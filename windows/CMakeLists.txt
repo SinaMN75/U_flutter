@@ -20,6 +20,8 @@ set(PLUGIN_NAME "u_plugin")
 list(APPEND PLUGIN_SOURCES
   "u_plugin.cpp"
   "u_plugin.h"
+  "screen_guard/screen_guard.cpp"
+  "screen_guard/screen_guard.h"
 )
 
 # Define the plugin library target. Its name must not be changed (see comment

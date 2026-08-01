@@ -1,5 +1,7 @@
 #include "u_plugin.h"
 
+#include "screen_guard/screen_guard.h"
+
 // This must be included before many other Windows headers.
 #include <windows.h>
 
@@ -31,6 +33,9 @@ void UPlugin::RegisterWithRegistrar(
       });
 
   registrar->AddPlugin(std::move(plugin));
+
+  // Register each native feature of the `u` plugin.
+  ScreenGuard::RegisterWithRegistrar(registrar);
 }
 
 UPlugin::UPlugin() {}

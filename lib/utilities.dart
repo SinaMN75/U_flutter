@@ -151,3 +151,5 @@ export "utils/u_update_dialog.dart";
 export "utils/u_utils.dart";
 export "utils/web/u_pwa.dart";
 export "utils/web/u_web_message.dart";
+
+export "plugins/screen_guard/screen_guard.dart";
