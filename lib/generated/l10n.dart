@@ -7319,6 +7319,56 @@ class S {
     return Intl.message('Generate', name: 'generate', desc: '', args: []);
   }
 
+  /// `OTP Tools`
+  String get otpTools {
+    return Intl.message('OTP Tools', name: 'otpTools', desc: '', args: []);
+  }
+
+  /// `Generate OTP`
+  String get generateOtp {
+    return Intl.message(
+      'Generate OTP',
+      name: 'generateOtp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Verify OTP`
+  String get verifyOtp {
+    return Intl.message('Verify OTP', name: 'verifyOtp', desc: '', args: []);
+  }
+
+  /// `Admin OTP`
+  String get adminOtp {
+    return Intl.message('Admin OTP', name: 'adminOtp', desc: '', args: []);
+  }
+
+  /// `OTP Length`
+  String get otpLength {
+    return Intl.message('OTP Length', name: 'otpLength', desc: '', args: []);
+  }
+
+  /// `OTP Code`
+  String get otpCode {
+    return Intl.message('OTP Code', name: 'otpCode', desc: '', args: []);
+  }
+
+  /// `OTP is valid`
+  String get otpValid {
+    return Intl.message('OTP is valid', name: 'otpValid', desc: '', args: []);
+  }
+
+  /// `OTP is invalid`
+  String get otpInvalid {
+    return Intl.message(
+      'OTP is invalid',
+      name: 'otpInvalid',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Use output as input`
   String get useOutputAsInput {
     return Intl.message(

@@ -90,10 +90,11 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
     handlers: UAdminActionHandlers<UTerminalResponse>(
       onEdit: _showEditDialog,
       onDelete: c.delete,
-      extras: <String, void Function(UTerminalResponse)>{"supportPassword": c.supportPassword},
+      extras: <String, void Function(UTerminalResponse)>{"supportPassword": c.supportPassword, "otpTools": _showOtpDialog},
     ),
     fallback: (UAdminActionContext<UTerminalResponse> ctx) => <UAdminAction>[
       ctx.extra("supportPassword", label: U.s.getSupportPassword, icon: Icons.password),
+      ctx.extra("otpTools", label: U.s.otpTools, icon: Icons.pin),
       ctx.edit(),
       ctx.delete(),
     ],
@@ -287,6 +288,112 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  void _showOtpDialog(UTerminalResponse i) {
+    final TextEditingController serial = TextEditingController(text: i.serial);
+    final TextEditingController length = TextEditingController(text: "6");
+    final TextEditingController otp = TextEditingController();
+    final Rx<bool> generateMode = true.obs;
+    final Rx<bool> admin = false.obs;
+    final Rx<String> result = "".obs;
+    final Rx<bool?> valid = Rx<bool?>(null);
+
+    void run() {
+      final String serialText = serial.text.trim();
+      if (serialText.isEmpty) {
+        UToast.error(message: U.s.required);
+        return;
+      }
+      if (generateMode.value) {
+        final int len = int.tryParse(length.text.trim()) ?? 6;
+        result(admin.value ? UOtp.generateAdminOtp(serialText, len) : UOtp.generateOtp(serialText, len));
+        valid(null);
+      } else {
+        final String otpText = otp.text.trim();
+        if (otpText.isEmpty) {
+          UToast.error(message: U.s.required);
+          return;
+        }
+        valid(admin.value ? UOtp.verifyAdminOtp(serialText, otpText) : UOtp.verifyOtp(serialText, otpText));
+        result("");
+      }
+    }
+
+    UNavigator.dialog(
+      AlertDialog(
+        title: Text(U.s.otpTools),
+        content: SizedBox(
+          width: context.dialogWidth(),
+          child: SingleChildScrollView(
+            child: Obx(
+              () => UColumn(
+                spacing: 0,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  USegmentedControl<bool>(
+                    selectedValue: generateMode.value,
+                    items: <bool, String>{true: U.s.generateOtp, false: U.s.verifyOtp},
+                    onValueChanged: (bool? v) {
+                      generateMode(v ?? true);
+                      result("");
+                      valid(null);
+                    },
+                  ).pSymmetric(vertical: 6),
+                  UTextField(controller: serial, labelText: U.s.serial).pSymmetric(vertical: 6),
+                  if (generateMode.value)
+                    UTextField(controller: length, labelText: U.s.otpLength, keyboardType: TextInputType.number).pSymmetric(vertical: 6)
+                  else
+                    UTextField(controller: otp, labelText: U.s.otpCode, keyboardType: TextInputType.number).pSymmetric(vertical: 6),
+                  URow(
+                    children: <Widget>[
+                      UTextBodyMedium(U.s.adminOtp).expanded(),
+                      Switch(value: admin.value, onChanged: (bool v) => admin(v)),
+                    ],
+                  ).pSymmetric(vertical: 6),
+                  if (result.value.isNotEmpty)
+                    Container(
+                      width: double.infinity,
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: UAdminTheme.green.withValues(alpha: 0.12),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: SelectableText(result.value, textAlign: TextAlign.center, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, letterSpacing: 2)),
+                    ),
+                  if (valid.value != null)
+                    Container(
+                      width: double.infinity,
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: (valid.value! ? UAdminTheme.green : UAdminTheme.red).withValues(alpha: 0.12),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: UTextBodyLarge(
+                        valid.value! ? U.s.otpValid : U.s.otpInvalid,
+                        color: valid.value! ? UAdminTheme.green : UAdminTheme.red,
+                        fontWeight: FontWeight.w600,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        actions: <Widget>[
+          Obx(
+            () => generateMode.value && result.value.isNotEmpty
+                ? UButton(type: UButtonType.text, title: U.s.copy, onTap: () => UClipboard.set(result.value, snackBar: true))
+                : const SizedBox.shrink(),
+          ),
+          UButton(type: UButtonType.text, title: U.s.cancel, onTap: UNavigator.back),
+          Obx(() => UButton(title: generateMode.value ? U.s.generate : U.s.verifyOtp, onTap: run)),
+        ],
       ),
     );
   }
