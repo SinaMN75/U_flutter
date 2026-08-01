@@ -26,7 +26,10 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
     title: widget.merchant == null ? U.s.terminalsManagement : "${U.s.terminals} · ${widget.merchant?.title}",
     onFilter: _showFilterDialog,
     onCreate: _showCreateDialog,
-    extraActions: <Widget>[IconButton(icon: const Icon(Icons.grid_4x4), tooltip: U.s.bulkImportTerminals, onPressed: c.import)],
+    extraActions: <Widget>[
+      IconButton(icon: const Icon(Icons.pin), tooltip: U.s.otpTools, onPressed: _showOtpDialog),
+      IconButton(icon: const Icon(Icons.grid_4x4), tooltip: U.s.bulkImportTerminals, onPressed: c.import),
+    ],
     pageNumber: c.pageNumber,
     totalPages: c.totalPages,
     onPageChanged: (int page) {
@@ -90,11 +93,10 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
     handlers: UAdminActionHandlers<UTerminalResponse>(
       onEdit: _showEditDialog,
       onDelete: c.delete,
-      extras: <String, void Function(UTerminalResponse)>{"supportPassword": c.supportPassword, "otpTools": _showOtpDialog},
+      extras: <String, void Function(UTerminalResponse)>{"supportPassword": c.supportPassword},
     ),
     fallback: (UAdminActionContext<UTerminalResponse> ctx) => <UAdminAction>[
       ctx.extra("supportPassword", label: U.s.getSupportPassword, icon: Icons.password),
-      ctx.extra("otpTools", label: U.s.otpTools, icon: Icons.pin),
       ctx.edit(),
       ctx.delete(),
     ],
@@ -292,8 +294,8 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
     );
   }
 
-  void _showOtpDialog(UTerminalResponse i) {
-    final TextEditingController serial = TextEditingController(text: i.serial);
+  void _showOtpDialog() {
+    final TextEditingController serial = TextEditingController();
     final TextEditingController length = TextEditingController(text: "6");
     final TextEditingController otp = TextEditingController();
     final Rx<bool> generateMode = true.obs;
