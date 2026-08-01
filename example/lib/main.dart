@@ -1,59 +1,41 @@
-import 'package:flutter/material.dart';
-import 'dart:async';
+import "package:u/utilities.dart";
 
-import 'package:flutter/services.dart';
-import 'package:u/u.dart';
+import "home_page.dart";
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(const UGalleryApp());
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
-  final _uPlugin = U();
-
-  @override
-  void initState() {
-    super.initState();
-    initPlatformState();
-  }
-
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    // We also handle the message potentially returning null.
-    try {
-      platformVersion =
-          await _uPlugin.getPlatformVersion() ?? 'Unknown platform version';
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _platformVersion = platformVersion;
-    });
-  }
+/// Showcase app for the `u` plugin. A single import — `package:u/utilities.dart`
+/// — brings in Flutter's material library plus every `u` component, utility,
+/// extension, service, and native feature demonstrated here.
+class UGalleryApp extends StatelessWidget {
+  const UGalleryApp({super.key});
 
   @override
   Widget build(BuildContext context) {
+    const Color seed = Color(0xFF3D5AFE);
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: const Text('Plugin example app')),
-        body: Center(child: Text('Running on: $_platformVersion\n')),
+      title: "u plugin gallery",
+      debugShowCheckedModeBanner: false,
+      // UToast / UNavigator / ULoading operate without a BuildContext by
+      // reading this key, so the gallery must hand it to MaterialApp.
+      navigatorKey: navigatorKey,
+      // Many u widgets read localized strings via U.s, so register S.delegate.
+      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: seed),
       ),
+      darkTheme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: seed, brightness: Brightness.dark),
+      ),
+      home: const HomePage(),
     );
   }
 }

@@ -1,17 +1,46 @@
-# u_example
+# u — example gallery
 
-Demonstrates how to use the u plugin.
+A multi-page showcase for the [`u`](../README.md) plugin. Every page demonstrates one capability
+area with a live widget and the exact code that produced it.
 
-## Getting Started
+## Run
 
-This project is a starting point for a Flutter application.
+```bash
+flutter pub get
+flutter run            # mobile
+flutter run -d chrome  # web
+flutter run -d macos   # desktop
+```
 
-A few resources to get you started if this is your first Flutter project:
+## Pages
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+| Page            | Shows                                                                    |
+| --------------- | ----------------------------------------------------------------------- |
+| Text            | The `UText*` type scale, styling props, `UAnimatedCounter`               |
+| Buttons         | `UButton` variants, submit-cancel, `UPressable`, `USendAgainCountDown`   |
+| Inputs          | `UTextField`+`UValidators`, `UOtpField`, `USegmentedControl`, `UChipChoice`, `UPlateField` |
+| Layout          | `UColumn`/`URow`, `UCard`, `UGlassCard`, `UHeaderCard`, `UListTile`, empty state |
+| Navigation      | `UTabBar`, `USideMenu`                                                    |
+| Feedback        | `UToast`, `UNavigator` dialogs/sheets, `ULoading`, progress, `RatingBar` |
+| Media & files   | `UImageNetwork`, `CachedNetworkImage`, `USlider`, `UBarcode`, `UFilePicker`, `UHtmlView`, `UWebView`, `UScanner` |
+| Data viz        | `UCartesianChart`, `UGauge`, `UJsonViewer`, `UNumberPagination`, `UMap`  |
+| Cards & misc    | `FlipCard`, `CreditCardWidget`, `ReadMoreText`, `ScrollingText`, `BadgeWidget`, Jalali picker |
+| Advanced forms  | `URichTextEditor`, `USignaturePad`, `UProcessView` (reference)           |
+| Utilities       | `UEncryption`, `PersianTools`, `UUUID`, `UClipboard`, `UShare`, `ULaunch`, `ULocalStorage` |
+| Formatters      | Money, compact/grouped numbers, Jalali dates, Persian digits             |
+| Extensions      | Widget sugar + string/iterable/num extensions                            |
+| ScreenGuard     | Native screenshot/recording prevention + detection callbacks             |
+| API services    | `UServices` usage and the full service list (reference)                  |
+| Admin panel     | `u_admin` modules and how to launch them (reference)                     |
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Structure
+
+```
+lib/
+  main.dart               MaterialApp: theme, navigatorKey, S localization
+  home_page.dart          gallery grid + navigation registry
+  widgets/
+    gallery_page.dart     shared page scaffold
+    demo_section.dart     documented demo block (title + description + live + code)
+  pages/                  one file per capability area
+```
