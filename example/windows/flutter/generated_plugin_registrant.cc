@@ -11,7 +11,6 @@
 #include <geolocator_windows/geolocator_windows.h>
 #include <share_plus/share_plus_windows_plugin_c_api.h>
 #include <syncfusion_pdfviewer_windows/syncfusion_pdfviewer_windows_plugin.h>
-#include <u/u_plugin_c_api.h>
 #include <url_launcher_windows/url_launcher_windows.h>
 #include <webview_all_windows/webview_windows_plugin.h>
 
@@ -26,8 +25,6 @@ void RegisterPlugins(flutter::PluginRegistry* registry) {
       registry->GetRegistrarForPlugin("SharePlusWindowsPluginCApi"));
   SyncfusionPdfviewerWindowsPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("SyncfusionPdfviewerWindowsPlugin"));
-  UPluginCApiRegisterWithRegistrar(
-      registry->GetRegistrarForPlugin("UPluginCApi"));
   UrlLauncherWindowsRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("UrlLauncherWindows"));
   WebviewWindowsPluginRegisterWithRegistrar(

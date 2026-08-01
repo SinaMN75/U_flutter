@@ -8,7 +8,6 @@ list(APPEND FLUTTER_PLUGIN_LIST
   geolocator_windows
   share_plus
   syncfusion_pdfviewer_windows
-  u
   url_launcher_windows
   webview_all_windows
 )

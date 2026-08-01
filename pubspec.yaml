@@ -11,6 +11,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   flutter_web_plugins:
     sdk: flutter
   web: ^1.0.0
@@ -48,6 +50,33 @@ dev_dependencies:
   flutter_lints: ^6.0.0
 
 flutter:
+  uses-material-design: true
+  assets:
+    - lib/assets/fonts/
+    - lib/assets/flags/
+  fonts:
+    - family: Vazir
+      fonts:
+        - asset: lib/assets/fonts/Vazir.ttf
+    - family: Samim
+      fonts:
+        - asset: lib/assets/fonts/Samim.ttf
+    - family: Shabnam
+      fonts:
+        - asset: lib/assets/fonts/Shabnam.ttf
+    - family: Sahel
+      fonts:
+        - asset: lib/assets/fonts/Sahel.ttf
+    - family: Yekan
+      fonts:
+        - asset: lib/assets/fonts/Yekan.ttf
+    - family: IranSansFaNum
+      fonts:
+        - asset: lib/assets/fonts/IranSansFaNum.ttf
+
+flutter_intl:
+  enabled: true
+
   plugin:
     platforms:
       android:
@@ -64,3 +93,29 @@ flutter:
       web:
         pluginClass: UWeb
         fileName: u_web.dart
+
+#  flutter pub global activate rename
+#  flutter pub global run rename setBundleId --value ""
+#  flutter pub global run rename setAppName --value ""
+#  flutter pub run flutter_launcher_icons:main
+
+# N/V prefix used in every command below:
+#   N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .)
+
+#Android:
+#  N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .) && flutter clean && flutter pub get && flutter build apk --target-platform android-arm64,android-arm --release && cp build/app/outputs/flutter-apk/app-release.apk ~/Desktop/$N-$V.apk
+
+#Web:
+#  N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .) && flutter clean && flutter pub get && flutter build web --release && (cd build/web && zip -r ~/Desktop/$N-$V-web.zip .)
+
+#macOS:
+#  N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .) && flutter clean && flutter pub get && flutter build macos --release && (cd build/macos/Build/Products/Release && zip -r ~/Desktop/$N-$V-macos.zip *.app)
+
+#Android + Web:
+#  N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .) && flutter clean && flutter pub get && flutter build apk --target-platform android-arm64,android-arm --release && flutter build web --release && cp build/app/outputs/flutter-apk/app-release.apk ~/Desktop/$N-$V.apk && (cd build/web && zip -r ~/Desktop/$N-$V-web.zip .)
+
+#Android + macOS:
+#  N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .) && flutter clean && flutter pub get && flutter build apk --target-platform android-arm64,android-arm --release && flutter build macos --release && cp build/app/outputs/flutter-apk/app-release.apk ~/Desktop/$N-$V.apk && (cd build/macos/Build/Products/Release && zip -r ~/Desktop/$N-$V-macos.zip *.app)
+
+#Android + macOS + Web:
+#  N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .) && flutter clean && flutter pub get && flutter build apk --target-platform android-arm64,android-arm --release && flutter build macos --release && flutter build web --release && cp build/app/outputs/flutter-apk/app-release.apk ~/Desktop/$N-$V.apk && (cd build/macos/Build/Products/Release && zip -r ~/Desktop/$N-$V-macos.zip *.app) && (cd build/web && zip -r ~/Desktop/$N-$V-web.zip .)
