@@ -307,7 +307,7 @@ class _UTextFieldDatePickerState extends State<UTextFieldDatePicker> {
 
           if (widget.time) {
             final TimeOfDay? timeOfDay = await showTimePicker(
-              context: context,
+              context: navigatorKey.currentContext!,
               initialTime: TimeOfDay.fromDateTime(selectedDateTime),
             );
 

@@ -242,8 +242,8 @@ class _ContractPageState extends State<UAdminContractPage> {
     final TextEditingController rent = TextEditingController(text: p?.rent.toInt().toString());
     final TextEditingController penalty = TextEditingController();
     final TextEditingController description = TextEditingController(text: p?.jsonData.description);
-    final TextEditingController startCtrl = TextEditingController(text: p == null ? null : p.startDate.toJalaliDate());
-    final TextEditingController endCtrl = TextEditingController(text: p == null ? null : p.endDate.toJalaliDate());
+    final TextEditingController startCtrl = TextEditingController(text: p?.startDate.toJalaliDate());
+    final TextEditingController endCtrl = TextEditingController(text: p?.endDate.toJalaliDate());
 
     final Rxn<UDormBedResponse> bed = Rxn<UDormBedResponse>();
     final Rxn<UUserResponse> user = Rxn<UUserResponse>();

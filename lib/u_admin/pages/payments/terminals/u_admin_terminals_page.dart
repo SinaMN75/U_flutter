@@ -352,7 +352,7 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                   URow(
                     children: <Widget>[
                       UTextBodyMedium(U.s.adminOtp).expanded(),
-                      Switch(value: admin.value, onChanged: (bool v) => admin(v)),
+                      Switch(value: admin.value, onChanged: admin.call),
                     ],
                   ).pSymmetric(vertical: 6),
                   if (result.value.isNotEmpty)
@@ -364,7 +364,11 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                         color: UAdminTheme.green.withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: SelectableText(result.value, textAlign: TextAlign.center, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, letterSpacing: 2)),
+                      child: SelectableText(
+                        result.value,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, letterSpacing: 2),
+                      ),
                     ),
                   if (valid.value != null)
                     Container(
@@ -389,9 +393,7 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
         ),
         actions: <Widget>[
           Obx(
-            () => generateMode.value && result.value.isNotEmpty
-                ? UButton(type: UButtonType.text, title: U.s.copy, onTap: () => UClipboard.set(result.value, snackBar: true))
-                : const SizedBox.shrink(),
+            () => generateMode.value && result.value.isNotEmpty ? UButton(type: UButtonType.text, title: U.s.copy, onTap: () => UClipboard.set(result.value, snackBar: true)) : const SizedBox.shrink(),
           ),
           UButton(type: UButtonType.text, title: U.s.cancel, onTap: UNavigator.back),
           Obx(() => UButton(title: generateMode.value ? U.s.generate : U.s.verifyOtp, onTap: run)),

@@ -17,7 +17,7 @@ class RatingWidget {
 class RatingBar extends StatefulWidget {
   const RatingBar({
     required this.onRatingUpdate,
-    required RatingWidget ratingWidget,
+    required RatingWidget this._ratingWidget,
     super.key,
     this.glowColor,
     this.maxRating,
@@ -36,12 +36,11 @@ class RatingBar extends StatefulWidget {
     this.tapOnlyMode = false,
     this.updateOnDrag = false,
     this.wrapAlignment = WrapAlignment.start,
-  }) : _itemBuilder = null,
-       _ratingWidget = ratingWidget;
+  }) : _itemBuilder = null;
 
   const RatingBar.builder({
     required this.onRatingUpdate,
-    required IndexedWidgetBuilder itemBuilder,
+    required IndexedWidgetBuilder this._itemBuilder,
     super.key,
     this.glowColor,
     this.maxRating,
@@ -60,8 +59,7 @@ class RatingBar extends StatefulWidget {
     this.tapOnlyMode = false,
     this.updateOnDrag = false,
     this.wrapAlignment = WrapAlignment.start,
-  }) : _itemBuilder = itemBuilder,
-       _ratingWidget = null;
+  }) : _ratingWidget = null;
 
   final ValueChanged<double> onRatingUpdate;
 

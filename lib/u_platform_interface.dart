@@ -1,6 +1,5 @@
-import 'package:plugin_platform_interface/plugin_platform_interface.dart';
-
-import 'u_method_channel.dart';
+import "package:plugin_platform_interface/plugin_platform_interface.dart";
+import "package:u/u_method_channel.dart";
 
 abstract class UPlatform extends PlatformInterface {
   /// Constructs a UPlatform.
@@ -24,6 +23,6 @@ abstract class UPlatform extends PlatformInterface {
   }
 
   Future<String?> getPlatformVersion() {
-    throw UnimplementedError('platformVersion() has not been implemented.');
+    throw UnimplementedError("platformVersion() has not been implemented.");
   }
 }

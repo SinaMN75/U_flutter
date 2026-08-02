@@ -63,13 +63,11 @@ class UMenuGroup extends UMenuEntry {
 
 class USideMenuController extends ChangeNotifier {
   USideMenuController({
-    String? selectedId,
-    bool collapsed = false,
+    this._selectedId,
+    this._collapsed = false,
     Set<String>? expandedGroups,
     Set<String>? pinnedIds,
-  }) : _selectedId = selectedId,
-       _collapsed = collapsed,
-       _expandedGroups = expandedGroups ?? <String>{},
+  }) : _expandedGroups = expandedGroups ?? <String>{},
        _pinnedIds = pinnedIds ?? <String>{};
 
   String? _selectedId;

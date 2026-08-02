@@ -118,7 +118,7 @@ class _HotelPageState extends State<UAdminHotelPage> {
   Future<void> _showEditDialog({UHotelResponse? p}) async {
     final TextEditingController title = TextEditingController(text: p?.title);
     final TextEditingController detail = TextEditingController(text: p?.jsonData.description ?? p?.jsonData.detail1);
-    final TextEditingController stars = TextEditingController(text: p == null ? null : p.stars.toString());
+    final TextEditingController stars = TextEditingController(text: p?.stars.toString());
     final TextEditingController address = TextEditingController(text: p?.address);
     final TextEditingController phone = TextEditingController(text: p?.phoneNumber);
     final TextEditingController email = TextEditingController(text: p?.email);

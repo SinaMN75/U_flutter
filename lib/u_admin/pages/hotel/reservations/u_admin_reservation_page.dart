@@ -252,8 +252,8 @@ class _ReservationPageState extends State<UAdminReservationPage> {
     final TextEditingController guestName = TextEditingController(text: p?.jsonData.guestName);
     final TextEditingController guestPhone = TextEditingController(text: p?.jsonData.guestPhone);
     final TextEditingController notes = TextEditingController(text: p?.jsonData.notes);
-    final TextEditingController checkInCtrl = TextEditingController(text: p == null ? null : p.checkInDate.toJalaliDate());
-    final TextEditingController checkOutCtrl = TextEditingController(text: p == null ? null : p.checkOutDate.toJalaliDate());
+    final TextEditingController checkInCtrl = TextEditingController(text: p?.checkInDate.toJalaliDate());
+    final TextEditingController checkOutCtrl = TextEditingController(text: p?.checkOutDate.toJalaliDate());
 
     final Rxn<UHotelRoomResponse> room = Rxn<UHotelRoomResponse>();
     final Rxn<UUserResponse> user = Rxn<UUserResponse>();

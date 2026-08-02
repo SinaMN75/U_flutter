@@ -318,7 +318,7 @@ class _UAdminAppSettingsPageState extends State<UAdminAppSettingsPage> {
     color: cs.surface,
     child: URow(
       children: <Widget>[
-        UTextBodySmall("${U.baseUrl}", color: cs.onSurface.withValues(alpha: 0.5)).expanded(),
+        UTextBodySmall(U.baseUrl, color: cs.onSurface.withValues(alpha: 0.5)).expanded(),
         UButton(
           title: U.s.save,
           icon: const Icon(Icons.save_rounded, size: 18),

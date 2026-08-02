@@ -63,7 +63,7 @@ class _UProgressLinearState extends State<UProgressLinear> with SingleTickerProv
     super.dispose();
   }
 
-  int? get _clampedValue => widget.value == null ? null : widget.value!.clamp(0, 100);
+  int? get _clampedValue => widget.value?.clamp(0, 100);
 
   @override
   Widget build(BuildContext context) {
@@ -224,7 +224,7 @@ class _UProgressCircularState extends State<UProgressCircular> with SingleTicker
     super.dispose();
   }
 
-  int? get _clampedValue => widget.value == null ? null : widget.value!.clamp(0, 100);
+  int? get _clampedValue => widget.value?.clamp(0, 100);
 
   @override
   Widget build(BuildContext context) {

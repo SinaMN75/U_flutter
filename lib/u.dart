@@ -1,8 +1,5 @@
-
-import 'u_platform_interface.dart';
+import "package:u/u_platform_interface.dart";
 
 class U {
-  Future<String?> getPlatformVersion() {
-    return UPlatform.instance.getPlatformVersion();
-  }
+  Future<String?> getPlatformVersion() => UPlatform.instance.getPlatformVersion();
 }
