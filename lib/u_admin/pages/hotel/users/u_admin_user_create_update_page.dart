@@ -208,7 +208,7 @@ class _UserCreateUpdateDialogState extends State<UAdminUserCreateUpdateDialog> {
     }
     final List<int> roleTagNumbers = <int>[TagUser.superAdmin.number, TagUser.subAdmin.number, TagUser.guest.number];
     final List<int> addTags = <int>[c.gender.value.number];
-    final List<int> removeTags = <int>[c.gender.value == TagUser.male ? TagUser.female.number : TagUser.male.number];
+    final List<int> removeTags = <int>[if (c.gender.value == TagUser.male) TagUser.female.number else TagUser.male.number];
     if (_canManageRoles) {
       addTags.add(c.role.value.number);
       removeTags.addAll(roleTagNumbers.where((int n) => n != c.role.value.number));

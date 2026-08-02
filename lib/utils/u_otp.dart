@@ -47,7 +47,7 @@ abstract class UOtp {
 
   static String _generate(final String posSerial, final int length, {required final bool admin}) {
     final String serialNo = _digitsOnly(posSerial);
-    final int max = (pow(10, length - 3)).toInt() - 1;
+    final int max = pow(10, length - 3).toInt() - 1;
     final String randomString = Random().nextInt(max).toString().padLeft(length - 3, "0");
     final String nowDate = _nowDate();
     final String serialCD = generateVerhoeff(admin ? serialNo : "$randomString$serialNo");

@@ -1,7 +1,7 @@
 part of "../data.dart";
 
 extension UInvoiceStatusX on UDormBedInvoiceResponse {
-  double get netDue => (debtAmount + penaltyAmount - creditorAmount - paidAmount);
+  double get netDue => debtAmount + penaltyAmount - creditorAmount - paidAmount;
 
   bool get isPaid {
     final bool taggedPaid = tags.contains(TagDormBedInvoice.paid.number) || tags.contains(TagDormBedInvoice.paidOnline.number) || tags.contains(TagDormBedInvoice.paidManual.number);
@@ -783,7 +783,7 @@ extension UHotelReservationStatusX on UHotelReservationResponse {
 }
 
 extension UHotelInvoiceStatusX on UHotelInvoiceResponse {
-  double get netDue => (debtAmount + penaltyAmount - creditorAmount - paidAmount);
+  double get netDue => debtAmount + penaltyAmount - creditorAmount - paidAmount;
 
   bool get isPaid {
     final bool taggedPaid = tags.contains(TagHotelInvoice.paid.number) || tags.contains(TagHotelInvoice.paidOnline.number) || tags.contains(TagHotelInvoice.paidManual.number);

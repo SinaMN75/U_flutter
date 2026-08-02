@@ -117,7 +117,7 @@ abstract class UToast {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       if (title != null) UTextTitleSmall(title, color: foreground),
-                      textStyle != null ? Text(message, style: textStyle) : UTextBodyMedium(message, color: foreground),
+                      if (textStyle != null) Text(message, style: textStyle) else UTextBodyMedium(message, color: foreground),
                     ],
                   ),
                 ),

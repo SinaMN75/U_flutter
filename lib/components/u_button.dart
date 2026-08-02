@@ -102,7 +102,7 @@ class _UButtonState extends State<UButton> {
       setState(() {
         counter--;
         title = "$counter ${widget.counterDescription}";
-        if (widget.counterOnCounting != null) widget.counterOnCounting!(counter);
+        widget.counterOnCounting?.call(counter);
         if (counter <= 1) {
           title = widget.title;
           timer.cancel();

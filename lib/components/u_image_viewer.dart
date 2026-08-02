@@ -31,7 +31,7 @@ class UImageViewer extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
     backgroundColor: backgroundColor,
-    body: Container(
+    body: ColoredBox(
       color: backgroundColor,
       child: Stack(
         children: <Widget>[

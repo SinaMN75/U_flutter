@@ -70,7 +70,7 @@ class _UPlateFieldState extends State<UPlateField> {
 
     if (widget.initialPlate.isNotEmpty) {
       for (int i = 0; i < widget.initialPlate.length && i < 2; i++) {
-        if (widget.initialPlate[i].contains(RegExp(r"[0-9]"))) parsedDigits1 += widget.initialPlate[i];
+        if (widget.initialPlate[i].contains(RegExp("[0-9]"))) parsedDigits1 += widget.initialPlate[i];
       }
       for (int i = 0; i < widget.initialPlate.length; i++) {
         if (uPlateLetters.contains(widget.initialPlate[i])) {
@@ -81,12 +81,12 @@ class _UPlateFieldState extends State<UPlateField> {
       final int letterIndex = widget.initialPlate.indexOf(parsedLetter);
       if (letterIndex != -1 && letterIndex + 1 < widget.initialPlate.length) {
         for (int i = letterIndex + 1; i < widget.initialPlate.length && i < letterIndex + 4; i++) {
-          if (widget.initialPlate[i].contains(RegExp(r"[0-9]"))) parsedDigits3 += widget.initialPlate[i];
+          if (widget.initialPlate[i].contains(RegExp("[0-9]"))) parsedDigits3 += widget.initialPlate[i];
         }
       }
       final List<String> digits = <String>[];
       for (int i = widget.initialPlate.length - 1; i >= 0 && digits.length < 2; i--) {
-        if (widget.initialPlate[i].contains(RegExp(r"[0-9]"))) digits.insert(0, widget.initialPlate[i]);
+        if (widget.initialPlate[i].contains(RegExp("[0-9]"))) digits.insert(0, widget.initialPlate[i]);
       }
       parsedProvince = digits.join();
     }
@@ -105,7 +105,7 @@ class _UPlateFieldState extends State<UPlateField> {
 
   void _onDigits1Changed() {
     if (_isReadOnly) return;
-    String value = digits1Controller.text.replaceAll(RegExp(r"[^0-9]"), "");
+    String value = digits1Controller.text.replaceAll(RegExp("[^0-9]"), "");
     if (value.length > 2) value = value.substring(0, 2);
     if (digits1Controller.text != value)
       digits1Controller.value = TextEditingValue(
@@ -118,7 +118,7 @@ class _UPlateFieldState extends State<UPlateField> {
 
   void _onDigits3Changed() {
     if (_isReadOnly) return;
-    String value = digits3Controller.text.replaceAll(RegExp(r"[^0-9]"), "");
+    String value = digits3Controller.text.replaceAll(RegExp("[^0-9]"), "");
     if (value.length > 3) value = value.substring(0, 3);
     if (digits3Controller.text != value)
       digits3Controller.value = TextEditingValue(
@@ -131,7 +131,7 @@ class _UPlateFieldState extends State<UPlateField> {
 
   void _onProvinceChanged() {
     if (_isReadOnly) return;
-    String value = provinceController.text.replaceAll(RegExp(r"[^0-9]"), "");
+    String value = provinceController.text.replaceAll(RegExp("[^0-9]"), "");
     if (value.length > 2) value = value.substring(0, 2);
     if (provinceController.text != value)
       provinceController.value = TextEditingValue(

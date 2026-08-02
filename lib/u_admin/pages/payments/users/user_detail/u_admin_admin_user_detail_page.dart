@@ -165,7 +165,7 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
     children: <Widget>[
       _sectionHeader(U.s.userInformation, Icons.person_outline, UAdminTheme.orange),
       const SizedBox(height: 12),
-      Container(
+      DecoratedBox(
         decoration: _cardDecoration(),
         child: UColumn(
           spacing: 0,
@@ -204,7 +204,7 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
     final bool hasData = d.base64 != null;
     return SizedBox(
       width: 190,
-      child: Container(
+      child: DecoratedBox(
         decoration: _cardDecoration(),
         child: UColumn(
           spacing: 0,

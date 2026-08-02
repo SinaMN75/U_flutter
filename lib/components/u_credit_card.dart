@@ -39,12 +39,12 @@ class CardBrandDetector {
     final String number = input.replaceAll(RegExp(r"\D"), "");
     if (number.isEmpty) return CardBrand.unknown;
 
-    if (RegExp(r"^4").hasMatch(number)) return CardBrand.visa;
-    if (RegExp(r"^(5[1-5]|2[2-7])").hasMatch(number)) return CardBrand.mastercard;
-    if (RegExp(r"^3[47]").hasMatch(number)) return CardBrand.amex;
-    if (RegExp(r"^6(011|5|4[4-9]|22)").hasMatch(number)) return CardBrand.discover;
-    if (RegExp(r"^3(0[0-5]|[68])").hasMatch(number)) return CardBrand.dinersClub;
-    if (RegExp(r"^35").hasMatch(number)) return CardBrand.jcb;
+    if (RegExp("^4").hasMatch(number)) return CardBrand.visa;
+    if (RegExp("^(5[1-5]|2[2-7])").hasMatch(number)) return CardBrand.mastercard;
+    if (RegExp("^3[47]").hasMatch(number)) return CardBrand.amex;
+    if (RegExp("^6(011|5|4[4-9]|22)").hasMatch(number)) return CardBrand.discover;
+    if (RegExp("^3(0[0-5]|[68])").hasMatch(number)) return CardBrand.dinersClub;
+    if (RegExp("^35").hasMatch(number)) return CardBrand.jcb;
     return CardBrand.unknown;
   }
 

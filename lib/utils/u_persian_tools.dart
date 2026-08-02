@@ -480,7 +480,7 @@ class PersianTools {
   static bool validateNationalCode(String? input) {
     if (input == null) return false;
     final String code = input.trim();
-    if (code.length != 10 || RegExp(r"[^0-9]").hasMatch(code)) return false;
+    if (code.length != 10 || RegExp("[^0-9]").hasMatch(code)) return false;
     if (RegExp(r"^(\d)\1{9}$").hasMatch(code)) return false;
     final List<int> digits = code.split("").map(int.parse).toList();
     int sum = 0;
@@ -520,7 +520,7 @@ class PersianTools {
   /// @returns bool True if valid
   /// Example: PersianTools.isShebaValid("IR123456789012345678901234") => true
   static bool isShebaValid(String sheba) {
-    if (sheba.length != 26 || !RegExp(r"IR[0-9]{24}").hasMatch(sheba)) return false;
+    if (sheba.length != 26 || !RegExp("IR[0-9]{24}").hasMatch(sheba)) return false;
     final int d1 = sheba.codeUnitAt(0) - 65 + 10;
     final int d2 = sheba.codeUnitAt(1) - 65 + 10;
     final String iban = "${sheba.substring(4)}$d1$d2${sheba.substring(2, 4)}";
@@ -538,7 +538,7 @@ class PersianTools {
   /// Example: PersianTools.getBankFromSheba("IR123456789012345678901234") => BankInfo(...)
   static BankInfo? getBankFromSheba(String sheba) {
     if (!isShebaValid(sheba)) return null;
-    final String? bankCode = RegExp(r"IR[0-9]{2}([0-9]{3})").firstMatch(sheba)?[1];
+    final String? bankCode = RegExp("IR[0-9]{2}([0-9]{3})").firstMatch(sheba)?[1];
     final BankInfo? bank = _bankInfo[bankCode];
     if (bank == null) return null;
     if (bank.isAccountNumberAvailable && bank.process != null) {
@@ -639,9 +639,9 @@ class PersianTools {
     return parts.length > 1 ? "$integer.${parts[1]}" : integer;
   }
 
-  static String _convertEnToFa(String digits) => digits.replaceAllMapped(RegExp(r"[0-9]"), (Match m) => _faNumber[int.parse(m.group(0)!)]);
+  static String _convertEnToFa(String digits) => digits.replaceAllMapped(RegExp("[0-9]"), (Match m) => _faNumber[int.parse(m.group(0)!)]);
 
-  static String _convertEnToAr(String digits) => digits.replaceAllMapped(RegExp(r"[0-9]"), (Match m) => _arNumber[int.parse(m.group(0)!)]);
+  static String _convertEnToAr(String digits) => digits.replaceAllMapped(RegExp("[0-9]"), (Match m) => _arNumber[int.parse(m.group(0)!)]);
 
   static String _convertFaToEn(String digits) => digits.replaceAllMapped(RegExp("[$_faNumber]"), (Match m) => _faNumber.indexOf(m.group(0)!).toString());
 
@@ -689,7 +689,7 @@ class PersianTools {
     int sum = 0;
     bool isNegative = false;
 
-    for (String token in tokens) {
+    for (final String token in tokens) {
       final String enToken = _convertFaToEn(token);
       if (enToken == "منفی") {
         isNegative = true;

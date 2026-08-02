@@ -115,7 +115,7 @@ class _UOtpFieldState extends State<UOtpField> {
     controller.text = _otp.join();
 
     if (value.isNotEmpty && index < widget.length - 1) _focusNodes[index + 1].requestFocus();
-    if (widget.onChanged != null) widget.onChanged!(controller.text);
+    widget.onChanged?.call(controller.text);
     if (controller.text.length == widget.length && widget.onCompleted != null) widget.onCompleted!(controller.text);
   }
 

@@ -715,7 +715,7 @@ class _UTextFieldPhoneNumberState extends State<UTextFieldPhoneNumber> {
         minChildSize: 0.5,
         maxChildSize: 0.95,
         expand: false,
-        builder: (BuildContext context, ScrollController scrollController) => Container(
+        builder: (BuildContext context, ScrollController scrollController) => DecoratedBox(
           decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),

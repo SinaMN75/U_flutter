@@ -251,12 +251,12 @@ class _UProcessVisualAuthFieldState extends State<UProcessVisualAuthField> with 
         ),
       );
     } else if (_hasInitialValue) {
-      return Container(
+      return ColoredBox(
         color: scheme.surfaceContainerHighest,
         child: const Center(child: CircularProgressIndicator()),
       );
     } else {
-      return Container(
+      return ColoredBox(
         color: scheme.surfaceContainerHighest,
         child: Center(child: Icon(Icons.person, size: 64, color: scheme.onSurfaceVariant)),
       );

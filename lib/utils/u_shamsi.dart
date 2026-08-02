@@ -38,7 +38,7 @@ abstract class DateFormatter {
   String get wN;
 
   // Persian number formatting
-  String toPersian(String input) => input.replaceAllMapped(RegExp(r"[0-9]"), (Match m) => "۰۱۲۳۴۵۶۷۸۹"[int.parse(m.group(0)!)]);
+  String toPersian(String input) => input.replaceAllMapped(RegExp("[0-9]"), (Match m) => "۰۱۲۳۴۵۶۷۸۹"[int.parse(m.group(0)!)]);
 }
 
 // Abstract base class for dates

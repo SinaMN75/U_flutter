@@ -549,7 +549,7 @@ class _UAdminFileManagerPageState extends State<UAdminFileManagerPage> {
     final String url = e.url ?? UServices.fileManager.downloadUrl(e.path);
     switch (_kind(e)) {
       case _PreviewKind.image:
-        return Container(
+        return ColoredBox(
           color: Colors.black,
           child: InteractiveViewer(
             minScale: 0.5,
@@ -717,7 +717,7 @@ class _VideoPreviewState extends State<_VideoPreview> {
   Widget build(BuildContext context) {
     if (_error != null) return Center(child: UTextBodyMedium(_error!, color: Theme.of(context).colorScheme.error));
     if (!_ready || _controller == null) return const Center(child: CircularProgressIndicator());
-    return Container(
+    return ColoredBox(
       color: Colors.black,
       child: Column(
         children: <Widget>[

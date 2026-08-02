@@ -435,7 +435,7 @@ class UDownload {
     final File file = File("${dir.path}/$safeCacheKey.tmp");
 
     int downloadedBytes = 0;
-    if (await file.exists()) {
+    if (file.existsSync()) {
       try {
         downloadedBytes = await file.length();
       } catch (e) {
@@ -465,7 +465,7 @@ class UDownload {
             );
 
         if (response.statusCode == 416) {
-          if (await file.exists() && downloadedBytes > 0) {
+          if (file.existsSync() && downloadedBytes > 0) {
             return await _readFileWithRetry(file);
           } else {
             await _safeDelete(file);
@@ -552,7 +552,7 @@ class UDownload {
 
   // FIX 9: Safe file delete with retry for Windows
   static Future<void> _safeDelete(File file) async {
-    if (!await file.exists()) return;
+    if (!file.existsSync()) return;
 
     for (int i = 0; i < 3; i++) {
       try {

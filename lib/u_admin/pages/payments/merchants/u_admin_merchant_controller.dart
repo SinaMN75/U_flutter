@@ -59,9 +59,9 @@ class UAdminMerchantController extends UBaseController {
     titleFilter.clear();
     nationalCodeFilter.clear();
     phoneNumberFilter.clear();
-    businessCategory.value = (null);
-    selectedCity.value = (null);
-    selectedProvince.value = (null);
+    businessCategory.value = null;
+    selectedCity.value = null;
+    selectedProvince.value = null;
     zipCodeFilter.clear();
     landlineFilter.clear();
     merchantIdFilter.clear();

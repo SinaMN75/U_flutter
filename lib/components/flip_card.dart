@@ -125,7 +125,7 @@ class FlipCardState extends State<FlipCard> with SingleTickerProviderStateMixin 
 
     final TickerFuture animation = isFront ? controller!.forward() : controller!.reverse();
     await animation.whenComplete(() {
-      if (widget.onFlipDone != null) widget.onFlipDone!(isFront);
+      widget.onFlipDone?.call(isFront);
       if (!mounted) return;
       setState(() => isFront = !isFrontBefore);
     });
@@ -136,7 +136,7 @@ class FlipCardState extends State<FlipCard> with SingleTickerProviderStateMixin 
 
     widget.onFlip?.call();
 
-    if (widget.onFlipDone != null) widget.onFlipDone!(isFront);
+    widget.onFlipDone?.call(isFront);
 
     setState(() {
       isFront = !isFront;

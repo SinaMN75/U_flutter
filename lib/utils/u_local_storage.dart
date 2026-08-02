@@ -37,7 +37,7 @@ abstract class ULocalStorage {
   }
 
   static Future<void> setBatch(Map<String, dynamic> keyValuePairs) async {
-    for (MapEntry<String, dynamic> entry in keyValuePairs.entries) {
+    for (final MapEntry<String, dynamic> entry in keyValuePairs.entries) {
       set(entry.key, entry.value);
     }
   }
@@ -93,7 +93,7 @@ abstract class ULocalStorage {
   static Map<String, dynamic> getAll() {
     final Set<String> keys = getKeys();
     final Map<String, dynamic> data = <String, dynamic>{};
-    for (String key in keys) {
+    for (final String key in keys) {
       data[key] = _sp.get(key);
     }
     return data;
@@ -120,7 +120,7 @@ abstract class UFileStorage {
     if (!kIsWeb) {
       _directory = await getApplicationDocumentsDirectory();
       _bigFilesDirectory = Directory("${_directory.path}/big_files");
-      if (!await _bigFilesDirectory.exists()) {
+      if (!_bigFilesDirectory.existsSync()) {
         await _bigFilesDirectory.create(recursive: true);
       }
     }
@@ -134,7 +134,7 @@ abstract class UFileStorage {
   static Future<Uint8List?> getBytes(String key) async {
     final File file = File("${_bigFilesDirectory.path}/$key.dat");
 
-    if (!await file.exists()) return null;
+    if (!file.existsSync()) return null;
 
     final int size = file.lengthSync();
     final Uint8List output = Uint8List(size);
@@ -185,10 +185,10 @@ abstract class UFileStorage {
     return output;
   }
 
-  static Future<bool> fileExists(String key) async {
+  static bool fileExists(String key) {
     try {
       final File file = File("${_bigFilesDirectory.path}/$key.dat");
-      return await file.exists();
+      return file.existsSync();
     } catch (e) {
       return false;
     }
@@ -197,8 +197,8 @@ abstract class UFileStorage {
   static Future<int> fileSize(String key) async {
     try {
       final File file = File("${_bigFilesDirectory.path}/$key.dat");
-      if (await file.exists()) {
-        final FileStat stat = await file.stat();
+      if (file.existsSync()) {
+        final FileStat stat = file.statSync();
         return stat.size;
       }
       return 0;
@@ -244,11 +244,11 @@ abstract class UFileStorage {
   static Future<void> remove(String key) async {
     try {
       final File datFile = File("${_bigFilesDirectory.path}/$key.dat");
-      if (await datFile.exists()) {
+      if (datFile.existsSync()) {
         await datFile.delete();
       }
       final File txtFile = File("${_directory.path}/$key.txt");
-      if (await txtFile.exists()) {
+      if (txtFile.existsSync()) {
         await txtFile.delete();
       }
     } catch (e) {
@@ -286,7 +286,7 @@ abstract class UFileStorage {
   static Future<String?> getString(String key) async {
     try {
       final File file = File("${_directory.path}/$key.txt");
-      if (await file.exists()) {
+      if (file.existsSync()) {
         return await file.readAsString();
       }
       return null;
@@ -319,7 +319,7 @@ abstract class UFileStorage {
   static Future<Map<String, dynamic>?> getJson(String key) async {
     try {
       final File file = File("${_bigFilesDirectory.path}/$key.dat");
-      if (await file.exists()) {
+      if (file.existsSync()) {
         final String jsonString = await file.readAsString();
         return jsonDecode(jsonString) as Map<String, dynamic>;
       }
@@ -357,7 +357,7 @@ abstract class UFileStorage {
 
   static Future<void> copyFile(String sourceKey, String destinationKey) async {
     final File sourceFile = File("${_bigFilesDirectory.path}/$sourceKey.dat");
-    if (await sourceFile.exists()) {
+    if (sourceFile.existsSync()) {
       await sourceFile.copy("${_bigFilesDirectory.path}/$destinationKey.dat");
     }
   }

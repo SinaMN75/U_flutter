@@ -1162,7 +1162,7 @@ class _Parser {
         .replaceAll("&#39;", "'")
         .replaceAll("&#x27;", "'")
         .replaceAllMapped(RegExp(r"&#(\d+);"), (Match m) => String.fromCharCode(int.parse(m.group(1)!)))
-        .replaceAllMapped(RegExp(r"&#x([0-9a-fA-F]+);"), (Match m) => String.fromCharCode(int.parse(m.group(1)!, radix: 16)));
+        .replaceAllMapped(RegExp("&#x([0-9a-fA-F]+);"), (Match m) => String.fromCharCode(int.parse(m.group(1)!, radix: 16)));
   }
 }
 

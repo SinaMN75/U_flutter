@@ -211,7 +211,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator> wit
                     child: Transform.translate(
                       offset: Offset(
                         (widget.circularStrokeCap != CircularStrokeCap.butt) ? widget.lineWidth / 2 : 0,
-                        (-widget.radius + widget.lineWidth / 2),
+                        -widget.radius + widget.lineWidth / 2,
                       ),
                       child: widget.widgetIndicator,
                     ),
@@ -628,7 +628,7 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator> with Si
     }
     return Material(
       color: Colors.transparent,
-      child: Container(
+      child: ColoredBox(
         color: widget.fillColor,
         child: Row(
           mainAxisAlignment: widget.alignment,

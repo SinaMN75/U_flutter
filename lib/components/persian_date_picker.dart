@@ -140,7 +140,7 @@ class _JalaliDatePickerDialogState extends State<JalaliDatePickerDialog> {
     // Add buttons for each day in the month
     final int daysInMonth = Jalali(currentYear, currentMonth).monthLength;
     for (int day = 1; day <= daysInMonth; day++) {
-      final bool isSelected = (selectedDate.year == currentYear && selectedDate.month == currentMonth && selectedDate.day == day);
+      final bool isSelected = selectedDate.year == currentYear && selectedDate.month == currentMonth && selectedDate.day == day;
       final ColorScheme scheme = Theme.of(context).colorScheme;
       dayWidgets.add(
         InkWell(

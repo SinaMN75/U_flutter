@@ -279,7 +279,7 @@ extension StringExtensions on String {
     final Uint8List input = utf8.encode(this);
     BigInt intData = BigInt.from(0);
 
-    for (int byte in input) {
+    for (final int byte in input) {
       intData = intData * BigInt.from(256) + BigInt.from(byte);
     }
 
@@ -290,7 +290,7 @@ extension StringExtensions on String {
       result.write(base58Alphabet[remainder.toInt()]);
     }
 
-    for (int byte in input) {
+    for (final int byte in input) {
       if (byte == 0) {
         result.write(base58Alphabet[0]);
       } else {
@@ -305,7 +305,7 @@ extension StringExtensions on String {
     const String base58Alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
     BigInt intData = BigInt.zero;
 
-    for (String char in split("")) {
+    for (final String char in split("")) {
       final int index = base58Alphabet.indexOf(char);
       if (index < 0) throw FormatException("Invalid Base58 character: $char");
       intData = intData * BigInt.from(58) + BigInt.from(index);
@@ -317,7 +317,7 @@ extension StringExtensions on String {
       intData = intData ~/ BigInt.from(256);
     }
 
-    for (String char in split("")) {
+    for (final String char in split("")) {
       if (char == "1") {
         bytes.insert(0, 0);
       } else {

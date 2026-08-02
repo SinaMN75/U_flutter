@@ -1,6 +1,5 @@
 part of "../data.dart";
 
-// Cross-platform server/OS metrics (identity, uptime, CPU, memory, disk).
 class UOsMetricsResponse {
   final DateTime generatedAt;
 
@@ -76,9 +75,9 @@ class UOsMetricsResponse {
     processUptimeSeconds: (json["processUptimeSeconds"] ?? 0).toString().toDouble(),
     processStartedAt: DateTime.parse(json["processStartedAt"]),
     cpuUsagePercent: (json["cpuUsagePercent"] ?? 0).toString().toDouble(),
-    loadAverage1Min: json["loadAverage1Min"] == null ? null : (json["loadAverage1Min"]).toString().toDouble(),
-    loadAverage5Min: json["loadAverage5Min"] == null ? null : (json["loadAverage5Min"]).toString().toDouble(),
-    loadAverage15Min: json["loadAverage15Min"] == null ? null : (json["loadAverage15Min"]).toString().toDouble(),
+    loadAverage1Min: json["loadAverage1Min"]?.toString().toDouble(),
+    loadAverage5Min: json["loadAverage5Min"]?.toString().toDouble(),
+    loadAverage15Min: json["loadAverage15Min"]?.toString().toDouble(),
     memoryTotalGb: (json["memoryTotalGb"] ?? 0).toString().toDouble(),
     memoryUsedGb: (json["memoryUsedGb"] ?? 0).toString().toDouble(),
     memoryFreeGb: (json["memoryFreeGb"] ?? 0).toString().toDouble(),
