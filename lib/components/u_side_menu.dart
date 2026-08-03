@@ -49,7 +49,7 @@ class UMenuGroup extends UMenuEntry {
   final String id;
   final String title;
   final IconData icon;
-  final List<UMenuItem> children;
+  final List<UMenuEntry> children;
   final bool initiallyExpanded;
 
   const UMenuGroup({
@@ -649,28 +649,15 @@ class _USideMenuState extends State<USideMenu> with TickerProviderStateMixin {
         if (searching && !_matches(entry, query)) continue;
         out.add(reveal(_buildItemTile(entry, collapsed: collapsed)));
       } else if (entry is UMenuGroup) {
-        final List<UMenuItem> matchingChildren = searching ? entry.children.where((UMenuItem c) => _matches(c, query)).toList() : entry.children;
-        if (searching && matchingChildren.isEmpty && !entry.title.toLowerCase().contains(query)) continue;
+        if (searching && !_entryMatches(entry, query)) continue;
 
         if (collapsed) {
-          for (final UMenuItem child in matchingChildren) {
+          for (final UMenuItem child in _collectLeafItems(entry)) {
+            if (searching && !_matches(child, query)) continue;
             out.add(reveal(_buildItemTile(child, collapsed: true)));
           }
         } else {
-          out.add(
-            reveal(
-              _GroupTile(
-                key: ValueKey<String>("group-${entry.id}"),
-                group: entry,
-                theme: _t,
-                expanded: searching || widget.controller.isGroupExpanded(entry.id) || entry.initiallyExpanded,
-                forceExpanded: searching,
-                onToggle: () => widget.controller.toggleGroup(entry.id),
-                childBuilder: (UMenuItem child) => _buildItemTile(child, collapsed: false, indent: true),
-                children: matchingChildren,
-              ),
-            ),
-          );
+          out.add(reveal(_buildGroup(entry, depth: 0, searching: searching, query: query)));
         }
       }
     }
@@ -694,12 +681,57 @@ class _USideMenuState extends State<USideMenu> with TickerProviderStateMixin {
     final List<UMenuItem> result = <UMenuItem>[];
     for (final UMenuEntry e in widget.items) {
       if (e is UMenuItem) result.add(e);
-      if (e is UMenuGroup) result.addAll(e.children);
+      if (e is UMenuGroup) result.addAll(_collectLeafItems(e));
+    }
+    return result;
+  }
+
+  // Flattens a group's entire subtree down to its leaf items.
+  List<UMenuItem> _collectLeafItems(UMenuGroup group) {
+    final List<UMenuItem> result = <UMenuItem>[];
+    for (final UMenuEntry child in group.children) {
+      if (child is UMenuItem) result.add(child);
+      if (child is UMenuGroup) result.addAll(_collectLeafItems(child));
     }
     return result;
   }
 
   bool _matches(UMenuItem item, String query) => item.title.toLowerCase().contains(query);
+
+  bool _entryMatches(UMenuEntry entry, String query) {
+    if (entry is UMenuItem) return _matches(entry, query);
+    if (entry is UMenuGroup) return entry.title.toLowerCase().contains(query) || entry.children.any((UMenuEntry c) => _entryMatches(c, query));
+    return false;
+  }
+
+  // A matching group title reveals its whole subtree; otherwise only matching descendants show.
+  List<UMenuEntry> _filterChildren(UMenuGroup group, bool searching, String query) {
+    if (!searching || group.title.toLowerCase().contains(query)) return group.children;
+    return group.children.where((UMenuEntry c) => _entryMatches(c, query)).toList();
+  }
+
+  Widget _buildGroup(UMenuGroup group, {required int depth, required bool searching, required String query}) {
+    final List<Widget> childWidgets = <Widget>[];
+    for (final UMenuEntry child in _filterChildren(group, searching, query)) {
+      if (child is UMenuHeader) {
+        childWidgets.add(_buildHeaderLabel(child.label));
+      } else if (child is UMenuItem) {
+        childWidgets.add(_buildItemTile(child, collapsed: false, depth: depth + 1));
+      } else if (child is UMenuGroup) {
+        childWidgets.add(_buildGroup(child, depth: depth + 1, searching: searching, query: query));
+      }
+    }
+    return _GroupTile(
+      key: ValueKey<String>("group-${group.id}"),
+      group: group,
+      theme: _t,
+      depth: depth,
+      expanded: searching || widget.controller.isGroupExpanded(group.id) || group.initiallyExpanded,
+      forceExpanded: searching,
+      onToggle: () => widget.controller.toggleGroup(group.id),
+      childWidgets: childWidgets,
+    );
+  }
 
   Widget _buildHeaderLabel(String label) => Padding(
     padding: const EdgeInsets.fromLTRB(24, 14, 16, 6),
@@ -711,11 +743,11 @@ class _USideMenuState extends State<USideMenu> with TickerProviderStateMixin {
     child: Divider(height: 1, thickness: 1, color: _t.dividerColor),
   );
 
-  Widget _buildItemTile(UMenuItem item, {required bool collapsed, bool indent = false}) => _ItemTile(
+  Widget _buildItemTile(UMenuItem item, {required bool collapsed, int depth = 0}) => _ItemTile(
     item: item,
     theme: _t,
     collapsed: collapsed,
-    indent: indent,
+    depth: depth,
     selected: widget.controller.selectedId == item.id,
     pinned: widget.controller.isPinned(item.id),
     enablePinning: widget.enablePinning && item.pinnable,
@@ -894,13 +926,13 @@ class _ItemTile extends StatefulWidget {
     required this.enablePinning,
     required this.onTap,
     required this.onTogglePin,
-    this.indent = false,
+    this.depth = 0,
   });
 
   final UMenuItem item;
   final USideMenuTheme theme;
   final bool collapsed;
-  final bool indent;
+  final int depth;
   final bool selected;
   final bool pinned;
   final bool enablePinning;
@@ -975,7 +1007,7 @@ class _ItemTileState extends State<_ItemTile> {
                 child: Row(
                   children: <Widget>[
                     _buildLeadingIndicator(active),
-                    SizedBox(width: widget.collapsed ? 0 : (widget.indent ? 14 : 6)),
+                    SizedBox(width: widget.collapsed ? 0 : (6 + widget.depth * 14).toDouble()),
                     Expanded(
                       child: Row(
                         mainAxisAlignment: widget.collapsed ? MainAxisAlignment.center : MainAxisAlignment.start,
@@ -1079,21 +1111,21 @@ class _GroupTile extends StatelessWidget {
   const _GroupTile({
     required this.group,
     required this.theme,
+    required this.depth,
     required this.expanded,
     required this.forceExpanded,
     required this.onToggle,
-    required this.children,
-    required this.childBuilder,
+    required this.childWidgets,
     super.key,
   });
 
   final UMenuGroup group;
   final USideMenuTheme theme;
+  final int depth;
   final bool expanded;
   final bool forceExpanded;
   final VoidCallback onToggle;
-  final List<UMenuItem> children;
-  final Widget Function(UMenuItem item) childBuilder;
+  final List<Widget> childWidgets;
 
   @override
   Widget build(BuildContext context) => Column(
@@ -1101,6 +1133,7 @@ class _GroupTile extends StatelessWidget {
     children: <Widget>[
       ListTile(
         onTap: forceExpanded ? null : onToggle,
+        contentPadding: EdgeInsets.only(left: (16 + depth * 14).toDouble(), right: 8),
         leading: Icon(group.icon, size: theme.iconSize, color: theme.unselectedIconColor),
         title: UTextBodyMedium(
           group.title,
@@ -1130,7 +1163,7 @@ class _GroupTile extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 4),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: children.map(childBuilder).toList(),
+                children: childWidgets,
               ),
             ),
           ),
