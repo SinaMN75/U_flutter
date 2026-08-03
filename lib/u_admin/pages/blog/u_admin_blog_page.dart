@@ -50,29 +50,29 @@ class _BlogPageState extends State<UAdminBlogPage> {
 
   Widget _itemDesktop(UBlogResponse i, int index) => URow(
     color: UAdminTable.rowColor(context, index),
+    padding: UAdminTable.rowPadding,
     children: <Widget>[
-      SizedBox(width: 48, child: i.media?.firstOrNull?.url != null ? UImage(i.media!.first.url!) : const Icon(Icons.article_outlined)).expanded(flex: 0),
+      SizedBox(width: 48, child: i.media?.firstOrNull?.url != null ? UImage(i.media!.first.url!, borderRadius: 8) : const Icon(Icons.article_outlined)).expanded(flex: 0),
       UAdminTable.cell(i.title, flex: 3),
-      Chip(
-        label: Text(_isPublished(i) ? U.s.published : U.s.draft),
-        backgroundColor: _isPublished(i) ? Colors.green.withValues(alpha: 0.15) : Colors.grey.withValues(alpha: 0.15),
-      ).expanded(),
+      UAdminTable.statusChip(context, label: _isPublished(i) ? U.s.published : U.s.draft, color: _isPublished(i) ? UAdminTheme.green : UAdminTheme.grey).alignAtCenter().expanded(),
       UAdminTable.cell((i.commentCount ?? 0).toString()),
       UAdminTable.cell(i.createdAt.toJalaliDate()),
       _menu(i).expanded(),
     ],
   );
 
-  Widget _itemResponsive(UBlogResponse i, int index) => UAdminTable.mobileTile(
+  Widget _itemResponsive(UBlogResponse i, int index) => UAdminTable.mobileCard(
     context,
-    index: index,
-    icon: Icons.article_outlined,
+    leading: i.media?.firstOrNull?.url != null
+        ? SizedBox(width: 44, height: 44, child: UImage(i.media!.first.url!, borderRadius: 12))
+        : UAdminTable.leadingIcon(context, Icons.article_outlined),
     title: i.title,
-    subtitle: <Widget>[
-      UTextBodyMedium(_isPublished(i) ? U.s.published : U.s.draft),
-      UTextBodySmall("${U.s.viewCount} • ${i.commentCount ?? 0} ${U.s.comments} • ${i.createdAt.toJalaliDate()}"),
-    ],
+    badge: UAdminTable.statusChip(context, label: _isPublished(i) ? U.s.published : U.s.draft, color: _isPublished(i) ? UAdminTheme.green : UAdminTheme.grey),
     trailing: _menu(i),
+    fields: <UAdminField>[
+      UAdminField(U.s.comments, (i.commentCount ?? 0).toString()),
+      UAdminField(U.s.createdAt, i.createdAt.toJalaliDate()),
+    ],
   );
 
   Widget _menu(UBlogResponse i) => UAdminOps.menu<UBlogResponse>(

@@ -1,5 +1,15 @@
 part of "u_admin.dart";
 
+// One label/value pair rendered inside a [UAdminTable.mobileCard]. Pass [valueWidget] for a
+// non-text value (a chip, image, coloured amount); otherwise [value] is shown as text.
+class UAdminField {
+  const UAdminField(this.label, this.value, {this.valueWidget});
+
+  final String label;
+  final String? value;
+  final Widget? valueWidget;
+}
+
 class UAdminListView<T> extends StatelessWidget {
   const UAdminListView({
     required this.state,
@@ -33,9 +43,18 @@ class UAdminListView<T> extends StatelessWidget {
 
     final List<T> data = items();
     final bool desktop = MediaQuery.sizeOf(context).width >= desktopBreakpoint;
+    final ColorScheme scheme = Theme.of(context).colorScheme;
     final Widget list = desktop
         ? UListView(
-            header: URow(color: Theme.of(context).colorScheme.primary, padding: const EdgeInsets.all(8), children: desktopHeader()),
+            padding: const EdgeInsets.only(bottom: 8),
+            header: Container(
+              decoration: BoxDecoration(
+                color: scheme.primary,
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(14)),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14),
+              child: URow(children: desktopHeader()),
+            ),
             itemBuilder: (BuildContext context, int index) => desktopRow(data[index], index),
             itemCount: data.length,
           )
@@ -75,7 +94,109 @@ abstract class UAdminTable {
   static Widget cell(String text, {int flex = 1}) => UTextBodyMedium(text, textAlign: TextAlign.center).expanded(flex: flex);
 
   // Zebra background for a desktop row.
-  static Color rowColor(BuildContext context, int index) => index.isOdd ? UAdminTheme.transparent : Theme.of(context).colorScheme.primary.withValues(alpha: 0.16);
+  static Color rowColor(BuildContext context, int index) => index.isOdd ? UAdminTheme.transparent : Theme.of(context).colorScheme.primary.withValues(alpha: 0.05);
+
+  // Standard padding for a desktop row so table rows breathe consistently across pages.
+  static const EdgeInsets rowPadding = EdgeInsets.symmetric(horizontal: 8, vertical: 12);
+
+  // A pill-shaped status chip reused by desktop rows and mobile cards for a consistent look.
+  static Widget statusChip(BuildContext context, {required String label, required Color color}) => UContainer(
+    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+    radius: 20,
+    color: color.withValues(alpha: 0.14),
+    child: UTextBodySmall(label, color: color, fontWeight: FontWeight.w600),
+  );
+
+  // A tinted rounded square holding a leading [icon], the default leading for [mobileCard].
+  static Widget leadingIcon(BuildContext context, IconData icon, {Color? color}) {
+    final Color c = color ?? Theme.of(context).colorScheme.primary;
+    return UContainer(
+      width: 44,
+      height: 44,
+      radius: 12,
+      color: c.withValues(alpha: 0.12),
+      alignment: Alignment.center,
+      child: Icon(icon, color: c, size: 22),
+    );
+  }
+
+  // The beautiful, reusable mobile card used by every list page. Shows a leading icon/thumbnail,
+  // a title (+ optional subtitle), an optional status [badge] and [trailing] menu, then every
+  // desktop column as a clean label -> value row so mobile stays complete and scannable.
+  static Widget mobileCard(
+    BuildContext context, {
+    required String title,
+    required List<UAdminField> fields,
+    Widget? leading,
+    IconData? icon,
+    String? subtitle,
+    Widget? badge,
+    Widget? trailing,
+    VoidCallback? onTap,
+  }) {
+    final ColorScheme scheme = Theme.of(context).colorScheme;
+    final Widget card = UContainer(
+      margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 2),
+      padding: const EdgeInsets.all(14),
+      radius: 16,
+      color: scheme.surface,
+      border: Border.all(color: scheme.outlineVariant.withValues(alpha: 0.5)),
+      boxShadow: <BoxShadow>[BoxShadow(color: scheme.shadow.withValues(alpha: 0.06), blurRadius: 12, offset: const Offset(0, 4))],
+      child: UColumn(
+        spacing: 0,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          URow(
+            spacing: 12,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              leading ?? leadingIcon(context, icon ?? Icons.circle_outlined),
+              Expanded(
+                child: UColumn(
+                  spacing: 2,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    UTextTitleSmall(title, maxLines: 2, overflow: TextOverflow.ellipsis, fontWeight: FontWeight.w700),
+                    if (subtitle.isNotNullOrEmpty()) UTextBodySmall(subtitle!, color: scheme.onSurfaceVariant, maxLines: 1, overflow: TextOverflow.ellipsis),
+                  ],
+                ),
+              ),
+              if (badge != null) badge,
+              if (trailing != null) trailing,
+            ],
+          ),
+          if (fields.isNotEmpty) ...<Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              child: Divider(height: 1, color: scheme.outlineVariant.withValues(alpha: 0.4)),
+            ),
+            ...fields.mapIndexed(
+              (int idx, UAdminField f) => Padding(
+                padding: EdgeInsets.only(top: idx == 0 ? 0 : 10),
+                child: _fieldRow(context, f),
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+    return onTap == null ? card : card.onTapInk(onTap);
+  }
+
+  static Widget _fieldRow(BuildContext context, UAdminField f) {
+    final ColorScheme scheme = Theme.of(context).colorScheme;
+    return URow(
+      spacing: 12,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        UTextBodySmall(f.label, color: scheme.onSurfaceVariant),
+        Flexible(
+          child: f.valueWidget ?? UTextBodyMedium(f.value ?? "-", textAlign: TextAlign.end, maxLines: 3, overflow: TextOverflow.ellipsis, fontWeight: FontWeight.w500),
+        ),
+      ],
+    );
+  }
 
   // The mobile card row (UContainer + dense ListTile) used by every list page.
   static Widget mobileTile(BuildContext context, {required int index, required IconData icon, required String title, required List<Widget> subtitle, Widget? trailing, VoidCallback? onTap}) =>

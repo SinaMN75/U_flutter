@@ -55,46 +55,21 @@ class _ContentsPageState extends State<UAdminContentsPage> {
     child: base64.isNotNullOrEmpty() ? UImage("", fileData: FileData(bytes: _decodeBase64(base64!)), borderRadius: 8) : const Icon(Icons.image_outlined),
   );
 
-  Widget _itemMobile(UContentResponse i, int index) => UContainer(
-    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-    margin: const EdgeInsets.symmetric(vertical: 4),
-    child: URow(
-      spacing: 0,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        _thumb(i.jsonData.imageBase64 ?? i.jsonData.iconBase64),
-        const SizedBox(width: 12),
-        Expanded(
-          child: UColumn(
-            spacing: 0,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              URow(
-                spacing: 0,
-                children: <Widget>[
-                  Chip(
-                    label: Text(_tagOf(i)?.localizedTitle ?? "---"),
-                    backgroundColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.15),
-                    visualDensity: VisualDensity.compact,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 4),
-              UTextBodyLarge(i.jsonData.title ?? "---", maxLines: 1, overflow: TextOverflow.ellipsis),
-              const SizedBox(height: 4),
-              UTextBodySmall(i.jsonData.description ?? i.jsonData.detail1 ?? "---", maxLines: 2, overflow: TextOverflow.ellipsis, color: UAdminTheme.grey),
-              const SizedBox(height: 4),
-              UTextBodySmall(i.createdAt.toJalaliDate(), color: UAdminTheme.grey),
-            ],
-          ),
-        ),
-        _menu(i),
-      ],
-    ),
+  Widget _itemMobile(UContentResponse i, int index) => UAdminTable.mobileCard(
+    context,
+    leading: _thumb(i.jsonData.imageBase64 ?? i.jsonData.iconBase64, size: 44),
+    title: i.jsonData.title ?? "---",
+    badge: UAdminTable.statusChip(context, label: _tagOf(i)?.localizedTitle ?? "---", color: Theme.of(context).colorScheme.primary),
+    trailing: _menu(i),
+    fields: <UAdminField>[
+      UAdminField(U.s.description, i.jsonData.description ?? i.jsonData.detail1 ?? "---"),
+      UAdminField(U.s.createdAt, i.createdAt.toJalaliDate()),
+    ],
   );
 
   Widget _itemDesktop(UContentResponse i, int index) => URow(
     color: UAdminTable.rowColor(context, index),
+    padding: UAdminTable.rowPadding,
     children: <Widget>[
       _thumb(i.jsonData.imageBase64 ?? i.jsonData.iconBase64).expanded(),
       UAdminTable.cell(_tagOf(i)?.localizedTitle ?? "---"),

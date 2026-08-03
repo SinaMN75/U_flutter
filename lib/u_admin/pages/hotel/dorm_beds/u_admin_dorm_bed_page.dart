@@ -46,27 +46,30 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
     ),
   );
 
+  bool _isFree(UDormBedResponse i) => i.contracts?.where((UDormBedContractResponse i) => i.isActive).isEmpty ?? true;
+
   Widget _itemDesktop(UDormBedResponse i, int index) => URow(
     color: UAdminTable.rowColor(context, index),
+    padding: UAdminTable.rowPadding,
     children: <Widget>[
       UAdminTable.cell(i.title),
       UAdminTable.cell(i.deposit.rial()),
       UAdminTable.cell(i.monthlyRent.rial()),
-      UAdminTable.cell((i.contracts?.where((UDormBedContractResponse i) => i.isActive).isEmpty ?? true) ? U.s.free : U.s.occupied),
+      UAdminTable.statusChip(context, label: _isFree(i) ? U.s.free : U.s.occupied, color: _isFree(i) ? UAdminTheme.green : UAdminTheme.orange).alignAtCenter().expanded(),
       _menu(i).expanded(),
     ],
   );
 
-  Widget _itemResponsive(UDormBedResponse i, int index) => UAdminTable.mobileTile(
+  Widget _itemResponsive(UDormBedResponse i, int index) => UAdminTable.mobileCard(
     context,
-    index: index,
     icon: Icons.bed_rounded,
     title: i.title,
-    subtitle: <Widget>[
-      UTextBodyMedium("${U.s.deposit}: ${i.deposit.rial()}"),
-      UTextBodyMedium("${U.s.rent}: ${i.monthlyRent.rial()}"),
-    ],
+    badge: UAdminTable.statusChip(context, label: _isFree(i) ? U.s.free : U.s.occupied, color: _isFree(i) ? UAdminTheme.green : UAdminTheme.orange),
     trailing: _menu(i),
+    fields: <UAdminField>[
+      UAdminField(U.s.deposit, i.deposit.rial()),
+      UAdminField(U.s.rent, i.monthlyRent.rial()),
+    ],
   );
 
   Widget _menu(UDormBedResponse i) => UAdminOps.menu<UDormBedResponse>(

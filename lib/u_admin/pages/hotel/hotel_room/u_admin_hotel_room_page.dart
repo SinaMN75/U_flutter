@@ -43,6 +43,7 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
 
   Widget _itemDesktop(UHotelRoomResponse i, int index) => URow(
     color: UAdminTable.rowColor(context, index),
+    padding: UAdminTable.rowPadding,
     children: <Widget>[
       UAdminTable.cell(i.title),
       UAdminTable.cell(i.hotel?.title ?? "-"),
@@ -52,16 +53,16 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
     ],
   );
 
-  Widget _itemResponsive(UHotelRoomResponse i, int index) => UAdminTable.mobileTile(
+  Widget _itemResponsive(UHotelRoomResponse i, int index) => UAdminTable.mobileCard(
     context,
-    index: index,
     icon: Icons.meeting_room_rounded,
     title: i.title,
-    subtitle: <Widget>[
-      UTextBodyMedium("${i.hotel?.title ?? "-"} • ${U.s.capacity}: ${i.capacity}"),
-      UTextBodyMedium(i.pricePerNight.rial()),
-    ],
     trailing: _menu(i),
+    fields: <UAdminField>[
+      UAdminField(U.s.hotel, i.hotel?.title ?? "-"),
+      UAdminField(U.s.capacity, i.capacity.toString()),
+      UAdminField(U.s.priceNight, i.pricePerNight.rial()),
+    ],
   );
 
   Widget _menu(UHotelRoomResponse i) => UAdminOps.menu<UHotelRoomResponse>(

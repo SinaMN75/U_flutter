@@ -61,6 +61,7 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
 
   Widget _itemDesktop(UTerminalResponse i, int index) => URow(
     color: UAdminTable.rowColor(context, index),
+    padding: UAdminTable.rowPadding,
     children: <Widget>[
       UAdminTable.cell(i.serial),
       UAdminTable.cell(i.simCardSerial ?? "-"),
@@ -71,18 +72,17 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
     ],
   );
 
-  Widget _itemResponsive(UTerminalResponse i, int index) => UAdminTable.mobileTile(
+  Widget _itemResponsive(UTerminalResponse i, int index) => UAdminTable.mobileCard(
     context,
-    index: index,
     icon: Icons.point_of_sale_rounded,
     title: "${U.s.serial}: ${i.serial}",
-    subtitle: <Widget>[
-      UTextBodyMedium(i.merchant?.title ?? U.s.noMerchantSelected),
-      UTextBodySmall("${i.terminalId ?? "-"} • ${i.createdAt.toJalaliDate()}"),
-      const SizedBox(height: 4),
-      _statusChip(i),
-    ],
+    badge: _statusChip(i),
     trailing: _menu(i),
+    fields: <UAdminField>[
+      UAdminField(U.s.simCardSerial, i.simCardSerial ?? "-"),
+      UAdminField(U.s.merchant, i.merchant?.title ?? U.s.noMerchantSelected),
+      UAdminField(U.s.createdAt, i.createdAt.toJalaliDate()),
+    ],
   );
 
   // Built-in operations; overridable via UAdminTerminalsPage(actions: ...).

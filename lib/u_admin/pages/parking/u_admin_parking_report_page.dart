@@ -69,6 +69,7 @@ class _UAdminParkingReportPageState extends State<UAdminParkingReportPage> {
 
   Widget _itemDesktop(UParkingReportResponse i, int index) => URow(
     color: UAdminTable.rowColor(context, index),
+    padding: UAdminTable.rowPadding,
     children: <Widget>[
       UAdminTable.cell(i.parking?.title ?? "-", flex: 2),
       UAdminTable.cell(i.vehicle?.licencePlate ?? "-", flex: 2),
@@ -82,15 +83,20 @@ class _UAdminParkingReportPageState extends State<UAdminParkingReportPage> {
     ],
   );
 
-  Widget _itemResponsive(UParkingReportResponse i, int index) => UAdminTable.mobileTile(
+  Widget _itemResponsive(UParkingReportResponse i, int index) => UAdminTable.mobileCard(
     context,
-    index: index,
     icon: Icons.directions_car_rounded,
-    title: "${i.vehicle?.licencePlate ?? "-"} • ${i.parking?.title ?? "-"}",
-    subtitle: <Widget>[UTextBodySmall("${i.startDate.toJalaliDate()} → ${i.endDate?.toJalaliDate() ?? "-"} • ${(i.amount ?? 0).rial()}")],
+    title: i.vehicle?.licencePlate ?? "-",
+    subtitle: i.parking?.title,
     trailing: IconButton(
       icon: Icon(Icons.delete, color: Theme.of(context).colorScheme.error, size: 20),
       onPressed: () => c.delete(i),
     ),
+    fields: <UAdminField>[
+      UAdminField(U.s.parking, i.parking?.title ?? "-"),
+      UAdminField(U.s.startDate, i.startDate.toJalaliDate()),
+      UAdminField(U.s.endDate, i.endDate?.toJalaliDate() ?? "-"),
+      UAdminField(U.s.amount, (i.amount ?? 0).rial()),
+    ],
   );
 }

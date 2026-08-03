@@ -136,6 +136,7 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
 
   Widget _itemDesktop(UDormBedInvoiceResponse i, int index) => URow(
     color: UAdminTable.rowColor(context, index),
+    padding: UAdminTable.rowPadding,
     children: <Widget>[
       UAdminTable.cell(_tenantLabel(i)),
       UAdminTable.cell(_typeLabel(i)),
@@ -148,18 +149,20 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
     ],
   );
 
-  Widget _itemResponsive(UDormBedInvoiceResponse i, int index) => UAdminTable.mobileTile(
+  Widget _itemResponsive(UDormBedInvoiceResponse i, int index) => UAdminTable.mobileCard(
     context,
-    index: index,
     icon: Icons.receipt_long_rounded,
-    title: "${_typeLabel(i)} • ${i.debtAmount.rial()}",
-    subtitle: <Widget>[
-      UTextBodyMedium(_tenantLabel(i)),
-      UTextBodySmall("${U.s.dueDate}: ${i.dueDate.toJalaliDate()}"),
-      UTextBodySmall("${U.s.paidAmount}: ${i.paidAmount.rial()} • ${U.s.penalty}: ${i.penaltyAmount.rial()}"),
-      _statusChip(i),
-    ],
+    title: _tenantLabel(i),
+    subtitle: _typeLabel(i),
+    badge: _statusChip(i),
     trailing: _menu(i),
+    fields: <UAdminField>[
+      UAdminField(U.s.invoiceType, _typeLabel(i)),
+      UAdminField(U.s.dueDate, i.dueDate.toJalaliDate()),
+      UAdminField(U.s.debtAmount, i.debtAmount.rial()),
+      UAdminField(U.s.paidAmount, i.paidAmount.rial()),
+      UAdminField(U.s.penalty, i.penaltyAmount.rial()),
+    ],
   );
 
   Widget _menu(UDormBedInvoiceResponse i) => UAdminOps.menu<UDormBedInvoiceResponse>(

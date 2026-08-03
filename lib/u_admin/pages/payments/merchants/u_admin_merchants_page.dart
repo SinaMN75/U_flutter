@@ -49,6 +49,7 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
 
   Widget _itemDesktop(UMerchantResponse i, int index) => URow(
     color: UAdminTable.rowColor(context, index),
+    padding: UAdminTable.rowPadding,
     children: <Widget>[
       UAdminTable.cell(i.title),
       UAdminTable.cell(i.nationalCode),
@@ -60,17 +61,18 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
     ],
   );
 
-  Widget _itemResponsive(UMerchantResponse i, int index) => UAdminTable.mobileTile(
+  Widget _itemResponsive(UMerchantResponse i, int index) => UAdminTable.mobileCard(
     context,
-    index: index,
     icon: Icons.storefront_rounded,
     title: i.title,
-    subtitle: <Widget>[
-      UTextBodyMedium("${U.s.nationalCode}: ${i.nationalCode}"),
-      UTextBodySmall("${i.phoneNumber} • ${U.s.mcc}: ${i.mcc}"),
-      UTextBodySmall(i.createdAt.toJalaliDate()),
-    ],
     trailing: _menu(i),
+    fields: <UAdminField>[
+      UAdminField(U.s.nationalCode, i.nationalCode),
+      UAdminField(U.s.phoneNumber, i.phoneNumber),
+      UAdminField(U.s.mcc, BusinessCategories.categories.firstWhereOrNull((UBusinessCategory j) => j.code == i.mcc)?.localizedName() ?? i.mcc),
+      UAdminField(U.s.merchantId, i.merchantId ?? U.s.unassigned),
+      UAdminField(U.s.createdAt, i.createdAt.toJalaliDate()),
+    ],
   );
 
   // Built-in operations; the app can override them via UAdminMerchantsPage(actions: ...).

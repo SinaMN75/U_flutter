@@ -43,6 +43,7 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
 
   Widget _itemDesktop(UDormRoomResponse i, int index) => URow(
     color: UAdminTable.rowColor(context, index),
+    padding: UAdminTable.rowPadding,
     children: <Widget>[
       UAdminTable.cell(i.title),
       UAdminTable.cell(i.dorm?.title ?? "-"),
@@ -52,16 +53,16 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
     ],
   );
 
-  Widget _itemResponsive(UDormRoomResponse i, int index) => UAdminTable.mobileTile(
+  Widget _itemResponsive(UDormRoomResponse i, int index) => UAdminTable.mobileCard(
     context,
-    index: index,
     icon: Icons.meeting_room_rounded,
     title: i.title,
-    subtitle: <Widget>[
-      UTextBodyMedium("${i.dorm?.title ?? "-"} • ${i.beds?.length ?? 0} ${U.s.beds}"),
-      UTextBodySmall(i.createdAt.toJalaliDate()),
-    ],
     trailing: _menu(i),
+    fields: <UAdminField>[
+      UAdminField(U.s.dorm, i.dorm?.title ?? "-"),
+      UAdminField(U.s.beds, (i.beds?.length ?? 0).toString()),
+      UAdminField(U.s.created, i.createdAt.toJalaliDate()),
+    ],
   );
 
   Widget _menu(UDormRoomResponse i) => UAdminOps.menu<UDormRoomResponse>(

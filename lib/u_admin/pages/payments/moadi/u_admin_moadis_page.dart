@@ -48,6 +48,7 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
 
   Widget _itemDesktop(UMoadiResponse i, int index) => URow(
     color: UAdminTable.rowColor(context, index),
+    padding: UAdminTable.rowPadding,
     children: <Widget>[
       UAdminTable.cell(i.name),
       UAdminTable.cell(i.economicCode),
@@ -58,17 +59,17 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
     ],
   );
 
-  Widget _itemResponsive(UMoadiResponse i, int index) => UAdminTable.mobileTile(
+  Widget _itemResponsive(UMoadiResponse i, int index) => UAdminTable.mobileCard(
     context,
-    index: index,
     icon: Icons.receipt_long_rounded,
     title: i.name,
-    subtitle: <Widget>[
-      UTextBodyMedium("${U.s.moadiEconomicCode}: ${i.economicCode}"),
-      UTextBodySmall("${U.s.moadiLegalEntity}: ${i.legalEntity} • ${_statusLabel(i.tags)}"),
-      UTextBodySmall(i.createdAt.toJalaliDate()),
-    ],
+    badge: UAdminTable.statusChip(context, label: _statusLabel(i.tags), color: Theme.of(context).colorScheme.primary),
     trailing: _menu(i),
+    fields: <UAdminField>[
+      UAdminField(U.s.moadiEconomicCode, i.economicCode),
+      UAdminField(U.s.moadiLegalEntity, i.legalEntity),
+      UAdminField(U.s.createdAt, i.createdAt.toJalaliDate()),
+    ],
   );
 
   String _statusLabel(List<int> tags) {

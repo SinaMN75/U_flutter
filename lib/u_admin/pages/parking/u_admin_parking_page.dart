@@ -51,6 +51,7 @@ class _UAdminParkingPageState extends State<UAdminParkingPage> {
 
   Widget _itemDesktop(UParkingResponse i, int index) => URow(
     color: UAdminTable.rowColor(context, index),
+    padding: UAdminTable.rowPadding,
     children: <Widget>[
       UAdminTable.cell(i.title, flex: 2),
       UAdminTable.cell(_ownerLabel(i), flex: 2),
@@ -60,13 +61,16 @@ class _UAdminParkingPageState extends State<UAdminParkingPage> {
     ],
   );
 
-  Widget _itemResponsive(UParkingResponse i, int index) => UAdminTable.mobileTile(
+  Widget _itemResponsive(UParkingResponse i, int index) => UAdminTable.mobileCard(
     context,
-    index: index,
     icon: Icons.local_parking_rounded,
     title: i.title,
-    subtitle: <Widget>[UTextBodySmall("${U.s.owner}: ${_ownerLabel(i)} • ${i.createdAt.toJalaliDate()}")],
     trailing: _menu(i),
+    fields: <UAdminField>[
+      UAdminField(U.s.owner, _ownerLabel(i)),
+      UAdminField(U.s.admins, i.adminUserIds.length.toString()),
+      UAdminField(U.s.createdAt, i.createdAt.toJalaliDate()),
+    ],
   );
 
   // Built-in operations; overridable via UAdminParkingPage(actions: ...).

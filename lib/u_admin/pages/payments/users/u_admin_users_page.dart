@@ -88,6 +88,7 @@ class _AdminUsersPageState extends State<UAdminUsersPage> {
 
   Widget _itemDesktop(UUserResponse i, int index) => URow(
     color: UAdminTable.rowColor(context, index),
+    padding: UAdminTable.rowPadding,
     children: <Widget>[
       UAdminTable.cell("${i.firstName ?? ""} ${i.lastName ?? ""}".trim()),
       UAdminTable.cell(i.userName),
@@ -99,19 +100,19 @@ class _AdminUsersPageState extends State<UAdminUsersPage> {
     ],
   );
 
-  Widget _itemResponsive(UUserResponse i, int index) => UAdminTable.mobileTile(
+  Widget _itemResponsive(UUserResponse i, int index) => UAdminTable.mobileCard(
     context,
-    index: index,
     icon: Icons.person_rounded,
-    title: "${i.firstName ?? ""} ${i.lastName ?? ""} (${i.userName})".trim(),
-    subtitle: <Widget>[
-      UTextBodyMedium(i.phoneNumber ?? "-"),
-      UTextBodySmall("${i.nationalCode ?? "-"} • ${i.createdAt.toJalaliDate()}"),
-      const SizedBox(height: 4),
-      _statusChip(i),
-    ],
+    title: "${i.firstName ?? ""} ${i.lastName ?? ""}".trim().nullIfEmpty() ?? i.userName,
+    subtitle: i.userName,
+    badge: _statusChip(i),
     onTap: () => UAdminPageSwitcher.adminUserDetail(user: i),
     trailing: _menu(i),
+    fields: <UAdminField>[
+      UAdminField(U.s.phoneNumber, null, valueWidget: UTextBodyMedium(i.phoneNumber ?? "-", textAlign: TextAlign.end, textDirection: TextDirection.ltr, fontWeight: FontWeight.w500)),
+      UAdminField(U.s.nationalCode, i.nationalCode ?? "-"),
+      UAdminField(U.s.joinedDate, i.createdAt.toJalaliDate()),
+    ],
   );
 
   Widget _menu(UUserResponse i) => UAdminOps.menu<UUserResponse>(

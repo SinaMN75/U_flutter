@@ -99,6 +99,7 @@ class _ReservationPageState extends State<UAdminReservationPage> {
 
   Widget _itemDesktop(UHotelReservationResponse i, int index) => URow(
     color: UAdminTable.rowColor(context, index),
+    padding: UAdminTable.rowPadding,
     children: <Widget>[
       UAdminTable.cell(_guestLabel(i)),
       UAdminTable.cell(_roomLabel(i)),
@@ -110,18 +111,20 @@ class _ReservationPageState extends State<UAdminReservationPage> {
     ],
   );
 
-  Widget _itemResponsive(UHotelReservationResponse i, int index) => UAdminTable.mobileTile(
+  Widget _itemResponsive(UHotelReservationResponse i, int index) => UAdminTable.mobileCard(
     context,
-    index: index,
     icon: Icons.event_available_rounded,
     title: _guestLabel(i),
-    subtitle: <Widget>[
-      UTextBodyMedium("${U.s.rooms}: ${_roomLabel(i)}"),
-      UTextBodySmall("${i.checkInDate.toJalaliDate()} → ${i.checkOutDate.toJalaliDate()} • ${i.jsonData.nightCount ?? 0} ${U.s.nights}"),
-      UTextBodySmall("${U.s.totalPrice}: ${i.totalPrice.rial()} • ${U.s.guests}: ${i.guestCount}"),
-      _statusChip(i),
-    ],
+    badge: _statusChip(i),
     trailing: _menu(i),
+    fields: <UAdminField>[
+      UAdminField(U.s.rooms, _roomLabel(i)),
+      UAdminField(U.s.checkInDate, i.checkInDate.toJalaliDate()),
+      UAdminField(U.s.checkOutDate, i.checkOutDate.toJalaliDate()),
+      UAdminField(U.s.nights, "${i.jsonData.nightCount ?? 0}"),
+      UAdminField(U.s.guests, i.guestCount.toString()),
+      UAdminField(U.s.totalPrice, i.totalPrice.rial()),
+    ],
   );
 
   Widget _menu(UHotelReservationResponse i) => UAdminOps.menu<UHotelReservationResponse>(

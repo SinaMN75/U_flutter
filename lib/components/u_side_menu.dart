@@ -376,11 +376,22 @@ class _USideMenuState extends State<USideMenu> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    _seedExpandedGroups(widget.items);
     _reveal = AnimationController(vsync: this, duration: const Duration(milliseconds: 700))..forward();
     _drawer = AnimationController(vsync: this, duration: const Duration(milliseconds: 280));
     widget.controller.addListener(_onControllerChanged);
     // Expose drawer open/close to the parent for external hamburger triggers.
     widget.controller.attachDrawer(_openDrawer, _closeDrawer);
+  }
+
+  // Seeds initiallyExpanded groups into the controller once so toggling can later collapse them.
+  void _seedExpandedGroups(List<UMenuEntry> entries) {
+    for (final UMenuEntry e in entries) {
+      if (e is UMenuGroup) {
+        if (e.initiallyExpanded) widget.controller.setGroupExpanded(e.id, true);
+        _seedExpandedGroups(e.children);
+      }
+    }
   }
 
   void _onControllerChanged() {
@@ -726,7 +737,7 @@ class _USideMenuState extends State<USideMenu> with TickerProviderStateMixin {
       group: group,
       theme: _t,
       depth: depth,
-      expanded: searching || widget.controller.isGroupExpanded(group.id) || group.initiallyExpanded,
+      expanded: searching || widget.controller.isGroupExpanded(group.id),
       forceExpanded: searching,
       onToggle: () => widget.controller.toggleGroup(group.id),
       childWidgets: childWidgets,

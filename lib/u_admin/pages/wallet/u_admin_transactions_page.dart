@@ -45,6 +45,7 @@ class _TransactionsPageState extends State<UAdminTransactionsPage> {
 
   Widget _itemDesktop(UTxnResponse i, int index) => URow(
     color: UAdminTable.rowColor(context, index),
+    padding: UAdminTable.rowPadding,
     children: <Widget>[
       UAdminTable.cell(i.amount.rial()),
       UAdminTable.cell(i.trackingNumber ?? "-"),
@@ -55,16 +56,17 @@ class _TransactionsPageState extends State<UAdminTransactionsPage> {
     ],
   );
 
-  Widget _itemResponsive(UTxnResponse i, int index) => UAdminTable.mobileTile(
+  Widget _itemResponsive(UTxnResponse i, int index) => UAdminTable.mobileCard(
     context,
-    index: index,
     icon: Icons.receipt_long_rounded,
     title: i.amount.rial(),
-    subtitle: <Widget>[
-      UTextBodySmall("${_statusName(i)} • ${i.trackingNumber ?? "-"}"),
-      UTextBodySmall("${i.user?.displayName ?? "-"} • ${i.createdAt.toJalaliDate()}"),
-    ],
+    badge: UAdminTable.statusChip(context, label: _statusName(i), color: Theme.of(context).colorScheme.primary),
     trailing: _menu(i),
+    fields: <UAdminField>[
+      UAdminField(U.s.trackingNumber, i.trackingNumber ?? "-"),
+      UAdminField(U.s.user, i.user?.displayName ?? "-"),
+      UAdminField(U.s.created, i.createdAt.toJalaliDate()),
+    ],
   );
 
   Widget _menu(UTxnResponse i) => UAdminOps.menu<UTxnResponse>(

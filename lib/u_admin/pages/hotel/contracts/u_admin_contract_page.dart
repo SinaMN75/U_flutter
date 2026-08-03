@@ -91,6 +91,7 @@ class _ContractPageState extends State<UAdminContractPage> {
 
   Widget _itemDesktop(UDormBedContractResponse i, int index) => URow(
     color: UAdminTable.rowColor(context, index),
+    padding: UAdminTable.rowPadding,
     children: <Widget>[
       UAdminTable.cell(_tenantLabel(i)),
       UAdminTable.cell(_bedLabel(i)),
@@ -102,18 +103,19 @@ class _ContractPageState extends State<UAdminContractPage> {
     ],
   );
 
-  Widget _itemResponsive(UDormBedContractResponse i, int index) => UAdminTable.mobileTile(
+  Widget _itemResponsive(UDormBedContractResponse i, int index) => UAdminTable.mobileCard(
     context,
-    index: index,
     icon: Icons.description_rounded,
     title: _tenantLabel(i),
-    subtitle: <Widget>[
-      UTextBodyMedium("${U.s.bed}: ${_bedLabel(i)}"),
-      UTextBodySmall("${i.startDate.toJalaliDate()} → ${i.endDate.toJalaliDate()}"),
-      UTextBodySmall("${U.s.rent}: ${i.rent.rial()} • ${i.invoices?.length ?? 0} ${U.s.invoices}"),
-      _statusChip(i),
-    ],
+    badge: _statusChip(i),
     trailing: _menu(i),
+    fields: <UAdminField>[
+      UAdminField(U.s.bed, _bedLabel(i)),
+      UAdminField(U.s.startDate, i.startDate.toJalaliDate()),
+      UAdminField(U.s.endDate, i.endDate.toJalaliDate()),
+      UAdminField(U.s.rent, i.rent.rial()),
+      UAdminField(U.s.invoices, "${i.invoices?.length ?? 0}"),
+    ],
   );
 
   Widget _menu(UDormBedContractResponse i) => UAdminOps.menu<UDormBedContractResponse>(

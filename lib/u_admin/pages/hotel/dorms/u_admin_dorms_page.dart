@@ -42,6 +42,7 @@ class _DormPageState extends State<UAdminDormPage> {
     final UCountryCityInfo city = UCountries.infoByCode(i.cityCode);
     return URow(
       color: UAdminTable.rowColor(context, index),
+      padding: UAdminTable.rowPadding,
       children: <Widget>[
         UAdminTable.cell(i.title),
         UAdminTable.cell("${city.country?.nameFa ?? ""} - ${city.province?.nameFa ?? ""} - ${city.city?.nameFa ?? ""}"),
@@ -54,16 +55,16 @@ class _DormPageState extends State<UAdminDormPage> {
 
   Widget _itemResponsive(UDormResponse i, int index) {
     final UCountryCityInfo city = UCountries.infoByCode(i.cityCode);
-    return UAdminTable.mobileTile(
+    return UAdminTable.mobileCard(
       context,
-      index: index,
       icon: Icons.bedroom_parent_rounded,
       title: i.title,
-      subtitle: <Widget>[
-        UTextBodyMedium("${city.country?.nameFa ?? ""} - ${city.province?.nameFa ?? ""} - ${city.city?.nameFa ?? ""}"),
-        UTextBodySmall("${i.rooms?.length ?? 0} ${U.s.rooms} • ${i.createdAt.toJalaliDate()}"),
-      ],
       trailing: _menu(i),
+      fields: <UAdminField>[
+        UAdminField(U.s.city, "${city.country?.nameFa ?? ""} - ${city.province?.nameFa ?? ""} - ${city.city?.nameFa ?? ""}"),
+        UAdminField(U.s.rooms, (i.rooms?.length ?? 0).toString()),
+        UAdminField(U.s.created, i.createdAt.toJalaliDate()),
+      ],
     );
   }
 
