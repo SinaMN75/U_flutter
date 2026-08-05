@@ -1,7 +1,7 @@
 import "package:u/utilities.dart";
 
-// SystemAdmin-only PgAdmin-style console: browse every table, page/sort/edit/insert/delete rows,
-// inspect structure (columns, indexes, foreign keys) and run arbitrary SQL with prebuilt helpers.
+// SystemAdmin-only PgAdmin-style console: browse every table with real server-side pagination,
+// filter/sort/edit/insert/delete rows, inspect structure, and run arbitrary SQL. English-only + LTR.
 // All power lives on the backend DbAdmin endpoints; this widget is pure UI over UServices.dbAdmin.
 class UAdminDbAdminPage extends StatefulWidget {
   const UAdminDbAdminPage({super.key});
@@ -11,7 +11,7 @@ class UAdminDbAdminPage extends StatefulWidget {
 }
 
 class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
-  static const int _pageSize = 50;
+  static const List<int> _pageSizes = <int>[50, 100, 200, 500];
 
   List<UDbTableResponse> _tables = <UDbTableResponse>[];
   bool _loadingTables = true;
@@ -23,10 +23,12 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
   UDbQueryResultResponse? _rows;
   bool _loadingRows = false;
   int _page = 1;
+  int _pageSize = 100;
   int _pageCount = 1;
   int _totalCount = 0;
   String? _orderBy;
   bool _descending = false;
+  final TextEditingController _whereController = TextEditingController();
 
   UDbTableSchemaResponse? _schema;
   bool _loadingSchema = false;
@@ -44,9 +46,12 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
 
   @override
   void dispose() {
+    _whereController.dispose();
     _sqlController.dispose();
     super.dispose();
   }
+
+  // ===== Data loading =====
 
   Future<void> _loadTables() async {
     setState(() => _loadingTables = true);
@@ -76,14 +81,18 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
       _descending = false;
       _rows = null;
       _schema = null;
+      _whereController.clear();
     });
-    _loadRows();
+    _loadRows(withCount: true);
     _loadSchema();
   }
 
-  Future<void> _loadRows() async {
+  // withCount is only true on the first load / new filter / new page size, so paging & sorting
+  // never re-scan the whole table with count(*).
+  Future<void> _loadRows({final bool withCount = false}) async {
     if (_selected == null) return;
     setState(() => _loadingRows = true);
+    final String where = _whereController.text.trim();
     await UServices.dbAdmin.rows(
       p: UDbAdminRowsParams(
         table: _selected!.name,
@@ -92,11 +101,15 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
         pageNumber: _page,
         orderByColumn: _orderBy,
         descending: _descending,
+        where: where.isEmpty ? null : where,
+        withCount: withCount,
       ),
       onOk: (final UResponse<UDbQueryResultResponse> r) => setState(() {
         _rows = r.result;
-        _totalCount = r.totalCount;
-        _pageCount = r.pageCount < 1 ? 1 : r.pageCount;
+        if (withCount) {
+          _totalCount = r.totalCount;
+          _pageCount = _totalCount <= 0 ? 1 : (_totalCount + _pageSize - 1) ~/ _pageSize;
+        }
         _loadingRows = false;
       }),
       onError: (final UEmptyResponse e) {
@@ -140,6 +153,25 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
       }
       _page = 1;
     });
+    _loadRows();
+  }
+
+  void _applyFilter() {
+    setState(() => _page = 1);
+    _loadRows(withCount: true);
+  }
+
+  void _changePageSize(final int size) {
+    setState(() {
+      _pageSize = size;
+      _page = 1;
+    });
+    _loadRows(withCount: true);
+  }
+
+  void _gotoPage(final int page) {
+    if (page < 1 || page > _pageCount || page == _page) return;
+    setState(() => _page = page);
     _loadRows();
   }
 
@@ -189,7 +221,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
   Future<void> _deleteRow(final Map<String, String?> row) async {
     final String? pk = _rows?.primaryKeyColumn;
     if (_selected == null || pk == null || row[pk] == null) return;
-    if (!await UNavigator.confirmAsync(title: "Delete", message: "Delete this row? This cannot be undone.", destructive: true, icon: Icons.delete_outline_rounded)) return;
+    if (!await UNavigator.confirmAsync(title: "Delete row", message: "Delete this row? This cannot be undone.", destructive: true, icon: Icons.delete_outline_rounded)) return;
 
     ULoading.show();
     await UServices.dbAdmin.deleteRow(
@@ -197,7 +229,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
       onOk: (final UEmptyResponse r) {
         ULoading.dismiss();
         UToast.success(message: r.message);
-        _loadRows();
+        _loadRows(withCount: true);
       },
       onError: (final UEmptyResponse e) {
         ULoading.dismiss();
@@ -207,6 +239,37 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
         ULoading.dismiss();
         UToast.error(message: e);
       },
+    );
+  }
+
+  void _viewRow(final Map<String, String?> row) {
+    final ColorScheme cs = Theme.of(context).colorScheme;
+    UNavigator.dialog<void>(
+      AlertDialog(
+        title: URow(children: <Widget>[Icon(Icons.article_outlined, color: cs.primary, size: 20), const UTextTitleSmall("Row details", fontWeight: FontWeight.bold)]),
+        content: SizedBox(
+          width: 560,
+          child: SingleChildScrollView(
+            child: UColumn(
+              spacing: 0,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: row.entries.mapIndexed((final int i, final MapEntry<String, String?> e) => URow(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 12,
+                  children: <Widget>[
+                    SizedBox(width: 160, child: UTextLabelSmall(e.key, fontWeight: FontWeight.w700, color: cs.primary)),
+                    SelectableText(e.value ?? "NULL", style: TextStyle(fontFamily: "monospace", fontSize: 12.5, color: e.value == null ? cs.onSurface.withValues(alpha: 0.4) : cs.onSurface)).expanded(),
+                    IconButton(visualDensity: VisualDensity.compact, iconSize: 15, tooltip: "Copy", onPressed: e.value == null ? null : () => UClipboard.set(e.value!), icon: const Icon(Icons.copy_rounded)),
+                  ],
+                ).pSymmetric(vertical: 7).container(backgroundColor: i.isOdd ? cs.surfaceContainerHighest.withValues(alpha: 0.3) : null, radius: 6)).toList(),
+            ),
+          ),
+        ),
+        actions: <Widget>[
+          UButton(title: "Copy JSON", type: UButtonType.text, icon: const Icon(Icons.data_object_rounded, size: 16), onTap: () => UClipboard.set(_rowJson(row))),
+          const UButton(title: "Close", onTap: UNavigator.back),
+        ],
+      ),
     );
   }
 
@@ -227,32 +290,33 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
     final bool? saved = await UNavigator.dialog<bool>(
       StatefulBuilder(
         builder: (final BuildContext ctx, final StateSetter setLocal) => AlertDialog(
-          title: UTextTitleMedium(isInsert ? "Insert Row" : "Edit Row", fontWeight: FontWeight.bold),
+          title: URow(children: <Widget>[
+            Icon(isInsert ? Icons.add_circle_outline_rounded : Icons.edit_outlined, color: cs.primary, size: 20),
+            UTextTitleSmall(isInsert ? "Insert row" : "Edit row", fontWeight: FontWeight.bold),
+          ]),
           content: SizedBox(
-            width: 520,
+            width: 540,
             child: SingleChildScrollView(
               child: UColumn(
-                spacing: 14,
+                spacing: 12,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: _schema!.columns.map((final UDbColumnResponse c) {
                   final bool readOnly = !isInsert && c.name == pk;
                   return URow(
-                    spacing: 10,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
                       UTextField(
                         controller: controllers[c.name],
-                        labelText: "${c.name}  (${c.dataType})${c.isPrimaryKey ? "  •PK" : ""}",
+                        labelText: "${c.name}  ·  ${c.dataType}${c.isPrimaryKey ? "  · PK" : ""}${c.isNullable ? "" : "  · NOT NULL"}",
                         readOnly: readOnly || nulls[c.name]!,
+                        isDense: true,
                       ).expanded(),
                       if (c.isNullable && !readOnly)
-                        Tooltip(
-                          message: "Null",
-                          child: FilterChip(
-                            label: UTextLabelSmall("Null", color: nulls[c.name]! ? cs.onPrimary : cs.onSurface),
-                            selected: nulls[c.name]!,
-                            onSelected: (final bool v) => setLocal(() => nulls[c.name] = v),
-                          ),
+                        FilterChip(
+                          label: const Text("NULL"),
+                          visualDensity: VisualDensity.compact,
+                          selected: nulls[c.name]!,
+                          onSelected: (final bool v) => setLocal(() => nulls[c.name] = v),
                         ),
                     ],
                   );
@@ -302,7 +366,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
         onOk: (final UResponse<UDbQueryResultResponse> r) {
           ULoading.dismiss();
           UToast.success(message: r.message);
-          _loadRows();
+          _loadRows(withCount: true);
         },
         onError: (final UEmptyResponse e) {
           ULoading.dismiss();
@@ -337,6 +401,20 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
     }
   }
 
+  String _rowJson(final Map<String, String?> row) {
+    final StringBuffer b = StringBuffer("{");
+    int i = 0;
+    row.forEach((final String k, final String? v) {
+      if (i++ > 0) b.write(", ");
+      b.write('"$k": ');
+      b.write(v == null ? "null" : '"${v.replaceAll("\\", "\\\\").replaceAll("\"", "\\\"")}"');
+    });
+    b.write("}");
+    return b.toString();
+  }
+
+  // ===== Build =====
+
   @override
   Widget build(final BuildContext context) {
     final ColorScheme cs = Theme.of(context).colorScheme;
@@ -359,325 +437,272 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
   // ===== Sidebar =====
 
   Widget _sidebar(final ColorScheme cs) {
-    final List<UDbTableResponse> filtered = _tableSearch.isEmpty ? _tables : _tables.where((final UDbTableResponse t) => t.name.toLowerCase().contains(_tableSearch.toLowerCase())).toList();
+    final List<UDbTableResponse> filtered = _tableSearch.isEmpty
+        ? _tables
+        : _tables.where((final UDbTableResponse t) => t.name.toLowerCase().contains(_tableSearch.toLowerCase())).toList();
     return SizedBox(
-      width: 280,
+      width: 256,
       child: UColumn(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           URow(
+            spacing: 6,
             children: <Widget>[
-              Icon(Icons.storage_rounded, color: cs.primary),
-              const UTextTitleMedium("Database Console", fontWeight: FontWeight.bold).expanded(),
-              IconButton(
-                tooltip: "Run migrations",
-                onPressed: _runMigrations,
-                icon: Icon(Icons.system_update_alt_rounded, size: 20, color: cs.primary),
-              ),
-              IconButton(
-                tooltip: "Refresh",
-                onPressed: _loadTables,
-                icon: Icon(Icons.refresh_rounded, size: 20, color: cs.primary),
-              ),
+              Icon(Icons.storage_rounded, color: cs.primary, size: 20),
+              const UTextLabelLarge("DATABASE", fontWeight: FontWeight.w800).expanded(),
+              _miniIcon(cs, Icons.system_update_alt_rounded, "Run migrations", _runMigrations),
+              _miniIcon(cs, Icons.refresh_rounded, "Refresh tables", _loadTables),
             ],
-          ).pOnly(left: 16, right: 8, top: 12, bottom: 4),
+          ).pOnly(left: 14, right: 6, top: 12, bottom: 8),
           UTextField(
             hintText: "Search tables",
-            prefix: Icon(Icons.search_rounded, size: 18, color: cs.onSurface.withValues(alpha: 0.5)),
+            prefix: Icon(Icons.search_rounded, size: 17, color: cs.onSurface.withValues(alpha: 0.5)),
             isDense: true,
+            hasClearButton: true,
             onChanged: (final String v) => setState(() => _tableSearch = v),
-          ).pSymmetric(horizontal: 12, vertical: 6),
+          ).pSymmetric(horizontal: 10),
+          UTextLabelSmall("${filtered.length} tables", color: cs.onSurface.withValues(alpha: 0.5)).pOnly(left: 14, top: 8, bottom: 4),
           const Divider(height: 1),
           if (_loadingTables)
-            const UProgressCircular().pAll(24)
+            const Center(child: UProgressCircular(size: 26)).pAll(24)
           else if (filtered.isEmpty)
-            UTextBodySmall("No data", color: cs.onSurface.withValues(alpha: 0.5)).pAll(24)
+            UTextBodySmall("No tables", color: cs.onSurface.withValues(alpha: 0.5)).pAll(20)
           else
             ListView.builder(
+              padding: const EdgeInsets.symmetric(vertical: 4),
               itemCount: filtered.length,
-              itemBuilder: (final BuildContext ctx, final int i) {
-                final UDbTableResponse t = filtered[i];
-                final bool active = _selected?.name == t.name;
-                return URow(
-                  children: <Widget>[
-                    Icon(Icons.table_chart_outlined, size: 16, color: active ? cs.onPrimary : cs.primary),
-                    UColumn(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        UTextBodyMedium(t.name, color: active ? cs.onPrimary : cs.onSurface, fontWeight: active ? FontWeight.w600 : FontWeight.normal, maxLines: 1),
-                        UTextLabelSmall("${t.estimatedRows} ${"Rows"} · ${t.columnCount} ${"Columns"}", color: (active ? cs.onPrimary : cs.onSurface).withValues(alpha: 0.6)),
-                      ],
-                    ).expanded(),
-                  ],
-                ).pSymmetric(horizontal: 14, vertical: 10).container(backgroundColor: active ? cs.primary : null, radius: 10).pSymmetric(horizontal: 6, vertical: 2).onTap(() => _selectTable(t));
-              },
+              itemBuilder: (final BuildContext ctx, final int i) => _tableTile(cs, filtered[i]),
             ).expanded(),
         ],
       ),
     );
   }
 
+  Widget _tableTile(final ColorScheme cs, final UDbTableResponse t) {
+    final bool active = _selected?.name == t.name;
+    return URow(
+      children: <Widget>[
+        Container(width: 3, height: 26, decoration: BoxDecoration(color: active ? cs.primary : Colors.transparent, borderRadius: BorderRadius.circular(3))),
+        Icon(Icons.table_rows_rounded, size: 15, color: active ? cs.primary : cs.onSurface.withValues(alpha: 0.55)),
+        UTextBodySmall(t.name, color: active ? cs.primary : cs.onSurface, fontWeight: active ? FontWeight.w700 : FontWeight.w500, maxLines: 1).expanded(),
+        UTextLabelSmall(t.estimatedRows.toKMB(), color: cs.onSurface.withValues(alpha: 0.45)),
+      ],
+    ).pSymmetric(horizontal: 8, vertical: 8).container(backgroundColor: active ? cs.primary.withValues(alpha: 0.08) : null, radius: 8).pSymmetric(horizontal: 6, vertical: 1).onTap(() => _selectTable(t));
+  }
+
   // ===== Main =====
 
-  Widget _main(final ColorScheme cs) => UColumn(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: <Widget>[
-      _mainHeader(cs),
-      const Divider(height: 1),
-      URow(
-        children: <Widget>[
-          _tabChip(cs, 0, "Data", Icons.grid_on_rounded),
-          _tabChip(cs, 1, "Structure", Icons.schema_rounded),
-          _tabChip(cs, 2, "Query", Icons.terminal_rounded),
-        ],
-      ).pSymmetric(horizontal: 16, vertical: 10),
-      const Divider(height: 1),
-      IndexedStack(
-        index: _tab,
-        children: <Widget>[_dataTab(cs), _structureTab(cs), _queryTab(cs)],
-      ).expanded(),
-    ],
-  );
+  Widget _main(final ColorScheme cs) {
+    if (_selected == null && _tab != 2) return _placeholder(cs, Icons.storage_rounded, "Select a table to get started", "Pick a table from the left to browse and edit its data, or open the Query tab.");
+    return UColumn(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        _toolbar(cs),
+        const Divider(height: 1),
+        IndexedStack(index: _tab, children: <Widget>[_dataTab(cs), _structureTab(cs), _queryTab(cs)]).expanded(),
+      ],
+    );
+  }
 
-  Widget _mainHeader(final ColorScheme cs) => URow(
+  Widget _toolbar(final ColorScheme cs) => URow(
     spacing: 10,
     children: <Widget>[
-      Icon(Icons.data_object_rounded, color: cs.primary),
+      Icon(Icons.grid_on_rounded, color: cs.primary, size: 18),
       UColumn(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          UTextTitleMedium(_selected?.name ?? "Database Console", fontWeight: FontWeight.bold, maxLines: 1),
-          if (_selected != null) UTextLabelSmall("${_selected!.schema} · $_totalCount ${"Rows"}${_selected!.size != null ? " · ${_selected!.size}" : ""}", color: cs.onSurface.withValues(alpha: 0.6)),
+          UTextTitleSmall(_selected?.name ?? "SQL Query", fontWeight: FontWeight.bold, maxLines: 1),
+          if (_selected != null)
+            UTextLabelSmall("${_selected!.schema}  ·  ${_selected!.columnCount} cols${_selected!.size != null ? "  ·  ${_selected!.size}" : ""}", color: cs.onSurface.withValues(alpha: 0.55)),
         ],
-      ).expanded(),
-      if (_selected != null && _tab == 0) ...<Widget>[
-        UButton(title: "Insert Row", type: UButtonType.outlined, icon: const Icon(Icons.add_rounded, size: 18), onTap: _openRowEditor),
-        IconButton(
-          tooltip: "Refresh",
-          onPressed: _loadRows,
-          icon: Icon(Icons.refresh_rounded, color: cs.primary),
-        ),
-      ],
+      ),
+      const Spacer(),
+      _segTabs(cs),
     ],
-  ).pSymmetric(horizontal: 16, vertical: 12);
+  ).pSymmetric(horizontal: 14, vertical: 8);
 
-  Widget _tabChip(final ColorScheme cs, final int index, final String label, final IconData icon) {
-    final bool active = _tab == index;
+  Widget _segTabs(final ColorScheme cs) {
+    final List<(String, IconData)> tabs = <(String, IconData)>[("Data", Icons.grid_on_rounded), ("Structure", Icons.schema_rounded), ("Query", Icons.terminal_rounded)];
     return URow(
       mainAxisSize: MainAxisSize.min,
-      spacing: 6,
-      children: <Widget>[
-        Icon(icon, size: 16, color: active ? cs.onPrimary : cs.primary),
-        UTextLabelLarge(label, color: active ? cs.onPrimary : cs.onSurface, fontWeight: FontWeight.w600),
-      ],
-    ).pSymmetric(horizontal: 14, vertical: 8).container(backgroundColor: active ? cs.primary : cs.surfaceContainerHighest.withValues(alpha: 0.5), radius: 10).onTap(() => setState(() => _tab = index));
+      spacing: 0,
+      children: List<Widget>.generate(tabs.length, (final int i) {
+        final bool active = _tab == i;
+        return URow(
+          mainAxisSize: MainAxisSize.min,
+          spacing: 6,
+          children: <Widget>[
+            Icon(tabs[i].$2, size: 15, color: active ? cs.onPrimary : cs.onSurface.withValues(alpha: 0.7)),
+            UTextLabelMedium(tabs[i].$1, color: active ? cs.onPrimary : cs.onSurface.withValues(alpha: 0.7), fontWeight: FontWeight.w600),
+          ],
+        ).pSymmetric(horizontal: 12, vertical: 7).container(backgroundColor: active ? cs.primary : null, radius: 8).onTap(() => setState(() => _tab = i));
+      }),
+    ).pAll(3).container(backgroundColor: cs.surfaceContainerHighest.withValues(alpha: 0.5), radius: 11);
   }
 
   // ===== Data tab =====
 
   Widget _dataTab(final ColorScheme cs) {
-    if (_selected == null) return _placeholder(cs, Icons.touch_app_outlined, "Select a table to view its data");
-    if (_loadingRows && _rows == null) return const UProgressCircular().pAll(40);
-    final UDbQueryResultResponse? data = _rows;
-    if (data == null || data.columns.isEmpty) return _placeholder(cs, Icons.inbox_outlined, "No data");
-
+    if (_selected == null) return _placeholder(cs, Icons.touch_app_outlined, "No table selected", "");
     return UColumn(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        _resultGrid(cs, data, editable: true).expanded(),
+        _dataToolbar(cs),
+        SizedBox(height: 2, child: _loadingRows ? LinearProgressIndicator(minHeight: 2, backgroundColor: Colors.transparent, color: cs.primary) : null),
+        if (_rows == null)
+          const Center(child: UProgressCircular(size: 30)).pAll(40).expanded()
+        else if (_rows!.columns.isEmpty)
+          _placeholder(cs, Icons.inbox_outlined, "No rows", _whereController.text.trim().isEmpty ? "This table is empty." : "No rows match the filter.").expanded()
+        else
+          _grid(cs, _rows!, editable: true).expanded(),
         const Divider(height: 1),
-        _pagination(cs),
+        _paginationBar(cs),
       ],
     );
   }
 
-  Widget _pagination(final ColorScheme cs) => URow(
-    spacing: 12,
-    mainAxisAlignment: MainAxisAlignment.end,
+  Widget _dataToolbar(final ColorScheme cs) => URow(
     children: <Widget>[
-      if (_rows?.truncated ?? false) UTextLabelSmall("Results truncated", color: cs.error),
-      UTextBodySmall("$_page / $_pageCount", color: cs.onSurface.withValues(alpha: 0.7)),
-      IconButton(
-        onPressed: _page > 1
-            ? () {
-                setState(() => _page -= 1);
-                _loadRows();
-              }
-            : null,
-        icon: const Icon(Icons.chevron_left_rounded),
-      ),
-      IconButton(
-        onPressed: _page < _pageCount
-            ? () {
-                setState(() => _page += 1);
-                _loadRows();
-              }
-            : null,
-        icon: const Icon(Icons.chevron_right_rounded),
-      ),
+      UTextField(
+        controller: _whereController,
+        hintText: "WHERE  e.g.  \"Status\" = 1  and  \"CreatedAt\" > now() - interval '7 days'",
+        prefix: Icon(Icons.filter_alt_outlined, size: 16, color: cs.onSurface.withValues(alpha: 0.5)),
+        isDense: true,
+        hasClearButton: true,
+        onFieldSubmitted: (final String _) => _applyFilter(),
+      ).expanded(),
+      UButton(title: "Apply", type: UButtonType.outlined, icon: const Icon(Icons.play_arrow_rounded, size: 16), onTap: _applyFilter, padding: const EdgeInsets.symmetric(horizontal: 12)),
+      _miniIcon(cs, Icons.add_rounded, "Insert row", _openRowEditor, filled: true),
+      _miniIcon(cs, Icons.refresh_rounded, "Reload", () => _loadRows(withCount: true)),
     ],
-  ).pSymmetric(horizontal: 16, vertical: 6);
+  ).pSymmetric(horizontal: 14, vertical: 8);
+
+  Widget _paginationBar(final ColorScheme cs) {
+    final int from = _totalCount == 0 ? 0 : (_page - 1) * _pageSize + 1;
+    final int to = (_page * _pageSize) < _totalCount ? _page * _pageSize : _totalCount;
+    return URow(
+      spacing: 6,
+      children: <Widget>[
+        PopupMenuButton<int>(
+          tooltip: "Rows per page",
+          onSelected: _changePageSize,
+          itemBuilder: (final BuildContext ctx) => _pageSizes.map((final int s) => PopupMenuItem<int>(value: s, child: Text("$s per page"))).toList(),
+          child: URow(
+            mainAxisSize: MainAxisSize.min,
+            spacing: 4,
+            children: <Widget>[
+              UTextLabelMedium("$_pageSize / page", fontWeight: FontWeight.w600),
+              Icon(Icons.arrow_drop_down_rounded, size: 18, color: cs.onSurface.withValues(alpha: 0.7)),
+            ],
+          ).pSymmetric(horizontal: 10, vertical: 6).container(backgroundColor: cs.surfaceContainerHighest.withValues(alpha: 0.5), radius: 8),
+        ),
+        const Spacer(),
+        UTextLabelMedium("$from–$to of $_totalCount", color: cs.onSurface.withValues(alpha: 0.7)),
+        const SizedBox(width: 6),
+        _pageBtn(cs, Icons.first_page_rounded, _page > 1, () => _gotoPage(1)),
+        _pageBtn(cs, Icons.chevron_left_rounded, _page > 1, () => _gotoPage(_page - 1)),
+        UTextLabelMedium("$_page / $_pageCount", fontWeight: FontWeight.w700).pSymmetric(horizontal: 4),
+        _pageBtn(cs, Icons.chevron_right_rounded, _page < _pageCount, () => _gotoPage(_page + 1)),
+        _pageBtn(cs, Icons.last_page_rounded, _page < _pageCount, () => _gotoPage(_pageCount)),
+      ],
+    ).pSymmetric(horizontal: 12, vertical: 6);
+  }
 
   // ===== Structure tab =====
 
   Widget _structureTab(final ColorScheme cs) {
-    if (_selected == null) return _placeholder(cs, Icons.touch_app_outlined, "Select a table to view its data");
-    if (_loadingSchema && _schema == null) return const UProgressCircular().pAll(40);
+    if (_loadingSchema && _schema == null) return const Center(child: UProgressCircular(size: 30)).pAll(40);
     final UDbTableSchemaResponse? s = _schema;
-    if (s == null) return _placeholder(cs, Icons.inbox_outlined, "No data");
-
+    if (s == null) return _placeholder(cs, Icons.inbox_outlined, "No structure", "");
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(14),
       child: UColumn(
-        spacing: 18,
+        spacing: 14,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          _structureCard(
-            cs,
-            "Columns",
-            Icons.view_column_outlined,
-            s.columns
-                .map(
-                  (final UDbColumnResponse c) => URow(
-                    spacing: 10,
-                    children: <Widget>[
-                      if (c.isPrimaryKey) Icon(Icons.key_rounded, size: 15, color: cs.tertiary) else const SizedBox(width: 15),
-                      UTextBodyMedium(c.name, fontWeight: FontWeight.w600).expanded(flex: 3),
-                      UTextBodySmall(c.dataType, color: cs.primary).expanded(flex: 2),
-                      UTextLabelSmall(c.isNullable ? "Nullable" : "NOT NULL", color: cs.onSurface.withValues(alpha: 0.6)).expanded(flex: 2),
-                      UTextLabelSmall(c.defaultValue ?? "", color: cs.onSurface.withValues(alpha: 0.5), maxLines: 1).expanded(flex: 3),
-                    ],
-                  ).pSymmetric(vertical: 6),
-                )
-                .toList(),
-          ),
+          _card(cs, "Columns", Icons.view_column_outlined, s.columns.length, s.columns.mapIndexed((final int i, final UDbColumnResponse c) => URow(
+              spacing: 10,
+              children: <Widget>[
+                SizedBox(width: 18, child: c.isPrimaryKey ? Icon(Icons.key_rounded, size: 14, color: cs.tertiary) : null),
+                UTextBodySmall(c.name, fontWeight: FontWeight.w600, fontFamily: "monospace").expanded(flex: 3),
+                _typeBadge(cs, c.dataType),
+                UTextLabelSmall(c.isNullable ? "nullable" : "not null", color: cs.onSurface.withValues(alpha: 0.55)).expanded(flex: 2),
+                UTextLabelSmall(c.defaultValue ?? "", color: cs.onSurface.withValues(alpha: 0.45), maxLines: 1, fontFamily: "monospace").expanded(flex: 3),
+              ],
+            ).pSymmetric(horizontal: 4, vertical: 7).container(backgroundColor: i.isOdd ? cs.surfaceContainerHighest.withValues(alpha: 0.28) : null, radius: 6)).toList()),
           if (s.indexes.isNotEmpty)
-            _structureCard(
-              cs,
-              "Indexes",
-              Icons.bolt_rounded,
-              s.indexes
-                  .map(
-                    (final UDbIndexResponse idx) => UColumn(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        URow(
-                          children: <Widget>[
-                            if (idx.isPrimary) Icon(Icons.key_rounded, size: 14, color: cs.tertiary) else if (idx.isUnique) Icon(Icons.star_rounded, size: 14, color: cs.primary),
-                            UTextBodyMedium(idx.name, fontWeight: FontWeight.w600),
-                          ],
-                        ),
-                        UTextLabelSmall(idx.definition, color: cs.onSurface.withValues(alpha: 0.55)),
-                      ],
-                    ).pSymmetric(vertical: 6),
-                  )
-                  .toList(),
-            ),
+            _card(cs, "Indexes", Icons.bolt_rounded, s.indexes.length, s.indexes.map((final UDbIndexResponse idx) => UColumn(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 2,
+                children: <Widget>[
+                  URow(spacing: 6, children: <Widget>[
+                    if (idx.isPrimary) Icon(Icons.key_rounded, size: 13, color: cs.tertiary) else if (idx.isUnique) Icon(Icons.star_rounded, size: 13, color: cs.primary),
+                    UTextBodySmall(idx.name, fontWeight: FontWeight.w600),
+                  ]),
+                  UTextLabelSmall(idx.definition, color: cs.onSurface.withValues(alpha: 0.5), fontFamily: "monospace"),
+                ],
+              ).pSymmetric(vertical: 6)).toList()),
           if (s.foreignKeys.isNotEmpty)
-            _structureCard(
-              cs,
-              "Foreign Keys",
-              Icons.link_rounded,
-              s.foreignKeys
-                  .map(
-                    (final UDbForeignKeyResponse fk) => URow(
-                      children: <Widget>[
-                        UTextBodyMedium(fk.column, fontWeight: FontWeight.w600),
-                        Icon(Icons.arrow_forward_rounded, size: 15, color: cs.onSurface.withValues(alpha: 0.5)),
-                        UTextBodySmall("${fk.referencesTable}.${fk.referencesColumn}", color: cs.primary),
-                      ],
-                    ).pSymmetric(vertical: 6),
-                  )
-                  .toList(),
-            ),
+            _card(cs, "Foreign Keys", Icons.link_rounded, s.foreignKeys.length, s.foreignKeys.map((final UDbForeignKeyResponse fk) => URow(
+                children: <Widget>[
+                  UTextBodySmall(fk.column, fontWeight: FontWeight.w600, fontFamily: "monospace"),
+                  Icon(Icons.arrow_forward_rounded, size: 14, color: cs.onSurface.withValues(alpha: 0.5)),
+                  UTextBodySmall("${fk.referencesTable}.${fk.referencesColumn}", color: cs.primary, fontFamily: "monospace"),
+                ],
+              ).pSymmetric(vertical: 6)).toList()),
         ],
       ),
     );
   }
 
-  Widget _structureCard(final ColorScheme cs, final String title, final IconData icon, final List<Widget> children) => UCard(
-    child: UColumn(
-      spacing: 6,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        URow(
-          children: <Widget>[
-            Icon(icon, color: cs.primary, size: 20),
-            UTextTitleSmall(title, fontWeight: FontWeight.bold),
-          ],
-        ),
-        const Divider(height: 12),
-        ...children,
-      ],
-    ).pAll(18),
-  );
-
   // ===== Query tab =====
 
   Widget _queryTab(final ColorScheme cs) => SingleChildScrollView(
-    padding: const EdgeInsets.all(16),
+    padding: const EdgeInsets.all(14),
     child: UColumn(
-      spacing: 14,
+      spacing: 12,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: _prebuilt
-              .map(
-                (final _Prebuilt q) =>
-                    URow(
-                      mainAxisSize: MainAxisSize.min,
-                      spacing: 6,
-                      children: <Widget>[
-                        Icon(q.icon, size: 14, color: cs.primary),
-                        UTextLabelSmall(q.title, fontWeight: FontWeight.w600),
-                      ],
-                    ).pSymmetric(horizontal: 12, vertical: 8).container(backgroundColor: cs.surfaceContainerHighest.withValues(alpha: 0.5), radius: 20, borderColor: cs.outlineVariant).onTap(() {
-                      _sqlController.text = q.sql(_selected?.name ?? "table_name", _selected?.schema ?? "public");
-                      setState(() {});
-                    }),
-              )
-              .toList(),
+        URow(
+          children: <Widget>[
+            Icon(Icons.terminal_rounded, color: cs.primary, size: 18),
+            const UTextTitleSmall("SQL Editor", fontWeight: FontWeight.bold).expanded(),
+            PopupMenuButton<_Prebuilt>(
+              tooltip: "Snippets",
+              onSelected: (final _Prebuilt q) => setState(() => _sqlController.text = q.sql(_selected?.name ?? "table_name", _selected?.schema ?? "public")),
+              itemBuilder: (final BuildContext ctx) => _prebuilt.map((final _Prebuilt q) => PopupMenuItem<_Prebuilt>(value: q, child: URow(mainAxisSize: MainAxisSize.min, children: <Widget>[Icon(q.icon, size: 15, color: cs.primary), Text(q.title)]))).toList(),
+              child: URow(mainAxisSize: MainAxisSize.min, spacing: 4, children: <Widget>[
+                Icon(Icons.bookmark_border_rounded, size: 16, color: cs.primary),
+                const UTextLabelMedium("Snippets", fontWeight: FontWeight.w600),
+                Icon(Icons.arrow_drop_down_rounded, size: 18, color: cs.onSurface.withValues(alpha: 0.7)),
+              ]).pSymmetric(horizontal: 10, vertical: 7).container(backgroundColor: cs.surfaceContainerHighest.withValues(alpha: 0.5), radius: 8),
+            ),
+            UButton(title: "Run", icon: const Icon(Icons.play_arrow_rounded, size: 18), isLoading: _queryRunning, onTap: _runQuery),
+          ],
         ),
-        UCard(
-          child: UColumn(
-            spacing: 10,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              URow(
-                children: <Widget>[
-                  Icon(Icons.terminal_rounded, color: cs.primary, size: 20),
-                  const UTextTitleSmall("SQL Editor", fontWeight: FontWeight.bold).expanded(),
-                  UButton(title: "Run", icon: const Icon(Icons.play_arrow_rounded, size: 18), isLoading: _queryRunning, onTap: _runQuery),
-                ],
-              ),
-              TextField(
-                controller: _sqlController,
-                maxLines: 8,
-                minLines: 6,
-                style: const TextStyle(fontFamily: "monospace", fontSize: 13),
-                decoration: InputDecoration(
-                  hintText: "SELECT * FROM ...",
-                  filled: true,
-                  fillColor: cs.surfaceContainerHighest.withValues(alpha: 0.35),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(color: cs.outlineVariant),
-                  ),
-                ),
-              ),
-            ],
-          ).pAll(16),
+        TextField(
+          controller: _sqlController,
+          maxLines: 9,
+          minLines: 6,
+          style: const TextStyle(fontFamily: "monospace", fontSize: 13, height: 1.4),
+          decoration: InputDecoration(
+            hintText: "SELECT * FROM ...",
+            filled: true,
+            fillColor: cs.surfaceContainerHighest.withValues(alpha: 0.3),
+            contentPadding: const EdgeInsets.all(12),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide(color: cs.outlineVariant)),
+            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide(color: cs.outlineVariant)),
+          ),
         ),
         if (_queryError != null)
           URow(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Icon(Icons.error_outline_rounded, color: cs.error, size: 20),
-              UTextBodySmall(_queryError!, color: cs.error).expanded(),
+              Icon(Icons.error_outline_rounded, color: cs.error, size: 18),
+              SelectableText(_queryError!, style: TextStyle(color: cs.error, fontSize: 12.5, fontFamily: "monospace")).expanded(),
             ],
-          ).pAll(14).container(backgroundColor: cs.errorContainer.withValues(alpha: 0.4), radius: 10),
+          ).pAll(12).container(backgroundColor: cs.errorContainer.withValues(alpha: 0.35), radius: 10, borderColor: cs.error.withValues(alpha: 0.3)),
         if (_queryResult != null) _queryResultView(cs, _queryResult!),
       ],
     ),
@@ -685,132 +710,163 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
 
   Widget _queryResultView(final ColorScheme cs, final UDbQueryResultResponse r) {
     final String meta = r.columns.isEmpty
-        ? "${r.affectedRows ?? 0} ${"affected"} · ${r.executionMs} ms"
-        : "${r.rowCount} ${"Rows"} · ${r.executionMs} ms${r.truncated ? " · ${"Results truncated"}" : ""}";
+        ? "${r.affectedRows ?? 0} rows affected  ·  ${r.executionMs} ms"
+        : "${r.rowCount} rows  ·  ${r.executionMs} ms${r.truncated ? "  ·  truncated" : ""}";
     return UColumn(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        UTextLabelSmall(meta, color: cs.onSurface.withValues(alpha: 0.6)),
-        if (r.columns.isNotEmpty) ConstrainedBox(constraints: const BoxConstraints(maxHeight: 460), child: _resultGrid(cs, r, editable: false)),
+        URow(spacing: 6, children: <Widget>[
+          Icon(r.columns.isEmpty ? Icons.check_circle_outline_rounded : Icons.table_rows_rounded, size: 15, color: cs.primary),
+          UTextLabelSmall(meta, color: cs.onSurface.withValues(alpha: 0.65)),
+        ]),
+        if (r.columns.isNotEmpty)
+          ConstrainedBox(constraints: const BoxConstraints(maxHeight: 460), child: _grid(cs, r, editable: false)),
       ],
     );
   }
 
   // ===== Shared result grid =====
 
-  Widget _resultGrid(final ColorScheme cs, final UDbQueryResultResponse data, {required final bool editable}) {
-    final bool canMutate = editable && (data.primaryKeyColumn != null);
+  Widget _grid(final ColorScheme cs, final UDbQueryResultResponse data, {required final bool editable}) {
+    final bool canMutate = editable && data.primaryKeyColumn != null;
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: SingleChildScrollView(
         child: DataTable(
-          headingRowColor: WidgetStatePropertyAll<Color>(cs.surfaceContainerHighest.withValues(alpha: 0.4)),
-          columnSpacing: 26,
-          columns: <DataColumn>[
-            if (canMutate) const DataColumn(label: SizedBox(width: 8)),
-            ...data.columns.mapIndexed((final int i, final String col) {
-              final bool sorted = editable && _orderBy == col;
-              return DataColumn(
-                label: URow(
-                  mainAxisSize: MainAxisSize.min,
-                  spacing: 4,
-                  children: <Widget>[
-                    UTextLabelMedium(col, fontWeight: FontWeight.bold),
-                    if (i < data.columnTypes.length && data.columnTypes[i] != null) UTextLabelSmall(data.columnTypes[i]!, color: cs.onSurface.withValues(alpha: 0.45)),
-                    if (sorted) Icon(_descending ? Icons.arrow_downward_rounded : Icons.arrow_upward_rounded, size: 13, color: cs.primary),
-                  ],
-                ),
-                onSort: editable ? (final int columnIndex, final bool ascending) => _sortBy(col) : null,
-              );
-            }),
-          ],
-          rows: data.rows
-              .map(
-                (final Map<String, String?> row) => DataRow(
-                  cells: <DataCell>[
-                    if (canMutate)
-                      DataCell(
-                        URow(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            IconButton(
-                              tooltip: "Edit",
-                              iconSize: 17,
-                              visualDensity: VisualDensity.compact,
-                              onPressed: () => _openRowEditor(original: row),
-                              icon: Icon(Icons.edit_outlined, color: cs.primary),
-                            ),
-                            IconButton(
-                              tooltip: "Delete",
-                              iconSize: 17,
-                              visualDensity: VisualDensity.compact,
-                              onPressed: () => _deleteRow(row),
-                              icon: Icon(Icons.delete_outline_rounded, color: cs.error),
-                            ),
-                          ],
-                        ),
+            headingRowHeight: 40,
+            dataRowMinHeight: 36,
+            dataRowMaxHeight: 40,
+            horizontalMargin: 12,
+            columnSpacing: 20,
+            dividerThickness: 0.4,
+            headingRowColor: WidgetStatePropertyAll<Color>(cs.surfaceContainerHighest.withValues(alpha: 0.55)),
+            border: TableBorder(horizontalInside: BorderSide(color: cs.outlineVariant.withValues(alpha: 0.4), width: 0.4)),
+            columns: <DataColumn>[
+              if (canMutate) const DataColumn(label: SizedBox(width: 4)),
+              ...data.columns.mapIndexed((final int i, final String col) {
+                final bool sorted = editable && _orderBy == col;
+                return DataColumn(
+                  label: URow(
+                    mainAxisSize: MainAxisSize.min,
+                    spacing: 4,
+                    children: <Widget>[
+                      UTextLabelMedium(col, fontWeight: FontWeight.w800),
+                      if (i < data.columnTypes.length && data.columnTypes[i] != null) UTextLabelSmall(data.columnTypes[i]!, color: cs.onSurface.withValues(alpha: 0.4)),
+                      if (sorted) Icon(_descending ? Icons.arrow_downward_rounded : Icons.arrow_upward_rounded, size: 12, color: cs.primary),
+                    ],
+                  ),
+                  onSort: editable ? (final int columnIndex, final bool ascending) => _sortBy(col) : null,
+                );
+              }),
+            ],
+            rows: data.rows.mapIndexed((final int rowIndex, final Map<String, String?> row) => DataRow(
+                color: WidgetStateProperty.resolveWith<Color?>((final Set<WidgetState> states) {
+                  if (states.contains(WidgetState.hovered)) return cs.primary.withValues(alpha: 0.06);
+                  return rowIndex.isOdd ? cs.surfaceContainerHighest.withValues(alpha: 0.22) : null;
+                }),
+                cells: <DataCell>[
+                  if (canMutate)
+                    DataCell(URow(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        _cellIcon(cs, Icons.visibility_outlined, "View", () => _viewRow(row)),
+                        _cellIcon(cs, Icons.edit_outlined, "Edit", () => _openRowEditor(original: row), color: cs.primary),
+                        _cellIcon(cs, Icons.delete_outline_rounded, "Delete", () => _deleteRow(row), color: cs.error),
+                      ],
+                    )),
+                  ...data.columns.map((final String col) {
+                    final String? value = row[col];
+                    return DataCell(
+                      ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: 340),
+                        child: value == null
+                            ? UTextLabelSmall("NULL", color: cs.onSurface.withValues(alpha: 0.32), fontStyle: FontStyle.italic)
+                            : UTextBodySmall(value, maxLines: 1, fontFamily: "monospace"),
                       ),
-                    ...data.columns.map((final String col) {
-                      final String? value = row[col];
-                      return DataCell(
-                        ConstrainedBox(
-                          constraints: const BoxConstraints(maxWidth: 320),
-                          child: value == null ? UTextBodySmall("NULL", color: cs.onSurface.withValues(alpha: 0.35)) : UTextBodySmall(value, maxLines: 1),
-                        ),
-                        onTap: value == null ? null : () => UClipboard.set(value),
-                      );
-                    }),
-                  ],
-                ),
-              )
-              .toList(),
+                      onTap: value == null
+                          ? null
+                          : () {
+                              UClipboard.set(value);
+                              UToast.info(message: "Copied");
+                            },
+                    );
+                  }),
+                ],
+              )).toList(),
+          ),
         ),
-      ),
     );
   }
 
-  Widget _placeholder(final ColorScheme cs, final IconData icon, final String message) => UColumn(
+  // ===== Small building blocks =====
+
+  Widget _card(final ColorScheme cs, final String title, final IconData icon, final int count, final List<Widget> children) => UCard(
+    child: UColumn(
+      spacing: 4,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        URow(children: <Widget>[
+          Icon(icon, color: cs.primary, size: 18),
+          UTextTitleSmall(title, fontWeight: FontWeight.bold),
+          UTextLabelSmall("$count", color: cs.onSurface.withValues(alpha: 0.5)).pSymmetric(horizontal: 7, vertical: 2).container(backgroundColor: cs.surfaceContainerHighest.withValues(alpha: 0.6), radius: 20),
+        ]),
+        const Divider(height: 14),
+        ...children,
+      ],
+    ).pAll(16),
+  );
+
+  Widget _typeBadge(final ColorScheme cs, final String type) => UTextLabelSmall(type, color: cs.primary, fontWeight: FontWeight.w600)
+      .pSymmetric(horizontal: 8, vertical: 3)
+      .container(backgroundColor: cs.primary.withValues(alpha: 0.1), radius: 6);
+
+  Widget _miniIcon(final ColorScheme cs, final IconData icon, final String tooltip, final VoidCallback onTap, {final bool filled = false}) => IconButton(
+    tooltip: tooltip,
+    onPressed: onTap,
+    visualDensity: VisualDensity.compact,
+    iconSize: 18,
+    style: filled ? IconButton.styleFrom(backgroundColor: cs.primary.withValues(alpha: 0.12)) : null,
+    icon: Icon(icon, color: cs.primary),
+  );
+
+  Widget _pageBtn(final ColorScheme cs, final IconData icon, final bool enabled, final VoidCallback onTap) => IconButton(
+    onPressed: enabled ? onTap : null,
+    visualDensity: VisualDensity.compact,
+    iconSize: 20,
+    icon: Icon(icon),
+  );
+
+  Widget _cellIcon(final ColorScheme cs, final IconData icon, final String tooltip, final VoidCallback onTap, {final Color? color}) => IconButton(
+    tooltip: tooltip,
+    onPressed: onTap,
+    iconSize: 16,
+    visualDensity: VisualDensity.compact,
+    constraints: const BoxConstraints(minWidth: 30, minHeight: 30),
+    padding: EdgeInsets.zero,
+    icon: Icon(icon, color: color ?? cs.onSurface.withValues(alpha: 0.7)),
+  );
+
+  Widget _placeholder(final ColorScheme cs, final IconData icon, final String title, final String subtitle) => UColumn(
     mainAxisAlignment: MainAxisAlignment.center,
-    spacing: 12,
+    spacing: 10,
     children: <Widget>[
-      Icon(icon, size: 46, color: cs.onSurface.withValues(alpha: 0.25)),
-      UTextBodyMedium(message, color: cs.onSurface.withValues(alpha: 0.5)),
+      Icon(icon, size: 44, color: cs.onSurface.withValues(alpha: 0.22)),
+      UTextBodyMedium(title, color: cs.onSurface.withValues(alpha: 0.55), fontWeight: FontWeight.w600),
+      if (subtitle.isNotEmpty) SizedBox(width: 360, child: UTextBodySmall(subtitle, color: cs.onSurface.withValues(alpha: 0.4), textAlign: TextAlign.center)),
     ],
   ).pAll(40);
 
-  // Prebuilt query catalog. `{s}`/`{t}` are replaced with the selected schema/table (or placeholders).
+  // Prebuilt query catalog for the Query tab snippets menu.
   List<_Prebuilt> get _prebuilt => <_Prebuilt>[
-    _Prebuilt("Rows", Icons.numbers_rounded, (final String t, final String s) => "SELECT relname AS table, n_live_tup AS rows FROM pg_stat_user_tables ORDER BY n_live_tup DESC;"),
-    _Prebuilt(
-      "Sizes",
-      Icons.sd_storage_outlined,
-      (final String t, final String s) =>
-          "SELECT relname AS table, pg_size_pretty(pg_total_relation_size(relid)) AS size FROM pg_catalog.pg_statio_user_tables ORDER BY pg_total_relation_size(relid) DESC;",
-    ),
-    _Prebuilt("Recent", Icons.history_rounded, (final String t, final String s) => 'SELECT * FROM "$s"."$t" ORDER BY "CreatedAt" DESC LIMIT 50;'),
-    _Prebuilt("DB size", Icons.data_usage_rounded, (final String t, final String s) => "SELECT pg_size_pretty(pg_database_size(current_database())) AS database_size;"),
-    _Prebuilt("Connections", Icons.cable_rounded, (final String t, final String s) => "SELECT state, count(*) FROM pg_stat_activity GROUP BY state ORDER BY count DESC;"),
-    _Prebuilt(
-      "Long queries",
-      Icons.timelapse_rounded,
-      (final String t, final String s) =>
-          "SELECT pid, now() - query_start AS duration, state, query FROM pg_stat_activity WHERE state <> 'idle' AND query_start IS NOT NULL ORDER BY duration DESC LIMIT 20;",
-    ),
-    _Prebuilt(
-      "Cache hit",
-      Icons.speed_rounded,
-      (final String t, final String s) => "SELECT round(sum(heap_blks_hit) / nullif(sum(heap_blks_hit) + sum(heap_blks_read), 0), 4) AS cache_hit_ratio FROM pg_statio_user_tables;",
-    ),
-    _Prebuilt(
-      "Index usage",
-      Icons.bolt_rounded,
-      (final String t, final String s) => "SELECT relname AS table, indexrelname AS index, idx_scan AS scans FROM pg_stat_user_indexes ORDER BY idx_scan DESC LIMIT 30;",
-    ),
-    _Prebuilt(
-      "Dead rows",
-      Icons.cleaning_services_rounded,
-      (final String t, final String s) => "SELECT relname AS table, n_dead_tup AS dead_rows FROM pg_stat_user_tables ORDER BY n_dead_tup DESC LIMIT 20;",
-    ),
+    _Prebuilt("Row counts per table", Icons.numbers_rounded, (final String t, final String s) => "SELECT relname AS table, n_live_tup AS rows FROM pg_stat_user_tables ORDER BY n_live_tup DESC;"),
+    _Prebuilt("Table sizes", Icons.sd_storage_outlined, (final String t, final String s) => "SELECT relname AS table, pg_size_pretty(pg_total_relation_size(relid)) AS size FROM pg_catalog.pg_statio_user_tables ORDER BY pg_total_relation_size(relid) DESC;"),
+    _Prebuilt("Recent rows (selected)", Icons.history_rounded, (final String t, final String s) => 'SELECT * FROM "$s"."$t" ORDER BY "CreatedAt" DESC LIMIT 50;'),
+    _Prebuilt("Database size", Icons.data_usage_rounded, (final String t, final String s) => "SELECT pg_size_pretty(pg_database_size(current_database())) AS database_size;"),
+    _Prebuilt("Connections by state", Icons.cable_rounded, (final String t, final String s) => "SELECT state, count(*) FROM pg_stat_activity GROUP BY state ORDER BY count DESC;"),
+    _Prebuilt("Long-running queries", Icons.timelapse_rounded, (final String t, final String s) => "SELECT pid, now() - query_start AS duration, state, query FROM pg_stat_activity WHERE state <> 'idle' AND query_start IS NOT NULL ORDER BY duration DESC LIMIT 20;"),
+    _Prebuilt("Cache hit ratio", Icons.speed_rounded, (final String t, final String s) => "SELECT round(sum(heap_blks_hit) / nullif(sum(heap_blks_hit) + sum(heap_blks_read), 0), 4) AS cache_hit_ratio FROM pg_statio_user_tables;"),
+    _Prebuilt("Index usage", Icons.bolt_rounded, (final String t, final String s) => "SELECT relname AS table, indexrelname AS index, idx_scan AS scans FROM pg_stat_user_indexes ORDER BY idx_scan DESC LIMIT 30;"),
+    _Prebuilt("Dead rows (vacuum)", Icons.cleaning_services_rounded, (final String t, final String s) => "SELECT relname AS table, n_dead_tup AS dead_rows FROM pg_stat_user_tables ORDER BY n_dead_tup DESC LIMIT 20;"),
   ];
 }
 

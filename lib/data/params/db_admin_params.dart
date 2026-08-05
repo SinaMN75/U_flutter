@@ -25,6 +25,8 @@ class UDbAdminRowsParams {
     this.pageNumber = 1,
     this.orderByColumn,
     this.descending = false,
+    this.where,
+    this.withCount = true,
   });
 
   final String table;
@@ -33,6 +35,8 @@ class UDbAdminRowsParams {
   final int pageNumber;
   final String? orderByColumn;
   final bool descending;
+  final String? where;
+  final bool withCount;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "table": table,
@@ -41,6 +45,8 @@ class UDbAdminRowsParams {
     "pageNumber": pageNumber,
     "orderByColumn": orderByColumn,
     "descending": descending,
+    "where": where,
+    "withCount": withCount,
   };
 }
 
