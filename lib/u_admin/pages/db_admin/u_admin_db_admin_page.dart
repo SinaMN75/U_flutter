@@ -253,7 +253,9 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
             child: UColumn(
               spacing: 0,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: row.entries.mapIndexed((final int i, final MapEntry<String, String?> e) => URow(
+              children: List<Widget>.generate(row.length, (final int i) {
+                final MapEntry<String, String?> e = row.entries.elementAt(i);
+                return URow(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   spacing: 12,
                   children: <Widget>[
@@ -261,7 +263,8 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
                     SelectableText(e.value ?? "NULL", style: TextStyle(fontFamily: "monospace", fontSize: 12.5, color: e.value == null ? cs.onSurface.withValues(alpha: 0.4) : cs.onSurface)).expanded(),
                     IconButton(visualDensity: VisualDensity.compact, iconSize: 15, tooltip: "Copy", onPressed: e.value == null ? null : () => UClipboard.set(e.value!), icon: const Icon(Icons.copy_rounded)),
                   ],
-                ).pSymmetric(vertical: 7).container(backgroundColor: i.isOdd ? cs.surfaceContainerHighest.withValues(alpha: 0.3) : null, radius: 6)).toList(),
+                ).pSymmetric(vertical: 7).container(backgroundColor: i.isOdd ? cs.surfaceContainerHighest.withValues(alpha: 0.3) : null, radius: 6);
+              }),
             ),
           ),
         ),
@@ -621,7 +624,9 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
         spacing: 14,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          _card(cs, "Columns", Icons.view_column_outlined, s.columns.length, s.columns.mapIndexed((final int i, final UDbColumnResponse c) => URow(
+          _card(cs, "Columns", Icons.view_column_outlined, s.columns.length, List<Widget>.generate(s.columns.length, (final int i) {
+            final UDbColumnResponse c = s.columns[i];
+            return URow(
               spacing: 10,
               children: <Widget>[
                 SizedBox(width: 18, child: c.isPrimaryKey ? Icon(Icons.key_rounded, size: 14, color: cs.tertiary) : null),
@@ -630,7 +635,8 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
                 UTextLabelSmall(c.isNullable ? "nullable" : "not null", color: cs.onSurface.withValues(alpha: 0.55)).expanded(flex: 2),
                 UTextLabelSmall(c.defaultValue ?? "", color: cs.onSurface.withValues(alpha: 0.45), maxLines: 1, fontFamily: "monospace").expanded(flex: 3),
               ],
-            ).pSymmetric(horizontal: 4, vertical: 7).container(backgroundColor: i.isOdd ? cs.surfaceContainerHighest.withValues(alpha: 0.28) : null, radius: 6)).toList()),
+            ).pSymmetric(horizontal: 4, vertical: 7).container(backgroundColor: i.isOdd ? cs.surfaceContainerHighest.withValues(alpha: 0.28) : null, radius: 6);
+          })),
           if (s.indexes.isNotEmpty)
             _card(cs, "Indexes", Icons.bolt_rounded, s.indexes.length, s.indexes.map((final UDbIndexResponse idx) => UColumn(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -743,7 +749,8 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
             border: TableBorder(horizontalInside: BorderSide(color: cs.outlineVariant.withValues(alpha: 0.4), width: 0.4)),
             columns: <DataColumn>[
               if (canMutate) const DataColumn(label: SizedBox(width: 4)),
-              ...data.columns.mapIndexed((final int i, final String col) {
+              ...List<DataColumn>.generate(data.columns.length, (final int i) {
+                final String col = data.columns[i];
                 final bool sorted = editable && _orderBy == col;
                 return DataColumn(
                   label: URow(
@@ -759,7 +766,9 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
                 );
               }),
             ],
-            rows: data.rows.mapIndexed((final int rowIndex, final Map<String, String?> row) => DataRow(
+            rows: List<DataRow>.generate(data.rows.length, (final int rowIndex) {
+              final Map<String, String?> row = data.rows[rowIndex];
+              return DataRow(
                 color: WidgetStateProperty.resolveWith<Color?>((final Set<WidgetState> states) {
                   if (states.contains(WidgetState.hovered)) return cs.primary.withValues(alpha: 0.06);
                   return rowIndex.isOdd ? cs.surfaceContainerHighest.withValues(alpha: 0.22) : null;
@@ -792,7 +801,8 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
                     );
                   }),
                 ],
-              )).toList(),
+              );
+            }),
           ),
         ),
     );
