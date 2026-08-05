@@ -170,6 +170,22 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
     );
   }
 
+  Future<void> _runMigrations() async {
+    if (!await UNavigator.confirmAsync(title: "Run migrations", message: "Apply all pending database migrations now?", confirmText: "Migrate", icon: Icons.system_update_alt_rounded)) return;
+    ULoading.show();
+    await UServices.dbAdmin.migrate(
+      onOk: (final List<String> applied) {
+        ULoading.dismiss();
+        UToast.success(message: applied.isEmpty ? "Database is already up to date." : "Applied ${applied.length} migration(s): ${applied.join(", ")}");
+        _loadTables();
+      },
+      onError: (final String e) {
+        ULoading.dismiss();
+        UToast.error(message: e.isEmpty ? "Migration failed." : e);
+      },
+    );
+  }
+
   Future<void> _deleteRow(final Map<String, String?> row) async {
     final String? pk = _rows?.primaryKeyColumn;
     if (_selected == null || pk == null || row[pk] == null) return;
@@ -343,9 +359,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
   // ===== Sidebar =====
 
   Widget _sidebar(final ColorScheme cs) {
-    final List<UDbTableResponse> filtered = _tableSearch.isEmpty
-        ? _tables
-        : _tables.where((final UDbTableResponse t) => t.name.toLowerCase().contains(_tableSearch.toLowerCase())).toList();
+    final List<UDbTableResponse> filtered = _tableSearch.isEmpty ? _tables : _tables.where((final UDbTableResponse t) => t.name.toLowerCase().contains(_tableSearch.toLowerCase())).toList();
     return SizedBox(
       width: 280,
       child: UColumn(
@@ -355,7 +369,16 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
             children: <Widget>[
               Icon(Icons.storage_rounded, color: cs.primary),
               const UTextTitleMedium("Database Console", fontWeight: FontWeight.bold).expanded(),
-              IconButton(tooltip: "Refresh", onPressed: _loadTables, icon: Icon(Icons.refresh_rounded, size: 20, color: cs.primary)),
+              IconButton(
+                tooltip: "Run migrations",
+                onPressed: _runMigrations,
+                icon: Icon(Icons.system_update_alt_rounded, size: 20, color: cs.primary),
+              ),
+              IconButton(
+                tooltip: "Refresh",
+                onPressed: _loadTables,
+                icon: Icon(Icons.refresh_rounded, size: 20, color: cs.primary),
+              ),
             ],
           ).pOnly(left: 16, right: 8, top: 12, bottom: 4),
           UTextField(
@@ -401,11 +424,13 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
     children: <Widget>[
       _mainHeader(cs),
       const Divider(height: 1),
-      URow(children: <Widget>[
-        _tabChip(cs, 0, "Data", Icons.grid_on_rounded),
-        _tabChip(cs, 1, "Structure", Icons.schema_rounded),
-        _tabChip(cs, 2, "Query", Icons.terminal_rounded),
-      ]).pSymmetric(horizontal: 16, vertical: 10),
+      URow(
+        children: <Widget>[
+          _tabChip(cs, 0, "Data", Icons.grid_on_rounded),
+          _tabChip(cs, 1, "Structure", Icons.schema_rounded),
+          _tabChip(cs, 2, "Query", Icons.terminal_rounded),
+        ],
+      ).pSymmetric(horizontal: 16, vertical: 10),
       const Divider(height: 1),
       IndexedStack(
         index: _tab,
@@ -427,7 +452,11 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
       ).expanded(),
       if (_selected != null && _tab == 0) ...<Widget>[
         UButton(title: "Insert Row", type: UButtonType.outlined, icon: const Icon(Icons.add_rounded, size: 18), onTap: _openRowEditor),
-        IconButton(tooltip: "Refresh", onPressed: _loadRows, icon: Icon(Icons.refresh_rounded, color: cs.primary)),
+        IconButton(
+          tooltip: "Refresh",
+          onPressed: _loadRows,
+          icon: Icon(Icons.refresh_rounded, color: cs.primary),
+        ),
       ],
     ],
   ).pSymmetric(horizontal: 16, vertical: 12);
@@ -503,35 +532,64 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
         spacing: 18,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          _structureCard(cs, "Columns", Icons.view_column_outlined, s.columns.map((final UDbColumnResponse c) => URow(
-              spacing: 10,
-              children: <Widget>[
-                if (c.isPrimaryKey) Icon(Icons.key_rounded, size: 15, color: cs.tertiary) else const SizedBox(width: 15),
-                UTextBodyMedium(c.name, fontWeight: FontWeight.w600).expanded(flex: 3),
-                UTextBodySmall(c.dataType, color: cs.primary).expanded(flex: 2),
-                UTextLabelSmall(c.isNullable ? "Nullable" : "NOT NULL", color: cs.onSurface.withValues(alpha: 0.6)).expanded(flex: 2),
-                UTextLabelSmall(c.defaultValue ?? "", color: cs.onSurface.withValues(alpha: 0.5), maxLines: 1).expanded(flex: 3),
-              ],
-            ).pSymmetric(vertical: 6)).toList()),
+          _structureCard(
+            cs,
+            "Columns",
+            Icons.view_column_outlined,
+            s.columns
+                .map(
+                  (final UDbColumnResponse c) => URow(
+                    spacing: 10,
+                    children: <Widget>[
+                      if (c.isPrimaryKey) Icon(Icons.key_rounded, size: 15, color: cs.tertiary) else const SizedBox(width: 15),
+                      UTextBodyMedium(c.name, fontWeight: FontWeight.w600).expanded(flex: 3),
+                      UTextBodySmall(c.dataType, color: cs.primary).expanded(flex: 2),
+                      UTextLabelSmall(c.isNullable ? "Nullable" : "NOT NULL", color: cs.onSurface.withValues(alpha: 0.6)).expanded(flex: 2),
+                      UTextLabelSmall(c.defaultValue ?? "", color: cs.onSurface.withValues(alpha: 0.5), maxLines: 1).expanded(flex: 3),
+                    ],
+                  ).pSymmetric(vertical: 6),
+                )
+                .toList(),
+          ),
           if (s.indexes.isNotEmpty)
-            _structureCard(cs, "Indexes", Icons.bolt_rounded, s.indexes.map((final UDbIndexResponse idx) => UColumn(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  URow(children: <Widget>[
-                    if (idx.isPrimary) Icon(Icons.key_rounded, size: 14, color: cs.tertiary) else if (idx.isUnique) Icon(Icons.star_rounded, size: 14, color: cs.primary),
-                    UTextBodyMedium(idx.name, fontWeight: FontWeight.w600),
-                  ]),
-                  UTextLabelSmall(idx.definition, color: cs.onSurface.withValues(alpha: 0.55)),
-                ],
-              ).pSymmetric(vertical: 6)).toList()),
+            _structureCard(
+              cs,
+              "Indexes",
+              Icons.bolt_rounded,
+              s.indexes
+                  .map(
+                    (final UDbIndexResponse idx) => UColumn(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        URow(
+                          children: <Widget>[
+                            if (idx.isPrimary) Icon(Icons.key_rounded, size: 14, color: cs.tertiary) else if (idx.isUnique) Icon(Icons.star_rounded, size: 14, color: cs.primary),
+                            UTextBodyMedium(idx.name, fontWeight: FontWeight.w600),
+                          ],
+                        ),
+                        UTextLabelSmall(idx.definition, color: cs.onSurface.withValues(alpha: 0.55)),
+                      ],
+                    ).pSymmetric(vertical: 6),
+                  )
+                  .toList(),
+            ),
           if (s.foreignKeys.isNotEmpty)
-            _structureCard(cs, "Foreign Keys", Icons.link_rounded, s.foreignKeys.map((final UDbForeignKeyResponse fk) => URow(
-                children: <Widget>[
-                  UTextBodyMedium(fk.column, fontWeight: FontWeight.w600),
-                  Icon(Icons.arrow_forward_rounded, size: 15, color: cs.onSurface.withValues(alpha: 0.5)),
-                  UTextBodySmall("${fk.referencesTable}.${fk.referencesColumn}", color: cs.primary),
-                ],
-              ).pSymmetric(vertical: 6)).toList()),
+            _structureCard(
+              cs,
+              "Foreign Keys",
+              Icons.link_rounded,
+              s.foreignKeys
+                  .map(
+                    (final UDbForeignKeyResponse fk) => URow(
+                      children: <Widget>[
+                        UTextBodyMedium(fk.column, fontWeight: FontWeight.w600),
+                        Icon(Icons.arrow_forward_rounded, size: 15, color: cs.onSurface.withValues(alpha: 0.5)),
+                        UTextBodySmall("${fk.referencesTable}.${fk.referencesColumn}", color: cs.primary),
+                      ],
+                    ).pSymmetric(vertical: 6),
+                  )
+                  .toList(),
+            ),
         ],
       ),
     );
@@ -542,7 +600,12 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
       spacing: 6,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        URow(children: <Widget>[Icon(icon, color: cs.primary, size: 20), UTextTitleSmall(title, fontWeight: FontWeight.bold)]),
+        URow(
+          children: <Widget>[
+            Icon(icon, color: cs.primary, size: 20),
+            UTextTitleSmall(title, fontWeight: FontWeight.bold),
+          ],
+        ),
         const Divider(height: 12),
         ...children,
       ],
@@ -560,25 +623,35 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
         Wrap(
           spacing: 8,
           runSpacing: 8,
-          children: _prebuilt.map((final _Prebuilt q) => URow(
-              mainAxisSize: MainAxisSize.min,
-              spacing: 6,
-              children: <Widget>[Icon(q.icon, size: 14, color: cs.primary), UTextLabelSmall(q.title, fontWeight: FontWeight.w600)],
-            ).pSymmetric(horizontal: 12, vertical: 8).container(backgroundColor: cs.surfaceContainerHighest.withValues(alpha: 0.5), radius: 20, borderColor: cs.outlineVariant).onTap(() {
-              _sqlController.text = q.sql(_selected?.name ?? "table_name", _selected?.schema ?? "public");
-              setState(() {});
-            })).toList(),
+          children: _prebuilt
+              .map(
+                (final _Prebuilt q) =>
+                    URow(
+                      mainAxisSize: MainAxisSize.min,
+                      spacing: 6,
+                      children: <Widget>[
+                        Icon(q.icon, size: 14, color: cs.primary),
+                        UTextLabelSmall(q.title, fontWeight: FontWeight.w600),
+                      ],
+                    ).pSymmetric(horizontal: 12, vertical: 8).container(backgroundColor: cs.surfaceContainerHighest.withValues(alpha: 0.5), radius: 20, borderColor: cs.outlineVariant).onTap(() {
+                      _sqlController.text = q.sql(_selected?.name ?? "table_name", _selected?.schema ?? "public");
+                      setState(() {});
+                    }),
+              )
+              .toList(),
         ),
         UCard(
           child: UColumn(
             spacing: 10,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              URow(children: <Widget>[
-                Icon(Icons.terminal_rounded, color: cs.primary, size: 20),
-                const UTextTitleSmall("SQL Editor", fontWeight: FontWeight.bold).expanded(),
-                UButton(title: "Run", icon: const Icon(Icons.play_arrow_rounded, size: 18), isLoading: _queryRunning, onTap: _runQuery),
-              ]),
+              URow(
+                children: <Widget>[
+                  Icon(Icons.terminal_rounded, color: cs.primary, size: 20),
+                  const UTextTitleSmall("SQL Editor", fontWeight: FontWeight.bold).expanded(),
+                  UButton(title: "Run", icon: const Icon(Icons.play_arrow_rounded, size: 18), isLoading: _queryRunning, onTap: _runQuery),
+                ],
+              ),
               TextField(
                 controller: _sqlController,
                 maxLines: 8,
@@ -588,7 +661,10 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
                   hintText: "SELECT * FROM ...",
                   filled: true,
                   fillColor: cs.surfaceContainerHighest.withValues(alpha: 0.35),
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide(color: cs.outlineVariant)),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: cs.outlineVariant),
+                  ),
                 ),
               ),
             ],
@@ -615,8 +691,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         UTextLabelSmall(meta, color: cs.onSurface.withValues(alpha: 0.6)),
-        if (r.columns.isNotEmpty)
-          ConstrainedBox(constraints: const BoxConstraints(maxHeight: 460), child: _resultGrid(cs, r, editable: false)),
+        if (r.columns.isNotEmpty) ConstrainedBox(constraints: const BoxConstraints(maxHeight: 460), child: _resultGrid(cs, r, editable: false)),
       ],
     );
   }
@@ -649,30 +724,46 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
               );
             }),
           ],
-          rows: data.rows.map((final Map<String, String?> row) => DataRow(
-              cells: <DataCell>[
-                if (canMutate)
-                  DataCell(URow(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      IconButton(tooltip: "Edit", iconSize: 17, visualDensity: VisualDensity.compact, onPressed: () => _openRowEditor(original: row), icon: Icon(Icons.edit_outlined, color: cs.primary)),
-                      IconButton(tooltip: "Delete", iconSize: 17, visualDensity: VisualDensity.compact, onPressed: () => _deleteRow(row), icon: Icon(Icons.delete_outline_rounded, color: cs.error)),
-                    ],
-                  )),
-                ...data.columns.map((final String col) {
-                  final String? value = row[col];
-                  return DataCell(
-                    ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 320),
-                      child: value == null
-                          ? UTextBodySmall("NULL", color: cs.onSurface.withValues(alpha: 0.35))
-                          : UTextBodySmall(value, maxLines: 1),
-                    ),
-                    onTap: value == null ? null : () => UClipboard.set(value),
-                  );
-                }),
-              ],
-            )).toList(),
+          rows: data.rows
+              .map(
+                (final Map<String, String?> row) => DataRow(
+                  cells: <DataCell>[
+                    if (canMutate)
+                      DataCell(
+                        URow(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            IconButton(
+                              tooltip: "Edit",
+                              iconSize: 17,
+                              visualDensity: VisualDensity.compact,
+                              onPressed: () => _openRowEditor(original: row),
+                              icon: Icon(Icons.edit_outlined, color: cs.primary),
+                            ),
+                            IconButton(
+                              tooltip: "Delete",
+                              iconSize: 17,
+                              visualDensity: VisualDensity.compact,
+                              onPressed: () => _deleteRow(row),
+                              icon: Icon(Icons.delete_outline_rounded, color: cs.error),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ...data.columns.map((final String col) {
+                      final String? value = row[col];
+                      return DataCell(
+                        ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 320),
+                          child: value == null ? UTextBodySmall("NULL", color: cs.onSurface.withValues(alpha: 0.35)) : UTextBodySmall(value, maxLines: 1),
+                        ),
+                        onTap: value == null ? null : () => UClipboard.set(value),
+                      );
+                    }),
+                  ],
+                ),
+              )
+              .toList(),
         ),
       ),
     );
@@ -690,14 +781,36 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
   // Prebuilt query catalog. `{s}`/`{t}` are replaced with the selected schema/table (or placeholders).
   List<_Prebuilt> get _prebuilt => <_Prebuilt>[
     _Prebuilt("Rows", Icons.numbers_rounded, (final String t, final String s) => "SELECT relname AS table, n_live_tup AS rows FROM pg_stat_user_tables ORDER BY n_live_tup DESC;"),
-    _Prebuilt("Sizes", Icons.sd_storage_outlined, (final String t, final String s) => "SELECT relname AS table, pg_size_pretty(pg_total_relation_size(relid)) AS size FROM pg_catalog.pg_statio_user_tables ORDER BY pg_total_relation_size(relid) DESC;"),
+    _Prebuilt(
+      "Sizes",
+      Icons.sd_storage_outlined,
+      (final String t, final String s) =>
+          "SELECT relname AS table, pg_size_pretty(pg_total_relation_size(relid)) AS size FROM pg_catalog.pg_statio_user_tables ORDER BY pg_total_relation_size(relid) DESC;",
+    ),
     _Prebuilt("Recent", Icons.history_rounded, (final String t, final String s) => 'SELECT * FROM "$s"."$t" ORDER BY "CreatedAt" DESC LIMIT 50;'),
     _Prebuilt("DB size", Icons.data_usage_rounded, (final String t, final String s) => "SELECT pg_size_pretty(pg_database_size(current_database())) AS database_size;"),
     _Prebuilt("Connections", Icons.cable_rounded, (final String t, final String s) => "SELECT state, count(*) FROM pg_stat_activity GROUP BY state ORDER BY count DESC;"),
-    _Prebuilt("Long queries", Icons.timelapse_rounded, (final String t, final String s) => "SELECT pid, now() - query_start AS duration, state, query FROM pg_stat_activity WHERE state <> 'idle' AND query_start IS NOT NULL ORDER BY duration DESC LIMIT 20;"),
-    _Prebuilt("Cache hit", Icons.speed_rounded, (final String t, final String s) => "SELECT round(sum(heap_blks_hit) / nullif(sum(heap_blks_hit) + sum(heap_blks_read), 0), 4) AS cache_hit_ratio FROM pg_statio_user_tables;"),
-    _Prebuilt("Index usage", Icons.bolt_rounded, (final String t, final String s) => "SELECT relname AS table, indexrelname AS index, idx_scan AS scans FROM pg_stat_user_indexes ORDER BY idx_scan DESC LIMIT 30;"),
-    _Prebuilt("Dead rows", Icons.cleaning_services_rounded, (final String t, final String s) => "SELECT relname AS table, n_dead_tup AS dead_rows FROM pg_stat_user_tables ORDER BY n_dead_tup DESC LIMIT 20;"),
+    _Prebuilt(
+      "Long queries",
+      Icons.timelapse_rounded,
+      (final String t, final String s) =>
+          "SELECT pid, now() - query_start AS duration, state, query FROM pg_stat_activity WHERE state <> 'idle' AND query_start IS NOT NULL ORDER BY duration DESC LIMIT 20;",
+    ),
+    _Prebuilt(
+      "Cache hit",
+      Icons.speed_rounded,
+      (final String t, final String s) => "SELECT round(sum(heap_blks_hit) / nullif(sum(heap_blks_hit) + sum(heap_blks_read), 0), 4) AS cache_hit_ratio FROM pg_statio_user_tables;",
+    ),
+    _Prebuilt(
+      "Index usage",
+      Icons.bolt_rounded,
+      (final String t, final String s) => "SELECT relname AS table, indexrelname AS index, idx_scan AS scans FROM pg_stat_user_indexes ORDER BY idx_scan DESC LIMIT 30;",
+    ),
+    _Prebuilt(
+      "Dead rows",
+      Icons.cleaning_services_rounded,
+      (final String t, final String s) => "SELECT relname AS table, n_dead_tup AS dead_rows FROM pg_stat_user_tables ORDER BY n_dead_tup DESC LIMIT 20;",
+    ),
   ];
 }
 

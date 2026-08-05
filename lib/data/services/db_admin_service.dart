@@ -17,7 +17,7 @@ class DbAdminService {
       onSuccess: (final Response r) {
         final UResponse<List<UDbTableResponse>> ok = UResponse<List<UDbTableResponse>>.fromJson(
           r.body,
-          (dynamic i) => List<UDbTableResponse>.from((i as List<dynamic>).map((dynamic x) => UDbTableResponse.fromMap(x))),
+              (dynamic i) => List<UDbTableResponse>.from((i as List<dynamic>).map((dynamic x) => UDbTableResponse.fromMap(x))),
         );
         result = (ok, null, null);
         onOk(ok);
@@ -121,13 +121,30 @@ class DbAdminService {
     return result;
   }
 
+  // Applies all pending EF Core migrations via the DataSeeder/Migrate endpoint (auth is the apiKey query param).
+  Future<void> migrate({
+    required final Function(List<String> applied) onOk,
+    required final Function(String e) onError,
+  }) async {
+    await UHttpClient.send(
+      method: "GET",
+      endpoint: "${U.baseUrl}/DataSeeder/Migrate?key=${Uri.encodeQueryComponent(U.apiKey)}",
+      onSuccess: (final Response r) {
+        final Map<String, dynamic> body = json.decode(r.body) as Map<String, dynamic>;
+        onOk(List<String>.from((body["applied"] as List<dynamic>? ?? <dynamic>[]).map((dynamic x) => x.toString())));
+      },
+      onError: (final Response r) => onError(r.body),
+      onException: onError,
+    );
+  }
+
   Future<(UResponse<UDbQueryResultResponse>?, UEmptyResponse?, String?)> _query(
-    final String path,
-    final Map<String, dynamic> body,
-    final Function(UResponse<UDbQueryResultResponse> r) onOk,
-    final Function(UEmptyResponse e) onError,
-    final Function(String e) onException,
-  ) async {
+      final String path,
+      final Map<String, dynamic> body,
+      final Function(UResponse<UDbQueryResultResponse> r) onOk,
+      final Function(UEmptyResponse e) onError,
+      final Function(String e) onException,
+      ) async {
     (UResponse<UDbQueryResultResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
       method: "POST",
