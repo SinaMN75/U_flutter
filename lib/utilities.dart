@@ -92,6 +92,7 @@ export "models/u_business_category.dart";
 export "u_admin/pages/analytics/u_admin_financial_ops_dashboard_page.dart";
 export "u_admin/pages/blog/u_admin_blog_page.dart";
 export "u_admin/pages/contents/u_admin_contents_page.dart";
+export "u_admin/pages/db_admin/u_admin_db_admin_page.dart";
 export "u_admin/pages/file_manager/u_admin_file_manager_page.dart";
 export "u_admin/pages/hotel/contracts/u_admin_contract_page.dart";
 export "u_admin/pages/hotel/dashboard/u_admin_hotel_dashboard_page.dart";

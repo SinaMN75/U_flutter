@@ -54,6 +54,16 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
+  /// `Database Console`
+  String get databaseConsole {
+    return Intl.message(
+      'Database Console',
+      name: 'databaseConsole',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Are you sure you want to approve and register this taxpayer in the Namat system?`
   String get moadiApproveConfirm {
     return Intl.message(

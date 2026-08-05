@@ -1,4 +1,5 @@
 {
+  "databaseConsole": "Database Console",
   "moadiApproveConfirm": "Are you sure you want to approve and register this taxpayer in the Namat system?",
   "moadiSection": "Taxpayer",
   "moadiRequests": "Taxpayer Requests",

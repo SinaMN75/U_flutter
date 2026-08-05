@@ -294,6 +294,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "dark": MessageLookupByLibrary.simpleMessage("Dark"),
     "darkMode": MessageLookupByLibrary.simpleMessage("Dark Mode"),
     "dashboard": MessageLookupByLibrary.simpleMessage("Dashboard"),
+    "databaseConsole": MessageLookupByLibrary.simpleMessage("Database Console"),
     "date": MessageLookupByLibrary.simpleMessage("Date"),
     "day": MessageLookupByLibrary.simpleMessage("Day"),
     "dayCountSuffix": MessageLookupByLibrary.simpleMessage("days"),

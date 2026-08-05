@@ -269,6 +269,13 @@ abstract class UAdminModules {
     roles: roles,
   );
 
+  static UAdminModule dbAdmin({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.databaseConsole,
+    icon: Icons.storage_rounded,
+    page: () => const UAdminDbAdminPage(),
+    roles: roles,
+  );
+
   static UAdminModule appSettings({List<TagUser>? roles}) => UAdminModule(
     title: U.s.appSettings,
     icon: Icons.tune_rounded,
