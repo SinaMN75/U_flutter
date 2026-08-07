@@ -25,10 +25,10 @@ let package = Package(
         .package(name: "package_info_plus", path: "../.packages/package_info_plus-10.2.1"),
         .package(name: "share_plus", path: "../.packages/share_plus-13.3.0"),
         .package(name: "shared_preferences_foundation", path: "../.packages/shared_preferences_foundation-2.5.6"),
-        .package(name: "syncfusion_pdfviewer_macos", path: "../.packages/syncfusion_pdfviewer_macos-34.1.33"),
+        .package(name: "syncfusion_pdfviewer_macos", path: "../.packages/syncfusion_pdfviewer_macos-34.2.2"),
         .package(name: "url_launcher_macos", path: "../.packages/url_launcher_macos-3.2.5"),
         .package(name: "video_player_avfoundation", path: "../.packages/video_player_avfoundation-2.11.0"),
-        .package(name: "webview_all_wkwebview", path: "../.packages/webview_all_wkwebview-1.3.0"),
+        .package(name: "webview_all_wkwebview", path: "../.packages/webview_all_wkwebview-1.3.5"),
         .package(name: "FlutterFramework", path: "../.packages/FlutterFramework")
     ],
     targets: [
