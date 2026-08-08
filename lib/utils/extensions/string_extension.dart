@@ -13,6 +13,8 @@ extension TextEditingControllerExtension on TextEditingController {
   bool isNullOrEmpty() => text.isEmpty;
 
   bool isNotNullOrEmpty() => text.isNotEmpty;
+
+  String trimmedLatin() => text.toLatinNumber().trim();
 }
 
 extension OptionalStringExtension on String? {
