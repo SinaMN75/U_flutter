@@ -5239,6 +5239,51 @@ class S {
     );
   }
 
+  /// `Scan Receipt`
+  String get scanReceipt {
+    return Intl.message(
+      'Scan Receipt',
+      name: 'scanReceipt',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Scan Plate`
+  String get scanPlate {
+    return Intl.message('Scan Plate', name: 'scanPlate', desc: '', args: []);
+  }
+
+  /// `Position the licence plate inside the frame`
+  String get plateScanHint {
+    return Intl.message(
+      'Position the licence plate inside the frame',
+      name: 'plateScanHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please select a vehicle type`
+  String get selectVehicleType {
+    return Intl.message(
+      'Please select a vehicle type',
+      name: 'selectVehicleType',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter a complete licence plate`
+  String get enterPlate {
+    return Intl.message(
+      'Please enter a complete licence plate',
+      name: 'enterPlate',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Switch Camera`
   String get switchCamera {
     return Intl.message(

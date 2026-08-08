@@ -98,9 +98,10 @@ class _UBarcodeState extends State<UBarcode> {
   void _initializeSymbology() {
     switch (widget.type) {
       case UBarcodeType.qrCode:
+        final bool isAlphaNumeric = RegExp(r"^[0-9A-Z $%*+\-./:]*$").hasMatch(widget.value);
         symbology = QRCode(
           errorCorrectionLevel: widget.errorCorrectionLevel != null ? _mapErrorCorrectionLevel(widget.errorCorrectionLevel!) : ErrorCorrectionLevel.low,
-          inputMode: QRInputMode.alphaNumeric,
+          inputMode: isAlphaNumeric ? QRInputMode.alphaNumeric : QRInputMode.binary,
           codeVersion: widget.qrCodeVersion != null && widget.qrCodeVersion! > 0 && widget.qrCodeVersion! <= 40 ? QRCodeVersion.values[widget.qrCodeVersion! - 1] : QRCodeVersion.auto,
           module: widget.module,
         );

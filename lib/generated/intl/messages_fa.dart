@@ -383,6 +383,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "enterPhoneNumber": MessageLookupByLibrary.simpleMessage(
       "شماره موبایل وارد نمایید",
     ),
+    "enterPlate": MessageLookupByLibrary.simpleMessage(
+      "لطفاً پلاک را کامل وارد کنید",
+    ),
     "enterPrepaidSimCardNumber": MessageLookupByLibrary.simpleMessage(
       "شماره سیم‌کارت اعتباری را وارد کنید",
     ),
@@ -973,6 +976,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "plateHistoryInquiry": MessageLookupByLibrary.simpleMessage(
       "استعلام سوابق پلاک",
     ),
+    "plateScanHint": MessageLookupByLibrary.simpleMessage(
+      "پلاک را داخل کادر قرار دهید",
+    ),
     "plateSpecifications": MessageLookupByLibrary.simpleMessage("مشخصات پلاک"),
     "plateStatus": MessageLookupByLibrary.simpleMessage("وضعیت پلاک"),
     "plateStatusInquiry": MessageLookupByLibrary.simpleMessage(
@@ -1139,6 +1145,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "scanHint": MessageLookupByLibrary.simpleMessage(
       "بارکد را داخل کادر قرار دهید",
     ),
+    "scanPlate": MessageLookupByLibrary.simpleMessage("اسکن پلاک"),
+    "scanReceipt": MessageLookupByLibrary.simpleMessage("اسکن رسید"),
     "scanReceiptHint": MessageLookupByLibrary.simpleMessage(
       "دوربین را روی کد QR رسید بگیرید",
     ),
@@ -1195,6 +1203,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "selectVehicleForViolationInquiry": MessageLookupByLibrary.simpleMessage(
       "خودرو موردنظر را برای استعلام خلافی انتخاب کنید",
+    ),
+    "selectVehicleType": MessageLookupByLibrary.simpleMessage(
+      "لطفاً نوع خودرو را انتخاب کنید",
     ),
     "sendRequest": MessageLookupByLibrary.simpleMessage("ارسال درخواست"),
     "sent": MessageLookupByLibrary.simpleMessage("ارسالی"),

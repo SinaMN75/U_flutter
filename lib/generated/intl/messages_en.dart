@@ -391,6 +391,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "enterPhoneNumber": MessageLookupByLibrary.simpleMessage(
       "Enter phone number",
     ),
+    "enterPlate": MessageLookupByLibrary.simpleMessage(
+      "Please enter a complete licence plate",
+    ),
     "enterPrepaidSimCardNumber": MessageLookupByLibrary.simpleMessage(
       "Enter the prepaid SIM card number",
     ),
@@ -995,6 +998,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "plateHistoryInquiry": MessageLookupByLibrary.simpleMessage(
       "Plate history inquiry",
     ),
+    "plateScanHint": MessageLookupByLibrary.simpleMessage(
+      "Position the licence plate inside the frame",
+    ),
     "plateSpecifications": MessageLookupByLibrary.simpleMessage(
       "Plate specifications",
     ),
@@ -1171,6 +1177,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "scanHint": MessageLookupByLibrary.simpleMessage(
       "Place the barcode inside the frame",
     ),
+    "scanPlate": MessageLookupByLibrary.simpleMessage("Scan Plate"),
+    "scanReceipt": MessageLookupByLibrary.simpleMessage("Scan Receipt"),
     "scanReceiptHint": MessageLookupByLibrary.simpleMessage(
       "Point the camera at a receipt QR code",
     ),
@@ -1227,6 +1235,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "selectVehicleForViolationInquiry": MessageLookupByLibrary.simpleMessage(
       "Select the vehicle for violation inquiry",
+    ),
+    "selectVehicleType": MessageLookupByLibrary.simpleMessage(
+      "Please select a vehicle type",
     ),
     "sendRequest": MessageLookupByLibrary.simpleMessage("Send Request"),
     "sent": MessageLookupByLibrary.simpleMessage("Sent"),
