@@ -364,7 +364,11 @@ enum TagParking with NumericIdentifiable {
 }
 
 enum TagVehicle with NumericIdentifiable {
-  test("تست", "Test", 999);
+  motorcycle("موتورسیکلت", "Motorcycle", 101),
+  car("سواری", "Car", 102),
+  van("ون", "Van", 103),
+  truck("کامیون", "Truck", 104),
+  bus("اتوبوس", "Bus", 105);
 
   const TagVehicle(this.titleFa, this.titleEn, this.number);
 
