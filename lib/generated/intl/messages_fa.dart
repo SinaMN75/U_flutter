@@ -396,6 +396,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "entityOverview": MessageLookupByLibrary.simpleMessage(
       "نمای کلی موجودیت‌ها",
     ),
+    "entranceDate": MessageLookupByLibrary.simpleMessage("تاریخ ورود"),
     "entrancePrice": MessageLookupByLibrary.simpleMessage("هزینه ورود"),
     "error": MessageLookupByLibrary.simpleMessage("خطا"),
     "errorFetchingCategories": MessageLookupByLibrary.simpleMessage(
@@ -600,6 +601,9 @@ class MessageLookup extends MessageLookupByLibrary {
         MessageLookupByLibrary.simpleMessage(
           "بارکد نامعتبر است، لطفاً شناسه‌ها را به صورت دستی وارد کنید",
         ),
+    "invalidReceipt": MessageLookupByLibrary.simpleMessage(
+      "کد QR نامعتبر یا دستکاری‌شده است",
+    ),
     "invoice": MessageLookupByLibrary.simpleMessage("فاکتور"),
     "invoiceMarkedAsPaid": MessageLookupByLibrary.simpleMessage(
       "فاکتور پرداخت شد",
@@ -931,6 +935,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "parentDirectory": MessageLookupByLibrary.simpleMessage("بالا"),
     "parking": MessageLookupByLibrary.simpleMessage("پارکینگ"),
     "parkingManagement": MessageLookupByLibrary.simpleMessage("مدیریت پارکینگ"),
+    "parkingName": MessageLookupByLibrary.simpleMessage("نام پارکینگ"),
     "parkingReport": MessageLookupByLibrary.simpleMessage("گزارش پارکینگ"),
     "parkingReports": MessageLookupByLibrary.simpleMessage("گزارش‌های پارکینگ"),
     "password": MessageLookupByLibrary.simpleMessage("رمز عبور"),
@@ -1015,7 +1020,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "priceNight": MessageLookupByLibrary.simpleMessage("قیمت / شب"),
     "pricePerNight": MessageLookupByLibrary.simpleMessage("قیمت هر شب"),
     "printDate": MessageLookupByLibrary.simpleMessage("تاریخ چاپ"),
+    "printFailed": MessageLookupByLibrary.simpleMessage("چاپ رسید ناموفق بود"),
     "printNumber": MessageLookupByLibrary.simpleMessage("شماره چاپ"),
+    "printReceipt": MessageLookupByLibrary.simpleMessage("چاپ رسید"),
     "privateMemory": MessageLookupByLibrary.simpleMessage("حافظه اختصاصی"),
     "process": MessageLookupByLibrary.simpleMessage("پردازش"),
     "processUptime": MessageLookupByLibrary.simpleMessage("زمان کارکرد سرویس"),
@@ -1061,6 +1068,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "reasonForRejectingVideo": MessageLookupByLibrary.simpleMessage(
       "دلیل رد ویدیو",
     ),
+    "receiptPrinted": MessageLookupByLibrary.simpleMessage(
+      "رسید با موفقیت چاپ شد",
+    ),
+    "receiptTitle": MessageLookupByLibrary.simpleMessage("رسید پارکینگ"),
     "received": MessageLookupByLibrary.simpleMessage("دریافتی"),
     "receiver": MessageLookupByLibrary.simpleMessage("گیرنده"),
     "recentContracts": MessageLookupByLibrary.simpleMessage("قراردادهای اخیر"),
@@ -1128,6 +1139,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "scanHint": MessageLookupByLibrary.simpleMessage(
       "بارکد را داخل کادر قرار دهید",
     ),
+    "scanReceiptHint": MessageLookupByLibrary.simpleMessage(
+      "دوربین را روی کد QR رسید بگیرید",
+    ),
+    "scannedReceipt": MessageLookupByLibrary.simpleMessage("رسید اسکن‌شده"),
     "score": MessageLookupByLibrary.simpleMessage("امتیاز"),
     "scoreOptionScore": MessageLookupByLibrary.simpleMessage(
       "امتیاز: \${option.score}",
@@ -1385,6 +1400,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "وضعیت و سوابق پلاک خودرو",
     ),
     "vehicleServices": MessageLookupByLibrary.simpleMessage("خدمات خودرو"),
+    "vehicleType": MessageLookupByLibrary.simpleMessage("نوع خودرو"),
     "vehicleViolationInquiry": MessageLookupByLibrary.simpleMessage(
       "استعلام خلافی خودرو",
     ),

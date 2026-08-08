@@ -402,6 +402,7 @@ class MessageLookup extends MessageLookupByLibrary {
           "Enter your postal code correctly and inquire.",
         ),
     "entityOverview": MessageLookupByLibrary.simpleMessage("Entity Overview"),
+    "entranceDate": MessageLookupByLibrary.simpleMessage("Entrance Date"),
     "entrancePrice": MessageLookupByLibrary.simpleMessage("Entrance Price"),
     "error": MessageLookupByLibrary.simpleMessage("Error"),
     "errorFetchingCategories": MessageLookupByLibrary.simpleMessage(
@@ -612,6 +613,9 @@ class MessageLookup extends MessageLookupByLibrary {
         MessageLookupByLibrary.simpleMessage(
           "Invalid barcode, please enter the IDs manually",
         ),
+    "invalidReceipt": MessageLookupByLibrary.simpleMessage(
+      "Invalid or tampered QR code",
+    ),
     "invoice": MessageLookupByLibrary.simpleMessage("Invoice"),
     "invoiceMarkedAsPaid": MessageLookupByLibrary.simpleMessage(
       "Invoice marked as paid",
@@ -953,6 +957,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "parkingManagement": MessageLookupByLibrary.simpleMessage(
       "Parking Management",
     ),
+    "parkingName": MessageLookupByLibrary.simpleMessage("Parking Name"),
     "parkingReport": MessageLookupByLibrary.simpleMessage("Parking Report"),
     "parkingReports": MessageLookupByLibrary.simpleMessage("Parking Reports"),
     "password": MessageLookupByLibrary.simpleMessage("Password"),
@@ -1041,7 +1046,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "priceNight": MessageLookupByLibrary.simpleMessage("Price / Night"),
     "pricePerNight": MessageLookupByLibrary.simpleMessage("Price per Night"),
     "printDate": MessageLookupByLibrary.simpleMessage("Print date"),
+    "printFailed": MessageLookupByLibrary.simpleMessage("Printing failed"),
     "printNumber": MessageLookupByLibrary.simpleMessage("Print number"),
+    "printReceipt": MessageLookupByLibrary.simpleMessage("Print Receipt"),
     "privateMemory": MessageLookupByLibrary.simpleMessage("Private Memory"),
     "process": MessageLookupByLibrary.simpleMessage("Process"),
     "processUptime": MessageLookupByLibrary.simpleMessage("Process Uptime"),
@@ -1089,6 +1096,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "reasonForRejectingVideo": MessageLookupByLibrary.simpleMessage(
       "Reason for rejecting Video",
     ),
+    "receiptPrinted": MessageLookupByLibrary.simpleMessage(
+      "Receipt printed successfully",
+    ),
+    "receiptTitle": MessageLookupByLibrary.simpleMessage("Parking Receipt"),
     "received": MessageLookupByLibrary.simpleMessage("Received"),
     "receiver": MessageLookupByLibrary.simpleMessage("Receiver"),
     "recentContracts": MessageLookupByLibrary.simpleMessage("Recent Contracts"),
@@ -1160,6 +1171,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "scanHint": MessageLookupByLibrary.simpleMessage(
       "Place the barcode inside the frame",
     ),
+    "scanReceiptHint": MessageLookupByLibrary.simpleMessage(
+      "Point the camera at a receipt QR code",
+    ),
+    "scannedReceipt": MessageLookupByLibrary.simpleMessage("Scanned Receipt"),
     "score": MessageLookupByLibrary.simpleMessage("Score"),
     "scoreOptionScore": MessageLookupByLibrary.simpleMessage(
       "Score: \${option.score}",
@@ -1419,6 +1434,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Vehicle plate status and history",
     ),
     "vehicleServices": MessageLookupByLibrary.simpleMessage("Vehicle services"),
+    "vehicleType": MessageLookupByLibrary.simpleMessage("Vehicle Type"),
     "vehicleViolationInquiry": MessageLookupByLibrary.simpleMessage(
       "Vehicle violation inquiry",
     ),

@@ -5139,6 +5139,106 @@ class S {
     );
   }
 
+  /// `Print Receipt`
+  String get printReceipt {
+    return Intl.message(
+      'Print Receipt',
+      name: 'printReceipt',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Vehicle Type`
+  String get vehicleType {
+    return Intl.message(
+      'Vehicle Type',
+      name: 'vehicleType',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Entrance Date`
+  String get entranceDate {
+    return Intl.message(
+      'Entrance Date',
+      name: 'entranceDate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Parking Name`
+  String get parkingName {
+    return Intl.message(
+      'Parking Name',
+      name: 'parkingName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Parking Receipt`
+  String get receiptTitle {
+    return Intl.message(
+      'Parking Receipt',
+      name: 'receiptTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Receipt printed successfully`
+  String get receiptPrinted {
+    return Intl.message(
+      'Receipt printed successfully',
+      name: 'receiptPrinted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Printing failed`
+  String get printFailed {
+    return Intl.message(
+      'Printing failed',
+      name: 'printFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Scanned Receipt`
+  String get scannedReceipt {
+    return Intl.message(
+      'Scanned Receipt',
+      name: 'scannedReceipt',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid or tampered QR code`
+  String get invalidReceipt {
+    return Intl.message(
+      'Invalid or tampered QR code',
+      name: 'invalidReceipt',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Point the camera at a receipt QR code`
+  String get scanReceiptHint {
+    return Intl.message(
+      'Point the camera at a receipt QR code',
+      name: 'scanReceiptHint',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Switch Camera`
   String get switchCamera {
     return Intl.message(
