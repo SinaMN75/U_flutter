@@ -84,6 +84,8 @@ class UAdminDormRoomController extends UBaseController {
     await UServices.hotel.readDorms(
       p: UDormReadParams(title: query, pageSize: 100, pageNumber: 1),
       onOk: (UResponse<List<UDormResponse>> r) => result.addAll(r.result ?? <UDormResponse>[]),
+      onError: (UEmptyResponse e) {},
+      onException: (String e) {},
     );
     return result;
   }

@@ -3,9 +3,9 @@ part of "../data.dart";
 class AuthService {
   Future<(UResponse<ULoginResponse>?, UEmptyResponse?, String?)> register({
     required final URegisterParams p,
-    final Function(UResponse<ULoginResponse> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<ULoginResponse> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<ULoginResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -35,9 +35,9 @@ class AuthService {
 
   Future<(UResponse<ULoginResponse>?, UEmptyResponse?, String?)> login({
     required final ULoginParams p,
-    final Function(UResponse<ULoginResponse> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<ULoginResponse> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<ULoginResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -67,9 +67,9 @@ class AuthService {
 
   Future<(UResponse<ULoginResponse>?, UEmptyResponse?, String?)> refreshToken({
     required final URefreshTokenParams p,
-    final Function(UResponse<ULoginResponse> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<ULoginResponse> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<ULoginResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -99,9 +99,9 @@ class AuthService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> getVerificationCodeForLogin({
     required final UGetMobileVerificationCodeForLoginParams p,
-    final Function(UEmptyResponse r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -128,9 +128,9 @@ class AuthService {
 
   Future<(UResponse<ULoginResponse>?, UEmptyResponse?, String?)> verifyCodeForLogin({
     required final UVerifyMobileForLoginParams p,
-    final Function(UResponse<ULoginResponse> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<ULoginResponse> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<ULoginResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -160,9 +160,9 @@ class AuthService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> completeProfile({
     required final UAuthCompleteProfileParams p,
-    final Function(UEmptyResponse r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -189,9 +189,9 @@ class AuthService {
 
   Future<(UResponse<ULoginResponse>?, UEmptyResponse?, String?)> loginOrRegister({
     required final URegisterParams p,
-    final Function(UResponse<ULoginResponse> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<ULoginResponse> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<ULoginResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(

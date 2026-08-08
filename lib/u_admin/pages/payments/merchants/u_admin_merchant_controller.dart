@@ -118,6 +118,8 @@ class UAdminMerchantController extends UBaseController {
     await UServices.user.read(
       p: UUserReadParams(query: query, pageSize: 100, pageNumber: 1),
       onOk: (UResponse<List<UUserResponse>> r) => result.addAll(r.result ?? <UUserResponse>[]),
+      onError: (UEmptyResponse e) {},
+      onException: (String e) {},
     );
     return result;
   }

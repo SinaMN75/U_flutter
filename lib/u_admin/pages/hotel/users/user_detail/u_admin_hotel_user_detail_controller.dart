@@ -24,6 +24,7 @@ class UAdminHotelUserDetailController {
       },
       onError: (UEmptyResponse r) {},
       onException: (String e) {},
+      onProgress: (int e) {},
     );
     await UServices.hotel.readDormBedContract(
       p: UDormBedContractReadParams(

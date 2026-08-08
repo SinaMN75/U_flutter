@@ -3,9 +3,9 @@ part of "../data.dart";
 class CategoryService {
   Future<(UResponse<String>?, UEmptyResponse?, String?)> create({
     required final UCategoryCreateParams p,
-    final Function(UResponse<String> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<String> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<String>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -32,9 +32,9 @@ class CategoryService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> bulkCreate({
     required final List<UCategoryCreateParams> p,
-    final Function(UEmptyResponse r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -61,9 +61,9 @@ class CategoryService {
 
   Future<(UResponse<List<UCategoryResponse>>?, UEmptyResponse?, String?)> read({
     required final UCategoryReadParams p,
-    final Function(UResponse<List<UCategoryResponse>> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<List<UCategoryResponse>> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<List<UCategoryResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -93,9 +93,9 @@ class CategoryService {
 
   Future<(UResponse<UCategoryResponse>?, UEmptyResponse?, String?)> readById({
     required final UIdParams p,
-    final Function(UResponse<UCategoryResponse> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<UCategoryResponse> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<UCategoryResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -122,9 +122,9 @@ class CategoryService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> update({
     required final UCategoryUpdateParams p,
-    final Function(UEmptyResponse r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -151,9 +151,9 @@ class CategoryService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> delete({
     required final UIdParams p,
-    final Function(UEmptyResponse r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(

@@ -3,9 +3,9 @@ part of "../data.dart";
 class UserService {
   Future<(UResponse<String>?, UEmptyResponse?, String?)> create({
     required final UUserCreateParams p,
-    final Function(UResponse<String> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<String> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<String>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -32,9 +32,9 @@ class UserService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> bulkCreate({
     required final UUserBulkCreateParams p,
-    final Function(UEmptyResponse r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -61,9 +61,9 @@ class UserService {
 
   Future<(UResponse<List<UUserResponse>>?, UEmptyResponse?, String?)> read({
     required final UUserReadParams p,
-    final Function(UResponse<List<UUserResponse>> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<List<UUserResponse>> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<List<UUserResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -93,10 +93,10 @@ class UserService {
 
   Future<(UResponse<UUserResponse>?, UEmptyResponse?, String?)> readById({
     required final UIdParams p,
-    final Function(UResponse<UUserResponse> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
-    final Function(int e)? onProgress,
+    required Function(UResponse<UUserResponse> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
+    required Function(int e)? onProgress,
   }) async {
     (UResponse<UUserResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -124,9 +124,9 @@ class UserService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> update({
     required final UUserUpdateParams p,
-    final Function(UEmptyResponse r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -153,9 +153,9 @@ class UserService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> delete({
     required final UIdParams p,
-    final Function(UEmptyResponse r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -182,9 +182,9 @@ class UserService {
 
   Future<(UResponse<String>?, UEmptyResponse?, String?)> downloadUserData({
     required final UIdParams p,
-    final Function(UResponse<String> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<String> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<String>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(

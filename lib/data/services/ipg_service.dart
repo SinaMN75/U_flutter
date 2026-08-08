@@ -3,9 +3,9 @@ part of "../data.dart";
 class IpgService {
   Future<(UResponse<UIpgPayResponse>?, UEmptyResponse?, String?)> pay({
     required final UIpgSaleParams p,
-    final Function(UResponse<UIpgPayResponse> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<UIpgPayResponse> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<UIpgPayResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -33,9 +33,9 @@ class IpgService {
   // Polls the outcome of a started payment by tracking number. The backend already did the work; this only reads the result.
   Future<(UResponse<UIpgVerifyResponse>?, UEmptyResponse?, String?)> status({
     required final UIpgVerifyParams p,
-    final Function(UResponse<UIpgVerifyResponse> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<UIpgVerifyResponse> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<UIpgVerifyResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(

@@ -104,6 +104,8 @@ class UAdminParkingController extends UBaseController {
     await UServices.user.read(
       p: UUserReadParams(query: query.nullIfEmpty(), pageSize: 100, pageNumber: 1),
       onOk: (UResponse<List<UUserResponse>> r) => result.addAll(r.result ?? <UUserResponse>[]),
+      onError: (UEmptyResponse e) {},
+      onException: (String e) {},
     );
     return result;
   }
@@ -115,6 +117,7 @@ class UAdminParkingController extends UBaseController {
       onOk: (UResponse<UUserResponse> r) => completer.complete(r.result),
       onError: (_) => completer.complete(null),
       onException: (_) => completer.complete(null),
+      onProgress: (int e) {},
     );
     return completer.future;
   }

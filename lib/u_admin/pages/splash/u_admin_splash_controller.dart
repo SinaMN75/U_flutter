@@ -18,6 +18,7 @@ class UAdminSplashController extends UBaseController {
         },
         onError: (final UEmptyResponse r) => onError.call,
         onException: (String e) => onError.call,
+        onProgress: (int e) {},
       );
     }
   }

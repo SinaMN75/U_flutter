@@ -266,6 +266,7 @@ class UAdminHotelAdminSearchHelper {
       onOk: (UResponse<UUserResponse> r) => completer.complete(r.result),
       onError: (_) => completer.complete(null),
       onException: (_) => completer.complete(null),
+      onProgress: (int e) {},
     );
     return completer.future;
   }

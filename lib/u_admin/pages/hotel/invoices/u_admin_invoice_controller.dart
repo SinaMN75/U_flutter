@@ -145,6 +145,8 @@ class UAdminInvoiceController extends UBaseController {
         selectorArgs: const ContractSelectorArgs(user: UserSelectorArgs(), bed: DormBedSelectorArgs()),
       ),
       onOk: (UResponse<List<UDormBedContractResponse>> r) => result.addAll(r.result ?? <UDormBedContractResponse>[]),
+      onError: (UResponse<dynamic> e) {},
+      onException: (String e) {},
     );
     return result;
   }

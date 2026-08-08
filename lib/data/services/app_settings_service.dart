@@ -3,9 +3,9 @@ part of "../data.dart";
 class AppSettingsService {
   Future<(UResponse<UAppSettingsResponse>?, UEmptyResponse?, String?)> read({
     required final UAppSettingsReadParams p,
-    final Function(UResponse<UAppSettingsResponse> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<UAppSettingsResponse> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<UAppSettingsResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -32,9 +32,9 @@ class AppSettingsService {
 
   // Full config for the SystemAdmin editor (secrets masked).
   Future<(UResponse<UAppSettings>?, UEmptyResponse?, String?)> readAll({
-    required final Function(UResponse<UAppSettings> r) onOk,
-    required final Function(UEmptyResponse e) onError,
-    required final Function(String e) onException,
+    required Function(UResponse<UAppSettings> r) onOk,
+    required Function(UEmptyResponse e) onError,
+    required Function(String e) onException,
   }) async {
     (UResponse<UAppSettings>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -62,9 +62,9 @@ class AppSettingsService {
   // Applies edits live to Core.App on the server (in-memory only).
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> update({
     required final UAppSettingsUpdateParams p,
-    required final Function(UEmptyResponse r) onOk,
-    required final Function(UEmptyResponse e) onError,
-    required final Function(String e) onException,
+    required Function(UEmptyResponse r) onOk,
+    required Function(UEmptyResponse e) onError,
+    required Function(String e) onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(

@@ -83,6 +83,8 @@ class UAdminHotelRoomController extends UBaseController {
     await UServices.hotel.readHotels(
       p: UHotelReadParams(title: query, pageSize: 100, pageNumber: 1),
       onOk: (UResponse<List<UHotelResponse>> r) => result.addAll(r.result ?? <UHotelResponse>[]),
+      onError: (UEmptyResponse e) {},
+      onException: (String e) {},
     );
     return result;
   }

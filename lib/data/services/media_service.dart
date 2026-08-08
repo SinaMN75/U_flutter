@@ -3,9 +3,9 @@ part of "../data.dart";
 class MediaService {
   Future<(UResponse<String>?, UEmptyResponse?, String?)> create({
     required final UMediaCreateParams p,
-    required final Function(UResponse<String> r)? onOk,
-    required final Function(UEmptyResponse e) onError,
-    required final Function(String e) onException,
+    required Function(UResponse<String> r)? onOk,
+    required Function(UEmptyResponse e) onError,
+    required Function(String e) onException,
   }) async {
     (UResponse<String>?, UEmptyResponse?, String?) result = (null, null, null);
     final List<MultipartFile> files = <MultipartFile>[
@@ -38,9 +38,9 @@ class MediaService {
 
   Future<(UResponse<List<UMediaResponse>>?, UEmptyResponse?, String?)> read({
     required final UMediaReadParams p,
-    required final Function(UResponse<List<UMediaResponse>> r) onOk,
-    required final Function(UEmptyResponse e) onError,
-    required final Function(String e) onException,
+    required Function(UResponse<List<UMediaResponse>> r) onOk,
+    required Function(UEmptyResponse e) onError,
+    required Function(String e) onException,
   }) async {
     (UResponse<List<UMediaResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -70,9 +70,9 @@ class MediaService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> update({
     required final UMediaUpdateParams p,
-    required final Function(UEmptyResponse r) onOk,
-    required final Function(UEmptyResponse e) onError,
-    required final Function(String e) onException,
+    required Function(UEmptyResponse r) onOk,
+    required Function(UEmptyResponse e) onError,
+    required Function(String e) onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -99,9 +99,9 @@ class MediaService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> delete({
     required final UIdParams p,
-    required final Function(UEmptyResponse r) onOk,
-    required final Function(UEmptyResponse e) onError,
-    required final Function(String e) onException,
+    required Function(UEmptyResponse r) onOk,
+    required Function(UEmptyResponse e) onError,
+    required Function(String e) onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -128,9 +128,9 @@ class MediaService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteRange({
     required final UIdListParams p,
-    final Function(UEmptyResponse r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(

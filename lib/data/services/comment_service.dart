@@ -3,9 +3,9 @@ part of "../data.dart";
 class CommentService {
   Future<(UResponse<String>?, UEmptyResponse?, String?)> create({
     required final UCommentCreateParams p,
-    final Function(UResponse<String> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<String> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<String>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -32,9 +32,9 @@ class CommentService {
 
   Future<(UResponse<List<UCommentResponse>>?, UEmptyResponse?, String?)> read({
     required final UCommentReadParams p,
-    final Function(UResponse<List<UCommentResponse>> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<List<UCommentResponse>> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<List<UCommentResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -64,9 +64,9 @@ class CommentService {
 
   Future<(UResponse<UCommentResponse>?, UEmptyResponse?, String?)> readById({
     required final UIdParams p,
-    final Function(UResponse<UCommentResponse> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<UCommentResponse> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<UCommentResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -93,9 +93,9 @@ class CommentService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> update({
     required final UCommentUpdateParams p,
-    final Function(UEmptyResponse r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -122,9 +122,9 @@ class CommentService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> delete({
     required final UIdParams p,
-    final Function(UEmptyResponse r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -151,9 +151,9 @@ class CommentService {
 
   Future<(UResponse<int>?, UEmptyResponse?, String?)> readProductCommentCount({
     required final UIdParams p,
-    final Function(UResponse<int> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<int> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<int>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -180,9 +180,9 @@ class CommentService {
 
   Future<(UResponse<int>?, UEmptyResponse?, String?)> readUserCommentCount({
     required final UIdParams p,
-    final Function(UResponse<int> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<int> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<int>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(

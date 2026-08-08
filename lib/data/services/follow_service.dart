@@ -3,9 +3,9 @@ part of "../data.dart";
 class FollowService {
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> follow({
     required final UFollowParams p,
-    final Function(UEmptyResponse r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -32,9 +32,9 @@ class FollowService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> unfollow({
     required final UFollowParams p,
-    final Function(UEmptyResponse r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -61,9 +61,9 @@ class FollowService {
 
   Future<(UResponse<List<UUserResponse>>?, UEmptyResponse?, String?)> readFollowers({
     required final UIdParams p,
-    final Function(UResponse<List<UUserResponse>> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<List<UUserResponse>> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<List<UUserResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -93,9 +93,9 @@ class FollowService {
 
   Future<(UResponse<List<UUserResponse>>?, UEmptyResponse?, String?)> readFollowedUsers({
     required final UIdParams p,
-    final Function(UResponse<List<UUserResponse>> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<List<UUserResponse>> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<List<UUserResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -125,9 +125,9 @@ class FollowService {
 
   Future<(UResponse<List<UProductResponse>>?, UEmptyResponse?, String?)> readFollowedProducts({
     required final UIdParams p,
-    final Function(UResponse<List<UProductResponse>> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<List<UProductResponse>> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<List<UProductResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -157,9 +157,9 @@ class FollowService {
 
   Future<(UResponse<List<UCategoryResponse>>?, UEmptyResponse?, String?)> readFollowedCategories({
     required final UIdParams p,
-    final Function(UResponse<List<UCategoryResponse>> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<List<UCategoryResponse>> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<List<UCategoryResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -189,9 +189,9 @@ class FollowService {
 
   Future<(UResponse<UFollowerFollowingCountResponse>?, UEmptyResponse?, String?)> readFollowerFollowingCount({
     required final UIdParams p,
-    final Function(UResponse<UFollowerFollowingCountResponse> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<UFollowerFollowingCountResponse> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<UFollowerFollowingCountResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -218,9 +218,9 @@ class FollowService {
 
   Future<(UResponse<bool>?, UEmptyResponse?, String?)> isFollowingUser({
     required final UFollowParams p,
-    final Function(UResponse<bool> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<bool> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<bool>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -247,9 +247,9 @@ class FollowService {
 
   Future<(UResponse<bool>?, UEmptyResponse?, String?)> isFollowingProduct({
     required final UFollowParams p,
-    final Function(UResponse<bool> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<bool> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<bool>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -276,9 +276,9 @@ class FollowService {
 
   Future<(UResponse<bool>?, UEmptyResponse?, String?)> isFollowingCategory({
     required final UFollowParams p,
-    final Function(UResponse<bool> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<bool> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<bool>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(

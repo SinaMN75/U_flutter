@@ -1,12 +1,11 @@
 part of "../data.dart";
 
-// Client for the SystemAdmin-only wwwroot file manager. Every path is relative to wwwroot.
 class FileManagerService {
   Future<(UResponse<UFileManagerListResponse>?, UEmptyResponse?, String?)> browse({
     required final UFileManagerBrowseParams p,
-    required final Function(UResponse<UFileManagerListResponse> r) onOk,
-    required final Function(UEmptyResponse e) onError,
-    required final Function(String e) onException,
+    required Function(UResponse<UFileManagerListResponse> r) onOk,
+    required Function(UEmptyResponse e) onError,
+    required Function(String e) onException,
   }) async {
     (UResponse<UFileManagerListResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -33,37 +32,37 @@ class FileManagerService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> createFolder({
     required final UFileManagerCreateFolderParams p,
-    required final Function(UEmptyResponse r) onOk,
-    required final Function(UEmptyResponse e) onError,
-    required final Function(String e) onException,
+    required Function(UEmptyResponse r) onOk,
+    required Function(UEmptyResponse e) onError,
+    required Function(String e) onException,
   }) => _mutate("CreateFolder", p.toMap(), onOk, onError, onException);
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> rename({
     required final UFileManagerRenameParams p,
-    required final Function(UEmptyResponse r) onOk,
-    required final Function(UEmptyResponse e) onError,
-    required final Function(String e) onException,
+    required Function(UEmptyResponse r) onOk,
+    required Function(UEmptyResponse e) onError,
+    required Function(String e) onException,
   }) => _mutate("Rename", p.toMap(), onOk, onError, onException);
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> move({
     required final UFileManagerMoveParams p,
-    required final Function(UEmptyResponse r) onOk,
-    required final Function(UEmptyResponse e) onError,
-    required final Function(String e) onException,
+    required Function(UEmptyResponse r) onOk,
+    required Function(UEmptyResponse e) onError,
+    required Function(String e) onException,
   }) => _mutate("Move", p.toMap(), onOk, onError, onException);
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> delete({
     required final UFileManagerDeleteParams p,
-    required final Function(UEmptyResponse r) onOk,
-    required final Function(UEmptyResponse e) onError,
-    required final Function(String e) onException,
+    required Function(UEmptyResponse r) onOk,
+    required Function(UEmptyResponse e) onError,
+    required Function(String e) onException,
   }) => _mutate("Delete", p.toMap(), onOk, onError, onException);
 
   Future<(UResponse<String>?, UEmptyResponse?, String?)> upload({
     required final UFileManagerUploadParams p,
-    required final Function(UResponse<String> r) onOk,
-    required final Function(UEmptyResponse e) onError,
-    required final Function(String e) onException,
+    required Function(UResponse<String> r) onOk,
+    required Function(UEmptyResponse e) onError,
+    required Function(String e) onException,
   }) async {
     (UResponse<String>?, UEmptyResponse?, String?) result = (null, null, null);
     final List<MultipartFile> files = <MultipartFile>[
@@ -100,8 +99,8 @@ class FileManagerService {
   // Fetches raw file contents (for inline text/json/code previews).
   Future<void> fetchText({
     required final String url,
-    required final Function(String content) onOk,
-    required final Function(String e) onException,
+    required Function(String content) onOk,
+    required Function(String e) onException,
   }) async {
     await UHttpClient.send(
       method: "GET",
@@ -115,9 +114,9 @@ class FileManagerService {
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> _mutate(
     final String path,
     final Map<String, dynamic> body,
-    final Function(UEmptyResponse r) onOk,
-    final Function(UEmptyResponse e) onError,
-    final Function(String e) onException,
+    Function(UEmptyResponse r) onOk,
+    Function(UEmptyResponse e) onError,
+    Function(String e) onException,
   ) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(

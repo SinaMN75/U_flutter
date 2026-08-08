@@ -5,9 +5,9 @@ part of "../data.dart";
 class DbAdminService {
   Future<(UResponse<List<UDbTableResponse>>?, UEmptyResponse?, String?)> tables({
     required final UDbAdminTablesParams p,
-    required final Function(UResponse<List<UDbTableResponse>> r) onOk,
-    required final Function(UEmptyResponse e) onError,
-    required final Function(String e) onException,
+    required Function(UResponse<List<UDbTableResponse>> r) onOk,
+    required Function(UEmptyResponse e) onError,
+    required Function(String e) onException,
   }) async {
     (UResponse<List<UDbTableResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -37,9 +37,9 @@ class DbAdminService {
 
   Future<(UResponse<UDbTableSchemaResponse>?, UEmptyResponse?, String?)> schema({
     required final UDbAdminSchemaParams p,
-    required final Function(UResponse<UDbTableSchemaResponse> r) onOk,
-    required final Function(UEmptyResponse e) onError,
-    required final Function(String e) onException,
+    required Function(UResponse<UDbTableSchemaResponse> r) onOk,
+    required Function(UEmptyResponse e) onError,
+    required Function(String e) onException,
   }) async {
     (UResponse<UDbTableSchemaResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -66,37 +66,37 @@ class DbAdminService {
 
   Future<(UResponse<UDbQueryResultResponse>?, UEmptyResponse?, String?)> rows({
     required final UDbAdminRowsParams p,
-    required final Function(UResponse<UDbQueryResultResponse> r) onOk,
-    required final Function(UEmptyResponse e) onError,
-    required final Function(String e) onException,
+    required Function(UResponse<UDbQueryResultResponse> r) onOk,
+    required Function(UEmptyResponse e) onError,
+    required Function(String e) onException,
   }) => _query("Rows", p.toMap(), onOk, onError, onException);
 
   Future<(UResponse<UDbQueryResultResponse>?, UEmptyResponse?, String?)> query({
     required final UDbAdminQueryParams p,
-    required final Function(UResponse<UDbQueryResultResponse> r) onOk,
-    required final Function(UEmptyResponse e) onError,
-    required final Function(String e) onException,
+    required Function(UResponse<UDbQueryResultResponse> r) onOk,
+    required Function(UEmptyResponse e) onError,
+    required Function(String e) onException,
   }) => _query("Query", p.toMap(), onOk, onError, onException);
 
   Future<(UResponse<UDbQueryResultResponse>?, UEmptyResponse?, String?)> updateRow({
     required final UDbAdminUpdateRowParams p,
-    required final Function(UResponse<UDbQueryResultResponse> r) onOk,
-    required final Function(UEmptyResponse e) onError,
-    required final Function(String e) onException,
+    required Function(UResponse<UDbQueryResultResponse> r) onOk,
+    required Function(UEmptyResponse e) onError,
+    required Function(String e) onException,
   }) => _query("UpdateRow", p.toMap(), onOk, onError, onException);
 
   Future<(UResponse<UDbQueryResultResponse>?, UEmptyResponse?, String?)> insertRow({
     required final UDbAdminInsertRowParams p,
-    required final Function(UResponse<UDbQueryResultResponse> r) onOk,
-    required final Function(UEmptyResponse e) onError,
-    required final Function(String e) onException,
+    required Function(UResponse<UDbQueryResultResponse> r) onOk,
+    required Function(UEmptyResponse e) onError,
+    required Function(String e) onException,
   }) => _query("InsertRow", p.toMap(), onOk, onError, onException);
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteRow({
     required final UDbAdminDeleteRowParams p,
-    required final Function(UEmptyResponse r) onOk,
-    required final Function(UEmptyResponse e) onError,
-    required final Function(String e) onException,
+    required Function(UEmptyResponse r) onOk,
+    required Function(UEmptyResponse e) onError,
+    required Function(String e) onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -123,8 +123,8 @@ class DbAdminService {
 
   // Applies all pending EF Core migrations via the DataSeeder/Migrate endpoint (auth is the apiKey query param).
   Future<void> migrate({
-    required final Function(List<String> applied) onOk,
-    required final Function(String e) onError,
+    required Function(List<String> applied) onOk,
+    required Function(String e) onError,
   }) async {
     await UHttpClient.send(
       method: "GET",

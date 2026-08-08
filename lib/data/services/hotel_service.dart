@@ -5,9 +5,9 @@ class HotelService {
 
   Future<(UResponse<String>?, UEmptyResponse?, String?)> createHotel({
     required final UHotelCreateParams p,
-    final Function(UResponse<String> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<String> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<String>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -34,9 +34,9 @@ class HotelService {
 
   Future<(UResponse<List<UHotelResponse>>?, UEmptyResponse?, String?)> readHotels({
     required final UHotelReadParams p,
-    final Function(UResponse<List<UHotelResponse>> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<List<UHotelResponse>> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<List<UHotelResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -66,9 +66,9 @@ class HotelService {
 
   Future<(UResponse<UHotelResponse>?, UEmptyResponse?, String?)> readHotelById({
     required final UIdParams p,
-    final Function(UResponse<UHotelResponse> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<UHotelResponse> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<UHotelResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -95,9 +95,9 @@ class HotelService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> updateHotel({
     required final UHotelUpdateParams p,
-    final Function(UEmptyResponse r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -124,9 +124,9 @@ class HotelService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteHotel({
     required final UIdParams p,
-    final Function(UEmptyResponse r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -155,9 +155,9 @@ class HotelService {
 
   Future<(UResponse<String>?, UEmptyResponse?, String?)> createHotelRoom({
     required final UHotelRoomCreateParams p,
-    final Function(UResponse<String> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<String> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<String>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -184,9 +184,9 @@ class HotelService {
 
   Future<(UResponse<List<UHotelRoomResponse>>?, UEmptyResponse?, String?)> readHotelRooms({
     required final UHotelRoomReadParams p,
-    final Function(UResponse<List<UHotelRoomResponse>> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<List<UHotelRoomResponse>> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<List<UHotelRoomResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -216,9 +216,9 @@ class HotelService {
 
   Future<(UResponse<UHotelRoomResponse>?, UEmptyResponse?, String?)> readHotelRoomById({
     required final UIdParams p,
-    final Function(UResponse<UHotelRoomResponse> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<UHotelRoomResponse> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<UHotelRoomResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -245,9 +245,9 @@ class HotelService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> updateHotelRoom({
     required final UHotelRoomUpdateParams p,
-    final Function(UEmptyResponse r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -274,9 +274,9 @@ class HotelService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteHotelRoom({
     required final UIdParams p,
-    final Function(UEmptyResponse r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -305,9 +305,9 @@ class HotelService {
 
   Future<(UResponse<String>?, UEmptyResponse?, String?)> createDorm({
     required final UDormCreateParams p,
-    final Function(UResponse<String> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<String> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<String>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -334,9 +334,9 @@ class HotelService {
 
   Future<(UResponse<List<UDormResponse>>?, UEmptyResponse?, String?)> readDorms({
     required final UDormReadParams p,
-    final Function(UResponse<List<UDormResponse>> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<List<UDormResponse>> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<List<UDormResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -366,9 +366,9 @@ class HotelService {
 
   Future<(UResponse<UDormResponse>?, UEmptyResponse?, String?)> readDormById({
     required final UIdParams p,
-    final Function(UResponse<UDormResponse> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<UDormResponse> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<UDormResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -395,9 +395,9 @@ class HotelService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> updateDorm({
     required final UDormUpdateParams p,
-    final Function(UEmptyResponse r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -424,9 +424,9 @@ class HotelService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteDorm({
     required final UIdParams p,
-    final Function(UEmptyResponse r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -455,9 +455,9 @@ class HotelService {
 
   Future<(UResponse<String>?, UEmptyResponse?, String?)> createDormRoom({
     required final UDormRoomCreateParams p,
-    final Function(UResponse<String> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<String> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<String>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -484,9 +484,9 @@ class HotelService {
 
   Future<(UResponse<List<UDormRoomResponse>>?, UEmptyResponse?, String?)> readDormRooms({
     required final UDormRoomReadParams p,
-    final Function(UResponse<List<UDormRoomResponse>> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<List<UDormRoomResponse>> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<List<UDormRoomResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -516,9 +516,9 @@ class HotelService {
 
   Future<(UResponse<UDormRoomResponse>?, UEmptyResponse?, String?)> readDormRoomById({
     required final UIdParams p,
-    final Function(UResponse<UDormRoomResponse> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<UDormRoomResponse> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<UDormRoomResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -545,9 +545,9 @@ class HotelService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> updateDormRoom({
     required final UDormRoomUpdateParams p,
-    final Function(UEmptyResponse r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -574,9 +574,9 @@ class HotelService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteDormRoom({
     required final UIdParams p,
-    final Function(UEmptyResponse r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -605,9 +605,9 @@ class HotelService {
 
   Future<(UResponse<String>?, UEmptyResponse?, String?)> createDormBed({
     required final UDormBedCreateParams p,
-    final Function(UResponse<String> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<String> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<String>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -634,9 +634,9 @@ class HotelService {
 
   Future<(UResponse<List<UDormBedResponse>>?, UEmptyResponse?, String?)> readDormBeds({
     required final UDormBedReadParams p,
-    final Function(UResponse<List<UDormBedResponse>> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<List<UDormBedResponse>> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<List<UDormBedResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -666,9 +666,9 @@ class HotelService {
 
   Future<(UResponse<UDormBedResponse>?, UEmptyResponse?, String?)> readDormBedById({
     required final UIdParams p,
-    final Function(UResponse<UDormBedResponse> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<UDormBedResponse> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<UDormBedResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -695,9 +695,9 @@ class HotelService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> updateDormBed({
     required final UDormBedUpdateParams p,
-    final Function(UEmptyResponse r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -724,9 +724,9 @@ class HotelService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteDormBed({
     required final UIdParams p,
-    final Function(UEmptyResponse r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -753,9 +753,9 @@ class HotelService {
 
   Future<(UResponse<String>?, UResponse<dynamic>?, String?)> createDormBedContract({
     required final UDormBedContractCreateParams p,
-    final Function(UResponse<String> r)? onOk,
-    final Function(UResponse<dynamic> e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<String> r)? onOk,
+    required Function(UResponse<dynamic> e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<String>?, UResponse<dynamic>?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -782,9 +782,9 @@ class HotelService {
 
   Future<(UResponse<List<UDormBedContractResponse>>?, UResponse<dynamic>?, String?)> readDormBedContract({
     required final UDormBedContractReadParams p,
-    final Function(UResponse<List<UDormBedContractResponse>> r)? onOk,
-    final Function(UResponse<dynamic> e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<List<UDormBedContractResponse>> r)? onOk,
+    required Function(UResponse<dynamic> e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<List<UDormBedContractResponse>>?, UResponse<dynamic>?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -814,9 +814,9 @@ class HotelService {
 
   Future<(UResponse<UDormBedContractResponse>?, UResponse<dynamic>?, String?)> updateDormBedContract({
     required final UDormBedContractUpdateParams p,
-    final Function(UResponse<UDormBedContractResponse> r)? onOk,
-    final Function(UResponse<dynamic> e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<UDormBedContractResponse> r)? onOk,
+    required Function(UResponse<dynamic> e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<UDormBedContractResponse>?, UResponse<dynamic>?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -843,9 +843,9 @@ class HotelService {
 
   Future<(UResponse<dynamic>?, UResponse<dynamic>?, String?)> deleteDormBedContract({
     required final UIdParams p,
-    final Function(UResponse<dynamic> r)? onOk,
-    final Function(UResponse<dynamic> e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<dynamic> r)? onOk,
+    required Function(UResponse<dynamic> e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<dynamic>?, UResponse<dynamic>?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -872,9 +872,9 @@ class HotelService {
 
   Future<(UResponse<UDormBedInvoiceResponse>?, UResponse<dynamic>?, String?)> createDormBedInvoice({
     required final UDormBedInvoiceCreateParams p,
-    final Function(UResponse<UDormBedInvoiceResponse> r)? onOk,
-    final Function(UResponse<dynamic> e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<UDormBedInvoiceResponse> r)? onOk,
+    required Function(UResponse<dynamic> e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<UDormBedInvoiceResponse>?, UResponse<dynamic>?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -901,9 +901,9 @@ class HotelService {
 
   Future<(UResponse<List<UDormBedInvoiceResponse>>?, UResponse<dynamic>?, String?)> readDormBedInvoice({
     required final UDormBedInvoiceReadParams p,
-    final Function(UResponse<List<UDormBedInvoiceResponse>> r)? onOk,
-    final Function(UResponse<dynamic> e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<List<UDormBedInvoiceResponse>> r)? onOk,
+    required Function(UResponse<dynamic> e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<List<UDormBedInvoiceResponse>>?, UResponse<dynamic>?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -933,9 +933,9 @@ class HotelService {
 
   Future<(UResponse<UDormBedInvoiceResponse>?, UResponse<dynamic>?, String?)> updateDormBedInvoice({
     required final UDormBedInvoiceUpdateParams p,
-    final Function(UResponse<UDormBedInvoiceResponse> r)? onOk,
-    final Function(UResponse<dynamic> e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<UDormBedInvoiceResponse> r)? onOk,
+    required Function(UResponse<dynamic> e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<UDormBedInvoiceResponse>?, UResponse<dynamic>?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -962,9 +962,9 @@ class HotelService {
 
   Future<(UResponse<dynamic>?, UResponse<dynamic>?, String?)> deleteDormBedInvoice({
     required final UIdParams p,
-    final Function(UResponse<dynamic> r)? onOk,
-    final Function(UResponse<dynamic> e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<dynamic> r)? onOk,
+    required Function(UResponse<dynamic> e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<dynamic>?, UResponse<dynamic>?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -991,9 +991,9 @@ class HotelService {
 
   Future<(UEmptyResponse?, UResponse<dynamic>?, String?)> payDormBedInvoice({
     required final UIdParams p,
-    final Function(UEmptyResponse r)? onOk,
-    final Function(UResponse<dynamic> e)? onError,
-    final Function(String e)? onException,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UResponse<dynamic> e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UResponse<dynamic>?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -1022,9 +1022,9 @@ class HotelService {
 
   Future<(UResponse<String>?, UResponse<dynamic>?, String?)> createHotelReservation({
     required final UHotelReservationCreateParams p,
-    final Function(UResponse<String> r)? onOk,
-    final Function(UResponse<dynamic> e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<String> r)? onOk,
+    required Function(UResponse<dynamic> e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<String>?, UResponse<dynamic>?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -1051,9 +1051,9 @@ class HotelService {
 
   Future<(UResponse<List<UHotelReservationResponse>>?, UResponse<dynamic>?, String?)> readHotelReservations({
     required final UHotelReservationReadParams p,
-    final Function(UResponse<List<UHotelReservationResponse>> r)? onOk,
-    final Function(UResponse<dynamic> e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<List<UHotelReservationResponse>> r)? onOk,
+    required Function(UResponse<dynamic> e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<List<UHotelReservationResponse>>?, UResponse<dynamic>?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -1083,9 +1083,9 @@ class HotelService {
 
   Future<(UResponse<UHotelReservationResponse>?, UResponse<dynamic>?, String?)> readHotelReservationById({
     required final UIdParams p,
-    final Function(UResponse<UHotelReservationResponse> r)? onOk,
-    final Function(UResponse<dynamic> e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<UHotelReservationResponse> r)? onOk,
+    required Function(UResponse<dynamic> e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<UHotelReservationResponse>?, UResponse<dynamic>?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -1112,9 +1112,9 @@ class HotelService {
 
   Future<(UEmptyResponse?, UResponse<dynamic>?, String?)> updateHotelReservation({
     required final UHotelReservationUpdateParams p,
-    final Function(UEmptyResponse r)? onOk,
-    final Function(UResponse<dynamic> e)? onError,
-    final Function(String e)? onException,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UResponse<dynamic> e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UResponse<dynamic>?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -1141,9 +1141,9 @@ class HotelService {
 
   Future<(UEmptyResponse?, UResponse<dynamic>?, String?)> deleteHotelReservation({
     required final UIdParams p,
-    final Function(UEmptyResponse r)? onOk,
-    final Function(UResponse<dynamic> e)? onError,
-    final Function(String e)? onException,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UResponse<dynamic> e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UResponse<dynamic>?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -1171,9 +1171,9 @@ class HotelService {
   Future<(UEmptyResponse?, UResponse<dynamic>?, String?)> _reservationAction({
     required final String action,
     required final UIdParams p,
-    final Function(UEmptyResponse r)? onOk,
-    final Function(UResponse<dynamic> e)? onError,
-    final Function(String e)? onException,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UResponse<dynamic> e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UResponse<dynamic>?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -1200,39 +1200,39 @@ class HotelService {
 
   Future<(UEmptyResponse?, UResponse<dynamic>?, String?)> confirmHotelReservation({
     required final UIdParams p,
-    final Function(UEmptyResponse r)? onOk,
-    final Function(UResponse<dynamic> e)? onError,
-    final Function(String e)? onException,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UResponse<dynamic> e)? onError,
+    required Function(String e)? onException,
   }) => _reservationAction(action: "Confirm", p: p, onOk: onOk, onError: onError, onException: onException);
 
   Future<(UEmptyResponse?, UResponse<dynamic>?, String?)> checkInHotelReservation({
     required final UIdParams p,
-    final Function(UEmptyResponse r)? onOk,
-    final Function(UResponse<dynamic> e)? onError,
-    final Function(String e)? onException,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UResponse<dynamic> e)? onError,
+    required Function(String e)? onException,
   }) => _reservationAction(action: "CheckIn", p: p, onOk: onOk, onError: onError, onException: onException);
 
   Future<(UEmptyResponse?, UResponse<dynamic>?, String?)> checkOutHotelReservation({
     required final UIdParams p,
-    final Function(UEmptyResponse r)? onOk,
-    final Function(UResponse<dynamic> e)? onError,
-    final Function(String e)? onException,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UResponse<dynamic> e)? onError,
+    required Function(String e)? onException,
   }) => _reservationAction(action: "CheckOut", p: p, onOk: onOk, onError: onError, onException: onException);
 
   Future<(UEmptyResponse?, UResponse<dynamic>?, String?)> cancelHotelReservation({
     required final UIdParams p,
-    final Function(UEmptyResponse r)? onOk,
-    final Function(UResponse<dynamic> e)? onError,
-    final Function(String e)? onException,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UResponse<dynamic> e)? onError,
+    required Function(String e)? onException,
   }) => _reservationAction(action: "Cancel", p: p, onOk: onOk, onError: onError, onException: onException);
 
   // ==================== HotelInvoice ====================
 
   Future<(UResponse<String>?, UResponse<dynamic>?, String?)> createHotelInvoice({
     required final UHotelInvoiceCreateParams p,
-    final Function(UResponse<String> r)? onOk,
-    final Function(UResponse<dynamic> e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<String> r)? onOk,
+    required Function(UResponse<dynamic> e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<String>?, UResponse<dynamic>?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -1259,9 +1259,9 @@ class HotelService {
 
   Future<(UResponse<List<UHotelInvoiceResponse>>?, UResponse<dynamic>?, String?)> readHotelInvoices({
     required final UHotelInvoiceReadParams p,
-    final Function(UResponse<List<UHotelInvoiceResponse>> r)? onOk,
-    final Function(UResponse<dynamic> e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<List<UHotelInvoiceResponse>> r)? onOk,
+    required Function(UResponse<dynamic> e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<List<UHotelInvoiceResponse>>?, UResponse<dynamic>?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -1291,9 +1291,9 @@ class HotelService {
 
   Future<(UEmptyResponse?, UResponse<dynamic>?, String?)> updateHotelInvoice({
     required final UHotelInvoiceUpdateParams p,
-    final Function(UEmptyResponse r)? onOk,
-    final Function(UResponse<dynamic> e)? onError,
-    final Function(String e)? onException,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UResponse<dynamic> e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UResponse<dynamic>?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -1320,9 +1320,9 @@ class HotelService {
 
   Future<(UEmptyResponse?, UResponse<dynamic>?, String?)> deleteHotelInvoice({
     required final UIdParams p,
-    final Function(UEmptyResponse r)? onOk,
-    final Function(UResponse<dynamic> e)? onError,
-    final Function(String e)? onException,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UResponse<dynamic> e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UResponse<dynamic>?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -1349,9 +1349,9 @@ class HotelService {
 
   Future<(UEmptyResponse?, UResponse<dynamic>?, String?)> payHotelInvoice({
     required final UIdParams p,
-    final Function(UEmptyResponse r)? onOk,
-    final Function(UResponse<dynamic> e)? onError,
-    final Function(String e)? onException,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UResponse<dynamic> e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UResponse<dynamic>?, String?) result = (null, null, null);
     await UHttpClient.send(

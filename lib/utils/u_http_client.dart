@@ -29,6 +29,9 @@ abstract class UHttpClient {
       if (refreshToken == null || refreshToken.isEmpty) return false;
       final (UResponse<ULoginResponse>?, UEmptyResponse?, String?) result = await AuthService().refreshToken(
         p: URefreshTokenParams(refreshToken: refreshToken),
+        onOk: (UResponse<ULoginResponse> r) {},
+        onError: (UEmptyResponse e) {},
+        onException: (String e) {},
       );
       return result.$1?.result != null;
     })().whenComplete(() => _refreshInFlight = null);

@@ -3,9 +3,9 @@ part of "../data.dart";
 class InquiryService {
   Future<(UResponse<UBillInfoResponse>?, UEmptyResponse?, String?)> billInfo({
     required final UBillInfoParams p,
-    final Function(UResponse<UBillInfoResponse> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<UBillInfoResponse> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<UBillInfoResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -32,9 +32,9 @@ class InquiryService {
 
   Future<(UResponse<UZipCodeToAddressDetailResponse>?, UEmptyResponse?, String?)> zipCodeToAddressDetail({
     required final UZipCodeToAddressDetailParams p,
-    final Function(UResponse<UZipCodeToAddressDetailResponse> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<UZipCodeToAddressDetailResponse> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<UZipCodeToAddressDetailResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -61,9 +61,9 @@ class InquiryService {
 
   Future<(UResponse<UVehicleViolationDetailResponse>?, UEmptyResponse?, String?)> vehicleViolationDetail({
     required final UVehicleViolationDetailParams p,
-    final Function(UResponse<UVehicleViolationDetailResponse> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<UVehicleViolationDetailResponse> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<UVehicleViolationDetailResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -90,9 +90,9 @@ class InquiryService {
 
   Future<(UResponse<UDrivingLicenceDetailResponse>?, UEmptyResponse?, String?)> drivingLicenceDetail({
     required final UDrivingLicenceDetailParams p,
-    final Function(UResponse<UDrivingLicenceDetailResponse> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<UDrivingLicenceDetailResponse> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<UDrivingLicenceDetailResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -119,9 +119,9 @@ class InquiryService {
 
   Future<(UResponse<ULicencePlateDetailResponse>?, UEmptyResponse?, String?)> licencePlateDetail({
     required final ULicencePlateDetailParams p,
-    final Function(UResponse<ULicencePlateDetailResponse> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<ULicencePlateDetailResponse> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<ULicencePlateDetailResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -148,9 +148,9 @@ class InquiryService {
 
   Future<(UResponse<UDrivingLicenceNegativePointResponse>?, UEmptyResponse?, String?)> drivingLicenceNegativePoint({
     required final UDrivingLicenceNegativePointParams p,
-    final Function(UResponse<UDrivingLicenceNegativePointResponse> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<UDrivingLicenceNegativePointResponse> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<UDrivingLicenceNegativePointResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -180,9 +180,9 @@ class InquiryService {
 
   Future<(UResponse<UFreewayTollsResponse>?, UEmptyResponse?, String?)> freewayTolls({
     required final UFreewayTollsParams p,
-    final Function(UResponse<UFreewayTollsResponse> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<UFreewayTollsResponse> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<UFreewayTollsResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -209,9 +209,9 @@ class InquiryService {
 
   Future<(UResponse<UInquiryCacheStatusResponse>?, UEmptyResponse?, String?)> cacheStatus({
     required final UInquiryCacheStatusParams p,
-    final Function(UResponse<UInquiryCacheStatusResponse> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<UInquiryCacheStatusResponse> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<UInquiryCacheStatusResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -238,9 +238,9 @@ class InquiryService {
 
   Future<(UResponse<UIBanToBankAccountDetailResponse>?, UEmptyResponse?, String?)> iBanToBankAccountDetail({
     required final UIBanToBankAccountDetailParams p,
-    final Function(UResponse<UIBanToBankAccountDetailResponse> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<UIBanToBankAccountDetailResponse> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<UIBanToBankAccountDetailResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(

@@ -3,9 +3,9 @@ part of "../data.dart";
 class ProcessService {
   Future<(UResponse<UProcessStepGet>?, UEmptyResponse?, String?)> get({
     required final String processId,
-    final Function(UResponse<UProcessStepGet> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<UProcessStepGet> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<UProcessStepGet>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -36,9 +36,9 @@ class ProcessService {
 
   Future<(UResponse<UProcessStepGet>?, UEmptyResponse?, String?)> send({
     required final UProcessStepSend p,
-    final Function(UResponse<UProcessStepGet> r)? onOk,
-    final Function(UEmptyResponse e)? onError,
-    final Function(String e)? onException,
+    required Function(UResponse<UProcessStepGet> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
   }) async {
     (UResponse<UProcessStepGet>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
