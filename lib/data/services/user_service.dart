@@ -96,7 +96,7 @@ class UserService {
     required Function(UResponse<UUserResponse> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
-    required Function(int e)? onProgress,
+    Function(int e)? onProgress,
   }) async {
     (UResponse<UUserResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(

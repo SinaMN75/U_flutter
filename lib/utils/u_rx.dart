@@ -206,6 +206,146 @@ class RxList<E> extends Rx<List<E>> with ListMixin<E> {
       ..add(item);
     refresh();
   }
+
+  /// Callable setter that ignores a `null` assignment, e.g.
+  /// `list(response.result)` when `result` may be null.
+  @override
+  List<E> call([List<E>? newValue]) {
+    if (newValue != null) value = newValue;
+    return _value;
+  }
+}
+
+/// Observable map. Mutating methods notify listeners; behaves like a normal
+/// [Map] elsewhere thanks to [MapMixin].
+class RxMap<K, V> extends Rx<Map<K, V>> with MapMixin<K, V> {
+  RxMap([Map<K, V>? initial]) : super(initial ?? <K, V>{});
+
+  @override
+  V? operator [](Object? key) {
+    _RxObserver.active?.read.add(this);
+    return _value[key];
+  }
+
+  @override
+  void operator []=(K key, V value) {
+    _value[key] = value;
+    refresh();
+  }
+
+  @override
+  Iterable<K> get keys {
+    _RxObserver.active?.read.add(this);
+    return _value.keys;
+  }
+
+  @override
+  void addAll(Map<K, V> other) {
+    _value.addAll(other);
+    refresh();
+  }
+
+  @override
+  V? remove(Object? key) {
+    final V? removed = _value.remove(key);
+    refresh();
+    return removed;
+  }
+
+  @override
+  void clear() {
+    _value.clear();
+    refresh();
+  }
+
+  /// Replace all entries with [items] and notify once.
+  void assignAll(Map<K, V> items) {
+    _value
+      ..clear()
+      ..addAll(items);
+    refresh();
+  }
+
+  /// Callable setter that ignores a `null` assignment.
+  @override
+  Map<K, V> call([Map<K, V>? newValue]) {
+    if (newValue != null) value = newValue;
+    return _value;
+  }
+}
+
+/// Observable set. Mutating methods notify listeners; behaves like a normal
+/// [Set] elsewhere thanks to [SetMixin].
+class RxSet<E> extends Rx<Set<E>> with SetMixin<E> {
+  RxSet([Set<E>? initial]) : super(initial ?? <E>{});
+
+  @override
+  bool add(E value) {
+    final bool added = _value.add(value);
+    if (added) refresh();
+    return added;
+  }
+
+  @override
+  bool contains(Object? element) {
+    _RxObserver.active?.read.add(this);
+    return _value.contains(element);
+  }
+
+  @override
+  E? lookup(Object? element) {
+    _RxObserver.active?.read.add(this);
+    return _value.lookup(element);
+  }
+
+  @override
+  bool remove(Object? value) {
+    final bool removed = _value.remove(value);
+    if (removed) refresh();
+    return removed;
+  }
+
+  @override
+  int get length {
+    _RxObserver.active?.read.add(this);
+    return _value.length;
+  }
+
+  @override
+  Iterator<E> get iterator {
+    _RxObserver.active?.read.add(this);
+    return _value.iterator;
+  }
+
+  @override
+  Set<E> toSet() => _value.toSet();
+
+  @override
+  void addAll(Iterable<E> elements) {
+    _value.addAll(elements);
+    refresh();
+  }
+
+  @override
+  void clear() {
+    _value.clear();
+    refresh();
+  }
+
+  /// Replace all elements with [items] and notify once.
+  void assignAll(Iterable<E> items) {
+    _value
+      ..clear()
+      ..addAll(items);
+    refresh();
+  }
+
+  /// Callable setter that ignores a `null` assignment.
+  @override
+  Set<E> call([Set<E>? newValue]) {
+    if (newValue != null) value = newValue;
+    return _value;
+  }
 }
 
 extension RxObjectExt<T> on T {
@@ -234,6 +374,26 @@ extension RxBoolExt on bool {
 
 extension RxListExt<E> on List<E> {
   RxList<E> get obs => RxList<E>(this);
+}
+
+extension RxMapExt<K, V> on Map<K, V> {
+  RxMap<K, V> get obs => RxMap<K, V>(this);
+}
+
+extension RxSetExt<E> on Set<E> {
+  RxSet<E> get obs => RxSet<E>(this);
+}
+
+extension RxnListExt<E> on List<E>? {
+  RxList<E> get obs => RxList<E>(this);
+}
+
+extension RxnMapExt<K, V> on Map<K, V>? {
+  RxMap<K, V> get obs => RxMap<K, V>(this);
+}
+
+extension RxnSetExt<E> on Set<E>? {
+  RxSet<E> get obs => RxSet<E>(this);
 }
 
 extension RxnIntExt on int? {

@@ -344,7 +344,7 @@ class UTextFieldAutoComplete<T> extends StatefulWidget {
 
   final List<T> items;
   final String Function(T) labelBuilder;
-  final void Function(T?) onChanged;
+  final void Function(T) onChanged;
   final T selectedItem;
   final String? hintText;
   final String? title;
