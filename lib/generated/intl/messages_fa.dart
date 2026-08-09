@@ -1460,6 +1460,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "words": MessageLookupByLibrary.simpleMessage("کلمات"),
     "workingSet": MessageLookupByLibrary.simpleMessage("حافظه در حال استفاده"),
     "writeSomething": MessageLookupByLibrary.simpleMessage("چیزی بنویسید..."),
+    "wrongPostalCode": MessageLookupByLibrary.simpleMessage(
+      "کد پستی وارد شده صحیح نیست.",
+    ),
     "year": MessageLookupByLibrary.simpleMessage("سال"),
     "yes": MessageLookupByLibrary.simpleMessage("بله"),
     "youHaveNotRegisteredAnyBankAccountsYet":

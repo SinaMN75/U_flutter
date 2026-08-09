@@ -7738,6 +7738,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Wrong Postal Code`
+  String get wrongPostalCode {
+    return Intl.message(
+      'Wrong Postal Code',
+      name: 'wrongPostalCode',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

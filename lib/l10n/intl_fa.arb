@@ -1001,5 +1001,6 @@
   "inquiryCost": "هزینه استعلام",
   "payAndInquire": "پرداخت و استعلام",
   "cachedData": "ذخیره‌شده",
-  "expirationDate": "تاریخ انقضا"
+  "expirationDate": "تاریخ انقضا",
+  "wrongPostalCode": "کد پستی وارد شده صحیح نیست."
 }

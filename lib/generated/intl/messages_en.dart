@@ -1500,6 +1500,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "writeSomething": MessageLookupByLibrary.simpleMessage(
       "Write something...",
     ),
+    "wrongPostalCode": MessageLookupByLibrary.simpleMessage(
+      "Wrong Postal Code",
+    ),
     "year": MessageLookupByLibrary.simpleMessage("Year"),
     "yes": MessageLookupByLibrary.simpleMessage("Yes"),
     "youHaveNotRegisteredAnyBankAccountsYet":

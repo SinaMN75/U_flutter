@@ -1001,5 +1001,6 @@
   "inquiryCost": "Inquiry cost",
   "payAndInquire": "Pay and inquire",
   "cachedData": "Cached",
-  "expirationDate": "Expiration date"
+  "expirationDate": "Expiration date",
+  "wrongPostalCode": "Wrong Postal Code"
 }
