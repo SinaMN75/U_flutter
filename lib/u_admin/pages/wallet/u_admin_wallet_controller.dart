@@ -206,7 +206,7 @@ class UAdminTransactionsController extends UBaseController {
 }
 
 class UAdminAccountingController {
-  final Rx<PageState> state = PageState.initial.obs;
+  final RxState state = RxState();
   final Rxn<UAccountingReportResponse> report = Rxn<UAccountingReportResponse>();
 
   final Rxn<UUserResponse> user = Rxn<UUserResponse>();

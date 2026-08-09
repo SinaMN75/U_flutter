@@ -145,7 +145,7 @@ class UDropDownField<T> extends StatefulWidget {
   });
 
   final List<DropdownMenuItem<T>> items;
-  final ValueChanged<T?> onChanged;
+  final ValueChanged<T> onChanged;
   final T initialValue;
 
   final bool required;
@@ -180,7 +180,7 @@ class _UDropDownFieldState<T> extends State<UDropDownField<T>> {
       DropdownButtonFormField<T>(
         initialValue: widget.initialValue,
         items: widget.items,
-        onChanged: widget.onChanged,
+        onChanged: (T? i) => widget.onChanged(i as T),
         onSaved: widget.onSave,
         onTap: widget.onTap,
         validator: widget.validator,

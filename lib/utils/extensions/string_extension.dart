@@ -336,7 +336,9 @@ extension StringExtensions on String {
     r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
   ).hasMatch(this);
 
-  bool get isValidUrl => GetUtils.isURL(this);
+  bool get isValidUrl => RegExp(
+    r"^(https?://)?([\w\-]+\.)+[\w\-]+(:\d+)?(/\S*)?$",
+  ).hasMatch(this);
 
   bool get isValidPhone => RegExp(
     r"^\+?[\d\s-]{8,15}$",

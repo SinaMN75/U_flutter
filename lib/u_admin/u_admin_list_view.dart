@@ -24,7 +24,7 @@ class UAdminListView<T> extends StatelessWidget {
     this.desktopBreakpoint = 800,
   });
 
-  final Rx<PageState> state;
+  final RxState state;
 
   final List<T> Function() items;
   final int Function() totalCount;

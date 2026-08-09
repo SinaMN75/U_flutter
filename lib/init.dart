@@ -94,7 +94,7 @@ Future<void> initU({
   ULoading.initialize(key: navigatorKey, blurAmount: 1, overlayColor: Colors.black12);
 }
 
-class UMaterialApp extends StatelessWidget {
+class UMaterialApp extends StatefulWidget {
   const UMaterialApp({
     required this.localizationsDelegates,
     required this.supportedLocales,
@@ -113,16 +113,31 @@ class UMaterialApp extends StatelessWidget {
   final ThemeData darkThemeData;
 
   @override
-  Widget build(BuildContext context) => GetMaterialApp(
-    navigatorKey: navigatorKey,
-    enableLog: false,
-    localizationsDelegates: localizationsDelegates,
-    supportedLocales: supportedLocales,
-    home: home,
-    locale: Locale(ULocalStorage.getString(UConstants.locale) ?? locale.languageCode),
-    themeMode: (ULocalStorage.getBool(UConstants.isDarkMode) ?? false) ? ThemeMode.dark : ThemeMode.light,
-    theme: lightThemeData,
-    darkTheme: darkThemeData,
+  State<UMaterialApp> createState() => _UMaterialAppState();
+}
+
+class _UMaterialAppState extends State<UMaterialApp> {
+  @override
+  void initState() {
+    super.initState();
+    UAppState.themeMode.value = (ULocalStorage.getBool(UConstants.isDarkMode) ?? false) ? ThemeMode.dark : ThemeMode.light;
+    UAppState.locale.value = Locale(ULocalStorage.getString(UConstants.locale) ?? widget.locale.languageCode);
+  }
+
+  @override
+  Widget build(BuildContext context) => AnimatedBuilder(
+    animation: Listenable.merge(<Listenable>[UAppState.themeMode, UAppState.locale]),
+    builder: (BuildContext context, Widget? child) => MaterialApp(
+      navigatorKey: navigatorKey,
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: widget.localizationsDelegates,
+      supportedLocales: widget.supportedLocales,
+      home: widget.home,
+      locale: UAppState.locale.value,
+      themeMode: UAppState.themeMode.value,
+      theme: widget.lightThemeData,
+      darkTheme: widget.darkThemeData,
+    ),
   );
 }
 

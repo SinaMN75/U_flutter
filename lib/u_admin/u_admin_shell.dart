@@ -151,7 +151,7 @@ class _UAdminShellState extends State<UAdminShell> with SingleTickerProviderStat
     profileAvatar: CircleAvatar(radius: 18, backgroundColor: UAdminTheme.white24, child: UImage(UAdmin.logo)),
     isDarkMode: ULocalStorage.isDarkMode(),
     onToggleTheme: (bool dark) {
-      Get.changeThemeMode(dark ? ThemeMode.dark : ThemeMode.light);
+      UAppState.changeThemeMode(dark ? ThemeMode.dark : ThemeMode.light);
       ULocalStorage.setDarkMode(dark);
       setState(() {});
     },

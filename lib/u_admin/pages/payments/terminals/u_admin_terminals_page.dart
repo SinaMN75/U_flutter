@@ -112,7 +112,7 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
             spacing: 0,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              UDropDownField<TagOrderBy?>(
+              UDropDownField<TagOrderBy>(
                 initialValue: c.tagOrderBy.value,
                 onChanged: c.tagOrderBy.call,
                 items: <DropdownMenuItem<TagOrderBy>>[
@@ -200,7 +200,7 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                   UTextField(controller: simCardNumber, labelText: U.s.simCardNumber, keyboardType: TextInputType.phone).pSymmetric(vertical: 6),
                   UTextField(controller: simCardSerial, labelText: U.s.simCardSerial).pSymmetric(vertical: 6),
                   UTextField(controller: imei, labelText: U.s.imei).pSymmetric(vertical: 6),
-                  UDropDownField<TagTerminal?>(
+                  UDropDownField<TagTerminal>(
                     initialValue: type.value,
                     onChanged: type.call,
                     items: <DropdownMenuItem<TagTerminal>>[

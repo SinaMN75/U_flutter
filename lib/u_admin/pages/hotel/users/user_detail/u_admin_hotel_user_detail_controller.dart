@@ -7,7 +7,7 @@ class UAdminHotelUserDetailController {
 
   UUserResponse user;
 
-  final Rx<PageState> state = PageState.initial.obs;
+  final RxState state = RxState();
   final RxList<UDormBedContractResponse> contracts = <UDormBedContractResponse>[].obs;
 
   Future<void> init() async => read();

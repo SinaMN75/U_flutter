@@ -24,7 +24,7 @@ class UCategorySelector extends StatefulWidget {
 }
 
 class _UCategorySelectorState extends State<UCategorySelector> {
-  final Rx<PageState> pageState = PageState.initial.obs;
+  final RxState pageState = RxState();
 
   final RxList<UCategoryResponse> categories = <UCategoryResponse>[].obs;
   final RxList<UCategoryResponse> subCategories = <UCategoryResponse>[].obs;
@@ -191,7 +191,7 @@ class _UCountryProvincePickerState extends State<UCountryProvincePicker> {
     widget.onCountryChanged?.call(i);
     widget.onProvinceChanged?.call(i.provinces.first);
     widget.onCityChanged?.call(i.provinces.first.cities.firstOrNull);
-    Get.forceAppUpdate();
+    if (mounted) setState(() {});
   }
 
   void _selectProvince(UProvince? i) {
@@ -200,14 +200,14 @@ class _UCountryProvincePickerState extends State<UCountryProvincePicker> {
     city(i.cities.firstOrNull);
     cities(i.cities);
     widget.onProvinceChanged?.call(i);
-    Get.forceAppUpdate();
+    if (mounted) setState(() {});
   }
 
   void _selectCity(UCity? i) {
     if (i == null) return;
     city(i);
     widget.onCityChanged?.call(i);
-    Get.forceAppUpdate();
+    if (mounted) setState(() {});
   }
 
   @override

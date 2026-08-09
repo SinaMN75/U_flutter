@@ -42,7 +42,7 @@ abstract class UApp {
 
   static bool get isDesktop => isMacOs || isWindows || isLinux;
 
-  static bool get isDarkMode => Get.isDarkMode;
+  static bool get isDarkMode => UAppState.isDarkMode;
 
   static bool isLandscape() => MediaQuery.of(navigatorKey.currentContext!).orientation == Orientation.landscape;
 
@@ -58,22 +58,22 @@ abstract class UApp {
 
   static bool isDesktopSize() => MediaQuery.of(navigatorKey.currentContext!).size.width >= 1100;
 
-  static String locale() => Get.locale?.languageCode ?? "en";
+  static String locale() => UAppState.locale.value.languageCode;
 
   static void updateLocale(final Locale locale) {
-    Get.updateLocale(locale);
+    UAppState.updateLocale(locale);
     ULocalStorage.set(UConstants.locale, locale.languageCode);
   }
 
-  static void isDarkTheme() => Get.isDarkMode;
+  static bool isDarkTheme() => UAppState.isDarkMode;
 
   static void toDarkMode() {
-    Get.changeThemeMode(ThemeMode.dark);
+    UAppState.changeThemeMode(ThemeMode.dark);
     ULocalStorage.setDarkMode(true);
   }
 
   static void toLightMode() {
-    Get.changeThemeMode(ThemeMode.light);
+    UAppState.changeThemeMode(ThemeMode.light);
     ULocalStorage.setDarkMode(false);
   }
 

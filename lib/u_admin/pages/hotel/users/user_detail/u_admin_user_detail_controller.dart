@@ -2,7 +2,7 @@ part of "../../../../u_admin.dart";
 
 class UAdminUserDetailController {
   final Rx<int> loadingProgress = 0.obs;
-  final Rx<PageState> state = PageState.initial.obs;
+  final RxState state = RxState();
   late UUserResponse user;
 
   void init({required UUserResponse user}) {
@@ -13,9 +13,7 @@ class UAdminUserDetailController {
   Future<void> read() async {
     state.loading();
     await UServices.user.readById(
-      onProgress: (int i) {
-        loadingProgress(i);
-      },
+      onProgress: loadingProgress.call,
       p: UIdParams(
         id: user.id,
         selectorArgs: const UserSelectorArgs(

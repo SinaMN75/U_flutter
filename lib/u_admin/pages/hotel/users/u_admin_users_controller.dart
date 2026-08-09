@@ -55,7 +55,7 @@ class UAdminUsersController extends UBaseController {
         pageSize: pageSize,
       ),
       onOk: (UResponse<List<UUserResponse>> response) {
-        list(response.result);
+        list(response.result ?? <UUserResponse>[]);
         setTotalPages(response.totalCount);
         state.loaded();
       },

@@ -44,7 +44,7 @@ class _CachedNetworkImageState extends State<CachedNetworkImage> {
         return bytes;
       }
     } catch (e) {
-      e.printError();
+      //
     }
     return null;
   }

@@ -10,7 +10,7 @@ class UAdminApiLogController extends UBaseController {
   final Rx<String> bucket = "hour".obs;
 
   final Rxn<UOsMetricsResponse> osMetrics = Rxn<UOsMetricsResponse>();
-  final Rx<PageState> osMetricsState = PageState.initial.obs;
+  final RxState osMetricsState = RxState();
   Timer? _osMetricsTimer;
 
   final TextEditingController pathContainsCtrl = TextEditingController();

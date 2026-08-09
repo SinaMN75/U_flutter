@@ -17,12 +17,12 @@ class _AdminSettingsPageState extends State<UAdminSettingsPage> {
     switch (mode) {
       case "light":
         ULocalStorage.setDarkMode(false);
-        Get.changeThemeMode(ThemeMode.light);
+        UAppState.changeThemeMode(ThemeMode.light);
       case "dark":
         ULocalStorage.setDarkMode(true);
-        Get.changeThemeMode(ThemeMode.dark);
+        UAppState.changeThemeMode(ThemeMode.dark);
       default:
-        Get.changeThemeMode(ThemeMode.system);
+        UAppState.changeThemeMode(ThemeMode.system);
     }
   }
 

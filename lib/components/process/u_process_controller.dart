@@ -23,7 +23,7 @@ class UProcessController {
 
   final Rxn<UProcessStepGet> processStep = Rxn<UProcessStepGet>();
   late UProcessStepSend processStepSend;
-  final Rx<PageState> state = PageState.initial.obs;
+  final RxState state = RxState();
 
   void init({required String processId}) {
     this.processId = processId;
