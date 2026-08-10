@@ -26,7 +26,7 @@ class _UIpgWebViewPageState extends State<UIpgWebViewPage> {
     },
     child: UScaffold(
       appBar: AppBar(title: Text(U.s.payment)),
-      body: UWebView(initialUrl: widget.url, showUrlBar: true),
+      body: UWebView(initialUrl: widget.url, showUrlBar: true, onPageFinished: c.onPageFinished),
     ),
   );
 }
