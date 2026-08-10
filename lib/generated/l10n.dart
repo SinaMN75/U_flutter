@@ -54,7 +54,187 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
+  /// `Storage Manager`
+  String get storageManager {
+    return Intl.message(
+      'Storage Manager',
+      name: 'storageManager',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Browse and delete everything saved in local storage`
+  String get storageManagerSubtitle {
+    return Intl.message(
+      'Browse and delete everything saved in local storage',
+      name: 'storageManagerSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Key-Value`
+  String get keyValueStorage {
+    return Intl.message(
+      'Key-Value',
+      name: 'keyValueStorage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Files`
+  String get fileStorage {
+    return Intl.message('Files', name: 'fileStorage', desc: '', args: []);
+  }
+
+  /// `Key`
+  String get storageKey {
+    return Intl.message('Key', name: 'storageKey', desc: '', args: []);
+  }
+
+  /// `Value`
+  String get storageValue {
+    return Intl.message('Value', name: 'storageValue', desc: '', args: []);
+  }
+
+  /// `Size`
+  String get fileSizeLabel {
+    return Intl.message('Size', name: 'fileSizeLabel', desc: '', args: []);
+  }
+
+  /// `Total items`
+  String get totalItems {
+    return Intl.message('Total items', name: 'totalItems', desc: '', args: []);
+  }
+
+  /// `Total size`
+  String get totalSize {
+    return Intl.message('Total size', name: 'totalSize', desc: '', args: []);
+  }
+
+  /// `Text files`
+  String get textFiles {
+    return Intl.message('Text files', name: 'textFiles', desc: '', args: []);
+  }
+
+  /// `Binary files`
+  String get binaryFiles {
+    return Intl.message(
+      'Binary files',
+      name: 'binaryFiles',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Expires`
+  String get expiresAt {
+    return Intl.message('Expires', name: 'expiresAt', desc: '', args: []);
+  }
+
+  /// `Are you sure you want to delete this entry? This action cannot be undone.`
+  String get deleteEntryConfirm {
+    return Intl.message(
+      'Are you sure you want to delete this entry? This action cannot be undone.',
+      name: 'deleteEntryConfirm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Clear all`
+  String get clearAll {
+    return Intl.message('Clear all', name: 'clearAll', desc: '', args: []);
+  }
+
+  /// `Are you sure you want to delete all stored data? This action cannot be undone.`
+  String get clearAllConfirm {
+    return Intl.message(
+      'Are you sure you want to delete all stored data? This action cannot be undone.',
+      name: 'clearAllConfirm',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Database Console`
+  String get storageManager {
+    return Intl.message('Storage Manager', name: 'storageManager', desc: '', args: []);
+  }
+
+  String get storageManagerSubtitle {
+    return Intl.message(
+      'Browse and delete everything saved in local storage',
+      name: 'storageManagerSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get keyValueStorage {
+    return Intl.message('Key-Value', name: 'keyValueStorage', desc: '', args: []);
+  }
+
+  String get fileStorage {
+    return Intl.message('Files', name: 'fileStorage', desc: '', args: []);
+  }
+
+  String get storageKey {
+    return Intl.message('Key', name: 'storageKey', desc: '', args: []);
+  }
+
+  String get storageValue {
+    return Intl.message('Value', name: 'storageValue', desc: '', args: []);
+  }
+
+  String get fileSizeLabel {
+    return Intl.message('Size', name: 'fileSizeLabel', desc: '', args: []);
+  }
+
+  String get totalItems {
+    return Intl.message('Total items', name: 'totalItems', desc: '', args: []);
+  }
+
+  String get totalSize {
+    return Intl.message('Total size', name: 'totalSize', desc: '', args: []);
+  }
+
+  String get textFiles {
+    return Intl.message('Text files', name: 'textFiles', desc: '', args: []);
+  }
+
+  String get binaryFiles {
+    return Intl.message('Binary files', name: 'binaryFiles', desc: '', args: []);
+  }
+
+  String get expiresAt {
+    return Intl.message('Expires', name: 'expiresAt', desc: '', args: []);
+  }
+
+  String get deleteEntryConfirm {
+    return Intl.message(
+      'Are you sure you want to delete this entry? This action cannot be undone.',
+      name: 'deleteEntryConfirm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get clearAll {
+    return Intl.message('Clear all', name: 'clearAll', desc: '', args: []);
+  }
+
+  String get clearAllConfirm {
+    return Intl.message(
+      'Are you sure you want to delete all stored data? This action cannot be undone.',
+      name: 'clearAllConfirm',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get databaseConsole {
     return Intl.message(
       'Database Console',

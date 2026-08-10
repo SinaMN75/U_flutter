@@ -78,6 +78,7 @@ export "components/u_rich_text_editor.dart";
 export "components/u_scanner.dart";
 export "components/u_side_menu.dart";
 export "components/u_slider.dart";
+export "components/u_storage_manager_page.dart";
 export "components/u_tab_bar.dart";
 export "components/u_text.dart";
 export "components/u_text_field.dart";

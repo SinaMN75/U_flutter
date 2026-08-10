@@ -141,6 +141,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "billDetails": MessageLookupByLibrary.simpleMessage("Bill details"),
     "billId": MessageLookupByLibrary.simpleMessage("Bill ID"),
     "billInquiry": MessageLookupByLibrary.simpleMessage("Bill inquiry"),
+    "binaryFiles": MessageLookupByLibrary.simpleMessage("Binary files"),
     "bio": MessageLookupByLibrary.simpleMessage("Bio"),
     "birthCertificate": MessageLookupByLibrary.simpleMessage(
       "Birth Certificate",
@@ -199,6 +200,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "city": MessageLookupByLibrary.simpleMessage("City"),
     "cityCode": MessageLookupByLibrary.simpleMessage("City Code"),
     "clear": MessageLookupByLibrary.simpleMessage("Clear"),
+    "clearAll": MessageLookupByLibrary.simpleMessage("Clear all"),
+    "clearAllConfirm": MessageLookupByLibrary.simpleMessage(
+      "Are you sure you want to delete all stored data? This action cannot be undone.",
+    ),
     "clearCache": MessageLookupByLibrary.simpleMessage("Clear Cache"),
     "clearFilters": MessageLookupByLibrary.simpleMessage("Clear Filters"),
     "clearFormatting": MessageLookupByLibrary.simpleMessage("Clear Formatting"),
@@ -294,6 +299,27 @@ class MessageLookup extends MessageLookupByLibrary {
     "dark": MessageLookupByLibrary.simpleMessage("Dark"),
     "darkMode": MessageLookupByLibrary.simpleMessage("Dark Mode"),
     "dashboard": MessageLookupByLibrary.simpleMessage("Dashboard"),
+    "storageManager": MessageLookupByLibrary.simpleMessage("Storage Manager"),
+    "storageManagerSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Browse and delete everything saved in local storage",
+    ),
+    "keyValueStorage": MessageLookupByLibrary.simpleMessage("Key-Value"),
+    "fileStorage": MessageLookupByLibrary.simpleMessage("Files"),
+    "storageKey": MessageLookupByLibrary.simpleMessage("Key"),
+    "storageValue": MessageLookupByLibrary.simpleMessage("Value"),
+    "fileSizeLabel": MessageLookupByLibrary.simpleMessage("Size"),
+    "totalItems": MessageLookupByLibrary.simpleMessage("Total items"),
+    "totalSize": MessageLookupByLibrary.simpleMessage("Total size"),
+    "textFiles": MessageLookupByLibrary.simpleMessage("Text files"),
+    "binaryFiles": MessageLookupByLibrary.simpleMessage("Binary files"),
+    "expiresAt": MessageLookupByLibrary.simpleMessage("Expires"),
+    "deleteEntryConfirm": MessageLookupByLibrary.simpleMessage(
+      "Are you sure you want to delete this entry? This action cannot be undone.",
+    ),
+    "clearAll": MessageLookupByLibrary.simpleMessage("Clear all"),
+    "clearAllConfirm": MessageLookupByLibrary.simpleMessage(
+      "Are you sure you want to delete all stored data? This action cannot be undone.",
+    ),
     "databaseConsole": MessageLookupByLibrary.simpleMessage("Database Console"),
     "date": MessageLookupByLibrary.simpleMessage("Date"),
     "day": MessageLookupByLibrary.simpleMessage("Day"),
@@ -306,6 +332,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "decreaseIndent": MessageLookupByLibrary.simpleMessage("Decrease Indent"),
     "decrypt": MessageLookupByLibrary.simpleMessage("Decrypt"),
     "delete": MessageLookupByLibrary.simpleMessage("Delete"),
+    "deleteEntryConfirm": MessageLookupByLibrary.simpleMessage(
+      "Are you sure you want to delete this entry? This action cannot be undone.",
+    ),
     "deleteItemConfirm": MessageLookupByLibrary.simpleMessage(
       "Are you sure you want to delete this item?",
     ),
@@ -441,6 +470,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "exception": MessageLookupByLibrary.simpleMessage("Exception"),
     "expirationDate": MessageLookupByLibrary.simpleMessage("Expiration date"),
     "expired": MessageLookupByLibrary.simpleMessage("Expired"),
+    "expiresAt": MessageLookupByLibrary.simpleMessage("Expires"),
     "expiresToday": MessageLookupByLibrary.simpleMessage("Expires today"),
     "expiringSoon": MessageLookupByLibrary.simpleMessage("Expiring Soon"),
     "externalApi": MessageLookupByLibrary.simpleMessage("External API"),
@@ -457,6 +487,8 @@ class MessageLookup extends MessageLookupByLibrary {
       "This field is required",
     ),
     "fileManager": MessageLookupByLibrary.simpleMessage("File Manager"),
+    "fileSizeLabel": MessageLookupByLibrary.simpleMessage("Size"),
+    "fileStorage": MessageLookupByLibrary.simpleMessage("Files"),
     "files": MessageLookupByLibrary.simpleMessage("Files"),
     "filter": MessageLookupByLibrary.simpleMessage("Filter"),
     "filterBeds": MessageLookupByLibrary.simpleMessage("Filter Beds"),
@@ -637,6 +669,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "joinedDate": MessageLookupByLibrary.simpleMessage("Joined Date"),
     "keyEncoding": MessageLookupByLibrary.simpleMessage("Key Encoding"),
     "keySize": MessageLookupByLibrary.simpleMessage("Key Size"),
+    "keyValueStorage": MessageLookupByLibrary.simpleMessage("Key-Value"),
     "landline": MessageLookupByLibrary.simpleMessage("Landline"),
     "landlinePhoneNumber": MessageLookupByLibrary.simpleMessage(
       "Landline phone number",
@@ -1276,6 +1309,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "stars": MessageLookupByLibrary.simpleMessage("Stars"),
     "startDate": MessageLookupByLibrary.simpleMessage("Start Date"),
     "status": MessageLookupByLibrary.simpleMessage("Status"),
+    "storageKey": MessageLookupByLibrary.simpleMessage("Key"),
+    "storageManager": MessageLookupByLibrary.simpleMessage("Storage Manager"),
+    "storageManagerSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Browse and delete everything saved in local storage",
+    ),
+    "storageValue": MessageLookupByLibrary.simpleMessage("Value"),
     "strikethrough": MessageLookupByLibrary.simpleMessage("Strikethrough"),
     "subAdmin": MessageLookupByLibrary.simpleMessage("Sub Admin"),
     "submit": MessageLookupByLibrary.simpleMessage("Submit"),
@@ -1321,6 +1360,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Terms and conditions",
     ),
     "textColor": MessageLookupByLibrary.simpleMessage("Text Color"),
+    "textFiles": MessageLookupByLibrary.simpleMessage("Text files"),
     "theEnteredNationalCodeIsIncorrect": MessageLookupByLibrary.simpleMessage(
       "The entered national code is incorrect.",
     ),
@@ -1357,6 +1397,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "totalFreewayTolls": MessageLookupByLibrary.simpleMessage(
       "Total freeway tolls",
     ),
+    "totalItems": MessageLookupByLibrary.simpleMessage("Total items"),
     "totalMemory": MessageLookupByLibrary.simpleMessage("Total Memory"),
     "totalPaid": MessageLookupByLibrary.simpleMessage("Total Paid"),
     "totalPenalty": MessageLookupByLibrary.simpleMessage("Total Penalty"),
@@ -1364,6 +1405,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "totalRemaining": MessageLookupByLibrary.simpleMessage("Total Remaining"),
     "totalRequests": MessageLookupByLibrary.simpleMessage("Total Requests"),
     "totalResults": MessageLookupByLibrary.simpleMessage("Total Results"),
+    "totalSize": MessageLookupByLibrary.simpleMessage("Total size"),
     "totalViolationAmount": MessageLookupByLibrary.simpleMessage(
       "Total violation amount",
     ),

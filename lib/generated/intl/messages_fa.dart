@@ -143,6 +143,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "billDetails": MessageLookupByLibrary.simpleMessage("جزئیات قبض"),
     "billId": MessageLookupByLibrary.simpleMessage("شناسه قبض"),
     "billInquiry": MessageLookupByLibrary.simpleMessage("استعلام قبض"),
+    "binaryFiles": MessageLookupByLibrary.simpleMessage("فایل‌های باینری"),
     "bio": MessageLookupByLibrary.simpleMessage("بیوگرافی"),
     "birthCertificate": MessageLookupByLibrary.simpleMessage("شناسنامه"),
     "birthdate": MessageLookupByLibrary.simpleMessage("تاریخ تولد"),
@@ -199,6 +200,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "city": MessageLookupByLibrary.simpleMessage("شهر"),
     "cityCode": MessageLookupByLibrary.simpleMessage("کد شهر"),
     "clear": MessageLookupByLibrary.simpleMessage("پاک کردن"),
+    "clearAll": MessageLookupByLibrary.simpleMessage("حذف همه"),
+    "clearAllConfirm": MessageLookupByLibrary.simpleMessage(
+      "آیا از حذف تمام داده‌های ذخیره‌شده مطمئن هستید؟ این عمل قابل بازگشت نیست.",
+    ),
     "clearCache": MessageLookupByLibrary.simpleMessage("پاک‌کردن حافظه پنهان"),
     "clearFilters": MessageLookupByLibrary.simpleMessage("حذف فیلترها"),
     "clearFormatting": MessageLookupByLibrary.simpleMessage(
@@ -284,6 +289,27 @@ class MessageLookup extends MessageLookupByLibrary {
     "dark": MessageLookupByLibrary.simpleMessage("تیره"),
     "darkMode": MessageLookupByLibrary.simpleMessage("حالت تیره"),
     "dashboard": MessageLookupByLibrary.simpleMessage("داشبورد"),
+    "storageManager": MessageLookupByLibrary.simpleMessage("مدیریت حافظه"),
+    "storageManagerSubtitle": MessageLookupByLibrary.simpleMessage(
+      "مشاهده و حذف تمام داده‌های ذخیره‌شده در حافظه محلی",
+    ),
+    "keyValueStorage": MessageLookupByLibrary.simpleMessage("کلید-مقدار"),
+    "fileStorage": MessageLookupByLibrary.simpleMessage("فایل‌ها"),
+    "storageKey": MessageLookupByLibrary.simpleMessage("کلید"),
+    "storageValue": MessageLookupByLibrary.simpleMessage("مقدار"),
+    "fileSizeLabel": MessageLookupByLibrary.simpleMessage("حجم"),
+    "totalItems": MessageLookupByLibrary.simpleMessage("تعداد کل"),
+    "totalSize": MessageLookupByLibrary.simpleMessage("حجم کل"),
+    "textFiles": MessageLookupByLibrary.simpleMessage("فایل‌های متنی"),
+    "binaryFiles": MessageLookupByLibrary.simpleMessage("فایل‌های باینری"),
+    "expiresAt": MessageLookupByLibrary.simpleMessage("انقضا"),
+    "deleteEntryConfirm": MessageLookupByLibrary.simpleMessage(
+      "آیا از حذف این مورد مطمئن هستید؟ این عمل قابل بازگشت نیست.",
+    ),
+    "clearAll": MessageLookupByLibrary.simpleMessage("حذف همه"),
+    "clearAllConfirm": MessageLookupByLibrary.simpleMessage(
+      "آیا از حذف تمام داده‌های ذخیره‌شده مطمئن هستید؟ این عمل قابل بازگشت نیست.",
+    ),
     "databaseConsole": MessageLookupByLibrary.simpleMessage(
       "کنسول پایگاه داده",
     ),
@@ -298,6 +324,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "decreaseIndent": MessageLookupByLibrary.simpleMessage("کاهش تورفتگی"),
     "decrypt": MessageLookupByLibrary.simpleMessage("رمزگشایی"),
     "delete": MessageLookupByLibrary.simpleMessage("حذف"),
+    "deleteEntryConfirm": MessageLookupByLibrary.simpleMessage(
+      "آیا از حذف این مورد مطمئن هستید؟ این عمل قابل بازگشت نیست.",
+    ),
     "deleteItemConfirm": MessageLookupByLibrary.simpleMessage(
       "آیا از حذف این مورد مطمئن هستید؟",
     ),
@@ -435,6 +464,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "exception": MessageLookupByLibrary.simpleMessage("استثنا"),
     "expirationDate": MessageLookupByLibrary.simpleMessage("تاریخ انقضا"),
     "expired": MessageLookupByLibrary.simpleMessage("منقضی"),
+    "expiresAt": MessageLookupByLibrary.simpleMessage("انقضا"),
     "expiresToday": MessageLookupByLibrary.simpleMessage("امروز منقضی می‌شود"),
     "expiringSoon": MessageLookupByLibrary.simpleMessage("در حال انقضا"),
     "externalApi": MessageLookupByLibrary.simpleMessage("API خارجی"),
@@ -451,6 +481,8 @@ class MessageLookup extends MessageLookupByLibrary {
       "این فیلد الزامی است",
     ),
     "fileManager": MessageLookupByLibrary.simpleMessage("مدیریت فایل"),
+    "fileSizeLabel": MessageLookupByLibrary.simpleMessage("حجم"),
+    "fileStorage": MessageLookupByLibrary.simpleMessage("فایل‌ها"),
     "files": MessageLookupByLibrary.simpleMessage("فایل‌ها"),
     "filter": MessageLookupByLibrary.simpleMessage("فیلتر"),
     "filterBeds": MessageLookupByLibrary.simpleMessage("فیلتر تخت‌ها"),
@@ -625,6 +657,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "joinedDate": MessageLookupByLibrary.simpleMessage("تاریخ عضویت"),
     "keyEncoding": MessageLookupByLibrary.simpleMessage("کدگذاری کلید"),
     "keySize": MessageLookupByLibrary.simpleMessage("اندازه کلید"),
+    "keyValueStorage": MessageLookupByLibrary.simpleMessage("کلید-مقدار"),
     "landline": MessageLookupByLibrary.simpleMessage("تلفن ثابت"),
     "landlinePhoneNumber": MessageLookupByLibrary.simpleMessage(
       "شماره تلفن ثابت",
@@ -1246,6 +1279,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "stars": MessageLookupByLibrary.simpleMessage("ستاره"),
     "startDate": MessageLookupByLibrary.simpleMessage("تاریخ شروع"),
     "status": MessageLookupByLibrary.simpleMessage("وضعیت"),
+    "storageKey": MessageLookupByLibrary.simpleMessage("کلید"),
+    "storageManager": MessageLookupByLibrary.simpleMessage("مدیریت حافظه"),
+    "storageManagerSubtitle": MessageLookupByLibrary.simpleMessage(
+      "مشاهده و حذف تمام داده‌های ذخیره‌شده در حافظه محلی",
+    ),
+    "storageValue": MessageLookupByLibrary.simpleMessage("مقدار"),
     "strikethrough": MessageLookupByLibrary.simpleMessage("خط‌خورده"),
     "subAdmin": MessageLookupByLibrary.simpleMessage("زیرمجموعه ادمین"),
     "submit": MessageLookupByLibrary.simpleMessage("ثبت"),
@@ -1291,6 +1330,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "قوانین و مقررات",
     ),
     "textColor": MessageLookupByLibrary.simpleMessage("رنگ متن"),
+    "textFiles": MessageLookupByLibrary.simpleMessage("فایل‌های متنی"),
     "theEnteredNationalCodeIsIncorrect": MessageLookupByLibrary.simpleMessage(
       "کد ملی وارد شده صحیح نیست.",
     ),
@@ -1325,6 +1365,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "totalFreewayTolls": MessageLookupByLibrary.simpleMessage(
       "مجموع عوارض آزادراهی",
     ),
+    "totalItems": MessageLookupByLibrary.simpleMessage("تعداد کل"),
     "totalMemory": MessageLookupByLibrary.simpleMessage("کل حافظه"),
     "totalPaid": MessageLookupByLibrary.simpleMessage("کل پرداختی"),
     "totalPenalty": MessageLookupByLibrary.simpleMessage("کل جریمه"),
@@ -1332,6 +1373,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "totalRemaining": MessageLookupByLibrary.simpleMessage("کل باقی‌مانده"),
     "totalRequests": MessageLookupByLibrary.simpleMessage("کل درخواست‌ها"),
     "totalResults": MessageLookupByLibrary.simpleMessage("تعداد نتایج"),
+    "totalSize": MessageLookupByLibrary.simpleMessage("حجم کل"),
     "totalViolationAmount": MessageLookupByLibrary.simpleMessage(
       "مبلغ کل خلافی",
     ),
