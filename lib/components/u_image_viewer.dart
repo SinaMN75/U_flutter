@@ -137,27 +137,34 @@ class _BetterImageViewerState extends State<BetterImageViewer> {
       final Completer<Size> completer = Completer<Size>();
       final ImageStream stream = provider.resolve(const ImageConfiguration());
 
-      stream.addListener(
-        ImageStreamListener(
-          (ImageInfo info, _) {
-            if (!completer.isCompleted) {
-              completer.complete(
-                Size(
-                  info.image.width.toDouble(),
-                  info.image.height.toDouble(),
-                ),
-              );
-            }
-          },
-          onError: (Object error, _) {
-            if (!completer.isCompleted) {
-              completer.completeError(error);
-            }
-          },
-        ),
+      // The listener must be removed once resolved, otherwise it keeps the ImageStream (and this
+      // State) alive — an ImageStream listener is not auto-cleaned like a ChangeNotifier listener.
+      late final ImageStreamListener listener;
+      listener = ImageStreamListener(
+        (ImageInfo info, _) {
+          if (!completer.isCompleted) {
+            completer.complete(
+              Size(
+                info.image.width.toDouble(),
+                info.image.height.toDouble(),
+              ),
+            );
+          }
+        },
+        onError: (Object error, _) {
+          if (!completer.isCompleted) {
+            completer.completeError(error);
+          }
+        },
       );
+      stream.addListener(listener);
 
-      final Size size = await completer.future;
+      final Size size;
+      try {
+        size = await completer.future;
+      } finally {
+        stream.removeListener(listener);
+      }
 
       if (mounted) {
         setState(() {

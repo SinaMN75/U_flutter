@@ -73,6 +73,27 @@ const String _kLineSeparator = "\u2028";
 class ReadMoreTextState extends State<ReadMoreText> {
   bool _readMore = true;
 
+  final List<TapGestureRecognizer> _recognizers = <TapGestureRecognizer>[];
+
+  static final RegExp _urlExp = RegExp(r"(?:(?:https?|ftp)://)?[\w/\-?=%.]+\.[\w/\-?=%.]+");
+
+  TapGestureRecognizer _tap(final GestureTapCallback onTap) {
+    final TapGestureRecognizer recognizer = TapGestureRecognizer()..onTap = onTap;
+    _recognizers.add(recognizer);
+    return recognizer;
+  }
+
+  void _disposeRecognizers() {
+    for (final TapGestureRecognizer recognizer in _recognizers) recognizer.dispose();
+    _recognizers.clear();
+  }
+
+  @override
+  void dispose() {
+    _disposeRecognizers();
+    super.dispose();
+  }
+
   void _onTapLink() {
     setState(() {
       _readMore = !_readMore;
@@ -82,6 +103,7 @@ class ReadMoreTextState extends State<ReadMoreText> {
 
   @override
   Widget build(BuildContext context) {
+    _disposeRecognizers();
     final DefaultTextStyle defaultTextStyle = DefaultTextStyle.of(context);
     TextStyle? effectiveTextStyle = widget.style;
     if (widget.style?.inherit ?? false) {
@@ -101,7 +123,7 @@ class ReadMoreTextState extends State<ReadMoreText> {
     final TextSpan link = TextSpan(
       text: _readMore ? widget.trimCollapsedText : widget.trimExpandedText,
       style: _readMore ? defaultMoreStyle : defaultLessStyle,
-      recognizer: TapGestureRecognizer()..onTap = _onTapLink,
+      recognizer: _tap(_onTapLink),
     );
 
     final TextSpan delimiter = TextSpan(
@@ -111,7 +133,7 @@ class ReadMoreTextState extends State<ReadMoreText> {
                 : ""
           : "",
       style: defaultDelimiterStyle,
-      recognizer: TapGestureRecognizer()..onTap = _onTapLink,
+      recognizer: _tap(_onTapLink),
     );
 
     Widget result = LayoutBuilder(
@@ -262,12 +284,10 @@ class ReadMoreTextState extends State<ReadMoreText> {
     TextStyle? linkTextStyle,
     ValueChanged<String>? onPressed,
   }) {
-    final RegExp exp = RegExp(r"(?:(?:https?|ftp)://)?[\w/\-?=%.]+\.[\w/\-?=%.]+");
-
     final List<TextSpan> contents = <TextSpan>[];
 
-    while (exp.hasMatch(data)) {
-      final RegExpMatch? match = exp.firstMatch(data);
+    while (_urlExp.hasMatch(data)) {
+      final RegExpMatch? match = _urlExp.firstMatch(data);
 
       final String firstTextPart = data.substring(0, match!.start);
       final String linkTextPart = data.substring(match.start, match.end);
@@ -277,7 +297,7 @@ class ReadMoreTextState extends State<ReadMoreText> {
         TextSpan(
           text: linkTextPart,
           style: linkTextStyle,
-          recognizer: TapGestureRecognizer()..onTap = () => onPressed?.call(linkTextPart.trim()),
+          recognizer: _tap(() => onPressed?.call(linkTextPart.trim())),
         ),
       );
       data = data.substring(match.end, data.length);

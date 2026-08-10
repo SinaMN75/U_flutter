@@ -19,7 +19,7 @@ class UIpgSaleParams {
 
   factory UIpgSaleParams.fromMap(Map<String, dynamic> json) => UIpgSaleParams(
     amount: (json["amount"] as num).toDouble(),
-    tag: json["tag"] == null ? null : TagTxn.values.firstWhere((TagTxn e) => e.number == json["tag"]),
+    tag: json["tag"] == null ? null : TagTxn.values.firstWhereOrNull((TagTxn e) => e.number == json["tag"]),
     invoiceId: json["invoiceId"],
   );
 
@@ -28,7 +28,6 @@ class UIpgSaleParams {
   factory UIpgSaleParams.fromJson(String str) => UIpgSaleParams.fromMap(json.decode(str));
 }
 
-// Request body for polling/confirming the result of a started IPG charge.
 class UIpgVerifyParams {
   final String trackingNumber;
 

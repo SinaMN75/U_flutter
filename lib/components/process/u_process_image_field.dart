@@ -32,8 +32,8 @@ class _UProcessImagePickerFieldState extends State<UProcessImagePickerField> {
       action: (List<FileData> files) {
         if (files.isEmpty) return;
         final FileData file = files.first;
-        setState(() => _fileData = file);
         widget.processStepSend.fields.firstWhere((UProcessField f) => f.key == widget.field.key).value = file.bytes?.toBase64();
+        if (mounted) setState(() => _fileData = file);
       },
     );
   }

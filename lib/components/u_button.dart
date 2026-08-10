@@ -96,7 +96,8 @@ class _UButtonState extends State<UButton> {
 
   void startTimer() {
     timer?.cancel();
-    counter = widget.counter!;
+    // counterResetCounterOnTap can trigger startTimer even when no counter was provided, so guard the unwrap.
+    counter = widget.counter ?? 0;
     onTap = null;
     timer = Timer.periodic(const Duration(seconds: 1), (final Timer timer) {
       setState(() {

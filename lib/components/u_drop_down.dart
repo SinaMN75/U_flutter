@@ -121,6 +121,11 @@ class _UCategorySelectorState extends State<UCategorySelector> {
         return const CircularProgressIndicator().alignAtCenter();
       }
 
+      // No category selected yet (empty result or load error) — avoid the null-check crash on selectedCategory.value!.
+      if (selectedCategory.value == null) {
+        return const SizedBox.shrink();
+      }
+
       return Column(
         children: <Widget>[
           UTextFieldAutoComplete<UCategoryResponse>(
@@ -200,6 +205,8 @@ class _UCountryProvincePickerState extends State<UCountryProvincePicker> {
     city(i.cities.firstOrNull);
     cities(i.cities);
     widget.onProvinceChanged?.call(i);
+    // Province change resets the city, so notify the parent (matches _selectCountry).
+    widget.onCityChanged?.call(i.cities.firstOrNull);
     if (mounted) setState(() {});
   }
 

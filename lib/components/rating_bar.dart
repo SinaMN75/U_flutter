@@ -271,7 +271,7 @@ class _RatingBarState extends State<RatingBar> {
 
   void _onDragUpdate(DragUpdateDetails dragDetails) {
     if (!widget.tapOnlyMode) {
-      final RenderBox? box = navigatorKey.currentContext!.findRenderObject() as RenderBox?;
+      final RenderBox? box = context.findRenderObject() as RenderBox?;
       if (box == null) return;
 
       final Offset pos = box.globalToLocal(dragDetails.globalPosition);

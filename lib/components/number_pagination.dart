@@ -24,6 +24,27 @@ class UNumberPagination extends StatelessWidget {
   final Icon? prevIcon;
   final Icon? nextIcon;
 
+  // Computes the ordered pages to display; a null entry represents an ellipsis gap. Always includes
+  // page 1, the last page, and a window of +/- threshold around the current page. Iterates only the
+  // visible window (not every page), so it stays cheap even with thousands of pages, and never emits
+  // a page twice (the previous implementation double-rendered the first/last page).
+  List<int?> _visiblePages() {
+    if (totalPages <= 0) return <int?>[];
+    final Set<int> pages = <int>{1, totalPages};
+    for (int i = currentPage - threshold; i <= currentPage + threshold; i++) {
+      if (i >= 1 && i <= totalPages) pages.add(i);
+    }
+    final List<int> sorted = pages.toList()..sort();
+    final List<int?> result = <int?>[];
+    int? previous;
+    for (final int page in sorted) {
+      if (previous != null && page - previous > 1) result.add(null);
+      result.add(page);
+      previous = page;
+    }
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -38,31 +59,14 @@ class UNumberPagination extends StatelessWidget {
             icon: prevIcon ?? const Icon(Icons.chevron_left),
             onPressed: currentPage > 1 ? () => onPageChanged(currentPage - 1) : null,
           ),
-
-        // First page
-        if (currentPage > threshold + 1 && totalPages > threshold * 2) _buildPageNumber(1, selectedColor, unselectedColor),
-
-        // Left dots
-        if (currentPage > threshold + 2 && totalPages > threshold * 2)
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8),
-            child: Text("..."),
-          ),
-
-        // Middle numbers
-        for (int i = 1; i <= totalPages; i++)
-          if ((i >= currentPage - threshold && i <= currentPage + threshold) || i == 1 || i == totalPages) _buildPageNumber(i, selectedColor, unselectedColor),
-
-        // Right dots
-        if (currentPage < totalPages - threshold - 1 && totalPages > threshold * 2)
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8),
-            child: Text("..."),
-          ),
-
-        // Last page
-        if (currentPage < totalPages - threshold && totalPages > threshold * 2) _buildPageNumber(totalPages, selectedColor, unselectedColor),
-
+        for (final int? page in _visiblePages())
+          if (page == null)
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8),
+              child: Text("..."),
+            )
+          else
+            _buildPageNumber(page, selectedColor, unselectedColor),
         if (showPrevNext)
           IconButton(
             icon: nextIcon ?? const Icon(Icons.chevron_right),

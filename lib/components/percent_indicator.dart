@@ -635,7 +635,7 @@ class _LinearPainter extends CustomPainter {
     this.linearGradientBackgroundColor,
   }) {
     _paintBackground.color = backgroundColor;
-    _paintLine.color = progress.toString() == "0.0" ? progressColor.withValues(alpha: 0) : progressColor;
+    _paintLine.color = progress == 0 ? progressColor.withValues(alpha: 0) : progressColor;
   }
 
   final Paint _paintBackground = Paint();
