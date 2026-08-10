@@ -413,13 +413,9 @@ extension HTTP on Response? {
 
   bool isServerError() => (this?.statusCode ?? 999) >= 500 && (this?.statusCode ?? 999) <= 599;
 
-  void prettyLog({final String params = ""}) {
-    if (kDebugMode) {
-      developer.log(
-        "${this?.request?.method} - ${this?.request?.url} - ${this?.statusCode} \nPARAMS: $params \nRESPONSE: ${this?.body}",
-      );
-    }
-  }
+  void prettyLog({final String params = ""}) => developer.log(
+    "${this?.request?.method} - ${this?.request?.url} - ${this?.statusCode} \nPARAMS: $params \nRESPONSE: ${this?.body}",
+  );
 }
 
 class UDownload {

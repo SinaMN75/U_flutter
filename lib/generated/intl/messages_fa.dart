@@ -289,27 +289,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "dark": MessageLookupByLibrary.simpleMessage("تیره"),
     "darkMode": MessageLookupByLibrary.simpleMessage("حالت تیره"),
     "dashboard": MessageLookupByLibrary.simpleMessage("داشبورد"),
-    "storageManager": MessageLookupByLibrary.simpleMessage("مدیریت حافظه"),
-    "storageManagerSubtitle": MessageLookupByLibrary.simpleMessage(
-      "مشاهده و حذف تمام داده‌های ذخیره‌شده در حافظه محلی",
-    ),
-    "keyValueStorage": MessageLookupByLibrary.simpleMessage("کلید-مقدار"),
-    "fileStorage": MessageLookupByLibrary.simpleMessage("فایل‌ها"),
-    "storageKey": MessageLookupByLibrary.simpleMessage("کلید"),
-    "storageValue": MessageLookupByLibrary.simpleMessage("مقدار"),
-    "fileSizeLabel": MessageLookupByLibrary.simpleMessage("حجم"),
-    "totalItems": MessageLookupByLibrary.simpleMessage("تعداد کل"),
-    "totalSize": MessageLookupByLibrary.simpleMessage("حجم کل"),
-    "textFiles": MessageLookupByLibrary.simpleMessage("فایل‌های متنی"),
-    "binaryFiles": MessageLookupByLibrary.simpleMessage("فایل‌های باینری"),
-    "expiresAt": MessageLookupByLibrary.simpleMessage("انقضا"),
-    "deleteEntryConfirm": MessageLookupByLibrary.simpleMessage(
-      "آیا از حذف این مورد مطمئن هستید؟ این عمل قابل بازگشت نیست.",
-    ),
-    "clearAll": MessageLookupByLibrary.simpleMessage("حذف همه"),
-    "clearAllConfirm": MessageLookupByLibrary.simpleMessage(
-      "آیا از حذف تمام داده‌های ذخیره‌شده مطمئن هستید؟ این عمل قابل بازگشت نیست.",
-    ),
     "databaseConsole": MessageLookupByLibrary.simpleMessage(
       "کنسول پایگاه داده",
     ),
