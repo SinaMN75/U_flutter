@@ -25,7 +25,7 @@ class UAdminGroup {
     this.id,
     this.header,
     this.roles,
-    this.expanded = true,
+    this.expanded = false,
   });
 
   final String title;

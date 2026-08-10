@@ -872,7 +872,8 @@ class _ApiLogDetailView extends StatelessWidget {
 
   Widget _metaItem(BuildContext context, String label, String value) => ListTile(
     title: Text(label),
-    trailing: Text(value),
+    trailing: value.length <= 50 ? SelectableText(value) : null,
+    subtitle: value.length >= 50 ? SelectableText(value) : null,
   ).card(elevation: 0);
 
   Widget _exceptionBlock(BuildContext context) {
