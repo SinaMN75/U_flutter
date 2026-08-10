@@ -296,4 +296,11 @@ abstract class UAdminModules {
     page: () => const UAdminApiLogPage(),
     roles: roles,
   );
+
+  static UAdminModule storage({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.keyValueStorage,
+    icon: Icons.storage,
+    page: () => const UStorageManagerPage(),
+    roles: roles,
+  );
 }
