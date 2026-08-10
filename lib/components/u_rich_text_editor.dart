@@ -413,7 +413,7 @@ class UEditorBlock {
     this.imageUrl,
     this.imageAlt,
     this.imageWidth,
-    this.align = TextAlign.left,
+    this.align = TextAlign.start,
     this.indent = 0,
     this.checked = false,
     this.language,
@@ -444,7 +444,7 @@ class UEditorBlock {
     UBlockType type, {
     String text = "",
     List<UStyleSpan>? spans,
-    TextAlign align = TextAlign.left,
+    TextAlign align = TextAlign.start,
     int indent = 0,
     bool checked = false,
     String? language,
@@ -578,9 +578,11 @@ abstract class UHtmlDocument {
       case TextAlign.right:
       case TextAlign.end:
         return "right";
+      case TextAlign.left:
+        return "left";
       case TextAlign.justify:
         return "justify";
-      case TextAlign.left:
+      // start follows the ambient text direction, so it emits no CSS.
       case TextAlign.start:
         return null;
     }
@@ -795,17 +797,19 @@ abstract class UHtmlDocument {
 
   static TextAlign _alignOf(_Node node) {
     final String? style = node.attrs["style"];
-    if (style == null) return TextAlign.left;
+    if (style == null) return TextAlign.start;
     final RegExpMatch? m = RegExp(r"text-align\s*:\s*([a-z]+)").firstMatch(style.toLowerCase());
     switch (m?.group(1)) {
       case "center":
         return TextAlign.center;
       case "right":
         return TextAlign.right;
+      case "left":
+        return TextAlign.left;
       case "justify":
         return TextAlign.justify;
       default:
-        return TextAlign.left;
+        return TextAlign.start;
     }
   }
 
@@ -1259,9 +1263,9 @@ abstract class UEditorStyles {
     switch (type) {
       case UBlockType.quote:
         return Container(
-          padding: const EdgeInsets.only(left: 12, top: 4, bottom: 4),
+          padding: const EdgeInsetsDirectional.only(start: 12, top: 4, bottom: 4),
           decoration: BoxDecoration(
-            border: Border(left: BorderSide(width: 4, color: cs.primary)),
+            border: BorderDirectional(start: BorderSide(width: 4, color: cs.primary)),
           ),
           child: child,
         );
@@ -2376,7 +2380,7 @@ class _URichTextEditorState extends State<URichTextEditor> {
     final UEditorBlock b = _blocks[index];
     return Padding(
       key: ValueKey<String>(b.id),
-      padding: EdgeInsets.only(top: 3, bottom: 3, left: b.indent * UHtmlDocument.indentStep),
+      padding: EdgeInsetsDirectional.only(top: 3, bottom: 3, start: b.indent * UHtmlDocument.indentStep),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -2452,7 +2456,7 @@ class _URichTextEditorState extends State<URichTextEditor> {
       content = Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(padding: const EdgeInsets.only(top: 2, right: 8, left: 4), child: _listMarker(b, style)),
+          Padding(padding: const EdgeInsetsDirectional.only(top: 2, end: 8, start: 4), child: _listMarker(b, style)),
           field.expanded(),
         ],
       );
@@ -2486,7 +2490,7 @@ class _URichTextEditorState extends State<URichTextEditor> {
   }
 
   Widget _codeLanguageMenu(UEditorBlock b) => Align(
-    alignment: Alignment.centerLeft,
+    alignment: AlignmentDirectional.centerStart,
     child: UEditorDropdown<String>(
       label: (b.language ?? "").isEmpty ? U.s.codeLanguage : b.language!,
       tooltip: U.s.codeLanguage,
@@ -2571,11 +2575,7 @@ class _URichTextEditorState extends State<URichTextEditor> {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
       Align(
-        alignment: b.align == TextAlign.center
-            ? Alignment.center
-            : b.align == TextAlign.right
-            ? Alignment.centerRight
-            : Alignment.centerLeft,
+        alignment: _imageAlignment(b.align),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8),
           child: UImage(b.imageUrl ?? "", width: b.imageWidth ?? double.infinity, height: 220),
@@ -2612,6 +2612,22 @@ class _URichTextEditorState extends State<URichTextEditor> {
       ),
     ],
   ).pSymmetric(vertical: 6);
+
+  // Maps a block alignment to a directional alignment so images honour RTL/LTR.
+  AlignmentGeometry _imageAlignment(TextAlign align) {
+    switch (align) {
+      case TextAlign.center:
+        return Alignment.center;
+      case TextAlign.right:
+      case TextAlign.end:
+        return Alignment.centerRight;
+      case TextAlign.left:
+        return Alignment.centerLeft;
+      case TextAlign.start:
+      case TextAlign.justify:
+        return AlignmentDirectional.centerStart;
+    }
+  }
 
   void _setImageAlign(UEditorBlock b, TextAlign align) {
     setState(() => b.align = align);

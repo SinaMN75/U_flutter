@@ -166,7 +166,7 @@ class _UHtmlViewState extends State<UHtmlView> {
         return Padding(padding: pad, child: _code(b));
       default:
         return Padding(
-          padding: EdgeInsets.only(top: pad.top, bottom: pad.bottom, left: b.indent * UHtmlDocument.indentStep),
+          padding: EdgeInsetsDirectional.only(top: pad.top, bottom: pad.bottom, start: b.indent * UHtmlDocument.indentStep),
           child: UEditorStyles.decorate(context, b.type, _richText(b)),
         );
     }
@@ -201,15 +201,15 @@ class _UHtmlViewState extends State<UHtmlView> {
       children: <Widget>[
         UEditorStyles.decorate(context, UBlockType.code, SingleChildScrollView(scrollDirection: Axis.horizontal, child: _richText(b))),
         if ((b.language ?? "").isNotEmpty)
-          Positioned(
+          PositionedDirectional(
             top: 2,
-            left: 8,
+            start: 8,
             child: Text(b.language!, style: Theme.of(context).textTheme.labelSmall?.copyWith(color: cs.onSurfaceVariant)),
           ),
         if (widget.showCodeCopyButton)
-          Positioned(
+          PositionedDirectional(
             top: 0,
-            right: 0,
+            end: 0,
             child: IconButton(
               icon: Icon(Icons.copy_rounded, size: 16, color: cs.onSurfaceVariant),
               tooltip: U.s.copy,
@@ -264,11 +264,11 @@ class _UHtmlViewState extends State<UHtmlView> {
         : Text(b.type == UBlockType.numbered ? "$ordinal." : "•", style: style);
 
     return Padding(
-      padding: EdgeInsets.only(left: 8 + b.indent * UHtmlDocument.indentStep, top: 2, bottom: 2),
+      padding: EdgeInsetsDirectional.only(start: 8 + b.indent * UHtmlDocument.indentStep, top: 2, bottom: 2),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(padding: const EdgeInsets.only(right: 8), child: marker),
+          Padding(padding: const EdgeInsetsDirectional.only(end: 8), child: marker),
           _richText(b, strike: b.type == UBlockType.checklist && b.checked).expanded(),
         ],
       ),
@@ -350,7 +350,7 @@ class _UHtmlViewState extends State<UHtmlView> {
     return true;
   }
 
-  Alignment _alignmentOf(TextAlign align) {
+  AlignmentGeometry _alignmentOf(TextAlign align) {
     switch (align) {
       case TextAlign.center:
         return Alignment.center;
@@ -358,9 +358,10 @@ class _UHtmlViewState extends State<UHtmlView> {
       case TextAlign.end:
         return Alignment.centerRight;
       case TextAlign.left:
+        return Alignment.centerLeft;
       case TextAlign.start:
       case TextAlign.justify:
-        return Alignment.centerLeft;
+        return AlignmentDirectional.centerStart;
     }
   }
 }
