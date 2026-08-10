@@ -66,7 +66,7 @@ abstract class UHttpClient {
       onProgress(p);
     }
 
-    final bool hasNetworkConnection = await UNetwork.hasEthernet() || await UNetwork.hasCellular() || await UNetwork.hasWifi();
+    final bool hasNetworkConnection = await UNetwork.hasAnyConnection();
 
     if (!hasNetworkConnection && offline == false) {
       final String message = noNetworkMessage ?? U.s.connectionToNetworkWasNotPossible;
@@ -75,14 +75,16 @@ abstract class UHttpClient {
     }
 
     final Uri uri = _buildUri(endpoint, queryParams);
-    final String cacheKey = "cache_${method}_${uri.toString().replaceAll(RegExp(r"[^\w]"), "_")}_${body == null ? "" : jsonEncode(body).hashCode}";
+    final bool cacheEnabled = offline || cacheDuration != null;
+    final String cacheKey = cacheEnabled ? _cacheKey(method, uri, body) : "";
 
-    // getString auto-clears and returns null once cacheDuration has elapsed, forcing a fresh fetch
-    final String? cachedData = ULocalStorage.getString(cacheKey);
-    if (offline && cachedData != null) {
-      final Response response = Response(cachedData, 200, request: Request(method, uri));
-      onSuccess(response);
-      return UHttpClientResponse(response: cachedData);
+    if (offline) {
+      final String? cachedData = await _readCache(cacheKey);
+      if (cachedData != null) {
+        final Response response = Response(cachedData, 200, request: Request(method, uri));
+        onSuccess(response);
+        return UHttpClientResponse(response: cachedData);
+      }
     }
 
     final Response response;
@@ -191,11 +193,11 @@ abstract class UHttpClient {
       }
     }
 
-    response.prettyLog(params: jsonEncode(body));
+    if (kDebugMode) response.prettyLog(params: jsonEncode(body));
 
     try {
       if (response.statusCode >= 200 && response.statusCode <= 299) {
-        ULocalStorage.set(cacheKey, response.body, expireTime: cacheDuration);
+        if (cacheEnabled) await _writeCache(cacheKey, response.body, cacheDuration);
         onSuccess(response);
         return UHttpClientResponse(response: response.body);
       } else if (response.statusCode == Usc.expiredToken.number && !isRetryAfterRefresh && !endpoint.contains("/auth/")) {
@@ -265,7 +267,7 @@ abstract class UHttpClient {
       if (fields != null) request.fields.addAll(removeNullEntries(fields)!.map((String key, dynamic value) => MapEntry<String, String>(key, value is String ? value : jsonEncode(value))));
       request.files.addAll(files);
       final Response response = await request.send().timeout(timeout).then(Response.fromStream);
-      response.prettyLog(params: jsonEncode(fields));
+      if (kDebugMode) response.prettyLog(params: jsonEncode(fields));
       if (response.statusCode >= 200 && response.statusCode < 300)
         onSuccess?.call(response);
       else
@@ -326,6 +328,30 @@ abstract class UHttpClient {
     }
 
     return json;
+  }
+
+  static final RegExp _nonWord = RegExp(r"[^\w]");
+
+  static String _cacheKey(final String method, final Uri uri, final dynamic body) => "cache_${method}_${uri.toString().replaceAll(_nonWord, "_")}_${body == null ? "" : jsonEncode(body).hashCode}";
+
+  static Future<void> _writeCache(final String key, final String body, final Duration? cacheDuration) async {
+    if (kIsWeb) {
+      ULocalStorage.set(key, body, expireTime: cacheDuration);
+      return;
+    }
+    await UFileStorage.set(key, body);
+    ULocalStorage.set("${key}_exp", cacheDuration == null ? 0 : DateTime.now().add(cacheDuration).millisecondsSinceEpoch);
+  }
+
+  static Future<String?> _readCache(final String key) async {
+    if (kIsWeb) return ULocalStorage.getString(key);
+    final int? expiry = ULocalStorage.getInt("${key}_exp");
+    if (expiry != null && expiry > 0 && DateTime.now().millisecondsSinceEpoch > expiry) {
+      await UFileStorage.remove(key);
+      await ULocalStorage.remove("${key}_exp");
+      return null;
+    }
+    return UFileStorage.getString(key);
   }
 }
 

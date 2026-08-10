@@ -2,16 +2,11 @@ import "dart:collection";
 
 import "package:flutter/widgets.dart";
 
-/// Collects every [Rx] read while an [Obx] builder runs, so the [Obx] only
-/// subscribes to the observables it actually depends on.
 class _RxObserver {
   static _RxObserver? active;
   final Set<Rx<dynamic>> read = <Rx<dynamic>>{};
 }
 
-/// A minimal observable value. Reading [value] inside an [Obx] builder records a
-/// dependency; assigning a different value notifies listeners so those [Obx]
-/// widgets rebuild.
 class Rx<T> extends ChangeNotifier {
   Rx(this._value);
 
@@ -28,13 +23,11 @@ class Rx<T> extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Callable setter, e.g. `state(PageState.loading)` — sets and returns the value.
   T call(T newValue) {
     value = newValue;
     return _value;
   }
 
-  /// Force listeners to rebuild even when the value's identity did not change.
   void refresh() => notifyListeners();
 
   @override
@@ -67,7 +60,6 @@ class RxBool extends Rx<bool> {
   void toggle() => value = !_value;
 }
 
-/// Nullable observable (`Rxn<T>` holds a `T?`).
 class Rxn<T> extends Rx<T?> {
   Rxn([super.initial]);
 }
@@ -98,7 +90,6 @@ class RxnBool extends Rx<bool?> {
   void toggle() => value = !(value ?? false);
 }
 
-/// Page-load lifecycle used by list and detail controllers.
 enum PageState {
   initial,
   loading,
@@ -120,8 +111,6 @@ enum PageState {
   bool isEmpty() => this == PageState.empty;
 }
 
-/// Observable [PageState] with built-in transitions and queries — e.g.
-/// `state.loading()`, `state.isLoaded()`. Defaults to [PageState.initial].
 class RxState extends Rx<PageState> {
   RxState([super.initial = PageState.initial]);
 
@@ -150,8 +139,6 @@ class RxState extends Rx<PageState> {
   PageState emptying() => this(PageState.empty);
 }
 
-/// Observable list. Mutating methods notify listeners; it behaves like a normal
-/// [List] elsewhere thanks to [ListMixin].
 class RxList<E> extends Rx<List<E>> with ListMixin<E> {
   RxList([List<E>? initial]) : super(initial ?? <E>[]);
 
@@ -191,7 +178,6 @@ class RxList<E> extends Rx<List<E>> with ListMixin<E> {
     refresh();
   }
 
-  /// Replace all elements with [items] and notify once.
   void assignAll(Iterable<E> items) {
     _value
       ..clear()
@@ -199,7 +185,6 @@ class RxList<E> extends Rx<List<E>> with ListMixin<E> {
     refresh();
   }
 
-  /// Replace all elements with a single [item] and notify once.
   void assign(E item) {
     _value
       ..clear()
@@ -207,8 +192,69 @@ class RxList<E> extends Rx<List<E>> with ListMixin<E> {
     refresh();
   }
 
-  /// Callable setter that ignores a `null` assignment, e.g.
-  /// `list(response.result)` when `result` may be null.
+  @override
+  void sort([int Function(E a, E b)? compare]) {
+    _value.sort(compare);
+    refresh();
+  }
+
+  @override
+  void insert(int index, E element) {
+    _value.insert(index, element);
+    refresh();
+  }
+
+  @override
+  void insertAll(int index, Iterable<E> iterable) {
+    _value.insertAll(index, iterable);
+    refresh();
+  }
+
+  @override
+  E removeAt(int index) {
+    final E removed = _value.removeAt(index);
+    refresh();
+    return removed;
+  }
+
+  @override
+  E removeLast() {
+    final E removed = _value.removeLast();
+    refresh();
+    return removed;
+  }
+
+  @override
+  bool remove(Object? element) {
+    final bool removed = _value.remove(element);
+    if (removed) refresh();
+    return removed;
+  }
+
+  @override
+  void removeWhere(bool Function(E element) test) {
+    _value.removeWhere(test);
+    refresh();
+  }
+
+  @override
+  void retainWhere(bool Function(E element) test) {
+    _value.retainWhere(test);
+    refresh();
+  }
+
+  @override
+  void removeRange(int start, int end) {
+    _value.removeRange(start, end);
+    refresh();
+  }
+
+  @override
+  void clear() {
+    _value.clear();
+    refresh();
+  }
+
   @override
   List<E> call([List<E>? newValue]) {
     if (newValue != null) value = newValue;
@@ -258,7 +304,18 @@ class RxMap<K, V> extends Rx<Map<K, V>> with MapMixin<K, V> {
     refresh();
   }
 
-  /// Replace all entries with [items] and notify once.
+  @override
+  void removeWhere(bool Function(K key, V value) test) {
+    _value.removeWhere(test);
+    refresh();
+  }
+
+  @override
+  void addEntries(Iterable<MapEntry<K, V>> entries) {
+    _value.addEntries(entries);
+    refresh();
+  }
+
   void assignAll(Map<K, V> items) {
     _value
       ..clear()
@@ -266,7 +323,6 @@ class RxMap<K, V> extends Rx<Map<K, V>> with MapMixin<K, V> {
     refresh();
   }
 
-  /// Callable setter that ignores a `null` assignment.
   @override
   Map<K, V> call([Map<K, V>? newValue]) {
     if (newValue != null) value = newValue;
@@ -274,8 +330,6 @@ class RxMap<K, V> extends Rx<Map<K, V>> with MapMixin<K, V> {
   }
 }
 
-/// Observable set. Mutating methods notify listeners; behaves like a normal
-/// [Set] elsewhere thanks to [SetMixin].
 class RxSet<E> extends Rx<Set<E>> with SetMixin<E> {
   RxSet([Set<E>? initial]) : super(initial ?? <E>{});
 
@@ -332,7 +386,31 @@ class RxSet<E> extends Rx<Set<E>> with SetMixin<E> {
     refresh();
   }
 
-  /// Replace all elements with [items] and notify once.
+  // Notify once instead of once-per-element (see RxList note).
+  @override
+  void removeWhere(bool Function(E element) test) {
+    _value.removeWhere(test);
+    refresh();
+  }
+
+  @override
+  void retainWhere(bool Function(E element) test) {
+    _value.retainWhere(test);
+    refresh();
+  }
+
+  @override
+  void removeAll(Iterable<Object?> elements) {
+    _value.removeAll(elements);
+    refresh();
+  }
+
+  @override
+  void retainAll(Iterable<Object?> elements) {
+    _value.retainAll(elements);
+    refresh();
+  }
+
   void assignAll(Iterable<E> items) {
     _value
       ..clear()
@@ -340,7 +418,6 @@ class RxSet<E> extends Rx<Set<E>> with SetMixin<E> {
     refresh();
   }
 
-  /// Callable setter that ignores a `null` assignment.
   @override
   Set<E> call([Set<E>? newValue]) {
     if (newValue != null) value = newValue;
@@ -416,8 +493,6 @@ extension RxnBoolExt on bool? {
   RxnBool get obs => RxnBool(this);
 }
 
-/// Rebuilds its [builder] whenever any [Rx] read inside it changes. Drop-in
-/// replacement for GetX's `Obx`.
 class Obx extends StatefulWidget {
   const Obx(this.builder, {super.key});
 

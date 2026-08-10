@@ -47,6 +47,12 @@ abstract class UNetwork {
     }
     return true;
   }
+
+  static Future<bool> hasAnyConnection() async {
+    if (kIsWeb) return true;
+    final List<ConnectivityResult> result = await Connectivity().checkConnectivity();
+    return result.contains(ConnectivityResult.mobile) || result.contains(ConnectivityResult.wifi) || result.contains(ConnectivityResult.ethernet);
+  }
 }
 
 class AddressCheckOptions {

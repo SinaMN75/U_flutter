@@ -63,15 +63,23 @@ extension OptionalStringExtension on String? {
 }
 
 extension StringExtensions on String {
+  static final RegExp _nonDigits = RegExp("[^0-9]");
+  static final RegExp _thousands = RegExp(r"(\d{1,3})(?=(\d{3})+(?!\d))");
+  static final RegExp _emailPattern = RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
+  static final RegExp _urlPattern = RegExp(r"^(https?://)?([\w\-]+\.)+[\w\-]+(:\d+)?(/\S*)?$");
+  static final RegExp _phonePattern = RegExp(r"^\+?[\d\s-]{8,15}$");
+  static final RegExp _alphanumericPattern = RegExp(r"^[a-zA-Z0-9]+$");
+  static final RegExp _strongPasswordPattern = RegExp(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$");
+
   Uint8List toBytesFromBase64() => base64.decode(this);
 
   Uint8List toBytesFromBase64Url() => base64Url.decode(this);
 
   String subStringIfExist(final int start, final int end) => length > end ? substring(start, end) : this;
 
-  String numberString() => replaceAll(RegExp("[^0-9]"), "");
+  String numberString() => replaceAll(_nonDigits, "");
 
-  int number() => replaceAll(RegExp("[^0-9]"), "").toInt();
+  int number() => replaceAll(_nonDigits, "").toInt();
 
   String? nullIfEmpty() => isEmpty ? null : this;
 
@@ -89,7 +97,7 @@ extension StringExtensions on String {
 
   double toDouble() => double.tryParse(this) ?? 0;
 
-  String separateNumbers3By3() => replaceAllMapped(RegExp(r"(\d{1,3})(?=(\d{3})+(?!\d))"), (final Match m) => "${m[1]},");
+  String separateNumbers3By3() => replaceAllMapped(_thousands, (final Match m) => "${m[1]},");
 
   String separateCharacters(final int number, final String separator) => replaceAllMapped(
     RegExp("(\\d{1,$number})(?=(\\d{$number})+(?!\\d))"),
@@ -330,27 +338,17 @@ extension StringExtensions on String {
     return utf8.decode(bytes);
   }
 
-  String extractLatinNumber() => toLatinNumber().replaceAll(RegExp(r"[^\d]"), "");
+  String extractLatinNumber() => toLatinNumber().replaceAll(_nonDigits, "");
 
-  bool get isValidEmail => RegExp(
-    r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
-  ).hasMatch(this);
+  bool get isValidEmail => _emailPattern.hasMatch(this);
 
-  bool get isValidUrl => RegExp(
-    r"^(https?://)?([\w\-]+\.)+[\w\-]+(:\d+)?(/\S*)?$",
-  ).hasMatch(this);
+  bool get isValidUrl => _urlPattern.hasMatch(this);
 
-  bool get isValidPhone => RegExp(
-    r"^\+?[\d\s-]{8,15}$",
-  ).hasMatch(this);
+  bool get isValidPhone => _phonePattern.hasMatch(this);
 
-  bool get isAlphanumeric => RegExp(
-    r"^[a-zA-Z0-9]+$",
-  ).hasMatch(this);
+  bool get isAlphanumeric => _alphanumericPattern.hasMatch(this);
 
-  bool get isStrongPassword => RegExp(
-    r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$",
-  ).hasMatch(this);
+  bool get isStrongPassword => _strongPasswordPattern.hasMatch(this);
 }
 
 extension Base64BytesExtensions on Uint8List {

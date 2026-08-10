@@ -32,15 +32,20 @@ class _CachedNetworkImageState extends State<CachedNetworkImage> {
   }
 
   Future<Uint8List?> _loadImage() async {
-    final String? cachedBase64 = ULocalStorage.getString(widget.imageUrl);
-    if (cachedBase64 != null) {
-      return base64.decode(cachedBase64);
+    final String diskKey = "img_${widget.imageUrl.hashCode}";
+    if (kIsWeb) {
+      final String? cachedBase64 = ULocalStorage.getString(widget.imageUrl);
+      if (cachedBase64 != null) return base64.decode(cachedBase64);
+    } else {
+      final Uint8List? cachedBytes = await UFileStorage.getBytes(diskKey);
+      if (cachedBytes != null) return cachedBytes;
     }
     try {
       final Response response = await get(Uri.parse(widget.imageUrl));
       if (response.statusCode == 200) {
         final Uint8List bytes = response.bodyBytes;
-        ULocalStorage.set(widget.imageUrl, base64.encode(bytes));
+        if (kIsWeb) ULocalStorage.set(widget.imageUrl, base64.encode(bytes));
+         else await UFileStorage.setBytes(diskKey, bytes);
         return bytes;
       }
     } catch (e) {
@@ -53,16 +58,17 @@ class _CachedNetworkImageState extends State<CachedNetworkImage> {
   Widget build(BuildContext context) => FutureBuilder<Uint8List?>(
     future: _imageDataFuture,
     builder: (BuildContext context, AsyncSnapshot<Uint8List?> snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return widget.placeholder ?? const Center(child: CircularProgressIndicator());
-      } else if (snapshot.hasError || snapshot.data == null) {
-        return widget.errorWidget ?? const Icon(Icons.error);
-      } else {
+      if (snapshot.connectionState == ConnectionState.waiting) return widget.placeholder ?? const Center(child: CircularProgressIndicator());
+       else if (snapshot.hasError || snapshot.data == null) return widget.errorWidget ?? const Icon(Icons.error);
+       else {
+        final double dpr = MediaQuery.maybeDevicePixelRatioOf(context) ?? 1.0;
         return Image.memory(
           snapshot.data!,
           width: widget.width,
           height: widget.height,
           fit: widget.fit,
+          cacheWidth: widget.width == null ? null : (widget.width! * dpr).round(),
+          cacheHeight: widget.height == null ? null : (widget.height! * dpr).round(),
         );
       }
     },

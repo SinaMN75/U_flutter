@@ -126,7 +126,7 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
           ),
         ],
       ),
-    );
+    ).whenComplete(reason.dispose);
   }
 
   void _showDetailDialog(UMoadiResponse i) => UNavigator.dialog(

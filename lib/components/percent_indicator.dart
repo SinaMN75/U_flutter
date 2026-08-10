@@ -119,30 +119,21 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator> wit
           Tween<double>(begin: 0, end: widget.percent).animate(
             CurvedAnimation(parent: _animationController!, curve: widget.curve),
           )..addListener(() {
-            setState(() {
-              _percent = _animation.value;
-            });
-            if (widget.restartAnimation && _percent == 1.0) {
-              _animationController!.repeat(min: 0, max: 1);
-            }
+            _percent = _animation.value;
+            if (widget.restartAnimation && _percent == 1.0) _animationController!.repeat(min: 0, max: 1);
           });
       _animationController!.addStatusListener((AnimationStatus status) {
-        if (widget.onAnimationEnd != null && status == AnimationStatus.completed) {
-          widget.onAnimationEnd!();
-        }
+        if (widget.onAnimationEnd != null && status == AnimationStatus.completed) widget.onAnimationEnd!();
       });
       _animationController!.forward();
-    } else {
+    } else
       _updateProgress();
-    }
     _diameter = widget.radius * 2;
     super.initState();
   }
 
   void _checkIfNeedCancelAnimation(CircularPercentIndicator oldWidget) {
-    if (oldWidget.animation && !widget.animation && _animationController != null) {
-      _animationController!.stop();
-    }
+    if (oldWidget.animation && !widget.animation && _animationController != null) _animationController!.stop();
   }
 
   @override
@@ -151,76 +142,77 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator> wit
     if (oldWidget.percent != widget.percent || oldWidget.startAngle != widget.startAngle) {
       if (_animationController != null) {
         _animationController!.duration = Duration(milliseconds: widget.animationDuration);
-        _animation =
-            Tween<double>(
-              begin: widget.animateFromLastPercent ? oldWidget.percent : 0.0,
-              end: widget.percent,
-            ).animate(
-              CurvedAnimation(parent: _animationController!, curve: widget.curve),
-            );
+        _animation = Tween<double>(
+          begin: widget.animateFromLastPercent ? oldWidget.percent : 0.0,
+          end: widget.percent,
+        ).animate(CurvedAnimation(parent: _animationController!, curve: widget.curve));
         _animationController!.forward(from: 0);
-      } else {
+      } else
         _updateProgress();
-      }
     }
     _checkIfNeedCancelAnimation(oldWidget);
   }
 
-  void _updateProgress() {
-    setState(() => _percent = widget.percent);
-  }
+  void _updateProgress() => setState(() => _percent = widget.percent);
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
     final List<Widget> items = List<Widget>.empty(growable: true);
-    if (widget.header != null) {
-      items.add(widget.header!);
-    }
-    items.add(
-      SizedBox(
-        height: _diameter,
-        width: _diameter,
-        child: Stack(
-          children: <Widget>[
-            CustomPaint(
-              painter: _CirclePainter(
-                progress: _percent * 360,
-                progressColor: widget.progressColor ?? Theme.of(context).colorScheme.primary,
-                backgroundColor: widget.backgroundColor,
-                startAngle: widget.startAngle,
-                circularStrokeCap: widget.circularStrokeCap,
-                radius: widget.radius - widget.lineWidth / 2,
-                lineWidth: widget.lineWidth,
-                backgroundWidth: widget.backgroundWidth >= 0.0 ? (widget.backgroundWidth) : widget.lineWidth,
-                arcBackgroundColor: widget.arcBackgroundColor,
-                arcType: widget.arcType,
-                reverse: widget.reverse,
-                linearGradient: widget.linearGradient,
-                maskFilter: widget.maskFilter,
-                rotateLinearGradient: widget.rotateLinearGradient,
-              ),
-              child: (widget.center != null) ? Center(child: widget.center) : const SizedBox.expand(),
+    if (widget.header != null) items.add(widget.header!);
+    Widget buildIndicator() => SizedBox(
+      height: _diameter,
+      width: _diameter,
+      child: Stack(
+        children: <Widget>[
+          CustomPaint(
+            painter: _CirclePainter(
+              progress: _percent * 360,
+              progressColor: widget.progressColor ?? Theme.of(context).colorScheme.primary,
+              backgroundColor: widget.backgroundColor,
+              startAngle: widget.startAngle,
+              circularStrokeCap: widget.circularStrokeCap,
+              radius: widget.radius - widget.lineWidth / 2,
+              lineWidth: widget.lineWidth,
+              backgroundWidth: widget.backgroundWidth >= 0.0 ? (widget.backgroundWidth) : widget.lineWidth,
+              arcBackgroundColor: widget.arcBackgroundColor,
+              arcType: widget.arcType,
+              reverse: widget.reverse,
+              linearGradient: widget.linearGradient,
+              maskFilter: widget.maskFilter,
+              rotateLinearGradient: widget.rotateLinearGradient,
             ),
-            if (widget.widgetIndicator != null && widget.animation)
-              Positioned.fill(
+            child: (widget.center != null) ? Center(child: widget.center) : const SizedBox.expand(),
+          ),
+          if (widget.widgetIndicator != null && widget.animation)
+            Positioned.fill(
+              child: Transform.rotate(
+                angle: radians((widget.circularStrokeCap != CircularStrokeCap.butt && widget.reverse) ? -15 : 0).toDouble(),
                 child: Transform.rotate(
-                  angle: radians((widget.circularStrokeCap != CircularStrokeCap.butt && widget.reverse) ? -15 : 0).toDouble(),
-                  child: Transform.rotate(
-                    angle: getCurrentPercent(_percent),
-                    child: Transform.translate(
-                      offset: Offset(
-                        (widget.circularStrokeCap != CircularStrokeCap.butt) ? widget.lineWidth / 2 : 0,
-                        -widget.radius + widget.lineWidth / 2,
-                      ),
-                      child: widget.widgetIndicator,
+                  angle: getCurrentPercent(_percent),
+                  child: Transform.translate(
+                    offset: Offset(
+                      (widget.circularStrokeCap != CircularStrokeCap.butt) ? widget.lineWidth / 2 : 0,
+                      -widget.radius + widget.lineWidth / 2,
                     ),
+                    child: widget.widgetIndicator,
                   ),
                 ),
               ),
-          ],
-        ),
+            ),
+        ],
       ),
+    );
+    items.add(
+      widget.animation
+          ? AnimatedBuilder(
+              animation: _animation,
+              builder: (BuildContext context, Widget? child) {
+                _percent = _animation.value;
+                return buildIndicator();
+              },
+            )
+          : buildIndicator(),
     );
     if (widget.footer != null) {
       items.add(widget.footer!);
@@ -519,22 +511,15 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator> with Si
           Tween<double>(begin: 0, end: widget.percent).animate(
             CurvedAnimation(parent: _animationController!, curve: widget.curve),
           )..addListener(() {
-            setState(() {
-              _percent = _animation.value;
-            });
-            if (widget.restartAnimation && _percent == 1.0) {
-              _animationController!.repeat(min: 0, max: 1);
-            }
+            _percent = _animation.value;
+            if (widget.restartAnimation && _percent == 1.0) _animationController!.repeat(min: 0, max: 1);
           });
       _animationController!.addStatusListener((AnimationStatus status) {
-        if (widget.onAnimationEnd != null && status == AnimationStatus.completed) {
-          widget.onAnimationEnd!();
-        }
+        if (widget.onAnimationEnd != null && status == AnimationStatus.completed) widget.onAnimationEnd!();
       });
       _animationController!.forward();
-    } else {
+    } else
       _updateProgress();
-    }
     super.initState();
   }
 
@@ -561,71 +546,66 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator> with Si
     _checkIfNeedCancelAnimation(oldWidget);
   }
 
-  void _updateProgress() {
-    setState(() {
-      _percent = widget.percent;
-    });
-  }
+  void _updateProgress() => setState(() => _percent = widget.percent);
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
     final List<Widget> items = List<Widget>.empty(growable: true);
-    if (widget.leading != null) {
-      items.add(widget.leading!);
-    }
+    if (widget.leading != null) items.add(widget.leading!);
     final bool hasSetWidth = widget.width != null;
-    final double percentPositionedHorizontal = _containerWidth * _percent - _indicatorWidth / 3;
-    final Container containerWidget = Container(
-      width: hasSetWidth ? widget.width : double.infinity,
-      height: widget.lineHeight,
-      padding: widget.padding,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: <Widget>[
-          CustomPaint(
-            key: _containerKey,
-            painter: _LinearPainter(
-              isRTL: widget.isRTL,
-              progress: _percent,
-              progressColor: widget.progressColor,
-              linearGradient: widget.linearGradient,
-              backgroundColor: widget.backgroundColor,
-              barRadius: widget.barRadius ?? Radius.zero,
-              linearGradientBackgroundColor: widget.linearGradientBackgroundColor,
-              maskFilter: widget.maskFilter,
-              clipLinearGradient: widget.clipLinearGradient,
+    Container buildContainer() {
+      final double percentPositionedHorizontal = _containerWidth * _percent - _indicatorWidth / 3;
+      return Container(
+        width: hasSetWidth ? widget.width : double.infinity,
+        height: widget.lineHeight,
+        padding: widget.padding,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: <Widget>[
+            CustomPaint(
+              key: _containerKey,
+              painter: _LinearPainter(
+                isRTL: widget.isRTL,
+                progress: _percent,
+                progressColor: widget.progressColor,
+                linearGradient: widget.linearGradient,
+                backgroundColor: widget.backgroundColor,
+                barRadius: widget.barRadius ?? Radius.zero,
+                linearGradientBackgroundColor: widget.linearGradientBackgroundColor,
+                maskFilter: widget.maskFilter,
+                clipLinearGradient: widget.clipLinearGradient,
+              ),
+              child: (widget.center != null) ? Center(child: widget.center) : Container(),
             ),
-            child: (widget.center != null) ? Center(child: widget.center) : Container(),
-          ),
-          if (widget.widgetIndicator != null && _indicatorWidth == 0)
-            Opacity(
-              opacity: 0,
-              key: _keyIndicator,
-              child: widget.widgetIndicator,
-            ),
-          if (widget.widgetIndicator != null && _containerWidth > 0 && _indicatorWidth > 0)
-            Positioned(
-              right: widget.isRTL ? percentPositionedHorizontal : null,
-              left: !widget.isRTL ? percentPositionedHorizontal : null,
-              top: _containerHeight / 2 - _indicatorHeight,
-              child: widget.widgetIndicator!,
-            ),
-        ],
-      ),
-    );
-    if (hasSetWidth) {
-      items.add(containerWidget);
-    } else {
-      items.add(
-        Expanded(
-          child: containerWidget,
+            if (widget.widgetIndicator != null && _indicatorWidth == 0) Opacity(opacity: 0, key: _keyIndicator, child: widget.widgetIndicator),
+            if (widget.widgetIndicator != null && _containerWidth > 0 && _indicatorWidth > 0)
+              Positioned(
+                right: widget.isRTL ? percentPositionedHorizontal : null,
+                left: !widget.isRTL ? percentPositionedHorizontal : null,
+                top: _containerHeight / 2 - _indicatorHeight,
+                child: widget.widgetIndicator!,
+              ),
+          ],
         ),
       );
     }
-    if (widget.trailing != null) {
-      items.add(widget.trailing!);
+
+    final Widget indicator = widget.animation
+        ? AnimatedBuilder(
+            animation: _animation,
+            builder: (BuildContext context, Widget? child) {
+              _percent = _animation.value;
+              return buildContainer();
+            },
+          )
+        : buildContainer();
+    if (hasSetWidth) {
+      items.add(indicator);
+    } else {
+      items.add(Expanded(child: indicator));
     }
+    if (widget.trailing != null) items.add(widget.trailing!);
     return Material(
       color: Colors.transparent,
       child: ColoredBox(

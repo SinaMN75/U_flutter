@@ -106,10 +106,9 @@ class ScrollingTextState extends State<ScrollingText> with SingleTickerProviderS
 
   @override
   void dispose() {
+    timer?.cancel();
+    scrollController.dispose();
     super.dispose();
-    if (timer != null) {
-      timer!.cancel();
-    }
   }
 
   @override

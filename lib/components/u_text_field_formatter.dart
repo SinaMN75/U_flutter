@@ -1,6 +1,8 @@
 import "package:u/utilities.dart";
 
 class UCurrencyInputFormatter extends TextInputFormatter {
+  static final RegExp _nonNumeric = RegExp(r"[^\d.]");
+
   final String thousandSeparator;
   final String decimalSeparator;
   final int maxDigits;
@@ -70,7 +72,7 @@ class UCurrencyInputFormatter extends TextInputFormatter {
     TextEditingValue oldValue,
     TextEditingValue newValue,
   ) {
-    final String cleanedText = newValue.text.toLatinNumber().replaceAll(RegExp(r"[^\d.]"), "");
+    final String cleanedText = newValue.text.toLatinNumber().replaceAll(_nonNumeric, "");
 
     final List<String> parts = cleanedText.split(".");
     String integerPart = parts[0];
@@ -111,7 +113,7 @@ class UCurrencyInputFormatter extends TextInputFormatter {
   String _formatText(String text) {
     if (text.isEmpty) return "";
 
-    final String cleanedText = text.toLatinNumber().replaceAll(RegExp(r"[^\d.]"), "");
+    final String cleanedText = text.toLatinNumber().replaceAll(_nonNumeric, "");
 
     final List<String> parts = cleanedText.split(".");
     String integerPart = parts[0];

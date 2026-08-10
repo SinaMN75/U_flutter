@@ -139,6 +139,11 @@ class PersianTools {
 
   static const String _faNumber = "۰۱۲۳۴۵۶۷۸۹";
   static const String _arNumber = "٠١٢٣٤٥٦٧٨٩";
+
+  static final RegExp _asciiDigits = RegExp("[0-9]");
+  static final RegExp _faDigits = RegExp("[$_faNumber]");
+  static final RegExp _arDigits = RegExp("[$_arNumber]");
+  static final RegExp _thousandsGroup = RegExp(r"(\d)(?=(\d{3})+(?!\d))");
   static const Map<int, String> _numberToWord = <int, String>{
     0: "",
     1: "یک",
@@ -633,21 +638,21 @@ class PersianTools {
     final String str = number.toString();
     final List<String> parts = str.split(".");
     final String integer = parts[0].replaceAllMapped(
-      RegExp(r"(\d)(?=(\d{3})+(?!\d))"),
+      _thousandsGroup,
       (Match m) => "${m[1]},",
     );
     return parts.length > 1 ? "$integer.${parts[1]}" : integer;
   }
 
-  static String _convertEnToFa(String digits) => digits.replaceAllMapped(RegExp("[0-9]"), (Match m) => _faNumber[int.parse(m.group(0)!)]);
+  static String _convertEnToFa(String digits) => digits.replaceAllMapped(_asciiDigits, (Match m) => _faNumber[int.parse(m.group(0)!)]);
 
-  static String _convertEnToAr(String digits) => digits.replaceAllMapped(RegExp("[0-9]"), (Match m) => _arNumber[int.parse(m.group(0)!)]);
+  static String _convertEnToAr(String digits) => digits.replaceAllMapped(_asciiDigits, (Match m) => _arNumber[int.parse(m.group(0)!)]);
 
-  static String _convertFaToEn(String digits) => digits.replaceAllMapped(RegExp("[$_faNumber]"), (Match m) => _faNumber.indexOf(m.group(0)!).toString());
+  static String _convertFaToEn(String digits) => digits.replaceAllMapped(_faDigits, (Match m) => _faNumber.indexOf(m.group(0)!).toString());
 
-  static String _convertArToFa(String digits) => digits.replaceAllMapped(RegExp("[$_arNumber]"), (Match m) => _faNumber[_arNumber.indexOf(m.group(0)!)]);
+  static String _convertArToFa(String digits) => digits.replaceAllMapped(_arDigits, (Match m) => _faNumber[_arNumber.indexOf(m.group(0)!)]);
 
-  static String _convertArToEn(String digits) => digits.replaceAllMapped(RegExp("[$_arNumber]"), (Match m) => _arNumber.indexOf(m.group(0)!).toString());
+  static String _convertArToEn(String digits) => digits.replaceAllMapped(_arDigits, (Match m) => _arNumber.indexOf(m.group(0)!).toString());
 
   static String _convertNumberToWords(int number) {
     final List<String> result = <String>[];

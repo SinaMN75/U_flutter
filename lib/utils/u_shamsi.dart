@@ -1,5 +1,7 @@
 // Abstract base class for date formatting
 abstract class DateFormatter {
+  static final RegExp _asciiDigits = RegExp("[0-9]");
+
   final Date date;
 
   const DateFormatter(this.date);
@@ -38,7 +40,7 @@ abstract class DateFormatter {
   String get wN;
 
   // Persian number formatting
-  String toPersian(String input) => input.replaceAllMapped(RegExp("[0-9]"), (Match m) => "۰۱۲۳۴۵۶۷۸۹"[int.parse(m.group(0)!)]);
+  String toPersian(String input) => input.replaceAllMapped(_asciiDigits, (Match m) => "۰۱۲۳۴۵۶۷۸۹"[int.parse(m.group(0)!)]);
 }
 
 // Abstract base class for dates

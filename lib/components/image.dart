@@ -69,7 +69,11 @@ class UImage extends StatelessWidget {
             );
           }
         } else {
-          if (source.startsWith("http")) {
+          if (source.endsWith(".json")) {
+            return source.startsWith("http")
+                ? Lottie.network(source, width: width, height: height, fit: fit, repeat: true)
+                : Lottie.asset(source, width: width, height: height, fit: fit, repeat: true);
+          } else if (source.startsWith("http")) {
             return UImageNetwork(
               source,
               width: width,
@@ -79,10 +83,6 @@ class UImage extends StatelessWidget {
               color: color,
               placeholder: placeholder,
             );
-          } else if (source.startsWith("http") && source.endsWith(".json")) {
-            return Lottie.network(source, width: width, height: height, fit: fit, repeat: true);
-          } else if (source.endsWith(".json")) {
-            return Lottie.asset(source, width: width, height: height, fit: fit, repeat: true);
           } else {
             return UImageAsset(
               source,
@@ -180,6 +180,8 @@ class UImageAsset extends StatelessWidget {
           width: width,
           height: height,
           fit: fit,
+          cacheWidth: width == null ? null : (width! * (MediaQuery.maybeDevicePixelRatioOf(context) ?? 1.0)).round(),
+          cacheHeight: height == null ? null : (height! * (MediaQuery.maybeDevicePixelRatioOf(context) ?? 1.0)).round(),
           errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) => placeholder == null
               ? SizedBox(width: width, height: height)
               : UImageAsset(
@@ -293,13 +295,18 @@ class UImageFile extends StatelessWidget {
   final double borderRadius;
 
   @override
-  Widget build(final BuildContext context) => Image.file(
-    file,
-    color: color,
-    width: width,
-    height: height,
-    fit: fit,
-  ).container(radius: borderRadius);
+  Widget build(final BuildContext context) {
+    final double dpr = MediaQuery.maybeDevicePixelRatioOf(context) ?? 1.0;
+    return Image.file(
+      file,
+      color: color,
+      width: width,
+      height: height,
+      fit: fit,
+      cacheWidth: width == null ? null : (width! * dpr).round(),
+      cacheHeight: height == null ? null : (height! * dpr).round(),
+    ).container(radius: borderRadius);
+  }
 }
 
 class UImageMemory extends StatelessWidget {
@@ -323,21 +330,26 @@ class UImageMemory extends StatelessWidget {
   final String? placeholder;
 
   @override
-  Widget build(final BuildContext context) => Image.memory(
-    file,
-    color: color,
-    width: width,
-    height: height,
-    fit: fit,
-    errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) => placeholder == null
-        ? SizedBox(width: width, height: height)
-        : UImageAsset(
-            placeholder!,
-            color: color,
-            width: width,
-            height: height,
-            fit: fit,
-            borderRadius: borderRadius,
-          ),
-  ).container(radius: borderRadius);
+  Widget build(final BuildContext context) {
+    final double dpr = MediaQuery.maybeDevicePixelRatioOf(context) ?? 1.0;
+    return Image.memory(
+      file,
+      color: color,
+      width: width,
+      height: height,
+      fit: fit,
+      cacheWidth: width == null ? null : (width! * dpr).round(),
+      cacheHeight: height == null ? null : (height! * dpr).round(),
+      errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) => placeholder == null
+          ? SizedBox(width: width, height: height)
+          : UImageAsset(
+              placeholder!,
+              color: color,
+              width: width,
+              height: height,
+              fit: fit,
+              borderRadius: borderRadius,
+            ),
+    ).container(radius: borderRadius);
+  }
 }
