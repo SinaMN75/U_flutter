@@ -3409,6 +3409,56 @@ class S {
     );
   }
 
+  /// `Error loading video`
+  String get errorLoadingVideo {
+    return Intl.message(
+      'Error loading video',
+      name: 'errorLoadingVideo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Playback speed`
+  String get playbackSpeed {
+    return Intl.message(
+      'Playback speed',
+      name: 'playbackSpeed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mute`
+  String get mute {
+    return Intl.message('Mute', name: 'mute', desc: '', args: []);
+  }
+
+  /// `Unmute`
+  String get unmute {
+    return Intl.message('Unmute', name: 'unmute', desc: '', args: []);
+  }
+
+  /// `Fullscreen`
+  String get enterFullscreen {
+    return Intl.message(
+      'Fullscreen',
+      name: 'enterFullscreen',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Exit fullscreen`
+  String get exitFullscreen {
+    return Intl.message(
+      'Exit fullscreen',
+      name: 'exitFullscreen',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `View`
   String get view {
     return Intl.message('View', name: 'view', desc: '', args: []);

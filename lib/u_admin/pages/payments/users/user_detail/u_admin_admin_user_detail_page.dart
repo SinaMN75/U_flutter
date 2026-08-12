@@ -229,14 +229,26 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
                             fit: BoxFit.cover,
                           ),
                         )
+                      : hasData && d.isVideo
+                      ? ClipRRect(
+                          borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                          child: UVideoPlayer(
+                            base64: d.base64,
+                            fit: BoxFit.cover,
+                            muted: true,
+                            allowFullScreen: false,
+                            borderRadius: 0,
+                            accentColor: UAdminTheme.orange,
+                          ),
+                        )
                       : Center(
                           child: UColumn(
                             spacing: 0,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Icon(d.isVideo ? (hasData ? Icons.play_circle_outline : Icons.videocam_off_outlined) : Icons.insert_drive_file, size: 44, color: UAdminTheme.grey.shade400),
+                              Icon(d.isVideo ? Icons.videocam_off_outlined : Icons.insert_drive_file, size: 44, color: UAdminTheme.grey.shade400),
                               const SizedBox(height: 6),
-                              UTextBodySmall(hasData ? U.s.videoAvailable : U.s.notUploaded, color: UAdminTheme.grey),
+                              UTextBodySmall(U.s.notUploaded, color: UAdminTheme.grey),
                             ],
                           ),
                         ),
@@ -257,8 +269,8 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
                         child: UTextBodySmall(d.title, fontWeight: FontWeight.w600, maxLines: 1, overflow: TextOverflow.ellipsis),
                       ),
                       IconButton(
-                        onPressed: hasData && !d.isVideo ? () => _openImage(d.base64!) : null,
-                        icon: Icon(Icons.zoom_out_map, size: 18, color: hasData && !d.isVideo ? UAdminTheme.blue.shade700 : UAdminTheme.grey.shade400),
+                        onPressed: hasData ? (d.isVideo ? () => _openVideo(d.base64!) : () => _openImage(d.base64!)) : null,
+                        icon: Icon(hasData && d.isVideo ? Icons.fullscreen : Icons.zoom_out_map, size: 18, color: hasData ? UAdminTheme.blue.shade700 : UAdminTheme.grey.shade400),
                         padding: EdgeInsets.zero,
                         constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
                       ),
@@ -350,6 +362,8 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
   );
 
   void _openImage(String base64) => UNavigator.push(UImageViewer(fileData: FileData(bytes: base64.toBytesFromBase64())));
+
+  void _openVideo(String base64) => UVideo.show(base64: base64);
 
   void _confirmApprove() => UNavigator.confirm(
     title: U.s.finalApproval,

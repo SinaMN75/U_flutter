@@ -71,6 +71,7 @@ export "components/u_general_widgets.dart";
 export "components/u_html_view.dart";
 export "components/u_image_viewer.dart";
 export "components/u_pdf_viewer.dart";
+export "components/u_video_player.dart";
 export "components/u_plate_field.dart";
 export "components/u_progress.dart";
 export "components/u_rich_text_editor.dart";

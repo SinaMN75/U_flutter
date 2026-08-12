@@ -392,6 +392,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "enterDrivingLicenceNumberToInquire": MessageLookupByLibrary.simpleMessage(
       "برای استعلام، شماره گواهینامه را وارد کنید",
     ),
+    "enterFullscreen": MessageLookupByLibrary.simpleMessage("تمام‌صفحه"),
     "enterPhoneNumber": MessageLookupByLibrary.simpleMessage(
       "شماره موبایل وارد نمایید",
     ),
@@ -423,6 +424,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "errorLoadingData": MessageLookupByLibrary.simpleMessage(
       "خطا در بارگزاری اطلاعات",
     ),
+    "errorLoadingVideo": MessageLookupByLibrary.simpleMessage(
+      "خطا در بارگذاری ویدیو",
+    ),
     "errorReadingDashboardData": MessageLookupByLibrary.simpleMessage(
       "خطا در خواندن داده‌های داشبورد",
     ),
@@ -445,6 +449,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "exams": MessageLookupByLibrary.simpleMessage("آزمون‌ها"),
     "exception": MessageLookupByLibrary.simpleMessage("استثنا"),
+    "exitFullscreen": MessageLookupByLibrary.simpleMessage("خروج از تمام‌صفحه"),
     "expirationDate": MessageLookupByLibrary.simpleMessage("تاریخ انقضا"),
     "expired": MessageLookupByLibrary.simpleMessage("منقضی"),
     "expiresAt": MessageLookupByLibrary.simpleMessage("انقضا"),
@@ -789,6 +794,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "moveDown": MessageLookupByLibrary.simpleMessage("انتقال به پایین"),
     "moveTo": MessageLookupByLibrary.simpleMessage("انتقال به"),
     "moveUp": MessageLookupByLibrary.simpleMessage("انتقال به بالا"),
+    "mute": MessageLookupByLibrary.simpleMessage("بی‌صدا"),
     "myBankAccounts": MessageLookupByLibrary.simpleMessage("حساب‌های بانکی من"),
     "myMerchants": MessageLookupByLibrary.simpleMessage("پذیرندگی‌های من"),
     "myPos": MessageLookupByLibrary.simpleMessage("خودپرداز من"),
@@ -1005,6 +1011,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "استعلام وضعیت پلاک",
     ),
     "plateTrackingCode": MessageLookupByLibrary.simpleMessage("کد پیگیری پلاک"),
+    "playbackSpeed": MessageLookupByLibrary.simpleMessage("سرعت پخش"),
     "pleaseCreateACategoryBeforeCreatingAProduct":
         MessageLookupByLibrary.simpleMessage(
           "لطفاً قبل از ایجاد محصول، یک دسته‌بندی ایجاد کنید.",
@@ -1399,6 +1406,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "unexpectedErrorPleaseTryAgain": MessageLookupByLibrary.simpleMessage(
       "خطای ناشناخته، لطفا دوباره تلاش کنید",
     ),
+    "unmute": MessageLookupByLibrary.simpleMessage("پخش صدا"),
     "unpaid": MessageLookupByLibrary.simpleMessage("پرداخت‌نشده"),
     "unpublish": MessageLookupByLibrary.simpleMessage("لغو انتشار"),
     "upcoming": MessageLookupByLibrary.simpleMessage("آتی"),
@@ -1518,5 +1526,13 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "yourWallet": MessageLookupByLibrary.simpleMessage("کیف پول شما"),
     "zipCode": MessageLookupByLibrary.simpleMessage("کد پستی"),
+    "errorLoadingVideo": MessageLookupByLibrary.simpleMessage(
+      "خطا در بارگذاری ویدیو",
+    ),
+    "playbackSpeed": MessageLookupByLibrary.simpleMessage("سرعت پخش"),
+    "mute": MessageLookupByLibrary.simpleMessage("بی‌صدا"),
+    "unmute": MessageLookupByLibrary.simpleMessage("پخش صدا"),
+    "enterFullscreen": MessageLookupByLibrary.simpleMessage("تمام‌صفحه"),
+    "exitFullscreen": MessageLookupByLibrary.simpleMessage("خروج از تمام‌صفحه"),
   };
 }

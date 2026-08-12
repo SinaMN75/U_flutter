@@ -400,6 +400,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "enterDrivingLicenceNumberToInquire": MessageLookupByLibrary.simpleMessage(
       "Enter the driving license number to inquire",
     ),
+    "enterFullscreen": MessageLookupByLibrary.simpleMessage("Fullscreen"),
     "enterPhoneNumber": MessageLookupByLibrary.simpleMessage(
       "Enter phone number",
     ),
@@ -429,6 +430,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "errorLoadingData": MessageLookupByLibrary.simpleMessage(
       "Error loading data",
     ),
+    "errorLoadingVideo": MessageLookupByLibrary.simpleMessage(
+      "Error loading video",
+    ),
     "errorReadingDashboardData": MessageLookupByLibrary.simpleMessage(
       "Error Reading Dashboard Data",
     ),
@@ -451,6 +455,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "exams": MessageLookupByLibrary.simpleMessage("Exams"),
     "exception": MessageLookupByLibrary.simpleMessage("Exception"),
+    "exitFullscreen": MessageLookupByLibrary.simpleMessage("Exit fullscreen"),
     "expirationDate": MessageLookupByLibrary.simpleMessage("Expiration date"),
     "expired": MessageLookupByLibrary.simpleMessage("Expired"),
     "expiresAt": MessageLookupByLibrary.simpleMessage("Expires"),
@@ -813,6 +818,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "moveDown": MessageLookupByLibrary.simpleMessage("Move Down"),
     "moveTo": MessageLookupByLibrary.simpleMessage("Move To"),
     "moveUp": MessageLookupByLibrary.simpleMessage("Move Up"),
+    "mute": MessageLookupByLibrary.simpleMessage("Mute"),
     "myBankAccounts": MessageLookupByLibrary.simpleMessage("My bank accounts"),
     "myMerchants": MessageLookupByLibrary.simpleMessage("My merchants"),
     "myPos": MessageLookupByLibrary.simpleMessage("My POS"),
@@ -1031,6 +1037,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "plateTrackingCode": MessageLookupByLibrary.simpleMessage(
       "Plate tracking code",
     ),
+    "playbackSpeed": MessageLookupByLibrary.simpleMessage("Playback speed"),
     "pleaseCreateACategoryBeforeCreatingAProduct":
         MessageLookupByLibrary.simpleMessage(
           "Please Create a Category before creating a Product.",
@@ -1433,6 +1440,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "unexpectedErrorPleaseTryAgain": MessageLookupByLibrary.simpleMessage(
       "Unexpected Error, Please try again",
     ),
+    "unmute": MessageLookupByLibrary.simpleMessage("Unmute"),
     "unpaid": MessageLookupByLibrary.simpleMessage("Unpaid"),
     "unpublish": MessageLookupByLibrary.simpleMessage("Unpublish"),
     "upcoming": MessageLookupByLibrary.simpleMessage("Upcoming"),
@@ -1558,5 +1566,13 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "yourWallet": MessageLookupByLibrary.simpleMessage("Your wallet"),
     "zipCode": MessageLookupByLibrary.simpleMessage("Zip Code"),
+    "errorLoadingVideo": MessageLookupByLibrary.simpleMessage(
+      "Error loading video",
+    ),
+    "playbackSpeed": MessageLookupByLibrary.simpleMessage("Playback speed"),
+    "mute": MessageLookupByLibrary.simpleMessage("Mute"),
+    "unmute": MessageLookupByLibrary.simpleMessage("Unmute"),
+    "enterFullscreen": MessageLookupByLibrary.simpleMessage("Fullscreen"),
+    "exitFullscreen": MessageLookupByLibrary.simpleMessage("Exit fullscreen"),
   };
 }
