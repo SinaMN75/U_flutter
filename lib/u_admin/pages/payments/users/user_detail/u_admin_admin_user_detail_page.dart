@@ -3,10 +3,10 @@ import "package:u/utilities.dart";
 enum _DocStatus { verified, rejected, awaiting, missing }
 
 class _Doc {
-  _Doc({required this.title, required this.base64, required this.verifiedTag, required this.awaitingTag, required this.rejectionReason, this.isVideo = false});
+  _Doc({required this.title, required this.url, required this.verifiedTag, required this.awaitingTag, required this.rejectionReason, this.isVideo = false});
 
   final String title;
-  final String? base64;
+  final String? url;
   final TagUser verifiedTag;
   final TagUser awaitingTag;
   final String? rejectionReason;
@@ -34,35 +34,35 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
   List<_Doc> get _docs => <_Doc>[
     _Doc(
       title: U.s.nationalCardFront,
-      base64: c.user.nationalCardFront,
+      url: c.user.nationalCardFront,
       verifiedTag: TagUser.nationalCardFrontVerified,
       awaitingTag: TagUser.nationalCardFrontAwaitingVerification,
       rejectionReason: c.user.jsonData.nationalCardFrontRejectionReason,
     ),
     _Doc(
       title: U.s.nationalCardBack,
-      base64: c.user.nationalCardBack,
+      url: c.user.nationalCardBack,
       verifiedTag: TagUser.nationalCardBackVerified,
       awaitingTag: TagUser.nationalCardBackAwaitingVerification,
       rejectionReason: c.user.jsonData.nationalCardBackRejectionReason,
     ),
     _Doc(
       title: U.s.birthCertificate,
-      base64: c.user.birthCertificateFirst,
+      url: c.user.birthCertificateFirst,
       verifiedTag: TagUser.birthCertificateFirstVerified,
       awaitingTag: TagUser.birthCertificateFirstAwaitingVerification,
       rejectionReason: c.user.jsonData.birthCertificateFirstRejectionReason,
     ),
     _Doc(
       title: U.s.signature,
-      base64: c.user.eSignature,
+      url: c.user.eSignature,
       verifiedTag: TagUser.eSignatureVerified,
       awaitingTag: TagUser.eSignatureAwaitingVerification,
       rejectionReason: c.user.jsonData.eSignatureRejectionReason,
     ),
     _Doc(
       title: U.s.video,
-      base64: c.user.visualAuthentication,
+      url: c.user.visualAuthentication,
       verifiedTag: TagUser.visualAuthenticationVerified,
       awaitingTag: TagUser.visualAuthenticationAwaitingVerification,
       rejectionReason: c.user.jsonData.visualAuthenticationRejectionReason,
@@ -73,7 +73,7 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
   _DocStatus _statusOf(_Doc d) {
     if (c.user.tags.contains(d.verifiedTag.number)) return _DocStatus.verified;
     if (d.rejectionReason.isNotNullOrEmpty()) return _DocStatus.rejected;
-    if (d.base64 != null) return _DocStatus.awaiting;
+    if (d.url != null) return _DocStatus.awaiting;
     return _DocStatus.missing;
   }
 
@@ -201,7 +201,7 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
 
   Widget _documentCard(_Doc d) {
     final _DocStatus status = _statusOf(d);
-    final bool hasData = d.base64 != null;
+    final bool hasData = d.url != null;
     return SizedBox(
       width: 190,
       child: DecoratedBox(
@@ -223,22 +223,9 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
                       ? ClipRRect(
                           borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
                           child: UImage(
-                            "",
-                            fileData: FileData(bytes: d.base64!.toBytesFromBase64()),
+                            d.url!,
                             placeholder: UAdmin.logo,
                             fit: BoxFit.cover,
-                          ),
-                        )
-                      : hasData && d.isVideo
-                      ? ClipRRect(
-                          borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                          child: UVideoPlayer(
-                            base64: d.base64,
-                            fit: BoxFit.cover,
-                            muted: true,
-                            allowFullScreen: false,
-                            borderRadius: 0,
-                            accentColor: UAdminTheme.orange,
                           ),
                         )
                       : Center(
@@ -246,9 +233,9 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
                             spacing: 0,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Icon(d.isVideo ? Icons.videocam_off_outlined : Icons.insert_drive_file, size: 44, color: UAdminTheme.grey.shade400),
+                              Icon(d.isVideo ? (hasData ? Icons.play_circle_outline : Icons.videocam_off_outlined) : Icons.insert_drive_file, size: 44, color: UAdminTheme.grey.shade400),
                               const SizedBox(height: 6),
-                              UTextBodySmall(U.s.notUploaded, color: UAdminTheme.grey),
+                              UTextBodySmall(hasData ? U.s.videoAvailable : U.s.notUploaded, color: UAdminTheme.grey),
                             ],
                           ),
                         ),
@@ -269,8 +256,8 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
                         child: UTextBodySmall(d.title, fontWeight: FontWeight.w600, maxLines: 1, overflow: TextOverflow.ellipsis),
                       ),
                       IconButton(
-                        onPressed: hasData ? (d.isVideo ? () => _openVideo(d.base64!) : () => _openImage(d.base64!)) : null,
-                        icon: Icon(hasData && d.isVideo ? Icons.fullscreen : Icons.zoom_out_map, size: 18, color: hasData ? UAdminTheme.blue.shade700 : UAdminTheme.grey.shade400),
+                        onPressed: hasData && !d.isVideo ? () => _openImage(d.url!) : null,
+                        icon: Icon(Icons.zoom_out_map, size: 18, color: hasData && !d.isVideo ? UAdminTheme.blue.shade700 : UAdminTheme.grey.shade400),
                         padding: EdgeInsets.zero,
                         constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
                       ),
@@ -361,9 +348,7 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
     boxShadow: <BoxShadow>[BoxShadow(color: UAdminTheme.black.withValues(alpha: 0.04), blurRadius: 8, offset: const Offset(0, 2))],
   );
 
-  void _openImage(String base64) => UNavigator.push(UImageViewer(fileData: FileData(bytes: base64.toBytesFromBase64())));
-
-  void _openVideo(String base64) => UVideo.show(base64: base64);
+  void _openImage(String url) => UNavigator.push(UImageViewer(fileData: FileData(url: url)));
 
   void _confirmApprove() => UNavigator.confirm(
     title: U.s.finalApproval,
