@@ -18,10 +18,12 @@ class UProcessImagePickerField extends StatefulWidget {
 
 class _UProcessImagePickerFieldState extends State<UProcessImagePickerField> {
   FileData? _fileData;
+  String? _initialUrl;
 
   @override
   void initState() {
-    if (widget.field.value != null) _fileData = FileData(bytes: widget.field.value!.toBytesFromBase64());
+    // Existing document comes back from the server as a URL; a freshly picked one is held as bytes.
+    if (widget.field.value != null) _initialUrl = widget.field.value;
     super.initState();
   }
 
@@ -33,7 +35,12 @@ class _UProcessImagePickerFieldState extends State<UProcessImagePickerField> {
         if (files.isEmpty) return;
         final FileData file = files.first;
         widget.processStepSend.fields.firstWhere((UProcessField f) => f.key == widget.field.key).value = file.bytes?.toBase64();
-        if (mounted) setState(() => _fileData = file);
+        if (mounted) {
+          setState(() {
+            _fileData = file;
+            _initialUrl = null;
+          });
+        }
       },
     );
   }
@@ -53,11 +60,13 @@ class _UProcessImagePickerFieldState extends State<UProcessImagePickerField> {
           alignment: Alignment.center,
           child: _fileData != null
               ? UImage("", fileData: _fileData, borderRadius: 16)
+              : _initialUrl != null
+              ? UImage(_initialUrl!, borderRadius: 16)
               : UIconTextVertical(
-                  leading: Icon(Icons.add_a_photo_rounded, size: 48, color: scheme.onSurfaceVariant),
-                  trailing: UTextBodyMedium(widget.field.label, color: scheme.onSurfaceVariant),
-                  spaceBetween: 12,
-                ),
+            leading: Icon(Icons.add_a_photo_rounded, size: 48, color: scheme.onSurfaceVariant),
+            trailing: UTextBodyMedium(widget.field.label, color: scheme.onSurfaceVariant),
+            spaceBetween: 12,
+          ),
         ).onTap(_pick),
         if (widget.field.rejectionReason != null)
           UIconTextHorizontal(
