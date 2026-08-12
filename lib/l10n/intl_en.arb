@@ -1017,5 +1017,17 @@
   "payAndInquire": "Pay and inquire",
   "cachedData": "Cached",
   "expirationDate": "Expiration date",
-  "wrongPostalCode": "Wrong Postal Code"
+  "wrongPostalCode": "Wrong Postal Code",
+  "cropImage": "Crop Image",
+  "rotateLeft": "Rotate left",
+  "rotateRight": "Rotate right",
+  "flipHorizontal": "Flip horizontal",
+  "flipVertical": "Flip vertical",
+  "reset": "Reset",
+  "done": "Done",
+  "brightness": "Brightness",
+  "contrast": "Contrast",
+  "saturation": "Saturation",
+  "original": "Original",
+  "square": "Square"
 }

@@ -73,7 +73,6 @@ abstract class UFile {
         type: fileType,
         allowMultiple: allowMultiple,
         allowedExtensions: allowedExtensions,
-
       );
 
       if (result == null) return;
@@ -110,79 +109,43 @@ abstract class UFile {
   }
 
   static Future<FileData?> cropImage({
-    required final String filePath,
+    final Uint8List? bytes,
+    final String? filePath,
     final Function(FileData file)? action,
     final int? maxWidth,
     final int? maxHeight,
-    final CropStyle cropStyle = CropStyle.rectangle,
-    final CropAspectRatio cropAspectRatio = const CropAspectRatio(ratioX: 3, ratioY: 1.2),
-    final ImageCompressFormat imageCompressFormat = ImageCompressFormat.png,
-    final AndroidUiSettings? androidUiSettings,
-    final WebUiSettings? webUiSettings,
-    final IOSUiSettings? iOSUiSettings,
-    final Color? activeControlsWidgetColor,
-    final Color? toolbarColor,
-    final Color? toolbarWidgetColor,
-    final List<CropAspectRatioPreset> aspectRatioPresets = const <CropAspectRatioPreset>[
-      CropAspectRatioPreset.original,
-      CropAspectRatioPreset.square,
-      CropAspectRatioPreset.ratio3x2,
-      CropAspectRatioPreset.ratio4x3,
-      CropAspectRatioPreset.ratio16x9,
-    ],
+    final UCropShape cropShape = UCropShape.rectangle,
+    final double? aspectRatio,
+    final List<UCropAspectRatio>? aspectRatios,
+    final bool allowRotate = true,
+    final bool allowFlip = true,
+    final bool allowAdjust = true,
+    final bool allowShapeToggle = false,
+    final String? title,
   }) async {
-    final CroppedFile? result = await ImageCropper().cropImage(
-      sourcePath: filePath,
-      maxWidth: maxWidth,
-      maxHeight: maxHeight,
-      aspectRatio: cropAspectRatio,
-      compressFormat: imageCompressFormat,
-      uiSettings: <PlatformUiSettings>[
-        androidUiSettings ??
-            AndroidUiSettings(
-              aspectRatioPresets: aspectRatioPresets,
-              cropStyle: cropStyle,
-              toolbarTitle: "Crop Your Image",
-              showCropGrid: true,
-              hideBottomControls: false,
-              lockAspectRatio: true,
-              initAspectRatio: CropAspectRatioPreset.square,
-              activeControlsWidgetColor: activeControlsWidgetColor ?? Theme.of(navigatorKey.currentContext!).colorScheme.primary,
-              toolbarColor: toolbarColor ?? Theme.of(navigatorKey.currentContext!).colorScheme.primary,
-              toolbarWidgetColor: toolbarWidgetColor ?? Theme.of(navigatorKey.currentContext!).cardColor,
-            ),
-        iOSUiSettings ??
-            IOSUiSettings(
-              aspectRatioPresets: aspectRatioPresets,
-              cropStyle: cropStyle,
-              resetAspectRatioEnabled: false,
-              minimumAspectRatio: 1,
-              aspectRatioPickerButtonHidden: true,
-              title: "Crop Your Image",
-              aspectRatioLockDimensionSwapEnabled: true,
-              aspectRatioLockEnabled: true,
-              hidesNavigationBar: true,
-            ),
-        webUiSettings ??
-            WebUiSettings(
-              context: navigatorKey.currentContext!,
-              cropBoxMovable: true,
-              background: true,
-              center: true,
-              checkCrossOrigin: true,
-              checkOrientation: true,
-              cropBoxResizable: true,
-              guides: true,
-              highlight: true,
-              rotatable: true,
-              zoomable: true,
-              zoomOnTouch: true,
-              zoomOnWheel: true,
-            ),
-      ],
+    Uint8List? data = bytes;
+    if (data == null && filePath != null && !kIsWeb) data = await File(filePath).readAsBytes();
+    if (data == null) return null;
+
+    final Uint8List? cropped = await UNavigator.push<Uint8List>(
+      UImageCropper(
+        bytes: data,
+        title: title,
+        shape: cropShape,
+        aspectRatios: aspectRatios,
+        initialAspectRatio: aspectRatio,
+        allowRotate: allowRotate,
+        allowFlip: allowFlip,
+        allowAdjust: allowAdjust,
+        allowShapeToggle: allowShapeToggle,
+        maxWidth: maxWidth,
+        maxHeight: maxHeight,
+      ),
+      fullscreenDialog: true,
     );
-    if (result == null) return null;
-    final FileData fileData = FileData(path: result.path, bytes: await result.readAsBytes(), extension: result.path.split(".").last);
+    if (cropped == null) return null;
+
+    final FileData fileData = FileData(bytes: cropped, extension: "png");
     if (action != null) action(fileData);
     return fileData;
   }

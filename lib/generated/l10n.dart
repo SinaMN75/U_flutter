@@ -7853,6 +7853,81 @@ class S {
       args: [],
     );
   }
+
+  /// `Crop Image`
+  String get cropImage {
+    return Intl.message('Crop Image', name: 'cropImage', desc: '', args: []);
+  }
+
+  /// `Rotate left`
+  String get rotateLeft {
+    return Intl.message('Rotate left', name: 'rotateLeft', desc: '', args: []);
+  }
+
+  /// `Rotate right`
+  String get rotateRight {
+    return Intl.message(
+      'Rotate right',
+      name: 'rotateRight',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Flip horizontal`
+  String get flipHorizontal {
+    return Intl.message(
+      'Flip horizontal',
+      name: 'flipHorizontal',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Flip vertical`
+  String get flipVertical {
+    return Intl.message(
+      'Flip vertical',
+      name: 'flipVertical',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reset`
+  String get reset {
+    return Intl.message('Reset', name: 'reset', desc: '', args: []);
+  }
+
+  /// `Done`
+  String get done {
+    return Intl.message('Done', name: 'done', desc: '', args: []);
+  }
+
+  /// `Brightness`
+  String get brightness {
+    return Intl.message('Brightness', name: 'brightness', desc: '', args: []);
+  }
+
+  /// `Contrast`
+  String get contrast {
+    return Intl.message('Contrast', name: 'contrast', desc: '', args: []);
+  }
+
+  /// `Saturation`
+  String get saturation {
+    return Intl.message('Saturation', name: 'saturation', desc: '', args: []);
+  }
+
+  /// `Original`
+  String get original {
+    return Intl.message('Original', name: 'original', desc: '', args: []);
+  }
+
+  /// `Square`
+  String get square {
+    return Intl.message('Square', name: 'square', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

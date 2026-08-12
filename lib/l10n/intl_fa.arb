@@ -1017,5 +1017,17 @@
   "payAndInquire": "پرداخت و استعلام",
   "cachedData": "ذخیره‌شده",
   "expirationDate": "تاریخ انقضا",
-  "wrongPostalCode": "کد پستی وارد شده صحیح نیست."
+  "wrongPostalCode": "کد پستی وارد شده صحیح نیست.",
+  "cropImage": "برش تصویر",
+  "rotateLeft": "چرخش به چپ",
+  "rotateRight": "چرخش به راست",
+  "flipHorizontal": "برگرداندن افقی",
+  "flipVertical": "برگرداندن عمودی",
+  "reset": "بازنشانی",
+  "done": "انجام شد",
+  "brightness": "روشنایی",
+  "contrast": "کنتراست",
+  "saturation": "اشباع رنگ",
+  "original": "اصلی",
+  "square": "مربع"
 }

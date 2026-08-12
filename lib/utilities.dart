@@ -25,7 +25,7 @@ export "utils/u_rx.dart";
 export "utils/u_app_state.dart";
 export "package:http/http.dart";
 export "package:http_parser/http_parser.dart";
-export "package:image_cropper/image_cropper.dart";
+export "components/u_image_cropper.dart";
 export "package:image_picker/image_picker.dart";
 export "package:latlong2/latlong.dart" hide Path, pi;
 export "package:logging/logging.dart";
