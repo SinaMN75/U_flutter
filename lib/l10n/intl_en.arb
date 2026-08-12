@@ -1029,5 +1029,7 @@
   "contrast": "Contrast",
   "saturation": "Saturation",
   "original": "Original",
-  "square": "Square"
+  "square": "Square",
+  "penColor": "Pen color",
+  "strokeWidth": "Stroke width"
 }

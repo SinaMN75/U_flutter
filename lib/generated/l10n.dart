@@ -7928,6 +7928,21 @@ class S {
   String get square {
     return Intl.message('Square', name: 'square', desc: '', args: []);
   }
+
+  /// `Pen color`
+  String get penColor {
+    return Intl.message('Pen color', name: 'penColor', desc: '', args: []);
+  }
+
+  /// `Stroke width`
+  String get strokeWidth {
+    return Intl.message(
+      'Stroke width',
+      name: 'strokeWidth',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

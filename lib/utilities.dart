@@ -44,6 +44,7 @@ export "package:url_launcher/url_launcher.dart";
 export "package:video_player/video_player.dart";
 export "package:webview_all/webview_all.dart" hide X509Certificate;
 
+export "components/u_signature_pad.dart";
 export "components/badges.dart";
 export "components/barcode_qrcode.dart";
 export "components/chart.dart";

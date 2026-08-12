@@ -1029,5 +1029,7 @@
   "contrast": "کنتراست",
   "saturation": "اشباع رنگ",
   "original": "اصلی",
-  "square": "مربع"
+  "square": "مربع",
+  "penColor": "رنگ قلم",
+  "strokeWidth": "ضخامت خط"
 }
