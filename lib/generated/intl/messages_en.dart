@@ -1566,13 +1566,5 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "yourWallet": MessageLookupByLibrary.simpleMessage("Your wallet"),
     "zipCode": MessageLookupByLibrary.simpleMessage("Zip Code"),
-    "errorLoadingVideo": MessageLookupByLibrary.simpleMessage(
-      "Error loading video",
-    ),
-    "playbackSpeed": MessageLookupByLibrary.simpleMessage("Playback speed"),
-    "mute": MessageLookupByLibrary.simpleMessage("Mute"),
-    "unmute": MessageLookupByLibrary.simpleMessage("Unmute"),
-    "enterFullscreen": MessageLookupByLibrary.simpleMessage("Fullscreen"),
-    "exitFullscreen": MessageLookupByLibrary.simpleMessage("Exit fullscreen"),
   };
 }

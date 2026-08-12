@@ -1526,13 +1526,5 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "yourWallet": MessageLookupByLibrary.simpleMessage("کیف پول شما"),
     "zipCode": MessageLookupByLibrary.simpleMessage("کد پستی"),
-    "errorLoadingVideo": MessageLookupByLibrary.simpleMessage(
-      "خطا در بارگذاری ویدیو",
-    ),
-    "playbackSpeed": MessageLookupByLibrary.simpleMessage("سرعت پخش"),
-    "mute": MessageLookupByLibrary.simpleMessage("بی‌صدا"),
-    "unmute": MessageLookupByLibrary.simpleMessage("پخش صدا"),
-    "enterFullscreen": MessageLookupByLibrary.simpleMessage("تمام‌صفحه"),
-    "exitFullscreen": MessageLookupByLibrary.simpleMessage("خروج از تمام‌صفحه"),
   };
 }
