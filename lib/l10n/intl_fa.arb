@@ -1,4 +1,5 @@
 {
+  "@@locale": "fa",
   "storageManager": "مدیریت حافظه",
   "storageManagerSubtitle": "مشاهده و حذف تمام داده‌های ذخیره‌شده در حافظه محلی",
   "keyValueStorage": "کلید-مقدار",

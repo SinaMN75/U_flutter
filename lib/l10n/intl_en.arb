@@ -1,4 +1,5 @@
 {
+  "@@locale": "en",
   "storageManager": "Storage Manager",
   "storageManagerSubtitle": "Browse and delete everything saved in local storage",
   "keyValueStorage": "Key-Value",
