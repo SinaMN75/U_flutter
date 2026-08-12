@@ -804,7 +804,7 @@ class _ApiLogDetailView extends StatelessWidget {
                 _exceptionBlock(context),
               ],
               if (item.jsonData.queryString != null) ...<Widget>[
-                _metaItem(context, U.s.queryString, item.jsonData.queryString!),
+                _metaItem(U.s.queryString, item.jsonData.queryString!),
               ],
               UTextTitleSmall(U.s.requestBody, fontWeight: FontWeight.w700),
               UJsonViewer(jsonString: item.jsonData.requestBody ?? "-"),
@@ -854,23 +854,24 @@ class _ApiLogDetailView extends StatelessWidget {
   );
 
   Widget _metaGrid(BuildContext context) => UColumn(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
     spacing: 0,
     children: <Widget>[
-      _metaItem(context, U.s.time, item.createdAt.formatDate("yyyy-MM-dd HH:mm:ss")),
-      _metaItem(context, U.s.duration, "${item.durationMs} ms"),
-      if (item.jsonData.userName != null) _metaItem(context, U.s.userName, item.jsonData.userName!),
-      if (item.jsonData.userEmail != null) _metaItem(context, U.s.userEmail, item.jsonData.userEmail!),
-      if (item.userId != null) _metaItem(context, item.userId!, U.s.userId),
-      if (item.jsonData.userRoles != null) _metaItem(context, U.s.roles, item.jsonData.userRoles!),
-      if (item.ipAddress != null) _metaItem(context, "IP", item.ipAddress!),
-      if (item.jsonData.host != null) _metaItem(context, "Host", item.jsonData.host!),
-      _metaItem(context, U.s.requestSize, _formatBytes(item.jsonData.requestSizeBytes)),
-      _metaItem(context, U.s.responseSize, _formatBytes(item.jsonData.responseSizeBytes)),
-      if (item.jsonData.userAgent != null) SizedBox(width: 280, child: _metaItem(context, "User-Agent", item.jsonData.userAgent!)),
+      _metaItem(U.s.time, item.createdAt.formatDate("yyyy-MM-dd HH:mm:ss")),
+      _metaItem(U.s.duration, "${item.durationMs} ms"),
+      if (item.jsonData.userName != null) _metaItem(U.s.userName, item.jsonData.userName!),
+      if (item.jsonData.userEmail != null) _metaItem(U.s.userEmail, item.jsonData.userEmail!),
+      if (item.userId != null) _metaItem(item.userId!, U.s.userId),
+      if (item.jsonData.userRoles != null) _metaItem(U.s.roles, item.jsonData.userRoles!),
+      if (item.ipAddress != null) _metaItem("IP", item.ipAddress!),
+      if (item.jsonData.host != null) _metaItem("Host", item.jsonData.host!),
+      _metaItem(U.s.requestSize, _formatBytes(item.jsonData.requestSizeBytes)),
+      _metaItem(U.s.responseSize, _formatBytes(item.jsonData.responseSizeBytes)),
+      if (item.jsonData.userAgent != null) SizedBox(width: 280, child: _metaItem("User-Agent", item.jsonData.userAgent!)),
     ],
   );
 
-  Widget _metaItem(BuildContext context, String label, String value) => ListTile(
+  Widget _metaItem(String label, String value) => ListTile(
     title: Text(label),
     trailing: value.length <= 50 ? SelectableText(value) : null,
     subtitle: value.length >= 50 ? SelectableText(value) : null,
