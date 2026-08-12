@@ -558,7 +558,12 @@ class _UAdminFileManagerPageState extends State<UAdminFileManagerPage> {
           ),
         );
       case _PreviewKind.video:
-        return _VideoPreview(key: ValueKey<String>(e.path), url: url);
+        return ColoredBox(
+          color: Colors.black,
+          child: Center(
+            child: UVideoPlayer(key: ValueKey<String>(e.path), url: url, autoPlay: true, borderRadius: 0),
+          ),
+        );
       case _PreviewKind.pdf:
         return UPdfViewer(url: url);
       case _PreviewKind.json:
@@ -676,80 +681,6 @@ class _UAdminFileManagerPageState extends State<UAdminFileManagerPage> {
   }
 }
 
-// Inline video player with tap-to-play/pause and a scrubber, backed by the shared video_player package.
-class _VideoPreview extends StatefulWidget {
-  const _VideoPreview({required this.url, super.key});
-
-  final String url;
-
-  @override
-  State<_VideoPreview> createState() => _VideoPreviewState();
-}
-
-class _VideoPreviewState extends State<_VideoPreview> {
-  VideoPlayerController? _controller;
-  bool _ready = false;
-  String? _error;
-
-  @override
-  void initState() {
-    super.initState();
-    _init();
-  }
-
-  Future<void> _init() async {
-    try {
-      _controller = VideoPlayerController.networkUrl(Uri.parse(widget.url));
-      await _controller!.initialize();
-      setState(() => _ready = true);
-    } catch (e) {
-      setState(() => _error = e.toString());
-    }
-  }
-
-  @override
-  void dispose() {
-    _controller?.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (_error != null) return Center(child: UTextBodyMedium(_error!, color: Theme.of(context).colorScheme.error));
-    if (!_ready || _controller == null) return const Center(child: CircularProgressIndicator());
-    return ColoredBox(
-      color: Colors.black,
-      child: Column(
-        children: <Widget>[
-          Expanded(
-            child: Center(
-              child: AspectRatio(
-                aspectRatio: _controller!.value.aspectRatio == 0 ? 16 / 9 : _controller!.value.aspectRatio,
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: <Widget>[
-                    VideoPlayer(_controller!),
-                    IconButton(
-                      iconSize: 56,
-                      icon: Icon(
-                        _controller!.value.isPlaying ? Icons.pause_circle_filled_rounded : Icons.play_circle_fill_rounded,
-                        color: Colors.white.withValues(alpha: 0.85),
-                      ),
-                      onPressed: () => setState(() => _controller!.value.isPlaying ? _controller!.pause() : _controller!.play()),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          VideoProgressIndicator(_controller!, allowScrubbing: true, padding: const EdgeInsets.all(12)),
-        ],
-      ),
-    );
-  }
-}
-
-// Inline text/json viewer that fetches file contents on open; JSON is rendered via UJsonViewer.
 class _TextPreview extends StatefulWidget {
   const _TextPreview({required this.url, required this.asJson, super.key});
 
