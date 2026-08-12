@@ -857,7 +857,7 @@ class _ApiLogDetailView extends StatelessWidget {
     crossAxisAlignment: CrossAxisAlignment.stretch,
     spacing: 0,
     children: <Widget>[
-      _metaItem(U.s.time, item.createdAt.formatDate("yyyy-MM-dd HH:mm:ss")),
+      _metaItem(U.s.time, item.createdAt.toJalaliDateTime()),
       _metaItem(U.s.duration, "${item.durationMs} ms"),
       if (item.jsonData.userName != null) _metaItem(U.s.userName, item.jsonData.userName!),
       if (item.jsonData.userEmail != null) _metaItem(U.s.userEmail, item.jsonData.userEmail!),
