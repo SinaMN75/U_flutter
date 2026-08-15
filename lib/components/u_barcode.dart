@@ -1,5 +1,3 @@
-import "dart:convert";
-import "dart:math";
 import "dart:math" as math;
 import "dart:typed_data";
 import "dart:ui" as ui;
@@ -7,163 +5,42 @@ import "dart:ui" as ui;
 import "package:u/utilities.dart";
 
 class BarcodeAztec extends Barcode2D {
-  const BarcodeAztec(
-    this.minECCPercent,
-    this.userSpecifiedLayers,
-  ) : assert(minECCPercent >= 0 && minECCPercent <= 100),
-      assert(userSpecifiedLayers >= 0);
-
+  const BarcodeAztec(this.minECCPercent, this.userSpecifiedLayers) : assert(minECCPercent >= 0 && minECCPercent <= 100), assert(userSpecifiedLayers >= 0);
   static const defaultEcPercent = 33;
-
   static const defaultLayers = 0;
-
   final int minECCPercent;
-
   final int userSpecifiedLayers;
-
   static const _maxNbBits = 32;
-
   static const _maxNbBitsCompact = 4;
-
-  static const _wordSize = <int>[
-    4,
-    6,
-    6,
-    8,
-    8,
-    8,
-    8,
-    8,
-    8,
-    10,
-    10,
-    10,
-    10,
-    10,
-    10,
-    10,
-    10,
-    10,
-    10,
-    10,
-    10,
-    10,
-    10,
-    12,
-    12,
-    12,
-    12,
-    12,
-    12,
-    12,
-    12,
-    12,
-    12,
-  ];
-
+  static const _wordSize = <int>[4, 6, 6, 8, 8, 8, 8, 8, 8, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12];
   static bool _initialized = false;
-
   static late Map<_EncodingMode, List<int?>> _charMap;
 
   static void _init() {
     _charMap = <_EncodingMode, List<int?>>{};
-
     _charMap[_EncodingMode.mode_upper] = List<int?>.filled(256, null);
     _charMap[_EncodingMode.mode_lower] = List<int?>.filled(256, null);
     _charMap[_EncodingMode.mode_digit] = List<int?>.filled(256, null);
     _charMap[_EncodingMode.mode_mixed] = List<int?>.filled(256, null);
     _charMap[_EncodingMode.mode_punct] = List<int?>.filled(256, null);
-
     _charMap[_EncodingMode.mode_upper]![0x20] = 1;
-    for (var c = 0x41; c <= 0x5a; c++) {
-      _charMap[_EncodingMode.mode_upper]![c] = c - 0x41 + 2;
-    }
+    for (var c = 0x41; c <= 0x5a; c++) _charMap[_EncodingMode.mode_upper]![c] = c - 0x41 + 2;
 
     _charMap[_EncodingMode.mode_lower]![0x20] = 1;
-    for (var c = 0x61; c <= 0x7a; c++) {
-      _charMap[_EncodingMode.mode_lower]![c] = c - 0x61 + 2;
-    }
+    for (var c = 0x61; c <= 0x7a; c++) _charMap[_EncodingMode.mode_lower]![c] = c - 0x61 + 2;
     _charMap[_EncodingMode.mode_digit]![0x20] = 1;
-    for (var c = 0x30; c <= 0x39; c++) {
-      _charMap[_EncodingMode.mode_digit]![c] = c - 0x30 + 2;
-    }
+    for (var c = 0x30; c <= 0x39; c++) _charMap[_EncodingMode.mode_digit]![c] = c - 0x30 + 2;
     _charMap[_EncodingMode.mode_digit]![0x2c] = 12;
     _charMap[_EncodingMode.mode_digit]![0x2e] = 13;
 
-    final mixedTable = <int>[
-      0,
-      0x20,
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9,
-      10,
-      11,
-      12,
-      13,
-      27,
-      28,
-      29,
-      30,
-      31,
-      0x40,
-      0x5c,
-      0x5e,
-      0x5f,
-      0x60,
-      0x7c,
-      0x7e,
-      127,
-    ];
-    for (var i = 0; i < mixedTable.length; i++) {
-      final v = mixedTable[i];
-      _charMap[_EncodingMode.mode_mixed]![v] = i;
-    }
+    final mixedTable = <int>[0, 0x20, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 27, 28, 29, 30, 31, 0x40, 0x5c, 0x5e, 0x5f, 0x60, 0x7c, 0x7e, 127];
+    for (var i = 0; i < mixedTable.length; i++) _charMap[_EncodingMode.mode_mixed]![mixedTable[i]] = i;
 
-    const punctTable = <int>[
-      0,
-      0xd,
-      0,
-      0,
-      0,
-      0,
-      0x21,
-      0x27,
-      0x23,
-      0x24,
-      0x25,
-      0x26,
-      0x27,
-      0x28,
-      0x29,
-      0x2a,
-      0x2b,
-      0x2c,
-      0x2d,
-      0x2e,
-      0x2f,
-      0x3a,
-      0x3b,
-      0x3c,
-      0x3d,
-      0x3e,
-      0x3f,
-      0x5b,
-      0x5d,
-      0x7b,
-      0x7d,
-    ];
+    const punctTable = <int>[0, 0xd, 0, 0, 0, 0, 0x21, 0x27, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2a, 0x2b, 0x2c, 0x2d, 0x2e, 0x2f, 0x3a, 0x3b, 0x3c, 0x3d, 0x3e, 0x3f, 0x5b, 0x5d, 0x7b, 0x7d];
 
     for (var i = 0; i < punctTable.length; i++) {
       final v = punctTable[i];
-      if (v > 0) {
-        _charMap[_EncodingMode.mode_punct]![v] = i;
-      }
+      if (v > 0) _charMap[_EncodingMode.mode_punct]![v] = i;
     }
   }
 
@@ -176,12 +53,7 @@ class BarcodeAztec extends Barcode2D {
 
     final m = _encode(data);
 
-    return Barcode2DMatrix(
-      m.matrixSize,
-      m.matrixSize,
-      1,
-      m.bits,
-    );
+    return Barcode2DMatrix(m.matrixSize, m.matrixSize, 1, m.bits);
   }
 
   @override
@@ -199,9 +71,7 @@ class BarcodeAztec extends Barcode2D {
     for (var i = 0; i < wordCount; i++) {
       var value = 0;
       for (var j = 0; j < wordSize; j++) {
-        if (stuffedBits[i * wordSize + j]) {
-          value |= 1 << (wordSize - j - 1);
-        }
+        if (stuffedBits[i * wordSize + j]) value |= 1 << (wordSize - j - 1);
       }
       message[i] = value;
     }
@@ -210,24 +80,16 @@ class BarcodeAztec extends Barcode2D {
 
   List<bool> _generateCheckWords(List<bool> bits, int totalBits, int wordSize) {
     final rs = ReedSolomonEncoder(_getGF(wordSize));
-
     final messageWordCount = bits.length ~/ wordSize;
     final totalWordCount = totalBits ~/ wordSize;
     final eccWordCount = totalWordCount - messageWordCount;
-
     final messageWords = _bitsToWords(bits, wordSize, messageWordCount);
     final eccWords = rs.encode(messageWords, eccWordCount);
     final startPad = totalBits % wordSize;
-
     final messageBits = <bool>[];
     messageBits.addAll(_addBits(0, startPad));
-
-    for (final messageWord in messageWords) {
-      messageBits.addAll(_addBits(messageWord, wordSize));
-    }
-    for (final eccWord in eccWords) {
-      messageBits.addAll(_addBits(eccWord, wordSize));
-    }
+    for (final messageWord in messageWords) messageBits.addAll(_addBits(messageWord, wordSize));
+    for (final eccWord in eccWords) messageBits.addAll(_addBits(eccWord, wordSize));
     return messageBits;
   }
 
@@ -254,27 +116,22 @@ class BarcodeAztec extends Barcode2D {
     for (var index = 0; index < data.length; index++) {
       var pairCode = 0;
       var nextChar = 0;
-      if (index + 1 < data.length) {
-        nextChar = data[index + 1];
-      }
+      if (index + 1 < data.length) nextChar = data[index + 1];
 
       final cur = data[index];
-      if (cur == 0xd && nextChar == 0xa) {
+      if (cur == 0xd && nextChar == 0xa)
         pairCode = 2;
-      } else if (cur == 0x2e && nextChar == 0x20) {
+      else if (cur == 0x2e && nextChar == 0x20)
         pairCode = 3;
-      } else if (cur == 0x2c && nextChar == 0x20) {
+      else if (cur == 0x2c && nextChar == 0x20)
         pairCode = 4;
-      } else if (cur == 0x3a && nextChar == 0x20) {
+      else if (cur == 0x3a && nextChar == 0x20)
         pairCode = 5;
-      }
 
       if (pairCode > 0) {
         states = _updateStateListForPair(states, data, index, pairCode);
         index++;
-      } else {
-        states = _updateStateListForChar(states, data, index);
-      }
+      } else states = _updateStateListForChar(states, data, index);
     }
     int? minBitCnt;
     _State? result;
@@ -11901,64 +11758,4 @@ class _UBarcodePainter extends CustomPainter {
       old.textPadding != textPadding ||
       old.logo != logo ||
       old.logoRatio != logoRatio;
-}
-
-class UBarcodeExamples extends StatelessWidget {
-  const UBarcodeExamples({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    Widget tile(String title, Widget child) => Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-          const SizedBox(height: 6),
-          SizedBox(height: 130, child: child),
-        ],
-      ),
-    );
-
-    return ListView(
-      padding: const EdgeInsets.all(16),
-      children: <Widget>[
-        tile("QR — plain", const UBarcode(value: "https://sinamn75.com", backgroundColor: Colors.white)),
-        tile(
-          "QR — gradient + rounded modules",
-          const UBarcode(
-            value: "https://sinamn75.com",
-            backgroundColor: Colors.white,
-            moduleShape: UBarcodeModuleShape.rounded,
-            gradientColors: <Color>[Color(0xFF6A11CB), Color(0xFF2575FC)],
-            errorCorrectionLevel: UErrorCorrectionLevel.high,
-            quietZone: 8,
-          ),
-        ),
-        tile(
-          "QR — dot modules, high ECC",
-          const UBarcode(
-            value: "U package barcode engine",
-            backgroundColor: Colors.white,
-            moduleShape: UBarcodeModuleShape.dot,
-            barColor: Color(0xFF0F9D58),
-            errorCorrectionLevel: UErrorCorrectionLevel.quartile,
-          ),
-        ),
-        tile("Data Matrix", const UBarcode(value: "1234567890", type: UBarcodeType.dataMatrix, backgroundColor: Colors.white)),
-        tile("Aztec", const UBarcode(value: "Aztec code sample", type: UBarcodeType.aztec, backgroundColor: Colors.white)),
-        tile("PDF417", const UBarcode(value: "PDF417 sample data", type: UBarcodeType.pdf417, backgroundColor: Colors.white)),
-        tile("Code 128", const UBarcode(value: "ABC-12345", type: UBarcodeType.code128, showValue: true, backgroundColor: Colors.white)),
-        tile("Code 39", const UBarcode(value: "CODE39", type: UBarcodeType.code39, showValue: true, backgroundColor: Colors.white)),
-        tile("Code 93", const UBarcode(value: "CODE93", type: UBarcodeType.code93, showValue: true, backgroundColor: Colors.white)),
-        tile("EAN-13", const UBarcode(value: "9781234567897", type: UBarcodeType.ean13, showValue: true, backgroundColor: Colors.white)),
-        tile("EAN-8", const UBarcode(value: "12345670", type: UBarcodeType.ean8, showValue: true, backgroundColor: Colors.white)),
-        tile("UPC-A", const UBarcode(value: "123456789012", type: UBarcodeType.upcA, showValue: true, backgroundColor: Colors.white)),
-        tile("UPC-E", const UBarcode(value: "01234565", type: UBarcodeType.upcE, showValue: true, backgroundColor: Colors.white)),
-        tile("ITF", const UBarcode(value: "1234567890", type: UBarcodeType.itf, showValue: true, backgroundColor: Colors.white)),
-        tile("Codabar", const UBarcode(value: "A12345B", type: UBarcodeType.codabar, showValue: true, backgroundColor: Colors.white)),
-        tile("ISBN", const UBarcode(value: "9781234567897", type: UBarcodeType.isbn, showValue: true, backgroundColor: Colors.white)),
-      ],
-    );
-  }
 }
