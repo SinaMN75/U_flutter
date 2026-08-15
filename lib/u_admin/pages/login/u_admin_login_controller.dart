@@ -19,13 +19,13 @@ class UAdminLoginController extends UBaseController {
           userName: controllerUserName.text,
           password: controllerPassword.text,
         ),
-        onOk: (final UResponse<ULoginResponse> r) {
+        onOk: (UResponse<ULoginResponse> r) {
           ULocalStorage.set(UConstants.token, r.result!.token);
           ULocalStorage.set(UConstants.userId, r.result!.user.id);
           ULoading.dismiss();
           onFinish(r.result!.user);
         },
-        onError: (final UEmptyResponse r) {
+        onError: (UEmptyResponse r) {
           ULoading.dismiss();
           UToast.error(message: r.message);
         },

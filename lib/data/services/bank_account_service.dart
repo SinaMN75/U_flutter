@@ -2,7 +2,7 @@ part of "../data.dart";
 
 class BankAccountService {
   Future<(UResponse<String>?, UEmptyResponse?, String?)> create({
-    required final UBankAccountCreateParams p,
+    required UBankAccountCreateParams p,
     required Function(UResponse<String> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -12,17 +12,17 @@ class BankAccountService {
       method: "POST",
       endpoint: "${U.baseUrl}/bankAccount/Create",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
-        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (final dynamic i) => i);
+      onSuccess: (Response r) {
+        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (dynamic i) => i);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -31,7 +31,7 @@ class BankAccountService {
   }
 
   Future<(UResponse<List<UBankAccountResponse>>?, UEmptyResponse?, String?)> read({
-    required final UBankAccountReadParams p,
+    required UBankAccountReadParams p,
     required Function(UResponse<List<UBankAccountResponse>> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -41,20 +41,20 @@ class BankAccountService {
       method: "POST",
       endpoint: "${U.baseUrl}/bankAccount/Read",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UResponse<List<UBankAccountResponse>> ok = UResponse<List<UBankAccountResponse>>.fromJson(
           r.body,
-          (final dynamic i) => List<UBankAccountResponse>.from((i as List<dynamic>).map((final dynamic x) => UBankAccountResponse.fromMap(x))),
+          (dynamic i) => List<UBankAccountResponse>.from((i as List<dynamic>).map((dynamic x) => UBankAccountResponse.fromMap(x))),
         );
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -63,7 +63,7 @@ class BankAccountService {
   }
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> update({
-    required final UBankAccountUpdateParams p,
+    required UBankAccountUpdateParams p,
     required Function(UEmptyResponse r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -73,17 +73,17 @@ class BankAccountService {
       method: "POST",
       endpoint: "${U.baseUrl}/bankAccount/Update",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -92,7 +92,7 @@ class BankAccountService {
   }
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> delete({
-    required final UIdParams p,
+    required UIdParams p,
     required Function(UEmptyResponse r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -102,17 +102,17 @@ class BankAccountService {
       method: "POST",
       endpoint: "${U.baseUrl}/bankAccount/Delete",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },

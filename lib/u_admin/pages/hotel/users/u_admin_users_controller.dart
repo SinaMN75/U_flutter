@@ -24,7 +24,7 @@ class UAdminUsersController extends UBaseController {
   final TextEditingController fromCreatedAtController = TextEditingController();
   final TextEditingController toCreatedAtController = TextEditingController();
 
-  void init({required final UAdminUsersPageArgs args}) {
+  void init({required UAdminUsersPageArgs args}) {
     this.args = args;
     read();
   }
@@ -98,12 +98,12 @@ class UAdminUsersController extends UBaseController {
       ULoading.show();
       UServices.user.delete(
         p: UIdParams(id: user.id),
-        onOk: (final UEmptyResponse r) {
+        onOk: (UEmptyResponse r) {
           UNavigator.back();
           UToast.snackBar(message: r.message);
           ULoading.dismiss();
         },
-        onError: (final UEmptyResponse r) {
+        onError: (UEmptyResponse r) {
           UToast.error(message: r.message);
           ULoading.dismiss();
         },
@@ -122,7 +122,7 @@ class UAdminUsersController extends UBaseController {
       ULoading.show();
       UServices.user.create(
         p: p,
-        onOk: (final UResponse<String> r) async {
+        onOk: (UResponse<String> r) async {
           files?.forEach(
             (FileData i) async => UServices.media.create(
               p: UMediaCreateParams(file: i, userId: r.result, tag1: TagMedia.image.number),
@@ -135,7 +135,7 @@ class UAdminUsersController extends UBaseController {
           UNavigator.back();
           UToast.snackBar(message: U.s.userCreatedSuccessfully);
         },
-        onError: (final UEmptyResponse r) {
+        onError: (UEmptyResponse r) {
           ULoading.dismiss();
           UToast.snackBar(message: r.message);
         },
@@ -148,8 +148,8 @@ class UAdminUsersController extends UBaseController {
   );
 
   void update({
-    required final GlobalKey<FormState> formKey,
-    required final UUserUpdateParams p,
+    required GlobalKey<FormState> formKey,
+    required UUserUpdateParams p,
     List<FileData>? files,
   }) => UValidators.validateForm(
     key: formKey,
@@ -165,13 +165,13 @@ class UAdminUsersController extends UBaseController {
       );
       UServices.user.update(
         p: p,
-        onOk: (final UEmptyResponse r) {
+        onOk: (UEmptyResponse r) {
           read();
           ULoading.dismiss();
           UNavigator.back();
           UToast.snackBar(message: U.s.userCreatedSuccessfully);
         },
-        onError: (final UEmptyResponse r) {
+        onError: (UEmptyResponse r) {
           ULoading.dismiss();
           UToast.snackBar(message: r.message);
         },

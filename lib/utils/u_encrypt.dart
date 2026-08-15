@@ -45,19 +45,19 @@ abstract class UEncryption {
   // ---------------------------------------------------------------------------
   // Byte parsing helpers.
   // ---------------------------------------------------------------------------
-  static Key parseKey(final String value, final UByteEncoding encoding) => switch (encoding) {
+  static Key parseKey(String value, UByteEncoding encoding) => switch (encoding) {
     UByteEncoding.utf8 => Key.fromUtf8(value),
     UByteEncoding.base64 => Key.fromBase64(value),
     UByteEncoding.hex => Key(Uint8List.fromList(hexToBytes(value))),
   };
 
-  static IV parseIv(final String value, final UByteEncoding encoding) => switch (encoding) {
+  static IV parseIv(String value, UByteEncoding encoding) => switch (encoding) {
     UByteEncoding.utf8 => IV.fromUtf8(value),
     UByteEncoding.base64 => IV.fromBase64(value),
     UByteEncoding.hex => IV(Uint8List.fromList(hexToBytes(value))),
   };
 
-  static AESMode _mode(final UAesMode mode) => switch (mode) {
+  static AESMode _mode(UAesMode mode) => switch (mode) {
     UAesMode.cbc => AESMode.cbc,
     UAesMode.cfb64 => AESMode.cfb64,
     UAesMode.ctr => AESMode.ctr,
@@ -128,21 +128,21 @@ abstract class UEncryption {
   // ---------------------------------------------------------------------------
   // Reversible text encoders.
   // ---------------------------------------------------------------------------
-  static String base64EncodeText(final String text) => base64.encode(utf8.encode(text));
+  static String base64EncodeText(String text) => base64.encode(utf8.encode(text));
 
-  static String base64DecodeText(final String value) => utf8.decode(base64.decode(value));
+  static String base64DecodeText(String value) => utf8.decode(base64.decode(value));
 
-  static String base64UrlEncodeText(final String text) => base64Url.encode(utf8.encode(text));
+  static String base64UrlEncodeText(String text) => base64Url.encode(utf8.encode(text));
 
-  static String base64UrlDecodeText(final String value) => utf8.decode(base64Url.decode(value));
+  static String base64UrlDecodeText(String value) => utf8.decode(base64Url.decode(value));
 
-  static String hexEncodeText(final String text) => hexEncode(utf8.encode(text));
+  static String hexEncodeText(String text) => hexEncode(utf8.encode(text));
 
-  static String hexDecodeText(final String value) => utf8.decode(hexToBytes(value));
+  static String hexDecodeText(String value) => utf8.decode(hexToBytes(value));
 
-  static String hexEncode(final List<int> bytes) => bytes.map((final int b) => b.toRadixString(16).padLeft(2, "0")).join();
+  static String hexEncode(List<int> bytes) => bytes.map((int b) => b.toRadixString(16).padLeft(2, "0")).join();
 
-  static List<int> hexToBytes(final String hex) {
+  static List<int> hexToBytes(String hex) {
     final String clean = hex.replaceAll(RegExp(r"\s"), "");
     if (clean.length.isOdd) throw const FormatException("Hex length must be even.");
     return <int>[for (int i = 0; i < clean.length; i += 2) int.parse(clean.substring(i, i + 2), radix: 16)];
@@ -151,24 +151,24 @@ abstract class UEncryption {
   // ---------------------------------------------------------------------------
   // One-way hashes.
   // ---------------------------------------------------------------------------
-  static String md5Hash(final String text) => md5.convert(utf8.encode(text)).toString();
+  static String md5Hash(String text) => md5.convert(utf8.encode(text)).toString();
 
-  static String sha1Hash(final String text) => sha1.convert(utf8.encode(text)).toString();
+  static String sha1Hash(String text) => sha1.convert(utf8.encode(text)).toString();
 
-  static String sha224Hash(final String text) => sha224.convert(utf8.encode(text)).toString();
+  static String sha224Hash(String text) => sha224.convert(utf8.encode(text)).toString();
 
-  static String sha256Hash(final String text) => sha256.convert(utf8.encode(text)).toString();
+  static String sha256Hash(String text) => sha256.convert(utf8.encode(text)).toString();
 
-  static String sha384Hash(final String text) => sha384.convert(utf8.encode(text)).toString();
+  static String sha384Hash(String text) => sha384.convert(utf8.encode(text)).toString();
 
-  static String sha512Hash(final String text) => sha512.convert(utf8.encode(text)).toString();
+  static String sha512Hash(String text) => sha512.convert(utf8.encode(text)).toString();
 
-  static String hmacSha256(final String text, final String key) => Hmac(sha256, utf8.encode(key)).convert(utf8.encode(text)).toString();
+  static String hmacSha256(String text, String key) => Hmac(sha256, utf8.encode(key)).convert(utf8.encode(text)).toString();
 
   // ---------------------------------------------------------------------------
   // Random material generators (returned as Base64).
   // ---------------------------------------------------------------------------
-  static String randomKey({final int bytes = 32}) => Key.fromSecureRandom(bytes).base64;
+  static String randomKey({int bytes = 32}) => Key.fromSecureRandom(bytes).base64;
 
-  static String randomIv({final int bytes = 16}) => IV.fromSecureRandom(bytes).base64;
+  static String randomIv({int bytes = 16}) => IV.fromSecureRandom(bytes).base64;
 }

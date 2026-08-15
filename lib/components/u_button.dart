@@ -99,7 +99,7 @@ class _UButtonState extends State<UButton> {
     // counterResetCounterOnTap can trigger startTimer even when no counter was provided, so guard the unwrap.
     counter = widget.counter ?? 0;
     onTap = null;
-    timer = Timer.periodic(const Duration(seconds: 1), (final Timer timer) {
+    timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
       setState(() {
         counter--;
         title = "$counter ${widget.counterDescription}";
@@ -366,12 +366,12 @@ class UPressable extends StatefulWidget {
 class _UPressableState extends State<UPressable> {
   bool _pressed = false;
 
-  void _setPressed(final bool value) => setState(() => _pressed = value);
+  void _setPressed(bool value) => setState(() => _pressed = value);
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-    onTapDown: (final TapDownDetails _) => _setPressed(true),
-    onTapUp: (final TapUpDetails _) => _setPressed(false),
+    onTapDown: (TapDownDetails _) => _setPressed(true),
+    onTapUp: (TapUpDetails _) => _setPressed(false),
     onTapCancel: () => _setPressed(false),
     onTap: widget.onTap,
     child: AnimatedScale(

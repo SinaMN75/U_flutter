@@ -2,7 +2,7 @@ part of "../data.dart";
 
 class MediaService {
   Future<(UResponse<String>?, UEmptyResponse?, String?)> create({
-    required final UMediaCreateParams p,
+    required UMediaCreateParams p,
     required Function(UResponse<String> r)? onOk,
     required Function(UEmptyResponse e) onError,
     required Function(String e) onException,
@@ -18,12 +18,12 @@ class MediaService {
       endpoint: "${U.baseUrl}/Media/Create",
       files: files,
       fields: p.toMap()..addAll(<String, dynamic>{"apiKey": U.apiKey, "token": ULocalStorage.getToken()}),
-      onSuccess: (final Response r) {
-        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (final dynamic i) => i);
+      onSuccess: (Response r) {
+        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (dynamic i) => i);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError(err);
@@ -37,7 +37,7 @@ class MediaService {
   }
 
   Future<(UResponse<List<UMediaResponse>>?, UEmptyResponse?, String?)> read({
-    required final UMediaReadParams p,
+    required UMediaReadParams p,
     required Function(UResponse<List<UMediaResponse>> r) onOk,
     required Function(UEmptyResponse e) onError,
     required Function(String e) onException,
@@ -47,7 +47,7 @@ class MediaService {
       method: "POST",
       endpoint: "${U.baseUrl}/Media/Read",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UResponse<List<UMediaResponse>> ok = UResponse<List<UMediaResponse>>.fromJson(
           r.body,
           (dynamic i) => List<UMediaResponse>.from((i as List<dynamic>).map((dynamic x) => UMediaResponse.fromMap(x))),
@@ -55,12 +55,12 @@ class MediaService {
         result = (ok, null, null);
         onOk(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException(e);
       },
@@ -69,7 +69,7 @@ class MediaService {
   }
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> update({
-    required final UMediaUpdateParams p,
+    required UMediaUpdateParams p,
     required Function(UEmptyResponse r) onOk,
     required Function(UEmptyResponse e) onError,
     required Function(String e) onException,
@@ -79,17 +79,17 @@ class MediaService {
       method: "POST",
       endpoint: "${U.baseUrl}/Media/Update",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException(e);
       },
@@ -98,7 +98,7 @@ class MediaService {
   }
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> delete({
-    required final UIdParams p,
+    required UIdParams p,
     required Function(UEmptyResponse r) onOk,
     required Function(UEmptyResponse e) onError,
     required Function(String e) onException,
@@ -108,17 +108,17 @@ class MediaService {
       method: "POST",
       endpoint: "${U.baseUrl}/Media/Delete",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException(e);
       },
@@ -127,7 +127,7 @@ class MediaService {
   }
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteRange({
-    required final UIdListParams p,
+    required UIdListParams p,
     required Function(UEmptyResponse r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -137,17 +137,17 @@ class MediaService {
       method: "POST",
       endpoint: "${U.baseUrl}/Media/DeleteRange",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },

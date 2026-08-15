@@ -45,7 +45,7 @@ void Function() listenWebMessage(void Function(String origin, Map<String, dynami
     onMessage(e.origin, decoded.map((Object? k, Object? v) => MapEntry<String, dynamic>(k.toString(), v)));
   }
 
-  final JSFunction listener = handle.toJS;
+  final JSExportedDartFunction<void Function(web.Event event)> listener = handle.toJS;
   web.window.addEventListener("message", listener);
   return () => web.window.removeEventListener("message", listener);
 }

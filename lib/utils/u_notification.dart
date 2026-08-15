@@ -2,13 +2,13 @@ import "package:u/utilities.dart";
 
 abstract class UNotification {
   static void showNotification({
-    required final String title,
-    required final String message,
-    required final Function(NotificationResponse) onNotificationTap,
-    final String channelId = "channelId",
-    final String channelName = "channelName",
-    final String channelDescription = "channelDescription",
-    final String? payload,
+    required String title,
+    required String message,
+    required Function(NotificationResponse) onNotificationTap,
+    String channelId = "channelId",
+    String channelName = "channelName",
+    String channelDescription = "channelDescription",
+    String? payload,
   }) {
     final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.requestNotificationsPermission();

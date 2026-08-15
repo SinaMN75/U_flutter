@@ -384,7 +384,7 @@ abstract class UNavigator {
 
   static Future<Color?> colorPicker({
     required Color defaultColor,
-    final List<Color>? colors,
+    List<Color>? colors,
     String? title,
   }) async => UNavigator.dialog<Color>(
     AlertDialog(

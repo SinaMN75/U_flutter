@@ -1,11 +1,11 @@
 part of "../data.dart";
 
 extension NullableWalletListExtension on Iterable<UWalletResponse>? {
-  List<UWalletResponse> whereByTag(int tag) => (this ?? <UWalletResponse>[]).where((final UWalletResponse i) => i.tags.contains(tag)).toList();
+  List<UWalletResponse> whereByTag(int tag) => (this ?? <UWalletResponse>[]).where((UWalletResponse i) => i.tags.contains(tag)).toList();
 
-  UWalletResponse primary() => (this ?? <UWalletResponse>[]).firstWhere((final UWalletResponse i) => i.tags.contains(TagWallet.primary.number));
+  UWalletResponse primary() => (this ?? <UWalletResponse>[]).firstWhere((UWalletResponse i) => i.tags.contains(TagWallet.primary.number));
 
-  UWalletResponse? firstWhereByTagOrNull(int tag) => (this ?? <UWalletResponse>[]).firstWhereOrNull((final UWalletResponse i) => i.tags.contains(tag));
+  UWalletResponse? firstWhereByTagOrNull(int tag) => (this ?? <UWalletResponse>[]).firstWhereOrNull((UWalletResponse i) => i.tags.contains(tag));
 }
 
 extension NullableWalletExtension on UWalletTxnResponse {

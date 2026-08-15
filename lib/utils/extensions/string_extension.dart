@@ -31,7 +31,7 @@ extension OptionalStringExtension on String? {
     return nums > 0 ? intl.NumberFormat("###,###,###,###,000").format(nums) : "0";
   }
 
-  String separateNumbers3By3() => (this ?? "").replaceAllMapped(RegExp(r"(\d{1,3})(?=(\d{3})+(?!\d))"), (final Match m) => "${m[1]},");
+  String separateNumbers3By3() => (this ?? "").replaceAllMapped(RegExp(r"(\d{1,3})(?=(\d{3})+(?!\d))"), (Match m) => "${m[1]},");
 
   String toJalaliDateString() => Jalali.fromDateTime(DateTime.parse(this ?? DateTime.now().toString())).formatFullDate();
 
@@ -42,13 +42,13 @@ extension OptionalStringExtension on String? {
 
   String toJalaliDate() => Jalali.fromDateTime(DateTime.parse(this ?? DateTime.now().toString())).formatCompactDate();
 
-  String rial({final bool removeNegative = false}) => "${(this ?? "").separateNumbers3By3()} ریال".trim().replaceAll(removeNegative ? "-" : "", "");
+  String rial({bool removeNegative = false}) => "${(this ?? "").separateNumbers3By3()} ریال".trim().replaceAll(removeNegative ? "-" : "", "");
 
-  String toman({final bool removeNegative = false}) => "${(this ?? "").separateNumbers3By3()} تومان".trim().replaceAll(removeNegative ? "-" : "", "");
+  String toman({bool removeNegative = false}) => "${(this ?? "").separateNumbers3By3()} تومان".trim().replaceAll(removeNegative ? "-" : "", "");
 
   String rialToTomanMoneyPersian() => "${((this ?? "0").toInt() / 10).toString().separateNumbers3By3()} تومان ".trim();
 
-  String formatJalaliDateTime({final bool toLocal = false}) {
+  String formatJalaliDateTime({bool toLocal = false}) {
     final DateTime dateTime = DateTime.parse(this ?? DateTime.now().toString()).toLocal();
     final Jalali jalali = Jalali.fromDateTime(dateTime);
     if (dateTime.hour == 0 && dateTime.minute == 0) return "${jalali.year}/${jalali.month}/${jalali.day}";
@@ -75,7 +75,7 @@ extension StringExtensions on String {
 
   Uint8List toBytesFromBase64Url() => base64Url.decode(this);
 
-  String subStringIfExist(final int start, final int end) => length > end ? substring(start, end) : this;
+  String subStringIfExist(int start, int end) => length > end ? substring(start, end) : this;
 
   String numberString() => replaceAll(_nonDigits, "");
 
@@ -97,11 +97,11 @@ extension StringExtensions on String {
 
   double toDouble() => double.tryParse(this) ?? 0;
 
-  String separateNumbers3By3() => replaceAllMapped(_thousands, (final Match m) => "${m[1]},");
+  String separateNumbers3By3() => replaceAllMapped(_thousands, (Match m) => "${m[1]},");
 
-  String separateCharacters(final int number, final String separator) => replaceAllMapped(
+  String separateCharacters(int number, String separator) => replaceAllMapped(
     RegExp("(\\d{1,$number})(?=(\\d{$number})+(?!\\d))"),
-    (final Match m) => "${m[1]}$separator",
+    (Match m) => "${m[1]}$separator",
   );
 
   String toJalaliCompactDateString() => Jalali.fromDateTime(DateTime.parse(this)).formatCompactDate();
@@ -122,7 +122,7 @@ extension StringExtensions on String {
     return "${jalali.year}/${jalali.month}/${jalali.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second.toString().append0()}";
   }
 
-  String maxLength({required final int max}) => length > max ? "${substring(0, max - 3)}..." : this;
+  String maxLength({required int max}) => length > max ? "${substring(0, max - 3)}..." : this;
 
   int getDay() => int.parse(substring(8, 10).append0());
 
@@ -134,7 +134,7 @@ extension StringExtensions on String {
 
   int getMinute() => int.parse(substring(3, 5).append0());
 
-  String toTimeAgo({final bool numericDates = false, final bool persian = false}) {
+  String toTimeAgo({bool numericDates = false, bool persian = false}) {
     try {
       final Duration difference = DateTime.now().difference(intl.DateFormat("yyyy-MM-ddThh:mm:sss").parse(this));
       if (difference.inDays > 8) {
@@ -202,18 +202,79 @@ extension StringExtensions on String {
   }
 
   String toLatinNumber() {
-    String number = this;
-    number = number.replaceAll("۱", "1");
-    number = number.replaceAll("۲", "2");
-    number = number.replaceAll("۳", "3");
-    number = number.replaceAll("۴", "4");
-    number = number.replaceAll("۵", "5");
-    number = number.replaceAll("۶", "6");
-    number = number.replaceAll("۷", "7");
-    number = number.replaceAll("۸", "8");
-    number = number.replaceAll("۹", "9");
-    number = number.replaceAll("۰", "0");
-    return number;
+    final StringBuffer result = StringBuffer();
+
+    for (final int rune in runes) {
+      final int? digit = _unicodeDigitToLatin(rune);
+
+      if (digit != null)
+        result.write(digit);
+      else
+        result.writeCharCode(rune);
+    }
+
+    return result.toString();
+  }
+
+  static int? _unicodeDigitToLatin(int codePoint) {
+    // ASCII
+    if (codePoint >= 0x30 && codePoint <= 0x39) return codePoint - 0x30;
+
+    // Arabic-Indic: ١٢٣٤٥٦٧٨٩٠
+    if (codePoint >= 0x0660 && codePoint <= 0x0669) return codePoint - 0x0660;
+
+    // Extended Arabic-Indic / Persian: ۰۱۲۳۴۵۶۷۸۹
+    if (codePoint >= 0x06F0 && codePoint <= 0x06F9) return codePoint - 0x06F0;
+
+    // Devanagari: ०१२३४५६७८९
+    if (codePoint >= 0x0966 && codePoint <= 0x096F) return codePoint - 0x0966;
+
+    // Bengali: ০১২৩৪৫৬৭৮৯
+    if (codePoint >= 0x09E6 && codePoint <= 0x09EF) return codePoint - 0x09E6;
+
+    // Gurmukhi: ੦੧੨੩੪੫੬੭੮੯
+    if (codePoint >= 0x0A66 && codePoint <= 0x0A6F) return codePoint - 0x0A66;
+
+    // Gujarati: ૦૧૨૩૪૫૬૭૮૯
+    if (codePoint >= 0x0AE6 && codePoint <= 0x0AEF) return codePoint - 0x0AE6;
+
+    // Oriya: ୦୧୨୩୪୫୬୭୮୯
+    if (codePoint >= 0x0B66 && codePoint <= 0x0B6F) return codePoint - 0x0B66;
+
+    // Tamil: ௦௧௨௩௪௫௬௭௮௯
+    if (codePoint >= 0x0BE6 && codePoint <= 0x0BEF) return codePoint - 0x0BE6;
+
+    // Telugu: ౦౧౨౩౪౫౬౭౮౯
+    if (codePoint >= 0x0C66 && codePoint <= 0x0C6F) return codePoint - 0x0C66;
+
+    // Kannada: ೦೧೨೩೪೫೬೭೮೯
+    if (codePoint >= 0x0CE6 && codePoint <= 0x0CEF) return codePoint - 0x0CE6;
+
+    // Malayalam: ൦൧൨൩൪൫൬൭൮൯
+    if (codePoint >= 0x0D66 && codePoint <= 0x0D6F) return codePoint - 0x0D66;
+
+    // Thai: ๐๑๒๓๔๕๖๗๘๙
+    if (codePoint >= 0x0E50 && codePoint <= 0x0E59) return codePoint - 0x0E50;
+
+    // Lao: ໐໑໒໓໔໕໖໗໘໙
+    if (codePoint >= 0x0ED0 && codePoint <= 0x0ED9) return codePoint - 0x0ED0;
+
+    // Tibetan: ༠༡༢༣༤༥༦༧༨༩
+    if (codePoint >= 0x0F20 && codePoint <= 0x0F29) return codePoint - 0x0F20;
+
+    // Myanmar: ၀၁၂၃၄၅၆၇၈၉
+    if (codePoint >= 0x1040 && codePoint <= 0x1049) return codePoint - 0x1040;
+
+    // Khmer: ០១២៣៤៥៦៧៨៩
+    if (codePoint >= 0x17E0 && codePoint <= 0x17E9) return codePoint - 0x17E0;
+
+    // Mongolian: ᠐᠑᠒᠓᠔᠕᠖᠗᠘᠙
+    if (codePoint >= 0x1810 && codePoint <= 0x1819) return codePoint - 0x1810;
+
+    // Full-width digits: ０１２３４５６７８９
+    if (codePoint >= 0xFF10 && codePoint <= 0xFF19) return codePoint - 0xFF10;
+
+    return null;
   }
 
   String persianDayDay() {
@@ -274,7 +335,7 @@ extension StringExtensions on String {
     return month;
   }
 
-  String removeCharAt(final int charIndex) {
+  String removeCharAt(int charIndex) {
     final List<String> charList = split("").toList();
     charList.removeAt(charIndex);
     return charList.join();

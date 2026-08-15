@@ -93,7 +93,7 @@ class BadgeState extends State<BadgeWidget> with SingleTickerProviderStateMixin 
   }
 
   @override
-  Widget build(final BuildContext context) {
+  Widget build(BuildContext context) {
     if (widget.child == null) {
       return _getBadge();
     } else {
@@ -172,7 +172,7 @@ class BadgeState extends State<BadgeWidget> with SingleTickerProviderStateMixin 
   }
 
   @override
-  void didUpdateWidget(final BadgeWidget oldWidget) {
+  void didUpdateWidget(BadgeWidget oldWidget) {
     if (widget.badgeContent is Text && oldWidget.badgeContent is Text) {
       final Text newText = widget.badgeContent! as Text;
       final Text oldText = oldWidget.badgeContent! as Text;
@@ -206,13 +206,13 @@ class BadgePosition {
 
   factory BadgePosition.center() => const BadgePosition(isCenter: true);
 
-  factory BadgePosition.topStart({final double top = -5, final double start = -10}) => BadgePosition(top: top, start: start);
+  factory BadgePosition.topStart({double top = -5, double start = -10}) => BadgePosition(top: top, start: start);
 
-  factory BadgePosition.topEnd({final double top = -8, final double end = -10}) => BadgePosition(top: top, end: end);
+  factory BadgePosition.topEnd({double top = -8, double end = -10}) => BadgePosition(top: top, end: end);
 
-  factory BadgePosition.bottomEnd({final double bottom = -8, final double end = -10}) => BadgePosition(bottom: bottom, end: end);
+  factory BadgePosition.bottomEnd({double bottom = -8, double end = -10}) => BadgePosition(bottom: bottom, end: end);
 
-  factory BadgePosition.bottomStart({final double bottom = -8, final double start = -10}) => BadgePosition(bottom: bottom, start: start);
+  factory BadgePosition.bottomStart({double bottom = -8, double start = -10}) => BadgePosition(bottom: bottom, start: start);
   final double? top;
 
   final double? end;
@@ -237,7 +237,7 @@ class BadgePositioned extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(final BuildContext context) {
+  Widget build(BuildContext context) {
     final BadgePosition? position = this.position;
     if (position == null) {
       final BadgePosition topRight = BadgePosition.topEnd();

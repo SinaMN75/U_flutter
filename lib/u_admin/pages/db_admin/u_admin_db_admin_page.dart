@@ -1,8 +1,5 @@
 import "package:u/utilities.dart";
 
-// SystemAdmin-only PgAdmin-style console: browse every table with real server-side pagination,
-// filter/sort/edit/insert/delete rows, inspect structure, and run arbitrary SQL. English-only + LTR.
-// All power lives on the backend DbAdmin endpoints; this widget is pure UI over UServices.dbAdmin.
 class UAdminDbAdminPage extends StatefulWidget {
   const UAdminDbAdminPage({super.key});
 
@@ -57,22 +54,22 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
     setState(() => _loadingTables = true);
     await UServices.dbAdmin.tables(
       p: UDbAdminTablesParams(),
-      onOk: (final UResponse<List<UDbTableResponse>> r) => setState(() {
+      onOk: (UResponse<List<UDbTableResponse>> r) => setState(() {
         _tables = r.result ?? <UDbTableResponse>[];
         _loadingTables = false;
       }),
-      onError: (final UEmptyResponse e) {
+      onError: (UEmptyResponse e) {
         setState(() => _loadingTables = false);
         UToast.error(message: e.message);
       },
-      onException: (final String e) {
+      onException: (String e) {
         setState(() => _loadingTables = false);
         UToast.error(message: e);
       },
     );
   }
 
-  void _selectTable(final UDbTableResponse t) {
+  void _selectTable(UDbTableResponse t) {
     setState(() {
       _selected = t;
       _tab = 0;
@@ -89,7 +86,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
 
   // withCount is only true on the first load / new filter / new page size, so paging & sorting
   // never re-scan the whole table with count(*).
-  Future<void> _loadRows({final bool withCount = false}) async {
+  Future<void> _loadRows({bool withCount = false}) async {
     if (_selected == null) return;
     setState(() => _loadingRows = true);
     final String where = _whereController.text.trim();
@@ -104,7 +101,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
         where: where.isEmpty ? null : where,
         withCount: withCount,
       ),
-      onOk: (final UResponse<UDbQueryResultResponse> r) => setState(() {
+      onOk: (UResponse<UDbQueryResultResponse> r) => setState(() {
         _rows = r.result;
         if (withCount) {
           _totalCount = r.totalCount;
@@ -112,11 +109,11 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
         }
         _loadingRows = false;
       }),
-      onError: (final UEmptyResponse e) {
+      onError: (UEmptyResponse e) {
         setState(() => _loadingRows = false);
         UToast.error(message: e.message);
       },
-      onException: (final String e) {
+      onException: (String e) {
         setState(() => _loadingRows = false);
         UToast.error(message: e);
       },
@@ -128,22 +125,22 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
     setState(() => _loadingSchema = true);
     await UServices.dbAdmin.schema(
       p: UDbAdminSchemaParams(table: _selected!.name, schema: _selected!.schema),
-      onOk: (final UResponse<UDbTableSchemaResponse> r) => setState(() {
+      onOk: (UResponse<UDbTableSchemaResponse> r) => setState(() {
         _schema = r.result;
         _loadingSchema = false;
       }),
-      onError: (final UEmptyResponse e) {
+      onError: (UEmptyResponse e) {
         setState(() => _loadingSchema = false);
         UToast.error(message: e.message);
       },
-      onException: (final String e) {
+      onException: (String e) {
         setState(() => _loadingSchema = false);
         UToast.error(message: e);
       },
     );
   }
 
-  void _sortBy(final String column) {
+  void _sortBy(String column) {
     setState(() {
       if (_orderBy == column) {
         _descending = !_descending;
@@ -161,7 +158,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
     _loadRows(withCount: true);
   }
 
-  void _changePageSize(final int size) {
+  void _changePageSize(int size) {
     setState(() {
       _pageSize = size;
       _page = 1;
@@ -169,7 +166,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
     _loadRows(withCount: true);
   }
 
-  void _gotoPage(final int page) {
+  void _gotoPage(int page) {
     if (page < 1 || page > _pageCount || page == _page) return;
     setState(() => _page = page);
     _loadRows();
@@ -184,17 +181,17 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
     });
     await UServices.dbAdmin.query(
       p: UDbAdminQueryParams(sql: sql),
-      onOk: (final UResponse<UDbQueryResultResponse> r) => setState(() {
+      onOk: (UResponse<UDbQueryResultResponse> r) => setState(() {
         _queryResult = r.result;
         _queryError = null;
         _queryRunning = false;
       }),
-      onError: (final UEmptyResponse e) => setState(() {
+      onError: (UEmptyResponse e) => setState(() {
         _queryResult = null;
         _queryError = e.message;
         _queryRunning = false;
       }),
-      onException: (final String e) => setState(() {
+      onException: (String e) => setState(() {
         _queryResult = null;
         _queryError = e;
         _queryRunning = false;
@@ -206,19 +203,19 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
     if (!await UNavigator.confirmAsync(title: "Run migrations", message: "Apply all pending database migrations now?", confirmText: "Migrate", icon: Icons.system_update_alt_rounded)) return;
     ULoading.show();
     await UServices.dbAdmin.migrate(
-      onOk: (final List<String> applied) {
+      onOk: (List<String> applied) {
         ULoading.dismiss();
         UToast.success(message: applied.isEmpty ? "Database is already up to date." : "Applied ${applied.length} migration(s): ${applied.join(", ")}");
         _loadTables();
       },
-      onError: (final String e) {
+      onError: (String e) {
         ULoading.dismiss();
         UToast.error(message: e.isEmpty ? "Migration failed." : e);
       },
     );
   }
 
-  Future<void> _deleteRow(final Map<String, String?> row) async {
+  Future<void> _deleteRow(Map<String, String?> row) async {
     final String? pk = _rows?.primaryKeyColumn;
     if (_selected == null || pk == null || row[pk] == null) return;
     if (!await UNavigator.confirmAsync(title: "Delete row", message: "Delete this row? This cannot be undone.", destructive: true, icon: Icons.delete_outline_rounded)) return;
@@ -226,23 +223,23 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
     ULoading.show();
     await UServices.dbAdmin.deleteRow(
       p: UDbAdminDeleteRowParams(table: _selected!.name, schema: _selected!.schema, primaryKeyColumn: pk, primaryKeyValue: row[pk]!),
-      onOk: (final UEmptyResponse r) {
+      onOk: (UEmptyResponse r) {
         ULoading.dismiss();
         UToast.success(message: r.message);
         _loadRows(withCount: true);
       },
-      onError: (final UEmptyResponse e) {
+      onError: (UEmptyResponse e) {
         ULoading.dismiss();
         UToast.error(message: e.message);
       },
-      onException: (final String e) {
+      onException: (String e) {
         ULoading.dismiss();
         UToast.error(message: e);
       },
     );
   }
 
-  void _viewRow(final Map<String, String?> row) {
+  void _viewRow(Map<String, String?> row) {
     final ColorScheme cs = Theme.of(context).colorScheme;
     UNavigator.dialog<void>(
       AlertDialog(
@@ -253,7 +250,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
             child: UColumn(
               spacing: 0,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: List<Widget>.generate(row.length, (final int i) {
+              children: List<Widget>.generate(row.length, (int i) {
                 final MapEntry<String, String?> e = row.entries.elementAt(i);
                 return URow(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -276,7 +273,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
     );
   }
 
-  Future<void> _openRowEditor({final Map<String, String?>? original}) async {
+  Future<void> _openRowEditor({Map<String, String?>? original}) async {
     if (_selected == null || _schema == null) return;
     final bool isInsert = original == null;
     final String? pk = _rows?.primaryKeyColumn ?? (_schema!.primaryKeys.isNotEmpty ? _schema!.primaryKeys.first : null);
@@ -292,7 +289,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
     final ColorScheme cs = Theme.of(context).colorScheme;
     final bool? saved = await UNavigator.dialog<bool>(
       StatefulBuilder(
-        builder: (final BuildContext ctx, final StateSetter setLocal) => AlertDialog(
+        builder: (BuildContext ctx, StateSetter setLocal) => AlertDialog(
           title: URow(children: <Widget>[
             Icon(isInsert ? Icons.add_circle_outline_rounded : Icons.edit_outlined, color: cs.primary, size: 20),
             UTextTitleSmall(isInsert ? "Insert row" : "Edit row", fontWeight: FontWeight.bold),
@@ -303,7 +300,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
               child: UColumn(
                 spacing: 12,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: _schema!.columns.map((final UDbColumnResponse c) {
+                children: _schema!.columns.map((UDbColumnResponse c) {
                   final bool readOnly = !isInsert && c.name == pk;
                   return URow(
                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -319,7 +316,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
                           label: const Text("NULL"),
                           visualDensity: VisualDensity.compact,
                           selected: nulls[c.name]!,
-                          onSelected: (final bool v) => setLocal(() => nulls[c.name] = v),
+                          onSelected: (bool v) => setLocal(() => nulls[c.name] = v),
                         ),
                     ],
                   );
@@ -366,16 +363,16 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
     if (isInsert) {
       await UServices.dbAdmin.insertRow(
         p: UDbAdminInsertRowParams(table: _selected!.name, schema: _selected!.schema, values: values),
-        onOk: (final UResponse<UDbQueryResultResponse> r) {
+        onOk: (UResponse<UDbQueryResultResponse> r) {
           ULoading.dismiss();
           UToast.success(message: r.message);
           _loadRows(withCount: true);
         },
-        onError: (final UEmptyResponse e) {
+        onError: (UEmptyResponse e) {
           ULoading.dismiss();
           UToast.error(message: e.message);
         },
-        onException: (final String e) {
+        onException: (String e) {
           ULoading.dismiss();
           UToast.error(message: e);
         },
@@ -387,16 +384,16 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
       }
       await UServices.dbAdmin.updateRow(
         p: UDbAdminUpdateRowParams(table: _selected!.name, schema: _selected!.schema, primaryKeyColumn: pk, primaryKeyValue: original[pk]!, values: values),
-        onOk: (final UResponse<UDbQueryResultResponse> r) {
+        onOk: (UResponse<UDbQueryResultResponse> r) {
           ULoading.dismiss();
           UToast.success(message: r.message);
           _loadRows();
         },
-        onError: (final UEmptyResponse e) {
+        onError: (UEmptyResponse e) {
           ULoading.dismiss();
           UToast.error(message: e.message);
         },
-        onException: (final String e) {
+        onException: (String e) {
           ULoading.dismiss();
           UToast.error(message: e);
         },
@@ -404,10 +401,10 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
     }
   }
 
-  String _rowJson(final Map<String, String?> row) {
+  String _rowJson(Map<String, String?> row) {
     final StringBuffer b = StringBuffer("{");
     int i = 0;
-    row.forEach((final String k, final String? v) {
+    row.forEach((String k, String? v) {
       if (i++ > 0) b.write(", ");
       b.write('"$k": ');
       b.write(v == null ? "null" : '"${v.replaceAll("\\", "\\\\").replaceAll("\"", "\\\"")}"');
@@ -419,7 +416,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
   // ===== Build =====
 
   @override
-  Widget build(final BuildContext context) {
+  Widget build(BuildContext context) {
     final ColorScheme cs = Theme.of(context).colorScheme;
     // This console is English-only and always left-to-right, regardless of the app locale/direction.
     return Directionality(
@@ -439,10 +436,10 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
 
   // ===== Sidebar =====
 
-  Widget _sidebar(final ColorScheme cs) {
+  Widget _sidebar(ColorScheme cs) {
     final List<UDbTableResponse> filtered = _tableSearch.isEmpty
         ? _tables
-        : _tables.where((final UDbTableResponse t) => t.name.toLowerCase().contains(_tableSearch.toLowerCase())).toList();
+        : _tables.where((UDbTableResponse t) => t.name.toLowerCase().contains(_tableSearch.toLowerCase())).toList();
     return SizedBox(
       width: 256,
       child: UColumn(
@@ -462,7 +459,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
             prefix: Icon(Icons.search_rounded, size: 17, color: cs.onSurface.withValues(alpha: 0.5)),
             isDense: true,
             hasClearButton: true,
-            onChanged: (final String v) => setState(() => _tableSearch = v),
+            onChanged: (String v) => setState(() => _tableSearch = v),
           ).pSymmetric(horizontal: 10),
           UTextLabelSmall("${filtered.length} tables", color: cs.onSurface.withValues(alpha: 0.5)).pOnly(left: 14, top: 8, bottom: 4),
           const Divider(height: 1),
@@ -474,14 +471,14 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
             ListView.builder(
               padding: const EdgeInsets.symmetric(vertical: 4),
               itemCount: filtered.length,
-              itemBuilder: (final BuildContext ctx, final int i) => _tableTile(cs, filtered[i]),
+              itemBuilder: (BuildContext ctx, int i) => _tableTile(cs, filtered[i]),
             ).expanded(),
         ],
       ),
     );
   }
 
-  Widget _tableTile(final ColorScheme cs, final UDbTableResponse t) {
+  Widget _tableTile(ColorScheme cs, UDbTableResponse t) {
     final bool active = _selected?.name == t.name;
     return URow(
       children: <Widget>[
@@ -495,7 +492,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
 
   // ===== Main =====
 
-  Widget _main(final ColorScheme cs) {
+  Widget _main(ColorScheme cs) {
     if (_selected == null && _tab != 2) return _placeholder(cs, Icons.storage_rounded, "Select a table to get started", "Pick a table from the left to browse and edit its data, or open the Query tab.");
     return UColumn(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -507,7 +504,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
     );
   }
 
-  Widget _toolbar(final ColorScheme cs) => URow(
+  Widget _toolbar(ColorScheme cs) => URow(
     spacing: 10,
     children: <Widget>[
       Icon(Icons.grid_on_rounded, color: cs.primary, size: 18),
@@ -525,12 +522,12 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
     ],
   ).pSymmetric(horizontal: 14, vertical: 8);
 
-  Widget _segTabs(final ColorScheme cs) {
+  Widget _segTabs(ColorScheme cs) {
     final List<(String, IconData)> tabs = <(String, IconData)>[("Data", Icons.grid_on_rounded), ("Structure", Icons.schema_rounded), ("Query", Icons.terminal_rounded)];
     return URow(
       mainAxisSize: MainAxisSize.min,
       spacing: 0,
-      children: List<Widget>.generate(tabs.length, (final int i) {
+      children: List<Widget>.generate(tabs.length, (int i) {
         final bool active = _tab == i;
         return URow(
           mainAxisSize: MainAxisSize.min,
@@ -546,7 +543,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
 
   // ===== Data tab =====
 
-  Widget _dataTab(final ColorScheme cs) {
+  Widget _dataTab(ColorScheme cs) {
     if (_selected == null) return _placeholder(cs, Icons.touch_app_outlined, "No table selected", "");
     return UColumn(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -565,7 +562,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
     );
   }
 
-  Widget _dataToolbar(final ColorScheme cs) => URow(
+  Widget _dataToolbar(ColorScheme cs) => URow(
     children: <Widget>[
       UTextField(
         controller: _whereController,
@@ -573,7 +570,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
         prefix: Icon(Icons.filter_alt_outlined, size: 16, color: cs.onSurface.withValues(alpha: 0.5)),
         isDense: true,
         hasClearButton: true,
-        onFieldSubmitted: (final String _) => _applyFilter(),
+        onFieldSubmitted: (String _) => _applyFilter(),
       ).expanded(),
       UButton(title: "Apply", type: UButtonType.outlined, icon: const Icon(Icons.play_arrow_rounded, size: 16), onTap: _applyFilter, padding: const EdgeInsets.symmetric(horizontal: 12)),
       _miniIcon(cs, Icons.add_rounded, "Insert row", _openRowEditor, filled: true),
@@ -581,7 +578,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
     ],
   ).pSymmetric(horizontal: 14, vertical: 8);
 
-  Widget _paginationBar(final ColorScheme cs) {
+  Widget _paginationBar(ColorScheme cs) {
     final int from = _totalCount == 0 ? 0 : (_page - 1) * _pageSize + 1;
     final int to = (_page * _pageSize) < _totalCount ? _page * _pageSize : _totalCount;
     return URow(
@@ -590,7 +587,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
         PopupMenuButton<int>(
           tooltip: "Rows per page",
           onSelected: _changePageSize,
-          itemBuilder: (final BuildContext ctx) => _pageSizes.map((final int s) => PopupMenuItem<int>(value: s, child: Text("$s per page"))).toList(),
+          itemBuilder: (BuildContext ctx) => _pageSizes.map((int s) => PopupMenuItem<int>(value: s, child: Text("$s per page"))).toList(),
           child: URow(
             mainAxisSize: MainAxisSize.min,
             spacing: 4,
@@ -614,7 +611,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
 
   // ===== Structure tab =====
 
-  Widget _structureTab(final ColorScheme cs) {
+  Widget _structureTab(ColorScheme cs) {
     if (_loadingSchema && _schema == null) return const Center(child: UProgressCircular(size: 30)).pAll(40);
     final UDbTableSchemaResponse? s = _schema;
     if (s == null) return _placeholder(cs, Icons.inbox_outlined, "No structure", "");
@@ -624,7 +621,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
         spacing: 14,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          _card(cs, "Columns", Icons.view_column_outlined, s.columns.length, List<Widget>.generate(s.columns.length, (final int i) {
+          _card(cs, "Columns", Icons.view_column_outlined, s.columns.length, List<Widget>.generate(s.columns.length, (int i) {
             final UDbColumnResponse c = s.columns[i];
             return URow(
               spacing: 10,
@@ -638,7 +635,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
             ).pSymmetric(horizontal: 4, vertical: 7).container(backgroundColor: i.isOdd ? cs.surfaceContainerHighest.withValues(alpha: 0.28) : null, radius: 6);
           })),
           if (s.indexes.isNotEmpty)
-            _card(cs, "Indexes", Icons.bolt_rounded, s.indexes.length, s.indexes.map((final UDbIndexResponse idx) => UColumn(
+            _card(cs, "Indexes", Icons.bolt_rounded, s.indexes.length, s.indexes.map((UDbIndexResponse idx) => UColumn(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 spacing: 2,
                 children: <Widget>[
@@ -650,7 +647,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
                 ],
               ).pSymmetric(vertical: 6)).toList()),
           if (s.foreignKeys.isNotEmpty)
-            _card(cs, "Foreign Keys", Icons.link_rounded, s.foreignKeys.length, s.foreignKeys.map((final UDbForeignKeyResponse fk) => URow(
+            _card(cs, "Foreign Keys", Icons.link_rounded, s.foreignKeys.length, s.foreignKeys.map((UDbForeignKeyResponse fk) => URow(
                 children: <Widget>[
                   UTextBodySmall(fk.column, fontWeight: FontWeight.w600, fontFamily: "monospace"),
                   Icon(Icons.arrow_forward_rounded, size: 14, color: cs.onSurface.withValues(alpha: 0.5)),
@@ -664,7 +661,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
 
   // ===== Query tab =====
 
-  Widget _queryTab(final ColorScheme cs) => SingleChildScrollView(
+  Widget _queryTab(ColorScheme cs) => SingleChildScrollView(
     padding: const EdgeInsets.all(14),
     child: UColumn(
       spacing: 12,
@@ -676,8 +673,8 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
             const UTextTitleSmall("SQL Editor", fontWeight: FontWeight.bold).expanded(),
             PopupMenuButton<_Prebuilt>(
               tooltip: "Snippets",
-              onSelected: (final _Prebuilt q) => setState(() => _sqlController.text = q.sql(_selected?.name ?? "table_name", _selected?.schema ?? "public")),
-              itemBuilder: (final BuildContext ctx) => _prebuilt.map((final _Prebuilt q) => PopupMenuItem<_Prebuilt>(value: q, child: URow(mainAxisSize: MainAxisSize.min, children: <Widget>[Icon(q.icon, size: 15, color: cs.primary), Text(q.title)]))).toList(),
+              onSelected: (_Prebuilt q) => setState(() => _sqlController.text = q.sql(_selected?.name ?? "table_name", _selected?.schema ?? "public")),
+              itemBuilder: (BuildContext ctx) => _prebuilt.map((_Prebuilt q) => PopupMenuItem<_Prebuilt>(value: q, child: URow(mainAxisSize: MainAxisSize.min, children: <Widget>[Icon(q.icon, size: 15, color: cs.primary), Text(q.title)]))).toList(),
               child: URow(mainAxisSize: MainAxisSize.min, spacing: 4, children: <Widget>[
                 Icon(Icons.bookmark_border_rounded, size: 16, color: cs.primary),
                 const UTextLabelMedium("Snippets", fontWeight: FontWeight.w600),
@@ -714,7 +711,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
     ),
   );
 
-  Widget _queryResultView(final ColorScheme cs, final UDbQueryResultResponse r) {
+  Widget _queryResultView(ColorScheme cs, UDbQueryResultResponse r) {
     final String meta = r.columns.isEmpty
         ? "${r.affectedRows ?? 0} rows affected  ·  ${r.executionMs} ms"
         : "${r.rowCount} rows  ·  ${r.executionMs} ms${r.truncated ? "  ·  truncated" : ""}";
@@ -733,7 +730,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
 
   // ===== Shared result grid =====
 
-  Widget _grid(final ColorScheme cs, final UDbQueryResultResponse data, {required final bool editable}) {
+  Widget _grid(ColorScheme cs, UDbQueryResultResponse data, {required bool editable}) {
     final bool canMutate = editable && data.primaryKeyColumn != null;
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -749,7 +746,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
             border: TableBorder(horizontalInside: BorderSide(color: cs.outlineVariant.withValues(alpha: 0.4), width: 0.4)),
             columns: <DataColumn>[
               if (canMutate) const DataColumn(label: SizedBox(width: 4)),
-              ...List<DataColumn>.generate(data.columns.length, (final int i) {
+              ...List<DataColumn>.generate(data.columns.length, (int i) {
                 final String col = data.columns[i];
                 final bool sorted = editable && _orderBy == col;
                 return DataColumn(
@@ -762,14 +759,14 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
                       if (sorted) Icon(_descending ? Icons.arrow_downward_rounded : Icons.arrow_upward_rounded, size: 12, color: cs.primary),
                     ],
                   ),
-                  onSort: editable ? (final int columnIndex, final bool ascending) => _sortBy(col) : null,
+                  onSort: editable ? (int columnIndex, bool ascending) => _sortBy(col) : null,
                 );
               }),
             ],
-            rows: List<DataRow>.generate(data.rows.length, (final int rowIndex) {
+            rows: List<DataRow>.generate(data.rows.length, (int rowIndex) {
               final Map<String, String?> row = data.rows[rowIndex];
               return DataRow(
-                color: WidgetStateProperty.resolveWith<Color?>((final Set<WidgetState> states) {
+                color: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
                   if (states.contains(WidgetState.hovered)) return cs.primary.withValues(alpha: 0.06);
                   return rowIndex.isOdd ? cs.surfaceContainerHighest.withValues(alpha: 0.22) : null;
                 }),
@@ -783,7 +780,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
                         _cellIcon(cs, Icons.delete_outline_rounded, "Delete", () => _deleteRow(row), color: cs.error),
                       ],
                     )),
-                  ...data.columns.map((final String col) {
+                  ...data.columns.map((String col) {
                     final String? value = row[col];
                     return DataCell(
                       ConstrainedBox(
@@ -810,7 +807,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
 
   // ===== Small building blocks =====
 
-  Widget _card(final ColorScheme cs, final String title, final IconData icon, final int count, final List<Widget> children) => UCard(
+  Widget _card(ColorScheme cs, String title, IconData icon, int count, List<Widget> children) => UCard(
     child: UColumn(
       spacing: 4,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -826,11 +823,11 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
     ).pAll(16),
   );
 
-  Widget _typeBadge(final ColorScheme cs, final String type) => UTextLabelSmall(type, color: cs.primary, fontWeight: FontWeight.w600)
+  Widget _typeBadge(ColorScheme cs, String type) => UTextLabelSmall(type, color: cs.primary, fontWeight: FontWeight.w600)
       .pSymmetric(horizontal: 8, vertical: 3)
       .container(backgroundColor: cs.primary.withValues(alpha: 0.1), radius: 6);
 
-  Widget _miniIcon(final ColorScheme cs, final IconData icon, final String tooltip, final VoidCallback onTap, {final bool filled = false}) => IconButton(
+  Widget _miniIcon(ColorScheme cs, IconData icon, String tooltip, VoidCallback onTap, {bool filled = false}) => IconButton(
     tooltip: tooltip,
     onPressed: onTap,
     visualDensity: VisualDensity.compact,
@@ -839,14 +836,14 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
     icon: Icon(icon, color: cs.primary),
   );
 
-  Widget _pageBtn(final ColorScheme cs, final IconData icon, final bool enabled, final VoidCallback onTap) => IconButton(
+  Widget _pageBtn(ColorScheme cs, IconData icon, bool enabled, VoidCallback onTap) => IconButton(
     onPressed: enabled ? onTap : null,
     visualDensity: VisualDensity.compact,
     iconSize: 20,
     icon: Icon(icon),
   );
 
-  Widget _cellIcon(final ColorScheme cs, final IconData icon, final String tooltip, final VoidCallback onTap, {final Color? color}) => IconButton(
+  Widget _cellIcon(ColorScheme cs, IconData icon, String tooltip, VoidCallback onTap, {Color? color}) => IconButton(
     tooltip: tooltip,
     onPressed: onTap,
     iconSize: 16,
@@ -856,7 +853,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
     icon: Icon(icon, color: color ?? cs.onSurface.withValues(alpha: 0.7)),
   );
 
-  Widget _placeholder(final ColorScheme cs, final IconData icon, final String title, final String subtitle) => UColumn(
+  Widget _placeholder(ColorScheme cs, IconData icon, String title, String subtitle) => UColumn(
     mainAxisAlignment: MainAxisAlignment.center,
     spacing: 10,
     children: <Widget>[
@@ -868,15 +865,15 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
 
   // Prebuilt query catalog for the Query tab snippets menu.
   List<_Prebuilt> get _prebuilt => <_Prebuilt>[
-    _Prebuilt("Row counts per table", Icons.numbers_rounded, (final String t, final String s) => "SELECT relname AS table, n_live_tup AS rows FROM pg_stat_user_tables ORDER BY n_live_tup DESC;"),
-    _Prebuilt("Table sizes", Icons.sd_storage_outlined, (final String t, final String s) => "SELECT relname AS table, pg_size_pretty(pg_total_relation_size(relid)) AS size FROM pg_catalog.pg_statio_user_tables ORDER BY pg_total_relation_size(relid) DESC;"),
-    _Prebuilt("Recent rows (selected)", Icons.history_rounded, (final String t, final String s) => 'SELECT * FROM "$s"."$t" ORDER BY "CreatedAt" DESC LIMIT 50;'),
-    _Prebuilt("Database size", Icons.data_usage_rounded, (final String t, final String s) => "SELECT pg_size_pretty(pg_database_size(current_database())) AS database_size;"),
-    _Prebuilt("Connections by state", Icons.cable_rounded, (final String t, final String s) => "SELECT state, count(*) FROM pg_stat_activity GROUP BY state ORDER BY count DESC;"),
-    _Prebuilt("Long-running queries", Icons.timelapse_rounded, (final String t, final String s) => "SELECT pid, now() - query_start AS duration, state, query FROM pg_stat_activity WHERE state <> 'idle' AND query_start IS NOT NULL ORDER BY duration DESC LIMIT 20;"),
-    _Prebuilt("Cache hit ratio", Icons.speed_rounded, (final String t, final String s) => "SELECT round(sum(heap_blks_hit) / nullif(sum(heap_blks_hit) + sum(heap_blks_read), 0), 4) AS cache_hit_ratio FROM pg_statio_user_tables;"),
-    _Prebuilt("Index usage", Icons.bolt_rounded, (final String t, final String s) => "SELECT relname AS table, indexrelname AS index, idx_scan AS scans FROM pg_stat_user_indexes ORDER BY idx_scan DESC LIMIT 30;"),
-    _Prebuilt("Dead rows (vacuum)", Icons.cleaning_services_rounded, (final String t, final String s) => "SELECT relname AS table, n_dead_tup AS dead_rows FROM pg_stat_user_tables ORDER BY n_dead_tup DESC LIMIT 20;"),
+    _Prebuilt("Row counts per table", Icons.numbers_rounded, (String t, String s) => "SELECT relname AS table, n_live_tup AS rows FROM pg_stat_user_tables ORDER BY n_live_tup DESC;"),
+    _Prebuilt("Table sizes", Icons.sd_storage_outlined, (String t, String s) => "SELECT relname AS table, pg_size_pretty(pg_total_relation_size(relid)) AS size FROM pg_catalog.pg_statio_user_tables ORDER BY pg_total_relation_size(relid) DESC;"),
+    _Prebuilt("Recent rows (selected)", Icons.history_rounded, (String t, String s) => 'SELECT * FROM "$s"."$t" ORDER BY "CreatedAt" DESC LIMIT 50;'),
+    _Prebuilt("Database size", Icons.data_usage_rounded, (String t, String s) => "SELECT pg_size_pretty(pg_database_size(current_database())) AS database_size;"),
+    _Prebuilt("Connections by state", Icons.cable_rounded, (String t, String s) => "SELECT state, count(*) FROM pg_stat_activity GROUP BY state ORDER BY count DESC;"),
+    _Prebuilt("Long-running queries", Icons.timelapse_rounded, (String t, String s) => "SELECT pid, now() - query_start AS duration, state, query FROM pg_stat_activity WHERE state <> 'idle' AND query_start IS NOT NULL ORDER BY duration DESC LIMIT 20;"),
+    _Prebuilt("Cache hit ratio", Icons.speed_rounded, (String t, String s) => "SELECT round(sum(heap_blks_hit) / nullif(sum(heap_blks_hit) + sum(heap_blks_read), 0), 4) AS cache_hit_ratio FROM pg_statio_user_tables;"),
+    _Prebuilt("Index usage", Icons.bolt_rounded, (String t, String s) => "SELECT relname AS table, indexrelname AS index, idx_scan AS scans FROM pg_stat_user_indexes ORDER BY idx_scan DESC LIMIT 30;"),
+    _Prebuilt("Dead rows (vacuum)", Icons.cleaning_services_rounded, (String t, String s) => "SELECT relname AS table, n_dead_tup AS dead_rows FROM pg_stat_user_tables ORDER BY n_dead_tup DESC LIMIT 20;"),
   ];
 }
 

@@ -210,7 +210,7 @@ class _UScannerState extends State<UScanner> with SingleTickerProviderStateMixin
     super.dispose();
   }
 
-  void _onDetect(final BarcodeCapture capture) {
+  void _onDetect(BarcodeCapture capture) {
     if (widget.singleScan && _handled) return;
     if (capture.barcodes.isEmpty) return;
     widget.onCapture?.call(capture);
@@ -234,7 +234,7 @@ class _UScannerState extends State<UScanner> with SingleTickerProviderStateMixin
 
   Color get _controlBackground => widget.controlBackgroundColor ?? Theme.of(context).colorScheme.surface.withValues(alpha: 0.85);
 
-  Widget _controlButton({required final IconData icon, required final VoidCallback onTap, final String? tooltip, final Color? color}) {
+  Widget _controlButton({required IconData icon, required VoidCallback onTap, String? tooltip, Color? color}) {
     final Widget button = Container(
       width: widget.controlButtonSize,
       height: widget.controlButtonSize,
@@ -249,7 +249,7 @@ class _UScannerState extends State<UScanner> with SingleTickerProviderStateMixin
 
   Widget _buildControls() => ValueListenableBuilder<MobileScannerState>(
     valueListenable: _controller,
-    builder: (final BuildContext context, final MobileScannerState state, final Widget? child) {
+    builder: (BuildContext context, MobileScannerState state, Widget? child) {
       final bool torchOn = state.torchState == TorchState.on;
       return Row(
         mainAxisSize: MainAxisSize.min,
@@ -283,8 +283,8 @@ class _UScannerState extends State<UScanner> with SingleTickerProviderStateMixin
   );
 
   @override
-  Widget build(final BuildContext context) => LayoutBuilder(
-    builder: (final BuildContext context, final BoxConstraints constraints) {
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (BuildContext context, BoxConstraints constraints) {
       final Rect window =
           widget.scanWindow ??
           Rect.fromCenter(
@@ -300,7 +300,7 @@ class _UScannerState extends State<UScanner> with SingleTickerProviderStateMixin
           MobileScanner(
             controller: _controller,
             onDetect: _onDetect,
-            onDetectError: widget.onScanError ?? (final Object error, final StackTrace stackTrace) {},
+            onDetectError: widget.onScanError ?? (Object error, StackTrace stackTrace) {},
             fit: widget.fit,
             errorBuilder: widget.errorBuilder,
             placeholderBuilder: widget.placeholderBuilder,
@@ -327,7 +327,7 @@ class _UScannerState extends State<UScanner> with SingleTickerProviderStateMixin
           if (widget.showScanLine && _lineController != null)
             AnimatedBuilder(
               animation: _lineController!,
-              builder: (final BuildContext context, final Widget? child) {
+              builder: (BuildContext context, Widget? child) {
                 final double y = window.top + widget.borderWidth + (window.height - 2 * widget.borderWidth) * _lineController!.value;
                 return Positioned(
                   left: window.left + widget.borderWidth,
@@ -386,7 +386,7 @@ class _UScannerOverlayPainter extends CustomPainter {
   final bool showFullBorder;
 
   @override
-  void paint(final Canvas canvas, final Size size) {
+  void paint(Canvas canvas, Size size) {
     final RRect hole = RRect.fromRectAndRadius(window, Radius.circular(borderRadius));
     final Path background = Path.combine(
       PathOperation.difference,
@@ -434,7 +434,7 @@ class _UScannerOverlayPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(final _UScannerOverlayPainter oldDelegate) =>
+  bool shouldRepaint(_UScannerOverlayPainter oldDelegate) =>
       oldDelegate.window != window ||
       oldDelegate.overlayColor != overlayColor ||
       oldDelegate.borderColor != borderColor ||
@@ -527,10 +527,10 @@ class UScannerPage extends StatelessWidget {
 
   /// Push this page and await the scanned string (or null if dismissed).
   static Future<String?> open({
-    final String? title,
-    final List<BarcodeFormat> formats = const <BarcodeFormat>[],
-    final String? hintText,
-    final bool showGalleryButton = false,
+    String? title,
+    List<BarcodeFormat> formats = const <BarcodeFormat>[],
+    String? hintText,
+    bool showGalleryButton = false,
   }) => UNavigator.push<String>(UScannerPage(title: title, formats: formats, hintText: hintText, showGalleryButton: showGalleryButton));
 
   final String? title;
@@ -606,13 +606,13 @@ class UScannerPage extends StatelessWidget {
   final IconData galleryIcon;
 
   @override
-  Widget build(final BuildContext context) => UScaffold(
+  Widget build(BuildContext context) => UScaffold(
     safeArea: false,
     extendBodyBehindAppBar: true,
     color: backgroundColor ?? Theme.of(context).colorScheme.scrim,
     appBar: showAppBar ? (appBar ?? AppBar(title: Text(title ?? S.current.scanBarcode), backgroundColor: Theme.of(context).colorScheme.scrim.withValues(alpha: 0), elevation: 0)) : null,
     body: UScanner(
-      onScan: (final String value) {
+      onScan: (String value) {
         onScan?.call(value);
         if (autoPopOnScan) UNavigator.back<String>(value);
       },

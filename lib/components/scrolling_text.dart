@@ -42,7 +42,7 @@ class ScrollingTextState extends State<ScrollingText> with SingleTickerProviderS
   void initState() {
     super.initState();
     scrollController = ScrollController();
-    WidgetsBinding.instance.addPostFrameCallback((final Duration callback) {
+    WidgetsBinding.instance.addPostFrameCallback((Duration callback) {
       startTimer();
     });
   }
@@ -52,7 +52,7 @@ class ScrollingTextState extends State<ScrollingText> with SingleTickerProviderS
       final double widgetWidth = _key.currentContext!.findRenderObject()!.paintBounds.size.width;
       final double widgetHeight = _key.currentContext!.findRenderObject()!.paintBounds.size.height;
 
-      timer = Timer.periodic(Duration(milliseconds: _timerRest), (final Timer timer) {
+      timer = Timer.periodic(Duration(milliseconds: _timerRest), (Timer timer) {
         final double maxScrollExtent = scrollController.position.maxScrollExtent;
         final double pixels = scrollController.position.pixels;
         if (pixels + _moveDistance >= maxScrollExtent) {
@@ -112,7 +112,7 @@ class ScrollingTextState extends State<ScrollingText> with SingleTickerProviderS
   }
 
   @override
-  Widget build(final BuildContext context) => Container(
+  Widget build(BuildContext context) => Container(
     height: widget.height ?? 30,
     width: widget.width,
     color: widget.color,

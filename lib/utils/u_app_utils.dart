@@ -60,7 +60,7 @@ abstract class UApp {
 
   static String locale() => UAppState.locale.value.languageCode;
 
-  static void updateLocale(final Locale locale) {
+  static void updateLocale(Locale locale) {
     UAppState.updateLocale(locale);
     ULocalStorage.set(UConstants.locale, locale.languageCode);
   }

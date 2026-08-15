@@ -39,26 +39,26 @@ abstract class UHttpClient {
   }
 
   static Future<UHttpClientResponse> send({
-    required final String method,
-    required final String endpoint,
-    required final Function(Response) onSuccess,
-    required final Function(Response) onError,
-    required final Function(String) onException,
-    final Map<String, String>? headers,
-    final Map<String, dynamic>? queryParams,
-    final dynamic body,
-    final URequestBodyType bodyType = URequestBodyType.json,
-    final String? noNetworkMessage,
-    final String? unexpectedErrorMessage,
-    final bool offline = false,
-    final Duration? cacheDuration,
-    final int retryAmount = 3,
-    final Duration timeout = const Duration(seconds: 30),
-    final void Function(int percent)? onProgress,
-    final bool isRetryAfterRefresh = false,
+    required String method,
+    required String endpoint,
+    required Function(Response) onSuccess,
+    required Function(Response) onError,
+    required Function(String) onException,
+    Map<String, String>? headers,
+    Map<String, dynamic>? queryParams,
+    dynamic body,
+    URequestBodyType bodyType = URequestBodyType.json,
+    String? noNetworkMessage,
+    String? unexpectedErrorMessage,
+    bool offline = false,
+    Duration? cacheDuration,
+    int retryAmount = 3,
+    Duration timeout = const Duration(seconds: 30),
+    void Function(int percent)? onProgress,
+    bool isRetryAfterRefresh = false,
   }) async {
     int lastPercent = -1;
-    void report(final num percent) {
+    void report(num percent) {
       if (onProgress == null) return;
       final int p = percent.clamp(0, 100).toInt();
       if (p <= lastPercent) return;
@@ -122,7 +122,7 @@ abstract class UHttpClient {
 
       final BaseRequest outgoing = !hasUpload || onProgress == null
           ? request
-          : (_UProgressRequest(method, uri, uploadBytes, (final int uploadPercent) => report((uploadPercent / 100 * uploadWeight).round()))
+          : (_UProgressRequest(method, uri, uploadBytes, (int uploadPercent) => report((uploadPercent / 100 * uploadWeight).round()))
               ..headers.addAll(request.headers)
               ..contentLength = uploadBytes.length);
 
@@ -138,7 +138,7 @@ abstract class UHttpClient {
       if (onProgress != null && (totalBytes == null || totalBytes <= 0)) {
         const int tauMs = 7000;
         final Stopwatch sw = Stopwatch()..start();
-        estimateTicker = Timer.periodic(const Duration(milliseconds: 200), (final Timer _) {
+        estimateTicker = Timer.periodic(const Duration(milliseconds: 200), (Timer _) {
           final double frac = sw.elapsedMilliseconds / (sw.elapsedMilliseconds + tauMs);
           report(uploadWeight + (frac * downloadBand).round().clamp(0, downloadBand - 1));
         });
@@ -204,7 +204,7 @@ abstract class UHttpClient {
         final bool refreshed = await _refreshToken();
         if (refreshed) {
           final dynamic retryBody = body is Map ? (Map<String, dynamic>.from(body)..["token"] = ULocalStorage.getToken()) : body;
-          return send(
+          return await send(
             method: method,
             endpoint: endpoint,
             onSuccess: onSuccess,
@@ -240,20 +240,20 @@ abstract class UHttpClient {
   }
 
   static Future<void> upload({
-    required final String endpoint,
-    required final List<MultipartFile> files,
-    required final Function(Response)? onSuccess,
-    required final Function(Response)? onError,
-    required final VoidCallback onException,
-    final Map<String, dynamic>? fields,
-    final Map<String, String>? headers,
-    final Map<String, dynamic>? queryParams,
-    final String method = "POST",
-    final Duration timeout = const Duration(minutes: 5),
-    final void Function(int percent)? onProgress,
+    required String endpoint,
+    required List<MultipartFile> files,
+    required Function(Response)? onSuccess,
+    required Function(Response)? onError,
+    required VoidCallback onException,
+    Map<String, dynamic>? fields,
+    Map<String, String>? headers,
+    Map<String, dynamic>? queryParams,
+    String method = "POST",
+    Duration timeout = const Duration(minutes: 5),
+    void Function(int percent)? onProgress,
   }) async {
     int lastPercent = -1;
-    void report(final int percent) {
+    void report(int percent) {
       if (onProgress == null) return;
       final int p = percent.clamp(0, 100).toInt();
       if (p <= lastPercent) return;
@@ -278,13 +278,13 @@ abstract class UHttpClient {
     }
   }
 
-  static Uri _buildUri(final String endpoint, final Map<String, dynamic>? queryParams) {
+  static Uri _buildUri(String endpoint, Map<String, dynamic>? queryParams) {
     final Uri uri = Uri.parse(endpoint);
 
     if (queryParams != null) {
       return uri.replace(
         queryParameters: queryParams.map(
-          (final String key, final dynamic value) => MapEntry<String, String>(key, value?.toString() ?? ""),
+          (String key, dynamic value) => MapEntry<String, String>(key, value?.toString() ?? ""),
         ),
       );
     }
@@ -292,10 +292,10 @@ abstract class UHttpClient {
   }
 
   static Future<MultipartFile> multipartFileFromFile(
-    final String fieldName,
-    final File file, {
+    String fieldName,
+    File file, {
     String? filename,
-    final MediaType? contentType,
+    MediaType? contentType,
   }) async {
     filename ??= file.path.split("/").last;
     final Stream<List<int>> stream = file.openRead();
@@ -310,20 +310,20 @@ abstract class UHttpClient {
   }
 
   static Future<MultipartFile> multipartFileFromUint8List(
-    final String fieldName,
-    final Uint8List bytes, {
+    String fieldName,
+    Uint8List bytes, {
     String? filename,
-    final MediaType? contentType,
+    MediaType? contentType,
   }) async => MultipartFile.fromBytes(fieldName, bytes, contentType: contentType, filename: filename);
 
   static T? removeNullEntries<T>(T? json) {
     if (json == null) return null;
 
     if (json is List) {
-      json.removeWhere((final dynamic e) => e == null);
+      json.removeWhere((dynamic e) => e == null);
       json.forEach(removeNullEntries);
     } else if (json is Map) {
-      json.removeWhere((final dynamic key, final dynamic value) => key == null || value == null);
+      json.removeWhere((dynamic key, dynamic value) => key == null || value == null);
       json.values.forEach(removeNullEntries);
     }
 
@@ -332,9 +332,9 @@ abstract class UHttpClient {
 
   static final RegExp _nonWord = RegExp(r"[^\w]");
 
-  static String _cacheKey(final String method, final Uri uri, final dynamic body) => "cache_${method}_${uri.toString().replaceAll(_nonWord, "_")}_${body == null ? "" : jsonEncode(body).hashCode}";
+  static String _cacheKey(String method, Uri uri, dynamic body) => "cache_${method}_${uri.toString().replaceAll(_nonWord, "_")}_${body == null ? "" : jsonEncode(body).hashCode}";
 
-  static Future<void> _writeCache(final String key, final String body, final Duration? cacheDuration) async {
+  static Future<void> _writeCache(String key, String body, Duration? cacheDuration) async {
     if (kIsWeb) {
       ULocalStorage.set(key, body, expireTime: cacheDuration);
       return;
@@ -343,7 +343,7 @@ abstract class UHttpClient {
     ULocalStorage.set("${key}_exp", cacheDuration == null ? 0 : DateTime.now().add(cacheDuration).millisecondsSinceEpoch);
   }
 
-  static Future<String?> _readCache(final String key) async {
+  static Future<String?> _readCache(String key) async {
     if (kIsWeb) return ULocalStorage.getString(key);
     final int? expiry = ULocalStorage.getInt("${key}_exp");
     if (expiry != null && expiry > 0 && DateTime.now().millisecondsSinceEpoch > expiry) {
@@ -397,7 +397,7 @@ class _UProgressMultipartRequest extends MultipartRequest {
     final int total = contentLength;
     int sent = 0;
     final StreamTransformer<List<int>, List<int>> reporter = StreamTransformer<List<int>, List<int>>.fromHandlers(
-      handleData: (final List<int> data, final EventSink<List<int>> sink) {
+      handleData: (List<int> data, EventSink<List<int>> sink) {
         sent += data.length;
         if (total > 0) _onSendProgress((sent / total * 100).clamp(0, 100).round());
         sink.add(data);
@@ -413,7 +413,7 @@ extension HTTP on Response? {
 
   bool isServerError() => (this?.statusCode ?? 999) >= 500 && (this?.statusCode ?? 999) <= 599;
 
-  void prettyLog({final String params = ""}) => developer.log(
+  void prettyLog({String params = ""}) => developer.log(
     "${this?.request?.method} - ${this?.request?.url} - ${this?.statusCode} \nPARAMS: $params \nRESPONSE: ${this?.body}",
   );
 }

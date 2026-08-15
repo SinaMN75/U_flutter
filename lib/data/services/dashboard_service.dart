@@ -10,17 +10,17 @@ class DashboardService {
     await UHttpClient.send(
       method: "POST",
       endpoint: "${U.baseUrl}/dashboard/ReadSystemMetrics",
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UMetricsResponse ok = UMetricsResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call();
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -37,17 +37,17 @@ class DashboardService {
     await UHttpClient.send(
       method: "POST",
       endpoint: "${U.baseUrl}/dashboard/Read",
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UDashboardResponse ok = UDashboardResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call();
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -56,7 +56,7 @@ class DashboardService {
   }
 
   Future<(UResponse<UFinancialOpsDashboardResponse>?, UEmptyResponse?, String?)> readFinancialOpsDashboard({
-    required final UDashboardRangeParams p,
+    required UDashboardRangeParams p,
     required Function(UResponse<UFinancialOpsDashboardResponse> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -66,20 +66,20 @@ class DashboardService {
       method: "POST",
       endpoint: "${U.baseUrl}/dashboard/ReadFinancialOpsDashboard",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UResponse<UFinancialOpsDashboardResponse> ok = UResponse<UFinancialOpsDashboardResponse>.fromJson(
           r.body,
-          (final dynamic i) => UFinancialOpsDashboardResponse.fromMap(i),
+          (dynamic i) => UFinancialOpsDashboardResponse.fromMap(i),
         );
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -88,7 +88,7 @@ class DashboardService {
   }
 
   Future<(UResponse<UPropertyDashboardResponse>?, UEmptyResponse?, String?)> readPropertyDashboard({
-    required final UDashboardRangeParams p,
+    required UDashboardRangeParams p,
     required Function(UResponse<UPropertyDashboardResponse> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -98,20 +98,20 @@ class DashboardService {
       method: "POST",
       endpoint: "${U.baseUrl}/dashboard/ReadPropertyDashboard",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UResponse<UPropertyDashboardResponse> ok = UResponse<UPropertyDashboardResponse>.fromJson(
           r.body,
-          (final dynamic i) => UPropertyDashboardResponse.fromMap(i),
+          (dynamic i) => UPropertyDashboardResponse.fromMap(i),
         );
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -129,20 +129,20 @@ class DashboardService {
       method: "POST",
       endpoint: "${U.baseUrl}/dashboard/ReadOsMetrics",
       body: <String, dynamic>{}.add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UResponse<UOsMetricsResponse> ok = UResponse<UOsMetricsResponse>.fromJson(
           r.body,
-          (final dynamic i) => UOsMetricsResponse.fromMap(i),
+          (dynamic i) => UOsMetricsResponse.fromMap(i),
         );
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -159,17 +159,17 @@ class DashboardService {
     await UHttpClient.send(
       method: "POST",
       endpoint: "${U.baseUrl}/dashboard/Logs/structure",
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final LogStructureResponse ok = LogStructureResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call();
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -178,7 +178,7 @@ class DashboardService {
   }
 
   Future<(String?, UEmptyResponse?, String?)> getLogContent({
-    required final String logId,
+    required String logId,
     required Function(String r)? onOk,
     required VoidCallback? onError,
     required Function(String e)? onException,
@@ -188,17 +188,17 @@ class DashboardService {
       method: "POST",
       endpoint: "${U.baseUrl}/dashboard/Logs/content",
       body: <String, String>{"id": logId},
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final String ok = r.body;
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call();
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -207,7 +207,7 @@ class DashboardService {
   }
 
   Future<(UResponse<List<UApiLogResponse>>?, UEmptyResponse?, String?)> readApiLogs({
-    required final UApiLogReadParams p,
+    required UApiLogReadParams p,
     required Function(UResponse<List<UApiLogResponse>> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -217,20 +217,20 @@ class DashboardService {
       method: "POST",
       endpoint: "${U.baseUrl}/dashboard/ReadApiLogs",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UResponse<List<UApiLogResponse>> ok = UResponse<List<UApiLogResponse>>.fromJson(
           r.body,
-          (final dynamic i) => List<UApiLogResponse>.from((i as List<dynamic>).map((final dynamic x) => UApiLogResponse.fromMap(x))),
+          (dynamic i) => List<UApiLogResponse>.from((i as List<dynamic>).map((dynamic x) => UApiLogResponse.fromMap(x))),
         );
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -239,7 +239,7 @@ class DashboardService {
   }
 
   Future<(UResponse<UApiLogStatsResponse>?, UEmptyResponse?, String?)> apiLogStats({
-    required final UApiLogStatsParams p,
+    required UApiLogStatsParams p,
     required Function(UResponse<UApiLogStatsResponse> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -249,17 +249,17 @@ class DashboardService {
       method: "POST",
       endpoint: "${U.baseUrl}/dashboard/ApiLogStats",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
-        final UResponse<UApiLogStatsResponse> ok = UResponse<UApiLogStatsResponse>.fromJson(r.body, (final dynamic i) => UApiLogStatsResponse.fromMap(i));
+      onSuccess: (Response r) {
+        final UResponse<UApiLogStatsResponse> ok = UResponse<UApiLogStatsResponse>.fromJson(r.body, (dynamic i) => UApiLogStatsResponse.fromMap(i));
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -268,7 +268,7 @@ class DashboardService {
   }
 
   Future<(String?, UEmptyResponse?, String?)> exportApiLogs({
-    required final UApiLogReadParams p,
+    required UApiLogReadParams p,
     required Function(String csv)? onOk,
     required VoidCallback? onError,
     required Function(String e)? onException,
@@ -278,17 +278,17 @@ class DashboardService {
       method: "POST",
       endpoint: "${U.baseUrl}/dashboard/ApiLogExport",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final String ok = r.body;
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call();
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },

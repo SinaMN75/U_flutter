@@ -10,6 +10,14 @@ analyzer:
     - "lib/generated/intl/messages_all.dart"
     - "lib/generated/intl/messages_en.dart"
     - "lib/generated/intl/messages_fa.dart"
+    - "lib/components/u_barcode.dart"
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
 
   errors:
     avoid_empty_else: error
@@ -42,7 +50,6 @@ analyzer:
     throw_in_finally: error
     type_annotate_public_apis: error
     unawaited_futures: error
-    unnecessary_await_in_return: error
     unnecessary_const: error
     unnecessary_null_checks: error
     unnecessary_nullable_for_final_variable_declarations: error
@@ -125,7 +132,6 @@ linter:
     throw_in_finally: true
     type_annotate_public_apis: true
     unawaited_futures: true
-    unnecessary_await_in_return: true
     unnecessary_const: true
     unnecessary_null_checks: true
     unnecessary_nullable_for_final_variable_declarations: true

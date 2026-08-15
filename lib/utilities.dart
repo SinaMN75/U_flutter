@@ -35,7 +35,6 @@ export "package:package_info_plus/package_info_plus.dart";
 export "package:path_provider/path_provider.dart";
 export "package:share_plus/share_plus.dart";
 export "package:shared_preferences/shared_preferences.dart";
-export "package:syncfusion_flutter_barcodes/barcodes.dart";
 export "package:syncfusion_flutter_charts/charts.dart" hide AnimationType, Position;
 export "package:syncfusion_flutter_pdfviewer/pdfviewer.dart";
 export "package:u/utilities.dart";
@@ -45,7 +44,7 @@ export "package:webview_all/webview_all.dart" hide X509Certificate;
 
 export "components/u_signature_pad.dart";
 export "components/badges.dart";
-export "components/barcode_qrcode.dart";
+export "components/u_barcode.dart" show UBarcode, UBarcodeType, UErrorCorrectionLevel, UBarcodeModuleShape, UBarcodeExamples;
 export "components/chart.dart";
 export "components/chip_choice.dart";
 export "components/container.dart";
@@ -157,3 +156,4 @@ export "utils/web/u_pwa.dart";
 export "utils/web/u_web_message.dart";
 
 export "plugins/screen_guard.dart";
+

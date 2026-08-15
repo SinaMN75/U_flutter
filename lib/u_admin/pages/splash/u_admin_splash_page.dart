@@ -32,7 +32,7 @@ class _UAdminSplashPageState extends State<UAdminSplashPage> {
   }
 
   @override
-  Widget build(final BuildContext context) => UScaffold(
+  Widget build(BuildContext context) => UScaffold(
     body: UColumn(
       spacing: 0,
       mainAxisSize: MainAxisSize.min,

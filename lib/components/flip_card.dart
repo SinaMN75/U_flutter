@@ -14,9 +14,9 @@ class UAnimationCard extends StatelessWidget {
   final FlipDirection? direction;
 
   @override
-  Widget build(final BuildContext context) => AnimatedBuilder(
+  Widget build(BuildContext context) => AnimatedBuilder(
     animation: animation!,
-    builder: (final BuildContext context, final Widget? child) {
+    builder: (BuildContext context, Widget? child) {
       final Matrix4 transform = Matrix4.identity();
       transform.setEntry(3, 2, 0.001);
       if (direction == FlipDirection.VERTICAL) {
@@ -112,7 +112,7 @@ class FlipCardState extends State<FlipCard> with SingleTickerProviderStateMixin 
   }
 
   @override
-  void didUpdateWidget(final FlipCard oldWidget) {
+  void didUpdateWidget(FlipCard oldWidget) {
     widget.controller?.state ??= this;
     super.didUpdateWidget(oldWidget);
   }
@@ -145,7 +145,7 @@ class FlipCardState extends State<FlipCard> with SingleTickerProviderStateMixin 
   }
 
   @override
-  Widget build(final BuildContext context) {
+  Widget build(BuildContext context) {
     final Widget Function(Widget child) frontPositioning = widget.fill == Fill.fillFront ? _fill : _noop;
     final Widget Function(Widget child) backPositioning = widget.fill == Fill.fillBack ? _fill : _noop;
 
@@ -168,7 +168,7 @@ class FlipCardState extends State<FlipCard> with SingleTickerProviderStateMixin 
     return child;
   }
 
-  Widget _buildContent({required final bool front}) => IgnorePointer(
+  Widget _buildContent({required bool front}) => IgnorePointer(
     ignoring: front ? !isFront : isFront,
     child: UAnimationCard(
       animation: front ? _frontRotation : _backRotation,
@@ -184,9 +184,9 @@ class FlipCardState extends State<FlipCard> with SingleTickerProviderStateMixin 
   }
 }
 
-Widget _fill(final Widget child) => Positioned.fill(child: child);
+Widget _fill(Widget child) => Positioned.fill(child: child);
 
-Widget _noop(final Widget child) => child;
+Widget _noop(Widget child) => child;
 
 class FlipCardController {
   FlipCardState? state;
@@ -200,14 +200,14 @@ class FlipCardController {
 
   void toggleCardWithoutAnimation() => state?.toggleCardWithoutAnimation();
 
-  Future<void> skew(final double amount, {final Duration? duration, final Curve? curve}) async {
+  Future<void> skew(double amount, {Duration? duration, Curve? curve}) async {
     assert(0 <= amount && amount <= 1);
 
     final double target = state!.isFront ? amount : 1 - amount;
     await controller?.animateTo(target, duration: duration, curve: curve ?? Curves.linear).asStream().first;
   }
 
-  Future<void> hint({final Duration? duration, final Duration? total}) async {
+  Future<void> hint({Duration? duration, Duration? total}) async {
     assert(controller is AnimationController);
     if (controller is! AnimationController) return;
 

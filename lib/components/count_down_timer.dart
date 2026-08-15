@@ -35,7 +35,7 @@ class _USendAgainCountDownState extends State<USendAgainCountDown> {
   }
 
   @override
-  Widget build(final BuildContext context) => counter == 0
+  Widget build(BuildContext context) => counter == 0
       ? TextButton(
           onPressed: widget.onSendAgainTap,
           child: UTextLabelLarge(widget.buttonTitle, color: Theme.of(context).colorScheme.primary),
@@ -47,7 +47,7 @@ class _USendAgainCountDownState extends State<USendAgainCountDown> {
 
   void startTimer() {
     counter = widget.counter;
-    timer = Timer.periodic(const Duration(seconds: 1), (final Timer timer) {
+    timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
       setState(() => counter--);
       if (counter == 0) timer.cancel();
     });

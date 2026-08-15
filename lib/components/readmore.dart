@@ -77,7 +77,7 @@ class ReadMoreTextState extends State<ReadMoreText> {
 
   static final RegExp _urlExp = RegExp(r"(?:(?:https?|ftp)://)?[\w/\-?=%.]+\.[\w/\-?=%.]+");
 
-  TapGestureRecognizer _tap(final GestureTapCallback onTap) {
+  TapGestureRecognizer _tap(GestureTapCallback onTap) {
     final TapGestureRecognizer recognizer = TapGestureRecognizer()..onTap = onTap;
     _recognizers.add(recognizer);
     return recognizer;

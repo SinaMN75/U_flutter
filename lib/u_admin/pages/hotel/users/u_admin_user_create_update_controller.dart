@@ -22,7 +22,7 @@ class UAdminUserCreateUpdateController {
   late DateTime birthdate;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  void init({required final UAdminUserCreateUpdateArgs args}) {
+  void init({required UAdminUserCreateUpdateArgs args}) {
     this.args = args;
     controllerFirstName = TextEditingController(text: args.user?.firstName);
     controllerLastName = TextEditingController(text: args.user?.lastName);
@@ -46,12 +46,12 @@ class UAdminUserCreateUpdateController {
       ULoading.show();
       UServices.user.create(
         p: p,
-        onOk: (final UResponse<String> r) async {
+        onOk: (UResponse<String> r) async {
           ULoading.dismiss();
           UNavigator.back();
           UToast.snackBar(message: U.s.userCreatedSuccessfully);
         },
-        onError: (final UEmptyResponse r) {
+        onError: (UEmptyResponse r) {
           ULoading.dismiss();
           UToast.snackBar(message: r.message);
         },
@@ -64,20 +64,20 @@ class UAdminUserCreateUpdateController {
   );
 
   void update({
-    required final GlobalKey<FormState> formKey,
-    required final UUserUpdateParams p,
+    required GlobalKey<FormState> formKey,
+    required UUserUpdateParams p,
   }) => UValidators.validateForm(
     key: formKey,
     action: () {
       ULoading.show();
       UServices.user.update(
         p: p,
-        onOk: (final UEmptyResponse r) {
+        onOk: (UEmptyResponse r) {
           ULoading.dismiss();
           UNavigator.back();
           UToast.snackBar(message: U.s.userCreatedSuccessfully);
         },
-        onError: (final UEmptyResponse r) {
+        onError: (UEmptyResponse r) {
           ULoading.dismiss();
           UToast.snackBar(message: r.message);
         },

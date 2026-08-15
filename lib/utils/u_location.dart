@@ -1,7 +1,7 @@
 import "package:u/utilities.dart";
 
 abstract class ULocation {
-  static Future<Position?> getUserLocation({final Function(Position)? onUserLocationFound}) async {
+  static Future<Position?> getUserLocation({Function(Position)? onUserLocationFound}) async {
     bool serviceEnabled;
     LocationPermission permission;
 

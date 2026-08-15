@@ -71,10 +71,10 @@ class _UOtpFieldState extends State<UOtpField> {
   }
 
   void _initializeOtpFields() {
-    _focusNodes = List<FocusNode>.generate(widget.length, (final int index) => FocusNode());
-    _keyboardNodes = List<FocusNode>.generate(widget.length, (final int index) => FocusNode());
-    _controllers = List<TextEditingController>.generate(widget.length, (final int index) => TextEditingController());
-    _otp = List<String>.generate(widget.length, (final int index) => "");
+    _focusNodes = List<FocusNode>.generate(widget.length, (int index) => FocusNode());
+    _keyboardNodes = List<FocusNode>.generate(widget.length, (int index) => FocusNode());
+    _controllers = List<TextEditingController>.generate(widget.length, (int index) => TextEditingController());
+    _otp = List<String>.generate(widget.length, (int index) => "");
     controller.addListener(_syncControllersWithMain);
   }
 
@@ -98,7 +98,7 @@ class _UOtpFieldState extends State<UOtpField> {
     super.dispose();
   }
 
-  void _onChanged(final int index, final String value) {
+  void _onChanged(int index, String value) {
     if (value.length > 1) {
       if (value.length == widget.length) {
         for (int i = 0; i < widget.length; i++) {
@@ -119,11 +119,11 @@ class _UOtpFieldState extends State<UOtpField> {
     if (controller.text.length == widget.length && widget.onCompleted != null) widget.onCompleted!(controller.text);
   }
 
-  void _onKeyDown(final int index, final KeyEvent event) {
+  void _onKeyDown(int index, KeyEvent event) {
     if (event.logicalKey == LogicalKeyboardKey.backspace && _controllers[index].text.isEmpty && index > 0) _focusNodes[index - 1].requestFocus();
   }
 
-  Color _getBorderColor(final int index) {
+  Color _getBorderColor(int index) {
     if (_focusNodes[index].hasFocus)
       return widget.activeColor ?? Theme.of(context).colorScheme.primary;
     else if (_controllers[index].text.isNotEmpty)
@@ -132,20 +132,20 @@ class _UOtpFieldState extends State<UOtpField> {
   }
 
   @override
-  Widget build(final BuildContext context) => FormField<String>(
-    builder: (final FormFieldState<String> formFieldState) => Column(
+  Widget build(BuildContext context) => FormField<String>(
+    builder: (FormFieldState<String> formFieldState) => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Row(
           mainAxisAlignment: widget.mainAxisAlignment,
           children: List<Widget>.generate(
             widget.length,
-            (final int index) => SizedBox(
+            (int index) => SizedBox(
               width: widget.fieldWidth,
               height: widget.fieldHeight,
               child: KeyboardListener(
                 focusNode: _keyboardNodes[index],
-                onKeyEvent: (final KeyEvent event) => _onKeyDown(index, event),
+                onKeyEvent: (KeyEvent event) => _onKeyDown(index, event),
                 child: TextField(
                   controller: _controllers[index],
                   focusNode: _focusNodes[index],
@@ -181,7 +181,7 @@ class _UOtpFieldState extends State<UOtpField> {
                           borderSide: BorderSide(color: Theme.of(context).colorScheme.error, width: widget.borderWidth),
                         ),
                       ),
-                  onChanged: (final String value) => _onChanged(index, value),
+                  onChanged: (String value) => _onChanged(index, value),
                 ),
               ),
             ),

@@ -2,7 +2,7 @@ part of "../data.dart";
 
 class CategoryService {
   Future<(UResponse<String>?, UEmptyResponse?, String?)> create({
-    required final UCategoryCreateParams p,
+    required UCategoryCreateParams p,
     required Function(UResponse<String> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -12,17 +12,17 @@ class CategoryService {
       method: "POST",
       endpoint: "${U.baseUrl}/category/Create",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
-        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (final dynamic i) => i);
+      onSuccess: (Response r) {
+        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (dynamic i) => i);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -31,7 +31,7 @@ class CategoryService {
   }
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> bulkCreate({
-    required final List<UCategoryCreateParams> p,
+    required List<UCategoryCreateParams> p,
     required Function(UEmptyResponse r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -41,17 +41,17 @@ class CategoryService {
       method: "POST",
       endpoint: "${U.baseUrl}/category/BulkCreate",
       body: <String, dynamic>{"list": List<dynamic>.from(p.map((UCategoryCreateParams x) => x.toMap()))}.add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -60,7 +60,7 @@ class CategoryService {
   }
 
   Future<(UResponse<List<UCategoryResponse>>?, UEmptyResponse?, String?)> read({
-    required final UCategoryReadParams p,
+    required UCategoryReadParams p,
     required Function(UResponse<List<UCategoryResponse>> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -70,20 +70,20 @@ class CategoryService {
       method: "POST",
       endpoint: "${U.baseUrl}/category/Read",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UResponse<List<UCategoryResponse>> ok = UResponse<List<UCategoryResponse>>.fromJson(
           r.body,
-          (final dynamic i) => List<UCategoryResponse>.from((i as List<dynamic>).map((final dynamic x) => UCategoryResponse.fromMap(x))),
+          (dynamic i) => List<UCategoryResponse>.from((i as List<dynamic>).map((dynamic x) => UCategoryResponse.fromMap(x))),
         );
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -92,7 +92,7 @@ class CategoryService {
   }
 
   Future<(UResponse<UCategoryResponse>?, UEmptyResponse?, String?)> readById({
-    required final UIdParams p,
+    required UIdParams p,
     required Function(UResponse<UCategoryResponse> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -102,17 +102,17 @@ class CategoryService {
       method: "POST",
       endpoint: "${U.baseUrl}/category/ReadById",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
-        final UResponse<UCategoryResponse> ok = UResponse<UCategoryResponse>.fromJson(r.body, (final dynamic i) => UCategoryResponse.fromMap(i));
+      onSuccess: (Response r) {
+        final UResponse<UCategoryResponse> ok = UResponse<UCategoryResponse>.fromJson(r.body, (dynamic i) => UCategoryResponse.fromMap(i));
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -121,7 +121,7 @@ class CategoryService {
   }
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> update({
-    required final UCategoryUpdateParams p,
+    required UCategoryUpdateParams p,
     required Function(UEmptyResponse r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -131,17 +131,17 @@ class CategoryService {
       method: "POST",
       endpoint: "${U.baseUrl}/category/Update",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -150,7 +150,7 @@ class CategoryService {
   }
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> delete({
-    required final UIdParams p,
+    required UIdParams p,
     required Function(UEmptyResponse r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -160,17 +160,17 @@ class CategoryService {
       method: "POST",
       endpoint: "${U.baseUrl}/category/Delete",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },

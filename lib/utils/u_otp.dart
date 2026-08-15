@@ -27,7 +27,7 @@ abstract class UOtp {
 
   static const List<int> _inv = <int>[0, 4, 3, 2, 1, 5, 6, 7, 8, 9];
 
-  static String generateVerhoeff(final String num) {
+  static String generateVerhoeff(String num) {
     int c = 0;
     final List<int> reversed = num.split("").reversed.map(int.parse).toList();
     for (int i = 0; i < reversed.length; i++) {
@@ -36,7 +36,7 @@ abstract class UOtp {
     return _inv[c].toString();
   }
 
-  static String _digitsOnly(final String s) => s.split("").where((final String ch) => RegExp(r"\d").hasMatch(ch)).join();
+  static String _digitsOnly(String s) => s.split("").where((String ch) => RegExp(r"\d").hasMatch(ch)).join();
 
   static String _nowDate() {
     final DateTime now = DateTime.now();
@@ -45,7 +45,7 @@ abstract class UOtp {
     return "${now.year}$m$d";
   }
 
-  static String _generate(final String posSerial, final int length, {required final bool admin}) {
+  static String _generate(String posSerial, int length, {required bool admin}) {
     final String serialNo = _digitsOnly(posSerial);
     final int max = pow(10, length - 3).toInt() - 1;
     final String randomString = Random().nextInt(max).toString().padLeft(length - 3, "0");
@@ -56,7 +56,7 @@ abstract class UOtp {
     return "$randomString$serialCD$nowCD$randomCD";
   }
 
-  static bool _verify(final String posSerial, final String otp, {required final bool admin}) {
+  static bool _verify(String posSerial, String otp, {required bool admin}) {
     final String serialNo = _digitsOnly(posSerial);
     final int rIndex = otp.length - 3;
     if (rIndex < 1) return false;
@@ -71,11 +71,11 @@ abstract class UOtp {
     return pinSerialCD == serialCD && pinRandomCD == randomCD && pinNowCD == nowCD;
   }
 
-  static String generateOtp(final String posSerial, final int length) => _generate(posSerial, length, admin: false);
+  static String generateOtp(String posSerial, int length) => _generate(posSerial, length, admin: false);
 
-  static String generateAdminOtp(final String posSerial, final int length) => _generate(posSerial, length, admin: true);
+  static String generateAdminOtp(String posSerial, int length) => _generate(posSerial, length, admin: true);
 
-  static bool verifyOtp(final String posSerial, final String otp) => _verify(posSerial, otp, admin: false);
+  static bool verifyOtp(String posSerial, String otp) => _verify(posSerial, otp, admin: false);
 
-  static bool verifyAdminOtp(final String posSerial, final String otp) => _verify(posSerial, otp, admin: true);
+  static bool verifyAdminOtp(String posSerial, String otp) => _verify(posSerial, otp, admin: true);
 }

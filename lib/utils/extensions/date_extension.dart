@@ -2,7 +2,7 @@ import "package:intl/intl.dart" as intl;
 import "package:u/utilities.dart";
 
 extension DateTimeExtensions on DateTime {
-  String formatDate(final String dateFormat) => intl.DateFormat(dateFormat).format(this);
+  String formatDate(String dateFormat) => intl.DateFormat(dateFormat).format(this);
 
   DateTime utcNow() => DateTime.now().toUtc();
 
@@ -14,7 +14,7 @@ extension DateTimeExtensions on DateTime {
 
   Jalali toJalali() => Jalali.fromDateTime(this);
 
-  String toTimeAgo({final bool numericDates = false, final bool persian = false}) {
+  String toTimeAgo({bool numericDates = false, bool persian = false}) {
     try {
       final Duration difference = DateTime.now().difference(this);
 

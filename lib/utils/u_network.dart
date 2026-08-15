@@ -114,7 +114,7 @@ class InternetConnectionChecker {
 
   static final InternetConnectionChecker _instance = InternetConnectionChecker._();
 
-  Future<AddressCheckResult> isHostReachable(final AddressCheckOptions options) async {
+  Future<AddressCheckResult> isHostReachable(AddressCheckOptions options) async {
     Socket? sock;
     try {
       sock =
@@ -143,7 +143,7 @@ class InternetConnectionChecker {
 
     for (final AddressCheckOptions addressOptions in addresses) {
       await isHostReachable(addressOptions).then(
-        (final AddressCheckResult request) {
+        (AddressCheckResult request) {
           length -= 1;
           if (!result.isCompleted) {
             if (request.isSuccess) {
@@ -161,7 +161,7 @@ class InternetConnectionChecker {
 
   Duration checkInterval = defaultInterval;
 
-  Future<void> _maybeEmitStatusUpdate([final Timer? timer]) async {
+  Future<void> _maybeEmitStatusUpdate([Timer? timer]) async {
     _timerHandle?.cancel();
     timer?.cancel();
     final InternetConnectionStatus currentStatus = await connectionStatus;

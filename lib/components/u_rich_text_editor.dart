@@ -1,5 +1,52 @@
 import "package:u/utilities.dart";
 
+class URichTextEditorField extends StatefulWidget {
+  const URichTextEditorField({required this.onSubmit, required this.content, super.key});
+
+  final String content;
+  final Function(String) onSubmit;
+
+  @override
+  State<URichTextEditorField> createState() => _URichTextEditorFieldState();
+}
+
+class _URichTextEditorFieldState extends State<URichTextEditorField> {
+  String content = "";
+
+  @override
+  void initState() {
+    content = widget.content;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) => InkWell(
+    borderRadius: BorderRadius.circular(8),
+    onTap: () async {
+      final String? html = await URichTextEditor.open(initialHtml: content);
+      if (html != null) {
+        setState(() => content = html);
+        widget.onSubmit(content);
+      }
+    },
+    child: Container(
+      width: double.infinity,
+      constraints: const BoxConstraints(minHeight: 72, maxHeight: 220),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        border: Border.all(color: Theme.of(context).dividerColor),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: content.trim().isEmpty
+          ? UIconTextHorizontal(
+              leading: const Icon(Icons.edit_note),
+              trailing: Text(U.s.richTextEditor),
+            )
+          : SingleChildScrollView(child: UHtmlView(html: content)),
+    ),
+  ).pSymmetric(vertical: 6);
+}
+
 /// A self-contained, cross-platform rich text editor that produces and consumes
 /// HTML. No third-party editor packages are used.
 ///

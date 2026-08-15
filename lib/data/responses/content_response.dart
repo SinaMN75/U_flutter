@@ -1,9 +1,9 @@
 part of "../data.dart";
 
 extension ContentListExtension on Iterable<UContentResponse> {
-  UContentResponse? firstByTag(TagContent tag) => firstWhereOrNull((final UContentResponse i) => i.tags.contains(tag.number));
+  UContentResponse? firstByTag(TagContent tag) => firstWhereOrNull((UContentResponse i) => i.tags.contains(tag.number));
 
-  List<UContentResponse> byTag(TagContent tag) => where((final UContentResponse i) => i.tags.contains(tag.number)).toList();
+  List<UContentResponse> byTag(TagContent tag) => where((UContentResponse i) => i.tags.contains(tag.number)).toList();
 }
 
 class UContentResponse {

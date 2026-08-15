@@ -2,7 +2,7 @@ part of "../data.dart";
 
 class ProcessService {
   Future<(UResponse<UProcessStepGet>?, UEmptyResponse?, String?)> get({
-    required final String processId,
+    required String processId,
     required Function(UResponse<UProcessStepGet> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -16,17 +16,17 @@ class ProcessService {
         "apiKey": U.apiKey,
         "token": ULocalStorage.getToken(),
       },
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UResponse<UProcessStepGet> ok = UResponse<UProcessStepGet>.fromJson(r.body, (dynamic i) => UProcessStepGet.fromMap(i));
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -35,7 +35,7 @@ class ProcessService {
   }
 
   Future<(UResponse<UProcessStepGet>?, UEmptyResponse?, String?)> send({
-    required final UProcessStepSend p,
+    required UProcessStepSend p,
     required Function(UResponse<UProcessStepGet> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -49,17 +49,17 @@ class ProcessService {
         "apiKey": U.apiKey,
         "token": ULocalStorage.getToken(),
       },
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UResponse<UProcessStepGet> ok = UResponse<UProcessStepGet>.fromJson(r.body, (dynamic i) => UProcessStepGet.fromMap(i));
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },

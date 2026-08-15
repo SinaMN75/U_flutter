@@ -60,15 +60,15 @@ class UCropOptions {
 abstract class UFile {
   static const Set<String> imageExtensions = <String>{"jpg", "jpeg", "png", "gif", "webp", "bmp", "heic", "heif"};
 
-  static bool isImageExtension(final String? extension) => extension != null && imageExtensions.contains(extension.toLowerCase());
+  static bool isImageExtension(String? extension) => extension != null && imageExtensions.contains(extension.toLowerCase());
 
   static Future<List<FileData>> showImagePicker({
-    required final UImageSource source,
-    final bool allowMultiple = false,
-    final bool isSelfie = false,
-    final int? imageQuality,
-    final UCropOptions? crop,
-    final Function(List<FileData>)? action,
+    required UImageSource source,
+    bool allowMultiple = false,
+    bool isSelfie = false,
+    int? imageQuality,
+    UCropOptions? crop,
+    Function(List<FileData>)? action,
   }) async {
     try {
       final ImagePicker picker = ImagePicker();
@@ -95,11 +95,11 @@ abstract class UFile {
   }
 
   static Future<List<FileData>> showFilePicker({
-    final Function(List<FileData>)? action,
-    final FileType fileType = FileType.any,
-    final bool allowMultiple = false,
-    final List<String>? allowedExtensions,
-    final UCropOptions? crop,
+    Function(List<FileData>)? action,
+    FileType fileType = FileType.any,
+    bool allowMultiple = false,
+    List<String>? allowedExtensions,
+    UCropOptions? crop,
   }) async {
     try {
       final FileType type = allowedExtensions != null && allowedExtensions.isNotEmpty ? FileType.custom : (fileType == FileType.custom ? FileType.any : fileType);
@@ -125,10 +125,10 @@ abstract class UFile {
   }
 
   static Future<FileData?> cropImage({
-    final Uint8List? bytes,
-    final String? filePath,
-    final UCropOptions options = const UCropOptions(),
-    final Function(FileData file)? action,
+    Uint8List? bytes,
+    String? filePath,
+    UCropOptions options = const UCropOptions(),
+    Function(FileData file)? action,
   }) async {
     Uint8List? data = bytes;
     if (data == null && filePath != null && !kIsWeb) data = await File(filePath).readAsBytes();
@@ -140,12 +140,12 @@ abstract class UFile {
     return cropped;
   }
 
-  static Future<File> writeToFile(final Uint8List data, {final String extension = "tmp"}) async {
+  static Future<File> writeToFile(Uint8List data, {String extension = "tmp"}) async {
     final Directory dir = await getTemporaryDirectory();
     return File("${dir.path}/u_${DateTime.now().microsecondsSinceEpoch}.$extension").writeAsBytes(data);
   }
 
-  static Future<List<FileData>> _collect(final Iterable<Future<FileData>> sources, final UCropOptions? crop) async {
+  static Future<List<FileData>> _collect(Iterable<Future<FileData>> sources, UCropOptions? crop) async {
     final List<FileData> out = <FileData>[];
     for (final Future<FileData> source in sources) {
       final FileData base = await source;
@@ -155,12 +155,12 @@ abstract class UFile {
     return out;
   }
 
-  static Future<FileData?> _maybeCrop(final FileData file, final UCropOptions? crop) async {
+  static Future<FileData?> _maybeCrop(FileData file, UCropOptions? crop) async {
     if (crop == null || !file.isImage || file.bytes == null) return file;
     return _openCropper(file.bytes!, crop);
   }
 
-  static Future<FileData?> _openCropper(final Uint8List bytes, final UCropOptions options) async {
+  static Future<FileData?> _openCropper(Uint8List bytes, UCropOptions options) async {
     final Uint8List? cropped = await UNavigator.push<Uint8List>(
       UImageCropper(
         bytes: bytes,
@@ -181,17 +181,17 @@ abstract class UFile {
     return FileData(bytes: cropped, path: await _persistTemp(cropped, "png"), extension: "png");
   }
 
-  static Future<FileData> _fromXFile(final XFile file) async {
+  static Future<FileData> _fromXFile(XFile file) async {
     final Uint8List bytes = await file.readAsBytes();
     return FileData(bytes: bytes, path: file.path, extension: _extensionOf(file.name.isNotEmpty ? file.name : file.path, "jpg"));
   }
 
-  static Future<FileData> _fromPlatformFile(final PlatformFile file) async {
+  static Future<FileData> _fromPlatformFile(PlatformFile file) async {
     final Uint8List bytes = await file.readAsBytes();
     return FileData(bytes: bytes, path: kIsWeb ? null : file.path, extension: (file.extension ?? _extensionOf(file.name)).toLowerCase());
   }
 
-  static Future<String?> _persistTemp(final Uint8List bytes, final String extension) async {
+  static Future<String?> _persistTemp(Uint8List bytes, String extension) async {
     if (kIsWeb) return null;
     try {
       final Directory dir = await getTemporaryDirectory();
@@ -203,7 +203,7 @@ abstract class UFile {
     }
   }
 
-  static String _extensionOf(final String? source, [final String fallback = ""]) {
+  static String _extensionOf(String? source, [String fallback = ""]) {
     if (source == null || source.isEmpty) return fallback.toLowerCase();
     final String raw = path.extension(source);
     final String clean = raw.startsWith(".") ? raw.substring(1) : raw;

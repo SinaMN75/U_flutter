@@ -61,7 +61,7 @@ class UScaffold extends StatelessWidget {
   final bool? resizeToAvoidBottomInset;
 
   @override
-  Widget build(final BuildContext context) {
+  Widget build(BuildContext context) {
     Widget content = GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Container(
@@ -144,7 +144,7 @@ class UDefaultTabBar extends StatelessWidget {
   final BoxConstraints? constraints;
 
   @override
-  Widget build(final BuildContext context) => DefaultTabController(
+  Widget build(BuildContext context) => DefaultTabController(
     initialIndex: initialIndex,
     length: children.length,
     child: Column(
@@ -200,7 +200,7 @@ class UIconTextHorizontal extends StatelessWidget {
   final EdgeInsets padding;
 
   @override
-  Widget build(final BuildContext context) {
+  Widget build(BuildContext context) {
     Widget content = Row(
       mainAxisAlignment: mainAxisAlignment,
       crossAxisAlignment: crossAxisAlignment,
@@ -246,7 +246,7 @@ class UIconTextVertical extends StatelessWidget {
   final MainAxisSize mainAxisSize;
 
   @override
-  Widget build(final BuildContext context) => Column(
+  Widget build(BuildContext context) => Column(
     mainAxisAlignment: mainAxisAlignment,
     crossAxisAlignment: crossAxisAlignment,
     mainAxisSize: mainAxisSize,
@@ -297,7 +297,7 @@ class UContainer extends StatelessWidget {
   final Decoration? foregroundDecoration;
 
   @override
-  Widget build(final BuildContext context) => Container(
+  Widget build(BuildContext context) => Container(
     padding: padding,
     margin: margin,
     width: width,
@@ -376,7 +376,7 @@ class UColumn extends StatelessWidget {
   final Decoration? foregroundDecoration;
 
   @override
-  Widget build(final BuildContext context) => UContainer(
+  Widget build(BuildContext context) => UContainer(
     color: color,
     width: width,
     height: height,
@@ -448,7 +448,7 @@ class URow extends StatelessWidget {
   final Decoration? foregroundDecoration;
 
   @override
-  Widget build(final BuildContext context) => UContainer(
+  Widget build(BuildContext context) => UContainer(
     color: color,
     width: width,
     height: height,
@@ -498,7 +498,7 @@ class UCard extends StatelessWidget {
   final Color? shadowColor;
 
   @override
-  Widget build(final BuildContext context) => Card(
+  Widget build(BuildContext context) => Card(
     elevation: elevation,
     color: color,
     shape: RoundedRectangleBorder(borderRadius: borderRadius),

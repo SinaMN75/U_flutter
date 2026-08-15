@@ -1,8 +1,5 @@
 import "package:u/utilities.dart";
 
-// SystemAdmin editor for the backend AppSettings (Core.App). Edits apply live in memory and reset
-// to the Program.cs defaults when the server restarts. Secrets arrive masked; leaving a field masked
-// keeps its current value on save.
 class UAdminAppSettingsPage extends StatefulWidget {
   const UAdminAppSettingsPage({super.key});
 
@@ -25,16 +22,16 @@ class _UAdminAppSettingsPageState extends State<UAdminAppSettingsPage> {
   Future<void> _load() async {
     setState(() => _loading = true);
     await UServices.appSettings.readAll(
-      onOk: (final UResponse<UAppSettings> r) => setState(() {
+      onOk: (UResponse<UAppSettings> r) => setState(() {
         _m = r.result;
         _loading = false;
         _tick++;
       }),
-      onError: (final UEmptyResponse e) => setState(() {
+      onError: (UEmptyResponse e) => setState(() {
         _loading = false;
         UToast.error(message: e.message);
       }),
-      onException: (final String e) => setState(() {
+      onException: (String e) => setState(() {
         _loading = false;
         UToast.error(message: e);
       }),
@@ -46,16 +43,16 @@ class _UAdminAppSettingsPageState extends State<UAdminAppSettingsPage> {
     setState(() => _saving = true);
     await UServices.appSettings.update(
       p: UAppSettingsUpdateParams(settings: _m!),
-      onOk: (final UEmptyResponse r) {
+      onOk: (UEmptyResponse r) {
         setState(() => _saving = false);
         UToast.snackBar(message: r.message);
         _load();
       },
-      onError: (final UEmptyResponse e) {
+      onError: (UEmptyResponse e) {
         setState(() => _saving = false);
         UToast.error(message: e.message);
       },
-      onException: (final String e) {
+      onException: (String e) {
         setState(() => _saving = false);
         UToast.error(message: e);
       },
@@ -91,7 +88,7 @@ class _UAdminAppSettingsPageState extends State<UAdminAppSettingsPage> {
     );
   }
 
-  Widget _form(final ColorScheme cs) {
+  Widget _form(ColorScheme cs) {
     final UAppSettings m = _m!;
     return UColumn(
       spacing: 14,
@@ -175,7 +172,7 @@ class _UAdminAppSettingsPageState extends State<UAdminAppSettingsPage> {
     );
   }
 
-  Widget _note(final ColorScheme cs) => URow(
+  Widget _note(ColorScheme cs) => URow(
     spacing: 10,
     children: <Widget>[
       Icon(Icons.info_outline_rounded, size: 18, color: cs.primary),
@@ -183,7 +180,7 @@ class _UAdminAppSettingsPageState extends State<UAdminAppSettingsPage> {
     ],
   ).pAll(14).container(backgroundColor: cs.primary.withValues(alpha: 0.08), radius: 12);
 
-  Widget _section(final String title, final IconData icon, final ColorScheme cs, final List<Widget> children) => UCard(
+  Widget _section(String title, IconData icon, ColorScheme cs, List<Widget> children) => UCard(
     child: UColumn(
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 4,
@@ -201,7 +198,7 @@ class _UAdminAppSettingsPageState extends State<UAdminAppSettingsPage> {
     ).pAll(16),
   );
 
-  Widget _text(final String label, final String initial, final ValueChanged<String> onChanged, {final bool secret = false, final TextInputType? kt, final int lines = 1}) => UTextField(
+  Widget _text(String label, String initial, ValueChanged<String> onChanged, {bool secret = false, TextInputType? kt, int lines = 1}) => UTextField(
     labelText: label,
     initialValue: initial,
     hintText: secret ? U.s.secretHint : null,
@@ -210,32 +207,32 @@ class _UAdminAppSettingsPageState extends State<UAdminAppSettingsPage> {
     onChanged: onChanged,
   ).pSymmetric(vertical: 6);
 
-  Widget _num(final String label, final double initial, final ValueChanged<double> onChanged) => _text(
+  Widget _num(String label, double initial, ValueChanged<double> onChanged) => _text(
     label,
     initial == initial.roundToDouble() ? initial.toStringAsFixed(0) : initial.toString(),
     (String v) => onChanged(double.tryParse(v) ?? 0),
     kt: const TextInputType.numberWithOptions(decimal: true),
   );
 
-  Widget _switch(final String label, final bool value, final ValueChanged<bool> onChanged, final ColorScheme cs) => URow(
+  Widget _switch(String label, bool value, ValueChanged<bool> onChanged, ColorScheme cs) => URow(
     children: <Widget>[
       UTextBodyMedium(label).expanded(),
       Switch(value: value, onChanged: (bool v) => setState(() => onChanged(v))),
     ],
   ).pSymmetric(vertical: 2);
 
-  Widget _enum<T extends Enum>(final String label, final T value, final List<T> values, final ValueChanged<T> onChanged) => UDropDownField<T>(
+  Widget _enum<T extends Enum>(String label, T value, List<T> values, ValueChanged<T> onChanged) => UDropDownField<T>(
     labelText: label,
     initialValue: value,
-    items: values.map((final T e) => DropdownMenuItem<T>(value: e, child: Text((e as dynamic).localizedTitle as String))).toList(),
-    onChanged: (final T? v) {
+    items: values.map((T e) => DropdownMenuItem<T>(value: e, child: Text((e as dynamic).localizedTitle as String))).toList(),
+    onChanged: (T? v) {
       if (v != null) setState(() => onChanged(v));
     },
   ).pSymmetric(vertical: 6);
 
   // ---- Charge Internet (nested list) ----
 
-  Widget _chargeInternetSection(final UAppSettings m, final ColorScheme cs) => UCard(
+  Widget _chargeInternetSection(UAppSettings m, ColorScheme cs) => UCard(
     child: UColumn(
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 10,
@@ -255,12 +252,12 @@ class _UAdminAppSettingsPageState extends State<UAdminAppSettingsPage> {
           ],
         ),
         const Divider(height: 4),
-        ...m.chargeInternet.asMap().entries.map((final MapEntry<int, USettingsChargeInternet> e) => _operatorCard(m, e.key, e.value, cs)),
+        ...m.chargeInternet.asMap().entries.map((MapEntry<int, USettingsChargeInternet> e) => _operatorCard(m, e.key, e.value, cs)),
       ],
     ).pAll(16),
   );
 
-  Widget _operatorCard(final UAppSettings m, final int index, final USettingsChargeInternet c, final ColorScheme cs) => UContainer(
+  Widget _operatorCard(UAppSettings m, int index, USettingsChargeInternet c, ColorScheme cs) => UContainer(
     margin: const EdgeInsets.symmetric(vertical: 6),
     padding: const EdgeInsets.all(12),
     color: cs.surfaceContainerHighest.withValues(alpha: 0.35),
@@ -293,7 +290,7 @@ class _UAdminAppSettingsPageState extends State<UAdminAppSettingsPage> {
           ],
         ),
         ...c.preDefinedAmountsList.asMap().entries.map(
-          (final MapEntry<int, USettingsChargeAmount> a) => URow(
+          (MapEntry<int, USettingsChargeAmount> a) => URow(
             children: <Widget>[
               _text("Title", a.value.title, (String v) => a.value.title = v).expanded(),
               _text(
@@ -313,7 +310,7 @@ class _UAdminAppSettingsPageState extends State<UAdminAppSettingsPage> {
     ),
   );
 
-  Widget _saveBar(final ColorScheme cs) => UContainer(
+  Widget _saveBar(ColorScheme cs) => UContainer(
     padding: const EdgeInsets.all(14),
     color: cs.surface,
     child: URow(

@@ -941,15 +941,15 @@ extension NumericEnumExtension<T extends Enum> on Iterable<T> {
     },
   ).toList();
 
-  T? fromNumber(final int id) {
+  T? fromNumber(int id) {
     try {
-      return firstWhere((final dynamic element) => (element as dynamic).number == id);
+      return firstWhere((dynamic element) => (element as dynamic).number == id);
     } catch (e) {
       return null;
     }
   }
 
-  T fromNumericIdOrThrow(final int id) {
+  T fromNumericIdOrThrow(int id) {
     final dynamic result = fromNumber(id);
     if (result == null) {
       throw ArgumentError.value(id, "id", 'No ${T.toString().split('.').first} found with numericId $id');

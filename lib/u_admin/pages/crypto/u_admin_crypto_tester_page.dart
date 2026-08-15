@@ -59,7 +59,7 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
   ];
 
   // Maps the current UI selection to the matching reusable UEncryption call.
-  String _process(final bool forward) {
+  String _process(bool forward) {
     final String text = _inputController.text;
     final String key = _keyController.text;
     final String iv = _ivController.text;
@@ -99,7 +99,7 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
     }
   }
 
-  void _run(final bool forward) {
+  void _run(bool forward) {
     if (_inputController.text.isEmpty) {
       setState(() {
         _output = null;
@@ -141,13 +141,13 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
     });
   }
 
-  void _copy(final String value) {
+  void _copy(String value) {
     UClipboard.set(value);
     UToast.snackBar(message: U.s.copiedToClipboard);
   }
 
   @override
-  Widget build(final BuildContext context) {
+  Widget build(BuildContext context) {
     final ColorScheme cs = Theme.of(context).colorScheme;
     return UScaffold(
       padding: const EdgeInsets.all(20),
@@ -168,7 +168,7 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
     );
   }
 
-  Widget _header(final ColorScheme cs) => URow(
+  Widget _header(ColorScheme cs) => URow(
     spacing: 14,
     children: <Widget>[
       Icon(Icons.security_rounded, size: 34, color: cs.primary).container(
@@ -186,10 +186,10 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
     ],
   );
 
-  Widget _algoSelector(final ColorScheme cs) => Wrap(
+  Widget _algoSelector(ColorScheme cs) => Wrap(
     spacing: 10,
     runSpacing: 10,
-    children: List<Widget>.generate(_algos.length, (final int i) {
+    children: List<Widget>.generate(_algos.length, (int i) {
       final bool active = i == _selected;
       final _CryptoAlgo a = _algos[i];
       return URow(
@@ -216,7 +216,7 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
     }),
   );
 
-  Widget _configCard(final ColorScheme cs) {
+  Widget _configCard(ColorScheme cs) {
     final List<Widget> rows = <Widget>[];
     if (_algo.isAes) rows.add(_aesConfig(cs));
     if (_algo.needsKey) rows.add(_keyField(cs));
@@ -241,7 +241,7 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
     );
   }
 
-  Widget _aesConfig(final ColorScheme cs) => Wrap(
+  Widget _aesConfig(ColorScheme cs) => Wrap(
     spacing: 16,
     runSpacing: 14,
     children: <Widget>[
@@ -250,8 +250,8 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
         child: UDropDownField<UAesMode>(
           initialValue: _aesMode,
           labelText: U.s.mode,
-          items: UAesMode.values.map((final UAesMode m) => DropdownMenuItem<UAesMode>(value: m, child: UTextBodyMedium(_aesModeLabel(m)))).toList(),
-          onChanged: (final UAesMode? m) => setState(() => _aesMode = m ?? UAesMode.cbc),
+          items: UAesMode.values.map((UAesMode m) => DropdownMenuItem<UAesMode>(value: m, child: UTextBodyMedium(_aesModeLabel(m)))).toList(),
+          onChanged: (UAesMode? m) => setState(() => _aesMode = m ?? UAesMode.cbc),
         ),
       ),
       SizedBox(
@@ -263,7 +263,7 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
             const DropdownMenuItem<bool>(value: true, child: UTextBodyMedium("PKCS7")),
             DropdownMenuItem<bool>(value: false, child: UTextBodyMedium(U.s.none)),
           ],
-          onChanged: (final bool? p) => setState(() => _padding = p ?? true),
+          onChanged: (bool? p) => setState(() => _padding = p ?? true),
         ),
       ),
       SizedBox(
@@ -276,19 +276,19 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
             DropdownMenuItem<int>(value: 24, child: UTextBodyMedium("192-bit")),
             DropdownMenuItem<int>(value: 32, child: UTextBodyMedium("256-bit")),
           ],
-          onChanged: (final int? b) => setState(() => _aesKeyBytes = b ?? 32),
+          onChanged: (int? b) => setState(() => _aesKeyBytes = b ?? 32),
         ),
       ),
     ],
   );
 
-  Widget _keyField(final ColorScheme cs) => URow(
+  Widget _keyField(ColorScheme cs) => URow(
     spacing: 10,
     crossAxisAlignment: CrossAxisAlignment.end,
     children: <Widget>[
       UTextField(controller: _keyController, labelText: U.s.secretKey, hintText: U.s.secretKey).expanded(),
       if (_algo.id != "hmac") ...<Widget>[
-        SizedBox(width: 130, child: _encodingDropdown(_keyEncoding, (final UByteEncoding e) => setState(() => _keyEncoding = e), U.s.keyEncoding)),
+        SizedBox(width: 130, child: _encodingDropdown(_keyEncoding, (UByteEncoding e) => setState(() => _keyEncoding = e), U.s.keyEncoding)),
         IconButton(
           tooltip: U.s.generate,
           onPressed: _generateKey,
@@ -298,12 +298,12 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
     ],
   );
 
-  Widget _ivField(final ColorScheme cs) => URow(
+  Widget _ivField(ColorScheme cs) => URow(
     spacing: 10,
     crossAxisAlignment: CrossAxisAlignment.end,
     children: <Widget>[
       UTextField(controller: _ivController, labelText: U.s.initializationVector, hintText: U.s.initializationVector).expanded(),
-      SizedBox(width: 130, child: _encodingDropdown(_ivEncoding, (final UByteEncoding e) => setState(() => _ivEncoding = e), U.s.ivEncoding)),
+      SizedBox(width: 130, child: _encodingDropdown(_ivEncoding, (UByteEncoding e) => setState(() => _ivEncoding = e), U.s.ivEncoding)),
       IconButton(
         tooltip: U.s.generate,
         onPressed: _generateIv,
@@ -312,7 +312,7 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
     ],
   );
 
-  Widget _encodingDropdown(final UByteEncoding value, final ValueChanged<UByteEncoding> onChanged, final String label) => UDropDownField<UByteEncoding>(
+  Widget _encodingDropdown(UByteEncoding value, ValueChanged<UByteEncoding> onChanged, String label) => UDropDownField<UByteEncoding>(
     initialValue: value,
     labelText: label,
     items: const <DropdownMenuItem<UByteEncoding>>[
@@ -320,10 +320,10 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
       DropdownMenuItem<UByteEncoding>(value: UByteEncoding.base64, child: UTextBodyMedium("Base64")),
       DropdownMenuItem<UByteEncoding>(value: UByteEncoding.hex, child: UTextBodyMedium("Hex")),
     ],
-    onChanged: (final UByteEncoding? e) => onChanged(e ?? UByteEncoding.utf8),
+    onChanged: (UByteEncoding? e) => onChanged(e ?? UByteEncoding.utf8),
   );
 
-  Widget _inputCard(final ColorScheme cs) => UCard(
+  Widget _inputCard(ColorScheme cs) => UCard(
     child: UColumn(
       spacing: 12,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -351,7 +351,7 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
     ).pAll(20),
   );
 
-  Widget _actions(final ColorScheme cs) {
+  Widget _actions(ColorScheme cs) {
     if (_algo.category == _Category.hash) {
       return UButton(
         title: U.s.hash,
@@ -383,7 +383,7 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
     );
   }
 
-  Widget _outputCard(final ColorScheme cs) {
+  Widget _outputCard(ColorScheme cs) {
     if (_error != null) {
       return UCard(
         child: UColumn(
@@ -417,7 +417,7 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
     );
   }
 
-  Widget _resultBlock(final ColorScheme cs, final String label, final String value) => UColumn(
+  Widget _resultBlock(ColorScheme cs, String label, String value) => UColumn(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
       URow(
@@ -445,7 +445,7 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
     ],
   );
 
-  String _aesModeLabel(final UAesMode mode) => switch (mode) {
+  String _aesModeLabel(UAesMode mode) => switch (mode) {
     UAesMode.cbc => "CBC",
     UAesMode.cfb64 => "CFB-64",
     UAesMode.ctr => "CTR",

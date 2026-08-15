@@ -12,11 +12,11 @@ class UAdminSplashController extends UBaseController {
         p: UIdParams(
           id: ULocalStorage.getString(UConstants.userId)!,
         ),
-        onOk: (final UResponse<UUserResponse> user) {
+        onOk: (UResponse<UUserResponse> user) {
           U.user = user.result!;
           onFinish();
         },
-        onError: (final UEmptyResponse r) => onError.call,
+        onError: (UEmptyResponse r) => onError.call,
         onException: (String e) => onError.call,
         onProgress: (int e) {},
       );

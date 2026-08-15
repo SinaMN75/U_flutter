@@ -2,7 +2,7 @@ part of "../data.dart";
 
 class SimService {
   Future<(UResponse<String>?, UEmptyResponse?, String?)> create({
-    required final USimCardCreateParams p,
+    required USimCardCreateParams p,
     required Function(UResponse<String> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -12,17 +12,17 @@ class SimService {
       method: "POST",
       endpoint: "${U.baseUrl}/Sim/Create",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
-        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (final dynamic i) => i);
+      onSuccess: (Response r) {
+        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (dynamic i) => i);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -31,7 +31,7 @@ class SimService {
   }
 
   Future<(UResponse<List<USimCardResponse>>?, UEmptyResponse?, String?)> read({
-    required final USimCardReadParams p,
+    required USimCardReadParams p,
     required Function(UResponse<List<USimCardResponse>> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -41,20 +41,20 @@ class SimService {
       method: "POST",
       endpoint: "${U.baseUrl}/Sim/Read",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UResponse<List<USimCardResponse>> ok = UResponse<List<USimCardResponse>>.fromJson(
           r.body,
-          (final dynamic i) => List<USimCardResponse>.from((i as List<dynamic>).map((final dynamic x) => USimCardResponse.fromMap(x))),
+          (dynamic i) => List<USimCardResponse>.from((i as List<dynamic>).map((dynamic x) => USimCardResponse.fromMap(x))),
         );
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -63,7 +63,7 @@ class SimService {
   }
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> update({
-    required final USimCardUpdateParams p,
+    required USimCardUpdateParams p,
     required Function(UEmptyResponse r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -73,17 +73,17 @@ class SimService {
       method: "POST",
       endpoint: "${U.baseUrl}/Sim/Update",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -92,7 +92,7 @@ class SimService {
   }
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> delete({
-    required final UIdParams p,
+    required UIdParams p,
     required Function(UEmptyResponse r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -102,17 +102,17 @@ class SimService {
       method: "POST",
       endpoint: "${U.baseUrl}/Sim/Delete",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },

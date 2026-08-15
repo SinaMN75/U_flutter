@@ -1,5 +1,60 @@
 import "package:u/utilities.dart";
 
+class UNumberInputFormatter extends TextInputFormatter {
+  final int maxDigits;
+
+  UNumberInputFormatter({
+    this.maxDigits = 24,
+  });
+
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    if (newValue.text.isEmpty) {
+      return newValue;
+    }
+
+    final String latin = newValue.text.toLatinNumber();
+
+    final StringBuffer result = StringBuffer();
+
+    int digitCount = 0;
+    int cursorPosition = 0;
+
+    final int requestedCursor = newValue.selection.baseOffset;
+
+    for (int i = 0; i < latin.length; i++) {
+      final String character = latin[i];
+
+      if (character.codeUnitAt(0) >= 48 && character.codeUnitAt(0) <= 57) {
+        if (digitCount >= maxDigits) {
+          break;
+        }
+
+        result.write(character);
+        digitCount++;
+
+        if (i < requestedCursor) {
+          cursorPosition++;
+        }
+      }
+    }
+
+    final String formatted = result.toString();
+
+    cursorPosition = cursorPosition.clamp(0, formatted.length);
+
+    return TextEditingValue(
+      text: formatted,
+      selection: TextSelection.collapsed(
+        offset: cursorPosition,
+      ),
+    );
+  }
+}
+
 class UCurrencyInputFormatter extends TextInputFormatter {
   static final RegExp _nonNumeric = RegExp(r"[^\d.]");
 
@@ -82,17 +137,7 @@ class UCurrencyInputFormatter extends TextInputFormatter {
       integerPart = integerPart.substring(0, maxDigits);
     }
 
-    String formattedInteger = "";
-    int count = 0;
-
-    for (int i = integerPart.length - 1; i >= 0; i--) {
-      formattedInteger = integerPart[i] + formattedInteger;
-      count++;
-      if (count == 3 && i > 0) {
-        formattedInteger = thousandSeparator + formattedInteger;
-        count = 0;
-      }
-    }
+    final String formattedInteger = _formatInteger(integerPart);
 
     String finalText = formattedInteger;
     if (decimalPart.isNotEmpty) {
@@ -116,6 +161,7 @@ class UCurrencyInputFormatter extends TextInputFormatter {
     final String cleanedText = text.toLatinNumber().replaceAll(_nonNumeric, "");
 
     final List<String> parts = cleanedText.split(".");
+
     String integerPart = parts[0];
     String decimalPart = parts.length > 1 ? parts[1] : "";
 
@@ -123,17 +169,7 @@ class UCurrencyInputFormatter extends TextInputFormatter {
       integerPart = integerPart.substring(0, maxDigits);
     }
 
-    String formattedInteger = "";
-    int count = 0;
-
-    for (int i = integerPart.length - 1; i >= 0; i--) {
-      formattedInteger = integerPart[i] + formattedInteger;
-      count++;
-      if (count == 3 && i > 0) {
-        formattedInteger = thousandSeparator + formattedInteger;
-        count = 0;
-      }
-    }
+    final String formattedInteger = _formatInteger(integerPart);
 
     String finalText = formattedInteger;
     if (decimalPart.isNotEmpty) {
@@ -146,8 +182,29 @@ class UCurrencyInputFormatter extends TextInputFormatter {
     return finalText;
   }
 
+  String _formatInteger(String integerPart) {
+    if (integerPart.isEmpty) return "";
+
+    final StringBuffer result = StringBuffer();
+
+    int count = 0;
+
+    for (int i = integerPart.length - 1; i >= 0; i--) {
+      result.write(integerPart[i]);
+
+      count++;
+
+      if (count == 3 && i > 0) {
+        result.write(thousandSeparator);
+        count = 0;
+      }
+    }
+
+    return result.toString().split("").reversed.join();
+  }
+
   int _calculateCursorPosition(String formattedText, int oldCursorPos) {
-    if (formattedText.isEmpty) return 0;
+    if (formattedText.isEmpty || oldCursorPos <= 0) return 0;
 
     int separatorsBeforeCursor = 0;
     for (int i = 0; i < formattedText.length && i < oldCursorPos; i++) {
@@ -164,6 +221,6 @@ class UCurrencyInputFormatter extends TextInputFormatter {
       newCursorPos++;
     }
 
-    return newCursorPos;
+    return newCursorPos.clamp(0, formattedText.length);
   }
 }

@@ -2,7 +2,7 @@ part of "../data.dart";
 
 class AppSettingsService {
   Future<(UResponse<UAppSettingsResponse>?, UEmptyResponse?, String?)> read({
-    required final UAppSettingsReadParams p,
+    required UAppSettingsReadParams p,
     required Function(UResponse<UAppSettingsResponse> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -12,17 +12,17 @@ class AppSettingsService {
       method: "POST",
       endpoint: "${U.baseUrl}/AppSettings/Read",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
-        final UResponse<UAppSettingsResponse> ok = UResponse<UAppSettingsResponse>.fromJson(r.body, (final dynamic i) => UAppSettingsResponse.fromMap(i));
+      onSuccess: (Response r) {
+        final UResponse<UAppSettingsResponse> ok = UResponse<UAppSettingsResponse>.fromJson(r.body, (dynamic i) => UAppSettingsResponse.fromMap(i));
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -41,17 +41,17 @@ class AppSettingsService {
       method: "POST",
       endpoint: "${U.baseUrl}/AppSettings/ReadAll",
       body: <String, dynamic>{"apiKey": U.apiKey, "token": ULocalStorage.getToken()},
-      onSuccess: (final Response r) {
-        final UResponse<UAppSettings> ok = UResponse<UAppSettings>.fromJson(r.body, (final dynamic i) => UAppSettings.fromMap(i));
+      onSuccess: (Response r) {
+        final UResponse<UAppSettings> ok = UResponse<UAppSettings>.fromJson(r.body, (dynamic i) => UAppSettings.fromMap(i));
         result = (ok, null, null);
         onOk(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException(e);
       },
@@ -61,7 +61,7 @@ class AppSettingsService {
 
   // Applies edits live to Core.App on the server (in-memory only).
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> update({
-    required final UAppSettingsUpdateParams p,
+    required UAppSettingsUpdateParams p,
     required Function(UEmptyResponse r) onOk,
     required Function(UEmptyResponse e) onError,
     required Function(String e) onException,
@@ -71,17 +71,17 @@ class AppSettingsService {
       method: "POST",
       endpoint: "${U.baseUrl}/AppSettings/Update",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException(e);
       },

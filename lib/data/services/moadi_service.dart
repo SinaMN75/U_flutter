@@ -2,7 +2,7 @@ part of "../data.dart";
 
 class MoadiService {
   Future<(UResponse<String>?, UEmptyResponse?, String?)> create({
-    required final UMoadiCreateParams p,
+    required UMoadiCreateParams p,
     required Function(UResponse<String> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -12,17 +12,17 @@ class MoadiService {
       method: "POST",
       endpoint: "${U.baseUrl}/Moadi/Create",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
-        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (final dynamic i) => i);
+      onSuccess: (Response r) {
+        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (dynamic i) => i);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -31,7 +31,7 @@ class MoadiService {
   }
 
   Future<(UResponse<List<UMoadiResponse>>?, UEmptyResponse?, String?)> read({
-    required final UMoadiReadParams p,
+    required UMoadiReadParams p,
     required Function(UResponse<List<UMoadiResponse>> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -41,20 +41,20 @@ class MoadiService {
       method: "POST",
       endpoint: "${U.baseUrl}/Moadi/Read",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UResponse<List<UMoadiResponse>> ok = UResponse<List<UMoadiResponse>>.fromJson(
           r.body,
-          (final dynamic i) => List<UMoadiResponse>.from((i as List<dynamic>).map((final dynamic x) => UMoadiResponse.fromMap(x))),
+          (dynamic i) => List<UMoadiResponse>.from((i as List<dynamic>).map((dynamic x) => UMoadiResponse.fromMap(x))),
         );
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -63,7 +63,7 @@ class MoadiService {
   }
 
   Future<(UResponse<UMoadiResponse>?, UEmptyResponse?, String?)> readById({
-    required final UIdParams p,
+    required UIdParams p,
     required Function(UResponse<UMoadiResponse> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -73,17 +73,17 @@ class MoadiService {
       method: "POST",
       endpoint: "${U.baseUrl}/Moadi/ReadById",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
-        final UResponse<UMoadiResponse> ok = UResponse<UMoadiResponse>.fromJson(r.body, (final dynamic i) => UMoadiResponse.fromMap(i));
+      onSuccess: (Response r) {
+        final UResponse<UMoadiResponse> ok = UResponse<UMoadiResponse>.fromJson(r.body, (dynamic i) => UMoadiResponse.fromMap(i));
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -92,7 +92,7 @@ class MoadiService {
   }
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> update({
-    required final UMoadiUpdateParams p,
+    required UMoadiUpdateParams p,
     required Function(UEmptyResponse r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -102,17 +102,17 @@ class MoadiService {
       method: "POST",
       endpoint: "${U.baseUrl}/Moadi/Update",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -121,7 +121,7 @@ class MoadiService {
   }
 
   Future<(UResponse<UMoadiResponse>?, UEmptyResponse?, String?)> approve({
-    required final UIdParams p,
+    required UIdParams p,
     required Function(UResponse<UMoadiResponse> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -131,17 +131,17 @@ class MoadiService {
       method: "POST",
       endpoint: "${U.baseUrl}/Moadi/Approve",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
-        final UResponse<UMoadiResponse> ok = UResponse<UMoadiResponse>.fromJson(r.body, (final dynamic i) => UMoadiResponse.fromMap(i));
+      onSuccess: (Response r) {
+        final UResponse<UMoadiResponse> ok = UResponse<UMoadiResponse>.fromJson(r.body, (dynamic i) => UMoadiResponse.fromMap(i));
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -150,7 +150,7 @@ class MoadiService {
   }
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> reject({
-    required final UMoadiRejectParams p,
+    required UMoadiRejectParams p,
     required Function(UEmptyResponse r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -160,17 +160,17 @@ class MoadiService {
       method: "POST",
       endpoint: "${U.baseUrl}/Moadi/Reject",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -179,7 +179,7 @@ class MoadiService {
   }
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> delete({
-    required final UIdParams p,
+    required UIdParams p,
     required Function(UEmptyResponse r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -189,17 +189,17 @@ class MoadiService {
       method: "POST",
       endpoint: "${U.baseUrl}/Moadi/Delete",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },

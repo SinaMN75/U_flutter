@@ -2,7 +2,7 @@ part of "../data.dart";
 
 class InquiryService {
   Future<(UResponse<UBillInfoResponse>?, UEmptyResponse?, String?)> billInfo({
-    required final UBillInfoParams p,
+    required UBillInfoParams p,
     required Function(UResponse<UBillInfoResponse> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -12,17 +12,17 @@ class InquiryService {
       method: "POST",
       endpoint: "${U.baseUrl}/inquiry/BillInfo",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
-        final UResponse<UBillInfoResponse> ok = UResponse<UBillInfoResponse>.fromJson(r.body, (final dynamic i) => UBillInfoResponse.fromMap(i));
+      onSuccess: (Response r) {
+        final UResponse<UBillInfoResponse> ok = UResponse<UBillInfoResponse>.fromJson(r.body, (dynamic i) => UBillInfoResponse.fromMap(i));
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -31,7 +31,7 @@ class InquiryService {
   }
 
   Future<(UResponse<UZipCodeToAddressDetailResponse>?, UEmptyResponse?, String?)> zipCodeToAddressDetail({
-    required final UZipCodeToAddressDetailParams p,
+    required UZipCodeToAddressDetailParams p,
     required Function(UResponse<UZipCodeToAddressDetailResponse> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -41,17 +41,17 @@ class InquiryService {
       method: "POST",
       endpoint: "${U.baseUrl}/inquiry/ZipCodeToAddressDetail",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
-        final UResponse<UZipCodeToAddressDetailResponse> ok = UResponse<UZipCodeToAddressDetailResponse>.fromJson(r.body, (final dynamic i) => UZipCodeToAddressDetailResponse.fromMap(i));
+      onSuccess: (Response r) {
+        final UResponse<UZipCodeToAddressDetailResponse> ok = UResponse<UZipCodeToAddressDetailResponse>.fromJson(r.body, (dynamic i) => UZipCodeToAddressDetailResponse.fromMap(i));
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -60,7 +60,7 @@ class InquiryService {
   }
 
   Future<(UResponse<UVehicleViolationDetailResponse>?, UEmptyResponse?, String?)> vehicleViolationDetail({
-    required final UVehicleViolationDetailParams p,
+    required UVehicleViolationDetailParams p,
     required Function(UResponse<UVehicleViolationDetailResponse> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -70,17 +70,17 @@ class InquiryService {
       method: "POST",
       endpoint: "${U.baseUrl}/inquiry/VehicleViolationDetail",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
-        final UResponse<UVehicleViolationDetailResponse> ok = UResponse<UVehicleViolationDetailResponse>.fromJson(r.body, (final dynamic i) => UVehicleViolationDetailResponse.fromMap(i));
+      onSuccess: (Response r) {
+        final UResponse<UVehicleViolationDetailResponse> ok = UResponse<UVehicleViolationDetailResponse>.fromJson(r.body, (dynamic i) => UVehicleViolationDetailResponse.fromMap(i));
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -89,7 +89,7 @@ class InquiryService {
   }
 
   Future<(UResponse<UDrivingLicenceDetailResponse>?, UEmptyResponse?, String?)> drivingLicenceDetail({
-    required final UDrivingLicenceDetailParams p,
+    required UDrivingLicenceDetailParams p,
     required Function(UResponse<UDrivingLicenceDetailResponse> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -99,17 +99,17 @@ class InquiryService {
       method: "POST",
       endpoint: "${U.baseUrl}/inquiry/DrivingLicenceDetail",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
-        final UResponse<UDrivingLicenceDetailResponse> ok = UResponse<UDrivingLicenceDetailResponse>.fromJson(r.body, (final dynamic i) => UDrivingLicenceDetailResponse.fromMap(i));
+      onSuccess: (Response r) {
+        final UResponse<UDrivingLicenceDetailResponse> ok = UResponse<UDrivingLicenceDetailResponse>.fromJson(r.body, (dynamic i) => UDrivingLicenceDetailResponse.fromMap(i));
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -118,7 +118,7 @@ class InquiryService {
   }
 
   Future<(UResponse<ULicencePlateDetailResponse>?, UEmptyResponse?, String?)> licencePlateDetail({
-    required final ULicencePlateDetailParams p,
+    required ULicencePlateDetailParams p,
     required Function(UResponse<ULicencePlateDetailResponse> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -128,17 +128,17 @@ class InquiryService {
       method: "POST",
       endpoint: "${U.baseUrl}/inquiry/LicencePlateDetail",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
-        final UResponse<ULicencePlateDetailResponse> ok = UResponse<ULicencePlateDetailResponse>.fromJson(r.body, (final dynamic i) => ULicencePlateDetailResponse.fromMap(i));
+      onSuccess: (Response r) {
+        final UResponse<ULicencePlateDetailResponse> ok = UResponse<ULicencePlateDetailResponse>.fromJson(r.body, (dynamic i) => ULicencePlateDetailResponse.fromMap(i));
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -147,7 +147,7 @@ class InquiryService {
   }
 
   Future<(UResponse<UDrivingLicenceNegativePointResponse>?, UEmptyResponse?, String?)> drivingLicenceNegativePoint({
-    required final UDrivingLicenceNegativePointParams p,
+    required UDrivingLicenceNegativePointParams p,
     required Function(UResponse<UDrivingLicenceNegativePointResponse> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -157,20 +157,20 @@ class InquiryService {
       method: "POST",
       endpoint: "${U.baseUrl}/inquiry/DrivingLicenceNegativePoint",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UResponse<UDrivingLicenceNegativePointResponse> ok = UResponse<UDrivingLicenceNegativePointResponse>.fromJson(
           r.body,
-          (final dynamic i) => UDrivingLicenceNegativePointResponse.fromMap(i),
+          (dynamic i) => UDrivingLicenceNegativePointResponse.fromMap(i),
         );
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -179,7 +179,7 @@ class InquiryService {
   }
 
   Future<(UResponse<UFreewayTollsResponse>?, UEmptyResponse?, String?)> freewayTolls({
-    required final UFreewayTollsParams p,
+    required UFreewayTollsParams p,
     required Function(UResponse<UFreewayTollsResponse> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -189,17 +189,17 @@ class InquiryService {
       method: "POST",
       endpoint: "${U.baseUrl}/inquiry/FreewayTolls",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
-        final UResponse<UFreewayTollsResponse> ok = UResponse<UFreewayTollsResponse>.fromJson(r.body, (final dynamic i) => UFreewayTollsResponse.fromMap(i));
+      onSuccess: (Response r) {
+        final UResponse<UFreewayTollsResponse> ok = UResponse<UFreewayTollsResponse>.fromJson(r.body, (dynamic i) => UFreewayTollsResponse.fromMap(i));
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -208,7 +208,7 @@ class InquiryService {
   }
 
   Future<(UResponse<UInquiryCacheStatusResponse>?, UEmptyResponse?, String?)> cacheStatus({
-    required final UInquiryCacheStatusParams p,
+    required UInquiryCacheStatusParams p,
     required Function(UResponse<UInquiryCacheStatusResponse> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -218,17 +218,17 @@ class InquiryService {
       method: "POST",
       endpoint: "${U.baseUrl}/inquiry/CacheStatus",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
-        final UResponse<UInquiryCacheStatusResponse> ok = UResponse<UInquiryCacheStatusResponse>.fromJson(r.body, (final dynamic i) => UInquiryCacheStatusResponse.fromMap(i));
+      onSuccess: (Response r) {
+        final UResponse<UInquiryCacheStatusResponse> ok = UResponse<UInquiryCacheStatusResponse>.fromJson(r.body, (dynamic i) => UInquiryCacheStatusResponse.fromMap(i));
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -237,7 +237,7 @@ class InquiryService {
   }
 
   Future<(UResponse<UIBanToBankAccountDetailResponse>?, UEmptyResponse?, String?)> iBanToBankAccountDetail({
-    required final UIBanToBankAccountDetailParams p,
+    required UIBanToBankAccountDetailParams p,
     required Function(UResponse<UIBanToBankAccountDetailResponse> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -247,17 +247,17 @@ class InquiryService {
       method: "POST",
       endpoint: "${U.baseUrl}/inquiry/IBanToBankAccountDetail",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
-        final UResponse<UIBanToBankAccountDetailResponse> ok = UResponse<UIBanToBankAccountDetailResponse>.fromJson(r.body, (final dynamic i) => UIBanToBankAccountDetailResponse.fromMap(i));
+      onSuccess: (Response r) {
+        final UResponse<UIBanToBankAccountDetailResponse> ok = UResponse<UIBanToBankAccountDetailResponse>.fromJson(r.body, (dynamic i) => UIBanToBankAccountDetailResponse.fromMap(i));
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },

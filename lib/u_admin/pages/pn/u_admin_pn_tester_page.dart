@@ -1,7 +1,5 @@
 import "package:u/utilities.dart";
 
-// Interactive tester for the external-facing Pn API. Lets an admin pick an endpoint, fill its body,
-// fire the request against the live backend and inspect the raw JSON response.
 class UAdminPnTesterPage extends StatefulWidget {
   const UAdminPnTesterPage({super.key});
 
@@ -38,7 +36,7 @@ class _UAdminPnTesterPageState extends State<UAdminPnTesterPage> {
   }
 
   // A controller is created lazily per field key and reused across rebuilds.
-  TextEditingController _controllerFor(final String key) => _controllers.putIfAbsent(key, TextEditingController.new);
+  TextEditingController _controllerFor(String key) => _controllers.putIfAbsent(key, TextEditingController.new);
 
   List<_PnEndpoint> _buildEndpoints() => <_PnEndpoint>[
     _PnEndpoint(
@@ -145,7 +143,7 @@ class _UAdminPnTesterPageState extends State<UAdminPnTesterPage> {
     final Stopwatch watch = Stopwatch()..start();
     await endpoint.call(
       body: body,
-      onResponse: (final int status, final String responseBody) {
+      onResponse: (int status, String responseBody) {
         watch.stop();
         setState(() {
           _statusCode = status;
@@ -154,7 +152,7 @@ class _UAdminPnTesterPageState extends State<UAdminPnTesterPage> {
           _loading = false;
         });
       },
-      onException: (final String e) {
+      onException: (String e) {
         watch.stop();
         setState(() {
           _exception = e;
@@ -186,7 +184,7 @@ class _UAdminPnTesterPageState extends State<UAdminPnTesterPage> {
     );
   }
 
-  Widget _header(final ColorScheme cs) => URow(
+  Widget _header(ColorScheme cs) => URow(
     spacing: 14,
     children: <Widget>[
       Icon(Icons.api_rounded, size: 34, color: cs.primary).container(
@@ -204,7 +202,7 @@ class _UAdminPnTesterPageState extends State<UAdminPnTesterPage> {
     ],
   );
 
-  Widget _apiKeyCard(final ColorScheme cs) => UCard(
+  Widget _apiKeyCard(ColorScheme cs) => UCard(
     child: URow(
       spacing: 12,
       children: <Widget>[
@@ -214,10 +212,10 @@ class _UAdminPnTesterPageState extends State<UAdminPnTesterPage> {
     ).pAll(16),
   );
 
-  Widget _endpointSelector(final ColorScheme cs) => Wrap(
+  Widget _endpointSelector(ColorScheme cs) => Wrap(
     spacing: 10,
     runSpacing: 10,
-    children: List<Widget>.generate(_endpoints.length, (final int i) {
+    children: List<Widget>.generate(_endpoints.length, (int i) {
       final bool active = i == _selected;
       final _PnEndpoint e = _endpoints[i];
       return URow(
@@ -242,7 +240,7 @@ class _UAdminPnTesterPageState extends State<UAdminPnTesterPage> {
     }),
   );
 
-  Widget _requestCard(final ColorScheme cs) {
+  Widget _requestCard(ColorScheme cs) {
     final _PnEndpoint endpoint = _endpoints[_selected];
     return UCard(
       child: UColumn(
@@ -264,7 +262,7 @@ class _UAdminPnTesterPageState extends State<UAdminPnTesterPage> {
           ),
           const Divider(height: 1),
           LayoutBuilder(
-            builder: (final BuildContext context, final BoxConstraints constraints) {
+            builder: (BuildContext context, BoxConstraints constraints) {
               // Two fields per row on wide viewports, one on narrow.
               final bool twoColumns = constraints.maxWidth > 640;
               final double fieldWidth = twoColumns ? (constraints.maxWidth - 16) / 2 : constraints.maxWidth;
@@ -273,7 +271,7 @@ class _UAdminPnTesterPageState extends State<UAdminPnTesterPage> {
                 runSpacing: 14,
                 children: endpoint.fields
                     .map(
-                      (final _PnField f) => SizedBox(
+                      (_PnField f) => SizedBox(
                         width: f.lines > 1 ? constraints.maxWidth : fieldWidth,
                         child: UTextField(
                           controller: _controllerFor(f.key),
@@ -302,7 +300,7 @@ class _UAdminPnTesterPageState extends State<UAdminPnTesterPage> {
     );
   }
 
-  Widget _responseCard(final ColorScheme cs) {
+  Widget _responseCard(ColorScheme cs) {
     final bool isException = _exception != null;
     final bool ok = !isException && (_statusCode ?? 0) >= 200 && (_statusCode ?? 0) < 300;
     final Color accent = isException || !ok ? cs.error : UAdminTheme.green;

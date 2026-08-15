@@ -1,7 +1,7 @@
 import "package:u/utilities.dart";
 
 extension DoubleExtionsion on double {
-  String toStringAsSmartRound({final int maxPrecision = 2}) {
+  String toStringAsSmartRound({int maxPrecision = 2}) {
     final String str = toString();
     try {
       if (str.contains(".")) {
@@ -34,8 +34,8 @@ extension DoubleExtionsion on double {
   }
 
   int toSafeInt({
-    final int? minValue,
-    final int? maxValue,
+    int? minValue,
+    int? maxValue,
   }) {
     if (minValue == null && maxValue == null) {
       return toInt();
@@ -56,9 +56,9 @@ extension DoubleExtionsion on double {
 
 extension IntExtesion on int {
   int subtractClamping(
-    final int subtract, {
-    final int minValue = 0,
-    final int maxValue = 999999999,
+    int subtract, {
+    int minValue = 0,
+    int maxValue = 999999999,
   }) => (this - subtract).clamp(
     minValue,
     maxValue,
@@ -72,13 +72,13 @@ extension IntExtesion on int {
     return "${(this / 1000000000).toStringAsFixed(1)} B";
   }
 
-  String rial({final bool removeNegative = false}) => "${toString().separateNumbers3By3()} ریال".replaceAll(removeNegative ? "-" : "", "");
+  String rial({bool removeNegative = false}) => "${toString().separateNumbers3By3()} ریال".replaceAll(removeNegative ? "-" : "", "");
 
-  String separate3By3({final bool removeNegative = false}) => toString().separateNumbers3By3().replaceAll(removeNegative ? "-" : "", "");
+  String separate3By3({bool removeNegative = false}) => toString().separateNumbers3By3().replaceAll(removeNegative ? "-" : "", "");
 
-  String toman({final bool removeNegative = false}) => "${toString().separateNumbers3By3()} تومان".replaceAll(removeNegative ? "-" : "", "");
+  String toman({bool removeNegative = false}) => "${toString().separateNumbers3By3()} تومان".replaceAll(removeNegative ? "-" : "", "");
 
-  String rialToToman({final bool removeNegative = false}) => "${(this / 10).toInt().toString().separateNumbers3By3()} تومان ";
+  String rialToToman({bool removeNegative = false}) => "${(this / 10).toInt().toString().separateNumbers3By3()} تومان ";
 
   String secondsToTimeLeft() {
     final int h = this ~/ 3600;
@@ -101,7 +101,7 @@ extension IntExtesion on int {
     return result;
   }
 
-  String getMonthName(final bool isJalali) => isJalali ? jalaliMonthName : gregorianMonthName;
+  String getMonthName(bool isJalali) => isJalali ? jalaliMonthName : gregorianMonthName;
 
   String get jalaliMonthName {
     switch (this) {
@@ -167,21 +167,21 @@ extension IntExtesion on int {
 }
 
 extension OptionalIntExtension on int? {
-  String rial({final bool removeNegative = false}) => "${(this ?? 0).toString().separateNumbers3By3()} ریال".replaceAll(removeNegative ? "-" : "", "").trim();
+  String rial({bool removeNegative = false}) => "${(this ?? 0).toString().separateNumbers3By3()} ریال".replaceAll(removeNegative ? "-" : "", "").trim();
 
-  String toman({final bool removeNegative = false}) => "${(this ?? 0).toString().separateNumbers3By3()} تومان".replaceAll(removeNegative ? "-" : "", "").trim();
+  String toman({bool removeNegative = false}) => "${(this ?? 0).toString().separateNumbers3By3()} تومان".replaceAll(removeNegative ? "-" : "", "").trim();
 
-  String rialToToman({final bool removeNegative = false}) => "${((this ?? 0) / 10).toInt().toString().separateNumbers3By3()} تومان".replaceAll(removeNegative ? "-" : "", "").trim();
+  String rialToToman({bool removeNegative = false}) => "${((this ?? 0) / 10).toInt().toString().separateNumbers3By3()} تومان".replaceAll(removeNegative ? "-" : "", "").trim();
 
   String toStringOrEmptyIfNull() => this == null ? "" : toString();
 }
 
 extension OptionalDoubleExtension on double? {
-  String rial({final bool removeNegative = false}) => "${(this ?? 0).toInt().toString().separateNumbers3By3()} ریال".replaceAll(removeNegative ? "-" : "", "").trim();
+  String rial({bool removeNegative = false}) => "${(this ?? 0).toInt().toString().separateNumbers3By3()} ریال".replaceAll(removeNegative ? "-" : "", "").trim();
 
-  String toman({final bool removeNegative = false}) => "${(this ?? 0).toInt().toString().separateNumbers3By3()} تومان".replaceAll(removeNegative ? "-" : "", "").trim();
+  String toman({bool removeNegative = false}) => "${(this ?? 0).toInt().toString().separateNumbers3By3()} تومان".replaceAll(removeNegative ? "-" : "", "").trim();
 
-  String rialToTomanMoneyPersian({final bool removeNegative = false}) => "${((this ?? 0) / 10).toString().separateNumbers3By3()} تومان".replaceAll(removeNegative ? "-" : "", "").trim();
+  String rialToTomanMoneyPersian({bool removeNegative = false}) => "${((this ?? 0) / 10).toString().separateNumbers3By3()} تومان".replaceAll(removeNegative ? "-" : "", "").trim();
 
   String toStringOrEmptyIfNull() => this == null ? "" : toString();
 }

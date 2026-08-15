@@ -1,9 +1,9 @@
 part of "../data.dart";
 
 extension MediaListExtension on Iterable<UMediaResponse> {
-  UMediaResponse? firstByTag(TagMedia tag) => firstWhereOrNull((final UMediaResponse i) => i.tags.contains(tag.number));
+  UMediaResponse? firstByTag(TagMedia tag) => firstWhereOrNull((UMediaResponse i) => i.tags.contains(tag.number));
 
-  List<UMediaResponse> byTag(TagMedia tag) => where((final UMediaResponse i) => i.tags.contains(tag.number)).toList();
+  List<UMediaResponse> byTag(TagMedia tag) => where((UMediaResponse i) => i.tags.contains(tag.number)).toList();
 }
 
 class UMediaResponse {

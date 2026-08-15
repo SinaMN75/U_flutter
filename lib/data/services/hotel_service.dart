@@ -4,7 +4,7 @@ class HotelService {
   // ==================== Hotel ====================
 
   Future<(UResponse<String>?, UEmptyResponse?, String?)> createHotel({
-    required final UHotelCreateParams p,
+    required UHotelCreateParams p,
     required Function(UResponse<String> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -14,17 +14,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/Hotel/Create",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
-        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (final dynamic i) => i);
+      onSuccess: (Response r) {
+        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (dynamic i) => i);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -33,7 +33,7 @@ class HotelService {
   }
 
   Future<(UResponse<List<UHotelResponse>>?, UEmptyResponse?, String?)> readHotels({
-    required final UHotelReadParams p,
+    required UHotelReadParams p,
     required Function(UResponse<List<UHotelResponse>> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -43,20 +43,20 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/Hotel/Read",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UResponse<List<UHotelResponse>> ok = UResponse<List<UHotelResponse>>.fromJson(
           r.body,
-          (final dynamic i) => List<UHotelResponse>.from((i as List<dynamic>).map((final dynamic x) => UHotelResponse.fromMap(x))),
+          (dynamic i) => List<UHotelResponse>.from((i as List<dynamic>).map((dynamic x) => UHotelResponse.fromMap(x))),
         );
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -65,7 +65,7 @@ class HotelService {
   }
 
   Future<(UResponse<UHotelResponse>?, UEmptyResponse?, String?)> readHotelById({
-    required final UIdParams p,
+    required UIdParams p,
     required Function(UResponse<UHotelResponse> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -75,17 +75,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/Hotel/ReadById",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
-        final UResponse<UHotelResponse> ok = UResponse<UHotelResponse>.fromJson(r.body, (final dynamic i) => UHotelResponse.fromMap(i));
+      onSuccess: (Response r) {
+        final UResponse<UHotelResponse> ok = UResponse<UHotelResponse>.fromJson(r.body, (dynamic i) => UHotelResponse.fromMap(i));
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -94,7 +94,7 @@ class HotelService {
   }
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> updateHotel({
-    required final UHotelUpdateParams p,
+    required UHotelUpdateParams p,
     required Function(UEmptyResponse r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -104,17 +104,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/Hotel/Update",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -123,7 +123,7 @@ class HotelService {
   }
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteHotel({
-    required final UIdParams p,
+    required UIdParams p,
     required Function(UEmptyResponse r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -133,17 +133,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/Hotel/Delete",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -154,7 +154,7 @@ class HotelService {
   // ==================== HotelRoom ====================
 
   Future<(UResponse<String>?, UEmptyResponse?, String?)> createHotelRoom({
-    required final UHotelRoomCreateParams p,
+    required UHotelRoomCreateParams p,
     required Function(UResponse<String> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -164,17 +164,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/HotelRoom/Create",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
-        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (final dynamic i) => i);
+      onSuccess: (Response r) {
+        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (dynamic i) => i);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -183,7 +183,7 @@ class HotelService {
   }
 
   Future<(UResponse<List<UHotelRoomResponse>>?, UEmptyResponse?, String?)> readHotelRooms({
-    required final UHotelRoomReadParams p,
+    required UHotelRoomReadParams p,
     required Function(UResponse<List<UHotelRoomResponse>> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -193,20 +193,20 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/HotelRoom/Read",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UResponse<List<UHotelRoomResponse>> ok = UResponse<List<UHotelRoomResponse>>.fromJson(
           r.body,
-          (final dynamic i) => List<UHotelRoomResponse>.from((i as List<dynamic>).map((final dynamic x) => UHotelRoomResponse.fromMap(x))),
+          (dynamic i) => List<UHotelRoomResponse>.from((i as List<dynamic>).map((dynamic x) => UHotelRoomResponse.fromMap(x))),
         );
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -215,7 +215,7 @@ class HotelService {
   }
 
   Future<(UResponse<UHotelRoomResponse>?, UEmptyResponse?, String?)> readHotelRoomById({
-    required final UIdParams p,
+    required UIdParams p,
     required Function(UResponse<UHotelRoomResponse> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -225,17 +225,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/HotelRoom/ReadById",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
-        final UResponse<UHotelRoomResponse> ok = UResponse<UHotelRoomResponse>.fromJson(r.body, (final dynamic i) => UHotelRoomResponse.fromMap(i));
+      onSuccess: (Response r) {
+        final UResponse<UHotelRoomResponse> ok = UResponse<UHotelRoomResponse>.fromJson(r.body, (dynamic i) => UHotelRoomResponse.fromMap(i));
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -244,7 +244,7 @@ class HotelService {
   }
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> updateHotelRoom({
-    required final UHotelRoomUpdateParams p,
+    required UHotelRoomUpdateParams p,
     required Function(UEmptyResponse r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -254,17 +254,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/HotelRoom/Update",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -273,7 +273,7 @@ class HotelService {
   }
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteHotelRoom({
-    required final UIdParams p,
+    required UIdParams p,
     required Function(UEmptyResponse r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -283,17 +283,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/HotelRoom/Delete",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -304,7 +304,7 @@ class HotelService {
   // ==================== Dorm ====================
 
   Future<(UResponse<String>?, UEmptyResponse?, String?)> createDorm({
-    required final UDormCreateParams p,
+    required UDormCreateParams p,
     required Function(UResponse<String> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -314,17 +314,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/Dorm/Create",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
-        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (final dynamic i) => i);
+      onSuccess: (Response r) {
+        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (dynamic i) => i);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -333,7 +333,7 @@ class HotelService {
   }
 
   Future<(UResponse<List<UDormResponse>>?, UEmptyResponse?, String?)> readDorms({
-    required final UDormReadParams p,
+    required UDormReadParams p,
     required Function(UResponse<List<UDormResponse>> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -343,20 +343,20 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/Dorm/Read",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UResponse<List<UDormResponse>> ok = UResponse<List<UDormResponse>>.fromJson(
           r.body,
-          (final dynamic i) => List<UDormResponse>.from((i as List<dynamic>).map((final dynamic x) => UDormResponse.fromMap(x))),
+          (dynamic i) => List<UDormResponse>.from((i as List<dynamic>).map((dynamic x) => UDormResponse.fromMap(x))),
         );
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -365,7 +365,7 @@ class HotelService {
   }
 
   Future<(UResponse<UDormResponse>?, UEmptyResponse?, String?)> readDormById({
-    required final UIdParams p,
+    required UIdParams p,
     required Function(UResponse<UDormResponse> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -375,17 +375,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/Dorm/ReadById",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
-        final UResponse<UDormResponse> ok = UResponse<UDormResponse>.fromJson(r.body, (final dynamic i) => UDormResponse.fromMap(i));
+      onSuccess: (Response r) {
+        final UResponse<UDormResponse> ok = UResponse<UDormResponse>.fromJson(r.body, (dynamic i) => UDormResponse.fromMap(i));
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -394,7 +394,7 @@ class HotelService {
   }
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> updateDorm({
-    required final UDormUpdateParams p,
+    required UDormUpdateParams p,
     required Function(UEmptyResponse r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -404,17 +404,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/Dorm/Update",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -423,7 +423,7 @@ class HotelService {
   }
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteDorm({
-    required final UIdParams p,
+    required UIdParams p,
     required Function(UEmptyResponse r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -433,17 +433,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/Dorm/Delete",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -454,7 +454,7 @@ class HotelService {
   // ==================== DormRoom ====================
 
   Future<(UResponse<String>?, UEmptyResponse?, String?)> createDormRoom({
-    required final UDormRoomCreateParams p,
+    required UDormRoomCreateParams p,
     required Function(UResponse<String> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -464,17 +464,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/DormRoom/Create",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
-        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (final dynamic i) => i);
+      onSuccess: (Response r) {
+        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (dynamic i) => i);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -483,7 +483,7 @@ class HotelService {
   }
 
   Future<(UResponse<List<UDormRoomResponse>>?, UEmptyResponse?, String?)> readDormRooms({
-    required final UDormRoomReadParams p,
+    required UDormRoomReadParams p,
     required Function(UResponse<List<UDormRoomResponse>> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -493,20 +493,20 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/DormRoom/Read",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UResponse<List<UDormRoomResponse>> ok = UResponse<List<UDormRoomResponse>>.fromJson(
           r.body,
-          (final dynamic i) => List<UDormRoomResponse>.from((i as List<dynamic>).map((final dynamic x) => UDormRoomResponse.fromMap(x))),
+          (dynamic i) => List<UDormRoomResponse>.from((i as List<dynamic>).map((dynamic x) => UDormRoomResponse.fromMap(x))),
         );
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -515,7 +515,7 @@ class HotelService {
   }
 
   Future<(UResponse<UDormRoomResponse>?, UEmptyResponse?, String?)> readDormRoomById({
-    required final UIdParams p,
+    required UIdParams p,
     required Function(UResponse<UDormRoomResponse> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -525,17 +525,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/DormRoom/ReadById",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
-        final UResponse<UDormRoomResponse> ok = UResponse<UDormRoomResponse>.fromJson(r.body, (final dynamic i) => UDormRoomResponse.fromMap(i));
+      onSuccess: (Response r) {
+        final UResponse<UDormRoomResponse> ok = UResponse<UDormRoomResponse>.fromJson(r.body, (dynamic i) => UDormRoomResponse.fromMap(i));
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -544,7 +544,7 @@ class HotelService {
   }
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> updateDormRoom({
-    required final UDormRoomUpdateParams p,
+    required UDormRoomUpdateParams p,
     required Function(UEmptyResponse r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -554,17 +554,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/DormRoom/Update",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -573,7 +573,7 @@ class HotelService {
   }
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteDormRoom({
-    required final UIdParams p,
+    required UIdParams p,
     required Function(UEmptyResponse r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -583,17 +583,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/DormRoom/Delete",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -604,7 +604,7 @@ class HotelService {
   // ==================== DormBed ====================
 
   Future<(UResponse<String>?, UEmptyResponse?, String?)> createDormBed({
-    required final UDormBedCreateParams p,
+    required UDormBedCreateParams p,
     required Function(UResponse<String> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -614,17 +614,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/DormBed/Create",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
-        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (final dynamic i) => i);
+      onSuccess: (Response r) {
+        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (dynamic i) => i);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -633,7 +633,7 @@ class HotelService {
   }
 
   Future<(UResponse<List<UDormBedResponse>>?, UEmptyResponse?, String?)> readDormBeds({
-    required final UDormBedReadParams p,
+    required UDormBedReadParams p,
     required Function(UResponse<List<UDormBedResponse>> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -643,20 +643,20 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/DormBed/Read",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UResponse<List<UDormBedResponse>> ok = UResponse<List<UDormBedResponse>>.fromJson(
           r.body,
-          (final dynamic i) => List<UDormBedResponse>.from((i as List<dynamic>).map((final dynamic x) => UDormBedResponse.fromMap(x))),
+          (dynamic i) => List<UDormBedResponse>.from((i as List<dynamic>).map((dynamic x) => UDormBedResponse.fromMap(x))),
         );
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -665,7 +665,7 @@ class HotelService {
   }
 
   Future<(UResponse<UDormBedResponse>?, UEmptyResponse?, String?)> readDormBedById({
-    required final UIdParams p,
+    required UIdParams p,
     required Function(UResponse<UDormBedResponse> r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -675,17 +675,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/DormBed/ReadById",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
-        final UResponse<UDormBedResponse> ok = UResponse<UDormBedResponse>.fromJson(r.body, (final dynamic i) => UDormBedResponse.fromMap(i));
+      onSuccess: (Response r) {
+        final UResponse<UDormBedResponse> ok = UResponse<UDormBedResponse>.fromJson(r.body, (dynamic i) => UDormBedResponse.fromMap(i));
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -694,7 +694,7 @@ class HotelService {
   }
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> updateDormBed({
-    required final UDormBedUpdateParams p,
+    required UDormBedUpdateParams p,
     required Function(UEmptyResponse r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -704,17 +704,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/DormBed/Update",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -723,7 +723,7 @@ class HotelService {
   }
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteDormBed({
-    required final UIdParams p,
+    required UIdParams p,
     required Function(UEmptyResponse r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
@@ -733,17 +733,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/DormBed/Delete",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
+      onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -752,7 +752,7 @@ class HotelService {
   }
 
   Future<(UResponse<String>?, UResponse<dynamic>?, String?)> createDormBedContract({
-    required final UDormBedContractCreateParams p,
+    required UDormBedContractCreateParams p,
     required Function(UResponse<String> r)? onOk,
     required Function(UResponse<dynamic> e)? onError,
     required Function(String e)? onException,
@@ -762,17 +762,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/DormBedContract/Create",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()).add("locale", ULocalStorage.getLocale()).add("locale", ULocalStorage.getLocale()),
-      onSuccess: (final Response r) {
-        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (final dynamic i) => i);
+      onSuccess: (Response r) {
+        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (dynamic i) => i);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
-        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (final dynamic i) => i);
+      onError: (Response r) {
+        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (dynamic i) => i);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -781,7 +781,7 @@ class HotelService {
   }
 
   Future<(UResponse<List<UDormBedContractResponse>>?, UResponse<dynamic>?, String?)> readDormBedContract({
-    required final UDormBedContractReadParams p,
+    required UDormBedContractReadParams p,
     required Function(UResponse<List<UDormBedContractResponse>> r)? onOk,
     required Function(UResponse<dynamic> e)? onError,
     required Function(String e)? onException,
@@ -791,20 +791,20 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/DormBedContract/Read",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()).add("locale", ULocalStorage.getLocale()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UResponse<List<UDormBedContractResponse>> ok = UResponse<List<UDormBedContractResponse>>.fromJson(
           r.body,
-          (final dynamic i) => List<UDormBedContractResponse>.from((i as List<dynamic>).map((final dynamic x) => UDormBedContractResponse.fromMap(x))),
+          (dynamic i) => List<UDormBedContractResponse>.from((i as List<dynamic>).map((dynamic x) => UDormBedContractResponse.fromMap(x))),
         );
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
-        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (final dynamic i) => i);
+      onError: (Response r) {
+        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (dynamic i) => i);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -813,7 +813,7 @@ class HotelService {
   }
 
   Future<(UResponse<UDormBedContractResponse>?, UResponse<dynamic>?, String?)> updateDormBedContract({
-    required final UDormBedContractUpdateParams p,
+    required UDormBedContractUpdateParams p,
     required Function(UResponse<UDormBedContractResponse> r)? onOk,
     required Function(UResponse<dynamic> e)? onError,
     required Function(String e)? onException,
@@ -823,17 +823,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/DormBedContract/Update",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()).add("locale", ULocalStorage.getLocale()),
-      onSuccess: (final Response r) {
-        final UResponse<UDormBedContractResponse> ok = UResponse<UDormBedContractResponse>.fromJson(r.body, (final dynamic i) => UDormBedContractResponse.fromMap(i));
+      onSuccess: (Response r) {
+        final UResponse<UDormBedContractResponse> ok = UResponse<UDormBedContractResponse>.fromJson(r.body, (dynamic i) => UDormBedContractResponse.fromMap(i));
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
-        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (final dynamic i) => i);
+      onError: (Response r) {
+        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (dynamic i) => i);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -842,7 +842,7 @@ class HotelService {
   }
 
   Future<(UResponse<dynamic>?, UResponse<dynamic>?, String?)> deleteDormBedContract({
-    required final UIdParams p,
+    required UIdParams p,
     required Function(UResponse<dynamic> r)? onOk,
     required Function(UResponse<dynamic> e)? onError,
     required Function(String e)? onException,
@@ -852,17 +852,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/DormBedContract/Delete",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()).add("locale", ULocalStorage.getLocale()),
-      onSuccess: (final Response r) {
-        final UResponse<dynamic> ok = UResponse<dynamic>.fromJson(r.body, (final dynamic i) => i);
+      onSuccess: (Response r) {
+        final UResponse<dynamic> ok = UResponse<dynamic>.fromJson(r.body, (dynamic i) => i);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
-        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (final dynamic i) => i);
+      onError: (Response r) {
+        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (dynamic i) => i);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -871,7 +871,7 @@ class HotelService {
   }
 
   Future<(UResponse<UDormBedInvoiceResponse>?, UResponse<dynamic>?, String?)> createDormBedInvoice({
-    required final UDormBedInvoiceCreateParams p,
+    required UDormBedInvoiceCreateParams p,
     required Function(UResponse<UDormBedInvoiceResponse> r)? onOk,
     required Function(UResponse<dynamic> e)? onError,
     required Function(String e)? onException,
@@ -881,17 +881,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/DormBedInvoice/Create",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()).add("locale", ULocalStorage.getLocale()),
-      onSuccess: (final Response r) {
-        final UResponse<UDormBedInvoiceResponse> ok = UResponse<UDormBedInvoiceResponse>.fromJson(r.body, (final dynamic i) => UDormBedInvoiceResponse.fromMap(i));
+      onSuccess: (Response r) {
+        final UResponse<UDormBedInvoiceResponse> ok = UResponse<UDormBedInvoiceResponse>.fromJson(r.body, (dynamic i) => UDormBedInvoiceResponse.fromMap(i));
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
-        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (final dynamic i) => i);
+      onError: (Response r) {
+        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (dynamic i) => i);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -900,7 +900,7 @@ class HotelService {
   }
 
   Future<(UResponse<List<UDormBedInvoiceResponse>>?, UResponse<dynamic>?, String?)> readDormBedInvoice({
-    required final UDormBedInvoiceReadParams p,
+    required UDormBedInvoiceReadParams p,
     required Function(UResponse<List<UDormBedInvoiceResponse>> r)? onOk,
     required Function(UResponse<dynamic> e)? onError,
     required Function(String e)? onException,
@@ -910,20 +910,20 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/DormBedInvoice/Read",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()).add("locale", ULocalStorage.getLocale()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UResponse<List<UDormBedInvoiceResponse>> ok = UResponse<List<UDormBedInvoiceResponse>>.fromJson(
           r.body,
-          (final dynamic i) => List<UDormBedInvoiceResponse>.from((i as List<dynamic>).map((final dynamic x) => UDormBedInvoiceResponse.fromMap(x))),
+          (dynamic i) => List<UDormBedInvoiceResponse>.from((i as List<dynamic>).map((dynamic x) => UDormBedInvoiceResponse.fromMap(x))),
         );
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
-        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (final dynamic i) => i);
+      onError: (Response r) {
+        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (dynamic i) => i);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -932,7 +932,7 @@ class HotelService {
   }
 
   Future<(UResponse<UDormBedInvoiceResponse>?, UResponse<dynamic>?, String?)> updateDormBedInvoice({
-    required final UDormBedInvoiceUpdateParams p,
+    required UDormBedInvoiceUpdateParams p,
     required Function(UResponse<UDormBedInvoiceResponse> r)? onOk,
     required Function(UResponse<dynamic> e)? onError,
     required Function(String e)? onException,
@@ -942,17 +942,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/DormBedInvoice/Update",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()).add("locale", ULocalStorage.getLocale()),
-      onSuccess: (final Response r) {
-        final UResponse<UDormBedInvoiceResponse> ok = UResponse<UDormBedInvoiceResponse>.fromJson(r.body, (final dynamic i) => UDormBedInvoiceResponse.fromMap(i));
+      onSuccess: (Response r) {
+        final UResponse<UDormBedInvoiceResponse> ok = UResponse<UDormBedInvoiceResponse>.fromJson(r.body, (dynamic i) => UDormBedInvoiceResponse.fromMap(i));
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
-        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (final dynamic i) => i);
+      onError: (Response r) {
+        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (dynamic i) => i);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -961,7 +961,7 @@ class HotelService {
   }
 
   Future<(UResponse<dynamic>?, UResponse<dynamic>?, String?)> deleteDormBedInvoice({
-    required final UIdParams p,
+    required UIdParams p,
     required Function(UResponse<dynamic> r)? onOk,
     required Function(UResponse<dynamic> e)? onError,
     required Function(String e)? onException,
@@ -971,17 +971,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/DormBedInvoice/Delete",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()).add("locale", ULocalStorage.getLocale()),
-      onSuccess: (final Response r) {
-        final UResponse<dynamic> ok = UResponse<dynamic>.fromJson(r.body, (final dynamic i) => i);
+      onSuccess: (Response r) {
+        final UResponse<dynamic> ok = UResponse<dynamic>.fromJson(r.body, (dynamic i) => i);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
-        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (final dynamic i) => i);
+      onError: (Response r) {
+        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (dynamic i) => i);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -990,7 +990,7 @@ class HotelService {
   }
 
   Future<(UEmptyResponse?, UResponse<dynamic>?, String?)> payDormBedInvoice({
-    required final UIdParams p,
+    required UIdParams p,
     required Function(UEmptyResponse r)? onOk,
     required Function(UResponse<dynamic> e)? onError,
     required Function(String e)? onException,
@@ -1000,17 +1000,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/DormBedInvoice/Pay",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()).add("locale", ULocalStorage.getLocale()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
-        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (final dynamic i) => i);
+      onError: (Response r) {
+        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (dynamic i) => i);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -1021,7 +1021,7 @@ class HotelService {
   // ==================== HotelReservation ====================
 
   Future<(UResponse<String>?, UResponse<dynamic>?, String?)> createHotelReservation({
-    required final UHotelReservationCreateParams p,
+    required UHotelReservationCreateParams p,
     required Function(UResponse<String> r)? onOk,
     required Function(UResponse<dynamic> e)? onError,
     required Function(String e)? onException,
@@ -1031,17 +1031,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/HotelReservation/Create",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()).add("locale", ULocalStorage.getLocale()),
-      onSuccess: (final Response r) {
-        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (final dynamic i) => i);
+      onSuccess: (Response r) {
+        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (dynamic i) => i);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
-        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (final dynamic i) => i);
+      onError: (Response r) {
+        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (dynamic i) => i);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -1050,7 +1050,7 @@ class HotelService {
   }
 
   Future<(UResponse<List<UHotelReservationResponse>>?, UResponse<dynamic>?, String?)> readHotelReservations({
-    required final UHotelReservationReadParams p,
+    required UHotelReservationReadParams p,
     required Function(UResponse<List<UHotelReservationResponse>> r)? onOk,
     required Function(UResponse<dynamic> e)? onError,
     required Function(String e)? onException,
@@ -1060,20 +1060,20 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/HotelReservation/Read",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()).add("locale", ULocalStorage.getLocale()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UResponse<List<UHotelReservationResponse>> ok = UResponse<List<UHotelReservationResponse>>.fromJson(
           r.body,
-          (final dynamic i) => List<UHotelReservationResponse>.from((i as List<dynamic>).map((final dynamic x) => UHotelReservationResponse.fromMap(x))),
+          (dynamic i) => List<UHotelReservationResponse>.from((i as List<dynamic>).map((dynamic x) => UHotelReservationResponse.fromMap(x))),
         );
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
-        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (final dynamic i) => i);
+      onError: (Response r) {
+        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (dynamic i) => i);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -1082,7 +1082,7 @@ class HotelService {
   }
 
   Future<(UResponse<UHotelReservationResponse>?, UResponse<dynamic>?, String?)> readHotelReservationById({
-    required final UIdParams p,
+    required UIdParams p,
     required Function(UResponse<UHotelReservationResponse> r)? onOk,
     required Function(UResponse<dynamic> e)? onError,
     required Function(String e)? onException,
@@ -1092,17 +1092,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/HotelReservation/ReadById",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()).add("locale", ULocalStorage.getLocale()),
-      onSuccess: (final Response r) {
-        final UResponse<UHotelReservationResponse> ok = UResponse<UHotelReservationResponse>.fromJson(r.body, (final dynamic i) => UHotelReservationResponse.fromMap(i));
+      onSuccess: (Response r) {
+        final UResponse<UHotelReservationResponse> ok = UResponse<UHotelReservationResponse>.fromJson(r.body, (dynamic i) => UHotelReservationResponse.fromMap(i));
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
-        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (final dynamic i) => i);
+      onError: (Response r) {
+        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (dynamic i) => i);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -1111,7 +1111,7 @@ class HotelService {
   }
 
   Future<(UEmptyResponse?, UResponse<dynamic>?, String?)> updateHotelReservation({
-    required final UHotelReservationUpdateParams p,
+    required UHotelReservationUpdateParams p,
     required Function(UEmptyResponse r)? onOk,
     required Function(UResponse<dynamic> e)? onError,
     required Function(String e)? onException,
@@ -1121,17 +1121,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/HotelReservation/Update",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()).add("locale", ULocalStorage.getLocale()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
-        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (final dynamic i) => i);
+      onError: (Response r) {
+        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (dynamic i) => i);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -1140,7 +1140,7 @@ class HotelService {
   }
 
   Future<(UEmptyResponse?, UResponse<dynamic>?, String?)> deleteHotelReservation({
-    required final UIdParams p,
+    required UIdParams p,
     required Function(UEmptyResponse r)? onOk,
     required Function(UResponse<dynamic> e)? onError,
     required Function(String e)? onException,
@@ -1150,17 +1150,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/HotelReservation/Delete",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()).add("locale", ULocalStorage.getLocale()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
-        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (final dynamic i) => i);
+      onError: (Response r) {
+        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (dynamic i) => i);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -1169,8 +1169,8 @@ class HotelService {
   }
 
   Future<(UEmptyResponse?, UResponse<dynamic>?, String?)> _reservationAction({
-    required final String action,
-    required final UIdParams p,
+    required String action,
+    required UIdParams p,
     required Function(UEmptyResponse r)? onOk,
     required Function(UResponse<dynamic> e)? onError,
     required Function(String e)? onException,
@@ -1180,17 +1180,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/HotelReservation/$action",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()).add("locale", ULocalStorage.getLocale()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
-        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (final dynamic i) => i);
+      onError: (Response r) {
+        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (dynamic i) => i);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -1199,28 +1199,28 @@ class HotelService {
   }
 
   Future<(UEmptyResponse?, UResponse<dynamic>?, String?)> confirmHotelReservation({
-    required final UIdParams p,
+    required UIdParams p,
     required Function(UEmptyResponse r)? onOk,
     required Function(UResponse<dynamic> e)? onError,
     required Function(String e)? onException,
   }) => _reservationAction(action: "Confirm", p: p, onOk: onOk, onError: onError, onException: onException);
 
   Future<(UEmptyResponse?, UResponse<dynamic>?, String?)> checkInHotelReservation({
-    required final UIdParams p,
+    required UIdParams p,
     required Function(UEmptyResponse r)? onOk,
     required Function(UResponse<dynamic> e)? onError,
     required Function(String e)? onException,
   }) => _reservationAction(action: "CheckIn", p: p, onOk: onOk, onError: onError, onException: onException);
 
   Future<(UEmptyResponse?, UResponse<dynamic>?, String?)> checkOutHotelReservation({
-    required final UIdParams p,
+    required UIdParams p,
     required Function(UEmptyResponse r)? onOk,
     required Function(UResponse<dynamic> e)? onError,
     required Function(String e)? onException,
   }) => _reservationAction(action: "CheckOut", p: p, onOk: onOk, onError: onError, onException: onException);
 
   Future<(UEmptyResponse?, UResponse<dynamic>?, String?)> cancelHotelReservation({
-    required final UIdParams p,
+    required UIdParams p,
     required Function(UEmptyResponse r)? onOk,
     required Function(UResponse<dynamic> e)? onError,
     required Function(String e)? onException,
@@ -1229,7 +1229,7 @@ class HotelService {
   // ==================== HotelInvoice ====================
 
   Future<(UResponse<String>?, UResponse<dynamic>?, String?)> createHotelInvoice({
-    required final UHotelInvoiceCreateParams p,
+    required UHotelInvoiceCreateParams p,
     required Function(UResponse<String> r)? onOk,
     required Function(UResponse<dynamic> e)? onError,
     required Function(String e)? onException,
@@ -1239,17 +1239,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/HotelInvoice/Create",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()).add("locale", ULocalStorage.getLocale()),
-      onSuccess: (final Response r) {
-        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (final dynamic i) => i);
+      onSuccess: (Response r) {
+        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (dynamic i) => i);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
-        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (final dynamic i) => i);
+      onError: (Response r) {
+        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (dynamic i) => i);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -1258,7 +1258,7 @@ class HotelService {
   }
 
   Future<(UResponse<List<UHotelInvoiceResponse>>?, UResponse<dynamic>?, String?)> readHotelInvoices({
-    required final UHotelInvoiceReadParams p,
+    required UHotelInvoiceReadParams p,
     required Function(UResponse<List<UHotelInvoiceResponse>> r)? onOk,
     required Function(UResponse<dynamic> e)? onError,
     required Function(String e)? onException,
@@ -1268,20 +1268,20 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/HotelInvoice/Read",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()).add("locale", ULocalStorage.getLocale()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UResponse<List<UHotelInvoiceResponse>> ok = UResponse<List<UHotelInvoiceResponse>>.fromJson(
           r.body,
-          (final dynamic i) => List<UHotelInvoiceResponse>.from((i as List<dynamic>).map((final dynamic x) => UHotelInvoiceResponse.fromMap(x))),
+          (dynamic i) => List<UHotelInvoiceResponse>.from((i as List<dynamic>).map((dynamic x) => UHotelInvoiceResponse.fromMap(x))),
         );
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
-        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (final dynamic i) => i);
+      onError: (Response r) {
+        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (dynamic i) => i);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -1290,7 +1290,7 @@ class HotelService {
   }
 
   Future<(UEmptyResponse?, UResponse<dynamic>?, String?)> updateHotelInvoice({
-    required final UHotelInvoiceUpdateParams p,
+    required UHotelInvoiceUpdateParams p,
     required Function(UEmptyResponse r)? onOk,
     required Function(UResponse<dynamic> e)? onError,
     required Function(String e)? onException,
@@ -1300,17 +1300,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/HotelInvoice/Update",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()).add("locale", ULocalStorage.getLocale()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
-        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (final dynamic i) => i);
+      onError: (Response r) {
+        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (dynamic i) => i);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -1319,7 +1319,7 @@ class HotelService {
   }
 
   Future<(UEmptyResponse?, UResponse<dynamic>?, String?)> deleteHotelInvoice({
-    required final UIdParams p,
+    required UIdParams p,
     required Function(UEmptyResponse r)? onOk,
     required Function(UResponse<dynamic> e)? onError,
     required Function(String e)? onException,
@@ -1329,17 +1329,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/HotelInvoice/Delete",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()).add("locale", ULocalStorage.getLocale()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
-        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (final dynamic i) => i);
+      onError: (Response r) {
+        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (dynamic i) => i);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },
@@ -1348,7 +1348,7 @@ class HotelService {
   }
 
   Future<(UEmptyResponse?, UResponse<dynamic>?, String?)> payHotelInvoice({
-    required final UIdParams p,
+    required UIdParams p,
     required Function(UEmptyResponse r)? onOk,
     required Function(UResponse<dynamic> e)? onError,
     required Function(String e)? onException,
@@ -1358,17 +1358,17 @@ class HotelService {
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/HotelInvoice/Pay",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()).add("locale", ULocalStorage.getLocale()),
-      onSuccess: (final Response r) {
+      onSuccess: (Response r) {
         final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },
-      onError: (final Response r) {
-        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (final dynamic i) => i);
+      onError: (Response r) {
+        final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (dynamic i) => i);
         result = (null, err, null);
         onError?.call(err);
       },
-      onException: (final String e) {
+      onException: (String e) {
         result = (null, null, e);
         onException?.call(e);
       },

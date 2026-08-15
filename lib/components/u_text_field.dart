@@ -75,7 +75,7 @@ class _UTextFieldState extends State<UTextField> {
   }
 
   @override
-  Widget build(final BuildContext context) => Column(
+  Widget build(BuildContext context) => Column(
     mainAxisSize: MainAxisSize.min,
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
@@ -87,7 +87,7 @@ class _UTextFieldState extends State<UTextField> {
       TextFormField(
         autofillHints: widget.autoFillHints,
         textDirection: widget.keyboardType == TextInputType.number ? TextDirection.ltr : null,
-        inputFormatters: widget.formatters,
+        inputFormatters: widget.formatters ?? (widget.keyboardType == TextInputType.number || widget.keyboardType == TextInputType.phone ? <TextInputFormatter>[UNumberInputFormatter()] : null),
         style: TextStyle(fontSize: widget.fontSize, color: widget.textColor),
         maxLength: widget.maxLength,
         onChanged: widget.onChanged,
@@ -108,7 +108,7 @@ class _UTextFieldState extends State<UTextField> {
           isDense: widget.isDense,
           helperStyle: const TextStyle(fontSize: 0),
           hintText: widget.hintText,
-          contentPadding: widget.contentPadding ?? const EdgeInsets.fromLTRB(10, 0, 10, 0),
+          contentPadding: widget.contentPadding ?? (widget.lines > 1 ? const EdgeInsets.symmetric(vertical: 20, horizontal: 12) : const EdgeInsets.symmetric(vertical: 2, horizontal: 12)),
           suffixIcon: widget.obscureText
               ? IconButton(
                   splashRadius: 1,
@@ -369,7 +369,7 @@ class _UTextFieldAutoCompleteState<T> extends State<UTextFieldAutoComplete<T>> {
             children: <Widget>[
               UTextField(
                 hintText: U.s.search,
-                onChanged: (final String? i) => filteredItems(
+                onChanged: (String? i) => filteredItems(
                   widget.items.where((T item) => widget.labelBuilder(item).toLowerCase().contains(i!.toLowerCase())).toList(),
                 ),
               ),

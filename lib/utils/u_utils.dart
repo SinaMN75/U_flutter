@@ -18,7 +18,7 @@ abstract class UUUID {
 }
 
 abstract class UValidators {
-  static void validateForm({required final GlobalKey<FormState> key, required final VoidCallback action}) {
+  static void validateForm({required GlobalKey<FormState> key, required VoidCallback action}) {
     if (key.currentState!.validate()) action();
   }
 
@@ -214,7 +214,7 @@ abstract class UValidators {
   ]);
 }
 
-Future<void> delay(final int milliseconds, final VoidCallback action) async => Future<dynamic>.delayed(
+Future<void> delay(int milliseconds, VoidCallback action) async => Future<dynamic>.delayed(
   Duration(milliseconds: milliseconds),
   () async => action(),
 );

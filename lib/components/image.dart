@@ -26,13 +26,13 @@ class UImage extends StatelessWidget {
   final BoxBorder? border;
 
   @override
-  Widget build(final BuildContext context) => DecoratedBox(
+  Widget build(BuildContext context) => DecoratedBox(
     decoration: BoxDecoration(
       border: border,
       borderRadius: BorderRadius.circular(borderRadius),
     ),
     child: Builder(
-      builder: (final BuildContext context) {
+      builder: (BuildContext context) {
         if (fileData != null) {
           if (fileData?.bytes != null) {
             return UImageMemory(
@@ -121,7 +121,7 @@ class UIconPrimary extends StatelessWidget {
   final String? placeholder;
 
   @override
-  Widget build(final BuildContext context) => UImage(
+  Widget build(BuildContext context) => UImage(
     source,
     color: color ?? Theme.of(navigatorKey.currentContext!).colorScheme.primary,
     width: width,
@@ -155,7 +155,7 @@ class UImageAsset extends StatelessWidget {
   final double borderRadius;
 
   @override
-  Widget build(final BuildContext context) => path.endsWith("svg")
+  Widget build(BuildContext context) => path.endsWith("svg")
       ? SvgPicture.asset(
           path,
           width: width,
@@ -219,8 +219,8 @@ class UImageNetwork extends StatelessWidget {
   final String? placeholder;
 
   @override
-  Widget build(final BuildContext context) => Builder(
-    builder: (final BuildContext context) => url.length <= 10
+  Widget build(BuildContext context) => Builder(
+    builder: (BuildContext context) => url.length <= 10
         ? placeholder == null
               ? SizedBox(width: width, height: height)
               : UImageAsset(
@@ -240,7 +240,7 @@ class UImageNetwork extends StatelessWidget {
             fit: fit,
             placeholderBuilder: placeholder == null
                 ? null
-                : (final _) => UImageAsset(
+                : (_) => UImageAsset(
                     placeholder!,
                     width: width,
                     height: height,
@@ -295,7 +295,7 @@ class UImageFile extends StatelessWidget {
   final double borderRadius;
 
   @override
-  Widget build(final BuildContext context) {
+  Widget build(BuildContext context) {
     final double dpr = MediaQuery.maybeDevicePixelRatioOf(context) ?? 1.0;
     return Image.file(
       file,
@@ -330,7 +330,7 @@ class UImageMemory extends StatelessWidget {
   final String? placeholder;
 
   @override
-  Widget build(final BuildContext context) {
+  Widget build(BuildContext context) {
     final double dpr = MediaQuery.maybeDevicePixelRatioOf(context) ?? 1.0;
     return Image.memory(
       file,

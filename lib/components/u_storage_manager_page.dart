@@ -59,14 +59,14 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
     _binaryFiles = UFileStorage.allFilesStorageInfo();
   }
 
-  Future<void> _deleteLocal(final _LocalEntry entry) async {
+  Future<void> _deleteLocal(_LocalEntry entry) async {
     if (!await UNavigator.confirmAsync(title: U.s.delete, message: U.s.deleteEntryConfirm, destructive: true)) return;
     await ULocalStorage.remove(entry.key);
     if (entry.expiry != null) await ULocalStorage.remove("_expiry_${entry.key}");
     await _loadAll();
   }
 
-  Future<void> _deleteFile(final String key) async {
+  Future<void> _deleteFile(String key) async {
     if (!await UNavigator.confirmAsync(title: U.s.delete, message: U.s.deleteEntryConfirm, destructive: true)) return;
     await UFileStorage.remove(key);
     await _loadAll();
@@ -84,13 +84,13 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
     await _loadAll();
   }
 
-  void _copy(final String value) {
+  void _copy(String value) {
     UClipboard.set(value);
     UToast.snackBar(message: U.s.copiedToClipboard);
   }
 
   @override
-  Widget build(final BuildContext context) {
+  Widget build(BuildContext context) {
     final ColorScheme cs = Theme.of(context).colorScheme;
     return DefaultTabController(
       length: 2,
@@ -117,7 +117,7 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
     );
   }
 
-  Widget _localTab(final ColorScheme cs) {
+  Widget _localTab(ColorScheme cs) {
     if (_localEntries.isEmpty) return UEmptyState(title: U.s.noData);
     return UColumn(
       spacing: 0,
@@ -127,13 +127,13 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
         UListView(
           padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
           itemCount: _localEntries.length,
-          itemBuilder: (final BuildContext context, final int i) => _localCard(cs, _localEntries[i]),
+          itemBuilder: (BuildContext context, int i) => _localCard(cs, _localEntries[i]),
         ).expanded(),
       ],
     );
   }
 
-  Widget _filesTab(final ColorScheme cs) {
+  Widget _filesTab(ColorScheme cs) {
     if (kIsWeb) return UEmptyState(title: U.s.noData);
     if (_textFiles.isEmpty && _binaryFiles.isEmpty) return UEmptyState(title: U.s.noData);
     final List<MapEntry<String, int>> binaries = _binaryFiles.entries.toList()..sort((MapEntry<String, int> a, MapEntry<String, int> b) => a.key.compareTo(b.key));
@@ -164,7 +164,7 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
     );
   }
 
-  Widget _summaryBar(final ColorScheme cs, final String label, {final VoidCallback? onClear}) => Padding(
+  Widget _summaryBar(ColorScheme cs, String label, {VoidCallback? onClear}) => Padding(
     padding: const EdgeInsets.fromLTRB(16, 12, 8, 4),
     child: URow(
       children: <Widget>[
@@ -180,7 +180,7 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
     ),
   );
 
-  Widget _sectionLabel(final ColorScheme cs, final String title, final IconData icon) => Padding(
+  Widget _sectionLabel(ColorScheme cs, String title, IconData icon) => Padding(
     padding: const EdgeInsets.only(top: 8, bottom: 2),
     child: URow(
       children: <Widget>[
@@ -190,7 +190,7 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
     ),
   );
 
-  Widget _localCard(final ColorScheme cs, final _LocalEntry entry) => UContainer(
+  Widget _localCard(ColorScheme cs, _LocalEntry entry) => UContainer(
     margin: const EdgeInsets.only(top: 10),
     padding: const EdgeInsets.all(14),
     radius: 16,
@@ -223,7 +223,7 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
     ),
   );
 
-  Widget _textFileCard(final ColorScheme cs, final _TextFile f) => UContainer(
+  Widget _textFileCard(ColorScheme cs, _TextFile f) => UContainer(
     padding: const EdgeInsets.all(14),
     radius: 16,
     color: cs.surface,
@@ -247,7 +247,7 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
     ),
   );
 
-  Widget _binaryFileCard(final ColorScheme cs, final String key, final int size) => UContainer(
+  Widget _binaryFileCard(ColorScheme cs, String key, int size) => UContainer(
     padding: const EdgeInsets.all(14),
     radius: 16,
     color: cs.surface,
@@ -280,7 +280,7 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
     ),
   );
 
-  Widget _cardActions(final ColorScheme cs, {required final VoidCallback onDelete, final VoidCallback? onCopy}) => URow(
+  Widget _cardActions(ColorScheme cs, {required VoidCallback onDelete, VoidCallback? onCopy}) => URow(
     spacing: 0,
     mainAxisSize: MainAxisSize.min,
     children: <Widget>[
@@ -300,14 +300,14 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
     ],
   );
 
-  Widget _typeChip(final ColorScheme cs, final String label) => UContainer(
+  Widget _typeChip(ColorScheme cs, String label) => UContainer(
     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
     radius: 20,
     color: cs.primary.withValues(alpha: 0.14),
     child: UTextBodySmall(label, color: cs.primary, fontWeight: FontWeight.w600),
   );
 
-  Widget _valueBlock(final ColorScheme cs, final String value) => UContainer(
+  Widget _valueBlock(ColorScheme cs, String value) => UContainer(
     width: double.infinity,
     padding: const EdgeInsets.all(12),
     radius: 8,
@@ -319,7 +319,7 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
     ).ltr(),
   );
 
-  String _typeLabel(final dynamic value) => switch (value) {
+  String _typeLabel(dynamic value) => switch (value) {
     String() => "String",
     bool() => "bool",
     int() => "int",
@@ -328,9 +328,9 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
     _ => value.runtimeType.toString(),
   };
 
-  String _valueString(final dynamic value) => value is List<String> ? value.join(", ") : value.toString();
+  String _valueString(dynamic value) => value is List<String> ? value.join(", ") : value.toString();
 
-  String _formatBytes(final int bytes) {
+  String _formatBytes(int bytes) {
     if (bytes < 1024) return "$bytes B";
     if (bytes < 1024 * 1024) return "${(bytes / 1024).toStringAsFixed(1)} KB";
     return "${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB";
