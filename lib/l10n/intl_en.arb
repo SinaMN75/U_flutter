@@ -599,7 +599,6 @@
   "links": "Links",
   "addLink": "Add Link",
   "richTextEditor": "Rich Text Editor",
-  "bold": "Bold",
   "italic": "Italic",
   "underline": "Underline",
   "strikethrough": "Strikethrough",
@@ -1055,5 +1054,8 @@
   "cornerRadius": "Corner radius",
   "auto": "Auto",
   "remove": "Remove",
-  "color": "Color"
+  "color": "Color",
+  "bold": "Bold",
+  "textSize": "Text size",
+  "textSpacing": "Text spacing"
 }

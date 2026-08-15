@@ -158,7 +158,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "birthdate": MessageLookupByLibrary.simpleMessage("تاریخ تولد"),
     "blog": MessageLookupByLibrary.simpleMessage("وبلاگ"),
     "blogs": MessageLookupByLibrary.simpleMessage("وبلاگ‌ها"),
-    "bold": MessageLookupByLibrary.simpleMessage("پررنگ"),
+    "bold": MessageLookupByLibrary.simpleMessage("درشت"),
     "brightness": MessageLookupByLibrary.simpleMessage("روشنایی"),
     "bulkImport": MessageLookupByLibrary.simpleMessage("افزودن گروهی"),
     "bulkImportTerminals": MessageLookupByLibrary.simpleMessage(
@@ -1351,6 +1351,8 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "textColor": MessageLookupByLibrary.simpleMessage("رنگ متن"),
     "textFiles": MessageLookupByLibrary.simpleMessage("فایل‌های متنی"),
+    "textSize": MessageLookupByLibrary.simpleMessage("اندازه متن"),
+    "textSpacing": MessageLookupByLibrary.simpleMessage("فاصله متن"),
     "theEnteredNationalCodeIsIncorrect": MessageLookupByLibrary.simpleMessage(
       "کد ملی وارد شده صحیح نیست.",
     ),

@@ -4544,11 +4544,6 @@ class S {
     );
   }
 
-  /// `Bold`
-  String get bold {
-    return Intl.message('Bold', name: 'bold', desc: '', args: []);
-  }
-
   /// `Italic`
   String get italic {
     return Intl.message('Italic', name: 'italic', desc: '', args: []);
@@ -8117,6 +8112,26 @@ class S {
   /// `Color`
   String get color {
     return Intl.message('Color', name: 'color', desc: '', args: []);
+  }
+
+  /// `Bold`
+  String get bold {
+    return Intl.message('Bold', name: 'bold', desc: '', args: []);
+  }
+
+  /// `Text size`
+  String get textSize {
+    return Intl.message('Text size', name: 'textSize', desc: '', args: []);
+  }
+
+  /// `Text spacing`
+  String get textSpacing {
+    return Intl.message(
+      'Text spacing',
+      name: 'textSpacing',
+      desc: '',
+      args: [],
+    );
   }
 }
 

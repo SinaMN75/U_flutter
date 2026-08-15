@@ -1381,6 +1381,8 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "textColor": MessageLookupByLibrary.simpleMessage("Text Color"),
     "textFiles": MessageLookupByLibrary.simpleMessage("Text files"),
+    "textSize": MessageLookupByLibrary.simpleMessage("Text size"),
+    "textSpacing": MessageLookupByLibrary.simpleMessage("Text spacing"),
     "theEnteredNationalCodeIsIncorrect": MessageLookupByLibrary.simpleMessage(
       "The entered national code is incorrect.",
     ),

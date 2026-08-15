@@ -28,6 +28,14 @@ class _UAdminBarcodeGeneratorPageState extends State<UAdminBarcodeGeneratorPage>
   double _size = 280;
   bool _busy = false;
 
+  Alignment _gradientBeginAlign = Alignment.centerLeft;
+  Alignment _gradientEndAlign = Alignment.centerRight;
+
+  Color _textColor = const Color(0xFF000000);
+  double _textSize = 14;
+  double _textSpacing = 8;
+  bool _textBold = false;
+
   static const List<Color> _palette = <Color>[
     Color(0xFF000000),
     Color(0xFFFFFFFF),
@@ -164,10 +172,14 @@ class _UAdminBarcodeGeneratorPageState extends State<UAdminBarcodeGeneratorPage>
             barColor: _barColor,
             backgroundColor: _bgColor,
             gradientColors: _useGradient ? <Color>[_gradientStart, _gradientEnd] : null,
+            gradientBegin: _gradientBeginAlign,
+            gradientEnd: _gradientEndAlign,
             moduleShape: _shape,
             cornerRadiusRatio: _cornerRadius,
             quietZone: _quietZone,
             showValue: _showValue,
+            textSpacing: _textSpacing,
+            textStyle: TextStyle(color: _textColor, fontSize: _textSize, fontWeight: _textBold ? FontWeight.bold : FontWeight.normal),
             errorCorrectionLevel: _ecc,
             qrCodeVersion: _qrVersion > 0 ? _qrVersion : null,
             logoBytes: _is2d ? _logo : null,
@@ -209,6 +221,16 @@ class _UAdminBarcodeGeneratorPageState extends State<UAdminBarcodeGeneratorPage>
     if (_useGradient) ...<Widget>[
       _swatchLabel("${U.s.gradient} 1", _gradientStart, (Color c) => setState(() => _gradientStart = c)),
       _swatchLabel("${U.s.gradient} 2", _gradientEnd, (Color c) => setState(() => _gradientEnd = c)),
+      Wrap(
+        spacing: 10,
+        runSpacing: 10,
+        children: <Widget>[
+          _dirChip(cs, "→", Alignment.centerLeft, Alignment.centerRight),
+          _dirChip(cs, "↓", Alignment.topCenter, Alignment.bottomCenter),
+          _dirChip(cs, "↘", Alignment.topLeft, Alignment.bottomRight),
+          _dirChip(cs, "↙", Alignment.topRight, Alignment.bottomLeft),
+        ],
+      ),
     ],
     _slider("${U.s.quietZone}: ${_quietZone.round()}", _quietZone, 0, 40, (double v) => setState(() => _quietZone = v)),
     _slider("${U.s.size}: ${_size.round()}", _size, 160, 360, (double v) => setState(() => _size = v)),
@@ -256,6 +278,17 @@ class _UAdminBarcodeGeneratorPageState extends State<UAdminBarcodeGeneratorPage>
       value: _showValue,
       onChanged: (bool v) => setState(() => _showValue = v),
     ),
+    if (_showValue) ...<Widget>[
+      _swatchLabel(U.s.color, _textColor, (Color c) => setState(() => _textColor = c)),
+      SwitchListTile(
+        contentPadding: EdgeInsets.zero,
+        title: UTextBodyMedium(U.s.bold),
+        value: _textBold,
+        onChanged: (bool v) => setState(() => _textBold = v),
+      ),
+      _slider("${U.s.textSize}: ${_textSize.round()}", _textSize, 8, 32, (double v) => setState(() => _textSize = v)),
+      _slider("${U.s.textSpacing}: ${_textSpacing.round()}", _textSpacing, 0, 40, (double v) => setState(() => _textSpacing = v)),
+    ],
   ]);
 
   Widget _card(ColorScheme cs, IconData icon, String title, List<Widget> children) => UCard(
@@ -296,6 +329,14 @@ class _UAdminBarcodeGeneratorPageState extends State<UAdminBarcodeGeneratorPage>
       .pSymmetric(horizontal: 14, vertical: 9)
       .container(backgroundColor: active ? cs.primary : cs.surfaceContainerHighest.withValues(alpha: 0.5), radius: 12, borderColor: active ? cs.primary : cs.outlineVariant)
       .onTap(onTap);
+
+  Widget _dirChip(ColorScheme cs, String label, Alignment begin, Alignment end) {
+    final bool active = _gradientBeginAlign == begin && _gradientEndAlign == end;
+    return _chip(cs, label, active, () => setState(() {
+      _gradientBeginAlign = begin;
+      _gradientEndAlign = end;
+    }));
+  }
 
   Widget _slider(String label, double value, double min, double max, ValueChanged<double> onChanged) => UColumn(
     crossAxisAlignment: CrossAxisAlignment.start,

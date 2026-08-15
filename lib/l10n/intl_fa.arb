@@ -599,7 +599,6 @@
   "links": "لینک‌ها",
   "addLink": "افزودن لینک",
   "richTextEditor": "ویرایشگر متن",
-  "bold": "پررنگ",
   "italic": "کج",
   "underline": "زیرخط",
   "strikethrough": "خط‌خورده",
@@ -1055,5 +1054,8 @@
   "cornerRadius": "شعاع گوشه",
   "auto": "خودکار",
   "remove": "حذف",
-  "color": "رنگ"
+  "color": "رنگ",
+  "bold": "درشت",
+  "textSize": "اندازه متن",
+  "textSpacing": "فاصله متن"
 }

@@ -11583,6 +11583,8 @@ class UBarcode extends StatefulWidget {
     this.barColor,
     this.backgroundColor,
     this.gradientColors,
+    this.gradientBegin = Alignment.centerLeft,
+    this.gradientEnd = Alignment.centerRight,
     this.moduleShape = UBarcodeModuleShape.square,
     this.cornerRadiusRatio = 0.3,
     this.showValue = false,
@@ -11605,6 +11607,8 @@ class UBarcode extends StatefulWidget {
   final Color? barColor;
   final Color? backgroundColor;
   final List<Color>? gradientColors;
+  final AlignmentGeometry gradientBegin;
+  final AlignmentGeometry gradientEnd;
   final UBarcodeModuleShape moduleShape;
   final double cornerRadiusRatio;
   final bool showValue;
@@ -11631,6 +11635,8 @@ class UBarcode extends StatefulWidget {
     Color barColor = const Color(0xFF000000),
     Color background = const Color(0xFFFFFFFF),
     List<Color>? gradientColors,
+    AlignmentGeometry gradientBegin = Alignment.centerLeft,
+    AlignmentGeometry gradientEnd = Alignment.centerRight,
     UBarcodeModuleShape moduleShape = UBarcodeModuleShape.square,
     double cornerRadiusRatio = 0.3,
     bool showValue = false,
@@ -11646,7 +11652,7 @@ class UBarcode extends StatefulWidget {
       drawText: showValue,
       foreground: barColor,
       background: background,
-      gradient: gradientColors != null && gradientColors.length >= 2 ? LinearGradient(colors: gradientColors) : null,
+      gradient: gradientColors != null && gradientColors.length >= 2 ? LinearGradient(colors: gradientColors, begin: gradientBegin, end: gradientEnd) : null,
       moduleShape: moduleShape,
       cornerRadiusRatio: cornerRadiusRatio,
       quietZone: quietZone,
@@ -11733,7 +11739,7 @@ class _UBarcodeState extends State<UBarcode> {
           drawText: widget.showValue,
           foreground: foreground,
           background: widget.backgroundColor,
-          gradient: widget.gradientColors != null && widget.gradientColors!.length >= 2 ? LinearGradient(colors: widget.gradientColors!) : null,
+          gradient: widget.gradientColors != null && widget.gradientColors!.length >= 2 ? LinearGradient(colors: widget.gradientColors!, begin: widget.gradientBegin, end: widget.gradientEnd) : null,
           moduleShape: widget.moduleShape,
           cornerRadiusRatio: widget.cornerRadiusRatio,
           quietZone: widget.quietZone,
