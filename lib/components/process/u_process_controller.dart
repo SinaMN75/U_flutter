@@ -1,23 +1,18 @@
 part of "u_process.dart";
 
-/// Drives a server-defined multi-step process: loads the current step, holds an
-/// editable copy of its fields, and submits them. App-agnostic — when the
-/// backend reports the process is finished it calls [onCompleted]; if none was
-/// supplied it simply closes the current screen ([UNavigator.back]).
 class UProcessController {
   UProcessController({this.onCompleted});
 
-  /// Invoked when the backend reports the whole process is complete. When null,
-  /// the process screen is popped so any process is reusable with zero config.
   final VoidCallback? onCompleted;
 
-  // Single place that decides the "process finished" behavior.
   void _complete() {
     if (onCompleted != null)
       onCompleted!();
     else
-      UNavigator.back();
+      dismiss();
   }
+
+  void dismiss() => UNavigator.back();
 
   late String processId;
 
@@ -35,7 +30,6 @@ class UProcessController {
     UServices.process.get(
       processId: processId,
       onOk: (UResponse<UProcessStepGet> response) {
-        // Backend signals the process is done -> hand control back to the host.
         if (response.status == Usc.processCompleted.number)
           _complete();
         else {
@@ -57,7 +51,6 @@ class UProcessController {
       p: processStepSend,
       onOk: (UResponse<UProcessStepGet> response) {
         ULoading.dismiss();
-        // A submit can also finish the process; guard against a null next step.
         if (response.status == Usc.processCompleted.number || response.result == null) {
           _complete();
           return;
@@ -77,7 +70,6 @@ class UProcessController {
 
   void _applyStep(UProcessStepGet step) {
     processStep(step);
-    // Rebuild an independent send payload so edits never mutate the fetched step.
     processStepSend = UProcessStepSend(
       processId: processId,
       stepId: step.id,
