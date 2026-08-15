@@ -103,21 +103,25 @@ abstract class UFile {
   }) async {
     try {
       final FileType type = allowedExtensions != null && allowedExtensions.isNotEmpty ? FileType.custom : (fileType == FileType.custom ? FileType.any : fileType);
-      final FilePickerResult? result = await FilePicker.pickFiles(
-        type: type,
-        allowMultiple: allowMultiple,
-        allowedExtensions: type == FileType.custom ? allowedExtensions : null,
-        withData: kIsWeb,
-      );
-
-      if (result == null) {
-        action?.call(<FileData>[]);
-        return <FileData>[];
+      if (allowMultiple) {
+        final List<PlatformFile> list = await FilePicker.pickFiles(type: type, allowedExtensions: allowedExtensions);
+        if (list.isNullOrEmpty()) {
+          action?.call(<FileData>[]);
+          return <FileData>[];
+        }
+        final List<FileData> files = await _collect(list.map(_fromPlatformFile), crop);
+        action?.call(files);
+        return files;
+      } else {
+        final PlatformFile? platformFile = await FilePicker.pickFile(type: type, allowedExtensions: allowedExtensions);
+        if (platformFile == null) {
+          action?.call(<FileData>[]);
+          return <FileData>[];
+        }
+        final List<FileData> files = await _collect(<Future<FileData>>[_fromPlatformFile(platformFile)], crop);
+        action?.call(files);
+        return files;
       }
-
-      final List<FileData> files = await _collect(result.files.map(_fromPlatformFile), crop);
-      action?.call(files);
-      return files;
     } catch (e) {
       action?.call(<FileData>[]);
       return <FileData>[];
@@ -188,7 +192,7 @@ abstract class UFile {
 
   static Future<FileData> _fromPlatformFile(PlatformFile file) async {
     final Uint8List bytes = await file.readAsBytes();
-    return FileData(bytes: bytes, path: kIsWeb ? null : file.path, extension: (file.extension ?? _extensionOf(file.name)).toLowerCase());
+    return FileData(bytes: bytes, path: kIsWeb ? null : file.path, extension: (file.xFile.mimeType ?? _extensionOf(file.name)).toLowerCase());
   }
 
   static Future<String?> _persistTemp(Uint8List bytes, String extension) async {
