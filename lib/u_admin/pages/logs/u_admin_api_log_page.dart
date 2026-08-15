@@ -307,29 +307,18 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
     ),
     child: (c.stats.value?.timeline.isEmpty ?? true)
         ? Center(child: UTextBodyMedium(U.s.noData))
-        : SfCartesianChart(
-            primaryXAxis: const DateTimeAxis(),
-            legend: const Legend(isVisible: true, position: LegendPosition.bottom),
-            tooltipBehavior: TooltipBehavior(enable: true),
-            series: <CartesianSeries<UApiLogBucketResponse, DateTime>>[
-              SplineAreaSeries<UApiLogBucketResponse, DateTime>(
-                name: U.s.count,
-                dataSource: c.stats.value!.timeline,
-                xValueMapper: (UApiLogBucketResponse b, _) => b.time,
-                yValueMapper: (UApiLogBucketResponse b, _) => b.count,
-                color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.35),
-                borderColor: Theme.of(context).colorScheme.primary,
-              ),
-              LineSeries<UApiLogBucketResponse, DateTime>(
-                name: U.s.errors,
-                dataSource: c.stats.value!.timeline,
-                xValueMapper: (UApiLogBucketResponse b, _) => b.time,
-                yValueMapper: (UApiLogBucketResponse b, _) => b.errorCount,
-                color: UAdminTheme.red,
-              ),
+        : ULineChart(
+            smooth: true,
+            showDots: false,
+            categories: c.stats.value!.timeline.map((UApiLogBucketResponse b) => _bucketLabel(b.time)).toList(),
+            series: <UChartSeries>[
+              UChartSeries(name: U.s.count, color: Theme.of(context).colorScheme.primary, filled: true, values: c.stats.value!.timeline.map((UApiLogBucketResponse b) => b.count.toDouble()).toList()),
+              UChartSeries(name: U.s.errors, color: UAdminTheme.red, values: c.stats.value!.timeline.map((UApiLogBucketResponse b) => b.errorCount.toDouble()).toList()),
             ],
           ),
   );
+
+  String _bucketLabel(DateTime t) => c.bucket.value == "day" ? "${t.month}/${t.day}" : "${t.hour.toString().padLeft(2, "0")}:${t.minute.toString().padLeft(2, "0")}";
 
   Widget _bucketButton(String value, String label) => Obx(
     () => TextButton(
@@ -343,20 +332,10 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
     title: U.s.successErrorDistribution,
     child: (c.stats.value?.totalCount ?? 0) == 0
         ? Center(child: UTextBodyMedium(U.s.noData))
-        : SfCircularChart(
-            legend: const Legend(isVisible: true, position: LegendPosition.bottom),
-            tooltipBehavior: TooltipBehavior(enable: true),
-            series: <CircularSeries<_StatusSlice, String>>[
-              DoughnutSeries<_StatusSlice, String>(
-                dataSource: <_StatusSlice>[
-                  _StatusSlice(U.s.success, c.stats.value!.successCount, UAdminTheme.green),
-                  _StatusSlice(U.s.errors, c.stats.value!.errorCount, UAdminTheme.red),
-                ],
-                xValueMapper: (_StatusSlice s, _) => s.label,
-                yValueMapper: (_StatusSlice s, _) => s.count,
-                pointColorMapper: (_StatusSlice s, _) => s.color,
-                dataLabelSettings: const DataLabelSettings(isVisible: true),
-              ),
+        : UDonutChart(
+            slices: <USlice>[
+              USlice(value: c.stats.value!.successCount.toDouble(), label: U.s.success, color: UAdminTheme.green),
+              USlice(value: c.stats.value!.errorCount.toDouble(), label: U.s.errors, color: UAdminTheme.red),
             ],
           ),
   );
@@ -408,19 +387,9 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
     title: title,
     child: items.isEmpty
         ? Center(child: UTextBodyMedium(U.s.noData))
-        : SfCartesianChart(
-            primaryXAxis: const CategoryAxis(),
-            tooltipBehavior: TooltipBehavior(enable: true),
-            series: <CartesianSeries<UApiLogEndpointResponse, String>>[
-              BarSeries<UApiLogEndpointResponse, String>(
-                dataSource: items,
-                xValueMapper: (UApiLogEndpointResponse e, _) => e.path.subStringIfExist(0, 32),
-                yValueMapper: (UApiLogEndpointResponse e, _) => e.averageDurationMs,
-                color: color,
-                dataLabelSettings: const DataLabelSettings(isVisible: true),
-                borderRadius: const BorderRadius.horizontal(right: Radius.circular(6)),
-              ),
-            ],
+        : UHorizontalBarChart(
+            categories: items.map((UApiLogEndpointResponse e) => e.path.subStringIfExist(0, 32)).toList(),
+            series: <UChartSeries>[UChartSeries(color: color, values: items.map((UApiLogEndpointResponse e) => e.averageDurationMs.toDouble()).toList())],
           ),
   );
 
@@ -771,14 +740,6 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
       ),
     );
   });
-}
-
-class _StatusSlice {
-  _StatusSlice(this.label, this.count, this.color);
-
-  final String label;
-  final int count;
-  final Color color;
 }
 
 class _ApiLogDetailView extends StatelessWidget {

@@ -21,11 +21,15 @@ export "package:flutter_localizations/flutter_localizations.dart";
 export "package:flutter_map/flutter_map.dart";
 export "package:flutter_svg/flutter_svg.dart";
 export "package:geolocator/geolocator.dart";
+
 export "utils/u_rx.dart";
 export "utils/u_app_state.dart";
+
 export "package:http/http.dart";
 export "package:http_parser/http_parser.dart";
+
 export "components/u_image_cropper.dart";
+
 export "package:image_picker/image_picker.dart";
 export "package:latlong2/latlong.dart" hide Path, pi;
 export "package:logging/logging.dart";
@@ -35,7 +39,6 @@ export "package:package_info_plus/package_info_plus.dart";
 export "package:path_provider/path_provider.dart";
 export "package:share_plus/share_plus.dart";
 export "package:shared_preferences/shared_preferences.dart";
-export "package:syncfusion_flutter_charts/charts.dart" hide AnimationType, Position;
 export "package:syncfusion_flutter_pdfviewer/pdfviewer.dart";
 export "package:u/utilities.dart";
 export "package:url_launcher/url_launcher.dart";
@@ -44,14 +47,14 @@ export "package:webview_all/webview_all.dart" hide X509Certificate;
 
 export "components/u_signature_pad.dart";
 export "components/badges.dart";
-export "components/u_barcode.dart" show UBarcode, UBarcodeType, UErrorCorrectionLevel, UBarcodeModuleShape, UBarcodeExamples;
-export "components/chart.dart";
+export "components/u_barcode.dart" show UBarcode, UBarcodeType, UErrorCorrectionLevel, UBarcodeModuleShape;
 export "components/chip_choice.dart";
 export "components/container.dart";
 export "components/count_down_timer.dart";
 export "components/file_picker.dart";
 export "components/flip_card.dart";
-export "components/gauge.dart";
+export "charts/u_charts.dart";
+export "gauges/u_gauges.dart";
 export "components/image.dart";
 export "components/json_viewer.dart";
 export "components/map.dart";
@@ -156,4 +159,3 @@ export "utils/web/u_pwa.dart";
 export "utils/web/u_web_message.dart";
 
 export "plugins/screen_guard.dart";
-

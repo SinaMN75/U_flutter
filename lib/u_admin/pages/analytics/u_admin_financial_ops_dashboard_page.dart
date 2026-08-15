@@ -130,28 +130,11 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
     if (r.dailyTimeline.isEmpty) return _chartCard(title: U.s.dailyInOut, child: UTextBodySmall(U.s.noData).alignAtCenter());
     return _chartCard(
       title: U.s.dailyInOut,
-      child: SfCartesianChart(
-        legend: const Legend(isVisible: true, overflowMode: LegendItemOverflowMode.wrap),
-        tooltipBehavior: TooltipBehavior(enable: true),
-        primaryXAxis: const CategoryAxis(majorGridLines: MajorGridLines(width: 0)),
-        primaryYAxis: const NumericAxis(isVisible: false),
-        series: <CartesianSeries<UAccountingTimelineItem, String>>[
-          SplineAreaSeries<UAccountingTimelineItem, String>(
-            dataSource: r.dailyTimeline,
-            name: U.s.moneyIn,
-            xValueMapper: (UAccountingTimelineItem d, _) => d.date.toJalaliDate(),
-            yValueMapper: (UAccountingTimelineItem d, _) => d.inAmount,
-            color: UAdminTheme.green.withValues(alpha: 0.35),
-            borderColor: UAdminTheme.green,
-          ),
-          SplineAreaSeries<UAccountingTimelineItem, String>(
-            dataSource: r.dailyTimeline,
-            name: U.s.moneyOut,
-            xValueMapper: (UAccountingTimelineItem d, _) => d.date.toJalaliDate(),
-            yValueMapper: (UAccountingTimelineItem d, _) => d.outAmount,
-            color: UAdminTheme.red.withValues(alpha: 0.30),
-            borderColor: UAdminTheme.red,
-          ),
+      child: UAreaChart(
+        categories: r.dailyTimeline.map((UAccountingTimelineItem d) => d.date.toJalaliDate()).toList(),
+        series: <UChartSeries>[
+          UChartSeries(name: U.s.moneyIn, color: UAdminTheme.green, values: r.dailyTimeline.map((UAccountingTimelineItem d) => d.inAmount.toDouble()).toList()),
+          UChartSeries(name: U.s.moneyOut, color: UAdminTheme.red, values: r.dailyTimeline.map((UAccountingTimelineItem d) => d.outAmount.toDouble()).toList()),
         ],
       ),
     );
@@ -166,19 +149,12 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
     ];
     return _chartCard(
       title: U.s.entityOverview,
-      child: SfCartesianChart(
-        tooltipBehavior: TooltipBehavior(enable: true),
-        primaryXAxis: const CategoryAxis(majorGridLines: MajorGridLines(width: 0)),
-        primaryYAxis: const NumericAxis(isVisible: false),
-        series: <CartesianSeries<_Bar, String>>[
-          ColumnSeries<_Bar, String>(
-            dataSource: data,
-            xValueMapper: (_Bar d, _) => d.label,
-            yValueMapper: (_Bar d, _) => d.value,
-            pointColorMapper: (_Bar d, _) => d.color,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
-            dataLabelSettings: const DataLabelSettings(isVisible: true),
-            width: 0.6,
+      child: UBarChart(
+        categories: data.map((_Bar d) => d.label).toList(),
+        series: <UChartSeries>[
+          UChartSeries(
+            values: data.map((_Bar d) => d.value.toDouble()).toList(),
+            pointColors: data.map((_Bar d) => d.color).toList(),
           ),
         ],
       ),
@@ -211,20 +187,8 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
     title: title,
     child: items.isEmpty
         ? UTextBodySmall(U.s.noData).alignAtCenter()
-        : SfCircularChart(
-            legend: const Legend(isVisible: true, overflowMode: LegendItemOverflowMode.wrap, position: LegendPosition.bottom),
-            tooltipBehavior: TooltipBehavior(enable: true),
-            series: <CircularSeries<UAccountingBreakdownItem, String>>[
-              DoughnutSeries<UAccountingBreakdownItem, String>(
-                dataSource: items,
-                xValueMapper: (UAccountingBreakdownItem d, _) => d.tagName,
-                yValueMapper: (UAccountingBreakdownItem d, _) => d.amount,
-                innerRadius: "62%",
-                explode: true,
-                explodeOffset: "4%",
-                dataLabelSettings: const DataLabelSettings(isVisible: true),
-              ),
-            ],
+        : UDonutChart(
+            slices: items.map((UAccountingBreakdownItem d) => USlice(value: d.amount.toDouble(), label: d.tagName)).toList(),
           ),
   );
 
@@ -232,17 +196,8 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
     title: title,
     child: items.isEmpty
         ? UTextBodySmall(U.s.noData).alignAtCenter()
-        : SfCircularChart(
-            legend: const Legend(isVisible: true, overflowMode: LegendItemOverflowMode.wrap, position: LegendPosition.bottom),
-            tooltipBehavior: TooltipBehavior(enable: true),
-            series: <CircularSeries<UAccountingBreakdownItem, String>>[
-              PieSeries<UAccountingBreakdownItem, String>(
-                dataSource: items,
-                xValueMapper: (UAccountingBreakdownItem d, _) => d.tagName,
-                yValueMapper: (UAccountingBreakdownItem d, _) => d.count,
-                dataLabelSettings: const DataLabelSettings(isVisible: true),
-              ),
-            ],
+        : UPieChart(
+            slices: items.map((UAccountingBreakdownItem d) => USlice(value: d.count.toDouble(), label: d.tagName)).toList(),
           ),
   );
 

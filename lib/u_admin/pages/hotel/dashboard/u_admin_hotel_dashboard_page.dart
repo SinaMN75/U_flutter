@@ -139,33 +139,12 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
     if (r.monthlyRevenue.isEmpty) return _chartCard(title: U.s.monthlyRevenue, child: UTextBodySmall(U.s.noData).alignAtCenter());
     return _chartCard(
       title: U.s.monthlyRevenueBreakdown,
-      child: SfCartesianChart(
-        legend: const Legend(isVisible: true, overflowMode: LegendItemOverflowMode.wrap),
-        tooltipBehavior: TooltipBehavior(enable: true),
-        primaryXAxis: const CategoryAxis(majorGridLines: MajorGridLines(width: 0)),
-        primaryYAxis: const NumericAxis(isVisible: false),
-        series: <CartesianSeries<UDormBedInvoiceChartItem, String>>[
-          ColumnSeries<UDormBedInvoiceChartItem, String>(
-            dataSource: r.monthlyRevenue,
-            name: U.s.debt,
-            xValueMapper: (UDormBedInvoiceChartItem d, _) => d.month,
-            yValueMapper: (UDormBedInvoiceChartItem d, _) => d.totalDebt,
-            color: UAdminTheme.blueGrey,
-          ),
-          ColumnSeries<UDormBedInvoiceChartItem, String>(
-            dataSource: r.monthlyRevenue,
-            name: U.s.paid,
-            xValueMapper: (UDormBedInvoiceChartItem d, _) => d.month,
-            yValueMapper: (UDormBedInvoiceChartItem d, _) => d.totalPaid,
-            color: UAdminTheme.green,
-          ),
-          ColumnSeries<UDormBedInvoiceChartItem, String>(
-            dataSource: r.monthlyRevenue,
-            name: U.s.penalty,
-            xValueMapper: (UDormBedInvoiceChartItem d, _) => d.month,
-            yValueMapper: (UDormBedInvoiceChartItem d, _) => d.totalPenalty,
-            color: UAdminTheme.red,
-          ),
+      child: UBarChart(
+        categories: r.monthlyRevenue.map((UDormBedInvoiceChartItem d) => d.month).toList(),
+        series: <UChartSeries>[
+          UChartSeries(name: U.s.debt, color: UAdminTheme.blueGrey, values: r.monthlyRevenue.map((UDormBedInvoiceChartItem d) => d.totalDebt.toDouble()).toList()),
+          UChartSeries(name: U.s.paid, color: UAdminTheme.green, values: r.monthlyRevenue.map((UDormBedInvoiceChartItem d) => d.totalPaid.toDouble()).toList()),
+          UChartSeries(name: U.s.penalty, color: UAdminTheme.red, values: r.monthlyRevenue.map((UDormBedInvoiceChartItem d) => d.totalPenalty.toDouble()).toList()),
         ],
       ),
     );
@@ -173,23 +152,13 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
 
   Widget _occupancyChart(UPropertyDashboardResponse r) => _chartCard(
     title: U.s.occupancy,
-    child: SfCircularChart(
-      legend: const Legend(isVisible: true, overflowMode: LegendItemOverflowMode.wrap, position: LegendPosition.bottom),
-      tooltipBehavior: TooltipBehavior(enable: true),
-      series: <CircularSeries<_OccupancySlice, String>>[
-        DoughnutSeries<_OccupancySlice, String>(
-          dataSource: <_OccupancySlice>[
-            _OccupancySlice(U.s.hotelOccupied, r.hotelRoomsOccupiedCount, UAdminTheme.orange),
-            _OccupancySlice(U.s.hotelAvailable, r.hotelRoomsAvailableCount, UAdminTheme.orange.shade100),
-            _OccupancySlice(U.s.dormOccupied, r.dormBedsOccupiedCount, UAdminTheme.green),
-            _OccupancySlice(U.s.dormAvailable, r.dormBedsAvailableCount, UAdminTheme.green.shade100),
-          ],
-          xValueMapper: (_OccupancySlice d, _) => d.label,
-          yValueMapper: (_OccupancySlice d, _) => d.value,
-          pointColorMapper: (_OccupancySlice d, _) => d.color,
-          innerRadius: "55%",
-          dataLabelSettings: const DataLabelSettings(isVisible: true),
-        ),
+    child: UDonutChart(
+      holeFactor: 0.55,
+      slices: <USlice>[
+        USlice(value: r.hotelRoomsOccupiedCount.toDouble(), label: U.s.hotelOccupied, color: UAdminTheme.orange),
+        USlice(value: r.hotelRoomsAvailableCount.toDouble(), label: U.s.hotelAvailable, color: UAdminTheme.orange.shade100),
+        USlice(value: r.dormBedsOccupiedCount.toDouble(), label: U.s.dormOccupied, color: UAdminTheme.green),
+        USlice(value: r.dormBedsAvailableCount.toDouble(), label: U.s.dormAvailable, color: UAdminTheme.green.shade100),
       ],
     ),
   );
@@ -213,20 +182,9 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
     title: title,
     child: items.isEmpty
         ? UTextBodySmall(U.s.noData).alignAtCenter()
-        : SfCartesianChart(
-            tooltipBehavior: TooltipBehavior(enable: true),
-            primaryXAxis: const CategoryAxis(majorGridLines: MajorGridLines(width: 0)),
-            primaryYAxis: const NumericAxis(isVisible: false),
-            series: <CartesianSeries<UPropertyBreakdownItem, String>>[
-              BarSeries<UPropertyBreakdownItem, String>(
-                dataSource: items,
-                xValueMapper: (UPropertyBreakdownItem d, _) => d.name,
-                yValueMapper: (UPropertyBreakdownItem d, _) => d.count,
-                color: color,
-                borderRadius: const BorderRadius.horizontal(right: Radius.circular(8)),
-                dataLabelSettings: const DataLabelSettings(isVisible: true),
-              ),
-            ],
+        : UHorizontalBarChart(
+            categories: items.map((UPropertyBreakdownItem d) => d.name).toList(),
+            series: <UChartSeries>[UChartSeries(color: color, values: items.map((UPropertyBreakdownItem d) => d.count.toDouble()).toList())],
           ),
   );
 
@@ -413,12 +371,4 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
       ],
     ),
   );
-}
-
-class _OccupancySlice {
-  _OccupancySlice(this.label, this.value, this.color);
-
-  final String label;
-  final int value;
-  final Color color;
 }
