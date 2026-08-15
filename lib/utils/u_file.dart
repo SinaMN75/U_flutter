@@ -1,10 +1,7 @@
 import "package:path/path.dart" as path;
 import "package:u/utilities.dart";
 
-enum UImageSource {
-  camera,
-  gallery,
-}
+enum UImageSource { camera, gallery }
 
 class FileData {
   FileData({
@@ -24,129 +21,192 @@ class FileData {
   final String? id;
   final List<int>? tags;
   final List<FileData>? children;
+
+  String? get name => path?.split(RegExp(r"[\\/]")).last;
+
+  int? get sizeInBytes => bytes?.lengthInBytes;
+
+  bool get hasBytes => bytes != null && bytes!.isNotEmpty;
+
+  bool get isImage => UFile.isImageExtension(extension);
+}
+
+class UCropOptions {
+  const UCropOptions({
+    this.shape = UCropShape.rectangle,
+    this.aspectRatio,
+    this.aspectRatios,
+    this.maxWidth,
+    this.maxHeight,
+    this.allowRotate = true,
+    this.allowFlip = true,
+    this.allowAdjust = true,
+    this.allowShapeToggle = false,
+    this.title,
+  });
+
+  final UCropShape shape;
+  final double? aspectRatio;
+  final List<UCropAspectRatio>? aspectRatios;
+  final int? maxWidth;
+  final int? maxHeight;
+  final bool allowRotate;
+  final bool allowFlip;
+  final bool allowAdjust;
+  final bool allowShapeToggle;
+  final String? title;
 }
 
 abstract class UFile {
+  static const Set<String> imageExtensions = <String>{"jpg", "jpeg", "png", "gif", "webp", "bmp", "heic", "heif"};
+
+  static bool isImageExtension(final String? extension) => extension != null && imageExtensions.contains(extension.toLowerCase());
+
   static Future<List<FileData>> showImagePicker({
     required final UImageSource source,
     final bool allowMultiple = false,
     final bool isSelfie = false,
+    final int? imageQuality,
+    final UCropOptions? crop,
     final Function(List<FileData>)? action,
   }) async {
-    final List<FileData> files = <FileData>[];
-    final ImagePicker imagePicker = ImagePicker();
+    try {
+      final ImagePicker picker = ImagePicker();
+      final List<XFile> picked = <XFile>[];
 
-    if (allowMultiple) {
-      final List<XFile> images = await imagePicker.pickMultiImage();
-      for (final XFile i in images) {
-        final Uint8List bytes = await i.readAsBytes();
-        files.add(FileData(bytes: bytes, path: i.path, extension: i.path.split(".").last));
+      if (allowMultiple) {
+        picked.addAll(await picker.pickMultiImage(imageQuality: imageQuality));
+      } else {
+        final XFile? single = await picker.pickImage(
+          source: source == UImageSource.camera ? ImageSource.camera : ImageSource.gallery,
+          preferredCameraDevice: isSelfie ? CameraDevice.front : CameraDevice.rear,
+          imageQuality: imageQuality,
+        );
+        if (single != null) picked.add(single);
       }
-      if (action != null) action(files);
+
+      final List<FileData> files = await _collect(picked.map(_fromXFile), crop);
+      action?.call(files);
       return files;
-    } else {
-      final XFile? image = await imagePicker.pickImage(
-        source: source == UImageSource.camera ? ImageSource.camera : ImageSource.gallery,
-        preferredCameraDevice: isSelfie ? CameraDevice.front : CameraDevice.rear,
-      );
-      if (image == null) return <FileData>[];
-      final Uint8List bytes = await image.readAsBytes();
-      files.add(FileData(bytes: bytes, path: image.path, extension: image.path.split(".").last));
-      if (action != null) action(files);
-      return files;
+    } catch (e) {
+      action?.call(<FileData>[]);
+      return <FileData>[];
     }
   }
 
-  static Future<void> showFilePicker({
-    required final Function(List<FileData>) action,
-    final FileType fileType = FileType.custom,
+  static Future<List<FileData>> showFilePicker({
+    final Function(List<FileData>)? action,
+    final FileType fileType = FileType.any,
     final bool allowMultiple = false,
-    final String? initialDirectory,
-    final String? dialogTitle,
-    final bool allowCompression = true,
-    final bool withReadStream = false,
-    final bool lockParentWindow = false,
     final List<String>? allowedExtensions,
+    final UCropOptions? crop,
   }) async {
     try {
+      final FileType type = allowedExtensions != null && allowedExtensions.isNotEmpty ? FileType.custom : (fileType == FileType.custom ? FileType.any : fileType);
       final FilePickerResult? result = await FilePicker.pickFiles(
-        type: fileType,
+        type: type,
         allowMultiple: allowMultiple,
-        allowedExtensions: allowedExtensions,
+        allowedExtensions: type == FileType.custom ? allowedExtensions : null,
+        withData: kIsWeb,
       );
 
-      if (result == null) return;
+      if (result == null) {
+        action?.call(<FileData>[]);
+        return <FileData>[];
+      }
 
-      final List<FileData> files = await Future.wait(
-        result.files.map((PlatformFile file) async {
-          if (kIsWeb) {
-            return FileData(
-              bytes: await file.readAsBytes(),
-              extension: file.extension,
-            );
-          } else {
-            return FileData(
-              path: file.path,
-              bytes: await File(file.path!).readAsBytes(),
-              extension: file.extension ?? path.extension(file.path!),
-            );
-          }
-        }),
-      );
-
-      action(files);
+      final List<FileData> files = await _collect(result.files.map(_fromPlatformFile), crop);
+      action?.call(files);
+      return files;
     } catch (e) {
-      debugPrint("File picker error: $e");
-      action(<FileData>[]);
+      action?.call(<FileData>[]);
+      return <FileData>[];
     }
-  }
-
-  static Future<File> writeToFile(final Uint8List data) async {
-    final Directory tempDir = await getTemporaryDirectory();
-    return File("${tempDir.path}/${Random.secure().nextInt(10000)}.tmp").writeAsBytes(
-      data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes),
-    );
   }
 
   static Future<FileData?> cropImage({
     final Uint8List? bytes,
     final String? filePath,
+    final UCropOptions options = const UCropOptions(),
     final Function(FileData file)? action,
-    final int? maxWidth,
-    final int? maxHeight,
-    final UCropShape cropShape = UCropShape.rectangle,
-    final double? aspectRatio,
-    final List<UCropAspectRatio>? aspectRatios,
-    final bool allowRotate = true,
-    final bool allowFlip = true,
-    final bool allowAdjust = true,
-    final bool allowShapeToggle = false,
-    final String? title,
   }) async {
     Uint8List? data = bytes;
     if (data == null && filePath != null && !kIsWeb) data = await File(filePath).readAsBytes();
     if (data == null) return null;
 
+    final FileData? cropped = await _openCropper(data, options);
+    if (cropped == null) return null;
+    action?.call(cropped);
+    return cropped;
+  }
+
+  static Future<File> writeToFile(final Uint8List data, {final String extension = "tmp"}) async {
+    final Directory dir = await getTemporaryDirectory();
+    return File("${dir.path}/u_${DateTime.now().microsecondsSinceEpoch}.$extension").writeAsBytes(data);
+  }
+
+  static Future<List<FileData>> _collect(final Iterable<Future<FileData>> sources, final UCropOptions? crop) async {
+    final List<FileData> out = <FileData>[];
+    for (final Future<FileData> source in sources) {
+      final FileData base = await source;
+      final FileData? result = await _maybeCrop(base, crop);
+      if (result != null) out.add(result);
+    }
+    return out;
+  }
+
+  static Future<FileData?> _maybeCrop(final FileData file, final UCropOptions? crop) async {
+    if (crop == null || !file.isImage || file.bytes == null) return file;
+    return _openCropper(file.bytes!, crop);
+  }
+
+  static Future<FileData?> _openCropper(final Uint8List bytes, final UCropOptions options) async {
     final Uint8List? cropped = await UNavigator.push<Uint8List>(
       UImageCropper(
-        bytes: data,
-        title: title,
-        shape: cropShape,
-        aspectRatios: aspectRatios,
-        initialAspectRatio: aspectRatio,
-        allowRotate: allowRotate,
-        allowFlip: allowFlip,
-        allowAdjust: allowAdjust,
-        allowShapeToggle: allowShapeToggle,
-        maxWidth: maxWidth,
-        maxHeight: maxHeight,
+        bytes: bytes,
+        title: options.title,
+        shape: options.shape,
+        aspectRatios: options.aspectRatios,
+        initialAspectRatio: options.aspectRatio,
+        allowRotate: options.allowRotate,
+        allowFlip: options.allowFlip,
+        allowAdjust: options.allowAdjust,
+        allowShapeToggle: options.allowShapeToggle,
+        maxWidth: options.maxWidth,
+        maxHeight: options.maxHeight,
       ),
       fullscreenDialog: true,
     );
     if (cropped == null) return null;
+    return FileData(bytes: cropped, path: await _persistTemp(cropped, "png"), extension: "png");
+  }
 
-    final FileData fileData = FileData(bytes: cropped, extension: "png");
-    if (action != null) action(fileData);
-    return fileData;
+  static Future<FileData> _fromXFile(final XFile file) async {
+    final Uint8List bytes = await file.readAsBytes();
+    return FileData(bytes: bytes, path: file.path, extension: _extensionOf(file.name.isNotEmpty ? file.name : file.path, "jpg"));
+  }
+
+  static Future<FileData> _fromPlatformFile(final PlatformFile file) async {
+    final Uint8List bytes = await file.readAsBytes();
+    return FileData(bytes: bytes, path: kIsWeb ? null : file.path, extension: (file.extension ?? _extensionOf(file.name)).toLowerCase());
+  }
+
+  static Future<String?> _persistTemp(final Uint8List bytes, final String extension) async {
+    if (kIsWeb) return null;
+    try {
+      final Directory dir = await getTemporaryDirectory();
+      final File file = File("${dir.path}/u_${DateTime.now().microsecondsSinceEpoch}.$extension");
+      await file.writeAsBytes(bytes);
+      return file.path;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  static String _extensionOf(final String? source, [final String fallback = ""]) {
+    if (source == null || source.isEmpty) return fallback.toLowerCase();
+    final String raw = path.extension(source);
+    final String clean = raw.startsWith(".") ? raw.substring(1) : raw;
+    return (clean.isEmpty ? fallback : clean).toLowerCase();
   }
 }
