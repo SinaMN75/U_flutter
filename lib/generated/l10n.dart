@@ -7993,6 +7993,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Barcode / QR generator`
+  String get barcodeGenerator {
+    return Intl.message(
+      'Barcode / QR generator',
+      name: 'barcodeGenerator',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Barcode type`
+  String get barcodeType {
+    return Intl.message(
+      'Barcode type',
+      name: 'barcodeType',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

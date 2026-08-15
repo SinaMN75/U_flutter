@@ -148,6 +148,92 @@ abstract class UEncryption {
     return <int>[for (int i = 0; i < clean.length; i += 2) int.parse(clean.substring(i, i + 2), radix: 16)];
   }
 
+  static const String _base32Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+
+  static String base32EncodeText(String text) => base32Encode(utf8.encode(text));
+
+  static String base32DecodeText(String value) => utf8.decode(base32Decode(value));
+
+  static String base32Encode(List<int> bytes) {
+    final StringBuffer buffer = StringBuffer();
+    int value = 0;
+    int bits = 0;
+    for (final int b in bytes) {
+      value = (value << 8) | b;
+      bits += 8;
+      while (bits >= 5) {
+        bits -= 5;
+        buffer.write(_base32Alphabet[(value >> bits) & 31]);
+      }
+    }
+    if (bits > 0) buffer.write(_base32Alphabet[(value << (5 - bits)) & 31]);
+    while (buffer.length % 8 != 0) {
+      buffer.write("=");
+    }
+    return buffer.toString();
+  }
+
+  static List<int> base32Decode(String input) {
+    final String clean = input.toUpperCase().replaceAll("=", "").replaceAll(RegExp(r"\s"), "");
+    final List<int> out = <int>[];
+    int value = 0;
+    int bits = 0;
+    for (final int rune in clean.runes) {
+      final int index = _base32Alphabet.indexOf(String.fromCharCode(rune));
+      if (index < 0) throw const FormatException("Invalid Base32 character.");
+      value = (value << 5) | index;
+      bits += 5;
+      if (bits >= 8) {
+        bits -= 8;
+        out.add((value >> bits) & 0xFF);
+      }
+    }
+    return out;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Classical / bitwise ciphers.
+  // ---------------------------------------------------------------------------
+  static List<int> _keyBytes(String key, UByteEncoding encoding) => switch (encoding) {
+    UByteEncoding.utf8 => utf8.encode(key),
+    UByteEncoding.base64 => base64.decode(key),
+    UByteEncoding.hex => hexToBytes(key),
+  };
+
+  static Uint8List _xor(List<int> data, List<int> key) {
+    if (key.isEmpty) throw ArgumentError("XOR key must not be empty.");
+    final Uint8List out = Uint8List(data.length);
+    for (int i = 0; i < data.length; i++) {
+      out[i] = data[i] ^ key[i % key.length];
+    }
+    return out;
+  }
+
+  static String xorEncrypt({required String plainText, required String key, UByteEncoding keyEncoding = UByteEncoding.utf8}) =>
+      base64.encode(_xor(utf8.encode(plainText), _keyBytes(key, keyEncoding)));
+
+  static String xorDecrypt({required String base64Encrypted, required String key, UByteEncoding keyEncoding = UByteEncoding.utf8}) =>
+      utf8.decode(_xor(base64.decode(base64Encrypted), _keyBytes(key, keyEncoding)));
+
+  static String rot13(String text) => String.fromCharCodes(
+    text.runes.map((int c) {
+      if (c >= 65 && c <= 90) return (c - 65 + 13) % 26 + 65;
+      if (c >= 97 && c <= 122) return (c - 97 + 13) % 26 + 97;
+      return c;
+    }),
+  );
+
+  static String caesarShift(String text, int shift) {
+    final int normalized = ((shift % 26) + 26) % 26;
+    return String.fromCharCodes(
+      text.runes.map((int c) {
+        if (c >= 65 && c <= 90) return (c - 65 + normalized) % 26 + 65;
+        if (c >= 97 && c <= 122) return (c - 97 + normalized) % 26 + 97;
+        return c;
+      }),
+    );
+  }
+
   // ---------------------------------------------------------------------------
   // One-way hashes.
   // ---------------------------------------------------------------------------

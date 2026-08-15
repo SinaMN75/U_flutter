@@ -1038,5 +1038,7 @@
   "original": "اصلی",
   "square": "مربع",
   "penColor": "رنگ قلم",
-  "strokeWidth": "ضخامت خط"
+  "strokeWidth": "ضخامت خط",
+  "barcodeGenerator": "تولید بارکد / کیو‌آر",
+  "barcodeType": "نوع بارکد"
 }

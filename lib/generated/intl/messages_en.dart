@@ -130,6 +130,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "balance": MessageLookupByLibrary.simpleMessage("Balance"),
     "bankAccountId": MessageLookupByLibrary.simpleMessage("Bank Account ID"),
     "barcode": MessageLookupByLibrary.simpleMessage("Barcode"),
+    "barcodeGenerator": MessageLookupByLibrary.simpleMessage(
+      "Barcode / QR generator",
+    ),
+    "barcodeType": MessageLookupByLibrary.simpleMessage("Barcode type"),
     "bed": MessageLookupByLibrary.simpleMessage("Bed"),
     "bedType": MessageLookupByLibrary.simpleMessage("Bed Type"),
     "beds": MessageLookupByLibrary.simpleMessage("Beds"),

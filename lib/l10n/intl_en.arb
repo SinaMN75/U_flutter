@@ -1038,5 +1038,7 @@
   "original": "Original",
   "square": "Square",
   "penColor": "Pen color",
-  "strokeWidth": "Stroke width"
+  "strokeWidth": "Stroke width",
+  "barcodeGenerator": "Barcode / QR generator",
+  "barcodeType": "Barcode type"
 }

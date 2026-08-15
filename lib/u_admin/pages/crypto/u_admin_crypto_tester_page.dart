@@ -23,6 +23,8 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
   UByteEncoding _ivEncoding = UByteEncoding.utf8;
   int _aesKeyBytes = 32;
 
+  UBarcodeType _barcodeType = UBarcodeType.qrCode;
+
   String? _output;
   String? _error;
 
@@ -46,9 +48,13 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
     _CryptoAlgo(id: "aes", label: "AES", category: _Category.symmetric, icon: Icons.lock_rounded, needsKey: true, needsIv: true, isAes: true),
     _CryptoAlgo(id: "salsa20", label: "Salsa20", category: _Category.symmetric, icon: Icons.lock_outline_rounded, needsKey: true, needsIv: true),
     _CryptoAlgo(id: "fernet", label: "Fernet", category: _Category.symmetric, icon: Icons.enhanced_encryption_rounded, needsKey: true),
+    _CryptoAlgo(id: "xor", label: "XOR", category: _Category.symmetric, icon: Icons.bolt_rounded, needsKey: true),
     _CryptoAlgo(id: "base64", label: "Base64", category: _Category.encoding, icon: Icons.data_object_rounded),
     _CryptoAlgo(id: "base64url", label: "Base64 URL", category: _Category.encoding, icon: Icons.link_rounded),
     _CryptoAlgo(id: "hex", label: "Hex", category: _Category.encoding, icon: Icons.tag_rounded),
+    _CryptoAlgo(id: "base32", label: "Base32", category: _Category.encoding, icon: Icons.grid_4x4_rounded),
+    _CryptoAlgo(id: "rot13", label: "ROT13", category: _Category.encoding, icon: Icons.rotate_right_rounded),
+    _CryptoAlgo(id: "caesar", label: "Caesar", category: _Category.encoding, icon: Icons.text_rotation_none_rounded, needsKey: true),
     _CryptoAlgo(id: "md5", label: "MD5", category: _Category.hash, icon: Icons.fingerprint_rounded),
     _CryptoAlgo(id: "sha1", label: "SHA-1", category: _Category.hash, icon: Icons.fingerprint_rounded),
     _CryptoAlgo(id: "sha224", label: "SHA-224", category: _Category.hash, icon: Icons.fingerprint_rounded),
@@ -74,12 +80,23 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
             : UEncryption.salsa20Decrypt(base64Encrypted: text, key: key, iv: iv, keyEncoding: _keyEncoding, ivEncoding: _ivEncoding);
       case "fernet":
         return forward ? UEncryption.fernetEncrypt(plainText: text, key: key, keyEncoding: _keyEncoding) : UEncryption.fernetDecrypt(base64Encrypted: text, key: key, keyEncoding: _keyEncoding);
+      case "xor":
+        return forward ? UEncryption.xorEncrypt(plainText: text, key: key, keyEncoding: _keyEncoding) : UEncryption.xorDecrypt(base64Encrypted: text, key: key, keyEncoding: _keyEncoding);
       case "base64":
         return forward ? UEncryption.base64EncodeText(text) : UEncryption.base64DecodeText(text);
       case "base64url":
         return forward ? UEncryption.base64UrlEncodeText(text) : UEncryption.base64UrlDecodeText(text);
       case "hex":
         return forward ? UEncryption.hexEncodeText(text) : UEncryption.hexDecodeText(text);
+      case "base32":
+        return forward ? UEncryption.base32EncodeText(text) : UEncryption.base32DecodeText(text);
+      case "rot13":
+        return UEncryption.rot13(text);
+      case "caesar":
+        {
+          final int shift = int.tryParse(key) ?? 3;
+          return forward ? UEncryption.caesarShift(text, shift) : UEncryption.caesarShift(text, -shift);
+        }
       case "md5":
         return UEncryption.md5Hash(text);
       case "sha1":
@@ -162,6 +179,7 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
             _inputCard(cs),
             _actions(cs),
             if (_output != null || _error != null) _outputCard(cs),
+            _barcodeCard(cs),
           ],
         ),
       ),
@@ -287,7 +305,7 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
     crossAxisAlignment: CrossAxisAlignment.end,
     children: <Widget>[
       UTextField(controller: _keyController, labelText: U.s.secretKey, hintText: U.s.secretKey).expanded(),
-      if (_algo.id != "hmac") ...<Widget>[
+      if (_algo.id != "hmac" && _algo.id != "caesar") ...<Widget>[
         SizedBox(width: 130, child: _encodingDropdown(_keyEncoding, (UByteEncoding e) => setState(() => _keyEncoding = e), U.s.keyEncoding)),
         IconButton(
           tooltip: U.s.generate,
@@ -443,6 +461,61 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
         ).ltr(),
       ),
     ],
+  );
+
+  bool _is2dBarcode(UBarcodeType type) =>
+      type == UBarcodeType.qrCode || type == UBarcodeType.dataMatrix || type == UBarcodeType.aztec || type == UBarcodeType.pdf417;
+
+  Widget _barcodeCard(ColorScheme cs) => UCard(
+    child: UColumn(
+      spacing: 14,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        URow(
+          spacing: 10,
+          children: <Widget>[
+            Icon(Icons.qr_code_2_rounded, color: cs.primary),
+            UTextTitleMedium(U.s.barcodeGenerator, fontWeight: FontWeight.bold),
+            const Spacer(),
+            SizedBox(
+              width: 190,
+              child: UDropDownField<UBarcodeType>(
+                initialValue: _barcodeType,
+                labelText: U.s.barcodeType,
+                items: UBarcodeType.values.map((UBarcodeType t) => DropdownMenuItem<UBarcodeType>(value: t, child: UTextBodyMedium(t.name))).toList(),
+                onChanged: (UBarcodeType? t) => setState(() => _barcodeType = t ?? UBarcodeType.qrCode),
+              ),
+            ),
+          ],
+        ),
+        ValueListenableBuilder<TextEditingValue>(
+          valueListenable: _inputController,
+          builder: (BuildContext context, TextEditingValue value, Widget? child) {
+            final String data = (_output ?? value.text).trim();
+            if (data.isEmpty) return UTextBodySmall(U.s.inputTextRequired, color: cs.onSurface.withValues(alpha: 0.6));
+            return Center(
+              child: UContainer(
+                padding: const EdgeInsets.all(16),
+                color: Colors.white,
+                radius: 12,
+                child: SizedBox(
+                  width: 240,
+                  height: 240,
+                  child: UBarcode(
+                    value: data,
+                    type: _barcodeType,
+                    backgroundColor: Colors.white,
+                    barColor: Colors.black,
+                    showValue: !_is2dBarcode(_barcodeType),
+                    quietZone: 8,
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ],
+    ).pAll(20),
   );
 
   String _aesModeLabel(UAesMode mode) => switch (mode) {

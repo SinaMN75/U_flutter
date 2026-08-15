@@ -134,6 +134,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "balance": MessageLookupByLibrary.simpleMessage("موجودی"),
     "bankAccountId": MessageLookupByLibrary.simpleMessage("شناسه حساب بانکی"),
     "barcode": MessageLookupByLibrary.simpleMessage("بارکد"),
+    "barcodeGenerator": MessageLookupByLibrary.simpleMessage(
+      "تولید بارکد / کیو‌آر",
+    ),
+    "barcodeType": MessageLookupByLibrary.simpleMessage("نوع بارکد"),
     "bed": MessageLookupByLibrary.simpleMessage("تخت"),
     "bedType": MessageLookupByLibrary.simpleMessage("نوع تخت"),
     "beds": MessageLookupByLibrary.simpleMessage("تخت‌ها"),
