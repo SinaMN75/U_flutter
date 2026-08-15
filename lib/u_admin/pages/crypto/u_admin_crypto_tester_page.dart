@@ -23,8 +23,6 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
   UByteEncoding _ivEncoding = UByteEncoding.utf8;
   int _aesKeyBytes = 32;
 
-  UBarcodeType _barcodeType = UBarcodeType.qrCode;
-
   String? _output;
   String? _error;
 
@@ -179,7 +177,6 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
             _inputCard(cs),
             _actions(cs),
             if (_output != null || _error != null) _outputCard(cs),
-            _barcodeCard(cs),
           ],
         ),
       ),
@@ -461,61 +458,6 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
         ).ltr(),
       ),
     ],
-  );
-
-  bool _is2dBarcode(UBarcodeType type) =>
-      type == UBarcodeType.qrCode || type == UBarcodeType.dataMatrix || type == UBarcodeType.aztec || type == UBarcodeType.pdf417;
-
-  Widget _barcodeCard(ColorScheme cs) => UCard(
-    child: UColumn(
-      spacing: 14,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        URow(
-          spacing: 10,
-          children: <Widget>[
-            Icon(Icons.qr_code_2_rounded, color: cs.primary),
-            UTextTitleMedium(U.s.barcodeGenerator, fontWeight: FontWeight.bold),
-            const Spacer(),
-            SizedBox(
-              width: 190,
-              child: UDropDownField<UBarcodeType>(
-                initialValue: _barcodeType,
-                labelText: U.s.barcodeType,
-                items: UBarcodeType.values.map((UBarcodeType t) => DropdownMenuItem<UBarcodeType>(value: t, child: UTextBodyMedium(t.name))).toList(),
-                onChanged: (UBarcodeType? t) => setState(() => _barcodeType = t ?? UBarcodeType.qrCode),
-              ),
-            ),
-          ],
-        ),
-        ValueListenableBuilder<TextEditingValue>(
-          valueListenable: _inputController,
-          builder: (BuildContext context, TextEditingValue value, Widget? child) {
-            final String data = (_output ?? value.text).trim();
-            if (data.isEmpty) return UTextBodySmall(U.s.inputTextRequired, color: cs.onSurface.withValues(alpha: 0.6));
-            return Center(
-              child: UContainer(
-                padding: const EdgeInsets.all(16),
-                color: Colors.white,
-                radius: 12,
-                child: SizedBox(
-                  width: 240,
-                  height: 240,
-                  child: UBarcode(
-                    value: data,
-                    type: _barcodeType,
-                    backgroundColor: Colors.white,
-                    barColor: Colors.black,
-                    showValue: !_is2dBarcode(_barcodeType),
-                    quietZone: 8,
-                  ),
-                ),
-              ),
-            );
-          },
-        ),
-      ],
-    ).pAll(20),
   );
 
   String _aesModeLabel(UAesMode mode) => switch (mode) {

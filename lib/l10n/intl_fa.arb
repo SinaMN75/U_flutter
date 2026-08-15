@@ -1040,5 +1040,20 @@
   "penColor": "رنگ قلم",
   "strokeWidth": "ضخامت خط",
   "barcodeGenerator": "تولید بارکد / کیو‌آر",
-  "barcodeType": "نوع بارکد"
+  "barcodeType": "نوع بارکد",
+  "barcodeGeneratorSubtitle": "تولید و شخصی‌سازی کامل کیو‌آر و بارکد از هر نوع.",
+  "share": "اشتراک‌گذاری",
+  "foregroundColor": "رنگ پیش‌زمینه",
+  "backgroundColor": "رنگ پس‌زمینه",
+  "moduleShape": "شکل ماژول",
+  "quietZone": "حاشیه آرام",
+  "gradient": "گرادیان",
+  "logo": "لوگو",
+  "errorCorrection": "تصحیح خطا",
+  "version": "نسخه",
+  "showValue": "نمایش مقدار",
+  "cornerRadius": "شعاع گوشه",
+  "auto": "خودکار",
+  "remove": "حذف",
+  "color": "رنگ"
 }

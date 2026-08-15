@@ -1040,5 +1040,20 @@
   "penColor": "Pen color",
   "strokeWidth": "Stroke width",
   "barcodeGenerator": "Barcode / QR generator",
-  "barcodeType": "Barcode type"
+  "barcodeType": "Barcode type",
+  "barcodeGeneratorSubtitle": "Generate and fully customize QR codes and barcodes of every kind.",
+  "share": "Share",
+  "foregroundColor": "Foreground",
+  "backgroundColor": "Background",
+  "moduleShape": "Module shape",
+  "quietZone": "Quiet zone",
+  "gradient": "Gradient",
+  "logo": "Logo",
+  "errorCorrection": "Error correction",
+  "version": "Version",
+  "showValue": "Show value",
+  "cornerRadius": "Corner radius",
+  "auto": "Auto",
+  "remove": "Remove",
+  "color": "Color"
 }

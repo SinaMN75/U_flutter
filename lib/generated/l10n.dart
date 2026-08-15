@@ -8013,6 +8013,111 @@ class S {
       args: [],
     );
   }
+
+  /// `Generate and fully customize QR codes and barcodes of every kind.`
+  String get barcodeGeneratorSubtitle {
+    return Intl.message(
+      'Generate and fully customize QR codes and barcodes of every kind.',
+      name: 'barcodeGeneratorSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Share`
+  String get share {
+    return Intl.message('Share', name: 'share', desc: '', args: []);
+  }
+
+  /// `Foreground`
+  String get foregroundColor {
+    return Intl.message(
+      'Foreground',
+      name: 'foregroundColor',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Background`
+  String get backgroundColor {
+    return Intl.message(
+      'Background',
+      name: 'backgroundColor',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Module shape`
+  String get moduleShape {
+    return Intl.message(
+      'Module shape',
+      name: 'moduleShape',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Quiet zone`
+  String get quietZone {
+    return Intl.message('Quiet zone', name: 'quietZone', desc: '', args: []);
+  }
+
+  /// `Gradient`
+  String get gradient {
+    return Intl.message('Gradient', name: 'gradient', desc: '', args: []);
+  }
+
+  /// `Logo`
+  String get logo {
+    return Intl.message('Logo', name: 'logo', desc: '', args: []);
+  }
+
+  /// `Error correction`
+  String get errorCorrection {
+    return Intl.message(
+      'Error correction',
+      name: 'errorCorrection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Version`
+  String get version {
+    return Intl.message('Version', name: 'version', desc: '', args: []);
+  }
+
+  /// `Show value`
+  String get showValue {
+    return Intl.message('Show value', name: 'showValue', desc: '', args: []);
+  }
+
+  /// `Corner radius`
+  String get cornerRadius {
+    return Intl.message(
+      'Corner radius',
+      name: 'cornerRadius',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Auto`
+  String get auto {
+    return Intl.message('Auto', name: 'auto', desc: '', args: []);
+  }
+
+  /// `Remove`
+  String get remove {
+    return Intl.message('Remove', name: 'remove', desc: '', args: []);
+  }
+
+  /// `Color`
+  String get color {
+    return Intl.message('Color', name: 'color', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

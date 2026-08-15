@@ -261,6 +261,13 @@ abstract class UAdminModules {
     roles: roles,
   );
 
+  static UAdminModule barcodeGenerator({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.barcodeGenerator,
+    icon: Icons.qr_code_2_rounded,
+    page: () => const UAdminBarcodeGeneratorPage(),
+    roles: roles,
+  );
+
   // ---- System ----
   static UAdminModule fileManager({List<TagUser>? roles}) => UAdminModule(
     title: U.s.fileManager,
