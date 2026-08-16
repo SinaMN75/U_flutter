@@ -18,17 +18,12 @@ class UMenuItem extends UMenuEntry {
   final String id;
   final String title;
   final IconData icon;
-
   final IconData? selectedIcon;
   final VoidCallback? onTap;
-
   final String? badge;
   final Color? badgeColor;
-
   final Widget? trailing;
-
   final bool pinnable;
-
   final String? tooltip;
 
   const UMenuItem({
@@ -128,8 +123,6 @@ class USideMenuController extends ChangeNotifier {
     notifyListeners();
   }
 
-  // External drawer hooks so a parent (e.g. a mobile hamburger button) can open
-  // or close the overlay drawer without the built-in rail being visible.
   VoidCallback? _openDrawerCb;
   VoidCallback? _closeDrawerCb;
 
@@ -151,33 +144,25 @@ class USideMenuController extends ChangeNotifier {
 class USideMenuTheme {
   final double expandedWidth;
   final double railWidth;
-
   final Color backgroundColor;
   final Gradient? backgroundGradient;
-
   final Color selectedItemColor;
   final Color hoverColor;
   final Color indicatorColor;
-
   final Color selectedTextColor;
   final Color unselectedTextColor;
   final Color selectedIconColor;
   final Color unselectedIconColor;
-
   final TextStyle? itemTextStyle;
   final TextStyle? headerTextStyle;
-
   final double iconSize;
   final double itemHeight;
   final double itemSpacing;
   final EdgeInsets itemPadding;
   final BorderRadius itemRadius;
-
   final USideMenuIndicatorStyle indicatorStyle;
-
   final Duration animationDuration;
   final Curve animationCurve;
-
   final bool enableHoverElevation;
   final List<BoxShadow>? shadow;
   final Color scrimColor;
@@ -205,7 +190,7 @@ class USideMenuTheme {
     this.itemPadding = const EdgeInsets.symmetric(horizontal: 12),
     this.itemRadius = const BorderRadius.all(Radius.circular(14)),
     this.indicatorStyle = USideMenuIndicatorStyle.bar,
-    this.animationDuration = const Duration(milliseconds: 320),
+    this.animationDuration = const Duration(milliseconds: 600),
     this.animationCurve = Curves.easeOutCubic,
     this.enableHoverElevation = true,
     this.shadow,
@@ -330,36 +315,23 @@ class USideMenu extends StatefulWidget {
   final USideMenuController controller;
   final List<UMenuEntry> items;
   final USideMenuTheme? theme;
-
   final Widget? header;
-
   final bool enableSearch;
   final String searchHint;
   final bool enablePinning;
   final String pinnedSectionLabel;
   final bool enableToggleButton;
-
-  /// When false, the persistent icon rail is hidden on mobile and the drawer is
-  /// only reachable via [USideMenuController.openDrawer] (e.g. an app-bar
-  /// hamburger), letting page content use the full width.
   final bool showRailOnMobile;
-
   final double mobileBreakpoint;
-
   final double autoCollapseBreakpoint;
-
   final String? profileName;
   final String? profileSubtitle;
   final Widget? profileAvatar;
-
   final List<UMenuItem>? profileMenuItems;
   final ValueChanged<String>? onProfileMenuSelected;
-
   final bool? isDarkMode;
   final ValueChanged<bool>? onToggleTheme;
-
   final String? version;
-
   final Widget? footer;
 
   @override
@@ -380,11 +352,9 @@ class _USideMenuState extends State<USideMenu> with TickerProviderStateMixin {
     _reveal = AnimationController(vsync: this, duration: const Duration(milliseconds: 700))..forward();
     _drawer = AnimationController(vsync: this, duration: const Duration(milliseconds: 280));
     widget.controller.addListener(_onControllerChanged);
-    // Expose drawer open/close to the parent for external hamburger triggers.
     widget.controller.attachDrawer(_openDrawer, _closeDrawer);
   }
 
-  // Seeds initiallyExpanded groups into the controller once so toggling can later collapse them.
   void _seedExpandedGroups(List<UMenuEntry> entries) {
     for (final UMenuEntry e in entries) {
       if (e is UMenuGroup) {
@@ -443,8 +413,6 @@ class _USideMenuState extends State<USideMenu> with TickerProviderStateMixin {
       return OverlayPortal(
         controller: _portal,
         overlayChildBuilder: _buildMobileOverlay,
-        // When the rail is suppressed the widget occupies no width; the drawer
-        // is then opened externally via controller.openDrawer().
         child: widget.showRailOnMobile ? _buildRail(showHamburger: true) : const SizedBox.shrink(),
       );
     }
@@ -697,7 +665,6 @@ class _USideMenuState extends State<USideMenu> with TickerProviderStateMixin {
     return result;
   }
 
-  // Flattens a group's entire subtree down to its leaf items.
   List<UMenuItem> _collectLeafItems(UMenuGroup group) {
     final List<UMenuItem> result = <UMenuItem>[];
     for (final UMenuEntry child in group.children) {
@@ -715,7 +682,6 @@ class _USideMenuState extends State<USideMenu> with TickerProviderStateMixin {
     return false;
   }
 
-  // A matching group title reveals its whole subtree; otherwise only matching descendants show.
   List<UMenuEntry> _filterChildren(UMenuGroup group, bool searching, String query) {
     if (!searching || group.title.toLowerCase().contains(query)) return group.children;
     return group.children.where((UMenuEntry c) => _entryMatches(c, query)).toList();
@@ -1015,35 +981,19 @@ class _ItemTileState extends State<_ItemTile> {
                       : null,
                   borderRadius: t.itemRadius,
                 ),
-                child: Row(
-                  children: <Widget>[
-                    _buildLeadingIndicator(active),
-                    SizedBox(width: widget.collapsed ? 0 : (6 + widget.depth * 14).toDouble()),
-                    Expanded(
-                      child: Row(
-                        mainAxisAlignment: widget.collapsed ? MainAxisAlignment.center : MainAxisAlignment.start,
-                        children: <Widget>[
-                          icon,
-                          if (!widget.collapsed) ...<Widget>[
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: AnimatedDefaultTextStyle(
-                                duration: t.animationDuration,
-                                style: Theme.of(context).textTheme.bodyLarge!
-                                    .merge(t.itemTextStyle)
-                                    .copyWith(
-                                      color: textColor,
-                                      fontWeight: active ? FontWeight.w700 : FontWeight.w500,
-                                    ),
-                                child: Text(widget.item.title, maxLines: 1, overflow: TextOverflow.ellipsis),
-                              ),
-                            ),
-                            _buildTrailing(t),
-                          ],
-                        ],
-                      ),
-                    ),
-                  ],
+                child: ListTile(
+                  leading: _buildLeadingIndicator(active),
+                  title: widget.collapsed
+                      ? icon
+                      : ListTile(
+                          leading: icon,
+                          title: AnimatedDefaultTextStyle(
+                            duration: t.animationDuration,
+                            style: Theme.of(context).textTheme.bodyLarge!.merge(t.itemTextStyle).copyWith(color: textColor, fontWeight: active ? FontWeight.w700 : FontWeight.w500),
+                            child: Text(widget.item.title, maxLines: 1, overflow: TextOverflow.ellipsis),
+                          ),
+                          trailing: _buildTrailing(t),
+                        ),
                 ),
               ),
             ),

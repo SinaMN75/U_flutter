@@ -1,5 +1,3 @@
-import "dart:math" as math;
-
 import "package:u/utilities.dart";
 
 enum _PickerMode { calendar, selectYear, selectMonth }
@@ -28,20 +26,7 @@ class _JalaliDatePickerDialogState extends State<JalaliDatePickerDialog> {
   late int currentMonth;
   _PickerMode mode = _PickerMode.selectYear;
 
-  final List<String> monthNames = <String>[
-    "فروردین",
-    "اردیبهشت",
-    "خرداد",
-    "تیر",
-    "مرداد",
-    "شهریور",
-    "مهر",
-    "آبان",
-    "آذر",
-    "دی",
-    "بهمن",
-    "اسفند",
-  ];
+  final List<String> monthNames = <String>["فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند"];
 
   @override
   void initState() {
@@ -78,7 +63,6 @@ class _JalaliDatePickerDialogState extends State<JalaliDatePickerDialog> {
       IconButton(
         onPressed: () {
           setState(() {
-            // Go to previous month
             if (currentMonth == 1) {
               currentMonth = 12;
               currentYear--;
@@ -96,7 +80,6 @@ class _JalaliDatePickerDialogState extends State<JalaliDatePickerDialog> {
       IconButton(
         onPressed: () {
           setState(() {
-            // Go to next month
             if (currentMonth == 12) {
               currentMonth = 1;
               currentYear++;
@@ -110,11 +93,9 @@ class _JalaliDatePickerDialogState extends State<JalaliDatePickerDialog> {
     ],
   );
 
-  /// Builds the calendar grid of days.
   Widget _buildCalendarGrid() {
     final List<Widget> dayWidgets = <Widget>[];
 
-    // Weekday headers (you may adjust the labels to local language as needed)
     const List<String> weekDays = <String>["شنبه", "یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنجشنبه", "جمعه"];
     dayWidgets.addAll(
       weekDays
@@ -127,17 +108,10 @@ class _JalaliDatePickerDialogState extends State<JalaliDatePickerDialog> {
           .toList(),
     );
 
-    // Determine the first weekday offset for the month (Jalali weeks start on Saturday)
-    final Jalali firstDayOfMonth = Jalali(currentYear, currentMonth);
-    // In shamsi_date, weekday returns 1 for Saturday ... 7 for Friday.
-    final int weekdayOffset = firstDayOfMonth.weekDay - 1;
+    final int weekdayOffset = Jalali(currentYear, currentMonth).weekDay - 1;
 
-    // Add empty containers for offset days.
-    for (int i = 0; i < weekdayOffset; i++) {
-      dayWidgets.add(const SizedBox());
-    }
+    for (int i = 0; i < weekdayOffset; i++) dayWidgets.add(const SizedBox());
 
-    // Add buttons for each day in the month
     final int daysInMonth = Jalali(currentYear, currentMonth).monthLength;
     for (int day = 1; day <= daysInMonth; day++) {
       final bool isSelected = selectedDate.year == currentYear && selectedDate.month == currentMonth && selectedDate.day == day;
@@ -165,52 +139,47 @@ class _JalaliDatePickerDialogState extends State<JalaliDatePickerDialog> {
       );
     }
 
-    return Flexible(
-      child: GridView.count(
-        padding: const EdgeInsets.all(8),
-        crossAxisCount: 7,
-        shrinkWrap: true,
-        children: dayWidgets,
-      ),
+    return GridView.count(
+      padding: const EdgeInsets.all(8),
+      crossAxisCount: 7,
+      shrinkWrap: true,
+      children: dayWidgets,
     );
   }
 
-  /// Scrollable list for selecting the year (easier to scroll to a birth year).
   Widget _buildYearSelection() {
     final ColorScheme scheme = Theme.of(context).colorScheme;
-    final int lo = math.min(widget.startYear, widget.endYear);
-    final int hi = math.max(widget.startYear, widget.endYear);
+    final int lo = min(widget.startYear, widget.endYear);
+    final int hi = max(widget.startYear, widget.endYear);
     final List<int> years = <int>[for (int y = hi; y >= lo; y--) y];
-    return Flexible(
-      child: Scrollbar(
-        child: ListView.builder(
-          padding: const EdgeInsets.all(8),
-          itemCount: years.length,
-          itemBuilder: (BuildContext context, int index) {
-            final int year = years[index];
-            final bool selected = year == currentYear;
-            return InkWell(
-              onTap: () => setState(() {
-                currentYear = year;
-                selectedDate = Jalali(currentYear, currentMonth, selectedDate.day);
-                mode = _PickerMode.selectMonth;
-              }),
-              child: Container(
-                margin: const EdgeInsets.symmetric(vertical: 3),
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: selected ? scheme.primary : scheme.surfaceContainerHighest,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  "$year",
-                  style: TextStyle(color: selected ? scheme.onPrimary : scheme.onSurface, fontWeight: selected ? FontWeight.bold : FontWeight.normal),
-                ),
+    return Scrollbar(
+      child: ListView.builder(
+        padding: const EdgeInsets.all(8),
+        itemCount: years.length,
+        itemBuilder: (BuildContext context, int index) {
+          final int year = years[index];
+          final bool selected = year == currentYear;
+          return InkWell(
+            onTap: () => setState(() {
+              currentYear = year;
+              selectedDate = Jalali(currentYear, currentMonth, selectedDate.day);
+              mode = _PickerMode.selectMonth;
+            }),
+            child: Container(
+              margin: const EdgeInsets.symmetric(vertical: 3),
+              padding: const EdgeInsets.symmetric(vertical: 14),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: selected ? scheme.primary : scheme.surfaceContainerHighest,
+                borderRadius: BorderRadius.circular(8),
               ),
-            );
-          },
-        ),
+              child: Text(
+                "$year",
+                style: TextStyle(color: selected ? scheme.onPrimary : scheme.onSurface, fontWeight: selected ? FontWeight.bold : FontWeight.normal),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -242,14 +211,12 @@ class _JalaliDatePickerDialogState extends State<JalaliDatePickerDialog> {
         ),
       );
     }
-    return Flexible(
-      child: GridView.count(
-        padding: const EdgeInsets.all(8),
-        crossAxisCount: 3,
-        childAspectRatio: 2.4,
-        shrinkWrap: true,
-        children: monthWidgets,
-      ),
+    return GridView.count(
+      padding: const EdgeInsets.all(8),
+      crossAxisCount: 3,
+      childAspectRatio: 2.4,
+      shrinkWrap: true,
+      children: monthWidgets,
     );
   }
 
@@ -288,10 +255,7 @@ class _JalaliDatePickerDialogState extends State<JalaliDatePickerDialog> {
       ],
     ).container(width: 350, height: 500),
     actions: <Widget>[
-      TextButton(
-        onPressed: UNavigator.back,
-        child: Text(U.s.cancel),
-      ),
+      TextButton(onPressed: UNavigator.back, child: Text(U.s.cancel)),
       TextButton(
         onPressed: () {
           widget.onDateSelected.call(selectedDate.toDateTime(), selectedDate);
