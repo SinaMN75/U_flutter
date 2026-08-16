@@ -245,6 +245,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "connectionToNetworkWasNotPossible": MessageLookupByLibrary.simpleMessage(
       "Connection to Network was Not possible",
     ),
+    "contactUs": MessageLookupByLibrary.simpleMessage("Contact us"),
     "content": MessageLookupByLibrary.simpleMessage("Content"),
     "contentType": MessageLookupByLibrary.simpleMessage("Content Type"),
     "contents": MessageLookupByLibrary.simpleMessage("Contents"),
@@ -531,6 +532,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "folder": MessageLookupByLibrary.simpleMessage("Folder"),
     "folderName": MessageLookupByLibrary.simpleMessage("Folder Name"),
     "folders": MessageLookupByLibrary.simpleMessage("Folders"),
+    "followUs": MessageLookupByLibrary.simpleMessage("Follow us"),
     "fontFamily": MessageLookupByLibrary.simpleMessage("Font"),
     "fontSize": MessageLookupByLibrary.simpleMessage("Font Size"),
     "foregroundColor": MessageLookupByLibrary.simpleMessage("Foreground"),
@@ -1544,6 +1546,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "violationsPlateAndLicense": MessageLookupByLibrary.simpleMessage(
       "Violations, plate and license",
     ),
+    "visitWebsite": MessageLookupByLibrary.simpleMessage("Visit website"),
     "visualAuthentication": MessageLookupByLibrary.simpleMessage(
       "Visual Authentication",
     ),

@@ -4379,6 +4379,26 @@ class S {
     );
   }
 
+  /// `Contact us`
+  String get contactUs {
+    return Intl.message('Contact us', name: 'contactUs', desc: '', args: []);
+  }
+
+  /// `Follow us`
+  String get followUs {
+    return Intl.message('Follow us', name: 'followUs', desc: '', args: []);
+  }
+
+  /// `Visit website`
+  String get visitWebsite {
+    return Intl.message(
+      'Visit website',
+      name: 'visitWebsite',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Extra Sections`
   String get extraSections {
     return Intl.message(

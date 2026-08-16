@@ -243,6 +243,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "connectionToNetworkWasNotPossible": MessageLookupByLibrary.simpleMessage(
       "ارتباط با اینترنت برقرار نیست",
     ),
+    "contactUs": MessageLookupByLibrary.simpleMessage("تماس با ما"),
     "content": MessageLookupByLibrary.simpleMessage("محتوا"),
     "contentType": MessageLookupByLibrary.simpleMessage("نوع محتوا"),
     "contents": MessageLookupByLibrary.simpleMessage("محتواها"),
@@ -521,6 +522,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "folder": MessageLookupByLibrary.simpleMessage("پوشه"),
     "folderName": MessageLookupByLibrary.simpleMessage("نام پوشه"),
     "folders": MessageLookupByLibrary.simpleMessage("پوشه‌ها"),
+    "followUs": MessageLookupByLibrary.simpleMessage("ما را دنبال کنید"),
     "fontFamily": MessageLookupByLibrary.simpleMessage("قلم"),
     "fontSize": MessageLookupByLibrary.simpleMessage("اندازه فونت"),
     "foregroundColor": MessageLookupByLibrary.simpleMessage("رنگ پیش‌زمینه"),
@@ -1508,6 +1510,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "violationsPlateAndLicense": MessageLookupByLibrary.simpleMessage(
       "خلافی، پلاک و گواهینامه",
     ),
+    "visitWebsite": MessageLookupByLibrary.simpleMessage("مشاهده وب‌سایت"),
     "visualAuthentication": MessageLookupByLibrary.simpleMessage(
       "احراز هویت تصویری",
     ),

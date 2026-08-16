@@ -68,6 +68,7 @@ export "components/segmented_control.dart";
 export "components/u_button.dart";
 export "components/u_credit_card.dart";
 export "components/u_drop_down.dart";
+export "components/u_content_bento_page.dart";
 export "components/u_general_widgets.dart";
 export "components/u_html_view.dart";
 export "components/u_image_viewer.dart";
