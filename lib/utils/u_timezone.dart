@@ -1,10 +1,12 @@
 import "dart:core";
 
-class TimezoneHelper {
+abstract class UTimezone {
   static String getLocalTimezone() {
     final DateTime now = DateTime.now();
     return _mapToIANA(now.timeZoneName, _formatOffset(now.timeZoneOffset));
   }
+
+  static Duration getTimezoneOffset() => DateTime.now().timeZoneOffset;
 
   static String _formatOffset(Duration offset) {
     final int hours = offset.inHours;

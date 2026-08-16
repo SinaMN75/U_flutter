@@ -98,6 +98,7 @@ abstract class UHttpClient {
             request.body = jsonEncode(removeNullEntries(body));
             request.headers["Content-Type"] = "application/json";
             request.headers["Locale"] = UApp.locale();
+            request.headers["Timezone"] = UTimezone.getLocalTimezone();
           } else if (body is String) {
             request.body = body;
           } else if (body is List<int>) {
@@ -130,7 +131,6 @@ abstract class UHttpClient {
       report(uploadWeight);
 
       final int? totalBytes = streamed.contentLength;
-      // BytesBuilder(copy: false) avoids the repeated reallocations of a growing List<int> on large responses
       final BytesBuilder receivedBuilder = BytesBuilder(copy: false);
       int receivedCount = 0;
 
