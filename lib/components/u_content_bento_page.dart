@@ -322,7 +322,7 @@ class UContentBentoPage extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Icon(Icons.call_rounded, color: scheme.onPrimaryContainer),
+          const UImage(UIcons.phone, package: "u"),
           const SizedBox(height: 12),
           UTextLabelMedium(U.s.contactUs, color: scheme.onPrimaryContainer.withValues(alpha: 0.7)),
           const SizedBox(height: 2),
