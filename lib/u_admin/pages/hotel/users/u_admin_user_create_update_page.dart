@@ -191,10 +191,10 @@ class _UserCreateUpdateDialogState extends State<UAdminUserCreateUpdateDialog> {
         p: UUserCreateParams(
           firstName: c.controllerFirstName.text,
           lastName: c.controllerLastName.text,
-          password: c.controllerPassword.text,
-          email: c.controllerEmail.text.toLatinNumber(),
-          phoneNumber: c.controllerPhoneNumber.numString(),
-          userName: c.controllerUserName.text.numberString(),
+          password: c.controllerPassword.trimmedLatin(),
+          email: c.controllerEmail.trimmedLatin(),
+          phoneNumber: c.controllerPhoneNumber.trimmedLatin(),
+          userName: c.controllerUserName.trimmedLatin(),
           birthdate: c.birthdate,
           fatherName: c.controllerFatherName.text,
           tags: <int>[
