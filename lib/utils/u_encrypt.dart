@@ -41,6 +41,311 @@ int _rotl32(int x, int n) => ((x << n) | (x >>> (32 - n))) & _m32;
 
 Uint8List _u8(String s) => Uint8List.fromList(utf8.encode(s));
 
+// --- 64-bit arithmetic as (hi, lo) 32-bit record pairs (web/JS-safe) --------
+typedef _U64 = (int, int);
+
+const List<int> _sha512KHi = <int>[
+  0x428a2f98,
+  0x71374491,
+  0xb5c0fbcf,
+  0xe9b5dba5,
+  0x3956c25b,
+  0x59f111f1,
+  0x923f82a4,
+  0xab1c5ed5,
+  0xd807aa98,
+  0x12835b01,
+  0x243185be,
+  0x550c7dc3,
+  0x72be5d74,
+  0x80deb1fe,
+  0x9bdc06a7,
+  0xc19bf174,
+  0xe49b69c1,
+  0xefbe4786,
+  0x0fc19dc6,
+  0x240ca1cc,
+  0x2de92c6f,
+  0x4a7484aa,
+  0x5cb0a9dc,
+  0x76f988da,
+  0x983e5152,
+  0xa831c66d,
+  0xb00327c8,
+  0xbf597fc7,
+  0xc6e00bf3,
+  0xd5a79147,
+  0x06ca6351,
+  0x14292967,
+  0x27b70a85,
+  0x2e1b2138,
+  0x4d2c6dfc,
+  0x53380d13,
+  0x650a7354,
+  0x766a0abb,
+  0x81c2c92e,
+  0x92722c85,
+  0xa2bfe8a1,
+  0xa81a664b,
+  0xc24b8b70,
+  0xc76c51a3,
+  0xd192e819,
+  0xd6990624,
+  0xf40e3585,
+  0x106aa070,
+  0x19a4c116,
+  0x1e376c08,
+  0x2748774c,
+  0x34b0bcb5,
+  0x391c0cb3,
+  0x4ed8aa4a,
+  0x5b9cca4f,
+  0x682e6ff3,
+  0x748f82ee,
+  0x78a5636f,
+  0x84c87814,
+  0x8cc70208,
+  0x90befffa,
+  0xa4506ceb,
+  0xbef9a3f7,
+  0xc67178f2,
+  0xca273ece,
+  0xd186b8c7,
+  0xeada7dd6,
+  0xf57d4f7f,
+  0x06f067aa,
+  0x0a637dc5,
+  0x113f9804,
+  0x1b710b35,
+  0x28db77f5,
+  0x32caab7b,
+  0x3c9ebe0a,
+  0x431d67c4,
+  0x4cc5d4be,
+  0x597f299c,
+  0x5fcb6fab,
+  0x6c44198c,
+];
+const List<int> _sha512KLo = <int>[
+  0xd728ae22,
+  0x23ef65cd,
+  0xec4d3b2f,
+  0x8189dbbc,
+  0xf348b538,
+  0xb605d019,
+  0xaf194f9b,
+  0xda6d8118,
+  0xa3030242,
+  0x45706fbe,
+  0x4ee4b28c,
+  0xd5ffb4e2,
+  0xf27b896f,
+  0x3b1696b1,
+  0x25c71235,
+  0xcf692694,
+  0x9ef14ad2,
+  0x384f25e3,
+  0x8b8cd5b5,
+  0x77ac9c65,
+  0x592b0275,
+  0x6ea6e483,
+  0xbd41fbd4,
+  0x831153b5,
+  0xee66dfab,
+  0x2db43210,
+  0x98fb213f,
+  0xbeef0ee4,
+  0x3da88fc2,
+  0x930aa725,
+  0xe003826f,
+  0x0a0e6e70,
+  0x46d22ffc,
+  0x5c26c926,
+  0x5ac42aed,
+  0x9d95b3df,
+  0x8baf63de,
+  0x3c77b2a8,
+  0x47edaee6,
+  0x1482353b,
+  0x4cf10364,
+  0xbc423001,
+  0xd0f89791,
+  0x0654be30,
+  0xd6ef5218,
+  0x5565a910,
+  0x5771202a,
+  0x32bbd1b8,
+  0xb8d2d0c8,
+  0x5141ab53,
+  0xdf8eeb99,
+  0xe19b48a8,
+  0xc5c95a63,
+  0xe3418acb,
+  0x7763e373,
+  0xd6b2b8a3,
+  0x5defb2fc,
+  0x43172f60,
+  0xa1f0ab72,
+  0x1a6439ec,
+  0x23631e28,
+  0xde82bde9,
+  0xb2c67915,
+  0xe372532b,
+  0xea26619c,
+  0x21c0c207,
+  0xcde0eb1e,
+  0xee6ed178,
+  0x72176fba,
+  0xa2c898a6,
+  0xbef90dae,
+  0x131c471b,
+  0x23047d84,
+  0x40c72493,
+  0x15c9bebc,
+  0x9c100d4c,
+  0xcb3e42b6,
+  0xfc657e2a,
+  0x3ad6faec,
+  0x4a475817,
+];
+const List<int> _sha512IvHi = <int>[0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19];
+const List<int> _sha512IvLo = <int>[0xf3bcc908, 0x84caa73b, 0xfe94f82b, 0x5f1d36f1, 0xade682d1, 0x2b3e6c1f, 0xfb41bd6b, 0x137e2179];
+const List<int> _sha384IvHi = <int>[0xcbbb9d5d, 0x629a292a, 0x9159015a, 0x152fecd8, 0x67332667, 0x8eb44a87, 0xdb0c2e0d, 0x47b5481d];
+const List<int> _sha384IvLo = <int>[0xc1059ed8, 0x367cd507, 0x3070dd17, 0xf70e5939, 0xffc00b31, 0x68581511, 0x64f98fa7, 0xbefa4fa4];
+const List<int> _sha512t256IvHi = <int>[0x22312194, 0x9f555fa3, 0x2393b86b, 0x96387719, 0x96283ee2, 0xbe5e1e25, 0x2b0199fc, 0x0eb72ddc];
+const List<int> _sha512t256IvLo = <int>[0xfc2bf72c, 0xc84c64c2, 0x6f53b151, 0x5940eabd, 0xa88effe3, 0x53863992, 0x2c85b8aa, 0x81c52ca2];
+const List<int> _keccakRcHi = <int>[
+  0x00000000,
+  0x00000000,
+  0x80000000,
+  0x80000000,
+  0x00000000,
+  0x00000000,
+  0x80000000,
+  0x80000000,
+  0x00000000,
+  0x00000000,
+  0x00000000,
+  0x00000000,
+  0x00000000,
+  0x80000000,
+  0x80000000,
+  0x80000000,
+  0x80000000,
+  0x80000000,
+  0x00000000,
+  0x80000000,
+  0x80000000,
+  0x80000000,
+  0x00000000,
+  0x80000000,
+];
+const List<int> _keccakRcLo = <int>[
+  0x00000001,
+  0x00008082,
+  0x0000808a,
+  0x80008000,
+  0x0000808b,
+  0x80000001,
+  0x80008081,
+  0x00008009,
+  0x0000008a,
+  0x00000088,
+  0x80008009,
+  0x8000000a,
+  0x8000808b,
+  0x0000008b,
+  0x00008089,
+  0x00008003,
+  0x00008002,
+  0x00000080,
+  0x0000800a,
+  0x8000000a,
+  0x80008081,
+  0x00008080,
+  0x80000001,
+  0x80008008,
+];
+const List<int> _blakeIvHi = <int>[0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19];
+const List<int> _blakeIvLo = <int>[0xf3bcc908, 0x84caa73b, 0xfe94f82b, 0x5f1d36f1, 0xade682d1, 0x2b3e6c1f, 0xfb41bd6b, 0x137e2179];
+
+_U64 _add64(_U64 a, _U64 b) {
+  final int lo = a.$2 + b.$2;
+  final int hi = a.$1 + b.$1 + (lo >= 0x100000000 ? 1 : 0);
+  return (hi & _m32, lo & _m32);
+}
+
+_U64 _xor64(_U64 a, _U64 b) => ((a.$1 ^ b.$1) & _m32, (a.$2 ^ b.$2) & _m32);
+
+_U64 _and64(_U64 a, _U64 b) => ((a.$1 & b.$1) & _m32, (a.$2 & b.$2) & _m32);
+
+_U64 _not64(_U64 a) => ((~a.$1) & _m32, (~a.$2) & _m32);
+
+_U64 _shr64(_U64 a, int n) {
+  if (n == 0) return a;
+  if (n < 32) return ((a.$1 >>> n) & _m32, ((a.$2 >>> n) | (a.$1 << (32 - n))) & _m32);
+  return (0, (a.$1 >>> (n - 32)) & _m32);
+}
+
+_U64 _rotr64p(_U64 a, int n) {
+  final int m = n & 63;
+  if (m == 0) return a;
+  if (m == 32) return (a.$2, a.$1);
+  if (m < 32) return (((a.$1 >>> m) | (a.$2 << (32 - m))) & _m32, ((a.$2 >>> m) | (a.$1 << (32 - m))) & _m32);
+  final int k = m - 32;
+  return (((a.$2 >>> k) | (a.$1 << (32 - k))) & _m32, ((a.$1 >>> k) | (a.$2 << (32 - k))) & _m32);
+}
+
+_U64 _rotl64p(_U64 a, int n) => _rotr64p(a, 64 - (n & 63));
+
+_U64 _load64BE(Uint8List b, int o) => (((b[o] << 24) | (b[o + 1] << 16) | (b[o + 2] << 8) | b[o + 3]) & _m32, ((b[o + 4] << 24) | (b[o + 5] << 16) | (b[o + 6] << 8) | b[o + 7]) & _m32);
+
+_U64 _load64LEp(Uint8List b, int o) => (((b[o + 4]) | (b[o + 5] << 8) | (b[o + 6] << 16) | (b[o + 7] << 24)) & _m32, ((b[o]) | (b[o + 1] << 8) | (b[o + 2] << 16) | (b[o + 3] << 24)) & _m32);
+
+void _store64BE(Uint8List out, int o, _U64 v) {
+  out[o] = (v.$1 >>> 24) & 0xFF;
+  out[o + 1] = (v.$1 >>> 16) & 0xFF;
+  out[o + 2] = (v.$1 >>> 8) & 0xFF;
+  out[o + 3] = v.$1 & 0xFF;
+  out[o + 4] = (v.$2 >>> 24) & 0xFF;
+  out[o + 5] = (v.$2 >>> 16) & 0xFF;
+  out[o + 6] = (v.$2 >>> 8) & 0xFF;
+  out[o + 7] = v.$2 & 0xFF;
+}
+
+void _store64LE(Uint8List out, int o, _U64 v) {
+  out[o] = v.$2 & 0xFF;
+  out[o + 1] = (v.$2 >>> 8) & 0xFF;
+  out[o + 2] = (v.$2 >>> 16) & 0xFF;
+  out[o + 3] = (v.$2 >>> 24) & 0xFF;
+  out[o + 4] = v.$1 & 0xFF;
+  out[o + 5] = (v.$1 >>> 8) & 0xFF;
+  out[o + 6] = (v.$1 >>> 16) & 0xFF;
+  out[o + 7] = (v.$1 >>> 24) & 0xFF;
+}
+
+Uint8List _len64BE(int value) {
+  final Uint8List b = Uint8List(8);
+  int v = value;
+  for (int i = 7; i >= 0; i--) {
+    b[i] = v % 256;
+    v = v ~/ 256;
+  }
+  return b;
+}
+
+Uint8List _len64LE(int value) {
+  final Uint8List b = Uint8List(8);
+  int v = value;
+  for (int i = 0; i < 8; i++) {
+    b[i] = v % 256;
+    v = v ~/ 256;
+  }
+  return b;
+}
+
+List<_U64> _ivPairs(List<int> hi, List<int> lo) => List<_U64>.generate(hi.length, (int i) => (hi[i], lo[i]));
+
 // ===========================================================================
 // MD5
 // ===========================================================================
@@ -122,8 +427,7 @@ Uint8List _md5(Uint8List msg) {
     ..add(msg)
     ..addByte(0x80)
     ..add(Uint8List(padLen));
-  final ByteData lenData = ByteData(8)..setUint64(0, bitLen, Endian.little);
-  bb.add(lenData.buffer.asUint8List());
+  bb.add(_len64LE(bitLen));
   final Uint8List data = bb.toBytes();
 
   int a0 = 0x67452301;
@@ -372,8 +676,7 @@ Uint8List _padBE(Uint8List msg) {
     ..add(msg)
     ..addByte(0x80)
     ..add(Uint8List(padLen));
-  final ByteData lenData = ByteData(8)..setUint64(0, bitLen);
-  bb.add(lenData.buffer.asUint8List());
+  bb.add(_len64BE(bitLen));
   return bb.toBytes();
 }
 
@@ -381,160 +684,70 @@ Uint8List _padBE(Uint8List msg) {
 // SHA-384 / SHA-512 (64-bit; native targets)
 // ===========================================================================
 
-const List<int> _sha512K = <int>[
-  0x428a2f98d728ae22,
-  0x7137449123ef65cd,
-  0xb5c0fbcfec4d3b2f,
-  0xe9b5dba58189dbbc,
-  0x3956c25bf348b538,
-  0x59f111f1b605d019,
-  0x923f82a4af194f9b,
-  0xab1c5ed5da6d8118,
-  0xd807aa98a3030242,
-  0x12835b0145706fbe,
-  0x243185be4ee4b28c,
-  0x550c7dc3d5ffb4e2,
-  0x72be5d74f27b896f,
-  0x80deb1fe3b1696b1,
-  0x9bdc06a725c71235,
-  0xc19bf174cf692694,
-  0xe49b69c19ef14ad2,
-  0xefbe4786384f25e3,
-  0x0fc19dc68b8cd5b5,
-  0x240ca1cc77ac9c65,
-  0x2de92c6f592b0275,
-  0x4a7484aa6ea6e483,
-  0x5cb0a9dcbd41fbd4,
-  0x76f988da831153b5,
-  0x983e5152ee66dfab,
-  0xa831c66d2db43210,
-  0xb00327c898fb213f,
-  0xbf597fc7beef0ee4,
-  0xc6e00bf33da88fc2,
-  0xd5a79147930aa725,
-  0x06ca6351e003826f,
-  0x142929670a0e6e70,
-  0x27b70a8546d22ffc,
-  0x2e1b21385c26c926,
-  0x4d2c6dfc5ac42aed,
-  0x53380d139d95b3df,
-  0x650a73548baf63de,
-  0x766a0abb3c77b2a8,
-  0x81c2c92e47edaee6,
-  0x92722c851482353b,
-  0xa2bfe8a14cf10364,
-  0xa81a664bbc423001,
-  0xc24b8b70d0f89791,
-  0xc76c51a30654be30,
-  0xd192e819d6ef5218,
-  0xd69906245565a910,
-  0xf40e35855771202a,
-  0x106aa07032bbd1b8,
-  0x19a4c116b8d2d0c8,
-  0x1e376c085141ab53,
-  0x2748774cdf8eeb99,
-  0x34b0bcb5e19b48a8,
-  0x391c0cb3c5c95a63,
-  0x4ed8aa4ae3418acb,
-  0x5b9cca4f7763e373,
-  0x682e6ff3d6b2b8a3,
-  0x748f82ee5defb2fc,
-  0x78a5636f43172f60,
-  0x84c87814a1f0ab72,
-  0x8cc702081a6439ec,
-  0x90befffa23631e28,
-  0xa4506cebde82bde9,
-  0xbef9a3f7b2c67915,
-  0xc67178f2e372532b,
-  0xca273eceea26619c,
-  0xd186b8c721c0c207,
-  0xeada7dd6cde0eb1e,
-  0xf57d4f7fee6ed178,
-  0x06f067aa72176fba,
-  0x0a637dc5a2c898a6,
-  0x113f9804bef90dae,
-  0x1b710b35131c471b,
-  0x28db77f523047d84,
-  0x32caab7b40c72493,
-  0x3c9ebe0a15c9bebc,
-  0x431d67c49c100d4c,
-  0x4cc5d4becb3e42b6,
-  0x597f299cfc657e2a,
-  0x5fcb6fab3ad6faec,
-  0x6c44198c4a475817,
-];
-
-int _rotr64(int x, int n) => (x >>> n) | (x << (64 - n));
-
-Uint8List _sha512Core(Uint8List msg, List<int> h0, int outBytes) {
+Uint8List _sha512Core(Uint8List msg, List<_U64> h0, int outBytes) {
   final int msgBits = msg.length * 8;
   final int padLen = (112 - (msg.length + 1) % 128) % 128;
   final BytesBuilder bb = BytesBuilder()
     ..add(msg)
     ..addByte(0x80)
     ..add(Uint8List(padLen))
-    ..add(Uint8List(8));
-  final ByteData lenData = ByteData(8)..setUint64(0, msgBits);
-  bb.add(lenData.buffer.asUint8List());
+    ..add(Uint8List(8))
+    ..add(_len64BE(msgBits));
   final Uint8List data = bb.toBytes();
-
-  final List<int> h = List<int>.of(h0);
-  final ByteData view = ByteData.sublistView(data);
-  final List<int> w = List<int>.filled(80, 0);
+  final List<_U64> h = List<_U64>.of(h0);
+  final List<_U64> w = List<_U64>.filled(80, (0, 0));
   for (int off = 0; off < data.length; off += 128) {
     for (int i = 0; i < 16; i++) {
-      w[i] = view.getUint64(off + i * 8);
+      w[i] = _load64BE(data, off + i * 8);
     }
     for (int i = 16; i < 80; i++) {
-      final int s0 = _rotr64(w[i - 15], 1) ^ _rotr64(w[i - 15], 8) ^ (w[i - 15] >>> 7);
-      final int s1 = _rotr64(w[i - 2], 19) ^ _rotr64(w[i - 2], 61) ^ (w[i - 2] >>> 6);
-      w[i] = w[i - 16] + s0 + w[i - 7] + s1;
+      final _U64 s0 = _xor64(_xor64(_rotr64p(w[i - 15], 1), _rotr64p(w[i - 15], 8)), _shr64(w[i - 15], 7));
+      final _U64 s1 = _xor64(_xor64(_rotr64p(w[i - 2], 19), _rotr64p(w[i - 2], 61)), _shr64(w[i - 2], 6));
+      w[i] = _add64(_add64(w[i - 16], s0), _add64(w[i - 7], s1));
     }
-    int a = h[0];
-    int b = h[1];
-    int c = h[2];
-    int d = h[3];
-    int e = h[4];
-    int f = h[5];
-    int g = h[6];
-    int hh = h[7];
+    _U64 a = h[0];
+    _U64 b = h[1];
+    _U64 c = h[2];
+    _U64 d = h[3];
+    _U64 e = h[4];
+    _U64 f = h[5];
+    _U64 g = h[6];
+    _U64 hh = h[7];
     for (int i = 0; i < 80; i++) {
-      final int s1 = _rotr64(e, 14) ^ _rotr64(e, 18) ^ _rotr64(e, 41);
-      final int ch = (e & f) ^ (~e & g);
-      final int t1 = hh + s1 + ch + _sha512K[i] + w[i];
-      final int s0 = _rotr64(a, 28) ^ _rotr64(a, 34) ^ _rotr64(a, 39);
-      final int maj = (a & b) ^ (a & c) ^ (b & c);
-      final int t2 = s0 + maj;
+      final _U64 s1 = _xor64(_xor64(_rotr64p(e, 14), _rotr64p(e, 18)), _rotr64p(e, 41));
+      final _U64 ch = _xor64(_and64(e, f), _and64(_not64(e), g));
+      final _U64 t1 = _add64(_add64(_add64(hh, s1), _add64(ch, (_sha512KHi[i], _sha512KLo[i]))), w[i]);
+      final _U64 s0 = _xor64(_xor64(_rotr64p(a, 28), _rotr64p(a, 34)), _rotr64p(a, 39));
+      final _U64 maj = _xor64(_xor64(_and64(a, b), _and64(a, c)), _and64(b, c));
+      final _U64 t2 = _add64(s0, maj);
       hh = g;
       g = f;
       f = e;
-      e = d + t1;
+      e = _add64(d, t1);
       d = c;
       c = b;
       b = a;
-      a = t1 + t2;
+      a = _add64(t1, t2);
     }
-    h[0] += a;
-    h[1] += b;
-    h[2] += c;
-    h[3] += d;
-    h[4] += e;
-    h[5] += f;
-    h[6] += g;
-    h[7] += hh;
+    h[0] = _add64(h[0], a);
+    h[1] = _add64(h[1], b);
+    h[2] = _add64(h[2], c);
+    h[3] = _add64(h[3], d);
+    h[4] = _add64(h[4], e);
+    h[5] = _add64(h[5], f);
+    h[6] = _add64(h[6], g);
+    h[7] = _add64(h[7], hh);
   }
-  final ByteData out = ByteData(64);
+  final Uint8List out = Uint8List(64);
   for (int i = 0; i < 8; i++) {
-    out.setUint64(i * 8, h[i]);
+    _store64BE(out, i * 8, h[i]);
   }
-  return out.buffer.asUint8List().sublist(0, outBytes);
+  return Uint8List.fromList(out.sublist(0, outBytes));
 }
 
-Uint8List _sha512(Uint8List msg) =>
-    _sha512Core(msg, <int>[0x6a09e667f3bcc908, 0xbb67ae8584caa73b, 0x3c6ef372fe94f82b, 0xa54ff53a5f1d36f1, 0x510e527fade682d1, 0x9b05688c2b3e6c1f, 0x1f83d9abfb41bd6b, 0x5be0cd19137e2179], 64);
+Uint8List _sha512(Uint8List msg) => _sha512Core(msg, _ivPairs(_sha512IvHi, _sha512IvLo), 64);
 
-Uint8List _sha384(Uint8List msg) =>
-    _sha512Core(msg, <int>[0xcbbb9d5dc1059ed8, 0x629a292a367cd507, 0x9159015a3070dd17, 0x152fecd8f70e5939, 0x67332667ffc00b31, 0x8eb44a8768581511, 0xdb0c2e0d64f98fa7, 0x47b5481dbefa4fa4], 48);
+Uint8List _sha384(Uint8List msg) => _sha512Core(msg, _ivPairs(_sha384IvHi, _sha384IvLo), 48);
 
 // ===========================================================================
 // HMAC + KDF (PBKDF2, HKDF)
@@ -947,12 +1160,7 @@ Uint8List _ghash(Uint8List h, Uint8List data) {
   return y;
 }
 
-Uint8List _lenBlock(int aadBits, int cBits) {
-  final ByteData bd = ByteData(16)
-    ..setUint64(0, aadBits)
-    ..setUint64(8, cBits);
-  return bd.buffer.asUint8List();
-}
+Uint8List _lenBlock(int aadBits, int cBits) => _concat(<Uint8List>[_len64BE(aadBits), _len64BE(cBits)]);
 
 /// Returns ciphertext concatenated with the 16-byte tag.
 Uint8List _aesGcmEncrypt(Uint8List key, Uint8List nonce, Uint8List plain, Uint8List aad) {
@@ -1186,10 +1394,7 @@ Uint8List _pad16(Uint8List d) {
   return rem == 0 ? Uint8List(0) : Uint8List(16 - rem);
 }
 
-Uint8List _le64(int value) {
-  final ByteData bd = ByteData(8)..setUint64(0, value, Endian.little);
-  return bd.buffer.asUint8List();
-}
+Uint8List _le64(int value) => _len64LE(value);
 
 /// Returns ciphertext concatenated with the 16-byte Poly1305 tag.
 Uint8List _chachaPolyEncrypt(Uint8List key32, Uint8List nonce12, Uint8List plain, Uint8List aad) {
@@ -1292,10 +1497,9 @@ Uint8List _fernetEncryptBytes(Uint8List key32, Uint8List plain, int timestamp) {
   final Uint8List encKey = key32.sublist(16, 32);
   final Uint8List iv = _randomBytes(16);
   final Uint8List cipher = _aesCbc(encKey, iv, plain, true, true);
-  final ByteData ts = ByteData(8)..setUint64(0, timestamp);
   final Uint8List pre = _concat(<Uint8List>[
     Uint8List.fromList(<int>[0x80]),
-    ts.buffer.asUint8List(),
+    _len64BE(timestamp),
     iv,
     cipher,
   ]);
@@ -1643,7 +1847,7 @@ abstract class UEncryption {
 
   static String sm3Hash(String text) => _toHex(_sm3(_u8(text)));
 
-  static String sha512256Hash(String text) => _toHex(_sha512_256(_u8(text)));
+  static String sha512256Hash(String text) => _toHex(_sha512t256(_u8(text)));
 
   static String blake2bHash(String text, {int bytes = 64}) => _toHex(_blake2b(_u8(text), bytes));
 
@@ -1728,62 +1932,26 @@ abstract class UEncryption {
 // Extended hashes: SHA-3 / Keccak / SHAKE, RIPEMD-160, MD4, SM3, SHA-512/256
 // ===========================================================================
 
-int _load64LE(Uint8List b, int off) {
-  int v = 0;
-  for (int i = 0; i < 8; i++) {
-    v |= b[off + i] << (8 * i);
-  }
-  return v;
-}
-
-int _rotl64(int x, int n) => (x << n) | (x >>> (64 - n));
-
-const List<int> _keccakRc = <int>[
-  0x0000000000000001,
-  0x0000000000008082,
-  0x800000000000808a,
-  0x8000000080008000,
-  0x000000000000808b,
-  0x0000000080000001,
-  0x8000000080008081,
-  0x8000000000008009,
-  0x000000000000008a,
-  0x0000000000000088,
-  0x0000000080008009,
-  0x000000008000000a,
-  0x000000008000808b,
-  0x800000000000008b,
-  0x8000000000008089,
-  0x8000000000008003,
-  0x8000000000008002,
-  0x8000000000000080,
-  0x000000000000800a,
-  0x800000008000000a,
-  0x8000000080008081,
-  0x8000000000008080,
-  0x0000000080000001,
-  0x8000000080008008,
-];
 const List<int> _keccakRotc = <int>[1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 2, 14, 27, 41, 56, 8, 25, 43, 62, 18, 39, 61, 20, 44];
 const List<int> _keccakPiln = <int>[10, 7, 11, 17, 18, 3, 5, 16, 8, 21, 24, 4, 15, 23, 19, 13, 12, 2, 20, 14, 22, 9, 6, 1];
 
-void _keccakF(List<int> st) {
-  final List<int> bc = List<int>.filled(5, 0);
+void _keccakF(List<_U64> st) {
+  final List<_U64> bc = List<_U64>.filled(5, (0, 0));
   for (int round = 0; round < 24; round++) {
     for (int i = 0; i < 5; i++) {
-      bc[i] = st[i] ^ st[i + 5] ^ st[i + 10] ^ st[i + 15] ^ st[i + 20];
+      bc[i] = _xor64(_xor64(_xor64(st[i], st[i + 5]), _xor64(st[i + 10], st[i + 15])), st[i + 20]);
     }
     for (int i = 0; i < 5; i++) {
-      final int t = bc[(i + 4) % 5] ^ _rotl64(bc[(i + 1) % 5], 1);
+      final _U64 t = _xor64(bc[(i + 4) % 5], _rotl64p(bc[(i + 1) % 5], 1));
       for (int j = 0; j < 25; j += 5) {
-        st[j + i] ^= t;
+        st[j + i] = _xor64(st[j + i], t);
       }
     }
-    int t = st[1];
+    _U64 t = st[1];
     for (int i = 0; i < 24; i++) {
       final int j = _keccakPiln[i];
-      final int tmp = st[j];
-      st[j] = _rotl64(t, _keccakRotc[i]);
+      final _U64 tmp = st[j];
+      st[j] = _rotl64p(t, _keccakRotc[i]);
       t = tmp;
     }
     for (int j = 0; j < 25; j += 5) {
@@ -1791,21 +1959,21 @@ void _keccakF(List<int> st) {
         bc[i] = st[j + i];
       }
       for (int i = 0; i < 5; i++) {
-        st[j + i] ^= (~bc[(i + 1) % 5]) & bc[(i + 2) % 5];
+        st[j + i] = _xor64(st[j + i], _and64(_not64(bc[(i + 1) % 5]), bc[(i + 2) % 5]));
       }
     }
-    st[0] ^= _keccakRc[round];
+    st[0] = _xor64(st[0], (_keccakRcHi[round], _keccakRcLo[round]));
   }
 }
 
 Uint8List _keccak(int rate, Uint8List input, int pad, int outLen) {
-  final List<int> st = List<int>.filled(25, 0);
+  final List<_U64> st = List<_U64>.filled(25, (0, 0));
   final int rateLanes = rate ~/ 8;
   int off = 0;
   int remaining = input.length;
   while (remaining >= rate) {
     for (int i = 0; i < rateLanes; i++) {
-      st[i] ^= _load64LE(input, off + i * 8);
+      st[i] = _xor64(st[i], _load64LEp(input, off + i * 8));
     }
     _keccakF(st);
     off += rate;
@@ -1818,15 +1986,17 @@ Uint8List _keccak(int rate, Uint8List input, int pad, int outLen) {
   block[remaining] = pad;
   block[rate - 1] |= 0x80;
   for (int i = 0; i < rateLanes; i++) {
-    st[i] ^= _load64LE(block, i * 8);
+    st[i] = _xor64(st[i], _load64LEp(block, i * 8));
   }
   _keccakF(st);
   final Uint8List out = Uint8List(outLen);
+  final Uint8List lane = Uint8List(8);
   int produced = 0;
   while (produced < outLen) {
     final int n = min(rate, outLen - produced);
     for (int i = 0; i < n; i++) {
-      out[produced + i] = (st[i ~/ 8] >>> (8 * (i % 8))) & 0xFF;
+      if (i % 8 == 0) _store64LE(lane, 0, st[i ~/ 8]);
+      out[produced + i] = lane[i % 8];
     }
     produced += n;
     if (produced < outLen) _keccakF(st);
@@ -1840,8 +2010,7 @@ Uint8List _keccakLegacy(Uint8List msg, int bits) => _keccak(200 - bits ~/ 4, msg
 
 Uint8List _shake(Uint8List msg, int capacityBits, int outBytes) => _keccak(200 - capacityBits ~/ 8, msg, 0x1f, outBytes);
 
-Uint8List _sha512_256(Uint8List msg) =>
-    _sha512Core(msg, <int>[0x22312194fc2bf72c, 0x9f555fa3c84c64c2, 0x2393b86b6f53b151, 0x963877195940eabd, 0x96283ee2a88effe3, 0xbe5e1e2553863992, 0x2b0199fc2c85b8aa, 0x0eb72ddc81c52ca2], 32);
+Uint8List _sha512t256(Uint8List msg) => _sha512Core(msg, _ivPairs(_sha512t256IvHi, _sha512t256IvLo), 32);
 
 // --- MD4 -------------------------------------------------------------------
 
@@ -1852,8 +2021,7 @@ Uint8List _md4(Uint8List msg) {
     ..add(msg)
     ..addByte(0x80)
     ..add(Uint8List(padLen));
-  final ByteData lenData = ByteData(8)..setUint64(0, bitLen, Endian.little);
-  bb.add(lenData.buffer.asUint8List());
+  bb.add(_len64LE(bitLen));
   final Uint8List data = bb.toBytes();
   int a = 0x67452301;
   int b = 0xefcdab89;
@@ -2247,8 +2415,7 @@ Uint8List _ripemd160(Uint8List msg) {
     ..add(msg)
     ..addByte(0x80)
     ..add(Uint8List(padLen));
-  final ByteData lenData = ByteData(8)..setUint64(0, bitLen, Endian.little);
-  bb.add(lenData.buffer.asUint8List());
+  bb.add(_len64LE(bitLen));
   final Uint8List data = bb.toBytes();
   int h0 = 0x67452301;
   int h1 = 0xefcdab89;
@@ -2319,8 +2486,7 @@ Uint8List _sm3(Uint8List msg) {
     ..add(msg)
     ..addByte(0x80)
     ..add(Uint8List(padLen));
-  final ByteData lenData = ByteData(8)..setUint64(0, bitLen);
-  bb.add(lenData.buffer.asUint8List());
+  bb.add(_len64BE(bitLen));
   final Uint8List data = bb.toBytes();
   final List<int> v = <int>[0x7380166f, 0x4914b2b9, 0x172442d7, 0xda8a0600, 0xa96f30bc, 0x163138aa, 0xe38dee4d, 0xb0fb0e4e];
   final ByteData view = ByteData.sublistView(data);
@@ -2396,28 +2562,27 @@ const List<List<int>> _blakeSigma = <List<int>>[
   <int>[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
   <int>[14, 10, 4, 8, 9, 15, 13, 6, 1, 12, 0, 2, 11, 7, 5, 3],
 ];
-const List<int> _blakeIv = <int>[0x6a09e667f3bcc908, 0xbb67ae8584caa73b, 0x3c6ef372fe94f82b, 0xa54ff53a5f1d36f1, 0x510e527fade682d1, 0x9b05688c2b3e6c1f, 0x1f83d9abfb41bd6b, 0x5be0cd19137e2179];
 
-void _blakeG(List<int> v, int a, int b, int c, int d, int x, int y) {
-  v[a] = v[a] + v[b] + x;
-  v[d] = _rotr64(v[d] ^ v[a], 32);
-  v[c] = v[c] + v[d];
-  v[b] = _rotr64(v[b] ^ v[c], 24);
-  v[a] = v[a] + v[b] + y;
-  v[d] = _rotr64(v[d] ^ v[a], 16);
-  v[c] = v[c] + v[d];
-  v[b] = _rotr64(v[b] ^ v[c], 63);
+void _blakeG(List<_U64> v, int a, int b, int c, int d, _U64 x, _U64 y) {
+  v[a] = _add64(_add64(v[a], v[b]), x);
+  v[d] = _rotr64p(_xor64(v[d], v[a]), 32);
+  v[c] = _add64(v[c], v[d]);
+  v[b] = _rotr64p(_xor64(v[b], v[c]), 24);
+  v[a] = _add64(_add64(v[a], v[b]), y);
+  v[d] = _rotr64p(_xor64(v[d], v[a]), 16);
+  v[c] = _add64(v[c], v[d]);
+  v[b] = _rotr64p(_xor64(v[b], v[c]), 63);
 }
 
-void _blake2bCompress(List<int> h, Uint8List block, int t, bool last) {
-  final List<int> m = List<int>.generate(16, (int i) => _load64LE(block, i * 8));
-  final List<int> v = List<int>.filled(16, 0);
+void _blake2bCompress(List<_U64> h, Uint8List block, int t, bool last) {
+  final List<_U64> m = List<_U64>.generate(16, (int i) => _load64LEp(block, i * 8));
+  final List<_U64> v = List<_U64>.filled(16, (0, 0));
   for (int i = 0; i < 8; i++) {
     v[i] = h[i];
-    v[i + 8] = _blakeIv[i];
+    v[i + 8] = (_blakeIvHi[i], _blakeIvLo[i]);
   }
-  v[12] ^= t;
-  if (last) v[14] = ~v[14];
+  v[12] = _xor64(v[12], (t ~/ 0x100000000, t % 0x100000000));
+  if (last) v[14] = _not64(v[14]);
   for (int r = 0; r < 12; r++) {
     final List<int> s = _blakeSigma[r];
     _blakeG(v, 0, 4, 8, 12, m[s[0]], m[s[1]]);
@@ -2430,13 +2595,13 @@ void _blake2bCompress(List<int> h, Uint8List block, int t, bool last) {
     _blakeG(v, 3, 4, 9, 14, m[s[14]], m[s[15]]);
   }
   for (int i = 0; i < 8; i++) {
-    h[i] ^= v[i] ^ v[i + 8];
+    h[i] = _xor64(h[i], _xor64(v[i], v[i + 8]));
   }
 }
 
 Uint8List _blake2b(Uint8List msg, int outLen) {
-  final List<int> h = List<int>.of(_blakeIv);
-  h[0] ^= 0x01010000 ^ outLen;
+  final List<_U64> h = _ivPairs(_blakeIvHi, _blakeIvLo);
+  h[0] = _xor64(h[0], (0, 0x01010000 ^ outLen));
   int t = 0;
   int off = 0;
   int remaining = msg.length;
@@ -2452,11 +2617,11 @@ Uint8List _blake2b(Uint8List msg, int outLen) {
   }
   t += remaining;
   _blake2bCompress(h, lastBlock, t, true);
-  final ByteData full = ByteData(64);
+  final Uint8List full = Uint8List(64);
   for (int i = 0; i < 8; i++) {
-    full.setUint64(i * 8, h[i], Endian.little);
+    _store64LE(full, i * 8, h[i]);
   }
-  return full.buffer.asUint8List().sublist(0, outLen);
+  return Uint8List.fromList(full.sublist(0, outLen));
 }
 
 // --- scrypt ----------------------------------------------------------------
