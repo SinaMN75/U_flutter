@@ -30,7 +30,6 @@ export "package:http_parser/http_parser.dart";
 
 export "components/u_image_cropper.dart";
 
-export "package:image_picker/image_picker.dart";
 export "package:latlong2/latlong.dart" hide Path, pi;
 export "package:logging/logging.dart";
 export "package:lottie/lottie.dart" hide Marker;
@@ -52,6 +51,7 @@ export "components/chip_choice.dart";
 export "components/container.dart";
 export "components/count_down_timer.dart";
 export "components/file_picker.dart";
+export "components/u_camera.dart";
 export "components/flip_card.dart";
 export "components/u_charts.dart";
 export "components/u_gauges.dart";
