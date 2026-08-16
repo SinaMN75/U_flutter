@@ -13,8 +13,10 @@ class UImage extends StatelessWidget {
     this.fit = BoxFit.contain,
     this.borderRadius = 1,
     this.border,
+    this.package,
   });
 
+  final String? package;
   final String source;
   final FileData? fileData;
   final Color? color;
@@ -66,6 +68,7 @@ class UImage extends StatelessWidget {
               placeholder: placeholder,
               color: color,
               fit: fit,
+              package: package,
             );
           }
         } else {
@@ -92,6 +95,7 @@ class UImage extends StatelessWidget {
               borderRadius: borderRadius,
               placeholder: placeholder,
               color: color,
+              package: package,
             );
           }
         }
@@ -110,8 +114,10 @@ class UIconPrimary extends StatelessWidget {
     this.placeholder,
     this.fit = BoxFit.contain,
     this.borderRadius = 1,
+    this.package,
   });
 
+  final String? package;
   final String source;
   final Color? color;
   final double? width;
@@ -129,6 +135,7 @@ class UIconPrimary extends StatelessWidget {
     fit: fit,
     borderRadius: borderRadius,
     placeholder: placeholder,
+    package: package,
   );
 }
 
@@ -142,9 +149,11 @@ class UImageAsset extends StatelessWidget {
     this.fit = BoxFit.contain,
     this.clipBehavior = Clip.hardEdge,
     this.borderRadius = 1,
+    this.package,
     super.key,
   });
 
+  final String? package;
   final String path;
   final String? placeholder;
   final Color? color;
@@ -162,6 +171,7 @@ class UImageAsset extends StatelessWidget {
           height: height,
           fit: fit,
           color: color,
+          package: package,
           placeholderBuilder: (BuildContext context) => placeholder == null
               ? SizedBox(width: width, height: height)
               : UImageAsset(
@@ -172,6 +182,7 @@ class UImageAsset extends StatelessWidget {
                   fit: fit,
                   clipBehavior: clipBehavior,
                   borderRadius: borderRadius,
+            package: package,
                 ),
         ).container(radius: borderRadius)
       : Image.asset(
@@ -182,6 +193,7 @@ class UImageAsset extends StatelessWidget {
           fit: fit,
           cacheWidth: width == null ? null : (width! * (MediaQuery.maybeDevicePixelRatioOf(context) ?? 1.0)).round(),
           cacheHeight: height == null ? null : (height! * (MediaQuery.maybeDevicePixelRatioOf(context) ?? 1.0)).round(),
+          package: package,
           errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) => placeholder == null
               ? SizedBox(width: width, height: height)
               : UImageAsset(
@@ -192,6 +204,7 @@ class UImageAsset extends StatelessWidget {
                   fit: fit,
                   clipBehavior: clipBehavior,
                   borderRadius: borderRadius,
+            package: package,
                 ),
         );
 }
@@ -206,9 +219,11 @@ class UImageNetwork extends StatelessWidget {
     this.clipBehavior = Clip.hardEdge,
     this.borderRadius = 1,
     this.placeholder,
+    this.package,
     super.key,
   });
 
+  final String? package;
   final String url;
   final Color? color;
   final double? width;
@@ -231,14 +246,15 @@ class UImageNetwork extends StatelessWidget {
                   fit: fit,
                   clipBehavior: clipBehavior,
                   borderRadius: borderRadius,
-                )
+      package: package,
+    )
         : url.substring(url.length - 3) == "svg"
         ? SvgPicture.network(
             url,
             width: width,
             height: height,
             fit: fit,
-            placeholderBuilder: placeholder == null
+      placeholderBuilder: placeholder == null
                 ? null
                 : (_) => UImageAsset(
                     placeholder!,
@@ -247,7 +263,8 @@ class UImageNetwork extends StatelessWidget {
                     fit: fit,
                     clipBehavior: clipBehavior,
                     borderRadius: borderRadius,
-                  ),
+        package: package,
+      ),
           )
         : CachedNetworkImage(
             imageUrl: url,
@@ -262,7 +279,8 @@ class UImageNetwork extends StatelessWidget {
                     width: width,
                     height: height,
                     fit: fit,
-                  ),
+              package: package,
+            ),
             placeholder: placeholder == null
                 ? null
                 : UImage(
@@ -271,7 +289,8 @@ class UImageNetwork extends StatelessWidget {
                     width: width,
                     height: height,
                     fit: fit,
-                  ),
+              package: package,
+            ),
           ),
   ).container(radius: borderRadius);
 }

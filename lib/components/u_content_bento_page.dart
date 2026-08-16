@@ -335,9 +335,9 @@ class UContentBentoPage extends StatelessWidget {
   Widget? _followTile(BuildContext context, UContentJson j) {
     final ColorScheme scheme = Theme.of(context).colorScheme;
     final List<Widget> buttons = <Widget>[];
-    if (_has(j.instagram)) buttons.add(_socialButton(context, Icons.camera_alt_rounded, () => _openSocial(j.instagram!, ULaunch.launchInstagram)));
-    if (_has(j.telegram)) buttons.add(_socialButton(context, Icons.send_rounded, () => _openSocial(j.telegram!, ULaunch.launchTelegram)));
-    if (_has(j.whatsapp)) buttons.add(_socialButton(context, Icons.chat_bubble_rounded, () => _openSocial(j.whatsapp!, ULaunch.launchWhatsApp)));
+    if (_has(j.instagram)) buttons.add(_socialButton(UIcons.instagram, () => _openSocial(j.instagram!, ULaunch.launchInstagram)));
+    if (_has(j.telegram)) buttons.add(_socialButton(UIcons.telegram, () => _openSocial(j.telegram!, ULaunch.launchTelegram)));
+    if (_has(j.whatsapp)) buttons.add(_socialButton(UIcons.whatsapp, () => _openSocial(j.whatsapp!, ULaunch.launchWhatsApp)));
     if (buttons.isEmpty) return null;
 
     return _surface(
@@ -408,21 +408,7 @@ class UContentBentoPage extends StatelessWidget {
     );
   }
 
-  Widget _socialButton(BuildContext context, IconData icon, VoidCallback onTap) {
-    final ColorScheme scheme = Theme.of(context).colorScheme;
-    return Material(
-      color: scheme.onSecondaryContainer.withValues(alpha: 0.12),
-      shape: const CircleBorder(),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(11),
-          child: Icon(icon, size: 22, color: scheme.onSecondaryContainer),
-        ),
-      ),
-    );
-  }
+  Widget _socialButton(String icon, VoidCallback onTap) => UImage(icon, width: 22, package: "u").pAll(12).onPress(onTap);
 
   // ---- Helpers ----------------------------------------------------------
 
