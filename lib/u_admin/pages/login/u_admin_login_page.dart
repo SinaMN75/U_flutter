@@ -41,6 +41,7 @@ class _UAdminLoginPageState extends State<UAdminLoginPage> {
                   obscureText: true,
                 ).pSymmetric(vertical: 8),
                 UButton(
+                  width: 1000,
                   onTap: () => c.login(
                     onFinish: (UUserResponse i) {
                       U.user = i;
@@ -51,7 +52,7 @@ class _UAdminLoginPageState extends State<UAdminLoginPage> {
                 ).pSymmetric(vertical: 8),
               ],
             ),
-          ).pAll(context.isMobileWidth ? 24 : 40),
+          ).pAll(40),
         ).container(width: context.dialogWidth()),
       ),
     ),
