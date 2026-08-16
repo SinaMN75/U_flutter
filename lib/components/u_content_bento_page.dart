@@ -322,7 +322,7 @@ class UContentBentoPage extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const UImage(UIcons.phone, package: "u"),
+          const UImage(UIcons.phone, width: 40, package: "u"),
           const SizedBox(height: 12),
           UTextLabelMedium(U.s.contactUs, color: scheme.onPrimaryContainer.withValues(alpha: 0.7)),
           const SizedBox(height: 2),
@@ -334,12 +334,6 @@ class UContentBentoPage extends StatelessWidget {
 
   Widget? _followTile(BuildContext context, UContentJson j) {
     final ColorScheme scheme = Theme.of(context).colorScheme;
-    final List<Widget> buttons = <Widget>[];
-    if (_has(j.instagram)) buttons.add(_socialButton(UIcons.instagram, () => _openSocial(j.instagram!, ULaunch.launchInstagram)));
-    if (_has(j.telegram)) buttons.add(_socialButton(UIcons.telegram, () => _openSocial(j.telegram!, ULaunch.launchTelegram)));
-    if (_has(j.whatsapp)) buttons.add(_socialButton(UIcons.whatsapp, () => _openSocial(j.whatsapp!, ULaunch.launchWhatsApp)));
-    if (buttons.isEmpty) return null;
-
     return _surface(
       context,
       background: scheme.secondaryContainer,
@@ -350,7 +344,14 @@ class UContentBentoPage extends StatelessWidget {
         children: <Widget>[
           UTextLabelMedium(U.s.followUs, color: scheme.onSecondaryContainer.withValues(alpha: 0.7)),
           const SizedBox(height: 12),
-          Wrap(spacing: 10, runSpacing: 10, children: buttons),
+          Wrap(
+            children: <Widget>[
+              if (_has(j.instagram)) const UImage(UIcons.instagram, package: "u").onPress(() => ULaunch.launchURL(j.instagram!)),
+              if (_has(j.telegram)) const UImage(UIcons.telegram, package: "u").onPress(() => ULaunch.launchURL(j.telegram!)),
+              if (_has(j.whatsapp)) const UImage(UIcons.whatsapp, package: "u").onPress(() => ULaunch.launchURL(j.whatsapp!)),
+              if (_has(j.link)) const UImage(UIcons.website, package: "u").onPress(() => ULaunch.launchURL(j.link!)),
+            ],
+          ),
         ],
       ),
     );
@@ -408,23 +409,11 @@ class UContentBentoPage extends StatelessWidget {
     );
   }
 
-  Widget _socialButton(String icon, VoidCallback onTap) => UImage(icon, width: 22, package: "u").pAll(12).onPress(onTap);
-
-  // ---- Helpers ----------------------------------------------------------
-
   static bool _has(String? value) => value != null && value.trim().isNotEmpty;
 
   static String? _text(String? value) => _has(value) ? value!.trim() : null;
 
   static bool _looksLikeHtml(String value) => value.contains("<") && value.contains(">");
-
-  static void _openSocial(String value, Future<void> Function(String) fallback) {
-    if (value.startsWith("http")) {
-      ULaunch.launchURL(value);
-    } else {
-      fallback(value);
-    }
-  }
 
   static Uint8List? _decodeBase64(String? raw) {
     if (raw == null || raw.trim().isEmpty) return null;
