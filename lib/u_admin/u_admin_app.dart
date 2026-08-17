@@ -10,10 +10,6 @@ Future<void> runUAdminApp(UAdminConfig config) async {
   };
   runApp(
     UMaterialApp(
-      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
-        AppLocalizations.delegate,
-        ...GlobalMaterialLocalizations.delegates,
-      ],
       locale: Locale(ULocalStorage.getString(UConstants.locale) ?? config.defaultLocale.languageCode),
       home: UAdminSplashPage(
         logo: config.logo,

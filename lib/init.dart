@@ -75,7 +75,10 @@ abstract class U {
 Future<void> initU({
   String? baseUrl,
   String? apiKey,
-  List<DeviceOrientation> deviceOrientations = const <DeviceOrientation>[DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
+  List<DeviceOrientation> deviceOrientations = const <DeviceOrientation>[
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ],
 }) async {
   U.baseUrl = baseUrl ?? "";
   U.apiKey = apiKey ?? "";
@@ -95,7 +98,6 @@ Future<void> initU({
 
 class UMaterialApp extends StatefulWidget {
   const UMaterialApp({
-    required this.localizationsDelegates,
     required this.locale,
     required this.home,
     required this.lightThemeData,
@@ -103,7 +105,6 @@ class UMaterialApp extends StatefulWidget {
     super.key,
   });
 
-  final List<LocalizationsDelegate<dynamic>> localizationsDelegates;
   final Locale locale;
   final Widget home;
   final ThemeData lightThemeData;
@@ -127,7 +128,10 @@ class _UMaterialAppState extends State<UMaterialApp> {
     builder: (BuildContext context, Widget? child) => MaterialApp(
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
-      localizationsDelegates: widget.localizationsDelegates,
+      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+        AppLocalizations.delegate,
+        ...GlobalMaterialLocalizations.delegates,
+      ],
       supportedLocales: AppLocalizations.supportedLocales,
       home: widget.home,
       locale: UAppState.locale.value,
