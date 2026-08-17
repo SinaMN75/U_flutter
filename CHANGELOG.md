@@ -1,4 +1,4 @@
-## 2.0.0
+## 2.0.1
 
 * converted the package to Plugin to be able to provide native codes
 
