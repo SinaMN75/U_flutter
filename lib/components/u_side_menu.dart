@@ -665,6 +665,7 @@ class _USideMenuState extends State<USideMenu> with TickerProviderStateMixin {
     return result;
   }
 
+  // Flattens a group's entire subtree down to its leaf items.
   List<UMenuItem> _collectLeafItems(UMenuGroup group) {
     final List<UMenuItem> result = <UMenuItem>[];
     for (final UMenuEntry child in group.children) {

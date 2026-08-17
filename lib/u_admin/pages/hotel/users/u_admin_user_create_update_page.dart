@@ -18,9 +18,6 @@ class _UserCreateUpdateDialogState extends State<UAdminUserCreateUpdateDialog> {
   bool get _canManageRoles => U.user.isFullAdmin();
 
   bool get _isEdit => widget.user != null;
-
-  bool get _isFa => ULocalStorage.getLocale() == "fa";
-
   late Set<TagUser> _selectedPermissions;
 
   @override
@@ -160,7 +157,7 @@ class _UserCreateUpdateDialogState extends State<UAdminUserCreateUpdateDialog> {
                           dense: true,
                           contentPadding: EdgeInsets.zero,
                           controlAffinity: ListTileControlAffinity.leading,
-                          title: Text(_isFa ? permission.titleFa : permission.titleEn),
+                          title: Text(permission.localizedTitle),
                           value: _selectedPermissions.contains(permission),
                           onChanged: (bool? checked) => setState(() {
                             if (checked ?? false) {
