@@ -248,15 +248,15 @@ class _UScannerState extends State<UScanner> with SingleTickerProviderStateMixin
         mainAxisSize: MainAxisSize.min,
         spacing: widget.controlsSpacing,
         children: <Widget>[
-          if (widget.showGalleryButton) _controlButton(icon: widget.galleryIcon, tooltip: S.current.scanFromGallery, onTap: _scanFromGallery),
+          if (widget.showGalleryButton) _controlButton(icon: widget.galleryIcon, tooltip: U.s.scanFromGallery, onTap: _scanFromGallery),
           if (widget.showTorchButton)
             _controlButton(
               icon: torchOn ? widget.torchOnIcon : widget.torchOffIcon,
-              tooltip: S.current.flashlight,
+              tooltip: U.s.flashlight,
               color: torchOn ? (widget.controlActiveIconColor ?? Theme.of(context).colorScheme.primary) : null,
               onTap: _controller.toggleTorch,
             ),
-          if (widget.showSwitchCameraButton) _controlButton(icon: widget.switchCameraIcon, tooltip: S.current.switchCamera, onTap: _controller.switchCamera),
+          if (widget.showSwitchCameraButton) _controlButton(icon: widget.switchCameraIcon, tooltip: U.s.switchCamera, onTap: _controller.switchCamera),
         ],
       );
     },
@@ -269,7 +269,7 @@ class _UScannerState extends State<UScanner> with SingleTickerProviderStateMixin
       borderRadius: BorderRadius.circular(widget.hintBorderRadius),
     ),
     child: Text(
-      widget.hintText ?? S.current.placeTheBarcodeInsideTheFrame,
+      widget.hintText ?? U.s.placeTheBarcodeInsideTheFrame,
       textAlign: TextAlign.center,
       style: widget.hintTextStyle ?? Theme.of(context).textTheme.bodySmall,
     ),
@@ -603,7 +603,7 @@ class UScannerPage extends StatelessWidget {
     safeArea: false,
     extendBodyBehindAppBar: true,
     color: backgroundColor ?? Theme.of(context).colorScheme.scrim,
-    appBar: showAppBar ? (appBar ?? AppBar(title: Text(title ?? S.current.scanBarcode), backgroundColor: Theme.of(context).colorScheme.scrim.withValues(alpha: 0), elevation: 0)) : null,
+    appBar: showAppBar ? (appBar ?? AppBar(title: Text(title ?? U.s.scanBarcode), backgroundColor: Theme.of(context).colorScheme.scrim.withValues(alpha: 0), elevation: 0)) : null,
     body: UScanner(
       onScan: (String value) {
         onScan?.call(value);

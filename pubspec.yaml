@@ -46,6 +46,7 @@ dev_dependencies:
   flutter_lints: ^6.0.0
 
 flutter:
+  generate: true
   uses-material-design: true
   assets:
     - lib/assets/fonts/
@@ -70,9 +71,6 @@ flutter:
     - family: IranSansFaNum
       fonts:
         - asset: lib/assets/fonts/IranSansFaNum.ttf
-
-flutter_intl:
-  enabled: true
 
   plugin:
     platforms:

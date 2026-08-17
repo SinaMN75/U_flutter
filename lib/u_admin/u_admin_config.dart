@@ -11,7 +11,6 @@ class UAdminConfig {
     this.apiKey = "",
     this.loginBackground,
     this.font,
-    this.locales = const <Locale>[Locale("en"), Locale("fa")],
     this.defaultLocale = const Locale("fa"),
   });
 
@@ -20,17 +19,10 @@ class UAdminConfig {
   final String? loginBackground;
   final Color primaryColor;
   final String? font;
-
   final String baseUrl;
   final String apiKey;
-
-  final List<Locale> locales;
   final Locale defaultLocale;
-
-  // The initial dashboard tab. Lazy so its title resolves after localization is ready.
   final UAdminModule Function() dashboard;
-
-  // The side menu — a list of groups (the only top-level menu node).
   final List<UAdminGroup> Function() menu;
 }
 

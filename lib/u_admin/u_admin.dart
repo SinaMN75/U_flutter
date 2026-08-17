@@ -1,3 +1,4 @@
+import "package:u/l10n/app_localizations.dart";
 import "package:u/u_admin/pages/barcode/u_admin_barcode_generator_page.dart";
 import "package:u/u_admin/pages/crypto/u_admin_crypto_tester_page.dart";
 import "package:u/utilities.dart";

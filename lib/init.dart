@@ -6,7 +6,7 @@ abstract class U {
   static late String baseUrl;
   static late String apiKey;
 
-  static S get s => S.current;
+  static AppLocalizations get s => AppLocalizations.of(navigatorKey.currentContext!)!;
   static late UUserResponse user;
   static List<UContentResponse> contents = <UContentResponse>[];
   static List<UCategoryResponse> categories = <UCategoryResponse>[];
@@ -96,7 +96,6 @@ Future<void> initU({
 class UMaterialApp extends StatefulWidget {
   const UMaterialApp({
     required this.localizationsDelegates,
-    required this.supportedLocales,
     required this.locale,
     required this.home,
     required this.lightThemeData,
@@ -105,7 +104,6 @@ class UMaterialApp extends StatefulWidget {
   });
 
   final List<LocalizationsDelegate<dynamic>> localizationsDelegates;
-  final List<Locale> supportedLocales;
   final Locale locale;
   final Widget home;
   final ThemeData lightThemeData;
@@ -130,7 +128,7 @@ class _UMaterialAppState extends State<UMaterialApp> {
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       localizationsDelegates: widget.localizationsDelegates,
-      supportedLocales: widget.supportedLocales,
+      supportedLocales: AppLocalizations.supportedLocales,
       home: widget.home,
       locale: UAppState.locale.value,
       themeMode: UAppState.themeMode.value,

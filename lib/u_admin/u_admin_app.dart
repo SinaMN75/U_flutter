@@ -11,12 +11,9 @@ Future<void> runUAdminApp(UAdminConfig config) async {
   runApp(
     UMaterialApp(
       localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        S.delegate,
+        AppLocalizations.delegate,
+        ...GlobalMaterialLocalizations.delegates,
       ],
-      supportedLocales: config.locales,
       locale: Locale(ULocalStorage.getString(UConstants.locale) ?? config.defaultLocale.languageCode),
       home: UAdminSplashPage(
         logo: config.logo,
