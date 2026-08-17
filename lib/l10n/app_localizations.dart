@@ -92,6 +92,1416 @@ abstract class AppLocalizations {
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[Locale('en'), Locale('fa')];
 
+  /// No description provided for @aboutAvaHamrah.
+  ///
+  /// In en, this message translates to:
+  /// **'About AvaHamrah'**
+  String get aboutAvaHamrah;
+
+  /// No description provided for @acceptTermsAndContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept terms and continue'**
+  String get acceptTermsAndContinue;
+
+  /// No description provided for @allowedToDrive.
+  ///
+  /// In en, this message translates to:
+  /// **'Allowed to drive'**
+  String get allowedToDrive;
+
+  /// No description provided for @areYouSureAboutTheEnteredPostalCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure about the entered postal code?'**
+  String get areYouSureAboutTheEnteredPostalCode;
+
+  /// No description provided for @avaHamrahOfficialWebsite.
+  ///
+  /// In en, this message translates to:
+  /// **'AvaHamrah official website'**
+  String get avaHamrahOfficialWebsite;
+
+  /// No description provided for @avaHamrahSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'AvaHamrah system'**
+  String get avaHamrahSystem;
+
+  /// No description provided for @avaHamrahTermsOfUse.
+  ///
+  /// In en, this message translates to:
+  /// **'AvaHamrah terms of use'**
+  String get avaHamrahTermsOfUse;
+
+  /// No description provided for @between50000And10000000Rials.
+  ///
+  /// In en, this message translates to:
+  /// **'Between 50,000 and 10,000,000 Rials'**
+  String get between50000And10000000Rials;
+
+  /// No description provided for @bill.
+  ///
+  /// In en, this message translates to:
+  /// **'Bill'**
+  String get bill;
+
+  /// No description provided for @billDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Bill details'**
+  String get billDetails;
+
+  /// No description provided for @billInquiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Bill inquiry'**
+  String get billInquiry;
+
+  /// No description provided for @buyItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy {item}'**
+  String buyItem(Object item);
+
+  /// No description provided for @cached.
+  ///
+  /// In en, this message translates to:
+  /// **'Cached'**
+  String get cached;
+
+  /// No description provided for @cardToCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Card to card'**
+  String get cardToCard;
+
+  /// No description provided for @chargeAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Charge amount'**
+  String get chargeAmount;
+
+  /// No description provided for @charity.
+  ///
+  /// In en, this message translates to:
+  /// **'Charity'**
+  String get charity;
+
+  /// No description provided for @charityDonation.
+  ///
+  /// In en, this message translates to:
+  /// **'Charity donation'**
+  String get charityDonation;
+
+  /// No description provided for @checkManagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Check management'**
+  String get checkManagement;
+
+  /// No description provided for @civicPartnership.
+  ///
+  /// In en, this message translates to:
+  /// **'Civic Partnership'**
+  String get civicPartnership;
+
+  /// No description provided for @comingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming soon'**
+  String get comingSoon;
+
+  /// No description provided for @completeUserInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete user information'**
+  String get completeUserInformation;
+
+  /// No description provided for @confirmAndContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm and continue'**
+  String get confirmAndContinue;
+
+  /// No description provided for @confirmationDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmation date'**
+  String get confirmationDate;
+
+  /// No description provided for @continue_.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continue_;
+
+  /// No description provided for @creditValidation.
+  ///
+  /// In en, this message translates to:
+  /// **'Credit validation'**
+  String get creditValidation;
+
+  /// No description provided for @daysLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'days left'**
+  String get daysLeft;
+
+  /// No description provided for @deviceSerial.
+  ///
+  /// In en, this message translates to:
+  /// **'Device serial'**
+  String get deviceSerial;
+
+  /// No description provided for @drivingLicense.
+  ///
+  /// In en, this message translates to:
+  /// **'Driving license'**
+  String get drivingLicense;
+
+  /// No description provided for @drivingLicenseNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Driving license number'**
+  String get drivingLicenseNumber;
+
+  /// No description provided for @electricityWaterGas.
+  ///
+  /// In en, this message translates to:
+  /// **'Electricity, water, gas'**
+  String get electricityWaterGas;
+
+  /// No description provided for @enterTheBillidAndPaymentidOrScanItsBarcode.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the bill ID and payment ID or scan its barcode'**
+  String get enterTheBillidAndPaymentidOrScanItsBarcode;
+
+  /// No description provided for @enterTheDrivingLicenseNumberToInquire.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the driving license number to inquire'**
+  String get enterTheDrivingLicenseNumberToInquire;
+
+  /// No description provided for @enterThePrepaidsimCardNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the prepaid SIM card number'**
+  String get enterThePrepaidsimCardNumber;
+
+  /// No description provided for @enterTheSentVerificationCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the sent verification code.'**
+  String get enterTheSentVerificationCode;
+
+  /// No description provided for @enterYourPostalCodeCorrectlyAndInquire.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your postal code correctly and inquire.'**
+  String get enterYourPostalCodeCorrectlyAndInquire;
+
+  /// No description provided for @errorLoadingBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading balance'**
+  String get errorLoadingBalance;
+
+  /// No description provided for @expirationDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiration date'**
+  String get expirationDate;
+
+  /// No description provided for @expiresToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Expires today'**
+  String get expiresToday;
+
+  /// No description provided for @finalConsumer.
+  ///
+  /// In en, this message translates to:
+  /// **'Final Consumer'**
+  String get finalConsumer;
+
+  /// No description provided for @financialRecords.
+  ///
+  /// In en, this message translates to:
+  /// **'Financial records'**
+  String get financialRecords;
+
+  /// No description provided for @foreigners.
+  ///
+  /// In en, this message translates to:
+  /// **'Foreigners'**
+  String get foreigners;
+
+  /// No description provided for @freewayTollsInquiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Freeway tolls inquiry'**
+  String get freewayTollsInquiry;
+
+  /// No description provided for @goodAfternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Good afternoon'**
+  String get goodAfternoon;
+
+  /// No description provided for @goodMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Good morning'**
+  String get goodMorning;
+
+  /// No description provided for @goodNight.
+  ///
+  /// In en, this message translates to:
+  /// **'Good night'**
+  String get goodNight;
+
+  /// No description provided for @goodNoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Good noon'**
+  String get goodNoon;
+
+  /// No description provided for @imeiCode.
+  ///
+  /// In en, this message translates to:
+  /// **'IMEI code'**
+  String get imeiCode;
+
+  /// No description provided for @informationConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Information confirmation'**
+  String get informationConfirmation;
+
+  /// No description provided for @inquire.
+  ///
+  /// In en, this message translates to:
+  /// **'Inquire'**
+  String get inquire;
+
+  /// No description provided for @inquireAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Inquire again'**
+  String get inquireAgain;
+
+  /// No description provided for @inquiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Inquiry'**
+  String get inquiry;
+
+  /// No description provided for @inquiryCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Inquiry cost'**
+  String get inquiryCost;
+
+  /// No description provided for @inquiryDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Inquiry date'**
+  String get inquiryDate;
+
+  /// No description provided for @inquiryDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Inquiry details'**
+  String get inquiryDetails;
+
+  /// No description provided for @installationDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Installation date'**
+  String get installationDate;
+
+  /// No description provided for @instantMoneyTransfer.
+  ///
+  /// In en, this message translates to:
+  /// **'Instant money transfer'**
+  String get instantMoneyTransfer;
+
+  /// No description provided for @insufficientBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Insufficient balance'**
+  String get insufficientBalance;
+
+  /// No description provided for @insufficientWalletBalancePleaseUseThePaymentGateway.
+  ///
+  /// In en, this message translates to:
+  /// **'Insufficient wallet balance. Please use the payment gateway.'**
+  String get insufficientWalletBalancePleaseUseThePaymentGateway;
+
+  /// No description provided for @internet.
+  ///
+  /// In en, this message translates to:
+  /// **'Internet'**
+  String get internet;
+
+  /// No description provided for @internetDataPackage.
+  ///
+  /// In en, this message translates to:
+  /// **'Internet data package'**
+  String get internetDataPackage;
+
+  /// No description provided for @internetPackage.
+  ///
+  /// In en, this message translates to:
+  /// **'Internet package'**
+  String get internetPackage;
+
+  /// No description provided for @invalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid'**
+  String get invalid;
+
+  /// No description provided for @invalidBarcodePleaseEnterTheIdsManually.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid barcode, please enter the IDs manually'**
+  String get invalidBarcodePleaseEnterTheIdsManually;
+
+  /// No description provided for @irancellHamrahEAvalRightel.
+  ///
+  /// In en, this message translates to:
+  /// **'Irancell, Hamrah-e Aval, Rightel'**
+  String get irancellHamrahEAvalRightel;
+
+  /// No description provided for @landlinePhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Landline phone number'**
+  String get landlinePhoneNumber;
+
+  /// No description provided for @legalPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Legal Person'**
+  String get legalPerson;
+
+  /// No description provided for @licenseDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'License details'**
+  String get licenseDetails;
+
+  /// No description provided for @licenseHolder.
+  ///
+  /// In en, this message translates to:
+  /// **'License holder'**
+  String get licenseHolder;
+
+  /// No description provided for @licenseNegativePointInquiry.
+  ///
+  /// In en, this message translates to:
+  /// **'License negative point inquiry'**
+  String get licenseNegativePointInquiry;
+
+  /// No description provided for @licenseStatusInquiry.
+  ///
+  /// In en, this message translates to:
+  /// **'License status inquiry'**
+  String get licenseStatusInquiry;
+
+  /// No description provided for @loanPreRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Loan pre-request'**
+  String get loanPreRequest;
+
+  /// No description provided for @loanRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Loan request'**
+  String get loanRequest;
+
+  /// No description provided for @merchant.
+  ///
+  /// In en, this message translates to:
+  /// **'Merchant'**
+  String get merchant;
+
+  /// No description provided for @merchantTitleStoreOrBusinessName.
+  ///
+  /// In en, this message translates to:
+  /// **'Merchant title (store or business name)'**
+  String get merchantTitleStoreOrBusinessName;
+
+  /// No description provided for @min.
+  ///
+  /// In en, this message translates to:
+  /// **'min'**
+  String get min;
+
+  /// No description provided for @mobileNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile number'**
+  String get mobileNumber;
+
+  /// No description provided for @model.
+  ///
+  /// In en, this message translates to:
+  /// **'Model'**
+  String get model;
+
+  /// No description provided for @monthly.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get monthly;
+
+  /// No description provided for @months.
+  ///
+  /// In en, this message translates to:
+  /// **'months'**
+  String get months;
+
+  /// No description provided for @myBankAccounts.
+  ///
+  /// In en, this message translates to:
+  /// **'My bank accounts'**
+  String get myBankAccounts;
+
+  /// No description provided for @myMerchants.
+  ///
+  /// In en, this message translates to:
+  /// **'My merchants'**
+  String get myMerchants;
+
+  /// No description provided for @myPos.
+  ///
+  /// In en, this message translates to:
+  /// **'My POS'**
+  String get myPos;
+
+  /// No description provided for @myTerminals.
+  ///
+  /// In en, this message translates to:
+  /// **'My terminals'**
+  String get myTerminals;
+
+  /// No description provided for @myVehicle.
+  ///
+  /// In en, this message translates to:
+  /// **'My vehicle'**
+  String get myVehicle;
+
+  /// No description provided for @myVehicles.
+  ///
+  /// In en, this message translates to:
+  /// **'My vehicles'**
+  String get myVehicles;
+
+  /// No description provided for @name.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get name;
+
+  /// No description provided for @nationalCode.
+  ///
+  /// In en, this message translates to:
+  /// **'National Code'**
+  String get nationalCode;
+
+  /// No description provided for @negativePointDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Negative point details'**
+  String get negativePointDetails;
+
+  /// No description provided for @negativePoints.
+  ///
+  /// In en, this message translates to:
+  /// **'Negative points'**
+  String get negativePoints;
+
+  /// No description provided for @newRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'New Request'**
+  String get newRequest;
+
+  /// No description provided for @noItemsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No {items} found'**
+  String noItemsFound(Object items);
+
+  /// No description provided for @noNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications'**
+  String get noNotifications;
+
+  /// No description provided for @noSavedData.
+  ///
+  /// In en, this message translates to:
+  /// **'No saved data'**
+  String get noSavedData;
+
+  /// No description provided for @nosimCardRegistered.
+  ///
+  /// In en, this message translates to:
+  /// **'No SIM card registered'**
+  String get nosimCardRegistered;
+
+  /// No description provided for @notAllowedToDrive.
+  ///
+  /// In en, this message translates to:
+  /// **'Not allowed to drive'**
+  String get notAllowedToDrive;
+
+  /// No description provided for @notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifications;
+
+  /// No description provided for @noTransactionsDone.
+  ///
+  /// In en, this message translates to:
+  /// **'No transactions done.'**
+  String get noTransactionsDone;
+
+  /// No description provided for @number.
+  ///
+  /// In en, this message translates to:
+  /// **'Number'**
+  String get number;
+
+  /// No description provided for @onlineInquiryOfVehicleViolationsLicenseAndPlate.
+  ///
+  /// In en, this message translates to:
+  /// **'Online inquiry of vehicle violations, license and plate'**
+  String get onlineInquiryOfVehicleViolationsLicenseAndPlate;
+
+  /// No description provided for @onlinePayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Online payment'**
+  String get onlinePayment;
+
+  /// No description provided for @operator.
+  ///
+  /// In en, this message translates to:
+  /// **'Operator'**
+  String get operator;
+
+  /// No description provided for @ownerInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner Information'**
+  String get ownerInformation;
+
+  /// No description provided for @ownerMobile.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner Mobile'**
+  String get ownerMobile;
+
+  /// No description provided for @ownerName.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner Name'**
+  String get ownerName;
+
+  /// No description provided for @ownerNationalCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner National Code'**
+  String get ownerNationalCode;
+
+  /// No description provided for @package.
+  ///
+  /// In en, this message translates to:
+  /// **'Package'**
+  String get package;
+
+  /// No description provided for @pay.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay'**
+  String get pay;
+
+  /// No description provided for @payableAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Payable amount'**
+  String get payableAmount;
+
+  /// No description provided for @payAndInquire.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay and inquire'**
+  String get payAndInquire;
+
+  /// No description provided for @payment.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment'**
+  String get payment;
+
+  /// No description provided for @paymentId.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment ID'**
+  String get paymentId;
+
+  /// No description provided for @paymentMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment method'**
+  String get paymentMethod;
+
+  /// No description provided for @payWithWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay with wallet'**
+  String get payWithWallet;
+
+  /// No description provided for @pending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get pending;
+
+  /// No description provided for @period.
+  ///
+  /// In en, this message translates to:
+  /// **'Period'**
+  String get period;
+
+  /// No description provided for @phoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone Number'**
+  String get phoneNumber;
+
+  /// No description provided for @plate.
+  ///
+  /// In en, this message translates to:
+  /// **'Plate'**
+  String get plate;
+
+  /// No description provided for @plateHistoryInquiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Plate history inquiry'**
+  String get plateHistoryInquiry;
+
+  /// No description provided for @plateSpecifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Plate specifications'**
+  String get plateSpecifications;
+
+  /// No description provided for @plateStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Plate status'**
+  String get plateStatus;
+
+  /// No description provided for @plateStatusInquiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Plate status inquiry'**
+  String get plateStatusInquiry;
+
+  /// No description provided for @plateTrackingCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Plate tracking code'**
+  String get plateTrackingCode;
+
+  /// No description provided for @pleaseEnterYourMobileNumberToLogIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your mobile number to log in.'**
+  String get pleaseEnterYourMobileNumberToLogIn;
+
+  /// No description provided for @pleaseSelectA.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a {item}'**
+  String pleaseSelectA(Object item);
+
+  /// No description provided for @postalCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Postal Code'**
+  String get postalCode;
+
+  /// No description provided for @previousInquiryResult.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous inquiry result'**
+  String get previousInquiryResult;
+
+  /// No description provided for @price.
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get price;
+
+  /// No description provided for @printDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Print date'**
+  String get printDate;
+
+  /// No description provided for @printNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Print number'**
+  String get printNumber;
+
+  /// No description provided for @profile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profile;
+
+  /// No description provided for @province.
+  ///
+  /// In en, this message translates to:
+  /// **'Province'**
+  String get province;
+
+  /// No description provided for @receiver.
+  ///
+  /// In en, this message translates to:
+  /// **'Receiver'**
+  String get receiver;
+
+  /// No description provided for @recentTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Transactions'**
+  String get recentTransactions;
+
+  /// No description provided for @refresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get refresh;
+
+  /// No description provided for @register.
+  ///
+  /// In en, this message translates to:
+  /// **'Register'**
+  String get register;
+
+  /// No description provided for @registerMerchant.
+  ///
+  /// In en, this message translates to:
+  /// **'Register merchant'**
+  String get registerMerchant;
+
+  /// No description provided for @registerNewMerchant.
+  ///
+  /// In en, this message translates to:
+  /// **'Register new merchant'**
+  String get registerNewMerchant;
+
+  /// No description provided for @registrationDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Registration Date'**
+  String get registrationDate;
+
+  /// No description provided for @registrationNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Registration Number'**
+  String get registrationNumber;
+
+  /// No description provided for @reInquiryWithFee.
+  ///
+  /// In en, this message translates to:
+  /// **'Re-inquiry (with fee)'**
+  String get reInquiryWithFee;
+
+  /// No description provided for @rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get rejected;
+
+  /// No description provided for @rejectionReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejection Reason'**
+  String get rejectionReason;
+
+  /// No description provided for @remove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get remove;
+
+  /// No description provided for @replaceAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace All'**
+  String get replaceAll;
+
+  /// No description provided for @request.
+  ///
+  /// In en, this message translates to:
+  /// **'Request'**
+  String get request;
+
+  /// No description provided for @required.
+  ///
+  /// In en, this message translates to:
+  /// **'Required'**
+  String get required;
+
+  /// No description provided for @resend.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend'**
+  String get resend;
+
+  /// No description provided for @rial.
+  ///
+  /// In en, this message translates to:
+  /// **'Rial'**
+  String get rial;
+
+  /// No description provided for @sayadCheck.
+  ///
+  /// In en, this message translates to:
+  /// **'Sayad check'**
+  String get sayadCheck;
+
+  /// No description provided for @scanBarcode.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan Barcode'**
+  String get scanBarcode;
+
+  /// No description provided for @selectAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Select amount'**
+  String get selectAmount;
+
+  /// No description provided for @selectInternetPackage.
+  ///
+  /// In en, this message translates to:
+  /// **'Select internet package'**
+  String get selectInternetPackage;
+
+  /// No description provided for @selectTheDesiredsimCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Select the desired SIM card'**
+  String get selectTheDesiredsimCard;
+
+  /// No description provided for @selectVehicleForInquiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Select the vehicle for {inquiry}'**
+  String selectVehicleForInquiry(Object inquiry);
+
+  /// No description provided for @serial.
+  ///
+  /// In en, this message translates to:
+  /// **'Serial'**
+  String get serial;
+
+  /// No description provided for @serialNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Serial number'**
+  String get serialNumber;
+
+  /// No description provided for @services.
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get services;
+
+  /// No description provided for @simCardCharge.
+  ///
+  /// In en, this message translates to:
+  /// **'SIM card charge'**
+  String get simCardCharge;
+
+  /// No description provided for @simCardNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'SIM Card Number'**
+  String get simCardNumber;
+
+  /// No description provided for @simCardSerial.
+  ///
+  /// In en, this message translates to:
+  /// **'SIM Card Serial'**
+  String get simCardSerial;
+
+  /// No description provided for @size.
+  ///
+  /// In en, this message translates to:
+  /// **'Size'**
+  String get size;
+
+  /// No description provided for @startInvoiceNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Invoice Number'**
+  String get startInvoiceNumber;
+
+  /// No description provided for @status.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get status;
+
+  /// No description provided for @submit.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit'**
+  String get submit;
+
+  /// No description provided for @subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Subtitle'**
+  String get subtitle;
+
+  /// No description provided for @success.
+  ///
+  /// In en, this message translates to:
+  /// **'Success'**
+  String get success;
+
+  /// No description provided for @successful.
+  ///
+  /// In en, this message translates to:
+  /// **'Successful'**
+  String get successful;
+
+  /// No description provided for @system.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get system;
+
+  /// No description provided for @tags.
+  ///
+  /// In en, this message translates to:
+  /// **'Tags'**
+  String get tags;
+
+  /// No description provided for @tapToInquire.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to inquire'**
+  String get tapToInquire;
+
+  /// No description provided for @taxpayer.
+  ///
+  /// In en, this message translates to:
+  /// **'Taxpayer'**
+  String get taxpayer;
+
+  /// No description provided for @taxpayerInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Taxpayer Information'**
+  String get taxpayerInformation;
+
+  /// No description provided for @taxpayerName.
+  ///
+  /// In en, this message translates to:
+  /// **'Taxpayer Name'**
+  String get taxpayerName;
+
+  /// No description provided for @terminal.
+  ///
+  /// In en, this message translates to:
+  /// **'Terminal'**
+  String get terminal;
+
+  /// No description provided for @terminalId.
+  ///
+  /// In en, this message translates to:
+  /// **'Terminal ID'**
+  String get terminalId;
+
+  /// No description provided for @terminalNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Terminal number'**
+  String get terminalNumber;
+
+  /// No description provided for @terminals.
+  ///
+  /// In en, this message translates to:
+  /// **'Terminals'**
+  String get terminals;
+
+  /// No description provided for @terminalTitleOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Terminal title (optional)'**
+  String get terminalTitleOptional;
+
+  /// No description provided for @termsAndConditions.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms and conditions'**
+  String get termsAndConditions;
+
+  /// No description provided for @theAmountWillBeAddedToTheWalletAndPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'The amount will be added to the wallet and paid'**
+  String get theAmountWillBeAddedToTheWalletAndPaid;
+
+  /// No description provided for @theEnteredNationalCodeIsIncorrect.
+  ///
+  /// In en, this message translates to:
+  /// **'The entered national code is incorrect.'**
+  String get theEnteredNationalCodeIsIncorrect;
+
+  /// No description provided for @theEnteredVerificationCodeIsIncorrect.
+  ///
+  /// In en, this message translates to:
+  /// **'The entered verification code is incorrect.'**
+  String get theEnteredVerificationCodeIsIncorrect;
+
+  /// No description provided for @thereIsNoSavedDataForThisVehicleToGetFreshDataYouMustPayTheInquiryFee.
+  ///
+  /// In en, this message translates to:
+  /// **'There is no saved data for this vehicle. To get fresh data you must pay the inquiry fee.'**
+  String get thereIsNoSavedDataForThisVehicleToGetFreshDataYouMustPayTheInquiryFee;
+
+  /// No description provided for @theSupportPasswordWasSentViasmsToTheNumberRegisteredInTheApp.
+  ///
+  /// In en, this message translates to:
+  /// **'The support password was sent via SMS to the number registered in the app.'**
+  String get theSupportPasswordWasSentViasmsToTheNumberRegisteredInTheApp;
+
+  /// No description provided for @thisFieldIsInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'This field is invalid.'**
+  String get thisFieldIsInvalid;
+
+  /// No description provided for @thisServiceWillLaunchSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'This service will launch soon'**
+  String get thisServiceWillLaunchSoon;
+
+  /// No description provided for @title.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get title;
+
+  /// No description provided for @to.
+  ///
+  /// In en, this message translates to:
+  /// **'To'**
+  String get to;
+
+  /// No description provided for @tollItems.
+  ///
+  /// In en, this message translates to:
+  /// **'Toll items'**
+  String get tollItems;
+
+  /// No description provided for @toRegisterAMerchantYourWalletMustHaveAtLeast100000TomansBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'To register a merchant, your wallet must have at least 100,000 Tomans balance.'**
+  String get toRegisterAMerchantYourWalletMustHaveAtLeast100000TomansBalance;
+
+  /// No description provided for @totalFreewayTolls.
+  ///
+  /// In en, this message translates to:
+  /// **'Total freeway tolls'**
+  String get totalFreewayTolls;
+
+  /// No description provided for @totalPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Price'**
+  String get totalPrice;
+
+  /// No description provided for @totalViolationAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Total violation amount'**
+  String get totalViolationAmount;
+
+  /// No description provided for @toUseAvaHamrahServicesCompleteYourIdentityInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'To use AvaHamrah services, complete your identity information.'**
+  String get toUseAvaHamrahServicesCompleteYourIdentityInformation;
+
+  /// No description provided for @trackingNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Tracking Number'**
+  String get trackingNumber;
+
+  /// No description provided for @transactionHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction history'**
+  String get transactionHistory;
+
+  /// No description provided for @transactionId.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction ID'**
+  String get transactionId;
+
+  /// No description provided for @transactionReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction receipt'**
+  String get transactionReceipt;
+
+  /// No description provided for @transactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Transactions'**
+  String get transactions;
+
+  /// No description provided for @transactionType.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction type'**
+  String get transactionType;
+
+  /// No description provided for @type.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get type;
+
+  /// No description provided for @uniqueTaxCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Unique Tax Code'**
+  String get uniqueTaxCode;
+
+  /// No description provided for @url.
+  ///
+  /// In en, this message translates to:
+  /// **'URL'**
+  String get url;
+
+  /// No description provided for @user.
+  ///
+  /// In en, this message translates to:
+  /// **'User'**
+  String get user;
+
+  /// No description provided for @userInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'User Information'**
+  String get userInformation;
+
+  /// No description provided for @valid.
+  ///
+  /// In en, this message translates to:
+  /// **'Valid'**
+  String get valid;
+
+  /// No description provided for @validityAndStatusOfDrivingLicense.
+  ///
+  /// In en, this message translates to:
+  /// **'Validity and status of driving license'**
+  String get validityAndStatusOfDrivingLicense;
+
+  /// No description provided for @validityYears.
+  ///
+  /// In en, this message translates to:
+  /// **'Validity years'**
+  String get validityYears;
+
+  /// No description provided for @value.
+  ///
+  /// In en, this message translates to:
+  /// **'Value'**
+  String get value;
+
+  /// No description provided for @variousInsurances.
+  ///
+  /// In en, this message translates to:
+  /// **'Various insurances'**
+  String get variousInsurances;
+
+  /// No description provided for @vehiclePlate.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle plate'**
+  String get vehiclePlate;
+
+  /// No description provided for @vehiclePlateStatusAndHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle plate status and history'**
+  String get vehiclePlateStatusAndHistory;
+
+  /// No description provided for @vehicleServices.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle services'**
+  String get vehicleServices;
+
+  /// No description provided for @vehicleViolationInquiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle violation inquiry'**
+  String get vehicleViolationInquiry;
+
+  /// No description provided for @viewAll.
+  ///
+  /// In en, this message translates to:
+  /// **'View all'**
+  String get viewAll;
+
+  /// No description provided for @viewItem.
+  ///
+  /// In en, this message translates to:
+  /// **'View {item}'**
+  String viewItem(Object item);
+
+  /// No description provided for @violation.
+  ///
+  /// In en, this message translates to:
+  /// **'Violation'**
+  String get violation;
+
+  /// No description provided for @violationItems.
+  ///
+  /// In en, this message translates to:
+  /// **'Violation items'**
+  String get violationItems;
+
+  /// No description provided for @violationsPlateAndLicense.
+  ///
+  /// In en, this message translates to:
+  /// **'Violations, plate and license'**
+  String get violationsPlateAndLicense;
+
+  /// No description provided for @wallet.
+  ///
+  /// In en, this message translates to:
+  /// **'Wallet'**
+  String get wallet;
+
+  /// No description provided for @walletBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Wallet Balance'**
+  String get walletBalance;
+
+  /// No description provided for @walletChargeWasNotCompletedIfAnyAmountWasDeductedItWillBeRefundedWithin15Minutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Wallet charge was not completed. If any amount was deducted, it will be refunded within 15 minutes.'**
+  String get walletChargeWasNotCompletedIfAnyAmountWasDeductedItWillBeRefundedWithin15Minutes;
+
+  /// No description provided for @wallets.
+  ///
+  /// In en, this message translates to:
+  /// **'Wallets'**
+  String get wallets;
+
+  /// No description provided for @warnings.
+  ///
+  /// In en, this message translates to:
+  /// **'Warnings'**
+  String get warnings;
+
+  /// No description provided for @weekly.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly'**
+  String get weekly;
+
+  /// No description provided for @weeks.
+  ///
+  /// In en, this message translates to:
+  /// **'weeks'**
+  String get weeks;
+
+  /// No description provided for @welcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome'**
+  String get welcome;
+
+  /// No description provided for @wrongPostalCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong Postal Code'**
+  String get wrongPostalCode;
+
+  /// No description provided for @year.
+  ///
+  /// In en, this message translates to:
+  /// **'Year'**
+  String get year;
+
+  /// No description provided for @youHaveNotRegisteredAny.
+  ///
+  /// In en, this message translates to:
+  /// **'You have not registered any {items} yet'**
+  String youHaveNotRegisteredAny(Object items);
+
+  /// No description provided for @youHaveNotSubmittedAnyTaxpayerRequestYet.
+  ///
+  /// In en, this message translates to:
+  /// **'You have not submitted any taxpayer request yet.'**
+  String get youHaveNotSubmittedAnyTaxpayerRequestYet;
+
+  /// No description provided for @yourRegisteredVehicles.
+  ///
+  /// In en, this message translates to:
+  /// **'Your registered vehicles'**
+  String get yourRegisteredVehicles;
+
+  /// No description provided for @yourRequestHasBeenSubmittedAndIsAwaitingApproval.
+  ///
+  /// In en, this message translates to:
+  /// **'Your request has been submitted and is awaiting approval.'**
+  String get yourRequestHasBeenSubmittedAndIsAwaitingApproval;
+
+  /// No description provided for @yourSessionHasExpiredPleaseSignInAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Your session has expired. Please sign in again.'**
+  String get yourSessionHasExpiredPleaseSignInAgain;
+
+  /// No description provided for @yourWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'Your wallet'**
+  String get yourWallet;
+
   /// No description provided for @accenting.
   ///
   /// In en, this message translates to:
@@ -2030,12 +3440,6 @@ abstract class AppLocalizations {
   /// **'Memory Usage'**
   String get memoryUsage;
 
-  /// No description provided for @merchant.
-  ///
-  /// In en, this message translates to:
-  /// **'Merchant'**
-  String get merchant;
-
   /// No description provided for @merchantId.
   ///
   /// In en, this message translates to:
@@ -2072,12 +3476,6 @@ abstract class AppLocalizations {
   /// **'Method'**
   String get method;
 
-  /// No description provided for @min.
-  ///
-  /// In en, this message translates to:
-  /// **'min'**
-  String get min;
-
   /// No description provided for @minDurationMs.
   ///
   /// In en, this message translates to:
@@ -2101,12 +3499,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Mode'**
   String get mode;
-
-  /// No description provided for @model.
-  ///
-  /// In en, this message translates to:
-  /// **'Model'**
-  String get model;
 
   /// No description provided for @modified.
   ///
@@ -2132,12 +3524,6 @@ abstract class AppLocalizations {
   /// **'Money Out'**
   String get moneyOut;
 
-  /// No description provided for @monthly.
-  ///
-  /// In en, this message translates to:
-  /// **'Monthly'**
-  String get monthly;
-
   /// No description provided for @monthlyRevenue.
   ///
   /// In en, this message translates to:
@@ -2149,12 +3535,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Monthly Revenue (Debt / Paid / Penalty)'**
   String get monthlyRevenueDebtPaidPenalty;
-
-  /// No description provided for @months.
-  ///
-  /// In en, this message translates to:
-  /// **'months'**
-  String get months;
 
   /// No description provided for @more.
   ///
@@ -2198,12 +3578,6 @@ abstract class AppLocalizations {
   /// **'Mute'**
   String get mute;
 
-  /// No description provided for @name.
-  ///
-  /// In en, this message translates to:
-  /// **'Name'**
-  String get name;
-
   /// No description provided for @nationalCardBack.
   ///
   /// In en, this message translates to:
@@ -2215,12 +3589,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'National Card (Front)'**
   String get nationalCardFront;
-
-  /// No description provided for @nationalCode.
-  ///
-  /// In en, this message translates to:
-  /// **'National Code'**
-  String get nationalCode;
 
   /// No description provided for @needsReview.
   ///
@@ -2276,12 +3644,6 @@ abstract class AppLocalizations {
   /// **'No data'**
   String get noData;
 
-  /// No description provided for @noItemsFound.
-  ///
-  /// In en, this message translates to:
-  /// **'No {items} found'**
-  String noItemsFound(Object items);
-
   /// No description provided for @noMerchantSelected.
   ///
   /// In en, this message translates to:
@@ -2329,12 +3691,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not Uploaded'**
   String get notUploaded;
-
-  /// No description provided for @number.
-  ///
-  /// In en, this message translates to:
-  /// **'Number'**
-  String get number;
 
   /// No description provided for @numberedList.
   ///
@@ -2401,12 +3757,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Operations'**
   String get operations;
-
-  /// No description provided for @operator.
-  ///
-  /// In en, this message translates to:
-  /// **'Operator'**
-  String get operator;
 
   /// No description provided for @options.
   ///
@@ -2486,35 +3836,11 @@ abstract class AppLocalizations {
   /// **'Owner'**
   String get owner;
 
-  /// No description provided for @ownerMobile.
-  ///
-  /// In en, this message translates to:
-  /// **'Owner Mobile'**
-  String get ownerMobile;
-
-  /// No description provided for @ownerName.
-  ///
-  /// In en, this message translates to:
-  /// **'Owner Name'**
-  String get ownerName;
-
-  /// No description provided for @ownerNationalCode.
-  ///
-  /// In en, this message translates to:
-  /// **'Owner National Code'**
-  String get ownerNationalCode;
-
   /// No description provided for @ownerPhoneNumber.
   ///
   /// In en, this message translates to:
   /// **'Owner Phone Number'**
   String get ownerPhoneNumber;
-
-  /// No description provided for @package.
-  ///
-  /// In en, this message translates to:
-  /// **'Package'**
-  String get package;
 
   /// No description provided for @padding.
   ///
@@ -2582,35 +3908,17 @@ abstract class AppLocalizations {
   /// **'Path Contains'**
   String get pathContains;
 
-  /// No description provided for @pay.
-  ///
-  /// In en, this message translates to:
-  /// **'Pay'**
-  String get pay;
-
   /// No description provided for @payInvoice.
   ///
   /// In en, this message translates to:
   /// **'Pay Invoice'**
   String get payInvoice;
 
-  /// No description provided for @payment.
-  ///
-  /// In en, this message translates to:
-  /// **'Payment'**
-  String get payment;
-
   /// No description provided for @paymentFailed.
   ///
   /// In en, this message translates to:
   /// **'Payment failed.'**
   String get paymentFailed;
-
-  /// No description provided for @paymentId.
-  ///
-  /// In en, this message translates to:
-  /// **'Payment ID'**
-  String get paymentId;
 
   /// No description provided for @payments.
   ///
@@ -2648,12 +3956,6 @@ abstract class AppLocalizations {
   /// **'Pen color'**
   String get penColor;
 
-  /// No description provided for @pending.
-  ///
-  /// In en, this message translates to:
-  /// **'Pending'**
-  String get pending;
-
   /// No description provided for @pendingApproval.
   ///
   /// In en, this message translates to:
@@ -2677,12 +3979,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Persian'**
   String get persian;
-
-  /// No description provided for @phoneNumber.
-  ///
-  /// In en, this message translates to:
-  /// **'Phone Number'**
-  String get phoneNumber;
 
   /// No description provided for @placeTheBarcodeInsideTheFrame.
   ///
@@ -2708,12 +4004,6 @@ abstract class AppLocalizations {
   /// **'Please enter some input text.'**
   String get pleaseEnterSomeInputText;
 
-  /// No description provided for @pleaseSelectA.
-  ///
-  /// In en, this message translates to:
-  /// **'Please select a {item}'**
-  String pleaseSelectA(Object item);
-
   /// No description provided for @pnapiTester.
   ///
   /// In en, this message translates to:
@@ -2725,12 +4015,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Policies'**
   String get policies;
-
-  /// No description provided for @postalCode.
-  ///
-  /// In en, this message translates to:
-  /// **'Postal Code'**
-  String get postalCode;
 
   /// No description provided for @preview.
   ///
@@ -2744,12 +4028,6 @@ abstract class AppLocalizations {
   /// **'Preview not available for this file type'**
   String get previewNotAvailableForThisFileType;
 
-  /// No description provided for @price.
-  ///
-  /// In en, this message translates to:
-  /// **'Price'**
-  String get price;
-
   /// No description provided for @priceNight.
   ///
   /// In en, this message translates to:
@@ -2761,12 +4039,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Price per Night'**
   String get pricePerNight;
-
-  /// No description provided for @printDate.
-  ///
-  /// In en, this message translates to:
-  /// **'Print date'**
-  String get printDate;
 
   /// No description provided for @process.
   ///
@@ -2791,12 +4063,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Property Dashboard'**
   String get propertyDashboard;
-
-  /// No description provided for @province.
-  ///
-  /// In en, this message translates to:
-  /// **'Province'**
-  String get province;
 
   /// No description provided for @publish.
   ///
@@ -2846,12 +4112,6 @@ abstract class AppLocalizations {
   /// **'Reason for rejecting {item}'**
   String reasonForRejecting(Object item);
 
-  /// No description provided for @receiver.
-  ///
-  /// In en, this message translates to:
-  /// **'Receiver'**
-  String get receiver;
-
   /// No description provided for @recentContracts.
   ///
   /// In en, this message translates to:
@@ -2869,12 +4129,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Recently Onboarded Merchants'**
   String get recentlyOnboardedMerchants;
-
-  /// No description provided for @recentTransactions.
-  ///
-  /// In en, this message translates to:
-  /// **'Recent Transactions'**
-  String get recentTransactions;
 
   /// No description provided for @recentWalletTransactions.
   ///
@@ -2894,30 +4148,6 @@ abstract class AppLocalizations {
   /// **'Redo'**
   String get redo;
 
-  /// No description provided for @refresh.
-  ///
-  /// In en, this message translates to:
-  /// **'Refresh'**
-  String get refresh;
-
-  /// No description provided for @register.
-  ///
-  /// In en, this message translates to:
-  /// **'Register'**
-  String get register;
-
-  /// No description provided for @registrationDate.
-  ///
-  /// In en, this message translates to:
-  /// **'Registration Date'**
-  String get registrationDate;
-
-  /// No description provided for @registrationNumber.
-  ///
-  /// In en, this message translates to:
-  /// **'Registration Number'**
-  String get registrationNumber;
-
   /// No description provided for @reject.
   ///
   /// In en, this message translates to:
@@ -2929,24 +4159,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reject Documents'**
   String get rejectDocuments;
-
-  /// No description provided for @rejected.
-  ///
-  /// In en, this message translates to:
-  /// **'Rejected'**
-  String get rejected;
-
-  /// No description provided for @rejectionReason.
-  ///
-  /// In en, this message translates to:
-  /// **'Rejection Reason'**
-  String get rejectionReason;
-
-  /// No description provided for @remove.
-  ///
-  /// In en, this message translates to:
-  /// **'Remove'**
-  String get remove;
 
   /// No description provided for @removeBlock.
   ///
@@ -2978,12 +4190,6 @@ abstract class AppLocalizations {
   /// **'Rent'**
   String get rent;
 
-  /// No description provided for @replaceAll.
-  ///
-  /// In en, this message translates to:
-  /// **'Replace All'**
-  String get replaceAll;
-
   /// No description provided for @replaced.
   ///
   /// In en, this message translates to:
@@ -2995,12 +4201,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Replace With'**
   String get replaceWith;
-
-  /// No description provided for @request.
-  ///
-  /// In en, this message translates to:
-  /// **'Request'**
-  String get request;
 
   /// No description provided for @requestBody.
   ///
@@ -3025,12 +4225,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Request Size'**
   String get requestSize;
-
-  /// No description provided for @required.
-  ///
-  /// In en, this message translates to:
-  /// **'Required'**
-  String get required;
 
   /// No description provided for @reservation.
   ///
@@ -3085,12 +4279,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Report'**
   String get report;
-
-  /// No description provided for @rial.
-  ///
-  /// In en, this message translates to:
-  /// **'Rial'**
-  String get rial;
 
   /// No description provided for @richTextEditor.
   ///
@@ -3157,12 +4345,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save signature'**
   String get saveSignature;
-
-  /// No description provided for @scanBarcode.
-  ///
-  /// In en, this message translates to:
-  /// **'Scan Barcode'**
-  String get scanBarcode;
 
   /// No description provided for @scanFromGallery.
   ///
@@ -3236,12 +4418,6 @@ abstract class AppLocalizations {
   /// **'Send Request'**
   String get sendRequest;
 
-  /// No description provided for @serial.
-  ///
-  /// In en, this message translates to:
-  /// **'Serial'**
-  String get serial;
-
   /// No description provided for @settings.
   ///
   /// In en, this message translates to:
@@ -3265,24 +4441,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Signature'**
   String get signature;
-
-  /// No description provided for @simCardNumber.
-  ///
-  /// In en, this message translates to:
-  /// **'SIM Card Number'**
-  String get simCardNumber;
-
-  /// No description provided for @simCardSerial.
-  ///
-  /// In en, this message translates to:
-  /// **'SIM Card Serial'**
-  String get simCardSerial;
-
-  /// No description provided for @size.
-  ///
-  /// In en, this message translates to:
-  /// **'Size'**
-  String get size;
 
   /// No description provided for @slowestPaths.
   ///
@@ -3350,18 +4508,6 @@ abstract class AppLocalizations {
   /// **'Start Date'**
   String get startDate;
 
-  /// No description provided for @startInvoiceNumber.
-  ///
-  /// In en, this message translates to:
-  /// **'Start Invoice Number'**
-  String get startInvoiceNumber;
-
-  /// No description provided for @status.
-  ///
-  /// In en, this message translates to:
-  /// **'Status'**
-  String get status;
-
   /// No description provided for @storageManager.
   ///
   /// In en, this message translates to:
@@ -3386,12 +4532,6 @@ abstract class AppLocalizations {
   /// **'Sub Admin'**
   String get subAdmin;
 
-  /// No description provided for @submit.
-  ///
-  /// In en, this message translates to:
-  /// **'Submit'**
-  String get submit;
-
   /// No description provided for @submitted.
   ///
   /// In en, this message translates to:
@@ -3403,18 +4543,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Subscript'**
   String get subscript;
-
-  /// No description provided for @subtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Subtitle'**
-  String get subtitle;
-
-  /// No description provided for @success.
-  ///
-  /// In en, this message translates to:
-  /// **'Success'**
-  String get success;
 
   /// No description provided for @successErrorDistribution.
   ///
@@ -3440,12 +4568,6 @@ abstract class AppLocalizations {
   /// **'Switch Camera'**
   String get switchCamera;
 
-  /// No description provided for @system.
-  ///
-  /// In en, this message translates to:
-  /// **'System'**
-  String get system;
-
   /// No description provided for @systemUptime.
   ///
   /// In en, this message translates to:
@@ -3464,12 +4586,6 @@ abstract class AppLocalizations {
   /// **'Table'**
   String get table;
 
-  /// No description provided for @tags.
-  ///
-  /// In en, this message translates to:
-  /// **'Tags'**
-  String get tags;
-
   /// No description provided for @tapAddInTheTopRightCorner.
   ///
   /// In en, this message translates to:
@@ -3481,12 +4597,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tap the Share button in Safari\'s toolbar'**
   String get tapTheShareButtonInSafarisToolbar;
-
-  /// No description provided for @taxpayerName.
-  ///
-  /// In en, this message translates to:
-  /// **'Taxpayer Name'**
-  String get taxpayerName;
 
   /// No description provided for @taxpayerRequests.
   ///
@@ -3505,24 +4615,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tenant'**
   String get tenant;
-
-  /// No description provided for @terminal.
-  ///
-  /// In en, this message translates to:
-  /// **'Terminal'**
-  String get terminal;
-
-  /// No description provided for @terminalId.
-  ///
-  /// In en, this message translates to:
-  /// **'Terminal ID'**
-  String get terminalId;
-
-  /// No description provided for @terminals.
-  ///
-  /// In en, this message translates to:
-  /// **'Terminals'**
-  String get terminals;
 
   /// No description provided for @terminalsByType.
   ///
@@ -3572,12 +4664,6 @@ abstract class AppLocalizations {
   /// **'The video must be at least 4 seconds'**
   String get theVideoMustBeAtLeast4Seconds;
 
-  /// No description provided for @thisFieldIsInvalid.
-  ///
-  /// In en, this message translates to:
-  /// **'This field is invalid.'**
-  String get thisFieldIsInvalid;
-
   /// No description provided for @thisFieldIsRequired.
   ///
   /// In en, this message translates to:
@@ -3595,12 +4681,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Time'**
   String get time;
-
-  /// No description provided for @title.
-  ///
-  /// In en, this message translates to:
-  /// **'Title'**
-  String get title;
 
   /// No description provided for @toBirthDate.
   ///
@@ -3656,12 +4736,6 @@ abstract class AppLocalizations {
   /// **'Total Penalty'**
   String get totalPenalty;
 
-  /// No description provided for @totalPrice.
-  ///
-  /// In en, this message translates to:
-  /// **'Total Price'**
-  String get totalPrice;
-
   /// No description provided for @totalRemaining.
   ///
   /// In en, this message translates to:
@@ -3691,18 +4765,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Trace Id'**
   String get traceId;
-
-  /// No description provided for @trackingNumber.
-  ///
-  /// In en, this message translates to:
-  /// **'Tracking Number'**
-  String get trackingNumber;
-
-  /// No description provided for @transactions.
-  ///
-  /// In en, this message translates to:
-  /// **'Transactions'**
-  String get transactions;
 
   /// No description provided for @transactionsByMethod.
   ///
@@ -3734,12 +4796,6 @@ abstract class AppLocalizations {
   /// **'Try Again'**
   String get tryAgain;
 
-  /// No description provided for @type.
-  ///
-  /// In en, this message translates to:
-  /// **'Type'**
-  String get type;
-
   /// No description provided for @unassigned.
   ///
   /// In en, this message translates to:
@@ -3769,12 +4825,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unexpected Error, Please try again'**
   String get unexpectedErrorPleaseTryAgain;
-
-  /// No description provided for @uniqueTaxCode.
-  ///
-  /// In en, this message translates to:
-  /// **'Unique Tax Code'**
-  String get uniqueTaxCode;
 
   /// No description provided for @unmute.
   ///
@@ -3812,23 +4862,11 @@ abstract class AppLocalizations {
   /// **'Upload'**
   String get upload;
 
-  /// No description provided for @url.
-  ///
-  /// In en, this message translates to:
-  /// **'URL'**
-  String get url;
-
   /// No description provided for @useOutputAsInput.
   ///
   /// In en, this message translates to:
   /// **'Use output as input'**
   String get useOutputAsInput;
-
-  /// No description provided for @user.
-  ///
-  /// In en, this message translates to:
-  /// **'User'**
-  String get user;
 
   /// No description provided for @userCreatedSuccessfully.
   ///
@@ -3860,12 +4898,6 @@ abstract class AppLocalizations {
   /// **'User ID'**
   String get userId;
 
-  /// No description provided for @userInformation.
-  ///
-  /// In en, this message translates to:
-  /// **'User Information'**
-  String get userInformation;
-
   /// No description provided for @userIp.
   ///
   /// In en, this message translates to:
@@ -3889,12 +4921,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Users Management'**
   String get usersManagement;
-
-  /// No description provided for @value.
-  ///
-  /// In en, this message translates to:
-  /// **'Value'**
-  String get value;
 
   /// No description provided for @verificationStatus.
   ///
@@ -3932,12 +4958,6 @@ abstract class AppLocalizations {
   /// **'Video available'**
   String get videoAvailable;
 
-  /// No description provided for @viewItem.
-  ///
-  /// In en, this message translates to:
-  /// **'View {item}'**
-  String viewItem(Object item);
-
   /// No description provided for @visitWebsite.
   ///
   /// In en, this message translates to:
@@ -3950,35 +4970,11 @@ abstract class AppLocalizations {
   /// **'Visual Authentication'**
   String get visualAuthentication;
 
-  /// No description provided for @wallet.
-  ///
-  /// In en, this message translates to:
-  /// **'Wallet'**
-  String get wallet;
-
-  /// No description provided for @walletBalance.
-  ///
-  /// In en, this message translates to:
-  /// **'Wallet Balance'**
-  String get walletBalance;
-
   /// No description provided for @walletManagement.
   ///
   /// In en, this message translates to:
   /// **'Wallet Management'**
   String get walletManagement;
-
-  /// No description provided for @wallets.
-  ///
-  /// In en, this message translates to:
-  /// **'Wallets'**
-  String get wallets;
-
-  /// No description provided for @warnings.
-  ///
-  /// In en, this message translates to:
-  /// **'Warnings'**
-  String get warnings;
 
   /// No description provided for @whatsapp.
   ///
@@ -3997,24 +4993,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Write something...'**
   String get writeSomething;
-
-  /// No description provided for @year.
-  ///
-  /// In en, this message translates to:
-  /// **'Year'**
-  String get year;
-
-  /// No description provided for @youHaveNotSubmittedAnyTaxpayerRequestYet.
-  ///
-  /// In en, this message translates to:
-  /// **'You have not submitted any taxpayer request yet.'**
-  String get youHaveNotSubmittedAnyTaxpayerRequestYet;
-
-  /// No description provided for @yourSessionHasExpiredPleaseSignInAgain.
-  ///
-  /// In en, this message translates to:
-  /// **'Your session has expired. Please sign in again.'**
-  String get yourSessionHasExpiredPleaseSignInAgain;
 
   /// No description provided for @zipCode.
   ///
