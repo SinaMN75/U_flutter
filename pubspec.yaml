@@ -44,6 +44,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
+  remove_unused_localizations: ^1.1.2
 
 flutter:
   generate: true

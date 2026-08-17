@@ -9,22 +9,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get about => 'About';
-
-  @override
-  String get aboutAvaHamrah => 'About AvaHamrah';
-
-  @override
   String get accenting => 'Accenting';
-
-  @override
-  String get acceptTermsAndContinue => 'Accept terms and continue';
-
-  @override
-  String get accommodation => 'Accommodation';
-
-  @override
-  String get accommodationsDashboard => 'Accommodation\'s Dashboard';
 
   @override
   String get account => 'Account';
@@ -77,9 +62,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get all => 'All';
 
   @override
-  String get allowedToDrive => 'Allowed to drive';
-
-  @override
   String get amenities => 'Amenities';
 
   @override
@@ -111,9 +93,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get architecture => 'Architecture';
-
-  @override
-  String get areYouSureAboutTheEnteredPostalCode => 'Are you sure about the entered postal code?';
 
   @override
   String get areYouSureToDeleteThisUser => 'Are you sure to Delete this User?';
@@ -148,9 +127,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get assigned => 'Assigned';
 
   @override
-  String get assignTerminal => 'Assign Terminal';
-
-  @override
   String get atLeast => 'At least';
 
   @override
@@ -158,18 +134,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get auto => 'Auto';
-
-  @override
-  String get avaHamrahOfficialWebsite => 'AvaHamrah official website';
-
-  @override
-  String get avaHamrahSystem => 'AvaHamrah system';
-
-  @override
-  String get avaHamrahTermsOfUse => 'AvaHamrah terms of use';
-
-  @override
-  String get availability => 'Availability';
 
   @override
   String get available => 'Available';
@@ -205,19 +169,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bedType => 'Bed Type';
 
   @override
-  String get between50000And10000000Rials => 'Between 50,000 and 10,000,000 Rials';
-
-  @override
-  String get bill => 'Bill';
-
-  @override
-  String get billDetails => 'Bill details';
-
-  @override
   String get billId => 'Bill ID';
-
-  @override
-  String get billInquiry => 'Bill inquiry';
 
   @override
   String get binaryFiles => 'Binary files';
@@ -244,12 +196,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get brightness => 'Brightness';
 
   @override
-  String get browseAndDeleteEverythingSavedInLocalStorage => 'Browse and delete everything saved in local storage';
-
-  @override
-  String get bulkImport => 'Bulk Import';
-
-  @override
   String get bulkImportTerminals => 'Bulk Import Terminals';
 
   @override
@@ -259,24 +205,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get businessTitle => 'Business Title';
 
   @override
-  String get busy => 'Busy';
-
-  @override
   String get buttonLink => 'Button Link';
 
   @override
   String get buttonText => 'Button Text';
 
   @override
-  String buyItem(Object item) {
-    return 'Buy $item';
-  }
-
-  @override
   String get cacheCleared => 'Cache Cleared';
-
-  @override
-  String get cached => 'Cached';
 
   @override
   String get cancel => 'Cancel';
@@ -288,13 +223,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get capacity => 'Capacity';
 
   @override
-  String get cardToCard => 'Card to card';
-
-  @override
   String get categories => 'Categories';
-
-  @override
-  String get categoriesNotFound => 'Categories Not Found';
 
   @override
   String get category => 'Category';
@@ -309,16 +238,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get charge => 'Charge';
 
   @override
-  String get chargeAmount => 'Charge amount';
-
-  @override
   String get chargeWallet => 'Charge Wallet';
-
-  @override
-  String get charity => 'Charity';
-
-  @override
-  String get charityDonation => 'Charity donation';
 
   @override
   String get checkedIn => 'Checked In';
@@ -339,12 +259,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get checklist => 'Checklist';
 
   @override
-  String get checkManagement => 'Check management';
-
-  @override
-  String get checkNegativePointsRecordedOnTheLicense => 'Check negative points recorded on the license';
-
-  @override
   String get checkOut => 'Check Out';
 
   @override
@@ -354,16 +268,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get checkOutTime => 'Check-out Time';
 
   @override
-  String get chooseaCategory => 'Choose A Category';
-
-  @override
   String get city => 'City';
 
   @override
   String get cityCode => 'City Code';
-
-  @override
-  String get civicPartnership => 'Civic Partnership';
 
   @override
   String get clear => 'Clear';
@@ -399,28 +307,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get columns => 'Columns';
 
   @override
-  String get comingSoon => 'Coming soon';
-
-  @override
   String get comments => 'Comments';
-
-  @override
-  String get completeUserInformation => 'Complete user information';
 
   @override
   String get configuration => 'Configuration';
 
   @override
   String get confirm => 'Confirm';
-
-  @override
-  String get confirmAndContinue => 'Confirm and continue';
-
-  @override
-  String get confirmationDate => 'Confirmation date';
-
-  @override
-  String get confirmDelete => 'Confirm Delete';
 
   @override
   String get confirmed => 'Confirmed';
@@ -441,9 +334,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get contentType => 'Content Type';
 
   @override
-  String get continue_ => 'Continue';
-
-  @override
   String get contract => 'Contract';
 
   @override
@@ -451,9 +341,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get contractsExpiringSoon => 'Contracts Expiring Soon';
-
-  @override
-  String get contractStatus => 'Contract Status';
 
   @override
   String get contractType => 'Contract Type';
@@ -509,16 +396,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get creditor => 'Creditor';
 
   @override
-  String get creditValidation => 'Credit validation';
-
-  @override
   String get cropImage => 'Crop Image';
 
   @override
   String get cryptoTester => 'Crypto Tester';
-
-  @override
-  String get csvExport => 'CSV Export';
 
   @override
   String get currentBalance => 'Current Balance';
@@ -539,9 +420,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dark => 'Dark';
 
   @override
-  String get darkMode => 'Dark Mode';
-
-  @override
   String get dashboard => 'Dashboard';
 
   @override
@@ -555,9 +433,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get days => 'days';
-
-  @override
-  String get daysLeft => 'days left';
 
   @override
   String get daysOverdue => 'Days Overdue';
@@ -581,9 +456,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get delete => 'Delete';
 
   @override
-  String get deleted => 'Deleted';
-
-  @override
   String deleteItem(Object item) {
     return 'Delete $item';
   }
@@ -598,9 +470,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get description => 'Description';
 
   @override
-  String get descriptionOptional => 'Description (Optional)';
-
-  @override
   String get detail1 => 'Detail 1';
 
   @override
@@ -610,12 +479,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get details => 'Details';
 
   @override
-  String get deviceSerial => 'Device serial';
-
-  @override
-  String get disks => 'Disks';
-
-  @override
   String get diskUsage => 'Disk Usage';
 
   @override
@@ -623,9 +486,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get documentInfo => 'Document Info';
-
-  @override
-  String get documents => 'Documents';
 
   @override
   String get done => 'Done';
@@ -664,19 +524,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get draft => 'Draft';
 
   @override
-  String get drivingLicense => 'Driving license';
-
-  @override
-  String get drivingLicenseNumber => 'Driving license number';
-
-  @override
   String get due => 'Due';
 
   @override
   String get dueDate => 'Due Date';
-
-  @override
-  String get dueFactors => 'Due Factors';
 
   @override
   String get duplicateBlock => 'Duplicate Block';
@@ -691,15 +542,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get edit => 'Edit';
 
   @override
-  String get edited => 'Edited';
-
-  @override
   String editItem(Object item) {
     return 'Edit $item';
   }
-
-  @override
-  String get electricityWaterGas => 'Electricity, water, gas';
 
   @override
   String get email => 'Email';
@@ -729,25 +574,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get enterPhoneNumber => 'Enter phone number';
 
   @override
-  String get enterTheBillidAndPaymentidOrScanItsBarcode => 'Enter the bill ID and payment ID or scan its barcode';
-
-  @override
-  String get enterTheDrivingLicenseNumberToInquire => 'Enter the driving license number to inquire';
-
-  @override
-  String get enterThePrepaidsimCardNumber => 'Enter the prepaid SIM card number';
-
-  @override
-  String get enterTheSentVerificationCode => 'Enter the sent verification code.';
-
-  @override
-  String get enterYourPostalCodeCorrectlyAndInquire => 'Enter your postal code correctly and inquire.';
-
-  @override
   String get entityOverview => 'Entity Overview';
-
-  @override
-  String get entranceDate => 'Entrance Date';
 
   @override
   String get entrancePrice => 'Entrance Price';
@@ -759,19 +586,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorCorrection => 'Error correction';
 
   @override
-  String get errorFetchingCategories => 'Error Fetching Categories';
-
-  @override
-  String get errorLoadingBalance => 'Error loading balance';
-
-  @override
   String get errorLoadingData => 'Error loading data';
 
   @override
   String get errorLoadingVideo => 'Error loading video';
-
-  @override
-  String get errorReadingDashboardData => 'Error Reading Dashboard Data';
 
   @override
   String get errorReadingData => 'Error reading Data';
@@ -786,25 +604,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get exactStatusCode => 'Exact Status Code';
 
   @override
-  String get examCategories => 'Exam Categories';
-
-  @override
-  String get examCreatedSuccessfully => 'Exam created successfully!';
-
-  @override
-  String get examDeletedSuccessfully => 'Exam deleted successfully!';
-
-  @override
-  String get exams => 'Exams';
-
-  @override
   String get exception => 'Exception';
-
-  @override
-  String get exitFullscreen => 'Exit fullscreen';
-
-  @override
-  String get expirationDate => 'Expiration date';
 
   @override
   String get expired => 'Expired';
@@ -813,22 +613,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get expires => 'Expires';
 
   @override
-  String get expiresToday => 'Expires today';
-
-  @override
   String get expiringSoon => 'Expiring Soon';
-
-  @override
-  String get externalApi => 'External API';
-
-  @override
-  String get extraSections => 'Extra Sections';
-
-  @override
-  String get failedToLoadLogContent => 'Failed to load log content';
-
-  @override
-  String get failedToLoadLogStructure => 'Failed to load log structure';
 
   @override
   String get fatherName => 'Father Name';
@@ -854,16 +639,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get finalApproval => 'Final Approval';
 
   @override
-  String get finalConsumer => 'Final Consumer';
-
-  @override
-  String get finance => 'Finance';
-
-  @override
   String get financialAndOperations => 'Financial & Operations';
-
-  @override
-  String get financialRecords => 'Financial records';
 
   @override
   String get find => 'Find';
@@ -873,12 +649,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get firstName => 'First Name';
-
-  @override
-  String get firstNameaz => 'First Name (A-Z)';
-
-  @override
-  String get firstNameza => 'First Name (Z-A)';
 
   @override
   String get flashlight => 'Flashlight';
@@ -899,9 +669,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get folderName => 'Folder Name';
 
   @override
-  String get folders => 'Folders';
-
-  @override
   String get followUs => 'Follow us';
 
   @override
@@ -911,13 +678,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fontSize => 'Font Size';
 
   @override
-  String get for_ => 'For';
-
-  @override
   String get foreground => 'Foreground';
-
-  @override
-  String get foreigners => 'Foreigners';
 
   @override
   String get framework => 'Framework';
@@ -932,9 +693,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get freeway => 'Freeway';
 
   @override
-  String get freewayTollsInquiry => 'Freeway tolls inquiry';
-
-  @override
   String get from => 'From';
 
   @override
@@ -947,13 +705,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fullscreen => 'Fullscreen';
 
   @override
-  String get garbageCollector => 'Garbage Collector';
-
-  @override
   String get gatewayPaymentsByType => 'Gateway Payments by Type';
-
-  @override
-  String get gen0Gen1Gen2 => 'Gen0 / Gen1 / Gen2';
 
   @override
   String get gender => 'Gender';
@@ -972,18 +724,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get getSupportPassword => 'Get Support Password';
-
-  @override
-  String get goodAfternoon => 'Good afternoon';
-
-  @override
-  String get goodMorning => 'Good morning';
-
-  @override
-  String get goodNight => 'Good night';
-
-  @override
-  String get goodNoon => 'Good noon';
 
   @override
   String get gotIt => 'Got it';
@@ -1016,9 +756,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hasImage => 'Has image';
 
   @override
-  String get hddUsage => 'HDD Usage';
-
-  @override
   String get headerRow => 'Header Row';
 
   @override
@@ -1041,9 +778,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get highlightColor => 'Highlight Color';
-
-  @override
-  String get hintOptional => 'Hint (Optional)';
 
   @override
   String get hotel => 'Hotel';
@@ -1079,15 +813,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get icon => 'Icon';
 
   @override
-  String get icon1 => 'Icon 1';
-
-  @override
-  String get icon2 => 'Icon 2';
-
-  @override
-  String get icon3 => 'Icon 3';
-
-  @override
   String get image => 'Image';
 
   @override
@@ -1103,40 +828,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get imei => 'IMEI';
 
   @override
-  String get imeiCode => 'IMEI code';
-
-  @override
   String get incomeByType => 'Income by Type';
 
   @override
   String get increaseIndent => 'Increase Indent';
 
   @override
-  String get informationConfirmation => 'Information confirmation';
-
-  @override
   String get inlineCode => 'Inline Code';
 
   @override
   String get inputText => 'Input Text';
-
-  @override
-  String get inquire => 'Inquire';
-
-  @override
-  String get inquireAgain => 'Inquire again';
-
-  @override
-  String get inquiry => 'Inquiry';
-
-  @override
-  String get inquiryCost => 'Inquiry cost';
-
-  @override
-  String get inquiryDate => 'Inquiry date';
-
-  @override
-  String get inquiryDetails => 'Inquiry details';
 
   @override
   String get insert => 'Insert';
@@ -1154,43 +855,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get instagram => 'Instagram';
 
   @override
-  String get installationDate => 'Installation date';
-
-  @override
-  String get instantMoneyTransfer => 'Instant money transfer';
-
-  @override
   String get institutionId => 'Institution ID';
-
-  @override
-  String get insufficientBalance => 'Insufficient balance';
-
-  @override
-  String get insufficientWalletBalancePleaseUseThePaymentGateway => 'Insufficient wallet balance. Please use the payment gateway.';
-
-  @override
-  String get internet => 'Internet';
-
-  @override
-  String get internetDataPackage => 'Internet data package';
-
-  @override
-  String get internetPackage => 'Internet package';
 
   @override
   String get introductionCode => 'Introduction Code';
 
   @override
-  String get invalid => 'Invalid';
-
-  @override
   String get invalidAmount => 'Invalid amount.';
-
-  @override
-  String get invalidBarcodePleaseEnterTheIdsManually => 'Invalid barcode, please enter the IDs manually';
-
-  @override
-  String get invalidOrTamperedqrCode => 'Invalid or tampered QR code';
 
   @override
   String get invoice => 'Invoice';
@@ -1209,9 +880,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get iran => 'Iran';
-
-  @override
-  String get irancellHamrahEAvalRightel => 'Irancell, Hamrah-e Aval, Rightel';
 
   @override
   String get italic => 'Italic';
@@ -1250,9 +918,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get landline => 'Landline';
 
   @override
-  String get landlinePhoneNumber => 'Landline phone number';
-
-  @override
   String get language => 'Language';
 
   @override
@@ -1262,40 +927,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get lastName => 'Last Name';
 
   @override
-  String get lastNameaz => 'Last Name (A-Z)';
-
-  @override
-  String get lastNameza => 'Last Name (Z-A)';
-
-  @override
-  String get leasing => 'Leasing';
-
-  @override
   String get leaveMaskedToKeepTheCurrentValue => 'Leave masked to keep the current value';
 
   @override
   String get legalEntityType => 'Legal Entity Type';
 
   @override
-  String get legalPerson => 'Legal Person';
-
-  @override
   String get letter => 'Letter';
 
   @override
   String get licencePlate => 'Licence Plate';
-
-  @override
-  String get licenseDetails => 'License details';
-
-  @override
-  String get licenseHolder => 'License holder';
-
-  @override
-  String get licenseNegativePointInquiry => 'License negative point inquiry';
-
-  @override
-  String get licenseStatusInquiry => 'License status inquiry';
 
   @override
   String get light => 'Light';
@@ -1311,12 +952,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loadAverage => 'Load Average';
-
-  @override
-  String get loanPreRequest => 'Loan pre-request';
-
-  @override
-  String get loanRequest => 'Loan request';
 
   @override
   String get logo => 'Logo';
@@ -1346,16 +981,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get maxDurationMs => 'Max Duration (ms)';
 
   @override
-  String get maximumRent => 'Maximum Rent';
-
-  @override
-  String get maxOccupancy => 'Max Occupancy';
-
-  @override
   String get maxPrice => 'Max Price';
-
-  @override
-  String get maxRent => 'Max Rent';
 
   @override
   String get mcc => 'MCC';
@@ -1376,9 +1002,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get merchantsManagement => 'Merchants Management';
 
   @override
-  String get merchantTitleStoreOrBusinessName => 'Merchant title (store or business name)';
-
-  @override
   String get metaDescription => 'Meta Description';
 
   @override
@@ -1394,19 +1017,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get minDurationMs => 'Min Duration (ms)';
 
   @override
-  String get minimumRent => 'Minimum Rent';
-
-  @override
   String get minPrice => 'Min Price';
 
   @override
-  String get minRent => 'Min Rent';
-
-  @override
   String get minute => 'Minute';
-
-  @override
-  String get mobileNumber => 'Mobile number';
 
   @override
   String get mode => 'Mode';
@@ -1430,9 +1044,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get monthly => 'Monthly';
 
   @override
-  String get monthlyActiveUsers => 'Monthly Active Users';
-
-  @override
   String get monthlyRevenue => 'Monthly Revenue';
 
   @override
@@ -1443,9 +1054,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get more => 'More';
-
-  @override
-  String get moreFilters => 'More Filters';
 
   @override
   String get mostFailingPaths => 'Most Failing Paths';
@@ -1466,24 +1074,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mute => 'Mute';
 
   @override
-  String get myBankAccounts => 'My bank accounts';
-
-  @override
-  String get myMerchants => 'My merchants';
-
-  @override
-  String get myPos => 'My POS';
-
-  @override
-  String get myTerminals => 'My terminals';
-
-  @override
-  String get myVehicle => 'My vehicle';
-
-  @override
-  String get myVehicles => 'My vehicles';
-
-  @override
   String get name => 'Name';
 
   @override
@@ -1496,16 +1086,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get nationalCode => 'National Code';
 
   @override
-  String get naturalPerson => 'Natural Person';
-
-  @override
   String get needsReview => 'Needs Review';
-
-  @override
-  String get negativePointDetails => 'Negative point details';
-
-  @override
-  String get negativePoints => 'Negative points';
 
   @override
   String get net => 'Net';
@@ -1517,19 +1098,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get new_ => 'New';
 
   @override
-  String get newestFirst => 'Newest First';
-
-  @override
-  String get newExam => 'New Exam';
-
-  @override
   String get newFolder => 'New Folder';
 
   @override
   String get newName => 'New Name';
-
-  @override
-  String get newRequest => 'New Request';
 
   @override
   String get next30Days => 'Next 30 Days';
@@ -1538,13 +1110,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get nights => 'Nights';
 
   @override
-  String get no => 'No';
-
-  @override
   String get noData => 'No data';
-
-  @override
-  String get noFreewayTollsFoundForThisVehicle => 'No freeway tolls found for this vehicle';
 
   @override
   String noItemsFound(Object items) {
@@ -1558,25 +1124,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get none => 'None';
 
   @override
-  String get noNotifications => 'No notifications';
-
-  @override
-  String get noResults => 'No Results';
-
-  @override
   String get normalText => 'Normal Text';
 
   @override
-  String get noSavedData => 'No saved data';
-
-  @override
   String get noShow => 'No Show';
-
-  @override
-  String get nosimCardRegistered => 'No SIM card registered';
-
-  @override
-  String get notAllowedToDrive => 'Not allowed to drive';
 
   @override
   String get notAssigned => 'Not assigned';
@@ -1585,19 +1136,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notes => 'Notes';
 
   @override
-  String get notifications => 'Notifications';
-
-  @override
   String get noTransactions => 'No transactions';
 
   @override
-  String get noTransactionsDone => 'No transactions done.';
-
-  @override
   String get notUploaded => 'Not Uploaded';
-
-  @override
-  String get noViolationsFoundForThisVehicle => 'No violations found for this vehicle';
 
   @override
   String get number => 'Number';
@@ -1616,18 +1158,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ok => 'OK';
-
-  @override
-  String get oldestFirst => 'Oldest First';
-
-  @override
-  String get oneTerminalPerLineSerialSimnumberSimserialImei => 'One terminal per line: serial,simNumber,simSerial,imei';
-
-  @override
-  String get onlineInquiryOfVehicleViolationsLicenseAndPlate => 'Online inquiry of vehicle violations, license and plate';
-
-  @override
-  String get onlinePayment => 'Online payment';
 
   @override
   String get onlyErrors => 'Only Errors';
@@ -1654,12 +1184,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get options => 'Options:';
 
   @override
-  String get optionTitle => 'Option Title';
-
-  @override
-  String get optionTitleAndScoreAreRequired => 'Option title and score are required';
-
-  @override
   String get order => 'Order';
 
   @override
@@ -1684,9 +1208,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get otpTools => 'OTP Tools';
 
   @override
-  String get outOfService => 'Out of Service';
-
-  @override
   String get output => 'Output';
 
   @override
@@ -1697,9 +1218,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get owner => 'Owner';
-
-  @override
-  String get ownerInformation => 'Owner Information';
 
   @override
   String get ownerMobile => 'Owner Mobile';
@@ -1726,12 +1244,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get paidAmount => 'Paid Amount';
 
   @override
-  String get paidDate => 'Paid Date';
-
-  @override
-  String get paidFactors => 'Paid Factors';
-
-  @override
   String get paragraph => 'Paragraph';
 
   @override
@@ -1739,12 +1251,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get parkingManagement => 'Parking Management';
-
-  @override
-  String get parkingName => 'Parking Name';
-
-  @override
-  String get parkingReceipt => 'Parking Receipt';
 
   @override
   String get parkingReport => 'Parking Report';
@@ -1765,12 +1271,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pay => 'Pay';
 
   @override
-  String get payableAmount => 'Payable amount';
-
-  @override
-  String get payAndInquire => 'Pay and inquire';
-
-  @override
   String get payInvoice => 'Pay Invoice';
 
   @override
@@ -1783,9 +1283,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get paymentId => 'Payment ID';
 
   @override
-  String get paymentMethod => 'Payment method';
-
-  @override
   String get payments => 'Payments';
 
   @override
@@ -1793,9 +1290,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get paymentWasSuccessful => 'Payment was successful.';
-
-  @override
-  String get payWithWallet => 'Pay with wallet';
 
   @override
   String get penalty => 'Penalty';
@@ -1816,9 +1310,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pendingVerification => 'Pending Verification';
 
   @override
-  String get period => 'Period';
-
-  @override
   String get permissions => 'Permissions';
 
   @override
@@ -1828,28 +1319,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get phoneNumber => 'Phone Number';
 
   @override
-  String get pinCharge => 'PIN charge';
-
-  @override
   String get placeTheBarcodeInsideTheFrame => 'Place the barcode inside the frame';
-
-  @override
-  String get plate => 'Plate';
-
-  @override
-  String get plateHistoryInquiry => 'Plate history inquiry';
-
-  @override
-  String get plateSpecifications => 'Plate specifications';
-
-  @override
-  String get plateStatus => 'Plate status';
-
-  @override
-  String get plateStatusInquiry => 'Plate status inquiry';
-
-  @override
-  String get plateTrackingCode => 'Plate tracking code';
 
   @override
   String get playbackSpeed => 'Playback speed';
@@ -1858,22 +1328,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pleaseAddYourSignatureFirst => 'Please add your signature first';
 
   @override
-  String get pleaseCreateACategoryBeforeCreatingAProduct => 'Please Create a Category before creating a Product.';
-
-  @override
-  String get pleaseCreateAProductBeforeSigningAContract => 'Please Create a Product before Signing a Contract';
-
-  @override
-  String get pleaseDrawYourSignatureInTheBoxBelow => 'Please draw your signature in the box below';
-
-  @override
-  String get pleaseEnterACompleteLicencePlate => 'Please enter a complete licence plate';
-
-  @override
   String get pleaseEnterSomeInputText => 'Please enter some input text.';
-
-  @override
-  String get pleaseEnterYourMobileNumberToLogIn => 'Please enter your mobile number to log in.';
 
   @override
   String pleaseSelectA(Object item) {
@@ -1881,25 +1336,10 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get pleaseSelectAnOperator => 'Please select an operator.';
-
-  @override
-  String get pleaseSelectTheChargeAmount => 'Please select the charge amount.';
-
-  @override
   String get pnapiTester => 'Pn API Tester';
 
   @override
-  String get pointDetails => 'Point Details';
-
-  @override
-  String get pointTheCameraAtAReceiptqrCode => 'Point the camera at a receipt QR code';
-
-  @override
   String get policies => 'Policies';
-
-  @override
-  String get positionTheLicencePlateInsideTheFrame => 'Position the licence plate inside the frame';
 
   @override
   String get postalCode => 'Postal Code';
@@ -1909,9 +1349,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get previewNotAvailableForThisFileType => 'Preview not available for this file type';
-
-  @override
-  String get previousInquiryResult => 'Previous inquiry result';
 
   @override
   String get price => 'Price';
@@ -1926,31 +1363,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get printDate => 'Print date';
 
   @override
-  String get printingFailed => 'Printing failed';
-
-  @override
-  String get printNumber => 'Print number';
-
-  @override
-  String get printReceipt => 'Print Receipt';
-
-  @override
-  String get privateMemory => 'Private Memory';
-
-  @override
   String get process => 'Process';
 
   @override
   String get processUptime => 'Process Uptime';
 
   @override
-  String get productCategories => 'Product Categories';
-
-  @override
   String get products => 'Products';
-
-  @override
-  String get profile => 'Profile';
 
   @override
   String get propertyDashboard => 'Property Dashboard';
@@ -1971,42 +1390,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get queryString => 'Query String';
 
   @override
-  String get questionnaire => 'Questionnaire';
-
-  @override
-  String get questions => 'Questions';
-
-  @override
-  String get questionTitle => 'Question Title';
-
-  @override
-  String get questionTitleAndAtLeastOneOptionAreRequired => 'Question title and at least one option are required';
-
-  @override
   String get quietZone => 'Quiet zone';
 
   @override
   String get quote => 'Quote';
 
   @override
-  String get ramUsage => 'RAM Usage';
-
-  @override
   String get readingTime => 'Reading Time';
-
-  @override
-  String get readingTimeMinutes => 'Reading Time (minutes)';
 
   @override
   String reasonForRejecting(Object item) {
     return 'Reason for rejecting $item';
   }
-
-  @override
-  String get receiptPrintedSuccessfully => 'Receipt printed successfully';
-
-  @override
-  String get received => 'Received';
 
   @override
   String get receiver => 'Receiver';
@@ -2039,19 +1434,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get register => 'Register';
 
   @override
-  String get registerMerchant => 'Register merchant';
-
-  @override
-  String get registerNewMerchant => 'Register new merchant';
-
-  @override
   String get registrationDate => 'Registration Date';
 
   @override
   String get registrationNumber => 'Registration Number';
-
-  @override
-  String get reInquiryWithFee => 'Re-inquiry (with fee)';
 
   @override
   String get reject => 'Reject';
@@ -2066,9 +1452,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get rejectionReason => 'Rejection Reason';
 
   @override
-  String get remaining => 'Remaining';
-
-  @override
   String get remove => 'Remove';
 
   @override
@@ -2076,9 +1459,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get removeColumn => 'Remove Column';
-
-  @override
-  String get removeLink => 'Remove Link';
 
   @override
   String get removeRow => 'Remove Row';
@@ -2115,9 +1495,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get required => 'Required';
-
-  @override
-  String get resend => 'Resend';
 
   @override
   String get reservation => 'Reservation';
@@ -2174,9 +1551,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get rows => 'Rows';
 
   @override
-  String get rowsIncludingHeaderUpTo10000RowsBasedOnCurrentFilters => 'rows (including header) - up to 10,000 rows based on current filters.';
-
-  @override
   String get saturation => 'Saturation';
 
   @override
@@ -2186,30 +1560,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get saveSignature => 'Save signature';
 
   @override
-  String get sayadCheck => 'Sayad check';
-
-  @override
   String get scanBarcode => 'Scan Barcode';
 
   @override
   String get scanFromGallery => 'Scan from Gallery';
 
   @override
-  String get scannedReceipt => 'Scanned Receipt';
-
-  @override
-  String get scanPlate => 'Scan Plate';
-
-  @override
-  String get scanReceipt => 'Scan Receipt';
-
-  @override
   String get score => 'Score';
-
-  @override
-  String scoreValue(Object score) {
-    return 'Score: $score';
-  }
 
   @override
   String get scrollDownAndTapAddToHomeScreen => 'Scroll down and tap \"Add to Home Screen\"';
@@ -2227,9 +1584,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get secretKey => 'Secret Key';
 
   @override
-  String get section => 'Section';
-
-  @override
   String get select => 'Select';
 
   @override
@@ -2238,45 +1592,16 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get selectAmount => 'Select amount';
-
-  @override
   String get selectAUserToManageTheirWallet => 'Select a user to manage their wallet';
 
   @override
   String get selectCountry => 'Select Country';
 
   @override
-  String get selectInternetPackage => 'Select internet package';
-
-  @override
-  String get selectMerchant => 'Select Merchant';
-
-  @override
-  String get selectTheDesiredsimCard => 'Select the desired SIM card';
-
-  @override
-  String selectVehicleForInquiry(Object inquiry) {
-    return 'Select the vehicle for $inquiry';
-  }
-
-  @override
   String get sendRequest => 'Send Request';
 
   @override
-  String get sent => 'Sent';
-
-  @override
   String get serial => 'Serial';
-
-  @override
-  String get serialNumber => 'Serial number';
-
-  @override
-  String get serverGc => 'Server GC';
-
-  @override
-  String get services => 'Services';
 
   @override
   String get settings => 'Settings';
@@ -2291,22 +1616,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signature => 'Signature';
 
   @override
-  String get simCardCharge => 'SIM card charge';
-
-  @override
   String get simCardNumber => 'SIM Card Number';
 
   @override
   String get simCardSerial => 'SIM Card Serial';
 
   @override
-  String get singleInvoice => 'Single Invoice';
-
-  @override
   String get size => 'Size';
-
-  @override
-  String get sizeM2 => 'Size (m2)';
 
   @override
   String get slowestPaths => 'Slowest Paths';
@@ -2319,9 +1635,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get socialMedia => 'Social Media';
-
-  @override
-  String get sortBy => 'Sort By';
 
   @override
   String get source => 'Source';
@@ -2366,9 +1679,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get submit => 'Submit';
 
   @override
-  String get submitRequest => 'Submit Request';
-
-  @override
   String get submitted => 'Submitted';
 
   @override
@@ -2382,9 +1692,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get successErrorDistribution => 'Success / Error Distribution';
-
-  @override
-  String get successful => 'Successful';
 
   @override
   String get superscript => 'Superscript';
@@ -2417,18 +1724,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tapTheShareButtonInSafarisToolbar => 'Tap the Share button in Safari\'s toolbar';
 
   @override
-  String get tapToInquire => 'Tap to inquire';
-
-  @override
-  String get taxpayer => 'Taxpayer';
-
-  @override
-  String get taxpayerDetails => 'Taxpayer Details';
-
-  @override
-  String get taxpayerInformation => 'Taxpayer Information';
-
-  @override
   String get taxpayerName => 'Taxpayer Name';
 
   @override
@@ -2447,9 +1742,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get terminalId => 'Terminal ID';
 
   @override
-  String get terminalNumber => 'Terminal number';
-
-  @override
   String get terminals => 'Terminals';
 
   @override
@@ -2457,15 +1749,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get terminalsManagement => 'Terminals Management';
-
-  @override
-  String get terminalTitleOptional => 'Terminal title (optional)';
-
-  @override
-  String get terminalType => 'Terminal Type';
-
-  @override
-  String get termsAndConditions => 'Terms and conditions';
 
   @override
   String get textColor => 'Text Color';
@@ -2480,22 +1763,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get textSpacing => 'Text spacing';
 
   @override
-  String get theAmountWillBeAddedToTheWalletAndPaid => 'The amount will be added to the wallet and paid';
-
-  @override
-  String get theEnteredNationalCodeIsIncorrect => 'The entered national code is incorrect.';
-
-  @override
-  String get theEnteredVerificationCodeIsIncorrect => 'The entered verification code is incorrect.';
-
-  @override
   String get theme => 'Theme';
-
-  @override
-  String get thereIsNoSavedDataForThisVehicleToGetFreshDataYouMustPayTheInquiryFee => 'There is no saved data for this vehicle. To get fresh data you must pay the inquiry fee.';
-
-  @override
-  String get theSupportPasswordWasSentViasmsToTheNumberRegisteredInTheApp => 'The support password was sent via SMS to the number registered in the app.';
 
   @override
   String get theVideoMustBeAtLeast4Seconds => 'The video must be at least 4 seconds';
@@ -2510,22 +1778,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get thisFolderIsEmpty => 'This folder is empty';
 
   @override
-  String get thisServiceWillLaunchSoon => 'This service will launch soon';
-
-  @override
-  String get thisUserDoesNotHaveAnActiveContract => 'This User does not have an Active Contract.';
-
-  @override
-  String get threads => 'Threads';
-
-  @override
   String get time => 'Time';
 
   @override
   String get title => 'Title';
-
-  @override
-  String get to => 'To';
 
   @override
   String get toBirthDate => 'To Birth Date';
@@ -2534,25 +1790,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get toDate => 'To Date';
 
   @override
-  String get tollGateway => 'Toll gateway';
-
-  @override
-  String get tollItems => 'Toll items';
-
-  @override
   String get topMerchants => 'Top Merchants';
 
   @override
   String get topMerchantsByTerminalCount => 'Top Merchants (by terminal count)';
 
   @override
-  String get toRegisterAMerchantYourWalletMustHaveAtLeast100000TomansBalance => 'To register a merchant, your wallet must have at least 100,000 Tomans balance.';
-
-  @override
   String get totalDebt => 'Total Debt';
-
-  @override
-  String get totalFreewayTolls => 'Total freeway tolls';
 
   @override
   String get totalItems => 'Total items';
@@ -2582,25 +1826,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get totalSize => 'Total size';
 
   @override
-  String get totalViolationAmount => 'Total violation amount';
-
-  @override
-  String get toUseAvaHamrahServicesCompleteYourIdentityInformation => 'To use AvaHamrah services, complete your identity information.';
-
-  @override
   String get traceId => 'Trace Id';
 
   @override
   String get trackingNumber => 'Tracking Number';
-
-  @override
-  String get transactionHistory => 'Transaction history';
-
-  @override
-  String get transactionId => 'Transaction ID';
-
-  @override
-  String get transactionReceipt => 'Transaction receipt';
 
   @override
   String get transactions => 'Transactions';
@@ -2610,9 +1839,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get transactionsByStatus => 'Transactions by Status';
-
-  @override
-  String get transactionType => 'Transaction type';
 
   @override
   String get transfer => 'Transfer';
@@ -2631,9 +1857,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get unassignedTerminals => 'Unassigned Terminals';
-
-  @override
-  String get unavailable => 'Unavailable';
 
   @override
   String get underline => 'Underline';
@@ -2663,19 +1886,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get upcoming => 'Upcoming';
 
   @override
-  String get updateFunctionalityWouldGoHere => 'Update functionality would go here';
-
-  @override
-  String get updateProfile => 'Update Profile';
-
-  @override
   String get upload => 'Upload';
-
-  @override
-  String get uploadFailed => 'Upload Failed';
-
-  @override
-  String get uploadingImage => 'Uploading image...';
 
   @override
   String get url => 'URL';
@@ -2685,9 +1896,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get user => 'User';
-
-  @override
-  String get userCategories => 'User Categories';
 
   @override
   String get userCreatedSuccessfully => 'User created successfully';
@@ -2711,9 +1919,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get userIp => 'User / IP';
 
   @override
-  String get userLeaveEmptyForSystemWide => 'User (leave empty for system-wide)';
-
-  @override
   String get username => 'Username';
 
   @override
@@ -2723,34 +1928,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get usersManagement => 'Users Management';
 
   @override
-  String get valid => 'Valid';
-
-  @override
-  String get validityAndStatusOfDrivingLicense => 'Validity and status of driving license';
-
-  @override
-  String get validityYears => 'Validity years';
-
-  @override
   String get value => 'Value';
-
-  @override
-  String get variousInsurances => 'Various insurances';
-
-  @override
-  String get vehiclePlate => 'Vehicle plate';
-
-  @override
-  String get vehiclePlateStatusAndHistory => 'Vehicle plate status and history';
-
-  @override
-  String get vehicleServices => 'Vehicle services';
-
-  @override
-  String get vehicleType => 'Vehicle Type';
-
-  @override
-  String get vehicleViolationInquiry => 'Vehicle violation inquiry';
 
   @override
   String get verificationStatus => 'Verification Status';
@@ -2771,27 +1949,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get videoAvailable => 'Video available';
 
   @override
-  String get view => 'View';
-
-  @override
-  String get viewAll => 'View all';
-
-  @override
   String viewItem(Object item) {
     return 'View $item';
   }
-
-  @override
-  String get views => 'Views';
-
-  @override
-  String get violation => 'Violation';
-
-  @override
-  String get violationItems => 'Violation items';
-
-  @override
-  String get violationsPlateAndLicense => 'Violations, plate and license';
 
   @override
   String get visitWebsite => 'Visit website';
@@ -2806,9 +1966,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get walletBalance => 'Wallet Balance';
 
   @override
-  String get walletChargeWasNotCompletedIfAnyAmountWasDeductedItWillBeRefundedWithin15Minutes => 'Wallet charge was not completed. If any amount was deducted, it will be refunded within 15 minutes.';
-
-  @override
   String get walletManagement => 'Wallet Management';
 
   @override
@@ -2818,58 +1975,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get warnings => 'Warnings';
 
   @override
-  String get weekly => 'Weekly';
-
-  @override
-  String get weeks => 'weeks';
-
-  @override
-  String get welcome => 'Welcome';
-
-  @override
   String get whatsapp => 'WhatsApp';
 
   @override
   String get words => 'Words';
 
   @override
-  String get workingSet => 'Working Set';
-
-  @override
   String get writeSomething => 'Write something...';
-
-  @override
-  String get wrongPostalCode => 'Wrong Postal Code';
 
   @override
   String get year => 'Year';
 
   @override
-  String get yes => 'Yes';
-
-  @override
-  String youHaveNotRegisteredAny(Object items) {
-    return 'You have not registered any $items yet';
-  }
-
-  @override
   String get youHaveNotSubmittedAnyTaxpayerRequestYet => 'You have not submitted any taxpayer request yet.';
 
   @override
-  String get yourPaymentIsStillBeingConfirmedIfTheAmountWasDeductedItWillBeAddedToYourWalletShortly =>
-      'Your payment is still being confirmed. If the amount was deducted it will be added to your wallet shortly.';
-
-  @override
-  String get yourRegisteredVehicles => 'Your registered vehicles';
-
-  @override
-  String get yourRequestHasBeenSubmittedAndIsAwaitingApproval => 'Your request has been submitted and is awaiting approval.';
-
-  @override
   String get yourSessionHasExpiredPleaseSignInAgain => 'Your session has expired. Please sign in again.';
-
-  @override
-  String get yourWallet => 'Your wallet';
 
   @override
   String get zipCode => 'Zip Code';
