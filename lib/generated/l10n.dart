@@ -1468,10 +1468,10 @@ class S {
   }
 
   /// `Continue`
-  String get continue {
+  String get continue_ {
     return Intl.message(
       'Continue',
-      name: 'continue',
+      name: 'continue_',
       desc: '',
       args: [],
     );
