@@ -90,7 +90,6 @@ class UUpdateDialog {
       return;
     }
 
-    // ✅ Skip check is ONLY for optional update
     if (type == UpdateType.optional) {
       final int? skipped = ULocalStorage.getInt(_skipKey);
       if (skipped == info.current) {
@@ -102,8 +101,8 @@ class UUpdateDialog {
     await showDialog(
       barrierDismissible: type == UpdateType.optional,
       context: navigatorKey.currentContext!,
-      builder: (_) => WillPopScope(
-        onWillPop: () async => type == UpdateType.optional,
+      builder: (_) => PopScope(
+        canPop: type == UpdateType.optional,
         child: AlertDialog(
           title: Text(type == UpdateType.force ? "Update Required" : "Update Available"),
           content: UColumn(

@@ -5,7 +5,6 @@ export "dart:math";
 
 export "package:async/async.dart";
 export "package:camera/camera.dart";
-export "package:collection/collection.dart" hide binarySearch, mergeSort;
 export "package:connectivity_plus/connectivity_plus.dart";
 export "package:device_info_plus/device_info_plus.dart";
 export "package:file_picker/file_picker.dart";
@@ -21,9 +20,7 @@ export "package:flutter_map/flutter_map.dart";
 export "package:flutter_svg/flutter_svg.dart";
 export "package:geolocator/geolocator.dart";
 export "package:http/http.dart";
-export "package:http_parser/http_parser.dart";
 export "package:latlong2/latlong.dart" hide Path, pi;
-export "package:logging/logging.dart";
 export "package:lottie/lottie.dart" hide Marker;
 export "package:mobile_scanner/mobile_scanner.dart" hide CameraLensType;
 export "package:package_info_plus/package_info_plus.dart";

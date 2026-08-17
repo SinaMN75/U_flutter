@@ -18,7 +18,9 @@ class _ContractPageState extends State<UAdminContractPage> {
   static const List<TagDormBedContract> _types = <TagDormBedContract>[TagDormBedContract.monthly, TagDormBedContract.daily];
 
   TagDormBedContract? _typeOf(UDormBedContractResponse i) {
-    for (final TagDormBedContract t in _types) if (i.tags.contains(t.number)) return t;
+    for (final TagDormBedContract t in _types) {
+      if (i.tags.contains(t.number)) return t;
+    }
     return null;
   }
 

@@ -169,7 +169,7 @@ class _UAdminParkingPageState extends State<UAdminParkingPage> {
                         key: formKey,
                         action: () {
                           final List<String> adminUserIds = selectedAdmins.map((UUserResponse u) => u.id).toList();
-                          if (p == null)
+                          if (p == null) {
                             c.create(
                               p: UParkingCreateParams(
                                 tags: <int>[TagParking.test.number],
@@ -181,7 +181,7 @@ class _UAdminParkingPageState extends State<UAdminParkingPage> {
                                 adminUserIds: adminUserIds,
                               ),
                             );
-                          else
+                          } else {
                             c.update(
                               p: UParkingUpdateParams(
                                 id: p.id,
@@ -191,6 +191,7 @@ class _UAdminParkingPageState extends State<UAdminParkingPage> {
                                 adminUserIds: adminUserIds,
                               ),
                             );
+                          }
                           UNavigator.back();
                         },
                       ),

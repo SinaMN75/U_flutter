@@ -1,8 +1,8 @@
 import "package:u/utilities.dart";
 
-enum FlipDirection { VERTICAL, HORIZONTAL }
+enum FlipDirection { vertical, horizontal }
 
-enum CardSide { FRONT, BACK }
+enum CardSide { front, back }
 
 enum Fill { none, fillFront, fillBack }
 
@@ -19,7 +19,7 @@ class UAnimationCard extends StatelessWidget {
     builder: (BuildContext context, Widget? child) {
       final Matrix4 transform = Matrix4.identity();
       transform.setEntry(3, 2, 0.001);
-      if (direction == FlipDirection.VERTICAL) {
+      if (direction == FlipDirection.vertical) {
         transform.rotateX(animation!.value);
       } else {
         transform.rotateY(animation!.value);
@@ -44,12 +44,12 @@ class FlipCard extends StatefulWidget {
     this.speed = 500,
     this.onFlip,
     this.onFlipDone,
-    this.direction = FlipDirection.HORIZONTAL,
+    this.direction = FlipDirection.horizontal,
     this.controller,
     this.flipOnTouch = true,
     this.alignment = Alignment.center,
     this.fill = Fill.none,
-    this.side = CardSide.FRONT,
+    this.side = CardSide.front,
   });
 
   final Widget front;
@@ -80,7 +80,7 @@ class FlipCardState extends State<FlipCard> with SingleTickerProviderStateMixin 
   @override
   void initState() {
     super.initState();
-    isFront = widget.side == CardSide.FRONT;
+    isFront = widget.side == CardSide.front;
     controller = AnimationController(
       value: isFront ? 0.0 : 1.0,
       duration: Duration(milliseconds: widget.speed),

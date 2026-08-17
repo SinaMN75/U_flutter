@@ -161,8 +161,8 @@ abstract class UAdminTable {
                   ],
                 ),
               ),
-              if (badge != null) badge,
-              if (trailing != null) trailing,
+              ?badge,
+              ?trailing,
             ],
           ),
           if (fields.isNotEmpty) ...<Widget>[

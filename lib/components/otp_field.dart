@@ -51,7 +51,7 @@ class UOtpField extends StatefulWidget {
   final MainAxisAlignment mainAxisAlignment;
 
   @override
-  _UOtpFieldState createState() => _UOtpFieldState();
+  State<UOtpField> createState() => _UOtpFieldState();
 }
 
 class _UOtpFieldState extends State<UOtpField> {
@@ -81,18 +81,25 @@ class _UOtpFieldState extends State<UOtpField> {
   void _syncControllersWithMain() {
     final String text = controller.text;
     for (int i = 0; i < widget.length; i++) {
-      if (i < text.length)
+      if (i < text.length) {
         _controllers[i].text = text[i];
-      else
+      } else {
         _controllers[i].text = "";
+      }
     }
   }
 
   @override
   void dispose() {
-    for (final FocusNode node in _focusNodes) node.dispose();
-    for (final FocusNode node in _keyboardNodes) node.dispose();
-    for (final TextEditingController c in _controllers) c.dispose();
+    for (final FocusNode node in _focusNodes) {
+      node.dispose();
+    }
+    for (final FocusNode node in _keyboardNodes) {
+      node.dispose();
+    }
+    for (final TextEditingController c in _controllers) {
+      c.dispose();
+    }
     controller.removeListener(_syncControllersWithMain);
     if (_ownsController) controller.dispose();
     super.dispose();
@@ -124,10 +131,11 @@ class _UOtpFieldState extends State<UOtpField> {
   }
 
   Color _getBorderColor(int index) {
-    if (_focusNodes[index].hasFocus)
+    if (_focusNodes[index].hasFocus) {
       return widget.activeColor ?? Theme.of(context).colorScheme.primary;
-    else if (_controllers[index].text.isNotEmpty)
+    } else if (_controllers[index].text.isNotEmpty) {
       return (widget.activeColor ?? Theme.of(context).colorScheme.primary).withValues(alpha: 0.5);
+    }
     return widget.borderColor ?? Theme.of(context).colorScheme.secondary;
   }
 

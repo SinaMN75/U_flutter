@@ -147,7 +147,7 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
                         UToast.error(message: U.s.pleaseSelectA(U.s.dorm));
                         return;
                       }
-                      if (p == null)
+                      if (p == null) {
                         c.create(
                           p: UDormRoomCreateParams(
                             tags: <int>[TagDormRoom.dorm.number],
@@ -156,7 +156,7 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
                             detail1: detail.text.nullIfEmpty(),
                           ),
                         );
-                      else
+                      } else {
                         c.update(
                           p: UDormRoomUpdateParams(
                             id: p.id,
@@ -165,6 +165,7 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
                             detail1: detail.text.nullIfEmpty(),
                           ),
                         );
+                      }
                       UNavigator.back();
                     },
                   ),

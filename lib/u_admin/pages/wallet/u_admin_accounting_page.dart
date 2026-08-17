@@ -26,10 +26,11 @@ class _AccountingPageState extends State<UAdminAccountingPage> {
       ],
     ),
     body: Obx(() {
-      if (c.state.value.isError())
+      if (c.state.value.isError()) {
         return Center(
           child: TextButton(onPressed: c.load, child: Text(U.s.retry)),
         );
+      }
       if (!c.state.value.isLoaded()) return const Center(child: CircularProgressIndicator());
       final UAccountingReportResponse? r = c.report.value;
       if (r == null) return Center(child: Text(U.s.noData));

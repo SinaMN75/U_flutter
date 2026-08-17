@@ -136,10 +136,14 @@ class URichTextController extends TextEditingController {
     final int minLen = oldLen < newLen ? oldLen : newLen;
 
     int prefix = 0;
-    while (prefix < minLen && oldText.codeUnitAt(prefix) == newText.codeUnitAt(prefix)) prefix++;
+    while (prefix < minLen && oldText.codeUnitAt(prefix) == newText.codeUnitAt(prefix)) {
+      prefix++;
+    }
 
     int suffix = 0;
-    while (suffix < minLen - prefix && oldText.codeUnitAt(oldLen - 1 - suffix) == newText.codeUnitAt(newLen - 1 - suffix)) suffix++;
+    while (suffix < minLen - prefix && oldText.codeUnitAt(oldLen - 1 - suffix) == newText.codeUnitAt(newLen - 1 - suffix)) {
+      suffix++;
+    }
 
     final int removedEnd = oldLen - suffix; // region [prefix, removedEnd) removed
     final int insertedEnd = newLen - suffix; // region [prefix, insertedEnd) added
@@ -245,17 +249,19 @@ class URichTextController extends TextEditingController {
     final TextSelection sel = selection;
     if (!sel.isValid) return;
     if (sel.isCollapsed) {
-      if (pending.containsKey(attr))
+      if (pending.containsKey(attr)) {
         pending.remove(attr);
-      else
+      } else {
         pending[attr] = null;
+      }
       notifyListeners();
       return;
     }
-    if (_attrCoversRange(attr, sel.start, sel.end))
+    if (_attrCoversRange(attr, sel.start, sel.end)) {
       removeAttr(attr, sel.start, sel.end);
-    else
+    } else {
       spans.add(UStyleSpan(start: sel.start, end: sel.end, attr: attr));
+    }
     normalize();
     notifyListeners();
   }
@@ -265,10 +271,11 @@ class URichTextController extends TextEditingController {
     final TextSelection sel = selection;
     if (!sel.isValid) return;
     if (sel.isCollapsed) {
-      if (value == null)
+      if (value == null) {
         pending.remove(attr);
-      else
+      } else {
         pending[attr] = value;
+      }
       notifyListeners();
       return;
     }
@@ -286,7 +293,9 @@ class URichTextController extends TextEditingController {
       notifyListeners();
       return;
     }
-    for (final UInlineAttr attr in UInlineAttr.values) removeAttr(attr, sel.start, sel.end);
+    for (final UInlineAttr attr in UInlineAttr.values) {
+      removeAttr(attr, sel.start, sel.end);
+    }
     normalize();
     notifyListeners();
   }
@@ -434,7 +443,9 @@ class UTableData {
   void addRow() => rows.add(<String>[for (int c = 0; c < columnCount; c++) ""]);
 
   void addColumn() {
-    for (final List<String> row in rows) row.add("");
+    for (final List<String> row in rows) {
+      row.add("");
+    }
   }
 
   void removeRow(int index) {
@@ -595,7 +606,9 @@ abstract class UHtmlDocument {
       if (header) sb.write("<thead>");
       if (r == (table.hasHeader ? 1 : 0)) sb.write("<tbody>");
       sb.write("<tr>");
-      for (final String cell in table.rows[r]) sb.write(header ? "<th>${escapeHtml(cell)}</th>" : "<td>${escapeHtml(cell)}</td>");
+      for (final String cell in table.rows[r]) {
+        sb.write(header ? "<th>${escapeHtml(cell)}</th>" : "<td>${escapeHtml(cell)}</td>");
+      }
       sb.write("</tr>");
       if (header) sb.write("</thead>");
     }
@@ -663,8 +676,12 @@ abstract class UHtmlDocument {
     for (int i = 0; i < text.length; i++) {
       final List<_Tag> active = _tagsAt(spans, i);
       int common = 0;
-      while (common < stack.length && common < active.length && stack[common] == active[common]) common++;
-      for (int k = stack.length - 1; k >= common; k--) out.write(stack[k].close());
+      while (common < stack.length && common < active.length && stack[common] == active[common]) {
+        common++;
+      }
+      for (int k = stack.length - 1; k >= common; k--) {
+        out.write(stack[k].close());
+      }
       stack.removeRange(common, stack.length);
       for (int k = common; k < active.length; k++) {
         out.write(active[k].open());
@@ -673,7 +690,9 @@ abstract class UHtmlDocument {
       final String ch = text[i];
       out.write(ch == "\n" ? "<br>" : escapeHtml(ch));
     }
-    for (int k = stack.length - 1; k >= 0; k--) out.write(stack[k].close());
+    for (int k = stack.length - 1; k >= 0; k--) {
+      out.write(stack[k].close());
+    }
     return out.toString();
   }
 
@@ -714,7 +733,9 @@ abstract class UHtmlDocument {
         .map((UEditorBlock b) => b.isText ? b.controller!.text : (b.type == UBlockType.table ? (b.table?.rows.map((List<String> r) => r.join(" ")).join("\n") ?? "") : ""))
         .where((String s) => s.isNotEmpty)
         .join("\n");
-    for (final UEditorBlock b in blocks) b.dispose();
+    for (final UEditorBlock b in blocks) {
+      b.dispose();
+    }
     return text;
   }
 
@@ -810,7 +831,9 @@ abstract class UHtmlDocument {
     // Pad short rows so the grid stays rectangular.
     final int width = rows.map((List<String> r) => r.length).reduce((int a, int b) => a > b ? a : b);
     for (final List<String> r in rows) {
-      while (r.length < width) r.add("");
+      while (r.length < width) {
+        r.add("");
+      }
     }
     return UTableData(rows: rows, hasHeader: hasHeader);
   }
@@ -829,7 +852,9 @@ abstract class UHtmlDocument {
       for (final _Node nested in li.children.where((_Node n) => !n.isText && (n.tag == "ul" || n.tag == "ol"))) {
         final int before = blocks.length;
         _addList(nested, nested.tag == "ol" ? UBlockType.numbered : itemType, blocks);
-        for (int i = before; i < blocks.length; i++) blocks[i].indent += 1;
+        for (int i = before; i < blocks.length; i++) {
+          blocks[i].indent += 1;
+        }
       }
     }
   }
@@ -1188,7 +1213,9 @@ class _Parser {
 
   _Node _parseTag(String raw) {
     int i = 0;
-    while (i < raw.length && !_isSpace(raw[i])) i++;
+    while (i < raw.length && !_isSpace(raw[i])) {
+      i++;
+    }
     final _Node el = _Node.element(raw.substring(0, i).toLowerCase());
     final RegExp attr = RegExp("""([a-zA-Z_:-][a-zA-Z0-9_:.-]*)\\s*(?:=\\s*("[^"]*"|'[^']*'|[^\\s>]+))?""");
     for (final RegExpMatch m in attr.allMatches(raw.substring(i))) {
@@ -1732,7 +1759,9 @@ class _URichTextEditorState extends State<URichTextEditor> {
   void initState() {
     super.initState();
     _blocks.addAll(UHtmlDocument.parse(widget.initialHtml));
-    for (final UEditorBlock b in _blocks) _wireBlock(b);
+    for (final UEditorBlock b in _blocks) {
+      _wireBlock(b);
+    }
     _history.add(UHtmlDocument.serialize(_blocks));
     _historyIndex = 0;
     if (widget.onAutoSave != null) _autoSaveTimer = Timer.periodic(widget.autoSaveInterval, (_) => _autoSave());
@@ -1742,7 +1771,9 @@ class _URichTextEditorState extends State<URichTextEditor> {
   void dispose() {
     _historyTimer?.cancel();
     _autoSaveTimer?.cancel();
-    for (final UEditorBlock b in _blocks) b.dispose();
+    for (final UEditorBlock b in _blocks) {
+      b.dispose();
+    }
     super.dispose();
   }
 
@@ -1816,11 +1847,15 @@ class _URichTextEditorState extends State<URichTextEditor> {
   void _loadHtml(String html) {
     _restoring = true;
     setState(() {
-      for (final UEditorBlock b in _blocks) b.dispose();
+      for (final UEditorBlock b in _blocks) {
+        b.dispose();
+      }
       _blocks
         ..clear()
         ..addAll(UHtmlDocument.parse(html));
-      for (final UEditorBlock b in _blocks) _wireBlock(b);
+      for (final UEditorBlock b in _blocks) {
+        _wireBlock(b);
+      }
       _activeIndex = 0;
     });
     _restoring = false;
@@ -1887,10 +1922,11 @@ class _URichTextEditorState extends State<URichTextEditor> {
         return KeyEventResult.handled;
       }
       if (key == LogicalKeyboardKey.keyZ) {
-        if (shift)
+        if (shift) {
           _redo();
-        else
+        } else {
           _undo();
+        }
         return KeyEventResult.handled;
       }
       if (key == LogicalKeyboardKey.keyY) {
@@ -2023,7 +2059,9 @@ class _URichTextEditorState extends State<URichTextEditor> {
     final int junction = pc.text.length;
 
     final List<UStyleSpan> merged = <UStyleSpan>[for (final UStyleSpan sp in pc.spans) sp.copy()];
-    for (final UStyleSpan sp in cc.spans) merged.add(UStyleSpan(start: sp.start + junction, end: sp.end + junction, attr: sp.attr, value: sp.value));
+    for (final UStyleSpan sp in cc.spans) {
+      merged.add(UStyleSpan(start: sp.start + junction, end: sp.end + junction, attr: sp.attr, value: sp.value));
+    }
 
     pc.setContent(pc.text + cc.text, merged, caret: junction);
 
@@ -2076,10 +2114,9 @@ class _URichTextEditorState extends State<URichTextEditor> {
 
   void _reorder(int oldIndex, int newIndex) {
     setState(() {
-      final int target = newIndex > oldIndex ? newIndex - 1 : newIndex;
       final UEditorBlock b = _blocks.removeAt(oldIndex);
-      _blocks.insert(target, b);
-      _activeIndex = target;
+      _blocks.insert(newIndex, b);
+      _activeIndex = newIndex;
     });
     _notifyChanged();
   }
@@ -2234,9 +2271,9 @@ class _URichTextEditorState extends State<URichTextEditor> {
         padding: widget.padding,
         buildDefaultDragHandles: false,
         itemCount: _blocks.length,
-        onReorder: _reorder,
+        onReorderItem: _reorder,
         itemBuilder: (BuildContext context, int index) => _blockRow(index),
-      ).expanded(),
+      ),
       if (widget.showStatusBar) _statusBar(),
     ],
   );

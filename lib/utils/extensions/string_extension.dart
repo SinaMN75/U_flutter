@@ -139,7 +139,7 @@ extension StringExtensions on String {
       final Duration difference = DateTime.now().difference(intl.DateFormat("yyyy-MM-ddThh:mm:sss").parse(this));
       if (difference.inDays > 8) {
         return substring(0, 10);
-      } else if ((difference.inDays / 7).floor() >= 1)
+      } else if ((difference.inDays / 7).floor() >= 1) {
         return persian
             ? numericDates
                   ? "۱ هفته پیش"
@@ -147,9 +147,9 @@ extension StringExtensions on String {
             : numericDates
             ? "1 week ago"
             : "Last week";
-      else if (difference.inDays >= 2)
+      } else if (difference.inDays >= 2) {
         return persian ? "${difference.inDays.toString().toPersianNumber()} روز پیش" : "${difference.inDays} days ago";
-      else if (difference.inDays >= 1)
+      } else if (difference.inDays >= 1) {
         return persian
             ? numericDates
                   ? "۱ روز پیش"
@@ -157,9 +157,9 @@ extension StringExtensions on String {
             : numericDates
             ? "1 day ago"
             : "Yesterday";
-      else if (difference.inHours >= 2)
+      } else if (difference.inHours >= 2) {
         return persian ? "${difference.inHours.toString().toPersianNumber()} ساعت پیش" : "${difference.inHours} hours ago";
-      else if (difference.inHours >= 1)
+      } else if (difference.inHours >= 1) {
         return persian
             ? numericDates
                   ? "۱ ساعت پیش"
@@ -167,9 +167,9 @@ extension StringExtensions on String {
             : numericDates
             ? "1 hour ago"
             : "An hour ago";
-      else if (difference.inMinutes >= 2)
+      } else if (difference.inMinutes >= 2) {
         return persian ? "${difference.inMinutes.toString().toPersianNumber()} دقیقه پیش" : "${difference.inMinutes} minutes ago";
-      else if (difference.inMinutes >= 1)
+      } else if (difference.inMinutes >= 1) {
         return persian
             ? numericDates
                   ? "۱ دقیقه پیش"
@@ -177,10 +177,11 @@ extension StringExtensions on String {
             : numericDates
             ? "1 minute ago"
             : "A minute ago";
-      else if (difference.inSeconds >= 3)
+      } else if (difference.inSeconds >= 3) {
         return persian ? "${difference.inSeconds.toString().toPersianNumber()} ثانیه پیش" : "${difference.inSeconds} seconds ago";
-      else
+      } else {
         return persian ? "همین الان" : "Just now";
+      }
     } catch (e) {
       return this;
     }
@@ -207,10 +208,11 @@ extension StringExtensions on String {
     for (final int rune in runes) {
       final int? digit = _unicodeDigitToLatin(rune);
 
-      if (digit != null)
+      if (digit != null) {
         result.write(digit);
-      else
+      } else {
         result.writeCharCode(rune);
+      }
     }
 
     return result.toString();

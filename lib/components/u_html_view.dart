@@ -93,8 +93,12 @@ class _UHtmlViewState extends State<UHtmlView> {
   }
 
   void _disposeBlocks() {
-    for (final UEditorBlock b in _blocks) b.dispose();
-    for (final TapGestureRecognizer r in _recognizers) r.dispose();
+    for (final UEditorBlock b in _blocks) {
+      b.dispose();
+    }
+    for (final TapGestureRecognizer r in _recognizers) {
+      r.dispose();
+    }
     _recognizers.clear();
   }
 
@@ -122,7 +126,9 @@ class _UHtmlViewState extends State<UHtmlView> {
   @override
   Widget build(BuildContext context) {
     // Recognizers are rebuilt with the spans on every frame, so clear the old ones.
-    for (final TapGestureRecognizer r in _recognizers) r.dispose();
+    for (final TapGestureRecognizer r in _recognizers) {
+      r.dispose();
+    }
     _recognizers.clear();
 
     final List<Widget> children = <Widget>[];

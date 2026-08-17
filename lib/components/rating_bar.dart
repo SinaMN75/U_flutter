@@ -101,7 +101,7 @@ class RatingBar extends StatefulWidget {
   final RatingWidget? _ratingWidget;
 
   @override
-  _RatingBarState createState() => _RatingBarState();
+  State<RatingBar> createState() => _RatingBarState();
 }
 
 class _RatingBarState extends State<RatingBar> {
@@ -187,7 +187,7 @@ class _RatingBarState extends State<RatingBar> {
           child: FittedBox(
             child: _isRTL
                 ? Transform(
-                    transform: Matrix4.identity()..scale(-1.0, 1, 1),
+                    transform: Matrix4.identity()..scaleByDouble(-1, 1, 1, 1),
                     alignment: Alignment.center,
                     transformHitTests: false,
                     child: ratingWidget!.half,
@@ -444,7 +444,7 @@ class RatingBarIndicator extends StatefulWidget {
   final double rating;
 
   @override
-  _RatingBarIndicatorState createState() => _RatingBarIndicatorState();
+  State<RatingBarIndicator> createState() => _RatingBarIndicatorState();
 }
 
 class _RatingBarIndicatorState extends State<RatingBarIndicator> {
@@ -488,7 +488,7 @@ class _RatingBarIndicatorState extends State<RatingBarIndicator> {
       if (widget.textDirection != null) {
         if (widget.textDirection == TextDirection.rtl && Directionality.of(navigatorKey.currentContext!) != TextDirection.rtl) {
           return Transform(
-            transform: Matrix4.identity()..scale(-1.0, 1, 1),
+            transform: Matrix4.identity()..scaleByDouble(-1, 1, 1, 1),
             alignment: Alignment.center,
             transformHitTests: false,
             child: _buildItems(index),

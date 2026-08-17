@@ -22,7 +22,9 @@ extension NullableWalletExtension on UWalletTxnResponse {
   }
 
   String? get reference {
-    for (final String d in <String>[jsonData.detail1 ?? "", jsonData.detail2 ?? ""]) if (d.toUpperCase().contains("RRN")) return d.split(":").last.trim();
+    for (final String d in <String>[jsonData.detail1 ?? "", jsonData.detail2 ?? ""]) {
+      if (d.toUpperCase().contains("RRN")) return d.split(":").last.trim();
+    }
     return null;
   }
 

@@ -107,11 +107,12 @@ class _UPlateFieldState extends State<UPlateField> {
     if (_isReadOnly) return;
     String value = digits1Controller.text.replaceAll(RegExp("[^0-9]"), "");
     if (value.length > 2) value = value.substring(0, 2);
-    if (digits1Controller.text != value)
+    if (digits1Controller.text != value) {
       digits1Controller.value = TextEditingValue(
         text: value,
         selection: TextSelection.collapsed(offset: value.length),
       );
+    }
     _updateFullPlate();
     if (value.length == 2 && letter.isEmpty) WidgetsBinding.instance.addPostFrameCallback((_) => _showLetterMenu());
   }
@@ -120,11 +121,12 @@ class _UPlateFieldState extends State<UPlateField> {
     if (_isReadOnly) return;
     String value = digits3Controller.text.replaceAll(RegExp("[^0-9]"), "");
     if (value.length > 3) value = value.substring(0, 3);
-    if (digits3Controller.text != value)
+    if (digits3Controller.text != value) {
       digits3Controller.value = TextEditingValue(
         text: value,
         selection: TextSelection.collapsed(offset: value.length),
       );
+    }
     _updateFullPlate();
     if (value.length == 3) focusProv.requestFocus();
   }
@@ -133,11 +135,12 @@ class _UPlateFieldState extends State<UPlateField> {
     if (_isReadOnly) return;
     String value = provinceController.text.replaceAll(RegExp("[^0-9]"), "");
     if (value.length > 2) value = value.substring(0, 2);
-    if (provinceController.text != value)
+    if (provinceController.text != value) {
       provinceController.value = TextEditingValue(
         text: value,
         selection: TextSelection.collapsed(offset: value.length),
       );
+    }
     _updateFullPlate();
   }
 

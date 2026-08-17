@@ -3,10 +3,7 @@ import "package:u/utilities.dart";
 class UAdminMerchantsPage extends StatefulWidget {
   const UAdminMerchantsPage({super.key, this.user, this.actions});
 
-  // When set, the list is scoped to this owner's merchants (user -> their merchants).
   final UUserResponse? user;
-
-  // Optional per-row operations override; defaults to the page's built-in set.
   final UAdminActionBuilder<UMerchantResponse>? actions;
 
   @override

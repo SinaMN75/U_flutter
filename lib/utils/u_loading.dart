@@ -69,7 +69,7 @@ class _LoadingOverlay extends StatefulWidget {
   final WidgetBuilder? customLoader;
 
   @override
-  __LoadingOverlayState createState() => __LoadingOverlayState();
+  State<_LoadingOverlay> createState() => __LoadingOverlayState();
 }
 
 class __LoadingOverlayState extends State<_LoadingOverlay> with SingleTickerProviderStateMixin {

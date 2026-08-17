@@ -84,7 +84,9 @@ class ReadMoreTextState extends State<ReadMoreText> {
   }
 
   void _disposeRecognizers() {
-    for (final TapGestureRecognizer recognizer in _recognizers) recognizer.dispose();
+    for (final TapGestureRecognizer recognizer in _recognizers) {
+      recognizer.dispose();
+    }
     _recognizers.clear();
   }
 
@@ -157,9 +159,9 @@ class ReadMoreTextState extends State<ReadMoreText> {
         }
         final TextSpan text = TextSpan(
           children: <InlineSpan>[
-            if (preTextSpan != null) preTextSpan,
+            ?preTextSpan,
             TextSpan(text: widget.data, style: effectiveTextStyle),
-            if (postTextSpan != null) postTextSpan,
+            ?postTextSpan,
           ],
         );
         final TextPainter textPainter = TextPainter(
@@ -255,9 +257,9 @@ class ReadMoreTextState extends State<ReadMoreText> {
         return Text.rich(
           TextSpan(
             children: <InlineSpan>[
-              if (preTextSpan != null) preTextSpan,
+              ?preTextSpan,
               textSpan,
-              if (postTextSpan != null) postTextSpan,
+              ?postTextSpan,
             ],
           ),
           textAlign: textAlign,

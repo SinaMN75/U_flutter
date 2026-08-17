@@ -148,8 +148,9 @@ class InternetConnectionChecker {
           if (!result.isCompleted) {
             if (request.isSuccess) {
               result.complete(true);
-            } else if (length == 0)
+            } else if (length == 0) {
               result.complete(false);
+            }
           }
         },
       );

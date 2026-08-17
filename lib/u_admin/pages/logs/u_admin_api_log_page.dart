@@ -352,7 +352,7 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
         spacing: 0,
         children: <Widget>[
           UTextTitleSmall(title, fontWeight: FontWeight.w700).expanded(),
-          if (trailing != null) trailing,
+          ?trailing,
         ],
       ),
       const Divider(height: 18),
@@ -484,11 +484,12 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
   Widget _table() => Obx(() {
     if (c.state.value.isError()) return _tableMessage(icon: Icons.cloud_off_rounded, text: U.s.errorReadingData, retry: true);
     if (c.state.value.isEmpty()) return _tableMessage(icon: Icons.inbox_rounded, text: U.s.noData, retry: false);
-    if (!c.state.value.isLoaded())
+    if (!c.state.value.isLoaded()) {
       return const Padding(
         padding: EdgeInsets.symmetric(vertical: 40),
         child: Center(child: CircularProgressIndicator()),
       );
+    }
 
     final List<UApiLogResponse> data = c.list;
     final bool desktop = MediaQuery.sizeOf(context).width >= 800;

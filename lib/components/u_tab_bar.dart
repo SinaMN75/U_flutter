@@ -272,10 +272,11 @@ class _UTabBarState extends State<UTabBar> {
       ],
     );
     if (action == null || !mounted) return;
-    if (widget.onMenuAction != null)
+    if (widget.onMenuAction != null) {
       widget.onMenuAction!(action, index);
-    else if (action == UTabMenuAction.close)
+    } else if (action == UTabMenuAction.close) {
       widget.onClose(index);
+    }
   }
 
   PopupMenuItem<UTabMenuAction> _menuItem(UTabMenuAction action, IconData icon) => PopupMenuItem<UTabMenuAction>(

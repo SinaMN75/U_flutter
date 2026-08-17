@@ -95,14 +95,15 @@ class _UAdminShellState extends State<UAdminShell> with SingleTickerProviderStat
     final int selected = U.tabController?.index ?? 0;
     final List<TabData> newTabs = <TabData>[...U.tabs]..removeAt(index);
     int select;
-    if (newTabs.isEmpty)
+    if (newTabs.isEmpty) {
       select = 0;
-    else if (index < selected)
+    } else if (index < selected) {
       select = selected - 1;
-    else if (index == selected)
+    } else if (index == selected) {
       select = index.clamp(0, newTabs.length - 1);
-    else
+    } else {
       select = selected;
+    }
     _applyTabs(newTabs, select: select);
   }
 

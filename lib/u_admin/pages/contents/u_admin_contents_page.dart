@@ -240,7 +240,7 @@ class _ContentsPageState extends State<UAdminContentsPage> {
                         action: () {
                           final List<UContentItem> itemModels = items.map((_ItemForm e) => e.toModel()).toList();
                           final List<UContentLink> linkModels = links.map((_LinkForm e) => e.toModel()).toList();
-                          if (p == null)
+                          if (p == null) {
                             c.create(
                               p: UContentCreateParams(
                                 tags: <int>[tag.value.number],
@@ -263,7 +263,7 @@ class _ContentsPageState extends State<UAdminContentsPage> {
                                 links: linkModels,
                               ),
                             );
-                          else
+                          } else {
                             c.update(
                               p: UContentUpdateParams(
                                 id: p.id,
@@ -287,6 +287,7 @@ class _ContentsPageState extends State<UAdminContentsPage> {
                                 links: linkModels,
                               ),
                             );
+                          }
                           UNavigator.back();
                         },
                       ),

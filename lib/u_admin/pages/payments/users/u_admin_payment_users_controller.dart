@@ -26,9 +26,10 @@ class UAdminPaymentUsersController extends UBaseController {
   List<TagUser> tags = <TagUser>[];
 
   Future<void> read() async {
-    if (verificationStatus.value == TagUser.verified)
+    if (verificationStatus.value == TagUser.verified) {
       tags = <TagUser>[TagUser.nationalCardFrontVerified, TagUser.nationalCardBackVerified, TagUser.birthCertificateFirstVerified, TagUser.eSignatureVerified, TagUser.visualAuthenticationVerified];
-    if (verificationStatus.value == TagUser.awaitingVerification)
+    }
+    if (verificationStatus.value == TagUser.awaitingVerification) {
       tags = <TagUser>[
         TagUser.nationalCardFrontAwaitingVerification,
         TagUser.nationalCardBackAwaitingVerification,
@@ -36,6 +37,7 @@ class UAdminPaymentUsersController extends UBaseController {
         TagUser.eSignatureAwaitingVerification,
         TagUser.visualAuthenticationAwaitingVerification,
       ];
+    }
     if (verificationStatus.value == null) tags.clear();
 
     state.loading();

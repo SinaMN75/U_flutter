@@ -7,7 +7,7 @@ class Operator {
 
   final String name;
   static const Operator shatelMobile = Operator._("شاتل موبایل");
-  static const Operator MCI = Operator._("همراه اول");
+  static const Operator mci = Operator._("همراه اول");
   static const Operator irancell = Operator._("ایرانسل");
   static const Operator taliya = Operator._("تالیا");
   static const Operator rightTel = Operator._("رایتل");
@@ -362,61 +362,61 @@ class PersianTools {
   // Phone number constants
   static final RegExp _mobileRegex = RegExp(r"^(?:[+|0{2}]?98)?0?(\d{3})+(\d{3})+(\d{4})$");
   static final Map<String, OperatorDetail> _operators = <String, OperatorDetail>{
-    "910": const OperatorDetail(base: "کشوری", operator: Operator.MCI),
+    "910": const OperatorDetail(base: "کشوری", operator: Operator.mci),
     "914": const OperatorDetail(
       base: "آذربایجان غربی",
       provinces: <String>["آذربایجان شرقی", "اردبیل", "اصفهان"],
-      operator: Operator.MCI,
+      operator: Operator.mci,
     ),
     "911": const OperatorDetail(
       base: "مازندران",
       provinces: <String>["گلستان", "گیلان"],
-      operator: Operator.MCI,
+      operator: Operator.mci,
     ),
     "912": const OperatorDetail(
       base: "تهران",
       provinces: <String>["البرز", "زنجان", "سمنان", "قزوین", "قم", "برخی از شهرستان های استان مرکزی"],
       type: SimCardType.permanent,
-      operator: Operator.MCI,
+      operator: Operator.mci,
     ),
     "913": const OperatorDetail(
       base: "اصفهان",
       provinces: <String>["یزد", "چهارمحال و بختیاری", "کرمان"],
-      operator: Operator.MCI,
+      operator: Operator.mci,
     ),
     "915": const OperatorDetail(
       base: "خراسان رضوی",
       provinces: <String>["خراسان شمالی", "خراسان جنوبی", "سیستان و بلوچستان"],
-      operator: Operator.MCI,
+      operator: Operator.mci,
     ),
     "916": const OperatorDetail(
       base: "خوزستان",
       provinces: <String>["لرستان", "فارس", "اصفهان"],
-      operator: Operator.MCI,
+      operator: Operator.mci,
     ),
     "917": const OperatorDetail(
       base: "فارس",
       provinces: <String>["بوشهر", "کهگیلویه و بویر احمد", "هرمزگان"],
-      operator: Operator.MCI,
+      operator: Operator.mci,
     ),
     "918": const OperatorDetail(
       base: "کرمانشاه",
       provinces: <String>["کردستان", "ایلام", "همدان"],
-      operator: Operator.MCI,
+      operator: Operator.mci,
     ),
     "919": const OperatorDetail(
       base: "تهران",
       provinces: <String>["البرز", "سمنان", "قم", "قزوین", "زنجان"],
       type: SimCardType.credit,
-      operator: Operator.MCI,
+      operator: Operator.mci,
     ),
-    "990": const OperatorDetail(base: "کشوری", type: SimCardType.credit, operator: Operator.MCI),
-    "991": const OperatorDetail(base: "کشوری", operator: Operator.MCI),
-    "992": const OperatorDetail(base: "کشوری", type: SimCardType.credit, operator: Operator.MCI),
-    "993": const OperatorDetail(base: "کشوری", type: SimCardType.credit, operator: Operator.MCI),
-    "994": const OperatorDetail(base: "کشوری", type: SimCardType.credit, operator: Operator.MCI),
-    "995": const OperatorDetail(base: "کشوری", type: SimCardType.credit, operator: Operator.MCI),
-    "996": const OperatorDetail(base: "کشوری", type: SimCardType.credit, operator: Operator.MCI),
+    "990": const OperatorDetail(base: "کشوری", type: SimCardType.credit, operator: Operator.mci),
+    "991": const OperatorDetail(base: "کشوری", operator: Operator.mci),
+    "992": const OperatorDetail(base: "کشوری", type: SimCardType.credit, operator: Operator.mci),
+    "993": const OperatorDetail(base: "کشوری", type: SimCardType.credit, operator: Operator.mci),
+    "994": const OperatorDetail(base: "کشوری", type: SimCardType.credit, operator: Operator.mci),
+    "995": const OperatorDetail(base: "کشوری", type: SimCardType.credit, operator: Operator.mci),
+    "996": const OperatorDetail(base: "کشوری", type: SimCardType.credit, operator: Operator.mci),
     "932": const OperatorDetail(base: "کشوری", type: SimCardType.credit, operator: Operator.taliya),
     "920": const OperatorDetail(base: "کشوری", type: SimCardType.permanent, operator: Operator.rightTel),
     "921": const OperatorDetail(base: "کشوری", type: SimCardType.credit, operator: Operator.rightTel),
@@ -489,7 +489,9 @@ class PersianTools {
     if (RegExp(r"^(\d)\1{9}$").hasMatch(code)) return false;
     final List<int> digits = code.split("").map(int.parse).toList();
     int sum = 0;
-    for (int i = 0; i < 9; i++) sum += digits[i] * (10 - i);
+    for (int i = 0; i < 9; i++) {
+      sum += digits[i] * (10 - i);
+    }
     final int remainder = sum % 11;
     final int expected = remainder < 2 ? remainder : 11 - remainder;
     return expected == digits[9];

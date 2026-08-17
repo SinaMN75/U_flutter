@@ -17,7 +17,7 @@ class JalaliDatePickerDialog extends StatefulWidget {
   final Function(DateTime, Jalali) onDateSelected;
 
   @override
-  _JalaliDatePickerDialogState createState() => _JalaliDatePickerDialogState();
+  State<JalaliDatePickerDialog> createState() => _JalaliDatePickerDialogState();
 }
 
 class _JalaliDatePickerDialogState extends State<JalaliDatePickerDialog> {
@@ -110,7 +110,9 @@ class _JalaliDatePickerDialogState extends State<JalaliDatePickerDialog> {
 
     final int weekdayOffset = Jalali(currentYear, currentMonth).weekDay - 1;
 
-    for (int i = 0; i < weekdayOffset; i++) dayWidgets.add(const SizedBox());
+    for (int i = 0; i < weekdayOffset; i++) {
+      dayWidgets.add(const SizedBox());
+    }
 
     final int daysInMonth = Jalali(currentYear, currentMonth).monthLength;
     for (int day = 1; day <= daysInMonth; day++) {

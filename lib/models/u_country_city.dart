@@ -64,7 +64,11 @@ enum UCodeType { country, province, city, unknown }
 abstract class UCountries {
   static String? cityFullName(String? cityCode) {
     if (cityCode == null) return null;
-    for (final UProvince province in iranProvinces) for (final UCity city in province.cities) if (city.code == cityCode) return "${province.nameFa} - ${city.nameFa}";
+    for (final UProvince province in iranProvinces) {
+      for (final UCity city in province.cities) {
+        if (city.code == cityCode) return "${province.nameFa} - ${city.nameFa}";
+      }
+    }
     return cityCode;
   }
 
@@ -117,7 +121,9 @@ abstract class UCountries {
   static UCountry? countryByCode(String? code) {
     final String? cc = codeType(code) == UCodeType.country ? code : countryCodeOf(code);
     if (cc == null) return null;
-    for (final UCountry c in countries) if (c.code == cc) return c;
+    for (final UCountry c in countries) {
+      if (c.code == cc) return c;
+    }
     return null;
   }
 
@@ -125,7 +131,9 @@ abstract class UCountries {
     final String? pc = codeType(code) == UCodeType.province ? code : provinceCodeOf(code);
     final UCountry? c = countryByCode(code);
     if (pc == null || c == null) return null;
-    for (final UProvince p in c.provinces) if (p.code == pc) return p;
+    for (final UProvince p in c.provinces) {
+      if (p.code == pc) return p;
+    }
     return null;
   }
 
@@ -133,7 +141,9 @@ abstract class UCountries {
     if (codeType(code) != UCodeType.city) return null;
     final UProvince? p = provinceByCode(code);
     if (p == null) return null;
-    for (final UCity city in p.cities) if (city.code == code) return city;
+    for (final UCity city in p.cities) {
+      if (city.code == code) return city;
+    }
     return null;
   }
 

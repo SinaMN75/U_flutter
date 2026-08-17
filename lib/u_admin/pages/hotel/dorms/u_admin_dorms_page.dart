@@ -153,7 +153,7 @@ class _DormPageState extends State<UAdminDormPage> {
                       key: formKey,
                       action: () {
                         final List<String> adminUserIds = selectedAdmins.map((UUserResponse u) => u.id).toList();
-                        if (p == null)
+                        if (p == null) {
                           c.create(
                             p: UDormCreateParams(
                               tags: <int>[TagDorm.girls.number],
@@ -163,7 +163,7 @@ class _DormPageState extends State<UAdminDormPage> {
                               adminUserIds: adminUserIds,
                             ),
                           );
-                        else
+                        } else {
                           c.update(
                             p: UDormUpdateParams(
                               id: p.id,
@@ -173,6 +173,7 @@ class _DormPageState extends State<UAdminDormPage> {
                               adminUserIds: adminUserIds,
                             ),
                           );
+                        }
                         UNavigator.back();
                       },
                     ),

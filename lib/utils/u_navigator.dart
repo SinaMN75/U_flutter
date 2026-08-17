@@ -43,7 +43,7 @@ abstract class UNavigator {
     return Navigator.push<T>(
       navigatorKey.currentContext!,
       PageRouteBuilder<T>(
-        pageBuilder: (BuildContext context, Animation<double> _, Animation<double> __) => page,
+        pageBuilder: (BuildContext context, Animation<double> _, Animation<double> _) => page,
         transitionsBuilder: _getTransition(transition, curve),
         transitionDuration: duration,
         reverseTransitionDuration: duration,
@@ -72,7 +72,7 @@ abstract class UNavigator {
       Navigator.pushReplacement<T, dynamic>(
         navigatorKey.currentContext!,
         PageRouteBuilder<T>(
-          pageBuilder: (BuildContext context, Animation<double> _, Animation<double> __) => page,
+          pageBuilder: (BuildContext context, Animation<double> _, Animation<double> _) => page,
           transitionsBuilder: _getTransition(transition, curve),
           transitionDuration: duration,
           reverseTransitionDuration: duration,
@@ -97,7 +97,7 @@ abstract class UNavigator {
     await Navigator.pushAndRemoveUntil(
       navigatorKey.currentContext!,
       PageRouteBuilder<dynamic>(
-        pageBuilder: (BuildContext context, Animation<double> _, Animation<double> __) => page,
+        pageBuilder: (BuildContext context, Animation<double> _, Animation<double> _) => page,
         transitionsBuilder: _getTransition(transition, curve),
         transitionDuration: duration,
         reverseTransitionDuration: duration,
@@ -118,7 +118,7 @@ abstract class UNavigator {
   }) => Navigator.pushAndRemoveUntil<T>(
     navigatorKey.currentContext!,
     PageRouteBuilder<T>(
-      pageBuilder: (BuildContext context, Animation<double> _, Animation<double> __) => page,
+      pageBuilder: (BuildContext context, Animation<double> _, Animation<double> _) => page,
       transitionsBuilder: _getTransition(transition, curve),
       transitionDuration: duration,
       reverseTransitionDuration: duration,
@@ -193,7 +193,7 @@ abstract class UNavigator {
         barrierColor: barrierColor ?? Colors.black54,
         useRootNavigator: useRootNavigator,
         transitionDuration: duration,
-        pageBuilder: (BuildContext context, Animation<double> _, Animation<double> __) => Align(alignment: alignment, child: child),
+        pageBuilder: (BuildContext context, Animation<double> _, Animation<double> _) => Align(alignment: alignment, child: child),
         transitionBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget widget) =>
             _getTransition(transition, curve)(context, animation, secondaryAnimation, widget),
       ).then((T? value) {

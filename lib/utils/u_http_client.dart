@@ -268,10 +268,11 @@ abstract class UHttpClient {
       request.files.addAll(files);
       final Response response = await request.send().timeout(timeout).then(Response.fromStream);
       if (kDebugMode) response.prettyLog(params: jsonEncode(fields));
-      if (response.statusCode >= 200 && response.statusCode < 300)
+      if (response.statusCode >= 200 && response.statusCode < 300) {
         onSuccess?.call(response);
-      else
+      } else {
         onError?.call(response);
+      }
     } catch (e, stack) {
       onException();
       developer.log(e.toString(), stackTrace: stack);

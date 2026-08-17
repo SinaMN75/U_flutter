@@ -311,8 +311,8 @@ class RxMap<K, V> extends Rx<Map<K, V>> with MapMixin<K, V> {
   }
 
   @override
-  void addEntries(Iterable<MapEntry<K, V>> entries) {
-    _value.addEntries(entries);
+  void addEntries(Iterable<MapEntry<K, V>> newEntries) {
+    _value.addEntries(newEntries);
     refresh();
   }
 

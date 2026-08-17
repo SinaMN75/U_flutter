@@ -93,6 +93,7 @@ analyzer:
     unnecessary_null_aware_assignments: error
     unnecessary_null_in_if_null_operators: error
     sort_child_properties_last: error
+    always_put_control_body_on_new_line: error
 
 linter:
   rules:
@@ -176,3 +177,4 @@ linter:
     unnecessary_null_aware_assignments: true
     unnecessary_null_in_if_null_operators: true
     sort_child_properties_last: true
+    always_put_control_body_on_new_line: false

@@ -6,10 +6,11 @@ class UProcessController {
   final VoidCallback? onCompleted;
 
   void _complete() {
-    if (onCompleted != null)
+    if (onCompleted != null) {
       onCompleted!();
-    else
+    } else {
       dismiss();
+    }
   }
 
   void dismiss() => UNavigator.back();
@@ -30,9 +31,9 @@ class UProcessController {
     UServices.process.get(
       processId: processId,
       onOk: (UResponse<UProcessStepGet> response) {
-        if (response.status == Usc.processCompleted.number)
+        if (response.status == Usc.processCompleted.number) {
           _complete();
-        else {
+        } else {
           _applyStep(response.result!);
           state.loaded();
         }

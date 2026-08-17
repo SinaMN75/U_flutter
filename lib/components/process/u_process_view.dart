@@ -41,7 +41,7 @@ class _UProcessViewState extends State<UProcessView> {
   @override
   Widget build(BuildContext context) => Obx(() {
     if (c.state.isLoading()) return const Scaffold(body: Center(child: CircularProgressIndicator()));
-    if (c.state.isError())
+    if (c.state.isError()) {
       return UScaffold(
         appBar: AppBar(),
         body: UIconTextVertical(
@@ -49,6 +49,7 @@ class _UProcessViewState extends State<UProcessView> {
           trailing: UButton(title: U.s.tryAgain, onTap: c.read),
         ),
       );
+    }
 
     if (c.state.isLoaded()) {
       final UProcessStepGet step = c.processStep.value!;

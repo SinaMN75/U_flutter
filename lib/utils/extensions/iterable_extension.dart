@@ -9,7 +9,9 @@ extension GenericIterableExtensions<T> on Iterable<T> {
 
   void forEachIndexed(void Function(int index, T element) action) {
     int index = 0;
-    for (final T element in this) action(index++, element);
+    for (final T element in this) {
+      action(index++, element);
+    }
   }
 
   List<T> insertFirstReturn(T item) => <T>[item, ...this];
@@ -33,6 +35,13 @@ extension GenericIterableExtensions<T> on Iterable<T> {
   List<T> addAllAndReturn(Iterable<T> t) => <T>[...this, ...t];
 
   List<T> insertAndReturn(int index, T t) => toList()..insert(index, t);
+
+  T? firstWhereOrNull(bool Function(T element) test) {
+    for (final T element in this) {
+      if (test(element)) return element;
+    }
+    return null;
+  }
 }
 
 extension NullableIterableExtensions<T> on Iterable<T>? {

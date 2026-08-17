@@ -595,7 +595,7 @@ class UTextFieldPhoneNumber extends StatefulWidget {
   });
 
   @override
-  _UTextFieldPhoneNumberState createState() => _UTextFieldPhoneNumberState();
+  State<UTextFieldPhoneNumber> createState() => _UTextFieldPhoneNumberState();
 }
 
 class _UTextFieldPhoneNumberState extends State<UTextFieldPhoneNumber> {
@@ -843,7 +843,7 @@ class _UTextFieldPhoneNumberState extends State<UTextFieldPhoneNumber> {
                       "packages/u/lib/assets/flags/${_selectedCountry.flag}",
                       width: 24,
                       height: 24,
-                      errorBuilder: (_, __, ___) => const Icon(Icons.flag, size: 24),
+                      errorBuilder: (_, _, _) => const Icon(Icons.flag, size: 24),
                     ),
                     const SizedBox(width: 8),
                     Text(_selectedCountry.dialCode),

@@ -197,7 +197,7 @@ class _HotelPageState extends State<UAdminHotelPage> {
                       key: formKey,
                       action: () {
                         final List<String> adminUserIds = selectedAdmins.map((UUserResponse u) => u.id).toList();
-                        if (p == null)
+                        if (p == null) {
                           c.create(
                             p: UHotelCreateParams(
                               tags: <int>[TagHotel.hotel.number],
@@ -215,7 +215,7 @@ class _HotelPageState extends State<UAdminHotelPage> {
                               adminUserIds: adminUserIds,
                             ),
                           );
-                        else
+                        } else {
                           c.update(
                             p: UHotelUpdateParams(
                               id: p.id,
@@ -233,6 +233,7 @@ class _HotelPageState extends State<UAdminHotelPage> {
                               adminUserIds: adminUserIds,
                             ),
                           );
+                        }
                         UNavigator.back();
                       },
                     ),

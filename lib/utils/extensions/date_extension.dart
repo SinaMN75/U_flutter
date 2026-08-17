@@ -20,7 +20,7 @@ extension DateTimeExtensions on DateTime {
 
       if ((difference.inDays / 365).floor() >= 2) {
         return persian ? "${(difference.inDays / 365).floor().toString().toPersianNumber()} سال پیش" : "${(difference.inDays / 365).floor()}y";
-      } else if ((difference.inDays / 365).floor() >= 1)
+      } else if ((difference.inDays / 365).floor() >= 1) {
         return persian
             ? numericDates
                   ? "۱ سال پیش"
@@ -28,10 +28,9 @@ extension DateTimeExtensions on DateTime {
             : numericDates
             ? "1y"
             : "Last year";
-      else if ((difference.inDays / 30).floor() >= 2)
-        // return persian ? '${difference.inDays.toString().toPersianNumber()} ماه پیش' : '${(difference.inDays / 30).floor()}M';
+      } else if ((difference.inDays / 30).floor() >= 2) {
         return persian ? "${(difference.inDays / 30).floor()} ماه پیش" : "${(difference.inDays / 30).floor()}M";
-      else if ((difference.inDays / 30).floor() >= 1)
+      } else if ((difference.inDays / 30).floor() >= 1) {
         return persian
             ? numericDates
                   ? "۱ ماه پیش"
@@ -39,9 +38,9 @@ extension DateTimeExtensions on DateTime {
             : numericDates
             ? "1M"
             : "Last month";
-      else if ((difference.inDays / 7).floor() >= 2)
+      } else if ((difference.inDays / 7).floor() >= 2) {
         return persian ? "${difference.inDays.toString().toPersianNumber()} روز پیش" : "${(difference.inDays / 7).floor()}w";
-      else if ((difference.inDays / 7).floor() >= 1)
+      } else if ((difference.inDays / 7).floor() >= 1) {
         return persian
             ? numericDates
                   ? "۱ هفته پیش"
@@ -49,9 +48,9 @@ extension DateTimeExtensions on DateTime {
             : numericDates
             ? "1w"
             : "Last week";
-      else if (difference.inDays >= 2)
+      } else if (difference.inDays >= 2) {
         return persian ? "${difference.inDays.toString().toPersianNumber()} روز پیش" : "${difference.inDays}d";
-      else if (difference.inDays >= 1)
+      } else if (difference.inDays >= 1) {
         return persian
             ? numericDates
                   ? "۱ روز پیش"
@@ -59,9 +58,9 @@ extension DateTimeExtensions on DateTime {
             : numericDates
             ? "1d"
             : "Yesterday";
-      else if (difference.inHours >= 2)
+      } else if (difference.inHours >= 2) {
         return persian ? "${difference.inHours.toString().toPersianNumber()} ساعت پیش" : "${difference.inHours}h";
-      else if (difference.inHours >= 1)
+      } else if (difference.inHours >= 1) {
         return persian
             ? numericDates
                   ? "۱ ساعت پیش"
@@ -69,9 +68,9 @@ extension DateTimeExtensions on DateTime {
             : numericDates
             ? "1h"
             : "An hour ago";
-      else if (difference.inMinutes >= 2)
+      } else if (difference.inMinutes >= 2) {
         return persian ? "${difference.inMinutes.toString().toPersianNumber()} دقیقه پیش" : "${difference.inMinutes}m";
-      else if (difference.inMinutes >= 1)
+      } else if (difference.inMinutes >= 1) {
         return persian
             ? numericDates
                   ? "۱ دقیقه پیش"
@@ -79,10 +78,11 @@ extension DateTimeExtensions on DateTime {
             : numericDates
             ? "1m"
             : "A minute ago";
-      else if (difference.inSeconds >= 3)
+      } else if (difference.inSeconds >= 3) {
         return persian ? "${difference.inSeconds.toString().toPersianNumber()} ثانیه پیش" : "${difference.inSeconds}s";
-      else
+      } else {
         return persian ? "همین الان" : "Just now";
+      }
     } catch (e) {
       return toIso8601String();
     }

@@ -42,10 +42,11 @@ class _UFilePickerState extends State<UFilePicker> {
         if (newFiles.isEmpty) return;
         if (!mounted) return;
         setState(() {
-          if (widget.allowMultipleSelection)
+          if (widget.allowMultipleSelection) {
             _selectedFiles.addAll(newFiles);
-          else
+          } else {
             _selectedFiles = newFiles;
+          }
           _notifyParent();
         });
       },

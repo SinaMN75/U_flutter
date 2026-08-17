@@ -188,7 +188,7 @@ class _UButtonState extends State<UButton> {
         );
         break;
       case UButtonType.fab:
-        if (widget.title == null)
+        if (widget.title == null) {
           button = FloatingActionButton(
             heroTag: widget.heroTag,
             onPressed: onTap != null && !widget.isLoading
@@ -202,7 +202,7 @@ class _UButtonState extends State<UButton> {
             elevation: widget.elevation,
             child: widget.icon,
           );
-        else
+        } else {
           button = FloatingActionButton.extended(
             heroTag: widget.heroTag,
             onPressed: onTap != null && !widget.isLoading
@@ -217,6 +217,7 @@ class _UButtonState extends State<UButton> {
             icon: widget.icon,
             label: Text(widget.title!),
           );
+        }
         break;
       case UButtonType.cupertino:
         button = CupertinoButton(

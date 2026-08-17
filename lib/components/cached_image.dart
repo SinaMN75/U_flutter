@@ -19,7 +19,7 @@ class CachedNetworkImage extends StatefulWidget {
   final BoxFit? fit;
 
   @override
-  _CachedNetworkImageState createState() => _CachedNetworkImageState();
+  State<CachedNetworkImage> createState() => _CachedNetworkImageState();
 }
 
 class _CachedNetworkImageState extends State<CachedNetworkImage> {
@@ -44,10 +44,11 @@ class _CachedNetworkImageState extends State<CachedNetworkImage> {
       final Response response = await get(Uri.parse(widget.imageUrl));
       if (response.statusCode == 200) {
         final Uint8List bytes = response.bodyBytes;
-        if (kIsWeb)
+        if (kIsWeb) {
           ULocalStorage.set(widget.imageUrl, base64.encode(bytes));
-        else
+        } else {
           await UFileStorage.setBytes(diskKey, bytes);
+        }
         return bytes;
       }
     } catch (e) {
@@ -60,12 +61,13 @@ class _CachedNetworkImageState extends State<CachedNetworkImage> {
   Widget build(BuildContext context) => FutureBuilder<Uint8List?>(
     future: _imageDataFuture,
     builder: (BuildContext context, AsyncSnapshot<Uint8List?> snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting)
+      if (snapshot.connectionState == ConnectionState.waiting) {
         return widget.placeholder ?? const Center(child: CircularProgressIndicator());
-      else if (snapshot.hasError || snapshot.data == null)
+      } else if (snapshot.hasError || snapshot.data == null) {
         return widget.errorWidget ?? const Icon(Icons.error);
-      else
+      } else {
         return Image.memory(snapshot.data!, width: widget.width, height: widget.height, fit: widget.fit);
+      }
     },
   );
 }

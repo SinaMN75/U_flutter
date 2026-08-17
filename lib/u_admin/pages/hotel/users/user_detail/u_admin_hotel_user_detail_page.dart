@@ -272,7 +272,7 @@ class _HotelUserDetailPageState extends State<UAdminHotelUserDetailPage> {
             Icon(icon, size: 20, color: Theme.of(context).colorScheme.primary),
             const SizedBox(width: 8),
             UTextTitleSmall(title, fontWeight: FontWeight.w700).expanded(),
-            if (trailing != null) trailing,
+            ?trailing,
           ],
         ),
         const Divider(height: 18),

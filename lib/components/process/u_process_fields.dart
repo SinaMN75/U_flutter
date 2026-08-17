@@ -30,14 +30,16 @@ class UProcessFields extends StatelessWidget {
   Widget _field(UProcessField i) {
     if (i.type == TagFieldType.text) return UProcessTextField(field: i, processStepSend: processStepSend);
     // Null-safe file-config checks so a malformed field can't crash the step.
-    if (i.type == TagFieldType.file && i.fileConfig?.type == TagFileFieldType.video && (i.fileConfig?.isSelfieCamera ?? false))
+    if (i.type == TagFieldType.file && i.fileConfig?.type == TagFileFieldType.video && (i.fileConfig?.isSelfieCamera ?? false)) {
       return UProcessVisualAuthField(field: i, processStepSend: processStepSend, style: style);
-    if (i.type == TagFieldType.eSignature)
+    }
+    if (i.type == TagFieldType.eSignature) {
       return UProcessESignField(
         title: i.label,
         initialBase64: i.value,
         onSubmit: (String value) => processStepSend.fields.firstWhere((UProcessField f) => f.key == i.key).value = value,
       );
+    }
     if (i.type == TagFieldType.file && i.fileConfig?.type == TagFileFieldType.image) return UProcessImagePickerField(field: i, processStepSend: processStepSend);
     return const SizedBox();
   }

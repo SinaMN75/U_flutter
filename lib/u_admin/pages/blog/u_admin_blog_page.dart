@@ -218,10 +218,11 @@ class _BlogPageState extends State<UAdminBlogPage> {
                                 label: Text(cat.title),
                                 selected: selectedCategories.any((UCategoryResponse x) => x.id == cat.id),
                                 onSelected: (bool selected) => setDialogState(() {
-                                  if (selected)
+                                  if (selected) {
                                     selectedCategories.add(cat);
-                                  else
+                                  } else {
                                     selectedCategories.removeWhere((UCategoryResponse x) => x.id == cat.id);
+                                  }
                                 }),
                               ),
                             )
@@ -235,7 +236,7 @@ class _BlogPageState extends State<UAdminBlogPage> {
                         key: formKey,
                         action: () {
                           final List<String> categoryIds = selectedCategories.map((UCategoryResponse cat) => cat.id).toList();
-                          if (p == null)
+                          if (p == null) {
                             c.create(
                               p: UBlogCreateParams(
                                 tags: <int>[TagBlog.draft.number],
@@ -247,7 +248,7 @@ class _BlogPageState extends State<UAdminBlogPage> {
                               ),
                               files: files,
                             );
-                          else
+                          } else {
                             c.update(
                               p: UBlogUpdateParams(
                                 id: p.id,
@@ -259,6 +260,7 @@ class _BlogPageState extends State<UAdminBlogPage> {
                               ),
                               files: files,
                             );
+                          }
                           UNavigator.back();
                         },
                       ),

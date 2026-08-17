@@ -1,3 +1,7 @@
+## 2.0.0
+
+* converted the package to Plugin to be able to provide native codes
+
 ## 0.1.0
 
 * First release as the `u` **plugin** (successor to the `Utilities-flutter` package), adding

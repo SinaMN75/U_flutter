@@ -239,13 +239,14 @@ class _UCountryProvincePickerState extends State<UCountryProvincePicker> {
       ).pSymmetric(vertical: widget.spacing),
       Obx(
         () {
-          if (cities.isNotNullOrEmpty())
+          if (cities.isNotNullOrEmpty()) {
             return UTextFieldAutoComplete<UCity>(
               items: cities,
               labelBuilder: (UCity i) => i.nameFa,
               onChanged: _selectCity,
               selectedItem: city.value!,
             );
+          }
           return const SizedBox.shrink();
         },
       ).pSymmetric(vertical: widget.spacing),

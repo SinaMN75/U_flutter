@@ -18,23 +18,31 @@ class BarcodeAztec extends Barcode2D {
 
   static void _init() {
     _charMap = <_EncodingMode, List<int?>>{};
-    _charMap[_EncodingMode.mode_upper] = List<int?>.filled(256, null);
-    _charMap[_EncodingMode.mode_lower] = List<int?>.filled(256, null);
-    _charMap[_EncodingMode.mode_digit] = List<int?>.filled(256, null);
-    _charMap[_EncodingMode.mode_mixed] = List<int?>.filled(256, null);
-    _charMap[_EncodingMode.mode_punct] = List<int?>.filled(256, null);
-    _charMap[_EncodingMode.mode_upper]![0x20] = 1;
-    for (int c = 0x41; c <= 0x5a; c++) _charMap[_EncodingMode.mode_upper]![c] = c - 0x41 + 2;
+    _charMap[_EncodingMode.modeUpper] = List<int?>.filled(256, null);
+    _charMap[_EncodingMode.modeLower] = List<int?>.filled(256, null);
+    _charMap[_EncodingMode.modeDigit] = List<int?>.filled(256, null);
+    _charMap[_EncodingMode.modeMixed] = List<int?>.filled(256, null);
+    _charMap[_EncodingMode.modePunct] = List<int?>.filled(256, null);
+    _charMap[_EncodingMode.modeUpper]![0x20] = 1;
+    for (int c = 0x41; c <= 0x5a; c++) {
+      _charMap[_EncodingMode.modeUpper]![c] = c - 0x41 + 2;
+    }
 
-    _charMap[_EncodingMode.mode_lower]![0x20] = 1;
-    for (int c = 0x61; c <= 0x7a; c++) _charMap[_EncodingMode.mode_lower]![c] = c - 0x61 + 2;
-    _charMap[_EncodingMode.mode_digit]![0x20] = 1;
-    for (int c = 0x30; c <= 0x39; c++) _charMap[_EncodingMode.mode_digit]![c] = c - 0x30 + 2;
-    _charMap[_EncodingMode.mode_digit]![0x2c] = 12;
-    _charMap[_EncodingMode.mode_digit]![0x2e] = 13;
+    _charMap[_EncodingMode.modeLower]![0x20] = 1;
+    for (int c = 0x61; c <= 0x7a; c++) {
+      _charMap[_EncodingMode.modeLower]![c] = c - 0x61 + 2;
+    }
+    _charMap[_EncodingMode.modeDigit]![0x20] = 1;
+    for (int c = 0x30; c <= 0x39; c++) {
+      _charMap[_EncodingMode.modeDigit]![c] = c - 0x30 + 2;
+    }
+    _charMap[_EncodingMode.modeDigit]![0x2c] = 12;
+    _charMap[_EncodingMode.modeDigit]![0x2e] = 13;
 
     final List<int> mixedTable = <int>[0, 0x20, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 27, 28, 29, 30, 31, 0x40, 0x5c, 0x5e, 0x5f, 0x60, 0x7c, 0x7e, 127];
-    for (int i = 0; i < mixedTable.length; i++) _charMap[_EncodingMode.mode_mixed]![mixedTable[i]] = i;
+    for (int i = 0; i < mixedTable.length; i++) {
+      _charMap[_EncodingMode.modeMixed]![mixedTable[i]] = i;
+    }
 
     const List<int> punctTable = <int>[
       0,
@@ -72,7 +80,7 @@ class BarcodeAztec extends Barcode2D {
 
     for (int i = 0; i < punctTable.length; i++) {
       final int v = punctTable[i];
-      if (v > 0) _charMap[_EncodingMode.mode_punct]![v] = i;
+      if (v > 0) _charMap[_EncodingMode.modePunct]![v] = i;
     }
   }
 
@@ -120,8 +128,12 @@ class BarcodeAztec extends Barcode2D {
     final int startPad = totalBits % wordSize;
     final List<bool> messageBits = <bool>[];
     messageBits.addAll(_addBits(0, startPad));
-    for (final int messageWord in messageWords) messageBits.addAll(_addBits(messageWord, wordSize));
-    for (final int eccWord in eccWords) messageBits.addAll(_addBits(eccWord, wordSize));
+    for (final int messageWord in messageWords) {
+      messageBits.addAll(_addBits(messageWord, wordSize));
+    }
+    for (final int eccWord in eccWords) {
+      messageBits.addAll(_addBits(eccWord, wordSize));
+    }
     return messageBits;
   }
 
@@ -151,20 +163,21 @@ class BarcodeAztec extends Barcode2D {
       if (index + 1 < data.length) nextChar = data[index + 1];
 
       final int cur = data[index];
-      if (cur == 0xd && nextChar == 0xa)
+      if (cur == 0xd && nextChar == 0xa) {
         pairCode = 2;
-      else if (cur == 0x2e && nextChar == 0x20)
+      } else if (cur == 0x2e && nextChar == 0x20) {
         pairCode = 3;
-      else if (cur == 0x2c && nextChar == 0x20)
+      } else if (cur == 0x2c && nextChar == 0x20) {
         pairCode = 4;
-      else if (cur == 0x3a && nextChar == 0x20)
+      } else if (cur == 0x3a && nextChar == 0x20) {
         pairCode = 5;
-
+      }
       if (pairCode > 0) {
         states = _updateStateListForPair(states, data, index, pairCode);
         index++;
-      } else
+      } else {
         states = _updateStateListForChar(states, data, index);
+      }
     }
     int? minBitCnt;
     _State? result;
@@ -228,7 +241,7 @@ class BarcodeAztec extends Barcode2D {
       if (charInMode != null && charInMode > 0) {
         stateNoBinary ??= s.endBinaryShift(index);
 
-        if (!charInCurrentTable || mode == s.mode || mode == _EncodingMode.mode_digit) {
+        if (!charInCurrentTable || mode == s.mode || mode == _EncodingMode.modeDigit) {
           final _State res = stateNoBinary.latchAndAppend(mode, charInMode);
           result.add(res);
         }
@@ -261,12 +274,12 @@ class BarcodeAztec extends Barcode2D {
     final List<_State> result = <_State>[];
     final _State stateNoBinary = s.endBinaryShift(index);
 
-    result.add(stateNoBinary.latchAndAppend(_EncodingMode.mode_punct, pairCode));
-    if (s.mode != _EncodingMode.mode_punct) {
-      result.add(stateNoBinary.shiftAndAppend(_EncodingMode.mode_punct, pairCode));
+    result.add(stateNoBinary.latchAndAppend(_EncodingMode.modePunct, pairCode));
+    if (s.mode != _EncodingMode.modePunct) {
+      result.add(stateNoBinary.shiftAndAppend(_EncodingMode.modePunct, pairCode));
     }
     if (pairCode == 3 || pairCode == 4) {
-      final _State digitState = stateNoBinary.latchAndAppend(_EncodingMode.mode_digit, 16 - pairCode).latchAndAppend(_EncodingMode.mode_digit, 1);
+      final _State digitState = stateNoBinary.latchAndAppend(_EncodingMode.modeDigit, 16 - pairCode).latchAndAppend(_EncodingMode.modeDigit, 1);
       result.add(digitState);
     }
     if (s.bShiftByteCount > 0) {
@@ -571,27 +584,27 @@ Iterable<bool> _addBits(int b, int count) sync* {
 }
 
 enum _EncodingMode {
-  mode_upper,
-  mode_lower,
-  mode_digit,
-  mode_mixed,
-  mode_punct,
+  modeUpper,
+  modeLower,
+  modeDigit,
+  modeMixed,
+  modePunct,
 }
 
 const Map<_EncodingMode, Map<_EncodingMode, int>> _shiftTable = <_EncodingMode, Map<_EncodingMode, int>>{
-  _EncodingMode.mode_upper: <_EncodingMode, int>{
-    _EncodingMode.mode_punct: 0,
+  _EncodingMode.modeUpper: <_EncodingMode, int>{
+    _EncodingMode.modePunct: 0,
   },
-  _EncodingMode.mode_lower: <_EncodingMode, int>{
-    _EncodingMode.mode_punct: 0,
-    _EncodingMode.mode_upper: 28,
+  _EncodingMode.modeLower: <_EncodingMode, int>{
+    _EncodingMode.modePunct: 0,
+    _EncodingMode.modeUpper: 28,
   },
-  _EncodingMode.mode_mixed: <_EncodingMode, int>{
-    _EncodingMode.mode_punct: 0,
+  _EncodingMode.modeMixed: <_EncodingMode, int>{
+    _EncodingMode.modePunct: 0,
   },
-  _EncodingMode.mode_digit: <_EncodingMode, int>{
-    _EncodingMode.mode_punct: 0,
-    _EncodingMode.mode_upper: 15,
+  _EncodingMode.modeDigit: <_EncodingMode, int>{
+    _EncodingMode.modePunct: 0,
+    _EncodingMode.modeUpper: 15,
   },
 };
 
@@ -604,7 +617,7 @@ class _State {
   });
 
   static const _State initialState = _State(
-    mode: _EncodingMode.mode_upper,
+    mode: _EncodingMode.modeUpper,
     bShiftByteCount: 0,
     bitCount: 0,
   );
@@ -615,40 +628,40 @@ class _State {
   final int bitCount;
 
   static const Map<_EncodingMode, Map<_EncodingMode, int>> latchTable = <_EncodingMode, Map<_EncodingMode, int>>{
-    _EncodingMode.mode_upper: <_EncodingMode, int>{
-      _EncodingMode.mode_upper: 0,
-      _EncodingMode.mode_lower: (5 << 16) + 28,
-      _EncodingMode.mode_digit: (5 << 16) + 30,
-      _EncodingMode.mode_mixed: (5 << 16) + 29,
-      _EncodingMode.mode_punct: (10 << 16) + (29 << 5) + 30,
+    _EncodingMode.modeUpper: <_EncodingMode, int>{
+      _EncodingMode.modeUpper: 0,
+      _EncodingMode.modeLower: (5 << 16) + 28,
+      _EncodingMode.modeDigit: (5 << 16) + 30,
+      _EncodingMode.modeMixed: (5 << 16) + 29,
+      _EncodingMode.modePunct: (10 << 16) + (29 << 5) + 30,
     },
-    _EncodingMode.mode_lower: <_EncodingMode, int>{
-      _EncodingMode.mode_upper: (9 << 16) + (30 << 4) + 14,
-      _EncodingMode.mode_lower: 0,
-      _EncodingMode.mode_digit: (5 << 16) + 30,
-      _EncodingMode.mode_mixed: (5 << 16) + 29,
-      _EncodingMode.mode_punct: (10 << 16) + (29 << 5) + 30,
+    _EncodingMode.modeLower: <_EncodingMode, int>{
+      _EncodingMode.modeUpper: (9 << 16) + (30 << 4) + 14,
+      _EncodingMode.modeLower: 0,
+      _EncodingMode.modeDigit: (5 << 16) + 30,
+      _EncodingMode.modeMixed: (5 << 16) + 29,
+      _EncodingMode.modePunct: (10 << 16) + (29 << 5) + 30,
     },
-    _EncodingMode.mode_digit: <_EncodingMode, int>{
-      _EncodingMode.mode_upper: (4 << 16) + 14,
-      _EncodingMode.mode_lower: (9 << 16) + (14 << 5) + 28,
-      _EncodingMode.mode_digit: 0,
-      _EncodingMode.mode_mixed: (9 << 16) + (14 << 5) + 29,
-      _EncodingMode.mode_punct: (14 << 16) + (14 << 10) + (29 << 5) + 30,
+    _EncodingMode.modeDigit: <_EncodingMode, int>{
+      _EncodingMode.modeUpper: (4 << 16) + 14,
+      _EncodingMode.modeLower: (9 << 16) + (14 << 5) + 28,
+      _EncodingMode.modeDigit: 0,
+      _EncodingMode.modeMixed: (9 << 16) + (14 << 5) + 29,
+      _EncodingMode.modePunct: (14 << 16) + (14 << 10) + (29 << 5) + 30,
     },
-    _EncodingMode.mode_mixed: <_EncodingMode, int>{
-      _EncodingMode.mode_upper: (5 << 16) + 29,
-      _EncodingMode.mode_lower: (5 << 16) + 28,
-      _EncodingMode.mode_digit: (10 << 16) + (29 << 5) + 30,
-      _EncodingMode.mode_mixed: 0,
-      _EncodingMode.mode_punct: (5 << 16) + 30,
+    _EncodingMode.modeMixed: <_EncodingMode, int>{
+      _EncodingMode.modeUpper: (5 << 16) + 29,
+      _EncodingMode.modeLower: (5 << 16) + 28,
+      _EncodingMode.modeDigit: (10 << 16) + (29 << 5) + 30,
+      _EncodingMode.modeMixed: 0,
+      _EncodingMode.modePunct: (5 << 16) + 30,
     },
-    _EncodingMode.mode_punct: <_EncodingMode, int>{
-      _EncodingMode.mode_upper: (5 << 16) + 31,
-      _EncodingMode.mode_lower: (10 << 16) + (31 << 5) + 28,
-      _EncodingMode.mode_digit: (10 << 16) + (31 << 5) + 30,
-      _EncodingMode.mode_mixed: (10 << 16) + (31 << 5) + 29,
-      _EncodingMode.mode_punct: 0,
+    _EncodingMode.modePunct: <_EncodingMode, int>{
+      _EncodingMode.modeUpper: (5 << 16) + 31,
+      _EncodingMode.modeLower: (10 << 16) + (31 << 5) + 28,
+      _EncodingMode.modeDigit: (10 << 16) + (31 << 5) + 30,
+      _EncodingMode.modeMixed: (10 << 16) + (31 << 5) + 29,
+      _EncodingMode.modePunct: 0,
     },
   };
 
@@ -688,11 +701,11 @@ class _State {
     _Token? tokens = this.tokens;
     _EncodingMode mode = this.mode;
     int bitCnt = bitCount;
-    if (this.mode == _EncodingMode.mode_punct || this.mode == _EncodingMode.mode_digit) {
-      final int latch = latchTable[this.mode]![_EncodingMode.mode_upper]!;
+    if (this.mode == _EncodingMode.modePunct || this.mode == _EncodingMode.modeDigit) {
+      final int latch = latchTable[this.mode]![_EncodingMode.modeUpper]!;
       tokens = _SimpleToken(tokens, latch & 0xFFFF, latch >> 16);
       bitCnt += latch >> 16;
-      mode = _EncodingMode.mode_upper;
+      mode = _EncodingMode.modeUpper;
     }
     int deltaBitCount = 8;
     if (bShiftByteCount == 0 || bShiftByteCount == 31) {
@@ -751,7 +764,7 @@ class _State {
 }
 
 int _bitCount(_EncodingMode em) {
-  if (em == _EncodingMode.mode_digit) {
+  if (em == _EncodingMode.modeDigit) {
     return 4;
   }
   return 5;
@@ -774,49 +787,49 @@ abstract class Barcode {
 
   factory Barcode.fromType(BarcodeType type) {
     switch (type) {
-      case BarcodeType.Code39:
+      case BarcodeType.code39:
         return Barcode.code39();
-      case BarcodeType.Code93:
+      case BarcodeType.code93:
         return Barcode.code93();
-      case BarcodeType.Code128:
+      case BarcodeType.code128:
         return Barcode.code128();
-      case BarcodeType.GS128:
+      case BarcodeType.gS128:
         return Barcode.gs128();
-      case BarcodeType.Itf:
+      case BarcodeType.itf:
         return Barcode.itf();
-      case BarcodeType.CodeITF14:
+      case BarcodeType.codeITF14:
         return Barcode.itf14();
-      case BarcodeType.CodeITF16:
+      case BarcodeType.codeITF16:
         return Barcode.itf16();
-      case BarcodeType.CodeEAN13:
+      case BarcodeType.codeEAN13:
         return Barcode.ean13();
-      case BarcodeType.CodeEAN8:
+      case BarcodeType.codeEAN8:
         return Barcode.ean8();
-      case BarcodeType.CodeEAN5:
+      case BarcodeType.codeEAN5:
         return Barcode.ean5();
-      case BarcodeType.CodeEAN2:
+      case BarcodeType.codeEAN2:
         return Barcode.ean2();
-      case BarcodeType.CodeISBN:
+      case BarcodeType.codeISBN:
         return Barcode.isbn();
-      case BarcodeType.CodeUPCA:
+      case BarcodeType.codeUPCA:
         return Barcode.upcA();
-      case BarcodeType.CodeUPCE:
+      case BarcodeType.codeUPCE:
         return Barcode.upcE();
-      case BarcodeType.Telepen:
+      case BarcodeType.telepen:
         return Barcode.telepen();
-      case BarcodeType.Codabar:
+      case BarcodeType.codabar:
         return Barcode.codabar();
-      case BarcodeType.Rm4scc:
+      case BarcodeType.rm4scc:
         return Barcode.rm4scc();
-      case BarcodeType.Postnet:
+      case BarcodeType.postnet:
         return Barcode.postnet();
-      case BarcodeType.QrCode:
+      case BarcodeType.qrCode:
         return Barcode.qrCode();
-      case BarcodeType.PDF417:
+      case BarcodeType.pdf417:
         return Barcode.pdf417();
-      case BarcodeType.DataMatrix:
+      case BarcodeType.dataMatrix:
         return Barcode.dataMatrix();
-      case BarcodeType.Aztec:
+      case BarcodeType.aztec:
         return Barcode.aztec();
     }
   }
@@ -2526,28 +2539,28 @@ class BarcodeText extends BarcodeElement {
 }
 
 enum BarcodeType {
-  CodeITF16,
-  CodeITF14,
-  CodeEAN13,
-  CodeEAN8,
-  CodeEAN5,
-  CodeEAN2,
-  CodeISBN,
-  Code39,
-  Code93,
-  CodeUPCA,
-  CodeUPCE,
-  Code128,
-  GS128,
-  Telepen,
-  QrCode,
-  Codabar,
-  PDF417,
-  DataMatrix,
-  Aztec,
-  Rm4scc,
-  Postnet,
-  Itf,
+  codeITF16,
+  codeITF14,
+  codeEAN13,
+  codeEAN8,
+  codeEAN5,
+  codeEAN2,
+  codeISBN,
+  code39,
+  code93,
+  codeUPCA,
+  codeUPCE,
+  code128,
+  gS128,
+  telepen,
+  qrCode,
+  codabar,
+  pdf417,
+  dataMatrix,
+  aztec,
+  rm4scc,
+  postnet,
+  itf,
 }
 
 final class QrBitBuffer {
@@ -5103,7 +5116,7 @@ class BarcodePDF417 extends Barcode2D {
       final int table = rowNum % 3;
       final List<int> rowCodes = <int>[];
 
-      rowCodes.add(start_word);
+      rowCodes.add(startWord);
       rowCodes.add(_getCodeword(table, _getLeftCodeWord(rowNum, dim.rows, dim.columns, securityLevel)));
 
       for (final int word in row) {
@@ -5111,7 +5124,7 @@ class BarcodePDF417 extends Barcode2D {
       }
 
       rowCodes.add(_getCodeword(table, _getRightCodeWord(rowNum, dim.rows, dim.columns, securityLevel)));
-      rowCodes.add(stop_word);
+      rowCodes.add(stopWord);
 
       codes.add(rowCodes);
 
@@ -5202,7 +5215,7 @@ class BarcodePDF417 extends Barcode2D {
 
     if (mod > 0) {
       final int padCount = columns - mod;
-      yield* Iterable<int>.generate(padCount, (_) => padding_codeword);
+      yield* Iterable<int>.generate(padCount, (_) => paddingCodeword);
     }
   }
 
@@ -5362,7 +5375,7 @@ class BarcodePDF417 extends Barcode2D {
     int i = 0;
     for (final int ch in msg) {
       final int numericCount = _determineConsecutiveDigitCount(msg.sublist(i));
-      if (numericCount >= min_numeric_count || (numericCount == 0 && !_isText(ch))) {
+      if (numericCount >= minNumericCount || (numericCount == 0 && !_isText(ch))) {
         break;
       }
 
@@ -5493,7 +5506,7 @@ class BarcodePDF417 extends Barcode2D {
 
     for (int i = 0; i < msg.length; i++) {
       final int numericCount = _determineConsecutiveDigitCount(msg.sublist(i));
-      if (numericCount >= min_numeric_count) {
+      if (numericCount >= minNumericCount) {
         break;
       }
       final int textCount = _determineConsecutiveTextCount(msg.sublist(i));
@@ -5508,11 +5521,11 @@ class BarcodePDF417 extends Barcode2D {
   Iterable<int> _encodeBinary(List<int> data, _Pdf417EncodingMode startmode) sync* {
     final int count = data.length;
     if (count == 1 && startmode == _Pdf417EncodingMode.encText) {
-      yield shift_to_byte;
+      yield shiftToByte;
     } else if ((count % 6) == 0) {
-      yield latch_to_byte;
+      yield latchToByte;
     } else {
-      yield latch_to_byte_padded;
+      yield latchToBytePadded;
     }
 
     int idx = 0;
@@ -5545,8 +5558,8 @@ class BarcodePDF417 extends Barcode2D {
 
     while (data.isNotEmpty) {
       final int numericCount = _determineConsecutiveDigitCount(data);
-      if (numericCount >= min_numeric_count || numericCount == data.length) {
-        yield latch_to_numeric;
+      if (numericCount >= minNumericCount || numericCount == data.length) {
+        yield latchToNumeric;
         encodingMode = _Pdf417EncodingMode.encNumeric;
         textSubMode = _SubMode.subUpper;
         final Iterable<int> numData = _encodeNumeric(data.sublist(0, numericCount));
@@ -5556,7 +5569,7 @@ class BarcodePDF417 extends Barcode2D {
         final int textCount = _determineConsecutiveTextCount(data);
         if (textCount >= 5 || textCount == data.length) {
           if (encodingMode != _Pdf417EncodingMode.encText) {
-            yield latch_to_text;
+            yield latchToText;
             encodingMode = _Pdf417EncodingMode.encText;
             textSubMode = _SubMode.subUpper;
           }
@@ -5594,10 +5607,10 @@ class _Pdf417Size {
   final int rows;
 }
 
-const int start_word = 0x1fea8;
-const int stop_word = 0x3fa29;
+const int startWord = 0x1fea8;
+const int stopWord = 0x3fa29;
 
-const int padding_codeword = 900;
+const int paddingCodeword = 900;
 
 const List<List<int>> codewords = <List<int>>[
   <int>[
@@ -9429,13 +9442,13 @@ const List<List<int>> correctionFactors = <List<int>>[
   ],
 ];
 
-const int latch_to_text = 900;
-const int latch_to_byte_padded = 901;
-const int latch_to_numeric = 902;
-const int latch_to_byte = 924;
-const int shift_to_byte = 913;
+const int latchToText = 900;
+const int latchToBytePadded = 901;
+const int latchToNumeric = 902;
+const int latchToByte = 924;
+const int shiftToByte = 913;
 
-const int min_numeric_count = 13;
+const int minNumericCount = 13;
 
 const Map<int, int> mixedMap = <int, int>{
   48: 0,

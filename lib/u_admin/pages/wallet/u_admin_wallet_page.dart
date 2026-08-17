@@ -27,14 +27,16 @@ class _WalletPageState extends State<UAdminWalletPage> {
                 child: Center(child: UTextBodyMedium(U.s.selectAUserToManageTheirWallet)),
               );
             }
-            if (c.state.value.isError())
+            if (c.state.value.isError()) {
               return Center(
                 child: TextButton(onPressed: c.read, child: Text(U.s.retry)),
               );
-            if (!c.state.value.isLoaded())
+            }
+            if (!c.state.value.isLoaded()) {
               return const Center(
                 child: Padding(padding: EdgeInsets.all(40), child: CircularProgressIndicator()),
               );
+            }
             return UColumn(
               spacing: 0,
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -119,11 +121,12 @@ class _WalletPageState extends State<UAdminWalletPage> {
   );
 
   Widget _history() => Obx(() {
-    if (c.txns.isEmpty)
+    if (c.txns.isEmpty) {
       return Padding(
         padding: const EdgeInsets.all(16),
         child: Center(child: UTextBodySmall(U.s.noTransactions)),
       );
+    }
     return UColumn(
       spacing: 0,
       children: c.txns.map((UWalletTxnResponse t) {

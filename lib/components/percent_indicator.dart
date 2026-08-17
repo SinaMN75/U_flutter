@@ -2,7 +2,7 @@ import "dart:math";
 
 import "package:flutter/material.dart";
 
-enum ArcType { HALF, FULL }
+enum ArcType { half, full }
 
 enum CircularStrokeCap { butt, round, square }
 
@@ -91,7 +91,7 @@ class CircularPercentIndicator extends StatefulWidget {
   final bool rotateLinearGradient;
 
   @override
-  _CircularPercentIndicatorState createState() => _CircularPercentIndicatorState();
+  State<CircularPercentIndicator> createState() => _CircularPercentIndicatorState();
 }
 
 class _CircularPercentIndicatorState extends State<CircularPercentIndicator> with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
@@ -126,8 +126,9 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator> wit
         if (widget.onAnimationEnd != null && status == AnimationStatus.completed) widget.onAnimationEnd!();
       });
       _animationController!.forward();
-    } else
+    } else {
       _updateProgress();
+    }
     _diameter = widget.radius * 2;
     super.initState();
   }
@@ -147,8 +148,9 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator> wit
           end: widget.percent,
         ).animate(CurvedAnimation(parent: _animationController!, curve: widget.curve));
         _animationController!.forward(from: 0);
-      } else
+      } else {
         _updateProgress();
+      }
     }
     _checkIfNeedCancelAnimation(oldWidget);
   }
@@ -232,7 +234,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator> wit
       final double angle = _getStartAngleFixedMargin(widget.arcType!).fixedStartAngle;
       final double fixedPercent = 1.0 / widget.percent * _percent;
       late double margin;
-      if (widget.arcType == ArcType.HALF) {
+      if (widget.arcType == ArcType.half) {
         margin = 180 * widget.percent;
       } else {
         margin = 270 * widget.percent;
@@ -251,7 +253,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator> wit
 _ArcAngles _getStartAngleFixedMargin(ArcType arcType) {
   double fixedStartAngle;
   double startAngleFixedMargin;
-  if (arcType == ArcType.FULL) {
+  if (arcType == ArcType.full) {
     fixedStartAngle = 220;
     startAngleFixedMargin = 172 / fixedStartAngle;
   } else {
@@ -468,7 +470,7 @@ class LinearPercentIndicator extends StatefulWidget {
   final Widget? widgetIndicator;
 
   @override
-  _LinearPercentIndicatorState createState() => _LinearPercentIndicatorState();
+  State<LinearPercentIndicator> createState() => _LinearPercentIndicatorState();
 }
 
 class _LinearPercentIndicatorState extends State<LinearPercentIndicator> with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
@@ -518,8 +520,9 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator> with Si
         if (widget.onAnimationEnd != null && status == AnimationStatus.completed) widget.onAnimationEnd!();
       });
       _animationController!.forward();
-    } else
+    } else {
       _updateProgress();
+    }
     super.initState();
   }
 

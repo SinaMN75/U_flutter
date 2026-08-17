@@ -558,7 +558,9 @@ _Axes _drawFrame(
     final int n = categoryCount;
     final double slot = plot.width / n;
     double widest = 0;
-    for (final String c in categories) widest = math.max(widest, _measure(c, r.labelStyle).width);
+    for (final String c in categories) {
+      widest = math.max(widest, _measure(c, r.labelStyle).width);
+    }
     final int every = widest + 6 > slot ? ((widest + 6) / slot).ceil() : 1;
     for (int i = 0; i < n; i++) {
       if (i % every != 0) continue;

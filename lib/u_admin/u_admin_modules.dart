@@ -39,7 +39,9 @@ class UAdminGroup {
 
   List<UMenuEntry> _children() {
     final List<UMenuEntry> children = <UMenuEntry>[];
-    for (final UAdminModule m in modules.where((UAdminModule m) => m.visible))children.add(m.toItem());
+    for (final UAdminModule m in modules.where((UAdminModule m) => m.visible)) {
+      children.add(m.toItem());
+    }
     for (final UAdminGroup g in groups) {
       final UMenuGroup? sub = g._toGroup();
       if (sub != null) children.add(sub);
