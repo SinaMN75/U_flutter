@@ -32,7 +32,7 @@ class _BlogPageState extends State<UAdminBlogPage> {
       items: () => c.list,
       totalCount: () => c.totalCount,
       onRetry: c.read,
-      emptyText: U.s.noBlogsFound,
+      emptyText: U.s.noItemsFound(U.s.blogs),
       desktopHeader: () => <Widget>[
         UAdminTable.headerCell("", flex: 0),
         UAdminTable.headerCell(U.s.title, flex: 3),
@@ -96,7 +96,7 @@ class _BlogPageState extends State<UAdminBlogPage> {
 
   void _showFilterDialog() => UNavigator.dialog(
     AlertDialog(
-      title: Text(U.s.filterBlogs),
+      title: Text(U.s.filterItem(U.s.blogs)),
       content: Form(
         key: c.filterFormKey,
         child: SingleChildScrollView(
@@ -132,7 +132,7 @@ class _BlogPageState extends State<UAdminBlogPage> {
         content: SizedBox(
           width: context.dialogWidth(),
           child: (i.comments?.isEmpty ?? true)
-              ? Center(child: Text(U.s.noCommentsFound).pSymmetric(vertical: 24))
+              ? Center(child: Text(U.s.noItemsFound(U.s.comments)).pSymmetric(vertical: 24))
               : SingleChildScrollView(
                   child: UColumn(
                     spacing: 0,
@@ -167,7 +167,7 @@ class _BlogPageState extends State<UAdminBlogPage> {
     await UNavigator.dialog(
       StatefulBuilder(
         builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
-          title: Text(p == null ? U.s.createBlog : U.s.editBlog),
+          title: Text(p == null ? U.s.createItem(U.s.blog) : U.s.editItem(U.s.blog)),
           content: SizedBox(
             width: context.dialogWidth(max: 480),
             child: SingleChildScrollView(

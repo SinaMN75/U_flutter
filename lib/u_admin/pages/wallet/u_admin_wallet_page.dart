@@ -24,7 +24,7 @@ class _WalletPageState extends State<UAdminWalletPage> {
             if (c.selectedUser.value == null) {
               return Padding(
                 padding: const EdgeInsets.only(top: 40),
-                child: Center(child: UTextBodyMedium(U.s.selectUserToManageWallet)),
+                child: Center(child: UTextBodyMedium(U.s.selectAUserToManageTheirWallet)),
               );
             }
             if (c.state.value.isError())
@@ -214,7 +214,7 @@ class _WalletPageState extends State<UAdminWalletPage> {
                       key: formKey,
                       action: () {
                         if (receiver.value == null) {
-                          UToast.error(message: U.s.selectAReceiver);
+                          UToast.error(message: U.s.selectA(U.s.receiver));
                           return;
                         }
                         UNavigator.back();

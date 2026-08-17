@@ -34,7 +34,7 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
       items: () => c.list,
       totalCount: () => c.totalCount,
       onRetry: c.read,
-      emptyText: U.s.noRoomsFound,
+      emptyText: U.s.noItemsFound(U.s.rooms),
       desktopHeader: () => UAdminTable.header(<String>[U.s.title, U.s.hotel, U.s.capacity, U.s.priceNight, U.s.operations]),
       desktopRow: _itemDesktop,
       mobileRow: _itemResponsive,
@@ -81,7 +81,7 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
 
   void _showFilterDialog() => UNavigator.dialog(
     AlertDialog(
-      title: Text(U.s.filterRooms),
+      title: Text(U.s.filterItem(U.s.rooms)),
       content: SingleChildScrollView(
         child: UColumn(
           spacing: 0,
@@ -126,7 +126,7 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
 
     UNavigator.dialog(
       AlertDialog(
-        title: Text(p == null ? U.s.createRoom : U.s.editRoom),
+        title: Text(p == null ? U.s.createItem(U.s.room) : U.s.createItem(U.s.room)),
         content: SingleChildScrollView(
           child: StatefulBuilder(
             builder: (BuildContext context, void Function(void Function()) setLocal) => Form(
@@ -176,7 +176,7 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
                       action: () {
                         final String? hid = hotel.value?.id ?? widget.hotel?.id;
                         if (hid == null) {
-                          UToast.error(message: U.s.pleaseSelectAHotel);
+                          UToast.error(message: U.s.pleaseSelectA(U.s.hotel));
                           return;
                         }
                         if (p == null) {

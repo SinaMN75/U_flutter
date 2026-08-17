@@ -21,7 +21,7 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
   @override
   Widget build(BuildContext context) => UScaffold(
     appBar: AppBar(
-      title: Text("${U.s.financialOpsDashboard} ⚡"),
+      title: Text("${U.s.financialAndOperations} ⚡"),
       actions: <Widget>[IconButton(icon: const Icon(Icons.refresh_rounded), tooltip: U.s.refresh, onPressed: c.load)],
     ),
     body: Obx(() {
@@ -61,7 +61,7 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
       children: <Widget>[
         UIconTextHorizontal(
           leading: const Icon(Icons.account_balance_wallet_rounded, color: UAdminTheme.white, size: 34),
-          trailing: UTextHeadlineSmall(U.s.financialOpsDashboard, color: UAdminTheme.white, fontWeight: FontWeight.w800),
+          trailing: UTextHeadlineSmall(U.s.financialAndOperations, color: UAdminTheme.white, fontWeight: FontWeight.w800),
         ),
         UAdminResponsiveGrid(
           minTileWidth: 150,
@@ -86,17 +86,17 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
 
   Widget _entityCards(UFinancialOpsDashboardResponse r) => UAdminResponsiveGrid(
     children: <Widget>[
-      _statCard(U.s.users, r.usersCount.separate3By3(), "+${r.newUsersCount} ${U.s.newThisPeriod}", Icons.people_alt_rounded, UAdminTheme.indigo, UAdminPageSwitcher.adminUsers),
-      _statCard(U.s.merchants, r.merchantsCount.separate3By3(), "+${r.newMerchantsCount} ${U.s.newThisPeriod}", Icons.storefront_rounded, UAdminTheme.orange, UAdminPageSwitcher.merchants),
+      _statCard(U.s.users, r.usersCount.separate3By3(), "+${r.newUsersCount} ${U.s.new_}", Icons.people_alt_rounded, UAdminTheme.indigo, UAdminPageSwitcher.adminUsers),
+      _statCard(U.s.merchants, r.merchantsCount.separate3By3(), "+${r.newMerchantsCount} ${U.s.new_}", Icons.storefront_rounded, UAdminTheme.orange, UAdminPageSwitcher.merchants),
       _statCard(
         U.s.terminals,
         r.terminalsCount.separate3By3(),
-        "${r.terminalsAssignedCount} ${U.s.assignedTerminalsCount}",
+        "${r.terminalsAssignedCount} ${U.s.assigned}",
         Icons.point_of_sale_rounded,
         UAdminTheme.green,
         UAdminPageSwitcher.terminals,
       ),
-      _statCard(U.s.transactions, r.txnCount.separate3By3(), "+${r.newTxnCount} ${U.s.newThisPeriod}", Icons.swap_horiz_rounded, UAdminTheme.pink, UAdminPageSwitcher.transactions),
+      _statCard(U.s.transactions, r.txnCount.separate3By3(), "+${r.newTxnCount} ${U.s.new_}", Icons.swap_horiz_rounded, UAdminTheme.pink, UAdminPageSwitcher.transactions),
       _statCard(U.s.wallets, r.walletsCount.separate3By3(), r.totalWalletBalance.rial(), Icons.account_balance_wallet_rounded, UAdminTheme.blueGrey, UAdminPageSwitcher.wallet),
       _statCard(U.s.moneyIn, r.totalIn.rial(), "", Icons.south_west_rounded, UAdminTheme.green, null),
       _statCard(U.s.moneyOut, r.totalOut.rial(), "", Icons.north_east_rounded, UAdminTheme.red, null),

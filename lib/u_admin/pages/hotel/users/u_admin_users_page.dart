@@ -51,7 +51,7 @@ class _UserPageState extends State<UAdminUserPage> {
 
   Widget buildUserList() => Obx(() {
     if (c.state.isError()) return Center(child: Text(U.s.errorReadingData));
-    if (c.state.isEmpty()) return Center(child: Text(U.s.noUserFound));
+    if (c.state.isEmpty()) return Center(child: Text(U.s.noItemsFound(U.s.user)));
     if (!c.state.isLoaded()) return const Center(child: CircularProgressIndicator());
     if (MediaQuery.sizeOf(context).width >= 800) {
       return UListView(
@@ -81,7 +81,7 @@ class _UserPageState extends State<UAdminUserPage> {
 
   void _showFilterDialog() => UNavigator.dialog(
     AlertDialog(
-      title: Text(U.s.filterUsers),
+      title: Text(U.s.filterItem(U.s.users)),
       content: Form(
         key: c.filterFormKey,
         child: SingleChildScrollView(

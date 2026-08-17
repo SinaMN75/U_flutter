@@ -164,7 +164,7 @@ class _AccountingPageState extends State<UAdminAccountingPage> {
 
   void _showFilterDialog() => UNavigator.dialog(
     AlertDialog(
-      title: Text(U.s.filterReport),
+      title: Text(U.s.filterItem(U.s.report)),
       content: SizedBox(
         width: context.dialogWidth(),
         child: SingleChildScrollView(

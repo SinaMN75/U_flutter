@@ -9,9 +9,7 @@ class UAdminModule {
   final IconData? selectedIcon;
   final List<TagUser>? roles;
 
-  bool get visible => UAdmin.canAccess(
-    roles,
-  );
+  bool get visible => UAdmin.canAccess(roles);
 
   UMenuItem toItem() => UMenuItem(id: title, title: title, icon: icon, selectedIcon: selectedIcon, onTap: () => U.addOrSwitchTab(title, page()));
 }
@@ -39,12 +37,9 @@ class UAdminGroup {
 
   String get resolvedId => id ?? title;
 
-  // Modules become leaf items; nested groups recurse into sub-expansions.
   List<UMenuEntry> _children() {
     final List<UMenuEntry> children = <UMenuEntry>[];
-    for (final UAdminModule m in modules.where((UAdminModule m) => m.visible)) {
-      children.add(m.toItem());
-    }
+    for (final UAdminModule m in modules.where((UAdminModule m) => m.visible))children.add(m.toItem());
     for (final UAdminGroup g in groups) {
       final UMenuGroup? sub = g._toGroup();
       if (sub != null) children.add(sub);
@@ -75,15 +70,9 @@ class UAdminGroup {
   }
 }
 
-// ---------------------------------------------------------------------------
-// Catalog of individual modules. Compose them into UAdminGroups in your app config
-// (see main.dart). List modules accept an optional per-row `actions` override.
-// ---------------------------------------------------------------------------
-
 abstract class UAdminModules {
-  // ---- Dashboards ----
   static UAdminModule financialOpsDashboard({List<TagUser>? roles}) => UAdminModule(
-    title: "${U.s.financialOpsDashboard} ⚡",
+    title: U.s.financialAndOperations,
     icon: Icons.account_balance_wallet_rounded,
     page: () => const UAdminFinancialOpsDashboardPage(),
     roles: roles,
@@ -186,7 +175,7 @@ abstract class UAdminModules {
   );
 
   static UAdminModule moadis({List<TagUser>? roles, UAdminActionBuilder<UMoadiResponse>? actions}) => UAdminModule(
-    title: U.s.moadiRequests,
+    title: U.s.taxpayerRequests,
     icon: Icons.receipt_long_rounded,
     page: () => UAdminMoadisPage(actions: actions),
     roles: roles,
@@ -247,7 +236,7 @@ abstract class UAdminModules {
 
   // ---- External API ----
   static UAdminModule pnApiTester({List<TagUser>? roles}) => UAdminModule(
-    title: U.s.pnApiTester,
+    title: U.s.pnapiTester,
     icon: Icons.api_rounded,
     page: () => const UAdminPnTesterPage(),
     roles: roles,
@@ -262,7 +251,7 @@ abstract class UAdminModules {
   );
 
   static UAdminModule barcodeGenerator({List<TagUser>? roles}) => UAdminModule(
-    title: U.s.barcodeGenerator,
+    title: U.s.barcodeqrGenerator,
     icon: Icons.qr_code_2_rounded,
     page: () => const UAdminBarcodeGeneratorPage(),
     roles: roles,
@@ -305,7 +294,7 @@ abstract class UAdminModules {
   );
 
   static UAdminModule storage({List<TagUser>? roles}) => UAdminModule(
-    title: U.s.keyValueStorage,
+    title: U.s.keyValue,
     icon: Icons.storage,
     page: () => const UStorageManagerPage(),
     roles: roles,

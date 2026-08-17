@@ -33,7 +33,7 @@ class _AdminUsersPageState extends State<UAdminUsersPage> {
       items: () => c.list,
       totalCount: () => c.totalCount,
       onRetry: c.read,
-      emptyText: U.s.noUserFound,
+      emptyText: U.s.noItemsFound(U.s.users),
       desktopHeader: () => UAdminTable.header(
         <String>[
           U.s.name,
@@ -130,7 +130,7 @@ class _AdminUsersPageState extends State<UAdminUsersPage> {
 
   void _showFilterDialog() => UNavigator.dialog(
     AlertDialog(
-      title: Text(U.s.filterUsers),
+      title: Text(U.s.filterItem(U.s.users)),
       content: SizedBox(
         width: context.dialogWidth(),
         child: SingleChildScrollView(

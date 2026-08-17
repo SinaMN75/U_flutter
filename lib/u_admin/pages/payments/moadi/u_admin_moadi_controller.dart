@@ -62,8 +62,8 @@ class UAdminMoadiController extends UBaseController {
   }
 
   void approve(UMoadiResponse i) => UNavigator.confirm(
-    title: U.s.moadiApprove,
-    message: U.s.moadiApproveConfirm,
+    title: U.s.approve,
+    message: U.s.areYouSureYouWantToApproveAndRegisterThisTaxpayerInTheNamatSystem,
     onConfirm: () {
       ULoading.show();
       UServices.moadi.approve(

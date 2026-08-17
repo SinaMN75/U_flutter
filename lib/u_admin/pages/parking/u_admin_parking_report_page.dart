@@ -2,8 +2,6 @@ import "package:u/utilities.dart";
 
 class UAdminParkingReportPage extends StatefulWidget {
   const UAdminParkingReportPage({super.key, this.parking});
-
-  // When set, only this parking's reports are shown.
   final UParkingResponse? parking;
 
   @override
@@ -54,7 +52,7 @@ class _UAdminParkingReportPageState extends State<UAdminParkingReportPage> {
     items: () => c.list,
     totalCount: () => c.totalCount,
     onRetry: c.read,
-    emptyText: U.s.noParkingReportsFound,
+    emptyText: U.s.noItemsFound(U.s.parkingReport),
     desktopHeader: () => <Widget>[
       UAdminTable.headerCell(U.s.parking, flex: 2),
       UAdminTable.headerCell(U.s.licencePlate, flex: 2),

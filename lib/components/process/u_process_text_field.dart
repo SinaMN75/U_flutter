@@ -1,7 +1,5 @@
 part of "u_process.dart";
 
-/// Renders a process text field (plain text or Persian/Jalali date) and writes
-/// user input straight into the matching field of [processStepSend].
 class UProcessTextField extends StatefulWidget {
   const UProcessTextField({
     required this.field,
@@ -17,14 +15,13 @@ class UProcessTextField extends StatefulWidget {
 }
 
 class _UProcessTextFieldState extends State<UProcessTextField> {
-  // Owned by the State (not recreated per build) so it is disposed properly.
   final TextEditingController _dateController = TextEditingController();
 
   void _setValue(String? value) => widget.processStepSend.fields.firstWhere((UProcessField f) => f.key == widget.field.key).value = value;
 
   String? _requiredValidator(String? v) {
     if (!widget.field.required) return null;
-    if ((v ?? "").trim().isEmpty) return S.current.fieldRequired;
+    if ((v ?? "").trim().isEmpty) return U.s.thisFieldIsRequired;
     return null;
   }
 
@@ -71,8 +68,8 @@ class _UProcessTextFieldState extends State<UProcessTextField> {
           final String? requiredError = _requiredValidator(v);
           if (requiredError != null) return requiredError;
           final String value = (v ?? "").trim();
-          if (minLen != null && value.isNotEmpty && value.length < minLen) return "${S.current.atLeast} $minLen ${S.current.characters}";
-          if (maxLen != null && value.isNotEmpty && value.length > maxLen) return "${S.current.atMost} $maxLen ${S.current.characters}";
+          if (minLen != null && value.isNotEmpty && value.length < minLen) return "${U.s.atLeast} $minLen ${U.s.characters}";
+          if (maxLen != null && value.isNotEmpty && value.length > maxLen) return "${U.s.atMost} $maxLen ${U.s.characters}";
           return null;
         },
         onChanged: _setValue,

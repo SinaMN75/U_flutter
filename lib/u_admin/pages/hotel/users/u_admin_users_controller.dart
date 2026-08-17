@@ -92,7 +92,7 @@ class UAdminUsersController extends UBaseController {
   }
 
   void delete(UUserResponse user) => UNavigator.confirm(
-    title: U.s.deleteUser,
+    title: U.s.deleteItem(U.s.user),
     message: U.s.areYouSureToDeleteThisUser,
     onConfirm: () {
       ULoading.show();

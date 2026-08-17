@@ -32,7 +32,7 @@ class _HotelPageState extends State<UAdminHotelPage> {
       items: () => c.list,
       totalCount: () => c.totalCount,
       onRetry: c.read,
-      emptyText: U.s.noHotelsFound,
+      emptyText: U.s.noItemsFound(U.s.hotels),
       desktopHeader: () => UAdminTable.header(<String>[U.s.title, U.s.city, U.s.rooms, U.s.created, U.s.operations]),
       desktopRow: _itemDesktop,
       mobileRow: _itemResponsive,
@@ -86,7 +86,7 @@ class _HotelPageState extends State<UAdminHotelPage> {
 
   void _showFilterDialog() => UNavigator.dialog(
     AlertDialog(
-      title: Text(U.s.filterHotels),
+      title: Text(U.s.filterItem(U.s.hotels)),
       content: Form(
         key: c.filterFormKey,
         child: SingleChildScrollView(
@@ -140,7 +140,7 @@ class _HotelPageState extends State<UAdminHotelPage> {
     await UNavigator.dialog(
       StatefulBuilder(
         builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
-          title: Text(p == null ? U.s.createHotel : U.s.editHotel),
+          title: Text(p == null ? U.s.createItem(U.s.hotel) : U.s.createItem(U.s.hotel)),
           content: SingleChildScrollView(
             child: Form(
               key: formKey,

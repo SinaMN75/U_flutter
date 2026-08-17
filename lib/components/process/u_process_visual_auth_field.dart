@@ -1,8 +1,5 @@
 part of "u_process.dart";
 
-/// Selfie video-capture field used for visual (liveness) authentication.
-/// Records a short front-camera clip, stores it as base64 on the matching
-/// [processStepSend] field, and previews an existing/recorded video.
 class UProcessVisualAuthField extends StatefulWidget {
   const UProcessVisualAuthField({
     required this.field,
@@ -136,7 +133,7 @@ class _UProcessVisualAuthFieldState extends State<UProcessVisualAuthField> with 
       final Duration duration = DateTime.now().difference(_recordingStartTime ?? DateTime.now());
 
       if (duration.inMilliseconds < 4000) {
-        UToast.error(message: S.current.videoMinDurationError);
+        UToast.error(message: U.s.theVideoMustBeAtLeast4Seconds);
         return;
       }
 
@@ -221,7 +218,7 @@ class _UProcessVisualAuthFieldState extends State<UProcessVisualAuthField> with 
         if (widget.field.rejectionReason != null)
           UIconTextHorizontal(
             leading: Icon(Icons.error_outline, color: scheme.error),
-            trailing: UTextBodyMedium("${S.current.adminMessage}: ${widget.field.rejectionReason}", color: scheme.error),
+            trailing: UTextBodyMedium("${U.s.adminMessage}: ${widget.field.rejectionReason}", color: scheme.error),
           ).pOnly(bottom: 16),
         _buildControls(),
       ],
@@ -270,7 +267,7 @@ class _UProcessVisualAuthFieldState extends State<UProcessVisualAuthField> with 
       return ElevatedButton.icon(
         onPressed: _reRecord,
         icon: const Icon(Icons.refresh),
-        label: Text(S.current.recordAgain),
+        label: Text(U.s.recordAgain),
         style: ElevatedButton.styleFrom(
           backgroundColor: scheme.primary,
           foregroundColor: onAccent,

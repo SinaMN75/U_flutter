@@ -1,10 +1,5 @@
 import "package:u/utilities.dart";
 
-/// Full-featured video player supporting network URLs, base64 strings, raw
-/// bytes, local files and bundled assets. Handles source resolution, buffering,
-/// scrubbing, volume, playback-speed, looping, replay and fullscreen out of the
-/// box. `video_player` cannot decode in-memory data directly, so base64/bytes
-/// sources are written to a temporary file first.
 class UVideoPlayer extends StatefulWidget {
   const UVideoPlayer({
     super.key,
@@ -322,9 +317,7 @@ class _UVideoPlayerState extends State<UVideoPlayer> {
                   tooltip: U.s.playbackSpeed,
                   initialValue: _speed,
                   onSelected: _setSpeed,
-                  itemBuilder: (BuildContext context) => _speeds
-                      .map((double s) => PopupMenuItem<double>(value: s, child: Text("${s}x")))
-                      .toList(),
+                  itemBuilder: (BuildContext context) => _speeds.map((double s) => PopupMenuItem<double>(value: s, child: Text("${s}x"))).toList(),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     child: UTextBodySmall("${_speed}x", color: Colors.white, fontWeight: FontWeight.bold),
@@ -332,7 +325,7 @@ class _UVideoPlayerState extends State<UVideoPlayer> {
                 ),
               if (widget.allowFullScreen)
                 IconButton(
-                  tooltip: U.s.enterFullscreen,
+                  tooltip: U.s.fullscreen,
                   onPressed: _openFullScreen,
                   icon: const Icon(Icons.fullscreen, color: Colors.white, size: 22),
                 ),
@@ -437,7 +430,10 @@ abstract class UVideo {
     bool autoPlay = true,
   }) => UNavigator.bottomSheet(
     UScaffold(
-      appBar: AppBar(backgroundColor: Colors.black, iconTheme: const IconThemeData(color: Colors.white)),
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
       color: Colors.black,
       body: Center(
         child: UVideoPlayer(

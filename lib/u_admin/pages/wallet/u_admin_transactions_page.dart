@@ -35,7 +35,7 @@ class _TransactionsPageState extends State<UAdminTransactionsPage> {
     items: () => c.list,
     totalCount: () => c.totalCount,
     onRetry: c.read,
-    emptyText: U.s.noTransactionsFound,
+    emptyText: U.s.noItemsFound(U.s.transactions),
     desktopHeader: () => UAdminTable.header(<String>[U.s.amount, U.s.trackingNumber, U.s.status, U.s.user, U.s.created, U.s.operations]),
     desktopRow: _itemDesktop,
     mobileRow: _itemResponsive,
@@ -78,7 +78,7 @@ class _TransactionsPageState extends State<UAdminTransactionsPage> {
 
   void _showFilterDialog() => UNavigator.dialog(
     AlertDialog(
-      title: Text(U.s.filterTransactions),
+      title: Text(U.s.filterItem(U.s.transactions)),
       content: SizedBox(
         width: context.dialogWidth(),
         child: SingleChildScrollView(
@@ -139,7 +139,7 @@ class _TransactionsPageState extends State<UAdminTransactionsPage> {
     final Rx<TagTxn> tag = TagTxn.pending.obs;
     UNavigator.dialog(
       AlertDialog(
-        title: Text(U.s.createTransaction),
+        title: Text(U.s.createItem(U.s.transactions)),
         content: SizedBox(
           width: context.dialogWidth(),
           child: SingleChildScrollView(
@@ -191,7 +191,7 @@ class _TransactionsPageState extends State<UAdminTransactionsPage> {
     final Rx<TagTxn> tag = (TagTxn.values.fromNumber(i.tags.isEmpty ? TagTxn.pending.number : i.tags.first) ?? TagTxn.pending).obs;
     UNavigator.dialog(
       AlertDialog(
-        title: Text(U.s.editTransaction),
+        title: Text(U.s.editItem(U.s.transactions)),
         content: SizedBox(
           width: context.dialogWidth(),
           child: SingleChildScrollView(

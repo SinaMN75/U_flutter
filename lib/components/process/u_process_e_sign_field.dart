@@ -1,7 +1,5 @@
 part of "u_process.dart";
 
-/// E-signature field for a process step. Wraps [USignaturePad] and forwards the
-/// captured signature (base64 PNG) to [onSubmit].
 class UProcessESignField extends StatelessWidget {
   const UProcessESignField({
     required this.onSubmit,
@@ -33,9 +31,9 @@ class UProcessESignField extends StatelessWidget {
     children: <Widget>[
       USignaturePad(
         onSave: _handleSubmit,
-        saveButtonText: saveButtonText ?? S.current.saveSignature,
-        clearButtonText: clearButtonText ?? S.current.clear,
-        emptyMessage: emptyMessage ?? S.current.signFirst,
+        saveButtonText: saveButtonText ?? U.s.saveSignature,
+        clearButtonText: clearButtonText ?? U.s.clear,
+        emptyMessage: emptyMessage ?? U.s.pleaseAddYourSignatureFirst,
       ),
     ],
   );

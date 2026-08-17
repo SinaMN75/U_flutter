@@ -31,7 +31,7 @@ class _DormPageState extends State<UAdminDormPage> {
       items: () => c.list,
       totalCount: () => c.totalCount,
       onRetry: c.read,
-      emptyText: U.s.noDormsFound,
+      emptyText: U.s.noItemsFound(U.s.dorms),
       desktopHeader: () => UAdminTable.header(<String>[U.s.title, U.s.city, U.s.room, U.s.created, U.s.operations]),
       desktopRow: _itemDesktop,
       mobileRow: _itemResponsive,
@@ -99,7 +99,7 @@ class _DormPageState extends State<UAdminDormPage> {
     await UNavigator.dialog(
       StatefulBuilder(
         builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
-          title: Text(p == null ? U.s.createDorm : U.s.editDorm),
+          title: Text(p == null ? U.s.createItem(U.s.dorm) : U.s.editItem(U.s.dorm)),
           content: SingleChildScrollView(
             child: Form(
               key: formKey,

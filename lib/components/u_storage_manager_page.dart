@@ -60,26 +60,26 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
   }
 
   Future<void> _deleteLocal(_LocalEntry entry) async {
-    if (!await UNavigator.confirmAsync(title: U.s.delete, message: U.s.deleteEntryConfirm, destructive: true)) return;
+    if (!await UNavigator.confirmAsync(title: U.s.delete, message: U.s.areYouSureYouWantToDeleteThisEntryThisActionCannotBeUndone, destructive: true)) return;
     await ULocalStorage.remove(entry.key);
     if (entry.expiry != null) await ULocalStorage.remove("_expiry_${entry.key}");
     await _loadAll();
   }
 
   Future<void> _deleteFile(String key) async {
-    if (!await UNavigator.confirmAsync(title: U.s.delete, message: U.s.deleteEntryConfirm, destructive: true)) return;
+    if (!await UNavigator.confirmAsync(title: U.s.delete, message: U.s.areYouSureYouWantToDeleteThisEntryThisActionCannotBeUndone, destructive: true)) return;
     await UFileStorage.remove(key);
     await _loadAll();
   }
 
   Future<void> _clearLocal() async {
-    if (!await UNavigator.confirmAsync(title: U.s.clearAll, message: U.s.clearAllConfirm, destructive: true)) return;
+    if (!await UNavigator.confirmAsync(title: U.s.clearAll, message: U.s.areYouSureYouWantToDeleteAllStoredDataThisActionCannotBeUndone, destructive: true)) return;
     await ULocalStorage.clear();
     await _loadAll();
   }
 
   Future<void> _clearFiles() async {
-    if (!await UNavigator.confirmAsync(title: U.s.clearAll, message: U.s.clearAllConfirm, destructive: true)) return;
+    if (!await UNavigator.confirmAsync(title: U.s.clearAll, message: U.s.areYouSureYouWantToDeleteAllStoredDataThisActionCannotBeUndone, destructive: true)) return;
     await UFileStorage.clear();
     await _loadAll();
   }
@@ -103,8 +103,8 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
           ],
           bottom: TabBar(
             tabs: <Widget>[
-              Tab(text: U.s.keyValueStorage),
-              Tab(text: U.s.fileStorage),
+              Tab(text: U.s.keyValue),
+              Tab(text: U.s.files),
             ],
           ),
         ),
@@ -216,7 +216,7 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
             spacing: 6,
             children: <Widget>[
               Icon(Icons.schedule_rounded, size: 14, color: cs.onSurfaceVariant),
-              UTextBodySmall("${U.s.expiresAt}: ${entry.expiry!.formatDate("yyyy/MM/dd HH:mm")}", color: cs.onSurfaceVariant),
+              UTextBodySmall("${U.s.expires}: ${entry.expiry!.formatDate("yyyy/MM/dd HH:mm")}", color: cs.onSurfaceVariant),
             ],
           ),
       ],
@@ -268,7 +268,7 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             UTextTitleSmall("$key.dat", fontWeight: FontWeight.w700, maxLines: 1, overflow: TextOverflow.ellipsis),
-            UTextBodySmall("${U.s.fileSizeLabel}: ${_formatBytes(size)}", color: cs.onSurfaceVariant),
+            UTextBodySmall("${U.s.size}: ${_formatBytes(size)}", color: cs.onSurfaceVariant),
           ],
         ).expanded(),
         IconButton(

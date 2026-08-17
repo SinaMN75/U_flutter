@@ -185,8 +185,8 @@ class UAdminTransactionsController extends UBaseController {
   }
 
   void delete(UTxnResponse i) => UNavigator.confirm(
-    title: U.s.deleteTransaction,
-    message: U.s.areYouSureToDeleteThisTransaction,
+    title: U.s.deleteItem(U.s.transactions),
+    message: U.s.areYouSureYouWantToDeleteItem(U.s.transactions),
     onConfirm: () => UServices.txn.delete(
       p: UIdParams(id: i.id),
       onOk: (UEmptyResponse r) {

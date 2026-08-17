@@ -176,7 +176,7 @@ class _UAdminAppSettingsPageState extends State<UAdminAppSettingsPage> {
     spacing: 10,
     children: <Widget>[
       Icon(Icons.info_outline_rounded, size: 18, color: cs.primary),
-      UTextBodySmall(U.s.settingsInMemoryNote, color: cs.onSurface.withValues(alpha: 0.75)).expanded(),
+      UTextBodySmall(U.s.changesApplyLiveAndResetToDefaultsOnServerRestart, color: cs.onSurface.withValues(alpha: 0.75)).expanded(),
     ],
   ).pAll(14).container(backgroundColor: cs.primary.withValues(alpha: 0.08), radius: 12);
 
@@ -201,7 +201,7 @@ class _UAdminAppSettingsPageState extends State<UAdminAppSettingsPage> {
   Widget _text(String label, String initial, ValueChanged<String> onChanged, {bool secret = false, TextInputType? kt, int lines = 1}) => UTextField(
     labelText: label,
     initialValue: initial,
-    hintText: secret ? U.s.secretHint : null,
+    hintText: secret ? U.s.leaveMaskedToKeepTheCurrentValue : null,
     keyboardType: kt ?? TextInputType.text,
     lines: lines,
     onChanged: onChanged,
@@ -243,7 +243,7 @@ class _UAdminAppSettingsPageState extends State<UAdminAppSettingsPage> {
             Icon(Icons.sim_card_rounded, size: 20, color: cs.primary),
             const UTextTitleMedium("Charge Internet", fontWeight: FontWeight.bold).expanded(),
             UButton(
-              title: U.s.addItem,
+              title: U.s.addItem(""),
               icon: const Icon(Icons.add_rounded, size: 18),
               backgroundColor: cs.primary,
               foregroundColor: cs.onPrimary,
@@ -284,7 +284,7 @@ class _UAdminAppSettingsPageState extends State<UAdminAppSettingsPage> {
             UTextLabelLarge("Amounts", color: cs.onSurface.withValues(alpha: 0.7), fontWeight: FontWeight.bold).expanded(),
             TextButton.icon(
               icon: const Icon(Icons.add_rounded, size: 16),
-              label: Text(U.s.addItem),
+              label: Text(U.s.addItem("")),
               onPressed: () => setState(() => c.preDefinedAmountsList.add(USettingsChargeAmount(title: "", amount: 0))),
             ),
           ],

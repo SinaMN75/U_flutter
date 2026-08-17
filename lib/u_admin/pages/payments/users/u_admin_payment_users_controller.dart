@@ -92,7 +92,7 @@ class UAdminPaymentUsersController extends UBaseController {
   }
 
   void delete(UUserResponse i) => UNavigator.confirm(
-    title: U.s.deleteUser,
+    title: U.s.deleteItem(U.s.user),
     message: U.s.areYouSureToDeleteThisUser,
     onConfirm: () => UServices.user.delete(
       p: UIdParams(id: i.id),

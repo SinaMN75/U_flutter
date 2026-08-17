@@ -3,10 +3,7 @@ import "package:u/utilities.dart";
 class UAdminMoadisPage extends StatefulWidget {
   const UAdminMoadisPage({super.key, this.user, this.actions});
 
-  // When set, the list is scoped to this owner's taxpayer requests.
   final UUserResponse? user;
-
-  // Optional per-row operations override; defaults to the page's built-in set.
   final UAdminActionBuilder<UMoadiResponse>? actions;
 
   @override
@@ -24,7 +21,7 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
-    title: U.s.moadiRequests,
+    title: U.s.taxpayerRequests,
     onFilter: _showFilterDialog,
     pageNumber: c.pageNumber,
     totalPages: c.totalPages,
@@ -40,8 +37,17 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
     items: () => c.list,
     totalCount: () => c.totalCount,
     onRetry: c.read,
-    emptyText: U.s.moadiNoRequests,
-    desktopHeader: () => UAdminTable.header(<String>[U.s.moadiName, U.s.moadiEconomicCode, U.s.moadiLegalEntity, U.s.moadiStatusPending, U.s.createdAt, U.s.operations]),
+    emptyText: U.s.youHaveNotSubmittedAnyTaxpayerRequestYet,
+    desktopHeader: () => UAdminTable.header(
+      <String>[
+        U.s.taxpayerName,
+        U.s.economicCode,
+        U.s.legalEntityType,
+        U.s.pendingApproval,
+        U.s.createdAt,
+        U.s.operations,
+      ],
+    ),
     desktopRow: _itemDesktop,
     mobileRow: _itemResponsive,
   );
@@ -66,22 +72,22 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
     badge: UAdminTable.statusChip(context, label: _statusLabel(i.tags), color: Theme.of(context).colorScheme.primary),
     trailing: _menu(i),
     fields: <UAdminField>[
-      UAdminField(U.s.moadiEconomicCode, i.economicCode),
-      UAdminField(U.s.moadiLegalEntity, i.legalEntity),
+      UAdminField(U.s.economicCode, i.economicCode),
+      UAdminField(U.s.legalEntityType, i.legalEntity),
       UAdminField(U.s.createdAt, i.createdAt.toJalaliDate()),
     ],
   );
 
   String _statusLabel(List<int> tags) {
-    if (tags.contains(TagMoadi.approved.number)) return U.s.moadiStatusApproved;
-    if (tags.contains(TagMoadi.rejected.number)) return U.s.moadiStatusRejected;
-    return U.s.moadiStatusPending;
+    if (tags.contains(TagMoadi.approved.number)) return U.s.approved;
+    if (tags.contains(TagMoadi.rejected.number)) return U.s.rejected;
+    return U.s.pendingApproval;
   }
 
   String _tagLabel(TagMoadi t) => switch (t) {
-    TagMoadi.approved => U.s.moadiStatusApproved,
-    TagMoadi.rejected => U.s.moadiStatusRejected,
-    TagMoadi.pending => U.s.moadiStatusPending,
+    TagMoadi.approved => U.s.approved,
+    TagMoadi.rejected => U.s.rejected,
+    TagMoadi.pending => U.s.pendingApproval,
   };
 
   Widget _menu(UMoadiResponse i) {
@@ -99,8 +105,8 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
         },
       ),
       fallback: (UAdminActionContext<UMoadiResponse> ctx) => <UAdminAction>[
-        ctx.extra("approve", label: U.s.moadiApprove, icon: Icons.check_circle_outline, visible: isPending, color: UAdminTheme.green),
-        ctx.extra("reject", label: U.s.moadiReject, icon: Icons.cancel_outlined, visible: isPending, destructive: true),
+        ctx.extra("approve", label: U.s.approve, icon: Icons.check_circle_outline, visible: isPending, color: UAdminTheme.green),
+        ctx.extra("reject", label: U.s.reject, icon: Icons.cancel_outlined, visible: isPending, destructive: true),
         ctx.detail(),
         ctx.delete(),
       ],
@@ -111,10 +117,10 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
     final TextEditingController reason = TextEditingController();
     UNavigator.dialog(
       AlertDialog(
-        title: Text(U.s.moadiReject),
+        title: Text(U.s.reject),
         content: SizedBox(
           width: context.dialogWidth(),
-          child: UTextField(controller: reason, labelText: U.s.moadiRejectReason, lines: 3),
+          child: UTextField(controller: reason, labelText: U.s.rejectionReason, lines: 3),
         ),
         actions: <Widget>[
           UButtonSubmitCancel(
@@ -140,21 +146,21 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              _kv(U.s.moadiStatusPending, _statusLabel(i.tags)),
-              _kv(U.s.moadiEconomicCode, i.economicCode),
-              _kv(U.s.moadiLegalEntity, i.legalEntity),
-              _kv(U.s.moadiUniqueTaxCode, i.uniqueTaxCode),
-              _kv(U.s.moadiNationalCode, i.nationalCode ?? "-"),
-              _kv(U.s.moadiPostalCode, i.postalCode ?? "-"),
-              _kv(U.s.moadiRegistrationDate, i.registrationDate ?? "-"),
-              _kv(U.s.moadiRegistrationNumber, i.registrationNumber ?? "-"),
-              _kv(U.s.moadiAddress, i.address ?? "-"),
-              _kv(U.s.moadiIntroductionCode, i.introductionCode ?? "-"),
-              _kv(U.s.moadiOwnerName, i.ownerName),
-              _kv(U.s.moadiOwnerMobile, i.ownerMobile),
-              _kv(U.s.moadiOwnerNationalCode, i.ownerNationalCode),
+              _kv(U.s.pendingApproval, _statusLabel(i.tags)),
+              _kv(U.s.economicCode, i.economicCode),
+              _kv(U.s.legalEntityType, i.legalEntity),
+              _kv(U.s.uniqueTaxCode, i.uniqueTaxCode),
+              _kv(U.s.nationalCode, i.nationalCode ?? "-"),
+              _kv(U.s.postalCode, i.postalCode ?? "-"),
+              _kv(U.s.registrationDate, i.registrationDate ?? "-"),
+              _kv(U.s.registrationNumber, i.registrationNumber ?? "-"),
+              _kv(U.s.address, i.address ?? "-"),
+              _kv(U.s.introductionCode, i.introductionCode ?? "-"),
+              _kv(U.s.ownerName, i.ownerName),
+              _kv(U.s.ownerMobile, i.ownerMobile),
+              _kv(U.s.ownerNationalCode, i.ownerNationalCode),
               _kv("UUID", i.jsonData.uuid ?? "-"),
-              _kv(U.s.moadiRejectReason, i.jsonData.rejectReason ?? "-"),
+              _kv(U.s.rejectionReason, i.jsonData.rejectReason ?? "-"),
               UButton(type: UButtonType.text, title: U.s.ok, onTap: UNavigator.back),
             ],
           ),
@@ -174,7 +180,7 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
 
   void _showFilterDialog() => UNavigator.dialog(
     AlertDialog(
-      title: Text(U.s.moadiRequests),
+      title: Text(U.s.taxpayerRequests),
       content: SizedBox(
         width: context.dialogWidth(),
         child: SingleChildScrollView(
@@ -191,17 +197,17 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
               ).pSymmetric(vertical: 6),
               Obx(
                 () => UTextFieldAutoComplete<TagMoadi?>(
-                  title: U.s.moadiStatusPending,
+                  title: U.s.pendingApproval,
                   items: TagMoadi.values,
                   labelBuilder: (TagMoadi? i) => i == null ? "" : _tagLabel(i),
                   selectedItem: c.status.value,
                   onChanged: c.status.call,
                 ),
               ).pSymmetric(vertical: 6),
-              UTextField(controller: c.nameFilter, labelText: U.s.moadiName).pSymmetric(vertical: 6),
-              UTextField(controller: c.economicCodeFilter, labelText: U.s.moadiEconomicCode).pSymmetric(vertical: 6),
-              UTextField(controller: c.nationalCodeFilter, labelText: U.s.moadiNationalCode).pSymmetric(vertical: 6),
-              UTextField(controller: c.uniqueTaxCodeFilter, labelText: U.s.moadiUniqueTaxCode).pSymmetric(vertical: 6),
+              UTextField(controller: c.nameFilter, labelText: U.s.taxpayerName).pSymmetric(vertical: 6),
+              UTextField(controller: c.economicCodeFilter, labelText: U.s.economicCode).pSymmetric(vertical: 6),
+              UTextField(controller: c.nationalCodeFilter, labelText: U.s.nationalCode).pSymmetric(vertical: 6),
+              UTextField(controller: c.uniqueTaxCodeFilter, labelText: U.s.uniqueTaxCode).pSymmetric(vertical: 6),
               UTextFieldDatePicker(
                 jalali: true,
                 controller: c.fromCreatedController,

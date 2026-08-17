@@ -39,7 +39,7 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
       items: () => c.list,
       totalCount: () => c.totalCount,
       onRetry: c.read,
-      emptyText: U.s.noBedsFound,
+      emptyText: U.s.noItemsFound(U.s.beds),
       desktopHeader: () => UAdminTable.header(<String>[U.s.title, U.s.deposit, U.s.rent, U.s.occupancy, U.s.operations]),
       desktopRow: _itemDesktop,
       mobileRow: _itemResponsive,
@@ -88,7 +88,7 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
 
   void _showFilterDialog() => UNavigator.dialog(
     AlertDialog(
-      title: Text(U.s.filterBeds),
+      title: Text(U.s.filterItem(U.s.beds)),
       content: SingleChildScrollView(
         child: UColumn(
           spacing: 0,
@@ -124,7 +124,7 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
 
     UNavigator.dialog(
       AlertDialog(
-        title: Text(p == null ? U.s.createBed : U.s.editBed),
+        title: Text(p == null ? U.s.createItem(U.s.bed) : U.s.editItem(U.s.bed)),
         content: SingleChildScrollView(
           child: StatefulBuilder(
             builder: (BuildContext context, void Function(void Function()) setLocal) => Form(
@@ -168,7 +168,7 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
                       action: () {
                         final String? rid = room.value?.id ?? widget.room?.id;
                         if (rid == null) {
-                          UToast.error(message: U.s.pleaseSelectARoom);
+                          UToast.error(message: U.s.pleaseSelectA(U.s.room));
                           return;
                         }
                         if (p == null) {

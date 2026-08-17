@@ -1,43 +1,21 @@
 import "package:u/utilities.dart";
 import "package:u/utils/web/u_web_stub.dart" if (dart.library.html) "package:u/utils/web/u_web_impl.dart";
 
-/// Progressive-web-app helpers: detect the current browser environment and guide
-/// users on iOS through adding the site to their home screen (installing the PWA).
-///
-/// All getters return `false` on native builds, so calls are safe to make
-/// unconditionally.
 abstract class UPwa {
   static String get _ua => uPwaUserAgent().toLowerCase();
-
-  // Already added to the home screen and launched as a standalone PWA.
   static bool get isStandalone => UApp.isWeb && uPwaIsStandalone();
-
-  // Opened in a browser on an iPhone.
   static bool get isIphoneBrowser => UApp.isWeb && _ua.contains("iphone");
-
-  // Opened in a browser on any iOS device (iPhone/iPad/iPod).
   static bool get isIosBrowser => UApp.isWeb && (_ua.contains("iphone") || _ua.contains("ipad") || _ua.contains("ipod"));
-
-  // Opened in a browser on Android.
   static bool get isAndroidBrowser => UApp.isWeb && _ua.contains("android");
-
-  // True only for Safari on iOS — the sole iOS browser that can "Add to Home Screen".
   static bool get isIosSafari {
     if (!isIosBrowser) return false;
-    // iOS Chrome/Firefox/Edge/Opera/etc. embed their own tokens; exclude them.
     const List<String> nonSafari = <String>["crios", "fxios", "edgios", "opios", "mercury", "gsa"];
     if (nonSafari.any(_ua.contains)) return false;
     return _ua.contains("safari");
   }
 
-  // Whether it makes sense to prompt an iOS install (iOS browser, not already installed).
   static bool get canPromptIosInstall => isIosBrowser && !isStandalone;
 
-  // Show step-by-step "Add to Home Screen" guidance in a bottom sheet.
-  //
-  // Does nothing when not on an un-installed iOS browser, unless [force] is set.
-  // Every string is overridable so callers can pass their own localized copy;
-  // defaults come from the app's l10n.
   static Future<void> promptIosInstall({
     bool force = false,
     String? title,
@@ -49,17 +27,16 @@ abstract class UPwa {
   }) async {
     if (!force && !canPromptIosInstall) return;
 
-    // Add to Home Screen is only available in Safari; other iOS browsers get a hint.
     final bool safari = force || isIosSafari;
 
     await UNavigator.bottomSheet<void>(
       _IosInstallSheet(
-        title: title ?? U.s.addToHomeScreenTitle,
+        title: title ?? U.s.openThisPageInSafariThenAddItToYourHomeScreen,
         safari: safari,
-        step1: step1 ?? U.s.addToHomeScreenStep1,
-        step2: step2 ?? U.s.addToHomeScreenStep2,
-        step3: step3 ?? U.s.addToHomeScreenStep3,
-        safariHint: safariHint ?? U.s.openInSafariToInstall,
+        step1: step1 ?? U.s.tapTheShareButtonInSafarisToolbar,
+        step2: step2 ?? U.s.scrollDownAndTapAddToHomeScreen,
+        step3: step3 ?? U.s.tapAddInTheTopRightCorner,
+        safariHint: safariHint ?? U.s.openThisPageInSafariThenAddItToYourHomeScreen,
         doneLabel: doneLabel ?? U.s.gotIt,
       ),
       showDragHandle: true,

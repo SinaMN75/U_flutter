@@ -4,8 +4,6 @@ class UAdminTerminalsPage extends StatefulWidget {
   const UAdminTerminalsPage({super.key, this.merchant, this.actions});
 
   final UMerchantResponse? merchant;
-
-  // Optional per-row operations override; defaults to the page's built-in set.
   final UAdminActionBuilder<UTerminalResponse>? actions;
 
   @override
@@ -44,7 +42,7 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
     items: () => c.list,
     totalCount: () => c.totalCount,
     onRetry: c.read,
-    emptyText: U.s.noTerminalsFound,
+    emptyText: U.s.noItemsFound(U.s.terminals),
     desktopHeader: () => UAdminTable.header(<String>[U.s.serial, U.s.simCardSerial, U.s.merchant, U.s.terminalId, U.s.createdAt, U.s.operations]),
     desktopRow: _itemDesktop,
     mobileRow: _itemResponsive,
@@ -104,7 +102,7 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
 
   void _showFilterDialog() => UNavigator.dialog(
     AlertDialog(
-      title: Text(U.s.filterTerminals),
+      title: Text(U.s.filterItem(U.s.terminals)),
       content: SizedBox(
         width: context.dialogWidth(),
         child: SingleChildScrollView(
@@ -182,7 +180,7 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
 
     UNavigator.dialog(
       AlertDialog(
-        title: Text(U.s.createTerminal),
+        title: Text(U.s.createItem(U.s.terminals)),
         content: SizedBox(
           width: context.dialogWidth(),
           child: SingleChildScrollView(
@@ -247,7 +245,7 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
 
     UNavigator.dialog(
       AlertDialog(
-        title: Text(U.s.editTerminal),
+        title: Text(U.s.editItem(U.s.terminals)),
         content: SizedBox(
           width: context.dialogWidth(),
           child: SingleChildScrollView(
@@ -380,7 +378,7 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: UTextBodyLarge(
-                        valid.value! ? U.s.otpValid : U.s.otpInvalid,
+                        valid.value! ? U.s.otpIsValid : U.s.otpIsInvalid,
                         color: valid.value! ? UAdminTheme.green : UAdminTheme.red,
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.center,

@@ -1,12 +1,5 @@
 part of "u_admin.dart";
 
-// ---------------------------------------------------------------------------
-// Per-row operations. Each list page owns a sensible default set of operations
-// (cross-nav + edit/delete/...) and optionally accepts an `actions` override from
-// the app. There is no global registry: actions live with the page that shows them.
-// ---------------------------------------------------------------------------
-
-// One row operation: a navigation or CRUD action shown in the row's popup menu.
 class UAdminAction {
   UAdminAction({required this.label, required this.icon, required this.onTap, this.roles, this.visible = true, this.destructive = false, this.color});
 
@@ -14,32 +7,22 @@ class UAdminAction {
   final IconData icon;
   final VoidCallback onTap;
   final List<TagUser>? roles;
-
-  // Data-driven visibility (e.g. only show "pay" on unpaid invoices).
   final bool visible;
-
-  // Red styling for destructive actions like delete.
   final bool destructive;
   final Color? color;
 
   bool get allowed => visible && UAdmin.canAccess(roles);
 }
 
-// Callbacks a page exposes so both its default actions and an app override can
-// trigger the page's dialogs / controller.
 class UAdminActionHandlers<T> {
   UAdminActionHandlers({this.onEdit, this.onDelete, this.onDetail, this.extras});
 
   final void Function(T item)? onEdit;
   final void Function(T item)? onDelete;
   final void Function(T item)? onDetail;
-
-  // Entity-specific handlers keyed by name (e.g. "publish", "pay", "supportPassword").
   final Map<String, void Function(T item)>? extras;
 }
 
-// Given to an action builder: the row [item] plus factories that wire common CRUD
-// actions to the page's handlers, so builders never touch page internals directly.
 class UAdminActionContext<T> {
   UAdminActionContext(this.item, this._handlers);
 
@@ -51,9 +34,8 @@ class UAdminActionContext<T> {
   UAdminAction delete({List<TagUser>? roles}) => UAdminAction(label: U.s.delete, icon: Icons.delete, destructive: true, roles: roles, onTap: () => _handlers.onDelete?.call(item));
 
   UAdminAction detail({String? label, IconData icon = Icons.info_outline, List<TagUser>? roles}) =>
-      UAdminAction(label: label ?? U.s.viewDetails, icon: icon, roles: roles, onTap: () => _handlers.onDetail?.call(item));
+      UAdminAction(label: label ?? U.s.viewItem(U.s.details), icon: icon, roles: roles, onTap: () => _handlers.onDetail?.call(item));
 
-  // A page-specific handler (publish, pay, ...); [key] must exist in [UAdminActionHandlers.extras].
   UAdminAction extra(String key, {required String label, required IconData icon, bool destructive = false, bool visible = true, Color? color, List<TagUser>? roles}) =>
       UAdminAction(label: label, icon: icon, destructive: destructive, visible: visible, color: color, roles: roles, onTap: () => _handlers.extras?[key]?.call(item));
 }
@@ -97,7 +79,7 @@ abstract class UAdminOps {
 abstract class UAdminLinks {
   // ---- from a user ----
   static UAdminAction adminUserDetail(UUserResponse u, {List<TagUser>? roles}) => UAdminAction(
-    label: U.s.viewDetails,
+    label: U.s.viewItem(U.s.details),
     icon: Icons.visibility_outlined,
     roles: roles,
     onTap: () => UAdminPageSwitcher.adminUserDetail(user: u),
@@ -126,7 +108,7 @@ abstract class UAdminLinks {
 
   // ---- from a merchant ----
   static UAdminAction merchantTerminals(UMerchantResponse m, {List<TagUser>? roles}) => UAdminAction(
-    label: U.s.viewTerminals,
+    label: U.s.viewItem(U.s.terminals),
     icon: Icons.point_of_sale_outlined,
     roles: roles,
     onTap: () => UAdminPageSwitcher.terminals(merchant: m),
@@ -134,7 +116,7 @@ abstract class UAdminLinks {
 
   // ---- from a parking ----
   static UAdminAction parkingReport(UParkingResponse p, {List<TagUser>? roles}) => UAdminAction(
-    label: U.s.viewReport,
+    label: U.s.viewItem(U.s.parkingReports),
     icon: Icons.assessment_outlined,
     roles: roles,
     onTap: () => UAdminPageSwitcher.parkingReport(parking: p),
@@ -193,7 +175,7 @@ abstract class UAdminLinks {
 
   // ---- from a contract ----
   static UAdminAction contractInvoices(UDormBedContractResponse c, {List<TagUser>? roles}) => UAdminAction(
-    label: U.s.viewInvoices,
+    label: U.s.viewItem(U.s.invoices),
     icon: Icons.receipt_long_outlined,
     roles: roles,
     onTap: () => UAdminPageSwitcher.invoices(contract: c),

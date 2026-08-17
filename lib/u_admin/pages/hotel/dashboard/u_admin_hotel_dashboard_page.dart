@@ -101,7 +101,7 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
       _statCard(U.s.contracts, r.contractsCount.separate3By3(), "${r.activeContractsCount} ${U.s.active}", Icons.description_rounded, UAdminTheme.blueGrey, UAdminPageSwitcher.contracts),
       _statCard(U.s.contractsExpiringSoon, r.expiringSoonContractsCount.separate3By3(), U.s.next30Days, Icons.event_busy_rounded, UAdminTheme.red, UAdminPageSwitcher.contracts),
       _statCard(U.s.invoices, r.invoicesCount.separate3By3(), "${r.unpaidInvoicesCount} ${U.s.unpaid}", Icons.receipt_long_rounded, UAdminTheme.yellow.shade900, UAdminPageSwitcher.invoices),
-      _statCard(U.s.overdueInvoicesTitle, r.overdueInvoicesCount.separate3By3(), r.totalOutstanding.rial(), Icons.warning_amber_rounded, UAdminTheme.red, UAdminPageSwitcher.invoices),
+      _statCard(U.s.overdueInvoices, r.overdueInvoicesCount.separate3By3(), r.totalOutstanding.rial(), Icons.warning_amber_rounded, UAdminTheme.red, UAdminPageSwitcher.invoices),
     ],
   );
 
@@ -138,7 +138,7 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
   Widget _monthlyRevenueChart(UPropertyDashboardResponse r) {
     if (r.monthlyRevenue.isEmpty) return _chartCard(title: U.s.monthlyRevenue, child: UTextBodySmall(U.s.noData).alignAtCenter());
     return _chartCard(
-      title: U.s.monthlyRevenueBreakdown,
+      title: U.s.monthlyRevenueDebtPaidPenalty,
       child: UBarChart(
         categories: r.monthlyRevenue.map((UDormBedInvoiceChartItem d) => d.month).toList(),
         series: <UChartSeries>[
@@ -239,7 +239,7 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
                 contentPadding: EdgeInsets.zero,
                 leading: const Icon(Icons.bed_rounded),
                 title: Text("${item.userName ?? "-"} · ${item.dormTitle} / ${item.bedTitle}"),
-                subtitle: Text("${U.s.endsOn} ${item.endDate.toJalaliDate()} · ${item.rent.rial()}"),
+                subtitle: Text("${U.s.ends} ${item.endDate.toJalaliDate()} · ${item.rent.rial()}"),
               );
             },
           ),
@@ -259,7 +259,7 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
           children: <Widget>[
             const Icon(Icons.warning_amber_rounded, size: 20),
             const SizedBox(width: 8),
-            UTextTitleSmall(U.s.overdueInvoicesTitle, fontWeight: FontWeight.w700).expanded(),
+            UTextTitleSmall(U.s.overdueInvoices, fontWeight: FontWeight.w700).expanded(),
             TextButton(onPressed: UAdminPageSwitcher.invoices, child: Text(U.s.invoices)),
           ],
         ),
@@ -278,7 +278,7 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
                 contentPadding: EdgeInsets.zero,
                 leading: const Icon(Icons.receipt_long_rounded, color: UAdminTheme.red),
                 title: Text(item.userName ?? "-"),
-                subtitle: Text("${U.s.dueOn} ${item.dueDate.toJalaliDate()} · ${item.daysOverdue} ${U.s.daysOverdue}"),
+                subtitle: Text("${U.s.due} ${item.dueDate.toJalaliDate()} · ${item.daysOverdue} ${U.s.daysOverdue}"),
                 trailing: UTextBodyMedium(item.debtAmount.rial(), fontWeight: FontWeight.w700),
               );
             },

@@ -1,14 +1,11 @@
 part of "../../u_admin.dart";
 
-// Pay a dorm invoice online via IPG. Opens the gateway; the backend charges the wallet then pays the invoice from it
-// (invoice id + tag ride in additionalData, no separate pay-link transaction). Refreshes on success.
 abstract class UAdminPayLink {
   static Future<void> dormBedInvoice(UDormBedInvoiceResponse i, {Future<void> Function()? onClosed}) async {
     final bool paid = await UIpgFlow.pay(amount: i.netDue, tag: TagTxn.dormInvoice, invoiceId: i.id);
     if (paid) await onClosed?.call();
   }
 
-  // Generates the invoice's payment link and copies it to the clipboard to share.
   static Future<void> copyDormBedInvoiceLink(UDormBedInvoiceResponse i) async {
     final String? url = await UIpgFlow.link(amount: i.netDue, tag: TagTxn.dormInvoice, invoiceId: i.id);
     if (url == null || url.isEmpty) return;
@@ -16,11 +13,10 @@ abstract class UAdminPayLink {
     UToast.snackBar(message: U.s.copiedToClipboard);
   }
 
-  // Lists a contract's invoices with a one-tap online-pay for the unpaid ones.
   static void dormBedInvoiceList(UDormBedContractResponse contract, {Future<void> Function()? onClosed}) {
     final List<UDormBedInvoiceResponse> invoices = contract.invoices ?? <UDormBedInvoiceResponse>[];
     if (invoices.isEmpty) {
-      UToast.error(message: U.s.noInvoiceFound);
+      UToast.error(message: U.s.noItemsFound(U.s.invoice));
       return;
     }
     UNavigator.dialog(

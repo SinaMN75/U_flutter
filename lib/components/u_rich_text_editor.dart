@@ -1475,7 +1475,7 @@ abstract class UEditorDialogs {
     final ColorScheme cs = Theme.of(context).colorScheme;
     return UNavigator.dialog<int>(
       AlertDialog(
-        title: Text(title ?? U.s.selectAColor),
+        title: Text(title ?? U.s.selectA(U.s.color)),
         content: SizedBox(
           width: 320,
           child: Column(
@@ -1651,7 +1651,7 @@ abstract class UEditorDialogs {
         children: <Widget>[
           _infoRow(U.s.words, "${UHtmlDocument.wordCount(html)}"),
           _infoRow(U.s.characters, "${UHtmlDocument.characterCount(html)}"),
-          _infoRow(U.s.readingTime, "${UHtmlDocument.readingMinutes(html)} ${U.s.minutes}"),
+          _infoRow(U.s.readingTime, "${UHtmlDocument.readingMinutes(html)} ${U.s.min}"),
         ],
       ),
       actions: <Widget>[TextButton(onPressed: UNavigator.back, child: Text(U.s.ok))],
@@ -2178,7 +2178,7 @@ class _URichTextEditorState extends State<URichTextEditor> {
     }
     setState(() {});
     _notifyChanged();
-    UToast.snackBar(message: count == 0 ? U.s.noMatchesFound : "${U.s.replacedCount}: $count");
+    UToast.snackBar(message: count == 0 ? U.s.noItemsFound(U.s.matchCase) : "${U.s.replaced}: $count");
   }
 
   Future<void> _insertImage() async {
@@ -2251,7 +2251,7 @@ class _URichTextEditorState extends State<URichTextEditor> {
       child: Row(
         children: <Widget>[
           UTextBodySmall("${U.s.words}: ${UHtmlDocument.wordCount(html)}   ${U.s.characters}: ${UHtmlDocument.characterCount(html)}").expanded(),
-          UTextBodySmall("${UHtmlDocument.readingMinutes(html)} ${U.s.minutes}"),
+          UTextBodySmall("${UHtmlDocument.readingMinutes(html)} ${U.s.min}"),
         ],
       ),
     );
@@ -2347,7 +2347,7 @@ class _URichTextEditorState extends State<URichTextEditor> {
           UEditorToolButton(icon: Icons.format_align_left, tooltip: U.s.alignLeft, active: _active?.align == TextAlign.left, onTap: () => _setAlign(TextAlign.left)),
           UEditorToolButton(icon: Icons.format_align_center, tooltip: U.s.alignCenter, active: _active?.align == TextAlign.center, onTap: () => _setAlign(TextAlign.center)),
           UEditorToolButton(icon: Icons.format_align_right, tooltip: U.s.alignRight, active: _active?.align == TextAlign.right, onTap: () => _setAlign(TextAlign.right)),
-          UEditorToolButton(icon: Icons.format_align_justify, tooltip: U.s.alignJustify, active: _active?.align == TextAlign.justify, onTap: () => _setAlign(TextAlign.justify)),
+          UEditorToolButton(icon: Icons.format_align_justify, tooltip: U.s.justify, active: _active?.align == TextAlign.justify, onTap: () => _setAlign(TextAlign.justify)),
           const UEditorToolSeparator(),
           UEditorToolButton(icon: Icons.image_outlined, tooltip: U.s.insertImage, onTap: _insertImage),
           UEditorToolButton(icon: Icons.table_chart_outlined, tooltip: U.s.insertTable, onTap: _insertTable),
@@ -2396,8 +2396,8 @@ class _URichTextEditorState extends State<URichTextEditor> {
   );
 
   Widget _fontFamilyMenu(String? current) => UEditorDropdown<String>(
-    label: current ?? U.s.fontFamily,
-    tooltip: U.s.fontFamily,
+    label: current ?? U.s.font,
+    tooltip: U.s.font,
     width: 120,
     onSelected: (String f) => _onSelection((URichTextController c) => c.applyValue(UInlineAttr.fontFamily, f == UEditorStyles.fontFamilies.first ? null : f)),
     items: <UEditorMenuEntry<String>>[
@@ -2598,8 +2598,8 @@ class _URichTextEditorState extends State<URichTextEditor> {
         if (!widget.readOnly)
           Row(
             children: <Widget>[
-              UEditorToolButton(icon: Icons.add, tooltip: U.s.addRow, size: 16, onTap: () => setState(table.addRow)),
-              UEditorToolButton(icon: Icons.add_box_outlined, tooltip: U.s.addColumn, size: 16, onTap: () => setState(table.addColumn)),
+              UEditorToolButton(icon: Icons.add, tooltip: U.s.addItem(U.s.rows), size: 16, onTap: () => setState(table.addRow)),
+              UEditorToolButton(icon: Icons.add_box_outlined, tooltip: U.s.addItem(U.s.columns), size: 16, onTap: () => setState(table.addColumn)),
               UEditorToolButton(icon: Icons.remove, tooltip: U.s.removeRow, size: 16, onTap: () => setState(() => table.removeRow(table.rowCount - 1))),
               UEditorToolButton(icon: Icons.indeterminate_check_box_outlined, tooltip: U.s.removeColumn, size: 16, onTap: () => setState(() => table.removeColumn(table.columnCount - 1))),
               UEditorToolButton(
@@ -2650,7 +2650,7 @@ class _URichTextEditorState extends State<URichTextEditor> {
       TextFormField(
         initialValue: b.imageAlt,
         readOnly: widget.readOnly,
-        decoration: InputDecoration(isDense: true, hintText: U.s.imageAltText, border: InputBorder.none),
+        decoration: InputDecoration(isDense: true, hintText: U.s.imageDescription, border: InputBorder.none),
         style: Theme.of(context).textTheme.bodySmall,
         onChanged: (String v) {
           b.imageAlt = v;
@@ -2660,7 +2660,6 @@ class _URichTextEditorState extends State<URichTextEditor> {
     ],
   ).pSymmetric(vertical: 6);
 
-  // Maps a block alignment to a directional alignment so images honour RTL/LTR.
   AlignmentGeometry _imageAlignment(TextAlign align) {
     switch (align) {
       case TextAlign.center:

@@ -45,8 +45,8 @@ class _UProcessViewState extends State<UProcessView> {
       return UScaffold(
         appBar: AppBar(),
         body: UIconTextVertical(
-          leading: UTextBodyMedium(S.current.errorLoadingData),
-          trailing: UButton(title: S.current.tryAgain, onTap: c.read),
+          leading: UTextBodyMedium(U.s.errorLoadingData),
+          trailing: UButton(title: U.s.tryAgain, onTap: c.read),
         ),
       );
 
@@ -62,7 +62,7 @@ class _UProcessViewState extends State<UProcessView> {
         floatingActionButton: hasFields || hasMessageBox
             ? UButton(
                 width: MediaQuery.sizeOf(context).width,
-                title: hasFields ? S.current.submit : S.current.confirm,
+                title: hasFields ? U.s.submit : U.s.confirm,
                 onTap: hasFields ? c.send : c.dismiss,
               ).pSymmetric(horizontal: 20)
             : null,

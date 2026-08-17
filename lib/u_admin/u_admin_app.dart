@@ -5,7 +5,7 @@ Future<void> runUAdminApp(UAdminConfig config) async {
   await initU(baseUrl: config.baseUrl, apiKey: config.apiKey);
   UHttpClient.onAuthFailed = () async {
     await ULocalStorage.clear();
-    UToast.error(message: U.s.sessionExpired);
+    UToast.error(message: U.s.yourSessionHasExpiredPleaseSignInAgain);
     await UNavigator.offAll(const UAdminLoginPage());
   };
   runApp(

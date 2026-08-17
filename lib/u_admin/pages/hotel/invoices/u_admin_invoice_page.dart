@@ -106,7 +106,7 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
     items: () => c.list,
     totalCount: () => c.totalCount,
     onRetry: c.read,
-    emptyText: U.s.noInvoiceFound,
+    emptyText: U.s.noItemsFound(U.s.invoices),
     desktopBreakpoint: 900,
     desktopHeader: () => UAdminTable.header(<String>[U.s.tenant, U.s.invoiceType, U.s.dueDate, U.s.debtAmount, U.s.paidAmount, U.s.penalty, U.s.paymentStatus, U.s.operations]),
     desktopRow: _itemDesktop,
@@ -260,7 +260,7 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
 
     UNavigator.dialog(
       AlertDialog(
-        title: Text(isEdit ? U.s.editInvoice : U.s.createInvoice),
+        title: Text(p == null ? U.s.createItem(U.s.invoice) : U.s.createItem(U.s.invoice)),
         content: SingleChildScrollView(
           child: StatefulBuilder(
             builder: (BuildContext context, void Function(void Function()) setLocal) => Form(

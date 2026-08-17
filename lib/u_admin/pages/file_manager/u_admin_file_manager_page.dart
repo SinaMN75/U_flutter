@@ -110,7 +110,7 @@ class _UAdminFileManagerPageState extends State<UAdminFileManagerPage> {
 
   void _delete(UFileManagerEntryResponse entry) => UNavigator.confirm(
     title: U.s.delete,
-    message: U.s.deleteItemConfirm,
+    message: U.s.areYouSureYouWantToDelete,
     onConfirm: () {
       UNavigator.back();
       UServices.fileManager.delete(
@@ -227,7 +227,7 @@ class _UAdminFileManagerPageState extends State<UAdminFileManagerPage> {
   Widget _toolbar(ColorScheme cs) => URow(
     spacing: 10,
     children: <Widget>[
-      _toolButton(Icons.arrow_upward_rounded, U.s.parentDirectory, _path.isEmpty ? null : () => _load(_parentPath), cs),
+      _toolButton(Icons.arrow_upward_rounded, U.s.up, _path.isEmpty ? null : () => _load(_parentPath), cs),
       _toolButton(Icons.create_new_folder_rounded, U.s.newFolder, _createFolder, cs, primary: true),
       _toolButton(Icons.upload_file_rounded, U.s.upload, _upload, cs, primary: true),
       _toolButton(Icons.refresh_rounded, U.s.refresh, () => _load(_path), cs),
@@ -326,7 +326,7 @@ class _UAdminFileManagerPageState extends State<UAdminFileManagerPage> {
       spacing: 12,
       children: <Widget>[
         Icon(Icons.folder_off_rounded, size: 56, color: cs.onSurface.withValues(alpha: 0.3)),
-        UTextBodyMedium(U.s.emptyFolder, color: cs.onSurface.withValues(alpha: 0.6)),
+        UTextBodyMedium(U.s.thisFolderIsEmpty, color: cs.onSurface.withValues(alpha: 0.6)),
       ],
     ),
   );
@@ -578,7 +578,7 @@ class _UAdminFileManagerPageState extends State<UAdminFileManagerPage> {
       spacing: 16,
       children: <Widget>[
         Icon(_iconFor(e), size: 64, color: cs.onSurface.withValues(alpha: 0.3)),
-        UTextBodyMedium(U.s.previewNotAvailable, color: cs.onSurface.withValues(alpha: 0.6)),
+        UTextBodyMedium(U.s.previewNotAvailableForThisFileType, color: cs.onSurface.withValues(alpha: 0.6)),
         UButton(
           title: U.s.download,
           icon: const Icon(Icons.download_rounded, size: 18),

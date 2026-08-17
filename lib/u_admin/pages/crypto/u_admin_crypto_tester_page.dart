@@ -1,7 +1,5 @@
 import "package:u/utilities.dart";
 
-// Local-only playground for admins to encrypt, decrypt, encode and hash arbitrary text.
-// All cryptography is delegated to the reusable [UEncryption] helper; this widget is pure UI.
 class UAdminCryptoTesterPage extends StatefulWidget {
   const UAdminCryptoTesterPage({super.key});
 
@@ -118,7 +116,7 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
     if (_inputController.text.isEmpty) {
       setState(() {
         _output = null;
-        _error = U.s.inputTextRequired;
+        _error = U.s.pleaseEnterSomeInputText;
       });
       return;
     }
@@ -195,7 +193,7 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           UTextHeadlineSmall(U.s.cryptoTester, fontWeight: FontWeight.bold),
-          UTextBodySmall(U.s.cryptoTesterSubtitle, color: cs.onSurface.withValues(alpha: 0.6)),
+          UTextBodySmall(U.s.encryptDecryptEncodeAndHashTextLocallyNoServerCalls, color: cs.onSurface.withValues(alpha: 0.6)),
         ],
       ).expanded(),
     ],
@@ -317,7 +315,7 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
     spacing: 10,
     crossAxisAlignment: CrossAxisAlignment.end,
     children: <Widget>[
-      UTextField(controller: _ivController, labelText: U.s.initializationVector, hintText: U.s.initializationVector).expanded(),
+      UTextField(controller: _ivController, labelText: U.s.ivInitializationVector, hintText: U.s.ivInitializationVector).expanded(),
       SizedBox(width: 130, child: _encodingDropdown(_ivEncoding, (UByteEncoding e) => setState(() => _ivEncoding = e), U.s.ivEncoding)),
       IconButton(
         tooltip: U.s.generate,

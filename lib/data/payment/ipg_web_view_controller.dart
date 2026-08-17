@@ -31,7 +31,7 @@ class UIpgWebViewController {
 
   void _finish(bool paid) {
     finished = true;
-    UToast.snackBar(message: paid ? U.s.paymentSuccessful : U.s.paymentFailed);
+    UToast.snackBar(message: paid ? U.s.paymentWasSuccessful : U.s.paymentFailed);
     UNavigator.back<bool>(paid);
   }
 

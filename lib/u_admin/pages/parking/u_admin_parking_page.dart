@@ -3,7 +3,6 @@ import "package:u/utilities.dart";
 class UAdminParkingPage extends StatefulWidget {
   const UAdminParkingPage({super.key, this.actions});
 
-  // Optional per-row operations override; defaults to the page's built-in set.
   final UAdminActionBuilder<UParkingResponse>? actions;
 
   @override
@@ -34,7 +33,7 @@ class _UAdminParkingPageState extends State<UAdminParkingPage> {
       items: () => c.list,
       totalCount: () => c.totalCount,
       onRetry: c.read,
-      emptyText: U.s.noParkingsFound,
+      emptyText: U.s.noItemsFound(U.s.parking),
       desktopHeader: () => <Widget>[
         UAdminTable.headerCell(U.s.title, flex: 2),
         UAdminTable.headerCell(U.s.owner, flex: 2),
@@ -107,7 +106,7 @@ class _UAdminParkingPageState extends State<UAdminParkingPage> {
     await UNavigator.dialog(
       StatefulBuilder(
         builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
-          title: Text(p == null ? U.s.createParking : U.s.editParking),
+          title: Text(p == null ? U.s.createItem(U.s.parking) : U.s.editItem(U.s.parking)),
           content: SizedBox(
             width: context.dialogWidth(max: 480),
             child: SingleChildScrollView(

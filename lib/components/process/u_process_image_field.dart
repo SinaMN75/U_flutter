@@ -71,7 +71,7 @@ class _UProcessImagePickerFieldState extends State<UProcessImagePickerField> {
         if (widget.field.rejectionReason != null)
           UIconTextHorizontal(
             leading: Icon(Icons.error_outline, color: scheme.error),
-            trailing: UTextBodyMedium("${S.current.adminMessage}: ${widget.field.rejectionReason}", color: scheme.error),
+            trailing: UTextBodyMedium("${U.s.adminMessage}: ${widget.field.rejectionReason}", color: scheme.error),
           ).pOnly(bottom: 12),
       ],
     );

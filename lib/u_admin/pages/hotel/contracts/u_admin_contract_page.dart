@@ -66,7 +66,7 @@ class _ContractPageState extends State<UAdminContractPage> {
     items: () => c.list,
     totalCount: () => c.totalCount,
     onRetry: c.read,
-    emptyText: U.s.noContractFound,
+    emptyText: U.s.noItemsFound(U.s.contracts),
     desktopBreakpoint: 900,
     desktopHeader: () => UAdminTable.header(<String>[U.s.tenant, U.s.bed, U.s.startDate, U.s.endDate, U.s.rent, U.s.status, U.s.operations]),
     desktopRow: _itemDesktop,
@@ -140,7 +140,7 @@ class _ContractPageState extends State<UAdminContractPage> {
     ),
     fallback: (UAdminActionContext<UDormBedContractResponse> ctx) => <UAdminAction>[
       ctx.extra("tenant", label: U.s.tenant, icon: Icons.person_outline, visible: ctx.item.user != null),
-      ctx.extra("invoices", label: U.s.viewInvoices, icon: Icons.receipt_long_outlined),
+      ctx.extra("invoices", label: U.s.viewItem(U.s.invoices), icon: Icons.receipt_long_outlined),
       ctx.extra("payLinks", label: "${U.s.payment} ${U.s.link}", icon: Icons.link_rounded, visible: ctx.item.invoices?.isNotEmpty ?? false, roles: <TagUser>[TagUser.permissionPayInvoices]),
       ctx.extra("bed", label: U.s.bed, icon: Icons.bed_outlined, visible: ctx.item.bed?.room != null),
       ctx.extra("dorm", label: U.s.dorm, icon: Icons.bedroom_parent_outlined, visible: ctx.item.bed?.room?.dorm != null),
@@ -155,7 +155,7 @@ class _ContractPageState extends State<UAdminContractPage> {
 
     UNavigator.dialog(
       AlertDialog(
-        title: Text(U.s.filterContracts),
+        title: Text(U.s.filterItem(U.s.contracts)),
         content: SingleChildScrollView(
           child: StatefulBuilder(
             builder: (BuildContext context, void Function(void Function()) setLocal) => UColumn(
@@ -257,7 +257,7 @@ class _ContractPageState extends State<UAdminContractPage> {
 
     UNavigator.dialog(
       AlertDialog(
-        title: Text(isEdit ? U.s.editContract : U.s.createContract),
+        title: Text(isEdit ? U.s.editItem(U.s.contract) : U.s.createItem(U.s.contract)),
         content: SingleChildScrollView(
           child: StatefulBuilder(
             builder: (BuildContext context, void Function(void Function()) setLocal) => Form(
@@ -350,11 +350,11 @@ class _ContractPageState extends State<UAdminContractPage> {
                         } else {
                           final String? bid = bed.value?.id ?? widget.bed?.id;
                           if (bid == null) {
-                            UToast.error(message: U.s.selectABed);
+                            UToast.error(message: U.s.selectA(U.s.bed));
                             return;
                           }
                           if (user.value?.id == null) {
-                            UToast.error(message: U.s.selectAUser);
+                            UToast.error(message: U.s.selectA(U.s.user));
                             return;
                           }
                           c.create(

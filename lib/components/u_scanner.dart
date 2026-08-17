@@ -1,15 +1,8 @@
 import "package:mobile_scanner/mobile_scanner.dart";
 import "package:u/utilities.dart" hide CameraLensType;
 
-/// Where the hint text sits relative to the scan window.
 enum UScannerHintPosition { top, bottom }
 
-/// A fully customizable barcode / QR scanner widget built on `mobile_scanner`.
-///
-/// It owns (or accepts) a [MobileScannerController], exposes every controller
-/// and [MobileScanner] option, and draws an optional dimmed overlay with a
-/// rounded scan window, corner brackets, an animated scan line, hint text and
-/// camera control buttons (torch, switch camera, scan from gallery).
 class UScanner extends StatefulWidget {
   const UScanner({
     this.onScan,
@@ -276,7 +269,7 @@ class _UScannerState extends State<UScanner> with SingleTickerProviderStateMixin
       borderRadius: BorderRadius.circular(widget.hintBorderRadius),
     ),
     child: Text(
-      widget.hintText ?? S.current.scanHint,
+      widget.hintText ?? S.current.placeTheBarcodeInsideTheFrame,
       textAlign: TextAlign.center,
       style: widget.hintTextStyle ?? Theme.of(context).textTheme.bodySmall,
     ),

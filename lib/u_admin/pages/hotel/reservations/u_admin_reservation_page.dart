@@ -86,7 +86,7 @@ class _ReservationPageState extends State<UAdminReservationPage> {
     items: () => c.list,
     totalCount: () => c.totalCount,
     onRetry: c.read,
-    emptyText: U.s.noReservationsFound,
+    emptyText: U.s.noItemsFound(U.s.reservations),
     desktopBreakpoint: 900,
     desktopHeader: () => UAdminTable.header(<String>[U.s.guest, U.s.rooms, U.s.checkInDate, U.s.checkOutDate, U.s.totalPrice, U.s.status, U.s.operations]),
     desktopRow: _itemDesktop,
@@ -181,7 +181,7 @@ class _ReservationPageState extends State<UAdminReservationPage> {
 
     UNavigator.dialog(
       AlertDialog(
-        title: Text(U.s.filterReservations),
+        title: Text(U.s.filterItem(U.s.reservations)),
         content: SingleChildScrollView(
           child: StatefulBuilder(
             builder: (BuildContext context, void Function(void Function()) setLocal) => UColumn(
@@ -267,7 +267,7 @@ class _ReservationPageState extends State<UAdminReservationPage> {
 
     UNavigator.dialog(
       AlertDialog(
-        title: Text(isEdit ? U.s.editReservation : U.s.createReservation),
+        title: Text(p == null ? U.s.createItem(U.s.reservation) : U.s.createItem(U.s.reservation)),
         content: SingleChildScrollView(
           child: StatefulBuilder(
             builder: (BuildContext context, void Function(void Function()) setLocal) => Form(
@@ -316,7 +316,7 @@ class _ReservationPageState extends State<UAdminReservationPage> {
                   ).pSymmetric(vertical: 6),
                   UTextField(
                     controller: guestCount,
-                    labelText: U.s.guestCount,
+                    labelText: U.s.numberOfGuests,
                     keyboardType: TextInputType.number,
                     validator: UValidators.required(message: ""),
                   ).pSymmetric(vertical: 6),
@@ -355,11 +355,11 @@ class _ReservationPageState extends State<UAdminReservationPage> {
                         } else {
                           final String? rid = room.value?.id ?? widget.room?.id;
                           if (rid == null) {
-                            UToast.error(message: U.s.selectARoom);
+                            UToast.error(message: U.s.pleaseSelectA(U.s.room));
                             return;
                           }
                           if (user.value?.id == null) {
-                            UToast.error(message: U.s.selectAUser);
+                            UToast.error(message: U.s.pleaseSelectA(U.s.user));
                             return;
                           }
                           c.create(

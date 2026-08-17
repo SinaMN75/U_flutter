@@ -34,7 +34,7 @@ class _ContentsPageState extends State<UAdminContentsPage> {
       items: () => c.list,
       totalCount: () => c.totalCount,
       onRetry: c.read,
-      emptyText: U.s.noContentFound,
+      emptyText: U.s.noItemsFound(U.s.contents),
       desktopBreakpoint: 720,
       desktopHeader: () => <Widget>[
         UAdminTable.headerCell(U.s.image),
@@ -92,7 +92,7 @@ class _ContentsPageState extends State<UAdminContentsPage> {
 
   void _showFilterDialog() => UNavigator.dialog(
     AlertDialog(
-      title: Text(U.s.filterContents),
+      title: Text(U.s.filterItem(U.s.contents)),
       content: Form(
         key: c.filterFormKey,
         child: SingleChildScrollView(
@@ -157,7 +157,7 @@ class _ContentsPageState extends State<UAdminContentsPage> {
     await UNavigator.dialog(
       StatefulBuilder(
         builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
-          title: Text(p == null ? U.s.createContent : U.s.editContent),
+          title: Text(p == null ? U.s.createItem(U.s.content) : U.s.editItem(U.s.content)),
           content: SizedBox(
             width: context.dialogWidth(max: 520),
             child: SingleChildScrollView(
@@ -210,7 +210,7 @@ class _ContentsPageState extends State<UAdminContentsPage> {
                         TextButton.icon(
                           onPressed: () => setDialogState(() => items.add(_ItemForm())),
                           icon: const Icon(Icons.add, size: 18),
-                          label: Text(U.s.addItem),
+                          label: Text(U.s.addItem("")),
                         ),
                       ],
                     ),
@@ -226,7 +226,7 @@ class _ContentsPageState extends State<UAdminContentsPage> {
                         TextButton.icon(
                           onPressed: () => setDialogState(() => links.add(_LinkForm())),
                           icon: const Icon(Icons.add, size: 18),
-                          label: Text(U.s.addLink),
+                          label: Text(U.s.addItem(U.s.link)),
                         ),
                       ],
                     ),

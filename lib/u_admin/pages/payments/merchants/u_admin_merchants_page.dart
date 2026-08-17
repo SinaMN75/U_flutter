@@ -41,7 +41,7 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
     items: () => c.list,
     totalCount: () => c.totalCount,
     onRetry: c.read,
-    emptyText: U.s.noMerchantsFound,
+    emptyText: U.s.noItemsFound(U.s.merchant),
     desktopHeader: () => UAdminTable.header(<String>[U.s.title, U.s.nationalCode, U.s.phoneNumber, U.s.mcc, U.s.merchantId, U.s.createdAt, U.s.operations]),
     desktopRow: _itemDesktop,
     mobileRow: _itemResponsive,
@@ -127,7 +127,7 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
 
   void _showFilterDialog() => UNavigator.dialog(
     AlertDialog(
-      title: Text(U.s.filterMerchants),
+      title: Text(U.s.filterItem(U.s.merchant)),
       content: SizedBox(
         width: context.dialogWidth(),
         child: SingleChildScrollView(
@@ -202,7 +202,7 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
               UTextField(controller: c.landlineFilter, labelText: U.s.landline).pSymmetric(vertical: 6),
               UTextField(controller: c.zipCodeFilter, labelText: U.s.zipCode).pSymmetric(vertical: 6),
               UTextField(controller: c.merchantIdFilter, labelText: U.s.merchantId).pSymmetric(vertical: 6),
-              UTextField(controller: c.bankAccountIdFilter, labelText: U.s.bankAccountId).pSymmetric(vertical: 6),
+              UTextField(controller: c.bankAccountIdFilter, labelText: U.s.bankAccountid).pSymmetric(vertical: 6),
               const SizedBox(height: 20),
               UButtonSubmitCancel(
                 submitTitle: U.s.filter,
@@ -239,7 +239,7 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
 
     UNavigator.dialog(
       AlertDialog(
-        title: Text(U.s.createMerchant),
+        title: Text(U.s.createItem(U.s.merchant)),
         content: SizedBox(
           width: context.dialogWidth(),
           child: SingleChildScrollView(

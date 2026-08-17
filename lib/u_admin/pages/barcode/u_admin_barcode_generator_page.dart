@@ -149,8 +149,8 @@ class _UAdminBarcodeGeneratorPageState extends State<UAdminBarcodeGeneratorPage>
       UColumn(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          UTextHeadlineSmall(U.s.barcodeGenerator, fontWeight: FontWeight.bold),
-          UTextBodySmall(U.s.barcodeGeneratorSubtitle, color: cs.onSurface.withValues(alpha: 0.6)),
+          UTextHeadlineSmall(U.s.barcodeqrGenerator, fontWeight: FontWeight.bold),
+          UTextBodySmall(U.s.generateAndFullyCustomizeqrCodesAndBarcodesOfEveryKind, color: cs.onSurface.withValues(alpha: 0.6)),
         ],
       ).expanded(),
     ],
@@ -210,8 +210,8 @@ class _UAdminBarcodeGeneratorPageState extends State<UAdminBarcodeGeneratorPage>
   ]);
 
   Widget _styleCard(ColorScheme cs) => _card(cs, Icons.palette_rounded, U.s.color, <Widget>[
-    _swatchLabel(U.s.foregroundColor, _barColor, (Color c) => setState(() => _barColor = c)),
-    _swatchLabel(U.s.backgroundColor, _bgColor, (Color c) => setState(() => _bgColor = c)),
+    _swatchLabel(U.s.foreground, _barColor, (Color c) => setState(() => _barColor = c)),
+    _swatchLabel(U.s.background, _bgColor, (Color c) => setState(() => _bgColor = c)),
     SwitchListTile(
       contentPadding: EdgeInsets.zero,
       title: UTextBodyMedium(U.s.gradient),

@@ -505,7 +505,7 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
                 UTextBodyLarge(U.s.path, color: UAdminTheme.white, textAlign: .center).expanded(flex: 3),
                 UTextBodyLarge(U.s.status, color: UAdminTheme.white, textAlign: .center).expanded(),
                 UTextBodyLarge(U.s.duration, color: UAdminTheme.white, textAlign: .center).expanded(),
-                UTextBodyLarge(U.s.userSlashIp, color: UAdminTheme.white, textAlign: .center).expanded(flex: 2),
+                UTextBodyLarge(U.s.userIp, color: UAdminTheme.white, textAlign: .center).expanded(flex: 2),
               ],
             ),
             itemBuilder: (BuildContext context, int index) => _itemDesktop(i: data[index], index: index),
@@ -649,7 +649,7 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
 
   void _showFilterDialog() => UNavigator.dialog(
     AlertDialog(
-      title: Text(U.s.filterLogs),
+      title: Text(U.s.filterItem(U.s.logs)),
       content: SizedBox(
         width: context.dialogWidth(),
         child: SingleChildScrollView(
@@ -820,7 +820,7 @@ class _ApiLogDetailView extends StatelessWidget {
     children: <Widget>[
       _metaItem(U.s.time, item.createdAt.toJalaliDateTime()),
       _metaItem(U.s.duration, "${item.durationMs} ms"),
-      if (item.jsonData.userName != null) _metaItem(U.s.userName, item.jsonData.userName!),
+      if (item.jsonData.userName != null) _metaItem(U.s.username, item.jsonData.userName!),
       if (item.jsonData.userEmail != null) _metaItem(U.s.userEmail, item.jsonData.userEmail!),
       if (item.userId != null) _metaItem(item.userId!, U.s.userId),
       if (item.jsonData.userRoles != null) _metaItem(U.s.roles, item.jsonData.userRoles!),
