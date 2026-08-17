@@ -6,13 +6,13 @@ import "package:u/utilities.dart";
 
 class BarcodeAztec extends Barcode2D {
   const BarcodeAztec(this.minECCPercent, this.userSpecifiedLayers) : assert(minECCPercent >= 0 && minECCPercent <= 100), assert(userSpecifiedLayers >= 0);
-  static const defaultEcPercent = 33;
-  static const defaultLayers = 0;
+  static const int defaultEcPercent = 33;
+  static const int defaultLayers = 0;
   final int minECCPercent;
   final int userSpecifiedLayers;
-  static const _maxNbBits = 32;
-  static const _maxNbBitsCompact = 4;
-  static const _wordSize = <int>[4, 6, 6, 8, 8, 8, 8, 8, 8, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12];
+  static const int _maxNbBits = 32;
+  static const int _maxNbBitsCompact = 4;
+  static const List<int> _wordSize = <int>[4, 6, 6, 8, 8, 8, 8, 8, 8, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12];
   static bool _initialized = false;
   static late Map<_EncodingMode, List<int?>> _charMap;
 
@@ -24,22 +24,54 @@ class BarcodeAztec extends Barcode2D {
     _charMap[_EncodingMode.mode_mixed] = List<int?>.filled(256, null);
     _charMap[_EncodingMode.mode_punct] = List<int?>.filled(256, null);
     _charMap[_EncodingMode.mode_upper]![0x20] = 1;
-    for (var c = 0x41; c <= 0x5a; c++) _charMap[_EncodingMode.mode_upper]![c] = c - 0x41 + 2;
+    for (int c = 0x41; c <= 0x5a; c++) _charMap[_EncodingMode.mode_upper]![c] = c - 0x41 + 2;
 
     _charMap[_EncodingMode.mode_lower]![0x20] = 1;
-    for (var c = 0x61; c <= 0x7a; c++) _charMap[_EncodingMode.mode_lower]![c] = c - 0x61 + 2;
+    for (int c = 0x61; c <= 0x7a; c++) _charMap[_EncodingMode.mode_lower]![c] = c - 0x61 + 2;
     _charMap[_EncodingMode.mode_digit]![0x20] = 1;
-    for (var c = 0x30; c <= 0x39; c++) _charMap[_EncodingMode.mode_digit]![c] = c - 0x30 + 2;
+    for (int c = 0x30; c <= 0x39; c++) _charMap[_EncodingMode.mode_digit]![c] = c - 0x30 + 2;
     _charMap[_EncodingMode.mode_digit]![0x2c] = 12;
     _charMap[_EncodingMode.mode_digit]![0x2e] = 13;
 
-    final mixedTable = <int>[0, 0x20, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 27, 28, 29, 30, 31, 0x40, 0x5c, 0x5e, 0x5f, 0x60, 0x7c, 0x7e, 127];
-    for (var i = 0; i < mixedTable.length; i++) _charMap[_EncodingMode.mode_mixed]![mixedTable[i]] = i;
+    final List<int> mixedTable = <int>[0, 0x20, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 27, 28, 29, 30, 31, 0x40, 0x5c, 0x5e, 0x5f, 0x60, 0x7c, 0x7e, 127];
+    for (int i = 0; i < mixedTable.length; i++) _charMap[_EncodingMode.mode_mixed]![mixedTable[i]] = i;
 
-    const punctTable = <int>[0, 0xd, 0, 0, 0, 0, 0x21, 0x27, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2a, 0x2b, 0x2c, 0x2d, 0x2e, 0x2f, 0x3a, 0x3b, 0x3c, 0x3d, 0x3e, 0x3f, 0x5b, 0x5d, 0x7b, 0x7d];
+    const List<int> punctTable = <int>[
+      0,
+      0xd,
+      0,
+      0,
+      0,
+      0,
+      0x21,
+      0x27,
+      0x23,
+      0x24,
+      0x25,
+      0x26,
+      0x27,
+      0x28,
+      0x29,
+      0x2a,
+      0x2b,
+      0x2c,
+      0x2d,
+      0x2e,
+      0x2f,
+      0x3a,
+      0x3b,
+      0x3c,
+      0x3d,
+      0x3e,
+      0x3f,
+      0x5b,
+      0x5d,
+      0x7b,
+      0x7d,
+    ];
 
-    for (var i = 0; i < punctTable.length; i++) {
-      final v = punctTable[i];
+    for (int i = 0; i < punctTable.length; i++) {
+      final int v = punctTable[i];
       if (v > 0) _charMap[_EncodingMode.mode_punct]![v] = i;
     }
   }
@@ -51,7 +83,7 @@ class BarcodeAztec extends Barcode2D {
       _initialized = true;
     }
 
-    final m = _encode(data);
+    final _AztecCode m = _encode(data);
 
     return Barcode2DMatrix(m.matrixSize, m.matrixSize, 1, m.bits);
   }
@@ -66,11 +98,11 @@ class BarcodeAztec extends Barcode2D {
   int get maxLength => 2335;
 
   List<int> _bitsToWords(List<bool> stuffedBits, int wordSize, int wordCount) {
-    final message = List<int>.filled(wordCount, 0);
+    final List<int> message = List<int>.filled(wordCount, 0);
 
-    for (var i = 0; i < wordCount; i++) {
-      var value = 0;
-      for (var j = 0; j < wordSize; j++) {
+    for (int i = 0; i < wordCount; i++) {
+      int value = 0;
+      for (int j = 0; j < wordSize; j++) {
         if (stuffedBits[i * wordSize + j]) value |= 1 << (wordSize - j - 1);
       }
       message[i] = value;
@@ -79,17 +111,17 @@ class BarcodeAztec extends Barcode2D {
   }
 
   List<bool> _generateCheckWords(List<bool> bits, int totalBits, int wordSize) {
-    final rs = ReedSolomonEncoder(_getGF(wordSize));
-    final messageWordCount = bits.length ~/ wordSize;
-    final totalWordCount = totalBits ~/ wordSize;
-    final eccWordCount = totalWordCount - messageWordCount;
-    final messageWords = _bitsToWords(bits, wordSize, messageWordCount);
-    final eccWords = rs.encode(messageWords, eccWordCount);
-    final startPad = totalBits % wordSize;
-    final messageBits = <bool>[];
+    final ReedSolomonEncoder rs = ReedSolomonEncoder(_getGF(wordSize));
+    final int messageWordCount = bits.length ~/ wordSize;
+    final int totalWordCount = totalBits ~/ wordSize;
+    final int eccWordCount = totalWordCount - messageWordCount;
+    final List<int> messageWords = _bitsToWords(bits, wordSize, messageWordCount);
+    final List<int> eccWords = rs.encode(messageWords, eccWordCount);
+    final int startPad = totalBits % wordSize;
+    final List<bool> messageBits = <bool>[];
     messageBits.addAll(_addBits(0, startPad));
-    for (final messageWord in messageWords) messageBits.addAll(_addBits(messageWord, wordSize));
-    for (final eccWord in eccWords) messageBits.addAll(_addBits(eccWord, wordSize));
+    for (final int messageWord in messageWords) messageBits.addAll(_addBits(messageWord, wordSize));
+    for (final int eccWord in eccWords) messageBits.addAll(_addBits(eccWord, wordSize));
     return messageBits;
   }
 
@@ -111,14 +143,14 @@ class BarcodeAztec extends Barcode2D {
   }
 
   List<bool> _highlevelEncode(List<int> data) {
-    var states = <_State>[_State.initialState];
+    List<_State> states = <_State>[_State.initialState];
 
-    for (var index = 0; index < data.length; index++) {
-      var pairCode = 0;
-      var nextChar = 0;
+    for (int index = 0; index < data.length; index++) {
+      int pairCode = 0;
+      int nextChar = 0;
       if (index + 1 < data.length) nextChar = data[index + 1];
 
-      final cur = data[index];
+      final int cur = data[index];
       if (cur == 0xd && nextChar == 0xa)
         pairCode = 2;
       else if (cur == 0x2e && nextChar == 0x20)
@@ -131,11 +163,12 @@ class BarcodeAztec extends Barcode2D {
       if (pairCode > 0) {
         states = _updateStateListForPair(states, data, index, pairCode);
         index++;
-      } else states = _updateStateListForChar(states, data, index);
+      } else
+        states = _updateStateListForChar(states, data, index);
     }
     int? minBitCnt;
     _State? result;
-    for (final s in states) {
+    for (final _State s in states) {
       if (minBitCnt == null || s.bitCount < minBitCnt) {
         minBitCnt = s.bitCount;
         result = s;
@@ -149,12 +182,12 @@ class BarcodeAztec extends Barcode2D {
   }
 
   List<_State> _simplifyStates(List<_State> states) {
-    var result = <_State>[];
-    for (final newState in states) {
-      var add = true;
-      final newResult = <_State>[];
+    List<_State> result = <_State>[];
+    for (final _State newState in states) {
+      bool add = true;
+      final List<_State> newResult = <_State>[];
 
-      for (final oldState in result) {
+      for (final _State oldState in result) {
         if (add && oldState.isBetterThanOrEqualTo(newState)) {
           add = false;
         }
@@ -174,9 +207,9 @@ class BarcodeAztec extends Barcode2D {
   }
 
   List<_State> _updateStateListForChar(List<_State> states, List<int> data, int index) {
-    final result = <_State>[];
-    for (final s in states) {
-      final r = _updateStateForChar(s, data, index);
+    final List<_State> result = <_State>[];
+    for (final _State s in states) {
+      final List<_State> r = _updateStateForChar(s, data, index);
       if (r.isNotEmpty) {
         result.addAll(r);
       }
@@ -185,38 +218,38 @@ class BarcodeAztec extends Barcode2D {
   }
 
   List<_State> _updateStateForChar(_State s, List<int> data, int index) {
-    final result = <_State>[];
-    final ch = data[index];
-    final charInCurrentTable = _charMap[s.mode]![ch] != null;
+    final List<_State> result = <_State>[];
+    final int ch = data[index];
+    final bool charInCurrentTable = _charMap[s.mode]![ch] != null;
 
     _State? stateNoBinary;
-    for (var mode in _EncodingMode.values) {
-      final charInMode = _charMap[mode]![ch];
+    for (final _EncodingMode mode in _EncodingMode.values) {
+      final int? charInMode = _charMap[mode]![ch];
       if (charInMode != null && charInMode > 0) {
         stateNoBinary ??= s.endBinaryShift(index);
 
         if (!charInCurrentTable || mode == s.mode || mode == _EncodingMode.mode_digit) {
-          final res = stateNoBinary.latchAndAppend(mode, charInMode);
+          final _State res = stateNoBinary.latchAndAppend(mode, charInMode);
           result.add(res);
         }
 
         if (!charInCurrentTable && _shiftTable[s.mode] != null && _shiftTable[s.mode]![mode] != null) {
-          final res = stateNoBinary.shiftAndAppend(mode, charInMode);
+          final _State res = stateNoBinary.shiftAndAppend(mode, charInMode);
           result.add(res);
         }
       }
     }
     if (s.bShiftByteCount > 0 || _charMap[s.mode]![ch] == null) {
-      final res = s.addBinaryShiftChar(index);
+      final _State res = s.addBinaryShiftChar(index);
       result.add(res);
     }
     return result;
   }
 
   List<_State> _updateStateListForPair(List<_State> states, List<int> data, int index, int pairCode) {
-    final result = <_State>[];
-    for (final s in states) {
-      final r = _updateStateForPair(s, data, index, pairCode);
+    final List<_State> result = <_State>[];
+    for (final _State s in states) {
+      final List<_State> r = _updateStateForPair(s, data, index, pairCode);
       if (r.isNotEmpty) {
         result.addAll(r);
       }
@@ -225,15 +258,15 @@ class BarcodeAztec extends Barcode2D {
   }
 
   List<_State> _updateStateForPair(_State s, List<int> data, int index, int pairCode) {
-    final result = <_State>[];
-    final stateNoBinary = s.endBinaryShift(index);
+    final List<_State> result = <_State>[];
+    final _State stateNoBinary = s.endBinaryShift(index);
 
     result.add(stateNoBinary.latchAndAppend(_EncodingMode.mode_punct, pairCode));
     if (s.mode != _EncodingMode.mode_punct) {
       result.add(stateNoBinary.shiftAndAppend(_EncodingMode.mode_punct, pairCode));
     }
     if (pairCode == 3 || pairCode == 4) {
-      final digitState = stateNoBinary.latchAndAppend(_EncodingMode.mode_digit, 16 - pairCode).latchAndAppend(_EncodingMode.mode_digit, 1);
+      final _State digitState = stateNoBinary.latchAndAppend(_EncodingMode.mode_digit, 16 - pairCode).latchAndAppend(_EncodingMode.mode_digit, 1);
       result.add(digitState);
     }
     if (s.bShiftByteCount > 0) {
@@ -243,7 +276,7 @@ class BarcodeAztec extends Barcode2D {
   }
 
   int _totalBitsInLayer(int layers, bool compact) {
-    var tmp = 112;
+    int tmp = 112;
     if (compact) {
       tmp = 88;
     }
@@ -251,12 +284,12 @@ class BarcodeAztec extends Barcode2D {
   }
 
   List<bool> _stuffBits(List<bool> bits, int wordSize) {
-    final out = <bool>[];
-    final n = bits.length;
-    final mask = (1 << wordSize) - 2;
-    for (var i = 0; i < n; i += wordSize) {
-      var word = 0;
-      for (var j = 0; j < wordSize; j++) {
+    final List<bool> out = <bool>[];
+    final int n = bits.length;
+    final int mask = (1 << wordSize) - 2;
+    for (int i = 0; i < n; i += wordSize) {
+      int word = 0;
+      for (int j = 0; j < wordSize; j++) {
         if (i + j >= n || bits[i + j]) {
           word |= 1 << (wordSize - 1 - j);
         }
@@ -275,7 +308,7 @@ class BarcodeAztec extends Barcode2D {
   }
 
   List<bool> _generateModeMessage(bool compact, int layers, int messageSizeInWords) {
-    var modeMessage = <bool>[];
+    List<bool> modeMessage = <bool>[];
     if (compact) {
       modeMessage.addAll(_addBits(layers - 1, 2));
       modeMessage.addAll(_addBits(messageSizeInWords - 1, 6));
@@ -289,11 +322,11 @@ class BarcodeAztec extends Barcode2D {
   }
 
   void _drawModeMessage(_AztecCode matrix, bool compact, int matrixSize, List<bool> modeMessage) {
-    final center = matrixSize ~/ 2;
+    final int center = matrixSize ~/ 2;
 
     if (compact) {
-      for (var i = 0; i < 7; i++) {
-        final offset = center - 3 + i;
+      for (int i = 0; i < 7; i++) {
+        final int offset = center - 3 + i;
         if (modeMessage[i]) {
           matrix.set(offset, center - 5);
         }
@@ -308,8 +341,8 @@ class BarcodeAztec extends Barcode2D {
         }
       }
     } else {
-      for (var i = 0; i < 10; i++) {
-        final offset = center - 5 + i + i ~/ 5;
+      for (int i = 0; i < 10; i++) {
+        final int offset = center - 5 + i + i ~/ 5;
         if (modeMessage[i]) {
           matrix.set(offset, center - 7);
         }
@@ -327,8 +360,8 @@ class BarcodeAztec extends Barcode2D {
   }
 
   void _drawBullsEye(_AztecCode matrix, int center, int size) {
-    for (var i = 0; i < size; i += 2) {
-      for (var j = center - i; j <= center + i; j++) {
+    for (int i = 0; i < size; i += 2) {
+      for (int j = center - i; j <= center + i; j++) {
         matrix.set(j, center - i);
         matrix.set(j, center + i);
         matrix.set(center - i, j);
@@ -344,9 +377,9 @@ class BarcodeAztec extends Barcode2D {
   }
 
   _AztecCode _encode(List<int> data) {
-    final bits = _highlevelEncode(data);
-    final eccBits = ((bits.length * minECCPercent) ~/ 100) + 11;
-    final totalSizeBits = bits.length + eccBits;
+    final List<bool> bits = _highlevelEncode(data);
+    final int eccBits = ((bits.length * minECCPercent) ~/ 100) + 11;
+    final int totalSizeBits = bits.length + eccBits;
     int layers;
     int wordSize;
     int totalBitsInLayer;
@@ -364,7 +397,7 @@ class BarcodeAztec extends Barcode2D {
       }
       totalBitsInLayer = _totalBitsInLayer(layers, compact);
       wordSize = _wordSize[layers];
-      final usableBitsInLayers = totalBitsInLayer - (totalBitsInLayer % wordSize);
+      final int usableBitsInLayers = totalBitsInLayer - (totalBitsInLayer % wordSize);
       stuffedBits = _stuffBits(bits, wordSize);
       if (stuffedBits.length + eccBits > usableBitsInLayers) {
         throw const BarcodeException("Data too large for user specified layer");
@@ -376,7 +409,7 @@ class BarcodeAztec extends Barcode2D {
       wordSize = 0;
       stuffedBits = null;
 
-      for (var i = 0; ; i++) {
+      for (int i = 0; ; i++) {
         if (i > _maxNbBits) {
           throw const BarcodeException("Data too large for an aztec code");
         }
@@ -394,7 +427,7 @@ class BarcodeAztec extends Barcode2D {
           wordSize = _wordSize[layers];
           stuffedBits = _stuffBits(bits, wordSize);
         }
-        final usableBitsInLayers = totalBitsInLayer - (totalBitsInLayer % wordSize);
+        final int usableBitsInLayers = totalBitsInLayer - (totalBitsInLayer % wordSize);
         if (compact && stuffedBits!.length > wordSize * 64) {
           continue;
         }
@@ -403,9 +436,9 @@ class BarcodeAztec extends Barcode2D {
         }
       }
     }
-    final messageBits = _generateCheckWords(stuffedBits, totalBitsInLayer, wordSize);
-    final messageSizeInWords = stuffedBits.length ~/ wordSize;
-    final modeMessage = _generateModeMessage(compact, layers, messageSizeInWords);
+    final List<bool> messageBits = _generateCheckWords(stuffedBits, totalBitsInLayer, wordSize);
+    final int messageSizeInWords = stuffedBits.length ~/ wordSize;
+    final List<bool> modeMessage = _generateModeMessage(compact, layers, messageSizeInWords);
 
     int baseMatrixSize;
     if (compact) {
@@ -413,38 +446,38 @@ class BarcodeAztec extends Barcode2D {
     } else {
       baseMatrixSize = 14 + layers * 4;
     }
-    final alignmentMap = List<int>.filled(baseMatrixSize, 0);
+    final List<int> alignmentMap = List<int>.filled(baseMatrixSize, 0);
     int matrixSize;
 
     if (compact) {
       matrixSize = baseMatrixSize;
-      for (var i = 0; i < alignmentMap.length; i++) {
+      for (int i = 0; i < alignmentMap.length; i++) {
         alignmentMap[i] = i;
       }
     } else {
       matrixSize = baseMatrixSize + 1 + 2 * ((baseMatrixSize / 2 - 1) ~/ 15);
-      final origCenter = baseMatrixSize ~/ 2;
-      final center = matrixSize ~/ 2;
-      for (var i = 0; i < origCenter; i++) {
-        final newOffset = i + i ~/ 15;
+      final int origCenter = baseMatrixSize ~/ 2;
+      final int center = matrixSize ~/ 2;
+      for (int i = 0; i < origCenter; i++) {
+        final int newOffset = i + i ~/ 15;
         alignmentMap[origCenter - i - 1] = center - newOffset - 1;
         alignmentMap[origCenter + i] = center + newOffset + 1;
       }
     }
-    final code = _AztecCode(matrixSize);
+    final _AztecCode code = _AztecCode(matrixSize);
 
-    var rowOffset = 0;
-    for (var i = 0; i < layers; i++) {
-      var rowSize = (layers - i) * 4;
+    int rowOffset = 0;
+    for (int i = 0; i < layers; i++) {
+      int rowSize = (layers - i) * 4;
       if (compact) {
         rowSize += 9;
       } else {
         rowSize += 12;
       }
 
-      for (var j = 0; j < rowSize; j++) {
-        final columnOffset = j * 2;
-        for (var k = 0; k < 2; k++) {
+      for (int j = 0; j < rowSize; j++) {
+        final int columnOffset = j * 2;
+        for (int k = 0; k < 2; k++) {
           if (messageBits[rowOffset + columnOffset + k]) {
             code.set(alignmentMap[i * 2 + k], alignmentMap[i * 2 + j]);
           }
@@ -468,9 +501,9 @@ class BarcodeAztec extends Barcode2D {
       _drawBullsEye(code, matrixSize ~/ 2, 5);
     } else {
       _drawBullsEye(code, matrixSize ~/ 2, 7);
-      var j = 0;
-      for (var i = 0; i < baseMatrixSize / 2 - 1; i += 15,) {
-        for (var k = (matrixSize ~/ 2) & 1; k < matrixSize; k += 2) {
+      int j = 0;
+      for (int i = 0; i < baseMatrixSize / 2 - 1; i += 15,) {
+        for (int k = (matrixSize ~/ 2) & 1; k < matrixSize; k += 2) {
           code.set(matrixSize ~/ 2 - j, k);
           code.set(matrixSize ~/ 2 + j, k);
           code.set(k, matrixSize ~/ 2 - j);
@@ -492,7 +525,7 @@ abstract class _Token {
 }
 
 class _SimpleToken extends _Token {
-  _SimpleToken(_Token? prev, this.value, this.bitCount) : super(prev);
+  _SimpleToken(super.prev, this.value, this.bitCount);
 
   final int value;
   final int bitCount;
@@ -504,14 +537,14 @@ class _SimpleToken extends _Token {
 }
 
 class _BinaryShiftToken extends _Token {
-  _BinaryShiftToken(_Token? prev, this.bShiftStart, this.bShiftByteCnt) : super(prev);
+  _BinaryShiftToken(super.prev, this.bShiftStart, this.bShiftByteCnt);
 
   final int bShiftStart;
   final int bShiftByteCnt;
 
   @override
   void appendTo(List<bool> bits, List<int> text) {
-    for (var i = 0; i < bShiftByteCnt; i++) {
+    for (int i = 0; i < bShiftByteCnt; i++) {
       if (i == 0 || (i == 31 && bShiftByteCnt <= 62)) {
         bits.addAll(_addBits(31, 5));
         if (bShiftByteCnt > 62) {
@@ -532,7 +565,7 @@ class _BinaryShiftToken extends _Token {
 }
 
 Iterable<bool> _addBits(int b, int count) sync* {
-  for (var i = count - 1; i >= 0; i--) {
+  for (int i = count - 1; i >= 0; i--) {
     yield ((b >> i) & 1) == 1;
   }
 }
@@ -545,18 +578,18 @@ enum _EncodingMode {
   mode_punct,
 }
 
-const _shiftTable = <_EncodingMode, Map<_EncodingMode, int>>{
-  _EncodingMode.mode_upper: {
+const Map<_EncodingMode, Map<_EncodingMode, int>> _shiftTable = <_EncodingMode, Map<_EncodingMode, int>>{
+  _EncodingMode.mode_upper: <_EncodingMode, int>{
     _EncodingMode.mode_punct: 0,
   },
-  _EncodingMode.mode_lower: {
+  _EncodingMode.mode_lower: <_EncodingMode, int>{
     _EncodingMode.mode_punct: 0,
     _EncodingMode.mode_upper: 28,
   },
-  _EncodingMode.mode_mixed: {
+  _EncodingMode.mode_mixed: <_EncodingMode, int>{
     _EncodingMode.mode_punct: 0,
   },
-  _EncodingMode.mode_digit: {
+  _EncodingMode.mode_digit: <_EncodingMode, int>{
     _EncodingMode.mode_punct: 0,
     _EncodingMode.mode_upper: 15,
   },
@@ -565,14 +598,13 @@ const _shiftTable = <_EncodingMode, Map<_EncodingMode, int>>{
 class _State {
   const _State({
     required this.mode,
-    this.tokens,
     required this.bShiftByteCount,
     required this.bitCount,
+    this.tokens,
   });
 
-  static const initialState = _State(
+  static const _State initialState = _State(
     mode: _EncodingMode.mode_upper,
-    tokens: null,
     bShiftByteCount: 0,
     bitCount: 0,
   );
@@ -582,36 +614,36 @@ class _State {
   final int bShiftByteCount;
   final int bitCount;
 
-  static const latchTable = <_EncodingMode, Map<_EncodingMode, int>>{
-    _EncodingMode.mode_upper: {
+  static const Map<_EncodingMode, Map<_EncodingMode, int>> latchTable = <_EncodingMode, Map<_EncodingMode, int>>{
+    _EncodingMode.mode_upper: <_EncodingMode, int>{
       _EncodingMode.mode_upper: 0,
       _EncodingMode.mode_lower: (5 << 16) + 28,
       _EncodingMode.mode_digit: (5 << 16) + 30,
       _EncodingMode.mode_mixed: (5 << 16) + 29,
       _EncodingMode.mode_punct: (10 << 16) + (29 << 5) + 30,
     },
-    _EncodingMode.mode_lower: {
+    _EncodingMode.mode_lower: <_EncodingMode, int>{
       _EncodingMode.mode_upper: (9 << 16) + (30 << 4) + 14,
       _EncodingMode.mode_lower: 0,
       _EncodingMode.mode_digit: (5 << 16) + 30,
       _EncodingMode.mode_mixed: (5 << 16) + 29,
       _EncodingMode.mode_punct: (10 << 16) + (29 << 5) + 30,
     },
-    _EncodingMode.mode_digit: {
+    _EncodingMode.mode_digit: <_EncodingMode, int>{
       _EncodingMode.mode_upper: (4 << 16) + 14,
       _EncodingMode.mode_lower: (9 << 16) + (14 << 5) + 28,
       _EncodingMode.mode_digit: 0,
       _EncodingMode.mode_mixed: (9 << 16) + (14 << 5) + 29,
       _EncodingMode.mode_punct: (14 << 16) + (14 << 10) + (29 << 5) + 30,
     },
-    _EncodingMode.mode_mixed: {
+    _EncodingMode.mode_mixed: <_EncodingMode, int>{
       _EncodingMode.mode_upper: (5 << 16) + 29,
       _EncodingMode.mode_lower: (5 << 16) + 28,
       _EncodingMode.mode_digit: (10 << 16) + (29 << 5) + 30,
       _EncodingMode.mode_mixed: 0,
       _EncodingMode.mode_punct: (5 << 16) + 30,
     },
-    _EncodingMode.mode_punct: {
+    _EncodingMode.mode_punct: <_EncodingMode, int>{
       _EncodingMode.mode_upper: (5 << 16) + 31,
       _EncodingMode.mode_lower: (10 << 16) + (31 << 5) + 28,
       _EncodingMode.mode_digit: (10 << 16) + (31 << 5) + 30,
@@ -621,11 +653,11 @@ class _State {
   };
 
   _State latchAndAppend(_EncodingMode mode, int value) {
-    var bitCount = this.bitCount;
-    var tokens = this.tokens;
+    int bitCount = this.bitCount;
+    _Token? tokens = this.tokens;
 
     if (mode != this.mode) {
-      final latch = latchTable[this.mode]![mode]!;
+      final int latch = latchTable[this.mode]![mode]!;
       tokens = _SimpleToken(tokens, latch & 0xFFFF, latch >> 16);
       bitCount += latch >> 16;
     }
@@ -639,7 +671,7 @@ class _State {
   }
 
   _State shiftAndAppend(_EncodingMode mode, int value) {
-    var tokens = this.tokens;
+    _Token? tokens = this.tokens;
 
     tokens = _SimpleToken(tokens, _shiftTable[this.mode]![mode]!, _bitCount(this.mode));
     tokens = _SimpleToken(tokens, value, 5);
@@ -653,22 +685,22 @@ class _State {
   }
 
   _State addBinaryShiftChar(int index) {
-    var tokens = this.tokens;
-    var mode = this.mode;
-    var bitCnt = bitCount;
+    _Token? tokens = this.tokens;
+    _EncodingMode mode = this.mode;
+    int bitCnt = bitCount;
     if (this.mode == _EncodingMode.mode_punct || this.mode == _EncodingMode.mode_digit) {
-      final latch = latchTable[this.mode]![_EncodingMode.mode_upper]!;
+      final int latch = latchTable[this.mode]![_EncodingMode.mode_upper]!;
       tokens = _SimpleToken(tokens, latch & 0xFFFF, latch >> 16);
       bitCnt += latch >> 16;
       mode = _EncodingMode.mode_upper;
     }
-    var deltaBitCount = 8;
+    int deltaBitCount = 8;
     if (bShiftByteCount == 0 || bShiftByteCount == 31) {
       deltaBitCount = 18;
     } else if (bShiftByteCount == 62) {
       deltaBitCount = 9;
     }
-    var result = _State(
+    _State result = _State(
       mode: mode,
       tokens: tokens,
       bShiftByteCount: bShiftByteCount + 1,
@@ -685,7 +717,7 @@ class _State {
     if (bShiftByteCount == 0) {
       return this;
     }
-    final tokens = _BinaryShiftToken(this.tokens, index - bShiftByteCount, bShiftByteCount);
+    final _BinaryShiftToken tokens = _BinaryShiftToken(this.tokens, index - bShiftByteCount, bShiftByteCount);
     return _State(
       mode: mode,
       tokens: tokens,
@@ -695,7 +727,7 @@ class _State {
   }
 
   bool isBetterThanOrEqualTo(_State other) {
-    var mySize = bitCount + (latchTable[mode]![other.mode]! >> 16);
+    int mySize = bitCount + (latchTable[mode]![other.mode]! >> 16);
 
     if (other.bShiftByteCount > 0 && (bShiftByteCount == 0 || bShiftByteCount > other.bShiftByteCount)) {
       mySize += 10;
@@ -704,14 +736,14 @@ class _State {
   }
 
   List<bool> toBitList(List<int> text) {
-    final tokens = <_Token>[];
-    final se = endBinaryShift(text.length);
+    final List<_Token> tokens = <_Token>[];
+    final _State se = endBinaryShift(text.length);
 
-    for (var t = se.tokens; t != null; t = t.prev) {
+    for (_Token? t = se.tokens; t != null; t = t.prev) {
       tokens.add(t);
     }
-    final res = <bool>[];
-    for (var i = tokens.length - 1; i >= 0; i--) {
+    final List<bool> res = <bool>[];
+    for (int i = tokens.length - 1; i >= 0; i--) {
       tokens[i].appendTo(res, text);
     }
     return res;
@@ -786,8 +818,6 @@ abstract class Barcode {
         return Barcode.dataMatrix();
       case BarcodeType.Aztec:
         return Barcode.aztec();
-      default:
-        throw UnimplementedError("Barcode $type not supported");
     }
   }
 
@@ -943,9 +973,9 @@ abstract class Barcode {
       throw BarcodeException('Unable to encode "$data", minimum length is $minLength for $name Barcode');
     }
 
-    final chr = charSet.toSet();
+    final Set<int> chr = charSet.toSet();
 
-    for (var code in data) {
+    for (final int code in data) {
       if (!chr.contains(code)) {
         throw BarcodeException('Unable to encode "${String.fromCharCode(code)}" to $name Barcode');
       }
@@ -969,7 +999,7 @@ abstract class Barcode {
     fontHeight ??= height * 0.2;
     textPadding ??= height * 0.05;
 
-    final recipe = make(
+    final Iterable<BarcodeElement> recipe = make(
       data,
       width: width.toDouble(),
       height: height.toDouble(),
@@ -998,7 +1028,7 @@ abstract class Barcode {
     fontHeight ??= height * 0.2;
     textPadding ??= height * 0.05;
 
-    final recipe = makeBytes(
+    final Iterable<BarcodeElement> recipe = makeBytes(
       data,
       width: width.toDouble(),
       height: height.toDouble(),
@@ -1016,13 +1046,11 @@ abstract class Barcode {
   }
 
   String _s(String s) {
-    const esc = HtmlEscape();
+    const HtmlEscape esc = HtmlEscape();
     return esc.convert(s);
   }
 
-  String _c(int c) {
-    return "#${(c & 0xffffff).toRadixString(16).padLeft(6, '0')}";
-  }
+  String _c(int c) => "#${(c & 0xffffff).toRadixString(16).padLeft(6, '0')}";
 
   String _toSvg(
     Iterable<BarcodeElement> recipe,
@@ -1037,10 +1065,10 @@ abstract class Barcode {
     bool fullSvg,
     double baseline,
   ) {
-    final path = StringBuffer();
-    final tSpan = StringBuffer();
+    final StringBuffer path = StringBuffer();
+    final StringBuffer tSpan = StringBuffer();
 
-    for (var elem in recipe) {
+    for (final BarcodeElement elem in recipe) {
       if (elem is BarcodeBar) {
         if (elem.black) {
           path.write("M ${_d(x + elem.left)} ${_d(y + elem.top)} ");
@@ -1050,7 +1078,7 @@ abstract class Barcode {
           path.write("z ");
         }
       } else if (elem is BarcodeText) {
-        final lY = y + elem.top + elem.height * baseline;
+        final double lY = y + elem.top + elem.height * baseline;
 
         final double lX;
         String anchor;
@@ -1073,7 +1101,7 @@ abstract class Barcode {
       }
     }
 
-    final output = StringBuffer();
+    final StringBuffer output = StringBuffer();
     if (fullSvg) {
       output.write('<svg viewBox="${_d(x)} ${_d(y)} ${_d(width)} ${_d(height)}" xmlns="http://www.w3.org/2000/svg">');
     }
@@ -1105,7 +1133,7 @@ abstract class Barcode {
 abstract class Barcode1D extends Barcode {
   const Barcode1D();
 
-  static const defaultTextPadding = 0.0;
+  static const double defaultTextPadding = 0;
 
   @override
   Iterable<BarcodeElement> makeBytes(
@@ -1122,22 +1150,22 @@ abstract class Barcode1D extends Barcode {
     fontHeight ??= 0;
     textPadding ??= defaultTextPadding;
 
-    final text = utf8.decoder.convert(data);
-    final bits = convert(text).toList();
+    final String text = utf8.decoder.convert(data);
+    final List<bool> bits = convert(text).toList();
 
     if (bits.isEmpty) {
       return;
     }
 
-    final top = marginTop(drawText, width, height, fontHeight, textPadding);
-    final left = marginLeft(drawText, width, height, fontHeight, textPadding);
-    final right = marginRight(drawText, width, height, fontHeight, textPadding);
-    final lineWidth = (width - left - right) / bits.length;
+    final double top = marginTop(drawText, width, height, fontHeight, textPadding);
+    final double left = marginLeft(drawText, width, height, fontHeight, textPadding);
+    final double right = marginRight(drawText, width, height, fontHeight, textPadding);
+    final double lineWidth = (width - left - right) / bits.length;
 
-    var color = bits.first;
-    var count = 1;
+    bool color = bits.first;
+    int count = 1;
 
-    for (var i = 1; i < bits.length; i++) {
+    for (int i = 1; i < bits.length; i++) {
       if (color == bits[i]) {
         count++;
         continue;
@@ -1163,7 +1191,7 @@ abstract class Barcode1D extends Barcode {
       count = 1;
     }
 
-    final l = bits.length;
+    final int l = bits.length;
     yield BarcodeBar(
       left: left + (l - count) * lineWidth,
       top: top,
@@ -1193,9 +1221,7 @@ abstract class Barcode1D extends Barcode {
     double fontHeight,
     double textPadding,
     bool drawText,
-  ) {
-    return height - (drawText ? fontHeight + textPadding : 0);
-  }
+  ) => height - (drawText ? fontHeight + textPadding : 0);
 
   double marginTop(
     bool drawText,
@@ -1240,32 +1266,33 @@ abstract class Barcode1D extends Barcode {
   }
 
   Iterable<bool> add(int data, int count) sync* {
-    for (var i = 0; i < count; i++) {
+    for (int i = 0; i < count; i++) {
       yield (1 & (data >> i)) == 1;
     }
   }
 
   String toHex(String data) {
-    var intermediate = "";
-    for (var bit in convert(data)) {
-      intermediate += bit ? "1" : "0";
+    final StringBuffer intermediateBuffer = StringBuffer();
+    for (final bool bit in convert(data)) {
+      intermediateBuffer.write(bit ? "1" : "0");
     }
+    String intermediate = intermediateBuffer.toString();
 
-    var result = "";
+    final StringBuffer resultBuffer = StringBuffer();
     while (intermediate.length > 8) {
-      final sub = intermediate.substring(intermediate.length - 8);
-      result += int.parse(sub, radix: 2).toRadixString(16);
+      final String sub = intermediate.substring(intermediate.length - 8);
+      resultBuffer.write(int.parse(sub, radix: 2).toRadixString(16));
       intermediate = intermediate.substring(0, intermediate.length - 8);
     }
-    result += int.parse(intermediate, radix: 2).toRadixString(16);
+    resultBuffer.write(int.parse(intermediate, radix: 2).toRadixString(16));
 
-    return result;
+    return resultBuffer.toString();
   }
 
   String getText(String data) {
-    final result = StringBuffer();
+    final StringBuffer result = StringBuffer();
 
-    for (final elem in makeText(data, 200, 200, 10, 5, 10)) {
+    for (final BarcodeElement elem in makeText(data, 200, 200, 10, 5, 10)) {
       if (elem is BarcodeText) {
         result.write(elem.text);
       }
@@ -1289,9 +1316,9 @@ class Barcode2DMatrix {
     width,
     height,
     ratio,
-    Iterable<bool>.generate(width * height, (p) {
-      final x = p % height;
-      final y = p ~/ height;
+    Iterable<bool>.generate(width * height, (int p) {
+      final int x = p % height;
+      final int y = p ~/ height;
       return isDark(y, x);
     }),
   );
@@ -1320,9 +1347,9 @@ abstract class Barcode2D extends Barcode {
     assert(width > 0);
     assert(height > 0);
 
-    final matrix = convert(data);
+    final Barcode2DMatrix matrix = convert(data);
 
-    final mh = matrix.height * matrix.ratio;
+    final double mh = matrix.height * matrix.ratio;
     double w;
     double h;
     if (width / height > matrix.width / mh) {
@@ -1333,17 +1360,17 @@ abstract class Barcode2D extends Barcode {
       h = mh * width / matrix.width;
     }
 
-    final pixelW = w / matrix.width;
-    final pixelH = h / matrix.height;
-    final offsetX = (width - w) / 2;
-    final offsetY = (height - h) / 2;
+    final double pixelW = w / matrix.width;
+    final double pixelH = h / matrix.height;
+    final double offsetX = (width - w) / 2;
+    final double offsetY = (height - h) / 2;
 
-    var start = 0;
+    int start = 0;
     bool? color;
-    var x = 0;
-    var y = 0;
+    int x = 0;
+    int y = 0;
 
-    for (final pixel in matrix.pixels) {
+    for (final bool pixel in matrix.pixels) {
       color ??= pixel;
 
       if (pixel != color) {
@@ -1388,21 +1415,22 @@ abstract class Barcode2D extends Barcode {
   }
 
   String toHex(String data) {
-    var intermediate = "";
-    final matrix = convert(Uint8List.fromList(data.codeUnits));
-    for (var bit in matrix.pixels) {
-      intermediate += bit ? "1" : "0";
+    final StringBuffer intermediateBuffer = StringBuffer();
+    final Barcode2DMatrix matrix = convert(Uint8List.fromList(data.codeUnits));
+    for (final bool bit in matrix.pixels) {
+      intermediateBuffer.write(bit ? "1" : "0");
     }
+    String intermediate = intermediateBuffer.toString();
 
-    var result = "";
+    final StringBuffer resultBuffer = StringBuffer();
     while (intermediate.length > 8) {
-      final sub = intermediate.substring(intermediate.length - 8);
-      result += int.parse(sub, radix: 2).toRadixString(16);
+      final String sub = intermediate.substring(intermediate.length - 8);
+      resultBuffer.write(int.parse(sub, radix: 2).toRadixString(16));
       intermediate = intermediate.substring(0, intermediate.length - 8);
     }
-    result += int.parse(intermediate, radix: 2).toRadixString(16);
+    resultBuffer.write(int.parse(intermediate, radix: 2).toRadixString(16));
 
-    return result;
+    return resultBuffer.toString();
   }
 
   Barcode2DMatrix convert(Uint8List data);
@@ -1425,7 +1453,7 @@ enum BarcodeHMBar {
 }
 
 abstract class BarcodeHM extends Barcode1D {
-  const BarcodeHM({double tracker = 0.3}) : _tracker = tracker;
+  const BarcodeHM({this._tracker = 0.3});
 
   final double _tracker;
 
@@ -1444,41 +1472,41 @@ abstract class BarcodeHM extends Barcode1D {
     fontHeight ??= 0;
     textPadding ??= Barcode1D.defaultTextPadding;
 
-    final text = utf8.decoder.convert(data);
-    final bars = convertHM(text).toList();
+    final String text = utf8.decoder.convert(data);
+    final List<BarcodeHMBar> bars = convertHM(text).toList();
 
     if (bars.isEmpty) {
       return;
     }
 
-    final top = marginTop(
+    final double top = marginTop(
       drawText,
       width,
       height,
       fontHeight,
       textPadding,
     );
-    final left = marginLeft(
+    final double left = marginLeft(
       drawText,
       width,
       height,
       fontHeight,
       textPadding,
     );
-    final right = marginRight(
+    final double right = marginRight(
       drawText,
       width,
       height,
       fontHeight,
       textPadding,
     );
-    final lineWidth = (width - left - right) / (bars.length * 2 - 1);
-    var index = 0;
+    final double lineWidth = (width - left - right) / (bars.length * 2 - 1);
+    int index = 0;
 
-    final barHeight = height - (drawText ? fontHeight + textPadding : 0) - top;
-    final tracker = barHeight * _tracker;
+    final double barHeight = height - (drawText ? fontHeight + textPadding : 0) - top;
+    final double tracker = barHeight * _tracker;
 
-    for (final bar in bars) {
+    for (final BarcodeHMBar bar in bars) {
       switch (bar) {
         case BarcodeHMBar.tracker:
           yield BarcodeBar(
@@ -1528,10 +1556,10 @@ abstract class BarcodeHM extends Barcode1D {
 
   @override
   String toHex(String data) {
-    var result = "";
-    var b = 0;
-    var n = false;
-    for (var bit in convertHM(data)) {
+    String result = "";
+    int b = 0;
+    bool n = false;
+    for (final BarcodeHMBar bit in convertHM(data)) {
       b = (b << 2) + bit.index;
       if (n) {
         result += b.toRadixString(16);
@@ -1545,7 +1573,7 @@ abstract class BarcodeHM extends Barcode1D {
   BarcodeHMBar fromBits(int bits) => BarcodeHMBar.values[bits];
 
   Iterable<BarcodeHMBar> addHW(int code, int len) sync* {
-    for (var index = 0; index < len; index++) {
+    for (int index = 0; index < len; index++) {
       yield fromBits((code >> index * 2) & 3);
     }
   }
@@ -1559,7 +1587,7 @@ abstract class BarcodeHM extends Barcode1D {
 }
 
 class BarcodeMaps {
-  static const code39 = <int, int>{
+  static const Map<int, int> code39 = <int, int>{
     0x30: 0xb65,
     0x31: 0xd4b,
     0x32: 0xd4d,
@@ -1605,10 +1633,10 @@ class BarcodeMaps {
     0x25: 0x925,
   };
 
-  static const code39StartStop = 0xb69;
+  static const int code39StartStop = 0xb69;
   static const int code39Len = 13;
 
-  static const code93 = <int, int>{
+  static const Map<int, int> code93 = <int, int>{
     0x30: 0x51,
     0x31: 0x25,
     0x32: 0x45,
@@ -1660,15 +1688,15 @@ class BarcodeMaps {
     -6: code93ReverseStop,
   };
 
-  static const code93Dollar = 0xc9;
-  static const code93Percent = 0xb7;
-  static const code93Slash = 0xd7;
-  static const code93Plus = 0x99;
-  static const code93StartStop = 0xf5;
-  static const code93ReverseStop = 0xbd;
-  static const code93Len = 9;
+  static const int code93Dollar = 0xc9;
+  static const int code93Percent = 0xb7;
+  static const int code93Slash = 0xd7;
+  static const int code93Plus = 0x99;
+  static const int code93StartStop = 0xf5;
+  static const int code93ReverseStop = 0xbd;
+  static const int code93Len = 9;
 
-  static const code128A = <int, int>{
+  static const Map<int, int> code128A = <int, int>{
     0x20: 0x0,
     0x21: 0x1,
     0x22: 0x2,
@@ -1774,7 +1802,7 @@ class BarcodeMaps {
     code128FNC1: 0x66,
   };
 
-  static const code128B = <int, int>{
+  static const Map<int, int> code128B = <int, int>{
     0x20: 0x0,
     0x21: 0x1,
     0x22: 0x2,
@@ -1880,7 +1908,7 @@ class BarcodeMaps {
     code128FNC1: 0x66,
   };
 
-  static const code128C = <int, int>{
+  static const Map<int, int> code128C = <int, int>{
     0x0: 0x0,
     0x1: 0x1,
     0x2: 0x2,
@@ -1986,7 +2014,7 @@ class BarcodeMaps {
     code128FNC1: 0x66,
   };
 
-  static const code128 = <int, int>{
+  static const Map<int, int> code128 = <int, int>{
     0x0: 0x19b,
     0x1: 0x1b3,
     0x2: 0x333,
@@ -2098,28 +2126,28 @@ class BarcodeMaps {
     code128StopPattern: 0x1ae3,
   };
 
-  static const code128StartCodeA = 0x67;
-  static const code128StartCodeB = 0x68;
-  static const code128StartCodeC = 0x69;
-  static const code128Stop = 0x6a;
-  static const code128ReverseStop = 0x6b;
-  static const code128StopPattern = 0x6c;
-  static const code128FNC1 = 0xfa;
-  static const code128FNC1String = "\u{fa}";
-  static const code128FNC2 = 0xfb;
-  static const code128FNC2String = "\u{fb}";
-  static const code128FNC3 = 0xfc;
-  static const code128FNC3String = "\u{fc}";
-  static const code128FNC4 = 0xfd;
-  static const code128FNC4String = "\u{fd}";
-  static const code128ShiftA = -5;
-  static const code128ShiftB = -6;
-  static const code128CodeA = -7;
-  static const code128CodeB = -8;
-  static const code128CodeC = -9;
-  static const code128Len = 11;
+  static const int code128StartCodeA = 0x67;
+  static const int code128StartCodeB = 0x68;
+  static const int code128StartCodeC = 0x69;
+  static const int code128Stop = 0x6a;
+  static const int code128ReverseStop = 0x6b;
+  static const int code128StopPattern = 0x6c;
+  static const int code128FNC1 = 0xfa;
+  static const String code128FNC1String = "\u{fa}";
+  static const int code128FNC2 = 0xfb;
+  static const String code128FNC2String = "\u{fb}";
+  static const int code128FNC3 = 0xfc;
+  static const String code128FNC3String = "\u{fc}";
+  static const int code128FNC4 = 0xfd;
+  static const String code128FNC4String = "\u{fd}";
+  static const int code128ShiftA = -5;
+  static const int code128ShiftB = -6;
+  static const int code128CodeA = -7;
+  static const int code128CodeB = -8;
+  static const int code128CodeC = -9;
+  static const int code128Len = 11;
 
-  static const ean = <int, List<int>>{
+  static const Map<int, List<int>> ean = <int, List<int>>{
     0x30: <int>[0x58, 0x72, 0x27],
     0x31: <int>[0x4c, 0x66, 0x33],
     0x32: <int>[0x64, 0x6c, 0x1b],
@@ -2132,7 +2160,7 @@ class BarcodeMaps {
     0x39: <int>[0x68, 0x74, 0x17],
   };
 
-  static const eanFirst = <int, int>{
+  static const Map<int, int> eanFirst = <int, int>{
     0x30: 0x0,
     0x31: 0x34,
     0x32: 0x2c,
@@ -2145,7 +2173,7 @@ class BarcodeMaps {
     0x39: 0x16,
   };
 
-  static const ean5Checksum = <int, int>{
+  static const Map<int, int> ean5Checksum = <int, int>{
     0x30: 0x3,
     0x31: 0x5,
     0x32: 0x9,
@@ -2158,7 +2186,7 @@ class BarcodeMaps {
     0x39: 0x14,
   };
 
-  static const upce = <int, int>{
+  static const Map<int, int> upce = <int, int>{
     0x30: 0x38,
     0x31: 0x34,
     0x32: 0x2c,
@@ -2171,13 +2199,13 @@ class BarcodeMaps {
     0x39: 0x16,
   };
 
-  static const eanStartEnd = 0x5;
-  static const eanCenter = 0xa;
-  static const eanEndUpcE = 0x2a;
-  static const eanStartEan2 = 0x1a;
-  static const eanCenterEan2 = 0x2;
+  static const int eanStartEnd = 0x5;
+  static const int eanCenter = 0xa;
+  static const int eanEndUpcE = 0x2a;
+  static const int eanStartEan2 = 0x1a;
+  static const int eanCenterEan2 = 0x2;
 
-  static const itf = <int, int>{
+  static const Map<int, int> itf = <int, int>{
     0x30: 0xc,
     0x31: 0x11,
     0x32: 0x12,
@@ -2190,10 +2218,10 @@ class BarcodeMaps {
     0x39: 0xa,
   };
 
-  static const itfStart = 0x5;
-  static const itfEnd = 0x17;
+  static const int itfStart = 0x5;
+  static const int itfEnd = 0x17;
 
-  static const telepen = <int>[
+  static const List<int> telepen = <int>[
     0x7777,
     0x5ddd,
     0x5dc7,
@@ -2324,11 +2352,11 @@ class BarcodeMaps {
     0x5555,
   ];
 
-  static const telepenStart = 0x1d55;
-  static const telepenEnd = 0x5547;
-  static const telepenLen = 16;
+  static const int telepenStart = 0x1d55;
+  static const int telepenEnd = 0x5547;
+  static const int telepenLen = 16;
 
-  static const codabar = <int, int>{
+  static const Map<int, int> codabar = <int, int>{
     0x30: 0x195,
     0x31: 0x135,
     0x34: 0x12d,
@@ -2351,7 +2379,7 @@ class BarcodeMaps {
     0x42: 0x349,
   };
 
-  static const codabarLen = <int, int>{
+  static const Map<int, int> codabarLen = <int, int>{
     0x30: 9,
     0x31: 9,
     0x34: 9,
@@ -2374,7 +2402,7 @@ class BarcodeMaps {
     0x42: 10,
   };
 
-  static const rm4scc = <int, int>{
+  static const Map<int, int> rm4scc = <int, int>{
     0x30: 0xf0,
     0x31: 0xd8,
     0x32: 0x78,
@@ -2413,11 +2441,11 @@ class BarcodeMaps {
     0x5a: 0xf,
   };
 
-  static const rm4sccLen = 4;
-  static const rm4sccStart = 0x1;
-  static const rm4sccStop = 0x3;
+  static const int rm4sccLen = 4;
+  static const int rm4sccStart = 0x1;
+  static const int rm4sccStop = 0x3;
 
-  static const postnet = <int, int>{
+  static const Map<int, int> postnet = <int, int>{
     0x30: 0x2af,
     0x31: 0x3ea,
     0x32: 0x3ba,
@@ -2430,8 +2458,8 @@ class BarcodeMaps {
     0x39: 0xbb,
   };
 
-  static const postnetLen = 5;
-  static const postnetStartStop = 0x3;
+  static const int postnetLen = 5;
+  static const int postnetStartStop = 0x3;
 }
 
 class BarcodeElement {
@@ -2460,17 +2488,12 @@ class BarcodeElement {
 
 class BarcodeBar extends BarcodeElement {
   const BarcodeBar({
-    required double left,
-    required double top,
-    required double width,
-    required double height,
+    required super.left,
+    required super.top,
+    required super.width,
+    required super.height,
     required this.black,
-  }) : super(
-         left: left,
-         top: top,
-         width: width,
-         height: height,
-       );
+  });
 
   final bool black;
 
@@ -2486,18 +2509,13 @@ enum BarcodeTextAlign {
 
 class BarcodeText extends BarcodeElement {
   const BarcodeText({
-    required double left,
-    required double top,
-    required double width,
-    required double height,
+    required super.left,
+    required super.top,
+    required super.width,
+    required super.height,
     required this.text,
     required this.align,
-  }) : super(
-         left: left,
-         top: top,
-         width: width,
-         height: height,
-       );
+  });
 
   final String text;
 
@@ -2548,10 +2566,10 @@ final class QrBitBuffer {
     assert(length > 0, "length must be strictly positive");
     assert(number >= 0, "number must be non-negative");
 
-    var bitIndex = _length;
-    final endBitIndex = bitIndex + length;
+    int bitIndex = _length;
+    final int endBitIndex = bitIndex + length;
 
-    final neededBytes = (endBitIndex + 7) >> 3;
+    final int neededBytes = (endBitIndex + 7) >> 3;
     _ensureCapacity(neededBytes);
 
     if (length == 8 && (bitIndex & 7) == 0 && number >= 0 && number <= 255) {
@@ -2560,18 +2578,18 @@ final class QrBitBuffer {
       return;
     }
 
-    var bitsLeft = length;
+    int bitsLeft = length;
 
     while (bitsLeft > 0) {
-      final bufIndex = bitIndex >> 3;
-      final leftBitIndex = bitIndex & 7;
-      final available = 8 - leftBitIndex;
-      final bitsToWrite = bitsLeft < available ? bitsLeft : available;
+      final int bufIndex = bitIndex >> 3;
+      final int leftBitIndex = bitIndex & 7;
+      final int available = 8 - leftBitIndex;
+      final int bitsToWrite = bitsLeft < available ? bitsLeft : available;
 
-      final shift = bitsLeft - bitsToWrite;
-      final bits = (number >> shift) & ((1 << bitsToWrite) - 1);
+      final int shift = bitsLeft - bitsToWrite;
+      final int bits = (number >> shift) & ((1 << bitsToWrite) - 1);
 
-      final posShift = 8 - leftBitIndex - bitsToWrite;
+      final int posShift = 8 - leftBitIndex - bitsToWrite;
       _buffer[bufIndex] |= bits << posShift;
 
       bitsLeft -= bitsToWrite;
@@ -2583,21 +2601,21 @@ final class QrBitBuffer {
 
   @override
   String toString() {
-    final chars = Uint8List(_length);
-    var charIndex = 0;
+    final Uint8List chars = Uint8List(_length);
+    int charIndex = 0;
 
-    final fullBytes = _length >> 3;
-    for (var i = 0; i < fullBytes; i++) {
-      final byte = _buffer[i];
-      for (var j = 7; j >= 0; j--) {
+    final int fullBytes = _length >> 3;
+    for (int i = 0; i < fullBytes; i++) {
+      final int byte = _buffer[i];
+      for (int j = 7; j >= 0; j--) {
         chars[charIndex++] = ((byte >> j) & 1) + 48;
       }
     }
 
-    final remainingBits = _length & 7;
+    final int remainingBits = _length & 7;
     if (remainingBits > 0) {
-      final byte = _buffer[fullBytes];
-      for (var i = 0; i < remainingBits; i++) {
+      final int byte = _buffer[fullBytes];
+      for (int i = 0; i < remainingBits; i++) {
         chars[charIndex++] = ((byte >> (7 - i)) & 1) + 48;
       }
     }
@@ -2607,11 +2625,11 @@ final class QrBitBuffer {
 
   void _ensureCapacity(int neededBytes) {
     if (_buffer.length < neededBytes) {
-      var newLength = _buffer.isEmpty ? 4 : _buffer.length * 2;
+      int newLength = _buffer.isEmpty ? 4 : _buffer.length * 2;
       while (newLength < neededBytes) {
         newLength *= 2;
       }
-      final newBuffer = Uint8List(newLength)..setRange(0, _buffer.length, _buffer);
+      final Uint8List newBuffer = Uint8List(newLength)..setRange(0, _buffer.length, _buffer);
       _buffer = newBuffer;
     }
   }
@@ -2628,17 +2646,17 @@ abstract interface class QrDatum {
 
   static List<QrDatum> toDatums(String data) {
     if (QrNumeric.validationRegex.hasMatch(data)) {
-      return [QrNumeric.fromString(data)];
+      return <QrDatum>[QrNumeric.fromString(data)];
     }
     if (QrAlphaNumeric.validationRegex.hasMatch(data)) {
-      return [QrAlphaNumeric.fromString(data)];
+      return <QrDatum>[QrAlphaNumeric.fromString(data)];
     }
 
-    final hasNonLatin1 = data.codeUnits.any((c) => c > 255);
+    final bool hasNonLatin1 = data.codeUnits.any((int c) => c > 255);
     if (hasNonLatin1) {
-      return [QrEci(26), QrByte(data)];
+      return <QrDatum>[QrEci(26), QrByte(data)];
     }
-    return [QrByte(data)];
+    return <QrDatum>[QrByte(data)];
   }
 }
 
@@ -2663,7 +2681,7 @@ final class QrByte implements QrDatum {
 
   @override
   void write(QrBitBuffer buffer) {
-    for (final v in _data) {
+    for (final int v in _data) {
       buffer.put(v, 8);
     }
   }
@@ -2674,16 +2692,16 @@ final class QrNumeric implements QrDatum {
 
   factory QrNumeric.fromString(String numberString) {
     if (!validationRegex.hasMatch(numberString)) {
-      final value = numberString.length > 10 ? "${numberString.substring(0, 10)}..." : numberString;
+      final String value = numberString.length > 10 ? "${numberString.substring(0, 10)}..." : numberString;
       throw ArgumentError.value(
         value,
         "numberString",
         "string can only contain digits 0-9",
       );
     }
-    final newList = Uint8List(numberString.length);
-    var count = 0;
-    for (var char in numberString.codeUnits) {
+    final Uint8List newList = Uint8List(numberString.length);
+    int count = 0;
+    for (final int char in numberString.codeUnits) {
       newList[count++] = char - 0x30;
     }
     return QrNumeric._(newList);
@@ -2698,11 +2716,11 @@ final class QrNumeric implements QrDatum {
 
   @override
   void write(QrBitBuffer buffer) {
-    final leftOver = _data.length % 3;
+    final int leftOver = _data.length % 3;
 
-    final efficientGrab = _data.length - leftOver;
-    for (var i = 0; i < efficientGrab; i += 3) {
-      final encoded = _data[i] * 100 + _data[i + 1] * 10 + _data[i + 2];
+    final int efficientGrab = _data.length - leftOver;
+    for (int i = 0; i < efficientGrab; i += 3) {
+      final int encoded = _data[i] * 100 + _data[i + 1] * 10 + _data[i + 2];
       buffer.put(encoded, 10);
     }
     switch (leftOver) {
@@ -2718,8 +2736,8 @@ final class QrNumeric implements QrDatum {
 
   @override
   int get bitLength {
-    final leftOver = _data.length % 3;
-    var bits = (_data.length ~/ 3) * 10;
+    final int leftOver = _data.length % 3;
+    int bits = (_data.length ~/ 3) * 10;
     if (leftOver == 1) {
       bits += 4;
     } else if (leftOver == 2) {
@@ -2730,15 +2748,15 @@ final class QrNumeric implements QrDatum {
 }
 
 final class QrAlphaNumeric implements QrDatum {
-  static const alphaNumTable = r"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:";
+  static const String alphaNumTable = r"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:";
 
-  static final validationRegex = RegExp(
+  static final RegExp validationRegex = RegExp(
     r"^[-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+./:]+$",
   );
-  static final encodeArray = () {
-    final array = List<int?>.filled(91, null);
-    for (var i = 0; i < alphaNumTable.length; i++) {
-      final char = alphaNumTable.codeUnitAt(i);
+  static final List<int?> encodeArray = () {
+    final List<int?> array = List<int?>.filled(91, null);
+    for (int i = 0; i < alphaNumTable.length; i++) {
+      final int char = alphaNumTable.codeUnitAt(i);
       array[char] = i;
     }
     return array;
@@ -2748,7 +2766,7 @@ final class QrAlphaNumeric implements QrDatum {
 
   factory QrAlphaNumeric.fromString(String alphaNumeric) {
     if (!alphaNumeric.contains(validationRegex)) {
-      final value = alphaNumeric.length > 10 ? "${alphaNumeric.substring(0, 10)}..." : alphaNumeric;
+      final String value = alphaNumeric.length > 10 ? "${alphaNumeric.substring(0, 10)}..." : alphaNumeric;
       throw ArgumentError.value(
         value,
         "alphaNumeric",
@@ -2765,11 +2783,11 @@ final class QrAlphaNumeric implements QrDatum {
 
   @override
   void write(QrBitBuffer buffer) {
-    final leftOver = _string.length % 2;
+    final int leftOver = _string.length % 2;
 
-    final efficientGrab = _string.length - leftOver;
-    for (var i = 0; i < efficientGrab; i += 2) {
-      final encoded = encodeArray[_string.codeUnitAt(i)]! * 45 + encodeArray[_string.codeUnitAt(i + 1)]!;
+    final int efficientGrab = _string.length - leftOver;
+    for (int i = 0; i < efficientGrab; i += 2) {
+      final int encoded = encodeArray[_string.codeUnitAt(i)]! * 45 + encodeArray[_string.codeUnitAt(i + 1)]!;
       buffer.put(encoded, 11);
     }
     if (leftOver > 0) {
@@ -2782,8 +2800,8 @@ final class QrAlphaNumeric implements QrDatum {
 
   @override
   int get bitLength {
-    final leftOver = _string.length % 2;
-    var bits = (_string.length ~/ 2) * 11;
+    final int leftOver = _string.length % 2;
+    int bits = (_string.length ~/ 2) * 11;
     if (leftOver == 1) {
       bits += 6;
     }
@@ -2822,10 +2840,10 @@ class BarcodeCodabar extends Barcode1D {
 
   @override
   Iterable<bool> convert(String data) sync* {
-    final startStop = <int>[0x41, 0x42, 0x43, 0x44];
+    final List<int> startStop = <int>[0x41, 0x42, 0x43, 0x44];
 
-    var lStart = startStop[start.index];
-    var lStop = startStop[stop.index];
+    int lStart = startStop[start.index];
+    int lStop = startStop[stop.index];
 
     if (explicitStartStop) {
       lStart = _getStartStopByte(data.codeUnitAt(0));
@@ -2837,16 +2855,16 @@ class BarcodeCodabar extends Barcode1D {
 
     yield false;
 
-    for (var code in data.codeUnits) {
+    for (final int code in data.codeUnits) {
       if (code > 0x40 || code == 0x2a) {
         throw BarcodeException('Unable to encode "${String.fromCharCode(code)}" to $name Barcode');
       }
 
-      final codeValue = BarcodeMaps.codabar[code];
+      final int? codeValue = BarcodeMaps.codabar[code];
       if (codeValue == null) {
         throw BarcodeException('Unable to encode "${String.fromCharCode(code)}" to $name Barcode');
       }
-      final codeLen = BarcodeMaps.codabarLen[code]!;
+      final int codeLen = BarcodeMaps.codabarLen[code]!;
       yield* add(codeValue, codeLen);
 
       yield false;
@@ -2872,7 +2890,7 @@ class BarcodeCodabar extends Barcode1D {
   @override
   void verifyBytes(Uint8List data) {
     if (explicitStartStop) {
-      const validStartStop = [0x41, 0x42, 0x43, 0x44, 0x4e, 0x54, 0x2a, 0x45];
+      const List<int> validStartStop = <int>[0x41, 0x42, 0x43, 0x44, 0x4e, 0x54, 0x2a, 0x45];
 
       if (data.length < 3) {
         throw BarcodeException("Unable to encode $name Barcode: missing start and/or stop chars");
@@ -2919,13 +2937,13 @@ class BarcodeCodabar extends Barcode1D {
 }
 
 class BarcodeCode128Fnc {
-  static const fnc1 = BarcodeMaps.code128FNC1String;
+  static const String fnc1 = BarcodeMaps.code128FNC1String;
 
-  static const fnc2 = BarcodeMaps.code128FNC2String;
+  static const String fnc2 = BarcodeMaps.code128FNC2String;
 
-  static const fnc3 = BarcodeMaps.code128FNC3String;
+  static const String fnc3 = BarcodeMaps.code128FNC3String;
 
-  static const fnc4 = BarcodeMaps.code128FNC4String;
+  static const String fnc4 = BarcodeMaps.code128FNC4String;
 }
 
 class BarcodeCode128 extends Barcode1D {
@@ -2957,13 +2975,13 @@ class BarcodeCode128 extends Barcode1D {
   Iterable<int> get charSet => BarcodeMaps.code128B.keys
       .where((int x) => useCode128B && x >= 0)
       .followedBy(BarcodeMaps.code128A.keys.where((int x) => useCode128A && x >= 0))
-      .followedBy(useCode128C ? List<int>.generate(10, (int index) => index + 0x30) : [])
-      .followedBy([
+      .followedBy(useCode128C ? List<int>.generate(10, (int index) => index + 0x30) : <int>[])
+      .followedBy(<int>[
         BarcodeMaps.code128FNC1,
         if (useCode128A || useCode128B) BarcodeMaps.code128FNC2,
         if (useCode128A || useCode128B) BarcodeMaps.code128FNC3,
         if (useCode128A || useCode128B) BarcodeMaps.code128FNC4,
-        if (isGS1) ...[40, 41],
+        if (isGS1) ...<int>[40, 41],
       ])
       .toSet();
 
@@ -2971,14 +2989,14 @@ class BarcodeCode128 extends Barcode1D {
   String get name => isGS1 ? "GS1 128" : "CODE 128";
 
   Iterable<int> shortestCode(List<int> data) {
-    var table = 0;
+    int table = 0;
 
-    var lastTable = 0;
+    int lastTable = 0;
 
-    var length = 0;
-    var digitCount = 0;
+    int length = 0;
+    int digitCount = 0;
 
-    final result = <int>[];
+    final List<int> result = <int>[];
 
     void addFrom(List<int> data, int start) {
       Map<int, int>? t;
@@ -3013,33 +3031,33 @@ class BarcodeCode128 extends Barcode1D {
       }
 
       if (lastTable == 3) {
-        for (var i = start + length - 1; i >= start; i--) {
+        for (int i = start + length - 1; i >= start; i--) {
           if (data[i] == BarcodeMaps.code128FNC1) {
             result.add(t[BarcodeMaps.code128FNC1]!);
           } else {
-            final digit = data[i] - 0x30 + (data[i - 1] - 0x30) * 10;
+            final int digit = data[i] - 0x30 + (data[i - 1] - 0x30) * 10;
             assert(t[digit] != null);
             result.add(t[digit]!);
             i--;
           }
         }
       } else {
-        for (final c in data.sublist(start, start + length).reversed) {
+        for (final int c in data.sublist(start, start + length).reversed) {
           assert(t[c] != null);
           result.add(t[c]!);
         }
       }
     }
 
-    for (var index = data.length - 1; index >= 0; index--) {
-      final code = data[index];
+    for (int index = data.length - 1; index >= 0; index--) {
+      final int code = data[index];
 
-      final codeA = useCode128A && BarcodeMaps.code128A.containsKey(code);
-      final codeB = useCode128B && BarcodeMaps.code128B.containsKey(code);
-      final isFnc1 = code == BarcodeMaps.code128FNC1;
-      final codeC = useCode128C && (code >= 0x30 && code <= 0x39);
+      final bool codeA = useCode128A && BarcodeMaps.code128A.containsKey(code);
+      final bool codeB = useCode128B && BarcodeMaps.code128B.containsKey(code);
+      final bool isFnc1 = code == BarcodeMaps.code128FNC1;
+      final bool codeC = useCode128C && (code >= 0x30 && code <= 0x39);
 
-      var available = 0;
+      int available = 0;
       if (codeA) {
         available = 1;
       }
@@ -3090,7 +3108,7 @@ class BarcodeCode128 extends Barcode1D {
         table = available;
         length++;
       } else {
-        final newTable = table & available;
+        final int newTable = table & available;
         if (newTable == 0) {
           addFrom(data, index + 1);
           length = 0;
@@ -3131,9 +3149,9 @@ class BarcodeCode128 extends Barcode1D {
 
   String adaptData(String data, [bool text = false]) {
     if (isGS1) {
-      final result = StringBuffer();
-      var start = 0;
-      for (final match in RegExp(r"\(.+?\)").allMatches(data)) {
+      final StringBuffer result = StringBuffer();
+      int start = 0;
+      for (final RegExpMatch match in RegExp(r"\(.+?\)").allMatches(data)) {
         result.write(data.substring(start, match.start));
         result.write(BarcodeMaps.code128FNC1String);
         if (text && keepParenthesis) {
@@ -3153,9 +3171,9 @@ class BarcodeCode128 extends Barcode1D {
     }
 
     if (escapes) {
-      final result = StringBuffer();
-      var start = 0;
-      for (final match in RegExp(r"{\d}").allMatches(data)) {
+      final StringBuffer result = StringBuffer();
+      int start = 0;
+      for (final RegExpMatch match in RegExp(r"{\d}").allMatches(data)) {
         result.write(data.substring(start, match.start));
         switch (match.group(0)) {
           case "{1}":
@@ -3187,18 +3205,18 @@ class BarcodeCode128 extends Barcode1D {
   Iterable<bool> convert(String data) sync* {
     data = adaptData(data);
 
-    final checksum = <int>[];
+    final List<int> checksum = <int>[];
 
-    for (var codeIndex in shortestCode(data.codeUnits)) {
-      final codeValue = BarcodeMaps.code128[codeIndex]!;
+    for (final int codeIndex in shortestCode(data.codeUnits)) {
+      final int codeValue = BarcodeMaps.code128[codeIndex]!;
       yield* add(codeValue, BarcodeMaps.code128Len);
       checksum.add(codeIndex);
     }
 
-    var sum = 0;
-    for (var index = 0; index < checksum.length; index++) {
-      final code = checksum[index];
-      final mul = index == 0 ? 1 : index;
+    int sum = 0;
+    for (int index = 0; index < checksum.length; index++) {
+      final int code = checksum[index];
+      final int mul = index == 0 ? 1 : index;
       sum += code * mul;
     }
     sum = sum % 103;
@@ -3233,7 +3251,7 @@ class BarcodeCode128 extends Barcode1D {
 
   @override
   void verifyBytes(Uint8List data) {
-    final text = Uint8List.fromList(
+    final Uint8List text = Uint8List.fromList(
       adaptData(utf8.decoder.convert(data)).codeUnits,
     );
     shortestCode(text);
@@ -3256,8 +3274,8 @@ class BarcodeCode39 extends Barcode1D {
   Iterable<bool> convert(String data) sync* {
     yield* add(BarcodeMaps.code39StartStop, BarcodeMaps.code39Len);
 
-    for (var code in data.codeUnits) {
-      final codeValue = BarcodeMaps.code39[code];
+    for (final int code in data.codeUnits) {
+      final int? codeValue = BarcodeMaps.code39[code];
       if (codeValue == null) {
         throw BarcodeException('Unable to encode "${String.fromCharCode(code)}" to $name Barcode');
       }
@@ -3276,10 +3294,10 @@ class BarcodeCode39 extends Barcode1D {
     double textPadding,
     double lineWidth,
   ) sync* {
-    final text = drawSpacers ? "*$data*" : data;
+    final String text = drawSpacers ? "*$data*" : data;
 
-    final additionalOffset = drawSpacers ? 0 : 1;
-    for (var i = 0; i < text.length; i++) {
+    final int additionalOffset = drawSpacers ? 0 : 1;
+    for (int i = 0; i < text.length; i++) {
       yield BarcodeText(
         left: lineWidth * BarcodeMaps.code39Len * (i + additionalOffset),
         top: height - fontHeight,
@@ -3305,23 +3323,23 @@ class BarcodeCode93 extends Barcode1D {
   Iterable<bool> convert(String data) sync* {
     yield* add(BarcodeMaps.code93StartStop, BarcodeMaps.code93Len);
 
-    final keys = BarcodeMaps.code93.keys.toList();
+    final List<int> keys = BarcodeMaps.code93.keys.toList();
 
-    for (var code in data.codeUnits) {
-      final codeValue = BarcodeMaps.code93[code];
+    for (final int code in data.codeUnits) {
+      final int? codeValue = BarcodeMaps.code93[code];
       if (codeValue == null) {
         throw BarcodeException('Unable to encode "${String.fromCharCode(code)}" to $name Barcode');
       }
       yield* add(codeValue, BarcodeMaps.code93Len);
     }
 
-    var sumC = 0;
-    var sumK = 0;
-    var indexC = 1;
-    var indexK = 2;
+    int sumC = 0;
+    int sumK = 0;
+    int indexC = 1;
+    int indexK = 2;
 
-    for (var index = data.codeUnits.length - 1; index >= 0; index--) {
-      final code = data.codeUnits[index];
+    for (int index = data.codeUnits.length - 1; index >= 0; index--) {
+      final int code = data.codeUnits[index];
       sumC += keys.indexOf(code) * indexC;
       sumK += keys.indexOf(code) * indexK;
 
@@ -3359,7 +3377,7 @@ class BarcodeDataMatrix extends Barcode2D {
     double? fontHeight,
     double? textPadding,
   }) {
-    final encoder = DataMatrixEncoder()..ascii(data);
+    final DataMatrixEncoder encoder = DataMatrixEncoder()..ascii(data);
     return makeBytes(
       encoder.toBytes(),
       width: width,
@@ -3372,10 +3390,10 @@ class BarcodeDataMatrix extends Barcode2D {
 
   @override
   Barcode2DMatrix convert(Uint8List data) {
-    var text = <int>[...data];
+    List<int> text = <int>[...data];
 
     _CodeSize? size;
-    for (final s in _CodeSize.codeSizes) {
+    for (final _CodeSize s in _CodeSize.codeSizes) {
       if (s.dataCodewords() >= text.length) {
         size = s;
         break;
@@ -3387,7 +3405,7 @@ class BarcodeDataMatrix extends Barcode2D {
     }
     text = _addPadding(text, size.dataCodewords());
     text = _ErrorCorrection.ec.calcECC(text, size);
-    final code = _render(text, size);
+    final List<bool> code = _render(text, size);
 
     return Barcode2DMatrix(
       size.columns,
@@ -3407,7 +3425,7 @@ class BarcodeDataMatrix extends Barcode2D {
   int get maxLength => 1559;
 
   List<bool> _render(List<int> data, _CodeSize size) {
-    final cl = _CodeLayout(size);
+    final _CodeLayout cl = _CodeLayout(size);
     cl.setValues(data);
     return cl.merge();
   }
@@ -3418,7 +3436,7 @@ class BarcodeDataMatrix extends Barcode2D {
     }
 
     while (data.length < toCount) {
-      final r = ((149 * (data.length + 1)) % 253) + 1;
+      final int r = ((149 * (data.length + 1)) % 253) + 1;
       data.add((0x81 + r) % 254);
     }
 
@@ -3436,12 +3454,10 @@ class _CodeLayout {
   late List<bool> occupy;
   final _CodeSize size;
 
-  bool occupied(int row, int col) {
-    return occupy[col + row * size.matrixColumns()];
-  }
+  bool occupied(int row, int col) => occupy[col + row * size.matrixColumns()];
 
   void setXY(int row, int col, int value, int bitNum) {
-    final val = ((value >> (7 - bitNum)) & 1) == 1;
+    final bool val = ((value >> (7 - bitNum)) & 1) == 1;
 
     if (row < 0) {
       row += size.matrixRows();
@@ -3516,9 +3532,9 @@ class _CodeLayout {
   }
 
   void setValues(List<int> data) {
-    var idx = 0;
-    var row = 4;
-    var col = 0;
+    int idx = 0;
+    int row = 4;
+    int col = 0;
 
     while ((row < size.matrixRows()) || (col < size.matrixColumns())) {
       if ((row == size.matrixRows()) && (col == 0)) {
@@ -3575,46 +3591,46 @@ class _CodeLayout {
   }
 
   List<bool> merge() {
-    final result = List<bool>.filled(size.rows * size.columns, false);
+    final List<bool> result = List<bool>.filled(size.rows * size.columns, false);
 
     void setXY(int x, int y, bool v) {
       result[x + y * size.columns] = v;
     }
 
-    for (var r = 0; r < size.rows; r += size.regionRows() + 2) {
-      for (var c = 0; c < size.columns; c += 2) {
+    for (int r = 0; r < size.rows; r += size.regionRows() + 2) {
+      for (int c = 0; c < size.columns; c += 2) {
         setXY(c, r, true);
       }
     }
 
-    for (var r = size.regionRows() + 1; r < size.rows; r += size.regionRows() + 2) {
-      for (var c = 0; c < size.columns; c++) {
+    for (int r = size.regionRows() + 1; r < size.rows; r += size.regionRows() + 2) {
+      for (int c = 0; c < size.columns; c++) {
         setXY(c, r, true);
       }
     }
 
-    for (var c = size.regionColumns() + 1; c < size.columns; c += size.regionColumns() + 2) {
-      for (var r = 1; r < size.rows; r += 2) {
+    for (int c = size.regionColumns() + 1; c < size.columns; c += size.regionColumns() + 2) {
+      for (int r = 1; r < size.rows; r += 2) {
         setXY(c, r, true);
       }
     }
 
-    for (var c = 0; c < size.columns; c += size.regionColumns() + 2) {
-      for (var r = 0; r < size.rows; r++) {
+    for (int c = 0; c < size.columns; c += size.regionColumns() + 2) {
+      for (int r = 0; r < size.rows; r++) {
         setXY(c, r, true);
       }
     }
 
-    for (var hRegion = 0; hRegion < size.regionCountHorizontal; hRegion++) {
-      for (var vRegion = 0; vRegion < size.regionCountVertical; vRegion++) {
-        for (var x = 0; x < size.regionColumns(); x++) {
-          final colMatrix = (size.regionColumns() * hRegion) + x;
-          final colResult = ((2 + size.regionColumns()) * hRegion) + x + 1;
+    for (int hRegion = 0; hRegion < size.regionCountHorizontal; hRegion++) {
+      for (int vRegion = 0; vRegion < size.regionCountVertical; vRegion++) {
+        for (int x = 0; x < size.regionColumns(); x++) {
+          final int colMatrix = (size.regionColumns() * hRegion) + x;
+          final int colResult = ((2 + size.regionColumns()) * hRegion) + x + 1;
 
-          for (var y = 0; y < size.regionRows(); y++) {
-            final rowMatrix = (size.regionRows() * vRegion) + y;
-            final rowResult = ((2 + size.regionRows()) * vRegion) + y + 1;
-            final val = matrix[colMatrix + rowMatrix * size.matrixColumns()];
+          for (int y = 0; y < size.regionRows(); y++) {
+            final int rowMatrix = (size.regionRows() * vRegion) + y;
+            final int rowResult = ((2 + size.regionRows()) * vRegion) + y + 1;
+            final bool val = matrix[colMatrix + rowMatrix * size.matrixColumns()];
 
             setXY(colResult, rowResult, val);
           }
@@ -3636,25 +3652,15 @@ class _CodeSize {
   final int eccCount;
   final int blockCount;
 
-  int regionRows() {
-    return (rows - (regionCountHorizontal * 2)) ~/ regionCountHorizontal;
-  }
+  int regionRows() => (rows - (regionCountHorizontal * 2)) ~/ regionCountHorizontal;
 
-  int regionColumns() {
-    return (columns - (regionCountVertical * 2)) ~/ regionCountVertical;
-  }
+  int regionColumns() => (columns - (regionCountVertical * 2)) ~/ regionCountVertical;
 
-  int matrixRows() {
-    return regionRows() * regionCountHorizontal;
-  }
+  int matrixRows() => regionRows() * regionCountHorizontal;
 
-  int matrixColumns() {
-    return regionColumns() * regionCountVertical;
-  }
+  int matrixColumns() => regionColumns() * regionCountVertical;
 
-  int dataCodewords() {
-    return ((matrixColumns() * matrixRows()) ~/ 8) - eccCount;
-  }
+  int dataCodewords() => ((matrixColumns() * matrixRows()) ~/ 8) - eccCount;
 
   int dataCodewordsForBlock(int idx) {
     if (rows == 144 && columns == 144) {
@@ -3667,11 +3673,9 @@ class _CodeSize {
     return dataCodewords() ~/ blockCount;
   }
 
-  int errorCorrectionCodewordsPerBlock() {
-    return eccCount ~/ blockCount;
-  }
+  int errorCorrectionCodewordsPerBlock() => eccCount ~/ blockCount;
 
-  static const codeSizes = <_CodeSize>[
+  static const List<_CodeSize> codeSizes = <_CodeSize>[
     _CodeSize(10, 10, 1, 1, 5, 1),
     _CodeSize(12, 12, 1, 1, 7, 1),
     _CodeSize(14, 14, 1, 1, 10, 1),
@@ -3701,34 +3705,34 @@ class _CodeSize {
 
 class _ErrorCorrection {
   _ErrorCorrection() {
-    final gf = GaloisField(301, 256, 1);
+    final GaloisField gf = GaloisField(301, 256, 1);
     rs = ReedSolomonEncoder(gf);
   }
 
   late ReedSolomonEncoder rs;
 
-  static final ec = _ErrorCorrection();
+  static final _ErrorCorrection ec = _ErrorCorrection();
 
   List<int> calcECC(List<int> data, _CodeSize size) {
-    final dataSize = data.length;
+    final int dataSize = data.length;
 
     data.addAll(List<int>.filled(size.eccCount, 0));
 
-    for (var block = 0; block < size.blockCount; block++) {
-      final dataCnt = size.dataCodewordsForBlock(block);
+    for (int block = 0; block < size.blockCount; block++) {
+      final int dataCnt = size.dataCodewordsForBlock(block);
 
-      final buff = List<int>.filled(dataCnt, 0);
+      final List<int> buff = List<int>.filled(dataCnt, 0);
 
-      var j = 0;
-      for (var i = block; i < dataSize; i += size.blockCount) {
+      int j = 0;
+      for (int i = block; i < dataSize; i += size.blockCount) {
         buff[j] = data[i];
         j++;
       }
 
-      final ecc = ec.rs.encode(buff, size.errorCorrectionCodewordsPerBlock());
+      final List<int> ecc = ec.rs.encode(buff, size.errorCorrectionCodewordsPerBlock());
 
       j = 0;
-      for (var i = block; i < size.errorCorrectionCodewordsPerBlock() * size.blockCount; i += size.blockCount) {
+      for (int i = block; i < size.errorCorrectionCodewordsPerBlock() * size.blockCount; i += size.blockCount) {
         data[dataSize + i] = ecc[j];
         j++;
       }
@@ -3739,19 +3743,19 @@ class _ErrorCorrection {
 }
 
 class DataMatrixEncoder {
-  final _data = BytesBuilder();
+  final BytesBuilder _data = BytesBuilder();
 
   void ascii(String data) {
-    final input = data.codeUnits;
+    final List<int> input = data.codeUnits;
 
-    for (var i = 0; i < input.length;) {
-      final c = input[i];
+    for (int i = 0; i < input.length;) {
+      final int c = input[i];
       i++;
 
       if (c >= 0x30 && c <= 0x39 && i < input.length && input[i] >= 0x30 && input[i] <= 0x39) {
-        final c2 = input[i];
+        final int c2 = input[i];
         i++;
-        final cw = ((c - 0x30) * 10 + (c2 - 0x30)) + 0x82;
+        final int cw = ((c - 0x30) * 10 + (c2 - 0x30)) + 0x82;
         _data.addByte(cw);
       } else if (c > 0x7f) {
         _data.addByte(0xeb);
@@ -3807,8 +3811,8 @@ abstract class BarcodeEan extends Barcode1D {
         throw BarcodeException('Unable to encode "$data" to $name Barcode, it is not $length digits');
       }
 
-      final last = data.substring(length - 1);
-      final checksum = checkSumModulo10(data.substring(0, length - 1));
+      final String last = data.substring(length - 1);
+      final String checksum = checkSumModulo10(data.substring(0, length - 1));
 
       if (last != checksum) {
         throw BarcodeException('Unable to encode "$data" to $name Barcode, checksum "$last" should be "$checksum"');
@@ -3819,9 +3823,9 @@ abstract class BarcodeEan extends Barcode1D {
   }
 
   String checkSumModulo10(String data) {
-    var sum = 0;
-    var fak = data.length;
-    for (var c in data.codeUnits) {
+    int sum = 0;
+    int fak = data.length;
+    for (final int c in data.codeUnits) {
       if (fak % 2 == 0) {
         sum += c - 0x30;
       } else {
@@ -3837,9 +3841,9 @@ abstract class BarcodeEan extends Barcode1D {
   }
 
   String checkSumModulo11(String data) {
-    var sum = 0;
-    var pos = 10;
-    for (var c in data.codeUnits) {
+    int sum = 0;
+    int pos = 10;
+    for (final int c in data.codeUnits) {
       sum += (c - 0x30) * pos;
       pos--;
     }
@@ -3867,7 +3871,7 @@ class BarcodeEan13 extends BarcodeEan {
 
   @override
   void verifyBytes(Uint8List data) {
-    final text = utf8.decoder.convert(data);
+    final String text = utf8.decoder.convert(data);
     checkLength(text, maxLength);
     super.verifyBytes(data);
   }
@@ -3878,14 +3882,14 @@ class BarcodeEan13 extends BarcodeEan {
 
     yield* add(BarcodeMaps.eanStartEnd, 3);
 
-    var index = 0;
-    final first = BarcodeMaps.eanFirst[data.codeUnits.first];
+    int index = 0;
+    final int? first = BarcodeMaps.eanFirst[data.codeUnits.first];
     if (first == null) {
       throw BarcodeException('Unable to encode "${String.fromCharCode(data.codeUnits.first)}" to $name Barcode');
     }
 
-    for (var code in data.codeUnits.sublist(1)) {
-      final codes = BarcodeMaps.ean[code];
+    for (final int code in data.codeUnits.sublist(1)) {
+      final List<int>? codes = BarcodeMaps.ean[code];
 
       if (codes == null) {
         throw BarcodeException('Unable to encode "${String.fromCharCode(code)}" to $name Barcode');
@@ -3959,7 +3963,7 @@ class BarcodeEan13 extends BarcodeEan {
       );
     }
 
-    final h = height - fontHeight - textPadding;
+    final double h = height - fontHeight - textPadding;
 
     if (index < 3 || (index > 45 && index < 49) || index > 91) {
       return h + fontHeight / 2 + textPadding;
@@ -3977,10 +3981,10 @@ class BarcodeEan13 extends BarcodeEan {
     double textPadding,
     double lineWidth,
   ) sync* {
-    final text = checkLength(data, maxLength);
-    final w = lineWidth * 7;
-    final left = marginLeft(true, width, height, fontHeight, textPadding);
-    final right = marginRight(true, width, height, fontHeight, textPadding);
+    final String text = checkLength(data, maxLength);
+    final double w = lineWidth * 7;
+    final double left = marginLeft(true, width, height, fontHeight, textPadding);
+    final double right = marginRight(true, width, height, fontHeight, textPadding);
 
     yield BarcodeText(
       left: 0,
@@ -3991,9 +3995,9 @@ class BarcodeEan13 extends BarcodeEan {
       align: BarcodeTextAlign.right,
     );
 
-    var offset = left + lineWidth * 3;
+    double offset = left + lineWidth * 3;
 
-    for (var i = 1; i < text.length; i++) {
+    for (int i = 1; i < text.length; i++) {
       yield BarcodeText(
         left: offset,
         top: height - fontHeight,
@@ -4043,13 +4047,13 @@ class BarcodeEan2 extends BarcodeEan {
     } catch (e) {
       throw BarcodeException('Unable to encode "$data" to $name Barcode');
     }
-    final pattern = idata % 4;
+    final int pattern = idata % 4;
 
     yield* add(BarcodeMaps.eanStartEan2, 5);
 
-    var index = 0;
-    for (var code in data.codeUnits) {
-      final codes = BarcodeMaps.ean[code];
+    int index = 0;
+    for (final int code in data.codeUnits) {
+      final List<int>? codes = BarcodeMaps.ean[code];
 
       if (codes == null) {
         throw BarcodeException('Unable to encode "${String.fromCharCode(code)}" to $name Barcode');
@@ -4125,9 +4129,9 @@ class BarcodeEan5 extends BarcodeEan2 {
 
   @override
   String checkSumModulo10(String data) {
-    var sum = 0;
-    var fak = data.length;
-    for (var c in data.codeUnits) {
+    int sum = 0;
+    int fak = data.length;
+    for (final int c in data.codeUnits) {
       if (fak % 2 == 0) {
         sum += (c - 0x30) * 9;
       } else {
@@ -4141,14 +4145,14 @@ class BarcodeEan5 extends BarcodeEan2 {
   @override
   Iterable<bool> convert(String data) sync* {
     verify(data);
-    final checksum = checkSumModulo10(data);
-    final pattern = BarcodeMaps.ean5Checksum[checksum.codeUnitAt(0)];
+    final String checksum = checkSumModulo10(data);
+    final int? pattern = BarcodeMaps.ean5Checksum[checksum.codeUnitAt(0)];
 
     yield* add(BarcodeMaps.eanStartEan2, 5);
 
-    var index = 0;
-    for (var code in data.codeUnits) {
-      final codes = BarcodeMaps.ean[code];
+    int index = 0;
+    for (final int code in data.codeUnits) {
+      final List<int>? codes = BarcodeMaps.ean[code];
 
       if (codes == null) {
         throw BarcodeException('Unable to encode "${String.fromCharCode(code)}" to $name Barcode');
@@ -4184,7 +4188,7 @@ class BarcodeEan8 extends BarcodeEan {
 
   @override
   void verifyBytes(Uint8List data) {
-    final text = utf8.decoder.convert(data);
+    final String text = utf8.decoder.convert(data);
     checkLength(text, maxLength);
     super.verifyBytes(data);
   }
@@ -4195,9 +4199,9 @@ class BarcodeEan8 extends BarcodeEan {
 
     yield* add(BarcodeMaps.eanStartEnd, 3);
 
-    var index = 0;
-    for (var code in data.codeUnits) {
-      final codes = BarcodeMaps.ean[code];
+    int index = 0;
+    for (final int code in data.codeUnits) {
+      final List<int>? codes = BarcodeMaps.ean[code];
 
       if (codes == null) {
         throw BarcodeException('Unable to encode "${String.fromCharCode(code)}" to $name Barcode');
@@ -4266,7 +4270,7 @@ class BarcodeEan8 extends BarcodeEan {
       );
     }
 
-    final h = height - fontHeight - textPadding;
+    final double h = height - fontHeight - textPadding;
 
     if (index + count < 4 || (index > 31 && index + count < 36) || index > 63) {
       return h + fontHeight / 2 + textPadding;
@@ -4285,12 +4289,12 @@ class BarcodeEan8 extends BarcodeEan {
     double lineWidth,
   ) sync* {
     data = checkLength(data, maxLength);
-    final w = lineWidth * 7;
-    final left = marginLeft(true, width, height, fontHeight, textPadding);
-    final right = marginRight(true, width, height, fontHeight, textPadding);
-    var offset = left + lineWidth * 3;
+    final double w = lineWidth * 7;
+    final double left = marginLeft(true, width, height, fontHeight, textPadding);
+    final double right = marginRight(true, width, height, fontHeight, textPadding);
+    double offset = left + lineWidth * 3;
 
-    for (var i = 0; i < data.length; i++) {
+    for (int i = 0; i < data.length; i++) {
       yield BarcodeText(
         left: offset,
         top: height - fontHeight,
@@ -4365,59 +4369,59 @@ final class QrEci implements QrDatum {
 }
 
 extension type const QrEciValue(int value) implements int {
-  static const iso8859_1 = QrEciValue(3);
+  static const QrEciValue iso8859_1 = QrEciValue(3);
 
-  static const iso8859_2 = QrEciValue(4);
+  static const QrEciValue iso8859_2 = QrEciValue(4);
 
-  static const iso8859_3 = QrEciValue(5);
+  static const QrEciValue iso8859_3 = QrEciValue(5);
 
-  static const iso8859_4 = QrEciValue(6);
+  static const QrEciValue iso8859_4 = QrEciValue(6);
 
-  static const iso8859_5 = QrEciValue(7);
+  static const QrEciValue iso8859_5 = QrEciValue(7);
 
-  static const iso8859_6 = QrEciValue(8);
+  static const QrEciValue iso8859_6 = QrEciValue(8);
 
-  static const iso8859_7 = QrEciValue(9);
+  static const QrEciValue iso8859_7 = QrEciValue(9);
 
-  static const iso8859_8 = QrEciValue(10);
+  static const QrEciValue iso8859_8 = QrEciValue(10);
 
-  static const iso8859_9 = QrEciValue(11);
+  static const QrEciValue iso8859_9 = QrEciValue(11);
 
-  static const iso8859_10 = QrEciValue(12);
+  static const QrEciValue iso8859_10 = QrEciValue(12);
 
-  static const iso8859_11 = QrEciValue(13);
+  static const QrEciValue iso8859_11 = QrEciValue(13);
 
-  static const iso8859_13 = QrEciValue(15);
+  static const QrEciValue iso8859_13 = QrEciValue(15);
 
-  static const iso8859_14 = QrEciValue(16);
+  static const QrEciValue iso8859_14 = QrEciValue(16);
 
-  static const iso8859_15 = QrEciValue(17);
+  static const QrEciValue iso8859_15 = QrEciValue(17);
 
-  static const iso8859_16 = QrEciValue(18);
+  static const QrEciValue iso8859_16 = QrEciValue(18);
 
-  static const shiftJis = QrEciValue(20);
+  static const QrEciValue shiftJis = QrEciValue(20);
 
-  static const windows1250 = QrEciValue(21);
+  static const QrEciValue windows1250 = QrEciValue(21);
 
-  static const windows1251 = QrEciValue(22);
+  static const QrEciValue windows1251 = QrEciValue(22);
 
-  static const windows1252 = QrEciValue(23);
+  static const QrEciValue windows1252 = QrEciValue(23);
 
-  static const windows1256 = QrEciValue(24);
+  static const QrEciValue windows1256 = QrEciValue(24);
 
-  static const utf16BE = QrEciValue(25);
+  static const QrEciValue utf16BE = QrEciValue(25);
 
-  static const utf8 = QrEciValue(26);
+  static const QrEciValue utf8 = QrEciValue(26);
 
-  static const ascii = QrEciValue(27);
+  static const QrEciValue ascii = QrEciValue(27);
 
-  static const big5 = QrEciValue(28);
+  static const QrEciValue big5 = QrEciValue(28);
 
-  static const gb2312 = QrEciValue(29);
+  static const QrEciValue gb2312 = QrEciValue(29);
 
-  static const eucKr = QrEciValue(30);
+  static const QrEciValue eucKr = QrEciValue(30);
 
-  static const gbk = QrEciValue(31);
+  static const QrEciValue gbk = QrEciValue(31);
 }
 
 enum QrErrorCorrectLevel {
@@ -4445,7 +4449,7 @@ final class InputTooLongException implements Exception {
 InputTooLongException createExp(int inputBits, int inputLimit) => InputTooLongException._(inputBits, inputLimit);
 
 class BarcodeIsbn extends BarcodeEan13 {
-  const BarcodeIsbn(bool drawEndChar, this.drawIsbn) : super(drawEndChar);
+  const BarcodeIsbn(super.drawEndChar, this.drawIsbn);
 
   final bool drawIsbn;
 
@@ -4484,7 +4488,7 @@ class BarcodeIsbn extends BarcodeEan13 {
     );
 
     if (drawIsbn) {
-      final isbn = "${data.substring(0, 3)}-${data.substring(3, 12)}-${data.substring(12, 13)}";
+      final String isbn = "${data.substring(0, 3)}-${data.substring(3, 12)}-${data.substring(12, 13)}";
 
       yield BarcodeText(
         left: 0,
@@ -4532,13 +4536,9 @@ class BarcodeItf extends BarcodeEan {
   @override
   int get maxLength => fixedLength != null ? fixedLength! : super.maxLength;
 
-  double _getBorderWidth(double width) {
-    return borderWidth ?? width * .015;
-  }
+  double _getBorderWidth(double width) => borderWidth ?? width * .015;
 
-  double _getQuietWidth(double width) {
-    return quietWidth ?? width * .07;
-  }
+  double _getQuietWidth(double width) => quietWidth ?? width * .07;
 
   @override
   double marginTop(
@@ -4547,9 +4547,7 @@ class BarcodeItf extends BarcodeEan {
     double height,
     double fontHeight,
     double textPadding,
-  ) {
-    return drawBorder ? _getBorderWidth(width) : 0;
-  }
+  ) => drawBorder ? _getBorderWidth(width) : 0;
 
   @override
   double marginLeft(
@@ -4558,9 +4556,7 @@ class BarcodeItf extends BarcodeEan {
     double height,
     double fontHeight,
     double textPadding,
-  ) {
-    return drawBorder ? _getBorderWidth(width) + _getQuietWidth(width) : 0;
-  }
+  ) => drawBorder ? _getBorderWidth(width) + _getQuietWidth(width) : 0;
 
   @override
   double marginRight(
@@ -4569,9 +4565,7 @@ class BarcodeItf extends BarcodeEan {
     double height,
     double fontHeight,
     double textPadding,
-  ) {
-    return drawBorder ? _getBorderWidth(width) + _getQuietWidth(width) : 0;
-  }
+  ) => drawBorder ? _getBorderWidth(width) + _getQuietWidth(width) : 0;
 
   @override
   double getHeight(
@@ -4582,18 +4576,17 @@ class BarcodeItf extends BarcodeEan {
     double fontHeight,
     double textPadding,
     bool drawText,
-  ) {
-    return super.getHeight(
-          index,
-          count,
-          width,
-          height,
-          fontHeight,
-          textPadding,
-          drawText,
-        ) -
-        (drawBorder ? _getBorderWidth(width) : 0);
-  }
+  ) =>
+      super.getHeight(
+        index,
+        count,
+        width,
+        height,
+        fontHeight,
+        textPadding,
+        drawText,
+      ) -
+      (drawBorder ? _getBorderWidth(width) : 0);
 
   @override
   Iterable<bool> convert(String data) sync* {
@@ -4615,17 +4608,17 @@ class BarcodeItf extends BarcodeEan {
 
     yield* add(BarcodeMaps.itfStart, 4);
 
-    final cu = data.codeUnits;
-    for (var i = 0; i < cu.length / 2; i++) {
-      final tuple = <int?>[BarcodeMaps.itf[cu[i * 2]], BarcodeMaps.itf[cu[i * 2 + 1]]];
+    final List<int> cu = data.codeUnits;
+    for (int i = 0; i < cu.length / 2; i++) {
+      final List<int?> tuple = <int?>[BarcodeMaps.itf[cu[i * 2]], BarcodeMaps.itf[cu[i * 2 + 1]]];
 
       if (tuple[0] == null || tuple[1] == null) {
         throw BarcodeException('Unable to encode "${String.fromCharCode(cu[i * 2])}${String.fromCharCode(cu[i * 2 + 1])}" to $name Barcode');
       }
 
-      for (var n = 0; n < 10; n++) {
-        final v = (tuple[n % 2]! >> (n ~/ 2)) & 1;
-        final c = n % 2 == 0;
+      for (int n = 0; n < 10; n++) {
+        final int v = (tuple[n % 2]! >> (n ~/ 2)) & 1;
+        final bool c = n % 2 == 0;
         yield c;
         if (v != 0) {
           yield c;
@@ -4662,8 +4655,8 @@ class BarcodeItf extends BarcodeEan {
     );
 
     if (drawBorder) {
-      final bw = _getBorderWidth(width);
-      final hp = drawText ? fontHeight + textPadding : 0;
+      final double bw = _getBorderWidth(width);
+      final num hp = drawText ? fontHeight + textPadding : 0;
 
       yield BarcodeBar(left: 0, top: 0, width: width, height: bw, black: true);
       yield BarcodeBar(left: 0, top: height - hp - bw, width: width, height: bw, black: true);
@@ -4704,7 +4697,7 @@ class BarcodeItf extends BarcodeEan {
 
   @override
   void verifyBytes(Uint8List data) {
-    var text = utf8.decoder.convert(data);
+    String text = utf8.decoder.convert(data);
 
     if (fixedLength != null) {
       text = checkLength(text, maxLength);
@@ -4815,19 +4808,19 @@ int glog(int n) => (n >= 1) ? _logTable[n] : throw ArgumentError.value(n, "n", "
 int gexp(int n) => _expTable[n % 255];
 
 Uint8List _createExpTable() {
-  final list = Uint8List(256);
-  for (var i = 0; i < 8; i++) {
+  final Uint8List list = Uint8List(256);
+  for (int i = 0; i < 8; i++) {
     list[i] = 1 << i;
   }
-  for (var i = 8; i < 256; i++) {
+  for (int i = 8; i < 256; i++) {
     list[i] = list[i - 4] ^ list[i - 5] ^ list[i - 6] ^ list[i - 8];
   }
   return list;
 }
 
 Uint8List _createLogTable() {
-  final list = Uint8List(256);
-  for (var i = 0; i < 255; i++) {
+  final Uint8List list = Uint8List(256);
+  for (int i = 0; i < 255; i++) {
     list[_expTable[i]] = i;
   }
   return list;
@@ -4851,7 +4844,7 @@ class MeCard {
     List<String>? urls,
     String? nickname,
   }) {
-    final fields = <MeTuple>[];
+    final List<MeTuple> fields = <MeTuple>[];
 
     if (name != null) {
       fields.add(MeTuple("N", name));
@@ -4863,7 +4856,7 @@ class MeCard {
       fields.add(MeTuple("TEL", tel));
     }
     if (tels != null) {
-      for (final tel in tels) {
+      for (final String tel in tels) {
         fields.add(MeTuple("TEL", tel));
       }
     }
@@ -4874,7 +4867,7 @@ class MeCard {
       fields.add(MeTuple("EMAIL", email));
     }
     if (emails != null) {
-      for (final email in emails) {
+      for (final String email in emails) {
         fields.add(MeTuple("EMAIL", email));
       }
     }
@@ -4891,7 +4884,7 @@ class MeCard {
       fields.add(MeTuple("URL", url));
     }
     if (urls != null) {
-      for (final url in urls) {
+      for (final String url in urls) {
         fields.add(MeTuple("URL", url));
       }
     }
@@ -4908,7 +4901,7 @@ class MeCard {
     String? password,
     bool hidden = false,
   }) {
-    final fields = <MeTuple>[];
+    final List<MeTuple> fields = <MeTuple>[];
 
     fields.add(MeTuple("S", ssid));
 
@@ -4929,10 +4922,10 @@ class MeCard {
 
   @override
   String toString() {
-    final result = StringBuffer();
+    final StringBuffer result = StringBuffer();
     result.write("${_str(type)}:");
 
-    for (final field in fields) {
+    for (final MeTuple field in fields) {
       result.write("${_str(field.key)}:${_str(field.val)};");
     }
 
@@ -4940,37 +4933,33 @@ class MeCard {
     return result.toString();
   }
 
-  static String _str(String s) {
-    return s.replaceAllMapped(
-      RegExp('[;:"]'),
-      (match) => r"\" + match.group(0)!,
-    );
-  }
+  static String _str(String s) => s.replaceAllMapped(
+    RegExp('[;:"]'),
+    (Match match) => r"\" + match.group(0)!,
+  );
 }
 
 class MeTuple {
   const MeTuple(this.key, this.val);
 
-  factory MeTuple.bool(String key, bool val) {
-    return MeTuple(key, val ? "true" : "false");
-  }
+  factory MeTuple.bool(String key, bool val) => MeTuple(key, val ? "true" : "false");
 
   factory MeTuple.date(String key, DateTime val) {
-    final y = "${val.year}".padLeft(4, "0");
-    final m = "${val.month}".padLeft(2, "0");
-    final d = "${val.day}".padLeft(2, "0");
+    final String y = "${val.year}".padLeft(4, "0");
+    final String m = "${val.month}".padLeft(2, "0");
+    final String d = "${val.day}".padLeft(2, "0");
     return MeTuple(key, "$y$m$d");
   }
 
   factory MeTuple.sub(String key, Iterable<String> val) {
-    final result = StringBuffer();
-    for (final v in val) {
+    final StringBuffer result = StringBuffer();
+    for (final String v in val) {
       result.write(v.replaceAll(",", r"\,"));
       result.write(",");
     }
 
-    final data = result.toString();
-    var p = data.length - 1;
+    final String data = result.toString();
+    int p = data.length - 1;
     while (data.codeUnitAt(p) == 0x2c) {
       p--;
     }
@@ -5026,7 +5015,7 @@ enum QrMode {
 }
 
 final class QrPayload {
-  final _dataList = <QrDatum>[];
+  final List<QrDatum> _dataList = <QrDatum>[];
 
   QrPayload();
 
@@ -5035,7 +5024,7 @@ final class QrPayload {
   factory QrPayload.fromTypedData(TypedData data) => QrPayload().._addToList(QrByte.fromByteData(data));
 
   void addString(String data) {
-    for (final datum in QrDatum.toDatums(data)) {
+    for (final QrDatum datum in QrDatum.toDatums(data)) {
       _addToList(datum);
     }
   }
@@ -5057,8 +5046,8 @@ extension QrPayloadInternal on QrPayload {
   List<QrDatum> get dataList => _dataList;
 
   int calculateRequiredBits(int typeNumber) {
-    var bits = 0;
-    for (final datum in _dataList) {
+    int bits = 0;
+    for (final QrDatum datum in _dataList) {
       bits += 4 + datum.mode.getLengthBits(typeNumber) + datum.bitLength;
     }
     return bits;
@@ -5080,10 +5069,10 @@ enum Pdf417SecurityLevel {
 class BarcodePDF417 extends Barcode2D {
   const BarcodePDF417(this.securityLevel, this.moduleHeight, this.preferredRatio);
 
-  static const _minCols = 2;
-  static const _maxCols = 60;
-  static const _maxRows = 60;
-  static const _minRows = 2;
+  static const int _minCols = 2;
+  static const int _maxCols = 60;
+  static const int _maxRows = 60;
+  static const int _minRows = 2;
 
   final double moduleHeight;
 
@@ -5093,31 +5082,31 @@ class BarcodePDF417 extends Barcode2D {
 
   @override
   Barcode2DMatrix convert(Uint8List data) {
-    final dataWords = _highlevelEncode(data);
+    final Iterable<int> dataWords = _highlevelEncode(data);
 
-    final dim = _calcDimensions(dataWords.length, _errorCorrectionWordCount(securityLevel));
+    final _Pdf417Size dim = _calcDimensions(dataWords.length, _errorCorrectionWordCount(securityLevel));
     if (dim.columns < _minCols || dim.columns > _maxCols || dim.rows < _minRows || dim.rows > _maxRows) {
       throw const BarcodeException("Unable to fit data in barcode");
     }
 
-    final codeWords = _encodeData(dataWords.toList(), dim.columns, securityLevel);
+    final List<int> codeWords = _encodeData(dataWords.toList(), dim.columns, securityLevel);
 
-    final grid = <List<int>>[];
-    for (var i = 0; i < codeWords.length; i += dim.columns) {
+    final List<List<int>> grid = <List<int>>[];
+    for (int i = 0; i < codeWords.length; i += dim.columns) {
       grid.add(codeWords.sublist(i, min(i + dim.columns, codeWords.length)));
     }
 
-    final codes = <List<int>>[];
+    final List<List<int>> codes = <List<int>>[];
 
-    var rowNum = 0;
-    for (final row in grid) {
-      final table = rowNum % 3;
-      final rowCodes = <int>[];
+    int rowNum = 0;
+    for (final List<int> row in grid) {
+      final int table = rowNum % 3;
+      final List<int> rowCodes = <int>[];
 
       rowCodes.add(start_word);
       rowCodes.add(_getCodeword(table, _getLeftCodeWord(rowNum, dim.rows, dim.columns, securityLevel)));
 
-      for (final word in row) {
+      for (final int word in row) {
         rowCodes.add(_getCodeword(table, word));
       }
 
@@ -5129,7 +5118,7 @@ class BarcodePDF417 extends Barcode2D {
       rowNum++;
     }
 
-    final width = (dim.columns + 4) * 17 + 1;
+    final int width = (dim.columns + 4) * 17 + 1;
 
     return Barcode2DMatrix(
       width,
@@ -5149,24 +5138,24 @@ class BarcodePDF417 extends Barcode2D {
   int get maxLength => 990;
 
   List<int> _encodeData(List<int> dataWords, int columns, Pdf417SecurityLevel securityLevel) {
-    final dataCount = dataWords.length;
+    final int dataCount = dataWords.length;
 
-    final ecCount = _errorCorrectionWordCount(securityLevel);
+    final int ecCount = _errorCorrectionWordCount(securityLevel);
 
-    final padWords = _getPadding(dataCount, ecCount, columns);
+    final Iterable<int> padWords = _getPadding(dataCount, ecCount, columns);
     dataWords.addAll(padWords);
 
-    final length = dataWords.length + 1;
+    final int length = dataWords.length + 1;
     dataWords.insert(0, length);
 
-    final ecWords = _computeErrorCorrection(securityLevel, dataWords);
+    final List<int> ecWords = _computeErrorCorrection(securityLevel, dataWords);
 
     dataWords.addAll(ecWords);
     return dataWords;
   }
 
   int _getLeftCodeWord(int rowNum, int rows, int columns, Pdf417SecurityLevel securityLevel) {
-    final tableId = rowNum % 3;
+    final int tableId = rowNum % 3;
 
     late int x;
 
@@ -5187,7 +5176,7 @@ class BarcodePDF417 extends Barcode2D {
   }
 
   int _getRightCodeWord(int rowNum, int rows, int columns, Pdf417SecurityLevel securityLevel) {
-    final tableId = rowNum % 3;
+    final int tableId = rowNum % 3;
 
     late int x;
 
@@ -5208,26 +5197,26 @@ class BarcodePDF417 extends Barcode2D {
   }
 
   Iterable<int> _getPadding(int dataCount, int ecCount, int columns) sync* {
-    final totalCount = dataCount + ecCount + 1;
-    final mod = totalCount % columns;
+    final int totalCount = dataCount + ecCount + 1;
+    final int mod = totalCount % columns;
 
     if (mod > 0) {
-      final padCount = columns - mod;
+      final int padCount = columns - mod;
       yield* Iterable<int>.generate(padCount, (_) => padding_codeword);
     }
   }
 
   Iterable<bool> _addBits(int b, int count) sync* {
-    for (var i = count - 1; i >= 0; i--) {
+    for (int i = count - 1; i >= 0; i--) {
       yield ((b >> i) & 1) == 1;
     }
   }
 
   Iterable<bool> _renderBarcode(List<List<int>> codes) sync* {
-    for (final row in codes) {
-      final lastIdx = row.length - 1;
-      var i = 0;
-      for (final col in row) {
+    for (final List<int> row in codes) {
+      final int lastIdx = row.length - 1;
+      int i = 0;
+      for (final int col in row) {
         if (i == lastIdx) {
           yield* _addBits(col, 18);
         } else {
@@ -5239,7 +5228,7 @@ class BarcodePDF417 extends Barcode2D {
   }
 
   int _calculateNumberOfRows(int m, int k, int c) {
-    var r = ((m + 1 + k) ~/ c) + 1;
+    int r = ((m + 1 + k) ~/ c) + 1;
     if (c * r >= (m + 1 + k + c)) {
       r--;
     }
@@ -5247,12 +5236,12 @@ class BarcodePDF417 extends Barcode2D {
   }
 
   _Pdf417Size _calcDimensions(int dataWords, int eccWords) {
-    var ratio = 0.0;
-    var cols = 0;
-    var rows = 0;
+    double ratio = 0;
+    int cols = 0;
+    int rows = 0;
 
-    for (var c = _minCols; c <= _maxCols; c++) {
-      final r = _calculateNumberOfRows(dataWords, eccWords, c);
+    for (int c = _minCols; c <= _maxCols; c++) {
+      final int r = _calculateNumberOfRows(dataWords, eccWords, c);
 
       if (r < _minRows) {
         break;
@@ -5263,7 +5252,7 @@ class BarcodePDF417 extends Barcode2D {
       }
 
       if (r != 0) {
-        final newRatio = (17 * c + 69) / (r * moduleHeight);
+        final double newRatio = (17 * c + 69) / (r * moduleHeight);
 
         if ((newRatio - preferredRatio).abs() < (ratio - preferredRatio).abs()) {
           ratio = newRatio;
@@ -5287,22 +5276,20 @@ class BarcodePDF417 extends Barcode2D {
     return _Pdf417Size(cols, rows);
   }
 
-  int _errorCorrectionWordCount(Pdf417SecurityLevel level) {
-    return 1 << (level.index + 1);
-  }
+  int _errorCorrectionWordCount(Pdf417SecurityLevel level) => 1 << (level.index + 1);
 
   List<int> _computeErrorCorrection(Pdf417SecurityLevel level, Iterable<int> data) {
-    final factors = correctionFactors[level.index];
+    final List<int> factors = correctionFactors[level.index];
 
-    final count = _errorCorrectionWordCount(level);
+    final int count = _errorCorrectionWordCount(level);
 
-    final ecWords = List<int>.filled(count, 0);
+    final List<int> ecWords = List<int>.filled(count, 0);
 
-    for (final value in data) {
-      final temp = (value + ecWords[0]) % 929;
+    for (final int value in data) {
+      final int temp = (value + ecWords[0]) % 929;
 
-      for (var i = count - 1; i >= 0; i--) {
-        var add = 0;
+      for (int i = count - 1; i >= 0; i--) {
+        int add = 0;
 
         if (i > 0) {
           add = ecWords[count - i];
@@ -5312,8 +5299,8 @@ class BarcodePDF417 extends Barcode2D {
       }
     }
 
-    var key = 0;
-    for (final word in ecWords) {
+    int key = 0;
+    for (final int word in ecWords) {
       if (word > 0) {
         ecWords[key] = 929 - word;
       }
@@ -5323,13 +5310,11 @@ class BarcodePDF417 extends Barcode2D {
     return ecWords;
   }
 
-  int _getCodeword(int tableId, int word) {
-    return codewords[tableId][word];
-  }
+  int _getCodeword(int tableId, int word) => codewords[tableId][word];
 
   int _determineConsecutiveDigitCount(Iterable<int> data) {
-    var cnt = 0;
-    for (final r in data) {
+    int cnt = 0;
+    for (final int r in data) {
       if (r < 0x30 || r > 0x39) {
         break;
       }
@@ -5339,27 +5324,27 @@ class BarcodePDF417 extends Barcode2D {
   }
 
   Iterable<int> _encodeNumeric(List<int> digits) sync* {
-    final digitCount = digits.length;
-    var chunkCount = digitCount ~/ 44;
+    final int digitCount = digits.length;
+    int chunkCount = digitCount ~/ 44;
     if (digitCount % 44 != 0) {
       chunkCount++;
     }
 
-    for (var i = 0; i < chunkCount; i++) {
-      final start = i * 44;
-      var end = start + 44;
+    for (int i = 0; i < chunkCount; i++) {
+      final int start = i * 44;
+      int end = start + 44;
       if (end > digitCount) {
         end = digitCount;
       }
-      final chunk = digits.sublist(start, end);
+      final List<int> chunk = digits.sublist(start, end);
 
-      var chunkNum = BigInt.parse("1${String.fromCharCodes(chunk)}", radix: 10);
+      BigInt chunkNum = BigInt.parse("1${String.fromCharCodes(chunk)}", radix: 10);
 
-      final cws = <int>[];
+      final List<int> cws = <int>[];
 
       while (chunkNum > BigInt.zero) {
-        final newChunk = chunkNum ~/ BigInt.from(900);
-        final cw = chunkNum % BigInt.from(900);
+        final BigInt newChunk = chunkNum ~/ BigInt.from(900);
+        final BigInt cw = chunkNum % BigInt.from(900);
 
         chunkNum = newChunk;
         cws.insert(0, cw.toInt());
@@ -5369,16 +5354,14 @@ class BarcodePDF417 extends Barcode2D {
     }
   }
 
-  bool _isText(int ch) {
-    return ch == 0x9 || ch == 0xa || ch == 0xd || (ch >= 32 && ch <= 126);
-  }
+  bool _isText(int ch) => ch == 0x9 || ch == 0xa || ch == 0xd || (ch >= 32 && ch <= 126);
 
   int _determineConsecutiveTextCount(List<int> msg) {
-    var result = 0;
+    int result = 0;
 
-    var i = 0;
-    for (final ch in msg) {
-      final numericCount = _determineConsecutiveDigitCount(msg.sublist(i));
+    int i = 0;
+    for (final int ch in msg) {
+      final int numericCount = _determineConsecutiveDigitCount(msg.sublist(i));
       if (numericCount >= min_numeric_count || (numericCount == 0 && !_isText(ch))) {
         break;
       }
@@ -5389,28 +5372,20 @@ class BarcodePDF417 extends Barcode2D {
     return result;
   }
 
-  bool _isAlphaUpper(int ch) {
-    return ch == 0x20 || (ch >= 0x41 && ch <= 0x5a);
-  }
+  bool _isAlphaUpper(int ch) => ch == 0x20 || (ch >= 0x41 && ch <= 0x5a);
 
-  bool _isAlphaLower(int ch) {
-    return ch == 0x20 || (ch >= 0x61 && ch <= 0x7a);
-  }
+  bool _isAlphaLower(int ch) => ch == 0x20 || (ch >= 0x61 && ch <= 0x7a);
 
-  bool _isMixed(int ch) {
-    return mixedMap.containsKey(ch);
-  }
+  bool _isMixed(int ch) => mixedMap.containsKey(ch);
 
-  bool _isPunctuation(int ch) {
-    return punctMap.containsKey(ch);
-  }
+  bool _isPunctuation(int ch) => punctMap.containsKey(ch);
 
   _SubMode _encodeText(List<int> text, _SubMode submode, List<int> result) {
-    var idx = 0;
-    final tmp = <int?>[];
+    int idx = 0;
+    final List<int?> tmp = <int?>[];
 
     while (idx < text.length) {
-      final ch = text[idx];
+      final int ch = text[idx];
       switch (submode) {
         case _SubMode.subUpper:
           if (_isAlphaUpper(ch)) {
@@ -5472,7 +5447,7 @@ class BarcodePDF417 extends Barcode2D {
               continue;
             } else {
               if (idx + 1 < text.length) {
-                final next = text[idx + 1];
+                final int next = text[idx + 1];
                 if (_isPunctuation(next)) {
                   submode = _SubMode.subPunct;
                   tmp.add(25);
@@ -5497,8 +5472,8 @@ class BarcodePDF417 extends Barcode2D {
     }
 
     int? h = 0;
-    var i = 0;
-    for (final val in tmp) {
+    int i = 0;
+    for (final int? val in tmp) {
       if (i % 2 != 0) {
         h = (h! * 30) + val!;
         result.add(h);
@@ -5514,14 +5489,14 @@ class BarcodePDF417 extends Barcode2D {
   }
 
   int _determineConsecutiveBinaryCount(List<int> msg) {
-    var result = 0;
+    int result = 0;
 
-    for (var i = 0; i < msg.length; i++) {
-      final numericCount = _determineConsecutiveDigitCount(msg.sublist(i));
+    for (int i = 0; i < msg.length; i++) {
+      final int numericCount = _determineConsecutiveDigitCount(msg.sublist(i));
       if (numericCount >= min_numeric_count) {
         break;
       }
-      final textCount = _determineConsecutiveTextCount(msg.sublist(i));
+      final int textCount = _determineConsecutiveTextCount(msg.sublist(i));
       if (textCount > 5) {
         break;
       }
@@ -5531,7 +5506,7 @@ class BarcodePDF417 extends Barcode2D {
   }
 
   Iterable<int> _encodeBinary(List<int> data, _Pdf417EncodingMode startmode) sync* {
-    final count = data.length;
+    final int count = data.length;
     if (count == 1 && startmode == _Pdf417EncodingMode.encText) {
       yield shift_to_byte;
     } else if ((count % 6) == 0) {
@@ -5540,17 +5515,17 @@ class BarcodePDF417 extends Barcode2D {
       yield latch_to_byte_padded;
     }
 
-    var idx = 0;
+    int idx = 0;
 
     if (count >= 6) {
-      final words = List<int>.filled(5, 0);
+      final List<int> words = List<int>.filled(5, 0);
       while ((count - idx) >= 6) {
-        var t = 0;
-        for (var i = 0; i < 6; i++) {
+        int t = 0;
+        for (int i = 0; i < 6; i++) {
           t = t << 8;
           t += data[idx + i];
         }
-        for (var i = 0; i < 5; i++) {
+        for (int i = 0; i < 5; i++) {
           words[4 - i] = t % 900;
           t = t ~/ 900;
         }
@@ -5559,47 +5534,47 @@ class BarcodePDF417 extends Barcode2D {
       }
     }
 
-    for (var i = idx; i < count; i++) {
+    for (int i = idx; i < count; i++) {
       yield data[i] & 0xff;
     }
   }
 
   Iterable<int> _highlevelEncode(List<int> data) sync* {
-    var encodingMode = _Pdf417EncodingMode.encText;
-    var textSubMode = _SubMode.subUpper;
+    _Pdf417EncodingMode encodingMode = _Pdf417EncodingMode.encText;
+    _SubMode textSubMode = _SubMode.subUpper;
 
     while (data.isNotEmpty) {
-      final numericCount = _determineConsecutiveDigitCount(data);
+      final int numericCount = _determineConsecutiveDigitCount(data);
       if (numericCount >= min_numeric_count || numericCount == data.length) {
         yield latch_to_numeric;
         encodingMode = _Pdf417EncodingMode.encNumeric;
         textSubMode = _SubMode.subUpper;
-        final numData = _encodeNumeric(data.sublist(0, numericCount));
+        final Iterable<int> numData = _encodeNumeric(data.sublist(0, numericCount));
         yield* numData;
         data = data.sublist(numericCount);
       } else {
-        final textCount = _determineConsecutiveTextCount(data);
+        final int textCount = _determineConsecutiveTextCount(data);
         if (textCount >= 5 || textCount == data.length) {
           if (encodingMode != _Pdf417EncodingMode.encText) {
             yield latch_to_text;
             encodingMode = _Pdf417EncodingMode.encText;
             textSubMode = _SubMode.subUpper;
           }
-          final txtData = <int>[];
+          final List<int> txtData = <int>[];
           textSubMode = _encodeText(data.sublist(0, textCount), textSubMode, txtData);
           yield* txtData;
           data = data.sublist(textCount);
         } else {
-          var binaryCount = _determineConsecutiveBinaryCount(data);
+          int binaryCount = _determineConsecutiveBinaryCount(data);
           if (binaryCount == 0) {
             binaryCount = 1;
           }
-          final bytes = data.sublist(0, binaryCount);
+          final List<int> bytes = data.sublist(0, binaryCount);
           if (bytes.length != 1 || encodingMode != _Pdf417EncodingMode.encText) {
             encodingMode = _Pdf417EncodingMode.encBinary;
             textSubMode = _SubMode.subUpper;
           }
-          final byteData = _encodeBinary(bytes, encodingMode);
+          final Iterable<int> byteData = _encodeBinary(bytes, encodingMode);
           yield* byteData;
           data = data.sublist(binaryCount);
         }
@@ -5619,12 +5594,12 @@ class _Pdf417Size {
   final int rows;
 }
 
-const start_word = 0x1fea8;
-const stop_word = 0x3fa29;
+const int start_word = 0x1fea8;
+const int stop_word = 0x3fa29;
 
-const padding_codeword = 900;
+const int padding_codeword = 900;
 
-const codewords = <List<int>>[
+const List<List<int>> codewords = <List<int>>[
   <int>[
     0x1d5c0,
     0x1eaf0,
@@ -8420,7 +8395,7 @@ const codewords = <List<int>>[
   ],
 ];
 
-const correctionFactors = <List<int>>[
+const List<List<int>> correctionFactors = <List<int>>[
   <int>[27, 917],
 
   <int>[522, 568, 723, 809],
@@ -9454,15 +9429,15 @@ const correctionFactors = <List<int>>[
   ],
 ];
 
-const latch_to_text = 900;
-const latch_to_byte_padded = 901;
-const latch_to_numeric = 902;
-const latch_to_byte = 924;
-const shift_to_byte = 913;
+const int latch_to_text = 900;
+const int latch_to_byte_padded = 901;
+const int latch_to_numeric = 902;
+const int latch_to_byte = 924;
+const int shift_to_byte = 913;
 
-const min_numeric_count = 13;
+const int min_numeric_count = 13;
 
-const mixedMap = <int, int>{
+const Map<int, int> mixedMap = <int, int>{
   48: 0,
   49: 1,
   50: 2,
@@ -9491,7 +9466,7 @@ const mixedMap = <int, int>{
   32: 26,
 };
 
-const punctMap = <int, int>{
+const Map<int, int> punctMap = <int, int>{
   59: 0,
   60: 1,
   62: 2,
@@ -9527,15 +9502,15 @@ final class QrPolynomial {
   final Uint8List _values;
 
   factory QrPolynomial(List<int> thing, int shift) {
-    var offset = 0;
+    int offset = 0;
 
     while (offset < thing.length && thing[offset] == 0) {
       offset++;
     }
 
-    final values = Uint8List(thing.length - offset + shift);
+    final Uint8List values = Uint8List(thing.length - offset + shift);
 
-    for (var i = 0; i < thing.length - offset; i++) {
+    for (int i = 0; i < thing.length - offset; i++) {
       values[i] = thing[i + offset];
     }
 
@@ -9549,18 +9524,18 @@ final class QrPolynomial {
   int get length => _values.length;
 
   QrPolynomial multiply(QrPolynomial e) {
-    final eLength = e.length;
-    final valLength = length;
-    final foo = Uint8List(valLength + eLength - 1);
+    final int eLength = e.length;
+    final int valLength = length;
+    final Uint8List foo = Uint8List(valLength + eLength - 1);
 
-    final eValues = e._values;
+    final Uint8List eValues = e._values;
 
-    for (var i = 0; i < valLength; i++) {
-      final v1 = _values[i];
+    for (int i = 0; i < valLength; i++) {
+      final int v1 = _values[i];
       if (v1 == 0) continue;
-      final log1 = glog(v1);
-      for (var j = 0; j < eLength; j++) {
-        final v2 = eValues[j];
+      final int log1 = glog(v1);
+      for (int j = 0; j < eLength; j++) {
+        final int v2 = eValues[j];
         if (v2 == 0) continue;
         foo[i + j] ^= gexp(log1 + glog(v2));
       }
@@ -9570,26 +9545,26 @@ final class QrPolynomial {
   }
 
   QrPolynomial mod(QrPolynomial e) {
-    final eLength = e.length;
-    final valLength = length;
+    final int eLength = e.length;
+    final int valLength = length;
     if (valLength - eLength < 0) {
       return this;
     }
 
-    final values = Uint8List.fromList(_values);
-    final iterLimit = valLength - eLength + 1;
+    final Uint8List values = Uint8List.fromList(_values);
+    final int iterLimit = valLength - eLength + 1;
 
-    final eValues = e._values;
-    final e0Log = glog(eValues[0]);
+    final Uint8List eValues = e._values;
+    final int e0Log = glog(eValues[0]);
 
-    for (var i = 0; i < iterLimit; i++) {
-      final v = values[i];
+    for (int i = 0; i < iterLimit; i++) {
+      final int v = values[i];
       if (v == 0) continue;
 
-      final ratio = glog(v) - e0Log;
+      final int ratio = glog(v) - e0Log;
 
-      for (var j = 0; j < eLength; j++) {
-        final eVal = eValues[j];
+      for (int j = 0; j < eLength; j++) {
+        final int eVal = eValues[j];
         if (eVal == 0) continue;
         values[i + j] ^= gexp(glog(eVal) + ratio);
       }
@@ -9603,7 +9578,7 @@ class BarcodePostnet extends BarcodeHM {
   const BarcodePostnet() : super(tracker: 0);
 
   @override
-  Iterable<int> get charSet => [45, ...BarcodeMaps.postnet.keys];
+  Iterable<int> get charSet => <int>[45, ...BarcodeMaps.postnet.keys];
 
   @override
   String get name => "POSTNET";
@@ -9612,12 +9587,12 @@ class BarcodePostnet extends BarcodeHM {
   Iterable<BarcodeHMBar> convertHM(String data) sync* {
     yield fromBits(BarcodeMaps.postnetStartStop);
 
-    var sum = 0;
-    for (final codeUnit in data.codeUnits) {
+    int sum = 0;
+    for (final int codeUnit in data.codeUnits) {
       if (codeUnit == 45) {
         continue;
       }
-      final code = BarcodeMaps.postnet[codeUnit];
+      final int? code = BarcodeMaps.postnet[codeUnit];
       if (code == null) {
         throw BarcodeException('Unable to encode "${String.fromCharCode(codeUnit)}" to $name');
       }
@@ -9626,7 +9601,7 @@ class BarcodePostnet extends BarcodeHM {
       sum += codeUnit - 0x30;
     }
 
-    final crc = (10 - (sum % 10)) % 10;
+    final int crc = (10 - (sum % 10)) % 10;
     yield* addHW(BarcodeMaps.postnet[crc + 0x30]!, BarcodeMaps.postnetLen);
 
     yield fromBits(BarcodeMaps.postnetStartStop);
@@ -9645,7 +9620,7 @@ final class QrCode {
     QrErrorCorrectLevel errorCorrectLevel = QrErrorCorrectLevel.medium,
     int minTypeNumber = 1,
   }) {
-    final typeNumber = _calculateTypeNumberFromPayload(
+    final int typeNumber = _calculateTypeNumberFromPayload(
       errorCorrectLevel,
       payload,
       minTypeNumber,
@@ -9662,17 +9637,17 @@ final class QrCode {
   ) {
     RangeError.checkValueInInterval(minTypeNumber, 1, 40, "minTypeNumber");
 
-    final requiredBitsFor1 = payload.calculateRequiredBits(1);
-    final requiredBitsFor10 = payload.calculateRequiredBits(10);
-    final requiredBitsFor27 = payload.calculateRequiredBits(27);
+    final int requiredBitsFor1 = payload.calculateRequiredBits(1);
+    final int requiredBitsFor10 = payload.calculateRequiredBits(10);
+    final int requiredBitsFor27 = payload.calculateRequiredBits(27);
 
-    for (var typeNumber = minTypeNumber; typeNumber <= 40; typeNumber++) {
-      final totalDataBits = QrRsBlock.getTotalDataBits(
+    for (int typeNumber = minTypeNumber; typeNumber <= 40; typeNumber++) {
+      final int totalDataBits = QrRsBlock.getTotalDataBits(
         typeNumber,
         errorCorrectLevel,
       );
 
-      final requiredBits = switch (typeNumber) {
+      final int requiredBits = switch (typeNumber) {
         < 10 => requiredBitsFor1,
         < 27 => requiredBitsFor10,
         _ => requiredBitsFor27,
@@ -9681,7 +9656,7 @@ final class QrCode {
       if (requiredBits <= totalDataBits) return typeNumber;
     }
 
-    final maxBits = QrRsBlock.getTotalDataBits(40, errorCorrectLevel);
+    final int maxBits = QrRsBlock.getTotalDataBits(40, errorCorrectLevel);
     throw createExp(requiredBitsFor27, maxBits);
   }
 }
@@ -9700,17 +9675,17 @@ List<int> _createData(
   QrErrorCorrectLevel errorCorrectLevel,
   List<QrDatum> dataList,
 ) {
-  final rsBlocks = QrRsBlock.getRSBlocks(typeNumber, errorCorrectLevel);
+  final List<QrRsBlock> rsBlocks = QrRsBlock.getRSBlocks(typeNumber, errorCorrectLevel);
 
-  var totalDataBits = 0;
-  for (var rsBlock in rsBlocks) {
+  int totalDataBits = 0;
+  for (final QrRsBlock rsBlock in rsBlocks) {
     totalDataBits += rsBlock.dataCount * 8;
   }
 
-  final buffer = QrBitBuffer();
+  final QrBitBuffer buffer = QrBitBuffer();
 
-  for (var i = 0; i < dataList.length; i++) {
-    final data = dataList[i];
+  for (int i = 0; i < dataList.length; i++) {
+    final QrDatum data = dataList[i];
     buffer
       ..put(data.mode.value, 4)
       ..put(data.length, data.mode.getLengthBits(typeNumber));
@@ -9723,13 +9698,13 @@ List<int> _createData(
     buffer.put(0, 4);
   }
 
-  final paddingBits = 8 - (buffer.length % 8);
+  final int paddingBits = 8 - (buffer.length % 8);
   if (paddingBits < 8) {
     buffer.put(0, paddingBits);
   }
 
-  final bitDataCount = totalDataBits;
-  var count = 0;
+  final int bitDataCount = totalDataBits;
+  int count = 0;
   for (;;) {
     if (buffer.length >= bitDataCount) {
       break;
@@ -9741,56 +9716,56 @@ List<int> _createData(
 }
 
 List<int> _createBytes(QrBitBuffer buffer, List<QrRsBlock> rsBlocks) {
-  var offset = 0;
+  int offset = 0;
 
-  var maxDcCount = 0;
-  var maxEcCount = 0;
+  int maxDcCount = 0;
+  int maxEcCount = 0;
 
-  final dcData = List<List<int>?>.filled(rsBlocks.length, null);
-  final ecData = List<List<int>?>.filled(rsBlocks.length, null);
+  final List<List<int>?> dcData = List<List<int>?>.filled(rsBlocks.length, null);
+  final List<List<int>?> ecData = List<List<int>?>.filled(rsBlocks.length, null);
 
-  for (var r = 0; r < rsBlocks.length; r++) {
-    final dcCount = rsBlocks[r].dataCount;
-    final ecCount = rsBlocks[r].totalCount - dcCount;
+  for (int r = 0; r < rsBlocks.length; r++) {
+    final int dcCount = rsBlocks[r].dataCount;
+    final int ecCount = rsBlocks[r].totalCount - dcCount;
 
     maxDcCount = math.max(maxDcCount, dcCount);
     maxEcCount = math.max(maxEcCount, ecCount);
 
-    final dcItem = dcData[r] = buffer.getBytes(offset, dcCount);
+    final Uint8List dcItem = dcData[r] = buffer.getBytes(offset, dcCount);
     offset += dcCount;
 
-    final rsPoly = _errorCorrectPolynomial(ecCount);
-    final rawPoly = QrPolynomial(dcItem, rsPoly.length - 1);
+    final QrPolynomial rsPoly = _errorCorrectPolynomial(ecCount);
+    final QrPolynomial rawPoly = QrPolynomial(dcItem, rsPoly.length - 1);
 
-    final modPoly = rawPoly.mod(rsPoly);
-    final ecItem = ecData[r] = Uint8List(rsPoly.length - 1);
+    final QrPolynomial modPoly = rawPoly.mod(rsPoly);
+    final Uint8List ecItem = ecData[r] = Uint8List(rsPoly.length - 1);
 
-    for (var i = 0; i < ecItem.length; i++) {
-      final modIndex = i + modPoly.length - ecItem.length;
+    for (int i = 0; i < ecItem.length; i++) {
+      final int modIndex = i + modPoly.length - ecItem.length;
       ecItem[i] = (modIndex >= 0) ? modPoly[modIndex] : 0;
     }
   }
 
-  var totalCount = 0;
-  for (var i = 0; i < rsBlocks.length; i++) {
+  int totalCount = 0;
+  for (int i = 0; i < rsBlocks.length; i++) {
     totalCount += rsBlocks[i].totalCount;
   }
 
-  final data = Uint8List(totalCount);
-  var dataPtr = 0;
+  final Uint8List data = Uint8List(totalCount);
+  int dataPtr = 0;
 
-  for (var i = 0; i < maxDcCount; i++) {
-    for (var r = 0; r < rsBlocks.length; r++) {
-      final dcItem = dcData[r]!;
+  for (int i = 0; i < maxDcCount; i++) {
+    for (int r = 0; r < rsBlocks.length; r++) {
+      final List<int> dcItem = dcData[r]!;
       if (i < dcItem.length) {
         data[dataPtr++] = dcItem[i];
       }
     }
   }
 
-  for (var i = 0; i < maxEcCount; i++) {
-    for (var r = 0; r < rsBlocks.length; r++) {
-      final ecItem = ecData[r]!;
+  for (int i = 0; i < maxEcCount; i++) {
+    for (int r = 0; r < rsBlocks.length; r++) {
+      final List<int> ecItem = ecData[r]!;
       if (i < ecItem.length) {
         data[dataPtr++] = ecItem[i];
       }
@@ -9801,19 +9776,19 @@ List<int> _createBytes(QrBitBuffer buffer, List<QrRsBlock> rsBlocks) {
 }
 
 QrPolynomial _errorCorrectPolynomial(int errorCorrectLength) {
-  var a = QrPolynomial([1], 0);
+  QrPolynomial a = QrPolynomial(<int>[1], 0);
 
-  for (var i = 0; i < errorCorrectLength; i++) {
-    a = a.multiply(QrPolynomial([1, gexp(i)], 0));
+  for (int i = 0; i < errorCorrectLength; i++) {
+    a = a.multiply(QrPolynomial(<int>[1, gexp(i)], 0));
   }
 
   return a;
 }
 
 final class QrImage {
-  static const _pixelUnassigned = 0;
-  static const _pixelLight = 1;
-  static const _pixelDark = 2;
+  static const int _pixelUnassigned = 0;
+  static const int _pixelLight = 1;
+  static const int _pixelDark = 2;
 
   final int moduleCount;
   final int typeNumber;
@@ -9823,25 +9798,25 @@ final class QrImage {
   final Uint8List _data;
 
   factory QrImage(QrCode qrCode) {
-    final template = QrImage._template(qrCode);
-    final moduleCount = template.moduleCount;
-    final dataSize = moduleCount * moduleCount;
+    final QrImage template = QrImage._template(qrCode);
+    final int moduleCount = template.moduleCount;
+    final int dataSize = moduleCount * moduleCount;
 
-    final dataMap = Uint8List(dataSize)..setRange(0, dataSize, template._data);
+    final Uint8List dataMap = Uint8List(dataSize)..setRange(0, dataSize, template._data);
 
     QrImage._fromData(qrCode, 0, dataMap)._mapData(getDataCache(qrCode));
 
-    final workingBuffer = Uint8List(dataSize);
-    var minLostPoint = double.maxFinite;
-    var bestMaskPattern = 0;
+    final Uint8List workingBuffer = Uint8List(dataSize);
+    double minLostPoint = double.maxFinite;
+    int bestMaskPattern = 0;
     Uint8List? bestData;
 
-    for (var i = 0; i < 8; i++) {
+    for (int i = 0; i < 8; i++) {
       workingBuffer.setRange(0, dataSize, dataMap);
 
-      final testImage = QrImage._fromData(qrCode, i, workingBuffer).._applyMask(i, template._data);
+      final QrImage testImage = QrImage._fromData(qrCode, i, workingBuffer).._applyMask(i, template._data);
 
-      final lostPoint = _lostPoint(testImage);
+      final double lostPoint = _lostPoint(testImage);
 
       if (lostPoint < minLostPoint) {
         minLostPoint = lostPoint;
@@ -9852,7 +9827,7 @@ final class QrImage {
       }
     }
 
-    final finalImage = QrImage._fromData(qrCode, bestMaskPattern, bestData!).._setupTypeInfo(bestMaskPattern, false);
+    final QrImage finalImage = QrImage._fromData(qrCode, bestMaskPattern, bestData!).._setupTypeInfo(bestMaskPattern, false);
     if (finalImage.typeNumber >= 7) {
       finalImage._setupTypeNumber(false);
     }
@@ -9892,11 +9867,11 @@ final class QrImage {
   QrImage._fromData(QrCode qrCode, this.maskPattern, this._data) : moduleCount = qrCode.moduleCount, typeNumber = qrCode.typeNumber, errorCorrectLevel = qrCode.errorCorrectLevel;
 
   List<List<bool?>> get qrModules {
-    final list = <List<bool?>>[];
-    for (var r = 0; r < moduleCount; r++) {
-      final row = List<bool?>.filled(moduleCount, null);
-      for (var c = 0; c < moduleCount; c++) {
-        final v = _data[r * moduleCount + c];
+    final List<List<bool?>> list = <List<bool?>>[];
+    for (int r = 0; r < moduleCount; r++) {
+      final List<bool?> row = List<bool?>.filled(moduleCount, null);
+      for (int c = 0; c < moduleCount; c++) {
+        final int v = _data[r * moduleCount + c];
         row[c] = v == _pixelUnassigned ? null : (v == _pixelDark);
       }
       list.add(row);
@@ -9939,10 +9914,10 @@ final class QrImage {
   }
 
   void _setupPositionProbePattern(int row, int col) {
-    for (var r = -1; r <= 7; r++) {
+    for (int r = -1; r <= 7; r++) {
       if (row + r <= -1 || moduleCount <= row + r) continue;
 
-      for (var c = -1; c <= 7; c++) {
+      for (int c = -1; c <= 7; c++) {
         if (col + c <= -1 || moduleCount <= col + c) continue;
 
         if ((0 <= r && r <= 6 && (c == 0 || c == 6)) || (0 <= c && c <= 6 && (r == 0 || r == 6)) || (2 <= r && r <= 4 && 2 <= c && c <= 4)) {
@@ -9955,19 +9930,19 @@ final class QrImage {
   }
 
   void _setupPositionAdjustPattern() {
-    final pos = patternPosition(typeNumber);
+    final List<int> pos = patternPosition(typeNumber);
 
-    for (var i = 0; i < pos.length; i++) {
-      for (var j = 0; j < pos.length; j++) {
-        final row = pos[i];
-        final col = pos[j];
+    for (int i = 0; i < pos.length; i++) {
+      for (int j = 0; j < pos.length; j++) {
+        final int row = pos[i];
+        final int col = pos[j];
 
         if (_data[row * moduleCount + col] != _pixelUnassigned) {
           continue;
         }
 
-        for (var r = -2; r <= 2; r++) {
-          for (var c = -2; c <= 2; c++) {
+        for (int r = -2; r <= 2; r++) {
+          for (int c = -2; c <= 2; c++) {
             if (r == -2 || r == 2 || c == -2 || c == 2 || (r == 0 && c == 0)) {
               _set(row + r, col + c, true);
             } else {
@@ -9980,14 +9955,14 @@ final class QrImage {
   }
 
   void _setupTimingPattern() {
-    for (var r = 8; r < moduleCount - 8; r++) {
+    for (int r = 8; r < moduleCount - 8; r++) {
       if (_data[r * moduleCount + 6] != _pixelUnassigned) {
         continue;
       }
       _set(r, 6, r.isEven);
     }
 
-    for (var c = 8; c < moduleCount - 8; c++) {
+    for (int c = 8; c < moduleCount - 8; c++) {
       if (_data[6 * moduleCount + c] != _pixelUnassigned) {
         continue;
       }
@@ -9996,8 +9971,8 @@ final class QrImage {
   }
 
   void _setupTypeInfo(int maskPattern, bool test) {
-    final data = (errorCorrectLevel.index << 3) | maskPattern;
-    final bits = bchTypeInfo(data);
+    final int data = (errorCorrectLevel.index << 3) | maskPattern;
+    final int bits = bchTypeInfo(data);
 
     int i;
     bool mod;
@@ -10030,40 +10005,40 @@ final class QrImage {
   }
 
   void _setupTypeNumber(bool test) {
-    final bits = bchTypeNumber(typeNumber);
+    final int bits = bchTypeNumber(typeNumber);
 
-    for (var i = 0; i < 18; i++) {
-      final mod = !test && ((bits >> i) & 1) == 1;
+    for (int i = 0; i < 18; i++) {
+      final bool mod = !test && ((bits >> i) & 1) == 1;
       _set(i ~/ 3, i % 3 + moduleCount - 8 - 3, mod);
     }
 
-    for (var i = 0; i < 18; i++) {
-      final mod = !test && ((bits >> i) & 1) == 1;
+    for (int i = 0; i < 18; i++) {
+      final bool mod = !test && ((bits >> i) & 1) == 1;
       _set(i % 3 + moduleCount - 8 - 3, i ~/ 3, mod);
     }
   }
 
   void _mapData(List<int> data, [int? maskPattern]) {
-    var inc = -1;
-    var row = moduleCount - 1;
-    var bitIndex = 7;
-    var byteIndex = 0;
-    final mpIndex = maskPattern;
+    int inc = -1;
+    int row = moduleCount - 1;
+    int bitIndex = 7;
+    int byteIndex = 0;
+    final int? mpIndex = maskPattern;
 
-    for (var col = moduleCount - 1; col > 0; col -= 2) {
+    for (int col = moduleCount - 1; col > 0; col -= 2) {
       if (col == 6) col--;
 
       for (;;) {
-        for (var c = 0; c < 2; c++) {
+        for (int c = 0; c < 2; c++) {
           if (_data[row * moduleCount + (col - c)] == _pixelUnassigned) {
-            var dark = false;
+            bool dark = false;
 
             if (byteIndex < data.length) {
               dark = ((data[byteIndex] >> bitIndex) & 1) == 1;
             }
 
-            final cCol = col - c;
-            var mask = false;
+            final int cCol = col - c;
+            bool mask = false;
             if (mpIndex != null) {
               mask = _getMaskFunction(mpIndex)(row, cCol);
             }
@@ -10094,11 +10069,11 @@ final class QrImage {
   }
 
   void _applyMask(int mpIndex, Uint8List templateData) {
-    final maskFunction = _getMaskFunction(mpIndex);
+    final bool Function(int r, int c) maskFunction = _getMaskFunction(mpIndex);
 
-    var idx = 0;
-    for (var row = 0; row < moduleCount; row++) {
-      for (var col = 0; col < moduleCount; col++, idx++) {
+    int idx = 0;
+    for (int row = 0; row < moduleCount; row++) {
+      for (int col = 0; col < moduleCount; col++, idx++) {
         if (templateData[idx] == _pixelUnassigned && maskFunction(row, col)) {
           _data[idx] ^= _pixelDark ^ _pixelLight;
         }
@@ -10108,23 +10083,23 @@ final class QrImage {
 }
 
 double _lostPoint(QrImage qrImage) {
-  final moduleCount = qrImage.moduleCount;
-  final data = qrImage._data;
-  var lostPoint = 0.0;
+  final int moduleCount = qrImage.moduleCount;
+  final Uint8List data = qrImage._data;
+  double lostPoint = 0;
 
-  var darkCount = 0;
+  int darkCount = 0;
 
-  for (var row = 0; row < moduleCount; row++) {
-    final rowIdx = row * moduleCount;
-    for (var col = 0; col < moduleCount; col++) {
-      var sameCount = 0;
-      final currentIdx = rowIdx + col;
-      final p00 = data[currentIdx];
+  for (int row = 0; row < moduleCount; row++) {
+    final int rowIdx = row * moduleCount;
+    for (int col = 0; col < moduleCount; col++) {
+      int sameCount = 0;
+      final int currentIdx = rowIdx + col;
+      final int p00 = data[currentIdx];
 
       if (p00 == QrImage._pixelDark) darkCount++;
 
       if (row > 0) {
-        final upIdx = currentIdx - moduleCount;
+        final int upIdx = currentIdx - moduleCount;
         if (col > 0 && data[upIdx - 1] == p00) sameCount++;
         if (data[upIdx] == p00) sameCount++;
         if (col < moduleCount - 1 && data[upIdx + 1] == p00) sameCount++;
@@ -10134,7 +10109,7 @@ double _lostPoint(QrImage qrImage) {
       if (col < moduleCount - 1 && data[currentIdx + 1] == p00) sameCount++;
 
       if (row < moduleCount - 1) {
-        final downIdx = currentIdx + moduleCount;
+        final int downIdx = currentIdx + moduleCount;
         if (col > 0 && data[downIdx - 1] == p00) sameCount++;
         if (data[downIdx] == p00) sameCount++;
         if (col < moduleCount - 1 && data[downIdx + 1] == p00) sameCount++;
@@ -10173,7 +10148,7 @@ double _lostPoint(QrImage qrImage) {
     }
   }
 
-  final ratio = (100 * darkCount / moduleCount / moduleCount - 50).abs() / 5;
+  final double ratio = (100 * darkCount / moduleCount / moduleCount - 50).abs() / 5;
   return lostPoint + ratio * 10;
 }
 
@@ -10226,12 +10201,12 @@ class BarcodeQR extends Barcode2D {
       payload = QrPayload.fromTypedData(data);
     }
 
-    final qrCode = QrCode(
+    final QrCode qrCode = QrCode(
       payload: payload,
       errorCorrectLevel: errorLevel,
       minTypeNumber: typeNumber ?? 1,
     );
-    final qrImage = QrImage(qrCode);
+    final QrImage qrImage = QrImage(qrCode);
 
     return Barcode2DMatrix.fromXY(
       qrCode.moduleCount,
@@ -10263,9 +10238,9 @@ class ReedSolomonEncoder {
 
   GFPoly getPolynomial(int degree) {
     if (degree >= polynomes.length) {
-      var last = polynomes[polynomes.length - 1];
-      for (var d = polynomes.length; d <= degree; d++) {
-        final next = last.multiply(GFPoly(gf, <int>[1, gf.aLogTbl[d - 1 + gf.base]]));
+      GFPoly last = polynomes[polynomes.length - 1];
+      for (int d = polynomes.length; d <= degree; d++) {
+        final GFPoly next = last.multiply(GFPoly(gf, <int>[1, gf.aLogTbl[d - 1 + gf.base]]));
         polynomes.add(next);
         last = next;
       }
@@ -10274,13 +10249,13 @@ class ReedSolomonEncoder {
   }
 
   List<int> encode(List<int> data, int eccCount) {
-    final generator = getPolynomial(eccCount);
-    var info = GFPoly(gf, data);
+    final GFPoly generator = getPolynomial(eccCount);
+    GFPoly info = GFPoly(gf, data);
     info = info.multByMonominal(eccCount, 1);
-    final remainder = info.divide(generator)[1];
+    final GFPoly remainder = info.divide(generator)[1];
 
-    final result = List<int>.filled(eccCount, 0);
-    final numZero = eccCount - remainder.coefficients.length;
+    final List<int> result = List<int>.filled(eccCount, 0);
+    final int numZero = eccCount - remainder.coefficients.length;
     result.setAll(numZero, remainder.coefficients);
     return result;
   }
@@ -10291,8 +10266,8 @@ class GaloisField {
     aLogTbl = List<int>.filled(size, 0);
     logTbl = List<int>.filled(size, 0);
 
-    var x = 1;
-    for (var i = 0; i < size; i++) {
+    int x = 1;
+    for (int i = 0; i < size; i++) {
       aLogTbl[i] = x;
       x = x * 2;
       if (x >= size) {
@@ -10300,7 +10275,7 @@ class GaloisField {
       }
     }
 
-    for (var i = 0; i < size; i++) {
+    for (int i = 0; i < size; i++) {
       logTbl[aLogTbl[i]] = i;
     }
   }
@@ -10310,13 +10285,9 @@ class GaloisField {
   late List<int> aLogTbl;
   late List<int> logTbl;
 
-  GFPoly zero() {
-    return GFPoly(this, <int>[0]);
-  }
+  GFPoly zero() => GFPoly(this, <int>[0]);
 
-  int addOrSub(int a, int b) {
-    return a ^ b;
-  }
+  int addOrSub(int a, int b) => a ^ b;
 
   int multiply(int a, int b) {
     if (a == 0 || b == 0) {
@@ -10334,9 +10305,7 @@ class GaloisField {
     return aLogTbl[(logTbl[a] - logTbl[b]) % (size - 1)];
   }
 
-  int invers(int num) {
-    return aLogTbl[(size - 1) - logTbl[num]];
-  }
+  int invers(int num) => aLogTbl[(size - 1) - logTbl[num]];
 }
 
 class GFPoly {
@@ -10350,7 +10319,7 @@ class GFPoly {
     if (coeff == 0) {
       return field.zero();
     }
-    final result = List<int>.filled(degree + 1, 0);
+    final List<int> result = List<int>.filled(degree + 1, 0);
     result[0] = coeff;
     return GFPoly(field, result);
   }
@@ -10358,17 +10327,11 @@ class GFPoly {
   GaloisField gf;
   List<int> coefficients;
 
-  int getDegree() {
-    return coefficients.length - 1;
-  }
+  int getDegree() => coefficients.length - 1;
 
-  bool zero() {
-    return coefficients[0] == 0;
-  }
+  bool zero() => coefficients[0] == 0;
 
-  int getCoefficient(int degree) {
-    return coefficients[getDegree() - degree];
-  }
+  int getCoefficient(int degree) => coefficients[getDegree() - degree];
 
   GFPoly addOrSubstract(GFPoly other) {
     if (zero()) {
@@ -10376,17 +10339,17 @@ class GFPoly {
     } else if (other.zero()) {
       return this;
     }
-    var smallCoeff = coefficients;
-    var largeCoeff = other.coefficients;
+    List<int> smallCoeff = coefficients;
+    List<int> largeCoeff = other.coefficients;
     if (smallCoeff.length > largeCoeff.length) {
-      final swap = largeCoeff;
+      final List<int> swap = largeCoeff;
       largeCoeff = smallCoeff;
       smallCoeff = swap;
     }
-    final sumDiff = List<int>.filled(largeCoeff.length, 0);
-    final lenDiff = largeCoeff.length - smallCoeff.length;
+    final List<int> sumDiff = List<int>.filled(largeCoeff.length, 0);
+    final int lenDiff = largeCoeff.length - smallCoeff.length;
     sumDiff.setAll(0, largeCoeff.sublist(0, lenDiff));
-    for (var i = lenDiff; i < largeCoeff.length; i++) {
+    for (int i = lenDiff; i < largeCoeff.length; i++) {
       sumDiff[i] = gf.addOrSub(smallCoeff[i - lenDiff], largeCoeff[i]);
     }
     return GFPoly(gf, sumDiff);
@@ -10396,9 +10359,9 @@ class GFPoly {
     if (coeff == 0) {
       return gf.zero();
     }
-    final size = coefficients.length;
-    final result = List<int>.filled(size + degree, 0);
-    for (var i = 0; i < size; i++) {
+    final int size = coefficients.length;
+    final List<int> result = List<int>.filled(size + degree, 0);
+    for (int i = 0; i < size; i++) {
       result[i] = gf.multiply(coefficients[i], coeff);
     }
     return GFPoly(gf, result);
@@ -10408,15 +10371,15 @@ class GFPoly {
     if (zero() || other.zero()) {
       return gf.zero();
     }
-    final aCoeff = coefficients;
-    final aLen = aCoeff.length;
-    final bCoeff = other.coefficients;
-    final bLen = bCoeff.length;
-    final product = List<int>.filled(aLen + bLen - 1, 0);
-    for (var i = 0; i < aLen; i++) {
-      final ac = aCoeff[i];
-      for (var j = 0; j < bLen; j++) {
-        final bc = bCoeff[j];
+    final List<int> aCoeff = coefficients;
+    final int aLen = aCoeff.length;
+    final List<int> bCoeff = other.coefficients;
+    final int bLen = bCoeff.length;
+    final List<int> product = List<int>.filled(aLen + bLen - 1, 0);
+    for (int i = 0; i < aLen; i++) {
+      final int ac = aCoeff[i];
+      for (int j = 0; j < bLen; j++) {
+        final int bc = bCoeff[j];
         product[i + j] = gf.addOrSub(product[i + j], gf.multiply(ac, bc));
       }
     }
@@ -10424,16 +10387,16 @@ class GFPoly {
   }
 
   List<GFPoly> divide(GFPoly other) {
-    var quotient = gf.zero();
-    var remainder = this;
-    final fld = gf;
-    final denomLeadTerm = other.getCoefficient(other.getDegree());
-    final inversDenomLeadTerm = fld.invers(denomLeadTerm);
+    GFPoly quotient = gf.zero();
+    GFPoly remainder = this;
+    final GaloisField fld = gf;
+    final int denomLeadTerm = other.getCoefficient(other.getDegree());
+    final int inversDenomLeadTerm = fld.invers(denomLeadTerm);
     while (remainder.getDegree() >= other.getDegree() && !remainder.zero()) {
-      final degreeDiff = remainder.getDegree() - other.getDegree();
-      final scale = fld.multiply(remainder.getCoefficient(remainder.getDegree()), inversDenomLeadTerm);
-      final term = other.multByMonominal(degreeDiff, scale);
-      final itQuot = GFPoly.monominalPoly(fld, degreeDiff, scale);
+      final int degreeDiff = remainder.getDegree() - other.getDegree();
+      final int scale = fld.multiply(remainder.getCoefficient(remainder.getDegree()), inversDenomLeadTerm);
+      final GFPoly term = other.multByMonominal(degreeDiff, scale);
+      final GFPoly itQuot = GFPoly.monominalPoly(fld, degreeDiff, scale);
       quotient = quotient.addOrSubstract(itQuot);
       remainder = remainder.addOrSubstract(term);
     }
@@ -10454,23 +10417,23 @@ class BarcodeRm4scc extends BarcodeHM {
   Iterable<BarcodeHMBar> convertHM(String data) sync* {
     yield fromBits(BarcodeMaps.rm4sccStart);
 
-    var sumTop = 0;
-    var sumBottom = 0;
-    final keys = BarcodeMaps.rm4scc.keys.toList();
+    int sumTop = 0;
+    int sumBottom = 0;
+    final List<int> keys = BarcodeMaps.rm4scc.keys.toList();
 
-    for (final codeUnit in data.codeUnits) {
-      final code = BarcodeMaps.rm4scc[codeUnit];
+    for (final int codeUnit in data.codeUnits) {
+      final int? code = BarcodeMaps.rm4scc[codeUnit];
       if (code == null) {
         throw BarcodeException('Unable to encode "${String.fromCharCode(codeUnit)}" to $name');
       }
       yield* addHW(code, BarcodeMaps.rm4sccLen);
 
-      final index = keys.indexOf(codeUnit);
+      final int index = keys.indexOf(codeUnit);
       sumTop += (index ~/ 6 + 1) % 6;
       sumBottom += (index + 1) % 6;
     }
 
-    final crc = ((sumTop - 1) % 6) * 6 + (sumBottom - 1) % 6;
+    final int crc = ((sumTop - 1) % 6) * 6 + (sumBottom - 1) % 6;
     yield* addHW(BarcodeMaps.rm4scc[keys[crc]]!, BarcodeMaps.rm4sccLen);
 
     yield fromBits(BarcodeMaps.rm4sccStop);
@@ -10487,18 +10450,18 @@ final class QrRsBlock {
     int typeNumber,
     QrErrorCorrectLevel errorCorrectLevel,
   ) {
-    final rsBlock = _getRsBlockTable(typeNumber, errorCorrectLevel);
+    final List<int> rsBlock = _getRsBlockTable(typeNumber, errorCorrectLevel);
 
-    final length = rsBlock.length ~/ 3;
+    final int length = rsBlock.length ~/ 3;
 
-    final list = <QrRsBlock>[];
+    final List<QrRsBlock> list = <QrRsBlock>[];
 
-    for (var i = 0; i < length; i++) {
-      final count = rsBlock[i * 3 + 0];
-      final totalCount = rsBlock[i * 3 + 1];
-      final dataCount = rsBlock[i * 3 + 2];
+    for (int i = 0; i < length; i++) {
+      final int count = rsBlock[i * 3 + 0];
+      final int totalCount = rsBlock[i * 3 + 1];
+      final int dataCount = rsBlock[i * 3 + 2];
 
-      for (var j = 0; j < count; j++) {
+      for (int j = 0; j < count; j++) {
         list.add(QrRsBlock._(totalCount, dataCount));
       }
     }
@@ -10510,12 +10473,12 @@ final class QrRsBlock {
     int typeNumber,
     QrErrorCorrectLevel errorCorrectLevel,
   ) {
-    final rsBlock = _getRsBlockTable(typeNumber, errorCorrectLevel);
-    final length = rsBlock.length ~/ 3;
-    var totalDataBits = 0;
-    for (var i = 0; i < length; i++) {
-      final count = rsBlock[i * 3 + 0];
-      final dataCount = rsBlock[i * 3 + 2];
+    final List<int> rsBlock = _getRsBlockTable(typeNumber, errorCorrectLevel);
+    final int length = rsBlock.length ~/ 3;
+    int totalDataBits = 0;
+    for (int i = 0; i < length; i++) {
+      final int count = rsBlock[i * 3 + 0];
+      final int dataCount = rsBlock[i * 3 + 2];
       totalDataBits += count * dataCount * 8;
     }
     return totalDataBits;
@@ -10532,206 +10495,206 @@ List<int> _getRsBlockTable(
   QrErrorCorrectLevel.high => _rsBlockTable[(typeNumber - 1) * 4 + 3],
 };
 
-const List<List<int>> _rsBlockTable = [
-  [1, 26, 19],
-  [1, 26, 16],
-  [1, 26, 13],
-  [1, 26, 9],
+const List<List<int>> _rsBlockTable = <List<int>>[
+  <int>[1, 26, 19],
+  <int>[1, 26, 16],
+  <int>[1, 26, 13],
+  <int>[1, 26, 9],
 
-  [1, 44, 34],
-  [1, 44, 28],
-  [1, 44, 22],
-  [1, 44, 16],
+  <int>[1, 44, 34],
+  <int>[1, 44, 28],
+  <int>[1, 44, 22],
+  <int>[1, 44, 16],
 
-  [1, 70, 55],
-  [1, 70, 44],
-  [2, 35, 17],
-  [2, 35, 13],
+  <int>[1, 70, 55],
+  <int>[1, 70, 44],
+  <int>[2, 35, 17],
+  <int>[2, 35, 13],
 
-  [1, 100, 80],
-  [2, 50, 32],
-  [2, 50, 24],
-  [4, 25, 9],
+  <int>[1, 100, 80],
+  <int>[2, 50, 32],
+  <int>[2, 50, 24],
+  <int>[4, 25, 9],
 
-  [1, 134, 108],
-  [2, 67, 43],
-  [2, 33, 15, 2, 34, 16],
-  [2, 33, 11, 2, 34, 12],
+  <int>[1, 134, 108],
+  <int>[2, 67, 43],
+  <int>[2, 33, 15, 2, 34, 16],
+  <int>[2, 33, 11, 2, 34, 12],
 
-  [2, 86, 68],
-  [4, 43, 27],
-  [4, 43, 19],
-  [4, 43, 15],
+  <int>[2, 86, 68],
+  <int>[4, 43, 27],
+  <int>[4, 43, 19],
+  <int>[4, 43, 15],
 
-  [2, 98, 78],
-  [4, 49, 31],
-  [2, 32, 14, 4, 33, 15],
-  [4, 39, 13, 1, 40, 14],
+  <int>[2, 98, 78],
+  <int>[4, 49, 31],
+  <int>[2, 32, 14, 4, 33, 15],
+  <int>[4, 39, 13, 1, 40, 14],
 
-  [2, 121, 97],
-  [2, 60, 38, 2, 61, 39],
-  [4, 40, 18, 2, 41, 19],
-  [4, 40, 14, 2, 41, 15],
+  <int>[2, 121, 97],
+  <int>[2, 60, 38, 2, 61, 39],
+  <int>[4, 40, 18, 2, 41, 19],
+  <int>[4, 40, 14, 2, 41, 15],
 
-  [2, 146, 116],
-  [3, 58, 36, 2, 59, 37],
-  [4, 36, 16, 4, 37, 17],
-  [4, 36, 12, 4, 37, 13],
+  <int>[2, 146, 116],
+  <int>[3, 58, 36, 2, 59, 37],
+  <int>[4, 36, 16, 4, 37, 17],
+  <int>[4, 36, 12, 4, 37, 13],
 
-  [2, 86, 68, 2, 87, 69],
-  [4, 69, 43, 1, 70, 44],
-  [6, 43, 19, 2, 44, 20],
-  [6, 43, 15, 2, 44, 16],
+  <int>[2, 86, 68, 2, 87, 69],
+  <int>[4, 69, 43, 1, 70, 44],
+  <int>[6, 43, 19, 2, 44, 20],
+  <int>[6, 43, 15, 2, 44, 16],
 
-  [4, 101, 81],
-  [1, 80, 50, 4, 81, 51],
-  [4, 50, 22, 4, 51, 23],
-  [3, 36, 12, 8, 37, 13],
+  <int>[4, 101, 81],
+  <int>[1, 80, 50, 4, 81, 51],
+  <int>[4, 50, 22, 4, 51, 23],
+  <int>[3, 36, 12, 8, 37, 13],
 
-  [2, 116, 92, 2, 117, 93],
-  [6, 58, 36, 2, 59, 37],
-  [4, 46, 20, 6, 47, 21],
-  [7, 42, 14, 4, 43, 15],
+  <int>[2, 116, 92, 2, 117, 93],
+  <int>[6, 58, 36, 2, 59, 37],
+  <int>[4, 46, 20, 6, 47, 21],
+  <int>[7, 42, 14, 4, 43, 15],
 
-  [4, 133, 107],
-  [8, 59, 37, 1, 60, 38],
-  [8, 44, 20, 4, 45, 21],
-  [12, 33, 11, 4, 34, 12],
+  <int>[4, 133, 107],
+  <int>[8, 59, 37, 1, 60, 38],
+  <int>[8, 44, 20, 4, 45, 21],
+  <int>[12, 33, 11, 4, 34, 12],
 
-  [3, 145, 115, 1, 146, 116],
-  [4, 64, 40, 5, 65, 41],
-  [11, 36, 16, 5, 37, 17],
-  [11, 36, 12, 5, 37, 13],
+  <int>[3, 145, 115, 1, 146, 116],
+  <int>[4, 64, 40, 5, 65, 41],
+  <int>[11, 36, 16, 5, 37, 17],
+  <int>[11, 36, 12, 5, 37, 13],
 
-  [5, 109, 87, 1, 110, 88],
-  [5, 65, 41, 5, 66, 42],
-  [5, 54, 24, 7, 55, 25],
-  [11, 36, 12],
+  <int>[5, 109, 87, 1, 110, 88],
+  <int>[5, 65, 41, 5, 66, 42],
+  <int>[5, 54, 24, 7, 55, 25],
+  <int>[11, 36, 12],
 
-  [5, 122, 98, 1, 123, 99],
-  [7, 73, 45, 3, 74, 46],
-  [15, 43, 19, 2, 44, 20],
-  [3, 45, 15, 13, 46, 16],
+  <int>[5, 122, 98, 1, 123, 99],
+  <int>[7, 73, 45, 3, 74, 46],
+  <int>[15, 43, 19, 2, 44, 20],
+  <int>[3, 45, 15, 13, 46, 16],
 
-  [1, 135, 107, 5, 136, 108],
-  [10, 74, 46, 1, 75, 47],
-  [1, 50, 22, 15, 51, 23],
-  [2, 42, 14, 17, 43, 15],
+  <int>[1, 135, 107, 5, 136, 108],
+  <int>[10, 74, 46, 1, 75, 47],
+  <int>[1, 50, 22, 15, 51, 23],
+  <int>[2, 42, 14, 17, 43, 15],
 
-  [5, 150, 120, 1, 151, 121],
-  [9, 69, 43, 4, 70, 44],
-  [17, 50, 22, 1, 51, 23],
-  [2, 42, 14, 19, 43, 15],
+  <int>[5, 150, 120, 1, 151, 121],
+  <int>[9, 69, 43, 4, 70, 44],
+  <int>[17, 50, 22, 1, 51, 23],
+  <int>[2, 42, 14, 19, 43, 15],
 
-  [3, 141, 113, 4, 142, 114],
-  [3, 70, 44, 11, 71, 45],
-  [17, 47, 21, 4, 48, 22],
-  [9, 39, 13, 16, 40, 14],
+  <int>[3, 141, 113, 4, 142, 114],
+  <int>[3, 70, 44, 11, 71, 45],
+  <int>[17, 47, 21, 4, 48, 22],
+  <int>[9, 39, 13, 16, 40, 14],
 
-  [3, 135, 107, 5, 136, 108],
-  [3, 67, 41, 13, 68, 42],
-  [15, 54, 24, 5, 55, 25],
-  [15, 43, 15, 10, 44, 16],
+  <int>[3, 135, 107, 5, 136, 108],
+  <int>[3, 67, 41, 13, 68, 42],
+  <int>[15, 54, 24, 5, 55, 25],
+  <int>[15, 43, 15, 10, 44, 16],
 
-  [4, 144, 116, 4, 145, 117],
-  [17, 68, 42],
-  [17, 50, 22, 6, 51, 23],
-  [19, 46, 16, 6, 47, 17],
+  <int>[4, 144, 116, 4, 145, 117],
+  <int>[17, 68, 42],
+  <int>[17, 50, 22, 6, 51, 23],
+  <int>[19, 46, 16, 6, 47, 17],
 
-  [2, 139, 111, 7, 140, 112],
-  [17, 74, 46],
-  [7, 54, 24, 16, 55, 25],
-  [34, 37, 13],
+  <int>[2, 139, 111, 7, 140, 112],
+  <int>[17, 74, 46],
+  <int>[7, 54, 24, 16, 55, 25],
+  <int>[34, 37, 13],
 
-  [4, 151, 121, 5, 152, 122],
-  [4, 75, 47, 14, 76, 48],
-  [11, 54, 24, 14, 55, 25],
-  [16, 45, 15, 14, 46, 16],
+  <int>[4, 151, 121, 5, 152, 122],
+  <int>[4, 75, 47, 14, 76, 48],
+  <int>[11, 54, 24, 14, 55, 25],
+  <int>[16, 45, 15, 14, 46, 16],
 
-  [6, 147, 117, 4, 148, 118],
-  [6, 73, 45, 14, 74, 46],
-  [11, 54, 24, 16, 55, 25],
-  [30, 46, 16, 2, 47, 17],
+  <int>[6, 147, 117, 4, 148, 118],
+  <int>[6, 73, 45, 14, 74, 46],
+  <int>[11, 54, 24, 16, 55, 25],
+  <int>[30, 46, 16, 2, 47, 17],
 
-  [8, 132, 106, 4, 133, 107],
-  [8, 75, 47, 13, 76, 48],
-  [7, 54, 24, 22, 55, 25],
-  [22, 45, 15, 13, 46, 16],
+  <int>[8, 132, 106, 4, 133, 107],
+  <int>[8, 75, 47, 13, 76, 48],
+  <int>[7, 54, 24, 22, 55, 25],
+  <int>[22, 45, 15, 13, 46, 16],
 
-  [10, 142, 114, 2, 143, 115],
-  [19, 74, 46, 4, 75, 47],
-  [28, 50, 22, 6, 51, 23],
-  [33, 46, 16, 4, 47, 17],
+  <int>[10, 142, 114, 2, 143, 115],
+  <int>[19, 74, 46, 4, 75, 47],
+  <int>[28, 50, 22, 6, 51, 23],
+  <int>[33, 46, 16, 4, 47, 17],
 
-  [8, 152, 122, 4, 153, 123],
-  [22, 73, 45, 3, 74, 46],
-  [8, 53, 23, 26, 54, 24],
-  [12, 45, 15, 28, 46, 16],
+  <int>[8, 152, 122, 4, 153, 123],
+  <int>[22, 73, 45, 3, 74, 46],
+  <int>[8, 53, 23, 26, 54, 24],
+  <int>[12, 45, 15, 28, 46, 16],
 
-  [3, 147, 117, 10, 148, 118],
-  [3, 73, 45, 23, 74, 46],
-  [4, 54, 24, 31, 55, 25],
-  [11, 45, 15, 31, 46, 16],
+  <int>[3, 147, 117, 10, 148, 118],
+  <int>[3, 73, 45, 23, 74, 46],
+  <int>[4, 54, 24, 31, 55, 25],
+  <int>[11, 45, 15, 31, 46, 16],
 
-  [7, 146, 116, 7, 147, 117],
-  [21, 73, 45, 7, 74, 46],
-  [1, 53, 23, 37, 54, 24],
-  [19, 45, 15, 26, 46, 16],
+  <int>[7, 146, 116, 7, 147, 117],
+  <int>[21, 73, 45, 7, 74, 46],
+  <int>[1, 53, 23, 37, 54, 24],
+  <int>[19, 45, 15, 26, 46, 16],
 
-  [5, 145, 115, 10, 146, 116],
-  [19, 75, 47, 10, 76, 48],
-  [15, 54, 24, 25, 55, 25],
-  [23, 45, 15, 25, 46, 16],
+  <int>[5, 145, 115, 10, 146, 116],
+  <int>[19, 75, 47, 10, 76, 48],
+  <int>[15, 54, 24, 25, 55, 25],
+  <int>[23, 45, 15, 25, 46, 16],
 
-  [13, 145, 115, 3, 146, 116],
-  [2, 74, 46, 29, 75, 47],
-  [42, 54, 24, 1, 55, 25],
-  [23, 45, 15, 28, 46, 16],
+  <int>[13, 145, 115, 3, 146, 116],
+  <int>[2, 74, 46, 29, 75, 47],
+  <int>[42, 54, 24, 1, 55, 25],
+  <int>[23, 45, 15, 28, 46, 16],
 
-  [17, 145, 115],
-  [10, 74, 46, 23, 75, 47],
-  [10, 54, 24, 35, 55, 25],
-  [19, 45, 15, 35, 46, 16],
+  <int>[17, 145, 115],
+  <int>[10, 74, 46, 23, 75, 47],
+  <int>[10, 54, 24, 35, 55, 25],
+  <int>[19, 45, 15, 35, 46, 16],
 
-  [17, 145, 115, 1, 146, 116],
-  [14, 74, 46, 21, 75, 47],
-  [29, 54, 24, 19, 55, 25],
-  [11, 45, 15, 46, 46, 16],
+  <int>[17, 145, 115, 1, 146, 116],
+  <int>[14, 74, 46, 21, 75, 47],
+  <int>[29, 54, 24, 19, 55, 25],
+  <int>[11, 45, 15, 46, 46, 16],
 
-  [13, 145, 115, 6, 146, 116],
-  [14, 74, 46, 23, 75, 47],
-  [44, 54, 24, 7, 55, 25],
-  [59, 46, 16, 1, 47, 17],
+  <int>[13, 145, 115, 6, 146, 116],
+  <int>[14, 74, 46, 23, 75, 47],
+  <int>[44, 54, 24, 7, 55, 25],
+  <int>[59, 46, 16, 1, 47, 17],
 
-  [12, 151, 121, 7, 152, 122],
-  [12, 75, 47, 26, 76, 48],
-  [39, 54, 24, 14, 55, 25],
-  [22, 45, 15, 41, 46, 16],
+  <int>[12, 151, 121, 7, 152, 122],
+  <int>[12, 75, 47, 26, 76, 48],
+  <int>[39, 54, 24, 14, 55, 25],
+  <int>[22, 45, 15, 41, 46, 16],
 
-  [6, 151, 121, 14, 152, 122],
-  [6, 75, 47, 34, 76, 48],
-  [46, 54, 24, 10, 55, 25],
-  [2, 45, 15, 64, 46, 16],
+  <int>[6, 151, 121, 14, 152, 122],
+  <int>[6, 75, 47, 34, 76, 48],
+  <int>[46, 54, 24, 10, 55, 25],
+  <int>[2, 45, 15, 64, 46, 16],
 
-  [17, 152, 122, 4, 153, 123],
-  [29, 74, 46, 14, 75, 47],
-  [49, 54, 24, 10, 55, 25],
-  [24, 45, 15, 46, 46, 16],
+  <int>[17, 152, 122, 4, 153, 123],
+  <int>[29, 74, 46, 14, 75, 47],
+  <int>[49, 54, 24, 10, 55, 25],
+  <int>[24, 45, 15, 46, 46, 16],
 
-  [4, 152, 122, 18, 153, 123],
-  [13, 74, 46, 32, 75, 47],
-  [48, 54, 24, 14, 55, 25],
-  [42, 45, 15, 32, 46, 16],
+  <int>[4, 152, 122, 18, 153, 123],
+  <int>[13, 74, 46, 32, 75, 47],
+  <int>[48, 54, 24, 14, 55, 25],
+  <int>[42, 45, 15, 32, 46, 16],
 
-  [20, 147, 117, 4, 148, 118],
-  [40, 75, 47, 7, 76, 48],
-  [43, 54, 24, 22, 55, 25],
-  [10, 45, 15, 67, 46, 16],
+  <int>[20, 147, 117, 4, 148, 118],
+  <int>[40, 75, 47, 7, 76, 48],
+  <int>[43, 54, 24, 22, 55, 25],
+  <int>[10, 45, 15, 67, 46, 16],
 
-  [19, 148, 118, 6, 149, 119],
-  [18, 75, 47, 31, 76, 48],
-  [34, 54, 24, 34, 55, 25],
-  [20, 45, 15, 61, 46, 16],
+  <int>[19, 148, 118, 6, 149, 119],
+  <int>[18, 75, 47, 31, 76, 48],
+  <int>[34, 54, 24, 34, 55, 25],
+  <int>[20, 45, 15, 61, 46, 16],
 ];
 
 class BarcodeTelepen extends Barcode1D {
@@ -10747,13 +10710,13 @@ class BarcodeTelepen extends Barcode1D {
   Iterable<bool> convert(String data) sync* {
     yield* add(BarcodeMaps.telepenStart, BarcodeMaps.telepenLen);
 
-    var checksum = 0;
+    int checksum = 0;
 
-    for (var code in data.codeUnits) {
+    for (final int code in data.codeUnits) {
       if (code >= BarcodeMaps.telepen.length) {
         throw BarcodeException('Unable to encode "${String.fromCharCode(code)}" to $name Barcode');
       }
-      final codeValue = BarcodeMaps.telepen[code];
+      final int codeValue = BarcodeMaps.telepen[code];
       yield* add(codeValue, BarcodeMaps.telepenLen);
       checksum += code;
     }
@@ -10782,7 +10745,7 @@ class BarcodeUpcA extends BarcodeEan {
 
   @override
   void verifyBytes(Uint8List data) {
-    final text = utf8.decoder.convert(data);
+    final String text = utf8.decoder.convert(data);
     checkLength(text, maxLength);
     super.verifyBytes(data);
   }
@@ -10793,9 +10756,9 @@ class BarcodeUpcA extends BarcodeEan {
 
     yield* add(BarcodeMaps.eanStartEnd, 3);
 
-    var index = 0;
-    for (var code in data.codeUnits) {
-      final codes = BarcodeMaps.ean[code];
+    int index = 0;
+    for (final int code in data.codeUnits) {
+      final List<int>? codes = BarcodeMaps.ean[code];
 
       if (codes == null) {
         throw BarcodeException('Unable to encode "${String.fromCharCode(code)}" to $name Barcode');
@@ -10856,7 +10819,7 @@ class BarcodeUpcA extends BarcodeEan {
       return super.getHeight(index, count, width, height, fontHeight, textPadding, drawText);
     }
 
-    final h = height - fontHeight - textPadding;
+    final double h = height - fontHeight - textPadding;
 
     if (index + count < 11 || (index > 45 && index < 49) || index > 82) {
       return h + fontHeight / 2 + textPadding;
@@ -10874,10 +10837,10 @@ class BarcodeUpcA extends BarcodeEan {
     double textPadding,
     double lineWidth,
   ) sync* {
-    final text = checkLength(data, maxLength);
-    final w = lineWidth * 7;
-    final left = marginLeft(true, width, height, fontHeight, textPadding);
-    final right = marginRight(true, width, height, fontHeight, textPadding);
+    final String text = checkLength(data, maxLength);
+    final double w = lineWidth * 7;
+    final double left = marginLeft(true, width, height, fontHeight, textPadding);
+    final double right = marginRight(true, width, height, fontHeight, textPadding);
 
     yield BarcodeText(
       left: 0,
@@ -10888,9 +10851,9 @@ class BarcodeUpcA extends BarcodeEan {
       align: BarcodeTextAlign.right,
     );
 
-    var offset = left + lineWidth * 10;
+    double offset = left + lineWidth * 10;
 
-    for (var i = 1; i < text.length - 1; i++) {
+    for (int i = 1; i < text.length - 1; i++) {
       yield BarcodeText(
         left: offset,
         top: height - fontHeight,
@@ -10933,7 +10896,7 @@ class BarcodeUpcE extends BarcodeEan {
 
   @override
   void verifyBytes(Uint8List data) {
-    var text = utf8.decoder.convert(data);
+    String text = utf8.decoder.convert(data);
 
     if (text.length <= 8) {
       text = upceToUpca(text);
@@ -10943,7 +10906,7 @@ class BarcodeUpcE extends BarcodeEan {
       throw BarcodeException('Unable to encode "$text", minimum length is 11 for $name Barcode');
     }
 
-    final upca = checkLength(text, maxLength);
+    final String upca = checkLength(text, maxLength);
     if (!fallback) {
       upcaToUpce(upca);
     }
@@ -10956,16 +10919,16 @@ class BarcodeUpcE extends BarcodeEan {
       throw BarcodeException('Unable to convert "$data" to $name Barcode');
     }
 
-    final mc = data.substring(1, 6);
-    final pc = data.substring(6, 11);
+    final String mc = data.substring(1, 6);
+    final String pc = data.substring(6, 11);
 
-    if (["000", "100", "200"].contains(mc.substring(mc.length - 3)) && int.parse(pc) <= 999) {
+    if (<String>["000", "100", "200"].contains(mc.substring(mc.length - 3)) && int.parse(pc) <= 999) {
       return "${mc.substring(0, 2)}${pc.substring(pc.length - 3)}${mc[2]}";
     } else if (mc.substring(mc.length - 2) == "00" && int.parse(pc) <= 99) {
       return "${mc.substring(0, 3)}${pc.substring(pc.length - 2)}3";
     } else if (mc.substring(mc.length - 1) == "0" && int.parse(pc) <= 9) {
       return "${mc.substring(0, 4)}${pc.substring(pc.length - 1)}4";
-    } else if (mc.substring(mc.length - 1) != "0" && [5, 6, 7, 8, 9].contains(int.parse(pc))) {
+    } else if (mc.substring(mc.length - 1) != "0" && <int>[5, 6, 7, 8, 9].contains(int.parse(pc))) {
       return mc + pc.substring(pc.length - 1);
     } else {
       throw BarcodeException('Unable to convert "$data" to $name Barcode');
@@ -10973,14 +10936,14 @@ class BarcodeUpcE extends BarcodeEan {
   }
 
   String upceToUpca(String data) {
-    final exp = RegExp(r"^\d{6,8}$");
-    final match = exp.firstMatch(data);
+    final RegExp exp = RegExp(r"^\d{6,8}$");
+    final RegExpMatch? match = exp.firstMatch(data);
 
     if (match == null) {
       throw BarcodeException('Unable to convert "$data" to UPC A Barcode');
     }
 
-    var first = "0";
+    String first = "0";
     String? checksum;
 
     switch (data.length) {
@@ -10999,12 +10962,12 @@ class BarcodeUpcE extends BarcodeEan {
       throw BarcodeException('Unable to convert "$data" to UPC A Barcode');
     }
 
-    final d1 = data[0];
-    final d2 = data[1];
-    final d3 = data[2];
-    final d4 = data[3];
-    final d5 = data[4];
-    final d6 = data[5];
+    final String d1 = data[0];
+    final String d2 = data[1];
+    final String d3 = data[2];
+    final String d4 = data[3];
+    final String d5 = data[4];
+    final String d6 = data[5];
 
     String manufacturer;
     String product;
@@ -11041,8 +11004,8 @@ class BarcodeUpcE extends BarcodeEan {
     }
 
     data = checkLength(data, maxLength);
-    final first = data.codeUnitAt(0);
-    final last = data.codeUnitAt(11);
+    final int first = data.codeUnitAt(0);
+    final int last = data.codeUnitAt(11);
 
     try {
       data = upcaToUpce(data);
@@ -11056,12 +11019,12 @@ class BarcodeUpcE extends BarcodeEan {
 
     yield* add(BarcodeMaps.eanStartEnd, 3);
 
-    final parityRow = BarcodeMaps.upce[last];
-    final parity = first == 0x30 ? parityRow : parityRow! ^ 0x3f;
+    final int? parityRow = BarcodeMaps.upce[last];
+    final int? parity = first == 0x30 ? parityRow : parityRow! ^ 0x3f;
 
-    var index = 0;
-    for (var code in data.codeUnits) {
-      final codes = BarcodeMaps.ean[code];
+    int index = 0;
+    for (final int code in data.codeUnits) {
+      final List<int>? codes = BarcodeMaps.ean[code];
 
       if (codes == null) {
         throw BarcodeException('Unable to encode "${String.fromCharCode(code)}" to $name Barcode');
@@ -11126,7 +11089,7 @@ class BarcodeUpcE extends BarcodeEan {
       );
     }
 
-    final h = height - fontHeight - textPadding;
+    final double h = height - fontHeight - textPadding;
 
     if (index + count < 4 || index > 44) {
       return h + fontHeight / 2 + textPadding;
@@ -11149,8 +11112,8 @@ class BarcodeUpcE extends BarcodeEan {
     }
 
     data = checkLength(data, maxLength);
-    final first = data.substring(0, 1);
-    final last = data.substring(11, 12);
+    final String first = data.substring(0, 1);
+    final String last = data.substring(11, 12);
 
     try {
       data = upcaToUpce(data);
@@ -11169,9 +11132,9 @@ class BarcodeUpcE extends BarcodeEan {
       rethrow;
     }
 
-    final w = lineWidth * 7;
-    final left = marginLeft(true, width, height, fontHeight, textPadding);
-    final right = marginRight(true, width, height, fontHeight, textPadding);
+    final double w = lineWidth * 7;
+    final double left = marginLeft(true, width, height, fontHeight, textPadding);
+    final double right = marginRight(true, width, height, fontHeight, textPadding);
 
     yield BarcodeText(
       left: 0,
@@ -11182,9 +11145,9 @@ class BarcodeUpcE extends BarcodeEan {
       align: BarcodeTextAlign.right,
     );
 
-    var offset = left + lineWidth * 3;
+    double offset = left + lineWidth * 3;
 
-    for (var i = 0; i < data.length; i++) {
+    for (int i = 0; i < data.length; i++) {
       yield BarcodeText(
         left: offset,
         top: height - fontHeight,
@@ -11214,8 +11177,8 @@ class BarcodeUpcE extends BarcodeEan {
     }
 
     data = checkLength(data, maxLength);
-    final first = data.substring(0, 1);
-    final last = data.substring(11, 12);
+    final String first = data.substring(0, 1);
+    final String last = data.substring(11, 12);
 
     try {
       data = upcaToUpce(data);
@@ -11230,55 +11193,55 @@ class BarcodeUpcE extends BarcodeEan {
   }
 }
 
-const List<List<int>> _patternPositionTable = [
-  [],
-  [6, 18],
-  [6, 22],
-  [6, 26],
-  [6, 30],
-  [6, 34],
-  [6, 22, 38],
-  [6, 24, 42],
-  [6, 26, 46],
-  [6, 28, 50],
-  [6, 30, 54],
-  [6, 32, 58],
-  [6, 34, 62],
-  [6, 26, 46, 66],
-  [6, 26, 48, 70],
-  [6, 26, 50, 74],
-  [6, 30, 54, 78],
-  [6, 30, 56, 82],
-  [6, 30, 58, 86],
-  [6, 34, 62, 90],
-  [6, 28, 50, 72, 94],
-  [6, 26, 50, 74, 98],
-  [6, 30, 54, 78, 102],
-  [6, 28, 54, 80, 106],
-  [6, 32, 58, 84, 110],
-  [6, 30, 58, 86, 114],
-  [6, 34, 62, 90, 118],
-  [6, 26, 50, 74, 98, 122],
-  [6, 30, 54, 78, 102, 126],
-  [6, 26, 52, 78, 104, 130],
-  [6, 30, 56, 82, 108, 134],
-  [6, 34, 60, 86, 112, 138],
-  [6, 30, 58, 86, 114, 142],
-  [6, 34, 62, 90, 118, 146],
-  [6, 30, 54, 78, 102, 126, 150],
-  [6, 24, 50, 76, 102, 128, 154],
-  [6, 28, 54, 80, 106, 132, 158],
-  [6, 32, 58, 84, 110, 136, 162],
-  [6, 26, 54, 82, 110, 138, 166],
-  [6, 30, 58, 86, 114, 142, 170],
+const List<List<int>> _patternPositionTable = <List<int>>[
+  <int>[],
+  <int>[6, 18],
+  <int>[6, 22],
+  <int>[6, 26],
+  <int>[6, 30],
+  <int>[6, 34],
+  <int>[6, 22, 38],
+  <int>[6, 24, 42],
+  <int>[6, 26, 46],
+  <int>[6, 28, 50],
+  <int>[6, 30, 54],
+  <int>[6, 32, 58],
+  <int>[6, 34, 62],
+  <int>[6, 26, 46, 66],
+  <int>[6, 26, 48, 70],
+  <int>[6, 26, 50, 74],
+  <int>[6, 30, 54, 78],
+  <int>[6, 30, 56, 82],
+  <int>[6, 30, 58, 86],
+  <int>[6, 34, 62, 90],
+  <int>[6, 28, 50, 72, 94],
+  <int>[6, 26, 50, 74, 98],
+  <int>[6, 30, 54, 78, 102],
+  <int>[6, 28, 54, 80, 106],
+  <int>[6, 32, 58, 84, 110],
+  <int>[6, 30, 58, 86, 114],
+  <int>[6, 34, 62, 90, 118],
+  <int>[6, 26, 50, 74, 98, 122],
+  <int>[6, 30, 54, 78, 102, 126],
+  <int>[6, 26, 52, 78, 104, 130],
+  <int>[6, 30, 56, 82, 108, 134],
+  <int>[6, 34, 60, 86, 112, 138],
+  <int>[6, 30, 58, 86, 114, 142],
+  <int>[6, 34, 62, 90, 118, 146],
+  <int>[6, 30, 54, 78, 102, 126, 150],
+  <int>[6, 24, 50, 76, 102, 128, 154],
+  <int>[6, 28, 54, 80, 106, 132, 158],
+  <int>[6, 32, 58, 84, 110, 136, 162],
+  <int>[6, 26, 54, 82, 110, 138, 166],
+  <int>[6, 30, 58, 86, 114, 142, 170],
 ];
 
 const int _g15 = (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0);
 const int _g18 = (1 << 12) | (1 << 11) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 5) | (1 << 2) | (1 << 0);
-const _g15Mask = (1 << 14) | (1 << 12) | (1 << 10) | (1 << 4) | (1 << 1);
+const int _g15Mask = (1 << 14) | (1 << 12) | (1 << 10) | (1 << 4) | (1 << 1);
 
 int bchTypeInfo(int data) {
-  var d = data << 10;
+  int d = data << 10;
   while (d.bitLength >= 11) {
     d ^= _g15 << (d.bitLength - 11);
   }
@@ -11286,7 +11249,7 @@ int bchTypeInfo(int data) {
 }
 
 int bchTypeNumber(int data) {
-  var d = data << 12;
+  int d = data << 12;
   while (d.bitLength >= 13) {
     d ^= _g18 << (d.bitLength - 13);
   }
@@ -11303,9 +11266,9 @@ final class QrValidationResult {
   final List<QrErrorCorrectLevel> validErrorCorrectLevels;
 
   const QrValidationResult._({
-    this.qrCode,
     required this.validTypeNumbers,
     required this.validErrorCorrectLevels,
+    this.qrCode,
   });
 
   factory QrValidationResult.fromPayload({
@@ -11315,9 +11278,9 @@ final class QrValidationResult {
   }) {
     RangeError.checkValueInInterval(typeNumber, 1, 40, "typeNumber");
 
-    final requiredBitsFor1 = payload.calculateRequiredBits(1);
-    final requiredBitsFor10 = payload.calculateRequiredBits(10);
-    final requiredBitsFor27 = payload.calculateRequiredBits(27);
+    final int requiredBitsFor1 = payload.calculateRequiredBits(1);
+    final int requiredBitsFor10 = payload.calculateRequiredBits(10);
+    final int requiredBitsFor27 = payload.calculateRequiredBits(27);
 
     int getRequiredBits(int type) {
       if (type < 10) return requiredBitsFor1;
@@ -11325,22 +11288,22 @@ final class QrValidationResult {
       return requiredBitsFor27;
     }
 
-    final validTypes = <int>[];
-    for (var type = 1; type <= 40; type++) {
-      final required = getRequiredBits(type);
-      final capacity = QrRsBlock.getTotalDataBits(type, errorCorrectLevel);
+    final List<int> validTypes = <int>[];
+    for (int type = 1; type <= 40; type++) {
+      final int required = getRequiredBits(type);
+      final int capacity = QrRsBlock.getTotalDataBits(type, errorCorrectLevel);
       if (required <= capacity) {
-        for (var t = type; t <= 40; t++) {
+        for (int t = type; t <= 40; t++) {
           validTypes.add(t);
         }
         break;
       }
     }
 
-    final validErrorLevels = <QrErrorCorrectLevel>[];
-    for (final level in QrErrorCorrectLevel.values) {
-      final requiredForType = getRequiredBits(typeNumber);
-      final capacity = QrRsBlock.getTotalDataBits(typeNumber, level);
+    final List<QrErrorCorrectLevel> validErrorLevels = <QrErrorCorrectLevel>[];
+    for (final QrErrorCorrectLevel level in QrErrorCorrectLevel.values) {
+      final int requiredForType = getRequiredBits(typeNumber);
+      final int capacity = QrRsBlock.getTotalDataBits(typeNumber, level);
       if (requiredForType <= capacity) {
         validErrorLevels.add(level);
       }
@@ -11357,8 +11320,8 @@ final class QrValidationResult {
 
     return QrValidationResult._(
       qrCode: code,
-      validTypeNumbers: List.unmodifiable(validTypes),
-      validErrorCorrectLevels: List.unmodifiable(validErrorLevels),
+      validTypeNumbers: List<int>.unmodifiable(validTypes),
+      validErrorCorrectLevels: List<QrErrorCorrectLevel>.unmodifiable(validErrorLevels),
     );
   }
 

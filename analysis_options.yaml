@@ -5,12 +5,6 @@ formatter:
   page_width: 200
 analyzer:
   exclude:
-    - "lib/generated_plugin_registrant.dart"
-    - "lib/generated/l10n.dart"
-    - "lib/generated/intl/messages_all.dart"
-    - "lib/generated/intl/messages_en.dart"
-    - "lib/generated/intl/messages_fa.dart"
-    - "lib/components/u_barcode.dart"
     - build/**
     - android/**
     - ios/**
