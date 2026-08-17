@@ -12,6 +12,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get aboutAvaHamrah => 'درباره آواهمراه';
 
   @override
+  String get accommodation => 'اقامتگاه';
+
+  @override
   String get acceptTermsAndContinue => 'قبول شرایط و ادامه';
 
   @override

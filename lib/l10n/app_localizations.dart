@@ -98,6 +98,12 @@ abstract class AppLocalizations {
   /// **'About AvaHamrah'**
   String get aboutAvaHamrah;
 
+  /// No description provided for @accommodation.
+  ///
+  /// In en, this message translates to:
+  /// **'Accommodation'**
+  String get accommodation;
+
   /// No description provided for @acceptTermsAndContinue.
   ///
   /// In en, this message translates to:

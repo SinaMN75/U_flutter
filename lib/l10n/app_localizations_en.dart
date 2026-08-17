@@ -12,6 +12,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get aboutAvaHamrah => 'About AvaHamrah';
 
   @override
+  String get accommodation => 'Accommodation';
+
+  @override
   String get acceptTermsAndContinue => 'Accept terms and continue';
 
   @override
