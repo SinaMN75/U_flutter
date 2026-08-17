@@ -481,7 +481,6 @@ class UCard extends StatelessWidget {
     this.color,
     this.borderRadius = const BorderRadius.all(Radius.circular(12)),
     this.margin = EdgeInsets.zero,
-    this.onTap,
     this.shadowColor,
     this.width,
     this.height,
@@ -494,7 +493,6 @@ class UCard extends StatelessWidget {
   final Color? color;
   final BorderRadius borderRadius;
   final EdgeInsets margin;
-  final VoidCallback? onTap;
   final Color? shadowColor;
 
   @override
