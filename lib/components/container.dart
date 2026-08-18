@@ -180,11 +180,6 @@ class UIconTextHorizontal extends StatelessWidget {
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.crossAxisAlignment = CrossAxisAlignment.center,
     this.mainAxisSize = MainAxisSize.min,
-    this.onTap,
-    this.backgroundColor,
-    this.borderRadius,
-    this.elevation = 0.0,
-    this.padding = EdgeInsets.zero,
   });
 
   final Widget leading;
@@ -193,38 +188,18 @@ class UIconTextHorizontal extends StatelessWidget {
   final MainAxisAlignment mainAxisAlignment;
   final CrossAxisAlignment crossAxisAlignment;
   final MainAxisSize mainAxisSize;
-  final VoidCallback? onTap;
-  final Color? backgroundColor;
-  final BorderRadius? borderRadius;
-  final double elevation;
-  final EdgeInsets padding;
 
   @override
-  Widget build(BuildContext context) {
-    Widget content = Row(
-      mainAxisAlignment: mainAxisAlignment,
-      crossAxisAlignment: crossAxisAlignment,
-      mainAxisSize: mainAxisSize,
-      children: <Widget>[
-        leading,
-        SizedBox(width: spaceBetween),
-        trailing,
-      ],
-    );
-
-    content = Padding(padding: padding, child: content);
-
-    if (onTap != null || elevation > 0 || backgroundColor != null || borderRadius != null) {
-      content = Card(
-        elevation: elevation,
-        color: backgroundColor,
-        shape: RoundedRectangleBorder(borderRadius: borderRadius ?? BorderRadius.circular(8)),
-        child: InkWell(onTap: onTap, child: content),
-      );
-    }
-
-    return content;
-  }
+  Widget build(BuildContext context) => Row(
+    mainAxisAlignment: mainAxisAlignment,
+    crossAxisAlignment: crossAxisAlignment,
+    mainAxisSize: mainAxisSize,
+    children: <Widget>[
+      leading,
+      SizedBox(width: spaceBetween),
+      trailing,
+    ],
+  );
 }
 
 class UIconTextVertical extends StatelessWidget {
@@ -253,6 +228,26 @@ class UIconTextVertical extends StatelessWidget {
     children: <Widget>[
       leading,
       SizedBox(height: spaceBetween),
+      trailing,
+    ],
+  );
+}
+
+class UKeyValue extends StatelessWidget {
+  const UKeyValue({
+    required this.leading,
+    required this.trailing,
+    super.key,
+  });
+
+  final Widget leading;
+  final Widget trailing;
+
+  @override
+  Widget build(BuildContext context) => Row(
+    mainAxisAlignment: .spaceBetween,
+    children: <Widget>[
+      leading,
       trailing,
     ],
   );
@@ -516,7 +511,7 @@ class UListView extends StatelessWidget {
   });
 
   final IndexedWidgetBuilder itemBuilder;
-  final int itemCount; // number of main items
+  final int itemCount;
   final Widget? header;
   final Widget? footer;
   final ScrollPhysics? physics;

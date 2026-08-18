@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:u/components/container.dart";
 
 class UTab {
   final String id;
@@ -15,24 +16,19 @@ enum UTabMenuAction { close, closeOthers, closeAll, closeToRight }
 class UTabBarTheme {
   final Color backgroundColor;
   final Gradient? backgroundGradient;
-
   final Color selectedTabColor;
   final Color hoverTabColor;
   final Color unselectedTabColor;
-
   final Color selectedTextColor;
   final Color unselectedTextColor;
-
   final Color indicatorColor;
   final Color controlColor;
-
   final double height;
   final double tabHeight;
   final double minTabWidth;
   final double maxTabWidth;
   final double gap;
   final BorderRadius tabRadius;
-
   final Duration animationDuration;
   final Curve animationCurve;
   final bool showSelectedUnderline;
@@ -145,20 +141,14 @@ class UTabBar extends StatefulWidget {
   final int selectedIndex;
   final ValueChanged<int> onSelect;
   final ValueChanged<int> onClose;
-
   final void Function(int oldIndex, int newIndex)? onReorder;
-
   final void Function(UTabMenuAction action, int index)? onMenuAction;
-
   final UTabBarTheme? theme;
   final bool enableReorder;
   final bool enableContextMenu;
   final bool showOverflowMenu;
-
   final Map<UTabMenuAction, String> closeLabels;
-
   final Widget? leading;
-
   final Widget? trailing;
 
   @override
@@ -282,12 +272,10 @@ class _UTabBarState extends State<UTabBar> {
   PopupMenuItem<UTabMenuAction> _menuItem(UTabMenuAction action, IconData icon) => PopupMenuItem<UTabMenuAction>(
     value: action,
     height: 40,
-    child: Row(
-      children: <Widget>[
-        Icon(icon, size: 18),
-        const SizedBox(width: 12),
-        Text(_menuLabel(action)),
-      ],
+    child: UIconTextHorizontal(
+      spaceBetween: 12,
+      leading: Icon(icon, size: 18),
+      trailing: Text(_menuLabel(action)),
     ),
   );
 
@@ -502,15 +490,13 @@ class _TabChipState extends State<_TabChip> {
                   Icon(widget.tab.icon, size: 16, color: textColor),
                   const SizedBox(width: 8),
                 ],
-                Flexible(
-                  child: AnimatedDefaultTextStyle(
-                    duration: t.animationDuration,
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                      color: textColor,
-                      fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
-                    ),
-                    child: Text(widget.tab.title, maxLines: 1, overflow: TextOverflow.ellipsis),
+                AnimatedDefaultTextStyle(
+                  duration: t.animationDuration,
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                    color: textColor,
+                    fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
                   ),
+                  child: Text(widget.tab.title, maxLines: 1, overflow: TextOverflow.ellipsis),
                 ),
                 if (widget.tab.badge != null) ...<Widget>[
                   const SizedBox(width: 6),

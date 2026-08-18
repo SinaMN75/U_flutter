@@ -203,30 +203,36 @@ class _UserPageState extends State<UAdminUserPage> {
     margin: const EdgeInsets.symmetric(vertical: 4),
     color: index.isOdd ? Theme.of(context).colorScheme.surface : Theme.of(context).colorScheme.primary.withValues(alpha: 0.12),
     radius: 8,
-    child: ListTile(
-      dense: true,
-      onTap: () => UAdminPageSwitcher.hotelUserDetail(user: i),
-      title: URow(
-        spacing: 0,
-        children: <Widget>[
-          _roleChip(i),
-          const SizedBox(width: 8),
-          UTextBodyMedium("${i.firstName ?? ""} ${i.lastName ?? ""} (${i.userName})".trim(), maxLines: 1, overflow: TextOverflow.ellipsis).expanded(),
-        ],
-      ),
-      subtitle: UColumn(
-        spacing: 0,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          UTextBodyMedium(i.phoneNumber ?? "-"),
-          UTextBodyMedium(i.email ?? "-", overflow: TextOverflow.ellipsis),
-          UTextBodySmall(i.createdAt.toJalaliDateTime()),
-        ],
-      ),
-      trailing: PopupMenuButton<String>(
-        icon: const Icon(Icons.more_vert),
-        itemBuilder: (BuildContext context) => _menuItems(i),
-      ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        UKeyValue(
+          leading: UIconTextHorizontal(
+            leading: PopupMenuButton<String>(
+              icon: const Icon(Icons.more_vert),
+              itemBuilder: (BuildContext context) => _menuItems(i),
+            ),
+            trailing: _roleChip(i),
+          ),
+          trailing: UTextBodyMedium("${i.firstName ?? "-"} ${i.lastName ?? "-"}", fontWeight: FontWeight.bold),
+        ),
+        const Divider(height: 24, endIndent: 20, indent: 20),
+        UKeyValue(
+          leading: UTextBodyMedium("${U.s.phoneNumber}:"),
+          trailing: UTextBodyMedium(i.phoneNumber ?? "---", fontWeight: FontWeight.bold),
+        ),
+        const Divider(height: 24, endIndent: 20, indent: 20),
+        UKeyValue(
+          leading: UTextBodyMedium("${U.s.email}:"),
+          trailing: UTextBodyMedium(i.email ?? "---", fontWeight: FontWeight.bold),
+        ),
+        const Divider(height: 24, endIndent: 20, indent: 20),
+        UKeyValue(
+          leading: UTextBodyMedium("${U.s.createdAt}:"),
+          trailing: UTextBodyMedium(i.createdAt.toJalaliDateTime(), fontWeight: FontWeight.bold),
+        ),
+        const Divider(height: 24, endIndent: 20, indent: 20),
+      ],
     ),
   );
 
