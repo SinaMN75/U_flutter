@@ -315,18 +315,8 @@ class UContainer extends StatelessWidget {
       boxShadow: boxShadow,
     ),
     clipBehavior: clipBehavior,
-    child: _wrapChild(),
+    child: child,
   );
-
-  Widget? _wrapChild() {
-    if (child == null || (color == null && gradient == null && image == null)) return child;
-    return Material(
-      type: MaterialType.transparency,
-      borderRadius: BorderRadius.circular(radius ?? 0),
-      clipBehavior: Clip.antiAlias,
-      child: child,
-    );
-  }
 }
 
 class UColumn extends StatelessWidget {
