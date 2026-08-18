@@ -198,11 +198,9 @@ class _UserPageState extends State<UAdminUserPage> {
     );
   }
 
-  Widget _listItemResponsive({required UUserResponse i, required int index}) => UContainer(
-    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-    margin: const EdgeInsets.symmetric(vertical: 4),
-    color: index.isOdd ? Theme.of(context).colorScheme.surface : Theme.of(context).colorScheme.primary.withValues(alpha: 0.12),
-    radius: 8,
+  Widget _listItemResponsive({required UUserResponse i, required int index}) => Card(
+    elevation: 1,
+    margin: const EdgeInsets.all(8),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
@@ -233,7 +231,7 @@ class _UserPageState extends State<UAdminUserPage> {
         ),
         const Divider(height: 24, endIndent: 20, indent: 20),
       ],
-    ),
+    ).pAll(16),
   );
 
   Widget _listItemDesktop({required UUserResponse i, required int index}) => URow(
