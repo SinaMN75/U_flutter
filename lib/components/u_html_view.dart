@@ -112,7 +112,7 @@ class _UHtmlViewState extends State<UHtmlView> {
       widget.onLinkTap!(href);
       return;
     }
-    ULaunch.launchURL(href);
+    ULaunch.url(href);
   }
 
   void _openImage(String url) {

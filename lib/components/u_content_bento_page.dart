@@ -199,7 +199,7 @@ class UContentBentoPage extends StatelessWidget {
 
   Widget _richTile(BuildContext context, String value) => _surface(
     context,
-    child: _looksLikeHtml(value) ? UHtmlView(html: value, selectable: true, onLinkTap: ULaunch.launchURL) : UTextBodyMedium(value, overflow: TextOverflow.visible, height: 1.5),
+    child: _looksLikeHtml(value) ? UHtmlView(html: value, selectable: true, onLinkTap: ULaunch.url) : UTextBodyMedium(value, overflow: TextOverflow.visible, height: 1.5),
   );
 
   Widget _detailTile(BuildContext context, String value, IconData icon, Color accent) => _surface(
@@ -226,7 +226,7 @@ class UContentBentoPage extends StatelessWidget {
 
     return _surface(
       context,
-      onTap: tapLink == null ? null : () => ULaunch.launchURL(tapLink),
+      onTap: tapLink == null ? null : () => ULaunch.url(tapLink),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -274,7 +274,7 @@ class UContentBentoPage extends StatelessWidget {
           shape: const StadiumBorder(),
           clipBehavior: Clip.antiAlias,
           child: InkWell(
-            onTap: () => ULaunch.launchURL(url),
+            onTap: () => ULaunch.url(url),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
               child: Row(
@@ -346,10 +346,10 @@ class UContentBentoPage extends StatelessWidget {
           const SizedBox(height: 12),
           Wrap(
             children: <Widget>[
-              if (_has(j.instagram)) const UImage(UIcons.instagram, package: "u").onPress(() => ULaunch.launchURL(j.instagram!)),
-              if (_has(j.telegram)) const UImage(UIcons.telegram, package: "u").onPress(() => ULaunch.launchURL(j.telegram!)),
-              if (_has(j.whatsapp)) const UImage(UIcons.whatsapp, package: "u").onPress(() => ULaunch.launchURL(j.whatsapp!)),
-              if (_has(j.link)) const UImage(UIcons.website, package: "u").onPress(() => ULaunch.launchURL(j.link!)),
+              if (_has(j.instagram)) const UImage(UIcons.instagram, package: "u").onPress(() => ULaunch.url(j.instagram!)),
+              if (_has(j.telegram)) const UImage(UIcons.telegram, package: "u").onPress(() => ULaunch.url(j.telegram!)),
+              if (_has(j.whatsapp)) const UImage(UIcons.whatsapp, package: "u").onPress(() => ULaunch.url(j.whatsapp!)),
+              if (_has(j.link)) const UImage(UIcons.website, package: "u").onPress(() => ULaunch.url(j.link!)),
             ],
           ),
         ],
@@ -363,7 +363,7 @@ class UContentBentoPage extends StatelessWidget {
       context,
       background: scheme.tertiaryContainer,
       border: scheme.tertiaryContainer,
-      onTap: () => ULaunch.launchURL(link),
+      onTap: () => ULaunch.url(link),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -382,7 +382,7 @@ class UContentBentoPage extends StatelessWidget {
     iconPosition: UButtonIconPosition.trailing,
     height: 52,
     borderRadius: 18,
-    onTap: () => ULaunch.launchURL(link),
+    onTap: () => ULaunch.url(link),
   );
 
   // ---- Shared building blocks -------------------------------------------

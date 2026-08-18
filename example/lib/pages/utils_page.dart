@@ -88,7 +88,7 @@ ULaunch.call("+989120000000");''',
           spacing: 12,
           runSpacing: 12,
           children: <Widget>[
-            UButton(title: "Open URL", type: UButtonType.outlined, onTap: () => ULaunch.launchURL("https://sinamn75.com")),
+            UButton(title: "Open URL", type: UButtonType.outlined, onTap: () => ULaunch.url("https://sinamn75.com")),
             UButton(title: "Call", type: UButtonType.outlined, onTap: () => ULaunch.call("+989120000000")),
           ],
         ),

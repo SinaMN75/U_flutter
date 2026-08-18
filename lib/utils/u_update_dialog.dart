@@ -115,13 +115,13 @@ class UUpdateDialog {
               if (info.link1 != null && info.link1Title != null)
                 UButton(
                   width: MediaQuery.sizeOf(navigatorKey.currentContext!).width,
-                  onTap: () => ULaunch.launchURL(info.link1!),
+                  onTap: () => ULaunch.url(info.link1!),
                   title: info.link1Title ?? "---",
                 ).pOnly(top: 8),
               if (info.link2 != null && info.link2Title != null)
                 UButton(
                   width: MediaQuery.sizeOf(navigatorKey.currentContext!).width,
-                  onTap: () => ULaunch.launchURL(info.link2!),
+                  onTap: () => ULaunch.url(info.link2!),
                   title: info.link2Title ?? "",
                 ).pOnly(top: 8),
               if (type == UpdateType.optional)

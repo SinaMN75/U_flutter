@@ -1,33 +1,33 @@
 import "package:u/utilities.dart";
 
 abstract class ULaunch {
-  static Future<void> launchURL(String url, {LaunchMode mode = LaunchMode.platformDefault}) async => launchUrl(
+  static Future<void> url(String url, {LaunchMode mode = LaunchMode.platformDefault}) async => launchUrl(
     Uri.parse(url),
     mode: mode,
     webOnlyWindowName: kIsWeb ? "_self" : null,
   );
 
-  static Future<void> launchWhatsApp(String number) async => launchURL("https://api.whatsapp.com/send?phone=$number");
+  static Future<void> whatsApp(String number) async => url("https://api.whatsapp.com/send?phone=$number");
 
-  static Future<void> launchMap(double latitude, double longitude) async => launchURL(
+  static Future<void> map(double latitude, double longitude) async => url(
     Uri(scheme: "geo", queryParameters: <String, String>{"q": "$latitude,$longitude"}).toString(),
   );
 
-  static Future<void> launchTelegram(String id) async => launchURL("https://t.me/$id");
+  static Future<void> telegram(String id) async => url("https://t.me/$id");
 
-  static Future<void> launchInstagram(String username) async => launchURL("https://instagram.com/$username");
+  static Future<void> instagram(String username) async => url("https://instagram.com/$username");
 
-  static Future<void> call(String phone) async => launchURL("tel:$phone");
+  static Future<void> call(String phone) async => url("tel:$phone");
 
-  static Future<void> sms(String phone, String body) async => launchURL("sms:$phone?body=$body");
+  static Future<void> sms(String phone, String body) async => url("sms:$phone?body=$body");
 
-  static Future<void> shareWithTelegram(String param) async => launchURL("tg://msg?text=$param");
+  static Future<void> shareWithTelegram(String param) async => url("tg://msg?text=$param");
 
-  static Future<void> shareWithWhatsapp(String param) async => launchURL("whatsapp://send?text=$param");
+  static Future<void> shareWithWhatsapp(String param) async => url("whatsapp://send?text=$param");
 
-  static Future<void> shareWithEmail(String param) async => launchURL("mailto:?body=$param");
+  static Future<void> shareWithEmail(String param) async => url("mailto:?body=$param");
 
-  static void email(String email, String subject) => launchURL(
+  static void email(String email, String subject) => url(
     Uri(
       scheme: "mailto",
       path: email,
