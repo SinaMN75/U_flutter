@@ -156,7 +156,6 @@ class USideMenuTheme {
   final TextStyle? itemTextStyle;
   final TextStyle? headerTextStyle;
   final double iconSize;
-  final double itemHeight;
   final double itemSpacing;
   final EdgeInsets itemPadding;
   final BorderRadius itemRadius;
@@ -185,7 +184,6 @@ class USideMenuTheme {
     this.itemTextStyle,
     this.headerTextStyle,
     this.iconSize = 22,
-    this.itemHeight = 50,
     this.itemSpacing = 4,
     this.itemPadding = const EdgeInsets.symmetric(horizontal: 12),
     this.itemRadius = const BorderRadius.all(Radius.circular(14)),
@@ -246,7 +244,6 @@ class USideMenuTheme {
     TextStyle? itemTextStyle,
     TextStyle? headerTextStyle,
     double? iconSize,
-    double? itemHeight,
     double? itemSpacing,
     EdgeInsets? itemPadding,
     BorderRadius? itemRadius,
@@ -272,7 +269,6 @@ class USideMenuTheme {
     itemTextStyle: itemTextStyle ?? this.itemTextStyle,
     headerTextStyle: headerTextStyle ?? this.headerTextStyle,
     iconSize: iconSize ?? this.iconSize,
-    itemHeight: itemHeight ?? this.itemHeight,
     itemSpacing: itemSpacing ?? this.itemSpacing,
     itemPadding: itemPadding ?? this.itemPadding,
     itemRadius: itemRadius ?? this.itemRadius,
@@ -953,7 +949,7 @@ class _ItemTileState extends State<_ItemTile> {
       onEnter: (_) => setState(() => _hover = true),
       onExit: (_) => setState(() => _hover = false),
       child: AnimatedScale(
-        scale: _hover && t.enableHoverElevation ? 1.02 : 1,
+        scale: _hover && t.enableHoverElevation ? 1.05 : 1,
         duration: const Duration(milliseconds: 140),
         curve: Curves.easeOut,
         child: Padding(
@@ -969,7 +965,6 @@ class _ItemTileState extends State<_ItemTile> {
               child: AnimatedContainer(
                 duration: t.animationDuration,
                 curve: t.animationCurve,
-                height: t.itemHeight,
                 decoration: BoxDecoration(
                   color: t.indicatorStyle == USideMenuIndicatorStyle.gradient && active ? null : bg,
                   gradient: t.indicatorStyle == USideMenuIndicatorStyle.gradient && active
@@ -1021,7 +1016,7 @@ class _ItemTileState extends State<_ItemTile> {
       duration: widget.theme.animationDuration,
       curve: widget.theme.animationCurve,
       width: 4,
-      height: active ? widget.theme.itemHeight * 0.5 : 0,
+      height: active ? 32 : 0,
       margin: const EdgeInsets.only(right: 4),
       decoration: BoxDecoration(
         color: widget.theme.indicatorColor,
