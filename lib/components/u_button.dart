@@ -1,6 +1,6 @@
 import "package:u/utilities.dart";
 
-enum UButtonType { elevated, text, outlined, icon, fab, cupertino, custom }
+enum UButtonType { elevated, text, outlined, icon, fab, custom }
 
 enum UButtonIconPosition { leading, trailing }
 
@@ -218,22 +218,6 @@ class _UButtonState extends State<UButton> {
             label: Text(widget.title!),
           );
         }
-        break;
-      case UButtonType.cupertino:
-        button = CupertinoButton(
-          onPressed: onTap != null && !widget.isLoading
-              ? () {
-                  onTap!();
-                  if (widget.counterResetCounterOnTap == true) {
-                    startTimer();
-                  }
-                }
-              : null,
-          color: widget.backgroundColor,
-          padding: widget.padding,
-          disabledColor: widget.backgroundColor?.withValues(alpha: 0.5) ?? CupertinoColors.quaternarySystemFill,
-          child: content,
-        );
         break;
       case UButtonType.custom:
         button = InkWell(

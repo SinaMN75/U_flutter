@@ -153,27 +153,18 @@ abstract class UNavigator {
     Color? barrierColor,
     RouteSettings? settings,
     VoidCallback? onDismiss,
-  }) => UApp.isIos
-      ? showCupertinoDialog<T>(
-          context: navigatorKey.currentContext!,
-          barrierDismissible: barrierDismissible,
-          useRootNavigator: useRootNavigator,
-          builder: (BuildContext context) => child,
-        ).then((T? value) {
-          onDismiss?.call();
-          return value;
-        })
-      : showDialog<T>(
-          context: navigatorKey.currentContext!,
-          barrierDismissible: barrierDismissible,
-          useRootNavigator: useRootNavigator,
-          barrierColor: barrierColor ?? Colors.black54,
-          routeSettings: settings,
-          builder: (BuildContext context) => child,
-        ).then((T? value) {
-          onDismiss?.call();
-          return value;
-        });
+  }) =>
+      showDialog<T>(
+        context: navigatorKey.currentContext!,
+        barrierDismissible: barrierDismissible,
+        useRootNavigator: useRootNavigator,
+        barrierColor: barrierColor ?? Colors.black54,
+        routeSettings: settings,
+        builder: (BuildContext context) => child,
+      ).then((T? value) {
+        onDismiss?.call();
+        return value;
+      });
 
   static Future<T?> animatedDialog<T>(
     Widget child, {
@@ -550,65 +541,37 @@ abstract class UNavigator {
     bool showCancel = true,
     String? cancelText,
     bool barrierDismissible = true,
-  }) {
-    final BuildContext ctx = navigatorKey.currentContext!;
-    if (UApp.isIos) {
-      return showCupertinoModalPopup<T>(
-        context: ctx,
-        barrierDismissible: barrierDismissible,
-        builder: (BuildContext context) => CupertinoActionSheet(
-          title: title != null ? Text(title) : null,
-          message: message != null ? Text(message) : null,
-          actions: actions
-              .map(
-                (UNavAction<T> action) => CupertinoActionSheetAction(
-                  isDestructiveAction: action.isDestructive,
-                  onPressed: action.enabled ? () => back<T>(action.value) : () {},
-                  child: Text(action.label),
-                ),
-              )
-              .toList(),
-          cancelButton: showCancel
-              ? CupertinoActionSheetAction(
-                  onPressed: back,
-                  child: Text(cancelText ?? U.s.cancel),
-                )
-              : null,
-        ),
-      );
-    }
-    return showModalBottomSheet<T>(
-      context: ctx,
-      isDismissible: barrierDismissible,
-      showDragHandle: true,
-      builder: (BuildContext context) => SafeArea(
-        child: UColumn(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            if (title != null) UTextTitleMedium(title, textAlign: TextAlign.center).pOnly(bottom: 4),
-            if (message != null) UTextBodySmall(message, textAlign: TextAlign.center).pOnly(bottom: 8),
-            ...actions.map(
-              (UNavAction<T> action) => ListTile(
-                enabled: action.enabled,
-                leading: action.icon != null ? Icon(action.icon, color: action.isDestructive ? Theme.of(context).colorScheme.error : null) : null,
-                title: UTextBodyLarge(
-                  action.label,
-                  color: action.isDestructive ? Theme.of(context).colorScheme.error : null,
-                ),
-                onTap: () => back<T>(action.value),
+  }) => showModalBottomSheet<T>(
+    context: navigatorKey.currentContext!,
+    isDismissible: barrierDismissible,
+    showDragHandle: true,
+    builder: (BuildContext context) => SafeArea(
+      child: UColumn(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          if (title != null) UTextTitleMedium(title, textAlign: TextAlign.center).pOnly(bottom: 4),
+          if (message != null) UTextBodySmall(message, textAlign: TextAlign.center).pOnly(bottom: 8),
+          ...actions.map(
+            (UNavAction<T> action) => ListTile(
+              enabled: action.enabled,
+              leading: action.icon != null ? Icon(action.icon, color: action.isDestructive ? Theme.of(context).colorScheme.error : null) : null,
+              title: UTextBodyLarge(
+                action.label,
+                color: action.isDestructive ? Theme.of(context).colorScheme.error : null,
               ),
+              onTap: () => back<T>(action.value),
             ),
-            if (showCancel)
-              ListTile(
-                title: UTextBodyLarge(cancelText ?? U.s.cancel, textAlign: TextAlign.center),
-                onTap: back,
-              ),
-          ],
-        ),
+          ),
+          if (showCancel)
+            ListTile(
+              title: UTextBodyLarge(cancelText ?? U.s.cancel, textAlign: TextAlign.center),
+              onTap: back,
+            ),
+        ],
       ),
-    );
-  }
+    ),
+  );
 
   static Future<T?> fullScreenDialog<T>(
     Widget page, {
@@ -742,13 +705,6 @@ abstract class UNavigator {
             child: child,
           ),
         );
-      case RouteTransitions.cupertino:
-        return (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) => CupertinoPageTransition(
-          primaryRouteAnimation: animation,
-          secondaryRouteAnimation: secondaryAnimation,
-          linearTransition: false,
-          child: child,
-        );
     }
   }
 }
@@ -765,96 +721,4 @@ enum RouteTransitions {
   scale,
   rotate,
   size,
-  cupertino,
 }
-
-// -----------------------------------------------------------------------------
-// USAGE EXAMPLES
-// -----------------------------------------------------------------------------
-//
-// Page navigation
-// ---------------
-//   // Push with a transition and read the result the pushed page returns via back(result).
-//   final bool? saved = await UNavigator.push<bool>(
-//     const EditProfilePage(),
-//     transition: RouteTransitions.cupertino,
-//     arguments: <String, dynamic>{"id": 12},
-//   );
-//
-//   // Replace the current page (e.g. splash -> home).
-//   UNavigator.off(const HomePage(), transition: RouteTransitions.fade);
-//
-//   // Clear the whole stack (e.g. after logout).
-//   UNavigator.offAll(const LoginPage());
-//
-//   // Push a page and remove everything above a known route.
-//   UNavigator.offUntil(const CheckoutPage(), untilRouteName: "CartPage");
-//
-//   // Pop helpers.
-//   UNavigator.back();                 // pop top
-//   UNavigator.back<int>(42);          // pop and return a value
-//   UNavigator.backUntil("HomePage");  // pop down to a named route
-//   UNavigator.backToRoot();           // pop everything to the first route
-//   await UNavigator.maybeBack();      // pop respecting PopScope guards
-//   if (UNavigator.canPop) UNavigator.back();
-//
-// Dialogs
-// -------
-//   // Info alert with one button.
-//   await UNavigator.alert(title: U.s.success, message: U.s.savedSuccessfully);
-//
-//   // Fire-and-forget confirm with callbacks.
-//   UNavigator.confirm(
-//     title: U.s.delete,
-//     message: U.s.areYouSureYouWantToDelete,
-//     destructive: true,
-//     icon: Icons.warning_amber_rounded,
-//     onConfirm: () => controller.delete(),
-//   );
-//
-//   // Awaitable confirm.
-//   if (await UNavigator.confirmAsync(title: U.s.logout, message: U.s.areYouSureYouWantToLogOut)) {
-//     UNavigator.offAll(const LoginPage());
-//   }
-//
-//   // Text input.
-//   final String? name = await UNavigator.inputDialog(
-//     title: U.s.name,
-//     hint: U.s.enterName,
-//     lines: 1,
-//     validator: UValidators.required,
-//   );
-//
-//   // Custom dialog with its own enter/exit animation.
-//   UNavigator.animatedDialog(const MyCard(), transition: RouteTransitions.fadeScale);
-//
-// Pickers
-// -------
-//   final DateTime? date = await UNavigator.datePicker(initialDate: DateTime.now());
-//   final TimeOfDay? time = await UNavigator.timePicker();
-//   final DateTimeRange? range = await UNavigator.dateRangePicker();
-//   final Color? color = await UNavigator.colorPicker(defaultColor: Theme.of(context).colorScheme.primary);
-//
-// Bottom sheets
-// -------------
-//   // Simple modal sheet.
-//   UNavigator.bottomSheet(const FilterPanel(), showDragHandle: true);
-//
-//   // Draggable, resizable sheet.
-//   UNavigator.draggableSheet(const CommentsList(), initialChildSize: 0.6, snap: true);
-//
-//   // Adaptive action sheet returning the chosen value.
-//   final String? choice = await UNavigator.actionSheet<String>(
-//     title: U.s.select,
-//     actions: <UNavAction<String>>[
-//       UNavAction<String>(label: U.s.edit, value: "edit", icon: Icons.edit),
-//       UNavAction<String>(label: U.s.delete, value: "delete", icon: Icons.delete, isDestructive: true),
-//     ],
-//   );
-//
-// Overlays
-// --------
-//   // Transient toast-like overlay (auto-dismisses after `duration`).
-//   UNavigator.showOverlay(child: const MyBanner(), dismissOnTap: true);
-//   UNavigator.dismissOverlay(); // dismiss manually
-// -----------------------------------------------------------------------------

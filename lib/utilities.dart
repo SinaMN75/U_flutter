@@ -8,7 +8,6 @@ export "package:camera/camera.dart";
 export "package:connectivity_plus/connectivity_plus.dart";
 export "package:device_info_plus/device_info_plus.dart";
 export "package:file_picker/file_picker.dart";
-export "package:flutter/cupertino.dart" hide CupertinoTimerPicker, CupertinoTimerPickerMode, RefreshCallback;
 export "package:flutter/foundation.dart";
 export "package:flutter/gestures.dart";
 export "package:flutter/material.dart";
