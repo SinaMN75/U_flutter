@@ -11,11 +11,6 @@ abstract class UApp {
   static late WindowsDeviceInfo windowsDeviceInfo;
   static late LinuxDeviceInfo linuxDeviceInfo;
 
-  static ThemeData theme = Theme.of(navigatorKey.currentContext!);
-  static TextTheme textTheme = Theme.of(navigatorKey.currentContext!).textTheme;
-  static ColorScheme colorScheme = Theme.of(navigatorKey.currentContext!).colorScheme;
-  static Size size = MediaQuery.sizeOf(navigatorKey.currentContext!);
-
   static String name = packageInfo.appName;
 
   static String packageName = packageInfo.packageName;
