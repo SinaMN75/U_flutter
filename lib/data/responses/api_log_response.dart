@@ -77,6 +77,9 @@ class UApiLogJson {
     this.userName,
     this.userEmail,
     this.userRoles,
+    this.userFirstName,
+    this.userLastName,
+    this.userPhoneNumber,
     this.exceptionType,
     this.exceptionMessage,
     this.stackTrace,
@@ -98,6 +101,9 @@ class UApiLogJson {
     userName: json["userName"],
     userEmail: json["userEmail"],
     userRoles: json["userRoles"],
+    userFirstName: json["userFirstName"],
+    userLastName: json["userLastName"],
+    userPhoneNumber: json["userPhoneNumber"],
     exceptionType: json["exceptionType"],
     exceptionMessage: json["exceptionMessage"],
     stackTrace: json["stackTrace"],
@@ -120,6 +126,9 @@ class UApiLogJson {
   final String? userName;
   final String? userEmail;
   final String? userRoles;
+  final String? userFirstName;
+  final String? userLastName;
+  final String? userPhoneNumber;
   final String? exceptionType;
   final String? exceptionMessage;
   final String? stackTrace;
@@ -140,6 +149,9 @@ class UApiLogJson {
     "userName": userName,
     "userEmail": userEmail,
     "userRoles": userRoles,
+    "userFirstName": userFirstName,
+    "userLastName": userLastName,
+    "userPhoneNumber": userPhoneNumber,
     "exceptionType": exceptionType,
     "exceptionMessage": exceptionMessage,
     "stackTrace": stackTrace,

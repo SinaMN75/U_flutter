@@ -794,6 +794,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get apiRequestLogs => 'API Request Logs';
 
   @override
+  String get applicationLogs => 'Application Logs';
+
+  @override
+  String get clearLogs => 'Clear Logs';
+
+  @override
+  String get clearLogsConfirm => 'Are you sure you want to clear all logs?';
+
+  @override
   String get appearance => 'Appearance';
 
   @override

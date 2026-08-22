@@ -30,6 +30,7 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
       title: Text(U.s.apiRequestLogs),
       centerTitle: true,
       actions: <Widget>[
+        IconButton(tooltip: U.s.applicationLogs, icon: const Icon(Icons.terminal_rounded), onPressed: _openAppLogs),
         IconButton(tooltip: U.s.filter, icon: const Icon(Icons.tune_rounded), onPressed: _showFilterDialog),
         IconButton(tooltip: U.s.refresh, icon: const Icon(Icons.refresh_rounded), onPressed: c.refreshAll),
       ],
@@ -164,7 +165,7 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
                       decoration: const BoxDecoration(color: UAdminTheme.green, shape: BoxShape.circle),
                     ),
                     const SizedBox(width: 6),
-                    UTextBodySmall(m.generatedAt.formatDate("HH:mm:ss"), color: UAdminTheme.green, fontWeight: FontWeight.w600).ltr(),
+                    UTextBodySmall(m.generatedAt.toJalaliDateTime(), color: UAdminTheme.green, fontWeight: FontWeight.w600).ltr(),
                   ],
                 ),
               ),
@@ -433,7 +434,7 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
     onTap: () => _openDetail(i),
     leading: _methodChip(i.jsonData.method),
     title: UTextBodyMedium(i.path, maxLines: 1, overflow: TextOverflow.ellipsis).ltr(),
-    subtitle: UTextBodySmall(i.createdAt.formatDate("yyyy-MM-dd HH:mm:ss")).ltr(),
+    subtitle: UTextBodySmall(i.createdAt.toJalaliDateTime()).ltr(),
     trailing: URow(
       spacing: 0,
       mainAxisSize: MainAxisSize.min,
@@ -506,7 +507,8 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
                 UTextBodyLarge(U.s.path, color: UAdminTheme.white, textAlign: .center).expanded(flex: 3),
                 UTextBodyLarge(U.s.status, color: UAdminTheme.white, textAlign: .center).expanded(),
                 UTextBodyLarge(U.s.duration, color: UAdminTheme.white, textAlign: .center).expanded(),
-                UTextBodyLarge(U.s.userIp, color: UAdminTheme.white, textAlign: .center).expanded(flex: 2),
+                UTextBodyLarge(U.s.user, color: UAdminTheme.white, textAlign: .center).expanded(flex: 2),
+                const UTextBodyLarge("IP", color: UAdminTheme.white, textAlign: .center).expanded(flex: 2),
               ],
             ),
             itemBuilder: (BuildContext context, int index) => _itemDesktop(i: data[index], index: index),
@@ -563,11 +565,12 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
     child: URow(
       color: index.isOdd ? UAdminTheme.transparent : Theme.of(context).colorScheme.primary.withValues(alpha: 0.16),
       children: <Widget>[
-        UTextBodySmall(i.createdAt.formatDate("yyyy-MM-dd HH:mm:ss"), textAlign: .center).ltr().expanded(),
+        UTextBodySmall(i.createdAt.toJalaliDateTime(), textAlign: .center).ltr().expanded(),
         _methodChip(i.jsonData.method).alignAtCenter().expanded(),
         _pathCell(i).expanded(flex: 3),
         _statusChip(i.statusCode).alignAtCenter().expanded(),
         UTextBodyMedium("${i.durationMs} ms", textAlign: .center, color: i.durationMs > 1000 ? UAdminTheme.orange : null).expanded(),
+        _userCell(i).expanded(flex: 2),
         UTextBodySmall(i.ipAddress ?? "-", textAlign: .center, overflow: TextOverflow.ellipsis).ltr().expanded(flex: 2),
       ],
     ),
@@ -592,7 +595,7 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
             if (_hasException(i)) _exceptionBadge(),
           ],
         ),
-        subtitle: UTextBodySmall("${i.createdAt.formatDate("yyyy-MM-dd HH:mm:ss")} • ${i.durationMs} ms${i.ipAddress != null ? " • ${i.ipAddress}" : ""}").ltr(),
+        subtitle: UTextBodySmall("${i.createdAt.toJalaliDateTime()} • ${i.durationMs} ms${i.ipAddress != null ? " • ${i.ipAddress}" : ""}").ltr(),
         trailing: const Icon(Icons.chevron_left_rounded),
       ),
     ),
@@ -607,6 +610,42 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
       child: Icon(Icons.error_outline_rounded, size: 16, color: Theme.of(context).colorScheme.error),
     ),
   );
+
+  Widget _userCell(UApiLogResponse i) {
+    final UApiLogJson j = i.jsonData;
+    final String fullName = <String?>[j.userFirstName, j.userLastName].where((String? e) => e.nullIfEmpty() != null).join(" ").trim();
+    final String? username = j.userName.nullIfEmpty();
+    final String? phone = j.userPhoneNumber.nullIfEmpty();
+    final String? email = j.userEmail.nullIfEmpty();
+    final String primary = fullName.isNotEmpty ? fullName : (username ?? U.s.guest);
+    final List<String> sub = <String>[
+      if (fullName.isNotEmpty && username != null) "@$username",
+      if (phone != null) phone,
+      if (email != null) email,
+    ];
+    final bool hasUser = fullName.isNotEmpty || username != null || phone != null || email != null;
+    if (!hasUser) return UTextBodySmall("-", textAlign: .center, color: Theme.of(context).disabledColor);
+    return Tooltip(
+      message: _userTooltip(j),
+      child: UColumn(
+        spacing: 2,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          UTextBodySmall(primary, textAlign: .center, maxLines: 1, overflow: TextOverflow.ellipsis, fontWeight: FontWeight.w700),
+          if (sub.isNotEmpty)
+            UTextLabelSmall(sub.join(" • "), textAlign: .center, maxLines: 2, overflow: TextOverflow.ellipsis, color: Theme.of(context).disabledColor).ltr(),
+        ],
+      ),
+    );
+  }
+
+  String _userTooltip(UApiLogJson j) => <String>[
+    if (j.userFirstName.nullIfEmpty() != null) "${U.s.firstName}: ${j.userFirstName}",
+    if (j.userLastName.nullIfEmpty() != null) "${U.s.lastName}: ${j.userLastName}",
+    if (j.userName.nullIfEmpty() != null) "${U.s.username}: ${j.userName}",
+    if (j.userPhoneNumber.nullIfEmpty() != null) "${U.s.phoneNumber}: ${j.userPhoneNumber}",
+    if (j.userEmail.nullIfEmpty() != null) "${U.s.email}: ${j.userEmail}",
+  ].join("\n");
 
   Widget _pathCell(UApiLogResponse i) => URow(
     spacing: 0,
@@ -741,6 +780,51 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
       ),
     );
   });
+
+  void _openAppLogs() {
+    c.loadAppLogs();
+    UNavigator.dialog(
+      Dialog.fullscreen(
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(U.s.applicationLogs),
+            leading: const IconButton(icon: Icon(Icons.close_rounded), onPressed: UNavigator.back),
+            actions: <Widget>[
+              IconButton(tooltip: U.s.refresh, icon: const Icon(Icons.refresh_rounded), onPressed: c.loadAppLogs),
+              IconButton(tooltip: U.s.clearLogs, icon: const Icon(Icons.delete_sweep_rounded), color: UAdminTheme.red, onPressed: _confirmClearAppLogs),
+            ],
+          ),
+          body: Obx(() {
+            if (c.appLogsState.value.isLoading() || c.appLogsState.value.isInitial()) return const Center(child: CircularProgressIndicator());
+            if (c.appLogsState.value.isError()) return Center(child: UTextBodyMedium(U.s.errorReadingData, color: Theme.of(context).colorScheme.error));
+            if (c.appLogs.isEmpty) return Center(child: UTextBodyMedium(U.s.noData, color: Theme.of(context).disabledColor));
+            return SingleChildScrollView(
+              padding: const EdgeInsets.all(12),
+              child: UJsonViewer(jsonString: jsonEncode(c.appLogs.toList()), fontSize: 12.5),
+            );
+          }),
+        ),
+      ),
+    );
+  }
+
+  void _confirmClearAppLogs() => UNavigator.dialog(
+    AlertDialog(
+      title: Text(U.s.clearLogs),
+      content: Text(U.s.clearLogsConfirm),
+      actions: <Widget>[
+        UButton(title: U.s.cancel, type: UButtonType.text, onTap: UNavigator.back),
+        UButton(
+          title: U.s.clearLogs,
+          backgroundColor: UAdminTheme.red,
+          onTap: () {
+            UNavigator.back();
+            c.clearAppLogs();
+          },
+        ),
+      ],
+    ),
+  );
 }
 
 class _ApiLogDetailView extends StatelessWidget {
@@ -821,7 +905,10 @@ class _ApiLogDetailView extends StatelessWidget {
     children: <Widget>[
       _metaItem(U.s.time, item.createdAt.toJalaliDateTime()),
       _metaItem(U.s.duration, "${item.durationMs} ms"),
-      if (item.jsonData.userName != null) _metaItem(U.s.username, item.jsonData.userName!),
+      if (item.jsonData.userName.nullIfEmpty() != null) _metaItem(U.s.username, item.jsonData.userName!),
+      if (item.jsonData.userFirstName.nullIfEmpty() != null) _metaItem(U.s.firstName, item.jsonData.userFirstName!),
+      if (item.jsonData.userLastName.nullIfEmpty() != null) _metaItem(U.s.lastName, item.jsonData.userLastName!),
+      if (item.jsonData.userPhoneNumber.nullIfEmpty() != null) _metaItem(U.s.phoneNumber, item.jsonData.userPhoneNumber!),
       if (item.jsonData.userEmail != null) _metaItem(U.s.userEmail, item.jsonData.userEmail!),
       if (item.userId != null) _metaItem(item.userId!, U.s.userId),
       if (item.jsonData.userRoles != null) _metaItem(U.s.roles, item.jsonData.userRoles!),

@@ -1634,6 +1634,24 @@ abstract class AppLocalizations {
   /// **'API Request Logs'**
   String get apiRequestLogs;
 
+  /// No description provided for @applicationLogs.
+  ///
+  /// In en, this message translates to:
+  /// **'Application Logs'**
+  String get applicationLogs;
+
+  /// No description provided for @clearLogs.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear Logs'**
+  String get clearLogs;
+
+  /// No description provided for @clearLogsConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to clear all logs?'**
+  String get clearLogsConfirm;
+
   /// No description provided for @appearance.
   ///
   /// In en, this message translates to:

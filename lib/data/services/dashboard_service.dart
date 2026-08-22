@@ -295,4 +295,61 @@ class DashboardService {
     );
     return result;
   }
+
+  Future<(List<String>?, UEmptyResponse?, String?)> readAppLogs({
+    required Function(List<String> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
+  }) async {
+    (List<String>?, UEmptyResponse?, String?) result = (null, null, null);
+    await UHttpClient.send(
+      method: "GET",
+      endpoint: "${U.baseUrl}/Log/Read",
+      onSuccess: (Response r) {
+        final UResponse<List<String>> ok = UResponse<List<String>>.fromJson(
+          r.body,
+          (dynamic i) => List<String>.from((i as List<dynamic>).map((dynamic x) => x.toString())),
+        );
+        final List<String> logs = ok.result ?? <String>[];
+        result = (logs, null, null);
+        onOk?.call(logs);
+      },
+      onError: (Response r) {
+        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
+        result = (null, err, null);
+        onError?.call(err);
+      },
+      onException: (String e) {
+        result = (null, null, e);
+        onException?.call(e);
+      },
+    );
+    return result;
+  }
+
+  Future<(bool, UEmptyResponse?, String?)> clearAppLogs({
+    required VoidCallback? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
+  }) async {
+    (bool, UEmptyResponse?, String?) result = (false, null, null);
+    await UHttpClient.send(
+      method: "DELETE",
+      endpoint: "${U.baseUrl}/Log/Clear",
+      onSuccess: (Response r) {
+        result = (true, null, null);
+        onOk?.call();
+      },
+      onError: (Response r) {
+        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
+        result = (false, err, null);
+        onError?.call(err);
+      },
+      onException: (String e) {
+        result = (false, null, e);
+        onException?.call(e);
+      },
+    );
+    return result;
+  }
 }

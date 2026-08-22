@@ -794,6 +794,15 @@ class AppLocalizationsFa extends AppLocalizations {
   String get apiRequestLogs => 'لاگ درخواست‌های API';
 
   @override
+  String get applicationLogs => 'لاگ‌های برنامه';
+
+  @override
+  String get clearLogs => 'پاک کردن لاگ‌ها';
+
+  @override
+  String get clearLogsConfirm => 'آیا از پاک کردن همهٔ لاگ‌ها مطمئن هستید؟';
+
+  @override
   String get appearance => 'ظاهر';
 
   @override

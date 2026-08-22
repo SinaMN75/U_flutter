@@ -173,4 +173,38 @@ class UAdminApiLogController extends UBaseController {
       },
     );
   }
+
+  final RxList<String> appLogs = <String>[].obs;
+  final RxState appLogsState = RxState();
+
+  Future<void> loadAppLogs() async {
+    appLogsState.loading();
+    await UServices.dashboard.readAppLogs(
+      onOk: (List<String> r) {
+        appLogs(r);
+        appLogsState.loaded();
+      },
+      onError: (UEmptyResponse e) => appLogsState.error(),
+      onException: (String e) => appLogsState.error(),
+    );
+  }
+
+  void clearAppLogs() {
+    ULoading.show();
+    UServices.dashboard.clearAppLogs(
+      onOk: () {
+        ULoading.dismiss();
+        appLogs(<String>[]);
+        UToast.snackBar(message: U.s.done);
+      },
+      onError: (UEmptyResponse e) {
+        ULoading.dismiss();
+        UToast.error(message: e.message);
+      },
+      onException: (String e) {
+        ULoading.dismiss();
+        UToast.error(message: e);
+      },
+    );
+  }
 }
