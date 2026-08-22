@@ -12,7 +12,6 @@ class UImage extends StatelessWidget {
     this.placeholder,
     this.fit = BoxFit.contain,
     this.borderRadius = 1,
-    this.border,
     this.package,
   });
 
@@ -25,14 +24,10 @@ class UImage extends StatelessWidget {
   final BoxFit fit;
   final double borderRadius;
   final String? placeholder;
-  final BoxBorder? border;
 
   @override
-  Widget build(BuildContext context) => DecoratedBox(
-    decoration: BoxDecoration(
-      border: border,
-      borderRadius: BorderRadius.circular(borderRadius),
-    ),
+  Widget build(BuildContext context) => ClipRRect(
+    borderRadius: BorderRadius.circular(borderRadius),
     child: Builder(
       builder: (BuildContext context) {
         if (fileData != null) {
@@ -41,7 +36,6 @@ class UImage extends StatelessWidget {
               fileData!.bytes!,
               width: width,
               height: height,
-              borderRadius: borderRadius,
               color: color,
               fit: fit,
               placeholder: placeholder,
@@ -51,7 +45,6 @@ class UImage extends StatelessWidget {
               File(fileData!.path!),
               width: width,
               height: height,
-              borderRadius: borderRadius,
               color: color,
               fit: fit,
             );
@@ -64,7 +57,6 @@ class UImage extends StatelessWidget {
               placeholder!,
               width: width,
               height: height,
-              borderRadius: borderRadius,
               placeholder: placeholder,
               color: color,
               fit: fit,
@@ -82,7 +74,6 @@ class UImage extends StatelessWidget {
               width: width,
               height: height,
               fit: fit,
-              borderRadius: borderRadius,
               color: color,
               placeholder: placeholder,
             );
@@ -92,7 +83,6 @@ class UImage extends StatelessWidget {
               width: width,
               height: height,
               fit: fit,
-              borderRadius: borderRadius,
               placeholder: placeholder,
               color: color,
               package: package,
@@ -113,7 +103,6 @@ class UIconPrimary extends StatelessWidget {
     this.height,
     this.placeholder,
     this.fit = BoxFit.contain,
-    this.borderRadius = 1,
     this.package,
   });
 
@@ -123,7 +112,6 @@ class UIconPrimary extends StatelessWidget {
   final double? width;
   final double? height;
   final BoxFit fit;
-  final double borderRadius;
   final String? placeholder;
 
   @override
@@ -133,7 +121,6 @@ class UIconPrimary extends StatelessWidget {
     width: width,
     height: height,
     fit: fit,
-    borderRadius: borderRadius,
     placeholder: placeholder,
     package: package,
   );
@@ -148,7 +135,6 @@ class UImageAsset extends StatelessWidget {
     this.height,
     this.fit = BoxFit.contain,
     this.clipBehavior = Clip.hardEdge,
-    this.borderRadius = 1,
     this.package,
     super.key,
   });
@@ -161,7 +147,6 @@ class UImageAsset extends StatelessWidget {
   final double? height;
   final BoxFit fit;
   final Clip clipBehavior;
-  final double borderRadius;
 
   @override
   Widget build(BuildContext context) => path.endsWith("svg")
@@ -181,10 +166,9 @@ class UImageAsset extends StatelessWidget {
                   height: height,
                   fit: fit,
                   clipBehavior: clipBehavior,
-                  borderRadius: borderRadius,
                   package: package,
                 ),
-        ).container(radius: borderRadius)
+        )
       : Image.asset(
           path,
           color: color,
@@ -203,7 +187,6 @@ class UImageAsset extends StatelessWidget {
                   height: height,
                   fit: fit,
                   clipBehavior: clipBehavior,
-                  borderRadius: borderRadius,
                   package: package,
                 ),
         );
@@ -217,7 +200,6 @@ class UImageNetwork extends StatelessWidget {
     this.height,
     this.fit = BoxFit.contain,
     this.clipBehavior = Clip.hardEdge,
-    this.borderRadius = 1,
     this.placeholder,
     this.package,
     super.key,
@@ -230,7 +212,6 @@ class UImageNetwork extends StatelessWidget {
   final double? height;
   final BoxFit fit;
   final Clip clipBehavior;
-  final double borderRadius;
   final String? placeholder;
 
   @override
@@ -245,7 +226,6 @@ class UImageNetwork extends StatelessWidget {
                   color: color,
                   fit: fit,
                   clipBehavior: clipBehavior,
-                  borderRadius: borderRadius,
                   package: package,
                 )
         : url.substring(url.length - 3) == "svg"
@@ -262,7 +242,6 @@ class UImageNetwork extends StatelessWidget {
                     height: height,
                     fit: fit,
                     clipBehavior: clipBehavior,
-                    borderRadius: borderRadius,
                     package: package,
                   ),
           )
@@ -292,7 +271,7 @@ class UImageNetwork extends StatelessWidget {
                     package: package,
                   ),
           ),
-  ).container(radius: borderRadius);
+  );
 }
 
 class UImageFile extends StatelessWidget {
@@ -302,7 +281,6 @@ class UImageFile extends StatelessWidget {
     this.width,
     this.height,
     this.fit = BoxFit.contain,
-    this.borderRadius = 1,
     super.key,
   });
 
@@ -311,7 +289,6 @@ class UImageFile extends StatelessWidget {
   final double? width;
   final double? height;
   final BoxFit fit;
-  final double borderRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -324,7 +301,7 @@ class UImageFile extends StatelessWidget {
       fit: fit,
       cacheWidth: width == null ? null : (width! * dpr).round(),
       cacheHeight: height == null ? null : (height! * dpr).round(),
-    ).container(radius: borderRadius);
+    );
   }
 }
 
@@ -336,7 +313,6 @@ class UImageMemory extends StatelessWidget {
     this.height,
     this.placeholder,
     this.fit = BoxFit.contain,
-    this.borderRadius = 1,
     super.key,
   });
 
@@ -345,7 +321,6 @@ class UImageMemory extends StatelessWidget {
   final double? width;
   final double? height;
   final BoxFit fit;
-  final double borderRadius;
   final String? placeholder;
 
   @override
@@ -367,8 +342,7 @@ class UImageMemory extends StatelessWidget {
               width: width,
               height: height,
               fit: fit,
-              borderRadius: borderRadius,
             ),
-    ).container(radius: borderRadius);
+    );
   }
 }
