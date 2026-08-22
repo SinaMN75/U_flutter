@@ -31,6 +31,7 @@ class UTextField extends StatefulWidget {
     this.isDense = false,
     this.textAlign = TextAlign.start,
     this.textColor,
+    this.focusNode,
   });
 
   final bool obscureText;
@@ -60,6 +61,7 @@ class UTextField extends StatefulWidget {
   final List<TextInputFormatter>? formatters;
   final List<String>? autoFillHints;
   final Color? textColor;
+  final FocusNode? focusNode;
 
   @override
   State<UTextField> createState() => _UTextFieldState();
@@ -85,6 +87,7 @@ class _UTextFieldState extends State<UTextField> {
           trailing: widget.required ? UTextBodyMedium("*", color: Theme.of(context).colorScheme.error) : const SizedBox(),
         ).pSymmetric(vertical: 8),
       TextFormField(
+        focusNode: widget.focusNode,
         autofillHints: widget.autoFillHints,
         textDirection: widget.keyboardType == TextInputType.number ? TextDirection.ltr : null,
         inputFormatters: widget.formatters ?? (widget.keyboardType == TextInputType.number || widget.keyboardType == TextInputType.phone ? <TextInputFormatter>[UNumberInputFormatter()] : null),
