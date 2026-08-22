@@ -632,8 +632,7 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           UTextBodySmall(primary, textAlign: .center, maxLines: 1, overflow: TextOverflow.ellipsis, fontWeight: FontWeight.w700),
-          if (sub.isNotEmpty)
-            UTextLabelSmall(sub.join(" • "), textAlign: .center, maxLines: 2, overflow: TextOverflow.ellipsis, color: Theme.of(context).disabledColor).ltr(),
+          if (sub.isNotEmpty) UTextLabelSmall(sub.join(" • "), textAlign: .center, maxLines: 2, overflow: TextOverflow.ellipsis, color: Theme.of(context).disabledColor).ltr(),
         ],
       ),
     );
@@ -784,26 +783,38 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
   void _openAppLogs() {
     c.loadAppLogs();
     UNavigator.dialog(
-      Dialog.fullscreen(
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text(U.s.applicationLogs),
-            leading: const IconButton(icon: Icon(Icons.close_rounded), onPressed: UNavigator.back),
-            actions: <Widget>[
-              IconButton(tooltip: U.s.refresh, icon: const Icon(Icons.refresh_rounded), onPressed: c.loadAppLogs),
-              IconButton(tooltip: U.s.clearLogs, icon: const Icon(Icons.delete_sweep_rounded), color: UAdminTheme.red, onPressed: _confirmClearAppLogs),
-            ],
-          ),
-          body: Obx(() {
-            if (c.appLogsState.value.isLoading() || c.appLogsState.value.isInitial()) return const Center(child: CircularProgressIndicator());
-            if (c.appLogsState.value.isError()) return Center(child: UTextBodyMedium(U.s.errorReadingData, color: Theme.of(context).colorScheme.error));
-            if (c.appLogs.isEmpty) return Center(child: UTextBodyMedium(U.s.noData, color: Theme.of(context).disabledColor));
-            return SingleChildScrollView(
-              padding: const EdgeInsets.all(12),
-              child: UJsonViewer(jsonString: jsonEncode(c.appLogs.toList()), fontSize: 12.5),
-            );
-          }),
+      UScaffold(
+        appBar: AppBar(
+          title: Text(U.s.applicationLogs),
+          leading: const IconButton(icon: Icon(Icons.close_rounded), onPressed: UNavigator.back),
+          actions: <Widget>[
+            IconButton(tooltip: U.s.refresh, icon: const Icon(Icons.refresh_rounded), onPressed: c.loadAppLogs),
+            IconButton(tooltip: U.s.clearLogs, icon: const Icon(Icons.delete_sweep_rounded), color: UAdminTheme.red, onPressed: _confirmClearAppLogs),
+          ],
         ),
+        body: Obx(() {
+          if (c.appLogsState.value.isLoading() || c.appLogsState.value.isInitial()) return const Center(child: CircularProgressIndicator());
+          if (c.appLogsState.value.isError()) return Center(child: UTextBodyMedium(U.s.errorReadingData, color: Theme.of(context).colorScheme.error));
+          if (c.appLogs.isEmpty) return Center(child: UTextBodyMedium(U.s.noData, color: Theme.of(context).disabledColor));
+          return ListView.builder(
+            itemBuilder: (BuildContext _, int index) {
+              final String i = c.appLogs[index];
+              Color color = Colors.black;
+              if (i.contains("[INFO]")) color = Colors.blue;
+              if (i.contains("[ERROR]")) color = Colors.red;
+              if (i.contains("[SUCCESS]")) color = Colors.green;
+              if (i.contains("[WARNING]")) color = Colors.yellow.shade700;
+              return UCard(
+                child: SelectableText(
+                  i,
+                  style: TextStyle(color: color, fontSize: 16),
+                  textDirection: TextDirection.ltr,
+                ).pAll(16),
+              ).pAll(16);
+            },
+            itemCount: c.appLogs.length,
+          );
+        }),
       ),
     );
   }
@@ -952,7 +963,7 @@ class _ApiLogDetailView extends StatelessWidget {
                   tooltip: U.s.copyToClipboard,
                   visualDensity: VisualDensity.compact,
                   icon: Icon(Icons.copy_rounded, size: 16, color: error),
-                  onPressed: () => _copy(_exceptionAsText()),
+                  onPressed: () => UClipboard.set(_exceptionAsText(), snackBar: true),
                 ),
               ],
             ),
@@ -981,7 +992,7 @@ class _ApiLogDetailView extends StatelessWidget {
         tooltip: U.s.copyToClipboard,
         visualDensity: VisualDensity.compact,
         icon: const Icon(Icons.copy_rounded, size: 16),
-        onPressed: () => _copy(stack),
+        onPressed: () => UClipboard.set(stack, snackBar: true),
       ),
       childrenPadding: const EdgeInsets.fromLTRB(14, 0, 14, 14),
       children: <Widget>[_codeBlock(context, stack)],
@@ -1005,16 +1016,7 @@ class _ApiLogDetailView extends StatelessWidget {
     ),
   );
 
-  String _exceptionAsText() => <String?>[item.jsonData.exceptionType, item.jsonData.exceptionMessage, item.jsonData.stackTrace]
-      .where((String? s) => s != null && s.trim().isNotEmpty)
-      .join(
-        "\n\n",
-      );
-
-  void _copy(String value) {
-    UClipboard.set(value);
-    UToast.snackBar(message: U.s.copiedToClipboard);
-  }
+  String _exceptionAsText() => <String?>[item.jsonData.exceptionType, item.jsonData.exceptionMessage, item.jsonData.stackTrace].where((String? s) => s != null && s.trim().isNotEmpty).join("\n\n");
 
   String _formatBytes(int bytes) {
     if (bytes < 1024) return "$bytes B";

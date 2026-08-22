@@ -9,8 +9,7 @@ abstract class UAdminPayLink {
   static Future<void> copyDormBedInvoiceLink(UDormBedInvoiceResponse i) async {
     final String? url = await UIpgFlow.link(amount: i.netDue, tag: TagTxn.dormInvoice, invoiceId: i.id);
     if (url == null || url.isEmpty) return;
-    await Clipboard.setData(ClipboardData(text: url));
-    UToast.snackBar(message: U.s.copiedToClipboard);
+    await UClipboard.set(url, snackBar: true);
   }
 
   static void dormBedInvoiceList(UDormBedContractResponse contract, {Future<void> Function()? onClosed}) {
