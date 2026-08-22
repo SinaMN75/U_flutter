@@ -16,38 +16,16 @@ extension TextEditingControllerExtension on TextEditingController {
 
   String trimmedLatin() => text.toLatinNumber().trim();
 
-  void appendCharacter(String char) {
-    final String text = this.text;
-    final TextSelection selection = this.selection;
-    final String newText = text.substring(0, selection.baseOffset) + char + text.substring(selection.extentOffset);
-    this.text = newText;
-    this.selection = TextSelection.collapsed(offset: selection.baseOffset + 1);
+  void appendCharacter(String character, {int? maxLength}) {
+    if (maxLength != null && text.length >= maxLength) return;
+    final String updated = text + character;
+    value = TextEditingValue(text: updated, selection: TextSelection.collapsed(offset: updated.length));
   }
 
   void dropLastCharacter() {
     if (text.isEmpty) return;
-
-    final String newText = text.substring(0, text.length - 1);
-    text = newText;
-    selection = TextSelection.collapsed(
-      offset: newText.length,
-    );
-  }
-
-  void dropString(String stringToRemove, {bool removeAll = false}) {
-    if (stringToRemove.isEmpty) return;
-    if (text.isEmpty) return;
-    if (!text.contains(stringToRemove)) return;
-
-    String newText;
-    if (removeAll) {
-      newText = text.replaceAll(stringToRemove, "");
-    } else {
-      newText = text.replaceFirst(stringToRemove, "");
-    }
-
-    text = newText;
-    selection = TextSelection.collapsed(offset: newText.length);
+    final String updated = text.substring(0, text.length - 1);
+    value = TextEditingValue(text: updated, selection: TextSelection.collapsed(offset: updated.length));
   }
 }
 
