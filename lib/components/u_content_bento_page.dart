@@ -128,8 +128,8 @@ class UContentBentoPage extends StatelessWidget {
 
     final Widget background = hasImage
         ? (hasNetwork
-              ? UImageNetwork(mediaUrl, width: double.infinity, height: height, fit: BoxFit.cover, borderRadius: 24)
-              : UImageMemory(imageBytes!, width: double.infinity, height: height, fit: BoxFit.cover, borderRadius: 24))
+              ? UImage(mediaUrl, width: double.infinity, height: height, fit: BoxFit.cover, borderRadius: 24)
+              : UImageMemory(imageBytes!, width: double.infinity, height: height, fit: BoxFit.cover))
         : DecoratedBox(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(24),
@@ -232,7 +232,7 @@ class UContentBentoPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           if (image != null)
-            UImageMemory(image, width: double.infinity, height: 96, fit: BoxFit.cover, borderRadius: 14)
+            UImageMemory(image, width: double.infinity, height: 96, fit: BoxFit.cover)
           else if (icon != null)
             UContainer(
               width: 44,
