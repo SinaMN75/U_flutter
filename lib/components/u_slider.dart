@@ -181,10 +181,6 @@ abstract class _UCarouselBinding {
   int get currentPage;
 }
 
-/// Generic, data-driven page carousel. Builds each page from a typed item,
-/// reports the item (not just the index) on page change, supports peeking
-/// neighbours, optional looping, dot indicators, and auto-play that can be
-/// switched on/off via the [autoPlay] flag or a [UCarouselController].
 class UCarousel<T> extends StatefulWidget {
   const UCarousel({
     required this.items,

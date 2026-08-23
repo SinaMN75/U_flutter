@@ -18,6 +18,13 @@ extension WidgetsExtension on Widget {
     child: this,
   );
 
+  Widget pLTRB(
+    double left,
+    double top,
+    double right,
+    double bottom,
+  ) => Padding(padding: EdgeInsets.fromLTRB(left, top, right, bottom), child: this);
+
   Widget fit({Alignment alignment = Alignment.center}) => FittedBox(
     key: key,
     alignment: alignment,
