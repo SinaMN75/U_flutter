@@ -128,10 +128,10 @@ extension WidgetsExtension on Widget {
   );
 
   Widget chip({
+    required Color backgroundColor,
     double? width,
     double? height,
     Alignment? alignment,
-    Color? backgroundColor,
     double borderWidth = 1,
     double radius = 12,
     Color borderColor = Colors.transparent,
@@ -147,7 +147,7 @@ extension WidgetsExtension on Widget {
     margin: margin,
     alignment: alignment,
     decoration: BoxDecoration(
-      color: backgroundColor ?? navigatorKey.currentContext!.colorScheme.onPrimary.withValues(alpha: 0.10),
+      color: backgroundColor,
       borderRadius: BorderRadius.circular(radius),
       border: Border.all(color: borderColor, width: borderWidth),
     ),
