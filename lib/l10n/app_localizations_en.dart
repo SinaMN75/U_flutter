@@ -2552,6 +2552,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profilesHint => 'Accounts, cards and transactions are shown based on the active profile.';
+
   @override
   String get cards => 'Cards';
 
@@ -2600,4 +2601,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get pinSentBySms => 'The dynamic PIN was sent via SMS';
 
+  @override
+  String get autoPlay => 'Auto-play';
 }

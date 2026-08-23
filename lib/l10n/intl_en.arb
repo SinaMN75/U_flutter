@@ -924,5 +924,6 @@
   "dynamicPin": "Dynamic PIN",
   "dynamicPinHint": "The dynamic PIN is used for online purchases.",
   "secondsWord": "seconds",
-  "pinSentBySms": "The dynamic PIN was sent via SMS"
+  "pinSentBySms": "The dynamic PIN was sent via SMS",
+  "autoPlay": "Auto-play"
 }

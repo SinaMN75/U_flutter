@@ -5024,102 +5024,6 @@ abstract class AppLocalizations {
   /// **'Zip Code'**
   String get zipCode;
 
-  /// No description provided for @cards.
-  ///
-  /// In en, this message translates to:
-  /// **'Cards'**
-  String get cards;
-
-  /// No description provided for @cardTransactions.
-  ///
-  /// In en, this message translates to:
-  /// **'Card transactions'**
-  String get cardTransactions;
-
-  /// No description provided for @noCardsInThisProfile.
-  ///
-  /// In en, this message translates to:
-  /// **'No card issued for this profile'**
-  String get noCardsInThisProfile;
-
-  /// No description provided for @connectedAccount.
-  ///
-  /// In en, this message translates to:
-  /// **'Connected account'**
-  String get connectedAccount;
-
-  /// No description provided for @showPinInApp.
-  ///
-  /// In en, this message translates to:
-  /// **'Show dynamic PIN in app'**
-  String get showPinInApp;
-
-  /// No description provided for @getPinBySms.
-  ///
-  /// In en, this message translates to:
-  /// **'Get PIN via SMS'**
-  String get getPinBySms;
-
-  /// No description provided for @cardLimitsAndSettings.
-  ///
-  /// In en, this message translates to:
-  /// **'Card limits & settings'**
-  String get cardLimitsAndSettings;
-
-  /// No description provided for @blockCardTemp.
-  ///
-  /// In en, this message translates to:
-  /// **'Temporarily block'**
-  String get blockCardTemp;
-
-  /// No description provided for @unblockCard.
-  ///
-  /// In en, this message translates to:
-  /// **'Unblock'**
-  String get unblockCard;
-
-  /// No description provided for @cardActive.
-  ///
-  /// In en, this message translates to:
-  /// **'Active'**
-  String get cardActive;
-
-  /// No description provided for @cardExpiringSoon.
-  ///
-  /// In en, this message translates to:
-  /// **'Expiring soon'**
-  String get cardExpiringSoon;
-
-  /// No description provided for @cardBlocked.
-  ///
-  /// In en, this message translates to:
-  /// **'Temporarily blocked'**
-  String get cardBlocked;
-
-  /// No description provided for @dynamicPin.
-  ///
-  /// In en, this message translates to:
-  /// **'Dynamic PIN'**
-  String get dynamicPin;
-
-  /// No description provided for @dynamicPinHint.
-  ///
-  /// In en, this message translates to:
-  /// **'The dynamic PIN is used for online purchases.'**
-  String get dynamicPinHint;
-
-  /// No description provided for @secondsWord.
-  ///
-  /// In en, this message translates to:
-  /// **'seconds'**
-  String get secondsWord;
-
-  /// No description provided for @pinSentBySms.
-  ///
-  /// In en, this message translates to:
-  /// **'The dynamic PIN was sent via SMS'**
-  String get pinSentBySms;
-
   /// No description provided for @activeProfile.
   ///
   /// In en, this message translates to:
@@ -5221,6 +5125,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Accounts, cards and transactions are shown based on the active profile.'**
   String get profilesHint;
+
+  /// No description provided for @cards.
+  ///
+  /// In en, this message translates to:
+  /// **'Cards'**
+  String get cards;
+
+  /// No description provided for @cardTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Card transactions'**
+  String get cardTransactions;
+
+  /// No description provided for @noCardsInThisProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'No card issued for this profile'**
+  String get noCardsInThisProfile;
+
+  /// No description provided for @connectedAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected account'**
+  String get connectedAccount;
+
+  /// No description provided for @showPinInApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Show dynamic PIN in app'**
+  String get showPinInApp;
+
+  /// No description provided for @getPinBySms.
+  ///
+  /// In en, this message translates to:
+  /// **'Get PIN via SMS'**
+  String get getPinBySms;
+
+  /// No description provided for @cardLimitsAndSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Card limits & settings'**
+  String get cardLimitsAndSettings;
+
+  /// No description provided for @blockCardTemp.
+  ///
+  /// In en, this message translates to:
+  /// **'Temporarily block'**
+  String get blockCardTemp;
+
+  /// No description provided for @unblockCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Unblock'**
+  String get unblockCard;
+
+  /// No description provided for @cardActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get cardActive;
+
+  /// No description provided for @cardExpiringSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiring soon'**
+  String get cardExpiringSoon;
+
+  /// No description provided for @cardBlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Temporarily blocked'**
+  String get cardBlocked;
+
+  /// No description provided for @dynamicPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Dynamic PIN'**
+  String get dynamicPin;
+
+  /// No description provided for @dynamicPinHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The dynamic PIN is used for online purchases.'**
+  String get dynamicPinHint;
+
+  /// No description provided for @secondsWord.
+  ///
+  /// In en, this message translates to:
+  /// **'seconds'**
+  String get secondsWord;
+
+  /// No description provided for @pinSentBySms.
+  ///
+  /// In en, this message translates to:
+  /// **'The dynamic PIN was sent via SMS'**
+  String get pinSentBySms;
+
+  /// No description provided for @autoPlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-play'**
+  String get autoPlay;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

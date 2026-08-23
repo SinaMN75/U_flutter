@@ -924,5 +924,6 @@
   "dynamicPin": "رمز دوم پویا",
   "dynamicPinHint": "رمز دوم پویا برای خریدهای اینترنتی استفاده می‌شود.",
   "secondsWord": "ثانیه",
-  "pinSentBySms": "رمز دوم پویا پیامک شد"
+  "pinSentBySms": "رمز دوم پویا پیامک شد",
+  "autoPlay": "پخش خودکار"
 }

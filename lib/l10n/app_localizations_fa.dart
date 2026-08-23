@@ -2552,6 +2552,7 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get profilesHint => 'حساب‌ها، کارت‌ها و تراکنش‌ها بر اساس پروندهٔ فعال نمایش داده می‌شوند.';
+
   @override
   String get cards => 'کارت‌ها';
 
@@ -2600,4 +2601,6 @@ class AppLocalizationsFa extends AppLocalizations {
   @override
   String get pinSentBySms => 'رمز دوم پویا پیامک شد';
 
+  @override
+  String get autoPlay => 'پخش خودکار';
 }
