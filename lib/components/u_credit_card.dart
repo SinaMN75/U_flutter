@@ -1,15 +1,6 @@
-// Self-contained credit card UI + form for Flutter. No external packages.
-// Provides: CreditCardModel, CardBrand detection, CreditCardWidget (flip card),
-// and CreditCardForm (validated, masked inputs). Pure Flutter/Dart.
-
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 
-// ---------------------------------------------------------------------------
-// MODEL
-// ---------------------------------------------------------------------------
-
-// Holds the current state of a card; mutated as the user types in the form.
 class CreditCardModel {
   CreditCardModel({
     this.cardNumber = "",
@@ -23,32 +14,27 @@ class CreditCardModel {
   String expiryDate;
   String cardHolderName;
   String cvvCode;
-  bool isCvvFocused; // when true, the card shows its back (CVV) side
+  bool isCvvFocused;
 }
 
-// ---------------------------------------------------------------------------
-// BRAND DETECTION
-// ---------------------------------------------------------------------------
+enum CardBrand { visa, mastercard, amex, discover, dinersClub, jcb, unionPay, maestro, mir, unknown }
 
-// Supported card brands the detector can recognize from the number prefix.
-enum CardBrand { visa, mastercard, amex, discover, dinersClub, jcb, unknown }
-
-// Detects the brand purely from the digit prefix of the card number.
 class CardBrandDetector {
   static CardBrand detect(String input) {
-    final String number = input.replaceAll(RegExp(r"\D"), "");
-    if (number.isEmpty) return CardBrand.unknown;
-
-    if (RegExp("^4").hasMatch(number)) return CardBrand.visa;
-    if (RegExp("^(5[1-5]|2[2-7])").hasMatch(number)) return CardBrand.mastercard;
-    if (RegExp("^3[47]").hasMatch(number)) return CardBrand.amex;
-    if (RegExp("^6(011|5|4[4-9]|22)").hasMatch(number)) return CardBrand.discover;
-    if (RegExp("^3(0[0-5]|[68])").hasMatch(number)) return CardBrand.dinersClub;
-    if (RegExp("^35").hasMatch(number)) return CardBrand.jcb;
+    final String n = input.replaceAll(RegExp(r"\D"), "");
+    if (n.isEmpty) return CardBrand.unknown;
+    if (RegExp("^220[0-4]").hasMatch(n)) return CardBrand.mir;
+    if (RegExp("^4").hasMatch(n)) return CardBrand.visa;
+    if (RegExp("^3[47]").hasMatch(n)) return CardBrand.amex;
+    if (RegExp("^3(0[0-5]|[68])").hasMatch(n)) return CardBrand.dinersClub;
+    if (RegExp("^35").hasMatch(n)) return CardBrand.jcb;
+    if (RegExp("^(5018|5020|5038|56|57|58|6304|6759|676[1-3])").hasMatch(n)) return CardBrand.maestro;
+    if (RegExp("^(5[1-5]|2[2-7])").hasMatch(n)) return CardBrand.mastercard;
+    if (RegExp("^62").hasMatch(n)) return CardBrand.unionPay;
+    if (RegExp("^6(011|5|4[4-9]|22)").hasMatch(n)) return CardBrand.discover;
     return CardBrand.unknown;
   }
 
-  // Human-readable label used on the card face.
   static String label(CardBrand brand) {
     switch (brand) {
       case CardBrand.visa:
@@ -63,20 +49,45 @@ class CardBrandDetector {
         return "Diners Club";
       case CardBrand.jcb:
         return "JCB";
+      case CardBrand.unionPay:
+        return "UnionPay";
+      case CardBrand.maestro:
+        return "Maestro";
+      case CardBrand.mir:
+        return "MIR";
       case CardBrand.unknown:
         return "";
     }
   }
 
-  // Amex uses a 4-6-5 grouping and a 4-digit CVV; everyone else 4-4-4-4 / 3-digit.
+  static List<Color> gradientColors(CardBrand brand) {
+    switch (brand) {
+      case CardBrand.visa:
+        return const <Color>[Color(0xFF1A1F71), Color(0xFF3B4BA0)];
+      case CardBrand.mastercard:
+        return const <Color>[Color(0xFFEB001B), Color(0xFFF79E1B)];
+      case CardBrand.amex:
+        return const <Color>[Color(0xFF2E7D9E), Color(0xFF16506B)];
+      case CardBrand.discover:
+        return const <Color>[Color(0xFFF48120), Color(0xFF2A2E33)];
+      case CardBrand.dinersClub:
+        return const <Color>[Color(0xFF0079BE), Color(0xFF00456B)];
+      case CardBrand.jcb:
+        return const <Color>[Color(0xFF1D3F8B), Color(0xFFB01030)];
+      case CardBrand.unionPay:
+        return const <Color>[Color(0xFF00447C), Color(0xFF007B84)];
+      case CardBrand.maestro:
+        return const <Color>[Color(0xFF0099DF), Color(0xFFCC0000)];
+      case CardBrand.mir:
+        return const <Color>[Color(0xFF0F754C), Color(0xFF0A4732)];
+      case CardBrand.unknown:
+        return const <Color>[Color(0xFF2C3E50), Color(0xFF4CA1AF)];
+    }
+  }
+
   static bool isAmex(CardBrand brand) => brand == CardBrand.amex;
 }
 
-// ---------------------------------------------------------------------------
-// INPUT FORMATTERS
-// ---------------------------------------------------------------------------
-
-// Groups card number digits (4-4-4-4, or 4-6-5 for Amex) and caps the length.
 class _CardNumberFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
@@ -84,7 +95,6 @@ class _CardNumberFormatter extends TextInputFormatter {
     final bool isAmex = CardBrandDetector.isAmex(CardBrandDetector.detect(digits));
     final int maxLen = isAmex ? 15 : 16;
     final String trimmed = digits.length > maxLen ? digits.substring(0, maxLen) : digits;
-
     final List<int> groups = isAmex ? <int>[4, 6, 5] : <int>[4, 4, 4, 4];
     final StringBuffer buffer = StringBuffer();
     int index = 0;
@@ -95,7 +105,6 @@ class _CardNumberFormatter extends TextInputFormatter {
       buffer.write(trimmed.substring(index, end));
       index = end;
     }
-
     final String text = buffer.toString();
     return TextEditingValue(
       text: text,
@@ -104,7 +113,6 @@ class _CardNumberFormatter extends TextInputFormatter {
   }
 }
 
-// Formats expiry as MM/YY and caps to 4 digits.
 class _ExpiryFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
@@ -118,11 +126,6 @@ class _ExpiryFormatter extends TextInputFormatter {
   }
 }
 
-// ---------------------------------------------------------------------------
-// CARD WIDGET (front + back with smooth 3D flip)
-// ---------------------------------------------------------------------------
-
-// The visual card that flips to reveal the CVV when [showBackView] is true.
 class CreditCardWidget extends StatefulWidget {
   const CreditCardWidget({
     required this.cardNumber,
@@ -134,6 +137,9 @@ class CreditCardWidget extends StatefulWidget {
     this.height,
     this.width,
     this.gradient,
+    this.title,
+    this.logo,
+    this.brandLabel,
     this.animationDuration = const Duration(milliseconds: 500),
     this.obscureCardNumber = true,
     this.onBrandChanged,
@@ -147,6 +153,9 @@ class CreditCardWidget extends StatefulWidget {
   final double? height;
   final double? width;
   final Gradient? gradient;
+  final String? title;
+  final Widget? logo;
+  final String? brandLabel;
   final Duration animationDuration;
   final bool obscureCardNumber;
   final ValueChanged<CardBrand>? onBrandChanged;
@@ -164,7 +173,6 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this, duration: widget.animationDuration);
-    // Eased curve makes the flip feel fluid rather than linear.
     _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
     if (widget.showBackView) _controller.value = 1.0;
     _brand = CardBrandDetector.detect(widget.cardNumber);
@@ -173,11 +181,9 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
   @override
   void didUpdateWidget(covariant CreditCardWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // Drive the flip whenever the requested side changes.
     if (widget.showBackView != oldWidget.showBackView) {
       widget.showBackView ? _controller.forward() : _controller.reverse();
     }
-    // Re-detect brand and notify the parent only when it actually changes.
     final CardBrand newBrand = CardBrandDetector.detect(widget.cardNumber);
     if (newBrand != _brand) {
       _brand = newBrand;
@@ -195,22 +201,18 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
   Widget build(BuildContext context) {
     final double width = widget.width ?? MediaQuery.of(context).size.width * 0.9;
     final double height = widget.height ?? width * 0.62;
-
     return AnimatedBuilder(
       animation: _animation,
       builder: (BuildContext context, _) {
-        // angle goes 0 -> pi; we swap faces at the halfway point.
         final double angle = _animation.value * 3.1415926535;
         final bool isBack = angle > 1.5707963267;
         final Matrix4 transform = Matrix4.identity()
-          ..setEntry(3, 2, 0.001) // perspective
+          ..setEntry(3, 2, 0.001)
           ..rotateY(angle);
-
         return Transform(
           alignment: Alignment.center,
           transform: transform,
           child: isBack
-              // Counter-rotate the back face so its text isn't mirrored.
               ? Transform(
                   alignment: Alignment.center,
                   transform: Matrix4.identity()..rotateY(3.1415926535),
@@ -222,61 +224,65 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
     );
   }
 
-  // Default gradient if the caller doesn't supply one.
   Gradient get _gradient =>
       widget.gradient ??
-      const LinearGradient(
-        colors: <Color>[Color(0xFF2C3E50), Color(0xFF4CA1AF)],
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
+      LinearGradient(
+        colors: CardBrandDetector.gradientColors(_brand),
+        begin: Alignment.topRight,
+        end: Alignment.bottomLeft,
       );
 
-  // Front face: chip, brand, number, holder, expiry.
   Widget _buildFront(double width, double height) {
-    final String number = _displayNumber();
+    final Widget mark =
+        widget.logo ??
+        Text(
+          widget.brandLabel ?? CardBrandDetector.label(_brand),
+          style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+        );
     return Container(
       width: width,
       height: height,
-      padding: const EdgeInsets.all(22),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         gradient: _gradient,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(18),
         boxShadow: const <BoxShadow>[BoxShadow(color: Colors.black26, blurRadius: 12, offset: Offset(0, 6))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              // Stylized chip drawn with plain containers.
               Container(
-                width: 44,
-                height: 32,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFD4AF37),
-                  borderRadius: BorderRadius.circular(6),
-                ),
+                width: 42,
+                height: 30,
+                decoration: BoxDecoration(color: const Color(0xFFD4AF37), borderRadius: BorderRadius.circular(6)),
               ),
-              Text(
-                CardBrandDetector.label(_brand),
-                style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
-              ),
+              mark,
             ],
           ),
+          if (widget.title != null) ...<Widget>[
+            const SizedBox(height: 10),
+            Text(
+              widget.title!,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w600),
+            ),
+          ],
           const Spacer(),
           Text(
-            number,
-            style: const TextStyle(color: Colors.white, fontSize: 22, letterSpacing: 2, fontFamily: "monospace"),
+            _displayNumber(),
+            style: const TextStyle(color: Colors.white, fontSize: 20, letterSpacing: 2, fontFamily: "monospace"),
           ),
           const Spacer(),
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Expanded(
-                child: _labelled("CARD HOLDER", widget.cardHolderName.isEmpty ? "YOUR NAME" : widget.cardHolderName.toUpperCase()),
-              ),
+              Expanded(child: _labelled("CARD HOLDER", widget.cardHolderName.isEmpty ? "—" : widget.cardHolderName)),
               _labelled("EXPIRES", widget.expiryDate.isEmpty ? "MM/YY" : widget.expiryDate),
             ],
           ),
@@ -285,22 +291,21 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
     );
   }
 
-  // Back face: magnetic stripe and CVV box.
   Widget _buildBack(double width, double height) => Container(
     width: width,
     height: height,
     decoration: BoxDecoration(
       gradient: _gradient,
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(18),
       boxShadow: const <BoxShadow>[BoxShadow(color: Colors.black26, blurRadius: 12, offset: Offset(0, 6))],
     ),
     child: Column(
       children: <Widget>[
         const SizedBox(height: 20),
-        Container(height: 44, color: Colors.black87), // magnetic stripe
+        Container(height: 44, color: Colors.black87),
         const SizedBox(height: 20),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 22),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
@@ -321,20 +326,21 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
         ),
         const Spacer(),
         Padding(
-          padding: const EdgeInsets.only(right: 22, bottom: 16),
+          padding: const EdgeInsets.only(right: 20, bottom: 16),
           child: Align(
             alignment: Alignment.centerRight,
-            child: Text(
-              CardBrandDetector.label(_brand),
-              style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
-            ),
+            child:
+                widget.logo ??
+                Text(
+                  widget.brandLabel ?? CardBrandDetector.label(_brand),
+                  style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                ),
           ),
         ),
       ],
     ),
   );
 
-  // Small two-line caption/value pair used on the front face.
   Widget _labelled(String caption, String value) => Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisSize: MainAxisSize.min,
@@ -343,13 +349,13 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
       const SizedBox(height: 4),
       Text(
         value,
-        style: const TextStyle(color: Colors.white, fontSize: 15),
+        style: const TextStyle(color: Colors.white, fontSize: 14),
+        maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
     ],
   );
 
-  // Masks all but the last 4 digits when obscuring is enabled.
   String _displayNumber() {
     if (widget.cardNumber.isEmpty) {
       return CardBrandDetector.isAmex(_brand) ? "#### ###### #####" : "#### #### #### ####";
@@ -359,11 +365,6 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
   }
 }
 
-// ---------------------------------------------------------------------------
-// FORM (validated inputs that drive the card model)
-// ---------------------------------------------------------------------------
-
-// Editable form for card details; reports every change via [onChanged].
 class CreditCardForm extends StatefulWidget {
   const CreditCardForm({
     required this.model,
@@ -396,7 +397,6 @@ class _CreditCardFormState extends State<CreditCardForm> {
     _expiryCtrl = TextEditingController(text: widget.model.expiryDate);
     _nameCtrl = TextEditingController(text: widget.model.cardHolderName);
     _cvvCtrl = TextEditingController(text: widget.model.cvvCode);
-    // Flip the card to its back while the CVV field is focused.
     _cvvFocus.addListener(() {
       widget.model.isCvvFocused = _cvvFocus.hasFocus;
       widget.onChanged(widget.model);
@@ -413,7 +413,6 @@ class _CreditCardFormState extends State<CreditCardForm> {
     super.dispose();
   }
 
-  // Pushes the latest field values back through the callback.
   void _emit() {
     widget.model
       ..cardNumber = _numberCtrl.text
@@ -423,7 +422,6 @@ class _CreditCardFormState extends State<CreditCardForm> {
     widget.onChanged(widget.model);
   }
 
-  // Luhn checksum so obviously-invalid numbers are rejected.
   bool _luhnValid(String number) {
     final String digits = number.replaceAll(RegExp(r"\D"), "");
     if (digits.length < 13) return false;
@@ -501,7 +499,6 @@ class _CreditCardFormState extends State<CreditCardForm> {
     );
   }
 
-  // Validates MM/YY format and that the date is not in the past.
   String? _validateExpiry(String? v) {
     if (v == null || v.length != 5) return "Invalid date";
     final List<String> parts = v.split("/");
@@ -513,55 +510,4 @@ class _CreditCardFormState extends State<CreditCardForm> {
     final DateTime expiry = DateTime(fullYear, month + 1);
     return expiry.isAfter(now) ? null : "Card expired";
   }
-}
-
-// ---------------------------------------------------------------------------
-// DEMO PAGE (delete if you only want the components)
-// ---------------------------------------------------------------------------
-
-// Minimal screen wiring the card and form together.
-class CreditCardDemoPage extends StatefulWidget {
-  const CreditCardDemoPage({super.key});
-
-  @override
-  State<CreditCardDemoPage> createState() => _CreditCardDemoPageState();
-}
-
-class _CreditCardDemoPageState extends State<CreditCardDemoPage> {
-  final CreditCardModel _model = CreditCardModel();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text("Credit Card")),
-    body: SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: <Widget>[
-          CreditCardWidget(
-            cardNumber: _model.cardNumber,
-            expiryDate: _model.expiryDate,
-            cardHolderName: _model.cardHolderName,
-            cvvCode: _model.cvvCode,
-            showBackView: _model.isCvvFocused,
-          ),
-          const SizedBox(height: 24),
-          CreditCardForm(
-            model: _model,
-            formKey: _formKey,
-            onChanged: (CreditCardModel m) => setState(() {}),
-          ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              if (_formKey.currentState?.validate() ?? false) {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Card is valid")));
-              }
-            },
-            child: const Text("Validate"),
-          ),
-        ],
-      ),
-    ),
-  );
 }
