@@ -906,5 +906,7 @@
   "debit": "برداشت",
   "accountsWord": "حساب",
   "emptyLabel": "خالی",
-  "noAccountsInThisProfile": "حسابی در این پرونده نیست"
+  "noAccountsInThisProfile": "حسابی در این پرونده نیست",
+  "selectProfile": "انتخاب پرونده",
+  "profilesHint": "حساب‌ها، کارت‌ها و تراکنش‌ها بر اساس پروندهٔ فعال نمایش داده می‌شوند."
 }

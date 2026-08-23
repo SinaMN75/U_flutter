@@ -2546,4 +2546,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noAccountsInThisProfile => 'No accounts in this profile';
+
+  @override
+  String get selectProfile => 'Select profile';
+
+  @override
+  String get profilesHint => 'Accounts, cards and transactions are shown based on the active profile.';
 }

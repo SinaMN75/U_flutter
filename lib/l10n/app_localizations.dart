@@ -5113,6 +5113,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No accounts in this profile'**
   String get noAccountsInThisProfile;
+
+  /// No description provided for @selectProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Select profile'**
+  String get selectProfile;
+
+  /// No description provided for @profilesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Accounts, cards and transactions are shown based on the active profile.'**
+  String get profilesHint;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

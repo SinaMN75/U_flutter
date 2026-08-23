@@ -2546,4 +2546,10 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get noAccountsInThisProfile => 'حسابی در این پرونده نیست';
+
+  @override
+  String get selectProfile => 'انتخاب پرونده';
+
+  @override
+  String get profilesHint => 'حساب‌ها، کارت‌ها و تراکنش‌ها بر اساس پروندهٔ فعال نمایش داده می‌شوند.';
 }

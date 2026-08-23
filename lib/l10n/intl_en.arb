@@ -906,5 +906,7 @@
   "debit": "Withdrawal",
   "accountsWord": "accounts",
   "emptyLabel": "Empty",
-  "noAccountsInThisProfile": "No accounts in this profile"
+  "noAccountsInThisProfile": "No accounts in this profile",
+  "selectProfile": "Select profile",
+  "profilesHint": "Accounts, cards and transactions are shown based on the active profile."
 }
