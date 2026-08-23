@@ -127,6 +127,33 @@ extension WidgetsExtension on Widget {
     child: this,
   );
 
+  Widget chip({
+    double? width,
+    double? height,
+    Alignment? alignment,
+    Color? backgroundColor,
+    double borderWidth = 1,
+    double radius = 12,
+    Color borderColor = Colors.transparent,
+    EdgeInsets padding = const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+    EdgeInsets? margin,
+    BoxConstraints? constraints,
+  }) => Container(
+    clipBehavior: Clip.hardEdge,
+    constraints: constraints,
+    width: width,
+    height: height,
+    padding: padding,
+    margin: margin,
+    alignment: alignment,
+    decoration: BoxDecoration(
+      color: backgroundColor ?? navigatorKey.currentContext!.colorScheme.onPrimary.withValues(alpha: 0.10),
+      borderRadius: BorderRadius.circular(radius),
+      border: Border.all(color: borderColor, width: borderWidth),
+    ),
+    child: this,
+  );
+
   Widget card({
     Color? backgroundColor,
     double? elevation,
