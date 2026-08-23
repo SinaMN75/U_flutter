@@ -908,5 +908,21 @@
   "emptyLabel": "خالی",
   "noAccountsInThisProfile": "حسابی در این پرونده نیست",
   "selectProfile": "انتخاب پرونده",
-  "profilesHint": "حساب‌ها، کارت‌ها و تراکنش‌ها بر اساس پروندهٔ فعال نمایش داده می‌شوند."
+  "profilesHint": "حساب‌ها، کارت‌ها و تراکنش‌ها بر اساس پروندهٔ فعال نمایش داده می‌شوند.",
+  "cards": "کارت‌ها",
+  "cardTransactions": "تراکنش‌های این کارت",
+  "noCardsInThisProfile": "کارتی برای این پرونده صادر نشده",
+  "connectedAccount": "حساب متصل",
+  "showPinInApp": "نمایش رمز دوم در اپ",
+  "getPinBySms": "دریافت رمز با پیامک",
+  "cardLimitsAndSettings": "سقف و تنظیمات کارت",
+  "blockCardTemp": "مسدودسازی موقت",
+  "unblockCard": "رفع مسدودی",
+  "cardActive": "فعال",
+  "cardExpiringSoon": "انقضا نزدیک",
+  "cardBlocked": "مسدود موقت",
+  "dynamicPin": "رمز دوم پویا",
+  "dynamicPinHint": "رمز دوم پویا برای خریدهای اینترنتی استفاده می‌شود.",
+  "secondsWord": "ثانیه",
+  "pinSentBySms": "رمز دوم پویا پیامک شد"
 }

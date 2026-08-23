@@ -2552,4 +2552,52 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get profilesHint => 'حساب‌ها، کارت‌ها و تراکنش‌ها بر اساس پروندهٔ فعال نمایش داده می‌شوند.';
+  @override
+  String get cards => 'کارت‌ها';
+
+  @override
+  String get cardTransactions => 'تراکنش‌های این کارت';
+
+  @override
+  String get noCardsInThisProfile => 'کارتی برای این پرونده صادر نشده';
+
+  @override
+  String get connectedAccount => 'حساب متصل';
+
+  @override
+  String get showPinInApp => 'نمایش رمز دوم در اپ';
+
+  @override
+  String get getPinBySms => 'دریافت رمز با پیامک';
+
+  @override
+  String get cardLimitsAndSettings => 'سقف و تنظیمات کارت';
+
+  @override
+  String get blockCardTemp => 'مسدودسازی موقت';
+
+  @override
+  String get unblockCard => 'رفع مسدودی';
+
+  @override
+  String get cardActive => 'فعال';
+
+  @override
+  String get cardExpiringSoon => 'انقضا نزدیک';
+
+  @override
+  String get cardBlocked => 'مسدود موقت';
+
+  @override
+  String get dynamicPin => 'رمز دوم پویا';
+
+  @override
+  String get dynamicPinHint => 'رمز دوم پویا برای خریدهای اینترنتی استفاده می‌شود.';
+
+  @override
+  String get secondsWord => 'ثانیه';
+
+  @override
+  String get pinSentBySms => 'رمز دوم پویا پیامک شد';
+
 }

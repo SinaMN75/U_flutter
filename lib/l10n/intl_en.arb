@@ -908,5 +908,21 @@
   "emptyLabel": "Empty",
   "noAccountsInThisProfile": "No accounts in this profile",
   "selectProfile": "Select profile",
-  "profilesHint": "Accounts, cards and transactions are shown based on the active profile."
+  "profilesHint": "Accounts, cards and transactions are shown based on the active profile.",
+  "cards": "Cards",
+  "cardTransactions": "Card transactions",
+  "noCardsInThisProfile": "No card issued for this profile",
+  "connectedAccount": "Connected account",
+  "showPinInApp": "Show dynamic PIN in app",
+  "getPinBySms": "Get PIN via SMS",
+  "cardLimitsAndSettings": "Card limits & settings",
+  "blockCardTemp": "Temporarily block",
+  "unblockCard": "Unblock",
+  "cardActive": "Active",
+  "cardExpiringSoon": "Expiring soon",
+  "cardBlocked": "Temporarily blocked",
+  "dynamicPin": "Dynamic PIN",
+  "dynamicPinHint": "The dynamic PIN is used for online purchases.",
+  "secondsWord": "seconds",
+  "pinSentBySms": "The dynamic PIN was sent via SMS"
 }

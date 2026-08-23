@@ -2552,4 +2552,52 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profilesHint => 'Accounts, cards and transactions are shown based on the active profile.';
+  @override
+  String get cards => 'Cards';
+
+  @override
+  String get cardTransactions => 'Card transactions';
+
+  @override
+  String get noCardsInThisProfile => 'No card issued for this profile';
+
+  @override
+  String get connectedAccount => 'Connected account';
+
+  @override
+  String get showPinInApp => 'Show dynamic PIN in app';
+
+  @override
+  String get getPinBySms => 'Get PIN via SMS';
+
+  @override
+  String get cardLimitsAndSettings => 'Card limits & settings';
+
+  @override
+  String get blockCardTemp => 'Temporarily block';
+
+  @override
+  String get unblockCard => 'Unblock';
+
+  @override
+  String get cardActive => 'Active';
+
+  @override
+  String get cardExpiringSoon => 'Expiring soon';
+
+  @override
+  String get cardBlocked => 'Temporarily blocked';
+
+  @override
+  String get dynamicPin => 'Dynamic PIN';
+
+  @override
+  String get dynamicPinHint => 'The dynamic PIN is used for online purchases.';
+
+  @override
+  String get secondsWord => 'seconds';
+
+  @override
+  String get pinSentBySms => 'The dynamic PIN was sent via SMS';
+
 }
