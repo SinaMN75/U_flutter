@@ -891,5 +891,20 @@
   "whatsapp": "WhatsApp",
   "words": "Words",
   "writeSomething": "Write something...",
-  "zipCode": "Zip Code"
+  "zipCode": "Zip Code",
+  "activeProfile": "Active profile",
+  "totalBalance": "Total balance",
+  "change": "Change",
+  "show": "Show",
+  "hide": "Hide",
+  "toman": "Toman",
+  "billPayment": "Bill payment",
+  "statement": "Statement",
+  "chargeAndPackage": "Charge & package",
+  "accountsInThisProfile": "Accounts in this profile",
+  "credit": "Deposit",
+  "debit": "Withdrawal",
+  "accountsWord": "accounts",
+  "emptyLabel": "Empty",
+  "noAccountsInThisProfile": "No accounts in this profile"
 }

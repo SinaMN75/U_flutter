@@ -891,5 +891,20 @@
   "year": "سال",
   "youHaveNotSubmittedAnyTaxpayerRequestYet": "شما هنوز درخواستی برای مودی ثبت نکرده‌اید.",
   "yourSessionHasExpiredPleaseSignInAgain": "نشست شما منقضی شده است. لطفاً دوباره وارد شوید.",
-  "zipCode": "کد پستی"
+  "zipCode": "کد پستی",
+  "activeProfile": "پروندهٔ فعال",
+  "totalBalance": "مجموع موجودی",
+  "change": "تغییر",
+  "show": "نمایش",
+  "hide": "مخفی",
+  "toman": "تومان",
+  "billPayment": "پرداخت قبض",
+  "statement": "صورت‌حساب",
+  "chargeAndPackage": "شارژ و بسته",
+  "accountsInThisProfile": "حساب‌های این پرونده",
+  "credit": "واریز",
+  "debit": "برداشت",
+  "accountsWord": "حساب",
+  "emptyLabel": "خالی",
+  "noAccountsInThisProfile": "حسابی در این پرونده نیست"
 }

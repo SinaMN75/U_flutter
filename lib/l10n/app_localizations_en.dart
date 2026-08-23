@@ -2501,4 +2501,49 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get zipCode => 'Zip Code';
+
+  @override
+  String get activeProfile => 'Active profile';
+
+  @override
+  String get totalBalance => 'Total balance';
+
+  @override
+  String get change => 'Change';
+
+  @override
+  String get show => 'Show';
+
+  @override
+  String get hide => 'Hide';
+
+  @override
+  String get toman => 'Toman';
+
+  @override
+  String get billPayment => 'Bill payment';
+
+  @override
+  String get statement => 'Statement';
+
+  @override
+  String get chargeAndPackage => 'Charge & package';
+
+  @override
+  String get accountsInThisProfile => 'Accounts in this profile';
+
+  @override
+  String get credit => 'Deposit';
+
+  @override
+  String get debit => 'Withdrawal';
+
+  @override
+  String get accountsWord => 'accounts';
+
+  @override
+  String get emptyLabel => 'Empty';
+
+  @override
+  String get noAccountsInThisProfile => 'No accounts in this profile';
 }

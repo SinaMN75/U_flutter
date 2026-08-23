@@ -5023,6 +5023,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Zip Code'**
   String get zipCode;
+
+  /// No description provided for @activeProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Active profile'**
+  String get activeProfile;
+
+  /// No description provided for @totalBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Total balance'**
+  String get totalBalance;
+
+  /// No description provided for @change.
+  ///
+  /// In en, this message translates to:
+  /// **'Change'**
+  String get change;
+
+  /// No description provided for @show.
+  ///
+  /// In en, this message translates to:
+  /// **'Show'**
+  String get show;
+
+  /// No description provided for @hide.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide'**
+  String get hide;
+
+  /// No description provided for @toman.
+  ///
+  /// In en, this message translates to:
+  /// **'Toman'**
+  String get toman;
+
+  /// No description provided for @billPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Bill payment'**
+  String get billPayment;
+
+  /// No description provided for @statement.
+  ///
+  /// In en, this message translates to:
+  /// **'Statement'**
+  String get statement;
+
+  /// No description provided for @chargeAndPackage.
+  ///
+  /// In en, this message translates to:
+  /// **'Charge & package'**
+  String get chargeAndPackage;
+
+  /// No description provided for @accountsInThisProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Accounts in this profile'**
+  String get accountsInThisProfile;
+
+  /// No description provided for @credit.
+  ///
+  /// In en, this message translates to:
+  /// **'Deposit'**
+  String get credit;
+
+  /// No description provided for @debit.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdrawal'**
+  String get debit;
+
+  /// No description provided for @accountsWord.
+  ///
+  /// In en, this message translates to:
+  /// **'accounts'**
+  String get accountsWord;
+
+  /// No description provided for @emptyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Empty'**
+  String get emptyLabel;
+
+  /// No description provided for @noAccountsInThisProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'No accounts in this profile'**
+  String get noAccountsInThisProfile;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

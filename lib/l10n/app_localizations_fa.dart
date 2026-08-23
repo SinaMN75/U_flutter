@@ -2501,4 +2501,49 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get zipCode => 'کد پستی';
+
+  @override
+  String get activeProfile => 'پروندهٔ فعال';
+
+  @override
+  String get totalBalance => 'مجموع موجودی';
+
+  @override
+  String get change => 'تغییر';
+
+  @override
+  String get show => 'نمایش';
+
+  @override
+  String get hide => 'مخفی';
+
+  @override
+  String get toman => 'تومان';
+
+  @override
+  String get billPayment => 'پرداخت قبض';
+
+  @override
+  String get statement => 'صورت‌حساب';
+
+  @override
+  String get chargeAndPackage => 'شارژ و بسته';
+
+  @override
+  String get accountsInThisProfile => 'حساب‌های این پرونده';
+
+  @override
+  String get credit => 'واریز';
+
+  @override
+  String get debit => 'برداشت';
+
+  @override
+  String get accountsWord => 'حساب';
+
+  @override
+  String get emptyLabel => 'خالی';
+
+  @override
+  String get noAccountsInThisProfile => 'حسابی در این پرونده نیست';
 }
