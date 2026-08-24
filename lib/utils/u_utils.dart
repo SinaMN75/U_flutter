@@ -120,6 +120,16 @@ abstract class UValidators {
     return null;
   };
 
+  static FormFieldValidator<String> iranianTaxPayerCode({
+    String? requiredMessage,
+    String? invalidMessage,
+    bool isRequired = true,
+  }) => (String? value) {
+    if (isRequired && (value == null || value.isEmpty)) return requiredMessage ?? U.s.required;
+    if (value != null && value.isNotEmpty && !PersianTools.validateTaxMemoryId(value.toLatinNumber())) return invalidMessage ?? U.s.thisFieldIsInvalid;
+    return null;
+  };
+
   static FormFieldValidator<String> numberRange({
     required double min,
     required double max,

@@ -227,7 +227,6 @@ class PersianTools {
     "نهصد": 900,
   };
 
-  // Bank data
   static final Map<String, BankInfo> _bankInfo = <String, BankInfo>{
     "010": const BankInfo(nickname: "central-bank", name: "Central Bank of Iran", persianName: "بانک مرکزی جمهوری اسلامی ایران"),
     "011": const BankInfo(nickname: "sanat-o-madan", name: "Sanat O Madan Bank", persianName: "بانک صنعت و معدن"),
@@ -359,7 +358,6 @@ class PersianTools {
     "585947": "بانک خاورمیانه",
   };
 
-  // Phone number constants
   static final RegExp _mobileRegex = RegExp(r"^(?:[+|0{2}]?98)?0?(\d{3})+(\d{3})+(\d{4})$");
   static final Map<String, OperatorDetail> _operators = <String, OperatorDetail>{
     "910": const OperatorDetail(base: "کشوری", operator: Operator.mci),
@@ -439,11 +437,6 @@ class PersianTools {
     "999": const OperatorDetail(base: "کشوری", operator: Operator.samanTel),
   };
 
-  /// Validates if the input string contains only Persian characters
-  /// @param input The string to validate
-  /// @param complex Whether to use complex Persian character set
-  /// @returns bool True if input is valid Persian text
-  /// Example: PersianTools.isPersian("سلام") => true
   static bool isPersian(String input, {bool complex = false}) {
     if (input.isEmpty) return false;
     final RegExp pattern = RegExp('["\'-+()؟\\s.]');
@@ -452,36 +445,18 @@ class PersianTools {
     return RegExp("^[$faRegExp]+\$").hasMatch(rawText);
   }
 
-  /// Checks if the input string contains any Persian characters
-  /// @param input The string to check
-  /// @param complex Whether to use complex Persian character set
-  /// @returns bool True if input contains Persian characters
-  /// Example: PersianTools.hasPersian("Hello سلام") => true
   static bool hasPersian(String input, {bool complex = false}) {
     final String faRegExp = complex ? _faComplexText : _faText;
     return RegExp("[$faRegExp]").hasMatch(input);
   }
 
-  /// Trims whitespace from start and end of string
-  /// @param input The string to trim
-  /// @returns String Trimmed string
-  /// Example: PersianTools.trim("  hello  ") => "hello"
   static String trim(String input) => input.trim();
 
-  /// Replaces patterns in string using a map
-  /// @param input The input string
-  /// @param mapPattern Map of patterns to replacements
-  /// @returns String String with replaced patterns
-  /// Example: PersianTools.replaceMapValue("شیش صد", {"شیش صد": "ششصد"}) => "ششصد"
   static String replaceMapValue(String input, Map<String, String> mapPattern) => input.replaceAllMapped(
     RegExp(mapPattern.keys.join("|"), caseSensitive: false),
     (Match match) => mapPattern[match.group(0)]!,
   );
 
-  /// Validates Iranian national ID
-  /// @param id The national ID to validate
-  /// @returns bool True if valid
-  /// Example: PersianTools.verifyNationalId("1234567890") => false
   static bool validateNationalCode(String? input) {
     if (input == null) return false;
     final String code = input.trim();
@@ -497,12 +472,14 @@ class PersianTools {
     return expected == digits[9];
   }
 
-  /// Validates Iranian bank card number
-  /// @param cardNumber The card number to validate
-  /// @returns bool True if valid
-  /// Example: PersianTools.validateCardNumber("6219861034567890") => true
+  static bool validateTaxMemoryId(String? input) {
+    if (input == null) return false;
+    final String code = input.trim().toUpperCase();
+    if (code.length != 6) return false;
+    return RegExp(r"^[A-Z0-9]{6}$").hasMatch(code);
+  }
+
   static bool validateCardNumber(String cardNumber) {
-    // FIX: ensure the value is all digits before parsing so non-numeric input returns false instead of throwing.
     if (!RegExp(r"^\d{16}$").hasMatch(cardNumber) || int.parse(cardNumber.substring(1, 11)) == 0) return false;
     int sum = 0;
     for (int i = 0; i < 16; i++) {
@@ -513,19 +490,11 @@ class PersianTools {
     return sum % 10 == 0;
   }
 
-  /// Gets bank name from card number
-  /// @param cardNumber The card number
-  /// @returns String? Bank name or null if not found
-  /// Example: PersianTools.getBankNameFromCard("6219861034567890") => "بانک سامان"
   static String? getBankNameFromCard(String cardNumber) {
     if (cardNumber.length != 16) return null;
     return _bankCardPrefixes[cardNumber.substring(0, 6)];
   }
 
-  /// Validates Iranian IBAN (Sheba) number
-  /// @param sheba The IBAN number
-  /// @returns bool True if valid
-  /// Example: PersianTools.isShebaValid("IR123456789012345678901234") => true
   static bool isShebaValid(String sheba) {
     if (sheba.length != 26 || !RegExp("IR[0-9]{24}").hasMatch(sheba)) return false;
     final int d1 = sheba.codeUnitAt(0) - 65 + 10;
@@ -539,10 +508,6 @@ class PersianTools {
     return int.parse(remainder) % 97 == 1;
   }
 
-  /// Gets bank information from IBAN
-  /// @param sheba The IBAN number
-  /// @returns BankInfo? Bank information or null if invalid
-  /// Example: PersianTools.getBankFromSheba("IR123456789012345678901234") => BankInfo(...)
   static BankInfo? getBankFromSheba(String sheba) {
     if (!isShebaValid(sheba)) return null;
     final String? bankCode = RegExp("IR[0-9]{2}([0-9]{3})").firstMatch(sheba)?[1];
@@ -558,11 +523,6 @@ class PersianTools {
     return bank;
   }
 
-  /// Converts number to Persian words
-  /// @param number The number to convert
-  /// @param ordinal Whether to use ordinal form
-  /// @returns String? Converted number or null if invalid
-  /// Example: PersianTools.numberToWords(123) => "یکصد و بیست و سه"
   static String? numberToWords(num number, {bool ordinal = false}) {
     if (number == 0) return "صفر";
     final String result = _convertNumberToWords(number.abs().toInt());
@@ -570,12 +530,6 @@ class PersianTools {
     return trim((number < 0 ? "منفی " : "") + result);
   }
 
-  /// Converts Persian number words to number
-  /// @param words The words to convert
-  /// @param digits Output digit format
-  /// @param addComma Whether to add commas to output
-  /// @returns String? Converted number or null if invalid
-  /// Example: PersianTools.wordsToNumberString("یکصد و بیست و سه") => "123"
   static String? wordsToNumberString(String words, {DigitLocale digits = DigitLocale.en, bool addComma = false}) {
     final int? number = _wordsToNumber(words);
     if (number == null) return null;
@@ -590,12 +544,6 @@ class PersianTools {
     }
   }
 
-  /// Converts digits between different locales
-  /// @param digits The digits to convert
-  /// @param from Source locale
-  /// @param to Target locale
-  /// @returns String Converted digits
-  /// Example: PersianTools.convertDigits("123", DigitLocale.en, DigitLocale.fa) => "۱۲۳"
   static String convertDigits(String digits, DigitLocale from, DigitLocale to) {
     if (from == to) return digits;
     if (from == DigitLocale.en && to == DigitLocale.fa) return _convertEnToFa(digits);
@@ -606,36 +554,23 @@ class PersianTools {
     return _convertFaToEn(_convertArToFa(digits));
   }
 
-  /// Validates phone number and returns operator details
-  /// @param phoneNumber The phone number to validate
-  /// @returns OperatorDetail? Operator details or null if invalid
-  /// Example: PersianTools.getPhoneDetails("09123456789") => OperatorDetail(...)
   static OperatorDetail? getPhoneDetails(String phoneNumber) {
     if (!_mobileRegex.hasMatch(phoneNumber)) return null;
     final String? prefix = _mobileRegex.firstMatch(phoneNumber)?.group(1);
     return prefix != null ? _operators[prefix] : null;
   }
 
-  /// Formats phone number
-  /// @param phoneNumber The phone number to format
-  /// @returns String? Formatted phone number or null if invalid
-  /// Example: PersianTools.formatPhoneNumber("09123456789") => "+98912-345-6789"
   static String? formatPhoneNumber(String phoneNumber) {
     if (!_mobileRegex.hasMatch(phoneNumber)) return null;
     final RegExpMatch match = _mobileRegex.firstMatch(phoneNumber)!;
     return "+98${match.group(1)}-${match.group(2)}-${match.group(3)}";
   }
 
-  /// Formats bank card number
-  /// @param cardNumber The card number to format
-  /// @returns String? Formatted card number or null if invalid
-  /// Example: PersianTools.formatCardNumber("6219861034567890") => "6219-8610-3456-7890"
   static String? formatCardNumber(String cardNumber) {
     if (!validateCardNumber(cardNumber)) return null;
     return "${cardNumber.substring(0, 4)}-${cardNumber.substring(4, 8)}-${cardNumber.substring(8, 12)}-${cardNumber.substring(12)}";
   }
 
-  // Helper methods
   static String _addCommas(num number) {
     final String str = number.toString();
     final List<String> parts = str.split(".");

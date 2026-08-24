@@ -25,7 +25,7 @@ CachedNetworkImage(imageUrl: "https://…/photo.jpg", width: 140, height: 100);'
         child: URow(
           spacing: 12,
           children: <Widget>[
-            const UImageNetwork(_img, width: 140, height: 100, borderRadius: 12, fit: BoxFit.cover),
+            const UImageNetwork(_img, width: 140, height: 100, fit: BoxFit.cover),
             const CachedNetworkImage(imageUrl: _img, width: 140, height: 100, fit: BoxFit.cover),
           ],
         ),
