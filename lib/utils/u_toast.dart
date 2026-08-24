@@ -1,18 +1,13 @@
 import "package:u/utilities.dart";
 
-/// Semantic intent of a toast/snackbar/banner, driving its default color and icon.
 enum UToastType { neutral, info, success, warning, error }
 
-/// Where an overlay toast is anchored on screen.
 enum UToastPosition { top, center, bottom }
 
 abstract class UToast {
   static ThemeData get theme => Theme.of(navigatorKey.currentContext!);
-
   static ColorScheme get _scheme => theme.colorScheme;
 
-  // Success/warning have no dedicated Material ColorScheme roles, so these act as
-  // semantic fallbacks. error/info/neutral are derived from the active theme.
   static const Color _successColor = Color(0xFF2E7D32);
   static const Color _warningColor = Color(0xFFF9A825);
   static const Color _onSuccessColor = Color(0xFFFFFFFF);
@@ -63,10 +58,6 @@ abstract class UToast {
     }
   }
 
-  // ---------------------------------------------------------------------------
-  // SnackBars
-  // ---------------------------------------------------------------------------
-
   static void snackBar({
     required String message,
     String? title,
@@ -92,14 +83,12 @@ abstract class UToast {
   }) {
     if (message.isNullOrEmpty()) return;
     final BuildContext ctx = navigatorKey.currentContext!;
-    // Resolve visuals from explicit overrides first, then the semantic type
     final Color background = backgroundColor ?? _backgroundFor(type);
     final Color foreground = foregroundColor ?? _foregroundFor(type);
     final IconData? resolvedIcon = icon ?? _iconFor(type);
     final ScaffoldMessengerState messenger = ScaffoldMessenger.of(ctx);
     if (clearQueue) messenger.clearSnackBars();
 
-    // Build an action from either a ready SnackBarAction or a label+callback pair
     final SnackBarAction? resolvedAction = action ??
         (actionLabel != null
             ? SnackBarAction(label: actionLabel, textColor: foreground, onPressed: onAction ?? () {})
@@ -228,12 +217,7 @@ abstract class UToast {
         onDismiss: onDismiss,
       );
 
-  // Remove any queued/visible snackbars immediately
   static void clearSnackBars() => ScaffoldMessenger.of(navigatorKey.currentContext!).clearSnackBars();
-
-  // ---------------------------------------------------------------------------
-  // Material banners (persistent, top-anchored)
-  // ---------------------------------------------------------------------------
 
   static void banner({
     required String message,
@@ -295,10 +279,6 @@ abstract class UToast {
   }
 
   static void dismissBanner() => ScaffoldMessenger.of(navigatorKey.currentContext!).hideCurrentMaterialBanner();
-
-  // ---------------------------------------------------------------------------
-  // Overlay toasts (floating, animated, position-aware)
-  // ---------------------------------------------------------------------------
 
   static OverlayEntry? _toastEntry;
 
@@ -474,6 +454,7 @@ class _UToastCardState extends State<_UToastCard> with SingleTickerProviderState
               child: Material(
                 type: MaterialType.transparency,
                 child: UContainer(
+                  onTap: widget.onTap,
                   color: widget.background,
                   radius: widget.borderRadius,
                   boxShadow: <BoxShadow>[BoxShadow(color: const Color(0x33000000), blurRadius: widget.elevation, offset: Offset(0, widget.elevation / 2))],
@@ -494,7 +475,7 @@ class _UToastCardState extends State<_UToastCard> with SingleTickerProviderState
                       ),
                     ],
                   ),
-                ).onTap(widget.onTap ?? () {}),
+                ),
               ),
             ),
           ),

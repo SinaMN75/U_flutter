@@ -391,12 +391,13 @@ abstract class UNavigator {
           children: (colors ?? <Color>[Colors.red, Colors.green, Colors.blue, Colors.yellow, Colors.orange, Colors.purple, Colors.pink, Colors.cyan, Colors.black, Colors.teal])
               .map(
                 (Color color) => UContainer(
+                  onTap: () => UNavigator.back(color),
                   width: 40,
                   height: 40,
                   color: color,
                   radius: 100,
                   border: color == defaultColor ? Border.all(width: 3) : null,
-                ).onTap(() => UNavigator.back(color)),
+                ),
               )
               .toList(),
         ),

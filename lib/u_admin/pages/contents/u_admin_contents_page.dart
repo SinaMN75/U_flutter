@@ -418,6 +418,7 @@ class _Base64ImageFieldState extends State<_Base64ImageField> {
         Stack(
           children: <Widget>[
             UContainer(
+              onTap: _pick,
               height: 96,
               width: double.infinity,
               radius: 12,
@@ -427,7 +428,7 @@ class _Base64ImageFieldState extends State<_Base64ImageField> {
               child: _value.isNotNullOrEmpty()
                   ? UImage("", fileData: FileData(bytes: _decodeBase64(_value!)), borderRadius: 12)
                   : Icon(Icons.add_photo_alternate_outlined, size: 32, color: scheme.onSurfaceVariant),
-            ).onTap(_pick),
+            ),
             if (_value.isNotNullOrEmpty())
               Positioned(
                 top: 4,

@@ -239,6 +239,7 @@ class _UserPageState extends State<UAdminUserPage> {
     children: <Widget>[
       Center(child: _genderIcon(i)).expanded(),
       URow(
+        onTap: () => UAdminPageSwitcher.hotelUserDetail(user: i),
         spacing: 0,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -248,7 +249,7 @@ class _UserPageState extends State<UAdminUserPage> {
             child: UTextBodyMedium("${i.firstName ?? ""} ${i.lastName ?? ""}".trim(), textAlign: .center, maxLines: 1, overflow: TextOverflow.ellipsis),
           ),
         ],
-      ).onTap(() => UAdminPageSwitcher.hotelUserDetail(user: i)).expanded(),
+      ).expanded(),
       UTextBodyMedium(i.userName, textAlign: .center).onTap(() => UClipboard.set(i.userName)).expanded(),
       UTextBodyMedium(i.phoneNumber ?? "", textAlign: .center).expanded(),
       UTextBodyMedium(i.email ?? "", textAlign: .center).expanded(),

@@ -52,6 +52,7 @@ class _UProcessImagePickerFieldState extends State<UProcessImagePickerField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         UContainer(
+          onTap: _pick,
           margin: const EdgeInsets.symmetric(vertical: 4),
           border: Border.all(color: scheme.outlineVariant, width: 1.5),
           radius: 16,
@@ -67,7 +68,7 @@ class _UProcessImagePickerFieldState extends State<UProcessImagePickerField> {
             trailing: UTextBodyMedium(widget.field.label, color: scheme.onSurfaceVariant),
             spaceBetween: 12,
           ),
-        ).onTap(_pick),
+        ),
         if (widget.field.rejectionReason != null)
           UIconTextHorizontal(
             leading: Icon(Icons.error_outline, color: scheme.error),
