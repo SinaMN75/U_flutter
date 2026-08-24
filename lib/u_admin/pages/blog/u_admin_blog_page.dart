@@ -194,14 +194,12 @@ class _BlogPageState extends State<UAdminBlogPage> {
                         final String? html = await URichTextEditor.open(initialHtml: content.text);
                         if (html != null) setDialogState(() => content.text = html);
                       },
-                      child: Container(
+                      child: UContainer(
                         width: double.infinity,
                         constraints: const BoxConstraints(minHeight: 72, maxHeight: 220),
                         padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Theme.of(context).dividerColor),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+                        border: Border.all(color: Theme.of(context).dividerColor),
+                        radius: 8,
                         child: content.text.trim().isEmpty
                             ? URow(spacing: 0, children: <Widget>[const Icon(Icons.edit_note), const SizedBox(width: 8), Text(U.s.richTextEditor)])
                             : SingleChildScrollView(child: UHtmlView(html: content.text)),

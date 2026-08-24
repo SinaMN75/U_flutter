@@ -191,9 +191,10 @@ class _UserPageState extends State<UAdminUserPage> {
         : i.tags.contains(TagUser.guest.number)
         ? UAdminTheme.blueGrey
         : UAdminTheme.grey;
-    return Container(
+    return UContainer(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-      decoration: BoxDecoration(color: color.withValues(alpha: 0.16), borderRadius: BorderRadius.circular(20)),
+      color: color.withValues(alpha: 0.16),
+      radius: 20,
       child: UTextBodySmall(label, color: color, fontWeight: FontWeight.w600),
     );
   }

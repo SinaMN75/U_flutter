@@ -79,9 +79,10 @@ class _AdminUsersPageState extends State<UAdminUsersPage> {
         : awaiting
         ? U.s.pendingVerification
         : U.s.notUploaded;
-    return Container(
+    return UContainer(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      decoration: BoxDecoration(color: color.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(20)),
+      color: color.withValues(alpha: 0.15),
+      radius: 20,
       child: UTextBodySmall(label, color: color, fontWeight: FontWeight.w600),
     );
   }

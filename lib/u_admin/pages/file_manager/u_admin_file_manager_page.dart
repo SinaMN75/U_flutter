@@ -387,12 +387,10 @@ class _UAdminFileManagerPageState extends State<UAdminFileManagerPage> {
       );
     }
     final Color accent = _accentFor(e, cs);
-    return Container(
+    return UContainer(
       alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: accent.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(radius),
-      ),
+      color: accent.withValues(alpha: 0.1),
+      radius: radius,
       child: Icon(_iconFor(e), size: 40, color: accent),
     );
   }

@@ -117,9 +117,10 @@ showDialog(context: context, builder: (_) => JalaliDatePickerDialog(
     );
   }
 
-  Widget _face(Color bg, Color fg, String label) => Container(
+  Widget _face(Color bg, Color fg, String label) => UContainer(
+    color: bg,
+    radius: 16,
     alignment: Alignment.center,
-    decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(16)),
     child: UTextTitleMedium(label, color: fg, fontWeight: FontWeight.w700),
   );
 }

@@ -101,16 +101,14 @@ class _AdminSettingsPageState extends State<UAdminSettingsPage> {
     ),
   );
 
-  Widget _accountCard() => Container(
+  Widget _accountCard() => UContainer(
     padding: const EdgeInsets.all(16),
-    decoration: BoxDecoration(
-      gradient: LinearGradient(
-        colors: <Color>[Theme.of(context).colorScheme.primary.withValues(alpha: 0.15), Theme.of(context).colorScheme.primary.withValues(alpha: 0.05)],
-        begin: Alignment.topRight,
-        end: Alignment.bottomLeft,
-      ),
-      borderRadius: BorderRadius.circular(16),
+    gradient: LinearGradient(
+      colors: <Color>[Theme.of(context).colorScheme.primary.withValues(alpha: 0.15), Theme.of(context).colorScheme.primary.withValues(alpha: 0.05)],
+      begin: Alignment.topRight,
+      end: Alignment.bottomLeft,
     ),
+    radius: 16,
     child: URow(
       spacing: 0,
       children: <Widget>[
@@ -127,22 +125,21 @@ class _AdminSettingsPageState extends State<UAdminSettingsPage> {
             ],
           ),
         ),
-        Container(
+        UContainer(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-          decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(20)),
+          color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.15),
+          radius: 20,
           child: UTextBodySmall(U.s.account, color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.w600),
         ),
       ],
     ),
   );
 
-  Widget _section(String title, IconData icon, List<Widget> children) => Container(
+  Widget _section(String title, IconData icon, List<Widget> children) => UContainer(
     padding: const EdgeInsets.all(16),
-    decoration: BoxDecoration(
-      color: Theme.of(context).colorScheme.surface,
-      borderRadius: BorderRadius.circular(16),
-      border: Border.all(color: Theme.of(context).dividerColor.withValues(alpha: 0.4)),
-    ),
+    color: Theme.of(context).colorScheme.surface,
+    radius: 16,
+    border: Border.all(color: Theme.of(context).dividerColor.withValues(alpha: 0.4)),
     child: UColumn(
       spacing: 0,
       crossAxisAlignment: CrossAxisAlignment.start,

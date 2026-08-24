@@ -123,18 +123,17 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
   Widget _statusCard() {
     final bool verified = c.isFullyVerified;
     final Color color = verified ? UAdminTheme.green : UAdminTheme.orange;
-    return Container(
+    return UContainer(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(colors: <Color>[color.withValues(alpha: 0.08), color.withValues(alpha: 0.20)], begin: Alignment.topRight, end: Alignment.bottomLeft),
-        borderRadius: BorderRadius.circular(16),
-      ),
+      gradient: LinearGradient(colors: <Color>[color.withValues(alpha: 0.08), color.withValues(alpha: 0.20)], begin: Alignment.topRight, end: Alignment.bottomLeft),
+      radius: 16,
       child: URow(
         spacing: 0,
         children: <Widget>[
-          Container(
+          UContainer(
             padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(color: Theme.of(context).colorScheme.surface, borderRadius: BorderRadius.circular(12)),
+            color: Theme.of(context).colorScheme.surface,
+            radius: 12,
             child: Icon(verified ? Icons.verified_rounded : Icons.pending_actions_rounded, color: color, size: 28),
           ),
           const SizedBox(width: 16),
@@ -149,9 +148,10 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
               ],
             ),
           ),
-          Container(
+          UContainer(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(color: color.withValues(alpha: 0.18), borderRadius: BorderRadius.circular(20)),
+            color: color.withValues(alpha: 0.18),
+            radius: 20,
             child: UTextBodySmall(verified ? U.s.approved : U.s.needsReview, color: color, fontWeight: FontWeight.w600),
           ),
         ],
@@ -212,13 +212,11 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
           children: <Widget>[
             Stack(
               children: <Widget>[
-                Container(
+                UContainer(
                   width: double.infinity,
                   height: 150,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                  ),
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
                   child: hasData && !d.isVideo
                       ? ClipRRect(
                           borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
@@ -299,9 +297,10 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
         icon = Icons.remove_circle_outline;
         label = U.s.notUploaded;
     }
-    return Container(
+    return UContainer(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(20)),
+      color: color,
+      radius: 20,
       child: URow(
         spacing: 0,
         mainAxisSize: MainAxisSize.min,
@@ -315,9 +314,10 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
   }
 
   Widget _infoRow(IconData icon, String label, String value, Color color) => ListTile(
-    leading: Container(
+    leading: UContainer(
       padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(color: color.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)),
+      color: color.withValues(alpha: 0.1),
+      radius: 10,
       child: Icon(icon, size: 20, color: color),
     ),
     title: UTextBodySmall(label, color: UAdminTheme.grey),
@@ -332,9 +332,10 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
   Widget _sectionHeader(String title, IconData icon, Color color) => URow(
     spacing: 0,
     children: <Widget>[
-      Container(
+      UContainer(
         padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(color: color.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)),
+        color: color.withValues(alpha: 0.1),
+        radius: 10,
         child: Icon(icon, size: 20, color: color),
       ),
       const SizedBox(width: 12),

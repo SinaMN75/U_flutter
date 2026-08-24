@@ -122,9 +122,10 @@ class _HotelUserDetailPageState extends State<UAdminHotelUserDetailPage> {
     );
   }
 
-  Widget _pill(IconData icon, String text) => Container(
+  Widget _pill(IconData icon, String text) => UContainer(
     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-    decoration: BoxDecoration(color: UAdminTheme.white24, borderRadius: BorderRadius.circular(30)),
+    color: UAdminTheme.white24,
+    radius: 30,
     child: URow(
       spacing: 0,
       mainAxisSize: MainAxisSize.min,
@@ -281,9 +282,10 @@ class _HotelUserDetailPageState extends State<UAdminHotelUserDetailPage> {
     ),
   );
 
-  Widget _chip(String label, Color color, IconData icon) => Container(
+  Widget _chip(String label, Color color, IconData icon) => UContainer(
     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-    decoration: BoxDecoration(color: color.withValues(alpha: 0.14), borderRadius: BorderRadius.circular(30)),
+    color: color.withValues(alpha: 0.14),
+    radius: 30,
     child: URow(
       spacing: 0,
       mainAxisSize: MainAxisSize.min,
@@ -295,9 +297,10 @@ class _HotelUserDetailPageState extends State<UAdminHotelUserDetailPage> {
     ),
   );
 
-  Widget _countBadge(int count) => Container(
+  Widget _countBadge(int count) => UContainer(
     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-    decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.14), borderRadius: BorderRadius.circular(30)),
+    color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.14),
+    radius: 30,
     child: UTextBodySmall(count.separate3By3(), color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.w700),
   );
 

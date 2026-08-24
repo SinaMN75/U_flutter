@@ -610,7 +610,7 @@ abstract class UNavigator {
               child: Material(
                 color: Colors.transparent,
                 child: dismissOnTap
-                    ? GestureDetector(
+                    ? UContainer(
                         onTap: () {
                           dismissOverlay();
                           onDismiss?.call();

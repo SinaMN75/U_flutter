@@ -121,12 +121,10 @@ class _JalaliDatePickerDialogState extends State<JalaliDatePickerDialog> {
       dayWidgets.add(
         InkWell(
           onTap: () => setState(() => selectedDate = Jalali(currentYear, currentMonth, day)),
-          child: Container(
+          child: UContainer(
             margin: const EdgeInsets.all(4),
-            decoration: BoxDecoration(
-              color: isSelected ? scheme.primary : scheme.surfaceContainerHighest,
-              borderRadius: BorderRadius.circular(6),
-            ),
+            color: isSelected ? scheme.primary : scheme.surfaceContainerHighest,
+            radius: 6,
             alignment: Alignment.center,
             padding: const EdgeInsets.symmetric(vertical: 12),
             child: Text(
@@ -167,14 +165,12 @@ class _JalaliDatePickerDialogState extends State<JalaliDatePickerDialog> {
               selectedDate = Jalali(currentYear, currentMonth, selectedDate.day);
               mode = _PickerMode.selectMonth;
             }),
-            child: Container(
+            child: UContainer(
               margin: const EdgeInsets.symmetric(vertical: 3),
               padding: const EdgeInsets.symmetric(vertical: 14),
               alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: selected ? scheme.primary : scheme.surfaceContainerHighest,
-                borderRadius: BorderRadius.circular(8),
-              ),
+              color: selected ? scheme.primary : scheme.surfaceContainerHighest,
+              radius: 8,
               child: Text(
                 "$year",
                 style: TextStyle(color: selected ? scheme.onPrimary : scheme.onSurface, fontWeight: selected ? FontWeight.bold : FontWeight.normal),

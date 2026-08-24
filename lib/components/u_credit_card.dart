@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
+import "package:u/utilities.dart";
 
 class CreditCardModel {
   CreditCardModel({
@@ -239,15 +240,13 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
           widget.brandLabel ?? CardBrandDetector.label(_brand),
           style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
         );
-    return Container(
+    return UContainer(
       width: width,
       height: height,
       padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        gradient: _gradient,
-        borderRadius: BorderRadius.circular(18),
-        boxShadow: const <BoxShadow>[BoxShadow(color: Colors.black26, blurRadius: 12, offset: Offset(0, 6))],
-      ),
+      gradient: _gradient,
+      radius: 18,
+      boxShadow: const <BoxShadow>[BoxShadow(color: Colors.black26, blurRadius: 12, offset: Offset(0, 6))],
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -255,10 +254,11 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Container(
+              const UContainer(
                 width: 42,
                 height: 30,
-                decoration: BoxDecoration(color: const Color(0xFFD4AF37), borderRadius: BorderRadius.circular(6)),
+                color: Color(0xFFD4AF37),
+                radius: 6,
               ),
               mark,
             ],
@@ -291,18 +291,16 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
     );
   }
 
-  Widget _buildBack(double width, double height) => Container(
+  Widget _buildBack(double width, double height) => UContainer(
     width: width,
     height: height,
-    decoration: BoxDecoration(
-      gradient: _gradient,
-      borderRadius: BorderRadius.circular(18),
-      boxShadow: const <BoxShadow>[BoxShadow(color: Colors.black26, blurRadius: 12, offset: Offset(0, 6))],
-    ),
+    gradient: _gradient,
+    radius: 18,
+    boxShadow: const <BoxShadow>[BoxShadow(color: Colors.black26, blurRadius: 12, offset: Offset(0, 6))],
     child: Column(
       children: <Widget>[
         const SizedBox(height: 20),
-        Container(height: 44, color: Colors.black87),
+        const UContainer(height: 44, color: Colors.black87),
         const SizedBox(height: 20),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -311,7 +309,7 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
             children: <Widget>[
               const Text("CVV", style: TextStyle(color: Colors.white70, fontSize: 12)),
               const SizedBox(width: 8),
-              Container(
+              UContainer(
                 width: 70,
                 height: 30,
                 alignment: Alignment.center,

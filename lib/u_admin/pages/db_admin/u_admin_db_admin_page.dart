@@ -497,10 +497,11 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
     final bool active = _selected?.name == t.name;
     return URow(
           children: <Widget>[
-            Container(
+            UContainer(
               width: 3,
               height: 26,
-              decoration: BoxDecoration(color: active ? cs.primary : Colors.transparent, borderRadius: BorderRadius.circular(3)),
+              color: active ? cs.primary : Colors.transparent,
+              radius: 3,
             ),
             Icon(Icons.table_rows_rounded, size: 15, color: active ? cs.primary : cs.onSurface.withValues(alpha: 0.55)),
             UTextBodySmall(t.name, color: active ? cs.primary : cs.onSurface, fontWeight: active ? FontWeight.w700 : FontWeight.w500, maxLines: 1).expanded(),

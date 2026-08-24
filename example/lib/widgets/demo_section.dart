@@ -46,13 +46,11 @@ class _CodeBlock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ColorScheme scheme = Theme.of(context).colorScheme;
-    return Container(
+    return UContainer(
+      color: scheme.surfaceContainerHighest,
+      radius: 10,
       width: double.infinity,
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: scheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(10),
-      ),
       child: SelectableText(
         code.trim(),
         style: TextStyle(

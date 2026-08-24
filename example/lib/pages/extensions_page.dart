@@ -11,11 +11,12 @@ class ExtensionsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ColorScheme scheme = Theme.of(context).colorScheme;
-    final Widget box = Container(
+    final Widget box = UContainer(
+      color: scheme.primaryContainer,
+      radius: 8,
       width: 90,
       height: 60,
       alignment: Alignment.center,
-      decoration: BoxDecoration(color: scheme.primaryContainer, borderRadius: BorderRadius.circular(8)),
       child: const UTextLabelLarge("box"),
     );
 

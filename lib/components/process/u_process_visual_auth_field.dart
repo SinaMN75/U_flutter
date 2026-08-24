@@ -277,13 +277,11 @@ class _UProcessVisualAuthFieldState extends State<UProcessVisualAuthField> with 
       return GestureDetector(
         onLongPressStart: (_) => _startRecording(),
         onLongPressEnd: (_) => _stopRecording(),
-        child: Container(
+        child: UContainer(
           width: 80,
           height: 80,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: _isRecording ? scheme.error : scheme.primary,
-          ),
+          shape: BoxShape.circle,
+          color: _isRecording ? scheme.error : scheme.primary,
           child: Icon(
             _isRecording ? Icons.stop : Icons.fiber_manual_record,
             color: onAccent,

@@ -1,5 +1,6 @@
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
+import "package:u/utilities.dart";
 
 enum SegmentedStyle { material, cupertino, platformDefault }
 
@@ -8,7 +9,7 @@ class USegmentedControl<T extends Object> extends StatelessWidget {
   final T? selectedValue;
   final ValueChanged<T?> onValueChanged;
   final SegmentedStyle style;
-  final EdgeInsetsGeometry? padding;
+  final EdgeInsets? padding;
   final Color? selectedColor;
   final Color? unselectedColor;
   final Color? backgroundColor;
@@ -57,12 +58,10 @@ class USegmentedControl<T extends Object> extends StatelessWidget {
     padding: padding ?? const EdgeInsets.all(2),
   );
 
-  Widget _buildMaterialSegmentedControl(BuildContext context) => Container(
+  Widget _buildMaterialSegmentedControl(BuildContext context) => UContainer(
     padding: padding ?? const EdgeInsets.all(4),
-    decoration: BoxDecoration(
-      color: backgroundColor ?? Theme.of(context).colorScheme.surfaceContainerHighest,
-      borderRadius: BorderRadius.circular(8),
-    ),
+    color: backgroundColor ?? Theme.of(context).colorScheme.surfaceContainerHighest,
+    radius: 8,
     child: Row(
       mainAxisSize: MainAxisSize.min,
       children: items.entries.map((MapEntry<T, String> entry) {
@@ -78,7 +77,7 @@ class USegmentedControl<T extends Object> extends StatelessWidget {
               child: InkWell(
                 onTap: enabled ? () => onValueChanged(entry.key) : null,
                 borderRadius: BorderRadius.circular(6),
-                child: Container(
+                child: UContainer(
                   padding: const EdgeInsets.symmetric(
                     vertical: 10,
                     horizontal: 12,

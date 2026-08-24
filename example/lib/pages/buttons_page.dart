@@ -85,12 +85,10 @@ UButtonSubmitCancel(
         code: r'''UPressable(onTap: () {}, child: myCard);''',
         child: UPressable(
           onTap: () => UToast.info(message: "Pressed"),
-          child: Container(
+          child: UContainer(
+            color: Theme.of(context).colorScheme.secondaryContainer,
+            radius: 12,
             padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.secondaryContainer,
-              borderRadius: BorderRadius.circular(12),
-            ),
             child: const UTextBodyMedium("Press me"),
           ),
         ),

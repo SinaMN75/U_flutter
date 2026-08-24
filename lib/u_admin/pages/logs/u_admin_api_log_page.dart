@@ -130,9 +130,10 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
     ],
   );
 
-  Widget _percentileBadge(String label, double ms) => Container(
+  Widget _percentileBadge(String label, double ms) => UContainer(
     padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-    decoration: BoxDecoration(color: UAdminTheme.white.withValues(alpha: 0.14), borderRadius: BorderRadius.circular(20)),
+    color: UAdminTheme.white.withValues(alpha: 0.14),
+    radius: 20,
     child: UTextBodySmall("$label: ${ms.toStringAsFixed(0)} ms", color: UAdminTheme.white, fontWeight: FontWeight.w600).ltr(),
   );
 
@@ -152,17 +153,19 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
             const SizedBox(width: 8),
             UTextTitleSmall(U.s.osMetrics, fontWeight: FontWeight.w700).expanded(),
             if (m != null)
-              Container(
+              UContainer(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(color: UAdminTheme.green.withValues(alpha: 0.14), borderRadius: BorderRadius.circular(20)),
+                color: UAdminTheme.green.withValues(alpha: 0.14),
+                radius: 20,
                 child: URow(
                   spacing: 0,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Container(
+                    const UContainer(
                       width: 8,
                       height: 8,
-                      decoration: const BoxDecoration(color: UAdminTheme.green, shape: BoxShape.circle),
+                      color: UAdminTheme.green,
+                      shape: BoxShape.circle,
                     ),
                     const SizedBox(width: 6),
                     UTextBodySmall(m.generatedAt.toJalaliDateTime(), color: UAdminTheme.green, fontWeight: FontWeight.w600).ltr(),
@@ -657,15 +660,17 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
     ],
   );
 
-  Widget _methodChip(String method) => Container(
+  Widget _methodChip(String method) => UContainer(
     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-    decoration: BoxDecoration(color: _methodColor(method).withValues(alpha: 0.15), borderRadius: BorderRadius.circular(20)),
+    color: _methodColor(method).withValues(alpha: 0.15),
+    radius: 20,
     child: UTextBodySmall(method, color: _methodColor(method), fontWeight: FontWeight.w700).ltr(),
   );
 
-  Widget _statusChip(int statusCode) => Container(
+  Widget _statusChip(int statusCode) => UContainer(
     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-    decoration: BoxDecoration(color: _statusColor(statusCode).withValues(alpha: 0.15), borderRadius: BorderRadius.circular(20)),
+    color: _statusColor(statusCode).withValues(alpha: 0.15),
+    radius: 20,
     child: UTextBodySmall(statusCode.toString(), color: _statusColor(statusCode), fontWeight: FontWeight.w700).ltr(),
   );
 
@@ -890,17 +895,19 @@ class _ApiLogDetailView extends StatelessWidget {
       child: URow(
         spacing: 0,
         children: <Widget>[
-          Container(
+          UContainer(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-            decoration: BoxDecoration(color: methodColor.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(20)),
+            color: methodColor.withValues(alpha: 0.15),
+            radius: 20,
             child: UTextBodySmall(item.jsonData.method, color: methodColor, fontWeight: FontWeight.w700).ltr(),
           ),
           const SizedBox(width: 8),
           UTextBodyMedium(item.path, maxLines: 1, overflow: TextOverflow.ellipsis).ltr().expanded(),
           const SizedBox(width: 8),
-          Container(
+          UContainer(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-            decoration: BoxDecoration(color: statusColor.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(20)),
+            color: statusColor.withValues(alpha: 0.15),
+            radius: 20,
             child: UTextBodySmall(item.statusCode.toString(), color: statusColor, fontWeight: FontWeight.w700).ltr(),
           ),
           const SizedBox(width: 8),
@@ -940,13 +947,11 @@ class _ApiLogDetailView extends StatelessWidget {
   Widget _exceptionBlock(BuildContext context) {
     final Color error = Theme.of(context).colorScheme.error;
     final String? stack = item.jsonData.stackTrace;
-    return Container(
+    return UContainer(
       width: double.infinity,
-      decoration: BoxDecoration(
-        color: error.withValues(alpha: 0.06),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: error.withValues(alpha: 0.35)),
-      ),
+      color: error.withValues(alpha: 0.06),
+      radius: 14,
+      border: Border.all(color: error.withValues(alpha: 0.35)),
       child: UColumn(
         spacing: 0,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -999,14 +1004,12 @@ class _ApiLogDetailView extends StatelessWidget {
     ),
   );
 
-  Widget _codeBlock(BuildContext context, String text) => Container(
+  Widget _codeBlock(BuildContext context, String text) => UContainer(
     width: double.infinity,
     padding: const EdgeInsets.all(12),
-    decoration: BoxDecoration(
-      color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-      borderRadius: BorderRadius.circular(10),
-      border: Border.all(color: Theme.of(context).dividerColor),
-    ),
+    color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+    radius: 10,
+    border: Border.all(color: Theme.of(context).dividerColor),
     constraints: const BoxConstraints(maxHeight: 260),
     child: SingleChildScrollView(
       child: SelectableText(

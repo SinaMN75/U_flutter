@@ -50,9 +50,10 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
 
   Widget _statusChip(UTerminalResponse i) {
     final Color color = i.terminalId.isNotNullOrEmpty() ? UAdminTheme.green : UAdminTheme.grey;
-    return Container(
+    return UContainer(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      decoration: BoxDecoration(color: color.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(20)),
+      color: color.withValues(alpha: 0.15),
+      radius: 20,
       child: UTextBodyMedium(i.terminalId ?? U.s.notAssigned, color: color, fontWeight: FontWeight.w600),
     );
   }
@@ -354,14 +355,12 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                     ],
                   ).pSymmetric(vertical: 6),
                   if (result.value.isNotEmpty)
-                    Container(
+                    UContainer(
                       width: double.infinity,
                       margin: const EdgeInsets.symmetric(vertical: 6),
                       padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: UAdminTheme.green.withValues(alpha: 0.12),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
+                      color: UAdminTheme.green.withValues(alpha: 0.12),
+                      radius: 8,
                       child: SelectableText(
                         result.value,
                         textAlign: TextAlign.center,
@@ -369,14 +368,12 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                       ),
                     ),
                   if (valid.value != null)
-                    Container(
+                    UContainer(
                       width: double.infinity,
                       margin: const EdgeInsets.symmetric(vertical: 6),
                       padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: (valid.value! ? UAdminTheme.green : UAdminTheme.red).withValues(alpha: 0.12),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
+                      color: (valid.value! ? UAdminTheme.green : UAdminTheme.red).withValues(alpha: 0.12),
+                      radius: 8,
                       child: UTextBodyLarge(
                         valid.value! ? U.s.otpIsValid : U.s.otpIsInvalid,
                         color: valid.value! ? UAdminTheme.green : UAdminTheme.red,

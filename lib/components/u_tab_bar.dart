@@ -285,12 +285,10 @@ class _UTabBarState extends State<UTabBar> {
 
     if (widget.tabs.isEmpty) return const SizedBox.shrink();
 
-    return Container(
+    return UContainer(
       height: _t.height,
-      decoration: BoxDecoration(
-        color: _t.backgroundGradient == null ? _t.backgroundColor : null,
-        gradient: _t.backgroundGradient,
-      ),
+      color: _t.backgroundGradient == null ? _t.backgroundColor : null,
+      gradient: _t.backgroundGradient,
       child: Row(
         children: <Widget>[
           if (widget.leading != null) widget.leading!,

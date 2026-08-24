@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:u/utilities.dart";
 
 class UNumberPagination extends StatelessWidget {
   const UNumberPagination({
@@ -78,13 +79,11 @@ class UNumberPagination extends StatelessWidget {
 
   Widget _buildPageNumber(int page, Color selectedColor, Color unselectedColor) => InkWell(
     onTap: () => onPageChanged(page),
-    child: Container(
+    child: UContainer(
       margin: const EdgeInsets.symmetric(horizontal: 4),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        color: currentPage == page ? selectedColor : null,
-        borderRadius: BorderRadius.circular(4),
-      ),
+      color: currentPage == page ? selectedColor : null,
+      radius: 4,
       child: Text(
         "$page",
         style: TextStyle(

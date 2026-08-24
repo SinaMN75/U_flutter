@@ -228,10 +228,11 @@ class _UScannerState extends State<UScanner> with SingleTickerProviderStateMixin
   Color get _controlBackground => widget.controlBackgroundColor ?? Theme.of(context).colorScheme.surface.withValues(alpha: 0.85);
 
   Widget _controlButton({required IconData icon, required VoidCallback onTap, String? tooltip, Color? color}) {
-    final Widget button = Container(
+    final Widget button = UContainer(
+      color: _controlBackground,
+      shape: BoxShape.circle,
       width: widget.controlButtonSize,
       height: widget.controlButtonSize,
-      decoration: BoxDecoration(color: _controlBackground, shape: BoxShape.circle),
       child: IconButton(
         onPressed: onTap,
         icon: Icon(icon, size: widget.controlIconSize, color: color ?? _controlIconColor),
@@ -262,12 +263,10 @@ class _UScannerState extends State<UScanner> with SingleTickerProviderStateMixin
     },
   );
 
-  Widget _buildHint() => Container(
+  Widget _buildHint() => UContainer(
+    color: widget.hintBackgroundColor ?? Theme.of(context).colorScheme.surface.withValues(alpha: 0.85),
+    radius: widget.hintBorderRadius,
     padding: widget.hintPadding,
-    decoration: BoxDecoration(
-      color: widget.hintBackgroundColor ?? Theme.of(context).colorScheme.surface.withValues(alpha: 0.85),
-      borderRadius: BorderRadius.circular(widget.hintBorderRadius),
-    ),
     child: Text(
       widget.hintText ?? U.s.placeTheBarcodeInsideTheFrame,
       textAlign: TextAlign.center,

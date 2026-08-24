@@ -604,7 +604,7 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
       }
       return const SizedBox();
     }
-    return GestureDetector(
+    return UContainer(
       onTap: () => setState(() => _isVideoMode = !_isVideoMode),
       child: Icon(_isVideoMode ? Icons.videocam : Icons.photo_camera, color: Colors.white),
     );
@@ -612,32 +612,28 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
 
   Widget _shutterButton() {
     final Color ring = _isVideoMode ? const Color(0xFFFF3B30) : Colors.white;
-    return GestureDetector(
+    return UContainer(
       onTap: () => unawaited(_onShutter()),
-      child: Container(
-        width: 78,
-        height: 78,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(color: Colors.white, width: 4),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(4),
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 180),
-            decoration: BoxDecoration(
-              color: ring,
-              shape: _isRecording ? BoxShape.rectangle : BoxShape.circle,
-              borderRadius: _isRecording ? BorderRadius.circular(8) : null,
-            ),
-            margin: EdgeInsets.all(_isRecording ? 18 : 0),
+      border: Border.all(color: Colors.white, width: 4),
+      shape: BoxShape.circle,
+      width: 78,
+      height: 78,
+      child: Padding(
+        padding: const EdgeInsets.all(4),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 180),
+          decoration: BoxDecoration(
+            color: ring,
+            shape: _isRecording ? BoxShape.rectangle : BoxShape.circle,
+            borderRadius: _isRecording ? BorderRadius.circular(8) : null,
           ),
+          margin: EdgeInsets.all(_isRecording ? 18 : 0),
         ),
       ),
     );
   }
 
-  Widget _thumbnailStrip() => Container(
+  Widget _thumbnailStrip() => UContainer(
     height: 72,
     margin: const EdgeInsets.only(bottom: 4),
     child: ListView.separated(
@@ -706,10 +702,11 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
   Widget _recordTimerLabel() => Row(
     mainAxisSize: MainAxisSize.min,
     children: <Widget>[
-      Container(
+      const UContainer(
+        color: Color(0xFFFF3B30),
+        shape: BoxShape.circle,
         width: 10,
         height: 10,
-        decoration: const BoxDecoration(color: Color(0xFFFF3B30), shape: BoxShape.circle),
       ),
       const SizedBox(width: 6),
       Text(
@@ -773,10 +770,11 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
     padding: const EdgeInsets.all(4),
     child: InkResponse(
       onTap: onTap,
-      child: Container(
+      child: UContainer(
+        color: active ? _accent : Colors.black38,
+        shape: BoxShape.circle,
         width: 42,
         height: 42,
-        decoration: BoxDecoration(color: active ? _accent : Colors.black38, shape: BoxShape.circle),
         child: Icon(icon, color: Colors.white, size: 22),
       ),
     ),

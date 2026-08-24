@@ -415,10 +415,11 @@ class _ChartLegend extends StatelessWidget {
           (_LegendEntry e) => Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Container(
+              UContainer(
                 width: 11,
                 height: 11,
-                decoration: BoxDecoration(color: e.color, borderRadius: BorderRadius.circular(3)),
+                color: e.color,
+                radius: 3,
               ),
               const SizedBox(width: 5),
               Text(e.label, style: Theme.of(context).textTheme.labelSmall),
@@ -447,7 +448,7 @@ class _ChartFrame extends StatelessWidget {
   final List<_LegendEntry>? legend;
 
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(BuildContext context) => UContainer(
     height: height,
     padding: padding,
     color: background == Colors.transparent ? null : background,

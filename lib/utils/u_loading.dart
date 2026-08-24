@@ -100,15 +100,15 @@ class __LoadingOverlayState extends State<_LoadingOverlay> with SingleTickerProv
         Positioned.fill(
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: ULoading._blurAmount, sigmaY: ULoading._blurAmount),
-            child: Container(color: ULoading._overlayColor),
+            child: UContainer(color: ULoading._overlayColor),
           ),
         ),
         if (ULoading._dismissible)
-          Positioned.fill(
-            child: GestureDetector(
+          const Positioned.fill(
+            child: UContainer(
               onTap: ULoading.dismiss,
-              behavior: HitTestBehavior.opaque,
-              child: Container(color: Colors.transparent),
+              hitTestBehavior: HitTestBehavior.opaque,
+              color: Colors.transparent,
             ),
           ),
         Center(

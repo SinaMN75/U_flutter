@@ -34,7 +34,7 @@ class UProcessStepsIndicator extends StatelessWidget {
               ),
             ).expanded(flex: 3),
             if (!isLast)
-              Container(
+              UContainer(
                 height: 3,
                 margin: const EdgeInsets.only(bottom: 20),
                 color: _lineColor(context, step.status),

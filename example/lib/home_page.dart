@@ -65,9 +65,10 @@ class HomePage extends StatelessWidget {
               spacing: 8,
               padding: const EdgeInsets.all(16),
               children: <Widget>[
-                Container(
+                UContainer(
+                  color: scheme.primaryContainer,
+                  radius: 12,
                   padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(color: scheme.primaryContainer, borderRadius: BorderRadius.circular(12)),
                   child: Icon(e.icon, color: scheme.onPrimaryContainer),
                 ),
                 const Spacer(),

@@ -427,12 +427,10 @@ class _USideMenuState extends State<USideMenu> with TickerProviderStateMixin {
     child: _buildContent(collapsed, inOverlay: inOverlay),
   );
 
-  Widget _buildRail({required bool showHamburger}) => Container(
+  Widget _buildRail({required bool showHamburger}) => UContainer(
     width: _t.railWidth,
-    decoration: BoxDecoration(
-      color: _t.backgroundGradient == null ? _t.backgroundColor : null,
-      gradient: _t.backgroundGradient,
-    ),
+    color: _t.backgroundGradient == null ? _t.backgroundColor : null,
+    gradient: _t.backgroundGradient,
     child: _buildContent(true, inOverlay: false, forceHamburger: showHamburger),
   );
 
@@ -449,9 +447,9 @@ class _USideMenuState extends State<USideMenu> with TickerProviderStateMixin {
           Positioned.fill(
             child: FadeTransition(
               opacity: curved,
-              child: GestureDetector(
+              child: UContainer(
                 onTap: _closeDrawer,
-                child: Container(color: _t.scrimColor),
+                color: _t.scrimColor,
               ),
             ),
           ),
@@ -740,11 +738,9 @@ class _USideMenuState extends State<USideMenu> with TickerProviderStateMixin {
     final bool hasTheme = widget.isDarkMode != null && widget.onToggleTheme != null;
     if (!hasProfile && !hasTheme && widget.version == null) return const SizedBox.shrink();
 
-    return Container(
+    return UContainer(
       padding: const EdgeInsets.fromLTRB(10, 8, 10, 10),
-      decoration: BoxDecoration(
-        border: Border(top: BorderSide(color: _t.dividerColor)),
-      ),
+      border: Border(top: BorderSide(color: _t.dividerColor)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
@@ -1191,10 +1187,11 @@ class _MiniSwitch extends StatelessWidget {
       duration: const Duration(milliseconds: 240),
       curve: Curves.easeOut,
       alignment: value ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
+      child: UContainer(
         width: 16,
         height: 16,
-        decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+        color: color,
+        shape: BoxShape.circle,
       ),
     ),
   );

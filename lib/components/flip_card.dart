@@ -159,9 +159,9 @@ class FlipCardState extends State<FlipCard> with SingleTickerProviderStateMixin 
     );
 
     if (widget.flipOnTouch) {
-      return GestureDetector(
-        behavior: HitTestBehavior.translucent,
+      return UContainer(
         onTap: toggleCard,
+        hitTestBehavior: HitTestBehavior.translucent,
         child: child,
       );
     }

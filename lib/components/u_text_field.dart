@@ -645,7 +645,7 @@ class _UTextFieldPhoneNumberState extends State<UTextFieldPhoneNumber> {
       context: context,
       builder: (BuildContext context) => Dialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        child: Container(
+        child: UContainer(
           constraints: const BoxConstraints(maxHeight: 500, maxWidth: 400),
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -725,7 +725,7 @@ class _UTextFieldPhoneNumberState extends State<UTextFieldPhoneNumber> {
           ),
           child: Column(
             children: <Widget>[
-              Container(
+              UContainer(
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 child: Text(U.s.selectCountry),
               ),
@@ -831,15 +831,12 @@ class _UTextFieldPhoneNumberState extends State<UTextFieldPhoneNumber> {
               underline: const SizedBox(),
               icon: Icon(Icons.arrow_drop_down, color: Colors.grey[600]),
             )
-          : GestureDetector(
+          : UContainer(
               onTap: widget.pickerMode == CountryPickerMode.dialog ? _showCountryPickerDialog : _showCountryPickerBottomSheet,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey[400]!),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
+              radius: 12,
+              border: Border.all(color: Colors.grey[400]!),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     Image.asset(
@@ -854,7 +851,6 @@ class _UTextFieldPhoneNumberState extends State<UTextFieldPhoneNumber> {
                     Icon(Icons.arrow_drop_down, color: Colors.grey[600]),
                   ],
                 ),
-              ),
             ),
     ),
   );

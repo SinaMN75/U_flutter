@@ -29,14 +29,12 @@ class _URichTextEditorFieldState extends State<URichTextEditorField> {
         widget.onSubmit(content);
       }
     },
-    child: Container(
+    child: UContainer(
       width: double.infinity,
       constraints: const BoxConstraints(minHeight: 72, maxHeight: 220),
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        border: Border.all(color: Theme.of(context).dividerColor),
-        borderRadius: BorderRadius.circular(8),
-      ),
+      border: Border.all(color: Theme.of(context).dividerColor),
+      radius: 8,
       child: content.trim().isEmpty
           ? UIconTextHorizontal(
               leading: const Icon(Icons.edit_note),
@@ -1336,18 +1334,17 @@ abstract class UEditorStyles {
     final ColorScheme cs = Theme.of(context).colorScheme;
     switch (type) {
       case UBlockType.quote:
-        return Container(
+        return UContainer(
           padding: const EdgeInsetsDirectional.only(start: 12, top: 4, bottom: 4),
-          decoration: BoxDecoration(
-            border: BorderDirectional(start: BorderSide(width: 4, color: cs.primary)),
-          ),
+          border: BorderDirectional(start: BorderSide(width: 4, color: cs.primary)),
           child: child,
         );
       case UBlockType.code:
-        return Container(
+        return UContainer(
           width: double.infinity,
           padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(color: cs.surfaceContainerHighest, borderRadius: BorderRadius.circular(8)),
+          color: cs.surfaceContainerHighest,
+          radius: 8,
           child: child,
         );
       default:
@@ -1433,7 +1430,7 @@ class UEditorToolSeparator extends StatelessWidget {
   const UEditorToolSeparator({super.key});
 
   @override
-  Widget build(BuildContext context) => Container(width: 1, height: 24, margin: const EdgeInsets.symmetric(horizontal: 6), color: Theme.of(context).dividerColor);
+  Widget build(BuildContext context) => UContainer(width: 1, height: 24, margin: const EdgeInsets.symmetric(horizontal: 6), color: Theme.of(context).dividerColor);
 }
 
 /// A compact bordered dropdown used for the block-type and font pickers.
@@ -1457,13 +1454,11 @@ class UEditorDropdown<T> extends StatelessWidget {
           child: Text(e.label, style: e.style),
         ),
     ],
-    child: Container(
+    child: UContainer(
       width: width,
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-      decoration: BoxDecoration(
-        border: Border.all(color: Theme.of(context).dividerColor),
-        borderRadius: BorderRadius.circular(6),
-      ),
+      border: Border.all(color: Theme.of(context).dividerColor),
+      radius: 6,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -1514,15 +1509,14 @@ abstract class UEditorDialogs {
                 runSpacing: 8,
                 children: <Widget>[
                   for (final int c in UEditorStyles.palette)
-                    Container(
+                    UContainer(
+                      onTap: () => UNavigator.back(c),
                       width: 30,
                       height: 30,
-                      decoration: BoxDecoration(
-                        color: Color(c),
-                        shape: BoxShape.circle,
-                        border: Border.all(color: current == c ? cs.primary : cs.outlineVariant, width: current == c ? 3 : 1),
-                      ),
-                    ).onTap(() => UNavigator.back(c)),
+                      color: Color(c),
+                      shape: BoxShape.circle,
+                      border: Border.all(color: current == c ? cs.primary : cs.outlineVariant, width: current == c ? 3 : 1),
+                    ),
                 ],
               ),
               const SizedBox(height: 12),
@@ -2280,11 +2274,9 @@ class _URichTextEditorState extends State<URichTextEditor> {
 
   Widget _statusBar() {
     final String html = _html;
-    return Container(
+    return UContainer(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-      decoration: BoxDecoration(
-        border: Border(top: BorderSide(color: Theme.of(context).dividerColor)),
-      ),
+      border: Border(top: BorderSide(color: Theme.of(context).dividerColor)),
       child: Row(
         children: <Widget>[
           UTextBodySmall("${U.s.words}: ${UHtmlDocument.wordCount(html)}   ${U.s.characters}: ${UHtmlDocument.characterCount(html)}").expanded(),

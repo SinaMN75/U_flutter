@@ -435,8 +435,9 @@ class _Base64ImageFieldState extends State<_Base64ImageField> {
                 right: 4,
                 child: InkWell(
                   onTap: _clear,
-                  child: Container(
-                    decoration: BoxDecoration(color: scheme.error, shape: BoxShape.circle),
+                  child: UContainer(
+                    color: scheme.error,
+                    shape: BoxShape.circle,
                     padding: const EdgeInsets.all(2),
                     child: const Icon(Icons.close, size: 14, color: UAdminTheme.white),
                   ),

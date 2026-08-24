@@ -10,7 +10,7 @@ import "package:u/utilities.dart";
 // untouched.
 // ===========================================================================
 
-BorderRadius? _uRadius(BorderRadius? borderRadius, double? radius) => borderRadius ?? (radius != null ? BorderRadius.circular(radius) : null);
+BorderRadius? _uRadius(BorderRadius? borderRadius, double? radius) => borderRadius ?? ((radius != null && radius != 0) ? BorderRadius.circular(radius) : null);
 
 BoxDecoration? _uDecoration({
   Color? color,
@@ -124,7 +124,7 @@ Widget _uEffects(
   double? opacity,
   String? tooltip,
   String? heroTag,
-  EdgeInsets? margin,
+  EdgeInsetsGeometry? margin,
   String? semanticsLabel,
   bool? semanticsButton,
 }) {
@@ -139,8 +139,8 @@ Widget _uEffects(
 
 Widget _uBox({
   required Widget? child,
-  EdgeInsets? padding,
-  EdgeInsets? margin,
+  EdgeInsetsGeometry? padding,
+  EdgeInsetsGeometry? margin,
   double? width,
   double? height,
   double? minWidth,
@@ -227,7 +227,6 @@ Widget _uBox({
       padding: padding,
       transform: transform,
       transformAlignment: transformAlignment,
-      // Container asserts a decoration exists whenever it clips, so clip only when one is present.
       clipBehavior: decoration != null ? clipBehavior : Clip.none,
       foregroundDecoration: foregroundDecoration,
       color: decoration == null ? color : null,
@@ -505,8 +504,8 @@ class UContainer extends StatelessWidget {
   });
 
   final Widget? child;
-  final EdgeInsets? padding;
-  final EdgeInsets? margin;
+  final EdgeInsetsGeometry? padding;
+  final EdgeInsetsGeometry? margin;
   final Color? color;
   final Gradient? gradient;
   final DecorationImage? image;

@@ -187,7 +187,7 @@ class _UVideoPlayerState extends State<UVideoPlayer> {
     if (!_initialized || _controller == null) return widget.placeholder ?? const Center(child: CircularProgressIndicator());
 
     final VideoPlayerController controller = _controller!;
-    return GestureDetector(
+    return UContainer(
       onTap: _toggleControls,
       child: Stack(
         alignment: Alignment.center,
@@ -252,16 +252,15 @@ class _UVideoPlayerState extends State<UVideoPlayer> {
           child: Stack(
             children: <Widget>[
               Center(
-                child: GestureDetector(
+                child: UContainer(
                   onTap: _togglePlay,
-                  child: Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.4), shape: BoxShape.circle),
-                    child: Icon(
-                      ended ? Icons.replay : (controller.value.isPlaying ? Icons.pause : Icons.play_arrow),
-                      color: Colors.white,
-                      size: 40,
-                    ),
+                  padding: const EdgeInsets.all(10),
+                  color: Colors.black.withValues(alpha: 0.4),
+                  shape: BoxShape.circle,
+                  child: Icon(
+                    ended ? Icons.replay : (controller.value.isPlaying ? Icons.pause : Icons.play_arrow),
+                    color: Colors.white,
+                    size: 40,
                   ),
                 ),
               ),
@@ -390,26 +389,24 @@ class _UFullScreenVideoState extends State<_UFullScreenVideo> {
         Center(
           child: ValueListenableBuilder<VideoPlayerValue>(
             valueListenable: widget.controller,
-            builder: (BuildContext context, VideoPlayerValue value, _) => GestureDetector(
+            builder: (BuildContext context, VideoPlayerValue value, _) => UContainer(
               onTap: () => value.isPlaying ? widget.controller.pause() : widget.controller.play(),
-              child: Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.4), shape: BoxShape.circle),
-                child: Icon(value.isPlaying ? Icons.pause : Icons.play_arrow, color: Colors.white, size: 48),
-              ),
+              padding: const EdgeInsets.all(12),
+              color: Colors.black.withValues(alpha: 0.4),
+              shape: BoxShape.circle,
+              child: Icon(value.isPlaying ? Icons.pause : Icons.play_arrow, color: Colors.white, size: 48),
             ),
           ),
         ),
         Positioned(
           top: MediaQuery.of(context).padding.top + 12,
           right: 16,
-          child: GestureDetector(
+          child: UContainer(
             onTap: () => Navigator.pop(context),
-            child: Container(
-              decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.6), shape: BoxShape.circle),
-              padding: const EdgeInsets.all(8),
-              child: const Icon(Icons.fullscreen_exit, color: Colors.white, size: 24),
-            ),
+            color: Colors.black.withValues(alpha: 0.6),
+            shape: BoxShape.circle,
+            padding: const EdgeInsets.all(8),
+            child: const Icon(Icons.fullscreen_exit, color: Colors.white, size: 24),
           ),
         ),
       ],

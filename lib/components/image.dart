@@ -11,8 +11,25 @@ class UImage extends StatelessWidget {
     this.height,
     this.placeholder,
     this.fit = BoxFit.contain,
-    this.borderRadius = 1,
+    this.borderRadius = 0,
     this.package,
+    this.shape = BoxShape.rectangle,
+    this.border,
+    this.boxShadow,
+    this.gradient,
+    this.backgroundColor,
+    this.padding,
+    this.margin,
+    this.onTap,
+    this.onLongPress,
+    this.onDoubleTap,
+    this.splash = false,
+    this.pressedScale,
+    this.opacity,
+    this.heroTag,
+    this.tooltip,
+    this.semanticsLabel,
+    this.visible = true,
   });
 
   final String? package;
@@ -24,73 +41,66 @@ class UImage extends StatelessWidget {
   final BoxFit fit;
   final double borderRadius;
   final String? placeholder;
+  final BoxShape shape;
+  final BoxBorder? border;
+  final List<BoxShadow>? boxShadow;
+  final Gradient? gradient;
+  final Color? backgroundColor;
+  final EdgeInsets? padding;
+  final EdgeInsets? margin;
+  final GestureTapCallback? onTap;
+  final GestureLongPressCallback? onLongPress;
+  final GestureTapCallback? onDoubleTap;
+  final bool splash;
+  final double? pressedScale;
+  final double? opacity;
+  final String? heroTag;
+  final String? tooltip;
+  final String? semanticsLabel;
+  final bool visible;
+
+  Widget _image(BuildContext context) {
+    if (fileData != null) {
+      if (fileData?.bytes != null) {
+        return UImageMemory(fileData!.bytes!, width: width, height: height, color: color, fit: fit, placeholder: placeholder);
+      }
+      return UImageFile(File(fileData!.path!), width: width, height: height, color: color, fit: fit);
+    }
+    if (source.length <= 5) {
+      if (placeholder == null) return SizedBox(width: width, height: height);
+      return UImageAsset(placeholder!, width: width, height: height, placeholder: placeholder, color: color, fit: fit, package: package);
+    }
+    if (source.endsWith(".json")) {
+      return source.startsWith("http") ? Lottie.network(source, width: width, height: height, fit: fit, repeat: true) : Lottie.asset(source, width: width, height: height, fit: fit, repeat: true);
+    }
+    if (source.startsWith("http")) {
+      return UImageNetwork(source, width: width, height: height, fit: fit, color: color, placeholder: placeholder);
+    }
+    return UImageAsset(source, width: width, height: height, fit: fit, placeholder: placeholder, color: color, package: package);
+  }
 
   @override
-  Widget build(BuildContext context) => ClipRRect(
-    borderRadius: BorderRadius.circular(borderRadius),
-    child: Builder(
-      builder: (BuildContext context) {
-        if (fileData != null) {
-          if (fileData?.bytes != null) {
-            return UImageMemory(
-              fileData!.bytes!,
-              width: width,
-              height: height,
-              color: color,
-              fit: fit,
-              placeholder: placeholder,
-            );
-          } else {
-            return UImageFile(
-              File(fileData!.path!),
-              width: width,
-              height: height,
-              color: color,
-              fit: fit,
-            );
-          }
-        } else if (source.length <= 5) {
-          if (placeholder == null) {
-            return SizedBox(width: width, height: height);
-          } else {
-            return UImageAsset(
-              placeholder!,
-              width: width,
-              height: height,
-              placeholder: placeholder,
-              color: color,
-              fit: fit,
-              package: package,
-            );
-          }
-        } else {
-          if (source.endsWith(".json")) {
-            return source.startsWith("http")
-                ? Lottie.network(source, width: width, height: height, fit: fit, repeat: true)
-                : Lottie.asset(source, width: width, height: height, fit: fit, repeat: true);
-          } else if (source.startsWith("http")) {
-            return UImageNetwork(
-              source,
-              width: width,
-              height: height,
-              fit: fit,
-              color: color,
-              placeholder: placeholder,
-            );
-          } else {
-            return UImageAsset(
-              source,
-              width: width,
-              height: height,
-              fit: fit,
-              placeholder: placeholder,
-              color: color,
-              package: package,
-            );
-          }
-        }
-      },
-    ),
+  Widget build(BuildContext context) => UContainer(
+    radius: borderRadius,
+    shape: shape,
+    border: border,
+    boxShadow: boxShadow,
+    gradient: gradient,
+    color: backgroundColor,
+    padding: padding,
+    margin: margin,
+    clipBehavior: Clip.antiAlias,
+    onTap: onTap,
+    onLongPress: onLongPress,
+    onDoubleTap: onDoubleTap,
+    splash: splash,
+    pressedScale: pressedScale,
+    opacity: opacity,
+    heroTag: heroTag,
+    tooltip: tooltip,
+    semanticsLabel: semanticsLabel,
+    visible: visible,
+    child: _image(context),
   );
 }
 
@@ -215,63 +225,61 @@ class UImageNetwork extends StatelessWidget {
   final String? placeholder;
 
   @override
-  Widget build(BuildContext context) => Builder(
-    builder: (BuildContext context) => url.length <= 10
-        ? placeholder == null
-              ? SizedBox(width: width, height: height)
-              : UImageAsset(
+  Widget build(BuildContext context) => url.length <= 10
+      ? placeholder == null
+            ? SizedBox(width: width, height: height)
+            : UImageAsset(
+                placeholder!,
+                width: width,
+                height: height,
+                color: color,
+                fit: fit,
+                clipBehavior: clipBehavior,
+                package: package,
+              )
+      : url.substring(url.length - 3) == "svg"
+      ? SvgPicture.network(
+          url,
+          width: width,
+          height: height,
+          fit: fit,
+          placeholderBuilder: placeholder == null
+              ? null
+              : (_) => UImageAsset(
                   placeholder!,
                   width: width,
                   height: height,
-                  color: color,
                   fit: fit,
                   clipBehavior: clipBehavior,
                   package: package,
-                )
-        : url.substring(url.length - 3) == "svg"
-        ? SvgPicture.network(
-            url,
-            width: width,
-            height: height,
-            fit: fit,
-            placeholderBuilder: placeholder == null
-                ? null
-                : (_) => UImageAsset(
-                    placeholder!,
-                    width: width,
-                    height: height,
-                    fit: fit,
-                    clipBehavior: clipBehavior,
-                    package: package,
-                  ),
-          )
-        : CachedNetworkImage(
-            imageUrl: url,
-            width: width,
-            height: height,
-            fit: fit,
-            errorWidget: placeholder == null
-                ? null
-                : UImage(
-                    placeholder!,
-                    color: color,
-                    width: width,
-                    height: height,
-                    fit: fit,
-                    package: package,
-                  ),
-            placeholder: placeholder == null
-                ? null
-                : UImage(
-                    placeholder!,
-                    color: color,
-                    width: width,
-                    height: height,
-                    fit: fit,
-                    package: package,
-                  ),
-          ),
-  );
+                ),
+        )
+      : CachedNetworkImage(
+          imageUrl: url,
+          width: width,
+          height: height,
+          fit: fit,
+          errorWidget: placeholder == null
+              ? null
+              : UImage(
+                  placeholder!,
+                  color: color,
+                  width: width,
+                  height: height,
+                  fit: fit,
+                  package: package,
+                ),
+          placeholder: placeholder == null
+              ? null
+              : UImage(
+                  placeholder!,
+                  color: color,
+                  width: width,
+                  height: height,
+                  fit: fit,
+                  package: package,
+                ),
+        );
 }
 
 class UImageFile extends StatelessWidget {

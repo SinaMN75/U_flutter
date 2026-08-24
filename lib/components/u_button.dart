@@ -231,16 +231,14 @@ class _UButtonState extends State<UButton> {
               : null,
           onLongPress: widget.onLongPress != null || !widget.isLoading ? widget.onLongPress : null,
           borderRadius: BorderRadius.circular(widget.borderRadius),
-          child: Container(
+          child: UContainer(
+            color: widget.gradient == null ? widget.backgroundColor : null,
+            radius: widget.borderRadius,
+            border: widget.borderColor != null ? Border.all(color: widget.borderColor!, width: widget.borderWidth) : null,
+            gradient: widget.gradient,
             width: widget.width ?? double.infinity,
             height: widget.height ?? 46,
             padding: widget.padding,
-            decoration: BoxDecoration(
-              color: widget.gradient == null ? widget.backgroundColor : null,
-              gradient: widget.gradient,
-              borderRadius: BorderRadius.circular(widget.borderRadius),
-              border: widget.borderColor != null ? Border.all(color: widget.borderColor!, width: widget.borderWidth) : null,
-            ),
             alignment: Alignment.center,
             child: content,
           ),

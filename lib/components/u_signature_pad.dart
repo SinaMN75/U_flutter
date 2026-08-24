@@ -343,15 +343,13 @@ class _USignaturePadState extends State<USignaturePad> {
               message: U.s.penColor,
               child: InkResponse(
                 onTap: () => _controller.penColor = c,
-                child: Container(
+                child: UContainer(
                   margin: const EdgeInsets.only(right: 8),
                   width: 24,
                   height: 24,
-                  decoration: BoxDecoration(
-                    color: c,
-                    shape: BoxShape.circle,
-                    border: Border.all(color: _controller.penColor == c ? scheme.primary : scheme.outlineVariant, width: _controller.penColor == c ? 3 : 1),
-                  ),
+                  color: c,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: _controller.penColor == c ? scheme.primary : scheme.outlineVariant, width: _controller.penColor == c ? 3 : 1),
                 ),
               ),
             ),

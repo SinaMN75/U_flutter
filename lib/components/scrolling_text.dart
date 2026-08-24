@@ -98,9 +98,9 @@ class ScrollingTextState extends State<ScrollingText> with SingleTickerProviderS
 
   Widget getCenterChild() {
     if (widget.scrollAxis == Axis.horizontal) {
-      return Container(width: screenWidth! * widget.ratioOfBlankToScreen);
+      return UContainer(width: screenWidth! * widget.ratioOfBlankToScreen);
     } else {
-      return Container(height: screenHeight! * widget.ratioOfBlankToScreen);
+      return UContainer(height: screenHeight! * widget.ratioOfBlankToScreen);
     }
   }
 
@@ -112,7 +112,7 @@ class ScrollingTextState extends State<ScrollingText> with SingleTickerProviderS
   }
 
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(BuildContext context) => UContainer(
     height: widget.height ?? 30,
     width: widget.width,
     color: widget.color,

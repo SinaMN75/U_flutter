@@ -47,11 +47,9 @@ class UAdminListView<T> extends StatelessWidget {
     final Widget list = desktop
         ? UListView(
             padding: const EdgeInsets.only(bottom: 8),
-            header: Container(
-              decoration: BoxDecoration(
-                color: scheme.primary,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(14)),
-              ),
+            header: UContainer(
+              color: scheme.primary,
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(14)),
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14),
               child: URow(children: desktopHeader()),
             ),

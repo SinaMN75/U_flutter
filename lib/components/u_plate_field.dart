@@ -161,7 +161,7 @@ class _UPlateFieldState extends State<UPlateField> {
       builder: (BuildContext context) => Stack(
         children: <Widget>[
           Positioned.fill(
-            child: GestureDetector(
+            child: UContainer(
               onTap: _hideLetterMenu,
               child: const ColoredBox(color: Color(0x00000000)),
             ),
@@ -193,12 +193,10 @@ class _UPlateFieldState extends State<UPlateField> {
                                 _updateFullPlate();
                                 WidgetsBinding.instance.addPostFrameCallback((_) => focus3.requestFocus());
                               },
-                              child: Container(
+                              child: UContainer(
                                 padding: const EdgeInsets.symmetric(vertical: 14),
                                 alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  border: Border(bottom: BorderSide(color: scheme.outlineVariant)),
-                                ),
+                                border: Border(bottom: BorderSide(color: scheme.outlineVariant)),
                                 child: Text(
                                   ch,
                                   style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500, color: scheme.onSurface),
@@ -246,21 +244,17 @@ class _UPlateFieldState extends State<UPlateField> {
         const SizedBox(width: 4),
         _buildTextField(controller: digits3Controller, focusNode: focus3, hint: "---", readOnly: _isReadOnly).expanded(flex: 3),
         const SizedBox(width: 4),
-        GestureDetector(
+        UContainer(
           key: _letterButtonKey,
           onTap: _isReadOnly ? null : _showLetterMenu,
-          child: Container(
-            height: 48,
-            decoration: BoxDecoration(
-              border: Border.all(color: letter.isEmpty ? _scheme.onSurfaceVariant : _scheme.onSurface, width: 1.5),
-              borderRadius: BorderRadius.circular(8),
-              color: _isReadOnly ? _scheme.surfaceContainerHighest : null,
-            ),
-            child: Center(
-              child: Text(
-                letter.isEmpty ? U.s.letter : letter,
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: letter.isEmpty ? _scheme.onSurfaceVariant : (_isReadOnly ? _scheme.onSurfaceVariant : _scheme.onSurface)),
-              ),
+          height: 48,
+          color: _isReadOnly ? _scheme.surfaceContainerHighest : null,
+          radius: 8,
+          border: Border.all(color: letter.isEmpty ? _scheme.onSurfaceVariant : _scheme.onSurface, width: 1.5),
+          child: Center(
+            child: Text(
+              letter.isEmpty ? U.s.letter : letter,
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: letter.isEmpty ? _scheme.onSurfaceVariant : (_isReadOnly ? _scheme.onSurfaceVariant : _scheme.onSurface)),
             ),
           ),
         ).expanded(flex: 2),

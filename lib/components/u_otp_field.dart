@@ -284,10 +284,11 @@ class _UOtpFieldState extends State<UOtpField> with TickerProviderStateMixin {
           : state == UOtpCellState.active && widget.showCursor
           ? FadeTransition(
               opacity: _cursorController,
-              child: Container(
+              child: UContainer(
                 width: 2,
                 height: widget.fieldHeight * 0.4,
-                decoration: BoxDecoration(color: widget.cursorColor ?? scheme.primary, borderRadius: BorderRadius.circular(1)),
+                color: widget.cursorColor ?? scheme.primary,
+                radius: 1,
               ),
             )
           : const SizedBox.shrink(),

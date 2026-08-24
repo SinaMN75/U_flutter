@@ -128,12 +128,12 @@ class _UChipChoiceState<T> extends State<UChipChoice<T>> {
 
   @override
   Widget build(BuildContext context) {
-    final List<GestureDetector> chips = widget.options.asMap().entries.map((MapEntry<int, T> entry) {
+    final List<Widget> chips = widget.options.asMap().entries.map((MapEntry<int, T> entry) {
       final int index = entry.key;
       final T item = entry.value;
       final bool isSelected = _isSelected(item);
 
-      return GestureDetector(
+      return UContainer(
         onTap: () => _handleSelection(item, index),
         child: widget.chipBuilder != null ? widget.chipBuilder!(item, isSelected, index) : _defaultChipBuilder(item, isSelected, index),
       );
@@ -148,11 +148,11 @@ class _UChipChoiceState<T> extends State<UChipChoice<T>> {
         child: widget.direction == Axis.horizontal
             ? Row(
                 mainAxisSize: MainAxisSize.min,
-                children: chips.expand((GestureDetector chip) => <Widget>[chip, SizedBox(width: widget.spacing)]).toList()..removeLast(),
+                children: chips.expand((Widget chip) => <Widget>[chip, SizedBox(width: widget.spacing)]).toList()..removeLast(),
               )
             : Column(
                 mainAxisSize: MainAxisSize.min,
-                children: chips.expand((GestureDetector chip) => <Widget>[chip, SizedBox(height: widget.spacing)]).toList()..removeLast(),
+                children: chips.expand((Widget chip) => <Widget>[chip, SizedBox(height: widget.spacing)]).toList()..removeLast(),
               ),
       );
     } else {

@@ -46,7 +46,7 @@ class UImageViewer extends StatelessWidget {
                   fit: BoxFit.contain,
                   width: double.infinity,
                   height: double.infinity,
-                  errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) => Container(
+                  errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) => UContainer(
                     color: Colors.grey[900],
                     child: const Center(
                       child: Column(
@@ -70,16 +70,12 @@ class UImageViewer extends StatelessWidget {
           Positioned(
             top: MediaQuery.of(context).padding.top + 16,
             right: 16,
-            child: GestureDetector(
+            child: UContainer(
               onTap: () => Navigator.pop(context),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.black.withValues(alpha: 0.6),
-                  shape: BoxShape.circle,
-                ),
-                padding: const EdgeInsets.all(8),
-                child: const Icon(Icons.close, color: Colors.white, size: 24),
-              ),
+              color: Colors.black.withValues(alpha: 0.6),
+              shape: BoxShape.circle,
+              padding: const EdgeInsets.all(8),
+              child: const Icon(Icons.close, color: Colors.white, size: 24),
             ),
           ),
         ],
@@ -250,16 +246,12 @@ class _BetterImageViewerState extends State<BetterImageViewer> {
         Positioned(
           top: MediaQuery.of(context).padding.top + 16,
           right: 16,
-          child: GestureDetector(
+          child: UContainer(
             onTap: () => Navigator.pop(context),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.black.withValues(alpha: 0.6),
-                shape: BoxShape.circle,
-              ),
-              padding: const EdgeInsets.all(8),
-              child: const Icon(Icons.close, color: Colors.white, size: 24),
-            ),
+            color: Colors.black.withValues(alpha: 0.6),
+            shape: BoxShape.circle,
+            padding: const EdgeInsets.all(8),
+            child: const Icon(Icons.close, color: Colors.white, size: 24),
           ),
         ),
       ],
@@ -328,12 +320,10 @@ class _ImageGalleryViewerState extends State<ImageGalleryViewer> {
         Positioned(
           top: MediaQuery.of(context).padding.top + 16,
           left: 16,
-          child: Container(
+          child: UContainer(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: Colors.black.withValues(alpha: 0.6),
-              borderRadius: BorderRadius.circular(20),
-            ),
+            color: Colors.black.withValues(alpha: 0.6),
+            radius: 20,
             child: Text(
               "${_currentIndex + 1} / ${widget.files.length}",
               style: const TextStyle(color: Colors.white),
