@@ -352,6 +352,7 @@ class _UAdminFileManagerPageState extends State<UAdminFileManagerPage> {
     onTap: () => _open(e),
     cs: cs,
     child: UColumn(
+      margin: const EdgeInsets.all(12),
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 10,
       children: <Widget>[
@@ -375,7 +376,7 @@ class _UAdminFileManagerPageState extends State<UAdminFileManagerPage> {
           color: cs.onSurface.withValues(alpha: 0.5),
         ),
       ],
-    ).pAll(12),
+    ),
   );
 
   // A thumbnail: real image preview for image files, otherwise a tinted type-icon tile.

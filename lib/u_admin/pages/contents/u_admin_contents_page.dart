@@ -433,14 +433,12 @@ class _Base64ImageFieldState extends State<_Base64ImageField> {
               Positioned(
                 top: 4,
                 right: 4,
-                child: InkWell(
+                child: UContainer(
                   onTap: _clear,
-                  child: UContainer(
-                    color: scheme.error,
-                    shape: BoxShape.circle,
-                    padding: const EdgeInsets.all(2),
-                    child: const Icon(Icons.close, size: 14, color: UAdminTheme.white),
-                  ),
+                  color: scheme.error,
+                  shape: BoxShape.circle,
+                  padding: const EdgeInsets.all(2),
+                  child: const Icon(Icons.close, size: 14, color: UAdminTheme.white),
                 ),
               ),
           ],

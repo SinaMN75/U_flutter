@@ -222,18 +222,16 @@ class UAdminSortHeader extends StatelessWidget {
   final bool? direction;
 
   @override
-  Widget build(BuildContext context) => InkWell(
+  Widget build(BuildContext context) => URow(
     onTap: onTap,
-    child: URow(
-      spacing: 0,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Flexible(
-          child: UTextBodyLarge(title, color: Theme.of(context).colorScheme.onPrimary, textAlign: .center, maxLines: 1, overflow: TextOverflow.ellipsis),
-        ),
-        if (direction != null) Icon(direction! ? Icons.arrow_upward : Icons.arrow_downward, size: 16, color: Theme.of(context).colorScheme.onPrimary),
-      ],
-    ),
+    spacing: 0,
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: <Widget>[
+      Flexible(
+        child: UTextBodyLarge(title, color: Theme.of(context).colorScheme.onPrimary, textAlign: .center, maxLines: 1, overflow: TextOverflow.ellipsis),
+      ),
+      if (direction != null) Icon(direction! ? Icons.arrow_upward : Icons.arrow_downward, size: 16, color: Theme.of(context).colorScheme.onPrimary),
+    ],
   ).expanded();
 }
 

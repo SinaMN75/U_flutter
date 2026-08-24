@@ -338,6 +338,7 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
 
   Widget _inputCard(ColorScheme cs) => UCard(
     child: UColumn(
+      margin: const EdgeInsets.all(20),
       spacing: 12,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -361,7 +362,7 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
         ),
         UTextField(controller: _inputController, hintText: U.s.inputText, lines: 4, contentPadding: const EdgeInsets.all(16)),
       ],
-    ).pAll(20),
+    ),
   );
 
   Widget _actions(ColorScheme cs) {
@@ -421,13 +422,14 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
     final String output = _output ?? "";
     return UCard(
       child: UColumn(
+        margin: const EdgeInsets.all(20),
         spacing: 14,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           _resultBlock(cs, U.s.output, output),
           _resultBlock(cs, "Base64", UEncryption.base64EncodeText(output)),
         ],
-      ).pAll(20),
+      ),
     );
   }
 

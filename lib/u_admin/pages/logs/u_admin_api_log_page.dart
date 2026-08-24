@@ -810,12 +810,13 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
               if (i.contains("[SUCCESS]")) color = Colors.green;
               if (i.contains("[WARNING]")) color = Colors.yellow.shade700;
               return UCard(
+                margin: const EdgeInsets.all(16),
                 child: SelectableText(
                   i,
                   style: TextStyle(color: color, fontSize: 16),
                   textDirection: TextDirection.ltr,
                 ).pAll(16),
-              ).pAll(16);
+              );
             },
             itemCount: c.appLogs.length,
           );

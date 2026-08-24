@@ -173,12 +173,13 @@ class _UAdminAppSettingsPageState extends State<UAdminAppSettingsPage> {
   }
 
   Widget _note(ColorScheme cs) => URow(
+    margin: const EdgeInsets.all(14),
     spacing: 10,
     children: <Widget>[
       Icon(Icons.info_outline_rounded, size: 18, color: cs.primary),
       UTextBodySmall(U.s.changesApplyLiveAndResetToDefaultsOnServerRestart, color: cs.onSurface.withValues(alpha: 0.75)).expanded(),
     ],
-  ).pAll(14).container(backgroundColor: cs.primary.withValues(alpha: 0.08), radius: 12);
+  ).container(backgroundColor: cs.primary.withValues(alpha: 0.08), radius: 12);
 
   Widget _section(String title, IconData icon, ColorScheme cs, List<Widget> children) => UCard(
     child: UColumn(

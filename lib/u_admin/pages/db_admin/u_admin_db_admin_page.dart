@@ -897,6 +897,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
 
   Widget _card(ColorScheme cs, String title, IconData icon, int count, List<Widget> children) => UCard(
     child: UColumn(
+      margin: const EdgeInsets.all(16),
       spacing: 4,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -913,7 +914,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
         const Divider(height: 14),
         ...children,
       ],
-    ).pAll(16),
+    ),
   );
 
   Widget _typeBadge(ColorScheme cs, String type) =>
@@ -946,6 +947,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
   );
 
   Widget _placeholder(ColorScheme cs, IconData icon, String title, String subtitle) => UColumn(
+    margin: const EdgeInsets.all(40),
     mainAxisAlignment: MainAxisAlignment.center,
     spacing: 10,
     children: <Widget>[
@@ -957,7 +959,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
           child: UTextBodySmall(subtitle, color: cs.onSurface.withValues(alpha: 0.4), textAlign: TextAlign.center),
         ),
     ],
-  ).pAll(40);
+  );
 
   // Prebuilt query catalog for the Query tab snippets menu.
   List<_Prebuilt> get _prebuilt => <_Prebuilt>[

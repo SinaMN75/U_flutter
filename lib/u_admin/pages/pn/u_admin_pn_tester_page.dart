@@ -244,6 +244,7 @@ class _UAdminPnTesterPageState extends State<UAdminPnTesterPage> {
     final _PnEndpoint endpoint = _endpoints[_selected];
     return UCard(
       child: UColumn(
+        margin: const EdgeInsets.all(20),
         spacing: 16,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -296,7 +297,7 @@ class _UAdminPnTesterPageState extends State<UAdminPnTesterPage> {
             onTap: _send,
           ).alignAtCenterRight(),
         ],
-      ).pAll(20),
+      ),
     );
   }
 

@@ -202,7 +202,8 @@ class _UserPageState extends State<UAdminUserPage> {
   Widget _listItemResponsive({required UUserResponse i, required int index}) => Card(
     elevation: 1,
     margin: const EdgeInsets.all(8),
-    child: Column(
+    child: UColumn(
+      margin: const EdgeInsets.all(16),
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         UKeyValue(
@@ -232,7 +233,7 @@ class _UserPageState extends State<UAdminUserPage> {
         ),
         const Divider(height: 24, endIndent: 20, indent: 20),
       ],
-    ).pAll(16),
+    ),
   );
 
   Widget _listItemDesktop({required UUserResponse i, required int index}) => URow(

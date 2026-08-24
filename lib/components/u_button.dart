@@ -220,7 +220,7 @@ class _UButtonState extends State<UButton> {
         }
         break;
       case UButtonType.custom:
-        button = InkWell(
+        button = UContainer(
           onTap: onTap != null && !widget.isLoading
               ? () {
                   onTap!();
@@ -230,18 +230,15 @@ class _UButtonState extends State<UButton> {
                 }
               : null,
           onLongPress: widget.onLongPress != null || !widget.isLoading ? widget.onLongPress : null,
-          borderRadius: BorderRadius.circular(widget.borderRadius),
-          child: UContainer(
-            color: widget.gradient == null ? widget.backgroundColor : null,
-            radius: widget.borderRadius,
-            border: widget.borderColor != null ? Border.all(color: widget.borderColor!, width: widget.borderWidth) : null,
-            gradient: widget.gradient,
-            width: widget.width ?? double.infinity,
-            height: widget.height ?? 46,
-            padding: widget.padding,
-            alignment: Alignment.center,
-            child: content,
-          ),
+          color: widget.gradient == null ? widget.backgroundColor : null,
+          radius: widget.borderRadius,
+          border: widget.borderColor != null ? Border.all(color: widget.borderColor!, width: widget.borderWidth) : null,
+          gradient: widget.gradient,
+          width: widget.width ?? double.infinity,
+          height: widget.height ?? 46,
+          padding: widget.padding,
+          alignment: Alignment.center,
+          child: content,
         );
         break;
     }

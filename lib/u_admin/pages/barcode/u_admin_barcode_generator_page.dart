@@ -293,6 +293,7 @@ class _UAdminBarcodeGeneratorPageState extends State<UAdminBarcodeGeneratorPage>
 
   Widget _card(ColorScheme cs, IconData icon, String title, List<Widget> children) => UCard(
     child: UColumn(
+      margin: const EdgeInsets.all(20),
       spacing: 14,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -300,7 +301,7 @@ class _UAdminBarcodeGeneratorPageState extends State<UAdminBarcodeGeneratorPage>
         const Divider(height: 1),
         ...children,
       ],
-    ).pAll(20),
+    ),
   );
 
   Widget _swatchLabel(String label, Color selected, ValueChanged<Color> onSelect) => UColumn(
