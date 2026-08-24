@@ -306,6 +306,7 @@ class _UAdminPnTesterPageState extends State<UAdminPnTesterPage> {
     final Color accent = isException || !ok ? cs.error : UAdminTheme.green;
     return UCard(
       child: UColumn(
+        margin: const EdgeInsets.all(20),
         spacing: 14,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -344,7 +345,7 @@ class _UAdminPnTesterPageState extends State<UAdminPnTesterPage> {
           else
             UJsonViewer(jsonString: _responseBody ?? ""),
         ],
-      ).pAll(20),
+      ),
     );
   }
 }

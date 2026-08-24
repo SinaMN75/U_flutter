@@ -182,6 +182,7 @@ class _UAdminAppSettingsPageState extends State<UAdminAppSettingsPage> {
 
   Widget _section(String title, IconData icon, ColorScheme cs, List<Widget> children) => UCard(
     child: UColumn(
+      margin: const EdgeInsets.all(16),
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 4,
       children: <Widget>[
@@ -195,7 +196,7 @@ class _UAdminAppSettingsPageState extends State<UAdminAppSettingsPage> {
         const Divider(height: 18),
         ...children,
       ],
-    ).pAll(16),
+    ),
   );
 
   Widget _text(String label, String initial, ValueChanged<String> onChanged, {bool secret = false, TextInputType? kt, int lines = 1}) => UTextField(
@@ -234,6 +235,7 @@ class _UAdminAppSettingsPageState extends State<UAdminAppSettingsPage> {
 
   Widget _chargeInternetSection(UAppSettings m, ColorScheme cs) => UCard(
     child: UColumn(
+      margin: const EdgeInsets.all(16),
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 10,
       children: <Widget>[
@@ -254,7 +256,7 @@ class _UAdminAppSettingsPageState extends State<UAdminAppSettingsPage> {
         const Divider(height: 4),
         ...m.chargeInternet.asMap().entries.map((MapEntry<int, USettingsChargeInternet> e) => _operatorCard(m, e.key, e.value, cs)),
       ],
-    ).pAll(16),
+    ),
   );
 
   Widget _operatorCard(UAppSettings m, int index, USettingsChargeInternet c, ColorScheme cs) => UContainer(

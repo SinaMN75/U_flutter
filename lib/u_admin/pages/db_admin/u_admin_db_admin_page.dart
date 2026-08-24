@@ -779,6 +779,10 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
         ),
         if (_queryError != null)
           URow(
+            margin: const EdgeInsets.all(12),
+            color: cs.errorContainer.withValues(alpha: 0.35),
+            radius: 10,
+            border: Border.all(color: cs.error.withValues(alpha: 0.3)),
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Icon(Icons.error_outline_rounded, color: cs.error, size: 18),
@@ -787,7 +791,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
                 style: TextStyle(color: cs.error, fontSize: 12.5, fontFamily: "monospace"),
               ).expanded(),
             ],
-          ).pAll(12).container(backgroundColor: cs.errorContainer.withValues(alpha: 0.35), radius: 10, borderColor: cs.error.withValues(alpha: 0.3)),
+          ),
         if (_queryResult != null) _queryResultView(cs, _queryResult!),
       ],
     ),

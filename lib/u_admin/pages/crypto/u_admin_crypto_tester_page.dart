@@ -400,6 +400,7 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
     if (_error != null) {
       return UCard(
         child: UColumn(
+          margin: const EdgeInsets.all(20),
           spacing: 14,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -414,7 +415,7 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
               ).ltr(),
             ),
           ],
-        ).pAll(20),
+        ),
       );
     }
     final String output = _output ?? "";
