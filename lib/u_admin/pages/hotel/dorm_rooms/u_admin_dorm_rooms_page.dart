@@ -82,7 +82,9 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
   void _showFilterDialog() => UNavigator.dialog(
     AlertDialog(
       title: Text(U.s.filterItem(U.s.rooms)),
-      content: SingleChildScrollView(
+      content: SizedBox(
+        width: context.dialogWidth(),
+        child: SingleChildScrollView(
         child: UColumn(
           spacing: 0,
           mainAxisSize: MainAxisSize.min,
@@ -103,7 +105,7 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
             ),
           ],
         ),
-      ),
+      )),
     ),
   );
 
@@ -116,7 +118,9 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
     UNavigator.dialog(
       AlertDialog(
         title: Text(p == null ? U.s.createItem(U.s.room) : U.s.editItem(U.s.rooms)),
-        content: SingleChildScrollView(
+        content: SizedBox(
+          width: context.dialogWidth(),
+          child: SingleChildScrollView(
           child: Form(
             key: formKey,
             child: UColumn(
@@ -173,7 +177,7 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
               ],
             ),
           ),
-        ),
+        )),
       ),
     );
   }

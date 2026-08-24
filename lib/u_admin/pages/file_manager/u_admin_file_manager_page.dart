@@ -224,35 +224,42 @@ class _UAdminFileManagerPageState extends State<UAdminFileManagerPage> {
 
   // ---- Toolbar ----
 
-  Widget _toolbar(ColorScheme cs) => URow(
-    spacing: 10,
-    children: <Widget>[
-      _toolButton(Icons.arrow_upward_rounded, U.s.up, _path.isEmpty ? null : () => _load(_parentPath), cs),
-      _toolButton(Icons.create_new_folder_rounded, U.s.newFolder, _createFolder, cs, primary: true),
-      _toolButton(Icons.upload_file_rounded, U.s.upload, _upload, cs, primary: true),
-      _toolButton(Icons.refresh_rounded, U.s.refresh, () => _load(_path), cs),
-      const Spacer(),
-      _viewToggle(cs),
-    ],
-  );
+  Widget _toolbar(ColorScheme cs) {
+    final bool compact = context.isMobileWidth;
+    return Wrap(
+      spacing: 10,
+      runSpacing: 10,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      children: <Widget>[
+        _toolButton(Icons.arrow_upward_rounded, U.s.up, _path.isEmpty ? null : () => _load(_parentPath), cs, compact: compact),
+        _toolButton(Icons.create_new_folder_rounded, U.s.newFolder, _createFolder, cs, primary: true, compact: compact),
+        _toolButton(Icons.upload_file_rounded, U.s.upload, _upload, cs, primary: true, compact: compact),
+        _toolButton(Icons.refresh_rounded, U.s.refresh, () => _load(_path), cs, compact: compact),
+        _viewToggle(cs),
+      ],
+    );
+  }
 
-  Widget _toolButton(IconData icon, String label, VoidCallback? onTap, ColorScheme cs, {bool primary = false}) {
+  Widget _toolButton(IconData icon, String label, VoidCallback? onTap, ColorScheme cs, {bool primary = false, bool compact = false}) {
     final bool enabled = onTap != null;
     final Color bg = primary ? cs.primary : cs.surfaceContainerHighest.withValues(alpha: 0.5);
     final Color fg = primary ? cs.onPrimary : cs.onSurface;
-    return URow(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Icon(icon, size: 18, color: enabled ? fg : fg.withValues(alpha: 0.4)),
-            UTextLabelLarge(label, color: enabled ? fg : fg.withValues(alpha: 0.4), fontWeight: FontWeight.w600),
-          ],
-        )
-        .pSymmetric(horizontal: 14, vertical: 10)
-        .container(
-          backgroundColor: enabled ? bg : bg.withValues(alpha: 0.4),
-          radius: 10,
-        )
-        .onTap(enabled ? onTap : () {});
+    return Tooltip(
+      message: compact ? label : "",
+      child: URow(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Icon(icon, size: 18, color: enabled ? fg : fg.withValues(alpha: 0.4)),
+              if (!compact) UTextLabelLarge(label, color: enabled ? fg : fg.withValues(alpha: 0.4), fontWeight: FontWeight.w600),
+            ],
+          )
+          .pSymmetric(horizontal: compact ? 10 : 14, vertical: 10)
+          .container(
+            backgroundColor: enabled ? bg : bg.withValues(alpha: 0.4),
+            radius: 10,
+          )
+          .onTap(enabled ? onTap : () {}),
+    );
   }
 
   Widget _viewToggle(ColorScheme cs) =>

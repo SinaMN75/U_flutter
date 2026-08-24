@@ -88,7 +88,9 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
   void _showDetailDialog(UMerchantResponse i) => UNavigator.dialog(
     AlertDialog(
       title: Text(i.title),
-      content: SingleChildScrollView(
+      content: SizedBox(
+        width: context.dialogWidth(),
+        child: SingleChildScrollView(
         child: UColumn(
           spacing: 0,
           mainAxisSize: MainAxisSize.min,
@@ -109,7 +111,7 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
             UButton(type: UButtonType.text, title: U.s.ok, onTap: UNavigator.back),
           ],
         ),
-      ),
+      )),
     ),
   );
 

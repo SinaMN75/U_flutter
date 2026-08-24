@@ -182,7 +182,9 @@ class _ReservationPageState extends State<UAdminReservationPage> {
     UNavigator.dialog(
       AlertDialog(
         title: Text(U.s.filterItem(U.s.reservations)),
-        content: SingleChildScrollView(
+        content: SizedBox(
+          width: context.dialogWidth(),
+          child: SingleChildScrollView(
           child: StatefulBuilder(
             builder: (BuildContext context, void Function(void Function()) setLocal) => UColumn(
               spacing: 0,
@@ -242,7 +244,7 @@ class _ReservationPageState extends State<UAdminReservationPage> {
               ],
             ),
           ),
-        ),
+        )),
       ),
     );
   }
@@ -267,8 +269,10 @@ class _ReservationPageState extends State<UAdminReservationPage> {
 
     UNavigator.dialog(
       AlertDialog(
-        title: Text(p == null ? U.s.createItem(U.s.reservation) : U.s.createItem(U.s.reservation)),
-        content: SingleChildScrollView(
+        title: Text(p == null ? U.s.createItem(U.s.reservation) : U.s.editItem(U.s.reservation)),
+        content: SizedBox(
+          width: context.dialogWidth(max: 480),
+          child: SingleChildScrollView(
           child: StatefulBuilder(
             builder: (BuildContext context, void Function(void Function()) setLocal) => Form(
               key: formKey,
@@ -386,7 +390,7 @@ class _ReservationPageState extends State<UAdminReservationPage> {
               ),
             ),
           ),
-        ),
+        )),
       ),
     );
   }

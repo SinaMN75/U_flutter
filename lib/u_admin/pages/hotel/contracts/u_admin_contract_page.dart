@@ -158,7 +158,9 @@ class _ContractPageState extends State<UAdminContractPage> {
     UNavigator.dialog(
       AlertDialog(
         title: Text(U.s.filterItem(U.s.contracts)),
-        content: SingleChildScrollView(
+        content: SizedBox(
+          width: context.dialogWidth(),
+          child: SingleChildScrollView(
           child: StatefulBuilder(
             builder: (BuildContext context, void Function(void Function()) setLocal) => UColumn(
               spacing: 0,
@@ -235,7 +237,7 @@ class _ContractPageState extends State<UAdminContractPage> {
               ],
             ),
           ),
-        ),
+        )),
       ),
     );
   }
@@ -260,7 +262,9 @@ class _ContractPageState extends State<UAdminContractPage> {
     UNavigator.dialog(
       AlertDialog(
         title: Text(isEdit ? U.s.editItem(U.s.contract) : U.s.createItem(U.s.contract)),
-        content: SingleChildScrollView(
+        content: SizedBox(
+          width: context.dialogWidth(max: 480),
+          child: SingleChildScrollView(
           child: StatefulBuilder(
             builder: (BuildContext context, void Function(void Function()) setLocal) => Form(
               key: formKey,
@@ -381,7 +385,7 @@ class _ContractPageState extends State<UAdminContractPage> {
               ),
             ),
           ),
-        ),
+        )),
       ),
     );
   }

@@ -100,7 +100,9 @@ class _DormPageState extends State<UAdminDormPage> {
       StatefulBuilder(
         builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
           title: Text(p == null ? U.s.createItem(U.s.dorm) : U.s.editItem(U.s.dorm)),
-          content: SingleChildScrollView(
+          content: SizedBox(
+            width: context.dialogWidth(max: 480),
+            child: SingleChildScrollView(
             child: Form(
               key: formKey,
               child: UColumn(
@@ -182,7 +184,7 @@ class _DormPageState extends State<UAdminDormPage> {
               ),
             ),
           ),
-        ),
+        )),
       ),
     );
   }

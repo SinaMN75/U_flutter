@@ -87,7 +87,9 @@ class _HotelPageState extends State<UAdminHotelPage> {
   void _showFilterDialog() => UNavigator.dialog(
     AlertDialog(
       title: Text(U.s.filterItem(U.s.hotels)),
-      content: Form(
+      content: SizedBox(
+        width: context.dialogWidth(),
+        child: Form(
         key: c.filterFormKey,
         child: SingleChildScrollView(
           child: UColumn(
@@ -113,7 +115,7 @@ class _HotelPageState extends State<UAdminHotelPage> {
           ),
         ),
       ),
-    ),
+    )),
   );
 
   Future<void> _showEditDialog({UHotelResponse? p}) async {
@@ -140,8 +142,10 @@ class _HotelPageState extends State<UAdminHotelPage> {
     await UNavigator.dialog(
       StatefulBuilder(
         builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
-          title: Text(p == null ? U.s.createItem(U.s.hotel) : U.s.createItem(U.s.hotel)),
-          content: SingleChildScrollView(
+          title: Text(p == null ? U.s.createItem(U.s.hotel) : U.s.editItem(U.s.hotel)),
+          content: SizedBox(
+            width: context.dialogWidth(max: 480),
+            child: SingleChildScrollView(
             child: Form(
               key: formKey,
               child: UColumn(
@@ -242,7 +246,7 @@ class _HotelPageState extends State<UAdminHotelPage> {
               ),
             ),
           ),
-        ),
+        )),
       ),
     );
   }

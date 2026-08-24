@@ -89,7 +89,9 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
   void _showFilterDialog() => UNavigator.dialog(
     AlertDialog(
       title: Text(U.s.filterItem(U.s.beds)),
-      content: SingleChildScrollView(
+      content: SizedBox(
+        width: context.dialogWidth(),
+        child: SingleChildScrollView(
         child: UColumn(
           spacing: 0,
           mainAxisSize: MainAxisSize.min,
@@ -110,7 +112,7 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
             ),
           ],
         ),
-      ),
+      )),
     ),
   );
 
@@ -125,7 +127,9 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
     UNavigator.dialog(
       AlertDialog(
         title: Text(p == null ? U.s.createItem(U.s.bed) : U.s.editItem(U.s.bed)),
-        content: SingleChildScrollView(
+        content: SizedBox(
+          width: context.dialogWidth(),
+          child: SingleChildScrollView(
           child: StatefulBuilder(
             builder: (BuildContext context, void Function(void Function()) setLocal) => Form(
               key: formKey,
@@ -202,7 +206,7 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
               ),
             ),
           ),
-        ),
+        )),
       ),
     );
   }

@@ -21,38 +21,42 @@ abstract class UAdminPayLink {
     UNavigator.dialog(
       AlertDialog(
         title: Text(U.s.payment),
-        content: SizedBox(
-          width: 420,
-          child: UColumn(
-            spacing: 0,
-            mainAxisSize: MainAxisSize.min,
-            children: invoices
-                .map(
-                  (UDormBedInvoiceResponse i) => ListTile(
-                    dense: true,
-                    title: UTextBodyMedium(i.netDue.rial()),
-                    subtitle: UTextBodySmall(i.dueDate.toJalaliDate()),
-                    trailing: i.isPaid
-                        ? UTextBodySmall(U.s.paid, color: UAdminTheme.green)
-                        : URow(
-                            mainAxisSize: MainAxisSize.min,
-                            spacing: 0,
-                            children: <Widget>[
-                              IconButton(
-                                icon: const Icon(Icons.copy_rounded),
-                                tooltip: "${U.s.copy} ${U.s.link}",
-                                onPressed: () => copyDormBedInvoiceLink(i),
+        content: Builder(
+          builder: (BuildContext context) => SizedBox(
+            width: context.dialogWidth(),
+            child: SingleChildScrollView(
+              child: UColumn(
+                spacing: 0,
+                mainAxisSize: MainAxisSize.min,
+                children: invoices
+                    .map(
+                      (UDormBedInvoiceResponse i) => ListTile(
+                        dense: true,
+                        title: UTextBodyMedium(i.netDue.rial()),
+                        subtitle: UTextBodySmall(i.dueDate.toJalaliDate()),
+                        trailing: i.isPaid
+                            ? UTextBodySmall(U.s.paid, color: UAdminTheme.green)
+                            : URow(
+                                mainAxisSize: MainAxisSize.min,
+                                spacing: 0,
+                                children: <Widget>[
+                                  IconButton(
+                                    icon: const Icon(Icons.copy_rounded),
+                                    tooltip: "${U.s.copy} ${U.s.link}",
+                                    onPressed: () => copyDormBedInvoiceLink(i),
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.payments_rounded),
+                                    tooltip: U.s.payment,
+                                    onPressed: () => dormBedInvoice(i, onClosed: onClosed),
+                                  ),
+                                ],
                               ),
-                              IconButton(
-                                icon: const Icon(Icons.payments_rounded),
-                                tooltip: U.s.payment,
-                                onPressed: () => dormBedInvoice(i, onClosed: onClosed),
-                              ),
-                            ],
-                          ),
-                  ),
-                )
-                .toList(),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ),
           ),
         ),
       ),

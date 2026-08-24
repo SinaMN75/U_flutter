@@ -91,42 +91,47 @@ class _ContentsPageState extends State<UAdminContentsPage> {
   );
 
   void _showFilterDialog() => UNavigator.dialog(
-    AlertDialog(
-      title: Text(U.s.filterItem(U.s.contents)),
-      content: Form(
-        key: c.filterFormKey,
-        child: SingleChildScrollView(
-          child: UColumn(
-            spacing: 0,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Obx(
-                () => UDropDownField<TagContent?>(
-                  initialValue: c.tagFilter.value,
-                  labelText: U.s.contentType,
-                  items: <DropdownMenuItem<TagContent?>>[
-                    DropdownMenuItem<TagContent?>(child: Text(U.s.all)),
-                    ...TagContent.values.map(
-                      (TagContent t) => DropdownMenuItem<TagContent?>(value: t, child: Text(t.localizedTitle)),
+    Builder(
+      builder: (BuildContext context) => AlertDialog(
+        title: Text(U.s.filterItem(U.s.contents)),
+        content: SizedBox(
+          width: context.dialogWidth(),
+          child: Form(
+            key: c.filterFormKey,
+            child: SingleChildScrollView(
+              child: UColumn(
+                spacing: 0,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Obx(
+                    () => UDropDownField<TagContent?>(
+                      initialValue: c.tagFilter.value,
+                      labelText: U.s.contentType,
+                      items: <DropdownMenuItem<TagContent?>>[
+                        DropdownMenuItem<TagContent?>(child: Text(U.s.all)),
+                        ...TagContent.values.map(
+                          (TagContent t) => DropdownMenuItem<TagContent?>(value: t, child: Text(t.localizedTitle)),
+                        ),
+                      ],
+                      onChanged: (TagContent? v) => c.tagFilter.value = v,
                     ),
-                  ],
-                  onChanged: (TagContent? v) => c.tagFilter.value = v,
-                ),
-              ).pSymmetric(vertical: 6),
-              const SizedBox(height: 20),
-              UButtonSubmitCancel(
-                submitTitle: U.s.filter,
-                cancelTitle: U.s.clearFilters,
-                onSubmit: () {
-                  c.applyFilters();
-                  UNavigator.back();
-                },
-                onCancel: () {
-                  c.clearFilters();
-                  UNavigator.back();
-                },
+                  ).pSymmetric(vertical: 6),
+                  const SizedBox(height: 20),
+                  UButtonSubmitCancel(
+                    submitTitle: U.s.filter,
+                    cancelTitle: U.s.clearFilters,
+                    onSubmit: () {
+                      c.applyFilters();
+                      UNavigator.back();
+                    },
+                    onCancel: () {
+                      c.clearFilters();
+                      UNavigator.back();
+                    },
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

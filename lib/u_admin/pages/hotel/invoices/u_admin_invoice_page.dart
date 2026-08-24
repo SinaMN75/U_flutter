@@ -189,7 +189,9 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
   void _showFilterDialog() => UNavigator.dialog(
     AlertDialog(
       title: Text(U.s.filter),
-      content: SingleChildScrollView(
+      content: SizedBox(
+        width: context.dialogWidth(),
+        child: SingleChildScrollView(
         child: UColumn(
           spacing: 0,
           mainAxisSize: MainAxisSize.min,
@@ -239,7 +241,7 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
             ),
           ],
         ),
-      ),
+      )),
     ),
   );
 
@@ -260,8 +262,10 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
 
     UNavigator.dialog(
       AlertDialog(
-        title: Text(p == null ? U.s.createItem(U.s.invoice) : U.s.createItem(U.s.invoice)),
-        content: SingleChildScrollView(
+        title: Text(p == null ? U.s.createItem(U.s.invoice) : U.s.editItem(U.s.invoice)),
+        content: SizedBox(
+          width: context.dialogWidth(max: 480),
+          child: SingleChildScrollView(
           child: StatefulBuilder(
             builder: (BuildContext context, void Function(void Function()) setLocal) => Form(
               key: formKey,
@@ -360,7 +364,7 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
               ),
             ),
           ),
-        ),
+        )),
       ),
     );
   }

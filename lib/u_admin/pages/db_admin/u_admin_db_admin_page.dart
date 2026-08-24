@@ -250,7 +250,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
           ],
         ),
         content: SizedBox(
-          width: 560,
+          width: context.dialogWidth(max: 560),
           child: SingleChildScrollView(
             child: UColumn(
               spacing: 0,
@@ -314,7 +314,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
             ],
           ),
           content: SizedBox(
-            width: 540,
+            width: context.dialogWidth(max: 540),
             child: SingleChildScrollView(
               child: UColumn(
                 spacing: 12,
@@ -436,18 +436,22 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
   @override
   Widget build(BuildContext context) {
     final ColorScheme cs = Theme.of(context).colorScheme;
+    final bool mobile = context.isMobileWidth;
     // This console is English-only and always left-to-right, regardless of the app locale/direction.
     return Directionality(
       textDirection: TextDirection.ltr,
       child: UScaffold(
-        body: URow(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            _sidebar(cs),
-            VerticalDivider(width: 1, color: cs.outlineVariant),
-            _main(cs).expanded(),
-          ],
-        ),
+        drawer: mobile ? Drawer(width: 280, child: SafeArea(child: _sidebar(cs))) : null,
+        body: mobile
+            ? _main(cs, showMenu: true)
+            : URow(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  _sidebar(cs),
+                  VerticalDivider(width: 1, color: cs.outlineVariant),
+                  _main(cs).expanded(),
+                ],
+              ),
       ),
     );
   }
@@ -516,38 +520,66 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
 
   // ===== Main =====
 
-  Widget _main(ColorScheme cs) {
-    if (_selected == null && _tab != 2)
-      return _placeholder(cs, Icons.storage_rounded, "Select a table to get started", "Pick a table from the left to browse and edit its data, or open the Query tab.");
+  Widget _main(ColorScheme cs, {bool showMenu = false}) {
+    if (_selected == null && _tab != 2) {
+      return UColumn(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          if (showMenu) _mobileMenuBar(cs),
+          _placeholder(
+            cs,
+            Icons.storage_rounded,
+            "Select a table to get started",
+            showMenu ? "Tap the menu to pick a table, or open the Query tab." : "Pick a table from the left to browse and edit its data, or open the Query tab.",
+          ).expanded(),
+        ],
+      );
+    }
     return UColumn(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        _toolbar(cs),
+        _toolbar(cs, showMenu: showMenu),
         const Divider(height: 1),
         IndexedStack(index: _tab, children: <Widget>[_dataTab(cs), _structureTab(cs), _queryTab(cs)]).expanded(),
       ],
     );
   }
 
-  Widget _toolbar(ColorScheme cs) => URow(
-    spacing: 10,
+  Widget _mobileMenuBar(ColorScheme cs) => Builder(
+    builder: (BuildContext ctx) => URow(
+      spacing: 4,
+      children: <Widget>[
+        IconButton(icon: const Icon(Icons.menu_rounded), onPressed: () => Scaffold.of(ctx).openDrawer()),
+        UTextTitleSmall("${_tables.length} tables", color: cs.onSurface.withValues(alpha: 0.6)),
+      ],
+    ),
+  );
+
+  Widget _toolbar(ColorScheme cs, {bool showMenu = false}) => URow(
     children: <Widget>[
-      Icon(Icons.grid_on_rounded, color: cs.primary, size: 18),
-      UColumn(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          UTextTitleSmall(_selected?.name ?? "SQL Query", fontWeight: FontWeight.bold, maxLines: 1),
-          if (_selected != null)
-            UTextLabelSmall("${_selected!.schema}  ·  ${_selected!.columnCount} cols${_selected!.size != null ? "  ·  ${_selected!.size}" : ""}", color: cs.onSurface.withValues(alpha: 0.55)),
-        ],
+      if (showMenu) Builder(builder: (BuildContext ctx) => IconButton(icon: const Icon(Icons.menu_rounded), onPressed: () => Scaffold.of(ctx).openDrawer(), padding: EdgeInsets.zero)),
+      if (!showMenu) Icon(Icons.grid_on_rounded, color: cs.primary, size: 18),
+      Expanded(
+        child: UColumn(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            UTextTitleSmall(_selected?.name ?? "SQL Query", fontWeight: FontWeight.bold, maxLines: 1, overflow: TextOverflow.ellipsis),
+            if (_selected != null)
+              UTextLabelSmall(
+                "${_selected!.schema}  ·  ${_selected!.columnCount} cols${_selected!.size != null ? "  ·  ${_selected!.size}" : ""}",
+                color: cs.onSurface.withValues(alpha: 0.55),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+          ],
+        ),
       ),
-      const Spacer(),
-      _segTabs(cs),
+      _segTabs(cs, compact: showMenu),
     ],
   ).pSymmetric(horizontal: 14, vertical: 8);
 
-  Widget _segTabs(ColorScheme cs) {
+  Widget _segTabs(ColorScheme cs, {bool compact = false}) {
     final List<(String, IconData)> tabs = <(String, IconData)>[("Data", Icons.grid_on_rounded), ("Structure", Icons.schema_rounded), ("Query", Icons.terminal_rounded)];
     return URow(
       mainAxisSize: MainAxisSize.min,
@@ -559,9 +591,9 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
           spacing: 6,
           children: <Widget>[
             Icon(tabs[i].$2, size: 15, color: active ? cs.onPrimary : cs.onSurface.withValues(alpha: 0.7)),
-            UTextLabelMedium(tabs[i].$1, color: active ? cs.onPrimary : cs.onSurface.withValues(alpha: 0.7), fontWeight: FontWeight.w600),
+            if (!compact) UTextLabelMedium(tabs[i].$1, color: active ? cs.onPrimary : cs.onSurface.withValues(alpha: 0.7), fontWeight: FontWeight.w600),
           ],
-        ).pSymmetric(horizontal: 12, vertical: 7).container(backgroundColor: active ? cs.primary : null, radius: 8).onTap(() => setState(() => _tab = i));
+        ).pSymmetric(horizontal: compact ? 8 : 12, vertical: 7).container(backgroundColor: active ? cs.primary : null, radius: 8).onTap(() => setState(() => _tab = i));
       }),
     ).pAll(3).container(backgroundColor: cs.surfaceContainerHighest.withValues(alpha: 0.5), radius: 11);
   }
@@ -608,8 +640,11 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
   Widget _paginationBar(ColorScheme cs) {
     final int from = _totalCount == 0 ? 0 : (_page - 1) * _pageSize + 1;
     final int to = (_page * _pageSize) < _totalCount ? _page * _pageSize : _totalCount;
-    return URow(
-      spacing: 6,
+    return Wrap(
+      spacing: 10,
+      runSpacing: 6,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      alignment: WrapAlignment.spaceBetween,
       children: <Widget>[
         PopupMenuButton<int>(
           tooltip: "Rows per page",
@@ -624,14 +659,19 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
             ],
           ).pSymmetric(horizontal: 10, vertical: 6).container(backgroundColor: cs.surfaceContainerHighest.withValues(alpha: 0.5), radius: 8),
         ),
-        const Spacer(),
-        UTextLabelMedium("$from–$to of $_totalCount", color: cs.onSurface.withValues(alpha: 0.7)),
-        const SizedBox(width: 6),
-        _pageBtn(cs, Icons.first_page_rounded, _page > 1, () => _gotoPage(1)),
-        _pageBtn(cs, Icons.chevron_left_rounded, _page > 1, () => _gotoPage(_page - 1)),
-        UTextLabelMedium("$_page / $_pageCount", fontWeight: FontWeight.w700).pSymmetric(horizontal: 4),
-        _pageBtn(cs, Icons.chevron_right_rounded, _page < _pageCount, () => _gotoPage(_page + 1)),
-        _pageBtn(cs, Icons.last_page_rounded, _page < _pageCount, () => _gotoPage(_pageCount)),
+        URow(
+          mainAxisSize: MainAxisSize.min,
+          spacing: 6,
+          children: <Widget>[
+            UTextLabelMedium("$from–$to of $_totalCount", color: cs.onSurface.withValues(alpha: 0.7)),
+            const SizedBox(width: 6),
+            _pageBtn(cs, Icons.first_page_rounded, _page > 1, () => _gotoPage(1)),
+            _pageBtn(cs, Icons.chevron_left_rounded, _page > 1, () => _gotoPage(_page - 1)),
+            UTextLabelMedium("$_page / $_pageCount", fontWeight: FontWeight.w700).pSymmetric(horizontal: 4),
+            _pageBtn(cs, Icons.chevron_right_rounded, _page < _pageCount, () => _gotoPage(_page + 1)),
+            _pageBtn(cs, Icons.last_page_rounded, _page < _pageCount, () => _gotoPage(_pageCount)),
+          ],
+        ),
       ],
     ).pSymmetric(horizontal: 12, vertical: 6);
   }
@@ -954,8 +994,8 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
       Icon(icon, size: 44, color: cs.onSurface.withValues(alpha: 0.22)),
       UTextBodyMedium(title, color: cs.onSurface.withValues(alpha: 0.55), fontWeight: FontWeight.w600),
       if (subtitle.isNotEmpty)
-        SizedBox(
-          width: 360,
+        ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 360),
           child: UTextBodySmall(subtitle, color: cs.onSurface.withValues(alpha: 0.4), textAlign: TextAlign.center),
         ),
     ],

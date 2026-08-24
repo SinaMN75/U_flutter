@@ -82,7 +82,9 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
   void _showFilterDialog() => UNavigator.dialog(
     AlertDialog(
       title: Text(U.s.filterItem(U.s.rooms)),
-      content: SingleChildScrollView(
+      content: SizedBox(
+        width: context.dialogWidth(),
+        child: SingleChildScrollView(
         child: UColumn(
           spacing: 0,
           mainAxisSize: MainAxisSize.min,
@@ -105,7 +107,7 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
             ),
           ],
         ),
-      ),
+      )),
     ),
   );
 
@@ -126,8 +128,10 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
 
     UNavigator.dialog(
       AlertDialog(
-        title: Text(p == null ? U.s.createItem(U.s.room) : U.s.createItem(U.s.room)),
-        content: SingleChildScrollView(
+        title: Text(p == null ? U.s.createItem(U.s.room) : U.s.editItem(U.s.room)),
+        content: SizedBox(
+          width: context.dialogWidth(max: 480),
+          child: SingleChildScrollView(
           child: StatefulBuilder(
             builder: (BuildContext context, void Function(void Function()) setLocal) => Form(
               key: formKey,
@@ -225,7 +229,7 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
             ),
           ),
         ),
-      ),
+      )),
     );
   }
 }

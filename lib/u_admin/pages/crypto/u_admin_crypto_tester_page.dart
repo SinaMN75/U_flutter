@@ -295,35 +295,50 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
     ],
   );
 
-  Widget _keyField(ColorScheme cs) => URow(
-    spacing: 10,
-    crossAxisAlignment: CrossAxisAlignment.end,
-    children: <Widget>[
-      UTextField(controller: _keyController, labelText: U.s.secretKey, hintText: U.s.secretKey).expanded(),
-      if (_algo.id != "hmac" && _algo.id != "caesar") ...<Widget>[
-        SizedBox(width: 130, child: _encodingDropdown(_keyEncoding, (UByteEncoding e) => setState(() => _keyEncoding = e), U.s.keyEncoding)),
-        IconButton(
-          tooltip: U.s.generate,
-          onPressed: _generateKey,
-          icon: Icon(Icons.casino_rounded, color: cs.primary),
-        ),
-      ],
-    ],
-  );
+  Widget _keyField(ColorScheme cs) {
+    final bool mobile = context.isMobileWidth;
+    final Widget field = UTextField(controller: _keyController, labelText: U.s.secretKey, hintText: U.s.secretKey);
+    if (_algo.id == "hmac" || _algo.id == "caesar") return field;
+    final Widget encoding = _encodingDropdown(_keyEncoding, (UByteEncoding e) => setState(() => _keyEncoding = e), U.s.keyEncoding);
+    final Widget generateBtn = IconButton(tooltip: U.s.generate, onPressed: _generateKey, icon: Icon(Icons.casino_rounded, color: cs.primary));
+    if (mobile) {
+      return UColumn(
+        spacing: 10,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          field,
+          URow(spacing: 10, crossAxisAlignment: CrossAxisAlignment.end, children: <Widget>[encoding.expanded(), generateBtn]),
+        ],
+      );
+    }
+    return URow(
+      spacing: 10,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: <Widget>[field.expanded(), SizedBox(width: 130, child: encoding), generateBtn],
+    );
+  }
 
-  Widget _ivField(ColorScheme cs) => URow(
-    spacing: 10,
-    crossAxisAlignment: CrossAxisAlignment.end,
-    children: <Widget>[
-      UTextField(controller: _ivController, labelText: U.s.ivInitializationVector, hintText: U.s.ivInitializationVector).expanded(),
-      SizedBox(width: 130, child: _encodingDropdown(_ivEncoding, (UByteEncoding e) => setState(() => _ivEncoding = e), U.s.ivEncoding)),
-      IconButton(
-        tooltip: U.s.generate,
-        onPressed: _generateIv,
-        icon: Icon(Icons.casino_rounded, color: cs.primary),
-      ),
-    ],
-  );
+  Widget _ivField(ColorScheme cs) {
+    final bool mobile = context.isMobileWidth;
+    final Widget field = UTextField(controller: _ivController, labelText: U.s.ivInitializationVector, hintText: U.s.ivInitializationVector);
+    final Widget encoding = _encodingDropdown(_ivEncoding, (UByteEncoding e) => setState(() => _ivEncoding = e), U.s.ivEncoding);
+    final Widget generateBtn = IconButton(tooltip: U.s.generate, onPressed: _generateIv, icon: Icon(Icons.casino_rounded, color: cs.primary));
+    if (mobile) {
+      return UColumn(
+        spacing: 10,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          field,
+          URow(spacing: 10, crossAxisAlignment: CrossAxisAlignment.end, children: <Widget>[encoding.expanded(), generateBtn]),
+        ],
+      );
+    }
+    return URow(
+      spacing: 10,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: <Widget>[field.expanded(), SizedBox(width: 130, child: encoding), generateBtn],
+    );
+  }
 
   Widget _encodingDropdown(UByteEncoding value, ValueChanged<UByteEncoding> onChanged, String label) => UDropDownField<UByteEncoding>(
     initialValue: value,

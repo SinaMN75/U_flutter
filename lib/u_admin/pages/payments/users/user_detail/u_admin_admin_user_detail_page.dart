@@ -378,17 +378,20 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
     UNavigator.dialog(
       AlertDialog(
         title: Text(U.s.rejectDocuments),
-        content: SingleChildScrollView(
-          child: UColumn(
-            spacing: 0,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              UTextField(labelText: U.s.reasonForRejecting(U.s.nationalCardFront), controller: frontReason).pSymmetric(vertical: 6),
-              UTextField(labelText: U.s.reasonForRejecting(U.s.nationalCardBack), controller: backReason).pSymmetric(vertical: 6),
-              UTextField(labelText: U.s.reasonForRejecting(U.s.birthCertificate), controller: birthReason).pSymmetric(vertical: 6),
-              UTextField(labelText: U.s.reasonForRejecting(U.s.video), controller: videoReason).pSymmetric(vertical: 6),
-              UTextField(labelText: U.s.reasonForRejecting(U.s.signature), controller: signatureReason).pSymmetric(vertical: 6),
-            ],
+        content: SizedBox(
+          width: context.dialogWidth(),
+          child: SingleChildScrollView(
+            child: UColumn(
+              spacing: 0,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                UTextField(labelText: U.s.reasonForRejecting(U.s.nationalCardFront), controller: frontReason).pSymmetric(vertical: 6),
+                UTextField(labelText: U.s.reasonForRejecting(U.s.nationalCardBack), controller: backReason).pSymmetric(vertical: 6),
+                UTextField(labelText: U.s.reasonForRejecting(U.s.birthCertificate), controller: birthReason).pSymmetric(vertical: 6),
+                UTextField(labelText: U.s.reasonForRejecting(U.s.video), controller: videoReason).pSymmetric(vertical: 6),
+                UTextField(labelText: U.s.reasonForRejecting(U.s.signature), controller: signatureReason).pSymmetric(vertical: 6),
+              ],
+            ),
           ),
         ),
         actions: <Widget>[
