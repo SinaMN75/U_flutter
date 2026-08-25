@@ -31,12 +31,10 @@ class _UAdminShellState extends State<UAdminShell> with SingleTickerProviderStat
     final bool isMobile = context.isMobileWidth;
     return UScaffold(
       body: UColumn(
-        spacing: 0,
         children: <Widget>[
           _topBar(isMobile),
           Obx(
             () => URow(
-              spacing: 0,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 _sideMenu(),
@@ -59,7 +57,6 @@ class _UAdminShellState extends State<UAdminShell> with SingleTickerProviderStat
 
   Widget _topBar(bool isMobile) => isMobile
       ? URow(
-          spacing: 0,
           children: <Widget>[
             IconButton(icon: const Icon(Icons.menu_rounded), onPressed: _menu.openDrawer),
             _tabBar().expanded(),

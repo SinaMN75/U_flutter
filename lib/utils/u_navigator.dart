@@ -548,6 +548,7 @@ abstract class UNavigator {
     showDragHandle: true,
     builder: (BuildContext context) => SafeArea(
       child: UColumn(
+        spacing: 8,
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[

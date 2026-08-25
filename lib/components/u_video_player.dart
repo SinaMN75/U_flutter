@@ -210,7 +210,6 @@ class _UVideoPlayerState extends State<UVideoPlayer> {
 
   Widget _buildError(BuildContext context) => Center(
     child: UColumn(
-      spacing: 0,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         const Icon(Icons.error_outline, color: Colors.white70, size: 40),
@@ -279,7 +278,6 @@ class _UVideoPlayerState extends State<UVideoPlayer> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
       child: UColumn(
-        spacing: 0,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           SliderTheme(
@@ -301,7 +299,6 @@ class _UVideoPlayerState extends State<UVideoPlayer> {
             ),
           ),
           URow(
-            spacing: 0,
             children: <Widget>[
               const SizedBox(width: 8),
               UTextBodySmall("${_fmt(position)} / ${_fmt(duration)}", color: Colors.white),

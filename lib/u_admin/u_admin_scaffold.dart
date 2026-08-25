@@ -38,7 +38,6 @@ class UAdminScaffold extends StatelessWidget {
       ],
     ),
     body: UColumn(
-      spacing: 0,
       children: <Widget>[
         body.expanded(),
         if (_hasPagination)

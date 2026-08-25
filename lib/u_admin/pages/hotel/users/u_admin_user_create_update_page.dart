@@ -32,7 +32,6 @@ class _UserCreateUpdateDialogState extends State<UAdminUserCreateUpdateDialog> {
   @override
   Widget build(BuildContext context) => AlertDialog(
     title: URow(
-      spacing: 0,
       children: <Widget>[
         Icon(_isEdit ? Icons.manage_accounts_rounded : Icons.person_add_alt_1_rounded, color: Theme.of(context).colorScheme.primary),
         const SizedBox(width: 10),
@@ -48,7 +47,6 @@ class _UserCreateUpdateDialogState extends State<UAdminUserCreateUpdateDialog> {
         key: c.formKey,
         child: SingleChildScrollView(
           child: UColumn(
-            spacing: 0,
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
@@ -66,14 +64,13 @@ class _UserCreateUpdateDialogState extends State<UAdminUserCreateUpdateDialog> {
                   ),
                 ),
               if (context.isMobileWidth) UColumn(
-                      spacing: 6,
+                      spacing: 8,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
                         UTextField(controller: c.controllerFirstName, labelText: U.s.firstName, validator: UValidators.required(message: U.s.required)),
                         UTextField(controller: c.controllerLastName, labelText: U.s.lastName, validator: UValidators.required(message: U.s.required)),
                       ],
                     ).pSymmetric(vertical: 6) else URow(
-                      spacing: 0,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         UTextField(
@@ -154,7 +151,6 @@ class _UserCreateUpdateDialogState extends State<UAdminUserCreateUpdateDialog> {
                 Obx(() {
                   if (c.role.value != TagUser.subAdmin) return const SizedBox.shrink();
                   return UColumn(
-                    spacing: 0,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       const SizedBox(height: 6),

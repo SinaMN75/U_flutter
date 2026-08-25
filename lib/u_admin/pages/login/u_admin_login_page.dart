@@ -24,7 +24,6 @@ class _UAdminLoginPageState extends State<UAdminLoginPage> {
           child: Form(
             key: c.formKey,
             child: UColumn(
-              spacing: 0,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 UImage(UAdmin.logo, width: 100, height: 100).pSymmetric(vertical: 8),

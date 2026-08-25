@@ -42,6 +42,7 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
   );
 
   Widget _itemDesktop(UDormRoomResponse i, int index) => URow(
+    spacing: 8,
     color: UAdminTable.rowColor(context, index),
     padding: UAdminTable.rowPadding,
     children: <Widget>[
@@ -86,7 +87,6 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
         width: context.dialogWidth(),
         child: SingleChildScrollView(
         child: UColumn(
-          spacing: 0,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             UTextField(controller: c.titleFilter, labelText: U.s.title).pSymmetric(vertical: 6),
@@ -124,7 +124,6 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
           child: Form(
             key: formKey,
             child: UColumn(
-              spacing: 0,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 UTextField(

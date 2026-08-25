@@ -607,7 +607,7 @@ class UColumn extends StatelessWidget {
   const UColumn({
     required this.children,
     super.key,
-    this.spacing = 8.0,
+    this.spacing = 0,
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.crossAxisAlignment = CrossAxisAlignment.center,
     this.mainAxisSize = MainAxisSize.max,
@@ -767,7 +767,7 @@ class URow extends StatelessWidget {
   const URow({
     required this.children,
     super.key,
-    this.spacing = 8.0,
+    this.spacing = 0,
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.crossAxisAlignment = CrossAxisAlignment.center,
     this.mainAxisSize = MainAxisSize.max,

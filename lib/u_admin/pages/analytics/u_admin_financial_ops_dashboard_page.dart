@@ -31,7 +31,6 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
       return SingleChildScrollView(
         padding: EdgeInsets.all(_isWide ? 24 : 14),
         child: UColumn(
-          spacing: 0,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             _hero(r).pSymmetric(vertical: 16),
@@ -56,7 +55,6 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
     ),
     boxShadow: <BoxShadow>[BoxShadow(color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.35), blurRadius: 24, offset: const Offset(0, 10))],
     child: UColumn(
-      spacing: 0,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         UIconTextHorizontal(
@@ -110,7 +108,6 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
       leading: Icon(icon, color: color, size: 26).container(padding: const EdgeInsets.all(12), backgroundColor: color.withValues(alpha: 0.14), radius: 16),
       title: UTextTitleMedium(value, fontWeight: FontWeight.w800, maxLines: 1),
       subtitle: UColumn(
-        spacing: 0,
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -123,8 +120,8 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
   );
 
   Widget _chartsSection(UFinancialOpsDashboardResponse r) => _isWide
-      ? URow(spacing: 0, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[_timelineChart(r).expanded(flex: 2), const SizedBox(width: 16), _entityBarChart(r).expanded()])
-      : UColumn(spacing: 0, children: <Widget>[_timelineChart(r), const SizedBox(height: 16), _entityBarChart(r)]);
+      ? URow(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[_timelineChart(r).expanded(flex: 2), const SizedBox(width: 16), _entityBarChart(r).expanded()])
+      : UColumn(children: <Widget>[_timelineChart(r), const SizedBox(height: 16), _entityBarChart(r)]);
 
   Widget _timelineChart(UFinancialOpsDashboardResponse r) {
     if (r.dailyTimeline.isEmpty) return _chartCard(title: U.s.dailyInOut, child: UTextBodySmall(U.s.noData).alignAtCenter());
@@ -169,14 +166,12 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
     ];
     return _isWide
         ? URow(
-            spacing: 0,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               for (int i = 0; i < charts.length; i++) ...<Widget>[if (i > 0) const SizedBox(width: 16), charts[i].expanded()],
             ],
           )
         : UColumn(
-            spacing: 0,
             children: <Widget>[
               for (final Widget w in charts) ...<Widget>[w, const SizedBox(height: 16)],
             ],
@@ -207,7 +202,6 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
     radius: 20,
     color: Theme.of(context).cardTheme.color,
     child: UColumn(
-      spacing: 0,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         UTextTitleSmall(title, fontWeight: FontWeight.w700),
@@ -221,11 +215,9 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
     padding: const EdgeInsets.all(20),
     radius: 20,
     child: UColumn(
-      spacing: 0,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         URow(
-          spacing: 0,
           children: <Widget>[
             const Icon(Icons.workspace_premium_rounded, size: 20),
             const SizedBox(width: 8),
@@ -262,21 +254,18 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
 
   Widget _recentListsSection(UFinancialOpsDashboardResponse r) => _isWide
       ? URow(
-          spacing: 0,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[_recentTransactions(r).expanded(), const SizedBox(width: 16), _recentMerchantsAndUsers(r).expanded()],
         )
-      : UColumn(spacing: 0, children: <Widget>[_recentTransactions(r), const SizedBox(height: 16), _recentMerchantsAndUsers(r)]);
+      : UColumn(children: <Widget>[_recentTransactions(r), const SizedBox(height: 16), _recentMerchantsAndUsers(r)]);
 
   Widget _recentTransactions(UFinancialOpsDashboardResponse r) => UContainer(
     padding: const EdgeInsets.all(20),
     radius: 20,
     child: UColumn(
-      spacing: 0,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         URow(
-          spacing: 0,
           children: <Widget>[
             const Icon(Icons.receipt_long_rounded, size: 20),
             const SizedBox(width: 8),
@@ -309,17 +298,14 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
   );
 
   Widget _recentMerchantsAndUsers(UFinancialOpsDashboardResponse r) => UColumn(
-    spacing: 0,
     children: <Widget>[
       UContainer(
         padding: const EdgeInsets.all(20),
         radius: 20,
         child: UColumn(
-          spacing: 0,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             URow(
-              spacing: 0,
               children: <Widget>[
                 const Icon(Icons.storefront_rounded, size: 20),
                 const SizedBox(width: 8),
@@ -349,11 +335,9 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
         padding: const EdgeInsets.all(20),
         radius: 20,
         child: UColumn(
-          spacing: 0,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             URow(
-              spacing: 0,
               children: <Widget>[
                 const Icon(Icons.person_add_alt_1_rounded, size: 20),
                 const SizedBox(width: 8),

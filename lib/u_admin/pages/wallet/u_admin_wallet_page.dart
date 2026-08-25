@@ -16,7 +16,6 @@ class _WalletPageState extends State<UAdminWalletPage> {
     body: SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: UColumn(
-        spacing: 0,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           const SizedBox(height: 16),
@@ -38,7 +37,6 @@ class _WalletPageState extends State<UAdminWalletPage> {
               );
             }
             return UColumn(
-              spacing: 0,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 _balanceCard(),
@@ -60,12 +58,10 @@ class _WalletPageState extends State<UAdminWalletPage> {
 
   Widget _balanceCard() => UCard(
     child: URow(
-      spacing: 0,
       children: <Widget>[
         const Icon(Icons.account_balance_wallet_rounded, size: 40),
         const SizedBox(width: 16),
         UColumn(
-          spacing: 0,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             UTextBodyMedium(U.s.currentBalance),
@@ -78,7 +74,6 @@ class _WalletPageState extends State<UAdminWalletPage> {
   );
 
   Widget _actions() => URow(
-    spacing: 0,
     children: <Widget>[
       UButton(title: U.s.charge, icon: const Icon(Icons.add_card_rounded, size: 18), onTap: _showChargeDialog).expanded(),
       const SizedBox(width: 12),
@@ -91,13 +86,11 @@ class _WalletPageState extends State<UAdminWalletPage> {
     if (s == null) return const SizedBox.shrink();
     return UCard(
       child: UColumn(
-        spacing: 0,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           UTextTitleSmall(U.s.last30Days),
           const Divider(height: 16),
           URow(
-            spacing: 0,
             children: <Widget>[
               _miniStat(U.s.moneyIn, s.totalIn, UAdminTheme.green),
               _miniStat(U.s.moneyOut, s.totalOut, UAdminTheme.red),
@@ -111,7 +104,6 @@ class _WalletPageState extends State<UAdminWalletPage> {
 
   Widget _miniStat(String label, double value, Color color) => Expanded(
     child: UColumn(
-      spacing: 0,
       children: <Widget>[
         UTextBodySmall(label),
         const SizedBox(height: 4),
@@ -128,7 +120,6 @@ class _WalletPageState extends State<UAdminWalletPage> {
       );
     }
     return UColumn(
-      spacing: 0,
       children: c.txns.map((UWalletTxnResponse t) {
         final bool incoming = t.receiverId == c.selectedUser.value?.id;
         final Color color = incoming ? UAdminTheme.green : UAdminTheme.red;
@@ -158,7 +149,6 @@ class _WalletPageState extends State<UAdminWalletPage> {
           child: Form(
             key: formKey,
             child: UColumn(
-              spacing: 0,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 UTextField(
@@ -200,7 +190,6 @@ class _WalletPageState extends State<UAdminWalletPage> {
             child: Form(
               key: formKey,
               child: UColumn(
-                spacing: 0,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   UTextField(

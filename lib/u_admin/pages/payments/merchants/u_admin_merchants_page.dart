@@ -92,7 +92,6 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
         width: context.dialogWidth(),
         child: SingleChildScrollView(
         child: UColumn(
-          spacing: 0,
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -116,7 +115,6 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
   );
 
   Widget _kv(String k, String v) => URow(
-    spacing: 0,
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
       SizedBox(width: 130, child: UTextBodySmall(k, color: UAdminTheme.grey)),
@@ -131,7 +129,6 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
         width: context.dialogWidth(),
         child: SingleChildScrollView(
           child: UColumn(
-            spacing: 0,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               UTextFieldAutoCompleteAsync<UUserResponse>(
@@ -151,7 +148,6 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
                 ),
               ).pSymmetric(vertical: 6),
               URow(
-                spacing: 0,
                 children: <Widget>[
                   Obx(
                     () => UTextFieldAutoComplete<UProvince?>(
@@ -245,7 +241,6 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
             child: Form(
               key: formKey,
               child: UColumn(
-                spacing: 0,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   UTextField(

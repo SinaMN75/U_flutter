@@ -49,6 +49,7 @@ class _UAdminParkingPageState extends State<UAdminParkingPage> {
   String _ownerLabel(UParkingResponse i) => i.creator?.displayName.nullIfEmpty() ?? i.creator?.userName ?? "-";
 
   Widget _itemDesktop(UParkingResponse i, int index) => URow(
+    spacing: 8,
     color: UAdminTable.rowColor(context, index),
     padding: UAdminTable.rowPadding,
     children: <Widget>[
@@ -113,7 +114,6 @@ class _UAdminParkingPageState extends State<UAdminParkingPage> {
               child: Form(
                 key: formKey,
                 child: UColumn(
-                  spacing: 0,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     UTextField(

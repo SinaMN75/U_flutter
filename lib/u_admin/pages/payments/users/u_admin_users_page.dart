@@ -88,6 +88,7 @@ class _AdminUsersPageState extends State<UAdminUsersPage> {
   }
 
   Widget _itemDesktop(UUserResponse i, int index) => URow(
+    spacing: 8,
     color: UAdminTable.rowColor(context, index),
     padding: UAdminTable.rowPadding,
     children: <Widget>[
@@ -136,7 +137,6 @@ class _AdminUsersPageState extends State<UAdminUsersPage> {
         width: context.dialogWidth(),
         child: SingleChildScrollView(
           child: UColumn(
-            spacing: 0,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Obx(

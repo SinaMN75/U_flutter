@@ -193,6 +193,7 @@ class _UAdminPnTesterPageState extends State<UAdminPnTesterPage> {
         radius: 16,
       ),
       UColumn(
+        spacing: 8,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           UTextHeadlineSmall(U.s.pnapiTester, fontWeight: FontWeight.bold),
@@ -219,6 +220,7 @@ class _UAdminPnTesterPageState extends State<UAdminPnTesterPage> {
       final bool active = i == _selected;
       final _PnEndpoint e = _endpoints[i];
       return URow(
+        spacing: 8,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               UContainer(
@@ -253,6 +255,7 @@ class _UAdminPnTesterPageState extends State<UAdminPnTesterPage> {
             children: <Widget>[
               Icon(endpoint.icon, color: cs.primary),
               UColumn(
+                spacing: 8,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   UTextTitleMedium(endpoint.name, fontWeight: FontWeight.bold),

@@ -49,6 +49,7 @@ class _BlogPageState extends State<UAdminBlogPage> {
   bool _isPublished(UBlogResponse i) => i.tags.contains(TagBlog.published.number);
 
   Widget _itemDesktop(UBlogResponse i, int index) => URow(
+    spacing: 8,
     color: UAdminTable.rowColor(context, index),
     padding: UAdminTable.rowPadding,
     children: <Widget>[
@@ -101,7 +102,6 @@ class _BlogPageState extends State<UAdminBlogPage> {
         key: c.filterFormKey,
         child: SingleChildScrollView(
           child: UColumn(
-            spacing: 0,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               UTextField(controller: c.titleFilter, labelText: U.s.title).pSymmetric(vertical: 6),
@@ -135,7 +135,6 @@ class _BlogPageState extends State<UAdminBlogPage> {
               ? Center(child: Text(U.s.noItemsFound(U.s.comments)).pSymmetric(vertical: 24))
               : SingleChildScrollView(
                   child: UColumn(
-                    spacing: 0,
                     children: (i.comments ?? <UCommentResponse>[])
                         .map(
                           (UCommentResponse cm) => ListTile(
@@ -174,7 +173,6 @@ class _BlogPageState extends State<UAdminBlogPage> {
               child: Form(
                 key: formKey,
                 child: UColumn(
-                  spacing: 0,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     UTextField(
@@ -201,7 +199,7 @@ class _BlogPageState extends State<UAdminBlogPage> {
                         border: Border.all(color: Theme.of(context).dividerColor),
                         radius: 8,
                         child: content.text.trim().isEmpty
-                            ? URow(spacing: 0, children: <Widget>[const Icon(Icons.edit_note), const SizedBox(width: 8), Text(U.s.richTextEditor)])
+                            ? URow(children: <Widget>[const Icon(Icons.edit_note), const SizedBox(width: 8), Text(U.s.richTextEditor)])
                             : SingleChildScrollView(child: UHtmlView(html: content.text)),
                       ),
                     ).pSymmetric(vertical: 6),

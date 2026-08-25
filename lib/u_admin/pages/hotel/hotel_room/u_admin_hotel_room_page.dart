@@ -42,6 +42,7 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
   );
 
   Widget _itemDesktop(UHotelRoomResponse i, int index) => URow(
+    spacing: 8,
     color: UAdminTable.rowColor(context, index),
     padding: UAdminTable.rowPadding,
     children: <Widget>[
@@ -86,7 +87,6 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
         width: context.dialogWidth(),
         child: SingleChildScrollView(
         child: UColumn(
-          spacing: 0,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             UTextField(controller: c.titleFilter, labelText: U.s.title).pSymmetric(vertical: 6),
@@ -136,7 +136,6 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
             builder: (BuildContext context, void Function(void Function()) setLocal) => Form(
               key: formKey,
               child: UColumn(
-                spacing: 0,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   UTextField(

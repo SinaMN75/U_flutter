@@ -51,7 +51,7 @@ class UAdminListView<T> extends StatelessWidget {
               color: scheme.primary,
               borderRadius: const BorderRadius.vertical(top: Radius.circular(14)),
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14),
-              child: URow(children: desktopHeader()),
+              child: URow(spacing: 8, children: desktopHeader()),
             ),
             itemBuilder: (BuildContext context, int index) => desktopRow(data[index], index),
             itemCount: data.length,
@@ -59,13 +59,11 @@ class UAdminListView<T> extends StatelessWidget {
         : UListView(itemBuilder: (BuildContext context, int index) => mobileRow(data[index], index), itemCount: data.length);
 
     return UColumn(
-      spacing: 0,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
           child: URow(
-            spacing: 0,
             children: <Widget>[
               Icon(Icons.format_list_bulleted_rounded, size: 16, color: Theme.of(context).disabledColor),
               const SizedBox(width: 6),
@@ -141,7 +139,6 @@ abstract class UAdminTable {
       border: Border.all(color: scheme.outlineVariant.withValues(alpha: 0.5)),
       boxShadow: <BoxShadow>[BoxShadow(color: scheme.shadow.withValues(alpha: 0.06), blurRadius: 12, offset: const Offset(0, 4))],
       child: UColumn(
-        spacing: 0,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           URow(
@@ -208,7 +205,7 @@ abstract class UAdminTable {
           onTap: onTap,
           leading: Icon(icon),
           title: UTextBodyMedium(title),
-          subtitle: UColumn(spacing: 0, crossAxisAlignment: CrossAxisAlignment.start, children: subtitle),
+          subtitle: UColumn(crossAxisAlignment: CrossAxisAlignment.start, children: subtitle),
           trailing: trailing,
         ),
       );
@@ -224,7 +221,6 @@ class UAdminSortHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) => URow(
     onTap: onTap,
-    spacing: 0,
     mainAxisAlignment: MainAxisAlignment.center,
     children: <Widget>[
       Flexible(
@@ -243,7 +239,6 @@ class _AdminListError extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Center(
     child: UColumn(
-      spacing: 0,
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Icon(Icons.cloud_off_rounded, size: 56, color: Theme.of(context).colorScheme.error),
@@ -264,7 +259,6 @@ class _AdminListEmpty extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Center(
     child: UColumn(
-      spacing: 0,
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Icon(Icons.inbox_rounded, size: 56, color: Theme.of(context).disabledColor),

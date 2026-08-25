@@ -26,7 +26,7 @@ class _UAdminParkingReportPageState extends State<UAdminParkingReportPage> {
       c.pageNumber(page);
       c.read();
     },
-    body: UColumn(spacing: 0, children: <Widget>[_summary(), _list().expanded()]),
+    body: UColumn(children: <Widget>[_summary(), _list().expanded()]),
   );
 
   Widget _summary() => Obx(() {
@@ -37,7 +37,6 @@ class _UAdminParkingReportPageState extends State<UAdminParkingReportPage> {
       color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.08),
       radius: 10,
       child: URow(
-        spacing: 0,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           UTextBodyMedium("${U.s.totalResults}: ${c.totalCount.toString().separateNumbers3By3()}"),
@@ -66,6 +65,7 @@ class _UAdminParkingReportPageState extends State<UAdminParkingReportPage> {
   );
 
   Widget _itemDesktop(UParkingReportResponse i, int index) => URow(
+    spacing: 8,
     color: UAdminTable.rowColor(context, index),
     padding: UAdminTable.rowPadding,
     children: <Widget>[

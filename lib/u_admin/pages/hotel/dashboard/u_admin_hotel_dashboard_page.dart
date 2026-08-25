@@ -31,7 +31,6 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
       return SingleChildScrollView(
         padding: EdgeInsets.all(_isWide ? 24 : 14),
         child: UColumn(
-          spacing: 0,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             _hero(r).pSymmetric(vertical: 16),
@@ -56,7 +55,6 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
     ),
     boxShadow: <BoxShadow>[BoxShadow(color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.35), blurRadius: 24, offset: const Offset(0, 10))],
     child: UColumn(
-      spacing: 0,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         UIconTextHorizontal(
@@ -118,7 +116,6 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
 
   Widget _occupancyAndRevenueSection(UPropertyDashboardResponse r) => _isWide
       ? URow(
-          spacing: 0,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             _monthlyRevenueChart(r).expanded(flex: 2),
@@ -127,7 +124,6 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
           ],
         )
       : UColumn(
-          spacing: 0,
           children: <Widget>[
             _monthlyRevenueChart(r),
             const SizedBox(height: 16),
@@ -165,7 +161,6 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
 
   Widget _cityBreakdownSection(UPropertyDashboardResponse r) => _isWide
       ? URow(
-          spacing: 0,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             _cityBarChart(U.s.hotelsByCity, r.hotelsByCity, UAdminTheme.indigo).expanded(),
@@ -174,7 +169,6 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
           ],
         )
       : UColumn(
-          spacing: 0,
           children: <Widget>[_cityBarChart(U.s.hotelsByCity, r.hotelsByCity, UAdminTheme.indigo), const SizedBox(height: 16), _cityBarChart(U.s.dormsByCity, r.dormsByCity, UAdminTheme.green)],
         );
 
@@ -194,7 +188,6 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
     radius: 20,
     color: Theme.of(context).cardTheme.color,
     child: UColumn(
-      spacing: 0,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         UTextTitleSmall(title, fontWeight: FontWeight.w700),
@@ -205,18 +198,16 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
   );
 
   Widget _contractsAndInvoicesSection(UPropertyDashboardResponse r) => _isWide
-      ? URow(spacing: 0, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[_expiringContracts(r).expanded(), const SizedBox(width: 16), _overdueInvoices(r).expanded()])
-      : UColumn(spacing: 0, children: <Widget>[_expiringContracts(r), const SizedBox(height: 16), _overdueInvoices(r)]);
+      ? URow(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[_expiringContracts(r).expanded(), const SizedBox(width: 16), _overdueInvoices(r).expanded()])
+      : UColumn(children: <Widget>[_expiringContracts(r), const SizedBox(height: 16), _overdueInvoices(r)]);
 
   Widget _expiringContracts(UPropertyDashboardResponse r) => UContainer(
     padding: const EdgeInsets.all(20),
     radius: 20,
     child: UColumn(
-      spacing: 0,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         URow(
-          spacing: 0,
           children: <Widget>[
             const Icon(Icons.event_busy_rounded, size: 20),
             const SizedBox(width: 8),
@@ -251,11 +242,9 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
     padding: const EdgeInsets.all(20),
     radius: 20,
     child: UColumn(
-      spacing: 0,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         URow(
-          spacing: 0,
           children: <Widget>[
             const Icon(Icons.warning_amber_rounded, size: 20),
             const SizedBox(width: 8),
@@ -288,18 +277,16 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
   );
 
   Widget _recentSection(UPropertyDashboardResponse r) => _isWide
-      ? URow(spacing: 0, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[_recentContracts(r).expanded(), const SizedBox(width: 16), _recentUsers(r).expanded()])
-      : UColumn(spacing: 0, children: <Widget>[_recentContracts(r), const SizedBox(height: 16), _recentUsers(r)]);
+      ? URow(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[_recentContracts(r).expanded(), const SizedBox(width: 16), _recentUsers(r).expanded()])
+      : UColumn(children: <Widget>[_recentContracts(r), const SizedBox(height: 16), _recentUsers(r)]);
 
   Widget _recentContracts(UPropertyDashboardResponse r) => UContainer(
     padding: const EdgeInsets.all(20),
     radius: 20,
     child: UColumn(
-      spacing: 0,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         URow(
-          spacing: 0,
           children: <Widget>[
             const Icon(Icons.description_rounded, size: 20),
             const SizedBox(width: 8),
@@ -334,11 +321,9 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
     padding: const EdgeInsets.all(20),
     radius: 20,
     child: UColumn(
-      spacing: 0,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         URow(
-          spacing: 0,
           children: <Widget>[
             const Icon(Icons.person_add_alt_1_rounded, size: 20),
             const SizedBox(width: 8),

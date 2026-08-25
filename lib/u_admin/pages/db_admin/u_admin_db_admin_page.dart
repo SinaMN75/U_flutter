@@ -244,6 +244,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
     UNavigator.dialog<void>(
       AlertDialog(
         title: URow(
+          spacing: 8,
           children: <Widget>[
             Icon(Icons.article_outlined, color: cs.primary, size: 20),
             const UTextTitleSmall("Row details", fontWeight: FontWeight.bold),
@@ -253,7 +254,6 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
           width: context.dialogWidth(max: 560),
           child: SingleChildScrollView(
             child: UColumn(
-              spacing: 0,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: List<Widget>.generate(row.length, (int i) {
                 final MapEntry<String, String?> e = row.entries.elementAt(i);
@@ -308,6 +308,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
       StatefulBuilder(
         builder: (BuildContext ctx, StateSetter setLocal) => AlertDialog(
           title: URow(
+            spacing: 8,
             children: <Widget>[
               Icon(isInsert ? Icons.add_circle_outline_rounded : Icons.edit_outlined, color: cs.primary, size: 20),
               UTextTitleSmall(isInsert ? "Insert row" : "Edit row", fontWeight: FontWeight.bold),
@@ -322,6 +323,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
                 children: _schema!.columns.map((UDbColumnResponse c) {
                   final bool readOnly = !isInsert && c.name == pk;
                   return URow(
+                    spacing: 8,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
                       UTextField(
@@ -583,7 +585,6 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
     final List<(String, IconData)> tabs = <(String, IconData)>[("Data", Icons.grid_on_rounded), ("Structure", Icons.schema_rounded), ("Query", Icons.terminal_rounded)];
     return URow(
       mainAxisSize: MainAxisSize.min,
-      spacing: 0,
       children: List<Widget>.generate(tabs.length, (int i) {
         final bool active = _tab == i;
         return URow(

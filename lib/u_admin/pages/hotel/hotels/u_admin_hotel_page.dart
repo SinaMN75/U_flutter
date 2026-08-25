@@ -42,6 +42,7 @@ class _HotelPageState extends State<UAdminHotelPage> {
   Widget _itemDesktop(UHotelResponse i, int index) {
     final UCountryCityInfo city = UCountries.infoByCode(i.cityCode);
     return URow(
+      spacing: 8,
       color: UAdminTable.rowColor(context, index),
       padding: UAdminTable.rowPadding,
       children: <Widget>[
@@ -93,7 +94,6 @@ class _HotelPageState extends State<UAdminHotelPage> {
         key: c.filterFormKey,
         child: SingleChildScrollView(
           child: UColumn(
-            spacing: 0,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               UTextField(controller: c.titleFilter, labelText: U.s.title).pSymmetric(vertical: 6),
@@ -149,7 +149,6 @@ class _HotelPageState extends State<UAdminHotelPage> {
             child: Form(
               key: formKey,
               child: UColumn(
-                spacing: 0,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   UTextField(

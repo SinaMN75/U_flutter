@@ -98,6 +98,7 @@ class _ReservationPageState extends State<UAdminReservationPage> {
   String _roomLabel(UHotelReservationResponse i) => i.room?.title ?? widget.room?.title ?? "-";
 
   Widget _itemDesktop(UHotelReservationResponse i, int index) => URow(
+    spacing: 8,
     color: UAdminTable.rowColor(context, index),
     padding: UAdminTable.rowPadding,
     children: <Widget>[
@@ -187,7 +188,6 @@ class _ReservationPageState extends State<UAdminReservationPage> {
           child: SingleChildScrollView(
           child: StatefulBuilder(
             builder: (BuildContext context, void Function(void Function()) setLocal) => UColumn(
-              spacing: 0,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 UTextField(controller: c.guestFilter, labelText: U.s.guest).pSymmetric(vertical: 6),
@@ -277,7 +277,6 @@ class _ReservationPageState extends State<UAdminReservationPage> {
             builder: (BuildContext context, void Function(void Function()) setLocal) => Form(
               key: formKey,
               child: UColumn(
-                spacing: 0,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   if (!isEdit && widget.room == null)

@@ -68,6 +68,7 @@ class _IosInstallSheet extends StatelessWidget {
     final ColorScheme scheme = Theme.of(context).colorScheme;
     return SafeArea(
       child: UColumn(
+        spacing: 8,
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
@@ -81,6 +82,7 @@ class _IosInstallSheet extends StatelessWidget {
             _step(context, 3, Icons.check_circle_outline_rounded, step3),
           ] else
             URow(
+              spacing: 8,
               children: <Widget>[
                 Icon(Icons.info_outline_rounded, color: scheme.primary),
                 UTextBodyMedium(safariHint).expanded(),
@@ -96,6 +98,7 @@ class _IosInstallSheet extends StatelessWidget {
   Widget _step(BuildContext context, int number, IconData icon, String text) {
     final ColorScheme scheme = Theme.of(context).colorScheme;
     return URow(
+      spacing: 8,
       children: <Widget>[
         UContainer(
           width: 28,

@@ -89,6 +89,7 @@ class _UserPageState extends State<UAdminUserPage> {
   Widget _itemDesktop(UUserResponse i, int index) {
     final ({IconData icon, Color color}) gender = _genderStyle(i);
     return URow(
+      spacing: 8,
       color: UAdminTable.rowColor(context, index),
       padding: UAdminTable.rowPadding,
       children: <Widget>[
@@ -163,7 +164,6 @@ class _UserPageState extends State<UAdminUserPage> {
           child: SingleChildScrollView(
             child: StatefulBuilder(
               builder: (BuildContext context, void Function(void Function()) setLocal) => UColumn(
-                spacing: 0,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   UTextField(controller: c.queryController, labelText: U.s.search, prefix: const Icon(Icons.search)).pSymmetric(vertical: 6),

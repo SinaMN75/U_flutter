@@ -41,6 +41,7 @@ class _DormPageState extends State<UAdminDormPage> {
   Widget _itemDesktop(UDormResponse i, int index) {
     final UCountryCityInfo city = UCountries.infoByCode(i.cityCode);
     return URow(
+      spacing: 8,
       color: UAdminTable.rowColor(context, index),
       padding: UAdminTable.rowPadding,
       children: <Widget>[
@@ -106,7 +107,6 @@ class _DormPageState extends State<UAdminDormPage> {
             child: Form(
               key: formKey,
               child: UColumn(
-                spacing: 0,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   UTextField(

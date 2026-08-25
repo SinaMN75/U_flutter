@@ -37,7 +37,6 @@ class _AccountingPageState extends State<UAdminAccountingPage> {
       return SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: UColumn(
-          spacing: 0,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             _scopeBanner(),
@@ -87,12 +86,10 @@ class _AccountingPageState extends State<UAdminAccountingPage> {
   Widget _stat(String label, double value, Color color, IconData icon) => UCard(
     width: 220,
     child: UColumn(
-      spacing: 0,
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         URow(
-          spacing: 0,
           children: <Widget>[
             Icon(icon, color: color, size: 18),
             const SizedBox(width: 8),
@@ -108,7 +105,6 @@ class _AccountingPageState extends State<UAdminAccountingPage> {
   Widget _breakdown(String title, List<UAccountingBreakdownItem> items, Color color) => UCard(
     margin: const EdgeInsets.symmetric(vertical: 6),
     child: UColumn(
-      spacing: 0,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         UTextTitleSmall(title),
@@ -120,7 +116,6 @@ class _AccountingPageState extends State<UAdminAccountingPage> {
             (UAccountingBreakdownItem i) => Padding(
               padding: const EdgeInsets.symmetric(vertical: 6),
               child: URow(
-                spacing: 0,
                 children: <Widget>[
                   UTextBodyMedium(i.tagName).expanded(),
                   UTextBodySmall("×${i.count}"),
@@ -139,7 +134,6 @@ class _AccountingPageState extends State<UAdminAccountingPage> {
     return UCard(
       margin: const EdgeInsets.symmetric(vertical: 6),
       child: UColumn(
-        spacing: 0,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           UTextTitleSmall(U.s.dailyInOut),
@@ -148,7 +142,6 @@ class _AccountingPageState extends State<UAdminAccountingPage> {
             (UAccountingTimelineItem t) => Padding(
               padding: const EdgeInsets.symmetric(vertical: 6),
               child: URow(
-                spacing: 0,
                 children: <Widget>[
                   UTextBodySmall(t.date.toJalaliDate()).expanded(),
                   UTextBodySmall("+${t.inAmount.rial()}", color: UAdminTheme.green),
@@ -170,7 +163,6 @@ class _AccountingPageState extends State<UAdminAccountingPage> {
         width: context.dialogWidth(),
         child: SingleChildScrollView(
           child: UColumn(
-            spacing: 0,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               UTextFieldDatePicker(

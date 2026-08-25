@@ -120,7 +120,6 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
   Widget _localTab(ColorScheme cs) {
     if (_localEntries.isEmpty) return UEmptyState(title: U.s.noData);
     return UColumn(
-      spacing: 0,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         _summaryBar(cs, "${U.s.totalItems}: ${_localEntries.length}", onClear: _clearLocal),
@@ -139,14 +138,13 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
     final List<MapEntry<String, int>> binaries = _binaryFiles.entries.toList()..sort((MapEntry<String, int> a, MapEntry<String, int> b) => a.key.compareTo(b.key));
     final int totalBytes = _binaryFiles.values.fold(0, (int sum, int s) => sum + s);
     return UColumn(
-      spacing: 0,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         _summaryBar(cs, "${U.s.totalSize}: ${_formatBytes(totalBytes)}", onClear: _textFiles.isEmpty && binaries.isEmpty ? null : _clearFiles),
         SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
           child: UColumn(
-            spacing: 10,
+            spacing: 8,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               if (_textFiles.isNotEmpty) ...<Widget>[
@@ -167,6 +165,7 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
   Widget _summaryBar(ColorScheme cs, String label, {VoidCallback? onClear}) => Padding(
     padding: const EdgeInsets.fromLTRB(16, 12, 8, 4),
     child: URow(
+      spacing: 8,
       children: <Widget>[
         Icon(Icons.storage_rounded, size: 16, color: cs.onSurfaceVariant),
         UTextBodySmall(label, color: cs.onSurfaceVariant).expanded(),
@@ -183,6 +182,7 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
   Widget _sectionLabel(ColorScheme cs, String title, IconData icon) => Padding(
     padding: const EdgeInsets.only(top: 8, bottom: 2),
     child: URow(
+      spacing: 8,
       children: <Widget>[
         Icon(icon, size: 18, color: cs.primary),
         UTextTitleSmall(title, fontWeight: FontWeight.bold),
@@ -197,10 +197,11 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
     color: cs.surface,
     border: Border.all(color: cs.outlineVariant.withValues(alpha: 0.5)),
     child: UColumn(
-      spacing: 10,
+      spacing: 8,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         URow(
+          spacing: 8,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Expanded(
@@ -213,7 +214,7 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
         _valueBlock(cs, _valueString(entry.value)),
         if (entry.expiry != null)
           URow(
-            spacing: 6,
+            spacing: 8,
             children: <Widget>[
               Icon(Icons.schedule_rounded, size: 14, color: cs.onSurfaceVariant),
               UTextBodySmall("${U.s.expires}: ${entry.expiry!.formatDate("yyyy/MM/dd HH:mm")}", color: cs.onSurfaceVariant),
@@ -229,10 +230,11 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
     color: cs.surface,
     border: Border.all(color: cs.outlineVariant.withValues(alpha: 0.5)),
     child: UColumn(
-      spacing: 10,
+      spacing: 8,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         URow(
+          spacing: 8,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Expanded(
@@ -281,7 +283,6 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
   );
 
   Widget _cardActions(ColorScheme cs, {required VoidCallback onDelete, VoidCallback? onCopy}) => URow(
-    spacing: 0,
     mainAxisSize: MainAxisSize.min,
     children: <Widget>[
       if (onCopy != null)

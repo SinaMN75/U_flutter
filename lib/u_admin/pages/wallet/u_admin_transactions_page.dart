@@ -44,6 +44,7 @@ class _TransactionsPageState extends State<UAdminTransactionsPage> {
   String _statusName(UTxnResponse i) => i.tags.isEmpty ? "-" : (TagTxn.values.fromNumber(i.tags.first)?.localizedTitle ?? "-");
 
   Widget _itemDesktop(UTxnResponse i, int index) => URow(
+    spacing: 8,
     color: UAdminTable.rowColor(context, index),
     padding: UAdminTable.rowPadding,
     children: <Widget>[
@@ -83,7 +84,6 @@ class _TransactionsPageState extends State<UAdminTransactionsPage> {
         width: context.dialogWidth(),
         child: SingleChildScrollView(
           child: UColumn(
-            spacing: 0,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               UDropDownField<TagTxn?>(
@@ -146,7 +146,6 @@ class _TransactionsPageState extends State<UAdminTransactionsPage> {
             child: Form(
               key: formKey,
               child: UColumn(
-                spacing: 0,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   UTextField(
@@ -198,7 +197,6 @@ class _TransactionsPageState extends State<UAdminTransactionsPage> {
             child: Form(
               key: formKey,
               child: UColumn(
-                spacing: 0,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   UTextField(controller: amount, labelText: U.s.amount, keyboardType: TextInputType.number).pSymmetric(vertical: 6),

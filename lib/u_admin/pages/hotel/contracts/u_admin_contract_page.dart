@@ -92,6 +92,7 @@ class _ContractPageState extends State<UAdminContractPage> {
   String _tenantLabel(UDormBedContractResponse i) => i.user?.displayName ?? "-";
 
   Widget _itemDesktop(UDormBedContractResponse i, int index) => URow(
+    spacing: 8,
     color: UAdminTable.rowColor(context, index),
     padding: UAdminTable.rowPadding,
     children: <Widget>[
@@ -163,7 +164,6 @@ class _ContractPageState extends State<UAdminContractPage> {
           child: SingleChildScrollView(
           child: StatefulBuilder(
             builder: (BuildContext context, void Function(void Function()) setLocal) => UColumn(
-              spacing: 0,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 UTextField(controller: c.tenantFilter, labelText: U.s.tenant).pSymmetric(vertical: 6),
@@ -269,7 +269,6 @@ class _ContractPageState extends State<UAdminContractPage> {
             builder: (BuildContext context, void Function(void Function()) setLocal) => Form(
               key: formKey,
               child: UColumn(
-                spacing: 0,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   if (!isEdit && widget.bed == null)

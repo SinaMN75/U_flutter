@@ -41,7 +41,6 @@ class _AdminSettingsPageState extends State<UAdminSettingsPage> {
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 720),
           child: UColumn(
-            spacing: 0,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               _accountCard(),
@@ -110,13 +109,11 @@ class _AdminSettingsPageState extends State<UAdminSettingsPage> {
     ),
     radius: 16,
     child: URow(
-      spacing: 0,
       children: <Widget>[
         CircleAvatar(radius: 28, backgroundColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2), child: UImage(UAdmin.logo)),
         const SizedBox(width: 16),
         Expanded(
           child: UColumn(
-            spacing: 0,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               UTextBodyLarge("${U.user.firstName ?? ""} ${U.user.lastName ?? ""}".trim(), fontWeight: FontWeight.bold),
@@ -141,11 +138,9 @@ class _AdminSettingsPageState extends State<UAdminSettingsPage> {
     radius: 16,
     border: Border.all(color: Theme.of(context).dividerColor.withValues(alpha: 0.4)),
     child: UColumn(
-      spacing: 0,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         URow(
-          spacing: 0,
           children: <Widget>[
             Icon(icon, size: 20, color: Theme.of(context).colorScheme.primary),
             const SizedBox(width: 10),
@@ -159,7 +154,6 @@ class _AdminSettingsPageState extends State<UAdminSettingsPage> {
   );
 
   Widget _rowLabel(String text, IconData icon) => URow(
-    spacing: 0,
     children: <Widget>[
       Icon(icon, size: 18, color: UAdminTheme.grey),
       const SizedBox(width: 8),

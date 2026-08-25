@@ -49,6 +49,7 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
   bool _isFree(UDormBedResponse i) => i.contracts?.where((UDormBedContractResponse i) => i.isActive).isEmpty ?? true;
 
   Widget _itemDesktop(UDormBedResponse i, int index) => URow(
+    spacing: 8,
     color: UAdminTable.rowColor(context, index),
     padding: UAdminTable.rowPadding,
     children: <Widget>[
@@ -93,7 +94,6 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
         width: context.dialogWidth(),
         child: SingleChildScrollView(
         child: UColumn(
-          spacing: 0,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             UTextField(controller: c.titleFilter, labelText: U.s.title).pSymmetric(vertical: 6),
@@ -134,7 +134,6 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
             builder: (BuildContext context, void Function(void Function()) setLocal) => Form(
               key: formKey,
               child: UColumn(
-                spacing: 0,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   UTextField(

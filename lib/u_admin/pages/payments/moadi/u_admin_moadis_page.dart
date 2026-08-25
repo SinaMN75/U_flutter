@@ -53,6 +53,7 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
   );
 
   Widget _itemDesktop(UMoadiResponse i, int index) => URow(
+    spacing: 8,
     color: UAdminTable.rowColor(context, index),
     padding: UAdminTable.rowPadding,
     children: <Widget>[
@@ -142,7 +143,6 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
         width: context.dialogWidth(),
         child: SingleChildScrollView(
           child: UColumn(
-            spacing: 0,
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -170,7 +170,6 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
   );
 
   Widget _kv(String k, String v) => URow(
-    spacing: 0,
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
       SizedBox(width: 130, child: UTextBodySmall(k, color: UAdminTheme.grey)),
@@ -185,7 +184,6 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
         width: context.dialogWidth(),
         child: SingleChildScrollView(
           child: UColumn(
-            spacing: 0,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               UTextFieldAutoCompleteAsync<UUserResponse>(

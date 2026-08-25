@@ -190,6 +190,7 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
         radius: 16,
       ),
       UColumn(
+        spacing: 8,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           UTextHeadlineSmall(U.s.cryptoTester, fontWeight: FontWeight.bold),
@@ -307,7 +308,7 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           field,
-          URow(spacing: 10, crossAxisAlignment: CrossAxisAlignment.end, children: <Widget>[encoding.expanded(), generateBtn]),
+          URow(spacing: 8, crossAxisAlignment: CrossAxisAlignment.end, children: <Widget>[encoding.expanded(), generateBtn]),
         ],
       );
     }

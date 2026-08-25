@@ -68,6 +68,7 @@ class _ContentsPageState extends State<UAdminContentsPage> {
   );
 
   Widget _itemDesktop(UContentResponse i, int index) => URow(
+    spacing: 8,
     color: UAdminTable.rowColor(context, index),
     padding: UAdminTable.rowPadding,
     children: <Widget>[
@@ -100,7 +101,6 @@ class _ContentsPageState extends State<UAdminContentsPage> {
             key: c.filterFormKey,
             child: SingleChildScrollView(
               child: UColumn(
-                spacing: 0,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Obx(
@@ -169,7 +169,6 @@ class _ContentsPageState extends State<UAdminContentsPage> {
               child: Form(
                 key: formKey,
                 child: UColumn(
-                  spacing: 0,
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
@@ -208,7 +207,6 @@ class _ContentsPageState extends State<UAdminContentsPage> {
                     UTextField(controller: phone, labelText: U.s.phoneNumber).pSymmetric(vertical: 6),
                     const SizedBox(height: 12),
                     URow(
-                      spacing: 0,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         UTextBodyLarge(U.s.items),
@@ -224,7 +222,6 @@ class _ContentsPageState extends State<UAdminContentsPage> {
                     ),
                     const SizedBox(height: 12),
                     URow(
-                      spacing: 0,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         UTextBodyLarge(U.s.links),
@@ -313,11 +310,9 @@ class _ContentsPageState extends State<UAdminContentsPage> {
     color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.06),
     radius: 8,
     child: UColumn(
-      spacing: 0,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         URow(
-          spacing: 0,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             UTextBodyMedium("${U.s.item} ${index + 1}"),
@@ -351,11 +346,9 @@ class _ContentsPageState extends State<UAdminContentsPage> {
     color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.06),
     radius: 8,
     child: UColumn(
-      spacing: 0,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         URow(
-          spacing: 0,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             UTextBodyMedium("${U.s.link} ${index + 1}"),
@@ -416,7 +409,6 @@ class _Base64ImageFieldState extends State<_Base64ImageField> {
   Widget build(BuildContext context) {
     final ColorScheme scheme = Theme.of(context).colorScheme;
     return UColumn(
-      spacing: 0,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         UTextBodySmall(widget.label, color: scheme.onSurfaceVariant).pOnly(bottom: 4),

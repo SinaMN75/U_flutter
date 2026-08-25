@@ -93,7 +93,6 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 900),
             child: UColumn(
-              spacing: 0,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 const SizedBox(height: 12),
@@ -104,7 +103,6 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
                 _documentsSection(),
                 const SizedBox(height: 20),
                 URow(
-                  spacing: 0,
                   children: <Widget>[
                     UButton(title: U.s.approve, icon: const Icon(Icons.check_circle_outline), onTap: _confirmApprove).expanded(flex: 2),
                     const SizedBox(width: 12),
@@ -128,7 +126,6 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
       gradient: LinearGradient(colors: <Color>[color.withValues(alpha: 0.08), color.withValues(alpha: 0.20)], begin: Alignment.topRight, end: Alignment.bottomLeft),
       radius: 16,
       child: URow(
-        spacing: 0,
         children: <Widget>[
           UContainer(
             padding: const EdgeInsets.all(12),
@@ -139,7 +136,6 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
           const SizedBox(width: 16),
           Expanded(
             child: UColumn(
-              spacing: 0,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 UTextBodySmall(U.s.verificationStatus, color: UAdminTheme.grey),
@@ -160,7 +156,6 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
   }
 
   Widget _userInfo() => UColumn(
-    spacing: 0,
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
       _sectionHeader(U.s.userInformation, Icons.person_outline, UAdminTheme.orange),
@@ -168,7 +163,6 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
       DecoratedBox(
         decoration: _cardDecoration(),
         child: UColumn(
-          spacing: 0,
           children: <Widget>[
             _infoRow(Icons.person, U.s.username, c.user.userName, UAdminTheme.orange),
             const Divider(height: 1),
@@ -190,7 +184,6 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
   );
 
   Widget _documentsSection() => UColumn(
-    spacing: 0,
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
       _sectionHeader(U.s.userDocuments, Icons.folder_outlined, UAdminTheme.red),
@@ -207,7 +200,6 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
       child: DecoratedBox(
         decoration: _cardDecoration(),
         child: UColumn(
-          spacing: 0,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Stack(
@@ -228,7 +220,6 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
                         )
                       : Center(
                           child: UColumn(
-                            spacing: 0,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Icon(d.isVideo ? (hasData ? Icons.play_circle_outline : Icons.videocam_off_outlined) : Icons.insert_drive_file, size: 44, color: UAdminTheme.grey.shade400),
@@ -244,11 +235,9 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
             Padding(
               padding: const EdgeInsets.all(10),
               child: UColumn(
-                spacing: 0,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   URow(
-                    spacing: 0,
                     children: <Widget>[
                       Expanded(
                         child: UTextBodySmall(d.title, fontWeight: FontWeight.w600, maxLines: 1, overflow: TextOverflow.ellipsis),
@@ -302,7 +291,6 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
       color: color,
       radius: 20,
       child: URow(
-        spacing: 0,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Icon(icon, size: 12, color: UAdminTheme.white),
@@ -330,7 +318,6 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
   );
 
   Widget _sectionHeader(String title, IconData icon, Color color) => URow(
-    spacing: 0,
     children: <Widget>[
       UContainer(
         padding: const EdgeInsets.all(8),
@@ -382,7 +369,6 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
           width: context.dialogWidth(),
           child: SingleChildScrollView(
             child: UColumn(
-              spacing: 0,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 UTextField(labelText: U.s.reasonForRejecting(U.s.nationalCardFront), controller: frontReason).pSymmetric(vertical: 6),
@@ -433,7 +419,6 @@ class UAdminAppErrorRetry extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => UColumn(
-    spacing: 0,
     mainAxisAlignment: MainAxisAlignment.center,
     children: <Widget>[
       Icon(Icons.error_outline, size: 48, color: Theme.of(context).colorScheme.error),

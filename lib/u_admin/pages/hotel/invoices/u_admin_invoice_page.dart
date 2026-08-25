@@ -39,7 +39,6 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
       c.read();
     },
     body: UColumn(
-      spacing: 0,
       children: <Widget>[
         if (widget.contract != null) Obx(() => c.state.isLoaded() ? _summary() : const SizedBox.shrink()),
         _statusFilter(),
@@ -52,7 +51,6 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
     scrollDirection: Axis.horizontal,
     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
     child: URow(
-      spacing: 0,
       children: <Widget>[
         _summaryCard(U.s.totalDebt, c.totalDebt, UAdminTheme.blueGrey),
         _summaryCard(U.s.totalPaid, c.totalPaid, UAdminTheme.green),
@@ -68,7 +66,6 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
     radius: 12,
     color: color.withValues(alpha: 0.11),
     child: UColumn(
-      spacing: 0,
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -85,7 +82,6 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
       scrollDirection: Axis.horizontal,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       child: URow(
-        spacing: 0,
         children: <Widget>[
           _chip(U.s.all, UAdminInvoiceStatusFilter.all),
           _chip(U.s.paid, UAdminInvoiceStatusFilter.paid),
@@ -135,6 +131,7 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
   String _tenantLabel(UDormBedInvoiceResponse i) => i.contract?.user?.displayName ?? widget.contract?.user?.displayName ?? "-";
 
   Widget _itemDesktop(UDormBedInvoiceResponse i, int index) => URow(
+    spacing: 8,
     color: UAdminTable.rowColor(context, index),
     padding: UAdminTable.rowPadding,
     children: <Widget>[
@@ -193,7 +190,6 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
         width: context.dialogWidth(),
         child: SingleChildScrollView(
         child: UColumn(
-          spacing: 0,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             UTextFieldDatePicker(
@@ -270,7 +266,6 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
             builder: (BuildContext context, void Function(void Function()) setLocal) => Form(
               key: formKey,
               child: UColumn(
-                spacing: 0,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   if (!isEdit && widget.contract == null)

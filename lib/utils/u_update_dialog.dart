@@ -106,6 +106,7 @@ class UUpdateDialog {
         child: AlertDialog(
           title: Text(type == UpdateType.force ? "Update Required" : "Update Available"),
           content: UColumn(
+            spacing: 8,
             width: 200,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[

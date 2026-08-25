@@ -108,7 +108,6 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
         width: context.dialogWidth(),
         child: SingleChildScrollView(
           child: UColumn(
-            spacing: 0,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               UDropDownField<TagOrderBy>(
@@ -188,7 +187,6 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
             child: Form(
               key: formKey,
               child: UColumn(
-                spacing: 0,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   UTextField(
@@ -253,7 +251,6 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
             child: Form(
               key: formKey,
               child: UColumn(
-                spacing: 0,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   UTextField(
@@ -331,7 +328,6 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
           child: SingleChildScrollView(
             child: Obx(
               () => UColumn(
-                spacing: 0,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   USegmentedControl<bool>(

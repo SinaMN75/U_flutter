@@ -244,7 +244,7 @@ class _UAdminBarcodeGeneratorPageState extends State<UAdminBarcodeGeneratorPage>
     ),
     if (_shape == UBarcodeModuleShape.rounded) _slider("${U.s.cornerRadius}: ${(_cornerRadius * 100).round()}%", _cornerRadius, 0, 0.5, (double v) => setState(() => _cornerRadius = v)),
     URow(
-      spacing: 10,
+      spacing: 8,
       children: <Widget>[
         UButton(title: U.s.logo, icon: const Icon(Icons.image_rounded), type: UButtonType.outlined, onTap: _pickLogo).expanded(),
         if (_logo != null) UButton(title: U.s.remove, icon: const Icon(Icons.delete_outline_rounded), type: UButtonType.text, onTap: () => setState(() => _logo = null)),
@@ -297,7 +297,7 @@ class _UAdminBarcodeGeneratorPageState extends State<UAdminBarcodeGeneratorPage>
       spacing: 14,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        URow(spacing: 10, children: <Widget>[Icon(icon, color: cs.primary), UTextTitleMedium(title, fontWeight: FontWeight.bold)]),
+        URow(spacing: 8, children: <Widget>[Icon(icon, color: cs.primary), UTextTitleMedium(title, fontWeight: FontWeight.bold)]),
         const Divider(height: 1),
         ...children,
       ],

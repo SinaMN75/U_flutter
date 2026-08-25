@@ -26,7 +26,6 @@ abstract class UAdminPayLink {
             width: context.dialogWidth(),
             child: SingleChildScrollView(
               child: UColumn(
-                spacing: 0,
                 mainAxisSize: MainAxisSize.min,
                 children: invoices
                     .map(
@@ -37,8 +36,8 @@ abstract class UAdminPayLink {
                         trailing: i.isPaid
                             ? UTextBodySmall(U.s.paid, color: UAdminTheme.green)
                             : URow(
+                          spacing: 8,
                                 mainAxisSize: MainAxisSize.min,
-                                spacing: 0,
                                 children: <Widget>[
                                   IconButton(
                                     icon: const Icon(Icons.copy_rounded),
