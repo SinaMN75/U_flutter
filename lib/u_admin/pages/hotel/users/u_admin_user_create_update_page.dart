@@ -63,29 +63,40 @@ class _UserCreateUpdateDialogState extends State<UAdminUserCreateUpdateDialog> {
                     },
                   ),
                 ),
-              if (context.isMobileWidth) UColumn(
-                      spacing: 8,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        UTextField(controller: c.controllerFirstName, labelText: U.s.firstName, validator: UValidators.required(message: U.s.required)),
-                        UTextField(controller: c.controllerLastName, labelText: U.s.lastName, validator: UValidators.required(message: U.s.required)),
-                      ],
-                    ).pSymmetric(vertical: 6) else URow(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        UTextField(
-                          controller: c.controllerFirstName,
-                          labelText: U.s.firstName,
-                          validator: UValidators.required(message: U.s.required),
-                        ).expanded(),
-                        const SizedBox(width: 10),
-                        UTextField(
-                          controller: c.controllerLastName,
-                          labelText: U.s.lastName,
-                          validator: UValidators.required(message: U.s.required),
-                        ).expanded(),
-                      ],
-                    ).pSymmetric(vertical: 6),
+              if (context.isMobileWidth)
+                UColumn(
+                  spacing: 8,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    UTextField(
+                      controller: c.controllerFirstName,
+                      labelText: U.s.firstName,
+                      validator: UValidators.required(message: U.s.required),
+                    ),
+                    UTextField(
+                      controller: c.controllerLastName,
+                      labelText: U.s.lastName,
+                      validator: UValidators.required(message: U.s.required),
+                    ),
+                  ],
+                ).pSymmetric(vertical: 6)
+              else
+                URow(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    UTextField(
+                      controller: c.controllerFirstName,
+                      labelText: U.s.firstName,
+                      validator: UValidators.required(message: U.s.required),
+                    ).expanded(),
+                    const SizedBox(width: 10),
+                    UTextField(
+                      controller: c.controllerLastName,
+                      labelText: U.s.lastName,
+                      validator: UValidators.required(message: U.s.required),
+                    ).expanded(),
+                  ],
+                ).pSymmetric(vertical: 6),
               UTextField(
                 controller: c.controllerUserName,
                 labelText: U.s.username,

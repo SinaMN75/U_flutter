@@ -246,19 +246,20 @@ class _UAdminFileManagerPageState extends State<UAdminFileManagerPage> {
     final Color fg = primary ? cs.onPrimary : cs.onSurface;
     return Tooltip(
       message: compact ? label : "",
-      child: URow(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Icon(icon, size: 18, color: enabled ? fg : fg.withValues(alpha: 0.4)),
-              if (!compact) UTextLabelLarge(label, color: enabled ? fg : fg.withValues(alpha: 0.4), fontWeight: FontWeight.w600),
-            ],
-          )
-          .pSymmetric(horizontal: compact ? 10 : 14, vertical: 10)
-          .container(
-            backgroundColor: enabled ? bg : bg.withValues(alpha: 0.4),
-            radius: 10,
-          )
-          .onTap(enabled ? onTap : () {}),
+      child:
+          URow(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Icon(icon, size: 18, color: enabled ? fg : fg.withValues(alpha: 0.4)),
+                  if (!compact) UTextLabelLarge(label, color: enabled ? fg : fg.withValues(alpha: 0.4), fontWeight: FontWeight.w600),
+                ],
+              )
+              .pSymmetric(horizontal: compact ? 10 : 14, vertical: 10)
+              .container(
+                backgroundColor: enabled ? bg : bg.withValues(alpha: 0.4),
+                radius: 10,
+              )
+              .onTap(enabled ? onTap : () {}),
     );
   }
 

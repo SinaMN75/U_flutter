@@ -837,20 +837,20 @@ class _UTextFieldPhoneNumberState extends State<UTextFieldPhoneNumber> {
               border: Border.all(color: Colors.grey[400]!),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
               child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Image.asset(
-                      "packages/u/lib/assets/flags/${_selectedCountry.flag}",
-                      width: 24,
-                      height: 24,
-                      errorBuilder: (_, _, _) => const Icon(Icons.flag, size: 24),
-                    ),
-                    const SizedBox(width: 8),
-                    Text(_selectedCountry.dialCode),
-                    const SizedBox(width: 4),
-                    Icon(Icons.arrow_drop_down, color: Colors.grey[600]),
-                  ],
-                ),
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Image.asset(
+                    "packages/u/lib/assets/flags/${_selectedCountry.flag}",
+                    width: 24,
+                    height: 24,
+                    errorBuilder: (_, _, _) => const Icon(Icons.flag, size: 24),
+                  ),
+                  const SizedBox(width: 8),
+                  Text(_selectedCountry.dialCode),
+                  const SizedBox(width: 4),
+                  Icon(Icons.arrow_drop_down, color: Colors.grey[600]),
+                ],
+              ),
             ),
     ),
   );

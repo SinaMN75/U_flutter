@@ -1,5 +1,6 @@
-import "package:u/utilities.dart";
 import "dart:ui" as ui;
+
+import "package:u/utilities.dart";
 
 class USignaturePoint {
   const USignaturePoint(this.offset, this.width);
@@ -43,10 +44,15 @@ class USignatureController extends ChangeNotifier {
   }
 
   List<USignatureStroke> get strokes => _strokes;
+
   USignatureStroke? get activeStroke => _active;
+
   bool get isEmpty => _strokes.isEmpty && _active == null;
+
   bool get isNotEmpty => !isEmpty;
+
   bool get canUndo => _strokes.isNotEmpty;
+
   bool get canRedo => _redo.isNotEmpty;
 
   void beginStroke(Offset point) {
@@ -120,7 +126,13 @@ class _USignaturePainter extends CustomPainter {
     final List<USignaturePoint> points = stroke.points;
     if (points.isEmpty) return;
     if (points.length == 1) {
-      canvas.drawCircle(points.first.offset, points.first.width / 2, Paint()..color = stroke.color..isAntiAlias = true);
+      canvas.drawCircle(
+        points.first.offset,
+        points.first.width / 2,
+        Paint()
+          ..color = stroke.color
+          ..isAntiAlias = true,
+      );
       return;
     }
     final Paint paint = Paint()

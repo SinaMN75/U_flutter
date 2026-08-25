@@ -220,7 +220,7 @@ class _UAdminPnTesterPageState extends State<UAdminPnTesterPage> {
       final bool active = i == _selected;
       final _PnEndpoint e = _endpoints[i];
       return URow(
-        spacing: 8,
+            spacing: 8,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               UContainer(

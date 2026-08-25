@@ -19,13 +19,19 @@ extension TextEditingControllerExtension on TextEditingController {
   void appendCharacter(String character, {int? maxLength}) {
     if (maxLength != null && text.length >= maxLength) return;
     final String updated = text + character;
-    value = TextEditingValue(text: updated, selection: TextSelection.collapsed(offset: updated.length));
+    value = TextEditingValue(
+      text: updated,
+      selection: TextSelection.collapsed(offset: updated.length),
+    );
   }
 
   void dropLastCharacter() {
     if (text.isEmpty) return;
     final String updated = text.substring(0, text.length - 1);
-    value = TextEditingValue(text: updated, selection: TextSelection.collapsed(offset: updated.length));
+    value = TextEditingValue(
+      text: updated,
+      selection: TextSelection.collapsed(offset: updated.length),
+    );
   }
 }
 

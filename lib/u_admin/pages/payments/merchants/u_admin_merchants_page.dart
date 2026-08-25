@@ -91,26 +91,27 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
       content: SizedBox(
         width: context.dialogWidth(),
         child: SingleChildScrollView(
-        child: UColumn(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            _kv(U.s.businessTitle, i.jsonData.businessTitle ?? "-"),
-            _kv(U.s.ownerName, i.jsonData.ownerName ?? "-"),
-            _kv(U.s.ownerPhoneNumber, i.jsonData.ownerPhoneNumber ?? "-"),
-            _kv(U.s.nationalCode, i.nationalCode),
-            _kv(U.s.phoneNumber, i.phoneNumber),
-            _kv(U.s.landline, i.landline),
-            _kv(U.s.zipCode, i.zipCode),
-            _kv(U.s.cityCode, i.cityCode),
-            _kv(U.s.mcc, i.mcc),
-            _kv(U.s.address, i.jsonData.address ?? "-"),
-            _kv(U.s.merchantId, i.merchantId ?? U.s.unassigned),
-            _kv(U.s.institutionId, i.insId ?? U.s.unassigned),
-            UButton(type: UButtonType.text, title: U.s.ok, onTap: UNavigator.back),
-          ],
+          child: UColumn(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              _kv(U.s.businessTitle, i.jsonData.businessTitle ?? "-"),
+              _kv(U.s.ownerName, i.jsonData.ownerName ?? "-"),
+              _kv(U.s.ownerPhoneNumber, i.jsonData.ownerPhoneNumber ?? "-"),
+              _kv(U.s.nationalCode, i.nationalCode),
+              _kv(U.s.phoneNumber, i.phoneNumber),
+              _kv(U.s.landline, i.landline),
+              _kv(U.s.zipCode, i.zipCode),
+              _kv(U.s.cityCode, i.cityCode),
+              _kv(U.s.mcc, i.mcc),
+              _kv(U.s.address, i.jsonData.address ?? "-"),
+              _kv(U.s.merchantId, i.merchantId ?? U.s.unassigned),
+              _kv(U.s.institutionId, i.insId ?? U.s.unassigned),
+              UButton(type: UButtonType.text, title: U.s.ok, onTap: UNavigator.back),
+            ],
+          ),
         ),
-      )),
+      ),
     ),
   );
 

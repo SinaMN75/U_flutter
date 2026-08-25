@@ -132,7 +132,11 @@ class _UserPageState extends State<UAdminUserPage> {
       trailing: _menu(i),
       onTap: () => UAdminPageSwitcher.hotelUserDetail(user: i),
       fields: <UAdminField>[
-        UAdminField(U.s.phoneNumber, null, valueWidget: UTextBodyMedium(i.phoneNumber ?? "-", textAlign: TextAlign.end, textDirection: TextDirection.ltr, fontWeight: FontWeight.w500)),
+        UAdminField(
+          U.s.phoneNumber,
+          null,
+          valueWidget: UTextBodyMedium(i.phoneNumber ?? "-", textAlign: TextAlign.end, textDirection: TextDirection.ltr, fontWeight: FontWeight.w500),
+        ),
         UAdminField(U.s.email, i.email ?? "-"),
         UAdminField(U.s.joinedDate, i.createdAt.toJalaliDateTime()),
       ],

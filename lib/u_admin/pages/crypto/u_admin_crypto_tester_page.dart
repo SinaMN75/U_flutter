@@ -301,7 +301,11 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
     final Widget field = UTextField(controller: _keyController, labelText: U.s.secretKey, hintText: U.s.secretKey);
     if (_algo.id == "hmac" || _algo.id == "caesar") return field;
     final Widget encoding = _encodingDropdown(_keyEncoding, (UByteEncoding e) => setState(() => _keyEncoding = e), U.s.keyEncoding);
-    final Widget generateBtn = IconButton(tooltip: U.s.generate, onPressed: _generateKey, icon: Icon(Icons.casino_rounded, color: cs.primary));
+    final Widget generateBtn = IconButton(
+      tooltip: U.s.generate,
+      onPressed: _generateKey,
+      icon: Icon(Icons.casino_rounded, color: cs.primary),
+    );
     if (mobile) {
       return UColumn(
         spacing: 10,
@@ -315,7 +319,11 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
     return URow(
       spacing: 10,
       crossAxisAlignment: CrossAxisAlignment.end,
-      children: <Widget>[field.expanded(), SizedBox(width: 130, child: encoding), generateBtn],
+      children: <Widget>[
+        field.expanded(),
+        SizedBox(width: 130, child: encoding),
+        generateBtn,
+      ],
     );
   }
 
@@ -323,7 +331,11 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
     final bool mobile = context.isMobileWidth;
     final Widget field = UTextField(controller: _ivController, labelText: U.s.ivInitializationVector, hintText: U.s.ivInitializationVector);
     final Widget encoding = _encodingDropdown(_ivEncoding, (UByteEncoding e) => setState(() => _ivEncoding = e), U.s.ivEncoding);
-    final Widget generateBtn = IconButton(tooltip: U.s.generate, onPressed: _generateIv, icon: Icon(Icons.casino_rounded, color: cs.primary));
+    final Widget generateBtn = IconButton(
+      tooltip: U.s.generate,
+      onPressed: _generateIv,
+      icon: Icon(Icons.casino_rounded, color: cs.primary),
+    );
     if (mobile) {
       return UColumn(
         spacing: 10,
@@ -337,7 +349,11 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
     return URow(
       spacing: 10,
       crossAxisAlignment: CrossAxisAlignment.end,
-      children: <Widget>[field.expanded(), SizedBox(width: 130, child: encoding), generateBtn],
+      children: <Widget>[
+        field.expanded(),
+        SizedBox(width: 130, child: encoding),
+        generateBtn,
+      ],
     );
   }
 

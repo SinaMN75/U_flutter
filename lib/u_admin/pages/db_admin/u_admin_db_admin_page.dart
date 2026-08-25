@@ -559,7 +559,10 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
 
   Widget _toolbar(ColorScheme cs, {bool showMenu = false}) => URow(
     children: <Widget>[
-      if (showMenu) Builder(builder: (BuildContext ctx) => IconButton(icon: const Icon(Icons.menu_rounded), onPressed: () => Scaffold.of(ctx).openDrawer(), padding: EdgeInsets.zero)),
+      if (showMenu)
+        Builder(
+          builder: (BuildContext ctx) => IconButton(icon: const Icon(Icons.menu_rounded), onPressed: () => Scaffold.of(ctx).openDrawer(), padding: EdgeInsets.zero),
+        ),
       if (!showMenu) Icon(Icons.grid_on_rounded, color: cs.primary, size: 18),
       Expanded(
         child: UColumn(

@@ -3,10 +3,15 @@ import "package:u/utils/web/u_web_stub.dart" if (dart.library.html) "package:u/u
 
 abstract class UPwa {
   static String get _ua => uPwaUserAgent().toLowerCase();
+
   static bool get isStandalone => UApp.isWeb && uPwaIsStandalone();
+
   static bool get isIphoneBrowser => UApp.isWeb && _ua.contains("iphone");
+
   static bool get isIosBrowser => UApp.isWeb && (_ua.contains("iphone") || _ua.contains("ipad") || _ua.contains("ipod"));
+
   static bool get isAndroidBrowser => UApp.isWeb && _ua.contains("android");
+
   static bool get isIosSafari {
     if (!isIosBrowser) return false;
     const List<String> nonSafari = <String>["crios", "fxios", "edgios", "opios", "mercury", "gsa"];

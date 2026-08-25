@@ -439,91 +439,93 @@ class _UImageCropperState extends State<UImageCropper> {
   }
 
   Widget _toolbar(ColorScheme scheme) => Material(
-        color: scheme.surface,
-        elevation: 8,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              SizedBox(
-                height: 40,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  children: <Widget>[
-                    for (final UCropAspectRatio r in _ratios)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
-                        child: ChoiceChip(
-                          label: Text(r.label),
-                          selected: _aspect == r.ratio,
-                          onSelected: (_) => _selectAspect(r.ratio),
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  if (widget.allowRotate) ...<Widget>[
-                    IconButton(
-                      icon: const Icon(Icons.rotate_left_rounded),
-                      tooltip: U.s.rotateLeft,
-                      onPressed: () => _transform((ui.Image i) => _rotate90(i, clockwise: false)),
+    color: scheme.surface,
+    elevation: 8,
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          SizedBox(
+            height: 40,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              children: <Widget>[
+                for (final UCropAspectRatio r in _ratios)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    child: ChoiceChip(
+                      label: Text(r.label),
+                      selected: _aspect == r.ratio,
+                      onSelected: (_) => _selectAspect(r.ratio),
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.rotate_right_rounded),
-                      tooltip: U.s.rotateRight,
-                      onPressed: () => _transform((ui.Image i) => _rotate90(i, clockwise: true)),
-                    ),
-                  ],
-                  if (widget.allowFlip) ...<Widget>[
-                    IconButton(
-                      icon: const Icon(Icons.flip_rounded),
-                      tooltip: U.s.flipHorizontal,
-                      onPressed: () => _transform((ui.Image i) => _flip(i, horizontal: true)),
-                    ),
-                    IconButton(
-                      icon: Transform.rotate(angle: pi / 2, child: const Icon(Icons.flip_rounded)),
-                      tooltip: U.s.flipVertical,
-                      onPressed: () => _transform((ui.Image i) => _flip(i, horizontal: false)),
-                    ),
-                  ],
-                  if (widget.allowShapeToggle)
-                    IconButton(
-                      icon: Icon(_shape == UCropShape.circle ? Icons.crop_square_rounded : Icons.circle_outlined),
-                      onPressed: () => setState(() => _shape = _shape == UCropShape.circle ? UCropShape.rectangle : UCropShape.circle),
-                    ),
-                  if (widget.allowAdjust)
-                    IconButton(
-                      icon: const Icon(Icons.tune_rounded),
-                      color: _showAdjust ? scheme.primary : null,
-                      onPressed: () => setState(() => _showAdjust = !_showAdjust),
-                    ),
-                ],
-              ),
-              if (widget.allowAdjust && _showAdjust) ...<Widget>[
-                _slider(U.s.brightness, _brightness, -1, 1, (double v) => setState(() => _brightness = v)),
-                _slider(U.s.contrast, _contrast, 0, 2, (double v) => setState(() => _contrast = v)),
-                _slider(U.s.saturation, _saturation, 0, 2, (double v) => setState(() => _saturation = v)),
+                  ),
               ],
+            ),
+          ),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              if (widget.allowRotate) ...<Widget>[
+                IconButton(
+                  icon: const Icon(Icons.rotate_left_rounded),
+                  tooltip: U.s.rotateLeft,
+                  onPressed: () => _transform((ui.Image i) => _rotate90(i, clockwise: false)),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.rotate_right_rounded),
+                  tooltip: U.s.rotateRight,
+                  onPressed: () => _transform((ui.Image i) => _rotate90(i, clockwise: true)),
+                ),
+              ],
+              if (widget.allowFlip) ...<Widget>[
+                IconButton(
+                  icon: const Icon(Icons.flip_rounded),
+                  tooltip: U.s.flipHorizontal,
+                  onPressed: () => _transform((ui.Image i) => _flip(i, horizontal: true)),
+                ),
+                IconButton(
+                  icon: Transform.rotate(angle: pi / 2, child: const Icon(Icons.flip_rounded)),
+                  tooltip: U.s.flipVertical,
+                  onPressed: () => _transform((ui.Image i) => _flip(i, horizontal: false)),
+                ),
+              ],
+              if (widget.allowShapeToggle)
+                IconButton(
+                  icon: Icon(_shape == UCropShape.circle ? Icons.crop_square_rounded : Icons.circle_outlined),
+                  onPressed: () => setState(() => _shape = _shape == UCropShape.circle ? UCropShape.rectangle : UCropShape.circle),
+                ),
+              if (widget.allowAdjust)
+                IconButton(
+                  icon: const Icon(Icons.tune_rounded),
+                  color: _showAdjust ? scheme.primary : null,
+                  onPressed: () => setState(() => _showAdjust = !_showAdjust),
+                ),
             ],
           ),
-        ),
-      );
+          if (widget.allowAdjust && _showAdjust) ...<Widget>[
+            _slider(U.s.brightness, _brightness, -1, 1, (double v) => setState(() => _brightness = v)),
+            _slider(U.s.contrast, _contrast, 0, 2, (double v) => setState(() => _contrast = v)),
+            _slider(U.s.saturation, _saturation, 0, 2, (double v) => setState(() => _saturation = v)),
+          ],
+        ],
+      ),
+    ),
+  );
 
   Widget _slider(String label, double value, double min, double max, ValueChanged<double> onChanged) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Row(
-          children: <Widget>[
-            SizedBox(width: 88, child: Text(label)),
-            Expanded(child: Slider(value: value, min: min, max: max, onChanged: onChanged)),
-          ],
+    padding: const EdgeInsets.symmetric(horizontal: 16),
+    child: Row(
+      children: <Widget>[
+        SizedBox(width: 88, child: Text(label)),
+        Expanded(
+          child: Slider(value: value, min: min, max: max, onChanged: onChanged),
         ),
-      );
+      ],
+    ),
+  );
 }
 
 /// Multiplies two 4x5 colour matrices (treated as 5x5 with an implicit

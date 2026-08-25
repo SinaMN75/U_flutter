@@ -111,7 +111,11 @@ class _AdminUsersPageState extends State<UAdminUsersPage> {
     onTap: () => UAdminPageSwitcher.adminUserDetail(user: i),
     trailing: _menu(i),
     fields: <UAdminField>[
-      UAdminField(U.s.phoneNumber, null, valueWidget: UTextBodyMedium(i.phoneNumber ?? "-", textAlign: TextAlign.end, textDirection: TextDirection.ltr, fontWeight: FontWeight.w500)),
+      UAdminField(
+        U.s.phoneNumber,
+        null,
+        valueWidget: UTextBodyMedium(i.phoneNumber ?? "-", textAlign: TextAlign.end, textDirection: TextDirection.ltr, fontWeight: FontWeight.w500),
+      ),
       UAdminField(U.s.nationalCode, i.nationalCode ?? "-"),
       UAdminField(U.s.joinedDate, i.createdAt.toJalaliDate()),
     ],

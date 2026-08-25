@@ -297,7 +297,13 @@ class _UAdminBarcodeGeneratorPageState extends State<UAdminBarcodeGeneratorPage>
       spacing: 14,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        URow(spacing: 8, children: <Widget>[Icon(icon, color: cs.primary), UTextTitleMedium(title, fontWeight: FontWeight.bold)]),
+        URow(
+          spacing: 8,
+          children: <Widget>[
+            Icon(icon, color: cs.primary),
+            UTextTitleMedium(title, fontWeight: FontWeight.bold),
+          ],
+        ),
         const Divider(height: 1),
         ...children,
       ],
@@ -333,10 +339,15 @@ class _UAdminBarcodeGeneratorPageState extends State<UAdminBarcodeGeneratorPage>
 
   Widget _dirChip(ColorScheme cs, String label, Alignment begin, Alignment end) {
     final bool active = _gradientBeginAlign == begin && _gradientEndAlign == end;
-    return _chip(cs, label, active, () => setState(() {
-      _gradientBeginAlign = begin;
-      _gradientEndAlign = end;
-    }));
+    return _chip(
+      cs,
+      label,
+      active,
+      () => setState(() {
+        _gradientBeginAlign = begin;
+        _gradientEndAlign = end;
+      }),
+    );
   }
 
   Widget _slider(String label, double value, double min, double max, ValueChanged<double> onChanged) => UColumn(

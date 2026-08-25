@@ -104,87 +104,88 @@ class _DormPageState extends State<UAdminDormPage> {
           content: SizedBox(
             width: context.dialogWidth(max: 480),
             child: SingleChildScrollView(
-            child: Form(
-              key: formKey,
-              child: UColumn(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  UTextField(
-                    controller: title,
-                    labelText: U.s.title,
-                    validator: UValidators.required(message: ""),
-                  ).pSymmetric(vertical: 6),
-                  UCountryProvincePicker(
-                    onCountryChanged: (UCountry i) {},
-                    onProvinceChanged: (UProvince i) => province = i,
-                    onCityChanged: (UCity? i) => city = i,
-                  ).pSymmetric(vertical: 6),
-                  UTextField(
-                    controller: detail,
-                    labelText: U.s.description,
-                    contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
-                    lines: 3,
-                  ).pSymmetric(vertical: 6),
-                  const SizedBox(height: 12),
-                  UTextFieldAutoCompleteAsync<UUserResponse>(
-                    hintText: U.s.admins,
-                    selectedItem: null,
-                    labelBuilder: (UUserResponse u) => u.userName,
-                    fetchData: UAdminHotelAdminSearchHelper.searchUsers,
-                    onChanged: (UUserResponse? u) {
-                      if (u == null) return;
-                      if (selectedAdmins.any((UUserResponse x) => x.id == u.id)) return;
-                      setDialogState(() => selectedAdmins.add(u));
-                    },
-                  ).pSymmetric(vertical: 6),
-                  Wrap(
-                    spacing: 6,
-                    runSpacing: 6,
-                    children: selectedAdmins
-                        .map(
-                          (UUserResponse u) => Chip(
-                            label: Text(u.userName),
-                            onDeleted: () => setDialogState(() => selectedAdmins.removeWhere((UUserResponse x) => x.id == u.id)),
-                          ),
-                        )
-                        .toList(),
-                  ).pSymmetric(vertical: 6),
-                  const SizedBox(height: 20),
-                  UButtonSubmitCancel(
-                    onSubmit: () => UValidators.validateForm(
-                      key: formKey,
-                      action: () {
-                        final List<String> adminUserIds = selectedAdmins.map((UUserResponse u) => u.id).toList();
-                        if (p == null) {
-                          c.create(
-                            p: UDormCreateParams(
-                              tags: <int>[TagDorm.girls.number],
-                              title: title.text,
-                              cityCode: city?.code ?? province.code,
-                              detail1: detail.text.nullIfEmpty(),
-                              adminUserIds: adminUserIds,
-                            ),
-                          );
-                        } else {
-                          c.update(
-                            p: UDormUpdateParams(
-                              id: p.id,
-                              title: title.text,
-                              cityCode: city?.code ?? province.code,
-                              detail1: detail.text.nullIfEmpty(),
-                              adminUserIds: adminUserIds,
-                            ),
-                          );
-                        }
-                        UNavigator.back();
+              child: Form(
+                key: formKey,
+                child: UColumn(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    UTextField(
+                      controller: title,
+                      labelText: U.s.title,
+                      validator: UValidators.required(message: ""),
+                    ).pSymmetric(vertical: 6),
+                    UCountryProvincePicker(
+                      onCountryChanged: (UCountry i) {},
+                      onProvinceChanged: (UProvince i) => province = i,
+                      onCityChanged: (UCity? i) => city = i,
+                    ).pSymmetric(vertical: 6),
+                    UTextField(
+                      controller: detail,
+                      labelText: U.s.description,
+                      contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+                      lines: 3,
+                    ).pSymmetric(vertical: 6),
+                    const SizedBox(height: 12),
+                    UTextFieldAutoCompleteAsync<UUserResponse>(
+                      hintText: U.s.admins,
+                      selectedItem: null,
+                      labelBuilder: (UUserResponse u) => u.userName,
+                      fetchData: UAdminHotelAdminSearchHelper.searchUsers,
+                      onChanged: (UUserResponse? u) {
+                        if (u == null) return;
+                        if (selectedAdmins.any((UUserResponse x) => x.id == u.id)) return;
+                        setDialogState(() => selectedAdmins.add(u));
                       },
+                    ).pSymmetric(vertical: 6),
+                    Wrap(
+                      spacing: 6,
+                      runSpacing: 6,
+                      children: selectedAdmins
+                          .map(
+                            (UUserResponse u) => Chip(
+                              label: Text(u.userName),
+                              onDeleted: () => setDialogState(() => selectedAdmins.removeWhere((UUserResponse x) => x.id == u.id)),
+                            ),
+                          )
+                          .toList(),
+                    ).pSymmetric(vertical: 6),
+                    const SizedBox(height: 20),
+                    UButtonSubmitCancel(
+                      onSubmit: () => UValidators.validateForm(
+                        key: formKey,
+                        action: () {
+                          final List<String> adminUserIds = selectedAdmins.map((UUserResponse u) => u.id).toList();
+                          if (p == null) {
+                            c.create(
+                              p: UDormCreateParams(
+                                tags: <int>[TagDorm.girls.number],
+                                title: title.text,
+                                cityCode: city?.code ?? province.code,
+                                detail1: detail.text.nullIfEmpty(),
+                                adminUserIds: adminUserIds,
+                              ),
+                            );
+                          } else {
+                            c.update(
+                              p: UDormUpdateParams(
+                                id: p.id,
+                                title: title.text,
+                                cityCode: city?.code ?? province.code,
+                                detail1: detail.text.nullIfEmpty(),
+                                adminUserIds: adminUserIds,
+                              ),
+                            );
+                          }
+                          UNavigator.back();
+                        },
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
-        )),
+        ),
       ),
     );
   }

@@ -36,7 +36,7 @@ abstract class UAdminPayLink {
                         trailing: i.isPaid
                             ? UTextBodySmall(U.s.paid, color: UAdminTheme.green)
                             : URow(
-                          spacing: 8,
+                                spacing: 8,
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
                                   IconButton(

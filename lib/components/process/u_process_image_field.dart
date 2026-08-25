@@ -64,10 +64,10 @@ class _UProcessImagePickerFieldState extends State<UProcessImagePickerField> {
               : _initialUrl != null
               ? UImage(_initialUrl!, borderRadius: 16)
               : UIconTextVertical(
-            leading: Icon(Icons.add_a_photo_rounded, size: 48, color: scheme.onSurfaceVariant),
-            trailing: UTextBodyMedium(widget.field.label, color: scheme.onSurfaceVariant),
-            spaceBetween: 12,
-          ),
+                  leading: Icon(Icons.add_a_photo_rounded, size: 48, color: scheme.onSurfaceVariant),
+                  trailing: UTextBodyMedium(widget.field.label, color: scheme.onSurfaceVariant),
+                  spaceBetween: 12,
+                ),
         ),
         if (widget.field.rejectionReason != null)
           UIconTextHorizontal(

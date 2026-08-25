@@ -6,6 +6,7 @@ enum UToastPosition { top, center, bottom }
 
 abstract class UToast {
   static ThemeData get theme => Theme.of(navigatorKey.currentContext!);
+
   static ColorScheme get _scheme => theme.colorScheme;
 
   static const Color _successColor = Color(0xFF2E7D32);
@@ -89,10 +90,7 @@ abstract class UToast {
     final ScaffoldMessengerState messenger = ScaffoldMessenger.of(ctx);
     if (clearQueue) messenger.clearSnackBars();
 
-    final SnackBarAction? resolvedAction = action ??
-        (actionLabel != null
-            ? SnackBarAction(label: actionLabel, textColor: foreground, onPressed: onAction ?? () {})
-            : null);
+    final SnackBarAction? resolvedAction = action ?? (actionLabel != null ? SnackBarAction(label: actionLabel, textColor: foreground, onPressed: onAction ?? () {}) : null);
 
     messenger
         .showSnackBar(
@@ -138,18 +136,17 @@ abstract class UToast {
     VoidCallback? onAction,
     bool showCloseIcon = false,
     VoidCallback? onDismiss,
-  }) =>
-      snackBar(
-        message: message,
-        title: title,
-        type: UToastType.success,
-        icon: icon,
-        duration: duration,
-        actionLabel: actionLabel,
-        onAction: onAction,
-        showCloseIcon: showCloseIcon,
-        onDismiss: onDismiss,
-      );
+  }) => snackBar(
+    message: message,
+    title: title,
+    type: UToastType.success,
+    icon: icon,
+    duration: duration,
+    actionLabel: actionLabel,
+    onAction: onAction,
+    showCloseIcon: showCloseIcon,
+    onDismiss: onDismiss,
+  );
 
   static void warning({
     required String message,
@@ -160,18 +157,17 @@ abstract class UToast {
     VoidCallback? onAction,
     bool showCloseIcon = false,
     VoidCallback? onDismiss,
-  }) =>
-      snackBar(
-        message: message,
-        title: title,
-        type: UToastType.warning,
-        icon: icon,
-        duration: duration,
-        actionLabel: actionLabel,
-        onAction: onAction,
-        showCloseIcon: showCloseIcon,
-        onDismiss: onDismiss,
-      );
+  }) => snackBar(
+    message: message,
+    title: title,
+    type: UToastType.warning,
+    icon: icon,
+    duration: duration,
+    actionLabel: actionLabel,
+    onAction: onAction,
+    showCloseIcon: showCloseIcon,
+    onDismiss: onDismiss,
+  );
 
   static void info({
     required String message,
@@ -182,18 +178,17 @@ abstract class UToast {
     VoidCallback? onAction,
     bool showCloseIcon = false,
     VoidCallback? onDismiss,
-  }) =>
-      snackBar(
-        message: message,
-        title: title,
-        type: UToastType.info,
-        icon: icon,
-        duration: duration,
-        actionLabel: actionLabel,
-        onAction: onAction,
-        showCloseIcon: showCloseIcon,
-        onDismiss: onDismiss,
-      );
+  }) => snackBar(
+    message: message,
+    title: title,
+    type: UToastType.info,
+    icon: icon,
+    duration: duration,
+    actionLabel: actionLabel,
+    onAction: onAction,
+    showCloseIcon: showCloseIcon,
+    onDismiss: onDismiss,
+  );
 
   static void error({
     required String message,
@@ -204,18 +199,17 @@ abstract class UToast {
     VoidCallback? onAction,
     bool showCloseIcon = false,
     VoidCallback? onDismiss,
-  }) =>
-      snackBar(
-        message: message,
-        title: title,
-        type: UToastType.error,
-        icon: icon,
-        duration: duration,
-        actionLabel: actionLabel,
-        onAction: onAction,
-        showCloseIcon: showCloseIcon,
-        onDismiss: onDismiss,
-      );
+  }) => snackBar(
+    message: message,
+    title: title,
+    type: UToastType.error,
+    icon: icon,
+    duration: duration,
+    actionLabel: actionLabel,
+    onAction: onAction,
+    showCloseIcon: showCloseIcon,
+    onDismiss: onDismiss,
+  );
 
   static void clearSnackBars() => ScaffoldMessenger.of(navigatorKey.currentContext!).clearSnackBars();
 
@@ -242,7 +236,8 @@ abstract class UToast {
     if (clearQueue) messenger.clearMaterialBanners();
 
     // Ensure the banner always has at least one action (MaterialBanner requires it)
-    final List<Widget> resolvedActions = actions ??
+    final List<Widget> resolvedActions =
+        actions ??
         <Widget>[
           if (actionLabel != null)
             TextButton(
@@ -307,20 +302,19 @@ abstract class UToast {
     final IconData? resolvedIcon = icon ?? _iconFor(type);
 
     final OverlayEntry entry = OverlayEntry(
-      builder: (BuildContext context) =>
-          _UToastCard(
-            message: message,
-            title: title,
-            icon: resolvedIcon,
-            background: background,
-            foreground: foreground,
-            position: position,
-            margin: margin,
-            borderRadius: borderRadius,
-            elevation: elevation,
-            animationDuration: animationDuration,
-            onTap: onTap,
-          ),
+      builder: (BuildContext context) => _UToastCard(
+        message: message,
+        title: title,
+        icon: resolvedIcon,
+        background: background,
+        foreground: foreground,
+        position: position,
+        margin: margin,
+        borderRadius: borderRadius,
+        elevation: elevation,
+        animationDuration: animationDuration,
+        onTap: onTap,
+      ),
     );
 
     _toastEntry = entry;
@@ -334,49 +328,45 @@ abstract class UToast {
     }
   }
 
-  static void successToast({required String message, String? title, IconData? icon, UToastPosition position = UToastPosition.bottom, Duration duration = const Duration(
-      seconds: 3), VoidCallback? onTap, VoidCallback? onDismiss}) =>
-      toast(message: message,
-          title: title,
-          type: UToastType.success,
-          icon: icon,
-          position: position,
-          duration: duration,
-          onTap: onTap,
-          onDismiss: onDismiss);
+  static void successToast({
+    required String message,
+    String? title,
+    IconData? icon,
+    UToastPosition position = UToastPosition.bottom,
+    Duration duration = const Duration(seconds: 3),
+    VoidCallback? onTap,
+    VoidCallback? onDismiss,
+  }) => toast(message: message, title: title, type: UToastType.success, icon: icon, position: position, duration: duration, onTap: onTap, onDismiss: onDismiss);
 
-  static void errorToast({required String message, String? title, IconData? icon, UToastPosition position = UToastPosition.bottom, Duration duration = const Duration(
-      seconds: 3), VoidCallback? onTap, VoidCallback? onDismiss}) =>
-      toast(message: message,
-          title: title,
-          type: UToastType.error,
-          icon: icon,
-          position: position,
-          duration: duration,
-          onTap: onTap,
-          onDismiss: onDismiss);
+  static void errorToast({
+    required String message,
+    String? title,
+    IconData? icon,
+    UToastPosition position = UToastPosition.bottom,
+    Duration duration = const Duration(seconds: 3),
+    VoidCallback? onTap,
+    VoidCallback? onDismiss,
+  }) => toast(message: message, title: title, type: UToastType.error, icon: icon, position: position, duration: duration, onTap: onTap, onDismiss: onDismiss);
 
-  static void warningToast({required String message, String? title, IconData? icon, UToastPosition position = UToastPosition.bottom, Duration duration = const Duration(
-      seconds: 3), VoidCallback? onTap, VoidCallback? onDismiss}) =>
-      toast(message: message,
-          title: title,
-          type: UToastType.warning,
-          icon: icon,
-          position: position,
-          duration: duration,
-          onTap: onTap,
-          onDismiss: onDismiss);
+  static void warningToast({
+    required String message,
+    String? title,
+    IconData? icon,
+    UToastPosition position = UToastPosition.bottom,
+    Duration duration = const Duration(seconds: 3),
+    VoidCallback? onTap,
+    VoidCallback? onDismiss,
+  }) => toast(message: message, title: title, type: UToastType.warning, icon: icon, position: position, duration: duration, onTap: onTap, onDismiss: onDismiss);
 
-  static void infoToast({required String message, String? title, IconData? icon, UToastPosition position = UToastPosition.bottom, Duration duration = const Duration(
-      seconds: 3), VoidCallback? onTap, VoidCallback? onDismiss}) =>
-      toast(message: message,
-          title: title,
-          type: UToastType.info,
-          icon: icon,
-          position: position,
-          duration: duration,
-          onTap: onTap,
-          onDismiss: onDismiss);
+  static void infoToast({
+    required String message,
+    String? title,
+    IconData? icon,
+    UToastPosition position = UToastPosition.bottom,
+    Duration duration = const Duration(seconds: 3),
+    VoidCallback? onTap,
+    VoidCallback? onDismiss,
+  }) => toast(message: message, title: title, type: UToastType.info, icon: icon, position: position, duration: duration, onTap: onTap, onDismiss: onDismiss);
 
   static void clearToast() {
     _toastEntry?.remove();
@@ -416,22 +406,19 @@ class _UToastCard extends StatefulWidget {
 }
 
 class _UToastCardState extends State<_UToastCard> with SingleTickerProviderStateMixin {
-  late final AnimationController _controller = AnimationController(vsync: this, duration: widget.animationDuration)
-    ..forward();
+  late final AnimationController _controller = AnimationController(vsync: this, duration: widget.animationDuration)..forward();
 
-  Alignment get _alignment =>
-      switch (widget.position) {
-        UToastPosition.top => Alignment.topCenter,
-        UToastPosition.center => Alignment.center,
-        UToastPosition.bottom => Alignment.bottomCenter,
-      };
+  Alignment get _alignment => switch (widget.position) {
+    UToastPosition.top => Alignment.topCenter,
+    UToastPosition.center => Alignment.center,
+    UToastPosition.bottom => Alignment.bottomCenter,
+  };
 
-  Offset get _beginOffset =>
-      switch (widget.position) {
-        UToastPosition.top => const Offset(0, -1),
-        UToastPosition.center => const Offset(0, 0.2),
-        UToastPosition.bottom => const Offset(0, 1),
-      };
+  Offset get _beginOffset => switch (widget.position) {
+    UToastPosition.top => const Offset(0, -1),
+    UToastPosition.center => const Offset(0, 0.2),
+    UToastPosition.bottom => const Offset(0, 1),
+  };
 
   @override
   void dispose() {

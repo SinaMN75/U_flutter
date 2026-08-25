@@ -1,5 +1,4 @@
 import "package:flutter/cupertino.dart";
-import "package:flutter/material.dart";
 import "package:u/utilities.dart";
 
 enum SegmentedStyle { material, cupertino, platformDefault }

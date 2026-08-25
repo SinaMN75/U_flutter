@@ -236,46 +236,61 @@ class _UButtonState extends State<UButton> {
   @override
   Widget build(BuildContext context) {
     Widget button = switch (widget.type) {
-      UButtonType.elevated => _buildMaterialButton(context, (ButtonStyle style, VoidCallback? onTap, Widget child) => ElevatedButton(
+      UButtonType.elevated => _buildMaterialButton(
+        context,
+        (ButtonStyle style, VoidCallback? onTap, Widget child) => ElevatedButton(
           onPressed: onTap,
           onLongPress: _effectiveLongPress,
           style: style,
           autofocus: widget.autofocus,
           focusNode: widget.focusNode,
           child: child,
-        )),
-      UButtonType.filled => _buildMaterialButton(context, (ButtonStyle style, VoidCallback? onTap, Widget child) => FilledButton(
+        ),
+      ),
+      UButtonType.filled => _buildMaterialButton(
+        context,
+        (ButtonStyle style, VoidCallback? onTap, Widget child) => FilledButton(
           onPressed: onTap,
           onLongPress: _effectiveLongPress,
           style: style,
           autofocus: widget.autofocus,
           focusNode: widget.focusNode,
           child: child,
-        )),
-      UButtonType.filledTonal => _buildMaterialButton(context, (ButtonStyle style, VoidCallback? onTap, Widget child) => FilledButton.tonal(
+        ),
+      ),
+      UButtonType.filledTonal => _buildMaterialButton(
+        context,
+        (ButtonStyle style, VoidCallback? onTap, Widget child) => FilledButton.tonal(
           onPressed: onTap,
           onLongPress: _effectiveLongPress,
           style: style,
           autofocus: widget.autofocus,
           focusNode: widget.focusNode,
           child: child,
-        )),
-      UButtonType.outlined => _buildMaterialButton(context, (ButtonStyle style, VoidCallback? onTap, Widget child) => OutlinedButton(
+        ),
+      ),
+      UButtonType.outlined => _buildMaterialButton(
+        context,
+        (ButtonStyle style, VoidCallback? onTap, Widget child) => OutlinedButton(
           onPressed: onTap,
           onLongPress: _effectiveLongPress,
           style: style,
           autofocus: widget.autofocus,
           focusNode: widget.focusNode,
           child: child,
-        )),
-      UButtonType.text => _buildMaterialButton(context, (ButtonStyle style, VoidCallback? onTap, Widget child) => TextButton(
+        ),
+      ),
+      UButtonType.text => _buildMaterialButton(
+        context,
+        (ButtonStyle style, VoidCallback? onTap, Widget child) => TextButton(
           onPressed: onTap,
           onLongPress: _effectiveLongPress,
           style: style,
           autofocus: widget.autofocus,
           focusNode: widget.focusNode,
           child: child,
-        )),
+        ),
+      ),
       UButtonType.icon => _buildIconButton(context),
       UButtonType.fab => _buildFab(context),
       UButtonType.cupertino => _buildCupertino(context),

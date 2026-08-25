@@ -162,82 +162,83 @@ class _ContractPageState extends State<UAdminContractPage> {
         content: SizedBox(
           width: context.dialogWidth(),
           child: SingleChildScrollView(
-          child: StatefulBuilder(
-            builder: (BuildContext context, void Function(void Function()) setLocal) => UColumn(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                UTextField(controller: c.tenantFilter, labelText: U.s.tenant).pSymmetric(vertical: 6),
-                UTextFieldAutoCompleteAsync<UDormResponse>(
-                  labelBuilder: (UDormResponse i) => i.title,
-                  onChanged: (UDormResponse? i) => setLocal(() {
-                    c.dormFilter = i;
-                    c.bedFilter = null;
-                  }),
-                  selectedItem: c.dormFilter,
-                  fetchData: c.readDorms,
-                  hintText: U.s.dorm,
-                ).pSymmetric(vertical: 6),
-                UTextFieldAutoCompleteAsync<UDormBedResponse>(
-                  labelBuilder: (UDormBedResponse i) => i.room?.dorm == null ? i.title : "${i.room!.dorm!.title} · ${i.title}",
-                  onChanged: (UDormBedResponse? i) => setLocal(() => c.bedFilter = i),
-                  selectedItem: c.bedFilter,
-                  fetchData: c.readBeds,
-                  hintText: U.s.bed,
-                ).pSymmetric(vertical: 6),
-                DropdownButtonFormField<int?>(
-                  isExpanded: true,
-                  initialValue: c.typeFilter,
-                  decoration: InputDecoration(labelText: U.s.contractType, border: const OutlineInputBorder()),
-                  items: <DropdownMenuItem<int?>>[
-                    DropdownMenuItem<int?>(child: Text(U.s.all)),
-                    ..._types.map((TagDormBedContract t) => DropdownMenuItem<int?>(value: t.number, child: Text(c.isFa ? t.titleFa : t.titleEn))),
-                  ],
-                  onChanged: (int? v) => setLocal(() => c.typeFilter = v),
-                ).pSymmetric(vertical: 6),
-                DropdownButtonFormField<UAdminContractStatusFilter>(
-                  isExpanded: true,
-                  initialValue: c.statusFilter,
-                  decoration: InputDecoration(labelText: U.s.status, border: const OutlineInputBorder()),
-                  items: UAdminContractStatusFilter.values.map((UAdminContractStatusFilter f) => DropdownMenuItem<UAdminContractStatusFilter>(value: f, child: Text(_statusLabel(f)))).toList(),
-                  onChanged: (UAdminContractStatusFilter? v) => setLocal(() => c.statusFilter = v ?? UAdminContractStatusFilter.all),
-                ).pSymmetric(vertical: 6),
-                UTextFieldDatePicker(
-                  controller: startCtrl,
-                  labelText: U.s.startDate,
-                  jalali: true,
-                  initialDate: c.startDateFilter,
-                  onChange: (DateTime d, Jalali j) {
-                    c.startDateFilter = d;
-                    startCtrl.text = d.toJalaliDate();
-                  },
-                ).pSymmetric(vertical: 6),
-                UTextFieldDatePicker(
-                  controller: endCtrl,
-                  labelText: U.s.endDate,
-                  jalali: true,
-                  initialDate: c.endDateFilter,
-                  onChange: (DateTime d, Jalali j) {
-                    c.endDateFilter = d;
-                    endCtrl.text = d.toJalaliDate();
-                  },
-                ).pSymmetric(vertical: 6),
-                const SizedBox(height: 20),
-                UButtonSubmitCancel(
-                  submitTitle: U.s.filter,
-                  cancelTitle: U.s.clearFilters,
-                  onSubmit: () {
-                    c.applyFilters();
-                    UNavigator.back();
-                  },
-                  onCancel: () {
-                    c.clearFilters();
-                    UNavigator.back();
-                  },
-                ),
-              ],
+            child: StatefulBuilder(
+              builder: (BuildContext context, void Function(void Function()) setLocal) => UColumn(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  UTextField(controller: c.tenantFilter, labelText: U.s.tenant).pSymmetric(vertical: 6),
+                  UTextFieldAutoCompleteAsync<UDormResponse>(
+                    labelBuilder: (UDormResponse i) => i.title,
+                    onChanged: (UDormResponse? i) => setLocal(() {
+                      c.dormFilter = i;
+                      c.bedFilter = null;
+                    }),
+                    selectedItem: c.dormFilter,
+                    fetchData: c.readDorms,
+                    hintText: U.s.dorm,
+                  ).pSymmetric(vertical: 6),
+                  UTextFieldAutoCompleteAsync<UDormBedResponse>(
+                    labelBuilder: (UDormBedResponse i) => i.room?.dorm == null ? i.title : "${i.room!.dorm!.title} · ${i.title}",
+                    onChanged: (UDormBedResponse? i) => setLocal(() => c.bedFilter = i),
+                    selectedItem: c.bedFilter,
+                    fetchData: c.readBeds,
+                    hintText: U.s.bed,
+                  ).pSymmetric(vertical: 6),
+                  DropdownButtonFormField<int?>(
+                    isExpanded: true,
+                    initialValue: c.typeFilter,
+                    decoration: InputDecoration(labelText: U.s.contractType, border: const OutlineInputBorder()),
+                    items: <DropdownMenuItem<int?>>[
+                      DropdownMenuItem<int?>(child: Text(U.s.all)),
+                      ..._types.map((TagDormBedContract t) => DropdownMenuItem<int?>(value: t.number, child: Text(c.isFa ? t.titleFa : t.titleEn))),
+                    ],
+                    onChanged: (int? v) => setLocal(() => c.typeFilter = v),
+                  ).pSymmetric(vertical: 6),
+                  DropdownButtonFormField<UAdminContractStatusFilter>(
+                    isExpanded: true,
+                    initialValue: c.statusFilter,
+                    decoration: InputDecoration(labelText: U.s.status, border: const OutlineInputBorder()),
+                    items: UAdminContractStatusFilter.values.map((UAdminContractStatusFilter f) => DropdownMenuItem<UAdminContractStatusFilter>(value: f, child: Text(_statusLabel(f)))).toList(),
+                    onChanged: (UAdminContractStatusFilter? v) => setLocal(() => c.statusFilter = v ?? UAdminContractStatusFilter.all),
+                  ).pSymmetric(vertical: 6),
+                  UTextFieldDatePicker(
+                    controller: startCtrl,
+                    labelText: U.s.startDate,
+                    jalali: true,
+                    initialDate: c.startDateFilter,
+                    onChange: (DateTime d, Jalali j) {
+                      c.startDateFilter = d;
+                      startCtrl.text = d.toJalaliDate();
+                    },
+                  ).pSymmetric(vertical: 6),
+                  UTextFieldDatePicker(
+                    controller: endCtrl,
+                    labelText: U.s.endDate,
+                    jalali: true,
+                    initialDate: c.endDateFilter,
+                    onChange: (DateTime d, Jalali j) {
+                      c.endDateFilter = d;
+                      endCtrl.text = d.toJalaliDate();
+                    },
+                  ).pSymmetric(vertical: 6),
+                  const SizedBox(height: 20),
+                  UButtonSubmitCancel(
+                    submitTitle: U.s.filter,
+                    cancelTitle: U.s.clearFilters,
+                    onSubmit: () {
+                      c.applyFilters();
+                      UNavigator.back();
+                    },
+                    onCancel: () {
+                      c.clearFilters();
+                      UNavigator.back();
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
-        )),
+        ),
       ),
     );
   }
@@ -265,126 +266,127 @@ class _ContractPageState extends State<UAdminContractPage> {
         content: SizedBox(
           width: context.dialogWidth(max: 480),
           child: SingleChildScrollView(
-          child: StatefulBuilder(
-            builder: (BuildContext context, void Function(void Function()) setLocal) => Form(
-              key: formKey,
-              child: UColumn(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  if (!isEdit && widget.bed == null)
-                    UTextFieldAutoCompleteAsync<UDormBedResponse>(
-                      labelBuilder: (UDormBedResponse i) => "${i.title} · ${i.monthlyRent.rial()}",
-                      onChanged: bed.call,
-                      selectedItem: bed.value,
-                      fetchData: c.readBeds,
-                      hintText: U.s.bed,
+            child: StatefulBuilder(
+              builder: (BuildContext context, void Function(void Function()) setLocal) => Form(
+                key: formKey,
+                child: UColumn(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    if (!isEdit && widget.bed == null)
+                      UTextFieldAutoCompleteAsync<UDormBedResponse>(
+                        labelBuilder: (UDormBedResponse i) => "${i.title} · ${i.monthlyRent.rial()}",
+                        onChanged: bed.call,
+                        selectedItem: bed.value,
+                        fetchData: c.readBeds,
+                        hintText: U.s.bed,
+                      ).pSymmetric(vertical: 6),
+                    if (!isEdit)
+                      UTextFieldAutoCompleteAsync<UUserResponse>(
+                        labelBuilder: (UUserResponse i) => i.phoneNumber == null ? i.displayName : "${i.displayName} · ${i.phoneNumber}",
+                        onChanged: user.call,
+                        selectedItem: user.value,
+                        fetchData: c.readUsers,
+                        hintText: U.s.tenant,
+                      ).pSymmetric(vertical: 6),
+                    DropdownButtonFormField<int>(
+                      isExpanded: true,
+                      initialValue: type.number,
+                      decoration: InputDecoration(labelText: U.s.contractType, border: const OutlineInputBorder()),
+                      items: _types.map((TagDormBedContract t) => DropdownMenuItem<int>(value: t.number, child: Text(c.isFa ? t.titleFa : t.titleEn))).toList(),
+                      onChanged: (int? v) => setLocal(() => type = _types.firstWhere((TagDormBedContract t) => t.number == v)),
                     ).pSymmetric(vertical: 6),
-                  if (!isEdit)
-                    UTextFieldAutoCompleteAsync<UUserResponse>(
-                      labelBuilder: (UUserResponse i) => i.phoneNumber == null ? i.displayName : "${i.displayName} · ${i.phoneNumber}",
-                      onChanged: user.call,
-                      selectedItem: user.value,
-                      fetchData: c.readUsers,
-                      hintText: U.s.tenant,
-                    ).pSymmetric(vertical: 6),
-                  DropdownButtonFormField<int>(
-                    isExpanded: true,
-                    initialValue: type.number,
-                    decoration: InputDecoration(labelText: U.s.contractType, border: const OutlineInputBorder()),
-                    items: _types.map((TagDormBedContract t) => DropdownMenuItem<int>(value: t.number, child: Text(c.isFa ? t.titleFa : t.titleEn))).toList(),
-                    onChanged: (int? v) => setLocal(() => type = _types.firstWhere((TagDormBedContract t) => t.number == v)),
-                  ).pSymmetric(vertical: 6),
-                  UTextFieldDatePicker(
-                    controller: startCtrl,
-                    labelText: U.s.startDate,
-                    jalali: true,
-                    initialDate: startDate,
-                    validator: UValidators.required(message: ""),
-                    onChange: (DateTime d, Jalali j) {
-                      startDate = d;
-                      startCtrl.text = d.toJalaliDate();
-                    },
-                  ).pSymmetric(vertical: 6),
-                  UTextFieldDatePicker(
-                    controller: endCtrl,
-                    labelText: U.s.endDate,
-                    jalali: true,
-                    initialDate: endDate,
-                    validator: UValidators.required(message: ""),
-                    onChange: (DateTime d, Jalali j) {
-                      endDate = d;
-                      endCtrl.text = d.toJalaliDate();
-                    },
-                  ).pSymmetric(vertical: 6),
-                  // deposit only applies to monthly contracts; daily contracts have no deposit
-                  if (type != TagDormBedContract.daily)
-                    UTextField(controller: deposit, labelText: U.s.deposit, keyboardType: TextInputType.number, formatters: <TextInputFormatter>[UCurrencyInputFormatter()]).pSymmetric(vertical: 6),
-                  // the rent field doubles as the fixed per-day price when the contract is daily
-                  UTextField(
-                    controller: rent,
-                    labelText: type == TagDormBedContract.daily ? U.s.dailyPrice : U.s.rent,
-                    keyboardType: TextInputType.number,
-                    formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-                  ).pSymmetric(vertical: 6),
-                  // late-payment penalty only makes sense for recurring monthly invoices
-                  if (!isEdit && type != TagDormBedContract.daily) UTextField(controller: penalty, labelText: U.s.dailyPenalty, keyboardType: TextInputType.number).pSymmetric(vertical: 6),
-                  UTextField(controller: description, labelText: U.s.description, lines: 2).pSymmetric(vertical: 6),
-                  const SizedBox(height: 20),
-                  UButtonSubmitCancel(
-                    onSubmit: () => UValidators.validateForm(
-                      key: formKey,
-                      action: () {
-                        if (startDate == null || endDate == null) {
-                          UToast.error(message: U.s.errorSubmittingForm);
-                          return;
-                        }
-                        // daily contracts are single-invoice with no deposit; monthly keep rent + deposit
-                        final bool isDaily = type == TagDormBedContract.daily;
-                        final List<int> tags = <int>[type.number, if (isDaily) TagDormBedContract.singleInvoice.number];
-                        if (isEdit) {
-                          c.update(
-                            p: UDormBedContractUpdateParams(
-                              id: p.id,
-                              tags: tags,
-                              startDate: startDate,
-                              endDate: endDate,
-                              deposit: isDaily ? 0 : (deposit.text.isEmpty ? null : deposit.numDouble()),
-                              rent: rent.text.isEmpty ? null : rent.numDouble(),
-                            ),
-                          );
-                        } else {
-                          final String? bid = bed.value?.id ?? widget.bed?.id;
-                          if (bid == null) {
-                            UToast.error(message: U.s.selectA(U.s.bed));
-                            return;
-                          }
-                          if (user.value?.id == null) {
-                            UToast.error(message: U.s.selectA(U.s.user));
-                            return;
-                          }
-                          c.create(
-                            p: UDormBedContractCreateParams(
-                              tags: tags,
-                              startDate: startDate!,
-                              endDate: endDate!,
-                              userId: user.value!.id,
-                              bedId: bid,
-                              deposit: isDaily ? null : (deposit.text.isEmpty ? null : deposit.numDouble()),
-                              rent: rent.text.isEmpty ? null : rent.numDouble(),
-                              penaltyPrecentEveryDate: isDaily ? null : (penalty.text.isEmpty ? null : penalty.text.toInt()),
-                              detail1: description.text.nullIfEmpty(),
-                            ),
-                          );
-                        }
-                        UNavigator.back();
+                    UTextFieldDatePicker(
+                      controller: startCtrl,
+                      labelText: U.s.startDate,
+                      jalali: true,
+                      initialDate: startDate,
+                      validator: UValidators.required(message: ""),
+                      onChange: (DateTime d, Jalali j) {
+                        startDate = d;
+                        startCtrl.text = d.toJalaliDate();
                       },
+                    ).pSymmetric(vertical: 6),
+                    UTextFieldDatePicker(
+                      controller: endCtrl,
+                      labelText: U.s.endDate,
+                      jalali: true,
+                      initialDate: endDate,
+                      validator: UValidators.required(message: ""),
+                      onChange: (DateTime d, Jalali j) {
+                        endDate = d;
+                        endCtrl.text = d.toJalaliDate();
+                      },
+                    ).pSymmetric(vertical: 6),
+                    // deposit only applies to monthly contracts; daily contracts have no deposit
+                    if (type != TagDormBedContract.daily)
+                      UTextField(controller: deposit, labelText: U.s.deposit, keyboardType: TextInputType.number, formatters: <TextInputFormatter>[UCurrencyInputFormatter()]).pSymmetric(vertical: 6),
+                    // the rent field doubles as the fixed per-day price when the contract is daily
+                    UTextField(
+                      controller: rent,
+                      labelText: type == TagDormBedContract.daily ? U.s.dailyPrice : U.s.rent,
+                      keyboardType: TextInputType.number,
+                      formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+                    ).pSymmetric(vertical: 6),
+                    // late-payment penalty only makes sense for recurring monthly invoices
+                    if (!isEdit && type != TagDormBedContract.daily) UTextField(controller: penalty, labelText: U.s.dailyPenalty, keyboardType: TextInputType.number).pSymmetric(vertical: 6),
+                    UTextField(controller: description, labelText: U.s.description, lines: 2).pSymmetric(vertical: 6),
+                    const SizedBox(height: 20),
+                    UButtonSubmitCancel(
+                      onSubmit: () => UValidators.validateForm(
+                        key: formKey,
+                        action: () {
+                          if (startDate == null || endDate == null) {
+                            UToast.error(message: U.s.errorSubmittingForm);
+                            return;
+                          }
+                          // daily contracts are single-invoice with no deposit; monthly keep rent + deposit
+                          final bool isDaily = type == TagDormBedContract.daily;
+                          final List<int> tags = <int>[type.number, if (isDaily) TagDormBedContract.singleInvoice.number];
+                          if (isEdit) {
+                            c.update(
+                              p: UDormBedContractUpdateParams(
+                                id: p.id,
+                                tags: tags,
+                                startDate: startDate,
+                                endDate: endDate,
+                                deposit: isDaily ? 0 : (deposit.text.isEmpty ? null : deposit.numDouble()),
+                                rent: rent.text.isEmpty ? null : rent.numDouble(),
+                              ),
+                            );
+                          } else {
+                            final String? bid = bed.value?.id ?? widget.bed?.id;
+                            if (bid == null) {
+                              UToast.error(message: U.s.selectA(U.s.bed));
+                              return;
+                            }
+                            if (user.value?.id == null) {
+                              UToast.error(message: U.s.selectA(U.s.user));
+                              return;
+                            }
+                            c.create(
+                              p: UDormBedContractCreateParams(
+                                tags: tags,
+                                startDate: startDate!,
+                                endDate: endDate!,
+                                userId: user.value!.id,
+                                bedId: bid,
+                                deposit: isDaily ? null : (deposit.text.isEmpty ? null : deposit.numDouble()),
+                                rent: rent.text.isEmpty ? null : rent.numDouble(),
+                                penaltyPrecentEveryDate: isDaily ? null : (penalty.text.isEmpty ? null : penalty.text.toInt()),
+                                detail1: description.text.nullIfEmpty(),
+                              ),
+                            );
+                          }
+                          UNavigator.back();
+                        },
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
-        )),
+        ),
       ),
     );
   }

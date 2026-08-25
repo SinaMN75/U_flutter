@@ -2,6 +2,7 @@ part of "../data.dart";
 
 class UContentCreateParams {
   final List<String>? media;
+
   UContentCreateParams({
     required this.tags,
     this.title,
@@ -106,6 +107,7 @@ class UContentCreateParams {
 class UContentUpdateParams {
   final String? creatorId;
   final List<String>? media;
+
   UContentUpdateParams({
     required this.id,
     this.title,
@@ -224,6 +226,7 @@ class UContentUpdateParams {
 
 class UContentReadParams {
   final String? query;
+
   UContentReadParams({
     this.pageSize,
     this.pageNumber,

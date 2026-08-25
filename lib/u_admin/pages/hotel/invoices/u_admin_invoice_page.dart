@@ -189,55 +189,56 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
       content: SizedBox(
         width: context.dialogWidth(),
         child: SingleChildScrollView(
-        child: UColumn(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            UTextFieldDatePicker(
-              jalali: true,
-              controller: c.minDueDateController,
-              labelText: U.s.dueDate,
-              onChange: (DateTime d, Jalali j) {
-                c.minDueDate = d;
-                c.minDueDateController.text = d.toJalaliDate();
-              },
-            ).pSymmetric(vertical: 6),
-            UTextFieldDatePicker(
-              jalali: true,
-              controller: c.maxDueDateController,
-              labelText: U.s.dueDate,
-              onChange: (DateTime d, Jalali j) {
-                c.maxDueDate = d;
-                c.maxDueDateController.text = d.toJalaliDate();
-              },
-            ).pSymmetric(vertical: 6),
-            UTextField(
-              controller: c.minDebtController,
-              labelText: U.s.minPrice,
-              keyboardType: TextInputType.number,
-              formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-            ).pSymmetric(vertical: 6),
-            UTextField(
-              controller: c.maxDebtController,
-              labelText: U.s.maxPrice,
-              keyboardType: TextInputType.number,
-              formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-            ).pSymmetric(vertical: 6),
-            const SizedBox(height: 20),
-            UButtonSubmitCancel(
-              submitTitle: U.s.filter,
-              cancelTitle: U.s.clearFilters,
-              onSubmit: () {
-                c.applyExtraFilters();
-                UNavigator.back();
-              },
-              onCancel: () {
-                c.clearExtraFilters();
-                UNavigator.back();
-              },
-            ),
-          ],
+          child: UColumn(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              UTextFieldDatePicker(
+                jalali: true,
+                controller: c.minDueDateController,
+                labelText: U.s.dueDate,
+                onChange: (DateTime d, Jalali j) {
+                  c.minDueDate = d;
+                  c.minDueDateController.text = d.toJalaliDate();
+                },
+              ).pSymmetric(vertical: 6),
+              UTextFieldDatePicker(
+                jalali: true,
+                controller: c.maxDueDateController,
+                labelText: U.s.dueDate,
+                onChange: (DateTime d, Jalali j) {
+                  c.maxDueDate = d;
+                  c.maxDueDateController.text = d.toJalaliDate();
+                },
+              ).pSymmetric(vertical: 6),
+              UTextField(
+                controller: c.minDebtController,
+                labelText: U.s.minPrice,
+                keyboardType: TextInputType.number,
+                formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+              ).pSymmetric(vertical: 6),
+              UTextField(
+                controller: c.maxDebtController,
+                labelText: U.s.maxPrice,
+                keyboardType: TextInputType.number,
+                formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+              ).pSymmetric(vertical: 6),
+              const SizedBox(height: 20),
+              UButtonSubmitCancel(
+                submitTitle: U.s.filter,
+                cancelTitle: U.s.clearFilters,
+                onSubmit: () {
+                  c.applyExtraFilters();
+                  UNavigator.back();
+                },
+                onCancel: () {
+                  c.clearExtraFilters();
+                  UNavigator.back();
+                },
+              ),
+            ],
+          ),
         ),
-      )),
+      ),
     ),
   );
 
@@ -262,104 +263,105 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
         content: SizedBox(
           width: context.dialogWidth(max: 480),
           child: SingleChildScrollView(
-          child: StatefulBuilder(
-            builder: (BuildContext context, void Function(void Function()) setLocal) => Form(
-              key: formKey,
-              child: UColumn(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  if (!isEdit && widget.contract == null)
-                    UTextFieldAutoCompleteAsync<UDormBedContractResponse>(
-                      labelBuilder: (UDormBedContractResponse i) => "${i.user?.displayName ?? "-"} · ${i.bed?.title ?? ""} · ${i.startDate.toJalaliDate()}",
-                      onChanged: contract.call,
-                      selectedItem: contract.value,
-                      fetchData: c.readContracts,
-                      hintText: U.s.contract,
+            child: StatefulBuilder(
+              builder: (BuildContext context, void Function(void Function()) setLocal) => Form(
+                key: formKey,
+                child: UColumn(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    if (!isEdit && widget.contract == null)
+                      UTextFieldAutoCompleteAsync<UDormBedContractResponse>(
+                        labelBuilder: (UDormBedContractResponse i) => "${i.user?.displayName ?? "-"} · ${i.bed?.title ?? ""} · ${i.startDate.toJalaliDate()}",
+                        onChanged: contract.call,
+                        selectedItem: contract.value,
+                        fetchData: c.readContracts,
+                        hintText: U.s.contract,
+                      ).pSymmetric(vertical: 6),
+                    DropdownButtonFormField<int>(
+                      isExpanded: true,
+                      initialValue: type.number,
+                      decoration: InputDecoration(labelText: U.s.invoiceType, border: const OutlineInputBorder()),
+                      items: _types.map((TagDormBedInvoice t) => DropdownMenuItem<int>(value: t.number, child: Text(t.localizedTitle))).toList(),
+                      onChanged: (int? v) => setLocal(() => type = _types.firstWhere((TagDormBedInvoice t) => t.number == v)),
                     ).pSymmetric(vertical: 6),
-                  DropdownButtonFormField<int>(
-                    isExpanded: true,
-                    initialValue: type.number,
-                    decoration: InputDecoration(labelText: U.s.invoiceType, border: const OutlineInputBorder()),
-                    items: _types.map((TagDormBedInvoice t) => DropdownMenuItem<int>(value: t.number, child: Text(t.localizedTitle))).toList(),
-                    onChanged: (int? v) => setLocal(() => type = _types.firstWhere((TagDormBedInvoice t) => t.number == v)),
-                  ).pSymmetric(vertical: 6),
-                  UTextField(
-                    controller: debt,
-                    labelText: U.s.debtAmount,
-                    keyboardType: TextInputType.number,
-                    validator: UValidators.required(message: ""),
-                    formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-                  ).pSymmetric(vertical: 6),
-                  UTextField(controller: creditor, labelText: U.s.creditor, keyboardType: TextInputType.number, formatters: <TextInputFormatter>[UCurrencyInputFormatter()]).pSymmetric(vertical: 6),
-                  UTextField(controller: paid, labelText: U.s.paidAmount, keyboardType: TextInputType.number, formatters: <TextInputFormatter>[UCurrencyInputFormatter()]).pSymmetric(vertical: 6),
-                  UTextField(
-                    controller: penalty,
-                    labelText: U.s.penaltyAmount,
-                    keyboardType: TextInputType.number,
-                    formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-                  ).pSymmetric(vertical: 6),
-                  UTextFieldDatePicker(
-                    controller: dueCtrl,
-                    labelText: U.s.dueDate,
-                    jalali: true,
-                    initialDate: dueDate,
-                    validator: UValidators.required(message: ""),
-                    onChange: (DateTime d, Jalali j) {
-                      dueDate = d;
-                      dueCtrl.text = d.toJalaliDate();
-                    },
-                  ).pSymmetric(vertical: 6),
-                  UTextField(controller: description, labelText: U.s.description, lines: 2).pSymmetric(vertical: 6),
-                  const SizedBox(height: 20),
-                  UButtonSubmitCancel(
-                    onSubmit: () => UValidators.validateForm(
-                      key: formKey,
-                      action: () {
-                        if (dueDate == null) {
-                          UToast.error(message: U.s.errorSubmittingForm);
-                          return;
-                        }
-                        if (isEdit) {
-                          c.update(
-                            p: UDormBedInvoiceUpdateParams(
-                              id: p.id,
-                              tags: <int>[type.number],
-                              debtAmount: debt.text.isEmpty ? null : debt.numDouble(),
-                              creditorAmount: creditor.text.isEmpty ? null : creditor.numDouble(),
-                              paidAmount: paid.text.isEmpty ? null : paid.numDouble(),
-                              penaltyAmount: penalty.text.isEmpty ? null : penalty.numDouble(),
-                              dueDate: dueDate,
-                              detail1: description.text.nullIfEmpty(),
-                            ),
-                          );
-                        } else {
-                          final String? cid = contract.value?.id ?? widget.contract?.id;
-                          if (cid == null) {
+                    UTextField(
+                      controller: debt,
+                      labelText: U.s.debtAmount,
+                      keyboardType: TextInputType.number,
+                      validator: UValidators.required(message: ""),
+                      formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+                    ).pSymmetric(vertical: 6),
+                    UTextField(controller: creditor, labelText: U.s.creditor, keyboardType: TextInputType.number, formatters: <TextInputFormatter>[UCurrencyInputFormatter()]).pSymmetric(vertical: 6),
+                    UTextField(controller: paid, labelText: U.s.paidAmount, keyboardType: TextInputType.number, formatters: <TextInputFormatter>[UCurrencyInputFormatter()]).pSymmetric(vertical: 6),
+                    UTextField(
+                      controller: penalty,
+                      labelText: U.s.penaltyAmount,
+                      keyboardType: TextInputType.number,
+                      formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+                    ).pSymmetric(vertical: 6),
+                    UTextFieldDatePicker(
+                      controller: dueCtrl,
+                      labelText: U.s.dueDate,
+                      jalali: true,
+                      initialDate: dueDate,
+                      validator: UValidators.required(message: ""),
+                      onChange: (DateTime d, Jalali j) {
+                        dueDate = d;
+                        dueCtrl.text = d.toJalaliDate();
+                      },
+                    ).pSymmetric(vertical: 6),
+                    UTextField(controller: description, labelText: U.s.description, lines: 2).pSymmetric(vertical: 6),
+                    const SizedBox(height: 20),
+                    UButtonSubmitCancel(
+                      onSubmit: () => UValidators.validateForm(
+                        key: formKey,
+                        action: () {
+                          if (dueDate == null) {
                             UToast.error(message: U.s.errorSubmittingForm);
                             return;
                           }
-                          c.create(
-                            p: UDormBedInvoiceCreateParams(
-                              tags: <int>[TagDormBedInvoice.notPaid.number, type.number],
-                              debtAmount: debt.text.isEmpty ? 0 : debt.numDouble(),
-                              creditorAmount: creditor.text.isEmpty ? 0 : creditor.numDouble(),
-                              paidAmount: paid.text.isEmpty ? 0 : paid.numDouble(),
-                              penaltyAmount: penalty.text.isEmpty ? 0 : penalty.numDouble(),
-                              contractId: cid,
-                              dueDate: dueDate!,
-                              detail1: description.text.trim(),
-                            ),
-                          );
-                        }
-                        UNavigator.back();
-                      },
+                          if (isEdit) {
+                            c.update(
+                              p: UDormBedInvoiceUpdateParams(
+                                id: p.id,
+                                tags: <int>[type.number],
+                                debtAmount: debt.text.isEmpty ? null : debt.numDouble(),
+                                creditorAmount: creditor.text.isEmpty ? null : creditor.numDouble(),
+                                paidAmount: paid.text.isEmpty ? null : paid.numDouble(),
+                                penaltyAmount: penalty.text.isEmpty ? null : penalty.numDouble(),
+                                dueDate: dueDate,
+                                detail1: description.text.nullIfEmpty(),
+                              ),
+                            );
+                          } else {
+                            final String? cid = contract.value?.id ?? widget.contract?.id;
+                            if (cid == null) {
+                              UToast.error(message: U.s.errorSubmittingForm);
+                              return;
+                            }
+                            c.create(
+                              p: UDormBedInvoiceCreateParams(
+                                tags: <int>[TagDormBedInvoice.notPaid.number, type.number],
+                                debtAmount: debt.text.isEmpty ? 0 : debt.numDouble(),
+                                creditorAmount: creditor.text.isEmpty ? 0 : creditor.numDouble(),
+                                paidAmount: paid.text.isEmpty ? 0 : paid.numDouble(),
+                                penaltyAmount: penalty.text.isEmpty ? 0 : penalty.numDouble(),
+                                contractId: cid,
+                                dueDate: dueDate!,
+                                detail1: description.text.trim(),
+                              ),
+                            );
+                          }
+                          UNavigator.back();
+                        },
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
-        )),
+        ),
       ),
     );
   }

@@ -51,6 +51,7 @@ class UDashboardResponse {
   final List<UCommentResponse> newComments;
   final List<UContentResponse> newContents;
   final List<UProductResponse> newProducts;
+
   UDashboardResponse({
     required this.categories,
     required this.comments,

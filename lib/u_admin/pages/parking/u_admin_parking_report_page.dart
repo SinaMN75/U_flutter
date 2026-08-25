@@ -2,6 +2,7 @@ import "package:u/utilities.dart";
 
 class UAdminParkingReportPage extends StatefulWidget {
   const UAdminParkingReportPage({super.key, this.parking});
+
   final UParkingResponse? parking;
 
   @override

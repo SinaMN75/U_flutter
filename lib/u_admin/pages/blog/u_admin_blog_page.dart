@@ -64,9 +64,7 @@ class _BlogPageState extends State<UAdminBlogPage> {
 
   Widget _itemResponsive(UBlogResponse i, int index) => UAdminTable.mobileCard(
     context,
-    leading: i.media?.firstOrNull?.url != null
-        ? SizedBox(width: 44, height: 44, child: UImage(i.media!.first.url!, borderRadius: 12))
-        : UAdminTable.leadingIcon(context, Icons.article_outlined),
+    leading: i.media?.firstOrNull?.url != null ? SizedBox(width: 44, height: 44, child: UImage(i.media!.first.url!, borderRadius: 12)) : UAdminTable.leadingIcon(context, Icons.article_outlined),
     title: i.title,
     badge: UAdminTable.statusChip(context, label: _isPublished(i) ? U.s.published : U.s.draft, color: _isPublished(i) ? UAdminTheme.green : UAdminTheme.grey),
     trailing: _menu(i),

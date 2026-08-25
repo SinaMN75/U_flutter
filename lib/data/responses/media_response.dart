@@ -8,6 +8,7 @@ extension MediaListExtension on Iterable<UMediaResponse> {
 
 class UMediaResponse {
   final String path;
+
   UMediaResponse({
     required this.id,
     required this.jsonData,
@@ -29,6 +30,7 @@ class UMediaResponse {
   final UBaseJson jsonData;
   final List<int> tags;
   final String? url;
+
   String toJson() => json.encode(toMap());
 
   Map<String, dynamic> toMap() => <String, dynamic>{

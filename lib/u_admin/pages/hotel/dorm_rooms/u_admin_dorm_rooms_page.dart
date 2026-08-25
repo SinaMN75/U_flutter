@@ -86,26 +86,27 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
       content: SizedBox(
         width: context.dialogWidth(),
         child: SingleChildScrollView(
-        child: UColumn(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            UTextField(controller: c.titleFilter, labelText: U.s.title).pSymmetric(vertical: 6),
-            const SizedBox(height: 20),
-            UButtonSubmitCancel(
-              submitTitle: U.s.filter,
-              cancelTitle: U.s.clearFilters,
-              onSubmit: () {
-                c.applyFilters();
-                UNavigator.back();
-              },
-              onCancel: () {
-                c.clearFilters();
-                UNavigator.back();
-              },
-            ),
-          ],
+          child: UColumn(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              UTextField(controller: c.titleFilter, labelText: U.s.title).pSymmetric(vertical: 6),
+              const SizedBox(height: 20),
+              UButtonSubmitCancel(
+                submitTitle: U.s.filter,
+                cancelTitle: U.s.clearFilters,
+                onSubmit: () {
+                  c.applyFilters();
+                  UNavigator.back();
+                },
+                onCancel: () {
+                  c.clearFilters();
+                  UNavigator.back();
+                },
+              ),
+            ],
+          ),
         ),
-      )),
+      ),
     ),
   );
 
@@ -121,62 +122,63 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
         content: SizedBox(
           width: context.dialogWidth(),
           child: SingleChildScrollView(
-          child: Form(
-            key: formKey,
-            child: UColumn(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                UTextField(
-                  controller: title,
-                  labelText: U.s.title,
-                  validator: UValidators.required(message: ""),
-                ).pSymmetric(vertical: 6),
-                if (widget.dorm == null)
-                  UTextFieldAutoCompleteAsync<UDormResponse>(
-                    labelBuilder: (UDormResponse i) => i.title,
-                    onChanged: dorm.call,
-                    selectedItem: dorm.value,
-                    fetchData: c.readDorms,
-                    hintText: U.s.dorm,
+            child: Form(
+              key: formKey,
+              child: UColumn(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  UTextField(
+                    controller: title,
+                    labelText: U.s.title,
+                    validator: UValidators.required(message: ""),
                   ).pSymmetric(vertical: 6),
-                UTextField(controller: detail, labelText: U.s.description).pSymmetric(vertical: 6),
-                const SizedBox(height: 20),
-                UButtonSubmitCancel(
-                  onSubmit: () => UValidators.validateForm(
-                    key: formKey,
-                    action: () {
-                      final String? did = dorm.value?.id ?? widget.dorm?.id;
-                      if (did == null) {
-                        UToast.error(message: U.s.pleaseSelectA(U.s.dorm));
-                        return;
-                      }
-                      if (p == null) {
-                        c.create(
-                          p: UDormRoomCreateParams(
-                            tags: <int>[TagDormRoom.dorm.number],
-                            title: title.text,
-                            dormId: did,
-                            detail1: detail.text.nullIfEmpty(),
-                          ),
-                        );
-                      } else {
-                        c.update(
-                          p: UDormRoomUpdateParams(
-                            id: p.id,
-                            title: title.text,
-                            dormId: did,
-                            detail1: detail.text.nullIfEmpty(),
-                          ),
-                        );
-                      }
-                      UNavigator.back();
-                    },
+                  if (widget.dorm == null)
+                    UTextFieldAutoCompleteAsync<UDormResponse>(
+                      labelBuilder: (UDormResponse i) => i.title,
+                      onChanged: dorm.call,
+                      selectedItem: dorm.value,
+                      fetchData: c.readDorms,
+                      hintText: U.s.dorm,
+                    ).pSymmetric(vertical: 6),
+                  UTextField(controller: detail, labelText: U.s.description).pSymmetric(vertical: 6),
+                  const SizedBox(height: 20),
+                  UButtonSubmitCancel(
+                    onSubmit: () => UValidators.validateForm(
+                      key: formKey,
+                      action: () {
+                        final String? did = dorm.value?.id ?? widget.dorm?.id;
+                        if (did == null) {
+                          UToast.error(message: U.s.pleaseSelectA(U.s.dorm));
+                          return;
+                        }
+                        if (p == null) {
+                          c.create(
+                            p: UDormRoomCreateParams(
+                              tags: <int>[TagDormRoom.dorm.number],
+                              title: title.text,
+                              dormId: did,
+                              detail1: detail.text.nullIfEmpty(),
+                            ),
+                          );
+                        } else {
+                          c.update(
+                            p: UDormRoomUpdateParams(
+                              id: p.id,
+                              title: title.text,
+                              dormId: did,
+                              detail1: detail.text.nullIfEmpty(),
+                            ),
+                          );
+                        }
+                        UNavigator.back();
+                      },
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        )),
+        ),
       ),
     );
   }

@@ -166,13 +166,12 @@ class USettingsSms {
 class USettingsItHub {
   USettingsItHub({required this.clientId, required this.clientSecret, required this.userName, required this.password});
 
-  factory USettingsItHub.fromMap(Map<String, dynamic> j) =>
-      USettingsItHub(
-        clientId: j["clientId"] ?? "",
-        clientSecret: j["clientSecret"] ?? "",
-        userName: j["userName"] ?? "",
-        password: j["password"] ?? "",
-      );
+  factory USettingsItHub.fromMap(Map<String, dynamic> j) => USettingsItHub(
+    clientId: j["clientId"] ?? "",
+    clientSecret: j["clientSecret"] ?? "",
+    userName: j["userName"] ?? "",
+    password: j["password"] ?? "",
+  );
 
   String clientId;
   String clientSecret;

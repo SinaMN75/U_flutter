@@ -54,6 +54,7 @@ class UNotificationUpdateParams {
   final List<String>? adminUserIds;
   final List<String>? addAdminUserIds;
   final List<String>? removeAdminUserIds;
+
   UNotificationUpdateParams({
     required this.id,
     this.addTags,

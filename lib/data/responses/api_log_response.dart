@@ -2,6 +2,7 @@ part of "../data.dart";
 
 class UApiLogResponse {
   final List<String> adminUserIds;
+
   UApiLogResponse({
     required this.id,
     required this.createdAt,

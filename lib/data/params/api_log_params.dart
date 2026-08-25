@@ -3,6 +3,7 @@ part of "../data.dart";
 class UApiLogReadParams {
   final String? creatorId;
   final dynamic selectorArgs;
+
   UApiLogReadParams({
     this.pageSize,
     this.pageNumber,
