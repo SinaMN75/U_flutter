@@ -36,6 +36,8 @@ class _UAdminParkingPageState extends State<UAdminParkingPage> {
       emptyText: U.s.noItemsFound(U.s.parking),
       desktopHeader: () => <Widget>[
         UAdminTable.headerCell(U.s.title, flex: 2),
+        UAdminTable.headerCell(U.s.address, flex: 2),
+        UAdminTable.headerCell(U.s.capacity),
         UAdminTable.headerCell(U.s.owner, flex: 2),
         UAdminTable.headerCell(U.s.admins),
         UAdminTable.headerCell(U.s.createdAt),
@@ -54,6 +56,8 @@ class _UAdminParkingPageState extends State<UAdminParkingPage> {
     padding: UAdminTable.rowPadding,
     children: <Widget>[
       UAdminTable.cell(i.title, flex: 2),
+      UAdminTable.cell(i.address.nullIfEmpty() ?? "-", flex: 2),
+      UAdminTable.cell(i.capacity.toString()),
       UAdminTable.cell(_ownerLabel(i), flex: 2),
       UAdminTable.cell(i.adminUserIds.length.toString()),
       UAdminTable.cell(i.createdAt.toJalaliDate()),
@@ -67,6 +71,9 @@ class _UAdminParkingPageState extends State<UAdminParkingPage> {
     title: i.title,
     trailing: _menu(i),
     fields: <UAdminField>[
+      UAdminField(U.s.address, i.address.nullIfEmpty() ?? "-"),
+      UAdminField(U.s.phoneNumber, i.phoneNumber.nullIfEmpty() ?? "-"),
+      UAdminField(U.s.capacity, i.capacity.toString()),
       UAdminField(U.s.owner, _ownerLabel(i)),
       UAdminField(U.s.admins, i.adminUserIds.length.toString()),
       UAdminField(U.s.createdAt, i.createdAt.toJalaliDate()),
@@ -91,10 +98,14 @@ class _UAdminParkingPageState extends State<UAdminParkingPage> {
 
   Future<void> _showEditDialog({UParkingResponse? p}) async {
     final TextEditingController title = TextEditingController(text: p?.title);
-    final TextEditingController entrance = TextEditingController();
-    final TextEditingController hourly = TextEditingController();
-    final TextEditingController daily = TextEditingController();
+    final TextEditingController address = TextEditingController(text: p?.address);
+    final TextEditingController phoneNumber = TextEditingController(text: p?.phoneNumber);
+    final TextEditingController capacity = TextEditingController(text: p == null ? "" : p.capacity.toString());
+    final TextEditingController entrance = TextEditingController(text: p?.entrancePrice.toStringAsSmartRound());
+    final TextEditingController hourly = TextEditingController(text: p?.hourlyPrice.toStringAsSmartRound());
+    final TextEditingController daily = TextEditingController(text: p?.dailyPrice.toStringAsSmartRound());
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    bool isDisabled = p?.tags.contains(TagParking.disabled.number) ?? false;
 
     // Owner = creatorId (single user). Assigned admins = adminUserIds (multiple users).
     UUserResponse? owner = p?.creator;
@@ -121,6 +132,9 @@ class _UAdminParkingPageState extends State<UAdminParkingPage> {
                       labelText: U.s.title,
                       validator: UValidators.required(message: ""),
                     ).pSymmetric(vertical: 6),
+                    UTextField(controller: address, labelText: U.s.address).pSymmetric(vertical: 6),
+                    UTextField(controller: phoneNumber, labelText: U.s.phoneNumber, keyboardType: TextInputType.phone).pSymmetric(vertical: 6),
+                    UTextField(controller: capacity, labelText: U.s.capacity, keyboardType: TextInputType.number).pSymmetric(vertical: 6),
                     UTextField(
                       controller: entrance,
                       labelText: U.s.entrancePrice,
@@ -129,6 +143,12 @@ class _UAdminParkingPageState extends State<UAdminParkingPage> {
                     ).pSymmetric(vertical: 6),
                     UTextField(controller: hourly, labelText: U.s.hourlyPrice, keyboardType: TextInputType.number, formatters: <TextInputFormatter>[UCurrencyInputFormatter()]).pSymmetric(vertical: 6),
                     UTextField(controller: daily, labelText: U.s.dailyPrice, keyboardType: TextInputType.number, formatters: <TextInputFormatter>[UCurrencyInputFormatter()]).pSymmetric(vertical: 6),
+                    SwitchListTile(
+                      value: isDisabled,
+                      title: UTextBodyMedium(U.s.disabled),
+                      contentPadding: EdgeInsets.zero,
+                      onChanged: (bool v) => setDialogState(() => isDisabled = v),
+                    ),
                     const SizedBox(height: 8),
                     // Assign a user as the owner (creatorId).
                     UTextFieldAutoCompleteAsync<UUserResponse>(
@@ -172,8 +192,11 @@ class _UAdminParkingPageState extends State<UAdminParkingPage> {
                           if (p == null) {
                             c.create(
                               p: UParkingCreateParams(
-                                tags: <int>[TagParking.test.number],
+                                tags: <int>[if (isDisabled) TagParking.disabled.number else TagParking.active.number],
                                 title: title.text,
+                                address: address.text.nullIfEmpty(),
+                                phoneNumber: phoneNumber.text.nullIfEmpty(),
+                                capacity: capacity.isNullOrEmpty() ? 0 : capacity.numInt(),
                                 entrancePrice: entrance.isNullOrEmpty() ? 0 : entrance.numDouble(),
                                 hourlyPrice: hourly.isNullOrEmpty() ? 0 : hourly.numDouble(),
                                 dailyPrice: daily.isNullOrEmpty() ? 0 : daily.numDouble(),
@@ -185,6 +208,12 @@ class _UAdminParkingPageState extends State<UAdminParkingPage> {
                             c.update(
                               p: UParkingUpdateParams(
                                 id: p.id,
+                                title: title.text.nullIfEmpty(),
+                                address: address.text,
+                                phoneNumber: phoneNumber.text,
+                                capacity: capacity.isNullOrEmpty() ? null : capacity.numInt(),
+                                addTags: <int>[if (isDisabled) TagParking.disabled.number else TagParking.active.number],
+                                removeTags: <int>[if (isDisabled) TagParking.active.number else TagParking.disabled.number],
                                 entrancePrice: entrance.isNullOrEmpty() ? null : entrance.numDouble(),
                                 hourlyPrice: hourly.isNullOrEmpty() ? null : hourly.numDouble(),
                                 dailyPrice: daily.isNullOrEmpty() ? null : daily.numDouble(),

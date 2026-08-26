@@ -190,3 +190,105 @@ class UErrorRetry extends StatelessWidget {
     trailing: UButton(title: buttonTitle ?? U.s.tryAgain, onTap: onTap),
   );
 }
+
+class UPill extends StatelessWidget {
+  const UPill(
+    this.label, {
+    super.key,
+    this.color,
+    this.icon,
+  });
+
+  final String label;
+  final Color? color;
+  final IconData? icon;
+
+  @override
+  Widget build(BuildContext context) {
+    final Color foreground = color ?? Theme.of(context).colorScheme.onSurfaceVariant;
+    return UContainer(
+      radius: 999,
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      color: foreground.withValues(alpha: 0.12),
+      child: URow(
+        spacing: 4,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          if (icon != null) Icon(icon, size: 14, color: foreground),
+          UTextLabelMedium(label, color: foreground, fontWeight: FontWeight.w600),
+        ],
+      ),
+    );
+  }
+}
+
+class USelectionCard extends StatelessWidget {
+  const USelectionCard({
+    required this.title,
+    required this.onTap,
+    super.key,
+    this.subtitle,
+    this.pills = const <Widget>[],
+    this.trailing,
+    this.isSelected = false,
+    this.isDisabled = false,
+  });
+
+  final String title;
+  final String? subtitle;
+  final List<Widget> pills;
+  final Widget? trailing;
+  final bool isSelected;
+  final bool isDisabled;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme scheme = Theme.of(context).colorScheme;
+    return UContainer(
+      radius: 20,
+      padding: const EdgeInsets.all(18),
+      color: scheme.surface,
+      opacity: isDisabled ? 0.55 : 1,
+      onTap: isDisabled ? null : onTap,
+      border: Border.all(
+        color: isSelected ? scheme.primary : scheme.outlineVariant,
+        width: isSelected ? 2 : 1,
+      ),
+      child: UColumn(
+        spacing: 12,
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          URow(
+            spacing: 12,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              UColumn(
+                spacing: 5,
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  UTextTitleLarge(title, color: scheme.onSurface),
+                  if (subtitle != null) UTextBodySmall(subtitle!, color: scheme.onSurfaceVariant),
+                ],
+              ).expanded(),
+              if (trailing != null)
+                trailing!
+              else if (isSelected)
+                UContainer(
+                  width: 24,
+                  height: 24,
+                  radius: 999,
+                  color: scheme.primary,
+                  alignment: Alignment.center,
+                  child: Icon(Icons.check_rounded, size: 15, color: scheme.onPrimary),
+                ),
+            ],
+          ),
+          if (pills.isNotEmpty) Wrap(spacing: 8, runSpacing: 8, children: pills),
+        ],
+      ),
+    );
+  }
+}

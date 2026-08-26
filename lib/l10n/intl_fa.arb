@@ -925,5 +925,50 @@
   "dynamicPinHint": "رمز دوم پویا برای خریدهای اینترنتی استفاده می‌شود.",
   "secondsWord": "ثانیه",
   "pinSentBySms": "رمز دوم پویا پیامک شد",
-  "autoPlay": "پخش خودکار"
+  "autoPlay": "پخش خودکار",
+  "login": "ورود",
+  "forgotPassword": "فراموشی رمز عبور",
+  "back": "بازگشت",
+  "disabled": "غیرفعال",
+  "superAdmin": "سوپرادمین",
+  "contactSupport": "تماس با پشتیبانی",
+  "supportCode": "کد پشتیبانی",
+  "deviceId": "شناسه دستگاه",
+  "startShift": "شروع شیفت",
+  "whichParking": "کدام پارکینگ؟",
+  "logInToStartYourShift": "برای شروع شیفت وارد شوید",
+  "yourShiftWillBeRecordedOnThisParking": "شیفت شما روی همین پارکینگ ثبت می‌شود",
+  "youDoNotHaveAccessToAnyParking": "دسترسی به پارکینگ ندارید",
+  "yourAccountIsNotLinkedToAnyParkingYet": "حساب {userName} معتبر است اما هنوز به هیچ پارکینگی متصل نشده. از صاحب پارکینگ بخواهید شما را به‌عنوان اپراتور اضافه کند.",
+  "@yourAccountIsNotLinkedToAnyParkingYet": {
+    "placeholders": {
+      "userName": {}
+    }
+  },
+  "accessTemporarilyDisabled": "دسترسی موقتاً غیرفعال",
+  "parkingSpacesCount": "{count} جای پارک",
+  "@parkingSpacesCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "selectParking": "انتخاب پارکینگ",
+  "parkingAddress": "نشانی پارکینگ",
+  "parkingPhoneNumber": "تلفن پارکینگ",
+  "parkingCapacity": "ظرفیت پارکینگ",
+  "about": "درباره",
+  "entranceDate": "تاریخ ورود",
+  "parkingName": "نام پارکینگ",
+  "printReceipt": "چاپ رسید",
+  "printFailed": "چاپ رسید ناموفق بود",
+  "receiptPrinted": "رسید با موفقیت چاپ شد",
+  "receiptTitle": "رسید پارکینگ",
+  "scanReceipt": "اسکن رسید",
+  "scanReceiptHint": "دوربین را روی کد QR رسید بگیرید",
+  "scannedReceipt": "رسید اسکن‌شده",
+  "sessionExpired": "نشست شما منقضی شده است. لطفاً دوباره وارد شوید.",
+  "vehicleType": "نوع خودرو",
+  "avaPark": "آواپارک",
+  "askYourParkingOwnerToResetYourPassword": "برای بازنشانی رمز عبور با صاحب پارکینگ یا پشتیبانی تماس بگیرید.",
+  "changeParking": "تغییر پارکینگ"
 }

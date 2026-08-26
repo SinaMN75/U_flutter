@@ -11,6 +11,9 @@ class UParkingResponse {
     required this.entrancePrice,
     required this.hourlyPrice,
     required this.dailyPrice,
+    required this.capacity,
+    this.address,
+    this.phoneNumber,
     this.creator,
     this.creatorId,
   });
@@ -23,6 +26,9 @@ class UParkingResponse {
     jsonData: UBaseJson.fromMap(json["jsonData"]),
     tags: List<int>.from(json["tags"].map((dynamic x) => x)),
     title: json["title"],
+    address: json["address"],
+    phoneNumber: json["phoneNumber"],
+    capacity: json["capacity"] ?? 0,
     creator: json["creator"] == null ? null : UUserResponse.fromMap(json["creator"]),
     creatorId: json["creatorId"],
     adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
@@ -36,6 +42,9 @@ class UParkingResponse {
   final UBaseJson jsonData;
   final List<int> tags;
   final String title;
+  final String? address;
+  final String? phoneNumber;
+  final int capacity;
   final UUserResponse? creator;
   final String? creatorId;
   final List<String> adminUserIds;
@@ -51,6 +60,9 @@ class UParkingResponse {
     "jsonData": jsonData.toMap(),
     "tags": List<dynamic>.from(tags.map((int x) => x)),
     "title": title,
+    "address": address,
+    "phoneNumber": phoneNumber,
+    "capacity": capacity,
     "creator": creator?.toMap(),
     "creatorId": creatorId,
     "adminUserIds": List<dynamic>.from(adminUserIds.map((String x) => x)),

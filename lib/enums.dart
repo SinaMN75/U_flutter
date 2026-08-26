@@ -351,6 +351,8 @@ enum TagTxn with NumericIdentifiable {
 }
 
 enum TagParking with NumericIdentifiable {
+  disabled("غیرفعال", "Disabled", 101),
+  active("فعال", "Active", 102),
   test("تست", "Test", 999);
 
   const TagParking(this.titleFa, this.titleEn, this.number);

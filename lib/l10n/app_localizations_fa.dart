@@ -2604,4 +2604,113 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get autoPlay => 'پخش خودکار';
+
+  @override
+  String get login => 'ورود';
+
+  @override
+  String get forgotPassword => 'فراموشی رمز عبور';
+
+  @override
+  String get back => 'بازگشت';
+
+  @override
+  String get disabled => 'غیرفعال';
+
+  @override
+  String get superAdmin => 'سوپرادمین';
+
+  @override
+  String get contactSupport => 'تماس با پشتیبانی';
+
+  @override
+  String get supportCode => 'کد پشتیبانی';
+
+  @override
+  String get deviceId => 'شناسه دستگاه';
+
+  @override
+  String get startShift => 'شروع شیفت';
+
+  @override
+  String get whichParking => 'کدام پارکینگ؟';
+
+  @override
+  String get logInToStartYourShift => 'برای شروع شیفت وارد شوید';
+
+  @override
+  String get yourShiftWillBeRecordedOnThisParking => 'شیفت شما روی همین پارکینگ ثبت می‌شود';
+
+  @override
+  String get youDoNotHaveAccessToAnyParking => 'دسترسی به پارکینگ ندارید';
+
+  @override
+  String yourAccountIsNotLinkedToAnyParkingYet(Object userName) {
+    return 'حساب $userName معتبر است اما هنوز به هیچ پارکینگی متصل نشده. از صاحب پارکینگ بخواهید شما را به‌عنوان اپراتور اضافه کند.';
+  }
+
+  @override
+  String get accessTemporarilyDisabled => 'دسترسی موقتاً غیرفعال';
+
+  @override
+  String parkingSpacesCount(Object count) {
+    return '$count جای پارک';
+  }
+
+  @override
+  String get selectParking => 'انتخاب پارکینگ';
+
+  @override
+  String get parkingAddress => 'نشانی پارکینگ';
+
+  @override
+  String get parkingPhoneNumber => 'تلفن پارکینگ';
+
+  @override
+  String get parkingCapacity => 'ظرفیت پارکینگ';
+
+  @override
+  String get about => 'درباره';
+
+  @override
+  String get entranceDate => 'تاریخ ورود';
+
+  @override
+  String get parkingName => 'نام پارکینگ';
+
+  @override
+  String get printReceipt => 'چاپ رسید';
+
+  @override
+  String get printFailed => 'چاپ رسید ناموفق بود';
+
+  @override
+  String get receiptPrinted => 'رسید با موفقیت چاپ شد';
+
+  @override
+  String get receiptTitle => 'رسید پارکینگ';
+
+  @override
+  String get scanReceipt => 'اسکن رسید';
+
+  @override
+  String get scanReceiptHint => 'دوربین را روی کد QR رسید بگیرید';
+
+  @override
+  String get scannedReceipt => 'رسید اسکن‌شده';
+
+  @override
+  String get sessionExpired => 'نشست شما منقضی شده است. لطفاً دوباره وارد شوید.';
+
+  @override
+  String get vehicleType => 'نوع خودرو';
+
+  @override
+  String get avaPark => 'آواپارک';
+
+  @override
+  String get askYourParkingOwnerToResetYourPassword => 'برای بازنشانی رمز عبور با صاحب پارکینگ یا پشتیبانی تماس بگیرید.';
+
+  @override
+  String get changeParking => 'تغییر پارکینگ';
 }

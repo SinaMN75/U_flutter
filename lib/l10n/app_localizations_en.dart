@@ -2604,4 +2604,113 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get autoPlay => 'Auto-play';
+
+  @override
+  String get login => 'Log in';
+
+  @override
+  String get forgotPassword => 'Forgot password';
+
+  @override
+  String get back => 'Back';
+
+  @override
+  String get disabled => 'Disabled';
+
+  @override
+  String get superAdmin => 'Super admin';
+
+  @override
+  String get contactSupport => 'Contact support';
+
+  @override
+  String get supportCode => 'Support code';
+
+  @override
+  String get deviceId => 'Device ID';
+
+  @override
+  String get startShift => 'Start shift';
+
+  @override
+  String get whichParking => 'Which parking?';
+
+  @override
+  String get logInToStartYourShift => 'Log in to start your shift';
+
+  @override
+  String get yourShiftWillBeRecordedOnThisParking => 'Your shift will be recorded on this parking';
+
+  @override
+  String get youDoNotHaveAccessToAnyParking => 'You do not have access to any parking';
+
+  @override
+  String yourAccountIsNotLinkedToAnyParkingYet(Object userName) {
+    return 'The account $userName is valid but is not linked to any parking yet. Ask the parking owner to add you as an operator.';
+  }
+
+  @override
+  String get accessTemporarilyDisabled => 'Access temporarily disabled';
+
+  @override
+  String parkingSpacesCount(Object count) {
+    return '$count parking spaces';
+  }
+
+  @override
+  String get selectParking => 'Select parking';
+
+  @override
+  String get parkingAddress => 'Parking address';
+
+  @override
+  String get parkingPhoneNumber => 'Parking phone number';
+
+  @override
+  String get parkingCapacity => 'Parking capacity';
+
+  @override
+  String get about => 'About';
+
+  @override
+  String get entranceDate => 'Entrance date';
+
+  @override
+  String get parkingName => 'Parking name';
+
+  @override
+  String get printReceipt => 'Print receipt';
+
+  @override
+  String get printFailed => 'Printing failed';
+
+  @override
+  String get receiptPrinted => 'Receipt printed successfully';
+
+  @override
+  String get receiptTitle => 'Parking receipt';
+
+  @override
+  String get scanReceipt => 'Scan receipt';
+
+  @override
+  String get scanReceiptHint => 'Point the camera at a receipt QR code';
+
+  @override
+  String get scannedReceipt => 'Scanned receipt';
+
+  @override
+  String get sessionExpired => 'Your session has expired. Please sign in again.';
+
+  @override
+  String get vehicleType => 'Vehicle type';
+
+  @override
+  String get avaPark => 'AvaPark';
+
+  @override
+  String get askYourParkingOwnerToResetYourPassword => 'Ask your parking owner or support to reset your password.';
+
+  @override
+  String get changeParking => 'Change parking';
 }

@@ -39,6 +39,15 @@ abstract class UApp {
 
   static bool get isDarkMode => UAppState.isDarkMode;
 
+  static String deviceId() {
+    if (isAndroid) return androidDeviceInfo.id;
+    if (isIos) return iosDeviceInfo.identifierForVendor ?? "";
+    if (isMacOs) return macOsDeviceInfo.systemGUID ?? "";
+    if (isWindows) return windowsDeviceInfo.deviceId;
+    if (isLinux) return linuxDeviceInfo.machineId ?? "";
+    return "";
+  }
+
   static bool isLandscape() => MediaQuery.of(navigatorKey.currentContext!).orientation == Orientation.landscape;
 
   static bool isPortrait() => MediaQuery.of(navigatorKey.currentContext!).orientation == Orientation.portrait;

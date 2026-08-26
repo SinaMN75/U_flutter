@@ -925,5 +925,50 @@
   "dynamicPinHint": "The dynamic PIN is used for online purchases.",
   "secondsWord": "seconds",
   "pinSentBySms": "The dynamic PIN was sent via SMS",
-  "autoPlay": "Auto-play"
+  "autoPlay": "Auto-play",
+  "login": "Log in",
+  "forgotPassword": "Forgot password",
+  "back": "Back",
+  "disabled": "Disabled",
+  "superAdmin": "Super admin",
+  "contactSupport": "Contact support",
+  "supportCode": "Support code",
+  "deviceId": "Device ID",
+  "startShift": "Start shift",
+  "whichParking": "Which parking?",
+  "logInToStartYourShift": "Log in to start your shift",
+  "yourShiftWillBeRecordedOnThisParking": "Your shift will be recorded on this parking",
+  "youDoNotHaveAccessToAnyParking": "You do not have access to any parking",
+  "yourAccountIsNotLinkedToAnyParkingYet": "The account {userName} is valid but is not linked to any parking yet. Ask the parking owner to add you as an operator.",
+  "@yourAccountIsNotLinkedToAnyParkingYet": {
+    "placeholders": {
+      "userName": {}
+    }
+  },
+  "accessTemporarilyDisabled": "Access temporarily disabled",
+  "parkingSpacesCount": "{count} parking spaces",
+  "@parkingSpacesCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "selectParking": "Select parking",
+  "parkingAddress": "Parking address",
+  "parkingPhoneNumber": "Parking phone number",
+  "parkingCapacity": "Parking capacity",
+  "about": "About",
+  "entranceDate": "Entrance date",
+  "parkingName": "Parking name",
+  "printReceipt": "Print receipt",
+  "printFailed": "Printing failed",
+  "receiptPrinted": "Receipt printed successfully",
+  "receiptTitle": "Parking receipt",
+  "scanReceipt": "Scan receipt",
+  "scanReceiptHint": "Point the camera at a receipt QR code",
+  "scannedReceipt": "Scanned receipt",
+  "sessionExpired": "Your session has expired. Please sign in again.",
+  "vehicleType": "Vehicle type",
+  "avaPark": "AvaPark",
+  "askYourParkingOwnerToResetYourPassword": "Ask your parking owner or support to reset your password.",
+  "changeParking": "Change parking"
 }

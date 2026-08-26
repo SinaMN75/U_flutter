@@ -2,6 +2,9 @@ part of "../data.dart";
 
 class UParkingCreateParams {
   final String title;
+  final String? address;
+  final String? phoneNumber;
+  final int capacity;
   final double entrancePrice;
   final double hourlyPrice;
   final double dailyPrice;
@@ -18,6 +21,9 @@ class UParkingCreateParams {
     required this.hourlyPrice,
     required this.dailyPrice,
     required this.tags,
+    this.address,
+    this.phoneNumber,
+    this.capacity = 0,
     this.detail1,
     this.detail2,
     this.id,
@@ -31,6 +37,9 @@ class UParkingCreateParams {
 
   factory UParkingCreateParams.fromMap(Map<String, dynamic> json) => UParkingCreateParams(
     title: json["title"],
+    address: json["address"],
+    phoneNumber: json["phoneNumber"],
+    capacity: json["capacity"] ?? 0,
     entrancePrice: json["entrancePrice"].toDouble(),
     hourlyPrice: json["hourlyPrice"].toDouble(),
     dailyPrice: json["dailyPrice"].toDouble(),
@@ -44,6 +53,9 @@ class UParkingCreateParams {
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "title": title,
+    "address": address,
+    "phoneNumber": phoneNumber,
+    "capacity": capacity,
     "entrancePrice": entrancePrice,
     "hourlyPrice": hourlyPrice,
     "dailyPrice": dailyPrice,
@@ -58,6 +70,10 @@ class UParkingCreateParams {
 
 class UParkingUpdateParams {
   final String id;
+  final String? title;
+  final String? address;
+  final String? phoneNumber;
+  final int? capacity;
   final double? entrancePrice;
   final double? hourlyPrice;
   final double? dailyPrice;
@@ -72,6 +88,10 @@ class UParkingUpdateParams {
 
   UParkingUpdateParams({
     required this.id,
+    this.title,
+    this.address,
+    this.phoneNumber,
+    this.capacity,
     this.entrancePrice,
     this.hourlyPrice,
     this.dailyPrice,
@@ -91,6 +111,10 @@ class UParkingUpdateParams {
 
   factory UParkingUpdateParams.fromMap(Map<String, dynamic> json) => UParkingUpdateParams(
     id: json["id"],
+    title: json["title"],
+    address: json["address"],
+    phoneNumber: json["phoneNumber"],
+    capacity: json["capacity"],
     entrancePrice: json["entrancePrice"]?.toDouble(),
     hourlyPrice: json["hourlyPrice"]?.toDouble(),
     dailyPrice: json["dailyPrice"]?.toDouble(),
@@ -106,6 +130,10 @@ class UParkingUpdateParams {
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "id": id,
+    "title": title,
+    "address": address,
+    "phoneNumber": phoneNumber,
+    "capacity": capacity,
     "entrancePrice": entrancePrice,
     "hourlyPrice": hourlyPrice,
     "dailyPrice": dailyPrice,

@@ -5227,6 +5227,216 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Auto-play'**
   String get autoPlay;
+
+  /// No description provided for @login.
+  ///
+  /// In en, this message translates to:
+  /// **'Log in'**
+  String get login;
+
+  /// No description provided for @forgotPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot password'**
+  String get forgotPassword;
+
+  /// No description provided for @back.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get back;
+
+  /// No description provided for @disabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Disabled'**
+  String get disabled;
+
+  /// No description provided for @superAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Super admin'**
+  String get superAdmin;
+
+  /// No description provided for @contactSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact support'**
+  String get contactSupport;
+
+  /// No description provided for @supportCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Support code'**
+  String get supportCode;
+
+  /// No description provided for @deviceId.
+  ///
+  /// In en, this message translates to:
+  /// **'Device ID'**
+  String get deviceId;
+
+  /// No description provided for @startShift.
+  ///
+  /// In en, this message translates to:
+  /// **'Start shift'**
+  String get startShift;
+
+  /// No description provided for @whichParking.
+  ///
+  /// In en, this message translates to:
+  /// **'Which parking?'**
+  String get whichParking;
+
+  /// No description provided for @logInToStartYourShift.
+  ///
+  /// In en, this message translates to:
+  /// **'Log in to start your shift'**
+  String get logInToStartYourShift;
+
+  /// No description provided for @yourShiftWillBeRecordedOnThisParking.
+  ///
+  /// In en, this message translates to:
+  /// **'Your shift will be recorded on this parking'**
+  String get yourShiftWillBeRecordedOnThisParking;
+
+  /// No description provided for @youDoNotHaveAccessToAnyParking.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not have access to any parking'**
+  String get youDoNotHaveAccessToAnyParking;
+
+  /// No description provided for @yourAccountIsNotLinkedToAnyParkingYet.
+  ///
+  /// In en, this message translates to:
+  /// **'The account {userName} is valid but is not linked to any parking yet. Ask the parking owner to add you as an operator.'**
+  String yourAccountIsNotLinkedToAnyParkingYet(Object userName);
+
+  /// No description provided for @accessTemporarilyDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Access temporarily disabled'**
+  String get accessTemporarilyDisabled;
+
+  /// No description provided for @parkingSpacesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} parking spaces'**
+  String parkingSpacesCount(Object count);
+
+  /// No description provided for @selectParking.
+  ///
+  /// In en, this message translates to:
+  /// **'Select parking'**
+  String get selectParking;
+
+  /// No description provided for @parkingAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Parking address'**
+  String get parkingAddress;
+
+  /// No description provided for @parkingPhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Parking phone number'**
+  String get parkingPhoneNumber;
+
+  /// No description provided for @parkingCapacity.
+  ///
+  /// In en, this message translates to:
+  /// **'Parking capacity'**
+  String get parkingCapacity;
+
+  /// No description provided for @about.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get about;
+
+  /// No description provided for @entranceDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Entrance date'**
+  String get entranceDate;
+
+  /// No description provided for @parkingName.
+  ///
+  /// In en, this message translates to:
+  /// **'Parking name'**
+  String get parkingName;
+
+  /// No description provided for @printReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Print receipt'**
+  String get printReceipt;
+
+  /// No description provided for @printFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Printing failed'**
+  String get printFailed;
+
+  /// No description provided for @receiptPrinted.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipt printed successfully'**
+  String get receiptPrinted;
+
+  /// No description provided for @receiptTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Parking receipt'**
+  String get receiptTitle;
+
+  /// No description provided for @scanReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan receipt'**
+  String get scanReceipt;
+
+  /// No description provided for @scanReceiptHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Point the camera at a receipt QR code'**
+  String get scanReceiptHint;
+
+  /// No description provided for @scannedReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Scanned receipt'**
+  String get scannedReceipt;
+
+  /// No description provided for @sessionExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Your session has expired. Please sign in again.'**
+  String get sessionExpired;
+
+  /// No description provided for @vehicleType.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle type'**
+  String get vehicleType;
+
+  /// No description provided for @avaPark.
+  ///
+  /// In en, this message translates to:
+  /// **'AvaPark'**
+  String get avaPark;
+
+  /// No description provided for @askYourParkingOwnerToResetYourPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask your parking owner or support to reset your password.'**
+  String get askYourParkingOwnerToResetYourPassword;
+
+  /// No description provided for @changeParking.
+  ///
+  /// In en, this message translates to:
+  /// **'Change parking'**
+  String get changeParking;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
