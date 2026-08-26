@@ -825,3 +825,81 @@ class DormBedSelectorArgs {
     "contract": contract?.toMap(),
   };
 }
+
+class ParkingTariffSelectorArgs {
+  final UserSelectorArgs? creator;
+
+  const ParkingTariffSelectorArgs({this.creator});
+
+  factory ParkingTariffSelectorArgs.fromMap(Map<String, dynamic> json) => ParkingTariffSelectorArgs(creator: json["creator"] == null ? null : UserSelectorArgs.fromMap(json["creator"]));
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"creator": creator?.toMap()};
+
+  String toJson() => json.encode(toMap());
+
+  factory ParkingTariffSelectorArgs.fromJson(String str) => ParkingTariffSelectorArgs.fromMap(json.decode(str));
+}
+
+class ParkingPlateFlagSelectorArgs {
+  final UserSelectorArgs? creator;
+
+  const ParkingPlateFlagSelectorArgs({this.creator});
+
+  factory ParkingPlateFlagSelectorArgs.fromMap(Map<String, dynamic> json) => ParkingPlateFlagSelectorArgs(creator: json["creator"] == null ? null : UserSelectorArgs.fromMap(json["creator"]));
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"creator": creator?.toMap()};
+
+  String toJson() => json.encode(toMap());
+
+  factory ParkingPlateFlagSelectorArgs.fromJson(String str) => ParkingPlateFlagSelectorArgs.fromMap(json.decode(str));
+}
+
+class ParkingShiftSelectorArgs {
+  final UserSelectorArgs? creator;
+
+  const ParkingShiftSelectorArgs({this.creator});
+
+  factory ParkingShiftSelectorArgs.fromMap(Map<String, dynamic> json) => ParkingShiftSelectorArgs(creator: json["creator"] == null ? null : UserSelectorArgs.fromMap(json["creator"]));
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"creator": creator?.toMap()};
+
+  String toJson() => json.encode(toMap());
+
+  factory ParkingShiftSelectorArgs.fromJson(String str) => ParkingShiftSelectorArgs.fromMap(json.decode(str));
+}
+
+class ParkingSubscriptionSelectorArgs {
+  final UserSelectorArgs? creator;
+  final VehicleSelectorArgs? vehicle;
+
+  const ParkingSubscriptionSelectorArgs({this.creator, this.vehicle});
+
+  factory ParkingSubscriptionSelectorArgs.fromMap(Map<String, dynamic> json) => ParkingSubscriptionSelectorArgs(
+    creator: json["creator"] == null ? null : UserSelectorArgs.fromMap(json["creator"]),
+    vehicle: json["vehicle"] == null ? null : VehicleSelectorArgs.fromMap(json["vehicle"]),
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"creator": creator?.toMap(), "vehicle": vehicle?.toMap()};
+
+  String toJson() => json.encode(toMap());
+
+  factory ParkingSubscriptionSelectorArgs.fromJson(String str) => ParkingSubscriptionSelectorArgs.fromMap(json.decode(str));
+}
+
+class ParkingStaffSelectorArgs {
+  final UserSelectorArgs? creator;
+  final UserSelectorArgs? user;
+
+  const ParkingStaffSelectorArgs({this.creator, this.user});
+
+  factory ParkingStaffSelectorArgs.fromMap(Map<String, dynamic> json) => ParkingStaffSelectorArgs(
+    creator: json["creator"] == null ? null : UserSelectorArgs.fromMap(json["creator"]),
+    user: json["user"] == null ? null : UserSelectorArgs.fromMap(json["user"]),
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"creator": creator?.toMap(), "user": user?.toMap()};
+
+  String toJson() => json.encode(toMap());
+
+  factory ParkingStaffSelectorArgs.fromJson(String str) => ParkingStaffSelectorArgs.fromMap(json.decode(str));
+}

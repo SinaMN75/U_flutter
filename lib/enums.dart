@@ -369,8 +369,10 @@ enum TagVehicle with NumericIdentifiable {
   motorcycle("موتورسیکلت", "Motorcycle", 101),
   car("سواری", "Car", 102),
   van("ون", "Van", 103),
-  truck("کامیون", "Truck", 104),
-  bus("اتوبوس", "Bus", 105);
+  truck("کامیونت", "Truck", 104),
+  bus("اتوبوس", "Bus", 105),
+  pickup("وانت", "Pickup", 106),
+  electric("برقی", "Electric", 107);
 
   const TagVehicle(this.titleFa, this.titleEn, this.number);
 
@@ -383,9 +385,107 @@ enum TagVehicle with NumericIdentifiable {
 }
 
 enum TagParkingReport with NumericIdentifiable {
+  open("باز", "Open", 101),
+  closed("بسته", "Closed", 102),
+  offline("آفلاین", "Offline", 103),
   test("تست", "Test", 999);
 
   const TagParkingReport(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagParkingTariff with NumericIdentifiable {
+  hourly("ساعتی", "Hourly", 101),
+  subscription("اشتراک", "Subscription", 102);
+
+  const TagParkingTariff(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagParkingSubscription with NumericIdentifiable {
+  weekly("هفتگی", "Weekly", 101),
+  monthly("ماهانه", "Monthly", 102),
+  quarterly("فصلی", "Quarterly", 103),
+  cancelled("لغو شده", "Cancelled", 104);
+
+  const TagParkingSubscription(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagParkingPlateFlag with NumericIdentifiable {
+  debt("بدهی", "Debt", 101),
+  banned("ممنوع", "Banned", 102),
+  warning("هشدار", "Warning", 103),
+  reservation("رزرو", "Reservation", 104);
+
+  const TagParkingPlateFlag(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagParkingStaff with NumericIdentifiable {
+  registerEntryExit("ثبت ورود و خروج", "Register entry and exit", 101),
+  applyManualDiscount("اعمال تخفیف دستی", "Apply manual discount", 102),
+  manageSubscriptions("ثبت و تمدید اشتراک", "Manage subscriptions", 103),
+  changeTariff("تغییر تعرفه", "Change tariff", 104),
+  viewFinancialReports("مشاهده گزارش‌های مالی", "View financial reports", 105),
+  disabled("غیرفعال", "Disabled", 106);
+
+  const TagParkingStaff(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagParkingShift with NumericIdentifiable {
+  open("باز", "Open", 101),
+  closed("بسته", "Closed", 102);
+
+  const TagParkingShift(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagParkingPayment with NumericIdentifiable {
+  card("کارت بانکی", "Bank card", 101),
+  ipg("درگاه پرداخت", "Payment gateway", 102),
+  cash("نقدی", "Cash", 103),
+  subscription("اشتراک", "Subscription", 104),
+  free("رایگان", "Free", 105);
+
+  const TagParkingPayment(this.titleFa, this.titleEn, this.number);
 
   @override
   final String titleFa;

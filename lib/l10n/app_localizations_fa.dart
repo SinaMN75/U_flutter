@@ -2713,4 +2713,726 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get changeParking => 'تغییر پارکینگ';
+
+  @override
+  String get insideParking => 'داخل پارکینگ';
+
+  @override
+  String get shiftRevenue => 'درآمد شیفت';
+
+  @override
+  String get registerEntry => 'ثبت ورود';
+
+  @override
+  String get registerExit => 'ثبت خروج';
+
+  @override
+  String get plateAndPrintReceipt => 'پلاک و چاپ رسید';
+
+  @override
+  String get scanReceiptOrPlate => 'اسکن رسید یا پلاک';
+
+  @override
+  String get recentMovements => 'آخرین ترددها';
+
+  @override
+  String receiptsQueuedOffline(Object count) {
+    return '$count رسید در صف ارسال آفلاین است';
+  }
+
+  @override
+  String get freeExit => 'خروج رایگان';
+
+  @override
+  String get nonIranianPlate => 'پلاک غیرایرانی';
+
+  @override
+  String get readPlateWithCamera => 'خواندن پلاک با دوربین';
+
+  @override
+  String get perHourAfter => 'هر ساعت بعد';
+
+  @override
+  String get dailyCap => 'سقف ۲۴ ساعته';
+
+  @override
+  String firstMinutesAreFree(Object minutes) {
+    return '$minutes دقیقه اول رایگان است.';
+  }
+
+  @override
+  String nightRateAppliesBetween(Object from, Object to) {
+    return 'از $from تا $to نرخ شبانه اعمال می‌شود.';
+  }
+
+  @override
+  String get phoneNumberForSmsReceipt => 'ثبت شماره تماس برای پیامک رسید';
+
+  @override
+  String get registerEntryAndPrintReceipt => 'ثبت ورود و چاپ رسید';
+
+  @override
+  String get pointCameraAtPlate => 'دوربین را روی پلاک بگیرید';
+
+  @override
+  String get plateDetected => 'پلاک شناسایی شد';
+
+  @override
+  String get enterPlateManually => 'ورود دستی پلاک';
+
+  @override
+  String get checkPlate => 'بررسی پلاک';
+
+  @override
+  String get hasAnActiveSubscription => 'اشتراک فعال دارد';
+
+  @override
+  String get entryAndExitAreFreeOfCharge => 'ورود و خروج بدون هزینه ثبت می‌شود.';
+
+  @override
+  String get thisVehicleHasAReservation => 'این خودرو رزرو دارد';
+
+  @override
+  String spotIsReservedForThisPlate(Object spot) {
+    return 'جای پارک $spot برای این پلاک رزرو شده است.';
+  }
+
+  @override
+  String get isOnTheBlacklist => 'در لیست سیاه است';
+
+  @override
+  String get viewDebt => 'مشاهده بدهی';
+
+  @override
+  String get requestApproval => 'درخواست تأیید';
+
+  @override
+  String get entryRegistered => 'ورود ثبت شد';
+
+  @override
+  String get entryReceipt => 'رسید ورود';
+
+  @override
+  String get exitReceipt => 'رسید خروج';
+
+  @override
+  String get receiptNumber => 'شماره رسید';
+
+  @override
+  String get entryTime => 'ساعت ورود';
+
+  @override
+  String get exitTime => 'ساعت خروج';
+
+  @override
+  String get parkingSpot => 'جای پارک';
+
+  @override
+  String get tariff => 'تعرفه';
+
+  @override
+  String get scanThisCodeToRegisterExit => 'برای ثبت خروج این کد را اسکن کنید';
+
+  @override
+  String get printOnPosDevice => 'چاپ روی دستگاه پوز';
+
+  @override
+  String get shareImage => 'اشتراک‌گذاری تصویر';
+
+  @override
+  String get smsToCustomer => 'پیامک به مشتری';
+
+  @override
+  String get nextEntry => 'ثبت ورود بعدی';
+
+  @override
+  String get searchPlate => 'جستجوی پلاک';
+
+  @override
+  String get holdCustomerReceiptToCamera => 'رسید مشتری را جلوی دوربین بگیرید';
+
+  @override
+  String vehiclesAreInsideTheParking(Object count) {
+    return '$count خودرو داخل پارکینگ است';
+  }
+
+  @override
+  String get showList => 'لیست';
+
+  @override
+  String get receiptLostSearchManually => 'رسید مفقود شده — جستجوی دستی';
+
+  @override
+  String get searchVehicle => 'جستجوی خودرو';
+
+  @override
+  String get moreThanADay => 'بیش از ۲۴ ساعت';
+
+  @override
+  String get subscribers => 'اشتراکی';
+
+  @override
+  String get approximately => 'تقریبی';
+
+  @override
+  String get continueToExit => 'ادامه ثبت خروج';
+
+  @override
+  String get freeOfCharge => 'رایگان';
+
+  @override
+  String get exitInvoice => 'صورتحساب خروج';
+
+  @override
+  String get calculationBreakdown => 'ریز محاسبه';
+
+  @override
+  String firstMinutes(Object minutes) {
+    return '$minutes دقیقه اول';
+  }
+
+  @override
+  String get firstHour => 'ساعت اول';
+
+  @override
+  String additionalTimePerMinute(Object duration) {
+    return '$duration بعدی (دقیقه‌ای)';
+  }
+
+  @override
+  String get operatorDiscount => 'تخفیف اپراتور';
+
+  @override
+  String get appliedRate => 'نرخ اعمال‌شده';
+
+  @override
+  String get normalDayRate => 'روزانه عادی';
+
+  @override
+  String get nightRate => 'نرخ شبانه';
+
+  @override
+  String get applyDiscount => 'اعمال تخفیف';
+
+  @override
+  String get correctEntryTime => 'اصلاح ساعت ورود';
+
+  @override
+  String payAmount(Object amount) {
+    return 'پرداخت $amount';
+  }
+
+  @override
+  String get holidayExtra => 'تعرفه تعطیلات';
+
+  @override
+  String get dailyCapApplied => 'سقف ۲۴ ساعته اعمال شد';
+
+  @override
+  String get bankCardOnDevice => 'کارت بانکی روی دستگاه';
+
+  @override
+  String get internalCardReaderFastestWay => 'کارت‌خوان داخلی · سریع‌ترین راه';
+
+  @override
+  String get onlinePaymentGateway => 'درگاه پرداخت اینترنتی';
+
+  @override
+  String get showQrOrSendSmsLink => 'نمایش QR یا ارسال لینک پیامکی';
+
+  @override
+  String get cash => 'نقدی';
+
+  @override
+  String get recordedInTheShiftCashReport => 'در گزارش صندوق شیفت ثبت می‌شود';
+
+  @override
+  String get swipeOrTapTheCard => 'کارت را بکشید یا بزنید';
+
+  @override
+  String get amountSentToCardReader => 'مبلغ روی کارت‌خوان دستگاه ارسال شد. تا پایان تراکنش صفحه را نبندید.';
+
+  @override
+  String get transactionAmount => 'مبلغ تراکنش';
+
+  @override
+  String get trackingCode => 'کد پیگیری';
+
+  @override
+  String get cancelTransaction => 'لغو تراکنش';
+
+  @override
+  String get customerShouldScanThisCode => 'مشتری این کد را با موبایل اسکن کند';
+
+  @override
+  String get codeValidFor => 'اعتبار کد';
+
+  @override
+  String get sendPaymentLink => 'ارسال لینک پرداخت';
+
+  @override
+  String get waitingForBankConfirmation => 'در انتظار تأیید بانک…';
+
+  @override
+  String get payByCard => 'پرداخت با کارت';
+
+  @override
+  String get paymentSuccessful => 'پرداخت موفق بود';
+
+  @override
+  String get stayDuration => 'مدت توقف';
+
+  @override
+  String get haveAGoodTrip => 'سفر خوبی داشته باشید';
+
+  @override
+  String get finish => 'پایان';
+
+  @override
+  String get subscriptionExit => 'خروج اشتراکی';
+
+  @override
+  String get noChargeWillBeTaken => 'هزینه‌ای دریافت نمی‌شود';
+
+  @override
+  String get onlyAnExitReceiptIsIssued => 'این پلاک اشتراک فعال دارد. فقط رسید خروج صادر می‌شود.';
+
+  @override
+  String get subscriptionType => 'نوع اشتراک';
+
+  @override
+  String get validUntil => 'اعتبار تا';
+
+  @override
+  String get entriesThisMonth => 'تردد این ماه';
+
+  @override
+  String subscriptionExpiresInDays(Object days) {
+    return 'اشتراک $days روز دیگر تمام می‌شود.';
+  }
+
+  @override
+  String get renewSubscription => 'تمدید اشتراک';
+
+  @override
+  String get registerExitAndPrint => 'ثبت خروج و چاپ';
+
+  @override
+  String get management => 'مدیریت';
+
+  @override
+  String get reportsAndAccounts => 'گزارش و حساب';
+
+  @override
+  String get vehiclesInsideParking => 'خودروهای داخل پارکینگ';
+
+  @override
+  String get staffManagement => 'مدیریت کارکنان';
+
+  @override
+  String get tariffs => 'تعرفه‌ها';
+
+  @override
+  String get subscriptions => 'اشتراک‌ها';
+
+  @override
+  String get parkingSpotReservation => 'رزرو جای پارک';
+
+  @override
+  String get plateBlacklist => 'لیست سیاه پلاک';
+
+  @override
+  String get parkingInformation => 'اطلاعات پارکینگ';
+
+  @override
+  String get reports => 'گزارش‌ها';
+
+  @override
+  String get closeShiftAndSettleCash => 'بستن شیفت و تسویه صندوق';
+
+  @override
+  String get changePassword => 'تغییر رمز عبور';
+
+  @override
+  String get staff => 'کارکنان';
+
+  @override
+  String peopleCount(Object count) {
+    return '$count نفر';
+  }
+
+  @override
+  String get you => 'شما';
+
+  @override
+  String get fullAccess => 'دسترسی کامل';
+
+  @override
+  String get addStaff => 'افزودن کارمند';
+
+  @override
+  String get newStaffMember => 'کارمند جدید';
+
+  @override
+  String get fullName => 'نام و نام خانوادگی';
+
+  @override
+  String get temporaryPassword => 'رمز موقت';
+
+  @override
+  String get regenerate => 'تولید مجدد';
+
+  @override
+  String get maxDiscountAllowed => 'سقف تخفیف مجاز';
+
+  @override
+  String get temporaryPasswordMustBeChanged => 'رمز موقت پس از اولین ورود باید تغییر کند.';
+
+  @override
+  String disabledSince(Object date) {
+    return 'غیرفعال از $date';
+  }
+
+  @override
+  String get hourly => 'ساعتی';
+
+  @override
+  String get rules => 'قواعد';
+
+  @override
+  String get dayRate => 'نرخ روز';
+
+  @override
+  String get nightRateTitle => 'نرخ شب';
+
+  @override
+  String betweenHours(Object from, Object to) {
+    return '$from تا $to';
+  }
+
+  @override
+  String get perHour => 'هر ساعت';
+
+  @override
+  String firstMinutesFreeRule(Object minutes) {
+    return '$minutes دقیقه اول رایگان';
+  }
+
+  @override
+  String get roundToFullHour => 'گرد کردن به ساعت کامل';
+
+  @override
+  String get perMinuteAfterFirstHour => 'محاسبه دقیقه‌ای بعد از ساعت اول';
+
+  @override
+  String holidayTariffPlusPercent(Object percent) {
+    return 'تعرفه تعطیلات (+$percent٪)';
+  }
+
+  @override
+  String get saveTariff => 'ذخیره تعرفه';
+
+  @override
+  String get quarterly => 'فصلی';
+
+  @override
+  String get amountsInThousandToman => 'مبالغ به هزار تومان';
+
+  @override
+  String get subscriptionDailyEntryLimit => 'سقف تردد روزانه اشتراک';
+
+  @override
+  String get validOnlyDuringOfficeHours => 'اعتبار فقط در ساعات اداری';
+
+  @override
+  String expiryReminderDaysBefore(Object days) {
+    return 'یادآوری انقضا ($days روز قبل)';
+  }
+
+  @override
+  String get saveSubscriptionTariff => 'ذخیره تعرفه اشتراک';
+
+  @override
+  String timesCount(Object count) {
+    return '$count بار';
+  }
+
+  @override
+  String activeCount(Object count) {
+    return 'فعال ($count)';
+  }
+
+  @override
+  String expiringSoonCount(Object count) {
+    return 'رو به انقضا ($count)';
+  }
+
+  @override
+  String expiredCount(Object count) {
+    return 'منقضی ($count)';
+  }
+
+  @override
+  String get newSubscription => 'اشتراک جدید';
+
+  @override
+  String get addAndCollectFee => 'افزودن و دریافت هزینه';
+
+  @override
+  String get sendReminder => 'ارسال یادآوری';
+
+  @override
+  String get registerNewSubscription => 'ثبت اشتراک جدید';
+
+  @override
+  String daysRemainingCount(Object days) {
+    return '$days روز';
+  }
+
+  @override
+  String get parkingNamePrintedOnReceipt => 'نام پارکینگ (روی رسید چاپ می‌شود)';
+
+  @override
+  String get workingHours => 'ساعت کاری';
+
+  @override
+  String get openTwentyFourHours => 'شبانه‌روزی';
+
+  @override
+  String get openOnPublicHolidays => 'تعطیلات رسمی باز است';
+
+  @override
+  String get receiptFooterText => 'متن پایین رسید';
+
+  @override
+  String get autoPrintEntryReceipt => 'چاپ خودکار رسید ورود';
+
+  @override
+  String get saveChanges => 'ذخیره تغییرات';
+
+  @override
+  String get currentPassword => 'رمز فعلی';
+
+  @override
+  String get newPassword => 'رمز جدید';
+
+  @override
+  String get repeatNewPassword => 'تکرار رمز جدید';
+
+  @override
+  String get passwordStrength => 'قدرت رمز';
+
+  @override
+  String get weak => 'ضعیف';
+
+  @override
+  String get medium => 'متوسط';
+
+  @override
+  String get good => 'خوب';
+
+  @override
+  String get strong => 'قوی';
+
+  @override
+  String get atLeastEightCharacters => 'حداقل ۸ نویسه';
+
+  @override
+  String get includesUpperAndLowerCase => 'شامل حرف بزرگ و کوچک';
+
+  @override
+  String get includesANumber => 'شامل عدد';
+
+  @override
+  String get includesASpecialCharacter => 'شامل نویسه ویژه';
+
+  @override
+  String get afterChangingPasswordYouWillBeSignedOut => 'پس از تغییر رمز، از همه دستگاه‌های دیگر خارج می‌شوید.';
+
+  @override
+  String get specialPlates => 'پلاک‌های ویژه';
+
+  @override
+  String blacklistCount(Object count) {
+    return 'لیست سیاه ($count)';
+  }
+
+  @override
+  String reservationsCount(Object count) {
+    return 'رزروها ($count)';
+  }
+
+  @override
+  String get addPlate => 'افزودن پلاک';
+
+  @override
+  String get reason => 'علت';
+
+  @override
+  String get addToBlacklist => 'افزودن به لیست سیاه';
+
+  @override
+  String get addReservation => 'افزودن رزرو';
+
+  @override
+  String get connectionLost => 'اتصال قطع است';
+
+  @override
+  String get offlineModeDescription => 'ثبت ورود و خروج ادامه دارد و روی دستگاه ذخیره می‌شود. پرداخت کارتی در دسترس است، درگاه اینترنتی نه.';
+
+  @override
+  String get sendQueue => 'صف ارسال';
+
+  @override
+  String itemsCount(Object count) {
+    return '$count مورد';
+  }
+
+  @override
+  String get lastSync => 'آخرین همگام‌سازی';
+
+  @override
+  String get tariffStoredOnDevice => 'تعرفه ذخیره‌شده روی دستگاه';
+
+  @override
+  String get offlineSubscriptions => 'اشتراک‌های آفلاین';
+
+  @override
+  String plateCount(Object count) {
+    return '$count پلاک';
+  }
+
+  @override
+  String get tryToSend => 'تلاش برای ارسال';
+
+  @override
+  String get offline => 'آفلاین';
+
+  @override
+  String get send => 'ارسال';
+
+  @override
+  String get networkConnected => 'شبکه متصل';
+
+  @override
+  String get shift => 'شیفت';
+
+  @override
+  String get morningShift => 'شیفت صبح';
+
+  @override
+  String get closeShift => 'بستن شیفت';
+
+  @override
+  String get countedCash => 'نقد شمرده‌شده';
+
+  @override
+  String get cashDifference => 'اختلاف صندوق';
+
+  @override
+  String get cardTotal => 'جمع کارتی';
+
+  @override
+  String get cashTotal => 'جمع نقدی';
+
+  @override
+  String get gatewayTotal => 'جمع درگاه';
+
+  @override
+  String entriesCount(Object count) {
+    return '$count ورود';
+  }
+
+  @override
+  String exitsCount(Object count) {
+    return '$count خروج';
+  }
+
+  @override
+  String minutesShort(Object count) {
+    return '$count د';
+  }
+
+  @override
+  String hoursAndMinutes(Object hours, Object minutes) {
+    return '$hours س $minutes د';
+  }
+
+  @override
+  String get noVehicleInsideTheParking => 'خودرویی داخل پارکینگ نیست';
+
+  @override
+  String get plateNotFound => 'ورود بازی برای این پلاک پیدا نشد';
+
+  @override
+  String get warning => 'هشدار';
+
+  @override
+  String get thisVehicleIsAlreadyInsideTheParking => 'این خودرو هم‌اکنون داخل پارکینگ است';
+
+  @override
+  String get enterThePlateYouSee => 'پلاکی که در تصویر می‌بینید را وارد کنید';
+
+  @override
+  String get retakePhoto => 'گرفتن دوباره عکس';
+
+  @override
+  String get usePlate => 'استفاده از این پلاک';
+
+  @override
+  String get openCamera => 'باز کردن دوربین';
+
+  @override
+  String get continueWord => 'ادامه';
+
+  @override
+  String get waitingForCard => 'در انتظار کارت…';
+
+  @override
+  String get cardRead => 'کارت خوانده شد';
+
+  @override
+  String get enterTheTrackingCodeFromTheTerminal => 'کد پیگیری نمایش‌داده‌شده در برنامه پرداخت دستگاه را وارد کنید.';
+
+  @override
+  String get confirmPayment => 'تأیید پرداخت';
+
+  @override
+  String get paymentNotConfirmedYet => 'پرداخت هنوز تأیید نشده است';
+
+  @override
+  String get checkPaymentStatus => 'بررسی وضعیت پرداخت';
+
+  @override
+  String get cardReaderNotAvailable => 'کارت‌خوانی روی این دستگاه در دسترس نیست';
+
+  @override
+  String get passwordsDoNotMatch => 'رمزها یکسان نیستند';
+
+  @override
+  String get wrongPassword => 'رمز فعلی نادرست است';
+
+  @override
+  String get shiftSummary => 'خلاصه شیفت';
+
+  @override
+  String get shiftStarted => 'شروع شیفت';
+
+  @override
+  String get settleAndCloseShift => 'تسویه و بستن شیفت';
+
+  @override
+  String get shiftClosed => 'شیفت بسته شد';
+
+  @override
+  String get addToReservations => 'افزودن به رزروها';
+
+  @override
+  String get spotNumber => 'شماره جای پارک';
+
+  @override
+  String get areYouSure => 'آیا مطمئن هستید؟';
+
+  @override
+  String get total => 'جمع کل';
 }

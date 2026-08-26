@@ -91,6 +91,11 @@ class _UAdminParkingPageState extends State<UAdminParkingPage> {
     ),
     fallback: (UAdminActionContext<UParkingResponse> ctx) => <UAdminAction>[
       UAdminLinks.parkingReport(ctx.item),
+      UAdminLinks.parkingTariff(ctx.item),
+      UAdminLinks.parkingSubscription(ctx.item),
+      UAdminLinks.parkingStaff(ctx.item),
+      UAdminLinks.parkingPlateFlag(ctx.item),
+      UAdminLinks.parkingShift(ctx.item),
       ctx.edit(),
       ctx.delete(),
     ],

@@ -970,5 +970,370 @@
   "vehicleType": "نوع خودرو",
   "avaPark": "آواپارک",
   "askYourParkingOwnerToResetYourPassword": "برای بازنشانی رمز عبور با صاحب پارکینگ یا پشتیبانی تماس بگیرید.",
-  "changeParking": "تغییر پارکینگ"
+  "changeParking": "تغییر پارکینگ",
+  "insideParking": "داخل پارکینگ",
+  "shiftRevenue": "درآمد شیفت",
+  "registerEntry": "ثبت ورود",
+  "registerExit": "ثبت خروج",
+  "plateAndPrintReceipt": "پلاک و چاپ رسید",
+  "scanReceiptOrPlate": "اسکن رسید یا پلاک",
+  "recentMovements": "آخرین ترددها",
+  "receiptsQueuedOffline": "{count} رسید در صف ارسال آفلاین است",
+  "@receiptsQueuedOffline": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "freeExit": "خروج رایگان",
+  "nonIranianPlate": "پلاک غیرایرانی",
+  "readPlateWithCamera": "خواندن پلاک با دوربین",
+  "perHourAfter": "هر ساعت بعد",
+  "dailyCap": "سقف ۲۴ ساعته",
+  "firstMinutesAreFree": "{minutes} دقیقه اول رایگان است.",
+  "@firstMinutesAreFree": {
+    "placeholders": {
+      "minutes": {}
+    }
+  },
+  "nightRateAppliesBetween": "از {from} تا {to} نرخ شبانه اعمال می‌شود.",
+  "@nightRateAppliesBetween": {
+    "placeholders": {
+      "from": {},
+      "to": {}
+    }
+  },
+  "phoneNumberForSmsReceipt": "ثبت شماره تماس برای پیامک رسید",
+  "registerEntryAndPrintReceipt": "ثبت ورود و چاپ رسید",
+  "pointCameraAtPlate": "دوربین را روی پلاک بگیرید",
+  "plateDetected": "پلاک شناسایی شد",
+  "enterPlateManually": "ورود دستی پلاک",
+  "checkPlate": "بررسی پلاک",
+  "hasAnActiveSubscription": "اشتراک فعال دارد",
+  "entryAndExitAreFreeOfCharge": "ورود و خروج بدون هزینه ثبت می‌شود.",
+  "thisVehicleHasAReservation": "این خودرو رزرو دارد",
+  "spotIsReservedForThisPlate": "جای پارک {spot} برای این پلاک رزرو شده است.",
+  "@spotIsReservedForThisPlate": {
+    "placeholders": {
+      "spot": {}
+    }
+  },
+  "isOnTheBlacklist": "در لیست سیاه است",
+  "viewDebt": "مشاهده بدهی",
+  "requestApproval": "درخواست تأیید",
+  "entryRegistered": "ورود ثبت شد",
+  "entryReceipt": "رسید ورود",
+  "exitReceipt": "رسید خروج",
+  "receiptNumber": "شماره رسید",
+  "entryTime": "ساعت ورود",
+  "exitTime": "ساعت خروج",
+  "parkingSpot": "جای پارک",
+  "tariff": "تعرفه",
+  "scanThisCodeToRegisterExit": "برای ثبت خروج این کد را اسکن کنید",
+  "printOnPosDevice": "چاپ روی دستگاه پوز",
+  "shareImage": "اشتراک‌گذاری تصویر",
+  "smsToCustomer": "پیامک به مشتری",
+  "nextEntry": "ثبت ورود بعدی",
+  "searchPlate": "جستجوی پلاک",
+  "holdCustomerReceiptToCamera": "رسید مشتری را جلوی دوربین بگیرید",
+  "vehiclesAreInsideTheParking": "{count} خودرو داخل پارکینگ است",
+  "@vehiclesAreInsideTheParking": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "showList": "لیست",
+  "receiptLostSearchManually": "رسید مفقود شده — جستجوی دستی",
+  "searchVehicle": "جستجوی خودرو",
+  "moreThanADay": "بیش از ۲۴ ساعت",
+  "subscribers": "اشتراکی",
+  "approximately": "تقریبی",
+  "continueToExit": "ادامه ثبت خروج",
+  "freeOfCharge": "رایگان",
+  "exitInvoice": "صورتحساب خروج",
+  "calculationBreakdown": "ریز محاسبه",
+  "firstMinutes": "{minutes} دقیقه اول",
+  "@firstMinutes": {
+    "placeholders": {
+      "minutes": {}
+    }
+  },
+  "firstHour": "ساعت اول",
+  "additionalTimePerMinute": "{duration} بعدی (دقیقه‌ای)",
+  "@additionalTimePerMinute": {
+    "placeholders": {
+      "duration": {}
+    }
+  },
+  "operatorDiscount": "تخفیف اپراتور",
+  "appliedRate": "نرخ اعمال‌شده",
+  "normalDayRate": "روزانه عادی",
+  "nightRate": "نرخ شبانه",
+  "applyDiscount": "اعمال تخفیف",
+  "correctEntryTime": "اصلاح ساعت ورود",
+  "payAmount": "پرداخت {amount}",
+  "@payAmount": {
+    "placeholders": {
+      "amount": {}
+    }
+  },
+  "holidayExtra": "تعرفه تعطیلات",
+  "dailyCapApplied": "سقف ۲۴ ساعته اعمال شد",
+  "bankCardOnDevice": "کارت بانکی روی دستگاه",
+  "internalCardReaderFastestWay": "کارت‌خوان داخلی · سریع‌ترین راه",
+  "onlinePaymentGateway": "درگاه پرداخت اینترنتی",
+  "showQrOrSendSmsLink": "نمایش QR یا ارسال لینک پیامکی",
+  "cash": "نقدی",
+  "recordedInTheShiftCashReport": "در گزارش صندوق شیفت ثبت می‌شود",
+  "swipeOrTapTheCard": "کارت را بکشید یا بزنید",
+  "amountSentToCardReader": "مبلغ روی کارت‌خوان دستگاه ارسال شد. تا پایان تراکنش صفحه را نبندید.",
+  "transactionAmount": "مبلغ تراکنش",
+  "trackingCode": "کد پیگیری",
+  "cancelTransaction": "لغو تراکنش",
+  "customerShouldScanThisCode": "مشتری این کد را با موبایل اسکن کند",
+  "codeValidFor": "اعتبار کد",
+  "sendPaymentLink": "ارسال لینک پرداخت",
+  "waitingForBankConfirmation": "در انتظار تأیید بانک…",
+  "payByCard": "پرداخت با کارت",
+  "paymentSuccessful": "پرداخت موفق بود",
+  "stayDuration": "مدت توقف",
+  "haveAGoodTrip": "سفر خوبی داشته باشید",
+  "finish": "پایان",
+  "subscriptionExit": "خروج اشتراکی",
+  "noChargeWillBeTaken": "هزینه‌ای دریافت نمی‌شود",
+  "onlyAnExitReceiptIsIssued": "این پلاک اشتراک فعال دارد. فقط رسید خروج صادر می‌شود.",
+  "subscriptionType": "نوع اشتراک",
+  "validUntil": "اعتبار تا",
+  "entriesThisMonth": "تردد این ماه",
+  "subscriptionExpiresInDays": "اشتراک {days} روز دیگر تمام می‌شود.",
+  "@subscriptionExpiresInDays": {
+    "placeholders": {
+      "days": {}
+    }
+  },
+  "renewSubscription": "تمدید اشتراک",
+  "registerExitAndPrint": "ثبت خروج و چاپ",
+  "management": "مدیریت",
+  "reportsAndAccounts": "گزارش و حساب",
+  "vehiclesInsideParking": "خودروهای داخل پارکینگ",
+  "staffManagement": "مدیریت کارکنان",
+  "tariffs": "تعرفه‌ها",
+  "subscriptions": "اشتراک‌ها",
+  "parkingSpotReservation": "رزرو جای پارک",
+  "plateBlacklist": "لیست سیاه پلاک",
+  "parkingInformation": "اطلاعات پارکینگ",
+  "reports": "گزارش‌ها",
+  "closeShiftAndSettleCash": "بستن شیفت و تسویه صندوق",
+  "changePassword": "تغییر رمز عبور",
+  "staff": "کارکنان",
+  "peopleCount": "{count} نفر",
+  "@peopleCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "you": "شما",
+  "fullAccess": "دسترسی کامل",
+  "addStaff": "افزودن کارمند",
+  "newStaffMember": "کارمند جدید",
+  "fullName": "نام و نام خانوادگی",
+  "temporaryPassword": "رمز موقت",
+  "regenerate": "تولید مجدد",
+  "maxDiscountAllowed": "سقف تخفیف مجاز",
+  "temporaryPasswordMustBeChanged": "رمز موقت پس از اولین ورود باید تغییر کند.",
+  "disabledSince": "غیرفعال از {date}",
+  "@disabledSince": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "hourly": "ساعتی",
+  "rules": "قواعد",
+  "dayRate": "نرخ روز",
+  "nightRateTitle": "نرخ شب",
+  "betweenHours": "{from} تا {to}",
+  "@betweenHours": {
+    "placeholders": {
+      "from": {},
+      "to": {}
+    }
+  },
+  "perHour": "هر ساعت",
+  "firstMinutesFreeRule": "{minutes} دقیقه اول رایگان",
+  "@firstMinutesFreeRule": {
+    "placeholders": {
+      "minutes": {}
+    }
+  },
+  "roundToFullHour": "گرد کردن به ساعت کامل",
+  "perMinuteAfterFirstHour": "محاسبه دقیقه‌ای بعد از ساعت اول",
+  "holidayTariffPlusPercent": "تعرفه تعطیلات (+{percent}٪)",
+  "@holidayTariffPlusPercent": {
+    "placeholders": {
+      "percent": {}
+    }
+  },
+  "saveTariff": "ذخیره تعرفه",
+  "quarterly": "فصلی",
+  "amountsInThousandToman": "مبالغ به هزار تومان",
+  "subscriptionDailyEntryLimit": "سقف تردد روزانه اشتراک",
+  "validOnlyDuringOfficeHours": "اعتبار فقط در ساعات اداری",
+  "expiryReminderDaysBefore": "یادآوری انقضا ({days} روز قبل)",
+  "@expiryReminderDaysBefore": {
+    "placeholders": {
+      "days": {}
+    }
+  },
+  "saveSubscriptionTariff": "ذخیره تعرفه اشتراک",
+  "timesCount": "{count} بار",
+  "@timesCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "activeCount": "فعال ({count})",
+  "@activeCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "expiringSoonCount": "رو به انقضا ({count})",
+  "@expiringSoonCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "expiredCount": "منقضی ({count})",
+  "@expiredCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "newSubscription": "اشتراک جدید",
+  "addAndCollectFee": "افزودن و دریافت هزینه",
+  "sendReminder": "ارسال یادآوری",
+  "registerNewSubscription": "ثبت اشتراک جدید",
+  "daysRemainingCount": "{days} روز",
+  "@daysRemainingCount": {
+    "placeholders": {
+      "days": {}
+    }
+  },
+  "parkingNamePrintedOnReceipt": "نام پارکینگ (روی رسید چاپ می‌شود)",
+  "workingHours": "ساعت کاری",
+  "openTwentyFourHours": "شبانه‌روزی",
+  "openOnPublicHolidays": "تعطیلات رسمی باز است",
+  "receiptFooterText": "متن پایین رسید",
+  "autoPrintEntryReceipt": "چاپ خودکار رسید ورود",
+  "saveChanges": "ذخیره تغییرات",
+  "currentPassword": "رمز فعلی",
+  "newPassword": "رمز جدید",
+  "repeatNewPassword": "تکرار رمز جدید",
+  "passwordStrength": "قدرت رمز",
+  "weak": "ضعیف",
+  "medium": "متوسط",
+  "good": "خوب",
+  "strong": "قوی",
+  "atLeastEightCharacters": "حداقل ۸ نویسه",
+  "includesUpperAndLowerCase": "شامل حرف بزرگ و کوچک",
+  "includesANumber": "شامل عدد",
+  "includesASpecialCharacter": "شامل نویسه ویژه",
+  "afterChangingPasswordYouWillBeSignedOut": "پس از تغییر رمز، از همه دستگاه‌های دیگر خارج می‌شوید.",
+  "specialPlates": "پلاک‌های ویژه",
+  "blacklistCount": "لیست سیاه ({count})",
+  "@blacklistCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "reservationsCount": "رزروها ({count})",
+  "@reservationsCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "addPlate": "افزودن پلاک",
+  "reason": "علت",
+  "addToBlacklist": "افزودن به لیست سیاه",
+  "addReservation": "افزودن رزرو",
+  "connectionLost": "اتصال قطع است",
+  "offlineModeDescription": "ثبت ورود و خروج ادامه دارد و روی دستگاه ذخیره می‌شود. پرداخت کارتی در دسترس است، درگاه اینترنتی نه.",
+  "sendQueue": "صف ارسال",
+  "itemsCount": "{count} مورد",
+  "@itemsCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "lastSync": "آخرین همگام‌سازی",
+  "tariffStoredOnDevice": "تعرفه ذخیره‌شده روی دستگاه",
+  "offlineSubscriptions": "اشتراک‌های آفلاین",
+  "plateCount": "{count} پلاک",
+  "@plateCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "tryToSend": "تلاش برای ارسال",
+  "offline": "آفلاین",
+  "send": "ارسال",
+  "networkConnected": "شبکه متصل",
+  "shift": "شیفت",
+  "morningShift": "شیفت صبح",
+  "closeShift": "بستن شیفت",
+  "countedCash": "نقد شمرده‌شده",
+  "cashDifference": "اختلاف صندوق",
+  "cardTotal": "جمع کارتی",
+  "cashTotal": "جمع نقدی",
+  "gatewayTotal": "جمع درگاه",
+  "entriesCount": "{count} ورود",
+  "@entriesCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "exitsCount": "{count} خروج",
+  "@exitsCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "minutesShort": "{count} د",
+  "@minutesShort": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "hoursAndMinutes": "{hours} س {minutes} د",
+  "@hoursAndMinutes": {
+    "placeholders": {
+      "hours": {},
+      "minutes": {}
+    }
+  },
+  "noVehicleInsideTheParking": "خودرویی داخل پارکینگ نیست",
+  "plateNotFound": "ورود بازی برای این پلاک پیدا نشد",
+  "warning": "هشدار",
+  "thisVehicleIsAlreadyInsideTheParking": "این خودرو هم‌اکنون داخل پارکینگ است",
+  "enterThePlateYouSee": "پلاکی که در تصویر می‌بینید را وارد کنید",
+  "retakePhoto": "گرفتن دوباره عکس",
+  "usePlate": "استفاده از این پلاک",
+  "openCamera": "باز کردن دوربین",
+  "continueWord": "ادامه",
+  "waitingForCard": "در انتظار کارت…",
+  "cardRead": "کارت خوانده شد",
+  "enterTheTrackingCodeFromTheTerminal": "کد پیگیری نمایش‌داده‌شده در برنامه پرداخت دستگاه را وارد کنید.",
+  "confirmPayment": "تأیید پرداخت",
+  "paymentNotConfirmedYet": "پرداخت هنوز تأیید نشده است",
+  "checkPaymentStatus": "بررسی وضعیت پرداخت",
+  "cardReaderNotAvailable": "کارت‌خوانی روی این دستگاه در دسترس نیست",
+  "passwordsDoNotMatch": "رمزها یکسان نیستند",
+  "wrongPassword": "رمز فعلی نادرست است",
+  "shiftSummary": "خلاصه شیفت",
+  "shiftStarted": "شروع شیفت",
+  "settleAndCloseShift": "تسویه و بستن شیفت",
+  "shiftClosed": "شیفت بسته شد",
+  "addToReservations": "افزودن به رزروها",
+  "spotNumber": "شماره جای پارک",
+  "areYouSure": "آیا مطمئن هستید؟",
+  "total": "جمع کل"
 }

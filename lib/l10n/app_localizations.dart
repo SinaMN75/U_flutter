@@ -5437,6 +5437,1338 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Change parking'**
   String get changeParking;
+
+  /// No description provided for @insideParking.
+  ///
+  /// In en, this message translates to:
+  /// **'Inside the parking'**
+  String get insideParking;
+
+  /// No description provided for @shiftRevenue.
+  ///
+  /// In en, this message translates to:
+  /// **'Shift revenue'**
+  String get shiftRevenue;
+
+  /// No description provided for @registerEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'Register entry'**
+  String get registerEntry;
+
+  /// No description provided for @registerExit.
+  ///
+  /// In en, this message translates to:
+  /// **'Register exit'**
+  String get registerExit;
+
+  /// No description provided for @plateAndPrintReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Plate and print receipt'**
+  String get plateAndPrintReceipt;
+
+  /// No description provided for @scanReceiptOrPlate.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan receipt or plate'**
+  String get scanReceiptOrPlate;
+
+  /// No description provided for @recentMovements.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent movements'**
+  String get recentMovements;
+
+  /// No description provided for @receiptsQueuedOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} receipts are queued for offline sending'**
+  String receiptsQueuedOffline(Object count);
+
+  /// No description provided for @freeExit.
+  ///
+  /// In en, this message translates to:
+  /// **'Free exit'**
+  String get freeExit;
+
+  /// No description provided for @nonIranianPlate.
+  ///
+  /// In en, this message translates to:
+  /// **'Non-Iranian plate'**
+  String get nonIranianPlate;
+
+  /// No description provided for @readPlateWithCamera.
+  ///
+  /// In en, this message translates to:
+  /// **'Read plate with camera'**
+  String get readPlateWithCamera;
+
+  /// No description provided for @perHourAfter.
+  ///
+  /// In en, this message translates to:
+  /// **'Each hour after'**
+  String get perHourAfter;
+
+  /// No description provided for @dailyCap.
+  ///
+  /// In en, this message translates to:
+  /// **'24-hour cap'**
+  String get dailyCap;
+
+  /// No description provided for @firstMinutesAreFree.
+  ///
+  /// In en, this message translates to:
+  /// **'The first {minutes} minutes are free.'**
+  String firstMinutesAreFree(Object minutes);
+
+  /// No description provided for @nightRateAppliesBetween.
+  ///
+  /// In en, this message translates to:
+  /// **'The night rate applies between {from} and {to}.'**
+  String nightRateAppliesBetween(Object from, Object to);
+
+  /// No description provided for @phoneNumberForSmsReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number for the SMS receipt'**
+  String get phoneNumberForSmsReceipt;
+
+  /// No description provided for @registerEntryAndPrintReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Register entry and print receipt'**
+  String get registerEntryAndPrintReceipt;
+
+  /// No description provided for @pointCameraAtPlate.
+  ///
+  /// In en, this message translates to:
+  /// **'Point the camera at the plate'**
+  String get pointCameraAtPlate;
+
+  /// No description provided for @plateDetected.
+  ///
+  /// In en, this message translates to:
+  /// **'Plate detected'**
+  String get plateDetected;
+
+  /// No description provided for @enterPlateManually.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the plate manually'**
+  String get enterPlateManually;
+
+  /// No description provided for @checkPlate.
+  ///
+  /// In en, this message translates to:
+  /// **'Check plate'**
+  String get checkPlate;
+
+  /// No description provided for @hasAnActiveSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Has an active subscription'**
+  String get hasAnActiveSubscription;
+
+  /// No description provided for @entryAndExitAreFreeOfCharge.
+  ///
+  /// In en, this message translates to:
+  /// **'Entry and exit are recorded free of charge.'**
+  String get entryAndExitAreFreeOfCharge;
+
+  /// No description provided for @thisVehicleHasAReservation.
+  ///
+  /// In en, this message translates to:
+  /// **'This vehicle has a reservation'**
+  String get thisVehicleHasAReservation;
+
+  /// No description provided for @spotIsReservedForThisPlate.
+  ///
+  /// In en, this message translates to:
+  /// **'Spot {spot} is reserved for this plate.'**
+  String spotIsReservedForThisPlate(Object spot);
+
+  /// No description provided for @isOnTheBlacklist.
+  ///
+  /// In en, this message translates to:
+  /// **'Is on the blacklist'**
+  String get isOnTheBlacklist;
+
+  /// No description provided for @viewDebt.
+  ///
+  /// In en, this message translates to:
+  /// **'View debt'**
+  String get viewDebt;
+
+  /// No description provided for @requestApproval.
+  ///
+  /// In en, this message translates to:
+  /// **'Request approval'**
+  String get requestApproval;
+
+  /// No description provided for @entryRegistered.
+  ///
+  /// In en, this message translates to:
+  /// **'Entry registered'**
+  String get entryRegistered;
+
+  /// No description provided for @entryReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Entry receipt'**
+  String get entryReceipt;
+
+  /// No description provided for @exitReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Exit receipt'**
+  String get exitReceipt;
+
+  /// No description provided for @receiptNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipt number'**
+  String get receiptNumber;
+
+  /// No description provided for @entryTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Entry time'**
+  String get entryTime;
+
+  /// No description provided for @exitTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Exit time'**
+  String get exitTime;
+
+  /// No description provided for @parkingSpot.
+  ///
+  /// In en, this message translates to:
+  /// **'Parking spot'**
+  String get parkingSpot;
+
+  /// No description provided for @tariff.
+  ///
+  /// In en, this message translates to:
+  /// **'Tariff'**
+  String get tariff;
+
+  /// No description provided for @scanThisCodeToRegisterExit.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan this code to register the exit'**
+  String get scanThisCodeToRegisterExit;
+
+  /// No description provided for @printOnPosDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'Print on the POS device'**
+  String get printOnPosDevice;
+
+  /// No description provided for @shareImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Share image'**
+  String get shareImage;
+
+  /// No description provided for @smsToCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'SMS to customer'**
+  String get smsToCustomer;
+
+  /// No description provided for @nextEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'Next entry'**
+  String get nextEntry;
+
+  /// No description provided for @searchPlate.
+  ///
+  /// In en, this message translates to:
+  /// **'Search plate'**
+  String get searchPlate;
+
+  /// No description provided for @holdCustomerReceiptToCamera.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold the customer\'s receipt up to the camera'**
+  String get holdCustomerReceiptToCamera;
+
+  /// No description provided for @vehiclesAreInsideTheParking.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} vehicles are inside the parking'**
+  String vehiclesAreInsideTheParking(Object count);
+
+  /// No description provided for @showList.
+  ///
+  /// In en, this message translates to:
+  /// **'Show list'**
+  String get showList;
+
+  /// No description provided for @receiptLostSearchManually.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipt lost — search manually'**
+  String get receiptLostSearchManually;
+
+  /// No description provided for @searchVehicle.
+  ///
+  /// In en, this message translates to:
+  /// **'Search vehicle'**
+  String get searchVehicle;
+
+  /// No description provided for @moreThanADay.
+  ///
+  /// In en, this message translates to:
+  /// **'More than 24 hours'**
+  String get moreThanADay;
+
+  /// No description provided for @subscribers.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribers'**
+  String get subscribers;
+
+  /// No description provided for @approximately.
+  ///
+  /// In en, this message translates to:
+  /// **'Approximately'**
+  String get approximately;
+
+  /// No description provided for @continueToExit.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue to exit'**
+  String get continueToExit;
+
+  /// No description provided for @freeOfCharge.
+  ///
+  /// In en, this message translates to:
+  /// **'Free'**
+  String get freeOfCharge;
+
+  /// No description provided for @exitInvoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Exit invoice'**
+  String get exitInvoice;
+
+  /// No description provided for @calculationBreakdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculation breakdown'**
+  String get calculationBreakdown;
+
+  /// No description provided for @firstMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'First {minutes} minutes'**
+  String firstMinutes(Object minutes);
+
+  /// No description provided for @firstHour.
+  ///
+  /// In en, this message translates to:
+  /// **'First hour'**
+  String get firstHour;
+
+  /// No description provided for @additionalTimePerMinute.
+  ///
+  /// In en, this message translates to:
+  /// **'{duration} after that (per minute)'**
+  String additionalTimePerMinute(Object duration);
+
+  /// No description provided for @operatorDiscount.
+  ///
+  /// In en, this message translates to:
+  /// **'Operator discount'**
+  String get operatorDiscount;
+
+  /// No description provided for @appliedRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Applied rate'**
+  String get appliedRate;
+
+  /// No description provided for @normalDayRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Normal day rate'**
+  String get normalDayRate;
+
+  /// No description provided for @nightRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Night rate'**
+  String get nightRate;
+
+  /// No description provided for @applyDiscount.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply discount'**
+  String get applyDiscount;
+
+  /// No description provided for @correctEntryTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Correct the entry time'**
+  String get correctEntryTime;
+
+  /// No description provided for @payAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay {amount}'**
+  String payAmount(Object amount);
+
+  /// No description provided for @holidayExtra.
+  ///
+  /// In en, this message translates to:
+  /// **'Holiday surcharge'**
+  String get holidayExtra;
+
+  /// No description provided for @dailyCapApplied.
+  ///
+  /// In en, this message translates to:
+  /// **'24-hour cap applied'**
+  String get dailyCapApplied;
+
+  /// No description provided for @bankCardOnDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank card on the device'**
+  String get bankCardOnDevice;
+
+  /// No description provided for @internalCardReaderFastestWay.
+  ///
+  /// In en, this message translates to:
+  /// **'Built-in card reader · fastest way'**
+  String get internalCardReaderFastestWay;
+
+  /// No description provided for @onlinePaymentGateway.
+  ///
+  /// In en, this message translates to:
+  /// **'Online payment gateway'**
+  String get onlinePaymentGateway;
+
+  /// No description provided for @showQrOrSendSmsLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Show a QR code or send an SMS link'**
+  String get showQrOrSendSmsLink;
+
+  /// No description provided for @cash.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash'**
+  String get cash;
+
+  /// No description provided for @recordedInTheShiftCashReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Recorded in the shift cash report'**
+  String get recordedInTheShiftCashReport;
+
+  /// No description provided for @swipeOrTapTheCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Swipe or tap the card'**
+  String get swipeOrTapTheCard;
+
+  /// No description provided for @amountSentToCardReader.
+  ///
+  /// In en, this message translates to:
+  /// **'The amount was sent to the device\'s card reader. Do not close this screen until the transaction finishes.'**
+  String get amountSentToCardReader;
+
+  /// No description provided for @transactionAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction amount'**
+  String get transactionAmount;
+
+  /// No description provided for @trackingCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Tracking code'**
+  String get trackingCode;
+
+  /// No description provided for @cancelTransaction.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel transaction'**
+  String get cancelTransaction;
+
+  /// No description provided for @customerShouldScanThisCode.
+  ///
+  /// In en, this message translates to:
+  /// **'The customer should scan this code with their phone'**
+  String get customerShouldScanThisCode;
+
+  /// No description provided for @codeValidFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Code valid for'**
+  String get codeValidFor;
+
+  /// No description provided for @sendPaymentLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Send payment link'**
+  String get sendPaymentLink;
+
+  /// No description provided for @waitingForBankConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for bank confirmation…'**
+  String get waitingForBankConfirmation;
+
+  /// No description provided for @payByCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay by card'**
+  String get payByCard;
+
+  /// No description provided for @paymentSuccessful.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment successful'**
+  String get paymentSuccessful;
+
+  /// No description provided for @stayDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay duration'**
+  String get stayDuration;
+
+  /// No description provided for @haveAGoodTrip.
+  ///
+  /// In en, this message translates to:
+  /// **'Have a good trip'**
+  String get haveAGoodTrip;
+
+  /// No description provided for @finish.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish'**
+  String get finish;
+
+  /// No description provided for @subscriptionExit.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription exit'**
+  String get subscriptionExit;
+
+  /// No description provided for @noChargeWillBeTaken.
+  ///
+  /// In en, this message translates to:
+  /// **'No charge will be taken'**
+  String get noChargeWillBeTaken;
+
+  /// No description provided for @onlyAnExitReceiptIsIssued.
+  ///
+  /// In en, this message translates to:
+  /// **'This plate has an active subscription. Only an exit receipt is issued.'**
+  String get onlyAnExitReceiptIsIssued;
+
+  /// No description provided for @subscriptionType.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription type'**
+  String get subscriptionType;
+
+  /// No description provided for @validUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'Valid until'**
+  String get validUntil;
+
+  /// No description provided for @entriesThisMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Entries this month'**
+  String get entriesThisMonth;
+
+  /// No description provided for @subscriptionExpiresInDays.
+  ///
+  /// In en, this message translates to:
+  /// **'The subscription expires in {days} days.'**
+  String subscriptionExpiresInDays(Object days);
+
+  /// No description provided for @renewSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Renew subscription'**
+  String get renewSubscription;
+
+  /// No description provided for @registerExitAndPrint.
+  ///
+  /// In en, this message translates to:
+  /// **'Register exit and print'**
+  String get registerExitAndPrint;
+
+  /// No description provided for @management.
+  ///
+  /// In en, this message translates to:
+  /// **'Management'**
+  String get management;
+
+  /// No description provided for @reportsAndAccounts.
+  ///
+  /// In en, this message translates to:
+  /// **'Reports and accounts'**
+  String get reportsAndAccounts;
+
+  /// No description provided for @vehiclesInsideParking.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicles inside the parking'**
+  String get vehiclesInsideParking;
+
+  /// No description provided for @staffManagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Staff management'**
+  String get staffManagement;
+
+  /// No description provided for @tariffs.
+  ///
+  /// In en, this message translates to:
+  /// **'Tariffs'**
+  String get tariffs;
+
+  /// No description provided for @subscriptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscriptions'**
+  String get subscriptions;
+
+  /// No description provided for @parkingSpotReservation.
+  ///
+  /// In en, this message translates to:
+  /// **'Parking spot reservation'**
+  String get parkingSpotReservation;
+
+  /// No description provided for @plateBlacklist.
+  ///
+  /// In en, this message translates to:
+  /// **'Plate blacklist'**
+  String get plateBlacklist;
+
+  /// No description provided for @parkingInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Parking information'**
+  String get parkingInformation;
+
+  /// No description provided for @reports.
+  ///
+  /// In en, this message translates to:
+  /// **'Reports'**
+  String get reports;
+
+  /// No description provided for @closeShiftAndSettleCash.
+  ///
+  /// In en, this message translates to:
+  /// **'Close shift and settle cash'**
+  String get closeShiftAndSettleCash;
+
+  /// No description provided for @changePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Change password'**
+  String get changePassword;
+
+  /// No description provided for @staff.
+  ///
+  /// In en, this message translates to:
+  /// **'Staff'**
+  String get staff;
+
+  /// No description provided for @peopleCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} people'**
+  String peopleCount(Object count);
+
+  /// No description provided for @you.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get you;
+
+  /// No description provided for @fullAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Full access'**
+  String get fullAccess;
+
+  /// No description provided for @addStaff.
+  ///
+  /// In en, this message translates to:
+  /// **'Add staff member'**
+  String get addStaff;
+
+  /// No description provided for @newStaffMember.
+  ///
+  /// In en, this message translates to:
+  /// **'New staff member'**
+  String get newStaffMember;
+
+  /// No description provided for @fullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full name'**
+  String get fullName;
+
+  /// No description provided for @temporaryPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Temporary password'**
+  String get temporaryPassword;
+
+  /// No description provided for @regenerate.
+  ///
+  /// In en, this message translates to:
+  /// **'Regenerate'**
+  String get regenerate;
+
+  /// No description provided for @maxDiscountAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum discount allowed'**
+  String get maxDiscountAllowed;
+
+  /// No description provided for @temporaryPasswordMustBeChanged.
+  ///
+  /// In en, this message translates to:
+  /// **'The temporary password must be changed after the first sign-in.'**
+  String get temporaryPasswordMustBeChanged;
+
+  /// No description provided for @disabledSince.
+  ///
+  /// In en, this message translates to:
+  /// **'Disabled since {date}'**
+  String disabledSince(Object date);
+
+  /// No description provided for @hourly.
+  ///
+  /// In en, this message translates to:
+  /// **'Hourly'**
+  String get hourly;
+
+  /// No description provided for @rules.
+  ///
+  /// In en, this message translates to:
+  /// **'Rules'**
+  String get rules;
+
+  /// No description provided for @dayRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Day rate'**
+  String get dayRate;
+
+  /// No description provided for @nightRateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Night rate'**
+  String get nightRateTitle;
+
+  /// No description provided for @betweenHours.
+  ///
+  /// In en, this message translates to:
+  /// **'{from} to {to}'**
+  String betweenHours(Object from, Object to);
+
+  /// No description provided for @perHour.
+  ///
+  /// In en, this message translates to:
+  /// **'Per hour'**
+  String get perHour;
+
+  /// No description provided for @firstMinutesFreeRule.
+  ///
+  /// In en, this message translates to:
+  /// **'First {minutes} minutes free'**
+  String firstMinutesFreeRule(Object minutes);
+
+  /// No description provided for @roundToFullHour.
+  ///
+  /// In en, this message translates to:
+  /// **'Round up to a full hour'**
+  String get roundToFullHour;
+
+  /// No description provided for @perMinuteAfterFirstHour.
+  ///
+  /// In en, this message translates to:
+  /// **'Per-minute after the first hour'**
+  String get perMinuteAfterFirstHour;
+
+  /// No description provided for @holidayTariffPlusPercent.
+  ///
+  /// In en, this message translates to:
+  /// **'Holiday tariff (+{percent}%)'**
+  String holidayTariffPlusPercent(Object percent);
+
+  /// No description provided for @saveTariff.
+  ///
+  /// In en, this message translates to:
+  /// **'Save tariff'**
+  String get saveTariff;
+
+  /// No description provided for @quarterly.
+  ///
+  /// In en, this message translates to:
+  /// **'Quarterly'**
+  String get quarterly;
+
+  /// No description provided for @amountsInThousandToman.
+  ///
+  /// In en, this message translates to:
+  /// **'Amounts in thousand toman'**
+  String get amountsInThousandToman;
+
+  /// No description provided for @subscriptionDailyEntryLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily entry limit for subscriptions'**
+  String get subscriptionDailyEntryLimit;
+
+  /// No description provided for @validOnlyDuringOfficeHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Valid only during office hours'**
+  String get validOnlyDuringOfficeHours;
+
+  /// No description provided for @expiryReminderDaysBefore.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiry reminder ({days} days before)'**
+  String expiryReminderDaysBefore(Object days);
+
+  /// No description provided for @saveSubscriptionTariff.
+  ///
+  /// In en, this message translates to:
+  /// **'Save subscription tariff'**
+  String get saveSubscriptionTariff;
+
+  /// No description provided for @timesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} times'**
+  String timesCount(Object count);
+
+  /// No description provided for @activeCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Active ({count})'**
+  String activeCount(Object count);
+
+  /// No description provided for @expiringSoonCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiring soon ({count})'**
+  String expiringSoonCount(Object count);
+
+  /// No description provided for @expiredCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Expired ({count})'**
+  String expiredCount(Object count);
+
+  /// No description provided for @newSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'New subscription'**
+  String get newSubscription;
+
+  /// No description provided for @addAndCollectFee.
+  ///
+  /// In en, this message translates to:
+  /// **'Add and collect the fee'**
+  String get addAndCollectFee;
+
+  /// No description provided for @sendReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Send reminder'**
+  String get sendReminder;
+
+  /// No description provided for @registerNewSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Register a new subscription'**
+  String get registerNewSubscription;
+
+  /// No description provided for @daysRemainingCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} days'**
+  String daysRemainingCount(Object days);
+
+  /// No description provided for @parkingNamePrintedOnReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Parking name (printed on the receipt)'**
+  String get parkingNamePrintedOnReceipt;
+
+  /// No description provided for @workingHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Working hours'**
+  String get workingHours;
+
+  /// No description provided for @openTwentyFourHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Open 24 hours'**
+  String get openTwentyFourHours;
+
+  /// No description provided for @openOnPublicHolidays.
+  ///
+  /// In en, this message translates to:
+  /// **'Open on public holidays'**
+  String get openOnPublicHolidays;
+
+  /// No description provided for @receiptFooterText.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipt footer text'**
+  String get receiptFooterText;
+
+  /// No description provided for @autoPrintEntryReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Print the entry receipt automatically'**
+  String get autoPrintEntryReceipt;
+
+  /// No description provided for @saveChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes'**
+  String get saveChanges;
+
+  /// No description provided for @currentPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Current password'**
+  String get currentPassword;
+
+  /// No description provided for @newPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'New password'**
+  String get newPassword;
+
+  /// No description provided for @repeatNewPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat the new password'**
+  String get repeatNewPassword;
+
+  /// No description provided for @passwordStrength.
+  ///
+  /// In en, this message translates to:
+  /// **'Password strength'**
+  String get passwordStrength;
+
+  /// No description provided for @weak.
+  ///
+  /// In en, this message translates to:
+  /// **'Weak'**
+  String get weak;
+
+  /// No description provided for @medium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get medium;
+
+  /// No description provided for @good.
+  ///
+  /// In en, this message translates to:
+  /// **'Good'**
+  String get good;
+
+  /// No description provided for @strong.
+  ///
+  /// In en, this message translates to:
+  /// **'Strong'**
+  String get strong;
+
+  /// No description provided for @atLeastEightCharacters.
+  ///
+  /// In en, this message translates to:
+  /// **'At least 8 characters'**
+  String get atLeastEightCharacters;
+
+  /// No description provided for @includesUpperAndLowerCase.
+  ///
+  /// In en, this message translates to:
+  /// **'Includes upper and lower case'**
+  String get includesUpperAndLowerCase;
+
+  /// No description provided for @includesANumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Includes a number'**
+  String get includesANumber;
+
+  /// No description provided for @includesASpecialCharacter.
+  ///
+  /// In en, this message translates to:
+  /// **'Includes a special character'**
+  String get includesASpecialCharacter;
+
+  /// No description provided for @afterChangingPasswordYouWillBeSignedOut.
+  ///
+  /// In en, this message translates to:
+  /// **'After changing your password you will be signed out of every other device.'**
+  String get afterChangingPasswordYouWillBeSignedOut;
+
+  /// No description provided for @specialPlates.
+  ///
+  /// In en, this message translates to:
+  /// **'Special plates'**
+  String get specialPlates;
+
+  /// No description provided for @blacklistCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Blacklist ({count})'**
+  String blacklistCount(Object count);
+
+  /// No description provided for @reservationsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Reservations ({count})'**
+  String reservationsCount(Object count);
+
+  /// No description provided for @addPlate.
+  ///
+  /// In en, this message translates to:
+  /// **'Add plate'**
+  String get addPlate;
+
+  /// No description provided for @reason.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason'**
+  String get reason;
+
+  /// No description provided for @addToBlacklist.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to the blacklist'**
+  String get addToBlacklist;
+
+  /// No description provided for @addReservation.
+  ///
+  /// In en, this message translates to:
+  /// **'Add reservation'**
+  String get addReservation;
+
+  /// No description provided for @connectionLost.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection lost'**
+  String get connectionLost;
+
+  /// No description provided for @offlineModeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Entries and exits keep working and are stored on the device. Card payment is available, the online gateway is not.'**
+  String get offlineModeDescription;
+
+  /// No description provided for @sendQueue.
+  ///
+  /// In en, this message translates to:
+  /// **'Send queue'**
+  String get sendQueue;
+
+  /// No description provided for @itemsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} items'**
+  String itemsCount(Object count);
+
+  /// No description provided for @lastSync.
+  ///
+  /// In en, this message translates to:
+  /// **'Last sync'**
+  String get lastSync;
+
+  /// No description provided for @tariffStoredOnDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'Tariff stored on the device'**
+  String get tariffStoredOnDevice;
+
+  /// No description provided for @offlineSubscriptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline subscriptions'**
+  String get offlineSubscriptions;
+
+  /// No description provided for @plateCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} plates'**
+  String plateCount(Object count);
+
+  /// No description provided for @tryToSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Try to send'**
+  String get tryToSend;
+
+  /// No description provided for @offline.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline'**
+  String get offline;
+
+  /// No description provided for @send.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get send;
+
+  /// No description provided for @networkConnected.
+  ///
+  /// In en, this message translates to:
+  /// **'Network connected'**
+  String get networkConnected;
+
+  /// No description provided for @shift.
+  ///
+  /// In en, this message translates to:
+  /// **'Shift'**
+  String get shift;
+
+  /// No description provided for @morningShift.
+  ///
+  /// In en, this message translates to:
+  /// **'Morning shift'**
+  String get morningShift;
+
+  /// No description provided for @closeShift.
+  ///
+  /// In en, this message translates to:
+  /// **'Close shift'**
+  String get closeShift;
+
+  /// No description provided for @countedCash.
+  ///
+  /// In en, this message translates to:
+  /// **'Counted cash'**
+  String get countedCash;
+
+  /// No description provided for @cashDifference.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash difference'**
+  String get cashDifference;
+
+  /// No description provided for @cardTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Card total'**
+  String get cardTotal;
+
+  /// No description provided for @cashTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash total'**
+  String get cashTotal;
+
+  /// No description provided for @gatewayTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Gateway total'**
+  String get gatewayTotal;
+
+  /// No description provided for @entriesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} entries'**
+  String entriesCount(Object count);
+
+  /// No description provided for @exitsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} exits'**
+  String exitsCount(Object count);
+
+  /// No description provided for @minutesShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} m'**
+  String minutesShort(Object count);
+
+  /// No description provided for @hoursAndMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours} h {minutes} m'**
+  String hoursAndMinutes(Object hours, Object minutes);
+
+  /// No description provided for @noVehicleInsideTheParking.
+  ///
+  /// In en, this message translates to:
+  /// **'No vehicle is inside the parking'**
+  String get noVehicleInsideTheParking;
+
+  /// No description provided for @plateNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No open entry was found for this plate'**
+  String get plateNotFound;
+
+  /// No description provided for @warning.
+  ///
+  /// In en, this message translates to:
+  /// **'Warning'**
+  String get warning;
+
+  /// No description provided for @thisVehicleIsAlreadyInsideTheParking.
+  ///
+  /// In en, this message translates to:
+  /// **'This vehicle is already inside the parking'**
+  String get thisVehicleIsAlreadyInsideTheParking;
+
+  /// No description provided for @enterThePlateYouSee.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the plate you see in the photo'**
+  String get enterThePlateYouSee;
+
+  /// No description provided for @retakePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Retake photo'**
+  String get retakePhoto;
+
+  /// No description provided for @usePlate.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this plate'**
+  String get usePlate;
+
+  /// No description provided for @openCamera.
+  ///
+  /// In en, this message translates to:
+  /// **'Open camera'**
+  String get openCamera;
+
+  /// No description provided for @continueWord.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continueWord;
+
+  /// No description provided for @waitingForCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for the card…'**
+  String get waitingForCard;
+
+  /// No description provided for @cardRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Card read'**
+  String get cardRead;
+
+  /// No description provided for @enterTheTrackingCodeFromTheTerminal.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the tracking code shown by the terminal\'s payment app.'**
+  String get enterTheTrackingCodeFromTheTerminal;
+
+  /// No description provided for @confirmPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm payment'**
+  String get confirmPayment;
+
+  /// No description provided for @paymentNotConfirmedYet.
+  ///
+  /// In en, this message translates to:
+  /// **'The payment has not been confirmed yet'**
+  String get paymentNotConfirmedYet;
+
+  /// No description provided for @checkPaymentStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Check payment status'**
+  String get checkPaymentStatus;
+
+  /// No description provided for @cardReaderNotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No card reader is available on this device'**
+  String get cardReaderNotAvailable;
+
+  /// No description provided for @passwordsDoNotMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'The passwords do not match'**
+  String get passwordsDoNotMatch;
+
+  /// No description provided for @wrongPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'The current password is wrong'**
+  String get wrongPassword;
+
+  /// No description provided for @shiftSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Shift summary'**
+  String get shiftSummary;
+
+  /// No description provided for @shiftStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Shift started'**
+  String get shiftStarted;
+
+  /// No description provided for @settleAndCloseShift.
+  ///
+  /// In en, this message translates to:
+  /// **'Settle and close the shift'**
+  String get settleAndCloseShift;
+
+  /// No description provided for @shiftClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'The shift was closed'**
+  String get shiftClosed;
+
+  /// No description provided for @addToReservations.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to reservations'**
+  String get addToReservations;
+
+  /// No description provided for @spotNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Spot number'**
+  String get spotNumber;
+
+  /// No description provided for @areYouSure.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure?'**
+  String get areYouSure;
+
+  /// No description provided for @total.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get total;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

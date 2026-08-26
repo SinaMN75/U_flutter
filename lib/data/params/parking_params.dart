@@ -491,3 +491,625 @@ class UParkingUserReadParams {
     "selectorArgs": selectorArgs?.toMap(),
   };
 }
+
+class UParkingTariffCreateParams {
+  final String parkingId;
+  final int vehicleType;
+  final List<int> tags;
+  final double entrancePrice;
+  final double dayHourlyPrice;
+  final double nightHourlyPrice;
+  final double dailyCap;
+  final double weeklyPrice;
+  final double monthlyPrice;
+  final double quarterlyPrice;
+  final int freeMinutes;
+  final int nightStartHour;
+  final int nightEndHour;
+  final int holidayExtraPercent;
+  final bool roundToFullHour;
+  final bool perMinuteAfterFirstHour;
+  final int subscriptionDailyEntryLimit;
+  final bool subscriptionOfficeHoursOnly;
+  final int subscriptionExpiryReminderDays;
+
+  UParkingTariffCreateParams({
+    required this.parkingId,
+    required this.vehicleType,
+    required this.tags,
+    this.entrancePrice = 0,
+    this.dayHourlyPrice = 0,
+    this.nightHourlyPrice = 0,
+    this.dailyCap = 0,
+    this.weeklyPrice = 0,
+    this.monthlyPrice = 0,
+    this.quarterlyPrice = 0,
+    this.freeMinutes = 0,
+    this.nightStartHour = 22,
+    this.nightEndHour = 6,
+    this.holidayExtraPercent = 0,
+    this.roundToFullHour = false,
+    this.perMinuteAfterFirstHour = true,
+    this.subscriptionDailyEntryLimit = 0,
+    this.subscriptionOfficeHoursOnly = false,
+    this.subscriptionExpiryReminderDays = 5,
+  });
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "parkingId": parkingId,
+    "vehicleType": vehicleType,
+    "tags": List<dynamic>.from(tags.map((int x) => x)),
+    "entrancePrice": entrancePrice,
+    "dayHourlyPrice": dayHourlyPrice,
+    "nightHourlyPrice": nightHourlyPrice,
+    "dailyCap": dailyCap,
+    "weeklyPrice": weeklyPrice,
+    "monthlyPrice": monthlyPrice,
+    "quarterlyPrice": quarterlyPrice,
+    "freeMinutes": freeMinutes,
+    "nightStartHour": nightStartHour,
+    "nightEndHour": nightEndHour,
+    "holidayExtraPercent": holidayExtraPercent,
+    "roundToFullHour": roundToFullHour,
+    "perMinuteAfterFirstHour": perMinuteAfterFirstHour,
+    "subscriptionDailyEntryLimit": subscriptionDailyEntryLimit,
+    "subscriptionOfficeHoursOnly": subscriptionOfficeHoursOnly,
+    "subscriptionExpiryReminderDays": subscriptionExpiryReminderDays,
+  };
+}
+
+class UParkingTariffUpdateParams {
+  final String id;
+  final int? vehicleType;
+  final double? entrancePrice;
+  final double? dayHourlyPrice;
+  final double? nightHourlyPrice;
+  final double? dailyCap;
+  final double? weeklyPrice;
+  final double? monthlyPrice;
+  final double? quarterlyPrice;
+  final int? freeMinutes;
+  final int? nightStartHour;
+  final int? nightEndHour;
+  final int? holidayExtraPercent;
+  final bool? roundToFullHour;
+  final bool? perMinuteAfterFirstHour;
+  final int? subscriptionDailyEntryLimit;
+  final bool? subscriptionOfficeHoursOnly;
+  final int? subscriptionExpiryReminderDays;
+
+  UParkingTariffUpdateParams({
+    required this.id,
+    this.vehicleType,
+    this.entrancePrice,
+    this.dayHourlyPrice,
+    this.nightHourlyPrice,
+    this.dailyCap,
+    this.weeklyPrice,
+    this.monthlyPrice,
+    this.quarterlyPrice,
+    this.freeMinutes,
+    this.nightStartHour,
+    this.nightEndHour,
+    this.holidayExtraPercent,
+    this.roundToFullHour,
+    this.perMinuteAfterFirstHour,
+    this.subscriptionDailyEntryLimit,
+    this.subscriptionOfficeHoursOnly,
+    this.subscriptionExpiryReminderDays,
+  });
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "vehicleType": vehicleType,
+    "entrancePrice": entrancePrice,
+    "dayHourlyPrice": dayHourlyPrice,
+    "nightHourlyPrice": nightHourlyPrice,
+    "dailyCap": dailyCap,
+    "weeklyPrice": weeklyPrice,
+    "monthlyPrice": monthlyPrice,
+    "quarterlyPrice": quarterlyPrice,
+    "freeMinutes": freeMinutes,
+    "nightStartHour": nightStartHour,
+    "nightEndHour": nightEndHour,
+    "holidayExtraPercent": holidayExtraPercent,
+    "roundToFullHour": roundToFullHour,
+    "perMinuteAfterFirstHour": perMinuteAfterFirstHour,
+    "subscriptionDailyEntryLimit": subscriptionDailyEntryLimit,
+    "subscriptionOfficeHoursOnly": subscriptionOfficeHoursOnly,
+    "subscriptionExpiryReminderDays": subscriptionExpiryReminderDays,
+  };
+}
+
+class UParkingTariffReadParams {
+  final String? parkingId;
+  final int? vehicleType;
+  final int? pageSize;
+  final int? pageNumber;
+  final ParkingTariffSelectorArgs? selectorArgs;
+
+  UParkingTariffReadParams({this.parkingId, this.vehicleType, this.pageSize, this.pageNumber, this.selectorArgs});
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "parkingId": parkingId,
+    "vehicleType": vehicleType,
+    "pageSize": pageSize,
+    "pageNumber": pageNumber,
+    "selectorArgs": selectorArgs?.toMap(),
+  };
+}
+
+class UParkingSubscriptionCreateParams {
+  final String parkingId;
+  final String licencePlate;
+  final int vehicleType;
+  final List<int> tags;
+  final String? customerName;
+  final String? customerPhoneNumber;
+  final double price;
+  final DateTime? startDate;
+  final DateTime? expiryDate;
+  final int dailyEntryLimit;
+  final bool officeHoursOnly;
+
+  UParkingSubscriptionCreateParams({
+    required this.parkingId,
+    required this.licencePlate,
+    required this.vehicleType,
+    required this.tags,
+    this.customerName,
+    this.customerPhoneNumber,
+    this.price = 0,
+    this.startDate,
+    this.expiryDate,
+    this.dailyEntryLimit = 0,
+    this.officeHoursOnly = false,
+  });
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "parkingId": parkingId,
+    "licencePlate": licencePlate,
+    "vehicleType": vehicleType,
+    "tags": List<dynamic>.from(tags.map((int x) => x)),
+    "customerName": customerName,
+    "customerPhoneNumber": customerPhoneNumber,
+    "price": price,
+    "startDate": startDate?.toIso8601String(),
+    "expiryDate": expiryDate?.toIso8601String(),
+    "dailyEntryLimit": dailyEntryLimit,
+    "officeHoursOnly": officeHoursOnly,
+  };
+}
+
+class UParkingSubscriptionUpdateParams {
+  final String id;
+  final String? customerName;
+  final String? customerPhoneNumber;
+  final double? price;
+  final DateTime? startDate;
+  final DateTime? expiryDate;
+  final int? dailyEntryLimit;
+  final bool? officeHoursOnly;
+  final List<int>? addTags;
+  final List<int>? removeTags;
+
+  UParkingSubscriptionUpdateParams({
+    required this.id,
+    this.customerName,
+    this.customerPhoneNumber,
+    this.price,
+    this.startDate,
+    this.expiryDate,
+    this.dailyEntryLimit,
+    this.officeHoursOnly,
+    this.addTags,
+    this.removeTags,
+  });
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "customerName": customerName,
+    "customerPhoneNumber": customerPhoneNumber,
+    "price": price,
+    "startDate": startDate?.toIso8601String(),
+    "expiryDate": expiryDate?.toIso8601String(),
+    "dailyEntryLimit": dailyEntryLimit,
+    "officeHoursOnly": officeHoursOnly,
+    "addTags": addTags == null ? null : List<dynamic>.from(addTags!.map((int x) => x)),
+    "removeTags": removeTags == null ? null : List<dynamic>.from(removeTags!.map((int x) => x)),
+  };
+}
+
+class UParkingSubscriptionReadParams {
+  final String? parkingId;
+  final String? licencePlate;
+  final String? query;
+  final bool? isActive;
+  final bool? isExpiringSoon;
+  final bool? isExpired;
+  final int expiringInDays;
+  final int? pageSize;
+  final int? pageNumber;
+  final List<int>? tags;
+  final ParkingSubscriptionSelectorArgs? selectorArgs;
+
+  UParkingSubscriptionReadParams({
+    this.parkingId,
+    this.licencePlate,
+    this.query,
+    this.isActive,
+    this.isExpiringSoon,
+    this.isExpired,
+    this.expiringInDays = 7,
+    this.pageSize,
+    this.pageNumber,
+    this.tags,
+    this.selectorArgs,
+  });
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "parkingId": parkingId,
+    "licencePlate": licencePlate,
+    "query": query,
+    "isActive": isActive,
+    "isExpiringSoon": isExpiringSoon,
+    "isExpired": isExpired,
+    "expiringInDays": expiringInDays,
+    "pageSize": pageSize,
+    "pageNumber": pageNumber,
+    "tags": tags == null ? null : List<dynamic>.from(tags!.map((int x) => x)),
+    "selectorArgs": selectorArgs?.toMap(),
+  };
+}
+
+class UParkingPlateFlagCreateParams {
+  final String parkingId;
+  final String licencePlate;
+  final List<int> tags;
+  final String? reason;
+  final double? amount;
+  final DateTime? fromDate;
+  final DateTime? toDate;
+  final String? spotNumber;
+
+  UParkingPlateFlagCreateParams({
+    required this.parkingId,
+    required this.licencePlate,
+    required this.tags,
+    this.reason,
+    this.amount,
+    this.fromDate,
+    this.toDate,
+    this.spotNumber,
+  });
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "parkingId": parkingId,
+    "licencePlate": licencePlate,
+    "tags": List<dynamic>.from(tags.map((int x) => x)),
+    "reason": reason,
+    "amount": amount,
+    "fromDate": fromDate?.toIso8601String(),
+    "toDate": toDate?.toIso8601String(),
+    "spotNumber": spotNumber,
+  };
+}
+
+class UParkingPlateFlagUpdateParams {
+  final String id;
+  final String? reason;
+  final double? amount;
+  final DateTime? fromDate;
+  final DateTime? toDate;
+  final String? spotNumber;
+  final List<int>? tags;
+
+  UParkingPlateFlagUpdateParams({required this.id, this.reason, this.amount, this.fromDate, this.toDate, this.spotNumber, this.tags});
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "reason": reason,
+    "amount": amount,
+    "fromDate": fromDate?.toIso8601String(),
+    "toDate": toDate?.toIso8601String(),
+    "spotNumber": spotNumber,
+    "tags": tags == null ? null : List<dynamic>.from(tags!.map((int x) => x)),
+  };
+}
+
+class UParkingPlateFlagReadParams {
+  final String? parkingId;
+  final String? licencePlate;
+  final List<int>? tags;
+  final int? pageSize;
+  final int? pageNumber;
+  final ParkingPlateFlagSelectorArgs? selectorArgs;
+
+  UParkingPlateFlagReadParams({this.parkingId, this.licencePlate, this.tags, this.pageSize, this.pageNumber, this.selectorArgs});
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "parkingId": parkingId,
+    "licencePlate": licencePlate,
+    "tags": tags == null ? null : List<dynamic>.from(tags!.map((int x) => x)),
+    "pageSize": pageSize,
+    "pageNumber": pageNumber,
+    "selectorArgs": selectorArgs?.toMap(),
+  };
+}
+
+class UParkingStaffCreateParams {
+  final String parkingId;
+  final String userName;
+  final String password;
+  final List<int> tags;
+  final String? firstName;
+  final String? lastName;
+  final String? phoneNumber;
+  final String? shiftTitle;
+  final int maxDiscountPercent;
+
+  UParkingStaffCreateParams({
+    required this.parkingId,
+    required this.userName,
+    required this.password,
+    required this.tags,
+    this.firstName,
+    this.lastName,
+    this.phoneNumber,
+    this.shiftTitle,
+    this.maxDiscountPercent = 0,
+  });
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "parkingId": parkingId,
+    "userName": userName,
+    "password": password,
+    "tags": List<dynamic>.from(tags.map((int x) => x)),
+    "firstName": firstName,
+    "lastName": lastName,
+    "phoneNumber": phoneNumber,
+    "shiftTitle": shiftTitle,
+    "maxDiscountPercent": maxDiscountPercent,
+  };
+}
+
+class UParkingStaffUpdateParams {
+  final String id;
+  final String? shiftTitle;
+  final int? maxDiscountPercent;
+  final String? password;
+  final List<int>? tags;
+  final List<int>? addTags;
+  final List<int>? removeTags;
+
+  UParkingStaffUpdateParams({required this.id, this.shiftTitle, this.maxDiscountPercent, this.password, this.tags, this.addTags, this.removeTags});
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "shiftTitle": shiftTitle,
+    "maxDiscountPercent": maxDiscountPercent,
+    "password": password,
+    "tags": tags == null ? null : List<dynamic>.from(tags!.map((int x) => x)),
+    "addTags": addTags == null ? null : List<dynamic>.from(addTags!.map((int x) => x)),
+    "removeTags": removeTags == null ? null : List<dynamic>.from(removeTags!.map((int x) => x)),
+  };
+}
+
+class UParkingStaffReadParams {
+  final String? parkingId;
+  final int? pageSize;
+  final int? pageNumber;
+  final ParkingStaffSelectorArgs? selectorArgs;
+
+  UParkingStaffReadParams({this.parkingId, this.pageSize, this.pageNumber, this.selectorArgs});
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "parkingId": parkingId,
+    "pageSize": pageSize,
+    "pageNumber": pageNumber,
+    "selectorArgs": selectorArgs?.toMap(),
+  };
+}
+
+class UParkingShiftOpenParams {
+  final String parkingId;
+
+  UParkingShiftOpenParams({required this.parkingId});
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"parkingId": parkingId};
+}
+
+class UParkingShiftCloseParams {
+  final String id;
+  final double countedCash;
+
+  UParkingShiftCloseParams({required this.id, this.countedCash = 0});
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"id": id, "countedCash": countedCash};
+}
+
+class UParkingShiftReadParams {
+  final String? parkingId;
+  final bool? isOpen;
+  final int? pageSize;
+  final int? pageNumber;
+  final ParkingShiftSelectorArgs? selectorArgs;
+
+  UParkingShiftReadParams({this.parkingId, this.isOpen, this.pageSize, this.pageNumber, this.selectorArgs});
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "parkingId": parkingId,
+    "isOpen": isOpen,
+    "pageSize": pageSize,
+    "pageNumber": pageNumber,
+    "selectorArgs": selectorArgs?.toMap(),
+  };
+}
+
+class UParkingPlateStatusParams {
+  final String parkingId;
+  final String licencePlate;
+  final int vehicleType;
+
+  UParkingPlateStatusParams({required this.parkingId, required this.licencePlate, required this.vehicleType});
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"parkingId": parkingId, "licencePlate": licencePlate, "vehicleType": vehicleType};
+}
+
+class UParkingEntryParams {
+  final String parkingId;
+  final String licencePlate;
+  final int vehicleType;
+  final DateTime? startDate;
+  final String? spotNumber;
+  final String? customerPhoneNumber;
+  final bool isOffline;
+
+  UParkingEntryParams({
+    required this.parkingId,
+    required this.licencePlate,
+    required this.vehicleType,
+    this.startDate,
+    this.spotNumber,
+    this.customerPhoneNumber,
+    this.isOffline = false,
+  });
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "parkingId": parkingId,
+    "licencePlate": licencePlate,
+    "vehicleType": vehicleType,
+    "startDate": startDate?.toIso8601String(),
+    "spotNumber": spotNumber,
+    "customerPhoneNumber": customerPhoneNumber,
+    "isOffline": isOffline,
+  };
+}
+
+class UParkingExitCalculateParams {
+  final String? reportId;
+  final String? parkingId;
+  final String? licencePlate;
+  final DateTime? endDate;
+  final DateTime? correctedStartDate;
+  final double discount;
+
+  UParkingExitCalculateParams({this.reportId, this.parkingId, this.licencePlate, this.endDate, this.correctedStartDate, this.discount = 0});
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "reportId": reportId,
+    "parkingId": parkingId,
+    "licencePlate": licencePlate,
+    "endDate": endDate?.toIso8601String(),
+    "correctedStartDate": correctedStartDate?.toIso8601String(),
+    "discount": discount,
+  };
+}
+
+class UParkingExitParams {
+  final String reportId;
+  final DateTime? endDate;
+  final DateTime? correctedStartDate;
+  final double discount;
+  final int paymentMethod;
+  final String? trackingCode;
+  final bool isOffline;
+
+  UParkingExitParams({
+    required this.reportId,
+    required this.paymentMethod,
+    this.endDate,
+    this.correctedStartDate,
+    this.discount = 0,
+    this.trackingCode,
+    this.isOffline = false,
+  });
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "reportId": reportId,
+    "endDate": endDate?.toIso8601String(),
+    "correctedStartDate": correctedStartDate?.toIso8601String(),
+    "discount": discount,
+    "paymentMethod": paymentMethod,
+    "trackingCode": trackingCode,
+    "isOffline": isOffline,
+  };
+}
+
+class UParkingDashboardParams {
+  final String parkingId;
+  final int recentCount;
+
+  UParkingDashboardParams({required this.parkingId, this.recentCount = 10});
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"parkingId": parkingId, "recentCount": recentCount};
+}
+
+class UParkingInsideVehiclesParams {
+  final String parkingId;
+  final String? query;
+  final bool? longerThanADay;
+  final bool? hasSubscription;
+  final int pageSize;
+  final int pageNumber;
+
+  UParkingInsideVehiclesParams({
+    required this.parkingId,
+    this.query,
+    this.longerThanADay,
+    this.hasSubscription,
+    this.pageSize = 50,
+    this.pageNumber = 1,
+  });
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "parkingId": parkingId,
+    "query": query,
+    "longerThanADay": longerThanADay,
+    "hasSubscription": hasSubscription,
+    "pageSize": pageSize,
+    "pageNumber": pageNumber,
+  };
+}

@@ -16,6 +16,31 @@ abstract class UAdminPageSwitcher {
     UAdminParkingReportPage(parking: parking),
   );
 
+  static void parkingTariff({UParkingResponse? parking}) => U.addOrSwitchTab(
+    parking == null ? U.s.tariffs : "${U.s.tariffs} · ${parking.title}",
+    UAdminParkingTariffPage(parking: parking),
+  );
+
+  static void parkingSubscription({UParkingResponse? parking}) => U.addOrSwitchTab(
+    parking == null ? U.s.subscriptions : "${U.s.subscriptions} · ${parking.title}",
+    UAdminParkingSubscriptionPage(parking: parking),
+  );
+
+  static void parkingStaff({UParkingResponse? parking}) => U.addOrSwitchTab(
+    parking == null ? U.s.staffManagement : "${U.s.staff} · ${parking.title}",
+    UAdminParkingStaffPage(parking: parking),
+  );
+
+  static void parkingPlateFlag({UParkingResponse? parking}) => U.addOrSwitchTab(
+    parking == null ? U.s.specialPlates : "${U.s.specialPlates} · ${parking.title}",
+    UAdminParkingPlateFlagPage(parking: parking),
+  );
+
+  static void parkingShift({UParkingResponse? parking}) => U.addOrSwitchTab(
+    parking == null ? U.s.shift : "${U.s.shift} · ${parking.title}",
+    UAdminParkingShiftPage(parking: parking),
+  );
+
   static void users({required UAdminUsersPageArgs args}) => U.addOrSwitchTab(U.s.users, UAdminUserPage(args: args));
 
   static void hotelUserDetail({required UUserResponse user}) =>

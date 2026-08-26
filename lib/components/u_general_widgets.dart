@@ -292,3 +292,201 @@ class USelectionCard extends StatelessWidget {
     );
   }
 }
+
+/// Label on one side, value on the other. The building block of receipts, bills and detail sheets.
+class UInfoRow extends StatelessWidget {
+  const UInfoRow(
+    this.label, {
+    required this.value,
+    super.key,
+    this.valueColor,
+    this.isStrong = false,
+    this.trailing,
+  });
+
+  final String label;
+  final String value;
+  final Color? valueColor;
+  final bool isStrong;
+  final Widget? trailing;
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme scheme = Theme.of(context).colorScheme;
+    return URow(
+      spacing: 12,
+      children: <Widget>[
+        UTextBodyMedium(label, color: scheme.onSurfaceVariant),
+        const Spacer(),
+        if (trailing != null)
+          trailing!
+        else if (isStrong)
+          UTextTitleMedium(value, color: valueColor ?? scheme.onSurface, textAlign: TextAlign.end)
+        else
+          UTextBodyMedium(value, color: valueColor ?? scheme.onSurface, textAlign: TextAlign.end),
+      ],
+    );
+  }
+}
+
+/// Compact metric tile — a caption over a large number, optionally with a unit or a secondary total.
+class UStatTile extends StatelessWidget {
+  const UStatTile({
+    required this.caption,
+    required this.value,
+    super.key,
+    this.unit,
+    this.secondaryValue,
+    this.valueColor,
+    this.icon,
+  });
+
+  final String caption;
+  final String value;
+  final String? unit;
+  final String? secondaryValue;
+  final Color? valueColor;
+  final IconData? icon;
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme scheme = Theme.of(context).colorScheme;
+    return UContainer(
+      radius: 20,
+      padding: const EdgeInsets.all(16),
+      color: scheme.surface,
+      border: Border.all(color: scheme.outlineVariant),
+      child: UColumn(
+        spacing: 6,
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          URow(
+            spacing: 6,
+            children: <Widget>[
+              if (icon != null) Icon(icon, size: 14, color: scheme.onSurfaceVariant),
+              UTextLabelMedium(caption, color: scheme.onSurfaceVariant),
+            ],
+          ),
+          URow(
+            spacing: 4,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              UTextHeadlineMedium(value, color: valueColor ?? scheme.onSurface),
+              if (secondaryValue != null) UTextBodySmall("/ $secondaryValue", color: scheme.onSurfaceVariant),
+              if (unit != null) UTextBodySmall(unit!, color: scheme.onSurfaceVariant),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Large tappable action: an icon badge, a title and a one-line explanation. Sized for gloved thumbs on a POS.
+class UActionTile extends StatelessWidget {
+  const UActionTile({
+    required this.icon,
+    required this.title,
+    required this.onTap,
+    super.key,
+    this.subtitle,
+    this.color,
+  });
+
+  final IconData icon;
+  final String title;
+  final String? subtitle;
+  final Color? color;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme scheme = Theme.of(context).colorScheme;
+    final Color tone = color ?? scheme.primary;
+    return UContainer(
+      radius: 20,
+      padding: const EdgeInsets.all(16),
+      color: scheme.surface,
+      border: Border.all(color: scheme.outlineVariant),
+      onTap: onTap,
+      child: UColumn(
+        spacing: 10,
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          UIconBackground(icon, color: tone, size: 44),
+          UTextTitleLarge(title, color: scheme.onSurface),
+          if (subtitle != null) UTextBodySmall(subtitle!, color: scheme.onSurfaceVariant),
+        ],
+      ),
+    );
+  }
+}
+
+enum UAlertTone { info, success, warning, danger }
+
+/// Tinted callout used for pre-entry checks, offline notices and any other inline warning.
+class UAlertBanner extends StatelessWidget {
+  const UAlertBanner({
+    required this.title,
+    super.key,
+    this.message,
+    this.tone = UAlertTone.info,
+    this.icon,
+    this.actions = const <Widget>[],
+  });
+
+  final String title;
+  final String? message;
+  final UAlertTone tone;
+  final IconData? icon;
+  final List<Widget> actions;
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme scheme = Theme.of(context).colorScheme;
+    final Color color = switch (tone) {
+      UAlertTone.success => scheme.tertiary,
+      UAlertTone.warning => scheme.secondary,
+      UAlertTone.danger => scheme.error,
+      UAlertTone.info => scheme.primary,
+    };
+    final IconData toneIcon = icon ?? switch (tone) {
+      UAlertTone.success => Icons.check_circle_outline_rounded,
+      UAlertTone.warning => Icons.warning_amber_rounded,
+      UAlertTone.danger => Icons.cancel_outlined,
+      UAlertTone.info => Icons.info_outline_rounded,
+    };
+    return UContainer(
+      radius: 18,
+      padding: const EdgeInsets.all(16),
+      color: color.withValues(alpha: 0.08),
+      border: Border.all(color: color.withValues(alpha: 0.35)),
+      child: UColumn(
+        spacing: 10,
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          URow(
+            spacing: 10,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Icon(toneIcon, color: color, size: 20),
+              UColumn(
+                spacing: 4,
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  UTextTitleMedium(title, color: color),
+                  if (message != null) UTextBodySmall(message!, color: scheme.onSurfaceVariant),
+                ],
+              ).expanded(),
+            ],
+          ),
+          if (actions.isNotEmpty) Wrap(spacing: 8, runSpacing: 8, children: actions),
+        ],
+      ),
+    );
+  }
+}

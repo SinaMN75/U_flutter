@@ -122,6 +122,41 @@ abstract class UAdminLinks {
     onTap: () => UAdminPageSwitcher.parkingReport(parking: p),
   );
 
+  static UAdminAction parkingTariff(UParkingResponse p, {List<TagUser>? roles}) => UAdminAction(
+    label: U.s.tariffs,
+    icon: Icons.request_quote_outlined,
+    roles: roles,
+    onTap: () => UAdminPageSwitcher.parkingTariff(parking: p),
+  );
+
+  static UAdminAction parkingSubscription(UParkingResponse p, {List<TagUser>? roles}) => UAdminAction(
+    label: U.s.subscriptions,
+    icon: Icons.card_membership_outlined,
+    roles: roles,
+    onTap: () => UAdminPageSwitcher.parkingSubscription(parking: p),
+  );
+
+  static UAdminAction parkingStaff(UParkingResponse p, {List<TagUser>? roles}) => UAdminAction(
+    label: U.s.staff,
+    icon: Icons.badge_outlined,
+    roles: roles,
+    onTap: () => UAdminPageSwitcher.parkingStaff(parking: p),
+  );
+
+  static UAdminAction parkingPlateFlag(UParkingResponse p, {List<TagUser>? roles}) => UAdminAction(
+    label: U.s.specialPlates,
+    icon: Icons.gpp_maybe_outlined,
+    roles: roles,
+    onTap: () => UAdminPageSwitcher.parkingPlateFlag(parking: p),
+  );
+
+  static UAdminAction parkingShift(UParkingResponse p, {List<TagUser>? roles}) => UAdminAction(
+    label: U.s.shift,
+    icon: Icons.point_of_sale_outlined,
+    roles: roles,
+    onTap: () => UAdminPageSwitcher.parkingShift(parking: p),
+  );
+
   // ---- from a hotel / room ----
   static UAdminAction hotelRooms(UHotelResponse h, {List<TagUser>? roles}) => UAdminAction(
     label: U.s.rooms,

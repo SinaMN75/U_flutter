@@ -2713,4 +2713,726 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get changeParking => 'Change parking';
+
+  @override
+  String get insideParking => 'Inside the parking';
+
+  @override
+  String get shiftRevenue => 'Shift revenue';
+
+  @override
+  String get registerEntry => 'Register entry';
+
+  @override
+  String get registerExit => 'Register exit';
+
+  @override
+  String get plateAndPrintReceipt => 'Plate and print receipt';
+
+  @override
+  String get scanReceiptOrPlate => 'Scan receipt or plate';
+
+  @override
+  String get recentMovements => 'Recent movements';
+
+  @override
+  String receiptsQueuedOffline(Object count) {
+    return '$count receipts are queued for offline sending';
+  }
+
+  @override
+  String get freeExit => 'Free exit';
+
+  @override
+  String get nonIranianPlate => 'Non-Iranian plate';
+
+  @override
+  String get readPlateWithCamera => 'Read plate with camera';
+
+  @override
+  String get perHourAfter => 'Each hour after';
+
+  @override
+  String get dailyCap => '24-hour cap';
+
+  @override
+  String firstMinutesAreFree(Object minutes) {
+    return 'The first $minutes minutes are free.';
+  }
+
+  @override
+  String nightRateAppliesBetween(Object from, Object to) {
+    return 'The night rate applies between $from and $to.';
+  }
+
+  @override
+  String get phoneNumberForSmsReceipt => 'Phone number for the SMS receipt';
+
+  @override
+  String get registerEntryAndPrintReceipt => 'Register entry and print receipt';
+
+  @override
+  String get pointCameraAtPlate => 'Point the camera at the plate';
+
+  @override
+  String get plateDetected => 'Plate detected';
+
+  @override
+  String get enterPlateManually => 'Enter the plate manually';
+
+  @override
+  String get checkPlate => 'Check plate';
+
+  @override
+  String get hasAnActiveSubscription => 'Has an active subscription';
+
+  @override
+  String get entryAndExitAreFreeOfCharge => 'Entry and exit are recorded free of charge.';
+
+  @override
+  String get thisVehicleHasAReservation => 'This vehicle has a reservation';
+
+  @override
+  String spotIsReservedForThisPlate(Object spot) {
+    return 'Spot $spot is reserved for this plate.';
+  }
+
+  @override
+  String get isOnTheBlacklist => 'Is on the blacklist';
+
+  @override
+  String get viewDebt => 'View debt';
+
+  @override
+  String get requestApproval => 'Request approval';
+
+  @override
+  String get entryRegistered => 'Entry registered';
+
+  @override
+  String get entryReceipt => 'Entry receipt';
+
+  @override
+  String get exitReceipt => 'Exit receipt';
+
+  @override
+  String get receiptNumber => 'Receipt number';
+
+  @override
+  String get entryTime => 'Entry time';
+
+  @override
+  String get exitTime => 'Exit time';
+
+  @override
+  String get parkingSpot => 'Parking spot';
+
+  @override
+  String get tariff => 'Tariff';
+
+  @override
+  String get scanThisCodeToRegisterExit => 'Scan this code to register the exit';
+
+  @override
+  String get printOnPosDevice => 'Print on the POS device';
+
+  @override
+  String get shareImage => 'Share image';
+
+  @override
+  String get smsToCustomer => 'SMS to customer';
+
+  @override
+  String get nextEntry => 'Next entry';
+
+  @override
+  String get searchPlate => 'Search plate';
+
+  @override
+  String get holdCustomerReceiptToCamera => 'Hold the customer\'s receipt up to the camera';
+
+  @override
+  String vehiclesAreInsideTheParking(Object count) {
+    return '$count vehicles are inside the parking';
+  }
+
+  @override
+  String get showList => 'Show list';
+
+  @override
+  String get receiptLostSearchManually => 'Receipt lost — search manually';
+
+  @override
+  String get searchVehicle => 'Search vehicle';
+
+  @override
+  String get moreThanADay => 'More than 24 hours';
+
+  @override
+  String get subscribers => 'Subscribers';
+
+  @override
+  String get approximately => 'Approximately';
+
+  @override
+  String get continueToExit => 'Continue to exit';
+
+  @override
+  String get freeOfCharge => 'Free';
+
+  @override
+  String get exitInvoice => 'Exit invoice';
+
+  @override
+  String get calculationBreakdown => 'Calculation breakdown';
+
+  @override
+  String firstMinutes(Object minutes) {
+    return 'First $minutes minutes';
+  }
+
+  @override
+  String get firstHour => 'First hour';
+
+  @override
+  String additionalTimePerMinute(Object duration) {
+    return '$duration after that (per minute)';
+  }
+
+  @override
+  String get operatorDiscount => 'Operator discount';
+
+  @override
+  String get appliedRate => 'Applied rate';
+
+  @override
+  String get normalDayRate => 'Normal day rate';
+
+  @override
+  String get nightRate => 'Night rate';
+
+  @override
+  String get applyDiscount => 'Apply discount';
+
+  @override
+  String get correctEntryTime => 'Correct the entry time';
+
+  @override
+  String payAmount(Object amount) {
+    return 'Pay $amount';
+  }
+
+  @override
+  String get holidayExtra => 'Holiday surcharge';
+
+  @override
+  String get dailyCapApplied => '24-hour cap applied';
+
+  @override
+  String get bankCardOnDevice => 'Bank card on the device';
+
+  @override
+  String get internalCardReaderFastestWay => 'Built-in card reader · fastest way';
+
+  @override
+  String get onlinePaymentGateway => 'Online payment gateway';
+
+  @override
+  String get showQrOrSendSmsLink => 'Show a QR code or send an SMS link';
+
+  @override
+  String get cash => 'Cash';
+
+  @override
+  String get recordedInTheShiftCashReport => 'Recorded in the shift cash report';
+
+  @override
+  String get swipeOrTapTheCard => 'Swipe or tap the card';
+
+  @override
+  String get amountSentToCardReader => 'The amount was sent to the device\'s card reader. Do not close this screen until the transaction finishes.';
+
+  @override
+  String get transactionAmount => 'Transaction amount';
+
+  @override
+  String get trackingCode => 'Tracking code';
+
+  @override
+  String get cancelTransaction => 'Cancel transaction';
+
+  @override
+  String get customerShouldScanThisCode => 'The customer should scan this code with their phone';
+
+  @override
+  String get codeValidFor => 'Code valid for';
+
+  @override
+  String get sendPaymentLink => 'Send payment link';
+
+  @override
+  String get waitingForBankConfirmation => 'Waiting for bank confirmation…';
+
+  @override
+  String get payByCard => 'Pay by card';
+
+  @override
+  String get paymentSuccessful => 'Payment successful';
+
+  @override
+  String get stayDuration => 'Stay duration';
+
+  @override
+  String get haveAGoodTrip => 'Have a good trip';
+
+  @override
+  String get finish => 'Finish';
+
+  @override
+  String get subscriptionExit => 'Subscription exit';
+
+  @override
+  String get noChargeWillBeTaken => 'No charge will be taken';
+
+  @override
+  String get onlyAnExitReceiptIsIssued => 'This plate has an active subscription. Only an exit receipt is issued.';
+
+  @override
+  String get subscriptionType => 'Subscription type';
+
+  @override
+  String get validUntil => 'Valid until';
+
+  @override
+  String get entriesThisMonth => 'Entries this month';
+
+  @override
+  String subscriptionExpiresInDays(Object days) {
+    return 'The subscription expires in $days days.';
+  }
+
+  @override
+  String get renewSubscription => 'Renew subscription';
+
+  @override
+  String get registerExitAndPrint => 'Register exit and print';
+
+  @override
+  String get management => 'Management';
+
+  @override
+  String get reportsAndAccounts => 'Reports and accounts';
+
+  @override
+  String get vehiclesInsideParking => 'Vehicles inside the parking';
+
+  @override
+  String get staffManagement => 'Staff management';
+
+  @override
+  String get tariffs => 'Tariffs';
+
+  @override
+  String get subscriptions => 'Subscriptions';
+
+  @override
+  String get parkingSpotReservation => 'Parking spot reservation';
+
+  @override
+  String get plateBlacklist => 'Plate blacklist';
+
+  @override
+  String get parkingInformation => 'Parking information';
+
+  @override
+  String get reports => 'Reports';
+
+  @override
+  String get closeShiftAndSettleCash => 'Close shift and settle cash';
+
+  @override
+  String get changePassword => 'Change password';
+
+  @override
+  String get staff => 'Staff';
+
+  @override
+  String peopleCount(Object count) {
+    return '$count people';
+  }
+
+  @override
+  String get you => 'You';
+
+  @override
+  String get fullAccess => 'Full access';
+
+  @override
+  String get addStaff => 'Add staff member';
+
+  @override
+  String get newStaffMember => 'New staff member';
+
+  @override
+  String get fullName => 'Full name';
+
+  @override
+  String get temporaryPassword => 'Temporary password';
+
+  @override
+  String get regenerate => 'Regenerate';
+
+  @override
+  String get maxDiscountAllowed => 'Maximum discount allowed';
+
+  @override
+  String get temporaryPasswordMustBeChanged => 'The temporary password must be changed after the first sign-in.';
+
+  @override
+  String disabledSince(Object date) {
+    return 'Disabled since $date';
+  }
+
+  @override
+  String get hourly => 'Hourly';
+
+  @override
+  String get rules => 'Rules';
+
+  @override
+  String get dayRate => 'Day rate';
+
+  @override
+  String get nightRateTitle => 'Night rate';
+
+  @override
+  String betweenHours(Object from, Object to) {
+    return '$from to $to';
+  }
+
+  @override
+  String get perHour => 'Per hour';
+
+  @override
+  String firstMinutesFreeRule(Object minutes) {
+    return 'First $minutes minutes free';
+  }
+
+  @override
+  String get roundToFullHour => 'Round up to a full hour';
+
+  @override
+  String get perMinuteAfterFirstHour => 'Per-minute after the first hour';
+
+  @override
+  String holidayTariffPlusPercent(Object percent) {
+    return 'Holiday tariff (+$percent%)';
+  }
+
+  @override
+  String get saveTariff => 'Save tariff';
+
+  @override
+  String get quarterly => 'Quarterly';
+
+  @override
+  String get amountsInThousandToman => 'Amounts in thousand toman';
+
+  @override
+  String get subscriptionDailyEntryLimit => 'Daily entry limit for subscriptions';
+
+  @override
+  String get validOnlyDuringOfficeHours => 'Valid only during office hours';
+
+  @override
+  String expiryReminderDaysBefore(Object days) {
+    return 'Expiry reminder ($days days before)';
+  }
+
+  @override
+  String get saveSubscriptionTariff => 'Save subscription tariff';
+
+  @override
+  String timesCount(Object count) {
+    return '$count times';
+  }
+
+  @override
+  String activeCount(Object count) {
+    return 'Active ($count)';
+  }
+
+  @override
+  String expiringSoonCount(Object count) {
+    return 'Expiring soon ($count)';
+  }
+
+  @override
+  String expiredCount(Object count) {
+    return 'Expired ($count)';
+  }
+
+  @override
+  String get newSubscription => 'New subscription';
+
+  @override
+  String get addAndCollectFee => 'Add and collect the fee';
+
+  @override
+  String get sendReminder => 'Send reminder';
+
+  @override
+  String get registerNewSubscription => 'Register a new subscription';
+
+  @override
+  String daysRemainingCount(Object days) {
+    return '$days days';
+  }
+
+  @override
+  String get parkingNamePrintedOnReceipt => 'Parking name (printed on the receipt)';
+
+  @override
+  String get workingHours => 'Working hours';
+
+  @override
+  String get openTwentyFourHours => 'Open 24 hours';
+
+  @override
+  String get openOnPublicHolidays => 'Open on public holidays';
+
+  @override
+  String get receiptFooterText => 'Receipt footer text';
+
+  @override
+  String get autoPrintEntryReceipt => 'Print the entry receipt automatically';
+
+  @override
+  String get saveChanges => 'Save changes';
+
+  @override
+  String get currentPassword => 'Current password';
+
+  @override
+  String get newPassword => 'New password';
+
+  @override
+  String get repeatNewPassword => 'Repeat the new password';
+
+  @override
+  String get passwordStrength => 'Password strength';
+
+  @override
+  String get weak => 'Weak';
+
+  @override
+  String get medium => 'Medium';
+
+  @override
+  String get good => 'Good';
+
+  @override
+  String get strong => 'Strong';
+
+  @override
+  String get atLeastEightCharacters => 'At least 8 characters';
+
+  @override
+  String get includesUpperAndLowerCase => 'Includes upper and lower case';
+
+  @override
+  String get includesANumber => 'Includes a number';
+
+  @override
+  String get includesASpecialCharacter => 'Includes a special character';
+
+  @override
+  String get afterChangingPasswordYouWillBeSignedOut => 'After changing your password you will be signed out of every other device.';
+
+  @override
+  String get specialPlates => 'Special plates';
+
+  @override
+  String blacklistCount(Object count) {
+    return 'Blacklist ($count)';
+  }
+
+  @override
+  String reservationsCount(Object count) {
+    return 'Reservations ($count)';
+  }
+
+  @override
+  String get addPlate => 'Add plate';
+
+  @override
+  String get reason => 'Reason';
+
+  @override
+  String get addToBlacklist => 'Add to the blacklist';
+
+  @override
+  String get addReservation => 'Add reservation';
+
+  @override
+  String get connectionLost => 'Connection lost';
+
+  @override
+  String get offlineModeDescription => 'Entries and exits keep working and are stored on the device. Card payment is available, the online gateway is not.';
+
+  @override
+  String get sendQueue => 'Send queue';
+
+  @override
+  String itemsCount(Object count) {
+    return '$count items';
+  }
+
+  @override
+  String get lastSync => 'Last sync';
+
+  @override
+  String get tariffStoredOnDevice => 'Tariff stored on the device';
+
+  @override
+  String get offlineSubscriptions => 'Offline subscriptions';
+
+  @override
+  String plateCount(Object count) {
+    return '$count plates';
+  }
+
+  @override
+  String get tryToSend => 'Try to send';
+
+  @override
+  String get offline => 'Offline';
+
+  @override
+  String get send => 'Send';
+
+  @override
+  String get networkConnected => 'Network connected';
+
+  @override
+  String get shift => 'Shift';
+
+  @override
+  String get morningShift => 'Morning shift';
+
+  @override
+  String get closeShift => 'Close shift';
+
+  @override
+  String get countedCash => 'Counted cash';
+
+  @override
+  String get cashDifference => 'Cash difference';
+
+  @override
+  String get cardTotal => 'Card total';
+
+  @override
+  String get cashTotal => 'Cash total';
+
+  @override
+  String get gatewayTotal => 'Gateway total';
+
+  @override
+  String entriesCount(Object count) {
+    return '$count entries';
+  }
+
+  @override
+  String exitsCount(Object count) {
+    return '$count exits';
+  }
+
+  @override
+  String minutesShort(Object count) {
+    return '$count m';
+  }
+
+  @override
+  String hoursAndMinutes(Object hours, Object minutes) {
+    return '$hours h $minutes m';
+  }
+
+  @override
+  String get noVehicleInsideTheParking => 'No vehicle is inside the parking';
+
+  @override
+  String get plateNotFound => 'No open entry was found for this plate';
+
+  @override
+  String get warning => 'Warning';
+
+  @override
+  String get thisVehicleIsAlreadyInsideTheParking => 'This vehicle is already inside the parking';
+
+  @override
+  String get enterThePlateYouSee => 'Enter the plate you see in the photo';
+
+  @override
+  String get retakePhoto => 'Retake photo';
+
+  @override
+  String get usePlate => 'Use this plate';
+
+  @override
+  String get openCamera => 'Open camera';
+
+  @override
+  String get continueWord => 'Continue';
+
+  @override
+  String get waitingForCard => 'Waiting for the card…';
+
+  @override
+  String get cardRead => 'Card read';
+
+  @override
+  String get enterTheTrackingCodeFromTheTerminal => 'Enter the tracking code shown by the terminal\'s payment app.';
+
+  @override
+  String get confirmPayment => 'Confirm payment';
+
+  @override
+  String get paymentNotConfirmedYet => 'The payment has not been confirmed yet';
+
+  @override
+  String get checkPaymentStatus => 'Check payment status';
+
+  @override
+  String get cardReaderNotAvailable => 'No card reader is available on this device';
+
+  @override
+  String get passwordsDoNotMatch => 'The passwords do not match';
+
+  @override
+  String get wrongPassword => 'The current password is wrong';
+
+  @override
+  String get shiftSummary => 'Shift summary';
+
+  @override
+  String get shiftStarted => 'Shift started';
+
+  @override
+  String get settleAndCloseShift => 'Settle and close the shift';
+
+  @override
+  String get shiftClosed => 'The shift was closed';
+
+  @override
+  String get addToReservations => 'Add to reservations';
+
+  @override
+  String get spotNumber => 'Spot number';
+
+  @override
+  String get areYouSure => 'Are you sure?';
+
+  @override
+  String get total => 'Total';
 }

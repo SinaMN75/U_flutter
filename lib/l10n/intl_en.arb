@@ -970,5 +970,370 @@
   "vehicleType": "Vehicle type",
   "avaPark": "AvaPark",
   "askYourParkingOwnerToResetYourPassword": "Ask your parking owner or support to reset your password.",
-  "changeParking": "Change parking"
+  "changeParking": "Change parking",
+  "insideParking": "Inside the parking",
+  "shiftRevenue": "Shift revenue",
+  "registerEntry": "Register entry",
+  "registerExit": "Register exit",
+  "plateAndPrintReceipt": "Plate and print receipt",
+  "scanReceiptOrPlate": "Scan receipt or plate",
+  "recentMovements": "Recent movements",
+  "receiptsQueuedOffline": "{count} receipts are queued for offline sending",
+  "@receiptsQueuedOffline": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "freeExit": "Free exit",
+  "nonIranianPlate": "Non-Iranian plate",
+  "readPlateWithCamera": "Read plate with camera",
+  "perHourAfter": "Each hour after",
+  "dailyCap": "24-hour cap",
+  "firstMinutesAreFree": "The first {minutes} minutes are free.",
+  "@firstMinutesAreFree": {
+    "placeholders": {
+      "minutes": {}
+    }
+  },
+  "nightRateAppliesBetween": "The night rate applies between {from} and {to}.",
+  "@nightRateAppliesBetween": {
+    "placeholders": {
+      "from": {},
+      "to": {}
+    }
+  },
+  "phoneNumberForSmsReceipt": "Phone number for the SMS receipt",
+  "registerEntryAndPrintReceipt": "Register entry and print receipt",
+  "pointCameraAtPlate": "Point the camera at the plate",
+  "plateDetected": "Plate detected",
+  "enterPlateManually": "Enter the plate manually",
+  "checkPlate": "Check plate",
+  "hasAnActiveSubscription": "Has an active subscription",
+  "entryAndExitAreFreeOfCharge": "Entry and exit are recorded free of charge.",
+  "thisVehicleHasAReservation": "This vehicle has a reservation",
+  "spotIsReservedForThisPlate": "Spot {spot} is reserved for this plate.",
+  "@spotIsReservedForThisPlate": {
+    "placeholders": {
+      "spot": {}
+    }
+  },
+  "isOnTheBlacklist": "Is on the blacklist",
+  "viewDebt": "View debt",
+  "requestApproval": "Request approval",
+  "entryRegistered": "Entry registered",
+  "entryReceipt": "Entry receipt",
+  "exitReceipt": "Exit receipt",
+  "receiptNumber": "Receipt number",
+  "entryTime": "Entry time",
+  "exitTime": "Exit time",
+  "parkingSpot": "Parking spot",
+  "tariff": "Tariff",
+  "scanThisCodeToRegisterExit": "Scan this code to register the exit",
+  "printOnPosDevice": "Print on the POS device",
+  "shareImage": "Share image",
+  "smsToCustomer": "SMS to customer",
+  "nextEntry": "Next entry",
+  "searchPlate": "Search plate",
+  "holdCustomerReceiptToCamera": "Hold the customer's receipt up to the camera",
+  "vehiclesAreInsideTheParking": "{count} vehicles are inside the parking",
+  "@vehiclesAreInsideTheParking": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "showList": "Show list",
+  "receiptLostSearchManually": "Receipt lost — search manually",
+  "searchVehicle": "Search vehicle",
+  "moreThanADay": "More than 24 hours",
+  "subscribers": "Subscribers",
+  "approximately": "Approximately",
+  "continueToExit": "Continue to exit",
+  "freeOfCharge": "Free",
+  "exitInvoice": "Exit invoice",
+  "calculationBreakdown": "Calculation breakdown",
+  "firstMinutes": "First {minutes} minutes",
+  "@firstMinutes": {
+    "placeholders": {
+      "minutes": {}
+    }
+  },
+  "firstHour": "First hour",
+  "additionalTimePerMinute": "{duration} after that (per minute)",
+  "@additionalTimePerMinute": {
+    "placeholders": {
+      "duration": {}
+    }
+  },
+  "operatorDiscount": "Operator discount",
+  "appliedRate": "Applied rate",
+  "normalDayRate": "Normal day rate",
+  "nightRate": "Night rate",
+  "applyDiscount": "Apply discount",
+  "correctEntryTime": "Correct the entry time",
+  "payAmount": "Pay {amount}",
+  "@payAmount": {
+    "placeholders": {
+      "amount": {}
+    }
+  },
+  "holidayExtra": "Holiday surcharge",
+  "dailyCapApplied": "24-hour cap applied",
+  "bankCardOnDevice": "Bank card on the device",
+  "internalCardReaderFastestWay": "Built-in card reader · fastest way",
+  "onlinePaymentGateway": "Online payment gateway",
+  "showQrOrSendSmsLink": "Show a QR code or send an SMS link",
+  "cash": "Cash",
+  "recordedInTheShiftCashReport": "Recorded in the shift cash report",
+  "swipeOrTapTheCard": "Swipe or tap the card",
+  "amountSentToCardReader": "The amount was sent to the device's card reader. Do not close this screen until the transaction finishes.",
+  "transactionAmount": "Transaction amount",
+  "trackingCode": "Tracking code",
+  "cancelTransaction": "Cancel transaction",
+  "customerShouldScanThisCode": "The customer should scan this code with their phone",
+  "codeValidFor": "Code valid for",
+  "sendPaymentLink": "Send payment link",
+  "waitingForBankConfirmation": "Waiting for bank confirmation…",
+  "payByCard": "Pay by card",
+  "paymentSuccessful": "Payment successful",
+  "stayDuration": "Stay duration",
+  "haveAGoodTrip": "Have a good trip",
+  "finish": "Finish",
+  "subscriptionExit": "Subscription exit",
+  "noChargeWillBeTaken": "No charge will be taken",
+  "onlyAnExitReceiptIsIssued": "This plate has an active subscription. Only an exit receipt is issued.",
+  "subscriptionType": "Subscription type",
+  "validUntil": "Valid until",
+  "entriesThisMonth": "Entries this month",
+  "subscriptionExpiresInDays": "The subscription expires in {days} days.",
+  "@subscriptionExpiresInDays": {
+    "placeholders": {
+      "days": {}
+    }
+  },
+  "renewSubscription": "Renew subscription",
+  "registerExitAndPrint": "Register exit and print",
+  "management": "Management",
+  "reportsAndAccounts": "Reports and accounts",
+  "vehiclesInsideParking": "Vehicles inside the parking",
+  "staffManagement": "Staff management",
+  "tariffs": "Tariffs",
+  "subscriptions": "Subscriptions",
+  "parkingSpotReservation": "Parking spot reservation",
+  "plateBlacklist": "Plate blacklist",
+  "parkingInformation": "Parking information",
+  "reports": "Reports",
+  "closeShiftAndSettleCash": "Close shift and settle cash",
+  "changePassword": "Change password",
+  "staff": "Staff",
+  "peopleCount": "{count} people",
+  "@peopleCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "you": "You",
+  "fullAccess": "Full access",
+  "addStaff": "Add staff member",
+  "newStaffMember": "New staff member",
+  "fullName": "Full name",
+  "temporaryPassword": "Temporary password",
+  "regenerate": "Regenerate",
+  "maxDiscountAllowed": "Maximum discount allowed",
+  "temporaryPasswordMustBeChanged": "The temporary password must be changed after the first sign-in.",
+  "disabledSince": "Disabled since {date}",
+  "@disabledSince": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "hourly": "Hourly",
+  "rules": "Rules",
+  "dayRate": "Day rate",
+  "nightRateTitle": "Night rate",
+  "betweenHours": "{from} to {to}",
+  "@betweenHours": {
+    "placeholders": {
+      "from": {},
+      "to": {}
+    }
+  },
+  "perHour": "Per hour",
+  "firstMinutesFreeRule": "First {minutes} minutes free",
+  "@firstMinutesFreeRule": {
+    "placeholders": {
+      "minutes": {}
+    }
+  },
+  "roundToFullHour": "Round up to a full hour",
+  "perMinuteAfterFirstHour": "Per-minute after the first hour",
+  "holidayTariffPlusPercent": "Holiday tariff (+{percent}%)",
+  "@holidayTariffPlusPercent": {
+    "placeholders": {
+      "percent": {}
+    }
+  },
+  "saveTariff": "Save tariff",
+  "quarterly": "Quarterly",
+  "amountsInThousandToman": "Amounts in thousand toman",
+  "subscriptionDailyEntryLimit": "Daily entry limit for subscriptions",
+  "validOnlyDuringOfficeHours": "Valid only during office hours",
+  "expiryReminderDaysBefore": "Expiry reminder ({days} days before)",
+  "@expiryReminderDaysBefore": {
+    "placeholders": {
+      "days": {}
+    }
+  },
+  "saveSubscriptionTariff": "Save subscription tariff",
+  "timesCount": "{count} times",
+  "@timesCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "activeCount": "Active ({count})",
+  "@activeCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "expiringSoonCount": "Expiring soon ({count})",
+  "@expiringSoonCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "expiredCount": "Expired ({count})",
+  "@expiredCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "newSubscription": "New subscription",
+  "addAndCollectFee": "Add and collect the fee",
+  "sendReminder": "Send reminder",
+  "registerNewSubscription": "Register a new subscription",
+  "daysRemainingCount": "{days} days",
+  "@daysRemainingCount": {
+    "placeholders": {
+      "days": {}
+    }
+  },
+  "parkingNamePrintedOnReceipt": "Parking name (printed on the receipt)",
+  "workingHours": "Working hours",
+  "openTwentyFourHours": "Open 24 hours",
+  "openOnPublicHolidays": "Open on public holidays",
+  "receiptFooterText": "Receipt footer text",
+  "autoPrintEntryReceipt": "Print the entry receipt automatically",
+  "saveChanges": "Save changes",
+  "currentPassword": "Current password",
+  "newPassword": "New password",
+  "repeatNewPassword": "Repeat the new password",
+  "passwordStrength": "Password strength",
+  "weak": "Weak",
+  "medium": "Medium",
+  "good": "Good",
+  "strong": "Strong",
+  "atLeastEightCharacters": "At least 8 characters",
+  "includesUpperAndLowerCase": "Includes upper and lower case",
+  "includesANumber": "Includes a number",
+  "includesASpecialCharacter": "Includes a special character",
+  "afterChangingPasswordYouWillBeSignedOut": "After changing your password you will be signed out of every other device.",
+  "specialPlates": "Special plates",
+  "blacklistCount": "Blacklist ({count})",
+  "@blacklistCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "reservationsCount": "Reservations ({count})",
+  "@reservationsCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "addPlate": "Add plate",
+  "reason": "Reason",
+  "addToBlacklist": "Add to the blacklist",
+  "addReservation": "Add reservation",
+  "connectionLost": "Connection lost",
+  "offlineModeDescription": "Entries and exits keep working and are stored on the device. Card payment is available, the online gateway is not.",
+  "sendQueue": "Send queue",
+  "itemsCount": "{count} items",
+  "@itemsCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "lastSync": "Last sync",
+  "tariffStoredOnDevice": "Tariff stored on the device",
+  "offlineSubscriptions": "Offline subscriptions",
+  "plateCount": "{count} plates",
+  "@plateCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "tryToSend": "Try to send",
+  "offline": "Offline",
+  "send": "Send",
+  "networkConnected": "Network connected",
+  "shift": "Shift",
+  "morningShift": "Morning shift",
+  "closeShift": "Close shift",
+  "countedCash": "Counted cash",
+  "cashDifference": "Cash difference",
+  "cardTotal": "Card total",
+  "cashTotal": "Cash total",
+  "gatewayTotal": "Gateway total",
+  "entriesCount": "{count} entries",
+  "@entriesCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "exitsCount": "{count} exits",
+  "@exitsCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "minutesShort": "{count} m",
+  "@minutesShort": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "hoursAndMinutes": "{hours} h {minutes} m",
+  "@hoursAndMinutes": {
+    "placeholders": {
+      "hours": {},
+      "minutes": {}
+    }
+  },
+  "noVehicleInsideTheParking": "No vehicle is inside the parking",
+  "plateNotFound": "No open entry was found for this plate",
+  "warning": "Warning",
+  "thisVehicleIsAlreadyInsideTheParking": "This vehicle is already inside the parking",
+  "enterThePlateYouSee": "Enter the plate you see in the photo",
+  "retakePhoto": "Retake photo",
+  "usePlate": "Use this plate",
+  "openCamera": "Open camera",
+  "continueWord": "Continue",
+  "waitingForCard": "Waiting for the card…",
+  "cardRead": "Card read",
+  "enterTheTrackingCodeFromTheTerminal": "Enter the tracking code shown by the terminal's payment app.",
+  "confirmPayment": "Confirm payment",
+  "paymentNotConfirmedYet": "The payment has not been confirmed yet",
+  "checkPaymentStatus": "Check payment status",
+  "cardReaderNotAvailable": "No card reader is available on this device",
+  "passwordsDoNotMatch": "The passwords do not match",
+  "wrongPassword": "The current password is wrong",
+  "shiftSummary": "Shift summary",
+  "shiftStarted": "Shift started",
+  "settleAndCloseShift": "Settle and close the shift",
+  "shiftClosed": "The shift was closed",
+  "addToReservations": "Add to reservations",
+  "spotNumber": "Spot number",
+  "areYouSure": "Are you sure?",
+  "total": "Total"
 }

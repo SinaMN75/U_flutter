@@ -1,6 +1,9 @@
 import "package:u/utilities.dart";
 
 extension DoubleExtionsion on double {
+  /// Rounds first, then groups the whole part — the int version of this lives on [IntExtesion].
+  String separate3By3({int maxPrecision = 0}) => toStringAsSmartRound(maxPrecision: maxPrecision).separateNumbers3By3();
+
   String toStringAsSmartRound({int maxPrecision = 2}) {
     final String str = toString();
     try {
