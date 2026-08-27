@@ -687,8 +687,8 @@ enum TagVas with NumericIdentifiable {
 }
 
 enum TagSimOperator with NumericIdentifiable {
-  iranCell("ایرانسل", "Iran Cell", 1),
-  hamrahAvval("همراه اول", "Hamrah Avval", 2),
+  hamrahAvval("همراه اول", "Hamrah Avval", 1),
+  iranCell("ایرانسل", "Iran Cell", 2),
   rigthel("رایتل", "Rigthel", 3),
   shatel("شاتل", "Shatel", 5);
 
