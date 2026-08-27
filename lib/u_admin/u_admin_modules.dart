@@ -220,6 +220,41 @@ abstract class UAdminModules {
     roles: roles,
   );
 
+  static UAdminModule parkingTariff({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.tariffs,
+    icon: Icons.request_quote_rounded,
+    page: () => const UAdminParkingTariffPage(),
+    roles: roles,
+  );
+
+  static UAdminModule parkingSubscription({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.subscriptions,
+    icon: Icons.card_membership_rounded,
+    page: () => const UAdminParkingSubscriptionPage(),
+    roles: roles,
+  );
+
+  static UAdminModule parkingStaff({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.staffManagement,
+    icon: Icons.badge_rounded,
+    page: () => const UAdminParkingStaffPage(),
+    roles: roles,
+  );
+
+  static UAdminModule parkingPlateFlag({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.specialPlates,
+    icon: Icons.gpp_maybe_rounded,
+    page: () => const UAdminParkingPlateFlagPage(),
+    roles: roles,
+  );
+
+  static UAdminModule parkingShift({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.shift,
+    icon: Icons.point_of_sale_rounded,
+    page: () => const UAdminParkingShiftPage(),
+    roles: roles,
+  );
+
   // ---- Content ----
   static UAdminModule blogs({List<TagUser>? roles}) => UAdminModule(
     title: U.s.blogs,
