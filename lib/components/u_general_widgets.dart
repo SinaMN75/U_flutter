@@ -316,14 +316,13 @@ class UInfoRow extends StatelessWidget {
     return URow(
       spacing: 12,
       children: <Widget>[
-        UTextBodyMedium(label, color: scheme.onSurfaceVariant),
-        const Spacer(),
+        Flexible(child: UTextBodyMedium(label, color: scheme.onSurfaceVariant)),
         if (trailing != null)
-          trailing!
+          Flexible(child: trailing!)
         else if (isStrong)
-          UTextTitleMedium(value, color: valueColor ?? scheme.onSurface, textAlign: TextAlign.end)
+          Flexible(child: UTextTitleMedium(value, color: valueColor ?? scheme.onSurface, textAlign: TextAlign.end))
         else
-          UTextBodyMedium(value, color: valueColor ?? scheme.onSurface, textAlign: TextAlign.end),
+          Flexible(child: UTextBodyMedium(value, color: valueColor ?? scheme.onSurface, textAlign: TextAlign.end)),
       ],
     );
   }
@@ -365,14 +364,14 @@ class UStatTile extends StatelessWidget {
             spacing: 6,
             children: <Widget>[
               if (icon != null) Icon(icon, size: 14, color: scheme.onSurfaceVariant),
-              UTextLabelMedium(caption, color: scheme.onSurfaceVariant),
+              Flexible(child: UTextLabelMedium(caption, color: scheme.onSurfaceVariant)),
             ],
           ),
           URow(
             spacing: 4,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              UTextHeadlineMedium(value, color: valueColor ?? scheme.onSurface),
+              Flexible(child: UTextHeadlineMedium(value, color: valueColor ?? scheme.onSurface)),
               if (secondaryValue != null) UTextBodySmall("/ $secondaryValue", color: scheme.onSurfaceVariant),
               if (unit != null) UTextBodySmall(unit!, color: scheme.onSurfaceVariant),
             ],

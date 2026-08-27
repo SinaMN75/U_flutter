@@ -40,11 +40,15 @@ abstract class UApp {
   static bool get isDarkMode => UAppState.isDarkMode;
 
   static String deviceId() {
-    if (isAndroid) return androidDeviceInfo.id;
-    if (isIos) return iosDeviceInfo.identifierForVendor ?? "";
-    if (isMacOs) return macOsDeviceInfo.systemGUID ?? "";
-    if (isWindows) return windowsDeviceInfo.deviceId;
-    if (isLinux) return linuxDeviceInfo.machineId ?? "";
+    try {
+      if (isAndroid) return androidDeviceInfo.id;
+      if (isIos) return iosDeviceInfo.identifierForVendor ?? "";
+      if (isMacOs) return macOsDeviceInfo.systemGUID ?? "";
+      if (isWindows) return windowsDeviceInfo.deviceId;
+      if (isLinux) return linuxDeviceInfo.machineId ?? "";
+    } catch (_) {
+      return "";
+    }
     return "";
   }
 
