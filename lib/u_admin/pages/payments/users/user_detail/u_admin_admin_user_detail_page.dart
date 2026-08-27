@@ -83,7 +83,15 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
     appBar: AppBar(
       title: Text(U.s.userDetails),
       elevation: 0,
-      actions: <Widget>[UButton(type: UButtonType.text, title: U.s.downloadData, icon: const Icon(Icons.download_outlined), onTap: _downloadData)],
+      actions: <Widget>[
+        if (U.user.hasPermission(TagUser.permissionManageUsers))
+          IconButton(
+            icon: const Icon(Icons.edit_rounded),
+            tooltip: U.s.edit,
+            onPressed: () => UAdminPageSwitcher.paymentUserCreateUpdate(user: c.user).then((_) => c.read()),
+          ),
+        UButton(type: UButtonType.text, title: U.s.downloadData, icon: const Icon(Icons.download_outlined), onTap: _downloadData),
+      ],
     ),
     body: SingleChildScrollView(
       child: Obx(() {

@@ -2150,6 +2150,12 @@ abstract class AppLocalizations {
   /// **'Connection to Network was Not possible'**
   String get connectionToNetworkWasNotPossible;
 
+  /// No description provided for @contactInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Information'**
+  String get contactInformation;
+
   /// No description provided for @contactUs.
   ///
   /// In en, this message translates to:
@@ -4903,6 +4909,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'User created successfully'**
   String get userCreatedSuccessfully;
+
+  /// No description provided for @userUpdatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'User updated successfully'**
+  String get userUpdatedSuccessfully;
 
   /// No description provided for @userDetails.
   ///

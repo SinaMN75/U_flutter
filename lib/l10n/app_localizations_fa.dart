@@ -1054,6 +1054,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get connectionToNetworkWasNotPossible => 'ارتباط با اینترنت برقرار نیست';
 
   @override
+  String get contactInformation => 'اطلاعات تماس';
+
+  @override
   String get contactUs => 'تماس با ما';
 
   @override
@@ -2441,6 +2444,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get userCreatedSuccessfully => 'کاربر با موفقعیت ساخته شد';
+
+  @override
+  String get userUpdatedSuccessfully => 'کاربر با موفقیت ویرایش شد';
 
   @override
   String get userDetails => 'جزئیات کاربر';

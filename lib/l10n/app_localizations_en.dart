@@ -1054,6 +1054,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get connectionToNetworkWasNotPossible => 'Connection to Network was Not possible';
 
   @override
+  String get contactInformation => 'Contact Information';
+
+  @override
   String get contactUs => 'Contact us';
 
   @override
@@ -2441,6 +2444,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get userCreatedSuccessfully => 'User created successfully';
+
+  @override
+  String get userUpdatedSuccessfully => 'User updated successfully';
 
   @override
   String get userDetails => 'User Details';

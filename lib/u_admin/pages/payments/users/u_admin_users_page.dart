@@ -22,6 +22,7 @@ class _AdminUsersPageState extends State<UAdminUsersPage> {
   Widget build(BuildContext context) => UAdminScaffold(
     title: U.s.usersManagement,
     onFilter: _showFilterDialog,
+    onCreate: U.user.hasPermission(TagUser.permissionManageUsers) ? () => UAdminPageSwitcher.paymentUserCreateUpdate().then((_) => c.read()) : null,
     pageNumber: c.pageNumber,
     totalPages: c.totalPages,
     onPageChanged: (int page) {
@@ -125,11 +126,15 @@ class _AdminUsersPageState extends State<UAdminUsersPage> {
     context,
     item: i,
     actions: widget.actions,
-    handlers: UAdminActionHandlers<UUserResponse>(onDelete: c.delete),
+    handlers: UAdminActionHandlers<UUserResponse>(
+      onEdit: (UUserResponse x) => UAdminPageSwitcher.paymentUserCreateUpdate(user: x).then((_) => c.read()),
+      onDelete: c.delete,
+    ),
     fallback: (UAdminActionContext<UUserResponse> ctx) => <UAdminAction>[
       UAdminLinks.adminUserDetail(ctx.item),
       UAdminLinks.userMerchants(ctx.item),
       UAdminLinks.userContracts(ctx.item),
+      ctx.edit(roles: <TagUser>[TagUser.permissionManageUsers]),
       ctx.delete(roles: <TagUser>[TagUser.permissionDeleteUsers]),
     ],
   );

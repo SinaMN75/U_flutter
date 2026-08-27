@@ -108,4 +108,6 @@ abstract class UAdminPageSwitcher {
   static void apiLogs() => U.addOrSwitchTab(U.s.apiRequestLogs, const UAdminApiLogPage());
 
   static Future<void> userCreateUpdate({UUserResponse? user}) => UAdminUserCreateUpdateDialog.show(user: user);
+
+  static Future<void> paymentUserCreateUpdate({UUserResponse? user}) => UAdminPaymentUserCreateUpdateDialog.show(user: user);
 }
