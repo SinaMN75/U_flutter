@@ -531,6 +531,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get tapToInquire => 'برای استعلام لمس کنید';
 
   @override
+  String get taxAndFees => 'مالیات و عوارض';
+
+  @override
   String get taxpayer => 'مودی مالیاتی';
 
   @override

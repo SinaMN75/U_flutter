@@ -531,6 +531,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tapToInquire => 'Tap to inquire';
 
   @override
+  String get taxAndFees => 'Tax and fees';
+
+  @override
   String get taxpayer => 'Taxpayer';
 
   @override

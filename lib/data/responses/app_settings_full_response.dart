@@ -19,6 +19,7 @@ class UAppSettings {
     required this.pnApiKey,
     required this.apiCallCosts,
     required this.chargeInternet,
+    required this.chargeInternetTaxPercent,
     required this.users,
   });
 
@@ -38,6 +39,7 @@ class UAppSettings {
     pnApiKey: (j["pn"] ?? <String, dynamic>{})["apiKey"] ?? "",
     apiCallCosts: USettingsCosts.fromMap(j["apiCallCosts"] ?? <String, dynamic>{}),
     chargeInternet: List<USettingsChargeInternet>.from((j["chargeInternet"] as List<dynamic>? ?? <dynamic>[]).map((dynamic x) => USettingsChargeInternet.fromMap(x))),
+    chargeInternetTaxPercent: double.tryParse("${j["chargeInternetTaxPercent"] ?? 0}") ?? 0,
     users: j["users"],
   );
 
@@ -56,6 +58,7 @@ class UAppSettings {
   String pnApiKey;
   USettingsCosts apiCallCosts;
   List<USettingsChargeInternet> chargeInternet;
+  double chargeInternetTaxPercent;
 
   // Full AppSettings.Users blob, passed through untouched so the server can replace Core.App wholesale.
   dynamic users;
@@ -76,6 +79,7 @@ class UAppSettings {
     "pn": <String, dynamic>{"apiKey": pnApiKey},
     "apiCallCosts": apiCallCosts.toMap(),
     "chargeInternet": chargeInternet.map((USettingsChargeInternet e) => e.toMap()).toList(),
+    "chargeInternetTaxPercent": chargeInternetTaxPercent,
     "users": users,
   };
 
@@ -315,25 +319,31 @@ class USettingsCosts {
 }
 
 class USettingsChargeInternet {
-  USettingsChargeInternet({required this.operator, required this.title, required this.logo, required this.preDefinedAmountsList});
+  USettingsChargeInternet({required this.operator, required this.title, required this.logo, required this.pinAmountsList, required this.topupAmountsList});
 
   factory USettingsChargeInternet.fromMap(Map<String, dynamic> j) => USettingsChargeInternet(
     operator: TagSimOperator.values.firstWhere((TagSimOperator e) => e.number == j["operator"], orElse: () => TagSimOperator.values.first),
     title: j["title"] ?? "",
     logo: j["logo"] ?? "",
-    preDefinedAmountsList: List<USettingsChargeAmount>.from((j["preDefinedAmountsList"] as List<dynamic>? ?? <dynamic>[]).map((dynamic x) => USettingsChargeAmount.fromMap(x))),
+    pinAmountsList: _amounts(j["pinAmountsList"]),
+    topupAmountsList: _amounts(j["topupAmountsList"]),
   );
+
+  static List<USettingsChargeAmount> _amounts(dynamic list) =>
+      List<USettingsChargeAmount>.from((list as List<dynamic>? ?? <dynamic>[]).map((dynamic x) => USettingsChargeAmount.fromMap(x)));
 
   TagSimOperator operator;
   String title;
   String logo;
-  List<USettingsChargeAmount> preDefinedAmountsList;
+  List<USettingsChargeAmount> pinAmountsList;
+  List<USettingsChargeAmount> topupAmountsList;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "operator": operator.number,
     "title": title,
     "logo": logo,
-    "preDefinedAmountsList": preDefinedAmountsList.map((USettingsChargeAmount e) => e.toMap()).toList(),
+    "pinAmountsList": pinAmountsList.map((USettingsChargeAmount e) => e.toMap()).toList(),
+    "topupAmountsList": topupAmountsList.map((USettingsChargeAmount e) => e.toMap()).toList(),
   };
 
   String toJson() => json.encode(toMap());

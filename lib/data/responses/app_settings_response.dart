@@ -4,14 +4,19 @@ part of "../data.dart";
 class UAppSettingsResponse {
   final List<UChargeInternet> chargeInternet;
 
+  // Percent added to every sim charge nominal price; the server sends this amount to the operator and debits it from the wallet.
+  final double chargeInternetTaxPercent;
+
   UAppSettingsResponse({
     required this.apiCallCosts,
     required this.chargeInternet,
+    required this.chargeInternetTaxPercent,
   });
 
   factory UAppSettingsResponse.fromMap(Map<String, dynamic> json) => UAppSettingsResponse(
     apiCallCosts: UApiCallCosts.fromMap(json["apiCallCosts"] ?? <String, dynamic>{}),
     chargeInternet: json["chargeInternet"] == null ? <UChargeInternet>[] : List<UChargeInternet>.from(json["chargeInternet"]!.map((dynamic x) => UChargeInternet.fromMap(x))),
+    chargeInternetTaxPercent: (json["chargeInternetTaxPercent"] ?? 0).toString().toDouble(),
   );
 
   final UApiCallCosts apiCallCosts;
@@ -19,6 +24,7 @@ class UAppSettingsResponse {
   Map<String, dynamic> toMap() => <String, dynamic>{
     "chargeInternet": List<dynamic>.from(chargeInternet.map((UChargeInternet x) => x.toMap())),
     "apiCallCosts": apiCallCosts.toMap(),
+    "chargeInternetTaxPercent": chargeInternetTaxPercent,
   };
 
   String toJson() => json.encode(toMap());
@@ -79,13 +85,15 @@ class UChargeInternet {
   final int operator;
   final String title;
   final String logo;
-  final List<UChargeInternetPreDefinedAmounts> preDefinedAmountsList;
+  final List<UChargeInternetPreDefinedAmounts> pinAmountsList;
+  final List<UChargeInternetPreDefinedAmounts> topupAmountsList;
 
   UChargeInternet({
     required this.operator,
     required this.title,
     required this.logo,
-    required this.preDefinedAmountsList,
+    required this.pinAmountsList,
+    required this.topupAmountsList,
   });
 
   factory UChargeInternet.fromJson(String str) => UChargeInternet.fromMap(json.decode(str));
@@ -96,16 +104,19 @@ class UChargeInternet {
     operator: json["operator"],
     title: json["title"],
     logo: json["logo"],
-    preDefinedAmountsList: json["preDefinedAmountsList"] == null
-        ? <UChargeInternetPreDefinedAmounts>[]
-        : List<UChargeInternetPreDefinedAmounts>.from(json["preDefinedAmountsList"]!.map((dynamic x) => UChargeInternetPreDefinedAmounts.fromMap(x))),
+    pinAmountsList: _amounts(json["pinAmountsList"]),
+    topupAmountsList: _amounts(json["topupAmountsList"]),
   );
+
+  static List<UChargeInternetPreDefinedAmounts> _amounts(dynamic list) =>
+      list == null ? <UChargeInternetPreDefinedAmounts>[] : List<UChargeInternetPreDefinedAmounts>.from(list.map((dynamic x) => UChargeInternetPreDefinedAmounts.fromMap(x)));
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "operator": operator,
     "title": title,
     "logo": logo,
-    "preDefinedAmountsList": List<dynamic>.from(preDefinedAmountsList.map((UChargeInternetPreDefinedAmounts x) => x.toMap())),
+    "pinAmountsList": List<dynamic>.from(pinAmountsList.map((UChargeInternetPreDefinedAmounts x) => x.toMap())),
+    "topupAmountsList": List<dynamic>.from(topupAmountsList.map((UChargeInternetPreDefinedAmounts x) => x.toMap())),
   };
 }
 

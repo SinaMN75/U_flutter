@@ -1118,6 +1118,12 @@ abstract class AppLocalizations {
   /// **'Tap to inquire'**
   String get tapToInquire;
 
+  /// No description provided for @taxAndFees.
+  ///
+  /// In en, this message translates to:
+  /// **'Tax and fees'**
+  String get taxAndFees;
+
   /// No description provided for @taxpayer.
   ///
   /// In en, this message translates to:

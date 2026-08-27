@@ -250,11 +250,22 @@ class _UAdminAppSettingsPageState extends State<UAdminAppSettingsPage> {
               icon: const Icon(Icons.add_rounded, size: 18),
               backgroundColor: cs.primary,
               foregroundColor: cs.onPrimary,
-              onTap: () => setState(() => m.chargeInternet.add(USettingsChargeInternet(operator: TagSimOperator.values.first, title: "", logo: "", preDefinedAmountsList: <USettingsChargeAmount>[]))),
+              onTap: () => setState(
+                () => m.chargeInternet.add(
+                  USettingsChargeInternet(
+                    operator: TagSimOperator.values.first,
+                    title: "",
+                    logo: "",
+                    pinAmountsList: <USettingsChargeAmount>[],
+                    topupAmountsList: <USettingsChargeAmount>[],
+                  ),
+                ),
+              ),
             ),
           ],
         ),
         const Divider(height: 4),
+        _num("ChargeInternetTaxPercent", m.chargeInternetTaxPercent, (double v) => m.chargeInternetTaxPercent = v),
         ...m.chargeInternet.asMap().entries.map((MapEntry<int, USettingsChargeInternet> e) => _operatorCard(m, e.key, e.value, cs)),
       ],
     ),
@@ -282,36 +293,42 @@ class _UAdminAppSettingsPageState extends State<UAdminAppSettingsPage> {
         _text("Title", c.title, (String v) => c.title = v),
         _text("Logo", c.logo, (String v) => c.logo = v),
         const SizedBox(height: 4),
-        URow(
-          children: <Widget>[
-            UTextLabelLarge("Amounts", color: cs.onSurface.withValues(alpha: 0.7), fontWeight: FontWeight.bold).expanded(),
-            TextButton.icon(
-              icon: const Icon(Icons.add_rounded, size: 16),
-              label: Text(U.s.addItem("")),
-              onPressed: () => setState(() => c.preDefinedAmountsList.add(USettingsChargeAmount(title: "", amount: 0))),
-            ),
-          ],
-        ),
-        ...c.preDefinedAmountsList.asMap().entries.map(
-          (MapEntry<int, USettingsChargeAmount> a) => URow(
-            children: <Widget>[
-              _text("Title", a.value.title, (String v) => a.value.title = v).expanded(),
-              _text(
-                "Amount",
-                a.value.amount == a.value.amount.roundToDouble() ? a.value.amount.toStringAsFixed(0) : a.value.amount.toString(),
-                (String v) => a.value.amount = double.tryParse(v) ?? 0,
-                kt: const TextInputType.numberWithOptions(decimal: true),
-              ).expanded(),
-              IconButton(
-                icon: Icon(Icons.remove_circle_outline_rounded, color: cs.error, size: 20),
-                onPressed: () => setState(() => c.preDefinedAmountsList.removeAt(a.key)),
-              ),
-            ],
-          ),
-        ),
+        ..._amountsEditor("Pin Amounts", c.pinAmountsList, cs),
+        const SizedBox(height: 4),
+        ..._amountsEditor("Topup Amounts", c.topupAmountsList, cs),
       ],
     ),
   );
+
+  List<Widget> _amountsEditor(String label, List<USettingsChargeAmount> amounts, ColorScheme cs) => <Widget>[
+    URow(
+      children: <Widget>[
+        UTextLabelLarge(label, color: cs.onSurface.withValues(alpha: 0.7), fontWeight: FontWeight.bold).expanded(),
+        TextButton.icon(
+          icon: const Icon(Icons.add_rounded, size: 16),
+          label: Text(U.s.addItem("")),
+          onPressed: () => setState(() => amounts.add(USettingsChargeAmount(title: "", amount: 0))),
+        ),
+      ],
+    ),
+    ...amounts.asMap().entries.map(
+      (MapEntry<int, USettingsChargeAmount> a) => URow(
+        children: <Widget>[
+          _text("Title", a.value.title, (String v) => a.value.title = v).expanded(),
+          _text(
+            "Amount",
+            a.value.amount == a.value.amount.roundToDouble() ? a.value.amount.toStringAsFixed(0) : a.value.amount.toString(),
+            (String v) => a.value.amount = double.tryParse(v) ?? 0,
+            kt: const TextInputType.numberWithOptions(decimal: true),
+          ).expanded(),
+          IconButton(
+            icon: Icon(Icons.remove_circle_outline_rounded, color: cs.error, size: 20),
+            onPressed: () => setState(() => amounts.removeAt(a.key)),
+          ),
+        ],
+      ),
+    ),
+  ];
 
   Widget _saveBar(ColorScheme cs) => UContainer(
     padding: const EdgeInsets.all(14),
