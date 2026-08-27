@@ -1,7 +1,5 @@
 part of "u_admin.dart";
 
-// One label/value pair rendered inside a [UAdminTable.mobileCard]. Pass [valueWidget] for a
-// non-text value (a chip, image, coloured amount); otherwise [value] is shown as text.
 class UAdminField {
   const UAdminField(this.label, this.value, {this.valueWidget});
 
@@ -81,13 +79,13 @@ class UAdminListView<T> extends StatelessWidget {
 // hand-rolls header cells, centered body cells, zebra row colors, or the mobile ListTile card.
 abstract class UAdminTable {
   // A single primary-colored, centered header cell (use [flex] for wider columns).
-  static Widget headerCell(String title, {int flex = 1}) => UTextBodyLarge(title, color: UAdminTheme.white, textAlign: TextAlign.center).expanded(flex: flex);
+  static Widget headerCell(String title, {int flex = 1}) => UTextBodyLarge(title, color: UAdminTheme.white, textAlign: TextAlign.center, expanded: flex);
 
   // Primary-colored, centered header cells from column titles (all equal width).
   static List<Widget> header(List<String> titles) => titles.map(headerCell).toList();
 
   // A centered body cell for a desktop row (use [flex] to match a wider header column).
-  static Widget cell(String text, {int flex = 1}) => UTextBodyMedium(text, textAlign: TextAlign.center).expanded(flex: flex);
+  static Widget cell(String text, {int flex = 1}) => UTextBodyMedium(text, textAlign: TextAlign.center, expanded: flex);
 
   // Zebra background for a desktop row.
   static Color rowColor(BuildContext context, int index) => index.isOdd ? UAdminTheme.transparent : Theme.of(context).colorScheme.primary.withValues(alpha: 0.05);
@@ -222,13 +220,14 @@ class UAdminSortHeader extends StatelessWidget {
   Widget build(BuildContext context) => URow(
     onTap: onTap,
     mainAxisAlignment: MainAxisAlignment.center,
+    expanded: 1,
     children: <Widget>[
       Flexible(
         child: UTextBodyLarge(title, color: Theme.of(context).colorScheme.onPrimary, textAlign: .center, maxLines: 1, overflow: TextOverflow.ellipsis),
       ),
       if (direction != null) Icon(direction! ? Icons.arrow_upward : Icons.arrow_downward, size: 16, color: Theme.of(context).colorScheme.onPrimary),
     ],
-  ).expanded();
+  );
 }
 
 class _AdminListError extends StatelessWidget {

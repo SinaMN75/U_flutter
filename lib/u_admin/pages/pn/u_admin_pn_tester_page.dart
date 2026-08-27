@@ -193,13 +193,14 @@ class _UAdminPnTesterPageState extends State<UAdminPnTesterPage> {
         radius: 16,
       ),
       UColumn(
+        expanded: 1,
         spacing: 8,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           UTextHeadlineSmall(U.s.pnapiTester, fontWeight: FontWeight.bold),
           UTextBodySmall("${U.baseUrl}/Pn", color: cs.onSurface.withValues(alpha: 0.6)),
         ],
-      ).expanded(),
+      ),
     ],
   );
 
@@ -208,7 +209,7 @@ class _UAdminPnTesterPageState extends State<UAdminPnTesterPage> {
       spacing: 12,
       children: <Widget>[
         Icon(Icons.key_rounded, color: cs.primary),
-        UTextField(controller: _apiKeyController, labelText: U.s.apiKey, hintText: U.s.apiKey).expanded(),
+        UTextField(controller: _apiKeyController, labelText: U.s.apiKey, hintText: U.s.apiKey, expanded: 1),
       ],
     ).pAll(16),
   );
@@ -256,12 +257,13 @@ class _UAdminPnTesterPageState extends State<UAdminPnTesterPage> {
               Icon(endpoint.icon, color: cs.primary),
               UColumn(
                 spacing: 8,
+                expanded: 1,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   UTextTitleMedium(endpoint.name, fontWeight: FontWeight.bold),
                   UTextBodySmall(endpoint.description, color: cs.onSurface.withValues(alpha: 0.6)),
                 ],
-              ).expanded(),
+              ),
             ],
           ),
           const Divider(height: 1),

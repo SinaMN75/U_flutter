@@ -346,10 +346,10 @@ class UContentBentoPage extends StatelessWidget {
           const SizedBox(height: 12),
           Wrap(
             children: <Widget>[
-              if (_has(j.instagram)) const UImage(UIcons.instagram, package: "u").onPress(() => ULaunch.url(j.instagram!)),
-              if (_has(j.telegram)) const UImage(UIcons.telegram, package: "u").onPress(() => ULaunch.url(j.telegram!)),
-              if (_has(j.whatsapp)) const UImage(UIcons.whatsapp, package: "u").onPress(() => ULaunch.url(j.whatsapp!)),
-              if (_has(j.link)) const UImage(UIcons.website, package: "u").onPress(() => ULaunch.url(j.link!)),
+              if (_has(j.instagram)) UImage(UIcons.instagram, package: "u", onPress: () => ULaunch.url(j.instagram!)),
+              if (_has(j.telegram)) UImage(UIcons.telegram, package: "u", onPress: () => ULaunch.url(j.telegram!)),
+              if (_has(j.whatsapp)) UImage(UIcons.whatsapp, package: "u", onPress: () => ULaunch.url(j.whatsapp!)),
+              if (_has(j.link)) UImage(UIcons.website, package: "u", onPress: () => ULaunch.url(j.link!)),
             ],
           ),
         ],

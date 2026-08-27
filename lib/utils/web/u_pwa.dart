@@ -90,7 +90,7 @@ class _IosInstallSheet extends StatelessWidget {
               spacing: 8,
               children: <Widget>[
                 Icon(Icons.info_outline_rounded, color: scheme.primary),
-                UTextBodyMedium(safariHint).expanded(),
+                UTextBodyMedium(safariHint, expanded: 1),
               ],
             ),
           const SizedBox(height: 12),
@@ -114,7 +114,7 @@ class _IosInstallSheet extends StatelessWidget {
           child: UTextLabelLarge("$number", color: scheme.onPrimaryContainer),
         ),
         Icon(icon, color: scheme.primary),
-        UTextBodyMedium(text).expanded(),
+        UTextBodyMedium(text, expanded: 1),
       ],
     );
   }

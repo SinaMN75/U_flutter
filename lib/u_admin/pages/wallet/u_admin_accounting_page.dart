@@ -93,7 +93,7 @@ class _AccountingPageState extends State<UAdminAccountingPage> {
           children: <Widget>[
             Icon(icon, color: color, size: 18),
             const SizedBox(width: 8),
-            UTextBodySmall(label).expanded(),
+            UTextBodySmall(label, expanded: 1),
           ],
         ),
         const SizedBox(height: 10),
@@ -117,7 +117,7 @@ class _AccountingPageState extends State<UAdminAccountingPage> {
               padding: const EdgeInsets.symmetric(vertical: 6),
               child: URow(
                 children: <Widget>[
-                  UTextBodyMedium(i.tagName).expanded(),
+                  UTextBodyMedium(i.tagName, expanded: 1),
                   UTextBodySmall("×${i.count}"),
                   const SizedBox(width: 12),
                   UTextBodyMedium(i.amount.rial(), color: color, fontWeight: FontWeight.w600),
@@ -143,7 +143,7 @@ class _AccountingPageState extends State<UAdminAccountingPage> {
               padding: const EdgeInsets.symmetric(vertical: 6),
               child: URow(
                 children: <Widget>[
-                  UTextBodySmall(t.date.toJalaliDate()).expanded(),
+                  UTextBodySmall(t.date.toJalaliDate(), expanded: 1),
                   UTextBodySmall("+${t.inAmount.rial()}", color: UAdminTheme.green),
                   const SizedBox(width: 12),
                   UTextBodySmall("-${t.outAmount.rial()}", color: UAdminTheme.red),

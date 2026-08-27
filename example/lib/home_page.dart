@@ -76,7 +76,8 @@ class HomePage extends StatelessWidget {
                 UTextBodySmall(e.subtitle, color: scheme.onSurfaceVariant, maxLines: 2),
               ],
             ),
-          ).onPress(() => UNavigator.push<void>(e.builder()));
+            onPress: () => UNavigator.push<void>(e.builder()),
+          );
         },
       ),
     );

@@ -330,7 +330,8 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
                         controller: controllers[c.name],
                         labelText: "${c.name}  ·  ${c.dataType}${c.isPrimaryKey ? "  · PK" : ""}${c.isNullable ? "" : "  · NOT NULL"}",
                         readOnly: readOnly || nulls[c.name]!,
-                      ).expanded(),
+                        expanded: 1,
+                      ),
                       if (c.isNullable && !readOnly)
                         FilterChip(
                           label: const Text("NULL"),
@@ -471,7 +472,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
             spacing: 6,
             children: <Widget>[
               Icon(Icons.storage_rounded, color: cs.primary, size: 20),
-              const UTextLabelLarge("DATABASE", fontWeight: FontWeight.w800).expanded(),
+              const UTextLabelLarge("DATABASE", fontWeight: FontWeight.w800, expanded: 1),
               _miniIcon(cs, Icons.system_update_alt_rounded, "Run migrations", _runMigrations),
               _miniIcon(cs, Icons.refresh_rounded, "Refresh tables", _loadTables),
             ],
@@ -510,7 +511,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
               radius: 3,
             ),
             Icon(Icons.table_rows_rounded, size: 15, color: active ? cs.primary : cs.onSurface.withValues(alpha: 0.55)),
-            UTextBodySmall(t.name, color: active ? cs.primary : cs.onSurface, fontWeight: active ? FontWeight.w700 : FontWeight.w500, maxLines: 1).expanded(),
+            UTextBodySmall(t.name, color: active ? cs.primary : cs.onSurface, fontWeight: active ? FontWeight.w700 : FontWeight.w500, maxLines: 1, expanded: 1),
             UTextLabelSmall(t.estimatedRows.toKMB(), color: cs.onSurface.withValues(alpha: 0.45)),
           ],
         )
@@ -634,7 +635,8 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
         prefix: Icon(Icons.filter_alt_outlined, size: 16, color: cs.onSurface.withValues(alpha: 0.5)),
         hasClearButton: true,
         onFieldSubmitted: (String _) => _applyFilter(),
-      ).expanded(),
+        expanded: 1,
+      ),
       UButton(title: "Apply", type: UButtonType.outlined, icon: const Icon(Icons.play_arrow_rounded, size: 16), onTap: _applyFilter, padding: const EdgeInsets.symmetric(horizontal: 12)),
       _miniIcon(cs, Icons.add_rounded, "Insert row", _openRowEditor, filled: true),
       _miniIcon(cs, Icons.refresh_rounded, "Reload", () => _loadRows(withCount: true)),
@@ -703,10 +705,10 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
                 spacing: 10,
                 children: <Widget>[
                   SizedBox(width: 18, child: c.isPrimaryKey ? Icon(Icons.key_rounded, size: 14, color: cs.tertiary) : null),
-                  UTextBodySmall(c.name, fontWeight: FontWeight.w600, fontFamily: "monospace").expanded(flex: 3),
+                  UTextBodySmall(c.name, fontWeight: FontWeight.w600, fontFamily: "monospace", expanded: 3),
                   _typeBadge(cs, c.dataType),
-                  UTextLabelSmall(c.isNullable ? "nullable" : "not null", color: cs.onSurface.withValues(alpha: 0.55)).expanded(flex: 2),
-                  UTextLabelSmall(c.defaultValue ?? "", color: cs.onSurface.withValues(alpha: 0.45), maxLines: 1, fontFamily: "monospace").expanded(flex: 3),
+                  UTextLabelSmall(c.isNullable ? "nullable" : "not null", color: cs.onSurface.withValues(alpha: 0.55), expanded: 2),
+                  UTextLabelSmall(c.defaultValue ?? "", color: cs.onSurface.withValues(alpha: 0.45), maxLines: 1, fontFamily: "monospace", expanded: 3),
                 ],
               ).pSymmetric(horizontal: 4, vertical: 7).container(backgroundColor: i.isOdd ? cs.surfaceContainerHighest.withValues(alpha: 0.28) : null, radius: 6);
             }),
@@ -770,7 +772,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
         URow(
           children: <Widget>[
             Icon(Icons.terminal_rounded, color: cs.primary, size: 18),
-            const UTextTitleSmall("SQL Editor", fontWeight: FontWeight.bold).expanded(),
+            const UTextTitleSmall("SQL Editor", fontWeight: FontWeight.bold, expanded: 1),
             PopupMenuButton<_Prebuilt>(
               tooltip: "Snippets",
               onSelected: (_Prebuilt q) => setState(() => _sqlController.text = q.sql(_selected?.name ?? "table_name", _selected?.schema ?? "public")),

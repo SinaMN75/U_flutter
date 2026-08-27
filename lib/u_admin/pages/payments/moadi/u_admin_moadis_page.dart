@@ -171,11 +171,12 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
 
   Widget _kv(String k, String v) => URow(
     crossAxisAlignment: CrossAxisAlignment.start,
+    margin: const EdgeInsets.symmetric(vertical: 6),
     children: <Widget>[
       SizedBox(width: 130, child: UTextBodySmall(k, color: UAdminTheme.grey)),
       Expanded(child: UTextBodyMedium(v, fontWeight: FontWeight.w500)),
     ],
-  ).pSymmetric(vertical: 6);
+  );
 
   void _showFilterDialog() => UNavigator.dialog(
     AlertDialog(
@@ -202,10 +203,10 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
                   onChanged: c.status.call,
                 ),
               ).pSymmetric(vertical: 6),
-              UTextField(controller: c.nameFilter, labelText: U.s.taxpayerName).pSymmetric(vertical: 6),
-              UTextField(controller: c.economicCodeFilter, labelText: U.s.economicCode).pSymmetric(vertical: 6),
-              UTextField(controller: c.nationalCodeFilter, labelText: U.s.nationalCode).pSymmetric(vertical: 6),
-              UTextField(controller: c.uniqueTaxCodeFilter, labelText: U.s.uniqueTaxCode).pSymmetric(vertical: 6),
+              UTextField(controller: c.nameFilter, labelText: U.s.taxpayerName, margin: const EdgeInsets.symmetric(vertical: 6)),
+              UTextField(controller: c.economicCodeFilter, labelText: U.s.economicCode, margin: const EdgeInsets.symmetric(vertical: 6)),
+              UTextField(controller: c.nationalCodeFilter, labelText: U.s.nationalCode, margin: const EdgeInsets.symmetric(vertical: 6)),
+              UTextField(controller: c.uniqueTaxCodeFilter, labelText: U.s.uniqueTaxCode, margin: const EdgeInsets.symmetric(vertical: 6)),
               UTextFieldDatePicker(
                 jalali: true,
                 controller: c.fromCreatedController,

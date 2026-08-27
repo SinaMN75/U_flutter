@@ -1580,7 +1580,7 @@ abstract class UEditorDialogs {
 
   static Widget _counter(BuildContext context, String label, int value, ValueChanged<int> onChanged) => Row(
     children: <Widget>[
-      UTextBodyMedium(label).expanded(),
+      UTextBodyMedium(label, expanded: 1),
       IconButton(icon: const Icon(Icons.remove_circle_outline, size: 20), onPressed: () => onChanged(value - 1)),
       SizedBox(width: 28, child: Center(child: UTextBodyMedium("$value"))),
       IconButton(icon: const Icon(Icons.add_circle_outline, size: 20), onPressed: () => onChanged(value + 1)),
@@ -1681,7 +1681,7 @@ abstract class UEditorDialogs {
 
   static Widget _infoRow(String label, String value) => Padding(
     padding: const EdgeInsets.symmetric(vertical: 4),
-    child: Row(children: <Widget>[UTextBodyMedium(label).expanded(), UTextBodyMedium(value)]),
+    child: Row(children: <Widget>[UTextBodyMedium(label, expanded: 1), UTextBodyMedium(value)]),
   );
 }
 
@@ -2279,7 +2279,7 @@ class _URichTextEditorState extends State<URichTextEditor> {
       border: Border(top: BorderSide(color: Theme.of(context).dividerColor)),
       child: Row(
         children: <Widget>[
-          UTextBodySmall("${U.s.words}: ${UHtmlDocument.wordCount(html)}   ${U.s.characters}: ${UHtmlDocument.characterCount(html)}").expanded(),
+          UTextBodySmall("${U.s.words}: ${UHtmlDocument.wordCount(html)}   ${U.s.characters}: ${UHtmlDocument.characterCount(html)}", expanded: 1),
           UTextBodySmall("${UHtmlDocument.readingMinutes(html)} ${U.s.min}"),
         ],
       ),

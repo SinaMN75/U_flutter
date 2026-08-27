@@ -56,7 +56,7 @@ class _UAdminParkingSubscriptionPageState extends State<UAdminParkingSubscriptio
     spacing: 8,
     padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
     children: <Widget>[
-      UTextField(controller: c.controllerQuery, hintText: U.s.searchAndSelect, prefix: const Icon(Icons.search_rounded)).expanded(),
+      UTextField(controller: c.controllerQuery, hintText: U.s.searchAndSelect, prefix: const Icon(Icons.search_rounded), expanded: 1),
       Obx(
         () => USegmentedControl<bool>(
           items: <bool, String>{true: U.s.active, false: U.s.expired},
@@ -71,8 +71,7 @@ class _UAdminParkingSubscriptionPageState extends State<UAdminParkingSubscriptio
     ],
   );
 
-  String _duration(UParkingSubscriptionResponse i) =>
-      TagParkingSubscription.values.firstWhereOrNull((TagParkingSubscription t) => i.tags.contains(t.number))?.localizedTitle ?? "-";
+  String _duration(UParkingSubscriptionResponse i) => TagParkingSubscription.values.firstWhereOrNull((TagParkingSubscription t) => i.tags.contains(t.number))?.localizedTitle ?? "-";
 
   Widget _itemDesktop(UParkingSubscriptionResponse i, int index) => URow(
     spacing: 8,
@@ -114,15 +113,19 @@ class _UAdminParkingSubscriptionPageState extends State<UAdminParkingSubscriptio
   );
 
   void _renew(UParkingSubscriptionResponse i) {
-    final TagParkingSubscription duration =
-        TagParkingSubscription.values.firstWhereOrNull((TagParkingSubscription t) => i.tags.contains(t.number)) ?? TagParkingSubscription.monthly;
+    final TagParkingSubscription duration = TagParkingSubscription.values.firstWhereOrNull((TagParkingSubscription t) => i.tags.contains(t.number)) ?? TagParkingSubscription.monthly;
     final int days = switch (duration) {
       TagParkingSubscription.weekly => 7,
       TagParkingSubscription.quarterly => 90,
       _ => 30,
     };
     final DateTime base = i.expiryDate.isAfter(DateTime.now()) ? i.expiryDate : DateTime.now();
-    c.update(p: UParkingSubscriptionUpdateParams(id: i.id, expiryDate: base.add(Duration(days: days))));
+    c.update(
+      p: UParkingSubscriptionUpdateParams(
+        id: i.id,
+        expiryDate: base.add(Duration(days: days)),
+      ),
+    );
   }
 
   Future<void> _showCreateDialog() async {
@@ -157,9 +160,11 @@ class _UAdminParkingSubscriptionPageState extends State<UAdminParkingSubscriptio
                     ).pSymmetric(vertical: 6),
                     UDropDownField<TagParkingSubscription>(
                       initialValue: duration,
-                      items: <TagParkingSubscription>[TagParkingSubscription.weekly, TagParkingSubscription.monthly, TagParkingSubscription.quarterly]
-                          .map((TagParkingSubscription v) => DropdownMenuItem<TagParkingSubscription>(value: v, child: Text(v.localizedTitle)))
-                          .toList(),
+                      items: <TagParkingSubscription>[
+                        TagParkingSubscription.weekly,
+                        TagParkingSubscription.monthly,
+                        TagParkingSubscription.quarterly,
+                      ].map((TagParkingSubscription v) => DropdownMenuItem<TagParkingSubscription>(value: v, child: Text(v.localizedTitle))).toList(),
                       onChanged: (TagParkingSubscription? value) => setDialogState(() => duration = value ?? TagParkingSubscription.monthly),
                     ).pSymmetric(vertical: 6),
                     UTextField(controller: name, labelText: U.s.fullName).pSymmetric(vertical: 6),

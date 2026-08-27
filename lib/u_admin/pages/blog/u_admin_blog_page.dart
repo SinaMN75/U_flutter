@@ -102,7 +102,7 @@ class _BlogPageState extends State<UAdminBlogPage> {
           child: UColumn(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              UTextField(controller: c.titleFilter, labelText: U.s.title).pSymmetric(vertical: 6),
+              UTextField(controller: c.titleFilter, labelText: U.s.title, margin: const EdgeInsets.symmetric(vertical: 6)),
               const SizedBox(height: 20),
               UButtonSubmitCancel(
                 submitTitle: U.s.filter,
@@ -177,30 +177,29 @@ class _BlogPageState extends State<UAdminBlogPage> {
                       controller: title,
                       labelText: U.s.title,
                       validator: UValidators.required(message: ""),
-                    ).pSymmetric(vertical: 6),
-                    UTextField(controller: subtitle, labelText: U.s.subtitle).pSymmetric(vertical: 6),
-                    UTextField(controller: slug, labelText: U.s.slug).pSymmetric(vertical: 6),
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
+                    UTextField(controller: subtitle, labelText: U.s.subtitle, margin: const EdgeInsets.symmetric(vertical: 6)),
+                    UTextField(controller: slug, labelText: U.s.slug, margin: const EdgeInsets.symmetric(vertical: 6)),
                     Align(
                       alignment: AlignmentDirectional.centerStart,
                       child: UTextBodyMedium(U.s.content, color: Theme.of(context).colorScheme.onSurfaceVariant),
                     ).pOnly(top: 6, bottom: 4),
-                    InkWell(
-                      borderRadius: BorderRadius.circular(8),
+                    UContainer(
                       onTap: () async {
                         final String? html = await URichTextEditor.open(initialHtml: content.text);
                         if (html != null) setDialogState(() => content.text = html);
                       },
-                      child: UContainer(
-                        width: double.infinity,
-                        constraints: const BoxConstraints(minHeight: 72, maxHeight: 220),
-                        padding: const EdgeInsets.all(12),
-                        border: Border.all(color: Theme.of(context).dividerColor),
-                        radius: 8,
-                        child: content.text.trim().isEmpty
-                            ? URow(children: <Widget>[const Icon(Icons.edit_note), const SizedBox(width: 8), Text(U.s.richTextEditor)])
-                            : SingleChildScrollView(child: UHtmlView(html: content.text)),
-                      ),
-                    ).pSymmetric(vertical: 6),
+                      width: double.infinity,
+                      constraints: const BoxConstraints(minHeight: 72, maxHeight: 220),
+                      padding: const EdgeInsets.all(12),
+                      border: Border.all(color: Theme.of(context).dividerColor),
+                      radius: 8,
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                      child: content.text.trim().isEmpty
+                          ? URow(children: <Widget>[const Icon(Icons.edit_note), const SizedBox(width: 8), Text(U.s.richTextEditor)])
+                          : SingleChildScrollView(child: UHtmlView(html: content.text)),
+                    ),
                     const SizedBox(height: 12),
                     if (allCategories.isNotEmpty)
                       Wrap(

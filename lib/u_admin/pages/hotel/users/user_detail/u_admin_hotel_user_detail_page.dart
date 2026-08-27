@@ -169,7 +169,7 @@ class _HotelUserDetailPageState extends State<UAdminHotelUserDetailPage> {
     icon: Icons.description_outlined,
     trailing: _countBadge(c.contracts.length),
     child: c.contracts.isEmpty
-        ? UTextBodySmall(U.s.noData, color: UAdminTheme.grey).pSymmetric(vertical: 8)
+        ? UTextBodySmall(U.s.noData, color: UAdminTheme.grey, margin: const EdgeInsets.symmetric(vertical: 8))
         : UAdminResponsiveGrid(
             minTileWidth: 320,
             children: c.contracts.map(_contractCard).toList(),
@@ -195,7 +195,7 @@ class _HotelUserDetailPageState extends State<UAdminHotelUserDetailPage> {
             children: <Widget>[
               const Icon(Icons.bed_rounded, size: 18),
               const SizedBox(width: 8),
-              UTextBodyLarge("$dorm · $room · $bed", fontWeight: FontWeight.w700, maxLines: 1, overflow: TextOverflow.ellipsis).expanded(),
+              UTextBodyLarge("$dorm · $room · $bed", fontWeight: FontWeight.w700, maxLines: 1, overflow: TextOverflow.ellipsis, expanded: 1),
               _lifecycleChip(life),
             ],
           ),
@@ -260,7 +260,7 @@ class _HotelUserDetailPageState extends State<UAdminHotelUserDetailPage> {
           children: <Widget>[
             Icon(icon, size: 20, color: Theme.of(context).colorScheme.primary),
             const SizedBox(width: 8),
-            UTextTitleSmall(title, fontWeight: FontWeight.w700).expanded(),
+            UTextTitleSmall(title, fontWeight: FontWeight.w700, expanded: 1),
             ?trailing,
           ],
         ),
@@ -296,7 +296,7 @@ class _HotelUserDetailPageState extends State<UAdminHotelUserDetailPage> {
     children: <Widget>[
       Icon(icon, size: 15, color: color ?? UAdminTheme.grey),
       const SizedBox(width: 8),
-      UTextBodySmall(text, color: color).expanded(),
+      UTextBodySmall(text, color: color, expanded: 1),
     ],
   );
 

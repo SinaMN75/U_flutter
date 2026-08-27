@@ -112,9 +112,9 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
                 const SizedBox(height: 20),
                 URow(
                   children: <Widget>[
-                    UButton(title: U.s.approve, icon: const Icon(Icons.check_circle_outline), onTap: _confirmApprove).expanded(flex: 2),
+                    UButton(title: U.s.approve, icon: const Icon(Icons.check_circle_outline), onTap: _confirmApprove, expanded: 2),
                     const SizedBox(width: 12),
-                    UButton(title: U.s.reject, icon: const Icon(Icons.cancel_outlined), backgroundColor: Theme.of(context).colorScheme.error, onTap: _showRejectDialog).expanded(),
+                    UButton(title: U.s.reject, icon: const Icon(Icons.cancel_outlined), backgroundColor: Theme.of(context).colorScheme.error, onTap: _showRejectDialog, expanded: 1),
                   ],
                 ),
                 const SizedBox(height: 24),
@@ -379,11 +379,11 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
             child: UColumn(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                UTextField(labelText: U.s.reasonForRejecting(U.s.nationalCardFront), controller: frontReason).pSymmetric(vertical: 6),
-                UTextField(labelText: U.s.reasonForRejecting(U.s.nationalCardBack), controller: backReason).pSymmetric(vertical: 6),
-                UTextField(labelText: U.s.reasonForRejecting(U.s.birthCertificate), controller: birthReason).pSymmetric(vertical: 6),
-                UTextField(labelText: U.s.reasonForRejecting(U.s.video), controller: videoReason).pSymmetric(vertical: 6),
-                UTextField(labelText: U.s.reasonForRejecting(U.s.signature), controller: signatureReason).pSymmetric(vertical: 6),
+                UTextField(labelText: U.s.reasonForRejecting(U.s.nationalCardFront), controller: frontReason, margin: const EdgeInsets.symmetric(vertical: 6)),
+                UTextField(labelText: U.s.reasonForRejecting(U.s.nationalCardBack), controller: backReason, margin: const EdgeInsets.symmetric(vertical: 6)),
+                UTextField(labelText: U.s.reasonForRejecting(U.s.birthCertificate), controller: birthReason, margin: const EdgeInsets.symmetric(vertical: 6)),
+                UTextField(labelText: U.s.reasonForRejecting(U.s.video), controller: videoReason, margin: const EdgeInsets.symmetric(vertical: 6)),
+                UTextField(labelText: U.s.reasonForRejecting(U.s.signature), controller: signatureReason, margin: const EdgeInsets.symmetric(vertical: 6)),
               ],
             ),
           ),

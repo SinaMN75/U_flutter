@@ -3,79 +3,41 @@ import "package:u/u_admin/pages/crypto/u_admin_crypto_tester_page.dart";
 import "package:u/utilities.dart";
 
 part "pages/analytics/u_admin_financial_ops_dashboard_controller.dart";
-
 part "pages/blog/u_admin_blog_controller.dart";
-
 part "pages/contents/u_admin_contents_controller.dart";
-
 part "pages/hotel/contracts/u_admin_contract_controller.dart";
-
 part "pages/hotel/dashboard/u_admin_hotel_dashboard_controller.dart";
-
 part "pages/hotel/dorm_beds/u_admin_dorm_bed_controller.dart";
-
 part "pages/hotel/dorm_rooms/u_admin_dorm_room_controller.dart";
-
 part "pages/hotel/dorms/u_admin_dorm_controller.dart";
-
 part "pages/hotel/hotel_room/u_admin_hotel_room_controller.dart";
-
 part "pages/hotel/hotels/u_admin_hotel_controller.dart";
-
 part "pages/hotel/invoices/u_admin_invoice_controller.dart";
-
-part "pages/hotel/u_admin_pay_link.dart";
-
 part "pages/hotel/reservations/u_admin_reservation_controller.dart";
-
+part "pages/hotel/u_admin_pay_link.dart";
 part "pages/hotel/users/u_admin_users_controller.dart";
-
 part "pages/hotel/users/user_detail/u_admin_hotel_user_detail_controller.dart";
-
 part "pages/hotel/users/user_detail/u_admin_user_detail_controller.dart";
-
 part "pages/login/u_admin_login_controller.dart";
-
 part "pages/logs/u_admin_api_log_controller.dart";
-
 part "pages/parking/u_admin_parking_controller.dart";
-
 part "pages/parking/u_admin_parking_report_controller.dart";
-
-part "pages/parking/u_admin_parking_tariff_controller.dart";
-
-part "pages/parking/u_admin_parking_subscription_controller.dart";
-
 part "pages/parking/u_admin_parking_staff_controller.dart";
-
+part "pages/parking/u_admin_parking_subscription_controller.dart";
+part "pages/parking/u_admin_parking_tariff_controller.dart";
 part "pages/payments/merchants/u_admin_merchant_controller.dart";
-
 part "pages/payments/moadi/u_admin_moadi_controller.dart";
-
 part "pages/payments/terminals/u_admin_terminal_controller.dart";
-
 part "pages/payments/users/u_admin_payment_users_controller.dart";
-
 part "pages/splash/u_admin_splash_controller.dart";
-
 part "pages/splash/u_admin_splash_page.dart";
-
 part "pages/wallet/u_admin_wallet_controller.dart";
-
 part "u_admin_actions.dart";
-
 part "u_admin_app.dart";
-
 part "u_admin_base_controller.dart";
-
 part "u_admin_config.dart";
-
 part "u_admin_list_view.dart";
-
 part "u_admin_modules.dart";
-
 part "u_admin_responsive.dart";
-
 part "u_admin_scaffold.dart";
-
 part "u_admin_shell.dart";

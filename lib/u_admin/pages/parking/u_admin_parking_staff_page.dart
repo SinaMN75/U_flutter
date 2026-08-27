@@ -49,11 +49,8 @@ class _UAdminParkingStaffPageState extends State<UAdminParkingStaffPage> {
 
   String _name(UParkingStaffResponse i) => i.user?.displayName.nullIfEmpty() ?? i.user?.userName ?? "-";
 
-  String _permissions(UParkingStaffResponse i) => TagParkingStaff.values
-      .where((TagParkingStaff t) => t != TagParkingStaff.disabled && i.tags.contains(t.number))
-      .map((TagParkingStaff t) => t.localizedTitle)
-      .join("، ")
-      .nullIfEmpty() ??
+  String _permissions(UParkingStaffResponse i) =>
+      TagParkingStaff.values.where((TagParkingStaff t) => t != TagParkingStaff.disabled && i.tags.contains(t.number)).map((TagParkingStaff t) => t.localizedTitle).join("، ").nullIfEmpty() ??
       U.s.fullAccess;
 
   Widget _itemDesktop(UParkingStaffResponse i, int index) => URow(
@@ -127,8 +124,16 @@ class _UAdminParkingStaffPageState extends State<UAdminParkingStaffPage> {
                   children: <Widget>[
                     UTextField(controller: firstName, labelText: U.s.firstName).pSymmetric(vertical: 6),
                     UTextField(controller: lastName, labelText: U.s.lastName).pSymmetric(vertical: 6),
-                    UTextField(controller: userName, labelText: U.s.username, validator: UValidators.required(message: "")).pSymmetric(vertical: 6),
-                    UTextField(controller: password, labelText: U.s.password, validator: UValidators.required(message: "")).pSymmetric(vertical: 6),
+                    UTextField(
+                      controller: userName,
+                      labelText: U.s.username,
+                      validator: UValidators.required(message: ""),
+                    ).pSymmetric(vertical: 6),
+                    UTextField(
+                      controller: password,
+                      labelText: U.s.password,
+                      validator: UValidators.required(message: ""),
+                    ).pSymmetric(vertical: 6),
                     UTextField(controller: phone, labelText: U.s.phoneNumber, keyboardType: TextInputType.phone, maxLength: 15).pSymmetric(vertical: 6),
                     UTextField(controller: shiftTitle, labelText: U.s.shift).pSymmetric(vertical: 6),
                     const SizedBox(height: 8),
@@ -159,9 +164,7 @@ class _UAdminParkingStaffPageState extends State<UAdminParkingStaffPage> {
                               parkingId: parkingId,
                               userName: userName.trimmedLatin(),
                               password: password.trimmedLatin(),
-                              tags: permissions.isEmpty
-                                  ? <int>[TagParkingStaff.registerEntryExit.number]
-                                  : permissions.map((TagParkingStaff t) => t.number).toList(),
+                              tags: permissions.isEmpty ? <int>[TagParkingStaff.registerEntryExit.number] : permissions.map((TagParkingStaff t) => t.number).toList(),
                               firstName: firstName.text.nullIfEmpty(),
                               lastName: lastName.text.nullIfEmpty(),
                               phoneNumber: phone.trimmedLatin().nullIfEmpty(),

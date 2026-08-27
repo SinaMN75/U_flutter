@@ -32,6 +32,25 @@ class UTextField extends StatefulWidget {
     this.textAlign = TextAlign.start,
     this.textColor,
     this.focusNode,
+    this.margin,
+    this.visible = true,
+    this.opacity,
+    this.fit,
+    this.fitAlignment = Alignment.center,
+    this.scale,
+    this.rotate,
+    this.translate,
+    this.center = false,
+    this.safeArea = false,
+    this.expanded,
+    this.flexible,
+    this.positioned = false,
+    this.left,
+    this.top,
+    this.right,
+    this.bottom,
+    this.positionedWidth,
+    this.positionedHeight,
   });
 
   final bool obscureText;
@@ -62,6 +81,25 @@ class UTextField extends StatefulWidget {
   final List<String>? autoFillHints;
   final Color? textColor;
   final FocusNode? focusNode;
+  final EdgeInsetsGeometry? margin;
+  final bool visible;
+  final double? opacity;
+  final BoxFit? fit;
+  final AlignmentGeometry fitAlignment;
+  final double? scale;
+  final double? rotate;
+  final Offset? translate;
+  final bool center;
+  final bool safeArea;
+  final int? expanded;
+  final int? flexible;
+  final bool positioned;
+  final double? left;
+  final double? top;
+  final double? right;
+  final double? bottom;
+  final double? positionedWidth;
+  final double? positionedHeight;
 
   @override
   State<UTextField> createState() => _UTextFieldState();
@@ -77,52 +115,73 @@ class _UTextFieldState extends State<UTextField> {
   }
 
   @override
-  Widget build(BuildContext context) => Column(
-    mainAxisSize: MainAxisSize.min,
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      if (widget.text != null)
-        UIconTextHorizontal(
-          leading: Text(widget.text!, style: Theme.of(context).textTheme.titleSmall),
-          trailing: widget.required ? UTextBodyMedium("*", color: Theme.of(context).colorScheme.error) : const SizedBox(),
-        ).pSymmetric(vertical: 8),
-      TextFormField(
-        focusNode: widget.focusNode,
-        autofillHints: widget.autoFillHints,
-        textDirection: widget.keyboardType == TextInputType.number ? TextDirection.ltr : null,
-        inputFormatters: widget.formatters ?? (widget.keyboardType == TextInputType.number || widget.keyboardType == TextInputType.phone ? <TextInputFormatter>[UNumberInputFormatter()] : null),
-        style: TextStyle(fontSize: widget.fontSize, color: widget.textColor),
-        maxLength: widget.maxLength,
-        onChanged: widget.onChanged,
-        readOnly: widget.readOnly,
-        initialValue: widget.initialValue,
-        textAlign: widget.textAlign,
-        onSaved: widget.onSave,
-        onTap: widget.onTap,
-        controller: widget.controller,
-        keyboardType: widget.keyboardType,
-        obscureText: obscure,
-        validator: widget.validator,
-        minLines: widget.lines,
-        onFieldSubmitted: widget.onFieldSubmitted,
-        maxLines: widget.lines == 1 ? 1 : 20,
-        decoration: InputDecoration(
-          labelText: widget.labelText,
-          isDense: widget.isDense,
-          helperStyle: const TextStyle(fontSize: 0),
-          hintText: widget.hintText,
-          contentPadding: widget.contentPadding ?? (widget.lines > 1 ? const EdgeInsets.symmetric(vertical: 20, horizontal: 12) : const EdgeInsets.symmetric(vertical: 2, horizontal: 12)),
-          suffixIcon: widget.obscureText
-              ? IconButton(
-                  splashRadius: 1,
-                  onPressed: () => setState(() => obscure = !obscure),
-                  icon: obscure ? const Icon(Icons.visibility) : const Icon(Icons.visibility_off),
-                )
-              : widget.suffix,
-          prefixIcon: widget.prefix,
+  Widget build(BuildContext context) => uWrap(
+    Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        if (widget.text != null)
+          UIconTextHorizontal(
+            leading: Text(widget.text!, style: Theme.of(context).textTheme.titleSmall),
+            trailing: widget.required ? UTextBodyMedium("*", color: Theme.of(context).colorScheme.error) : const SizedBox(),
+          ).pSymmetric(vertical: 8),
+        TextFormField(
+          focusNode: widget.focusNode,
+          autofillHints: widget.autoFillHints,
+          textDirection: widget.keyboardType == TextInputType.number ? TextDirection.ltr : null,
+          inputFormatters: widget.formatters ?? (widget.keyboardType == TextInputType.number || widget.keyboardType == TextInputType.phone ? <TextInputFormatter>[UNumberInputFormatter()] : null),
+          style: TextStyle(fontSize: widget.fontSize, color: widget.textColor),
+          maxLength: widget.maxLength,
+          onChanged: widget.onChanged,
+          readOnly: widget.readOnly,
+          initialValue: widget.initialValue,
+          textAlign: widget.textAlign,
+          onSaved: widget.onSave,
+          onTap: widget.onTap,
+          controller: widget.controller,
+          keyboardType: widget.keyboardType,
+          obscureText: obscure,
+          validator: widget.validator,
+          minLines: widget.lines,
+          onFieldSubmitted: widget.onFieldSubmitted,
+          maxLines: widget.lines == 1 ? 1 : 20,
+          decoration: InputDecoration(
+            labelText: widget.labelText,
+            isDense: widget.isDense,
+            helperStyle: const TextStyle(fontSize: 0),
+            hintText: widget.hintText,
+            contentPadding: widget.contentPadding ?? (widget.lines > 1 ? const EdgeInsets.symmetric(vertical: 20, horizontal: 12) : const EdgeInsets.symmetric(vertical: 2, horizontal: 12)),
+            suffixIcon: widget.obscureText
+                ? IconButton(
+                    splashRadius: 1,
+                    onPressed: () => setState(() => obscure = !obscure),
+                    icon: obscure ? const Icon(Icons.visibility) : const Icon(Icons.visibility_off),
+                  )
+                : widget.suffix,
+            prefixIcon: widget.prefix,
+          ),
         ),
-      ),
-    ],
+      ],
+    ),
+    margin: widget.margin,
+    visible: widget.visible,
+    opacity: widget.opacity,
+    fit: widget.fit,
+    fitAlignment: widget.fitAlignment,
+    scale: widget.scale,
+    rotate: widget.rotate,
+    translate: widget.translate,
+    center: widget.center,
+    safeArea: widget.safeArea,
+    expanded: widget.expanded,
+    flexible: widget.flexible,
+    positioned: widget.positioned,
+    left: widget.left,
+    top: widget.top,
+    right: widget.right,
+    bottom: widget.bottom,
+    positionedWidth: widget.positionedWidth,
+    positionedHeight: widget.positionedHeight,
   );
 }
 
@@ -145,6 +204,25 @@ class UDropDownField<T> extends StatefulWidget {
     this.textHeight,
     this.required = false,
     this.isDense = true,
+    this.margin,
+    this.visible = true,
+    this.opacity,
+    this.fit,
+    this.fitAlignment = Alignment.center,
+    this.scale,
+    this.rotate,
+    this.translate,
+    this.center = false,
+    this.safeArea = false,
+    this.expanded,
+    this.flexible,
+    this.positioned = false,
+    this.left,
+    this.top,
+    this.right,
+    this.bottom,
+    this.positionedWidth,
+    this.positionedHeight,
   });
 
   final List<DropdownMenuItem<T>> items;
@@ -164,6 +242,25 @@ class UDropDownField<T> extends StatefulWidget {
   final Widget? prefix;
   final Widget? suffix;
   final Function(T? value)? onSave;
+  final EdgeInsetsGeometry? margin;
+  final bool visible;
+  final double? opacity;
+  final BoxFit? fit;
+  final AlignmentGeometry fitAlignment;
+  final double? scale;
+  final double? rotate;
+  final Offset? translate;
+  final bool center;
+  final bool safeArea;
+  final int? expanded;
+  final int? flexible;
+  final bool positioned;
+  final double? left;
+  final double? top;
+  final double? right;
+  final double? bottom;
+  final double? positionedWidth;
+  final double? positionedHeight;
 
   @override
   State<UDropDownField<T>> createState() => _UDropDownFieldState<T>();
@@ -171,33 +268,54 @@ class UDropDownField<T> extends StatefulWidget {
 
 class _UDropDownFieldState<T> extends State<UDropDownField<T>> {
   @override
-  Widget build(BuildContext context) => Column(
-    mainAxisSize: MainAxisSize.min,
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      if (widget.text != null)
-        UIconTextHorizontal(
-          leading: Text(widget.text!, style: Theme.of(context).textTheme.titleSmall),
-          trailing: widget.required ? UTextBodyMedium("*", color: Theme.of(context).colorScheme.error) : const SizedBox(),
-        ).pSymmetric(vertical: 8),
-      DropdownButtonFormField<T>(
-        initialValue: widget.initialValue,
-        items: widget.items,
-        onChanged: (T? i) => widget.onChanged(i as T),
-        onSaved: widget.onSave,
-        onTap: widget.onTap,
-        validator: widget.validator,
-        decoration: InputDecoration(
-          filled: true,
-          labelText: widget.labelText,
-          isDense: widget.isDense,
-          hintText: widget.hintText,
-          contentPadding: widget.contentPadding ?? const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-          suffixIcon: widget.suffix,
-          prefixIcon: widget.prefix,
+  Widget build(BuildContext context) => uWrap(
+    Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        if (widget.text != null)
+          UIconTextHorizontal(
+            leading: Text(widget.text!, style: Theme.of(context).textTheme.titleSmall),
+            trailing: widget.required ? UTextBodyMedium("*", color: Theme.of(context).colorScheme.error) : const SizedBox(),
+          ).pSymmetric(vertical: 8),
+        DropdownButtonFormField<T>(
+          initialValue: widget.initialValue,
+          items: widget.items,
+          onChanged: (T? i) => widget.onChanged(i as T),
+          onSaved: widget.onSave,
+          onTap: widget.onTap,
+          validator: widget.validator,
+          decoration: InputDecoration(
+            filled: true,
+            labelText: widget.labelText,
+            isDense: widget.isDense,
+            hintText: widget.hintText,
+            contentPadding: widget.contentPadding ?? const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+            suffixIcon: widget.suffix,
+            prefixIcon: widget.prefix,
+          ),
         ),
-      ),
-    ],
+      ],
+    ),
+    margin: widget.margin,
+    visible: widget.visible,
+    opacity: widget.opacity,
+    fit: widget.fit,
+    fitAlignment: widget.fitAlignment,
+    scale: widget.scale,
+    rotate: widget.rotate,
+    translate: widget.translate,
+    center: widget.center,
+    safeArea: widget.safeArea,
+    expanded: widget.expanded,
+    flexible: widget.flexible,
+    positioned: widget.positioned,
+    left: widget.left,
+    top: widget.top,
+    right: widget.right,
+    bottom: widget.bottom,
+    positionedWidth: widget.positionedWidth,
+    positionedHeight: widget.positionedHeight,
   );
 }
 
@@ -222,6 +340,25 @@ class UTextFieldDatePicker extends StatefulWidget {
     this.time = false,
     this.textAlign = TextAlign.start,
     this.jalali = false,
+    this.margin,
+    this.visible = true,
+    this.opacity,
+    this.fit,
+    this.fitAlignment = Alignment.center,
+    this.scale,
+    this.rotate,
+    this.translate,
+    this.center = false,
+    this.safeArea = false,
+    this.expanded,
+    this.flexible,
+    this.positioned = false,
+    this.left,
+    this.top,
+    this.right,
+    this.bottom,
+    this.positionedWidth,
+    this.positionedHeight,
   });
 
   final Function(DateTime, Jalali) onChange;
@@ -242,6 +379,25 @@ class UTextFieldDatePicker extends StatefulWidget {
   final bool date;
   final bool time;
   final bool jalali;
+  final EdgeInsetsGeometry? margin;
+  final bool visible;
+  final double? opacity;
+  final BoxFit? fit;
+  final AlignmentGeometry fitAlignment;
+  final double? scale;
+  final double? rotate;
+  final Offset? translate;
+  final bool center;
+  final bool safeArea;
+  final int? expanded;
+  final int? flexible;
+  final bool positioned;
+  final double? left;
+  final double? top;
+  final double? right;
+  final double? bottom;
+  final double? positionedWidth;
+  final double? positionedHeight;
 
   @override
   State<UTextFieldDatePicker> createState() => _UTextFieldDatePickerState();
@@ -269,6 +425,25 @@ class _UTextFieldDatePickerState extends State<UTextFieldDatePicker> {
     readOnly: true,
     textHeight: widget.textHeight,
     validator: widget.validator,
+    margin: widget.margin,
+    visible: widget.visible,
+    opacity: widget.opacity,
+    fit: widget.fit,
+    fitAlignment: widget.fitAlignment,
+    scale: widget.scale,
+    rotate: widget.rotate,
+    translate: widget.translate,
+    center: widget.center,
+    safeArea: widget.safeArea,
+    expanded: widget.expanded,
+    flexible: widget.flexible,
+    positioned: widget.positioned,
+    left: widget.left,
+    top: widget.top,
+    right: widget.right,
+    bottom: widget.bottom,
+    positionedWidth: widget.positionedWidth,
+    positionedHeight: widget.positionedHeight,
     onTap: () async {
       if (!widget.readOnly) {
         if (widget.date) {
@@ -343,6 +518,25 @@ class UTextFieldAutoComplete<T> extends StatefulWidget {
     super.key,
     this.hintText,
     this.title,
+    this.margin,
+    this.visible = true,
+    this.opacity,
+    this.fit,
+    this.fitAlignment = Alignment.center,
+    this.scale,
+    this.rotate,
+    this.translate,
+    this.center = false,
+    this.safeArea = false,
+    this.expanded,
+    this.flexible,
+    this.positioned = false,
+    this.left,
+    this.top,
+    this.right,
+    this.bottom,
+    this.positionedWidth,
+    this.positionedHeight,
   });
 
   final List<T> items;
@@ -351,6 +545,25 @@ class UTextFieldAutoComplete<T> extends StatefulWidget {
   final T selectedItem;
   final String? hintText;
   final String? title;
+  final EdgeInsetsGeometry? margin;
+  final bool visible;
+  final double? opacity;
+  final BoxFit? fit;
+  final AlignmentGeometry fitAlignment;
+  final double? scale;
+  final double? rotate;
+  final Offset? translate;
+  final bool center;
+  final bool safeArea;
+  final int? expanded;
+  final int? flexible;
+  final bool positioned;
+  final double? left;
+  final double? top;
+  final double? right;
+  final double? bottom;
+  final double? positionedWidth;
+  final double? positionedHeight;
 
   @override
   State<UTextFieldAutoComplete<T>> createState() => _UTextFieldAutoCompleteState<T>();
@@ -402,13 +615,34 @@ class _UTextFieldAutoCompleteState<T> extends State<UTextFieldAutoComplete<T>> {
   }
 
   @override
-  Widget build(BuildContext context) => widget.title == null
-      ? _input()
-      : UIconTextVertical(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          leading: UTextBodySmall(widget.title ?? ""),
-          trailing: _input(),
-        );
+  Widget build(BuildContext context) => uWrap(
+    widget.title == null
+        ? _input()
+        : UIconTextVertical(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            leading: UTextBodySmall(widget.title ?? ""),
+            trailing: _input(),
+          ),
+    margin: widget.margin,
+    visible: widget.visible,
+    opacity: widget.opacity,
+    fit: widget.fit,
+    fitAlignment: widget.fitAlignment,
+    scale: widget.scale,
+    rotate: widget.rotate,
+    translate: widget.translate,
+    center: widget.center,
+    safeArea: widget.safeArea,
+    expanded: widget.expanded,
+    flexible: widget.flexible,
+    positioned: widget.positioned,
+    left: widget.left,
+    top: widget.top,
+    right: widget.right,
+    bottom: widget.bottom,
+    positionedWidth: widget.positionedWidth,
+    positionedHeight: widget.positionedHeight,
+  );
 
   Widget _input() => InkWell(
     onTap: _openSearchDialog,
@@ -432,6 +666,25 @@ class UTextFieldAutoCompleteAsync<T> extends StatefulWidget {
     super.key,
     this.hintText,
     this.debounceDuration = const Duration(milliseconds: 500),
+    this.margin,
+    this.visible = true,
+    this.opacity,
+    this.fit,
+    this.fitAlignment = Alignment.center,
+    this.scale,
+    this.rotate,
+    this.translate,
+    this.center = false,
+    this.safeArea = false,
+    this.expanded,
+    this.flexible,
+    this.positioned = false,
+    this.left,
+    this.top,
+    this.right,
+    this.bottom,
+    this.positionedWidth,
+    this.positionedHeight,
   });
 
   final String Function(T) labelBuilder;
@@ -440,6 +693,25 @@ class UTextFieldAutoCompleteAsync<T> extends StatefulWidget {
   final String? hintText;
   final Duration debounceDuration;
   final Future<List<T>> Function(String query) fetchData;
+  final EdgeInsetsGeometry? margin;
+  final bool visible;
+  final double? opacity;
+  final BoxFit? fit;
+  final AlignmentGeometry fitAlignment;
+  final double? scale;
+  final double? rotate;
+  final Offset? translate;
+  final bool center;
+  final bool safeArea;
+  final int? expanded;
+  final int? flexible;
+  final bool positioned;
+  final double? left;
+  final double? top;
+  final double? right;
+  final double? bottom;
+  final double? positionedWidth;
+  final double? positionedHeight;
 
   @override
   State<UTextFieldAutoCompleteAsync<T>> createState() => _UTextFieldAutoCompleteAsyncState<T>();
@@ -574,27 +846,86 @@ class _UTextFieldAutoCompleteAsyncState<T> extends State<UTextFieldAutoCompleteA
   }
 
   @override
-  Widget build(BuildContext context) => InkWell(
-    onTap: _openSearchDialog,
-    child: InputDecorator(
-      decoration: InputDecoration(
-        labelText: widget.hintText,
-        border: const OutlineInputBorder(),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+  Widget build(BuildContext context) => uWrap(
+    InkWell(
+      onTap: _openSearchDialog,
+      child: InputDecorator(
+        decoration: InputDecoration(
+          labelText: widget.hintText,
+          border: const OutlineInputBorder(),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+        ),
+        child: _selectedItem == null ? const Text("___") : Text(widget.labelBuilder(_selectedItem as T)),
       ),
-      child: _selectedItem == null ? const Text("___") : Text(widget.labelBuilder(_selectedItem as T)),
     ),
+    margin: widget.margin,
+    visible: widget.visible,
+    opacity: widget.opacity,
+    fit: widget.fit,
+    fitAlignment: widget.fitAlignment,
+    scale: widget.scale,
+    rotate: widget.rotate,
+    translate: widget.translate,
+    center: widget.center,
+    safeArea: widget.safeArea,
+    expanded: widget.expanded,
+    flexible: widget.flexible,
+    positioned: widget.positioned,
+    left: widget.left,
+    top: widget.top,
+    right: widget.right,
+    bottom: widget.bottom,
+    positionedWidth: widget.positionedWidth,
+    positionedHeight: widget.positionedHeight,
   );
 }
 
 class UTextFieldPhoneNumber extends StatefulWidget {
   final CountryPickerMode pickerMode;
   final Function(PhoneNumberData) onChanged;
+  final EdgeInsetsGeometry? margin;
+  final bool visible;
+  final double? opacity;
+  final BoxFit? fit;
+  final AlignmentGeometry fitAlignment;
+  final double? scale;
+  final double? rotate;
+  final Offset? translate;
+  final bool center;
+  final bool safeArea;
+  final int? expanded;
+  final int? flexible;
+  final bool positioned;
+  final double? left;
+  final double? top;
+  final double? right;
+  final double? bottom;
+  final double? positionedWidth;
+  final double? positionedHeight;
 
   const UTextFieldPhoneNumber({
     required this.pickerMode,
     required this.onChanged,
     super.key,
+    this.margin,
+    this.visible = true,
+    this.opacity,
+    this.fit,
+    this.fitAlignment = Alignment.center,
+    this.scale,
+    this.rotate,
+    this.translate,
+    this.center = false,
+    this.safeArea = false,
+    this.expanded,
+    this.flexible,
+    this.positioned = false,
+    this.left,
+    this.top,
+    this.right,
+    this.bottom,
+    this.positionedWidth,
+    this.positionedHeight,
   });
 
   @override
@@ -797,6 +1128,25 @@ class _UTextFieldPhoneNumberState extends State<UTextFieldPhoneNumber> {
     controller: _phoneController,
     hintText: U.s.enterPhoneNumber,
     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+    margin: widget.margin,
+    visible: widget.visible,
+    opacity: widget.opacity,
+    fit: widget.fit,
+    fitAlignment: widget.fitAlignment,
+    scale: widget.scale,
+    rotate: widget.rotate,
+    translate: widget.translate,
+    center: widget.center,
+    safeArea: widget.safeArea,
+    expanded: widget.expanded,
+    flexible: widget.flexible,
+    positioned: widget.positioned,
+    left: widget.left,
+    top: widget.top,
+    right: widget.right,
+    bottom: widget.bottom,
+    positionedWidth: widget.positionedWidth,
+    positionedHeight: widget.positionedHeight,
     prefix: Builder(
       builder: (_) => widget.pickerMode == CountryPickerMode.dropdown
           ? DropdownButton<UCountry>(

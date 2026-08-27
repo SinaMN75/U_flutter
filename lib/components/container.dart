@@ -137,6 +137,154 @@ Widget _uEffects(
   return current;
 }
 
+// Layout/structure modifiers — each wraps [child] only when requested, so an
+// unused modifier costs nothing. Parent-data wrappers (positioned/expanded/
+// flexible) are mutually exclusive and applied outermost.
+Widget _uModifiers(
+  Widget child, {
+  BoxFit? fit,
+  AlignmentGeometry fitAlignment = Alignment.center,
+  double? scale,
+  double? rotate,
+  Offset? translate,
+  bool center = false,
+  bool safeArea = false,
+  Axis? scrollable,
+  ScrollController? scrollController,
+  TextDirection? textDirection,
+  int? expanded,
+  int? flexible,
+  bool positioned = false,
+  double? left,
+  double? top,
+  double? right,
+  double? bottom,
+  double? positionedWidth,
+  double? positionedHeight,
+}) {
+  Widget current = child;
+  if (scrollable != null) current = SingleChildScrollView(scrollDirection: scrollable, controller: scrollController, child: current);
+  if (fit != null) current = FittedBox(fit: fit, alignment: fitAlignment, child: current);
+  if (translate != null) current = Transform.translate(offset: translate, child: current);
+  if (rotate != null) current = Transform.rotate(angle: rotate, child: current);
+  if (scale != null) current = Transform.scale(scale: scale, child: current);
+  if (center) current = Center(child: current);
+  if (safeArea) current = SafeArea(child: current);
+  if (textDirection != null) current = Directionality(textDirection: textDirection, child: current);
+  if (positioned) {
+    current = Positioned(left: left, top: top, right: right, bottom: bottom, width: positionedWidth, height: positionedHeight, child: current);
+  } else if (expanded != null) {
+    current = Expanded(flex: expanded, child: current);
+  } else if (flexible != null) {
+    current = Flexible(flex: flexible, child: current);
+  }
+  return current;
+}
+
+/// Public conditional shell: applies interaction, effects, and layout
+/// modifiers to any [child], each layer added ONLY when its value is provided.
+/// Shared by the container family and by UImage/UButton/UText/UTextField so
+/// they all expose the same zero-overhead customization surface. Returns the
+/// child untouched when nothing is set.
+Widget uWrap(
+  Widget child, {
+  BorderRadius? borderRadius,
+  double? radius,
+  GestureTapCallback? onTap,
+  VoidCallback? onPress,
+  GestureTapCallback? onDoubleTap,
+  GestureLongPressCallback? onLongPress,
+  GestureTapDownCallback? onTapDown,
+  GestureTapUpCallback? onTapUp,
+  GestureTapCancelCallback? onTapCancel,
+  GestureTapCallback? onSecondaryTap,
+  HitTestBehavior? hitTestBehavior,
+  bool splash = false,
+  Color? splashColor,
+  Color? highlightColor,
+  Color? hoverColor,
+  double? pressedScale,
+  Duration pressDuration = const Duration(milliseconds: 120),
+  bool enableFeedback = true,
+  MouseCursor? cursor,
+  ValueChanged<bool>? onHover,
+  double? opacity,
+  String? tooltip,
+  String? heroTag,
+  EdgeInsetsGeometry? margin,
+  String? semanticsLabel,
+  bool? semanticsButton,
+  bool visible = true,
+  BoxFit? fit,
+  AlignmentGeometry fitAlignment = Alignment.center,
+  double? scale,
+  double? rotate,
+  Offset? translate,
+  bool center = false,
+  bool safeArea = false,
+  Axis? scrollable,
+  ScrollController? scrollController,
+  TextDirection? textDirection,
+  int? expanded,
+  int? flexible,
+  bool positioned = false,
+  double? left,
+  double? top,
+  double? right,
+  double? bottom,
+  double? positionedWidth,
+  double? positionedHeight,
+}) {
+  if (!visible) return const SizedBox.shrink();
+  final GestureTapCallback? effectiveTap = onTap ?? onPress;
+  final double? effectivePressedScale = pressedScale ?? (onPress != null ? 0.9 : null);
+  Widget current = _uInteractive(
+    child,
+    radius: _uRadius(borderRadius, radius),
+    onTap: effectiveTap,
+    onDoubleTap: onDoubleTap,
+    onLongPress: onLongPress,
+    onTapDown: onTapDown,
+    onTapUp: onTapUp,
+    onTapCancel: onTapCancel,
+    onSecondaryTap: onSecondaryTap,
+    hitTestBehavior: hitTestBehavior,
+    splash: splash,
+    splashColor: splashColor,
+    highlightColor: highlightColor,
+    hoverColor: hoverColor,
+    pressedScale: effectivePressedScale,
+    pressDuration: pressDuration,
+    enableFeedback: enableFeedback,
+    cursor: cursor,
+    onHover: onHover,
+  );
+  current = _uEffects(current, opacity: opacity, tooltip: tooltip, heroTag: heroTag, margin: margin, semanticsLabel: semanticsLabel, semanticsButton: semanticsButton);
+  current = _uModifiers(
+    current,
+    fit: fit,
+    fitAlignment: fitAlignment,
+    scale: scale,
+    rotate: rotate,
+    translate: translate,
+    center: center,
+    safeArea: safeArea,
+    scrollable: scrollable,
+    scrollController: scrollController,
+    textDirection: textDirection,
+    expanded: expanded,
+    flexible: flexible,
+    positioned: positioned,
+    left: left,
+    top: top,
+    right: right,
+    bottom: bottom,
+    positionedWidth: positionedWidth,
+    positionedHeight: positionedHeight,
+  );
+  return current;
+}
+
 Widget _uBox({
   required Widget? child,
   EdgeInsetsGeometry? padding,
@@ -185,6 +333,26 @@ Widget _uBox({
   String? semanticsLabel,
   bool? semanticsButton,
   bool visible = true,
+  VoidCallback? onPress,
+  BoxFit? fit,
+  AlignmentGeometry fitAlignment = Alignment.center,
+  double? scale,
+  double? rotate,
+  Offset? translate,
+  bool center = false,
+  bool safeArea = false,
+  Axis? scrollable,
+  ScrollController? scrollController,
+  TextDirection? textDirection,
+  int? expanded,
+  int? flexible,
+  bool positioned = false,
+  double? left,
+  double? top,
+  double? right,
+  double? bottom,
+  double? positionedWidth,
+  double? positionedHeight,
 }) {
   if (!visible) return const SizedBox.shrink();
 
@@ -237,10 +405,11 @@ Widget _uBox({
 
   current ??= const SizedBox.shrink();
 
-  current = _uInteractive(
+  return uWrap(
     current,
-    radius: effectiveRadius,
+    borderRadius: effectiveRadius,
     onTap: onTap,
+    onPress: onPress,
     onDoubleTap: onDoubleTap,
     onLongPress: onLongPress,
     onTapDown: onTapDown,
@@ -257,16 +426,31 @@ Widget _uBox({
     enableFeedback: enableFeedback,
     cursor: cursor,
     onHover: onHover,
-  );
-
-  return _uEffects(
-    current,
     opacity: opacity,
     tooltip: tooltip,
     heroTag: heroTag,
     margin: margin,
     semanticsLabel: semanticsLabel,
     semanticsButton: semanticsButton,
+    fit: fit,
+    fitAlignment: fitAlignment,
+    scale: scale,
+    rotate: rotate,
+    translate: translate,
+    center: center,
+    safeArea: safeArea,
+    scrollable: scrollable,
+    scrollController: scrollController,
+    textDirection: textDirection,
+    expanded: expanded,
+    flexible: flexible,
+    positioned: positioned,
+    left: left,
+    top: top,
+    right: right,
+    bottom: bottom,
+    positionedWidth: positionedWidth,
+    positionedHeight: positionedHeight,
   );
 }
 
@@ -501,6 +685,26 @@ class UContainer extends StatelessWidget {
     this.semanticsButton,
     this.visible = true,
     this.heroTag,
+    this.onPress,
+    this.fit,
+    this.fitAlignment = Alignment.center,
+    this.scale,
+    this.rotate,
+    this.translate,
+    this.center = false,
+    this.safeArea = false,
+    this.scrollable,
+    this.scrollController,
+    this.textDirection,
+    this.expanded,
+    this.flexible,
+    this.positioned = false,
+    this.left,
+    this.top,
+    this.right,
+    this.bottom,
+    this.positionedWidth,
+    this.positionedHeight,
   });
 
   final Widget? child;
@@ -550,6 +754,26 @@ class UContainer extends StatelessWidget {
   final bool? semanticsButton;
   final bool visible;
   final String? heroTag;
+  final VoidCallback? onPress;
+  final BoxFit? fit;
+  final AlignmentGeometry fitAlignment;
+  final double? scale;
+  final double? rotate;
+  final Offset? translate;
+  final bool center;
+  final bool safeArea;
+  final Axis? scrollable;
+  final ScrollController? scrollController;
+  final TextDirection? textDirection;
+  final int? expanded;
+  final int? flexible;
+  final bool positioned;
+  final double? left;
+  final double? top;
+  final double? right;
+  final double? bottom;
+  final double? positionedWidth;
+  final double? positionedHeight;
 
   @override
   Widget build(BuildContext context) => _uBox(
@@ -599,6 +823,26 @@ class UContainer extends StatelessWidget {
     semanticsLabel: semanticsLabel,
     semanticsButton: semanticsButton,
     visible: visible,
+    onPress: onPress,
+    fit: fit,
+    fitAlignment: fitAlignment,
+    scale: scale,
+    rotate: rotate,
+    translate: translate,
+    center: center,
+    safeArea: safeArea,
+    scrollable: scrollable,
+    scrollController: scrollController,
+    textDirection: textDirection,
+    expanded: expanded,
+    flexible: flexible,
+    positioned: positioned,
+    left: left,
+    top: top,
+    right: right,
+    bottom: bottom,
+    positionedWidth: positionedWidth,
+    positionedHeight: positionedHeight,
     child: child,
   );
 }
@@ -655,6 +899,26 @@ class UColumn extends StatelessWidget {
     this.semanticsButton,
     this.visible = true,
     this.heroTag,
+    this.onPress,
+    this.fit,
+    this.fitAlignment = Alignment.center,
+    this.scale,
+    this.rotate,
+    this.translate,
+    this.center = false,
+    this.safeArea = false,
+    this.scrollable,
+    this.scrollController,
+    this.textDirection,
+    this.expanded,
+    this.flexible,
+    this.positioned = false,
+    this.left,
+    this.top,
+    this.right,
+    this.bottom,
+    this.positionedWidth,
+    this.positionedHeight,
   });
 
   final List<Widget> children;
@@ -707,6 +971,27 @@ class UColumn extends StatelessWidget {
   final bool visible;
   final String? heroTag;
 
+  final VoidCallback? onPress;
+  final BoxFit? fit;
+  final AlignmentGeometry fitAlignment;
+  final double? scale;
+  final double? rotate;
+  final Offset? translate;
+  final bool center;
+  final bool safeArea;
+  final Axis? scrollable;
+  final ScrollController? scrollController;
+  final TextDirection? textDirection;
+  final int? expanded;
+  final int? flexible;
+  final bool positioned;
+  final double? left;
+  final double? top;
+  final double? right;
+  final double? bottom;
+  final double? positionedWidth;
+  final double? positionedHeight;
+
   @override
   Widget build(BuildContext context) => _uBox(
     color: color,
@@ -753,6 +1038,26 @@ class UColumn extends StatelessWidget {
     semanticsLabel: semanticsLabel,
     semanticsButton: semanticsButton,
     visible: visible,
+    onPress: onPress,
+    fit: fit,
+    fitAlignment: fitAlignment,
+    scale: scale,
+    rotate: rotate,
+    translate: translate,
+    center: center,
+    safeArea: safeArea,
+    scrollable: scrollable,
+    scrollController: scrollController,
+    textDirection: textDirection,
+    expanded: expanded,
+    flexible: flexible,
+    positioned: positioned,
+    left: left,
+    top: top,
+    right: right,
+    bottom: bottom,
+    positionedWidth: positionedWidth,
+    positionedHeight: positionedHeight,
     child: Column(
       spacing: spacing,
       mainAxisAlignment: mainAxisAlignment,
@@ -815,6 +1120,26 @@ class URow extends StatelessWidget {
     this.semanticsButton,
     this.visible = true,
     this.heroTag,
+    this.onPress,
+    this.fit,
+    this.fitAlignment = Alignment.center,
+    this.scale,
+    this.rotate,
+    this.translate,
+    this.center = false,
+    this.safeArea = false,
+    this.scrollable,
+    this.scrollController,
+    this.textDirection,
+    this.expanded,
+    this.flexible,
+    this.positioned = false,
+    this.left,
+    this.top,
+    this.right,
+    this.bottom,
+    this.positionedWidth,
+    this.positionedHeight,
   });
 
   final List<Widget> children;
@@ -867,6 +1192,27 @@ class URow extends StatelessWidget {
   final bool visible;
   final String? heroTag;
 
+  final VoidCallback? onPress;
+  final BoxFit? fit;
+  final AlignmentGeometry fitAlignment;
+  final double? scale;
+  final double? rotate;
+  final Offset? translate;
+  final bool center;
+  final bool safeArea;
+  final Axis? scrollable;
+  final ScrollController? scrollController;
+  final TextDirection? textDirection;
+  final int? expanded;
+  final int? flexible;
+  final bool positioned;
+  final double? left;
+  final double? top;
+  final double? right;
+  final double? bottom;
+  final double? positionedWidth;
+  final double? positionedHeight;
+
   @override
   Widget build(BuildContext context) => _uBox(
     color: color,
@@ -913,6 +1259,26 @@ class URow extends StatelessWidget {
     semanticsLabel: semanticsLabel,
     semanticsButton: semanticsButton,
     visible: visible,
+    onPress: onPress,
+    fit: fit,
+    fitAlignment: fitAlignment,
+    scale: scale,
+    rotate: rotate,
+    translate: translate,
+    center: center,
+    safeArea: safeArea,
+    scrollable: scrollable,
+    scrollController: scrollController,
+    textDirection: textDirection,
+    expanded: expanded,
+    flexible: flexible,
+    positioned: positioned,
+    left: left,
+    top: top,
+    right: right,
+    bottom: bottom,
+    positionedWidth: positionedWidth,
+    positionedHeight: positionedHeight,
     child: Row(
       spacing: spacing,
       mainAxisAlignment: mainAxisAlignment,
@@ -962,6 +1328,23 @@ class UStack extends StatelessWidget {
     this.semanticsLabel,
     this.visible = true,
     this.heroTag,
+    this.onPress,
+    this.scale,
+    this.rotate,
+    this.translate,
+    this.center = false,
+    this.safeArea = false,
+    this.scrollable,
+    this.scrollController,
+    this.expanded,
+    this.flexible,
+    this.positioned = false,
+    this.left,
+    this.top,
+    this.right,
+    this.bottom,
+    this.positionedWidth,
+    this.positionedHeight,
   });
 
   final List<Widget> children;
@@ -1001,6 +1384,24 @@ class UStack extends StatelessWidget {
   final bool visible;
   final String? heroTag;
 
+  final VoidCallback? onPress;
+  final double? scale;
+  final double? rotate;
+  final Offset? translate;
+  final bool center;
+  final bool safeArea;
+  final Axis? scrollable;
+  final ScrollController? scrollController;
+  final int? expanded;
+  final int? flexible;
+  final bool positioned;
+  final double? left;
+  final double? top;
+  final double? right;
+  final double? bottom;
+  final double? positionedWidth;
+  final double? positionedHeight;
+
   @override
   Widget build(BuildContext context) => _uBox(
     width: width,
@@ -1035,6 +1436,23 @@ class UStack extends StatelessWidget {
     semanticsLabel: semanticsLabel,
     visible: visible,
     heroTag: heroTag,
+    onPress: onPress,
+    scale: scale,
+    rotate: rotate,
+    translate: translate,
+    center: center,
+    safeArea: safeArea,
+    scrollable: scrollable,
+    scrollController: scrollController,
+    expanded: expanded,
+    flexible: flexible,
+    positioned: positioned,
+    left: left,
+    top: top,
+    right: right,
+    bottom: bottom,
+    positionedWidth: positionedWidth,
+    positionedHeight: positionedHeight,
     child: Stack(
       alignment: stackAlignment,
       fit: fit,
@@ -1089,6 +1507,25 @@ class UWrap extends StatelessWidget {
     this.semanticsLabel,
     this.visible = true,
     this.heroTag,
+    this.onPress,
+    this.fit,
+    this.fitAlignment = Alignment.center,
+    this.scale,
+    this.rotate,
+    this.translate,
+    this.center = false,
+    this.safeArea = false,
+    this.scrollable,
+    this.scrollController,
+    this.expanded,
+    this.flexible,
+    this.positioned = false,
+    this.left,
+    this.top,
+    this.right,
+    this.bottom,
+    this.positionedWidth,
+    this.positionedHeight,
   });
 
   final List<Widget> children;
@@ -1133,6 +1570,26 @@ class UWrap extends StatelessWidget {
   final bool visible;
   final String? heroTag;
 
+  final VoidCallback? onPress;
+  final BoxFit? fit;
+  final AlignmentGeometry fitAlignment;
+  final double? scale;
+  final double? rotate;
+  final Offset? translate;
+  final bool center;
+  final bool safeArea;
+  final Axis? scrollable;
+  final ScrollController? scrollController;
+  final int? expanded;
+  final int? flexible;
+  final bool positioned;
+  final double? left;
+  final double? top;
+  final double? right;
+  final double? bottom;
+  final double? positionedWidth;
+  final double? positionedHeight;
+
   @override
   Widget build(BuildContext context) => _uBox(
     width: width,
@@ -1167,6 +1624,25 @@ class UWrap extends StatelessWidget {
     semanticsLabel: semanticsLabel,
     visible: visible,
     heroTag: heroTag,
+    onPress: onPress,
+    fit: fit,
+    fitAlignment: fitAlignment,
+    scale: scale,
+    rotate: rotate,
+    translate: translate,
+    center: center,
+    safeArea: safeArea,
+    scrollable: scrollable,
+    scrollController: scrollController,
+    expanded: expanded,
+    flexible: flexible,
+    positioned: positioned,
+    left: left,
+    top: top,
+    right: right,
+    bottom: bottom,
+    positionedWidth: positionedWidth,
+    positionedHeight: positionedHeight,
     child: Wrap(
       direction: direction,
       alignment: wrapAlignment,
@@ -1212,6 +1688,26 @@ class UIconTextHorizontal extends StatelessWidget {
     this.splash = false,
     this.pressedScale,
     this.visible = true,
+    this.onPress,
+    this.fit,
+    this.fitAlignment = Alignment.center,
+    this.scale,
+    this.rotate,
+    this.translate,
+    this.center = false,
+    this.safeArea = false,
+    this.scrollable,
+    this.scrollController,
+    this.textDirection,
+    this.expanded,
+    this.flexible,
+    this.positioned = false,
+    this.left,
+    this.top,
+    this.right,
+    this.bottom,
+    this.positionedWidth,
+    this.positionedHeight,
   });
 
   final Widget leading;
@@ -1242,6 +1738,27 @@ class UIconTextHorizontal extends StatelessWidget {
   final double? pressedScale;
   final bool visible;
 
+  final VoidCallback? onPress;
+  final BoxFit? fit;
+  final AlignmentGeometry fitAlignment;
+  final double? scale;
+  final double? rotate;
+  final Offset? translate;
+  final bool center;
+  final bool safeArea;
+  final Axis? scrollable;
+  final ScrollController? scrollController;
+  final TextDirection? textDirection;
+  final int? expanded;
+  final int? flexible;
+  final bool positioned;
+  final double? left;
+  final double? top;
+  final double? right;
+  final double? bottom;
+  final double? positionedWidth;
+  final double? positionedHeight;
+
   @override
   Widget build(BuildContext context) => _uBox(
     padding: padding,
@@ -1265,6 +1782,26 @@ class UIconTextHorizontal extends StatelessWidget {
     onLongPress: onLongPress,
     onDoubleTap: onDoubleTap,
     onHover: onHover,
+    onPress: onPress,
+    fit: fit,
+    fitAlignment: fitAlignment,
+    scale: scale,
+    rotate: rotate,
+    translate: translate,
+    center: center,
+    safeArea: safeArea,
+    scrollable: scrollable,
+    scrollController: scrollController,
+    textDirection: textDirection,
+    expanded: expanded,
+    flexible: flexible,
+    positioned: positioned,
+    left: left,
+    top: top,
+    right: right,
+    bottom: bottom,
+    positionedWidth: positionedWidth,
+    positionedHeight: positionedHeight,
     child: Row(
       mainAxisAlignment: mainAxisAlignment,
       crossAxisAlignment: crossAxisAlignment,
@@ -1308,6 +1845,26 @@ class UIconTextVertical extends StatelessWidget {
     this.splash = false,
     this.pressedScale,
     this.visible = true,
+    this.onPress,
+    this.fit,
+    this.fitAlignment = Alignment.center,
+    this.scale,
+    this.rotate,
+    this.translate,
+    this.center = false,
+    this.safeArea = false,
+    this.scrollable,
+    this.scrollController,
+    this.textDirection,
+    this.expanded,
+    this.flexible,
+    this.positioned = false,
+    this.left,
+    this.top,
+    this.right,
+    this.bottom,
+    this.positionedWidth,
+    this.positionedHeight,
   });
 
   final Widget leading;
@@ -1338,6 +1895,27 @@ class UIconTextVertical extends StatelessWidget {
   final double? pressedScale;
   final bool visible;
 
+  final VoidCallback? onPress;
+  final BoxFit? fit;
+  final AlignmentGeometry fitAlignment;
+  final double? scale;
+  final double? rotate;
+  final Offset? translate;
+  final bool center;
+  final bool safeArea;
+  final Axis? scrollable;
+  final ScrollController? scrollController;
+  final TextDirection? textDirection;
+  final int? expanded;
+  final int? flexible;
+  final bool positioned;
+  final double? left;
+  final double? top;
+  final double? right;
+  final double? bottom;
+  final double? positionedWidth;
+  final double? positionedHeight;
+
   @override
   Widget build(BuildContext context) => _uBox(
     padding: padding,
@@ -1361,6 +1939,26 @@ class UIconTextVertical extends StatelessWidget {
     onLongPress: onLongPress,
     onDoubleTap: onDoubleTap,
     onHover: onHover,
+    onPress: onPress,
+    fit: fit,
+    fitAlignment: fitAlignment,
+    scale: scale,
+    rotate: rotate,
+    translate: translate,
+    center: center,
+    safeArea: safeArea,
+    scrollable: scrollable,
+    scrollController: scrollController,
+    textDirection: textDirection,
+    expanded: expanded,
+    flexible: flexible,
+    positioned: positioned,
+    left: left,
+    top: top,
+    right: right,
+    bottom: bottom,
+    positionedWidth: positionedWidth,
+    positionedHeight: positionedHeight,
     child: Column(
       mainAxisAlignment: mainAxisAlignment,
       crossAxisAlignment: crossAxisAlignment,
@@ -1396,6 +1994,26 @@ class UKeyValue extends StatelessWidget {
     this.semanticsLabel,
     this.splash = false,
     this.visible = true,
+    this.onPress,
+    this.fit,
+    this.fitAlignment = Alignment.center,
+    this.scale,
+    this.rotate,
+    this.translate,
+    this.center = false,
+    this.safeArea = false,
+    this.scrollable,
+    this.scrollController,
+    this.textDirection,
+    this.expanded,
+    this.flexible,
+    this.positioned = false,
+    this.left,
+    this.top,
+    this.right,
+    this.bottom,
+    this.positionedWidth,
+    this.positionedHeight,
   });
 
   final Widget leading;
@@ -1418,6 +2036,27 @@ class UKeyValue extends StatelessWidget {
   final bool splash;
   final bool visible;
 
+  final VoidCallback? onPress;
+  final BoxFit? fit;
+  final AlignmentGeometry fitAlignment;
+  final double? scale;
+  final double? rotate;
+  final Offset? translate;
+  final bool center;
+  final bool safeArea;
+  final Axis? scrollable;
+  final ScrollController? scrollController;
+  final TextDirection? textDirection;
+  final int? expanded;
+  final int? flexible;
+  final bool positioned;
+  final double? left;
+  final double? top;
+  final double? right;
+  final double? bottom;
+  final double? positionedWidth;
+  final double? positionedHeight;
+
   @override
   Widget build(BuildContext context) => _uBox(
     padding: padding,
@@ -1435,6 +2074,26 @@ class UKeyValue extends StatelessWidget {
     onTap: onTap,
     onLongPress: onLongPress,
     onHover: onHover,
+    onPress: onPress,
+    fit: fit,
+    fitAlignment: fitAlignment,
+    scale: scale,
+    rotate: rotate,
+    translate: translate,
+    center: center,
+    safeArea: safeArea,
+    scrollable: scrollable,
+    scrollController: scrollController,
+    textDirection: textDirection,
+    expanded: expanded,
+    flexible: flexible,
+    positioned: positioned,
+    left: left,
+    top: top,
+    right: right,
+    bottom: bottom,
+    positionedWidth: positionedWidth,
+    positionedHeight: positionedHeight,
     child: Row(
       mainAxisAlignment: mainAxisAlignment,
       crossAxisAlignment: crossAxisAlignment,
@@ -1468,6 +2127,31 @@ class UCard extends StatelessWidget {
     this.hoverColor,
     this.border,
     this.semanticsLabel,
+    this.onPress,
+    this.opacity,
+    this.visible = true,
+    this.tooltip,
+    this.heroTag,
+    this.cursor,
+    this.fit,
+    this.fitAlignment = Alignment.center,
+    this.scale,
+    this.rotate,
+    this.translate,
+    this.center = false,
+    this.safeArea = false,
+    this.scrollable,
+    this.scrollController,
+    this.textDirection,
+    this.expanded,
+    this.flexible,
+    this.positioned = false,
+    this.left,
+    this.top,
+    this.right,
+    this.bottom,
+    this.positionedWidth,
+    this.positionedHeight,
   });
 
   final Widget child;
@@ -1489,6 +2173,31 @@ class UCard extends StatelessWidget {
   final Color? hoverColor;
   final BorderSide? border;
   final String? semanticsLabel;
+  final VoidCallback? onPress;
+  final double? opacity;
+  final bool visible;
+  final String? tooltip;
+  final String? heroTag;
+  final MouseCursor? cursor;
+  final BoxFit? fit;
+  final AlignmentGeometry fitAlignment;
+  final double? scale;
+  final double? rotate;
+  final Offset? translate;
+  final bool center;
+  final bool safeArea;
+  final Axis? scrollable;
+  final ScrollController? scrollController;
+  final TextDirection? textDirection;
+  final int? expanded;
+  final int? flexible;
+  final bool positioned;
+  final double? left;
+  final double? top;
+  final double? right;
+  final double? bottom;
+  final double? positionedWidth;
+  final double? positionedHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -1525,8 +2234,35 @@ class UCard extends StatelessWidget {
       child: content,
     );
 
-    if (semanticsLabel != null) return Semantics(label: semanticsLabel, button: hasTap, child: card);
-    return card;
+    final Widget result = semanticsLabel != null ? Semantics(label: semanticsLabel, button: hasTap, child: card) : card;
+    return uWrap(
+      result,
+      onPress: onPress,
+      opacity: opacity,
+      visible: visible,
+      tooltip: tooltip,
+      heroTag: heroTag,
+      cursor: cursor,
+      fit: fit,
+      fitAlignment: fitAlignment,
+      scale: scale,
+      rotate: rotate,
+      translate: translate,
+      center: center,
+      safeArea: safeArea,
+      scrollable: scrollable,
+      scrollController: scrollController,
+      textDirection: textDirection,
+      expanded: expanded,
+      flexible: flexible,
+      positioned: positioned,
+      left: left,
+      top: top,
+      right: right,
+      bottom: bottom,
+      positionedWidth: positionedWidth,
+      positionedHeight: positionedHeight,
+    );
   }
 }
 
@@ -1575,6 +2311,26 @@ class UAnimatedContainer extends StatelessWidget {
     this.visible = true,
     this.heroTag,
     this.onEnd,
+    this.onPress,
+    this.fit,
+    this.fitAlignment = Alignment.center,
+    this.scale,
+    this.rotate,
+    this.translate,
+    this.center = false,
+    this.safeArea = false,
+    this.scrollable,
+    this.scrollController,
+    this.textDirection,
+    this.expanded,
+    this.flexible,
+    this.positioned = false,
+    this.left,
+    this.top,
+    this.right,
+    this.bottom,
+    this.positionedWidth,
+    this.positionedHeight,
   });
 
   final Widget? child;
@@ -1619,6 +2375,26 @@ class UAnimatedContainer extends StatelessWidget {
   final bool visible;
   final String? heroTag;
   final VoidCallback? onEnd;
+  final VoidCallback? onPress;
+  final BoxFit? fit;
+  final AlignmentGeometry fitAlignment;
+  final double? scale;
+  final double? rotate;
+  final Offset? translate;
+  final bool center;
+  final bool safeArea;
+  final Axis? scrollable;
+  final ScrollController? scrollController;
+  final TextDirection? textDirection;
+  final int? expanded;
+  final int? flexible;
+  final bool positioned;
+  final double? left;
+  final double? top;
+  final double? right;
+  final double? bottom;
+  final double? positionedWidth;
+  final double? positionedHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -1640,7 +2416,7 @@ class UAnimatedContainer extends StatelessWidget {
         ? BoxConstraints(minWidth: minWidth ?? 0, maxWidth: maxWidth ?? double.infinity, minHeight: minHeight ?? 0, maxHeight: maxHeight ?? double.infinity)
         : null;
 
-    Widget current = AnimatedContainer(
+    final Widget current = AnimatedContainer(
       duration: duration,
       curve: curve,
       onEnd: onEnd,
@@ -1658,10 +2434,11 @@ class UAnimatedContainer extends StatelessWidget {
       child: child,
     );
 
-    current = _uInteractive(
+    return uWrap(
       current,
-      radius: effectiveRadius,
+      borderRadius: effectiveRadius,
       onTap: onTap,
+      onPress: onPress,
       onDoubleTap: onDoubleTap,
       onLongPress: onLongPress,
       splash: splash,
@@ -1671,15 +2448,30 @@ class UAnimatedContainer extends StatelessWidget {
       pressedScale: pressedScale,
       cursor: cursor,
       onHover: onHover,
-    );
-
-    return _uEffects(
-      current,
       opacity: opacity,
       tooltip: tooltip,
       heroTag: heroTag,
       margin: margin,
       semanticsLabel: semanticsLabel,
+      fit: fit,
+      fitAlignment: fitAlignment,
+      scale: scale,
+      rotate: rotate,
+      translate: translate,
+      center: center,
+      safeArea: safeArea,
+      scrollable: scrollable,
+      scrollController: scrollController,
+      textDirection: textDirection,
+      expanded: expanded,
+      flexible: flexible,
+      positioned: positioned,
+      left: left,
+      top: top,
+      right: right,
+      bottom: bottom,
+      positionedWidth: positionedWidth,
+      positionedHeight: positionedHeight,
     );
   }
 }
@@ -1699,6 +2491,27 @@ class UListView extends StatelessWidget {
     this.reverse = false,
     this.scrollDirection = Axis.vertical,
     this.separatorBuilder,
+    this.margin,
+    this.opacity,
+    this.visible = true,
+    this.tooltip,
+    this.heroTag,
+    this.fit,
+    this.fitAlignment = Alignment.center,
+    this.scale,
+    this.rotate,
+    this.translate,
+    this.center = false,
+    this.safeArea = false,
+    this.expanded,
+    this.flexible,
+    this.positioned = false,
+    this.left,
+    this.top,
+    this.right,
+    this.bottom,
+    this.positionedWidth,
+    this.positionedHeight,
   });
 
   final IndexedWidgetBuilder itemBuilder;
@@ -1713,6 +2526,52 @@ class UListView extends StatelessWidget {
   final bool reverse;
   final Axis scrollDirection;
   final IndexedWidgetBuilder? separatorBuilder;
+  final EdgeInsetsGeometry? margin;
+  final double? opacity;
+  final bool visible;
+  final String? tooltip;
+  final String? heroTag;
+  final BoxFit? fit;
+  final AlignmentGeometry fitAlignment;
+  final double? scale;
+  final double? rotate;
+  final Offset? translate;
+  final bool center;
+  final bool safeArea;
+  final int? expanded;
+  final int? flexible;
+  final bool positioned;
+  final double? left;
+  final double? top;
+  final double? right;
+  final double? bottom;
+  final double? positionedWidth;
+  final double? positionedHeight;
+
+  Widget _wrap(Widget child) => uWrap(
+    child,
+    margin: margin,
+    opacity: opacity,
+    visible: visible,
+    tooltip: tooltip,
+    heroTag: heroTag,
+    fit: fit,
+    fitAlignment: fitAlignment,
+    scale: scale,
+    rotate: rotate,
+    translate: translate,
+    center: center,
+    safeArea: safeArea,
+    expanded: expanded,
+    flexible: flexible,
+    positioned: positioned,
+    left: left,
+    top: top,
+    right: right,
+    bottom: bottom,
+    positionedWidth: positionedWidth,
+    positionedHeight: positionedHeight,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -1726,7 +2585,24 @@ class UListView extends StatelessWidget {
     }
 
     if (separatorBuilder != null) {
-      return ListView.separated(
+      return _wrap(
+        ListView.separated(
+          itemCount: totalCount,
+          physics: physics,
+          shrinkWrap: shrinkWrap,
+          padding: padding,
+          controller: scrollController,
+          primary: primary,
+          reverse: reverse,
+          scrollDirection: scrollDirection,
+          itemBuilder: resolve,
+          separatorBuilder: separatorBuilder!,
+        ),
+      );
+    }
+
+    return _wrap(
+      ListView.builder(
         itemCount: totalCount,
         physics: physics,
         shrinkWrap: shrinkWrap,
@@ -1736,20 +2612,7 @@ class UListView extends StatelessWidget {
         reverse: reverse,
         scrollDirection: scrollDirection,
         itemBuilder: resolve,
-        separatorBuilder: separatorBuilder!,
-      );
-    }
-
-    return ListView.builder(
-      itemCount: totalCount,
-      physics: physics,
-      shrinkWrap: shrinkWrap,
-      padding: padding,
-      controller: scrollController,
-      primary: primary,
-      reverse: reverse,
-      scrollDirection: scrollDirection,
-      itemBuilder: resolve,
+      ),
     );
   }
 }
@@ -1771,6 +2634,27 @@ class UGridView extends StatelessWidget {
     this.primary,
     this.reverse = false,
     this.scrollDirection = Axis.vertical,
+    this.margin,
+    this.opacity,
+    this.visible = true,
+    this.tooltip,
+    this.heroTag,
+    this.fit,
+    this.fitAlignment = Alignment.center,
+    this.scale,
+    this.rotate,
+    this.translate,
+    this.center = false,
+    this.safeArea = false,
+    this.expanded,
+    this.flexible,
+    this.positioned = false,
+    this.left,
+    this.top,
+    this.right,
+    this.bottom,
+    this.positionedWidth,
+    this.positionedHeight,
   });
 
   final IndexedWidgetBuilder itemBuilder;
@@ -1787,6 +2671,52 @@ class UGridView extends StatelessWidget {
   final bool? primary;
   final bool reverse;
   final Axis scrollDirection;
+  final EdgeInsetsGeometry? margin;
+  final double? opacity;
+  final bool visible;
+  final String? tooltip;
+  final String? heroTag;
+  final BoxFit? fit;
+  final AlignmentGeometry fitAlignment;
+  final double? scale;
+  final double? rotate;
+  final Offset? translate;
+  final bool center;
+  final bool safeArea;
+  final int? expanded;
+  final int? flexible;
+  final bool positioned;
+  final double? left;
+  final double? top;
+  final double? right;
+  final double? bottom;
+  final double? positionedWidth;
+  final double? positionedHeight;
+
+  Widget _wrap(Widget child) => uWrap(
+    child,
+    margin: margin,
+    opacity: opacity,
+    visible: visible,
+    tooltip: tooltip,
+    heroTag: heroTag,
+    fit: fit,
+    fitAlignment: fitAlignment,
+    scale: scale,
+    rotate: rotate,
+    translate: translate,
+    center: center,
+    safeArea: safeArea,
+    expanded: expanded,
+    flexible: flexible,
+    positioned: positioned,
+    left: left,
+    top: top,
+    right: right,
+    bottom: bottom,
+    positionedWidth: positionedWidth,
+    positionedHeight: positionedHeight,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -1804,17 +2734,19 @@ class UGridView extends StatelessWidget {
             childAspectRatio: childAspectRatio,
           );
 
-    return GridView.builder(
-      itemCount: itemCount,
-      gridDelegate: delegate,
-      physics: physics,
-      shrinkWrap: shrinkWrap,
-      padding: padding,
-      controller: scrollController,
-      primary: primary,
-      reverse: reverse,
-      scrollDirection: scrollDirection,
-      itemBuilder: itemBuilder,
+    return _wrap(
+      GridView.builder(
+        itemCount: itemCount,
+        gridDelegate: delegate,
+        physics: physics,
+        shrinkWrap: shrinkWrap,
+        padding: padding,
+        controller: scrollController,
+        primary: primary,
+        reverse: reverse,
+        scrollDirection: scrollDirection,
+        itemBuilder: itemBuilder,
+      ),
     );
   }
 }

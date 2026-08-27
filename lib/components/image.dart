@@ -29,7 +29,38 @@ class UImage extends StatelessWidget {
     this.heroTag,
     this.tooltip,
     this.semanticsLabel,
+    this.semanticsButton,
     this.visible = true,
+    this.minWidth,
+    this.maxWidth,
+    this.minHeight,
+    this.maxHeight,
+    this.alignment,
+    this.onPress,
+    this.onTapDown,
+    this.onTapUp,
+    this.onTapCancel,
+    this.onSecondaryTap,
+    this.hitTestBehavior,
+    this.splashColor,
+    this.highlightColor,
+    this.hoverColor,
+    this.cursor,
+    this.onHover,
+    this.scale,
+    this.rotate,
+    this.translate,
+    this.center = false,
+    this.safeArea = false,
+    this.expanded,
+    this.flexible,
+    this.positioned = false,
+    this.left,
+    this.top,
+    this.right,
+    this.bottom,
+    this.positionedWidth,
+    this.positionedHeight,
   });
 
   final String? package;
@@ -57,7 +88,38 @@ class UImage extends StatelessWidget {
   final String? heroTag;
   final String? tooltip;
   final String? semanticsLabel;
+  final bool? semanticsButton;
   final bool visible;
+  final double? minWidth;
+  final double? maxWidth;
+  final double? minHeight;
+  final double? maxHeight;
+  final AlignmentGeometry? alignment;
+  final VoidCallback? onPress;
+  final GestureTapDownCallback? onTapDown;
+  final GestureTapUpCallback? onTapUp;
+  final GestureTapCancelCallback? onTapCancel;
+  final GestureTapCallback? onSecondaryTap;
+  final HitTestBehavior? hitTestBehavior;
+  final Color? splashColor;
+  final Color? highlightColor;
+  final Color? hoverColor;
+  final MouseCursor? cursor;
+  final ValueChanged<bool>? onHover;
+  final double? scale;
+  final double? rotate;
+  final Offset? translate;
+  final bool center;
+  final bool safeArea;
+  final int? expanded;
+  final int? flexible;
+  final bool positioned;
+  final double? left;
+  final double? top;
+  final double? right;
+  final double? bottom;
+  final double? positionedWidth;
+  final double? positionedHeight;
 
   Widget _image(BuildContext context) {
     if (fileData != null) {
@@ -99,7 +161,38 @@ class UImage extends StatelessWidget {
     heroTag: heroTag,
     tooltip: tooltip,
     semanticsLabel: semanticsLabel,
+    semanticsButton: semanticsButton,
     visible: visible,
+    minWidth: minWidth,
+    maxWidth: maxWidth,
+    minHeight: minHeight,
+    maxHeight: maxHeight,
+    alignment: alignment,
+    onPress: onPress,
+    onTapDown: onTapDown,
+    onTapUp: onTapUp,
+    onTapCancel: onTapCancel,
+    onSecondaryTap: onSecondaryTap,
+    hitTestBehavior: hitTestBehavior,
+    splashColor: splashColor,
+    highlightColor: highlightColor,
+    hoverColor: hoverColor,
+    cursor: cursor,
+    onHover: onHover,
+    scale: scale,
+    rotate: rotate,
+    translate: translate,
+    center: center,
+    safeArea: safeArea,
+    expanded: expanded,
+    flexible: flexible,
+    positioned: positioned,
+    left: left,
+    top: top,
+    right: right,
+    bottom: bottom,
+    positionedWidth: positionedWidth,
+    positionedHeight: positionedHeight,
     child: _image(context),
   );
 }
@@ -114,6 +207,33 @@ class UIconPrimary extends StatelessWidget {
     this.placeholder,
     this.fit = BoxFit.contain,
     this.package,
+    this.onTap,
+    this.onPress,
+    this.onLongPress,
+    this.onDoubleTap,
+    this.splash = false,
+    this.pressedScale,
+    this.cursor,
+    this.onHover,
+    this.margin,
+    this.opacity,
+    this.tooltip,
+    this.heroTag,
+    this.visible = true,
+    this.scale,
+    this.rotate,
+    this.translate,
+    this.center = false,
+    this.safeArea = false,
+    this.expanded,
+    this.flexible,
+    this.positioned = false,
+    this.left,
+    this.top,
+    this.right,
+    this.bottom,
+    this.positionedWidth,
+    this.positionedHeight,
   });
 
   final String? package;
@@ -123,6 +243,33 @@ class UIconPrimary extends StatelessWidget {
   final double? height;
   final BoxFit fit;
   final String? placeholder;
+  final GestureTapCallback? onTap;
+  final VoidCallback? onPress;
+  final GestureLongPressCallback? onLongPress;
+  final GestureTapCallback? onDoubleTap;
+  final bool splash;
+  final double? pressedScale;
+  final MouseCursor? cursor;
+  final ValueChanged<bool>? onHover;
+  final EdgeInsets? margin;
+  final double? opacity;
+  final String? tooltip;
+  final String? heroTag;
+  final bool visible;
+  final double? scale;
+  final double? rotate;
+  final Offset? translate;
+  final bool center;
+  final bool safeArea;
+  final int? expanded;
+  final int? flexible;
+  final bool positioned;
+  final double? left;
+  final double? top;
+  final double? right;
+  final double? bottom;
+  final double? positionedWidth;
+  final double? positionedHeight;
 
   @override
   Widget build(BuildContext context) => UImage(
@@ -133,6 +280,33 @@ class UIconPrimary extends StatelessWidget {
     fit: fit,
     placeholder: placeholder,
     package: package,
+    onTap: onTap,
+    onPress: onPress,
+    onLongPress: onLongPress,
+    onDoubleTap: onDoubleTap,
+    splash: splash,
+    pressedScale: pressedScale,
+    cursor: cursor,
+    onHover: onHover,
+    margin: margin,
+    opacity: opacity,
+    tooltip: tooltip,
+    heroTag: heroTag,
+    visible: visible,
+    scale: scale,
+    rotate: rotate,
+    translate: translate,
+    center: center,
+    safeArea: safeArea,
+    expanded: expanded,
+    flexible: flexible,
+    positioned: positioned,
+    left: left,
+    top: top,
+    right: right,
+    bottom: bottom,
+    positionedWidth: positionedWidth,
+    positionedHeight: positionedHeight,
   );
 }
 
@@ -146,6 +320,33 @@ class UImageAsset extends StatelessWidget {
     this.fit = BoxFit.contain,
     this.clipBehavior = Clip.hardEdge,
     this.package,
+    this.onTap,
+    this.onPress,
+    this.onLongPress,
+    this.onDoubleTap,
+    this.splash = false,
+    this.pressedScale,
+    this.cursor,
+    this.onHover,
+    this.margin,
+    this.opacity,
+    this.tooltip,
+    this.heroTag,
+    this.visible = true,
+    this.scale,
+    this.rotate,
+    this.translate,
+    this.center = false,
+    this.safeArea = false,
+    this.expanded,
+    this.flexible,
+    this.positioned = false,
+    this.left,
+    this.top,
+    this.right,
+    this.bottom,
+    this.positionedWidth,
+    this.positionedHeight,
     super.key,
   });
 
@@ -157,49 +358,105 @@ class UImageAsset extends StatelessWidget {
   final double? height;
   final BoxFit fit;
   final Clip clipBehavior;
+  final GestureTapCallback? onTap;
+  final VoidCallback? onPress;
+  final GestureLongPressCallback? onLongPress;
+  final GestureTapCallback? onDoubleTap;
+  final bool splash;
+  final double? pressedScale;
+  final MouseCursor? cursor;
+  final ValueChanged<bool>? onHover;
+  final EdgeInsetsGeometry? margin;
+  final double? opacity;
+  final String? tooltip;
+  final String? heroTag;
+  final bool visible;
+  final double? scale;
+  final double? rotate;
+  final Offset? translate;
+  final bool center;
+  final bool safeArea;
+  final int? expanded;
+  final int? flexible;
+  final bool positioned;
+  final double? left;
+  final double? top;
+  final double? right;
+  final double? bottom;
+  final double? positionedWidth;
+  final double? positionedHeight;
 
   @override
-  Widget build(BuildContext context) => path.endsWith("svg")
-      ? SvgPicture.asset(
-          path,
-          width: width,
-          height: height,
-          fit: fit,
-          colorFilter: color == null ? null : ColorFilter.mode(color!, BlendMode.srcIn),
-          package: package,
-          placeholderBuilder: (BuildContext context) => placeholder == null
-              ? SizedBox(width: width, height: height)
-              : UImageAsset(
-                  placeholder!,
-                  color: color,
-                  width: width,
-                  height: height,
-                  fit: fit,
-                  clipBehavior: clipBehavior,
-                  package: package,
-                ),
-        )
-      : Image.asset(
-          path,
-          color: color,
-          width: width,
-          height: height,
-          fit: fit,
-          cacheWidth: width == null ? null : (width! * (MediaQuery.maybeDevicePixelRatioOf(context) ?? 1.0)).round(),
-          cacheHeight: height == null ? null : (height! * (MediaQuery.maybeDevicePixelRatioOf(context) ?? 1.0)).round(),
-          package: package,
-          errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) => placeholder == null
-              ? SizedBox(width: width, height: height)
-              : UImageAsset(
-                  placeholder!,
-                  color: color,
-                  width: width,
-                  height: height,
-                  fit: fit,
-                  clipBehavior: clipBehavior,
-                  package: package,
-                ),
-        );
+  Widget build(BuildContext context) => uWrap(
+    path.endsWith("svg")
+        ? SvgPicture.asset(
+            path,
+            width: width,
+            height: height,
+            fit: fit,
+            colorFilter: color == null ? null : ColorFilter.mode(color!, BlendMode.srcIn),
+            package: package,
+            placeholderBuilder: (BuildContext context) => placeholder == null
+                ? SizedBox(width: width, height: height)
+                : UImageAsset(
+                    placeholder!,
+                    color: color,
+                    width: width,
+                    height: height,
+                    fit: fit,
+                    clipBehavior: clipBehavior,
+                    package: package,
+                  ),
+          )
+        : Image.asset(
+            path,
+            color: color,
+            width: width,
+            height: height,
+            fit: fit,
+            cacheWidth: width == null ? null : (width! * (MediaQuery.maybeDevicePixelRatioOf(context) ?? 1.0)).round(),
+            cacheHeight: height == null ? null : (height! * (MediaQuery.maybeDevicePixelRatioOf(context) ?? 1.0)).round(),
+            package: package,
+            errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) => placeholder == null
+                ? SizedBox(width: width, height: height)
+                : UImageAsset(
+                    placeholder!,
+                    color: color,
+                    width: width,
+                    height: height,
+                    fit: fit,
+                    clipBehavior: clipBehavior,
+                    package: package,
+                  ),
+          ),
+    onTap: onTap,
+    onPress: onPress,
+    onLongPress: onLongPress,
+    onDoubleTap: onDoubleTap,
+    splash: splash,
+    pressedScale: pressedScale,
+    cursor: cursor,
+    onHover: onHover,
+    margin: margin,
+    opacity: opacity,
+    tooltip: tooltip,
+    heroTag: heroTag,
+    visible: visible,
+    scale: scale,
+    rotate: rotate,
+    translate: translate,
+    center: center,
+    safeArea: safeArea,
+    expanded: expanded,
+    flexible: flexible,
+    positioned: positioned,
+    left: left,
+    top: top,
+    right: right,
+    bottom: bottom,
+    positionedWidth: positionedWidth,
+    positionedHeight: positionedHeight,
+  );
 }
 
 class UImageNetwork extends StatelessWidget {
@@ -212,6 +469,33 @@ class UImageNetwork extends StatelessWidget {
     this.clipBehavior = Clip.hardEdge,
     this.placeholder,
     this.package,
+    this.onTap,
+    this.onPress,
+    this.onLongPress,
+    this.onDoubleTap,
+    this.splash = false,
+    this.pressedScale,
+    this.cursor,
+    this.onHover,
+    this.margin,
+    this.opacity,
+    this.tooltip,
+    this.heroTag,
+    this.visible = true,
+    this.scale,
+    this.rotate,
+    this.translate,
+    this.center = false,
+    this.safeArea = false,
+    this.expanded,
+    this.flexible,
+    this.positioned = false,
+    this.left,
+    this.top,
+    this.right,
+    this.bottom,
+    this.positionedWidth,
+    this.positionedHeight,
     super.key,
   });
 
@@ -223,63 +507,119 @@ class UImageNetwork extends StatelessWidget {
   final BoxFit fit;
   final Clip clipBehavior;
   final String? placeholder;
+  final GestureTapCallback? onTap;
+  final VoidCallback? onPress;
+  final GestureLongPressCallback? onLongPress;
+  final GestureTapCallback? onDoubleTap;
+  final bool splash;
+  final double? pressedScale;
+  final MouseCursor? cursor;
+  final ValueChanged<bool>? onHover;
+  final EdgeInsetsGeometry? margin;
+  final double? opacity;
+  final String? tooltip;
+  final String? heroTag;
+  final bool visible;
+  final double? scale;
+  final double? rotate;
+  final Offset? translate;
+  final bool center;
+  final bool safeArea;
+  final int? expanded;
+  final int? flexible;
+  final bool positioned;
+  final double? left;
+  final double? top;
+  final double? right;
+  final double? bottom;
+  final double? positionedWidth;
+  final double? positionedHeight;
 
   @override
-  Widget build(BuildContext context) => url.length <= 10
-      ? placeholder == null
-            ? SizedBox(width: width, height: height)
-            : UImageAsset(
-                placeholder!,
-                width: width,
-                height: height,
-                color: color,
-                fit: fit,
-                clipBehavior: clipBehavior,
-                package: package,
-              )
-      : url.substring(url.length - 3) == "svg"
-      ? SvgPicture.network(
-          url,
-          width: width,
-          height: height,
-          fit: fit,
-          placeholderBuilder: placeholder == null
-              ? null
-              : (_) => UImageAsset(
+  Widget build(BuildContext context) => uWrap(
+    url.length <= 10
+        ? placeholder == null
+              ? SizedBox(width: width, height: height)
+              : UImageAsset(
                   placeholder!,
                   width: width,
                   height: height,
+                  color: color,
                   fit: fit,
                   clipBehavior: clipBehavior,
                   package: package,
-                ),
-        )
-      : CachedNetworkImage(
-          imageUrl: url,
-          width: width,
-          height: height,
-          fit: fit,
-          errorWidget: placeholder == null
-              ? null
-              : UImage(
-                  placeholder!,
-                  color: color,
-                  width: width,
-                  height: height,
-                  fit: fit,
-                  package: package,
-                ),
-          placeholder: placeholder == null
-              ? null
-              : UImage(
-                  placeholder!,
-                  color: color,
-                  width: width,
-                  height: height,
-                  fit: fit,
-                  package: package,
-                ),
-        );
+                )
+        : url.substring(url.length - 3) == "svg"
+        ? SvgPicture.network(
+            url,
+            width: width,
+            height: height,
+            fit: fit,
+            placeholderBuilder: placeholder == null
+                ? null
+                : (_) => UImageAsset(
+                    placeholder!,
+                    width: width,
+                    height: height,
+                    fit: fit,
+                    clipBehavior: clipBehavior,
+                    package: package,
+                  ),
+          )
+        : CachedNetworkImage(
+            imageUrl: url,
+            width: width,
+            height: height,
+            fit: fit,
+            errorWidget: placeholder == null
+                ? null
+                : UImage(
+                    placeholder!,
+                    color: color,
+                    width: width,
+                    height: height,
+                    fit: fit,
+                    package: package,
+                  ),
+            placeholder: placeholder == null
+                ? null
+                : UImage(
+                    placeholder!,
+                    color: color,
+                    width: width,
+                    height: height,
+                    fit: fit,
+                    package: package,
+                  ),
+          ),
+    onTap: onTap,
+    onPress: onPress,
+    onLongPress: onLongPress,
+    onDoubleTap: onDoubleTap,
+    splash: splash,
+    pressedScale: pressedScale,
+    cursor: cursor,
+    onHover: onHover,
+    margin: margin,
+    opacity: opacity,
+    tooltip: tooltip,
+    heroTag: heroTag,
+    visible: visible,
+    scale: scale,
+    rotate: rotate,
+    translate: translate,
+    center: center,
+    safeArea: safeArea,
+    expanded: expanded,
+    flexible: flexible,
+    positioned: positioned,
+    left: left,
+    top: top,
+    right: right,
+    bottom: bottom,
+    positionedWidth: positionedWidth,
+    positionedHeight: positionedHeight,
+  );
 }
 
 class UImageFile extends StatelessWidget {
@@ -289,6 +629,33 @@ class UImageFile extends StatelessWidget {
     this.width,
     this.height,
     this.fit = BoxFit.contain,
+    this.onTap,
+    this.onPress,
+    this.onLongPress,
+    this.onDoubleTap,
+    this.splash = false,
+    this.pressedScale,
+    this.cursor,
+    this.onHover,
+    this.margin,
+    this.opacity,
+    this.tooltip,
+    this.heroTag,
+    this.visible = true,
+    this.scale,
+    this.rotate,
+    this.translate,
+    this.center = false,
+    this.safeArea = false,
+    this.expanded,
+    this.flexible,
+    this.positioned = false,
+    this.left,
+    this.top,
+    this.right,
+    this.bottom,
+    this.positionedWidth,
+    this.positionedHeight,
     super.key,
   });
 
@@ -297,11 +664,38 @@ class UImageFile extends StatelessWidget {
   final double? width;
   final double? height;
   final BoxFit fit;
+  final GestureTapCallback? onTap;
+  final VoidCallback? onPress;
+  final GestureLongPressCallback? onLongPress;
+  final GestureTapCallback? onDoubleTap;
+  final bool splash;
+  final double? pressedScale;
+  final MouseCursor? cursor;
+  final ValueChanged<bool>? onHover;
+  final EdgeInsetsGeometry? margin;
+  final double? opacity;
+  final String? tooltip;
+  final String? heroTag;
+  final bool visible;
+  final double? scale;
+  final double? rotate;
+  final Offset? translate;
+  final bool center;
+  final bool safeArea;
+  final int? expanded;
+  final int? flexible;
+  final bool positioned;
+  final double? left;
+  final double? top;
+  final double? right;
+  final double? bottom;
+  final double? positionedWidth;
+  final double? positionedHeight;
 
   @override
   Widget build(BuildContext context) {
     final double dpr = MediaQuery.maybeDevicePixelRatioOf(context) ?? 1.0;
-    return Image.file(
+    final Widget img = Image.file(
       file,
       color: color,
       width: width,
@@ -309,6 +703,36 @@ class UImageFile extends StatelessWidget {
       fit: fit,
       cacheWidth: width == null ? null : (width! * dpr).round(),
       cacheHeight: height == null ? null : (height! * dpr).round(),
+    );
+    return uWrap(
+      img,
+      onTap: onTap,
+      onPress: onPress,
+      onLongPress: onLongPress,
+      onDoubleTap: onDoubleTap,
+      splash: splash,
+      pressedScale: pressedScale,
+      cursor: cursor,
+      onHover: onHover,
+      margin: margin,
+      opacity: opacity,
+      tooltip: tooltip,
+      heroTag: heroTag,
+      visible: visible,
+      scale: scale,
+      rotate: rotate,
+      translate: translate,
+      center: center,
+      safeArea: safeArea,
+      expanded: expanded,
+      flexible: flexible,
+      positioned: positioned,
+      left: left,
+      top: top,
+      right: right,
+      bottom: bottom,
+      positionedWidth: positionedWidth,
+      positionedHeight: positionedHeight,
     );
   }
 }
@@ -321,6 +745,33 @@ class UImageMemory extends StatelessWidget {
     this.height,
     this.placeholder,
     this.fit = BoxFit.contain,
+    this.onTap,
+    this.onPress,
+    this.onLongPress,
+    this.onDoubleTap,
+    this.splash = false,
+    this.pressedScale,
+    this.cursor,
+    this.onHover,
+    this.margin,
+    this.opacity,
+    this.tooltip,
+    this.heroTag,
+    this.visible = true,
+    this.scale,
+    this.rotate,
+    this.translate,
+    this.center = false,
+    this.safeArea = false,
+    this.expanded,
+    this.flexible,
+    this.positioned = false,
+    this.left,
+    this.top,
+    this.right,
+    this.bottom,
+    this.positionedWidth,
+    this.positionedHeight,
     super.key,
   });
 
@@ -330,11 +781,38 @@ class UImageMemory extends StatelessWidget {
   final double? height;
   final BoxFit fit;
   final String? placeholder;
+  final GestureTapCallback? onTap;
+  final VoidCallback? onPress;
+  final GestureLongPressCallback? onLongPress;
+  final GestureTapCallback? onDoubleTap;
+  final bool splash;
+  final double? pressedScale;
+  final MouseCursor? cursor;
+  final ValueChanged<bool>? onHover;
+  final EdgeInsetsGeometry? margin;
+  final double? opacity;
+  final String? tooltip;
+  final String? heroTag;
+  final bool visible;
+  final double? scale;
+  final double? rotate;
+  final Offset? translate;
+  final bool center;
+  final bool safeArea;
+  final int? expanded;
+  final int? flexible;
+  final bool positioned;
+  final double? left;
+  final double? top;
+  final double? right;
+  final double? bottom;
+  final double? positionedWidth;
+  final double? positionedHeight;
 
   @override
   Widget build(BuildContext context) {
     final double dpr = MediaQuery.maybeDevicePixelRatioOf(context) ?? 1.0;
-    return Image.memory(
+    final Widget img = Image.memory(
       file,
       color: color,
       width: width,
@@ -351,6 +829,36 @@ class UImageMemory extends StatelessWidget {
               height: height,
               fit: fit,
             ),
+    );
+    return uWrap(
+      img,
+      onTap: onTap,
+      onPress: onPress,
+      onLongPress: onLongPress,
+      onDoubleTap: onDoubleTap,
+      splash: splash,
+      pressedScale: pressedScale,
+      cursor: cursor,
+      onHover: onHover,
+      margin: margin,
+      opacity: opacity,
+      tooltip: tooltip,
+      heroTag: heroTag,
+      visible: visible,
+      scale: scale,
+      rotate: rotate,
+      translate: translate,
+      center: center,
+      safeArea: safeArea,
+      expanded: expanded,
+      flexible: flexible,
+      positioned: positioned,
+      left: left,
+      top: top,
+      right: right,
+      bottom: bottom,
+      positionedWidth: positionedWidth,
+      positionedHeight: positionedHeight,
     );
   }
 }

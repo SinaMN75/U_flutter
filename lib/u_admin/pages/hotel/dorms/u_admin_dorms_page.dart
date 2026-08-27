@@ -113,7 +113,8 @@ class _DormPageState extends State<UAdminDormPage> {
                       controller: title,
                       labelText: U.s.title,
                       validator: UValidators.required(message: ""),
-                    ).pSymmetric(vertical: 6),
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
                     UCountryProvincePicker(
                       onCountryChanged: (UCountry i) {},
                       onProvinceChanged: (UProvince i) => province = i,
@@ -124,7 +125,8 @@ class _DormPageState extends State<UAdminDormPage> {
                       labelText: U.s.description,
                       contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                       lines: 3,
-                    ).pSymmetric(vertical: 6),
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
                     const SizedBox(height: 12),
                     UTextFieldAutoCompleteAsync<UUserResponse>(
                       hintText: U.s.admins,

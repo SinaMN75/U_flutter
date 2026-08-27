@@ -20,8 +20,7 @@ abstract class UAppPrices {
 
   static Future<UApiCallCosts?> costs() async => (await settings())?.apiCallCosts;
 
-  static Future<UChargeInternet?> chargeInternet(TagSimOperator operator) async =>
-      (await settings())?.chargeInternet.firstWhereOrNull((UChargeInternet e) => e.operator == operator.number);
+  static Future<UChargeInternet?> chargeInternet(TagSimOperator operator) async => (await settings())?.chargeInternet.firstWhereOrNull((UChargeInternet e) => e.operator == operator.number);
 
   static Future<double> chargeTaxPercent() async => (await settings())?.chargeInternetTaxPercent ?? 0;
 

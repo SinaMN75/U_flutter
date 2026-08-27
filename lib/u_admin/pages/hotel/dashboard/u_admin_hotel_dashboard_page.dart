@@ -211,13 +211,13 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
           children: <Widget>[
             const Icon(Icons.event_busy_rounded, size: 20),
             const SizedBox(width: 8),
-            UTextTitleSmall(U.s.contractsExpiringSoon, fontWeight: FontWeight.w700).expanded(),
+            UTextTitleSmall(U.s.contractsExpiringSoon, fontWeight: FontWeight.w700, expanded: 1),
             TextButton(onPressed: UAdminPageSwitcher.contracts, child: Text(U.s.contracts)),
           ],
         ),
         const Divider(height: 16),
         if (r.expiringContracts.isEmpty)
-          UTextBodySmall(U.s.noData).pSymmetric(vertical: 12)
+          UTextBodySmall(U.s.noData, margin: const EdgeInsets.symmetric(vertical: 12))
         else
           ListView.separated(
             shrinkWrap: true,
@@ -248,13 +248,13 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
           children: <Widget>[
             const Icon(Icons.warning_amber_rounded, size: 20),
             const SizedBox(width: 8),
-            UTextTitleSmall(U.s.overdueInvoices, fontWeight: FontWeight.w700).expanded(),
+            UTextTitleSmall(U.s.overdueInvoices, fontWeight: FontWeight.w700, expanded: 1),
             TextButton(onPressed: UAdminPageSwitcher.invoices, child: Text(U.s.invoices)),
           ],
         ),
         const Divider(height: 16),
         if (r.overdueInvoices.isEmpty)
-          UTextBodySmall(U.s.noData).pSymmetric(vertical: 12)
+          UTextBodySmall(U.s.noData, margin: const EdgeInsets.symmetric(vertical: 12))
         else
           ListView.separated(
             shrinkWrap: true,
@@ -290,13 +290,13 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
           children: <Widget>[
             const Icon(Icons.description_rounded, size: 20),
             const SizedBox(width: 8),
-            UTextTitleSmall(U.s.recentContracts, fontWeight: FontWeight.w700).expanded(),
+            UTextTitleSmall(U.s.recentContracts, fontWeight: FontWeight.w700, expanded: 1),
             TextButton(onPressed: UAdminPageSwitcher.contracts, child: Text(U.s.contracts)),
           ],
         ),
         const Divider(height: 16),
         if (r.recentContracts.isEmpty)
-          UTextBodySmall(U.s.noData).pSymmetric(vertical: 12)
+          UTextBodySmall(U.s.noData, margin: const EdgeInsets.symmetric(vertical: 12))
         else
           ListView.separated(
             shrinkWrap: true,
@@ -333,7 +333,7 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
         ),
         const Divider(height: 16),
         if (r.recentUsers.isEmpty)
-          UTextBodySmall(U.s.noData).pSymmetric(vertical: 12)
+          UTextBodySmall(U.s.noData, margin: const EdgeInsets.symmetric(vertical: 12))
         else
           ListView.separated(
             shrinkWrap: true,

@@ -31,14 +31,16 @@ class UProcessStepsIndicator extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 color: _labelColor(context, step.status),
                 fontWeight: step.status == TagProcessStepStatus.current ? FontWeight.bold : FontWeight.normal,
+                expanded: 3,
               ),
-            ).expanded(flex: 3),
+            ),
             if (!isLast)
               UContainer(
                 height: 3,
                 margin: const EdgeInsets.only(bottom: 20),
                 color: _lineColor(context, step.status),
-              ).expanded(),
+                expanded: 1,
+              ),
           ],
         ).expanded();
       }),

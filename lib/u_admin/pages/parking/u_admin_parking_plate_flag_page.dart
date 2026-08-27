@@ -47,8 +47,7 @@ class _UAdminParkingPlateFlagPageState extends State<UAdminParkingPlateFlagPage>
     ),
   );
 
-  String _kind(UParkingPlateFlagResponse i) =>
-      TagParkingPlateFlag.values.firstWhereOrNull((TagParkingPlateFlag t) => i.tags.contains(t.number))?.localizedTitle ?? "-";
+  String _kind(UParkingPlateFlagResponse i) => TagParkingPlateFlag.values.firstWhereOrNull((TagParkingPlateFlag t) => i.tags.contains(t.number))?.localizedTitle ?? "-";
 
   Widget _itemDesktop(UParkingPlateFlagResponse i, int index) => URow(
     spacing: 8,
@@ -111,9 +110,7 @@ class _UAdminParkingPlateFlagPageState extends State<UAdminParkingPlateFlagPage>
                     UPlateField(onPlateChange: (String value) => plate = value).pSymmetric(vertical: 6),
                     UDropDownField<TagParkingPlateFlag>(
                       initialValue: kind,
-                      items: TagParkingPlateFlag.values
-                          .map((TagParkingPlateFlag v) => DropdownMenuItem<TagParkingPlateFlag>(value: v, child: Text(v.localizedTitle)))
-                          .toList(),
+                      items: TagParkingPlateFlag.values.map((TagParkingPlateFlag v) => DropdownMenuItem<TagParkingPlateFlag>(value: v, child: Text(v.localizedTitle))).toList(),
                       onChanged: (TagParkingPlateFlag? value) => setDialogState(() => kind = value ?? TagParkingPlateFlag.debt),
                     ).pSymmetric(vertical: 6),
                     UTextField(controller: reason, labelText: U.s.reason, lines: 2).pSymmetric(vertical: 6),
@@ -124,8 +121,7 @@ class _UAdminParkingPlateFlagPageState extends State<UAdminParkingPlateFlagPage>
                         keyboardType: TextInputType.number,
                         formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
                       ).pSymmetric(vertical: 6),
-                    if (kind == TagParkingPlateFlag.reservation)
-                      UTextField(controller: spotNumber, labelText: U.s.spotNumber).pSymmetric(vertical: 6),
+                    if (kind == TagParkingPlateFlag.reservation) UTextField(controller: spotNumber, labelText: U.s.spotNumber).pSymmetric(vertical: 6),
                     const SizedBox(height: 20),
                     UButtonSubmitCancel(
                       onSubmit: () => UValidators.validateForm(

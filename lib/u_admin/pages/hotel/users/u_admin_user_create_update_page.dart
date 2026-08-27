@@ -67,6 +67,7 @@ class _UserCreateUpdateDialogState extends State<UAdminUserCreateUpdateDialog> {
                 UColumn(
                   spacing: 8,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
+                  margin: const EdgeInsets.symmetric(vertical: 6),
                   children: <Widget>[
                     UTextField(
                       controller: c.controllerFirstName,
@@ -79,49 +80,56 @@ class _UserCreateUpdateDialogState extends State<UAdminUserCreateUpdateDialog> {
                       validator: UValidators.required(message: U.s.required),
                     ),
                   ],
-                ).pSymmetric(vertical: 6)
+                )
               else
                 URow(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  margin: const EdgeInsets.symmetric(vertical: 6),
                   children: <Widget>[
                     UTextField(
                       controller: c.controllerFirstName,
                       labelText: U.s.firstName,
                       validator: UValidators.required(message: U.s.required),
-                    ).expanded(),
+                      expanded: 1,
+                    ),
                     const SizedBox(width: 10),
                     UTextField(
                       controller: c.controllerLastName,
                       labelText: U.s.lastName,
                       validator: UValidators.required(message: U.s.required),
-                    ).expanded(),
+                      expanded: 1,
+                    ),
                   ],
-                ).pSymmetric(vertical: 6),
+                ),
               UTextField(
                 controller: c.controllerUserName,
                 labelText: U.s.username,
                 readOnly: _isEdit,
                 prefix: const Icon(Icons.alternate_email_rounded, size: 18),
                 validator: UValidators.required(message: U.s.required),
-              ).pSymmetric(vertical: 6),
+                margin: const EdgeInsets.symmetric(vertical: 6),
+              ),
               UTextField(
                 controller: c.controllerFatherName,
                 labelText: U.s.fatherName,
                 validator: UValidators.required(message: U.s.required),
-              ).pSymmetric(vertical: 6),
+                margin: const EdgeInsets.symmetric(vertical: 6),
+              ),
               UTextField(
                 controller: c.controllerPhoneNumber,
                 labelText: U.s.phoneNumber,
                 keyboardType: TextInputType.phone,
                 prefix: const Icon(Icons.phone_rounded, size: 18),
                 validator: UValidators.required(message: U.s.required),
-              ).pSymmetric(vertical: 6),
+                margin: const EdgeInsets.symmetric(vertical: 6),
+              ),
               UTextField(
                 controller: c.controllerEmail,
                 labelText: U.s.email,
                 keyboardType: TextInputType.emailAddress,
                 prefix: const Icon(Icons.email_rounded, size: 18),
-              ).pSymmetric(vertical: 6),
+                margin: const EdgeInsets.symmetric(vertical: 6),
+              ),
               UTextFieldDatePicker(
                 jalali: true,
                 controller: c.controllerBirthDate,
@@ -137,7 +145,8 @@ class _UserCreateUpdateDialogState extends State<UAdminUserCreateUpdateDialog> {
                 labelText: U.s.password,
                 keyboardType: TextInputType.visiblePassword,
                 prefix: const Icon(Icons.lock_outline_rounded, size: 18),
-              ).pSymmetric(vertical: 6),
+                margin: const EdgeInsets.symmetric(vertical: 6),
+              ),
               const Divider(height: 20),
               UTextBodySmall(U.s.gender, color: UAdminTheme.grey).alignAtCenterLeft(),
               Obx(

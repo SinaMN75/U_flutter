@@ -190,11 +190,12 @@ class _UAdminFileManagerPageState extends State<UAdminFileManagerPage> {
         ),
         UColumn(
           crossAxisAlignment: CrossAxisAlignment.start,
+          expanded: 1,
           children: <Widget>[
             UTextHeadlineSmall(U.s.fileManager, fontWeight: FontWeight.bold),
             UTextBodySmall("wwwroot/${_path.isEmpty ? "" : _path}", color: cs.onSurface.withValues(alpha: 0.6)),
           ],
-        ).expanded(),
+        ),
         if (!_loading && _preview == null)
           URow(
             mainAxisSize: MainAxisSize.min,
@@ -375,7 +376,7 @@ class _UAdminFileManagerPageState extends State<UAdminFileManagerPage> {
         URow(
           children: <Widget>[
             Icon(_iconFor(e), size: 18, color: _accentFor(e, cs)),
-            UTextBodyMedium(e.name, fontWeight: FontWeight.w600, maxLines: 1, overflow: TextOverflow.ellipsis).expanded(),
+            UTextBodyMedium(e.name, fontWeight: FontWeight.w600, maxLines: 1, overflow: TextOverflow.ellipsis, expanded: 1),
             _menu(e, cs),
           ],
         ),
@@ -422,9 +423,9 @@ class _UAdminFileManagerPageState extends State<UAdminFileManagerPage> {
 
   Widget _listHeader(ColorScheme cs) => URow(
     children: <Widget>[
-      UTextLabelMedium(U.s.name, color: cs.onSurface.withValues(alpha: 0.6), fontWeight: FontWeight.bold).expanded(flex: 5),
-      UTextLabelMedium(U.s.size, color: cs.onSurface.withValues(alpha: 0.6), fontWeight: FontWeight.bold).expanded(flex: 2),
-      UTextLabelMedium(U.s.modified, color: cs.onSurface.withValues(alpha: 0.6), fontWeight: FontWeight.bold).expanded(flex: 3),
+      UTextLabelMedium(U.s.name, color: cs.onSurface.withValues(alpha: 0.6), fontWeight: FontWeight.bold, expanded: 5),
+      UTextLabelMedium(U.s.size, color: cs.onSurface.withValues(alpha: 0.6), fontWeight: FontWeight.bold, expanded: 2),
+      UTextLabelMedium(U.s.modified, color: cs.onSurface.withValues(alpha: 0.6), fontWeight: FontWeight.bold, expanded: 3),
       const SizedBox(width: 40),
     ],
   ).pSymmetric(horizontal: 16, vertical: 12);
@@ -436,14 +437,15 @@ class _UAdminFileManagerPageState extends State<UAdminFileManagerPage> {
     child: URow(
       children: <Widget>[
         URow(
+          expanded: 5,
           spacing: 12,
           children: <Widget>[
             SizedBox(width: 34, height: 34, child: _thumb(e, cs, radius: 8)),
-            UTextBodyMedium(e.name, fontWeight: FontWeight.w500, maxLines: 1, overflow: TextOverflow.ellipsis).expanded(),
+            UTextBodyMedium(e.name, fontWeight: FontWeight.w500, maxLines: 1, overflow: TextOverflow.ellipsis, expanded: 1),
           ],
-        ).expanded(flex: 5),
-        UTextBodySmall(e.isDirectory ? "—" : _humanSize(e.size), color: cs.onSurface.withValues(alpha: 0.7)).expanded(flex: 2),
-        UTextBodySmall(_formatDate(e.modifiedAt), color: cs.onSurface.withValues(alpha: 0.7)).expanded(flex: 3),
+        ),
+        UTextBodySmall(e.isDirectory ? "—" : _humanSize(e.size), color: cs.onSurface.withValues(alpha: 0.7), expanded: 1),
+        UTextBodySmall(_formatDate(e.modifiedAt), color: cs.onSurface.withValues(alpha: 0.7), expanded: 1),
         SizedBox(width: 40, child: _menu(e, cs)),
       ],
     ).pSymmetric(horizontal: 16, vertical: 10),
@@ -539,11 +541,12 @@ class _UAdminFileManagerPageState extends State<UAdminFileManagerPage> {
       UColumn(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
+        expanded: 1,
         children: <Widget>[
           UTextTitleSmall(e.name, fontWeight: FontWeight.bold, maxLines: 1, overflow: TextOverflow.ellipsis),
           UTextLabelSmall(_humanSize(e.size), color: cs.onSurface.withValues(alpha: 0.5)),
         ],
-      ).expanded(),
+      ),
       IconButton(icon: const Icon(Icons.open_in_new_rounded), tooltip: U.s.openInBrowser, onPressed: () => _openInBrowser(e)),
       IconButton(icon: const Icon(Icons.download_rounded), tooltip: U.s.download, onPressed: () => _download(e)),
     ],

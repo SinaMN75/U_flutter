@@ -123,9 +123,7 @@ class _UAdminParkingTariffPageState extends State<UAdminParkingTariffPage> {
                   children: <Widget>[
                     UDropDownField<TagVehicle>(
                       initialValue: vehicleType,
-                      items: TagVehicle.values
-                          .map((TagVehicle v) => DropdownMenuItem<TagVehicle>(value: v, child: Text(v.localizedTitle)))
-                          .toList(),
+                      items: TagVehicle.values.map((TagVehicle v) => DropdownMenuItem<TagVehicle>(value: v, child: Text(v.localizedTitle))).toList(),
                       onChanged: (TagVehicle? value) => setDialogState(() => vehicleType = value ?? TagVehicle.car),
                     ).pSymmetric(vertical: 6),
                     _money(entrance, U.s.entrancePrice),

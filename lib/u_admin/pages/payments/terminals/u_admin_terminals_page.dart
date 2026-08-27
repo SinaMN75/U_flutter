@@ -128,9 +128,9 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                   DropdownMenuItem<TagTerminal>(value: TagTerminal.wallCashless, child: Text(TagTerminal.wallCashless.localizedTitle)),
                 ],
               ).pSymmetric(vertical: 6),
-              UTextField(controller: c.serialFilter, labelText: U.s.serial).pSymmetric(vertical: 6),
-              if (widget.merchant == null) UTextField(controller: c.merchantIdFilter, labelText: U.s.merchantId).pSymmetric(vertical: 6),
-              UTextField(controller: c.creatorIdFilter, labelText: U.s.creatorId).pSymmetric(vertical: 6),
+              UTextField(controller: c.serialFilter, labelText: U.s.serial, margin: const EdgeInsets.symmetric(vertical: 6)),
+              if (widget.merchant == null) UTextField(controller: c.merchantIdFilter, labelText: U.s.merchantId, margin: const EdgeInsets.symmetric(vertical: 6)),
+              UTextField(controller: c.creatorIdFilter, labelText: U.s.creatorId, margin: const EdgeInsets.symmetric(vertical: 6)),
               UTextFieldDatePicker(
                 jalali: true,
                 controller: c.fromCreatedController,
@@ -193,10 +193,11 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                     controller: serial,
                     labelText: U.s.serial,
                     validator: UValidators.required(message: U.s.required),
-                  ).pSymmetric(vertical: 6),
-                  UTextField(controller: simCardNumber, labelText: U.s.simCardNumber, keyboardType: TextInputType.phone).pSymmetric(vertical: 6),
-                  UTextField(controller: simCardSerial, labelText: U.s.simCardSerial).pSymmetric(vertical: 6),
-                  UTextField(controller: imei, labelText: U.s.imei).pSymmetric(vertical: 6),
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                  ),
+                  UTextField(controller: simCardNumber, labelText: U.s.simCardNumber, keyboardType: TextInputType.phone, margin: const EdgeInsets.symmetric(vertical: 6)),
+                  UTextField(controller: simCardSerial, labelText: U.s.simCardSerial, margin: const EdgeInsets.symmetric(vertical: 6)),
+                  UTextField(controller: imei, labelText: U.s.imei, margin: const EdgeInsets.symmetric(vertical: 6)),
                   UDropDownField<TagTerminal>(
                     initialValue: type.value,
                     onChanged: type.call,
@@ -257,11 +258,12 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                     controller: serial,
                     labelText: U.s.serial,
                     validator: UValidators.required(message: U.s.required),
-                  ).pSymmetric(vertical: 6),
-                  UTextField(controller: simCardNumber, labelText: U.s.simCardNumber, keyboardType: TextInputType.phone).pSymmetric(vertical: 6),
-                  UTextField(controller: simCardSerial, labelText: U.s.simCardSerial).pSymmetric(vertical: 6),
-                  UTextField(controller: imei, labelText: U.s.imei).pSymmetric(vertical: 6),
-                  UTextField(controller: terminalId, labelText: U.s.terminalId).pSymmetric(vertical: 6),
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                  ),
+                  UTextField(controller: simCardNumber, labelText: U.s.simCardNumber, keyboardType: TextInputType.phone, margin: const EdgeInsets.symmetric(vertical: 6)),
+                  UTextField(controller: simCardSerial, labelText: U.s.simCardSerial, margin: const EdgeInsets.symmetric(vertical: 6)),
+                  UTextField(controller: imei, labelText: U.s.imei, margin: const EdgeInsets.symmetric(vertical: 6)),
+                  UTextField(controller: terminalId, labelText: U.s.terminalId, margin: const EdgeInsets.symmetric(vertical: 6)),
                   const SizedBox(height: 20),
                   UButtonSubmitCancel(
                     onSubmit: () => UValidators.validateForm(
@@ -339,17 +341,18 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                       valid(null);
                     },
                   ).pSymmetric(vertical: 6),
-                  UTextField(controller: serial, labelText: U.s.serial).pSymmetric(vertical: 6),
+                  UTextField(controller: serial, labelText: U.s.serial, margin: const EdgeInsets.symmetric(vertical: 6)),
                   if (generateMode.value)
-                    UTextField(controller: length, labelText: U.s.otpLength, keyboardType: TextInputType.number).pSymmetric(vertical: 6)
+                    UTextField(controller: length, labelText: U.s.otpLength, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6))
                   else
-                    UTextField(controller: otp, labelText: U.s.otpCode, keyboardType: TextInputType.number).pSymmetric(vertical: 6),
+                    UTextField(controller: otp, labelText: U.s.otpCode, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
                   URow(
+                    margin: const EdgeInsets.symmetric(vertical: 6),
                     children: <Widget>[
-                      UTextBodyMedium(U.s.adminOtp).expanded(),
+                      UTextBodyMedium(U.s.adminOtp, expanded: 1),
                       Switch(value: admin.value, onChanged: admin.call),
                     ],
-                  ).pSymmetric(vertical: 6),
+                  ),
                   if (result.value.isNotEmpty)
                     UContainer(
                       width: double.infinity,

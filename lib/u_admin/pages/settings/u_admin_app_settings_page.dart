@@ -177,7 +177,7 @@ class _UAdminAppSettingsPageState extends State<UAdminAppSettingsPage> {
     spacing: 10,
     children: <Widget>[
       Icon(Icons.info_outline_rounded, size: 18, color: cs.primary),
-      UTextBodySmall(U.s.changesApplyLiveAndResetToDefaultsOnServerRestart, color: cs.onSurface.withValues(alpha: 0.75)).expanded(),
+      UTextBodySmall(U.s.changesApplyLiveAndResetToDefaultsOnServerRestart, color: cs.onSurface.withValues(alpha: 0.75), expanded: 1),
     ],
   ).container(backgroundColor: cs.primary.withValues(alpha: 0.08), radius: 12);
 
@@ -207,7 +207,8 @@ class _UAdminAppSettingsPageState extends State<UAdminAppSettingsPage> {
     keyboardType: kt ?? TextInputType.text,
     lines: lines,
     onChanged: onChanged,
-  ).pSymmetric(vertical: 6);
+    margin: const EdgeInsets.symmetric(vertical: 6),
+  );
 
   Widget _num(String label, double initial, ValueChanged<double> onChanged) => _text(
     label,
@@ -217,11 +218,12 @@ class _UAdminAppSettingsPageState extends State<UAdminAppSettingsPage> {
   );
 
   Widget _switch(String label, bool value, ValueChanged<bool> onChanged, ColorScheme cs) => URow(
+    margin: const EdgeInsets.symmetric(vertical: 2),
     children: <Widget>[
-      UTextBodyMedium(label).expanded(),
+      UTextBodyMedium(label, expanded: 1),
       Switch(value: value, onChanged: (bool v) => setState(() => onChanged(v))),
     ],
-  ).pSymmetric(vertical: 2);
+  );
 
   Widget _enum<T extends Enum>(String label, T value, List<T> values, ValueChanged<T> onChanged) => UDropDownField<T>(
     labelText: label,
@@ -244,7 +246,7 @@ class _UAdminAppSettingsPageState extends State<UAdminAppSettingsPage> {
           spacing: 10,
           children: <Widget>[
             Icon(Icons.sim_card_rounded, size: 20, color: cs.primary),
-            const UTextTitleMedium("Charge Internet", fontWeight: FontWeight.bold).expanded(),
+            const UTextTitleMedium("Charge Internet", fontWeight: FontWeight.bold, expanded: 1),
             UButton(
               title: U.s.addItem(""),
               icon: const Icon(Icons.add_rounded, size: 18),
@@ -303,7 +305,7 @@ class _UAdminAppSettingsPageState extends State<UAdminAppSettingsPage> {
   List<Widget> _amountsEditor(String label, List<USettingsChargeAmount> amounts, ColorScheme cs) => <Widget>[
     URow(
       children: <Widget>[
-        UTextLabelLarge(label, color: cs.onSurface.withValues(alpha: 0.7), fontWeight: FontWeight.bold).expanded(),
+        UTextLabelLarge(label, color: cs.onSurface.withValues(alpha: 0.7), fontWeight: FontWeight.bold, expanded: 1),
         TextButton.icon(
           icon: const Icon(Icons.add_rounded, size: 16),
           label: Text(U.s.addItem("")),
@@ -335,7 +337,7 @@ class _UAdminAppSettingsPageState extends State<UAdminAppSettingsPage> {
     color: cs.surface,
     child: URow(
       children: <Widget>[
-        UTextBodySmall(U.baseUrl, color: cs.onSurface.withValues(alpha: 0.5)).expanded(),
+        UTextBodySmall(U.baseUrl, color: cs.onSurface.withValues(alpha: 0.5), expanded: 1),
         UButton(
           title: U.s.save,
           icon: const Icon(Icons.save_rounded, size: 18),

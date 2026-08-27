@@ -96,7 +96,7 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
           child: UColumn(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              UTextField(controller: c.titleFilter, labelText: U.s.title).pSymmetric(vertical: 6),
+              UTextField(controller: c.titleFilter, labelText: U.s.title, margin: const EdgeInsets.symmetric(vertical: 6)),
               const SizedBox(height: 20),
               UButtonSubmitCancel(
                 submitTitle: U.s.filter,
@@ -141,7 +141,8 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
                       controller: title,
                       labelText: U.s.title,
                       validator: UValidators.required(message: ""),
-                    ).pSymmetric(vertical: 6),
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
                     if (widget.room == null)
                       UTextFieldAutoCompleteAsync<UDormRoomResponse>(
                         labelBuilder: (UDormRoomResponse i) => i.dorm == null ? i.title : "${i.dorm!.title} · ${i.title}",
@@ -156,15 +157,17 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
                       keyboardType: TextInputType.number,
                       validator: UValidators.required(message: ""),
                       formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-                    ).pSymmetric(vertical: 6),
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
                     UTextField(
                       controller: rent,
                       labelText: U.s.rent,
                       keyboardType: TextInputType.number,
                       validator: UValidators.required(message: ""),
                       formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-                    ).pSymmetric(vertical: 6),
-                    UTextField(controller: detail, labelText: U.s.description, lines: 2).pSymmetric(vertical: 6),
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
+                    UTextField(controller: detail, labelText: U.s.description, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
                     const SizedBox(height: 20),
                     UButtonSubmitCancel(
                       onSubmit: () => UValidators.validateForm(

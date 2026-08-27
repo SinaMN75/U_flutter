@@ -127,7 +127,8 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
           padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
           itemCount: _localEntries.length,
           itemBuilder: (BuildContext context, int i) => _localCard(cs, _localEntries[i]),
-        ).expanded(),
+          expanded: 1,
+        ),
       ],
     );
   }
@@ -168,7 +169,7 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
       spacing: 8,
       children: <Widget>[
         Icon(Icons.storage_rounded, size: 16, color: cs.onSurfaceVariant),
-        UTextBodySmall(label, color: cs.onSurfaceVariant).expanded(),
+        UTextBodySmall(label, color: cs.onSurfaceVariant, expanded: 1),
         if (onClear != null)
           TextButton.icon(
             onPressed: onClear,
@@ -267,12 +268,13 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
         ),
         UColumn(
           spacing: 2,
+          expanded: 1,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             UTextTitleSmall("$key.dat", fontWeight: FontWeight.w700, maxLines: 1, overflow: TextOverflow.ellipsis),
             UTextBodySmall("${U.s.size}: ${_formatBytes(size)}", color: cs.onSurfaceVariant),
           ],
-        ).expanded(),
+        ),
         IconButton(
           tooltip: U.s.delete,
           onPressed: () => _deleteFile(key),

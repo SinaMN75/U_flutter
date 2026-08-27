@@ -75,9 +75,9 @@ class _WalletPageState extends State<UAdminWalletPage> {
 
   Widget _actions() => URow(
     children: <Widget>[
-      UButton(title: U.s.charge, icon: const Icon(Icons.add_card_rounded, size: 18), onTap: _showChargeDialog).expanded(),
+      UButton(title: U.s.charge, icon: const Icon(Icons.add_card_rounded, size: 18), onTap: _showChargeDialog, expanded: 1),
       const SizedBox(width: 12),
-      UButton(title: U.s.transfer, icon: const Icon(Icons.swap_horiz_rounded, size: 18), onTap: _showTransferDialog).expanded(),
+      UButton(title: U.s.transfer, icon: const Icon(Icons.swap_horiz_rounded, size: 18), onTap: _showTransferDialog, expanded: 1),
     ],
   );
 
@@ -156,7 +156,8 @@ class _WalletPageState extends State<UAdminWalletPage> {
                   labelText: U.s.amount,
                   keyboardType: TextInputType.number,
                   validator: UValidators.required(message: U.s.required),
-                ).pSymmetric(vertical: 6),
+                  margin: const EdgeInsets.symmetric(vertical: 6),
+                ),
                 const SizedBox(height: 20),
                 UButtonSubmitCancel(
                   submitTitle: U.s.charge,
@@ -197,8 +198,9 @@ class _WalletPageState extends State<UAdminWalletPage> {
                     labelText: U.s.amount,
                     keyboardType: TextInputType.number,
                     validator: UValidators.required(message: U.s.required),
-                  ).pSymmetric(vertical: 6),
-                  UTextField(controller: detail, labelText: U.s.description).pSymmetric(vertical: 6),
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                  ),
+                  UTextField(controller: detail, labelText: U.s.description, margin: const EdgeInsets.symmetric(vertical: 6)),
                   const SizedBox(height: 20),
                   UButtonSubmitCancel(
                     submitTitle: U.s.transfer,

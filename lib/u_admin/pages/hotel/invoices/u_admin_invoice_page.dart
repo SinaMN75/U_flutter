@@ -215,13 +215,15 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
                 labelText: U.s.minPrice,
                 keyboardType: TextInputType.number,
                 formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-              ).pSymmetric(vertical: 6),
+                margin: const EdgeInsets.symmetric(vertical: 6),
+              ),
               UTextField(
                 controller: c.maxDebtController,
                 labelText: U.s.maxPrice,
                 keyboardType: TextInputType.number,
                 formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-              ).pSymmetric(vertical: 6),
+                margin: const EdgeInsets.symmetric(vertical: 6),
+              ),
               const SizedBox(height: 20),
               UButtonSubmitCancel(
                 submitTitle: U.s.filter,
@@ -290,15 +292,29 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
                       keyboardType: TextInputType.number,
                       validator: UValidators.required(message: ""),
                       formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-                    ).pSymmetric(vertical: 6),
-                    UTextField(controller: creditor, labelText: U.s.creditor, keyboardType: TextInputType.number, formatters: <TextInputFormatter>[UCurrencyInputFormatter()]).pSymmetric(vertical: 6),
-                    UTextField(controller: paid, labelText: U.s.paidAmount, keyboardType: TextInputType.number, formatters: <TextInputFormatter>[UCurrencyInputFormatter()]).pSymmetric(vertical: 6),
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
+                    UTextField(
+                      controller: creditor,
+                      labelText: U.s.creditor,
+                      keyboardType: TextInputType.number,
+                      formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
+                    UTextField(
+                      controller: paid,
+                      labelText: U.s.paidAmount,
+                      keyboardType: TextInputType.number,
+                      formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
                     UTextField(
                       controller: penalty,
                       labelText: U.s.penaltyAmount,
                       keyboardType: TextInputType.number,
                       formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-                    ).pSymmetric(vertical: 6),
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
                     UTextFieldDatePicker(
                       controller: dueCtrl,
                       labelText: U.s.dueDate,
@@ -310,7 +326,7 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
                         dueCtrl.text = d.toJalaliDate();
                       },
                     ).pSymmetric(vertical: 6),
-                    UTextField(controller: description, labelText: U.s.description, lines: 2).pSymmetric(vertical: 6),
+                    UTextField(controller: description, labelText: U.s.description, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
                     const SizedBox(height: 20),
                     UButtonSubmitCancel(
                       onSubmit: () => UValidators.validateForm(

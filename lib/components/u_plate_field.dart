@@ -245,6 +245,7 @@ class _UPlateFieldState extends State<UPlateField> {
         _buildTextField(controller: digits3Controller, focusNode: focus3, hint: "---", readOnly: _isReadOnly).expanded(flex: 3),
         const SizedBox(width: 4),
         UContainer(
+          expanded: 2,
           key: _letterButtonKey,
           onTap: _isReadOnly ? null : _showLetterMenu,
           height: 48,
@@ -257,7 +258,7 @@ class _UPlateFieldState extends State<UPlateField> {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: letter.isEmpty ? _scheme.onSurfaceVariant : (_isReadOnly ? _scheme.onSurfaceVariant : _scheme.onSurface)),
             ),
           ),
-        ).expanded(flex: 2),
+        ),
         const SizedBox(width: 4),
         _buildTextField(controller: digits1Controller, focusNode: focus1, hint: "--", readOnly: _isReadOnly).expanded(flex: 2),
         const SizedBox(width: 4),

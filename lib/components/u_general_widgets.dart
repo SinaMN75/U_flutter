@@ -265,6 +265,7 @@ class USelectionCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               UColumn(
+                expanded: 1,
                 spacing: 5,
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -272,7 +273,7 @@ class USelectionCard extends StatelessWidget {
                   UTextTitleLarge(title, color: scheme.onSurface),
                   if (subtitle != null) UTextBodySmall(subtitle!, color: scheme.onSurfaceVariant),
                 ],
-              ).expanded(),
+              ),
               if (trailing != null)
                 trailing!
               else if (isSelected)
@@ -320,9 +321,13 @@ class UInfoRow extends StatelessWidget {
         if (trailing != null)
           Flexible(child: trailing!)
         else if (isStrong)
-          Flexible(child: UTextTitleMedium(value, color: valueColor ?? scheme.onSurface, textAlign: TextAlign.end))
+          Flexible(
+            child: UTextTitleMedium(value, color: valueColor ?? scheme.onSurface, textAlign: TextAlign.end),
+          )
         else
-          Flexible(child: UTextBodyMedium(value, color: valueColor ?? scheme.onSurface, textAlign: TextAlign.end)),
+          Flexible(
+            child: UTextBodyMedium(value, color: valueColor ?? scheme.onSurface, textAlign: TextAlign.end),
+          ),
       ],
     );
   }
@@ -451,12 +456,14 @@ class UAlertBanner extends StatelessWidget {
       UAlertTone.danger => scheme.error,
       UAlertTone.info => scheme.primary,
     };
-    final IconData toneIcon = icon ?? switch (tone) {
-      UAlertTone.success => Icons.check_circle_outline_rounded,
-      UAlertTone.warning => Icons.warning_amber_rounded,
-      UAlertTone.danger => Icons.cancel_outlined,
-      UAlertTone.info => Icons.info_outline_rounded,
-    };
+    final IconData toneIcon =
+        icon ??
+        switch (tone) {
+          UAlertTone.success => Icons.check_circle_outline_rounded,
+          UAlertTone.warning => Icons.warning_amber_rounded,
+          UAlertTone.danger => Icons.cancel_outlined,
+          UAlertTone.info => Icons.info_outline_rounded,
+        };
     return UContainer(
       radius: 18,
       padding: const EdgeInsets.all(16),
@@ -473,6 +480,7 @@ class UAlertBanner extends StatelessWidget {
             children: <Widget>[
               Icon(toneIcon, color: color, size: 20),
               UColumn(
+                expanded: 1,
                 spacing: 4,
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -480,7 +488,7 @@ class UAlertBanner extends StatelessWidget {
                   UTextTitleMedium(title, color: color),
                   if (message != null) UTextBodySmall(message!, color: scheme.onSurfaceVariant),
                 ],
-              ).expanded(),
+              ),
             ],
           ),
           if (actions.isNotEmpty) Wrap(spacing: 8, runSpacing: 8, children: actions),

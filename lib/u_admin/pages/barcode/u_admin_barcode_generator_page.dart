@@ -147,12 +147,13 @@ class _UAdminBarcodeGeneratorPageState extends State<UAdminBarcodeGeneratorPage>
     children: <Widget>[
       Icon(Icons.qr_code_2_rounded, size: 34, color: cs.primary).container(padding: const EdgeInsets.all(12), backgroundColor: cs.primary.withValues(alpha: 0.12), radius: 16),
       UColumn(
+        expanded: 1,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           UTextHeadlineSmall(U.s.barcodeqrGenerator, fontWeight: FontWeight.bold),
           UTextBodySmall(U.s.generateAndFullyCustomizeqrCodesAndBarcodesOfEveryKind, color: cs.onSurface.withValues(alpha: 0.6)),
         ],
-      ).expanded(),
+      ),
     ],
   );
 
@@ -193,8 +194,8 @@ class _UAdminBarcodeGeneratorPageState extends State<UAdminBarcodeGeneratorPage>
   Widget _actions(ColorScheme cs) => URow(
     spacing: 12,
     children: <Widget>[
-      UButton(title: U.s.share, icon: const Icon(Icons.download_rounded), backgroundColor: cs.primary, foregroundColor: cs.onPrimary, isLoading: _busy, onTap: _savePng).expanded(),
-      UButton(title: "SVG", icon: const Icon(Icons.code_rounded), backgroundColor: cs.surfaceContainerHighest, foregroundColor: cs.onSurface, onTap: _copySvg).expanded(),
+      UButton(title: U.s.share, icon: const Icon(Icons.download_rounded), backgroundColor: cs.primary, foregroundColor: cs.onPrimary, isLoading: _busy, onTap: _savePng, expanded: 1),
+      UButton(title: "SVG", icon: const Icon(Icons.code_rounded), backgroundColor: cs.surfaceContainerHighest, foregroundColor: cs.onSurface, onTap: _copySvg, expanded: 1),
       UButton(title: U.s.reset, icon: const Icon(Icons.refresh_rounded), backgroundColor: cs.surfaceContainerHighest, foregroundColor: cs.onSurface, onTap: _reset),
     ],
   );
@@ -246,7 +247,7 @@ class _UAdminBarcodeGeneratorPageState extends State<UAdminBarcodeGeneratorPage>
     URow(
       spacing: 8,
       children: <Widget>[
-        UButton(title: U.s.logo, icon: const Icon(Icons.image_rounded), type: UButtonType.outlined, onTap: _pickLogo).expanded(),
+        UButton(title: U.s.logo, icon: const Icon(Icons.image_rounded), type: UButtonType.outlined, onTap: _pickLogo, expanded: 1),
         if (_logo != null) UButton(title: U.s.remove, icon: const Icon(Icons.delete_outline_rounded), type: UButtonType.text, onTap: () => setState(() => _logo = null)),
       ],
     ),

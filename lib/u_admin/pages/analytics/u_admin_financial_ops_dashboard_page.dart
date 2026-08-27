@@ -221,13 +221,13 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
           children: <Widget>[
             const Icon(Icons.workspace_premium_rounded, size: 20),
             const SizedBox(width: 8),
-            UTextTitleSmall(U.s.topMerchantsByTerminalCount, fontWeight: FontWeight.w700).expanded(),
+            UTextTitleSmall(U.s.topMerchantsByTerminalCount, fontWeight: FontWeight.w700, expanded: 1),
             TextButton(onPressed: UAdminPageSwitcher.merchants, child: Text(U.s.merchants)),
           ],
         ),
         const Divider(height: 16),
         if (r.topMerchants.isEmpty)
-          UTextBodySmall(U.s.noData).pSymmetric(vertical: 12)
+          UTextBodySmall(U.s.noData, margin: const EdgeInsets.symmetric(vertical: 12))
         else
           ListView.separated(
             shrinkWrap: true,
@@ -269,13 +269,13 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
           children: <Widget>[
             const Icon(Icons.receipt_long_rounded, size: 20),
             const SizedBox(width: 8),
-            UTextTitleSmall(U.s.recentTransactions, fontWeight: FontWeight.w700).expanded(),
+            UTextTitleSmall(U.s.recentTransactions, fontWeight: FontWeight.w700, expanded: 1),
             TextButton(onPressed: UAdminPageSwitcher.transactions, child: Text(U.s.transactions)),
           ],
         ),
         const Divider(height: 16),
         if (r.recentTransactions.isEmpty)
-          UTextBodySmall(U.s.noData).pSymmetric(vertical: 12)
+          UTextBodySmall(U.s.noData, margin: const EdgeInsets.symmetric(vertical: 12))
         else
           ListView.separated(
             shrinkWrap: true,
@@ -309,13 +309,13 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
               children: <Widget>[
                 const Icon(Icons.storefront_rounded, size: 20),
                 const SizedBox(width: 8),
-                UTextTitleSmall(U.s.recentlyOnboardedMerchants, fontWeight: FontWeight.w700).expanded(),
+                UTextTitleSmall(U.s.recentlyOnboardedMerchants, fontWeight: FontWeight.w700, expanded: 1),
                 TextButton(onPressed: UAdminPageSwitcher.merchants, child: Text(U.s.merchants)),
               ],
             ),
             const Divider(height: 16),
             if (r.recentMerchants.isEmpty)
-              UTextBodySmall(U.s.noData).pSymmetric(vertical: 12)
+              UTextBodySmall(U.s.noData, margin: const EdgeInsets.symmetric(vertical: 12))
             else
               ListView.separated(
                 shrinkWrap: true,
@@ -347,7 +347,7 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
             ),
             const Divider(height: 16),
             if (r.recentUsers.isEmpty)
-              UTextBodySmall(U.s.noData).pSymmetric(vertical: 12)
+              UTextBodySmall(U.s.noData, margin: const EdgeInsets.symmetric(vertical: 12))
             else
               ListView.separated(
                 shrinkWrap: true,

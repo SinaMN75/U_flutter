@@ -153,12 +153,14 @@ class _TransactionsPageState extends State<UAdminTransactionsPage> {
                     labelText: U.s.amount,
                     keyboardType: TextInputType.number,
                     validator: UValidators.required(message: U.s.required),
-                  ).pSymmetric(vertical: 6),
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                  ),
                   UTextField(
                     controller: tracking,
                     labelText: U.s.trackingNumber,
                     validator: UValidators.required(message: U.s.required),
-                  ).pSymmetric(vertical: 6),
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                  ),
                   UDropDownField<TagTxn?>(
                     initialValue: tag.value,
                     onChanged: (TagTxn? v) => tag.value = v ?? tag.value,
@@ -199,8 +201,8 @@ class _TransactionsPageState extends State<UAdminTransactionsPage> {
               child: UColumn(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  UTextField(controller: amount, labelText: U.s.amount, keyboardType: TextInputType.number).pSymmetric(vertical: 6),
-                  UTextField(controller: tracking, labelText: U.s.trackingNumber).pSymmetric(vertical: 6),
+                  UTextField(controller: amount, labelText: U.s.amount, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
+                  UTextField(controller: tracking, labelText: U.s.trackingNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
                   UDropDownField<TagTxn?>(
                     initialValue: tag.value,
                     onChanged: (TagTxn? v) => tag.value = v ?? tag.value,

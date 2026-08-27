@@ -358,7 +358,6 @@ class ParkingService {
     return result;
   }
 
-
   Future<(UResponse<List<UParkingTariffResponse>>?, UEmptyResponse?, String?)> readParkingTariff({
     required UParkingTariffReadParams p,
     required Function(UResponse<List<UParkingTariffResponse>> r)? onOk,
@@ -371,7 +370,10 @@ class ParkingService {
       endpoint: "${U.baseUrl}/parking/ReadParkingTariff",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
       onSuccess: (Response r) {
-        final UResponse<List<UParkingTariffResponse>> ok = UResponse<List<UParkingTariffResponse>>.fromJson(r.body, (dynamic i) => List<UParkingTariffResponse>.from((i as List<dynamic>).map((dynamic x) => UParkingTariffResponse.fromMap(x))));
+        final UResponse<List<UParkingTariffResponse>> ok = UResponse<List<UParkingTariffResponse>>.fromJson(
+          r.body,
+          (dynamic i) => List<UParkingTariffResponse>.from((i as List<dynamic>).map((dynamic x) => UParkingTariffResponse.fromMap(x))),
+        );
         result = (ok, null, null);
         onOk?.call(ok);
       },
@@ -387,7 +389,6 @@ class ParkingService {
     );
     return result;
   }
-
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> updateParkingTariff({
     required UParkingTariffUpdateParams p,
@@ -418,7 +419,6 @@ class ParkingService {
     return result;
   }
 
-
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteParkingTariff({
     required UIdParams p,
     required Function(UEmptyResponse r)? onOk,
@@ -447,7 +447,6 @@ class ParkingService {
     );
     return result;
   }
-
 
   Future<(UResponse<String>?, UEmptyResponse?, String?)> createParkingSubscription({
     required UParkingSubscriptionCreateParams p,
@@ -478,7 +477,6 @@ class ParkingService {
     return result;
   }
 
-
   Future<(UResponse<List<UParkingSubscriptionResponse>>?, UEmptyResponse?, String?)> readParkingSubscription({
     required UParkingSubscriptionReadParams p,
     required Function(UResponse<List<UParkingSubscriptionResponse>> r)? onOk,
@@ -491,7 +489,10 @@ class ParkingService {
       endpoint: "${U.baseUrl}/parking/ReadParkingSubscription",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
       onSuccess: (Response r) {
-        final UResponse<List<UParkingSubscriptionResponse>> ok = UResponse<List<UParkingSubscriptionResponse>>.fromJson(r.body, (dynamic i) => List<UParkingSubscriptionResponse>.from((i as List<dynamic>).map((dynamic x) => UParkingSubscriptionResponse.fromMap(x))));
+        final UResponse<List<UParkingSubscriptionResponse>> ok = UResponse<List<UParkingSubscriptionResponse>>.fromJson(
+          r.body,
+          (dynamic i) => List<UParkingSubscriptionResponse>.from((i as List<dynamic>).map((dynamic x) => UParkingSubscriptionResponse.fromMap(x))),
+        );
         result = (ok, null, null);
         onOk?.call(ok);
       },
@@ -507,7 +508,6 @@ class ParkingService {
     );
     return result;
   }
-
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> updateParkingSubscription({
     required UParkingSubscriptionUpdateParams p,
@@ -538,7 +538,6 @@ class ParkingService {
     return result;
   }
 
-
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteParkingSubscription({
     required UIdParams p,
     required Function(UEmptyResponse r)? onOk,
@@ -567,7 +566,6 @@ class ParkingService {
     );
     return result;
   }
-
 
   Future<(UResponse<String>?, UEmptyResponse?, String?)> createParkingPlateFlag({
     required UParkingPlateFlagCreateParams p,
@@ -598,7 +596,6 @@ class ParkingService {
     return result;
   }
 
-
   Future<(UResponse<List<UParkingPlateFlagResponse>>?, UEmptyResponse?, String?)> readParkingPlateFlag({
     required UParkingPlateFlagReadParams p,
     required Function(UResponse<List<UParkingPlateFlagResponse>> r)? onOk,
@@ -611,7 +608,10 @@ class ParkingService {
       endpoint: "${U.baseUrl}/parking/ReadParkingPlateFlag",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
       onSuccess: (Response r) {
-        final UResponse<List<UParkingPlateFlagResponse>> ok = UResponse<List<UParkingPlateFlagResponse>>.fromJson(r.body, (dynamic i) => List<UParkingPlateFlagResponse>.from((i as List<dynamic>).map((dynamic x) => UParkingPlateFlagResponse.fromMap(x))));
+        final UResponse<List<UParkingPlateFlagResponse>> ok = UResponse<List<UParkingPlateFlagResponse>>.fromJson(
+          r.body,
+          (dynamic i) => List<UParkingPlateFlagResponse>.from((i as List<dynamic>).map((dynamic x) => UParkingPlateFlagResponse.fromMap(x))),
+        );
         result = (ok, null, null);
         onOk?.call(ok);
       },
@@ -627,7 +627,6 @@ class ParkingService {
     );
     return result;
   }
-
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> updateParkingPlateFlag({
     required UParkingPlateFlagUpdateParams p,
@@ -658,7 +657,6 @@ class ParkingService {
     return result;
   }
 
-
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteParkingPlateFlag({
     required UIdParams p,
     required Function(UEmptyResponse r)? onOk,
@@ -687,7 +685,6 @@ class ParkingService {
     );
     return result;
   }
-
 
   Future<(UResponse<String>?, UEmptyResponse?, String?)> createParkingStaff({
     required UParkingStaffCreateParams p,
@@ -718,7 +715,6 @@ class ParkingService {
     return result;
   }
 
-
   Future<(UResponse<List<UParkingStaffResponse>>?, UEmptyResponse?, String?)> readParkingStaff({
     required UParkingStaffReadParams p,
     required Function(UResponse<List<UParkingStaffResponse>> r)? onOk,
@@ -731,7 +727,10 @@ class ParkingService {
       endpoint: "${U.baseUrl}/parking/ReadParkingStaff",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
       onSuccess: (Response r) {
-        final UResponse<List<UParkingStaffResponse>> ok = UResponse<List<UParkingStaffResponse>>.fromJson(r.body, (dynamic i) => List<UParkingStaffResponse>.from((i as List<dynamic>).map((dynamic x) => UParkingStaffResponse.fromMap(x))));
+        final UResponse<List<UParkingStaffResponse>> ok = UResponse<List<UParkingStaffResponse>>.fromJson(
+          r.body,
+          (dynamic i) => List<UParkingStaffResponse>.from((i as List<dynamic>).map((dynamic x) => UParkingStaffResponse.fromMap(x))),
+        );
         result = (ok, null, null);
         onOk?.call(ok);
       },
@@ -747,7 +746,6 @@ class ParkingService {
     );
     return result;
   }
-
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> updateParkingStaff({
     required UParkingStaffUpdateParams p,
@@ -778,7 +776,6 @@ class ParkingService {
     return result;
   }
 
-
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteParkingStaff({
     required UIdParams p,
     required Function(UEmptyResponse r)? onOk,
@@ -807,7 +804,6 @@ class ParkingService {
     );
     return result;
   }
-
 
   Future<(UResponse<UParkingShiftResponse>?, UEmptyResponse?, String?)> openParkingShift({
     required UParkingShiftOpenParams p,
@@ -838,7 +834,6 @@ class ParkingService {
     return result;
   }
 
-
   Future<(UResponse<List<UParkingShiftResponse>>?, UEmptyResponse?, String?)> readParkingShift({
     required UParkingShiftReadParams p,
     required Function(UResponse<List<UParkingShiftResponse>> r)? onOk,
@@ -851,7 +846,10 @@ class ParkingService {
       endpoint: "${U.baseUrl}/parking/ReadParkingShift",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
       onSuccess: (Response r) {
-        final UResponse<List<UParkingShiftResponse>> ok = UResponse<List<UParkingShiftResponse>>.fromJson(r.body, (dynamic i) => List<UParkingShiftResponse>.from((i as List<dynamic>).map((dynamic x) => UParkingShiftResponse.fromMap(x))));
+        final UResponse<List<UParkingShiftResponse>> ok = UResponse<List<UParkingShiftResponse>>.fromJson(
+          r.body,
+          (dynamic i) => List<UParkingShiftResponse>.from((i as List<dynamic>).map((dynamic x) => UParkingShiftResponse.fromMap(x))),
+        );
         result = (ok, null, null);
         onOk?.call(ok);
       },
@@ -867,7 +865,6 @@ class ParkingService {
     );
     return result;
   }
-
 
   Future<(UResponse<UParkingShiftResponse>?, UEmptyResponse?, String?)> closeParkingShift({
     required UParkingShiftCloseParams p,
@@ -898,7 +895,6 @@ class ParkingService {
     return result;
   }
 
-
   Future<(UResponse<UParkingPlateStatusResponse>?, UEmptyResponse?, String?)> readParkingPlateStatus({
     required UParkingPlateStatusParams p,
     required Function(UResponse<UParkingPlateStatusResponse> r)? onOk,
@@ -927,7 +923,6 @@ class ParkingService {
     );
     return result;
   }
-
 
   Future<(UResponse<UParkingReportResponse>?, UEmptyResponse?, String?)> registerParkingEntry({
     required UParkingEntryParams p,
@@ -958,7 +953,6 @@ class ParkingService {
     return result;
   }
 
-
   Future<(UResponse<UParkingBillResponse>?, UEmptyResponse?, String?)> calculateParkingExit({
     required UParkingExitCalculateParams p,
     required Function(UResponse<UParkingBillResponse> r)? onOk,
@@ -987,7 +981,6 @@ class ParkingService {
     );
     return result;
   }
-
 
   Future<(UResponse<UParkingReportResponse>?, UEmptyResponse?, String?)> registerParkingExit({
     required UParkingExitParams p,
@@ -1018,7 +1011,6 @@ class ParkingService {
     return result;
   }
 
-
   Future<(UResponse<UParkingDashboardResponse>?, UEmptyResponse?, String?)> readParkingDashboard({
     required UParkingDashboardParams p,
     required Function(UResponse<UParkingDashboardResponse> r)? onOk,
@@ -1048,7 +1040,6 @@ class ParkingService {
     return result;
   }
 
-
   Future<(UResponse<List<UParkingInsideVehicleResponse>>?, UEmptyResponse?, String?)> readParkingInsideVehicles({
     required UParkingInsideVehiclesParams p,
     required Function(UResponse<List<UParkingInsideVehicleResponse>> r)? onOk,
@@ -1061,7 +1052,10 @@ class ParkingService {
       endpoint: "${U.baseUrl}/parking/ReadParkingInsideVehicles",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
       onSuccess: (Response r) {
-        final UResponse<List<UParkingInsideVehicleResponse>> ok = UResponse<List<UParkingInsideVehicleResponse>>.fromJson(r.body, (dynamic i) => List<UParkingInsideVehicleResponse>.from((i as List<dynamic>).map((dynamic x) => UParkingInsideVehicleResponse.fromMap(x))));
+        final UResponse<List<UParkingInsideVehicleResponse>> ok = UResponse<List<UParkingInsideVehicleResponse>>.fromJson(
+          r.body,
+          (dynamic i) => List<UParkingInsideVehicleResponse>.from((i as List<dynamic>).map((dynamic x) => UParkingInsideVehicleResponse.fromMap(x))),
+        );
         result = (ok, null, null);
         onOk?.call(ok);
       },

@@ -90,7 +90,8 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
             UIconTextHorizontal(
               leading: const Icon(Icons.cloud_off_rounded, color: UAdminTheme.white),
               trailing: UTextBodyMedium(U.s.errorReadingData, color: UAdminTheme.white),
-            ).pSymmetric(vertical: 12)
+              margin: const EdgeInsets.symmetric(vertical: 12),
+            )
           else ...<Widget>[
             Wrap(
               spacing: 24,
@@ -146,7 +147,7 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
           children: <Widget>[
             const Icon(Icons.dns_rounded, size: 20),
             const SizedBox(width: 8),
-            UTextTitleSmall(U.s.osMetrics, fontWeight: FontWeight.w700).expanded(),
+            UTextTitleSmall(U.s.osMetrics, fontWeight: FontWeight.w700, expanded: 1),
             if (m != null)
               UContainer(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -231,7 +232,7 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
     children: <Widget>[
       URow(
         children: <Widget>[
-          UTextBodyMedium(label, fontWeight: FontWeight.w600).expanded(),
+          UTextBodyMedium(label, fontWeight: FontWeight.w600, expanded: 1),
           UTextBodyMedium("${percent.toStringAsFixed(1)}%", color: _usageColor(percent), fontWeight: FontWeight.w700),
         ],
       ),
@@ -341,7 +342,7 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
     children: <Widget>[
       URow(
         children: <Widget>[
-          UTextTitleSmall(title, fontWeight: FontWeight.w700).expanded(),
+          UTextTitleSmall(title, fontWeight: FontWeight.w700, expanded: 1),
           ?trailing,
         ],
       ),
@@ -395,12 +396,12 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
             children: <Widget>[
               const Icon(Icons.local_fire_department_rounded, size: 20, color: UAdminTheme.orange),
               const SizedBox(width: 8),
-              UTextTitleSmall(U.s.slowestRequests, fontWeight: FontWeight.w700).expanded(),
+              UTextTitleSmall(U.s.slowestRequests, fontWeight: FontWeight.w700, expanded: 1),
             ],
           ),
           const Divider(height: 18),
           if (items.isEmpty)
-            UTextBodySmall(U.s.noData).pSymmetric(vertical: 12)
+            UTextBodySmall(U.s.noData, margin: const EdgeInsets.symmetric(vertical: 12))
           else
             ListView.separated(
               shrinkWrap: true,
@@ -487,13 +488,13 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
               color: Theme.of(context).colorScheme.primary,
               padding: const EdgeInsets.all(8),
               children: <Widget>[
-                UTextBodyLarge(U.s.time, color: UAdminTheme.white, textAlign: .center).expanded(),
-                UTextBodyLarge(U.s.method, color: UAdminTheme.white, textAlign: .center).expanded(),
-                UTextBodyLarge(U.s.path, color: UAdminTheme.white, textAlign: .center).expanded(flex: 3),
-                UTextBodyLarge(U.s.status, color: UAdminTheme.white, textAlign: .center).expanded(),
-                UTextBodyLarge(U.s.duration, color: UAdminTheme.white, textAlign: .center).expanded(),
-                UTextBodyLarge(U.s.user, color: UAdminTheme.white, textAlign: .center).expanded(flex: 2),
-                const UTextBodyLarge("IP", color: UAdminTheme.white, textAlign: .center).expanded(flex: 2),
+                UTextBodyLarge(U.s.time, color: UAdminTheme.white, textAlign: .center, expanded: 1),
+                UTextBodyLarge(U.s.method, color: UAdminTheme.white, textAlign: .center, expanded: 1),
+                UTextBodyLarge(U.s.path, color: UAdminTheme.white, textAlign: .center, expanded: 3),
+                UTextBodyLarge(U.s.status, color: UAdminTheme.white, textAlign: .center, expanded: 1),
+                UTextBodyLarge(U.s.duration, color: UAdminTheme.white, textAlign: .center, expanded: 1),
+                UTextBodyLarge(U.s.user, color: UAdminTheme.white, textAlign: .center, expanded: 2),
+                const UTextBodyLarge("IP", color: UAdminTheme.white, textAlign: .center, expanded: 2),
               ],
             ),
             itemBuilder: (BuildContext context, int index) => _itemDesktop(i: data[index], index: index),
@@ -542,21 +543,19 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
     ),
   );
 
-  Widget _itemDesktop({required UApiLogResponse i, required int index}) => InkWell(
+  Widget _itemDesktop({required UApiLogResponse i, required int index}) => URow(
     onTap: () => _openDetail(i),
-    child: URow(
-      spacing: 8,
-      color: index.isOdd ? UAdminTheme.transparent : Theme.of(context).colorScheme.primary.withValues(alpha: 0.16),
-      children: <Widget>[
-        UTextBodySmall(i.createdAt.toJalaliDateTime(), textAlign: .center).ltr().expanded(),
-        _methodChip(i.jsonData.method).alignAtCenter().expanded(),
-        _pathCell(i).expanded(flex: 3),
-        _statusChip(i.statusCode).alignAtCenter().expanded(),
-        UTextBodyMedium("${i.durationMs} ms", textAlign: .center, color: i.durationMs > 1000 ? UAdminTheme.orange : null).expanded(),
-        _userCell(i).expanded(flex: 2),
-        UTextBodySmall(i.ipAddress ?? "-", textAlign: .center, overflow: TextOverflow.ellipsis).ltr().expanded(flex: 2),
-      ],
-    ),
+    spacing: 8,
+    color: index.isOdd ? UAdminTheme.transparent : Theme.of(context).colorScheme.primary.withValues(alpha: 0.16),
+    children: <Widget>[
+      UTextBodySmall(i.createdAt.toJalaliDateTime(), textAlign: .center).ltr().expanded(),
+      _methodChip(i.jsonData.method).alignAtCenter().expanded(),
+      _pathCell(i).expanded(flex: 3),
+      _statusChip(i.statusCode).alignAtCenter().expanded(),
+      UTextBodyMedium("${i.durationMs} ms", textAlign: .center, color: i.durationMs > 1000 ? UAdminTheme.orange : null, expanded: 1),
+      _userCell(i).expanded(flex: 2),
+      UTextBodySmall(i.ipAddress ?? "-", textAlign: .center, overflow: TextOverflow.ellipsis).ltr().expanded(flex: 2),
+    ],
   );
 
   Widget _itemResponsive({required UApiLogResponse i, required int index}) => UContainer(
@@ -678,18 +677,19 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
           child: UColumn(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              UTextField(controller: c.pathContainsCtrl, labelText: U.s.pathContains).pSymmetric(vertical: 6),
+              UTextField(controller: c.pathContainsCtrl, labelText: U.s.pathContains, margin: const EdgeInsets.symmetric(vertical: 6)),
               URow(
+                margin: const EdgeInsets.symmetric(vertical: 6),
                 children: <Widget>[
-                  UTextField(controller: c.minDurationCtrl, labelText: U.s.minDurationMs, keyboardType: TextInputType.number).expanded(),
+                  UTextField(controller: c.minDurationCtrl, labelText: U.s.minDurationMs, keyboardType: TextInputType.number, expanded: 1),
                   const SizedBox(width: 8),
-                  UTextField(controller: c.maxDurationCtrl, labelText: U.s.maxDurationMs, keyboardType: TextInputType.number).expanded(),
+                  UTextField(controller: c.maxDurationCtrl, labelText: U.s.maxDurationMs, keyboardType: TextInputType.number, expanded: 1),
                 ],
-              ).pSymmetric(vertical: 6),
-              UTextField(controller: c.statusCodeCtrl, labelText: U.s.exactStatusCode, keyboardType: TextInputType.number).pSymmetric(vertical: 6),
-              UTextField(controller: c.userIdCtrl, labelText: U.s.userId).pSymmetric(vertical: 6),
-              UTextField(controller: c.ipAddressCtrl, labelText: U.s.ipAddress).pSymmetric(vertical: 6),
-              UTextField(controller: c.traceIdCtrl, labelText: U.s.traceId).pSymmetric(vertical: 6),
+              ),
+              UTextField(controller: c.statusCodeCtrl, labelText: U.s.exactStatusCode, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
+              UTextField(controller: c.userIdCtrl, labelText: U.s.userId, margin: const EdgeInsets.symmetric(vertical: 6)),
+              UTextField(controller: c.ipAddressCtrl, labelText: U.s.ipAddress, margin: const EdgeInsets.symmetric(vertical: 6)),
+              UTextField(controller: c.traceIdCtrl, labelText: U.s.traceId, margin: const EdgeInsets.symmetric(vertical: 6)),
               Obx(
                 () => UDropDownField<TagApiLog?>(
                   initialValue: c.methodFilter.value,

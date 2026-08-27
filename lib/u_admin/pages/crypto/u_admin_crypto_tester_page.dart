@@ -190,13 +190,14 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
         radius: 16,
       ),
       UColumn(
+        expanded: 1,
         spacing: 8,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           UTextHeadlineSmall(U.s.cryptoTester, fontWeight: FontWeight.bold),
           UTextBodySmall(U.s.encryptDecryptEncodeAndHashTextLocallyNoServerCalls, color: cs.onSurface.withValues(alpha: 0.6)),
         ],
-      ).expanded(),
+      ),
     ],
   );
 
@@ -417,14 +418,16 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
           backgroundColor: cs.primary,
           foregroundColor: cs.onPrimary,
           onTap: () => _run(true),
-        ).expanded(),
+          expanded: 1,
+        ),
         UButton(
           title: encoding ? U.s.decode : U.s.decrypt,
           icon: Icon(encoding ? Icons.arrow_upward_rounded : Icons.lock_open_rounded),
           backgroundColor: cs.surfaceContainerHighest,
           foregroundColor: cs.onSurface,
           onTap: () => _run(false),
-        ).expanded(),
+          expanded: 1,
+        ),
       ],
     );
   }

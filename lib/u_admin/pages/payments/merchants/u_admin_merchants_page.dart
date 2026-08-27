@@ -117,11 +117,12 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
 
   Widget _kv(String k, String v) => URow(
     crossAxisAlignment: CrossAxisAlignment.start,
+    margin: const EdgeInsets.symmetric(vertical: 6),
     children: <Widget>[
       SizedBox(width: 130, child: UTextBodySmall(k, color: UAdminTheme.grey)),
       Expanded(child: UTextBodyMedium(v, fontWeight: FontWeight.w500)),
     ],
-  ).pSymmetric(vertical: 6);
+  );
 
   void _showFilterDialog() => UNavigator.dialog(
     AlertDialog(
@@ -149,6 +150,7 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
                 ),
               ).pSymmetric(vertical: 6),
               URow(
+                margin: const EdgeInsets.symmetric(vertical: 6),
                 children: <Widget>[
                   Obx(
                     () => UTextFieldAutoComplete<UProvince?>(
@@ -173,7 +175,7 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
                     ),
                   ).expanded(),
                 ],
-              ).pSymmetric(vertical: 6),
+              ),
               UTextFieldDatePicker(
                 jalali: true,
                 controller: c.fromCreatedController,
@@ -192,13 +194,13 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
                   c.toCreatedAt = d;
                 },
               ).pSymmetric(vertical: 6),
-              UTextField(controller: c.titleFilter, labelText: U.s.title).pSymmetric(vertical: 6),
-              UTextField(controller: c.nationalCodeFilter, labelText: U.s.nationalCode).pSymmetric(vertical: 6),
-              UTextField(controller: c.phoneNumberFilter, labelText: U.s.phoneNumber, keyboardType: TextInputType.phone).pSymmetric(vertical: 6),
-              UTextField(controller: c.landlineFilter, labelText: U.s.landline).pSymmetric(vertical: 6),
-              UTextField(controller: c.zipCodeFilter, labelText: U.s.zipCode).pSymmetric(vertical: 6),
-              UTextField(controller: c.merchantIdFilter, labelText: U.s.merchantId).pSymmetric(vertical: 6),
-              UTextField(controller: c.bankAccountIdFilter, labelText: U.s.bankAccountid).pSymmetric(vertical: 6),
+              UTextField(controller: c.titleFilter, labelText: U.s.title, margin: const EdgeInsets.symmetric(vertical: 6)),
+              UTextField(controller: c.nationalCodeFilter, labelText: U.s.nationalCode, margin: const EdgeInsets.symmetric(vertical: 6)),
+              UTextField(controller: c.phoneNumberFilter, labelText: U.s.phoneNumber, keyboardType: TextInputType.phone, margin: const EdgeInsets.symmetric(vertical: 6)),
+              UTextField(controller: c.landlineFilter, labelText: U.s.landline, margin: const EdgeInsets.symmetric(vertical: 6)),
+              UTextField(controller: c.zipCodeFilter, labelText: U.s.zipCode, margin: const EdgeInsets.symmetric(vertical: 6)),
+              UTextField(controller: c.merchantIdFilter, labelText: U.s.merchantId, margin: const EdgeInsets.symmetric(vertical: 6)),
+              UTextField(controller: c.bankAccountIdFilter, labelText: U.s.bankAccountid, margin: const EdgeInsets.symmetric(vertical: 6)),
               const SizedBox(height: 20),
               UButtonSubmitCancel(
                 submitTitle: U.s.filter,
@@ -248,56 +250,66 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
                     controller: title,
                     labelText: U.s.title,
                     validator: UValidators.required(message: U.s.required),
-                  ).pSymmetric(vertical: 6),
-                  UTextField(controller: businessTitle, labelText: U.s.businessTitle).pSymmetric(vertical: 6),
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                  ),
+                  UTextField(controller: businessTitle, labelText: U.s.businessTitle, margin: const EdgeInsets.symmetric(vertical: 6)),
                   UTextField(
                     controller: nationalCode,
                     labelText: U.s.nationalCode,
                     validator: UValidators.required(message: U.s.required),
-                  ).pSymmetric(vertical: 6),
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                  ),
                   UTextField(
                     controller: phoneNumber,
                     labelText: U.s.phoneNumber,
                     keyboardType: TextInputType.phone,
                     validator: UValidators.required(message: U.s.required),
-                  ).pSymmetric(vertical: 6),
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                  ),
                   UTextField(
                     controller: landline,
                     labelText: U.s.landline,
                     validator: UValidators.required(message: U.s.required),
-                  ).pSymmetric(vertical: 6),
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                  ),
                   UTextField(
                     controller: zipCode,
                     labelText: U.s.zipCode,
                     validator: UValidators.required(message: U.s.required),
-                  ).pSymmetric(vertical: 6),
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                  ),
                   UTextField(
                     controller: cityCode,
                     labelText: U.s.cityCode,
                     validator: UValidators.required(message: U.s.required),
-                  ).pSymmetric(vertical: 6),
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                  ),
                   UTextField(
                     controller: mcc,
                     labelText: U.s.mcc,
                     validator: UValidators.required(message: U.s.required),
-                  ).pSymmetric(vertical: 6),
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                  ),
                   UTextField(
                     controller: ownerName,
                     labelText: U.s.ownerName,
                     validator: UValidators.required(message: U.s.required),
-                  ).pSymmetric(vertical: 6),
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                  ),
                   UTextField(
                     controller: ownerPhoneNumber,
                     labelText: U.s.ownerPhoneNumber,
                     keyboardType: TextInputType.phone,
                     validator: UValidators.required(message: U.s.required),
-                  ).pSymmetric(vertical: 6),
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                  ),
                   UTextField(
                     controller: address,
                     labelText: U.s.address,
                     lines: 2,
                     validator: UValidators.required(message: U.s.required),
-                  ).pSymmetric(vertical: 6),
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                  ),
                   const SizedBox(height: 20),
                   UButtonSubmitCancel(
                     onSubmit: () => UValidators.validateForm(

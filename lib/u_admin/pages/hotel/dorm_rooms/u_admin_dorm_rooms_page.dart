@@ -89,7 +89,7 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
           child: UColumn(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              UTextField(controller: c.titleFilter, labelText: U.s.title).pSymmetric(vertical: 6),
+              UTextField(controller: c.titleFilter, labelText: U.s.title, margin: const EdgeInsets.symmetric(vertical: 6)),
               const SizedBox(height: 20),
               UButtonSubmitCancel(
                 submitTitle: U.s.filter,
@@ -131,7 +131,8 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
                     controller: title,
                     labelText: U.s.title,
                     validator: UValidators.required(message: ""),
-                  ).pSymmetric(vertical: 6),
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                  ),
                   if (widget.dorm == null)
                     UTextFieldAutoCompleteAsync<UDormResponse>(
                       labelBuilder: (UDormResponse i) => i.title,
@@ -140,7 +141,7 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
                       fetchData: c.readDorms,
                       hintText: U.s.dorm,
                     ).pSymmetric(vertical: 6),
-                  UTextField(controller: detail, labelText: U.s.description).pSymmetric(vertical: 6),
+                  UTextField(controller: detail, labelText: U.s.description, margin: const EdgeInsets.symmetric(vertical: 6)),
                   const SizedBox(height: 20),
                   UButtonSubmitCancel(
                     onSubmit: () => UValidators.validateForm(

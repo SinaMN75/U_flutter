@@ -190,7 +190,7 @@ class _ReservationPageState extends State<UAdminReservationPage> {
               builder: (BuildContext context, void Function(void Function()) setLocal) => UColumn(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  UTextField(controller: c.guestFilter, labelText: U.s.guest).pSymmetric(vertical: 6),
+                  UTextField(controller: c.guestFilter, labelText: U.s.guest, margin: const EdgeInsets.symmetric(vertical: 6)),
                   if (widget.hotel == null && widget.room == null)
                     UTextFieldAutoCompleteAsync<UHotelResponse>(
                       labelBuilder: (UHotelResponse i) => i.title,
@@ -323,17 +323,19 @@ class _ReservationPageState extends State<UAdminReservationPage> {
                       labelText: U.s.numberOfGuests,
                       keyboardType: TextInputType.number,
                       validator: UValidators.required(message: ""),
-                    ).pSymmetric(vertical: 6),
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
                     UTextField(
                       controller: totalPrice,
                       labelText: U.s.totalPrice,
                       keyboardType: TextInputType.number,
                       formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-                    ).pSymmetric(vertical: 6),
-                    UTextField(controller: guestName, labelText: U.s.guestName).pSymmetric(vertical: 6),
-                    UTextField(controller: guestPhone, labelText: U.s.guestPhone, keyboardType: TextInputType.phone).pSymmetric(vertical: 6),
-                    if (!isEdit) UTextField(controller: penalty, labelText: U.s.dailyPenalty, keyboardType: TextInputType.number).pSymmetric(vertical: 6),
-                    UTextField(controller: notes, labelText: U.s.notes, lines: 2).pSymmetric(vertical: 6),
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
+                    UTextField(controller: guestName, labelText: U.s.guestName, margin: const EdgeInsets.symmetric(vertical: 6)),
+                    UTextField(controller: guestPhone, labelText: U.s.guestPhone, keyboardType: TextInputType.phone, margin: const EdgeInsets.symmetric(vertical: 6)),
+                    if (!isEdit) UTextField(controller: penalty, labelText: U.s.dailyPenalty, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
+                    UTextField(controller: notes, labelText: U.s.notes, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
                     const SizedBox(height: 20),
                     UButtonSubmitCancel(
                       onSubmit: () => UValidators.validateForm(

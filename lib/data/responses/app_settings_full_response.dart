@@ -329,8 +329,7 @@ class USettingsChargeInternet {
     topupAmountsList: _amounts(j["topupAmountsList"]),
   );
 
-  static List<USettingsChargeAmount> _amounts(dynamic list) =>
-      List<USettingsChargeAmount>.from((list as List<dynamic>? ?? <dynamic>[]).map((dynamic x) => USettingsChargeAmount.fromMap(x)));
+  static List<USettingsChargeAmount> _amounts(dynamic list) => List<USettingsChargeAmount>.from((list as List<dynamic>? ?? <dynamic>[]).map((dynamic x) => USettingsChargeAmount.fromMap(x)));
 
   TagSimOperator operator;
   String title;

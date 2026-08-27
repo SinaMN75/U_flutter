@@ -166,7 +166,7 @@ class _ContractPageState extends State<UAdminContractPage> {
               builder: (BuildContext context, void Function(void Function()) setLocal) => UColumn(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  UTextField(controller: c.tenantFilter, labelText: U.s.tenant).pSymmetric(vertical: 6),
+                  UTextField(controller: c.tenantFilter, labelText: U.s.tenant, margin: const EdgeInsets.symmetric(vertical: 6)),
                   UTextFieldAutoCompleteAsync<UDormResponse>(
                     labelBuilder: (UDormResponse i) => i.title,
                     onChanged: (UDormResponse? i) => setLocal(() {
@@ -319,17 +319,25 @@ class _ContractPageState extends State<UAdminContractPage> {
                     ).pSymmetric(vertical: 6),
                     // deposit only applies to monthly contracts; daily contracts have no deposit
                     if (type != TagDormBedContract.daily)
-                      UTextField(controller: deposit, labelText: U.s.deposit, keyboardType: TextInputType.number, formatters: <TextInputFormatter>[UCurrencyInputFormatter()]).pSymmetric(vertical: 6),
+                      UTextField(
+                        controller: deposit,
+                        labelText: U.s.deposit,
+                        keyboardType: TextInputType.number,
+                        formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+                        margin: const EdgeInsets.symmetric(vertical: 6),
+                      ),
                     // the rent field doubles as the fixed per-day price when the contract is daily
                     UTextField(
                       controller: rent,
                       labelText: type == TagDormBedContract.daily ? U.s.dailyPrice : U.s.rent,
                       keyboardType: TextInputType.number,
                       formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-                    ).pSymmetric(vertical: 6),
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
                     // late-payment penalty only makes sense for recurring monthly invoices
-                    if (!isEdit && type != TagDormBedContract.daily) UTextField(controller: penalty, labelText: U.s.dailyPenalty, keyboardType: TextInputType.number).pSymmetric(vertical: 6),
-                    UTextField(controller: description, labelText: U.s.description, lines: 2).pSymmetric(vertical: 6),
+                    if (!isEdit && type != TagDormBedContract.daily)
+                      UTextField(controller: penalty, labelText: U.s.dailyPenalty, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
+                    UTextField(controller: description, labelText: U.s.description, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
                     const SizedBox(height: 20),
                     UButtonSubmitCancel(
                       onSubmit: () => UValidators.validateForm(
