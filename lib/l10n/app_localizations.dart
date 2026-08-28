@@ -6787,6 +6787,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Total'**
   String get total;
+
+  /// No description provided for @screenCaptureNotAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Screen capture is not allowed'**
+  String get screenCaptureNotAllowed;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -1338,5 +1338,6 @@
   "addToReservations": "Add to reservations",
   "spotNumber": "Spot number",
   "areYouSure": "Are you sure?",
-  "total": "Total"
+  "total": "Total",
+  "screenCaptureNotAllowed": "Screen capture is not allowed"
 }

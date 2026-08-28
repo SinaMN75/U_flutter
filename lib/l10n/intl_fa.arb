@@ -1338,5 +1338,6 @@
   "addToReservations": "افزودن به رزروها",
   "spotNumber": "شماره جای پارک",
   "areYouSure": "آیا مطمئن هستید؟",
-  "total": "جمع کل"
+  "total": "جمع کل",
+  "screenCaptureNotAllowed": "تصویربرداری از صفحه مجاز نیست"
 }
