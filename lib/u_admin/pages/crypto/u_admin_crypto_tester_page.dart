@@ -210,12 +210,12 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
       return URow(
             mainAxisSize: MainAxisSize.min,
             spacing: 6,
+            margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
             children: <Widget>[
               Icon(a.icon, size: 16, color: active ? cs.onPrimary : cs.primary),
               UTextLabelLarge(a.label, color: active ? cs.onPrimary : cs.onSurface, fontWeight: FontWeight.w600),
             ],
           )
-          .pSymmetric(horizontal: 14, vertical: 10)
           .container(
             backgroundColor: active ? cs.primary : cs.surfaceContainerHighest.withValues(alpha: 0.5),
             radius: 12,
@@ -241,6 +241,7 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
       child: UColumn(
         spacing: 16,
         crossAxisAlignment: CrossAxisAlignment.start,
+        margin: const EdgeInsets.all(20),
         children: <Widget>[
           URow(
             spacing: 10,
@@ -252,7 +253,7 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
           const Divider(height: 1),
           ...rows,
         ],
-      ).pAll(20),
+      ),
     );
   }
 

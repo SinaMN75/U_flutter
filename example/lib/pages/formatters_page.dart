@@ -36,11 +36,12 @@ class FormattersPage extends StatelessWidget {
       color: null,
       child: URow(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        margin: const EdgeInsets.all(14),
         children: <Widget>[
           const UTextLabelMedium("Result"),
           UTextTitleMedium(result, fontWeight: FontWeight.w700),
         ],
-      ).pAll(14),
+      ),
     ),
   );
 }

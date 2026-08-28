@@ -207,11 +207,12 @@ class _UAdminPnTesterPageState extends State<UAdminPnTesterPage> {
   Widget _apiKeyCard(ColorScheme cs) => UCard(
     child: URow(
       spacing: 12,
+      margin: const EdgeInsets.all(16),
       children: <Widget>[
         Icon(Icons.key_rounded, color: cs.primary),
         UTextField(controller: _apiKeyController, labelText: U.s.apiKey, hintText: U.s.apiKey, expanded: 1),
       ],
-    ).pAll(16),
+    ),
   );
 
   Widget _endpointSelector(ColorScheme cs) => Wrap(
@@ -223,6 +224,7 @@ class _UAdminPnTesterPageState extends State<UAdminPnTesterPage> {
       return URow(
             spacing: 8,
             mainAxisSize: MainAxisSize.min,
+            margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
             children: <Widget>[
               UContainer(
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
@@ -233,7 +235,6 @@ class _UAdminPnTesterPageState extends State<UAdminPnTesterPage> {
               UTextLabelLarge(e.name, color: active ? cs.onPrimary : cs.onSurface, fontWeight: FontWeight.w600),
             ],
           )
-          .pSymmetric(horizontal: 14, vertical: 10)
           .container(
             backgroundColor: active ? cs.primary : cs.surfaceContainerHighest.withValues(alpha: 0.5),
             radius: 12,

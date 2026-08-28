@@ -113,15 +113,16 @@ class _UAdminParkingPlateFlagPageState extends State<UAdminParkingPlateFlagPage>
                       items: TagParkingPlateFlag.values.map((TagParkingPlateFlag v) => DropdownMenuItem<TagParkingPlateFlag>(value: v, child: Text(v.localizedTitle))).toList(),
                       onChanged: (TagParkingPlateFlag? value) => setDialogState(() => kind = value ?? TagParkingPlateFlag.debt),
                     ).pSymmetric(vertical: 6),
-                    UTextField(controller: reason, labelText: U.s.reason, lines: 2).pSymmetric(vertical: 6),
+                    UTextField(controller: reason, labelText: U.s.reason, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
                     if (kind == TagParkingPlateFlag.debt)
                       UTextField(
                         controller: amount,
                         labelText: U.s.amount,
                         keyboardType: TextInputType.number,
                         formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-                      ).pSymmetric(vertical: 6),
-                    if (kind == TagParkingPlateFlag.reservation) UTextField(controller: spotNumber, labelText: U.s.spotNumber).pSymmetric(vertical: 6),
+                        margin: const EdgeInsets.symmetric(vertical: 6),
+                      ),
+                    if (kind == TagParkingPlateFlag.reservation) UTextField(controller: spotNumber, labelText: U.s.spotNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
                     const SizedBox(height: 20),
                     UButtonSubmitCancel(
                       onSubmit: () => UValidators.validateForm(

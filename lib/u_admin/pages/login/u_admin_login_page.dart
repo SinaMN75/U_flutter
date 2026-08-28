@@ -26,19 +26,21 @@ class _UAdminLoginPageState extends State<UAdminLoginPage> {
             child: UColumn(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                UImage(UAdmin.logo, width: 100, height: 100).pSymmetric(vertical: 8),
+                UImage(UAdmin.logo, width: 100, height: 100, margin: const EdgeInsets.symmetric(vertical: 8)),
                 UTextField(
                   hintText: U.s.username,
                   controller: c.controllerUserName,
                   validator: UValidators.required(message: ""),
-                ).pSymmetric(vertical: 8),
+                  margin: const EdgeInsets.symmetric(vertical: 8),
+                ),
                 UTextField(
                   hintText: U.s.password,
                   controller: c.controllerPassword,
                   validator: UValidators.required(message: ""),
                   keyboardType: TextInputType.visiblePassword,
                   obscureText: true,
-                ).pSymmetric(vertical: 8),
+                  margin: const EdgeInsets.symmetric(vertical: 8),
+                ),
                 UButton(
                   width: 1000,
                   onTap: () => c.login(
@@ -48,7 +50,8 @@ class _UAdminLoginPageState extends State<UAdminLoginPage> {
                     },
                   ),
                   title: U.s.enter,
-                ).pSymmetric(vertical: 8),
+                  margin: const EdgeInsets.symmetric(vertical: 8),
+                ),
               ],
             ),
           ).pAll(40),

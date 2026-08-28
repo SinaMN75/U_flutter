@@ -122,20 +122,22 @@ class _UAdminParkingStaffPageState extends State<UAdminParkingStaffPage> {
                 child: UColumn(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    UTextField(controller: firstName, labelText: U.s.firstName).pSymmetric(vertical: 6),
-                    UTextField(controller: lastName, labelText: U.s.lastName).pSymmetric(vertical: 6),
+                    UTextField(controller: firstName, labelText: U.s.firstName, margin: const EdgeInsets.symmetric(vertical: 6)),
+                    UTextField(controller: lastName, labelText: U.s.lastName, margin: const EdgeInsets.symmetric(vertical: 6)),
                     UTextField(
                       controller: userName,
                       labelText: U.s.username,
                       validator: UValidators.required(message: ""),
-                    ).pSymmetric(vertical: 6),
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
                     UTextField(
                       controller: password,
                       labelText: U.s.password,
                       validator: UValidators.required(message: ""),
-                    ).pSymmetric(vertical: 6),
-                    UTextField(controller: phone, labelText: U.s.phoneNumber, keyboardType: TextInputType.phone, maxLength: 15).pSymmetric(vertical: 6),
-                    UTextField(controller: shiftTitle, labelText: U.s.shift).pSymmetric(vertical: 6),
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
+                    UTextField(controller: phone, labelText: U.s.phoneNumber, keyboardType: TextInputType.phone, maxLength: 15, margin: const EdgeInsets.symmetric(vertical: 6)),
+                    UTextField(controller: shiftTitle, labelText: U.s.shift, margin: const EdgeInsets.symmetric(vertical: 6)),
                     const SizedBox(height: 8),
                     ..._selectablePermissions.map(
                       (TagParkingStaff permission) => CheckboxListTile(
@@ -204,8 +206,8 @@ class _UAdminParkingStaffPageState extends State<UAdminParkingStaffPage> {
               child: UColumn(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  UTextField(controller: shiftTitle, labelText: U.s.shift).pSymmetric(vertical: 6),
-                  UTextField(controller: password, labelText: U.s.newPassword).pSymmetric(vertical: 6),
+                  UTextField(controller: shiftTitle, labelText: U.s.shift, margin: const EdgeInsets.symmetric(vertical: 6)),
+                  UTextField(controller: password, labelText: U.s.newPassword, margin: const EdgeInsets.symmetric(vertical: 6)),
                   const SizedBox(height: 8),
                   ..._selectablePermissions.map(
                     (TagParkingStaff permission) => CheckboxListTile(

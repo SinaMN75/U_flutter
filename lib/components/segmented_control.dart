@@ -73,23 +73,20 @@ class USegmentedControl<T extends Object> extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(6),
               ),
-              child: InkWell(
+              child: UContainer(
                 onTap: enabled ? () => onValueChanged(entry.key) : null,
-                borderRadius: BorderRadius.circular(6),
-                child: UContainer(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 10,
-                    horizontal: 12,
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    entry.value,
-                    style: TextStyle(
-                      color: isSelected
-                          ? (selectedColor != null ? _getContrastColor(selectedColor!) : Theme.of(context).colorScheme.onPrimary)
-                          : (unselectedColor ?? Theme.of(context).colorScheme.onSurfaceVariant),
-                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-                    ),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 10,
+                  horizontal: 12,
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  entry.value,
+                  style: TextStyle(
+                    color: isSelected
+                        ? (selectedColor != null ? _getContrastColor(selectedColor!) : Theme.of(context).colorScheme.onPrimary)
+                        : (unselectedColor ?? Theme.of(context).colorScheme.onSurfaceVariant),
+                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                   ),
                 ),
               ),

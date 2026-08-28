@@ -109,7 +109,8 @@ class _PaymentUserCreateUpdateDialogState extends State<UAdminPaymentUserCreateU
                 labelText: U.s.password,
                 keyboardType: TextInputType.visiblePassword,
                 prefix: const Icon(Icons.lock_outline_rounded, size: 18),
-              ).pSymmetric(vertical: 6),
+                margin: const EdgeInsets.symmetric(vertical: 6),
+              ),
               UTextBodySmall(U.s.gender, color: UAdminTheme.grey).alignAtCenterLeft(),
               Obx(
                 () => USegmentedControl<int>(
@@ -144,8 +145,9 @@ class _PaymentUserCreateUpdateDialogState extends State<UAdminPaymentUserCreateU
                 keyboardType: TextInputType.emailAddress,
                 prefix: const Icon(Icons.email_rounded, size: 18),
                 validator: UValidators.email(isRequired: false),
-              ).pSymmetric(vertical: 6),
-              UTextField(controller: c.controllerBio, labelText: U.s.bio, lines: 3).pSymmetric(vertical: 6),
+                margin: const EdgeInsets.symmetric(vertical: 6),
+              ),
+              UTextField(controller: c.controllerBio, labelText: U.s.bio, lines: 3, margin: const EdgeInsets.symmetric(vertical: 6)),
               if (_canManageRoles) ...<Widget>[
                 _sectionTitle(U.s.roles),
                 Obx(
@@ -207,12 +209,14 @@ class _PaymentUserCreateUpdateDialogState extends State<UAdminPaymentUserCreateU
       ? UColumn(
           spacing: 8,
           crossAxisAlignment: CrossAxisAlignment.stretch,
+          margin: const EdgeInsets.symmetric(vertical: 6),
           children: <Widget>[first, second],
-        ).pSymmetric(vertical: 6)
+        )
       : URow(
           crossAxisAlignment: CrossAxisAlignment.start,
+          margin: const EdgeInsets.symmetric(vertical: 6),
           children: <Widget>[first.expanded(), const SizedBox(width: 10), second.expanded()],
-        ).pSymmetric(vertical: 6);
+        );
 
   void _submit() {
     if (!_isEdit) {

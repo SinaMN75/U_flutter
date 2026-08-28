@@ -133,7 +133,7 @@ class _UAdminParkingTariffPageState extends State<UAdminParkingTariffPage> {
                     _money(weekly, U.s.weekly),
                     _money(monthly, U.s.monthly),
                     _money(quarterly, U.s.quarterly),
-                    UTextField(controller: freeMinutes, labelText: U.s.firstMinutesFreeRule(freeMinutes.text), keyboardType: TextInputType.number).pSymmetric(vertical: 6),
+                    UTextField(controller: freeMinutes, labelText: U.s.firstMinutesFreeRule(freeMinutes.text), keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
                     SwitchListTile(
                       value: roundToFullHour,
                       title: UTextBodyMedium(U.s.roundToFullHour),
@@ -187,5 +187,6 @@ class _UAdminParkingTariffPageState extends State<UAdminParkingTariffPage> {
     labelText: label,
     keyboardType: TextInputType.number,
     formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-  ).pSymmetric(vertical: 6);
+    margin: const EdgeInsets.symmetric(vertical: 6),
+  );
 }
