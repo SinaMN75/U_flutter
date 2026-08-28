@@ -1,15 +1,5 @@
 import "package:u/utilities.dart";
 
-// ===========================================================================
-// Conditional engine
-//
-// Every container-family widget below is assembled from these helpers. Each
-// layer (decoration, constraints, gesture, hover, effect) is added ONLY when
-// the caller actually provides a value, so an unused option contributes zero
-// nodes to the widget tree. When nothing is provided the child passes through
-// untouched.
-// ===========================================================================
-
 BorderRadius? _uRadius(BorderRadius? borderRadius, double? radius) => borderRadius ?? ((radius != null && radius != 0) ? BorderRadius.circular(radius) : null);
 
 BoxDecoration? _uDecoration({
@@ -181,11 +171,6 @@ Widget _uModifiers(
   return current;
 }
 
-/// Public conditional shell: applies interaction, effects, and layout
-/// modifiers to any [child], each layer added ONLY when its value is provided.
-/// Shared by the container family and by UImage/UButton/UText/UTextField so
-/// they all expose the same zero-overhead customization surface. Returns the
-/// child untouched when nothing is set.
 Widget uWrap(
   Widget child, {
   BorderRadius? borderRadius,

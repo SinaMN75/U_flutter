@@ -11,18 +11,12 @@ class ExtensionsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ColorScheme scheme = Theme.of(context).colorScheme;
-    final Widget box = UContainer(
-      color: scheme.primaryContainer,
-      radius: 8,
-      width: 90,
-      height: 60,
-      alignment: Alignment.center,
-      child: const UTextLabelLarge("box"),
-    );
+    final Widget box = UContainer(color: scheme.primaryContainer, radius: 8, width: 90, height: 60, alignment: Alignment.center, child: const UTextLabelLarge("box"));
 
     return GalleryPage(
       title: "Extensions",
-      intro: "Every Widget gains chainable helpers, so `child.pAll(16).onTap(...)` replaces nested "
+      intro:
+          "Every Widget gains chainable helpers, so `child.pAll(16).onTap(...)` replaces nested "
           "Padding + GestureDetector. String, num and Iterable get similar sugar.",
       sections: <Widget>[
         DemoSection(
@@ -35,26 +29,20 @@ class ExtensionsPage extends StatelessWidget {
           title: ".card() / .container()",
           description: "Wrap a widget in a themed card or a decorated container with one call.",
           code: r'''child.card(elevation: 3);''',
-          child: const UTextBodyMedium("I live inside a card").pAll(16).card(),
+          child: const UTextBodyMedium("I live inside a card", margin: EdgeInsets.all(16)).card(),
         ),
         DemoSection(
           title: ".rotate() / .scale()",
           description: "Quick transforms without a Transform widget.",
           code: r'''box.rotate(0.15); box.scale(1.2);''',
-          child: URow(
-            spacing: 24,
-            children: <Widget>[box.rotate(0.15), box.scale(1.2)],
-          ),
+          child: URow(spacing: 24, children: <Widget>[box.rotate(0.15), box.scale(1.2)]),
         ),
         DemoSection(
           title: ".rtl()",
           description: "Force right-to-left direction for a subtree — useful for Persian content.",
           code: r'''
 URow(children: <Widget>[Icon(Icons.arrow_back), UTextBodyMedium("راست به چپ")]).rtl();''',
-          child: URow(
-            spacing: 8,
-            children: <Widget>[const Icon(Icons.arrow_back), const UTextBodyMedium("راست به چپ")],
-          ).rtl(),
+          child: URow(spacing: 8, children: <Widget>[const Icon(Icons.arrow_back), const UTextBodyMedium("راست به چپ")]).rtl(),
         ),
         DemoSection(
           title: "Iterable & String extensions",

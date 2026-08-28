@@ -72,7 +72,7 @@ UNavigator.bottomSheet(child);''',
               title: "Bottom sheet",
               type: UButtonType.outlined,
               onTap: () => UNavigator.bottomSheet<void>(
-                const UTextBodyLarge("A UNavigator bottom sheet.").pAll(24),
+                const UTextBodyLarge("A UNavigator bottom sheet.", margin: EdgeInsets.all(24)),
               ),
             ),
           ],
