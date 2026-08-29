@@ -294,14 +294,17 @@ abstract class UToast {
     VoidCallback? onDismiss,
   }) {
     if (message.isNullOrEmpty()) return;
-    final BuildContext ctx = navigatorKey.currentContext!;
+    final OverlayState? overlay = navigatorKey.currentState?.overlay;
+    if (overlay == null) return;
     clearToast();
-
+    final BuildContext? context = navigatorKey.currentContext;
+    if (context == null) return;
     final Color background = backgroundColor ?? (type == UToastType.neutral ? _scheme.inverseSurface : _backgroundFor(type));
     final Color foreground = foregroundColor ?? (type == UToastType.neutral ? _scheme.onInverseSurface : _foregroundFor(type));
     final IconData? resolvedIcon = icon ?? _iconFor(type);
+    late final OverlayEntry entry;
 
-    final OverlayEntry entry = OverlayEntry(
+    entry = OverlayEntry(
       builder: (BuildContext context) => _UToastCard(
         message: message,
         title: title,
@@ -318,13 +321,30 @@ abstract class UToast {
     );
 
     _toastEntry = entry;
-    Overlay.of(ctx).insert(entry);
+    overlay.insert(entry);
 
     if (duration != Duration.zero) {
       Future<void>.delayed(duration, () {
-        clearToast();
+        if (_toastEntry != entry) return;
+
+        _toastEntry = null;
+
+        if (entry.mounted) {
+          entry.remove();
+        }
+
         onDismiss?.call();
       });
+    }
+  }
+
+  static void clearToast() {
+    final OverlayEntry? entry = _toastEntry;
+
+    _toastEntry = null;
+
+    if (entry != null && entry.mounted) {
+      entry.remove();
     }
   }
 
@@ -367,11 +387,6 @@ abstract class UToast {
     VoidCallback? onTap,
     VoidCallback? onDismiss,
   }) => toast(message: message, title: title, type: UToastType.info, icon: icon, position: position, duration: duration, onTap: onTap, onDismiss: onDismiss);
-
-  static void clearToast() {
-    _toastEntry?.remove();
-    _toastEntry = null;
-  }
 }
 
 class _UToastCard extends StatefulWidget {

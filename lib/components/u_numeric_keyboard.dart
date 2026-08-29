@@ -53,7 +53,6 @@ class UNumericKeyboard extends StatelessWidget {
     this.fontWeight,
     this.padding = EdgeInsets.zero,
     this.hapticFeedback = true,
-    this.persianDigits = false,
     this.enabled = true,
     this.keyBuilder,
   });
@@ -76,7 +75,6 @@ class UNumericKeyboard extends StatelessWidget {
   final FontWeight? fontWeight;
   final EdgeInsets padding;
   final bool hapticFeedback;
-  final bool persianDigits;
   final bool enabled;
   final Widget Function(BuildContext context, String value)? keyBuilder;
 
