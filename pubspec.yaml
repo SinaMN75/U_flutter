@@ -105,23 +105,29 @@ flutter:
 #  flutter pub global run rename setAppName --value ""
 #  flutter pub run flutter_launcher_icons:main
 
-# N/V prefix used in every command below:
-#   N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .)
+# Android:
+# N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .) && flutter clean && flutter pub get && flutter build apk --target-platform android-arm64,android-arm --release && cp build/app/outputs/flutter-apk/app-release.apk ~/Desktop/$N-$V.apk
 
-#Android:
-#  N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .) && flutter clean && flutter pub get && flutter build apk --target-platform android-arm64,android-arm --release && cp build/app/outputs/flutter-apk/app-release.apk ~/Desktop/$N-$V.apk
+# iOS → Xcode Organizer:
+# N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .) && flutter clean && flutter pub get && flutter build ios --release --no-codesign && xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release -archivePath ~/Library/Developer/Xcode/Archives/$(date '+%Y-%m-%d')/$N-$V.xcarchive archive && open -a Xcode
 
-#Web:
-#  N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .) && flutter clean && flutter pub get && flutter build web --release && (cd build/web && zip -r ~/Desktop/$N-$V-web.zip .)
+# Web:
+# N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .) && flutter clean && flutter pub get && flutter build web --release && (cd build/web && zip -r ~/Desktop/$N-$V-web.zip .)
 
-#macOS:
-#  N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .) && flutter clean && flutter pub get && flutter build macos --release && (cd build/macos/Build/Products/Release && zip -r ~/Desktop/$N-$V-macos.zip *.app)
+# macOS:
+# N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .) && flutter clean && flutter pub get && flutter build macos --release && (cd build/macos/Build/Products/Release && zip -r ~/Desktop/$N-$V-macos.zip *.app)
 
-#Android + Web:
-#  N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .) && flutter clean && flutter pub get && flutter build apk --target-platform android-arm64,android-arm --release && flutter build web --release && cp build/app/outputs/flutter-apk/app-release.apk ~/Desktop/$N-$V.apk && (cd build/web && zip -r ~/Desktop/$N-$V-web.zip .)
+# Android + iOS:
+# N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .) && flutter clean && flutter pub get && flutter build apk --target-platform android-arm64,android-arm --release && flutter build ios --release --no-codesign && xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release -archivePath ~/Library/Developer/Xcode/Archives/$(date '+%Y-%m-%d')/$N-$V.xcarchive archive && cp build/app/outputs/flutter-apk/app-release.apk ~/Desktop/$N-$V.apk && open -a Xcode
 
-#Android + macOS:
-#  N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .) && flutter clean && flutter pub get && flutter build apk --target-platform android-arm64,android-arm --release && flutter build macos --release && cp build/app/outputs/flutter-apk/app-release.apk ~/Desktop/$N-$V.apk && (cd build/macos/Build/Products/Release && zip -r ~/Desktop/$N-$V-macos.zip *.app)
+# Android + Web:
+# N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .) && flutter clean && flutter pub get && flutter build apk --target-platform android-arm64,android-arm --release && flutter build web --release && cp build/app/outputs/flutter-apk/app-release.apk ~/Desktop/$N-$V.apk && (cd build/web && zip -r ~/Desktop/$N-$V-web.zip .)
 
-#Android + macOS + Web:
-#  N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .) && flutter clean && flutter pub get && flutter build apk --target-platform android-arm64,android-arm --release && flutter build macos --release && flutter build web --release && cp build/app/outputs/flutter-apk/app-release.apk ~/Desktop/$N-$V.apk && (cd build/macos/Build/Products/Release && zip -r ~/Desktop/$N-$V-macos.zip *.app) && (cd build/web && zip -r ~/Desktop/$N-$V-web.zip .)
+# Android + macOS:
+# N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .) && flutter clean && flutter pub get && flutter build apk --target-platform android-arm64,android-arm --release && flutter build macos --release && cp build/app/outputs/flutter-apk/app-release.apk ~/Desktop/$N-$V.apk && (cd build/macos/Build/Products/Release && zip -r ~/Desktop/$N-$V-macos.zip *.app)
+
+# Android + macOS + Web:
+# N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .) && flutter clean && flutter pub get && flutter build apk --target-platform android-arm64,android-arm --release && flutter build macos --release && flutter build web --release && cp build/app/outputs/flutter-apk/app-release.apk ~/Desktop/$N-$V.apk && (cd build/macos/Build/Products/Release && zip -r ~/Desktop/$N-$V-macos.zip *.app) && (cd build/web && zip -r ~/Desktop/$N-$V-web.zip .)
+
+# Android + iOS + macOS + Web:
+# N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .) && flutter clean && flutter pub get && flutter build apk --target-platform android-arm64,android-arm --release && flutter build ios --release --no-codesign && xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release -archivePath ~/Library/Developer/Xcode/Archives/$(date '+%Y-%m-%d')/$N-$V.xcarchive archive && flutter build macos --release && flutter build web --release && cp build/app/outputs/flutter-apk/app-release.apk ~/Desktop/$N-$V.apk && (cd build/macos/Build/Products/Release && zip -r ~/Desktop/$N-$V-macos.zip *.app) && (cd build/web && zip -r ~/Desktop/$N-$V-web.zip .) && open -a Xcode
