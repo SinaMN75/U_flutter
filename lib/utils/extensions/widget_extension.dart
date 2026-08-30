@@ -1,5 +1,17 @@
 import "package:u/utilities.dart";
 
+abstract class UState<T extends StatefulWidget> extends State<T> {
+  ColorScheme get scheme => Theme.of(context).colorScheme;
+  ThemeData get theme => Theme.of(context);
+  MediaQueryData get mediaQuery => MediaQuery.of(context);
+  Size get screenSize => mediaQuery.size;
+  EdgeInsets get padding => mediaQuery.padding;
+  EdgeInsets get viewPadding => mediaQuery.viewPadding;
+  EdgeInsets get viewInsets => mediaQuery.viewInsets;
+  double get width => screenSize.width;
+  double get height => screenSize.height;
+}
+
 extension WidgetsExtension on Widget {
   Widget pAll(double padding) => Padding(padding: EdgeInsets.all(padding), child: this);
 
