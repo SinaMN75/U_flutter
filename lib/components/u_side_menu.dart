@@ -157,7 +157,7 @@ class USideMenuTheme {
   final TextStyle? headerTextStyle;
   final double iconSize;
   final double itemSpacing;
-  final EdgeInsets itemPadding;
+  final EdgeInsetsGeometry itemPadding;
   final BorderRadius itemRadius;
   final USideMenuIndicatorStyle indicatorStyle;
   final Duration animationDuration;
@@ -245,7 +245,7 @@ class USideMenuTheme {
     TextStyle? headerTextStyle,
     double? iconSize,
     double? itemSpacing,
-    EdgeInsets? itemPadding,
+    EdgeInsetsGeometry? itemPadding,
     BorderRadius? itemRadius,
     USideMenuIndicatorStyle? indicatorStyle,
     Duration? animationDuration,

@@ -8,7 +8,7 @@ class USegmentedControl<T extends Object> extends StatelessWidget {
   final T? selectedValue;
   final ValueChanged<T?> onValueChanged;
   final SegmentedStyle style;
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
   final Color? selectedColor;
   final Color? unselectedColor;
   final Color? backgroundColor;

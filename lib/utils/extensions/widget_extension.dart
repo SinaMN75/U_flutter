@@ -127,8 +127,8 @@ extension WidgetsExtension on Widget {
     double borderWidth = 1,
     double radius = 1,
     Color borderColor = Colors.transparent,
-    EdgeInsets? padding,
-    EdgeInsets? margin,
+    EdgeInsetsGeometry? padding,
+    EdgeInsetsGeometry? margin,
     BoxConstraints? constraints,
   }) => Container(
     clipBehavior: Clip.hardEdge,
@@ -155,7 +155,7 @@ extension WidgetsExtension on Widget {
     double radius = 12,
     Color borderColor = Colors.transparent,
     EdgeInsets padding = const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-    EdgeInsets? margin,
+    EdgeInsetsGeometry? margin,
     BoxConstraints? constraints,
   }) => Container(
     clipBehavior: Clip.hardEdge,
@@ -176,7 +176,7 @@ extension WidgetsExtension on Widget {
   Widget card({
     Color? backgroundColor,
     double? elevation,
-    EdgeInsets? margin,
+    EdgeInsetsGeometry? margin,
   }) => Card(
     clipBehavior: Clip.hardEdge,
     margin: margin,

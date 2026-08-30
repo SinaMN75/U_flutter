@@ -77,8 +77,8 @@ class UImage extends StatelessWidget {
   final List<BoxShadow>? boxShadow;
   final Gradient? gradient;
   final Color? backgroundColor;
-  final EdgeInsets? padding;
-  final EdgeInsets? margin;
+  final EdgeInsetsGeometry? padding;
+  final EdgeInsetsGeometry? margin;
   final GestureTapCallback? onTap;
   final GestureLongPressCallback? onLongPress;
   final GestureTapCallback? onDoubleTap;
@@ -251,7 +251,7 @@ class UIconPrimary extends StatelessWidget {
   final double? pressedScale;
   final MouseCursor? cursor;
   final ValueChanged<bool>? onHover;
-  final EdgeInsets? margin;
+  final EdgeInsetsGeometry? margin;
   final double? opacity;
   final String? tooltip;
   final String? heroTag;

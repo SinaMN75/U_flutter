@@ -484,8 +484,8 @@ class UScaffold extends StatelessWidget {
   final Widget? bottomNavigationBar;
   final Widget? bottomSheet;
   final List<Widget>? persistentFooterButtons;
-  final EdgeInsets? padding;
-  final EdgeInsets? margin;
+  final EdgeInsetsGeometry? padding;
+  final EdgeInsetsGeometry? margin;
   final Color? color;
   final BoxDecoration? decoration;
   final bool extendBodyBehindAppBar;
@@ -919,8 +919,8 @@ class UColumn extends StatelessWidget {
   final MainAxisSize mainAxisSize;
   final double? radius;
   final BorderRadius? borderRadius;
-  final EdgeInsets? padding;
-  final EdgeInsets? margin;
+  final EdgeInsetsGeometry? padding;
+  final EdgeInsetsGeometry? margin;
   final BoxBorder? border;
   final Color? color;
   final Gradient? gradient;
@@ -1140,8 +1140,8 @@ class URow extends StatelessWidget {
   final MainAxisSize mainAxisSize;
   final double? radius;
   final BorderRadius? borderRadius;
-  final EdgeInsets? padding;
-  final EdgeInsets? margin;
+  final EdgeInsetsGeometry? padding;
+  final EdgeInsetsGeometry? margin;
   final BoxBorder? border;
   final Color? color;
   final Gradient? gradient;
@@ -1343,8 +1343,8 @@ class UStack extends StatelessWidget {
   final double? maxWidth;
   final double? minHeight;
   final double? maxHeight;
-  final EdgeInsets? padding;
-  final EdgeInsets? margin;
+  final EdgeInsetsGeometry? padding;
+  final EdgeInsetsGeometry? margin;
   final Color? color;
   final Gradient? gradient;
   final DecorationImage? image;
@@ -1529,8 +1529,8 @@ class UWrap extends StatelessWidget {
   final double? maxWidth;
   final double? minHeight;
   final double? maxHeight;
-  final EdgeInsets? padding;
-  final EdgeInsets? margin;
+  final EdgeInsetsGeometry? padding;
+  final EdgeInsetsGeometry? margin;
   final Color? color;
   final Gradient? gradient;
   final DecorationImage? image;
@@ -1705,8 +1705,8 @@ class UIconTextHorizontal extends StatelessWidget {
   final GestureLongPressCallback? onLongPress;
   final GestureTapCallback? onDoubleTap;
   final ValueChanged<bool>? onHover;
-  final EdgeInsets? padding;
-  final EdgeInsets? margin;
+  final EdgeInsetsGeometry? padding;
+  final EdgeInsetsGeometry? margin;
   final double? width;
   final double? height;
   final Color? color;
@@ -1862,8 +1862,8 @@ class UIconTextVertical extends StatelessWidget {
   final GestureLongPressCallback? onLongPress;
   final GestureTapCallback? onDoubleTap;
   final ValueChanged<bool>? onHover;
-  final EdgeInsets? padding;
-  final EdgeInsets? margin;
+  final EdgeInsetsGeometry? padding;
+  final EdgeInsetsGeometry? margin;
   final double? width;
   final double? height;
   final Color? color;
@@ -2008,8 +2008,8 @@ class UKeyValue extends StatelessWidget {
   final GestureTapCallback? onTap;
   final GestureLongPressCallback? onLongPress;
   final ValueChanged<bool>? onHover;
-  final EdgeInsets? padding;
-  final EdgeInsets? margin;
+  final EdgeInsetsGeometry? padding;
+  final EdgeInsetsGeometry? margin;
   final Color? color;
   final Gradient? gradient;
   final BoxBorder? border;
@@ -2146,7 +2146,7 @@ class UCard extends StatelessWidget {
   final Color? color;
   final BorderRadius borderRadius;
   final EdgeInsets margin;
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
   final Color? shadowColor;
   final Color? surfaceTintColor;
   final GestureTapCallback? onTap;
@@ -2321,8 +2321,8 @@ class UAnimatedContainer extends StatelessWidget {
   final Widget? child;
   final Duration duration;
   final Curve curve;
-  final EdgeInsets? padding;
-  final EdgeInsets? margin;
+  final EdgeInsetsGeometry? padding;
+  final EdgeInsetsGeometry? margin;
   final Color? color;
   final Gradient? gradient;
   final DecorationImage? image;
@@ -2505,7 +2505,7 @@ class UListView extends StatelessWidget {
   final Widget? footer;
   final ScrollPhysics? physics;
   final bool shrinkWrap;
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
   final ScrollController? scrollController;
   final bool? primary;
   final bool reverse;
@@ -2651,7 +2651,7 @@ class UGridView extends StatelessWidget {
   final double childAspectRatio;
   final ScrollPhysics? physics;
   final bool shrinkWrap;
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
   final ScrollController? scrollController;
   final bool? primary;
   final bool reverse;
@@ -2746,7 +2746,7 @@ class USliverList extends StatelessWidget {
 
   final IndexedWidgetBuilder itemBuilder;
   final int itemCount;
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {
@@ -2778,7 +2778,7 @@ class USliverGrid extends StatelessWidget {
   final double mainAxisSpacing;
   final double crossAxisSpacing;
   final double childAspectRatio;
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {

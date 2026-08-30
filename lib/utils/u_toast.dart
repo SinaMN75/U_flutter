@@ -77,7 +77,7 @@ abstract class UToast {
     ShapeBorder? shape,
     double? elevation,
     DismissDirection dismissDirection = DismissDirection.down,
-    EdgeInsets? margin,
+    EdgeInsetsGeometry? margin,
     double? width,
     bool clearQueue = false,
     VoidCallback? onDismiss,
