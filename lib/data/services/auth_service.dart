@@ -14,9 +14,7 @@ class AuthService {
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
       onSuccess: (Response r) {
         final UResponse<ULoginResponse> response = UResponse<ULoginResponse>.fromJson(r.body, (dynamic i) => ULoginResponse.fromMap(i));
-        ULocalStorage.setUserId(response.result!.user.id);
-        ULocalStorage.setToken(response.result!.token);
-        ULocalStorage.setRefreshToken(response.result!.refreshToken);
+        setUserData(response.result!);
         result = (response, null, null);
         onOk?.call(response);
       },
@@ -46,9 +44,7 @@ class AuthService {
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
       onSuccess: (Response r) {
         final UResponse<ULoginResponse> response = UResponse<ULoginResponse>.fromJson(r.body, (dynamic i) => ULoginResponse.fromMap(i));
-        ULocalStorage.setUserId(response.result!.user.id);
-        ULocalStorage.setToken(response.result!.token);
-        ULocalStorage.setRefreshToken(response.result!.refreshToken);
+        setUserData(response.result!);
         result = (response, null, null);
         onOk?.call(response);
       },
@@ -78,9 +74,7 @@ class AuthService {
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
       onSuccess: (Response r) {
         final UResponse<ULoginResponse> response = UResponse<ULoginResponse>.fromJson(r.body, (dynamic i) => ULoginResponse.fromMap(i));
-        ULocalStorage.setUserId(response.result!.user.id);
-        ULocalStorage.setToken(response.result!.token);
-        ULocalStorage.setRefreshToken(response.result!.refreshToken);
+        setUserData(response.result!);
         result = (response, null, null);
         onOk?.call(response);
       },
@@ -139,9 +133,7 @@ class AuthService {
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
       onSuccess: (Response r) {
         final UResponse<ULoginResponse> response = UResponse<ULoginResponse>.fromJson(r.body, (dynamic i) => ULoginResponse.fromMap(i));
-        ULocalStorage.setUserId(response.result!.user.id);
-        ULocalStorage.setToken(response.result!.token);
-        ULocalStorage.setRefreshToken(response.result!.refreshToken);
+        setUserData(response.result!);
         result = (response, null, null);
         onOk?.call(response);
       },
@@ -200,9 +192,7 @@ class AuthService {
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
       onSuccess: (Response r) {
         final UResponse<ULoginResponse> response = UResponse<ULoginResponse>.fromJson(r.body, (dynamic i) => ULoginResponse.fromMap(i));
-        ULocalStorage.setUserId(response.result!.user.id);
-        ULocalStorage.setToken(response.result!.token);
-        ULocalStorage.setRefreshToken(response.result!.refreshToken);
+        setUserData(response.result!);
         result = (response, null, null);
         onOk?.call(response);
       },
@@ -217,5 +207,12 @@ class AuthService {
       },
     );
     return result;
+  }
+
+  void setUserData(ULoginResponse response) {
+    ULocalStorage.setUserId(response.user.id);
+    ULocalStorage.setToken(response.token);
+    ULocalStorage.setRefreshToken(response.refreshToken);
+    U.user = response.user;
   }
 }
