@@ -23,7 +23,7 @@ class ULetterBadge extends StatelessWidget {
     radius: radius,
     color: background,
     alignment: Alignment.center,
-    child: UTextLabelLarge(label, color: foreground, fontWeight: FontWeight.bold),
+    child: UTextLabelLarge(label.substring(0, 1), color: foreground, fontWeight: FontWeight.bold),
   );
 }
 
