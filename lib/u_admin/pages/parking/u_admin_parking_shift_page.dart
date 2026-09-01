@@ -84,7 +84,6 @@ class _UAdminParkingShiftPageState extends State<UAdminParkingShiftPage> {
   );
 
   Widget _itemResponsive(UParkingShiftResponse i, int index) => UAdminTable.mobileCard(
-    context,
     icon: Icons.point_of_sale_outlined,
     title: _operator(i),
     fields: <UAdminField>[

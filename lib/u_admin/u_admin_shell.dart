@@ -27,12 +27,15 @@ class _UAdminShellState extends State<UAdminShell> with SingleTickerProviderStat
   }
 
   @override
-  Widget build(BuildContext context) {
-    final bool isMobile = context.isMobileWidth;
-    return UScaffold(
+  Widget build(BuildContext context) => UScaffold(
       body: UColumn(
         children: <Widget>[
-          _topBar(isMobile),
+          if (context.isMobileWidth) URow(
+            children: <Widget>[
+              IconButton(icon: const Icon(Icons.menu_rounded), onPressed: _menu.openDrawer),
+              _tabBar().expanded(),
+            ],
+          ) else _tabBar(),
           Obx(
             () => URow(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -53,16 +56,6 @@ class _UAdminShellState extends State<UAdminShell> with SingleTickerProviderStat
         ],
       ),
     );
-  }
-
-  Widget _topBar(bool isMobile) => isMobile
-      ? URow(
-          children: <Widget>[
-            IconButton(icon: const Icon(Icons.menu_rounded), onPressed: _menu.openDrawer),
-            _tabBar().expanded(),
-          ],
-        )
-      : _tabBar();
 
   Widget _tabBar() => Obx(() {
     if (U.tabs.isEmpty || U.tabController == null) return const SizedBox.shrink();
@@ -71,7 +64,7 @@ class _UAdminShellState extends State<UAdminShell> with SingleTickerProviderStat
       animation: controller,
       builder: (BuildContext context, _) => UTabBar(
         selectedIndex: controller.index,
-        onSelect: _selectTab,
+        onSelect: (int index) => U.tabController?.animateTo(index),
         onClose: _closeTab,
         onReorder: _reorderTabs,
         onMenuAction: _tabMenuAction,
@@ -79,8 +72,6 @@ class _UAdminShellState extends State<UAdminShell> with SingleTickerProviderStat
       ),
     );
   });
-
-  void _selectTab(int index) => U.tabController?.animateTo(index);
 
   void _applyTabs(List<TabData> newTabs, {int? select}) {
     U.tabs.value = newTabs;

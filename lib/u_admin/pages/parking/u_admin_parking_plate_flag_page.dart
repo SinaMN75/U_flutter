@@ -64,7 +64,6 @@ class _UAdminParkingPlateFlagPageState extends State<UAdminParkingPlateFlagPage>
   );
 
   Widget _itemResponsive(UParkingPlateFlagResponse i, int index) => UAdminTable.mobileCard(
-    context,
     icon: Icons.gpp_maybe_outlined,
     title: i.licencePlate,
     trailing: _menu(i),
@@ -78,7 +77,6 @@ class _UAdminParkingPlateFlagPageState extends State<UAdminParkingPlateFlagPage>
   );
 
   Widget _menu(UParkingPlateFlagResponse i) => UAdminOps.menu<UParkingPlateFlagResponse>(
-    context,
     item: i,
     handlers: UAdminActionHandlers<UParkingPlateFlagResponse>(onDelete: c.delete),
     fallback: (UAdminActionContext<UParkingPlateFlagResponse> ctx) => <UAdminAction>[ctx.delete()],

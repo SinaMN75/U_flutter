@@ -67,10 +67,9 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
   );
 
   Widget _itemResponsive(UMoadiResponse i, int index) => UAdminTable.mobileCard(
-    context,
     icon: Icons.receipt_long_rounded,
     title: i.name,
-    badge: UAdminTable.statusChip(context, label: _statusLabel(i.tags), color: Theme.of(context).colorScheme.primary),
+    badge: UAdminTable.statusChip(label: _statusLabel(i.tags), color: Theme.of(context).colorScheme.primary),
     trailing: _menu(i),
     fields: <UAdminField>[
       UAdminField(U.s.economicCode, i.economicCode),
@@ -94,7 +93,6 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
   Widget _menu(UMoadiResponse i) {
     final bool isPending = !i.tags.contains(TagMoadi.approved.number) && !i.tags.contains(TagMoadi.rejected.number);
     return UAdminOps.menu<UMoadiResponse>(
-      context,
       item: i,
       actions: widget.actions,
       handlers: UAdminActionHandlers<UMoadiResponse>(

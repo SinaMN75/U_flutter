@@ -58,10 +58,9 @@ class _TransactionsPageState extends State<UAdminTransactionsPage> {
   );
 
   Widget _itemResponsive(UTxnResponse i, int index) => UAdminTable.mobileCard(
-    context,
     icon: Icons.receipt_long_rounded,
     title: i.amount.rial(),
-    badge: UAdminTable.statusChip(context, label: _statusName(i), color: Theme.of(context).colorScheme.primary),
+    badge: UAdminTable.statusChip(label: _statusName(i), color: Theme.of(context).colorScheme.primary),
     trailing: _menu(i),
     fields: <UAdminField>[
       UAdminField(U.s.trackingNumber, i.trackingNumber ?? "-"),
@@ -71,7 +70,6 @@ class _TransactionsPageState extends State<UAdminTransactionsPage> {
   );
 
   Widget _menu(UTxnResponse i) => UAdminOps.menu<UTxnResponse>(
-    context,
     item: i,
     handlers: UAdminActionHandlers<UTxnResponse>(onEdit: _showEditDialog, onDelete: c.delete),
     fallback: (UAdminActionContext<UTxnResponse> ctx) => <UAdminAction>[ctx.edit(), ctx.delete()],

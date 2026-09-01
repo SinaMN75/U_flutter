@@ -94,16 +94,15 @@ abstract class UAdminTable {
   static const EdgeInsets rowPadding = EdgeInsets.symmetric(horizontal: 8, vertical: 12);
 
   // A pill-shaped status chip reused by desktop rows and mobile cards for a consistent look.
-  static Widget statusChip(BuildContext context, {required String label, required Color color}) => UContainer(
+  static Widget statusChip({required String label, required Color color}) => UContainer(
     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
     radius: 20,
     color: color.withValues(alpha: 0.14),
     child: UTextBodySmall(label, color: color, fontWeight: FontWeight.w600),
   );
 
-  // A tinted rounded square holding a leading [icon], the default leading for [mobileCard].
-  static Widget leadingIcon(BuildContext context, IconData icon, {Color? color}) {
-    final Color c = color ?? Theme.of(context).colorScheme.primary;
+  static Widget leadingIcon(IconData icon, {Color? color}) {
+    final Color c = color ?? navigatorKey.currentContext!.colorScheme.primary;
     return UContainer(
       width: 44,
       height: 44,
@@ -114,11 +113,7 @@ abstract class UAdminTable {
     );
   }
 
-  // The beautiful, reusable mobile card used by every list page. Shows a leading icon/thumbnail,
-  // a title (+ optional subtitle), an optional status [badge] and [trailing] menu, then every
-  // desktop column as a clean label -> value row so mobile stays complete and scannable.
-  static Widget mobileCard(
-    BuildContext context, {
+  static Widget mobileCard({
     required String title,
     required List<UAdminField> fields,
     Widget? leading,
@@ -128,7 +123,7 @@ abstract class UAdminTable {
     Widget? trailing,
     VoidCallback? onTap,
   }) {
-    final ColorScheme scheme = Theme.of(context).colorScheme;
+    final ColorScheme scheme = navigatorKey.currentContext!.colorScheme;
     final Widget card = UContainer(
       margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 2),
       padding: const EdgeInsets.all(14),
@@ -143,7 +138,7 @@ abstract class UAdminTable {
             spacing: 12,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              leading ?? leadingIcon(context, icon ?? Icons.circle_outlined),
+              leading ?? leadingIcon(icon ?? Icons.circle_outlined),
               Expanded(
                 child: UColumn(
                   spacing: 2,
@@ -166,7 +161,7 @@ abstract class UAdminTable {
             ...fields.mapIndexed(
               (int idx, UAdminField f) => Padding(
                 padding: EdgeInsets.only(top: idx == 0 ? 0 : 10),
-                child: _fieldRow(context, f),
+                child: _fieldRow(f),
               ),
             ),
           ],
@@ -176,20 +171,17 @@ abstract class UAdminTable {
     return onTap == null ? card : card.onTapInk(onTap);
   }
 
-  static Widget _fieldRow(BuildContext context, UAdminField f) {
-    final ColorScheme scheme = Theme.of(context).colorScheme;
-    return URow(
+  static Widget _fieldRow(UAdminField f) => URow(
       spacing: 12,
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        UTextBodySmall(f.label, color: scheme.onSurfaceVariant),
+        UTextBodySmall(f.label, color: navigatorKey.currentContext!.colorScheme.onSurfaceVariant),
         Flexible(
           child: f.valueWidget ?? UTextBodyMedium(f.value ?? "-", textAlign: TextAlign.end, maxLines: 3, overflow: TextOverflow.ellipsis, fontWeight: FontWeight.w500),
         ),
       ],
     );
-  }
 
   // The mobile card row (UContainer + dense ListTile) used by every list page.
   static Widget mobileTile(BuildContext context, {required int index, required IconData icon, required String title, required List<Widget> subtitle, Widget? trailing, VoidCallback? onTap}) =>

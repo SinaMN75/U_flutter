@@ -55,7 +55,7 @@ class _BlogPageState extends State<UAdminBlogPage> {
     children: <Widget>[
       SizedBox(width: 48, child: i.media?.firstOrNull?.url != null ? UImage(i.media!.first.url!, borderRadius: 8) : const Icon(Icons.article_outlined)).expanded(flex: 0),
       UAdminTable.cell(i.title, flex: 3),
-      UAdminTable.statusChip(context, label: _isPublished(i) ? U.s.published : U.s.draft, color: _isPublished(i) ? UAdminTheme.green : UAdminTheme.grey).alignAtCenter().expanded(),
+      UAdminTable.statusChip(label: _isPublished(i) ? U.s.published : U.s.draft, color: _isPublished(i) ? UAdminTheme.green : UAdminTheme.grey).alignAtCenter().expanded(),
       UAdminTable.cell((i.commentCount ?? 0).toString()),
       UAdminTable.cell(i.createdAt.toJalaliDate()),
       _menu(i).expanded(),
@@ -63,10 +63,9 @@ class _BlogPageState extends State<UAdminBlogPage> {
   );
 
   Widget _itemResponsive(UBlogResponse i, int index) => UAdminTable.mobileCard(
-    context,
-    leading: i.media?.firstOrNull?.url != null ? SizedBox(width: 44, height: 44, child: UImage(i.media!.first.url!, borderRadius: 12)) : UAdminTable.leadingIcon(context, Icons.article_outlined),
+    leading: i.media?.firstOrNull?.url != null ? SizedBox(width: 44, height: 44, child: UImage(i.media!.first.url!, borderRadius: 12)) : UAdminTable.leadingIcon(Icons.article_outlined),
     title: i.title,
-    badge: UAdminTable.statusChip(context, label: _isPublished(i) ? U.s.published : U.s.draft, color: _isPublished(i) ? UAdminTheme.green : UAdminTheme.grey),
+    badge: UAdminTable.statusChip(label: _isPublished(i) ? U.s.published : U.s.draft, color: _isPublished(i) ? UAdminTheme.green : UAdminTheme.grey),
     trailing: _menu(i),
     fields: <UAdminField>[
       UAdminField(U.s.comments, (i.commentCount ?? 0).toString()),
@@ -75,7 +74,6 @@ class _BlogPageState extends State<UAdminBlogPage> {
   );
 
   Widget _menu(UBlogResponse i) => UAdminOps.menu<UBlogResponse>(
-    context,
     item: i,
     handlers: UAdminActionHandlers<UBlogResponse>(
       onEdit: (UBlogResponse x) => _showEditDialog(p: x),

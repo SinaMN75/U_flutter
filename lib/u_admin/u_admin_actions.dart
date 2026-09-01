@@ -1,7 +1,15 @@
 part of "u_admin.dart";
 
 class UAdminAction {
-  UAdminAction({required this.label, required this.icon, required this.onTap, this.roles, this.visible = true, this.destructive = false, this.color});
+  UAdminAction({
+    required this.label,
+    required this.icon,
+    required this.onTap,
+    this.roles,
+    this.visible = true,
+    this.destructive = false,
+    this.color,
+  });
 
   final String label;
   final IconData icon;
@@ -29,24 +37,55 @@ class UAdminActionContext<T> {
   final T item;
   final UAdminActionHandlers<T> _handlers;
 
-  UAdminAction edit({List<TagUser>? roles}) => UAdminAction(label: U.s.edit, icon: Icons.edit, roles: roles, onTap: () => _handlers.onEdit?.call(item));
+  UAdminAction edit({List<TagUser>? roles}) => UAdminAction(
+    label: U.s.edit,
+    icon: Icons.edit,
+    roles: roles,
+    onTap: () => _handlers.onEdit?.call(item),
+  );
 
-  UAdminAction delete({List<TagUser>? roles}) => UAdminAction(label: U.s.delete, icon: Icons.delete, destructive: true, roles: roles, onTap: () => _handlers.onDelete?.call(item));
+  UAdminAction delete({List<TagUser>? roles}) => UAdminAction(
+    label: U.s.delete,
+    icon: Icons.delete,
+    destructive: true,
+    roles: roles,
+    onTap: () => _handlers.onDelete?.call(item),
+  );
 
-  UAdminAction detail({String? label, IconData icon = Icons.info_outline, List<TagUser>? roles}) =>
-      UAdminAction(label: label ?? U.s.viewItem(U.s.details), icon: icon, roles: roles, onTap: () => _handlers.onDetail?.call(item));
+  UAdminAction detail({
+    String? label,
+    IconData icon = Icons.info_outline,
+    List<TagUser>? roles,
+  }) => UAdminAction(
+    label: label ?? U.s.viewItem(U.s.details),
+    icon: icon,
+    roles: roles,
+    onTap: () => _handlers.onDetail?.call(item),
+  );
 
-  UAdminAction extra(String key, {required String label, required IconData icon, bool destructive = false, bool visible = true, Color? color, List<TagUser>? roles}) =>
-      UAdminAction(label: label, icon: icon, destructive: destructive, visible: visible, color: color, roles: roles, onTap: () => _handlers.extras?[key]?.call(item));
+  UAdminAction extra(
+    String key, {
+    required String label,
+    required IconData icon,
+    bool destructive = false,
+    bool visible = true,
+    Color? color,
+    List<TagUser>? roles,
+  }) => UAdminAction(
+    label: label,
+    icon: icon,
+    destructive: destructive,
+    visible: visible,
+    color: color,
+    roles: roles,
+    onTap: () => _handlers.extras?[key]?.call(item),
+  );
 }
 
 typedef UAdminActionBuilder<T> = List<UAdminAction> Function(UAdminActionContext<T> ctx);
 
-// Renders a row's "operations" popup. A page calls this with its [handlers] and its
-// own [fallback] default actions; if the app supplied [actions], those win.
 abstract class UAdminOps {
-  static Widget menu<T>(
-    BuildContext context, {
+  static Widget menu<T>({
     required T item,
     required UAdminActionHandlers<T> handlers,
     required UAdminActionBuilder<T> fallback,
@@ -71,13 +110,7 @@ abstract class UAdminOps {
   }
 }
 
-// ---------------------------------------------------------------------------
-// Cross-page navigation links used inside action builders so an admin can jump
-// between related records ("navigate everywhere from everywhere").
-// ---------------------------------------------------------------------------
-
 abstract class UAdminLinks {
-  // ---- from a user ----
   static UAdminAction adminUserDetail(UUserResponse u, {List<TagUser>? roles}) => UAdminAction(
     label: U.s.viewItem(U.s.details),
     icon: Icons.visibility_outlined,

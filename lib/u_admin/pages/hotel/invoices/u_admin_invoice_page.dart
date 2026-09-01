@@ -147,7 +147,6 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
   );
 
   Widget _itemResponsive(UDormBedInvoiceResponse i, int index) => UAdminTable.mobileCard(
-    context,
     icon: Icons.receipt_long_rounded,
     title: _tenantLabel(i),
     subtitle: _typeLabel(i),
@@ -163,7 +162,6 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
   );
 
   Widget _menu(UDormBedInvoiceResponse i) => UAdminOps.menu<UDormBedInvoiceResponse>(
-    context,
     item: i,
     handlers: UAdminActionHandlers<UDormBedInvoiceResponse>(
       onEdit: (UDormBedInvoiceResponse x) => _showEditDialog(p: x),

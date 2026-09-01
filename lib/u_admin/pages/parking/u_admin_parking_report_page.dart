@@ -83,7 +83,6 @@ class _UAdminParkingReportPageState extends State<UAdminParkingReportPage> {
   );
 
   Widget _itemResponsive(UParkingReportResponse i, int index) => UAdminTable.mobileCard(
-    context,
     icon: Icons.directions_car_rounded,
     title: i.vehicle?.licencePlate ?? "-",
     subtitle: i.parking?.title,

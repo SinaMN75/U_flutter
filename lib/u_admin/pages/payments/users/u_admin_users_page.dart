@@ -104,7 +104,6 @@ class _AdminUsersPageState extends State<UAdminUsersPage> {
   );
 
   Widget _itemResponsive(UUserResponse i, int index) => UAdminTable.mobileCard(
-    context,
     icon: Icons.person_rounded,
     title: "${i.firstName ?? ""} ${i.lastName ?? ""}".trim().nullIfEmpty() ?? i.userName,
     subtitle: i.userName,
@@ -123,7 +122,6 @@ class _AdminUsersPageState extends State<UAdminUsersPage> {
   );
 
   Widget _menu(UUserResponse i) => UAdminOps.menu<UUserResponse>(
-    context,
     item: i,
     actions: widget.actions,
     handlers: UAdminActionHandlers<UUserResponse>(

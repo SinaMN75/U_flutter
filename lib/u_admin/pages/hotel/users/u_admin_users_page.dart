@@ -66,7 +66,7 @@ class _UserPageState extends State<UAdminUserPage> {
         : i.tags.contains(TagUser.guest.number)
         ? UAdminTheme.blueGrey
         : UAdminTheme.grey;
-    return UAdminTable.statusChip(context, label: label, color: color);
+    return UAdminTable.statusChip(label: label, color: color);
   }
 
   ({IconData icon, Color color}) _genderStyle(UUserResponse i) {
@@ -118,7 +118,6 @@ class _UserPageState extends State<UAdminUserPage> {
   Widget _itemResponsive(UUserResponse i, int index) {
     final ({IconData icon, Color color}) gender = _genderStyle(i);
     return UAdminTable.mobileCard(
-      context,
       leading: UContainer(
         width: 44,
         height: 44,
@@ -145,7 +144,6 @@ class _UserPageState extends State<UAdminUserPage> {
   }
 
   Widget _menu(UUserResponse i) => UAdminOps.menu<UUserResponse>(
-    context,
     item: i,
     handlers: UAdminActionHandlers<UUserResponse>(
       onEdit: (UUserResponse x) => UAdminPageSwitcher.userCreateUpdate(user: x).then((_) => c.read()),
@@ -221,7 +219,7 @@ class _UserPageState extends State<UAdminUserPage> {
                   UDropDownField<TagUser>(
                     labelText: U.s.tags,
                     initialValue: c.selectedTag!,
-                    items: TagUser.values.map((TagUser tag) => DropdownMenuItem<TagUser>(value: tag, child: Text(c.isFa ? tag.titleFa : tag.titleEn))).toList(),
+                    items: TagUser.values.map((TagUser tag) => DropdownMenuItem<TagUser>(value: tag, child: Text(tag.localizedTitle))).toList(),
                     onChanged: (TagUser? value) => setLocal(() => c.selectedTag = value),
                   ).pSymmetric(vertical: 6),
                   SwitchListTile(

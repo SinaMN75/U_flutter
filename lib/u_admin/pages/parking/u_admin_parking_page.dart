@@ -66,7 +66,6 @@ class _UAdminParkingPageState extends State<UAdminParkingPage> {
   );
 
   Widget _itemResponsive(UParkingResponse i, int index) => UAdminTable.mobileCard(
-    context,
     icon: Icons.local_parking_rounded,
     title: i.title,
     trailing: _menu(i),
@@ -80,9 +79,7 @@ class _UAdminParkingPageState extends State<UAdminParkingPage> {
     ],
   );
 
-  // Built-in operations; overridable via UAdminParkingPage(actions: ...).
   Widget _menu(UParkingResponse i) => UAdminOps.menu<UParkingResponse>(
-    context,
     item: i,
     actions: widget.actions,
     handlers: UAdminActionHandlers<UParkingResponse>(

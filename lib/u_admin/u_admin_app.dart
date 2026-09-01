@@ -39,15 +39,30 @@ abstract class UAdminTheme {
   static const MaterialColor blueGrey = Colors.blueGrey;
   static const List<MaterialColor> primaries = Colors.primaries;
 
-  static ThemeData light({required Color primary, String? font}) => _build(primary: primary, font: font, brightness: Brightness.light, surface: white);
+  static ThemeData light({required Color primary, String? font}) => _build(
+    primary: primary,
+    font: font,
+    brightness: Brightness.light,
+    surface: white,
+  );
 
-  static ThemeData dark({required Color primary, String? font}) => _build(primary: primary, font: font, brightness: Brightness.dark, surface: black);
+  static ThemeData dark({required Color primary, String? font}) => _build(
+    primary: primary,
+    font: font,
+    brightness: Brightness.dark,
+    surface: black,
+  );
 
-  static ThemeData _build({required Color primary, required Brightness brightness, required Color surface, String? font, double baseRadius = 8}) {
+  static ThemeData _build({
+    required Color primary,
+    required Brightness brightness,
+    required Color surface,
+    String? font,
+    double baseRadius = 8,
+  }) {
     final String family = font ?? UFonts.vazir.fontFamily!;
-    final Color disabled = grey.shade400;
     return ThemeData(
-      dividerTheme: DividerThemeData(color: disabled, space: 0),
+      dividerTheme: DividerThemeData(color: grey.shade400, space: 0),
       cardTheme: CardThemeData(
         color: surface,
         elevation: 4,

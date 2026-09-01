@@ -28,9 +28,7 @@ class UAdminConfig {
 
 abstract class UAdmin {
   static late UAdminConfig config;
-
   static String get logo => config.logo;
-
   static String? get loginBackground => config.loginBackground;
 
   static bool canAccess(List<TagUser>? roles) {

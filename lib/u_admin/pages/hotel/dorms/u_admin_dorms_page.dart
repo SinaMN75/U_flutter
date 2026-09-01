@@ -57,7 +57,6 @@ class _DormPageState extends State<UAdminDormPage> {
   Widget _itemResponsive(UDormResponse i, int index) {
     final UCountryCityInfo city = UCountries.infoByCode(i.cityCode);
     return UAdminTable.mobileCard(
-      context,
       icon: Icons.bedroom_parent_rounded,
       title: i.title,
       trailing: _menu(i),
@@ -70,7 +69,6 @@ class _DormPageState extends State<UAdminDormPage> {
   }
 
   Widget _menu(UDormResponse i) => UAdminOps.menu<UDormResponse>(
-    context,
     item: i,
     handlers: UAdminActionHandlers<UDormResponse>(
       onEdit: (UDormResponse d) => _showEditDialog(p: d),

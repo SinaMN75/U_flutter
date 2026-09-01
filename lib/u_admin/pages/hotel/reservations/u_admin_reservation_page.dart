@@ -77,7 +77,7 @@ class _ReservationPageState extends State<UAdminReservationPage> {
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       radius: 20,
       color: color.withValues(alpha: 0.15),
-      child: UTextBodySmall(s == null ? "-" : (c.isFa ? s.titleFa : s.titleEn), color: color),
+      child: UTextBodySmall(s == null ? "-" : (s.localizedTitle), color: color),
     );
   }
 
@@ -113,7 +113,6 @@ class _ReservationPageState extends State<UAdminReservationPage> {
   );
 
   Widget _itemResponsive(UHotelReservationResponse i, int index) => UAdminTable.mobileCard(
-    context,
     icon: Icons.event_available_rounded,
     title: _guestLabel(i),
     badge: _statusChip(i),
@@ -129,7 +128,6 @@ class _ReservationPageState extends State<UAdminReservationPage> {
   );
 
   Widget _menu(UHotelReservationResponse i) => UAdminOps.menu<UHotelReservationResponse>(
-    context,
     item: i,
     handlers: UAdminActionHandlers<UHotelReservationResponse>(
       onEdit: (UHotelReservationResponse x) => _showEditDialog(p: x),

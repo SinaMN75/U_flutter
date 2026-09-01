@@ -39,11 +39,8 @@ class UAdminResponsiveGrid extends StatelessWidget {
   const UAdminResponsiveGrid({required this.children, super.key, this.minTileWidth = 260, this.spacing = 16, this.runSpacing = 16});
 
   final List<Widget> children;
-
   final double minTileWidth;
-
   final double spacing;
-
   final double runSpacing;
 
   @override
@@ -69,9 +66,7 @@ class UAdminPageBody extends StatelessWidget {
   const UAdminPageBody({required this.child, super.key, this.maxWidth = 1400, this.padded = true});
 
   final Widget child;
-
   final double maxWidth;
-
   final bool padded;
 
   @override
@@ -79,12 +74,7 @@ class UAdminPageBody extends StatelessWidget {
     alignment: Alignment.topCenter,
     child: ConstrainedBox(
       constraints: BoxConstraints(maxWidth: maxWidth),
-      child: padded
-          ? Padding(
-              padding: EdgeInsets.symmetric(horizontal: context.pagePadding),
-              child: child,
-            )
-          : child,
+      child: padded ? child.pSymmetric(horizontal: context.pagePadding) : child,
     ),
   );
 }

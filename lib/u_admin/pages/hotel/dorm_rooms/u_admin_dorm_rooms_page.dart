@@ -55,7 +55,6 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
   );
 
   Widget _itemResponsive(UDormRoomResponse i, int index) => UAdminTable.mobileCard(
-    context,
     icon: Icons.meeting_room_rounded,
     title: i.title,
     trailing: _menu(i),
@@ -67,7 +66,6 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
   );
 
   Widget _menu(UDormRoomResponse i) => UAdminOps.menu<UDormRoomResponse>(
-    context,
     item: i,
     handlers: UAdminActionHandlers<UDormRoomResponse>(
       onEdit: (UDormRoomResponse r) => _showEditDialog(p: r),

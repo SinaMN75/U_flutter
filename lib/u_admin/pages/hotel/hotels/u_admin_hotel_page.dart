@@ -58,7 +58,6 @@ class _HotelPageState extends State<UAdminHotelPage> {
   Widget _itemResponsive(UHotelResponse i, int index) {
     final UCountryCityInfo city = UCountries.infoByCode(i.cityCode);
     return UAdminTable.mobileCard(
-      context,
       icon: Icons.apartment_rounded,
       title: i.title,
       trailing: _menu(i),
@@ -71,7 +70,6 @@ class _HotelPageState extends State<UAdminHotelPage> {
   }
 
   Widget _menu(UHotelResponse i) => UAdminOps.menu<UHotelResponse>(
-    context,
     item: i,
     handlers: UAdminActionHandlers<UHotelResponse>(
       onEdit: (UHotelResponse h) => _showEditDialog(p: h),

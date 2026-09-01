@@ -48,16 +48,20 @@ abstract class UAdminPageSwitcher {
 
   static void adminUsers() => U.addOrSwitchTab(U.s.usersManagement, const UAdminUsersPage());
 
-  static void adminUserDetail({required UUserResponse user}) =>
-      U.addOrSwitchTab("${user.firstName ?? ""} ${user.lastName ?? ""}".trim().nullIfEmpty() ?? user.userName, UAdminUserDetailPage(user: user));
+  static void adminUserDetail({required UUserResponse user}) => U.addOrSwitchTab(
+    "${user.firstName ?? ""} ${user.lastName ?? ""}".trim().nullIfEmpty() ?? user.userName,
+    UAdminUserDetailPage(user: user),
+  );
 
   static void merchants({UUserResponse? user}) => U.addOrSwitchTab(
     user == null ? U.s.merchantsManagement : "${U.s.merchants} · ${user.displayName}",
     UAdminMerchantsPage(user: user),
   );
 
-  static void terminals({UMerchantResponse? merchant}) =>
-      U.addOrSwitchTab(merchant == null ? U.s.terminalsManagement : "${U.s.terminals} · ${merchant.title}", UAdminTerminalsPage(merchant: merchant));
+  static void terminals({UMerchantResponse? merchant}) => U.addOrSwitchTab(
+    merchant == null ? U.s.terminalsManagement : "${U.s.terminals} · ${merchant.title}",
+    UAdminTerminalsPage(merchant: merchant),
+  );
 
   static void hotels() => U.addOrSwitchTab(U.s.hotels, const UAdminHotelPage());
 
@@ -94,8 +98,10 @@ abstract class UAdminPageSwitcher {
     UAdminContractPage(bed: bed, user: user),
   );
 
-  static void invoices({UDormBedContractResponse? contract}) =>
-      U.addOrSwitchTab(contract == null ? U.s.invoices : "${U.s.invoices} · ${contract.user?.displayName ?? ""}", UAdminInvoicePage(contract: contract));
+  static void invoices({UDormBedContractResponse? contract}) => U.addOrSwitchTab(
+    contract == null ? U.s.invoices : "${U.s.invoices} · ${contract.user?.displayName ?? ""}",
+    UAdminInvoicePage(contract: contract),
+  );
 
   static void wallet() => U.addOrSwitchTab(U.s.walletManagement, const UAdminWalletPage());
 

@@ -22,8 +22,6 @@ abstract class UBaseController {
   final TextEditingController controllerStartDate = TextEditingController();
   final TextEditingController controllerEndDate = TextEditingController();
 
-  bool get isFa => ULocalStorage.getLocale() == "fa";
-
   void setTotalPages(int totalCount) => totalPages((totalCount / pageSize).ceil().clamp(1, 1 << 30));
 
   void firstPage() => pageNumber(1);

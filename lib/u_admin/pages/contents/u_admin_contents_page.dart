@@ -56,10 +56,9 @@ class _ContentsPageState extends State<UAdminContentsPage> {
   );
 
   Widget _itemMobile(UContentResponse i, int index) => UAdminTable.mobileCard(
-    context,
     leading: _thumb(i.jsonData.imageBase64 ?? i.jsonData.iconBase64, size: 44),
     title: i.jsonData.title ?? "---",
-    badge: UAdminTable.statusChip(context, label: _tagOf(i)?.localizedTitle ?? "---", color: Theme.of(context).colorScheme.primary),
+    badge: UAdminTable.statusChip(label: _tagOf(i)?.localizedTitle ?? "---", color: Theme.of(context).colorScheme.primary),
     trailing: _menu(i),
     fields: <UAdminField>[
       UAdminField(U.s.description, i.jsonData.description ?? i.jsonData.detail1 ?? "---"),
@@ -82,7 +81,6 @@ class _ContentsPageState extends State<UAdminContentsPage> {
   );
 
   Widget _menu(UContentResponse i) => UAdminOps.menu<UContentResponse>(
-    context,
     item: i,
     handlers: UAdminActionHandlers<UContentResponse>(
       onEdit: (UContentResponse x) => _showEditDialog(p: x),

@@ -55,7 +55,6 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
   );
 
   Widget _itemResponsive(UHotelRoomResponse i, int index) => UAdminTable.mobileCard(
-    context,
     icon: Icons.meeting_room_rounded,
     title: i.title,
     trailing: _menu(i),
@@ -67,7 +66,6 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
   );
 
   Widget _menu(UHotelRoomResponse i) => UAdminOps.menu<UHotelRoomResponse>(
-    context,
     item: i,
     handlers: UAdminActionHandlers<UHotelRoomResponse>(
       onEdit: (UHotelRoomResponse r) => _showEditDialog(p: r),

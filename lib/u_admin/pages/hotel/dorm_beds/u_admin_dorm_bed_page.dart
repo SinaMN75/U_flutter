@@ -56,16 +56,15 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
       UAdminTable.cell(i.title),
       UAdminTable.cell(i.deposit.rial()),
       UAdminTable.cell(i.monthlyRent.rial()),
-      UAdminTable.statusChip(context, label: _isFree(i) ? U.s.free : U.s.occupied, color: _isFree(i) ? UAdminTheme.green : UAdminTheme.orange).alignAtCenter().expanded(),
+      UAdminTable.statusChip(label: _isFree(i) ? U.s.free : U.s.occupied, color: _isFree(i) ? UAdminTheme.green : UAdminTheme.orange).alignAtCenter().expanded(),
       _menu(i).expanded(),
     ],
   );
 
   Widget _itemResponsive(UDormBedResponse i, int index) => UAdminTable.mobileCard(
-    context,
     icon: Icons.bed_rounded,
     title: i.title,
-    badge: UAdminTable.statusChip(context, label: _isFree(i) ? U.s.free : U.s.occupied, color: _isFree(i) ? UAdminTheme.green : UAdminTheme.orange),
+    badge: UAdminTable.statusChip(label: _isFree(i) ? U.s.free : U.s.occupied, color: _isFree(i) ? UAdminTheme.green : UAdminTheme.orange),
     trailing: _menu(i),
     fields: <UAdminField>[
       UAdminField(U.s.deposit, i.deposit.rial()),
@@ -74,7 +73,6 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
   );
 
   Widget _menu(UDormBedResponse i) => UAdminOps.menu<UDormBedResponse>(
-    context,
     item: i,
     handlers: UAdminActionHandlers<UDormBedResponse>(
       onEdit: (UDormBedResponse b) => _showEditDialog(p: b),

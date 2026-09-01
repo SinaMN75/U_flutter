@@ -59,7 +59,6 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
   );
 
   Widget _itemResponsive(UMerchantResponse i, int index) => UAdminTable.mobileCard(
-    context,
     icon: Icons.storefront_rounded,
     title: i.title,
     trailing: _menu(i),
@@ -74,7 +73,6 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
 
   // Built-in operations; the app can override them via UAdminMerchantsPage(actions: ...).
   Widget _menu(UMerchantResponse i) => UAdminOps.menu<UMerchantResponse>(
-    context,
     item: i,
     actions: widget.actions,
     handlers: UAdminActionHandlers<UMerchantResponse>(onDelete: c.delete, onDetail: _showDetailDialog),

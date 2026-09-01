@@ -107,7 +107,6 @@ class _ContractPageState extends State<UAdminContractPage> {
   );
 
   Widget _itemResponsive(UDormBedContractResponse i, int index) => UAdminTable.mobileCard(
-    context,
     icon: Icons.description_rounded,
     title: _tenantLabel(i),
     badge: _statusChip(i),
@@ -122,7 +121,6 @@ class _ContractPageState extends State<UAdminContractPage> {
   );
 
   Widget _menu(UDormBedContractResponse i) => UAdminOps.menu<UDormBedContractResponse>(
-    context,
     item: i,
     handlers: UAdminActionHandlers<UDormBedContractResponse>(
       onEdit: (UDormBedContractResponse x) => _showEditDialog(p: x),
@@ -190,7 +188,7 @@ class _ContractPageState extends State<UAdminContractPage> {
                     decoration: InputDecoration(labelText: U.s.contractType, border: const OutlineInputBorder()),
                     items: <DropdownMenuItem<int?>>[
                       DropdownMenuItem<int?>(child: Text(U.s.all)),
-                      ..._types.map((TagDormBedContract t) => DropdownMenuItem<int?>(value: t.number, child: Text(c.isFa ? t.titleFa : t.titleEn))),
+                      ..._types.map((TagDormBedContract t) => DropdownMenuItem<int?>(value: t.number, child: Text(t.localizedTitle))),
                     ],
                     onChanged: (int? v) => setLocal(() => c.typeFilter = v),
                   ).pSymmetric(vertical: 6),
@@ -292,7 +290,7 @@ class _ContractPageState extends State<UAdminContractPage> {
                       isExpanded: true,
                       initialValue: type.number,
                       decoration: InputDecoration(labelText: U.s.contractType, border: const OutlineInputBorder()),
-                      items: _types.map((TagDormBedContract t) => DropdownMenuItem<int>(value: t.number, child: Text(c.isFa ? t.titleFa : t.titleEn))).toList(),
+                      items: _types.map((TagDormBedContract t) => DropdownMenuItem<int>(value: t.number, child: Text(t.localizedTitle))).toList(),
                       onChanged: (int? v) => setLocal(() => type = _types.firstWhere((TagDormBedContract t) => t.number == v)),
                     ).pSymmetric(vertical: 6),
                     UTextFieldDatePicker(

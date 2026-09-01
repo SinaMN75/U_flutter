@@ -25,7 +25,7 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
     onFilter: _showFilterDialog,
     onCreate: _showCreateDialog,
     extraActions: <Widget>[
-      IconButton(icon: const Icon(Icons.pin), tooltip: U.s.otpTools, onPressed: _showOtpDialog),
+      if (U.user.isFullAdmin()) IconButton(icon: const Icon(Icons.pin), tooltip: U.s.otpTools, onPressed: _showOtpDialog),
       IconButton(icon: const Icon(Icons.grid_4x4), tooltip: U.s.bulkImportTerminals, onPressed: c.import),
     ],
     pageNumber: c.pageNumber,
@@ -43,7 +43,17 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
     totalCount: () => c.totalCount,
     onRetry: c.read,
     emptyText: U.s.noItemsFound(U.s.terminals),
-    desktopHeader: () => UAdminTable.header(<String>[U.s.serial, U.s.simCardSerial, U.s.merchant, U.s.terminalId, U.s.createdAt, U.s.operations]),
+    desktopHeader: () => UAdminTable.header(
+      <String>[
+        U.s.serial,
+        U.s.simCardSerial,
+        U.s.imei,
+        U.s.merchant,
+        U.s.terminalId,
+        U.s.createdAt,
+        U.s.operations,
+      ],
+    ),
     desktopRow: _itemDesktop,
     mobileRow: _itemResponsive,
   );
@@ -64,6 +74,7 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
     children: <Widget>[
       UAdminTable.cell(i.serial),
       UAdminTable.cell(i.simCardSerial ?? "-"),
+      UAdminTable.cell(i.imei ?? U.s.noMerchantSelected),
       UAdminTable.cell(i.merchant?.title ?? U.s.noMerchantSelected),
       _statusChip(i).alignAtCenter().expanded(),
       UAdminTable.cell(i.createdAt.toJalaliDate()),
@@ -72,7 +83,6 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
   );
 
   Widget _itemResponsive(UTerminalResponse i, int index) => UAdminTable.mobileCard(
-    context,
     icon: Icons.point_of_sale_rounded,
     title: "${U.s.serial}: ${i.serial}",
     badge: _statusChip(i),
@@ -86,7 +96,6 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
 
   // Built-in operations; overridable via UAdminTerminalsPage(actions: ...).
   Widget _menu(UTerminalResponse i) => UAdminOps.menu<UTerminalResponse>(
-    context,
     item: i,
     actions: widget.actions,
     handlers: UAdminActionHandlers<UTerminalResponse>(
@@ -195,7 +204,12 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                     validator: UValidators.required(message: U.s.required),
                     margin: const EdgeInsets.symmetric(vertical: 6),
                   ),
-                  UTextField(controller: simCardNumber, labelText: U.s.simCardNumber, keyboardType: TextInputType.phone, margin: const EdgeInsets.symmetric(vertical: 6)),
+                  UTextField(
+                    controller: simCardNumber,
+                    labelText: U.s.simCardNumber,
+                    keyboardType: TextInputType.phone,
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                  ),
                   UTextField(controller: simCardSerial, labelText: U.s.simCardSerial, margin: const EdgeInsets.symmetric(vertical: 6)),
                   UTextField(controller: imei, labelText: U.s.imei, margin: const EdgeInsets.symmetric(vertical: 6)),
                   UDropDownField<TagTerminal>(
@@ -260,7 +274,12 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                     validator: UValidators.required(message: U.s.required),
                     margin: const EdgeInsets.symmetric(vertical: 6),
                   ),
-                  UTextField(controller: simCardNumber, labelText: U.s.simCardNumber, keyboardType: TextInputType.phone, margin: const EdgeInsets.symmetric(vertical: 6)),
+                  UTextField(
+                    controller: simCardNumber,
+                    labelText: U.s.simCardNumber,
+                    keyboardType: TextInputType.phone,
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                  ),
                   UTextField(controller: simCardSerial, labelText: U.s.simCardSerial, margin: const EdgeInsets.symmetric(vertical: 6)),
                   UTextField(controller: imei, labelText: U.s.imei, margin: const EdgeInsets.symmetric(vertical: 6)),
                   UTextField(controller: terminalId, labelText: U.s.terminalId, margin: const EdgeInsets.symmetric(vertical: 6)),
@@ -341,11 +360,25 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                       valid(null);
                     },
                   ).pSymmetric(vertical: 6),
-                  UTextField(controller: serial, labelText: U.s.serial, margin: const EdgeInsets.symmetric(vertical: 6)),
+                  UTextField(
+                    controller: serial,
+                    labelText: U.s.serial,
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                  ),
                   if (generateMode.value)
-                    UTextField(controller: length, labelText: U.s.otpLength, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6))
+                    UTextField(
+                      controller: length,
+                      labelText: U.s.otpLength,
+                      keyboardType: TextInputType.number,
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    )
                   else
-                    UTextField(controller: otp, labelText: U.s.otpCode, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
+                    UTextField(
+                      controller: otp,
+                      labelText: U.s.otpCode,
+                      keyboardType: TextInputType.number,
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
                   URow(
                     margin: const EdgeInsets.symmetric(vertical: 6),
                     children: <Widget>[
@@ -387,7 +420,13 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
         ),
         actions: <Widget>[
           Obx(
-            () => generateMode.value && result.value.isNotEmpty ? UButton(type: UButtonType.text, title: U.s.copy, onTap: () => UClipboard.set(result.value, snackBar: true)) : const SizedBox.shrink(),
+            () => generateMode.value && result.value.isNotEmpty
+                ? UButton(
+                    type: UButtonType.text,
+                    title: U.s.copy,
+                    onTap: () => UClipboard.set(result.value, snackBar: true),
+                  )
+                : const SizedBox.shrink(),
           ),
           UButton(type: UButtonType.text, title: U.s.cancel, onTap: UNavigator.back),
           Obx(() => UButton(title: generateMode.value ? U.s.generate : U.s.verifyOtp, onTap: run)),

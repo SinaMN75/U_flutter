@@ -87,7 +87,6 @@ abstract class UAdminModules {
     roles: roles,
   );
 
-  // ---- Accommodation ----
   static UAdminModule hotels({List<TagUser>? roles}) => UAdminModule(
     title: U.s.hotels,
     icon: Icons.apartment_rounded,
@@ -109,7 +108,6 @@ abstract class UAdminModules {
     roles: roles,
   );
 
-  // ---- Dorms ----
   static UAdminModule dorms({List<TagUser>? roles}) => UAdminModule(
     title: U.s.dorms,
     icon: Icons.bedroom_parent_rounded,
@@ -131,7 +129,6 @@ abstract class UAdminModules {
     roles: roles,
   );
 
-  // ---- Leasing ----
   static UAdminModule contracts({List<TagUser>? roles}) => UAdminModule(
     title: U.s.contracts,
     icon: Icons.description_rounded,
@@ -146,7 +143,6 @@ abstract class UAdminModules {
     roles: roles,
   );
 
-  // ---- Users ----
   static UAdminModule users({List<TagUser>? roles}) => UAdminModule(
     title: U.s.users,
     icon: Icons.person_rounded,
@@ -154,7 +150,6 @@ abstract class UAdminModules {
     roles: roles,
   );
 
-  // ---- Payments (list modules accept an optional per-row `actions` override) ----
   static UAdminModule adminUsers({List<TagUser>? roles, UAdminActionBuilder<UUserResponse>? actions}) => UAdminModule(
     title: U.s.users,
     icon: Icons.manage_accounts_rounded,
@@ -183,7 +178,6 @@ abstract class UAdminModules {
     roles: roles,
   );
 
-  // ---- Finance ----
   static UAdminModule wallet({List<TagUser>? roles}) => UAdminModule(
     title: U.s.wallets,
     icon: Icons.account_balance_wallet_rounded,
@@ -205,7 +199,6 @@ abstract class UAdminModules {
     roles: roles,
   );
 
-  // ---- Parking ----
   static UAdminModule parking({List<TagUser>? roles, UAdminActionBuilder<UParkingResponse>? actions}) => UAdminModule(
     title: U.s.parking,
     icon: Icons.local_parking_rounded,
@@ -255,7 +248,6 @@ abstract class UAdminModules {
     roles: roles,
   );
 
-  // ---- Content ----
   static UAdminModule blogs({List<TagUser>? roles}) => UAdminModule(
     title: U.s.blogs,
     icon: Icons.article_rounded,
@@ -271,7 +263,6 @@ abstract class UAdminModules {
     roles: roles,
   );
 
-  // ---- External API ----
   static UAdminModule pnApiTester({List<TagUser>? roles}) => UAdminModule(
     title: U.s.pnapiTester,
     icon: Icons.api_rounded,
@@ -279,7 +270,6 @@ abstract class UAdminModules {
     roles: roles,
   );
 
-  // Local-only encrypt / decrypt / encode / hash playground for admins.
   static UAdminModule cryptoTester({List<TagUser>? roles}) => UAdminModule(
     title: U.s.cryptoTester,
     icon: Icons.security_rounded,
@@ -294,7 +284,6 @@ abstract class UAdminModules {
     roles: roles,
   );
 
-  // ---- System ----
   static UAdminModule fileManager({List<TagUser>? roles}) => UAdminModule(
     title: U.s.fileManager,
     icon: Icons.folder_open_rounded,

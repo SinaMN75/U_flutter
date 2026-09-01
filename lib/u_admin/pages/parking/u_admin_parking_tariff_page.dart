@@ -66,7 +66,6 @@ class _UAdminParkingTariffPageState extends State<UAdminParkingTariffPage> {
   );
 
   Widget _itemResponsive(UParkingTariffResponse i, int index) => UAdminTable.mobileCard(
-    context,
     icon: Icons.request_quote_outlined,
     title: _vehicle(i),
     trailing: _menu(i),
@@ -82,7 +81,6 @@ class _UAdminParkingTariffPageState extends State<UAdminParkingTariffPage> {
   );
 
   Widget _menu(UParkingTariffResponse i) => UAdminOps.menu<UParkingTariffResponse>(
-    context,
     item: i,
     handlers: UAdminActionHandlers<UParkingTariffResponse>(
       onEdit: (UParkingTariffResponse x) => _showEditDialog(p: x),
