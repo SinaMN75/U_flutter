@@ -54,6 +54,12 @@ extension NullableWalletExtension on UWalletTxnResponse {
         return Icons.fact_check_outlined;
       case null:
         return isOutgoing() ? Icons.north_east : Icons.south_west;
+      case TagWalletTxn.dormBedInvoice:
+        return Icons.fact_check_outlined;
+      case TagWalletTxn.hotelReservation:
+        return Icons.fact_check_outlined;
+      case TagWalletTxn.hotelReservationRefund:
+        return Icons.fact_check_outlined;
     }
   }
 }
