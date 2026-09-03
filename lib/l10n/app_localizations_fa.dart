@@ -3461,4 +3461,274 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get byContinuingYouAcceptTheTermsAndPrivacyPolicy => 'با ادامه، قوانین و مقررات و حریم خصوصی را می‌پذیرم.';
+
+  @override
+  String get night => 'شب';
+
+  @override
+  String get book => 'رزرو';
+
+  @override
+  String get bookNow => 'رزرو کن';
+
+  @override
+  String get reserveThisRoom => 'رزرو این اتاق';
+
+  @override
+  String get reviews => 'نظرات کاربران';
+
+  @override
+  String get guestCount => 'تعداد مهمان';
+
+  @override
+  String get monthlyRent => 'اجاره ماهانه';
+
+  @override
+  String get notPaid => 'پرداخت نشده';
+
+  @override
+  String get view => 'مشاهده';
+
+  @override
+  String get seeAll => 'همه';
+
+  @override
+  String get myReservations => 'رزروهای من';
+
+  @override
+  String get personalInformation => 'اطلاعات شخصی';
+
+  @override
+  String get cancelReservation => 'لغو رزرو';
+
+  @override
+  String get cancellationPolicy => 'شرایط کنسلی';
+
+  @override
+  String get refundAmount => 'مبلغ بازگشتی';
+
+  @override
+  String get cancellationPenalty => 'جریمه کنسلی';
+
+  @override
+  String get freeCancellationUntilHoursBeforeCheckIn => 'کنسلی رایگان تا چند ساعت قبل از ورود';
+
+  @override
+  String get selectDates => 'انتخاب تاریخ';
+
+  @override
+  String get roomCapacity => 'ظرفیت اتاق';
+
+  @override
+  String get requiredDocuments => 'مدارک لازم';
+
+  @override
+  String get visitingHours => 'ساعت بازدید';
+
+  @override
+  String get nearbyUniversity => 'دانشگاه نزدیک';
+
+  @override
+  String get directions => 'مسیریابی';
+
+  @override
+  String get callTheDorm => 'تماس با خوابگاه';
+
+  @override
+  String get callTheHotel => 'تماس با هتل';
+
+  @override
+  String get fullyBooked => 'تکمیل ظرفیت';
+
+  @override
+  String get payFromWallet => 'پرداخت از کیف پول';
+
+  @override
+  String get payWithGateway => 'پرداخت با درگاه بانکی';
+
+  @override
+  String get reservationCode => 'کد رزرو';
+
+  @override
+  String get addGuest => 'افزودن مهمان';
+
+  @override
+  String get priceDetails => 'جزئیات قیمت';
+
+  @override
+  String get writeAReview => 'ثبت نظر';
+
+  @override
+  String get yourRating => 'امتیاز شما';
+
+  @override
+  String get dormReservationIsInPersonOnly => 'رزرو خوابگاه فقط حضوری انجام می‌شود';
+
+  @override
+  String get dormReservationInPersonNote => 'برای گرفتن تخت، با خوابگاه تماس بگیرید یا حضوری مراجعه کنید. قرارداد و فاکتورهای ماهانه بعد از ثبت‌نام در همین اپ نمایش داده می‌شود.';
+
+  @override
+  String get roomsAndBeds => 'اتاق‌ها و تخت‌ها';
+
+  @override
+  String get youHaveNoReservations => 'هنوز رزروی ثبت نکرده‌اید';
+
+  @override
+  String get youHaveNoInvoices => 'فاکتوری ندارید';
+
+  @override
+  String get youHaveNoContracts => 'قراردادی ندارید';
+
+  @override
+  String get past => 'گذشته';
+
+  @override
+  String get perNight => 'هر شب';
+
+  @override
+  String get startingFrom => 'شروع از';
+
+  @override
+  String get guestInformation => 'مشخصات مهمانان';
+
+  @override
+  String get reservationRegistered => 'رزرو شما ثبت شد';
+
+  @override
+  String get payTheInvoice => 'پرداخت فاکتور';
+
+  @override
+  String get dormContracts => 'قراردادهای خوابگاه';
+
+  @override
+  String get monthlyInvoices => 'فاکتورهای ماهانه';
+
+  @override
+  String get whereAreYouStaying => 'کجا اقامت می‌کنی؟';
+
+  @override
+  String get aboutThisPlace => 'درباره این اقامتگاه';
+
+  @override
+  String get location => 'موقعیت مکانی';
+
+  @override
+  String get hotelReservation => 'رزرو هتل';
+
+  @override
+  String get chooseHowToPay => 'روش پرداخت را انتخاب کنید';
+
+  @override
+  String get noReviewsYet => 'هنوز نظری ثبت نشده است';
+
+  @override
+  String get thanksForYourReview => 'از ثبت نظر شما ممنونیم';
+
+  @override
+  String get guestNamePlaceholder => 'نام مهمان';
+
+  @override
+  String get mainGuest => 'مهمان اصلی';
+
+  @override
+  String get nightsCountLabel => 'تعداد شب';
+
+  @override
+  String get yourStay => 'اقامت شما';
+
+  @override
+  String get noPlacesYet => 'هنوز اقامتگاهی ثبت نشده است';
+
+  @override
+  String get inPerson => 'حضوری';
+
+  @override
+  String get bookedInPerson => 'رزرو حضوری';
+
+  @override
+  String get noRoomsAvailableForTheseDates => 'برای این تاریخ‌ها اتاقی موجود نیست';
+
+  @override
+  String get selectYourDatesToSeePrices => 'تاریخ ورود و خروج را انتخاب کنید تا قیمت‌ها را ببینید';
+
+  @override
+  String get reservationDetails => 'جزئیات رزرو';
+
+  @override
+  String get invoiceDetails => 'جزئیات فاکتور';
+
+  @override
+  String get remainingAmount => 'مبلغ باقی‌مانده';
+
+  @override
+  String get payNow => 'پرداخت';
+
+  @override
+  String get choosePaymentMethod => 'انتخاب روش پرداخت';
+
+  @override
+  String get yourReservationIsRegistered => 'رزرو شما ثبت شد';
+
+  @override
+  String get backToHome => 'بازگشت به خانه';
+
+  @override
+  String get nationalCodeOptional => 'کد ملی (اختیاری)';
+
+  @override
+  String get guestNumber => 'مهمان';
+
+  @override
+  String get markAllAsRead => 'علامت‌گذاری همه به عنوان خوانده شده';
+
+  @override
+  String get editProfile => 'ویرایش پروفایل';
+
+  @override
+  String get changesSaved => 'تغییرات ذخیره شد';
+
+  @override
+  String get topUpWallet => 'افزایش موجودی';
+
+  @override
+  String get cancellationRefundNote => 'اگر زودتر از مهلت رایگان لغو کنید، کل مبلغ به کیف پول شما برمی‌گردد.';
+
+  @override
+  String get reservationCancelledSuccessfully => 'رزرو لغو شد';
+
+  @override
+  String get contractPeriod => 'بازه قرارداد';
+
+  @override
+  String get bedTitle => 'تخت';
+
+  @override
+  String get roomTitle => 'اتاق';
+
+  @override
+  String get dormTitle => 'خوابگاه';
+
+  @override
+  String get payFromWalletBalance => 'پرداخت از موجودی کیف پول';
+
+  @override
+  String get payOnlineWithCard => 'پرداخت اینترنتی با کارت بانکی';
+
+  @override
+  String get yourReviewHelpsOthers => 'نظر شما به بقیه کمک می‌کند';
+
+  @override
+  String get guestsAndRooms => 'مهمان‌ها و اتاق';
+
+  @override
+  String get guestCountExceedsCapacity => 'بیش از ظرفیت اتاق';
+
+  @override
+  String get roomIsFullyBooked => 'این اتاق در این تاریخ‌ها پر است';
+
+  @override
+  String get extraGuestCapacity => 'ظرفیت نفر اضافه';
+
+  @override
+  String get extraGuestPrice => 'هزینه نفر اضافه';
 }

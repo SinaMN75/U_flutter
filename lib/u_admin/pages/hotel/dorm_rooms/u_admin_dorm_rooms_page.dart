@@ -110,7 +110,9 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
 
   void _showEditDialog({UDormRoomResponse? p}) {
     final TextEditingController title = TextEditingController(text: p?.title);
-    final TextEditingController detail = TextEditingController(text: p?.jsonData.detail1);
+    final TextEditingController detail = TextEditingController(text: p?.jsonData.description);
+    final TextEditingController capacity = TextEditingController(text: p?.capacity.toString());
+    final TextEditingController floor = TextEditingController(text: p?.jsonData.floor?.toString());
     final Rxn<UDormResponse> dorm = Rxn<UDormResponse>();
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -140,6 +142,13 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
                       hintText: U.s.dorm,
                     ).pSymmetric(vertical: 6),
                   UTextField(controller: detail, labelText: U.s.description, margin: const EdgeInsets.symmetric(vertical: 6)),
+                  URow(
+                    children: <Widget>[
+                      UTextField(expanded: 1, controller: capacity, labelText: U.s.capacity, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      const SizedBox(width: 8),
+                      UTextField(expanded: 1, controller: floor, labelText: U.s.floor, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
+                    ],
+                  ),
                   const SizedBox(height: 20),
                   UButtonSubmitCancel(
                     onSubmit: () => UValidators.validateForm(
@@ -156,7 +165,9 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
                               tags: <int>[TagDormRoom.dorm.number],
                               title: title.text,
                               dormId: did,
-                              detail1: detail.text.nullIfEmpty(),
+                              description: detail.text.nullIfEmpty(),
+                              capacity: int.tryParse(capacity.text.toLatinNumber()) ?? 0,
+                              floor: int.tryParse(floor.text.toLatinNumber()),
                             ),
                           );
                         } else {
@@ -165,7 +176,9 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
                               id: p.id,
                               title: title.text,
                               dormId: did,
-                              detail1: detail.text.nullIfEmpty(),
+                              description: detail.text.nullIfEmpty(),
+                              capacity: int.tryParse(capacity.text.toLatinNumber()),
+                              floor: int.tryParse(floor.text.toLatinNumber()),
                             ),
                           );
                         }

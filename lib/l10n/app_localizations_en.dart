@@ -3461,4 +3461,274 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get byContinuingYouAcceptTheTermsAndPrivacyPolicy => 'By continuing, you accept the terms and conditions and the privacy policy.';
+
+  @override
+  String get night => 'Night';
+
+  @override
+  String get book => 'Book';
+
+  @override
+  String get bookNow => 'Book now';
+
+  @override
+  String get reserveThisRoom => 'Book this room';
+
+  @override
+  String get reviews => 'Reviews';
+
+  @override
+  String get guestCount => 'Number of guests';
+
+  @override
+  String get monthlyRent => 'Monthly rent';
+
+  @override
+  String get notPaid => 'Unpaid';
+
+  @override
+  String get view => 'View';
+
+  @override
+  String get seeAll => 'See all';
+
+  @override
+  String get myReservations => 'My reservations';
+
+  @override
+  String get personalInformation => 'Personal information';
+
+  @override
+  String get cancelReservation => 'Cancel reservation';
+
+  @override
+  String get cancellationPolicy => 'Cancellation policy';
+
+  @override
+  String get refundAmount => 'Refund amount';
+
+  @override
+  String get cancellationPenalty => 'Cancellation fee';
+
+  @override
+  String get freeCancellationUntilHoursBeforeCheckIn => 'Free cancellation up to a few hours before check-in';
+
+  @override
+  String get selectDates => 'Select dates';
+
+  @override
+  String get roomCapacity => 'Room capacity';
+
+  @override
+  String get requiredDocuments => 'Required documents';
+
+  @override
+  String get visitingHours => 'Visiting hours';
+
+  @override
+  String get nearbyUniversity => 'Nearby university';
+
+  @override
+  String get directions => 'Directions';
+
+  @override
+  String get callTheDorm => 'Call the dorm';
+
+  @override
+  String get callTheHotel => 'Call the hotel';
+
+  @override
+  String get fullyBooked => 'Fully booked';
+
+  @override
+  String get payFromWallet => 'Pay from wallet';
+
+  @override
+  String get payWithGateway => 'Pay with the bank gateway';
+
+  @override
+  String get reservationCode => 'Reservation code';
+
+  @override
+  String get addGuest => 'Add guest';
+
+  @override
+  String get priceDetails => 'Price details';
+
+  @override
+  String get writeAReview => 'Write a review';
+
+  @override
+  String get yourRating => 'Your rating';
+
+  @override
+  String get dormReservationIsInPersonOnly => 'Dorm beds are booked in person only';
+
+  @override
+  String get dormReservationInPersonNote => 'To take a bed, call the dorm or visit in person. Once you are registered, the contract and its monthly invoices show up right here.';
+
+  @override
+  String get roomsAndBeds => 'Rooms and beds';
+
+  @override
+  String get youHaveNoReservations => 'You have no reservations yet';
+
+  @override
+  String get youHaveNoInvoices => 'You have no invoices';
+
+  @override
+  String get youHaveNoContracts => 'You have no contracts';
+
+  @override
+  String get past => 'Past';
+
+  @override
+  String get perNight => 'per night';
+
+  @override
+  String get startingFrom => 'Starting from';
+
+  @override
+  String get guestInformation => 'Guest details';
+
+  @override
+  String get reservationRegistered => 'Your reservation is registered';
+
+  @override
+  String get payTheInvoice => 'Pay the invoice';
+
+  @override
+  String get dormContracts => 'Dorm contracts';
+
+  @override
+  String get monthlyInvoices => 'Monthly invoices';
+
+  @override
+  String get whereAreYouStaying => 'Where are you staying?';
+
+  @override
+  String get aboutThisPlace => 'About this place';
+
+  @override
+  String get location => 'Location';
+
+  @override
+  String get hotelReservation => 'Hotel reservation';
+
+  @override
+  String get chooseHowToPay => 'Choose how to pay';
+
+  @override
+  String get noReviewsYet => 'No reviews yet';
+
+  @override
+  String get thanksForYourReview => 'Thanks for your review';
+
+  @override
+  String get guestNamePlaceholder => 'Guest name';
+
+  @override
+  String get mainGuest => 'Main guest';
+
+  @override
+  String get nightsCountLabel => 'Nights';
+
+  @override
+  String get yourStay => 'Your stay';
+
+  @override
+  String get noPlacesYet => 'No places have been added yet';
+
+  @override
+  String get inPerson => 'In person';
+
+  @override
+  String get bookedInPerson => 'Booked in person';
+
+  @override
+  String get noRoomsAvailableForTheseDates => 'No rooms are available for these dates';
+
+  @override
+  String get selectYourDatesToSeePrices => 'Pick your dates to see prices';
+
+  @override
+  String get reservationDetails => 'Reservation details';
+
+  @override
+  String get invoiceDetails => 'Invoice details';
+
+  @override
+  String get remainingAmount => 'Remaining amount';
+
+  @override
+  String get payNow => 'Pay now';
+
+  @override
+  String get choosePaymentMethod => 'Choose a payment method';
+
+  @override
+  String get yourReservationIsRegistered => 'Your reservation is registered';
+
+  @override
+  String get backToHome => 'Back to home';
+
+  @override
+  String get nationalCodeOptional => 'National ID (optional)';
+
+  @override
+  String get guestNumber => 'Guest';
+
+  @override
+  String get markAllAsRead => 'Mark all as read';
+
+  @override
+  String get editProfile => 'Edit profile';
+
+  @override
+  String get changesSaved => 'Changes saved';
+
+  @override
+  String get topUpWallet => 'Top up wallet';
+
+  @override
+  String get cancellationRefundNote => 'Cancel before the free window ends and the full amount goes back to your wallet.';
+
+  @override
+  String get reservationCancelledSuccessfully => 'The reservation was cancelled';
+
+  @override
+  String get contractPeriod => 'Contract period';
+
+  @override
+  String get bedTitle => 'Bed';
+
+  @override
+  String get roomTitle => 'Room';
+
+  @override
+  String get dormTitle => 'Dorm';
+
+  @override
+  String get payFromWalletBalance => 'Pay from your wallet balance';
+
+  @override
+  String get payOnlineWithCard => 'Pay online with a bank card';
+
+  @override
+  String get yourReviewHelpsOthers => 'Your review helps other guests';
+
+  @override
+  String get guestsAndRooms => 'Guests and room';
+
+  @override
+  String get guestCountExceedsCapacity => 'Over the room capacity';
+
+  @override
+  String get roomIsFullyBooked => 'This room is full for these dates';
+
+  @override
+  String get extraGuestCapacity => 'Extra guest capacity';
+
+  @override
+  String get extraGuestPrice => 'Extra guest price';
 }

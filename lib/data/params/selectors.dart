@@ -614,9 +614,10 @@ class HotelSelectorArgs {
   final UserSelectorArgs? creator;
   final HotelRoomSelectorArgs? rooms;
   final HotelReservationSelectorArgs? reservations;
+  final CommentSelectorArgs? comments;
   final MediaSelectorArgs? media;
 
-  const HotelSelectorArgs({this.creator, this.rooms, this.reservations, this.media});
+  const HotelSelectorArgs({this.creator, this.rooms, this.reservations, this.comments, this.media});
 
   factory HotelSelectorArgs.fromJson(String str) => HotelSelectorArgs.fromMap(json.decode(str));
 
@@ -626,6 +627,7 @@ class HotelSelectorArgs {
     creator: json["creator"] == null ? null : UserSelectorArgs.fromMap(json["creator"]),
     rooms: json["rooms"] == null ? null : HotelRoomSelectorArgs.fromMap(json["rooms"]),
     reservations: json["reservations"] == null ? null : HotelReservationSelectorArgs.fromMap(json["reservations"]),
+    comments: json["comments"] == null ? null : CommentSelectorArgs.fromMap(json["comments"]),
     media: json["media"] == null ? null : MediaSelectorArgs.fromMap(json["media"]),
   );
 
@@ -633,6 +635,7 @@ class HotelSelectorArgs {
     "creator": creator?.toMap(),
     "rooms": rooms?.toMap(),
     "reservations": reservations?.toMap(),
+    "comments": comments?.toMap(),
     "media": media?.toMap(),
   };
 }
@@ -719,9 +722,10 @@ class DormSelectorArgs {
   final UserSelectorArgs? creator;
   final DormRoomSelectorArgs? rooms;
   final DormBedSelectorArgs? beds;
+  final CommentSelectorArgs? comments;
   final MediaSelectorArgs? media;
 
-  const DormSelectorArgs({this.creator, this.rooms, this.beds, this.media});
+  const DormSelectorArgs({this.creator, this.rooms, this.beds, this.comments, this.media});
 
   factory DormSelectorArgs.fromJson(String str) => DormSelectorArgs.fromMap(json.decode(str));
 
@@ -731,6 +735,7 @@ class DormSelectorArgs {
     creator: json["creator"] == null ? null : UserSelectorArgs.fromMap(json["creator"]),
     rooms: json["rooms"] == null ? null : DormRoomSelectorArgs.fromMap(json["rooms"]),
     beds: json["beds"] == null ? null : DormBedSelectorArgs.fromMap(json["beds"]),
+    comments: json["comments"] == null ? null : CommentSelectorArgs.fromMap(json["comments"]),
     media: json["media"] == null ? null : MediaSelectorArgs.fromMap(json["media"]),
   );
 
@@ -738,6 +743,7 @@ class DormSelectorArgs {
     "creator": creator?.toMap(),
     "rooms": rooms?.toMap(),
     "beds": beds?.toMap(),
+    "comments": comments?.toMap(),
     "media": media?.toMap(),
   };
 }

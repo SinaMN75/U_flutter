@@ -217,6 +217,16 @@ class UDormCreateParams {
   final String title;
   final String cityCode;
   final List<String>? adminUserIds;
+  final String? address;
+  final String? phoneNumber;
+  final String? description;
+  final String? nearbyUniversity;
+  final String? visitingHours;
+  final List<String>? amenities;
+  final List<String>? rules;
+  final List<String>? requiredDocuments;
+  final double? latitude;
+  final double? longitude;
 
   UDormCreateParams({
     required this.tags,
@@ -227,6 +237,16 @@ class UDormCreateParams {
     this.id,
     this.creatorId,
     this.adminUserIds,
+    this.address,
+    this.phoneNumber,
+    this.description,
+    this.nearbyUniversity,
+    this.visitingHours,
+    this.amenities,
+    this.rules,
+    this.requiredDocuments,
+    this.latitude,
+    this.longitude,
   });
 
   factory UDormCreateParams.fromJson(String str) => UDormCreateParams.fromMap(json.decode(str));
@@ -242,6 +262,16 @@ class UDormCreateParams {
     title: json["title"],
     cityCode: json["cityCode"],
     adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
+    address: json["address"],
+    phoneNumber: json["phoneNumber"],
+    description: json["description"],
+    nearbyUniversity: json["nearbyUniversity"],
+    visitingHours: json["visitingHours"],
+    amenities: json["amenities"] == null ? <String>[] : List<String>.from(json["amenities"]!.map((dynamic x) => x)),
+    rules: json["rules"] == null ? <String>[] : List<String>.from(json["rules"]!.map((dynamic x) => x)),
+    requiredDocuments: json["requiredDocuments"] == null ? <String>[] : List<String>.from(json["requiredDocuments"]!.map((dynamic x) => x)),
+    latitude: json["latitude"] == null ? null : (json["latitude"] as num).toDouble(),
+    longitude: json["longitude"] == null ? null : (json["longitude"] as num).toDouble(),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -253,6 +283,16 @@ class UDormCreateParams {
     "title": title,
     "cityCode": cityCode,
     "adminUserIds": adminUserIds == null ? <dynamic>[] : List<dynamic>.from(adminUserIds!.map((String x) => x)),
+    "address": address,
+    "phoneNumber": phoneNumber,
+    "description": description,
+    "nearbyUniversity": nearbyUniversity,
+    "visitingHours": visitingHours,
+    "amenities": amenities == null ? <dynamic>[] : List<dynamic>.from(amenities!.map((String x) => x)),
+    "rules": rules == null ? <dynamic>[] : List<dynamic>.from(rules!.map((String x) => x)),
+    "requiredDocuments": requiredDocuments == null ? <dynamic>[] : List<dynamic>.from(requiredDocuments!.map((String x) => x)),
+    "latitude": latitude,
+    "longitude": longitude,
   };
 }
 
@@ -268,6 +308,16 @@ class UDormUpdateParams {
   final List<String>? adminUserIds;
   final List<String>? addAdminUserIds;
   final List<String>? removeAdminUserIds;
+  final String? address;
+  final String? phoneNumber;
+  final String? description;
+  final String? nearbyUniversity;
+  final String? visitingHours;
+  final List<String>? amenities;
+  final List<String>? rules;
+  final List<String>? requiredDocuments;
+  final double? latitude;
+  final double? longitude;
 
   UDormUpdateParams({
     required this.id,
@@ -281,6 +331,16 @@ class UDormUpdateParams {
     this.adminUserIds,
     this.addAdminUserIds,
     this.removeAdminUserIds,
+    this.address,
+    this.phoneNumber,
+    this.description,
+    this.nearbyUniversity,
+    this.visitingHours,
+    this.amenities,
+    this.rules,
+    this.requiredDocuments,
+    this.latitude,
+    this.longitude,
   });
 
   factory UDormUpdateParams.fromJson(String str) => UDormUpdateParams.fromMap(json.decode(str));
@@ -299,6 +359,16 @@ class UDormUpdateParams {
     adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
     addAdminUserIds: json["addAdminUserIds"] == null ? <String>[] : List<String>.from(json["addAdminUserIds"]!.map((dynamic x) => x)),
     removeAdminUserIds: json["removeAdminUserIds"] == null ? <String>[] : List<String>.from(json["removeAdminUserIds"]!.map((dynamic x) => x)),
+    address: json["address"],
+    phoneNumber: json["phoneNumber"],
+    description: json["description"],
+    nearbyUniversity: json["nearbyUniversity"],
+    visitingHours: json["visitingHours"],
+    amenities: json["amenities"] == null ? <String>[] : List<String>.from(json["amenities"]!.map((dynamic x) => x)),
+    rules: json["rules"] == null ? <String>[] : List<String>.from(json["rules"]!.map((dynamic x) => x)),
+    requiredDocuments: json["requiredDocuments"] == null ? <String>[] : List<String>.from(json["requiredDocuments"]!.map((dynamic x) => x)),
+    latitude: json["latitude"] == null ? null : (json["latitude"] as num).toDouble(),
+    longitude: json["longitude"] == null ? null : (json["longitude"] as num).toDouble(),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -313,6 +383,16 @@ class UDormUpdateParams {
     "adminUserIds": adminUserIds == null ? <dynamic>[] : List<dynamic>.from(adminUserIds!.map((String x) => x)),
     "addAdminUserIds": addAdminUserIds == null ? <dynamic>[] : List<dynamic>.from(addAdminUserIds!.map((String x) => x)),
     "removeAdminUserIds": removeAdminUserIds == null ? <dynamic>[] : List<dynamic>.from(removeAdminUserIds!.map((String x) => x)),
+    "address": address,
+    "phoneNumber": phoneNumber,
+    "description": description,
+    "nearbyUniversity": nearbyUniversity,
+    "visitingHours": visitingHours,
+    "amenities": amenities == null ? <dynamic>[] : List<dynamic>.from(amenities!.map((String x) => x)),
+    "rules": rules == null ? <dynamic>[] : List<dynamic>.from(rules!.map((String x) => x)),
+    "requiredDocuments": requiredDocuments == null ? <dynamic>[] : List<dynamic>.from(requiredDocuments!.map((String x) => x)),
+    "latitude": latitude,
+    "longitude": longitude,
   };
 }
 
@@ -396,6 +476,11 @@ class UHotelCreateParams {
   final String? checkOutTime;
   final List<String>? amenities;
   final List<String>? adminUserIds;
+  final List<String>? rules;
+  final double? latitude;
+  final double? longitude;
+  final int? cancellationFreeHours;
+  final int? cancellationPenaltyNights;
 
   UHotelCreateParams({
     required this.tags,
@@ -415,6 +500,11 @@ class UHotelCreateParams {
     this.id,
     this.creatorId,
     this.adminUserIds,
+    this.rules,
+    this.latitude,
+    this.longitude,
+    this.cancellationFreeHours,
+    this.cancellationPenaltyNights,
   });
 
   factory UHotelCreateParams.fromJson(String str) => UHotelCreateParams.fromMap(json.decode(str));
@@ -439,6 +529,11 @@ class UHotelCreateParams {
     checkOutTime: json["checkOutTime"],
     amenities: json["amenities"] == null ? null : List<String>.from(json["amenities"]!.map((dynamic x) => x)),
     adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
+    rules: json["rules"] == null ? <String>[] : List<String>.from(json["rules"]!.map((dynamic x) => x)),
+    latitude: json["latitude"] == null ? null : (json["latitude"] as num).toDouble(),
+    longitude: json["longitude"] == null ? null : (json["longitude"] as num).toDouble(),
+    cancellationFreeHours: json["cancellationFreeHours"] == null ? null : (json["cancellationFreeHours"] as num).toInt(),
+    cancellationPenaltyNights: json["cancellationPenaltyNights"] == null ? null : (json["cancellationPenaltyNights"] as num).toInt(),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -459,6 +554,11 @@ class UHotelCreateParams {
     "checkOutTime": checkOutTime,
     "amenities": amenities == null ? null : List<dynamic>.from(amenities!.map((String x) => x)),
     "adminUserIds": adminUserIds == null ? <dynamic>[] : List<dynamic>.from(adminUserIds!.map((String x) => x)),
+    "rules": rules == null ? <dynamic>[] : List<dynamic>.from(rules!.map((String x) => x)),
+    "latitude": latitude,
+    "longitude": longitude,
+    "cancellationFreeHours": cancellationFreeHours,
+    "cancellationPenaltyNights": cancellationPenaltyNights,
   };
 }
 
@@ -483,6 +583,11 @@ class UHotelUpdateParams {
   final List<String>? adminUserIds;
   final List<String>? addAdminUserIds;
   final List<String>? removeAdminUserIds;
+  final List<String>? rules;
+  final double? latitude;
+  final double? longitude;
+  final int? cancellationFreeHours;
+  final int? cancellationPenaltyNights;
 
   UHotelUpdateParams({
     required this.id,
@@ -505,6 +610,11 @@ class UHotelUpdateParams {
     this.adminUserIds,
     this.addAdminUserIds,
     this.removeAdminUserIds,
+    this.rules,
+    this.latitude,
+    this.longitude,
+    this.cancellationFreeHours,
+    this.cancellationPenaltyNights,
   });
 
   factory UHotelUpdateParams.fromJson(String str) => UHotelUpdateParams.fromMap(json.decode(str));
@@ -532,6 +642,11 @@ class UHotelUpdateParams {
     adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
     addAdminUserIds: json["addAdminUserIds"] == null ? <String>[] : List<String>.from(json["addAdminUserIds"]!.map((dynamic x) => x)),
     removeAdminUserIds: json["removeAdminUserIds"] == null ? <String>[] : List<String>.from(json["removeAdminUserIds"]!.map((dynamic x) => x)),
+    rules: json["rules"] == null ? <String>[] : List<String>.from(json["rules"]!.map((dynamic x) => x)),
+    latitude: json["latitude"] == null ? null : (json["latitude"] as num).toDouble(),
+    longitude: json["longitude"] == null ? null : (json["longitude"] as num).toDouble(),
+    cancellationFreeHours: json["cancellationFreeHours"] == null ? null : (json["cancellationFreeHours"] as num).toInt(),
+    cancellationPenaltyNights: json["cancellationPenaltyNights"] == null ? null : (json["cancellationPenaltyNights"] as num).toInt(),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -555,6 +670,11 @@ class UHotelUpdateParams {
     "adminUserIds": adminUserIds == null ? <dynamic>[] : List<dynamic>.from(adminUserIds!.map((String x) => x)),
     "addAdminUserIds": addAdminUserIds == null ? <dynamic>[] : List<dynamic>.from(addAdminUserIds!.map((String x) => x)),
     "removeAdminUserIds": removeAdminUserIds == null ? <dynamic>[] : List<dynamic>.from(removeAdminUserIds!.map((String x) => x)),
+    "rules": rules == null ? <dynamic>[] : List<dynamic>.from(rules!.map((String x) => x)),
+    "latitude": latitude,
+    "longitude": longitude,
+    "cancellationFreeHours": cancellationFreeHours,
+    "cancellationPenaltyNights": cancellationPenaltyNights,
   };
 }
 
@@ -643,6 +763,8 @@ class UHotelRoomCreateParams {
   final int? floor;
   final List<String>? amenities;
   final List<String>? adminUserIds;
+  final int? extraGuestCapacity;
+  final double? extraGuestPrice;
 
   UHotelRoomCreateParams({
     required this.tags,
@@ -663,6 +785,8 @@ class UHotelRoomCreateParams {
     this.id,
     this.creatorId,
     this.adminUserIds,
+    this.extraGuestCapacity,
+    this.extraGuestPrice,
   });
 
   factory UHotelRoomCreateParams.fromJson(String str) => UHotelRoomCreateParams.fromMap(json.decode(str));
@@ -688,6 +812,8 @@ class UHotelRoomCreateParams {
     floor: json["floor"] == null ? null : (json["floor"] as num).toInt(),
     amenities: json["amenities"] == null ? null : List<String>.from(json["amenities"]!.map((dynamic x) => x)),
     adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
+    extraGuestCapacity: json["extraGuestCapacity"] == null ? null : (json["extraGuestCapacity"] as num).toInt(),
+    extraGuestPrice: json["extraGuestPrice"] == null ? null : (json["extraGuestPrice"] as num).toDouble(),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -709,6 +835,8 @@ class UHotelRoomCreateParams {
     "floor": floor,
     "amenities": amenities == null ? null : List<dynamic>.from(amenities!.map((String x) => x)),
     "adminUserIds": adminUserIds == null ? <dynamic>[] : List<dynamic>.from(adminUserIds!.map((String x) => x)),
+    "extraGuestCapacity": extraGuestCapacity,
+    "extraGuestPrice": extraGuestPrice,
   };
 }
 
@@ -734,6 +862,8 @@ class UHotelRoomUpdateParams {
   final List<String>? adminUserIds;
   final List<String>? addAdminUserIds;
   final List<String>? removeAdminUserIds;
+  final int? extraGuestCapacity;
+  final double? extraGuestPrice;
 
   UHotelRoomUpdateParams({
     required this.id,
@@ -757,6 +887,8 @@ class UHotelRoomUpdateParams {
     this.adminUserIds,
     this.addAdminUserIds,
     this.removeAdminUserIds,
+    this.extraGuestCapacity,
+    this.extraGuestPrice,
   });
 
   factory UHotelRoomUpdateParams.fromJson(String str) => UHotelRoomUpdateParams.fromMap(json.decode(str));
@@ -785,6 +917,8 @@ class UHotelRoomUpdateParams {
     adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
     addAdminUserIds: json["addAdminUserIds"] == null ? <String>[] : List<String>.from(json["addAdminUserIds"]!.map((dynamic x) => x)),
     removeAdminUserIds: json["removeAdminUserIds"] == null ? <String>[] : List<String>.from(json["removeAdminUserIds"]!.map((dynamic x) => x)),
+    extraGuestCapacity: json["extraGuestCapacity"] == null ? null : (json["extraGuestCapacity"] as num).toInt(),
+    extraGuestPrice: json["extraGuestPrice"] == null ? null : (json["extraGuestPrice"] as num).toDouble(),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -809,6 +943,8 @@ class UHotelRoomUpdateParams {
     "adminUserIds": adminUserIds == null ? <dynamic>[] : List<dynamic>.from(adminUserIds!.map((String x) => x)),
     "addAdminUserIds": addAdminUserIds == null ? <dynamic>[] : List<dynamic>.from(addAdminUserIds!.map((String x) => x)),
     "removeAdminUserIds": removeAdminUserIds == null ? <dynamic>[] : List<dynamic>.from(removeAdminUserIds!.map((String x) => x)),
+    "extraGuestCapacity": extraGuestCapacity,
+    "extraGuestPrice": extraGuestPrice,
   };
 }
 
@@ -903,6 +1039,11 @@ class UDormRoomCreateParams {
   final String title;
   final String dormId;
   final List<String>? adminUserIds;
+  final int? capacity;
+  final String? description;
+  final int? floor;
+  final double? sizeSquareMeters;
+  final List<String>? amenities;
 
   UDormRoomCreateParams({
     required this.tags,
@@ -913,6 +1054,11 @@ class UDormRoomCreateParams {
     this.id,
     this.creatorId,
     this.adminUserIds,
+    this.capacity,
+    this.description,
+    this.floor,
+    this.sizeSquareMeters,
+    this.amenities,
   });
 
   factory UDormRoomCreateParams.fromJson(String str) => UDormRoomCreateParams.fromMap(json.decode(str));
@@ -928,6 +1074,11 @@ class UDormRoomCreateParams {
     title: json["title"],
     dormId: json["dormId"],
     adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
+    capacity: json["capacity"] == null ? null : (json["capacity"] as num).toInt(),
+    description: json["description"],
+    floor: json["floor"] == null ? null : (json["floor"] as num).toInt(),
+    sizeSquareMeters: json["sizeSquareMeters"] == null ? null : (json["sizeSquareMeters"] as num).toDouble(),
+    amenities: json["amenities"] == null ? <String>[] : List<String>.from(json["amenities"]!.map((dynamic x) => x)),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -939,6 +1090,11 @@ class UDormRoomCreateParams {
     "title": title,
     "dormId": dormId,
     "adminUserIds": adminUserIds == null ? <dynamic>[] : List<dynamic>.from(adminUserIds!.map((String x) => x)),
+    "capacity": capacity,
+    "description": description,
+    "floor": floor,
+    "sizeSquareMeters": sizeSquareMeters,
+    "amenities": amenities == null ? <dynamic>[] : List<dynamic>.from(amenities!.map((String x) => x)),
   };
 }
 
@@ -954,6 +1110,11 @@ class UDormRoomUpdateParams {
   final List<String>? adminUserIds;
   final List<String>? addAdminUserIds;
   final List<String>? removeAdminUserIds;
+  final int? capacity;
+  final String? description;
+  final int? floor;
+  final double? sizeSquareMeters;
+  final List<String>? amenities;
 
   UDormRoomUpdateParams({
     required this.id,
@@ -967,6 +1128,11 @@ class UDormRoomUpdateParams {
     this.adminUserIds,
     this.addAdminUserIds,
     this.removeAdminUserIds,
+    this.capacity,
+    this.description,
+    this.floor,
+    this.sizeSquareMeters,
+    this.amenities,
   });
 
   factory UDormRoomUpdateParams.fromJson(String str) => UDormRoomUpdateParams.fromMap(json.decode(str));
@@ -985,6 +1151,11 @@ class UDormRoomUpdateParams {
     adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
     addAdminUserIds: json["addAdminUserIds"] == null ? <String>[] : List<String>.from(json["addAdminUserIds"]!.map((dynamic x) => x)),
     removeAdminUserIds: json["removeAdminUserIds"] == null ? <String>[] : List<String>.from(json["removeAdminUserIds"]!.map((dynamic x) => x)),
+    capacity: json["capacity"] == null ? null : (json["capacity"] as num).toInt(),
+    description: json["description"],
+    floor: json["floor"] == null ? null : (json["floor"] as num).toInt(),
+    sizeSquareMeters: json["sizeSquareMeters"] == null ? null : (json["sizeSquareMeters"] as num).toDouble(),
+    amenities: json["amenities"] == null ? <String>[] : List<String>.from(json["amenities"]!.map((dynamic x) => x)),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -999,6 +1170,11 @@ class UDormRoomUpdateParams {
     "adminUserIds": adminUserIds == null ? <dynamic>[] : List<dynamic>.from(adminUserIds!.map((String x) => x)),
     "addAdminUserIds": addAdminUserIds == null ? <dynamic>[] : List<dynamic>.from(addAdminUserIds!.map((String x) => x)),
     "removeAdminUserIds": removeAdminUserIds == null ? <dynamic>[] : List<dynamic>.from(removeAdminUserIds!.map((String x) => x)),
+    "capacity": capacity,
+    "description": description,
+    "floor": floor,
+    "sizeSquareMeters": sizeSquareMeters,
+    "amenities": amenities == null ? <dynamic>[] : List<dynamic>.from(amenities!.map((String x) => x)),
   };
 }
 
@@ -1549,6 +1725,7 @@ class UHotelReservationCreateParams {
   final String? notes;
   final int? penaltyPrecentEveryDate;
   final List<String>? adminUserIds;
+  final List<UReservationGuestParams>? guests;
 
   UHotelReservationCreateParams({
     required this.tags,
@@ -1567,6 +1744,7 @@ class UHotelReservationCreateParams {
     this.id,
     this.creatorId,
     this.adminUserIds,
+    this.guests,
   });
 
   factory UHotelReservationCreateParams.fromJson(String str) => UHotelReservationCreateParams.fromMap(json.decode(str));
@@ -1590,6 +1768,7 @@ class UHotelReservationCreateParams {
     notes: json["notes"],
     penaltyPrecentEveryDate: json["penaltyPrecentEveryDate"],
     adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
+    guests: json["guests"] == null ? null : List<UReservationGuestParams>.from(json["guests"]!.map((dynamic x) => UReservationGuestParams.fromMap(x))),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -1609,6 +1788,7 @@ class UHotelReservationCreateParams {
     "notes": notes,
     "penaltyPrecentEveryDate": penaltyPrecentEveryDate,
     "adminUserIds": adminUserIds == null ? <dynamic>[] : List<dynamic>.from(adminUserIds!.map((String x) => x)),
+    "guests": guests == null ? <dynamic>[] : List<dynamic>.from(guests!.map((UReservationGuestParams x) => x.toMap())),
   };
 }
 
@@ -1629,6 +1809,7 @@ class UHotelReservationUpdateParams {
   final List<String>? adminUserIds;
   final List<String>? addAdminUserIds;
   final List<String>? removeAdminUserIds;
+  final List<UReservationGuestParams>? guests;
 
   UHotelReservationUpdateParams({
     required this.id,
@@ -1647,6 +1828,7 @@ class UHotelReservationUpdateParams {
     this.adminUserIds,
     this.addAdminUserIds,
     this.removeAdminUserIds,
+    this.guests,
   });
 
   factory UHotelReservationUpdateParams.fromJson(String str) => UHotelReservationUpdateParams.fromMap(json.decode(str));
@@ -1670,6 +1852,7 @@ class UHotelReservationUpdateParams {
     adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
     addAdminUserIds: json["addAdminUserIds"] == null ? <String>[] : List<String>.from(json["addAdminUserIds"]!.map((dynamic x) => x)),
     removeAdminUserIds: json["removeAdminUserIds"] == null ? <String>[] : List<String>.from(json["removeAdminUserIds"]!.map((dynamic x) => x)),
+    guests: json["guests"] == null ? null : List<UReservationGuestParams>.from(json["guests"]!.map((dynamic x) => UReservationGuestParams.fromMap(x))),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -1689,6 +1872,7 @@ class UHotelReservationUpdateParams {
     "adminUserIds": adminUserIds == null ? <dynamic>[] : List<dynamic>.from(adminUserIds!.map((String x) => x)),
     "addAdminUserIds": addAdminUserIds == null ? <dynamic>[] : List<dynamic>.from(addAdminUserIds!.map((String x) => x)),
     "removeAdminUserIds": removeAdminUserIds == null ? <dynamic>[] : List<dynamic>.from(removeAdminUserIds!.map((String x) => x)),
+    "guests": guests == null ? <dynamic>[] : List<dynamic>.from(guests!.map((UReservationGuestParams x) => x.toMap())),
   };
 }
 
@@ -2015,5 +2199,144 @@ class UHotelInvoiceReadParams {
     "maxDebtAmount": maxDebtAmount,
     "orderBy": orderBy,
     "selectorArgs": selectorArgs?.toMap(),
+  };
+}
+
+// ==================== Guest booking ====================
+
+class UReservationGuestParams {
+  final String fullName;
+  final String? nationalCode;
+  final String? phoneNumber;
+
+  UReservationGuestParams({required this.fullName, this.nationalCode, this.phoneNumber});
+
+  factory UReservationGuestParams.fromJson(String str) => UReservationGuestParams.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UReservationGuestParams.fromMap(Map<String, dynamic> json) => UReservationGuestParams(
+    fullName: json["fullName"],
+    nationalCode: json["nationalCode"],
+    phoneNumber: json["phoneNumber"],
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "fullName": fullName,
+    "nationalCode": nationalCode,
+    "phoneNumber": phoneNumber,
+  };
+}
+
+class UHotelRoomAvailabilityParams {
+  final String? hotelId;
+  final String? roomId;
+  final DateTime checkInDate;
+  final DateTime checkOutDate;
+  final int guestCount;
+  final HotelRoomSelectorArgs? selectorArgs;
+
+  UHotelRoomAvailabilityParams({
+    required this.checkInDate,
+    required this.checkOutDate,
+    this.hotelId,
+    this.roomId,
+    this.guestCount = 1,
+    this.selectorArgs,
+  });
+
+  factory UHotelRoomAvailabilityParams.fromJson(String str) => UHotelRoomAvailabilityParams.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UHotelRoomAvailabilityParams.fromMap(Map<String, dynamic> json) => UHotelRoomAvailabilityParams(
+    hotelId: json["hotelId"],
+    roomId: json["roomId"],
+    checkInDate: DateTime.parse(json["checkInDate"]),
+    checkOutDate: DateTime.parse(json["checkOutDate"]),
+    guestCount: json["guestCount"] == null ? 1 : (json["guestCount"] as num).toInt(),
+    selectorArgs: json["selectorArgs"] == null ? null : HotelRoomSelectorArgs.fromMap(json["selectorArgs"]),
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "hotelId": hotelId,
+    "roomId": roomId,
+    "checkInDate": checkInDate.toIso8601String(),
+    "checkOutDate": checkOutDate.toIso8601String(),
+    "guestCount": guestCount,
+    "selectorArgs": selectorArgs?.toMap(),
+  };
+}
+
+class UHotelReservationBookParams {
+  final String roomId;
+  final DateTime checkInDate;
+  final DateTime checkOutDate;
+  final int guestCount;
+  final List<UReservationGuestParams>? guests;
+  final String? guestName;
+  final String? guestPhone;
+  final String? notes;
+  final bool payFromWallet;
+
+  UHotelReservationBookParams({
+    required this.roomId,
+    required this.checkInDate,
+    required this.checkOutDate,
+    required this.guestCount,
+    this.guests,
+    this.guestName,
+    this.guestPhone,
+    this.notes,
+    this.payFromWallet = false,
+  });
+
+  factory UHotelReservationBookParams.fromJson(String str) => UHotelReservationBookParams.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UHotelReservationBookParams.fromMap(Map<String, dynamic> json) => UHotelReservationBookParams(
+    roomId: json["roomId"],
+    checkInDate: DateTime.parse(json["checkInDate"]),
+    checkOutDate: DateTime.parse(json["checkOutDate"]),
+    guestCount: (json["guestCount"] as num).toInt(),
+    guests: json["guests"] == null ? null : List<UReservationGuestParams>.from(json["guests"]!.map((dynamic x) => UReservationGuestParams.fromMap(x))),
+    guestName: json["guestName"],
+    guestPhone: json["guestPhone"],
+    notes: json["notes"],
+    payFromWallet: json["payFromWallet"] ?? false,
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "roomId": roomId,
+    "checkInDate": checkInDate.toIso8601String(),
+    "checkOutDate": checkOutDate.toIso8601String(),
+    "guestCount": guestCount,
+    "guests": guests == null ? <dynamic>[] : List<dynamic>.from(guests!.map((UReservationGuestParams x) => x.toMap())),
+    "guestName": guestName,
+    "guestPhone": guestPhone,
+    "notes": notes,
+    "payFromWallet": payFromWallet,
+  };
+}
+
+class UHotelReservationCancelParams {
+  final String id;
+  final String? reason;
+
+  UHotelReservationCancelParams({required this.id, this.reason});
+
+  factory UHotelReservationCancelParams.fromJson(String str) => UHotelReservationCancelParams.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UHotelReservationCancelParams.fromMap(Map<String, dynamic> json) => UHotelReservationCancelParams(
+    id: json["id"],
+    reason: json["reason"],
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "reason": reason,
   };
 }

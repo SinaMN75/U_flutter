@@ -133,6 +133,8 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
     final TextEditingController size = TextEditingController(text: p?.jsonData.sizeSquareMeters == null ? null : p!.jsonData.sizeSquareMeters!.toInt().toString());
     final TextEditingController floor = TextEditingController(text: p?.jsonData.floor?.toString());
     final TextEditingController amenities = TextEditingController(text: p?.jsonData.amenities.join(", "));
+    final TextEditingController extraGuestCapacity = TextEditingController(text: p?.jsonData.extraGuestCapacity?.toString());
+    final TextEditingController extraGuestPrice = TextEditingController(text: p?.jsonData.extraGuestPrice?.toInt().toString());
     bool isAvailable = p?.isAvailable ?? true;
     final Rxn<UHotelResponse> hotel = Rxn<UHotelResponse>();
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -185,6 +187,20 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
                     UTextField(controller: size, labelText: U.s.size, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
                     UTextField(controller: floor, labelText: U.s.floor, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
                     UTextField(controller: amenities, labelText: U.s.amenities, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
+                    URow(
+                      children: <Widget>[
+                        UTextField(expanded: 1, controller: extraGuestCapacity, labelText: U.s.extraGuestCapacity, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
+                        const SizedBox(width: 8),
+                        UTextField(
+                          expanded: 1,
+                          controller: extraGuestPrice,
+                          labelText: U.s.extraGuestPrice,
+                          keyboardType: TextInputType.number,
+                          formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+                          margin: const EdgeInsets.symmetric(vertical: 6),
+                        ),
+                      ],
+                    ),
                     SwitchListTile(contentPadding: EdgeInsets.zero, title: Text(U.s.available), value: isAvailable, onChanged: (bool v) => setLocal(() => isAvailable = v)),
                     const SizedBox(height: 20),
                     UButtonSubmitCancel(
@@ -212,6 +228,8 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
                                 sizeSquareMeters: size.text.isEmpty ? null : size.numDouble(),
                                 floor: floor.text.isEmpty ? null : floor.text.toInt(),
                                 amenities: amenities.text.trim().isEmpty ? null : amenities.text.split(",").map((String e) => e.trim()).where((String e) => e.isNotEmpty).toList(),
+                                extraGuestCapacity: extraGuestCapacity.text.isEmpty ? null : extraGuestCapacity.numInt(),
+                                extraGuestPrice: extraGuestPrice.text.isEmpty ? null : extraGuestPrice.numDouble(),
                               ),
                             );
                           } else {
@@ -230,6 +248,8 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
                                 sizeSquareMeters: size.text.isEmpty ? null : size.numDouble(),
                                 floor: floor.text.isEmpty ? null : floor.text.toInt(),
                                 amenities: amenities.text.trim().isEmpty ? null : amenities.text.split(",").map((String e) => e.trim()).where((String e) => e.isNotEmpty).toList(),
+                                extraGuestCapacity: extraGuestCapacity.text.isEmpty ? null : extraGuestCapacity.numInt(),
+                                extraGuestPrice: extraGuestPrice.text.isEmpty ? null : extraGuestPrice.numDouble(),
                               ),
                             );
                           }

@@ -338,7 +338,8 @@ enum TagTxn with NumericIdentifiable {
   refunded("بازگشت داده شده", "Refunded", 204),
   chargeWallet("شارژ کیف پول", "Charge Wallet", 301),
   merchantCreationFee("هزینه ایجاد پذیرنده", "Merchant Creation Fee", 302),
-  dormInvoice("پرداخت قبض خوابگاه", "Dorm Invoice", 303);
+  dormInvoice("پرداخت قبض خوابگاه", "Dorm Invoice", 303),
+  hotelInvoice("پرداخت فاکتور هتل", "Hotel Invoice", 304);
 
   const TagTxn(this.titleFa, this.titleEn, this.number);
 
@@ -534,6 +535,9 @@ enum TagWalletTxn with NumericIdentifiable {
   iBanToBankAccountDetail("استعلام شبا به حساب بانکی", "IBAN to Bank Account", 207),
   freewayTolls("استعلام عوارض آزادراه", "Freeway Tolls", 208),
   merchantCreationFee("هزینه ایجاد پذیرنده", "Merchant Creation Fee", 209),
+  dormBedInvoice("پرداخت فاکتور خوابگاه", "Dorm Invoice", 210),
+  hotelReservation("پرداخت رزرو هتل", "Hotel Reservation", 211),
+  hotelReservationRefund("استرداد رزرو هتل", "Hotel Reservation Refund", 212),
   chargeSimPin("خرید شارژ پین سیم‌کارت", "SIM Charge (PIN)", 301),
   chargeSimTopup("شارژ مستقیم سیم‌کارت", "SIM Top-up", 302),
   internetSim("خرید بسته اینترنت", "Internet Package", 303);
@@ -640,6 +644,16 @@ enum TagInquiryHistory with NumericIdentifiable {
 }
 
 enum TagNotification with NumericIdentifiable {
+  general("عمومی", "General", 101),
+  reservationCreated("ثبت رزرو", "Reservation Created", 102),
+  reservationConfirmed("تایید رزرو", "Reservation Confirmed", 103),
+  reservationCancelled("لغو رزرو", "Reservation Cancelled", 104),
+  invoiceIssued("صدور فاکتور", "Invoice Issued", 105),
+  invoiceDue("سررسید فاکتور", "Invoice Due", 106),
+  invoiceOverdue("فاکتور معوق", "Invoice Overdue", 107),
+  invoicePaid("پرداخت فاکتور", "Invoice Paid", 108),
+  unread("خوانده نشده", "Unread", 201),
+  read("خوانده شده", "Read", 202),
   test("تست", "Test", 999);
 
   const TagNotification(this.titleFa, this.titleEn, this.number);
@@ -903,7 +917,8 @@ enum TagHotelInvoice with NumericIdentifiable {
   paid("پرداخت شده", "Paid", 201),
   paidOnline("پرداخت آنلاین", "Paid Online", 202),
   paidManual("پرداخت دستی", "Paid Manual", 203),
-  notPaid("پرداخت نشده", "Not Paid", 204);
+  notPaid("پرداخت نشده", "Not Paid", 204),
+  refunded("مسترد شده", "Refunded", 205);
 
   const TagHotelInvoice(this.titleFa, this.titleEn, this.number);
 

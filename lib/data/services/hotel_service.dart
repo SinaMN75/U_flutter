@@ -1375,4 +1375,96 @@ class HotelService {
     );
     return result;
   }
+
+  // ==================== Guest booking ====================
+
+  Future<(UResponse<List<UHotelRoomAvailabilityResponse>>?, UEmptyResponse?, String?)> readHotelRoomAvailability({
+    required UHotelRoomAvailabilityParams p,
+    required Function(UResponse<List<UHotelRoomAvailabilityResponse>> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
+  }) async {
+    (UResponse<List<UHotelRoomAvailabilityResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
+    await UHttpClient.send(
+      method: "POST",
+      endpoint: "${U.baseUrl}/Hotel/HotelRoom/Availability",
+      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()).add("locale", ULocalStorage.getLocale()),
+      onSuccess: (Response r) {
+        final UResponse<List<UHotelRoomAvailabilityResponse>> ok = UResponse<List<UHotelRoomAvailabilityResponse>>.fromJson(
+          r.body,
+          (dynamic i) => List<UHotelRoomAvailabilityResponse>.from((i as List<dynamic>).map((dynamic x) => UHotelRoomAvailabilityResponse.fromMap(x))),
+        );
+        result = (ok, null, null);
+        onOk?.call(ok);
+      },
+      onError: (Response r) {
+        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
+        result = (null, err, null);
+        onError?.call(err);
+      },
+      onException: (String e) {
+        result = (null, null, e);
+        onException?.call(e);
+      },
+    );
+    return result;
+  }
+
+  Future<(UResponse<UHotelReservationResponse>?, UEmptyResponse?, String?)> bookHotelReservation({
+    required UHotelReservationBookParams p,
+    required Function(UResponse<UHotelReservationResponse> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
+  }) async {
+    (UResponse<UHotelReservationResponse>?, UEmptyResponse?, String?) result = (null, null, null);
+    await UHttpClient.send(
+      method: "POST",
+      endpoint: "${U.baseUrl}/Hotel/HotelReservation/Book",
+      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()).add("locale", ULocalStorage.getLocale()),
+      onSuccess: (Response r) {
+        final UResponse<UHotelReservationResponse> ok = UResponse<UHotelReservationResponse>.fromJson(r.body, (dynamic i) => UHotelReservationResponse.fromMap(i));
+        result = (ok, null, null);
+        onOk?.call(ok);
+      },
+      onError: (Response r) {
+        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
+        result = (null, err, null);
+        onError?.call(err);
+      },
+      onException: (String e) {
+        result = (null, null, e);
+        onException?.call(e);
+      },
+    );
+    return result;
+  }
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> cancelHotelReservationByUser({
+    required UHotelReservationCancelParams p,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
+  }) async {
+    (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
+    await UHttpClient.send(
+      method: "POST",
+      endpoint: "${U.baseUrl}/Hotel/HotelReservation/CancelByUser",
+      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()).add("locale", ULocalStorage.getLocale()),
+      onSuccess: (Response r) {
+        final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
+        result = (ok, null, null);
+        onOk?.call(ok);
+      },
+      onError: (Response r) {
+        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
+        result = (null, err, null);
+        onError?.call(err);
+      },
+      onException: (String e) {
+        result = (null, null, e);
+        onException?.call(e);
+      },
+    );
+    return result;
+  }
 }

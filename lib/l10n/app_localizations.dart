@@ -6823,6 +6823,546 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'By continuing, you accept the terms and conditions and the privacy policy.'**
   String get byContinuingYouAcceptTheTermsAndPrivacyPolicy;
+  /// No description provided for @night.
+  ///
+  /// In en, this message translates to:
+  /// **'Night'**
+  String get night;
+
+  /// No description provided for @book.
+  ///
+  /// In en, this message translates to:
+  /// **'Book'**
+  String get book;
+
+  /// No description provided for @bookNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Book now'**
+  String get bookNow;
+
+  /// No description provided for @reserveThisRoom.
+  ///
+  /// In en, this message translates to:
+  /// **'Book this room'**
+  String get reserveThisRoom;
+
+  /// No description provided for @reviews.
+  ///
+  /// In en, this message translates to:
+  /// **'Reviews'**
+  String get reviews;
+
+  /// No description provided for @guestCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of guests'**
+  String get guestCount;
+
+  /// No description provided for @monthlyRent.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly rent'**
+  String get monthlyRent;
+
+  /// No description provided for @notPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpaid'**
+  String get notPaid;
+
+  /// No description provided for @view.
+  ///
+  /// In en, this message translates to:
+  /// **'View'**
+  String get view;
+
+  /// No description provided for @seeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'See all'**
+  String get seeAll;
+
+  /// No description provided for @myReservations.
+  ///
+  /// In en, this message translates to:
+  /// **'My reservations'**
+  String get myReservations;
+
+  /// No description provided for @personalInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal information'**
+  String get personalInformation;
+
+  /// No description provided for @cancelReservation.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel reservation'**
+  String get cancelReservation;
+
+  /// No description provided for @cancellationPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancellation policy'**
+  String get cancellationPolicy;
+
+  /// No description provided for @refundAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Refund amount'**
+  String get refundAmount;
+
+  /// No description provided for @cancellationPenalty.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancellation fee'**
+  String get cancellationPenalty;
+
+  /// No description provided for @freeCancellationUntilHoursBeforeCheckIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Free cancellation up to a few hours before check-in'**
+  String get freeCancellationUntilHoursBeforeCheckIn;
+
+  /// No description provided for @selectDates.
+  ///
+  /// In en, this message translates to:
+  /// **'Select dates'**
+  String get selectDates;
+
+  /// No description provided for @roomCapacity.
+  ///
+  /// In en, this message translates to:
+  /// **'Room capacity'**
+  String get roomCapacity;
+
+  /// No description provided for @requiredDocuments.
+  ///
+  /// In en, this message translates to:
+  /// **'Required documents'**
+  String get requiredDocuments;
+
+  /// No description provided for @visitingHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Visiting hours'**
+  String get visitingHours;
+
+  /// No description provided for @nearbyUniversity.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearby university'**
+  String get nearbyUniversity;
+
+  /// No description provided for @directions.
+  ///
+  /// In en, this message translates to:
+  /// **'Directions'**
+  String get directions;
+
+  /// No description provided for @callTheDorm.
+  ///
+  /// In en, this message translates to:
+  /// **'Call the dorm'**
+  String get callTheDorm;
+
+  /// No description provided for @callTheHotel.
+  ///
+  /// In en, this message translates to:
+  /// **'Call the hotel'**
+  String get callTheHotel;
+
+  /// No description provided for @fullyBooked.
+  ///
+  /// In en, this message translates to:
+  /// **'Fully booked'**
+  String get fullyBooked;
+
+  /// No description provided for @payFromWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay from wallet'**
+  String get payFromWallet;
+
+  /// No description provided for @payWithGateway.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay with the bank gateway'**
+  String get payWithGateway;
+
+  /// No description provided for @reservationCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Reservation code'**
+  String get reservationCode;
+
+  /// No description provided for @addGuest.
+  ///
+  /// In en, this message translates to:
+  /// **'Add guest'**
+  String get addGuest;
+
+  /// No description provided for @priceDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Price details'**
+  String get priceDetails;
+
+  /// No description provided for @writeAReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a review'**
+  String get writeAReview;
+
+  /// No description provided for @yourRating.
+  ///
+  /// In en, this message translates to:
+  /// **'Your rating'**
+  String get yourRating;
+
+  /// No description provided for @dormReservationIsInPersonOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Dorm beds are booked in person only'**
+  String get dormReservationIsInPersonOnly;
+
+  /// No description provided for @dormReservationInPersonNote.
+  ///
+  /// In en, this message translates to:
+  /// **'To take a bed, call the dorm or visit in person. Once you are registered, the contract and its monthly invoices show up right here.'**
+  String get dormReservationInPersonNote;
+
+  /// No description provided for @roomsAndBeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Rooms and beds'**
+  String get roomsAndBeds;
+
+  /// No description provided for @youHaveNoReservations.
+  ///
+  /// In en, this message translates to:
+  /// **'You have no reservations yet'**
+  String get youHaveNoReservations;
+
+  /// No description provided for @youHaveNoInvoices.
+  ///
+  /// In en, this message translates to:
+  /// **'You have no invoices'**
+  String get youHaveNoInvoices;
+
+  /// No description provided for @youHaveNoContracts.
+  ///
+  /// In en, this message translates to:
+  /// **'You have no contracts'**
+  String get youHaveNoContracts;
+
+  /// No description provided for @past.
+  ///
+  /// In en, this message translates to:
+  /// **'Past'**
+  String get past;
+
+  /// No description provided for @perNight.
+  ///
+  /// In en, this message translates to:
+  /// **'per night'**
+  String get perNight;
+
+  /// No description provided for @startingFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'Starting from'**
+  String get startingFrom;
+
+  /// No description provided for @guestInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Guest details'**
+  String get guestInformation;
+
+  /// No description provided for @reservationRegistered.
+  ///
+  /// In en, this message translates to:
+  /// **'Your reservation is registered'**
+  String get reservationRegistered;
+
+  /// No description provided for @payTheInvoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay the invoice'**
+  String get payTheInvoice;
+
+  /// No description provided for @dormContracts.
+  ///
+  /// In en, this message translates to:
+  /// **'Dorm contracts'**
+  String get dormContracts;
+
+  /// No description provided for @monthlyInvoices.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly invoices'**
+  String get monthlyInvoices;
+
+  /// No description provided for @whereAreYouStaying.
+  ///
+  /// In en, this message translates to:
+  /// **'Where are you staying?'**
+  String get whereAreYouStaying;
+
+  /// No description provided for @aboutThisPlace.
+  ///
+  /// In en, this message translates to:
+  /// **'About this place'**
+  String get aboutThisPlace;
+
+  /// No description provided for @location.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get location;
+
+  /// No description provided for @hotelReservation.
+  ///
+  /// In en, this message translates to:
+  /// **'Hotel reservation'**
+  String get hotelReservation;
+
+  /// No description provided for @chooseHowToPay.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose how to pay'**
+  String get chooseHowToPay;
+
+  /// No description provided for @noReviewsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No reviews yet'**
+  String get noReviewsYet;
+
+  /// No description provided for @thanksForYourReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Thanks for your review'**
+  String get thanksForYourReview;
+
+  /// No description provided for @guestNamePlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Guest name'**
+  String get guestNamePlaceholder;
+
+  /// No description provided for @mainGuest.
+  ///
+  /// In en, this message translates to:
+  /// **'Main guest'**
+  String get mainGuest;
+
+  /// No description provided for @nightsCountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Nights'**
+  String get nightsCountLabel;
+
+  /// No description provided for @yourStay.
+  ///
+  /// In en, this message translates to:
+  /// **'Your stay'**
+  String get yourStay;
+
+  /// No description provided for @noPlacesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No places have been added yet'**
+  String get noPlacesYet;
+
+  /// No description provided for @inPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'In person'**
+  String get inPerson;
+
+  /// No description provided for @bookedInPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Booked in person'**
+  String get bookedInPerson;
+
+  /// No description provided for @noRoomsAvailableForTheseDates.
+  ///
+  /// In en, this message translates to:
+  /// **'No rooms are available for these dates'**
+  String get noRoomsAvailableForTheseDates;
+
+  /// No description provided for @selectYourDatesToSeePrices.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick your dates to see prices'**
+  String get selectYourDatesToSeePrices;
+
+  /// No description provided for @reservationDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Reservation details'**
+  String get reservationDetails;
+
+  /// No description provided for @invoiceDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice details'**
+  String get invoiceDetails;
+
+  /// No description provided for @remainingAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining amount'**
+  String get remainingAmount;
+
+  /// No description provided for @payNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay now'**
+  String get payNow;
+
+  /// No description provided for @choosePaymentMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a payment method'**
+  String get choosePaymentMethod;
+
+  /// No description provided for @yourReservationIsRegistered.
+  ///
+  /// In en, this message translates to:
+  /// **'Your reservation is registered'**
+  String get yourReservationIsRegistered;
+
+  /// No description provided for @backToHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to home'**
+  String get backToHome;
+
+  /// No description provided for @nationalCodeOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'National ID (optional)'**
+  String get nationalCodeOptional;
+
+  /// No description provided for @guestNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Guest'**
+  String get guestNumber;
+
+  /// No description provided for @markAllAsRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark all as read'**
+  String get markAllAsRead;
+
+  /// No description provided for @editProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit profile'**
+  String get editProfile;
+
+  /// No description provided for @changesSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes saved'**
+  String get changesSaved;
+
+  /// No description provided for @topUpWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'Top up wallet'**
+  String get topUpWallet;
+
+  /// No description provided for @cancellationRefundNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel before the free window ends and the full amount goes back to your wallet.'**
+  String get cancellationRefundNote;
+
+  /// No description provided for @reservationCancelledSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'The reservation was cancelled'**
+  String get reservationCancelledSuccessfully;
+
+  /// No description provided for @contractPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract period'**
+  String get contractPeriod;
+
+  /// No description provided for @bedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Bed'**
+  String get bedTitle;
+
+  /// No description provided for @roomTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Room'**
+  String get roomTitle;
+
+  /// No description provided for @dormTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Dorm'**
+  String get dormTitle;
+
+  /// No description provided for @payFromWalletBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay from your wallet balance'**
+  String get payFromWalletBalance;
+
+  /// No description provided for @payOnlineWithCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay online with a bank card'**
+  String get payOnlineWithCard;
+
+  /// No description provided for @yourReviewHelpsOthers.
+  ///
+  /// In en, this message translates to:
+  /// **'Your review helps other guests'**
+  String get yourReviewHelpsOthers;
+
+  /// No description provided for @guestsAndRooms.
+  ///
+  /// In en, this message translates to:
+  /// **'Guests and room'**
+  String get guestsAndRooms;
+
+  /// No description provided for @guestCountExceedsCapacity.
+  ///
+  /// In en, this message translates to:
+  /// **'Over the room capacity'**
+  String get guestCountExceedsCapacity;
+
+  /// No description provided for @roomIsFullyBooked.
+  ///
+  /// In en, this message translates to:
+  /// **'This room is full for these dates'**
+  String get roomIsFullyBooked;
+
+  /// No description provided for @extraGuestCapacity.
+  ///
+  /// In en, this message translates to:
+  /// **'Extra guest capacity'**
+  String get extraGuestCapacity;
+
+  /// No description provided for @extraGuestPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Extra guest price'**
+  String get extraGuestPrice;
+
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
