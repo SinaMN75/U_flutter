@@ -6787,6 +6787,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Total'**
   String get total;
+
+  /// No description provided for @loginToYourAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Log in to your account'**
+  String get loginToYourAccount;
+
+  /// No description provided for @weSentAVerificationCodeToThisNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'We sent a verification code to this number.'**
+  String get weSentAVerificationCodeToThisNumber;
+
+  /// No description provided for @verificationCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification code'**
+  String get verificationCode;
+
+  /// No description provided for @changeMobileNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Change mobile number'**
+  String get changeMobileNumber;
+
+  /// No description provided for @privacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy policy'**
+  String get privacyPolicy;
+
+  /// No description provided for @byContinuingYouAcceptTheTermsAndPrivacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'By continuing, you accept the terms and conditions and the privacy policy.'**
+  String get byContinuingYouAcceptTheTermsAndPrivacyPolicy;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -3443,4 +3443,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get total => 'Total';
+
+  @override
+  String get loginToYourAccount => 'Log in to your account';
+
+  @override
+  String get weSentAVerificationCodeToThisNumber => 'We sent a verification code to this number.';
+
+  @override
+  String get verificationCode => 'Verification code';
+
+  @override
+  String get changeMobileNumber => 'Change mobile number';
+
+  @override
+  String get privacyPolicy => 'Privacy policy';
+
+  @override
+  String get byContinuingYouAcceptTheTermsAndPrivacyPolicy => 'By continuing, you accept the terms and conditions and the privacy policy.';
 }

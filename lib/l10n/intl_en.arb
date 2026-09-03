@@ -1338,5 +1338,11 @@
   "addToReservations": "Add to reservations",
   "spotNumber": "Spot number",
   "areYouSure": "Are you sure?",
-  "total": "Total"
+  "total": "Total",
+  "loginToYourAccount": "Log in to your account",
+  "weSentAVerificationCodeToThisNumber": "We sent a verification code to this number.",
+  "verificationCode": "Verification code",
+  "changeMobileNumber": "Change mobile number",
+  "privacyPolicy": "Privacy policy",
+  "byContinuingYouAcceptTheTermsAndPrivacyPolicy": "By continuing, you accept the terms and conditions and the privacy policy."
 }

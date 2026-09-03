@@ -1338,5 +1338,11 @@
   "addToReservations": "افزودن به رزروها",
   "spotNumber": "شماره جای پارک",
   "areYouSure": "آیا مطمئن هستید؟",
-  "total": "جمع کل"
+  "total": "جمع کل",
+  "loginToYourAccount": "ورود به حساب کاربری",
+  "weSentAVerificationCodeToThisNumber": "کد تایید به این شماره پیامک شد.",
+  "verificationCode": "کد تایید",
+  "changeMobileNumber": "تغییر شماره موبایل",
+  "privacyPolicy": "حریم خصوصی",
+  "byContinuingYouAcceptTheTermsAndPrivacyPolicy": "با ادامه، قوانین و مقررات و حریم خصوصی را می‌پذیرم."
 }

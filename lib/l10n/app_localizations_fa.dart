@@ -3443,4 +3443,22 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get total => 'جمع کل';
+
+  @override
+  String get loginToYourAccount => 'ورود به حساب کاربری';
+
+  @override
+  String get weSentAVerificationCodeToThisNumber => 'کد تایید به این شماره پیامک شد.';
+
+  @override
+  String get verificationCode => 'کد تایید';
+
+  @override
+  String get changeMobileNumber => 'تغییر شماره موبایل';
+
+  @override
+  String get privacyPolicy => 'حریم خصوصی';
+
+  @override
+  String get byContinuingYouAcceptTheTermsAndPrivacyPolicy => 'با ادامه، قوانین و مقررات و حریم خصوصی را می‌پذیرم.';
 }
