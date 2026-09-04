@@ -172,3 +172,94 @@ class UGoldDeleteApiTokenParams {
 
   Map<String, dynamic> toMap() => <String, dynamic>{"tokenId": tokenId};
 }
+
+class UGoldReadUserBalanceParams {
+  final String? userId;
+
+  UGoldReadUserBalanceParams({this.userId});
+
+  factory UGoldReadUserBalanceParams.fromJson(String str) => UGoldReadUserBalanceParams.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UGoldReadUserBalanceParams.fromMap(Map<String, dynamic> json) => UGoldReadUserBalanceParams(userId: json["userId"]);
+
+  Map<String, dynamic> toMap() => <String, dynamic>{if (userId != null) "userId": userId};
+}
+
+// Send exactly one of amount (rial to spend) or goldAmount (grams to receive).
+class UGoldBuyParams {
+  final double? amount;
+  final double? goldAmount;
+
+  UGoldBuyParams({this.amount, this.goldAmount});
+
+  factory UGoldBuyParams.fromJson(String str) => UGoldBuyParams.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UGoldBuyParams.fromMap(Map<String, dynamic> json) => UGoldBuyParams(
+    amount: json["amount"] == null ? null : (json["amount"] as num).toDouble(),
+    goldAmount: json["goldAmount"] == null ? null : (json["goldAmount"] as num).toDouble(),
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    if (amount != null) "amount": amount,
+    if (goldAmount != null) "goldAmount": goldAmount,
+  };
+}
+
+// Send exactly one of goldAmount (grams to sell) or amount (rial to receive).
+class UGoldSellParams {
+  final double? amount;
+  final double? goldAmount;
+
+  UGoldSellParams({this.amount, this.goldAmount});
+
+  factory UGoldSellParams.fromJson(String str) => UGoldSellParams.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UGoldSellParams.fromMap(Map<String, dynamic> json) => UGoldSellParams(
+    amount: json["amount"] == null ? null : (json["amount"] as num).toDouble(),
+    goldAmount: json["goldAmount"] == null ? null : (json["goldAmount"] as num).toDouble(),
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    if (amount != null) "amount": amount,
+    if (goldAmount != null) "goldAmount": goldAmount,
+  };
+}
+
+class UGoldReadUserTxnsParams {
+  final String? userId;
+  final List<TagGoldTxn>? tags;
+  final int pageSize;
+  final int pageNumber;
+  final int orderBy;
+
+  UGoldReadUserTxnsParams({this.userId, this.tags, this.pageSize = 20, this.pageNumber = 1, int? orderBy})
+    : orderBy = orderBy ?? TagOrderBy.createdAtDescending.number;
+
+  factory UGoldReadUserTxnsParams.fromJson(String str) => UGoldReadUserTxnsParams.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UGoldReadUserTxnsParams.fromMap(Map<String, dynamic> json) => UGoldReadUserTxnsParams(
+    userId: json["userId"],
+    tags: json["tags"] == null
+        ? null
+        : List<TagGoldTxn>.from(json["tags"]!.map((dynamic x) => TagGoldTxn.values.firstWhereOrNull((TagGoldTxn e) => e.number == x)).whereType<TagGoldTxn>()),
+    pageSize: json["pageSize"] ?? 20,
+    pageNumber: json["pageNumber"] ?? 1,
+    orderBy: json["orderBy"],
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    if (userId != null) "userId": userId,
+    if (tags != null) "tags": List<dynamic>.from(tags!.map((TagGoldTxn x) => x.number)),
+    "pageSize": pageSize,
+    "pageNumber": pageNumber,
+    "orderBy": orderBy,
+  };
+}

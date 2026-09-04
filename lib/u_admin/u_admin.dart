@@ -5,6 +5,7 @@ import "package:u/utilities.dart";
 part "pages/analytics/u_admin_financial_ops_dashboard_controller.dart";
 part "pages/blog/u_admin_blog_controller.dart";
 part "pages/contents/u_admin_contents_controller.dart";
+part "pages/gold/u_admin_gold_controller.dart";
 part "pages/hotel/contracts/u_admin_contract_controller.dart";
 part "pages/hotel/dashboard/u_admin_hotel_dashboard_controller.dart";
 part "pages/hotel/dorm_beds/u_admin_dorm_bed_controller.dart";

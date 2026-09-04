@@ -178,6 +178,13 @@ abstract class UAdminModules {
     roles: roles,
   );
 
+  static UAdminModule gold({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.gold,
+    icon: Icons.diamond_rounded,
+    page: () => const UAdminGoldPage(),
+    roles: roles,
+  );
+
   static UAdminModule wallet({List<TagUser>? roles}) => UAdminModule(
     title: U.s.wallets,
     icon: Icons.account_balance_wallet_rounded,

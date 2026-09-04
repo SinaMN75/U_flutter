@@ -572,3 +572,183 @@ class UGoldApiTokenResponse {
     "rawToken": rawToken,
   };
 }
+
+extension UGoldTxnExtension on UGoldTxnResponse {
+  bool get isBuy => tags.contains(TagGoldTxn.buy.number);
+
+  bool get isPending => tags.contains(TagGoldTxn.pending.number);
+
+  bool get isFilled => tags.contains(TagGoldTxn.filled.number);
+
+  TagGoldTxn get side => isBuy ? TagGoldTxn.buy : TagGoldTxn.sell;
+
+  TagGoldTxn get status {
+    if (isFilled) return TagGoldTxn.filled;
+    if (tags.contains(TagGoldTxn.failed.number)) return TagGoldTxn.failed;
+    if (tags.contains(TagGoldTxn.cancelled.number)) return TagGoldTxn.cancelled;
+    return TagGoldTxn.pending;
+  }
+
+  IconData get icon => isBuy ? Icons.trending_up_rounded : Icons.trending_down_rounded;
+}
+
+class UGoldUserBalanceResponse {
+  final double balance;
+  final double? buyUnitPrice;
+  final double? sellUnitPrice;
+  final double? value;
+  final String? unit;
+  final DateTime? updatedAt;
+
+  UGoldUserBalanceResponse({required this.balance, this.buyUnitPrice, this.sellUnitPrice, this.value, this.unit, this.updatedAt});
+
+  factory UGoldUserBalanceResponse.fromJson(String str) => UGoldUserBalanceResponse.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UGoldUserBalanceResponse.fromMap(Map<String, dynamic> json) => UGoldUserBalanceResponse(
+    balance: json["balance"] == null ? 0 : (json["balance"] as num).toDouble(),
+    buyUnitPrice: json["buyUnitPrice"] == null ? null : (json["buyUnitPrice"] as num).toDouble(),
+    sellUnitPrice: json["sellUnitPrice"] == null ? null : (json["sellUnitPrice"] as num).toDouble(),
+    value: json["value"] == null ? null : (json["value"] as num).toDouble(),
+    unit: json["unit"],
+    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "balance": balance,
+    "buyUnitPrice": buyUnitPrice,
+    "sellUnitPrice": sellUnitPrice,
+    "value": value,
+    "unit": unit,
+    "updatedAt": updatedAt?.toIso8601String(),
+  };
+}
+
+class UGoldTxnJsonData {
+  final String? detail1;
+  final String? detail2;
+  final double? feeAmount;
+  final String? feeAsset;
+  final double? requestedGoldAmount;
+  final double? requestedAmount;
+  final double? reservedAmount;
+  final double? reservedGoldAmount;
+  final String? providerStatus;
+  final String? error;
+
+  UGoldTxnJsonData({
+    this.detail1,
+    this.detail2,
+    this.feeAmount,
+    this.feeAsset,
+    this.requestedGoldAmount,
+    this.requestedAmount,
+    this.reservedAmount,
+    this.reservedGoldAmount,
+    this.providerStatus,
+    this.error,
+  });
+
+  factory UGoldTxnJsonData.fromJson(String str) => UGoldTxnJsonData.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UGoldTxnJsonData.fromMap(Map<String, dynamic>? json) => UGoldTxnJsonData(
+    detail1: json?["detail1"],
+    detail2: json?["detail2"],
+    feeAmount: json?["feeAmount"] == null ? null : (json!["feeAmount"] as num).toDouble(),
+    feeAsset: json?["feeAsset"],
+    requestedGoldAmount: json?["requestedGoldAmount"] == null ? null : (json!["requestedGoldAmount"] as num).toDouble(),
+    requestedAmount: json?["requestedAmount"] == null ? null : (json!["requestedAmount"] as num).toDouble(),
+    reservedAmount: json?["reservedAmount"] == null ? null : (json!["reservedAmount"] as num).toDouble(),
+    reservedGoldAmount: json?["reservedGoldAmount"] == null ? null : (json!["reservedGoldAmount"] as num).toDouble(),
+    providerStatus: json?["providerStatus"],
+    error: json?["error"],
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "detail1": detail1,
+    "detail2": detail2,
+    "feeAmount": feeAmount,
+    "feeAsset": feeAsset,
+    "requestedGoldAmount": requestedGoldAmount,
+    "requestedAmount": requestedAmount,
+    "reservedAmount": reservedAmount,
+    "reservedGoldAmount": reservedGoldAmount,
+    "providerStatus": providerStatus,
+    "error": error,
+  };
+}
+
+class UGoldTxnResponse {
+  final String id;
+  final DateTime? createdAt;
+  final List<int> tags;
+  final UGoldTxnJsonData jsonData;
+  final String userId;
+  final UUserResponse? user;
+  final UUserResponse? creator;
+  final String? creatorId;
+  final double goldAmount;
+  final double amount;
+  final double unitPrice;
+  final String? orderId;
+  final String idempotencyKey;
+  final List<String> adminUserIds;
+
+  UGoldTxnResponse({
+    required this.id,
+    required this.tags,
+    required this.jsonData,
+    required this.userId,
+    required this.goldAmount,
+    required this.amount,
+    required this.unitPrice,
+    required this.idempotencyKey,
+    required this.adminUserIds,
+    this.createdAt,
+    this.user,
+    this.creator,
+    this.creatorId,
+    this.orderId,
+  });
+
+  factory UGoldTxnResponse.fromJson(String str) => UGoldTxnResponse.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UGoldTxnResponse.fromMap(Map<String, dynamic> json) => UGoldTxnResponse(
+    id: json["id"] ?? "",
+    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+    tags: json["tags"] == null ? <int>[] : List<int>.from(json["tags"]!.map((dynamic x) => x)),
+    jsonData: UGoldTxnJsonData.fromMap(json["jsonData"]),
+    userId: json["userId"] ?? "",
+    user: json["user"] == null ? null : UUserResponse.fromMap(json["user"]),
+    creator: json["creator"] == null ? null : UUserResponse.fromMap(json["creator"]),
+    creatorId: json["creatorId"],
+    goldAmount: json["goldAmount"] == null ? 0 : (json["goldAmount"] as num).toDouble(),
+    amount: json["amount"] == null ? 0 : (json["amount"] as num).toDouble(),
+    unitPrice: json["unitPrice"] == null ? 0 : (json["unitPrice"] as num).toDouble(),
+    orderId: json["orderId"],
+    idempotencyKey: json["idempotencyKey"] ?? "",
+    adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "createdAt": createdAt?.toIso8601String(),
+    "tags": List<dynamic>.from(tags.map((int x) => x)),
+    "jsonData": jsonData.toMap(),
+    "userId": userId,
+    "user": user?.toMap(),
+    "creator": creator?.toMap(),
+    "creatorId": creatorId,
+    "goldAmount": goldAmount,
+    "amount": amount,
+    "unitPrice": unitPrice,
+    "orderId": orderId,
+    "idempotencyKey": idempotencyKey,
+    "adminUserIds": List<dynamic>.from(adminUserIds.map((String x) => x)),
+  };
+}

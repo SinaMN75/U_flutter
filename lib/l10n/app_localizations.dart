@@ -7525,6 +7525,252 @@ abstract class AppLocalizations {
   /// **'Last updated'**
   String get goldLastUpdated;
 
+  /// No description provided for @goldTrade.
+  ///
+  /// In en, this message translates to:
+  /// **'Gold trading'**
+  String get goldTrade;
+
+  /// No description provided for @goldTradeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy and sell 18K gold online'**
+  String get goldTradeSubtitle;
+
+  /// No description provided for @goldMyGold.
+  ///
+  /// In en, this message translates to:
+  /// **'My gold'**
+  String get goldMyGold;
+
+  /// No description provided for @goldValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Current value'**
+  String get goldValue;
+
+  /// No description provided for @goldGram.
+  ///
+  /// In en, this message translates to:
+  /// **'gram'**
+  String get goldGram;
+
+  /// No description provided for @goldByAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'By amount'**
+  String get goldByAmount;
+
+  /// No description provided for @goldByWeight.
+  ///
+  /// In en, this message translates to:
+  /// **'By weight'**
+  String get goldByWeight;
+
+  /// No description provided for @goldEstimatedGold.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated gold'**
+  String get goldEstimatedGold;
+
+  /// No description provided for @goldEstimatedAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated amount'**
+  String get goldEstimatedAmount;
+
+  /// No description provided for @goldConfirmBuy.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm purchase'**
+  String get goldConfirmBuy;
+
+  /// No description provided for @goldConfirmSell.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm sale'**
+  String get goldConfirmSell;
+
+  /// No description provided for @goldBuySuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Gold purchased successfully'**
+  String get goldBuySuccess;
+
+  /// No description provided for @goldSellSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Gold sold successfully'**
+  String get goldSellSuccess;
+
+  /// No description provided for @goldInsufficientWalletBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Your wallet balance is not enough'**
+  String get goldInsufficientWalletBalance;
+
+  /// No description provided for @goldInsufficientGoldBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Your gold balance is not enough'**
+  String get goldInsufficientGoldBalance;
+
+  /// No description provided for @goldEnterAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter an amount'**
+  String get goldEnterAmount;
+
+  /// No description provided for @goldTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Gold transactions'**
+  String get goldTransactions;
+
+  /// No description provided for @goldOrderPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing'**
+  String get goldOrderPending;
+
+  /// No description provided for @goldUnitPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit price'**
+  String get goldUnitPrice;
+
+  /// No description provided for @goldFee.
+  ///
+  /// In en, this message translates to:
+  /// **'Fee'**
+  String get goldFee;
+
+  /// No description provided for @goldOrderId.
+  ///
+  /// In en, this message translates to:
+  /// **'Order id'**
+  String get goldOrderId;
+
+  /// No description provided for @goldSettleNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Check order status'**
+  String get goldSettleNow;
+
+  /// No description provided for @goldProviderAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Provider account'**
+  String get goldProviderAccount;
+
+  /// No description provided for @goldProviderBalances.
+  ///
+  /// In en, this message translates to:
+  /// **'Provider balances'**
+  String get goldProviderBalances;
+
+  /// No description provided for @goldProviderTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Provider transactions'**
+  String get goldProviderTransactions;
+
+  /// No description provided for @goldAccountStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Account status'**
+  String get goldAccountStatus;
+
+  /// No description provided for @goldIpWhitelist.
+  ///
+  /// In en, this message translates to:
+  /// **'Allowed IPs'**
+  String get goldIpWhitelist;
+
+  /// No description provided for @goldScopes.
+  ///
+  /// In en, this message translates to:
+  /// **'Scopes'**
+  String get goldScopes;
+
+  /// No description provided for @goldTokenLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Label'**
+  String get goldTokenLabel;
+
+  /// No description provided for @goldTokenPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Token prefix'**
+  String get goldTokenPrefix;
+
+  /// No description provided for @goldNoApiTokens.
+  ///
+  /// In en, this message translates to:
+  /// **'No API tokens yet'**
+  String get goldNoApiTokens;
+
+  /// No description provided for @goldMaxVolume.
+  ///
+  /// In en, this message translates to:
+  /// **'Max volume'**
+  String get goldMaxVolume;
+
+  /// No description provided for @goldUsedVolume.
+  ///
+  /// In en, this message translates to:
+  /// **'Used volume'**
+  String get goldUsedVolume;
+
+  /// No description provided for @goldInterval.
+  ///
+  /// In en, this message translates to:
+  /// **'Interval'**
+  String get goldInterval;
+
+  /// No description provided for @goldResetsAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Resets at'**
+  String get goldResetsAt;
+
+  /// No description provided for @goldTimezone.
+  ///
+  /// In en, this message translates to:
+  /// **'Timezone'**
+  String get goldTimezone;
+
+  /// No description provided for @goldWindow.
+  ///
+  /// In en, this message translates to:
+  /// **'Window'**
+  String get goldWindow;
+
+  /// No description provided for @goldLoadMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Load more'**
+  String get goldLoadMore;
+
+  /// No description provided for @goldPriceDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'The final price is set at the moment the order is filled'**
+  String get goldPriceDisclaimer;
+
+  /// No description provided for @inactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Inactive'**
+  String get inactive;
+
+  /// No description provided for @id.
+  ///
+  /// In en, this message translates to:
+  /// **'ID'**
+  String get id;
+
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

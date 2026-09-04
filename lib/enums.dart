@@ -1118,3 +1118,21 @@ enum TagGoldOrderStatus with NumericIdentifiable {
   @override
   final int number;
 }
+
+enum TagGoldTxn with NumericIdentifiable {
+  buy("خرید طلا", "Buy Gold", 101),
+  sell("فروش طلا", "Sell Gold", 102),
+  pending("در انتظار", "Pending", 201),
+  filled("انجام‌شده", "Filled", 202),
+  failed("ناموفق", "Failed", 203),
+  cancelled("لغوشده", "Cancelled", 204);
+
+  const TagGoldTxn(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}

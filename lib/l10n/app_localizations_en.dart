@@ -3812,4 +3812,127 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get goldLastUpdated => 'Last updated';
+
+  @override
+  String get goldTrade => 'Gold trading';
+
+  @override
+  String get goldTradeSubtitle => 'Buy and sell 18K gold online';
+
+  @override
+  String get goldMyGold => 'My gold';
+
+  @override
+  String get goldValue => 'Current value';
+
+  @override
+  String get goldGram => 'gram';
+
+  @override
+  String get goldByAmount => 'By amount';
+
+  @override
+  String get goldByWeight => 'By weight';
+
+  @override
+  String get goldEstimatedGold => 'Estimated gold';
+
+  @override
+  String get goldEstimatedAmount => 'Estimated amount';
+
+  @override
+  String get goldConfirmBuy => 'Confirm purchase';
+
+  @override
+  String get goldConfirmSell => 'Confirm sale';
+
+  @override
+  String get goldBuySuccess => 'Gold purchased successfully';
+
+  @override
+  String get goldSellSuccess => 'Gold sold successfully';
+
+  @override
+  String get goldInsufficientWalletBalance => 'Your wallet balance is not enough';
+
+  @override
+  String get goldInsufficientGoldBalance => 'Your gold balance is not enough';
+
+  @override
+  String get goldEnterAmount => 'Enter an amount';
+
+  @override
+  String get goldTransactions => 'Gold transactions';
+
+  @override
+  String get goldOrderPending => 'Processing';
+
+  @override
+  String get goldUnitPrice => 'Unit price';
+
+  @override
+  String get goldFee => 'Fee';
+
+  @override
+  String get goldOrderId => 'Order id';
+
+  @override
+  String get goldSettleNow => 'Check order status';
+
+  @override
+  String get goldProviderAccount => 'Provider account';
+
+  @override
+  String get goldProviderBalances => 'Provider balances';
+
+  @override
+  String get goldProviderTransactions => 'Provider transactions';
+
+  @override
+  String get goldAccountStatus => 'Account status';
+
+  @override
+  String get goldIpWhitelist => 'Allowed IPs';
+
+  @override
+  String get goldScopes => 'Scopes';
+
+  @override
+  String get goldTokenLabel => 'Label';
+
+  @override
+  String get goldTokenPrefix => 'Token prefix';
+
+  @override
+  String get goldNoApiTokens => 'No API tokens yet';
+
+  @override
+  String get goldMaxVolume => 'Max volume';
+
+  @override
+  String get goldUsedVolume => 'Used volume';
+
+  @override
+  String get goldInterval => 'Interval';
+
+  @override
+  String get goldResetsAt => 'Resets at';
+
+  @override
+  String get goldTimezone => 'Timezone';
+
+  @override
+  String get goldWindow => 'Window';
+
+  @override
+  String get goldLoadMore => 'Load more';
+
+  @override
+  String get goldPriceDisclaimer => 'The final price is set at the moment the order is filled';
+
+  @override
+  String get inactive => 'Inactive';
+
+  @override
+  String get id => 'ID';
 }

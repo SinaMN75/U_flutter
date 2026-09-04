@@ -59,6 +59,155 @@ class GoldService {
     return result;
   }
 
+  Future<(UResponse<UGoldUserBalanceResponse>?, UEmptyResponse?, String?)> readUserBalance({
+    required Function(UResponse<UGoldUserBalanceResponse> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
+    UGoldReadUserBalanceParams? p,
+  }) async {
+    (UResponse<UGoldUserBalanceResponse>?, UEmptyResponse?, String?) result = (null, null, null);
+    await UHttpClient.send(
+      method: "POST",
+      endpoint: "${U.baseUrl}/Gold/ReadUserBalance",
+      body: (p ?? UGoldReadUserBalanceParams()).toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
+      onSuccess: (Response r) {
+        final UResponse<UGoldUserBalanceResponse> ok = UResponse<UGoldUserBalanceResponse>.fromJson(r.body, (dynamic i) => UGoldUserBalanceResponse.fromMap(i));
+        result = (ok, null, null);
+        onOk?.call(ok);
+      },
+      onError: (Response r) {
+        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
+        result = (null, err, null);
+        onError?.call(err);
+      },
+      onException: (String e) {
+        result = (null, null, e);
+        onException?.call(e);
+      },
+    );
+    return result;
+  }
+
+  Future<(UResponse<UGoldTxnResponse>?, UEmptyResponse?, String?)> buy({
+    required UGoldBuyParams p,
+    required Function(UResponse<UGoldTxnResponse> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
+  }) async {
+    (UResponse<UGoldTxnResponse>?, UEmptyResponse?, String?) result = (null, null, null);
+    await UHttpClient.send(
+      method: "POST",
+      endpoint: "${U.baseUrl}/Gold/Buy",
+      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
+      onSuccess: (Response r) {
+        final UResponse<UGoldTxnResponse> ok = UResponse<UGoldTxnResponse>.fromJson(r.body, (dynamic i) => UGoldTxnResponse.fromMap(i));
+        result = (ok, null, null);
+        onOk?.call(ok);
+      },
+      onError: (Response r) {
+        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
+        result = (null, err, null);
+        onError?.call(err);
+      },
+      onException: (String e) {
+        result = (null, null, e);
+        onException?.call(e);
+      },
+    );
+    return result;
+  }
+
+  Future<(UResponse<UGoldTxnResponse>?, UEmptyResponse?, String?)> sell({
+    required UGoldSellParams p,
+    required Function(UResponse<UGoldTxnResponse> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
+  }) async {
+    (UResponse<UGoldTxnResponse>?, UEmptyResponse?, String?) result = (null, null, null);
+    await UHttpClient.send(
+      method: "POST",
+      endpoint: "${U.baseUrl}/Gold/Sell",
+      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
+      onSuccess: (Response r) {
+        final UResponse<UGoldTxnResponse> ok = UResponse<UGoldTxnResponse>.fromJson(r.body, (dynamic i) => UGoldTxnResponse.fromMap(i));
+        result = (ok, null, null);
+        onOk?.call(ok);
+      },
+      onError: (Response r) {
+        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
+        result = (null, err, null);
+        onError?.call(err);
+      },
+      onException: (String e) {
+        result = (null, null, e);
+        onException?.call(e);
+      },
+    );
+    return result;
+  }
+
+  // Settles a transaction the provider left pending; call it when the user opens the order, never on a timer.
+  Future<(UResponse<UGoldTxnResponse>?, UEmptyResponse?, String?)> syncTxn({
+    required UIdParams p,
+    required Function(UResponse<UGoldTxnResponse> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
+  }) async {
+    (UResponse<UGoldTxnResponse>?, UEmptyResponse?, String?) result = (null, null, null);
+    await UHttpClient.send(
+      method: "POST",
+      endpoint: "${U.baseUrl}/Gold/SyncTxn",
+      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
+      onSuccess: (Response r) {
+        final UResponse<UGoldTxnResponse> ok = UResponse<UGoldTxnResponse>.fromJson(r.body, (dynamic i) => UGoldTxnResponse.fromMap(i));
+        result = (ok, null, null);
+        onOk?.call(ok);
+      },
+      onError: (Response r) {
+        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
+        result = (null, err, null);
+        onError?.call(err);
+      },
+      onException: (String e) {
+        result = (null, null, e);
+        onException?.call(e);
+      },
+    );
+    return result;
+  }
+
+  Future<(UResponse<List<UGoldTxnResponse>>?, UEmptyResponse?, String?)> readUserTxns({
+    required UGoldReadUserTxnsParams p,
+    required Function(UResponse<List<UGoldTxnResponse>> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
+  }) async {
+    (UResponse<List<UGoldTxnResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
+    await UHttpClient.send(
+      method: "POST",
+      endpoint: "${U.baseUrl}/Gold/ReadUserTxns",
+      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
+      onSuccess: (Response r) {
+        final UResponse<List<UGoldTxnResponse>> ok = UResponse<List<UGoldTxnResponse>>.fromJson(
+          r.body,
+          (dynamic i) => List<UGoldTxnResponse>.from((i as List<dynamic>).map((dynamic x) => UGoldTxnResponse.fromMap(x))),
+        );
+        result = (ok, null, null);
+        onOk?.call(ok);
+      },
+      onError: (Response r) {
+        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
+        result = (null, err, null);
+        onError?.call(err);
+      },
+      onException: (String e) {
+        result = (null, null, e);
+        onException?.call(e);
+      },
+    );
+    return result;
+  }
+
   Future<(UResponse<UGoldOrderResponse>?, UEmptyResponse?, String?)> createOrder({
     required UGoldCreateOrderParams p,
     required Function(UResponse<UGoldOrderResponse> r)? onOk,

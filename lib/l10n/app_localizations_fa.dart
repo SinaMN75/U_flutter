@@ -3812,4 +3812,127 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get goldLastUpdated => 'آخرین به‌روزرسانی';
+
+  @override
+  String get goldTrade => 'معامله طلا';
+
+  @override
+  String get goldTradeSubtitle => 'خرید و فروش آنلاین طلای ۱۸ عیار';
+
+  @override
+  String get goldMyGold => 'طلای من';
+
+  @override
+  String get goldValue => 'ارزش روز';
+
+  @override
+  String get goldGram => 'گرم';
+
+  @override
+  String get goldByAmount => 'بر اساس مبلغ';
+
+  @override
+  String get goldByWeight => 'بر اساس وزن';
+
+  @override
+  String get goldEstimatedGold => 'طلای تقریبی';
+
+  @override
+  String get goldEstimatedAmount => 'مبلغ تقریبی';
+
+  @override
+  String get goldConfirmBuy => 'تأیید خرید';
+
+  @override
+  String get goldConfirmSell => 'تأیید فروش';
+
+  @override
+  String get goldBuySuccess => 'طلا با موفقیت خریداری شد';
+
+  @override
+  String get goldSellSuccess => 'طلا با موفقیت فروخته شد';
+
+  @override
+  String get goldInsufficientWalletBalance => 'موجودی کیف پول شما کافی نیست';
+
+  @override
+  String get goldInsufficientGoldBalance => 'موجودی طلای شما کافی نیست';
+
+  @override
+  String get goldEnterAmount => 'مبلغ را وارد کنید';
+
+  @override
+  String get goldTransactions => 'تراکنش‌های طلا';
+
+  @override
+  String get goldOrderPending => 'در حال پردازش';
+
+  @override
+  String get goldUnitPrice => 'قیمت واحد';
+
+  @override
+  String get goldFee => 'کارمزد';
+
+  @override
+  String get goldOrderId => 'شناسه سفارش';
+
+  @override
+  String get goldSettleNow => 'بررسی وضعیت سفارش';
+
+  @override
+  String get goldProviderAccount => 'حساب سرویس‌دهنده';
+
+  @override
+  String get goldProviderBalances => 'موجودی سرویس‌دهنده';
+
+  @override
+  String get goldProviderTransactions => 'تراکنش‌های سرویس‌دهنده';
+
+  @override
+  String get goldAccountStatus => 'وضعیت حساب';
+
+  @override
+  String get goldIpWhitelist => 'IPهای مجاز';
+
+  @override
+  String get goldScopes => 'دسترسی‌ها';
+
+  @override
+  String get goldTokenLabel => 'برچسب';
+
+  @override
+  String get goldTokenPrefix => 'پیشوند توکن';
+
+  @override
+  String get goldNoApiTokens => 'هنوز توکن API ساخته نشده است';
+
+  @override
+  String get goldMaxVolume => 'حداکثر حجم';
+
+  @override
+  String get goldUsedVolume => 'حجم مصرف‌شده';
+
+  @override
+  String get goldInterval => 'بازه زمانی';
+
+  @override
+  String get goldResetsAt => 'بازنشانی در';
+
+  @override
+  String get goldTimezone => 'منطقه زمانی';
+
+  @override
+  String get goldWindow => 'بازه معاملاتی';
+
+  @override
+  String get goldLoadMore => 'نمایش بیشتر';
+
+  @override
+  String get goldPriceDisclaimer => 'قیمت نهایی در لحظه انجام سفارش تعیین می‌شود';
+
+  @override
+  String get inactive => 'غیرفعال';
+
+  @override
+  String get id => 'شناسه';
 }
