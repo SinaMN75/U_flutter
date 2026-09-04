@@ -3731,4 +3731,85 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get extraGuestPrice => 'Extra guest price';
+
+  @override
+  String get gold => 'Gold';
+
+  @override
+  String get goldPrice => 'Gold price';
+
+  @override
+  String get goldPricePerGram => 'Price per gram';
+
+  @override
+  String get goldBuyPrice => 'Buy price';
+
+  @override
+  String get goldSellPrice => 'Sell price';
+
+  @override
+  String get buyGold => 'Buy gold';
+
+  @override
+  String get sellGold => 'Sell gold';
+
+  @override
+  String get goldWallet => 'Gold wallet';
+
+  @override
+  String get goldBalance => 'Gold balance';
+
+  @override
+  String get goldAmountInGram => 'Amount in gram';
+
+  @override
+  String get goldAmountInRial => 'Amount in rial';
+
+  @override
+  String get goldOrders => 'Gold orders';
+
+  @override
+  String get goldOrderDetail => 'Order detail';
+
+  @override
+  String get goldNoOrdersYet => 'No gold orders yet';
+
+  @override
+  String get goldNoTransactionsYet => 'No gold transactions yet';
+
+  @override
+  String get goldOrderPlacedSuccessfully => 'Your gold order was placed';
+
+  @override
+  String get goldTradeLimits => 'Trade limits';
+
+  @override
+  String get goldRemainingVolume => 'Remaining volume';
+
+  @override
+  String get goldCreditFacilities => 'Credit facilities';
+
+  @override
+  String get goldAvailableCredit => 'Available credit';
+
+  @override
+  String get goldUsedCredit => 'Used credit';
+
+  @override
+  String get goldApiTokens => 'Gold API tokens';
+
+  @override
+  String get goldCreateApiToken => 'Create API token';
+
+  @override
+  String get goldRevokeApiToken => 'Revoke API token';
+
+  @override
+  String get goldRawTokenShownOnce => 'Copy this token now, it is shown only once';
+
+  @override
+  String get goldServiceUnavailable => 'The gold service is not available right now';
+
+  @override
+  String get goldLastUpdated => 'Last updated';
 }

@@ -32,6 +32,8 @@ part "params/file_manager_params.dart";
 
 part "params/follow_params.dart";
 
+part "params/gold_params.dart";
+
 part "params/hotel_params.dart";
 
 part "params/inquiry_params.dart";
@@ -102,6 +104,8 @@ part "responses/file_manager_response.dart";
 
 part "responses/follower_following_count_response.dart";
 
+part "responses/gold_response.dart";
+
 part "responses/hotel_response.dart";
 
 part "responses/inquiry_response.dart";
@@ -168,6 +172,8 @@ part "services/file_manager_service.dart";
 
 part "services/follow_service.dart";
 
+part "services/gold_service.dart";
+
 part "services/hotel_service.dart";
 
 part "services/inquiry_service.dart";
@@ -223,6 +229,7 @@ class UServices {
   static ContentService content = ContentService();
   static CommentService comment = CommentService();
   static FollowService follow = FollowService();
+  static GoldService gold = GoldService();
   static MediaService media = MediaService();
   static WalletService wallet = WalletService();
   static IpgService ipg = IpgService();

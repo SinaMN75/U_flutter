@@ -1074,3 +1074,47 @@ extension NumericEnumExtension<T extends Enum> on Iterable<T> {
     return result;
   }
 }
+
+enum TagGoldAsset with NumericIdentifiable {
+  gold18("طلای ۱۸ عیار", "Gold 18K", 101),
+  irr("ریال", "Rial", 102);
+
+  const TagGoldAsset(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagGoldOrderSide with NumericIdentifiable {
+  buy("خرید", "Buy", 101),
+  sell("فروش", "Sell", 102);
+
+  const TagGoldOrderSide(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagGoldOrderStatus with NumericIdentifiable {
+  filled("انجام‌شده", "Filled", 101),
+  pending("در انتظار", "Pending", 102),
+  failed("ناموفق", "Failed", 103),
+  cancelled("لغوشده", "Cancelled", 104);
+
+  const TagGoldOrderStatus(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}

@@ -3731,4 +3731,85 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get extraGuestPrice => 'هزینه نفر اضافه';
+
+  @override
+  String get gold => 'طلا';
+
+  @override
+  String get goldPrice => 'قیمت طلا';
+
+  @override
+  String get goldPricePerGram => 'قیمت هر گرم';
+
+  @override
+  String get goldBuyPrice => 'قیمت خرید';
+
+  @override
+  String get goldSellPrice => 'قیمت فروش';
+
+  @override
+  String get buyGold => 'خرید طلا';
+
+  @override
+  String get sellGold => 'فروش طلا';
+
+  @override
+  String get goldWallet => 'کیف پول طلا';
+
+  @override
+  String get goldBalance => 'موجودی طلا';
+
+  @override
+  String get goldAmountInGram => 'مقدار به گرم';
+
+  @override
+  String get goldAmountInRial => 'مبلغ به ریال';
+
+  @override
+  String get goldOrders => 'سفارش‌های طلا';
+
+  @override
+  String get goldOrderDetail => 'جزئیات سفارش';
+
+  @override
+  String get goldNoOrdersYet => 'هنوز سفارش طلایی ثبت نشده است';
+
+  @override
+  String get goldNoTransactionsYet => 'هنوز تراکنش طلایی ثبت نشده است';
+
+  @override
+  String get goldOrderPlacedSuccessfully => 'سفارش طلای شما ثبت شد';
+
+  @override
+  String get goldTradeLimits => 'سقف‌های معاملاتی';
+
+  @override
+  String get goldRemainingVolume => 'حجم باقی‌مانده';
+
+  @override
+  String get goldCreditFacilities => 'تسهیلات اعتباری';
+
+  @override
+  String get goldAvailableCredit => 'اعتبار در دسترس';
+
+  @override
+  String get goldUsedCredit => 'اعتبار مصرف‌شده';
+
+  @override
+  String get goldApiTokens => 'توکن‌های API طلا';
+
+  @override
+  String get goldCreateApiToken => 'ساخت توکن API';
+
+  @override
+  String get goldRevokeApiToken => 'ابطال توکن API';
+
+  @override
+  String get goldRawTokenShownOnce => 'همین حالا این توکن را ذخیره کنید؛ فقط یک بار نمایش داده می‌شود';
+
+  @override
+  String get goldServiceUnavailable => 'سرویس طلا در حال حاضر در دسترس نیست';
+
+  @override
+  String get goldLastUpdated => 'آخرین به‌روزرسانی';
 }

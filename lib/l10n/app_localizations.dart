@@ -7363,6 +7363,168 @@ abstract class AppLocalizations {
   /// **'Extra guest price'**
   String get extraGuestPrice;
 
+  /// No description provided for @gold.
+  ///
+  /// In en, this message translates to:
+  /// **'Gold'**
+  String get gold;
+
+  /// No description provided for @goldPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Gold price'**
+  String get goldPrice;
+
+  /// No description provided for @goldPricePerGram.
+  ///
+  /// In en, this message translates to:
+  /// **'Price per gram'**
+  String get goldPricePerGram;
+
+  /// No description provided for @goldBuyPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy price'**
+  String get goldBuyPrice;
+
+  /// No description provided for @goldSellPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Sell price'**
+  String get goldSellPrice;
+
+  /// No description provided for @buyGold.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy gold'**
+  String get buyGold;
+
+  /// No description provided for @sellGold.
+  ///
+  /// In en, this message translates to:
+  /// **'Sell gold'**
+  String get sellGold;
+
+  /// No description provided for @goldWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'Gold wallet'**
+  String get goldWallet;
+
+  /// No description provided for @goldBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Gold balance'**
+  String get goldBalance;
+
+  /// No description provided for @goldAmountInGram.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount in gram'**
+  String get goldAmountInGram;
+
+  /// No description provided for @goldAmountInRial.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount in rial'**
+  String get goldAmountInRial;
+
+  /// No description provided for @goldOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'Gold orders'**
+  String get goldOrders;
+
+  /// No description provided for @goldOrderDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Order detail'**
+  String get goldOrderDetail;
+
+  /// No description provided for @goldNoOrdersYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No gold orders yet'**
+  String get goldNoOrdersYet;
+
+  /// No description provided for @goldNoTransactionsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No gold transactions yet'**
+  String get goldNoTransactionsYet;
+
+  /// No description provided for @goldOrderPlacedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Your gold order was placed'**
+  String get goldOrderPlacedSuccessfully;
+
+  /// No description provided for @goldTradeLimits.
+  ///
+  /// In en, this message translates to:
+  /// **'Trade limits'**
+  String get goldTradeLimits;
+
+  /// No description provided for @goldRemainingVolume.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining volume'**
+  String get goldRemainingVolume;
+
+  /// No description provided for @goldCreditFacilities.
+  ///
+  /// In en, this message translates to:
+  /// **'Credit facilities'**
+  String get goldCreditFacilities;
+
+  /// No description provided for @goldAvailableCredit.
+  ///
+  /// In en, this message translates to:
+  /// **'Available credit'**
+  String get goldAvailableCredit;
+
+  /// No description provided for @goldUsedCredit.
+  ///
+  /// In en, this message translates to:
+  /// **'Used credit'**
+  String get goldUsedCredit;
+
+  /// No description provided for @goldApiTokens.
+  ///
+  /// In en, this message translates to:
+  /// **'Gold API tokens'**
+  String get goldApiTokens;
+
+  /// No description provided for @goldCreateApiToken.
+  ///
+  /// In en, this message translates to:
+  /// **'Create API token'**
+  String get goldCreateApiToken;
+
+  /// No description provided for @goldRevokeApiToken.
+  ///
+  /// In en, this message translates to:
+  /// **'Revoke API token'**
+  String get goldRevokeApiToken;
+
+  /// No description provided for @goldRawTokenShownOnce.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy this token now, it is shown only once'**
+  String get goldRawTokenShownOnce;
+
+  /// No description provided for @goldServiceUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'The gold service is not available right now'**
+  String get goldServiceUnavailable;
+
+  /// No description provided for @goldLastUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Last updated'**
+  String get goldLastUpdated;
+
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
