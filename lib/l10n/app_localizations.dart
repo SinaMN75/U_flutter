@@ -7771,6 +7771,12 @@ abstract class AppLocalizations {
   /// **'ID'**
   String get id;
 
+  /// No description provided for @featureDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'This service is temporarily unavailable'**
+  String get featureDisabled;
+
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -1502,5 +1502,6 @@
   "goldLoadMore": "Load more",
   "goldPriceDisclaimer": "The final price is set at the moment the order is filled",
   "inactive": "Inactive",
-  "id": "ID"
+  "id": "ID",
+  "featureDisabled": "This service is temporarily unavailable"
 }
