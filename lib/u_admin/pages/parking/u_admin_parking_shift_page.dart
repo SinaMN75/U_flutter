@@ -88,13 +88,13 @@ class _UAdminParkingShiftPageState extends State<UAdminParkingShiftPage> {
     title: _operator(i),
     fields: <UAdminField>[
       UAdminField(U.s.shiftStarted, "${i.startDate.toJalaliDate()} ${i.startDate.hour}:${i.startDate.minute}"),
-      UAdminField(U.s.entriesCount(i.entryCount.toString()), U.s.exitsCount(i.exitCount.toString())),
+      UAdminField(U.s.countEntries(i.entryCount.toString()), U.s.countExits(i.exitCount.toString())),
       UAdminField(U.s.cashTotal, i.cashTotal.separate3By3()),
       UAdminField(U.s.cardTotal, i.cardTotal.separate3By3()),
       UAdminField(U.s.gatewayTotal, i.ipgTotal.separate3By3()),
       UAdminField(U.s.countedCash, i.countedCash.separate3By3()),
       UAdminField(U.s.cashDifference, i.cashDifference.separate3By3()),
-      UAdminField(i.endDate == null ? U.s.active : U.s.shiftClosed, i.endDate?.toJalaliDate() ?? "-"),
+      UAdminField(i.endDate == null ? U.s.active : U.s.theShiftWasClosed, i.endDate?.toJalaliDate() ?? "-"),
     ],
   );
 }

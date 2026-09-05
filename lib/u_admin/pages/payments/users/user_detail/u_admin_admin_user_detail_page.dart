@@ -379,11 +379,11 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
             child: UColumn(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                UTextField(labelText: U.s.reasonForRejecting(U.s.nationalCardFront), controller: frontReason, margin: const EdgeInsets.symmetric(vertical: 6)),
-                UTextField(labelText: U.s.reasonForRejecting(U.s.nationalCardBack), controller: backReason, margin: const EdgeInsets.symmetric(vertical: 6)),
-                UTextField(labelText: U.s.reasonForRejecting(U.s.birthCertificate), controller: birthReason, margin: const EdgeInsets.symmetric(vertical: 6)),
-                UTextField(labelText: U.s.reasonForRejecting(U.s.video), controller: videoReason, margin: const EdgeInsets.symmetric(vertical: 6)),
-                UTextField(labelText: U.s.reasonForRejecting(U.s.signature), controller: signatureReason, margin: const EdgeInsets.symmetric(vertical: 6)),
+                UTextField(labelText: U.s.reasonForRejectingItem(U.s.nationalCardFront), controller: frontReason, margin: const EdgeInsets.symmetric(vertical: 6)),
+                UTextField(labelText: U.s.reasonForRejectingItem(U.s.nationalCardBack), controller: backReason, margin: const EdgeInsets.symmetric(vertical: 6)),
+                UTextField(labelText: U.s.reasonForRejectingItem(U.s.birthCertificate), controller: birthReason, margin: const EdgeInsets.symmetric(vertical: 6)),
+                UTextField(labelText: U.s.reasonForRejectingItem(U.s.video), controller: videoReason, margin: const EdgeInsets.symmetric(vertical: 6)),
+                UTextField(labelText: U.s.reasonForRejectingItem(U.s.signature), controller: signatureReason, margin: const EdgeInsets.symmetric(vertical: 6)),
               ],
             ),
           ),

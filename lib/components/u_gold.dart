@@ -40,7 +40,7 @@ class UGoldBalanceCard extends StatelessWidget {
         URow(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            UTextLabelMedium(U.s.goldMyGold, color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.85)),
+            UTextLabelMedium(U.s.myGold, color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.85)),
             if (onRefresh != null)
               Icon(Icons.refresh_rounded, size: 20, color: Theme.of(context).colorScheme.onPrimary).onTap(onRefresh),
           ],
@@ -52,7 +52,7 @@ class UGoldBalanceCard extends StatelessWidget {
           UTextBodyMedium(errorText!, color: Theme.of(context).colorScheme.onPrimary)
         else ...<Widget>[
           UTextHeadlineSmall(
-            "${balance.toStringAsSmartRound(maxPrecision: 4)} ${U.s.goldGram}",
+            "${balance.toStringAsSmartRound(maxPrecision: 4)} ${U.s.gram}",
             color: Theme.of(context).colorScheme.onPrimary,
             fontWeight: FontWeight.bold,
           ),
@@ -62,15 +62,15 @@ class UGoldBalanceCard extends StatelessWidget {
         const SizedBox(height: 16),
         URow(
           children: <Widget>[
-            UGoldPriceChip(title: U.s.goldBuyPrice, price: buyUnitPrice).expanded(),
+            UGoldPriceChip(title: U.s.buyPrice, price: buyUnitPrice).expanded(),
             const SizedBox(width: 8),
-            UGoldPriceChip(title: U.s.goldSellPrice, price: sellUnitPrice).expanded(),
+            UGoldPriceChip(title: U.s.sellPrice, price: sellUnitPrice).expanded(),
           ],
         ),
         if (updatedAt != null) ...<Widget>[
           const SizedBox(height: 10),
           UTextLabelSmall(
-            "${U.s.goldLastUpdated}: ${updatedAt!.toJalaliDateTime()}",
+            "${U.s.lastUpdated}: ${updatedAt!.toJalaliDateTime()}",
             color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.7),
           ),
         ],
@@ -138,7 +138,7 @@ class UGoldTradeField extends StatelessWidget {
   String get _estimate {
     final double price = unitPrice ?? 0;
     if (price <= 0 || _typed <= 0) return "-";
-    return mode == UGoldInputMode.amount ? "${(_typed / price).toStringAsSmartRound(maxPrecision: 4)} ${U.s.goldGram}" : (_typed * price).rial();
+    return mode == UGoldInputMode.amount ? "${(_typed / price).toStringAsSmartRound(maxPrecision: 4)} ${U.s.gram}" : (_typed * price).rial();
   }
 
   @override
@@ -146,14 +146,14 @@ class UGoldTradeField extends StatelessWidget {
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: <Widget>[
       USegmentedControl<UGoldInputMode>(
-        items: <UGoldInputMode, String>{UGoldInputMode.amount: U.s.goldByAmount, UGoldInputMode.weight: U.s.goldByWeight},
+        items: <UGoldInputMode, String>{UGoldInputMode.amount: U.s.byAmount, UGoldInputMode.weight: U.s.byWeight},
         selectedValue: mode,
         onValueChanged: (UGoldInputMode? v) => onModeChanged(v ?? UGoldInputMode.amount),
       ),
       const SizedBox(height: 12),
       UTextField(
         controller: controller,
-        labelText: mode == UGoldInputMode.amount ? U.s.goldAmountInRial : U.s.goldAmountInGram,
+        labelText: mode == UGoldInputMode.amount ? U.s.amountInRial : U.s.amountInGram,
         hintText: hintText,
         keyboardType: const TextInputType.numberWithOptions(decimal: true),
         formatters: mode == UGoldInputMode.amount ? <TextInputFormatter>[UCurrencyInputFormatter()] : null,
@@ -167,7 +167,7 @@ class UGoldTradeField extends StatelessWidget {
           children: quickAmounts
               .map(
                 (double a) => UButton(
-                  title: mode == UGoldInputMode.amount ? a.rial() : "${a.toStringAsSmartRound(maxPrecision: 4)} ${U.s.goldGram}",
+                  title: mode == UGoldInputMode.amount ? a.rial() : "${a.toStringAsSmartRound(maxPrecision: 4)} ${U.s.gram}",
                   type: UButtonType.outlined,
                   size: UButtonSize.small,
                   onTap: () {
@@ -183,12 +183,12 @@ class UGoldTradeField extends StatelessWidget {
       URow(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          UTextLabelMedium(mode == UGoldInputMode.amount ? U.s.goldEstimatedGold : U.s.goldEstimatedAmount),
+          UTextLabelMedium(mode == UGoldInputMode.amount ? U.s.estimatedGold : U.s.estimatedAmount),
           UTextBodyMedium(_estimate, fontWeight: FontWeight.bold),
         ],
       ),
       const SizedBox(height: 6),
-      UTextLabelSmall(U.s.goldPriceDisclaimer, color: Theme.of(context).colorScheme.onSurfaceVariant),
+      UTextLabelSmall(U.s.theFinalPriceIsSetAtTheMomentTheOrderIsFilled, color: Theme.of(context).colorScheme.onSurfaceVariant),
     ],
   );
 }
@@ -218,7 +218,7 @@ class UGoldTxnTile extends StatelessWidget {
       leading: UIconBackground(txn.icon, color: _statusColor(context)),
       title: UTextBodyMedium(txn.side.localizedTitle, fontWeight: FontWeight.bold),
       subtitle: UTextLabelSmall(
-        "${txn.goldAmount.toStringAsSmartRound(maxPrecision: 4)} ${U.s.goldGram} • ${txn.createdAt?.toJalaliDateTime() ?? ""}",
+        "${txn.goldAmount.toStringAsSmartRound(maxPrecision: 4)} ${U.s.gram} • ${txn.createdAt?.toJalaliDateTime() ?? ""}",
         color: Theme.of(context).colorScheme.onSurfaceVariant,
       ),
       trailing: UColumn(

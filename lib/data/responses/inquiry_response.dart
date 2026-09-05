@@ -14,6 +14,9 @@ class UBillInfoResponse {
   final int? periodCode;
   final int? controlDigit1;
   final int? controlDigit2;
+  final int? expectedCheckDigit;
+  final int? expectedControlDigit1;
+  final int? expectedControlDigit2;
   final List<String> warnings;
   final bool isValid;
 
@@ -33,6 +36,9 @@ class UBillInfoResponse {
     this.periodCode,
     this.controlDigit1,
     this.controlDigit2,
+    this.expectedCheckDigit,
+    this.expectedControlDigit1,
+    this.expectedControlDigit2,
   });
 
   factory UBillInfoResponse.fromJson(String str) => UBillInfoResponse.fromMap(json.decode(str));
@@ -53,6 +59,9 @@ class UBillInfoResponse {
     periodCode: json["periodCode"],
     controlDigit1: json["controlDigit1"],
     controlDigit2: json["controlDigit2"],
+    expectedCheckDigit: json["expectedCheckDigit"],
+    expectedControlDigit1: json["expectedControlDigit1"],
+    expectedControlDigit2: json["expectedControlDigit2"],
     warnings: List<String>.from(json["warnings"]!.map((dynamic x) => x)),
     isValid: json["isValid"],
   );
@@ -71,6 +80,9 @@ class UBillInfoResponse {
     "periodCode": periodCode,
     "controlDigit1": controlDigit1,
     "controlDigit2": controlDigit2,
+    "expectedCheckDigit": expectedCheckDigit,
+    "expectedControlDigit1": expectedControlDigit1,
+    "expectedControlDigit2": expectedControlDigit2,
     "warnings": List<dynamic>.from(warnings.map((String x) => x)),
     "isValid": isValid,
   };

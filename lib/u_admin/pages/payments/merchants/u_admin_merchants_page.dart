@@ -198,7 +198,7 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
               UTextField(controller: c.landlineFilter, labelText: U.s.landline, margin: const EdgeInsets.symmetric(vertical: 6)),
               UTextField(controller: c.zipCodeFilter, labelText: U.s.zipCode, margin: const EdgeInsets.symmetric(vertical: 6)),
               UTextField(controller: c.merchantIdFilter, labelText: U.s.merchantId, margin: const EdgeInsets.symmetric(vertical: 6)),
-              UTextField(controller: c.bankAccountIdFilter, labelText: U.s.bankAccountid, margin: const EdgeInsets.symmetric(vertical: 6)),
+              UTextField(controller: c.bankAccountIdFilter, labelText: U.s.bankAccountId, margin: const EdgeInsets.symmetric(vertical: 6)),
               const SizedBox(height: 20),
               UButtonSubmitCancel(
                 submitTitle: U.s.filter,

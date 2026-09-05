@@ -359,11 +359,11 @@ class _ReservationPageState extends State<UAdminReservationPage> {
                           } else {
                             final String? rid = room.value?.id ?? widget.room?.id;
                             if (rid == null) {
-                              UToast.error(message: U.s.pleaseSelectA(U.s.room));
+                              UToast.error(message: U.s.pleaseSelectAItem(U.s.room));
                               return;
                             }
                             if (user.value?.id == null) {
-                              UToast.error(message: U.s.pleaseSelectA(U.s.user));
+                              UToast.error(message: U.s.pleaseSelectAItem(U.s.user));
                               return;
                             }
                             c.create(

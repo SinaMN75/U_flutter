@@ -1,7 +1,7 @@
 import "package:u/utilities.dart";
 
 abstract class UAdminPageSwitcher {
-  static void financialOpsDashboard() => U.addOrSwitchTab(U.s.financialAndOperations, const UAdminFinancialOpsDashboardPage());
+  static void financialOpsDashboard() => U.addOrSwitchTab(U.s.financialOperations, const UAdminFinancialOpsDashboardPage());
 
   static void propertyDashboard() => U.addOrSwitchTab(U.s.propertyDashboard, const UAdminHotelDashboardPage());
 

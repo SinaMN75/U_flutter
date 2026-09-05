@@ -21,7 +21,7 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
   @override
   Widget build(BuildContext context) => UScaffold(
     appBar: AppBar(
-      title: Text("${U.s.financialAndOperations} ⚡"),
+      title: Text("${U.s.financialOperations} ⚡"),
       actions: <Widget>[IconButton(icon: const Icon(Icons.refresh_rounded), tooltip: U.s.refresh, onPressed: c.load)],
     ),
     body: Obx(() {
@@ -59,7 +59,7 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
       children: <Widget>[
         UIconTextHorizontal(
           leading: const Icon(Icons.account_balance_wallet_rounded, color: UAdminTheme.white, size: 34),
-          trailing: UTextHeadlineSmall(U.s.financialAndOperations, color: UAdminTheme.white, fontWeight: FontWeight.w800),
+          trailing: UTextHeadlineSmall(U.s.financialOperations, color: UAdminTheme.white, fontWeight: FontWeight.w800),
         ),
         UAdminResponsiveGrid(
           minTileWidth: 150,

@@ -173,7 +173,7 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
                         action: () {
                           final String? rid = room.value?.id ?? widget.room?.id;
                           if (rid == null) {
-                            UToast.error(message: U.s.pleaseSelectA(U.s.room));
+                            UToast.error(message: U.s.pleaseSelectAItem(U.s.room));
                             return;
                           }
                           if (p == null) {

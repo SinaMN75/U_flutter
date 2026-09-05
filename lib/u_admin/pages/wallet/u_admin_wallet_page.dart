@@ -208,7 +208,7 @@ class _WalletPageState extends State<UAdminWalletPage> {
                       key: formKey,
                       action: () {
                         if (receiver.value == null) {
-                          UToast.error(message: U.s.selectA(U.s.receiver));
+                          UToast.error(message: U.s.selectAItem(U.s.receiver));
                           return;
                         }
                         UNavigator.back();

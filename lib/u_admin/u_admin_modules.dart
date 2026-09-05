@@ -74,7 +74,7 @@ class UAdminGroup {
 
 abstract class UAdminModules {
   static UAdminModule financialOpsDashboard({List<TagUser>? roles}) => UAdminModule(
-    title: U.s.financialAndOperations,
+    title: U.s.financialOperations,
     icon: Icons.account_balance_wallet_rounded,
     page: () => const UAdminFinancialOpsDashboardPage(),
     roles: roles,
@@ -271,7 +271,7 @@ abstract class UAdminModules {
   );
 
   static UAdminModule pnApiTester({List<TagUser>? roles}) => UAdminModule(
-    title: U.s.pnapiTester,
+    title: U.s.pnApiTester,
     icon: Icons.api_rounded,
     page: () => const UAdminPnTesterPage(),
     roles: roles,
@@ -285,7 +285,7 @@ abstract class UAdminModules {
   );
 
   static UAdminModule barcodeGenerator({List<TagUser>? roles}) => UAdminModule(
-    title: U.s.barcodeqrGenerator,
+    title: U.s.barcodeQrGenerator,
     icon: Icons.qr_code_2_rounded,
     page: () => const UAdminBarcodeGeneratorPage(),
     roles: roles,

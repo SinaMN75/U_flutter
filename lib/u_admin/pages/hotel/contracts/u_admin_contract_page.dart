@@ -362,11 +362,11 @@ class _ContractPageState extends State<UAdminContractPage> {
                           } else {
                             final String? bid = bed.value?.id ?? widget.bed?.id;
                             if (bid == null) {
-                              UToast.error(message: U.s.selectA(U.s.bed));
+                              UToast.error(message: U.s.selectAItem(U.s.bed));
                               return;
                             }
                             if (user.value?.id == null) {
-                              UToast.error(message: U.s.selectA(U.s.user));
+                              UToast.error(message: U.s.selectAItem(U.s.user));
                               return;
                             }
                             c.create(

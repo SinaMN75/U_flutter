@@ -97,7 +97,7 @@ class _UAdminParkingSubscriptionPageState extends State<UAdminParkingSubscriptio
       UAdminField(U.s.subscriptionType, _duration(i)),
       UAdminField(U.s.amount, i.price.separate3By3()),
       UAdminField(U.s.validUntil, i.expiryDate.toJalaliDate()),
-      UAdminField(U.s.daysRemainingCount(i.remainingDays.toString()), i.isExpired ? U.s.expired : U.s.active),
+      UAdminField(U.s.daysDays(i.remainingDays.toString()), i.isExpired ? U.s.expired : U.s.active),
     ],
   );
 
@@ -141,7 +141,7 @@ class _UAdminParkingSubscriptionPageState extends State<UAdminParkingSubscriptio
     await UNavigator.dialog(
       StatefulBuilder(
         builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
-          title: Text(U.s.registerNewSubscription),
+          title: Text(U.s.registerANewSubscription),
           content: SizedBox(
             width: context.dialogWidth(max: 480),
             child: SingleChildScrollView(

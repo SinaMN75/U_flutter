@@ -1497,7 +1497,7 @@ abstract class UEditorDialogs {
     final ColorScheme cs = Theme.of(context).colorScheme;
     return UNavigator.dialog<int>(
       AlertDialog(
-        title: Text(title ?? U.s.selectA(U.s.color)),
+        title: Text(title ?? U.s.selectAItem(U.s.color)),
         content: SizedBox(
           width: 320,
           child: Column(

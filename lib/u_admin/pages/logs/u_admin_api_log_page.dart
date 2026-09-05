@@ -289,7 +289,7 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
   }
 
   Widget _timelineChart() => _chartCard(
-    title: U.s.requestsAndResponseDurationTrend,
+    title: U.s.requestsResponseDurationTrend,
     trailing: URow(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -804,7 +804,7 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
   void _confirmClearAppLogs() => UNavigator.dialog(
     AlertDialog(
       title: Text(U.s.clearLogs),
-      content: Text(U.s.clearLogsConfirm),
+      content: Text(U.s.areYouSureYouWantToClearAllLogs),
       actions: <Widget>[
         UButton(title: U.s.cancel, type: UButtonType.text, onTap: UNavigator.back),
         UButton(

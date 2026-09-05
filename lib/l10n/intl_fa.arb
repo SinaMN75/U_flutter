@@ -36,9 +36,9 @@
   "drivingLicense": "گواهینامه رانندگی",
   "drivingLicenseNumber": "شماره گواهینامه",
   "electricityWaterGas": "برق، آب، گاز",
-  "enterTheBillidAndPaymentidOrScanItsBarcode": "شناسه قبض و شناسه پرداخت را وارد یا بارکد آن را اسکن کنید",
+  "enterTheBillIdAndPaymentIdOrScanItsBarcode": "شناسه قبض و شناسه پرداخت را وارد یا بارکد آن را اسکن کنید",
   "enterTheDrivingLicenseNumberToInquire": "برای استعلام، شماره گواهینامه را وارد کنید",
-  "enterThePrepaidsimCardNumber": "شماره سیم‌کارت اعتباری را وارد کنید",
+  "enterThePrepaidSimCardNumber": "شماره سیم‌کارت اعتباری را وارد کنید",
   "enterTheSentVerificationCode": "کد تایید ارسال شده را وارد نمایید.",
   "enterYourPostalCodeCorrectlyAndInquire": "کد پستی خود را به درستی وارد کرده و استعلام بگیرید.",
   "errorLoadingBalance": "خطا در بارگذاری موجودی",
@@ -92,7 +92,7 @@
   "noNotifications": "اعلانی وجود ندارد",
   "noSavedData": "اطلاعاتی ذخیره نشده",
   "noTransactionsDone": "تراکنشی انجام نشده.",
-  "nosimCardRegistered": "سیم‌کارتی ثبت نشده است",
+  "noSimCardRegistered": "سیم‌کارتی ثبت نشده است",
   "notAllowedToDrive": "غیرمجاز به رانندگی",
   "notifications": "اعلان‌ها",
   "onlineInquiryOfVehicleViolationsLicenseAndPlate": "استعلام آنلاین خلافی، گواهینامه و پلاک خودرو",
@@ -120,9 +120,9 @@
   "sayadCheck": "چک صیادی",
   "selectAmount": "انتخاب مبلغ",
   "selectInternetPackage": "انتخاب بسته اینترنت",
-  "selectTheDesiredsimCard": "سیم‌کارت موردنظر را انتخاب کنید",
-  "selectVehicleForInquiry": "خودرو موردنظر را برای استعلام {inquiry} انتخاب کنید",
-  "@selectVehicleForInquiry": {
+  "selectTheDesiredSimCard": "سیم‌کارت موردنظر را انتخاب کنید",
+  "selectTheVehicleForInquiry": "خودرو موردنظر را برای استعلام {inquiry} انتخاب کنید",
+  "@selectTheVehicleForInquiry": {
     "placeholders": {
       "inquiry": {}
     }
@@ -141,7 +141,7 @@
   "theAmountWillBeAddedToTheWalletAndPaid": "مبلغ به کیف پول اضافه و پرداخت انجام می‌شود",
   "theEnteredNationalCodeIsIncorrect": "کد ملی وارد شده صحیح نیست.",
   "theEnteredVerificationCodeIsIncorrect": "کد تایید وارد شده صحیح نیست.",
-  "theSupportPasswordWasSentViasmsToTheNumberRegisteredInTheApp": "رمز پشتیبان به شماره ثبت شده در اپلیکیشن پیامک شد.",
+  "theSupportPasswordWasSentViaSmsToTheNumberRegisteredInTheApp": "رمز پشتیبان به شماره ثبت شده در اپلیکیشن پیامک شد.",
   "thereIsNoSavedDataForThisVehicleToGetFreshDataYouMustPayTheInquiryFee": "برای این خودرو اطلاعاتی ذخیره نشده است. برای دریافت اطلاعات جدید باید هزینه استعلام را پرداخت کنید.",
   "thisServiceWillLaunchSoon": "این خدمت به زودی راه‌اندازی می‌شود",
   "to": "به",
@@ -171,8 +171,8 @@
   "weeks": "هفته‌ای",
   "welcome": "خوش آمدید",
   "wrongPostalCode": "کد پستی وارد شده صحیح نیست.",
-  "youHaveNotRegisteredAny": "تاکنون {items} ثبت نکرده‌اید",
-  "@youHaveNotRegisteredAny": {
+  "youHaveNotRegisteredAnyItemsYet": "تاکنون {items} ثبت نکرده‌اید",
+  "@youHaveNotRegisteredAnyItemsYet": {
     "placeholders": {
       "items": {}
     }
@@ -208,7 +208,7 @@
   "apiRequestLogs": "لاگ درخواست‌های API",
   "applicationLogs": "لاگ‌های برنامه",
   "clearLogs": "پاک کردن لاگ‌ها",
-  "clearLogsConfirm": "آیا از پاک کردن همهٔ لاگ‌ها مطمئن هستید؟",
+  "areYouSureYouWantToClearAllLogs": "آیا از پاک کردن همهٔ لاگ‌ها مطمئن هستید؟",
   "appSettings": "تنظیمات برنامه",
   "appVersion": "نسخه برنامه",
   "appearance": "ظاهر",
@@ -221,8 +221,8 @@
   "areYouSureYouWantToApproveThisUserWithAllOfTheirDocuments": "آیا از تایید این کاربر با تمام مدارک آن اطمینان دارید؟",
   "areYouSureYouWantToDelete": "از حذف اطمینان دارید؟",
   "areYouSureYouWantToDeleteAllStoredDataThisActionCannotBeUndone": "آیا از حذف تمام داده‌های ذخیره‌شده مطمئن هستید؟ این عمل قابل بازگشت نیست.",
-  "areYouSureYouWantToDeleteItem": "آیا از حذف این {item} اطمینان دارید؟",
-  "@areYouSureYouWantToDeleteItem": {
+  "areYouSureYouWantToDeleteThisItem": "آیا از حذف این {item} اطمینان دارید؟",
+  "@areYouSureYouWantToDeleteThisItem": {
     "placeholders": {
       "item": {}
     }
@@ -238,10 +238,10 @@
   "averageDuration": "میانگین مدت",
   "background": "رنگ پس‌زمینه",
   "balance": "موجودی",
-  "bankAccountid": "شناسه حساب بانکی",
+  "bankAccountId": "شناسه حساب بانکی",
   "barcode": "بارکد",
   "barcodeType": "نوع بارکد",
-  "barcodeqrGenerator": "تولید بارکد / کیو‌آر",
+  "barcodeQrGenerator": "تولید بارکد / کیو‌آر",
   "bed": "تخت",
   "bedType": "نوع تخت",
   "beds": "تخت‌ها",
@@ -420,7 +420,7 @@
     }
   },
   "finalApproval": "تایید نهایی",
-  "financialAndOperations": "مالی و عملیات",
+  "financialOperations": "مالی و عملیات",
   "find": "یافتن",
   "findAndReplace": "یافتن و جایگزینی",
   "firstName": "نام",
@@ -446,7 +446,7 @@
   "gender": "جنسیت",
   "general": "عمومی",
   "generate": "تولید",
-  "generateAndFullyCustomizeqrCodesAndBarcodesOfEveryKind": "تولید و شخصی‌سازی کامل کیو‌آر و بارکد از هر نوع.",
+  "generateAndFullyCustomizeQrCodesAndBarcodesOfEveryKind": "تولید و شخصی‌سازی کامل کیو‌آر و بارکد از هر نوع.",
   "generateOtp": "تولید کد OTP",
   "getSupportPassword": "دریافت رمز پشتیبانی",
   "gotIt": "متوجه شدم",
@@ -655,13 +655,13 @@
   "playbackSpeed": "سرعت پخش",
   "pleaseAddYourSignatureFirst": "لطفا اول امضای خود را ثبت کنید",
   "pleaseEnterSomeInputText": "لطفاً متن ورودی را وارد کنید.",
-  "pleaseSelectA": "لطفاً یک {item} انتخاب کنید",
-  "@pleaseSelectA": {
+  "pleaseSelectAItem": "لطفاً یک {item} انتخاب کنید",
+  "@pleaseSelectAItem": {
     "placeholders": {
       "item": {}
     }
   },
-  "pnapiTester": "تستر API پی‌ان",
+  "pnApiTester": "تستر API پی‌ان",
   "policies": "قوانین",
   "postalCode": "کد پستی",
   "preview": "پیش‌نمایش",
@@ -682,8 +682,8 @@
   "quietZone": "حاشیه آرام",
   "quote": "نقل قول",
   "readingTime": "زمان مطالعه",
-  "reasonForRejecting": "دلیل رد {item}",
-  "@reasonForRejecting": {
+  "reasonForRejectingItem": "دلیل رد {item}",
+  "@reasonForRejectingItem": {
     "placeholders": {
       "item": {}
     }
@@ -717,7 +717,7 @@
   "requestBody": "بدنه درخواست",
   "requestHeaders": "هدرهای درخواست",
   "requestSize": "اندازه درخواست",
-  "requestsAndResponseDurationTrend": "روند درخواست‌ها و مدت پاسخ",
+  "requestsResponseDurationTrend": "روند درخواست‌ها و مدت پاسخ",
   "required": "ضروری",
   "reservation": "رزرو",
   "reservations": "رزروها",
@@ -749,8 +749,8 @@
   "searchCountryCodeOrDialCode": "جستجو کشور، کد تلفن",
   "secretKey": "کلید مخفی",
   "select": "انتخاب",
-  "selectA": "انتخاب {item}",
-  "@selectA": {
+  "selectAItem": "انتخاب {item}",
+  "@selectAItem": {
     "placeholders": {
       "item": {}
     }
@@ -888,7 +888,7 @@
   "walletManagement": "مدیریت کیف پول",
   "wallets": "کیف پول‌ها",
   "warnings": "هشدارها",
-  "whatsapp": "واتساپ",
+  "whatsApp": "واتساپ",
   "words": "کلمات",
   "writeSomething": "چیزی بنویسید...",
   "year": "سال",
@@ -903,33 +903,31 @@
   "toman": "تومان",
   "billPayment": "پرداخت قبض",
   "statement": "صورت‌حساب",
-  "chargeAndPackage": "شارژ و بسته",
+  "chargePackage": "شارژ و بسته",
   "accountsInThisProfile": "حساب‌های این پرونده",
   "credit": "واریز",
   "debit": "برداشت",
-  "accountsWord": "حساب",
-  "emptyLabel": "خالی",
+  "accounts": "حساب",
+  "empty": "خالی",
   "noAccountsInThisProfile": "حسابی در این پرونده نیست",
   "selectProfile": "انتخاب پرونده",
-  "profilesHint": "حساب‌ها، کارت‌ها و تراکنش‌ها بر اساس پروندهٔ فعال نمایش داده می‌شوند.",
+  "accountsCardsAndTransactionsAreShownBasedOnTheActiveProfile": "حساب‌ها، کارت‌ها و تراکنش‌ها بر اساس پروندهٔ فعال نمایش داده می‌شوند.",
   "cards": "کارت‌ها",
   "cardTransactions": "تراکنش‌های این کارت",
-  "noCardsInThisProfile": "کارتی برای این پرونده صادر نشده",
+  "noCardIssuedForThisProfile": "کارتی برای این پرونده صادر نشده",
   "connectedAccount": "حساب متصل",
-  "showPinInApp": "نمایش رمز دوم در اپ",
-  "getPinBySms": "دریافت رمز با پیامک",
-  "cardLimitsAndSettings": "سقف و تنظیمات کارت",
-  "blockCardTemp": "مسدودسازی موقت",
-  "unblockCard": "رفع مسدودی",
-  "cardActive": "فعال",
-  "cardExpiringSoon": "انقضا نزدیک",
-  "cardBlocked": "مسدود موقت",
+  "showDynamicPinInApp": "نمایش رمز دوم در اپ",
+  "getPinViaSms": "دریافت رمز با پیامک",
+  "cardLimitsSettings": "سقف و تنظیمات کارت",
+  "temporarilyBlock": "مسدودسازی موقت",
+  "unblock": "رفع مسدودی",
+  "temporarilyBlocked": "مسدود موقت",
   "dynamicPin": "رمز دوم پویا",
-  "dynamicPinHint": "رمز دوم پویا برای خریدهای اینترنتی استفاده می‌شود.",
-  "secondsWord": "ثانیه",
-  "pinSentBySms": "رمز دوم پویا پیامک شد",
+  "theDynamicPinIsUsedForOnlinePurchases": "رمز دوم پویا برای خریدهای اینترنتی استفاده می‌شود.",
+  "seconds": "ثانیه",
+  "theDynamicPinWasSentViaSms": "رمز دوم پویا پیامک شد",
   "autoPlay": "پخش خودکار",
-  "login": "ورود",
+  "logIn": "ورود",
   "forgotPassword": "فراموشی رمز عبور",
   "back": "بازگشت",
   "disabled": "غیرفعال",
@@ -942,15 +940,15 @@
   "logInToStartYourShift": "برای شروع شیفت وارد شوید",
   "yourShiftWillBeRecordedOnThisParking": "شیفت شما روی همین پارکینگ ثبت می‌شود",
   "youDoNotHaveAccessToAnyParking": "دسترسی به پارکینگ ندارید",
-  "yourAccountIsNotLinkedToAnyParkingYet": "حساب {userName} معتبر است اما هنوز به هیچ پارکینگی متصل نشده. از صاحب پارکینگ بخواهید شما را به‌عنوان اپراتور اضافه کند.",
-  "@yourAccountIsNotLinkedToAnyParkingYet": {
+  "theAccountUserNameIsValidButIsNotLinkedToAnyParkingYetAskTheParkingOwnerToAddYouAsAnOperator": "حساب {userName} معتبر است اما هنوز به هیچ پارکینگی متصل نشده. از صاحب پارکینگ بخواهید شما را به‌عنوان اپراتور اضافه کند.",
+  "@theAccountUserNameIsValidButIsNotLinkedToAnyParkingYetAskTheParkingOwnerToAddYouAsAnOperator": {
     "placeholders": {
       "userName": {}
     }
   },
   "accessTemporarilyDisabled": "دسترسی موقتاً غیرفعال",
-  "parkingSpacesCount": "{count} جای پارک",
-  "@parkingSpacesCount": {
+  "countParkingSpaces": "{count} جای پارک",
+  "@countParkingSpaces": {
     "placeholders": {
       "count": {}
     }
@@ -963,26 +961,25 @@
   "entranceDate": "تاریخ ورود",
   "parkingName": "نام پارکینگ",
   "printReceipt": "چاپ رسید",
-  "printFailed": "چاپ رسید ناموفق بود",
-  "receiptPrinted": "رسید با موفقیت چاپ شد",
-  "receiptTitle": "رسید پارکینگ",
+  "printingFailed": "چاپ رسید ناموفق بود",
+  "receiptPrintedSuccessfully": "رسید با موفقیت چاپ شد",
+  "parkingReceipt": "رسید پارکینگ",
   "scanReceipt": "اسکن رسید",
-  "scanReceiptHint": "دوربین را روی کد QR رسید بگیرید",
+  "pointTheCameraAtAReceiptQrCode": "دوربین را روی کد QR رسید بگیرید",
   "scannedReceipt": "رسید اسکن‌شده",
-  "sessionExpired": "نشست شما منقضی شده است. لطفاً دوباره وارد شوید.",
   "vehicleType": "نوع خودرو",
   "avaPark": "آواپارک",
-  "askYourParkingOwnerToResetYourPassword": "برای بازنشانی رمز عبور با صاحب پارکینگ یا پشتیبانی تماس بگیرید.",
+  "askYourParkingOwnerOrSupportToResetYourPassword": "برای بازنشانی رمز عبور با صاحب پارکینگ یا پشتیبانی تماس بگیرید.",
   "changeParking": "تغییر پارکینگ",
-  "insideParking": "داخل پارکینگ",
+  "insideTheParking": "داخل پارکینگ",
   "shiftRevenue": "درآمد شیفت",
   "registerEntry": "ثبت ورود",
   "registerExit": "ثبت خروج",
   "plateAndPrintReceipt": "پلاک و چاپ رسید",
   "scanReceiptOrPlate": "اسکن رسید یا پلاک",
   "recentMovements": "آخرین ترددها",
-  "receiptsQueuedOffline": "{count} رسید در صف ارسال آفلاین است",
-  "@receiptsQueuedOffline": {
+  "countReceiptsAreQueuedForOfflineSending": "{count} رسید در صف ارسال آفلاین است",
+  "@countReceiptsAreQueuedForOfflineSending": {
     "placeholders": {
       "count": {}
     }
@@ -990,32 +987,32 @@
   "freeExit": "خروج رایگان",
   "nonIranianPlate": "پلاک غیرایرانی",
   "readPlateWithCamera": "خواندن پلاک با دوربین",
-  "perHourAfter": "هر ساعت بعد",
+  "eachHourAfter": "هر ساعت بعد",
   "dailyCap": "سقف ۲۴ ساعته",
-  "firstMinutesAreFree": "{minutes} دقیقه اول رایگان است.",
-  "@firstMinutesAreFree": {
+  "theFirstMinutesMinutesAreFree": "{minutes} دقیقه اول رایگان است.",
+  "@theFirstMinutesMinutesAreFree": {
     "placeholders": {
       "minutes": {}
     }
   },
-  "nightRateAppliesBetween": "از {from} تا {to} نرخ شبانه اعمال می‌شود.",
-  "@nightRateAppliesBetween": {
+  "theNightRateAppliesBetweenFromAndTo": "از {from} تا {to} نرخ شبانه اعمال می‌شود.",
+  "@theNightRateAppliesBetweenFromAndTo": {
     "placeholders": {
       "from": {},
       "to": {}
     }
   },
-  "phoneNumberForSmsReceipt": "ثبت شماره تماس برای پیامک رسید",
+  "phoneNumberForTheSmsReceipt": "ثبت شماره تماس برای پیامک رسید",
   "registerEntryAndPrintReceipt": "ثبت ورود و چاپ رسید",
-  "pointCameraAtPlate": "دوربین را روی پلاک بگیرید",
+  "pointTheCameraAtThePlate": "دوربین را روی پلاک بگیرید",
   "plateDetected": "پلاک شناسایی شد",
-  "enterPlateManually": "ورود دستی پلاک",
+  "enterThePlateManually": "ورود دستی پلاک",
   "checkPlate": "بررسی پلاک",
   "hasAnActiveSubscription": "اشتراک فعال دارد",
-  "entryAndExitAreFreeOfCharge": "ورود و خروج بدون هزینه ثبت می‌شود.",
+  "entryAndExitAreRecordedFreeOfCharge": "ورود و خروج بدون هزینه ثبت می‌شود.",
   "thisVehicleHasAReservation": "این خودرو رزرو دارد",
-  "spotIsReservedForThisPlate": "جای پارک {spot} برای این پلاک رزرو شده است.",
-  "@spotIsReservedForThisPlate": {
+  "spotSpotIsReservedForThisPlate": "جای پارک {spot} برای این پلاک رزرو شده است.",
+  "@spotSpotIsReservedForThisPlate": {
     "placeholders": {
       "spot": {}
     }
@@ -1031,15 +1028,15 @@
   "exitTime": "ساعت خروج",
   "parkingSpot": "جای پارک",
   "tariff": "تعرفه",
-  "scanThisCodeToRegisterExit": "برای ثبت خروج این کد را اسکن کنید",
-  "printOnPosDevice": "چاپ روی دستگاه پوز",
+  "scanThisCodeToRegisterTheExit": "برای ثبت خروج این کد را اسکن کنید",
+  "printOnThePosDevice": "چاپ روی دستگاه پوز",
   "shareImage": "اشتراک‌گذاری تصویر",
   "smsToCustomer": "پیامک به مشتری",
   "nextEntry": "ثبت ورود بعدی",
   "searchPlate": "جستجوی پلاک",
-  "holdCustomerReceiptToCamera": "رسید مشتری را جلوی دوربین بگیرید",
-  "vehiclesAreInsideTheParking": "{count} خودرو داخل پارکینگ است",
-  "@vehiclesAreInsideTheParking": {
+  "holdTheCustomersReceiptUpToTheCamera": "رسید مشتری را جلوی دوربین بگیرید",
+  "countVehiclesAreInsideTheParking": "{count} خودرو داخل پارکینگ است",
+  "@countVehiclesAreInsideTheParking": {
     "placeholders": {
       "count": {}
     }
@@ -1047,22 +1044,22 @@
   "showList": "لیست",
   "receiptLostSearchManually": "رسید مفقود شده — جستجوی دستی",
   "searchVehicle": "جستجوی خودرو",
-  "moreThanADay": "بیش از ۲۴ ساعت",
+  "moreThan24Hours": "بیش از ۲۴ ساعت",
   "subscribers": "اشتراکی",
   "approximately": "تقریبی",
   "continueToExit": "ادامه ثبت خروج",
   "freeOfCharge": "رایگان",
   "exitInvoice": "صورتحساب خروج",
   "calculationBreakdown": "ریز محاسبه",
-  "firstMinutes": "{minutes} دقیقه اول",
-  "@firstMinutes": {
+  "firstMinutesMinutes": "{minutes} دقیقه اول",
+  "@firstMinutesMinutes": {
     "placeholders": {
       "minutes": {}
     }
   },
   "firstHour": "ساعت اول",
-  "additionalTimePerMinute": "{duration} بعدی (دقیقه‌ای)",
-  "@additionalTimePerMinute": {
+  "durationAfterThatPerMinute": "{duration} بعدی (دقیقه‌ای)",
+  "@durationAfterThatPerMinute": {
     "placeholders": {
       "duration": {}
     }
@@ -1072,27 +1069,27 @@
   "normalDayRate": "روزانه عادی",
   "nightRate": "نرخ شبانه",
   "applyDiscount": "اعمال تخفیف",
-  "correctEntryTime": "اصلاح ساعت ورود",
+  "correctTheEntryTime": "اصلاح ساعت ورود",
   "payAmount": "پرداخت {amount}",
   "@payAmount": {
     "placeholders": {
       "amount": {}
     }
   },
-  "holidayExtra": "تعرفه تعطیلات",
+  "holidaySurcharge": "تعرفه تعطیلات",
   "dailyCapApplied": "سقف ۲۴ ساعته اعمال شد",
-  "bankCardOnDevice": "کارت بانکی روی دستگاه",
-  "internalCardReaderFastestWay": "کارت‌خوان داخلی · سریع‌ترین راه",
+  "bankCardOnTheDevice": "کارت بانکی روی دستگاه",
+  "builtInCardReaderFastestWay": "کارت‌خوان داخلی · سریع‌ترین راه",
   "onlinePaymentGateway": "درگاه پرداخت اینترنتی",
-  "showQrOrSendSmsLink": "نمایش QR یا ارسال لینک پیامکی",
+  "showAQrCodeOrSendAnSmsLink": "نمایش QR یا ارسال لینک پیامکی",
   "cash": "نقدی",
   "recordedInTheShiftCashReport": "در گزارش صندوق شیفت ثبت می‌شود",
   "swipeOrTapTheCard": "کارت را بکشید یا بزنید",
-  "amountSentToCardReader": "مبلغ روی کارت‌خوان دستگاه ارسال شد. تا پایان تراکنش صفحه را نبندید.",
+  "theAmountWasSentToTheDevicesCardReaderDoNotCloseThisScreenUntilTheTransactionFinishes": "مبلغ روی کارت‌خوان دستگاه ارسال شد. تا پایان تراکنش صفحه را نبندید.",
   "transactionAmount": "مبلغ تراکنش",
   "trackingCode": "کد پیگیری",
   "cancelTransaction": "لغو تراکنش",
-  "customerShouldScanThisCode": "مشتری این کد را با موبایل اسکن کند",
+  "theCustomerShouldScanThisCodeWithTheirPhone": "مشتری این کد را با موبایل اسکن کند",
   "codeValidFor": "اعتبار کد",
   "sendPaymentLink": "ارسال لینک پرداخت",
   "waitingForBankConfirmation": "در انتظار تأیید بانک…",
@@ -1103,12 +1100,12 @@
   "finish": "پایان",
   "subscriptionExit": "خروج اشتراکی",
   "noChargeWillBeTaken": "هزینه‌ای دریافت نمی‌شود",
-  "onlyAnExitReceiptIsIssued": "این پلاک اشتراک فعال دارد. فقط رسید خروج صادر می‌شود.",
+  "thisPlateHasAnActiveSubscriptionOnlyAnExitReceiptIsIssued": "این پلاک اشتراک فعال دارد. فقط رسید خروج صادر می‌شود.",
   "subscriptionType": "نوع اشتراک",
   "validUntil": "اعتبار تا",
   "entriesThisMonth": "تردد این ماه",
-  "subscriptionExpiresInDays": "اشتراک {days} روز دیگر تمام می‌شود.",
-  "@subscriptionExpiresInDays": {
+  "theSubscriptionExpiresInDaysDays": "اشتراک {days} روز دیگر تمام می‌شود.",
+  "@theSubscriptionExpiresInDaysDays": {
     "placeholders": {
       "days": {}
     }
@@ -1117,7 +1114,7 @@
   "registerExitAndPrint": "ثبت خروج و چاپ",
   "management": "مدیریت",
   "reportsAndAccounts": "گزارش و حساب",
-  "vehiclesInsideParking": "خودروهای داخل پارکینگ",
+  "vehiclesInsideTheParking": "خودروهای داخل پارکینگ",
   "staffManagement": "مدیریت کارکنان",
   "tariffs": "تعرفه‌ها",
   "subscriptions": "اشتراک‌ها",
@@ -1128,23 +1125,23 @@
   "closeShiftAndSettleCash": "بستن شیفت و تسویه صندوق",
   "changePassword": "تغییر رمز عبور",
   "staff": "کارکنان",
-  "peopleCount": "{count} نفر",
-  "@peopleCount": {
+  "countPeople": "{count} نفر",
+  "@countPeople": {
     "placeholders": {
       "count": {}
     }
   },
   "you": "شما",
   "fullAccess": "دسترسی کامل",
-  "addStaff": "افزودن کارمند",
+  "addStaffMember": "افزودن کارمند",
   "newStaffMember": "کارمند جدید",
   "fullName": "نام و نام خانوادگی",
   "temporaryPassword": "رمز موقت",
   "regenerate": "تولید مجدد",
-  "maxDiscountAllowed": "سقف تخفیف مجاز",
-  "temporaryPasswordMustBeChanged": "رمز موقت پس از اولین ورود باید تغییر کند.",
-  "disabledSince": "غیرفعال از {date}",
-  "@disabledSince": {
+  "maximumDiscountAllowed": "سقف تخفیف مجاز",
+  "theTemporaryPasswordMustBeChangedAfterTheFirstSignIn": "رمز موقت پس از اولین ورود باید تغییر کند.",
+  "disabledSinceDate": "غیرفعال از {date}",
+  "@disabledSinceDate": {
     "placeholders": {
       "date": {}
     }
@@ -1152,25 +1149,24 @@
   "hourly": "ساعتی",
   "rules": "قواعد",
   "dayRate": "نرخ روز",
-  "nightRateTitle": "نرخ شب",
-  "betweenHours": "{from} تا {to}",
-  "@betweenHours": {
+  "fromToTo": "{from} تا {to}",
+  "@fromToTo": {
     "placeholders": {
       "from": {},
       "to": {}
     }
   },
   "perHour": "هر ساعت",
-  "firstMinutesFreeRule": "{minutes} دقیقه اول رایگان",
-  "@firstMinutesFreeRule": {
+  "firstMinutesMinutesFree": "{minutes} دقیقه اول رایگان",
+  "@firstMinutesMinutesFree": {
     "placeholders": {
       "minutes": {}
     }
   },
-  "roundToFullHour": "گرد کردن به ساعت کامل",
-  "perMinuteAfterFirstHour": "محاسبه دقیقه‌ای بعد از ساعت اول",
-  "holidayTariffPlusPercent": "تعرفه تعطیلات (+{percent}٪)",
-  "@holidayTariffPlusPercent": {
+  "roundUpToAFullHour": "گرد کردن به ساعت کامل",
+  "perMinuteAfterTheFirstHour": "محاسبه دقیقه‌ای بعد از ساعت اول",
+  "holidayTariffPercent": "تعرفه تعطیلات (+{percent}٪)",
+  "@holidayTariffPercent": {
     "placeholders": {
       "percent": {}
     }
@@ -1178,17 +1174,17 @@
   "saveTariff": "ذخیره تعرفه",
   "quarterly": "فصلی",
   "amountsInThousandToman": "مبالغ به هزار تومان",
-  "subscriptionDailyEntryLimit": "سقف تردد روزانه اشتراک",
+  "dailyEntryLimitForSubscriptions": "سقف تردد روزانه اشتراک",
   "validOnlyDuringOfficeHours": "اعتبار فقط در ساعات اداری",
-  "expiryReminderDaysBefore": "یادآوری انقضا ({days} روز قبل)",
-  "@expiryReminderDaysBefore": {
+  "expiryReminderDaysDaysBefore": "یادآوری انقضا ({days} روز قبل)",
+  "@expiryReminderDaysDaysBefore": {
     "placeholders": {
       "days": {}
     }
   },
   "saveSubscriptionTariff": "ذخیره تعرفه اشتراک",
-  "timesCount": "{count} بار",
-  "@timesCount": {
+  "countTimes": "{count} بار",
+  "@countTimes": {
     "placeholders": {
       "count": {}
     }
@@ -1212,35 +1208,35 @@
     }
   },
   "newSubscription": "اشتراک جدید",
-  "addAndCollectFee": "افزودن و دریافت هزینه",
+  "addAndCollectTheFee": "افزودن و دریافت هزینه",
   "sendReminder": "ارسال یادآوری",
-  "registerNewSubscription": "ثبت اشتراک جدید",
-  "daysRemainingCount": "{days} روز",
-  "@daysRemainingCount": {
+  "registerANewSubscription": "ثبت اشتراک جدید",
+  "daysDays": "{days} روز",
+  "@daysDays": {
     "placeholders": {
       "days": {}
     }
   },
-  "parkingNamePrintedOnReceipt": "نام پارکینگ (روی رسید چاپ می‌شود)",
+  "parkingNamePrintedOnTheReceipt": "نام پارکینگ (روی رسید چاپ می‌شود)",
   "workingHours": "ساعت کاری",
-  "openTwentyFourHours": "شبانه‌روزی",
+  "open24Hours": "شبانه‌روزی",
   "openOnPublicHolidays": "تعطیلات رسمی باز است",
   "receiptFooterText": "متن پایین رسید",
-  "autoPrintEntryReceipt": "چاپ خودکار رسید ورود",
+  "printTheEntryReceiptAutomatically": "چاپ خودکار رسید ورود",
   "saveChanges": "ذخیره تغییرات",
   "currentPassword": "رمز فعلی",
   "newPassword": "رمز جدید",
-  "repeatNewPassword": "تکرار رمز جدید",
+  "repeatTheNewPassword": "تکرار رمز جدید",
   "passwordStrength": "قدرت رمز",
   "weak": "ضعیف",
   "medium": "متوسط",
   "good": "خوب",
   "strong": "قوی",
-  "atLeastEightCharacters": "حداقل ۸ نویسه",
+  "atLeast8Characters": "حداقل ۸ نویسه",
   "includesUpperAndLowerCase": "شامل حرف بزرگ و کوچک",
   "includesANumber": "شامل عدد",
   "includesASpecialCharacter": "شامل نویسه ویژه",
-  "afterChangingPasswordYouWillBeSignedOut": "پس از تغییر رمز، از همه دستگاه‌های دیگر خارج می‌شوید.",
+  "afterChangingYourPasswordYouWillBeSignedOutOfEveryOtherDevice": "پس از تغییر رمز، از همه دستگاه‌های دیگر خارج می‌شوید.",
   "specialPlates": "پلاک‌های ویژه",
   "blacklistCount": "لیست سیاه ({count})",
   "@blacklistCount": {
@@ -1256,22 +1252,22 @@
   },
   "addPlate": "افزودن پلاک",
   "reason": "علت",
-  "addToBlacklist": "افزودن به لیست سیاه",
+  "addToTheBlacklist": "افزودن به لیست سیاه",
   "addReservation": "افزودن رزرو",
   "connectionLost": "اتصال قطع است",
-  "offlineModeDescription": "ثبت ورود و خروج ادامه دارد و روی دستگاه ذخیره می‌شود. پرداخت کارتی در دسترس است، درگاه اینترنتی نه.",
+  "entriesAndExitsKeepWorkingAndAreStoredOnTheDeviceCardPaymentIsAvailableTheOnlineGatewayIsNot": "ثبت ورود و خروج ادامه دارد و روی دستگاه ذخیره می‌شود. پرداخت کارتی در دسترس است، درگاه اینترنتی نه.",
   "sendQueue": "صف ارسال",
-  "itemsCount": "{count} مورد",
-  "@itemsCount": {
+  "countItems": "{count} مورد",
+  "@countItems": {
     "placeholders": {
       "count": {}
     }
   },
   "lastSync": "آخرین همگام‌سازی",
-  "tariffStoredOnDevice": "تعرفه ذخیره‌شده روی دستگاه",
+  "tariffStoredOnTheDevice": "تعرفه ذخیره‌شده روی دستگاه",
   "offlineSubscriptions": "اشتراک‌های آفلاین",
-  "plateCount": "{count} پلاک",
-  "@plateCount": {
+  "countPlates": "{count} پلاک",
+  "@countPlates": {
     "placeholders": {
       "count": {}
     }
@@ -1288,71 +1284,68 @@
   "cardTotal": "جمع کارتی",
   "cashTotal": "جمع نقدی",
   "gatewayTotal": "جمع درگاه",
-  "entriesCount": "{count} ورود",
-  "@entriesCount": {
+  "countEntries": "{count} ورود",
+  "@countEntries": {
     "placeholders": {
       "count": {}
     }
   },
-  "exitsCount": "{count} خروج",
-  "@exitsCount": {
+  "countExits": "{count} خروج",
+  "@countExits": {
     "placeholders": {
       "count": {}
     }
   },
-  "minutesShort": "{count} د",
-  "@minutesShort": {
+  "countM": "{count} د",
+  "@countM": {
     "placeholders": {
       "count": {}
     }
   },
-  "hoursAndMinutes": "{hours} س {minutes} د",
-  "@hoursAndMinutes": {
+  "hoursHMinutesM": "{hours} س {minutes} د",
+  "@hoursHMinutesM": {
     "placeholders": {
       "hours": {},
       "minutes": {}
     }
   },
-  "noVehicleInsideTheParking": "خودرویی داخل پارکینگ نیست",
-  "plateNotFound": "ورود بازی برای این پلاک پیدا نشد",
+  "noVehicleIsInsideTheParking": "خودرویی داخل پارکینگ نیست",
+  "noOpenEntryWasFoundForThisPlate": "ورود بازی برای این پلاک پیدا نشد",
   "warning": "هشدار",
   "thisVehicleIsAlreadyInsideTheParking": "این خودرو هم‌اکنون داخل پارکینگ است",
-  "enterThePlateYouSee": "پلاکی که در تصویر می‌بینید را وارد کنید",
+  "enterThePlateYouSeeInThePhoto": "پلاکی که در تصویر می‌بینید را وارد کنید",
   "retakePhoto": "گرفتن دوباره عکس",
-  "usePlate": "استفاده از این پلاک",
+  "useThisPlate": "استفاده از این پلاک",
   "openCamera": "باز کردن دوربین",
-  "continueWord": "ادامه",
-  "waitingForCard": "در انتظار کارت…",
+  "waitingForTheCard": "در انتظار کارت…",
   "cardRead": "کارت خوانده شد",
-  "enterTheTrackingCodeFromTheTerminal": "کد پیگیری نمایش‌داده‌شده در برنامه پرداخت دستگاه را وارد کنید.",
+  "enterTheTrackingCodeShownByTheTerminalsPaymentApp": "کد پیگیری نمایش‌داده‌شده در برنامه پرداخت دستگاه را وارد کنید.",
   "confirmPayment": "تأیید پرداخت",
-  "paymentNotConfirmedYet": "پرداخت هنوز تأیید نشده است",
+  "thePaymentHasNotBeenConfirmedYet": "پرداخت هنوز تأیید نشده است",
   "checkPaymentStatus": "بررسی وضعیت پرداخت",
-  "cardReaderNotAvailable": "کارت‌خوانی روی این دستگاه در دسترس نیست",
-  "passwordsDoNotMatch": "رمزها یکسان نیستند",
-  "wrongPassword": "رمز فعلی نادرست است",
+  "noCardReaderIsAvailableOnThisDevice": "کارت‌خوانی روی این دستگاه در دسترس نیست",
+  "thePasswordsDoNotMatch": "رمزها یکسان نیستند",
+  "theCurrentPasswordIsWrong": "رمز فعلی نادرست است",
   "shiftSummary": "خلاصه شیفت",
   "shiftStarted": "شروع شیفت",
-  "settleAndCloseShift": "تسویه و بستن شیفت",
-  "shiftClosed": "شیفت بسته شد",
+  "settleAndCloseTheShift": "تسویه و بستن شیفت",
+  "theShiftWasClosed": "شیفت بسته شد",
   "addToReservations": "افزودن به رزروها",
   "spotNumber": "شماره جای پارک",
   "areYouSure": "آیا مطمئن هستید؟",
   "total": "جمع کل",
-  "loginToYourAccount": "ورود به حساب کاربری",
+  "logInToYourAccount": "ورود به حساب کاربری",
   "weSentAVerificationCodeToThisNumber": "کد تایید به این شماره پیامک شد.",
   "verificationCode": "کد تایید",
   "changeMobileNumber": "تغییر شماره موبایل",
   "privacyPolicy": "حریم خصوصی",
-  "byContinuingYouAcceptTheTermsAndPrivacyPolicy": "با ادامه، قوانین و مقررات و حریم خصوصی را می‌پذیرم.",
+  "byContinuingYouAcceptTheTermsAndConditionsAndThePrivacyPolicy": "با ادامه، قوانین و مقررات و حریم خصوصی را می‌پذیرم.",
   "night": "شب",
   "book": "رزرو",
   "bookNow": "رزرو کن",
-  "reserveThisRoom": "رزرو این اتاق",
+  "bookThisRoom": "رزرو این اتاق",
   "reviews": "نظرات کاربران",
-  "guestCount": "تعداد مهمان",
   "monthlyRent": "اجاره ماهانه",
-  "notPaid": "پرداخت نشده",
   "view": "مشاهده",
   "seeAll": "همه",
   "myReservations": "رزروهای من",
@@ -1360,8 +1353,8 @@
   "cancelReservation": "لغو رزرو",
   "cancellationPolicy": "شرایط کنسلی",
   "refundAmount": "مبلغ بازگشتی",
-  "cancellationPenalty": "جریمه کنسلی",
-  "freeCancellationUntilHoursBeforeCheckIn": "کنسلی رایگان تا چند ساعت قبل از ورود",
+  "cancellationFee": "جریمه کنسلی",
+  "freeCancellationUpToAFewHoursBeforeCheckIn": "کنسلی رایگان تا چند ساعت قبل از ورود",
   "selectDates": "انتخاب تاریخ",
   "roomCapacity": "ظرفیت اتاق",
   "requiredDocuments": "مدارک لازم",
@@ -1372,23 +1365,22 @@
   "callTheHotel": "تماس با هتل",
   "fullyBooked": "تکمیل ظرفیت",
   "payFromWallet": "پرداخت از کیف پول",
-  "payWithGateway": "پرداخت با درگاه بانکی",
+  "payWithTheBankGateway": "پرداخت با درگاه بانکی",
   "reservationCode": "کد رزرو",
   "addGuest": "افزودن مهمان",
   "priceDetails": "جزئیات قیمت",
   "writeAReview": "ثبت نظر",
   "yourRating": "امتیاز شما",
-  "dormReservationIsInPersonOnly": "رزرو خوابگاه فقط حضوری انجام می‌شود",
-  "dormReservationInPersonNote": "برای گرفتن تخت، با خوابگاه تماس بگیرید یا حضوری مراجعه کنید. قرارداد و فاکتورهای ماهانه بعد از ثبت‌نام در همین اپ نمایش داده می‌شود.",
+  "dormBedsAreBookedInPersonOnly": "رزرو خوابگاه فقط حضوری انجام می‌شود",
+  "toTakeABedCallTheDormOrVisitInPersonOnceYouAreRegisteredTheContractAndItsMonthlyInvoicesShowUpRightHere": "برای گرفتن تخت، با خوابگاه تماس بگیرید یا حضوری مراجعه کنید. قرارداد و فاکتورهای ماهانه بعد از ثبت‌نام در همین اپ نمایش داده می‌شود.",
   "roomsAndBeds": "اتاق‌ها و تخت‌ها",
-  "youHaveNoReservations": "هنوز رزروی ثبت نکرده‌اید",
+  "youHaveNoReservationsYet": "هنوز رزروی ثبت نکرده‌اید",
   "youHaveNoInvoices": "فاکتوری ندارید",
   "youHaveNoContracts": "قراردادی ندارید",
   "past": "گذشته",
   "perNight": "هر شب",
   "startingFrom": "شروع از",
-  "guestInformation": "مشخصات مهمانان",
-  "reservationRegistered": "رزرو شما ثبت شد",
+  "guestDetails": "مشخصات مهمانان",
   "payTheInvoice": "پرداخت فاکتور",
   "dormContracts": "قراردادهای خوابگاه",
   "monthlyInvoices": "فاکتورهای ماهانه",
@@ -1399,108 +1391,110 @@
   "chooseHowToPay": "روش پرداخت را انتخاب کنید",
   "noReviewsYet": "هنوز نظری ثبت نشده است",
   "thanksForYourReview": "از ثبت نظر شما ممنونیم",
-  "guestNamePlaceholder": "نام مهمان",
   "mainGuest": "مهمان اصلی",
-  "nightsCountLabel": "تعداد شب",
+  "numberOfNights": "تعداد شب",
   "yourStay": "اقامت شما",
-  "noPlacesYet": "هنوز اقامتگاهی ثبت نشده است",
+  "noPlacesHaveBeenAddedYet": "هنوز اقامتگاهی ثبت نشده است",
   "inPerson": "حضوری",
   "bookedInPerson": "رزرو حضوری",
-  "noRoomsAvailableForTheseDates": "برای این تاریخ‌ها اتاقی موجود نیست",
-  "selectYourDatesToSeePrices": "تاریخ ورود و خروج را انتخاب کنید تا قیمت‌ها را ببینید",
+  "noRoomsAreAvailableForTheseDates": "برای این تاریخ‌ها اتاقی موجود نیست",
+  "pickYourDatesToSeePrices": "تاریخ ورود و خروج را انتخاب کنید تا قیمت‌ها را ببینید",
   "reservationDetails": "جزئیات رزرو",
   "invoiceDetails": "جزئیات فاکتور",
   "remainingAmount": "مبلغ باقی‌مانده",
   "payNow": "پرداخت",
-  "choosePaymentMethod": "انتخاب روش پرداخت",
+  "chooseAPaymentMethod": "انتخاب روش پرداخت",
   "yourReservationIsRegistered": "رزرو شما ثبت شد",
   "backToHome": "بازگشت به خانه",
-  "nationalCodeOptional": "کد ملی (اختیاری)",
-  "guestNumber": "مهمان",
+  "nationalIdOptional": "کد ملی (اختیاری)",
   "markAllAsRead": "علامت‌گذاری همه به عنوان خوانده شده",
   "editProfile": "ویرایش پروفایل",
   "changesSaved": "تغییرات ذخیره شد",
   "topUpWallet": "افزایش موجودی",
-  "cancellationRefundNote": "اگر زودتر از مهلت رایگان لغو کنید، کل مبلغ به کیف پول شما برمی‌گردد.",
-  "reservationCancelledSuccessfully": "رزرو لغو شد",
+  "cancelBeforeTheFreeWindowEndsAndTheFullAmountGoesBackToYourWallet": "اگر زودتر از مهلت رایگان لغو کنید، کل مبلغ به کیف پول شما برمی‌گردد.",
+  "theReservationWasCancelled": "رزرو لغو شد",
   "contractPeriod": "بازه قرارداد",
-  "bedTitle": "تخت",
-  "roomTitle": "اتاق",
-  "dormTitle": "خوابگاه",
-  "payFromWalletBalance": "پرداخت از موجودی کیف پول",
-  "payOnlineWithCard": "پرداخت اینترنتی با کارت بانکی",
-  "yourReviewHelpsOthers": "نظر شما به بقیه کمک می‌کند",
-  "guestsAndRooms": "مهمان‌ها و اتاق",
-  "guestCountExceedsCapacity": "بیش از ظرفیت اتاق",
-  "roomIsFullyBooked": "این اتاق در این تاریخ‌ها پر است",
+  "payFromYourWalletBalance": "پرداخت از موجودی کیف پول",
+  "payOnlineWithABankCard": "پرداخت اینترنتی با کارت بانکی",
+  "yourReviewHelpsOtherGuests": "نظر شما به بقیه کمک می‌کند",
+  "guestsAndRoom": "مهمان‌ها و اتاق",
+  "overTheRoomCapacity": "بیش از ظرفیت اتاق",
+  "thisRoomIsFullForTheseDates": "این اتاق در این تاریخ‌ها پر است",
   "extraGuestCapacity": "ظرفیت نفر اضافه",
   "extraGuestPrice": "هزینه نفر اضافه",
   "gold": "طلا",
   "goldPrice": "قیمت طلا",
-  "goldPricePerGram": "قیمت هر گرم",
-  "goldBuyPrice": "قیمت خرید",
-  "goldSellPrice": "قیمت فروش",
+  "pricePerGram": "قیمت هر گرم",
+  "buyPrice": "قیمت خرید",
+  "sellPrice": "قیمت فروش",
   "buyGold": "خرید طلا",
   "sellGold": "فروش طلا",
   "goldWallet": "کیف پول طلا",
   "goldBalance": "موجودی طلا",
-  "goldAmountInGram": "مقدار به گرم",
-  "goldAmountInRial": "مبلغ به ریال",
+  "amountInGram": "مقدار به گرم",
+  "amountInRial": "مبلغ به ریال",
   "goldOrders": "سفارش‌های طلا",
-  "goldOrderDetail": "جزئیات سفارش",
-  "goldNoOrdersYet": "هنوز سفارش طلایی ثبت نشده است",
-  "goldNoTransactionsYet": "هنوز تراکنش طلایی ثبت نشده است",
-  "goldOrderPlacedSuccessfully": "سفارش طلای شما ثبت شد",
-  "goldTradeLimits": "سقف‌های معاملاتی",
-  "goldRemainingVolume": "حجم باقی‌مانده",
-  "goldCreditFacilities": "تسهیلات اعتباری",
-  "goldAvailableCredit": "اعتبار در دسترس",
-  "goldUsedCredit": "اعتبار مصرف‌شده",
+  "orderDetail": "جزئیات سفارش",
+  "noGoldOrdersYet": "هنوز سفارش طلایی ثبت نشده است",
+  "noGoldTransactionsYet": "هنوز تراکنش طلایی ثبت نشده است",
+  "yourGoldOrderWasPlaced": "سفارش طلای شما ثبت شد",
+  "tradeLimits": "سقف‌های معاملاتی",
+  "remainingVolume": "حجم باقی‌مانده",
+  "creditFacilities": "تسهیلات اعتباری",
+  "availableCredit": "اعتبار در دسترس",
+  "usedCredit": "اعتبار مصرف‌شده",
   "goldApiTokens": "توکن‌های API طلا",
-  "goldCreateApiToken": "ساخت توکن API",
-  "goldRevokeApiToken": "ابطال توکن API",
-  "goldRawTokenShownOnce": "همین حالا این توکن را ذخیره کنید؛ فقط یک بار نمایش داده می‌شود",
-  "goldServiceUnavailable": "سرویس طلا در حال حاضر در دسترس نیست",
-  "goldLastUpdated": "آخرین به‌روزرسانی",
-  "goldTrade": "معامله طلا",
-  "goldTradeSubtitle": "خرید و فروش آنلاین طلای ۱۸ عیار",
-  "goldMyGold": "طلای من",
-  "goldValue": "ارزش روز",
-  "goldGram": "گرم",
-  "goldByAmount": "بر اساس مبلغ",
-  "goldByWeight": "بر اساس وزن",
-  "goldEstimatedGold": "طلای تقریبی",
-  "goldEstimatedAmount": "مبلغ تقریبی",
-  "goldConfirmBuy": "تأیید خرید",
-  "goldConfirmSell": "تأیید فروش",
-  "goldBuySuccess": "طلا با موفقیت خریداری شد",
-  "goldSellSuccess": "طلا با موفقیت فروخته شد",
-  "goldInsufficientWalletBalance": "موجودی کیف پول شما کافی نیست",
-  "goldInsufficientGoldBalance": "موجودی طلای شما کافی نیست",
-  "goldEnterAmount": "مبلغ را وارد کنید",
+  "createApiToken": "ساخت توکن API",
+  "revokeApiToken": "ابطال توکن API",
+  "copyThisTokenNowItIsShownOnlyOnce": "همین حالا این توکن را ذخیره کنید؛ فقط یک بار نمایش داده می‌شود",
+  "theGoldServiceIsNotAvailableRightNow": "سرویس طلا در حال حاضر در دسترس نیست",
+  "lastUpdated": "آخرین به‌روزرسانی",
+  "goldTrading": "معامله طلا",
+  "buyAndSell18KGoldOnline": "خرید و فروش آنلاین طلای ۱۸ عیار",
+  "myGold": "طلای من",
+  "currentValue": "ارزش روز",
+  "gram": "گرم",
+  "byAmount": "بر اساس مبلغ",
+  "byWeight": "بر اساس وزن",
+  "estimatedGold": "طلای تقریبی",
+  "estimatedAmount": "مبلغ تقریبی",
+  "confirmPurchase": "تأیید خرید",
+  "confirmSale": "تأیید فروش",
+  "goldPurchasedSuccessfully": "طلا با موفقیت خریداری شد",
+  "goldSoldSuccessfully": "طلا با موفقیت فروخته شد",
+  "yourWalletBalanceIsNotEnough": "موجودی کیف پول شما کافی نیست",
+  "yourGoldBalanceIsNotEnough": "موجودی طلای شما کافی نیست",
+  "enterAnAmount": "مبلغ را وارد کنید",
   "goldTransactions": "تراکنش‌های طلا",
-  "goldOrderPending": "در حال پردازش",
-  "goldUnitPrice": "قیمت واحد",
-  "goldFee": "کارمزد",
-  "goldOrderId": "شناسه سفارش",
-  "goldSettleNow": "بررسی وضعیت سفارش",
-  "goldProviderAccount": "حساب سرویس‌دهنده",
-  "goldProviderBalances": "موجودی سرویس‌دهنده",
-  "goldProviderTransactions": "تراکنش‌های سرویس‌دهنده",
-  "goldAccountStatus": "وضعیت حساب",
-  "goldIpWhitelist": "IPهای مجاز",
-  "goldScopes": "دسترسی‌ها",
-  "goldTokenLabel": "برچسب",
-  "goldTokenPrefix": "پیشوند توکن",
-  "goldNoApiTokens": "هنوز توکن API ساخته نشده است",
-  "goldMaxVolume": "حداکثر حجم",
-  "goldUsedVolume": "حجم مصرف‌شده",
-  "goldInterval": "بازه زمانی",
-  "goldResetsAt": "بازنشانی در",
-  "goldTimezone": "منطقه زمانی",
-  "goldWindow": "بازه معاملاتی",
-  "goldLoadMore": "نمایش بیشتر",
-  "goldPriceDisclaimer": "قیمت نهایی در لحظه انجام سفارش تعیین می‌شود",
+  "processing": "در حال پردازش",
+  "unitPrice": "قیمت واحد",
+  "fee": "کارمزد",
+  "orderId": "شناسه سفارش",
+  "checkOrderStatus": "بررسی وضعیت سفارش",
+  "providerAccount": "حساب سرویس‌دهنده",
+  "providerBalances": "موجودی سرویس‌دهنده",
+  "providerTransactions": "تراکنش‌های سرویس‌دهنده",
+  "accountStatus": "وضعیت حساب",
+  "allowedIps": "IPهای مجاز",
+  "scopes": "دسترسی‌ها",
+  "label": "برچسب",
+  "tokenPrefix": "پیشوند توکن",
+  "noApiTokensYet": "هنوز توکن API ساخته نشده است",
+  "maxVolume": "حداکثر حجم",
+  "usedVolume": "حجم مصرف‌شده",
+  "interval": "بازه زمانی",
+  "resetsAt": "بازنشانی در",
+  "timezone": "منطقه زمانی",
+  "window": "بازه معاملاتی",
+  "loadMore": "نمایش بیشتر",
+  "theFinalPriceIsSetAtTheMomentTheOrderIsFilled": "قیمت نهایی در لحظه انجام سفارش تعیین می‌شود",
   "inactive": "غیرفعال",
-  "id": "شناسه"
+  "id": "شناسه",
+  "controlDigits": "ارقام کنترلی",
+  "billIdCheckDigit": "رقم کنترلی شناسه قبض",
+  "firstControlDigit": "رقم کنترلی اول",
+  "secondControlDigit": "رقم کنترلی دوم",
+  "expected": "مورد انتظار",
+  "entered": "وارد شده",
+  "companyCode": "کد شرکت"
 }

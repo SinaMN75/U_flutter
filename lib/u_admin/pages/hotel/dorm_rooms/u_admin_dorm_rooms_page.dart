@@ -156,7 +156,7 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
                       action: () {
                         final String? did = dorm.value?.id ?? widget.dorm?.id;
                         if (did == null) {
-                          UToast.error(message: U.s.pleaseSelectA(U.s.dorm));
+                          UToast.error(message: U.s.pleaseSelectAItem(U.s.dorm));
                           return;
                         }
                         if (p == null) {

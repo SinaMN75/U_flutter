@@ -179,9 +179,9 @@ class _HotelPageState extends State<UAdminHotelPage> {
                     UTextField(controller: rules, labelText: U.s.rules, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
                     URow(
                       children: <Widget>[
-                        UTextField(expanded: 1, controller: cancellationFreeHours, labelText: U.s.freeCancellationUntilHoursBeforeCheckIn, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
+                        UTextField(expanded: 1, controller: cancellationFreeHours, labelText: U.s.freeCancellationUpToAFewHoursBeforeCheckIn, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
                         const SizedBox(width: 8),
-                        UTextField(expanded: 1, controller: cancellationPenaltyNights, labelText: U.s.cancellationPenalty, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
+                        UTextField(expanded: 1, controller: cancellationPenaltyNights, labelText: U.s.cancellationFee, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
                       ],
                     ),
                     URow(

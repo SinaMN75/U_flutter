@@ -39,7 +39,7 @@ class _UAdminParkingStaffPageState extends State<UAdminParkingStaffPage> {
         UAdminTable.headerCell(U.s.username),
         UAdminTable.headerCell(U.s.shift),
         UAdminTable.headerCell(U.s.permissions, flex: 2),
-        UAdminTable.headerCell(U.s.maxDiscountAllowed),
+        UAdminTable.headerCell(U.s.maximumDiscountAllowed),
         UAdminTable.headerCell(U.s.operations),
       ],
       desktopRow: _itemDesktop,
@@ -75,7 +75,7 @@ class _UAdminParkingStaffPageState extends State<UAdminParkingStaffPage> {
       UAdminField(U.s.username, i.user?.userName ?? "-"),
       UAdminField(U.s.shift, i.shiftTitle.nullIfEmpty() ?? "-"),
       UAdminField(U.s.permissions, _permissions(i)),
-      UAdminField(U.s.maxDiscountAllowed, "${i.maxDiscountPercent}%"),
+      UAdminField(U.s.maximumDiscountAllowed, "${i.maxDiscountPercent}%"),
       if (i.tags.contains(TagParkingStaff.disabled.number)) UAdminField(U.s.disabled, i.createdAt.toJalaliDate()),
     ],
   );
@@ -146,7 +146,7 @@ class _UAdminParkingStaffPageState extends State<UAdminParkingStaffPage> {
                         onChanged: (bool? value) => setDialogState(() => value ?? false ? permissions.add(permission) : permissions.remove(permission)),
                       ),
                     ),
-                    UTextBodyMedium("${U.s.maxDiscountAllowed}: ${maxDiscount.round()}%"),
+                    UTextBodyMedium("${U.s.maximumDiscountAllowed}: ${maxDiscount.round()}%"),
                     Slider(
                       value: maxDiscount,
                       max: 100,
@@ -224,7 +224,7 @@ class _UAdminParkingStaffPageState extends State<UAdminParkingStaffPage> {
                       () => value ? permissions.add(TagParkingStaff.disabled) : permissions.remove(TagParkingStaff.disabled),
                     ),
                   ),
-                  UTextBodyMedium("${U.s.maxDiscountAllowed}: ${maxDiscount.round()}%"),
+                  UTextBodyMedium("${U.s.maximumDiscountAllowed}: ${maxDiscount.round()}%"),
                   Slider(
                     value: maxDiscount,
                     max: 100,

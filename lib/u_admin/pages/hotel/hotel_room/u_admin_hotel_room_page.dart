@@ -209,7 +209,7 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
                         action: () {
                           final String? hid = hotel.value?.id ?? widget.hotel?.id;
                           if (hid == null) {
-                            UToast.error(message: U.s.pleaseSelectA(U.s.hotel));
+                            UToast.error(message: U.s.pleaseSelectAItem(U.s.hotel));
                             return;
                           }
                           if (p == null) {

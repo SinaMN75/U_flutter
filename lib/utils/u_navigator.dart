@@ -379,7 +379,7 @@ abstract class UNavigator {
     String? title,
   }) async => UNavigator.dialog<Color>(
     AlertDialog(
-      title: Text(title ?? U.s.selectA(U.s.color)),
+      title: Text(title ?? U.s.selectAItem(U.s.color)),
       content: SizedBox(
         width: 200,
         height: 100,

@@ -36,9 +36,9 @@
   "drivingLicense": "Driving license",
   "drivingLicenseNumber": "Driving license number",
   "electricityWaterGas": "Electricity, water, gas",
-  "enterTheBillidAndPaymentidOrScanItsBarcode": "Enter the bill ID and payment ID or scan its barcode",
+  "enterTheBillIdAndPaymentIdOrScanItsBarcode": "Enter the bill ID and payment ID or scan its barcode",
   "enterTheDrivingLicenseNumberToInquire": "Enter the driving license number to inquire",
-  "enterThePrepaidsimCardNumber": "Enter the prepaid SIM card number",
+  "enterThePrepaidSimCardNumber": "Enter the prepaid SIM card number",
   "enterTheSentVerificationCode": "Enter the sent verification code.",
   "enterYourPostalCodeCorrectlyAndInquire": "Enter your postal code correctly and inquire.",
   "errorLoadingBalance": "Error loading balance",
@@ -104,7 +104,7 @@
   },
   "noNotifications": "No notifications",
   "noSavedData": "No saved data",
-  "nosimCardRegistered": "No SIM card registered",
+  "noSimCardRegistered": "No SIM card registered",
   "notAllowedToDrive": "Not allowed to drive",
   "notifications": "Notifications",
   "noTransactionsDone": "No transactions done.",
@@ -134,8 +134,8 @@
   "plateStatusInquiry": "Plate status inquiry",
   "plateTrackingCode": "Plate tracking code",
   "pleaseEnterYourMobileNumberToLogIn": "Please enter your mobile number to log in.",
-  "pleaseSelectA": "Please select a {item}",
-  "@pleaseSelectA": {
+  "pleaseSelectAItem": "Please select a {item}",
+  "@pleaseSelectAItem": {
     "placeholders": {
       "item": {}
     }
@@ -168,9 +168,9 @@
   "scanBarcode": "Scan Barcode",
   "selectAmount": "Select amount",
   "selectInternetPackage": "Select internet package",
-  "selectTheDesiredsimCard": "Select the desired SIM card",
-  "selectVehicleForInquiry": "Select the vehicle for {inquiry}",
-  "@selectVehicleForInquiry": {
+  "selectTheDesiredSimCard": "Select the desired SIM card",
+  "selectTheVehicleForInquiry": "Select the vehicle for {inquiry}",
+  "@selectTheVehicleForInquiry": {
     "placeholders": {
       "inquiry": {}
     }
@@ -205,7 +205,7 @@
   "theEnteredNationalCodeIsIncorrect": "The entered national code is incorrect.",
   "theEnteredVerificationCodeIsIncorrect": "The entered verification code is incorrect.",
   "thereIsNoSavedDataForThisVehicleToGetFreshDataYouMustPayTheInquiryFee": "There is no saved data for this vehicle. To get fresh data you must pay the inquiry fee.",
-  "theSupportPasswordWasSentViasmsToTheNumberRegisteredInTheApp": "The support password was sent via SMS to the number registered in the app.",
+  "theSupportPasswordWasSentViaSmsToTheNumberRegisteredInTheApp": "The support password was sent via SMS to the number registered in the app.",
   "thisFieldIsInvalid": "This field is invalid.",
   "thisServiceWillLaunchSoon": "This service will launch soon",
   "title": "Title",
@@ -256,8 +256,8 @@
   "welcome": "Welcome",
   "wrongPostalCode": "Wrong Postal Code",
   "year": "Year",
-  "youHaveNotRegisteredAny": "You have not registered any {items} yet",
-  "@youHaveNotRegisteredAny": {
+  "youHaveNotRegisteredAnyItemsYet": "You have not registered any {items} yet",
+  "@youHaveNotRegisteredAnyItemsYet": {
     "placeholders": {
       "items": {}
     }
@@ -295,7 +295,7 @@
   "apiRequestLogs": "API Request Logs",
   "applicationLogs": "Application Logs",
   "clearLogs": "Clear Logs",
-  "clearLogsConfirm": "Are you sure you want to clear all logs?",
+  "areYouSureYouWantToClearAllLogs": "Are you sure you want to clear all logs?",
   "appearance": "Appearance",
   "apply": "Apply",
   "approve": "Approve",
@@ -308,8 +308,8 @@
   "areYouSureYouWantToApproveThisUserWithAllOfTheirDocuments": "Are you sure you want to approve this user with all of their documents?",
   "areYouSureYouWantToDelete": "Are You Sure You Want To Delete",
   "areYouSureYouWantToDeleteAllStoredDataThisActionCannotBeUndone": "Are you sure you want to delete all stored data? This action cannot be undone.",
-  "areYouSureYouWantToDeleteItem": "Are you sure you want to delete this {item}?",
-  "@areYouSureYouWantToDeleteItem": {
+  "areYouSureYouWantToDeleteThisItem": "Are you sure you want to delete this {item}?",
+  "@areYouSureYouWantToDeleteThisItem": {
     "placeholders": {
       "item": {}
     }
@@ -325,9 +325,9 @@
   "averageDuration": "Average Duration",
   "background": "Background",
   "balance": "Balance",
-  "bankAccountid": "Bank Account ID",
+  "bankAccountId": "Bank Account ID",
   "barcode": "Barcode",
-  "barcodeqrGenerator": "Barcode / QR generator",
+  "barcodeQrGenerator": "Barcode / QR generator",
   "barcodeType": "Barcode type",
   "bed": "Bed",
   "beds": "Beds",
@@ -507,7 +507,7 @@
     }
   },
   "finalApproval": "Final Approval",
-  "financialAndOperations": "Financial & Operations",
+  "financialOperations": "Financial & Operations",
   "find": "Find",
   "findAndReplace": "Find and Replace",
   "firstName": "First Name",
@@ -533,7 +533,7 @@
   "gender": "Gender",
   "general": "General",
   "generate": "Generate",
-  "generateAndFullyCustomizeqrCodesAndBarcodesOfEveryKind": "Generate and fully customize QR codes and barcodes of every kind.",
+  "generateAndFullyCustomizeQrCodesAndBarcodesOfEveryKind": "Generate and fully customize QR codes and barcodes of every kind.",
   "generateOtp": "Generate OTP",
   "getSupportPassword": "Get Support Password",
   "gotIt": "Got it",
@@ -718,7 +718,7 @@
   "playbackSpeed": "Playback speed",
   "pleaseAddYourSignatureFirst": "Please add your signature first",
   "pleaseEnterSomeInputText": "Please enter some input text.",
-  "pnapiTester": "Pn API Tester",
+  "pnApiTester": "Pn API Tester",
   "policies": "Policies",
   "preview": "Preview",
   "previewNotAvailableForThisFileType": "Preview not available for this file type",
@@ -735,8 +735,8 @@
   "quietZone": "Quiet zone",
   "quote": "Quote",
   "readingTime": "Reading Time",
-  "reasonForRejecting": "Reason for rejecting {item}",
-  "@reasonForRejecting": {
+  "reasonForRejectingItem": "Reason for rejecting {item}",
+  "@reasonForRejectingItem": {
     "placeholders": {
       "item": {}
     }
@@ -758,7 +758,7 @@
   "replaceWith": "Replace With",
   "requestBody": "Request Body",
   "requestHeaders": "Request Headers",
-  "requestsAndResponseDurationTrend": "Requests & Response Duration Trend",
+  "requestsResponseDurationTrend": "Requests & Response Duration Trend",
   "requestSize": "Request Size",
   "reservation": "Reservation",
   "reservations": "Reservations",
@@ -788,8 +788,8 @@
   "searchCountryCodeOrDialCode": "Search country, code, or dial code",
   "secretKey": "Secret Key",
   "select": "Select",
-  "selectA": "Select a {item}",
-  "@selectA": {
+  "selectAItem": "Select a {item}",
+  "@selectAItem": {
     "placeholders": {
       "item": {}
     }
@@ -891,7 +891,7 @@
   "visitWebsite": "Visit website",
   "visualAuthentication": "Visual Authentication",
   "walletManagement": "Wallet Management",
-  "whatsapp": "WhatsApp",
+  "whatsApp": "WhatsApp",
   "words": "Words",
   "writeSomething": "Write something...",
   "zipCode": "Zip Code",
@@ -903,33 +903,31 @@
   "toman": "Toman",
   "billPayment": "Bill payment",
   "statement": "Statement",
-  "chargeAndPackage": "Charge & package",
+  "chargePackage": "Charge & package",
   "accountsInThisProfile": "Accounts in this profile",
-  "credit": "Deposit",
-  "debit": "Withdrawal",
-  "accountsWord": "accounts",
-  "emptyLabel": "Empty",
+  "credit": "Credit",
+  "debit": "Debit",
+  "accounts": "accounts",
+  "empty": "Empty",
   "noAccountsInThisProfile": "No accounts in this profile",
   "selectProfile": "Select profile",
-  "profilesHint": "Accounts, cards and transactions are shown based on the active profile.",
+  "accountsCardsAndTransactionsAreShownBasedOnTheActiveProfile": "Accounts, cards and transactions are shown based on the active profile.",
   "cards": "Cards",
   "cardTransactions": "Card transactions",
-  "noCardsInThisProfile": "No card issued for this profile",
+  "noCardIssuedForThisProfile": "No card issued for this profile",
   "connectedAccount": "Connected account",
-  "showPinInApp": "Show dynamic PIN in app",
-  "getPinBySms": "Get PIN via SMS",
-  "cardLimitsAndSettings": "Card limits & settings",
-  "blockCardTemp": "Temporarily block",
-  "unblockCard": "Unblock",
-  "cardActive": "Active",
-  "cardExpiringSoon": "Expiring soon",
-  "cardBlocked": "Temporarily blocked",
+  "showDynamicPinInApp": "Show dynamic PIN in app",
+  "getPinViaSms": "Get PIN via SMS",
+  "cardLimitsSettings": "Card limits & settings",
+  "temporarilyBlock": "Temporarily block",
+  "unblock": "Unblock",
+  "temporarilyBlocked": "Temporarily blocked",
   "dynamicPin": "Dynamic PIN",
-  "dynamicPinHint": "The dynamic PIN is used for online purchases.",
-  "secondsWord": "seconds",
-  "pinSentBySms": "The dynamic PIN was sent via SMS",
+  "theDynamicPinIsUsedForOnlinePurchases": "The dynamic PIN is used for online purchases.",
+  "seconds": "seconds",
+  "theDynamicPinWasSentViaSms": "The dynamic PIN was sent via SMS",
   "autoPlay": "Auto-play",
-  "login": "Log in",
+  "logIn": "Log in",
   "forgotPassword": "Forgot password",
   "back": "Back",
   "disabled": "Disabled",
@@ -942,15 +940,15 @@
   "logInToStartYourShift": "Log in to start your shift",
   "yourShiftWillBeRecordedOnThisParking": "Your shift will be recorded on this parking",
   "youDoNotHaveAccessToAnyParking": "You do not have access to any parking",
-  "yourAccountIsNotLinkedToAnyParkingYet": "The account {userName} is valid but is not linked to any parking yet. Ask the parking owner to add you as an operator.",
-  "@yourAccountIsNotLinkedToAnyParkingYet": {
+  "theAccountUserNameIsValidButIsNotLinkedToAnyParkingYetAskTheParkingOwnerToAddYouAsAnOperator": "The account {userName} is valid but is not linked to any parking yet. Ask the parking owner to add you as an operator.",
+  "@theAccountUserNameIsValidButIsNotLinkedToAnyParkingYetAskTheParkingOwnerToAddYouAsAnOperator": {
     "placeholders": {
       "userName": {}
     }
   },
   "accessTemporarilyDisabled": "Access temporarily disabled",
-  "parkingSpacesCount": "{count} parking spaces",
-  "@parkingSpacesCount": {
+  "countParkingSpaces": "{count} parking spaces",
+  "@countParkingSpaces": {
     "placeholders": {
       "count": {}
     }
@@ -963,26 +961,25 @@
   "entranceDate": "Entrance date",
   "parkingName": "Parking name",
   "printReceipt": "Print receipt",
-  "printFailed": "Printing failed",
-  "receiptPrinted": "Receipt printed successfully",
-  "receiptTitle": "Parking receipt",
+  "printingFailed": "Printing failed",
+  "receiptPrintedSuccessfully": "Receipt printed successfully",
+  "parkingReceipt": "Parking receipt",
   "scanReceipt": "Scan receipt",
-  "scanReceiptHint": "Point the camera at a receipt QR code",
+  "pointTheCameraAtAReceiptQrCode": "Point the camera at a receipt QR code",
   "scannedReceipt": "Scanned receipt",
-  "sessionExpired": "Your session has expired. Please sign in again.",
   "vehicleType": "Vehicle type",
   "avaPark": "AvaPark",
-  "askYourParkingOwnerToResetYourPassword": "Ask your parking owner or support to reset your password.",
+  "askYourParkingOwnerOrSupportToResetYourPassword": "Ask your parking owner or support to reset your password.",
   "changeParking": "Change parking",
-  "insideParking": "Inside the parking",
+  "insideTheParking": "Inside the parking",
   "shiftRevenue": "Shift revenue",
   "registerEntry": "Register entry",
   "registerExit": "Register exit",
   "plateAndPrintReceipt": "Plate and print receipt",
   "scanReceiptOrPlate": "Scan receipt or plate",
   "recentMovements": "Recent movements",
-  "receiptsQueuedOffline": "{count} receipts are queued for offline sending",
-  "@receiptsQueuedOffline": {
+  "countReceiptsAreQueuedForOfflineSending": "{count} receipts are queued for offline sending",
+  "@countReceiptsAreQueuedForOfflineSending": {
     "placeholders": {
       "count": {}
     }
@@ -990,32 +987,32 @@
   "freeExit": "Free exit",
   "nonIranianPlate": "Non-Iranian plate",
   "readPlateWithCamera": "Read plate with camera",
-  "perHourAfter": "Each hour after",
-  "dailyCap": "24-hour cap",
-  "firstMinutesAreFree": "The first {minutes} minutes are free.",
-  "@firstMinutesAreFree": {
+  "eachHourAfter": "Each hour after",
+  "dailyCap": "Daily cap",
+  "theFirstMinutesMinutesAreFree": "The first {minutes} minutes are free.",
+  "@theFirstMinutesMinutesAreFree": {
     "placeholders": {
       "minutes": {}
     }
   },
-  "nightRateAppliesBetween": "The night rate applies between {from} and {to}.",
-  "@nightRateAppliesBetween": {
+  "theNightRateAppliesBetweenFromAndTo": "The night rate applies between {from} and {to}.",
+  "@theNightRateAppliesBetweenFromAndTo": {
     "placeholders": {
       "from": {},
       "to": {}
     }
   },
-  "phoneNumberForSmsReceipt": "Phone number for the SMS receipt",
+  "phoneNumberForTheSmsReceipt": "Phone number for the SMS receipt",
   "registerEntryAndPrintReceipt": "Register entry and print receipt",
-  "pointCameraAtPlate": "Point the camera at the plate",
+  "pointTheCameraAtThePlate": "Point the camera at the plate",
   "plateDetected": "Plate detected",
-  "enterPlateManually": "Enter the plate manually",
+  "enterThePlateManually": "Enter the plate manually",
   "checkPlate": "Check plate",
   "hasAnActiveSubscription": "Has an active subscription",
-  "entryAndExitAreFreeOfCharge": "Entry and exit are recorded free of charge.",
+  "entryAndExitAreRecordedFreeOfCharge": "Entry and exit are recorded free of charge.",
   "thisVehicleHasAReservation": "This vehicle has a reservation",
-  "spotIsReservedForThisPlate": "Spot {spot} is reserved for this plate.",
-  "@spotIsReservedForThisPlate": {
+  "spotSpotIsReservedForThisPlate": "Spot {spot} is reserved for this plate.",
+  "@spotSpotIsReservedForThisPlate": {
     "placeholders": {
       "spot": {}
     }
@@ -1031,15 +1028,15 @@
   "exitTime": "Exit time",
   "parkingSpot": "Parking spot",
   "tariff": "Tariff",
-  "scanThisCodeToRegisterExit": "Scan this code to register the exit",
-  "printOnPosDevice": "Print on the POS device",
+  "scanThisCodeToRegisterTheExit": "Scan this code to register the exit",
+  "printOnThePosDevice": "Print on the POS device",
   "shareImage": "Share image",
   "smsToCustomer": "SMS to customer",
   "nextEntry": "Next entry",
   "searchPlate": "Search plate",
-  "holdCustomerReceiptToCamera": "Hold the customer's receipt up to the camera",
-  "vehiclesAreInsideTheParking": "{count} vehicles are inside the parking",
-  "@vehiclesAreInsideTheParking": {
+  "holdTheCustomersReceiptUpToTheCamera": "Hold the customer's receipt up to the camera",
+  "countVehiclesAreInsideTheParking": "{count} vehicles are inside the parking",
+  "@countVehiclesAreInsideTheParking": {
     "placeholders": {
       "count": {}
     }
@@ -1047,22 +1044,22 @@
   "showList": "Show list",
   "receiptLostSearchManually": "Receipt lost — search manually",
   "searchVehicle": "Search vehicle",
-  "moreThanADay": "More than 24 hours",
+  "moreThan24Hours": "More than 24 hours",
   "subscribers": "Subscribers",
   "approximately": "Approximately",
   "continueToExit": "Continue to exit",
-  "freeOfCharge": "Free",
+  "freeOfCharge": "Free of charge",
   "exitInvoice": "Exit invoice",
   "calculationBreakdown": "Calculation breakdown",
-  "firstMinutes": "First {minutes} minutes",
-  "@firstMinutes": {
+  "firstMinutesMinutes": "First {minutes} minutes",
+  "@firstMinutesMinutes": {
     "placeholders": {
       "minutes": {}
     }
   },
   "firstHour": "First hour",
-  "additionalTimePerMinute": "{duration} after that (per minute)",
-  "@additionalTimePerMinute": {
+  "durationAfterThatPerMinute": "{duration} after that (per minute)",
+  "@durationAfterThatPerMinute": {
     "placeholders": {
       "duration": {}
     }
@@ -1072,27 +1069,27 @@
   "normalDayRate": "Normal day rate",
   "nightRate": "Night rate",
   "applyDiscount": "Apply discount",
-  "correctEntryTime": "Correct the entry time",
+  "correctTheEntryTime": "Correct the entry time",
   "payAmount": "Pay {amount}",
   "@payAmount": {
     "placeholders": {
       "amount": {}
     }
   },
-  "holidayExtra": "Holiday surcharge",
-  "dailyCapApplied": "24-hour cap applied",
-  "bankCardOnDevice": "Bank card on the device",
-  "internalCardReaderFastestWay": "Built-in card reader · fastest way",
+  "holidaySurcharge": "Holiday surcharge",
+  "dailyCapApplied": "Daily cap applied",
+  "bankCardOnTheDevice": "Bank card on the device",
+  "builtInCardReaderFastestWay": "Built-in card reader · fastest way",
   "onlinePaymentGateway": "Online payment gateway",
-  "showQrOrSendSmsLink": "Show a QR code or send an SMS link",
+  "showAQrCodeOrSendAnSmsLink": "Show a QR code or send an SMS link",
   "cash": "Cash",
   "recordedInTheShiftCashReport": "Recorded in the shift cash report",
   "swipeOrTapTheCard": "Swipe or tap the card",
-  "amountSentToCardReader": "The amount was sent to the device's card reader. Do not close this screen until the transaction finishes.",
+  "theAmountWasSentToTheDevicesCardReaderDoNotCloseThisScreenUntilTheTransactionFinishes": "The amount was sent to the device's card reader. Do not close this screen until the transaction finishes.",
   "transactionAmount": "Transaction amount",
   "trackingCode": "Tracking code",
   "cancelTransaction": "Cancel transaction",
-  "customerShouldScanThisCode": "The customer should scan this code with their phone",
+  "theCustomerShouldScanThisCodeWithTheirPhone": "The customer should scan this code with their phone",
   "codeValidFor": "Code valid for",
   "sendPaymentLink": "Send payment link",
   "waitingForBankConfirmation": "Waiting for bank confirmation…",
@@ -1103,12 +1100,12 @@
   "finish": "Finish",
   "subscriptionExit": "Subscription exit",
   "noChargeWillBeTaken": "No charge will be taken",
-  "onlyAnExitReceiptIsIssued": "This plate has an active subscription. Only an exit receipt is issued.",
+  "thisPlateHasAnActiveSubscriptionOnlyAnExitReceiptIsIssued": "This plate has an active subscription. Only an exit receipt is issued.",
   "subscriptionType": "Subscription type",
   "validUntil": "Valid until",
   "entriesThisMonth": "Entries this month",
-  "subscriptionExpiresInDays": "The subscription expires in {days} days.",
-  "@subscriptionExpiresInDays": {
+  "theSubscriptionExpiresInDaysDays": "The subscription expires in {days} days.",
+  "@theSubscriptionExpiresInDaysDays": {
     "placeholders": {
       "days": {}
     }
@@ -1117,7 +1114,7 @@
   "registerExitAndPrint": "Register exit and print",
   "management": "Management",
   "reportsAndAccounts": "Reports and accounts",
-  "vehiclesInsideParking": "Vehicles inside the parking",
+  "vehiclesInsideTheParking": "Vehicles inside the parking",
   "staffManagement": "Staff management",
   "tariffs": "Tariffs",
   "subscriptions": "Subscriptions",
@@ -1128,23 +1125,23 @@
   "closeShiftAndSettleCash": "Close shift and settle cash",
   "changePassword": "Change password",
   "staff": "Staff",
-  "peopleCount": "{count} people",
-  "@peopleCount": {
+  "countPeople": "{count} people",
+  "@countPeople": {
     "placeholders": {
       "count": {}
     }
   },
   "you": "You",
   "fullAccess": "Full access",
-  "addStaff": "Add staff member",
+  "addStaffMember": "Add staff member",
   "newStaffMember": "New staff member",
   "fullName": "Full name",
   "temporaryPassword": "Temporary password",
   "regenerate": "Regenerate",
-  "maxDiscountAllowed": "Maximum discount allowed",
-  "temporaryPasswordMustBeChanged": "The temporary password must be changed after the first sign-in.",
-  "disabledSince": "Disabled since {date}",
-  "@disabledSince": {
+  "maximumDiscountAllowed": "Maximum discount allowed",
+  "theTemporaryPasswordMustBeChangedAfterTheFirstSignIn": "The temporary password must be changed after the first sign-in.",
+  "disabledSinceDate": "Disabled since {date}",
+  "@disabledSinceDate": {
     "placeholders": {
       "date": {}
     }
@@ -1152,25 +1149,24 @@
   "hourly": "Hourly",
   "rules": "Rules",
   "dayRate": "Day rate",
-  "nightRateTitle": "Night rate",
-  "betweenHours": "{from} to {to}",
-  "@betweenHours": {
+  "fromToTo": "{from} to {to}",
+  "@fromToTo": {
     "placeholders": {
       "from": {},
       "to": {}
     }
   },
   "perHour": "Per hour",
-  "firstMinutesFreeRule": "First {minutes} minutes free",
-  "@firstMinutesFreeRule": {
+  "firstMinutesMinutesFree": "First {minutes} minutes free",
+  "@firstMinutesMinutesFree": {
     "placeholders": {
       "minutes": {}
     }
   },
-  "roundToFullHour": "Round up to a full hour",
-  "perMinuteAfterFirstHour": "Per-minute after the first hour",
-  "holidayTariffPlusPercent": "Holiday tariff (+{percent}%)",
-  "@holidayTariffPlusPercent": {
+  "roundUpToAFullHour": "Round up to a full hour",
+  "perMinuteAfterTheFirstHour": "Per-minute after the first hour",
+  "holidayTariffPercent": "Holiday tariff (+{percent}%)",
+  "@holidayTariffPercent": {
     "placeholders": {
       "percent": {}
     }
@@ -1178,17 +1174,17 @@
   "saveTariff": "Save tariff",
   "quarterly": "Quarterly",
   "amountsInThousandToman": "Amounts in thousand toman",
-  "subscriptionDailyEntryLimit": "Daily entry limit for subscriptions",
+  "dailyEntryLimitForSubscriptions": "Daily entry limit for subscriptions",
   "validOnlyDuringOfficeHours": "Valid only during office hours",
-  "expiryReminderDaysBefore": "Expiry reminder ({days} days before)",
-  "@expiryReminderDaysBefore": {
+  "expiryReminderDaysDaysBefore": "Expiry reminder ({days} days before)",
+  "@expiryReminderDaysDaysBefore": {
     "placeholders": {
       "days": {}
     }
   },
   "saveSubscriptionTariff": "Save subscription tariff",
-  "timesCount": "{count} times",
-  "@timesCount": {
+  "countTimes": "{count} times",
+  "@countTimes": {
     "placeholders": {
       "count": {}
     }
@@ -1212,35 +1208,35 @@
     }
   },
   "newSubscription": "New subscription",
-  "addAndCollectFee": "Add and collect the fee",
+  "addAndCollectTheFee": "Add and collect the fee",
   "sendReminder": "Send reminder",
-  "registerNewSubscription": "Register a new subscription",
-  "daysRemainingCount": "{days} days",
-  "@daysRemainingCount": {
+  "registerANewSubscription": "Register a new subscription",
+  "daysDays": "{days} days",
+  "@daysDays": {
     "placeholders": {
       "days": {}
     }
   },
-  "parkingNamePrintedOnReceipt": "Parking name (printed on the receipt)",
+  "parkingNamePrintedOnTheReceipt": "Parking name (printed on the receipt)",
   "workingHours": "Working hours",
-  "openTwentyFourHours": "Open 24 hours",
+  "open24Hours": "Open 24 hours",
   "openOnPublicHolidays": "Open on public holidays",
   "receiptFooterText": "Receipt footer text",
-  "autoPrintEntryReceipt": "Print the entry receipt automatically",
+  "printTheEntryReceiptAutomatically": "Print the entry receipt automatically",
   "saveChanges": "Save changes",
   "currentPassword": "Current password",
   "newPassword": "New password",
-  "repeatNewPassword": "Repeat the new password",
+  "repeatTheNewPassword": "Repeat the new password",
   "passwordStrength": "Password strength",
   "weak": "Weak",
   "medium": "Medium",
   "good": "Good",
   "strong": "Strong",
-  "atLeastEightCharacters": "At least 8 characters",
+  "atLeast8Characters": "At least 8 characters",
   "includesUpperAndLowerCase": "Includes upper and lower case",
   "includesANumber": "Includes a number",
   "includesASpecialCharacter": "Includes a special character",
-  "afterChangingPasswordYouWillBeSignedOut": "After changing your password you will be signed out of every other device.",
+  "afterChangingYourPasswordYouWillBeSignedOutOfEveryOtherDevice": "After changing your password you will be signed out of every other device.",
   "specialPlates": "Special plates",
   "blacklistCount": "Blacklist ({count})",
   "@blacklistCount": {
@@ -1256,22 +1252,22 @@
   },
   "addPlate": "Add plate",
   "reason": "Reason",
-  "addToBlacklist": "Add to the blacklist",
+  "addToTheBlacklist": "Add to the blacklist",
   "addReservation": "Add reservation",
   "connectionLost": "Connection lost",
-  "offlineModeDescription": "Entries and exits keep working and are stored on the device. Card payment is available, the online gateway is not.",
+  "entriesAndExitsKeepWorkingAndAreStoredOnTheDeviceCardPaymentIsAvailableTheOnlineGatewayIsNot": "Entries and exits keep working and are stored on the device. Card payment is available, the online gateway is not.",
   "sendQueue": "Send queue",
-  "itemsCount": "{count} items",
-  "@itemsCount": {
+  "countItems": "{count} items",
+  "@countItems": {
     "placeholders": {
       "count": {}
     }
   },
   "lastSync": "Last sync",
-  "tariffStoredOnDevice": "Tariff stored on the device",
+  "tariffStoredOnTheDevice": "Tariff stored on the device",
   "offlineSubscriptions": "Offline subscriptions",
-  "plateCount": "{count} plates",
-  "@plateCount": {
+  "countPlates": "{count} plates",
+  "@countPlates": {
     "placeholders": {
       "count": {}
     }
@@ -1288,71 +1284,68 @@
   "cardTotal": "Card total",
   "cashTotal": "Cash total",
   "gatewayTotal": "Gateway total",
-  "entriesCount": "{count} entries",
-  "@entriesCount": {
+  "countEntries": "{count} entries",
+  "@countEntries": {
     "placeholders": {
       "count": {}
     }
   },
-  "exitsCount": "{count} exits",
-  "@exitsCount": {
+  "countExits": "{count} exits",
+  "@countExits": {
     "placeholders": {
       "count": {}
     }
   },
-  "minutesShort": "{count} m",
-  "@minutesShort": {
+  "countM": "{count} m",
+  "@countM": {
     "placeholders": {
       "count": {}
     }
   },
-  "hoursAndMinutes": "{hours} h {minutes} m",
-  "@hoursAndMinutes": {
+  "hoursHMinutesM": "{hours} h {minutes} m",
+  "@hoursHMinutesM": {
     "placeholders": {
       "hours": {},
       "minutes": {}
     }
   },
-  "noVehicleInsideTheParking": "No vehicle is inside the parking",
-  "plateNotFound": "No open entry was found for this plate",
+  "noVehicleIsInsideTheParking": "No vehicle is inside the parking",
+  "noOpenEntryWasFoundForThisPlate": "No open entry was found for this plate",
   "warning": "Warning",
   "thisVehicleIsAlreadyInsideTheParking": "This vehicle is already inside the parking",
-  "enterThePlateYouSee": "Enter the plate you see in the photo",
+  "enterThePlateYouSeeInThePhoto": "Enter the plate you see in the photo",
   "retakePhoto": "Retake photo",
-  "usePlate": "Use this plate",
+  "useThisPlate": "Use this plate",
   "openCamera": "Open camera",
-  "continueWord": "Continue",
-  "waitingForCard": "Waiting for the card…",
+  "waitingForTheCard": "Waiting for the card…",
   "cardRead": "Card read",
-  "enterTheTrackingCodeFromTheTerminal": "Enter the tracking code shown by the terminal's payment app.",
+  "enterTheTrackingCodeShownByTheTerminalsPaymentApp": "Enter the tracking code shown by the terminal's payment app.",
   "confirmPayment": "Confirm payment",
-  "paymentNotConfirmedYet": "The payment has not been confirmed yet",
+  "thePaymentHasNotBeenConfirmedYet": "The payment has not been confirmed yet",
   "checkPaymentStatus": "Check payment status",
-  "cardReaderNotAvailable": "No card reader is available on this device",
-  "passwordsDoNotMatch": "The passwords do not match",
-  "wrongPassword": "The current password is wrong",
+  "noCardReaderIsAvailableOnThisDevice": "No card reader is available on this device",
+  "thePasswordsDoNotMatch": "The passwords do not match",
+  "theCurrentPasswordIsWrong": "The current password is wrong",
   "shiftSummary": "Shift summary",
   "shiftStarted": "Shift started",
-  "settleAndCloseShift": "Settle and close the shift",
-  "shiftClosed": "The shift was closed",
+  "settleAndCloseTheShift": "Settle and close the shift",
+  "theShiftWasClosed": "The shift was closed",
   "addToReservations": "Add to reservations",
   "spotNumber": "Spot number",
   "areYouSure": "Are you sure?",
   "total": "Total",
-  "loginToYourAccount": "Log in to your account",
+  "logInToYourAccount": "Log in to your account",
   "weSentAVerificationCodeToThisNumber": "We sent a verification code to this number.",
   "verificationCode": "Verification code",
   "changeMobileNumber": "Change mobile number",
   "privacyPolicy": "Privacy policy",
-  "byContinuingYouAcceptTheTermsAndPrivacyPolicy": "By continuing, you accept the terms and conditions and the privacy policy.",
+  "byContinuingYouAcceptTheTermsAndConditionsAndThePrivacyPolicy": "By continuing, you accept the terms and conditions and the privacy policy.",
   "night": "Night",
   "book": "Book",
   "bookNow": "Book now",
-  "reserveThisRoom": "Book this room",
+  "bookThisRoom": "Book this room",
   "reviews": "Reviews",
-  "guestCount": "Number of guests",
   "monthlyRent": "Monthly rent",
-  "notPaid": "Unpaid",
   "view": "View",
   "seeAll": "See all",
   "myReservations": "My reservations",
@@ -1360,8 +1353,8 @@
   "cancelReservation": "Cancel reservation",
   "cancellationPolicy": "Cancellation policy",
   "refundAmount": "Refund amount",
-  "cancellationPenalty": "Cancellation fee",
-  "freeCancellationUntilHoursBeforeCheckIn": "Free cancellation up to a few hours before check-in",
+  "cancellationFee": "Cancellation fee",
+  "freeCancellationUpToAFewHoursBeforeCheckIn": "Free cancellation up to a few hours before check-in",
   "selectDates": "Select dates",
   "roomCapacity": "Room capacity",
   "requiredDocuments": "Required documents",
@@ -1372,23 +1365,22 @@
   "callTheHotel": "Call the hotel",
   "fullyBooked": "Fully booked",
   "payFromWallet": "Pay from wallet",
-  "payWithGateway": "Pay with the bank gateway",
+  "payWithTheBankGateway": "Pay with the bank gateway",
   "reservationCode": "Reservation code",
   "addGuest": "Add guest",
   "priceDetails": "Price details",
   "writeAReview": "Write a review",
   "yourRating": "Your rating",
-  "dormReservationIsInPersonOnly": "Dorm beds are booked in person only",
-  "dormReservationInPersonNote": "To take a bed, call the dorm or visit in person. Once you are registered, the contract and its monthly invoices show up right here.",
+  "dormBedsAreBookedInPersonOnly": "Dorm beds are booked in person only",
+  "toTakeABedCallTheDormOrVisitInPersonOnceYouAreRegisteredTheContractAndItsMonthlyInvoicesShowUpRightHere": "To take a bed, call the dorm or visit in person. Once you are registered, the contract and its monthly invoices show up right here.",
   "roomsAndBeds": "Rooms and beds",
-  "youHaveNoReservations": "You have no reservations yet",
+  "youHaveNoReservationsYet": "You have no reservations yet",
   "youHaveNoInvoices": "You have no invoices",
   "youHaveNoContracts": "You have no contracts",
   "past": "Past",
   "perNight": "per night",
   "startingFrom": "Starting from",
-  "guestInformation": "Guest details",
-  "reservationRegistered": "Your reservation is registered",
+  "guestDetails": "Guest details",
   "payTheInvoice": "Pay the invoice",
   "dormContracts": "Dorm contracts",
   "monthlyInvoices": "Monthly invoices",
@@ -1399,108 +1391,110 @@
   "chooseHowToPay": "Choose how to pay",
   "noReviewsYet": "No reviews yet",
   "thanksForYourReview": "Thanks for your review",
-  "guestNamePlaceholder": "Guest name",
   "mainGuest": "Main guest",
-  "nightsCountLabel": "Nights",
+  "numberOfNights": "Number of nights",
   "yourStay": "Your stay",
-  "noPlacesYet": "No places have been added yet",
+  "noPlacesHaveBeenAddedYet": "No places have been added yet",
   "inPerson": "In person",
   "bookedInPerson": "Booked in person",
-  "noRoomsAvailableForTheseDates": "No rooms are available for these dates",
-  "selectYourDatesToSeePrices": "Pick your dates to see prices",
+  "noRoomsAreAvailableForTheseDates": "No rooms are available for these dates",
+  "pickYourDatesToSeePrices": "Pick your dates to see prices",
   "reservationDetails": "Reservation details",
   "invoiceDetails": "Invoice details",
   "remainingAmount": "Remaining amount",
   "payNow": "Pay now",
-  "choosePaymentMethod": "Choose a payment method",
+  "chooseAPaymentMethod": "Choose a payment method",
   "yourReservationIsRegistered": "Your reservation is registered",
   "backToHome": "Back to home",
-  "nationalCodeOptional": "National ID (optional)",
-  "guestNumber": "Guest",
+  "nationalIdOptional": "National ID (optional)",
   "markAllAsRead": "Mark all as read",
   "editProfile": "Edit profile",
   "changesSaved": "Changes saved",
   "topUpWallet": "Top up wallet",
-  "cancellationRefundNote": "Cancel before the free window ends and the full amount goes back to your wallet.",
-  "reservationCancelledSuccessfully": "The reservation was cancelled",
+  "cancelBeforeTheFreeWindowEndsAndTheFullAmountGoesBackToYourWallet": "Cancel before the free window ends and the full amount goes back to your wallet.",
+  "theReservationWasCancelled": "The reservation was cancelled",
   "contractPeriod": "Contract period",
-  "bedTitle": "Bed",
-  "roomTitle": "Room",
-  "dormTitle": "Dorm",
-  "payFromWalletBalance": "Pay from your wallet balance",
-  "payOnlineWithCard": "Pay online with a bank card",
-  "yourReviewHelpsOthers": "Your review helps other guests",
-  "guestsAndRooms": "Guests and room",
-  "guestCountExceedsCapacity": "Over the room capacity",
-  "roomIsFullyBooked": "This room is full for these dates",
+  "payFromYourWalletBalance": "Pay from your wallet balance",
+  "payOnlineWithABankCard": "Pay online with a bank card",
+  "yourReviewHelpsOtherGuests": "Your review helps other guests",
+  "guestsAndRoom": "Guests and room",
+  "overTheRoomCapacity": "Over the room capacity",
+  "thisRoomIsFullForTheseDates": "This room is full for these dates",
   "extraGuestCapacity": "Extra guest capacity",
   "extraGuestPrice": "Extra guest price",
   "gold": "Gold",
   "goldPrice": "Gold price",
-  "goldPricePerGram": "Price per gram",
-  "goldBuyPrice": "Buy price",
-  "goldSellPrice": "Sell price",
+  "pricePerGram": "Price per gram",
+  "buyPrice": "Buy price",
+  "sellPrice": "Sell price",
   "buyGold": "Buy gold",
   "sellGold": "Sell gold",
   "goldWallet": "Gold wallet",
   "goldBalance": "Gold balance",
-  "goldAmountInGram": "Amount in gram",
-  "goldAmountInRial": "Amount in rial",
+  "amountInGram": "Amount in gram",
+  "amountInRial": "Amount in rial",
   "goldOrders": "Gold orders",
-  "goldOrderDetail": "Order detail",
-  "goldNoOrdersYet": "No gold orders yet",
-  "goldNoTransactionsYet": "No gold transactions yet",
-  "goldOrderPlacedSuccessfully": "Your gold order was placed",
-  "goldTradeLimits": "Trade limits",
-  "goldRemainingVolume": "Remaining volume",
-  "goldCreditFacilities": "Credit facilities",
-  "goldAvailableCredit": "Available credit",
-  "goldUsedCredit": "Used credit",
+  "orderDetail": "Order detail",
+  "noGoldOrdersYet": "No gold orders yet",
+  "noGoldTransactionsYet": "No gold transactions yet",
+  "yourGoldOrderWasPlaced": "Your gold order was placed",
+  "tradeLimits": "Trade limits",
+  "remainingVolume": "Remaining volume",
+  "creditFacilities": "Credit facilities",
+  "availableCredit": "Available credit",
+  "usedCredit": "Used credit",
   "goldApiTokens": "Gold API tokens",
-  "goldCreateApiToken": "Create API token",
-  "goldRevokeApiToken": "Revoke API token",
-  "goldRawTokenShownOnce": "Copy this token now, it is shown only once",
-  "goldServiceUnavailable": "The gold service is not available right now",
-  "goldLastUpdated": "Last updated",
-  "goldTrade": "Gold trading",
-  "goldTradeSubtitle": "Buy and sell 18K gold online",
-  "goldMyGold": "My gold",
-  "goldValue": "Current value",
-  "goldGram": "gram",
-  "goldByAmount": "By amount",
-  "goldByWeight": "By weight",
-  "goldEstimatedGold": "Estimated gold",
-  "goldEstimatedAmount": "Estimated amount",
-  "goldConfirmBuy": "Confirm purchase",
-  "goldConfirmSell": "Confirm sale",
-  "goldBuySuccess": "Gold purchased successfully",
-  "goldSellSuccess": "Gold sold successfully",
-  "goldInsufficientWalletBalance": "Your wallet balance is not enough",
-  "goldInsufficientGoldBalance": "Your gold balance is not enough",
-  "goldEnterAmount": "Enter an amount",
+  "createApiToken": "Create API token",
+  "revokeApiToken": "Revoke API token",
+  "copyThisTokenNowItIsShownOnlyOnce": "Copy this token now, it is shown only once",
+  "theGoldServiceIsNotAvailableRightNow": "The gold service is not available right now",
+  "lastUpdated": "Last updated",
+  "goldTrading": "Gold trading",
+  "buyAndSell18KGoldOnline": "Buy and sell 18K gold online",
+  "myGold": "My gold",
+  "currentValue": "Current value",
+  "gram": "gram",
+  "byAmount": "By amount",
+  "byWeight": "By weight",
+  "estimatedGold": "Estimated gold",
+  "estimatedAmount": "Estimated amount",
+  "confirmPurchase": "Confirm purchase",
+  "confirmSale": "Confirm sale",
+  "goldPurchasedSuccessfully": "Gold purchased successfully",
+  "goldSoldSuccessfully": "Gold sold successfully",
+  "yourWalletBalanceIsNotEnough": "Your wallet balance is not enough",
+  "yourGoldBalanceIsNotEnough": "Your gold balance is not enough",
+  "enterAnAmount": "Enter an amount",
   "goldTransactions": "Gold transactions",
-  "goldOrderPending": "Processing",
-  "goldUnitPrice": "Unit price",
-  "goldFee": "Fee",
-  "goldOrderId": "Order id",
-  "goldSettleNow": "Check order status",
-  "goldProviderAccount": "Provider account",
-  "goldProviderBalances": "Provider balances",
-  "goldProviderTransactions": "Provider transactions",
-  "goldAccountStatus": "Account status",
-  "goldIpWhitelist": "Allowed IPs",
-  "goldScopes": "Scopes",
-  "goldTokenLabel": "Label",
-  "goldTokenPrefix": "Token prefix",
-  "goldNoApiTokens": "No API tokens yet",
-  "goldMaxVolume": "Max volume",
-  "goldUsedVolume": "Used volume",
-  "goldInterval": "Interval",
-  "goldResetsAt": "Resets at",
-  "goldTimezone": "Timezone",
-  "goldWindow": "Window",
-  "goldLoadMore": "Load more",
-  "goldPriceDisclaimer": "The final price is set at the moment the order is filled",
+  "processing": "Processing",
+  "unitPrice": "Unit price",
+  "fee": "Fee",
+  "orderId": "Order id",
+  "checkOrderStatus": "Check order status",
+  "providerAccount": "Provider account",
+  "providerBalances": "Provider balances",
+  "providerTransactions": "Provider transactions",
+  "accountStatus": "Account status",
+  "allowedIps": "Allowed IPs",
+  "scopes": "Scopes",
+  "label": "Label",
+  "tokenPrefix": "Token prefix",
+  "noApiTokensYet": "No API tokens yet",
+  "maxVolume": "Max volume",
+  "usedVolume": "Used volume",
+  "interval": "Interval",
+  "resetsAt": "Resets at",
+  "timezone": "Timezone",
+  "window": "Window",
+  "loadMore": "Load more",
+  "theFinalPriceIsSetAtTheMomentTheOrderIsFilled": "The final price is set at the moment the order is filled",
   "inactive": "Inactive",
-  "id": "ID"
+  "id": "ID",
+  "controlDigits": "Control digits",
+  "billIdCheckDigit": "Bill ID check digit",
+  "firstControlDigit": "First control digit",
+  "secondControlDigit": "Second control digit",
+  "expected": "Expected",
+  "entered": "Entered",
+  "companyCode": "Company code"
 }

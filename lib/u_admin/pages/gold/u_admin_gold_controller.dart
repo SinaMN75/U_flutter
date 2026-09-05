@@ -124,7 +124,7 @@ class UAdminGoldController extends UBaseController {
     final List<String> scopes = tokenScopesController.text.split(",").map((String s) => s.trim()).where((String s) => s.isNotEmpty).toList();
     final List<String> ips = tokenIpsController.text.split(",").map((String s) => s.trim()).where((String s) => s.isNotEmpty).toList();
     if (scopes.isEmpty) {
-      UToast.error(message: U.s.goldScopes);
+      UToast.error(message: U.s.scopes);
       return;
     }
     ULoading.show();
@@ -135,7 +135,7 @@ class UAdminGoldController extends UBaseController {
         final String? raw = r.result?.rawToken;
         if (raw != null) {
           UClipboard.set(raw);
-          UToast.success(message: U.s.goldRawTokenShownOnce);
+          UToast.success(message: U.s.copyThisTokenNowItIsShownOnlyOnce);
         }
         okCallback(r.message, readTokens);
       },

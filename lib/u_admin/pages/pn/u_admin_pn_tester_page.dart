@@ -71,7 +71,7 @@ class _UAdminPnTesterPageState extends State<UAdminPnTesterPage> {
         _PnField(key: "mcc", label: U.s.mcc, required: true),
         _PnField(key: "address", label: U.s.address, required: true, lines: 2),
         _PnField(key: "businessTitle", label: U.s.businessTitle),
-        _PnField(key: "bankAccountId", label: U.s.bankAccountid),
+        _PnField(key: "bankAccountId", label: U.s.bankAccountId),
       ],
     ),
     _PnEndpoint(
@@ -197,7 +197,7 @@ class _UAdminPnTesterPageState extends State<UAdminPnTesterPage> {
         spacing: 8,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          UTextHeadlineSmall(U.s.pnapiTester, fontWeight: FontWeight.bold),
+          UTextHeadlineSmall(U.s.pnApiTester, fontWeight: FontWeight.bold),
           UTextBodySmall("${U.baseUrl}/Pn", color: cs.onSurface.withValues(alpha: 0.6)),
         ],
       ),

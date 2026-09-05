@@ -150,8 +150,8 @@ class _UAdminBarcodeGeneratorPageState extends State<UAdminBarcodeGeneratorPage>
         expanded: 1,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          UTextHeadlineSmall(U.s.barcodeqrGenerator, fontWeight: FontWeight.bold),
-          UTextBodySmall(U.s.generateAndFullyCustomizeqrCodesAndBarcodesOfEveryKind, color: cs.onSurface.withValues(alpha: 0.6)),
+          UTextHeadlineSmall(U.s.barcodeQrGenerator, fontWeight: FontWeight.bold),
+          UTextBodySmall(U.s.generateAndFullyCustomizeQrCodesAndBarcodesOfEveryKind, color: cs.onSurface.withValues(alpha: 0.6)),
         ],
       ),
     ],
