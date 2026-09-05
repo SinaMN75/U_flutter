@@ -3935,7 +3935,4 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get id => 'ID';
-
-  @override
-  String get featureDisabled => 'This service is temporarily unavailable';
 }

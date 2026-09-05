@@ -3935,7 +3935,4 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get id => 'شناسه';
-
-  @override
-  String get featureDisabled => 'این سرویس موقتاً در دسترس نیست';
 }

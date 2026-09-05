@@ -11,25 +11,20 @@ class UAppSettingsResponse {
     required this.apiCallCosts,
     required this.chargeInternet,
     required this.chargeInternetTaxPercent,
-    required this.features,
   });
 
   factory UAppSettingsResponse.fromMap(Map<String, dynamic> json) => UAppSettingsResponse(
     apiCallCosts: UApiCallCosts.fromMap(json["apiCallCosts"] ?? <String, dynamic>{}),
     chargeInternet: json["chargeInternet"] == null ? <UChargeInternet>[] : List<UChargeInternet>.from(json["chargeInternet"]!.map((dynamic x) => UChargeInternet.fromMap(x))),
     chargeInternetTaxPercent: (json["chargeInternetTaxPercent"] ?? 0).toString().toDouble(),
-    features: UFeatures.fromMap(json["features"] ?? <String, dynamic>{}),
   );
 
   final UApiCallCosts apiCallCosts;
-
-  final UFeatures features;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "chargeInternet": List<dynamic>.from(chargeInternet.map((UChargeInternet x) => x.toMap())),
     "apiCallCosts": apiCallCosts.toMap(),
     "chargeInternetTaxPercent": chargeInternetTaxPercent,
-    "features": features.toMap(),
   };
 
   String toJson() => json.encode(toMap());
@@ -146,70 +141,5 @@ class UChargeInternetPreDefinedAmounts {
   Map<String, dynamic> toMap() => <String, dynamic>{
     "title": title,
     "amount": amount,
-  };
-}
-
-// Each flag mirrors AppSettings.Features on the server; false means the feature is switched off.
-class UFeatures {
-  UFeatures({
-    this.gold = true,
-    this.bill = true,
-    this.simCharge = true,
-    this.internet = true,
-    this.vehicleServices = true,
-    this.merchant = true,
-    this.moadi = true,
-    this.cardToCard = true,
-    this.charity = true,
-    this.insurance = true,
-    this.loan = true,
-    this.sayadCheck = true,
-    this.creditValidation = true,
-  });
-
-  factory UFeatures.fromMap(Map<String, dynamic> json) => UFeatures(
-    gold: json["gold"] ?? true,
-    bill: json["bill"] ?? true,
-    simCharge: json["simCharge"] ?? true,
-    internet: json["internet"] ?? true,
-    vehicleServices: json["vehicleServices"] ?? true,
-    merchant: json["merchant"] ?? true,
-    moadi: json["moadi"] ?? true,
-    cardToCard: json["cardToCard"] ?? true,
-    charity: json["charity"] ?? true,
-    insurance: json["insurance"] ?? true,
-    loan: json["loan"] ?? true,
-    sayadCheck: json["sayadCheck"] ?? true,
-    creditValidation: json["creditValidation"] ?? true,
-  );
-
-  final bool gold;
-  final bool bill;
-  final bool simCharge;
-  final bool internet;
-  final bool vehicleServices;
-  final bool merchant;
-  final bool moadi;
-  final bool cardToCard;
-  final bool charity;
-  final bool insurance;
-  final bool loan;
-  final bool sayadCheck;
-  final bool creditValidation;
-
-  Map<String, dynamic> toMap() => <String, dynamic>{
-    "gold": gold,
-    "bill": bill,
-    "simCharge": simCharge,
-    "internet": internet,
-    "vehicleServices": vehicleServices,
-    "merchant": merchant,
-    "moadi": moadi,
-    "cardToCard": cardToCard,
-    "charity": charity,
-    "insurance": insurance,
-    "loan": loan,
-    "sayadCheck": sayadCheck,
-    "creditValidation": creditValidation,
   };
 }
