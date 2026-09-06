@@ -554,8 +554,14 @@ enum TagWalletTxn with NumericIdentifiable {
 
 enum TagTerminal with NumericIdentifiable {
   atm("خودپرداز", "ATM", 101),
-  wallCashless("پرداخت بدون پول نقد دیواری", "Wall Cashless", 102),
-  deskCashless("پرداخت بدون پول نقد میز", "Desk Cashless", 103);
+  wallCashless("خودپرداز غیر نقد", "Wall Cashless", 102),
+  deskCashless("خودپرداز رومیزی", "Desk Cashless", 103),
+  ava101("Ava 101", "Ava 101", 201),
+  ava102("Ava 102", "Ava 102", 202),
+  ava103("Ava 103", "Ava 103", 203),
+  ava104("Ava 104", "Ava 104", 204),
+  avaMax("Ava Max", "Ava Max", 205),
+  smartPeak("SmartPeak", "SmartPeak", 206);
 
   const TagTerminal(this.titleFa, this.titleEn, this.number);
 
