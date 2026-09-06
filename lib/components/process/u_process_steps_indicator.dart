@@ -23,6 +23,7 @@ class UProcessStepsIndicator extends StatelessWidget {
         return Row(
           children: <Widget>[
             UIconTextVertical(
+              expanded: 3,
               leading: _StepDot(status: step.status, style: style),
               trailing: UTextLabelSmall(
                 step.title,
@@ -31,7 +32,6 @@ class UProcessStepsIndicator extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 color: _labelColor(context, step.status),
                 fontWeight: step.status == TagProcessStepStatus.current ? FontWeight.bold : FontWeight.normal,
-                expanded: 3,
               ),
             ),
             if (!isLast)
