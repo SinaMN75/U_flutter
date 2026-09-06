@@ -2949,7 +2949,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get swipeOrTapTheCard => 'Swipe or tap the card';
 
   @override
-  String get theAmountWasSentToTheDevicesCardReaderDoNotCloseThisScreenUntilTheTransactionFinishes => 'The amount was sent to the device\'s card reader. Do not close this screen until the transaction finishes.';
+  String get theAmountWasSentToTheDevicesCardReaderDoNotCloseThisScreenUntilTheTransactionFinishes =>
+      'The amount was sent to the device\'s card reader. Do not close this screen until the transaction finishes.';
 
   @override
   String get transactionAmount => 'Transaction amount';
@@ -3274,7 +3275,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get connectionLost => 'Connection lost';
 
   @override
-  String get entriesAndExitsKeepWorkingAndAreStoredOnTheDeviceCardPaymentIsAvailableTheOnlineGatewayIsNot => 'Entries and exits keep working and are stored on the device. Card payment is available, the online gateway is not.';
+  String get entriesAndExitsKeepWorkingAndAreStoredOnTheDeviceCardPaymentIsAvailableTheOnlineGatewayIsNot =>
+      'Entries and exits keep working and are stored on the device. Card payment is available, the online gateway is not.';
 
   @override
   String get sendQueue => 'Send queue';
@@ -3544,7 +3546,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dormBedsAreBookedInPersonOnly => 'Dorm beds are booked in person only';
 
   @override
-  String get toTakeABedCallTheDormOrVisitInPersonOnceYouAreRegisteredTheContractAndItsMonthlyInvoicesShowUpRightHere => 'To take a bed, call the dorm or visit in person. Once you are registered, the contract and its monthly invoices show up right here.';
+  String get toTakeABedCallTheDormOrVisitInPersonOnceYouAreRegisteredTheContractAndItsMonthlyInvoicesShowUpRightHere =>
+      'To take a bed, call the dorm or visit in person. Once you are registered, the contract and its monthly invoices show up right here.';
 
   @override
   String get roomsAndBeds => 'Rooms and beds';
@@ -3917,4 +3920,100 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get companyCode => 'Company code';
+
+  @override
+  String get approvalCode => 'Approval code';
+
+  @override
+  String get availableBalance => 'Available balance';
+
+  @override
+  String get availableCreditBalance => 'Available credit balance';
+
+  @override
+  String get balanceEnquiry => 'Balance enquiry';
+
+  @override
+  String get balanceReceipt => 'Balance receipt';
+
+  @override
+  String get blockedAmount => 'Blocked amount';
+
+  @override
+  String get cardNumber => 'Card number';
+
+  @override
+  String get cardReadFailed => 'Card read failed';
+
+  @override
+  String get connectingToHost => 'Connecting to host';
+
+  @override
+  String get creditLimit => 'Credit limit';
+
+  @override
+  String get enterYourPin => 'Enter your PIN';
+
+  @override
+  String get errorCode => 'Error code';
+
+  @override
+  String get hostTerminal => 'Host terminal';
+
+  @override
+  String get issuer => 'Issuer';
+
+  @override
+  String get logon => 'Logon';
+
+  @override
+  String get logonDoneSuccessfully => 'Logon done successfully';
+
+  @override
+  String get noResponseFromHost => 'No response from host';
+
+  @override
+  String get pinEntryCancelled => 'PIN entry cancelled';
+
+  @override
+  String get printingReceipt => 'Printing receipt';
+
+  @override
+  String get realBalance => 'Real balance';
+
+  @override
+  String get reference => 'Reference';
+
+  @override
+  String get swipeYourCard => 'Swipe your card';
+
+  @override
+  String get terminalIsNotLoggedOn => 'Terminal is not logged on';
+
+  @override
+  String get terminalTrackingCode => 'Terminal tracking code';
+
+  @override
+  String get transactionFailed => 'Transaction failed';
+
+  @override
+  String get waitingForResponse => 'Waiting for response';
+
+  @override
+  String get noDeviceFound => 'No device found';
+
+  @override
+  String get port => 'Port';
+
+  @override
+  String get copied => 'Copied';
+
+  @override
+  String get nothingTracedYet => 'Nothing traced yet';
+
+  @override
+  String get importHostConfig => 'Import host config';
+
+  @override
+  String get pasteTheContentOfHostConfigJson => 'Paste the content of hostConfig.json';
 }

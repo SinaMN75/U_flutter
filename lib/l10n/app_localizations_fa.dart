@@ -3274,7 +3274,8 @@ class AppLocalizationsFa extends AppLocalizations {
   String get connectionLost => 'اتصال قطع است';
 
   @override
-  String get entriesAndExitsKeepWorkingAndAreStoredOnTheDeviceCardPaymentIsAvailableTheOnlineGatewayIsNot => 'ثبت ورود و خروج ادامه دارد و روی دستگاه ذخیره می‌شود. پرداخت کارتی در دسترس است، درگاه اینترنتی نه.';
+  String get entriesAndExitsKeepWorkingAndAreStoredOnTheDeviceCardPaymentIsAvailableTheOnlineGatewayIsNot =>
+      'ثبت ورود و خروج ادامه دارد و روی دستگاه ذخیره می‌شود. پرداخت کارتی در دسترس است، درگاه اینترنتی نه.';
 
   @override
   String get sendQueue => 'صف ارسال';
@@ -3544,7 +3545,8 @@ class AppLocalizationsFa extends AppLocalizations {
   String get dormBedsAreBookedInPersonOnly => 'رزرو خوابگاه فقط حضوری انجام می‌شود';
 
   @override
-  String get toTakeABedCallTheDormOrVisitInPersonOnceYouAreRegisteredTheContractAndItsMonthlyInvoicesShowUpRightHere => 'برای گرفتن تخت، با خوابگاه تماس بگیرید یا حضوری مراجعه کنید. قرارداد و فاکتورهای ماهانه بعد از ثبت‌نام در همین اپ نمایش داده می‌شود.';
+  String get toTakeABedCallTheDormOrVisitInPersonOnceYouAreRegisteredTheContractAndItsMonthlyInvoicesShowUpRightHere =>
+      'برای گرفتن تخت، با خوابگاه تماس بگیرید یا حضوری مراجعه کنید. قرارداد و فاکتورهای ماهانه بعد از ثبت‌نام در همین اپ نمایش داده می‌شود.';
 
   @override
   String get roomsAndBeds => 'اتاق‌ها و تخت‌ها';
@@ -3917,4 +3919,100 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get companyCode => 'کد شرکت';
+
+  @override
+  String get approvalCode => 'پیگیری';
+
+  @override
+  String get availableBalance => 'مانده در دسترس';
+
+  @override
+  String get availableCreditBalance => 'مانده اعتبار در دسترس';
+
+  @override
+  String get balanceEnquiry => 'مانده گیری';
+
+  @override
+  String get balanceReceipt => 'رسید موجودی';
+
+  @override
+  String get blockedAmount => 'مبلغ مسدود';
+
+  @override
+  String get cardNumber => 'شماره کارت';
+
+  @override
+  String get cardReadFailed => 'خواندن کارت ناموفق بود';
+
+  @override
+  String get connectingToHost => 'در حال اتصال به سرور';
+
+  @override
+  String get creditLimit => 'سقف اعتبار';
+
+  @override
+  String get enterYourPin => 'رمز خود را وارد کنید';
+
+  @override
+  String get errorCode => 'کد خطا';
+
+  @override
+  String get hostTerminal => 'پایانه / پذیرنده';
+
+  @override
+  String get issuer => 'بانک صادرکننده';
+
+  @override
+  String get logon => 'ورود به سیستم';
+
+  @override
+  String get logonDoneSuccessfully => 'ورود با موفقیت انجام شد';
+
+  @override
+  String get noResponseFromHost => 'پاسخی از سرور دریافت نشد';
+
+  @override
+  String get pinEntryCancelled => 'ورود رمز لغو شد';
+
+  @override
+  String get printingReceipt => 'در حال چاپ رسید';
+
+  @override
+  String get realBalance => 'مانده واقعی';
+
+  @override
+  String get reference => 'مرجع';
+
+  @override
+  String get swipeYourCard => 'کارت خود را بکشید';
+
+  @override
+  String get terminalIsNotLoggedOn => 'پایانه وارد سیستم نشده است';
+
+  @override
+  String get terminalTrackingCode => 'کد رهگیری پایانه';
+
+  @override
+  String get transactionFailed => 'تراکنش ناموفق';
+
+  @override
+  String get waitingForResponse => 'در انتظار پاسخ';
+
+  @override
+  String get noDeviceFound => 'دستگاهی یافت نشد';
+
+  @override
+  String get port => 'درگاه';
+
+  @override
+  String get copied => 'کپی شد';
+
+  @override
+  String get nothingTracedYet => 'هنوز چیزی ثبت نشده';
+
+  @override
+  String get importHostConfig => 'درون‌ریزی تنظیمات مرکز';
+
+  @override
+  String get pasteTheContentOfHostConfigJson => 'محتوای فایل hostConfig.json را جای‌گذاری کنید';
 }

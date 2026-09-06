@@ -6793,6 +6793,7 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'By continuing, you accept the terms and conditions and the privacy policy.'**
   String get byContinuingYouAcceptTheTermsAndConditionsAndThePrivacyPolicy;
+
   /// No description provided for @night.
   ///
   /// In en, this message translates to:
@@ -7735,6 +7736,197 @@ abstract class AppLocalizations {
   /// **'Company code'**
   String get companyCode;
 
+  /// No description provided for @approvalCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Approval code'**
+  String get approvalCode;
+
+  /// No description provided for @availableBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Available balance'**
+  String get availableBalance;
+
+  /// No description provided for @availableCreditBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Available credit balance'**
+  String get availableCreditBalance;
+
+  /// No description provided for @balanceEnquiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Balance enquiry'**
+  String get balanceEnquiry;
+
+  /// No description provided for @balanceReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Balance receipt'**
+  String get balanceReceipt;
+
+  /// No description provided for @blockedAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Blocked amount'**
+  String get blockedAmount;
+
+  /// No description provided for @cardNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Card number'**
+  String get cardNumber;
+
+  /// No description provided for @cardReadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Card read failed'**
+  String get cardReadFailed;
+
+  /// No description provided for @connectingToHost.
+  ///
+  /// In en, this message translates to:
+  /// **'Connecting to host'**
+  String get connectingToHost;
+
+  /// No description provided for @creditLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Credit limit'**
+  String get creditLimit;
+
+  /// No description provided for @enterYourPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your PIN'**
+  String get enterYourPin;
+
+  /// No description provided for @errorCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Error code'**
+  String get errorCode;
+
+  /// No description provided for @hostTerminal.
+  ///
+  /// In en, this message translates to:
+  /// **'Host terminal'**
+  String get hostTerminal;
+
+  /// No description provided for @issuer.
+  ///
+  /// In en, this message translates to:
+  /// **'Issuer'**
+  String get issuer;
+
+  /// No description provided for @logon.
+  ///
+  /// In en, this message translates to:
+  /// **'Logon'**
+  String get logon;
+
+  /// No description provided for @logonDoneSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Logon done successfully'**
+  String get logonDoneSuccessfully;
+
+  /// No description provided for @noResponseFromHost.
+  ///
+  /// In en, this message translates to:
+  /// **'No response from host'**
+  String get noResponseFromHost;
+
+  /// No description provided for @pinEntryCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'PIN entry cancelled'**
+  String get pinEntryCancelled;
+
+  /// No description provided for @printingReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Printing receipt'**
+  String get printingReceipt;
+
+  /// No description provided for @realBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Real balance'**
+  String get realBalance;
+
+  /// No description provided for @reference.
+  ///
+  /// In en, this message translates to:
+  /// **'Reference'**
+  String get reference;
+
+  /// No description provided for @swipeYourCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Swipe your card'**
+  String get swipeYourCard;
+
+  /// No description provided for @terminalIsNotLoggedOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Terminal is not logged on'**
+  String get terminalIsNotLoggedOn;
+
+  /// No description provided for @terminalTrackingCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Terminal tracking code'**
+  String get terminalTrackingCode;
+
+  /// No description provided for @transactionFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction failed'**
+  String get transactionFailed;
+
+  /// No description provided for @waitingForResponse.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for response'**
+  String get waitingForResponse;
+
+  /// No description provided for @noDeviceFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No device found'**
+  String get noDeviceFound;
+
+  /// No description provided for @port.
+  ///
+  /// In en, this message translates to:
+  /// **'Port'**
+  String get port;
+
+  /// No description provided for @copied.
+  ///
+  /// In en, this message translates to:
+  /// **'Copied'**
+  String get copied;
+
+  /// No description provided for @nothingTracedYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing traced yet'**
+  String get nothingTracedYet;
+
+  /// No description provided for @importHostConfig.
+  ///
+  /// In en, this message translates to:
+  /// **'Import host config'**
+  String get importHostConfig;
+
+  /// No description provided for @pasteTheContentOfHostConfigJson.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste the content of hostConfig.json'**
+  String get pasteTheContentOfHostConfigJson;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
