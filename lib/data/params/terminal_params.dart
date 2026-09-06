@@ -77,12 +77,14 @@ class UTerminalAssignParams {
   final String? simCardSerial;
   final String? merchantId;
   final String? title;
+  final int? tag;
 
   UTerminalAssignParams({
     required this.serial,
     this.simCardSerial,
     this.merchantId,
     this.title,
+    this.tag,
   });
 
   factory UTerminalAssignParams.fromJson(String str) => UTerminalAssignParams.fromMap(json.decode(str));
@@ -94,6 +96,7 @@ class UTerminalAssignParams {
     simCardSerial: json["simCardSerial"],
     merchantId: json["merchantId"],
     title: json["title"],
+    tag: json["tag"],
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -101,6 +104,7 @@ class UTerminalAssignParams {
     "simCardSerial": simCardSerial,
     "merchantId": merchantId,
     "title": title,
+    "tag": tag,
   };
 }
 
