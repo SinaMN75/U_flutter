@@ -49,7 +49,7 @@ class UNumericKeyboard extends StatelessWidget {
     this.foregroundColor,
     this.actionBackgroundColor,
     this.actionForegroundColor,
-    this.fontSize,
+    this.fontSize = 24,
     this.fontWeight,
     this.padding = EdgeInsets.zero,
     this.hapticFeedback = true,
@@ -204,10 +204,13 @@ class UNumericKeyboard extends StatelessWidget {
       hapticFeedback: hapticFeedback,
       enabled: enabled,
       backgroundColor: backgroundColor ?? Theme.of(context).colorScheme.surfaceContainerHighest,
-      child: UTextHeadlineSmall(
+      child: Text(
         "000",
-        color: fg,
-        fontWeight: fontWeight ?? FontWeight.w600,
+        style: context.textTheme.bodyLarge!.copyWith(
+          color: fg,
+          fontWeight: fontWeight ?? FontWeight.w600,
+          fontSize: fontSize,
+        ),
       ),
     );
   }
@@ -222,10 +225,13 @@ class UNumericKeyboard extends StatelessWidget {
       hapticFeedback: hapticFeedback,
       enabled: enabled,
       backgroundColor: backgroundColor ?? Theme.of(context).colorScheme.surfaceContainerHighest,
-      child: UTextHeadlineSmall(
+      child: Text(
         value,
-        color: fg,
-        fontWeight: fontWeight ?? FontWeight.w600,
+        style: context.textTheme.bodyLarge!.copyWith(
+          color: fg,
+          fontWeight: fontWeight ?? FontWeight.w600,
+          fontSize: fontSize,
+        ),
       ),
     );
   }
@@ -248,11 +254,14 @@ class UNumericKeyboard extends StatelessWidget {
           action.child ??
           (action.icon != null
               ? Icon(action.icon, color: fg, size: action.fontSize)
-              : UTextTitleMedium(
+              : Text(
                   action.label ?? "---",
-                  color: fg,
-                  fontWeight: action.fontWeight ?? FontWeight.w600,
                   textAlign: TextAlign.center,
+                  style: context.textTheme.bodyLarge!.copyWith(
+                    color: fg,
+                    fontWeight: action.fontWeight ?? FontWeight.w600,
+                    fontSize: fontSize,
+                  ),
                 )),
     );
   }
