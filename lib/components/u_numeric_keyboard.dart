@@ -85,41 +85,38 @@ class UNumericKeyboard extends StatelessWidget {
   ];
 
   @override
-  Widget build(BuildContext context) => LayoutBuilder(
-    builder: (BuildContext context, BoxConstraints constraints) {
-      final bool sideActions = actions.isNotEmpty && actionsPosition == UNumericKeyboardActionsPosition.right;
-      final int columns = sideActions ? 4 : 3;
-      final double available = constraints.maxWidth - padding.horizontal;
-      final double keyWidth = (available - spacing * (columns - 1)) / columns;
-      final double keyHeight = keyWidth / keyAspectRatio;
-      final double gridHeight = keyHeight * 4 + runSpacing * 3;
-
-      return Padding(
-        padding: padding,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            SizedBox(
-              height: gridHeight,
-              child: Row(
-                children: <Widget>[
-                  Expanded(child: _grid(context, keyHeight)),
-                  if (sideActions) ...<Widget>[
-                    SizedBox(width: spacing),
-                    SizedBox(width: keyWidth, child: _actionColumn(context)),
-                  ],
+  Widget build(BuildContext context) {
+    final bool sideActions = actions.isNotEmpty && actionsPosition == UNumericKeyboardActionsPosition.right;
+    final int columns = sideActions ? 4 : 3;
+    final double available = 300 - padding.horizontal;
+    final double keyWidth = (available - spacing * (columns - 1)) / columns;
+    final double keyHeight = keyWidth / keyAspectRatio;
+    final double gridHeight = keyHeight * 4 + runSpacing * 3;
+    return Padding(
+      padding: padding,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          SizedBox(
+            height: gridHeight,
+            child: Row(
+              children: <Widget>[
+                Expanded(child: _grid(context, keyHeight)),
+                if (sideActions) ...<Widget>[
+                  SizedBox(width: spacing),
+                  SizedBox(width: keyWidth, child: _actionColumn(context)),
                 ],
-              ),
+              ],
             ),
-            if (actions.isNotEmpty && actionsPosition == UNumericKeyboardActionsPosition.bottom) ...<Widget>[
-              SizedBox(height: runSpacing),
-              SizedBox(height: keyHeight, child: _actionRow(context)),
-            ],
+          ),
+          if (actions.isNotEmpty && actionsPosition == UNumericKeyboardActionsPosition.bottom) ...<Widget>[
+            SizedBox(height: runSpacing),
+            SizedBox(height: keyHeight, child: _actionRow(context)),
           ],
-        ),
-      );
-    },
-  ).ltr();
+        ],
+      ),
+    ).ltr();
+  }
 
   Widget _grid(BuildContext context, double keyHeight) => Column(
     children: <Widget>[

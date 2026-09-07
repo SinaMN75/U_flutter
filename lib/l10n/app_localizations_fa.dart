@@ -2548,7 +2548,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get debit => 'برداشت';
 
   @override
-  String get accounts => 'حساب';
+  String get accounts => 'حساب ها';
 
   @override
   String get empty => 'خالی';

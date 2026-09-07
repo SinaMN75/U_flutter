@@ -273,7 +273,7 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
           const Spacer(),
           Text(
             _displayNumber(),
-            style: const TextStyle(color: Colors.white, fontSize: 20, letterSpacing: 2, fontFamily: "monospace"),
+            style: const TextStyle(color: Colors.white, fontSize: 20, fontFamily: "monospace"),
           ),
           const Spacer(),
           Row(
