@@ -65,21 +65,6 @@ flutter:
     - family: Vazir
       fonts:
         - asset: lib/assets/fonts/Vazir.ttf
-    - family: Samim
-      fonts:
-        - asset: lib/assets/fonts/Samim.ttf
-    - family: Shabnam
-      fonts:
-        - asset: lib/assets/fonts/Shabnam.ttf
-    - family: Sahel
-      fonts:
-        - asset: lib/assets/fonts/Sahel.ttf
-    - family: Yekan
-      fonts:
-        - asset: lib/assets/fonts/Yekan.ttf
-    - family: IranSansFaNum
-      fonts:
-        - asset: lib/assets/fonts/IranSansFaNum.ttf
 
   plugin:
     platforms:

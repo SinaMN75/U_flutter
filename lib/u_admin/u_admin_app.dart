@@ -60,7 +60,7 @@ abstract class UAdminTheme {
     String? font,
     double baseRadius = 8,
   }) {
-    final String family = font ?? UFonts.vazir.fontFamily!;
+    final String family = font ?? U.vazir.fontFamily!;
     return ThemeData(
       dividerTheme: DividerThemeData(color: grey.shade400, space: 0),
       cardTheme: CardThemeData(
