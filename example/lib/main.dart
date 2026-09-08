@@ -59,7 +59,7 @@ abstract class Core {
       scrolledUnderElevation: 0,
       centerTitle: true,
       iconTheme: IconThemeData(color: scheme.onSurface),
-      titleTextStyle: TextStyle(fontFamily: UFonts.vazir.fontFamily, color: scheme.onSurface, fontSize: 18, fontWeight: FontWeight.bold),
+      titleTextStyle: TextStyle(color: scheme.onSurface, fontSize: 18, fontWeight: FontWeight.bold),
     ),
     dividerTheme: DividerThemeData(color: scheme.outlineVariant, space: 0, thickness: 1),
     cardTheme: CardThemeData(
@@ -74,8 +74,6 @@ abstract class Core {
       ),
     ),
     colorScheme: scheme,
-    fontFamily: UFonts.vazir.fontFamily,
-    // Compact, uniform-weight type scale so titles are smaller and consistent across every screen.
     textTheme: TextTheme(
       displayLarge: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: scheme.onSurface),
       displayMedium: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: scheme.onSurface),
@@ -116,14 +114,14 @@ abstract class Core {
         borderSide: BorderSide(color: scheme.error, width: 0.7),
       ),
       outlineBorder: const BorderSide(color: Colors.transparent, width: 0.7),
-      labelStyle: TextStyle(fontFamily: UFonts.vazir.fontFamily, color: scheme.onSurfaceVariant, fontSize: 12),
+      labelStyle: TextStyle(color: scheme.onSurfaceVariant, fontSize: 12),
       filled: true,
       fillColor: scheme.surface,
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         foregroundColor: scheme.onPrimary,
-        textStyle: TextStyle(fontFamily: UFonts.vazir.fontFamily, color: scheme.primary, fontSize: 16, fontWeight: FontWeight.w600),
+        textStyle: TextStyle(color: scheme.primary, fontSize: 16, fontWeight: FontWeight.w600),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
         backgroundColor: scheme.primary,
         elevation: 0,

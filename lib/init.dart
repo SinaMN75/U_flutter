@@ -3,6 +3,8 @@ import "package:u/utilities.dart";
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 abstract class U {
+  static const TextStyle vazir = TextStyle(fontFamily: "Vazir", package: "u");
+
   static late String baseUrl;
   static late String apiKey;
 

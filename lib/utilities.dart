@@ -176,7 +176,6 @@ export "utils/u_constants.dart";
 export "utils/u_convert.dart";
 export "utils/u_encrypt.dart";
 export "utils/u_file.dart";
-export "utils/u_fonts.dart";
 export "utils/u_http_client.dart";
 export "utils/u_launch.dart";
 export "utils/u_loading.dart";

@@ -61,6 +61,10 @@ flutter:
     - lib/assets/fonts/
     - lib/assets/flags/
     - lib/assets/icons/
+  fonts:
+    - family: Vazir
+      fonts:
+        - asset: lib/assets/fonts/Vazir.ttf
 
   plugin:
     platforms:
