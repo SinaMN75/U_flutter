@@ -10,6 +10,7 @@ import "pages/formatters_page.dart";
 import "pages/inputs_page.dart";
 import "pages/layout_page.dart";
 import "pages/media_page.dart";
+import "pages/media_player_page.dart";
 import "pages/misc_page.dart";
 import "pages/navigation_page.dart";
 import "pages/screen_guard_page.dart";
@@ -39,6 +40,7 @@ final List<GalleryEntry> kEntries = <GalleryEntry>[
   GalleryEntry(title: "Utilities", subtitle: "Crypto, Persian, storage", icon: Icons.handyman, builder: () => const UtilsPage()),
   GalleryEntry(title: "Formatters", subtitle: "Money, numbers, Jalali", icon: Icons.calculate, builder: () => const FormattersPage()),
   GalleryEntry(title: "Extensions", subtitle: "Widget & value sugar", icon: Icons.extension, builder: () => const ExtensionsPage()),
+  GalleryEntry(title: "u_media", subtitle: "Native audio & video engine", icon: Icons.play_circle_fill, builder: () => const MediaPlayerPage()),
   GalleryEntry(title: "ScreenGuard", subtitle: "Native capture block", icon: Icons.screenshot_monitor, builder: () => const ScreenGuardPage()),
   GalleryEntry(title: "API services", subtitle: "UServices reference", icon: Icons.cloud, builder: () => const ApiReferencePage()),
   GalleryEntry(title: "Admin panel", subtitle: "u_admin reference", icon: Icons.admin_panel_settings, builder: () => const AdminReferencePage()),

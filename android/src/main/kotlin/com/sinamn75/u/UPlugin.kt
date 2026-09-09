@@ -1,5 +1,7 @@
 package com.sinamn75.u
 
+import com.sinamn75.u.media.UMediaHandler
+import com.sinamn75.u.media.UMediaSessionHandler
 import com.sinamn75.u.screenguard.ScreenGuardHandler
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -18,11 +20,20 @@ class UPlugin :
 
     // Native feature handlers, each owning its own method channel.
     private var screenGuard: ScreenGuardHandler? = null
+    private var media: UMediaHandler? = null
+    private var mediaSession: UMediaSessionHandler? = null
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "u")
         channel.setMethodCallHandler(this)
         screenGuard = ScreenGuardHandler(flutterPluginBinding.binaryMessenger)
+        media =
+            UMediaHandler(
+                flutterPluginBinding.applicationContext,
+                flutterPluginBinding.binaryMessenger,
+                flutterPluginBinding.textureRegistry,
+            )
+        mediaSession = UMediaSessionHandler(flutterPluginBinding.applicationContext, flutterPluginBinding.binaryMessenger)
     }
 
     override fun onMethodCall(
@@ -40,21 +51,29 @@ class UPlugin :
         channel.setMethodCallHandler(null)
         screenGuard?.dispose()
         screenGuard = null
+        media?.dispose()
+        media = null
+        mediaSession?.dispose()
+        mediaSession = null
     }
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
         screenGuard?.setActivity(binding.activity)
+        media?.setActivity(binding.activity)
     }
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
         screenGuard?.setActivity(binding.activity)
+        media?.setActivity(binding.activity)
     }
 
     override fun onDetachedFromActivityForConfigChanges() {
         screenGuard?.setActivity(null)
+        media?.setActivity(null)
     }
 
     override fun onDetachedFromActivity() {
         screenGuard?.setActivity(null)
+        media?.setActivity(null)
     }
 }

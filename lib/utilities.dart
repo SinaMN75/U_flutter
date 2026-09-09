@@ -29,7 +29,6 @@ export "package:shared_preferences/shared_preferences.dart";
 export "package:syncfusion_flutter_pdfviewer/pdfviewer.dart";
 export "package:u/utilities.dart";
 export "package:url_launcher/url_launcher.dart";
-export "package:video_player/video_player.dart";
 export "package:webview_all/webview_all.dart" hide X509Certificate;
 
 export "components/badges.dart";
@@ -118,6 +117,7 @@ export "iso8583/u_iso.dart";
 export "iso8583/u_iso_client.dart";
 export "iso8583/value_packager.dart";
 export "l10n/app_localizations.dart";
+export "media/u_media.dart";
 export "models//u_country_city.dart";
 export "models/u_business_category.dart";
 export "plugins/screen_guard.dart";

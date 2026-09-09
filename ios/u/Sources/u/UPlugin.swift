@@ -3,6 +3,7 @@ import UIKit
 
 public final class UPlugin: NSObject, FlutterPlugin {
     private var screenGuard: ScreenGuardHandler?
+    private var media: UMediaHandler?
 
     public static func register(
         with registrar: FlutterPluginRegistrar
@@ -15,6 +16,10 @@ public final class UPlugin: NSObject, FlutterPlugin {
 
         instance.screenGuard = ScreenGuardHandler(
             messenger: registrar.messenger()
+        )
+        instance.media = UMediaHandler(
+            messenger: registrar.messenger(),
+            registry: registrar.textures()
         )
         registrar.addMethodCallDelegate(
             instance,

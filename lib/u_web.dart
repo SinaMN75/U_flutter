@@ -1,4 +1,5 @@
 import "package:flutter_web_plugins/flutter_web_plugins.dart";
+import "package:u/media/web/u_media_web.dart";
 import "package:u/u_platform_interface.dart";
 import "package:web/web.dart" as web;
 
@@ -7,6 +8,7 @@ class UWeb extends UPlatform {
 
   static void registerWith(Registrar registrar) {
     UPlatform.instance = UWeb();
+    UMediaWeb.registerWith(registrar);
   }
 
   @override

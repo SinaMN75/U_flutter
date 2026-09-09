@@ -14,7 +14,10 @@ set(PLUGIN_NAME "u_plugin")
 # Any new source files that you add to the plugin should be added here.
 list(APPEND PLUGIN_SOURCES
   "u_plugin.cc"
+  "media/u_media.cc"
 )
+
+pkg_check_modules(GSTREAMER IMPORTED_TARGET gstreamer-1.0 gstreamer-app-1.0 gstreamer-video-1.0)
 
 # Define the plugin library target. Its name must not be changed (see comment
 # on PLUGIN_NAME above).
@@ -40,6 +43,10 @@ target_include_directories(${PLUGIN_NAME} INTERFACE
   "${CMAKE_CURRENT_SOURCE_DIR}/include")
 target_link_libraries(${PLUGIN_NAME} PRIVATE flutter)
 target_link_libraries(${PLUGIN_NAME} PRIVATE PkgConfig::GTK)
+if(GSTREAMER_FOUND)
+  target_link_libraries(${PLUGIN_NAME} PRIVATE PkgConfig::GSTREAMER)
+  target_compile_definitions(${PLUGIN_NAME} PRIVATE U_HAS_GSTREAMER)
+endif()
 
 # List of absolute paths to libraries that should be bundled with the plugin.
 # This list could contain prebuilt libraries, or libraries created by an

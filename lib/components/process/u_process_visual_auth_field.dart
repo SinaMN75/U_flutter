@@ -18,7 +18,7 @@ class UProcessVisualAuthField extends StatefulWidget {
 
 class _UProcessVisualAuthFieldState extends State<UProcessVisualAuthField> with SingleTickerProviderStateMixin {
   CameraController? _cameraController;
-  VideoPlayerController? _videoController;
+  UMediaController? _videoController;
   XFile? _recordedVideo;
 
   bool _isRecording = false;
@@ -50,10 +50,8 @@ class _UProcessVisualAuthFieldState extends State<UProcessVisualAuthField> with 
 
   Future<void> _loadInitialVideo(String url) async {
     try {
-      _videoController = VideoPlayerController.networkUrl(Uri.parse(url));
-      await _videoController!.initialize();
-      await _videoController!.setLooping(true);
-      await _videoController!.play();
+      _videoController = UMediaController(config: const UMediaConfig(repeat: URepeatMode.one));
+      await _videoController!.open(UMediaSource.network(url), autoPlay: true);
       if (mounted) setState(() {});
     } catch (e) {
       debugPrint("Error loading initial video: $e");
@@ -103,7 +101,7 @@ class _UProcessVisualAuthFieldState extends State<UProcessVisualAuthField> with 
       _recordingStartTime = DateTime.now();
 
       if (_videoController != null) {
-        await _videoController!.dispose();
+        _videoController!.dispose();
         _videoController = null;
       }
 
@@ -144,10 +142,8 @@ class _UProcessVisualAuthFieldState extends State<UProcessVisualAuthField> with 
 
       // Preview the just-recorded clip: it lives on the device (web uses a blob
       // URL), so play it from a file on native and from the URL on web.
-      _videoController = kIsWeb ? VideoPlayerController.networkUrl(Uri.parse(xFile.path)) : VideoPlayerController.file(File(xFile.path));
-      await _videoController!.initialize();
-      await _videoController!.setLooping(true);
-      await _videoController!.play();
+      _videoController = UMediaController(config: const UMediaConfig(repeat: URepeatMode.one));
+      await _videoController!.open(kIsWeb ? UMediaSource.network(xFile.path) : UMediaSource.file(xFile.path), autoPlay: true);
 
       if (mounted) setState(() {});
     } catch (e) {
@@ -157,7 +153,7 @@ class _UProcessVisualAuthFieldState extends State<UProcessVisualAuthField> with 
 
   Future<void> _reRecord() async {
     if (_videoController != null) {
-      await _videoController!.dispose();
+      _videoController!.dispose();
       _videoController = null;
     }
     setState(() {
@@ -227,16 +223,9 @@ class _UProcessVisualAuthFieldState extends State<UProcessVisualAuthField> with 
 
   Widget _buildMediaPreview() {
     final ColorScheme scheme = Theme.of(context).colorScheme;
-    if (_videoController != null && _videoController!.value.isInitialized) {
+    if (_videoController != null && _videoController!.value.hasVideo) {
       // Cover the square frame without stretching by preserving the video's aspect ratio.
-      return FittedBox(
-        fit: BoxFit.cover,
-        child: SizedBox(
-          width: _videoController!.value.size.width,
-          height: _videoController!.value.size.height,
-          child: VideoPlayer(_videoController!),
-        ),
-      );
+      return UVideoView(controller: _videoController!, fit: UMediaFit.cover);
     } else if (_cameraController != null && _cameraController!.value.isInitialized) {
       // Cover the square frame without stretching by preserving the camera's preview aspect ratio.
       return FittedBox(

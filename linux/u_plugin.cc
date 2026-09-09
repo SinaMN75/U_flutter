@@ -6,6 +6,7 @@
 
 #include <cstring>
 
+#include "media/u_media.h"
 #include "u_plugin_private.h"
 
 #define U_PLUGIN(obj) \
@@ -71,6 +72,8 @@ void u_plugin_register_with_registrar(FlPluginRegistrar* registrar) {
   fl_method_channel_set_method_call_handler(channel, method_call_cb,
                                             g_object_ref(plugin),
                                             g_object_unref);
+
+  u_media_register(registrar);
 
   g_object_unref(plugin);
 }

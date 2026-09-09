@@ -24,7 +24,6 @@ dependencies:
     sdk: flutter
 
   camera: ^0.12.1
-  video_player: ^2.14.0
   url_launcher: ^6.3.2
   shared_preferences: ^2.5.5
   webview_all: ^1.4.1
