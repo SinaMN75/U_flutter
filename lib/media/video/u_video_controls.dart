@@ -55,7 +55,9 @@ class _UVideoSeekBarState extends State<UVideoSeekBar> {
   @override
   Widget build(BuildContext context) {
     final Color accent = widget.accentColor ?? Theme.of(context).colorScheme.primary;
-    return ValueListenableBuilder<UMediaValue>(
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: ValueListenableBuilder<UMediaValue>(
       valueListenable: widget.controller,
       builder: (BuildContext context, UMediaValue value, Widget? child) {
         final int total = value.duration.inMilliseconds;
@@ -108,6 +110,7 @@ class _UVideoSeekBarState extends State<UVideoSeekBar> {
           ],
         );
       },
+      ),
     );
   }
 
@@ -201,7 +204,9 @@ class UVideoControls extends StatelessWidget {
     duration: const Duration(milliseconds: 200),
     child: IgnorePointer(
       ignoring: !visible,
-      child: DecoratedBox(
+      child: Directionality(
+        textDirection: TextDirection.ltr,
+        child: DecoratedBox(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
@@ -210,7 +215,8 @@ class UVideoControls extends StatelessWidget {
             stops: <double>[0, 0.28, 0.62, 1],
           ),
         ),
-        child: locked ? _lockedLayer(context) : _fullLayer(context),
+          child: locked ? _lockedLayer(context) : _fullLayer(context),
+        ),
       ),
     ),
   );
@@ -244,7 +250,10 @@ class UVideoControls extends StatelessWidget {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: UTextTitleSmall(title!, color: _onDark, fontWeight: FontWeight.w600, maxLines: 1),
+              child: Directionality(
+                textDirection: UBidi.directionOf(title!),
+                child: UTextTitleSmall(title!, color: _onDark, fontWeight: FontWeight.w600, maxLines: 1),
+              ),
             ),
           )
         else

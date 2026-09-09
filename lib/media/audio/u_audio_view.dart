@@ -92,9 +92,9 @@ class _UAudioPlayerViewState extends State<UAudioPlayerView> {
                     ),
             ),
             _titleBlock(context, metadata, scheme),
-            _seekBar(context, value, scheme),
-            _mainControls(context, value, scheme),
-            _secondaryControls(context, value, scheme),
+            Directionality(textDirection: TextDirection.ltr, child: _seekBar(context, value, scheme)),
+            Directionality(textDirection: TextDirection.ltr, child: _mainControls(context, value, scheme)),
+            Directionality(textDirection: TextDirection.ltr, child: _secondaryControls(context, value, scheme)),
             const SizedBox(height: 12),
           ],
         );

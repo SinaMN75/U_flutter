@@ -119,10 +119,13 @@ class UMiniPlayerBar extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 if (showProgress)
-                  LinearProgressIndicator(
-                    value: value.progress,
-                    minHeight: 2,
-                    backgroundColor: scheme.surfaceContainerHighest,
+                  Directionality(
+                    textDirection: TextDirection.ltr,
+                    child: LinearProgressIndicator(
+                      value: value.progress,
+                      minHeight: 2,
+                      backgroundColor: scheme.surfaceContainerHighest,
+                    ),
                   ),
                 SizedBox(
                   height: height,
@@ -141,20 +144,28 @@ class UMiniPlayerBar extends StatelessWidget {
                           ],
                         ),
                       ),
-                      IconButton(
-                        tooltip: U.s.previous,
-                        onPressed: controller.hasPrevious ? () => unawaited(controller.previous()) : null,
-                        icon: const Icon(Icons.skip_previous_rounded),
-                      ),
-                      IconButton(
-                        tooltip: value.isPlaying ? U.s.pause : U.s.play,
-                        onPressed: () => unawaited(controller.playPause()),
-                        icon: Icon(value.isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded, size: 30),
-                      ),
-                      IconButton(
-                        tooltip: U.s.next,
-                        onPressed: controller.hasNext ? () => unawaited(controller.next()) : null,
-                        icon: const Icon(Icons.skip_next_rounded),
+                      Directionality(
+                        textDirection: TextDirection.ltr,
+                        child: URow(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            IconButton(
+                              tooltip: U.s.previous,
+                              onPressed: controller.hasPrevious ? () => unawaited(controller.previous()) : null,
+                              icon: const Icon(Icons.skip_previous_rounded),
+                            ),
+                            IconButton(
+                              tooltip: value.isPlaying ? U.s.pause : U.s.play,
+                              onPressed: () => unawaited(controller.playPause()),
+                              icon: Icon(value.isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded, size: 30),
+                            ),
+                            IconButton(
+                              tooltip: U.s.next,
+                              onPressed: controller.hasNext ? () => unawaited(controller.next()) : null,
+                              icon: const Icon(Icons.skip_next_rounded),
+                            ),
+                          ],
+                        ),
                       ),
                       if (onClose != null)
                         IconButton(tooltip: U.s.close, onPressed: onClose, icon: const Icon(Icons.close_rounded, size: 18)),
