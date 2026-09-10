@@ -3,7 +3,6 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  syncfusion_pdfviewer_linux
   u
   url_launcher_linux
   webview_all_linux

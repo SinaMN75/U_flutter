@@ -368,6 +368,12 @@ abstract class AppLocalizations {
   /// **'Amounts in thousand toman'**
   String get amountsInThousandToman;
 
+  /// No description provided for @annotations.
+  ///
+  /// In en, this message translates to:
+  /// **'Annotations'**
+  String get annotations;
+
   /// No description provided for @apiKey.
   ///
   /// In en, this message translates to:
@@ -409,6 +415,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Apply discount'**
   String get applyDiscount;
+
+  /// No description provided for @applyRedactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply redactions'**
+  String get applyRedactions;
 
   /// No description provided for @approvalCode.
   ///
@@ -518,6 +530,12 @@ abstract class AppLocalizations {
   /// **'Are you sure you want to log out?'**
   String get areYouSureYouWantToLogOut;
 
+  /// No description provided for @arrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Arrow'**
+  String get arrow;
+
   /// No description provided for @askYourParkingOwnerOrSupportToResetYourPassword.
   ///
   /// In en, this message translates to:
@@ -565,6 +583,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Audio track'**
   String get audioTrack;
+
+  /// No description provided for @author.
+  ///
+  /// In en, this message translates to:
+  /// **'Author'**
+  String get author;
 
   /// No description provided for @auto.
   ///
@@ -1130,6 +1154,12 @@ abstract class AppLocalizations {
   /// **'Changes saved'**
   String get changesSaved;
 
+  /// No description provided for @chapter.
+  ///
+  /// In en, this message translates to:
+  /// **'Chapter'**
+  String get chapter;
+
   /// No description provided for @characters.
   ///
   /// In en, this message translates to:
@@ -1532,6 +1562,12 @@ abstract class AppLocalizations {
   /// **'Continue to exit'**
   String get continueToExit;
 
+  /// No description provided for @continuous.
+  ///
+  /// In en, this message translates to:
+  /// **'Continuous'**
+  String get continuous;
+
   /// No description provided for @contract.
   ///
   /// In en, this message translates to:
@@ -1621,6 +1657,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Correct the entry time'**
   String get correctTheEntryTime;
+
+  /// No description provided for @couldNotOpenTheDocument.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open the document'**
+  String get couldNotOpenTheDocument;
 
   /// No description provided for @count.
   ///
@@ -1790,6 +1832,12 @@ abstract class AppLocalizations {
   /// **'Crop Image'**
   String get cropImage;
 
+  /// No description provided for @cropMargins.
+  ///
+  /// In en, this message translates to:
+  /// **'Crop margins'**
+  String get cropMargins;
+
   /// No description provided for @cryptoTester.
   ///
   /// In en, this message translates to:
@@ -1813,6 +1861,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Current value'**
   String get currentValue;
+
+  /// No description provided for @custom.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom'**
+  String get custom;
 
   /// No description provided for @daily.
   ///
@@ -2048,6 +2102,12 @@ abstract class AppLocalizations {
   /// **'Document Info'**
   String get documentInfo;
 
+  /// No description provided for @documentPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Document password'**
+  String get documentPassword;
+
   /// No description provided for @done.
   ///
   /// In en, this message translates to:
@@ -2131,6 +2191,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Draft'**
   String get draft;
+
+  /// No description provided for @draw.
+  ///
+  /// In en, this message translates to:
+  /// **'Draw'**
+  String get draw;
 
   /// No description provided for @drivingLicense.
   ///
@@ -2216,6 +2282,12 @@ abstract class AppLocalizations {
   /// **'Electricity, water, gas'**
   String get electricityWaterGas;
 
+  /// No description provided for @ellipse.
+  ///
+  /// In en, this message translates to:
+  /// **'Ellipse'**
+  String get ellipse;
+
   /// No description provided for @email.
   ///
   /// In en, this message translates to:
@@ -2299,6 +2371,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter the driving license number to inquire'**
   String get enterTheDrivingLicenseNumberToInquire;
+
+  /// No description provided for @enterThePasswordToOpenThisDocument.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the password to open this document'**
+  String get enterThePasswordToOpenThisDocument;
 
   /// No description provided for @enterThePlateManually.
   ///
@@ -2407,6 +2485,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Equalizer unavailable'**
   String get equalizerUnavailable;
+
+  /// No description provided for @erase.
+  ///
+  /// In en, this message translates to:
+  /// **'Erase'**
+  String get erase;
 
   /// No description provided for @error.
   ///
@@ -2564,6 +2648,18 @@ abstract class AppLocalizations {
   /// **'Expiry reminder ({days} days before)'**
   String expiryReminderDaysDaysBefore(Object days);
 
+  /// No description provided for @exportImages.
+  ///
+  /// In en, this message translates to:
+  /// **'Export images'**
+  String get exportImages;
+
+  /// No description provided for @extract.
+  ///
+  /// In en, this message translates to:
+  /// **'Extract'**
+  String get extract;
+
   /// No description provided for @extraGuestCapacity.
   ///
   /// In en, this message translates to:
@@ -2599,6 +2695,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Female'**
   String get female;
+
+  /// No description provided for @field.
+  ///
+  /// In en, this message translates to:
+  /// **'Field'**
+  String get field;
 
   /// No description provided for @fileManager.
   ///
@@ -2720,6 +2822,12 @@ abstract class AppLocalizations {
   /// **'Flashlight'**
   String get flashlight;
 
+  /// No description provided for @flatten.
+  ///
+  /// In en, this message translates to:
+  /// **'Flatten'**
+  String get flatten;
+
   /// No description provided for @flipHorizontal.
   ///
   /// In en, this message translates to:
@@ -2785,6 +2893,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Forgot password'**
   String get forgotPassword;
+
+  /// No description provided for @forms.
+  ///
+  /// In en, this message translates to:
+  /// **'Forms'**
+  String get forms;
 
   /// No description provided for @frameRate.
   ///
@@ -3038,6 +3152,12 @@ abstract class AppLocalizations {
   /// **'Got it'**
   String get gotIt;
 
+  /// No description provided for @goToPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to page'**
+  String get goToPage;
+
   /// No description provided for @gradient.
   ///
   /// In en, this message translates to:
@@ -3049,6 +3169,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'gram'**
   String get gram;
+
+  /// No description provided for @grayscale.
+  ///
+  /// In en, this message translates to:
+  /// **'Grayscale'**
+  String get grayscale;
 
   /// No description provided for @grid.
   ///
@@ -3170,11 +3296,29 @@ abstract class AppLocalizations {
   /// **'Hide'**
   String get hide;
 
+  /// No description provided for @highContrast.
+  ///
+  /// In en, this message translates to:
+  /// **'High contrast'**
+  String get highContrast;
+
+  /// No description provided for @highlight.
+  ///
+  /// In en, this message translates to:
+  /// **'Highlight'**
+  String get highlight;
+
   /// No description provided for @highlightColor.
   ///
   /// In en, this message translates to:
   /// **'Highlight Color'**
   String get highlightColor;
+
+  /// No description provided for @highlights.
+  ///
+  /// In en, this message translates to:
+  /// **'Highlights'**
+  String get highlights;
 
   /// No description provided for @holdTheCustomersReceiptUpToTheCamera.
   ///
@@ -3193,6 +3337,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Holiday tariff (+{percent}%)'**
   String holidayTariffPercent(Object percent);
+
+  /// No description provided for @horizontal.
+  ///
+  /// In en, this message translates to:
+  /// **'Horizontal'**
+  String get horizontal;
 
   /// No description provided for @hostTerminal.
   ///
@@ -3734,6 +3884,12 @@ abstract class AppLocalizations {
   /// **'Leave masked to keep the current value'**
   String get leaveMaskedToKeepTheCurrentValue;
 
+  /// No description provided for @leftToRight.
+  ///
+  /// In en, this message translates to:
+  /// **'Left to right'**
+  String get leftToRight;
+
   /// No description provided for @legalEntityType.
   ///
   /// In en, this message translates to:
@@ -3787,6 +3943,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Light'**
   String get light;
+
+  /// No description provided for @lineSpacing.
+  ///
+  /// In en, this message translates to:
+  /// **'Line spacing'**
+  String get lineSpacing;
 
   /// No description provided for @link.
   ///
@@ -3938,6 +4100,12 @@ abstract class AppLocalizations {
   /// **'Management'**
   String get management;
 
+  /// No description provided for @margins.
+  ///
+  /// In en, this message translates to:
+  /// **'Margins'**
+  String get margins;
+
   /// No description provided for @markAllAsRead.
   ///
   /// In en, this message translates to:
@@ -4033,6 +4201,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Merchant title (store or business name)'**
   String get merchantTitleStoreOrBusinessName;
+
+  /// No description provided for @merge.
+  ///
+  /// In en, this message translates to:
+  /// **'Merge'**
+  String get merge;
 
   /// No description provided for @metaDescription.
   ///
@@ -4538,11 +4712,23 @@ abstract class AppLocalizations {
   /// **'No response from host'**
   String get noResponseFromHost;
 
+  /// No description provided for @noResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No results'**
+  String get noResults;
+
   /// No description provided for @noReviewsYet.
   ///
   /// In en, this message translates to:
   /// **'No reviews yet'**
   String get noReviewsYet;
+
+  /// No description provided for @normal.
+  ///
+  /// In en, this message translates to:
+  /// **'Normal'**
+  String get normal;
 
   /// No description provided for @normalDayRate.
   ///
@@ -4591,6 +4777,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not assigned'**
   String get notAssigned;
+
+  /// No description provided for @note.
+  ///
+  /// In en, this message translates to:
+  /// **'Note'**
+  String get note;
 
   /// No description provided for @notes.
   ///
@@ -4670,6 +4862,12 @@ abstract class AppLocalizations {
   /// **'Number of nights'**
   String get numberOfNights;
 
+  /// No description provided for @nUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Pages per sheet'**
+  String get nUp;
+
   /// No description provided for @occupancy.
   ///
   /// In en, this message translates to:
@@ -4736,6 +4934,12 @@ abstract class AppLocalizations {
   /// **'Only Exceptions'**
   String get onlyExceptions;
 
+  /// No description provided for @opacity.
+  ///
+  /// In en, this message translates to:
+  /// **'Opacity'**
+  String get opacity;
+
   /// No description provided for @open.
   ///
   /// In en, this message translates to:
@@ -4795,6 +4999,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Operator discount'**
   String get operatorDiscount;
+
+  /// No description provided for @optimize.
+  ///
+  /// In en, this message translates to:
+  /// **'Optimize'**
+  String get optimize;
 
   /// No description provided for @options.
   ///
@@ -4861,6 +5071,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'OTP Tools'**
   String get otpTools;
+
+  /// No description provided for @outline.
+  ///
+  /// In en, this message translates to:
+  /// **'Outline'**
+  String get outline;
 
   /// No description provided for @output.
   ///
@@ -4933,6 +5149,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Padding'**
   String get padding;
+
+  /// No description provided for @page.
+  ///
+  /// In en, this message translates to:
+  /// **'Page'**
+  String get page;
+
+  /// No description provided for @paged.
+  ///
+  /// In en, this message translates to:
+  /// **'Paged'**
+  String get paged;
+
+  /// No description provided for @pageDirection.
+  ///
+  /// In en, this message translates to:
+  /// **'Page direction'**
+  String get pageDirection;
+
+  /// No description provided for @pageNumbers.
+  ///
+  /// In en, this message translates to:
+  /// **'Page numbers'**
+  String get pageNumbers;
+
+  /// No description provided for @pages.
+  ///
+  /// In en, this message translates to:
+  /// **'Pages'**
+  String get pages;
 
   /// No description provided for @paid.
   ///
@@ -5510,6 +5756,12 @@ abstract class AppLocalizations {
   /// **'Price per Night'**
   String get pricePerNight;
 
+  /// No description provided for @print.
+  ///
+  /// In en, this message translates to:
+  /// **'Print'**
+  String get print;
+
   /// No description provided for @printDate.
   ///
   /// In en, this message translates to:
@@ -5672,6 +5924,12 @@ abstract class AppLocalizations {
   /// **'Quote'**
   String get quote;
 
+  /// No description provided for @readingMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading mode'**
+  String get readingMode;
+
   /// No description provided for @readingTime.
   ///
   /// In en, this message translates to:
@@ -5785,6 +6043,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Recorded in the shift cash report'**
   String get recordedInTheShiftCashReport;
+
+  /// No description provided for @rectangle.
+  ///
+  /// In en, this message translates to:
+  /// **'Rectangle'**
+  String get rectangle;
+
+  /// No description provided for @redact.
+  ///
+  /// In en, this message translates to:
+  /// **'Redact'**
+  String get redact;
 
   /// No description provided for @redo.
   ///
@@ -5947,6 +6217,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Remove Row'**
   String get removeRow;
+
+  /// No description provided for @removesTheHiddenTextPermanently.
+  ///
+  /// In en, this message translates to:
+  /// **'Removes the hidden text permanently'**
+  String get removesTheHiddenTextPermanently;
 
   /// No description provided for @rename.
   ///
@@ -6194,6 +6470,12 @@ abstract class AppLocalizations {
   /// **'Rich Text Editor'**
   String get richTextEditor;
 
+  /// No description provided for @rightToLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Right to left'**
+  String get rightToLeft;
+
   /// No description provided for @roles.
   ///
   /// In en, this message translates to:
@@ -6283,6 +6565,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save changes'**
   String get saveChanges;
+
+  /// No description provided for @saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved'**
+  String get saved;
 
   /// No description provided for @savedSuccessfully.
   ///
@@ -6404,6 +6692,12 @@ abstract class AppLocalizations {
   /// **'Search plate'**
   String get searchPlate;
 
+  /// No description provided for @searchResults.
+  ///
+  /// In en, this message translates to:
+  /// **'Search results'**
+  String get searchResults;
+
   /// No description provided for @searchVehicle.
   ///
   /// In en, this message translates to:
@@ -6445,6 +6739,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select a {item}'**
   String selectAItem(Object item);
+
+  /// No description provided for @selectAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Select all'**
+  String get selectAll;
 
   /// No description provided for @selectAmount.
   ///
@@ -6542,6 +6842,12 @@ abstract class AppLocalizations {
   /// **'Send Request'**
   String get sendRequest;
 
+  /// No description provided for @sepia.
+  ///
+  /// In en, this message translates to:
+  /// **'Sepia'**
+  String get sepia;
+
   /// No description provided for @serial.
   ///
   /// In en, this message translates to:
@@ -6632,6 +6938,12 @@ abstract class AppLocalizations {
   /// **'Show'**
   String get show;
 
+  /// No description provided for @showAnnotations.
+  ///
+  /// In en, this message translates to:
+  /// **'Show annotations'**
+  String get showAnnotations;
+
   /// No description provided for @showAQrCodeOrSendAnSmsLink.
   ///
   /// In en, this message translates to:
@@ -6685,6 +6997,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'SIM Card Serial'**
   String get simCardSerial;
+
+  /// No description provided for @singlePage.
+  ///
+  /// In en, this message translates to:
+  /// **'Single page'**
+  String get singlePage;
 
   /// No description provided for @size.
   ///
@@ -6757,6 +7075,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Spending by Type'**
   String get spendingByType;
+
+  /// No description provided for @split.
+  ///
+  /// In en, this message translates to:
+  /// **'Split'**
+  String get split;
 
   /// No description provided for @spotNumber.
   ///
@@ -6871,6 +7195,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Strikethrough'**
   String get strikethrough;
+
+  /// No description provided for @strikeThrough.
+  ///
+  /// In en, this message translates to:
+  /// **'Strike through'**
+  String get strikeThrough;
 
   /// No description provided for @strokeWidth.
   ///
@@ -7214,6 +7544,12 @@ abstract class AppLocalizations {
   /// **'Terms and conditions'**
   String get termsAndConditions;
 
+  /// No description provided for @textBox.
+  ///
+  /// In en, this message translates to:
+  /// **'Text box'**
+  String get textBox;
+
   /// No description provided for @textColor.
   ///
   /// In en, this message translates to:
@@ -7382,6 +7718,12 @@ abstract class AppLocalizations {
   /// **'The video must be at least 4 seconds'**
   String get theVideoMustBeAtLeast4Seconds;
 
+  /// No description provided for @thickness.
+  ///
+  /// In en, this message translates to:
+  /// **'Thickness'**
+  String get thickness;
+
   /// No description provided for @thisFieldIsInvalid.
   ///
   /// In en, this message translates to:
@@ -7399,6 +7741,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This folder is empty'**
   String get thisFolderIsEmpty;
+
+  /// No description provided for @thisPageCouldNotBeRendered.
+  ///
+  /// In en, this message translates to:
+  /// **'This page could not be rendered'**
+  String get thisPageCouldNotBeRendered;
 
   /// No description provided for @thisPlateHasAnActiveSubscriptionOnlyAnExitReceiptIsIssued.
   ///
@@ -7429,6 +7777,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This vehicle is already inside the parking'**
   String get thisVehicleIsAlreadyInsideTheParking;
+
+  /// No description provided for @thumbnails.
+  ///
+  /// In en, this message translates to:
+  /// **'Thumbnails'**
+  String get thumbnails;
 
   /// No description provided for @time.
   ///
@@ -7483,6 +7837,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Toman'**
   String get toman;
+
+  /// No description provided for @tools.
+  ///
+  /// In en, this message translates to:
+  /// **'Tools'**
+  String get tools;
 
   /// No description provided for @topMerchants.
   ///
@@ -8174,6 +8534,12 @@ abstract class AppLocalizations {
   /// **'Warnings'**
   String get warnings;
 
+  /// No description provided for @watermark.
+  ///
+  /// In en, this message translates to:
+  /// **'Watermark'**
+  String get watermark;
+
   /// No description provided for @weak.
   ///
   /// In en, this message translates to:
@@ -8395,6 +8761,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Zip Code'**
   String get zipCode;
+
+  /// No description provided for @zoomIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Zoom in'**
+  String get zoomIn;
+
+  /// No description provided for @zoomOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Zoom out'**
+  String get zoomOut;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

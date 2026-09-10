@@ -151,6 +151,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get amountsInThousandToman => 'Amounts in thousand toman';
 
   @override
+  String get annotations => 'Annotations';
+
+  @override
   String get apiKey => 'API Key';
 
   @override
@@ -170,6 +173,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get applyDiscount => 'Apply discount';
+
+  @override
+  String get applyRedactions => 'Apply redactions';
 
   @override
   String get approvalCode => 'Approval code';
@@ -228,6 +234,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get areYouSureYouWantToLogOut => 'Are you sure you want to log out?';
 
   @override
+  String get arrow => 'Arrow';
+
+  @override
   String get askYourParkingOwnerOrSupportToResetYourPassword => 'Ask your parking owner or support to reset your password.';
 
   @override
@@ -250,6 +259,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get audioTrack => 'Audio track';
+
+  @override
+  String get author => 'Author';
 
   @override
   String get auto => 'Auto';
@@ -538,6 +550,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get changesSaved => 'Changes saved';
 
   @override
+  String get chapter => 'Chapter';
+
+  @override
   String get characters => 'characters';
 
   @override
@@ -739,6 +754,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get continueToExit => 'Continue to exit';
 
   @override
+  String get continuous => 'Continuous';
+
+  @override
   String get contract => 'Contract';
 
   @override
@@ -782,6 +800,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get correctTheEntryTime => 'Correct the entry time';
+
+  @override
+  String get couldNotOpenTheDocument => 'Could not open the document';
 
   @override
   String get count => 'Count';
@@ -890,6 +911,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cropImage => 'Crop Image';
 
   @override
+  String get cropMargins => 'Crop margins';
+
+  @override
   String get cryptoTester => 'Crypto Tester';
 
   @override
@@ -900,6 +924,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get currentValue => 'Current value';
+
+  @override
+  String get custom => 'Custom';
 
   @override
   String get daily => 'Daily';
@@ -1025,6 +1052,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get documentInfo => 'Document Info';
 
   @override
+  String get documentPassword => 'Document password';
+
+  @override
   String get done => 'Done';
 
   @override
@@ -1065,6 +1095,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get draft => 'Draft';
+
+  @override
+  String get draw => 'Draw';
 
   @override
   String get drivingLicense => 'Driving license';
@@ -1113,6 +1146,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get electricityWaterGas => 'Electricity, water, gas';
 
   @override
+  String get ellipse => 'Ellipse';
+
+  @override
   String get email => 'Email';
 
   @override
@@ -1153,6 +1189,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get enterTheDrivingLicenseNumberToInquire => 'Enter the driving license number to inquire';
+
+  @override
+  String get enterThePasswordToOpenThisDocument => 'Enter the password to open this document';
 
   @override
   String get enterThePlateManually => 'Enter the plate manually';
@@ -1208,6 +1247,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get equalizerUnavailable => 'Equalizer unavailable';
+
+  @override
+  String get erase => 'Erase';
 
   @override
   String get error => 'Error';
@@ -1294,6 +1336,12 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get exportImages => 'Export images';
+
+  @override
+  String get extract => 'Extract';
+
+  @override
   String get extraGuestCapacity => 'Extra guest capacity';
 
   @override
@@ -1310,6 +1358,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get female => 'Female';
+
+  @override
+  String get field => 'Field';
 
   @override
   String get fileManager => 'File Manager';
@@ -1378,6 +1429,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get flashlight => 'Flashlight';
 
   @override
+  String get flatten => 'Flatten';
+
+  @override
   String get flipHorizontal => 'Flip horizontal';
 
   @override
@@ -1409,6 +1463,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get forgotPassword => 'Forgot password';
+
+  @override
+  String get forms => 'Forms';
 
   @override
   String get frameRate => 'Frame rate';
@@ -1539,10 +1596,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gotIt => 'Got it';
 
   @override
+  String get goToPage => 'Go to page';
+
+  @override
   String get gradient => 'Gradient';
 
   @override
   String get gram => 'gram';
+
+  @override
+  String get grayscale => 'Grayscale';
 
   @override
   String get grid => 'Grid';
@@ -1605,7 +1668,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hide => 'Hide';
 
   @override
+  String get highContrast => 'High contrast';
+
+  @override
+  String get highlight => 'Highlight';
+
+  @override
   String get highlightColor => 'Highlight Color';
+
+  @override
+  String get highlights => 'Highlights';
 
   @override
   String get holdTheCustomersReceiptUpToTheCamera => 'Hold the customer\'s receipt up to the camera';
@@ -1617,6 +1689,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String holidayTariffPercent(Object percent) {
     return 'Holiday tariff (+$percent%)';
   }
+
+  @override
+  String get horizontal => 'Horizontal';
 
   @override
   String get hostTerminal => 'Host terminal';
@@ -1891,6 +1966,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get leaveMaskedToKeepTheCurrentValue => 'Leave masked to keep the current value';
 
   @override
+  String get leftToRight => 'Left to right';
+
+  @override
   String get legalEntityType => 'Legal Entity Type';
 
   @override
@@ -1916,6 +1994,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get light => 'Light';
+
+  @override
+  String get lineSpacing => 'Line spacing';
 
   @override
   String get link => 'Link';
@@ -1993,6 +2074,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get management => 'Management';
 
   @override
+  String get margins => 'Margins';
+
+  @override
   String get markAllAsRead => 'Mark all as read';
 
   @override
@@ -2039,6 +2123,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get merchantTitleStoreOrBusinessName => 'Merchant title (store or business name)';
+
+  @override
+  String get merge => 'Merge';
 
   @override
   String get metaDescription => 'Meta Description';
@@ -2295,7 +2382,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noResponseFromHost => 'No response from host';
 
   @override
+  String get noResults => 'No results';
+
+  @override
   String get noReviewsYet => 'No reviews yet';
+
+  @override
+  String get normal => 'Normal';
 
   @override
   String get normalDayRate => 'Normal day rate';
@@ -2320,6 +2413,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notAssigned => 'Not assigned';
+
+  @override
+  String get note => 'Note';
 
   @override
   String get notes => 'Notes';
@@ -2361,6 +2457,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get numberOfNights => 'Number of nights';
 
   @override
+  String get nUp => 'Pages per sheet';
+
+  @override
   String get occupancy => 'Occupancy';
 
   @override
@@ -2394,6 +2493,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onlyExceptions => 'Only Exceptions';
 
   @override
+  String get opacity => 'Opacity';
+
+  @override
   String get open => 'Open';
 
   @override
@@ -2422,6 +2524,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get operatorDiscount => 'Operator discount';
+
+  @override
+  String get optimize => 'Optimize';
 
   @override
   String get options => 'Options:';
@@ -2455,6 +2560,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get otpTools => 'OTP Tools';
+
+  @override
+  String get outline => 'Outline';
 
   @override
   String get output => 'Output';
@@ -2491,6 +2599,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get padding => 'Padding';
+
+  @override
+  String get page => 'Page';
+
+  @override
+  String get paged => 'Paged';
+
+  @override
+  String get pageDirection => 'Page direction';
+
+  @override
+  String get pageNumbers => 'Page numbers';
+
+  @override
+  String get pages => 'Pages';
 
   @override
   String get paid => 'Paid';
@@ -2785,6 +2908,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pricePerNight => 'Price per Night';
 
   @override
+  String get print => 'Print';
+
+  @override
   String get printDate => 'Print date';
 
   @override
@@ -2866,6 +2992,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get quote => 'Quote';
 
   @override
+  String get readingMode => 'Reading mode';
+
+  @override
   String get readingTime => 'Reading Time';
 
   @override
@@ -2923,6 +3052,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get recordedInTheShiftCashReport => 'Recorded in the shift cash report';
+
+  @override
+  String get rectangle => 'Rectangle';
+
+  @override
+  String get redact => 'Redact';
 
   @override
   String get redo => 'Redo';
@@ -3004,6 +3139,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get removeRow => 'Remove Row';
+
+  @override
+  String get removesTheHiddenTextPermanently => 'Removes the hidden text permanently';
 
   @override
   String get rename => 'Rename';
@@ -3131,6 +3269,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get richTextEditor => 'Rich Text Editor';
 
   @override
+  String get rightToLeft => 'Right to left';
+
+  @override
   String get roles => 'Roles';
 
   @override
@@ -3174,6 +3315,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get saveChanges => 'Save changes';
+
+  @override
+  String get saved => 'Saved';
 
   @override
   String get savedSuccessfully => 'Saved successfully';
@@ -3236,6 +3380,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get searchPlate => 'Search plate';
 
   @override
+  String get searchResults => 'Search results';
+
+  @override
   String get searchVehicle => 'Search vehicle';
 
   @override
@@ -3257,6 +3404,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String selectAItem(Object item) {
     return 'Select a $item';
   }
+
+  @override
+  String get selectAll => 'Select all';
 
   @override
   String get selectAmount => 'Select amount';
@@ -3309,6 +3459,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sendRequest => 'Send Request';
 
   @override
+  String get sepia => 'Sepia';
+
+  @override
   String get serial => 'Serial';
 
   @override
@@ -3354,6 +3507,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get show => 'Show';
 
   @override
+  String get showAnnotations => 'Show annotations';
+
+  @override
   String get showAQrCodeOrSendAnSmsLink => 'Show a QR code or send an SMS link';
 
   @override
@@ -3379,6 +3535,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get simCardSerial => 'SIM Card Serial';
+
+  @override
+  String get singlePage => 'Single page';
 
   @override
   String get size => 'Size';
@@ -3415,6 +3574,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get spendingByType => 'Spending by Type';
+
+  @override
+  String get split => 'Split';
 
   @override
   String get spotNumber => 'Spot number';
@@ -3474,6 +3636,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get strikethrough => 'Strikethrough';
+
+  @override
+  String get strikeThrough => 'Strike through';
 
   @override
   String get strokeWidth => 'Stroke width';
@@ -3647,6 +3812,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get termsAndConditions => 'Terms and conditions';
 
   @override
+  String get textBox => 'Text box';
+
+  @override
   String get textColor => 'Text Color';
 
   @override
@@ -3740,6 +3908,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get theVideoMustBeAtLeast4Seconds => 'The video must be at least 4 seconds';
 
   @override
+  String get thickness => 'Thickness';
+
+  @override
   String get thisFieldIsInvalid => 'This field is invalid.';
 
   @override
@@ -3747,6 +3918,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get thisFolderIsEmpty => 'This folder is empty';
+
+  @override
+  String get thisPageCouldNotBeRendered => 'This page could not be rendered';
 
   @override
   String get thisPlateHasAnActiveSubscriptionOnlyAnExitReceiptIsIssued => 'This plate has an active subscription. Only an exit receipt is issued.';
@@ -3762,6 +3936,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get thisVehicleIsAlreadyInsideTheParking => 'This vehicle is already inside the parking';
+
+  @override
+  String get thumbnails => 'Thumbnails';
 
   @override
   String get time => 'Time';
@@ -3789,6 +3966,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get toman => 'Toman';
+
+  @override
+  String get tools => 'Tools';
 
   @override
   String get topMerchants => 'Top Merchants';
@@ -4139,6 +4319,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get warnings => 'Warnings';
 
   @override
+  String get watermark => 'Watermark';
+
+  @override
   String get weak => 'Weak';
 
   @override
@@ -4250,4 +4433,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get zipCode => 'Zip Code';
+
+  @override
+  String get zoomIn => 'Zoom in';
+
+  @override
+  String get zoomOut => 'Zoom out';
 }
