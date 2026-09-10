@@ -95,7 +95,11 @@ object UMediaMapper {
                 val drmBuilder = MediaItem.DrmConfiguration.Builder(uuid)
                 (drm["licenseUrl"] as? String)?.let { drmBuilder.setLicenseUri(it) }
                 @Suppress("UNCHECKED_CAST")
-                (drm["headers"] as? Map<String, String>)?.let { drmBuilder.setLicenseRequestHeaders(it) }
+                (drm["headers"] as? Map<String, String>)?.let {
+                    drmBuilder.setLicenseRequestHeaders(
+                        it
+                    )
+                }
                 (drm["multiSession"] as? Boolean)?.let { drmBuilder.setMultiSession(it) }
                 builder.setDrmConfiguration(drmBuilder.build())
             }
@@ -112,11 +116,19 @@ object UMediaMapper {
             "network" -> Uri.parse(source["url"] as? String ?: "")
             "file" -> Uri.fromFile(File(source["path"] as? String ?: ""))
             "asset" -> {
-                val key = FlutterInjector.instance().flutterLoader().getLookupKeyForAsset(source["asset"] as? String ?: "")
+                val key = FlutterInjector.instance().flutterLoader()
+                    .getLookupKeyForAsset(source["asset"] as? String ?: "")
                 Uri.parse("asset:///$key")
             }
+
             "content" -> Uri.parse(source["uri"] as? String ?: "")
-            "bytes" -> Uri.fromFile(writeTempFile(context, source["bytes"] as? ByteArray ?: ByteArray(0)))
+            "bytes" -> Uri.fromFile(
+                writeTempFile(
+                    context,
+                    source["bytes"] as? ByteArray ?: ByteArray(0)
+                )
+            )
+
             else -> Uri.EMPTY
         }
 
@@ -166,7 +178,8 @@ object UMediaMapper {
                         "bitrate" to format.bitrate.takeIf { it != Format.NO_VALUE },
                         "width" to format.width.takeIf { it != Format.NO_VALUE },
                         "height" to format.height.takeIf { it != Format.NO_VALUE },
-                        "frameRate" to format.frameRate.takeIf { it != Format.NO_VALUE.toFloat() }?.toDouble(),
+                        "frameRate" to format.frameRate.takeIf { it != Format.NO_VALUE.toFloat() }
+                            ?.toDouble(),
                         "channels" to format.channelCount.takeIf { it != Format.NO_VALUE },
                         "sampleRate" to format.sampleRate.takeIf { it != Format.NO_VALUE },
                         "isDefault" to ((format.selectionFlags and C.SELECTION_FLAG_DEFAULT) != 0),
@@ -246,8 +259,12 @@ class UMediaEffects {
             bands.add(
                 mapOf(
                     "index" to index,
-                    "centerFrequencyHz" to runCatching { current.getCenterFreq(index.toShort()) / 1000 }.getOrDefault(0),
-                    "gainDb" to runCatching { current.getBandLevel(index.toShort()).toDouble() / 100.0 }.getOrDefault(0.0),
+                    "centerFrequencyHz" to runCatching { current.getCenterFreq(index.toShort()) / 1000 }.getOrDefault(
+                        0
+                    ),
+                    "gainDb" to runCatching {
+                        current.getBandLevel(index.toShort()).toDouble() / 100.0
+                    }.getOrDefault(0.0),
                     "minDb" to minDb,
                     "maxDb" to maxDb,
                 ),
@@ -266,9 +283,15 @@ class UMediaEffects {
             "bands" to bands,
             "presets" to presets,
             "preset" to preset,
-            "bassBoost" to (runCatching { (bassBoost?.roundedStrength ?: 0).toDouble() / 1000.0 }.getOrDefault(0.0)),
-            "virtualizer" to (runCatching { (virtualizer?.roundedStrength ?: 0).toDouble() / 1000.0 }.getOrDefault(0.0)),
-            "loudness" to (runCatching { (loudness?.targetGain ?: 0f).toDouble() / 1000.0 }.getOrDefault(0.0)),
+            "bassBoost" to (runCatching {
+                (bassBoost?.roundedStrength ?: 0).toDouble() / 1000.0
+            }.getOrDefault(0.0)),
+            "virtualizer" to (runCatching {
+                (virtualizer?.roundedStrength ?: 0).toDouble() / 1000.0
+            }.getOrDefault(0.0)),
+            "loudness" to (runCatching {
+                (loudness?.targetGain ?: 0f).toDouble() / 1000.0
+            }.getOrDefault(0.0)),
         )
     }
 
@@ -343,7 +366,8 @@ class UMediaSpectrum(
     private val samples = FloatArray(FFT_SIZE)
     private val real = DoubleArray(FFT_SIZE)
     private val imaginary = DoubleArray(FFT_SIZE)
-    private val window = DoubleArray(FFT_SIZE) { 0.5 - 0.5 * cos(2.0 * Math.PI * it / (FFT_SIZE - 1)) }
+    private val window =
+        DoubleArray(FFT_SIZE) { 0.5 - 0.5 * cos(2.0 * Math.PI * it / (FFT_SIZE - 1)) }
 
     private var writeIndex = 0
     private var channelCount = 2
@@ -480,7 +504,8 @@ object UMediaPip {
     ): Boolean {
         val current = activity ?: return false
         if (!isSupported(current)) return false
-        val safeRatio = if (aspectRatio.isFinite() && aspectRatio > 0.42 && aspectRatio < 2.38) aspectRatio else 16.0 / 9.0
+        val safeRatio =
+            if (aspectRatio.isFinite() && aspectRatio > 0.42 && aspectRatio < 2.38) aspectRatio else 16.0 / 9.0
         val numerator = (safeRatio * 1000).toInt()
         val params =
             PictureInPictureParams
@@ -516,7 +541,8 @@ class UMediaService : MediaSessionService() {
         fun current(): MediaSession? = sessions.values.lastOrNull()
     }
 
-    override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession? = current()
+    override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession? =
+        current()
 
     override fun onTaskRemoved(rootIntent: Intent?) {
         val session = current()
@@ -551,7 +577,8 @@ class UMediaPlayer(
             .setConnectTimeoutMs(intConfig("connectTimeoutMs", 15000))
             .setReadTimeoutMs(intConfig("connectTimeoutMs", 15000))
 
-    private val surfaceProducer: TextureRegistry.SurfaceProducer? = if (isVideo) textureRegistry.createSurfaceProducer() else null
+    private val surfaceProducer: TextureRegistry.SurfaceProducer? =
+        if (isVideo) textureRegistry.createSurfaceProducer() else null
 
     private val renderersFactory =
         object : DefaultRenderersFactory(context) {
@@ -564,14 +591,25 @@ class UMediaPlayer(
                     .Builder(context)
                     .setEnableFloatOutput(enableFloatOutput)
                     .setEnableAudioTrackPlaybackParams(enableAudioTrackPlaybackParams)
-                    .setAudioProcessorChain(DefaultAudioSink.DefaultAudioProcessorChain(TeeAudioProcessor(spectrum)))
+                    .setAudioProcessorChain(
+                        DefaultAudioSink.DefaultAudioProcessorChain(
+                            TeeAudioProcessor(spectrum)
+                        )
+                    )
                     .build()
         }.setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER)
 
     private val player: ExoPlayer =
         ExoPlayer
             .Builder(context, renderersFactory)
-            .setMediaSourceFactory(DefaultMediaSourceFactory(DefaultDataSource.Factory(context, httpFactory)))
+            .setMediaSourceFactory(
+                DefaultMediaSourceFactory(
+                    DefaultDataSource.Factory(
+                        context,
+                        httpFactory
+                    )
+                )
+            )
             .setLoadControl(
                 DefaultLoadControl
                     .Builder()
@@ -730,7 +768,8 @@ class UMediaPlayer(
         speed: Float,
         preservePitch: Boolean,
     ) {
-        player.playbackParameters = if (preservePitch) PlaybackParameters(speed) else PlaybackParameters(speed, speed)
+        player.playbackParameters =
+            if (preservePitch) PlaybackParameters(speed) else PlaybackParameters(speed, speed)
     }
 
     fun setVolume(volume: Float) {
@@ -832,7 +871,8 @@ class UMediaPlayer(
         val retriever = MediaMetadataRetriever()
         return try {
             retriever.setDataSource(uri, HashMap())
-            val bitmap: Bitmap = retriever.getFrameAtTime(player.currentPosition * 1000L) ?: return null
+            val bitmap: Bitmap =
+                retriever.getFrameAtTime(player.currentPosition * 1000L) ?: return null
             val stream = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
             bitmap.recycle()
@@ -848,7 +888,13 @@ class UMediaPlayer(
         val position = player.currentPosition
         if (position == lastSentPosition && !player.isPlaying) return
         lastSentPosition = position
-        send(mapOf("event" to "position", "positionMs" to position, "bufferedMs" to player.bufferedPosition))
+        send(
+            mapOf(
+                "event" to "position",
+                "positionMs" to position,
+                "bufferedMs" to player.bufferedPosition
+            )
+        )
     }
 
     override fun onPlaybackStateChanged(playbackState: Int) {
@@ -868,12 +914,19 @@ class UMediaPlayer(
                         "tracks" to UMediaMapper.tracksToList(player.currentTracks),
                     ),
                 )
-                send(mapOf("event" to "state", "state" to if (player.isPlaying) "playing" else "paused"))
+                send(
+                    mapOf(
+                        "event" to "state",
+                        "state" to if (player.isPlaying) "playing" else "paused"
+                    )
+                )
             }
+
             Player.STATE_ENDED -> {
                 handler.removeCallbacks(positionTicker)
                 send(mapOf("event" to "completed"))
             }
+
             Player.STATE_IDLE -> send(mapOf("event" to "state", "state" to "idle"))
         }
     }
@@ -920,18 +973,22 @@ class UMediaPlayer(
         when (error.errorCode) {
             PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_FAILED,
             PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_TIMEOUT,
-            -> "network"
+                -> "network"
+
             PlaybackException.ERROR_CODE_IO_FILE_NOT_FOUND -> "notFound"
             PlaybackException.ERROR_CODE_IO_NO_PERMISSION -> "permission"
             PlaybackException.ERROR_CODE_DECODING_FORMAT_UNSUPPORTED,
             PlaybackException.ERROR_CODE_PARSING_CONTAINER_UNSUPPORTED,
-            -> "unsupportedFormat"
+                -> "unsupportedFormat"
+
             PlaybackException.ERROR_CODE_DECODER_INIT_FAILED,
             PlaybackException.ERROR_CODE_DECODING_FAILED,
-            -> "decoder"
+                -> "decoder"
+
             PlaybackException.ERROR_CODE_DRM_UNSPECIFIED,
             PlaybackException.ERROR_CODE_DRM_LICENSE_ACQUISITION_FAILED,
-            -> "drm"
+                -> "drm"
+
             else -> "unknown"
         }
 
@@ -989,7 +1046,8 @@ class UMediaHandler(
             val kind = call.argument<String>("kind") ?: "video"
             val config = call.argument<Map<String, Any?>>("config") ?: emptyMap()
             val id = nextId++
-            players[id] = UMediaPlayer(id, context, messenger, textureRegistry, config, kind == "video")
+            players[id] =
+                UMediaPlayer(id, context, messenger, textureRegistry, config, kind == "video")
             result.success(id)
             return
         }
@@ -1023,32 +1081,41 @@ class UMediaHandler(
         when (call.method) {
             "open" -> {
                 player.open(
-                    call.argument<Map<String, Any?>>("source") ?: emptyMap(),
+                    call.argument<Map<String, Any?>>("source") ?: mapOf<String, Any?>(),
                     call.argument<Boolean>("autoPlay") ?: false,
                     call.argument<Number>("resumeMs")?.toLong(),
                 )
                 result.success(null)
             }
+
             "play" -> {
                 player.play()
                 result.success(null)
             }
+
             "pause" -> {
                 player.pause()
                 result.success(null)
             }
+
             "stop" -> {
                 player.stop()
                 result.success(null)
             }
+
             "seek" -> {
-                player.seek(call.argument<Number>("positionMs")?.toLong() ?: 0L, call.argument<Boolean>("precise") ?: true)
+                player.seek(
+                    call.argument<Number>("positionMs")?.toLong() ?: 0L,
+                    call.argument<Boolean>("precise") ?: true
+                )
                 result.success(null)
             }
+
             "stepFrame" -> {
                 player.stepFrame(call.argument<Int>("frames") ?: 1)
                 result.success(null)
             }
+
             "setSpeed" -> {
                 player.setSpeed(
                     call.argument<Number>("speed")?.toFloat() ?: 1f,
@@ -1056,69 +1123,97 @@ class UMediaHandler(
                 )
                 result.success(null)
             }
+
             "setVolume" -> {
                 player.setVolume(call.argument<Number>("volume")?.toFloat() ?: 1f)
                 result.success(null)
             }
+
             "setMuted" -> {
                 player.setMuted(call.argument<Boolean>("muted") ?: false)
                 result.success(null)
             }
+
             "setRepeat" -> {
                 player.setRepeat(call.argument<String>("mode"))
                 result.success(null)
             }
+
             "selectTrack" -> {
-                player.selectTrack(call.argument<String>("trackId") ?: "", call.argument<String>("type"))
+                player.selectTrack(
+                    call.argument<String>("trackId") ?: "",
+                    call.argument<String>("type")
+                )
                 result.success(null)
             }
+
             "setAutoQuality" -> {
                 player.setAutoQuality()
                 result.success(null)
             }
+
             "setMaxHeight" -> {
                 player.setMaxHeight(call.argument<Int>("height") ?: 0)
                 result.success(null)
             }
+
             "getEqualizer" -> result.success(player.describeEqualizer())
             "setEqualizerEnabled" -> {
                 player.setEqualizerEnabled(call.argument<Boolean>("enabled") ?: false)
                 result.success(null)
             }
+
             "setEqualizerBand" -> {
-                player.setEqualizerBand(call.argument<Int>("index") ?: 0, call.argument<Number>("gainDb")?.toDouble() ?: 0.0)
+                player.setEqualizerBand(
+                    call.argument<Int>("index") ?: 0,
+                    call.argument<Number>("gainDb")?.toDouble() ?: 0.0
+                )
                 result.success(null)
             }
+
             "setEqualizerPreset" -> {
                 player.setEqualizerPreset(call.argument<String>("preset") ?: "")
                 result.success(null)
             }
+
             "setBassBoost" -> {
                 player.setBassBoost(call.argument<Number>("strength")?.toDouble() ?: 0.0)
                 result.success(null)
             }
+
             "setVirtualizer" -> {
                 player.setVirtualizer(call.argument<Number>("strength")?.toDouble() ?: 0.0)
                 result.success(null)
             }
+
             "setLoudness" -> {
                 player.setLoudness(call.argument<Number>("gainDb")?.toDouble() ?: 0.0)
                 result.success(null)
             }
+
             "startVisualizer" -> {
                 player.startVisualizer(call.argument<Int>("bands") ?: 48)
                 result.success(null)
             }
+
             "stopVisualizer" -> {
                 player.stopVisualizer()
                 result.success(null)
             }
+
             "setAudioDelay" -> result.success(null)
-            "enterPip" -> result.success(player.enterPip(activity, call.argument<Number>("aspectRatio")?.toDouble() ?: (16.0 / 9.0)))
+            "enterPip" -> result.success(
+                player.enterPip(
+                    activity,
+                    call.argument<Number>("aspectRatio")?.toDouble() ?: (16.0 / 9.0)
+                )
+            )
+
             "exitPip" -> {
                 UMediaPip.exit(activity)
                 result.success(null)
             }
+
             "screenshot" -> result.success(player.screenshot())
             "setNotification" -> result.success(null)
             "dispose" -> {
@@ -1126,6 +1221,7 @@ class UMediaHandler(
                 players.remove(id)
                 result.success(null)
             }
+
             else -> result.notImplemented()
         }
     }
@@ -1150,7 +1246,10 @@ class UMediaSessionHandler(
                 receiverContext: Context?,
                 intent: Intent?,
             ) {
-                if (intent?.action == AudioManager.ACTION_AUDIO_BECOMING_NOISY) channel.invokeMethod("onBecomingNoisy", null)
+                if (intent?.action == AudioManager.ACTION_AUDIO_BECOMING_NOISY) channel.invokeMethod(
+                    "onBecomingNoisy",
+                    null
+                )
             }
         }
 
@@ -1167,17 +1266,22 @@ class UMediaSessionHandler(
                 registerNoisy()
                 result.success(true)
             }
+
             "abandonFocus" -> {
                 unregisterNoisy()
                 result.success(null)
             }
+
             else -> result.notImplemented()
         }
     }
 
     private fun registerNoisy() {
         if (noisyRegistered) return
-        context.registerReceiver(noisyReceiver, IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY))
+        context.registerReceiver(
+            noisyReceiver,
+            IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY)
+        )
         noisyRegistered = true
     }
 
