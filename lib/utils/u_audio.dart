@@ -117,3 +117,80 @@ abstract final class UAudio {
     _instance = null;
   }
 }
+
+/// Fire-and-forget sound effects. Runs on a small pool of headless players that
+/// mix with other audio, so playing a click never pauses the user's music.
+abstract final class USound {
+  static const UMediaConfig _config = UMediaConfig(
+    focusPolicy: UAudioFocusPolicy.mixWithOthers,
+    wakeLock: false,
+    minBufferMs: 500,
+    maxBufferMs: 4000,
+    bufferForPlaybackMs: 200,
+    bufferForPlaybackAfterRebufferMs: 400,
+    positionUpdateInterval: Duration(seconds: 1),
+  );
+
+  static final List<UMediaController> _pool = <UMediaController>[];
+  static final Map<String, UMediaSource> _cache = <String, UMediaSource>{};
+  static int _cursor = 0;
+
+  static bool enabled = true;
+  static double masterVolume = 1;
+  static int poolSize = 4;
+
+  static UMediaSource resolve(Object input) {
+    if (input is UMediaSource) return input;
+    final String value = input.toString();
+    final UMediaSource? cached = _cache[value];
+    if (cached != null) return cached;
+    final UMediaSource source = UAudio.source(value);
+    _cache[value] = source;
+    return source;
+  }
+
+  static UMediaController _acquire() {
+    if (_pool.length < poolSize) {
+      final UMediaController controller = UMediaController(kind: UMediaKind.audio, config: _config);
+      _pool.add(controller);
+      return controller;
+    }
+    final UMediaController controller = _pool[_cursor % _pool.length];
+    _cursor++;
+    return controller;
+  }
+
+  /// Warms up the decoder for each asset so the first play has no latency.
+  static Future<void> preload(List<Object> sources) async {
+    if (sources.isEmpty) return;
+    for (final Object input in sources) {
+      final UMediaSource source = resolve(input);
+      final UMediaController controller = _acquire();
+      await controller.open(source);
+      await controller.pause();
+    }
+  }
+
+  static Future<void> play(Object input, {double volume = 1, bool interrupt = false}) async {
+    if (!enabled) return;
+    final UMediaController controller = _acquire();
+    if (interrupt) await controller.stop();
+    await controller.setVolume((volume * masterVolume).clamp(0, 1).toDouble());
+    await controller.open(resolve(input), autoPlay: true);
+  }
+
+  static Future<void> stopAll() async {
+    for (final UMediaController controller in _pool) {
+      await controller.stop();
+    }
+  }
+
+  static Future<void> dispose() async {
+    for (final UMediaController controller in _pool) {
+      controller.dispose();
+    }
+    _pool.clear();
+    _cache.clear();
+    _cursor = 0;
+  }
+}

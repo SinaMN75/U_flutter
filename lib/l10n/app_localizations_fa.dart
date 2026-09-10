@@ -1303,6 +1303,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get fatherName => 'نام پدر';
 
   @override
+  String get favorites => 'علاقه‌مندی‌ها';
+
+  @override
   String get fee => 'کارمزد';
 
   @override

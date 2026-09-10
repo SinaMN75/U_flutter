@@ -2582,6 +2582,12 @@ abstract class AppLocalizations {
   /// **'Father Name'**
   String get fatherName;
 
+  /// No description provided for @favorites.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorites'**
+  String get favorites;
+
   /// No description provided for @fee.
   ///
   /// In en, this message translates to:

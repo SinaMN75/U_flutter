@@ -1303,6 +1303,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fatherName => 'Father Name';
 
   @override
+  String get favorites => 'Favorites';
+
+  @override
   String get fee => 'Fee';
 
   @override

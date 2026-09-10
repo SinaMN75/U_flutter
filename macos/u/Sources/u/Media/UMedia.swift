@@ -8,6 +8,155 @@ import AVFoundation
     import FlutterMacOS
 #endif
 
+public enum UMediaMapper {
+    public static func makeAsset(source: [String: Any]) -> AVURLAsset? {
+        guard let url = resolveUrl(source: source) else { return nil }
+        var options: [String: Any] = [:]
+        if let headers = source["headers"] as? [String: String], !headers.isEmpty {
+            options["AVURLAssetHTTPHeaderFieldsKey"] = headers
+        }
+        return AVURLAsset(url: url, options: options)
+    }
+
+    private static func resolveUrl(source: [String: Any]) -> URL? {
+        switch source["kind"] as? String {
+        case "network":
+            guard let value = source["url"] as? String else { return nil }
+            return URL(string: value)
+        case "file":
+            guard let value = source["path"] as? String else { return nil }
+            return URL(fileURLWithPath: value)
+        case "content":
+            guard let value = source["uri"] as? String else { return nil }
+            return URL(string: value)
+        case "asset":
+            guard let value = source["asset"] as? String else { return nil }
+            return assetUrl(for: value)
+        case "bytes":
+            guard let data = (source["bytes"] as? FlutterStandardTypedData)?.data else { return nil }
+            return writeTemporary(data: data)
+        default:
+            return nil
+        }
+    }
+
+    private static func assetUrl(for asset: String) -> URL? {
+        #if canImport(Flutter)
+            let key = FlutterDartProject.lookupKey(forAsset: asset)
+        #else
+            let key = FlutterDartProject.lookupKey(forAsset: asset)
+        #endif
+        guard let path = Bundle.main.path(forResource: key, ofType: nil) else { return nil }
+        return URL(fileURLWithPath: path)
+    }
+
+    private static func writeTemporary(data: Data) -> URL? {
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent("u_media", isDirectory: true)
+        try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        let file = directory.appendingPathComponent("src_\(data.count)_\(data.hashValue).bin")
+        if !FileManager.default.fileExists(atPath: file.path) {
+            guard (try? data.write(to: file)) != nil else { return nil }
+        }
+        return file
+    }
+
+    public static func tracks(for item: AVPlayerItem) -> [[String: Any?]] {
+        var result: [[String: Any?]] = []
+
+        for (index, track) in item.tracks.enumerated() where track.assetTrack?.mediaType == .video {
+            guard let assetTrack = track.assetTrack else { continue }
+            let size = assetTrack.naturalSize.applying(assetTrack.preferredTransform)
+            result.append([
+                "id": "video:\(index)",
+                "type": "video",
+                "label": nil,
+                "language": assetTrack.languageCode,
+                "codec": nil,
+                "bitrate": Int(assetTrack.estimatedDataRate),
+                "width": Int(abs(size.width)),
+                "height": Int(abs(size.height)),
+                "frameRate": Double(assetTrack.nominalFrameRate),
+                "isSelected": track.isEnabled,
+                "isDefault": index == 0,
+                "isForced": false,
+                "isAuto": false,
+            ])
+        }
+
+        result.append(contentsOf: selectionTracks(for: item, characteristic: .audible, type: "audio"))
+        result.append(contentsOf: selectionTracks(for: item, characteristic: .legible, type: "subtitle"))
+        return result
+    }
+
+    private static func selectionTracks(
+        for item: AVPlayerItem,
+        characteristic: AVMediaCharacteristic,
+        type: String
+    ) -> [[String: Any?]] {
+        guard let group = item.asset.mediaSelectionGroup(forMediaCharacteristic: characteristic) else { return [] }
+        let selected = item.currentMediaSelection.selectedMediaOption(in: group)
+        return group.options.enumerated().map { index, option in
+            [
+                "id": "\(type):\(index)",
+                "type": type,
+                "label": option.displayName,
+                "language": option.extendedLanguageTag ?? option.locale?.identifier,
+                "codec": nil,
+                "isSelected": option == selected,
+                "isDefault": index == 0,
+                "isForced": option.hasMediaCharacteristic(.containsOnlyForcedSubtitles),
+                "isAuto": false,
+            ]
+        }
+    }
+
+    public static func select(trackId: String, type: String?, in item: AVPlayerItem) {
+        let parts = trackId.split(separator: ":")
+        guard parts.count == 2, let index = Int(parts[1]) else { return }
+        let kind = String(parts[0])
+
+        if kind == "video" {
+            for (position, track) in item.tracks.enumerated() where track.assetTrack?.mediaType == .video {
+                track.isEnabled = position == index
+            }
+            return
+        }
+
+        let characteristic: AVMediaCharacteristic = kind == "audio" ? .audible : .legible
+        guard let group = item.asset.mediaSelectionGroup(forMediaCharacteristic: characteristic),
+              index >= 0, index < group.options.count
+        else { return }
+        item.select(group.options[index], in: group)
+    }
+
+    public static func errorCode(for error: NSError?) -> String {
+        guard let error else { return "unknown" }
+        switch error.code {
+        case NSURLErrorTimedOut:
+            return "timeout"
+        case NSURLErrorNotConnectedToInternet, NSURLErrorNetworkConnectionLost, NSURLErrorCannotConnectToHost:
+            return "network"
+        case NSURLErrorFileDoesNotExist, NSURLErrorBadURL:
+            return "notFound"
+        case NSURLErrorNoPermissionsToReadFile:
+            return "permission"
+        default:
+            break
+        }
+        if error.domain == AVFoundationErrorDomain {
+            switch error.code {
+            case AVError.Code.decoderNotFound.rawValue, AVError.Code.failedToLoadMediaData.rawValue:
+                return "decoder"
+            case AVError.Code.fileFormatNotRecognized.rawValue:
+                return "unsupportedFormat"
+            default:
+                return "decoder"
+            }
+        }
+        return "unknown"
+    }
+}
+
 public final class UMediaPlayer: NSObject, FlutterTexture, FlutterStreamHandler {
     private let playerId: Int
     private let registry: FlutterTextureRegistry
@@ -463,5 +612,145 @@ public final class UMediaPlayer: NSObject, FlutterTexture, FlutterStreamHandler 
         #endif
         if textureId >= 0 { registry.unregisterTexture(textureId) }
         textureId = -1
+    }
+}
+
+public final class UMediaHandler: NSObject {
+    private let channel: FlutterMethodChannel
+    private let sessionChannel: FlutterMethodChannel
+    private let messenger: FlutterBinaryMessenger
+    private let registry: FlutterTextureRegistry
+
+    private var players: [Int: UMediaPlayer] = [:]
+    private var nextId = 1
+
+    public init(messenger: FlutterBinaryMessenger, registry: FlutterTextureRegistry) {
+        self.messenger = messenger
+        self.registry = registry
+        channel = FlutterMethodChannel(name: "u/media", binaryMessenger: messenger)
+        sessionChannel = FlutterMethodChannel(name: "u/media_session", binaryMessenger: messenger)
+        super.init()
+
+        channel.setMethodCallHandler { [weak self] call, result in
+            self?.handle(call: call, result: result)
+        }
+        sessionChannel.setMethodCallHandler { call, result in
+            switch call.method {
+            case "requestFocus":
+                result(true)
+            case "abandonFocus":
+                result(nil)
+            default:
+                result(FlutterMethodNotImplemented)
+            }
+        }
+    }
+
+    private func handle(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        if call.method == "isAvailable" {
+            result(true)
+            return
+        }
+
+        let arguments = call.arguments as? [String: Any] ?? [:]
+
+        if call.method == "create" {
+            let kind = arguments["kind"] as? String ?? "video"
+            let config = arguments["config"] as? [String: Any] ?? [:]
+            let id = nextId
+            nextId += 1
+            players[id] = UMediaPlayer(
+                playerId: id,
+                messenger: messenger,
+                registry: registry,
+                config: config,
+                isVideo: kind == "video"
+            )
+            result(id)
+            return
+        }
+
+        guard let id = arguments["id"] as? Int else {
+            result(FlutterError(code: "ERROR_UNSPECIFIED", message: "Missing player id", details: nil))
+            return
+        }
+        guard let player = players[id] else {
+            result(FlutterError(code: "ERROR_NOT_FOUND", message: "Player \(id) not found", details: nil))
+            return
+        }
+
+        switch call.method {
+        case "open":
+            player.open(
+                source: arguments["source"] as? [String: Any] ?? [:],
+                autoPlay: arguments["autoPlay"] as? Bool ?? false,
+                resumeMs: arguments["resumeMs"] as? Int
+            )
+            result(nil)
+        case "play":
+            player.play()
+            result(nil)
+        case "pause":
+            player.pause()
+            result(nil)
+        case "stop":
+            player.stop()
+            result(nil)
+        case "seek":
+            player.seek(positionMs: arguments["positionMs"] as? Int ?? 0, precise: arguments["precise"] as? Bool ?? true)
+            result(nil)
+        case "stepFrame":
+            player.stepFrame(frames: arguments["frames"] as? Int ?? 1)
+            result(nil)
+        case "setSpeed":
+            player.setSpeed(arguments["speed"] as? Double ?? 1.0, preservePitch: arguments["preservePitch"] as? Bool ?? true)
+            result(nil)
+        case "setVolume":
+            player.setVolume(arguments["volume"] as? Double ?? 1.0)
+            result(nil)
+        case "setMuted":
+            player.setMuted(arguments["muted"] as? Bool ?? false)
+            result(nil)
+        case "setRepeat":
+            player.setRepeat(arguments["mode"] as? String)
+            result(nil)
+        case "selectTrack":
+            player.selectTrack(trackId: arguments["trackId"] as? String ?? "", type: arguments["type"] as? String)
+            result(nil)
+        case "setAutoQuality":
+            player.setMaxHeight(0)
+            result(nil)
+        case "setMaxHeight":
+            player.setMaxHeight(arguments["height"] as? Int ?? 0)
+            result(nil)
+        case "setAudioDelay":
+            result(nil)
+        case "enterPip":
+            result(player.enterPip(aspectRatio: arguments["aspectRatio"] as? Double ?? 16.0 / 9.0))
+        case "exitPip":
+            player.exitPip()
+            result(nil)
+        case "screenshot":
+            if let data = player.screenshot() {
+                result(FlutterStandardTypedData(bytes: data))
+            } else {
+                result(nil)
+            }
+        case "setNotification":
+            result(nil)
+        case "dispose":
+            player.dispose()
+            players.removeValue(forKey: id)
+            result(nil)
+        default:
+            result(FlutterMethodNotImplemented)
+        }
+    }
+
+    public func dispose() {
+        channel.setMethodCallHandler(nil)
+        sessionChannel.setMethodCallHandler(nil)
+        players.values.forEach { $0.dispose() }
+        players.removeAll()
     }
 }

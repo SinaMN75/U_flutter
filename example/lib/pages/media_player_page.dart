@@ -41,7 +41,10 @@ class MediaPlayerPage extends StatefulWidget {
 class _MediaPlayerPageState extends State<MediaPlayerPage> {
   final UMediaController _video = UMediaController(config: const UMediaConfig(autoPlay: false, subtitlesEnabled: true));
   final UVideoSettings _settings = UVideoSettings();
-  final List<UVideoMarker> _markers = <UVideoMarker>[const UVideoMarker(start: Duration(seconds: 20), end: Duration(seconds: 35), label: "Intro", skippable: true), const UVideoMarker(start: Duration(seconds: 90), label: "Chapter 2")];
+  final List<UVideoMarker> _markers = <UVideoMarker>[
+    const UVideoMarker(start: Duration(seconds: 20), end: Duration(seconds: 35), label: "Intro", skippable: true),
+    const UVideoMarker(start: Duration(seconds: 90), label: "Chapter 2"),
+  ];
 
   String _parseOutput = "";
   String _tagOutput = "";
@@ -50,14 +53,7 @@ class _MediaPlayerPageState extends State<MediaPlayerPage> {
   @override
   void initState() {
     super.initState();
-    unawaited(
-      _video.open(
-        UMediaSource.network(
-          _mp4Url,
-          metadata: const UMediaMetadata(title: "Big Buck Bunny", artist: "Blender Foundation"),
-        ),
-      ),
-    );
+    unawaited(_video.open(UMediaSource.network(_mp4Url, metadata: const UMediaMetadata(title: "Big Buck Bunny", artist: "Blender Foundation"))));
   }
 
   @override
@@ -74,7 +70,23 @@ class _MediaPlayerPageState extends State<MediaPlayerPage> {
         "The native-first media engine: one controller for audio and video on all six platforms. "
         "Media3 on Android, AVFoundation on Apple, Media Foundation on Windows, GStreamer on Linux and "
         "HTMLVideoElement on web — containers, manifests, tags and subtitles are all parsed in Dart.",
-    sections: <Widget>[_videoSection(), _fullscreenSection(), _subtitleSection(), _gestureSection(), _viewSection(), _audioSection(), _nowPlayingSection(), _queueSection(), _equalizerSection(), _visualizerSection(), _librarySection(), _downloadSection(), _tagSection(), _parserSection(), _sizeSection()],
+    sections: <Widget>[
+      _videoSection(),
+      _fullscreenSection(),
+      _subtitleSection(),
+      _gestureSection(),
+      _viewSection(),
+      _audioSection(),
+      _nowPlayingSection(),
+      _queueSection(),
+      _equalizerSection(),
+      _visualizerSection(),
+      _librarySection(),
+      _downloadSection(),
+      _tagSection(),
+      _parserSection(),
+      _sizeSection(),
+    ],
   );
 
   DemoSection _videoSection() => DemoSection(
@@ -98,8 +110,7 @@ UVideo(
 
   DemoSection _fullscreenSection() => DemoSection(
     title: "Fullscreen & sources",
-    description:
-        "Fullscreen reuses the same controller, so position, tracks and subtitles survive the transition. "
+    description: "Fullscreen reuses the same controller, so position, tracks and subtitles survive the transition. "
         "HLS resolves through the Dart manifest layer, which is what makes it work on Windows and macOS too.",
     code: r'''
 await UVideoFullscreen.open(context, controller: controller);
@@ -108,11 +119,7 @@ await controller.open(UMediaSource.network(hlsUrl));''',
       spacing: 8,
       runSpacing: 8,
       children: <Widget>[
-        UButton(
-          type: UButtonType.outlined,
-          title: "Fullscreen",
-          onTap: () => unawaited(UVideoFullscreen.open(context, controller: _video, settings: _settings, title: "Big Buck Bunny", markers: _markers)),
-        ),
+        UButton(type: UButtonType.outlined, title: "Fullscreen", onTap: () => unawaited(UVideoFullscreen.open(context, controller: _video, settings: _settings, title: "Big Buck Bunny", markers: _markers))),
         UButton(type: UButtonType.outlined, title: "Load MP4", onTap: () => unawaited(_video.open(UMediaSource.network(_mp4Url), autoPlay: true))),
         UButton(type: UButtonType.outlined, title: "Load HLS", onTap: () => unawaited(_video.open(UMediaSource.network(_hlsUrl), autoPlay: true))),
         UButton(type: UButtonType.outlined, title: "Picture in picture", onTap: () => unawaited(_video.enterPip())),
@@ -173,8 +180,7 @@ await controller.loadSubtitle(UExternalSubtitle(uri: path, language: "fa"));''',
 
   DemoSection _viewSection() => DemoSection(
     title: "Aspect, rotation & colour filters",
-    description:
-        "Fit modes, rotation and mirroring are view-level. The colour filters are a single ColorFilter matrix, "
+    description: "Fit modes, rotation and mirroring are view-level. The colour filters are a single ColorFilter matrix, "
         "so brightness, contrast, saturation and hue cost nothing at runtime and work on every platform.",
     code: r'''
 settings.fit = UMediaFit.cover;
@@ -188,27 +194,9 @@ settings.hue = 25;''',
         UButton(type: UButtonType.outlined, title: "Cycle fit", onTap: _settings.cycleFit),
         UButton(type: UButtonType.outlined, title: "Rotate 90°", onTap: _settings.rotateQuarter),
         UButton(type: UButtonType.outlined, title: "Mirror", onTap: () => _settings.mirrored = !_settings.mirrored),
-        UButton(
-          type: UButtonType.outlined,
-          title: "Warm",
-          onTap: () => _settings
-            ..saturation = 1.4
-            ..hue = 20,
-        ),
-        UButton(
-          type: UButtonType.outlined,
-          title: "Cool",
-          onTap: () => _settings
-            ..saturation = 0.9
-            ..hue = -25,
-        ),
-        UButton(
-          type: UButtonType.outlined,
-          title: "Reset",
-          onTap: () => _settings
-            ..resetFilters()
-            ..resetView(),
-        ),
+        UButton(type: UButtonType.outlined, title: "Warm", onTap: () => _settings..saturation = 1.4..hue = 20),
+        UButton(type: UButtonType.outlined, title: "Cool", onTap: () => _settings..saturation = 0.9..hue = -25),
+        UButton(type: UButtonType.outlined, title: "Reset", onTap: () => _settings..resetFilters()..resetView()),
         UButton(type: UButtonType.outlined, title: "Stats overlay", onTap: () => _settings.showStats = !_settings.showStats),
       ],
     ),
@@ -216,8 +204,7 @@ settings.hue = 25;''',
 
   DemoSection _audioSection() => DemoSection(
     title: "UAudio — one line to play",
-    description:
-        "The music facade wraps the same engine with a music-tuned config: bigger buffers, background playback, "
+    description: "The music facade wraps the same engine with a music-tuned config: bigger buffers, background playback, "
         "no wake lock. The mini bar below is a drop-in widget.",
     code: r'''
 await UAudio.play("https://example.com/song.mp3");
@@ -231,86 +218,56 @@ UAudio.next(); UAudio.setRepeat(URepeatMode.all);''',
           spacing: 8,
           runSpacing: 8,
           children: <Widget>[
-            UButton(
-              type: UButtonType.outlined,
-              title: "Play track",
-              onTap: () => unawaited(
-                UAudio.play(
-                  UMediaSource.network(
-                    _audioUrl,
-                    metadata: const UMediaMetadata(title: "SoundHelix Song 1", artist: "T. Schürger"),
-                  ),
-                ),
-              ),
-            ),
+            UButton(type: UButtonType.outlined, title: "Play track", onTap: () => unawaited(UAudio.play(UMediaSource.network(_audioUrl, metadata: const UMediaMetadata(title: "SoundHelix Song 1", artist: "T. Schürger"))))),
             UButton(type: UButtonType.outlined, title: "Play queue", onTap: () => unawaited(_playQueue())),
             UButton(type: UButtonType.outlined, title: "Pause", onTap: () => unawaited(UAudio.pause())),
             UButton(type: UButtonType.outlined, title: "Next", onTap: () => unawaited(UAudio.next())),
             UButton(type: UButtonType.outlined, title: "Shuffle", onTap: () => unawaited(UAudio.toggleShuffle())),
           ],
         ),
-        UMiniPlayerBar(
-          controller: UAudio.controller,
-          onTap: () => UNavigator.bottomSheet(const SizedBox(height: 620, child: UAudioPlayerView())),
-        ),
+        UMiniPlayerBar(controller: UAudio.controller, onTap: () => UNavigator.bottomSheet(const SizedBox(height: 620, child: UMusicPlayer()))),
       ],
     ),
   );
 
   DemoSection _nowPlayingSection() => DemoSection(
     title: "Now playing screen",
-    description:
-        "Artwork, seek bar, transport, speed, sleep timer, equalizer and synced lyrics. "
+    description: "Artwork, seek bar, transport, speed, sleep timer, equalizer and synced lyrics. "
         "Lyrics come from an embedded USLT tag, a sidecar .lrc file, or plain text.",
     code: r'''
-UNavigator.bottomSheet(const UAudioPlayerView());
+UNavigator.bottomSheet(const UMusicPlayer());
 
 final ULyrics lyrics = await ULyrics.load(source);
 ULyricsView(controller: controller, lyrics: lyrics);''',
-    child: UButton(
-      type: UButtonType.elevated,
-      title: "Open now playing",
-      onTap: () => UNavigator.bottomSheet(const SizedBox(height: 620, child: UAudioPlayerView())),
-    ),
+    child: UButton(type: UButtonType.elevated, title: "Open now playing", onTap: () => UNavigator.bottomSheet(const SizedBox(height: 620, child: UMusicPlayer()))),
   );
 
   DemoSection _queueSection() => DemoSection(
     title: "Queue, shuffle & repeat",
-    description:
-        "The queue is reorderable, shuffle keeps a stable order so turning it off restores the original sequence, "
+    description: "The queue is reorderable, shuffle keeps a stable order so turning it off restores the original sequence, "
         "and gapless preloads the next item only in the last few seconds.",
     code: r'''
 UNavigator.bottomSheet(UMediaQueueSheet(controller: UAudio.controller));
 await UAudio.playNext(source);
 await UAudio.move(0, 2);''',
-    child: UButton(
-      type: UButtonType.outlined,
-      title: "Open queue",
-      onTap: () => UNavigator.bottomSheet(UMediaQueueSheet(controller: UAudio.controller)),
-    ),
+    child: UButton(type: UButtonType.outlined, title: "Open queue", onTap: () => UNavigator.bottomSheet(UMediaQueueSheet(controller: UAudio.controller))),
   );
 
   DemoSection _equalizerSection() => DemoSection(
     title: "Equalizer & audio effects",
-    description:
-        "Native equalizer bands, bass boost, virtualizer and loudness. Android reports the real device bands; "
+    description: "Native equalizer bands, bass boost, virtualizer and loudness. Android reports the real device bands; "
         "platforms without an effects API report unavailable rather than faking it.",
     code: r'''
 final UEqualizer equalizer = UEqualizer(UAudio.controller);
 final UEqualizerState state = await equalizer.read();
 await equalizer.setBand(0, 6.0);
 await equalizer.setPreset("Rock");''',
-    child: UButton(
-      type: UButtonType.outlined,
-      title: "Open equalizer",
-      onTap: () => UNavigator.bottomSheet(UEqualizerSheet(controller: UAudio.controller)),
-    ),
+    child: UButton(type: UButtonType.outlined, title: "Open equalizer", onTap: () => UNavigator.bottomSheet(UEqualizerSheet(controller: UAudio.controller))),
   );
 
   DemoSection _visualizerSection() => DemoSection(
     title: "Spectrum visualizer",
-    description:
-        "PCM is tapped straight out of the Media3 audio pipeline and FFT'd natively, so this needs no "
+    description: "PCM is tapped straight out of the Media3 audio pipeline and FFT'd natively, so this needs no "
         "microphone permission — the platform Visualizer API would have required one.",
     code: r'''
 UVisualizer(controller: UAudio.controller, style: UVisualizerStyle.mirroredBars)''',
@@ -319,8 +276,7 @@ UVisualizer(controller: UAudio.controller, style: UVisualizerStyle.mirroredBars)
 
   DemoSection _librarySection() => DemoSection(
     title: "Music library",
-    description:
-        "Scans folders, reads tags with targeted file reads, and keeps a compact index. "
+    description: "Scans folders, reads tags with targeted file reads, and keeps a compact index. "
         "Search is Persian-normalized, so «کتاب» matches «كتاب» and diacritics are ignored.",
     code: r'''
 await UMediaLibrary.instance.load();
@@ -332,7 +288,11 @@ final List<UTrackRecord> hits = UMediaLibrary.instance.search("شجریان");''
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: 8,
         children: <Widget>[
-          UTextBodySmall(_libraryScanning ? "Scanning ${UMediaLibrary.instance.scannedCount} / ${UMediaLibrary.instance.scanTotal}" : "${UMediaLibrary.instance.count} tracks · ${UMediaLibrary.instance.albums.length} albums · ${UMediaLibrary.instance.artists.length} artists"),
+          UTextBodySmall(
+            _libraryScanning
+                ? "Scanning ${UMediaLibrary.instance.scannedCount} / ${UMediaLibrary.instance.scanTotal}"
+                : "${UMediaLibrary.instance.count} tracks · ${UMediaLibrary.instance.albums.length} albums · ${UMediaLibrary.instance.artists.length} artists",
+          ),
           UButton(type: UButtonType.outlined, title: "Pick a folder and scan", onTap: () => unawaited(_scanLibrary())),
         ],
       ),
@@ -368,8 +328,7 @@ await UDownloadManager.instance.enqueue(url, wifiOnly: true);''',
 
   DemoSection _tagSection() => DemoSection(
     title: "Tag reader",
-    description:
-        "ID3v1/v2, Vorbis comments, MP4 atoms, FLAC blocks and WAV LIST — parsed in Dart with a bounds-checked "
+    description: "ID3v1/v2, Vorbis comments, MP4 atoms, FLAC blocks and WAV LIST — parsed in Dart with a bounds-checked "
         "reader, so a malformed tag throws instead of corrupting memory. Artwork is returned as an offset, never loaded.",
     code: r'''
 final UMediaMetadata tags = await UTagParser.readFile(path);
@@ -386,8 +345,7 @@ UArtwork(artwork: tags.artwork, size: 72);''',
 
   DemoSection _parserSection() => DemoSection(
     title: "Manifest & playlist parsers",
-    description:
-        "HLS, DASH, M3U, PLS and XSPF are parsed in Dart. This is what gives Windows and macOS adaptive "
+    description: "HLS, DASH, M3U, PLS and XSPF are parsed in Dart. This is what gives Windows and macOS adaptive "
         "streaming that their native stacks do not provide.",
     code: r'''
 final UHlsPlaylist playlist = UHlsParser.parse(manifestText, baseUrl: url);
@@ -405,8 +363,7 @@ final UDashManifest? mpd = UDashParser.parse(xml);''',
 
   DemoSection _sizeSection() => const DemoSection(
     title: "Why it stays small",
-    description:
-        "Every OS already ships a hardware media stack, so we use it rather than bundling one. "
+    description: "Every OS already ships a hardware media stack, so we use it rather than bundling one. "
         "Containers, manifests, protocols, tags and subtitles are Dart; only pixel and PCM decoding go native.",
     child: UColumn(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -424,14 +381,8 @@ final UDashManifest? mpd = UDashParser.parse(xml);''',
 
   Future<void> _playQueue() async {
     await UAudio.playQueue(<Object>[
-      UMediaSource.network(
-        _audioUrl,
-        metadata: const UMediaMetadata(title: "SoundHelix Song 1", artist: "T. Schürger", album: "Demo"),
-      ),
-      UMediaSource.network(
-        _audioUrl2,
-        metadata: const UMediaMetadata(title: "SoundHelix Song 2", artist: "T. Schürger", album: "Demo"),
-      ),
+      UMediaSource.network(_audioUrl, metadata: const UMediaMetadata(title: "SoundHelix Song 1", artist: "T. Schürger", album: "Demo")),
+      UMediaSource.network(_audioUrl2, metadata: const UMediaMetadata(title: "SoundHelix Song 2", artist: "T. Schürger", album: "Demo")),
     ]);
   }
 
