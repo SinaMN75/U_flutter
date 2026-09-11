@@ -45,6 +45,7 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
     emptyText: U.s.noItemsFound(U.s.terminals),
     desktopHeader: () => UAdminTable.header(
       <String>[
+        U.s.type,
         U.s.serial,
         U.s.simCardSerial,
         U.s.imei,
@@ -81,6 +82,7 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
     color: UAdminTable.rowColor(context, index),
     padding: UAdminTable.rowPadding,
     children: <Widget>[
+      UAdminTable.cell(TagTerminal.values.titlesFromNumbers(i.tags).join(" , ")),
       UAdminTable.cell(i.serial),
       UAdminTable.cell(i.simCardSerial ?? "-"),
       UAdminTable.cell(i.imei ?? U.s.noMerchantSelected),
@@ -170,13 +172,15 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                 initialValue: c.typeFilter.value,
                 onChanged: c.typeFilter.call,
                 items: <DropdownMenuItem<TagTerminal>>[
-                  DropdownMenuItem<TagTerminal>(child: Text(TagTerminal.deskCashless.localizedTitle)),
-                  DropdownMenuItem<TagTerminal>(value: TagTerminal.deskCashless, child: Text(TagTerminal.deskCashless.localizedTitle)),
-                  DropdownMenuItem<TagTerminal>(value: TagTerminal.atm, child: Text(TagTerminal.atm.localizedTitle)),
-                  DropdownMenuItem<TagTerminal>(value: TagTerminal.wallCashless, child: Text(TagTerminal.wallCashless.localizedTitle)),
-                  DropdownMenuItem<TagTerminal>(value: TagTerminal.pendingApproval, child: Text(U.s.pendingApproval)),
-                  DropdownMenuItem<TagTerminal>(value: TagTerminal.approved, child: Text(U.s.approved)),
-                  DropdownMenuItem<TagTerminal>(value: TagTerminal.rejected, child: Text(U.s.rejected)),
+                  DropdownMenuItem<TagTerminal>(value: TagTerminal.ava101, child: Text(TagTerminal.ava101.localizedTitle)),
+                  DropdownMenuItem<TagTerminal>(value: TagTerminal.ava102, child: Text(TagTerminal.ava102.localizedTitle)),
+                  DropdownMenuItem<TagTerminal>(value: TagTerminal.ava103, child: Text(TagTerminal.ava103.localizedTitle)),
+                  DropdownMenuItem<TagTerminal>(value: TagTerminal.ava104, child: Text(TagTerminal.ava104.localizedTitle)),
+                  DropdownMenuItem<TagTerminal>(value: TagTerminal.avaMax, child: Text(TagTerminal.avaMax.localizedTitle)),
+                  DropdownMenuItem<TagTerminal>(value: TagTerminal.smartPeak, child: Text(TagTerminal.smartPeak.localizedTitle)),
+                  DropdownMenuItem<TagTerminal>(value: TagTerminal.pendingApproval, child: Text(TagTerminal.pendingApproval.localizedTitle)),
+                  DropdownMenuItem<TagTerminal>(value: TagTerminal.approved, child: Text(TagTerminal.approved.localizedTitle)),
+                  DropdownMenuItem<TagTerminal>(value: TagTerminal.rejected, child: Text(TagTerminal.rejected.localizedTitle)),
                 ],
               ).pSymmetric(vertical: 6),
               UTextField(controller: c.serialFilter, labelText: U.s.serial, margin: const EdgeInsets.symmetric(vertical: 6)),
@@ -227,7 +231,7 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
     final TextEditingController simCardSerial = TextEditingController();
     final TextEditingController imei = TextEditingController();
     final TextEditingController terminalId = TextEditingController();
-    final Rx<TagTerminal> type = TagTerminal.deskCashless.obs;
+    final Rx<TagTerminal> type = TagTerminal.ava101.obs;
 
     UNavigator.dialog(
       AlertDialog(
@@ -258,9 +262,12 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                     initialValue: type.value,
                     onChanged: type.call,
                     items: <DropdownMenuItem<TagTerminal>>[
-                      DropdownMenuItem<TagTerminal>(value: TagTerminal.deskCashless, child: Text(TagTerminal.deskCashless.localizedTitle)),
-                      DropdownMenuItem<TagTerminal>(value: TagTerminal.atm, child: Text(TagTerminal.atm.localizedTitle)),
-                      DropdownMenuItem<TagTerminal>(value: TagTerminal.wallCashless, child: Text(TagTerminal.wallCashless.localizedTitle)),
+                      DropdownMenuItem<TagTerminal>(value: TagTerminal.ava101, child: Text(TagTerminal.ava101.localizedTitle)),
+                      DropdownMenuItem<TagTerminal>(value: TagTerminal.ava102, child: Text(TagTerminal.ava102.localizedTitle)),
+                      DropdownMenuItem<TagTerminal>(value: TagTerminal.ava103, child: Text(TagTerminal.ava103.localizedTitle)),
+                      DropdownMenuItem<TagTerminal>(value: TagTerminal.ava104, child: Text(TagTerminal.ava104.localizedTitle)),
+                      DropdownMenuItem<TagTerminal>(value: TagTerminal.avaMax, child: Text(TagTerminal.avaMax.localizedTitle)),
+                      DropdownMenuItem<TagTerminal>(value: TagTerminal.smartPeak, child: Text(TagTerminal.smartPeak.localizedTitle)),
                     ],
                   ),
                   const SizedBox(height: 20),

@@ -1,5 +1,64 @@
 import "package:u/utilities.dart";
 
+mixin NumericIdentifiable {
+  int get number;
+
+  String get titleFa;
+
+  String get titleEn;
+
+  String get localizedTitle => UApp.locale() == "fa" ? titleFa : titleEn;
+}
+
+extension NumericEnumExtension<T extends Enum> on Iterable<T> {
+  List<int> get numbers => map((dynamic e) => (e as dynamic).number as int).toList();
+
+  List<String> get titlesFa => map((dynamic e) => (e as dynamic).titleFa as String).toList();
+
+  List<String> get titlesEn => map((dynamic e) => (e as dynamic).titleEn as String).toList();
+
+  List<Map<String, dynamic>> toMapList() => map(
+        (dynamic e) => <String, dynamic>{
+      "number": (e as dynamic).number,
+      "titleFa": (e as dynamic).titleFa,
+      "titleEn": (e as dynamic).titleEn,
+    },
+  ).toList();
+
+  T? fromNumber(int id) {
+    try {
+      return firstWhere((dynamic element) => (element as dynamic).number == id);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  T fromNumericIdOrThrow(int id) {
+    final dynamic result = fromNumber(id);
+    if (result == null) {
+      throw ArgumentError.value(
+        id,
+        "id",
+        'No ${T.toString().split('.').first} found with numericId $id',
+      );
+    }
+    return result;
+  }
+
+  List<T> fromNumbers(Iterable<int> numbers) => numbers.map(fromNumber).whereType<T>().toList();
+
+  List<String> titlesFromNumbers(
+      Iterable<int> numbers, {
+        bool localized = true,
+      }) => numbers
+      .map(fromNumber)
+      .whereType<T>()
+      .map(
+        (dynamic e) => localized ? (e as dynamic).localizedTitle as String : (e as dynamic).titleEn as String,
+  )
+      .toList();
+}
+
 enum Usc with NumericIdentifiable {
   success("موفقیت", "Success", 200),
   created("ایجاد شده", "Created", 201),
@@ -1041,48 +1100,6 @@ enum TagApiLog with NumericIdentifiable {
   final String titleEn;
   @override
   final int number;
-}
-
-mixin NumericIdentifiable {
-  int get number;
-
-  String get titleFa;
-
-  String get titleEn;
-
-  String get localizedTitle => UApp.locale() == "fa" ? titleFa : titleEn;
-}
-
-extension NumericEnumExtension<T extends Enum> on Iterable<T> {
-  List<int> get numbers => map((dynamic e) => (e as dynamic).number as int).toList();
-
-  List<String> get titlesFa => map((dynamic e) => (e as dynamic).titleFa as String).toList();
-
-  List<String> get titlesEn => map((dynamic e) => (e as dynamic).titleEn as String).toList();
-
-  List<Map<String, dynamic>> toMapList() => map(
-    (dynamic e) => <String, dynamic>{
-      "number": (e as dynamic).number,
-      "titleFa": (e as dynamic).titleFa,
-      "titleEn": (e as dynamic).titleEn,
-    },
-  ).toList();
-
-  T? fromNumber(int id) {
-    try {
-      return firstWhere((dynamic element) => (element as dynamic).number == id);
-    } catch (e) {
-      return null;
-    }
-  }
-
-  T fromNumericIdOrThrow(int id) {
-    final dynamic result = fromNumber(id);
-    if (result == null) {
-      throw ArgumentError.value(id, "id", 'No ${T.toString().split('.').first} found with numericId $id');
-    }
-    return result;
-  }
 }
 
 enum TagGoldAsset with NumericIdentifiable {
