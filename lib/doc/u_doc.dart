@@ -478,15 +478,33 @@ abstract class UDocSources {
     throw const UDocError(code: UDocErrorCode.notFound, message: "No document source was provided");
   }
 
+  static int _fnv32(int hash, int byte) {
+    final int mixed = (hash ^ byte) & 0xFFFFFFFF;
+    return (mixed + (mixed << 1) + (mixed << 4) + (mixed << 7) + (mixed << 8) + (mixed << 24)) & 0xFFFFFFFF;
+  }
+
+  static int _jenkins32(int hash, int byte) {
+    int value = (hash + byte) & 0xFFFFFFFF;
+    value = (value + (value << 10)) & 0xFFFFFFFF;
+    return (value ^ (value >> 6)) & 0xFFFFFFFF;
+  }
+
+  static int _jenkins32Finish(int hash) {
+    int value = (hash + (hash << 3)) & 0xFFFFFFFF;
+    value = (value ^ (value >> 11)) & 0xFFFFFFFF;
+    return (value + (value << 15)) & 0xFFFFFFFF;
+  }
+
   static Future<String> fingerprint(UDocByteSource source) async {
     final int head = source.length < uDocBlockSize ? source.length : uDocBlockSize;
     final Uint8List first = await source.read(0, head);
     final int tailOffset = source.length > head ? source.length - head : 0;
     final Uint8List last = tailOffset == 0 ? Uint8List(0) : await source.read(tailOffset, head);
-    int hash = 0xcbf29ce484222325;
+    int low = 0x811c9dc5;
+    int high = 0xdeadbeef;
     void mix(int byte) {
-      hash ^= byte;
-      hash = (hash * 0x100000001b3) & 0xFFFFFFFFFFFFFFFF;
+      low = _fnv32(low, byte);
+      high = _jenkins32(high, byte);
     }
 
     for (final int byte in first) {
@@ -499,7 +517,9 @@ abstract class UDocSources {
     mix((source.length >> 8) & 0xFF);
     mix((source.length >> 16) & 0xFF);
     mix((source.length >> 24) & 0xFF);
-    return "${source.length.toRadixString(16)}-${hash.toRadixString(16)}";
+    final String highHex = _jenkins32Finish(high).toRadixString(16).padLeft(8, "0");
+    final String lowHex = low.toRadixString(16).padLeft(8, "0");
+    return "${source.length.toRadixString(16)}-$highHex$lowHex";
   }
 
   static UDocKind sniff(Uint8List head) {
