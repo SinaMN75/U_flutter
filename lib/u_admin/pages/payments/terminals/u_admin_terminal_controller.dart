@@ -187,7 +187,7 @@ class UAdminTerminalController extends UBaseController {
           UToast.error(message: U.s.noItemsFound(U.s.agreement));
           return;
         }
-        UNavigator.push(UAgreementViewer(html: agreement.fromBase64(), fileName: "agreement-${i.serial}.pdf"));
+        UPdf.open(url: agreement);
       },
       onError: (UEmptyResponse r) {
         ULoading.dismiss();

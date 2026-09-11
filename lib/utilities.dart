@@ -46,7 +46,6 @@ export "components/rating_bar.dart";
 export "components/readmore.dart";
 export "components/scrolling_text.dart";
 export "components/segmented_control.dart";
-export "components/u_agreement_viewer.dart";
 export "components/u_barcode.dart" show UBarcode, UBarcodeType, UErrorCorrectionLevel, UBarcodeModuleShape;
 export "components/u_button.dart";
 export "components/u_camera.dart";

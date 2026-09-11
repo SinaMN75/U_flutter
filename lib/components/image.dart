@@ -132,10 +132,6 @@ class UImage extends StatelessWidget {
       if (placeholder == null) return SizedBox(width: width, height: height);
       return UImageAsset(placeholder!, width: width, height: height, placeholder: placeholder, color: color, fit: fit, package: package);
     }
-    if (source.startsWith("data:")) {
-      final int index = source.indexOf("base64,");
-      if (index >= 0) return UImageMemory(source.substring(index + 7).toBytesFromBase64(), width: width, height: height, color: color, fit: fit, placeholder: placeholder);
-    }
     if (source.endsWith(".json")) {
       return source.startsWith("http") ? Lottie.network(source, width: width, height: height, fit: fit, repeat: true) : Lottie.asset(source, width: width, height: height, fit: fit, repeat: true);
     }
