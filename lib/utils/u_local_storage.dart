@@ -66,6 +66,14 @@ abstract class ULocalStorage {
 
   static void setRefreshToken(String value) => set(UConstants.refreshToken, value);
 
+  static void setRefreshTokenExpiresAt(DateTime? value) {
+    if (value == null) {
+      remove(UConstants.refreshTokenExpiresAt);
+      return;
+    }
+    set(UConstants.refreshTokenExpiresAt, value.toUtc().millisecondsSinceEpoch);
+  }
+
   static void setLocale(String value) => set(UConstants.locale, value);
 
   static void setDarkMode(bool isDarkMode) => set(UConstants.isDarkMode, isDarkMode);
@@ -75,6 +83,11 @@ abstract class ULocalStorage {
   static String? getToken() => getIfNotExpired(UConstants.token);
 
   static String? getRefreshToken() => getIfNotExpired(UConstants.refreshToken);
+
+  static DateTime? getRefreshTokenExpiresAt() {
+    final int? value = getInt(UConstants.refreshTokenExpiresAt);
+    return value == null ? null : DateTime.fromMillisecondsSinceEpoch(value, isUtc: true);
+  }
 
   static String? getLocale() => getIfNotExpired(UConstants.locale);
 

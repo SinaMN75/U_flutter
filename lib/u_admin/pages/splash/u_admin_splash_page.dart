@@ -24,7 +24,7 @@ class _UAdminSplashPageState extends State<UAdminSplashPage> {
     c.init(
       onFinish: widget.onFinish,
       onError: () async {
-        await ULocalStorage.clear();
+        await UAuth.clear();
         widget.onError();
       },
     );

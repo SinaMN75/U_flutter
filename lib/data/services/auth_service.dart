@@ -213,6 +213,8 @@ class AuthService {
     ULocalStorage.setUserId(response.user.id);
     ULocalStorage.setToken(response.token);
     ULocalStorage.setRefreshToken(response.refreshToken);
+    ULocalStorage.setRefreshTokenExpiresAt(response.refreshTokenExpiresAt);
     U.user = response.user;
+    UAuth.onTokensIssued();
   }
 }

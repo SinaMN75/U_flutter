@@ -181,6 +181,7 @@ export "utils/extensions/widget_extension.dart";
 export "utils/u_audio.dart";
 export "utils/u_app.dart";
 export "utils/u_app_state.dart";
+export "utils/u_auth.dart";
 export "utils/u_clipboard.dart";
 export "utils/u_constants.dart";
 export "utils/u_convert.dart";

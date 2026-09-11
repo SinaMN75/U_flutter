@@ -21,6 +21,7 @@ enum Usc with NumericIdentifiable {
   expiredToken("توکن منقضی شده", "Expired Token", 604),
   shahkarException("استثنای شهکار", "Shahkar Exception", 605),
   shahkarError("خطای شهکار", "Shahkar Error", 606),
+  expiredRefreshToken("نشست منقضی شده", "Expired Refresh Token", 607),
   balanceIsLow("موجودی کم است", "Balance Is Low", 701),
   inquiryNotCached("استعلام قبلی موجود نیست", "Inquiry Not Cached", 702);
 

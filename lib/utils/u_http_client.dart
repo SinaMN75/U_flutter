@@ -21,22 +21,6 @@ class UHttpClientResponse {
 abstract class UHttpClient {
   static final Client _client = Client();
   static Future<void> Function()? onAuthFailed;
-  static Future<bool>? _refreshInFlight;
-
-  static Future<bool> _refreshToken() {
-    _refreshInFlight ??= (() async {
-      final String? refreshToken = ULocalStorage.getRefreshToken();
-      if (refreshToken == null || refreshToken.isEmpty) return false;
-      final (UResponse<ULoginResponse>?, UEmptyResponse?, String?) result = await AuthService().refreshToken(
-        p: URefreshTokenParams(refreshToken: refreshToken),
-        onOk: (UResponse<ULoginResponse> r) {},
-        onError: (UEmptyResponse e) {},
-        onException: (String e) {},
-      );
-      return result.$1?.result != null;
-    })().whenComplete(() => _refreshInFlight = null);
-    return _refreshInFlight!;
-  }
 
   static Future<UHttpClientResponse> send({
     required String method,
@@ -66,6 +50,8 @@ abstract class UHttpClient {
       onProgress(p);
     }
 
+    final bool isTokenIssuingEndpoint = UAuth.isTokenIssuingEndpoint(endpoint);
+
     final bool hasNetworkConnection = await UNetwork.hasAnyConnection();
 
     if (!hasNetworkConnection && offline == false) {
@@ -87,26 +73,33 @@ abstract class UHttpClient {
       }
     }
 
+    dynamic outgoingBody = body;
+    if (!isTokenIssuingEndpoint && body is Map && body.containsKey("token")) {
+      await UAuth.ensureFreshToken();
+      outgoingBody = Map<String, dynamic>.from(body)..["token"] = ULocalStorage.getToken();
+    }
+    final int authEpoch = UAuth.epoch;
+
     final Response response;
     try {
       final Request request = Request(method, uri);
       if (headers != null) request.headers.addAll(headers);
 
-      if (body != null) {
+      if (outgoingBody != null) {
         if (bodyType == URequestBodyType.json) {
-          if (body is Map) {
-            request.body = jsonEncode(removeNullEntries(body));
+          if (outgoingBody is Map) {
+            request.body = jsonEncode(removeNullEntries(outgoingBody));
             request.headers["Content-Type"] = "application/json";
             request.headers["Locale"] = UApp.locale();
             request.headers["Timezone"] = UTimezone.getLocalTimezone();
-          } else if (body is String) {
-            request.body = body;
-          } else if (body is List<int>) {
-            request.bodyBytes = body;
+          } else if (outgoingBody is String) {
+            request.body = outgoingBody;
+          } else if (outgoingBody is List<int>) {
+            request.bodyBytes = outgoingBody;
           }
-        } else if (bodyType == URequestBodyType.formData && body is Map<String, dynamic>) {
+        } else if (bodyType == URequestBodyType.formData && outgoingBody is Map<String, dynamic>) {
           final Map<String, String> formFields = <String, String>{};
-          body.forEach((String key, dynamic value) {
+          outgoingBody.forEach((String key, dynamic value) {
             if (value != null) {
               formFields[key] = value.toString();
             }
@@ -193,17 +186,16 @@ abstract class UHttpClient {
       }
     }
 
-    if (kDebugMode) response.prettyLog(params: jsonEncode(body));
+    if (kDebugMode) response.prettyLog(params: jsonEncode(outgoingBody));
 
     try {
       if (response.statusCode >= 200 && response.statusCode <= 299) {
         if (cacheEnabled) await _writeCache(cacheKey, response.body, cacheDuration);
         onSuccess(response);
         return UHttpClientResponse(response: response.body);
-      } else if (response.statusCode == Usc.expiredToken.number && !isRetryAfterRefresh && !endpoint.contains("/auth/")) {
-        final bool refreshed = await _refreshToken();
-        if (refreshed) {
-          final dynamic retryBody = body is Map ? (Map<String, dynamic>.from(body)..["token"] = ULocalStorage.getToken()) : body;
+      } else if ((response.statusCode == Usc.expiredToken.number || response.statusCode == Usc.expiredRefreshToken.number) && !isRetryAfterRefresh && !isTokenIssuingEndpoint) {
+        final bool canRetry = !UAuth.isSessionEnded && response.statusCode == Usc.expiredToken.number && (UAuth.epoch != authEpoch || await UAuth.refresh());
+        if (canRetry) {
           return await send(
             method: method,
             endpoint: endpoint,
@@ -212,7 +204,7 @@ abstract class UHttpClient {
             onException: onException,
             headers: headers,
             queryParams: queryParams,
-            body: retryBody,
+            body: body,
             bodyType: bodyType,
             noNetworkMessage: noNetworkMessage,
             unexpectedErrorMessage: unexpectedErrorMessage,
@@ -224,7 +216,8 @@ abstract class UHttpClient {
             isRetryAfterRefresh: true,
           );
         }
-        await onAuthFailed?.call();
+        if (!UAuth.canRefresh) await UAuth.handleAuthFailure();
+        if (UAuth.isSessionEnded) return UHttpClientResponse(error: response.body);
         onError(response);
         return UHttpClientResponse(error: response.body);
       } else {

@@ -5,7 +5,7 @@ class UAdminSplashController extends UBaseController {
     required VoidCallback onFinish,
     required VoidCallback onError,
   }) {
-    if (ULocalStorage.getString(UConstants.token) == null) {
+    if (!UAuth.isSignedIn) {
       onError();
     } else {
       UServices.user.readById(
@@ -16,8 +16,8 @@ class UAdminSplashController extends UBaseController {
           U.user = user.result!;
           onFinish();
         },
-        onError: (UEmptyResponse r) => onError.call,
-        onException: (String e) => onError.call,
+        onError: (UEmptyResponse r) => onError(),
+        onException: (String e) => onError(),
         onProgress: (int e) {},
       );
     }
