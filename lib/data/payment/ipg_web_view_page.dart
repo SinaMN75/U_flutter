@@ -1,9 +1,10 @@
 part of "../data.dart";
 
 class UIpgWebViewPage extends StatefulWidget {
-  const UIpgWebViewPage({required this.url, super.key});
+  const UIpgWebViewPage({required this.url, required this.trackingNumber, super.key});
 
   final String url;
+  final String trackingNumber;
 
   @override
   State<UIpgWebViewPage> createState() => _UIpgWebViewPageState();
@@ -14,8 +15,14 @@ class _UIpgWebViewPageState extends State<UIpgWebViewPage> {
 
   @override
   void initState() {
-    c = UIpgWebViewController();
+    c = UIpgWebViewController(trackingNumber: widget.trackingNumber);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
   }
 
   @override

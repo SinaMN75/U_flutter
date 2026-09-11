@@ -1,3 +1,5 @@
+import "dart:developer" as developer;
+
 import "package:u/utilities.dart";
 
 abstract class UAuth {
@@ -65,10 +67,26 @@ abstract class UAuth {
 
   static bool get isSignedIn => ULocalStorage.hasToken() && (!isAccessTokenExpired() || canRefresh);
 
+  static void _log(String message) {
+    if (kDebugMode) developer.log("[UAuth] $message");
+  }
+
+  static String diagnostics() =>
+      "hasToken=${ULocalStorage.hasToken()} accessExpiresAt=${accessTokenExpiresAt()} accessExpired=${isAccessTokenExpired()} "
+      "hasRefreshToken=$hasRefreshToken refreshExpiresAt=${ULocalStorage.getRefreshTokenExpiresAt()} refreshExpired=$isRefreshTokenExpired "
+      "canRefresh=$canRefresh epoch=$_epoch sessionEnded=$_authFailureHandled now=${DateTime.now().toUtc()}";
+
   static Future<void> ensureFreshToken() async {
-    if (!ULocalStorage.hasToken()) return;
+    if (!ULocalStorage.hasToken()) {
+      _log("ensureFreshToken: skipped, no access token stored. ${diagnostics()}");
+      return;
+    }
     if (!isAccessTokenExpired()) return;
-    if (!canRefresh) return;
+    if (!canRefresh) {
+      _log("ensureFreshToken: access token expired but cannot refresh. ${diagnostics()}");
+      return;
+    }
+    _log("ensureFreshToken: access token expired, refreshing. ${diagnostics()}");
     await refresh();
   }
 
@@ -87,8 +105,12 @@ abstract class UAuth {
       onError: (UEmptyResponse e) {},
       onException: (String e) {},
     );
-    if (result.$1?.result != null) return true;
+    if (result.$1?.result != null) {
+      _log("refresh: OK, new token stored. ${diagnostics()}");
+      return true;
+    }
     final UEmptyResponse? error = result.$2;
+    _log("refresh: FAILED status=${error?.status} message=${error?.message} exception=${result.$3}");
     final bool isRejected =
         error != null &&
         (error.status == Usc.unAuthorized.number ||
@@ -120,6 +142,7 @@ abstract class UAuth {
 
   static Future<void> handleAuthFailure() async {
     if (_authFailureHandled) return;
+    _log("handleAuthFailure: signing the user out. ${diagnostics()}");
     _authFailureHandled = true;
     await clear();
     ULoading.dismiss();

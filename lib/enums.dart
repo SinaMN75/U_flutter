@@ -399,7 +399,8 @@ enum TagTxn with NumericIdentifiable {
   chargeWallet("شارژ کیف پول", "Charge Wallet", 301),
   merchantCreationFee("هزینه ایجاد پذیرنده", "Merchant Creation Fee", 302),
   dormInvoice("پرداخت قبض خوابگاه", "Dorm Invoice", 303),
-  hotelInvoice("پرداخت فاکتور هتل", "Hotel Invoice", 304);
+  hotelInvoice("پرداخت فاکتور هتل", "Hotel Invoice", 304),
+  billPayment("پرداخت قبض", "Bill Payment", 305);
 
   const TagTxn(this.titleFa, this.titleEn, this.number);
 

@@ -28,6 +28,27 @@ class UIpgSaleParams {
   factory UIpgSaleParams.fromJson(String str) => UIpgSaleParams.fromMap(json.decode(str));
 }
 
+class UIpgBillParams {
+  final String billId;
+  final String paymentId;
+
+  UIpgBillParams({required this.billId, required this.paymentId});
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "billId": billId,
+    "paymentId": paymentId,
+  };
+
+  factory UIpgBillParams.fromMap(Map<String, dynamic> json) => UIpgBillParams(
+    billId: json["billId"],
+    paymentId: json["paymentId"],
+  );
+
+  String toJson() => json.encode(toMap());
+
+  factory UIpgBillParams.fromJson(String str) => UIpgBillParams.fromMap(json.decode(str));
+}
+
 class UIpgVerifyParams {
   final String trackingNumber;
 

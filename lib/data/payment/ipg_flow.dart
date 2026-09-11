@@ -14,13 +14,30 @@ abstract class UIpgFlow {
       p: UIpgSaleParams(amount: amount, tag: tag, invoiceId: invoiceId),
       onOk: (UResponse<UIpgPayResponse> r) async {
         ULoading.dismiss();
-        final UIpgPayResponse? data = r.result;
-        if (data == null || data.url.isEmpty) {
-          UToast.error(message: r.message);
-          completer.complete(false);
-          return;
-        }
-        completer.complete(await UNavigator.push<bool>(UIpgWebViewPage(url: data.url)) ?? false);
+        completer.complete(await _open(r));
+      },
+      onError: (UEmptyResponse e) {
+        ULoading.dismiss();
+        UToast.error(message: e.message);
+        completer.complete(false);
+      },
+      onException: (String e) {
+        ULoading.dismiss();
+        UToast.error(message: e);
+        completer.complete(false);
+      },
+    );
+    return completer.future;
+  }
+
+  static Future<bool> payBill({required String billId, required String paymentId}) async {
+    final Completer<bool> completer = Completer<bool>();
+    ULoading.show();
+    await UServices.ipg.payBill(
+      p: UIpgBillParams(billId: billId, paymentId: paymentId),
+      onOk: (UResponse<UIpgPayResponse> r) async {
+        ULoading.dismiss();
+        completer.complete(await _open(r));
       },
       onError: (UEmptyResponse e) {
         ULoading.dismiss();
@@ -51,5 +68,14 @@ abstract class UIpgFlow {
     );
     ULoading.dismiss();
     return url;
+  }
+
+  static Future<bool> _open(UResponse<UIpgPayResponse> r) async {
+    final UIpgPayResponse? data = r.result;
+    if (data == null || data.url.isEmpty) {
+      UToast.error(message: r.message);
+      return false;
+    }
+    return await UNavigator.push<bool>(UIpgWebViewPage(url: data.url, trackingNumber: data.trackingNumber)) ?? false;
   }
 }
