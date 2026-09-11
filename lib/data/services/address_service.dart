@@ -3,9 +3,9 @@ part of "../data.dart";
 class AddressService {
   Future<(UResponse<String>?, UEmptyResponse?, String?)> create({
     required UAddressCreateParams p,
-    required Function(UResponse<String> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<String> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<String>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -32,9 +32,9 @@ class AddressService {
 
   Future<(UResponse<List<UAddressResponse>>?, UEmptyResponse?, String?)> read({
     required UAddressReadParams p,
-    required Function(UResponse<List<UAddressResponse>> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<List<UAddressResponse>> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<List<UAddressResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -64,9 +64,9 @@ class AddressService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> update({
     required UAddressUpdateParams p,
-    required Function(UEmptyResponse r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -93,9 +93,9 @@ class AddressService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> delete({
     required UIdParams p,
-    required Function(UEmptyResponse r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(

@@ -3,9 +3,9 @@ part of "../data.dart";
 class AccountingService {
   Future<(UResponse<UAccountingReportResponse>?, UEmptyResponse?, String?)> report({
     required UAccountingReportParams p,
-    required Function(UResponse<UAccountingReportResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<UAccountingReportResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<UAccountingReportResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(

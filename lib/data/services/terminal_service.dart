@@ -3,9 +3,9 @@ part of "../data.dart";
 class TerminalService {
   Future<(UResponse<String>?, UEmptyResponse?, String?)> create({
     required UTerminalCreateParams p,
-    required Function(UResponse<String> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<String> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<String>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -32,9 +32,9 @@ class TerminalService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> bulkCreate({
     required UTerminalBulkCreateParams p,
-    required Function(UEmptyResponse r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -61,9 +61,9 @@ class TerminalService {
 
   Future<(UResponse<List<UTerminalResponse>>?, UEmptyResponse?, String?)> read({
     required UTerminalReadParams p,
-    required Function(UResponse<List<UTerminalResponse>> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<List<UTerminalResponse>> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<List<UTerminalResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -93,9 +93,9 @@ class TerminalService {
 
   Future<(UResponse<UTerminalAvailabilityResponse>?, UEmptyResponse?, String?)> checkAvailability({
     required UTerminalCheckAvailabilityParams p,
-    required Function(UResponse<UTerminalAvailabilityResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<UTerminalAvailabilityResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<UTerminalAvailabilityResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -125,9 +125,9 @@ class TerminalService {
 
   Future<(UResponse<UTerminalResponse>?, UEmptyResponse?, String?)> approve({
     required UIdParams p,
-    required Function(UResponse<UTerminalResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<UTerminalResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<UTerminalResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -154,9 +154,9 @@ class TerminalService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> reject({
     required UTerminalRejectParams p,
-    required Function(UEmptyResponse r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -183,9 +183,9 @@ class TerminalService {
 
   Future<(UResponse<UTerminalResponse>?, UEmptyResponse?, String?)> assign({
     required UTerminalAssignParams p,
-    required Function(UResponse<UTerminalResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<UTerminalResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<UTerminalResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -212,9 +212,9 @@ class TerminalService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> delete({
     required UIdParams p,
-    required Function(UEmptyResponse r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -241,9 +241,9 @@ class TerminalService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> update({
     required UTerminalUpdateParams p,
-    required Function(UEmptyResponse r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -270,9 +270,9 @@ class TerminalService {
 
   Future<(UResponse<UTerminalReadSupportPasswordResponse>?, UEmptyResponse?, String?)> readSupportPassword({
     required UIdParams p,
-    required Function(UResponse<UTerminalReadSupportPasswordResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<UTerminalReadSupportPasswordResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<UTerminalReadSupportPasswordResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -302,9 +302,9 @@ class TerminalService {
 
   Future<(UResponse<UTerminalImportResponse>?, UEmptyResponse?, String?)> import({
     required UTerminalImportParams p,
-    required Function(UResponse<UTerminalImportResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<UTerminalImportResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<UTerminalImportResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(

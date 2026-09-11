@@ -10,6 +10,7 @@ abstract class U {
 
   static AppLocalizations get s => AppLocalizations.of(navigatorKey.currentContext!)!;
   static late UUserResponse user;
+  static late UAppSettingsResponse appSettings;
   static List<UContentResponse> contents = <UContentResponse>[];
   static List<UCategoryResponse> categories = <UCategoryResponse>[];
   static final RxList<TabData> tabs = <TabData>[].obs;

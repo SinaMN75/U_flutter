@@ -3,9 +3,9 @@ part of "../data.dart";
 class AuthService {
   Future<(UResponse<ULoginResponse>?, UEmptyResponse?, String?)> register({
     required URegisterParams p,
-    required Function(UResponse<ULoginResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<ULoginResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<ULoginResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -33,9 +33,9 @@ class AuthService {
 
   Future<(UResponse<ULoginResponse>?, UEmptyResponse?, String?)> login({
     required ULoginParams p,
-    required Function(UResponse<ULoginResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<ULoginResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<ULoginResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -63,9 +63,9 @@ class AuthService {
 
   Future<(UResponse<ULoginResponse>?, UEmptyResponse?, String?)> refreshToken({
     required URefreshTokenParams p,
-    required Function(UResponse<ULoginResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<ULoginResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<ULoginResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -93,9 +93,9 @@ class AuthService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> getVerificationCodeForLogin({
     required UGetMobileVerificationCodeForLoginParams p,
-    required Function(UEmptyResponse r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -122,9 +122,9 @@ class AuthService {
 
   Future<(UResponse<ULoginResponse>?, UEmptyResponse?, String?)> verifyCodeForLogin({
     required UVerifyMobileForLoginParams p,
-    required Function(UResponse<ULoginResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<ULoginResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<ULoginResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -152,9 +152,9 @@ class AuthService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> completeProfile({
     required UAuthCompleteProfileParams p,
-    required Function(UEmptyResponse r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -181,9 +181,9 @@ class AuthService {
 
   Future<(UResponse<ULoginResponse>?, UEmptyResponse?, String?)> loginOrRegister({
     required URegisterParams p,
-    required Function(UResponse<ULoginResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<ULoginResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<ULoginResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(

@@ -3,9 +3,9 @@ part of "../data.dart";
 class AppSettingsService {
   Future<(UResponse<UAppSettingsResponse>?, UEmptyResponse?, String?)> read({
     required UAppSettingsReadParams p,
-    required Function(UResponse<UAppSettingsResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<UAppSettingsResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<UAppSettingsResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -30,11 +30,10 @@ class AppSettingsService {
     return result;
   }
 
-  // Full config for the SystemAdmin editor (secrets masked).
   Future<(UResponse<UAppSettings>?, UEmptyResponse?, String?)> readAll({
-    required Function(UResponse<UAppSettings> r) onOk,
-    required Function(UEmptyResponse e) onError,
-    required Function(String e) onException,
+    Function(UResponse<UAppSettings> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<UAppSettings>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -44,16 +43,16 @@ class AppSettingsService {
       onSuccess: (Response r) {
         final UResponse<UAppSettings> ok = UResponse<UAppSettings>.fromJson(r.body, (dynamic i) => UAppSettings.fromMap(i));
         result = (ok, null, null);
-        onOk(ok);
+        onOk?.call(ok);
       },
       onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
-        onError(err);
+        onError?.call(err);
       },
       onException: (String e) {
         result = (null, null, e);
-        onException(e);
+        onException?.call(e);
       },
     );
     return result;
@@ -62,9 +61,9 @@ class AppSettingsService {
   // Applies edits live to Core.App on the server (in-memory only).
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> update({
     required UAppSettingsUpdateParams p,
-    required Function(UEmptyResponse r) onOk,
-    required Function(UEmptyResponse e) onError,
-    required Function(String e) onException,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -74,16 +73,16 @@ class AppSettingsService {
       onSuccess: (Response r) {
         final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
         result = (ok, null, null);
-        onOk(ok);
+        onOk?.call(ok);
       },
       onError: (Response r) {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
-        onError(err);
+        onError?.call(err);
       },
       onException: (String e) {
         result = (null, null, e);
-        onException(e);
+        onException?.call(e);
       },
     );
     return result;

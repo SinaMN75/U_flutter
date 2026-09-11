@@ -3,9 +3,9 @@ part of "../data.dart";
 // Talks to the backend Gold routes, which front whichever gold provider the server is configured for.
 class GoldService {
   Future<(UResponse<UGoldAccountResponse>?, UEmptyResponse?, String?)> readAccount({
-    required Function(UResponse<UGoldAccountResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<UGoldAccountResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<UGoldAccountResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -32,9 +32,9 @@ class GoldService {
 
   Future<(UResponse<UGoldQuoteResponse>?, UEmptyResponse?, String?)> readQuote({
     required UGoldQuoteParams p,
-    required Function(UResponse<UGoldQuoteResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<UGoldQuoteResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<UGoldQuoteResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -60,9 +60,9 @@ class GoldService {
   }
 
   Future<(UResponse<UGoldUserBalanceResponse>?, UEmptyResponse?, String?)> readUserBalance({
-    required Function(UResponse<UGoldUserBalanceResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<UGoldUserBalanceResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
     UGoldReadUserBalanceParams? p,
   }) async {
     (UResponse<UGoldUserBalanceResponse>?, UEmptyResponse?, String?) result = (null, null, null);
@@ -90,9 +90,9 @@ class GoldService {
 
   Future<(UResponse<UGoldTxnResponse>?, UEmptyResponse?, String?)> buy({
     required UGoldBuyParams p,
-    required Function(UResponse<UGoldTxnResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<UGoldTxnResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<UGoldTxnResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -119,9 +119,9 @@ class GoldService {
 
   Future<(UResponse<UGoldTxnResponse>?, UEmptyResponse?, String?)> sell({
     required UGoldSellParams p,
-    required Function(UResponse<UGoldTxnResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<UGoldTxnResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<UGoldTxnResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -149,9 +149,9 @@ class GoldService {
   // Settles a transaction the provider left pending; call it when the user opens the order, never on a timer.
   Future<(UResponse<UGoldTxnResponse>?, UEmptyResponse?, String?)> syncTxn({
     required UIdParams p,
-    required Function(UResponse<UGoldTxnResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<UGoldTxnResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<UGoldTxnResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -178,9 +178,9 @@ class GoldService {
 
   Future<(UResponse<List<UGoldTxnResponse>>?, UEmptyResponse?, String?)> readUserTxns({
     required UGoldReadUserTxnsParams p,
-    required Function(UResponse<List<UGoldTxnResponse>> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<List<UGoldTxnResponse>> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<List<UGoldTxnResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -210,9 +210,9 @@ class GoldService {
 
   Future<(UResponse<UGoldOrderResponse>?, UEmptyResponse?, String?)> createOrder({
     required UGoldCreateOrderParams p,
-    required Function(UResponse<UGoldOrderResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<UGoldOrderResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<UGoldOrderResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -239,9 +239,9 @@ class GoldService {
 
   Future<(UResponse<UGoldOrderListResponse>?, UEmptyResponse?, String?)> readOrders({
     required UGoldReadOrdersParams p,
-    required Function(UResponse<UGoldOrderListResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<UGoldOrderListResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<UGoldOrderListResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -268,9 +268,9 @@ class GoldService {
 
   Future<(UResponse<UGoldOrderResponse>?, UEmptyResponse?, String?)> readOrderById({
     required UGoldReadOrderParams p,
-    required Function(UResponse<UGoldOrderResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<UGoldOrderResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<UGoldOrderResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -296,9 +296,9 @@ class GoldService {
   }
 
   Future<(UResponse<List<UGoldBalanceResponse>>?, UEmptyResponse?, String?)> readBalances({
-    required Function(UResponse<List<UGoldBalanceResponse>> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<List<UGoldBalanceResponse>> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<List<UGoldBalanceResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -328,9 +328,9 @@ class GoldService {
 
   Future<(UResponse<UGoldBalanceResponse>?, UEmptyResponse?, String?)> readBalance({
     required UGoldReadBalanceParams p,
-    required Function(UResponse<UGoldBalanceResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<UGoldBalanceResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<UGoldBalanceResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -357,9 +357,9 @@ class GoldService {
 
   Future<(UResponse<UGoldTransactionListResponse>?, UEmptyResponse?, String?)> readTransactions({
     required UGoldReadTransactionsParams p,
-    required Function(UResponse<UGoldTransactionListResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<UGoldTransactionListResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<UGoldTransactionListResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -388,9 +388,9 @@ class GoldService {
   }
 
   Future<(UResponse<UGoldTradeLimitsResponse>?, UEmptyResponse?, String?)> readTradeLimits({
-    required Function(UResponse<UGoldTradeLimitsResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<UGoldTradeLimitsResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<UGoldTradeLimitsResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -416,9 +416,9 @@ class GoldService {
   }
 
   Future<(UResponse<UGoldCreditFacilitiesResponse>?, UEmptyResponse?, String?)> readCreditFacilities({
-    required Function(UResponse<UGoldCreditFacilitiesResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<UGoldCreditFacilitiesResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<UGoldCreditFacilitiesResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -448,9 +448,9 @@ class GoldService {
 
   Future<(UResponse<UGoldApiTokenResponse>?, UEmptyResponse?, String?)> createApiToken({
     required UGoldCreateApiTokenParams p,
-    required Function(UResponse<UGoldApiTokenResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<UGoldApiTokenResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<UGoldApiTokenResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -476,9 +476,9 @@ class GoldService {
   }
 
   Future<(UResponse<List<UGoldApiTokenResponse>>?, UEmptyResponse?, String?)> readApiTokens({
-    required Function(UResponse<List<UGoldApiTokenResponse>> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<List<UGoldApiTokenResponse>> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<List<UGoldApiTokenResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -508,9 +508,9 @@ class GoldService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteApiToken({
     required UGoldDeleteApiTokenParams p,
-    required Function(UEmptyResponse r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(

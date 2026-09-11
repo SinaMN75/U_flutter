@@ -3,9 +3,9 @@ part of "../data.dart";
 class WalletService {
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> charge({
     required UWalletChargeParams p,
-    required Function(UEmptyResponse r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -32,9 +32,9 @@ class WalletService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> transfer({
     required UWalletTransferParams p,
-    required Function(UEmptyResponse r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -61,9 +61,9 @@ class WalletService {
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> purchase({
     required UWalletPurchaseParams p,
-    required Function(UEmptyResponse r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -90,9 +90,9 @@ class WalletService {
 
   Future<(UResponse<List<UWalletResponse>>?, UEmptyResponse?, String?)> read({
     required UWalletReadParams p,
-    required Function(UResponse<List<UWalletResponse>> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<List<UWalletResponse>> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<List<UWalletResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -122,9 +122,9 @@ class WalletService {
 
   Future<(UResponse<List<UWalletResponse>>?, UEmptyResponse?, String?)> readByUserId({
     required UIdParams p,
-    required Function(UResponse<List<UWalletResponse>> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<List<UWalletResponse>> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<List<UWalletResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -154,9 +154,9 @@ class WalletService {
 
   Future<(UResponse<List<UWalletTxnResponse>>?, UEmptyResponse?, String?)> readTxn({
     required UWalletTxnReadParams p,
-    required Function(UResponse<List<UWalletTxnResponse>> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<List<UWalletTxnResponse>> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<List<UWalletTxnResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(

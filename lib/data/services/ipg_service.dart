@@ -3,9 +3,9 @@ part of "../data.dart";
 class IpgService {
   Future<(UResponse<UIpgPayResponse>?, UEmptyResponse?, String?)> pay({
     required UIpgSaleParams p,
-    required Function(UResponse<UIpgPayResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<UIpgPayResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<UIpgPayResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -32,9 +32,9 @@ class IpgService {
 
   Future<(UResponse<UIpgPayResponse>?, UEmptyResponse?, String?)> payBill({
     required UIpgBillParams p,
-    required Function(UResponse<UIpgPayResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<UIpgPayResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<UIpgPayResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -62,9 +62,9 @@ class IpgService {
   // Reads the outcome of a started payment by tracking number. The backend already did the work; this only reads the result.
   Future<(UResponse<UIpgVerifyResponse>?, UEmptyResponse?, String?)> status({
     required UIpgVerifyParams p,
-    required Function(UResponse<UIpgVerifyResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<UIpgVerifyResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<UIpgVerifyResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(

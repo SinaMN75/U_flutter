@@ -3,9 +3,9 @@ part of "../data.dart";
 class ChargeInternetService {
   Future<(UResponse<ChargeInternetReserveResponse>?, UEmptyResponse?, String?)> pin({
     required ReserveChargeParams p,
-    required Function(UResponse<ChargeInternetReserveResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<ChargeInternetReserveResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<ChargeInternetReserveResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -32,9 +32,9 @@ class ChargeInternetService {
 
   Future<(UResponse<ChargeInternetReserveResponse>?, UEmptyResponse?, String?)> topup({
     required TopupChargeParams p,
-    required Function(UResponse<ChargeInternetReserveResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<ChargeInternetReserveResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<ChargeInternetReserveResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -61,9 +61,9 @@ class ChargeInternetService {
 
   Future<(UResponse<UInternetPackageResponse>?, UEmptyResponse?, String?)> internetList({
     required InternetListParams p,
-    required Function(UResponse<UInternetPackageResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<UInternetPackageResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<UInternetPackageResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -90,9 +90,9 @@ class ChargeInternetService {
 
   Future<(UResponse<ChargeInternetReserveResponse>?, UEmptyResponse?, String?)> internetReserve({
     required InternetReserveParams p,
-    required Function(UResponse<ChargeInternetReserveResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<ChargeInternetReserveResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<ChargeInternetReserveResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -119,9 +119,9 @@ class ChargeInternetService {
 
   Future<(UResponse<GetStatusResponse>?, UEmptyResponse?, String?)> getStatus({
     required GetStatusParams p,
-    required Function(UResponse<GetStatusResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<GetStatusResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<GetStatusResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -148,9 +148,9 @@ class ChargeInternetService {
 
   Future<(UResponse<GetBalanceResponse>?, UEmptyResponse?, String?)> getBalance({
     required UBaseParams p,
-    required Function(UResponse<GetBalanceResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<GetBalanceResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<GetBalanceResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -177,9 +177,9 @@ class ChargeInternetService {
 
   Future<(UResponse<EchoResponse>?, UEmptyResponse?, String?)> echo({
     required UBaseParams p,
-    required Function(UResponse<EchoResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<EchoResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<EchoResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(

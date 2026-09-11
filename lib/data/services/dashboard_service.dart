@@ -2,9 +2,9 @@ part of "../data.dart";
 
 class DashboardService {
   Future<(UMetricsResponse?, UEmptyResponse?, String?)> readSystemMetrics({
-    required Function(UMetricsResponse r)? onOk,
-    required VoidCallback? onError,
-    required Function(String e)? onException,
+    Function(UMetricsResponse r)? onOk,
+    VoidCallback? onError,
+    Function(String e)? onException,
   }) async {
     (UMetricsResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -29,9 +29,9 @@ class DashboardService {
   }
 
   Future<(UDashboardResponse?, UEmptyResponse?, String?)> read({
-    required Function(UDashboardResponse r)? onOk,
-    required VoidCallback? onError,
-    required Function(String e)? onException,
+    Function(UDashboardResponse r)? onOk,
+    VoidCallback? onError,
+    Function(String e)? onException,
   }) async {
     (UDashboardResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -57,9 +57,9 @@ class DashboardService {
 
   Future<(UResponse<UFinancialOpsDashboardResponse>?, UEmptyResponse?, String?)> readFinancialOpsDashboard({
     required UDashboardRangeParams p,
-    required Function(UResponse<UFinancialOpsDashboardResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<UFinancialOpsDashboardResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<UFinancialOpsDashboardResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -89,9 +89,9 @@ class DashboardService {
 
   Future<(UResponse<UPropertyDashboardResponse>?, UEmptyResponse?, String?)> readPropertyDashboard({
     required UDashboardRangeParams p,
-    required Function(UResponse<UPropertyDashboardResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<UPropertyDashboardResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<UPropertyDashboardResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -120,9 +120,9 @@ class DashboardService {
   }
 
   Future<(UResponse<UOsMetricsResponse>?, UEmptyResponse?, String?)> readOsMetrics({
-    required Function(UResponse<UOsMetricsResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<UOsMetricsResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<UOsMetricsResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -151,9 +151,9 @@ class DashboardService {
   }
 
   Future<(LogStructureResponse?, UEmptyResponse?, String?)> getLogStructure({
-    required Function(LogStructureResponse r)? onOk,
-    required VoidCallback? onError,
-    required Function(String e)? onException,
+    Function(LogStructureResponse r)? onOk,
+    VoidCallback? onError,
+    Function(String e)? onException,
   }) async {
     (LogStructureResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -179,9 +179,9 @@ class DashboardService {
 
   Future<(String?, UEmptyResponse?, String?)> getLogContent({
     required String logId,
-    required Function(String r)? onOk,
-    required VoidCallback? onError,
-    required Function(String e)? onException,
+    Function(String r)? onOk,
+    VoidCallback? onError,
+    Function(String e)? onException,
   }) async {
     (String?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -208,9 +208,9 @@ class DashboardService {
 
   Future<(UResponse<List<UApiLogResponse>>?, UEmptyResponse?, String?)> readApiLogs({
     required UApiLogReadParams p,
-    required Function(UResponse<List<UApiLogResponse>> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<List<UApiLogResponse>> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<List<UApiLogResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -240,9 +240,9 @@ class DashboardService {
 
   Future<(UResponse<UApiLogStatsResponse>?, UEmptyResponse?, String?)> apiLogStats({
     required UApiLogStatsParams p,
-    required Function(UResponse<UApiLogStatsResponse> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UResponse<UApiLogStatsResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (UResponse<UApiLogStatsResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -269,9 +269,9 @@ class DashboardService {
 
   Future<(String?, UEmptyResponse?, String?)> exportApiLogs({
     required UApiLogReadParams p,
-    required Function(String csv)? onOk,
-    required VoidCallback? onError,
-    required Function(String e)? onException,
+    Function(String csv)? onOk,
+    VoidCallback? onError,
+    Function(String e)? onException,
   }) async {
     (String?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -297,9 +297,9 @@ class DashboardService {
   }
 
   Future<(List<String>?, UEmptyResponse?, String?)> readAppLogs({
-    required Function(List<String> r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(List<String> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (List<String>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -329,8 +329,8 @@ class DashboardService {
 
   Future<(bool, UEmptyResponse?, String?)> clearAppLogs({
     required VoidCallback? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
   }) async {
     (bool, UEmptyResponse?, String?) result = (false, null, null);
     await UHttpClient.send(
