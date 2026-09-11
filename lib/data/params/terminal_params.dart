@@ -72,12 +72,45 @@ class UTerminalCreateParams {
   };
 }
 
+class UTerminalCheckAvailabilityParams {
+  final String serial;
+  final String? simCardSerial;
+  final String? merchantId;
+  final int? tag;
+
+  UTerminalCheckAvailabilityParams({
+    required this.serial,
+    this.simCardSerial,
+    this.merchantId,
+    this.tag,
+  });
+
+  factory UTerminalCheckAvailabilityParams.fromJson(String str) => UTerminalCheckAvailabilityParams.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UTerminalCheckAvailabilityParams.fromMap(Map<String, dynamic> json) => UTerminalCheckAvailabilityParams(
+    serial: json["serial"] as String,
+    simCardSerial: json["simCardSerial"],
+    merchantId: json["merchantId"],
+    tag: json["tag"],
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "serial": serial,
+    "simCardSerial": simCardSerial,
+    "merchantId": merchantId,
+    "tag": tag,
+  };
+}
+
 class UTerminalAssignParams {
   final String serial;
   final String? simCardSerial;
   final String? merchantId;
   final String? title;
   final int? tag;
+  final bool acceptedAgreement;
 
   UTerminalAssignParams({
     required this.serial,
@@ -85,6 +118,7 @@ class UTerminalAssignParams {
     this.merchantId,
     this.title,
     this.tag,
+    this.acceptedAgreement = false,
   });
 
   factory UTerminalAssignParams.fromJson(String str) => UTerminalAssignParams.fromMap(json.decode(str));
@@ -97,6 +131,7 @@ class UTerminalAssignParams {
     merchantId: json["merchantId"],
     title: json["title"],
     tag: json["tag"],
+    acceptedAgreement: json["acceptedAgreement"] ?? false,
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -105,6 +140,31 @@ class UTerminalAssignParams {
     "merchantId": merchantId,
     "title": title,
     "tag": tag,
+    "acceptedAgreement": acceptedAgreement,
+  };
+}
+
+class UTerminalRejectParams {
+  final String id;
+  final String? reason;
+
+  UTerminalRejectParams({
+    required this.id,
+    this.reason,
+  });
+
+  factory UTerminalRejectParams.fromJson(String str) => UTerminalRejectParams.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UTerminalRejectParams.fromMap(Map<String, dynamic> json) => UTerminalRejectParams(
+    id: json["id"],
+    reason: json["reason"],
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "reason": reason,
   };
 }
 

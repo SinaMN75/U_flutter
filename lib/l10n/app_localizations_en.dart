@@ -211,6 +211,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get areYouSureYouWantToApproveAndRegisterThisTaxpayerInTheNamatSystem => 'Are you sure you want to approve and register this taxpayer in the Namat system?';
 
   @override
+  String get areYouSureYouWantToApproveAndRegisterThisTerminalInTheAvreenSystem => 'Are you sure you want to approve and register this terminal in the Avreen system?';
+
+  @override
   String get areYouSureYouWantToApproveThisUserWithAllOfTheirDocuments => 'Are you sure you want to approve this user with all of their documents?';
 
   @override
@@ -1094,6 +1097,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get downloadData => 'Download Data';
 
   @override
+  String get downloadPdf => 'Download PDF';
+
+  @override
   String get draft => 'Draft';
 
   @override
@@ -1739,6 +1745,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get hue => 'Hue';
+
+  @override
+  String get iHaveReadAndAcceptTheAgreement => 'I have read and accept the agreement';
 
   @override
   String get icon => 'Icon';
@@ -3653,6 +3662,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get submit => 'Submit';
 
   @override
+  String get submitRequest => 'Submit request';
+
+  @override
   String get submitted => 'Submitted';
 
   @override
@@ -4254,6 +4266,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get view => 'View';
 
   @override
+  String get viewAgreement => 'View agreement';
+
+  @override
   String get viewAll => 'View all';
 
   @override
@@ -4391,6 +4406,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get youHaveNotSubmittedAnyTaxpayerRequestYet => 'You have not submitted any taxpayer request yet.';
+
+  @override
+  String get youHaveToAcceptTheAgreementToContinue => 'You have to accept the agreement to continue';
 
   @override
   String get yourGoldBalanceIsNotEnough => 'Your gold balance is not enough';

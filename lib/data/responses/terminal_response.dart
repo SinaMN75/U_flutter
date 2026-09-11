@@ -76,6 +76,34 @@ class UTerminalResponse {
   };
 }
 
+class UTerminalAvailabilityResponse {
+  final String id;
+  final String serial;
+  final String? agreement;
+
+  UTerminalAvailabilityResponse({
+    required this.id,
+    required this.serial,
+    this.agreement,
+  });
+
+  factory UTerminalAvailabilityResponse.fromJson(String str) => UTerminalAvailabilityResponse.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UTerminalAvailabilityResponse.fromMap(Map<String, dynamic> json) => UTerminalAvailabilityResponse(
+    id: json["id"],
+    serial: json["serial"],
+    agreement: json["agreement"],
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "serial": serial,
+    "agreement": agreement,
+  };
+}
+
 class UTerminalReadSupportPasswordResponse {
   final String? password;
 

@@ -488,6 +488,12 @@ abstract class AppLocalizations {
   /// **'Are you sure you want to approve and register this taxpayer in the Namat system?'**
   String get areYouSureYouWantToApproveAndRegisterThisTaxpayerInTheNamatSystem;
 
+  /// No description provided for @areYouSureYouWantToApproveAndRegisterThisTerminalInTheAvreenSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to approve and register this terminal in the Avreen system?'**
+  String get areYouSureYouWantToApproveAndRegisterThisTerminalInTheAvreenSystem;
+
   /// No description provided for @areYouSureYouWantToApproveThisUserWithAllOfTheirDocuments.
   ///
   /// In en, this message translates to:
@@ -2186,6 +2192,12 @@ abstract class AppLocalizations {
   /// **'Download Data'**
   String get downloadData;
 
+  /// No description provided for @downloadPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Download PDF'**
+  String get downloadPdf;
+
   /// No description provided for @draft.
   ///
   /// In en, this message translates to:
@@ -3433,6 +3445,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hue'**
   String get hue;
+
+  /// No description provided for @iHaveReadAndAcceptTheAgreement.
+  ///
+  /// In en, this message translates to:
+  /// **'I have read and accept the agreement'**
+  String get iHaveReadAndAcceptTheAgreement;
 
   /// No description provided for @icon.
   ///
@@ -7226,6 +7244,12 @@ abstract class AppLocalizations {
   /// **'Submit'**
   String get submit;
 
+  /// No description provided for @submitRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit request'**
+  String get submitRequest;
+
   /// No description provided for @submitted.
   ///
   /// In en, this message translates to:
@@ -8408,6 +8432,12 @@ abstract class AppLocalizations {
   /// **'View'**
   String get view;
 
+  /// No description provided for @viewAgreement.
+  ///
+  /// In en, this message translates to:
+  /// **'View agreement'**
+  String get viewAgreement;
+
   /// No description provided for @viewAll.
   ///
   /// In en, this message translates to:
@@ -8677,6 +8707,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You have not submitted any taxpayer request yet.'**
   String get youHaveNotSubmittedAnyTaxpayerRequestYet;
+
+  /// No description provided for @youHaveToAcceptTheAgreementToContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'You have to accept the agreement to continue'**
+  String get youHaveToAcceptTheAgreementToContinue;
 
   /// No description provided for @yourGoldBalanceIsNotEnough.
   ///

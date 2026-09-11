@@ -211,6 +211,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get areYouSureYouWantToApproveAndRegisterThisTaxpayerInTheNamatSystem => 'آیا از تایید و ثبت این مودی در سامانه نما مطمئن هستید؟';
 
   @override
+  String get areYouSureYouWantToApproveAndRegisterThisTerminalInTheAvreenSystem => 'آیا از تایید و ثبت این ترمینال در سامانه آورین اطمینان دارید؟';
+
+  @override
   String get areYouSureYouWantToApproveThisUserWithAllOfTheirDocuments => 'آیا از تایید این کاربر با تمام مدارک آن اطمینان دارید؟';
 
   @override
@@ -1094,6 +1097,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get downloadData => 'دانلود اطلاعات';
 
   @override
+  String get downloadPdf => 'دانلود PDF';
+
+  @override
   String get draft => 'پیش‌نویس';
 
   @override
@@ -1739,6 +1745,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get hue => 'رنگ‌مایه';
+
+  @override
+  String get iHaveReadAndAcceptTheAgreement => 'قرارداد را خوانده‌ام و می‌پذیرم';
 
   @override
   String get icon => 'آیکون';
@@ -3653,6 +3662,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get submit => 'ثبت';
 
   @override
+  String get submitRequest => 'ثبت درخواست';
+
+  @override
   String get submitted => 'ثبت شد';
 
   @override
@@ -4253,6 +4265,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get view => 'مشاهده';
 
   @override
+  String get viewAgreement => 'مشاهده قرارداد';
+
+  @override
   String get viewAll => 'مشاهده همه';
 
   @override
@@ -4390,6 +4405,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get youHaveNotSubmittedAnyTaxpayerRequestYet => 'شما هنوز درخواستی برای مودی ثبت نکرده‌اید.';
+
+  @override
+  String get youHaveToAcceptTheAgreementToContinue => 'برای ادامه باید قرارداد را تایید کنید';
 
   @override
   String get yourGoldBalanceIsNotEnough => 'موجودی طلای شما کافی نیست';

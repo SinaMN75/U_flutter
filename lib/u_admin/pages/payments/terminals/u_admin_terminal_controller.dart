@@ -131,6 +131,75 @@ class UAdminTerminalController extends UBaseController {
     );
   }
 
+  void approve(UTerminalResponse i) => UNavigator.confirm(
+    title: U.s.approve,
+    message: U.s.areYouSureYouWantToApproveAndRegisterThisTerminalInTheAvreenSystem,
+    onConfirm: () {
+      ULoading.show();
+      UServices.terminal.approve(
+        p: UIdParams(id: i.id),
+        onOk: (UResponse<UTerminalResponse> r) {
+          ULoading.dismiss();
+          okCallback(r.message, read);
+        },
+        onError: (UEmptyResponse r) {
+          ULoading.dismiss();
+          errorCallBack(r.message, read);
+        },
+        onException: (String e) {
+          ULoading.dismiss();
+          UToast.error(message: e);
+        },
+      );
+    },
+  );
+
+  void reject({required UTerminalResponse i, String? reason}) {
+    ULoading.show();
+    UServices.terminal.reject(
+      p: UTerminalRejectParams(id: i.id, reason: reason),
+      onOk: (UEmptyResponse r) {
+        ULoading.dismiss();
+        okCallback(r.message, read);
+      },
+      onError: (UEmptyResponse r) {
+        ULoading.dismiss();
+        errorCallBack(r.message, read);
+      },
+      onException: (String e) {
+        ULoading.dismiss();
+        UToast.error(message: e);
+      },
+    );
+  }
+
+  void viewAgreement(UTerminalResponse i) {
+    ULoading.show();
+    UServices.terminal.read(
+      p: UTerminalReadParams(
+        ids: <String>[i.id],
+        selectorArgs: const TerminalSelectorArgs(agreement: true),
+      ),
+      onOk: (UResponse<List<UTerminalResponse>> r) {
+        ULoading.dismiss();
+        final String? agreement = r.result?.firstOrNull?.agreement;
+        if (agreement == null) {
+          UToast.error(message: U.s.noItemsFound(U.s.agreement));
+          return;
+        }
+        UNavigator.push(UAgreementViewer(html: agreement.fromBase64(), fileName: "agreement-${i.serial}.pdf"));
+      },
+      onError: (UEmptyResponse r) {
+        ULoading.dismiss();
+        UToast.error(message: r.message);
+      },
+      onException: (String e) {
+        ULoading.dismiss();
+        UToast.error(message: e);
+      },
+    );
+  }
+
   void supportPassword(UTerminalResponse i) {
     ULoading.show();
     UServices.terminal.readSupportPassword(

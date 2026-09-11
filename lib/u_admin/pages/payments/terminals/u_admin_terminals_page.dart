@@ -59,14 +59,23 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
   );
 
   Widget _statusChip(UTerminalResponse i) {
-    final Color color = i.terminalId.isNotNullOrEmpty() ? UAdminTheme.green : UAdminTheme.grey;
+    final (String label, Color color) = _status(i);
     return UContainer(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       color: color.withValues(alpha: 0.15),
       radius: 20,
-      child: UTextBodyMedium(i.terminalId ?? U.s.notAssigned, color: color, fontWeight: FontWeight.w600),
+      child: UTextBodyMedium(label, color: color, fontWeight: FontWeight.w600),
     );
   }
+
+  (String, Color) _status(UTerminalResponse i) {
+    if (i.tags.contains(TagTerminal.pendingApproval.number)) return (U.s.pendingApproval, UAdminTheme.orange);
+    if (i.tags.contains(TagTerminal.rejected.number)) return (U.s.rejected, UAdminTheme.red);
+    if (i.tags.contains(TagTerminal.approved.number) || i.terminalId.isNotNullOrEmpty()) return (i.terminalId ?? U.s.approved, UAdminTheme.green);
+    return (U.s.notAssigned, UAdminTheme.grey);
+  }
+
+  bool _isPending(UTerminalResponse i) => i.tags.contains(TagTerminal.pendingApproval.number);
 
   Widget _itemDesktop(UTerminalResponse i, int index) => URow(
     color: UAdminTable.rowColor(context, index),
@@ -101,14 +110,44 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
     handlers: UAdminActionHandlers<UTerminalResponse>(
       onEdit: _showEditDialog,
       onDelete: c.delete,
-      extras: <String, void Function(UTerminalResponse)>{"supportPassword": c.supportPassword},
+      extras: <String, void Function(UTerminalResponse)>{
+        "supportPassword": c.supportPassword,
+        "approve": c.approve,
+        "reject": _showRejectDialog,
+        "viewAgreement": c.viewAgreement,
+      },
     ),
     fallback: (UAdminActionContext<UTerminalResponse> ctx) => <UAdminAction>[
+      ctx.extra("approve", label: U.s.approve, icon: Icons.check_circle_outline, visible: _isPending(i), color: UAdminTheme.green),
+      ctx.extra("reject", label: U.s.reject, icon: Icons.cancel_outlined, visible: _isPending(i), destructive: true),
+      ctx.extra("viewAgreement", label: U.s.viewAgreement, icon: Icons.description_outlined, visible: i.merchantId.isNotNullOrEmpty()),
       ctx.extra("supportPassword", label: U.s.getSupportPassword, icon: Icons.password),
       ctx.edit(),
       ctx.delete(),
     ],
   );
+
+  void _showRejectDialog(UTerminalResponse i) {
+    final TextEditingController reason = TextEditingController();
+    UNavigator.dialog(
+      AlertDialog(
+        title: Text(U.s.reject),
+        content: SizedBox(
+          width: context.dialogWidth(),
+          child: UTextField(controller: reason, labelText: U.s.rejectionReason, lines: 3),
+        ),
+        actions: <Widget>[
+          UButtonSubmitCancel(
+            onSubmit: () {
+              UNavigator.back();
+              c.reject(i: i, reason: reason.text.nullIfEmpty());
+            },
+            onCancel: UNavigator.back,
+          ),
+        ],
+      ),
+    ).whenComplete(reason.dispose);
+  }
 
   void _showFilterDialog() => UNavigator.dialog(
     AlertDialog(
@@ -135,6 +174,9 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                   DropdownMenuItem<TagTerminal>(value: TagTerminal.deskCashless, child: Text(TagTerminal.deskCashless.localizedTitle)),
                   DropdownMenuItem<TagTerminal>(value: TagTerminal.atm, child: Text(TagTerminal.atm.localizedTitle)),
                   DropdownMenuItem<TagTerminal>(value: TagTerminal.wallCashless, child: Text(TagTerminal.wallCashless.localizedTitle)),
+                  DropdownMenuItem<TagTerminal>(value: TagTerminal.pendingApproval, child: Text(U.s.pendingApproval)),
+                  DropdownMenuItem<TagTerminal>(value: TagTerminal.approved, child: Text(U.s.approved)),
+                  DropdownMenuItem<TagTerminal>(value: TagTerminal.rejected, child: Text(U.s.rejected)),
                 ],
               ).pSymmetric(vertical: 6),
               UTextField(controller: c.serialFilter, labelText: U.s.serial, margin: const EdgeInsets.symmetric(vertical: 6)),

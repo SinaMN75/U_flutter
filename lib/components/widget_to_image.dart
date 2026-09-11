@@ -7,12 +7,14 @@ class WidgetToImageController {
 
   void bind(GlobalKey globalKey) => _globalKey = globalKey;
 
-  Future<Uint8List?> capture() async {
+  Future<Uint8List?> capture({double pixelRatio = 3, double maxPixelHeight = 8000}) async {
     if (_globalKey?.currentContext == null) return null;
 
     try {
       final RenderRepaintBoundary boundary = _globalKey!.currentContext!.findRenderObject()! as RenderRepaintBoundary;
-      final ui.Image image = await boundary.toImage(pixelRatio: 3);
+      final double height = boundary.size.height;
+      final double ratio = height > 0 && height * pixelRatio > maxPixelHeight ? maxPixelHeight / height : pixelRatio;
+      final ui.Image image = await boundary.toImage(pixelRatio: ratio);
       final ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
       return byteData?.buffer.asUint8List();
     } catch (e) {

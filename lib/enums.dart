@@ -561,7 +561,10 @@ enum TagTerminal with NumericIdentifiable {
   ava103("Ava 103", "Ava 103", 203),
   ava104("Ava 104", "Ava 104", 204),
   avaMax("Ava Max", "Ava Max", 205),
-  smartPeak("SmartPeak", "SmartPeak", 206);
+  smartPeak("SmartPeak", "SmartPeak", 206),
+  pendingApproval("در انتظار تایید", "Pending Approval", 301),
+  approved("تایید شده", "Approved", 302),
+  rejected("رد شده", "Rejected", 303);
 
   const TagTerminal(this.titleFa, this.titleEn, this.number);
 

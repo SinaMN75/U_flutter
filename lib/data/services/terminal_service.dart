@@ -91,6 +91,96 @@ class TerminalService {
     return result;
   }
 
+  Future<(UResponse<UTerminalAvailabilityResponse>?, UEmptyResponse?, String?)> checkAvailability({
+    required UTerminalCheckAvailabilityParams p,
+    required Function(UResponse<UTerminalAvailabilityResponse> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
+  }) async {
+    (UResponse<UTerminalAvailabilityResponse>?, UEmptyResponse?, String?) result = (null, null, null);
+    await UHttpClient.send(
+      method: "POST",
+      endpoint: "${U.baseUrl}/terminal/CheckAvailability",
+      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
+      onSuccess: (Response r) {
+        final UResponse<UTerminalAvailabilityResponse> ok = UResponse<UTerminalAvailabilityResponse>.fromJson(
+          r.body,
+          (dynamic i) => UTerminalAvailabilityResponse.fromMap(i),
+        );
+        result = (ok, null, null);
+        onOk?.call(ok);
+      },
+      onError: (Response r) {
+        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
+        result = (null, err, null);
+        onError?.call(err);
+      },
+      onException: (String e) {
+        result = (null, null, e);
+        onException?.call(e);
+      },
+    );
+    return result;
+  }
+
+  Future<(UResponse<UTerminalResponse>?, UEmptyResponse?, String?)> approve({
+    required UIdParams p,
+    required Function(UResponse<UTerminalResponse> r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
+  }) async {
+    (UResponse<UTerminalResponse>?, UEmptyResponse?, String?) result = (null, null, null);
+    await UHttpClient.send(
+      method: "POST",
+      endpoint: "${U.baseUrl}/terminal/Approve",
+      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
+      onSuccess: (Response r) {
+        final UResponse<UTerminalResponse> ok = UResponse<UTerminalResponse>.fromJson(r.body, (dynamic i) => UTerminalResponse.fromMap(i));
+        result = (ok, null, null);
+        onOk?.call(ok);
+      },
+      onError: (Response r) {
+        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
+        result = (null, err, null);
+        onError?.call(err);
+      },
+      onException: (String e) {
+        result = (null, null, e);
+        onException?.call(e);
+      },
+    );
+    return result;
+  }
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> reject({
+    required UTerminalRejectParams p,
+    required Function(UEmptyResponse r)? onOk,
+    required Function(UEmptyResponse e)? onError,
+    required Function(String e)? onException,
+  }) async {
+    (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
+    await UHttpClient.send(
+      method: "POST",
+      endpoint: "${U.baseUrl}/terminal/Reject",
+      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
+      onSuccess: (Response r) {
+        final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
+        result = (ok, null, null);
+        onOk?.call(ok);
+      },
+      onError: (Response r) {
+        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
+        result = (null, err, null);
+        onError?.call(err);
+      },
+      onException: (String e) {
+        result = (null, null, e);
+        onException?.call(e);
+      },
+    );
+    return result;
+  }
+
   Future<(UResponse<UTerminalResponse>?, UEmptyResponse?, String?)> assign({
     required UTerminalAssignParams p,
     required Function(UResponse<UTerminalResponse> r)? onOk,

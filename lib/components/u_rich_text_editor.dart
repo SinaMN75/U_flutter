@@ -757,11 +757,20 @@ abstract class UHtmlDocument {
         continue;
       }
       switch (node.tag) {
+        case "head":
+        case "title":
+        case "meta":
+        case "link":
+          break;
         case "p":
+          _addInlineBlock(node, UBlockType.paragraph, blocks);
         case "div":
         case "section":
         case "article":
-          _addInlineBlock(node, UBlockType.paragraph, blocks);
+          if (_hasBlockChild(node))
+            _walkTopLevel(node.children, blocks);
+          else
+            _addInlineBlock(node, UBlockType.paragraph, blocks);
         case "h1":
           _addInlineBlock(node, UBlockType.h1, blocks);
         case "h2":
@@ -799,6 +808,33 @@ abstract class UHtmlDocument {
       }
     }
   }
+
+  static const Set<String> _blockTags = <String>{
+    "p",
+    "div",
+    "section",
+    "article",
+    "header",
+    "footer",
+    "main",
+    "aside",
+    "h1",
+    "h2",
+    "h3",
+    "h4",
+    "h5",
+    "h6",
+    "blockquote",
+    "pre",
+    "hr",
+    "ul",
+    "ol",
+    "table",
+    "figure",
+    "img",
+  };
+
+  static bool _hasBlockChild(_Node node) => node.children.any((_Node n) => !n.isText && _blockTags.contains(n.tag));
 
   static String? _languageOf(_Node pre) {
     final _Node? code = _findFirst(pre, "code");
