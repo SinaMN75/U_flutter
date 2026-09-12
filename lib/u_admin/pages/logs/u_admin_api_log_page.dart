@@ -163,7 +163,7 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
                       shape: BoxShape.circle,
                     ),
                     const SizedBox(width: 6),
-                    UTextBodySmall(m.generatedAt.toJalaliDateTime(), color: UAdminTheme.green, fontWeight: FontWeight.w600).ltr(),
+                    UTextBodySmall(m.generatedAt.toJalaliDateTimeSeconds(), color: UAdminTheme.green, fontWeight: FontWeight.w600).ltr(),
                   ],
                 ),
               ),
@@ -420,7 +420,7 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
     onTap: () => _openDetail(i),
     leading: _methodChip(i.jsonData.method),
     title: UTextBodyMedium(i.path, maxLines: 1, overflow: TextOverflow.ellipsis).ltr(),
-    subtitle: UTextBodySmall(i.createdAt.toJalaliDateTime()).ltr(),
+    subtitle: UTextBodySmall(i.createdAt.toJalaliDateTimeSeconds()).ltr(),
     trailing: URow(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -548,7 +548,7 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
     spacing: 8,
     color: index.isOdd ? UAdminTheme.transparent : Theme.of(context).colorScheme.primary.withValues(alpha: 0.16),
     children: <Widget>[
-      UTextBodySmall(i.createdAt.toJalaliDateTime(), textAlign: .center).ltr().expanded(),
+      UTextBodySmall(i.createdAt.toJalaliDateTimeSeconds(), textAlign: .center).ltr().expanded(),
       _methodChip(i.jsonData.method).alignAtCenter().expanded(),
       _pathCell(i).expanded(flex: 3),
       _statusChip(i.statusCode).alignAtCenter().expanded(),
@@ -576,7 +576,7 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
             if (_hasException(i)) _exceptionBadge(),
           ],
         ),
-        subtitle: UTextBodySmall("${i.createdAt.toJalaliDateTime()} • ${i.durationMs} ms${i.ipAddress != null ? " • ${i.ipAddress}" : ""}").ltr(),
+        subtitle: UTextBodySmall("${i.createdAt.toJalaliDateTimeSeconds()} • ${i.durationMs} ms${i.ipAddress != null ? " • ${i.ipAddress}" : ""}").ltr(),
         trailing: const Icon(Icons.chevron_left_rounded),
       ),
     ),
@@ -896,7 +896,7 @@ class _ApiLogDetailView extends StatelessWidget {
   Widget _metaGrid(BuildContext context) => UColumn(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: <Widget>[
-      _metaItem(U.s.time, item.createdAt.toJalaliDateTime()),
+      _metaItem(U.s.time, item.createdAt.toJalaliDateTimeSeconds()),
       _metaItem(U.s.duration, "${item.durationMs} ms"),
       if (item.jsonData.userName.nullIfEmpty() != null) _metaItem(U.s.username, item.jsonData.userName!),
       if (item.jsonData.userFirstName.nullIfEmpty() != null) _metaItem(U.s.firstName, item.jsonData.userFirstName!),

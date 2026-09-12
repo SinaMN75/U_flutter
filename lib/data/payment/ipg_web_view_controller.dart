@@ -1,7 +1,5 @@
 part of "../data.dart";
 
-const List<String> _uIpgWebSources = <String>["u_ipg", "avahamrah_ipg"];
-
 class UIpgWebViewController {
   UIpgWebViewController({required this.trackingNumber}) {
     if (kIsWeb) _webMessageDispose = UWebMessage.listen(_onWebMessage);
@@ -28,7 +26,7 @@ class UIpgWebViewController {
   }
 
   void _onWebMessage(String origin, Map<String, dynamic> data) {
-    if (finished || !_uIpgWebSources.contains(data["source"])) return;
+    if (finished || !(data["source"] == "u_ipg")) return;
     _finish("${data["status"]}" == "0");
   }
 

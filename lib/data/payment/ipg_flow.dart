@@ -15,30 +15,63 @@ class UPaymentRequest {
 }
 
 abstract class UIpgFlow {
-  static Future<bool> pay({required double amount, TagTxn? tag, String? invoiceId}) async {
-    if (amount <= 0) {
-      UToast.error(message: U.s.invalidAmount);
-      return false;
-    }
+  static Future<bool> pay({
+    required double amount,
+    Function(bool)? onPaid,
+    TagTxn? tag,
+    String? invoiceId,
+    String? billId,
+    String? paymentId,
+  }) async {
     final Completer<bool> completer = Completer<bool>();
+    bool paid = false;
+    if (amount <= 0) UToast.error(message: U.s.invalidAmount);
     ULoading.show();
-    await UServices.ipg.pay(
-      p: UIpgSaleParams(amount: amount, tag: tag, invoiceId: invoiceId),
-      onOk: (UResponse<UIpgPayResponse> r) async {
-        ULoading.dismiss();
-        completer.complete(await _open(r));
-      },
-      onError: (UEmptyResponse e) {
-        ULoading.dismiss();
-        UToast.error(message: e.message);
-        completer.complete(false);
-      },
-      onException: (String e) {
-        ULoading.dismiss();
-        UToast.error(message: e);
-        completer.complete(false);
-      },
-    );
+    if (billId == null || paymentId == null) {
+      await UServices.ipg.pay(
+        p: UIpgSaleParams(amount: amount, tag: tag, invoiceId: invoiceId),
+        onOk: (UResponse<UIpgPayResponse> response) async {
+          ULoading.dismiss();
+          paid = await UNavigator.push<bool>(UIpgWebViewPage(url: response.result!.url, trackingNumber: response.result!.trackingNumber)) ?? false;
+          completer.complete(paid);
+          onPaid?.call(paid);
+        },
+        onError: (UEmptyResponse e) {
+          ULoading.dismiss();
+          UToast.error(message: e.message);
+          onPaid?.call(false);
+          completer.complete(false);
+        },
+        onException: (String e) {
+          ULoading.dismiss();
+          UToast.error(message: e);
+          onPaid?.call(false);
+          completer.complete(false);
+        },
+      );
+    } else {
+      await UServices.ipg.payBill(
+        p: UIpgBillParams(billId: billId, paymentId: paymentId),
+        onOk: (UResponse<UIpgPayResponse> response) async {
+          ULoading.dismiss();
+          paid = await UNavigator.push<bool>(UIpgWebViewPage(url: response.result!.url, trackingNumber: response.result!.trackingNumber)) ?? false;
+          completer.complete(paid);
+          onPaid?.call(paid);
+        },
+        onError: (UEmptyResponse e) {
+          ULoading.dismiss();
+          UToast.error(message: e.message);
+          onPaid?.call(false);
+          completer.complete(false);
+        },
+        onException: (String e) {
+          ULoading.dismiss();
+          UToast.error(message: e);
+          onPaid?.call(false);
+          completer.complete(false);
+        },
+      );
+    }
     return completer.future;
   }
 
@@ -57,37 +90,5 @@ abstract class UIpgFlow {
     );
     ULoading.dismiss();
     return url;
-  }
-
-  static Future<bool> payBill({required String billId, required String paymentId}) async {
-    final Completer<bool> completer = Completer<bool>();
-    ULoading.show();
-    await UServices.ipg.payBill(
-      p: UIpgBillParams(billId: billId, paymentId: paymentId),
-      onOk: (UResponse<UIpgPayResponse> r) async {
-        ULoading.dismiss();
-        completer.complete(await _open(r));
-      },
-      onError: (UEmptyResponse e) {
-        ULoading.dismiss();
-        UToast.error(message: e.message);
-        completer.complete(false);
-      },
-      onException: (String e) {
-        ULoading.dismiss();
-        UToast.error(message: e);
-        completer.complete(false);
-      },
-    );
-    return completer.future;
-  }
-
-  static Future<bool> _open(UResponse<UIpgPayResponse> r) async {
-    final UIpgPayResponse? data = r.result;
-    if (data == null || data.url.isEmpty) {
-      UToast.error(message: r.message);
-      return false;
-    }
-    return await UNavigator.push<bool>(UIpgWebViewPage(url: data.url, trackingNumber: data.trackingNumber)) ?? false;
   }
 }
