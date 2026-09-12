@@ -183,9 +183,17 @@ class ContentSelectorArgs {
 class TerminalSelectorArgs {
   final UserSelectorArgs? creator;
   final MerchantSelectorArgs? merchant;
+  final TerminalBrandSelectorArgs? terminalBrand;
+  final TerminalBrokerSelectorArgs? terminalBroker;
   final bool? agreement;
 
-  const TerminalSelectorArgs({this.creator, this.merchant, this.agreement});
+  const TerminalSelectorArgs({
+    this.creator,
+    this.merchant,
+    this.agreement,
+    this.terminalBrand,
+    this.terminalBroker,
+  });
 
   factory TerminalSelectorArgs.fromJson(String str) => TerminalSelectorArgs.fromMap(json.decode(str));
 
@@ -194,12 +202,16 @@ class TerminalSelectorArgs {
   factory TerminalSelectorArgs.fromMap(Map<String, dynamic> json) => TerminalSelectorArgs(
     creator: json["creator"] == null ? null : UserSelectorArgs.fromMap(json["creator"]),
     merchant: json["merchant"] == null ? null : MerchantSelectorArgs.fromMap(json["merchant"]),
+    terminalBrand: json["terminalBrand"] == null ? null : TerminalBrandSelectorArgs.fromMap(json["terminalBrand"]),
+    terminalBroker: json["terminalBroker"] == null ? null : TerminalBrokerSelectorArgs.fromMap(json["terminalBroker"]),
     agreement: json["agreement"],
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "creator": creator?.toMap(),
     "merchant": merchant?.toMap(),
+    "terminalBrand": terminalBrand?.toMap(),
+    "terminalBroker": terminalBroker?.toMap(),
     "agreement": agreement,
   };
 }
