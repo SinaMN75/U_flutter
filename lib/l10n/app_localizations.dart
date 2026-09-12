@@ -302,24 +302,6 @@ abstract class AppLocalizations {
   /// **'Agreement'**
   String get agreement;
 
-  /// No description provided for @agreementTemplate.
-  ///
-  /// In en, this message translates to:
-  /// **'Agreement Template'**
-  String get agreementTemplate;
-
-  /// No description provided for @agreementTemplates.
-  ///
-  /// In en, this message translates to:
-  /// **'Agreement Templates'**
-  String get agreementTemplates;
-
-  /// No description provided for @agreementTemplatesManagement.
-  ///
-  /// In en, this message translates to:
-  /// **'Agreement Templates Management'**
-  String get agreementTemplatesManagement;
-
   /// No description provided for @alignCenter.
   ///
   /// In en, this message translates to:
@@ -848,23 +830,11 @@ abstract class AppLocalizations {
   /// **'Blacklist ({count})'**
   String blacklistCount(Object count);
 
-  /// No description provided for @block.
-  ///
-  /// In en, this message translates to:
-  /// **'Block'**
-  String get block;
-
   /// No description provided for @blockedAmount.
   ///
   /// In en, this message translates to:
   /// **'Blocked amount'**
   String get blockedAmount;
-
-  /// No description provided for @blocks.
-  ///
-  /// In en, this message translates to:
-  /// **'Blocks'**
-  String get blocks;
 
   /// No description provided for @blog.
   ///
@@ -908,47 +878,11 @@ abstract class AppLocalizations {
   /// **'Book this room'**
   String get bookThisRoom;
 
-  /// No description provided for @brand.
-  ///
-  /// In en, this message translates to:
-  /// **'Brand'**
-  String get brand;
-
-  /// No description provided for @brandsManagement.
-  ///
-  /// In en, this message translates to:
-  /// **'Brands Management'**
-  String get brandsManagement;
-
   /// No description provided for @brightness.
   ///
   /// In en, this message translates to:
   /// **'Brightness'**
   String get brightness;
-
-  /// No description provided for @broker.
-  ///
-  /// In en, this message translates to:
-  /// **'Broker'**
-  String get broker;
-
-  /// No description provided for @brokerIsRequired.
-  ///
-  /// In en, this message translates to:
-  /// **'Broker is Required'**
-  String get brokerIsRequired;
-
-  /// No description provided for @brokers.
-  ///
-  /// In en, this message translates to:
-  /// **'Brokers'**
-  String get brokers;
-
-  /// No description provided for @brokersManagement.
-  ///
-  /// In en, this message translates to:
-  /// **'Brokers Management'**
-  String get brokersManagement;
 
   /// No description provided for @bufferHealth.
   ///
@@ -1051,12 +985,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Calculation breakdown'**
   String get calculationBreakdown;
-
-  /// No description provided for @callCenterPhoneNumber.
-  ///
-  /// In en, this message translates to:
-  /// **'Call Center Phone Number'**
-  String get callCenterPhoneNumber;
 
   /// No description provided for @callTheDorm.
   ///
@@ -1651,12 +1579,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Contract'**
   String get contract;
-
-  /// No description provided for @contractNumberSuffix.
-  ///
-  /// In en, this message translates to:
-  /// **'Contract Number Suffix'**
-  String get contractNumberSuffix;
 
   /// No description provided for @contractPeriod.
   ///
@@ -3350,12 +3272,6 @@ abstract class AppLocalizations {
   /// **'Header Row'**
   String get headerRow;
 
-  /// No description provided for @headerTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Header Title'**
-  String get headerTitle;
-
   /// No description provided for @heading1.
   ///
   /// In en, this message translates to:
@@ -3998,23 +3914,11 @@ abstract class AppLocalizations {
   /// **'Left to right'**
   String get leftToRight;
 
-  /// No description provided for @legacyTag.
-  ///
-  /// In en, this message translates to:
-  /// **'Legacy Tag'**
-  String get legacyTag;
-
   /// No description provided for @legalEntityType.
   ///
   /// In en, this message translates to:
   /// **'Legal Entity Type'**
   String get legalEntityType;
-
-  /// No description provided for @legalName.
-  ///
-  /// In en, this message translates to:
-  /// **'Legal Name'**
-  String get legalName;
 
   /// No description provided for @legalPerson.
   ///
@@ -4598,12 +4502,6 @@ abstract class AppLocalizations {
   /// **'National Code'**
   String get nationalCode;
 
-  /// No description provided for @nationalId.
-  ///
-  /// In en, this message translates to:
-  /// **'National ID'**
-  String get nationalId;
-
   /// No description provided for @nationalIdOptional.
   ///
   /// In en, this message translates to:
@@ -4735,12 +4633,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Nights'**
   String get nights;
-
-  /// No description provided for @no.
-  ///
-  /// In en, this message translates to:
-  /// **'No'**
-  String get no;
 
   /// No description provided for @noAccountsInThisProfile.
   ///
@@ -5990,35 +5882,11 @@ abstract class AppLocalizations {
   /// **'Provider account'**
   String get providerAccount;
 
-  /// No description provided for @providerAuthHeader.
-  ///
-  /// In en, this message translates to:
-  /// **'Provider Auth Header'**
-  String get providerAuthHeader;
-
   /// No description provided for @providerBalances.
   ///
   /// In en, this message translates to:
   /// **'Provider balances'**
   String get providerBalances;
-
-  /// No description provided for @providerBaseUrl.
-  ///
-  /// In en, this message translates to:
-  /// **'Provider Base URL'**
-  String get providerBaseUrl;
-
-  /// No description provided for @providerDefinitionTemplate.
-  ///
-  /// In en, this message translates to:
-  /// **'Provider Definition Template'**
-  String get providerDefinitionTemplate;
-
-  /// No description provided for @providerProject.
-  ///
-  /// In en, this message translates to:
-  /// **'Provider Project'**
-  String get providerProject;
 
   /// No description provided for @providerTransactions.
   ///
@@ -6464,18 +6332,6 @@ abstract class AppLocalizations {
   /// **'Reports and accounts'**
   String get reportsAndAccounts;
 
-  /// No description provided for @representativeName.
-  ///
-  /// In en, this message translates to:
-  /// **'Representative Name'**
-  String get representativeName;
-
-  /// No description provided for @representativeRole.
-  ///
-  /// In en, this message translates to:
-  /// **'Representative Role'**
-  String get representativeRole;
-
   /// No description provided for @request.
   ///
   /// In en, this message translates to:
@@ -6523,18 +6379,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Required documents'**
   String get requiredDocuments;
-
-  /// No description provided for @requiresImei.
-  ///
-  /// In en, this message translates to:
-  /// **'Requires IMEI'**
-  String get requiresImei;
-
-  /// No description provided for @requiresSimCardSerial.
-  ///
-  /// In en, this message translates to:
-  /// **'Requires SIM Card Serial'**
-  String get requiresSimCardSerial;
 
   /// No description provided for @resend.
   ///
@@ -6661,12 +6505,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Right to left'**
   String get rightToLeft;
-
-  /// No description provided for @role.
-  ///
-  /// In en, this message translates to:
-  /// **'Role'**
-  String get role;
 
   /// No description provided for @roles.
   ///
@@ -6950,12 +6788,6 @@ abstract class AppLocalizations {
   /// **'Select a user to manage their wallet'**
   String get selectAUserToManageTheirWallet;
 
-  /// No description provided for @selectBrand.
-  ///
-  /// In en, this message translates to:
-  /// **'Select Brand'**
-  String get selectBrand;
-
   /// No description provided for @selectCountry.
   ///
   /// In en, this message translates to:
@@ -7057,12 +6889,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Serial number'**
   String get serialNumber;
-
-  /// No description provided for @serviceProvider.
-  ///
-  /// In en, this message translates to:
-  /// **'Service Provider'**
-  String get serviceProvider;
 
   /// No description provided for @services.
   ///
@@ -7177,18 +7003,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Shuffle'**
   String get shuffle;
-
-  /// No description provided for @signatories.
-  ///
-  /// In en, this message translates to:
-  /// **'Signatories'**
-  String get signatories;
-
-  /// No description provided for @signatory.
-  ///
-  /// In en, this message translates to:
-  /// **'Signatory'**
-  String get signatory;
 
   /// No description provided for @signature.
   ///
@@ -7556,12 +7370,6 @@ abstract class AppLocalizations {
   /// **'Support Password'**
   String get supportPassword;
 
-  /// No description provided for @supportPhoneNumber.
-  ///
-  /// In en, this message translates to:
-  /// **'Support Phone Number'**
-  String get supportPhoneNumber;
-
   /// No description provided for @swipeOrTapTheCard.
   ///
   /// In en, this message translates to:
@@ -7718,18 +7526,6 @@ abstract class AppLocalizations {
   /// **'Terminal'**
   String get terminal;
 
-  /// No description provided for @terminalBrand.
-  ///
-  /// In en, this message translates to:
-  /// **'Terminal Brand'**
-  String get terminalBrand;
-
-  /// No description provided for @terminalBrands.
-  ///
-  /// In en, this message translates to:
-  /// **'Terminal Brands'**
-  String get terminalBrands;
-
   /// No description provided for @terminalId.
   ///
   /// In en, this message translates to:
@@ -7783,12 +7579,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Terms and conditions'**
   String get termsAndConditions;
-
-  /// No description provided for @text.
-  ///
-  /// In en, this message translates to:
-  /// **'Text'**
-  String get text;
 
   /// No description provided for @textBox.
   ///
@@ -7903,12 +7693,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Theme'**
   String get theme;
-
-  /// No description provided for @themeColor.
-  ///
-  /// In en, this message translates to:
-  /// **'Theme Color'**
-  String get themeColor;
 
   /// No description provided for @theNightRateAppliesBetweenFromAndTo.
   ///
@@ -8887,12 +8671,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Year'**
   String get year;
-
-  /// No description provided for @yes.
-  ///
-  /// In en, this message translates to:
-  /// **'Yes'**
-  String get yes;
 
   /// No description provided for @you.
   ///

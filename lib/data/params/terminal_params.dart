@@ -15,8 +15,6 @@ class UTerminalCreateParams {
   final String? insId;
   final String? agreement;
   final String? merchantId;
-  final String? brandId;
-  final String? brokerId;
 
   UTerminalCreateParams({
     required this.tags,
@@ -33,8 +31,6 @@ class UTerminalCreateParams {
     this.insId,
     this.agreement,
     this.merchantId,
-    this.brandId,
-    this.brokerId,
   });
 
   factory UTerminalCreateParams.fromJson(String str) => UTerminalCreateParams.fromMap(json.decode(str));
@@ -56,8 +52,6 @@ class UTerminalCreateParams {
     insId: json["insId"],
     agreement: json["agreement"],
     merchantId: json["merchantId"],
-    brandId: json["brandId"],
-    brokerId: json["brokerId"],
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -75,8 +69,6 @@ class UTerminalCreateParams {
     "insId": insId,
     "agreement": agreement,
     "merchantId": merchantId,
-    "brandId": brandId,
-    "brokerId": brokerId,
   };
 }
 
@@ -84,14 +76,12 @@ class UTerminalCheckAvailabilityParams {
   final String serial;
   final String? simCardSerial;
   final String? merchantId;
-  final String? brandId;
   final int? tag;
 
   UTerminalCheckAvailabilityParams({
     required this.serial,
     this.simCardSerial,
     this.merchantId,
-    this.brandId,
     this.tag,
   });
 
@@ -103,7 +93,6 @@ class UTerminalCheckAvailabilityParams {
     serial: json["serial"] as String,
     simCardSerial: json["simCardSerial"],
     merchantId: json["merchantId"],
-    brandId: json["brandId"],
     tag: json["tag"],
   );
 
@@ -111,7 +100,6 @@ class UTerminalCheckAvailabilityParams {
     "serial": serial,
     "simCardSerial": simCardSerial,
     "merchantId": merchantId,
-    "brandId": brandId,
     "tag": tag,
   };
 }
@@ -121,7 +109,6 @@ class UTerminalAssignParams {
   final String? simCardSerial;
   final String? merchantId;
   final String? title;
-  final String? brandId;
   final int? tag;
   final bool acceptedAgreement;
 
@@ -130,7 +117,6 @@ class UTerminalAssignParams {
     this.simCardSerial,
     this.merchantId,
     this.title,
-    this.brandId,
     this.tag,
     this.acceptedAgreement = false,
   });
@@ -144,7 +130,6 @@ class UTerminalAssignParams {
     simCardSerial: json["simCardSerial"],
     merchantId: json["merchantId"],
     title: json["title"],
-    brandId: json["brandId"],
     tag: json["tag"],
     acceptedAgreement: json["acceptedAgreement"] ?? false,
   );
@@ -154,7 +139,6 @@ class UTerminalAssignParams {
     "simCardSerial": simCardSerial,
     "merchantId": merchantId,
     "title": title,
-    "brandId": brandId,
     "tag": tag,
     "acceptedAgreement": acceptedAgreement,
   };
@@ -193,8 +177,6 @@ class UTerminalUpdateParams {
   final String? terminalId;
   final String? insId;
   final String? merchantId;
-  final String? brandId;
-  final String? brokerId;
   final List<int>? addTags;
   final List<int>? removeTags;
   final List<int>? tags;
@@ -213,8 +195,6 @@ class UTerminalUpdateParams {
     this.terminalId,
     this.insId,
     this.merchantId,
-    this.brandId,
-    this.brokerId,
     this.addTags,
     this.removeTags,
     this.tags,
@@ -238,8 +218,6 @@ class UTerminalUpdateParams {
     terminalId: json["terminalId"],
     insId: json["insId"],
     merchantId: json["merchantId"],
-    brandId: json["brandId"],
-    brokerId: json["brokerId"],
     addTags: json["addTags"] == null ? null : List<int>.from(json["addTags"]!.map((dynamic x) => x)),
     removeTags: json["removeTags"] == null ? null : List<int>.from(json["removeTags"]!.map((dynamic x) => x)),
     tags: json["tags"] == null ? null : List<int>.from(json["tags"]!.map((dynamic x) => x)),
@@ -259,8 +237,6 @@ class UTerminalUpdateParams {
     "terminalId": terminalId,
     "insId": insId,
     "merchantId": merchantId,
-    "brandId": brandId,
-    "brokerId": brokerId,
     "addTags": addTags == null ? null : List<dynamic>.from(addTags!.map((int x) => x)),
     "removeTags": removeTags == null ? null : List<dynamic>.from(removeTags!.map((int x) => x)),
     "tags": tags == null ? null : List<dynamic>.from(tags!.map((int x) => x)),
@@ -307,8 +283,6 @@ class UTerminalReadParams {
   final String? imei;
   final String? terminalId;
   final String? insId;
-  final String? brandId;
-  final String? brokerId;
 
   UTerminalReadParams({
     required this.selectorArgs,
@@ -327,8 +301,6 @@ class UTerminalReadParams {
     this.imei,
     this.terminalId,
     this.insId,
-    this.brandId,
-    this.brokerId,
   });
 
   factory UTerminalReadParams.fromJson(String str) => UTerminalReadParams.fromMap(json.decode(str));
@@ -352,8 +324,6 @@ class UTerminalReadParams {
     imei: json["imei"],
     terminalId: json["terminalId"],
     insId: json["insId"],
-    brandId: json["brandId"],
-    brokerId: json["brokerId"],
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -373,8 +343,6 @@ class UTerminalReadParams {
     "imei": imei,
     "terminalId": terminalId,
     "insId": insId,
-    "brandId": brandId,
-    "brokerId": brokerId,
   };
 }
 

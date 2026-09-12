@@ -171,27 +171,6 @@ abstract class UAdminModules {
     roles: roles,
   );
 
-  static UAdminModule brokers({List<TagUser>? roles, UAdminActionBuilder<UBrokerResponse>? actions}) => UAdminModule(
-    title: U.s.brokers,
-    icon: Icons.apartment_rounded,
-    page: () => UAdminBrokersPage(actions: actions),
-    roles: roles,
-  );
-
-  static UAdminModule terminalBrands({List<TagUser>? roles, UAdminActionBuilder<UTerminalBrandResponse>? actions}) => UAdminModule(
-    title: U.s.terminalBrands,
-    icon: Icons.devices_other_rounded,
-    page: () => UAdminTerminalBrandsPage(actions: actions),
-    roles: roles,
-  );
-
-  static UAdminModule agreementTemplates({List<TagUser>? roles, UAdminActionBuilder<UAgreementTemplateResponse>? actions}) => UAdminModule(
-    title: U.s.agreementTemplates,
-    icon: Icons.description_outlined,
-    page: () => UAdminAgreementTemplatesPage(actions: actions),
-    roles: roles,
-  );
-
   static UAdminModule moadis({List<TagUser>? roles, UAdminActionBuilder<UMoadiResponse>? actions}) => UAdminModule(
     title: U.s.taxpayerRequests,
     icon: Icons.receipt_long_rounded,

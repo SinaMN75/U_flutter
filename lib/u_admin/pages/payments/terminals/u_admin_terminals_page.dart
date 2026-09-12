@@ -45,10 +45,10 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
     emptyText: U.s.noItemsFound(U.s.terminals),
     desktopHeader: () => UAdminTable.header(
       <String>[
-        U.s.brand,
-        U.s.broker,
+        U.s.type,
         U.s.serial,
         U.s.simCardSerial,
+        U.s.imei,
         U.s.merchant,
         U.s.terminalId,
         U.s.createdAt,
@@ -82,10 +82,10 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
     color: UAdminTable.rowColor(context, index),
     padding: UAdminTable.rowPadding,
     children: <Widget>[
-      UAdminTable.cell(i.brand?.title ?? TagTerminal.values.titlesFromNumbers(i.tags).join(" , ")),
-      UAdminTable.cell(i.broker?.title ?? "-"),
+      UAdminTable.cell(TagTerminal.values.titlesFromNumbers(i.tags).join(" , ")),
       UAdminTable.cell(i.serial),
       UAdminTable.cell(i.simCardSerial ?? "-"),
+      UAdminTable.cell(i.imei ?? U.s.noMerchantSelected),
       UAdminTable.cell(i.merchant?.title ?? U.s.noMerchantSelected),
       _statusChip(i).alignAtCenter().expanded(),
       UAdminTable.cell(i.createdAt.toJalaliDate()),
@@ -99,8 +99,6 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
     badge: _statusChip(i),
     trailing: _menu(i),
     fields: <UAdminField>[
-      UAdminField(U.s.brand, i.brand?.title ?? "-"),
-      UAdminField(U.s.broker, i.broker?.title ?? "-"),
       UAdminField(U.s.simCardSerial, i.simCardSerial ?? "-"),
       UAdminField(U.s.merchant, i.merchant?.title ?? U.s.noMerchantSelected),
       UAdminField(U.s.createdAt, i.createdAt.toJalaliDate()),
@@ -170,22 +168,16 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                   DropdownMenuItem<TagOrderBy>(value: TagOrderBy.createdAtDescending, child: Text(TagOrderBy.createdAtDescending.localizedTitle)),
                 ],
               ).pSymmetric(vertical: 6),
-              UDropDownField<UTerminalBrandResponse?>(
-                initialValue: c.brandFilter.value,
-                labelText: U.s.brand,
-                onChanged: c.brandFilter.call,
-                items: <DropdownMenuItem<UTerminalBrandResponse?>>[
-                  DropdownMenuItem<UTerminalBrandResponse?>(child: Text(U.s.all)),
-                  ...c.brands.map(
-                    (UTerminalBrandResponse b) => DropdownMenuItem<UTerminalBrandResponse?>(value: b, child: Text(b.title)),
-                  ),
-                ],
-              ).pSymmetric(vertical: 6),
               UDropDownField<TagTerminal?>(
                 initialValue: c.typeFilter.value,
-                labelText: U.s.status,
                 onChanged: c.typeFilter.call,
                 items: <DropdownMenuItem<TagTerminal>>[
+                  DropdownMenuItem<TagTerminal>(value: TagTerminal.ava101, child: Text(TagTerminal.ava101.localizedTitle)),
+                  DropdownMenuItem<TagTerminal>(value: TagTerminal.ava102, child: Text(TagTerminal.ava102.localizedTitle)),
+                  DropdownMenuItem<TagTerminal>(value: TagTerminal.ava103, child: Text(TagTerminal.ava103.localizedTitle)),
+                  DropdownMenuItem<TagTerminal>(value: TagTerminal.ava104, child: Text(TagTerminal.ava104.localizedTitle)),
+                  DropdownMenuItem<TagTerminal>(value: TagTerminal.avaMax, child: Text(TagTerminal.avaMax.localizedTitle)),
+                  DropdownMenuItem<TagTerminal>(value: TagTerminal.smartPeak, child: Text(TagTerminal.smartPeak.localizedTitle)),
                   DropdownMenuItem<TagTerminal>(value: TagTerminal.pendingApproval, child: Text(TagTerminal.pendingApproval.localizedTitle)),
                   DropdownMenuItem<TagTerminal>(value: TagTerminal.approved, child: Text(TagTerminal.approved.localizedTitle)),
                   DropdownMenuItem<TagTerminal>(value: TagTerminal.rejected, child: Text(TagTerminal.rejected.localizedTitle)),
@@ -239,7 +231,7 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
     final TextEditingController simCardSerial = TextEditingController();
     final TextEditingController imei = TextEditingController();
     final TextEditingController terminalId = TextEditingController();
-    final Rxn<UTerminalBrandResponse> brand = Rxn<UTerminalBrandResponse>(c.brands.firstOrNull);
+    final Rx<TagTerminal> type = TagTerminal.ava101.obs;
 
     UNavigator.dialog(
       AlertDialog(
@@ -266,34 +258,32 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                   ),
                   UTextField(controller: simCardSerial, labelText: U.s.simCardSerial, margin: const EdgeInsets.symmetric(vertical: 6)),
                   UTextField(controller: imei, labelText: U.s.imei, margin: const EdgeInsets.symmetric(vertical: 6)),
-                  UDropDownField<UTerminalBrandResponse?>(
-                    initialValue: brand.value,
-                    labelText: U.s.brand,
-                    onChanged: brand.call,
-                    items: c.brands
-                        .map((UTerminalBrandResponse b) => DropdownMenuItem<UTerminalBrandResponse?>(value: b, child: Text(b.title)))
-                        .toList(),
+                  UDropDownField<TagTerminal>(
+                    initialValue: type.value,
+                    onChanged: type.call,
+                    items: <DropdownMenuItem<TagTerminal>>[
+                      DropdownMenuItem<TagTerminal>(value: TagTerminal.ava101, child: Text(TagTerminal.ava101.localizedTitle)),
+                      DropdownMenuItem<TagTerminal>(value: TagTerminal.ava102, child: Text(TagTerminal.ava102.localizedTitle)),
+                      DropdownMenuItem<TagTerminal>(value: TagTerminal.ava103, child: Text(TagTerminal.ava103.localizedTitle)),
+                      DropdownMenuItem<TagTerminal>(value: TagTerminal.ava104, child: Text(TagTerminal.ava104.localizedTitle)),
+                      DropdownMenuItem<TagTerminal>(value: TagTerminal.avaMax, child: Text(TagTerminal.avaMax.localizedTitle)),
+                      DropdownMenuItem<TagTerminal>(value: TagTerminal.smartPeak, child: Text(TagTerminal.smartPeak.localizedTitle)),
+                    ],
                   ),
                   const SizedBox(height: 20),
                   UButtonSubmitCancel(
                     onSubmit: () => UValidators.validateForm(
                       key: formKey,
                       action: () {
-                        if (brand.value == null) {
-                          UToast.error(message: U.s.selectBrand);
-                          return;
-                        }
                         UNavigator.back();
                         c.create(
                           p: UTerminalCreateParams(
-                            tags: brand.value!.jsonData.legacyTag == null ? <int>[] : <int>[brand.value!.jsonData.legacyTag!],
+                            tags: <int>[type.value.number],
                             serial: serial.text.trim(),
                             simCardNumber: simCardNumber.text.nullIfEmpty(),
                             simCardSerial: simCardSerial.text.nullIfEmpty(),
                             imei: imei.text.nullIfEmpty(),
                             terminalId: terminalId.text.nullIfEmpty(),
-                            brandId: brand.value!.id,
-                            brokerId: brand.value!.brokerId,
                           ),
                         );
                       },
@@ -315,7 +305,6 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
     final TextEditingController simCardSerial = TextEditingController(text: i.simCardSerial);
     final TextEditingController imei = TextEditingController(text: i.imei);
     final TextEditingController terminalId = TextEditingController(text: i.terminalId);
-    final Rxn<UTerminalBrandResponse> brand = Rxn<UTerminalBrandResponse>(c.brands.firstWhereOrNull((UTerminalBrandResponse b) => b.id == i.brandId));
 
     UNavigator.dialog(
       AlertDialog(
@@ -343,14 +332,6 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                   UTextField(controller: simCardSerial, labelText: U.s.simCardSerial, margin: const EdgeInsets.symmetric(vertical: 6)),
                   UTextField(controller: imei, labelText: U.s.imei, margin: const EdgeInsets.symmetric(vertical: 6)),
                   UTextField(controller: terminalId, labelText: U.s.terminalId, margin: const EdgeInsets.symmetric(vertical: 6)),
-                  UDropDownField<UTerminalBrandResponse?>(
-                    initialValue: c.brands.firstWhereOrNull((UTerminalBrandResponse b) => b.id == i.brandId),
-                    labelText: U.s.brand,
-                    onChanged: brand.call,
-                    items: c.brands
-                        .map((UTerminalBrandResponse b) => DropdownMenuItem<UTerminalBrandResponse?>(value: b, child: Text(b.title)))
-                        .toList(),
-                  ),
                   const SizedBox(height: 20),
                   UButtonSubmitCancel(
                     onSubmit: () => UValidators.validateForm(
@@ -365,7 +346,6 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                             simCardSerial: simCardSerial.text.nullIfEmpty(),
                             imei: imei.text.nullIfEmpty(),
                             terminalId: terminalId.text.nullIfEmpty(),
-                            brandId: brand.value?.id,
                           ),
                         );
                       },

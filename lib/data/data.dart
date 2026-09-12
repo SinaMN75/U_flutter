@@ -16,8 +16,6 @@ part "params/base_params.dart";
 
 part "params/blog_params.dart";
 
-part "params/broker_params.dart";
-
 part "params/category_params.dart";
 
 part "params/charge_internet_params.dart";
@@ -132,8 +130,6 @@ part "responses/product_response.dart";
 
 part "responses/sim_response.dart";
 
-part "responses/broker_response.dart";
-
 part "responses/terminal_response.dart";
 
 part "responses/ticket_response.dart";
@@ -202,8 +198,6 @@ part "services/product_service.dart";
 
 part "services/sim_service.dart";
 
-part "services/broker_service.dart";
-
 part "services/terminal_service.dart";
 
 part "services/ticket_service.dart";
@@ -243,7 +237,6 @@ class UServices {
   static InquiryService inquiry = InquiryService();
   static VehicleService vehicle = VehicleService();
   static TerminalService terminal = TerminalService();
-  static BrokerService broker = BrokerService();
   static BankAccountService bankAccount = BankAccountService();
   static NotificationService notification = NotificationService();
   static ChargeInternetService chargeInternet = ChargeInternetService();

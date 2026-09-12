@@ -118,15 +118,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get agreement => 'قرارداد';
 
   @override
-  String get agreementTemplate => 'قالب قرارداد';
-
-  @override
-  String get agreementTemplates => 'قالب‌های قرارداد';
-
-  @override
-  String get agreementTemplatesManagement => 'مدیریت قالب‌های قرارداد';
-
-  @override
   String get alignCenter => 'وسط‌چین';
 
   @override
@@ -395,13 +386,7 @@ class AppLocalizationsFa extends AppLocalizations {
   }
 
   @override
-  String get block => 'بلوک';
-
-  @override
   String get blockedAmount => 'مبلغ مسدود';
-
-  @override
-  String get blocks => 'بلوک‌ها';
 
   @override
   String get blog => 'وبلاگ';
@@ -425,25 +410,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get bookThisRoom => 'رزرو این اتاق';
 
   @override
-  String get brand => 'برند';
-
-  @override
-  String get brandsManagement => 'مدیریت برندها';
-
-  @override
   String get brightness => 'روشنایی';
-
-  @override
-  String get broker => 'کارگزار';
-
-  @override
-  String get brokerIsRequired => 'کارگزار الزامی است';
-
-  @override
-  String get brokers => 'کارگزاران';
-
-  @override
-  String get brokersManagement => 'مدیریت کارگزاران';
 
   @override
   String get bufferHealth => 'وضعیت بافر';
@@ -497,9 +464,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get calculationBreakdown => 'ریز محاسبه';
-
-  @override
-  String get callCenterPhoneNumber => 'شماره مرکز تماس';
 
   @override
   String get callTheDorm => 'تماس با خوابگاه';
@@ -797,9 +761,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get contract => 'قرارداد';
-
-  @override
-  String get contractNumberSuffix => 'پسوند شماره قرارداد';
 
   @override
   String get contractPeriod => 'بازه قرارداد';
@@ -1695,9 +1656,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get headerRow => 'ردیف سرصفحه';
 
   @override
-  String get headerTitle => 'عنوان سربرگ';
-
-  @override
   String get heading1 => 'عنوان ۱';
 
   @override
@@ -2023,13 +1981,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get leftToRight => 'چپ به راست';
 
   @override
-  String get legacyTag => 'تگ قدیمی';
-
-  @override
   String get legalEntityType => 'نوع شخصیت';
-
-  @override
-  String get legalName => 'نام حقوقی';
 
   @override
   String get legalPerson => 'حقوقی';
@@ -2323,9 +2275,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get nationalCode => 'کد ملی';
 
   @override
-  String get nationalId => 'شناسه ملی';
-
-  @override
   String get nationalIdOptional => 'کد ملی (اختیاری)';
 
   @override
@@ -2390,9 +2339,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get nights => 'شب';
-
-  @override
-  String get no => 'خیر';
 
   @override
   String get noAccountsInThisProfile => 'حسابی در این پرونده نیست';
@@ -3025,19 +2971,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get providerAccount => 'حساب سرویس‌دهنده';
 
   @override
-  String get providerAuthHeader => 'هدر احراز هویت سرویس';
-
-  @override
   String get providerBalances => 'موجودی سرویس‌دهنده';
-
-  @override
-  String get providerBaseUrl => 'آدرس سرویس';
-
-  @override
-  String get providerDefinitionTemplate => 'قالب تعریف سرویس';
-
-  @override
-  String get providerProject => 'نام پروژه در سرویس';
 
   @override
   String get providerTransactions => 'تراکنش‌های سرویس‌دهنده';
@@ -3264,12 +3198,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get reportsAndAccounts => 'گزارش و حساب';
 
   @override
-  String get representativeName => 'نام نماینده';
-
-  @override
-  String get representativeRole => 'سمت نماینده';
-
-  @override
   String get request => 'درخواست';
 
   @override
@@ -3292,12 +3220,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get requiredDocuments => 'مدارک لازم';
-
-  @override
-  String get requiresImei => 'نیاز به کد IMEI دارد';
-
-  @override
-  String get requiresSimCardSerial => 'نیاز به سریال سیم کارت دارد';
 
   @override
   String get resend => 'ارسال دوباره';
@@ -3363,9 +3285,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get rightToLeft => 'راست به چپ';
-
-  @override
-  String get role => 'سمت';
 
   @override
   String get roles => 'نقش‌ها';
@@ -3511,9 +3430,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get selectAUserToManageTheirWallet => 'برای مدیریت کیف پول، کاربری را انتخاب کنید';
 
   @override
-  String get selectBrand => 'انتخاب برند';
-
-  @override
   String get selectCountry => 'انتخاب کشور';
 
   @override
@@ -3565,9 +3481,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get serialNumber => 'شماره سریال';
-
-  @override
-  String get serviceProvider => 'سرویس دهنده';
 
   @override
   String get services => 'خدمات';
@@ -3625,12 +3538,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get shuffle => 'تصادفی';
-
-  @override
-  String get signatories => 'امضاکنندگان';
-
-  @override
-  String get signatory => 'امضاکننده';
 
   @override
   String get signature => 'امضا';
@@ -3818,9 +3725,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get supportPassword => 'رمز پشتیبانی';
 
   @override
-  String get supportPhoneNumber => 'شماره پشتیبانی';
-
-  @override
   String get swipeOrTapTheCard => 'کارت را بکشید یا بزنید';
 
   @override
@@ -3899,12 +3803,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get terminal => 'پایانه';
 
   @override
-  String get terminalBrand => 'برند دستگاه';
-
-  @override
-  String get terminalBrands => 'برندهای دستگاه';
-
-  @override
   String get terminalId => 'شناسه پایانه';
 
   @override
@@ -3930,9 +3828,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get termsAndConditions => 'قوانین و مقررات';
-
-  @override
-  String get text => 'متن';
 
   @override
   String get textBox => 'کادر متن';
@@ -3994,9 +3889,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get theme => 'پوسته';
-
-  @override
-  String get themeColor => 'رنگ سازمانی';
 
   @override
   String theNightRateAppliesBetweenFromAndTo(Object from, Object to) {
@@ -4493,9 +4385,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get year => 'سال';
-
-  @override
-  String get yes => 'بله';
 
   @override
   String get you => 'شما';
