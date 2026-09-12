@@ -1035,6 +1035,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get deviceSerial => 'Device serial';
 
   @override
+  String get directTopUp => 'Direct top up';
+
+  @override
   String get directions => 'Directions';
 
   @override
@@ -2225,6 +2228,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get moveUp => 'Move Up';
+
+  @override
+  String get multiplexedPayment => 'Multiplexed payment';
 
   @override
   String get mute => 'Mute';

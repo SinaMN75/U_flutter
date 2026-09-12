@@ -1035,6 +1035,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get deviceSerial => 'سریال دستگاه';
 
   @override
+  String get directTopUp => 'شارژ مستقیم';
+
+  @override
   String get directions => 'مسیریابی';
 
   @override
@@ -2225,6 +2228,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get moveUp => 'انتقال به بالا';
+
+  @override
+  String get multiplexedPayment => 'پرداخت تسهیمی';
 
   @override
   String get mute => 'بی‌صدا';

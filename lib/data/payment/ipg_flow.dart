@@ -26,6 +26,9 @@ abstract class UIpgFlow {
     String? invoiceId,
     String? billId,
     String? paymentId,
+    String? chargeMobileNumber,
+    TagSimOperator? topUpType,
+    List<UIpgMultiplexedAccountParams>? multiplexedAccounts,
     UReceipt? receipt,
     bool showReceipt = true,
   }) async {
@@ -33,61 +36,58 @@ abstract class UIpgFlow {
     bool paid = false;
     if (amount <= 0) UToast.error(message: U.s.invalidAmount);
     ULoading.show();
-    if (billId == null || paymentId == null) {
-      await UServices.ipg.pay(
-        p: UIpgSaleParams(amount: amount, tag: tag, invoiceId: invoiceId),
-        onOk: (UResponse<UIpgPayResponse> response) async {
-          ULoading.dismiss();
-          final String trackingNumber = response.result!.trackingNumber;
-          paid = await UNavigator.push<bool>(UIpgWebViewPage(url: response.result!.url, trackingNumber: trackingNumber)) ?? false;
-          if (paid && showReceipt) await _showReceipt(amount: amount, trackingNumber: trackingNumber, receipt: receipt);
-          completer.complete(paid);
-          onPaid?.call(paid);
-        },
-        onError: (UEmptyResponse e) {
-          ULoading.dismiss();
-          UToast.error(message: e.message);
-          onPaid?.call(false);
-          completer.complete(false);
-        },
-        onException: (String e) {
-          ULoading.dismiss();
-          UToast.error(message: e);
-          onPaid?.call(false);
-          completer.complete(false);
-        },
-      );
-    } else {
-      await UServices.ipg.payBill(
-        p: UIpgBillParams(billId: billId, paymentId: paymentId),
-        onOk: (UResponse<UIpgPayResponse> response) async {
-          ULoading.dismiss();
-          final String trackingNumber = response.result!.trackingNumber;
-          paid = await UNavigator.push<bool>(UIpgWebViewPage(url: response.result!.url, trackingNumber: trackingNumber)) ?? false;
-          if (paid && showReceipt) await _showReceipt(amount: amount, trackingNumber: trackingNumber, receipt: receipt);
-          completer.complete(paid);
-          onPaid?.call(paid);
-        },
-        onError: (UEmptyResponse e) {
-          ULoading.dismiss();
-          UToast.error(message: e.message);
-          onPaid?.call(false);
-          completer.complete(false);
-        },
-        onException: (String e) {
-          ULoading.dismiss();
-          UToast.error(message: e);
-          onPaid?.call(false);
-          completer.complete(false);
-        },
-      );
-    }
+    await UServices.ipg.pay(
+      p: UIpgPayParams(
+        amount: amount,
+        tag: tag,
+        invoiceId: invoiceId,
+        billId: billId,
+        paymentId: paymentId,
+        chargeMobileNumber: chargeMobileNumber,
+        topUpType: topUpType,
+        multiplexedAccounts: multiplexedAccounts,
+      ),
+      onOk: (UResponse<UIpgPayResponse> response) async {
+        ULoading.dismiss();
+        final String trackingNumber = response.result!.trackingNumber;
+        paid = await UNavigator.push<bool>(UIpgWebViewPage(url: response.result!.url, trackingNumber: trackingNumber)) ?? false;
+        if (paid && showReceipt) {
+          await _showReceipt(
+            amount: amount,
+            trackingNumber: trackingNumber,
+            receipt: receipt,
+            title: _title(billId: billId, chargeMobileNumber: chargeMobileNumber, multiplexedAccounts: multiplexedAccounts),
+          );
+        }
+        completer.complete(paid);
+        onPaid?.call(paid);
+      },
+      onError: (UEmptyResponse e) {
+        ULoading.dismiss();
+        UToast.error(message: e.message);
+        onPaid?.call(false);
+        completer.complete(false);
+      },
+      onException: (String e) {
+        ULoading.dismiss();
+        UToast.error(message: e);
+        onPaid?.call(false);
+        completer.complete(false);
+      },
+    );
     return completer.future;
   }
 
-  static Future<void> _showReceipt({required double amount, required String trackingNumber, UReceipt? receipt}) => UReceiptSheet.show(
+  static String _title({String? billId, String? chargeMobileNumber, List<UIpgMultiplexedAccountParams>? multiplexedAccounts}) {
+    if (billId != null) return U.s.billPayment;
+    if (chargeMobileNumber != null) return U.s.directTopUp;
+    if (multiplexedAccounts != null && multiplexedAccounts.isNotEmpty) return U.s.multiplexedPayment;
+    return U.s.chargeWallet;
+  }
+
+  static Future<void> _showReceipt({required double amount, required String trackingNumber, required String title, UReceipt? receipt}) => UReceiptSheet.show(
     UReceipt(
-      title: receipt?.title ?? U.s.chargeWallet,
+      title: receipt?.title ?? title,
       amount: receipt?.amount ?? amount.toInt(),
       icon: receipt?.icon ?? Icons.add_card_outlined,
       method: receipt?.method ?? U.s.onlinePayment,
@@ -105,7 +105,7 @@ abstract class UIpgFlow {
     ULoading.show();
     String? url;
     await UServices.ipg.pay(
-      p: UIpgSaleParams(amount: amount, tag: tag, invoiceId: invoiceId),
+      p: UIpgPayParams(amount: amount, tag: tag, invoiceId: invoiceId),
       onOk: (UResponse<UIpgPayResponse> r) => url = r.result?.url,
       onError: (UEmptyResponse e) => UToast.error(message: e.message),
       onException: (String e) => UToast.error(message: e),

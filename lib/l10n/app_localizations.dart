@@ -2072,6 +2072,12 @@ abstract class AppLocalizations {
   /// **'Device serial'**
   String get deviceSerial;
 
+  /// No description provided for @directTopUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct top up'**
+  String get directTopUp;
+
   /// No description provided for @directions.
   ///
   /// In en, this message translates to:
@@ -4405,6 +4411,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Move Up'**
   String get moveUp;
+
+  /// No description provided for @multiplexedPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Multiplexed payment'**
+  String get multiplexedPayment;
 
   /// No description provided for @mute.
   ///
