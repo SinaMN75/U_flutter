@@ -11,10 +11,24 @@ class UAdminTerminalController extends UBaseController {
   final TextEditingController fromCreatedController = TextEditingController();
   final TextEditingController toCreatedController = TextEditingController();
   Rxn<TagTerminal> typeFilter = Rxn<TagTerminal>();
+  Rxn<UTerminalBrandResponse> brandFilter = Rxn<UTerminalBrandResponse>();
+  List<UTerminalBrandResponse> brands = <UTerminalBrandResponse>[];
 
   Future<void> init({UMerchantResponse? merchant}) async {
     this.merchant = merchant;
+    brands = await fetchBrands();
     await read();
+  }
+
+  Future<List<UTerminalBrandResponse>> fetchBrands() async {
+    final Completer<List<UTerminalBrandResponse>> completer = Completer<List<UTerminalBrandResponse>>();
+    await UServices.broker.readBrand(
+      p: UTerminalBrandReadParams(pageSize: 200, selectorArgs: const TerminalBrandSelectorArgs(broker: true)),
+      onOk: (UResponse<List<UTerminalBrandResponse>> r) => completer.complete(r.result ?? <UTerminalBrandResponse>[]),
+      onError: (_) => completer.complete(<UTerminalBrandResponse>[]),
+      onException: (_) => completer.complete(<UTerminalBrandResponse>[]),
+    );
+    return completer.future;
   }
 
   Future<void> read() async {
@@ -27,10 +41,11 @@ class UAdminTerminalController extends UBaseController {
         serial: serialFilter.text.nullIfEmpty(),
         creatorId: creatorIdFilter.text.nullIfEmpty(),
         tags: typeFilter.value == null ? null : <int>[typeFilter.value!.number],
+        brandId: brandFilter.value?.id,
         fromCreatedAt: fromCreatedAt,
         toCreatedAt: toCreatedAt,
         orderBy: tagOrderBy.value.number,
-        selectorArgs: const TerminalSelectorArgs(merchant: MerchantSelectorArgs()),
+        selectorArgs: const TerminalSelectorArgs(merchant: MerchantSelectorArgs(), brand: TerminalBrandSelectorArgs(), broker: true),
       ),
       onOk: (UResponse<List<UTerminalResponse>> r) {
         list = r.result ?? <UTerminalResponse>[];
@@ -52,6 +67,7 @@ class UAdminTerminalController extends UBaseController {
     fromCreatedController.clear();
     toCreatedController.clear();
     typeFilter(null);
+    brandFilter(null);
     reloadFirstPage(read);
   }
 

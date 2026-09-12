@@ -16,6 +16,10 @@ class UTerminalResponse {
   final String? creatorId;
   final List<String> adminUserIds;
   final String? merchantId;
+  final String? brandId;
+  final String? brokerId;
+  final UTerminalBrandResponse? brand;
+  final UBrokerBriefResponse? broker;
 
   UTerminalResponse({
     required this.tags,
@@ -33,6 +37,10 @@ class UTerminalResponse {
     this.creator,
     this.creatorId,
     this.merchantId,
+    this.brandId,
+    this.brokerId,
+    this.brand,
+    this.broker,
   });
 
   factory UTerminalResponse.fromJson(String str) => UTerminalResponse.fromMap(json.decode(str));
@@ -55,6 +63,10 @@ class UTerminalResponse {
     creatorId: json["creatorId"],
     adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
     merchantId: json["merchantId"],
+    brandId: json["brandId"],
+    brokerId: json["brokerId"],
+    brand: json["brand"] == null ? null : UTerminalBrandResponse.fromMap(json["brand"]),
+    broker: json["broker"] == null ? null : UBrokerBriefResponse.fromMap(json["broker"]),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -73,6 +85,10 @@ class UTerminalResponse {
     "creatorId": creatorId,
     "adminUserIds": List<dynamic>.from(adminUserIds.map((String x) => x)),
     "merchantId": merchantId,
+    "brandId": brandId,
+    "brokerId": brokerId,
+    "brand": brand?.toMap(),
+    "broker": broker?.toMap(),
   };
 }
 
@@ -80,11 +96,17 @@ class UTerminalAvailabilityResponse {
   final String id;
   final String serial;
   final String? agreement;
+  final String? brandId;
+  final String? brandTitle;
+  final UBrokerBriefResponse? broker;
 
   UTerminalAvailabilityResponse({
     required this.id,
     required this.serial,
     this.agreement,
+    this.brandId,
+    this.brandTitle,
+    this.broker,
   });
 
   factory UTerminalAvailabilityResponse.fromJson(String str) => UTerminalAvailabilityResponse.fromMap(json.decode(str));
@@ -95,12 +117,18 @@ class UTerminalAvailabilityResponse {
     id: json["id"],
     serial: json["serial"],
     agreement: json["agreement"],
+    brandId: json["brandId"],
+    brandTitle: json["brandTitle"],
+    broker: json["broker"] == null ? null : UBrokerBriefResponse.fromMap(json["broker"]),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "id": id,
     "serial": serial,
     "agreement": agreement,
+    "brandId": brandId,
+    "brandTitle": brandTitle,
+    "broker": broker?.toMap(),
   };
 }
 

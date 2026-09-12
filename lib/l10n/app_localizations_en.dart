@@ -118,6 +118,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get agreement => 'Agreement';
 
   @override
+  String get agreementTemplate => 'Agreement Template';
+
+  @override
+  String get agreementTemplates => 'Agreement Templates';
+
+  @override
+  String get agreementTemplatesManagement => 'Agreement Templates Management';
+
+  @override
   String get alignCenter => 'Align Center';
 
   @override
@@ -386,7 +395,13 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get block => 'Block';
+
+  @override
   String get blockedAmount => 'Blocked amount';
+
+  @override
+  String get blocks => 'Blocks';
 
   @override
   String get blog => 'Blog';
@@ -410,7 +425,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bookThisRoom => 'Book this room';
 
   @override
+  String get brand => 'Brand';
+
+  @override
+  String get brandsManagement => 'Brands Management';
+
+  @override
   String get brightness => 'Brightness';
+
+  @override
+  String get broker => 'Broker';
+
+  @override
+  String get brokerIsRequired => 'Broker is Required';
+
+  @override
+  String get brokers => 'Brokers';
+
+  @override
+  String get brokersManagement => 'Brokers Management';
 
   @override
   String get bufferHealth => 'Buffer health';
@@ -464,6 +497,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get calculationBreakdown => 'Calculation breakdown';
+
+  @override
+  String get callCenterPhoneNumber => 'Call Center Phone Number';
 
   @override
   String get callTheDorm => 'Call the dorm';
@@ -761,6 +797,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get contract => 'Contract';
+
+  @override
+  String get contractNumberSuffix => 'Contract Number Suffix';
 
   @override
   String get contractPeriod => 'Contract period';
@@ -1656,6 +1695,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get headerRow => 'Header Row';
 
   @override
+  String get headerTitle => 'Header Title';
+
+  @override
   String get heading1 => 'Heading 1';
 
   @override
@@ -1981,7 +2023,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get leftToRight => 'Left to right';
 
   @override
+  String get legacyTag => 'Legacy Tag';
+
+  @override
   String get legalEntityType => 'Legal Entity Type';
+
+  @override
+  String get legalName => 'Legal Name';
 
   @override
   String get legalPerson => 'Legal Person';
@@ -2275,6 +2323,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get nationalCode => 'National Code';
 
   @override
+  String get nationalId => 'National ID';
+
+  @override
   String get nationalIdOptional => 'National ID (optional)';
 
   @override
@@ -2339,6 +2390,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get nights => 'Nights';
+
+  @override
+  String get no => 'No';
 
   @override
   String get noAccountsInThisProfile => 'No accounts in this profile';
@@ -2971,7 +3025,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get providerAccount => 'Provider account';
 
   @override
+  String get providerAuthHeader => 'Provider Auth Header';
+
+  @override
   String get providerBalances => 'Provider balances';
+
+  @override
+  String get providerBaseUrl => 'Provider Base URL';
+
+  @override
+  String get providerDefinitionTemplate => 'Provider Definition Template';
+
+  @override
+  String get providerProject => 'Provider Project';
 
   @override
   String get providerTransactions => 'Provider transactions';
@@ -3198,6 +3264,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reportsAndAccounts => 'Reports and accounts';
 
   @override
+  String get representativeName => 'Representative Name';
+
+  @override
+  String get representativeRole => 'Representative Role';
+
+  @override
   String get request => 'Request';
 
   @override
@@ -3220,6 +3292,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get requiredDocuments => 'Required documents';
+
+  @override
+  String get requiresImei => 'Requires IMEI';
+
+  @override
+  String get requiresSimCardSerial => 'Requires SIM Card Serial';
 
   @override
   String get resend => 'Resend';
@@ -3285,6 +3363,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get rightToLeft => 'Right to left';
+
+  @override
+  String get role => 'Role';
 
   @override
   String get roles => 'Roles';
@@ -3430,6 +3511,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get selectAUserToManageTheirWallet => 'Select a user to manage their wallet';
 
   @override
+  String get selectBrand => 'Select Brand';
+
+  @override
   String get selectCountry => 'Select Country';
 
   @override
@@ -3481,6 +3565,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get serialNumber => 'Serial number';
+
+  @override
+  String get serviceProvider => 'Service Provider';
 
   @override
   String get services => 'Services';
@@ -3538,6 +3625,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get shuffle => 'Shuffle';
+
+  @override
+  String get signatories => 'Signatories';
+
+  @override
+  String get signatory => 'Signatory';
 
   @override
   String get signature => 'Signature';
@@ -3725,6 +3818,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get supportPassword => 'Support Password';
 
   @override
+  String get supportPhoneNumber => 'Support Phone Number';
+
+  @override
   String get swipeOrTapTheCard => 'Swipe or tap the card';
 
   @override
@@ -3803,6 +3899,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get terminal => 'Terminal';
 
   @override
+  String get terminalBrand => 'Terminal Brand';
+
+  @override
+  String get terminalBrands => 'Terminal Brands';
+
+  @override
   String get terminalId => 'Terminal ID';
 
   @override
@@ -3828,6 +3930,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get termsAndConditions => 'Terms and conditions';
+
+  @override
+  String get text => 'Text';
 
   @override
   String get textBox => 'Text box';
@@ -3890,6 +3995,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get theme => 'Theme';
+
+  @override
+  String get themeColor => 'Theme Color';
 
   @override
   String theNightRateAppliesBetweenFromAndTo(Object from, Object to) {
@@ -4386,6 +4494,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get year => 'Year';
+
+  @override
+  String get yes => 'Yes';
 
   @override
   String get you => 'You';

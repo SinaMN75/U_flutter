@@ -52,7 +52,7 @@ class _ContentsPageState extends State<UAdminContentsPage> {
   Widget _thumb(String? base64, {double size = 48}) => SizedBox(
     width: size,
     height: size,
-    child: base64.isNotNullOrEmpty() ? UImage("", fileData: FileData(bytes: _decodeBase64(base64!)), borderRadius: 8) : const Icon(Icons.image_outlined),
+    child: base64.isNotNullOrEmpty() ? UImage("", fileData: FileData(bytes: uDecodeBase64(base64!)), borderRadius: 8) : const Icon(Icons.image_outlined),
   );
 
   Widget _itemMobile(UContentResponse i, int index) => UAdminTable.mobileCard(
@@ -189,8 +189,8 @@ class _ContentsPageState extends State<UAdminContentsPage> {
                       spacing: 12,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        _Base64ImageField(label: U.s.image, initial: imageBase64, onChanged: (String? v) => imageBase64 = v).expanded(),
-                        _Base64ImageField(label: U.s.icon, initial: iconBase64, onChanged: (String? v) => iconBase64 = v).expanded(),
+                        UBase64ImageField(label: U.s.image, initial: imageBase64, onChanged: (String? v) => imageBase64 = v).expanded(),
+                        UBase64ImageField(label: U.s.icon, initial: iconBase64, onChanged: (String? v) => iconBase64 = v).expanded(),
                       ],
                     ),
                     const SizedBox(height: 12),
@@ -330,8 +330,8 @@ class _ContentsPageState extends State<UAdminContentsPage> {
           spacing: 12,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            _Base64ImageField(label: U.s.icon, initial: e.iconBase64, onChanged: (String? v) => e.iconBase64 = v).expanded(),
-            _Base64ImageField(label: U.s.image, initial: e.imageBase64, onChanged: (String? v) => e.imageBase64 = v).expanded(),
+            UBase64ImageField(label: U.s.icon, initial: e.iconBase64, onChanged: (String? v) => e.iconBase64 = v).expanded(),
+            UBase64ImageField(label: U.s.image, initial: e.imageBase64, onChanged: (String? v) => e.imageBase64 = v).expanded(),
           ],
         ),
       ],
@@ -359,90 +359,13 @@ class _ContentsPageState extends State<UAdminContentsPage> {
         UTextField(controller: e.title, labelText: U.s.title, margin: const EdgeInsets.symmetric(vertical: 4)),
         UTextField(controller: e.url, labelText: U.s.url, margin: const EdgeInsets.symmetric(vertical: 4)),
         const SizedBox(height: 8),
-        _Base64ImageField(label: U.s.icon, initial: e.iconBase64, onChanged: (String? v) => e.iconBase64 = v),
+        UBase64ImageField(label: U.s.icon, initial: e.iconBase64, onChanged: (String? v) => e.iconBase64 = v),
       ],
     ),
   );
 }
 
 // Decodes a base64 string, tolerating an optional data-uri prefix.
-Uint8List _decodeBase64(String base64) => (base64.contains(",") ? base64.split(",").last : base64).toBytesFromBase64();
-
-class _Base64ImageField extends StatefulWidget {
-  const _Base64ImageField({required this.label, required this.initial, required this.onChanged});
-
-  final String label;
-  final String? initial;
-  final ValueChanged<String?> onChanged;
-
-  @override
-  State<_Base64ImageField> createState() => _Base64ImageFieldState();
-}
-
-class _Base64ImageFieldState extends State<_Base64ImageField> {
-  String? _value;
-
-  @override
-  void initState() {
-    _value = widget.initial;
-    super.initState();
-  }
-
-  Future<void> _pick() => UFile.showFilePicker(
-    allowedExtensions: const <String>["jpg", "jpeg", "png", "gif", "webp", "svg"],
-    action: (List<FileData> files) {
-      if (files.isEmpty || files.first.bytes == null) return;
-      final String encoded = files.first.bytes!.toBase64();
-      setState(() => _value = encoded);
-      widget.onChanged(encoded);
-    },
-  );
-
-  void _clear() {
-    setState(() => _value = null);
-    widget.onChanged(null);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final ColorScheme scheme = Theme.of(context).colorScheme;
-    return UColumn(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        UTextBodySmall(widget.label, color: scheme.onSurfaceVariant, margin: const EdgeInsets.only(bottom: 4)),
-        Stack(
-          children: <Widget>[
-            UContainer(
-              onTap: _pick,
-              height: 96,
-              width: double.infinity,
-              radius: 12,
-              border: Border.all(color: scheme.outlineVariant, width: 1.5),
-              color: scheme.surfaceContainerHighest,
-              alignment: Alignment.center,
-              child: _value.isNotNullOrEmpty()
-                  ? UImage("", fileData: FileData(bytes: _decodeBase64(_value!)), borderRadius: 12)
-                  : Icon(Icons.add_photo_alternate_outlined, size: 32, color: scheme.onSurfaceVariant),
-            ),
-            if (_value.isNotNullOrEmpty())
-              Positioned(
-                top: 4,
-                right: 4,
-                child: UContainer(
-                  onTap: _clear,
-                  color: scheme.error,
-                  shape: BoxShape.circle,
-                  padding: const EdgeInsets.all(2),
-                  child: const Icon(Icons.close, size: 14, color: UAdminTheme.white),
-                ),
-              ),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
 class _ItemForm {
   _ItemForm({String? title, String? subTitle, String? description, String? link, int? order, this.iconBase64, this.imageBase64})
     : title = TextEditingController(text: title),

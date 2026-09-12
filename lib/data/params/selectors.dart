@@ -183,9 +183,11 @@ class ContentSelectorArgs {
 class TerminalSelectorArgs {
   final UserSelectorArgs? creator;
   final MerchantSelectorArgs? merchant;
+  final TerminalBrandSelectorArgs? brand;
+  final bool? broker;
   final bool? agreement;
 
-  const TerminalSelectorArgs({this.creator, this.merchant, this.agreement});
+  const TerminalSelectorArgs({this.creator, this.merchant, this.brand, this.broker, this.agreement});
 
   factory TerminalSelectorArgs.fromJson(String str) => TerminalSelectorArgs.fromMap(json.decode(str));
 
@@ -194,13 +196,77 @@ class TerminalSelectorArgs {
   factory TerminalSelectorArgs.fromMap(Map<String, dynamic> json) => TerminalSelectorArgs(
     creator: json["creator"] == null ? null : UserSelectorArgs.fromMap(json["creator"]),
     merchant: json["merchant"] == null ? null : MerchantSelectorArgs.fromMap(json["merchant"]),
+    brand: json["brand"] == null ? null : TerminalBrandSelectorArgs.fromMap(json["brand"]),
+    broker: json["broker"],
     agreement: json["agreement"],
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "creator": creator?.toMap(),
     "merchant": merchant?.toMap(),
+    "brand": brand?.toMap(),
+    "broker": broker,
     "agreement": agreement,
+  };
+}
+
+class BrokerSelectorArgs {
+  final UserSelectorArgs? creator;
+  final TerminalBrandSelectorArgs? brands;
+
+  const BrokerSelectorArgs({this.creator, this.brands});
+
+  factory BrokerSelectorArgs.fromJson(String str) => BrokerSelectorArgs.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory BrokerSelectorArgs.fromMap(Map<String, dynamic> json) => BrokerSelectorArgs(
+    creator: json["creator"] == null ? null : UserSelectorArgs.fromMap(json["creator"]),
+    brands: json["brands"] == null ? null : TerminalBrandSelectorArgs.fromMap(json["brands"]),
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "creator": creator?.toMap(),
+    "brands": brands?.toMap(),
+  };
+}
+
+class TerminalBrandSelectorArgs {
+  final UserSelectorArgs? creator;
+  final bool? broker;
+
+  const TerminalBrandSelectorArgs({this.creator, this.broker});
+
+  factory TerminalBrandSelectorArgs.fromJson(String str) => TerminalBrandSelectorArgs.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory TerminalBrandSelectorArgs.fromMap(Map<String, dynamic> json) => TerminalBrandSelectorArgs(
+    creator: json["creator"] == null ? null : UserSelectorArgs.fromMap(json["creator"]),
+    broker: json["broker"],
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "creator": creator?.toMap(),
+    "broker": broker,
+  };
+}
+
+class AgreementTemplateSelectorArgs {
+  final UserSelectorArgs? creator;
+
+  const AgreementTemplateSelectorArgs({this.creator});
+
+  factory AgreementTemplateSelectorArgs.fromJson(String str) => AgreementTemplateSelectorArgs.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory AgreementTemplateSelectorArgs.fromMap(Map<String, dynamic> json) => AgreementTemplateSelectorArgs(
+    creator: json["creator"] == null ? null : UserSelectorArgs.fromMap(json["creator"]),
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "creator": creator?.toMap(),
   };
 }
 

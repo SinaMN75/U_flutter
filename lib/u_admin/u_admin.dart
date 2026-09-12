@@ -26,6 +26,7 @@ part "pages/parking/u_admin_parking_report_controller.dart";
 part "pages/parking/u_admin_parking_staff_controller.dart";
 part "pages/parking/u_admin_parking_subscription_controller.dart";
 part "pages/parking/u_admin_parking_tariff_controller.dart";
+part "pages/payments/brokers/u_admin_broker_controller.dart";
 part "pages/payments/merchants/u_admin_merchant_controller.dart";
 part "pages/payments/moadi/u_admin_moadi_controller.dart";
 part "pages/payments/terminals/u_admin_terminal_controller.dart";
