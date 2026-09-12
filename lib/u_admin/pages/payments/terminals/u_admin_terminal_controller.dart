@@ -277,4 +277,32 @@ class UAdminTerminalController extends UBaseController {
       }
     },
   );
+
+  Future<List<UTerminalBrokerResponse>> readBroker(String query) async {
+    final List<UTerminalBrokerResponse> result = <UTerminalBrokerResponse>[];
+    await UServices.terminal.readBroker(
+      p: UTerminalBrokerReadParams(
+        title: query,
+        selectorArgs: const TerminalBrokerSelectorArgs(),
+      ),
+      onOk: (UResponse<List<UTerminalBrokerResponse>> r) => result.addAll(r.result ?? <UTerminalBrokerResponse>[]),
+      onError: (UEmptyResponse e) {},
+      onException: (String e) {},
+    );
+    return result;
+  }
+
+  Future<List<UTerminalBrandResponse>> readBrand(String query) async {
+    final List<UTerminalBrandResponse> result = <UTerminalBrandResponse>[];
+    await UServices.terminal.readBrand(
+      p: UTerminalBrandReadParams(
+        title: query,
+        selectorArgs: const TerminalBrandSelectorArgs(),
+      ),
+      onOk: (UResponse<List<UTerminalBrandResponse>> r) => result.addAll(r.result ?? <UTerminalBrandResponse>[]),
+      onError: (UEmptyResponse e) {},
+      onException: (String e) {},
+    );
+    return result;
+  }
 }

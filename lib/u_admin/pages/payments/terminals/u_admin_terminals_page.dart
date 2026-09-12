@@ -224,9 +224,9 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
     final TextEditingController simCardSerial = TextEditingController();
     final TextEditingController imei = TextEditingController();
     final TextEditingController terminalId = TextEditingController();
-    String? brandId;
-    String? brokerId;
     final Rx<TagTerminal> type = TagTerminal.atm.obs;
+    final Rxn<UTerminalBrandResponse> brand = Rxn<UTerminalBrandResponse>();
+    final Rxn<UTerminalBrokerResponse> broker = Rxn<UTerminalBrokerResponse>();
 
     UNavigator.dialog(
       AlertDialog(
@@ -262,22 +262,26 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                       DropdownMenuItem<TagTerminal>(value: TagTerminal.wallCashless, child: Text(TagTerminal.wallCashless.localizedTitle)),
                     ],
                   ),
-                  UTextField(
-                    labelText: "Terminal Brand ID",
-                    onChanged: (String value) => brandId = value.nullIfEmpty(),
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  UTextField(
-                    labelText: "Terminal Broker ID",
-                    onChanged: (String value) => brokerId = value.nullIfEmpty(),
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
+                  UTextFieldAutoCompleteAsync<UTerminalBrandResponse>(
+                    labelBuilder: (UTerminalBrandResponse i) => i.title,
+                    onChanged: brand.call,
+                    selectedItem: brand.value,
+                    fetchData: c.readBrand,
+                    hintText: U.s.bed,
+                  ).pSymmetric(vertical: 6),
+                  UTextFieldAutoCompleteAsync<UTerminalBrokerResponse>(
+                    labelBuilder: (UTerminalBrokerResponse i) => i.title,
+                    onChanged: broker.call,
+                    selectedItem: broker.value,
+                    fetchData: c.readBroker,
+                    hintText: U.s.bed,
+                  ).pSymmetric(vertical: 6),
                   const SizedBox(height: 20),
                   UButtonSubmitCancel(
                     onSubmit: () => UValidators.validateForm(
                       key: formKey,
                       action: () {
-                        if (brandId == null || brokerId == null) {
+                        if (brand.value == null || broker.value == null) {
                           UToast.error(message: U.s.required);
                           return;
                         }
@@ -290,8 +294,8 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                             simCardSerial: simCardSerial.text.nullIfEmpty(),
                             imei: imei.text.nullIfEmpty(),
                             terminalId: terminalId.text.nullIfEmpty(),
-                            terminalBrandId: brandId!,
-                            terminalBrokerId: brokerId!,
+                            terminalBrandId: brand.value!.id,
+                            terminalBrokerId: broker.value!.id,
                           ),
                         );
                       },
@@ -303,13 +307,7 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
           ),
         ),
       ),
-    ).whenComplete(() {
-      serial.dispose();
-      simCardNumber.dispose();
-      simCardSerial.dispose();
-      imei.dispose();
-      terminalId.dispose();
-    });
+    );
   }
 
   void _showEditDialog(UTerminalResponse i) {
@@ -371,13 +369,7 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
           ),
         ),
       ),
-    ).whenComplete(() {
-      serial.dispose();
-      simCardNumber.dispose();
-      simCardSerial.dispose();
-      imei.dispose();
-      terminalId.dispose();
-    });
+    );
   }
 
   void _showOtpDialog() {
@@ -417,7 +409,7 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
           width: context.dialogWidth(),
           child: SingleChildScrollView(
             child: Obx(
-              () => UColumn(
+                  () => UColumn(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   USegmentedControl<bool>(
@@ -489,12 +481,12 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
         ),
         actions: <Widget>[
           Obx(
-            () => generateMode.value && result.value.isNotEmpty
+                () => generateMode.value && result.value.isNotEmpty
                 ? UButton(
-                    type: UButtonType.text,
-                    title: U.s.copy,
-                    onTap: () => UClipboard.set(result.value, snackBar: true),
-                  )
+              type: UButtonType.text,
+              title: U.s.copy,
+              onTap: () => UClipboard.set(result.value, snackBar: true),
+            )
                 : const SizedBox.shrink(),
           ),
           UButton(type: UButtonType.text, title: U.s.cancel, onTap: UNavigator.back),

@@ -132,9 +132,9 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
   void _showCreateDialog() {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final TextEditingController title = TextEditingController();
-    final TextEditingController sign1Base64 = TextEditingController();
+    String sign1Base64 = "";
+    String sign2Base64 = "";
     final TextEditingController sign1Owner = TextEditingController();
-    final TextEditingController sign2Base64 = TextEditingController();
     final TextEditingController sign2Owner = TextEditingController();
 
     UNavigator.dialog(
@@ -155,27 +155,25 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
                     margin: const EdgeInsets.symmetric(vertical: 6),
                   ),
                   UTextField(
-                    controller: sign1Base64,
-                    labelText: "Sign 1 Base64",
-                    lines: 3,
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  UTextField(
                     controller: sign1Owner,
                     labelText: "Sign 1 Owner",
                     margin: const EdgeInsets.symmetric(vertical: 6),
                   ),
-                  UTextField(
-                    controller: sign2Base64,
-                    labelText: "Sign 2 Base64",
-                    lines: 3,
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
+                  UFilePicker(
+                    allowMultipleSelection: false,
+                    fileType: FileType.image,
+                    onFilesChanged: (List<FileData> i) => sign1Base64 = i.first.bytes!.toBase64(),
+                  ).pSymmetric(vertical: 6),
                   UTextField(
                     controller: sign2Owner,
                     labelText: "Sign 2 Owner",
                     margin: const EdgeInsets.symmetric(vertical: 6),
                   ),
+                  UFilePicker(
+                    allowMultipleSelection: false,
+                    fileType: FileType.image,
+                    onFilesChanged: (List<FileData> i) => sign2Base64 = i.first.bytes!.toBase64(),
+                  ).pSymmetric(vertical: 6),
                   const SizedBox(height: 20),
                   UButtonSubmitCancel(
                     onSubmit: () => UValidators.validateForm(
@@ -185,9 +183,9 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
                         c.create(
                           p: UTerminalBrokerCreateParams(
                             title: title.text.trim(),
-                            sign1Base64: sign1Base64.text.nullIfEmpty(),
+                            sign1Base64: sign1Base64.nullIfEmpty(),
                             sign1Owner: sign1Owner.text.nullIfEmpty(),
-                            sign2Base64: sign2Base64.text.nullIfEmpty(),
+                            sign2Base64: sign2Base64.nullIfEmpty(),
                             sign2Owner: sign2Owner.text.nullIfEmpty(),
                             tags: <int>[TagTerminalBroker.test.number],
                           ),
@@ -207,9 +205,9 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
   void _showEditDialog(UTerminalBrokerResponse i) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final TextEditingController title = TextEditingController(text: i.title);
-    final TextEditingController sign1Base64 = TextEditingController();
+    String sign1Base64 = "";
+    String sign2Base64 = "";
     final TextEditingController sign1Owner = TextEditingController();
-    final TextEditingController sign2Base64 = TextEditingController();
     final TextEditingController sign2Owner = TextEditingController();
 
     UNavigator.dialog(
@@ -230,27 +228,25 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
                     margin: const EdgeInsets.symmetric(vertical: 6),
                   ),
                   UTextField(
-                    controller: sign1Base64,
-                    labelText: "Sign 1 Base64",
-                    lines: 3,
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  UTextField(
                     controller: sign1Owner,
                     labelText: "Sign 1 Owner",
                     margin: const EdgeInsets.symmetric(vertical: 6),
                   ),
-                  UTextField(
-                    controller: sign2Base64,
-                    labelText: "Sign 2 Base64",
-                    lines: 3,
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
+                  UFilePicker(
+                    allowMultipleSelection: false,
+                    fileType: FileType.image,
+                    onFilesChanged: (List<FileData> i) => sign1Base64 = i.first.bytes!.toBase64(),
+                  ).pSymmetric(vertical: 6),
                   UTextField(
                     controller: sign2Owner,
                     labelText: "Sign 2 Owner",
                     margin: const EdgeInsets.symmetric(vertical: 6),
                   ),
+                  UFilePicker(
+                    allowMultipleSelection: false,
+                    fileType: FileType.image,
+                    onFilesChanged: (List<FileData> i) => sign2Base64 = i.first.bytes!.toBase64(),
+                  ).pSymmetric(vertical: 6),
                   const SizedBox(height: 20),
                   UButtonSubmitCancel(
                     onSubmit: () => UValidators.validateForm(
@@ -261,9 +257,9 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
                           p: UTerminalBrokerUpdateParams(
                             id: i.id,
                             title: title.text.nullIfEmpty(),
-                            sign1Base64: sign1Base64.text.nullIfEmpty(),
+                            sign1Base64: sign1Base64.nullIfEmpty(),
                             sign1Owner: sign1Owner.text.nullIfEmpty(),
-                            sign2Base64: sign2Base64.text.nullIfEmpty(),
+                            sign2Base64: sign2Base64.nullIfEmpty(),
                             sign2Owner: sign2Owner.text.nullIfEmpty(),
                           ),
                         );
