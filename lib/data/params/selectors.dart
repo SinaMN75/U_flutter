@@ -874,6 +874,34 @@ class ParkingShiftSelectorArgs {
   factory ParkingShiftSelectorArgs.fromJson(String str) => ParkingShiftSelectorArgs.fromMap(json.decode(str));
 }
 
+class TerminalBrandSelectorArgs {
+  final UserSelectorArgs? creator;
+
+  const TerminalBrandSelectorArgs({this.creator});
+
+  factory TerminalBrandSelectorArgs.fromMap(Map<String, dynamic> json) => TerminalBrandSelectorArgs(creator: json["creator"] == null ? null : UserSelectorArgs.fromMap(json["creator"]));
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"creator": creator?.toMap()};
+
+  String toJson() => json.encode(toMap());
+
+  factory TerminalBrandSelectorArgs.fromJson(String str) => TerminalBrandSelectorArgs.fromMap(json.decode(str));
+}
+
+class TerminalBrokerSelectorArgs {
+  final UserSelectorArgs? creator;
+
+  const TerminalBrokerSelectorArgs({this.creator});
+
+  factory TerminalBrokerSelectorArgs.fromMap(Map<String, dynamic> json) => TerminalBrokerSelectorArgs(creator: json["creator"] == null ? null : UserSelectorArgs.fromMap(json["creator"]));
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"creator": creator?.toMap()};
+
+  String toJson() => json.encode(toMap());
+
+  factory TerminalBrokerSelectorArgs.fromJson(String str) => TerminalBrokerSelectorArgs.fromMap(json.decode(str));
+}
+
 class ParkingSubscriptionSelectorArgs {
   final UserSelectorArgs? creator;
   final VehicleSelectorArgs? vehicle;

@@ -125,53 +125,157 @@ class UTerminalReadSupportPasswordResponse {
 }
 
 class UTerminalImportResponse {
-  final int? totalRows;
-  final int? imported;
-  final int? skipped;
-  final List<String>? skippedSerials;
+  final int totalRows;
+  final int imported;
+  final int skipped;
+  final List<String> skippedSerials;
 
   UTerminalImportResponse({
-    this.totalRows,
-    this.imported,
-    this.skipped,
-    this.skippedSerials,
+    required this.totalRows,
+    required this.imported,
+    required this.skipped,
+    required this.skippedSerials,
   });
 
   factory UTerminalImportResponse.fromJson(String str) => UTerminalImportResponse.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory UTerminalImportResponse.fromMap(Map<String, dynamic> json) => UTerminalImportResponse(
+  factory UTerminalImportResponse.fromMap(
+    Map<String, dynamic> json,
+  ) => UTerminalImportResponse(
     totalRows: json["totalRows"],
     imported: json["imported"],
     skipped: json["skipped"],
-    skippedSerials: json["skippedSerials"] == null ? <String>[] : List<String>.from(json["skippedSerials"]!.map((dynamic x) => x)),
+    skippedSerials: json["skippedSerials"] == null
+        ? <String>[]
+        : List<String>.from(
+            json["skippedSerials"]!.map((dynamic x) => x),
+          ),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "totalRows": totalRows,
     "imported": imported,
     "skipped": skipped,
-    "skippedSerials": skippedSerials == null ? <dynamic>[] : List<dynamic>.from(skippedSerials!.map((String x) => x)),
+    "skippedSerials": List<dynamic>.from(
+      skippedSerials.map((String x) => x),
+    ),
   };
 }
 
-class UTerminalSupportPasswordResponse {
-  final String? password;
+class UTerminalBrandResponse {
+  final String title;
+  final String model;
+  final List<int> tags;
+  final String id;
+  final UBaseJson jsonData;
+  final DateTime createdAt;
+  final UUserResponse? creator;
+  final String? creatorId;
+  final List<String> adminUserIds;
 
-  UTerminalSupportPasswordResponse({
-    this.password,
+  UTerminalBrandResponse({
+    required this.title,
+    required this.model,
+    required this.tags,
+    required this.id,
+    required this.jsonData,
+    required this.createdAt,
+    required this.adminUserIds,
+    this.creator,
+    this.creatorId,
   });
 
-  factory UTerminalSupportPasswordResponse.fromJson(String str) => UTerminalSupportPasswordResponse.fromMap(json.decode(str));
+  factory UTerminalBrandResponse.fromJson(String str) => UTerminalBrandResponse.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory UTerminalSupportPasswordResponse.fromMap(Map<String, dynamic> json) => UTerminalSupportPasswordResponse(
-    password: json["password"],
+  factory UTerminalBrandResponse.fromMap(
+    Map<String, dynamic> json,
+  ) => UTerminalBrandResponse(
+    title: json["title"],
+    model: json["model"],
+    tags: List<int>.from(json["tags"]!.map((dynamic x) => x)),
+    id: json["id"],
+    jsonData: UBaseJson.fromMap(json["jsonData"]),
+    createdAt: DateTime.parse(json["createdAt"]),
+    creator: json["creator"] == null ? null : UUserResponse.fromMap(json["creator"]),
+    creatorId: json["creatorId"],
+    adminUserIds: json["adminUserIds"] == null
+        ? <String>[]
+        : List<String>.from(
+            json["adminUserIds"]!.map((dynamic x) => x),
+          ),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
-    "password": password,
+    "title": title,
+    "model": model,
+    "tags": List<dynamic>.from(tags.map((int x) => x)),
+    "id": id,
+    "jsonData": jsonData.toMap(),
+    "createdAt": createdAt.toIso8601String(),
+    "creator": creator?.toMap(),
+    "creatorId": creatorId,
+    "adminUserIds": List<dynamic>.from(
+      adminUserIds.map((String x) => x),
+    ),
+  };
+}
+
+class UTerminalBrokerResponse {
+  final String title;
+  final List<int> tags;
+  final String id;
+  final UBaseJson jsonData;
+  final DateTime createdAt;
+  final UUserResponse? creator;
+  final String? creatorId;
+  final List<String> adminUserIds;
+
+  UTerminalBrokerResponse({
+    required this.title,
+    required this.tags,
+    required this.id,
+    required this.jsonData,
+    required this.createdAt,
+    required this.adminUserIds,
+    this.creator,
+    this.creatorId,
+  });
+
+  factory UTerminalBrokerResponse.fromJson(String str) => UTerminalBrokerResponse.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UTerminalBrokerResponse.fromMap(
+    Map<String, dynamic> json,
+  ) => UTerminalBrokerResponse(
+    title: json["title"],
+    tags: List<int>.from(json["tags"]!.map((dynamic x) => x)),
+    id: json["id"],
+    jsonData: UBaseJson.fromMap(json["jsonData"]),
+    createdAt: DateTime.parse(json["createdAt"]),
+    creator: json["creator"] == null ? null : UUserResponse.fromMap(json["creator"]),
+    creatorId: json["creatorId"],
+    adminUserIds: json["adminUserIds"] == null
+        ? <String>[]
+        : List<String>.from(
+            json["adminUserIds"]!.map((dynamic x) => x),
+          ),
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "title": title,
+    "tags": List<dynamic>.from(tags.map((int x) => x)),
+    "id": id,
+    "jsonData": jsonData.toMap(),
+    "createdAt": createdAt.toIso8601String(),
+    "creator": creator?.toMap(),
+    "creatorId": creatorId,
+    "adminUserIds": List<dynamic>.from(
+      adminUserIds.map((String x) => x),
+    ),
   };
 }
