@@ -2150,17 +2150,17 @@ abstract class AppLocalizations {
   /// **'Device serial'**
   String get deviceSerial;
 
-  /// No description provided for @directTopUp.
-  ///
-  /// In en, this message translates to:
-  /// **'Direct top up'**
-  String get directTopUp;
-
   /// No description provided for @directions.
   ///
   /// In en, this message translates to:
   /// **'Directions'**
   String get directions;
+
+  /// No description provided for @directTopUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct top up'**
+  String get directTopUp;
 
   /// No description provided for @disabled.
   ///
@@ -3536,12 +3536,6 @@ abstract class AppLocalizations {
   /// **'Hue'**
   String get hue;
 
-  /// No description provided for @iHaveReadAndAcceptTheAgreement.
-  ///
-  /// In en, this message translates to:
-  /// **'I have read and accept the agreement'**
-  String get iHaveReadAndAcceptTheAgreement;
-
   /// No description provided for @icon.
   ///
   /// In en, this message translates to:
@@ -3553,6 +3547,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'ID'**
   String get id;
+
+  /// No description provided for @iHaveReadAndAcceptTheAgreement.
+  ///
+  /// In en, this message translates to:
+  /// **'I have read and accept the agreement'**
+  String get iHaveReadAndAcceptTheAgreement;
 
   /// No description provided for @image.
   ///

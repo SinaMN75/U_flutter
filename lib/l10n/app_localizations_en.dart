@@ -1074,10 +1074,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get deviceSerial => 'Device serial';
 
   @override
-  String get directTopUp => 'Direct top up';
+  String get directions => 'Directions';
 
   @override
-  String get directions => 'Directions';
+  String get directTopUp => 'Direct top up';
 
   @override
   String get disabled => 'Disabled';
@@ -1792,13 +1792,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hue => 'Hue';
 
   @override
-  String get iHaveReadAndAcceptTheAgreement => 'I have read and accept the agreement';
-
-  @override
   String get icon => 'Icon';
 
   @override
   String get id => 'ID';
+
+  @override
+  String get iHaveReadAndAcceptTheAgreement => 'I have read and accept the agreement';
 
   @override
   String get image => 'Image';

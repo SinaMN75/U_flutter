@@ -1074,10 +1074,10 @@ class AppLocalizationsFa extends AppLocalizations {
   String get deviceSerial => 'سریال دستگاه';
 
   @override
-  String get directTopUp => 'شارژ مستقیم';
+  String get directions => 'مسیریابی';
 
   @override
-  String get directions => 'مسیریابی';
+  String get directTopUp => 'شارژ مستقیم';
 
   @override
   String get disabled => 'غیرفعال';
@@ -1792,13 +1792,13 @@ class AppLocalizationsFa extends AppLocalizations {
   String get hue => 'رنگ‌مایه';
 
   @override
-  String get iHaveReadAndAcceptTheAgreement => 'قرارداد را خوانده‌ام و می‌پذیرم';
-
-  @override
   String get icon => 'آیکون';
 
   @override
   String get id => 'شناسه';
+
+  @override
+  String get iHaveReadAndAcceptTheAgreement => 'قرارداد را خوانده‌ام و می‌پذیرم';
 
   @override
   String get image => 'تصویر';
