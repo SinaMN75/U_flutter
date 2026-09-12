@@ -12,6 +12,8 @@ class UTerminalResponse {
   final UBaseJson jsonData;
   final DateTime createdAt;
   final UMerchantResponse? merchant;
+  final UTerminalBrandResponse? terminalBrand;
+  final UTerminalBrokerResponse? terminalBroker;
   final UUserResponse? creator;
   final String? creatorId;
   final List<String> adminUserIds;
@@ -30,6 +32,8 @@ class UTerminalResponse {
     this.agreement,
     this.imei,
     this.merchant,
+    this.terminalBrand,
+    this.terminalBroker,
     this.creator,
     this.creatorId,
     this.merchantId,
@@ -46,6 +50,8 @@ class UTerminalResponse {
     serial: json["serial"],
     jsonData: UBaseJson.fromMap(json["jsonData"]),
     merchant: json["merchant"] == null ? null : UMerchantResponse.fromMap(json["merchant"]),
+    terminalBrand: json["terminalBrand"] == null ? null : UTerminalBrandResponse.fromMap(json["terminalBrand"]),
+    terminalBroker: json["terminalBroker"] == null ? null : UTerminalBrokerResponse.fromMap(json["terminalBroker"]),
     simCardNumber: json["simCardNumber"],
     simCardSerial: json["simCardSerial"],
     imei: json["imei"],
@@ -68,6 +74,8 @@ class UTerminalResponse {
     "imei": imei,
     "jsonData": jsonData.toMap(),
     "merchant": merchant?.toMap(),
+    "terminalBrand": terminalBrand?.toMap(),
+    "terminalBroker": terminalBroker?.toMap(),
     "createdAt": createdAt.toIso8601String(),
     "creator": creator?.toMap(),
     "creatorId": creatorId,
