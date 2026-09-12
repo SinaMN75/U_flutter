@@ -187,10 +187,7 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
           ),
         ),
       ),
-    ).whenComplete(() {
-      title.dispose();
-      model.dispose();
-    });
+    );
   }
 
   void _showEditDialog(UTerminalBrandResponse i) {
@@ -243,9 +240,6 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
           ),
         ),
       ),
-    ).whenComplete(() {
-      title.dispose();
-      model.dispose();
-    });
+    );
   }
 }

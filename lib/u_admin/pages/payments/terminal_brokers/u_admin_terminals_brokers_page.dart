@@ -201,13 +201,7 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
           ),
         ),
       ),
-    ).whenComplete(() {
-      title.dispose();
-      sign1Base64.dispose();
-      sign1Owner.dispose();
-      sign2Base64.dispose();
-      sign2Owner.dispose();
-    });
+    );
   }
 
   void _showEditDialog(UTerminalBrokerResponse i) {
@@ -282,12 +276,6 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
           ),
         ),
       ),
-    ).whenComplete(() {
-      title.dispose();
-      sign1Base64.dispose();
-      sign1Owner.dispose();
-      sign2Base64.dispose();
-      sign2Owner.dispose();
-    });
+    );
   }
 }
