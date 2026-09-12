@@ -30,7 +30,7 @@ class UAdminTerminalController extends UBaseController {
         fromCreatedAt: fromCreatedAt,
         toCreatedAt: toCreatedAt,
         orderBy: tagOrderBy.value.number,
-        selectorArgs: const TerminalSelectorArgs(merchant: MerchantSelectorArgs()),
+        selectorArgs: const TerminalSelectorArgs(merchant: MerchantSelectorArgs(), terminalBrand: TerminalBrandSelectorArgs(), terminalBroker: TerminalBrokerSelectorArgs()),
       ),
       onOk: (UResponse<List<UTerminalResponse>> r) {
         list = r.result ?? <UTerminalResponse>[];

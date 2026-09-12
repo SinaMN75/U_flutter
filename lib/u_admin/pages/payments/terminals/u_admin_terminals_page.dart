@@ -48,7 +48,8 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
         U.s.type,
         U.s.serial,
         U.s.simCardSerial,
-        U.s.imei,
+        U.s.brands,
+        U.s.brokers,
         U.s.merchant,
         U.s.terminalId,
         U.s.createdAt,
@@ -85,7 +86,8 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
       UAdminTable.cell(TagTerminal.values.titlesFromNumbers(i.tags).join(" , ")),
       UAdminTable.cell(i.serial),
       UAdminTable.cell(i.simCardSerial ?? "-"),
-      UAdminTable.cell(i.imei ?? U.s.noMerchantSelected),
+      UAdminTable.cell(i.terminalBrand?.title ?? "---"),
+      UAdminTable.cell(i.terminalBroker?.title ?? "---"),
       UAdminTable.cell(i.merchant?.title ?? U.s.noMerchantSelected),
       _statusChip(i).alignAtCenter().expanded(),
       UAdminTable.cell(i.createdAt.toJalaliDate()),
@@ -409,7 +411,7 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
           width: context.dialogWidth(),
           child: SingleChildScrollView(
             child: Obx(
-                  () => UColumn(
+              () => UColumn(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   USegmentedControl<bool>(
@@ -481,12 +483,12 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
         ),
         actions: <Widget>[
           Obx(
-                () => generateMode.value && result.value.isNotEmpty
+            () => generateMode.value && result.value.isNotEmpty
                 ? UButton(
-              type: UButtonType.text,
-              title: U.s.copy,
-              onTap: () => UClipboard.set(result.value, snackBar: true),
-            )
+                    type: UButtonType.text,
+                    title: U.s.copy,
+                    onTap: () => UClipboard.set(result.value, snackBar: true),
+                  )
                 : const SizedBox.shrink(),
           ),
           UButton(type: UButtonType.text, title: U.s.cancel, onTap: UNavigator.back),
