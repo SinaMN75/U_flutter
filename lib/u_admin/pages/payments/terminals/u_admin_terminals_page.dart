@@ -1,4 +1,4 @@
-import "package:u/utilities.dart";
+part of "../../../u_admin.dart";
 
 class UAdminTerminalsPage extends StatefulWidget {
   const UAdminTerminalsPage({super.key, this.merchant, this.actions});
@@ -105,7 +105,6 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
     ],
   );
 
-  // Built-in operations; overridable via UAdminTerminalsPage(actions: ...).
   Widget _menu(UTerminalResponse i) => UAdminOps.menu<UTerminalResponse>(
     item: i,
     actions: widget.actions,
@@ -172,12 +171,6 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                 initialValue: c.typeFilter.value,
                 onChanged: c.typeFilter.call,
                 items: <DropdownMenuItem<TagTerminal>>[
-                  DropdownMenuItem<TagTerminal>(value: TagTerminal.ava101, child: Text(TagTerminal.ava101.localizedTitle)),
-                  DropdownMenuItem<TagTerminal>(value: TagTerminal.ava102, child: Text(TagTerminal.ava102.localizedTitle)),
-                  DropdownMenuItem<TagTerminal>(value: TagTerminal.ava103, child: Text(TagTerminal.ava103.localizedTitle)),
-                  DropdownMenuItem<TagTerminal>(value: TagTerminal.ava104, child: Text(TagTerminal.ava104.localizedTitle)),
-                  DropdownMenuItem<TagTerminal>(value: TagTerminal.avaMax, child: Text(TagTerminal.avaMax.localizedTitle)),
-                  DropdownMenuItem<TagTerminal>(value: TagTerminal.smartPeak, child: Text(TagTerminal.smartPeak.localizedTitle)),
                   DropdownMenuItem<TagTerminal>(value: TagTerminal.pendingApproval, child: Text(TagTerminal.pendingApproval.localizedTitle)),
                   DropdownMenuItem<TagTerminal>(value: TagTerminal.approved, child: Text(TagTerminal.approved.localizedTitle)),
                   DropdownMenuItem<TagTerminal>(value: TagTerminal.rejected, child: Text(TagTerminal.rejected.localizedTitle)),
@@ -231,7 +224,9 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
     final TextEditingController simCardSerial = TextEditingController();
     final TextEditingController imei = TextEditingController();
     final TextEditingController terminalId = TextEditingController();
-    final Rx<TagTerminal> type = TagTerminal.ava101.obs;
+    String? brandId;
+    String? brokerId;
+    final Rx<TagTerminal> type = TagTerminal.atm.obs;
 
     UNavigator.dialog(
       AlertDialog(
@@ -262,19 +257,30 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                     initialValue: type.value,
                     onChanged: type.call,
                     items: <DropdownMenuItem<TagTerminal>>[
-                      DropdownMenuItem<TagTerminal>(value: TagTerminal.ava101, child: Text(TagTerminal.ava101.localizedTitle)),
-                      DropdownMenuItem<TagTerminal>(value: TagTerminal.ava102, child: Text(TagTerminal.ava102.localizedTitle)),
-                      DropdownMenuItem<TagTerminal>(value: TagTerminal.ava103, child: Text(TagTerminal.ava103.localizedTitle)),
-                      DropdownMenuItem<TagTerminal>(value: TagTerminal.ava104, child: Text(TagTerminal.ava104.localizedTitle)),
-                      DropdownMenuItem<TagTerminal>(value: TagTerminal.avaMax, child: Text(TagTerminal.avaMax.localizedTitle)),
-                      DropdownMenuItem<TagTerminal>(value: TagTerminal.smartPeak, child: Text(TagTerminal.smartPeak.localizedTitle)),
+                      DropdownMenuItem<TagTerminal>(value: TagTerminal.atm, child: Text(TagTerminal.atm.localizedTitle)),
+                      DropdownMenuItem<TagTerminal>(value: TagTerminal.deskCashless, child: Text(TagTerminal.deskCashless.localizedTitle)),
+                      DropdownMenuItem<TagTerminal>(value: TagTerminal.wallCashless, child: Text(TagTerminal.wallCashless.localizedTitle)),
                     ],
+                  ),
+                  UTextField(
+                    labelText: "Terminal Brand ID",
+                    onChanged: (String value) => brandId = value.nullIfEmpty(),
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                  ),
+                  UTextField(
+                    labelText: "Terminal Broker ID",
+                    onChanged: (String value) => brokerId = value.nullIfEmpty(),
+                    margin: const EdgeInsets.symmetric(vertical: 6),
                   ),
                   const SizedBox(height: 20),
                   UButtonSubmitCancel(
                     onSubmit: () => UValidators.validateForm(
                       key: formKey,
                       action: () {
+                        if (brandId == null || brokerId == null) {
+                          UToast.error(message: U.s.required);
+                          return;
+                        }
                         UNavigator.back();
                         c.create(
                           p: UTerminalCreateParams(
@@ -284,6 +290,8 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                             simCardSerial: simCardSerial.text.nullIfEmpty(),
                             imei: imei.text.nullIfEmpty(),
                             terminalId: terminalId.text.nullIfEmpty(),
+                            terminalBrandId: brandId!,
+                            terminalBrokerId: brokerId!,
                           ),
                         );
                       },
@@ -295,7 +303,13 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
           ),
         ),
       ),
-    );
+    ).whenComplete(() {
+      serial.dispose();
+      simCardNumber.dispose();
+      simCardSerial.dispose();
+      imei.dispose();
+      terminalId.dispose();
+    });
   }
 
   void _showEditDialog(UTerminalResponse i) {
@@ -357,7 +371,13 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
           ),
         ),
       ),
-    );
+    ).whenComplete(() {
+      serial.dispose();
+      simCardNumber.dispose();
+      simCardSerial.dispose();
+      imei.dispose();
+      terminalId.dispose();
+    });
   }
 
   void _showOtpDialog() {

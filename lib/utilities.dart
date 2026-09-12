@@ -159,7 +159,6 @@ export "u_admin/pages/parking/u_admin_parking_subscription_page.dart";
 export "u_admin/pages/parking/u_admin_parking_tariff_page.dart";
 export "u_admin/pages/payments/merchants/u_admin_merchants_page.dart";
 export "u_admin/pages/payments/moadi/u_admin_moadis_page.dart";
-export "u_admin/pages/payments/terminals/u_admin_terminals_page.dart";
 export "u_admin/pages/payments/users/u_admin_payment_user_create_update_page.dart";
 export "u_admin/pages/payments/users/u_admin_users_page.dart";
 export "u_admin/pages/payments/users/user_detail/u_admin_admin_user_detail_page.dart";

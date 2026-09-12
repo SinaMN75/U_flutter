@@ -1677,5 +1677,7 @@
   "yourWalletBalanceIsNotEnough": "موجودی کیف پول شما کافی نیست",
   "zipCode": "کد پستی",
   "zoomIn": "بزرگ‌نمایی",
-  "zoomOut": "کوچک‌نمایی"
+  "zoomOut": "کوچک‌نمایی",
+  "brands": "برند‌ها",
+  "brokers": "کارگذارها"
 }

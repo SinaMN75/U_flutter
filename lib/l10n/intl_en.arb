@@ -1677,5 +1677,7 @@
   "yourWalletBalanceIsNotEnough": "Your wallet balance is not enough",
   "zipCode": "Zip Code",
   "zoomIn": "Zoom in",
-  "zoomOut": "Zoom out"
+  "zoomOut": "Zoom out",
+  "brands": "Brands",
+  "brokers": "Brokers"
 }

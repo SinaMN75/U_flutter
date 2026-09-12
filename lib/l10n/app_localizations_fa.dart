@@ -4462,4 +4462,10 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get zoomOut => 'کوچک‌نمایی';
+
+  @override
+  String get brands => 'برند‌ها';
+
+  @override
+  String get brokers => 'کارگذارها';
 }

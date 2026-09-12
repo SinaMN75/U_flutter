@@ -619,17 +619,37 @@ enum TagTerminal with NumericIdentifiable {
   atm("خودپرداز", "ATM", 101),
   wallCashless("خودپرداز غیر نقد", "Wall Cashless", 102),
   deskCashless("خودپرداز رومیزی", "Desk Cashless", 103),
-  ava101("Ava 101", "Ava 101", 201),
-  ava102("Ava 102", "Ava 102", 202),
-  ava103("Ava 103", "Ava 103", 203),
-  ava104("Ava 104", "Ava 104", 204),
-  avaMax("Ava Max", "Ava Max", 205),
-  smartPeak("SmartPeak", "SmartPeak", 206),
-  pendingApproval("در انتظار تایید", "Pending Approval", 301),
-  approved("تایید شده", "Approved", 302),
-  rejected("رد شده", "Rejected", 303);
+  pendingApproval("در انتظار تایید", "Pending Approval", 201),
+  approved("تایید شده", "Approved", 202),
+  rejected("رد شده", "Rejected", 203);
 
   const TagTerminal(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagTerminalBrand with NumericIdentifiable {
+  test("تست", "Test", 999);
+
+  const TagTerminalBrand(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagTerminalBroker with NumericIdentifiable {
+  test("تست", "Test", 999);
+
+  const TagTerminalBroker(this.titleFa, this.titleEn, this.number);
 
   @override
   final String titleFa;

@@ -4463,4 +4463,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get zoomOut => 'Zoom out';
+
+  @override
+  String get brands => 'Brands';
+
+  @override
+  String get brokers => 'Brokers';
 }
