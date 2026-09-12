@@ -6,10 +6,14 @@ class UPaymentRequest {
     required this.amount,
     required this.onPay,
     this.lines = const <UKeyValue>[],
+    this.receiptRows = const <UReceiptRow>[],
+    this.icon = Icons.receipt_long_outlined,
   });
 
   final String title;
   final List<UKeyValue> lines;
+  final List<UReceiptRow> receiptRows;
+  final IconData icon;
   final int amount;
   final Future<bool> Function() onPay;
 }
@@ -22,6 +26,8 @@ abstract class UIpgFlow {
     String? invoiceId,
     String? billId,
     String? paymentId,
+    UReceipt? receipt,
+    bool showReceipt = true,
   }) async {
     final Completer<bool> completer = Completer<bool>();
     bool paid = false;
@@ -32,7 +38,9 @@ abstract class UIpgFlow {
         p: UIpgSaleParams(amount: amount, tag: tag, invoiceId: invoiceId),
         onOk: (UResponse<UIpgPayResponse> response) async {
           ULoading.dismiss();
-          paid = await UNavigator.push<bool>(UIpgWebViewPage(url: response.result!.url, trackingNumber: response.result!.trackingNumber)) ?? false;
+          final String trackingNumber = response.result!.trackingNumber;
+          paid = await UNavigator.push<bool>(UIpgWebViewPage(url: response.result!.url, trackingNumber: trackingNumber)) ?? false;
+          if (paid && showReceipt) await _showReceipt(amount: amount, trackingNumber: trackingNumber, receipt: receipt);
           completer.complete(paid);
           onPaid?.call(paid);
         },
@@ -54,7 +62,9 @@ abstract class UIpgFlow {
         p: UIpgBillParams(billId: billId, paymentId: paymentId),
         onOk: (UResponse<UIpgPayResponse> response) async {
           ULoading.dismiss();
-          paid = await UNavigator.push<bool>(UIpgWebViewPage(url: response.result!.url, trackingNumber: response.result!.trackingNumber)) ?? false;
+          final String trackingNumber = response.result!.trackingNumber;
+          paid = await UNavigator.push<bool>(UIpgWebViewPage(url: response.result!.url, trackingNumber: trackingNumber)) ?? false;
+          if (paid && showReceipt) await _showReceipt(amount: amount, trackingNumber: trackingNumber, receipt: receipt);
           completer.complete(paid);
           onPaid?.call(paid);
         },
@@ -74,6 +84,18 @@ abstract class UIpgFlow {
     }
     return completer.future;
   }
+
+  static Future<void> _showReceipt({required double amount, required String trackingNumber, UReceipt? receipt}) => UReceiptSheet.show(
+    UReceipt(
+      title: receipt?.title ?? U.s.chargeWallet,
+      amount: receipt?.amount ?? amount.toInt(),
+      icon: receipt?.icon ?? Icons.add_card_outlined,
+      method: receipt?.method ?? U.s.onlinePayment,
+      trackingNumber: receipt?.trackingNumber ?? trackingNumber,
+      date: receipt?.date,
+      rows: receipt?.rows ?? const <UReceiptRow>[],
+    ),
+  );
 
   static Future<String?> link({required double amount, TagTxn? tag, String? invoiceId}) async {
     if (amount <= 0) {
