@@ -1,7 +1,6 @@
 import "dart:async";
 import "dart:convert";
 import "dart:js_interop";
-import "dart:typed_data";
 import "dart:ui_web" as ui_web;
 
 import "package:flutter/services.dart";
