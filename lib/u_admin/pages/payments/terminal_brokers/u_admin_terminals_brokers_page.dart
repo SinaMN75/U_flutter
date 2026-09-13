@@ -131,9 +131,16 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
 
   void _showCreateDialog() {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final TextEditingController title = TextEditingController();
+    final TextEditingController titleController = TextEditingController();
+    final TextEditingController registrationNumberController = TextEditingController();
+    final TextEditingController nationalCodeController = TextEditingController();
+    final TextEditingController representativeController = TextEditingController();
+    final TextEditingController addressController = TextEditingController();
+    final TextEditingController postalCodeController = TextEditingController();
+    final TextEditingController phoneNumberController = TextEditingController();
     String sign1Base64 = "";
     String sign2Base64 = "";
+    String logoBase64 = "";
     final TextEditingController sign1Owner = TextEditingController();
     final TextEditingController sign2Owner = TextEditingController();
 
@@ -149,7 +156,43 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   UTextField(
-                    controller: title,
+                    controller: titleController,
+                    labelText: U.s.title,
+                    validator: UValidators.required(message: U.s.required),
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                  ),
+                  UTextField(
+                    controller: registrationNumberController,
+                    labelText: U.s.title,
+                    validator: UValidators.required(message: U.s.required),
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                  ),
+                  UTextField(
+                    controller: nationalCodeController,
+                    labelText: U.s.title,
+                    validator: UValidators.required(message: U.s.required),
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                  ),
+                  UTextField(
+                    controller: representativeController,
+                    labelText: U.s.title,
+                    validator: UValidators.required(message: U.s.required),
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                  ),
+                  UTextField(
+                    controller: addressController,
+                    labelText: U.s.title,
+                    validator: UValidators.required(message: U.s.required),
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                  ),
+                  UTextField(
+                    controller: postalCodeController,
+                    labelText: U.s.title,
+                    validator: UValidators.required(message: U.s.required),
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                  ),
+                  UTextField(
+                    controller: phoneNumberController,
                     labelText: U.s.title,
                     validator: UValidators.required(message: U.s.required),
                     margin: const EdgeInsets.symmetric(vertical: 6),
@@ -174,6 +217,11 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
                     fileType: FileType.image,
                     onFilesChanged: (List<FileData> i) => sign2Base64 = i.first.bytes!.toBase64(),
                   ).pSymmetric(vertical: 6),
+                  UFilePicker(
+                    allowMultipleSelection: false,
+                    fileType: FileType.image,
+                    onFilesChanged: (List<FileData> i) => logoBase64 = i.first.bytes!.toBase64(),
+                  ).pSymmetric(vertical: 6),
                   const SizedBox(height: 20),
                   UButtonSubmitCancel(
                     onSubmit: () => UValidators.validateForm(
@@ -182,12 +230,19 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
                         UNavigator.back();
                         c.create(
                           p: UTerminalBrokerCreateParams(
-                            title: title.text.trim(),
-                            sign1Base64: sign1Base64.nullIfEmpty(),
-                            sign1Owner: sign1Owner.text.nullIfEmpty(),
+                            title: titleController.text.trim(),
+                            sign1Base64: sign1Base64,
+                            sign1Owner: sign1Owner.text,
                             sign2Base64: sign2Base64.nullIfEmpty(),
                             sign2Owner: sign2Owner.text.nullIfEmpty(),
                             tags: <int>[TagTerminalBroker.test.number],
+                            registrationNumber: registrationNumberController.text,
+                            nationalCode: nationalCodeController.text,
+                            representative: representativeController.text,
+                            address: addressController.text,
+                            postalCode: postalCodeController.text,
+                            phoneNumber: phoneNumberController.text,
+                            logoBase64: logoBase64,
                           ),
                         );
                       },

@@ -416,16 +416,8 @@ class UTerminalBrandReadParams {
     pageNumber: json["pageNumber"],
     fromCreatedAt: json["fromCreatedAt"] == null ? null : DateTime.parse(json["fromCreatedAt"]),
     toCreatedAt: json["toCreatedAt"] == null ? null : DateTime.parse(json["toCreatedAt"]),
-    tags: json["tags"] == null
-        ? <int>[]
-        : List<int>.from(
-            json["tags"]!.map((dynamic x) => x)
-          ),
-    ids: json["ids"] == null
-        ? <String>[]
-        : List<String>.from(
-            json["ids"]!.map((dynamic x) => x)
-          ),
+    tags: json["tags"] == null ? <int>[] : List<int>.from(json["tags"]!.map((dynamic x) => x)),
+    ids: json["ids"] == null ? <String>[] : List<String>.from(json["ids"]!.map((dynamic x) => x)),
     creatorId: json["creatorId"],
     title: json["title"],
     model: json["model"],
@@ -477,22 +469,45 @@ class UTerminalBrandUpdateParams {
 }
 
 class UTerminalBrokerCreateParams {
-  final List<int> tags;
-  final String? id;
   final String title;
-  final String? sign1Base64;
-  final String? sign1Owner;
+  final String registrationNumber;
+  final String nationalCode;
+  final String representative;
+  final String address;
+  final String postalCode;
+  final String phoneNumber;
+  final String sign1Base64;
+  final String sign1Owner;
   final String? sign2Base64;
   final String? sign2Owner;
+  final String logoBase64;
+  final String? detail1;
+  final String? detail2;
+  final List<int> tags;
+  final String? id;
+  final String? creatorId;
+  final List<String>? adminUserIds;
+
 
   UTerminalBrokerCreateParams({
-    required this.tags,
     required this.title,
+    required this.registrationNumber,
+    required this.nationalCode,
+    required this.representative,
+    required this.address,
+    required this.postalCode,
+    required this.phoneNumber,
+    required this.sign1Base64,
+    required this.sign1Owner,
+    required this.logoBase64,
+    required this.tags,
     this.id,
-    this.sign1Base64,
-    this.sign1Owner,
+    this.creatorId,
+    this.adminUserIds,
     this.sign2Base64,
     this.sign2Owner,
+    this.detail1,
+    this.detail2,
   });
 
   factory UTerminalBrokerCreateParams.fromJson(String str) => UTerminalBrokerCreateParams.fromMap(json.decode(str));
@@ -500,23 +515,45 @@ class UTerminalBrokerCreateParams {
   String toJson() => json.encode(toMap());
 
   factory UTerminalBrokerCreateParams.fromMap(Map<String, dynamic> json) => UTerminalBrokerCreateParams(
-    tags: List<int>.from(json["tags"]!.map((dynamic x) => x)),
-    id: json["id"],
     title: json["title"],
+    registrationNumber: json["registrationNumber"],
+    nationalCode: json["nationalCode"],
+    representative: json["representative"],
+    address: json["address"],
+    postalCode: json["postalCode"],
+    phoneNumber: json["phoneNumber"],
     sign1Base64: json["sign1Base64"],
     sign1Owner: json["sign1Owner"],
     sign2Base64: json["sign2Base64"],
     sign2Owner: json["sign2Owner"],
+    logoBase64: json["logoBase64"],
+    detail1: json["detail1"],
+    detail2: json["detail2"],
+    tags: json["tags"] == null ? <int>[] : List<int>.from(json["tags"]!.map((dynamic x) => x)),
+    id: json["id"],
+    creatorId: json["creatorId"],
+    adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
-    "tags": List<dynamic>.from(tags.map((int x) => x)),
-    "id": id,
     "title": title,
+    "registrationNumber": registrationNumber,
+    "nationalCode": nationalCode,
+    "representative": representative,
+    "address": address,
+    "postalCode": postalCode,
+    "phoneNumber": phoneNumber,
     "sign1Base64": sign1Base64,
     "sign1Owner": sign1Owner,
     "sign2Base64": sign2Base64,
     "sign2Owner": sign2Owner,
+    "logoBase64": logoBase64,
+    "detail1": detail1,
+    "detail2": detail2,
+    "tags": List<dynamic>.from(tags.map((int x) => x)),
+    "id": id,
+    "creatorId": creatorId,
+    "adminUserIds": adminUserIds == null ? <dynamic>[] : List<dynamic>.from(adminUserIds!.map((String x) => x)),
   };
 }
 
@@ -577,20 +614,50 @@ class UTerminalBrokerReadParams {
 }
 
 class UTerminalBrokerUpdateParams {
-  final String id;
   final String? title;
+  final String? registrationNumber;
+  final String? nationalCode;
+  final String? representative;
+  final String? address;
+  final String? postalCode;
+  final String? phoneNumber;
   final String? sign1Base64;
   final String? sign1Owner;
   final String? sign2Base64;
   final String? sign2Owner;
+  final String? logoBase64;
+  final String id;
+  final String? detail1;
+  final String? detail2;
+  final List<int>? addTags;
+  final List<int>? removeTags;
+  final List<int>? tags;
+  final List<String>? adminUserIds;
+  final List<String>? addAdminUserIds;
+  final List<String>? removeAdminUserIds;
 
   UTerminalBrokerUpdateParams({
     required this.id,
     this.title,
+    this.registrationNumber,
+    this.nationalCode,
+    this.representative,
+    this.address,
+    this.postalCode,
+    this.phoneNumber,
     this.sign1Base64,
     this.sign1Owner,
     this.sign2Base64,
     this.sign2Owner,
+    this.logoBase64,
+    this.detail1,
+    this.detail2,
+    this.addTags,
+    this.removeTags,
+    this.tags,
+    this.adminUserIds,
+    this.addAdminUserIds,
+    this.removeAdminUserIds,
   });
 
   factory UTerminalBrokerUpdateParams.fromJson(String str) => UTerminalBrokerUpdateParams.fromMap(json.decode(str));
@@ -598,20 +665,50 @@ class UTerminalBrokerUpdateParams {
   String toJson() => json.encode(toMap());
 
   factory UTerminalBrokerUpdateParams.fromMap(Map<String, dynamic> json) => UTerminalBrokerUpdateParams(
-    id: json["id"],
     title: json["title"],
+    registrationNumber: json["registrationNumber"],
+    nationalCode: json["nationalCode"],
+    representative: json["representative"],
+    address: json["address"],
+    postalCode: json["postalCode"],
+    phoneNumber: json["phoneNumber"],
     sign1Base64: json["sign1Base64"],
     sign1Owner: json["sign1Owner"],
     sign2Base64: json["sign2Base64"],
     sign2Owner: json["sign2Owner"],
+    logoBase64: json["logoBase64"],
+    id: json["id"],
+    detail1: json["detail1"],
+    detail2: json["detail2"],
+    addTags: json["addTags"] == null ? <int>[] : List<int>.from(json["addTags"]!.map((dynamic x) => x)),
+    removeTags: json["removeTags"] == null ? <int>[] : List<int>.from(json["removeTags"]!.map((dynamic x) => x)),
+    tags: json["tags"] == null ? <int>[] : List<int>.from(json["tags"]!.map((dynamic x) => x)),
+    adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
+    addAdminUserIds: json["addAdminUserIds"] == null ? <String>[] : List<String>.from(json["addAdminUserIds"]!.map((dynamic x) => x)),
+    removeAdminUserIds: json["removeAdminUserIds"] == null ? <String>[] : List<String>.from(json["removeAdminUserIds"]!.map((dynamic x) => x)),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
-    "id": id,
     "title": title,
+    "registrationNumber": registrationNumber,
+    "nationalCode": nationalCode,
+    "representative": representative,
+    "address": address,
+    "postalCode": postalCode,
+    "phoneNumber": phoneNumber,
     "sign1Base64": sign1Base64,
     "sign1Owner": sign1Owner,
     "sign2Base64": sign2Base64,
     "sign2Owner": sign2Owner,
+    "logoBase64": logoBase64,
+    "id": id,
+    "detail1": detail1,
+    "detail2": detail2,
+    "addTags": addTags == null ? <dynamic>[] : List<dynamic>.from(addTags!.map((int x) => x)),
+    "removeTags": removeTags == null ? <dynamic>[] : List<dynamic>.from(removeTags!.map((int x) => x)),
+    "tags": tags == null ? <dynamic>[] : List<dynamic>.from(tags!.map((int x) => x)),
+    "adminUserIds": adminUserIds == null ? <dynamic>[] : List<dynamic>.from(adminUserIds!.map((String x) => x)),
+    "addAdminUserIds": addAdminUserIds == null ? <dynamic>[] : List<dynamic>.from(addAdminUserIds!.map((String x) => x)),
+    "removeAdminUserIds": removeAdminUserIds == null ? <dynamic>[] : List<dynamic>.from(removeAdminUserIds!.map((String x) => x)),
   };
 }

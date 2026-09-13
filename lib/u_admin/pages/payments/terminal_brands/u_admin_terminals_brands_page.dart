@@ -139,8 +139,9 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
 
   void _showCreateDialog() {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final TextEditingController title = TextEditingController();
-    final TextEditingController model = TextEditingController();
+    final TextEditingController titleController = TextEditingController();
+    final TextEditingController modelController = TextEditingController();
+    final Rx<TagTerminalBrand> tag = TagTerminalBrand.simCard.obs;
 
     UNavigator.dialog(
       AlertDialog(
@@ -154,16 +155,26 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   UTextField(
-                    controller: title,
+                    controller: titleController,
                     labelText: U.s.title,
                     validator: UValidators.required(message: U.s.required),
                     margin: const EdgeInsets.symmetric(vertical: 6),
                   ),
                   UTextField(
-                    controller: model,
+                    controller: modelController,
                     labelText: U.s.model,
                     validator: UValidators.required(message: U.s.required),
                     margin: const EdgeInsets.symmetric(vertical: 6),
+                  ),
+                  Obx(
+                    () => UDropDownField<TagTerminalBrand>(
+                      initialValue: tag.value,
+                      items: <DropdownMenuItem<TagTerminalBrand>>[
+                        DropdownMenuItem<TagTerminalBrand>(child: Text(TagTerminalBrand.simCard.titleFa)),
+                        DropdownMenuItem<TagTerminalBrand>(child: Text(TagTerminalBrand.wifi.titleFa)),
+                      ],
+                      onChanged: tag.call,
+                    ),
                   ),
                   const SizedBox(height: 20),
                   UButtonSubmitCancel(
@@ -173,9 +184,9 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
                         UNavigator.back();
                         c.create(
                           p: UTerminalBrandCreateParams(
-                            title: title.text.trim(),
-                            model: model.text.trim(),
-                            tags: <int>[TagTerminalBrand.test.number],
+                            title: titleController.text.trim(),
+                            model: modelController.text.trim(),
+                            tags: <int>[tag.value.number],
                           ),
                         );
                       },
