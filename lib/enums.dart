@@ -634,8 +634,11 @@ enum TagTerminal with NumericIdentifiable {
 }
 
 enum TagTerminalBrand with NumericIdentifiable {
-  simCard("سیمکارت", "SIM CARD", 101),
-  wifi("وای‌فای", "WIFI", 102);
+  atm("خودپرداز", "ATM", 101),
+  wallCashless("خودپرداز غیر نقد", "Wall Cashless", 102),
+  deskCashless("خودپرداز رومیزی", "Desk Cashless", 103),
+  simCard("سیمکارت", "SIM CARD", 201),
+  wifi("وای‌فای", "WIFI", 202);
 
   const TagTerminalBrand(this.titleFa, this.titleEn, this.number);
 
