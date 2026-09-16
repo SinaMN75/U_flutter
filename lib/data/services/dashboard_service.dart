@@ -1,17 +1,17 @@
 part of "../data.dart";
 
 class DashboardService {
-  Future<(UMetricsResponse?, UEmptyResponse?, String?)> readSystemMetrics({
-    Function(UMetricsResponse r)? onOk,
+  Future<(USystemMetricsResponse?, UEmptyResponse?, String?)> readSystemMetrics({
+    Function(USystemMetricsResponse r)? onOk,
     VoidCallback? onError,
     Function(String e)? onException,
   }) async {
-    (UMetricsResponse?, UEmptyResponse?, String?) result = (null, null, null);
+    (USystemMetricsResponse?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
       method: "POST",
       endpoint: "${U.baseUrl}/dashboard/ReadSystemMetrics",
       onSuccess: (Response r) {
-        final UMetricsResponse ok = UMetricsResponse.fromJson(r.body);
+        final USystemMetricsResponse ok = USystemMetricsResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },
@@ -150,62 +150,6 @@ class DashboardService {
     return result;
   }
 
-  Future<(LogStructureResponse?, UEmptyResponse?, String?)> getLogStructure({
-    Function(LogStructureResponse r)? onOk,
-    VoidCallback? onError,
-    Function(String e)? onException,
-  }) async {
-    (LogStructureResponse?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/dashboard/Logs/structure",
-      onSuccess: (Response r) {
-        final LogStructureResponse ok = LogStructureResponse.fromJson(r.body);
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call();
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
-
-  Future<(String?, UEmptyResponse?, String?)> getLogContent({
-    required String logId,
-    Function(String r)? onOk,
-    VoidCallback? onError,
-    Function(String e)? onException,
-  }) async {
-    (String?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/dashboard/Logs/content",
-      body: <String, String>{"id": logId},
-      onSuccess: (Response r) {
-        final String ok = r.body;
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call();
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
-
   Future<(UResponse<List<UApiLogResponse>>?, UEmptyResponse?, String?)> readApiLogs({
     required UApiLogReadParams p,
     Function(UResponse<List<UApiLogResponse>> r)? onOk,
@@ -258,35 +202,6 @@ class DashboardService {
         final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
-
-  Future<(String?, UEmptyResponse?, String?)> exportApiLogs({
-    required UApiLogReadParams p,
-    Function(String csv)? onOk,
-    VoidCallback? onError,
-    Function(String e)? onException,
-  }) async {
-    (String?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/dashboard/ApiLogExport",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final String ok = r.body;
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call();
       },
       onException: (String e) {
         result = (null, null, e);

@@ -31,9 +31,9 @@ class UAdminHotelUserDetailController {
         userId: user.id,
         pageNumber: 1,
         pageSize: 100,
-        selectorArgs: const ContractSelectorArgs(
+        selectorArgs: const DormBedContractSelectorArgs(
           bed: DormBedSelectorArgs(room: DormRoomSelectorArgs(dorm: DormSelectorArgs())),
-          invoice: InvoiceSelectorArgs(),
+          invoice: DormBedInvoiceSelectorArgs(),
         ),
       ),
       onOk: (UResponse<List<UDormBedContractResponse>> r) {

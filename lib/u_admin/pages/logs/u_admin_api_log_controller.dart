@@ -155,25 +155,6 @@ class UAdminApiLogController extends UBaseController {
     );
   }
 
-  void exportCsv(Function(String csv) onOk) {
-    ULoading.show();
-    UServices.dashboard.exportApiLogs(
-      p: _buildSearchParams(),
-      onOk: (String csv) {
-        ULoading.dismiss();
-        onOk(csv);
-      },
-      onError: () {
-        ULoading.dismiss();
-        UToast.error(message: U.s.errorReadingData);
-      },
-      onException: (String e) {
-        ULoading.dismiss();
-        UToast.error(message: e);
-      },
-    );
-  }
-
   final RxList<String> appLogs = <String>[].obs;
   final RxState appLogsState = RxState();
 

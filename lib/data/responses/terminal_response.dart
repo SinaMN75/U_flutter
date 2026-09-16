@@ -120,18 +120,18 @@ class UTerminalAvailabilityResponse {
   };
 }
 
-class UTerminalReadSupportPasswordResponse {
+class UTerminalSupportPasswordResponse {
   final String? password;
 
-  UTerminalReadSupportPasswordResponse({
+  UTerminalSupportPasswordResponse({
     this.password,
   });
 
-  factory UTerminalReadSupportPasswordResponse.fromJson(String str) => UTerminalReadSupportPasswordResponse.fromMap(json.decode(str));
+  factory UTerminalSupportPasswordResponse.fromJson(String str) => UTerminalSupportPasswordResponse.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory UTerminalReadSupportPasswordResponse.fromMap(Map<String, dynamic> json) => UTerminalReadSupportPasswordResponse(
+  factory UTerminalSupportPasswordResponse.fromMap(Map<String, dynamic> json) => UTerminalSupportPasswordResponse(
     password: json["password"],
   );
 

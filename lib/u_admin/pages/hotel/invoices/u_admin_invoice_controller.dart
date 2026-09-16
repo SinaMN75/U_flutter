@@ -36,7 +36,7 @@ class UAdminInvoiceController extends UBaseController {
         maxDueDate: maxDueDate,
         minDebtAmount: minDebtController.isNullOrEmpty() ? null : minDebtController.numDouble(),
         maxDebtAmount: maxDebtController.isNullOrEmpty() ? null : maxDebtController.numDouble(),
-        selectorArgs: const InvoiceSelectorArgs(contract: ContractSelectorArgs(user: UserSelectorArgs())),
+        selectorArgs: const DormBedInvoiceSelectorArgs(contract: DormBedContractSelectorArgs(user: UserSelectorArgs())),
       ),
       onOk: (UResponse<List<UDormBedInvoiceResponse>> r) {
         list = r.result ?? <UDormBedInvoiceResponse>[];
@@ -83,14 +83,14 @@ class UAdminInvoiceController extends UBaseController {
 
   void create({required UDormBedInvoiceCreateParams p}) => UServices.hotel.createDormBedInvoice(
     p: p,
-    onOk: (UResponse<UDormBedInvoiceResponse> r) => okCallback(r.message, read),
+    onOk: (UResponse<String> r) => okCallback(r.message, read),
     onError: (UResponse<dynamic> r) => errorCallBack(r.message, read),
     onException: (String e) => errorCallBack(U.s.errorSubmittingForm, read),
   );
 
   void update({required UDormBedInvoiceUpdateParams p}) => UServices.hotel.updateDormBedInvoice(
     p: p,
-    onOk: (UResponse<UDormBedInvoiceResponse> r) => okCallback(r.message, read),
+    onOk: (UEmptyResponse r) => okCallback(r.message, read),
     onError: (UResponse<dynamic> r) => errorCallBack(r.message, read),
     onException: (String e) => errorCallBack(U.s.errorSubmittingForm, read),
   );
@@ -142,7 +142,7 @@ class UAdminInvoiceController extends UBaseController {
         userName: query,
         pageSize: 100,
         pageNumber: 1,
-        selectorArgs: const ContractSelectorArgs(user: UserSelectorArgs(), bed: DormBedSelectorArgs()),
+        selectorArgs: const DormBedContractSelectorArgs(user: UserSelectorArgs(), bed: DormBedSelectorArgs()),
       ),
       onOk: (UResponse<List<UDormBedContractResponse>> r) => result.addAll(r.result ?? <UDormBedContractResponse>[]),
       onError: (UResponse<dynamic> e) {},

@@ -812,19 +812,19 @@ class HotelService {
     return result;
   }
 
-  Future<(UResponse<UDormBedContractResponse>?, UResponse<dynamic>?, String?)> updateDormBedContract({
+  Future<(UEmptyResponse?, UResponse<dynamic>?, String?)> updateDormBedContract({
     required UDormBedContractUpdateParams p,
-    Function(UResponse<UDormBedContractResponse> r)? onOk,
+    Function(UEmptyResponse r)? onOk,
     Function(UResponse<dynamic> e)? onError,
     Function(String e)? onException,
   }) async {
-    (UResponse<UDormBedContractResponse>?, UResponse<dynamic>?, String?) result = (null, null, null);
+    (UEmptyResponse?, UResponse<dynamic>?, String?) result = (null, null, null);
     await UHttpClient.send(
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/DormBedContract/Update",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()).add("locale", ULocalStorage.getLocale()),
       onSuccess: (Response r) {
-        final UResponse<UDormBedContractResponse> ok = UResponse<UDormBedContractResponse>.fromJson(r.body, (dynamic i) => UDormBedContractResponse.fromMap(i));
+        final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },
@@ -870,19 +870,19 @@ class HotelService {
     return result;
   }
 
-  Future<(UResponse<UDormBedInvoiceResponse>?, UResponse<dynamic>?, String?)> createDormBedInvoice({
+  Future<(UResponse<String>?, UResponse<dynamic>?, String?)> createDormBedInvoice({
     required UDormBedInvoiceCreateParams p,
-    Function(UResponse<UDormBedInvoiceResponse> r)? onOk,
+    Function(UResponse<String> r)? onOk,
     Function(UResponse<dynamic> e)? onError,
     Function(String e)? onException,
   }) async {
-    (UResponse<UDormBedInvoiceResponse>?, UResponse<dynamic>?, String?) result = (null, null, null);
+    (UResponse<String>?, UResponse<dynamic>?, String?) result = (null, null, null);
     await UHttpClient.send(
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/DormBedInvoice/Create",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()).add("locale", ULocalStorage.getLocale()),
       onSuccess: (Response r) {
-        final UResponse<UDormBedInvoiceResponse> ok = UResponse<UDormBedInvoiceResponse>.fromJson(r.body, (dynamic i) => UDormBedInvoiceResponse.fromMap(i));
+        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (dynamic i) => i);
         result = (ok, null, null);
         onOk?.call(ok);
       },
@@ -931,19 +931,19 @@ class HotelService {
     return result;
   }
 
-  Future<(UResponse<UDormBedInvoiceResponse>?, UResponse<dynamic>?, String?)> updateDormBedInvoice({
+  Future<(UEmptyResponse?, UResponse<dynamic>?, String?)> updateDormBedInvoice({
     required UDormBedInvoiceUpdateParams p,
-    Function(UResponse<UDormBedInvoiceResponse> r)? onOk,
+    Function(UEmptyResponse r)? onOk,
     Function(UResponse<dynamic> e)? onError,
     Function(String e)? onException,
   }) async {
-    (UResponse<UDormBedInvoiceResponse>?, UResponse<dynamic>?, String?) result = (null, null, null);
+    (UEmptyResponse?, UResponse<dynamic>?, String?) result = (null, null, null);
     await UHttpClient.send(
       method: "POST",
       endpoint: "${U.baseUrl}/Hotel/DormBedInvoice/Update",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()).add("locale", ULocalStorage.getLocale()),
       onSuccess: (Response r) {
-        final UResponse<UDormBedInvoiceResponse> ok = UResponse<UDormBedInvoiceResponse>.fromJson(r.body, (dynamic i) => UDormBedInvoiceResponse.fromMap(i));
+        final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },
@@ -1007,6 +1007,37 @@ class HotelService {
       },
       onError: (Response r) {
         final UResponse<dynamic> err = UResponse<dynamic>.fromJson(r.body, (dynamic i) => i);
+        result = (null, err, null);
+        onError?.call(err);
+      },
+      onException: (String e) {
+        result = (null, null, e);
+        onException?.call(e);
+      },
+    );
+    return result;
+  }
+
+  Future<(UResponse<List<UDormBedInvoiceChartResponse>>?, UEmptyResponse?, String?)> readDormBedInvoiceChartData({
+    Function(UResponse<List<UDormBedInvoiceChartResponse>> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) async {
+    (UResponse<List<UDormBedInvoiceChartResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
+    await UHttpClient.send(
+      method: "POST",
+      endpoint: "${U.baseUrl}/Hotel/DormBedInvoice/ChartData",
+      body: <String, dynamic>{}.add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
+      onSuccess: (Response r) {
+        final UResponse<List<UDormBedInvoiceChartResponse>> ok = UResponse<List<UDormBedInvoiceChartResponse>>.fromJson(
+          r.body,
+          (dynamic i) => List<UDormBedInvoiceChartResponse>.from((i as List<dynamic>).map((dynamic x) => UDormBedInvoiceChartResponse.fromMap(x))),
+        );
+        result = (ok, null, null);
+        onOk?.call(ok);
+      },
+      onError: (Response r) {
+        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
       },

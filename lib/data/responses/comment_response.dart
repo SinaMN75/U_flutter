@@ -1,6 +1,25 @@
 part of "../data.dart";
 
 class UCommentResponse {
+  final String id;
+  final DateTime createdAt;
+  final UCommentJson jsonData;
+  final List<int> tags;
+  final double score;
+  final String description;
+  final String? parentId;
+  final UUserResponse? user;
+  final String userId;
+  final UUserResponse? creator;
+  final String? creatorId;
+  final String? productId;
+  final String? blogId;
+  final String? hotelId;
+  final String? dormId;
+  final List<UCommentResponse>? children;
+  final List<UMediaResponse>? media;
+  final List<String> adminUserIds;
+
   UCommentResponse({
     required this.id,
     required this.createdAt,
@@ -24,16 +43,18 @@ class UCommentResponse {
 
   factory UCommentResponse.fromJson(String str) => UCommentResponse.fromMap(json.decode(str));
 
+  String toJson() => json.encode(toMap());
+
   factory UCommentResponse.fromMap(Map<String, dynamic> json) => UCommentResponse(
     id: json["id"],
     createdAt: DateTime.parse(json["createdAt"]),
     jsonData: UCommentJson.fromMap(json["jsonData"]),
     tags: List<int>.from(json["tags"].map((dynamic x) => x)),
-    score: json["score"],
+    score: (json["score"] as num?)?.toDouble() ?? 0,
     description: json["description"],
     parentId: json["parentId"],
     user: json["user"] == null ? null : UUserResponse.fromMap(json["user"]),
-    userId: json["userId"],
+    userId: json["userId"] ?? "",
     creator: json["creator"] == null ? null : UUserResponse.fromMap(json["creator"]),
     creatorId: json["creatorId"],
     productId: json["productId"],
@@ -44,26 +65,6 @@ class UCommentResponse {
     media: json["media"] == null ? <UMediaResponse>[] : List<UMediaResponse>.from(json["media"].map((dynamic x) => UMediaResponse.fromMap(x))),
     adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
   );
-  final String id;
-  final DateTime createdAt;
-  final UCommentJson jsonData;
-  final List<int> tags;
-  final double score;
-  final String description;
-  final String? parentId;
-  final UUserResponse? user;
-  final String userId;
-  final UUserResponse? creator;
-  final String? creatorId;
-  final String? productId;
-  final String? blogId;
-  final String? hotelId;
-  final String? dormId;
-  final List<UCommentResponse>? children;
-  final List<UMediaResponse>? media;
-  final List<String> adminUserIds;
-
-  String toJson() => json.encode(toMap());
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "id": id,

@@ -1,23 +1,59 @@
 part of "../data.dart";
 
 class UDbAdminTablesParams {
-  UDbAdminTablesParams({this.schema = "public"});
-
   final String schema;
 
-  Map<String, dynamic> toMap() => <String, dynamic>{"schema": schema};
+  UDbAdminTablesParams({
+    this.schema = "public",
+  });
+
+  factory UDbAdminTablesParams.fromJson(String str) => UDbAdminTablesParams.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UDbAdminTablesParams.fromMap(Map<String, dynamic> json) => UDbAdminTablesParams(
+    schema: json["schema"] ?? "public",
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "schema": schema,
+  };
 }
 
-class UDbAdminSchemaParams {
-  UDbAdminSchemaParams({required this.table, this.schema = "public"});
-
+class UDbAdminTableSchemaParams {
   final String table;
   final String schema;
 
-  Map<String, dynamic> toMap() => <String, dynamic>{"table": table, "schema": schema};
+  UDbAdminTableSchemaParams({
+    required this.table,
+    this.schema = "public",
+  });
+
+  factory UDbAdminTableSchemaParams.fromJson(String str) => UDbAdminTableSchemaParams.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UDbAdminTableSchemaParams.fromMap(Map<String, dynamic> json) => UDbAdminTableSchemaParams(
+    table: json["table"],
+    schema: json["schema"] ?? "public",
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "table": table,
+    "schema": schema,
+  };
 }
 
 class UDbAdminRowsParams {
+  final String table;
+  final String schema;
+  final int pageSize;
+  final int pageNumber;
+  final String? orderByColumn;
+  final bool descending;
+  final String? where;
+  final bool withCount;
+
   UDbAdminRowsParams({
     required this.table,
     this.schema = "public",
@@ -29,14 +65,20 @@ class UDbAdminRowsParams {
     this.withCount = true,
   });
 
-  final String table;
-  final String schema;
-  final int pageSize;
-  final int pageNumber;
-  final String? orderByColumn;
-  final bool descending;
-  final String? where;
-  final bool withCount;
+  factory UDbAdminRowsParams.fromJson(String str) => UDbAdminRowsParams.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UDbAdminRowsParams.fromMap(Map<String, dynamic> json) => UDbAdminRowsParams(
+    table: json["table"],
+    schema: json["schema"] ?? "public",
+    pageSize: json["pageSize"] ?? 100,
+    pageNumber: json["pageNumber"] ?? 1,
+    orderByColumn: json["orderByColumn"],
+    descending: json["descending"] ?? false,
+    where: json["where"],
+    withCount: json["withCount"] ?? true,
+  );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "table": table,
@@ -51,15 +93,36 @@ class UDbAdminRowsParams {
 }
 
 class UDbAdminQueryParams {
-  UDbAdminQueryParams({required this.sql, this.maxRows = 500});
-
   final String sql;
   final int maxRows;
 
-  Map<String, dynamic> toMap() => <String, dynamic>{"sql": sql, "maxRows": maxRows};
+  UDbAdminQueryParams({
+    required this.sql,
+    this.maxRows = 500,
+  });
+
+  factory UDbAdminQueryParams.fromJson(String str) => UDbAdminQueryParams.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UDbAdminQueryParams.fromMap(Map<String, dynamic> json) => UDbAdminQueryParams(
+    sql: json["sql"],
+    maxRows: json["maxRows"] ?? 500,
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "sql": sql,
+    "maxRows": maxRows,
+  };
 }
 
 class UDbAdminUpdateRowParams {
+  final String table;
+  final String schema;
+  final String primaryKeyColumn;
+  final String primaryKeyValue;
+  final Map<String, dynamic> values;
+
   UDbAdminUpdateRowParams({
     required this.table,
     required this.primaryKeyColumn,
@@ -68,11 +131,17 @@ class UDbAdminUpdateRowParams {
     this.schema = "public",
   });
 
-  final String table;
-  final String schema;
-  final String primaryKeyColumn;
-  final String primaryKeyValue;
-  final Map<String, dynamic> values;
+  factory UDbAdminUpdateRowParams.fromJson(String str) => UDbAdminUpdateRowParams.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UDbAdminUpdateRowParams.fromMap(Map<String, dynamic> json) => UDbAdminUpdateRowParams(
+    table: json["table"],
+    schema: json["schema"] ?? "public",
+    primaryKeyColumn: json["primaryKeyColumn"],
+    primaryKeyValue: json["primaryKeyValue"],
+    values: Map<String, dynamic>.from(json["values"] ?? <String, dynamic>{}),
+  );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "table": table,
@@ -84,16 +153,39 @@ class UDbAdminUpdateRowParams {
 }
 
 class UDbAdminInsertRowParams {
-  UDbAdminInsertRowParams({required this.table, required this.values, this.schema = "public"});
-
   final String table;
   final String schema;
   final Map<String, dynamic> values;
 
-  Map<String, dynamic> toMap() => <String, dynamic>{"table": table, "schema": schema, "values": values};
+  UDbAdminInsertRowParams({
+    required this.table,
+    required this.values,
+    this.schema = "public",
+  });
+
+  factory UDbAdminInsertRowParams.fromJson(String str) => UDbAdminInsertRowParams.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UDbAdminInsertRowParams.fromMap(Map<String, dynamic> json) => UDbAdminInsertRowParams(
+    table: json["table"],
+    schema: json["schema"] ?? "public",
+    values: Map<String, dynamic>.from(json["values"] ?? <String, dynamic>{}),
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "table": table,
+    "schema": schema,
+    "values": values,
+  };
 }
 
 class UDbAdminDeleteRowParams {
+  final String table;
+  final String schema;
+  final String primaryKeyColumn;
+  final String primaryKeyValue;
+
   UDbAdminDeleteRowParams({
     required this.table,
     required this.primaryKeyColumn,
@@ -101,10 +193,16 @@ class UDbAdminDeleteRowParams {
     this.schema = "public",
   });
 
-  final String table;
-  final String schema;
-  final String primaryKeyColumn;
-  final String primaryKeyValue;
+  factory UDbAdminDeleteRowParams.fromJson(String str) => UDbAdminDeleteRowParams.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UDbAdminDeleteRowParams.fromMap(Map<String, dynamic> json) => UDbAdminDeleteRowParams(
+    table: json["table"],
+    schema: json["schema"] ?? "public",
+    primaryKeyColumn: json["primaryKeyColumn"],
+    primaryKeyValue: json["primaryKeyValue"],
+  );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "table": table,

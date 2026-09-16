@@ -1,20 +1,20 @@
 part of "../data.dart";
 
-class ReserveChargeParams {
-  final String amount;
+class UReserveChargeParams {
+  final double amount;
   final String simType;
 
-  ReserveChargeParams({
+  UReserveChargeParams({
     required this.amount,
     required this.simType,
   });
 
-  factory ReserveChargeParams.fromJson(String str) => ReserveChargeParams.fromMap(json.decode(str));
+  factory UReserveChargeParams.fromJson(String str) => UReserveChargeParams.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory ReserveChargeParams.fromMap(Map<String, dynamic> json) => ReserveChargeParams(
-    amount: json["amount"],
+  factory UReserveChargeParams.fromMap(Map<String, dynamic> json) => UReserveChargeParams(
+    amount: (json["amount"] as num?)?.toDouble() ?? 0,
     simType: json["simType"],
   );
 
@@ -24,25 +24,25 @@ class ReserveChargeParams {
   };
 }
 
-class TopupChargeParams {
-  final String amount;
+class UTopupChargeParams {
+  final double amount;
   final String operatorId;
   final String chargeType;
   final String phoneNumber;
 
-  TopupChargeParams({
+  UTopupChargeParams({
     required this.amount,
     required this.operatorId,
     required this.chargeType,
     required this.phoneNumber,
   });
 
-  factory TopupChargeParams.fromJson(String str) => TopupChargeParams.fromMap(json.decode(str));
+  factory UTopupChargeParams.fromJson(String str) => UTopupChargeParams.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory TopupChargeParams.fromMap(Map<String, dynamic> json) => TopupChargeParams(
-    amount: json["amount"],
+  factory UTopupChargeParams.fromMap(Map<String, dynamic> json) => UTopupChargeParams(
+    amount: (json["amount"] as num?)?.toDouble() ?? 0,
     operatorId: json["operatorId"],
     chargeType: json["chargeType"],
     phoneNumber: json["phoneNumber"],
@@ -56,18 +56,18 @@ class TopupChargeParams {
   };
 }
 
-class InternetListParams {
+class UInternetListParams {
   final String operatorId;
 
-  InternetListParams({
+  UInternetListParams({
     required this.operatorId,
   });
 
-  factory InternetListParams.fromJson(String str) => InternetListParams.fromMap(json.decode(str));
+  factory UInternetListParams.fromJson(String str) => UInternetListParams.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory InternetListParams.fromMap(Map<String, dynamic> json) => InternetListParams(
+  factory UInternetListParams.fromMap(Map<String, dynamic> json) => UInternetListParams(
     operatorId: json["operatorId"],
   );
 
@@ -104,18 +104,18 @@ class ApproveParams {
   };
 }
 
-class GetStatusParams {
+class UGetStatusParams {
   final String reference;
 
-  GetStatusParams({
+  UGetStatusParams({
     required this.reference,
   });
 
-  factory GetStatusParams.fromJson(String str) => GetStatusParams.fromMap(json.decode(str));
+  factory UGetStatusParams.fromJson(String str) => UGetStatusParams.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory GetStatusParams.fromMap(Map<String, dynamic> json) => GetStatusParams(
+  factory UGetStatusParams.fromMap(Map<String, dynamic> json) => UGetStatusParams(
     reference: json["reference"],
   );
 
@@ -144,34 +144,31 @@ class MCITopOfferParams {
   };
 }
 
-class InternetReserveParams {
-  final String subscriber; // Phone number
+class UInternetReserveParams {
+  final String subscriber;
   final String operatorId;
-  final String packageId; // Id from InternetList
-  final String amount; // Amount from InternetList
-  final String device; // e.g., "05"
-  final String? bank;
+  final String packageId;
+  final double amount;
+  final String device;
 
-  InternetReserveParams({
+  UInternetReserveParams({
     required this.subscriber,
     required this.operatorId,
     required this.packageId,
     required this.amount,
     required this.device,
-    this.bank,
   });
 
-  factory InternetReserveParams.fromJson(String str) => InternetReserveParams.fromMap(json.decode(str));
+  factory UInternetReserveParams.fromJson(String str) => UInternetReserveParams.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory InternetReserveParams.fromMap(Map<String, dynamic> json) => InternetReserveParams(
+  factory UInternetReserveParams.fromMap(Map<String, dynamic> json) => UInternetReserveParams(
     subscriber: json["subscriber"],
     operatorId: json["operatorId"],
     packageId: json["packageId"],
-    amount: json["amount"],
+    amount: (json["amount"] as num?)?.toDouble() ?? 0,
     device: json["device"],
-    bank: json["bank"],
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -180,6 +177,5 @@ class InternetReserveParams {
     "packageId": packageId,
     "amount": amount,
     "device": device,
-    "bank": bank,
   };
 }

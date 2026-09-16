@@ -625,7 +625,7 @@ class UGoldUserBalanceResponse {
   };
 }
 
-class UGoldTxnJsonData {
+class UGoldTxnJson {
   final String? detail1;
   final String? detail2;
   final double? feeAmount;
@@ -637,7 +637,7 @@ class UGoldTxnJsonData {
   final String? providerStatus;
   final String? error;
 
-  UGoldTxnJsonData({
+  UGoldTxnJson({
     this.detail1,
     this.detail2,
     this.feeAmount,
@@ -650,11 +650,11 @@ class UGoldTxnJsonData {
     this.error,
   });
 
-  factory UGoldTxnJsonData.fromJson(String str) => UGoldTxnJsonData.fromMap(json.decode(str));
+  factory UGoldTxnJson.fromJson(String str) => UGoldTxnJson.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory UGoldTxnJsonData.fromMap(Map<String, dynamic>? json) => UGoldTxnJsonData(
+  factory UGoldTxnJson.fromMap(Map<String, dynamic>? json) => UGoldTxnJson(
     detail1: json?["detail1"],
     detail2: json?["detail2"],
     feeAmount: json?["feeAmount"] == null ? null : (json!["feeAmount"] as num).toDouble(),
@@ -685,7 +685,7 @@ class UGoldTxnResponse {
   final String id;
   final DateTime? createdAt;
   final List<int> tags;
-  final UGoldTxnJsonData jsonData;
+  final UGoldTxnJson jsonData;
   final String userId;
   final UUserResponse? user;
   final UUserResponse? creator;
@@ -722,7 +722,7 @@ class UGoldTxnResponse {
     id: json["id"] ?? "",
     createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     tags: json["tags"] == null ? <int>[] : List<int>.from(json["tags"]!.map((dynamic x) => x)),
-    jsonData: UGoldTxnJsonData.fromMap(json["jsonData"]),
+    jsonData: UGoldTxnJson.fromMap(json["jsonData"]),
     userId: json["userId"] ?? "",
     user: json["user"] == null ? null : UUserResponse.fromMap(json["user"]),
     creator: json["creator"] == null ? null : UUserResponse.fromMap(json["creator"]),

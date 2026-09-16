@@ -1,6 +1,15 @@
 part of "../data.dart";
 
 class UTicketResponse {
+  final String id;
+  final DateTime createdAt;
+  final UTicketJson jsonData;
+  final List<int> tags;
+  final String creatorId;
+  final UUserResponse? creator;
+  final List<UMediaResponse>? media;
+  final List<String> adminUserIds;
+
   UTicketResponse({
     required this.id,
     required this.createdAt,
@@ -12,25 +21,20 @@ class UTicketResponse {
     this.media,
   });
 
+  factory UTicketResponse.fromJson(String str) => UTicketResponse.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
   factory UTicketResponse.fromMap(Map<String, dynamic> json) => UTicketResponse(
     id: json["id"],
     createdAt: DateTime.parse(json["createdAt"]),
     jsonData: UTicketJson.fromMap(json["jsonData"]),
     tags: List<int>.from(json["tags"]),
-    creatorId: json["creatorId"],
+    creatorId: json["creatorId"] ?? "",
     creator: json["creator"] == null ? null : UUserResponse.fromMap(json["creator"]),
     media: json["media"] == null ? <UMediaResponse>[] : List<UMediaResponse>.from(json["media"].map((dynamic x) => UMediaResponse.fromMap(x))),
     adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
   );
-
-  final String id;
-  final DateTime createdAt;
-  final UTicketJson jsonData;
-  final List<int> tags;
-  final String creatorId;
-  final UUserResponse? creator;
-  final List<UMediaResponse>? media;
-  final List<String> adminUserIds;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "id": id,
@@ -42,10 +46,6 @@ class UTicketResponse {
     "media": media?.map((UMediaResponse e) => e.toMap()).toList(),
     "adminUserIds": List<dynamic>.from(adminUserIds.map((String x) => x)),
   };
-
-  String toJson() => json.encode(toMap());
-
-  factory UTicketResponse.fromJson(String str) => UTicketResponse.fromMap(json.decode(str));
 }
 
 class UTicketJson {

@@ -1,11 +1,5 @@
 part of "../data.dart";
 
-class UAppSettingsReadParams {
-  UAppSettingsReadParams();
-
-  Map<String, dynamic> toMap() => <String, dynamic>{};
-}
-
 class UAppSettingsUpdateParams {
   UAppSettingsUpdateParams({required this.settings});
 

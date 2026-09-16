@@ -181,6 +181,32 @@ class UParkingReportResponse {
 }
 
 class UParkingTariffResponse {
+  final String id;
+  final DateTime createdAt;
+  final List<int> tags;
+  final String parkingId;
+  final int vehicleType;
+  final double entrancePrice;
+  final double dayHourlyPrice;
+  final double nightHourlyPrice;
+  final double dailyCap;
+  final double weeklyPrice;
+  final double monthlyPrice;
+  final double quarterlyPrice;
+  final int freeMinutes;
+  final int nightStartHour;
+  final int nightEndHour;
+  final int holidayExtraPercent;
+  final bool roundToFullHour;
+  final bool perMinuteAfterFirstHour;
+  final int subscriptionDailyEntryLimit;
+  final bool subscriptionOfficeHoursOnly;
+  final int subscriptionExpiryReminderDays;
+  final String? creatorId;
+  final UBaseJson? jsonData;
+  final UUserResponse? creator;
+  final List<String> adminUserIds;
+
   UParkingTariffResponse({
     required this.id,
     required this.createdAt,
@@ -204,9 +230,14 @@ class UParkingTariffResponse {
     required this.subscriptionOfficeHoursOnly,
     required this.subscriptionExpiryReminderDays,
     this.creatorId,
+    this.jsonData,
+    this.creator,
+    this.adminUserIds = const <String>[],
   });
 
   factory UParkingTariffResponse.fromJson(String str) => UParkingTariffResponse.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
 
   factory UParkingTariffResponse.fromMap(Map<String, dynamic> json) => UParkingTariffResponse(
     id: json["id"],
@@ -231,32 +262,10 @@ class UParkingTariffResponse {
     subscriptionOfficeHoursOnly: json["subscriptionOfficeHoursOnly"] ?? false,
     subscriptionExpiryReminderDays: json["subscriptionExpiryReminderDays"] ?? 5,
     creatorId: json["creatorId"],
+    jsonData: json["jsonData"] == null ? null : UBaseJson.fromMap(json["jsonData"]),
+    creator: json["creator"] == null ? null : UUserResponse.fromMap(json["creator"]),
+    adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
   );
-
-  final String id;
-  final DateTime createdAt;
-  final List<int> tags;
-  final String parkingId;
-  final int vehicleType;
-  final double entrancePrice;
-  final double dayHourlyPrice;
-  final double nightHourlyPrice;
-  final double dailyCap;
-  final double weeklyPrice;
-  final double monthlyPrice;
-  final double quarterlyPrice;
-  final int freeMinutes;
-  final int nightStartHour;
-  final int nightEndHour;
-  final int holidayExtraPercent;
-  final bool roundToFullHour;
-  final bool perMinuteAfterFirstHour;
-  final int subscriptionDailyEntryLimit;
-  final bool subscriptionOfficeHoursOnly;
-  final int subscriptionExpiryReminderDays;
-  final String? creatorId;
-
-  String toJson() => json.encode(toMap());
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "id": id,
@@ -281,10 +290,32 @@ class UParkingTariffResponse {
     "subscriptionOfficeHoursOnly": subscriptionOfficeHoursOnly,
     "subscriptionExpiryReminderDays": subscriptionExpiryReminderDays,
     "creatorId": creatorId,
+    "jsonData": jsonData?.toMap(),
+    "creator": creator?.toMap(),
+    "adminUserIds": List<dynamic>.from(adminUserIds.map((String x) => x)),
   };
 }
 
 class UParkingSubscriptionResponse {
+  final String id;
+  final DateTime createdAt;
+  final List<int> tags;
+  final String parkingId;
+  final String vehicleId;
+  final double price;
+  final DateTime startDate;
+  final DateTime expiryDate;
+  final int dailyEntryLimit;
+  final bool officeHoursOnly;
+  final int remainingDays;
+  final UVehicleResponse? vehicle;
+  final String? customerName;
+  final String? customerPhoneNumber;
+  final String? creatorId;
+  final UBaseJson? jsonData;
+  final UUserResponse? creator;
+  final List<String> adminUserIds;
+
   UParkingSubscriptionResponse({
     required this.id,
     required this.createdAt,
@@ -301,9 +332,16 @@ class UParkingSubscriptionResponse {
     this.customerName,
     this.customerPhoneNumber,
     this.creatorId,
+    this.jsonData,
+    this.creator,
+    this.adminUserIds = const <String>[],
   });
 
+  bool get isExpired => remainingDays < 0;
+
   factory UParkingSubscriptionResponse.fromJson(String str) => UParkingSubscriptionResponse.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
 
   factory UParkingSubscriptionResponse.fromMap(Map<String, dynamic> json) => UParkingSubscriptionResponse(
     id: json["id"],
@@ -321,27 +359,10 @@ class UParkingSubscriptionResponse {
     customerName: json["customerName"],
     customerPhoneNumber: json["customerPhoneNumber"],
     creatorId: json["creatorId"],
+    jsonData: json["jsonData"] == null ? null : UBaseJson.fromMap(json["jsonData"]),
+    creator: json["creator"] == null ? null : UUserResponse.fromMap(json["creator"]),
+    adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
   );
-
-  final String id;
-  final DateTime createdAt;
-  final List<int> tags;
-  final String parkingId;
-  final String vehicleId;
-  final double price;
-  final DateTime startDate;
-  final DateTime expiryDate;
-  final int dailyEntryLimit;
-  final bool officeHoursOnly;
-  final int remainingDays;
-  final UVehicleResponse? vehicle;
-  final String? customerName;
-  final String? customerPhoneNumber;
-  final String? creatorId;
-
-  bool get isExpired => remainingDays < 0;
-
-  String toJson() => json.encode(toMap());
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "id": id,
@@ -359,10 +380,28 @@ class UParkingSubscriptionResponse {
     "customerName": customerName,
     "customerPhoneNumber": customerPhoneNumber,
     "creatorId": creatorId,
+    "jsonData": jsonData?.toMap(),
+    "creator": creator?.toMap(),
+    "adminUserIds": List<dynamic>.from(adminUserIds.map((String x) => x)),
   };
 }
 
 class UParkingPlateFlagResponse {
+  final String id;
+  final DateTime createdAt;
+  final List<int> tags;
+  final String parkingId;
+  final String licencePlate;
+  final String? reason;
+  final double? amount;
+  final DateTime? fromDate;
+  final DateTime? toDate;
+  final String? spotNumber;
+  final String? creatorId;
+  final UUserResponse? creator;
+  final UBaseJson? jsonData;
+  final List<String> adminUserIds;
+
   UParkingPlateFlagResponse({
     required this.id,
     required this.createdAt,
@@ -376,9 +415,13 @@ class UParkingPlateFlagResponse {
     this.spotNumber,
     this.creatorId,
     this.creator,
+    this.jsonData,
+    this.adminUserIds = const <String>[],
   });
 
   factory UParkingPlateFlagResponse.fromJson(String str) => UParkingPlateFlagResponse.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
 
   factory UParkingPlateFlagResponse.fromMap(Map<String, dynamic> json) => UParkingPlateFlagResponse(
     id: json["id"],
@@ -393,22 +436,9 @@ class UParkingPlateFlagResponse {
     spotNumber: json["spotNumber"],
     creatorId: json["creatorId"],
     creator: json["creator"] == null ? null : UUserResponse.fromMap(json["creator"]),
+    jsonData: json["jsonData"] == null ? null : UBaseJson.fromMap(json["jsonData"]),
+    adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
   );
-
-  final String id;
-  final DateTime createdAt;
-  final List<int> tags;
-  final String parkingId;
-  final String licencePlate;
-  final String? reason;
-  final double? amount;
-  final DateTime? fromDate;
-  final DateTime? toDate;
-  final String? spotNumber;
-  final String? creatorId;
-  final UUserResponse? creator;
-
-  String toJson() => json.encode(toMap());
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "id": id,
@@ -423,10 +453,25 @@ class UParkingPlateFlagResponse {
     "spotNumber": spotNumber,
     "creatorId": creatorId,
     "creator": creator?.toMap(),
+    "jsonData": jsonData?.toMap(),
+    "adminUserIds": List<dynamic>.from(adminUserIds.map((String x) => x)),
   };
 }
 
 class UParkingStaffResponse {
+  final String id;
+  final DateTime createdAt;
+  final List<int> tags;
+  final String parkingId;
+  final String userId;
+  final int maxDiscountPercent;
+  final UUserResponse? user;
+  final String? shiftTitle;
+  final String? creatorId;
+  final UBaseJson? jsonData;
+  final UUserResponse? creator;
+  final List<String> adminUserIds;
+
   UParkingStaffResponse({
     required this.id,
     required this.createdAt,
@@ -437,9 +482,14 @@ class UParkingStaffResponse {
     this.user,
     this.shiftTitle,
     this.creatorId,
+    this.jsonData,
+    this.creator,
+    this.adminUserIds = const <String>[],
   });
 
   factory UParkingStaffResponse.fromJson(String str) => UParkingStaffResponse.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
 
   factory UParkingStaffResponse.fromMap(Map<String, dynamic> json) => UParkingStaffResponse(
     id: json["id"],
@@ -451,19 +501,10 @@ class UParkingStaffResponse {
     user: json["user"] == null ? null : UUserResponse.fromMap(json["user"]),
     shiftTitle: json["shiftTitle"],
     creatorId: json["creatorId"],
+    jsonData: json["jsonData"] == null ? null : UBaseJson.fromMap(json["jsonData"]),
+    creator: json["creator"] == null ? null : UUserResponse.fromMap(json["creator"]),
+    adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
   );
-
-  final String id;
-  final DateTime createdAt;
-  final List<int> tags;
-  final String parkingId;
-  final String userId;
-  final int maxDiscountPercent;
-  final UUserResponse? user;
-  final String? shiftTitle;
-  final String? creatorId;
-
-  String toJson() => json.encode(toMap());
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "id": id,
@@ -475,10 +516,31 @@ class UParkingStaffResponse {
     "user": user?.toMap(),
     "shiftTitle": shiftTitle,
     "creatorId": creatorId,
+    "jsonData": jsonData?.toMap(),
+    "creator": creator?.toMap(),
+    "adminUserIds": List<dynamic>.from(adminUserIds.map((String x) => x)),
   };
 }
 
 class UParkingShiftResponse {
+  final String id;
+  final DateTime createdAt;
+  final List<int> tags;
+  final String parkingId;
+  final DateTime startDate;
+  final double cashTotal;
+  final double cardTotal;
+  final double ipgTotal;
+  final double countedCash;
+  final int entryCount;
+  final int exitCount;
+  final DateTime? endDate;
+  final String? creatorId;
+  final UUserResponse? creator;
+  final double total;
+  final UBaseJson? jsonData;
+  final List<String> adminUserIds;
+
   UParkingShiftResponse({
     required this.id,
     required this.createdAt,
@@ -494,9 +556,16 @@ class UParkingShiftResponse {
     this.endDate,
     this.creatorId,
     this.creator,
+    this.total = 0,
+    this.jsonData,
+    this.adminUserIds = const <String>[],
   });
 
+  double get cashDifference => countedCash - cashTotal;
+
   factory UParkingShiftResponse.fromJson(String str) => UParkingShiftResponse.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
 
   factory UParkingShiftResponse.fromMap(Map<String, dynamic> json) => UParkingShiftResponse(
     id: json["id"],
@@ -513,28 +582,10 @@ class UParkingShiftResponse {
     endDate: json["endDate"] == null ? null : DateTime.parse(json["endDate"]),
     creatorId: json["creatorId"],
     creator: json["creator"] == null ? null : UUserResponse.fromMap(json["creator"]),
+    total: (json["total"] as num?)?.toDouble() ?? 0,
+    jsonData: json["jsonData"] == null ? null : UBaseJson.fromMap(json["jsonData"]),
+    adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
   );
-
-  final String id;
-  final DateTime createdAt;
-  final List<int> tags;
-  final String parkingId;
-  final DateTime startDate;
-  final double cashTotal;
-  final double cardTotal;
-  final double ipgTotal;
-  final double countedCash;
-  final int entryCount;
-  final int exitCount;
-  final DateTime? endDate;
-  final String? creatorId;
-  final UUserResponse? creator;
-
-  double get total => cashTotal + cardTotal + ipgTotal;
-
-  double get cashDifference => countedCash - cashTotal;
-
-  String toJson() => json.encode(toMap());
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "id": id,
@@ -551,10 +602,24 @@ class UParkingShiftResponse {
     "endDate": endDate?.toIso8601String(),
     "creatorId": creatorId,
     "creator": creator?.toMap(),
+    "total": total,
+    "jsonData": jsonData?.toMap(),
+    "adminUserIds": List<dynamic>.from(adminUserIds.map((String x) => x)),
   };
 }
 
 class UParkingPlateStatusResponse {
+  final String licencePlate;
+  final List<UParkingPlateFlagResponse> flags;
+  final bool hasActiveSubscription;
+  final bool isBanned;
+  final bool isInside;
+  final UVehicleResponse? vehicle;
+  final UParkingSubscriptionResponse? subscription;
+  final UParkingPlateFlagResponse? reservation;
+  final UParkingReportResponse? openReport;
+  final UParkingTariffResponse? tariff;
+
   UParkingPlateStatusResponse({
     required this.licencePlate,
     required this.flags,
@@ -568,7 +633,11 @@ class UParkingPlateStatusResponse {
     this.tariff,
   });
 
+  bool get hasAnyWarning => hasActiveSubscription || reservation != null || flags.isNotEmpty;
+
   factory UParkingPlateStatusResponse.fromJson(String str) => UParkingPlateStatusResponse.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
 
   factory UParkingPlateStatusResponse.fromMap(Map<String, dynamic> json) => UParkingPlateStatusResponse(
     licencePlate: json["licencePlate"],
@@ -582,21 +651,6 @@ class UParkingPlateStatusResponse {
     openReport: json["openReport"] == null ? null : UParkingReportResponse.fromMap(json["openReport"]),
     tariff: json["tariff"] == null ? null : UParkingTariffResponse.fromMap(json["tariff"]),
   );
-
-  final String licencePlate;
-  final List<UParkingPlateFlagResponse> flags;
-  final bool hasActiveSubscription;
-  final bool isBanned;
-  final bool isInside;
-  final UVehicleResponse? vehicle;
-  final UParkingSubscriptionResponse? subscription;
-  final UParkingPlateFlagResponse? reservation;
-  final UParkingReportResponse? openReport;
-  final UParkingTariffResponse? tariff;
-
-  bool get hasAnyWarning => hasActiveSubscription || reservation != null || flags.isNotEmpty;
-
-  String toJson() => json.encode(toMap());
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "licencePlate": licencePlate,

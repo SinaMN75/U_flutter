@@ -52,7 +52,7 @@ class _TransactionsPageState extends State<UAdminTransactionsPage> {
       UAdminTable.cell(i.trackingNumber ?? "-"),
       UAdminTable.cell(_statusName(i)),
       UAdminTable.cell(i.user?.displayName ?? "-"),
-      UAdminTable.cell(i.createdAt.toJalaliDate()),
+      UAdminTable.cell(i.createdAt?.toJalaliDate() ?? "-"),
       _menu(i).expanded(),
     ],
   );
@@ -65,7 +65,7 @@ class _TransactionsPageState extends State<UAdminTransactionsPage> {
     fields: <UAdminField>[
       UAdminField(U.s.trackingNumber, i.trackingNumber ?? "-"),
       UAdminField(U.s.user, i.user?.displayName ?? "-"),
-      UAdminField(U.s.created, i.createdAt.toJalaliDate()),
+      UAdminField(U.s.created, i.createdAt?.toJalaliDate() ?? "-"),
     ],
   );
 

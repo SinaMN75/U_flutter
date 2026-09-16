@@ -32,7 +32,7 @@ class IpgService {
 
   // Reads the outcome of a started payment by tracking number. The backend already did the work; this only reads the result.
   Future<(UResponse<UIpgVerifyResponse>?, UEmptyResponse?, String?)> status({
-    required UIpgVerifyParams p,
+    required UIpgStatusParams p,
     Function(UResponse<UIpgVerifyResponse> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,

@@ -1,21 +1,21 @@
 part of "../data.dart";
 
 class DbAdminService {
-  Future<(UResponse<List<UDbTableResponse>>?, UEmptyResponse?, String?)> tables({
+  Future<(UResponse<List<UDbAdminTableResponse>>?, UEmptyResponse?, String?)> tables({
     required UDbAdminTablesParams p,
-    required Function(UResponse<List<UDbTableResponse>> r) onOk,
+    required Function(UResponse<List<UDbAdminTableResponse>> r) onOk,
     required Function(UEmptyResponse e) onError,
     required Function(String e) onException,
   }) async {
-    (UResponse<List<UDbTableResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
+    (UResponse<List<UDbAdminTableResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
       method: "POST",
       endpoint: "${U.baseUrl}/DbAdmin/Tables",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
       onSuccess: (Response r) {
-        final UResponse<List<UDbTableResponse>> ok = UResponse<List<UDbTableResponse>>.fromJson(
+        final UResponse<List<UDbAdminTableResponse>> ok = UResponse<List<UDbAdminTableResponse>>.fromJson(
           r.body,
-          (dynamic i) => List<UDbTableResponse>.from((i as List<dynamic>).map((dynamic x) => UDbTableResponse.fromMap(x))),
+          (dynamic i) => List<UDbAdminTableResponse>.from((i as List<dynamic>).map((dynamic x) => UDbAdminTableResponse.fromMap(x))),
         );
         result = (ok, null, null);
         onOk(ok);
@@ -33,19 +33,19 @@ class DbAdminService {
     return result;
   }
 
-  Future<(UResponse<UDbTableSchemaResponse>?, UEmptyResponse?, String?)> schema({
-    required UDbAdminSchemaParams p,
-    required Function(UResponse<UDbTableSchemaResponse> r) onOk,
+  Future<(UResponse<UDbAdminTableSchemaResponse>?, UEmptyResponse?, String?)> schema({
+    required UDbAdminTableSchemaParams p,
+    required Function(UResponse<UDbAdminTableSchemaResponse> r) onOk,
     required Function(UEmptyResponse e) onError,
     required Function(String e) onException,
   }) async {
-    (UResponse<UDbTableSchemaResponse>?, UEmptyResponse?, String?) result = (null, null, null);
+    (UResponse<UDbAdminTableSchemaResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
       method: "POST",
       endpoint: "${U.baseUrl}/DbAdmin/Schema",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
       onSuccess: (Response r) {
-        final UResponse<UDbTableSchemaResponse> ok = UResponse<UDbTableSchemaResponse>.fromJson(r.body, (dynamic i) => UDbTableSchemaResponse.fromMap(i));
+        final UResponse<UDbAdminTableSchemaResponse> ok = UResponse<UDbAdminTableSchemaResponse>.fromJson(r.body, (dynamic i) => UDbAdminTableSchemaResponse.fromMap(i));
         result = (ok, null, null);
         onOk(ok);
       },
@@ -62,30 +62,30 @@ class DbAdminService {
     return result;
   }
 
-  Future<(UResponse<UDbQueryResultResponse>?, UEmptyResponse?, String?)> rows({
+  Future<(UResponse<UDbAdminQueryResultResponse>?, UEmptyResponse?, String?)> rows({
     required UDbAdminRowsParams p,
-    required Function(UResponse<UDbQueryResultResponse> r) onOk,
+    required Function(UResponse<UDbAdminQueryResultResponse> r) onOk,
     required Function(UEmptyResponse e) onError,
     required Function(String e) onException,
   }) => _query("Rows", p.toMap(), onOk, onError, onException);
 
-  Future<(UResponse<UDbQueryResultResponse>?, UEmptyResponse?, String?)> query({
+  Future<(UResponse<UDbAdminQueryResultResponse>?, UEmptyResponse?, String?)> query({
     required UDbAdminQueryParams p,
-    required Function(UResponse<UDbQueryResultResponse> r) onOk,
+    required Function(UResponse<UDbAdminQueryResultResponse> r) onOk,
     required Function(UEmptyResponse e) onError,
     required Function(String e) onException,
   }) => _query("Query", p.toMap(), onOk, onError, onException);
 
-  Future<(UResponse<UDbQueryResultResponse>?, UEmptyResponse?, String?)> updateRow({
+  Future<(UResponse<UDbAdminQueryResultResponse>?, UEmptyResponse?, String?)> updateRow({
     required UDbAdminUpdateRowParams p,
-    required Function(UResponse<UDbQueryResultResponse> r) onOk,
+    required Function(UResponse<UDbAdminQueryResultResponse> r) onOk,
     required Function(UEmptyResponse e) onError,
     required Function(String e) onException,
   }) => _query("UpdateRow", p.toMap(), onOk, onError, onException);
 
-  Future<(UResponse<UDbQueryResultResponse>?, UEmptyResponse?, String?)> insertRow({
+  Future<(UResponse<UDbAdminQueryResultResponse>?, UEmptyResponse?, String?)> insertRow({
     required UDbAdminInsertRowParams p,
-    required Function(UResponse<UDbQueryResultResponse> r) onOk,
+    required Function(UResponse<UDbAdminQueryResultResponse> r) onOk,
     required Function(UEmptyResponse e) onError,
     required Function(String e) onException,
   }) => _query("InsertRow", p.toMap(), onOk, onError, onException);
@@ -119,37 +119,20 @@ class DbAdminService {
     return result;
   }
 
-  // Applies all pending EF Core migrations via the DataSeeder/Migrate endpoint (auth is the apiKey query param).
-  Future<void> migrate({
-    required Function(List<String> applied) onOk,
-    required Function(String e) onError,
-  }) async {
-    await UHttpClient.send(
-      method: "GET",
-      endpoint: "${U.baseUrl}/DataSeeder/Migrate?key=${Uri.encodeQueryComponent(U.apiKey)}",
-      onSuccess: (Response r) {
-        final Map<String, dynamic> body = json.decode(r.body) as Map<String, dynamic>;
-        onOk(List<String>.from((body["applied"] as List<dynamic>? ?? <dynamic>[]).map((dynamic x) => x.toString())));
-      },
-      onError: (Response r) => onError(r.body),
-      onException: onError,
-    );
-  }
-
-  Future<(UResponse<UDbQueryResultResponse>?, UEmptyResponse?, String?)> _query(
+  Future<(UResponse<UDbAdminQueryResultResponse>?, UEmptyResponse?, String?)> _query(
     String path,
     Map<String, dynamic> body,
-    Function(UResponse<UDbQueryResultResponse> r) onOk,
+    Function(UResponse<UDbAdminQueryResultResponse> r) onOk,
     Function(UEmptyResponse e) onError,
     Function(String e) onException,
   ) async {
-    (UResponse<UDbQueryResultResponse>?, UEmptyResponse?, String?) result = (null, null, null);
+    (UResponse<UDbAdminQueryResultResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
       method: "POST",
       endpoint: "${U.baseUrl}/DbAdmin/$path",
       body: body.add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
       onSuccess: (Response r) {
-        final UResponse<UDbQueryResultResponse> ok = UResponse<UDbQueryResultResponse>.fromJson(r.body, (dynamic i) => UDbQueryResultResponse.fromMap(i));
+        final UResponse<UDbAdminQueryResultResponse> ok = UResponse<UDbAdminQueryResultResponse>.fromJson(r.body, (dynamic i) => UDbAdminQueryResultResponse.fromMap(i));
         result = (ok, null, null);
         onOk(ok);
       },

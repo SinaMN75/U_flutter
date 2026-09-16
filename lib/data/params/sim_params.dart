@@ -56,7 +56,7 @@ class USimCardReadParams {
   final List<int>? tags;
   final List<String>? ids;
   final String? creatorId;
-  final SimSelectorArgs? selectorArgs;
+  final SimCardSelectorArgs? selectorArgs;
   final int? orderBy;
 
   USimCardReadParams({
@@ -83,7 +83,7 @@ class USimCardReadParams {
     tags: json["tags"] == null ? <int>[] : List<int>.from(json["tags"]!.map((dynamic x) => x)),
     ids: json["ids"] == null ? <String>[] : List<String>.from(json["ids"]!.map((dynamic x) => x)),
     creatorId: json["creatorId"],
-    selectorArgs: json["selectorArgs"] == null ? null : SimSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : SimCardSelectorArgs.fromMap(json["selectorArgs"]),
     orderBy: json["orderBy"],
   );
 

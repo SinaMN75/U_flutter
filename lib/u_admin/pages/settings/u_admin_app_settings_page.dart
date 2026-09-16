@@ -107,7 +107,11 @@ class _UAdminAppSettingsPageState extends State<UAdminAppSettingsPage> {
           _text("Key", m.jwt.key, (String v) => m.jwt.key = v, secret: true),
           _text("Issuer", m.jwt.issuer, (String v) => m.jwt.issuer = v),
           _text("Audience", m.jwt.audience, (String v) => m.jwt.audience = v),
-          _text("Expires (minutes)", m.jwt.expires, (String v) => m.jwt.expires = v, kt: TextInputType.number),
+          _int("Expires (minutes)", m.jwt.expires, (int v) => m.jwt.expires = v),
+          _int("RefreshTokenExpiresInDays", m.jwt.refreshTokenExpiresInDays, (int v) => m.jwt.refreshTokenExpiresInDays = v),
+        ]),
+        _section("CORS", Icons.public_rounded, cs, <Widget>[
+          _list("AllowedOrigins", m.cors.allowedOrigins, (List<String> v) => m.cors.allowedOrigins = v),
         ]),
         _section("Middleware", Icons.filter_alt_rounded, cs, <Widget>[
           _switch("RequireApiKey", m.middleware.requireApiKey, (bool v) => m.middleware.requireApiKey = v, cs),
@@ -157,6 +161,17 @@ class _UAdminAppSettingsPageState extends State<UAdminAppSettingsPage> {
         _section("PN", Icons.api_rounded, cs, <Widget>[
           _text("ApiKey", m.pnApiKey, (String v) => m.pnApiKey = v, secret: true),
         ]),
+        _section("Namat", Icons.account_balance_rounded, cs, <Widget>[
+          _text("BaseUrl", m.namat.baseUrl, (String v) => m.namat.baseUrl = v),
+          _text("BranchToken", m.namat.branchToken, (String v) => m.namat.branchToken = v, secret: true),
+        ]),
+        _section("Gold", Icons.savings_rounded, cs, <Widget>[
+          _text("BaseUrl", m.gold.baseUrl, (String v) => m.gold.baseUrl = v),
+          _text("ClientKey", m.gold.clientKey, (String v) => m.gold.clientKey = v),
+          _text("ClientSecret", m.gold.clientSecret, (String v) => m.gold.clientSecret = v, secret: true),
+          _list("Scopes", m.gold.scopes, (List<String> v) => m.gold.scopes = v),
+          _text("ApiToken", m.gold.apiToken ?? "", (String v) => m.gold.apiToken = v.isEmpty ? null : v, secret: true),
+        ]),
         _section("API Call Costs", Icons.request_quote_rounded, cs, <Widget>[
           _num("MobileAndNationalCodeVerification", m.apiCallCosts.mobileAndNationalCodeVerification, (double v) => m.apiCallCosts.mobileAndNationalCodeVerification = v),
           _num("ZipCodeToAddressDetail", m.apiCallCosts.zipCodeToAddressDetail, (double v) => m.apiCallCosts.zipCodeToAddressDetail = v),
@@ -166,6 +181,16 @@ class _UAdminAppSettingsPageState extends State<UAdminAppSettingsPage> {
           _num("LicencePlateDetail", m.apiCallCosts.licencePlateDetail, (double v) => m.apiCallCosts.licencePlateDetail = v),
           _num("DrivingLicenceNegativePoint", m.apiCallCosts.drivingLicenceNegativePoint, (double v) => m.apiCallCosts.drivingLicenceNegativePoint = v),
           _num("IBanToBankAccountDetail", m.apiCallCosts.iBanToBankAccountDetail, (double v) => m.apiCallCosts.iBanToBankAccountDetail = v),
+        ]),
+        _section("Inquiry Cache Durations (days)", Icons.history_rounded, cs, <Widget>[
+          _int("MobileAndNationalCodeVerification", m.inquiryCacheDurations.mobileAndNationalCodeVerification, (int v) => m.inquiryCacheDurations.mobileAndNationalCodeVerification = v),
+          _int("ZipCodeToAddressDetail", m.inquiryCacheDurations.zipCodeToAddressDetail, (int v) => m.inquiryCacheDurations.zipCodeToAddressDetail = v),
+          _int("VehicleViolationsDetail", m.inquiryCacheDurations.vehicleViolationsDetail, (int v) => m.inquiryCacheDurations.vehicleViolationsDetail = v),
+          _int("DrivingLicenceStatus", m.inquiryCacheDurations.drivingLicenceStatus, (int v) => m.inquiryCacheDurations.drivingLicenceStatus = v),
+          _int("FreewayToll", m.inquiryCacheDurations.freewayToll, (int v) => m.inquiryCacheDurations.freewayToll = v),
+          _int("LicencePlateDetail", m.inquiryCacheDurations.licencePlateDetail, (int v) => m.inquiryCacheDurations.licencePlateDetail = v),
+          _int("DrivingLicenceNegativePoint", m.inquiryCacheDurations.drivingLicenceNegativePoint, (int v) => m.inquiryCacheDurations.drivingLicenceNegativePoint = v),
+          _int("IBanToBankAccountDetail", m.inquiryCacheDurations.iBanToBankAccountDetail, (int v) => m.inquiryCacheDurations.iBanToBankAccountDetail = v),
         ]),
         _chargeInternetSection(m, cs),
       ],
@@ -215,6 +240,15 @@ class _UAdminAppSettingsPageState extends State<UAdminAppSettingsPage> {
     initial == initial.roundToDouble() ? initial.toStringAsFixed(0) : initial.toString(),
     (String v) => onChanged(double.tryParse(v) ?? 0),
     kt: const TextInputType.numberWithOptions(decimal: true),
+  );
+
+  Widget _int(String label, int initial, ValueChanged<int> onChanged) => _text(label, "$initial", (String v) => onChanged(int.tryParse(v) ?? 0), kt: TextInputType.number);
+
+  Widget _list(String label, List<String> initial, ValueChanged<List<String>> onChanged) => _text(
+    label,
+    initial.join("\n"),
+    (String v) => onChanged(v.split("\n").map((String e) => e.trim()).where((String e) => e.isNotEmpty).toList()),
+    lines: 3,
   );
 
   Widget _switch(String label, bool value, ValueChanged<bool> onChanged, ColorScheme cs) => URow(

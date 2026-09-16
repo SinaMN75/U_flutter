@@ -44,7 +44,7 @@ class UAdminTerminalBrandController extends UBaseController {
     ULoading.show();
     UServices.terminal.createBrand(
       p: p,
-      onOk: (UEmptyResponse r) {
+      onOk: (UResponse<String> r) {
         ULoading.dismiss();
         okCallback(r.message, read);
       },

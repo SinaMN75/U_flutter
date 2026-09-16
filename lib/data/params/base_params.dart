@@ -3,6 +3,12 @@ part of "../data.dart";
 class UBaseParams {
   UBaseParams();
 
+  factory UBaseParams.fromJson(String str) => UBaseParams.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UBaseParams.fromMap(Map<String, dynamic> _) => UBaseParams();
+
   Map<String, dynamic> toMap() => <String, dynamic>{};
 }
 
@@ -48,5 +54,25 @@ class UIdListParams {
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "ids": List<dynamic>.from(ids.map((String x) => x)),
+  };
+}
+
+class UIdStringParams {
+  final String id;
+
+  UIdStringParams({
+    required this.id,
+  });
+
+  factory UIdStringParams.fromJson(String str) => UIdStringParams.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UIdStringParams.fromMap(Map<String, dynamic> json) => UIdStringParams(
+    id: json["id"],
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
   };
 }

@@ -422,7 +422,7 @@ class UDormRoomResponse {
 class UDormBedContractResponse {
   final String id;
   final DateTime createdAt;
-  final UContractJsonData jsonData;
+  final UBaseJson jsonData;
   final List<int> tags;
   final DateTime startDate;
   final DateTime endDate;
@@ -465,7 +465,7 @@ class UDormBedContractResponse {
   factory UDormBedContractResponse.fromMap(Map<String, dynamic> json) => UDormBedContractResponse(
     id: json["id"],
     createdAt: DateTime.parse(json["createdAt"]),
-    jsonData: UContractJsonData.fromMap(json["jsonData"]),
+    jsonData: UBaseJson.fromMap(json["jsonData"]),
     tags: json["tags"] == null ? <int>[] : List<int>.from(json["tags"]!.map((dynamic x) => x)),
     startDate: DateTime.parse(json["startDate"]),
     endDate: DateTime.parse(json["endDate"]),
@@ -500,26 +500,6 @@ class UDormBedContractResponse {
     "isActive": isActive,
     "invoices": invoices == null ? <dynamic>[] : List<dynamic>.from(invoices!.map((UDormBedInvoiceResponse x) => x.toMap())),
     "adminUserIds": List<dynamic>.from(adminUserIds.map((String x) => x)),
-  };
-}
-
-class UContractJsonData {
-  final String? description;
-
-  UContractJsonData({
-    this.description,
-  });
-
-  factory UContractJsonData.fromJson(String str) => UContractJsonData.fromMap(json.decode(str));
-
-  String toJson() => json.encode(toMap());
-
-  factory UContractJsonData.fromMap(Map<String, dynamic> json) => UContractJsonData(
-    description: json["description"],
-  );
-
-  Map<String, dynamic> toMap() => <String, dynamic>{
-    "description": description,
   };
 }
 
@@ -642,10 +622,10 @@ class UDormBedInvoiceChartResponse {
 
   factory UDormBedInvoiceChartResponse.fromMap(Map<String, dynamic> json) => UDormBedInvoiceChartResponse(
     month: json["month"] as String,
-    totalDebt: json["totalDebt"],
-    totalPaid: json["totalPaid"],
-    totalPenalty: json["totalPenalty"],
-    totalRemaining: json["totalRemaining"],
+    totalDebt: (json["totalDebt"] as num?)?.toDouble() ?? 0,
+    totalPaid: (json["totalPaid"] as num?)?.toDouble() ?? 0,
+    totalPenalty: (json["totalPenalty"] as num?)?.toDouble() ?? 0,
+    totalRemaining: (json["totalRemaining"] as num?)?.toDouble() ?? 0,
     invoiceCount: json["invoiceCount"],
   );
 
@@ -783,7 +763,7 @@ class UHotelReservationJson {
   final String? notes;
   final int? nightCount;
   final String? reservationCode;
-  final List<UReservationGuest> guests;
+  final List<UReservationGuestJson> guests;
   final DateTime? cancelledAt;
   final String? cancelReason;
   final double? cancellationPenalty;
@@ -797,7 +777,7 @@ class UHotelReservationJson {
     this.notes,
     this.nightCount,
     this.reservationCode,
-    this.guests = const <UReservationGuest>[],
+    this.guests = const <UReservationGuestJson>[],
     this.cancelledAt,
     this.cancelReason,
     this.cancellationPenalty,
@@ -816,7 +796,7 @@ class UHotelReservationJson {
     notes: json["notes"],
     nightCount: json["nightCount"] == null ? null : (json["nightCount"] as num).toInt(),
     reservationCode: json["reservationCode"],
-    guests: json["guests"] == null ? <UReservationGuest>[] : List<UReservationGuest>.from(json["guests"]!.map((dynamic x) => UReservationGuest.fromMap(x))),
+    guests: json["guests"] == null ? <UReservationGuestJson>[] : List<UReservationGuestJson>.from(json["guests"]!.map((dynamic x) => UReservationGuestJson.fromMap(x))),
     cancelledAt: json["cancelledAt"] == null ? null : DateTime.parse(json["cancelledAt"]),
     cancelReason: json["cancelReason"],
     cancellationPenalty: json["cancellationPenalty"] == null ? null : (json["cancellationPenalty"] as num).toDouble(),
@@ -831,7 +811,7 @@ class UHotelReservationJson {
     "notes": notes,
     "nightCount": nightCount,
     "reservationCode": reservationCode,
-    "guests": List<dynamic>.from(guests.map((UReservationGuest x) => x.toMap())),
+    "guests": List<dynamic>.from(guests.map((UReservationGuestJson x) => x.toMap())),
     "cancelledAt": cancelledAt?.toIso8601String(),
     "cancelReason": cancelReason,
     "cancellationPenalty": cancellationPenalty,
@@ -839,18 +819,18 @@ class UHotelReservationJson {
   };
 }
 
-class UReservationGuest {
+class UReservationGuestJson {
   final String fullName;
   final String? nationalCode;
   final String? phoneNumber;
 
-  UReservationGuest({required this.fullName, this.nationalCode, this.phoneNumber});
+  UReservationGuestJson({required this.fullName, this.nationalCode, this.phoneNumber});
 
-  factory UReservationGuest.fromJson(String str) => UReservationGuest.fromMap(json.decode(str));
+  factory UReservationGuestJson.fromJson(String str) => UReservationGuestJson.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory UReservationGuest.fromMap(Map<String, dynamic> json) => UReservationGuest(
+  factory UReservationGuestJson.fromMap(Map<String, dynamic> json) => UReservationGuestJson(
     fullName: json["fullName"] as String,
     nationalCode: json["nationalCode"],
     phoneNumber: json["phoneNumber"],

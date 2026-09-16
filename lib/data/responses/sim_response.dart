@@ -2,7 +2,7 @@ part of "../data.dart";
 
 class USimCardResponse {
   final String id;
-  final String createdAt;
+  final DateTime createdAt;
   final UBaseJson jsonData;
   final List<int> tags;
   final UUserResponse? creator;
@@ -33,7 +33,7 @@ class USimCardResponse {
 
   factory USimCardResponse.fromMap(Map<String, dynamic> json) => USimCardResponse(
     id: json["id"] as String,
-    createdAt: json["createdAt"] as String,
+    createdAt: DateTime.parse(json["createdAt"]),
     jsonData: UBaseJson.fromMap(json["jsonData"]),
     tags: List<int>.from(json["tags"]!.map((dynamic x) => x)),
     creator: json["creator"] == null ? null : UUserResponse.fromMap(json["creator"]),
@@ -47,7 +47,7 @@ class USimCardResponse {
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "id": id,
-    "createdAt": createdAt,
+    "createdAt": createdAt.toIso8601String(),
     "jsonData": jsonData.toJson(),
     "tags": List<dynamic>.from(tags.map((int x) => x)),
     "creator": creator?.toJson(),

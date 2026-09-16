@@ -70,6 +70,7 @@ enum Usc with NumericIdentifiable {
   notFound("یافت نشد", "Not Found", 404),
   conflict("تداخل", "Conflict", 409),
   payloadTooLarge("حجم بار بیش از حد", "Payload Too Large", 413),
+  tooManyRequests("تعداد درخواست‌ها بیش از حد مجاز", "Too Many Requests", 429),
   mediaTypeNotSupported("نوع رسانه پشتیبانی نمی‌شود", "Media Type Not Supported", 451),
   securityError("خطای امنیتی", "Security Error", 452),
   internalServerError("خطای داخلی سرور", "Internal Server Error", 500),
@@ -601,6 +602,9 @@ enum TagWalletTxn with NumericIdentifiable {
   dormBedInvoice("پرداخت فاکتور خوابگاه", "Dorm Invoice", 210),
   hotelReservation("پرداخت رزرو هتل", "Hotel Reservation", 211),
   hotelReservationRefund("استرداد رزرو هتل", "Hotel Reservation Refund", 212),
+  goldPurchase("خرید طلا", "Gold Purchase", 213),
+  goldSale("فروش طلا", "Gold Sale", 214),
+  goldPurchaseRefund("استرداد خرید طلا", "Gold Purchase Refund", 215),
   chargeSimPin("خرید شارژ پین سیم‌کارت", "SIM Charge (PIN)", 301),
   chargeSimTopup("شارژ مستقیم سیم‌کارت", "SIM Top-up", 302),
   internetSim("خرید بسته اینترنت", "Internet Package", 303);
@@ -678,32 +682,6 @@ enum TagIpg with NumericIdentifiable {
   pn("پی ان", "Pn", 101);
 
   const TagIpg(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
-enum TagMpg with NumericIdentifiable {
-  pn("پی ان", "Pn", 101);
-
-  const TagMpg(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
-enum TagPayment with NumericIdentifiable {
-  chargeWallet("شارژ کیف پول", "Charge Wallet", 101);
-
-  const TagPayment(this.titleFa, this.titleEn, this.number);
 
   @override
   final String titleFa;
@@ -1180,6 +1158,22 @@ enum TagGoldTxn with NumericIdentifiable {
   cancelled("لغوشده", "Cancelled", 204);
 
   const TagGoldTxn(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagIpgPayment with NumericIdentifiable {
+  normalSale("خرید عادی", "Normal Sale", 101),
+  bill("پرداخت قبض", "Bill", 102),
+  topUp("شارژ مستقیم", "Top Up", 103),
+  multiplexedSale("پرداخت تسهیمی", "Multiplexed Sale", 104);
+
+  const TagIpgPayment(this.titleFa, this.titleEn, this.number);
 
   @override
   final String titleFa;

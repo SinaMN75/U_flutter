@@ -3,7 +3,7 @@ part of "../data.dart";
 class UMoadiResponse {
   final String id;
   final DateTime createdAt;
-  final MoadiJsonData jsonData;
+  final UMoadiJson jsonData;
   final List<int> tags;
   final UUserResponse? creator;
   final String? creatorId;
@@ -13,7 +13,6 @@ class UMoadiResponse {
   final String uniqueTaxCode;
   final String? nationalCode;
   final String? postalCode;
-  final String? registrationDate;
   final String? registrationNumber;
   final String? address;
   final int? startInvoiceNumber;
@@ -24,6 +23,7 @@ class UMoadiResponse {
   final String userId;
   final UUserResponse? user;
   final List<String> adminUserIds;
+  final DateTime? registerDate;
 
   UMoadiResponse({
     required this.id,
@@ -43,12 +43,12 @@ class UMoadiResponse {
     this.creatorId,
     this.nationalCode,
     this.postalCode,
-    this.registrationDate,
     this.registrationNumber,
     this.address,
     this.startInvoiceNumber,
     this.introductionCode,
     this.user,
+    this.registerDate,
   });
 
   factory UMoadiResponse.fromJson(String str) => UMoadiResponse.fromMap(json.decode(str));
@@ -58,7 +58,7 @@ class UMoadiResponse {
   factory UMoadiResponse.fromMap(Map<String, dynamic> json) => UMoadiResponse(
     id: json["id"] as String,
     createdAt: DateTime.parse(json["createdAt"]),
-    jsonData: MoadiJsonData.fromMap(json["jsonData"]),
+    jsonData: UMoadiJson.fromMap(json["jsonData"]),
     tags: List<int>.from(json["tags"]!.map((dynamic x) => x)),
     creator: json["creator"] == null ? null : UUserResponse.fromMap(json["creator"]),
     creatorId: json["creatorId"],
@@ -68,7 +68,6 @@ class UMoadiResponse {
     uniqueTaxCode: json["uniqueTaxCode"] as String,
     nationalCode: json["nationalCode"],
     postalCode: json["postalCode"],
-    registrationDate: json["registrationDate"],
     registrationNumber: json["registrationNumber"],
     address: json["address"],
     startInvoiceNumber: json["startInvoiceNumber"],
@@ -79,6 +78,7 @@ class UMoadiResponse {
     userId: json["userId"] as String,
     user: json["user"] == null ? null : UUserResponse.fromMap(json["user"]),
     adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
+    registerDate: json["registerDate"] == null ? null : DateTime.parse(json["registerDate"]),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -94,7 +94,6 @@ class UMoadiResponse {
     "uniqueTaxCode": uniqueTaxCode,
     "nationalCode": nationalCode,
     "postalCode": postalCode,
-    "registrationDate": registrationDate,
     "registrationNumber": registrationNumber,
     "address": address,
     "startInvoiceNumber": startInvoiceNumber,
@@ -105,10 +104,11 @@ class UMoadiResponse {
     "userId": userId,
     "user": user?.toMap(),
     "adminUserIds": List<dynamic>.from(adminUserIds.map((String x) => x)),
+    "registerDate": registerDate?.toIso8601String(),
   };
 }
 
-class MoadiJsonData {
+class UMoadiJson {
   final String? detail1;
   final String? detail2;
   final String? uuid;
@@ -121,7 +121,7 @@ class MoadiJsonData {
   final String? lastContractStatus;
   final String? rejectReason;
 
-  MoadiJsonData({
+  UMoadiJson({
     this.detail1,
     this.detail2,
     this.uuid,
@@ -135,11 +135,11 @@ class MoadiJsonData {
     this.rejectReason,
   });
 
-  factory MoadiJsonData.fromJson(String str) => MoadiJsonData.fromMap(json.decode(str));
+  factory UMoadiJson.fromJson(String str) => UMoadiJson.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory MoadiJsonData.fromMap(Map<String, dynamic> json) => MoadiJsonData(
+  factory UMoadiJson.fromMap(Map<String, dynamic> json) => UMoadiJson(
     detail1: json["detail1"],
     detail2: json["detail2"],
     uuid: json["uuid"],

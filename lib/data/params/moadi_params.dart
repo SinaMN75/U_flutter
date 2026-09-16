@@ -16,12 +16,12 @@ class UMoadiCreateParams {
   final String ownerNationalCode;
   final String? nationalCode;
   final String? postalCode;
-  final String? registrationDate;
   final String? registrationNumber;
   final String? address;
   final int? startInvoiceNumber;
   final String? introductionCode;
   final List<String>? adminUserIds;
+  final DateTime? registerDate;
 
   UMoadiCreateParams({
     required this.tags,
@@ -39,12 +39,12 @@ class UMoadiCreateParams {
     this.userId,
     this.nationalCode,
     this.postalCode,
-    this.registrationDate,
     this.registrationNumber,
     this.address,
     this.startInvoiceNumber,
     this.introductionCode,
     this.adminUserIds,
+    this.registerDate,
   });
 
   factory UMoadiCreateParams.fromJson(String str) => UMoadiCreateParams.fromMap(json.decode(str));
@@ -67,17 +67,17 @@ class UMoadiCreateParams {
     ownerNationalCode: json["ownerNationalCode"],
     nationalCode: json["nationalCode"],
     postalCode: json["postalCode"],
-    registrationDate: json["registrationDate"],
     registrationNumber: json["registrationNumber"],
     address: json["address"],
     startInvoiceNumber: json["startInvoiceNumber"],
     introductionCode: json["introductionCode"],
     adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
+    registerDate: json["registerDate"] == null ? null : DateTime.parse(json["registerDate"]),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
-    "detail1": detail1,
-    "detail2": detail2,
+    if (detail1 != null) "detail1": detail1,
+    if (detail2 != null) "detail2": detail2,
     "tags": List<dynamic>.from(tags.map((int x) => x)),
     "id": id,
     "creatorId": creatorId,
@@ -91,12 +91,12 @@ class UMoadiCreateParams {
     "ownerNationalCode": ownerNationalCode,
     "nationalCode": nationalCode,
     "postalCode": postalCode,
-    "registrationDate": registrationDate,
     "registrationNumber": registrationNumber,
     "address": address,
     "startInvoiceNumber": startInvoiceNumber,
     "introductionCode": introductionCode,
     "adminUserIds": adminUserIds == null ? <dynamic>[] : List<dynamic>.from(adminUserIds!.map((String x) => x)),
+    if (registerDate != null) "registerDate": registerDate?.toIso8601String(),
   };
 }
 
@@ -108,7 +108,6 @@ class UMoadiUpdateParams {
   final String? uniqueTaxCode;
   final String? nationalCode;
   final String? postalCode;
-  final String? registrationDate;
   final String? registrationNumber;
   final String? address;
   final int? startInvoiceNumber;
@@ -124,6 +123,7 @@ class UMoadiUpdateParams {
   final List<String>? adminUserIds;
   final List<String>? addAdminUserIds;
   final List<String>? removeAdminUserIds;
+  final DateTime? registerDate;
 
   UMoadiUpdateParams({
     required this.id,
@@ -133,7 +133,6 @@ class UMoadiUpdateParams {
     this.uniqueTaxCode,
     this.nationalCode,
     this.postalCode,
-    this.registrationDate,
     this.registrationNumber,
     this.address,
     this.startInvoiceNumber,
@@ -149,6 +148,7 @@ class UMoadiUpdateParams {
     this.adminUserIds,
     this.addAdminUserIds,
     this.removeAdminUserIds,
+    this.registerDate,
   });
 
   factory UMoadiUpdateParams.fromJson(String str) => UMoadiUpdateParams.fromMap(json.decode(str));
@@ -163,7 +163,6 @@ class UMoadiUpdateParams {
     uniqueTaxCode: json["uniqueTaxCode"],
     nationalCode: json["nationalCode"],
     postalCode: json["postalCode"],
-    registrationDate: json["registrationDate"],
     registrationNumber: json["registrationNumber"],
     address: json["address"],
     startInvoiceNumber: json["startInvoiceNumber"],
@@ -179,6 +178,7 @@ class UMoadiUpdateParams {
     adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
     addAdminUserIds: json["addAdminUserIds"] == null ? <String>[] : List<String>.from(json["addAdminUserIds"]!.map((dynamic x) => x)),
     removeAdminUserIds: json["removeAdminUserIds"] == null ? <String>[] : List<String>.from(json["removeAdminUserIds"]!.map((dynamic x) => x)),
+    registerDate: json["registerDate"] == null ? null : DateTime.parse(json["registerDate"]),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -189,7 +189,6 @@ class UMoadiUpdateParams {
     "uniqueTaxCode": uniqueTaxCode,
     "nationalCode": nationalCode,
     "postalCode": postalCode,
-    "registrationDate": registrationDate,
     "registrationNumber": registrationNumber,
     "address": address,
     "startInvoiceNumber": startInvoiceNumber,
@@ -205,6 +204,7 @@ class UMoadiUpdateParams {
     "adminUserIds": adminUserIds == null ? <dynamic>[] : List<dynamic>.from(adminUserIds!.map((String x) => x)),
     "addAdminUserIds": addAdminUserIds == null ? <dynamic>[] : List<dynamic>.from(addAdminUserIds!.map((String x) => x)),
     "removeAdminUserIds": removeAdminUserIds == null ? <dynamic>[] : List<dynamic>.from(removeAdminUserIds!.map((String x) => x)),
+    if (registerDate != null) "registerDate": registerDate?.toIso8601String(),
   };
 }
 

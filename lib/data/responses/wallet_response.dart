@@ -60,6 +60,10 @@ extension NullableWalletExtension on UWalletTxnResponse {
         return Icons.fact_check_outlined;
       case TagWalletTxn.hotelReservationRefund:
         return Icons.fact_check_outlined;
+      case TagWalletTxn.goldPurchase:
+      case TagWalletTxn.goldSale:
+      case TagWalletTxn.goldPurchaseRefund:
+        return Icons.savings_outlined;
     }
   }
 }
@@ -67,7 +71,7 @@ extension NullableWalletExtension on UWalletTxnResponse {
 class UWalletResponse {
   final String id;
   final List<int> tags;
-  final UBaseJson jsonData;
+  final UWalletJson jsonData;
   final DateTime? createdAt;
   final double balance;
   final String creatorId;
@@ -91,20 +95,20 @@ class UWalletResponse {
 
   factory UWalletResponse.fromMap(Map<String, dynamic> json) => UWalletResponse(
     id: json["id"],
-    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-    jsonData: UBaseJson.fromMap(json["jsonData"]),
     tags: List<int>.from(json["tags"]!.map((dynamic x) => x)),
+    jsonData: UWalletJson.fromMap(json["jsonData"]),
+    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     balance: json["balance"].toString().toDouble(),
-    creatorId: json["creatorId"],
+    creatorId: json["creatorId"] ?? "",
     creator: json["creator"] == null ? null : UUserResponse.fromMap(json["creator"]),
     adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "id": id,
-    "createdAt": createdAt?.toIso8601String(),
-    "jsonData": jsonData.toMap(),
     "tags": List<dynamic>.from(tags.map((int x) => x)),
+    "jsonData": jsonData.toMap(),
+    "createdAt": createdAt?.toIso8601String(),
     "balance": balance,
     "creatorId": creatorId,
     "creator": creator?.toMap(),
@@ -115,7 +119,7 @@ class UWalletResponse {
 class UWalletTxnResponse {
   final String id;
   final List<int> tags;
-  final UBaseJson jsonData;
+  final UWalletTxnJson jsonData;
   final DateTime createdAt;
   final double amount;
   final UUserResponse? sender;
@@ -147,9 +151,9 @@ class UWalletTxnResponse {
 
   factory UWalletTxnResponse.fromMap(Map<String, dynamic> json) => UWalletTxnResponse(
     id: json["id"],
-    createdAt: DateTime.parse(json["createdAt"]),
-    jsonData: UBaseJson.fromMap(json["jsonData"]),
     tags: List<int>.from(json["tags"]!.map((dynamic x) => x)),
+    jsonData: UWalletTxnJson.fromMap(json["jsonData"]),
+    createdAt: DateTime.parse(json["createdAt"]),
     amount: (json["amount"] as num).toDouble(),
     sender: json["sender"] == null ? null : UUserResponse.fromMap(json["sender"]),
     senderId: json["senderId"] as String,
@@ -162,9 +166,9 @@ class UWalletTxnResponse {
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "id": id,
-    "createdAt": createdAt.toIso8601String(),
-    "jsonData": jsonData.toMap(),
     "tags": List<dynamic>.from(tags.map((int x) => x)),
+    "jsonData": jsonData.toMap(),
+    "createdAt": createdAt.toIso8601String(),
     "amount": amount,
     "sender": sender?.toMap(),
     "senderId": senderId,
@@ -173,5 +177,61 @@ class UWalletTxnResponse {
     "creator": creator?.toMap(),
     "creatorId": creatorId,
     "adminUserIds": List<dynamic>.from(adminUserIds.map((String x) => x)),
+  };
+}
+
+class UWalletJson {
+  final bool allowMinusBalance;
+  final String? detail1;
+  final String? detail2;
+
+  UWalletJson({
+    this.allowMinusBalance = false,
+    this.detail1,
+    this.detail2,
+  });
+
+  factory UWalletJson.fromJson(String str) => UWalletJson.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UWalletJson.fromMap(Map<String, dynamic> json) => UWalletJson(
+    allowMinusBalance: json["allowMinusBalance"] ?? false,
+    detail1: json["detail1"],
+    detail2: json["detail2"],
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "allowMinusBalance": allowMinusBalance,
+    "detail1": detail1,
+    "detail2": detail2,
+  };
+}
+
+class UWalletTxnJson {
+  final List<UKeyValueData> keyValues;
+  final String? detail1;
+  final String? detail2;
+
+  UWalletTxnJson({
+    this.keyValues = const <UKeyValueData>[],
+    this.detail1,
+    this.detail2,
+  });
+
+  factory UWalletTxnJson.fromJson(String str) => UWalletTxnJson.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UWalletTxnJson.fromMap(Map<String, dynamic> json) => UWalletTxnJson(
+    keyValues: json["keyValues"] == null ? <UKeyValueData>[] : List<UKeyValueData>.from(json["keyValues"]!.map((dynamic x) => UKeyValueData.fromMap(x))),
+    detail1: json["detail1"],
+    detail2: json["detail2"],
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "keyValues": List<dynamic>.from(keyValues.map((UKeyValueData x) => x.toMap())),
+    "detail1": detail1,
+    "detail2": detail2,
   };
 }

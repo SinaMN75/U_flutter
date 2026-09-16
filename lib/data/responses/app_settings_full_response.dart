@@ -1,7 +1,6 @@
 part of "../data.dart";
 
-// Full, editable mirror of the backend AppSettingsDto for the admin config editor.
-// Secrets arrive masked (contain "••••"); leaving them masked keeps the current value on save.
+// Full, editable mirror of the backend AppSettings for the admin config editor; the server replaces its settings wholesale on save.
 class UAppSettings {
   UAppSettings({
     required this.baseUrl,
@@ -17,6 +16,10 @@ class UAppSettings {
     required this.ipg,
     required this.avreen,
     required this.pnApiKey,
+    required this.cors,
+    required this.namat,
+    required this.gold,
+    required this.inquiryCacheDurations,
     required this.apiCallCosts,
     required this.chargeInternet,
     required this.chargeInternetTaxPercent,
@@ -37,6 +40,10 @@ class UAppSettings {
     ipg: USettingsIpg.fromMap(j["ipg"] ?? <String, dynamic>{}),
     avreen: USettingsAvreen.fromMap(j["avreen"] ?? <String, dynamic>{}),
     pnApiKey: (j["pn"] ?? <String, dynamic>{})["apiKey"] ?? "",
+    cors: USettingsCors.fromMap(j["cors"] ?? <String, dynamic>{}),
+    namat: USettingsNamat.fromMap(j["namat"] ?? <String, dynamic>{}),
+    gold: USettingsGold.fromMap(j["gold"] ?? <String, dynamic>{}),
+    inquiryCacheDurations: USettingsInquiryCacheDurations.fromMap(j["inquiryCacheDurations"] ?? <String, dynamic>{}),
     apiCallCosts: USettingsCosts.fromMap(j["apiCallCosts"] ?? <String, dynamic>{}),
     chargeInternet: List<USettingsChargeInternet>.from((j["chargeInternet"] as List<dynamic>? ?? <dynamic>[]).map((dynamic x) => USettingsChargeInternet.fromMap(x))),
     chargeInternetTaxPercent: double.tryParse("${j["chargeInternetTaxPercent"] ?? 0}") ?? 0,
@@ -56,6 +63,10 @@ class UAppSettings {
   USettingsIpg ipg;
   USettingsAvreen avreen;
   String pnApiKey;
+  USettingsCors cors;
+  USettingsNamat namat;
+  USettingsGold gold;
+  USettingsInquiryCacheDurations inquiryCacheDurations;
   USettingsCosts apiCallCosts;
   List<USettingsChargeInternet> chargeInternet;
   double chargeInternetTaxPercent;
@@ -77,6 +88,10 @@ class UAppSettings {
     "ipg": ipg.toMap(),
     "avreen": avreen.toMap(),
     "pn": <String, dynamic>{"apiKey": pnApiKey},
+    "cors": cors.toMap(),
+    "namat": namat.toMap(),
+    "gold": gold.toMap(),
+    "inquiryCacheDurations": inquiryCacheDurations.toMap(),
     "apiCallCosts": apiCallCosts.toMap(),
     "chargeInternet": chargeInternet.map((USettingsChargeInternet e) => e.toMap()).toList(),
     "chargeInternetTaxPercent": chargeInternetTaxPercent,
@@ -89,25 +104,144 @@ class UAppSettings {
 }
 
 class USettingsJwt {
-  USettingsJwt({required this.key, required this.issuer, required this.audience, required this.expires});
+  USettingsJwt({required this.key, required this.issuer, required this.audience, required this.expires, this.refreshTokenExpiresInDays = 7});
 
   factory USettingsJwt.fromMap(Map<String, dynamic> j) => USettingsJwt(
     key: j["key"] ?? "",
     issuer: j["issuer"] ?? "",
     audience: j["audience"] ?? "",
-    expires: j["expires"] ?? "",
+    expires: int.tryParse("${j["expires"] ?? 0}") ?? 0,
+    refreshTokenExpiresInDays: int.tryParse("${j["refreshTokenExpiresInDays"] ?? 7}") ?? 7,
   );
 
   String key;
   String issuer;
   String audience;
-  String expires;
+  int expires;
+  int refreshTokenExpiresInDays;
 
-  Map<String, dynamic> toMap() => <String, dynamic>{"key": key, "issuer": issuer, "audience": audience, "expires": expires};
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "key": key,
+    "issuer": issuer,
+    "audience": audience,
+    "expires": expires,
+    "refreshTokenExpiresInDays": refreshTokenExpiresInDays,
+  };
 
   String toJson() => json.encode(toMap());
 
   factory USettingsJwt.fromJson(String str) => USettingsJwt.fromMap(json.decode(str));
+}
+
+class USettingsCors {
+  USettingsCors({required this.allowedOrigins});
+
+  factory USettingsCors.fromMap(Map<String, dynamic> j) => USettingsCors(
+    allowedOrigins: List<String>.from((j["allowedOrigins"] as List<dynamic>? ?? <dynamic>[]).map((dynamic x) => x.toString())),
+  );
+
+  List<String> allowedOrigins;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"allowedOrigins": allowedOrigins};
+
+  String toJson() => json.encode(toMap());
+
+  factory USettingsCors.fromJson(String str) => USettingsCors.fromMap(json.decode(str));
+}
+
+class USettingsNamat {
+  USettingsNamat({required this.baseUrl, required this.branchToken});
+
+  factory USettingsNamat.fromMap(Map<String, dynamic> j) => USettingsNamat(baseUrl: j["baseUrl"] ?? "", branchToken: j["branchToken"] ?? "");
+
+  String baseUrl;
+  String branchToken;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"baseUrl": baseUrl, "branchToken": branchToken};
+
+  String toJson() => json.encode(toMap());
+
+  factory USettingsNamat.fromJson(String str) => USettingsNamat.fromMap(json.decode(str));
+}
+
+class USettingsGold {
+  USettingsGold({required this.baseUrl, required this.clientKey, required this.clientSecret, required this.scopes, this.apiToken});
+
+  factory USettingsGold.fromMap(Map<String, dynamic> j) => USettingsGold(
+    baseUrl: j["baseUrl"] ?? "",
+    clientKey: j["clientKey"] ?? "",
+    clientSecret: j["clientSecret"] ?? "",
+    scopes: List<String>.from((j["scopes"] as List<dynamic>? ?? <dynamic>[]).map((dynamic x) => x.toString())),
+    apiToken: j["apiToken"],
+  );
+
+  String baseUrl;
+  String clientKey;
+  String clientSecret;
+  List<String> scopes;
+  String? apiToken;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "baseUrl": baseUrl,
+    "clientKey": clientKey,
+    "clientSecret": clientSecret,
+    "scopes": scopes,
+    "apiToken": apiToken,
+  };
+
+  String toJson() => json.encode(toMap());
+
+  factory USettingsGold.fromJson(String str) => USettingsGold.fromMap(json.decode(str));
+}
+
+class USettingsInquiryCacheDurations {
+  USettingsInquiryCacheDurations({
+    required this.mobileAndNationalCodeVerification,
+    required this.zipCodeToAddressDetail,
+    required this.vehicleViolationsDetail,
+    required this.drivingLicenceStatus,
+    required this.freewayToll,
+    required this.licencePlateDetail,
+    required this.drivingLicenceNegativePoint,
+    required this.iBanToBankAccountDetail,
+  });
+
+  factory USettingsInquiryCacheDurations.fromMap(Map<String, dynamic> j) => USettingsInquiryCacheDurations(
+    mobileAndNationalCodeVerification: _i(j["mobileAndNationalCodeVerification"]),
+    zipCodeToAddressDetail: _i(j["zipCodeToAddressDetail"]),
+    vehicleViolationsDetail: _i(j["vehicleViolationsDetail"]),
+    drivingLicenceStatus: _i(j["drivingLicenceStatus"]),
+    freewayToll: _i(j["freewayToll"]),
+    licencePlateDetail: _i(j["licencePlateDetail"]),
+    drivingLicenceNegativePoint: _i(j["drivingLicenceNegativePoint"]),
+    iBanToBankAccountDetail: _i(j["iBanToBankAccountDetail"]),
+  );
+
+  int mobileAndNationalCodeVerification;
+  int zipCodeToAddressDetail;
+  int vehicleViolationsDetail;
+  int drivingLicenceStatus;
+  int freewayToll;
+  int licencePlateDetail;
+  int drivingLicenceNegativePoint;
+  int iBanToBankAccountDetail;
+
+  static int _i(dynamic v) => int.tryParse("${v ?? 0}") ?? 0;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "mobileAndNationalCodeVerification": mobileAndNationalCodeVerification,
+    "zipCodeToAddressDetail": zipCodeToAddressDetail,
+    "vehicleViolationsDetail": vehicleViolationsDetail,
+    "drivingLicenceStatus": drivingLicenceStatus,
+    "freewayToll": freewayToll,
+    "licencePlateDetail": licencePlateDetail,
+    "drivingLicenceNegativePoint": drivingLicenceNegativePoint,
+    "iBanToBankAccountDetail": iBanToBankAccountDetail,
+  };
+
+  String toJson() => json.encode(toMap());
+
+  factory USettingsInquiryCacheDurations.fromJson(String str) => USettingsInquiryCacheDurations.fromMap(json.decode(str));
 }
 
 class USettingsMiddleware {

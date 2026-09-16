@@ -1,6 +1,33 @@
 part of "../data.dart";
 
 class UProductResponse {
+  final String id;
+  final DateTime createdAt;
+  final UProductJson jsonData;
+  final List<int> tags;
+  final String title;
+  final String? code;
+  final String? subtitle;
+  final String? description;
+  final String? slug;
+  final String? type;
+  final String? content;
+  final double? latitude;
+  final double? longitude;
+  final int? stock;
+  final int point;
+  final String? parentId;
+  final String creatorId;
+  final UUserResponse? creator;
+  final List<UProductResponse>? children;
+  final List<UMediaResponse>? media;
+  final List<UCategoryResponse>? categories;
+  final int? commentCount;
+  final bool? isFollowing;
+  final int? childrenCount;
+  final List<String> adminUserIds;
+  final int order;
+
   UProductResponse({
     required this.id,
     required this.createdAt,
@@ -32,6 +59,8 @@ class UProductResponse {
 
   factory UProductResponse.fromJson(String str) => UProductResponse.fromMap(json.decode(str));
 
+  String toJson() => json.encode(toMap());
+
   factory UProductResponse.fromMap(Map<String, dynamic> json) => UProductResponse(
     id: json["id"],
     createdAt: DateTime.parse(json["createdAt"]),
@@ -44,50 +73,22 @@ class UProductResponse {
     slug: json["slug"],
     type: json["type"],
     content: json["content"],
-    latitude: json["latitude"],
-    longitude: json["longitude"],
+    latitude: json["latitude"] == null ? null : (json["latitude"] as num).toDouble(),
+    longitude: json["longitude"] == null ? null : (json["longitude"] as num).toDouble(),
     stock: json["stock"],
     point: json["point"],
     parentId: json["parentId"],
-    creatorId: json["creatorId"],
-    commentCount: json["commentCount"],
-    isFollowing: json["isFollowing"],
-    childrenCount: json["childrenCount"],
+    creatorId: json["creatorId"] ?? "",
     creator: json["creator"] == null ? null : UUserResponse.fromMap(json["creator"]),
     children: json["children"] == null ? <UProductResponse>[] : List<UProductResponse>.from(json["children"].map((dynamic x) => UProductResponse.fromMap(x))),
     media: json["media"] == null ? <UMediaResponse>[] : List<UMediaResponse>.from(json["media"].map((dynamic x) => UMediaResponse.fromMap(x))),
     categories: json["categories"] == null ? <UCategoryResponse>[] : List<UCategoryResponse>.from(json["categories"].map((dynamic x) => UCategoryResponse.fromMap(x))),
+    commentCount: json["commentCount"],
+    isFollowing: json["isFollowing"],
+    childrenCount: json["childrenCount"],
     adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
     order: json["order"],
   );
-  final String id;
-  final DateTime createdAt;
-  final UProductJson jsonData;
-  final List<int> tags;
-  final String title;
-  final String? code;
-  final String? subtitle;
-  final String? description;
-  final String? slug;
-  final String? type;
-  final String? content;
-  final double? latitude;
-  final double? longitude;
-  final int? stock;
-  final int point;
-  final String? parentId;
-  final String creatorId;
-  final UUserResponse? creator;
-  final List<UProductResponse>? children;
-  final List<UMediaResponse>? media;
-  final List<UCategoryResponse>? categories;
-  final int? commentCount;
-  final bool? isFollowing;
-  final int? childrenCount;
-  final List<String> adminUserIds;
-  final int order;
-
-  String toJson() => json.encode(toMap());
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "id": id,
@@ -100,20 +101,20 @@ class UProductResponse {
     "description": description,
     "slug": slug,
     "type": type,
-    "point": point,
     "content": content,
     "latitude": latitude,
     "longitude": longitude,
     "stock": stock,
+    "point": point,
     "parentId": parentId,
     "creatorId": creatorId,
-    "commentCount": commentCount,
-    "isFollowing": isFollowing,
-    "childrenCount": childrenCount,
     "creator": creator?.toMap(),
     "children": children == null ? null : List<dynamic>.from(children!.map((UProductResponse x) => x.toMap())),
     "media": media == null ? null : List<dynamic>.from(media!.map((UMediaResponse x) => x.toMap())),
     "categories": categories == null ? null : List<dynamic>.from(categories!.map((UCategoryResponse x) => x.toMap())),
+    "commentCount": commentCount,
+    "isFollowing": isFollowing,
+    "childrenCount": childrenCount,
     "adminUserIds": List<dynamic>.from(adminUserIds.map((String x) => x)),
     "order": order,
   };

@@ -12,8 +12,5 @@ class UWeb extends UPlatform {
   }
 
   @override
-  Future<String?> getPlatformVersion() async {
-    final String version = web.window.navigator.userAgent;
-    return version;
-  }
+  Future<String?> getPlatformVersion() async => web.window.navigator.userAgent;
 }

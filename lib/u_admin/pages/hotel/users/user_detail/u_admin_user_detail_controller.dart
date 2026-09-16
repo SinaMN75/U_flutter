@@ -18,11 +18,7 @@ class UAdminUserDetailController {
         id: user.id,
         selectorArgs: const UserSelectorArgs(
           address: AddressSelectorArgs(),
-          nationalCardFront: true,
-          nationalCardBack: true,
-          birthCertificateFirst: true,
-          eSignature: true,
-          visualAuthentication: true,
+          media: MediaSelectorArgs(),
         ),
       ),
       onOk: (UResponse<UUserResponse> response) {

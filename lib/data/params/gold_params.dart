@@ -236,10 +236,25 @@ class UGoldReadUserTxnsParams {
   final List<TagGoldTxn>? tags;
   final int pageSize;
   final int pageNumber;
-  final int orderBy;
+  final int? orderBy;
+  final GoldTxnSelectorArgs? selectorArgs;
+  final DateTime? fromCreatedAt;
+  final DateTime? toCreatedAt;
+  final List<String>? ids;
+  final String? creatorId;
 
-  UGoldReadUserTxnsParams({this.userId, this.tags, this.pageSize = 20, this.pageNumber = 1, int? orderBy})
-    : orderBy = orderBy ?? TagOrderBy.createdAtDescending.number;
+  UGoldReadUserTxnsParams({
+    this.userId,
+    this.tags,
+    this.pageSize = 20,
+    this.pageNumber = 1,
+    this.orderBy,
+    this.selectorArgs,
+    this.fromCreatedAt,
+    this.toCreatedAt,
+    this.ids,
+    this.creatorId,
+  });
 
   factory UGoldReadUserTxnsParams.fromJson(String str) => UGoldReadUserTxnsParams.fromMap(json.decode(str));
 
@@ -247,12 +262,15 @@ class UGoldReadUserTxnsParams {
 
   factory UGoldReadUserTxnsParams.fromMap(Map<String, dynamic> json) => UGoldReadUserTxnsParams(
     userId: json["userId"],
-    tags: json["tags"] == null
-        ? null
-        : List<TagGoldTxn>.from(json["tags"]!.map((dynamic x) => TagGoldTxn.values.firstWhereOrNull((TagGoldTxn e) => e.number == x)).whereType<TagGoldTxn>()),
+    tags: json["tags"] == null ? null : List<TagGoldTxn>.from(json["tags"]!.map((dynamic x) => TagGoldTxn.values.firstWhereOrNull((TagGoldTxn e) => e.number == x)).whereType<TagGoldTxn>()),
     pageSize: json["pageSize"] ?? 20,
     pageNumber: json["pageNumber"] ?? 1,
     orderBy: json["orderBy"],
+    selectorArgs: json["selectorArgs"] == null ? null : GoldTxnSelectorArgs.fromMap(json["selectorArgs"]),
+    fromCreatedAt: json["fromCreatedAt"] == null ? null : DateTime.parse(json["fromCreatedAt"]),
+    toCreatedAt: json["toCreatedAt"] == null ? null : DateTime.parse(json["toCreatedAt"]),
+    ids: json["ids"] == null ? null : List<String>.from(json["ids"]!.map((dynamic x) => x)),
+    creatorId: json["creatorId"],
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -260,6 +278,11 @@ class UGoldReadUserTxnsParams {
     if (tags != null) "tags": List<dynamic>.from(tags!.map((TagGoldTxn x) => x.number)),
     "pageSize": pageSize,
     "pageNumber": pageNumber,
-    "orderBy": orderBy,
+    "orderBy": orderBy ?? TagOrderBy.createdAtDescending.number,
+    if (selectorArgs != null) "selectorArgs": selectorArgs?.toMap(),
+    if (fromCreatedAt != null) "fromCreatedAt": fromCreatedAt?.toIso8601String(),
+    if (toCreatedAt != null) "toCreatedAt": toCreatedAt?.toIso8601String(),
+    if (ids != null) "ids": List<dynamic>.from(ids!.map((String x) => x)),
+    if (creatorId != null) "creatorId": creatorId,
   };
 }

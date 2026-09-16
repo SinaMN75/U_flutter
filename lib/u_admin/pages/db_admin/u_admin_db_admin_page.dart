@@ -10,14 +10,14 @@ class UAdminDbAdminPage extends StatefulWidget {
 class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
   static const List<int> _pageSizes = <int>[50, 100, 200, 500];
 
-  List<UDbTableResponse> _tables = <UDbTableResponse>[];
+  List<UDbAdminTableResponse> _tables = <UDbAdminTableResponse>[];
   bool _loadingTables = true;
   String _tableSearch = "";
 
-  UDbTableResponse? _selected;
+  UDbAdminTableResponse? _selected;
   int _tab = 0; // 0 = data, 1 = structure, 2 = query
 
-  UDbQueryResultResponse? _rows;
+  UDbAdminQueryResultResponse? _rows;
   bool _loadingRows = false;
   int _page = 1;
   int _pageSize = 100;
@@ -27,11 +27,11 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
   bool _descending = false;
   final TextEditingController _whereController = TextEditingController();
 
-  UDbTableSchemaResponse? _schema;
+  UDbAdminTableSchemaResponse? _schema;
   bool _loadingSchema = false;
 
   final TextEditingController _sqlController = TextEditingController();
-  UDbQueryResultResponse? _queryResult;
+  UDbAdminQueryResultResponse? _queryResult;
   String? _queryError;
   bool _queryRunning = false;
 
@@ -54,8 +54,8 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
     setState(() => _loadingTables = true);
     await UServices.dbAdmin.tables(
       p: UDbAdminTablesParams(),
-      onOk: (UResponse<List<UDbTableResponse>> r) => setState(() {
-        _tables = r.result ?? <UDbTableResponse>[];
+      onOk: (UResponse<List<UDbAdminTableResponse>> r) => setState(() {
+        _tables = r.result ?? <UDbAdminTableResponse>[];
         _loadingTables = false;
       }),
       onError: (UEmptyResponse e) {
@@ -69,7 +69,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
     );
   }
 
-  void _selectTable(UDbTableResponse t) {
+  void _selectTable(UDbAdminTableResponse t) {
     setState(() {
       _selected = t;
       _tab = 0;
@@ -101,7 +101,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
         where: where.isEmpty ? null : where,
         withCount: withCount,
       ),
-      onOk: (UResponse<UDbQueryResultResponse> r) => setState(() {
+      onOk: (UResponse<UDbAdminQueryResultResponse> r) => setState(() {
         _rows = r.result;
         if (withCount) {
           _totalCount = r.totalCount;
@@ -124,8 +124,8 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
     if (_selected == null) return;
     setState(() => _loadingSchema = true);
     await UServices.dbAdmin.schema(
-      p: UDbAdminSchemaParams(table: _selected!.name, schema: _selected!.schema),
-      onOk: (UResponse<UDbTableSchemaResponse> r) => setState(() {
+      p: UDbAdminTableSchemaParams(table: _selected!.name, schema: _selected!.schema),
+      onOk: (UResponse<UDbAdminTableSchemaResponse> r) => setState(() {
         _schema = r.result;
         _loadingSchema = false;
       }),
@@ -181,7 +181,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
     });
     await UServices.dbAdmin.query(
       p: UDbAdminQueryParams(sql: sql),
-      onOk: (UResponse<UDbQueryResultResponse> r) => setState(() {
+      onOk: (UResponse<UDbAdminQueryResultResponse> r) => setState(() {
         _queryResult = r.result;
         _queryError = null;
         _queryRunning = false;
@@ -196,22 +196,6 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
         _queryError = e;
         _queryRunning = false;
       }),
-    );
-  }
-
-  Future<void> _runMigrations() async {
-    if (!await UNavigator.confirmAsync(title: "Run migrations", message: "Apply all pending database migrations now?", confirmText: "Migrate", icon: Icons.system_update_alt_rounded)) return;
-    ULoading.show();
-    await UServices.dbAdmin.migrate(
-      onOk: (List<String> applied) {
-        ULoading.dismiss();
-        UToast.success(message: applied.isEmpty ? "Database is already up to date." : "Applied ${applied.length} migration(s): ${applied.join(", ")}");
-        _loadTables();
-      },
-      onError: (String e) {
-        ULoading.dismiss();
-        UToast.error(message: e.isEmpty ? "Migration failed." : e);
-      },
     );
   }
 
@@ -297,7 +281,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
 
     final Map<String, TextEditingController> controllers = <String, TextEditingController>{};
     final Map<String, bool> nulls = <String, bool>{};
-    for (final UDbColumnResponse c in _schema!.columns) {
+    for (final UDbAdminColumnResponse c in _schema!.columns) {
       final String? value = original?[c.name];
       controllers[c.name] = TextEditingController(text: value ?? "");
       nulls[c.name] = !isInsert && value == null;
@@ -320,7 +304,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
               child: UColumn(
                 spacing: 12,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: _schema!.columns.map((UDbColumnResponse c) {
+                children: _schema!.columns.map((UDbAdminColumnResponse c) {
                   final bool readOnly = !isInsert && c.name == pk;
                   return URow(
                     spacing: 8,
@@ -361,7 +345,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
     }
 
     final Map<String, dynamic> values = <String, dynamic>{};
-    for (final UDbColumnResponse c in _schema!.columns) {
+    for (final UDbAdminColumnResponse c in _schema!.columns) {
       if (!isInsert && c.name == pk) continue;
       if (nulls[c.name]!) {
         if (isInsert || original[c.name] != null) values[c.name] = null;
@@ -384,7 +368,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
     if (isInsert) {
       await UServices.dbAdmin.insertRow(
         p: UDbAdminInsertRowParams(table: _selected!.name, schema: _selected!.schema, values: values),
-        onOk: (UResponse<UDbQueryResultResponse> r) {
+        onOk: (UResponse<UDbAdminQueryResultResponse> r) {
           ULoading.dismiss();
           UToast.success(message: r.message);
           _loadRows(withCount: true);
@@ -405,7 +389,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
       }
       await UServices.dbAdmin.updateRow(
         p: UDbAdminUpdateRowParams(table: _selected!.name, schema: _selected!.schema, primaryKeyColumn: pk, primaryKeyValue: original[pk]!, values: values),
-        onOk: (UResponse<UDbQueryResultResponse> r) {
+        onOk: (UResponse<UDbAdminQueryResultResponse> r) {
           ULoading.dismiss();
           UToast.success(message: r.message);
           _loadRows();
@@ -462,7 +446,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
   // ===== Sidebar =====
 
   Widget _sidebar(ColorScheme cs) {
-    final List<UDbTableResponse> filtered = _tableSearch.isEmpty ? _tables : _tables.where((UDbTableResponse t) => t.name.toLowerCase().contains(_tableSearch.toLowerCase())).toList();
+    final List<UDbAdminTableResponse> filtered = _tableSearch.isEmpty ? _tables : _tables.where((UDbAdminTableResponse t) => t.name.toLowerCase().contains(_tableSearch.toLowerCase())).toList();
     return SizedBox(
       width: 256,
       child: UColumn(
@@ -473,7 +457,6 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
             children: <Widget>[
               Icon(Icons.storage_rounded, color: cs.primary, size: 20),
               const UTextLabelLarge("DATABASE", fontWeight: FontWeight.w800, expanded: 1),
-              _miniIcon(cs, Icons.system_update_alt_rounded, "Run migrations", _runMigrations),
               _miniIcon(cs, Icons.refresh_rounded, "Refresh tables", _loadTables),
             ],
           ).pOnly(left: 14, right: 6, top: 12, bottom: 8),
@@ -500,7 +483,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
     );
   }
 
-  Widget _tableTile(ColorScheme cs, UDbTableResponse t) {
+  Widget _tableTile(ColorScheme cs, UDbAdminTableResponse t) {
     final bool active = _selected?.name == t.name;
     return URow(
           children: <Widget>[
@@ -686,7 +669,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
 
   Widget _structureTab(ColorScheme cs) {
     if (_loadingSchema && _schema == null) return const Center(child: UProgressCircular(size: 30)).pAll(40);
-    final UDbTableSchemaResponse? s = _schema;
+    final UDbAdminTableSchemaResponse? s = _schema;
     if (s == null) return _placeholder(cs, Icons.inbox_outlined, "No structure", "");
     return SingleChildScrollView(
       padding: const EdgeInsets.all(14),
@@ -700,7 +683,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
             Icons.view_column_outlined,
             s.columns.length,
             List<Widget>.generate(s.columns.length, (int i) {
-              final UDbColumnResponse c = s.columns[i];
+              final UDbAdminColumnResponse c = s.columns[i];
               return URow(
                 spacing: 10,
                 children: <Widget>[
@@ -721,7 +704,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
               s.indexes.length,
               s.indexes
                   .map(
-                    (UDbIndexResponse idx) => UColumn(
+                    (UDbAdminIndexResponse idx) => UColumn(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       spacing: 2,
                       children: <Widget>[
@@ -746,7 +729,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
               s.foreignKeys.length,
               s.foreignKeys
                   .map(
-                    (UDbForeignKeyResponse fk) => URow(
+                    (UDbAdminForeignKeyResponse fk) => URow(
                       children: <Widget>[
                         UTextBodySmall(fk.column, fontWeight: FontWeight.w600, fontFamily: "monospace"),
                         Icon(Icons.arrow_forward_rounded, size: 14, color: cs.onSurface.withValues(alpha: 0.5)),
@@ -843,7 +826,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
     ),
   );
 
-  Widget _queryResultView(ColorScheme cs, UDbQueryResultResponse r) {
+  Widget _queryResultView(ColorScheme cs, UDbAdminQueryResultResponse r) {
     final String meta = r.columns.isEmpty ? "${r.affectedRows ?? 0} rows affected  ·  ${r.executionMs} ms" : "${r.rowCount} rows  ·  ${r.executionMs} ms${r.truncated ? "  ·  truncated" : ""}";
     return UColumn(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -862,7 +845,7 @@ class _UAdminDbAdminPageState extends State<UAdminDbAdminPage> {
 
   // ===== Shared result grid =====
 
-  Widget _grid(ColorScheme cs, UDbQueryResultResponse data, {required bool editable}) {
+  Widget _grid(ColorScheme cs, UDbAdminQueryResultResponse data, {required bool editable}) {
     final bool canMutate = editable && data.primaryKeyColumn != null;
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,

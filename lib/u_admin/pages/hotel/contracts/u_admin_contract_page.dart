@@ -246,7 +246,7 @@ class _ContractPageState extends State<UAdminContractPage> {
     final TextEditingController deposit = TextEditingController(text: p?.deposit.toInt().toString());
     final TextEditingController rent = TextEditingController(text: p?.rent.toInt().toString());
     final TextEditingController penalty = TextEditingController();
-    final TextEditingController description = TextEditingController(text: p?.jsonData.description);
+    final TextEditingController description = TextEditingController(text: p?.jsonData.detail1);
     final TextEditingController startCtrl = TextEditingController(text: p?.startDate.toJalaliDate());
     final TextEditingController endCtrl = TextEditingController(text: p?.endDate.toJalaliDate());
 
@@ -401,7 +401,7 @@ class _ContractPageState extends State<UAdminContractPage> {
     isActive: false,
     id: "",
     createdAt: DateTime.now(),
-    jsonData: UContractJsonData(),
+    jsonData: UBaseJson(),
     tags: <int>[],
     startDate: DateTime.now(),
     endDate: DateTime.now(),

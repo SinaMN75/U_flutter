@@ -7,30 +7,6 @@ extension ContentListExtension on Iterable<UContentResponse> {
 }
 
 class UContentResponse {
-  UContentResponse({
-    required this.id,
-    required this.createdAt,
-    required this.jsonData,
-    required this.tags,
-    required this.adminUserIds,
-    this.creator,
-    this.creatorId,
-    this.media = const <UMediaResponse>[],
-  });
-
-  factory UContentResponse.fromJson(String str) => UContentResponse.fromMap(json.decode(str));
-
-  factory UContentResponse.fromMap(Map<String, dynamic> json) => UContentResponse(
-    id: json["id"],
-    createdAt: DateTime.parse(json["createdAt"]),
-    jsonData: UContentJson.fromMap(json["jsonData"]),
-    tags: List<int>.from(json["tags"].map((dynamic x) => x)),
-    media: json["media"] == null ? <UMediaResponse>[] : List<UMediaResponse>.from(json["media"].map((dynamic x) => UMediaResponse.fromMap(x))),
-    creator: json["creator"] == null ? null : UUserResponse.fromMap(json["creator"]),
-    creatorId: json["creatorId"],
-    adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
-  );
-
   final String id;
   final DateTime createdAt;
   final UContentJson jsonData;
@@ -40,7 +16,31 @@ class UContentResponse {
   final String? creatorId;
   final List<String> adminUserIds;
 
+  UContentResponse({
+    required this.id,
+    required this.createdAt,
+    required this.jsonData,
+    required this.tags,
+    required this.adminUserIds,
+    this.media = const <UMediaResponse>[],
+    this.creator,
+    this.creatorId,
+  });
+
+  factory UContentResponse.fromJson(String str) => UContentResponse.fromMap(json.decode(str));
+
   String toJson() => json.encode(toMap());
+
+  factory UContentResponse.fromMap(Map<String, dynamic> json) => UContentResponse(
+    id: json["id"],
+    createdAt: DateTime.parse(json["createdAt"]),
+    jsonData: UContentJson.fromMap(json["jsonData"]),
+    tags: List<int>.from(json["tags"].map((dynamic x) => x)),
+    media: json["media"] == null ? <UMediaResponse>[] : List<UMediaResponse>.from(json["media"]!.map((dynamic x) => UMediaResponse.fromMap(x))),
+    creator: json["creator"] == null ? null : UUserResponse.fromMap(json["creator"]),
+    creatorId: json["creatorId"],
+    adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
+  );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "id": id,

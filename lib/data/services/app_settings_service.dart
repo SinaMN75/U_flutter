@@ -2,7 +2,6 @@ part of "../data.dart";
 
 class AppSettingsService {
   Future<(UResponse<UAppSettingsResponse>?, UEmptyResponse?, String?)> read({
-    required UAppSettingsReadParams p,
     Function(UResponse<UAppSettingsResponse> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
@@ -11,7 +10,7 @@ class AppSettingsService {
     await UHttpClient.send(
       method: "POST",
       endpoint: "${U.baseUrl}/AppSettings/Read",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
+      body: <String, dynamic>{}.add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
       onSuccess: (Response r) {
         final UResponse<UAppSettingsResponse> ok = UResponse<UAppSettingsResponse>.fromJson(r.body, (dynamic i) => UAppSettingsResponse.fromMap(i));
         result = (ok, null, null);

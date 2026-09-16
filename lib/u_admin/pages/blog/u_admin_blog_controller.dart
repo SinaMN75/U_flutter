@@ -107,15 +107,15 @@ class UAdminBlogController extends UBaseController {
     ),
   );
 
-  void publish(UBlogResponse i) => UServices.blog.publish(
-    p: UIdParams(id: i.id),
+  void publish(UBlogResponse i) => UServices.blog.update(
+    p: UBlogUpdateParams(id: i.id, addTags: <int>[TagBlog.published.number], removeTags: <int>[TagBlog.draft.number]),
     onOk: (UEmptyResponse r) => okCallback(r.message, read),
     onError: (UEmptyResponse r) => errorCallBack(r.message, read),
     onException: (String e) => errorCallBack(U.s.errorSubmittingForm, read),
   );
 
-  void unpublish(UBlogResponse i) => UServices.blog.unpublish(
-    p: UIdParams(id: i.id),
+  void unpublish(UBlogResponse i) => UServices.blog.update(
+    p: UBlogUpdateParams(id: i.id, addTags: <int>[TagBlog.draft.number], removeTags: <int>[TagBlog.published.number]),
     onOk: (UEmptyResponse r) => okCallback(r.message, read),
     onError: (UEmptyResponse r) => errorCallBack(r.message, read),
     onException: (String e) => errorCallBack(U.s.errorSubmittingForm, read),

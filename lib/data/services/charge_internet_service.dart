@@ -1,19 +1,19 @@
 part of "../data.dart";
 
 class ChargeInternetService {
-  Future<(UResponse<ChargeInternetReserveResponse>?, UEmptyResponse?, String?)> pin({
-    required ReserveChargeParams p,
-    Function(UResponse<ChargeInternetReserveResponse> r)? onOk,
+  Future<(UResponse<UChargeInternetReserveResponse>?, UEmptyResponse?, String?)> pin({
+    required UReserveChargeParams p,
+    Function(UResponse<UChargeInternetReserveResponse> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
   }) async {
-    (UResponse<ChargeInternetReserveResponse>?, UEmptyResponse?, String?) result = (null, null, null);
+    (UResponse<UChargeInternetReserveResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
       method: "POST",
       endpoint: "${U.baseUrl}/ChargeInternet/Pin",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
       onSuccess: (Response r) {
-        final UResponse<ChargeInternetReserveResponse> ok = UResponse<ChargeInternetReserveResponse>.fromJson(r.body, (dynamic i) => ChargeInternetReserveResponse.fromMap(i));
+        final UResponse<UChargeInternetReserveResponse> ok = UResponse<UChargeInternetReserveResponse>.fromJson(r.body, (dynamic i) => UChargeInternetReserveResponse.fromMap(i));
         result = (ok, null, null);
         onOk?.call(ok);
       },
@@ -30,19 +30,19 @@ class ChargeInternetService {
     return result;
   }
 
-  Future<(UResponse<ChargeInternetReserveResponse>?, UEmptyResponse?, String?)> topup({
-    required TopupChargeParams p,
-    Function(UResponse<ChargeInternetReserveResponse> r)? onOk,
+  Future<(UResponse<UChargeInternetReserveResponse>?, UEmptyResponse?, String?)> topup({
+    required UTopupChargeParams p,
+    Function(UResponse<UChargeInternetReserveResponse> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
   }) async {
-    (UResponse<ChargeInternetReserveResponse>?, UEmptyResponse?, String?) result = (null, null, null);
+    (UResponse<UChargeInternetReserveResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
       method: "POST",
       endpoint: "${U.baseUrl}/ChargeInternet/Topup",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
       onSuccess: (Response r) {
-        final UResponse<ChargeInternetReserveResponse> ok = UResponse<ChargeInternetReserveResponse>.fromJson(r.body, (dynamic i) => ChargeInternetReserveResponse.fromMap(i));
+        final UResponse<UChargeInternetReserveResponse> ok = UResponse<UChargeInternetReserveResponse>.fromJson(r.body, (dynamic i) => UChargeInternetReserveResponse.fromMap(i));
         result = (ok, null, null);
         onOk?.call(ok);
       },
@@ -60,7 +60,7 @@ class ChargeInternetService {
   }
 
   Future<(UResponse<UInternetPackageResponse>?, UEmptyResponse?, String?)> internetList({
-    required InternetListParams p,
+    required UInternetListParams p,
     Function(UResponse<UInternetPackageResponse> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
@@ -88,19 +88,19 @@ class ChargeInternetService {
     return result;
   }
 
-  Future<(UResponse<ChargeInternetReserveResponse>?, UEmptyResponse?, String?)> internetReserve({
-    required InternetReserveParams p,
-    Function(UResponse<ChargeInternetReserveResponse> r)? onOk,
+  Future<(UResponse<UChargeInternetReserveResponse>?, UEmptyResponse?, String?)> internetReserve({
+    required UInternetReserveParams p,
+    Function(UResponse<UChargeInternetReserveResponse> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
   }) async {
-    (UResponse<ChargeInternetReserveResponse>?, UEmptyResponse?, String?) result = (null, null, null);
+    (UResponse<UChargeInternetReserveResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
       method: "POST",
       endpoint: "${U.baseUrl}/ChargeInternet/InternetReserve",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
       onSuccess: (Response r) {
-        final UResponse<ChargeInternetReserveResponse> ok = UResponse<ChargeInternetReserveResponse>.fromJson(r.body, (dynamic i) => ChargeInternetReserveResponse.fromMap(i));
+        final UResponse<UChargeInternetReserveResponse> ok = UResponse<UChargeInternetReserveResponse>.fromJson(r.body, (dynamic i) => UChargeInternetReserveResponse.fromMap(i));
         result = (ok, null, null);
         onOk?.call(ok);
       },
@@ -117,19 +117,19 @@ class ChargeInternetService {
     return result;
   }
 
-  Future<(UResponse<GetStatusResponse>?, UEmptyResponse?, String?)> getStatus({
-    required GetStatusParams p,
-    Function(UResponse<GetStatusResponse> r)? onOk,
+  Future<(UResponse<UGetStatusResponse>?, UEmptyResponse?, String?)> getStatus({
+    required UGetStatusParams p,
+    Function(UResponse<UGetStatusResponse> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
   }) async {
-    (UResponse<GetStatusResponse>?, UEmptyResponse?, String?) result = (null, null, null);
+    (UResponse<UGetStatusResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
       method: "POST",
       endpoint: "${U.baseUrl}/ChargeInternet/GetStatus",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
       onSuccess: (Response r) {
-        final UResponse<GetStatusResponse> ok = UResponse<GetStatusResponse>.fromJson(r.body, (dynamic i) => GetStatusResponse.fromMap(i));
+        final UResponse<UGetStatusResponse> ok = UResponse<UGetStatusResponse>.fromJson(r.body, (dynamic i) => UGetStatusResponse.fromMap(i));
         result = (ok, null, null);
         onOk?.call(ok);
       },
@@ -146,19 +146,19 @@ class ChargeInternetService {
     return result;
   }
 
-  Future<(UResponse<GetBalanceResponse>?, UEmptyResponse?, String?)> getBalance({
+  Future<(UResponse<UGetBalanceResponse>?, UEmptyResponse?, String?)> getBalance({
     required UBaseParams p,
-    Function(UResponse<GetBalanceResponse> r)? onOk,
+    Function(UResponse<UGetBalanceResponse> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
   }) async {
-    (UResponse<GetBalanceResponse>?, UEmptyResponse?, String?) result = (null, null, null);
+    (UResponse<UGetBalanceResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
       method: "POST",
       endpoint: "${U.baseUrl}/ChargeInternet/GetBalance",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
       onSuccess: (Response r) {
-        final UResponse<GetBalanceResponse> ok = UResponse<GetBalanceResponse>.fromJson(r.body, (dynamic i) => GetBalanceResponse.fromMap(i));
+        final UResponse<UGetBalanceResponse> ok = UResponse<UGetBalanceResponse>.fromJson(r.body, (dynamic i) => UGetBalanceResponse.fromMap(i));
         result = (ok, null, null);
         onOk?.call(ok);
       },
@@ -175,19 +175,19 @@ class ChargeInternetService {
     return result;
   }
 
-  Future<(UResponse<EchoResponse>?, UEmptyResponse?, String?)> echo({
+  Future<(UResponse<UEchoResponse>?, UEmptyResponse?, String?)> echo({
     required UBaseParams p,
-    Function(UResponse<EchoResponse> r)? onOk,
+    Function(UResponse<UEchoResponse> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
   }) async {
-    (UResponse<EchoResponse>?, UEmptyResponse?, String?) result = (null, null, null);
+    (UResponse<UEchoResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
       method: "POST",
       endpoint: "${U.baseUrl}/ChargeInternet/Echo",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
       onSuccess: (Response r) {
-        final UResponse<EchoResponse> ok = UResponse<EchoResponse>.fromJson(r.body, (dynamic i) => EchoResponse.fromMap(i));
+        final UResponse<UEchoResponse> ok = UResponse<UEchoResponse>.fromJson(r.body, (dynamic i) => UEchoResponse.fromMap(i));
         result = (ok, null, null);
         onOk?.call(ok);
       },

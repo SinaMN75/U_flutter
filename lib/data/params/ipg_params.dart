@@ -40,9 +40,7 @@ class UIpgPayParams {
     paymentId: json["paymentId"],
     chargeMobileNumber: json["chargeMobileNumber"],
     topUpType: json["topUpType"] == null ? null : TagSimOperator.values.firstWhereOrNull((TagSimOperator e) => e.number == json["topUpType"]),
-    multiplexedAccounts: json["multiplexedAccounts"] == null
-        ? null
-        : List<UIpgMultiplexedAccountParams>.from(json["multiplexedAccounts"].map((dynamic e) => UIpgMultiplexedAccountParams.fromMap(e))),
+    multiplexedAccounts: json["multiplexedAccounts"] == null ? null : List<UIpgMultiplexedAccountParams>.from(json["multiplexedAccounts"].map((dynamic e) => UIpgMultiplexedAccountParams.fromMap(e))),
   );
 
   String toJson() => json.encode(toMap());
@@ -74,20 +72,20 @@ class UIpgMultiplexedAccountParams {
   factory UIpgMultiplexedAccountParams.fromJson(String str) => UIpgMultiplexedAccountParams.fromMap(json.decode(str));
 }
 
-class UIpgVerifyParams {
+class UIpgStatusParams {
   final String trackingNumber;
 
-  UIpgVerifyParams({required this.trackingNumber});
+  UIpgStatusParams({required this.trackingNumber});
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "trackingNumber": trackingNumber,
   };
 
-  factory UIpgVerifyParams.fromMap(Map<String, dynamic> json) => UIpgVerifyParams(
+  factory UIpgStatusParams.fromMap(Map<String, dynamic> json) => UIpgStatusParams(
     trackingNumber: json["trackingNumber"],
   );
 
   String toJson() => json.encode(toMap());
 
-  factory UIpgVerifyParams.fromJson(String str) => UIpgVerifyParams.fromMap(json.decode(str));
+  factory UIpgStatusParams.fromJson(String str) => UIpgStatusParams.fromMap(json.decode(str));
 }

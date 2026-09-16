@@ -41,10 +41,10 @@ class UAdminContractController extends UBaseController {
         upcomingOnly: statusFilter == UAdminContractStatusFilter.upcoming ? true : null,
         expiredOnly: statusFilter == UAdminContractStatusFilter.expired ? true : null,
         expiringWithinDays: statusFilter == UAdminContractStatusFilter.expiringSoon ? 30 : null,
-        selectorArgs: const ContractSelectorArgs(
+        selectorArgs: const DormBedContractSelectorArgs(
           user: UserSelectorArgs(),
           bed: DormBedSelectorArgs(room: DormRoomSelectorArgs(dorm: DormSelectorArgs())),
-          invoice: InvoiceSelectorArgs(),
+          invoice: DormBedInvoiceSelectorArgs(),
         ),
       ),
       onOk: (UResponse<List<UDormBedContractResponse>> r) {
@@ -84,7 +84,7 @@ class UAdminContractController extends UBaseController {
 
   void update({required UDormBedContractUpdateParams p}) => UServices.hotel.updateDormBedContract(
     p: p,
-    onOk: (UResponse<UDormBedContractResponse> r) => okCallback(r.message, read),
+    onOk: (UEmptyResponse r) => okCallback(r.message, read),
     onError: (UResponse<dynamic> r) => errorCallBack(r.message, read),
     onException: (String e) => errorCallBack(U.s.errorSubmittingForm, read),
   );

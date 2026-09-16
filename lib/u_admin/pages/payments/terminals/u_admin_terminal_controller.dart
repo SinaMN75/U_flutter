@@ -204,7 +204,7 @@ class UAdminTerminalController extends UBaseController {
     ULoading.show();
     UServices.terminal.readSupportPassword(
       p: UIdParams(id: i.id),
-      onOk: (UResponse<UTerminalReadSupportPasswordResponse> r) {
+      onOk: (UResponse<UTerminalSupportPasswordResponse> r) {
         ULoading.dismiss();
         final String pass = r.result?.password ?? "-";
         UNavigator.dialog(

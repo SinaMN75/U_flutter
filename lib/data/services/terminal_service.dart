@@ -154,21 +154,21 @@ class TerminalService {
     return result;
   }
 
-  Future<(UResponse<UTerminalReadSupportPasswordResponse>?, UEmptyResponse?, String?)> readSupportPassword({
+  Future<(UResponse<UTerminalSupportPasswordResponse>?, UEmptyResponse?, String?)> readSupportPassword({
     required UIdParams p,
-    Function(UResponse<UTerminalReadSupportPasswordResponse> r)? onOk,
+    Function(UResponse<UTerminalSupportPasswordResponse> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
   }) async {
-    (UResponse<UTerminalReadSupportPasswordResponse>?, UEmptyResponse?, String?) result = (null, null, null);
+    (UResponse<UTerminalSupportPasswordResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
       method: "POST",
       endpoint: "${U.baseUrl}/terminal/ReadSupportPassword",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
       onSuccess: (Response r) {
-        final UResponse<UTerminalReadSupportPasswordResponse> ok = UResponse<UTerminalReadSupportPasswordResponse>.fromJson(
+        final UResponse<UTerminalSupportPasswordResponse> ok = UResponse<UTerminalSupportPasswordResponse>.fromJson(
           r.body,
-          (dynamic i) => UTerminalReadSupportPasswordResponse.fromMap(i),
+          (dynamic i) => UTerminalSupportPasswordResponse.fromMap(i),
         );
         result = (ok, null, null);
         onOk?.call(ok);
@@ -187,7 +187,7 @@ class TerminalService {
   }
 
   Future<(UResponse<UTerminalAvailabilityResponse>?, UEmptyResponse?, String?)> checkAvailability({
-    required UTerminalCheckAvailabilityParams p,
+    required UTerminalAssignParams p,
     Function(UResponse<UTerminalAvailabilityResponse> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
@@ -340,19 +340,19 @@ class TerminalService {
     return result;
   }
 
-  Future<(UEmptyResponse?, UEmptyResponse?, String?)> createBrand({
+  Future<(UResponse<String>?, UEmptyResponse?, String?)> createBrand({
     required UTerminalBrandCreateParams p,
-    Function(UEmptyResponse r)? onOk,
+    Function(UResponse<String> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
   }) async {
-    (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
+    (UResponse<String>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
       method: "POST",
       endpoint: "${U.baseUrl}/terminal/CreateBrand",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
       onSuccess: (Response r) {
-        final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
+        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (dynamic i) => i);
         result = (ok, null, null);
         onOk?.call(ok);
       },
@@ -461,19 +461,19 @@ class TerminalService {
     return result;
   }
 
-  Future<(UEmptyResponse?, UEmptyResponse?, String?)> createBroker({
+  Future<(UResponse<String>?, UEmptyResponse?, String?)> createBroker({
     required UTerminalBrokerCreateParams p,
-    Function(UEmptyResponse r)? onOk,
+    Function(UResponse<String> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
   }) async {
-    (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
+    (UResponse<String>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
       method: "POST",
       endpoint: "${U.baseUrl}/terminal/CreateBroker",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
       onSuccess: (Response r) {
-        final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
+        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (dynamic i) => i);
         result = (ok, null, null);
         onOk?.call(ok);
       },

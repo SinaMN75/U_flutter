@@ -50,54 +50,6 @@ class UResponse<T> {
   final String message;
 }
 
-class UVisitCount {
-  UVisitCount({
-    required this.userId,
-    required this.count,
-  });
-
-  factory UVisitCount.fromJson(String str) => UVisitCount.fromMap(json.decode(str));
-
-  factory UVisitCount.fromMap(Map<String, dynamic> json) => UVisitCount(
-    userId: json["userId"],
-    count: json["count"],
-  );
-
-  final String userId;
-  final int count;
-
-  String toJson() => json.encode(toMap());
-
-  Map<String, dynamic> toMap() => <String, dynamic>{
-    "userId": userId,
-    "count": count,
-  };
-}
-
-class UPointCount {
-  UPointCount({
-    required this.userId,
-    required this.point,
-  });
-
-  factory UPointCount.fromJson(String str) => UPointCount.fromMap(json.decode(str));
-
-  factory UPointCount.fromMap(Map<String, dynamic> json) => UPointCount(
-    userId: json["userId"],
-    point: json["point"],
-  );
-
-  final String userId;
-  final int point;
-
-  String toJson() => json.encode(toMap());
-
-  Map<String, dynamic> toMap() => <String, dynamic>{
-    "userId": userId,
-    "point": point,
-  };
-}
-
 class UBaseJson {
   UBaseJson({
     this.detail1,
@@ -118,5 +70,29 @@ class UBaseJson {
   Map<String, dynamic> toMap() => <String, dynamic>{
     "detail1": detail1,
     "detail2": detail2,
+  };
+}
+
+class UKeyValueData {
+  final String key;
+  final String value;
+
+  UKeyValueData({
+    this.key = "",
+    this.value = "",
+  });
+
+  factory UKeyValueData.fromJson(String str) => UKeyValueData.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UKeyValueData.fromMap(Map<String, dynamic> json) => UKeyValueData(
+    key: json["key"] ?? "",
+    value: json["value"] ?? "",
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "key": key,
+    "value": value,
   };
 }

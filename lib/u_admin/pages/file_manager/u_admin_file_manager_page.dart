@@ -52,7 +52,7 @@ class _UAdminFileManagerPageState extends State<UAdminFileManagerPage> {
     if (name == null || name.trim().isEmpty) return;
     await UServices.fileManager.createFolder(
       p: UFileManagerCreateFolderParams(path: _path, name: name.trim()),
-      onOk: (UEmptyResponse r) {
+      onOk: (UResponse<UFileManagerEntryResponse> r) {
         UToast.snackBar(message: r.message);
         _load(_path);
       },
@@ -69,7 +69,7 @@ class _UAdminFileManagerPageState extends State<UAdminFileManagerPage> {
         for (final FileData f in files) {
           await UServices.fileManager.upload(
             p: UFileManagerUploadParams(file: f, path: _path),
-            onOk: (UResponse<String> r) {},
+            onOk: (UResponse<UFileManagerEntryResponse> r) {},
             onError: (UEmptyResponse e) => UToast.error(message: e.message),
             onException: (String e) => UToast.error(message: e),
           );
@@ -85,7 +85,7 @@ class _UAdminFileManagerPageState extends State<UAdminFileManagerPage> {
     if (name == null || name.trim().isEmpty || name.trim() == entry.name) return;
     await UServices.fileManager.rename(
       p: UFileManagerRenameParams(path: entry.path, newName: name.trim()),
-      onOk: (UEmptyResponse r) {
+      onOk: (UResponse<UFileManagerEntryResponse> r) {
         UToast.snackBar(message: r.message);
         _load(_path);
       },
@@ -99,7 +99,7 @@ class _UAdminFileManagerPageState extends State<UAdminFileManagerPage> {
     if (destination == null) return;
     await UServices.fileManager.move(
       p: UFileManagerMoveParams(path: entry.path, destination: destination.trim()),
-      onOk: (UEmptyResponse r) {
+      onOk: (UResponse<UFileManagerEntryResponse> r) {
         UToast.snackBar(message: r.message);
         _load(_path);
       },

@@ -41,7 +41,7 @@ class UAdminTerminalBrokerController extends UBaseController {
     ULoading.show();
     UServices.terminal.createBroker(
       p: p,
-      onOk: (UEmptyResponse r) {
+      onOk: (UResponse<String> r) {
         ULoading.dismiss();
         okCallback(r.message, read);
       },

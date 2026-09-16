@@ -136,11 +136,11 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
     return _chartCard(
       title: U.s.monthlyRevenueDebtPaidPenalty,
       child: UBarChart(
-        categories: r.monthlyRevenue.map((UDormBedInvoiceChartItem d) => d.month).toList(),
+        categories: r.monthlyRevenue.map((UDormBedInvoiceChartResponse d) => d.month).toList(),
         series: <UChartSeries>[
-          UChartSeries(name: U.s.debt, color: UAdminTheme.blueGrey, values: r.monthlyRevenue.map((UDormBedInvoiceChartItem d) => d.totalDebt.toDouble()).toList()),
-          UChartSeries(name: U.s.paid, color: UAdminTheme.green, values: r.monthlyRevenue.map((UDormBedInvoiceChartItem d) => d.totalPaid.toDouble()).toList()),
-          UChartSeries(name: U.s.penalty, color: UAdminTheme.red, values: r.monthlyRevenue.map((UDormBedInvoiceChartItem d) => d.totalPenalty.toDouble()).toList()),
+          UChartSeries(name: U.s.debt, color: UAdminTheme.blueGrey, values: r.monthlyRevenue.map((UDormBedInvoiceChartResponse d) => d.totalDebt.toDouble()).toList()),
+          UChartSeries(name: U.s.paid, color: UAdminTheme.green, values: r.monthlyRevenue.map((UDormBedInvoiceChartResponse d) => d.totalPaid.toDouble()).toList()),
+          UChartSeries(name: U.s.penalty, color: UAdminTheme.red, values: r.monthlyRevenue.map((UDormBedInvoiceChartResponse d) => d.totalPenalty.toDouble()).toList()),
         ],
       ),
     );

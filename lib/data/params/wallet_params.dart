@@ -176,10 +176,12 @@ class UWalletTransferParams {
 class UWalletPurchaseParams {
   final int tag;
   final double? amount;
+  final List<UKeyValueData>? keyValues;
 
   UWalletPurchaseParams({
     required this.tag,
     this.amount,
+    this.keyValues,
   });
 
   factory UWalletPurchaseParams.fromJson(String str) => UWalletPurchaseParams.fromMap(json.decode(str));
@@ -189,10 +191,12 @@ class UWalletPurchaseParams {
   factory UWalletPurchaseParams.fromMap(Map<String, dynamic> json) => UWalletPurchaseParams(
     tag: json["tag"],
     amount: json["amount"]?.toDouble(),
+    keyValues: json["keyValues"] == null ? null : List<UKeyValueData>.from(json["keyValues"]!.map((dynamic x) => UKeyValueData.fromMap(x))),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "tag": tag,
     "amount": amount,
+    if (keyValues != null) "keyValues": List<dynamic>.from(keyValues!.map((UKeyValueData x) => x.toMap())),
   };
 }

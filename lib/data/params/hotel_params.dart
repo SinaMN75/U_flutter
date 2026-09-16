@@ -1324,7 +1324,7 @@ class UDormBedContractReadParams {
   final bool? upcomingOnly;
   final bool? expiredOnly;
   final int? expiringWithinDays;
-  final ContractSelectorArgs? selectorArgs;
+  final DormBedContractSelectorArgs? selectorArgs;
   final int? orderBy;
 
   UDormBedContractReadParams({
@@ -1371,7 +1371,7 @@ class UDormBedContractReadParams {
     upcomingOnly: json["upcomingOnly"],
     expiredOnly: json["expiredOnly"],
     expiringWithinDays: json["expiringWithinDays"] == null ? null : (json["expiringWithinDays"] as num).toInt(),
-    selectorArgs: json["selectorArgs"] == null ? null : ContractSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : DormBedContractSelectorArgs.fromMap(json["selectorArgs"]),
     orderBy: json["orderBy"],
   );
 
@@ -1550,7 +1550,7 @@ class UDormBedInvoiceReadParams {
   final DateTime? maxDueDate;
   final double? minDebtAmount;
   final double? maxDebtAmount;
-  final InvoiceSelectorArgs? selectorArgs;
+  final DormBedInvoiceSelectorArgs? selectorArgs;
   final String? creatorId;
   final int? orderBy;
 
@@ -1595,7 +1595,7 @@ class UDormBedInvoiceReadParams {
     maxDueDate: json["maxDueDate"] == null ? null : DateTime.parse(json["maxDueDate"]),
     minDebtAmount: json["minDebtAmount"] == null ? null : (json["minDebtAmount"] as num).toDouble(),
     maxDebtAmount: json["maxDebtAmount"] == null ? null : (json["maxDebtAmount"] as num).toDouble(),
-    selectorArgs: json["selectorArgs"] == null ? null : InvoiceSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : DormBedInvoiceSelectorArgs.fromMap(json["selectorArgs"]),
     creatorId: json["creatorId"],
     orderBy: json["orderBy"],
   );

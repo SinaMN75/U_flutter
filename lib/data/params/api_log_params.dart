@@ -2,27 +2,7 @@ part of "../data.dart";
 
 class UApiLogReadParams {
   final String? creatorId;
-  final dynamic selectorArgs;
-
-  UApiLogReadParams({
-    this.pageSize,
-    this.pageNumber,
-    this.fromCreatedAt,
-    this.toCreatedAt,
-    this.tags,
-    this.ids,
-    this.orderBy,
-    this.pathContains,
-    this.statusCode,
-    this.minDurationMs,
-    this.maxDurationMs,
-    this.userId,
-    this.ipAddress,
-    this.onlyErrors,
-    this.creatorId,
-    this.selectorArgs,
-  });
-
+  final ApiLogSelectorArgs? selectorArgs;
   final int? pageSize;
   final int? pageNumber;
   final DateTime? fromCreatedAt;
@@ -38,28 +18,32 @@ class UApiLogReadParams {
   final String? ipAddress;
   final bool? onlyErrors;
 
-  Map<String, dynamic> toMap() => <String, dynamic>{
-    "pageSize": pageSize,
-    "pageNumber": pageNumber,
-    "fromCreatedAt": fromCreatedAt?.toIso8601String(),
-    "toCreatedAt": toCreatedAt?.toIso8601String(),
-    "tags": tags == null ? <dynamic>[] : List<dynamic>.from(tags!.map((int x) => x)),
-    "ids": ids == null ? <dynamic>[] : List<dynamic>.from(ids!.map((String x) => x)),
-    "orderBy": orderBy,
-    "pathContains": pathContains,
-    "statusCode": statusCode,
-    "minDurationMs": minDurationMs,
-    "maxDurationMs": maxDurationMs,
-    "userId": userId,
-    "ipAddress": ipAddress,
-    "onlyErrors": onlyErrors,
-    "creatorId": creatorId,
-    "selectorArgs": selectorArgs,
-  };
+  UApiLogReadParams({
+    this.creatorId,
+    this.selectorArgs,
+    this.pageSize,
+    this.pageNumber,
+    this.fromCreatedAt,
+    this.toCreatedAt,
+    this.tags,
+    this.ids,
+    this.orderBy,
+    this.pathContains,
+    this.statusCode,
+    this.minDurationMs,
+    this.maxDurationMs,
+    this.userId,
+    this.ipAddress,
+    this.onlyErrors,
+  });
+
+  factory UApiLogReadParams.fromJson(String str) => UApiLogReadParams.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
 
   factory UApiLogReadParams.fromMap(Map<String, dynamic> json) => UApiLogReadParams(
     creatorId: json["creatorId"],
-    selectorArgs: json["selectorArgs"],
+    selectorArgs: json["selectorArgs"] == null ? null : ApiLogSelectorArgs.fromMap(json["selectorArgs"]),
     pageSize: json["pageSize"],
     pageNumber: json["pageNumber"],
     fromCreatedAt: json["fromCreatedAt"] == null ? null : DateTime.parse(json["fromCreatedAt"]),
@@ -76,9 +60,24 @@ class UApiLogReadParams {
     onlyErrors: json["onlyErrors"],
   );
 
-  String toJson() => json.encode(toMap());
-
-  factory UApiLogReadParams.fromJson(String str) => UApiLogReadParams.fromMap(json.decode(str));
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "creatorId": creatorId,
+    if (selectorArgs != null) "selectorArgs": selectorArgs?.toMap(),
+    if (pageSize != null) "pageSize": pageSize,
+    if (pageNumber != null) "pageNumber": pageNumber,
+    "fromCreatedAt": fromCreatedAt?.toIso8601String(),
+    "toCreatedAt": toCreatedAt?.toIso8601String(),
+    "tags": tags == null ? <dynamic>[] : List<dynamic>.from(tags!.map((int x) => x)),
+    if (ids != null) "ids": List<dynamic>.from(ids!.map((String x) => x)),
+    if (orderBy != null) "orderBy": orderBy,
+    "pathContains": pathContains,
+    "statusCode": statusCode,
+    "minDurationMs": minDurationMs,
+    "maxDurationMs": maxDurationMs,
+    "userId": userId,
+    "ipAddress": ipAddress,
+    "onlyErrors": onlyErrors,
+  };
 }
 
 class UApiLogStatsParams {

@@ -150,7 +150,7 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
               _kv(U.s.uniqueTaxCode, i.uniqueTaxCode),
               _kv(U.s.nationalCode, i.nationalCode ?? "-"),
               _kv(U.s.postalCode, i.postalCode ?? "-"),
-              _kv(U.s.registrationDate, i.registrationDate ?? "-"),
+              _kv(U.s.registrationDate, i.registerDate?.toJalaliDate() ?? "-"),
               _kv(U.s.registrationNumber, i.registrationNumber ?? "-"),
               _kv(U.s.address, i.address ?? "-"),
               _kv(U.s.introductionCode, i.introductionCode ?? "-"),

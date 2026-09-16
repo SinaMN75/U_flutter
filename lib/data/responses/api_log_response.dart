@@ -2,37 +2,6 @@ part of "../data.dart";
 
 class UApiLogResponse {
   final List<String> adminUserIds;
-
-  UApiLogResponse({
-    required this.id,
-    required this.createdAt,
-    required this.jsonData,
-    required this.tags,
-    required this.creatorId,
-    required this.path,
-    required this.statusCode,
-    required this.durationMs,
-    required this.adminUserIds,
-    this.creator,
-    this.userId,
-    this.ipAddress,
-  });
-
-  factory UApiLogResponse.fromMap(Map<String, dynamic> json) => UApiLogResponse(
-    id: json["id"],
-    createdAt: DateTime.parse(json["createdAt"]),
-    jsonData: UApiLogJson.fromMap(json["jsonData"]),
-    tags: List<int>.from(json["tags"]),
-    creatorId: json["creatorId"],
-    creator: json["creator"] == null ? null : UUserResponse.fromMap(json["creator"]),
-    path: json["path"] ?? "",
-    statusCode: json["statusCode"] ?? 0,
-    durationMs: json["durationMs"] is int ? json["durationMs"] : int.tryParse(json["durationMs"].toString()) ?? 0,
-    userId: json["userId"],
-    ipAddress: json["ipAddress"],
-    adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
-  );
-
   final String id;
   final DateTime createdAt;
   final UApiLogJson jsonData;
@@ -44,6 +13,40 @@ class UApiLogResponse {
   final int durationMs;
   final String? userId;
   final String? ipAddress;
+
+  UApiLogResponse({
+    required this.adminUserIds,
+    required this.id,
+    required this.createdAt,
+    required this.jsonData,
+    required this.tags,
+    required this.creatorId,
+    required this.path,
+    required this.statusCode,
+    required this.durationMs,
+    this.creator,
+    this.userId,
+    this.ipAddress,
+  });
+
+  factory UApiLogResponse.fromJson(String str) => UApiLogResponse.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UApiLogResponse.fromMap(Map<String, dynamic> json) => UApiLogResponse(
+    adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
+    id: json["id"],
+    createdAt: DateTime.parse(json["createdAt"]),
+    jsonData: UApiLogJson.fromMap(json["jsonData"]),
+    tags: List<int>.from(json["tags"]),
+    creatorId: json["creatorId"] ?? "",
+    creator: json["creator"] == null ? null : UUserResponse.fromMap(json["creator"]),
+    path: json["path"] ?? "",
+    statusCode: json["statusCode"] ?? 0,
+    durationMs: json["durationMs"] is int ? json["durationMs"] : int.tryParse(json["durationMs"].toString()) ?? 0,
+    userId: json["userId"],
+    ipAddress: json["ipAddress"],
+  );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "adminUserIds": List<dynamic>.from(adminUserIds.map((String x) => x)),
@@ -59,10 +62,6 @@ class UApiLogResponse {
     "userId": userId,
     "ipAddress": ipAddress,
   };
-
-  String toJson() => json.encode(toMap());
-
-  factory UApiLogResponse.fromJson(String str) => UApiLogResponse.fromMap(json.decode(str));
 }
 
 class UApiLogJson {

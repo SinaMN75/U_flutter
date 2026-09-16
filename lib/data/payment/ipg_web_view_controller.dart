@@ -43,7 +43,7 @@ class UIpgWebViewController {
     if (trackingNumber.isEmpty) return fallback;
     bool? paid;
     await UServices.ipg.status(
-      p: UIpgVerifyParams(trackingNumber: trackingNumber),
+      p: UIpgStatusParams(trackingNumber: trackingNumber),
       onOk: (UResponse<UIpgVerifyResponse> r) => paid = r.result?.paid,
       onError: (UEmptyResponse e) {},
       onException: (String e) {},

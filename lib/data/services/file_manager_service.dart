@@ -30,26 +30,26 @@ class FileManagerService {
     return result;
   }
 
-  Future<(UEmptyResponse?, UEmptyResponse?, String?)> createFolder({
+  Future<(UResponse<UFileManagerEntryResponse>?, UEmptyResponse?, String?)> createFolder({
     required UFileManagerCreateFolderParams p,
-    required Function(UEmptyResponse r) onOk,
+    required Function(UResponse<UFileManagerEntryResponse> r) onOk,
     required Function(UEmptyResponse e) onError,
     required Function(String e) onException,
-  }) => _mutate("CreateFolder", p.toMap(), onOk, onError, onException);
+  }) => _entry("CreateFolder", p.toMap(), onOk, onError, onException);
 
-  Future<(UEmptyResponse?, UEmptyResponse?, String?)> rename({
+  Future<(UResponse<UFileManagerEntryResponse>?, UEmptyResponse?, String?)> rename({
     required UFileManagerRenameParams p,
-    required Function(UEmptyResponse r) onOk,
+    required Function(UResponse<UFileManagerEntryResponse> r) onOk,
     required Function(UEmptyResponse e) onError,
     required Function(String e) onException,
-  }) => _mutate("Rename", p.toMap(), onOk, onError, onException);
+  }) => _entry("Rename", p.toMap(), onOk, onError, onException);
 
-  Future<(UEmptyResponse?, UEmptyResponse?, String?)> move({
+  Future<(UResponse<UFileManagerEntryResponse>?, UEmptyResponse?, String?)> move({
     required UFileManagerMoveParams p,
-    required Function(UEmptyResponse r) onOk,
+    required Function(UResponse<UFileManagerEntryResponse> r) onOk,
     required Function(UEmptyResponse e) onError,
     required Function(String e) onException,
-  }) => _mutate("Move", p.toMap(), onOk, onError, onException);
+  }) => _entry("Move", p.toMap(), onOk, onError, onException);
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> delete({
     required UFileManagerDeleteParams p,
@@ -58,13 +58,13 @@ class FileManagerService {
     required Function(String e) onException,
   }) => _mutate("Delete", p.toMap(), onOk, onError, onException);
 
-  Future<(UResponse<String>?, UEmptyResponse?, String?)> upload({
+  Future<(UResponse<UFileManagerEntryResponse>?, UEmptyResponse?, String?)> upload({
     required UFileManagerUploadParams p,
-    required Function(UResponse<String> r) onOk,
+    required Function(UResponse<UFileManagerEntryResponse> r) onOk,
     required Function(UEmptyResponse e) onError,
     required Function(String e) onException,
   }) async {
-    (UResponse<String>?, UEmptyResponse?, String?) result = (null, null, null);
+    (UResponse<UFileManagerEntryResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     final List<MultipartFile> files = <MultipartFile>[
       if (p.file.path != null)
         await UHttpClient.multipartFileFromFile("File", File(p.file.path!), filename: p.file.path!.split("/").last)
@@ -76,7 +76,7 @@ class FileManagerService {
       files: files,
       fields: p.toMap()..addAll(<String, dynamic>{"apiKey": U.apiKey, "token": ULocalStorage.getToken()}),
       onSuccess: (Response r) {
-        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (dynamic i) => i);
+        final UResponse<UFileManagerEntryResponse> ok = UResponse<UFileManagerEntryResponse>.fromJson(r.body, (dynamic i) => UFileManagerEntryResponse.fromMap(i));
         result = (ok, null, null);
         onOk(ok);
       },
@@ -109,6 +109,36 @@ class FileManagerService {
       onError: (Response r) => onException(r.body),
       onException: onException,
     );
+  }
+
+  Future<(UResponse<UFileManagerEntryResponse>?, UEmptyResponse?, String?)> _entry(
+    String path,
+    Map<String, dynamic> body,
+    Function(UResponse<UFileManagerEntryResponse> r) onOk,
+    Function(UEmptyResponse e) onError,
+    Function(String e) onException,
+  ) async {
+    (UResponse<UFileManagerEntryResponse>?, UEmptyResponse?, String?) result = (null, null, null);
+    await UHttpClient.send(
+      method: "POST",
+      endpoint: "${U.baseUrl}/FileManager/$path",
+      body: body.add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
+      onSuccess: (Response r) {
+        final UResponse<UFileManagerEntryResponse> ok = UResponse<UFileManagerEntryResponse>.fromJson(r.body, (dynamic i) => UFileManagerEntryResponse.fromMap(i));
+        result = (ok, null, null);
+        onOk(ok);
+      },
+      onError: (Response r) {
+        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
+        result = (null, err, null);
+        onError(err);
+      },
+      onException: (String e) {
+        result = (null, null, e);
+        onException(e);
+      },
+    );
+    return result;
   }
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> _mutate(

@@ -30,19 +30,19 @@ class WalletService {
     return result;
   }
 
-  Future<(UEmptyResponse?, UEmptyResponse?, String?)> transfer({
+  Future<(UResponse<UWalletTxnResponse>?, UEmptyResponse?, String?)> transfer({
     required UWalletTransferParams p,
-    Function(UEmptyResponse r)? onOk,
+    Function(UResponse<UWalletTxnResponse> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
   }) async {
-    (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
+    (UResponse<UWalletTxnResponse>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
       method: "POST",
       endpoint: "${U.baseUrl}/wallet/Transfer",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
       onSuccess: (Response r) {
-        final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
+        final UResponse<UWalletTxnResponse> ok = UResponse<UWalletTxnResponse>.fromJson(r.body, (dynamic i) => UWalletTxnResponse.fromMap(i));
         result = (ok, null, null);
         onOk?.call(ok);
       },

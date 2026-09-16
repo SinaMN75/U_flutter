@@ -1,29 +1,6 @@
 part of "../data.dart";
 
-class UMetricsResponse {
-  UMetricsResponse({
-    this.cpuUsage = 0,
-    this.memoryUsage = 0,
-    this.diskUsage = 0,
-    this.totalMemory = 0,
-    this.freeMemory = 0,
-    this.totalDisk = 0,
-    this.freeDisk = 0,
-    this.date = "",
-  });
-
-  factory UMetricsResponse.fromJson(String str) => UMetricsResponse.fromMap(json.decode(str));
-
-  factory UMetricsResponse.fromMap(Map<String, dynamic> json) => UMetricsResponse(
-    cpuUsage: json["cpuUsage"].toString().toDouble(),
-    memoryUsage: json["memoryUsage"].toString().toDouble(),
-    diskUsage: json["diskUsage"].toString().toDouble(),
-    totalMemory: json["totalMemory"].toString().toDouble(),
-    freeMemory: json["freeMemory"].toString().toDouble(),
-    totalDisk: json["totalDisk"].toString().toDouble(),
-    freeDisk: json["freeDisk"].toString().toDouble(),
-    date: json["date"],
-  );
+class USystemMetricsResponse {
   final double cpuUsage;
   final double memoryUsage;
   final double diskUsage;
@@ -31,7 +8,33 @@ class UMetricsResponse {
   final double freeMemory;
   final double totalDisk;
   final double freeDisk;
-  final String date;
+  final DateTime date;
+
+  USystemMetricsResponse({
+    required this.date,
+    this.cpuUsage = 0,
+    this.memoryUsage = 0,
+    this.diskUsage = 0,
+    this.totalMemory = 0,
+    this.freeMemory = 0,
+    this.totalDisk = 0,
+    this.freeDisk = 0,
+  });
+
+  factory USystemMetricsResponse.fromJson(String str) => USystemMetricsResponse.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory USystemMetricsResponse.fromMap(Map<String, dynamic> json) => USystemMetricsResponse(
+    cpuUsage: json["cpuUsage"].toString().toDouble(),
+    memoryUsage: json["memoryUsage"].toString().toDouble(),
+    diskUsage: json["diskUsage"].toString().toDouble(),
+    totalMemory: json["totalMemory"].toString().toDouble(),
+    freeMemory: json["freeMemory"].toString().toDouble(),
+    totalDisk: json["totalDisk"].toString().toDouble(),
+    freeDisk: json["freeDisk"].toString().toDouble(),
+    date: DateTime.parse(json["date"]),
+  );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "cpuUsage": cpuUsage,
@@ -41,10 +44,8 @@ class UMetricsResponse {
     "freeMemory": freeMemory,
     "totalDisk": totalDisk,
     "freeDisk": freeDisk,
-    "date": date,
+    "date": date.toIso8601String(),
   };
-
-  String toJson() => json.encode(toMap());
 }
 
 class UDashboardResponse {
@@ -108,97 +109,5 @@ class UDashboardResponse {
     "newComments": List<dynamic>.from(newComments.map((UCommentResponse x) => x.toMap())),
     "newContents": List<dynamic>.from(newContents.map((UContentResponse x) => x.toMap())),
     "newProducts": List<dynamic>.from(newProducts.map((UProductResponse x) => x.toMap())),
-  };
-}
-
-class LogStructureResponse {
-  LogStructureResponse({
-    required this.logs,
-  });
-
-  factory LogStructureResponse.fromJson(String str) => LogStructureResponse.fromMap(json.decode(str));
-
-  factory LogStructureResponse.fromMap(Map<String, dynamic> json) => LogStructureResponse(
-    logs: List<YearLog>.from(json["logs"].map((dynamic x) => YearLog.fromMap(x))),
-  );
-  final List<YearLog> logs;
-
-  String toJson() => json.encode(toMap());
-
-  Map<String, dynamic> toMap() => <String, dynamic>{
-    "logs": List<dynamic>.from(logs.map((YearLog x) => x.toMap())),
-  };
-}
-
-class YearLog {
-  YearLog({
-    required this.year,
-    required this.months,
-  });
-
-  factory YearLog.fromJson(String str) => YearLog.fromMap(json.decode(str));
-
-  factory YearLog.fromMap(Map<String, dynamic> json) => YearLog(
-    year: json["year"],
-    months: List<MonthLog>.from(json["months"].map((dynamic x) => MonthLog.fromMap(x))),
-  );
-  final int year;
-  final List<MonthLog> months;
-
-  String toJson() => json.encode(toMap());
-
-  Map<String, dynamic> toMap() => <String, dynamic>{
-    "year": year,
-    "months": List<dynamic>.from(months.map((MonthLog x) => x.toMap())),
-  };
-}
-
-class MonthLog {
-  MonthLog({
-    required this.month,
-    required this.days,
-  });
-
-  factory MonthLog.fromJson(String str) => MonthLog.fromMap(json.decode(str));
-
-  factory MonthLog.fromMap(Map<String, dynamic> json) => MonthLog(
-    month: json["month"],
-    days: List<DayLog>.from(json["days"].map((dynamic x) => DayLog.fromMap(x))),
-  );
-  final int month;
-  final List<DayLog> days;
-
-  String toJson() => json.encode(toMap());
-
-  Map<String, dynamic> toMap() => <String, dynamic>{
-    "month": month,
-    "days": List<dynamic>.from(days.map((DayLog x) => x.toMap())),
-  };
-}
-
-class DayLog {
-  DayLog({
-    required this.day,
-    this.success,
-    this.failed,
-  });
-
-  factory DayLog.fromJson(String str) => DayLog.fromMap(json.decode(str));
-
-  factory DayLog.fromMap(Map<String, dynamic> json) => DayLog(
-    day: json["day"],
-    success: json["success"],
-    failed: json["failed"],
-  );
-  final int day;
-  final String? success;
-  final String? failed;
-
-  String toJson() => json.encode(toMap());
-
-  Map<String, dynamic> toMap() => <String, dynamic>{
-    "day": day,
-    "success": success,
-    "failed": failed,
   };
 }

@@ -1,6 +1,6 @@
 part of "../data.dart";
 
-class ChargeInternetReserveResponse {
+class UChargeInternetReserveResponse {
   final int? reserve;
   final String? serverDateTime;
   final bool? status;
@@ -13,7 +13,7 @@ class ChargeInternetReserveResponse {
   final String? messageSource;
   final String? pin;
 
-  ChargeInternetReserveResponse({
+  UChargeInternetReserveResponse({
     this.reserve,
     this.serverDateTime,
     this.status,
@@ -27,11 +27,11 @@ class ChargeInternetReserveResponse {
     this.pin,
   });
 
-  factory ChargeInternetReserveResponse.fromJson(String str) => ChargeInternetReserveResponse.fromMap(json.decode(str));
+  factory UChargeInternetReserveResponse.fromJson(String str) => UChargeInternetReserveResponse.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory ChargeInternetReserveResponse.fromMap(Map<String, dynamic> json) => ChargeInternetReserveResponse(
+  factory UChargeInternetReserveResponse.fromMap(Map<String, dynamic> json) => UChargeInternetReserveResponse(
     reserve: json["reserve"],
     serverDateTime: json["serverDateTime"],
     status: json["status"],
@@ -200,7 +200,7 @@ class ApproveResponse {
   };
 }
 
-class GetStatusResponse {
+class UGetStatusResponse {
   final int? reserve;
   final String? serverDateTime;
   final bool? status;
@@ -215,7 +215,7 @@ class GetStatusResponse {
   final String? messageSource;
   final String? extCode;
 
-  GetStatusResponse({
+  UGetStatusResponse({
     this.reserve,
     this.serverDateTime,
     this.status,
@@ -231,11 +231,11 @@ class GetStatusResponse {
     this.extCode,
   });
 
-  factory GetStatusResponse.fromJson(String str) => GetStatusResponse.fromMap(json.decode(str));
+  factory UGetStatusResponse.fromJson(String str) => UGetStatusResponse.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory GetStatusResponse.fromMap(Map<String, dynamic> json) => GetStatusResponse(
+  factory UGetStatusResponse.fromMap(Map<String, dynamic> json) => UGetStatusResponse(
     reserve: json["reserve"],
     serverDateTime: json["serverDateTime"],
     status: json["status"],
@@ -268,7 +268,7 @@ class GetStatusResponse {
   };
 }
 
-class GetBalanceResponse {
+class UGetBalanceResponse {
   final int? reserve;
   final String? serverDateTime;
   final bool? status;
@@ -282,7 +282,7 @@ class GetBalanceResponse {
   final String? messageSource;
   final String? extCode;
 
-  GetBalanceResponse({
+  UGetBalanceResponse({
     this.reserve,
     this.serverDateTime,
     this.status,
@@ -297,11 +297,11 @@ class GetBalanceResponse {
     this.extCode,
   });
 
-  factory GetBalanceResponse.fromJson(String str) => GetBalanceResponse.fromMap(json.decode(str));
+  factory UGetBalanceResponse.fromJson(String str) => UGetBalanceResponse.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory GetBalanceResponse.fromMap(Map<String, dynamic> json) => GetBalanceResponse(
+  factory UGetBalanceResponse.fromMap(Map<String, dynamic> json) => UGetBalanceResponse(
     reserve: json["reserve"],
     serverDateTime: json["serverDateTime"],
     status: json["status"],
@@ -332,7 +332,7 @@ class GetBalanceResponse {
   };
 }
 
-class EchoResponse {
+class UEchoResponse {
   final int? reserve;
   final String? serverDateTime;
   final bool? status; // true = service is up
@@ -344,7 +344,7 @@ class EchoResponse {
   final bool? shatel; // Shatel server status
   final bool? mciInternet; // MCI Internet server status
 
-  EchoResponse({
+  UEchoResponse({
     this.reserve,
     this.serverDateTime,
     this.status,
@@ -357,11 +357,11 @@ class EchoResponse {
     this.mciInternet,
   });
 
-  factory EchoResponse.fromJson(String str) => EchoResponse.fromMap(json.decode(str));
+  factory UEchoResponse.fromJson(String str) => UEchoResponse.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory EchoResponse.fromMap(Map<String, dynamic> json) => EchoResponse(
+  factory UEchoResponse.fromMap(Map<String, dynamic> json) => UEchoResponse(
     reserve: json["reserve"],
     serverDateTime: json["serverDateTime"],
     status: json["status"],

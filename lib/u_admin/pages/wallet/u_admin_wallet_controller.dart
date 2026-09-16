@@ -86,7 +86,7 @@ class UAdminWalletController extends UBaseController {
     ULoading.show();
     UServices.wallet.transfer(
       p: UWalletTransferParams(senderId: selectedUser.value?.id, receiverId: receiverId, amount: amount, detail1: detail, tagWalletTxn: <int>[TagWalletTxn.transfer.number]),
-      onOk: (UEmptyResponse r) {
+      onOk: (UResponse<UWalletTxnResponse> r) {
         ULoading.dismiss();
         okCallback(r.message, read);
       },

@@ -3,7 +3,7 @@ part of "../data.dart";
 class UMerchantResponse {
   final String id;
   final DateTime createdAt;
-  final MerchantJsonData jsonData;
+  final UMerchantJson jsonData;
   final List<int> tags;
   final UUserResponse? creator;
   final String? creatorId;
@@ -52,7 +52,7 @@ class UMerchantResponse {
   factory UMerchantResponse.fromMap(Map<String, dynamic> json) => UMerchantResponse(
     id: json["id"] as String,
     createdAt: DateTime.parse(json["createdAt"]),
-    jsonData: MerchantJsonData.fromMap(json["jsonData"]),
+    jsonData: UMerchantJson.fromMap(json["jsonData"]),
     tags: List<int>.from(json["tags"]!.map((dynamic x) => x)),
     creator: json["creator"] == null ? null : UUserResponse.fromMap(json["creator"]),
     creatorId: json["creatorId"],
@@ -93,54 +93,6 @@ class UMerchantResponse {
     "user": user?.toMap(),
     "terminals": terminals == null ? <UTerminalResponse>[] : List<UTerminalResponse>.from(terminals!.map((UTerminalResponse x) => x.toMap())), // terminals remains optional
     "adminUserIds": List<dynamic>.from(adminUserIds.map((String x) => x)),
-  };
-}
-
-class MerchantJsonData {
-  final String? detail1;
-  final String? detail2;
-  final String? businessTitle;
-  final String? address;
-  final String? ownerPhoneNumber;
-  final int? definitionTemplate;
-  final int? settlementCurrency;
-  final String? ownerName;
-
-  MerchantJsonData({
-    this.detail1,
-    this.detail2,
-    this.businessTitle,
-    this.address,
-    this.ownerPhoneNumber,
-    this.definitionTemplate,
-    this.settlementCurrency,
-    this.ownerName,
-  });
-
-  factory MerchantJsonData.fromJson(String str) => MerchantJsonData.fromMap(json.decode(str));
-
-  String toJson() => json.encode(toMap());
-
-  factory MerchantJsonData.fromMap(Map<String, dynamic> json) => MerchantJsonData(
-    detail1: json["detail1"],
-    detail2: json["detail2"],
-    businessTitle: json["businessTitle"],
-    address: json["address"],
-    ownerPhoneNumber: json["ownerPhoneNumber"],
-    definitionTemplate: json["definitionTemplate"],
-    settlementCurrency: json["settlementCurrency"],
-    ownerName: json["ownerName"],
-  );
-
-  Map<String, dynamic> toMap() => <String, dynamic>{
-    "detail1": detail1,
-    "detail2": detail2,
-    "businessTitle": businessTitle,
-    "address": address,
-    "ownerPhoneNumber": ownerPhoneNumber,
-    "definitionTemplate": definitionTemplate,
-    "settlementCurrency": settlementCurrency,
-    "ownerName": ownerName,
   };
 }
 

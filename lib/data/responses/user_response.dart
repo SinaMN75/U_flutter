@@ -21,79 +21,6 @@ extension TagListExtension on UUserResponse {
 }
 
 class UUserResponse {
-  UUserResponse({
-    required this.id,
-    required this.createdAt,
-    required this.jsonData,
-    required this.tags,
-    required this.userName,
-    required this.adminUserIds,
-    this.landLine,
-    this.phoneNumber,
-    this.email,
-    this.firstName,
-    this.lastName,
-    this.nationalCode,
-    this.bio,
-    this.birthdate,
-    this.categories,
-    this.media,
-    this.addresses,
-    this.merchants,
-    this.wallets,
-    this.txns,
-    this.bankAccounts,
-    this.simCards,
-    this.nationalCardFront,
-    this.nationalCardBack,
-    this.birthCertificateFirst,
-    this.birthCertificateSecond,
-    this.birthCertificateThird,
-    this.birthCertificateForth,
-    this.birthCertificateFifth,
-    this.visualAuthentication,
-    this.eSignature,
-    this.creator,
-    this.creatorId,
-  });
-
-  factory UUserResponse.fromJson(String str) => UUserResponse.fromMap(json.decode(str));
-
-  factory UUserResponse.fromMap(Map<String, dynamic> json) => UUserResponse(
-    id: json["id"],
-    createdAt: DateTime.parse(json["createdAt"]),
-    jsonData: UUserJson.fromMap(json["jsonData"]),
-    tags: List<int>.from(json["tags"].map((dynamic x) => x)),
-    userName: json["userName"],
-    landLine: json["landLine"],
-    phoneNumber: json["phoneNumber"],
-    email: json["email"],
-    firstName: json["firstName"],
-    lastName: json["lastName"],
-    nationalCode: json["nationalCode"],
-    bio: json["bio"],
-    nationalCardFront: json["nationalCardFront"],
-    nationalCardBack: json["nationalCardBack"],
-    birthCertificateFirst: json["birthCertificateFirst"],
-    birthCertificateSecond: json["birthCertificateSecond"],
-    birthCertificateThird: json["birthCertificateThird"],
-    birthCertificateForth: json["birthCertificateForth"],
-    birthCertificateFifth: json["birthCertificateFifth"],
-    visualAuthentication: json["visualAuthentication"],
-    eSignature: json["eSignature"],
-    birthdate: json["birthdate"] == null ? null : DateTime.parse(json["birthdate"]),
-    categories: json["categories"] == null ? <UCategoryResponse>[] : List<UCategoryResponse>.from(json["categories"].map((dynamic x) => UCategoryResponse.fromMap(x))),
-    media: json["media"] == null ? <UMediaResponse>[] : List<UMediaResponse>.from(json["media"].map((dynamic x) => UMediaResponse.fromMap(x))),
-    addresses: json["addresses"] == null ? <UAddressResponse>[] : List<UAddressResponse>.from(json["addresses"].map((dynamic x) => UAddressResponse.fromMap(x))),
-    merchants: json["merchants"] == null ? <UMerchantResponse>[] : List<UMerchantResponse>.from(json["merchants"].map((dynamic x) => UMerchantResponse.fromMap(x))),
-    wallets: json["wallets"] == null ? <UWalletResponse>[] : List<UWalletResponse>.from(json["wallets"].map((dynamic x) => UWalletResponse.fromMap(x))),
-    txns: json["txns"] == null ? <UTxnResponse>[] : List<UTxnResponse>.from(json["txns"].map((dynamic x) => UTxnResponse.fromMap(x))),
-    bankAccounts: json["bankAccounts"] == null ? <UBankAccountResponse>[] : List<UBankAccountResponse>.from(json["bankAccounts"].map((dynamic x) => UBankAccountResponse.fromMap(x))),
-    simCards: json["simCards"] == null ? <USimCardResponse>[] : List<USimCardResponse>.from(json["simCards"].map((dynamic x) => USimCardResponse.fromMap(x))),
-    creator: json["creator"] == null ? null : UUserResponse.fromMap(json["creator"]),
-    creatorId: json["creatorId"],
-    adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
-  );
   final String id;
   final DateTime createdAt;
   final UUserJson jsonData;
@@ -128,7 +55,81 @@ class UUserResponse {
   final String? creatorId;
   final List<String> adminUserIds;
 
+  UUserResponse({
+    required this.id,
+    required this.createdAt,
+    required this.jsonData,
+    required this.tags,
+    required this.userName,
+    required this.adminUserIds,
+    this.landLine,
+    this.phoneNumber,
+    this.email,
+    this.firstName,
+    this.lastName,
+    this.nationalCode,
+    this.bio,
+    this.birthdate,
+    this.nationalCardFront,
+    this.nationalCardBack,
+    this.birthCertificateFirst,
+    this.birthCertificateSecond,
+    this.birthCertificateThird,
+    this.birthCertificateForth,
+    this.birthCertificateFifth,
+    this.visualAuthentication,
+    this.eSignature,
+    this.categories,
+    this.media,
+    this.addresses,
+    this.merchants,
+    this.wallets,
+    this.txns,
+    this.bankAccounts,
+    this.simCards,
+    this.creator,
+    this.creatorId,
+  });
+
+  factory UUserResponse.fromJson(String str) => UUserResponse.fromMap(json.decode(str));
+
   String toJson() => json.encode(toMap());
+
+  factory UUserResponse.fromMap(Map<String, dynamic> json) => UUserResponse(
+    id: json["id"],
+    createdAt: DateTime.parse(json["createdAt"]),
+    jsonData: UUserJson.fromMap(json["jsonData"]),
+    tags: List<int>.from(json["tags"].map((dynamic x) => x)),
+    userName: json["userName"] ?? "",
+    landLine: json["landLine"],
+    phoneNumber: json["phoneNumber"],
+    email: json["email"],
+    firstName: json["firstName"],
+    lastName: json["lastName"],
+    nationalCode: json["nationalCode"],
+    bio: json["bio"],
+    birthdate: json["birthdate"] == null ? null : DateTime.parse(json["birthdate"]),
+    nationalCardFront: json["nationalCardFront"],
+    nationalCardBack: json["nationalCardBack"],
+    birthCertificateFirst: json["birthCertificateFirst"],
+    birthCertificateSecond: json["birthCertificateSecond"],
+    birthCertificateThird: json["birthCertificateThird"],
+    birthCertificateForth: json["birthCertificateForth"],
+    birthCertificateFifth: json["birthCertificateFifth"],
+    visualAuthentication: json["visualAuthentication"],
+    eSignature: json["eSignature"],
+    categories: json["categories"] == null ? <UCategoryResponse>[] : List<UCategoryResponse>.from(json["categories"].map((dynamic x) => UCategoryResponse.fromMap(x))),
+    media: json["media"] == null ? <UMediaResponse>[] : List<UMediaResponse>.from(json["media"].map((dynamic x) => UMediaResponse.fromMap(x))),
+    addresses: json["addresses"] == null ? <UAddressResponse>[] : List<UAddressResponse>.from(json["addresses"].map((dynamic x) => UAddressResponse.fromMap(x))),
+    merchants: json["merchants"] == null ? <UMerchantResponse>[] : List<UMerchantResponse>.from(json["merchants"].map((dynamic x) => UMerchantResponse.fromMap(x))),
+    wallets: json["wallets"] == null ? <UWalletResponse>[] : List<UWalletResponse>.from(json["wallets"].map((dynamic x) => UWalletResponse.fromMap(x))),
+    txns: json["txns"] == null ? <UTxnResponse>[] : List<UTxnResponse>.from(json["txns"].map((dynamic x) => UTxnResponse.fromMap(x))),
+    bankAccounts: json["bankAccounts"] == null ? <UBankAccountResponse>[] : List<UBankAccountResponse>.from(json["bankAccounts"].map((dynamic x) => UBankAccountResponse.fromMap(x))),
+    simCards: json["simCards"] == null ? <USimCardResponse>[] : List<USimCardResponse>.from(json["simCards"].map((dynamic x) => USimCardResponse.fromMap(x))),
+    creator: json["creator"] == null ? null : UUserResponse.fromMap(json["creator"]),
+    creatorId: json["creatorId"],
+    adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
+  );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "id": id,
@@ -240,37 +241,6 @@ class UUserJson {
     "eSignatureRejectionReason": eSignatureRejectionReason,
     "detail1": detail1,
     "detail2": detail2,
-  };
-}
-
-class URegisterResponse {
-  URegisterResponse({
-    required this.token,
-    required this.refreshToken,
-    required this.expires,
-    required this.user,
-  });
-
-  factory URegisterResponse.fromJson(String str) => URegisterResponse.fromMap(json.decode(str));
-
-  factory URegisterResponse.fromMap(Map<String, dynamic> json) => URegisterResponse(
-    token: json["token"] as String,
-    refreshToken: json["refreshToken"] as String,
-    expires: json["expires"] as String,
-    user: UUserResponse.fromMap(json["user"]),
-  );
-  final String token;
-  final String refreshToken;
-  final String expires;
-  final UUserResponse user;
-
-  String toJson() => json.encode(toMap());
-
-  Map<String, dynamic> toMap() => <String, dynamic>{
-    "token": token,
-    "refreshToken": refreshToken,
-    "expires": expires,
-    "user": user.toMap(),
   };
 }
 

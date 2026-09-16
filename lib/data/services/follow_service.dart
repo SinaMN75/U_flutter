@@ -254,7 +254,7 @@ class FollowService {
     (UResponse<bool>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
       method: "POST",
-      endpoint: "${U.baseUrl}/follow/isFollowingProduct",
+      endpoint: "${U.baseUrl}/follow/IsFollowingProduct",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
       onSuccess: (Response r) {
         final UResponse<bool> ok = UResponse<bool>.fromJson(r.body, (dynamic i) => i);
@@ -283,7 +283,7 @@ class FollowService {
     (UResponse<bool>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
       method: "POST",
-      endpoint: "${U.baseUrl}/follow/isFollowingCategory",
+      endpoint: "${U.baseUrl}/follow/IsFollowingCategory",
       body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
       onSuccess: (Response r) {
         final UResponse<bool> ok = UResponse<bool>.fromJson(r.body, (dynamic i) => i);

@@ -292,7 +292,7 @@ class UPropertyDashboardResponse {
   final double totalPenalty;
   final double totalOutstanding;
 
-  final List<UDormBedInvoiceChartItem> monthlyRevenue;
+  final List<UDormBedInvoiceChartResponse> monthlyRevenue;
   final List<UExpiringContractItem> expiringContracts;
   final List<UOverdueInvoiceItem> overdueInvoices;
   final List<URecentContractItem> recentContracts;
@@ -365,7 +365,7 @@ class UPropertyDashboardResponse {
     totalPaid: (json["totalPaid"] ?? 0).toString().toDouble(),
     totalPenalty: (json["totalPenalty"] ?? 0).toString().toDouble(),
     totalOutstanding: (json["totalOutstanding"] ?? 0).toString().toDouble(),
-    monthlyRevenue: ((json["monthlyRevenue"] ?? <dynamic>[]) as List<dynamic>).map((dynamic x) => UDormBedInvoiceChartItem.fromMap(x)).toList(),
+    monthlyRevenue: ((json["monthlyRevenue"] ?? <dynamic>[]) as List<dynamic>).map((dynamic x) => UDormBedInvoiceChartResponse.fromMap(x)).toList(),
     expiringContracts: ((json["expiringContracts"] ?? <dynamic>[]) as List<dynamic>).map((dynamic x) => UExpiringContractItem.fromMap(x)).toList(),
     overdueInvoices: ((json["overdueInvoices"] ?? <dynamic>[]) as List<dynamic>).map((dynamic x) => UOverdueInvoiceItem.fromMap(x)).toList(),
     recentContracts: ((json["recentContracts"] ?? <dynamic>[]) as List<dynamic>).map((dynamic x) => URecentContractItem.fromMap(x)).toList(),
@@ -402,7 +402,7 @@ class UPropertyDashboardResponse {
     "totalPaid": totalPaid,
     "totalPenalty": totalPenalty,
     "totalOutstanding": totalOutstanding,
-    "monthlyRevenue": List<dynamic>.from(monthlyRevenue.map((UDormBedInvoiceChartItem x) => x.toMap())),
+    "monthlyRevenue": List<dynamic>.from(monthlyRevenue.map((UDormBedInvoiceChartResponse x) => x.toMap())),
     "expiringContracts": List<dynamic>.from(expiringContracts.map((UExpiringContractItem x) => x.toMap())),
     "overdueInvoices": List<dynamic>.from(overdueInvoices.map((UOverdueInvoiceItem x) => x.toMap())),
     "recentContracts": List<dynamic>.from(recentContracts.map((URecentContractItem x) => x.toMap())),
@@ -414,46 +414,6 @@ class UPropertyDashboardResponse {
   String toJson() => json.encode(toMap());
 
   factory UPropertyDashboardResponse.fromJson(String str) => UPropertyDashboardResponse.fromMap(json.decode(str));
-}
-
-class UDormBedInvoiceChartItem {
-  final String month;
-  final double totalDebt;
-  final double totalPaid;
-  final double totalPenalty;
-  final double totalRemaining;
-  final int invoiceCount;
-
-  UDormBedInvoiceChartItem({
-    required this.month,
-    required this.totalDebt,
-    required this.totalPaid,
-    required this.totalPenalty,
-    required this.totalRemaining,
-    required this.invoiceCount,
-  });
-
-  factory UDormBedInvoiceChartItem.fromMap(Map<String, dynamic> json) => UDormBedInvoiceChartItem(
-    month: json["month"] ?? "",
-    totalDebt: (json["totalDebt"] ?? 0).toString().toDouble(),
-    totalPaid: (json["totalPaid"] ?? 0).toString().toDouble(),
-    totalPenalty: (json["totalPenalty"] ?? 0).toString().toDouble(),
-    totalRemaining: (json["totalRemaining"] ?? 0).toString().toDouble(),
-    invoiceCount: json["invoiceCount"] ?? 0,
-  );
-
-  Map<String, dynamic> toMap() => <String, dynamic>{
-    "month": month,
-    "totalDebt": totalDebt,
-    "totalPaid": totalPaid,
-    "totalPenalty": totalPenalty,
-    "totalRemaining": totalRemaining,
-    "invoiceCount": invoiceCount,
-  };
-
-  String toJson() => json.encode(toMap());
-
-  factory UDormBedInvoiceChartItem.fromJson(String str) => UDormBedInvoiceChartItem.fromMap(json.decode(str));
 }
 
 class UExpiringContractItem {

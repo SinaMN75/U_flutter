@@ -23,7 +23,7 @@ class UAdminDormBedController extends UBaseController {
         roomId: room?.id,
         dormId: dorm?.id,
         title: titleFilter.text.nullIfEmpty(),
-        selectorArgs: const DormBedSelectorArgs(contract: ContractSelectorArgs(), room: DormRoomSelectorArgs()),
+        selectorArgs: const DormBedSelectorArgs(contract: DormBedContractSelectorArgs(), room: DormRoomSelectorArgs()),
       ),
       onOk: (UResponse<List<UDormBedResponse>> r) {
         list = r.result ?? <UDormBedResponse>[];
