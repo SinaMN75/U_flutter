@@ -1,4 +1,5 @@
 import AVFoundation
+import AVKit
 
 #if canImport(Flutter)
     import Flutter
