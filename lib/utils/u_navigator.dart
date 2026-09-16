@@ -1,16 +1,16 @@
 import "package:u/utilities.dart";
 
-class UNavAction<T> {
+class UNavAction {
   const UNavAction({
     required this.label,
-    required this.value,
+    required this.onTap,
     this.icon,
     this.isDestructive = false,
     this.enabled = true,
   });
 
   final String label;
-  final T value;
+  final VoidCallback onTap;
   final IconData? icon;
   final bool isDestructive;
   final bool enabled;
@@ -536,7 +536,7 @@ abstract class UNavigator {
       });
 
   static Future<T?> actionSheet<T>({
-    required List<UNavAction<T>> actions,
+    required List<UNavAction> actions,
     String? title,
     String? message,
     bool showCancel = true,
@@ -555,14 +555,11 @@ abstract class UNavigator {
           if (title != null) UTextTitleMedium(title, textAlign: TextAlign.center).pOnly(bottom: 4),
           if (message != null) UTextBodySmall(message, textAlign: TextAlign.center).pOnly(bottom: 8),
           ...actions.map(
-            (UNavAction<T> action) => ListTile(
+            (UNavAction action) => ListTile(
               enabled: action.enabled,
               leading: action.icon != null ? Icon(action.icon, color: action.isDestructive ? Theme.of(context).colorScheme.error : null) : null,
-              title: UTextBodyLarge(
-                action.label,
-                color: action.isDestructive ? Theme.of(context).colorScheme.error : null,
-              ),
-              onTap: () => back<T>(action.value),
+              title: UTextBodyLarge(action.label, color: action.isDestructive ? Theme.of(context).colorScheme.error : null),
+              onTap: action.onTap,
             ),
           ),
           if (showCancel)
