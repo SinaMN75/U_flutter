@@ -20,18 +20,20 @@ class UIpgWebViewController {
     if (finished) return;
     final Uri? uri = Uri.tryParse(url);
     if (uri == null || !uri.path.toLowerCase().contains("/ipg/verify")) return;
-    _finish(uri.queryParameters["status"] == "0");
+    if (uri.queryParameters["additionalData"] == null) return;
+    _finish(uri.queryParameters["additionalData"]!);
   }
 
   void _onWebMessage(String origin, Map<String, dynamic> data) {
     if (finished || !(data["source"] == "u_ipg")) return;
-    _finish("${data["status"]}" == "0");
+    _finish(data["additionalData"]);
   }
 
-  Future<void> _finish(bool gatewayPaid) async {
+  Future<void> _finish(String data) async {
+    final UIpgAdditionalData i = UIpgAdditionalData.fromJson(data.fromBase58());
     finished = true;
     ULoading.show();
-    final bool paid = await _readStatus(gatewayPaid);
+    final bool paid = await _readStatus(i.status == 0);
     ULoading.dismiss();
     UToast.snackBar(message: paid ? U.s.paymentWasSuccessful : U.s.paymentFailed);
     UNavigator.back<bool>(paid);

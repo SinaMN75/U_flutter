@@ -53,7 +53,7 @@ class UIpgAdditionalData {
   final String? billId;
   final String? paymentId;
   final String? chargeMobileNumber;
-  final String? status;
+  final int? status;
   final String? rrn;
   final String? token;
 
