@@ -33,7 +33,20 @@ class _UIpgWebViewPageState extends State<UIpgWebViewPage> {
     },
     child: UScaffold(
       appBar: AppBar(title: Text(U.s.payment)),
-      body: UWebView(initialUrl: widget.url, showUrlBar: true, showTopBar: true, onPageFinished: (String url) => c.onPageFinished(url)),
+      body: UWebView(
+        initialUrl: widget.url,
+        showUrlBar: true,
+        showTopBar: true,
+        onPageFinished: (String url) {
+          print("onPageFinished");
+          print(url);
+          c.onPageFinished(url);
+        },
+        onUrlChanged: (String url, Map<String, String> queryParameters) {
+          print("onUrlChanged");
+          print(url);
+        },
+      ),
     ),
   );
 }

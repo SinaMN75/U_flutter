@@ -16,12 +16,10 @@ class UIpgWebViewController {
     UNavigator.back<bool>(false);
   }
 
-  bool _isCallback(Uri uri) => uri.path.toLowerCase().contains("/ipg/verify") && uri.queryParameters.containsKey("status");
-
   void onPageFinished(String url) {
     if (finished) return;
     final Uri? uri = Uri.tryParse(url);
-    if (uri == null || !_isCallback(uri)) return;
+    if (uri == null || !uri.path.toLowerCase().contains("/ipg/verify")) return;
     _finish(uri.queryParameters["status"] == "0");
   }
 
