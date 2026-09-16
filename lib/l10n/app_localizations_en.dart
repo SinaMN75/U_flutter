@@ -3326,6 +3326,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get saturation => 'Saturation';
 
   @override
+  String get simCard => 'SIM CARD';
+
+  @override
   String get save => 'Save';
 
   @override

@@ -3326,6 +3326,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get saturation => 'اشباع رنگ';
 
   @override
+  String get simCard => 'سیمکارت';
+
+  @override
   String get save => 'ذخیره';
 
   @override

@@ -6584,6 +6584,12 @@ abstract class AppLocalizations {
   /// **'Saturation'**
   String get saturation;
 
+  /// No description provided for @simCard.
+  ///
+  /// In en, this message translates to:
+  /// **'SIM CARD'**
+  String get simCard;
+
   /// No description provided for @save.
   ///
   /// In en, this message translates to:
