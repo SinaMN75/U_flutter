@@ -226,7 +226,6 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
     final TextEditingController simCardSerial = TextEditingController();
     final TextEditingController imei = TextEditingController();
     final TextEditingController terminalId = TextEditingController();
-    final Rx<TagTerminal> type = TagTerminal.atm.obs;
     final Rxn<UTerminalBrandResponse> brand = Rxn<UTerminalBrandResponse>();
     final Rxn<UTerminalBrokerResponse> broker = Rxn<UTerminalBrokerResponse>();
 
@@ -255,15 +254,6 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                   ),
                   UTextField(controller: simCardSerial, labelText: U.s.simCardSerial, margin: const EdgeInsets.symmetric(vertical: 6)),
                   UTextField(controller: imei, labelText: U.s.imei, margin: const EdgeInsets.symmetric(vertical: 6)),
-                  UDropDownField<TagTerminal>(
-                    initialValue: type.value,
-                    onChanged: type.call,
-                    items: <DropdownMenuItem<TagTerminal>>[
-                      DropdownMenuItem<TagTerminal>(value: TagTerminal.atm, child: Text(TagTerminal.atm.localizedTitle)),
-                      DropdownMenuItem<TagTerminal>(value: TagTerminal.deskCashless, child: Text(TagTerminal.deskCashless.localizedTitle)),
-                      DropdownMenuItem<TagTerminal>(value: TagTerminal.wallCashless, child: Text(TagTerminal.wallCashless.localizedTitle)),
-                    ],
-                  ),
                   UTextFieldAutoCompleteAsync<UTerminalBrandResponse>(
                     labelBuilder: (UTerminalBrandResponse i) => i.title,
                     onChanged: brand.call,
@@ -290,7 +280,7 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                         UNavigator.back();
                         c.create(
                           p: UTerminalCreateParams(
-                            tags: <int>[type.value.number],
+                            tags: <int>[TagTerminal.notAssigned.number],
                             serial: serial.text.trim(),
                             simCardNumber: simCardNumber.text.nullIfEmpty(),
                             simCardSerial: simCardSerial.text.nullIfEmpty(),

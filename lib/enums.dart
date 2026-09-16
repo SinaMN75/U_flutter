@@ -616,12 +616,10 @@ enum TagWalletTxn with NumericIdentifiable {
 }
 
 enum TagTerminal with NumericIdentifiable {
-  atm("خودپرداز", "ATM", 101),
-  wallCashless("خودپرداز غیر نقد", "Wall Cashless", 102),
-  deskCashless("خودپرداز رومیزی", "Desk Cashless", 103),
-  pendingApproval("در انتظار تایید", "Pending Approval", 201),
-  approved("تایید شده", "Approved", 202),
-  rejected("رد شده", "Rejected", 203);
+  notAssigned("تخصیص داده نشده", "Not Assigned", 101),
+  pendingApproval("در انتظار تایید", "Pending Approval", 102),
+  approved("تایید شده", "Approved", 103),
+  rejected("رد شده", "Rejected", 104);
 
   const TagTerminal(this.titleFa, this.titleEn, this.number);
 
