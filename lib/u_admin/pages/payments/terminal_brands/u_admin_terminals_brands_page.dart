@@ -42,6 +42,8 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
       <String>[
         U.s.title,
         U.s.model,
+        U.s.deviceType,
+        U.s.connectionType,
         U.s.createdAt,
         U.s.operations,
       ],
@@ -56,6 +58,8 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
     children: <Widget>[
       UAdminTable.cell(i.title),
       UAdminTable.cell(i.model),
+      UAdminTable.cell(_deviceTypeOf(i)?.localizedTitle ?? "---"),
+      UAdminTable.cell(_connectionTypeOf(i)?.localizedTitle ?? "---"),
       UAdminTable.cell(i.createdAt.toJalaliDate()),
       _menu(i).expanded(),
     ],
@@ -67,6 +71,8 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
     trailing: _menu(i),
     fields: <UAdminField>[
       UAdminField(U.s.model, i.model),
+      UAdminField(U.s.deviceType, _deviceTypeOf(i)?.localizedTitle ?? "---"),
+      UAdminField(U.s.connectionType, _connectionTypeOf(i)?.localizedTitle ?? "---"),
       UAdminField(U.s.createdAt, i.createdAt.toJalaliDate()),
     ],
   );
@@ -137,11 +143,24 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
     ),
   );
 
+  static const List<TagTerminalBrand> _deviceTypes = <TagTerminalBrand>[
+    TagTerminalBrand.atm,
+    TagTerminalBrand.wallCashless,
+    TagTerminalBrand.deskCashless,
+  ];
+
+  static const List<TagTerminalBrand> _connectionTypes = <TagTerminalBrand>[TagTerminalBrand.simCard, TagTerminalBrand.wifi];
+
+  TagTerminalBrand? _deviceTypeOf(UTerminalBrandResponse i) => _deviceTypes.firstWhereOrNull((TagTerminalBrand x) => i.tags.contains(x.number));
+
+  TagTerminalBrand? _connectionTypeOf(UTerminalBrandResponse i) => _connectionTypes.firstWhereOrNull((TagTerminalBrand x) => i.tags.contains(x.number));
+
   void _showCreateDialog() {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final TextEditingController titleController = TextEditingController();
     final TextEditingController modelController = TextEditingController();
-    final Rx<TagTerminalBrand> tag = TagTerminalBrand.simCard.obs;
+    final Rx<TagTerminalBrand> deviceType = TagTerminalBrand.wallCashless.obs;
+    final Rx<TagTerminalBrand> connectionType = TagTerminalBrand.simCard.obs;
 
     UNavigator.dialog(
       AlertDialog(
@@ -168,12 +187,24 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
                   ),
                   Obx(
                     () => UDropDownField<TagTerminalBrand>(
-                      initialValue: tag.value,
-                      items: <DropdownMenuItem<TagTerminalBrand>>[
-                        DropdownMenuItem<TagTerminalBrand>(child: Text(TagTerminalBrand.simCard.titleFa)),
-                        DropdownMenuItem<TagTerminalBrand>(child: Text(TagTerminalBrand.wifi.titleFa)),
-                      ],
-                      onChanged: tag.call,
+                      initialValue: deviceType.value,
+                      labelText: U.s.deviceType,
+                      items: _deviceTypes
+                          .map((TagTerminalBrand x) => DropdownMenuItem<TagTerminalBrand>(value: x, child: Text(x.localizedTitle)))
+                          .toList(),
+                      onChanged: deviceType.call,
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
+                  ),
+                  Obx(
+                    () => UDropDownField<TagTerminalBrand>(
+                      initialValue: connectionType.value,
+                      labelText: U.s.connectionType,
+                      items: _connectionTypes
+                          .map((TagTerminalBrand x) => DropdownMenuItem<TagTerminalBrand>(value: x, child: Text(x.localizedTitle)))
+                          .toList(),
+                      onChanged: connectionType.call,
+                      margin: const EdgeInsets.symmetric(vertical: 6),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -186,7 +217,7 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
                           p: UTerminalBrandCreateParams(
                             title: titleController.text.trim(),
                             model: modelController.text.trim(),
-                            tags: <int>[tag.value.number],
+                            tags: <int>[deviceType.value.number, connectionType.value.number],
                           ),
                         );
                       },
@@ -205,6 +236,8 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final TextEditingController title = TextEditingController(text: i.title);
     final TextEditingController model = TextEditingController(text: i.model);
+    final Rx<TagTerminalBrand> deviceType = (_deviceTypeOf(i) ?? TagTerminalBrand.wallCashless).obs;
+    final Rx<TagTerminalBrand> connectionType = (_connectionTypeOf(i) ?? TagTerminalBrand.simCard).obs;
 
     UNavigator.dialog(
       AlertDialog(
@@ -229,6 +262,28 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
                     validator: UValidators.required(message: U.s.required),
                     margin: const EdgeInsets.symmetric(vertical: 6),
                   ),
+                  Obx(
+                    () => UDropDownField<TagTerminalBrand>(
+                      initialValue: deviceType.value,
+                      labelText: U.s.deviceType,
+                      items: _deviceTypes
+                          .map((TagTerminalBrand x) => DropdownMenuItem<TagTerminalBrand>(value: x, child: Text(x.localizedTitle)))
+                          .toList(),
+                      onChanged: deviceType.call,
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
+                  ),
+                  Obx(
+                    () => UDropDownField<TagTerminalBrand>(
+                      initialValue: connectionType.value,
+                      labelText: U.s.connectionType,
+                      items: _connectionTypes
+                          .map((TagTerminalBrand x) => DropdownMenuItem<TagTerminalBrand>(value: x, child: Text(x.localizedTitle)))
+                          .toList(),
+                      onChanged: connectionType.call,
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
+                  ),
                   const SizedBox(height: 20),
                   UButtonSubmitCancel(
                     onSubmit: () => UValidators.validateForm(
@@ -240,6 +295,7 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
                             id: i.id,
                             title: title.text.nullIfEmpty(),
                             model: model.text.nullIfEmpty(),
+                            tags: <int>[deviceType.value.number, connectionType.value.number],
                           ),
                         );
                       },

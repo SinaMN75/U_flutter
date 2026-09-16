@@ -37,15 +37,8 @@ class _UIpgWebViewPageState extends State<UIpgWebViewPage> {
         initialUrl: widget.url,
         showUrlBar: true,
         showTopBar: true,
-        onPageFinished: (String url) {
-          print("onPageFinished");
-          print(url);
-          c.onPageFinished(url);
-        },
-        onUrlChanged: (String url, Map<String, String> queryParameters) {
-          print("onUrlChanged");
-          print(url);
-        },
+        onPageFinished: c.onPageFinished,
+        onUrlChanged: (String url, Map<String, String> queryParameters) {},
       ),
     ),
   );

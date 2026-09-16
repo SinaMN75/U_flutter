@@ -40,7 +40,10 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
     emptyText: U.s.noItemsFound(U.s.brokers),
     desktopHeader: () => UAdminTable.header(
       <String>[
+        U.s.logo,
         U.s.title,
+        U.s.representative,
+        U.s.phoneNumber,
         U.s.createdAt,
         U.s.operations,
       ],
@@ -53,19 +56,32 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
     color: UAdminTable.rowColor(context, index),
     padding: UAdminTable.rowPadding,
     children: <Widget>[
+      _thumb(i.jsonData.logoBase64).alignAtCenter().expanded(),
       UAdminTable.cell(i.title),
+      UAdminTable.cell(i.jsonData.representative ?? "---"),
+      UAdminTable.cell(i.jsonData.phoneNumber ?? "---"),
       UAdminTable.cell(i.createdAt.toJalaliDate()),
       _menu(i).expanded(),
     ],
   );
 
   Widget _itemResponsive(UTerminalBrokerResponse i, int index) => UAdminTable.mobileCard(
-    icon: Icons.business_center_outlined,
+    leading: SizedBox(width: 44, height: 44, child: _thumb(i.jsonData.logoBase64)),
     title: i.title,
     trailing: _menu(i),
     fields: <UAdminField>[
+      UAdminField(U.s.representative, i.jsonData.representative ?? "---"),
+      UAdminField(U.s.phoneNumber, i.jsonData.phoneNumber ?? "---"),
       UAdminField(U.s.createdAt, i.createdAt.toJalaliDate()),
     ],
+  );
+
+  Widget _thumb(String? base64) => SizedBox(
+    width: 40,
+    height: 40,
+    child: base64.isNotNullOrEmpty()
+        ? UImage("", fileData: FileData(bytes: base64!.toBytesFromBase64()), borderRadius: 8)
+        : const Icon(Icons.business_center_outlined),
   );
 
   Widget _menu(UTerminalBrokerResponse i) => UAdminOps.menu<UTerminalBrokerResponse>(
@@ -129,147 +145,31 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
     ),
   );
 
-  void _showCreateDialog() {
+  void _showCreateDialog() => _showFormDialog();
+
+  void _showEditDialog(UTerminalBrokerResponse i) => _showFormDialog(item: i);
+
+  void _showFormDialog({UTerminalBrokerResponse? item}) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final TextEditingController titleController = TextEditingController();
-    final TextEditingController registrationNumberController = TextEditingController();
-    final TextEditingController nationalCodeController = TextEditingController();
-    final TextEditingController representativeController = TextEditingController();
-    final TextEditingController addressController = TextEditingController();
-    final TextEditingController postalCodeController = TextEditingController();
-    final TextEditingController phoneNumberController = TextEditingController();
-    String sign1Base64 = "";
-    String sign2Base64 = "";
-    String logoBase64 = "";
-    final TextEditingController sign1Owner = TextEditingController();
-    final TextEditingController sign2Owner = TextEditingController();
+    final TextEditingController title = TextEditingController(text: item?.title);
+    final TextEditingController registrationNumber = TextEditingController(text: item?.jsonData.registrationNumber);
+    final TextEditingController nationalCode = TextEditingController(text: item?.jsonData.nationalCode);
+    final TextEditingController representative = TextEditingController(text: item?.jsonData.representative);
+    final TextEditingController address = TextEditingController(text: item?.jsonData.address);
+    final TextEditingController postalCode = TextEditingController(text: item?.jsonData.postalCode);
+    final TextEditingController phoneNumber = TextEditingController(text: item?.jsonData.phoneNumber);
+    final TextEditingController sign1Owner = TextEditingController(text: item?.jsonData.sign1Owner);
+    final TextEditingController sign2Owner = TextEditingController(text: item?.jsonData.sign2Owner);
+
+    String? logoBase64 = item?.jsonData.logoBase64;
+    String? sign1Base64 = item?.jsonData.sign1Base64;
+    String? sign2Base64 = item?.jsonData.sign2Base64;
 
     UNavigator.dialog(
       AlertDialog(
-        title: Text(U.s.createItem(U.s.brokers)),
+        title: Text(item == null ? U.s.createItem(U.s.brokers) : U.s.editItem(U.s.brokers)),
         content: SizedBox(
-          width: context.dialogWidth(),
-          child: SingleChildScrollView(
-            child: Form(
-              key: formKey,
-              child: UColumn(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  UTextField(
-                    controller: titleController,
-                    labelText: U.s.title,
-                    validator: UValidators.required(message: U.s.required),
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  UTextField(
-                    controller: registrationNumberController,
-                    labelText: U.s.title,
-                    validator: UValidators.required(message: U.s.required),
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  UTextField(
-                    controller: nationalCodeController,
-                    labelText: U.s.title,
-                    validator: UValidators.required(message: U.s.required),
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  UTextField(
-                    controller: representativeController,
-                    labelText: U.s.title,
-                    validator: UValidators.required(message: U.s.required),
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  UTextField(
-                    controller: addressController,
-                    labelText: U.s.title,
-                    validator: UValidators.required(message: U.s.required),
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  UTextField(
-                    controller: postalCodeController,
-                    labelText: U.s.title,
-                    validator: UValidators.required(message: U.s.required),
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  UTextField(
-                    controller: phoneNumberController,
-                    labelText: U.s.title,
-                    validator: UValidators.required(message: U.s.required),
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  UTextField(
-                    controller: sign1Owner,
-                    labelText: "Sign 1 Owner",
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  UFilePicker(
-                    allowMultipleSelection: false,
-                    fileType: FileType.image,
-                    onFilesChanged: (List<FileData> i) => sign1Base64 = i.first.bytes!.toBase64(),
-                  ).pSymmetric(vertical: 6),
-                  UTextField(
-                    controller: sign2Owner,
-                    labelText: "Sign 2 Owner",
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  UFilePicker(
-                    allowMultipleSelection: false,
-                    fileType: FileType.image,
-                    onFilesChanged: (List<FileData> i) => sign2Base64 = i.first.bytes!.toBase64(),
-                  ).pSymmetric(vertical: 6),
-                  UFilePicker(
-                    allowMultipleSelection: false,
-                    fileType: FileType.image,
-                    onFilesChanged: (List<FileData> i) => logoBase64 = i.first.bytes!.toBase64(),
-                  ).pSymmetric(vertical: 6),
-                  const SizedBox(height: 20),
-                  UButtonSubmitCancel(
-                    onSubmit: () => UValidators.validateForm(
-                      key: formKey,
-                      action: () {
-                        UNavigator.back();
-                        c.create(
-                          p: UTerminalBrokerCreateParams(
-                            title: titleController.text.trim(),
-                            sign1Base64: sign1Base64,
-                            sign1Owner: sign1Owner.text,
-                            sign2Base64: sign2Base64.nullIfEmpty(),
-                            sign2Owner: sign2Owner.text.nullIfEmpty(),
-                            tags: <int>[TagTerminalBroker.test.number],
-                            registrationNumber: registrationNumberController.text,
-                            nationalCode: nationalCodeController.text,
-                            representative: representativeController.text,
-                            address: addressController.text,
-                            postalCode: postalCodeController.text,
-                            phoneNumber: phoneNumberController.text,
-                            logoBase64: logoBase64,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  void _showEditDialog(UTerminalBrokerResponse i) {
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final TextEditingController title = TextEditingController(text: i.title);
-    String sign1Base64 = "";
-    String sign2Base64 = "";
-    final TextEditingController sign1Owner = TextEditingController();
-    final TextEditingController sign2Owner = TextEditingController();
-
-    UNavigator.dialog(
-      AlertDialog(
-        title: Text(U.s.editItem(U.s.brokers)),
-        content: SizedBox(
-          width: context.dialogWidth(),
+          width: context.dialogWidth(max: 520),
           child: SingleChildScrollView(
             child: Form(
               key: formKey,
@@ -283,41 +183,103 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
                     margin: const EdgeInsets.symmetric(vertical: 6),
                   ),
                   UTextField(
-                    controller: sign1Owner,
-                    labelText: "Sign 1 Owner",
+                    controller: registrationNumber,
+                    labelText: U.s.registrationNumber,
+                    validator: UValidators.required(message: U.s.required),
                     margin: const EdgeInsets.symmetric(vertical: 6),
                   ),
-                  UFilePicker(
-                    allowMultipleSelection: false,
-                    fileType: FileType.image,
-                    onFilesChanged: (List<FileData> i) => sign1Base64 = i.first.bytes!.toBase64(),
-                  ).pSymmetric(vertical: 6),
                   UTextField(
-                    controller: sign2Owner,
-                    labelText: "Sign 2 Owner",
+                    controller: nationalCode,
+                    labelText: U.s.nationalCode,
+                    validator: UValidators.required(message: U.s.required),
                     margin: const EdgeInsets.symmetric(vertical: 6),
                   ),
-                  UFilePicker(
-                    allowMultipleSelection: false,
-                    fileType: FileType.image,
-                    onFilesChanged: (List<FileData> i) => sign2Base64 = i.first.bytes!.toBase64(),
-                  ).pSymmetric(vertical: 6),
+                  UTextField(
+                    controller: representative,
+                    labelText: U.s.representative,
+                    validator: UValidators.required(message: U.s.required),
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                  ),
+                  UTextField(
+                    controller: address,
+                    labelText: U.s.address,
+                    lines: 2,
+                    validator: UValidators.required(message: U.s.required),
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                  ),
+                  UTextField(
+                    controller: postalCode,
+                    labelText: U.s.postalCode,
+                    validator: UValidators.required(message: U.s.required),
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                  ),
+                  UTextField(
+                    controller: phoneNumber,
+                    labelText: U.s.phoneNumber,
+                    validator: UValidators.required(message: U.s.required),
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                  ),
+                  _Base64ImagePicker(label: U.s.logo, initial: logoBase64, onChanged: (String? v) => logoBase64 = v),
+                  const SizedBox(height: 12),
+                  UTextBodyLarge(U.s.firstSignatory, margin: const EdgeInsets.only(bottom: 4)),
+                  UTextField(
+                    controller: sign1Owner,
+                    labelText: U.s.signatoryName,
+                    validator: UValidators.required(message: U.s.required),
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                  ),
+                  _Base64ImagePicker(label: U.s.signature, initial: sign1Base64, onChanged: (String? v) => sign1Base64 = v),
+                  const SizedBox(height: 12),
+                  UTextBodyLarge(U.s.secondSignatory, margin: const EdgeInsets.only(bottom: 4)),
+                  UTextField(controller: sign2Owner, labelText: U.s.signatoryName, margin: const EdgeInsets.symmetric(vertical: 6)),
+                  _Base64ImagePicker(label: U.s.signature, initial: sign2Base64, onChanged: (String? v) => sign2Base64 = v),
                   const SizedBox(height: 20),
                   UButtonSubmitCancel(
                     onSubmit: () => UValidators.validateForm(
                       key: formKey,
                       action: () {
+                        if (item == null && (logoBase64.isNullOrEmpty() || sign1Base64.isNullOrEmpty())) {
+                          UToast.error(message: U.s.required);
+                          return;
+                        }
                         UNavigator.back();
-                        c.update(
-                          p: UTerminalBrokerUpdateParams(
-                            id: i.id,
-                            title: title.text.nullIfEmpty(),
-                            sign1Base64: sign1Base64.nullIfEmpty(),
-                            sign1Owner: sign1Owner.text.nullIfEmpty(),
-                            sign2Base64: sign2Base64.nullIfEmpty(),
-                            sign2Owner: sign2Owner.text.nullIfEmpty(),
-                          ),
-                        );
+                        if (item == null) {
+                          c.create(
+                            p: UTerminalBrokerCreateParams(
+                              tags: <int>[TagTerminalBroker.test.number],
+                              title: title.text.trim(),
+                              registrationNumber: registrationNumber.text.trim(),
+                              nationalCode: nationalCode.text.trim(),
+                              representative: representative.text.trim(),
+                              address: address.text.trim(),
+                              postalCode: postalCode.text.trim(),
+                              phoneNumber: phoneNumber.text.trim(),
+                              sign1Base64: sign1Base64!,
+                              sign1Owner: sign1Owner.text.trim(),
+                              sign2Base64: sign2Base64,
+                              sign2Owner: sign2Owner.text.trim().nullIfEmpty(),
+                              logoBase64: logoBase64!,
+                            ),
+                          );
+                        } else {
+                          c.update(
+                            p: UTerminalBrokerUpdateParams(
+                              id: item.id,
+                              title: title.text.trim(),
+                              registrationNumber: registrationNumber.text.trim(),
+                              nationalCode: nationalCode.text.trim(),
+                              representative: representative.text.trim(),
+                              address: address.text.trim(),
+                              postalCode: postalCode.text.trim(),
+                              phoneNumber: phoneNumber.text.trim(),
+                              sign1Base64: sign1Base64,
+                              sign1Owner: sign1Owner.text.trim(),
+                              sign2Base64: sign2Base64,
+                              sign2Owner: sign2Owner.text.trim(),
+                              logoBase64: logoBase64,
+                            ),
+                          );
+                        }
                       },
                     ),
                   ),
@@ -327,6 +289,81 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _Base64ImagePicker extends StatefulWidget {
+  const _Base64ImagePicker({required this.label, required this.initial, required this.onChanged});
+
+  final String label;
+  final String? initial;
+  final ValueChanged<String?> onChanged;
+
+  @override
+  State<_Base64ImagePicker> createState() => _Base64ImagePickerState();
+}
+
+class _Base64ImagePickerState extends State<_Base64ImagePicker> {
+  String? _value;
+
+  @override
+  void initState() {
+    _value = widget.initial;
+    super.initState();
+  }
+
+  Future<void> _pick() => UFile.showFilePicker(
+    allowedExtensions: const <String>["jpg", "jpeg", "png", "webp"],
+    action: (List<FileData> files) {
+      if (files.isEmpty || files.first.bytes == null) return;
+      final String encoded = files.first.bytes!.toBase64();
+      setState(() => _value = encoded);
+      widget.onChanged(encoded);
+    },
+  );
+
+  void _clear() {
+    setState(() => _value = null);
+    widget.onChanged(null);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme scheme = Theme.of(context).colorScheme;
+    return UColumn(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        UTextBodySmall(widget.label, color: scheme.onSurfaceVariant, margin: const EdgeInsets.only(bottom: 4)),
+        Stack(
+          children: <Widget>[
+            UContainer(
+              onTap: _pick,
+              height: 96,
+              width: double.infinity,
+              radius: 12,
+              border: Border.all(color: scheme.outlineVariant, width: 1.5),
+              color: scheme.surfaceContainerHighest,
+              alignment: Alignment.center,
+              child: _value.isNotNullOrEmpty()
+                  ? UImage("", fileData: FileData(bytes: _value!.toBytesFromBase64()), borderRadius: 12)
+                  : Icon(Icons.add_photo_alternate_outlined, size: 32, color: scheme.onSurfaceVariant),
+            ),
+            if (_value.isNotNullOrEmpty())
+              Positioned(
+                top: 4,
+                right: 4,
+                child: UContainer(
+                  onTap: _clear,
+                  color: scheme.error,
+                  shape: BoxShape.circle,
+                  padding: const EdgeInsets.all(2),
+                  child: const Icon(Icons.close, size: 14, color: UAdminTheme.white),
+                ),
+              ),
+          ],
+        ),
+      ],
     );
   }
 }

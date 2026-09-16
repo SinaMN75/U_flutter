@@ -733,6 +733,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get connectionToNetworkWasNotPossible => 'ارتباط با اینترنت برقرار نیست';
 
   @override
+  String get connectionType => 'نوع اتصال';
+
+  @override
   String get contactInformation => 'اطلاعات تماس';
 
   @override
@@ -1036,6 +1039,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get directTopUp => 'شارژ مستقیم';
+
+  @override
+  String get deviceType => 'نوع دستگاه';
 
   @override
   String get directions => 'مسیریابی';
@@ -1424,6 +1430,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get firstName => 'نام';
+
+  @override
+  String get firstSignatory => 'امضاکننده اول';
 
   @override
   String get fit => 'جا شدن';
@@ -2305,6 +2314,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get newFolder => 'پوشه جدید';
 
   @override
+  String get newMerchantAgreement => 'قرارداد ثبت پذیرندگی جدید';
+
+  @override
   String get newMessage => 'پیام جدید';
 
   @override
@@ -2944,6 +2956,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get printReceipt => 'چاپ رسید';
 
   @override
+  String get printTheAgreementSignItAndSendItByPost => 'قرارداد را دانلود و چاپ کنید، هر دو طرف آن را امضا کنند و سپس با پست به آدرس زیر ارسال نمایید.';
+
+  @override
   String get printTheEntryReceiptAutomatically => 'چاپ خودکار رسید ورود';
 
   @override
@@ -3198,6 +3213,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get reportsAndAccounts => 'گزارش و حساب';
 
   @override
+  String get representative => 'نماینده';
+
+  @override
   String get request => 'درخواست';
 
   @override
@@ -3410,6 +3428,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get seconds => 'ثانیه';
 
   @override
+  String get secondSignatory => 'امضاکننده دوم';
+
+  @override
   String get secretKey => 'کلید مخفی';
 
   @override
@@ -3431,6 +3452,12 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get selectAUserToManageTheirWallet => 'برای مدیریت کیف پول، کاربری را انتخاب کنید';
+
+  @override
+  String get selectBrand => 'انتخاب برند';
+
+  @override
+  String get selectBroker => 'انتخاب کارگزار';
 
   @override
   String get selectCountry => 'انتخاب کشور';
@@ -3541,6 +3568,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get shuffle => 'تصادفی';
+
+  @override
+  String get signatoryName => 'نام امضاکننده';
 
   @override
   String get signature => 'امضا';
@@ -4467,7 +4497,13 @@ class AppLocalizationsFa extends AppLocalizations {
   String get zoomOut => 'کوچک‌نمایی';
 
   @override
+  String get brand => 'برند';
+
+  @override
   String get brands => 'برند‌ها';
+
+  @override
+  String get broker => 'کارگزار';
 
   @override
   String get brokers => 'کارگذارها';

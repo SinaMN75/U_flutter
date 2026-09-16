@@ -12,7 +12,9 @@ class UTerminalResponse {
   final UBaseJson jsonData;
   final DateTime createdAt;
   final UMerchantResponse? merchant;
+  final String? terminalBrandId;
   final UTerminalBrandResponse? terminalBrand;
+  final String? terminalBrokerId;
   final UTerminalBrokerResponse? terminalBroker;
   final UUserResponse? creator;
   final String? creatorId;
@@ -32,7 +34,9 @@ class UTerminalResponse {
     this.agreement,
     this.imei,
     this.merchant,
+    this.terminalBrandId,
     this.terminalBrand,
+    this.terminalBrokerId,
     this.terminalBroker,
     this.creator,
     this.creatorId,
@@ -50,7 +54,9 @@ class UTerminalResponse {
     serial: json["serial"],
     jsonData: UBaseJson.fromMap(json["jsonData"]),
     merchant: json["merchant"] == null ? null : UMerchantResponse.fromMap(json["merchant"]),
+    terminalBrandId: json["terminalBrandId"],
     terminalBrand: json["terminalBrand"] == null ? null : UTerminalBrandResponse.fromMap(json["terminalBrand"]),
+    terminalBrokerId: json["terminalBrokerId"],
     terminalBroker: json["terminalBroker"] == null ? null : UTerminalBrokerResponse.fromMap(json["terminalBroker"]),
     simCardNumber: json["simCardNumber"],
     simCardSerial: json["simCardSerial"],
@@ -74,7 +80,9 @@ class UTerminalResponse {
     "imei": imei,
     "jsonData": jsonData.toMap(),
     "merchant": merchant?.toMap(),
+    "terminalBrandId": terminalBrandId,
     "terminalBrand": terminalBrand?.toMap(),
+    "terminalBrokerId": terminalBrokerId,
     "terminalBroker": terminalBroker?.toMap(),
     "createdAt": createdAt.toIso8601String(),
     "creator": creator?.toMap(),
@@ -236,7 +244,7 @@ class UTerminalBrokerResponse {
   final String title;
   final List<int> tags;
   final String id;
-  final UBaseJson jsonData;
+  final UTerminalBrokerJson jsonData;
   final DateTime createdAt;
   final UUserResponse? creator;
   final String? creatorId;
@@ -263,7 +271,7 @@ class UTerminalBrokerResponse {
     title: json["title"],
     tags: List<int>.from(json["tags"]!.map((dynamic x) => x)),
     id: json["id"],
-    jsonData: UBaseJson.fromMap(json["jsonData"]),
+    jsonData: UTerminalBrokerJson.fromMap(json["jsonData"]),
     createdAt: DateTime.parse(json["createdAt"]),
     creator: json["creator"] == null ? null : UUserResponse.fromMap(json["creator"]),
     creatorId: json["creatorId"],
@@ -285,5 +293,73 @@ class UTerminalBrokerResponse {
     "adminUserIds": List<dynamic>.from(
       adminUserIds.map((String x) => x),
     ),
+  };
+}
+
+class UTerminalBrokerJson {
+  final String? detail1;
+  final String? detail2;
+  final String? registrationNumber;
+  final String? nationalCode;
+  final String? representative;
+  final String? address;
+  final String? postalCode;
+  final String? phoneNumber;
+  final String? sign1Base64;
+  final String? sign1Owner;
+  final String? sign2Base64;
+  final String? sign2Owner;
+  final String? logoBase64;
+
+  UTerminalBrokerJson({
+    this.detail1,
+    this.detail2,
+    this.registrationNumber,
+    this.nationalCode,
+    this.representative,
+    this.address,
+    this.postalCode,
+    this.phoneNumber,
+    this.sign1Base64,
+    this.sign1Owner,
+    this.sign2Base64,
+    this.sign2Owner,
+    this.logoBase64,
+  });
+
+  factory UTerminalBrokerJson.fromJson(String str) => UTerminalBrokerJson.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UTerminalBrokerJson.fromMap(Map<String, dynamic> json) => UTerminalBrokerJson(
+    detail1: json["detail1"],
+    detail2: json["detail2"],
+    registrationNumber: json["registrationNumber"],
+    nationalCode: json["nationalCode"],
+    representative: json["representative"],
+    address: json["address"],
+    postalCode: json["postalCode"],
+    phoneNumber: json["phoneNumber"],
+    sign1Base64: json["sign1Base64"],
+    sign1Owner: json["sign1Owner"],
+    sign2Base64: json["sign2Base64"],
+    sign2Owner: json["sign2Owner"],
+    logoBase64: json["logoBase64"],
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "detail1": detail1,
+    "detail2": detail2,
+    "registrationNumber": registrationNumber,
+    "nationalCode": nationalCode,
+    "representative": representative,
+    "address": address,
+    "postalCode": postalCode,
+    "phoneNumber": phoneNumber,
+    "sign1Base64": sign1Base64,
+    "sign1Owner": sign1Owner,
+    "sign2Base64": sign2Base64,
+    "sign2Owner": sign2Owner,
+    "logoBase64": logoBase64,
   };
 }

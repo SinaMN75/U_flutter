@@ -1,5 +1,228 @@
 {
   "@@locale": "en",
+  "@activeCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@addItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "@areYouSureYouWantToDeleteThisItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "@blacklistCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@buyItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "@countEntries": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@countExits": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@countItems": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@countM": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@countParkingSpaces": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@countPeople": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@countPlates": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@countReceiptsAreQueuedForOfflineSending": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@countTimes": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@countVehiclesAreInsideTheParking": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@createItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "@daysDays": {
+    "placeholders": {
+      "days": {}
+    }
+  },
+  "@deleteItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "@disabledSinceDate": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "@durationAfterThatPerMinute": {
+    "placeholders": {
+      "duration": {}
+    }
+  },
+  "@editItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "@expiredCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@expiringSoonCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@expiryReminderDaysDaysBefore": {
+    "placeholders": {
+      "days": {}
+    }
+  },
+  "@filterItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "@firstMinutesMinutes": {
+    "placeholders": {
+      "minutes": {}
+    }
+  },
+  "@firstMinutesMinutesFree": {
+    "placeholders": {
+      "minutes": {}
+    }
+  },
+  "@fromToTo": {
+    "placeholders": {
+      "from": {},
+      "to": {}
+    }
+  },
+  "@holidayTariffPercent": {
+    "placeholders": {
+      "percent": {}
+    }
+  },
+  "@hoursHMinutesM": {
+    "placeholders": {
+      "hours": {},
+      "minutes": {}
+    }
+  },
+  "@noItemsFound": {
+    "placeholders": {
+      "items": {}
+    }
+  },
+  "@payAmount": {
+    "placeholders": {
+      "amount": {}
+    }
+  },
+  "@pleaseSelectAItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "@reasonForRejectingItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "@reservationsCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@selectAItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "@selectTheVehicleForInquiry": {
+    "placeholders": {
+      "inquiry": {}
+    }
+  },
+  "@spotSpotIsReservedForThisPlate": {
+    "placeholders": {
+      "spot": {}
+    }
+  },
+  "@theAccountUserNameIsValidButIsNotLinkedToAnyParkingYetAskTheParkingOwnerToAddYouAsAnOperator": {
+    "placeholders": {
+      "userName": {}
+    }
+  },
+  "@theFirstMinutesMinutesAreFree": {
+    "placeholders": {
+      "minutes": {}
+    }
+  },
+  "@theNightRateAppliesBetweenFromAndTo": {
+    "placeholders": {
+      "from": {},
+      "to": {}
+    }
+  },
+  "@theSubscriptionExpiresInDaysDays": {
+    "placeholders": {
+      "days": {}
+    }
+  },
+  "@viewItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "@youHaveNotRegisteredAnyItemsYet": {
+    "placeholders": {
+      "items": {}
+    }
+  },
   "about": "About",
   "aboutAvaHamrah": "About AvaHamrah",
   "aboutThisPlace": "About this place",
@@ -17,21 +240,11 @@
   "active": "Active",
   "activeContract": "Active Contract",
   "activeCount": "Active ({count})",
-  "@activeCount": {
-    "placeholders": {
-      "count": {}
-    }
-  },
   "activeProfile": "Active profile",
   "add": "Add",
   "addAndCollectTheFee": "Add and collect the fee",
   "addGuest": "Add guest",
   "addItem": "Add {item}",
-  "@addItem": {
-    "placeholders": {
-      "item": {}
-    }
-  },
   "addPlate": "Add plate",
   "addReservation": "Add reservation",
   "address": "Address",
@@ -83,11 +296,6 @@
   "areYouSureYouWantToDeleteAllStoredDataThisActionCannotBeUndone": "Are you sure you want to delete all stored data? This action cannot be undone.",
   "areYouSureYouWantToDeleteThisEntryThisActionCannotBeUndone": "Are you sure you want to delete this entry? This action cannot be undone.",
   "areYouSureYouWantToDeleteThisItem": "Are you sure you want to delete this {item}?",
-  "@areYouSureYouWantToDeleteThisItem": {
-    "placeholders": {
-      "item": {}
-    }
-  },
   "areYouSureYouWantToLogOut": "Are you sure you want to log out?",
   "arrow": "Arrow",
   "askYourParkingOwnerOrSupportToResetYourPassword": "Ask your parking owner or support to reset your password.",
@@ -138,11 +346,6 @@
   "birthdate": "Birthdate",
   "bitrate": "Bitrate",
   "blacklistCount": "Blacklist ({count})",
-  "@blacklistCount": {
-    "placeholders": {
-      "count": {}
-    }
-  },
   "blockedAmount": "Blocked amount",
   "blog": "Blog",
   "blogs": "Blogs",
@@ -151,7 +354,11 @@
   "bookedInPerson": "Booked in person",
   "bookNow": "Book now",
   "bookThisRoom": "Book this room",
+  "brand": "Brand",
+  "brands": "Brands",
   "brightness": "Brightness",
+  "broker": "Broker",
+  "brokers": "Brokers",
   "bufferHealth": "Buffer health",
   "builtInCardReaderFastestWay": "Built-in card reader · fastest way",
   "bulkImportTerminals": "Bulk Import Terminals",
@@ -162,11 +369,6 @@
   "buyAndSell18KGoldOnline": "Buy and sell 18K gold online",
   "buyGold": "Buy gold",
   "buyItem": "Buy {item}",
-  "@buyItem": {
-    "placeholders": {
-      "item": {}
-    }
-  },
   "buyPrice": "Buy price",
   "byAmount": "By amount",
   "byContinuingYouAcceptTheTermsAndConditionsAndThePrivacyPolicy": "By continuing, you accept the terms and conditions and the privacy policy.",
@@ -263,6 +465,7 @@
   "connectingToHost": "Connecting to host",
   "connectionLost": "Connection lost",
   "connectionToNetworkWasNotPossible": "Connection to Network was Not possible",
+  "connectionType": "Connection Type",
   "contactInformation": "Contact Information",
   "contactSupport": "Contact support",
   "contactUs": "Contact us",
@@ -291,66 +494,16 @@
   "count": "Count",
   "countedCash": "Counted cash",
   "countEntries": "{count} entries",
-  "@countEntries": {
-    "placeholders": {
-      "count": {}
-    }
-  },
   "countExits": "{count} exits",
-  "@countExits": {
-    "placeholders": {
-      "count": {}
-    }
-  },
   "countItems": "{count} items",
-  "@countItems": {
-    "placeholders": {
-      "count": {}
-    }
-  },
   "countM": "{count} m",
-  "@countM": {
-    "placeholders": {
-      "count": {}
-    }
-  },
   "countParkingSpaces": "{count} parking spaces",
-  "@countParkingSpaces": {
-    "placeholders": {
-      "count": {}
-    }
-  },
   "countPeople": "{count} people",
-  "@countPeople": {
-    "placeholders": {
-      "count": {}
-    }
-  },
   "countPlates": "{count} plates",
-  "@countPlates": {
-    "placeholders": {
-      "count": {}
-    }
-  },
   "countReceiptsAreQueuedForOfflineSending": "{count} receipts are queued for offline sending",
-  "@countReceiptsAreQueuedForOfflineSending": {
-    "placeholders": {
-      "count": {}
-    }
-  },
   "country": "Country",
   "countTimes": "{count} times",
-  "@countTimes": {
-    "placeholders": {
-      "count": {}
-    }
-  },
   "countVehiclesAreInsideTheParking": "{count} vehicles are inside the parking",
-  "@countVehiclesAreInsideTheParking": {
-    "placeholders": {
-      "count": {}
-    }
-  },
   "cover": "Cover",
   "cpuUsage": "CPU Usage",
   "create": "Create",
@@ -359,11 +512,6 @@
   "createdAt": "Created At",
   "createdDate": "Created Date",
   "createItem": "Create {item}",
-  "@createItem": {
-    "placeholders": {
-      "item": {}
-    }
-  },
   "creatorId": "Creator ID",
   "credit": "Credit",
   "creditFacilities": "Credit facilities",
@@ -392,11 +540,6 @@
   "dayRate": "Day rate",
   "days": "days",
   "daysDays": "{days} days",
-  "@daysDays": {
-    "placeholders": {
-      "days": {}
-    }
-  },
   "daysLeft": "days left",
   "daysOverdue": "Days Overdue",
   "debit": "Debit",
@@ -407,11 +550,6 @@
   "decrypt": "Decrypt",
   "delete": "Delete",
   "deleteItem": "Delete {item}",
-  "@deleteItem": {
-    "placeholders": {
-      "item": {}
-    }
-  },
   "deposit": "Deposit",
   "descending": "Descending",
   "description": "Description",
@@ -420,15 +558,11 @@
   "details": "Details",
   "deviceId": "Device ID",
   "deviceSerial": "Device serial",
-  "directTopUp": "Direct top up",
+  "deviceType": "Device Type",
   "directions": "Directions",
+  "directTopUp": "Direct top up",
   "disabled": "Disabled",
   "disabledSinceDate": "Disabled since {date}",
-  "@disabledSinceDate": {
-    "placeholders": {
-      "date": {}
-    }
-  },
   "diskUsage": "Disk Usage",
   "divider": "Divider",
   "documentInfo": "Document Info",
@@ -456,21 +590,11 @@
   "duplicateBlock": "Duplicate Block",
   "duration": "Duration",
   "durationAfterThatPerMinute": "{duration} after that (per minute)",
-  "@durationAfterThatPerMinute": {
-    "placeholders": {
-      "duration": {}
-    }
-  },
   "dynamicPin": "Dynamic PIN",
   "eachHourAfter": "Each hour after",
   "economicCode": "Economic Code",
   "edit": "Edit",
   "editItem": "Edit {item}",
-  "@editItem": {
-    "placeholders": {
-      "item": {}
-    }
-  },
   "editProfile": "Edit profile",
   "electricityWaterGas": "Electricity, water, gas",
   "ellipse": "Ellipse",
@@ -529,26 +653,11 @@
   "expirationDate": "Expiration date",
   "expired": "Expired",
   "expiredCount": "Expired ({count})",
-  "@expiredCount": {
-    "placeholders": {
-      "count": {}
-    }
-  },
   "expires": "Expires",
   "expiresToday": "Expires today",
   "expiringSoon": "Expiring Soon",
   "expiringSoonCount": "Expiring soon ({count})",
-  "@expiringSoonCount": {
-    "placeholders": {
-      "count": {}
-    }
-  },
   "expiryReminderDaysDaysBefore": "Expiry reminder ({days} days before)",
-  "@expiryReminderDaysDaysBefore": {
-    "placeholders": {
-      "days": {}
-    }
-  },
   "exportImages": "Export images",
   "extract": "Extract",
   "extraGuestCapacity": "Extra guest capacity",
@@ -562,11 +671,6 @@
   "files": "Files",
   "filter": "Filter",
   "filterItem": "Filter {item}",
-  "@filterItem": {
-    "placeholders": {
-      "item": {}
-    }
-  },
   "finalApproval": "Final Approval",
   "finalConsumer": "Final Consumer",
   "financialOperations": "Financial & Operations",
@@ -577,18 +681,9 @@
   "firstControlDigit": "First control digit",
   "firstHour": "First hour",
   "firstMinutesMinutes": "First {minutes} minutes",
-  "@firstMinutesMinutes": {
-    "placeholders": {
-      "minutes": {}
-    }
-  },
   "firstMinutesMinutesFree": "First {minutes} minutes free",
-  "@firstMinutesMinutesFree": {
-    "placeholders": {
-      "minutes": {}
-    }
-  },
   "firstName": "First Name",
+  "firstSignatory": "First Signatory",
   "fit": "Fit",
   "fitHeight": "Fit height",
   "fitWidth": "Fit width",
@@ -619,12 +714,6 @@
   "fromBirthDate": "From Birth Date",
   "fromDate": "From Date",
   "fromToTo": "{from} to {to}",
-  "@fromToTo": {
-    "placeholders": {
-      "from": {},
-      "to": {}
-    }
-  },
   "fullAccess": "Full access",
   "fullName": "Full name",
   "fullscreen": "Fullscreen",
@@ -685,11 +774,6 @@
   "holdTheCustomersReceiptUpToTheCamera": "Hold the customer's receipt up to the camera",
   "holidaySurcharge": "Holiday surcharge",
   "holidayTariffPercent": "Holiday tariff (+{percent}%)",
-  "@holidayTariffPercent": {
-    "placeholders": {
-      "percent": {}
-    }
-  },
   "horizontal": "Horizontal",
   "hostTerminal": "Host terminal",
   "hotel": "Hotel",
@@ -704,17 +788,11 @@
   "hourly": "Hourly",
   "hourlyPrice": "Hourly Price",
   "hoursHMinutesM": "{hours} h {minutes} m",
-  "@hoursHMinutesM": {
-    "placeholders": {
-      "hours": {},
-      "minutes": {}
-    }
-  },
   "htmlSource": "HTML Source",
   "hue": "Hue",
-  "iHaveReadAndAcceptTheAgreement": "I have read and accept the agreement",
   "icon": "Icon",
   "id": "ID",
+  "iHaveReadAndAcceptTheAgreement": "I have read and accept the agreement",
   "image": "Image",
   "imageDescription": "Image description",
   "images": "Images",
@@ -897,6 +975,7 @@
   "networkConnected": "Network connected",
   "new_": "New",
   "newFolder": "New Folder",
+  "newMerchantAgreement": "New Merchant Agreement",
   "newMessage": "New message",
   "newName": "New Name",
   "newPassword": "New password",
@@ -919,11 +998,6 @@
   "noGoldOrdersYet": "No gold orders yet",
   "noGoldTransactionsYet": "No gold transactions yet",
   "noItemsFound": "No {items} found",
-  "@noItemsFound": {
-    "placeholders": {
-      "items": {}
-    }
-  },
   "noLyricsFound": "No lyrics found",
   "noMerchantSelected": "No Merchant Selected",
   "none": "None",
@@ -1036,11 +1110,6 @@
   "pay": "Pay",
   "payableAmount": "Payable amount",
   "payAmount": "Pay {amount}",
-  "@payAmount": {
-    "placeholders": {
-      "amount": {}
-    }
-  },
   "payAndInquire": "Pay and inquire",
   "payByCard": "Pay by card",
   "payFromWallet": "Pay from wallet",
@@ -1096,11 +1165,6 @@
   "pleaseEnterSomeInputText": "Please enter some input text.",
   "pleaseEnterYourMobileNumberToLogIn": "Please enter your mobile number to log in.",
   "pleaseSelectAItem": "Please select a {item}",
-  "@pleaseSelectAItem": {
-    "placeholders": {
-      "item": {}
-    }
-  },
   "pnApiTester": "Pn API Tester",
   "pointTheCameraAtAReceiptQrCode": "Point the camera at a receipt QR code",
   "pointTheCameraAtThePlate": "Point the camera at the plate",
@@ -1123,6 +1187,7 @@
   "printNumber": "Print number",
   "printOnThePosDevice": "Print on the POS device",
   "printReceipt": "Print receipt",
+  "printTheAgreementSignItAndSendItByPost": "Print the agreement, sign it and send it by post.",
   "printTheEntryReceiptAutomatically": "Print the entry receipt automatically",
   "privacyPolicy": "Privacy policy",
   "process": "Process",
@@ -1151,11 +1216,6 @@
   "realBalance": "Real balance",
   "reason": "Reason",
   "reasonForRejectingItem": "Reason for rejecting {item}",
-  "@reasonForRejectingItem": {
-    "placeholders": {
-      "item": {}
-    }
-  },
   "receiptFooterText": "Receipt footer text",
   "receiptLostSearchManually": "Receipt lost — search manually",
   "receiptNumber": "Receipt number",
@@ -1212,6 +1272,7 @@
   "report": "Report",
   "reports": "Reports",
   "reportsAndAccounts": "Reports and accounts",
+  "representative": "Representative",
   "request": "Request",
   "requestApproval": "Request approval",
   "requestBody": "Request Body",
@@ -1226,11 +1287,6 @@
   "reservationDetails": "Reservation details",
   "reservations": "Reservations",
   "reservationsCount": "Reservations ({count})",
-  "@reservationsCount": {
-    "placeholders": {
-      "count": {}
-    }
-  },
   "reset": "Reset",
   "resetFilters": "Reset filters",
   "resetsAt": "Resets at",
@@ -1259,7 +1315,6 @@
   "rows": "Rows",
   "rules": "Rules",
   "saturation": "Saturation",
-  "simCard": "SIM CARD",
   "save": "Save",
   "saveChanges": "Save changes",
   "saved": "Saved",
@@ -1287,18 +1342,16 @@
   "searchVehicle": "Search vehicle",
   "secondControlDigit": "Second control digit",
   "seconds": "seconds",
+  "secondSignatory": "Second Signatory",
   "secretKey": "Secret Key",
   "seeAll": "See all",
   "select": "Select",
   "selectAItem": "Select a {item}",
-  "@selectAItem": {
-    "placeholders": {
-      "item": {}
-    }
-  },
   "selectAll": "Select all",
   "selectAmount": "Select amount",
   "selectAUserToManageTheirWallet": "Select a user to manage their wallet",
+  "selectBrand": "Select Brand",
+  "selectBroker": "Select Broker",
   "selectCountry": "Select Country",
   "selectDates": "Select dates",
   "selectInternetPackage": "Select internet package",
@@ -1306,11 +1359,6 @@
   "selectProfile": "Select profile",
   "selectTheDesiredSimCard": "Select the desired SIM card",
   "selectTheVehicleForInquiry": "Select the vehicle for {inquiry}",
-  "@selectTheVehicleForInquiry": {
-    "placeholders": {
-      "inquiry": {}
-    }
-  },
   "sellGold": "Sell gold",
   "sellPrice": "Sell price",
   "send": "Send",
@@ -1340,7 +1388,9 @@
   "showList": "Show list",
   "showValue": "Show value",
   "shuffle": "Shuffle",
+  "signatoryName": "Signatory Name",
   "signature": "Signature",
+  "simCard": "SIM CARD",
   "simCardCharge": "SIM card charge",
   "simCardNumber": "SIM Card Number",
   "simCardSerial": "SIM Card Serial",
@@ -1360,11 +1410,6 @@
   "split": "Split",
   "spotNumber": "Spot number",
   "spotSpotIsReservedForThisPlate": "Spot {spot} is reserved for this plate.",
-  "@spotSpotIsReservedForThisPlate": {
-    "placeholders": {
-      "spot": {}
-    }
-  },
   "square": "Square",
   "stackTrace": "Stack Trace",
   "staff": "Staff",
@@ -1448,11 +1493,6 @@
   "textSpacing": "Text spacing",
   "thanksForYourReview": "Thanks for your review",
   "theAccountUserNameIsValidButIsNotLinkedToAnyParkingYetAskTheParkingOwnerToAddYouAsAnOperator": "The account {userName} is valid but is not linked to any parking yet. Ask the parking owner to add you as an operator.",
-  "@theAccountUserNameIsValidButIsNotLinkedToAnyParkingYetAskTheParkingOwnerToAddYouAsAnOperator": {
-    "placeholders": {
-      "userName": {}
-    }
-  },
   "theAmountWasSentToTheDevicesCardReaderDoNotCloseThisScreenUntilTheTransactionFinishes": "The amount was sent to the device's card reader. Do not close this screen until the transaction finishes.",
   "theAmountWillBeAddedToTheWalletAndPaid": "The amount will be added to the wallet and paid",
   "theCurrentPasswordIsWrong": "The current password is wrong",
@@ -1463,31 +1503,15 @@
   "theEnteredVerificationCodeIsIncorrect": "The entered verification code is incorrect.",
   "theFinalPriceIsSetAtTheMomentTheOrderIsFilled": "The final price is set at the moment the order is filled",
   "theFirstMinutesMinutesAreFree": "The first {minutes} minutes are free.",
-  "@theFirstMinutesMinutesAreFree": {
-    "placeholders": {
-      "minutes": {}
-    }
-  },
   "theGoldServiceIsNotAvailableRightNow": "The gold service is not available right now",
   "theme": "Theme",
   "theNightRateAppliesBetweenFromAndTo": "The night rate applies between {from} and {to}.",
-  "@theNightRateAppliesBetweenFromAndTo": {
-    "placeholders": {
-      "from": {},
-      "to": {}
-    }
-  },
   "thePasswordsDoNotMatch": "The passwords do not match",
   "thePaymentHasNotBeenConfirmedYet": "The payment has not been confirmed yet",
   "thereIsNoSavedDataForThisVehicleToGetFreshDataYouMustPayTheInquiryFee": "There is no saved data for this vehicle. To get fresh data you must pay the inquiry fee.",
   "theReservationWasCancelled": "The reservation was cancelled",
   "theShiftWasClosed": "The shift was closed",
   "theSubscriptionExpiresInDaysDays": "The subscription expires in {days} days.",
-  "@theSubscriptionExpiresInDaysDays": {
-    "placeholders": {
-      "days": {}
-    }
-  },
   "theSupportPasswordWasSentViaSmsToTheNumberRegisteredInTheApp": "The support password was sent via SMS to the number registered in the app.",
   "theTemporaryPasswordMustBeChangedAfterTheFirstSignIn": "The temporary password must be changed after the first sign-in.",
   "theVideoMustBeAtLeast4Seconds": "The video must be at least 4 seconds",
@@ -1610,11 +1634,6 @@
   "viewAll": "View all",
   "viewDebt": "View debt",
   "viewItem": "View {item}",
-  "@viewItem": {
-    "placeholders": {
-      "item": {}
-    }
-  },
   "violation": "Violation",
   "violationItems": "Violation items",
   "violationsPlateAndLicense": "Violations, plate and license",
@@ -1656,11 +1675,6 @@
   "youHaveNoInvoices": "You have no invoices",
   "youHaveNoReservationsYet": "You have no reservations yet",
   "youHaveNotRegisteredAnyItemsYet": "You have not registered any {items} yet",
-  "@youHaveNotRegisteredAnyItemsYet": {
-    "placeholders": {
-      "items": {}
-    }
-  },
   "youHaveNotSubmittedAnyTaxpayerRequestYet": "You have not submitted any taxpayer request yet.",
   "youHaveToAcceptTheAgreementToContinue": "You have to accept the agreement to continue",
   "yourGoldBalanceIsNotEnough": "Your gold balance is not enough",
@@ -1678,7 +1692,5 @@
   "yourWalletBalanceIsNotEnough": "Your wallet balance is not enough",
   "zipCode": "Zip Code",
   "zoomIn": "Zoom in",
-  "zoomOut": "Zoom out",
-  "brands": "Brands",
-  "brokers": "Brokers"
+  "zoomOut": "Zoom out"
 }

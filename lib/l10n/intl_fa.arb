@@ -1,5 +1,228 @@
 {
   "@@locale": "fa",
+  "@activeCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@addItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "@areYouSureYouWantToDeleteThisItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "@blacklistCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@buyItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "@countEntries": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@countExits": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@countItems": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@countM": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@countParkingSpaces": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@countPeople": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@countPlates": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@countReceiptsAreQueuedForOfflineSending": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@countTimes": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@countVehiclesAreInsideTheParking": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@createItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "@daysDays": {
+    "placeholders": {
+      "days": {}
+    }
+  },
+  "@deleteItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "@disabledSinceDate": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "@durationAfterThatPerMinute": {
+    "placeholders": {
+      "duration": {}
+    }
+  },
+  "@editItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "@expiredCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@expiringSoonCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@expiryReminderDaysDaysBefore": {
+    "placeholders": {
+      "days": {}
+    }
+  },
+  "@filterItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "@firstMinutesMinutes": {
+    "placeholders": {
+      "minutes": {}
+    }
+  },
+  "@firstMinutesMinutesFree": {
+    "placeholders": {
+      "minutes": {}
+    }
+  },
+  "@fromToTo": {
+    "placeholders": {
+      "from": {},
+      "to": {}
+    }
+  },
+  "@holidayTariffPercent": {
+    "placeholders": {
+      "percent": {}
+    }
+  },
+  "@hoursHMinutesM": {
+    "placeholders": {
+      "hours": {},
+      "minutes": {}
+    }
+  },
+  "@noItemsFound": {
+    "placeholders": {
+      "items": {}
+    }
+  },
+  "@payAmount": {
+    "placeholders": {
+      "amount": {}
+    }
+  },
+  "@pleaseSelectAItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "@reasonForRejectingItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "@reservationsCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@selectAItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "@selectTheVehicleForInquiry": {
+    "placeholders": {
+      "inquiry": {}
+    }
+  },
+  "@spotSpotIsReservedForThisPlate": {
+    "placeholders": {
+      "spot": {}
+    }
+  },
+  "@theAccountUserNameIsValidButIsNotLinkedToAnyParkingYetAskTheParkingOwnerToAddYouAsAnOperator": {
+    "placeholders": {
+      "userName": {}
+    }
+  },
+  "@theFirstMinutesMinutesAreFree": {
+    "placeholders": {
+      "minutes": {}
+    }
+  },
+  "@theNightRateAppliesBetweenFromAndTo": {
+    "placeholders": {
+      "from": {},
+      "to": {}
+    }
+  },
+  "@theSubscriptionExpiresInDaysDays": {
+    "placeholders": {
+      "days": {}
+    }
+  },
+  "@viewItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "@youHaveNotRegisteredAnyItemsYet": {
+    "placeholders": {
+      "items": {}
+    }
+  },
   "about": "درباره",
   "aboutAvaHamrah": "درباره آواهمراه",
   "aboutThisPlace": "درباره این اقامتگاه",
@@ -17,21 +240,11 @@
   "active": "فعال",
   "activeContract": "قرارداد فعال",
   "activeCount": "فعال ({count})",
-  "@activeCount": {
-    "placeholders": {
-      "count": {}
-    }
-  },
   "activeProfile": "پروندهٔ فعال",
   "add": "افزودن",
   "addAndCollectTheFee": "افزودن و دریافت هزینه",
   "addGuest": "افزودن مهمان",
   "addItem": "افزودن {item}",
-  "@addItem": {
-    "placeholders": {
-      "item": {}
-    }
-  },
   "addPlate": "افزودن پلاک",
   "addReservation": "افزودن رزرو",
   "address": "آدرس",
@@ -83,11 +296,6 @@
   "areYouSureYouWantToDeleteAllStoredDataThisActionCannotBeUndone": "آیا از حذف تمام داده‌های ذخیره‌شده مطمئن هستید؟ این عمل قابل بازگشت نیست.",
   "areYouSureYouWantToDeleteThisEntryThisActionCannotBeUndone": "آیا از حذف این مورد مطمئن هستید؟ این عمل قابل بازگشت نیست.",
   "areYouSureYouWantToDeleteThisItem": "آیا از حذف این {item} اطمینان دارید؟",
-  "@areYouSureYouWantToDeleteThisItem": {
-    "placeholders": {
-      "item": {}
-    }
-  },
   "areYouSureYouWantToLogOut": "آیا از خروج از حساب اطمینان دارید؟",
   "arrow": "پیکان",
   "askYourParkingOwnerOrSupportToResetYourPassword": "برای بازنشانی رمز عبور با صاحب پارکینگ یا پشتیبانی تماس بگیرید.",
@@ -138,11 +346,6 @@
   "birthdate": "تاریخ تولد",
   "bitrate": "نرخ بیت",
   "blacklistCount": "لیست سیاه ({count})",
-  "@blacklistCount": {
-    "placeholders": {
-      "count": {}
-    }
-  },
   "blockedAmount": "مبلغ مسدود",
   "blog": "وبلاگ",
   "blogs": "وبلاگ‌ها",
@@ -151,7 +354,11 @@
   "bookedInPerson": "رزرو حضوری",
   "bookNow": "رزرو کن",
   "bookThisRoom": "رزرو این اتاق",
+  "brand": "برند",
+  "brands": "برند‌ها",
   "brightness": "روشنایی",
+  "broker": "کارگزار",
+  "brokers": "کارگذارها",
   "bufferHealth": "وضعیت بافر",
   "builtInCardReaderFastestWay": "کارت‌خوان داخلی · سریع‌ترین راه",
   "bulkImportTerminals": "افزودن گروهی پایانه‌ها",
@@ -162,11 +369,6 @@
   "buyAndSell18KGoldOnline": "خرید و فروش آنلاین طلای ۱۸ عیار",
   "buyGold": "خرید طلا",
   "buyItem": "خرید {item}",
-  "@buyItem": {
-    "placeholders": {
-      "item": {}
-    }
-  },
   "buyPrice": "قیمت خرید",
   "byAmount": "بر اساس مبلغ",
   "byContinuingYouAcceptTheTermsAndConditionsAndThePrivacyPolicy": "با ادامه، قوانین و مقررات و حریم خصوصی را می‌پذیرم.",
@@ -263,6 +465,7 @@
   "connectingToHost": "در حال اتصال به سرور",
   "connectionLost": "اتصال قطع است",
   "connectionToNetworkWasNotPossible": "ارتباط با اینترنت برقرار نیست",
+  "connectionType": "نوع اتصال",
   "contactInformation": "اطلاعات تماس",
   "contactSupport": "تماس با پشتیبانی",
   "contactUs": "تماس با ما",
@@ -291,66 +494,16 @@
   "count": "تعداد",
   "countedCash": "نقد شمرده‌شده",
   "countEntries": "{count} ورود",
-  "@countEntries": {
-    "placeholders": {
-      "count": {}
-    }
-  },
   "countExits": "{count} خروج",
-  "@countExits": {
-    "placeholders": {
-      "count": {}
-    }
-  },
   "countItems": "{count} مورد",
-  "@countItems": {
-    "placeholders": {
-      "count": {}
-    }
-  },
   "countM": "{count} د",
-  "@countM": {
-    "placeholders": {
-      "count": {}
-    }
-  },
   "countParkingSpaces": "{count} جای پارک",
-  "@countParkingSpaces": {
-    "placeholders": {
-      "count": {}
-    }
-  },
   "countPeople": "{count} نفر",
-  "@countPeople": {
-    "placeholders": {
-      "count": {}
-    }
-  },
   "countPlates": "{count} پلاک",
-  "@countPlates": {
-    "placeholders": {
-      "count": {}
-    }
-  },
   "countReceiptsAreQueuedForOfflineSending": "{count} رسید در صف ارسال آفلاین است",
-  "@countReceiptsAreQueuedForOfflineSending": {
-    "placeholders": {
-      "count": {}
-    }
-  },
   "country": "کشور",
   "countTimes": "{count} بار",
-  "@countTimes": {
-    "placeholders": {
-      "count": {}
-    }
-  },
   "countVehiclesAreInsideTheParking": "{count} خودرو داخل پارکینگ است",
-  "@countVehiclesAreInsideTheParking": {
-    "placeholders": {
-      "count": {}
-    }
-  },
   "cover": "پوششی",
   "cpuUsage": "مصرف CPU",
   "create": "ایجاد",
@@ -359,11 +512,6 @@
   "createdAt": "تاریخ ایجاد",
   "createdDate": "تاریخ ایجاد",
   "createItem": "ایجاد {item}",
-  "@createItem": {
-    "placeholders": {
-      "item": {}
-    }
-  },
   "creatorId": "شناسه ایجادکننده",
   "credit": "واریز",
   "creditFacilities": "تسهیلات اعتباری",
@@ -392,11 +540,6 @@
   "dayRate": "نرخ روز",
   "days": "روزه",
   "daysDays": "{days} روز",
-  "@daysDays": {
-    "placeholders": {
-      "days": {}
-    }
-  },
   "daysLeft": "روز تا انقضا",
   "daysOverdue": "روز تأخیر",
   "debit": "برداشت",
@@ -407,11 +550,6 @@
   "decrypt": "رمزگشایی",
   "delete": "حذف",
   "deleteItem": "حذف {item}",
-  "@deleteItem": {
-    "placeholders": {
-      "item": {}
-    }
-  },
   "deposit": "رهن",
   "descending": "نزولی",
   "description": "توضیحات",
@@ -420,15 +558,11 @@
   "details": "جزئیات",
   "deviceId": "شناسه دستگاه",
   "deviceSerial": "سریال دستگاه",
-  "directTopUp": "شارژ مستقیم",
+  "deviceType": "نوع دستگاه",
   "directions": "مسیریابی",
+  "directTopUp": "شارژ مستقیم",
   "disabled": "غیرفعال",
   "disabledSinceDate": "غیرفعال از {date}",
-  "@disabledSinceDate": {
-    "placeholders": {
-      "date": {}
-    }
-  },
   "diskUsage": "میزان استفاده دیسک",
   "divider": "جداکننده",
   "documentInfo": "اطلاعات سند",
@@ -456,21 +590,11 @@
   "duplicateBlock": "تکثیر بلوک",
   "duration": "مدت",
   "durationAfterThatPerMinute": "{duration} بعدی (دقیقه‌ای)",
-  "@durationAfterThatPerMinute": {
-    "placeholders": {
-      "duration": {}
-    }
-  },
   "dynamicPin": "رمز دوم پویا",
   "eachHourAfter": "هر ساعت بعد",
   "economicCode": "کد اقتصادی",
   "edit": "ویرایش",
   "editItem": "ویرایش {item}",
-  "@editItem": {
-    "placeholders": {
-      "item": {}
-    }
-  },
   "editProfile": "ویرایش پروفایل",
   "electricityWaterGas": "برق، آب، گاز",
   "ellipse": "بیضی",
@@ -529,26 +653,11 @@
   "expirationDate": "تاریخ انقضا",
   "expired": "منقضی",
   "expiredCount": "منقضی ({count})",
-  "@expiredCount": {
-    "placeholders": {
-      "count": {}
-    }
-  },
   "expires": "انقضا",
   "expiresToday": "امروز منقضی می‌شود",
   "expiringSoon": "در حال انقضا",
   "expiringSoonCount": "رو به انقضا ({count})",
-  "@expiringSoonCount": {
-    "placeholders": {
-      "count": {}
-    }
-  },
   "expiryReminderDaysDaysBefore": "یادآوری انقضا ({days} روز قبل)",
-  "@expiryReminderDaysDaysBefore": {
-    "placeholders": {
-      "days": {}
-    }
-  },
   "exportImages": "خروجی تصاویر",
   "extract": "استخراج",
   "extraGuestCapacity": "ظرفیت نفر اضافه",
@@ -562,11 +671,6 @@
   "files": "فایل‌ها",
   "filter": "فیلتر",
   "filterItem": "فیلتر {item}",
-  "@filterItem": {
-    "placeholders": {
-      "item": {}
-    }
-  },
   "finalApproval": "تایید نهایی",
   "finalConsumer": "مصرف‌کننده نهایی",
   "financialOperations": "مالی و عملیات",
@@ -577,18 +681,9 @@
   "firstControlDigit": "رقم کنترلی اول",
   "firstHour": "ساعت اول",
   "firstMinutesMinutes": "{minutes} دقیقه اول",
-  "@firstMinutesMinutes": {
-    "placeholders": {
-      "minutes": {}
-    }
-  },
   "firstMinutesMinutesFree": "{minutes} دقیقه اول رایگان",
-  "@firstMinutesMinutesFree": {
-    "placeholders": {
-      "minutes": {}
-    }
-  },
   "firstName": "نام",
+  "firstSignatory": "امضاکننده اول",
   "fit": "جا شدن",
   "fitHeight": "تنظیم بر ارتفاع",
   "fitWidth": "تنظیم بر عرض",
@@ -619,12 +714,6 @@
   "fromBirthDate": "از تاریخ تولد",
   "fromDate": "از تاریخ",
   "fromToTo": "{from} تا {to}",
-  "@fromToTo": {
-    "placeholders": {
-      "from": {},
-      "to": {}
-    }
-  },
   "fullAccess": "دسترسی کامل",
   "fullName": "نام و نام خانوادگی",
   "fullscreen": "تمام‌صفحه",
@@ -685,11 +774,6 @@
   "holdTheCustomersReceiptUpToTheCamera": "رسید مشتری را جلوی دوربین بگیرید",
   "holidaySurcharge": "تعرفه تعطیلات",
   "holidayTariffPercent": "تعرفه تعطیلات (+{percent}٪)",
-  "@holidayTariffPercent": {
-    "placeholders": {
-      "percent": {}
-    }
-  },
   "horizontal": "افقی",
   "hostTerminal": "پایانه / پذیرنده",
   "hotel": "هتل",
@@ -704,17 +788,11 @@
   "hourly": "ساعتی",
   "hourlyPrice": "هزینه ساعتی",
   "hoursHMinutesM": "{hours} س {minutes} د",
-  "@hoursHMinutesM": {
-    "placeholders": {
-      "hours": {},
-      "minutes": {}
-    }
-  },
   "htmlSource": "کد HTML",
   "hue": "رنگ‌مایه",
-  "iHaveReadAndAcceptTheAgreement": "قرارداد را خوانده‌ام و می‌پذیرم",
   "icon": "آیکون",
   "id": "شناسه",
+  "iHaveReadAndAcceptTheAgreement": "قرارداد را خوانده‌ام و می‌پذیرم",
   "image": "تصویر",
   "imageDescription": "توضیح تصویر",
   "images": "تصاویر",
@@ -897,6 +975,7 @@
   "networkConnected": "شبکه متصل",
   "new_": "جدید",
   "newFolder": "پوشه جدید",
+  "newMerchantAgreement": "قرارداد ثبت پذیرندگی جدید",
   "newMessage": "پیام جدید",
   "newName": "نام جدید",
   "newPassword": "رمز جدید",
@@ -919,11 +998,6 @@
   "noGoldOrdersYet": "هنوز سفارش طلایی ثبت نشده است",
   "noGoldTransactionsYet": "هنوز تراکنش طلایی ثبت نشده است",
   "noItemsFound": "هیچ {items} یافت نشد",
-  "@noItemsFound": {
-    "placeholders": {
-      "items": {}
-    }
-  },
   "noLyricsFound": "متن ترانه‌ای یافت نشد",
   "noMerchantSelected": "پذیرنده‌ای انتخاب نشده",
   "none": "هیچ‌کدام",
@@ -1036,11 +1110,6 @@
   "pay": "پرداخت",
   "payableAmount": "مبلغ قابل پرداخت",
   "payAmount": "پرداخت {amount}",
-  "@payAmount": {
-    "placeholders": {
-      "amount": {}
-    }
-  },
   "payAndInquire": "پرداخت و استعلام",
   "payByCard": "پرداخت با کارت",
   "payFromWallet": "پرداخت از کیف پول",
@@ -1096,11 +1165,6 @@
   "pleaseEnterSomeInputText": "لطفاً متن ورودی را وارد کنید.",
   "pleaseEnterYourMobileNumberToLogIn": "جهت ورود لطفا شماره موبایل خود را وارد کنید.",
   "pleaseSelectAItem": "لطفاً یک {item} انتخاب کنید",
-  "@pleaseSelectAItem": {
-    "placeholders": {
-      "item": {}
-    }
-  },
   "pnApiTester": "تستر API پی‌ان",
   "pointTheCameraAtAReceiptQrCode": "دوربین را روی کد QR رسید بگیرید",
   "pointTheCameraAtThePlate": "دوربین را روی پلاک بگیرید",
@@ -1123,6 +1187,7 @@
   "printNumber": "شماره چاپ",
   "printOnThePosDevice": "چاپ روی دستگاه پوز",
   "printReceipt": "چاپ رسید",
+  "printTheAgreementSignItAndSendItByPost": "قرارداد را دانلود و چاپ کنید، هر دو طرف آن را امضا کنند و سپس با پست به آدرس زیر ارسال نمایید.",
   "printTheEntryReceiptAutomatically": "چاپ خودکار رسید ورود",
   "privacyPolicy": "حریم خصوصی",
   "process": "پردازش",
@@ -1151,11 +1216,6 @@
   "realBalance": "مانده واقعی",
   "reason": "علت",
   "reasonForRejectingItem": "دلیل رد {item}",
-  "@reasonForRejectingItem": {
-    "placeholders": {
-      "item": {}
-    }
-  },
   "receiptFooterText": "متن پایین رسید",
   "receiptLostSearchManually": "رسید مفقود شده — جستجوی دستی",
   "receiptNumber": "شماره رسید",
@@ -1212,6 +1272,7 @@
   "report": "گزارش",
   "reports": "گزارش‌ها",
   "reportsAndAccounts": "گزارش و حساب",
+  "representative": "نماینده",
   "request": "درخواست",
   "requestApproval": "درخواست تأیید",
   "requestBody": "بدنه درخواست",
@@ -1226,11 +1287,6 @@
   "reservationDetails": "جزئیات رزرو",
   "reservations": "رزروها",
   "reservationsCount": "رزروها ({count})",
-  "@reservationsCount": {
-    "placeholders": {
-      "count": {}
-    }
-  },
   "reset": "بازنشانی",
   "resetFilters": "بازنشانی فیلترها",
   "resetsAt": "بازنشانی در",
@@ -1259,7 +1315,6 @@
   "rows": "ردیف‌ها",
   "rules": "قواعد",
   "saturation": "اشباع رنگ",
-  "simCard": "سیمکارت",
   "save": "ذخیره",
   "saveChanges": "ذخیره تغییرات",
   "saved": "ذخیره شد",
@@ -1287,18 +1342,16 @@
   "searchVehicle": "جستجوی خودرو",
   "secondControlDigit": "رقم کنترلی دوم",
   "seconds": "ثانیه",
+  "secondSignatory": "امضاکننده دوم",
   "secretKey": "کلید مخفی",
   "seeAll": "همه",
   "select": "انتخاب",
   "selectAItem": "انتخاب {item}",
-  "@selectAItem": {
-    "placeholders": {
-      "item": {}
-    }
-  },
   "selectAll": "انتخاب همه",
   "selectAmount": "انتخاب مبلغ",
   "selectAUserToManageTheirWallet": "برای مدیریت کیف پول، کاربری را انتخاب کنید",
+  "selectBrand": "انتخاب برند",
+  "selectBroker": "انتخاب کارگزار",
   "selectCountry": "انتخاب کشور",
   "selectDates": "انتخاب تاریخ",
   "selectInternetPackage": "انتخاب بسته اینترنت",
@@ -1306,11 +1359,6 @@
   "selectProfile": "انتخاب پرونده",
   "selectTheDesiredSimCard": "سیم‌کارت موردنظر را انتخاب کنید",
   "selectTheVehicleForInquiry": "خودرو موردنظر را برای استعلام {inquiry} انتخاب کنید",
-  "@selectTheVehicleForInquiry": {
-    "placeholders": {
-      "inquiry": {}
-    }
-  },
   "sellGold": "فروش طلا",
   "sellPrice": "قیمت فروش",
   "send": "ارسال",
@@ -1340,7 +1388,9 @@
   "showList": "لیست",
   "showValue": "نمایش مقدار",
   "shuffle": "تصادفی",
+  "signatoryName": "نام امضاکننده",
   "signature": "امضا",
+  "simCard": "سیمکارت",
   "simCardCharge": "شارژ سیم‌کارت",
   "simCardNumber": "شماره سیم‌کارت",
   "simCardSerial": "سریال سیم‌کارت",
@@ -1360,11 +1410,6 @@
   "split": "تقسیم",
   "spotNumber": "شماره جای پارک",
   "spotSpotIsReservedForThisPlate": "جای پارک {spot} برای این پلاک رزرو شده است.",
-  "@spotSpotIsReservedForThisPlate": {
-    "placeholders": {
-      "spot": {}
-    }
-  },
   "square": "مربع",
   "stackTrace": "ردیابی پشته",
   "staff": "کارکنان",
@@ -1448,11 +1493,6 @@
   "textSpacing": "فاصله متن",
   "thanksForYourReview": "از ثبت نظر شما ممنونیم",
   "theAccountUserNameIsValidButIsNotLinkedToAnyParkingYetAskTheParkingOwnerToAddYouAsAnOperator": "حساب {userName} معتبر است اما هنوز به هیچ پارکینگی متصل نشده. از صاحب پارکینگ بخواهید شما را به‌عنوان اپراتور اضافه کند.",
-  "@theAccountUserNameIsValidButIsNotLinkedToAnyParkingYetAskTheParkingOwnerToAddYouAsAnOperator": {
-    "placeholders": {
-      "userName": {}
-    }
-  },
   "theAmountWasSentToTheDevicesCardReaderDoNotCloseThisScreenUntilTheTransactionFinishes": "مبلغ روی کارت‌خوان دستگاه ارسال شد. تا پایان تراکنش صفحه را نبندید.",
   "theAmountWillBeAddedToTheWalletAndPaid": "مبلغ به کیف پول اضافه و پرداخت انجام می‌شود",
   "theCurrentPasswordIsWrong": "رمز فعلی نادرست است",
@@ -1463,31 +1503,15 @@
   "theEnteredVerificationCodeIsIncorrect": "کد تایید وارد شده صحیح نیست.",
   "theFinalPriceIsSetAtTheMomentTheOrderIsFilled": "قیمت نهایی در لحظه انجام سفارش تعیین می‌شود",
   "theFirstMinutesMinutesAreFree": "{minutes} دقیقه اول رایگان است.",
-  "@theFirstMinutesMinutesAreFree": {
-    "placeholders": {
-      "minutes": {}
-    }
-  },
   "theGoldServiceIsNotAvailableRightNow": "سرویس طلا در حال حاضر در دسترس نیست",
   "theme": "پوسته",
   "theNightRateAppliesBetweenFromAndTo": "از {from} تا {to} نرخ شبانه اعمال می‌شود.",
-  "@theNightRateAppliesBetweenFromAndTo": {
-    "placeholders": {
-      "from": {},
-      "to": {}
-    }
-  },
   "thePasswordsDoNotMatch": "رمزها یکسان نیستند",
   "thePaymentHasNotBeenConfirmedYet": "پرداخت هنوز تأیید نشده است",
   "thereIsNoSavedDataForThisVehicleToGetFreshDataYouMustPayTheInquiryFee": "برای این خودرو اطلاعاتی ذخیره نشده است. برای دریافت اطلاعات جدید باید هزینه استعلام را پرداخت کنید.",
   "theReservationWasCancelled": "رزرو لغو شد",
   "theShiftWasClosed": "شیفت بسته شد",
   "theSubscriptionExpiresInDaysDays": "اشتراک {days} روز دیگر تمام می‌شود.",
-  "@theSubscriptionExpiresInDaysDays": {
-    "placeholders": {
-      "days": {}
-    }
-  },
   "theSupportPasswordWasSentViaSmsToTheNumberRegisteredInTheApp": "رمز پشتیبان به شماره ثبت شده در اپلیکیشن پیامک شد.",
   "theTemporaryPasswordMustBeChangedAfterTheFirstSignIn": "رمز موقت پس از اولین ورود باید تغییر کند.",
   "theVideoMustBeAtLeast4Seconds": "ویدیو باید حداقل ۴ ثانیه باشد",
@@ -1610,11 +1634,6 @@
   "viewAll": "مشاهده همه",
   "viewDebt": "مشاهده بدهی",
   "viewItem": "مشاهده {item}",
-  "@viewItem": {
-    "placeholders": {
-      "item": {}
-    }
-  },
   "violation": "خلافی",
   "violationItems": "موارد خلافی",
   "violationsPlateAndLicense": "خلافی، پلاک و گواهینامه",
@@ -1656,11 +1675,6 @@
   "youHaveNoInvoices": "فاکتوری ندارید",
   "youHaveNoReservationsYet": "هنوز رزروی ثبت نکرده‌اید",
   "youHaveNotRegisteredAnyItemsYet": "تاکنون {items} ثبت نکرده‌اید",
-  "@youHaveNotRegisteredAnyItemsYet": {
-    "placeholders": {
-      "items": {}
-    }
-  },
   "youHaveNotSubmittedAnyTaxpayerRequestYet": "شما هنوز درخواستی برای مودی ثبت نکرده‌اید.",
   "youHaveToAcceptTheAgreementToContinue": "برای ادامه باید قرارداد را تایید کنید",
   "yourGoldBalanceIsNotEnough": "موجودی طلای شما کافی نیست",
@@ -1678,7 +1692,5 @@
   "yourWalletBalanceIsNotEnough": "موجودی کیف پول شما کافی نیست",
   "zipCode": "کد پستی",
   "zoomIn": "بزرگ‌نمایی",
-  "zoomOut": "کوچک‌نمایی",
-  "brands": "برند‌ها",
-  "brokers": "کارگذارها"
+  "zoomOut": "کوچک‌نمایی"
 }

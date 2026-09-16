@@ -69,6 +69,8 @@ class UTerminalUpdateParams {
   final String? terminalId;
   final String? insId;
   final String? merchantId;
+  final String? terminalBrandId;
+  final String? terminalBrokerId;
 
   UTerminalUpdateParams({
     required this.id,
@@ -79,6 +81,8 @@ class UTerminalUpdateParams {
     this.terminalId,
     this.insId,
     this.merchantId,
+    this.terminalBrandId,
+    this.terminalBrokerId,
   });
 
   factory UTerminalUpdateParams.fromJson(String str) => UTerminalUpdateParams.fromMap(json.decode(str));
@@ -94,6 +98,8 @@ class UTerminalUpdateParams {
     terminalId: json["terminalId"],
     insId: json["insId"],
     merchantId: json["merchantId"],
+    terminalBrandId: json["terminalBrandId"],
+    terminalBrokerId: json["terminalBrokerId"],
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -105,6 +111,8 @@ class UTerminalUpdateParams {
     "terminalId": terminalId,
     "insId": insId,
     "merchantId": merchantId,
+    "terminalBrandId": terminalBrandId,
+    "terminalBrokerId": terminalBrokerId,
   };
 }
 
@@ -444,11 +452,13 @@ class UTerminalBrandUpdateParams {
   final String id;
   final String? title;
   final String? model;
+  final List<int>? tags;
 
   UTerminalBrandUpdateParams({
     required this.id,
     this.title,
     this.model,
+    this.tags,
   });
 
   factory UTerminalBrandUpdateParams.fromJson(String str) => UTerminalBrandUpdateParams.fromMap(json.decode(str));
@@ -459,12 +469,14 @@ class UTerminalBrandUpdateParams {
     id: json["id"],
     title: json["title"],
     model: json["model"],
+    tags: json["tags"] == null ? null : List<int>.from(json["tags"]!.map((dynamic x) => x)),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "id": id,
     "title": title,
     "model": model,
+    "tags": tags == null ? null : List<dynamic>.from(tags!.map((int x) => x)),
   };
 }
 

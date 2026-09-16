@@ -309,6 +309,8 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
     final TextEditingController simCardSerial = TextEditingController(text: i.simCardSerial);
     final TextEditingController imei = TextEditingController(text: i.imei);
     final TextEditingController terminalId = TextEditingController(text: i.terminalId);
+    final Rxn<UTerminalBrandResponse> brand = Rxn<UTerminalBrandResponse>(i.terminalBrand);
+    final Rxn<UTerminalBrokerResponse> broker = Rxn<UTerminalBrokerResponse>(i.terminalBroker);
 
     UNavigator.dialog(
       AlertDialog(
@@ -336,6 +338,20 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                   UTextField(controller: simCardSerial, labelText: U.s.simCardSerial, margin: const EdgeInsets.symmetric(vertical: 6)),
                   UTextField(controller: imei, labelText: U.s.imei, margin: const EdgeInsets.symmetric(vertical: 6)),
                   UTextField(controller: terminalId, labelText: U.s.terminalId, margin: const EdgeInsets.symmetric(vertical: 6)),
+                  UTextFieldAutoCompleteAsync<UTerminalBrandResponse>(
+                    labelBuilder: (UTerminalBrandResponse x) => x.title,
+                    onChanged: brand.call,
+                    selectedItem: brand.value,
+                    fetchData: c.readBrand,
+                    hintText: U.s.brand,
+                  ).pSymmetric(vertical: 6),
+                  UTextFieldAutoCompleteAsync<UTerminalBrokerResponse>(
+                    labelBuilder: (UTerminalBrokerResponse x) => x.title,
+                    onChanged: broker.call,
+                    selectedItem: broker.value,
+                    fetchData: c.readBroker,
+                    hintText: U.s.broker,
+                  ).pSymmetric(vertical: 6),
                   const SizedBox(height: 20),
                   UButtonSubmitCancel(
                     onSubmit: () => UValidators.validateForm(
@@ -350,6 +366,8 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                             simCardSerial: simCardSerial.text.nullIfEmpty(),
                             imei: imei.text.nullIfEmpty(),
                             terminalId: terminalId.text.nullIfEmpty(),
+                            terminalBrandId: brand.value?.id,
+                            terminalBrokerId: broker.value?.id,
                           ),
                         );
                       },

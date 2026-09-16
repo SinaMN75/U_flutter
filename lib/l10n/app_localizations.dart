@@ -1520,6 +1520,12 @@ abstract class AppLocalizations {
   /// **'Connection to Network was Not possible'**
   String get connectionToNetworkWasNotPossible;
 
+  /// No description provided for @connectionType.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection Type'**
+  String get connectionType;
+
   /// No description provided for @contactInformation.
   ///
   /// In en, this message translates to:
@@ -2077,6 +2083,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Direct top up'**
   String get directTopUp;
+
+  /// No description provided for @deviceType.
+  ///
+  /// In en, this message translates to:
+  /// **'Device Type'**
+  String get deviceType;
 
   /// No description provided for @directions.
   ///
@@ -2815,6 +2827,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'First Name'**
   String get firstName;
+
+  /// No description provided for @firstSignatory.
+  ///
+  /// In en, this message translates to:
+  /// **'First Signatory'**
+  String get firstSignatory;
 
   /// No description provided for @fit.
   ///
@@ -4562,6 +4580,12 @@ abstract class AppLocalizations {
   /// **'New Folder'**
   String get newFolder;
 
+  /// No description provided for @newMerchantAgreement.
+  ///
+  /// In en, this message translates to:
+  /// **'New Merchant Agreement'**
+  String get newMerchantAgreement;
+
   /// No description provided for @newMessage.
   ///
   /// In en, this message translates to:
@@ -5828,6 +5852,12 @@ abstract class AppLocalizations {
   /// **'Print receipt'**
   String get printReceipt;
 
+  /// No description provided for @printTheAgreementSignItAndSendItByPost.
+  ///
+  /// In en, this message translates to:
+  /// **'Print the agreement, sign it and send it by post.'**
+  String get printTheAgreementSignItAndSendItByPost;
+
   /// No description provided for @printTheEntryReceiptAutomatically.
   ///
   /// In en, this message translates to:
@@ -6332,6 +6362,12 @@ abstract class AppLocalizations {
   /// **'Reports and accounts'**
   String get reportsAndAccounts;
 
+  /// No description provided for @representative.
+  ///
+  /// In en, this message translates to:
+  /// **'Representative'**
+  String get representative;
+
   /// No description provided for @request.
   ///
   /// In en, this message translates to:
@@ -6752,6 +6788,12 @@ abstract class AppLocalizations {
   /// **'seconds'**
   String get seconds;
 
+  /// No description provided for @secondSignatory.
+  ///
+  /// In en, this message translates to:
+  /// **'Second Signatory'**
+  String get secondSignatory;
+
   /// No description provided for @secretKey.
   ///
   /// In en, this message translates to:
@@ -6793,6 +6835,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select a user to manage their wallet'**
   String get selectAUserToManageTheirWallet;
+
+  /// No description provided for @selectBrand.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Brand'**
+  String get selectBrand;
+
+  /// No description provided for @selectBroker.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Broker'**
+  String get selectBroker;
 
   /// No description provided for @selectCountry.
   ///
@@ -7009,6 +7063,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Shuffle'**
   String get shuffle;
+
+  /// No description provided for @signatoryName.
+  ///
+  /// In en, this message translates to:
+  /// **'Signatory Name'**
+  String get signatoryName;
 
   /// No description provided for @signature.
   ///
@@ -8828,11 +8888,23 @@ abstract class AppLocalizations {
   /// **'Zoom out'**
   String get zoomOut;
 
+  /// No description provided for @brand.
+  ///
+  /// In en, this message translates to:
+  /// **'Brand'**
+  String get brand;
+
   /// No description provided for @brands.
   ///
   /// In en, this message translates to:
   /// **'Brands'**
   String get brands;
+
+  /// No description provided for @broker.
+  ///
+  /// In en, this message translates to:
+  /// **'Broker'**
+  String get broker;
 
   /// No description provided for @brokers.
   ///

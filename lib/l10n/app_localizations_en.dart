@@ -733,6 +733,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get connectionToNetworkWasNotPossible => 'Connection to Network was Not possible';
 
   @override
+  String get connectionType => 'Connection Type';
+
+  @override
   String get contactInformation => 'Contact Information';
 
   @override
@@ -1036,6 +1039,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get directTopUp => 'Direct top up';
+
+  @override
+  String get deviceType => 'Device Type';
 
   @override
   String get directions => 'Directions';
@@ -1424,6 +1430,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get firstName => 'First Name';
+
+  @override
+  String get firstSignatory => 'First Signatory';
 
   @override
   String get fit => 'Fit';
@@ -2305,6 +2314,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get newFolder => 'New Folder';
 
   @override
+  String get newMerchantAgreement => 'New Merchant Agreement';
+
+  @override
   String get newMessage => 'New message';
 
   @override
@@ -2944,6 +2956,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get printReceipt => 'Print receipt';
 
   @override
+  String get printTheAgreementSignItAndSendItByPost => 'Print the agreement, sign it and send it by post.';
+
+  @override
   String get printTheEntryReceiptAutomatically => 'Print the entry receipt automatically';
 
   @override
@@ -3198,6 +3213,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reportsAndAccounts => 'Reports and accounts';
 
   @override
+  String get representative => 'Representative';
+
+  @override
   String get request => 'Request';
 
   @override
@@ -3410,6 +3428,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get seconds => 'seconds';
 
   @override
+  String get secondSignatory => 'Second Signatory';
+
+  @override
   String get secretKey => 'Secret Key';
 
   @override
@@ -3431,6 +3452,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get selectAUserToManageTheirWallet => 'Select a user to manage their wallet';
+
+  @override
+  String get selectBrand => 'Select Brand';
+
+  @override
+  String get selectBroker => 'Select Broker';
 
   @override
   String get selectCountry => 'Select Country';
@@ -3541,6 +3568,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get shuffle => 'Shuffle';
+
+  @override
+  String get signatoryName => 'Signatory Name';
 
   @override
   String get signature => 'Signature';
@@ -4468,7 +4498,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get zoomOut => 'Zoom out';
 
   @override
+  String get brand => 'Brand';
+
+  @override
   String get brands => 'Brands';
+
+  @override
+  String get broker => 'Broker';
 
   @override
   String get brokers => 'Brokers';
