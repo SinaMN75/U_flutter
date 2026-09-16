@@ -50,8 +50,6 @@ class UIpgPayParams {
   factory UIpgPayParams.fromJson(String str) => UIpgPayParams.fromMap(json.decode(str));
 }
 
-typedef UIpgSaleParams = UIpgPayParams;
-
 class UIpgMultiplexedAccountParams {
   final String iban;
   final double amount;
