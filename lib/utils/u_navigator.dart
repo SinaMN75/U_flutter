@@ -558,6 +558,7 @@ abstract class UNavigator {
             (UNavAction action) => ListTile(
               enabled: action.enabled,
               leading: action.icon != null ? Icon(action.icon, color: action.isDestructive ? Theme.of(context).colorScheme.error : null) : null,
+              trailing: Icon(Icons.arrow_forward_ios, color: action.isDestructive ? Theme.of(context).colorScheme.error: null),
               title: UTextBodyLarge(action.label, color: action.isDestructive ? Theme.of(context).colorScheme.error : null),
               onTap: action.onTap,
             ),
