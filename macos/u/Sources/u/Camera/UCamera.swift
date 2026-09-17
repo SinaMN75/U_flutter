@@ -1,5 +1,6 @@
 import AVFoundation
 import CoreImage
+import ImageIO
 import Vision
 
 #if os(iOS)
@@ -74,6 +75,7 @@ enum UCameraMapper {
         }
     }
 
+    @available(macOS 13.0, *)
     static func metadataTypes(for formats: [String]) -> [AVMetadataObject.ObjectType] {
         var types: [AVMetadataObject.ObjectType] = []
         let wanted = formats.isEmpty ? allFormatNames : formats
@@ -102,6 +104,7 @@ enum UCameraMapper {
         "qr", "aztec", "dataMatrix", "pdf417", "code128", "code39", "code93", "itf", "ean13", "ean8", "upcE", "codabar",
     ]
 
+    @available(macOS 13.0, *)
     static func formatName(_ type: AVMetadataObject.ObjectType) -> String {
         switch type {
         case .qr: return "qr"
@@ -132,8 +135,9 @@ enum UCameraMapper {
         case .ean13: return "ean13"
         case .ean8: return "ean8"
         case .upce: return "upcE"
-        case .codabar: return "codabar"
-        default: return "unknown"
+        default:
+            if #available(iOS 15.0, macOS 12.0, *), symbology == .codabar { return "codabar" }
+            return "unknown"
         }
     }
 }
@@ -158,7 +162,7 @@ public final class UCameraSession: NSObject {
     private var photoOutput = AVCapturePhotoOutput()
     private var videoOutput = AVCaptureVideoDataOutput()
     private var movieOutput = AVCaptureMovieFileOutput()
-    private var metadataOutput = AVCaptureMetadataOutput()
+    private var metadataOutput: AVCaptureOutput?
 
     private var textureId: Int64 = -1
     private var latestBuffer: CVPixelBuffer?
@@ -233,9 +237,13 @@ public final class UCameraSession: NSObject {
 
             if self.session.canAddOutput(self.photoOutput) { self.session.addOutput(self.photoOutput) }
             if self.session.canAddOutput(self.movieOutput) { self.session.addOutput(self.movieOutput) }
-            if self.session.canAddOutput(self.metadataOutput) {
-                self.session.addOutput(self.metadataOutput)
-                self.metadataOutput.setMetadataObjectsDelegate(self, queue: self.frameQueue)
+            if #available(macOS 13.0, *) {
+                let output = AVCaptureMetadataOutput()
+                if self.session.canAddOutput(output) {
+                    self.session.addOutput(output)
+                    output.setMetadataObjectsDelegate(self, queue: self.frameQueue)
+                    self.metadataOutput = output
+                }
             }
 
             self.session.commitConfiguration()
@@ -297,7 +305,9 @@ public final class UCameraSession: NSObject {
             guard let self else { return }
             if self.session.isRunning { self.session.stopRunning() }
             self.videoOutput.setSampleBufferDelegate(nil, queue: nil)
-            self.metadataOutput.setMetadataObjectsDelegate(nil, queue: nil)
+            if #available(macOS 13.0, *) {
+                (self.metadataOutput as? AVCaptureMetadataOutput)?.setMetadataObjectsDelegate(nil, queue: nil)
+            }
             DispatchQueue.main.async {
                 if self.textureId >= 0 { self.registry.unregisterTexture(self.textureId) }
                 self.textureId = -1
@@ -354,34 +364,52 @@ public final class UCameraSession: NSObject {
             hdr = device.activeFormat.isVideoHDRSupported
         #endif
 
+        #if os(iOS)
+            let manualExposure = device.isExposureModeSupported(.custom)
+            let manualFocus = device.isLockingFocusWithCustomLensPositionSupported
+            let exposureOffset = range(Double(device.minExposureTargetBias), Double(device.maxExposureTargetBias))
+            let iso = range(Double(device.activeFormat.minISO), Double(device.activeFormat.maxISO), supported: manualExposure)
+            let exposureDuration = range(
+                CMTimeGetSeconds(device.activeFormat.minExposureDuration) * 1000,
+                CMTimeGetSeconds(device.activeFormat.maxExposureDuration) * 1000,
+                supported: manualExposure
+            )
+            let temperature = range(2000, 8000, supported: device.isWhiteBalanceModeSupported(.locked))
+            let depthCapture = photoOutput.isDepthDataDeliverySupported
+        #else
+            let manualExposure = false
+            let manualFocus = false
+            let exposureOffset = range(0, 0, supported: false)
+            let iso = range(0, 0, supported: false)
+            let exposureDuration = range(0, 0, supported: false)
+            let temperature = range(0, 0, supported: false)
+            let depthCapture = false
+        #endif
+
         return [
             "flash": device.hasFlash,
             "torch": device.hasTorch,
             "zoom": range(1, maxZoom, supported: maxZoom > 1),
-            "exposureOffset": range(Double(device.minExposureTargetBias), Double(device.maxExposureTargetBias)),
-            "iso": range(Double(device.activeFormat.minISO), Double(device.activeFormat.maxISO), supported: device.isExposureModeSupported(.custom)),
-            "exposureDuration": range(
-                CMTimeGetSeconds(device.activeFormat.minExposureDuration) * 1000,
-                CMTimeGetSeconds(device.activeFormat.maxExposureDuration) * 1000,
-                supported: device.isExposureModeSupported(.custom)
-            ),
-            "focusDistance": range(0, 1, supported: device.isLockingFocusWithCustomLensPositionSupported),
-            "temperature": range(2000, 8000, supported: device.isWhiteBalanceModeSupported(.locked)),
+            "exposureOffset": exposureOffset,
+            "iso": iso,
+            "exposureDuration": exposureDuration,
+            "focusDistance": range(0, 1, supported: manualFocus),
+            "temperature": temperature,
             "focusPoint": device.isFocusPointOfInterestSupported,
             "exposurePoint": device.isExposurePointOfInterestSupported,
-            "manualFocus": device.isLockingFocusWithCustomLensPositionSupported,
-            "manualExposure": device.isExposureModeSupported(.custom),
+            "manualFocus": manualFocus,
+            "manualExposure": manualExposure,
             "whiteBalance": device.isWhiteBalanceModeSupported(.locked),
             "stabilization": stabilization,
             "hdr": hdr,
             "nightMode": false,
             "rawCapture": !photoOutput.availableRawPhotoPixelFormatTypes.isEmpty,
-            "depthCapture": photoOutput.isDepthDataDeliverySupported,
+            "depthCapture": depthCapture,
             "videoRecording": true,
             "pauseRecording": false,
             "audioRecording": true,
             "imageStream": true,
-            "platformScanning": true,
+            "platformScanning": metadataOutput != nil,
             "multiCamera": false,
             "pictureInPicture": false,
             "lensSwitching": false,
@@ -447,9 +475,12 @@ public final class UCameraSession: NSObject {
     }
 
     public func setExposureOffset(_ offset: Double) {
-        configure { device in
-            device.setExposureTargetBias(Float(offset), completionHandler: nil)
-        }
+        #if os(iOS)
+            configure { device in
+                let clamped = max(device.minExposureTargetBias, min(Float(offset), device.maxExposureTargetBias))
+                device.setExposureTargetBias(clamped, completionHandler: nil)
+            }
+        #endif
     }
 
     public func setExposureMode(_ mode: String?) {
@@ -496,43 +527,53 @@ public final class UCameraSession: NSObject {
     }
 
     public func setFocusDistance(_ distance: Double) {
-        configure { device in
-            guard device.isLockingFocusWithCustomLensPositionSupported else { return }
-            device.setFocusModeLocked(lensPosition: Float(max(0, min(1, distance))), completionHandler: nil)
-        }
+        #if os(iOS)
+            configure { device in
+                guard device.isLockingFocusWithCustomLensPositionSupported else { return }
+                device.setFocusModeLocked(lensPosition: Float(max(0, min(1, distance))), completionHandler: nil)
+            }
+        #endif
     }
 
     public func setIso(_ iso: Double) {
-        configure { device in
-            guard device.isExposureModeSupported(.custom) else { return }
-            let clamped = Float(max(Double(device.activeFormat.minISO), min(iso, Double(device.activeFormat.maxISO))))
-            device.setExposureModeCustom(duration: AVCaptureDevice.currentExposureDuration, iso: clamped, completionHandler: nil)
-        }
+        #if os(iOS)
+            configure { device in
+                guard device.isExposureModeSupported(.custom) else { return }
+                let clamped = Float(max(Double(device.activeFormat.minISO), min(iso, Double(device.activeFormat.maxISO))))
+                device.setExposureModeCustom(duration: AVCaptureDevice.currentExposureDuration, iso: clamped, completionHandler: nil)
+            }
+        #endif
     }
 
     public func setExposureDuration(micros: Int64) {
-        configure { device in
-            guard device.isExposureModeSupported(.custom) else { return }
-            let duration = CMTimeMake(value: micros, timescale: 1_000_000)
-            device.setExposureModeCustom(duration: duration, iso: AVCaptureDevice.currentISO, completionHandler: nil)
-        }
+        #if os(iOS)
+            configure { device in
+                guard device.isExposureModeSupported(.custom) else { return }
+                let format = device.activeFormat
+                let requested = CMTimeMake(value: micros, timescale: 1_000_000)
+                let duration = CMTimeClampToRange(requested, range: CMTimeRange(start: format.minExposureDuration, end: format.maxExposureDuration))
+                device.setExposureModeCustom(duration: duration, iso: AVCaptureDevice.currentISO, completionHandler: nil)
+            }
+        #endif
     }
 
     public func setWhiteBalance(_ mode: String?, temperature: Double?) {
         configure { device in
             if mode == "locked" || mode == "manual" {
                 guard device.isWhiteBalanceModeSupported(.locked) else { return }
-                if let temperature {
-                    let values = AVCaptureDevice.WhiteBalanceTemperatureAndTintValues(temperature: Float(temperature), tint: 0)
-                    var gains = device.deviceWhiteBalanceGains(for: values)
-                    let maxGain = device.maxWhiteBalanceGain
-                    gains.redGain = max(1, min(gains.redGain, maxGain))
-                    gains.greenGain = max(1, min(gains.greenGain, maxGain))
-                    gains.blueGain = max(1, min(gains.blueGain, maxGain))
-                    device.setWhiteBalanceModeLocked(with: gains, completionHandler: nil)
-                } else {
-                    device.whiteBalanceMode = .locked
-                }
+                #if os(iOS)
+                    if let temperature {
+                        let values = AVCaptureDevice.WhiteBalanceTemperatureAndTintValues(temperature: Float(temperature), tint: 0)
+                        var gains = device.deviceWhiteBalanceGains(for: values)
+                        let maxGain = device.maxWhiteBalanceGain
+                        gains.redGain = max(1, min(gains.redGain, maxGain))
+                        gains.greenGain = max(1, min(gains.greenGain, maxGain))
+                        gains.blueGain = max(1, min(gains.blueGain, maxGain))
+                        device.setWhiteBalanceModeLocked(with: gains, completionHandler: nil)
+                        return
+                    }
+                #endif
+                device.whiteBalanceMode = .locked
             } else if device.isWhiteBalanceModeSupported(.continuousAutoWhiteBalance) {
                 device.whiteBalanceMode = .continuousAutoWhiteBalance
             }
@@ -698,15 +739,18 @@ public final class UCameraSession: NSObject {
 
     public func startScanning(formats: [String]) {
         queue.async { [weak self] in
-            guard let self else { return }
+            guard #available(macOS 13.0, *), let output = self?.metadataOutput as? AVCaptureMetadataOutput else { return }
             let types = UCameraMapper.metadataTypes(for: formats)
-            let available = self.metadataOutput.availableMetadataObjectTypes
-            self.metadataOutput.metadataObjectTypes = types.filter { available.contains($0) }
+            let available = output.availableMetadataObjectTypes
+            output.metadataObjectTypes = types.filter { available.contains($0) }
         }
     }
 
     public func stopScanning() {
-        queue.async { [weak self] in self?.metadataOutput.metadataObjectTypes = [] }
+        queue.async { [weak self] in
+            guard #available(macOS 13.0, *), let output = self?.metadataOutput as? AVCaptureMetadataOutput else { return }
+            output.metadataObjectTypes = []
+        }
     }
 
     static func temporaryFile(extension ext: String) -> String {
@@ -794,6 +838,7 @@ extension UCameraSession: AVCaptureVideoDataOutputSampleBufferDelegate {
 
 // MARK: - Barcodes
 
+@available(macOS 13.0, *)
 extension UCameraSession: AVCaptureMetadataOutputObjectsDelegate {
     public func metadataOutput(
         _: AVCaptureMetadataOutput,
@@ -918,8 +963,12 @@ enum UCameraImageCodec {
 enum UCameraEnumerator {
     static func describe(_ device: AVCaptureDevice) -> [String: Any] {
         var maxZoom = 1.0
+        var isLogical = false
+        var physicalDeviceIds: [String] = []
         #if os(iOS)
             maxZoom = Double(device.activeFormat.videoMaxZoomFactor)
+            isLogical = device.isVirtualDevice
+            physicalDeviceIds = device.constituentDevices.map(\.uniqueID)
         #endif
         let formats = device.formats.map { format -> [String: Any] in
             let dimensions = CMVideoFormatDescriptionGetDimensions(format.formatDescription)
@@ -936,8 +985,8 @@ enum UCameraEnumerator {
             "lens": UCameraMapper.lensName(device),
             "sensorOrientation": 0,
             "hasFlash": device.hasFlash,
-            "isLogical": device.isVirtualDevice,
-            "physicalDeviceIds": device.constituentDevices.map(\.uniqueID),
+            "isLogical": isLogical,
+            "physicalDeviceIds": physicalDeviceIds,
             "focalLengths": [] as [Double],
             "minFocusDistance": 0.0,
             "formats": formats,
