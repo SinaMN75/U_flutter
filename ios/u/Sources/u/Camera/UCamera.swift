@@ -93,7 +93,7 @@ enum UCameraMapper {
             case "ean8": types.append(.ean8)
             case "upcE": types.append(.upce)
             case "codabar":
-                if #available(iOS 15.4, macOS 12.3, *) { types.append(.codabar) }
+                if #available(iOS 15.4, *) { types.append(.codabar) }
             default: break
             }
         }
