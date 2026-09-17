@@ -1,25 +1,58 @@
-import "package:mobile_scanner/mobile_scanner.dart";
-import "package:u/utilities.dart" hide CameraLensType;
+import "package:u/utilities.dart";
+
+// =============================================================================
+// u_scanner — barcode / QR scanning UI of the `u` plugin.
+//
+// Built on [UCameraController] and the bundled Dart decode engine, so it reads
+// the same symbologies on all six platforms with no native decoder and no
+// downloadable model. Every visual element is configurable.
+// =============================================================================
 
 enum UScannerHintPosition { top, bottom }
+
+/// How aggressively frames are decoded. Slower settings cost less battery.
+enum UScanSpeed { unrestricted, normal, slow }
+
+extension UScanSpeedX on UScanSpeed {
+  Duration get interval {
+    switch (this) {
+      case UScanSpeed.unrestricted:
+        return const Duration(milliseconds: 40);
+      case UScanSpeed.normal:
+        return const Duration(milliseconds: 120);
+      case UScanSpeed.slow:
+        return const Duration(milliseconds: 400);
+    }
+  }
+
+  double get maxFps {
+    switch (this) {
+      case UScanSpeed.unrestricted:
+        return 24;
+      case UScanSpeed.normal:
+        return 12;
+      case UScanSpeed.slow:
+        return 5;
+    }
+  }
+}
 
 class UScanner extends StatefulWidget {
   const UScanner({
     this.onScan,
-    this.onCapture,
-    this.onBarcodes,
+    this.onCodes,
     this.onScanError,
     this.controller,
     this.autoStart = true,
-    this.cameraResolution,
-    this.lensType = CameraLensType.any,
-    this.detectionSpeed = DetectionSpeed.normal,
-    this.detectionTimeoutMs = 250,
-    this.facing = CameraFacing.back,
-    this.formats = const <BarcodeFormat>[],
-    this.returnImage = false,
+    this.facing = UCameraFacing.back,
+    this.resolution = UCameraResolution.high,
+    this.lensType,
+    this.speed = UScanSpeed.normal,
+    this.dedupeWindow = const Duration(milliseconds: 1500),
+    this.formats = const <UCodeFormat>[],
+    this.engine = UScanEngine.auto,
     this.torchEnabled = false,
-    this.invertImage = false,
+    this.tryInvert = false,
     this.autoZoom = false,
     this.initialZoom,
     this.fit = BoxFit.cover,
@@ -27,10 +60,10 @@ class UScanner extends StatefulWidget {
     this.placeholderBuilder,
     this.overlayBuilder,
     this.scanWindow,
-    this.restrictToScanWindow = false,
-    this.scanWindowUpdateThreshold = 0.0,
+    this.restrictToScanWindow = true,
     this.useAppLifecycleState = true,
-    this.tapToFocus = false,
+    this.tapToFocus = true,
+    this.pinchToZoom = true,
     this.singleScan = true,
     this.hapticOnScan = true,
     this.showOverlay = true,
@@ -46,6 +79,7 @@ class UScanner extends StatefulWidget {
     this.scanLineColor,
     this.scanLineThickness = 2,
     this.scanLineDuration = const Duration(seconds: 2),
+    this.showTrackingBoxes = false,
     this.hintText,
     this.showHint = true,
     this.hintTextStyle,
@@ -58,6 +92,7 @@ class UScanner extends StatefulWidget {
     this.showTorchButton = true,
     this.showSwitchCameraButton = true,
     this.showGalleryButton = false,
+    this.showZoomSlider = false,
     this.controlsAlignment = Alignment.bottomCenter,
     this.controlsSpacing = 24,
     this.controlsPadding = const EdgeInsets.only(bottom: 40),
@@ -73,54 +108,49 @@ class UScanner extends StatefulWidget {
     super.key,
   });
 
-  /// Called with the raw value of the first detected barcode.
+  /// Called with the raw value of the first symbol in each detection.
   final ValueChanged<String>? onScan;
 
-  /// Called with the full [BarcodeCapture] for every detection.
-  final ValueChanged<BarcodeCapture>? onCapture;
-
-  /// Called with the raw list of [Barcode]s for every detection.
-  final ValueChanged<List<Barcode>>? onBarcodes;
-
-  /// Called when the scanner throws while decoding.
+  /// Called with every symbol in each detection, with geometry and metadata.
+  final ValueChanged<List<UCode>>? onCodes;
   final void Function(Object error, StackTrace stackTrace)? onScanError;
 
-  /// External controller. When provided, the controller-configuration fields
-  /// (facing, formats, torchEnabled, ...) are ignored in favor of this instance.
-  final MobileScannerController? controller;
+  /// External controller. When given, the session options below are ignored.
+  final UCameraController? controller;
 
   final bool autoStart;
-  final Size? cameraResolution;
-  final CameraLensType lensType;
-  final DetectionSpeed detectionSpeed;
-  final int detectionTimeoutMs;
-  final CameraFacing facing;
-  final List<BarcodeFormat> formats;
-  final bool returnImage;
+  final UCameraFacing facing;
+  final UCameraResolution resolution;
+  final UCameraLens? lensType;
+  final UScanSpeed speed;
+  final Duration dedupeWindow;
+
+  /// Empty means every supported symbology. Restricting this is the single
+  /// biggest speed win available.
+  final List<UCodeFormat> formats;
+  final UScanEngine engine;
   final bool torchEnabled;
-  final bool invertImage;
+
+  /// Also try the inverted image, for light-on-dark symbols.
+  final bool tryInvert;
   final bool autoZoom;
   final double? initialZoom;
 
   final BoxFit fit;
-  final Widget Function(BuildContext, MobileScannerException)? errorBuilder;
+  final Widget Function(BuildContext context, UCameraException error)? errorBuilder;
   final WidgetBuilder? placeholderBuilder;
   final LayoutWidgetBuilder? overlayBuilder;
 
-  /// Explicit detection window. Overrides [restrictToScanWindow].
+  /// Explicit detection window in widget coordinates. Overrides
+  /// [restrictToScanWindow] plus [scanWindowSize].
   final Rect? scanWindow;
-
-  /// When true (and [scanWindow] is null) the detection is limited to the
-  /// centered [scanWindowSize] rectangle.
   final bool restrictToScanWindow;
-  final double scanWindowUpdateThreshold;
   final bool useAppLifecycleState;
   final bool tapToFocus;
+  final bool pinchToZoom;
 
   /// Stop reporting after the first successful scan.
   final bool singleScan;
-
-  /// Fire a haptic pulse when a code is scanned.
   final bool hapticOnScan;
 
   final bool showOverlay;
@@ -137,6 +167,9 @@ class UScanner extends StatefulWidget {
   final double scanLineThickness;
   final Duration scanLineDuration;
 
+  /// Draws a live box around each detected symbol.
+  final bool showTrackingBoxes;
+
   final String? hintText;
   final bool showHint;
   final TextStyle? hintTextStyle;
@@ -150,6 +183,7 @@ class UScanner extends StatefulWidget {
   final bool showTorchButton;
   final bool showSwitchCameraButton;
   final bool showGalleryButton;
+  final bool showZoomSlider;
   final Alignment controlsAlignment;
   final double controlsSpacing;
   final EdgeInsets controlsPadding;
@@ -167,60 +201,120 @@ class UScanner extends StatefulWidget {
   State<UScanner> createState() => _UScannerState();
 }
 
-class _UScannerState extends State<UScanner> with SingleTickerProviderStateMixin {
-  late MobileScannerController _controller;
+class _UScannerState extends State<UScanner> with SingleTickerProviderStateMixin, WidgetsBindingObserver {
+  UCameraController? _controller;
   late bool _ownsController;
   AnimationController? _lineController;
+  StreamSubscription<List<UCode>>? _codes;
+  List<UCode> _tracked = const <UCode>[];
   bool _handled = false;
+  double _baseZoom = 1;
+  UCameraException? _error;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    if (widget.showScanLine) {
+      _lineController = AnimationController(vsync: this, duration: widget.scanLineDuration)..repeat(reverse: true);
+    }
     _ownsController = widget.controller == null;
-    _controller =
-        widget.controller ??
-        MobileScannerController(
-          autoStart: widget.autoStart,
-          cameraResolution: widget.cameraResolution,
-          lensType: widget.lensType,
-          detectionSpeed: widget.detectionSpeed,
-          detectionTimeoutMs: widget.detectionTimeoutMs,
-          facing: widget.facing,
-          formats: widget.formats,
-          returnImage: widget.returnImage,
-          torchEnabled: widget.torchEnabled,
-          invertImage: widget.invertImage,
-          autoZoom: widget.autoZoom,
-          initialZoom: widget.initialZoom,
-        );
-    if (widget.showScanLine) _lineController = AnimationController(vsync: this, duration: widget.scanLineDuration)..repeat(reverse: true);
+    unawaited(_bootstrap());
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _lineController?.dispose();
-    if (_ownsController) _controller.dispose();
+    unawaited(_codes?.cancel());
+    if (_ownsController) unawaited(_controller?.dispose());
     super.dispose();
   }
 
-  void _onDetect(BarcodeCapture capture) {
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (!widget.useAppLifecycleState) return;
+    final UCameraController? controller = _controller;
+    if (controller == null || !_ownsController) return;
+    if (state == AppLifecycleState.inactive || state == AppLifecycleState.paused) {
+      unawaited(controller.suspend());
+    } else if (state == AppLifecycleState.resumed) {
+      unawaited(controller.resume());
+    }
+  }
+
+  Future<void> _bootstrap() async {
+    UCameraController? controller = widget.controller;
+    if (controller == null) {
+      final UCameraPermissionState permission = await UCameraController.requestPermission();
+      if (!permission.isGranted) {
+        if (mounted) setState(() => _error = const UCameraException(code: UCameraErrorCode.permission, message: "Camera permission denied"));
+        return;
+      }
+      controller = UCameraController(
+        config: UCameraConfig(
+          facing: widget.facing,
+          lens: widget.lensType,
+          resolution: widget.resolution,
+          enableAudio: false,
+          flash: widget.torchEnabled ? UFlashMode.torch : UFlashMode.off,
+          initialZoom: widget.initialZoom,
+          scanning: widget.autoStart,
+          scanEngine: widget.engine,
+          scanOptions: UCodeScanOptions(formats: widget.formats, multiple: !widget.singleScan, tryInvert: widget.tryInvert),
+          scanInterval: widget.speed.interval,
+          scanDedupeWindow: widget.dedupeWindow,
+          frameMaxFps: widget.speed.maxFps,
+        ),
+      );
+      await controller.initialize();
+    } else if (widget.autoStart && !controller.value.isScanning) {
+      await controller.startScanning();
+    }
+
+    if (!mounted) {
+      if (_ownsController) await controller.dispose();
+      return;
+    }
+    _codes = controller.codes.listen(_onCodes, onError: (Object error, StackTrace stackTrace) => widget.onScanError?.call(error, stackTrace));
+    setState(() {
+      _controller = controller;
+      _error = controller!.value.error;
+    });
+  }
+
+  void _onCodes(List<UCode> codes) {
+    if (codes.isEmpty) return;
     if (widget.singleScan && _handled) return;
-    if (capture.barcodes.isEmpty) return;
-    widget.onCapture?.call(capture);
-    widget.onBarcodes?.call(capture.barcodes);
-    final String? raw = capture.barcodes.first.rawValue;
-    if (raw == null || raw.isEmpty) return;
+    if (widget.showTrackingBoxes && mounted) setState(() => _tracked = codes);
+    widget.onCodes?.call(codes);
+    final String text = codes.first.text;
+    if (text.isEmpty) return;
     if (widget.singleScan) _handled = true;
-    if (widget.hapticOnScan) HapticFeedback.mediumImpact();
-    widget.onScan?.call(raw);
+    if (widget.hapticOnScan) unawaited(HapticFeedback.mediumImpact());
+    widget.onScan?.call(text);
   }
 
   Future<void> _scanFromGallery() async {
     final List<FileData> files = await UFile.showImagePicker(source: UImageSource.gallery);
-    final String? path = files.isNotEmpty ? files.first.path : null;
-    if (path == null) return;
-    final BarcodeCapture? capture = await _controller.analyzeImage(path, formats: widget.formats);
-    if (capture != null) _onDetect(capture);
+    if (files.isEmpty) return;
+    final List<UCode> codes = await UCameraController.analyzeImage(
+      path: files.first.path,
+      bytes: files.first.bytes,
+      options: UCodeScanOptions(formats: widget.formats, multiple: !widget.singleScan, tryInvert: true),
+      engine: widget.engine,
+    );
+    if (codes.isEmpty) {
+      UToast.warning(message: U.s.noBarcodeWasFoundInTheImage);
+      return;
+    }
+    _onCodes(codes);
+  }
+
+  /// Clears the single-scan latch so the same code can fire again.
+  void resume() {
+    _handled = false;
+    _controller?.resetScanHistory();
   }
 
   Color get _controlIconColor => widget.controlIconColor ?? Theme.of(context).colorScheme.onSurface;
@@ -241,26 +335,20 @@ class _UScannerState extends State<UScanner> with SingleTickerProviderStateMixin
     return tooltip == null ? button : Tooltip(message: tooltip, child: button);
   }
 
-  Widget _buildControls() => ValueListenableBuilder<MobileScannerState>(
-    valueListenable: _controller,
-    builder: (BuildContext context, MobileScannerState state, Widget? child) {
-      final bool torchOn = state.torchState == TorchState.on;
-      return Row(
-        mainAxisSize: MainAxisSize.min,
-        spacing: widget.controlsSpacing,
-        children: <Widget>[
-          if (widget.showGalleryButton) _controlButton(icon: widget.galleryIcon, tooltip: U.s.scanFromGallery, onTap: _scanFromGallery),
-          if (widget.showTorchButton)
-            _controlButton(
-              icon: torchOn ? widget.torchOnIcon : widget.torchOffIcon,
-              tooltip: U.s.flashlight,
-              color: torchOn ? (widget.controlActiveIconColor ?? Theme.of(context).colorScheme.primary) : null,
-              onTap: _controller.toggleTorch,
-            ),
-          if (widget.showSwitchCameraButton) _controlButton(icon: widget.switchCameraIcon, tooltip: U.s.switchCamera, onTap: _controller.switchCamera),
-        ],
-      );
-    },
+  Widget _buildControls(UCameraController controller, UCameraValue value) => Row(
+    mainAxisSize: MainAxisSize.min,
+    spacing: widget.controlsSpacing,
+    children: <Widget>[
+      if (widget.showGalleryButton) _controlButton(icon: widget.galleryIcon, tooltip: U.s.scanFromGallery, onTap: () => unawaited(_scanFromGallery())),
+      if (widget.showTorchButton && value.capabilities.torch)
+        _controlButton(
+          icon: value.torchOn ? widget.torchOnIcon : widget.torchOffIcon,
+          tooltip: U.s.flashlight,
+          color: value.torchOn ? (widget.controlActiveIconColor ?? Theme.of(context).colorScheme.primary) : null,
+          onTap: () => unawaited(controller.toggleTorch()),
+        ),
+      if (widget.showSwitchCameraButton) _controlButton(icon: widget.switchCameraIcon, tooltip: U.s.switchCamera, onTap: () => unawaited(controller.switchCamera())),
+    ],
   );
 
   Widget _buildHint() => UContainer(
@@ -275,83 +363,156 @@ class _UScannerState extends State<UScanner> with SingleTickerProviderStateMixin
   );
 
   @override
-  Widget build(BuildContext context) => LayoutBuilder(
-    builder: (BuildContext context, BoxConstraints constraints) {
-      final Rect window =
-          widget.scanWindow ??
-          Rect.fromCenter(
-            center: Offset(constraints.maxWidth / 2, constraints.maxHeight / 2),
-            width: widget.scanWindowSize.width,
-            height: widget.scanWindowSize.height,
-          );
-      final Rect? detectionWindow = widget.scanWindow ?? (widget.restrictToScanWindow ? window : null);
-      final Color borderColor = widget.borderColor ?? Theme.of(context).colorScheme.primary;
-      return Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          MobileScanner(
-            controller: _controller,
-            onDetect: _onDetect,
-            onDetectError: widget.onScanError ?? (Object error, StackTrace stackTrace) {},
-            fit: widget.fit,
-            errorBuilder: widget.errorBuilder,
-            placeholderBuilder: widget.placeholderBuilder,
-            overlayBuilder: widget.overlayBuilder,
-            scanWindow: detectionWindow,
-            scanWindowUpdateThreshold: widget.scanWindowUpdateThreshold,
-            useAppLifecycleState: widget.useAppLifecycleState,
-            tapToFocus: widget.tapToFocus,
-          ),
-          if (widget.showOverlay && widget.overlayBuilder == null)
-            CustomPaint(
-              size: Size(constraints.maxWidth, constraints.maxHeight),
-              painter: _UScannerOverlayPainter(
-                window: window,
-                overlayColor: widget.overlayColor ?? Theme.of(context).colorScheme.scrim.withValues(alpha: 0.5),
-                borderColor: borderColor,
-                borderWidth: widget.borderWidth,
-                borderRadius: widget.borderRadius,
-                cornerLength: widget.cornerLength,
-                showCorners: widget.showCorners,
-                showFullBorder: widget.showFullBorder,
+  Widget build(BuildContext context) {
+    final UCameraException? error = _error;
+    if (error != null) {
+      return widget.errorBuilder?.call(context, error) ??
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const Icon(Icons.no_photography_outlined, size: 48),
+                  const SizedBox(height: 12),
+                  Text(error.message, textAlign: TextAlign.center),
+                  const SizedBox(height: 16),
+                  UButton(title: U.s.retry, onTap: () => unawaited(_bootstrap())),
+                ],
               ),
             ),
-          if (widget.showScanLine && _lineController != null)
-            AnimatedBuilder(
-              animation: _lineController!,
-              builder: (BuildContext context, Widget? child) {
-                final double y = window.top + widget.borderWidth + (window.height - 2 * widget.borderWidth) * _lineController!.value;
-                return Positioned(
-                  left: window.left + widget.borderWidth,
-                  top: y,
-                  width: window.width - 2 * widget.borderWidth,
-                  height: widget.scanLineThickness,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: widget.scanLineColor ?? borderColor,
-                      boxShadow: <BoxShadow>[BoxShadow(color: (widget.scanLineColor ?? borderColor).withValues(alpha: 0.6), blurRadius: 8, spreadRadius: 1)],
-                    ),
+          );
+    }
+
+    final UCameraController? controller = _controller;
+    if (controller == null) {
+      return widget.placeholderBuilder?.call(context) ?? const Center(child: CircularProgressIndicator());
+    }
+
+    return ValueListenableBuilder<UCameraValue>(
+      valueListenable: controller,
+      builder: (BuildContext context, UCameraValue value, Widget? _) => LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          final Size bounds = Size(constraints.maxWidth, constraints.maxHeight);
+          final Rect window =
+              widget.scanWindow ??
+              Rect.fromCenter(
+                center: Offset(bounds.width / 2, bounds.height / 2),
+                width: widget.scanWindowSize.width,
+                height: widget.scanWindowSize.height,
+              );
+          if (widget.restrictToScanWindow || widget.scanWindow != null) {
+            controller.setScanRegion(
+              Rect.fromLTWH(window.left / bounds.width, window.top / bounds.height, window.width / bounds.width, window.height / bounds.height),
+            );
+          }
+          final Color borderColor = widget.borderColor ?? Theme.of(context).colorScheme.primary;
+
+          return Stack(
+            fit: StackFit.expand,
+            children: <Widget>[
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onScaleStart: widget.pinchToZoom ? (ScaleStartDetails _) => _baseZoom = value.zoom : null,
+                onScaleUpdate: widget.pinchToZoom
+                    ? (ScaleUpdateDetails details) {
+                        if (details.pointerCount == 2) unawaited(controller.setZoom(_baseZoom * details.scale));
+                      }
+                    : null,
+                onTapUp: widget.tapToFocus
+                    ? (TapUpDetails details) => unawaited(
+                        controller.focusAndMeterAt(
+                          UCameraUtils.normalizePoint(
+                            local: details.localPosition,
+                            widgetSize: bounds,
+                            previewSize: value.previewSize,
+                            fit: widget.fit,
+                            mirrored: value.mirrored,
+                          ),
+                        ),
+                      )
+                    : null,
+                child: UCameraPreview(controller: controller, fit: widget.fit, placeholder: widget.placeholderBuilder?.call(context)),
+              ),
+              if (widget.showOverlay && widget.overlayBuilder == null)
+                CustomPaint(
+                  size: bounds,
+                  painter: _UScannerOverlayPainter(
+                    window: window,
+                    overlayColor: widget.overlayColor ?? Theme.of(context).colorScheme.scrim.withValues(alpha: 0.5),
+                    borderColor: borderColor,
+                    borderWidth: widget.borderWidth,
+                    borderRadius: widget.borderRadius,
+                    cornerLength: widget.cornerLength,
+                    showCorners: widget.showCorners,
+                    showFullBorder: widget.showFullBorder,
                   ),
-                );
-              },
-            ),
-          if (widget.showHint)
-            Positioned(
-              left: 24,
-              right: 24,
-              top: widget.hintPosition == UScannerHintPosition.top ? window.top - widget.hintGap - 44 : null,
-              bottom: widget.hintPosition == UScannerHintPosition.bottom ? constraints.maxHeight - window.bottom - widget.hintGap - 44 : null,
-              child: Align(child: _buildHint()),
-            ),
-          if (widget.showControls)
-            Align(
-              alignment: widget.controlsAlignment,
-              child: Padding(padding: widget.controlsPadding, child: _buildControls()),
-            ),
-        ],
-      );
-    },
-  );
+                ),
+              if (widget.showTrackingBoxes && _tracked.isNotEmpty)
+                CustomPaint(
+                  size: bounds,
+                  painter: _UCodeTrackingPainter(
+                    codes: _tracked,
+                    color: borderColor,
+                    previewSize: value.previewSize,
+                    widgetSize: bounds,
+                    fit: widget.fit,
+                    mirrored: value.mirrored,
+                  ),
+                ),
+              if (widget.overlayBuilder != null) widget.overlayBuilder!(context, constraints),
+              if (widget.showScanLine && _lineController != null)
+                AnimatedBuilder(
+                  animation: _lineController!,
+                  builder: (BuildContext context, Widget? _) {
+                    final double y = window.top + widget.borderWidth + (window.height - 2 * widget.borderWidth) * _lineController!.value;
+                    return Positioned(
+                      left: window.left + widget.borderWidth,
+                      top: y,
+                      width: window.width - 2 * widget.borderWidth,
+                      height: widget.scanLineThickness,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: widget.scanLineColor ?? borderColor,
+                          boxShadow: <BoxShadow>[
+                            BoxShadow(color: (widget.scanLineColor ?? borderColor).withValues(alpha: 0.6), blurRadius: 8, spreadRadius: 1),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              if (widget.showHint)
+                Positioned(
+                  left: 24,
+                  right: 24,
+                  top: widget.hintPosition == UScannerHintPosition.top ? window.top - widget.hintGap - 44 : null,
+                  bottom: widget.hintPosition == UScannerHintPosition.bottom ? bounds.height - window.bottom - widget.hintGap - 44 : null,
+                  child: Align(child: _buildHint()),
+                ),
+              if (widget.showZoomSlider && !value.capabilities.zoom.isFixed)
+                Positioned(
+                  left: 24,
+                  right: 24,
+                  bottom: widget.controlsPadding.bottom + widget.controlButtonSize + 16,
+                  child: Slider(
+                    value: value.capabilities.zoom.clamp(value.zoom),
+                    min: value.capabilities.zoom.min,
+                    max: value.capabilities.zoom.max,
+                    onChanged: (double next) => unawaited(controller.setZoom(next)),
+                  ),
+                ),
+              if (widget.showControls)
+                Align(
+                  alignment: widget.controlsAlignment,
+                  child: Padding(padding: widget.controlsPadding, child: _buildControls(controller, value)),
+                ),
+            ],
+          );
+        },
+      ),
+    );
+  }
 }
 
 /// Paints the dimmed area outside the scan [window] plus corner brackets or a
@@ -402,22 +563,18 @@ class _UScannerOverlayPainter extends CustomPainter {
     final double r = borderRadius;
     final double l = cornerLength;
     final Path path = Path()
-      // top-left
       ..moveTo(window.left, window.top + r + l)
       ..lineTo(window.left, window.top + r)
       ..arcToPoint(Offset(window.left + r, window.top), radius: Radius.circular(r))
       ..lineTo(window.left + r + l, window.top)
-      // top-right
       ..moveTo(window.right - r - l, window.top)
       ..lineTo(window.right - r, window.top)
       ..arcToPoint(Offset(window.right, window.top + r), radius: Radius.circular(r))
       ..lineTo(window.right, window.top + r + l)
-      // bottom-right
       ..moveTo(window.right, window.bottom - r - l)
       ..lineTo(window.right, window.bottom - r)
       ..arcToPoint(Offset(window.right - r, window.bottom), radius: Radius.circular(r))
       ..lineTo(window.right - r - l, window.bottom)
-      // bottom-left
       ..moveTo(window.left + r + l, window.bottom)
       ..lineTo(window.left + r, window.bottom)
       ..arcToPoint(Offset(window.left, window.bottom - r), radius: Radius.circular(r))
@@ -437,11 +594,62 @@ class _UScannerOverlayPainter extends CustomPainter {
       oldDelegate.showFullBorder != showFullBorder;
 }
 
-/// A ready-to-use full-screen scanner page wrapping [UScanner] in a [UScaffold].
+/// Draws a live outline around each detected symbol.
+class _UCodeTrackingPainter extends CustomPainter {
+  _UCodeTrackingPainter({
+    required this.codes,
+    required this.color,
+    required this.previewSize,
+    required this.widgetSize,
+    required this.fit,
+    required this.mirrored,
+  });
+
+  final List<UCode> codes;
+  final Color color;
+  final UCameraSize previewSize;
+  final Size widgetSize;
+  final BoxFit fit;
+  final bool mirrored;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (previewSize.width == 0) return;
+    final Paint paint = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3
+      ..strokeJoin = StrokeJoin.round;
+    for (final UCode code in codes) {
+      if (code.corners.isEmpty) continue;
+      final Path path = Path();
+      for (int i = 0; i < code.corners.length; i++) {
+        final Offset point = UCameraUtils.denormalizePoint(
+          normalized: Offset(code.corners[i].dx / previewSize.width, code.corners[i].dy / previewSize.height),
+          widgetSize: widgetSize,
+          previewSize: previewSize,
+          fit: fit,
+          mirrored: mirrored,
+        );
+        if (i == 0) {
+          path.moveTo(point.dx, point.dy);
+        } else {
+          path.lineTo(point.dx, point.dy);
+        }
+      }
+      path.close();
+      canvas.drawPath(path, paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(_UCodeTrackingPainter oldDelegate) => oldDelegate.codes != codes;
+}
+
+/// A ready-to-use full-screen scanner page wrapping [UScanner].
 ///
-/// By default it pops with the scanned string (`UNavigator.back<String>(value)`)
-/// so it can be awaited with [UScannerPage.open]. Every [UScanner] option is
-/// forwarded, plus page-level app bar / background customization.
+/// By default it pops with the scanned string, so it can be awaited with
+/// [UScannerPage.open].
 class UScannerPage extends StatelessWidget {
   const UScannerPage({
     this.title,
@@ -450,31 +658,27 @@ class UScannerPage extends StatelessWidget {
     this.backgroundColor,
     this.autoPopOnScan = true,
     this.onScan,
-    this.onCapture,
-    this.onBarcodes,
+    this.onCodes,
     this.onScanError,
     this.controller,
     this.autoStart = true,
-    this.cameraResolution,
-    this.lensType = CameraLensType.any,
-    this.detectionSpeed = DetectionSpeed.normal,
-    this.detectionTimeoutMs = 250,
-    this.facing = CameraFacing.back,
-    this.formats = const <BarcodeFormat>[],
-    this.returnImage = false,
+    this.facing = UCameraFacing.back,
+    this.resolution = UCameraResolution.high,
+    this.speed = UScanSpeed.normal,
+    this.formats = const <UCodeFormat>[],
+    this.engine = UScanEngine.auto,
     this.torchEnabled = false,
-    this.invertImage = false,
-    this.autoZoom = false,
+    this.tryInvert = false,
     this.initialZoom,
     this.fit = BoxFit.cover,
     this.errorBuilder,
     this.placeholderBuilder,
     this.overlayBuilder,
     this.scanWindow,
-    this.restrictToScanWindow = false,
-    this.scanWindowUpdateThreshold = 0.0,
+    this.restrictToScanWindow = true,
     this.useAppLifecycleState = true,
-    this.tapToFocus = false,
+    this.tapToFocus = true,
+    this.pinchToZoom = true,
     this.singleScan = true,
     this.hapticOnScan = true,
     this.showOverlay = true,
@@ -490,6 +694,7 @@ class UScannerPage extends StatelessWidget {
     this.scanLineColor,
     this.scanLineThickness = 2,
     this.scanLineDuration = const Duration(seconds: 2),
+    this.showTrackingBoxes = false,
     this.hintText,
     this.showHint = true,
     this.hintTextStyle,
@@ -502,6 +707,7 @@ class UScannerPage extends StatelessWidget {
     this.showTorchButton = true,
     this.showSwitchCameraButton = true,
     this.showGalleryButton = false,
+    this.showZoomSlider = false,
     this.controlsAlignment = Alignment.bottomCenter,
     this.controlsSpacing = 24,
     this.controlsPadding = const EdgeInsets.only(bottom: 40),
@@ -517,13 +723,28 @@ class UScannerPage extends StatelessWidget {
     super.key,
   });
 
-  /// Push this page and await the scanned string (or null if dismissed).
+  /// Pushes this page and awaits the scanned string, or null if dismissed.
   static Future<String?> open({
     String? title,
-    List<BarcodeFormat> formats = const <BarcodeFormat>[],
+    List<UCodeFormat> formats = const <UCodeFormat>[],
     String? hintText,
     bool showGalleryButton = false,
-  }) => UNavigator.push<String>(UScannerPage(title: title, formats: formats, hintText: hintText, showGalleryButton: showGalleryButton));
+    UScanSpeed speed = UScanSpeed.normal,
+  }) => UNavigator.push<String>(UScannerPage(title: title, formats: formats, hintText: hintText, showGalleryButton: showGalleryButton, speed: speed));
+
+  /// Pushes this page and awaits the full result, with format and geometry.
+  static Future<UCode?> openForCode({String? title, List<UCodeFormat> formats = const <UCodeFormat>[], String? hintText}) async {
+    UCode? scanned;
+    await UNavigator.push<String>(
+      UScannerPage(
+        title: title,
+        formats: formats,
+        hintText: hintText,
+        onCodes: (List<UCode> codes) => scanned = codes.isEmpty ? null : codes.first,
+      ),
+    );
+    return scanned;
+  }
 
   final String? title;
   final PreferredSizeWidget? appBar;
@@ -532,31 +753,27 @@ class UScannerPage extends StatelessWidget {
   final bool autoPopOnScan;
 
   final ValueChanged<String>? onScan;
-  final ValueChanged<BarcodeCapture>? onCapture;
-  final ValueChanged<List<Barcode>>? onBarcodes;
+  final ValueChanged<List<UCode>>? onCodes;
   final void Function(Object error, StackTrace stackTrace)? onScanError;
-  final MobileScannerController? controller;
+  final UCameraController? controller;
   final bool autoStart;
-  final Size? cameraResolution;
-  final CameraLensType lensType;
-  final DetectionSpeed detectionSpeed;
-  final int detectionTimeoutMs;
-  final CameraFacing facing;
-  final List<BarcodeFormat> formats;
-  final bool returnImage;
+  final UCameraFacing facing;
+  final UCameraResolution resolution;
+  final UScanSpeed speed;
+  final List<UCodeFormat> formats;
+  final UScanEngine engine;
   final bool torchEnabled;
-  final bool invertImage;
-  final bool autoZoom;
+  final bool tryInvert;
   final double? initialZoom;
   final BoxFit fit;
-  final Widget Function(BuildContext, MobileScannerException)? errorBuilder;
+  final Widget Function(BuildContext context, UCameraException error)? errorBuilder;
   final WidgetBuilder? placeholderBuilder;
   final LayoutWidgetBuilder? overlayBuilder;
   final Rect? scanWindow;
   final bool restrictToScanWindow;
-  final double scanWindowUpdateThreshold;
   final bool useAppLifecycleState;
   final bool tapToFocus;
+  final bool pinchToZoom;
   final bool singleScan;
   final bool hapticOnScan;
   final bool showOverlay;
@@ -572,6 +789,7 @@ class UScannerPage extends StatelessWidget {
   final Color? scanLineColor;
   final double scanLineThickness;
   final Duration scanLineDuration;
+  final bool showTrackingBoxes;
   final String? hintText;
   final bool showHint;
   final TextStyle? hintTextStyle;
@@ -584,6 +802,7 @@ class UScannerPage extends StatelessWidget {
   final bool showTorchButton;
   final bool showSwitchCameraButton;
   final bool showGalleryButton;
+  final bool showZoomSlider;
   final Alignment controlsAlignment;
   final double controlsSpacing;
   final EdgeInsets controlsPadding;
@@ -602,27 +821,30 @@ class UScannerPage extends StatelessWidget {
     safeArea: false,
     extendBodyBehindAppBar: true,
     color: backgroundColor ?? Theme.of(context).colorScheme.scrim,
-    appBar: showAppBar ? (appBar ?? AppBar(title: Text(title ?? U.s.scanBarcode), backgroundColor: Theme.of(context).colorScheme.scrim.withValues(alpha: 0), elevation: 0)) : null,
+    appBar: showAppBar
+        ? (appBar ??
+              AppBar(
+                title: Text(title ?? U.s.scanBarcode),
+                backgroundColor: Theme.of(context).colorScheme.scrim.withValues(alpha: 0),
+                elevation: 0,
+              ))
+        : null,
     body: UScanner(
       onScan: (String value) {
         onScan?.call(value);
         if (autoPopOnScan) UNavigator.back<String>(value);
       },
-      onCapture: onCapture,
-      onBarcodes: onBarcodes,
+      onCodes: onCodes,
       onScanError: onScanError,
       controller: controller,
       autoStart: autoStart,
-      cameraResolution: cameraResolution,
-      lensType: lensType,
-      detectionSpeed: detectionSpeed,
-      detectionTimeoutMs: detectionTimeoutMs,
       facing: facing,
+      resolution: resolution,
+      speed: speed,
       formats: formats,
-      returnImage: returnImage,
+      engine: engine,
       torchEnabled: torchEnabled,
-      invertImage: invertImage,
-      autoZoom: autoZoom,
+      tryInvert: tryInvert,
       initialZoom: initialZoom,
       fit: fit,
       errorBuilder: errorBuilder,
@@ -630,9 +852,9 @@ class UScannerPage extends StatelessWidget {
       overlayBuilder: overlayBuilder,
       scanWindow: scanWindow,
       restrictToScanWindow: restrictToScanWindow,
-      scanWindowUpdateThreshold: scanWindowUpdateThreshold,
       useAppLifecycleState: useAppLifecycleState,
       tapToFocus: tapToFocus,
+      pinchToZoom: pinchToZoom,
       singleScan: singleScan,
       hapticOnScan: hapticOnScan,
       showOverlay: showOverlay,
@@ -648,6 +870,7 @@ class UScannerPage extends StatelessWidget {
       scanLineColor: scanLineColor,
       scanLineThickness: scanLineThickness,
       scanLineDuration: scanLineDuration,
+      showTrackingBoxes: showTrackingBoxes,
       hintText: hintText,
       showHint: showHint,
       hintTextStyle: hintTextStyle,
@@ -660,6 +883,7 @@ class UScannerPage extends StatelessWidget {
       showTorchButton: showTorchButton,
       showSwitchCameraButton: showSwitchCameraButton,
       showGalleryButton: showGalleryButton,
+      showZoomSlider: showZoomSlider,
       controlsAlignment: controlsAlignment,
       controlsSpacing: controlsSpacing,
       controlsPadding: controlsPadding,

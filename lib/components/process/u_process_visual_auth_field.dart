@@ -17,9 +17,9 @@ class UProcessVisualAuthField extends StatefulWidget {
 }
 
 class _UProcessVisualAuthFieldState extends State<UProcessVisualAuthField> with SingleTickerProviderStateMixin {
-  CameraController? _cameraController;
+  UCameraController? _cameraController;
   UMediaController? _videoController;
-  XFile? _recordedVideo;
+  UCapturedVideo? _recordedVideo;
 
   bool _isRecording = false;
   int _seconds = 0;
@@ -68,15 +68,16 @@ class _UProcessVisualAuthFieldState extends State<UProcessVisualAuthField> with 
 
   Future<void> _initCamera() async {
     try {
-      final List<CameraDescription> cameras = await availableCameras();
+      final UCameraPermissionState permission = await UCameraController.requestPermission(audio: true);
+      if (!permission.isGranted) return;
+
+      final List<UCameraDevice> cameras = await UCameraController.availableCameras();
       if (cameras.isEmpty) return;
+      final UCameraDevice? front = UCameraUtils.pickDevice(cameras, facing: UCameraFacing.front);
 
-      final CameraDescription frontCamera = cameras.firstWhere(
-        (CameraDescription camera) => camera.lensDirection == CameraLensDirection.front,
-        orElse: () => cameras.first,
+      _cameraController = UCameraController(
+        config: UCameraConfig(facing: UCameraFacing.front, deviceId: front?.id),
       );
-
-      _cameraController = CameraController(frontCamera, ResolutionPreset.high);
       await _cameraController!.initialize();
 
       if (mounted) setState(() {});
@@ -123,7 +124,8 @@ class _UProcessVisualAuthFieldState extends State<UProcessVisualAuthField> with 
     _progressController.stop();
 
     try {
-      final XFile xFile = await _cameraController!.stopVideoRecording();
+      final UCapturedVideo? recorded = await _cameraController!.stopVideoRecording();
+      if (recorded == null) return;
 
       setState(() => _isRecording = false);
 
@@ -135,15 +137,15 @@ class _UProcessVisualAuthFieldState extends State<UProcessVisualAuthField> with 
         return;
       }
 
-      setState(() => _recordedVideo = xFile);
+      setState(() => _recordedVideo = recorded);
 
-      final Uint8List bytes = await xFile.readAsBytes();
-      _setValue(base64Encode(bytes));
+      final Uint8List bytes = recorded.bytes ?? (kIsWeb ? Uint8List(0) : await File(recorded.path).readAsBytes());
+      if (bytes.isNotEmpty) _setValue(base64Encode(bytes));
 
       // Preview the just-recorded clip: it lives on the device (web uses a blob
       // URL), so play it from a file on native and from the URL on web.
       _videoController = UMediaController(config: const UMediaConfig(repeat: URepeatMode.one));
-      await _videoController!.open(kIsWeb ? UMediaSource.network(xFile.path) : UMediaSource.file(xFile.path), autoPlay: true);
+      await _videoController!.open(kIsWeb ? UMediaSource.network(recorded.path) : UMediaSource.file(recorded.path), autoPlay: true);
 
       if (mounted) setState(() {});
     } catch (e) {
@@ -169,7 +171,7 @@ class _UProcessVisualAuthFieldState extends State<UProcessVisualAuthField> with 
   void dispose() {
     _timer?.cancel();
     _progressController.dispose();
-    _cameraController?.dispose();
+    unawaited(_cameraController?.dispose());
     _videoController?.dispose();
     super.dispose();
   }
@@ -228,14 +230,7 @@ class _UProcessVisualAuthFieldState extends State<UProcessVisualAuthField> with 
       return UVideoView(controller: _videoController!, fit: UMediaFit.cover);
     } else if (_cameraController != null && _cameraController!.value.isInitialized) {
       // Cover the square frame without stretching by preserving the camera's preview aspect ratio.
-      return FittedBox(
-        fit: BoxFit.cover,
-        child: SizedBox(
-          width: _cameraController!.value.previewSize?.height ?? 220,
-          height: _cameraController!.value.previewSize?.width ?? 220,
-          child: CameraPreview(_cameraController!),
-        ),
-      );
+      return UCameraPreview(controller: _cameraController!);
     } else if (_hasInitialValue) {
       return ColoredBox(
         color: scheme.surfaceContainerHighest,

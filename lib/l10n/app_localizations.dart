@@ -92,6 +92,12 @@ abstract class AppLocalizations {
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[Locale('en'), Locale('fa')];
 
+  /// No description provided for @abRepeat.
+  ///
+  /// In en, this message translates to:
+  /// **'AB repeat'**
+  String get abRepeat;
+
   /// No description provided for @about.
   ///
   /// In en, this message translates to:
@@ -109,12 +115,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'About this place'**
   String get aboutThisPlace;
-
-  /// No description provided for @abRepeat.
-  ///
-  /// In en, this message translates to:
-  /// **'AB repeat'**
-  String get abRepeat;
 
   /// No description provided for @accenting.
   ///
@@ -146,6 +146,12 @@ abstract class AppLocalizations {
   /// **'Account'**
   String get account;
 
+  /// No description provided for @accountStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Account status'**
+  String get accountStatus;
+
   /// No description provided for @accounting.
   ///
   /// In en, this message translates to:
@@ -169,12 +175,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Accounts in this profile'**
   String get accountsInThisProfile;
-
-  /// No description provided for @accountStatus.
-  ///
-  /// In en, this message translates to:
-  /// **'Account status'**
-  String get accountStatus;
 
   /// No description provided for @active.
   ///
@@ -236,12 +236,6 @@ abstract class AppLocalizations {
   /// **'Add reservation'**
   String get addReservation;
 
-  /// No description provided for @address.
-  ///
-  /// In en, this message translates to:
-  /// **'Address'**
-  String get address;
-
   /// No description provided for @addStaffMember.
   ///
   /// In en, this message translates to:
@@ -259,6 +253,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add to the blacklist'**
   String get addToTheBlacklist;
+
+  /// No description provided for @address.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get address;
 
   /// No description provided for @admin.
   ///
@@ -386,6 +386,18 @@ abstract class AppLocalizations {
   /// **'API Request Logs'**
   String get apiRequestLogs;
 
+  /// No description provided for @appSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'App Settings'**
+  String get appSettings;
+
+  /// No description provided for @appVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'App Version'**
+  String get appVersion;
+
   /// No description provided for @appearance.
   ///
   /// In en, this message translates to:
@@ -445,18 +457,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Approximately'**
   String get approximately;
-
-  /// No description provided for @appSettings.
-  ///
-  /// In en, this message translates to:
-  /// **'App Settings'**
-  String get appSettings;
-
-  /// No description provided for @appVersion.
-  ///
-  /// In en, this message translates to:
-  /// **'App Version'**
-  String get appVersion;
 
   /// No description provided for @architecture.
   ///
@@ -626,6 +626,12 @@ abstract class AppLocalizations {
   /// **'AvaHamrah terms of use'**
   String get avaHamrahTermsOfUse;
 
+  /// No description provided for @avaPark.
+  ///
+  /// In en, this message translates to:
+  /// **'AvaPark'**
+  String get avaPark;
+
   /// No description provided for @available.
   ///
   /// In en, this message translates to:
@@ -650,12 +656,6 @@ abstract class AppLocalizations {
   /// **'Available credit balance'**
   String get availableCreditBalance;
 
-  /// No description provided for @avaPark.
-  ///
-  /// In en, this message translates to:
-  /// **'AvaPark'**
-  String get avaPark;
-
   /// No description provided for @averageDuration.
   ///
   /// In en, this message translates to:
@@ -668,17 +668,17 @@ abstract class AppLocalizations {
   /// **'Back'**
   String get back;
 
-  /// No description provided for @background.
-  ///
-  /// In en, this message translates to:
-  /// **'Background'**
-  String get background;
-
   /// No description provided for @backToHome.
   ///
   /// In en, this message translates to:
   /// **'Back to home'**
   String get backToHome;
+
+  /// No description provided for @background.
+  ///
+  /// In en, this message translates to:
+  /// **'Background'**
+  String get background;
 
   /// No description provided for @balance.
   ///
@@ -740,17 +740,17 @@ abstract class AppLocalizations {
   /// **'Bed'**
   String get bed;
 
-  /// No description provided for @beds.
-  ///
-  /// In en, this message translates to:
-  /// **'Beds'**
-  String get beds;
-
   /// No description provided for @bedType.
   ///
   /// In en, this message translates to:
   /// **'Bed Type'**
   String get bedType;
+
+  /// No description provided for @beds.
+  ///
+  /// In en, this message translates to:
+  /// **'Beds'**
+  String get beds;
 
   /// No description provided for @between50000And10000000Rials.
   ///
@@ -860,12 +860,6 @@ abstract class AppLocalizations {
   /// **'Book'**
   String get book;
 
-  /// No description provided for @bookedInPerson.
-  ///
-  /// In en, this message translates to:
-  /// **'Booked in person'**
-  String get bookedInPerson;
-
   /// No description provided for @bookNow.
   ///
   /// In en, this message translates to:
@@ -878,11 +872,41 @@ abstract class AppLocalizations {
   /// **'Book this room'**
   String get bookThisRoom;
 
+  /// No description provided for @bookedInPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Booked in person'**
+  String get bookedInPerson;
+
+  /// No description provided for @brand.
+  ///
+  /// In en, this message translates to:
+  /// **'Brand'**
+  String get brand;
+
+  /// No description provided for @brands.
+  ///
+  /// In en, this message translates to:
+  /// **'Brands'**
+  String get brands;
+
   /// No description provided for @brightness.
   ///
   /// In en, this message translates to:
   /// **'Brightness'**
   String get brightness;
+
+  /// No description provided for @broker.
+  ///
+  /// In en, this message translates to:
+  /// **'Broker'**
+  String get broker;
+
+  /// No description provided for @brokers.
+  ///
+  /// In en, this message translates to:
+  /// **'Brokers'**
+  String get brokers;
 
   /// No description provided for @bufferHealth.
   ///
@@ -998,6 +1022,12 @@ abstract class AppLocalizations {
   /// **'Call the hotel'**
   String get callTheHotel;
 
+  /// No description provided for @cameraPermissionIsRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera permission is required'**
+  String get cameraPermissionIsRequired;
+
   /// No description provided for @cancel.
   ///
   /// In en, this message translates to:
@@ -1009,6 +1039,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancel before the free window ends and the full amount goes back to your wallet.'**
   String get cancelBeforeTheFreeWindowEndsAndTheFullAmountGoesBackToYourWallet;
+
+  /// No description provided for @cancelReservation.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel reservation'**
+  String get cancelReservation;
+
+  /// No description provided for @cancelTransaction.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel transaction'**
+  String get cancelTransaction;
 
   /// No description provided for @cancellationFee.
   ///
@@ -1027,18 +1069,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancelled'**
   String get cancelled;
-
-  /// No description provided for @cancelReservation.
-  ///
-  /// In en, this message translates to:
-  /// **'Cancel reservation'**
-  String get cancelReservation;
-
-  /// No description provided for @cancelTransaction.
-  ///
-  /// In en, this message translates to:
-  /// **'Cancel transaction'**
-  String get cancelTransaction;
 
   /// No description provided for @capacity.
   ///
@@ -1070,12 +1100,6 @@ abstract class AppLocalizations {
   /// **'Card read failed'**
   String get cardReadFailed;
 
-  /// No description provided for @cards.
-  ///
-  /// In en, this message translates to:
-  /// **'Cards'**
-  String get cards;
-
   /// No description provided for @cardToCard.
   ///
   /// In en, this message translates to:
@@ -1093,6 +1117,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Card transactions'**
   String get cardTransactions;
+
+  /// No description provided for @cards.
+  ///
+  /// In en, this message translates to:
+  /// **'Cards'**
+  String get cards;
 
   /// No description provided for @cash.
   ///
@@ -1208,18 +1238,6 @@ abstract class AppLocalizations {
   /// **'Charity donation'**
   String get charityDonation;
 
-  /// No description provided for @checkedIn.
-  ///
-  /// In en, this message translates to:
-  /// **'Checked In'**
-  String get checkedIn;
-
-  /// No description provided for @checkedOut.
-  ///
-  /// In en, this message translates to:
-  /// **'Checked Out'**
-  String get checkedOut;
-
   /// No description provided for @checkIn.
   ///
   /// In en, this message translates to:
@@ -1237,12 +1255,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Check-in Time'**
   String get checkInTime;
-
-  /// No description provided for @checklist.
-  ///
-  /// In en, this message translates to:
-  /// **'Checklist'**
-  String get checklist;
 
   /// No description provided for @checkManagement.
   ///
@@ -1291,6 +1303,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Check plate'**
   String get checkPlate;
+
+  /// No description provided for @checkedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Checked In'**
+  String get checkedIn;
+
+  /// No description provided for @checkedOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Checked Out'**
+  String get checkedOut;
+
+  /// No description provided for @checklist.
+  ///
+  /// In en, this message translates to:
+  /// **'Checklist'**
+  String get checklist;
 
   /// No description provided for @chooseAPaymentMethod.
   ///
@@ -1388,12 +1418,6 @@ abstract class AppLocalizations {
   /// **'Code Block'**
   String get codeBlock;
 
-  /// No description provided for @codec.
-  ///
-  /// In en, this message translates to:
-  /// **'Codec'**
-  String get codec;
-
   /// No description provided for @codeLanguage.
   ///
   /// In en, this message translates to:
@@ -1405,6 +1429,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Code valid for'**
   String get codeValidFor;
+
+  /// No description provided for @codec.
+  ///
+  /// In en, this message translates to:
+  /// **'Codec'**
+  String get codec;
 
   /// No description provided for @color.
   ///
@@ -1436,17 +1466,17 @@ abstract class AppLocalizations {
   /// **'Company code'**
   String get companyCode;
 
-  /// No description provided for @completed.
-  ///
-  /// In en, this message translates to:
-  /// **'Completed'**
-  String get completed;
-
   /// No description provided for @completeUserInformation.
   ///
   /// In en, this message translates to:
   /// **'Complete user information'**
   String get completeUserInformation;
+
+  /// No description provided for @completed.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get completed;
 
   /// No description provided for @configuration.
   ///
@@ -1466,18 +1496,6 @@ abstract class AppLocalizations {
   /// **'Confirm and continue'**
   String get confirmAndContinue;
 
-  /// No description provided for @confirmationDate.
-  ///
-  /// In en, this message translates to:
-  /// **'Confirmation date'**
-  String get confirmationDate;
-
-  /// No description provided for @confirmed.
-  ///
-  /// In en, this message translates to:
-  /// **'Confirmed'**
-  String get confirmed;
-
   /// No description provided for @confirmPayment.
   ///
   /// In en, this message translates to:
@@ -1495,6 +1513,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Confirm sale'**
   String get confirmSale;
+
+  /// No description provided for @confirmationDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmation date'**
+  String get confirmationDate;
+
+  /// No description provided for @confirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmed'**
+  String get confirmed;
 
   /// No description provided for @connectedAccount.
   ///
@@ -1550,29 +1580,29 @@ abstract class AppLocalizations {
   /// **'Content'**
   String get content;
 
-  /// No description provided for @contents.
-  ///
-  /// In en, this message translates to:
-  /// **'Contents'**
-  String get contents;
-
   /// No description provided for @contentType.
   ///
   /// In en, this message translates to:
   /// **'Content Type'**
   String get contentType;
 
-  /// No description provided for @continue_.
+  /// No description provided for @contents.
   ///
   /// In en, this message translates to:
-  /// **'Continue'**
-  String get continue_;
+  /// **'Contents'**
+  String get contents;
 
   /// No description provided for @continueToExit.
   ///
   /// In en, this message translates to:
   /// **'Continue to exit'**
   String get continueToExit;
+
+  /// No description provided for @continue_.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continue_;
 
   /// No description provided for @continuous.
   ///
@@ -1592,6 +1622,12 @@ abstract class AppLocalizations {
   /// **'Contract period'**
   String get contractPeriod;
 
+  /// No description provided for @contractType.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract Type'**
+  String get contractType;
+
   /// No description provided for @contracts.
   ///
   /// In en, this message translates to:
@@ -1603,12 +1639,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Contracts Expiring Soon'**
   String get contractsExpiringSoon;
-
-  /// No description provided for @contractType.
-  ///
-  /// In en, this message translates to:
-  /// **'Contract Type'**
-  String get contractType;
 
   /// No description provided for @contrast.
   ///
@@ -1682,12 +1712,6 @@ abstract class AppLocalizations {
   /// **'Count'**
   String get count;
 
-  /// No description provided for @countedCash.
-  ///
-  /// In en, this message translates to:
-  /// **'Counted cash'**
-  String get countedCash;
-
   /// No description provided for @countEntries.
   ///
   /// In en, this message translates to:
@@ -1736,12 +1760,6 @@ abstract class AppLocalizations {
   /// **'{count} receipts are queued for offline sending'**
   String countReceiptsAreQueuedForOfflineSending(Object count);
 
-  /// No description provided for @country.
-  ///
-  /// In en, this message translates to:
-  /// **'Country'**
-  String get country;
-
   /// No description provided for @countTimes.
   ///
   /// In en, this message translates to:
@@ -1753,6 +1771,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count} vehicles are inside the parking'**
   String countVehiclesAreInsideTheParking(Object count);
+
+  /// No description provided for @countedCash.
+  ///
+  /// In en, this message translates to:
+  /// **'Counted cash'**
+  String get countedCash;
+
+  /// No description provided for @country.
+  ///
+  /// In en, this message translates to:
+  /// **'Country'**
+  String get country;
 
   /// No description provided for @cover.
   ///
@@ -1778,6 +1808,12 @@ abstract class AppLocalizations {
   /// **'Create API token'**
   String get createApiToken;
 
+  /// No description provided for @createItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Create {item}'**
+  String createItem(Object item);
+
   /// No description provided for @created.
   ///
   /// In en, this message translates to:
@@ -1795,12 +1831,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Created Date'**
   String get createdDate;
-
-  /// No description provided for @createItem.
-  ///
-  /// In en, this message translates to:
-  /// **'Create {item}'**
-  String createItem(Object item);
 
   /// No description provided for @creatorId.
   ///
@@ -1826,17 +1856,17 @@ abstract class AppLocalizations {
   /// **'Credit limit'**
   String get creditLimit;
 
-  /// No description provided for @creditor.
-  ///
-  /// In en, this message translates to:
-  /// **'Creditor'**
-  String get creditor;
-
   /// No description provided for @creditValidation.
   ///
   /// In en, this message translates to:
   /// **'Credit validation'**
   String get creditValidation;
+
+  /// No description provided for @creditor.
+  ///
+  /// In en, this message translates to:
+  /// **'Creditor'**
+  String get creditor;
 
   /// No description provided for @cropImage.
   ///
@@ -2078,17 +2108,17 @@ abstract class AppLocalizations {
   /// **'Device serial'**
   String get deviceSerial;
 
-  /// No description provided for @directTopUp.
-  ///
-  /// In en, this message translates to:
-  /// **'Direct top up'**
-  String get directTopUp;
-
   /// No description provided for @deviceType.
   ///
   /// In en, this message translates to:
   /// **'Device Type'**
   String get deviceType;
+
+  /// No description provided for @directTopUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct top up'**
+  String get directTopUp;
 
   /// No description provided for @directions.
   ///
@@ -2378,12 +2408,6 @@ abstract class AppLocalizations {
   /// **'Enter an amount'**
   String get enterAnAmount;
 
-  /// No description provided for @entered.
-  ///
-  /// In en, this message translates to:
-  /// **'Entered'**
-  String get entered;
-
   /// No description provided for @enterPhoneNumber.
   ///
   /// In en, this message translates to:
@@ -2449,6 +2473,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter your postal code correctly and inquire.'**
   String get enterYourPostalCodeCorrectlyAndInquire;
+
+  /// No description provided for @entered.
+  ///
+  /// In en, this message translates to:
+  /// **'Entered'**
+  String get entered;
 
   /// No description provided for @entityOverview.
   ///
@@ -2564,17 +2594,17 @@ abstract class AppLocalizations {
   /// **'Error reading Data'**
   String get errorReadingData;
 
-  /// No description provided for @errors.
-  ///
-  /// In en, this message translates to:
-  /// **'Errors'**
-  String get errors;
-
   /// No description provided for @errorSubmittingForm.
   ///
   /// In en, this message translates to:
   /// **'Error Submitting Form'**
   String get errorSubmittingForm;
+
+  /// No description provided for @errors.
+  ///
+  /// In en, this message translates to:
+  /// **'Errors'**
+  String get errors;
 
   /// No description provided for @estimatedAmount.
   ///
@@ -2684,12 +2714,6 @@ abstract class AppLocalizations {
   /// **'Export images'**
   String get exportImages;
 
-  /// No description provided for @extract.
-  ///
-  /// In en, this message translates to:
-  /// **'Extract'**
-  String get extract;
-
   /// No description provided for @extraGuestCapacity.
   ///
   /// In en, this message translates to:
@@ -2701,6 +2725,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Extra guest price'**
   String get extraGuestPrice;
+
+  /// No description provided for @extract.
+  ///
+  /// In en, this message translates to:
+  /// **'Extract'**
+  String get extract;
 
   /// No description provided for @fatherName.
   ///
@@ -3092,6 +3122,12 @@ abstract class AppLocalizations {
   /// **'Get Support Password'**
   String get getSupportPassword;
 
+  /// No description provided for @goToPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to page'**
+  String get goToPage;
+
   /// No description provided for @gold.
   ///
   /// In en, this message translates to:
@@ -3188,12 +3224,6 @@ abstract class AppLocalizations {
   /// **'Got it'**
   String get gotIt;
 
-  /// No description provided for @goToPage.
-  ///
-  /// In en, this message translates to:
-  /// **'Go to page'**
-  String get goToPage;
-
   /// No description provided for @gradient.
   ///
   /// In en, this message translates to:
@@ -3266,17 +3296,17 @@ abstract class AppLocalizations {
   /// **'Has an active subscription'**
   String get hasAnActiveSubscription;
 
-  /// No description provided for @hash.
-  ///
-  /// In en, this message translates to:
-  /// **'Hash'**
-  String get hash;
-
   /// No description provided for @hasImage.
   ///
   /// In en, this message translates to:
   /// **'Has image'**
   String get hasImage;
+
+  /// No description provided for @hash.
+  ///
+  /// In en, this message translates to:
+  /// **'Hash'**
+  String get hash;
 
   /// No description provided for @haveAGoodTrip.
   ///
@@ -3500,17 +3530,17 @@ abstract class AppLocalizations {
   /// **'Image description'**
   String get imageDescription;
 
-  /// No description provided for @images.
-  ///
-  /// In en, this message translates to:
-  /// **'Images'**
-  String get images;
-
   /// No description provided for @imageWidth.
   ///
   /// In en, this message translates to:
   /// **'Image Width'**
   String get imageWidth;
+
+  /// No description provided for @images.
+  ///
+  /// In en, this message translates to:
+  /// **'Images'**
+  String get images;
 
   /// No description provided for @imei.
   ///
@@ -3529,6 +3559,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Import host config'**
   String get importHostConfig;
+
+  /// No description provided for @inPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'In person'**
+  String get inPerson;
 
   /// No description provided for @inactive.
   ///
@@ -3577,12 +3613,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Inline Code'**
   String get inlineCode;
-
-  /// No description provided for @inPerson.
-  ///
-  /// In en, this message translates to:
-  /// **'In person'**
-  String get inPerson;
 
   /// No description provided for @inputText.
   ///
@@ -3764,17 +3794,17 @@ abstract class AppLocalizations {
   /// **'Invoice marked as paid'**
   String get invoiceMarkedAsPaid;
 
-  /// No description provided for @invoices.
-  ///
-  /// In en, this message translates to:
-  /// **'Invoices'**
-  String get invoices;
-
   /// No description provided for @invoiceType.
   ///
   /// In en, this message translates to:
   /// **'Invoice Type'**
   String get invoiceType;
+
+  /// No description provided for @invoices.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoices'**
+  String get invoices;
 
   /// No description provided for @ipAddress.
   ///
@@ -4178,12 +4208,6 @@ abstract class AppLocalizations {
   /// **'Max Duration (ms)'**
   String get maxDurationMs;
 
-  /// No description provided for @maximumDiscountAllowed.
-  ///
-  /// In en, this message translates to:
-  /// **'Maximum discount allowed'**
-  String get maximumDiscountAllowed;
-
   /// No description provided for @maxPrice.
   ///
   /// In en, this message translates to:
@@ -4195,6 +4219,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Max volume'**
   String get maxVolume;
+
+  /// No description provided for @maximumDiscountAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum discount allowed'**
+  String get maximumDiscountAllowed;
 
   /// No description provided for @mcc.
   ///
@@ -4226,6 +4256,12 @@ abstract class AppLocalizations {
   /// **'Merchant ID'**
   String get merchantId;
 
+  /// No description provided for @merchantTitleStoreOrBusinessName.
+  ///
+  /// In en, this message translates to:
+  /// **'Merchant title (store or business name)'**
+  String get merchantTitleStoreOrBusinessName;
+
   /// No description provided for @merchants.
   ///
   /// In en, this message translates to:
@@ -4237,12 +4273,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Merchants Management'**
   String get merchantsManagement;
-
-  /// No description provided for @merchantTitleStoreOrBusinessName.
-  ///
-  /// In en, this message translates to:
-  /// **'Merchant title (store or business name)'**
-  String get merchantTitleStoreOrBusinessName;
 
   /// No description provided for @merge.
   ///
@@ -4496,6 +4526,12 @@ abstract class AppLocalizations {
   /// **'My vehicles'**
   String get myVehicles;
 
+  /// No description provided for @nUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Pages per sheet'**
+  String get nUp;
+
   /// No description provided for @name.
   ///
   /// In en, this message translates to:
@@ -4568,12 +4604,6 @@ abstract class AppLocalizations {
   /// **'Network connected'**
   String get networkConnected;
 
-  /// No description provided for @new_.
-  ///
-  /// In en, this message translates to:
-  /// **'New'**
-  String get new_;
-
   /// No description provided for @newFolder.
   ///
   /// In en, this message translates to:
@@ -4622,6 +4652,12 @@ abstract class AppLocalizations {
   /// **'New subscription'**
   String get newSubscription;
 
+  /// No description provided for @new_.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get new_;
+
   /// No description provided for @next.
   ///
   /// In en, this message translates to:
@@ -4669,6 +4705,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No API tokens yet'**
   String get noApiTokensYet;
+
+  /// No description provided for @noBarcodeWasFoundInTheImage.
+  ///
+  /// In en, this message translates to:
+  /// **'No barcode was found in the image'**
+  String get noBarcodeWasFoundInTheImage;
+
+  /// No description provided for @noCameraWasFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No camera was found'**
+  String get noCameraWasFound;
 
   /// No description provided for @noCardIssuedForThisProfile.
   ///
@@ -4730,18 +4778,6 @@ abstract class AppLocalizations {
   /// **'No Merchant Selected'**
   String get noMerchantSelected;
 
-  /// No description provided for @none.
-  ///
-  /// In en, this message translates to:
-  /// **'None'**
-  String get none;
-
-  /// No description provided for @nonIranianPlate.
-  ///
-  /// In en, this message translates to:
-  /// **'Non-Iranian plate'**
-  String get nonIranianPlate;
-
   /// No description provided for @noNotifications.
   ///
   /// In en, this message translates to:
@@ -4778,24 +4814,6 @@ abstract class AppLocalizations {
   /// **'No reviews yet'**
   String get noReviewsYet;
 
-  /// No description provided for @normal.
-  ///
-  /// In en, this message translates to:
-  /// **'Normal'**
-  String get normal;
-
-  /// No description provided for @normalDayRate.
-  ///
-  /// In en, this message translates to:
-  /// **'Normal day rate'**
-  String get normalDayRate;
-
-  /// No description provided for @normalText.
-  ///
-  /// In en, this message translates to:
-  /// **'Normal Text'**
-  String get normalText;
-
   /// No description provided for @noRoomsAreAvailableForTheseDates.
   ///
   /// In en, this message translates to:
@@ -4820,6 +4838,60 @@ abstract class AppLocalizations {
   /// **'No SIM card registered'**
   String get noSimCardRegistered;
 
+  /// No description provided for @noTracksAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No tracks available'**
+  String get noTracksAvailable;
+
+  /// No description provided for @noTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'No transactions'**
+  String get noTransactions;
+
+  /// No description provided for @noTransactionsDone.
+  ///
+  /// In en, this message translates to:
+  /// **'No transactions done.'**
+  String get noTransactionsDone;
+
+  /// No description provided for @noVehicleIsInsideTheParking.
+  ///
+  /// In en, this message translates to:
+  /// **'No vehicle is inside the parking'**
+  String get noVehicleIsInsideTheParking;
+
+  /// No description provided for @nonIranianPlate.
+  ///
+  /// In en, this message translates to:
+  /// **'Non-Iranian plate'**
+  String get nonIranianPlate;
+
+  /// No description provided for @none.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get none;
+
+  /// No description provided for @normal.
+  ///
+  /// In en, this message translates to:
+  /// **'Normal'**
+  String get normal;
+
+  /// No description provided for @normalDayRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Normal day rate'**
+  String get normalDayRate;
+
+  /// No description provided for @normalText.
+  ///
+  /// In en, this message translates to:
+  /// **'Normal Text'**
+  String get normalText;
+
   /// No description provided for @notAllowedToDrive.
   ///
   /// In en, this message translates to:
@@ -4831,6 +4903,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not assigned'**
   String get notAssigned;
+
+  /// No description provided for @notUploaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Not Uploaded'**
+  String get notUploaded;
 
   /// No description provided for @note.
   ///
@@ -4856,36 +4934,6 @@ abstract class AppLocalizations {
   /// **'Notifications'**
   String get notifications;
 
-  /// No description provided for @noTracksAvailable.
-  ///
-  /// In en, this message translates to:
-  /// **'No tracks available'**
-  String get noTracksAvailable;
-
-  /// No description provided for @noTransactions.
-  ///
-  /// In en, this message translates to:
-  /// **'No transactions'**
-  String get noTransactions;
-
-  /// No description provided for @noTransactionsDone.
-  ///
-  /// In en, this message translates to:
-  /// **'No transactions done.'**
-  String get noTransactionsDone;
-
-  /// No description provided for @notUploaded.
-  ///
-  /// In en, this message translates to:
-  /// **'Not Uploaded'**
-  String get notUploaded;
-
-  /// No description provided for @noVehicleIsInsideTheParking.
-  ///
-  /// In en, this message translates to:
-  /// **'No vehicle is inside the parking'**
-  String get noVehicleIsInsideTheParking;
-
   /// No description provided for @nowPlaying.
   ///
   /// In en, this message translates to:
@@ -4897,12 +4945,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Number'**
   String get number;
-
-  /// No description provided for @numberedList.
-  ///
-  /// In en, this message translates to:
-  /// **'Numbered List'**
-  String get numberedList;
 
   /// No description provided for @numberOfGuests.
   ///
@@ -4916,11 +4958,11 @@ abstract class AppLocalizations {
   /// **'Number of nights'**
   String get numberOfNights;
 
-  /// No description provided for @nUp.
+  /// No description provided for @numberedList.
   ///
   /// In en, this message translates to:
-  /// **'Pages per sheet'**
-  String get nUp;
+  /// **'Numbered List'**
+  String get numberedList;
 
   /// No description provided for @occupancy.
   ///
@@ -5138,6 +5180,12 @@ abstract class AppLocalizations {
   /// **'Output'**
   String get output;
 
+  /// No description provided for @overTheRoomCapacity.
+  ///
+  /// In en, this message translates to:
+  /// **'Over the room capacity'**
+  String get overTheRoomCapacity;
+
   /// No description provided for @overdue.
   ///
   /// In en, this message translates to:
@@ -5149,12 +5197,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Overdue Invoices'**
   String get overdueInvoices;
-
-  /// No description provided for @overTheRoomCapacity.
-  ///
-  /// In en, this message translates to:
-  /// **'Over the room capacity'**
-  String get overTheRoomCapacity;
 
   /// No description provided for @owner.
   ///
@@ -5210,12 +5252,6 @@ abstract class AppLocalizations {
   /// **'Page'**
   String get page;
 
-  /// No description provided for @paged.
-  ///
-  /// In en, this message translates to:
-  /// **'Paged'**
-  String get paged;
-
   /// No description provided for @pageDirection.
   ///
   /// In en, this message translates to:
@@ -5227,6 +5263,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Page numbers'**
   String get pageNumbers;
+
+  /// No description provided for @paged.
+  ///
+  /// In en, this message translates to:
+  /// **'Paged'**
+  String get paged;
 
   /// No description provided for @pages.
   ///
@@ -5378,12 +5420,6 @@ abstract class AppLocalizations {
   /// **'Pay'**
   String get pay;
 
-  /// No description provided for @payableAmount.
-  ///
-  /// In en, this message translates to:
-  /// **'Payable amount'**
-  String get payableAmount;
-
   /// No description provided for @payAmount.
   ///
   /// In en, this message translates to:
@@ -5420,54 +5456,6 @@ abstract class AppLocalizations {
   /// **'Pay Invoice'**
   String get payInvoice;
 
-  /// No description provided for @payment.
-  ///
-  /// In en, this message translates to:
-  /// **'Payment'**
-  String get payment;
-
-  /// No description provided for @paymentFailed.
-  ///
-  /// In en, this message translates to:
-  /// **'Payment failed.'**
-  String get paymentFailed;
-
-  /// No description provided for @paymentId.
-  ///
-  /// In en, this message translates to:
-  /// **'Payment ID'**
-  String get paymentId;
-
-  /// No description provided for @paymentMethod.
-  ///
-  /// In en, this message translates to:
-  /// **'Payment method'**
-  String get paymentMethod;
-
-  /// No description provided for @payments.
-  ///
-  /// In en, this message translates to:
-  /// **'Payments'**
-  String get payments;
-
-  /// No description provided for @paymentStatus.
-  ///
-  /// In en, this message translates to:
-  /// **'Payment Status'**
-  String get paymentStatus;
-
-  /// No description provided for @paymentSuccessful.
-  ///
-  /// In en, this message translates to:
-  /// **'Payment successful'**
-  String get paymentSuccessful;
-
-  /// No description provided for @paymentWasSuccessful.
-  ///
-  /// In en, this message translates to:
-  /// **'Payment was successful.'**
-  String get paymentWasSuccessful;
-
   /// No description provided for @payNow.
   ///
   /// In en, this message translates to:
@@ -5498,6 +5486,66 @@ abstract class AppLocalizations {
   /// **'Pay with wallet'**
   String get payWithWallet;
 
+  /// No description provided for @payableAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Payable amount'**
+  String get payableAmount;
+
+  /// No description provided for @payment.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment'**
+  String get payment;
+
+  /// No description provided for @paymentFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment failed.'**
+  String get paymentFailed;
+
+  /// No description provided for @paymentId.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment ID'**
+  String get paymentId;
+
+  /// No description provided for @paymentMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment method'**
+  String get paymentMethod;
+
+  /// No description provided for @paymentStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Status'**
+  String get paymentStatus;
+
+  /// No description provided for @paymentSuccessful.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment successful'**
+  String get paymentSuccessful;
+
+  /// No description provided for @paymentWasSuccessful.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment was successful.'**
+  String get paymentWasSuccessful;
+
+  /// No description provided for @payments.
+  ///
+  /// In en, this message translates to:
+  /// **'Payments'**
+  String get payments;
+
+  /// No description provided for @penColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Pen color'**
+  String get penColor;
+
   /// No description provided for @penalty.
   ///
   /// In en, this message translates to:
@@ -5509,12 +5557,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Penalty Amount'**
   String get penaltyAmount;
-
-  /// No description provided for @penColor.
-  ///
-  /// In en, this message translates to:
-  /// **'Pen color'**
-  String get penColor;
 
   /// No description provided for @pending.
   ///
@@ -5540,29 +5582,29 @@ abstract class AppLocalizations {
   /// **'Per hour'**
   String get perHour;
 
-  /// No description provided for @period.
-  ///
-  /// In en, this message translates to:
-  /// **'Period'**
-  String get period;
-
   /// No description provided for @perMinuteAfterTheFirstHour.
   ///
   /// In en, this message translates to:
   /// **'Per-minute after the first hour'**
   String get perMinuteAfterTheFirstHour;
 
-  /// No description provided for @permissions.
-  ///
-  /// In en, this message translates to:
-  /// **'Permissions'**
-  String get permissions;
-
   /// No description provided for @perNight.
   ///
   /// In en, this message translates to:
   /// **'per night'**
   String get perNight;
+
+  /// No description provided for @period.
+  ///
+  /// In en, this message translates to:
+  /// **'Period'**
+  String get period;
+
+  /// No description provided for @permissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Permissions'**
+  String get permissions;
 
   /// No description provided for @persian.
   ///
@@ -5822,18 +5864,6 @@ abstract class AppLocalizations {
   /// **'Print date'**
   String get printDate;
 
-  /// No description provided for @printingFailed.
-  ///
-  /// In en, this message translates to:
-  /// **'Printing failed'**
-  String get printingFailed;
-
-  /// No description provided for @printingReceipt.
-  ///
-  /// In en, this message translates to:
-  /// **'Printing receipt'**
-  String get printingReceipt;
-
   /// No description provided for @printNumber.
   ///
   /// In en, this message translates to:
@@ -5864,6 +5894,18 @@ abstract class AppLocalizations {
   /// **'Print the entry receipt automatically'**
   String get printTheEntryReceiptAutomatically;
 
+  /// No description provided for @printingFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Printing failed'**
+  String get printingFailed;
+
+  /// No description provided for @printingReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Printing receipt'**
+  String get printingReceipt;
+
   /// No description provided for @privacyPolicy.
   ///
   /// In en, this message translates to:
@@ -5876,17 +5918,17 @@ abstract class AppLocalizations {
   /// **'Process'**
   String get process;
 
-  /// No description provided for @processing.
-  ///
-  /// In en, this message translates to:
-  /// **'Processing'**
-  String get processing;
-
   /// No description provided for @processUptime.
   ///
   /// In en, this message translates to:
   /// **'Process Uptime'**
   String get processUptime;
+
+  /// No description provided for @processing.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing'**
+  String get processing;
 
   /// No description provided for @products.
   ///
@@ -5984,17 +6026,11 @@ abstract class AppLocalizations {
   /// **'Quote'**
   String get quote;
 
-  /// No description provided for @readingMode.
+  /// No description provided for @reInquiryWithFee.
   ///
   /// In en, this message translates to:
-  /// **'Reading mode'**
-  String get readingMode;
-
-  /// No description provided for @readingTime.
-  ///
-  /// In en, this message translates to:
-  /// **'Reading Time'**
-  String get readingTime;
+  /// **'Re-inquiry (with fee)'**
+  String get reInquiryWithFee;
 
   /// No description provided for @readPlateWithCamera.
   ///
@@ -6007,6 +6043,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Read this'**
   String get readThis;
+
+  /// No description provided for @readingMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading mode'**
+  String get readingMode;
+
+  /// No description provided for @readingTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading Time'**
+  String get readingTime;
 
   /// No description provided for @realBalance.
   ///
@@ -6062,18 +6110,6 @@ abstract class AppLocalizations {
   /// **'Recent Contracts'**
   String get recentContracts;
 
-  /// No description provided for @recentlyJoined.
-  ///
-  /// In en, this message translates to:
-  /// **'Recently Joined'**
-  String get recentlyJoined;
-
-  /// No description provided for @recentlyOnboardedMerchants.
-  ///
-  /// In en, this message translates to:
-  /// **'Recently Onboarded Merchants'**
-  String get recentlyOnboardedMerchants;
-
   /// No description provided for @recentMovements.
   ///
   /// In en, this message translates to:
@@ -6091,6 +6127,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Recent Wallet Transactions'**
   String get recentWalletTransactions;
+
+  /// No description provided for @recentlyJoined.
+  ///
+  /// In en, this message translates to:
+  /// **'Recently Joined'**
+  String get recentlyJoined;
+
+  /// No description provided for @recentlyOnboardedMerchants.
+  ///
+  /// In en, this message translates to:
+  /// **'Recently Onboarded Merchants'**
+  String get recentlyOnboardedMerchants;
 
   /// No description provided for @recordAgain.
   ///
@@ -6205,12 +6253,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Registration Number'**
   String get registrationNumber;
-
-  /// No description provided for @reInquiryWithFee.
-  ///
-  /// In en, this message translates to:
-  /// **'Re-inquiry (with fee)'**
-  String get reInquiryWithFee;
 
   /// No description provided for @reject.
   ///
@@ -6332,17 +6374,17 @@ abstract class AppLocalizations {
   /// **'Replace All'**
   String get replaceAll;
 
-  /// No description provided for @replaced.
-  ///
-  /// In en, this message translates to:
-  /// **'Replaced'**
-  String get replaced;
-
   /// No description provided for @replaceWith.
   ///
   /// In en, this message translates to:
   /// **'Replace With'**
   String get replaceWith;
+
+  /// No description provided for @replaced.
+  ///
+  /// In en, this message translates to:
+  /// **'Replaced'**
+  String get replaced;
 
   /// No description provided for @report.
   ///
@@ -6620,12 +6662,6 @@ abstract class AppLocalizations {
   /// **'Saturation'**
   String get saturation;
 
-  /// No description provided for @simCard.
-  ///
-  /// In en, this message translates to:
-  /// **'SIM CARD'**
-  String get simCard;
-
   /// No description provided for @save.
   ///
   /// In en, this message translates to:
@@ -6637,18 +6673,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save changes'**
   String get saveChanges;
-
-  /// No description provided for @saved.
-  ///
-  /// In en, this message translates to:
-  /// **'Saved'**
-  String get saved;
-
-  /// No description provided for @savedSuccessfully.
-  ///
-  /// In en, this message translates to:
-  /// **'Saved successfully'**
-  String get savedSuccessfully;
 
   /// No description provided for @saveSignature.
   ///
@@ -6668,6 +6692,18 @@ abstract class AppLocalizations {
   /// **'Save tariff'**
   String get saveTariff;
 
+  /// No description provided for @saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved'**
+  String get saved;
+
+  /// No description provided for @savedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved successfully'**
+  String get savedSuccessfully;
+
   /// No description provided for @sayadCheck.
   ///
   /// In en, this message translates to:
@@ -6686,12 +6722,6 @@ abstract class AppLocalizations {
   /// **'Scan from Gallery'**
   String get scanFromGallery;
 
-  /// No description provided for @scannedReceipt.
-  ///
-  /// In en, this message translates to:
-  /// **'Scanned receipt'**
-  String get scannedReceipt;
-
   /// No description provided for @scanReceipt.
   ///
   /// In en, this message translates to:
@@ -6709,6 +6739,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Scan this code to register the exit'**
   String get scanThisCodeToRegisterTheExit;
+
+  /// No description provided for @scannedReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Scanned receipt'**
+  String get scannedReceipt;
 
   /// No description provided for @scopes.
   ///
@@ -6782,17 +6818,17 @@ abstract class AppLocalizations {
   /// **'Second control digit'**
   String get secondControlDigit;
 
-  /// No description provided for @seconds.
-  ///
-  /// In en, this message translates to:
-  /// **'seconds'**
-  String get seconds;
-
   /// No description provided for @secondSignatory.
   ///
   /// In en, this message translates to:
   /// **'Second Signatory'**
   String get secondSignatory;
+
+  /// No description provided for @seconds.
+  ///
+  /// In en, this message translates to:
+  /// **'seconds'**
+  String get seconds;
 
   /// No description provided for @secretKey.
   ///
@@ -6818,6 +6854,12 @@ abstract class AppLocalizations {
   /// **'Select a {item}'**
   String selectAItem(Object item);
 
+  /// No description provided for @selectAUserToManageTheirWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a user to manage their wallet'**
+  String get selectAUserToManageTheirWallet;
+
   /// No description provided for @selectAll.
   ///
   /// In en, this message translates to:
@@ -6829,12 +6871,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select amount'**
   String get selectAmount;
-
-  /// No description provided for @selectAUserToManageTheirWallet.
-  ///
-  /// In en, this message translates to:
-  /// **'Select a user to manage their wallet'**
-  String get selectAUserToManageTheirWallet;
 
   /// No description provided for @selectBrand.
   ///
@@ -6986,17 +7022,17 @@ abstract class AppLocalizations {
   /// **'Share'**
   String get share;
 
-  /// No description provided for @shared.
-  ///
-  /// In en, this message translates to:
-  /// **'Shared'**
-  String get shared;
-
   /// No description provided for @shareImage.
   ///
   /// In en, this message translates to:
   /// **'Share image'**
   String get shareImage;
+
+  /// No description provided for @shared.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared'**
+  String get shared;
 
   /// No description provided for @shift.
   ///
@@ -7028,17 +7064,17 @@ abstract class AppLocalizations {
   /// **'Show'**
   String get show;
 
-  /// No description provided for @showAnnotations.
-  ///
-  /// In en, this message translates to:
-  /// **'Show annotations'**
-  String get showAnnotations;
-
   /// No description provided for @showAQrCodeOrSendAnSmsLink.
   ///
   /// In en, this message translates to:
   /// **'Show a QR code or send an SMS link'**
   String get showAQrCodeOrSendAnSmsLink;
+
+  /// No description provided for @showAnnotations.
+  ///
+  /// In en, this message translates to:
+  /// **'Show annotations'**
+  String get showAnnotations;
 
   /// No description provided for @showDynamicPinInApp.
   ///
@@ -7075,6 +7111,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Signature'**
   String get signature;
+
+  /// No description provided for @simCard.
+  ///
+  /// In en, this message translates to:
+  /// **'SIM CARD'**
+  String get simCard;
 
   /// No description provided for @simCardCharge.
   ///
@@ -7226,12 +7268,6 @@ abstract class AppLocalizations {
   /// **'Start Date'**
   String get startDate;
 
-  /// No description provided for @startingFrom.
-  ///
-  /// In en, this message translates to:
-  /// **'Starting from'**
-  String get startingFrom;
-
   /// No description provided for @startInvoiceNumber.
   ///
   /// In en, this message translates to:
@@ -7243,6 +7279,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Start shift'**
   String get startShift;
+
+  /// No description provided for @startingFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'Starting from'**
+  String get startingFrom;
 
   /// No description provided for @state.
   ///
@@ -7286,17 +7328,17 @@ abstract class AppLocalizations {
   /// **'Stretch'**
   String get stretch;
 
-  /// No description provided for @strikethrough.
-  ///
-  /// In en, this message translates to:
-  /// **'Strikethrough'**
-  String get strikethrough;
-
   /// No description provided for @strikeThrough.
   ///
   /// In en, this message translates to:
   /// **'Strike through'**
   String get strikeThrough;
+
+  /// No description provided for @strikethrough.
+  ///
+  /// In en, this message translates to:
+  /// **'Strikethrough'**
+  String get strikethrough;
 
   /// No description provided for @strokeWidth.
   ///
@@ -7352,17 +7394,17 @@ abstract class AppLocalizations {
   /// **'Subscription exit'**
   String get subscriptionExit;
 
-  /// No description provided for @subscriptions.
-  ///
-  /// In en, this message translates to:
-  /// **'Subscriptions'**
-  String get subscriptions;
-
   /// No description provided for @subscriptionType.
   ///
   /// In en, this message translates to:
   /// **'Subscription type'**
   String get subscriptionType;
+
+  /// No description provided for @subscriptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscriptions'**
+  String get subscriptions;
 
   /// No description provided for @subtitle.
   ///
@@ -7376,12 +7418,6 @@ abstract class AppLocalizations {
   /// **'Subtitle delay'**
   String get subtitleDelay;
 
-  /// No description provided for @subtitles.
-  ///
-  /// In en, this message translates to:
-  /// **'Subtitles'**
-  String get subtitles;
-
   /// No description provided for @subtitleSize.
   ///
   /// In en, this message translates to:
@@ -7393,6 +7429,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Subtitle track'**
   String get subtitleTrack;
+
+  /// No description provided for @subtitles.
+  ///
+  /// In en, this message translates to:
+  /// **'Subtitles'**
+  String get subtitles;
 
   /// No description provided for @success.
   ///
@@ -7514,17 +7556,17 @@ abstract class AppLocalizations {
   /// **'Tariff'**
   String get tariff;
 
-  /// No description provided for @tariffs.
-  ///
-  /// In en, this message translates to:
-  /// **'Tariffs'**
-  String get tariffs;
-
   /// No description provided for @tariffStoredOnTheDevice.
   ///
   /// In en, this message translates to:
   /// **'Tariff stored on the device'**
   String get tariffStoredOnTheDevice;
+
+  /// No description provided for @tariffs.
+  ///
+  /// In en, this message translates to:
+  /// **'Tariffs'**
+  String get tariffs;
 
   /// No description provided for @taxAndFees.
   ///
@@ -7610,6 +7652,18 @@ abstract class AppLocalizations {
   /// **'Terminal number'**
   String get terminalNumber;
 
+  /// No description provided for @terminalTitleOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Terminal title (optional)'**
+  String get terminalTitleOptional;
+
+  /// No description provided for @terminalTrackingCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Terminal tracking code'**
+  String get terminalTrackingCode;
+
   /// No description provided for @terminals.
   ///
   /// In en, this message translates to:
@@ -7627,18 +7681,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Terminals Management'**
   String get terminalsManagement;
-
-  /// No description provided for @terminalTitleOptional.
-  ///
-  /// In en, this message translates to:
-  /// **'Terminal title (optional)'**
-  String get terminalTitleOptional;
-
-  /// No description provided for @terminalTrackingCode.
-  ///
-  /// In en, this message translates to:
-  /// **'Terminal tracking code'**
-  String get terminalTrackingCode;
 
   /// No description provided for @termsAndConditions.
   ///
@@ -7754,12 +7796,6 @@ abstract class AppLocalizations {
   /// **'The gold service is not available right now'**
   String get theGoldServiceIsNotAvailableRightNow;
 
-  /// No description provided for @theme.
-  ///
-  /// In en, this message translates to:
-  /// **'Theme'**
-  String get theme;
-
   /// No description provided for @theNightRateAppliesBetweenFromAndTo.
   ///
   /// In en, this message translates to:
@@ -7777,12 +7813,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The payment has not been confirmed yet'**
   String get thePaymentHasNotBeenConfirmedYet;
-
-  /// No description provided for @thereIsNoSavedDataForThisVehicleToGetFreshDataYouMustPayTheInquiryFee.
-  ///
-  /// In en, this message translates to:
-  /// **'There is no saved data for this vehicle. To get fresh data you must pay the inquiry fee.'**
-  String get thereIsNoSavedDataForThisVehicleToGetFreshDataYouMustPayTheInquiryFee;
 
   /// No description provided for @theReservationWasCancelled.
   ///
@@ -7819,6 +7849,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The video must be at least 4 seconds'**
   String get theVideoMustBeAtLeast4Seconds;
+
+  /// No description provided for @theme.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get theme;
+
+  /// No description provided for @thereIsNoSavedDataForThisVehicleToGetFreshDataYouMustPayTheInquiryFee.
+  ///
+  /// In en, this message translates to:
+  /// **'There is no saved data for this vehicle. To get fresh data you must pay the inquiry fee.'**
+  String get thereIsNoSavedDataForThisVehicleToGetFreshDataYouMustPayTheInquiryFee;
 
   /// No description provided for @thickness.
   ///
@@ -7922,6 +7964,24 @@ abstract class AppLocalizations {
   /// **'To Date'**
   String get toDate;
 
+  /// No description provided for @toRegisterAMerchantYourWalletMustHaveAtLeast100000TomansBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'To register a merchant, your wallet must have at least 100,000 Tomans balance.'**
+  String get toRegisterAMerchantYourWalletMustHaveAtLeast100000TomansBalance;
+
+  /// No description provided for @toTakeABedCallTheDormOrVisitInPersonOnceYouAreRegisteredTheContractAndItsMonthlyInvoicesShowUpRightHere.
+  ///
+  /// In en, this message translates to:
+  /// **'To take a bed, call the dorm or visit in person. Once you are registered, the contract and its monthly invoices show up right here.'**
+  String get toTakeABedCallTheDormOrVisitInPersonOnceYouAreRegisteredTheContractAndItsMonthlyInvoicesShowUpRightHere;
+
+  /// No description provided for @toUseAvaHamrahServicesCompleteYourIdentityInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'To use AvaHamrah services, complete your identity information.'**
+  String get toUseAvaHamrahServicesCompleteYourIdentityInformation;
+
   /// No description provided for @tokenPrefix.
   ///
   /// In en, this message translates to:
@@ -7963,18 +8023,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Top up wallet'**
   String get topUpWallet;
-
-  /// No description provided for @toRegisterAMerchantYourWalletMustHaveAtLeast100000TomansBalance.
-  ///
-  /// In en, this message translates to:
-  /// **'To register a merchant, your wallet must have at least 100,000 Tomans balance.'**
-  String get toRegisterAMerchantYourWalletMustHaveAtLeast100000TomansBalance;
-
-  /// No description provided for @toTakeABedCallTheDormOrVisitInPersonOnceYouAreRegisteredTheContractAndItsMonthlyInvoicesShowUpRightHere.
-  ///
-  /// In en, this message translates to:
-  /// **'To take a bed, call the dorm or visit in person. Once you are registered, the contract and its monthly invoices show up right here.'**
-  String get toTakeABedCallTheDormOrVisitInPersonOnceYouAreRegisteredTheContractAndItsMonthlyInvoicesShowUpRightHere;
 
   /// No description provided for @total.
   ///
@@ -8060,12 +8108,6 @@ abstract class AppLocalizations {
   /// **'Total violation amount'**
   String get totalViolationAmount;
 
-  /// No description provided for @toUseAvaHamrahServicesCompleteYourIdentityInformation.
-  ///
-  /// In en, this message translates to:
-  /// **'To use AvaHamrah services, complete your identity information.'**
-  String get toUseAvaHamrahServicesCompleteYourIdentityInformation;
-
   /// No description provided for @traceId.
   ///
   /// In en, this message translates to:
@@ -8120,6 +8162,12 @@ abstract class AppLocalizations {
   /// **'Transaction receipt'**
   String get transactionReceipt;
 
+  /// No description provided for @transactionType.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction type'**
+  String get transactionType;
+
   /// No description provided for @transactions.
   ///
   /// In en, this message translates to:
@@ -8137,12 +8185,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Transactions by Status'**
   String get transactionsByStatus;
-
-  /// No description provided for @transactionType.
-  ///
-  /// In en, this message translates to:
-  /// **'Transaction type'**
-  String get transactionType;
 
   /// No description provided for @transfer.
   ///
@@ -8282,6 +8324,18 @@ abstract class AppLocalizations {
   /// **'URL'**
   String get url;
 
+  /// No description provided for @useOutputAsInput.
+  ///
+  /// In en, this message translates to:
+  /// **'Use output as input'**
+  String get useOutputAsInput;
+
+  /// No description provided for @useThisPlate.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this plate'**
+  String get useThisPlate;
+
   /// No description provided for @usedCredit.
   ///
   /// In en, this message translates to:
@@ -8293,12 +8347,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Used volume'**
   String get usedVolume;
-
-  /// No description provided for @useOutputAsInput.
-  ///
-  /// In en, this message translates to:
-  /// **'Use output as input'**
-  String get useOutputAsInput;
 
   /// No description provided for @user.
   ///
@@ -8348,6 +8396,12 @@ abstract class AppLocalizations {
   /// **'User / IP'**
   String get userIp;
 
+  /// No description provided for @userUpdatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'User updated successfully'**
+  String get userUpdatedSuccessfully;
+
   /// No description provided for @username.
   ///
   /// In en, this message translates to:
@@ -8366,35 +8420,11 @@ abstract class AppLocalizations {
   /// **'Users Management'**
   String get usersManagement;
 
-  /// No description provided for @userUpdatedSuccessfully.
-  ///
-  /// In en, this message translates to:
-  /// **'User updated successfully'**
-  String get userUpdatedSuccessfully;
-
-  /// No description provided for @useThisPlate.
-  ///
-  /// In en, this message translates to:
-  /// **'Use this plate'**
-  String get useThisPlate;
-
   /// No description provided for @valid.
   ///
   /// In en, this message translates to:
   /// **'Valid'**
   String get valid;
-
-  /// No description provided for @validityAndStatusOfDrivingLicense.
-  ///
-  /// In en, this message translates to:
-  /// **'Validity and status of driving license'**
-  String get validityAndStatusOfDrivingLicense;
-
-  /// No description provided for @validityYears.
-  ///
-  /// In en, this message translates to:
-  /// **'Validity years'**
-  String get validityYears;
 
   /// No description provided for @validOnlyDuringOfficeHours.
   ///
@@ -8407,6 +8437,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Valid until'**
   String get validUntil;
+
+  /// No description provided for @validityAndStatusOfDrivingLicense.
+  ///
+  /// In en, this message translates to:
+  /// **'Validity and status of driving license'**
+  String get validityAndStatusOfDrivingLicense;
+
+  /// No description provided for @validityYears.
+  ///
+  /// In en, this message translates to:
+  /// **'Validity years'**
+  String get validityYears;
 
   /// No description provided for @value.
   ///
@@ -8438,12 +8480,6 @@ abstract class AppLocalizations {
   /// **'Vehicle services'**
   String get vehicleServices;
 
-  /// No description provided for @vehiclesInsideTheParking.
-  ///
-  /// In en, this message translates to:
-  /// **'Vehicles inside the parking'**
-  String get vehiclesInsideTheParking;
-
   /// No description provided for @vehicleType.
   ///
   /// In en, this message translates to:
@@ -8455,6 +8491,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Vehicle violation inquiry'**
   String get vehicleViolationInquiry;
+
+  /// No description provided for @vehiclesInsideTheParking.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicles inside the parking'**
+  String get vehiclesInsideTheParking;
 
   /// No description provided for @verificationCode.
   ///
@@ -8558,17 +8600,17 @@ abstract class AppLocalizations {
   /// **'Virtualizer'**
   String get virtualizer;
 
-  /// No description provided for @visitingHours.
-  ///
-  /// In en, this message translates to:
-  /// **'Visiting hours'**
-  String get visitingHours;
-
   /// No description provided for @visitWebsite.
   ///
   /// In en, this message translates to:
   /// **'Visit website'**
   String get visitWebsite;
+
+  /// No description provided for @visitingHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Visiting hours'**
+  String get visitingHours;
 
   /// No description provided for @visualAuthentication.
   ///
@@ -8648,6 +8690,12 @@ abstract class AppLocalizations {
   /// **'Watermark'**
   String get watermark;
 
+  /// No description provided for @weSentAVerificationCodeToThisNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'We sent a verification code to this number.'**
+  String get weSentAVerificationCodeToThisNumber;
+
   /// No description provided for @weak.
   ///
   /// In en, this message translates to:
@@ -8671,12 +8719,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Welcome'**
   String get welcome;
-
-  /// No description provided for @weSentAVerificationCodeToThisNumber.
-  ///
-  /// In en, this message translates to:
-  /// **'We sent a verification code to this number.'**
-  String get weSentAVerificationCodeToThisNumber;
 
   /// No description provided for @whatsApp.
   ///
@@ -8887,30 +8929,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Zoom out'**
   String get zoomOut;
-
-  /// No description provided for @brand.
-  ///
-  /// In en, this message translates to:
-  /// **'Brand'**
-  String get brand;
-
-  /// No description provided for @brands.
-  ///
-  /// In en, this message translates to:
-  /// **'Brands'**
-  String get brands;
-
-  /// No description provided for @broker.
-  ///
-  /// In en, this message translates to:
-  /// **'Broker'**
-  String get broker;
-
-  /// No description provided for @brokers.
-  ///
-  /// In en, this message translates to:
-  /// **'Brokers'**
-  String get brokers;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

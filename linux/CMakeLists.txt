@@ -15,6 +15,7 @@ set(PLUGIN_NAME "u_plugin")
 list(APPEND PLUGIN_SOURCES
   "u_plugin.cc"
   "media/u_media.cc"
+  "camera/u_camera.cc"
 )
 
 pkg_check_modules(GSTREAMER IMPORTED_TARGET gstreamer-1.0 gstreamer-app-1.0 gstreamer-video-1.0)

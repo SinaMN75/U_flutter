@@ -4,6 +4,7 @@ import UIKit
 public final class UPlugin: NSObject, FlutterPlugin {
     private var screenGuard: ScreenGuardHandler?
     private var media: UMediaHandler?
+    private var camera: UCameraHandler?
 
     public static func register(
         with registrar: FlutterPluginRegistrar
@@ -18,6 +19,10 @@ public final class UPlugin: NSObject, FlutterPlugin {
             messenger: registrar.messenger()
         )
         instance.media = UMediaHandler(
+            messenger: registrar.messenger(),
+            registry: registrar.textures()
+        )
+        instance.camera = UCameraHandler(
             messenger: registrar.messenger(),
             registry: registrar.textures()
         )

@@ -1,5 +1,6 @@
 package com.sinamn75.u
 
+import com.sinamn75.u.camera.UCameraHandler
 import com.sinamn75.u.media.UMediaHandler
 import com.sinamn75.u.media.UMediaSessionHandler
 import com.sinamn75.u.screenguard.ScreenGuardHandler
@@ -22,6 +23,7 @@ class UPlugin :
     private var screenGuard: ScreenGuardHandler? = null
     private var media: UMediaHandler? = null
     private var mediaSession: UMediaSessionHandler? = null
+    private var camera: UCameraHandler? = null
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "u")
@@ -34,6 +36,12 @@ class UPlugin :
                 flutterPluginBinding.textureRegistry,
             )
         mediaSession = UMediaSessionHandler(flutterPluginBinding.applicationContext, flutterPluginBinding.binaryMessenger)
+        camera =
+            UCameraHandler(
+                flutterPluginBinding.applicationContext,
+                flutterPluginBinding.binaryMessenger,
+                flutterPluginBinding.textureRegistry,
+            )
     }
 
     override fun onMethodCall(
@@ -55,25 +63,33 @@ class UPlugin :
         media = null
         mediaSession?.dispose()
         mediaSession = null
+        camera?.dispose()
+        camera = null
     }
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
         screenGuard?.setActivity(binding.activity)
         media?.setActivity(binding.activity)
+        camera?.setActivity(binding.activity)
+        camera?.let { binding.addRequestPermissionsResultListener(it) }
     }
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
         screenGuard?.setActivity(binding.activity)
         media?.setActivity(binding.activity)
+        camera?.setActivity(binding.activity)
+        camera?.let { binding.addRequestPermissionsResultListener(it) }
     }
 
     override fun onDetachedFromActivityForConfigChanges() {
         screenGuard?.setActivity(null)
         media?.setActivity(null)
+        camera?.setActivity(null)
     }
 
     override fun onDetachedFromActivity() {
         screenGuard?.setActivity(null)
         media?.setActivity(null)
+        camera?.setActivity(null)
     }
 }

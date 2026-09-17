@@ -1,18 +1,18 @@
-import "package:path/path.dart" as path;
 import "package:u/utilities.dart";
 
 // =============================================================================
-// u_camera — a fully-featured, cross-platform camera page for the `u` plugin,
-// built directly on the `camera` plugin. Returns [FileData] (the same model
-// UFile uses) so captured photos/videos flow through the app like any other
-// picked file. Every hardware feature is optional and degrades gracefully on
-// platforms/devices that do not support it.
+// u_camera — the camera UI of the `u` plugin.
+//
+// [UCameraPreview] renders a live session, [UCameraPage] is a complete camera
+// screen, and [UCamera] gives one-call helpers that return [FileData] so
+// captures flow through the app like any other picked file. Everything is
+// driven by [UCameraController], so every hardware feature the device exposes
+// is reachable, and anything it does not support is hidden automatically.
 // =============================================================================
 
 enum UCameraMode { photo, video, both }
 
-/// Optional label overrides. Anything left null falls back to an existing
-/// localized string, so the page needs no new l10n keys.
+/// Optional label overrides; anything left null falls back to l10n.
 class UCameraLabels {
   const UCameraLabels({this.retake, this.use, this.done, this.cancel, this.noCameraMessage, this.permissionMessage});
 
@@ -24,80 +24,137 @@ class UCameraLabels {
   final String? permissionMessage;
 }
 
-/// Full configuration for [UCameraPage]. Sensible defaults enable the common
-/// camera-app feature set; turn individual controls off as needed.
+/// Full configuration of [UCameraPage]. Every control can be switched off, and
+/// controls the device cannot support hide themselves.
 class UCameraOptions {
   const UCameraOptions({
     this.mode = UCameraMode.photo,
     this.allowMultiple = false,
     this.maxCount = 0,
-    this.resolution = ResolutionPreset.high,
+    this.resolution = UCameraResolution.veryHigh,
     this.startFront = false,
     this.enableFlash = true,
     this.enableCameraSwitch = true,
     this.enableGrid = true,
+    this.enableLevel = false,
     this.enablePinchZoom = true,
     this.enableZoomSlider = false,
+    this.enableZoomPresets = true,
     this.enableTapToFocus = true,
     this.enableExposure = true,
     this.enableSelfTimer = true,
     this.enableAudio = true,
+    this.enableStabilization = true,
+    this.enableHdr = false,
+    this.enableManualControls = false,
+    this.enableAspectRatioToggle = false,
     this.confirmCapture = true,
-    this.mirrorFrontPreview = false,
+    this.mirrorFrontPreview = true,
+    this.mirrorFrontCapture = false,
     this.videoMaxDuration,
+    this.videoCodec = UVideoCodec.auto,
+    this.photoFormat = UPhotoFormat.jpeg,
+    this.photoQuality = 92,
+    this.fit = BoxFit.cover,
     this.accentColor,
     this.labels,
+    this.overlayBuilder,
   });
 
   final UCameraMode mode;
   final bool allowMultiple;
 
-  /// Max photos in multi mode; 0 means unlimited.
+  /// Maximum photos in multi mode; 0 means unlimited.
   final int maxCount;
-  final ResolutionPreset resolution;
+  final UCameraResolution resolution;
   final bool startFront;
   final bool enableFlash;
   final bool enableCameraSwitch;
   final bool enableGrid;
+
+  /// Shows a horizon level line over the preview.
+  final bool enableLevel;
   final bool enablePinchZoom;
   final bool enableZoomSlider;
+
+  /// Shows 0.5x / 1x / 2x quick-zoom chips when the lens range allows it.
+  final bool enableZoomPresets;
   final bool enableTapToFocus;
   final bool enableExposure;
   final bool enableSelfTimer;
   final bool enableAudio;
+  final bool enableStabilization;
+  final bool enableHdr;
+
+  /// Reveals ISO, shutter and white-balance sliders on capable devices.
+  final bool enableManualControls;
+  final bool enableAspectRatioToggle;
   final bool confirmCapture;
   final bool mirrorFrontPreview;
+  final bool mirrorFrontCapture;
   final Duration? videoMaxDuration;
+  final UVideoCodec videoCodec;
+  final UPhotoFormat photoFormat;
+  final int photoQuality;
+  final BoxFit fit;
   final Color? accentColor;
   final UCameraLabels? labels;
 
-  UCameraOptions copyWith({UCameraMode? mode, bool? allowMultiple, int? maxCount, bool? startFront}) => UCameraOptions(
+  /// Extra chrome drawn over the preview, below the built-in controls.
+  final Widget Function(BuildContext context, UCameraController controller)? overlayBuilder;
+
+  UCameraOptions copyWith({UCameraMode? mode, bool? allowMultiple, int? maxCount, bool? startFront, UCameraResolution? resolution}) => UCameraOptions(
     mode: mode ?? this.mode,
     allowMultiple: allowMultiple ?? this.allowMultiple,
     maxCount: maxCount ?? this.maxCount,
-    resolution: resolution,
+    resolution: resolution ?? this.resolution,
     startFront: startFront ?? this.startFront,
     enableFlash: enableFlash,
     enableCameraSwitch: enableCameraSwitch,
     enableGrid: enableGrid,
+    enableLevel: enableLevel,
     enablePinchZoom: enablePinchZoom,
     enableZoomSlider: enableZoomSlider,
+    enableZoomPresets: enableZoomPresets,
     enableTapToFocus: enableTapToFocus,
     enableExposure: enableExposure,
     enableSelfTimer: enableSelfTimer,
     enableAudio: enableAudio,
+    enableStabilization: enableStabilization,
+    enableHdr: enableHdr,
+    enableManualControls: enableManualControls,
+    enableAspectRatioToggle: enableAspectRatioToggle,
     confirmCapture: confirmCapture,
     mirrorFrontPreview: mirrorFrontPreview,
+    mirrorFrontCapture: mirrorFrontCapture,
     videoMaxDuration: videoMaxDuration,
+    videoCodec: videoCodec,
+    photoFormat: photoFormat,
+    photoQuality: photoQuality,
+    fit: fit,
     accentColor: accentColor,
     labels: labels,
+    overlayBuilder: overlayBuilder,
+  );
+
+  UCameraConfig toConfig() => UCameraConfig(
+    facing: startFront ? UCameraFacing.front : UCameraFacing.back,
+    resolution: resolution,
+    enableAudio: enableAudio && mode != UCameraMode.photo,
+    photoFormat: photoFormat,
+    photoQuality: photoQuality,
+    videoCodec: videoCodec,
+    stabilization: enableStabilization ? UStabilizationMode.auto : UStabilizationMode.off,
+    hdr: enableHdr ? UHdrMode.auto : UHdrMode.off,
+    mirrorFrontPreview: mirrorFrontPreview,
+    mirrorFrontCapture: mirrorFrontCapture,
+    maxRecordingDuration: videoMaxDuration,
   );
 }
 
-/// One-call helpers to capture media, mirroring `UFile.showImagePicker`.
+/// One-call helpers that mirror `UFile.showImagePicker`.
 abstract class UCamera {
-  /// Opens the full camera page and returns everything captured. Also invokes
-  /// [action] with the result (empty list if cancelled).
+  /// Opens the full camera page and returns everything captured.
   static Future<List<FileData>> open({UCameraOptions options = const UCameraOptions(), Function(List<FileData>)? action}) async {
     final List<FileData>? result = await UNavigator.push<List<FileData>>(UCameraPage(options: options), fullscreenDialog: true);
     final List<FileData> files = result ?? <FileData>[];
@@ -105,7 +162,6 @@ abstract class UCamera {
     return files;
   }
 
-  /// Captures a single photo. Returns null if cancelled.
   static Future<FileData?> takePhoto({UCameraOptions options = const UCameraOptions(), Function(FileData?)? action}) async {
     final List<FileData> files = await open(options: options.copyWith(mode: UCameraMode.photo, allowMultiple: false));
     final FileData? file = files.isEmpty ? null : files.first;
@@ -113,22 +169,116 @@ abstract class UCamera {
     return file;
   }
 
-  /// Captures multiple photos in one session. [maxCount] 0 means unlimited.
+  /// Captures several photos in one session; [maxCount] 0 means unlimited.
   static Future<List<FileData>> takePhotos({int maxCount = 0, UCameraOptions options = const UCameraOptions(), Function(List<FileData>)? action}) async {
-    final List<FileData> files = await open(
-      options: options.copyWith(mode: UCameraMode.photo, allowMultiple: true, maxCount: maxCount),
-    );
+    final List<FileData> files = await open(options: options.copyWith(mode: UCameraMode.photo, allowMultiple: true, maxCount: maxCount));
     action?.call(files);
     return files;
   }
 
-  /// Records a single video. Returns null if cancelled.
   static Future<FileData?> recordVideo({UCameraOptions options = const UCameraOptions(), Function(FileData?)? action}) async {
     final List<FileData> files = await open(options: options.copyWith(mode: UCameraMode.video, allowMultiple: false));
     final FileData? file = files.isEmpty ? null : files.first;
     action?.call(file);
     return file;
   }
+
+  static Future<List<UCameraDevice>> devices() => UCameraController.availableCameras();
+
+  static Future<UCameraPermissionState> permission() => UCameraController.permissionStatus();
+
+  static Future<UCameraPermissionState> requestPermission({bool audio = false}) => UCameraController.requestPermission(audio: audio);
+}
+
+/// Renders the live preview of [controller]. Uses a GPU texture everywhere
+/// except the web, where the browser's own video element is embedded.
+class UCameraPreview extends StatelessWidget {
+  const UCameraPreview({required this.controller, this.fit = BoxFit.cover, this.mirror, this.placeholder, this.child, super.key});
+
+  final UCameraController controller;
+  final BoxFit fit;
+
+  /// Overrides the automatic front-camera mirroring.
+  final bool? mirror;
+  final Widget? placeholder;
+
+  /// Drawn on top of the preview, sized to the widget.
+  final Widget? child;
+
+  @override
+  Widget build(BuildContext context) => ValueListenableBuilder<UCameraValue>(
+    valueListenable: controller,
+    builder: (BuildContext context, UCameraValue value, Widget? _) {
+      if (!value.isInitialized || value.previewSize.width == 0) {
+        return placeholder ?? const Center(child: CircularProgressIndicator());
+      }
+
+      Widget preview = _surface(value);
+      final bool mirrored = mirror ?? value.mirrored;
+      if (mirrored) preview = Transform(alignment: Alignment.center, transform: Matrix4.identity()..scaleByDouble(-1, 1, 1, 1), child: preview);
+
+      return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) => ClipRect(
+          child: Stack(
+            fit: StackFit.expand,
+            children: <Widget>[
+              FittedBox(
+                fit: fit,
+                child: SizedBox(
+                  width: value.previewSize.width.toDouble(),
+                  height: value.previewSize.height.toDouble(),
+                  child: preview,
+                ),
+              ),
+              if (child != null) child!,
+            ],
+          ),
+        ),
+      );
+    },
+  );
+
+  Widget _surface(UCameraValue value) {
+    final String? viewType = value.viewType;
+    if (viewType != null) return HtmlElementView(viewType: viewType);
+    final int? textureId = value.textureId;
+    if (textureId == null) return const ColoredBox(color: Color(0xFF000000));
+    return Texture(textureId: textureId);
+  }
+}
+
+/// Rule-of-thirds grid drawn over the preview.
+class UCameraGrid extends StatelessWidget {
+  const UCameraGrid({this.color = const Color(0x33FFFFFF), this.divisions = 3, super.key});
+
+  final Color color;
+  final int divisions;
+
+  @override
+  Widget build(BuildContext context) => IgnorePointer(child: CustomPaint(painter: _UGridPainter(color, divisions), size: Size.infinite));
+}
+
+class _UGridPainter extends CustomPainter {
+  const _UGridPainter(this.color, this.divisions);
+
+  final Color color;
+  final int divisions;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final Paint paint = Paint()
+      ..color = color
+      ..strokeWidth = 1;
+    for (int i = 1; i < divisions; i++) {
+      final double dx = size.width * i / divisions;
+      final double dy = size.height * i / divisions;
+      canvas.drawLine(Offset(dx, 0), Offset(dx, size.height), paint);
+      canvas.drawLine(Offset(0, dy), Offset(size.width, dy), paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(_UGridPainter oldDelegate) => oldDelegate.color != color || oldDelegate.divisions != divisions;
 }
 
 class UCameraPage extends StatefulWidget {
@@ -141,38 +291,19 @@ class UCameraPage extends StatefulWidget {
 }
 
 class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
-  CameraController? _controller;
-  List<CameraDescription> _cameras = <CameraDescription>[];
-  int _cameraIndex = 0;
-  bool _initializing = true;
+  UCameraController? _controller;
+  List<UCameraDevice> _devices = <UCameraDevice>[];
   String? _error;
+  bool _initializing = true;
 
-  FlashMode _flash = FlashMode.off;
   bool _showGrid = false;
-
-  bool _zoomSupported = false;
-  double _minZoom = 1;
-  double _maxZoom = 1;
-  double _zoom = 1;
+  int _selfTimerSeconds = 0;
+  int _countdown = 0;
+  Timer? _selfTimer;
   double _baseZoom = 1;
-
-  bool _exposureSupported = false;
-  double _minExposure = 0;
-  double _maxExposure = 0;
-  double _exposure = 0;
+  bool _showManual = false;
 
   late bool _isVideoMode = widget.options.mode == UCameraMode.video;
-  bool _isRecording = false;
-  bool _isPaused = false;
-  Duration _recordElapsed = Duration.zero;
-  Timer? _recordTimer;
-
-  Timer? _selfTimer;
-  int _countdown = 0;
-
-  Offset? _focusIndicator;
-  Timer? _focusTimer;
-
   final List<FileData> _captured = <FileData>[];
   FileData? _review;
 
@@ -190,40 +321,60 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    _recordTimer?.cancel();
     _selfTimer?.cancel();
-    _focusTimer?.cancel();
-    _controller?.dispose();
+    unawaited(_controller?.dispose());
     super.dispose();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    final CameraController? c = _controller;
-    if (c == null || !c.value.isInitialized) return;
-    if (state == AppLifecycleState.inactive) {
-      c.dispose();
-      _controller = null;
+    final UCameraController? controller = _controller;
+    if (controller == null) return;
+    if (state == AppLifecycleState.inactive || state == AppLifecycleState.paused) {
+      unawaited(controller.suspend());
     } else if (state == AppLifecycleState.resumed) {
-      unawaited(_initController(_cameraIndex));
+      unawaited(controller.resume());
     }
   }
 
   Future<void> _bootstrap() async {
     try {
-      _cameras = await availableCameras();
-      if (_cameras.isEmpty) {
-        _fail(_o.labels?.noCameraMessage ?? U.s.noData);
+      final UCameraPermissionState permission = await UCameraController.requestPermission(audio: _o.enableAudio && _o.mode != UCameraMode.photo);
+      if (!permission.isGranted) {
+        _fail(_o.labels?.permissionMessage ?? U.s.cameraPermissionIsRequired);
         return;
       }
-      _cameraIndex = _cameras.indexWhere((CameraDescription d) => d.lensDirection == (_o.startFront ? CameraLensDirection.front : CameraLensDirection.back));
-      if (_cameraIndex < 0) _cameraIndex = 0;
-      await _initController(_cameraIndex);
-    } on CameraException catch (_) {
-      _fail(_o.labels?.permissionMessage ?? U.s.error);
-    } catch (_) {
-      _fail(_o.labels?.noCameraMessage ?? U.s.error);
+      _devices = await UCameraController.availableCameras();
+      if (_devices.isEmpty) {
+        _fail(_o.labels?.noCameraMessage ?? U.s.noCameraWasFound);
+        return;
+      }
+      await _openController(_o.startFront ? UCameraFacing.front : UCameraFacing.back);
+    } on UCameraException catch (error) {
+      _fail(error.message.isEmpty ? U.s.error : error.message);
     }
+  }
+
+  Future<void> _openController(UCameraFacing facing) async {
+    final UCameraDevice? device = UCameraUtils.pickDevice(_devices, facing: facing);
+    final UCameraController controller = UCameraController(
+      config: _o.toConfig().copyWith(facing: facing, deviceId: device?.id),
+    );
+    await controller.initialize();
+    if (!mounted) {
+      await controller.dispose();
+      return;
+    }
+    if (controller.value.hasError) {
+      _fail(controller.value.error?.message ?? U.s.error);
+      await controller.dispose();
+      return;
+    }
+    setState(() {
+      _controller = controller;
+      _initializing = false;
+      _error = null;
+    });
   }
 
   void _fail(String message) {
@@ -234,118 +385,33 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
     });
   }
 
-  Future<void> _initController(int index) async {
-    final CameraController controller = CameraController(
-      _cameras[index],
-      _o.resolution,
-      enableAudio: _o.enableAudio && _o.mode != UCameraMode.photo,
-      imageFormatGroup: ImageFormatGroup.jpeg,
-    );
-    _controller = controller;
-    try {
-      await controller.initialize();
-      await _readCapabilities(controller);
-      if (_o.enableFlash) {
-        await _safe(() => controller.setFlashMode(FlashMode.off));
-      }
-    } on CameraException catch (_) {
-      _fail(_o.labels?.permissionMessage ?? U.s.error);
-      return;
-    }
-    if (!mounted) {
-      await controller.dispose();
-      return;
-    }
-    setState(() {
-      _cameraIndex = index;
-      _initializing = false;
-      _error = null;
-      _flash = FlashMode.off;
-    });
-  }
-
-  Future<void> _readCapabilities(CameraController controller) async {
-    try {
-      _minZoom = await controller.getMinZoomLevel();
-      _maxZoom = await controller.getMaxZoomLevel();
-      _zoom = _minZoom;
-      _baseZoom = _minZoom;
-      _zoomSupported = _maxZoom > _minZoom;
-    } catch (_) {
-      _zoomSupported = false;
-    }
-    try {
-      _minExposure = await controller.getMinExposureOffset();
-      _maxExposure = await controller.getMaxExposureOffset();
-      _exposure = 0;
-      _exposureSupported = _maxExposure > _minExposure;
-    } catch (_) {
-      _exposureSupported = false;
-    }
-  }
-
-  Future<void> _safe(Future<void> Function() action) async {
-    try {
-      await action();
-    } catch (_) {
-      // Feature unsupported on this platform/device — ignore.
-    }
-  }
-
-  bool get _ready => _controller != null && _controller!.value.isInitialized;
-
   bool get _multiPhoto => _o.allowMultiple && _o.mode != UCameraMode.video;
 
   bool get _atLimit => _o.maxCount > 0 && _captured.length >= _o.maxCount;
 
-  // --------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   // Actions
-  // --------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
 
   Future<void> _cycleFlash() async {
-    if (!_ready) return;
-    const List<FlashMode> order = <FlashMode>[FlashMode.off, FlashMode.auto, FlashMode.always, FlashMode.torch];
-    final FlashMode next = order[(order.indexOf(_flash) + 1) % order.length];
-    await _safe(() => _controller!.setFlashMode(next));
-    if (mounted) setState(() => _flash = next);
+    final UCameraController? controller = _controller;
+    if (controller == null) return;
+    await controller.setFlashMode(UCameraUtils.nextFlashMode(controller.value.flash, includeTorch: _isVideoMode));
   }
 
   Future<void> _switchCamera() async {
-    if (_cameras.length < 2 || _isRecording) return;
-    final int next = (_cameraIndex + 1) % _cameras.length;
+    final UCameraController? controller = _controller;
+    if (controller == null || controller.value.isRecording || _devices.length < 2) return;
     setState(() => _initializing = true);
-    await _controller?.dispose();
-    await _initController(next);
-  }
-
-  Future<void> _handleZoom(double target) async {
-    if (!_zoomSupported || !_ready) return;
-    final double clamped = target.clamp(_minZoom, _maxZoom).toDouble();
-    await _safe(() => _controller!.setZoomLevel(clamped));
-    if (mounted) setState(() => _zoom = clamped);
-  }
-
-  Future<void> _handleExposure(double value) async {
-    if (!_exposureSupported || !_ready) return;
-    final double clamped = value.clamp(_minExposure, _maxExposure).toDouble();
-    await _safe(() => _controller!.setExposureOffset(clamped));
-    if (mounted) setState(() => _exposure = clamped);
-  }
-
-  Future<void> _focusAt(Offset local, Size size) async {
-    if (!_o.enableTapToFocus || !_ready) return;
-    final Offset point = Offset((local.dx / size.width).clamp(0, 1).toDouble(), (local.dy / size.height).clamp(0, 1).toDouble());
-    await _safe(() => _controller!.setFocusPoint(point));
-    await _safe(() => _controller!.setExposurePoint(point));
-    _focusTimer?.cancel();
-    setState(() => _focusIndicator = local);
-    _focusTimer = Timer(const Duration(milliseconds: 1400), () {
-      if (mounted) setState(() => _focusIndicator = null);
-    });
+    final UCameraFacing next = controller.value.device?.isFront == true ? UCameraFacing.back : UCameraFacing.front;
+    await controller.dispose();
+    _controller = null;
+    await _openController(next);
   }
 
   Future<void> _onShutter() async {
-    if (!_ready || _countdown > 0) return;
+    final UCameraController? controller = _controller;
+    if (controller == null || _countdown > 0) return;
     if (_isVideoMode) {
       await _toggleRecording();
       return;
@@ -357,18 +423,16 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
     }
   }
 
-  int _selfTimerSeconds = 0;
-
   Future<void> _runSelfTimer() async {
     setState(() => _countdown = _selfTimerSeconds);
     _selfTimer?.cancel();
-    _selfTimer = Timer.periodic(const Duration(seconds: 1), (Timer t) async {
+    _selfTimer = Timer.periodic(const Duration(seconds: 1), (Timer timer) async {
       if (!mounted) {
-        t.cancel();
+        timer.cancel();
         return;
       }
       if (_countdown <= 1) {
-        t.cancel();
+        timer.cancel();
         setState(() => _countdown = 0);
         await _takePhoto();
       } else {
@@ -378,89 +442,36 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
   }
 
   Future<void> _takePhoto() async {
-    if (!_ready || _controller!.value.isTakingPicture) return;
-    try {
-      final XFile shot = await _controller!.takePicture();
-      final FileData file = await _toFileData(shot, "jpg");
-      if (!mounted) return;
-      if (_multiPhoto) {
-        setState(() => _captured.add(file));
-        if (_atLimit) _finish();
-      } else if (_o.confirmCapture) {
-        setState(() => _review = file);
-      } else {
-        _finishWith(<FileData>[file]);
-      }
-    } catch (_) {
-      _snack(U.s.error);
+    final UCameraController? controller = _controller;
+    if (controller == null) return;
+    final UCapturedPhoto? photo = await controller.takePhoto();
+    if (photo == null || !mounted) return;
+    final FileData file = UCameraUtils.toFileData(photo);
+    if (_multiPhoto) {
+      setState(() => _captured.add(file));
+      if (_atLimit) _finish();
+    } else if (_o.confirmCapture) {
+      setState(() => _review = file);
+    } else {
+      _finishWith(<FileData>[file]);
     }
   }
 
   Future<void> _toggleRecording() async {
-    if (!_ready) return;
-    if (_isRecording) {
-      _recordTimer?.cancel();
-      try {
-        final XFile clip = await _controller!.stopVideoRecording();
-        final FileData file = await _toFileData(clip, "mp4");
-        if (!mounted) return;
-        setState(() {
-          _isRecording = false;
-          _isPaused = false;
-          _recordElapsed = Duration.zero;
-        });
-        if (_o.mode == UCameraMode.both) {
-          setState(() => _captured.add(file));
-        } else {
-          _finishWith(<FileData>[file]);
-        }
-      } catch (_) {
-        _snack(U.s.error);
+    final UCameraController? controller = _controller;
+    if (controller == null) return;
+    if (controller.value.isRecording) {
+      final UCapturedVideo? video = await controller.stopVideoRecording();
+      if (video == null || !mounted) return;
+      final FileData file = UCameraUtils.videoToFileData(video);
+      if (_o.mode == UCameraMode.both) {
+        setState(() => _captured.add(file));
+      } else {
+        _finishWith(<FileData>[file]);
       }
     } else {
-      try {
-        await _controller!.startVideoRecording();
-        if (!mounted) return;
-        setState(() {
-          _isRecording = true;
-          _recordElapsed = Duration.zero;
-        });
-        _recordTimer = Timer.periodic(const Duration(seconds: 1), (Timer _) {
-          if (!mounted || _isPaused) return;
-          setState(() => _recordElapsed += const Duration(seconds: 1));
-          final Duration? max = _o.videoMaxDuration;
-          if (max != null && _recordElapsed >= max) unawaited(_toggleRecording());
-        });
-      } catch (_) {
-        _snack(U.s.error);
-      }
+      await controller.startVideoRecording(codec: _o.videoCodec, maxDuration: _o.videoMaxDuration);
     }
-  }
-
-  Future<void> _togglePause() async {
-    if (!_isRecording) return;
-    if (_isPaused) {
-      await _safe(() => _controller!.resumeVideoRecording());
-      if (mounted) setState(() => _isPaused = false);
-    } else {
-      await _safe(() => _controller!.pauseVideoRecording());
-      if (mounted) setState(() => _isPaused = true);
-    }
-  }
-
-  Future<FileData> _toFileData(XFile file, String extension) async {
-    final Uint8List bytes = await file.readAsBytes();
-    return FileData(bytes: bytes, path: kIsWeb ? null : file.path, extension: _extensionOf(file.name, extension));
-  }
-
-  static String _extensionOf(String source, String fallback) {
-    final String raw = path.extension(source);
-    final String clean = raw.startsWith(".") ? raw.substring(1) : raw;
-    return (clean.isEmpty ? fallback : clean).toLowerCase();
-  }
-
-  void _snack(String message) {
-    if (mounted) UToast.error(message: message);
   }
 
   void _finish() => _finishWith(_captured);
@@ -470,21 +481,24 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
     Navigator.of(context).pop(files);
   }
 
-  // --------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   // UI
-  // --------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    backgroundColor: Colors.black,
-    body: _error != null
-        ? _errorView()
-        : _initializing || !_ready
-        ? const Center(child: CircularProgressIndicator())
-        : _review != null
-        ? _reviewView()
-        : _cameraView(),
-  );
+  Widget build(BuildContext context) {
+    final UCameraController? controller = _controller;
+    return Scaffold(
+      backgroundColor: const Color(0xFF000000),
+      body: _error != null
+          ? _errorView()
+          : (_initializing || controller == null)
+          ? const Center(child: CircularProgressIndicator())
+          : _review != null
+          ? _reviewView()
+          : _cameraView(controller),
+    );
+  }
 
   Widget _errorView() => SafeArea(
     child: Stack(
@@ -495,100 +509,116 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                const Icon(Icons.no_photography_outlined, color: Colors.white70, size: 56),
+                const Icon(Icons.no_photography_outlined, color: Color(0xB3FFFFFF), size: 56),
                 const SizedBox(height: 16),
                 Text(
                   _error ?? U.s.error,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Color(0xFFFFFFFF)),
                 ),
                 const SizedBox(height: 20),
                 UButton(title: U.s.retry, onTap: () => unawaited(_bootstrap())),
+                const SizedBox(height: 8),
+                UButton(type: UButtonType.text, title: U.s.settings, onTap: () => unawaited(UCameraController.openSettings())),
               ],
             ),
           ),
         ),
-        _closeButton(),
+        Positioned(top: 8, left: 8, child: _roundIcon(Icons.close, () => _finishWith(<FileData>[]))),
       ],
     ),
   );
 
-  Widget _cameraView() => Stack(
-    fit: StackFit.expand,
-    children: <Widget>[
-      _preview(),
-      if (_showGrid)
-        const Positioned.fill(
-          child: IgnorePointer(child: CustomPaint(painter: _GridPainter())),
+  Widget _cameraView(UCameraController controller) => ValueListenableBuilder<UCameraValue>(
+    valueListenable: controller,
+    builder: (BuildContext context, UCameraValue value, Widget? _) => Stack(
+      fit: StackFit.expand,
+      children: <Widget>[
+        _preview(controller, value),
+        if (_showGrid) const UCameraGrid(),
+        if (value.focusPoint != null) _focusRing(controller, value),
+        if (_countdown > 0) _countdownOverlay(),
+        if (_o.overlayBuilder != null) _o.overlayBuilder!(context, controller),
+        SafeArea(
+          child: Column(
+            children: <Widget>[
+              _topBar(controller, value),
+              const Spacer(),
+              if (_showManual && _o.enableManualControls) _manualControls(controller, value),
+              if (_o.enableExposure && !value.capabilities.exposureOffset.isFixed && !value.isRecording) _exposureSlider(controller, value),
+              if (_o.enableZoomSlider && !value.capabilities.zoom.isFixed && !value.isRecording) _zoomSlider(controller, value),
+              if (_o.enableZoomPresets && !value.capabilities.zoom.isFixed) _zoomPresets(controller, value),
+              if (_multiPhoto && _captured.isNotEmpty) _thumbnailStrip(),
+              _bottomBar(controller, value),
+            ],
+          ),
         ),
-      if (_focusIndicator != null) _focusRing(_focusIndicator!),
-      if (_countdown > 0) _countdownOverlay(),
-      SafeArea(
-        child: Column(
-          children: <Widget>[
-            _topBar(),
-            const Spacer(),
-            if (_exposureSupported && _o.enableExposure && !_isRecording) _exposureSlider(),
-            if (_zoomSupported && _o.enableZoomSlider && !_isRecording) _zoomSlider(),
-            if (_multiPhoto && _captured.isNotEmpty) _thumbnailStrip(),
-            _bottomBar(),
-          ],
-        ),
-      ),
-    ],
+      ],
+    ),
   );
 
-  Widget _preview() {
-    final CameraController controller = _controller!;
-    final Size size = MediaQuery.of(context).size;
-    double scale = size.aspectRatio * controller.value.aspectRatio;
-    if (scale < 1) scale = 1 / scale;
-    final bool mirror = _o.mirrorFrontPreview && _cameras[_cameraIndex].lensDirection == CameraLensDirection.front;
-    Widget preview = Transform.scale(
-      scale: scale,
-      child: Center(child: CameraPreview(controller)),
-    );
-    if (mirror) preview = Transform.scale(scaleX: -1, child: preview);
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints box) => GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onScaleStart: _o.enablePinchZoom ? (ScaleStartDetails _) => _baseZoom = _zoom : null,
-        onScaleUpdate: _o.enablePinchZoom
-            ? (ScaleUpdateDetails d) {
-                if (d.pointerCount == 2) unawaited(_handleZoom(_baseZoom * d.scale));
-              }
-            : null,
-        onTapUp: _o.enableTapToFocus ? (TapUpDetails d) => unawaited(_focusAt(d.localPosition, Size(box.maxWidth, box.maxHeight))) : null,
-        child: preview,
-      ),
-    );
-  }
+  Widget _preview(UCameraController controller, UCameraValue value) => LayoutBuilder(
+    builder: (BuildContext context, BoxConstraints box) => GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onScaleStart: _o.enablePinchZoom ? (ScaleStartDetails _) => _baseZoom = value.zoom : null,
+      onScaleUpdate: _o.enablePinchZoom
+          ? (ScaleUpdateDetails details) {
+              if (details.pointerCount == 2) unawaited(controller.setZoom(_baseZoom * details.scale));
+            }
+          : null,
+      onTapUp: _o.enableTapToFocus
+          ? (TapUpDetails details) {
+              final Offset point = UCameraUtils.normalizePoint(
+                local: details.localPosition,
+                widgetSize: Size(box.maxWidth, box.maxHeight),
+                previewSize: value.previewSize,
+                fit: _o.fit,
+                mirrored: value.mirrored,
+              );
+              unawaited(controller.focusAndMeterAt(point));
+            }
+          : null,
+      child: UCameraPreview(controller: controller, fit: _o.fit),
+    ),
+  );
 
-  Widget _topBar() => Padding(
+  Widget _topBar(UCameraController controller, UCameraValue value) => Padding(
     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
     child: Row(
       children: <Widget>[
         _roundIcon(Icons.close, () => _finishWith(_multiPhoto ? _captured : <FileData>[])),
         const Spacer(),
-        if (_o.enableFlash) _roundIcon(_flashIcon(), () => unawaited(_cycleFlash()), active: _flash != FlashMode.off),
-        if (_o.enableGrid) _roundIcon(Icons.grid_3x3, () => setState(() => _showGrid = !_showGrid), active: _showGrid),
-        if (_o.enableSelfTimer && !_isVideoMode) _roundIcon(_timerIcon(), _cycleSelfTimer, active: _selfTimerSeconds > 0),
+        if (_o.enableFlash && value.capabilities.flash)
+          _roundIcon(UCameraUtils.flashIcon(value.flash), () => unawaited(_cycleFlash()), active: value.flash != UFlashMode.off),
+        if (_o.enableGrid) _roundIcon(Icons.grid_3x3_rounded, () => setState(() => _showGrid = !_showGrid), active: _showGrid),
+        if (_o.enableSelfTimer && !_isVideoMode) _roundIcon(_selfTimerSeconds == 0 ? Icons.timer_off_rounded : Icons.timer_rounded, _cycleSelfTimer, active: _selfTimerSeconds > 0),
+        if (_o.enableHdr && value.capabilities.hdr)
+          _roundIcon(Icons.hdr_on_rounded, () => unawaited(controller.setHdr(value.hdr == UHdrMode.on ? UHdrMode.off : UHdrMode.on)), active: value.hdr == UHdrMode.on),
+        if (_o.enableManualControls && value.capabilities.manualExposure)
+          _roundIcon(Icons.tune_rounded, () => setState(() => _showManual = !_showManual), active: _showManual),
       ],
     ),
   );
 
-  Widget _bottomBar() => Padding(
+  Widget _bottomBar(UCameraController controller, UCameraValue value) => Padding(
     padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        SizedBox(width: 64, child: _isRecording ? _recordTimerLabel() : _modeToggle()),
-        _shutterButton(),
+        SizedBox(width: 72, child: value.isRecording ? _recordTimerLabel(value) : _modeToggle()),
+        _shutterButton(controller, value),
         SizedBox(
-          width: 64,
-          child: _isRecording
-              ? (_o.enableFlash ? Center(child: _roundIcon(_isPaused ? Icons.play_arrow : Icons.pause, () => unawaited(_togglePause()))) : const SizedBox())
-              : (_o.enableCameraSwitch && _cameras.length > 1 ? Center(child: _roundIcon(Icons.cameraswitch, () => unawaited(_switchCamera()))) : const SizedBox()),
+          width: 72,
+          child: value.isRecording
+              ? (value.capabilities.pauseRecording
+                    ? Center(
+                        child: _roundIcon(
+                          value.isRecordingPaused ? Icons.play_arrow_rounded : Icons.pause_rounded,
+                          () => unawaited(value.isRecordingPaused ? controller.resumeVideoRecording() : controller.pauseVideoRecording()),
+                        ),
+                      )
+                    : const SizedBox())
+              : (_o.enableCameraSwitch && _devices.length > 1 ? Center(child: _roundIcon(Icons.cameraswitch_rounded, () => unawaited(_switchCamera()))) : const SizedBox()),
         ),
       ],
     ),
@@ -599,22 +629,22 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
       if (_multiPhoto && _captured.isNotEmpty) {
         return TextButton(
           onPressed: _finish,
-          child: Text("${_o.labels?.done ?? U.s.done} (${_captured.length})", style: const TextStyle(color: Colors.white)),
+          child: Text("${_o.labels?.done ?? U.s.done} (${_captured.length})", style: const TextStyle(color: Color(0xFFFFFFFF))),
         );
       }
       return const SizedBox();
     }
     return UContainer(
       onTap: () => setState(() => _isVideoMode = !_isVideoMode),
-      child: Icon(_isVideoMode ? Icons.videocam : Icons.photo_camera, color: Colors.white),
+      child: Icon(_isVideoMode ? Icons.videocam_rounded : Icons.photo_camera_rounded, color: const Color(0xFFFFFFFF)),
     );
   }
 
-  Widget _shutterButton() {
-    final Color ring = _isVideoMode ? const Color(0xFFFF3B30) : Colors.white;
+  Widget _shutterButton(UCameraController controller, UCameraValue value) {
+    final Color ring = _isVideoMode ? const Color(0xFFFF3B30) : const Color(0xFFFFFFFF);
     return UContainer(
       onTap: () => unawaited(_onShutter()),
-      border: Border.all(color: Colors.white, width: 4),
+      border: Border.all(color: const Color(0xFFFFFFFF), width: 4),
       shape: BoxShape.circle,
       width: 78,
       height: 78,
@@ -624,10 +654,10 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
           duration: const Duration(milliseconds: 180),
           decoration: BoxDecoration(
             color: ring,
-            shape: _isRecording ? BoxShape.rectangle : BoxShape.circle,
-            borderRadius: _isRecording ? BorderRadius.circular(8) : null,
+            shape: value.isRecording ? BoxShape.rectangle : BoxShape.circle,
+            borderRadius: value.isRecording ? BorderRadius.circular(8) : null,
           ),
-          margin: EdgeInsets.all(_isRecording ? 18 : 0),
+          margin: EdgeInsets.all(value.isRecording ? 18 : 0),
         ),
       ),
     );
@@ -653,7 +683,7 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
               top: -6,
               right: -6,
               child: IconButton(
-                icon: const Icon(Icons.cancel, color: Colors.white, size: 20),
+                icon: const Icon(Icons.cancel_rounded, color: Color(0xFFFFFFFF), size: 20),
                 onPressed: () => setState(() => _captured.removeAt(index)),
               ),
             ),
@@ -663,81 +693,173 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
     ),
   );
 
-  Widget _exposureSlider() => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 40),
-    child: Row(
-      children: <Widget>[
-        const Icon(Icons.brightness_6, color: Colors.white70, size: 20),
-        Expanded(
-          child: Slider(
-            value: _exposure.clamp(_minExposure, _maxExposure).toDouble(),
-            min: _minExposure,
-            max: _maxExposure,
-            activeColor: _accent,
-            onChanged: (double v) => unawaited(_handleExposure(v)),
+  Widget _exposureSlider(UCameraController controller, UCameraValue value) {
+    final UCameraRange range = value.capabilities.exposureOffset;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 40),
+      child: Row(
+        children: <Widget>[
+          const Icon(Icons.brightness_6_rounded, color: Color(0xB3FFFFFF), size: 20),
+          Expanded(
+            child: Slider(
+              value: range.clamp(value.exposureOffset),
+              min: range.min,
+              max: range.max,
+              activeColor: _accent,
+              onChanged: (double next) => unawaited(controller.setExposureOffset(next)),
+            ),
           ),
-        ),
-      ],
-    ),
-  );
+        ],
+      ),
+    );
+  }
 
-  Widget _zoomSlider() => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 40),
-    child: Row(
-      children: <Widget>[
-        const Icon(Icons.zoom_out, color: Colors.white70, size: 20),
-        Expanded(
-          child: Slider(
-            value: _zoom.clamp(_minZoom, _maxZoom).toDouble(),
-            min: _minZoom,
-            max: _maxZoom,
-            activeColor: _accent,
-            onChanged: (double v) => unawaited(_handleZoom(v)),
+  Widget _zoomSlider(UCameraController controller, UCameraValue value) {
+    final UCameraRange range = value.capabilities.zoom;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 40),
+      child: Row(
+        children: <Widget>[
+          const Icon(Icons.zoom_out_rounded, color: Color(0xB3FFFFFF), size: 20),
+          Expanded(
+            child: Slider(
+              value: range.clamp(value.zoom),
+              min: range.min,
+              max: range.max,
+              activeColor: _accent,
+              onChanged: (double next) => unawaited(controller.setZoom(next)),
+            ),
           ),
-        ),
-      ],
-    ),
-  );
+        ],
+      ),
+    );
+  }
 
-  Widget _recordTimerLabel() => Row(
+  Widget _zoomPresets(UCameraController controller, UCameraValue value) {
+    final UCameraRange range = value.capabilities.zoom;
+    final List<double> presets = <double>[
+      if (range.min < 1) range.min,
+      1,
+      if (range.max >= 2) 2,
+      if (range.max >= 5) 5,
+    ];
+    if (presets.length < 2) return const SizedBox();
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: presets
+            .map(
+              (double preset) => Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: UContainer(
+                  onTap: () => unawaited(controller.setZoom(preset)),
+                  color: (value.zoom - preset).abs() < 0.05 ? _accent : const Color(0x66000000),
+                  shape: BoxShape.circle,
+                  width: 40,
+                  height: 40,
+                  child: Center(
+                    child: Text(
+                      preset == preset.roundToDouble() ? "${preset.toInt()}x" : "${preset.toStringAsFixed(1)}x",
+                      style: const TextStyle(color: Color(0xFFFFFFFF), fontSize: 12, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ),
+              ),
+            )
+            .toList(growable: false),
+      ),
+    );
+  }
+
+  Widget _manualControls(UCameraController controller, UCameraValue value) {
+    final UCameraRange iso = value.capabilities.iso;
+    final UCameraRange shutter = value.capabilities.exposureDuration;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Column(
+        children: <Widget>[
+          if (!iso.isFixed)
+            Row(
+              children: <Widget>[
+                const SizedBox(width: 44, child: Text("ISO", style: TextStyle(color: Color(0xFFFFFFFF), fontSize: 12))),
+                Expanded(
+                  child: Slider(
+                    value: iso.clamp(value.iso ?? iso.min),
+                    min: iso.min,
+                    max: iso.max,
+                    activeColor: _accent,
+                    onChanged: (double next) => unawaited(controller.setIso(next)),
+                  ),
+                ),
+              ],
+            ),
+          if (!shutter.isFixed)
+            Row(
+              children: <Widget>[
+                const SizedBox(width: 44, child: Icon(Icons.shutter_speed_rounded, color: Color(0xFFFFFFFF), size: 18)),
+                Expanded(
+                  child: Slider(
+                    value: shutter.clamp((value.exposureDuration?.inMicroseconds ?? shutter.min * 1000) / 1000),
+                    min: shutter.min,
+                    max: shutter.max,
+                    activeColor: _accent,
+                    onChanged: (double next) => unawaited(controller.setExposureDuration(Duration(microseconds: (next * 1000).round()))),
+                  ),
+                ),
+              ],
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _recordTimerLabel(UCameraValue value) => Row(
     mainAxisSize: MainAxisSize.min,
     children: <Widget>[
-      const UContainer(
-        color: Color(0xFFFF3B30),
-        shape: BoxShape.circle,
-        width: 10,
-        height: 10,
-      ),
+      const UContainer(color: Color(0xFFFF3B30), shape: BoxShape.circle, width: 10, height: 10),
       const SizedBox(width: 6),
       Text(
-        _formatDuration(_recordElapsed),
-        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+        UCameraUtils.formatDuration(value.recordingDuration),
+        style: const TextStyle(color: Color(0xFFFFFFFF), fontWeight: FontWeight.w600),
       ),
     ],
   );
 
-  Widget _focusRing(Offset at) => Positioned(
-    left: at.dx - 30,
-    top: at.dy - 30,
-    child: IgnorePointer(
-      child: Container(
-        width: 60,
-        height: 60,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(color: _accent, width: 2),
-        ),
-      ),
-    ),
+  Widget _focusRing(UCameraController controller, UCameraValue value) => LayoutBuilder(
+    builder: (BuildContext context, BoxConstraints box) {
+      final Offset at = UCameraUtils.denormalizePoint(
+        normalized: value.focusPoint!,
+        widgetSize: Size(box.maxWidth, box.maxHeight),
+        previewSize: value.previewSize,
+        fit: _o.fit,
+        mirrored: value.mirrored,
+      );
+      return Stack(
+        children: <Widget>[
+          Positioned(
+            left: at.dx - 30,
+            top: at.dy - 30,
+            child: IgnorePointer(
+              child: Container(
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: _accent, width: 2)),
+              ),
+            ),
+          ),
+        ],
+      );
+    },
   );
 
   Widget _countdownOverlay() => Positioned.fill(
     child: ColoredBox(
-      color: Colors.black38,
+      color: const Color(0x61000000),
       child: Center(
         child: Text(
           "$_countdown",
-          style: const TextStyle(color: Colors.white, fontSize: 96, fontWeight: FontWeight.bold),
+          style: const TextStyle(color: Color(0xFFFFFFFF), fontSize: 96, fontWeight: FontWeight.bold),
         ),
       ),
     ),
@@ -764,18 +886,16 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
     );
   }
 
-  Widget _closeButton() => Positioned(top: 8, left: 8, child: _roundIcon(Icons.close, () => _finishWith(<FileData>[])));
-
   Widget _roundIcon(IconData icon, VoidCallback onTap, {bool active = false}) => Padding(
     padding: const EdgeInsets.all(4),
     child: InkResponse(
       onTap: onTap,
       child: UContainer(
-        color: active ? _accent : Colors.black38,
+        color: active ? _accent : const Color(0x61000000),
         shape: BoxShape.circle,
         width: 42,
         height: 42,
-        child: Icon(icon, color: Colors.white, size: 22),
+        child: Icon(icon, color: const Color(0xFFFFFFFF), size: 22),
       ),
     ),
   );
@@ -784,45 +904,4 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
     const List<int> steps = <int>[0, 3, 5, 10];
     setState(() => _selfTimerSeconds = steps[(steps.indexOf(_selfTimerSeconds) + 1) % steps.length]);
   }
-
-  IconData _flashIcon() {
-    switch (_flash) {
-      case FlashMode.off:
-        return Icons.flash_off;
-      case FlashMode.auto:
-        return Icons.flash_auto;
-      case FlashMode.always:
-        return Icons.flash_on;
-      case FlashMode.torch:
-        return Icons.highlight;
-    }
-  }
-
-  IconData _timerIcon() => _selfTimerSeconds == 0 ? Icons.timer_off : Icons.timer;
-
-  static String _formatDuration(Duration d) {
-    final String m = d.inMinutes.remainder(60).toString().padLeft(2, "0");
-    final String s = d.inSeconds.remainder(60).toString().padLeft(2, "0");
-    return "$m:$s";
-  }
-}
-
-class _GridPainter extends CustomPainter {
-  const _GridPainter();
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final Paint paint = Paint()
-      ..color = Colors.white24
-      ..strokeWidth = 1;
-    for (int i = 1; i < 3; i++) {
-      final double dx = size.width * i / 3;
-      final double dy = size.height * i / 3;
-      canvas.drawLine(Offset(dx, 0), Offset(dx, size.height), paint);
-      canvas.drawLine(Offset(0, dy), Offset(size.width, dy), paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant _GridPainter oldDelegate) => false;
 }

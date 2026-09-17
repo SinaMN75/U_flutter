@@ -1,5 +1,6 @@
 #include "u_plugin.h"
 
+#include "camera/u_camera.h"
 #include "media/u_media.h"
 #include "screen_guard/screen_guard.h"
 
@@ -38,6 +39,7 @@ void UPlugin::RegisterWithRegistrar(
   // Register each native feature of the `u` plugin.
   ScreenGuard::RegisterWithRegistrar(registrar);
   UMedia::RegisterWithRegistrar(registrar);
+  UCamera::RegisterWithRegistrar(registrar);
 }
 
 UPlugin::UPlugin() {}

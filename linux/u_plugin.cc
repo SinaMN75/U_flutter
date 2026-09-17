@@ -6,6 +6,7 @@
 
 #include <cstring>
 
+#include "camera/u_camera.h"
 #include "media/u_media.h"
 #include "u_plugin_private.h"
 
@@ -74,6 +75,7 @@ void u_plugin_register_with_registrar(FlPluginRegistrar* registrar) {
                                             g_object_unref);
 
   u_media_register(registrar);
+  u_camera_register(registrar);
 
   g_object_unref(plugin);
 }

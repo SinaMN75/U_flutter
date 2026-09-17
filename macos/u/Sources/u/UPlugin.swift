@@ -6,6 +6,7 @@ public class UPlugin: NSObject, FlutterPlugin {
   // the plugin instance (which the registrar keeps alive).
   private var screenGuard: ScreenGuardHandler?
   private var media: UMediaHandler?
+  private var camera: UCameraHandler?
 
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "u", binaryMessenger: registrar.messenger)
@@ -13,6 +14,8 @@ public class UPlugin: NSObject, FlutterPlugin {
     instance.screenGuard = ScreenGuardHandler(
       messenger: registrar.messenger, window: registrar.view?.window)
     instance.media = UMediaHandler(
+      messenger: registrar.messenger, registry: registrar.textures)
+    instance.camera = UCameraHandler(
       messenger: registrar.messenger, registry: registrar.textures)
     registrar.addMethodCallDelegate(instance, channel: channel)
   }
