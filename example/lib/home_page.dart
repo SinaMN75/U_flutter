@@ -4,6 +4,7 @@ import "pages/admin_reference_page.dart";
 import "pages/advanced_page.dart";
 import "pages/api_reference_page.dart";
 import "pages/buttons_page.dart";
+import "pages/camera_page.dart";
 import "pages/extensions_page.dart";
 import "pages/feedback_page.dart";
 import "pages/formatters_page.dart";
@@ -41,6 +42,7 @@ final List<GalleryEntry> kEntries = <GalleryEntry>[
   GalleryEntry(title: "Formatters", subtitle: "Money, numbers, Jalali", icon: Icons.calculate, builder: () => const FormattersPage()),
   GalleryEntry(title: "Extensions", subtitle: "Widget & value sugar", icon: Icons.extension, builder: () => const ExtensionsPage()),
   GalleryEntry(title: "u_media", subtitle: "Native audio & video engine", icon: Icons.play_circle_fill, builder: () => const MediaPlayerPage()),
+  GalleryEntry(title: "Camera & scanning", subtitle: "Native camera + Dart barcode engine", icon: Icons.photo_camera, builder: () => const CameraPage()),
   GalleryEntry(title: "ScreenGuard", subtitle: "Native capture block", icon: Icons.screenshot_monitor, builder: () => const ScreenGuardPage()),
   GalleryEntry(title: "API services", subtitle: "UServices reference", icon: Icons.cloud, builder: () => const ApiReferencePage()),
   GalleryEntry(title: "Admin panel", subtitle: "u_admin reference", icon: Icons.admin_panel_settings, builder: () => const AdminReferencePage()),

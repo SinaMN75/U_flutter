@@ -1,4 +1,5 @@
 import "dart:isolate";
+import "dart:ui" as ui;
 
 import "package:u/utilities.dart";
 
@@ -1108,20 +1109,26 @@ class UCameraController extends ValueNotifier<UCameraValue> {
   static Future<bool> openSettings() async => await UCameraChannel.invoke<bool>("openSettings") ?? false;
 
   /// Decodes an image file or byte buffer without opening a camera.
+  ///
+  /// Prefers a free platform decoder (Apple Vision, the browser BarcodeDetector)
+  /// and otherwise decodes the image with Flutter's own codecs and runs the
+  /// bundled Dart engine, so this works on every platform with no native help.
   static Future<List<UCode>> analyzeImage({
     String? path,
     Uint8List? bytes,
     UCodeScanOptions options = const UCodeScanOptions(multiple: true),
     UScanEngine engine = UScanEngine.auto,
   }) async {
-    if (path == null && bytes == null) return const <UCode>[];
+    Uint8List? data = bytes;
+    if (data == null && path != null && !kIsWeb) {
+      final File file = File(path);
+      if (file.existsSync()) data = await file.readAsBytes();
+    }
+    if (data == null && path == null) return const <UCode>[];
+
     if (engine != UScanEngine.dart) {
       try {
-        final List<Object?>? raw = await UCameraChannel.invokeList("analyzeImage", <String, Object?>{
-          "path": path,
-          "bytes": bytes,
-          "options": options.toMap(),
-        });
+        final List<Object?>? raw = await UCameraChannel.invokeList("analyzeImage", <String, Object?>{"path": path, "bytes": data});
         if (raw != null) {
           final List<UCode> codes = raw.whereType<Map<Object?, Object?>>().map(UCode.fromMap).toList(growable: false);
           if (codes.isNotEmpty || engine == UScanEngine.platform) return codes;
@@ -1131,17 +1138,29 @@ class UCameraController extends ValueNotifier<UCameraValue> {
       }
     }
 
-    final Map<Object?, Object?>? decoded = await UCameraChannel.invokeMap("decodeImageToGray", <String, Object?>{"path": path, "bytes": bytes});
-    if (decoded == null) return const <UCode>[];
-    final Uint8List gray = (decoded["gray"] as Uint8List?) ?? Uint8List(0);
-    if (gray.isEmpty) return const <UCode>[];
-    return UCodeScanWorker.decode(
-      gray,
-      ((decoded["width"] as num?) ?? 0).toInt(),
-      ((decoded["height"] as num?) ?? 0).toInt(),
-      ((decoded["rowStride"] as num?) ?? 0).toInt(),
-      options,
-    );
+    if (data == null) return const <UCode>[];
+    final UGrayImage? gray = await decodeToGray(data);
+    if (gray == null) return const <UCode>[];
+    return UCodeScanWorker.decode(gray.data, gray.width, gray.height, gray.stride, options);
+  }
+
+  /// Turns encoded image bytes (JPEG, PNG, WebP, ...) into a grayscale buffer
+  /// using Flutter's own codecs.
+  static Future<UGrayImage?> decodeToGray(Uint8List bytes) async {
+    try {
+      final ui.Codec codec = await ui.instantiateImageCodec(bytes);
+      final ui.FrameInfo frame = await codec.getNextFrame();
+      final ui.Image image = frame.image;
+      final ByteData? raw = await image.toByteData();
+      final int width = image.width;
+      final int height = image.height;
+      image.dispose();
+      codec.dispose();
+      if (raw == null) return null;
+      return UGrayImage.fromPacked(raw.buffer.asUint8List(), width, height, bgra: false);
+    } catch (_) {
+      return null;
+    }
   }
 
   // ---------------------------------------------------------------------------
