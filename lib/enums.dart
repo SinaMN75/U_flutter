@@ -358,13 +358,24 @@ enum TagContent with NumericIdentifiable {
   aboutUs("درباره ما", "About Us", 101),
   terms("قوانین و مقررات", "Terms", 102),
   contactUs("تماس با ما", "Contact Us", 103),
+  qa("سوالات متداول", "Q&A", 104),
+  blog("بلاگ", "Blog", 105),
+  dorms("خوابگاه‌ها", "Dorms", 106),
+  hotels("هتل‌ها", "Hotels", 107),
+
   homeSlider1("اسلایدر اصلی ۱", "Home Slider 1", 201),
   homeSlider2("اسلایدر اصلی ۲", "Home Slider 2", 202),
-  aboutSection("بخش درباره ما", "About Section", 301),
-  servicesCarousel("اسلایدر خدمات", "Services Carousel", 302),
-  heroBanner("بنر اصلی", "Hero Banner", 303),
-  footer("فوتر", "Footer", 304),
-  latestBlogPosts("آخرین مطالب بلاگ", "Latest Blog Posts", 305);
+  homeBanner1("بنر اصلی ۱", "Home Banner 1", 203),
+  homeBanner2("بنر اصلی ۲", "Home Banner 2", 204),
+  homeBanner3("بنر اصلی ۳", "Home Banner 3", 205),
+
+  menu1("منو ۱", "Menu 1", 401),
+  menu2("منو ۲", "Menu 2", 402),
+  footer1("فوتر ۱", "Footer 1", 403),
+  footer2("فوتر ۲", "Footer 2", 404),
+
+  services1("خدمات ۱", "Services 1", 501),
+  services2("خدمات ۲", "Services 2", 502);
 
   const TagContent(this.titleFa, this.titleEn, this.number);
 
