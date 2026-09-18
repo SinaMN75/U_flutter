@@ -5990,11 +5990,11 @@ abstract class AppLocalizations {
   /// **'Profile'**
   String get profile;
 
-  /// No description provided for @propertyDashboard.
+  /// No description provided for @accommodationDashboard.
   ///
   /// In en, this message translates to:
-  /// **'Property Dashboard'**
-  String get propertyDashboard;
+  /// **'Accommodation Dashboard'**
+  String get accommodationDashboard;
 
   /// No description provided for @providerAccount.
   ///

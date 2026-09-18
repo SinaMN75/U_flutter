@@ -84,7 +84,8 @@ class _DormPageState extends State<UAdminDormPage> {
 
   Future<void> _showEditDialog({UDormResponse? p}) async {
     final TextEditingController title = TextEditingController(text: p?.title);
-    UProvince province = UCountries.iran().provinces.first;
+    UCountry country = UCountries.countryByCode(p?.cityCode ?? "-1") ?? UCountries.iran();
+    UProvince province = UCountries.provinceByCode(p?.cityCode ?? "-1") ?? UCountries.iran().provinces.first;
     UCity? city = province.cities.firstOrNull;
     final TextEditingController detail = TextEditingController(text: p?.jsonData.description);
     final TextEditingController address = TextEditingController(text: p?.address);
@@ -124,7 +125,9 @@ class _DormPageState extends State<UAdminDormPage> {
                       margin: const EdgeInsets.symmetric(vertical: 6),
                     ),
                     UCountryProvincePicker(
-                      onCountryChanged: (UCountry i) {},
+                      initialCountry: country,
+                      initialProvince: province,
+                      onCountryChanged: (UCountry i) => country = i,
                       onProvinceChanged: (UProvince i) => province = i,
                       onCityChanged: (UCity? i) => city = i,
                     ).pSymmetric(vertical: 6),

@@ -3025,7 +3025,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profile => 'Profile';
 
   @override
-  String get propertyDashboard => 'Property Dashboard';
+  String get accommodationDashboard => 'Accommodation Dashboard';
 
   @override
   String get providerAccount => 'Provider account';

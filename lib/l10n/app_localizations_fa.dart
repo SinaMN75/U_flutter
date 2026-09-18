@@ -3025,7 +3025,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get profile => 'پروفایل';
 
   @override
-  String get propertyDashboard => 'داشبورد املاک';
+  String get accommodationDashboard => 'داشبورد اقامتگاه';
 
   @override
   String get providerAccount => 'حساب سرویس‌دهنده';

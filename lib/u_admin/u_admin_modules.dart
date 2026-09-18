@@ -81,7 +81,7 @@ abstract class UAdminModules {
   );
 
   static UAdminModule propertyDashboard({List<TagUser>? roles}) => UAdminModule(
-    title: "${U.s.propertyDashboard} ⚡",
+    title: "${U.s.accommodationDashboard} ⚡",
     icon: Icons.apartment_rounded,
     page: () => const UAdminHotelDashboardPage(),
     roles: roles,

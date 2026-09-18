@@ -21,7 +21,7 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
   @override
   Widget build(BuildContext context) => UScaffold(
     appBar: AppBar(
-      title: Text("${U.s.propertyDashboard} ⚡"),
+      title: Text("${U.s.accommodationDashboard} ⚡"),
       actions: <Widget>[IconButton(icon: const Icon(Icons.refresh_rounded), tooltip: U.s.refresh, onPressed: c.load)],
     ),
     body: Obx(() {
@@ -59,7 +59,7 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
       children: <Widget>[
         UIconTextHorizontal(
           leading: const Icon(Icons.apartment_rounded, color: UAdminTheme.white, size: 34),
-          trailing: UTextHeadlineSmall(U.s.propertyDashboard, color: UAdminTheme.white, fontWeight: FontWeight.w800),
+          trailing: UTextHeadlineSmall(U.s.accommodationDashboard, color: UAdminTheme.white, fontWeight: FontWeight.w800),
         ),
         UAdminResponsiveGrid(
           minTileWidth: 150,
