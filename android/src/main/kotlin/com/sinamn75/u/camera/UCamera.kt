@@ -9,6 +9,7 @@ import android.graphics.ImageFormat
 import android.graphics.Rect
 import android.graphics.SurfaceTexture
 import android.graphics.YuvImage
+import android.hardware.display.DisplayManager
 import android.hardware.camera2.CameraCaptureSession
 import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraDevice
@@ -201,6 +202,7 @@ internal class UCameraSession(
     private var lockedRotation: Int? = null
 
     private var orientationListener: OrientationEventListener? = null
+    private var displayListener: DisplayManager.DisplayListener? = null
     private var deviceRotation = 0
     private var displayRotation = 0
     private var disposed = false
@@ -284,6 +286,7 @@ internal class UCameraSession(
             characteristics = manager.getCameraCharacteristics(cameraId)
             configureSizes()
             startOrientationListener()
+            startDisplayListener()
         } catch (error: Exception) {
             ready(null, error.message ?: "unknown")
             return
@@ -488,6 +491,10 @@ internal class UCameraSession(
         disposed = true
         runCatching { orientationListener?.disable() }
         orientationListener = null
+        runCatching {
+            displayListener?.let { (context.getSystemService(Context.DISPLAY_SERVICE) as? DisplayManager)?.unregisterDisplayListener(it) }
+        }
+        displayListener = null
         runCatching { session?.stopRepeating() }
         runCatching { session?.close() }
         session = null
@@ -808,7 +815,6 @@ internal class UCameraSession(
     }
 
     private fun startOrientationListener() {
-        displayRotation = readDisplayRotation()
         val listener =
             object : OrientationEventListener(context) {
                 override fun onOrientationChanged(orientation: Int) {
@@ -823,6 +829,25 @@ internal class UCameraSession(
         if (listener.canDetectOrientation()) {
             listener.enable()
             orientationListener = listener
+        }
+    }
+
+    private fun startDisplayListener() {
+        displayRotation = readDisplayRotation()
+        val manager = context.getSystemService(Context.DISPLAY_SERVICE) as? DisplayManager ?: return
+        val listener =
+            object : DisplayManager.DisplayListener {
+                override fun onDisplayAdded(displayId: Int) = Unit
+
+                override fun onDisplayRemoved(displayId: Int) = Unit
+
+                override fun onDisplayChanged(displayId: Int) {
+                    syncDisplayRotation()
+                }
+            }
+        runCatching {
+            manager.registerDisplayListener(listener, mainHandler)
+            displayListener = listener
         }
     }
 
@@ -875,11 +900,8 @@ internal class UCameraSession(
         val sensorOrientation = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION) ?: 0
         val rotation = lockedRotation ?: deviceRotation
         val facing = characteristics.get(CameraCharacteristics.LENS_FACING)
-        return if (facing == CameraCharacteristics.LENS_FACING_FRONT) {
-            (sensorOrientation + rotation) % 360
-        } else {
-            (sensorOrientation - rotation + 360) % 360
-        }
+        val signed = if (facing == CameraCharacteristics.LENS_FACING_FRONT) -rotation else rotation
+        return (sensorOrientation + signed + 360) % 360
     }
 
     // -------------------------------------------------------------------------

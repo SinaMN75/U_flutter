@@ -50,12 +50,30 @@ class _UProcessVisualAuthFieldState extends State<UProcessVisualAuthField> with 
 
   Future<void> _loadInitialVideo(String url) async {
     try {
-      _videoController = UMediaController(config: const UMediaConfig(repeat: URepeatMode.one));
-      await _videoController!.open(UMediaSource.network(url), autoPlay: true);
+      _attachPlayer(UMediaSource.network(url));
       if (mounted) setState(() {});
     } catch (e) {
       debugPrint("Error loading initial video: $e");
     }
+  }
+
+  void _attachPlayer(UMediaSource source) {
+    final UMediaController controller = UMediaController(config: const UMediaConfig(repeat: URepeatMode.one));
+    _videoController = controller;
+    controller.addListener(_onPlayerChanged);
+    unawaited(controller.open(source, autoPlay: true).catchError((Object error) => debugPrint("Error opening playback: $error")));
+  }
+
+  void _onPlayerChanged() {
+    if (mounted) setState(() {});
+  }
+
+  void _detachPlayer() {
+    final UMediaController? controller = _videoController;
+    if (controller == null) return;
+    _videoController = null;
+    controller.removeListener(_onPlayerChanged);
+    controller.dispose();
   }
 
   void _setValue(String? value) {
@@ -101,10 +119,7 @@ class _UProcessVisualAuthFieldState extends State<UProcessVisualAuthField> with 
 
       _recordingStartTime = DateTime.now();
 
-      if (_videoController != null) {
-        _videoController!.dispose();
-        _videoController = null;
-      }
+      _detachPlayer();
 
       await _progressController.forward(from: 0);
 
@@ -142,10 +157,12 @@ class _UProcessVisualAuthFieldState extends State<UProcessVisualAuthField> with 
       final Uint8List bytes = recorded.bytes ?? (kIsWeb ? Uint8List(0) : await File(recorded.path).readAsBytes());
       if (bytes.isNotEmpty) _setValue(base64Encode(bytes));
 
+      await _cameraController?.dispose();
+      _cameraController = null;
+
       // Preview the just-recorded clip: it lives on the device (web uses a blob
       // URL), so play it from a file on native and from the URL on web.
-      _videoController = UMediaController(config: const UMediaConfig(repeat: URepeatMode.one));
-      await _videoController!.open(kIsWeb ? UMediaSource.network(recorded.path) : UMediaSource.file(recorded.path), autoPlay: true);
+      _attachPlayer(kIsWeb ? UMediaSource.network(recorded.path) : UMediaSource.file(recorded.path));
 
       if (mounted) setState(() {});
     } catch (e) {
@@ -154,10 +171,7 @@ class _UProcessVisualAuthFieldState extends State<UProcessVisualAuthField> with 
   }
 
   Future<void> _reRecord() async {
-    if (_videoController != null) {
-      _videoController!.dispose();
-      _videoController = null;
-    }
+    _detachPlayer();
     setState(() {
       _recordedVideo = null;
       _hasInitialValue = false;
@@ -172,7 +186,7 @@ class _UProcessVisualAuthFieldState extends State<UProcessVisualAuthField> with 
     _timer?.cancel();
     _progressController.dispose();
     unawaited(_cameraController?.dispose());
-    _videoController?.dispose();
+    _detachPlayer();
     super.dispose();
   }
 
@@ -225,9 +239,17 @@ class _UProcessVisualAuthFieldState extends State<UProcessVisualAuthField> with 
 
   Widget _buildMediaPreview() {
     final ColorScheme scheme = Theme.of(context).colorScheme;
-    if (_videoController != null && _videoController!.value.hasVideo) {
+    final UMediaController? player = _videoController;
+    if (player != null) {
       // Cover the square frame without stretching by preserving the video's aspect ratio.
-      return UVideoView(controller: _videoController!, fit: UMediaFit.cover);
+      return UVideoView(
+        controller: player,
+        fit: UMediaFit.cover,
+        placeholder: ColoredBox(
+          color: scheme.surfaceContainerHighest,
+          child: const Center(child: CircularProgressIndicator()),
+        ),
+      );
     } else if (_cameraController != null && _cameraController!.value.isInitialized) {
       // Cover the square frame without stretching by preserving the camera's preview aspect ratio.
       return UCameraPreview(controller: _cameraController!);
