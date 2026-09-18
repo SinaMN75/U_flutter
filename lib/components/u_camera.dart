@@ -298,6 +298,7 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
   bool _initializing = true;
 
   bool _showGrid = false;
+  bool _capturing = false;
   int _selfTimerSeconds = 0;
   int _countdown = 0;
   Timer? _selfTimer;
@@ -353,6 +354,8 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
       await _openController(_o.startFront ? UCameraFacing.front : UCameraFacing.back);
     } on UCameraException catch (error) {
       _fail(error.message.isEmpty ? U.s.error : error.message);
+    } catch (_) {
+      _fail(U.s.error);
     }
   }
 
@@ -402,17 +405,21 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
 
   Future<void> _switchCamera() async {
     final UCameraController? controller = _controller;
-    if (controller == null || controller.value.isRecording || _devices.length < 2) return;
+    if (controller == null || controller.value.isRecording || _capturing || _devices.length < 2) return;
     setState(() => _initializing = true);
     final UCameraFacing next = controller.value.device?.isFront == true ? UCameraFacing.back : UCameraFacing.front;
-    await controller.dispose();
-    _controller = null;
-    await _openController(next);
+    try {
+      await controller.dispose();
+      _controller = null;
+      await _openController(next);
+    } catch (_) {
+      _fail(U.s.error);
+    }
   }
 
   Future<void> _onShutter() async {
     final UCameraController? controller = _controller;
-    if (controller == null || _countdown > 0) return;
+    if (controller == null || _countdown > 0 || _capturing) return;
     if (_isVideoMode) {
       await _toggleRecording();
       return;
@@ -444,34 +451,45 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
 
   Future<void> _takePhoto() async {
     final UCameraController? controller = _controller;
-    if (controller == null) return;
-    final UCapturedPhoto? photo = await controller.takePhoto();
-    if (photo == null || !mounted) return;
-    final FileData file = UCameraUtils.toFileData(photo);
-    if (_multiPhoto) {
-      setState(() => _captured.add(file));
-      if (_atLimit) _finish();
-    } else if (_o.confirmCapture) {
-      setState(() => _review = file);
-    } else {
-      _finishWith(<FileData>[file]);
+    if (controller == null || _capturing) return;
+    _capturing = true;
+    try {
+      final UCapturedPhoto? photo = await controller.takePhoto();
+      if (photo == null || !mounted) return;
+      final FileData file = UCameraUtils.toFileData(photo);
+      if (_multiPhoto) {
+        setState(() => _captured.add(file));
+        if (_atLimit) _finish();
+      } else if (_o.confirmCapture) {
+        setState(() => _review = file);
+      } else {
+        _finishWith(<FileData>[file]);
+      }
+    } catch (_) {
+      // The controller already surfaced the failure; keep the page alive.
+    } finally {
+      _capturing = false;
     }
   }
 
   Future<void> _toggleRecording() async {
     final UCameraController? controller = _controller;
     if (controller == null) return;
-    if (controller.value.isRecording) {
-      final UCapturedVideo? video = await controller.stopVideoRecording();
-      if (video == null || !mounted) return;
-      final FileData file = UCameraUtils.videoToFileData(video);
-      if (_o.mode == UCameraMode.both) {
-        setState(() => _captured.add(file));
+    try {
+      if (controller.value.isRecording) {
+        final UCapturedVideo? video = await controller.stopVideoRecording();
+        if (video == null || !mounted) return;
+        final FileData file = UCameraUtils.videoToFileData(video);
+        if (_o.mode == UCameraMode.both) {
+          setState(() => _captured.add(file));
+        } else {
+          _finishWith(<FileData>[file]);
+        }
       } else {
-        _finishWith(<FileData>[file]);
+        await controller.startVideoRecording(codec: _o.videoCodec, maxDuration: _o.videoMaxDuration);
       }
-    } else {
-      await controller.startVideoRecording(codec: _o.videoCodec, maxDuration: _o.videoMaxDuration);
+    } catch (_) {
+      // The controller already surfaced the failure; keep the page alive.
     }
   }
 

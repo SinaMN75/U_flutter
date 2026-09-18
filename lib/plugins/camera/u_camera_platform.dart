@@ -951,6 +951,10 @@ abstract class UCameraChannel {
       throw UCameraException.fromPlatform(error);
     } on MissingPluginException {
       throw const UCameraException(code: UCameraErrorCode.unsupported, message: "Camera is not available on this platform");
+    } on UCameraException {
+      rethrow;
+    } catch (error) {
+      throw UCameraException(code: UCameraErrorCode.unknown, message: "$error");
     }
   }
 
@@ -1299,11 +1303,20 @@ class UCameraController extends ValueNotifier<UCameraValue> {
   }
 
   void _onStreamError(Object error) {
-    if (error is PlatformException) _fail(UCameraException.fromPlatform(error));
+    if (_disposed) return;
+    _fail(error is PlatformException ? UCameraException.fromPlatform(error) : UCameraException(code: UCameraErrorCode.unknown, message: "$error"));
   }
 
   void _onEvent(Map<Object?, Object?> event) {
     if (_disposed) return;
+    try {
+      _handleEvent(event);
+    } catch (_) {
+      // A malformed platform event must never take the app down.
+    }
+  }
+
+  void _handleEvent(Map<Object?, Object?> event) {
     switch ((event["event"] as String?) ?? "") {
       case "initialized":
         _applyCreated(event);
@@ -1359,10 +1372,14 @@ class UCameraController extends ValueNotifier<UCameraValue> {
 
   void _onFrame(Map<Object?, Object?> event) {
     if (_disposed) return;
-    final UCameraFrame frame = UCameraFrame.fromMap(event);
-    if (frame.width <= 0 || frame.height <= 0) return;
-    if (_config.imageStream && !_frameController.isClosed) _frameController.add(frame);
-    if (value.isScanning && _config.scanEngine != UScanEngine.platform) unawaited(_decodeFrame(frame));
+    try {
+      final UCameraFrame frame = UCameraFrame.fromMap(event);
+      if (frame.width <= 0 || frame.height <= 0) return;
+      if (_config.imageStream && !_frameController.isClosed) _frameController.add(frame);
+      if (value.isScanning && _config.scanEngine != UScanEngine.platform) unawaited(_decodeFrame(frame));
+    } catch (_) {
+      // Drop the frame rather than break the stream.
+    }
   }
 
   Future<void> _decodeFrame(UCameraFrame frame) async {
@@ -1434,6 +1451,10 @@ class UCameraController extends ValueNotifier<UCameraValue> {
       _emit(value.copyWith(state: UCameraState.ready));
       _fail(error);
       return null;
+    } catch (error) {
+      _emit(value.copyWith(state: UCameraState.ready));
+      _fail(UCameraException(code: UCameraErrorCode.unknown, message: "$error"));
+      return null;
     }
   }
 
@@ -1442,12 +1463,20 @@ class UCameraController extends ValueNotifier<UCameraValue> {
   Future<UCapturedPhoto?> takeSnapshot({UPhotoFormat format = UPhotoFormat.jpeg, int quality = 90}) async {
     final int? id = _sessionId;
     if (id == null) return null;
-    final Map<Object?, Object?>? raw = await UCameraChannel.invokeMap("takeSnapshot", <String, Object?>{
-      "sessionId": id,
-      "format": format.name,
-      "quality": quality,
-    });
-    return raw == null ? null : UCapturedPhoto.fromMap(raw);
+    try {
+      final Map<Object?, Object?>? raw = await UCameraChannel.invokeMap("takeSnapshot", <String, Object?>{
+        "sessionId": id,
+        "format": format.name,
+        "quality": quality,
+      });
+      return raw == null ? null : UCapturedPhoto.fromMap(raw);
+    } on UCameraException catch (error) {
+      _fail(error);
+      return null;
+    } catch (error) {
+      _fail(UCameraException(code: UCameraErrorCode.unknown, message: "$error"));
+      return null;
+    }
   }
 
   Future<bool> startVideoRecording({String? path, UVideoCodec? codec, int? bitrate, bool? enableAudio, Duration? maxDuration}) async {
@@ -1471,6 +1500,9 @@ class UCameraController extends ValueNotifier<UCameraValue> {
     } on UCameraException catch (error) {
       _fail(error);
       return false;
+    } catch (error) {
+      _fail(UCameraException(code: UCameraErrorCode.unknown, message: "$error"));
+      return false;
     }
   }
 
@@ -1488,13 +1520,17 @@ class UCameraController extends ValueNotifier<UCameraValue> {
       _emit(value.copyWith(state: UCameraState.ready));
       _fail(error);
       return null;
+    } catch (error) {
+      _emit(value.copyWith(state: UCameraState.ready));
+      _fail(UCameraException(code: UCameraErrorCode.unknown, message: "$error"));
+      return null;
     }
   }
 
   Future<void> pauseVideoRecording() async {
     final int? id = _sessionId;
     if (id == null || value.state != UCameraState.recording) return;
-    await UCameraChannel.invoke<void>("pauseRecording", <String, Object?>{"sessionId": id});
+    await _set("pauseRecording", const <String, Object?>{});
     _recordingTicker?.cancel();
     final DateTime? startedAt = _recordingStartedAt;
     if (startedAt != null) _recordedBeforePause += DateTime.now().difference(startedAt);
@@ -1505,7 +1541,7 @@ class UCameraController extends ValueNotifier<UCameraValue> {
   Future<void> resumeVideoRecording() async {
     final int? id = _sessionId;
     if (id == null || value.state != UCameraState.recordingPaused) return;
-    await UCameraChannel.invoke<void>("resumeRecording", <String, Object?>{"sessionId": id});
+    await _set("resumeRecording", const <String, Object?>{});
     _recordingStartedAt = DateTime.now();
     _startRecordingTicker();
     _emit(value.copyWith(state: UCameraState.recording));
@@ -1534,6 +1570,8 @@ class UCameraController extends ValueNotifier<UCameraValue> {
       await UCameraChannel.invoke<void>(method, <String, Object?>{"sessionId": id, ...arguments});
     } on UCameraException catch (error) {
       if (error.code != UCameraErrorCode.unsupported) _fail(error);
+    } catch (error) {
+      _fail(UCameraException(code: UCameraErrorCode.unknown, message: "$error"));
     }
   }
 

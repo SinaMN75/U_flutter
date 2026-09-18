@@ -312,6 +312,10 @@ public final class UCameraSession: NSObject {
     }
 
     public func dispose() {
+        failPendingPhoto("disposed")
+        let pendingRecording = recordingCompletion
+        recordingCompletion = nil
+        pendingRecording?(nil, "disposed")
         queue.async { [weak self] in
             guard let self else { return }
             if self.session.isRunning { self.session.stopRunning() }
@@ -654,6 +658,17 @@ public final class UCameraSession: NSObject {
     // MARK: - Capture
 
     public func takePhoto(arguments: [String: Any], completion: @escaping ([String: Any]?, String?) -> Void) {
+        if photoCompletion != nil {
+            completion(nil, "capture")
+            return
+        }
+        guard session.isRunning,
+              let connection = photoOutput.connection(with: .video),
+              connection.isActive, connection.isEnabled
+        else {
+            completion(nil, "notFound")
+            return
+        }
         photoCompletion = completion
         photoPath = arguments["path"] as? String
         includePhotoBytes = arguments["includeBytes"] as? Bool ?? true
@@ -675,6 +690,12 @@ public final class UCameraSession: NSObject {
             }
         #endif
         photoOutput.capturePhoto(with: settings, delegate: self)
+    }
+
+    public func failPendingPhoto(_ reason: String) {
+        let completion = photoCompletion
+        photoCompletion = nil
+        completion?(nil, reason)
     }
 
     public func takeSnapshot(quality: Int, completion: @escaping ([String: Any]?, String?) -> Void) {
@@ -903,7 +924,12 @@ extension UCameraSession: AVCapturePhotoCaptureDelegate {
             return
         }
         let path = photoPath ?? UCameraSession.temporaryFile(extension: "jpg")
-        try? data.write(to: URL(fileURLWithPath: path))
+        do {
+            try data.write(to: URL(fileURLWithPath: path))
+        } catch {
+            completion?(nil, "storage")
+            return
+        }
         completion?(
             [
                 "path": path,

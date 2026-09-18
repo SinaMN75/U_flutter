@@ -9,7 +9,6 @@ import android.graphics.ImageFormat
 import android.graphics.Rect
 import android.graphics.SurfaceTexture
 import android.graphics.YuvImage
-import android.hardware.camera2.CameraAccessException
 import android.hardware.camera2.CameraCaptureSession
 import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraDevice
@@ -45,6 +44,7 @@ import io.flutter.plugin.common.PluginRegistry
 import io.flutter.view.TextureRegistry
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -203,6 +203,7 @@ internal class UCameraSession(
     private var orientationListener: OrientationEventListener? = null
     private var deviceRotation = 0
     private var displayRotation = 0
+    private var disposed = false
 
     val textureId: Long get() = surfaceProducer.id()
 
@@ -236,11 +237,31 @@ internal class UCameraSession(
     }
 
     private fun send(payload: Map<String, Any?>) {
-        mainHandler.post { eventSink?.success(payload) }
+        if (disposed) return
+        mainHandler.post { runCatching { eventSink?.success(payload) } }
     }
 
     private fun sendFrame(payload: Map<String, Any?>) {
-        mainHandler.post { frameSink?.success(payload) }
+        if (disposed) return
+        mainHandler.post { runCatching { frameSink?.success(payload) } }
+    }
+
+    private fun <T> once(callback: (T?, String?) -> Unit): (T?, String?) -> Unit {
+        val delivered = AtomicBoolean(false)
+        return { value, error ->
+            if (delivered.compareAndSet(false, true)) {
+                mainHandler.post { runCatching { callback(value, error) } }
+            }
+        }
+    }
+
+    private fun onceError(callback: (String?) -> Unit): (String?) -> Unit {
+        val delivered = AtomicBoolean(false)
+        return { error ->
+            if (delivered.compareAndSet(false, true)) {
+                mainHandler.post { runCatching { callback(error) } }
+            }
+        }
     }
 
     private fun stringConfig(key: String): String? = config[key] as? String
@@ -257,21 +278,19 @@ internal class UCameraSession(
     // -------------------------------------------------------------------------
 
     fun open(onReady: (Map<String, Any?>?, String?) -> Unit) {
+        val ready = once(onReady)
         try {
             cameraId = resolveCameraId()
             characteristics = manager.getCameraCharacteristics(cameraId)
             configureSizes()
             startOrientationListener()
-        } catch (error: CameraAccessException) {
-            onReady(null, error.message)
-            return
-        } catch (error: IllegalArgumentException) {
-            onReady(null, error.message)
+        } catch (error: Exception) {
+            ready(null, error.message ?: "unknown")
             return
         }
 
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            onReady(null, "permission")
+            ready(null, "permission")
             return
         }
 
@@ -280,39 +299,45 @@ internal class UCameraSession(
                 cameraId,
                 object : CameraDevice.StateCallback() {
                     override fun onOpened(camera: CameraDevice) {
+                        if (disposed) {
+                            runCatching { camera.close() }
+                            ready(null, "disposed")
+                            return
+                        }
                         device = camera
                         createSession { error ->
                             if (error == null) {
-                                onReady(describe(), null)
+                                ready(runCatching { describe() }.getOrNull(), null)
                             } else {
-                                onReady(null, error)
+                                ready(null, error)
                             }
                         }
                     }
 
                     override fun onDisconnected(camera: CameraDevice) {
-                        camera.close()
+                        runCatching { camera.close() }
                         device = null
                         send(mapOf("event" to "disconnected"))
+                        ready(null, "disconnected")
                     }
 
                     override fun onError(
                         camera: CameraDevice,
                         error: Int,
                     ) {
-                        camera.close()
+                        runCatching { camera.close() }
                         device = null
                         val code = if (error == ERROR_CAMERA_IN_USE || error == ERROR_MAX_CAMERAS_IN_USE) "inUse" else "unknown"
                         send(mapOf("event" to "error", "code" to code, "message" to "Camera error $error"))
-                        onReady(null, code)
+                        ready(null, code)
                     }
                 },
                 handler,
             )
         } catch (error: SecurityException) {
-            onReady(null, "permission")
-        } catch (error: CameraAccessException) {
-            onReady(null, error.message)
+            ready(null, "permission")
+        } catch (error: Exception) {
+            ready(null, error.message ?: "unknown")
         }
     }
 
@@ -345,25 +370,40 @@ internal class UCameraSession(
     }
 
     private fun createSession(onReady: (String?) -> Unit) {
-        val camera = device ?: run {
-            onReady("notFound")
+        val ready = onceError(onReady)
+        val camera = device
+        if (camera == null || disposed) {
+            ready("notFound")
             return
         }
 
-        surfaceProducer.setSize(previewSize.width, previewSize.height)
-        val previewSurface = surfaceProducer.surface
+        val prepared =
+            runCatching {
+                surfaceProducer.setSize(previewSize.width, previewSize.height)
+                val preview = surfaceProducer.surface
 
-        stillReader?.close()
-        stillReader = ImageReader.newInstance(stillSize.width, stillSize.height, ImageFormat.JPEG, 2)
+                runCatching { stillReader?.close() }
+                val still = ImageReader.newInstance(stillSize.width, stillSize.height, ImageFormat.JPEG, 2)
+                stillReader = still
 
-        analysisReader?.close()
-        analysisReader =
-            ImageReader.newInstance(analysisSize.width, analysisSize.height, ImageFormat.YUV_420_888, 2).apply {
-                setOnImageAvailableListener({ reader -> onAnalysisImage(reader) }, handler)
-            }
+                runCatching { analysisReader?.close() }
+                val analysis =
+                    ImageReader.newInstance(analysisSize.width, analysisSize.height, ImageFormat.YUV_420_888, 2).apply {
+                        setOnImageAvailableListener({ reader -> onAnalysisImage(reader) }, handler)
+                    }
+                analysisReader = analysis
 
-        val targets = mutableListOf(previewSurface, stillReader!!.surface, analysisReader!!.surface)
-        recorder?.let { targets.add(it.surface) }
+                val surfaces = mutableListOf(preview, still.surface, analysis.surface)
+                recorder?.let { surfaces.add(it.surface) }
+                Pair(preview, surfaces)
+            }.getOrNull()
+
+        if (prepared == null) {
+            ready("configuration")
+            return
+        }
+        val previewSurface = prepared.first
+        val targets = prepared.second
 
         try {
             @Suppress("DEPRECATION")
@@ -371,24 +411,33 @@ internal class UCameraSession(
                 targets,
                 object : CameraCaptureSession.StateCallback() {
                     override fun onConfigured(configured: CameraCaptureSession) {
+                        if (disposed) {
+                            runCatching { configured.close() }
+                            ready("disposed")
+                            return
+                        }
                         session = configured
                         buildRequest(previewSurface)
                         startRepeating()
-                        onReady(null)
+                        ready(null)
                     }
 
                     override fun onConfigureFailed(configured: CameraCaptureSession) {
-                        onReady("configuration")
+                        ready("configuration")
                     }
                 },
                 handler,
             )
-        } catch (error: CameraAccessException) {
-            onReady(error.message)
+        } catch (error: Exception) {
+            ready(error.message ?: "configuration")
         }
     }
 
     private fun buildRequest(previewSurface: Surface) {
+        runCatching { buildRequestInternal(previewSurface) }
+    }
+
+    private fun buildRequestInternal(previewSurface: Surface) {
         val camera = device ?: return
         val template = if (recorder != null) CameraDevice.TEMPLATE_RECORD else CameraDevice.TEMPLATE_PREVIEW
         val builder = camera.createCaptureRequest(template)
@@ -435,22 +484,32 @@ internal class UCameraSession(
     }
 
     fun dispose() {
-        orientationListener?.disable()
+        if (disposed) return
+        disposed = true
+        runCatching { orientationListener?.disable() }
         orientationListener = null
+        runCatching { session?.stopRepeating() }
         runCatching { session?.close() }
         session = null
+        runCatching { recorder?.stop() }
         runCatching { recorder?.release() }
         recorder = null
+        recordingPath = null
+        runCatching { stillReader?.setOnImageAvailableListener(null, handler) }
         runCatching { stillReader?.close() }
         stillReader = null
+        runCatching { analysisReader?.setOnImageAvailableListener(null, handler) }
         runCatching { analysisReader?.close() }
         analysisReader = null
         runCatching { device?.close() }
         device = null
-        surfaceProducer.release()
-        eventChannel.setStreamHandler(null)
-        frameChannel.setStreamHandler(null)
-        background.quitSafely()
+        requestBuilder = null
+        runCatching { surfaceProducer.release() }
+        runCatching { eventChannel.setStreamHandler(null) }
+        runCatching { frameChannel.setStreamHandler(null) }
+        eventSink = null
+        frameSink = null
+        runCatching { background.quitSafely() }
     }
 
     // -------------------------------------------------------------------------
@@ -831,45 +890,49 @@ internal class UCameraSession(
         arguments: Map<*, *>,
         result: (Map<String, Any?>?, String?) -> Unit,
     ) {
+        val deliver = once(result)
         val reader = stillReader
         val camera = device
         val current = session
-        if (reader == null || camera == null || current == null) {
-            result(null, "notFound")
+        if (reader == null || camera == null || current == null || disposed) {
+            deliver(null, "notFound")
             return
         }
 
         val includeBytes = arguments["includeBytes"] as? Boolean ?: true
         val targetPath = arguments["path"] as? String ?: defaultFile("jpg").absolutePath
+        val mirrored = characteristics.get(CameraCharacteristics.LENS_FACING) == CameraCharacteristics.LENS_FACING_FRONT
 
         reader.setOnImageAvailableListener({ source ->
-            var image: Image? = null
+            val frame = runCatching { source.acquireLatestImage() }.getOrNull() ?: return@setOnImageAvailableListener
             try {
-                image = source.acquireLatestImage() ?: return@setOnImageAvailableListener
-                val buffer = image.planes[0].buffer
+                val width = frame.width
+                val height = frame.height
+                val buffer = frame.planes[0].buffer
                 val bytes = ByteArray(buffer.remaining())
                 buffer.get(bytes)
+                val rotation = captureRotation()
                 File(targetPath).writeBytes(bytes)
-                mainHandler.post {
-                    result(
-                        mapOf(
-                            "path" to targetPath,
-                            "bytes" to if (includeBytes) bytes else null,
-                            "width" to image.width,
-                            "height" to image.height,
-                            "format" to "jpeg",
-                            "orientation" to captureRotation(),
-                            "sizeInBytes" to bytes.size,
-                            "mirrored" to (characteristics.get(CameraCharacteristics.LENS_FACING) == CameraCharacteristics.LENS_FACING_FRONT),
-                        ),
-                        null,
-                    )
-                }
-            } catch (error: IllegalStateException) {
-                mainHandler.post { result(null, error.message) }
+                deliver(
+                    mapOf(
+                        "path" to targetPath,
+                        "bytes" to if (includeBytes) bytes else null,
+                        "width" to width,
+                        "height" to height,
+                        "format" to "jpeg",
+                        "orientation" to rotation,
+                        "sizeInBytes" to bytes.size,
+                        "mirrored" to mirrored,
+                    ),
+                    null,
+                )
+            } catch (error: Exception) {
+                deliver(null, error.message ?: "capture")
+            } catch (error: OutOfMemoryError) {
+                deliver(null, "outOfMemory")
             } finally {
-                image?.close()
-                source.setOnImageAvailableListener(null, handler)
+                runCatching { frame.close() }
+                runCatching { source.setOnImageAvailableListener(null, handler) }
             }
         }, handler)
 
@@ -888,9 +951,23 @@ internal class UCameraSession(
             }
             builder.set(CaptureRequest.JPEG_ORIENTATION, captureRotation())
             builder.set(CaptureRequest.JPEG_QUALITY, ((arguments["quality"] as? Number)?.toInt() ?: 92).toByte())
-            current.capture(builder.build(), null, handler)
-        } catch (error: CameraAccessException) {
-            result(null, error.message)
+            current.capture(
+                builder.build(),
+                object : CameraCaptureSession.CaptureCallback() {
+                    override fun onCaptureFailed(
+                        capture: CameraCaptureSession,
+                        request: CaptureRequest,
+                        failure: android.hardware.camera2.CaptureFailure,
+                    ) {
+                        runCatching { reader.setOnImageAvailableListener(null, handler) }
+                        deliver(null, "capture")
+                    }
+                },
+                handler,
+            )
+        } catch (error: Exception) {
+            runCatching { reader.setOnImageAvailableListener(null, handler) }
+            deliver(null, error.message ?: "capture")
         }
     }
 
@@ -898,36 +975,43 @@ internal class UCameraSession(
         quality: Int,
         result: (Map<String, Any?>?, String?) -> Unit,
     ) {
+        val deliver = once(result)
         val reader = analysisReader
-        if (reader == null) {
-            result(null, "unsupported")
+        if (reader == null || disposed) {
+            deliver(null, "unsupported")
             return
         }
         if (!streamingFrames) {
-            requestBuilder?.addTarget(reader.surface)
+            runCatching { requestBuilder?.addTarget(reader.surface) }
             startRepeating()
         }
         reader.setOnImageAvailableListener({ source ->
-            var image: Image? = null
+            val frame = runCatching { source.acquireLatestImage() }.getOrNull() ?: return@setOnImageAvailableListener
             try {
-                image = source.acquireLatestImage() ?: return@setOnImageAvailableListener
-                val jpeg = yuvToJpeg(image, quality)
-                mainHandler.post {
-                    result(
-                        mapOf(
-                            "bytes" to jpeg,
-                            "width" to image.width,
-                            "height" to image.height,
-                            "format" to "jpeg",
-                            "orientation" to captureRotation(),
-                            "sizeInBytes" to jpeg.size,
-                        ),
-                        null,
-                    )
-                }
+                val width = frame.width
+                val height = frame.height
+                val rotation = captureRotation()
+                val jpeg = yuvToJpeg(frame, quality)
+                deliver(
+                    mapOf(
+                        "bytes" to jpeg,
+                        "width" to width,
+                        "height" to height,
+                        "format" to "jpeg",
+                        "orientation" to rotation,
+                        "sizeInBytes" to jpeg.size,
+                    ),
+                    null,
+                )
+            } catch (error: Exception) {
+                deliver(null, error.message ?: "capture")
+            } catch (error: OutOfMemoryError) {
+                deliver(null, "outOfMemory")
             } finally {
-                image?.close()
-                source.setOnImageAvailableListener(if (streamingFrames) { r -> onAnalysisImage(r) } else null, handler)
+                runCatching { frame.close() }
+                runCatching {
+                    source.setOnImageAvailableListener(if (streamingFrames) { r -> onAnalysisImage(r) } else null, handler)
+                }
             }
         }, handler)
     }
@@ -972,8 +1056,8 @@ internal class UCameraSession(
     private fun onAnalysisImage(reader: ImageReader) {
         var image: Image? = null
         try {
-            image = reader.acquireLatestImage() ?: return
-            if (!streamingFrames) return
+            image = runCatching { reader.acquireLatestImage() }.getOrNull() ?: return
+            if (!streamingFrames || disposed) return
             val now = System.currentTimeMillis()
             if (now - lastFrameAt < frameIntervalMs) return
             lastFrameAt = now
@@ -1034,10 +1118,12 @@ internal class UCameraSession(
                     }
                 }
             sendFrame(payload)
-        } catch (error: IllegalStateException) {
+        } catch (error: Exception) {
             // The reader was closed underneath us; the next frame will recover.
+        } catch (error: OutOfMemoryError) {
+            // Skip this frame rather than take the process down.
         } finally {
-            image?.close()
+            runCatching { image?.close() }
         }
     }
 
@@ -1092,8 +1178,9 @@ internal class UCameraSession(
         arguments: Map<*, *>,
         onDone: (String?) -> Unit,
     ) {
-        if (recorder != null) {
-            onDone("recording")
+        val done = onceError(onDone)
+        if (recorder != null || disposed) {
+            done("recording")
             return
         }
         val path = arguments["path"] as? String ?: defaultFile(if (stringConfig("videoContainer") == "webm") "webm" else "mp4").absolutePath
@@ -1101,7 +1188,13 @@ internal class UCameraSession(
         val hasAudioPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED
 
         val created =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) MediaRecorder(context) else @Suppress("DEPRECATION") MediaRecorder()
+            runCatching {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) MediaRecorder(context) else @Suppress("DEPRECATION") MediaRecorder()
+            }.getOrNull()
+        if (created == null) {
+            done("recording")
+            return
+        }
         try {
             if (enableAudio && hasAudioPermission) created.setAudioSource(MediaRecorder.AudioSource.CAMCORDER)
             created.setVideoSource(MediaRecorder.VideoSource.SURFACE)
@@ -1121,8 +1214,8 @@ internal class UCameraSession(
             (arguments["maxBytes"] as? Number)?.let { created.setMaxFileSize(it.toLong()) }
             created.prepare()
         } catch (error: Exception) {
-            created.release()
-            onDone(error.message)
+            runCatching { created.release() }
+            done(error.message ?: "recording")
             return
         }
 
@@ -1134,23 +1227,26 @@ internal class UCameraSession(
             if (error != null) {
                 runCatching { created.release() }
                 recorder = null
-                onDone(error)
+                recordingPath = null
+                done(error)
                 return@createSession
             }
             runCatching { created.start() }
-                .onFailure {
+                .onSuccess { done(null) }
+                .onFailure { failure ->
                     runCatching { created.release() }
                     recorder = null
-                    onDone(it.message)
+                    recordingPath = null
+                    done(failure.message ?: "recording")
                 }
-            onDone(null)
         }
     }
 
     fun stopRecording(onDone: (Map<String, Any?>?, String?) -> Unit) {
+        val deliver = once(onDone)
         val current = recorder
         if (current == null) {
-            onDone(null, "notFound")
+            deliver(null, "notFound")
             return
         }
         val path = recordingPath
@@ -1162,13 +1258,13 @@ internal class UCameraSession(
 
         createSession { _ ->
             val file = if (path == null) null else File(path)
-            onDone(
+            deliver(
                 mapOf(
                     "path" to path,
                     "durationMs" to duration,
                     "width" to previewSize.width,
                     "height" to previewSize.height,
-                    "sizeInBytes" to (file?.length() ?: 0L),
+                    "sizeInBytes" to (runCatching { file?.length() }.getOrNull() ?: 0L),
                     "container" to (stringConfig("videoContainer") ?: "mp4"),
                 ),
                 null,
@@ -1249,6 +1345,37 @@ internal object UCameraEnumerator {
         }
 }
 
+/**
+ * Replies at most once, always on the platform thread. Camera callbacks land on
+ * background threads and can fire twice, both of which take the process down if
+ * they reach a raw [MethodChannel.Result].
+ */
+internal class USafeResult(
+    private val delegate: MethodChannel.Result,
+) : MethodChannel.Result {
+    private val delivered = AtomicBoolean(false)
+    private val mainHandler = Handler(Looper.getMainLooper())
+
+    override fun success(result: Any?) = reply { delegate.success(result) }
+
+    override fun error(
+        code: String,
+        message: String?,
+        details: Any?,
+    ) = reply { delegate.error(code, message, details) }
+
+    override fun notImplemented() = reply { delegate.notImplemented() }
+
+    private fun reply(block: () -> Unit) {
+        if (!delivered.compareAndSet(false, true)) return
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            runCatching { block() }
+        } else {
+            mainHandler.post { runCatching { block() } }
+        }
+    }
+}
+
 /** Method-channel front end: owns every session and the permission flow. */
 internal class UCameraHandler(
     private val context: Context,
@@ -1271,9 +1398,11 @@ internal class UCameraHandler(
     }
 
     fun dispose() {
-        channel.setMethodCallHandler(null)
-        sessions.values.forEach { it.dispose() }
+        runCatching { channel.setMethodCallHandler(null) }
+        sessions.values.forEach { runCatching { it.dispose() } }
         sessions.clear()
+        runCatching { permissionResult?.success(permissionMap()) }
+        permissionResult = null
         activity = null
     }
 
@@ -1283,14 +1412,21 @@ internal class UCameraHandler(
         call: MethodCall,
         result: MethodChannel.Result,
     ) {
-        when (call.method) {
-            "isSupported" -> result.success(context.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY))
-            "availableCameras" -> result.success(UCameraEnumerator.list(manager))
-            "permissionStatus" -> result.success(permissionMap())
-            "requestPermission" -> requestPermission(call.argument<Boolean>("audio") ?: false, result)
-            "openSettings" -> result.success(openSettings())
-            "create" -> createSession(call, result)
-            else -> handleSessionCall(call, result)
+        val safe = USafeResult(result)
+        try {
+            when (call.method) {
+                "isSupported" -> safe.success(context.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY))
+                "availableCameras" -> safe.success(runCatching { UCameraEnumerator.list(manager) }.getOrDefault(emptyList()))
+                "permissionStatus" -> safe.success(permissionMap())
+                "requestPermission" -> requestPermission(call.argument<Boolean>("audio") ?: false, safe)
+                "openSettings" -> safe.success(openSettings())
+                "create" -> createSession(call, safe)
+                else -> handleSessionCall(call, safe)
+            }
+        } catch (error: Exception) {
+            safe.error("unknown", error.message ?: "Camera call failed", null)
+        } catch (error: OutOfMemoryError) {
+            safe.error("outOfMemory", "Out of memory", null)
         }
     }
 
@@ -1356,13 +1492,18 @@ internal class UCameraHandler(
     ) {
         val config = call.argument<Map<String, Any?>>("config") ?: emptyMap()
         val id = nextId++
-        val session = UCameraSession(id, context, messenger, textureRegistry, config) { activity }
+        val session =
+            runCatching { UCameraSession(id, context, messenger, textureRegistry, config) { activity } }.getOrNull()
+        if (session == null) {
+            result.error("unknown", "Unable to open camera", null)
+            return
+        }
         sessions[id] = session
         session.open { description, error ->
             if (description != null) {
                 result.success(description)
             } else {
-                sessions.remove(id)?.dispose()
+                runCatching { sessions.remove(id)?.dispose() }
                 result.error(error ?: "unknown", "Unable to open camera", null)
             }
         }
@@ -1381,7 +1522,7 @@ internal class UCameraHandler(
 
         when (call.method) {
             "dispose" -> {
-                sessions.remove(id)?.dispose()
+                runCatching { sessions.remove(id)?.dispose() }
                 result.success(null)
             }
 
