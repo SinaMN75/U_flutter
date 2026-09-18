@@ -20,43 +20,35 @@ class UPaymentRequest {
 
 abstract class UIpgFlow {
   static Future<bool> pay({
-    required double amount,
+    required UIpgPayParams p,
     Function(bool)? onPaid,
-    TagTxn? tag,
-    String? invoiceId,
-    String? billId,
-    String? paymentId,
-    String? chargeMobileNumber,
-    TagSimOperator? topUpType,
-    List<UIpgMultiplexedAccountParams>? multiplexedAccounts,
     UReceipt? receipt,
-    bool showReceipt = true,
   }) async {
     final Completer<bool> completer = Completer<bool>();
     bool paid = false;
-    if (amount <= 0) UToast.error(message: U.s.invalidAmount);
+    if (p.amount <= 0) UToast.error(message: U.s.invalidAmount);
     ULoading.show();
     await UServices.ipg.pay(
       p: UIpgPayParams(
-        amount: amount,
-        tag: tag,
-        invoiceId: invoiceId,
-        billId: billId,
-        paymentId: paymentId,
-        chargeMobileNumber: chargeMobileNumber,
-        topUpType: topUpType,
-        multiplexedAccounts: multiplexedAccounts,
+        amount: p.amount,
+        tag: p.tag,
+        invoiceId: p.invoiceId,
+        billId: p.billId,
+        paymentId: p.paymentId,
+        chargeMobileNumber: p.chargeMobileNumber,
+        topUpType: p.topUpType,
+        multiplexedAccounts: p.multiplexedAccounts,
       ),
       onOk: (UResponse<UIpgPayResponse> response) async {
         ULoading.dismiss();
-        final String trackingNumber = response.result!.trackingNumber;
-        paid = await UNavigator.push<bool>(UIpgWebViewPage(url: response.result!.url, trackingNumber: trackingNumber)) ?? false;
-        if (paid && showReceipt) {
+        final UIpgAdditionalData additionalData = response.result!.additionalData;
+        paid = await UNavigator.push<bool>(UIpgWebViewPage(url: response.result!.url, additionalData: additionalData)) ?? false;
+        if (paid && receipt != null) {
           await _showReceipt(
-            amount: amount,
-            trackingNumber: trackingNumber,
+            amount: p.amount,
+            trackingNumber: additionalData.trackingNumber,
             receipt: receipt,
-            title: _title(billId: billId, chargeMobileNumber: chargeMobileNumber, multiplexedAccounts: multiplexedAccounts),
+            title: _title(billId: p.billId, chargeMobileNumber: p.chargeMobileNumber, multiplexedAccounts: p.multiplexedAccounts),
           );
         }
         completer.complete(paid);

@@ -2,7 +2,7 @@ part of "../../u_admin.dart";
 
 abstract class UAdminPayLink {
   static Future<void> dormBedInvoice(UDormBedInvoiceResponse i, {Future<void> Function()? onClosed}) async {
-    final bool paid = await UIpgFlow.pay(amount: i.netDue, tag: TagTxn.dormInvoice, invoiceId: i.id);
+    final bool paid = await UIpgFlow.pay(p: UIpgPayParams(amount: i.netDue, tag: TagTxn.dormInvoice, invoiceId: i.id));
     if (paid) await onClosed?.call();
   }
 

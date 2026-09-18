@@ -1,11 +1,11 @@
 part of "../data.dart";
 
 class UIpgWebViewController {
-  UIpgWebViewController({required this.trackingNumber}) {
+  UIpgWebViewController({required this.additionalData}) {
     if (kIsWeb) _webMessageDispose = UWebMessage.listen(_onWebMessage);
   }
 
-  final String trackingNumber;
+  final UIpgAdditionalData additionalData;
   bool finished = false;
 
   void Function()? _webMessageDispose;
@@ -40,10 +40,9 @@ class UIpgWebViewController {
   }
 
   Future<bool> _readStatus(bool fallback) async {
-    if (trackingNumber.isEmpty) return fallback;
     bool? paid;
     await UServices.ipg.status(
-      p: UIpgStatusParams(trackingNumber: trackingNumber),
+      p: UIpgStatusParams(trackingNumber: additionalData.trackingNumber),
       onOk: (UResponse<UIpgVerifyResponse> r) => paid = r.result?.paid,
       onError: (UEmptyResponse e) {},
       onException: (String e) {},

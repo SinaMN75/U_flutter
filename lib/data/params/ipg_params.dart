@@ -1,7 +1,7 @@
 part of "../data.dart";
 
 class UIpgPayParams {
-  final double? amount;
+  final double amount;
   final TagTxn? tag;
   final String? invoiceId;
   final String? billId;
@@ -11,8 +11,8 @@ class UIpgPayParams {
   final List<UIpgMultiplexedAccountParams>? multiplexedAccounts;
 
   UIpgPayParams({
-    this.amount,
-    this.tag,
+    required this.amount,
+    required this.tag,
     this.invoiceId,
     this.billId,
     this.paymentId,
@@ -22,8 +22,8 @@ class UIpgPayParams {
   });
 
   Map<String, dynamic> toMap() => <String, dynamic>{
-    if (amount != null) "amount": amount,
-    if (tag != null) "tag": tag!.number,
+    "amount": amount,
+    "tag": tag!.number,
     if (invoiceId != null) "invoiceId": invoiceId,
     if (billId != null) "billId": billId,
     if (paymentId != null) "paymentId": paymentId,
@@ -33,7 +33,7 @@ class UIpgPayParams {
   };
 
   factory UIpgPayParams.fromMap(Map<String, dynamic> json) => UIpgPayParams(
-    amount: json["amount"] == null ? null : (json["amount"] as num).toDouble(),
+    amount: (json["amount"] as num).toDouble(),
     tag: json["tag"] == null ? null : TagTxn.values.firstWhereOrNull((TagTxn e) => e.number == json["tag"]),
     invoiceId: json["invoiceId"],
     billId: json["billId"],

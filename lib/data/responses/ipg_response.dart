@@ -1,19 +1,19 @@
 part of "../data.dart";
 
 class UIpgPayResponse {
-  UIpgPayResponse({required this.url, required this.trackingNumber});
+  UIpgPayResponse({required this.url, required this.additionalData});
 
   factory UIpgPayResponse.fromMap(Map<String, dynamic> json) => UIpgPayResponse(
     url: json["url"] ?? "",
-    trackingNumber: json["trackingNumber"] ?? "",
+    additionalData: json["additionalData"] ?? "",
   );
 
   final String url;
-  final String trackingNumber;
+  final UIpgAdditionalData additionalData;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "url": url,
-    "trackingNumber": trackingNumber,
+    "additionalData": additionalData,
   };
 
   String toJson() => json.encode(toMap());
