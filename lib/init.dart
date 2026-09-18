@@ -86,16 +86,13 @@ Future<void> initU({
   U.baseUrl = baseUrl ?? "";
   U.apiKey = apiKey ?? "";
   WidgetsFlutterBinding.ensureInitialized();
-  await SystemChrome.setPreferredOrientations(deviceOrientations);
-  await ULocalStorage.init();
-  await UFileStorage.init();
-  UApp.packageInfo = await PackageInfo.fromPlatform();
-  if (UApp.isAndroid) UApp.androidDeviceInfo = await UApp.deviceInfo.androidInfo;
-  if (UApp.isIos) UApp.iosDeviceInfo = await UApp.deviceInfo.iosInfo;
-  if (UApp.isWeb) UApp.webBrowserInfo = await UApp.deviceInfo.webBrowserInfo;
-  if (UApp.isWindows) UApp.windowsDeviceInfo = await UApp.deviceInfo.windowsInfo;
-  if (UApp.isMacOs) UApp.macOsDeviceInfo = await UApp.deviceInfo.macOsInfo;
-  if (UApp.isLinux) UApp.linuxDeviceInfo = await UApp.deviceInfo.linuxInfo;
+  await Future.wait(<Future<void>>[
+    if (!kIsWeb) SystemChrome.setPreferredOrientations(deviceOrientations),
+    ULocalStorage.init(),
+    UFileStorage.init(),
+    PackageInfo.fromPlatform().then((PackageInfo info) => UApp.packageInfo = info),
+    UApp.initDeviceInfo(),
+  ]);
   ULoading.initialize(key: navigatorKey, blurAmount: 1, overlayColor: Colors.black12);
 }
 

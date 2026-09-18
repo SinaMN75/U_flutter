@@ -96,4 +96,13 @@ abstract class UApp {
     if ((queryParameters["embedded"] ?? "").toLowerCase() == "true") return true;
     return embedDetectFromDom();
   }
+
+  static Future<void> initDeviceInfo() async {
+    if (UApp.isAndroid) UApp.androidDeviceInfo = await UApp.deviceInfo.androidInfo;
+    if (UApp.isIos) UApp.iosDeviceInfo = await UApp.deviceInfo.iosInfo;
+    if (UApp.isWeb) UApp.webBrowserInfo = await UApp.deviceInfo.webBrowserInfo;
+    if (UApp.isWindows) UApp.windowsDeviceInfo = await UApp.deviceInfo.windowsInfo;
+    if (UApp.isMacOs) UApp.macOsDeviceInfo = await UApp.deviceInfo.macOsInfo;
+    if (UApp.isLinux) UApp.linuxDeviceInfo = await UApp.deviceInfo.linuxInfo;
+  }
 }
