@@ -78,6 +78,7 @@ abstract class U {
 Future<void> initU({
   String? baseUrl,
   String? apiKey,
+  ULoadingSettings loadingSettings = const ULoadingSettings(blurAmount: 1, overlayColor: Colors.black12),
   List<DeviceOrientation> deviceOrientations = const <DeviceOrientation>[
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -93,7 +94,7 @@ Future<void> initU({
     PackageInfo.fromPlatform().then((PackageInfo info) => UApp.packageInfo = info),
     UApp.initDeviceInfo(),
   ]);
-  ULoading.initialize(key: navigatorKey, blurAmount: 1, overlayColor: Colors.black12);
+  ULoading.initialize(key: navigatorKey, settings: loadingSettings);
 }
 
 class UMaterialApp extends StatefulWidget {

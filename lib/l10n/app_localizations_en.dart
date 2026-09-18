@@ -2071,6 +2071,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loadSubtitleFile => 'Load subtitle file';
 
   @override
+  @override
+  String get loading => 'Loading...';
+
+  @override
   String get loanPreRequest => 'Loan pre-request';
 
   @override

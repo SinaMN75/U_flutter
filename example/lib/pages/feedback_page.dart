@@ -80,17 +80,41 @@ UNavigator.bottomSheet(child);''',
       ),
       DemoSection(
         title: "ULoading",
-        description: "A global blocking spinner overlay — show it, then dismiss when work finishes.",
+        description: "A global blocking overlay — show it, then dismiss when work finishes. Pass a gif, image or Lottie source and an int or RxInt to render a live percentage.",
         code: r'''
 ULoading.show();
 await doWork();
-ULoading.dismiss();''',
-        child: UButton(
-          title: "Show for 2s",
-          onTap: () {
-            ULoading.show();
-            Future<void>.delayed(const Duration(seconds: 2), ULoading.dismiss);
-          },
+ULoading.dismiss();
+
+final RxInt progress = 0.obs;
+ULoading.show(source: "assets/loading.json", percentRx: progress);
+progress.value = 40;''',
+        child: URow(
+          spacing: 12,
+          children: <Widget>[
+            UButton(
+              title: "Show for 2s",
+              onTap: () {
+                ULoading.show();
+                Future<void>.delayed(const Duration(seconds: 2), ULoading.dismiss);
+              },
+            ),
+            UButton(
+              title: "With percent",
+              type: UButtonType.outlined,
+              onTap: () {
+                final RxInt progress = 0.obs;
+                ULoading.show(percentRx: progress, text: "Downloading");
+                Timer.periodic(const Duration(milliseconds: 200), (Timer timer) {
+                  progress.value = progress.value + 10;
+                  if (progress.value >= 100) {
+                    timer.cancel();
+                    ULoading.dismiss();
+                  }
+                });
+              },
+            ),
+          ],
         ),
       ),
       DemoSection(

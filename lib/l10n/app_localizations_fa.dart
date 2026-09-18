@@ -2071,6 +2071,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get loadSubtitleFile => 'بارگذاری فایل زیرنویس';
 
   @override
+  String get loading => 'در حال بارگذاری...';
+
+  @override
   String get loanPreRequest => 'پیش‌درخواست وام';
 
   @override

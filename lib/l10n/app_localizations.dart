@@ -4098,6 +4098,16 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Loan pre-request'**
+  /// No description provided for @loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading...'**
+  String get loading;
+
+  /// No description provided for @loanPreRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Loan pre-request'**
   String get loanPreRequest;
 
   /// No description provided for @loanRequest.
