@@ -4,6 +4,7 @@ class UProcessController {
   UProcessController({this.onCompleted});
 
   final VoidCallback? onCompleted;
+  final RxInt progress = 0.obs;
 
   void _complete() {
     if (onCompleted != null) {
@@ -66,6 +67,7 @@ class UProcessController {
         UToast.error(message: response);
         ULoading.dismiss();
       },
+      onProgress: progress.call,
     );
   }
 

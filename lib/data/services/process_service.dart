@@ -39,6 +39,7 @@ class ProcessService {
     Function(UResponse<UProcessStepGet> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
+    Function(int percent)? onProgress,
   }) async {
     (UResponse<UProcessStepGet>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
@@ -63,6 +64,7 @@ class ProcessService {
         result = (null, null, e);
         onException?.call(e);
       },
+      onProgress: onProgress,
     );
     return result;
   }
