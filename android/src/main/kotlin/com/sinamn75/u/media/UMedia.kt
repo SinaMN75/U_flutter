@@ -677,6 +677,28 @@ class UMediaPlayer(
 
     val textureId: Long get() = surfaceProducer?.id() ?: -1L
 
+    /**
+     * Media3 reports the size the decoder is expected to produce and leaves the
+     * rotation to MediaCodec. That only reaches Flutter on the SurfaceTexture
+     * path; the ImageReader path hands us the raw buffer with the rotation
+     * dropped, so there we report the untouched buffer size and let Dart turn it.
+     */
+    private fun videoGeometry(): Triple<Int, Int, Int> {
+        val size = player.videoSize
+        val handled = runCatching { surfaceProducer?.handlesCropAndRotation() }.getOrNull() ?: true
+        val rotation =
+            if (handled) {
+                size.unappliedRotationDegrees
+            } else {
+                val container = runCatching { player.videoFormat?.rotationDegrees }.getOrNull() ?: 0
+                if (container != 0) container else size.unappliedRotationDegrees
+            }
+        val quarter = rotation == 90 || rotation == 270
+        val width = if (handled || !quarter) size.width else size.height
+        val height = if (handled || !quarter) size.height else size.width
+        return Triple(width, height, rotation)
+    }
+
     private fun intConfig(
         key: String,
         fallback: Int,
@@ -902,14 +924,15 @@ class UMediaPlayer(
             Player.STATE_BUFFERING -> send(mapOf("event" to "state", "state" to "buffering"))
             Player.STATE_READY -> {
                 effects.attach(player.audioSessionId)
+                val (width, height, rotation) = videoGeometry()
                 send(
                     mapOf(
                         "event" to "initialized",
                         "textureId" to if (textureId >= 0) textureId else null,
                         "durationMs" to if (player.duration == C.TIME_UNSET) 0L else player.duration,
-                        "width" to player.videoSize.width,
-                        "height" to player.videoSize.height,
-                        "rotation" to player.videoSize.unappliedRotationDegrees,
+                        "width" to width,
+                        "height" to height,
+                        "rotation" to rotation,
                         "isLive" to player.isCurrentMediaItemLive,
                         "tracks" to UMediaMapper.tracksToList(player.currentTracks),
                     ),
@@ -942,13 +965,14 @@ class UMediaPlayer(
     }
 
     override fun onVideoSizeChanged(videoSize: VideoSize) {
-        surfaceProducer?.setSize(videoSize.width, videoSize.height)
+        val (width, height, rotation) = videoGeometry()
+        surfaceProducer?.setSize(width, height)
         send(
             mapOf(
                 "event" to "size",
-                "width" to videoSize.width,
-                "height" to videoSize.height,
-                "rotation" to videoSize.unappliedRotationDegrees,
+                "width" to width,
+                "height" to height,
+                "rotation" to rotation,
             ),
         )
     }

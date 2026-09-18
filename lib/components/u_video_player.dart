@@ -362,7 +362,6 @@ class UVideoView extends StatelessWidget {
     final Widget surface = _surface();
     if (surface is SizedBox) return placeholder ?? const SizedBox.shrink();
 
-    final double ratio = ratioOf(fit) ?? value.aspectRatio;
     final int rotation = rotationDegrees == 0 ? value.rotationDegrees : rotationDegrees;
 
     Widget content = FittedBox(
@@ -387,6 +386,11 @@ class UVideoView extends StatelessWidget {
       );
     }
 
+    // cover and fill are meant to take the whole box, so they must not be
+    // boxed in by the video's own aspect ratio first.
+    if (fit == UMediaFit.cover || fit == UMediaFit.fill) return ClipRect(child: content);
+
+    final double ratio = ratioOf(fit) ?? value.aspectRatio;
     return ClipRect(child: Center(child: AspectRatio(aspectRatio: ratio <= 0 ? 16 / 9 : ratio, child: content)));
   }
 
