@@ -43,6 +43,7 @@ class ProcessService {
   }) async {
     (UResponse<UProcessStepGet>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
+      timeout: const Duration(minutes: 2),
       method: "POST",
       endpoint: "${U.baseUrl}/process/Send",
       body: <String, dynamic>{

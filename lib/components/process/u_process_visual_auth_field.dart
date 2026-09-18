@@ -94,7 +94,7 @@ class _UProcessVisualAuthFieldState extends State<UProcessVisualAuthField> with 
       final UCameraDevice? front = UCameraUtils.pickDevice(cameras, facing: UCameraFacing.front);
 
       _cameraController = UCameraController(
-        config: UCameraConfig(facing: UCameraFacing.front, deviceId: front?.id),
+        config: UCameraConfig(facing: UCameraFacing.front, deviceId: front?.id, photoQuality: 50, resolution: UCameraResolution.low, frameDownscale: 10, fps: 25, photoResolution: UCameraResolution.low,),
       );
       await _cameraController!.initialize();
 
