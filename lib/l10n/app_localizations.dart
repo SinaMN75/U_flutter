@@ -1436,6 +1436,12 @@ abstract class AppLocalizations {
   /// **'Codec'**
   String get codec;
 
+  /// No description provided for @collapse.
+  ///
+  /// In en, this message translates to:
+  /// **'Collapse'**
+  String get collapse;
+
   /// No description provided for @color.
   ///
   /// In en, this message translates to:
@@ -1957,6 +1963,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Dark'**
   String get dark;
+
+  /// No description provided for @darkMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark mode'**
+  String get darkMode;
 
   /// No description provided for @dashboard.
   ///
@@ -2653,6 +2665,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Exit time'**
   String get exitTime;
+
+  /// No description provided for @expand.
+  ///
+  /// In en, this message translates to:
+  /// **'Expand'**
+  String get expand;
 
   /// No description provided for @expected.
   ///
@@ -3362,6 +3380,12 @@ abstract class AppLocalizations {
   /// **'Hide'**
   String get hide;
 
+  /// No description provided for @hideMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide menu'**
+  String get hideMenu;
+
   /// No description provided for @highContrast.
   ///
   /// In en, this message translates to:
@@ -4016,6 +4040,12 @@ abstract class AppLocalizations {
   /// **'Light'**
   String get light;
 
+  /// No description provided for @lightMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Light mode'**
+  String get lightMode;
+
   /// No description provided for @lineSpacing.
   ///
   /// In en, this message translates to:
@@ -4243,6 +4273,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Memory Usage'**
   String get memoryUsage;
+
+  /// No description provided for @menu.
+  ///
+  /// In en, this message translates to:
+  /// **'Menu'**
+  String get menu;
 
   /// No description provided for @merchant.
   ///
@@ -5648,11 +5684,23 @@ abstract class AppLocalizations {
   /// **'Picture in picture'**
   String get pictureInPicture;
 
+  /// No description provided for @pin.
+  ///
+  /// In en, this message translates to:
+  /// **'Pin'**
+  String get pin;
+
   /// No description provided for @pinEntryCancelled.
   ///
   /// In en, this message translates to:
   /// **'PIN entry cancelled'**
   String get pinEntryCancelled;
+
+  /// No description provided for @pinned.
+  ///
+  /// In en, this message translates to:
+  /// **'Pinned'**
+  String get pinned;
 
   /// No description provided for @placeTheBarcodeInsideTheFrame.
   ///
@@ -7088,6 +7136,12 @@ abstract class AppLocalizations {
   /// **'Show list'**
   String get showList;
 
+  /// No description provided for @showMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'Show menu'**
+  String get showMenu;
+
   /// No description provided for @showValue.
   ///
   /// In en, this message translates to:
@@ -8293,6 +8347,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unpaid'**
   String get unpaid;
+
+  /// No description provided for @unpin.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpin'**
+  String get unpin;
 
   /// No description provided for @unpublish.
   ///

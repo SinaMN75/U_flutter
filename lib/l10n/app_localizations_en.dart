@@ -691,6 +691,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get codec => 'Codec';
 
   @override
+  String get collapse => 'Collapse';
+
+  @override
   String get color => 'Color';
 
   @override
@@ -972,6 +975,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dark => 'Dark';
+
+  @override
+  String get darkMode => 'Dark mode';
 
   @override
   String get dashboard => 'Dashboard';
@@ -1331,6 +1337,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get exitTime => 'Exit time';
+
+  @override
+  String get expand => 'Expand';
 
   @override
   String get expected => 'Expected';
@@ -1701,6 +1710,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hide => 'Hide';
 
   @override
+  String get hideMenu => 'Hide menu';
+
+  @override
   String get highContrast => 'High contrast';
 
   @override
@@ -2032,6 +2044,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get light => 'Light';
 
   @override
+  String get lightMode => 'Light mode';
+
+  @override
   String get lineSpacing => 'Line spacing';
 
   @override
@@ -2144,6 +2159,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get memoryUsage => 'Memory Usage';
+
+  @override
+  String get menu => 'Menu';
 
   @override
   String get merchant => 'Merchant';
@@ -2852,7 +2870,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pictureInPicture => 'Picture in picture';
 
   @override
+  String get pin => 'Pin';
+
+  @override
   String get pinEntryCancelled => 'PIN entry cancelled';
+
+  @override
+  String get pinned => 'Pinned';
 
   @override
   String get placeTheBarcodeInsideTheFrame => 'Place the barcode inside the frame';
@@ -3582,6 +3606,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get showList => 'Show list';
 
   @override
+  String get showMenu => 'Show menu';
+
+  @override
   String get showValue => 'Show value';
 
   @override
@@ -4195,6 +4222,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get unpaid => 'Unpaid';
+
+  @override
+  String get unpin => 'Unpin';
 
   @override
   String get unpublish => 'Unpublish';

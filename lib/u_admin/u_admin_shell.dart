@@ -7,7 +7,7 @@ class UAdminShell extends StatefulWidget {
   State<UAdminShell> createState() => _UAdminShellState();
 }
 
-class _UAdminShellState extends State<UAdminShell> with SingleTickerProviderStateMixin {
+class _UAdminShellState extends UState<UAdminShell> with SingleTickerProviderStateMixin {
   late final UAdminModule _dashboard = UAdmin.config.dashboard();
   late final USideMenuController _menu = USideMenuController(selectedId: _dashboard.title);
 
@@ -28,34 +28,29 @@ class _UAdminShellState extends State<UAdminShell> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) => UScaffold(
-      body: UColumn(
-        children: <Widget>[
-          if (context.isMobileWidth) URow(
+    body: UColumn(
+      children: <Widget>[
+        _tabBar(),
+        Obx(
+          () => URow(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              IconButton(icon: const Icon(Icons.menu_rounded), onPressed: _menu.openDrawer),
-              _tabBar().expanded(),
+              _sideMenu(),
+              Expanded(
+                child: U.tabs.isEmpty
+                    ? const SizedBox.shrink()
+                    : TabBarView(
+                        controller: U.tabController,
+                        physics: const NeverScrollableScrollPhysics(),
+                        children: U.tabs.map((TabData tab) => tab.page).toList(),
+                      ),
+              ),
             ],
-          ) else _tabBar(),
-          Obx(
-            () => URow(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                _sideMenu(),
-                Expanded(
-                  child: U.tabs.isEmpty
-                      ? const SizedBox.shrink()
-                      : TabBarView(
-                          controller: U.tabController,
-                          physics: const NeverScrollableScrollPhysics(),
-                          children: U.tabs.map((TabData tab) => tab.page).toList(),
-                        ),
-                ),
-              ],
-            ),
-          ).expanded(),
-        ],
-      ),
-    );
+          ),
+        ).expanded(),
+      ],
+    ),
+  );
 
   Widget _tabBar() => Obx(() {
     if (U.tabs.isEmpty || U.tabController == null) return const SizedBox.shrink();
@@ -63,6 +58,7 @@ class _UAdminShellState extends State<UAdminShell> with SingleTickerProviderStat
     return AnimatedBuilder(
       animation: controller,
       builder: (BuildContext context, _) => UTabBar(
+        leading: IconButton(icon: const Icon(Icons.menu_rounded), tooltip: U.s.menu, onPressed: _menu.openDrawer, color: scheme.surface),
         selectedIndex: controller.index,
         onSelect: (int index) => U.tabController?.animateTo(index),
         onClose: _closeTab,
@@ -128,7 +124,6 @@ class _UAdminShellState extends State<UAdminShell> with SingleTickerProviderStat
 
   Widget _sideMenu() => USideMenu(
     controller: _menu,
-    showRailOnMobile: false,
     searchHint: U.s.search,
     version: "v${UApp.version}",
     header: UIconTextHorizontal(

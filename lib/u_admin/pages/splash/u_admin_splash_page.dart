@@ -33,12 +33,6 @@ class _UAdminSplashPageState extends State<UAdminSplashPage> {
 
   @override
   Widget build(BuildContext context) => UScaffold(
-    body: UColumn(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        UImage(widget.logo, width: 200, height: 200),
-        const CircularProgressIndicator(),
-      ],
-    ).alignAtCenter(),
+    body: UImage(widget.logo, width: 200, height: 200).alignAtCenter(),
   );
 }

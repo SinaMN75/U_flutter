@@ -4,6 +4,8 @@ import "package:u/utilities.dart";
 
 enum USideMenuIndicatorStyle { bar, pill, filled, gradient, none }
 
+enum USideMenuMode { expanded, rail, hidden }
+
 abstract class UMenuEntry {
   const UMenuEntry();
 }
@@ -59,14 +61,18 @@ class UMenuGroup extends UMenuEntry {
 class USideMenuController extends ChangeNotifier {
   USideMenuController({
     this._selectedId,
-    this._collapsed = false,
+    this._mode,
     Set<String>? expandedGroups,
     Set<String>? pinnedIds,
-  }) : _expandedGroups = expandedGroups ?? <String>{},
-       _pinnedIds = pinnedIds ?? <String>{};
+  })
+      : _expandedGroups = expandedGroups ?? <String>{},
+        _pinnedIds = pinnedIds ?? <String>{};
 
   String? _selectedId;
-  bool _collapsed;
+  USideMenuMode? _mode;
+  USideMenuMode _resolvedMode = USideMenuMode.expanded;
+  bool _drawerOpen = false;
+  bool _disposed = false;
   String _search = "";
   final Set<String> _expandedGroups;
   final Set<String> _pinnedIds;
@@ -82,16 +88,33 @@ class USideMenuController extends ChangeNotifier {
 
   void select(String id) => selectedId = id;
 
-  bool get collapsed => _collapsed;
+  USideMenuMode? get mode => _mode;
 
-  set collapsed(bool value) {
-    if (_collapsed != value) {
-      _collapsed = value;
+  set mode(USideMenuMode? value) {
+    if (_mode != value) {
+      _mode = value;
       notifyListeners();
     }
   }
 
-  void toggleCollapsed() => collapsed = !_collapsed;
+  USideMenuMode get resolvedMode => _resolvedMode;
+
+  bool get isDrawerMode => _resolvedMode == USideMenuMode.hidden;
+
+  bool get isDrawerOpen => _drawerOpen;
+
+  bool get collapsed => _resolvedMode == USideMenuMode.rail;
+
+  set collapsed(bool value) => mode = value ? USideMenuMode.rail : USideMenuMode.expanded;
+
+  void toggleCollapsed() => collapsed = !collapsed;
+
+  void cycleMode() =>
+      mode = switch (_resolvedMode) {
+        USideMenuMode.expanded => USideMenuMode.rail,
+        USideMenuMode.rail => USideMenuMode.hidden,
+        USideMenuMode.hidden => USideMenuMode.expanded,
+      };
 
   String get search => _search;
 
@@ -139,6 +162,37 @@ class USideMenuController extends ChangeNotifier {
   void openDrawer() => _openDrawerCb?.call();
 
   void closeDrawer() => _closeDrawerCb?.call();
+
+  void toggleDrawer() {
+    if (_drawerOpen) {
+      closeDrawer();
+    } else {
+      openDrawer();
+    }
+  }
+
+  void _notifyAfterFrame() =>
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!_disposed) notifyListeners();
+      });
+
+  void _setResolvedMode(USideMenuMode value) {
+    if (_resolvedMode == value) return;
+    _resolvedMode = value;
+    _notifyAfterFrame();
+  }
+
+  void _setDrawerOpen(bool value) {
+    if (_drawerOpen == value) return;
+    _drawerOpen = value;
+    _notifyAfterFrame();
+  }
+
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
+  }
 }
 
 class USideMenuTheme {
@@ -195,7 +249,9 @@ class USideMenuTheme {
   });
 
   factory USideMenuTheme.from(BuildContext context) {
-    final ColorScheme cs = Theme.of(context).colorScheme;
+    final ColorScheme cs = Theme
+        .of(context)
+        .colorScheme;
     final Color bg = cs.primary;
     final Color on = cs.onPrimary;
     return USideMenuTheme(
@@ -254,32 +310,33 @@ class USideMenuTheme {
     List<BoxShadow>? shadow,
     Color? scrimColor,
     Color? dividerColor,
-  }) => USideMenuTheme(
-    expandedWidth: expandedWidth ?? this.expandedWidth,
-    railWidth: railWidth ?? this.railWidth,
-    backgroundColor: backgroundColor ?? this.backgroundColor,
-    backgroundGradient: backgroundGradient ?? this.backgroundGradient,
-    selectedItemColor: selectedItemColor ?? this.selectedItemColor,
-    hoverColor: hoverColor ?? this.hoverColor,
-    indicatorColor: indicatorColor ?? this.indicatorColor,
-    selectedTextColor: selectedTextColor ?? this.selectedTextColor,
-    unselectedTextColor: unselectedTextColor ?? this.unselectedTextColor,
-    selectedIconColor: selectedIconColor ?? this.selectedIconColor,
-    unselectedIconColor: unselectedIconColor ?? this.unselectedIconColor,
-    itemTextStyle: itemTextStyle ?? this.itemTextStyle,
-    headerTextStyle: headerTextStyle ?? this.headerTextStyle,
-    iconSize: iconSize ?? this.iconSize,
-    itemSpacing: itemSpacing ?? this.itemSpacing,
-    itemPadding: itemPadding ?? this.itemPadding,
-    itemRadius: itemRadius ?? this.itemRadius,
-    indicatorStyle: indicatorStyle ?? this.indicatorStyle,
-    animationDuration: animationDuration ?? this.animationDuration,
-    animationCurve: animationCurve ?? this.animationCurve,
-    enableHoverElevation: enableHoverElevation ?? this.enableHoverElevation,
-    shadow: shadow ?? this.shadow,
-    scrimColor: scrimColor ?? this.scrimColor,
-    dividerColor: dividerColor ?? this.dividerColor,
-  );
+  }) =>
+      USideMenuTheme(
+        expandedWidth: expandedWidth ?? this.expandedWidth,
+        railWidth: railWidth ?? this.railWidth,
+        backgroundColor: backgroundColor ?? this.backgroundColor,
+        backgroundGradient: backgroundGradient ?? this.backgroundGradient,
+        selectedItemColor: selectedItemColor ?? this.selectedItemColor,
+        hoverColor: hoverColor ?? this.hoverColor,
+        indicatorColor: indicatorColor ?? this.indicatorColor,
+        selectedTextColor: selectedTextColor ?? this.selectedTextColor,
+        unselectedTextColor: unselectedTextColor ?? this.unselectedTextColor,
+        selectedIconColor: selectedIconColor ?? this.selectedIconColor,
+        unselectedIconColor: unselectedIconColor ?? this.unselectedIconColor,
+        itemTextStyle: itemTextStyle ?? this.itemTextStyle,
+        headerTextStyle: headerTextStyle ?? this.headerTextStyle,
+        iconSize: iconSize ?? this.iconSize,
+        itemSpacing: itemSpacing ?? this.itemSpacing,
+        itemPadding: itemPadding ?? this.itemPadding,
+        itemRadius: itemRadius ?? this.itemRadius,
+        indicatorStyle: indicatorStyle ?? this.indicatorStyle,
+        animationDuration: animationDuration ?? this.animationDuration,
+        animationCurve: animationCurve ?? this.animationCurve,
+        enableHoverElevation: enableHoverElevation ?? this.enableHoverElevation,
+        shadow: shadow ?? this.shadow,
+        scrimColor: scrimColor ?? this.scrimColor,
+        dividerColor: dividerColor ?? this.dividerColor,
+      );
 }
 
 class USideMenu extends StatefulWidget {
@@ -290,13 +347,12 @@ class USideMenu extends StatefulWidget {
     this.theme,
     this.header,
     this.enableSearch = true,
-    this.searchHint = "Search…",
+    this.searchHint,
     this.enablePinning = true,
-    this.pinnedSectionLabel = "PINNED",
+    this.pinnedSectionLabel,
     this.enableToggleButton = true,
-    this.showRailOnMobile = true,
     this.mobileBreakpoint = 720,
-    this.autoCollapseBreakpoint = 1000,
+    this.autoCollapseBreakpoint = 1100,
     this.profileName,
     this.profileSubtitle,
     this.profileAvatar,
@@ -313,11 +369,10 @@ class USideMenu extends StatefulWidget {
   final USideMenuTheme? theme;
   final Widget? header;
   final bool enableSearch;
-  final String searchHint;
+  final String? searchHint;
   final bool enablePinning;
-  final String pinnedSectionLabel;
+  final String? pinnedSectionLabel;
   final bool enableToggleButton;
-  final bool showRailOnMobile;
   final double mobileBreakpoint;
   final double autoCollapseBreakpoint;
   final String? profileName;
@@ -345,7 +400,8 @@ class _USideMenuState extends State<USideMenu> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _seedExpandedGroups(widget.items);
-    _reveal = AnimationController(vsync: this, duration: const Duration(milliseconds: 700))..forward();
+    _reveal = AnimationController(vsync: this, duration: const Duration(milliseconds: 700))
+      ..forward();
     _drawer = AnimationController(vsync: this, duration: const Duration(milliseconds: 280));
     widget.controller.addListener(_onControllerChanged);
     widget.controller.attachDrawer(_openDrawer, _closeDrawer);
@@ -385,56 +441,78 @@ class _USideMenuState extends State<USideMenu> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  bool get _isMobile => MediaQuery.sizeOf(context).width < widget.mobileBreakpoint;
+  bool get _isMobile =>
+      MediaQuery
+          .sizeOf(context)
+          .width < widget.mobileBreakpoint;
 
-  bool get _autoCollapsed => MediaQuery.sizeOf(context).width < widget.autoCollapseBreakpoint;
+  USideMenuMode get _mode {
+    if (_isMobile) return USideMenuMode.hidden;
+    final USideMenuMode? requested = widget.controller.mode;
+    if (requested != null) return requested;
+    return MediaQuery
+        .sizeOf(context)
+        .width < widget.autoCollapseBreakpoint ? USideMenuMode.rail : USideMenuMode.expanded;
+  }
 
-  bool get _effectiveCollapsed => _isMobile || (widget.controller.collapsed || _autoCollapsed);
+  double _drawerWidth() =>
+      math.min(_t.expandedWidth, MediaQuery
+          .sizeOf(context)
+          .width * 0.86);
 
   void _openDrawer() {
     _portal.show();
     _drawer.forward();
+    widget.controller._setDrawerOpen(true);
   }
 
   Future<void> _closeDrawer() async {
     await _drawer.reverse();
-    if (mounted) _portal.hide();
+    if (!mounted) return;
+    _portal.hide();
+    widget.controller._setDrawerOpen(false);
   }
 
   @override
   Widget build(BuildContext context) {
     _t = widget.theme ?? USideMenuTheme.from(context);
-
-    if (_isMobile) {
-      return OverlayPortal(
-        controller: _portal,
-        overlayChildBuilder: _buildMobileOverlay,
-        child: widget.showRailOnMobile ? _buildRail(showHamburger: true) : const SizedBox.shrink(),
-      );
+    final USideMenuMode mode = _mode;
+    widget.controller._setResolvedMode(mode);
+    if (mode != USideMenuMode.hidden && _portal.isShowing) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted && _mode != USideMenuMode.hidden && _portal.isShowing) _closeDrawer();
+      });
     }
-    return _buildPanel(_effectiveCollapsed, inOverlay: false);
+    return OverlayPortal(
+      controller: _portal,
+      overlayChildBuilder: _buildDrawerOverlay,
+      child: mode == USideMenuMode.hidden ? const SizedBox.shrink() : _buildPanel(mode, inOverlay: false),
+    );
   }
 
-  Widget _buildPanel(bool collapsed, {required bool inOverlay}) => AnimatedContainer(
-    duration: _t.animationDuration,
-    curve: _t.animationCurve,
-    width: collapsed ? _t.railWidth : _t.expandedWidth,
-    decoration: BoxDecoration(
-      color: _t.backgroundGradient == null ? _t.backgroundColor : null,
-      gradient: _t.backgroundGradient,
-      boxShadow: inOverlay ? _t.shadow : null,
-    ),
-    child: _buildContent(collapsed, inOverlay: inOverlay),
-  );
+  Widget _buildPanel(USideMenuMode mode, {required bool inOverlay, double? width}) {
+    final double target = width ?? (mode == USideMenuMode.rail ? _t.railWidth : _t.expandedWidth);
+    return AnimatedContainer(
+      duration: _t.animationDuration,
+      curve: _t.animationCurve,
+      width: target,
+      decoration: BoxDecoration(
+        color: _t.backgroundGradient == null ? _t.backgroundColor : null,
+        gradient: _t.backgroundGradient,
+        boxShadow: inOverlay ? _t.shadow : null,
+      ),
+      child: ClipRect(
+        child: OverflowBox(
+          alignment: AlignmentDirectional.topStart,
+          minWidth: target,
+          maxWidth: target,
+          child: _buildContent(mode == USideMenuMode.rail, inOverlay: inOverlay),
+        ),
+      ),
+    );
+  }
 
-  Widget _buildRail({required bool showHamburger}) => UContainer(
-    width: _t.railWidth,
-    color: _t.backgroundGradient == null ? _t.backgroundColor : null,
-    gradient: _t.backgroundGradient,
-    child: _buildContent(true, inOverlay: false, forceHamburger: showHamburger),
-  );
-
-  Widget _buildMobileOverlay(BuildContext context) {
+  Widget _buildDrawerOverlay(BuildContext context) {
     final bool rtl = Directionality.of(context) == TextDirection.rtl;
     final Size size = MediaQuery.sizeOf(context);
     final CurvedAnimation curved = CurvedAnimation(parent: _drawer, curve: Curves.easeOutCubic);
@@ -462,7 +540,7 @@ class _USideMenuState extends State<USideMenu> with TickerProviderStateMixin {
               position: Tween<Offset>(begin: Offset(rtl ? 1 : -1, 0), end: Offset.zero).animate(curved),
               child: Material(
                 color: Colors.transparent,
-                child: _buildPanel(false, inOverlay: true),
+                child: _buildPanel(USideMenuMode.expanded, inOverlay: true, width: _drawerWidth()),
               ),
             ),
           ),
@@ -471,83 +549,43 @@ class _USideMenuState extends State<USideMenu> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildContent(bool collapsed, {required bool inOverlay, bool forceHamburger = false}) => SafeArea(
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        _buildHeaderRow(collapsed, inOverlay: inOverlay, forceHamburger: forceHamburger),
-        if (widget.enableSearch && !collapsed)
-          Padding(
-            padding: const EdgeInsets.fromLTRB(14, 4, 14, 8),
-            child: _buildSearchBox(),
-          ),
-        Expanded(
-          child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(vertical: collapsed ? 8 : 4),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: _buildEntries(collapsed),
+  Widget _buildContent(bool collapsed, {required bool inOverlay}) =>
+      SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            _buildHeaderRow(collapsed, inOverlay: inOverlay),
+            if (widget.enableSearch && !collapsed)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(14, 4, 14, 8),
+                child: _buildSearchBox(),
+              ),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.symmetric(vertical: collapsed ? 8 : 4),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: _buildEntries(collapsed),
+                ),
+              ),
             ),
-          ),
+            _buildFooter(collapsed),
+          ],
         ),
-        _buildFooter(collapsed),
-      ],
-    ),
-  );
+      );
 
-  Widget _buildHeaderRow(bool collapsed, {required bool inOverlay, required bool forceHamburger}) {
-    final List<Widget> children = <Widget>[];
-    if (widget.header != null) {
-      children.add(
-        Expanded(
-          child: AnimatedSwitcher(
-            duration: _t.animationDuration,
-            child: collapsed
-                ? Center(
-                    key: const ValueKey<String>("logo-c"),
-                    child: _LogoFallback(header: widget.header!),
-                  )
-                : Padding(
-                    key: const ValueKey<String>("logo-e"),
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
-                    child: widget.header,
-                  ),
-          ),
-        ),
-      );
-    } else {
-      children.add(const Spacer());
-    }
+  Widget _buildHeaderRow(bool collapsed, {required bool inOverlay}) {
+    final Widget? action = _buildHeaderAction(collapsed, inOverlay: inOverlay);
 
-    if (inOverlay) {
-      children.add(
-        IconButton(
-          tooltip: "Close",
-          color: _t.indicatorColor,
-          icon: const Icon(Icons.close_rounded),
-          onPressed: _closeDrawer,
-        ),
-      );
-    } else if (forceHamburger) {
-      children.add(
-        IconButton(
-          tooltip: "Menu",
-          color: _t.indicatorColor,
-          icon: const Icon(Icons.menu_rounded),
-          onPressed: _openDrawer,
-        ),
-      );
-    } else if (widget.enableToggleButton && !_autoCollapsed) {
-      children.add(
-        IconButton(
-          tooltip: collapsed ? "Expand" : "Collapse",
-          color: _t.indicatorColor,
-          icon: AnimatedRotation(
-            turns: collapsed ? 0.5 : 0,
-            duration: _t.animationDuration,
-            child: const Icon(Icons.menu_open_rounded),
-          ),
-          onPressed: widget.controller.toggleCollapsed,
+    if (collapsed) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            if (widget.header != null) _LogoFallback(header: widget.header!),
+            if (action != null) action,
+          ],
         ),
       );
     }
@@ -555,46 +593,99 @@ class _USideMenuState extends State<USideMenu> with TickerProviderStateMixin {
     return Container(
       height: 64,
       padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: Row(children: children),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: widget.header == null
+                ? const SizedBox.shrink()
+                : Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: widget.header,
+            ),
+          ),
+          if (action != null) action,
+        ],
+      ),
     );
   }
 
-  Widget _buildSearchBox() => TweenAnimationBuilder<double>(
-    tween: Tween<double>(begin: 0.9, end: 1),
-    duration: _t.animationDuration,
-    curve: Curves.easeOutBack,
-    builder: (BuildContext context, double scale, Widget? child) => Transform.scale(scale: scale, child: child),
-    child: TextField(
-      controller: _searchCtrl,
-      onChanged: (String v) => widget.controller.search = v,
-      style: TextStyle(color: _t.selectedTextColor, fontSize: 14),
-      cursorColor: _t.indicatorColor,
-      decoration: InputDecoration(
-        isDense: true,
-        hintText: widget.searchHint,
-        hintStyle: TextStyle(color: _t.unselectedTextColor.withValues(alpha: 0.7), fontSize: 14),
-        prefixIcon: Icon(Icons.search_rounded, color: _t.unselectedIconColor, size: 20),
-        suffixIcon: widget.controller.search.isEmpty
-            ? null
-            : IconButton(
-                icon: Icon(Icons.close_rounded, color: _t.unselectedIconColor, size: 18),
-                onPressed: () {
-                  _searchCtrl.clear();
-                  widget.controller.search = "";
-                },
-              ),
-        filled: true,
-        fillColor: _t.hoverColor,
-        contentPadding: const EdgeInsets.symmetric(vertical: 12),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: _t.indicatorColor.withValues(alpha: 0.6)),
-        ),
+  Widget? _buildHeaderAction(bool collapsed, {required bool inOverlay}) {
+    if (inOverlay) {
+      final Widget close = IconButton(
+        tooltip: U.s.close,
+        color: _t.indicatorColor,
+        icon: const Icon(Icons.close_rounded),
+        onPressed: _closeDrawer,
+      );
+      if (_isMobile) return close;
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          IconButton(
+            tooltip: U.s.showMenu,
+            color: _t.indicatorColor,
+            icon: const Icon(Icons.view_sidebar_rounded),
+            onPressed: () {
+              widget.controller.mode = USideMenuMode.expanded;
+              _closeDrawer();
+            },
+          ),
+          close,
+        ],
+      );
+    }
+
+    if (!widget.enableToggleButton) return null;
+
+    return IconButton(
+      tooltip: collapsed ? U.s.hideMenu : U.s.collapse,
+      color: _t.indicatorColor,
+      icon: AnimatedRotation(
+        turns: collapsed ? 0.5 : 0,
+        duration: _t.animationDuration,
+        child: const Icon(Icons.menu_open_rounded),
       ),
-    ),
-  );
+      onPressed: widget.controller.cycleMode,
+    );
+  }
+
+  Widget _buildSearchBox() =>
+      TweenAnimationBuilder<double>(
+        tween: Tween<double>(begin: 0.9, end: 1),
+        duration: _t.animationDuration,
+        curve: Curves.easeOutBack,
+        builder: (BuildContext context, double scale, Widget? child) => Transform.scale(scale: scale, child: child),
+        child: TextField(
+          controller: _searchCtrl,
+          onChanged: (String v) => widget.controller.search = v,
+          style: TextStyle(color: _t.selectedTextColor, fontSize: 14),
+          cursorColor: _t.indicatorColor,
+          decoration: InputDecoration(
+            isDense: true,
+            hintText: widget.searchHint ?? U.s.search,
+            hintStyle: TextStyle(color: _t.unselectedTextColor.withValues(alpha: 0.7), fontSize: 14),
+            prefixIcon: Icon(Icons.search_rounded, color: _t.unselectedIconColor, size: 20),
+            suffixIcon: widget.controller.search.isEmpty
+                ? null
+                : IconButton(
+              icon: Icon(Icons.close_rounded, color: _t.unselectedIconColor, size: 18),
+              onPressed: () {
+                _searchCtrl.clear();
+                widget.controller.search = "";
+              },
+            ),
+            filled: true,
+            fillColor: _t.hoverColor,
+            contentPadding: const EdgeInsets.symmetric(vertical: 12),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: _t.indicatorColor.withValues(alpha: 0.6)),
+            ),
+          ),
+        ),
+      );
 
   List<Widget> _buildEntries(bool collapsed) {
     final String query = widget.controller.search.trim().toLowerCase();
@@ -607,7 +698,7 @@ class _USideMenuState extends State<USideMenu> with TickerProviderStateMixin {
     if (widget.enablePinning && !collapsed && !searching && widget.controller.pinnedIds.isNotEmpty) {
       final List<UMenuItem> pinned = _allItems().where((UMenuItem i) => widget.controller.isPinned(i.id)).toList();
       if (pinned.isNotEmpty) {
-        out.add(reveal(_buildHeaderLabel(widget.pinnedSectionLabel)));
+        out.add(reveal(_buildHeaderLabel(widget.pinnedSectionLabel ?? U.s.pinned)));
         for (final UMenuItem item in pinned) {
           out.add(reveal(_buildItemTile(item, collapsed: collapsed)));
         }
@@ -640,7 +731,7 @@ class _USideMenuState extends State<USideMenu> with TickerProviderStateMixin {
         Padding(
           padding: const EdgeInsets.all(24),
           child: Text(
-            "No results",
+            U.s.noResults,
             textAlign: .center,
             style: TextStyle(color: _t.unselectedTextColor),
           ),
@@ -705,31 +796,34 @@ class _USideMenuState extends State<USideMenu> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildHeaderLabel(String label) => Padding(
-    padding: const EdgeInsets.fromLTRB(24, 14, 16, 6),
-    child: Text(label, style: _t.headerTextStyle),
-  );
+  Widget _buildHeaderLabel(String label) =>
+      Padding(
+        padding: const EdgeInsets.fromLTRB(24, 14, 16, 6),
+        child: Text(label, style: _t.headerTextStyle),
+      );
 
-  Widget _buildDivider() => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 6),
-    child: Divider(height: 1, thickness: 1, color: _t.dividerColor),
-  );
+  Widget _buildDivider() =>
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 6),
+        child: Divider(height: 1, thickness: 1, color: _t.dividerColor),
+      );
 
-  Widget _buildItemTile(UMenuItem item, {required bool collapsed, int depth = 0}) => _ItemTile(
-    item: item,
-    theme: _t,
-    collapsed: collapsed,
-    depth: depth,
-    selected: widget.controller.selectedId == item.id,
-    pinned: widget.controller.isPinned(item.id),
-    enablePinning: widget.enablePinning && item.pinnable,
-    onTap: () {
-      item.onTap?.call();
-      widget.controller.select(item.id);
-      if (_isMobile) _closeDrawer();
-    },
-    onTogglePin: () => widget.controller.togglePin(item.id),
-  );
+  Widget _buildItemTile(UMenuItem item, {required bool collapsed, int depth = 0}) =>
+      _ItemTile(
+        item: item,
+        theme: _t,
+        collapsed: collapsed,
+        depth: depth,
+        selected: widget.controller.selectedId == item.id,
+        pinned: widget.controller.isPinned(item.id),
+        enablePinning: widget.enablePinning && item.pinnable,
+        onTap: () {
+          item.onTap?.call();
+          widget.controller.select(item.id);
+          if (_portal.isShowing) _closeDrawer();
+        },
+        onTogglePin: () => widget.controller.togglePin(item.id),
+      );
 
   Widget _buildFooter(bool collapsed) {
     if (widget.footer != null) return widget.footer!;
@@ -765,10 +859,11 @@ class _USideMenuState extends State<USideMenu> with TickerProviderStateMixin {
     final bool dark = widget.isDarkMode ?? false;
     final Widget icon = AnimatedSwitcher(
       duration: _t.animationDuration,
-      transitionBuilder: (Widget child, Animation<double> a) => RotationTransition(
-        turns: Tween<double>(begin: 0.75, end: 1).animate(a),
-        child: FadeTransition(opacity: a, child: child),
-      ),
+      transitionBuilder: (Widget child, Animation<double> a) =>
+          RotationTransition(
+            turns: Tween<double>(begin: 0.75, end: 1).animate(a),
+            child: FadeTransition(opacity: a, child: child),
+          ),
       child: Icon(
         dark ? Icons.dark_mode_rounded : Icons.light_mode_rounded,
         key: ValueKey<bool>(dark),
@@ -779,7 +874,7 @@ class _USideMenuState extends State<USideMenu> with TickerProviderStateMixin {
 
     if (collapsed) {
       return IconButton(
-        tooltip: dark ? "Light mode" : "Dark mode",
+        tooltip: dark ? U.s.lightMode : U.s.darkMode,
         onPressed: () => widget.onToggleTheme!(!dark),
         icon: icon,
       );
@@ -796,7 +891,7 @@ class _USideMenuState extends State<USideMenu> with TickerProviderStateMixin {
             const SizedBox(width: 12),
             Expanded(
               child: Text(
-                dark ? "Dark mode" : "Light mode",
+                dark ? U.s.darkMode : U.s.lightMode,
                 style: TextStyle(color: _t.selectedTextColor, fontSize: 14, fontWeight: FontWeight.w500),
               ),
             ),
@@ -815,14 +910,14 @@ class _USideMenuState extends State<USideMenu> with TickerProviderStateMixin {
   Widget _buildProfile(bool collapsed) {
     final Widget avatar =
         widget.profileAvatar ??
-        CircleAvatar(
-          radius: 18,
-          backgroundColor: _t.indicatorColor.withValues(alpha: 0.2),
-          child: Text(
-            _initial(widget.profileName),
-            style: TextStyle(color: _t.indicatorColor, fontWeight: FontWeight.w700),
-          ),
-        );
+            CircleAvatar(
+              radius: 18,
+              backgroundColor: _t.indicatorColor.withValues(alpha: 0.2),
+              child: Text(
+                _initial(widget.profileName),
+                style: TextStyle(color: _t.indicatorColor, fontWeight: FontWeight.w700),
+              ),
+            );
 
     final Widget row = Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -867,20 +962,22 @@ class _USideMenuState extends State<USideMenu> with TickerProviderStateMixin {
       tooltip: "",
       offset: const Offset(0, -8),
       onSelected: (String id) => widget.onProfileMenuSelected?.call(id),
-      itemBuilder: (BuildContext context) => widget.profileMenuItems!
-          .map(
-            (UMenuItem i) => PopupMenuItem<String>(
-              value: i.id,
-              child: Row(
-                children: <Widget>[
-                  Icon(i.icon, size: 20),
-                  const SizedBox(width: 12),
-                  Text(i.title),
-                ],
-              ),
-            ),
+      itemBuilder: (BuildContext context) =>
+          widget.profileMenuItems!
+              .map(
+                (UMenuItem i) =>
+                PopupMenuItem<String>(
+                  value: i.id,
+                  child: Row(
+                    children: <Widget>[
+                      Icon(i.icon, size: 20),
+                      const SizedBox(width: 12),
+                      Text(i.title),
+                    ],
+                  ),
+                ),
           )
-          .toList(),
+              .toList(),
       child: InkWell(borderRadius: _t.itemRadius, child: row),
     );
   }
@@ -935,10 +1032,10 @@ class _ItemTileState extends State<_ItemTile> {
     final Widget icon = widget.item.badge == null
         ? iconData
         : Badge(
-            label: Text(widget.item.badge!, style: const TextStyle(fontSize: 10)),
-            backgroundColor: widget.item.badgeColor ?? Colors.redAccent,
-            child: iconData,
-          );
+      label: Text(widget.item.badge!, style: const TextStyle(fontSize: 10)),
+      backgroundColor: widget.item.badgeColor ?? Colors.redAccent,
+      child: iconData,
+    );
 
     final Widget tile = MouseRegion(
       cursor: SystemMouseCursors.click,
@@ -965,27 +1062,40 @@ class _ItemTileState extends State<_ItemTile> {
                   color: t.indicatorStyle == USideMenuIndicatorStyle.gradient && active ? null : bg,
                   gradient: t.indicatorStyle == USideMenuIndicatorStyle.gradient && active
                       ? LinearGradient(
-                          colors: <Color>[
-                            t.indicatorColor.withValues(alpha: 0.28),
-                            t.indicatorColor.withValues(alpha: 0.06),
-                          ],
-                        )
+                    colors: <Color>[
+                      t.indicatorColor.withValues(alpha: 0.28),
+                      t.indicatorColor.withValues(alpha: 0.06),
+                    ],
+                  )
                       : null,
                   borderRadius: t.itemRadius,
                 ),
-                child: ListTile(
+                child: widget.collapsed
+                    ? SizedBox(
+                  height: 52,
+                  child: Row(
+                    children: <Widget>[
+                      _buildLeadingIndicator(active),
+                      Expanded(child: Center(child: icon)),
+                    ],
+                  ),
+                )
+                    : ListTile(
                   leading: _buildLeadingIndicator(active),
-                  title: widget.collapsed
-                      ? icon
-                      : ListTile(
-                          leading: icon,
-                          title: AnimatedDefaultTextStyle(
-                            duration: t.animationDuration,
-                            style: Theme.of(context).textTheme.bodyLarge!.merge(t.itemTextStyle).copyWith(color: textColor, fontWeight: active ? FontWeight.w700 : FontWeight.w500),
-                            child: Text(widget.item.title, maxLines: 1, overflow: TextOverflow.ellipsis),
-                          ),
-                          trailing: _buildTrailing(t),
-                        ),
+                  title: ListTile(
+                    leading: icon,
+                    title: AnimatedDefaultTextStyle(
+                      duration: t.animationDuration,
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .bodyLarge!
+                          .merge(t.itemTextStyle)
+                          .copyWith(color: textColor, fontWeight: active ? FontWeight.w700 : FontWeight.w500),
+                      child: Text(widget.item.title, maxLines: 1, overflow: TextOverflow.ellipsis),
+                    ),
+                    trailing: _buildTrailing(t),
+                  ),
                 ),
               ),
             ),
@@ -1027,7 +1137,7 @@ class _ItemTileState extends State<_ItemTile> {
         visualDensity: VisualDensity.compact,
         padding: EdgeInsets.zero,
         constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
-        tooltip: widget.pinned ? "Unpin" : "Pin",
+        tooltip: widget.pinned ? U.s.unpin : U.s.pin,
         icon: Icon(
           widget.pinned ? Icons.push_pin_rounded : Icons.push_pin_outlined,
           size: 16,
@@ -1081,49 +1191,50 @@ class _GroupTile extends StatelessWidget {
   final List<Widget> childWidgets;
 
   @override
-  Widget build(BuildContext context) => Column(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: <Widget>[
-      ListTile(
-        onTap: forceExpanded ? null : onToggle,
-        contentPadding: EdgeInsets.only(left: (16 + depth * 14).toDouble(), right: 8),
-        leading: Icon(group.icon, size: theme.iconSize, color: theme.unselectedIconColor),
-        title: UTextBodyMedium(
-          group.title,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          color: theme.unselectedTextColor,
-        ),
-        trailing: AnimatedRotation(
-          turns: expanded ? 0.5 : 0,
-          duration: theme.animationDuration,
-          curve: theme.animationCurve,
-          child: Icon(Icons.keyboard_arrow_down_rounded, color: theme.unselectedIconColor),
-        ),
-      ).pSymmetric(
-        horizontal: theme.itemPadding.horizontal / 2,
-        vertical: theme.itemSpacing / 2,
-      ),
-      AnimatedSize(
-        duration: theme.animationDuration,
-        curve: theme.animationCurve,
-        alignment: Alignment.topCenter,
-        child: ClipRect(
-          child: Align(
+  Widget build(BuildContext context) =>
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          ListTile(
+            onTap: forceExpanded ? null : onToggle,
+            contentPadding: EdgeInsets.only(left: (16 + depth * 14).toDouble(), right: 8),
+            leading: Icon(group.icon, size: theme.iconSize, color: theme.unselectedIconColor),
+            title: UTextBodyMedium(
+              group.title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              color: theme.unselectedTextColor,
+            ),
+            trailing: AnimatedRotation(
+              turns: expanded ? 0.5 : 0,
+              duration: theme.animationDuration,
+              curve: theme.animationCurve,
+              child: Icon(Icons.keyboard_arrow_down_rounded, color: theme.unselectedIconColor),
+            ),
+          ).pSymmetric(
+            horizontal: theme.itemPadding.horizontal / 2,
+            vertical: theme.itemSpacing / 2,
+          ),
+          AnimatedSize(
+            duration: theme.animationDuration,
+            curve: theme.animationCurve,
             alignment: Alignment.topCenter,
-            heightFactor: expanded ? 1 : 0,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 4),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: childWidgets,
+            child: ClipRect(
+              child: Align(
+                alignment: Alignment.topCenter,
+                heightFactor: expanded ? 1 : 0,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 4),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: childWidgets,
+                  ),
+                ),
               ),
             ),
           ),
-        ),
-      ),
-    ],
-  );
+        ],
+      );
 }
 
 class _Reveal extends StatelessWidget {
@@ -1173,26 +1284,27 @@ class _MiniSwitch extends StatelessWidget {
   final Color track;
 
   @override
-  Widget build(BuildContext context) => AnimatedContainer(
-    duration: const Duration(milliseconds: 240),
-    curve: Curves.easeOut,
-    width: 40,
-    height: 22,
-    padding: const EdgeInsets.all(3),
-    decoration: BoxDecoration(
-      color: value ? color.withValues(alpha: 0.35) : track,
-      borderRadius: BorderRadius.circular(20),
-    ),
-    child: AnimatedAlign(
-      duration: const Duration(milliseconds: 240),
-      curve: Curves.easeOut,
-      alignment: value ? Alignment.centerRight : Alignment.centerLeft,
-      child: UContainer(
-        width: 16,
-        height: 16,
-        color: color,
-        shape: BoxShape.circle,
-      ),
-    ),
-  );
+  Widget build(BuildContext context) =>
+      AnimatedContainer(
+        duration: const Duration(milliseconds: 240),
+        curve: Curves.easeOut,
+        width: 40,
+        height: 22,
+        padding: const EdgeInsets.all(3),
+        decoration: BoxDecoration(
+          color: value ? color.withValues(alpha: 0.35) : track,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: AnimatedAlign(
+          duration: const Duration(milliseconds: 240),
+          curve: Curves.easeOut,
+          alignment: value ? Alignment.centerRight : Alignment.centerLeft,
+          child: UContainer(
+            width: 16,
+            height: 16,
+            color: color,
+            shape: BoxShape.circle,
+          ),
+        ),
+      );
 }

@@ -691,6 +691,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get codec => 'کدک';
 
   @override
+  String get collapse => 'جمع کردن';
+
+  @override
   String get color => 'رنگ';
 
   @override
@@ -972,6 +975,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get dark => 'تیره';
+
+  @override
+  String get darkMode => 'حالت تاریک';
 
   @override
   String get dashboard => 'داشبورد';
@@ -1331,6 +1337,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get exitTime => 'ساعت خروج';
+
+  @override
+  String get expand => 'باز کردن';
 
   @override
   String get expected => 'مورد انتظار';
@@ -1701,6 +1710,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get hide => 'مخفی';
 
   @override
+  String get hideMenu => 'مخفی کردن منو';
+
+  @override
   String get highContrast => 'کنتراست بالا';
 
   @override
@@ -2032,6 +2044,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get light => 'روشن';
 
   @override
+  String get lightMode => 'حالت روشن';
+
+  @override
   String get lineSpacing => 'فاصله خطوط';
 
   @override
@@ -2144,6 +2159,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get memoryUsage => 'میزان استفاده حافظه';
+
+  @override
+  String get menu => 'منو';
 
   @override
   String get merchant => 'پذیرنده';
@@ -2852,7 +2870,13 @@ class AppLocalizationsFa extends AppLocalizations {
   String get pictureInPicture => 'تصویر در تصویر';
 
   @override
+  String get pin => 'سنجاق کردن';
+
+  @override
   String get pinEntryCancelled => 'ورود رمز لغو شد';
+
+  @override
+  String get pinned => 'سنجاق شده';
 
   @override
   String get placeTheBarcodeInsideTheFrame => 'بارکد را داخل کادر قرار دهید';
@@ -3582,6 +3606,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get showList => 'لیست';
 
   @override
+  String get showMenu => 'نمایش منو';
+
+  @override
   String get showValue => 'نمایش مقدار';
 
   @override
@@ -4194,6 +4221,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get unpaid => 'پرداخت‌نشده';
+
+  @override
+  String get unpin => 'برداشتن سنجاق';
 
   @override
   String get unpublish => 'لغو انتشار';
