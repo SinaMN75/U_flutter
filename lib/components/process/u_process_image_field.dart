@@ -22,15 +22,15 @@ class _UProcessImagePickerFieldState extends State<UProcessImagePickerField> {
 
   @override
   void initState() {
-    // Existing document comes back from the server as a URL; a freshly picked one is held as bytes.
     if (widget.field.value != null) _initialUrl = widget.field.value;
     super.initState();
   }
 
   Future<void> _pick() async {
-    await UFile.showImagePicker(
+    await UFile.pickImage(
       source: UImageSource.camera,
-      isSelfie: widget.field.fileConfig?.isSelfieCamera ?? false,
+      selfie: widget.field.fileConfig?.isSelfieCamera ?? false,
+      cameraOptions: const UCameraOptions(resolution: UCameraResolution.low, photoQuality: 50),
       action: (List<FileData> files) {
         if (files.isEmpty) return;
         final FileData file = files.first;

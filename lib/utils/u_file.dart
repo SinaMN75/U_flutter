@@ -62,16 +62,13 @@ abstract class UFile {
 
   static bool isImageExtension(String? extension) => extension != null && imageExtensions.contains(extension.toLowerCase());
 
-  /// Backwards-compatible image picker. Delegates to [pickImage] (camera capture
-  /// uses the in-app [UCameraPage]; gallery uses the file picker).
   static Future<List<FileData>> showImagePicker({
     required UImageSource source,
     bool allowMultiple = false,
     bool isSelfie = false,
-    int? imageQuality,
     UCropOptions? crop,
     Function(List<FileData>)? action,
-  }) => pickImage(source: source, selfie: isSelfie, allowMultiple: allowMultiple, imageQuality: imageQuality, crop: crop, action: action);
+  }) => pickImage(source: source, selfie: isSelfie, allowMultiple: allowMultiple, crop: crop, action: action);
 
   static Future<List<FileData>> showFilePicker({
     Function(List<FileData>)? action,
@@ -112,7 +109,6 @@ abstract class UFile {
     bool selfie = false,
     bool allowMultiple = false,
     int? maxCount,
-    int? imageQuality,
     UCropOptions? crop,
     UCameraOptions? cameraOptions,
     Function(List<FileData>)? action,
@@ -146,7 +142,7 @@ abstract class UFile {
     UCameraOptions? cameraOptions,
     Function(FileData?)? action,
   }) async {
-    final List<FileData> files = await pickImage(source: source, selfie: selfie, imageQuality: imageQuality, crop: crop, cameraOptions: cameraOptions);
+    final List<FileData> files = await pickImage(source: source, selfie: selfie, crop: crop, cameraOptions: cameraOptions);
     final FileData? file = files.isEmpty ? null : files.first;
     action?.call(file);
     return file;
@@ -184,7 +180,6 @@ abstract class UFile {
     Function(FileData?)? action,
   }) => pickSingleImage(source: UImageSource.camera, selfie: selfie, crop: crop, cameraOptions: options, action: action);
 
-  /// Captures multiple photos in one camera session. [maxCount] 0 means unlimited.
   static Future<List<FileData>> takePhotos({
     int maxCount = 0,
     bool selfie = false,
@@ -193,13 +188,11 @@ abstract class UFile {
     Function(List<FileData>)? action,
   }) => pickImage(source: UImageSource.camera, selfie: selfie, allowMultiple: true, maxCount: maxCount, crop: crop, cameraOptions: options, action: action);
 
-  /// Records a single video with the in-app camera.
   static Future<FileData?> recordVideo({
     UCameraOptions options = const UCameraOptions(),
     Function(FileData?)? action,
   }) => UCamera.recordVideo(options: options, action: action);
 
-  /// Picks a video from the gallery, or records one when [source] is camera.
   static Future<FileData?> pickVideo({
     UImageSource source = UImageSource.gallery,
     UCameraOptions options = const UCameraOptions(),
