@@ -66,5 +66,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Used to take photos and record video.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Used to record audio with your videos.</string>
 </dict>
 </plist>

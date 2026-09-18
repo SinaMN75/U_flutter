@@ -376,8 +376,9 @@ public final class UMediaPlayer: NSObject, FlutterTexture, FlutterStreamHandler 
         }
 
         sizeObservation = item.observe(\.presentationSize, options: [.new]) { [weak self] observed, _ in
-            let size = observed.presentationSize
-            self?.send(["event": "size", "width": Int(size.width), "height": Int(size.height), "rotation": 0])
+            guard let self else { return }
+            let geometry = self.videoGeometry(item: observed)
+            self.send(["event": "size", "width": geometry.width, "height": geometry.height, "rotation": geometry.rotation])
         }
 
         bufferObservation = item.observe(\.loadedTimeRanges, options: [.new]) { [weak self] observed, _ in
@@ -414,18 +415,36 @@ public final class UMediaPlayer: NSObject, FlutterTexture, FlutterStreamHandler 
         guard !didAnnounceReady else { return }
         didAnnounceReady = true
         let duration = CMTimeGetSeconds(item.duration)
-        let size = item.presentationSize
+        let geometry = videoGeometry(item: item)
         send([
             "event": "initialized",
             "textureId": textureId >= 0 ? textureId : nil,
             "durationMs": duration.isFinite ? Int(duration * 1000) : 0,
-            "width": Int(size.width),
-            "height": Int(size.height),
-            "rotation": 0,
+            "width": geometry.width,
+            "height": geometry.height,
+            "rotation": geometry.rotation,
             "isLive": !duration.isFinite,
             "tracks": UMediaMapper.tracks(for: item),
         ])
         if isVideo { startFrameLoop() }
+    }
+
+    /// `AVPlayerItemVideoOutput` hands back the decoded buffer without the
+    /// track's `preferredTransform`, while `presentationSize` already has it
+    /// applied. Report the untouched buffer size plus the rotation so Dart can
+    /// turn it, rather than describing a frame we are not actually given.
+    private func videoGeometry(item: AVPlayerItem) -> (width: Int, height: Int, rotation: Int) {
+        let presentation = item.presentationSize
+        let fallback = (width: Int(abs(presentation.width)), height: Int(abs(presentation.height)), rotation: 0)
+        guard let track = item.tracks.compactMap({ $0.assetTrack }).first(where: { $0.mediaType == .video }) else {
+            return fallback
+        }
+        let transform = track.preferredTransform
+        let radians = atan2(Double(transform.b), Double(transform.a))
+        let rotation = ((Int((radians * 180 / .pi).rounded()) % 360) + 360) % 360
+        let natural = track.naturalSize
+        if natural.width <= 0 || natural.height <= 0 { return fallback }
+        return (width: Int(abs(natural.width)), height: Int(abs(natural.height)), rotation: rotation)
     }
 
     private func addPeriodicObserver() {

@@ -179,6 +179,10 @@ public final class UCameraSession: NSObject {
     private var recordingCompletion: (([String: Any]?, String?) -> Void)?
     private var recordingStartedAt: Date?
     private var mirrorFront = true
+    #if os(iOS)
+        private var lockedOrientation: AVCaptureVideoOrientation?
+        private var lastDeviceOrientation: AVCaptureVideoOrientation = .portrait
+    #endif
 
     public var currentTextureId: Int64 { textureId }
 
@@ -196,6 +200,9 @@ public final class UCameraSession: NSObject {
         super.init()
         eventChannel.setStreamHandler(UCameraStreamProxy { [weak self] sink in self?.eventSink = sink })
         frameChannel.setStreamHandler(UCameraStreamProxy { [weak self] sink in self?.frameSink = sink })
+        #if os(iOS)
+            UIDevice.current.beginGeneratingDeviceOrientationNotifications()
+        #endif
     }
 
     // MARK: - Setup
@@ -288,19 +295,37 @@ public final class UCameraSession: NSObject {
         if device.isWhiteBalanceModeSupported(.continuousAutoWhiteBalance) { device.whiteBalanceMode = .continuousAutoWhiteBalance }
         device.unlockForConfiguration()
         applyFlash(config["flash"] as? String)
+        applyPreviewOrientation()
         applyMirroring()
+    }
+
+    private func applyPreviewOrientation() {
+        #if os(iOS)
+            guard let connection = videoOutput.connection(with: .video) else { return }
+            if #available(iOS 17.0, *) {
+                if connection.isVideoRotationAngleSupported(90) { connection.videoRotationAngle = 90 }
+            } else if connection.isVideoOrientationSupported {
+                connection.videoOrientation = .portrait
+            }
+        #endif
     }
 
     private func applyMirroring() {
         guard let connection = videoOutput.connection(with: .video) else { return }
-        let isFront = device?.position == .front
         if connection.isVideoMirroringSupported {
             connection.automaticallyAdjustsVideoMirroring = false
-            connection.isVideoMirrored = isFront && mirrorFront
+            connection.isVideoMirrored = false
         }
     }
 
     public func dispose() {
+        #if os(iOS)
+            UIDevice.current.endGeneratingDeviceOrientationNotifications()
+        #endif
+        failPendingPhoto("disposed")
+        let pendingRecording = recordingCompletion
+        recordingCompletion = nil
+        pendingRecording?(nil, "disposed")
         queue.async { [weak self] in
             guard let self else { return }
             if self.session.isRunning { self.session.stopRunning() }
@@ -321,14 +346,20 @@ public final class UCameraSession: NSObject {
 
     public func describe() -> [String: Any] {
         let dimensions = device.map { CMVideoFormatDescriptionGetDimensions($0.activeFormat.formatDescription) }
+        var previewWidth = Int(dimensions?.width ?? 1280)
+        var previewHeight = Int(dimensions?.height ?? 720)
+        #if os(iOS)
+            if previewWidth > previewHeight { swap(&previewWidth, &previewHeight) }
+        #endif
         return [
             "sessionId": sessionId,
             "textureId": textureId,
             "previewSize": [
-                "width": Int(dimensions?.width ?? 1280),
-                "height": Int(dimensions?.height ?? 720),
+                "width": previewWidth,
+                "height": previewHeight,
             ],
             "sensorOrientation": 0,
+            "displayRotation": 0,
             "mirrored": device?.position == .front && mirrorFront,
             "zoom": zoomFactor(),
             "device": device.map { UCameraEnumerator.describe($0) } as Any,
@@ -499,7 +530,11 @@ public final class UCameraSession: NSObject {
     public func setPoint(x: Double?, y: Double?, focus: Bool) {
         configure { device in
             guard let x, let y else { return }
-            let point = CGPoint(x: x, y: y)
+            #if os(iOS)
+                let point = CGPoint(x: y, y: 1 - x)
+            #else
+                let point = CGPoint(x: x, y: y)
+            #endif
             if focus {
                 if device.isFocusPointOfInterestSupported {
                     device.focusPointOfInterest = point
@@ -618,21 +653,66 @@ public final class UCameraSession: NSObject {
 
     public func lockOrientation(_ name: String?) {
         #if os(iOS)
-            guard let connection = photoOutput.connection(with: .video) else { return }
-            let orientation: AVCaptureVideoOrientation
             switch name {
-            case "landscapeRight": orientation = .landscapeRight
-            case "portraitDown": orientation = .portraitUpsideDown
-            case "landscapeLeft": orientation = .landscapeLeft
-            default: orientation = .portrait
+            case "landscapeRight": lockedOrientation = .landscapeRight
+            case "portraitDown": lockedOrientation = .portraitUpsideDown
+            case "landscapeLeft": lockedOrientation = .landscapeLeft
+            case "portraitUp": lockedOrientation = .portrait
+            default: lockedOrientation = nil
             }
-            if connection.isVideoOrientationSupported { connection.videoOrientation = orientation }
         #endif
     }
+
+    #if os(iOS)
+        private func captureOrientation() -> AVCaptureVideoOrientation {
+            if let lockedOrientation { return lockedOrientation }
+            switch UIDevice.current.orientation {
+            case .landscapeLeft: lastDeviceOrientation = .landscapeRight
+            case .landscapeRight: lastDeviceOrientation = .landscapeLeft
+            case .portraitUpsideDown: lastDeviceOrientation = .portraitUpsideDown
+            case .portrait: lastDeviceOrientation = .portrait
+            default: break
+            }
+            return lastDeviceOrientation
+        }
+
+        private func applyCaptureOrientation(to connection: AVCaptureConnection) {
+            let orientation = captureOrientation()
+            if #available(iOS 17.0, *) {
+                let angle: CGFloat
+                switch orientation {
+                case .landscapeRight: angle = 0
+                case .portrait: angle = 90
+                case .landscapeLeft: angle = 180
+                case .portraitUpsideDown: angle = 270
+                @unknown default: angle = 90
+                }
+                if connection.isVideoRotationAngleSupported(angle) { connection.videoRotationAngle = angle }
+            } else if connection.isVideoOrientationSupported {
+                connection.videoOrientation = orientation
+            }
+        }
+    #endif
 
     // MARK: - Capture
 
     public func takePhoto(arguments: [String: Any], completion: @escaping ([String: Any]?, String?) -> Void) {
+        if photoCompletion != nil {
+            completion(nil, "capture")
+            return
+        }
+        guard session.isRunning,
+              let connection = photoOutput.connection(with: .video),
+              connection.isActive, connection.isEnabled
+        else {
+            completion(nil, "notFound")
+            return
+        }
+        #if os(iOS)
+            applyCaptureOrientation(to: connection)
+        #else
+            _ = connection
+        #endif
         photoCompletion = completion
         photoPath = arguments["path"] as? String
         includePhotoBytes = arguments["includeBytes"] as? Bool ?? true
@@ -654,6 +734,12 @@ public final class UCameraSession: NSObject {
             }
         #endif
         photoOutput.capturePhoto(with: settings, delegate: self)
+    }
+
+    public func failPendingPhoto(_ reason: String) {
+        let completion = photoCompletion
+        photoCompletion = nil
+        completion?(nil, reason)
     }
 
     public func takeSnapshot(quality: Int, completion: @escaping ([String: Any]?, String?) -> Void) {
@@ -694,8 +780,11 @@ public final class UCameraSession: NSObject {
         }
         let path = arguments["path"] as? String ?? UCameraSession.temporaryFile(extension: "mov")
         #if os(iOS)
-            if let connection = movieOutput.connection(with: .video), connection.isVideoMirroringSupported {
-                connection.isVideoMirrored = device?.position == .front && (config["mirrorFrontCapture"] as? Bool ?? false)
+            if let connection = movieOutput.connection(with: .video) {
+                applyCaptureOrientation(to: connection)
+                if connection.isVideoMirroringSupported {
+                    connection.isVideoMirrored = device?.position == .front && (config["mirrorFrontCapture"] as? Bool ?? false)
+                }
             }
             if let codec = arguments["codec"] as? String,
                let connection = movieOutput.connection(with: .video) {
@@ -882,7 +971,12 @@ extension UCameraSession: AVCapturePhotoCaptureDelegate {
             return
         }
         let path = photoPath ?? UCameraSession.temporaryFile(extension: "jpg")
-        try? data.write(to: URL(fileURLWithPath: path))
+        do {
+            try data.write(to: URL(fileURLWithPath: path))
+        } catch {
+            completion?(nil, "storage")
+            return
+        }
         completion?(
             [
                 "path": path,

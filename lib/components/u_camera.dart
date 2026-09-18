@@ -1,14 +1,83 @@
 import "package:u/utilities.dart";
 
-// =============================================================================
-// u_camera — the camera UI of the `u` plugin.
-//
-// [UCameraPreview] renders a live session, [UCameraPage] is a complete camera
-// screen, and [UCamera] gives one-call helpers that return [FileData] so
-// captures flow through the app like any other picked file. Everything is
-// driven by [UCameraController], so every hardware feature the device exposes
-// is reachable, and anything it does not support is hidden automatically.
-// =============================================================================
+/// HOST PROJECT SETUP
+///
+/// This package declares NO camera or microphone permission of its own, because
+/// a library manifest is merged into every app that depends on it and most apps
+/// never open a camera. Nothing below is optional: without it the camera either
+/// never opens or the app is killed by the OS on first use. Add only the
+/// platforms you ship, and drop the microphone entries if you only take photos.
+///
+/// ANDROID -- android/app/src/main/AndroidManifest.xml, inside <manifest>:
+///
+///   <uses-permission android:name="android.permission.CAMERA" />
+///   <uses-permission android:name="android.permission.RECORD_AUDIO" />
+///   <uses-feature android:name="android.hardware.camera" android:required="false" />
+///   <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
+///   <uses-feature android:name="android.hardware.camera.flash" android:required="false" />
+///
+///   Keep android:required="false" unless the app is useless without a camera --
+///   "true" hides the app on Play Store for tablets and TVs that have none.
+///   minSdk 24 or higher. UCameraController.requestPermission() shows the
+///   runtime dialog, so nothing else is needed in code.
+///
+/// IOS -- ios/Runner/Info.plist, inside the top-level <dict>:
+///
+///   <key>NSCameraUsageDescription</key>
+///   <string>Used to take photos and record video.</string>
+///   <key>NSMicrophoneUsageDescription</key>
+///   <string>Used to record audio with your videos.</string>
+///
+///   The strings are shown verbatim in the system prompt, so write them for the
+///   user, in their language. Deployment target 13.0 or higher. iOS terminates
+///   the app the moment the camera is touched with either key missing -- an
+///   instant crash on launch of the camera screen, not a denied permission.
+///
+/// MACOS -- two files, and both are required:
+///
+///   1. macos/Runner/Info.plist -- the same two keys as iOS above.
+///
+///   2. macos/Runner/DebugProfile.entitlements AND
+///      macos/Runner/Release.entitlements -- add to both:
+///
+///        <key>com.apple.security.device.camera</key>
+///        <true/>
+///        <key>com.apple.security.device.audio-input</key>
+///        <true/>
+///
+///   Flutter macOS apps run inside the App Sandbox, which denies capture
+///   hardware by default. Without the entitlement macOS reports the permission
+///   as restricted and hands back no devices -- the camera simply never opens
+///   and NO system prompt ever appears, which is what makes this one easy to
+///   mistake for a bug in the plugin. Editing only DebugProfile.entitlements is
+///   the usual mistake: the camera then works in debug and fails in release.
+///   Deployment target 10.15 or higher.
+///
+/// WEB:
+///
+///   getUserMedia is only granted on a secure origin, so the page must be served
+///   over https, or from localhost while developing. No manifest entry exists;
+///   the browser prompts on its own the first time a session opens.
+///
+/// WINDOWS:
+///
+///   Nothing to declare for a plain desktop build. A packaged MSIX needs the
+///   webcam and microphone device capabilities in its manifest, and Windows
+///   respects the per-app camera toggle in Settings > Privacy > Camera, which is
+///   reported back as a denied permission.
+///
+/// LINUX:
+///
+///   Capture goes through V4L2, so the user account must be able to read
+///   /dev/video*, which on most distributions means membership of the "video"
+///   group. There is no permission dialog; a missing device is reported as
+///   notFound.
+///
+/// VERIFYING: call UCameraController.permissionStatus() before opening a
+/// session. "restricted" on macOS means the entitlement is missing rather than
+/// the user having said no, and UCameraController.openSettings() takes the user
+/// to the right settings pane on every platform that has one.
+/// -----------------------------------------------------------------------------
 
 enum UCameraMode { photo, video, both }
 
