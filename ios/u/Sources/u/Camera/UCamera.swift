@@ -288,15 +288,26 @@ public final class UCameraSession: NSObject {
         if device.isWhiteBalanceModeSupported(.continuousAutoWhiteBalance) { device.whiteBalanceMode = .continuousAutoWhiteBalance }
         device.unlockForConfiguration()
         applyFlash(config["flash"] as? String)
+        applyPreviewOrientation()
         applyMirroring()
+    }
+
+    private func applyPreviewOrientation() {
+        #if os(iOS)
+            guard let connection = videoOutput.connection(with: .video) else { return }
+            if #available(iOS 17.0, *) {
+                if connection.isVideoRotationAngleSupported(90) { connection.videoRotationAngle = 90 }
+            } else if connection.isVideoOrientationSupported {
+                connection.videoOrientation = .portrait
+            }
+        #endif
     }
 
     private func applyMirroring() {
         guard let connection = videoOutput.connection(with: .video) else { return }
-        let isFront = device?.position == .front
         if connection.isVideoMirroringSupported {
             connection.automaticallyAdjustsVideoMirroring = false
-            connection.isVideoMirrored = isFront && mirrorFront
+            connection.isVideoMirrored = false
         }
     }
 
@@ -321,14 +332,20 @@ public final class UCameraSession: NSObject {
 
     public func describe() -> [String: Any] {
         let dimensions = device.map { CMVideoFormatDescriptionGetDimensions($0.activeFormat.formatDescription) }
+        var previewWidth = Int(dimensions?.width ?? 1280)
+        var previewHeight = Int(dimensions?.height ?? 720)
+        #if os(iOS)
+            if previewWidth > previewHeight { swap(&previewWidth, &previewHeight) }
+        #endif
         return [
             "sessionId": sessionId,
             "textureId": textureId,
             "previewSize": [
-                "width": Int(dimensions?.width ?? 1280),
-                "height": Int(dimensions?.height ?? 720),
+                "width": previewWidth,
+                "height": previewHeight,
             ],
             "sensorOrientation": 0,
+            "displayRotation": 0,
             "mirrored": device?.position == .front && mirrorFront,
             "zoom": zoomFactor(),
             "device": device.map { UCameraEnumerator.describe($0) } as Any,
@@ -499,7 +516,11 @@ public final class UCameraSession: NSObject {
     public func setPoint(x: Double?, y: Double?, focus: Bool) {
         configure { device in
             guard let x, let y else { return }
-            let point = CGPoint(x: x, y: y)
+            #if os(iOS)
+                let point = CGPoint(x: y, y: 1 - x)
+            #else
+                let point = CGPoint(x: x, y: y)
+            #endif
             if focus {
                 if device.isFocusPointOfInterestSupported {
                     device.focusPointOfInterest = point

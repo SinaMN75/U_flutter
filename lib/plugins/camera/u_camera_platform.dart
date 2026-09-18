@@ -784,6 +784,7 @@ class UCameraValue {
     this.textureId,
     this.viewType,
     this.sensorOrientation = 0,
+    this.displayRotation = 0,
     this.deviceOrientation = UCameraOrientation.portraitUp,
     this.lockedOrientation,
     this.flash = UFlashMode.off,
@@ -816,6 +817,10 @@ class UCameraValue {
   /// Platform view identifier used instead of a texture on the web.
   final String? viewType;
   final int sensorOrientation;
+
+  /// Clockwise rotation, in degrees, of the app window relative to the
+  /// device's natural orientation. Zero while the app stays portrait-locked.
+  final int displayRotation;
   final UCameraOrientation deviceOrientation;
   final UCameraOrientation? lockedOrientation;
   final UFlashMode flash;
@@ -852,6 +857,20 @@ class UCameraValue {
 
   double get aspectRatio => previewSize.aspectRatio;
 
+  /// Clockwise rotation, in degrees, that the raw preview texture needs before
+  /// it lines up with the app window. The sensor buffer arrives in the
+  /// sensor's own orientation, which is a quarter turn off on most phones.
+  int get previewRotation {
+    if (viewType != null) return 0;
+    final bool isFront = device?.isFront ?? mirrored;
+    return isFront ? (sensorOrientation + displayRotation) % 360 : (sensorOrientation - displayRotation + 360) % 360;
+  }
+
+  /// [previewSize] after [previewRotation] is applied, so it matches what the
+  /// widget actually paints.
+  UCameraSize get rotatedPreviewSize =>
+      previewRotation % 180 == 0 ? previewSize : UCameraSize(previewSize.height, previewSize.width);
+
   UCameraValue copyWith({
     UCameraState? state,
     UCameraDevice? device,
@@ -860,6 +879,7 @@ class UCameraValue {
     int? textureId,
     String? viewType,
     int? sensorOrientation,
+    int? displayRotation,
     UCameraOrientation? deviceOrientation,
     UCameraOrientation? lockedOrientation,
     UFlashMode? flash,
@@ -892,6 +912,7 @@ class UCameraValue {
     textureId: clearTexture ? null : (textureId ?? this.textureId),
     viewType: clearTexture ? null : (viewType ?? this.viewType),
     sensorOrientation: sensorOrientation ?? this.sensorOrientation,
+    displayRotation: displayRotation ?? this.displayRotation,
     deviceOrientation: deviceOrientation ?? this.deviceOrientation,
     lockedOrientation: lockedOrientation ?? this.lockedOrientation,
     flash: flash ?? this.flash,
@@ -1204,6 +1225,7 @@ class UCameraController extends ValueNotifier<UCameraValue> {
         device: rawDevice is Map<Object?, Object?> ? UCameraDevice.fromMap(rawDevice) : null,
         capabilities: rawCapabilities is Map<Object?, Object?> ? UCameraCapabilities.fromMap(rawCapabilities) : UCameraCapabilities.none,
         sensorOrientation: ((created["sensorOrientation"] as num?) ?? 0).toInt(),
+        displayRotation: ((created["displayRotation"] as num?) ?? 0).toInt(),
         zoom: ((created["zoom"] as num?) ?? _config.initialZoom ?? 1).toDouble(),
         flash: _config.flash,
         focusMode: _config.focusMode,
@@ -1292,6 +1314,9 @@ class UCameraController extends ValueNotifier<UCameraValue> {
         break;
       case "orientation":
         _emit(value.copyWith(deviceOrientation: UCameraOrientationX.fromDegrees(((event["degrees"] as num?) ?? 0).toInt())));
+        break;
+      case "displayRotation":
+        _emit(value.copyWith(displayRotation: ((event["degrees"] as num?) ?? 0).toInt()));
         break;
       case "zoom":
         _emit(value.copyWith(zoom: ((event["zoom"] as num?) ?? value.zoom).toDouble()));

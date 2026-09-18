@@ -34,6 +34,7 @@ import android.util.Range
 import android.util.Size
 import android.view.OrientationEventListener
 import android.view.Surface
+import android.view.WindowManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import io.flutter.plugin.common.BinaryMessenger
@@ -156,6 +157,7 @@ internal class UCameraSession(
     messenger: BinaryMessenger,
     textureRegistry: TextureRegistry,
     private val config: Map<*, *>,
+    private val activityProvider: () -> Activity? = { null },
 ) : EventChannel.StreamHandler {
     private val mainHandler = Handler(Looper.getMainLooper())
     private val eventChannel = EventChannel(messenger, "u/camera/events/$id")
@@ -200,6 +202,7 @@ internal class UCameraSession(
 
     private var orientationListener: OrientationEventListener? = null
     private var deviceRotation = 0
+    private var displayRotation = 0
 
     val textureId: Long get() = surfaceProducer.id()
 
@@ -460,6 +463,7 @@ internal class UCameraSession(
             "textureId" to textureId,
             "previewSize" to mapOf("width" to previewSize.width, "height" to previewSize.height),
             "sensorOrientation" to (characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION) ?: 0),
+            "displayRotation" to displayRotation,
             "mirrored" to (characteristics.get(CameraCharacteristics.LENS_FACING) == CameraCharacteristics.LENS_FACING_FRONT),
             "zoom" to zoomRatio.toDouble(),
             "device" to UCameraEnumerator.describeDevice(manager, cameraId),
@@ -645,10 +649,11 @@ internal class UCameraSession(
             return
         }
 
+        val (sensorX, sensorY) = toSensorPoint(x, y)
         val halfWidth = sensor.width() / 12
         val halfHeight = sensor.height() / 12
-        val centerX = (x * sensor.width()).roundToInt().coerceIn(0, sensor.width())
-        val centerY = (y * sensor.height()).roundToInt().coerceIn(0, sensor.height())
+        val centerX = (sensorX * sensor.width()).roundToInt().coerceIn(0, sensor.width())
+        val centerY = (sensorY * sensor.height()).roundToInt().coerceIn(0, sensor.height())
         val region =
             MeteringRectangle(
                 max(0, centerX - halfWidth),
@@ -744,9 +749,11 @@ internal class UCameraSession(
     }
 
     private fun startOrientationListener() {
+        displayRotation = readDisplayRotation()
         val listener =
             object : OrientationEventListener(context) {
                 override fun onOrientationChanged(orientation: Int) {
+                    syncDisplayRotation()
                     if (orientation == ORIENTATION_UNKNOWN) return
                     val rounded = ((orientation + 45) / 90 * 90) % 360
                     if (rounded == deviceRotation) return
@@ -759,6 +766,51 @@ internal class UCameraSession(
             orientationListener = listener
         }
     }
+
+    private fun syncDisplayRotation() {
+        val rotation = readDisplayRotation()
+        if (rotation == displayRotation) return
+        displayRotation = rotation
+        send(mapOf("event" to "displayRotation", "degrees" to rotation))
+    }
+
+    @Suppress("DEPRECATION")
+    private fun readDisplayRotation(): Int {
+        val source: Context = activityProvider() ?: context
+        val display =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                runCatching { source.display }.getOrNull()
+            } else {
+                null
+            } ?: (source.getSystemService(Context.WINDOW_SERVICE) as? WindowManager)?.defaultDisplay
+        return when (display?.rotation) {
+            Surface.ROTATION_90 -> 90
+            Surface.ROTATION_180 -> 180
+            Surface.ROTATION_270 -> 270
+            else -> 0
+        }
+    }
+
+    private fun previewRotation(): Int {
+        val sensorOrientation = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION) ?: 0
+        val facing = characteristics.get(CameraCharacteristics.LENS_FACING)
+        return if (facing == CameraCharacteristics.LENS_FACING_FRONT) {
+            (sensorOrientation + displayRotation) % 360
+        } else {
+            (sensorOrientation - displayRotation + 360) % 360
+        }
+    }
+
+    private fun toSensorPoint(
+        x: Double,
+        y: Double,
+    ): Pair<Double, Double> =
+        when (previewRotation()) {
+            90 -> Pair(y, 1 - x)
+            180 -> Pair(1 - x, 1 - y)
+            270 -> Pair(1 - y, x)
+            else -> Pair(x, y)
+        }
 
     private fun captureRotation(): Int {
         val sensorOrientation = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION) ?: 0
@@ -1304,7 +1356,7 @@ internal class UCameraHandler(
     ) {
         val config = call.argument<Map<String, Any?>>("config") ?: emptyMap()
         val id = nextId++
-        val session = UCameraSession(id, context, messenger, textureRegistry, config)
+        val session = UCameraSession(id, context, messenger, textureRegistry, config) { activity }
         sessions[id] = session
         session.open { description, error ->
             if (description != null) {

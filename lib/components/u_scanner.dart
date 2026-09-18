@@ -425,7 +425,7 @@ class _UScannerState extends State<UScanner> with SingleTickerProviderStateMixin
                           UCameraUtils.normalizePoint(
                             local: details.localPosition,
                             widgetSize: bounds,
-                            previewSize: value.previewSize,
+                            previewSize: value.rotatedPreviewSize,
                             fit: widget.fit,
                             mirrored: value.mirrored,
                           ),
@@ -455,6 +455,7 @@ class _UScannerState extends State<UScanner> with SingleTickerProviderStateMixin
                     codes: _tracked,
                     color: borderColor,
                     previewSize: value.previewSize,
+                    rotation: value.previewRotation,
                     widgetSize: bounds,
                     fit: widget.fit,
                     mirrored: value.mirrored,
@@ -600,6 +601,7 @@ class _UCodeTrackingPainter extends CustomPainter {
     required this.codes,
     required this.color,
     required this.previewSize,
+    required this.rotation,
     required this.widgetSize,
     required this.fit,
     required this.mirrored,
@@ -608,6 +610,7 @@ class _UCodeTrackingPainter extends CustomPainter {
   final List<UCode> codes;
   final Color color;
   final UCameraSize previewSize;
+  final int rotation;
   final Size widgetSize;
   final BoxFit fit;
   final bool mirrored;
@@ -615,6 +618,7 @@ class _UCodeTrackingPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     if (previewSize.width == 0) return;
+    final UCameraSize rotated = rotation % 180 == 0 ? previewSize : UCameraSize(previewSize.height, previewSize.width);
     final Paint paint = Paint()
       ..color = color
       ..style = PaintingStyle.stroke
@@ -625,9 +629,9 @@ class _UCodeTrackingPainter extends CustomPainter {
       final Path path = Path();
       for (int i = 0; i < code.corners.length; i++) {
         final Offset point = UCameraUtils.denormalizePoint(
-          normalized: Offset(code.corners[i].dx / previewSize.width, code.corners[i].dy / previewSize.height),
+          normalized: _toDisplay(Offset(code.corners[i].dx / previewSize.width, code.corners[i].dy / previewSize.height)),
           widgetSize: widgetSize,
-          previewSize: previewSize,
+          previewSize: rotated,
           fit: fit,
           mirrored: mirrored,
         );
@@ -642,8 +646,21 @@ class _UCodeTrackingPainter extends CustomPainter {
     }
   }
 
+  Offset _toDisplay(Offset point) {
+    switch (rotation) {
+      case 90:
+        return Offset(1 - point.dy, point.dx);
+      case 180:
+        return Offset(1 - point.dx, 1 - point.dy);
+      case 270:
+        return Offset(point.dy, 1 - point.dx);
+      default:
+        return point;
+    }
+  }
+
   @override
-  bool shouldRepaint(_UCodeTrackingPainter oldDelegate) => oldDelegate.codes != codes;
+  bool shouldRepaint(_UCodeTrackingPainter oldDelegate) => oldDelegate.codes != codes || oldDelegate.rotation != rotation;
 }
 
 /// A ready-to-use full-screen scanner page wrapping [UScanner].

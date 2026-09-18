@@ -213,7 +213,15 @@ class UCameraPreview extends StatelessWidget {
         return placeholder ?? const Center(child: CircularProgressIndicator());
       }
 
-      Widget preview = _surface(value);
+      Widget preview = SizedBox(
+        width: value.previewSize.width.toDouble(),
+        height: value.previewSize.height.toDouble(),
+        child: _surface(value),
+      );
+
+      final int turns = value.previewRotation ~/ 90;
+      if (turns != 0) preview = RotatedBox(quarterTurns: turns, child: preview);
+
       final bool mirrored = mirror ?? value.mirrored;
       if (mirrored) preview = Transform(alignment: Alignment.center, transform: Matrix4.identity()..scaleByDouble(-1, 1, 1, 1), child: preview);
 
@@ -222,14 +230,7 @@ class UCameraPreview extends StatelessWidget {
           child: Stack(
             fit: StackFit.expand,
             children: <Widget>[
-              FittedBox(
-                fit: fit,
-                child: SizedBox(
-                  width: value.previewSize.width.toDouble(),
-                  height: value.previewSize.height.toDouble(),
-                  child: preview,
-                ),
-              ),
+              FittedBox(fit: fit, child: preview),
               if (child != null) child!,
             ],
           ),
@@ -571,7 +572,7 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
               final Offset point = UCameraUtils.normalizePoint(
                 local: details.localPosition,
                 widgetSize: Size(box.maxWidth, box.maxHeight),
-                previewSize: value.previewSize,
+                previewSize: value.rotatedPreviewSize,
                 fit: _o.fit,
                 mirrored: value.mirrored,
               );
@@ -831,7 +832,7 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
       final Offset at = UCameraUtils.denormalizePoint(
         normalized: value.focusPoint!,
         widgetSize: Size(box.maxWidth, box.maxHeight),
-        previewSize: value.previewSize,
+        previewSize: value.rotatedPreviewSize,
         fit: _o.fit,
         mirrored: value.mirrored,
       );
