@@ -1082,6 +1082,12 @@ abstract class AppLocalizations {
   /// **'Card limits & settings'**
   String get cardLimitsSettings;
 
+  /// No description provided for @cardDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Card Details'**
+  String get cardDetails;
+
   /// No description provided for @cardNumber.
   ///
   /// In en, this message translates to:

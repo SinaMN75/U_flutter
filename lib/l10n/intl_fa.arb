@@ -388,6 +388,7 @@
   "cancelled": "لغو شده",
   "capacity": "ظرفیت",
   "cardLimitsSettings": "سقف و تنظیمات کارت",
+  "cardDetails": "اطلاعات کارت",
   "cardNumber": "شماره کارت",
   "cardRead": "کارت خوانده شد",
   "cardReadFailed": "خواندن کارت ناموفق بود",

@@ -514,6 +514,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get cardLimitsSettings => 'سقف و تنظیمات کارت';
 
   @override
+  String get cardDetails => 'اطلاعات کارت';
+
+  @override
   String get cardNumber => 'شماره کارت';
 
   @override

@@ -388,6 +388,7 @@
   "cancelled": "Cancelled",
   "capacity": "Capacity",
   "cardLimitsSettings": "Card limits & settings",
+  "cardDetails": "Card Details",
   "cardNumber": "Card number",
   "cardRead": "Card read",
   "cardReadFailed": "Card read failed",

@@ -514,6 +514,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cardLimitsSettings => 'Card limits & settings';
 
   @override
+  String get cardDetails => 'Card Details';
+
+  @override
   String get cardNumber => 'Card number';
 
   @override
