@@ -2192,6 +2192,12 @@ abstract class AppLocalizations {
   /// **'Document Info'**
   String get documentInfo;
 
+  /// No description provided for @documentNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Document number'**
+  String get documentNumber;
+
   /// No description provided for @documentPassword.
   ///
   /// In en, this message translates to:
@@ -2779,6 +2785,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Extract'**
   String get extract;
+
+  /// No description provided for @failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed'**
+  String get failed;
 
   /// No description provided for @fatherName.
   ///
@@ -3806,6 +3818,12 @@ abstract class AppLocalizations {
   /// **'Internet package'**
   String get internetPackage;
 
+  /// No description provided for @internetPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Internet payment'**
+  String get internetPayment;
+
   /// No description provided for @interval.
   ///
   /// In en, this message translates to:
@@ -4435,6 +4453,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Mirror'**
   String get mirror;
+
+  /// No description provided for @mobileBank.
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile bank'**
+  String get mobileBank;
 
   /// No description provided for @mobileNumber.
   ///
@@ -5252,6 +5276,12 @@ abstract class AppLocalizations {
   /// **'OS Metrics'**
   String get osMetrics;
 
+  /// No description provided for @other.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get other;
+
   /// No description provided for @otpCode.
   ///
   /// In en, this message translates to:
@@ -5918,6 +5948,12 @@ abstract class AppLocalizations {
   /// **'Port'**
   String get port;
 
+  /// No description provided for @posDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'POS device'**
+  String get posDevice;
+
   /// No description provided for @postalCode.
   ///
   /// In en, this message translates to:
@@ -6307,6 +6343,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reference'**
   String get reference;
+
+  /// No description provided for @referenceNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Reference number'**
+  String get referenceNumber;
 
   /// No description provided for @refresh.
   ///
@@ -6811,6 +6853,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save changes'**
   String get saveChanges;
+
+  /// No description provided for @saveImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Save image'**
+  String get saveImage;
 
   /// No description provided for @saveSignature.
   ///
@@ -7832,6 +7880,12 @@ abstract class AppLocalizations {
   /// **'Terminal tracking code'**
   String get terminalTrackingCode;
 
+  /// No description provided for @terminalType.
+  ///
+  /// In en, this message translates to:
+  /// **'Terminal type'**
+  String get terminalType;
+
   /// No description provided for @terminals.
   ///
   /// In en, this message translates to:
@@ -8287,6 +8341,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Trace Id'**
   String get traceId;
+
+  /// No description provided for @traceNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Trace number'**
+  String get traceNumber;
 
   /// No description provided for @trackingCode.
   ///

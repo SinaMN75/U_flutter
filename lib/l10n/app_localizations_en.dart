@@ -1097,6 +1097,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get documentInfo => 'Document Info';
 
   @override
+  String get documentNumber => 'Document number';
+
+  @override
   String get documentPassword => 'Document password';
 
   @override
@@ -1400,6 +1403,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get extract => 'Extract';
+
+  @override
+  String get failed => 'Failed';
 
   @override
   String get fatherName => 'Father Name';
@@ -1927,6 +1933,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get internetPackage => 'Internet package';
 
   @override
+  String get internetPayment => 'Internet payment';
+
+  @override
   String get interval => 'Interval';
 
   @override
@@ -2240,6 +2249,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mirror => 'Mirror';
+
+  @override
+  String get mobileBank => 'Mobile bank';
 
   @override
   String get mobileNumber => 'Mobile number';
@@ -2652,6 +2664,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get osMetrics => 'OS Metrics';
 
   @override
+  String get other => 'Other';
+
+  @override
   String get otpCode => 'OTP Code';
 
   @override
@@ -2989,6 +3004,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get port => 'Port';
 
   @override
+  String get posDevice => 'POS device';
+
+  @override
   String get postalCode => 'Postal Code';
 
   @override
@@ -3184,6 +3202,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reference => 'Reference';
+
+  @override
+  String get referenceNumber => 'Reference number';
 
   @override
   String get refresh => 'Refresh';
@@ -3438,6 +3459,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get saveChanges => 'Save changes';
+
+  @override
+  String get saveImage => 'Save image';
 
   @override
   String get saveSignature => 'Save signature';
@@ -3956,6 +3980,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get terminalTrackingCode => 'Terminal tracking code';
 
   @override
+  String get terminalType => 'Terminal type';
+
+  @override
   String get terminals => 'Terminals';
 
   @override
@@ -4192,6 +4219,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get traceId => 'Trace Id';
+
+  @override
+  String get traceNumber => 'Trace number';
 
   @override
   String get trackingCode => 'Tracking code';

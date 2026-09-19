@@ -1097,6 +1097,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get documentInfo => 'اطلاعات سند';
 
   @override
+  String get documentNumber => 'شماره سند';
+
+  @override
   String get documentPassword => 'رمز سند';
 
   @override
@@ -1400,6 +1403,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get extract => 'استخراج';
+
+  @override
+  String get failed => 'ناموفق';
 
   @override
   String get fatherName => 'نام پدر';
@@ -1927,6 +1933,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get internetPackage => 'بسته اینترنت';
 
   @override
+  String get internetPayment => 'پرداخت اینترنتی';
+
+  @override
   String get interval => 'بازه زمانی';
 
   @override
@@ -2240,6 +2249,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get mirror => 'آینه';
+
+  @override
+  String get mobileBank => 'همراه بانک';
 
   @override
   String get mobileNumber => 'شماره موبایل';
@@ -2652,6 +2664,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get osMetrics => 'متریک‌های سرور';
 
   @override
+  String get other => 'سایر';
+
+  @override
   String get otpCode => 'کد OTP';
 
   @override
@@ -2989,6 +3004,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get port => 'درگاه';
 
   @override
+  String get posDevice => 'دستگاه کارتخوان';
+
+  @override
   String get postalCode => 'کد پستی';
 
   @override
@@ -3184,6 +3202,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get reference => 'مرجع';
+
+  @override
+  String get referenceNumber => 'شماره مرجع';
 
   @override
   String get refresh => 'بازخوانی';
@@ -3438,6 +3459,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get saveChanges => 'ذخیره تغییرات';
+
+  @override
+  String get saveImage => 'ذخیره تصویر';
 
   @override
   String get saveSignature => 'ثبت امضا';
@@ -3956,6 +3980,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get terminalTrackingCode => 'کد رهگیری پایانه';
 
   @override
+  String get terminalType => 'نوع پایانه';
+
+  @override
   String get terminals => 'پایانه‌ها';
 
   @override
@@ -4191,6 +4218,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get traceId => 'شناسه رهگیری';
+
+  @override
+  String get traceNumber => 'شماره پیگیری';
 
   @override
   String get trackingCode => 'کد پیگیری';
