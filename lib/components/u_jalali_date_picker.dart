@@ -5,7 +5,7 @@ enum UJalaliDatePickerType { classic, material, spinner }
 
 abstract class UJalaliDatePicker {
   static Future<Jalali?> show({
-    UJalaliDatePickerType type = UJalaliDatePickerType.material,
+    UJalaliDatePickerType type = UJalaliDatePickerType.spinner,
     Jalali? initialDate,
     Jalali? firstDate,
     Jalali? lastDate,
@@ -275,38 +275,38 @@ class _UJalaliDatePickerMaterialState extends UState<UJalaliDatePickerMaterial> 
   );
 
   Widget _subHeader() => Row(
-      children: <Widget>[
-        TextButton(
-          onPressed: () => setState(() => _pickerMode = _pickerMode == DatePickerMode.day ? DatePickerMode.year : DatePickerMode.day),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              UTextLabelLarge(
-                "${UJalaliDatePicker.monthName(_displayMonth, persian: isFa)} ${UJalaliDatePicker.number(_displayYear, persian: isFa)}",
-                color: scheme.onSurfaceVariant,
-              ),
-              Icon(
-                _pickerMode == DatePickerMode.day ? Icons.arrow_drop_down : Icons.arrow_drop_up,
-                color: scheme.onSurfaceVariant,
-              ),
-            ],
-          ),
+    children: <Widget>[
+      TextButton(
+        onPressed: () => setState(() => _pickerMode = _pickerMode == DatePickerMode.day ? DatePickerMode.year : DatePickerMode.day),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            UTextLabelLarge(
+              "${UJalaliDatePicker.monthName(_displayMonth, persian: isFa)} ${UJalaliDatePicker.number(_displayYear, persian: isFa)}",
+              color: scheme.onSurfaceVariant,
+            ),
+            Icon(
+              _pickerMode == DatePickerMode.day ? Icons.arrow_drop_down : Icons.arrow_drop_up,
+              color: scheme.onSurfaceVariant,
+            ),
+          ],
         ),
-        const Spacer(),
-        if (_pickerMode == DatePickerMode.day) ...<Widget>[
-          IconButton(
-            onPressed: _pageOf(_displayYear, _displayMonth) > 0 ? () => _goToPage(_pageOf(_displayYear, _displayMonth) - 1) : null,
-            tooltip: U.s.previousMonth,
-            icon: Icon(Icons.chevron_left, color: scheme.onSurfaceVariant),
-          ),
-          IconButton(
-            onPressed: _pageOf(_displayYear, _displayMonth) < _monthCount - 1 ? () => _goToPage(_pageOf(_displayYear, _displayMonth) + 1) : null,
-            tooltip: U.s.nextMonth,
-            icon: Icon(Icons.chevron_right, color: scheme.onSurfaceVariant),
-          ),
-        ],
+      ),
+      const Spacer(),
+      if (_pickerMode == DatePickerMode.day) ...<Widget>[
+        IconButton(
+          onPressed: _pageOf(_displayYear, _displayMonth) > 0 ? () => _goToPage(_pageOf(_displayYear, _displayMonth) - 1) : null,
+          tooltip: U.s.previousMonth,
+          icon: Icon(Icons.chevron_left, color: scheme.onSurfaceVariant),
+        ),
+        IconButton(
+          onPressed: _pageOf(_displayYear, _displayMonth) < _monthCount - 1 ? () => _goToPage(_pageOf(_displayYear, _displayMonth) + 1) : null,
+          tooltip: U.s.nextMonth,
+          icon: Icon(Icons.chevron_right, color: scheme.onSurfaceVariant),
+        ),
       ],
-    ).pSymmetric(horizontal: 8);
+    ],
+  ).pSymmetric(horizontal: 8);
 
   Widget _weekDays() => Row(
     children: List<Widget>.generate(
@@ -519,7 +519,8 @@ class _UJalaliDatePickerSpinnerState extends UState<UJalaliDatePickerSpinner> {
   }
 
   @override
-  Widget build(BuildContext context) => Column(
+  Widget build(BuildContext context) => UColumn(
+    padding: const EdgeInsets.all(12),
     mainAxisSize: MainAxisSize.min,
     children: <Widget>[
       _header(),
@@ -530,14 +531,7 @@ class _UJalaliDatePickerSpinnerState extends UState<UJalaliDatePickerSpinner> {
 
   Widget _header() => Row(
     children: <Widget>[
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          UTextLabelMedium(widget.helpText ?? U.s.selectDate, color: scheme.onSurfaceVariant),
-          UTextTitleMedium(UJalaliDatePicker.headline(_value, persian: isFa), color: scheme.onSurface).pOnly(top: 4),
-        ],
-      ).expanded(),
+      UTextTitleMedium(UJalaliDatePicker.headline(_value, persian: isFa), color: scheme.onSurface).pOnly(top: 4).expanded(),
       if (widget.showTodayButton) TextButton(onPressed: _goToToday, child: Text(U.s.today)),
     ],
   ).pLTRB(20, 16, 12, 8);
@@ -545,13 +539,6 @@ class _UJalaliDatePickerSpinnerState extends UState<UJalaliDatePickerSpinner> {
   Widget _wheels() => Column(
     mainAxisSize: MainAxisSize.min,
     children: <Widget>[
-      Row(
-        children: <Widget>[
-          UTextLabelSmall(U.s.day, color: scheme.onSurfaceVariant, textAlign: TextAlign.center, expanded: 2),
-          UTextLabelSmall(U.s.month, color: scheme.onSurfaceVariant, textAlign: TextAlign.center, expanded: 3),
-          UTextLabelSmall(U.s.year, color: scheme.onSurfaceVariant, textAlign: TextAlign.center, expanded: 3),
-        ],
-      ).pSymmetric(horizontal: 16, vertical: 4),
       SizedBox(
         height: 200,
         child: Stack(

@@ -1151,7 +1151,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get due => 'سررسید';
 
   @override
-  String get dueDate => 'سررسید پرداخت';
+  String get dueDate => 'معوق';
 
   @override
   String get duplicateBlock => 'تکثیر بلوک';
