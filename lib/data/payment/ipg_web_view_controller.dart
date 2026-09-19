@@ -19,8 +19,8 @@ class UIpgWebViewController {
   void onPageFinished(String url) {
     if (finished) return;
     final Uri? uri = Uri.tryParse(url);
-    if (uri == null || !uri.path.toLowerCase().contains("/ipg/result")) return;
-    if (uri.queryParameters["additionalData"] == null) return;
+    if (uri == null || !uri.path.toLowerCase().contains("/ipg/verify")) return;
+    if (uri.queryParameters["done"] != "true" || uri.queryParameters["additionalData"] == null) return;
     _finish(uri.queryParameters["additionalData"]!);
   }
 
