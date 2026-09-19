@@ -41,13 +41,15 @@ abstract class UIpgFlow {
       ),
       onOk: (UResponse<UIpgPayResponse> response) async {
         ULoading.dismiss();
-        final UIpgAdditionalData additionalData = response.result!.additionalData;
-        paid = await UNavigator.push<bool>(UIpgWebViewPage(url: response.result!.url, additionalData: additionalData)) ?? false;
+        final UIpgAdditionalData requested = response.result!.additionalData;
+        final UIpgAdditionalData? settled = await UNavigator.push<UIpgAdditionalData>(UIpgWebViewPage(url: response.result!.url, additionalData: requested));
+        paid = settled?.paid ?? false;
         if (paid && receipt != null) {
           await _showReceipt(
             amount: p.amount,
-            trackingNumber: additionalData.trackingNumber ?? "---",
+            trackingNumber: settled?.trackingNumber ?? requested.trackingNumber ?? "---",
             receipt: receipt,
+            rows: UReceiptKeyValues.rows(settled?.keyValues ?? <UKeyValueData>[]),
             title: _title(billId: p.billId, chargeMobileNumber: p.chargeMobileNumber, multiplexedAccounts: p.multiplexedAccounts),
           );
         }
@@ -77,7 +79,13 @@ abstract class UIpgFlow {
     return U.s.chargeWallet;
   }
 
-  static Future<void> _showReceipt({required double amount, required String trackingNumber, required String title, UReceipt? receipt}) => UReceiptSheet.show(
+  static Future<void> _showReceipt({
+    required double amount,
+    required String trackingNumber,
+    required String title,
+    UReceipt? receipt,
+    List<UReceiptRow> rows = const <UReceiptRow>[],
+  }) => UReceiptSheet.show(
     UReceipt(
       title: receipt?.title ?? title,
       amount: receipt?.amount ?? amount.toInt(),
@@ -85,7 +93,7 @@ abstract class UIpgFlow {
       method: receipt?.method ?? U.s.onlinePayment,
       trackingNumber: receipt?.trackingNumber ?? trackingNumber,
       date: receipt?.date,
-      rows: receipt?.rows ?? const <UReceiptRow>[],
+      rows: rows.isNotEmpty ? rows : (receipt?.rows ?? const <UReceiptRow>[]),
     ),
   );
 

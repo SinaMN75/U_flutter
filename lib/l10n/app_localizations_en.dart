@@ -366,6 +366,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get billPayment => 'Bill payment';
 
   @override
+  String get billType => 'Bill type';
+
+  @override
   String get binaryFiles => 'Binary files';
 
   @override
@@ -584,6 +587,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chargePackage => 'Charge & package';
+
+  @override
+  String get chargePin => 'Charge pin';
 
   @override
   String get chargeWallet => 'Charge Wallet';
@@ -1632,6 +1638,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get goldWallet => 'Gold wallet';
 
   @override
+  String get goldWeight => 'Gold weight';
+
+  @override
   String get good => 'Good';
 
   @override
@@ -1795,6 +1804,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hue => 'Hue';
 
   @override
+  String get iBan => 'IBan';
+
+  @override
   String get iHaveReadAndAcceptTheAgreement => 'I have read and accept the agreement';
 
   @override
@@ -1943,6 +1955,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get invoiceDetails => 'Invoice details';
+
+  @override
+  String get invoiceId => 'Invoice ID';
 
   @override
   String get invoiceMarkedAsPaid => 'Invoice marked as paid';
@@ -3322,6 +3337,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reservationDetails => 'Reservation details';
+
+  @override
+  String get reservationId => 'Reservation ID';
 
   @override
   String get reservations => 'Reservations';

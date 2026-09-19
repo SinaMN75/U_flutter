@@ -794,6 +794,12 @@ abstract class AppLocalizations {
   /// **'Bill payment'**
   String get billPayment;
 
+  /// No description provided for @billType.
+  ///
+  /// In en, this message translates to:
+  /// **'Bill type'**
+  String get billType;
+
   /// No description provided for @binaryFiles.
   ///
   /// In en, this message translates to:
@@ -1225,6 +1231,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Charge & package'**
   String get chargePackage;
+
+  /// No description provided for @chargePin.
+  ///
+  /// In en, this message translates to:
+  /// **'Charge pin'**
+  String get chargePin;
 
   /// No description provided for @chargeWallet.
   ///
@@ -3224,6 +3236,12 @@ abstract class AppLocalizations {
   /// **'Gold wallet'**
   String get goldWallet;
 
+  /// No description provided for @goldWeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Gold weight'**
+  String get goldWeight;
+
   /// No description provided for @good.
   ///
   /// In en, this message translates to:
@@ -3542,6 +3560,12 @@ abstract class AppLocalizations {
   /// **'Hue'**
   String get hue;
 
+  /// No description provided for @iBan.
+  ///
+  /// In en, this message translates to:
+  /// **'IBan'**
+  String get iBan;
+
   /// No description provided for @iHaveReadAndAcceptTheAgreement.
   ///
   /// In en, this message translates to:
@@ -3841,6 +3865,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Invoice details'**
   String get invoiceDetails;
+
+  /// No description provided for @invoiceId.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice ID'**
+  String get invoiceId;
 
   /// No description provided for @invoiceMarkedAsPaid.
   ///
@@ -6583,6 +6613,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reservation details'**
   String get reservationDetails;
+
+  /// No description provided for @reservationId.
+  ///
+  /// In en, this message translates to:
+  /// **'Reservation ID'**
+  String get reservationId;
 
   /// No description provided for @reservations.
   ///

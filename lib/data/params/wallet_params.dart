@@ -143,6 +143,7 @@ class UWalletTransferParams {
   final String? senderId;
   final String? detail1;
   final List<int> tagWalletTxn;
+  final List<UKeyValueData>? keyValues;
 
   UWalletTransferParams({
     required this.receiverId,
@@ -150,6 +151,7 @@ class UWalletTransferParams {
     required this.tagWalletTxn,
     this.senderId,
     this.detail1,
+    this.keyValues,
   });
 
   factory UWalletTransferParams.fromJson(String str) => UWalletTransferParams.fromMap(json.decode(str));
@@ -162,6 +164,7 @@ class UWalletTransferParams {
     tagWalletTxn: List<int>.from(json["tagWalletTxn"]!.map((dynamic x) => x)),
     senderId: json["senderId"],
     detail1: json["detail1"],
+    keyValues: json["keyValues"] == null ? null : List<UKeyValueData>.from(json["keyValues"]!.map((dynamic x) => UKeyValueData.fromMap(x))),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -170,6 +173,7 @@ class UWalletTransferParams {
     "tagWalletTxn": List<dynamic>.from(tagWalletTxn.map((int x) => x)),
     "senderId": senderId,
     "detail1": detail1,
+    if (keyValues != null) "keyValues": List<dynamic>.from(keyValues!.map((UKeyValueData x) => x.toMap())),
   };
 }
 

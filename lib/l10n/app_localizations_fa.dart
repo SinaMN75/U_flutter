@@ -366,6 +366,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get billPayment => 'پرداخت قبض';
 
   @override
+  String get billType => 'نوع قبض';
+
+  @override
   String get binaryFiles => 'فایل‌های باینری';
 
   @override
@@ -584,6 +587,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get chargePackage => 'شارژ و بسته';
+
+  @override
+  String get chargePin => 'رمز شارژ';
 
   @override
   String get chargeWallet => 'شارژ کیف پول';
@@ -1632,6 +1638,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get goldWallet => 'کیف پول طلا';
 
   @override
+  String get goldWeight => 'وزن طلا';
+
+  @override
   String get good => 'خوب';
 
   @override
@@ -1795,6 +1804,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get hue => 'رنگ‌مایه';
 
   @override
+  String get iBan => 'شبا';
+
+  @override
   String get iHaveReadAndAcceptTheAgreement => 'قرارداد را خوانده‌ام و می‌پذیرم';
 
   @override
@@ -1943,6 +1955,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get invoiceDetails => 'جزئیات فاکتور';
+
+  @override
+  String get invoiceId => 'شناسه فاکتور';
 
   @override
   String get invoiceMarkedAsPaid => 'فاکتور پرداخت شد';
@@ -3322,6 +3337,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get reservationDetails => 'جزئیات رزرو';
+
+  @override
+  String get reservationId => 'شناسه رزرو';
 
   @override
   String get reservations => 'رزروها';

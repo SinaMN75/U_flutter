@@ -33,6 +33,7 @@ class UIpgAdditionalData {
   final String? rrn;
   final String? token;
   final bool paid;
+  final List<UKeyValueData> keyValues;
 
   UIpgAdditionalData({
     this.trackingNumber,
@@ -46,6 +47,7 @@ class UIpgAdditionalData {
     this.rrn,
     this.token,
     this.paid = false,
+    this.keyValues = const <UKeyValueData>[],
   });
 
   factory UIpgAdditionalData.fromJson(String str) => UIpgAdditionalData.fromMap(json.decode(str));
@@ -64,6 +66,7 @@ class UIpgAdditionalData {
     rrn: json["rrn"],
     token: json["token"],
     paid: json["paid"] ?? false,
+    keyValues: json["keyValues"] == null ? <UKeyValueData>[] : List<UKeyValueData>.from(json["keyValues"]!.map((dynamic x) => UKeyValueData.fromMap(x))),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -78,5 +81,6 @@ class UIpgAdditionalData {
     "rrn": rrn,
     "token": token,
     "paid": paid,
+    "keyValues": List<dynamic>.from(keyValues.map((UKeyValueData x) => x.toMap())),
   };
 }

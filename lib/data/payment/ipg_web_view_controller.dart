@@ -13,7 +13,7 @@ class UIpgWebViewController {
   void cancel() {
     if (finished) return;
     finished = true;
-    UNavigator.back<bool>(false);
+    UNavigator.back<UIpgAdditionalData>();
   }
 
   void onPageFinished(String url) {
@@ -33,14 +33,14 @@ class UIpgWebViewController {
     final UIpgAdditionalData i = UIpgAdditionalData.fromJson(data.fromBase58());
     finished = true;
     UToast.snackBar(message: i.paid ? U.s.paymentWasSuccessful : U.s.paymentFailed);
-    UNavigator.back<bool>(i.paid);
+    UNavigator.back<UIpgAdditionalData>(i);
   }
 
   void confirmCancel() {
     UNavigator.back();
     if (finished) return;
     finished = true;
-    UNavigator.back<bool>(false);
+    UNavigator.back<UIpgAdditionalData>();
   }
 
   void dispose() => _webMessageDispose?.call();

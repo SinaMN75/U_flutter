@@ -218,6 +218,8 @@ part "payment/ipg_web_view_page.dart";
 
 part "payment/receipt.dart";
 
+part "payment/receipt_key_values.dart";
+
 class UServices {
   static AuthService auth = AuthService();
   static AccountingService accounting = AccountingService();
