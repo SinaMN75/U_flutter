@@ -112,17 +112,25 @@ abstract class Date implements Comparable<Date> {
 class JalaliFormatter extends DateFormatter {
   const JalaliFormatter(Jalali super.date);
 
-  static const List<String> _monthNames = <String>["فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند"];
-  static const List<String> _monthNamesAfghanistan = <String>["حمل", "ثور", "جوزا", "سرطان", "اسد", "سنبله", "میزان", "عقرب", "قوس", "جدی", "دلو", "حوت"];
-  static const List<String> _weekDayNames = <String>["شنبه", "یک‌شنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنج‌شنبه", "جمعه"];
+  static const List<String> monthNames = <String>["فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند"];
+  static const List<String> monthNamesAfghanistan = <String>["حمل", "ثور", "جوزا", "سرطان", "اسد", "سنبله", "میزان", "عقرب", "قوس", "جدی", "دلو", "حوت"];
+  static const List<String> monthNamesLatin = <String>["Farvardin", "Ordibehesht", "Khordad", "Tir", "Mordad", "Shahrivar", "Mehr", "Aban", "Azar", "Dey", "Bahman", "Esfand"];
+  static const List<String> weekDayNames = <String>["شنبه", "یک‌شنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنج‌شنبه", "جمعه"];
+  static const List<String> weekDayNamesLatin = <String>["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+  static const List<String> weekDayNamesShort = <String>["ش", "ی", "د", "س", "چ", "پ", "ج"];
+  static const List<String> weekDayNamesShortLatin = <String>["Sa", "Su", "Mo", "Tu", "We", "Th", "Fr"];
 
   @override
-  String get mN => _monthNames[date.month - 1];
+  String get mN => monthNames[date.month - 1];
 
-  String get mNAf => _monthNamesAfghanistan[date.month - 1];
+  String get mNAf => monthNamesAfghanistan[date.month - 1];
+
+  String get mNLatin => monthNamesLatin[date.month - 1];
 
   @override
-  String get wN => _weekDayNames[date.weekDay - 1];
+  String get wN => weekDayNames[date.weekDay - 1];
+
+  String get wNLatin => weekDayNamesLatin[date.weekDay - 1];
 }
 
 // Jalali date implementation

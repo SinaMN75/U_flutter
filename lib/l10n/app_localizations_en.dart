@@ -992,6 +992,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get date => 'Date';
 
   @override
+  String get dateOutOfRange => 'Date out of range';
+
+  @override
   String get day => 'Day';
 
   @override
@@ -1216,6 +1219,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get enterAnAmount => 'Enter an amount';
+
+  @override
+  String get enterDate => 'Enter date';
 
   @override
   String get enterPhoneNumber => 'Enter phone number';
@@ -1924,6 +1930,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get invalidBarcodePleaseEnterTheIdsManually => 'Invalid barcode, please enter the IDs manually';
 
   @override
+  String get invalidDate => 'Invalid date';
+
+  @override
   String get invalidPhoneNumber => 'Invalid phone number';
 
   @override
@@ -2239,6 +2248,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get moneyOut => 'Money Out';
 
   @override
+  String get month => 'Month';
+
+  @override
   String get monthly => 'Monthly';
 
   @override
@@ -2387,6 +2399,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get nextEntry => 'Next entry';
+
+  @override
+  String get nextMonth => 'Next month';
 
   @override
   String get night => 'Night';
@@ -2974,6 +2989,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get previousInquiryResult => 'Previous inquiry result';
 
   @override
+  String get previousMonth => 'Previous month';
+
+  @override
   String get price => 'Price';
 
   @override
@@ -3514,6 +3532,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get selectCountry => 'Select Country';
 
   @override
+  String get selectDate => 'Select date';
+
+  @override
   String get selectDates => 'Select dates';
 
   @override
@@ -3532,6 +3553,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String selectTheVehicleForInquiry(Object inquiry) {
     return 'Select the vehicle for $inquiry';
   }
+
+  @override
+  String get selectYear => 'Select year';
 
   @override
   String get sellGold => 'Sell gold';
@@ -3824,6 +3848,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get switchCamera => 'Switch Camera';
 
   @override
+  String get switchToCalendar => 'Switch to calendar';
+
+  @override
+  String get switchToTextInput => 'Switch to text input';
+
+  @override
   String get syncing => 'Syncing';
 
   @override
@@ -4075,6 +4105,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get toUseAvaHamrahServicesCompleteYourIdentityInformation => 'To use AvaHamrah services, complete your identity information.';
+
+  @override
+  String get today => 'Today';
 
   @override
   String get tokenPrefix => 'Token prefix';

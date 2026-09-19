@@ -992,6 +992,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get date => 'تاریخ';
 
   @override
+  String get dateOutOfRange => 'تاریخ خارج از محدوده';
+
+  @override
   String get day => 'روز';
 
   @override
@@ -1216,6 +1219,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get enterAnAmount => 'مبلغ را وارد کنید';
+
+  @override
+  String get enterDate => 'وارد کردن تاریخ';
 
   @override
   String get enterPhoneNumber => 'شماره موبایل وارد نمایید';
@@ -1924,6 +1930,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get invalidBarcodePleaseEnterTheIdsManually => 'بارکد نامعتبر است، لطفاً شناسه‌ها را به صورت دستی وارد کنید';
 
   @override
+  String get invalidDate => 'تاریخ نامعتبر';
+
+  @override
   String get invalidPhoneNumber => 'شماره تلفن نامعتبر است';
 
   @override
@@ -2239,6 +2248,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get moneyOut => 'خروجی';
 
   @override
+  String get month => 'ماه';
+
+  @override
   String get monthly => 'ماهانه';
 
   @override
@@ -2387,6 +2399,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get nextEntry => 'ثبت ورود بعدی';
+
+  @override
+  String get nextMonth => 'ماه بعد';
 
   @override
   String get night => 'شب';
@@ -2974,6 +2989,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get previousInquiryResult => 'نتیجه استعلام قبلی';
 
   @override
+  String get previousMonth => 'ماه قبل';
+
+  @override
   String get price => 'قیمت';
 
   @override
@@ -3514,6 +3532,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get selectCountry => 'انتخاب کشور';
 
   @override
+  String get selectDate => 'انتخاب تاریخ';
+
+  @override
   String get selectDates => 'انتخاب تاریخ';
 
   @override
@@ -3532,6 +3553,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String selectTheVehicleForInquiry(Object inquiry) {
     return 'خودرو موردنظر را برای استعلام $inquiry انتخاب کنید';
   }
+
+  @override
+  String get selectYear => 'انتخاب سال';
 
   @override
   String get sellGold => 'فروش طلا';
@@ -3824,6 +3848,12 @@ class AppLocalizationsFa extends AppLocalizations {
   String get switchCamera => 'تعویض دوربین';
 
   @override
+  String get switchToCalendar => 'نمایش تقویم';
+
+  @override
+  String get switchToTextInput => 'ورود دستی تاریخ';
+
+  @override
   String get syncing => 'در حال همگام‌سازی';
 
   @override
@@ -4074,6 +4104,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get toUseAvaHamrahServicesCompleteYourIdentityInformation => 'برای استفاده از خدمات آواهمراه، اطلاعات هویتی خود را تکمیل کنید.';
+
+  @override
+  String get today => 'امروز';
 
   @override
   String get tokenPrefix => 'پیشوند توکن';

@@ -1,4 +1,3 @@
-import "package:u/components/persian_date_picker.dart";
 import "package:u/utilities.dart";
 
 class UTextField extends StatefulWidget {
@@ -340,6 +339,9 @@ class UTextFieldDatePicker extends StatefulWidget {
     this.time = false,
     this.textAlign = TextAlign.start,
     this.jalali = false,
+    this.jalaliType = UJalaliDatePickerType.material,
+    this.spinnerAsDialog = false,
+    this.helpText,
     this.margin,
     this.visible = true,
     this.opacity,
@@ -379,6 +381,9 @@ class UTextFieldDatePicker extends StatefulWidget {
   final bool date;
   final bool time;
   final bool jalali;
+  final UJalaliDatePickerType jalaliType;
+  final bool spinnerAsDialog;
+  final String? helpText;
   final EdgeInsetsGeometry? margin;
   final bool visible;
   final double? opacity;
@@ -448,18 +453,24 @@ class _UTextFieldDatePickerState extends State<UTextFieldDatePicker> {
       if (!widget.readOnly) {
         if (widget.date) {
           if (widget.jalali) {
-            await UNavigator.dialog(
-              JalaliDatePickerDialog(
-                startYear: widget.startYear ?? 1350,
-                endYear: widget.endYear ?? 1420,
-                initialDate: Jalali.now(),
-                onDateSelected: (DateTime d, Jalali j) {
-                  selectedDateTime = d;
-                  setState(() {});
-                  widget.onChange(selectedDateTime, j);
-                },
-              ),
+            final int startYear = widget.startYear ?? 1350;
+            final int endYear = widget.endYear ?? 1420;
+            final Jalali? picked = await UJalaliDatePicker.show(
+              type: widget.jalaliType,
+              initialDate: Jalali.fromDateTime(selectedDateTime),
+              firstDate: Jalali(startYear),
+              lastDate: Jalali(endYear, 12, Jalali(endYear, 12).monthLength),
+              helpText: widget.helpText,
+              asDialog: widget.spinnerAsDialog,
             );
+
+            if (!mounted) return;
+            if (picked != null) {
+              final DateTime gregorian = picked.toDateTime();
+              selectedDateTime = DateTime(gregorian.year, gregorian.month, gregorian.day, selectedDateTime.hour, selectedDateTime.minute);
+              setState(() {});
+              widget.onChange(selectedDateTime, picked);
+            }
           } else {
             final DateTime? pickedDate = await showDatePicker(
               context: context,

@@ -1994,6 +1994,12 @@ abstract class AppLocalizations {
   /// **'Date'**
   String get date;
 
+  /// No description provided for @dateOutOfRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Date out of range'**
+  String get dateOutOfRange;
+
   /// No description provided for @day.
   ///
   /// In en, this message translates to:
@@ -2425,6 +2431,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter an amount'**
   String get enterAnAmount;
+
+  /// No description provided for @enterDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter date'**
+  String get enterDate;
 
   /// No description provided for @enterPhoneNumber.
   ///
@@ -3800,6 +3812,12 @@ abstract class AppLocalizations {
   /// **'Invalid barcode, please enter the IDs manually'**
   String get invalidBarcodePleaseEnterTheIdsManually;
 
+  /// No description provided for @invalidDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid date'**
+  String get invalidDate;
+
   /// No description provided for @invalidPhoneNumber.
   ///
   /// In en, this message translates to:
@@ -4430,6 +4448,12 @@ abstract class AppLocalizations {
   /// **'Money Out'**
   String get moneyOut;
 
+  /// No description provided for @month.
+  ///
+  /// In en, this message translates to:
+  /// **'Month'**
+  String get month;
+
   /// No description provided for @monthly.
   ///
   /// In en, this message translates to:
@@ -4729,6 +4753,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Next entry'**
   String get nextEntry;
+
+  /// No description provided for @nextMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Next month'**
+  String get nextMonth;
 
   /// No description provided for @night.
   ///
@@ -5888,6 +5918,12 @@ abstract class AppLocalizations {
   /// **'Previous inquiry result'**
   String get previousInquiryResult;
 
+  /// No description provided for @previousMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous month'**
+  String get previousMonth;
+
   /// No description provided for @price.
   ///
   /// In en, this message translates to:
@@ -6956,6 +6992,12 @@ abstract class AppLocalizations {
   /// **'Select Country'**
   String get selectCountry;
 
+  /// No description provided for @selectDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Select date'**
+  String get selectDate;
+
   /// No description provided for @selectDates.
   ///
   /// In en, this message translates to:
@@ -6991,6 +7033,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select the vehicle for {inquiry}'**
   String selectTheVehicleForInquiry(Object inquiry);
+
+  /// No description provided for @selectYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Select year'**
+  String get selectYear;
 
   /// No description provided for @sellGold.
   ///
@@ -7568,6 +7616,18 @@ abstract class AppLocalizations {
   /// **'Switch Camera'**
   String get switchCamera;
 
+  /// No description provided for @switchToCalendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to calendar'**
+  String get switchToCalendar;
+
+  /// No description provided for @switchToTextInput.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to text input'**
+  String get switchToTextInput;
+
   /// No description provided for @syncing.
   ///
   /// In en, this message translates to:
@@ -8053,6 +8113,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'To use AvaHamrah services, complete your identity information.'**
   String get toUseAvaHamrahServicesCompleteYourIdentityInformation;
+
+  /// No description provided for @today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get today;
 
   /// No description provided for @tokenPrefix.
   ///

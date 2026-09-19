@@ -10,10 +10,12 @@ class UListTile extends StatelessWidget {
     this.color,
     this.textColor,
     this.subtitle,
+    this.trailingIcon = Icons.arrow_forward_ios,
     super.key,
   });
 
   final IconData icon;
+  final IconData trailingIcon;
   final String title;
   final String? subtitle;
   final Color? color;
@@ -29,7 +31,7 @@ class UListTile extends StatelessWidget {
         leading: UIconBackground(icon, color: color ?? Theme.of(context).colorScheme.primary),
         title: UTextBodyMedium(title, color: textColor, fontWeight: FontWeight.bold),
         subtitle: subtitle == null ? null : UTextLabelSmall(subtitle!, color: textColor?.withValues(alpha: 0.6)),
-        trailing: Icon(Icons.arrow_forward_ios, color: Theme.of(context).disabledColor, size: 16),
+        trailing: Icon(trailingIcon, color: Theme.of(context).disabledColor, size: 16),
       ),
     ),
   );
