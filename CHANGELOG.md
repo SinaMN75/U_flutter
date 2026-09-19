@@ -1,3 +1,12 @@
+## 2.0.3
+
+* added `UJalaliDatePicker` with three flavours: `classic` (the original `JalaliDatePickerDialog`),
+  `material` (a Jalali clone of Flutter's own Material date picker, with month paging, year grid
+  and keyboard entry) and `spinner` (an iOS style three wheel picker as a bottom sheet or dialog).
+* `UTextFieldDatePicker` gained `jalaliType`, `spinnerAsDialog` and `helpText`; `jalali: true` now
+  opens the material flavour by default.
+* `JalaliFormatter` now exposes its month and weekday name tables, plus Latin variants.
+
 ## 2.0.2
 
 * added example project

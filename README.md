@@ -115,6 +115,8 @@ UButton(title: "Save", isLoading: saving, onTap: save);
 `UTextField`, `UTextFieldPhoneNumber`, `UTextFieldDatePicker`, `UTextFieldAutoComplete(Async)`,
 `UDropDownField`, `UCountryProvincePicker`, `UOtpField`, `UPlateField` (Iranian plate),
 `UChipChoice`, `USegmentedControl`, `USlider`, `URichTextEditor`, `USignaturePad`, and
+`UJalaliDatePicker.show(type: ...)` for the Jalali calendar in three flavours (`classic`,
+`material`, `spinner`), and
 `UValidators` (email, phone, length, national code, …) for `validator:`.
 
 ### Layout & scaffolding
@@ -231,7 +233,8 @@ Everything below is exported from the single `package:u/utilities.dart` import.
 `UCartesianChart` · `UGauge` (`UGaugeRange`, `UGaugeAnnotation`) · `UJsonViewer` ·
 `UNumberPagination` · `UMap` · `UChat` · `FlipCard` · `ReadMoreText` · `ScrollingText` ·
 `CreditCardWidget` (`CreditCardForm`, `CreditCardModel`, `CardBrandDetector`) ·
-`JalaliDatePickerDialog`
+`JalaliDatePickerDialog` · `UJalaliDatePicker` (`UJalaliDatePickerType`) ·
+`UJalaliDatePickerMaterial` · `UJalaliDatePickerSpinner`
 
 ### Components — Process engine
 `UProcessView` · `UProcessController` · `UProcessFields` · `UProcessStepsIndicator` ·

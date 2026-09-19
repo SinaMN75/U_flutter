@@ -69,7 +69,10 @@ abstract class UJalaliDatePicker {
   static String weekDayName(int weekDay, {required bool persian}) => persian ? JalaliFormatter.weekDayNames[weekDay - 1] : JalaliFormatter.weekDayNamesLatin[weekDay - 1];
 
   static String format(Jalali date, {required bool persian}) {
-    final String value = "${date.year.toString().padLeft(4, "0")}/${date.month.toString().padLeft(2, "0")}/${date.day.toString().padLeft(2, "0")}";
+    final String year = date.year.toString().padLeft(4, "0");
+    final String month = date.month.toString().padLeft(2, "0");
+    final String day = date.day.toString().padLeft(2, "0");
+    final String value = "$year/$month/$day";
     return persian ? value.toPersianNumber() : value;
   }
 
@@ -84,7 +87,7 @@ abstract class UJalaliDatePicker {
     final int? month = int.tryParse(parts[1]);
     final int? day = int.tryParse(parts[2]);
     if (year == null || month == null || day == null) return null;
-    if (year < 1 || month < 1 || month > 12 || day < 1) return null;
+    if (year < 1 || year > 3177 || month < 1 || month > 12 || day < 1) return null;
     if (day > Jalali(year, month).monthLength) return null;
     return Jalali(year, month, day);
   }
@@ -165,8 +168,12 @@ class _UJalaliDatePickerMaterialState extends UState<UJalaliDatePickerMaterial> 
       _displayMonth = month;
       _pickerMode = DatePickerMode.day;
     });
-    _pageController.jumpToPage(_pageOf(year, month));
+    _jumpToPage(_pageOf(year, month));
   }
+
+  void _jumpToPage(int page) => WidgetsBinding.instance.addPostFrameCallback((Duration _) {
+    if (mounted && _pageController.hasClients) _pageController.jumpToPage(page);
+  });
 
   void _toggleEntryMode() {
     if (_entryMode == DatePickerEntryMode.input) {
@@ -180,7 +187,7 @@ class _UJalaliDatePickerMaterialState extends UState<UJalaliDatePickerMaterial> 
           _displayMonth = parsed.month;
         }
       });
-      _pageController.jumpToPage(_pageOf(_displayYear, _displayMonth));
+      _jumpToPage(_pageOf(_displayYear, _displayMonth));
     } else {
       _inputController.text = UJalaliDatePicker.format(_selected, persian: false);
       setState(() {
@@ -267,9 +274,7 @@ class _UJalaliDatePickerMaterialState extends UState<UJalaliDatePickerMaterial> 
     ],
   );
 
-  Widget _subHeader() {
-    final bool rtl = Directionality.of(context) == TextDirection.rtl;
-    return Row(
+  Widget _subHeader() => Row(
       children: <Widget>[
         TextButton(
           onPressed: () => setState(() => _pickerMode = _pickerMode == DatePickerMode.day ? DatePickerMode.year : DatePickerMode.day),
@@ -292,17 +297,16 @@ class _UJalaliDatePickerMaterialState extends UState<UJalaliDatePickerMaterial> 
           IconButton(
             onPressed: _pageOf(_displayYear, _displayMonth) > 0 ? () => _goToPage(_pageOf(_displayYear, _displayMonth) - 1) : null,
             tooltip: U.s.previousMonth,
-            icon: Icon(rtl ? Icons.chevron_right : Icons.chevron_left, color: scheme.onSurfaceVariant),
+            icon: Icon(Icons.chevron_left, color: scheme.onSurfaceVariant),
           ),
           IconButton(
             onPressed: _pageOf(_displayYear, _displayMonth) < _monthCount - 1 ? () => _goToPage(_pageOf(_displayYear, _displayMonth) + 1) : null,
             tooltip: U.s.nextMonth,
-            icon: Icon(rtl ? Icons.chevron_left : Icons.chevron_right, color: scheme.onSurfaceVariant),
+            icon: Icon(Icons.chevron_right, color: scheme.onSurfaceVariant),
           ),
         ],
       ],
     ).pSymmetric(horizontal: 8);
-  }
 
   Widget _weekDays() => Row(
     children: List<Widget>.generate(
@@ -543,21 +547,20 @@ class _UJalaliDatePickerSpinnerState extends UState<UJalaliDatePickerSpinner> {
     children: <Widget>[
       Row(
         children: <Widget>[
-          UTextLabelSmall(U.s.day, color: scheme.onSurfaceVariant, textAlign: TextAlign.center, expanded: 1),
-          UTextLabelSmall(U.s.month, color: scheme.onSurfaceVariant, textAlign: TextAlign.center, expanded: 1),
-          UTextLabelSmall(U.s.year, color: scheme.onSurfaceVariant, textAlign: TextAlign.center, expanded: 1),
+          UTextLabelSmall(U.s.day, color: scheme.onSurfaceVariant, textAlign: TextAlign.center, expanded: 2),
+          UTextLabelSmall(U.s.month, color: scheme.onSurfaceVariant, textAlign: TextAlign.center, expanded: 3),
+          UTextLabelSmall(U.s.year, color: scheme.onSurfaceVariant, textAlign: TextAlign.center, expanded: 3),
         ],
       ).pSymmetric(horizontal: 16, vertical: 4),
       SizedBox(
         height: 200,
         child: Stack(
           children: <Widget>[
-            UContainer(
-              height: 40,
-              radius: 12,
-              color: scheme.primary.withValues(alpha: 0.12),
-              margin: const EdgeInsets.symmetric(horizontal: 12),
-              center: true,
+            Positioned(
+              top: 80,
+              left: 12,
+              right: 12,
+              child: UContainer(height: 40, radius: 12, color: scheme.primary.withValues(alpha: 0.12)),
             ),
             Row(
               children: <Widget>[
@@ -566,18 +569,21 @@ class _UJalaliDatePickerSpinnerState extends UState<UJalaliDatePickerSpinner> {
                   itemCount: _maxDay - _minDay + 1,
                   onChanged: _onDayChanged,
                   labelBuilder: (int index) => UJalaliDatePicker.number(_minDay + index, persian: isFa),
+                  flex: 2,
                 ),
                 _wheel(
                   controller: _monthController,
                   itemCount: _maxMonth - _minMonth + 1,
                   onChanged: _onMonthChanged,
                   labelBuilder: (int index) => UJalaliDatePicker.monthName(_minMonth + index, persian: isFa),
+                  flex: 3,
                 ),
                 _wheel(
                   controller: _yearController,
                   itemCount: _maxYear - _minYear + 1,
                   onChanged: _onYearChanged,
                   labelBuilder: (int index) => UJalaliDatePicker.number(_minYear + index, persian: isFa),
+                  flex: 3,
                 ),
               ],
             ),
@@ -592,6 +598,7 @@ class _UJalaliDatePickerSpinnerState extends UState<UJalaliDatePickerSpinner> {
     required int itemCount,
     required ValueChanged<int> onChanged,
     required String Function(int index) labelBuilder,
+    int flex = 1,
   }) => CupertinoPicker.builder(
     scrollController: controller,
     itemExtent: 40,
@@ -604,9 +611,11 @@ class _UJalaliDatePickerSpinnerState extends UState<UJalaliDatePickerSpinner> {
       labelBuilder(index),
       color: scheme.onSurface,
       textAlign: TextAlign.center,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
       center: true,
     ),
-  ).expanded();
+  ).expanded(flex: flex);
 
   Widget _actions() => Row(
     mainAxisAlignment: MainAxisAlignment.end,
