@@ -246,10 +246,9 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                     validator: UValidators.required(message: U.s.required),
                     margin: const EdgeInsets.symmetric(vertical: 6),
                   ),
-                  UTextField(
+                  UTextFieldPhoneNumber(
                     controller: simCardNumber,
                     labelText: U.s.simCardNumber,
-                    keyboardType: TextInputType.phone,
                     margin: const EdgeInsets.symmetric(vertical: 6),
                   ),
                   UTextField(controller: simCardSerial, labelText: U.s.simCardSerial, margin: const EdgeInsets.symmetric(vertical: 6)),
@@ -329,10 +328,9 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                     validator: UValidators.required(message: U.s.required),
                     margin: const EdgeInsets.symmetric(vertical: 6),
                   ),
-                  UTextField(
+                  UTextFieldPhoneNumber(
                     controller: simCardNumber,
                     labelText: U.s.simCardNumber,
-                    keyboardType: TextInputType.phone,
                     margin: const EdgeInsets.symmetric(vertical: 6),
                   ),
                   UTextField(controller: simCardSerial, labelText: U.s.simCardSerial, margin: const EdgeInsets.symmetric(vertical: 6)),

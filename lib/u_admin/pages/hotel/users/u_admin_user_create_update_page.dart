@@ -115,12 +115,10 @@ class _UserCreateUpdateDialogState extends State<UAdminUserCreateUpdateDialog> {
                 validator: UValidators.required(message: U.s.required),
                 margin: const EdgeInsets.symmetric(vertical: 6),
               ),
-              UTextField(
+              UTextFieldPhoneNumber(
                 controller: c.controllerPhoneNumber,
                 labelText: U.s.phoneNumber,
-                keyboardType: TextInputType.phone,
-                prefix: const Icon(Icons.phone_rounded, size: 18),
-                validator: UValidators.required(message: U.s.required),
+                required: true,
                 margin: const EdgeInsets.symmetric(vertical: 6),
               ),
               UTextField(
@@ -247,7 +245,7 @@ class _UserCreateUpdateDialogState extends State<UAdminUserCreateUpdateDialog> {
         lastName: c.controllerLastName.text,
         password: c.controllerPassword.text,
         email: c.controllerEmail.text.toLatinNumber(),
-        phoneNumber: c.controllerPhoneNumber.numString(),
+        phoneNumber: c.controllerPhoneNumber.trimmedLatin(),
         userName: c.controllerUserName.numString(),
         birthdate: c.birthdate,
         fatherName: c.controllerFatherName.text,

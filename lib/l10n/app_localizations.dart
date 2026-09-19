@@ -3794,6 +3794,12 @@ abstract class AppLocalizations {
   /// **'Invalid barcode, please enter the IDs manually'**
   String get invalidBarcodePleaseEnterTheIdsManually;
 
+  /// No description provided for @invalidPhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid phone number'**
+  String get invalidPhoneNumber;
+
   /// No description provided for @invitation.
   ///
   /// In en, this message translates to:
@@ -4094,10 +4100,6 @@ abstract class AppLocalizations {
   /// **'Load subtitle file'**
   String get loadSubtitleFile;
 
-  /// No description provided for @loanPreRequest.
-  ///
-  /// In en, this message translates to:
-  /// **'Loan pre-request'**
   /// No description provided for @loading.
   ///
   /// In en, this message translates to:

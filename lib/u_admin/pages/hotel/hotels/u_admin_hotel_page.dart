@@ -170,7 +170,7 @@ class _HotelPageState extends State<UAdminHotelPage> {
                     UTextField(controller: detail, labelText: U.s.description, lines: 3, margin: const EdgeInsets.symmetric(vertical: 6)),
                     UTextField(controller: stars, labelText: U.s.stars, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
                     UTextField(controller: address, labelText: U.s.address, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextField(controller: phone, labelText: U.s.phoneNumber, keyboardType: TextInputType.phone, margin: const EdgeInsets.symmetric(vertical: 6)),
+                    UTextFieldPhoneNumber(controller: phone, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
                     UTextField(controller: email, labelText: U.s.email, keyboardType: TextInputType.emailAddress, margin: const EdgeInsets.symmetric(vertical: 6)),
                     UTextField(controller: checkInTime, labelText: U.s.checkInTime, margin: const EdgeInsets.symmetric(vertical: 6)),
                     UTextField(controller: checkOutTime, labelText: U.s.checkOutTime, margin: const EdgeInsets.symmetric(vertical: 6)),

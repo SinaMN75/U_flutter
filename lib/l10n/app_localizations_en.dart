@@ -1921,6 +1921,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get invalidBarcodePleaseEnterTheIdsManually => 'Invalid barcode, please enter the IDs manually';
 
   @override
+  String get invalidPhoneNumber => 'Invalid phone number';
+
+  @override
   String get invitation => 'Invitation';
 
   @override
@@ -2070,7 +2073,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get loadSubtitleFile => 'Load subtitle file';
 
-  @override
   @override
   String get loading => 'Loading...';
 

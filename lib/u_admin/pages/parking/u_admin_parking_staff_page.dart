@@ -134,7 +134,7 @@ class _UAdminParkingStaffPageState extends State<UAdminParkingStaffPage> {
                       validator: UValidators.required(message: ""),
                       margin: const EdgeInsets.symmetric(vertical: 6),
                     ),
-                    UTextField(controller: phone, labelText: U.s.phoneNumber, keyboardType: TextInputType.phone, maxLength: 15, margin: const EdgeInsets.symmetric(vertical: 6)),
+                    UTextFieldPhoneNumber(controller: phone, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
                     UTextField(controller: shiftTitle, labelText: U.s.shift, margin: const EdgeInsets.symmetric(vertical: 6)),
                     const SizedBox(height: 8),
                     ..._selectablePermissions.map(

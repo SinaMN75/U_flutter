@@ -166,7 +166,7 @@ class _UAdminParkingSubscriptionPageState extends State<UAdminParkingSubscriptio
                       onChanged: (TagParkingSubscription? value) => setDialogState(() => duration = value ?? TagParkingSubscription.monthly),
                     ).pSymmetric(vertical: 6),
                     UTextField(controller: name, labelText: U.s.fullName, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextField(controller: phone, labelText: U.s.phoneNumber, keyboardType: TextInputType.phone, maxLength: 15, margin: const EdgeInsets.symmetric(vertical: 6)),
+                    UTextFieldPhoneNumber(controller: phone, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
                     UTextField(
                       controller: price,
                       labelText: U.s.amount,

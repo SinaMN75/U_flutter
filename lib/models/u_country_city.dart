@@ -32,6 +32,8 @@ class UCountry {
     required this.primaryLanguageFa,
     required this.provinces,
   });
+
+  String get isoCode => flag.split(".").first.toUpperCase();
 }
 
 class UProvince {
@@ -73,6 +75,24 @@ abstract class UCountries {
   }
 
   static UCountry iran() => countries.firstWhere((UCountry i) => i.code == "001");
+
+  static UCountry? byIsoCode(String? isoCode) {
+    if (isoCode == null || isoCode.trim().isEmpty) return null;
+    final String code = isoCode.trim().toUpperCase();
+    for (final UCountry i in countries) {
+      if (i.isoCode == code) return i;
+    }
+    return null;
+  }
+
+  static UCountry? byDialCode(String? dialCode) {
+    if (dialCode == null || dialCode.trim().isEmpty) return null;
+    final String code = dialCode.trim().startsWith("+") ? dialCode.trim() : "+${dialCode.trim()}";
+    for (final UCountry i in countries) {
+      if (i.dialCode == code) return i;
+    }
+    return null;
+  }
 
   static UCodeType codeType(String? code) {
     if (code == null || !RegExp(r"^\d+$").hasMatch(code)) return UCodeType.unknown;
@@ -273,7 +293,7 @@ abstract class UCountries {
       code: "005",
       nameEn: "Antigua and Barbuda",
       nameFa: "آنتیگوا و باربودا",
-      dialCode: "+1-268",
+      dialCode: "+1",
       flag: "ag.png",
       capitalEn: "Saint John's",
       capitalFa: "سنت جونز",
@@ -299,7 +319,7 @@ abstract class UCountries {
       code: "006",
       nameEn: "Anguilla",
       nameFa: "آنگویلا",
-      dialCode: "+1-264",
+      dialCode: "+1",
       flag: "ai.png",
       capitalEn: "The Valley",
       capitalFa: "دره",
@@ -485,7 +505,7 @@ abstract class UCountries {
       code: "012",
       nameEn: "American Samoa",
       nameFa: "ساموآی آمریکا",
-      dialCode: "+1-684",
+      dialCode: "+1",
       flag: "as.png",
       capitalEn: "Pago Pago",
       capitalFa: "پاگو پاگو",
@@ -739,7 +759,7 @@ abstract class UCountries {
       code: "019",
       nameEn: "Barbados",
       nameFa: "باربادوس",
-      dialCode: "+1-246",
+      dialCode: "+1",
       flag: "bb.png",
       capitalEn: "Bridgetown",
       capitalFa: "بریجتاون",
@@ -1118,7 +1138,7 @@ abstract class UCountries {
       code: "028",
       nameEn: "Bermuda",
       nameFa: "برمودا",
-      dialCode: "+1-441",
+      dialCode: "+1",
       flag: "bm.png",
       capitalEn: "Hamilton",
       capitalFa: "همیلتون",
@@ -1260,7 +1280,7 @@ abstract class UCountries {
       code: "033",
       nameEn: "Bahamas",
       nameFa: "باهاما",
-      dialCode: "+1-242",
+      dialCode: "+1",
       flag: "bs.png",
       capitalEn: "Nassau",
       capitalFa: "ناسائو",
@@ -2211,7 +2231,7 @@ abstract class UCountries {
       code: "061",
       nameEn: "Dominica",
       nameFa: "دومینیکا",
-      dialCode: "+1-767",
+      dialCode: "+1",
       flag: "dm.png",
       capitalEn: "Roseau",
       capitalFa: "روسو",
@@ -2239,7 +2259,7 @@ abstract class UCountries {
       code: "062",
       nameEn: "Dominican Republic",
       nameFa: "جمهوری دومینیکن",
-      dialCode: "+1-809",
+      dialCode: "+1",
       flag: "do.png",
       capitalEn: "Santo Domingo",
       capitalFa: "سانتو دومینگو",
@@ -3345,7 +3365,7 @@ abstract class UCountries {
       code: "083",
       nameEn: "Grenada",
       nameFa: "گرنادا",
-      dialCode: "+1-473",
+      dialCode: "+1",
       flag: "gd.png",
       capitalEn: "St. George's",
       capitalFa: "سنت جورجز",
@@ -3744,7 +3764,7 @@ abstract class UCountries {
       code: "097",
       nameEn: "Guam",
       nameFa: "گوام",
-      dialCode: "+1-671",
+      dialCode: "+1",
       flag: "gu.png",
       capitalEn: "Hagåtña",
       capitalFa: "هاگاتنا",
@@ -4586,7 +4606,7 @@ abstract class UCountries {
       code: "116",
       nameEn: "Jamaica",
       nameFa: "جامائیکا",
-      dialCode: "+1-876",
+      dialCode: "+1",
       flag: "jm.png",
       capitalEn: "Kingston",
       capitalFa: "کینگستون",
@@ -4890,7 +4910,7 @@ abstract class UCountries {
       code: "124",
       nameEn: "Saint Kitts and Nevis",
       nameFa: "سنت کیتس و نویس",
-      dialCode: "+1-869",
+      dialCode: "+1",
       flag: "kn.png",
       capitalEn: "Basseterre",
       capitalFa: "باستر",
@@ -5014,7 +5034,7 @@ abstract class UCountries {
       code: "128",
       nameEn: "Cayman Islands",
       nameFa: "جزایر کیمن",
-      dialCode: "+1-345",
+      dialCode: "+1",
       flag: "ky.png",
       capitalEn: "George Town",
       capitalFa: "جورج‌تاون",
@@ -5135,7 +5155,7 @@ abstract class UCountries {
       code: "132",
       nameEn: "Saint Lucia",
       nameFa: "سنت لوسیا",
-      dialCode: "+1-758",
+      dialCode: "+1",
       flag: "lc.png",
       capitalEn: "Castries",
       capitalFa: "کاستری",
@@ -6066,7 +6086,7 @@ abstract class UCountries {
       code: "153",
       nameEn: "Northern Mariana Islands",
       nameFa: "جزایر ماریانای شمالی",
-      dialCode: "+1-670",
+      dialCode: "+1",
       flag: "mp.png",
       capitalEn: "Saipan",
       capitalFa: "سایپان",
@@ -6138,7 +6158,7 @@ abstract class UCountries {
       code: "156",
       nameEn: "Montserrat",
       nameFa: "مایوت",
-      dialCode: "+1-664",
+      dialCode: "+1",
       flag: "ms.png",
       capitalEn: "Plymouth",
       capitalFa: "پلیموث",
@@ -7231,7 +7251,7 @@ abstract class UCountries {
       code: "186",
       nameEn: "Puerto Rico",
       nameFa: "پورتو ریکو",
-      dialCode: "+1-787",
+      dialCode: "+1",
       flag: "pr.png",
       capitalEn: "San Juan",
       capitalFa: "سان خوان",
@@ -8483,7 +8503,7 @@ abstract class UCountries {
       code: "215",
       nameEn: "Sint Maarten",
       nameFa: "سینت مارتن",
-      dialCode: "+1-721",
+      dialCode: "+1",
       flag: "sx.png",
       capitalEn: "Philipsburg",
       capitalFa: "فیلیپسبورگ",
@@ -8554,7 +8574,7 @@ abstract class UCountries {
       code: "218",
       nameEn: "Turks and Caicos Islands",
       nameFa: "جزایر تورکس و کایکوس",
-      dialCode: "+1-649",
+      dialCode: "+1",
       flag: "tc.png",
       capitalEn: "Cockburn Town",
       capitalFa: "کاکبرن تاون",
@@ -9020,7 +9040,7 @@ abstract class UCountries {
       code: "230",
       nameEn: "Trinidad and Tobago",
       nameFa: "ترینیداد و توباگو",
-      dialCode: "+1-868",
+      dialCode: "+1",
       flag: "tt.png",
       capitalEn: "Port of Spain",
       capitalFa: "پورت آو اسپین",
@@ -9563,7 +9583,7 @@ abstract class UCountries {
       code: "241",
       nameEn: "Saint Vincent and the Grenadines",
       nameFa: "سنت وینسنت و گرنادین‌ها",
-      dialCode: "+1-784",
+      dialCode: "+1",
       flag: "vc.png",
       capitalEn: "Kingstown",
       capitalFa: "کینگزتاون",
@@ -9630,7 +9650,7 @@ abstract class UCountries {
       code: "243",
       nameEn: "British Virgin Islands",
       nameFa: "جزایر ویرجین بریتانیا",
-      dialCode: "+1-284",
+      dialCode: "+1",
       flag: "vg.png",
       capitalEn: "Road Town",
       capitalFa: "رود تاون",
@@ -9647,7 +9667,7 @@ abstract class UCountries {
       code: "244",
       nameEn: "U.S. Virgin Islands",
       nameFa: "جزایر ویرجین آمریکا",
-      dialCode: "+1-340",
+      dialCode: "+1",
       flag: "vi.png",
       capitalEn: "Charlotte Amalie",
       capitalFa: "شارلوت آمالی",

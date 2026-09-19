@@ -136,7 +136,7 @@ class _UAdminParkingPageState extends State<UAdminParkingPage> {
                       margin: const EdgeInsets.symmetric(vertical: 6),
                     ),
                     UTextField(controller: address, labelText: U.s.address, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextField(controller: phoneNumber, labelText: U.s.phoneNumber, keyboardType: TextInputType.phone, margin: const EdgeInsets.symmetric(vertical: 6)),
+                    UTextFieldPhoneNumber(controller: phoneNumber, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
                     UTextField(controller: capacity, labelText: U.s.capacity, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
                     UTextField(
                       controller: entrance,

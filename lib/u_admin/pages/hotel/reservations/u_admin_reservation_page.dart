@@ -331,7 +331,7 @@ class _ReservationPageState extends State<UAdminReservationPage> {
                       margin: const EdgeInsets.symmetric(vertical: 6),
                     ),
                     UTextField(controller: guestName, labelText: U.s.guestName, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextField(controller: guestPhone, labelText: U.s.guestPhone, keyboardType: TextInputType.phone, margin: const EdgeInsets.symmetric(vertical: 6)),
+                    UTextFieldPhoneNumber(controller: guestPhone, labelText: U.s.guestPhone, margin: const EdgeInsets.symmetric(vertical: 6)),
                     if (!isEdit) UTextField(controller: penalty, labelText: U.s.dailyPenalty, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
                     UTextField(controller: notes, labelText: U.s.notes, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
                     const SizedBox(height: 20),

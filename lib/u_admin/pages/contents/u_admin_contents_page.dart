@@ -202,7 +202,7 @@ class _ContentsPageState extends State<UAdminContentsPage> {
                     UTextField(controller: instagram, labelText: U.s.instagram, margin: const EdgeInsets.symmetric(vertical: 6)),
                     UTextField(controller: telegram, labelText: U.s.telegram, margin: const EdgeInsets.symmetric(vertical: 6)),
                     UTextField(controller: whatsapp, labelText: U.s.whatsApp, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextField(controller: phone, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
+                    UTextFieldPhoneNumber(controller: phone, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
                     const SizedBox(height: 12),
                     URow(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

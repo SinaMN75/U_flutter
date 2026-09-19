@@ -33,7 +33,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get accommodation => 'اقامتگاه';
 
   @override
-  String get account => 'حساب کاربری';
+  String get account => 'حساب';
 
   @override
   String get accountStatus => 'وضعیت حساب';
@@ -1921,6 +1921,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get invalidBarcodePleaseEnterTheIdsManually => 'بارکد نامعتبر است، لطفاً شناسه‌ها را به صورت دستی وارد کنید';
 
   @override
+  String get invalidPhoneNumber => 'شماره تلفن نامعتبر است';
+
+  @override
   String get invitation => 'دعوت‌نامه';
 
   @override
@@ -3282,7 +3285,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get requestsResponseDurationTrend => 'روند درخواست‌ها و مدت پاسخ';
 
   @override
-  String get required => 'ضروری';
+  String get required => 'الزامی';
 
   @override
   String get requiredDocuments => 'مدارک لازم';

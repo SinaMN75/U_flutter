@@ -144,7 +144,7 @@ class _DormPageState extends State<UAdminDormPage> {
                       margin: const EdgeInsets.symmetric(vertical: 6),
                     ),
                     UTextField(controller: address, labelText: U.s.address, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextField(controller: phoneNumber, labelText: U.s.phoneNumber, keyboardType: TextInputType.phone, margin: const EdgeInsets.symmetric(vertical: 6)),
+                    UTextFieldPhoneNumber(controller: phoneNumber, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
                     UTextField(controller: nearbyUniversity, labelText: U.s.nearbyUniversity, margin: const EdgeInsets.symmetric(vertical: 6)),
                     UTextField(controller: visitingHours, labelText: U.s.visitingHours, margin: const EdgeInsets.symmetric(vertical: 6)),
                     UTextField(controller: amenities, labelText: U.s.amenities, hintText: "،", margin: const EdgeInsets.symmetric(vertical: 6)),

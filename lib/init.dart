@@ -8,6 +8,9 @@ abstract class U {
   static late String baseUrl;
   static late String apiKey;
   static int snackBarDuration = 6;
+  static String defaultPhoneCountryCode = "IR";
+
+  static UCountry get defaultPhoneCountry => UCountries.byIsoCode(defaultPhoneCountryCode) ?? UCountries.byDialCode(defaultPhoneCountryCode) ?? UCountries.iran();
 
   static AppLocalizations get s => AppLocalizations.of(navigatorKey.currentContext!)!;
   static late UUserResponse user;
@@ -79,6 +82,7 @@ abstract class U {
 Future<void> initU({
   String? baseUrl,
   String? apiKey,
+  String defaultPhoneCountryCode = "IR",
   int snackBarDuration = 4,
   ULoadingSettings loadingSettings = const ULoadingSettings(blurAmount: 1, overlayColor: Colors.black12),
   List<DeviceOrientation> deviceOrientations = const <DeviceOrientation>[
@@ -88,6 +92,7 @@ Future<void> initU({
 }) async {
   U.baseUrl = baseUrl ?? "";
   U.apiKey = apiKey ?? "";
+  U.defaultPhoneCountryCode = defaultPhoneCountryCode;
   U.snackBarDuration = snackBarDuration;
   WidgetsFlutterBinding.ensureInitialized();
   await Future.wait(<Future<void>>[

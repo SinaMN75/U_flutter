@@ -171,7 +171,7 @@ class _UserPageState extends State<UAdminUserPage> {
                 children: <Widget>[
                   UTextField(controller: c.queryController, labelText: U.s.search, prefix: const Icon(Icons.search), margin: const EdgeInsets.symmetric(vertical: 6)),
                   UTextField(controller: c.userNameController, labelText: U.s.username, margin: const EdgeInsets.symmetric(vertical: 6)),
-                  UTextField(controller: c.phoneNumberController, labelText: U.s.phoneNumber, keyboardType: TextInputType.phone, margin: const EdgeInsets.symmetric(vertical: 6)),
+                  UTextFieldPhoneNumber(controller: c.phoneNumberController, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
                   UTextField(controller: c.emailController, labelText: U.s.email, keyboardType: TextInputType.emailAddress, margin: const EdgeInsets.symmetric(vertical: 6)),
                   UTextField(controller: c.firstNameController, labelText: U.s.firstName, margin: const EdgeInsets.symmetric(vertical: 6)),
                   UTextField(controller: c.lastNameController, labelText: U.s.lastName, margin: const EdgeInsets.symmetric(vertical: 6)),

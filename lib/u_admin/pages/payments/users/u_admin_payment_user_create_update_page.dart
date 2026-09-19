@@ -125,18 +125,14 @@ class _PaymentUserCreateUpdateDialogState extends State<UAdminPaymentUserCreateU
               ),
               _sectionTitle(U.s.contactInformation),
               _pair(
-                UTextField(
+                UTextFieldPhoneNumber(
                   controller: c.controllerPhoneNumber,
                   labelText: U.s.phoneNumber,
-                  keyboardType: TextInputType.phone,
-                  prefix: const Icon(Icons.phone_rounded, size: 18),
-                  validator: UValidators.required(message: U.s.required),
+                  required: true,
                 ),
-                UTextField(
+                UTextFieldPhoneNumber(
                   controller: c.controllerLandLine,
                   labelText: U.s.landline,
-                  keyboardType: TextInputType.phone,
-                  prefix: const Icon(Icons.phone_in_talk_outlined, size: 18),
                 ),
               ),
               UTextField(
@@ -268,7 +264,7 @@ class _PaymentUserCreateUpdateDialogState extends State<UAdminPaymentUserCreateU
         fatherName: c.controllerFatherName.text.nullIfEmpty(),
         nationalCode: c.controllerNationalCode.valueOrNull()?.toLatinNumber(),
         birthdate: c.birthdate,
-        phoneNumber: c.controllerPhoneNumber.numString(),
+        phoneNumber: c.controllerPhoneNumber.trimmedLatin(),
         landLine: c.controllerLandLine.valueOrNull()?.toLatinNumber(),
         email: c.controllerEmail.text.toLatinNumber().nullIfEmpty(),
         bio: c.controllerBio.valueOrNull(),

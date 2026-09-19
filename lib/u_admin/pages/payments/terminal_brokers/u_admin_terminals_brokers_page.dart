@@ -213,10 +213,10 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
                     validator: UValidators.required(message: U.s.required),
                     margin: const EdgeInsets.symmetric(vertical: 6),
                   ),
-                  UTextField(
+                  UTextFieldPhoneNumber(
                     controller: phoneNumber,
                     labelText: U.s.phoneNumber,
-                    validator: UValidators.required(message: U.s.required),
+                    required: true,
                     margin: const EdgeInsets.symmetric(vertical: 6),
                   ),
                   _Base64ImagePicker(label: U.s.logo, initial: logoBase64, onChanged: (String? v) => logoBase64 = v),

@@ -55,6 +55,67 @@ class UNumberInputFormatter extends TextInputFormatter {
   }
 }
 
+class UPhoneInputFormatter extends TextInputFormatter {
+  final int maxDigits;
+
+  UPhoneInputFormatter({
+    this.maxDigits = 15,
+  });
+
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    if (newValue.text.isEmpty) {
+      return newValue;
+    }
+
+    final String latin = newValue.text.toLatinNumber();
+
+    final StringBuffer result = StringBuffer();
+
+    int digitCount = 0;
+    int cursorPosition = 0;
+
+    final int requestedCursor = newValue.selection.baseOffset;
+
+    for (int i = 0; i < latin.length; i++) {
+      final String character = latin[i];
+      final bool isDigit = character.codeUnitAt(0) >= 48 && character.codeUnitAt(0) <= 57;
+      final bool isLeadingPlus = character == "+" && result.isEmpty;
+
+      if (!isDigit && !isLeadingPlus) {
+        continue;
+      }
+
+      if (isDigit) {
+        if (digitCount >= maxDigits) {
+          break;
+        }
+        digitCount++;
+      }
+
+      result.write(character);
+
+      if (i < requestedCursor) {
+        cursorPosition++;
+      }
+    }
+
+    final String formatted = result.toString();
+
+    cursorPosition = cursorPosition.clamp(0, formatted.length);
+
+    return TextEditingValue(
+      text: formatted,
+      selection: TextSelection.collapsed(
+        offset: cursorPosition,
+      ),
+    );
+  }
+}
+
 class UCurrencyInputFormatter extends TextInputFormatter {
   static final RegExp _nonNumeric = RegExp(r"[^\d.]");
 

@@ -840,6 +840,7 @@
   "invalid": "Invalid",
   "invalidAmount": "Invalid amount.",
   "invalidBarcodePleaseEnterTheIdsManually": "Invalid barcode, please enter the IDs manually",
+  "invalidPhoneNumber": "Invalid phone number",
   "invitation": "Invitation",
   "invoice": "Invoice",
   "invoiceDetails": "Invoice details",

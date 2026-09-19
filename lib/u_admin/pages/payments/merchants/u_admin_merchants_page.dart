@@ -194,8 +194,8 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
               ).pSymmetric(vertical: 6),
               UTextField(controller: c.titleFilter, labelText: U.s.title, margin: const EdgeInsets.symmetric(vertical: 6)),
               UTextField(controller: c.nationalCodeFilter, labelText: U.s.nationalCode, margin: const EdgeInsets.symmetric(vertical: 6)),
-              UTextField(controller: c.phoneNumberFilter, labelText: U.s.phoneNumber, keyboardType: TextInputType.phone, margin: const EdgeInsets.symmetric(vertical: 6)),
-              UTextField(controller: c.landlineFilter, labelText: U.s.landline, margin: const EdgeInsets.symmetric(vertical: 6)),
+              UTextFieldPhoneNumber(controller: c.phoneNumberFilter, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
+              UTextFieldPhoneNumber(controller: c.landlineFilter, labelText: U.s.landline, margin: const EdgeInsets.symmetric(vertical: 6)),
               UTextField(controller: c.zipCodeFilter, labelText: U.s.zipCode, margin: const EdgeInsets.symmetric(vertical: 6)),
               UTextField(controller: c.merchantIdFilter, labelText: U.s.merchantId, margin: const EdgeInsets.symmetric(vertical: 6)),
               UTextField(controller: c.bankAccountIdFilter, labelText: U.s.bankAccountId, margin: const EdgeInsets.symmetric(vertical: 6)),
@@ -257,17 +257,16 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
                     validator: UValidators.required(message: U.s.required),
                     margin: const EdgeInsets.symmetric(vertical: 6),
                   ),
-                  UTextField(
+                  UTextFieldPhoneNumber(
                     controller: phoneNumber,
                     labelText: U.s.phoneNumber,
-                    keyboardType: TextInputType.phone,
-                    validator: UValidators.required(message: U.s.required),
+                    required: true,
                     margin: const EdgeInsets.symmetric(vertical: 6),
                   ),
-                  UTextField(
+                  UTextFieldPhoneNumber(
                     controller: landline,
                     labelText: U.s.landline,
-                    validator: UValidators.required(message: U.s.required),
+                    required: true,
                     margin: const EdgeInsets.symmetric(vertical: 6),
                   ),
                   UTextField(
@@ -294,11 +293,10 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
                     validator: UValidators.required(message: U.s.required),
                     margin: const EdgeInsets.symmetric(vertical: 6),
                   ),
-                  UTextField(
+                  UTextFieldPhoneNumber(
                     controller: ownerPhoneNumber,
                     labelText: U.s.ownerPhoneNumber,
-                    keyboardType: TextInputType.phone,
-                    validator: UValidators.required(message: U.s.required),
+                    required: true,
                     margin: const EdgeInsets.symmetric(vertical: 6),
                   ),
                   UTextField(
@@ -320,13 +318,13 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
                             title: title.text,
                             businessTitle: businessTitle.text.nullIfEmpty(),
                             nationalCode: nationalCode.numString(),
-                            phoneNumber: phoneNumber.numString(),
-                            landline: landline.numString(),
+                            phoneNumber: phoneNumber.trimmedLatin(),
+                            landline: landline.trimmedLatin(),
                             zipCode: zipCode.numString(),
                             cityCode: cityCode.numString(),
                             mcc: mcc.numString(),
                             ownerName: ownerName.text,
-                            ownerPhoneNumber: ownerPhoneNumber.numString(),
+                            ownerPhoneNumber: ownerPhoneNumber.trimmedLatin(),
                             address: address.text,
                           ),
                         );

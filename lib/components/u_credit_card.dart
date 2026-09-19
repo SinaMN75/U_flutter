@@ -280,8 +280,8 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Expanded(child: _labelled("CARD HOLDER", widget.cardHolderName.isEmpty ? "—" : widget.cardHolderName)),
-              _labelled("EXPIRES", widget.expiryDate.isEmpty ? "MM/YY" : widget.expiryDate),
+              Expanded(child: _labelled("", widget.cardHolderName.isEmpty ? "—" : widget.cardHolderName)),
+              _labelled("EXP", widget.expiryDate.isEmpty ? "MM/YY" : widget.expiryDate),
             ],
           ),
         ],
