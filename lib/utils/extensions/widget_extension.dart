@@ -10,6 +10,7 @@ abstract class UState<T extends StatefulWidget> extends State<T> {
   EdgeInsets get viewInsets => mediaQuery.viewInsets;
   double get width => screenSize.width;
   double get height => screenSize.height;
+  bool get isFa => Localizations.localeOf(context).languageCode == "fa";
 }
 
 extension WidgetsExtension on Widget {
