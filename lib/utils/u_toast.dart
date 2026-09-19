@@ -64,7 +64,7 @@ abstract class UToast {
     String? title,
     UToastType type = UToastType.neutral,
     IconData? icon,
-    Duration duration = const Duration(seconds: 4),
+    Duration? duration,
     Color? backgroundColor,
     Color? foregroundColor,
     TextStyle? textStyle,
@@ -111,7 +111,7 @@ abstract class UToast {
               ],
             ),
             backgroundColor: background,
-            duration: duration,
+            duration: duration ?? Duration(seconds: U.snackBarDuration),
             action: resolvedAction,
             showCloseIcon: showCloseIcon,
             closeIconColor: foreground,
@@ -131,7 +131,7 @@ abstract class UToast {
     required String message,
     String? title,
     IconData? icon,
-    Duration duration = const Duration(seconds: 4),
+    Duration? duration,
     String? actionLabel,
     VoidCallback? onAction,
     bool showCloseIcon = false,
@@ -152,7 +152,7 @@ abstract class UToast {
     required String message,
     String? title,
     IconData? icon,
-    Duration duration = const Duration(seconds: 4),
+    Duration? duration,
     String? actionLabel,
     VoidCallback? onAction,
     bool showCloseIcon = false,
@@ -173,7 +173,7 @@ abstract class UToast {
     required String message,
     String? title,
     IconData? icon,
-    Duration duration = const Duration(seconds: 4),
+    Duration? duration,
     String? actionLabel,
     VoidCallback? onAction,
     bool showCloseIcon = false,
@@ -194,7 +194,7 @@ abstract class UToast {
     required String message,
     String? title,
     IconData? icon,
-    Duration duration = const Duration(seconds: 4),
+    Duration? duration,
     String? actionLabel,
     VoidCallback? onAction,
     bool showCloseIcon = false,
@@ -204,7 +204,7 @@ abstract class UToast {
     title: title,
     type: UToastType.error,
     icon: icon,
-    duration: duration,
+    duration: duration ?? Duration(seconds: U.snackBarDuration),
     actionLabel: actionLabel,
     onAction: onAction,
     showCloseIcon: showCloseIcon,
@@ -283,8 +283,8 @@ abstract class UToast {
     UToastType type = UToastType.neutral,
     IconData? icon,
     UToastPosition position = UToastPosition.bottom,
-    Duration duration = const Duration(seconds: 3),
-    Duration animationDuration = const Duration(milliseconds: 300),
+    Duration? duration,
+    Duration animationDuration = const Duration(milliseconds: 600),
     Color? backgroundColor,
     Color? foregroundColor,
     EdgeInsets margin = const EdgeInsets.all(24),
@@ -324,7 +324,7 @@ abstract class UToast {
     overlay.insert(entry);
 
     if (duration != Duration.zero) {
-      Future<void>.delayed(duration, () {
+      Future<void>.delayed(duration ?? Duration(seconds: U.snackBarDuration), () {
         if (_toastEntry != entry) return;
 
         _toastEntry = null;
@@ -353,7 +353,7 @@ abstract class UToast {
     String? title,
     IconData? icon,
     UToastPosition position = UToastPosition.bottom,
-    Duration duration = const Duration(seconds: 3),
+    Duration? duration,
     VoidCallback? onTap,
     VoidCallback? onDismiss,
   }) => toast(message: message, title: title, type: UToastType.success, icon: icon, position: position, duration: duration, onTap: onTap, onDismiss: onDismiss);

@@ -7,6 +7,7 @@ abstract class U {
 
   static late String baseUrl;
   static late String apiKey;
+  static int snackBarDuration = 6;
 
   static AppLocalizations get s => AppLocalizations.of(navigatorKey.currentContext!)!;
   static late UUserResponse user;
@@ -78,6 +79,7 @@ abstract class U {
 Future<void> initU({
   String? baseUrl,
   String? apiKey,
+  int snackBarDuration = 4,
   ULoadingSettings loadingSettings = const ULoadingSettings(blurAmount: 1, overlayColor: Colors.black12),
   List<DeviceOrientation> deviceOrientations = const <DeviceOrientation>[
     DeviceOrientation.portraitUp,
@@ -86,6 +88,7 @@ Future<void> initU({
 }) async {
   U.baseUrl = baseUrl ?? "";
   U.apiKey = apiKey ?? "";
+  U.snackBarDuration = snackBarDuration;
   WidgetsFlutterBinding.ensureInitialized();
   await Future.wait(<Future<void>>[
     if (!kIsWeb) SystemChrome.setPreferredOrientations(deviceOrientations),
