@@ -46,7 +46,7 @@ abstract class UIpgFlow {
         if (paid && receipt != null) {
           await _showReceipt(
             amount: p.amount,
-            trackingNumber: additionalData.trackingNumber,
+            trackingNumber: additionalData.trackingNumber ?? "---",
             receipt: receipt,
             title: _title(billId: p.billId, chargeMobileNumber: p.chargeMobileNumber, multiplexedAccounts: p.multiplexedAccounts),
           );

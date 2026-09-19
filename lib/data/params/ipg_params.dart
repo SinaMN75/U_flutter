@@ -71,21 +71,3 @@ class UIpgMultiplexedAccountParams {
 
   factory UIpgMultiplexedAccountParams.fromJson(String str) => UIpgMultiplexedAccountParams.fromMap(json.decode(str));
 }
-
-class UIpgStatusParams {
-  final String trackingNumber;
-
-  UIpgStatusParams({required this.trackingNumber});
-
-  Map<String, dynamic> toMap() => <String, dynamic>{
-    "trackingNumber": trackingNumber,
-  };
-
-  factory UIpgStatusParams.fromMap(Map<String, dynamic> json) => UIpgStatusParams(
-    trackingNumber: json["trackingNumber"],
-  );
-
-  String toJson() => json.encode(toMap());
-
-  factory UIpgStatusParams.fromJson(String str) => UIpgStatusParams.fromMap(json.decode(str));
-}

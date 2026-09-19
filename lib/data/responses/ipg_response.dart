@@ -4,8 +4,8 @@ class UIpgPayResponse {
   UIpgPayResponse({required this.url, required this.additionalData});
 
   factory UIpgPayResponse.fromMap(Map<String, dynamic> json) => UIpgPayResponse(
-    url: json["url"] ?? "",
-    additionalData: json["additionalData"] ?? "",
+    url: json["url"],
+    additionalData: UIpgAdditionalData.fromMap(json["additionalData"]),
   );
 
   final String url;
@@ -46,9 +46,9 @@ class UIpgVerifyResponse {
 }
 
 class UIpgAdditionalData {
-  final String trackingNumber;
-  final int tag;
-  final int kind;
+  final String? trackingNumber;
+  final int? tag;
+  final int? kind;
   final String? invoiceId;
   final String? billId;
   final String? paymentId;
@@ -58,9 +58,9 @@ class UIpgAdditionalData {
   final String? token;
 
   UIpgAdditionalData({
-    required this.trackingNumber,
-    required this.tag,
-    required this.kind,
+    this.trackingNumber,
+    this.tag,
+    this.kind,
     this.invoiceId,
     this.billId,
     this.paymentId,

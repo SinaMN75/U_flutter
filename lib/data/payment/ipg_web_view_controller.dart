@@ -33,21 +33,10 @@ class UIpgWebViewController {
     final UIpgAdditionalData i = UIpgAdditionalData.fromJson(data.fromBase58());
     finished = true;
     ULoading.show();
-    final bool paid = await _readStatus(i.status == 0);
+    final bool paid = i.status == 0 && i.rrn != null;
     ULoading.dismiss();
     UToast.snackBar(message: paid ? U.s.paymentWasSuccessful : U.s.paymentFailed);
     UNavigator.back<bool>(paid);
-  }
-
-  Future<bool> _readStatus(bool fallback) async {
-    bool? paid;
-    await UServices.ipg.status(
-      p: UIpgStatusParams(trackingNumber: additionalData.trackingNumber),
-      onOk: (UResponse<UIpgVerifyResponse> r) => paid = r.result?.paid,
-      onError: (UEmptyResponse e) {},
-      onException: (String e) {},
-    );
-    return paid ?? fallback;
   }
 
   void confirmCancel() {
