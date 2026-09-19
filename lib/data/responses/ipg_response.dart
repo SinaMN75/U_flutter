@@ -21,30 +21,6 @@ class UIpgPayResponse {
   factory UIpgPayResponse.fromJson(String str) => UIpgPayResponse.fromMap(json.decode(str));
 }
 
-class UIpgVerifyResponse {
-  UIpgVerifyResponse({required this.paid, required this.failed, required this.balance});
-
-  factory UIpgVerifyResponse.fromMap(Map<String, dynamic> json) => UIpgVerifyResponse(
-    paid: json["paid"] ?? false,
-    failed: json["failed"] ?? false,
-    balance: (json["balance"] ?? 0).toString().toDouble(),
-  );
-
-  final bool paid;
-  final bool failed;
-  final double balance;
-
-  Map<String, dynamic> toMap() => <String, dynamic>{
-    "paid": paid,
-    "failed": failed,
-    "balance": balance,
-  };
-
-  String toJson() => json.encode(toMap());
-
-  factory UIpgVerifyResponse.fromJson(String str) => UIpgVerifyResponse.fromMap(json.decode(str));
-}
-
 class UIpgAdditionalData {
   final String? trackingNumber;
   final int? tag;
@@ -56,6 +32,7 @@ class UIpgAdditionalData {
   final int? status;
   final String? rrn;
   final String? token;
+  final bool paid;
 
   UIpgAdditionalData({
     this.trackingNumber,
@@ -68,6 +45,7 @@ class UIpgAdditionalData {
     this.status,
     this.rrn,
     this.token,
+    this.paid = false,
   });
 
   factory UIpgAdditionalData.fromJson(String str) => UIpgAdditionalData.fromMap(json.decode(str));
@@ -85,6 +63,7 @@ class UIpgAdditionalData {
     status: json["status"],
     rrn: json["rrn"],
     token: json["token"],
+    paid: json["paid"] ?? false,
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -98,5 +77,6 @@ class UIpgAdditionalData {
     "status": status,
     "rrn": rrn,
     "token": token,
+    "paid": paid,
   };
 }

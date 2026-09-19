@@ -19,7 +19,7 @@ class UIpgWebViewController {
   void onPageFinished(String url) {
     if (finished) return;
     final Uri? uri = Uri.tryParse(url);
-    if (uri == null || !uri.path.toLowerCase().contains("/ipg/verify")) return;
+    if (uri == null || !uri.path.toLowerCase().contains("/ipg/result")) return;
     if (uri.queryParameters["additionalData"] == null) return;
     _finish(uri.queryParameters["additionalData"]!);
   }
@@ -29,14 +29,11 @@ class UIpgWebViewController {
     _finish(data["additionalData"]);
   }
 
-  Future<void> _finish(String data) async {
+  void _finish(String data) {
     final UIpgAdditionalData i = UIpgAdditionalData.fromJson(data.fromBase58());
     finished = true;
-    ULoading.show();
-    final bool paid = i.status == 0 && i.rrn != null;
-    ULoading.dismiss();
-    UToast.snackBar(message: paid ? U.s.paymentWasSuccessful : U.s.paymentFailed);
-    UNavigator.back<bool>(paid);
+    UToast.snackBar(message: i.paid ? U.s.paymentWasSuccessful : U.s.paymentFailed);
+    UNavigator.back<bool>(i.paid);
   }
 
   void confirmCancel() {
