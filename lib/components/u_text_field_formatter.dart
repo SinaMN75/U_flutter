@@ -56,62 +56,68 @@ class UNumberInputFormatter extends TextInputFormatter {
 }
 
 class UPhoneInputFormatter extends TextInputFormatter {
-  final int maxDigits;
+  final String countryCode;
 
   UPhoneInputFormatter({
-    this.maxDigits = 15,
+    required this.countryCode,
   });
+
+  static bool _isDigit(String character) => character.codeUnitAt(0) >= 48 && character.codeUnitAt(0) <= 57;
+
+  static String _digitsOf(String value) {
+    final StringBuffer out = StringBuffer();
+    for (int i = 0; i < value.length; i++) {
+      if (_isDigit(value[i])) out.write(value[i]);
+    }
+    return out.toString();
+  }
+
+  static int _digitsBefore(String value, int offset) {
+    int count = 0;
+    for (int i = 0; i < value.length && i < offset; i++) {
+      if (_isDigit(value[i])) count++;
+    }
+    return count;
+  }
 
   @override
   TextEditingValue formatEditUpdate(
     TextEditingValue oldValue,
     TextEditingValue newValue,
   ) {
-    if (newValue.text.isEmpty) {
-      return newValue;
-    }
-
     final String latin = newValue.text.toLatinNumber();
 
-    final StringBuffer result = StringBuffer();
-
-    int digitCount = 0;
-    int cursorPosition = 0;
-
-    final int requestedCursor = newValue.selection.baseOffset;
-
-    for (int i = 0; i < latin.length; i++) {
-      final String character = latin[i];
-      final bool isDigit = character.codeUnitAt(0) >= 48 && character.codeUnitAt(0) <= 57;
-      final bool isLeadingPlus = character == "+" && result.isEmpty;
-
-      if (!isDigit && !isLeadingPlus) {
-        continue;
-      }
-
-      if (isDigit) {
-        if (digitCount >= maxDigits) {
-          break;
-        }
-        digitCount++;
-      }
-
-      result.write(character);
-
-      if (i < requestedCursor) {
-        cursorPosition++;
-      }
+    if (latin.startsWith("+") || latin.startsWith("00")) {
+      final String international = latin.replaceAll(RegExp(r"[^\d+]"), "");
+      return TextEditingValue(
+        text: international,
+        selection: TextSelection.collapsed(offset: international.length),
+      );
     }
 
-    final String formatted = result.toString();
+    int typed = _digitsBefore(latin, newValue.selection.baseOffset);
+    String digits = _digitsOf(latin);
 
-    cursorPosition = cursorPosition.clamp(0, formatted.length);
+    final bool deleted = newValue.text.length < oldValue.text.length;
+    if (deleted && digits == _digitsOf(oldValue.text.toLatinNumber()) && typed > 0) {
+      digits = digits.substring(0, typed - 1) + digits.substring(typed);
+      typed--;
+    }
+
+    final String limited = UPhoneNumberUtils.inputDigits(digits, countryCode: countryCode);
+    final String formatted = UPhoneNumberUtils.formatNational(limited, countryCode: countryCode);
+
+    final int target = typed - (digits.length - limited.length);
+    int offset = 0;
+    int seen = 0;
+    while (offset < formatted.length && seen < target) {
+      if (_isDigit(formatted[offset])) seen++;
+      offset++;
+    }
 
     return TextEditingValue(
       text: formatted,
-      selection: TextSelection.collapsed(
-        offset: cursorPosition,
-      ),
+      selection: TextSelection.collapsed(offset: offset.clamp(0, formatted.length)),
     );
   }
 }
