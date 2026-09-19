@@ -113,6 +113,40 @@ showDialog(context: context, builder: (_) => JalaliDatePickerDialog(
             ),
           ),
         ),
+        DemoSection(
+          title: "Jalali date picker - material",
+          description: "A Jalali clone of Flutter's own Material date picker: month paging, year grid and keyboard entry.",
+          code: r'''
+final Jalali? date = await UJalaliDatePicker.show(
+  type: UJalaliDatePickerType.material,
+  initialDate: Jalali.now(),
+);''',
+          child: UButton(
+            title: "Pick a Jalali date",
+            icon: const Icon(Icons.calendar_month, size: 18),
+            onTap: () async {
+              final Jalali? date = await UJalaliDatePicker.show(initialDate: Jalali.now());
+              if (date != null) UToast.success(message: date.formatFullDate());
+            },
+          ),
+        ),
+        DemoSection(
+          title: "Jalali date picker - spinner",
+          description: "An iOS style three wheel picker in a bottom sheet; day and month wheels are clamped to the selected month and range.",
+          code: r'''
+final Jalali? date = await UJalaliDatePicker.show(
+  type: UJalaliDatePickerType.spinner,
+  initialDate: Jalali.now(),
+);''',
+          child: UButton(
+            title: "Spin a Jalali date",
+            icon: const Icon(Icons.view_day_outlined, size: 18),
+            onTap: () async {
+              final Jalali? date = await UJalaliDatePicker.show(type: UJalaliDatePickerType.spinner, initialDate: Jalali.now());
+              if (date != null) UToast.success(message: date.formatFullDate());
+            },
+          ),
+        ),
       ],
     );
   }
