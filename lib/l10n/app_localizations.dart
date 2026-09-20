@@ -146,6 +146,12 @@ abstract class AppLocalizations {
   /// **'Account'**
   String get account;
 
+  /// No description provided for @accountClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'Account closed'**
+  String get accountClosed;
+
   /// No description provided for @accountStatus.
   ///
   /// In en, this message translates to:
@@ -577,6 +583,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'At least 8 characters'**
   String get atLeast8Characters;
+
+  /// No description provided for @atm.
+  ///
+  /// In en, this message translates to:
+  /// **'ATM'**
+  String get atm;
 
   /// No description provided for @atMost.
   ///
@@ -3788,6 +3800,12 @@ abstract class AppLocalizations {
   /// **'Institution ID'**
   String get institutionId;
 
+  /// No description provided for @insufficientAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Insufficient amount'**
+  String get insufficientAmount;
+
   /// No description provided for @insufficientBalance.
   ///
   /// In en, this message translates to:
@@ -4003,6 +4021,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Key-Value'**
   String get keyValue;
+
+  /// No description provided for @kiosk.
+  ///
+  /// In en, this message translates to:
+  /// **'Kiosk'**
+  String get kiosk;
 
   /// No description provided for @label.
   ///
@@ -4286,6 +4310,12 @@ abstract class AppLocalizations {
   /// **'Management'**
   String get management;
 
+  /// No description provided for @manualRefund.
+  ///
+  /// In en, this message translates to:
+  /// **'Manual refund'**
+  String get manualRefund;
+
   /// No description provided for @margins.
   ///
   /// In en, this message translates to:
@@ -4376,6 +4406,12 @@ abstract class AppLocalizations {
   /// **'Merchant ID'**
   String get merchantId;
 
+  /// No description provided for @merchantSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'Merchant system'**
+  String get merchantSystem;
+
   /// No description provided for @merchantTitleStoreOrBusinessName.
   ///
   /// In en, this message translates to:
@@ -4453,6 +4489,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Mirror'**
   String get mirror;
+
+  /// No description provided for @mobileApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile app'**
+  String get mobileApp;
 
   /// No description provided for @mobileBank.
   ///
@@ -4591,6 +4633,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Move Up'**
   String get moveUp;
+
+  /// No description provided for @mPos.
+  ///
+  /// In en, this message translates to:
+  /// **'mPOS'**
+  String get mPos;
 
   /// No description provided for @multiplexedPayment.
   ///
@@ -5684,6 +5732,12 @@ abstract class AppLocalizations {
   /// **'Payments'**
   String get payments;
 
+  /// No description provided for @pc.
+  ///
+  /// In en, this message translates to:
+  /// **'PC'**
+  String get pc;
+
   /// No description provided for @penColor.
   ///
   /// In en, this message translates to:
@@ -6734,6 +6788,12 @@ abstract class AppLocalizations {
   /// **'Retry'**
   String get retry;
 
+  /// No description provided for @reverse.
+  ///
+  /// In en, this message translates to:
+  /// **'Reverse'**
+  String get reverse;
+
   /// No description provided for @reviews.
   ///
   /// In en, this message translates to:
@@ -7213,6 +7273,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Settle and close the shift'**
   String get settleAndCloseTheShift;
+
+  /// No description provided for @setTopBox.
+  ///
+  /// In en, this message translates to:
+  /// **'Set-top box'**
+  String get setTopBox;
 
   /// No description provided for @share.
   ///
@@ -9169,420 +9235,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Zoom out'**
   String get zoomOut;
-
-  /// No description provided for @detailsAndPhotos.
-  ///
-  /// In en, this message translates to:
-  /// **'Details & photos'**
-  String get detailsAndPhotos;
-
-  /// No description provided for @addPhotos.
-  ///
-  /// In en, this message translates to:
-  /// **'Add photos'**
-  String get addPhotos;
-
-  /// No description provided for @setAsCover.
-  ///
-  /// In en, this message translates to:
-  /// **'Set as cover'**
-  String get setAsCover;
-
-  /// No description provided for @photoCategory.
-  ///
-  /// In en, this message translates to:
-  /// **'Photo category'**
-  String get photoCategory;
-
-  /// No description provided for @noPhotosYet.
-  ///
-  /// In en, this message translates to:
-  /// **'No photos yet.'**
-  String get noPhotosYet;
-
-  /// No description provided for @propertyType.
-  ///
-  /// In en, this message translates to:
-  /// **'Property type'**
-  String get propertyType;
-
-  /// No description provided for @mealPlans.
-  ///
-  /// In en, this message translates to:
-  /// **'Meal plans'**
-  String get mealPlans;
-
-  /// No description provided for @paymentMethods.
-  ///
-  /// In en, this message translates to:
-  /// **'Payment methods'**
-  String get paymentMethods;
-
-  /// No description provided for @staffLanguages.
-  ///
-  /// In en, this message translates to:
-  /// **'Staff languages'**
-  String get staffLanguages;
-
-  /// No description provided for @yearBuilt.
-  ///
-  /// In en, this message translates to:
-  /// **'Year built'**
-  String get yearBuilt;
-
-  /// No description provided for @yearRenovated.
-  ///
-  /// In en, this message translates to:
-  /// **'Year renovated'**
-  String get yearRenovated;
-
-  /// No description provided for @floorCount.
-  ///
-  /// In en, this message translates to:
-  /// **'Number of floors'**
-  String get floorCount;
-
-  /// No description provided for @website.
-  ///
-  /// In en, this message translates to:
-  /// **'Website'**
-  String get website;
-
-  /// No description provided for @whatsapp.
-  ///
-  /// In en, this message translates to:
-  /// **'WhatsApp'**
-  String get whatsapp;
-
-  /// No description provided for @pets.
-  ///
-  /// In en, this message translates to:
-  /// **'Pets'**
-  String get pets;
-
-  /// No description provided for @smoking.
-  ///
-  /// In en, this message translates to:
-  /// **'Smoking'**
-  String get smoking;
-
-  /// No description provided for @children.
-  ///
-  /// In en, this message translates to:
-  /// **'Children'**
-  String get children;
-
-  /// No description provided for @extraBed.
-  ///
-  /// In en, this message translates to:
-  /// **'Extra bed'**
-  String get extraBed;
-
-  /// No description provided for @priceIncludesTax.
-  ///
-  /// In en, this message translates to:
-  /// **'Price includes tax'**
-  String get priceIncludesTax;
-
-  /// No description provided for @yes.
-  ///
-  /// In en, this message translates to:
-  /// **'Yes'**
-  String get yes;
-
-  /// No description provided for @no.
-  ///
-  /// In en, this message translates to:
-  /// **'No'**
-  String get no;
-
-  /// No description provided for @notSpecified.
-  ///
-  /// In en, this message translates to:
-  /// **'Not specified'**
-  String get notSpecified;
-
-  /// No description provided for @howToGetThere.
-  ///
-  /// In en, this message translates to:
-  /// **'How to get there'**
-  String get howToGetThere;
-
-  /// No description provided for @nearbyPlaces.
-  ///
-  /// In en, this message translates to:
-  /// **'Nearby places'**
-  String get nearbyPlaces;
-
-  /// No description provided for @addNearbyPlace.
-  ///
-  /// In en, this message translates to:
-  /// **'Add nearby place'**
-  String get addNearbyPlace;
-
-  /// No description provided for @distanceMeters.
-  ///
-  /// In en, this message translates to:
-  /// **'Distance (m)'**
-  String get distanceMeters;
-
-  /// No description provided for @walkMinutes.
-  ///
-  /// In en, this message translates to:
-  /// **'Time (min)'**
-  String get walkMinutes;
-
-  /// No description provided for @faqs.
-  ///
-  /// In en, this message translates to:
-  /// **'FAQs'**
-  String get faqs;
-
-  /// No description provided for @addQuestion.
-  ///
-  /// In en, this message translates to:
-  /// **'Add question'**
-  String get addQuestion;
-
-  /// No description provided for @question.
-  ///
-  /// In en, this message translates to:
-  /// **'Question'**
-  String get question;
-
-  /// No description provided for @answer.
-  ///
-  /// In en, this message translates to:
-  /// **'Answer'**
-  String get answer;
-
-  /// No description provided for @childrenPolicy.
-  ///
-  /// In en, this message translates to:
-  /// **'Children policy'**
-  String get childrenPolicy;
-
-  /// No description provided for @roomView.
-  ///
-  /// In en, this message translates to:
-  /// **'Room view'**
-  String get roomView;
-
-  /// No description provided for @bathroomType.
-  ///
-  /// In en, this message translates to:
-  /// **'Bathroom type'**
-  String get bathroomType;
-
-  /// No description provided for @maxAdults.
-  ///
-  /// In en, this message translates to:
-  /// **'Max adults'**
-  String get maxAdults;
-
-  /// No description provided for @maxChildren.
-  ///
-  /// In en, this message translates to:
-  /// **'Max children'**
-  String get maxChildren;
-
-  /// No description provided for @mealPlan.
-  ///
-  /// In en, this message translates to:
-  /// **'Meal plan'**
-  String get mealPlan;
-
-  /// No description provided for @nonRefundable.
-  ///
-  /// In en, this message translates to:
-  /// **'Non-refundable'**
-  String get nonRefundable;
-
-  /// No description provided for @curfewTime.
-  ///
-  /// In en, this message translates to:
-  /// **'Curfew time'**
-  String get curfewTime;
-
-  /// No description provided for @mealServices.
-  ///
-  /// In en, this message translates to:
-  /// **'Meal services'**
-  String get mealServices;
-
-  /// No description provided for @servicesIncluded.
-  ///
-  /// In en, this message translates to:
-  /// **'Services included in rent'**
-  String get servicesIncluded;
-
-  /// No description provided for @residentTypes.
-  ///
-  /// In en, this message translates to:
-  /// **'Accepted residents'**
-  String get residentTypes;
-
-  /// No description provided for @minimumStayMonths.
-  ///
-  /// In en, this message translates to:
-  /// **'Minimum stay (months)'**
-  String get minimumStayMonths;
-
-  /// No description provided for @paymentSchedule.
-  ///
-  /// In en, this message translates to:
-  /// **'Payment schedule'**
-  String get paymentSchedule;
-
-  /// No description provided for @depositPolicy.
-  ///
-  /// In en, this message translates to:
-  /// **'Deposit policy'**
-  String get depositPolicy;
-
-  /// No description provided for @earlyTerminationPolicy.
-  ///
-  /// In en, this message translates to:
-  /// **'Early termination policy'**
-  String get earlyTerminationPolicy;
-
-  /// No description provided for @visitorsPolicy.
-  ///
-  /// In en, this message translates to:
-  /// **'Visitors policy'**
-  String get visitorsPolicy;
-
-  /// No description provided for @wifiSpeed.
-  ///
-  /// In en, this message translates to:
-  /// **'Internet speed (Mbps)'**
-  String get wifiSpeed;
-
-  /// No description provided for @universityWalkMinutes.
-  ///
-  /// In en, this message translates to:
-  /// **'Walk to university (min)'**
-  String get universityWalkMinutes;
-
-  /// No description provided for @furnished.
-  ///
-  /// In en, this message translates to:
-  /// **'Furnished'**
-  String get furnished;
-
-  /// No description provided for @bedLevel.
-  ///
-  /// In en, this message translates to:
-  /// **'Bed level'**
-  String get bedLevel;
-
-  /// No description provided for @bedAmenities.
-  ///
-  /// In en, this message translates to:
-  /// **'Bed amenities'**
-  String get bedAmenities;
-
-  /// No description provided for @featured.
-  ///
-  /// In en, this message translates to:
-  /// **'Featured'**
-  String get featured;
-
-  /// No description provided for @visibility.
-  ///
-  /// In en, this message translates to:
-  /// **'Visibility'**
-  String get visibility;
-
-  /// No description provided for @verifiedOnSite.
-  ///
-  /// In en, this message translates to:
-  /// **'Visited in person'**
-  String get verifiedOnSite;
-
-  /// No description provided for @customItem.
-  ///
-  /// In en, this message translates to:
-  /// **'Custom item'**
-  String get customItem;
-
-  /// No description provided for @addCustomItem.
-  ///
-  /// In en, this message translates to:
-  /// **'Add custom item'**
-  String get addCustomItem;
-
-  /// No description provided for @addHighlight.
-  ///
-  /// In en, this message translates to:
-  /// **'Add highlight'**
-  String get addHighlight;
-
-  /// No description provided for @detailsSaved.
-  ///
-  /// In en, this message translates to:
-  /// **'Details saved.'**
-  String get detailsSaved;
-
-  /// No description provided for @meterUnit.
-  ///
-  /// In en, this message translates to:
-  /// **'m'**
-  String get meterUnit;
-
-  /// No description provided for @kilometerUnit.
-  ///
-  /// In en, this message translates to:
-  /// **'km'**
-  String get kilometerUnit;
-
-  /// No description provided for @minuteUnit.
-  ///
-  /// In en, this message translates to:
-  /// **'min'**
-  String get minuteUnit;
-
-  /// No description provided for @propertyInformation.
-  ///
-  /// In en, this message translates to:
-  /// **'Property information'**
-  String get propertyInformation;
-
-  /// No description provided for @bookingPolicies.
-  ///
-  /// In en, this message translates to:
-  /// **'Terms & services'**
-  String get bookingPolicies;
-
-  /// No description provided for @languagesSpoken.
-  ///
-  /// In en, this message translates to:
-  /// **'Languages spoken'**
-  String get languagesSpoken;
-
-  /// No description provided for @socialLinks.
-  ///
-  /// In en, this message translates to:
-  /// **'Get in touch'**
-  String get socialLinks;
-
-  /// No description provided for @acceptedResidents.
-  ///
-  /// In en, this message translates to:
-  /// **'Accepted residents'**
-  String get acceptedResidents;
-
-  /// No description provided for @includedInRent.
-  ///
-  /// In en, this message translates to:
-  /// **'Included in rent'**
-  String get includedInRent;
-
-  /// No description provided for @placesVisibility.
-  ///
-  /// In en, this message translates to:
-  /// **'Featured, verified & visibility'**
-  String get placesVisibility;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

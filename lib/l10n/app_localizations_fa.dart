@@ -36,6 +36,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get account => 'حساب';
 
   @override
+  String get accountClosed => 'حساب بسته شده';
+
+  @override
   String get accountStatus => 'وضعیت حساب';
 
   @override
@@ -256,6 +259,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get atLeast8Characters => 'حداقل ۸ نویسه';
+
+  @override
+  String get atm => 'خودپرداز';
 
   @override
   String get atMost => 'حداکثر';
@@ -1918,6 +1924,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get institutionId => 'شناسه موسسه';
 
   @override
+  String get insufficientAmount => 'مبلغ ناکافی';
+
+  @override
   String get insufficientBalance => 'موجودی کافی نیست';
 
   @override
@@ -2024,6 +2033,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get keyValue => 'کلید-مقدار';
+
+  @override
+  String get kiosk => 'کیوسک';
 
   @override
   String get label => 'برچسب';
@@ -2167,6 +2179,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get management => 'مدیریت';
 
   @override
+  String get manualRefund => 'بازگشت وجه دستی';
+
+  @override
   String get margins => 'حاشیه‌ها';
 
   @override
@@ -2212,6 +2227,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get merchantId => 'شناسه پذیرنده';
 
   @override
+  String get merchantSystem => 'سامانه پذیرنده';
+
+  @override
   String get merchantTitleStoreOrBusinessName => 'عنوان پذیرندگی (نام فروشگاه، کسب و کار)';
 
   @override
@@ -2249,6 +2267,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get mirror => 'آینه';
+
+  @override
+  String get mobileApp => 'اپلیکیشن موبایل';
 
   @override
   String get mobileBank => 'همراه بانک';
@@ -2318,6 +2339,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get moveUp => 'انتقال به بالا';
+
+  @override
+  String get mPos => 'کارتخوان سیار';
 
   @override
   String get multiplexedPayment => 'پرداخت تسهیمی';
@@ -2870,6 +2894,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get payments => 'پرداخت';
 
   @override
+  String get pc => 'رایانه';
+
+  @override
   String get penColor => 'رنگ قلم';
 
   @override
@@ -3401,6 +3428,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get retry => 'تلاش مجدد';
 
   @override
+  String get reverse => 'برگشت تراکنش';
+
+  @override
   String get reviews => 'نظرات کاربران';
 
   @override
@@ -3643,6 +3673,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get settleAndCloseTheShift => 'تسویه و بستن شیفت';
+
+  @override
+  String get setTopBox => 'گیرنده دیجیتال';
 
   @override
   String get share => 'اشتراک‌گذاری';
@@ -4636,211 +4669,4 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get zoomOut => 'کوچک‌نمایی';
-
-  @override
-  String get detailsAndPhotos => 'جزئیات و تصاویر';
-
-  @override
-  String get addPhotos => 'افزودن تصویر';
-
-  @override
-  String get setAsCover => 'انتخاب به‌عنوان عکس اصلی';
-
-  @override
-  String get photoCategory => 'دسته‌بندی تصویر';
-
-  @override
-  String get noPhotosYet => 'هنوز تصویری ثبت نشده است.';
-
-  @override
-  String get propertyType => 'نوع اقامتگاه';
-
-  @override
-  String get mealPlans => 'سرویس‌های غذایی';
-
-  @override
-  String get paymentMethods => 'روش‌های پرداخت';
-
-  @override
-  String get staffLanguages => 'زبان‌های پرسنل';
-
-  @override
-  String get yearBuilt => 'سال ساخت';
-
-  @override
-  String get yearRenovated => 'سال بازسازی';
-
-  @override
-  String get floorCount => 'تعداد طبقات';
-
-  @override
-  String get website => 'وب‌سایت';
-
-  @override
-  String get whatsapp => 'واتس‌اپ';
-
-  @override
-  String get pets => 'حیوان خانگی';
-
-  @override
-  String get smoking => 'استعمال دخانیات';
-
-  @override
-  String get children => 'کودکان';
-
-  @override
-  String get extraBed => 'تخت اضافه';
-
-  @override
-  String get priceIncludesTax => 'قیمت شامل مالیات است';
-
-  @override
-  String get yes => 'بله';
-
-  @override
-  String get no => 'خیر';
-
-  @override
-  String get notSpecified => 'نامشخص';
-
-  @override
-  String get howToGetThere => 'راهنمای دسترسی';
-
-  @override
-  String get nearbyPlaces => 'مکان‌های نزدیک';
-
-  @override
-  String get addNearbyPlace => 'افزودن مکان نزدیک';
-
-  @override
-  String get distanceMeters => 'فاصله (متر)';
-
-  @override
-  String get walkMinutes => 'زمان (دقیقه)';
-
-  @override
-  String get faqs => 'سؤالات متداول';
-
-  @override
-  String get addQuestion => 'افزودن سؤال';
-
-  @override
-  String get question => 'سؤال';
-
-  @override
-  String get answer => 'پاسخ';
-
-  @override
-  String get childrenPolicy => 'قوانین کودکان';
-
-  @override
-  String get roomView => 'منظره اتاق';
-
-  @override
-  String get bathroomType => 'نوع سرویس بهداشتی';
-
-  @override
-  String get maxAdults => 'حداکثر بزرگسال';
-
-  @override
-  String get maxChildren => 'حداکثر کودک';
-
-  @override
-  String get mealPlan => 'سرویس غذایی';
-
-  @override
-  String get nonRefundable => 'غیرقابل استرداد';
-
-  @override
-  String get curfewTime => 'ساعت آخرین ورود';
-
-  @override
-  String get mealServices => 'وعده‌های غذایی';
-
-  @override
-  String get servicesIncluded => 'خدمات شامل اجاره';
-
-  @override
-  String get residentTypes => 'پذیرش ساکنین';
-
-  @override
-  String get minimumStayMonths => 'حداقل مدت اقامت (ماه)';
-
-  @override
-  String get paymentSchedule => 'نحوه پرداخت اجاره';
-
-  @override
-  String get depositPolicy => 'شرایط ودیعه';
-
-  @override
-  String get earlyTerminationPolicy => 'شرایط فسخ زودهنگام';
-
-  @override
-  String get visitorsPolicy => 'قوانین مهمان';
-
-  @override
-  String get wifiSpeed => 'سرعت اینترنت (مگابیت)';
-
-  @override
-  String get universityWalkMinutes => 'پیاده‌روی تا دانشگاه (دقیقه)';
-
-  @override
-  String get furnished => 'مبله';
-
-  @override
-  String get bedLevel => 'طبقه تخت';
-
-  @override
-  String get bedAmenities => 'امکانات تخت';
-
-  @override
-  String get featured => 'ویژه';
-
-  @override
-  String get visibility => 'نمایش در سایت و اپ';
-
-  @override
-  String get verifiedOnSite => 'بازدید حضوری شده';
-
-  @override
-  String get customItem => 'مورد دلخواه';
-
-  @override
-  String get addCustomItem => 'افزودن مورد دلخواه';
-
-  @override
-  String get addHighlight => 'افزودن ویژگی برجسته';
-
-  @override
-  String get detailsSaved => 'جزئیات ذخیره شد.';
-
-  @override
-  String get meterUnit => 'متر';
-
-  @override
-  String get kilometerUnit => 'کیلومتر';
-
-  @override
-  String get minuteUnit => 'دقیقه';
-
-  @override
-  String get propertyInformation => 'اطلاعات اقامتگاه';
-
-  @override
-  String get bookingPolicies => 'شرایط و خدمات';
-
-  @override
-  String get languagesSpoken => 'زبان‌های پرسنل';
-
-  @override
-  String get socialLinks => 'ارتباط با ما';
-
-  @override
-  String get acceptedResidents => 'پذیرش ساکنین';
-
-  @override
-  String get includedInRent => 'شامل اجاره';
-
-  @override
-  String get placesVisibility => 'ویژه، تأیید و نمایش اقامتگاه‌ها';
 }
