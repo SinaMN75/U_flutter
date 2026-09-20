@@ -258,7 +258,19 @@ enum TagCategory with NumericIdentifiable {
 
 enum TagMedia with NumericIdentifiable {
   image("تصویر", "Image", 101),
-  profile("پروفایل", "Profile", 102);
+  profile("پروفایل", "Profile", 102),
+
+  /// The main photo of a hotel / dorm / room (shown first).
+  cover("عکس اصلی", "Cover", 201),
+
+  /// Gallery categories of hotel and dorm photos.
+  exterior("نما و محوطه", "Exterior", 301),
+  interior("فضای داخلی", "Interior", 302),
+  room("اتاق‌ها", "Rooms", 303),
+  bathroom("سرویس بهداشتی", "Bathroom", 304),
+  dining("غذاخوری", "Dining", 305),
+  facility("امکانات", "Facilities", 306),
+  surroundings("اطراف", "Surroundings", 307);
 
   const TagMedia(this.titleFa, this.titleEn, this.number);
 
@@ -362,12 +374,18 @@ enum TagContent with NumericIdentifiable {
   blog("بلاگ", "Blog", 105),
   dorms("خوابگاه‌ها", "Dorms", 106),
   hotels("هتل‌ها", "Hotels", 107),
+  aboutStats("آمار درباره ما", "About Stats", 108),
 
   homeSlider1("اسلایدر اصلی ۱", "Home Slider 1", 201),
   homeSlider2("اسلایدر اصلی ۲", "Home Slider 2", 202),
   homeBanner1("بنر اصلی ۱", "Home Banner 1", 203),
   homeBanner2("بنر اصلی ۲", "Home Banner 2", 204),
   homeBanner3("بنر اصلی ۳", "Home Banner 3", 205),
+  homeHero("هیرو صفحه اصلی", "Home Hero", 206),
+  homeStats("آمار صفحه اصلی", "Home Stats", 207),
+  homeMarquee("نوار متحرک صفحه اصلی", "Home Marquee", 208),
+  homeReasons("چرا ما (صفحه اصلی)", "Home Reasons", 209),
+  homeApp("بنر اپلیکیشن (صفحه اصلی)", "Home App", 210),
 
   menu1("منو ۱", "Menu 1", 401),
   menu2("منو ۲", "Menu 2", 402),
@@ -965,7 +983,10 @@ enum TagHotel with NumericIdentifiable {
   hotel("هتل", "Hotel", 101),
   featured("ویژه", "Featured", 201),
   active("فعال", "Active", 202),
-  inactive("غیرفعال", "Inactive", 203);
+  inactive("غیرفعال", "Inactive", 203),
+
+  /// Visited in person by the team (shown as a trust badge).
+  verified("تأیید شده (بازدید حضوری)", "Verified", 204);
 
   const TagHotel(this.titleFa, this.titleEn, this.number);
 
@@ -1032,7 +1053,14 @@ enum TagBlog with NumericIdentifiable {
 
 enum TagDorm with NumericIdentifiable {
   girls("دختران", "Girls", 101),
-  boys("پسران", "Boys", 102);
+  boys("پسران", "Boys", 102),
+  featured("ویژه", "Featured", 201),
+
+  /// Inactive dorms are hidden from the public.
+  inactive("غیرفعال", "Inactive", 203),
+
+  /// Visited in person by the team (shown as a trust badge).
+  verified("تأیید شده (بازدید حضوری)", "Verified", 204);
 
   const TagDorm(this.titleFa, this.titleEn, this.number);
 

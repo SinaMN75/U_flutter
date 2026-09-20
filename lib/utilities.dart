@@ -129,6 +129,7 @@ export "l10n/app_localizations.dart";
 export "components/media/u_media.dart";
 export "models//u_country_city.dart";
 export "models/u_business_category.dart";
+export "models/u_place_catalog.dart";
 export "plugins/camera/u_camera_platform.dart";
 export "plugins/camera/u_code_decoder.dart";
 export "plugins/screen_guard.dart";

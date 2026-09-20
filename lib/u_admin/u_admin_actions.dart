@@ -111,6 +111,14 @@ abstract class UAdminOps {
 }
 
 abstract class UAdminLinks {
+  /// Opens the "Details & photos" editor of a hotel / room / dorm / dorm room / bed.
+  static UAdminAction placeDetails({required VoidCallback onTap, List<TagUser>? roles}) => UAdminAction(
+    label: U.s.detailsAndPhotos,
+    icon: Icons.photo_library_outlined,
+    roles: roles,
+    onTap: onTap,
+  );
+
   static UAdminAction adminUserDetail(UUserResponse u, {List<TagUser>? roles}) => UAdminAction(
     label: U.s.viewItem(U.s.details),
     icon: Icons.visibility_outlined,

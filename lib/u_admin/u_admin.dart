@@ -8,6 +8,8 @@ part "pages/contents/u_admin_contents_controller.dart";
 part "pages/gold/u_admin_gold_controller.dart";
 part "pages/hotel/contracts/u_admin_contract_controller.dart";
 part "pages/hotel/dashboard/u_admin_hotel_dashboard_controller.dart";
+part "pages/hotel/details/u_admin_place_details.dart";
+part "pages/hotel/details/u_admin_place_widgets.dart";
 part "pages/hotel/dorm_beds/u_admin_dorm_bed_controller.dart";
 part "pages/hotel/dorm_rooms/u_admin_dorm_room_controller.dart";
 part "pages/hotel/dorms/u_admin_dorm_controller.dart";

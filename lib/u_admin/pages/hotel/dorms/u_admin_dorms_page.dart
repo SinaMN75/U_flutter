@@ -77,6 +77,7 @@ class _DormPageState extends State<UAdminDormPage> {
     fallback: (UAdminActionContext<UDormResponse> ctx) => <UAdminAction>[
       UAdminLinks.dormRooms(ctx.item),
       UAdminLinks.dormBeds(ctx.item),
+      UAdminLinks.placeDetails(onTap: () => UAdminPlaceDetails.dorm(ctx.item, onDone: c.read), roles: <TagUser>[TagUser.permissionManageDorms]),
       ctx.edit(roles: <TagUser>[TagUser.permissionManageDorms]),
       ctx.delete(roles: <TagUser>[TagUser.permissionDeleteDorms]),
     ],

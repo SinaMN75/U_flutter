@@ -11,10 +11,42 @@ extension UInvoiceStatusX on UDormBedInvoiceResponse {
   bool get isOverdue => !isPaid && dueDate.isBefore(DateTime.now());
 }
 
+class UDormBedJson {
+  final String? level;
+  final String? description;
+  final List<String> amenities;
+  UDormBedJson({
+    this.detail1,
+    this.detail2,
+    this.level,
+    this.description,
+    this.amenities = const <String>[],
+  });
+
+  factory UDormBedJson.fromMap(Map<String, dynamic> json) => UDormBedJson(
+    level: json["level"],
+    description: json["description"],
+    amenities: json["amenities"] == null ? <String>[] : List<String>.from((json["amenities"] as List<dynamic>).map((dynamic e) => e.toString())),
+    detail1: json["detail1"],
+    detail2: json["detail2"],
+  );
+
+  final String? detail1;
+  final String? detail2;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "level": level,
+    "description": description,
+    "amenities": amenities,
+    "detail1": detail1,
+    "detail2": detail2,
+  };
+}
+
 class UDormBedResponse {
   final String id;
   final DateTime createdAt;
-  final UBaseJson jsonData;
+  final UDormBedJson jsonData;
   final List<int> tags;
   final UUserResponse? creator;
   final String? creatorId;
@@ -51,7 +83,7 @@ class UDormBedResponse {
   factory UDormBedResponse.fromMap(Map<String, dynamic> json) => UDormBedResponse(
     id: json["id"] as String,
     createdAt: DateTime.parse(json["createdAt"]),
-    jsonData: UBaseJson.fromMap(json["jsonData"]),
+    jsonData: UDormBedJson.fromMap(json["jsonData"] ?? <String, dynamic>{}),
     tags: List<int>.from(json["tags"]!.map((dynamic x) => x)),
     creator: json["creator"] == null ? null : UUserResponse.fromMap(json["creator"]),
     creatorId: json["creatorId"],
@@ -98,6 +130,8 @@ class UDormResponse {
   final double averageScore;
   final int commentCount;
   final double? minMonthlyRent;
+  final int bedCount;
+  final int availableBedCount;
   final List<UDormRoomResponse>? rooms;
   final List<UDormBedResponse>? beds;
   final List<UCommentResponse>? comments;
@@ -116,6 +150,8 @@ class UDormResponse {
     this.averageScore = 0,
     this.commentCount = 0,
     this.minMonthlyRent,
+    this.bedCount = 0,
+    this.availableBedCount = 0,
     this.creator,
     this.creatorId,
     this.rooms,
@@ -143,6 +179,8 @@ class UDormResponse {
     averageScore: json["averageScore"] == null ? 0 : (json["averageScore"] as num).toDouble(),
     commentCount: json["commentCount"] == null ? 0 : (json["commentCount"] as num).toInt(),
     minMonthlyRent: json["minMonthlyRent"] == null ? null : (json["minMonthlyRent"] as num).toDouble(),
+    bedCount: json["bedCount"] ?? 0,
+    availableBedCount: json["availableBedCount"] ?? 0,
     rooms: json["rooms"] == null ? <UDormRoomResponse>[] : List<UDormRoomResponse>.from(json["rooms"]!.map((dynamic x) => UDormRoomResponse.fromMap(x))),
     beds: json["beds"] == null ? <UDormBedResponse>[] : List<UDormBedResponse>.from(json["beds"]!.map((dynamic x) => UDormBedResponse.fromMap(x))),
     comments: json["comments"] == null ? <UCommentResponse>[] : List<UCommentResponse>.from(json["comments"]!.map((dynamic x) => UCommentResponse.fromMap(x))),
@@ -164,6 +202,8 @@ class UDormResponse {
     "averageScore": averageScore,
     "commentCount": commentCount,
     "minMonthlyRent": minMonthlyRent,
+    "bedCount": bedCount,
+    "availableBedCount": availableBedCount,
     "rooms": rooms == null ? <UDormRoomResponse>[] : List<UDormRoomResponse>.from(rooms!.map((UDormRoomResponse x) => x.toMap())),
     "beds": beds == null ? <UDormBedResponse>[] : List<UDormBedResponse>.from(beds!.map((UDormBedResponse x) => x.toMap())),
     "comments": comments == null ? <UCommentResponse>[] : List<UCommentResponse>.from(comments!.map((UCommentResponse x) => x.toMap())),
@@ -188,6 +228,7 @@ class UHotelResponse {
   final double averageScore;
   final int commentCount;
   final double? minPricePerNight;
+  final int roomCount;
   final List<UHotelRoomResponse>? rooms;
   final List<UHotelReservationResponse>? reservations;
   final List<UCommentResponse>? comments;
@@ -208,6 +249,7 @@ class UHotelResponse {
     this.averageScore = 0,
     this.commentCount = 0,
     this.minPricePerNight,
+    this.roomCount = 0,
     this.creator,
     this.creatorId,
     this.rooms,
@@ -237,6 +279,7 @@ class UHotelResponse {
     averageScore: json["averageScore"] == null ? 0 : (json["averageScore"] as num).toDouble(),
     commentCount: json["commentCount"] == null ? 0 : (json["commentCount"] as num).toInt(),
     minPricePerNight: json["minPricePerNight"] == null ? null : (json["minPricePerNight"] as num).toDouble(),
+    roomCount: json["roomCount"] ?? 0,
     rooms: json["rooms"] == null ? <UHotelRoomResponse>[] : List<UHotelRoomResponse>.from(json["rooms"]!.map((dynamic x) => UHotelRoomResponse.fromMap(x))),
     reservations: json["reservations"] == null ? <UHotelReservationResponse>[] : List<UHotelReservationResponse>.from(json["reservations"]!.map((dynamic x) => UHotelReservationResponse.fromMap(x))),
     comments: json["comments"] == null ? <UCommentResponse>[] : List<UCommentResponse>.from(json["comments"]!.map((dynamic x) => UCommentResponse.fromMap(x))),
@@ -260,6 +303,7 @@ class UHotelResponse {
     "averageScore": averageScore,
     "commentCount": commentCount,
     "minPricePerNight": minPricePerNight,
+    "roomCount": roomCount,
     "rooms": rooms == null ? <UHotelRoomResponse>[] : List<UHotelRoomResponse>.from(rooms!.map((UHotelRoomResponse x) => x.toMap())),
     "reservations": reservations == null ? <UHotelReservationResponse>[] : List<UHotelReservationResponse>.from(reservations!.map((UHotelReservationResponse x) => x.toMap())),
     "comments": comments == null ? <UCommentResponse>[] : List<UCommentResponse>.from(comments!.map((UCommentResponse x) => x.toMap())),
@@ -640,6 +684,27 @@ class UDormBedInvoiceChartResponse {
 }
 
 class UHotelJson {
+  final String? type;
+  final List<String> highlights;
+  final String? website;
+  final String? whatsapp;
+  final String? instagram;
+  final String? telegram;
+  final int? yearBuilt;
+  final int? yearRenovated;
+  final int? floorCount;
+  final List<String> languages;
+  final List<String> mealPlans;
+  final List<String> paymentMethods;
+  final bool? petsAllowed;
+  final bool? smokingAllowed;
+  final bool? childrenAllowed;
+  final bool? extraBedAvailable;
+  final bool? priceIncludesTax;
+  final String? childrenPolicy;
+  final String? howToGetThere;
+  final List<UPlaceNearby> nearby;
+  final List<UPlaceFaq> faqs;
   final String? detail1;
   final String? detail2;
   final String? description;
@@ -666,6 +731,27 @@ class UHotelJson {
     this.longitude,
     this.cancellationFreeHours = 24,
     this.cancellationPenaltyNights = 1,
+    this.type,
+    this.highlights = const <String>[],
+    this.website,
+    this.whatsapp,
+    this.instagram,
+    this.telegram,
+    this.yearBuilt,
+    this.yearRenovated,
+    this.floorCount,
+    this.languages = const <String>[],
+    this.mealPlans = const <String>[],
+    this.paymentMethods = const <String>[],
+    this.petsAllowed,
+    this.smokingAllowed,
+    this.childrenAllowed,
+    this.extraBedAvailable,
+    this.priceIncludesTax,
+    this.childrenPolicy,
+    this.howToGetThere,
+    this.nearby = const <UPlaceNearby>[],
+    this.faqs = const <UPlaceFaq>[],
   });
 
   factory UHotelJson.fromJson(String str) => UHotelJson.fromMap(json.decode(str));
@@ -673,6 +759,27 @@ class UHotelJson {
   String toJson() => json.encode(toMap());
 
   factory UHotelJson.fromMap(Map<String, dynamic> json) => UHotelJson(
+    type: json["type"],
+    highlights: json["highlights"] == null ? <String>[] : List<String>.from((json["highlights"] as List<dynamic>).map((dynamic e) => e.toString())),
+    website: json["website"],
+    whatsapp: json["whatsapp"],
+    instagram: json["instagram"],
+    telegram: json["telegram"],
+    yearBuilt: json["yearBuilt"] == null ? null : (json["yearBuilt"] as num).toInt(),
+    yearRenovated: json["yearRenovated"] == null ? null : (json["yearRenovated"] as num).toInt(),
+    floorCount: json["floorCount"] == null ? null : (json["floorCount"] as num).toInt(),
+    languages: json["languages"] == null ? <String>[] : List<String>.from((json["languages"] as List<dynamic>).map((dynamic e) => e.toString())),
+    mealPlans: json["mealPlans"] == null ? <String>[] : List<String>.from((json["mealPlans"] as List<dynamic>).map((dynamic e) => e.toString())),
+    paymentMethods: json["paymentMethods"] == null ? <String>[] : List<String>.from((json["paymentMethods"] as List<dynamic>).map((dynamic e) => e.toString())),
+    petsAllowed: json["petsAllowed"],
+    smokingAllowed: json["smokingAllowed"],
+    childrenAllowed: json["childrenAllowed"],
+    extraBedAvailable: json["extraBedAvailable"],
+    priceIncludesTax: json["priceIncludesTax"],
+    childrenPolicy: json["childrenPolicy"],
+    howToGetThere: json["howToGetThere"],
+    nearby: json["nearby"] == null ? <UPlaceNearby>[] : List<UPlaceNearby>.from((json["nearby"] as List<dynamic>).map((dynamic e) => UPlaceNearby.fromMap(e))),
+    faqs: json["faqs"] == null ? <UPlaceFaq>[] : List<UPlaceFaq>.from((json["faqs"] as List<dynamic>).map((dynamic e) => UPlaceFaq.fromMap(e))),
     detail1: json["detail1"],
     detail2: json["detail2"],
     description: json["description"],
@@ -688,6 +795,27 @@ class UHotelJson {
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
+    "type": type,
+    "highlights": highlights,
+    "website": website,
+    "whatsapp": whatsapp,
+    "instagram": instagram,
+    "telegram": telegram,
+    "yearBuilt": yearBuilt,
+    "yearRenovated": yearRenovated,
+    "floorCount": floorCount,
+    "languages": languages,
+    "mealPlans": mealPlans,
+    "paymentMethods": paymentMethods,
+    "petsAllowed": petsAllowed,
+    "smokingAllowed": smokingAllowed,
+    "childrenAllowed": childrenAllowed,
+    "extraBedAvailable": extraBedAvailable,
+    "priceIncludesTax": priceIncludesTax,
+    "childrenPolicy": childrenPolicy,
+    "howToGetThere": howToGetThere,
+    "nearby": nearby.map((UPlaceNearby e) => e.toMap()).toList(),
+    "faqs": faqs.map((UPlaceFaq e) => e.toMap()).toList(),
     "detail1": detail1,
     "detail2": detail2,
     "description": description,
@@ -703,7 +831,45 @@ class UHotelJson {
   };
 }
 
+class UPlaceNearby {
+  UPlaceNearby({this.title = "", this.type, this.distanceMeters, this.minutes});
+
+  factory UPlaceNearby.fromMap(Map<String, dynamic> json) => UPlaceNearby(
+    title: json["title"] ?? "",
+    type: json["type"],
+    distanceMeters: json["distanceMeters"] == null ? null : (json["distanceMeters"] as num).toInt(),
+    minutes: json["minutes"] == null ? null : (json["minutes"] as num).toInt(),
+  );
+
+  final String title;
+  final String? type;
+  final int? distanceMeters;
+  final int? minutes;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"title": title, "type": type, "distanceMeters": distanceMeters, "minutes": minutes};
+}
+
+class UPlaceFaq {
+  UPlaceFaq({this.question = "", this.answer = ""});
+
+  factory UPlaceFaq.fromMap(Map<String, dynamic> json) => UPlaceFaq(question: json["question"] ?? "", answer: json["answer"] ?? "");
+
+  final String question;
+  final String answer;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"question": question, "answer": answer};
+}
+
+
 class UHotelRoomJson {
+  final String? view;
+  final String? bathroomType;
+  final int? maxAdults;
+  final int? maxChildren;
+  final String? mealPlan;
+  final bool? smokingAllowed;
+  final bool? nonRefundable;
+  final List<String> highlights;
   final String? detail1;
   final String? detail2;
   final String? description;
@@ -724,6 +890,14 @@ class UHotelRoomJson {
     this.amenities = const <String>[],
     this.extraGuestCapacity,
     this.extraGuestPrice,
+    this.view,
+    this.bathroomType,
+    this.maxAdults,
+    this.maxChildren,
+    this.mealPlan,
+    this.smokingAllowed,
+    this.nonRefundable,
+    this.highlights = const <String>[],
   });
 
   factory UHotelRoomJson.fromJson(String str) => UHotelRoomJson.fromMap(json.decode(str));
@@ -731,6 +905,14 @@ class UHotelRoomJson {
   String toJson() => json.encode(toMap());
 
   factory UHotelRoomJson.fromMap(Map<String, dynamic> json) => UHotelRoomJson(
+    view: json["view"],
+    bathroomType: json["bathroomType"],
+    maxAdults: json["maxAdults"] == null ? null : (json["maxAdults"] as num).toInt(),
+    maxChildren: json["maxChildren"] == null ? null : (json["maxChildren"] as num).toInt(),
+    mealPlan: json["mealPlan"],
+    smokingAllowed: json["smokingAllowed"],
+    nonRefundable: json["nonRefundable"],
+    highlights: json["highlights"] == null ? <String>[] : List<String>.from((json["highlights"] as List<dynamic>).map((dynamic e) => e.toString())),
     detail1: json["detail1"],
     detail2: json["detail2"],
     description: json["description"],
@@ -743,6 +925,14 @@ class UHotelRoomJson {
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
+    "view": view,
+    "bathroomType": bathroomType,
+    "maxAdults": maxAdults,
+    "maxChildren": maxChildren,
+    "mealPlan": mealPlan,
+    "smokingAllowed": smokingAllowed,
+    "nonRefundable": nonRefundable,
+    "highlights": highlights,
     "detail1": detail1,
     "detail2": detail2,
     "description": description,
@@ -1058,6 +1248,27 @@ class UHotelInvoiceResponse {
 }
 
 class UDormJson {
+  final List<String> highlights;
+  final String? website;
+  final String? whatsapp;
+  final String? instagram;
+  final String? telegram;
+  final int? yearBuilt;
+  final int? floorCount;
+  final String? curfewTime;
+  final List<String> mealServices;
+  final List<String> servicesIncluded;
+  final List<String> residentTypes;
+  final int? minimumStayMonths;
+  final String? paymentSchedule;
+  final String? depositPolicy;
+  final String? earlyTerminationPolicy;
+  final String? visitorsPolicy;
+  final int? wifiSpeedMbps;
+  final int? universityWalkMinutes;
+  final String? howToGetThere;
+  final List<UPlaceNearby> nearby;
+  final List<UPlaceFaq> faqs;
   final String? detail1;
   final String? detail2;
   final String? description;
@@ -1080,6 +1291,27 @@ class UDormJson {
     this.requiredDocuments = const <String>[],
     this.latitude,
     this.longitude,
+    this.highlights = const <String>[],
+    this.website,
+    this.whatsapp,
+    this.instagram,
+    this.telegram,
+    this.yearBuilt,
+    this.floorCount,
+    this.curfewTime,
+    this.mealServices = const <String>[],
+    this.servicesIncluded = const <String>[],
+    this.residentTypes = const <String>[],
+    this.minimumStayMonths,
+    this.paymentSchedule,
+    this.depositPolicy,
+    this.earlyTerminationPolicy,
+    this.visitorsPolicy,
+    this.wifiSpeedMbps,
+    this.universityWalkMinutes,
+    this.howToGetThere,
+    this.nearby = const <UPlaceNearby>[],
+    this.faqs = const <UPlaceFaq>[],
   });
 
   factory UDormJson.fromJson(String str) => UDormJson.fromMap(json.decode(str));
@@ -1087,6 +1319,27 @@ class UDormJson {
   String toJson() => json.encode(toMap());
 
   factory UDormJson.fromMap(Map<String, dynamic> json) => UDormJson(
+    highlights: json["highlights"] == null ? <String>[] : List<String>.from((json["highlights"] as List<dynamic>).map((dynamic e) => e.toString())),
+    website: json["website"],
+    whatsapp: json["whatsapp"],
+    instagram: json["instagram"],
+    telegram: json["telegram"],
+    yearBuilt: json["yearBuilt"] == null ? null : (json["yearBuilt"] as num).toInt(),
+    floorCount: json["floorCount"] == null ? null : (json["floorCount"] as num).toInt(),
+    curfewTime: json["curfewTime"],
+    mealServices: json["mealServices"] == null ? <String>[] : List<String>.from((json["mealServices"] as List<dynamic>).map((dynamic e) => e.toString())),
+    servicesIncluded: json["servicesIncluded"] == null ? <String>[] : List<String>.from((json["servicesIncluded"] as List<dynamic>).map((dynamic e) => e.toString())),
+    residentTypes: json["residentTypes"] == null ? <String>[] : List<String>.from((json["residentTypes"] as List<dynamic>).map((dynamic e) => e.toString())),
+    minimumStayMonths: json["minimumStayMonths"] == null ? null : (json["minimumStayMonths"] as num).toInt(),
+    paymentSchedule: json["paymentSchedule"],
+    depositPolicy: json["depositPolicy"],
+    earlyTerminationPolicy: json["earlyTerminationPolicy"],
+    visitorsPolicy: json["visitorsPolicy"],
+    wifiSpeedMbps: json["wifiSpeedMbps"] == null ? null : (json["wifiSpeedMbps"] as num).toInt(),
+    universityWalkMinutes: json["universityWalkMinutes"] == null ? null : (json["universityWalkMinutes"] as num).toInt(),
+    howToGetThere: json["howToGetThere"],
+    nearby: json["nearby"] == null ? <UPlaceNearby>[] : List<UPlaceNearby>.from((json["nearby"] as List<dynamic>).map((dynamic e) => UPlaceNearby.fromMap(e))),
+    faqs: json["faqs"] == null ? <UPlaceFaq>[] : List<UPlaceFaq>.from((json["faqs"] as List<dynamic>).map((dynamic e) => UPlaceFaq.fromMap(e))),
     detail1: json["detail1"],
     detail2: json["detail2"],
     description: json["description"],
@@ -1100,6 +1353,27 @@ class UDormJson {
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
+    "highlights": highlights,
+    "website": website,
+    "whatsapp": whatsapp,
+    "instagram": instagram,
+    "telegram": telegram,
+    "yearBuilt": yearBuilt,
+    "floorCount": floorCount,
+    "curfewTime": curfewTime,
+    "mealServices": mealServices,
+    "servicesIncluded": servicesIncluded,
+    "residentTypes": residentTypes,
+    "minimumStayMonths": minimumStayMonths,
+    "paymentSchedule": paymentSchedule,
+    "depositPolicy": depositPolicy,
+    "earlyTerminationPolicy": earlyTerminationPolicy,
+    "visitorsPolicy": visitorsPolicy,
+    "wifiSpeedMbps": wifiSpeedMbps,
+    "universityWalkMinutes": universityWalkMinutes,
+    "howToGetThere": howToGetThere,
+    "nearby": nearby.map((UPlaceNearby e) => e.toMap()).toList(),
+    "faqs": faqs.map((UPlaceFaq e) => e.toMap()).toList(),
     "detail1": detail1,
     "detail2": detail2,
     "description": description,
@@ -1114,6 +1388,10 @@ class UDormJson {
 }
 
 class UDormRoomJson {
+  final String? bathroomType;
+  final String? view;
+  final bool? furnished;
+  final List<String> highlights;
   final String? detail1;
   final String? detail2;
   final String? description;
@@ -1128,6 +1406,10 @@ class UDormRoomJson {
     this.floor,
     this.sizeSquareMeters,
     this.amenities = const <String>[],
+    this.bathroomType,
+    this.view,
+    this.furnished,
+    this.highlights = const <String>[],
   });
 
   factory UDormRoomJson.fromJson(String str) => UDormRoomJson.fromMap(json.decode(str));
@@ -1135,6 +1417,10 @@ class UDormRoomJson {
   String toJson() => json.encode(toMap());
 
   factory UDormRoomJson.fromMap(Map<String, dynamic> json) => UDormRoomJson(
+    bathroomType: json["bathroomType"],
+    view: json["view"],
+    furnished: json["furnished"],
+    highlights: json["highlights"] == null ? <String>[] : List<String>.from((json["highlights"] as List<dynamic>).map((dynamic e) => e.toString())),
     detail1: json["detail1"],
     detail2: json["detail2"],
     description: json["description"],
@@ -1144,6 +1430,10 @@ class UDormRoomJson {
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
+    "bathroomType": bathroomType,
+    "view": view,
+    "furnished": furnished,
+    "highlights": highlights,
     "detail1": detail1,
     "detail2": detail2,
     "description": description,

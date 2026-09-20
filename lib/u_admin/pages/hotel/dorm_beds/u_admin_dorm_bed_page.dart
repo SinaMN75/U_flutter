@@ -80,6 +80,7 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
     ),
     fallback: (UAdminActionContext<UDormBedResponse> ctx) => <UAdminAction>[
       UAdminLinks.bedContracts(ctx.item),
+      UAdminLinks.placeDetails(onTap: () => UAdminPlaceDetails.dormBed(ctx.item, onDone: c.read), roles: <TagUser>[TagUser.permissionManageDorms]),
       ctx.edit(roles: <TagUser>[TagUser.permissionManageDorms]),
       ctx.delete(roles: <TagUser>[TagUser.permissionDeleteDorms]),
     ],

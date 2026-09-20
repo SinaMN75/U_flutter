@@ -73,6 +73,7 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
     ),
     fallback: (UAdminActionContext<UHotelRoomResponse> ctx) => <UAdminAction>[
       UAdminLinks.roomReservations(ctx.item),
+      UAdminLinks.placeDetails(onTap: () => UAdminPlaceDetails.hotelRoom(ctx.item, onDone: c.read), roles: <TagUser>[TagUser.permissionManageHotels]),
       ctx.edit(roles: <TagUser>[TagUser.permissionManageHotels]),
       ctx.delete(roles: <TagUser>[TagUser.permissionDeleteHotels]),
     ],
