@@ -1,3 +1,5 @@
+import "dart:async";
+
 import "package:u/utilities.dart";
 
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -103,6 +105,7 @@ Future<void> initU({
     UApp.initDeviceInfo(),
   ]);
   ULoading.initialize(key: navigatorKey, settings: loadingSettings);
+  unawaited(delay(1000, UWebUpdate.checkAndRefresh));
 }
 
 class UMaterialApp extends StatefulWidget {
@@ -132,23 +135,25 @@ class _UMaterialAppState extends State<UMaterialApp> {
   }
 
   @override
-  Widget build(BuildContext context) => AnimatedBuilder(
-    animation: Listenable.merge(<Listenable>[UAppState.themeMode, UAppState.locale]),
-    builder: (BuildContext context, Widget? child) => MaterialApp(
-      navigatorKey: navigatorKey,
-      debugShowCheckedModeBanner: false,
-      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
-        AppLocalizations.delegate,
-        ...GlobalMaterialLocalizations.delegates,
-      ],
-      supportedLocales: AppLocalizations.supportedLocales,
-      home: widget.home,
-      locale: UAppState.locale.value,
-      themeMode: UAppState.themeMode.value,
-      theme: widget.lightThemeData,
-      darkTheme: widget.darkThemeData,
-    ),
-  );
+  Widget build(BuildContext context) =>
+      AnimatedBuilder(
+        animation: Listenable.merge(<Listenable>[UAppState.themeMode, UAppState.locale]),
+        builder: (BuildContext context, Widget? child) =>
+            MaterialApp(
+              navigatorKey: navigatorKey,
+              debugShowCheckedModeBanner: false,
+              localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+                AppLocalizations.delegate,
+                ...GlobalMaterialLocalizations.delegates,
+              ],
+              supportedLocales: AppLocalizations.supportedLocales,
+              home: widget.home,
+              locale: UAppState.locale.value,
+              themeMode: UAppState.themeMode.value,
+              theme: widget.lightThemeData,
+              darkTheme: widget.darkThemeData,
+            ),
+      );
 }
 
 class TabData {
