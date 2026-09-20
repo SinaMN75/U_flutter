@@ -1,8 +1,6 @@
 part of "../data.dart";
 
 class HotelService {
-  // ==================== Hotel ====================
-
   Future<(UResponse<String>?, UEmptyResponse?, String?)> createHotel({
     required UHotelCreateParams p,
     Function(UResponse<String> r)? onOk,
@@ -37,8 +35,6 @@ class HotelService {
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
   }) => _Api.call("/Hotel/Hotel/Delete", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
-
-  // ==================== HotelRoom ====================
 
   Future<(UResponse<String>?, UEmptyResponse?, String?)> createHotelRoom({
     required UHotelRoomCreateParams p,
@@ -75,8 +71,6 @@ class HotelService {
     Function(String e)? onException,
   }) => _Api.call("/Hotel/HotelRoom/Delete", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 
-  // ==================== Dorm ====================
-
   Future<(UResponse<String>?, UEmptyResponse?, String?)> createDorm({
     required UDormCreateParams p,
     Function(UResponse<String> r)? onOk,
@@ -112,8 +106,6 @@ class HotelService {
     Function(String e)? onException,
   }) => _Api.call("/Hotel/Dorm/Delete", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 
-  // ==================== DormRoom ====================
-
   Future<(UResponse<String>?, UEmptyResponse?, String?)> createDormRoom({
     required UDormRoomCreateParams p,
     Function(UResponse<String> r)? onOk,
@@ -148,8 +140,6 @@ class HotelService {
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
   }) => _Api.call("/Hotel/DormRoom/Delete", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
-
-  // ==================== DormBed ====================
 
   Future<(UResponse<String>?, UEmptyResponse?, String?)> createDormBed({
     required UDormBedCreateParams p,
@@ -255,8 +245,6 @@ class HotelService {
     Function(String e)? onException,
   }) => _Api.call("/Hotel/DormBedInvoice/ChartData", <String, dynamic>{}, _Api.list(UDormBedInvoiceChartResponse.fromMap), _Api.empty, onOk, onError, onException);
 
-  // ==================== HotelReservation ====================
-
   Future<(UResponse<String>?, UResponse<dynamic>?, String?)> createHotelReservation({
     required UHotelReservationCreateParams p,
     Function(UResponse<String> r)? onOk,
@@ -328,8 +316,6 @@ class HotelService {
     Function(String e)? onException,
   }) => _reservationAction(action: "Cancel", p: p, onOk: onOk, onError: onError, onException: onException);
 
-  // ==================== HotelInvoice ====================
-
   Future<(UResponse<String>?, UResponse<dynamic>?, String?)> createHotelInvoice({
     required UHotelInvoiceCreateParams p,
     Function(UResponse<String> r)? onOk,
@@ -364,8 +350,6 @@ class HotelService {
     Function(UResponse<dynamic> e)? onError,
     Function(String e)? onException,
   }) => _Api.call("/Hotel/HotelInvoice/Pay", p.toMap(), _Api.empty, _Api.dyn, onOk, onError, onException, locale: true);
-
-  // ==================== Guest booking ====================
 
   Future<(UResponse<List<UHotelRoomAvailabilityResponse>>?, UEmptyResponse?, String?)> readHotelRoomAvailability({
     required UHotelRoomAvailabilityParams p,

@@ -21,7 +21,6 @@ class UGoldQuoteParams {
   };
 }
 
-// Send exactly one of baseAmount (grams of gold) or quoteAmount (rial); idempotencyKey must be unique per order.
 class UGoldCreateOrderParams {
   final String idempotencyKey;
   final TagGoldOrderSide side;
@@ -62,7 +61,6 @@ class UGoldCreateOrderParams {
   };
 }
 
-// Cursor pagination: pass the nextCursor of the previous page, never a parsed or built value.
 class UGoldReadOrdersParams {
   final String? cursor;
   final int limit;
@@ -187,7 +185,6 @@ class UGoldReadUserBalanceParams {
   Map<String, dynamic> toMap() => <String, dynamic>{if (userId != null) "userId": userId};
 }
 
-// Send exactly one of amount (rial to spend) or goldAmount (grams to receive).
 class UGoldBuyParams {
   final double? amount;
   final double? goldAmount;
@@ -209,7 +206,6 @@ class UGoldBuyParams {
   };
 }
 
-// Send exactly one of goldAmount (grams to sell) or amount (rial to receive).
 class UGoldSellParams {
   final double? amount;
   final double? goldAmount;

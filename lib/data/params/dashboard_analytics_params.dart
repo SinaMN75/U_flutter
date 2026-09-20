@@ -1,6 +1,5 @@
 part of "../data.dart";
 
-// Optional date-range filter shared by the two aggregate dashboard endpoints.
 class UDashboardRangeParams {
   final DateTime? fromDate;
   final DateTime? toDate;

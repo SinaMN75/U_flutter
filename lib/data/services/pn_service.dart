@@ -46,7 +46,6 @@ class PnService {
     method: "POST",
     endpoint: "${U.baseUrl}/Pn/$path",
     body: body,
-    // The Pn API returns a JSON envelope on both success and failure, so surface either verbatim.
     onSuccess: (Response r) => onResponse?.call(r.statusCode, r.body),
     onError: (Response r) => onResponse?.call(r.statusCode, r.body),
     onException: (String e) => onException?.call(e),

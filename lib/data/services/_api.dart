@@ -1,20 +1,6 @@
 part of "../data.dart";
 
-// =============================================================================
-// _Api — the request/decode/dispatch dance every service method performs.
-//
-// Each endpoint differs in only four ways: the path, the body, how a success
-// envelope is decoded, and how an error envelope is decoded. [call] takes those
-// four and nothing else; the decoder factories below cover every shape the API
-// returns. Service methods keep their own signatures so callers see no change.
-// =============================================================================
-
 abstract class _Api {
-  /// Sends [path] under [U.baseUrl] and returns the `(ok, error, exception)` triple
-  /// every service method yields, invoking whichever callback applies on the way.
-  ///
-  /// [body] is sent with `apiKey` and `token` appended, and `locale` too when
-  /// [locale] is set. A null [body] sends no body at all.
   static Future<(S?, E?, String?)> call<S, E>(
     String path,
     Map<String, dynamic>? body,
@@ -56,23 +42,16 @@ abstract class _Api {
     return locale ? map.add("locale", ULocalStorage.getLocale()) : map;
   }
 
-  // --- success / error decoders -------------------------------------------
-
-  /// An envelope with no `result` payload.
   static UEmptyResponse empty(String json) => UEmptyResponse.fromJson(json);
 
-  /// An envelope whose `result` is passed through untouched.
   static UResponse<dynamic> dyn(String json) => UResponse<dynamic>.fromJson(json, (dynamic i) => i);
 
-  /// An envelope whose `result` is a scalar already of type [T] (`String`, `bool`, `int`, ...).
   static UResponse<T> Function(String json) raw<T>() =>
       (String json) => UResponse<T>.fromJson(json, (dynamic i) => i as T);
 
-  /// An envelope whose `result` is a single object built by [fromMap].
   static UResponse<T> Function(String json) one<T>(T Function(Map<String, dynamic> map) fromMap) =>
       (String json) => UResponse<T>.fromJson(json, (dynamic i) => fromMap(i as Map<String, dynamic>));
 
-  /// An envelope whose `result` is a list of objects each built by [fromMap].
   static UResponse<List<T>> Function(String json) list<T>(T Function(Map<String, dynamic> map) fromMap) =>
       (String json) => UResponse<List<T>>.fromJson(json, (dynamic i) => List<T>.from((i as List<dynamic>).map((dynamic x) => fromMap(x as Map<String, dynamic>))));
 }

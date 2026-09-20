@@ -5,7 +5,6 @@ extension MediaListExtension on Iterable<UMediaResponse> {
 
   List<UMediaResponse> byTag(TagMedia tag) => where((UMediaResponse i) => i.tags.contains(tag.number)).toList();
 
-  /// Cover photo first, then the others in upload order (ids are time-ordered).
   List<UMediaResponse> sortedForGallery() => toList()
     ..sort((UMediaResponse a, UMediaResponse b) {
       final int cover = (b.tags.contains(TagMedia.cover.number) ? 1 : 0) - (a.tags.contains(TagMedia.cover.number) ? 1 : 0);

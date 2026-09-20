@@ -1,6 +1,5 @@
 part of "../data.dart";
 
-// Accounting report response: money-in vs money-out with breakdowns and a daily timeline.
 class UAccountingReportResponse {
   final double totalIn;
   final double totalOut;
@@ -57,7 +56,6 @@ class UAccountingReportResponse {
   };
 }
 
-// One tag-grouped row of a money breakdown.
 class UAccountingBreakdownItem {
   final int tag;
   final String tagName;
@@ -90,7 +88,6 @@ class UAccountingBreakdownItem {
   factory UAccountingBreakdownItem.fromJson(String str) => UAccountingBreakdownItem.fromMap(json.decode(str));
 }
 
-// One day of aggregated in/out totals.
 class UAccountingTimelineItem {
   final DateTime date;
   final double inAmount;

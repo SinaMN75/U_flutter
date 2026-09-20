@@ -293,7 +293,7 @@ class TicketSelectorArgs {
 
 class ProductSelectorArgs {
   final UserSelectorArgs? creator;
-  final String? userId; // Guid in C# maps to String
+  final String? userId;
   final ProductSelectorArgs? children;
   final CategorySelectorArgs? category;
   final MediaSelectorArgs? media;

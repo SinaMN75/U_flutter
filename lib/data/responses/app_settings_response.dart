@@ -1,10 +1,7 @@
 part of "../data.dart";
 
-// Server-side prices used to show the amount on the payment page before each paid action.
 class UAppSettingsResponse {
   final List<UChargeInternet> chargeInternet;
-
-  // Percent added to every sim charge nominal price; the server sends this amount to the operator and debits it from the wallet.
   final double chargeInternetTaxPercent;
 
   UAppSettingsResponse({
@@ -32,7 +29,6 @@ class UAppSettingsResponse {
   factory UAppSettingsResponse.fromJson(String str) => UAppSettingsResponse.fromMap(json.decode(str));
 }
 
-// Price (in rial) of each vehicle / inquiry service, mirroring the backend ApiCallCosts.
 class UApiCallCosts {
   UApiCallCosts({
     required this.mobileAndNationalCodeVerification,

@@ -143,8 +143,8 @@ class ApproveResponse {
   final int? code;
   final String? message;
   final int? reference;
-  final String? serial; // PIN serial or operator reference
-  final String? pin; // PIN code for recharge
+  final String? serial;
+  final String? pin;
   final String? traceId;
   final String? help;
   final String? messageSource;
@@ -274,10 +274,10 @@ class UGetBalanceResponse {
   final bool? status;
   final int? code;
   final String? message;
-  final int? balance; // Account balance
-  final int? wallet; // Consumable balance
-  final int? credit; // Credit
-  final int? limit; // Daily consumable limit
+  final int? balance;
+  final int? wallet;
+  final int? credit;
+  final int? limit;
   final String? help;
   final String? messageSource;
   final String? extCode;
@@ -335,14 +335,14 @@ class UGetBalanceResponse {
 class UEchoResponse {
   final int? reserve;
   final String? serverDateTime;
-  final bool? status; // true = service is up
+  final bool? status;
   final int? code;
   final String? message;
-  final bool? mciTopup; // MCI Topup server status
-  final bool? mtn; // Irancel server status
-  final bool? rightel; // Rightel server status
-  final bool? shatel; // Shatel server status
-  final bool? mciInternet; // MCI Internet server status
+  final bool? mciTopup;
+  final bool? mtn;
+  final bool? rightel;
+  final bool? shatel;
+  final bool? mciInternet;
 
   UEchoResponse({
     this.reserve,

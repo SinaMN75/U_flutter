@@ -1,6 +1,5 @@
 part of "../data.dart";
 
-// Full, editable mirror of the backend AppSettings for the admin config editor; the server replaces its settings wholesale on save.
 class UAppSettings {
   UAppSettings({
     required this.baseUrl,
@@ -70,8 +69,6 @@ class UAppSettings {
   USettingsCosts apiCallCosts;
   List<USettingsChargeInternet> chargeInternet;
   double chargeInternetTaxPercent;
-
-  // Full AppSettings.Users blob, passed through untouched so the server can replace Core.App wholesale.
   dynamic users;
 
   Map<String, dynamic> toMap() => <String, dynamic>{

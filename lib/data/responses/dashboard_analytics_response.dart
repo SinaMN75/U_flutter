@@ -36,8 +36,6 @@ class URecentUserItem {
   factory URecentUserItem.fromJson(String str) => URecentUserItem.fromMap(json.decode(str));
 }
 
-// ===================== Financial / Operations Dashboard =====================
-
 class UFinancialOpsDashboardResponse {
   final DateTime generatedAt;
   final DateTime fromDate;
@@ -254,8 +252,6 @@ class URecentMerchantItem {
 
   factory URecentMerchantItem.fromJson(String str) => URecentMerchantItem.fromMap(json.decode(str));
 }
-
-// ===================== Property (Hotels/Dorms) Dashboard =====================
 
 class UPropertyDashboardResponse {
   final DateTime generatedAt;

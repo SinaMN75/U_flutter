@@ -14,7 +14,6 @@ class AppSettingsService {
   }) =>
       _Api.call("/AppSettings/ReadAll", <String, dynamic>{}, _Api.one(UAppSettings.fromMap), _Api.empty, onOk, onError, onException);
 
-  // Applies edits live to Core.App on the server (in-memory only).
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> update({
     required UAppSettingsUpdateParams p,
     Function(UEmptyResponse r)? onOk,

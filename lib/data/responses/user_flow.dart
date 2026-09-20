@@ -28,7 +28,6 @@ class UserFlowStatus {
   };
 }
 
-/// Metadata for the entire flow
 class FlowMetadata {
   final String? flowId;
   final String? flowName;
@@ -61,7 +60,6 @@ class FlowMetadata {
   };
 }
 
-/// Represents a single step in the multi-step wizard
 class UserFlowStep {
   final String stepId;
   final int number;
@@ -114,7 +112,6 @@ class UserFlowStep {
   };
 }
 
-/// Configuration for step navigation
 class StepNavigation {
   final String? enableNextCondition;
   final String? nextButtonLabel;
@@ -147,7 +144,6 @@ class StepNavigation {
   };
 }
 
-/// Group multiple fields together in a visual section
 class FieldGroup {
   final String groupId;
   final String title;
@@ -184,7 +180,6 @@ class FieldGroup {
   };
 }
 
-/// Represents a single form field with complete configuration
 class UserFlowField {
   final String fieldName;
   final String label;
@@ -299,7 +294,6 @@ class UserFlowField {
   };
 }
 
-/// Dynamic options loaded from API
 class DynamicOptionsConfig {
   final String apiUrl;
   final String? responsePath;
@@ -336,7 +330,6 @@ class DynamicOptionsConfig {
   };
 }
 
-/// Action to perform after API response
 class ApiAction {
   final ActionType type;
   final Map<String, dynamic>? parameters;
@@ -369,7 +362,6 @@ enum ActionType {
   refreshOptions,
 }
 
-/// Validation rules for a field
 class ValidationRules {
   final int? minLength;
   final int? maxLength;
@@ -438,7 +430,6 @@ class ValidationRules {
   };
 }
 
-/// Option for select, radio, checkbox group fields
 class SelectOption {
   final String value;
   final String text;
@@ -475,7 +466,6 @@ class SelectOption {
   };
 }
 
-/// Field dependency configuration
 class DependencyRule {
   final String dependsOnField;
   final String dependsOnValue;
@@ -511,7 +501,6 @@ class DependencyRule {
   };
 }
 
-/// Visibility rule for fields
 class VisibilityRule {
   final String dependsOnField;
   final String dependsOnValue;
@@ -569,7 +558,6 @@ enum LogicalOperator {
   or,
 }
 
-/// File upload configuration
 class UserFlowFileRequirement {
   final String fileKey;
   final String label;

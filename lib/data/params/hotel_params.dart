@@ -1,7 +1,5 @@
 part of "../data.dart";
 
-// ==================== DormBed ====================
-
 class UDormBedCreateParams {
   final String? level;
   final String? description;
@@ -229,8 +227,6 @@ class UDormBedReadParams {
     "orderBy": orderBy,
   };
 }
-
-// ==================== Dorm ====================
 
 class UDormCreateParams {
   final List<String>? highlights;
@@ -659,8 +655,6 @@ class UDormReadParams {
     "orderBy": orderBy,
   };
 }
-
-// ==================== Hotel ====================
 
 class UHotelCreateParams {
   final String? type;
@@ -1126,8 +1120,6 @@ class UHotelReadParams {
   };
 }
 
-// ==================== HotelRoom ====================
-
 class UHotelRoomCreateParams {
   final String? view;
   final String? bathroomType;
@@ -1475,8 +1467,6 @@ class UHotelRoomReadParams {
     "maxCapacity": maxCapacity,
   };
 }
-
-// ==================== DormRoom ====================
 
 class UDormRoomCreateParams {
   final String? bathroomType;
@@ -2186,8 +2176,6 @@ class UDormBedInvoiceUpdateParams {
   };
 }
 
-// ==================== HotelReservation ====================
-
 class UHotelReservationCreateParams {
   final String? detail1;
   final String? detail2;
@@ -2444,8 +2432,6 @@ class UHotelReservationReadParams {
   };
 }
 
-// ==================== HotelInvoice ====================
-
 class UHotelInvoiceCreateParams {
   final String? detail1;
   final String? detail2;
@@ -2681,8 +2667,6 @@ class UHotelInvoiceReadParams {
     "selectorArgs": selectorArgs?.toMap(),
   };
 }
-
-// ==================== Guest booking ====================
 
 class UReservationGuestParams {
   final String fullName;

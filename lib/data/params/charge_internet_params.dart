@@ -125,7 +125,7 @@ class UGetStatusParams {
 }
 
 class MCITopOfferParams {
-  final String subscriber; // Phone number
+  final String subscriber;
 
   MCITopOfferParams({
     required this.subscriber,

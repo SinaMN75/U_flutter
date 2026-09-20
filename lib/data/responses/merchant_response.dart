@@ -91,7 +91,7 @@ class UMerchantResponse {
     "insId": insId,
     "userId": userId,
     "user": user?.toMap(),
-    "terminals": terminals == null ? <UTerminalResponse>[] : List<UTerminalResponse>.from(terminals!.map((UTerminalResponse x) => x.toMap())), // terminals remains optional
+    "terminals": terminals == null ? <UTerminalResponse>[] : List<UTerminalResponse>.from(terminals!.map((UTerminalResponse x) => x.toMap())),
     "adminUserIds": List<dynamic>.from(adminUserIds.map((String x) => x)),
   };
 }

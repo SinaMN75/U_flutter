@@ -315,7 +315,6 @@ class UGoldTransactionListResponse {
   };
 }
 
-// resetsAt / windowStart / windowEnd are local times without offset; read them in the timezone of the parent response.
 class UGoldTradeLimitResponse {
   final String? type;
   final String? asset;
@@ -520,7 +519,6 @@ class UGoldCreditFacilitiesResponse {
   };
 }
 
-// rawToken is returned only by createApiToken and never again; store it at that moment or it is lost.
 class UGoldApiTokenResponse {
   final String id;
   final String? tokenPrefix;

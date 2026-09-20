@@ -1,6 +1,5 @@
 part of "../data.dart";
 
-// Talks to the backend Gold routes, which front whichever gold provider the server is configured for.
 class GoldService {
   Future<(UResponse<UGoldAccountResponse>?, UEmptyResponse?, String?)> readAccount({
     Function(UResponse<UGoldAccountResponse> r)? onOk,
@@ -36,7 +35,6 @@ class GoldService {
     Function(String e)? onException,
   }) => _Api.call("/Gold/Sell", p.toMap(), _Api.one(UGoldTxnResponse.fromMap), _Api.empty, onOk, onError, onException);
 
-  // Settles a transaction the provider left pending; call it when the user opens the order, never on a timer.
   Future<(UResponse<UGoldTxnResponse>?, UEmptyResponse?, String?)> syncTxn({
     required UIdParams p,
     Function(UResponse<UGoldTxnResponse> r)? onOk,
