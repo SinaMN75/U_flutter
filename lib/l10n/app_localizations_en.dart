@@ -4670,4 +4670,211 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get zoomOut => 'Zoom out';
+
+  @override
+  String get detailsAndPhotos => 'Details & photos';
+
+  @override
+  String get addPhotos => 'Add photos';
+
+  @override
+  String get setAsCover => 'Set as cover';
+
+  @override
+  String get photoCategory => 'Photo category';
+
+  @override
+  String get noPhotosYet => 'No photos yet.';
+
+  @override
+  String get propertyType => 'Property type';
+
+  @override
+  String get mealPlans => 'Meal plans';
+
+  @override
+  String get paymentMethods => 'Payment methods';
+
+  @override
+  String get staffLanguages => 'Staff languages';
+
+  @override
+  String get yearBuilt => 'Year built';
+
+  @override
+  String get yearRenovated => 'Year renovated';
+
+  @override
+  String get floorCount => 'Number of floors';
+
+  @override
+  String get website => 'Website';
+
+  @override
+  String get whatsapp => 'WhatsApp';
+
+  @override
+  String get pets => 'Pets';
+
+  @override
+  String get smoking => 'Smoking';
+
+  @override
+  String get children => 'Children';
+
+  @override
+  String get extraBed => 'Extra bed';
+
+  @override
+  String get priceIncludesTax => 'Price includes tax';
+
+  @override
+  String get yes => 'Yes';
+
+  @override
+  String get no => 'No';
+
+  @override
+  String get notSpecified => 'Not specified';
+
+  @override
+  String get howToGetThere => 'How to get there';
+
+  @override
+  String get nearbyPlaces => 'Nearby places';
+
+  @override
+  String get addNearbyPlace => 'Add nearby place';
+
+  @override
+  String get distanceMeters => 'Distance (m)';
+
+  @override
+  String get walkMinutes => 'Time (min)';
+
+  @override
+  String get faqs => 'FAQs';
+
+  @override
+  String get addQuestion => 'Add question';
+
+  @override
+  String get question => 'Question';
+
+  @override
+  String get answer => 'Answer';
+
+  @override
+  String get childrenPolicy => 'Children policy';
+
+  @override
+  String get roomView => 'Room view';
+
+  @override
+  String get bathroomType => 'Bathroom type';
+
+  @override
+  String get maxAdults => 'Max adults';
+
+  @override
+  String get maxChildren => 'Max children';
+
+  @override
+  String get mealPlan => 'Meal plan';
+
+  @override
+  String get nonRefundable => 'Non-refundable';
+
+  @override
+  String get curfewTime => 'Curfew time';
+
+  @override
+  String get mealServices => 'Meal services';
+
+  @override
+  String get servicesIncluded => 'Services included in rent';
+
+  @override
+  String get residentTypes => 'Accepted residents';
+
+  @override
+  String get minimumStayMonths => 'Minimum stay (months)';
+
+  @override
+  String get paymentSchedule => 'Payment schedule';
+
+  @override
+  String get depositPolicy => 'Deposit policy';
+
+  @override
+  String get earlyTerminationPolicy => 'Early termination policy';
+
+  @override
+  String get visitorsPolicy => 'Visitors policy';
+
+  @override
+  String get wifiSpeed => 'Internet speed (Mbps)';
+
+  @override
+  String get universityWalkMinutes => 'Walk to university (min)';
+
+  @override
+  String get furnished => 'Furnished';
+
+  @override
+  String get bedLevel => 'Bed level';
+
+  @override
+  String get bedAmenities => 'Bed amenities';
+
+  @override
+  String get featured => 'Featured';
+
+  @override
+  String get visibility => 'Visibility';
+
+  @override
+  String get verifiedOnSite => 'Visited in person';
+
+  @override
+  String get customItem => 'Custom item';
+
+  @override
+  String get addCustomItem => 'Add custom item';
+
+  @override
+  String get addHighlight => 'Add highlight';
+
+  @override
+  String get detailsSaved => 'Details saved.';
+
+  @override
+  String get meterUnit => 'm';
+
+  @override
+  String get kilometerUnit => 'km';
+
+  @override
+  String get minuteUnit => 'min';
+
+  @override
+  String get propertyInformation => 'Property information';
+
+  @override
+  String get bookingPolicies => 'Terms & services';
+
+  @override
+  String get languagesSpoken => 'Languages spoken';
+
+  @override
+  String get socialLinks => 'Get in touch';
+
+  @override
+  String get acceptedResidents => 'Accepted residents';
+
+  @override
+  String get includedInRent => 'Included in rent';
+
+  @override
+  String get placesVisibility => 'Featured, verified & visibility';
 }
