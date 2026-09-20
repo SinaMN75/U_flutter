@@ -242,10 +242,9 @@ class _UPdfPageManagerPanelState extends State<UPdfPageManagerPanel> {
           scrollDirection: Axis.horizontal,
           padding: const EdgeInsets.all(12),
           itemCount: widget.viewer.pageCount,
-          onReorder: (int oldIndex, int newIndex) => unawaited(
+          onReorderItem: (int oldIndex, int newIndex) => unawaited(
             _run(() async {
-              final int target = newIndex > oldIndex ? newIndex - 1 : newIndex;
-              await widget.editor.movePage(oldIndex, target);
+              await widget.editor.movePage(oldIndex, newIndex);
               _selected.clear();
             }),
           ),

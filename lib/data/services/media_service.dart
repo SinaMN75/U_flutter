@@ -41,117 +41,26 @@ class MediaService {
     required Function(UResponse<List<UMediaResponse>> r) onOk,
     required Function(UEmptyResponse e) onError,
     required Function(String e) onException,
-  }) async {
-    (UResponse<List<UMediaResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/Media/Read",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<List<UMediaResponse>> ok = UResponse<List<UMediaResponse>>.fromJson(
-          r.body,
-          (dynamic i) => List<UMediaResponse>.from((i as List<dynamic>).map((dynamic x) => UMediaResponse.fromMap(x))),
-        );
-        result = (ok, null, null);
-        onOk(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/Media/Read", p.toMap(), _Api.list(UMediaResponse.fromMap), _Api.empty, onOk, onError, onException);
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> update({
     required UMediaUpdateParams p,
     required Function(UEmptyResponse r) onOk,
     required Function(UEmptyResponse e) onError,
     required Function(String e) onException,
-  }) async {
-    (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/Media/Update",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
-        result = (ok, null, null);
-        onOk(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/Media/Update", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> delete({
     required UIdParams p,
     required Function(UEmptyResponse r) onOk,
     required Function(UEmptyResponse e) onError,
     required Function(String e) onException,
-  }) async {
-    (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/Media/Delete",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
-        result = (ok, null, null);
-        onOk(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/Media/Delete", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteRange({
     required UIdListParams p,
     required Function(UEmptyResponse r)? onOk,
     required Function(UEmptyResponse e)? onError,
     required Function(String e)? onException,
-  }) async {
-    (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/Media/DeleteRange",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/Media/DeleteRange", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 }

@@ -2086,7 +2086,7 @@ abstract class UPdfOps {
             "Subtype": const UPdfName("Form"),
             "FormType": 1,
             "BBox": <Object?>[page.box.left, page.box.top, page.box.right, page.box.bottom],
-            if (copiedResources != null) "Resources": copiedResources,
+            "Resources": ?copiedResources,
           },
         ),
       );

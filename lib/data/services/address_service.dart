@@ -6,117 +6,26 @@ class AddressService {
     Function(UResponse<String> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<String>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/address/Create",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (dynamic i) => i);
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/address/Create", p.toMap(), _Api.raw<String>(), _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<List<UAddressResponse>>?, UEmptyResponse?, String?)> read({
     required UAddressReadParams p,
     Function(UResponse<List<UAddressResponse>> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<List<UAddressResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/address/Read",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<List<UAddressResponse>> ok = UResponse<List<UAddressResponse>>.fromJson(
-          r.body,
-          (dynamic i) => List<UAddressResponse>.from((i as List<dynamic>).map((dynamic x) => UAddressResponse.fromMap(x))),
-        );
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/address/Read", p.toMap(), _Api.list(UAddressResponse.fromMap), _Api.empty, onOk, onError, onException);
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> update({
     required UAddressUpdateParams p,
     Function(UEmptyResponse r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/address/Update",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/address/Update", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> delete({
     required UIdParams p,
     Function(UEmptyResponse r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/address/Delete",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/address/Delete", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 }

@@ -5,57 +5,14 @@ class AppSettingsService {
     Function(UResponse<UAppSettingsResponse> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<UAppSettingsResponse>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/AppSettings/Read",
-      body: <String, dynamic>{}.add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<UAppSettingsResponse> ok = UResponse<UAppSettingsResponse>.fromJson(r.body, (dynamic i) => UAppSettingsResponse.fromMap(i));
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/AppSettings/Read", <String, dynamic>{}, _Api.one(UAppSettingsResponse.fromMap), _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<UAppSettings>?, UEmptyResponse?, String?)> readAll({
     Function(UResponse<UAppSettings> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<UAppSettings>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/AppSettings/ReadAll",
-      body: <String, dynamic>{"apiKey": U.apiKey, "token": ULocalStorage.getToken()},
-      onSuccess: (Response r) {
-        final UResponse<UAppSettings> ok = UResponse<UAppSettings>.fromJson(r.body, (dynamic i) => UAppSettings.fromMap(i));
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) =>
+      _Api.call("/AppSettings/ReadAll", <String, dynamic>{}, _Api.one(UAppSettings.fromMap), _Api.empty, onOk, onError, onException);
 
   // Applies edits live to Core.App on the server (in-memory only).
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> update({
@@ -63,27 +20,5 @@ class AppSettingsService {
     Function(UEmptyResponse r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/AppSettings/Update",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/AppSettings/Update", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 }

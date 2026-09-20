@@ -6,181 +6,40 @@ class WalletService {
     Function(UEmptyResponse r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/wallet/Charge",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/wallet/Charge", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<UWalletTxnResponse>?, UEmptyResponse?, String?)> transfer({
     required UWalletTransferParams p,
     Function(UResponse<UWalletTxnResponse> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<UWalletTxnResponse>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/wallet/Transfer",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<UWalletTxnResponse> ok = UResponse<UWalletTxnResponse>.fromJson(r.body, (dynamic i) => UWalletTxnResponse.fromMap(i));
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/wallet/Transfer", p.toMap(), _Api.one(UWalletTxnResponse.fromMap), _Api.empty, onOk, onError, onException);
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> purchase({
     required UWalletPurchaseParams p,
     Function(UEmptyResponse r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/wallet/Purchase",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/wallet/Purchase", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<List<UWalletResponse>>?, UEmptyResponse?, String?)> read({
     required UWalletReadParams p,
     Function(UResponse<List<UWalletResponse>> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<List<UWalletResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/wallet/Read",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<List<UWalletResponse>> ok = UResponse<List<UWalletResponse>>.fromJson(
-          r.body,
-          (dynamic i) => List<UWalletResponse>.from((i as List<dynamic>).map((dynamic x) => UWalletResponse.fromMap(x))),
-        );
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/wallet/Read", p.toMap(), _Api.list(UWalletResponse.fromMap), _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<List<UWalletResponse>>?, UEmptyResponse?, String?)> readByUserId({
     required UIdParams p,
     Function(UResponse<List<UWalletResponse>> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<List<UWalletResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/wallet/ReadByUserId",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<List<UWalletResponse>> ok = UResponse<List<UWalletResponse>>.fromJson(
-          r.body,
-          (dynamic i) => List<UWalletResponse>.from((i as List<dynamic>).map((dynamic x) => UWalletResponse.fromMap(x))),
-        );
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/wallet/ReadByUserId", p.toMap(), _Api.list(UWalletResponse.fromMap), _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<List<UWalletTxnResponse>>?, UEmptyResponse?, String?)> readTxn({
     required UWalletTxnReadParams p,
     Function(UResponse<List<UWalletTxnResponse>> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<List<UWalletTxnResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/wallet/ReadTxn",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<List<UWalletTxnResponse>> ok = UResponse<List<UWalletTxnResponse>>.fromJson(
-          r.body,
-          (dynamic i) => List<UWalletTxnResponse>.from((i as List<dynamic>).map((dynamic x) => UWalletTxnResponse.fromMap(x))),
-        );
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/wallet/ReadTxn", p.toMap(), _Api.list(UWalletTxnResponse.fromMap), _Api.empty, onOk, onError, onException);
 }

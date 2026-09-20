@@ -6,1069 +6,250 @@ class ParkingService {
     Function(UResponse<String> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<String>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/CreateParking",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (dynamic i) => i);
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/CreateParking", p.toMap(), _Api.raw<String>(), _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<List<UParkingResponse>>?, UEmptyResponse?, String?)> readParking({
     required UParkingReadParams p,
     Function(UResponse<List<UParkingResponse>> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<List<UParkingResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/ReadParking",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<List<UParkingResponse>> ok = UResponse<List<UParkingResponse>>.fromJson(
-          r.body,
-          (dynamic i) => List<UParkingResponse>.from((i as List<dynamic>).map((dynamic x) => UParkingResponse.fromMap(x))),
-        );
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/ReadParking", p.toMap(), _Api.list(UParkingResponse.fromMap), _Api.empty, onOk, onError, onException);
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> updateParking({
     required UParkingUpdateParams p,
     Function(UEmptyResponse r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/UpdateParking",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/UpdateParking", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteParking({
     required UIdParams p,
     Function(UEmptyResponse r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/DeleteParking",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/DeleteParking", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<String>?, UEmptyResponse?, String?)> createParkingReport({
     required UParkingReportCreateParams p,
     Function(UResponse<String> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<String>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/CreateParkingReport",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (dynamic i) => i);
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/CreateParkingReport", p.toMap(), _Api.raw<String>(), _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<List<UParkingReportResponse>>?, UEmptyResponse?, String?)> readParkingReport({
     required UParkingReportReadParams p,
     Function(UResponse<List<UParkingReportResponse>> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<List<UParkingReportResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/ReadParkingReport",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<List<UParkingReportResponse>> ok = UResponse<List<UParkingReportResponse>>.fromJson(
-          r.body,
-          (dynamic i) => List<UParkingReportResponse>.from((i as List<dynamic>).map((dynamic x) => UParkingReportResponse.fromMap(x))),
-        );
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/ReadParkingReport", p.toMap(), _Api.list(UParkingReportResponse.fromMap), _Api.empty, onOk, onError, onException);
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> updateParkingReport({
     required UParkingReportUpdateParams p,
     Function(UEmptyResponse r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/UpdateParkingReport",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/UpdateParkingReport", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteParkingReport({
     required UIdParams p,
     Function(UEmptyResponse r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/DeleteParkingReport",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/DeleteParkingReport", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<String>?, UEmptyResponse?, String?)> createParkingUser({
     required UParkingUserCreateParams p,
     Function(UResponse<String> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<String>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/CreateParkingUser",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (dynamic i) => i);
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/CreateParkingUser", p.toMap(), _Api.raw<String>(), _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<List<UUserResponse>>?, UEmptyResponse?, String?)> readParkingUsers({
     required UParkingUserReadParams p,
     Function(UResponse<List<UUserResponse>> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<List<UUserResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/ReadParkingUsers",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<List<UUserResponse>> ok = UResponse<List<UUserResponse>>.fromJson(
-          r.body,
-          (dynamic i) => List<UUserResponse>.from((i as List<dynamic>).map((dynamic x) => UUserResponse.fromMap(x))),
-        );
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/ReadParkingUsers", p.toMap(), _Api.list(UUserResponse.fromMap), _Api.empty, onOk, onError, onException);
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> removeParkingUser({
     required UParkingUserDeleteParams p,
     Function(UEmptyResponse r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/RemoveParkingUser",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/RemoveParkingUser", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<String>?, UEmptyResponse?, String?)> createParkingTariff({
     required UParkingTariffCreateParams p,
     Function(UResponse<String> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<String>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/CreateParkingTariff",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (dynamic i) => i);
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/CreateParkingTariff", p.toMap(), _Api.raw<String>(), _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<List<UParkingTariffResponse>>?, UEmptyResponse?, String?)> readParkingTariff({
     required UParkingTariffReadParams p,
     Function(UResponse<List<UParkingTariffResponse>> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<List<UParkingTariffResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/ReadParkingTariff",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<List<UParkingTariffResponse>> ok = UResponse<List<UParkingTariffResponse>>.fromJson(
-          r.body,
-          (dynamic i) => List<UParkingTariffResponse>.from((i as List<dynamic>).map((dynamic x) => UParkingTariffResponse.fromMap(x))),
-        );
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/ReadParkingTariff", p.toMap(), _Api.list(UParkingTariffResponse.fromMap), _Api.empty, onOk, onError, onException);
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> updateParkingTariff({
     required UParkingTariffUpdateParams p,
     Function(UEmptyResponse r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/UpdateParkingTariff",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/UpdateParkingTariff", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteParkingTariff({
     required UIdParams p,
     Function(UEmptyResponse r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/DeleteParkingTariff",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/DeleteParkingTariff", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<String>?, UEmptyResponse?, String?)> createParkingSubscription({
     required UParkingSubscriptionCreateParams p,
     Function(UResponse<String> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<String>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/CreateParkingSubscription",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (dynamic i) => i);
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/CreateParkingSubscription", p.toMap(), _Api.raw<String>(), _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<List<UParkingSubscriptionResponse>>?, UEmptyResponse?, String?)> readParkingSubscription({
     required UParkingSubscriptionReadParams p,
     Function(UResponse<List<UParkingSubscriptionResponse>> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<List<UParkingSubscriptionResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/ReadParkingSubscription",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<List<UParkingSubscriptionResponse>> ok = UResponse<List<UParkingSubscriptionResponse>>.fromJson(
-          r.body,
-          (dynamic i) => List<UParkingSubscriptionResponse>.from((i as List<dynamic>).map((dynamic x) => UParkingSubscriptionResponse.fromMap(x))),
-        );
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/ReadParkingSubscription", p.toMap(), _Api.list(UParkingSubscriptionResponse.fromMap), _Api.empty, onOk, onError, onException);
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> updateParkingSubscription({
     required UParkingSubscriptionUpdateParams p,
     Function(UEmptyResponse r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/UpdateParkingSubscription",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/UpdateParkingSubscription", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteParkingSubscription({
     required UIdParams p,
     Function(UEmptyResponse r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/DeleteParkingSubscription",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/DeleteParkingSubscription", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<String>?, UEmptyResponse?, String?)> createParkingPlateFlag({
     required UParkingPlateFlagCreateParams p,
     Function(UResponse<String> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<String>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/CreateParkingPlateFlag",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (dynamic i) => i);
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/CreateParkingPlateFlag", p.toMap(), _Api.raw<String>(), _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<List<UParkingPlateFlagResponse>>?, UEmptyResponse?, String?)> readParkingPlateFlag({
     required UParkingPlateFlagReadParams p,
     Function(UResponse<List<UParkingPlateFlagResponse>> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<List<UParkingPlateFlagResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/ReadParkingPlateFlag",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<List<UParkingPlateFlagResponse>> ok = UResponse<List<UParkingPlateFlagResponse>>.fromJson(
-          r.body,
-          (dynamic i) => List<UParkingPlateFlagResponse>.from((i as List<dynamic>).map((dynamic x) => UParkingPlateFlagResponse.fromMap(x))),
-        );
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/ReadParkingPlateFlag", p.toMap(), _Api.list(UParkingPlateFlagResponse.fromMap), _Api.empty, onOk, onError, onException);
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> updateParkingPlateFlag({
     required UParkingPlateFlagUpdateParams p,
     Function(UEmptyResponse r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/UpdateParkingPlateFlag",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/UpdateParkingPlateFlag", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteParkingPlateFlag({
     required UIdParams p,
     Function(UEmptyResponse r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/DeleteParkingPlateFlag",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/DeleteParkingPlateFlag", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<String>?, UEmptyResponse?, String?)> createParkingStaff({
     required UParkingStaffCreateParams p,
     Function(UResponse<String> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<String>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/CreateParkingStaff",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<String> ok = UResponse<String>.fromJson(r.body, (dynamic i) => i);
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/CreateParkingStaff", p.toMap(), _Api.raw<String>(), _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<List<UParkingStaffResponse>>?, UEmptyResponse?, String?)> readParkingStaff({
     required UParkingStaffReadParams p,
     Function(UResponse<List<UParkingStaffResponse>> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<List<UParkingStaffResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/ReadParkingStaff",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<List<UParkingStaffResponse>> ok = UResponse<List<UParkingStaffResponse>>.fromJson(
-          r.body,
-          (dynamic i) => List<UParkingStaffResponse>.from((i as List<dynamic>).map((dynamic x) => UParkingStaffResponse.fromMap(x))),
-        );
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/ReadParkingStaff", p.toMap(), _Api.list(UParkingStaffResponse.fromMap), _Api.empty, onOk, onError, onException);
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> updateParkingStaff({
     required UParkingStaffUpdateParams p,
     Function(UEmptyResponse r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/UpdateParkingStaff",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/UpdateParkingStaff", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteParkingStaff({
     required UIdParams p,
     Function(UEmptyResponse r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/DeleteParkingStaff",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/DeleteParkingStaff", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<UParkingShiftResponse>?, UEmptyResponse?, String?)> openParkingShift({
     required UParkingShiftOpenParams p,
     Function(UResponse<UParkingShiftResponse> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<UParkingShiftResponse>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/OpenParkingShift",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<UParkingShiftResponse> ok = UResponse<UParkingShiftResponse>.fromJson(r.body, (dynamic i) => UParkingShiftResponse.fromMap(i));
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/OpenParkingShift", p.toMap(), _Api.one(UParkingShiftResponse.fromMap), _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<List<UParkingShiftResponse>>?, UEmptyResponse?, String?)> readParkingShift({
     required UParkingShiftReadParams p,
     Function(UResponse<List<UParkingShiftResponse>> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<List<UParkingShiftResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/ReadParkingShift",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<List<UParkingShiftResponse>> ok = UResponse<List<UParkingShiftResponse>>.fromJson(
-          r.body,
-          (dynamic i) => List<UParkingShiftResponse>.from((i as List<dynamic>).map((dynamic x) => UParkingShiftResponse.fromMap(x))),
-        );
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/ReadParkingShift", p.toMap(), _Api.list(UParkingShiftResponse.fromMap), _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<UParkingShiftResponse>?, UEmptyResponse?, String?)> closeParkingShift({
     required UParkingShiftCloseParams p,
     Function(UResponse<UParkingShiftResponse> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<UParkingShiftResponse>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/CloseParkingShift",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<UParkingShiftResponse> ok = UResponse<UParkingShiftResponse>.fromJson(r.body, (dynamic i) => UParkingShiftResponse.fromMap(i));
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/CloseParkingShift", p.toMap(), _Api.one(UParkingShiftResponse.fromMap), _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<UParkingPlateStatusResponse>?, UEmptyResponse?, String?)> readParkingPlateStatus({
     required UParkingPlateStatusParams p,
     Function(UResponse<UParkingPlateStatusResponse> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<UParkingPlateStatusResponse>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/ReadParkingPlateStatus",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<UParkingPlateStatusResponse> ok = UResponse<UParkingPlateStatusResponse>.fromJson(r.body, (dynamic i) => UParkingPlateStatusResponse.fromMap(i));
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/ReadParkingPlateStatus", p.toMap(), _Api.one(UParkingPlateStatusResponse.fromMap), _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<UParkingReportResponse>?, UEmptyResponse?, String?)> registerParkingEntry({
     required UParkingEntryParams p,
     Function(UResponse<UParkingReportResponse> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<UParkingReportResponse>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/RegisterParkingEntry",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<UParkingReportResponse> ok = UResponse<UParkingReportResponse>.fromJson(r.body, (dynamic i) => UParkingReportResponse.fromMap(i));
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/RegisterParkingEntry", p.toMap(), _Api.one(UParkingReportResponse.fromMap), _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<UParkingBillResponse>?, UEmptyResponse?, String?)> calculateParkingExit({
     required UParkingExitCalculateParams p,
     Function(UResponse<UParkingBillResponse> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<UParkingBillResponse>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/CalculateParkingExit",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<UParkingBillResponse> ok = UResponse<UParkingBillResponse>.fromJson(r.body, (dynamic i) => UParkingBillResponse.fromMap(i));
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/CalculateParkingExit", p.toMap(), _Api.one(UParkingBillResponse.fromMap), _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<UParkingReportResponse>?, UEmptyResponse?, String?)> registerParkingExit({
     required UParkingExitParams p,
     Function(UResponse<UParkingReportResponse> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<UParkingReportResponse>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/RegisterParkingExit",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<UParkingReportResponse> ok = UResponse<UParkingReportResponse>.fromJson(r.body, (dynamic i) => UParkingReportResponse.fromMap(i));
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/RegisterParkingExit", p.toMap(), _Api.one(UParkingReportResponse.fromMap), _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<UParkingDashboardResponse>?, UEmptyResponse?, String?)> readParkingDashboard({
     required UParkingDashboardParams p,
     Function(UResponse<UParkingDashboardResponse> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<UParkingDashboardResponse>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/ReadParkingDashboard",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<UParkingDashboardResponse> ok = UResponse<UParkingDashboardResponse>.fromJson(r.body, (dynamic i) => UParkingDashboardResponse.fromMap(i));
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/ReadParkingDashboard", p.toMap(), _Api.one(UParkingDashboardResponse.fromMap), _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<List<UParkingInsideVehicleResponse>>?, UEmptyResponse?, String?)> readParkingInsideVehicles({
     required UParkingInsideVehiclesParams p,
     Function(UResponse<List<UParkingInsideVehicleResponse>> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<List<UParkingInsideVehicleResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/parking/ReadParkingInsideVehicles",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<List<UParkingInsideVehicleResponse>> ok = UResponse<List<UParkingInsideVehicleResponse>>.fromJson(
-          r.body,
-          (dynamic i) => List<UParkingInsideVehicleResponse>.from((i as List<dynamic>).map((dynamic x) => UParkingInsideVehicleResponse.fromMap(x))),
-        );
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/parking/ReadParkingInsideVehicles", p.toMap(), _Api.list(UParkingInsideVehicleResponse.fromMap), _Api.empty, onOk, onError, onException);
 }

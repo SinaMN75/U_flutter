@@ -601,8 +601,8 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
     final String primary = fullName.isNotEmpty ? fullName : (username ?? U.s.guest);
     final List<String> sub = <String>[
       if (fullName.isNotEmpty && username != null) "@$username",
-      if (phone != null) phone,
-      if (email != null) email,
+      ?phone,
+      ?email,
     ];
     final bool hasUser = fullName.isNotEmpty || username != null || phone != null || email != null;
     if (!hasUser) return UTextBodySmall("-", textAlign: .center, color: Theme.of(context).disabledColor);

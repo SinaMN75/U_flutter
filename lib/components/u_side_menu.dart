@@ -584,7 +584,7 @@ class _USideMenuState extends State<USideMenu> with TickerProviderStateMixin {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             if (widget.header != null) _LogoFallback(header: widget.header!),
-            if (action != null) action,
+            ?action,
           ],
         ),
       );
@@ -603,7 +603,7 @@ class _USideMenuState extends State<USideMenu> with TickerProviderStateMixin {
               child: widget.header,
             ),
           ),
-          if (action != null) action,
+          ?action,
         ],
       ),
     );

@@ -4,7 +4,6 @@ import "dart:js_interop_unsafe";
 import "package:flutter_web_plugins/flutter_web_plugins.dart";
 import "package:u/components/media/u_media_web.dart";
 import "package:u/plugins/camera/u_camera_web.dart";
-import "package:u/u_platform_interface.dart";
 import "package:web/web.dart" as web;
 
 // =============================================================================
@@ -23,17 +22,13 @@ import "package:web/web.dart" as web;
 // =============================================================================
 
 /// Registers every web implementation of the `u` plugin with the Flutter engine.
-class UWeb extends UPlatform {
-  UWeb();
-
+/// `pubspec.yaml` points `plugin.platforms.web.fileName` here and Flutter's
+/// generated registrant calls [registerWith] before `main()`.
+abstract class UWeb {
   static void registerWith(Registrar registrar) {
-    UPlatform.instance = UWeb();
     UMediaWeb.registerWith(registrar);
     UCameraWeb.registerWith(registrar);
   }
-
-  @override
-  Future<String?> getPlatformVersion() async => web.window.navigator.userAgent;
 }
 
 /// Thin, dependency-free wrappers over the browser APIs the rest of `u` needs.

@@ -6,29 +6,7 @@ class FileManagerService {
     required Function(UResponse<UFileManagerListResponse> r) onOk,
     required Function(UEmptyResponse e) onError,
     required Function(String e) onException,
-  }) async {
-    (UResponse<UFileManagerListResponse>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/FileManager/Browse",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<UFileManagerListResponse> ok = UResponse<UFileManagerListResponse>.fromJson(r.body, (dynamic i) => UFileManagerListResponse.fromMap(i));
-        result = (ok, null, null);
-        onOk(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/FileManager/Browse", p.toMap(), _Api.one(UFileManagerListResponse.fromMap), _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<UFileManagerEntryResponse>?, UEmptyResponse?, String?)> createFolder({
     required UFileManagerCreateFolderParams p,

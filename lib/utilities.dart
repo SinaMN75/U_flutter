@@ -190,6 +190,7 @@ export "utils/u_camera_utils.dart";
 export "utils/u_clipboard.dart";
 export "utils/u_constants.dart";
 export "utils/u_convert.dart";
+export "utils/u_crashlytics.dart";
 export "utils/u_encrypt.dart";
 export "utils/u_file.dart";
 export "utils/u_http_client.dart";

@@ -1,11 +1,11 @@
 import "package:u/utilities.dart";
 
-typedef CrashListener = void Function(Map<String, dynamic> errorData);
+typedef UCrashListener = void Function(Map<String, dynamic> errorData);
 
 class UCrashlytics {
-  static CrashListener? _crashListener;
+  static UCrashListener? _crashListener;
 
-  static Future<void> initialize({CrashListener? onCrash}) async {
+  static Future<void> initialize({UCrashListener? onCrash}) async {
     _crashListener = onCrash;
 
     PlatformDispatcher.instance.onError = (Object error, StackTrace stack) {
@@ -153,14 +153,14 @@ class UCrashlytics {
         },
         "pixelRatio": media.devicePixelRatio,
         "orientation": media.orientation.name,
-        "deviceType": _getDeviceType(navigatorKey.currentContext!),
+        "deviceType": _getDeviceType(),
       };
     } catch (e) {
       return <String, dynamic>{"error": "Failed to get screen info: $e"};
     }
   }
 
-  static String _getDeviceType(BuildContext context) {
+  static String _getDeviceType() {
     if (UApp.isWeb) return "Web";
     if (UApp.isTablet()) return "Tablet";
     if (UApp.isPhone()) return "Phone";

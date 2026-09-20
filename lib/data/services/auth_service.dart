@@ -96,29 +96,7 @@ class AuthService {
     Function(UEmptyResponse r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/auth/GetVerificationCodeForLogin",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/auth/GetVerificationCodeForLogin", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<ULoginResponse>?, UEmptyResponse?, String?)> verifyCodeForLogin({
     required UVerifyMobileForLoginParams p,
@@ -155,29 +133,7 @@ class AuthService {
     Function(UEmptyResponse r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UEmptyResponse?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/auth/CompleteProfile",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UEmptyResponse ok = UEmptyResponse.fromJson(r.body);
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/auth/CompleteProfile", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<ULoginResponse>?, UEmptyResponse?, String?)> loginOrRegister({
     required URegisterParams p,

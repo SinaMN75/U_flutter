@@ -39,7 +39,7 @@ class UMediaQueueSheet extends StatelessWidget {
             child: ReorderableListView.builder(
               shrinkWrap: true,
               itemCount: queue.length,
-              onReorder: (int from, int to) => unawaited(controller.moveInQueue(from, to > from ? to - 1 : to)),
+              onReorderItem: (int from, int to) => unawaited(controller.moveInQueue(from, to)),
               itemBuilder: (BuildContext context, int index) {
                 final UMediaSource item = queue[index];
                 final bool current = index == value.currentIndex;

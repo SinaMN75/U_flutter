@@ -60,156 +60,34 @@ class DashboardService {
     Function(UResponse<UFinancialOpsDashboardResponse> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<UFinancialOpsDashboardResponse>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/dashboard/ReadFinancialOpsDashboard",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<UFinancialOpsDashboardResponse> ok = UResponse<UFinancialOpsDashboardResponse>.fromJson(
-          r.body,
-          (dynamic i) => UFinancialOpsDashboardResponse.fromMap(i),
-        );
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/dashboard/ReadFinancialOpsDashboard", p.toMap(), _Api.one(UFinancialOpsDashboardResponse.fromMap), _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<UPropertyDashboardResponse>?, UEmptyResponse?, String?)> readPropertyDashboard({
     required UDashboardRangeParams p,
     Function(UResponse<UPropertyDashboardResponse> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<UPropertyDashboardResponse>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/dashboard/ReadPropertyDashboard",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<UPropertyDashboardResponse> ok = UResponse<UPropertyDashboardResponse>.fromJson(
-          r.body,
-          (dynamic i) => UPropertyDashboardResponse.fromMap(i),
-        );
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/dashboard/ReadPropertyDashboard", p.toMap(), _Api.one(UPropertyDashboardResponse.fromMap), _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<UOsMetricsResponse>?, UEmptyResponse?, String?)> readOsMetrics({
     Function(UResponse<UOsMetricsResponse> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<UOsMetricsResponse>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/dashboard/ReadOsMetrics",
-      body: <String, dynamic>{}.add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<UOsMetricsResponse> ok = UResponse<UOsMetricsResponse>.fromJson(
-          r.body,
-          (dynamic i) => UOsMetricsResponse.fromMap(i),
-        );
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/dashboard/ReadOsMetrics", <String, dynamic>{}, _Api.one(UOsMetricsResponse.fromMap), _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<List<UApiLogResponse>>?, UEmptyResponse?, String?)> readApiLogs({
     required UApiLogReadParams p,
     Function(UResponse<List<UApiLogResponse>> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<List<UApiLogResponse>>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/dashboard/ReadApiLogs",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<List<UApiLogResponse>> ok = UResponse<List<UApiLogResponse>>.fromJson(
-          r.body,
-          (dynamic i) => List<UApiLogResponse>.from((i as List<dynamic>).map((dynamic x) => UApiLogResponse.fromMap(x))),
-        );
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/dashboard/ReadApiLogs", p.toMap(), _Api.list(UApiLogResponse.fromMap), _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<UApiLogStatsResponse>?, UEmptyResponse?, String?)> apiLogStats({
     required UApiLogStatsParams p,
     Function(UResponse<UApiLogStatsResponse> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) async {
-    (UResponse<UApiLogStatsResponse>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/dashboard/ApiLogStats",
-      body: p.toMap().add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<UApiLogStatsResponse> ok = UResponse<UApiLogStatsResponse>.fromJson(r.body, (dynamic i) => UApiLogStatsResponse.fromMap(i));
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
+  }) => _Api.call("/dashboard/ApiLogStats", p.toMap(), _Api.one(UApiLogStatsResponse.fromMap), _Api.empty, onOk, onError, onException);
 
   Future<(List<String>?, UEmptyResponse?, String?)> readAppLogs({
     Function(List<String> r)? onOk,

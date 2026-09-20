@@ -8,25 +8,29 @@ import "package:u/utilities.dart";
 /// never opens or the app is killed by the OS on first use. Add only the
 /// platforms you ship, and drop the microphone entries if you only take photos.
 ///
-/// ANDROID -- android/app/src/main/AndroidManifest.xml, inside <manifest>:
+/// ANDROID -- android/app/src/main/AndroidManifest.xml, inside `<manifest>`:
 ///
-///   <uses-permission android:name="android.permission.CAMERA" />
-///   <uses-permission android:name="android.permission.RECORD_AUDIO" />
-///   <uses-feature android:name="android.hardware.camera" android:required="false" />
-///   <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
-///   <uses-feature android:name="android.hardware.camera.flash" android:required="false" />
+/// ```xml
+/// <uses-permission android:name="android.permission.CAMERA" />
+/// <uses-permission android:name="android.permission.RECORD_AUDIO" />
+/// <uses-feature android:name="android.hardware.camera" android:required="false" />
+/// <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
+/// <uses-feature android:name="android.hardware.camera.flash" android:required="false" />
+/// ```
 ///
 ///   Keep android:required="false" unless the app is useless without a camera --
 ///   "true" hides the app on Play Store for tablets and TVs that have none.
 ///   minSdk 24 or higher. UCameraController.requestPermission() shows the
 ///   runtime dialog, so nothing else is needed in code.
 ///
-/// IOS -- ios/Runner/Info.plist, inside the top-level <dict>:
+/// IOS -- ios/Runner/Info.plist, inside the top-level `<dict>`:
 ///
-///   <key>NSCameraUsageDescription</key>
-///   <string>Used to take photos and record video.</string>
-///   <key>NSMicrophoneUsageDescription</key>
-///   <string>Used to record audio with your videos.</string>
+/// ```xml
+/// <key>NSCameraUsageDescription</key>
+/// <string>Used to take photos and record video.</string>
+/// <key>NSMicrophoneUsageDescription</key>
+/// <string>Used to record audio with your videos.</string>
+/// ```
 ///
 ///   The strings are shown verbatim in the system prompt, so write them for the
 ///   user, in their language. Deployment target 13.0 or higher. iOS terminates
@@ -40,10 +44,13 @@ import "package:u/utilities.dart";
 ///   2. macos/Runner/DebugProfile.entitlements AND
 ///      macos/Runner/Release.entitlements -- add to both:
 ///
-///        <key>com.apple.security.device.camera</key>
-///        <true/>
-///        <key>com.apple.security.device.audio-input</key>
-///        <true/>
+///
+/// ```xml
+/// <key>com.apple.security.device.camera</key>
+/// <true/>
+/// <key>com.apple.security.device.audio-input</key>
+/// <true/>
+/// ```
 ///
 ///   Flutter macOS apps run inside the App Sandbox, which denies capture
 ///   hardware by default. Without the entitlement macOS reports the permission
@@ -300,7 +307,7 @@ class UCameraPreview extends StatelessWidget {
             fit: StackFit.expand,
             children: <Widget>[
               FittedBox(fit: fit, child: preview),
-              if (child != null) child!,
+              ?child,
             ],
           ),
         ),

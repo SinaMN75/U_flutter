@@ -375,7 +375,7 @@ class UVideoView extends StatelessWidget {
     );
 
     if (rotation != 0) content = RotatedBox(quarterTurns: (rotation ~/ 90) % 4, child: content);
-    if (mirrored) content = Transform(alignment: Alignment.center, transform: Matrix4.identity()..scale(-1.0, 1, 1), child: content);
+    if (mirrored) content = Transform(alignment: Alignment.center, transform: Matrix4.identity()..scaleByDouble(-1, 1, 1, 1), child: content);
     if (zoom != 1 || pan != Offset.zero) {
       content = Transform(
         alignment: Alignment.center,
