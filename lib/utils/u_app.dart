@@ -1,5 +1,5 @@
 import "package:u/utilities.dart";
-import "package:u/utils/web/u_web_stub.dart" if (dart.library.html) "package:u/utils/web/u_web_impl.dart";
+import "package:u/utils/web/u_web_native.dart" if (dart.library.js_interop) "package:u/utils/web/u_web_browser.dart";
 
 abstract class UApp {
   static late PackageInfo packageInfo;
@@ -94,7 +94,7 @@ abstract class UApp {
   static bool _detectEmbedded() {
     if (!isWeb) return false;
     if ((queryParameters["embedded"] ?? "").toLowerCase() == "true") return true;
-    return embedDetectFromDom();
+    return UWebBridge.isEmbedded();
   }
 
   static Future<void> initDeviceInfo() async {

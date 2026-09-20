@@ -79,7 +79,7 @@ flutter:
         pluginClass: UPluginCApi
       web:
         pluginClass: UWeb
-        fileName: u_web.dart
+        fileName: utils/web/u_web_browser.dart
 
 #  flutter pub upgrade --major-versions --tighten
 
