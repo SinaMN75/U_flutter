@@ -4841,4 +4841,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get includedInRent => 'Included in rent';
+
+  @override
+  String get placesVisibility => 'Featured, verified & visibility';
 }

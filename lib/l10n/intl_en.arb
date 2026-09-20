@@ -1803,5 +1803,6 @@
   "languagesSpoken": "Languages spoken",
   "socialLinks": "Get in touch",
   "acceptedResidents": "Accepted residents",
-  "includedInRent": "Included in rent"
+  "includedInRent": "Included in rent",
+  "placesVisibility": "Featured, verified & visibility"
 }

@@ -146,6 +146,8 @@ export "u_admin/pages/hotel/dorm_rooms/u_admin_dorm_rooms_page.dart";
 export "u_admin/pages/hotel/dorms/u_admin_dorms_page.dart";
 export "u_admin/pages/hotel/hotel_room/u_admin_hotel_room_page.dart";
 export "u_admin/pages/hotel/hotels/u_admin_hotel_page.dart";
+export "u_admin/pages/hotel/reviews/u_admin_review_page.dart";
+export "u_admin/pages/hotel/visibility/u_admin_place_visibility_page.dart";
 export "u_admin/pages/hotel/invoices/u_admin_invoice_page.dart";
 export "u_admin/pages/hotel/reservations/u_admin_reservation_page.dart";
 export "u_admin/pages/hotel/users/u_admin_user_create_update_page.dart";

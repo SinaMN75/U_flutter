@@ -4840,4 +4840,7 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get includedInRent => 'شامل اجاره';
+
+  @override
+  String get placesVisibility => 'ویژه، تأیید و نمایش اقامتگاه‌ها';
 }

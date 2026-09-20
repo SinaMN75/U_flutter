@@ -1803,5 +1803,6 @@
   "languagesSpoken": "زبان‌های پرسنل",
   "socialLinks": "ارتباط با ما",
   "acceptedResidents": "پذیرش ساکنین",
-  "includedInRent": "شامل اجاره"
+  "includedInRent": "شامل اجاره",
+  "placesVisibility": "ویژه، تأیید و نمایش اقامتگاه‌ها"
 }

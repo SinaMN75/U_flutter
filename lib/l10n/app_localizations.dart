@@ -9577,6 +9577,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Included in rent'**
   String get includedInRent;
+
+  /// No description provided for @placesVisibility.
+  ///
+  /// In en, this message translates to:
+  /// **'Featured, verified & visibility'**
+  String get placesVisibility;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
