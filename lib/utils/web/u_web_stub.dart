@@ -37,3 +37,6 @@ Future<void> uWebClearCaches() async {}
 
 // Nothing to reload off the web.
 void uWebReload(String? url) {}
+
+// Nothing gets hidden and shown off the web; returns a no-op disposer.
+void Function() uWebOnVisible(void Function() onVisible) => () {};

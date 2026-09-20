@@ -51,7 +51,13 @@ abstract class UWebUpdate {
   /// Build id compiled into this bundle by `--dart-define=U_BUILD_ID=...`, empty when not passed.
   static const String buildId = String.fromEnvironment("U_BUILD_ID");
 
-  static const String _handledBuildKey = "u_web_handled_build";
+  // A build we already reloaded for. Persisted so a host that keeps serving the old files cannot
+  // put the app in a reload loop.
+  static const String _refreshedBuildKey = "u_web_refreshed_build";
+
+  // A build the user answered "later" to. Only silences the prompt, never a silent refresh, so
+  // declining once does not pin the browser to an old build forever.
+  static const String _declinedBuildKey = "u_web_declined_build";
 
   /// Files re-downloaded before reloading, relative to the deployment base. Missing ones are ignored.
   static const List<String> defaultAssets = <String>[
@@ -67,9 +73,13 @@ abstract class UWebUpdate {
     "assets/NOTICES",
   ];
 
+  /// How long a probe of the server may take before it is treated as "nothing new".
+  static Duration timeout = const Duration(seconds: 10);
+
   static final RegExp _serviceWorkerVersionPattern = RegExp("serviceWorkerVersion[\"']?\\s*:\\s*[\"']([0-9]+)");
 
   static Timer? _timer;
+  static void Function()? _visibilityDisposer;
   static bool _checking = false;
 
   /// Throws away every browser-side copy of the app and reloads into the deployed build.
@@ -106,7 +116,7 @@ abstract class UWebUpdate {
   /// Whether the server holds a build other than the one this tab is running.
   static Future<bool> hasUpdate() async {
     if (!UApp.isWeb) return false;
-    if (await uWebServiceWorkerHasPendingUpdate()) return true;
+    if (await uWebServiceWorkerHasPendingUpdate().timeout(timeout, onTimeout: () => false)) return true;
 
     final UWebBuild? server = await serverBuild();
     if (server == null) return false;
@@ -125,9 +135,10 @@ abstract class UWebUpdate {
 
   /// Checks the server and, when a newer build is deployed, reloads into it. Returns whether a refresh started.
   ///
-  /// [silent] refreshes without asking, otherwise the user confirms first. [once] keeps the same
-  /// build from being offered twice, which also stops an endless auto-refresh when a misconfigured
-  /// host keeps handing out the old files.
+  /// [silent] refreshes without asking, otherwise the user confirms first. [once] keeps a build
+  /// the user declined from being offered again, and keeps a build that was already reloaded for
+  /// from being reloaded for a second time, which is what stops an endless auto-refresh when a
+  /// misconfigured host keeps handing out the old files.
   static Future<bool> checkAndRefresh({
     bool silent = false,
     bool once = true,
@@ -142,10 +153,13 @@ abstract class UWebUpdate {
     try {
       if (!await hasUpdate()) return false;
       final String signature = (await serverBuild())?.signature ?? "";
-      if (once && signature.isNotEmpty && ULocalStorage.getString(_handledBuildKey) == signature) return false;
-      if (signature.isNotEmpty) ULocalStorage.set(_handledBuildKey, signature);
+      final bool guarded = once && signature.isNotEmpty;
+      if (guarded && ULocalStorage.getString(_refreshedBuildKey) == signature) return false;
 
       if (!silent) {
+        if (guarded && ULocalStorage.getString(_declinedBuildKey) == signature) return false;
+        // No navigator yet, so there is nobody to ask; leave the build untouched and retry later.
+        if (navigatorKey.currentContext == null) return false;
         final bool accepted = await UNavigator.confirmAsync(
           title: title ?? U.s.updateAvailable,
           message: message ?? U.s.aNewVersionIsAvailableReloadToGetIt,
@@ -153,9 +167,13 @@ abstract class UWebUpdate {
           cancelText: cancelText ?? U.s.later,
           icon: Icons.system_update_alt_rounded,
         );
-        if (!accepted) return false;
+        if (!accepted) {
+          if (signature.isNotEmpty) ULocalStorage.set(_declinedBuildKey, signature);
+          return false;
+        }
       }
 
+      if (signature.isNotEmpty) ULocalStorage.set(_refreshedBuildKey, signature);
       await refresh(bustUrl: bustUrl);
       return true;
     } finally {
@@ -163,22 +181,32 @@ abstract class UWebUpdate {
     }
   }
 
-  /// Polls the server every [interval] and refreshes when a new build appears. End it with [stopWatching].
+  /// Watches for new builds: once at startup, every [interval], and whenever the tab is brought
+  /// back to the foreground. Safe to call before `runApp`. End it with [stopWatching].
+  ///
+  /// The startup check is [silentOnStart] because nothing is in flight yet, so reloading costs the
+  /// user nothing and needs no navigator. Later checks use [silent], which defaults to asking
+  /// first — a reload in the middle of a half-filled form would throw that input away.
   static void startWatching({
     Duration interval = const Duration(minutes: 15),
     bool silent = false,
     bool checkNow = true,
+    bool silentOnStart = true,
+    bool onVisible = true,
     bool bustUrl = false,
   }) {
     if (!UApp.isWeb) return;
     stopWatching();
     _timer = Timer.periodic(interval, (_) => unawaited(checkAndRefresh(silent: silent, bustUrl: bustUrl)));
-    if (checkNow) unawaited(checkAndRefresh(silent: silent, bustUrl: bustUrl));
+    if (onVisible) _visibilityDisposer = uWebOnVisible(() => unawaited(checkAndRefresh(silent: silent, bustUrl: bustUrl)));
+    if (checkNow) unawaited(checkAndRefresh(silent: silentOnStart, bustUrl: bustUrl));
   }
 
   static void stopWatching() {
     _timer?.cancel();
     _timer = null;
+    _visibilityDisposer?.call();
+    _visibilityDisposer = null;
   }
 
   static Future<UWebBuild?> _build(String cacheMode) async {
@@ -189,8 +217,8 @@ abstract class UWebUpdate {
     // parameter is guaranteed to reach the network.
     final String suffix = cacheMode == "no-store" ? "?_u=${DateTime.now().millisecondsSinceEpoch}" : "";
     final List<String?> files = await Future.wait(<Future<String?>>[
-      uWebFetch("${base}flutter_bootstrap.js$suffix", cacheMode),
-      uWebFetch("${base}version.json$suffix", cacheMode),
+      uWebFetch("${base}flutter_bootstrap.js$suffix", cacheMode).timeout(timeout, onTimeout: () => null),
+      uWebFetch("${base}version.json$suffix", cacheMode).timeout(timeout, onTimeout: () => null),
     ]);
     final String? bootstrap = files[0];
     final String? versionJson = files[1];
@@ -233,8 +261,11 @@ abstract class UWebUpdate {
 //   await initU(...);
 //   unawaited(UWebUpdate.checkAndRefresh());
 //
-//   // Keep every open tab current without asking.
-//   UWebUpdate.startWatching(interval: const Duration(minutes: 10), silent: true);
+//   // The solid default, wired into initU: silent at startup, ask for anything found later.
+//   UWebUpdate.startWatching();
+//
+//   // Keep every open tab current without ever asking.
+//   UWebUpdate.startWatching(silent: true);
 //
 //   // Read what is deployed, e.g. to show it next to the running version.
 //   final UWebBuild? deployed = await UWebUpdate.serverBuild();

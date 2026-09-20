@@ -163,3 +163,14 @@ void uWebReload(String? url) {
     web.window.location.replace(url);
   }
 }
+
+// Runs [onVisible] every time the tab comes back to the foreground; returns a disposer.
+void Function() uWebOnVisible(void Function() onVisible) {
+  void handle(web.Event event) {
+    if (!web.document.hidden) onVisible();
+  }
+
+  final JSExportedDartFunction<void Function(web.Event event)> listener = handle.toJS;
+  web.document.addEventListener("visibilitychange", listener);
+  return () => web.document.removeEventListener("visibilitychange", listener);
+}
