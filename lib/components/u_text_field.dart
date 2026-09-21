@@ -363,7 +363,7 @@ class UTextFieldDatePicker extends StatefulWidget {
     this.positionedHeight,
   });
 
-  final Function(DateTime, Jalali) onChange;
+  final Function(DateTime, UJalali) onChange;
   final String? text;
   final double? fontSize;
   final String? hintText;
@@ -455,11 +455,11 @@ class _UTextFieldDatePickerState extends State<UTextFieldDatePicker> {
           if (widget.jalali) {
             final int startYear = widget.startYear ?? 1350;
             final int endYear = widget.endYear ?? 1420;
-            final Jalali? picked = await UJalaliDatePicker.show(
+            final UJalali? picked = await UJalaliDatePicker.show(
               type: widget.jalaliType,
-              initialDate: Jalali.fromDateTime(selectedDateTime),
-              firstDate: Jalali(startYear),
-              lastDate: Jalali(endYear, 12, Jalali(endYear, 12).monthLength),
+              initialDate: UJalali.fromDateTime(selectedDateTime),
+              firstDate: UJalali(startYear),
+              lastDate: UJalali(endYear, 12, UJalali(endYear, 12).monthLength),
               helpText: widget.helpText,
               asDialog: widget.spinnerAsDialog,
             );
@@ -489,7 +489,7 @@ class _UTextFieldDatePickerState extends State<UTextFieldDatePicker> {
                 selectedDateTime.minute,
               );
               setState(() {});
-              final Jalali jalali = Jalali.fromDateTime(selectedDateTime);
+              final UJalali jalali = UJalali.fromDateTime(selectedDateTime);
               widget.onChange(selectedDateTime, jalali);
             }
           }
@@ -510,7 +510,7 @@ class _UTextFieldDatePickerState extends State<UTextFieldDatePicker> {
                 timeOfDay.minute,
               );
               setState(() {});
-              final Jalali jalali = Jalali.fromDateTime(selectedDateTime);
+              final UJalali jalali = UJalali.fromDateTime(selectedDateTime);
               widget.onChange(selectedDateTime, jalali);
             }
           }
@@ -581,7 +581,7 @@ class UTextFieldAutoComplete<T> extends StatefulWidget {
 }
 
 class _UTextFieldAutoCompleteState<T> extends State<UTextFieldAutoComplete<T>> {
-  late RxList<T> filteredItems = widget.items.obs;
+  late URxList<T> filteredItems = widget.items.obs;
 
   Future<void> _openSearchDialog() async {
     await showDialog<T>(
@@ -601,7 +601,7 @@ class _UTextFieldAutoCompleteState<T> extends State<UTextFieldAutoComplete<T>> {
                 ),
               ),
               const SizedBox(height: 12),
-              Obx(
+              UObx(
                 () => ListView.separated(
                   shrinkWrap: true,
                   itemCount: filteredItems.length,
@@ -894,7 +894,7 @@ class _UTextFieldAutoCompleteAsyncState<T> extends State<UTextFieldAutoCompleteA
 class UTextFieldPhoneNumber extends StatefulWidget {
   const UTextFieldPhoneNumber({
     super.key,
-    this.pickerMode = CountryPickerMode.bottomSheet,
+    this.pickerMode = UCountryPickerMode.bottomSheet,
     this.onChanged,
     this.controller,
     this.initialValue,
@@ -928,8 +928,8 @@ class UTextFieldPhoneNumber extends StatefulWidget {
     this.positionedHeight,
   });
 
-  final CountryPickerMode pickerMode;
-  final Function(PhoneNumberData)? onChanged;
+  final UCountryPickerMode pickerMode;
+  final Function(UPhoneNumberData)? onChanged;
   final TextEditingController? controller;
   final String? initialValue;
   final String? initialCountryCode;
@@ -1006,7 +1006,7 @@ class _UTextFieldPhoneNumberState extends State<UTextFieldPhoneNumber> {
   void _emit() {
     _syncController();
     widget.onChanged?.call(
-      PhoneNumberData(
+      UPhoneNumberData(
         countryCode: _selectedCountry.dialCode,
         phoneNumber: _e164,
         phoneWithoutCode: _national,
@@ -1069,7 +1069,7 @@ class _UTextFieldPhoneNumberState extends State<UTextFieldPhoneNumber> {
     if (widget.readOnly) return;
     _searchController.clear();
     final Widget picker = _UCountryPicker(selected: _selectedCountry, searchController: _searchController);
-    final UCountry? picked = widget.pickerMode == CountryPickerMode.bottomSheet
+    final UCountry? picked = widget.pickerMode == UCountryPickerMode.bottomSheet
         ? await UNavigator.bottomSheet<UCountry>(
             picker,
             showDragHandle: true,
@@ -1271,9 +1271,9 @@ class _UCountryPickerState extends UState<_UCountryPicker> {
   );
 }
 
-enum CountryPickerMode { dropdown, dialog, bottomSheet }
+enum UCountryPickerMode { dropdown, dialog, bottomSheet }
 
-class PhoneNumberData {
+class UPhoneNumberData {
   final String countryCode;
   final String phoneNumber;
   final String phoneWithoutCode;
@@ -1284,7 +1284,7 @@ class PhoneNumberData {
   final String currency;
   final String primaryLanguage;
 
-  PhoneNumberData({
+  UPhoneNumberData({
     required this.countryCode,
     required this.phoneNumber,
     required this.phoneWithoutCode,

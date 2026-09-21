@@ -15,6 +15,12 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
     c.init();
     super.initState();
   }
+  @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
+
 
   bool get _isWide => MediaQuery.sizeOf(context).width > 1000;
 
@@ -24,7 +30,7 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
       title: Text("${U.s.accommodationDashboard} ⚡"),
       actions: <Widget>[IconButton(icon: const Icon(Icons.refresh_rounded), tooltip: U.s.refresh, onPressed: c.load)],
     ),
-    body: Obx(() {
+    body: UObx(() {
       if (c.state.value.isError()) return TextButton(onPressed: c.load, child: Text(U.s.retry)).alignAtCenter();
       if (!c.state.value.isLoaded()) return const CircularProgressIndicator().alignAtCenter();
       final UPropertyDashboardResponse r = c.report.value!;

@@ -1,6 +1,6 @@
 part of "../data.dart";
 
-class AppSettingsService {
+class UAppSettingsService {
   Future<(UResponse<UAppSettingsResponse>?, UEmptyResponse?, String?)> read({
     Function(UResponse<UAppSettingsResponse> r)? onOk,
     Function(UEmptyResponse e)? onError,

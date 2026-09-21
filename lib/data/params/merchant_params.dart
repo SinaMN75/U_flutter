@@ -112,7 +112,7 @@ class UMerchantReadParams {
   final String? merchantId;
   final String? insId;
   final int? orderBy;
-  final MerchantSelectorArgs? selectorArgs;
+  final UMerchantSelectorArgs? selectorArgs;
 
   UMerchantReadParams({
     this.pageSize,
@@ -161,7 +161,7 @@ class UMerchantReadParams {
     merchantId: json["merchantId"],
     insId: json["insId"],
     orderBy: json["orderBy"],
-    selectorArgs: json["selectorArgs"] == null ? null : MerchantSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : UMerchantSelectorArgs.fromMap(json["selectorArgs"]),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{

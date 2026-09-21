@@ -7,7 +7,7 @@ class UAdminParkingReportController extends UBaseController {
   // Optional page-context scope: only this parking's reports.
   UParkingResponse? parking;
 
-  final Rxn<UUserResponse> creatorFilter = Rxn<UUserResponse>();
+  final URxn<UUserResponse> creatorFilter = URxn<UUserResponse>();
 
   Future<void> init({UParkingResponse? parking}) async {
     this.parking = parking;
@@ -24,10 +24,10 @@ class UAdminParkingReportController extends UBaseController {
         creatorId: creatorFilter.value?.id,
         fromCreatedAt: fromCreatedAt,
         toCreatedAt: toCreatedAt,
-        selectorArgs: const ParkingReportSelectorArgs(
-          parking: ParkingSelectorArgs(creator: UserSelectorArgs()),
-          creator: UserSelectorArgs(),
-          vehicle: VehicleSelectorArgs(),
+        selectorArgs: const UParkingReportSelectorArgs(
+          parking: UParkingSelectorArgs(creator: UUserSelectorArgs()),
+          creator: UUserSelectorArgs(),
+          vehicle: UVehicleSelectorArgs(),
         ),
       ),
       onOk: (UResponse<List<UParkingReportResponse>> r) {

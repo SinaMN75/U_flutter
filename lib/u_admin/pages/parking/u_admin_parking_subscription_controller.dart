@@ -3,7 +3,7 @@ part of "../../u_admin.dart";
 class UAdminParkingSubscriptionController extends UBaseController {
   List<UParkingSubscriptionResponse> list = <UParkingSubscriptionResponse>[];
   UParkingResponse? parking;
-  final RxnBool isActive = RxnBool(true);
+  final URxnBool isActive = URxnBool(true);
   final TextEditingController controllerQuery = TextEditingController();
 
   Future<void> init({UParkingResponse? parking}) {
@@ -21,7 +21,7 @@ class UAdminParkingSubscriptionController extends UBaseController {
         isExpired: isActive.value == false ? true : null,
         pageNumber: pageNumber.value,
         pageSize: pageSize,
-        selectorArgs: const ParkingSubscriptionSelectorArgs(vehicle: VehicleSelectorArgs(), creator: UserSelectorArgs()),
+        selectorArgs: const UParkingSubscriptionSelectorArgs(vehicle: UVehicleSelectorArgs(), creator: UUserSelectorArgs()),
       ),
       onOk: (UResponse<List<UParkingSubscriptionResponse>> r) {
         list = r.result ?? <UParkingSubscriptionResponse>[];
@@ -91,4 +91,10 @@ class UAdminParkingSubscriptionController extends UBaseController {
       },
     ),
   );
+
+  @override
+  void dispose() {
+    controllerQuery.dispose();
+    super.dispose();
+  }
 }

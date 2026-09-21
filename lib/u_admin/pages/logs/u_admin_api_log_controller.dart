@@ -5,12 +5,12 @@ class UAdminApiLogController extends UBaseController {
     pageSize = 25;
   }
 
-  final RxList<UApiLogResponse> list = <UApiLogResponse>[].obs;
-  final Rxn<UApiLogStatsResponse> stats = Rxn<UApiLogStatsResponse>();
-  final Rx<String> bucket = "hour".obs;
+  final URxList<UApiLogResponse> list = <UApiLogResponse>[].obs;
+  final URxn<UApiLogStatsResponse> stats = URxn<UApiLogStatsResponse>();
+  final URx<String> bucket = "hour".obs;
 
-  final Rxn<UOsMetricsResponse> osMetrics = Rxn<UOsMetricsResponse>();
-  final RxState osMetricsState = RxState();
+  final URxn<UOsMetricsResponse> osMetrics = URxn<UOsMetricsResponse>();
+  final URxState osMetricsState = URxState();
   Timer? _osMetricsTimer;
 
   final TextEditingController pathContainsCtrl = TextEditingController();
@@ -20,10 +20,10 @@ class UAdminApiLogController extends UBaseController {
   final TextEditingController traceIdCtrl = TextEditingController();
   final TextEditingController minDurationCtrl = TextEditingController();
   final TextEditingController maxDurationCtrl = TextEditingController();
-  final Rxn<TagApiLog> methodFilter = Rxn<TagApiLog>();
-  final RxBool onlyErrors = false.obs;
-  final RxBool onlyExceptions = false.obs;
-  final Rx<TagOrderBy> orderBy = TagOrderBy.createdAtDescending.obs;
+  final URxn<TagApiLog> methodFilter = URxn<TagApiLog>();
+  final URxBool onlyErrors = false.obs;
+  final URxBool onlyExceptions = false.obs;
+  final URx<TagOrderBy> orderBy = TagOrderBy.createdAtDescending.obs;
 
   Future<void> init() async {
     startOsMetricsPolling();
@@ -51,7 +51,18 @@ class UAdminApiLogController extends UBaseController {
     );
   }
 
-  void dispose() => _osMetricsTimer?.cancel();
+  @override
+  void dispose() {
+    pathContainsCtrl.dispose();
+    statusCodeCtrl.dispose();
+    userIdCtrl.dispose();
+    ipAddressCtrl.dispose();
+    traceIdCtrl.dispose();
+    minDurationCtrl.dispose();
+    maxDurationCtrl.dispose();
+    _osMetricsTimer?.cancel();
+    super.dispose();
+  }
 
   List<int>? _buildTags() {
     final List<int> tags = <int>[];
@@ -155,8 +166,8 @@ class UAdminApiLogController extends UBaseController {
     );
   }
 
-  final RxList<String> appLogs = <String>[].obs;
-  final RxState appLogsState = RxState();
+  final URxList<String> appLogs = <String>[].obs;
+  final URxState appLogsState = URxState();
 
   Future<void> loadAppLogs() async {
     appLogsState.loading();

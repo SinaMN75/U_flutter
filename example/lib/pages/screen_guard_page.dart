@@ -21,22 +21,22 @@ class _ScreenGuardPageState extends State<ScreenGuardPage> {
   void initState() {
     super.initState();
     // Detection callbacks fire even when the OS cannot hard-block capture (iOS).
-    ScreenGuard.onScreenshot = () => setState(() => _screenshotCount++);
-    ScreenGuard.onScreenRecording = (bool active) => setState(() => _recording = active);
+    UScreenGuard.onScreenshot = () => setState(() => _screenshotCount++);
+    UScreenGuard.onScreenRecording = (bool active) => setState(() => _recording = active);
   }
 
   @override
   void dispose() {
-    ScreenGuard.onScreenshot = null;
-    ScreenGuard.onScreenRecording = null;
+    UScreenGuard.onScreenshot = null;
+    UScreenGuard.onScreenRecording = null;
     super.dispose();
   }
 
   Future<void> _toggle(bool value) async {
     if (value) {
-      await ScreenGuard.enable();
+      await UScreenGuard.enable();
     } else {
-      await ScreenGuard.disable();
+      await UScreenGuard.disable();
     }
     setState(() => _enabled = value);
   }
@@ -55,8 +55,8 @@ class _ScreenGuardPageState extends State<ScreenGuardPage> {
           description: "While enabled, screenshots and recordings of this app are blocked or blanked. "
               "Try taking a screenshot with it on.",
           code: r'''
-await ScreenGuard.enable();
-await ScreenGuard.disable();''',
+await UScreenGuard.enable();
+await UScreenGuard.disable();''',
           child: URow(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -70,8 +70,8 @@ await ScreenGuard.disable();''',
           title: "Detection callbacks",
           description: "onScreenshot and onScreenRecording report events the OS can't fully block.",
           code: r'''
-ScreenGuard.onScreenshot = () => setState(() => _screenshotCount++);
-ScreenGuard.onScreenRecording = (bool active) => setState(() => _recording = active);''',
+UScreenGuard.onScreenshot = () => setState(() => _screenshotCount++);
+UScreenGuard.onScreenRecording = (bool active) => setState(() => _recording = active);''',
           child: UColumn(
             crossAxisAlignment: CrossAxisAlignment.start,
             spacing: 8,

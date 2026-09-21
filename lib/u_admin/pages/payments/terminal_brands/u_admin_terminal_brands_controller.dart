@@ -19,7 +19,7 @@ class UAdminTerminalBrandController extends UBaseController {
         title: titleFilter.text.nullIfEmpty(),
         model: modelFilter.text.nullIfEmpty(),
         orderBy: tagOrderBy.value.number,
-        selectorArgs: const TerminalBrandSelectorArgs(),
+        selectorArgs: const UTerminalBrandSelectorArgs(),
       ),
       onOk: (UResponse<List<UTerminalBrandResponse>> r) {
         list = r.result ?? <UTerminalBrandResponse>[];
@@ -97,4 +97,11 @@ class UAdminTerminalBrandController extends UBaseController {
       },
     ),
   );
+
+  @override
+  void dispose() {
+    titleFilter.dispose();
+    modelFilter.dispose();
+    super.dispose();
+  }
 }

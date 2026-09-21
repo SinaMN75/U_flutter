@@ -1,6 +1,6 @@
 part of "../data.dart";
 
-class ProcessService {
+class UProcessService {
   Future<(UResponse<UProcessStepGet>?, UEmptyResponse?, String?)> get({
     required String processId,
     Function(UResponse<UProcessStepGet> r)? onOk,

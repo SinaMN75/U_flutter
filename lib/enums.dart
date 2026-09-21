@@ -1,6 +1,6 @@
 import "package:u/utilities.dart";
 
-mixin NumericIdentifiable {
+mixin UNumericIdentifiable {
   int get number;
 
   String get titleFa;
@@ -59,7 +59,7 @@ extension NumericEnumExtension<T extends Enum> on Iterable<T> {
       .toList();
 }
 
-enum Usc with NumericIdentifiable {
+enum Usc with UNumericIdentifiable {
   success("موفقیت", "Success", 200),
   created("ایجاد شده", "Created", 201),
   deleted("حذف شده", "Deleted", 211),
@@ -95,7 +95,7 @@ enum Usc with NumericIdentifiable {
   final int number;
 }
 
-enum TagOrderBy with NumericIdentifiable {
+enum TagOrderBy with UNumericIdentifiable {
   createdAt("تاریخ ایجاد", "Created At", 101),
   cardNumber("شماره کارت", "Card Number", 102),
   zipCode("کد پستی", "Zip Code", 103),
@@ -143,7 +143,7 @@ enum TagOrderBy with NumericIdentifiable {
   final int number;
 }
 
-enum TagSmsPanel with NumericIdentifiable {
+enum TagSmsPanel with UNumericIdentifiable {
   nikSms("نیک اس ام اس", "Nik Sms", 101),
   ghasedak("قاصدک", "Ghasedak", 102),
   kavenegar("کاوه نگار", "Kavenegar", 103);
@@ -158,7 +158,7 @@ enum TagSmsPanel with NumericIdentifiable {
   final int number;
 }
 
-enum TagUser with NumericIdentifiable {
+enum TagUser with UNumericIdentifiable {
   male("مرد", "Male", 101),
   female("زن", "Female", 102),
   unspecified("نامشخص", "Unspecified", 103),
@@ -233,7 +233,7 @@ enum TagUser with NumericIdentifiable {
   ];
 }
 
-enum TagCategory with NumericIdentifiable {
+enum TagCategory with UNumericIdentifiable {
   category("دسته‌بندی", "Category", 101),
   exam("پرسشنامه", "Exam", 102),
   user("کاربران", "User", 103),
@@ -256,7 +256,7 @@ enum TagCategory with NumericIdentifiable {
   final int number;
 }
 
-enum TagMedia with NumericIdentifiable {
+enum TagMedia with UNumericIdentifiable {
   image("تصویر", "Image", 101),
   profile("پروفایل", "Profile", 102),
 
@@ -282,7 +282,7 @@ enum TagMedia with NumericIdentifiable {
   final int number;
 }
 
-enum TagProduct with NumericIdentifiable {
+enum TagProduct with UNumericIdentifiable {
   product("محصول", "Product", 101),
   content("محتوا", "Content", 102),
   blog("وبلاگ", "Blog", 103),
@@ -320,7 +320,7 @@ enum TagProduct with NumericIdentifiable {
   final int number;
 }
 
-enum TagComment with NumericIdentifiable {
+enum TagComment with UNumericIdentifiable {
   released("منتشر شده", "Released", 101),
   inQueue("در حال بررسی", "In Queue", 102),
   rejected("رد شده", "Rejected", 103),
@@ -336,7 +336,7 @@ enum TagComment with NumericIdentifiable {
   final int number;
 }
 
-enum TagReaction with NumericIdentifiable {
+enum TagReaction with UNumericIdentifiable {
   like("پسندیدن", "Like", 101),
   dislike("نپسندیدن", "Dislike", 102);
 
@@ -350,7 +350,7 @@ enum TagReaction with NumericIdentifiable {
   final int number;
 }
 
-enum TagFollow with NumericIdentifiable {
+enum TagFollow with UNumericIdentifiable {
   user("کاربر", "User", 101),
   product("محصول", "Product", 102),
   category("دسته‌بندی", "Category", 103),
@@ -366,7 +366,7 @@ enum TagFollow with NumericIdentifiable {
   final int number;
 }
 
-enum TagContent with NumericIdentifiable {
+enum TagContent with UNumericIdentifiable {
   aboutUs("درباره ما", "About Us", 101),
   terms("قوانین و مقررات", "Terms", 102),
   contactUs("تماس با ما", "Contact Us", 103),
@@ -405,7 +405,7 @@ enum TagContent with NumericIdentifiable {
   final int number;
 }
 
-enum TagTicket with NumericIdentifiable {
+enum TagTicket with UNumericIdentifiable {
   superAdmin("سوپر ادمین", "Super Admin", 101),
   admin("ادمین", "Admin", 102);
 
@@ -419,7 +419,7 @@ enum TagTicket with NumericIdentifiable {
   final int number;
 }
 
-enum TagTxn with NumericIdentifiable {
+enum TagTxn with UNumericIdentifiable {
   creditCard("کارت اعتباری", "Credit Card", 101),
   cash("نقدی", "Cash", 102),
   pending("در انتظار", "Pending", 201),
@@ -444,7 +444,7 @@ enum TagTxn with NumericIdentifiable {
   final int number;
 }
 
-enum TagParking with NumericIdentifiable {
+enum TagParking with UNumericIdentifiable {
   disabled("غیرفعال", "Disabled", 101),
   active("فعال", "Active", 102),
   test("تست", "Test", 999);
@@ -459,7 +459,7 @@ enum TagParking with NumericIdentifiable {
   final int number;
 }
 
-enum TagVehicle with NumericIdentifiable {
+enum TagVehicle with UNumericIdentifiable {
   motorcycle("موتورسیکلت", "Motorcycle", 101),
   car("سواری", "Car", 102),
   van("ون", "Van", 103),
@@ -478,7 +478,7 @@ enum TagVehicle with NumericIdentifiable {
   final int number;
 }
 
-enum TagParkingReport with NumericIdentifiable {
+enum TagParkingReport with UNumericIdentifiable {
   open("باز", "Open", 101),
   closed("بسته", "Closed", 102),
   offline("آفلاین", "Offline", 103),
@@ -494,7 +494,7 @@ enum TagParkingReport with NumericIdentifiable {
   final int number;
 }
 
-enum TagParkingTariff with NumericIdentifiable {
+enum TagParkingTariff with UNumericIdentifiable {
   hourly("ساعتی", "Hourly", 101),
   subscription("اشتراک", "Subscription", 102);
 
@@ -508,7 +508,7 @@ enum TagParkingTariff with NumericIdentifiable {
   final int number;
 }
 
-enum TagParkingSubscription with NumericIdentifiable {
+enum TagParkingSubscription with UNumericIdentifiable {
   weekly("هفتگی", "Weekly", 101),
   monthly("ماهانه", "Monthly", 102),
   quarterly("فصلی", "Quarterly", 103),
@@ -524,7 +524,7 @@ enum TagParkingSubscription with NumericIdentifiable {
   final int number;
 }
 
-enum TagParkingPlateFlag with NumericIdentifiable {
+enum TagParkingPlateFlag with UNumericIdentifiable {
   debt("بدهی", "Debt", 101),
   banned("ممنوع", "Banned", 102),
   warning("هشدار", "Warning", 103),
@@ -540,7 +540,7 @@ enum TagParkingPlateFlag with NumericIdentifiable {
   final int number;
 }
 
-enum TagParkingStaff with NumericIdentifiable {
+enum TagParkingStaff with UNumericIdentifiable {
   registerEntryExit("ثبت ورود و خروج", "Register entry and exit", 101),
   applyManualDiscount("اعمال تخفیف دستی", "Apply manual discount", 102),
   manageSubscriptions("ثبت و تمدید اشتراک", "Manage subscriptions", 103),
@@ -558,7 +558,7 @@ enum TagParkingStaff with NumericIdentifiable {
   final int number;
 }
 
-enum TagParkingShift with NumericIdentifiable {
+enum TagParkingShift with UNumericIdentifiable {
   open("باز", "Open", 101),
   closed("بسته", "Closed", 102);
 
@@ -572,7 +572,7 @@ enum TagParkingShift with NumericIdentifiable {
   final int number;
 }
 
-enum TagParkingPayment with NumericIdentifiable {
+enum TagParkingPayment with UNumericIdentifiable {
   card("کارت بانکی", "Bank card", 101),
   ipg("درگاه پرداخت", "Payment gateway", 102),
   cash("نقدی", "Cash", 103),
@@ -589,7 +589,7 @@ enum TagParkingPayment with NumericIdentifiable {
   final int number;
 }
 
-enum TagAddress with NumericIdentifiable {
+enum TagAddress with UNumericIdentifiable {
   verified("تایید شده", "Verified", 101);
 
   const TagAddress(this.titleFa, this.titleEn, this.number);
@@ -602,7 +602,7 @@ enum TagAddress with NumericIdentifiable {
   final int number;
 }
 
-enum TagWallet with NumericIdentifiable {
+enum TagWallet with UNumericIdentifiable {
   primary("اصلی", "Primary", 101);
 
   const TagWallet(this.titleFa, this.titleEn, this.number);
@@ -616,7 +616,7 @@ enum TagWallet with NumericIdentifiable {
 }
 
 // Polished fa/en titles so each tag reads as a clean transaction title in the wallet list/receipt (shown via localizedTitle).
-enum TagWalletTxn with NumericIdentifiable {
+enum TagWalletTxn with UNumericIdentifiable {
   charge("شارژ کیف پول", "Wallet Top-up", 101),
   transfer("انتقال وجه", "Money Transfer", 102),
   mobileAndNationalCodeVerification("اعتبارسنجی موبایل و کد ملی", "Mobile & National ID Match", 201),
@@ -648,7 +648,7 @@ enum TagWalletTxn with NumericIdentifiable {
   final int number;
 }
 
-enum TagTerminal with NumericIdentifiable {
+enum TagTerminal with UNumericIdentifiable {
   notAssigned("تخصیص داده نشده", "Not Assigned", 101),
   pendingApproval("در انتظار تایید", "Pending Approval", 102),
   approved("تایید شده", "Approved", 103),
@@ -664,7 +664,7 @@ enum TagTerminal with NumericIdentifiable {
   final int number;
 }
 
-enum TagTerminalBrand with NumericIdentifiable {
+enum TagTerminalBrand with UNumericIdentifiable {
   atm("خودپرداز", "ATM", 101),
   wallCashless("خودپرداز غیر نقد", "Wall Cashless", 102),
   deskCashless("خودپرداز رومیزی", "Desk Cashless", 103),
@@ -681,7 +681,7 @@ enum TagTerminalBrand with NumericIdentifiable {
   final int number;
 }
 
-enum TagTerminalBroker with NumericIdentifiable {
+enum TagTerminalBroker with UNumericIdentifiable {
   test("تست", "Test", 999);
 
   const TagTerminalBroker(this.titleFa, this.titleEn, this.number);
@@ -694,7 +694,7 @@ enum TagTerminalBroker with NumericIdentifiable {
   final int number;
 }
 
-enum TagBankAccount with NumericIdentifiable {
+enum TagBankAccount with UNumericIdentifiable {
   verified("تایید شده", "Verified", 101);
 
   const TagBankAccount(this.titleFa, this.titleEn, this.number);
@@ -707,7 +707,7 @@ enum TagBankAccount with NumericIdentifiable {
   final int number;
 }
 
-enum TagIpg with NumericIdentifiable {
+enum TagIpg with UNumericIdentifiable {
   pn("پی ان", "Pn", 101);
 
   const TagIpg(this.titleFa, this.titleEn, this.number);
@@ -720,7 +720,7 @@ enum TagIpg with NumericIdentifiable {
   final int number;
 }
 
-enum TagInquiryHistory with NumericIdentifiable {
+enum TagInquiryHistory with UNumericIdentifiable {
   validateNationalCodeAndPhoneNumber("اعتبارسنجی کد ملی و شماره تلفن", "Validate National Code And Phone Number", 101),
   zipCodeToAddressDetail("کد پستی به آدرس", "Zip Code To Address Detail", 201),
   vehicleViolationsDetail("جزئیات تخلفات وسیله نقلیه", "Vehicle Violations Detail", 301),
@@ -744,7 +744,7 @@ enum TagInquiryHistory with NumericIdentifiable {
   final int number;
 }
 
-enum TagNotification with NumericIdentifiable {
+enum TagNotification with UNumericIdentifiable {
   general("عمومی", "General", 101),
   reservationCreated("ثبت رزرو", "Reservation Created", 102),
   reservationConfirmed("تایید رزرو", "Reservation Confirmed", 103),
@@ -767,7 +767,7 @@ enum TagNotification with NumericIdentifiable {
   final int number;
 }
 
-enum TagTxnErrorCodes with NumericIdentifiable {
+enum TagTxnErrorCodes with UNumericIdentifiable {
   lowBalance("موجودی کم", "Low Balance", 101),
   unauthorized("غیرمجاز", "Unauthorized", 102),
   senderWalletNotFound("کیف پول فرستنده یافت نشد", "Sender Wallet Not Found", 103),
@@ -785,7 +785,7 @@ enum TagTxnErrorCodes with NumericIdentifiable {
   final int number;
 }
 
-enum TagVas with NumericIdentifiable {
+enum TagVas with UNumericIdentifiable {
   water("آب", "Water", 101),
   chargeTopup("شارژ مستقیم", "Charge Topup", 201),
   chargePin("شارژ با پین", "Charge Pin", 202),
@@ -801,7 +801,7 @@ enum TagVas with NumericIdentifiable {
   final int number;
 }
 
-enum TagSimOperator with NumericIdentifiable {
+enum TagSimOperator with UNumericIdentifiable {
   hamrahAvval("همراه اول", "Hamrah Avval", 1),
   iranCell("ایرانسل", "Iran Cell", 2),
   rigthel("رایتل", "Rigthel", 3),
@@ -817,7 +817,7 @@ enum TagSimOperator with NumericIdentifiable {
   final int number;
 }
 
-enum TagMerchant with NumericIdentifiable {
+enum TagMerchant with UNumericIdentifiable {
   normal("معمولی", "Normal", 101);
 
   const TagMerchant(this.titleFa, this.titleEn, this.number);
@@ -830,7 +830,7 @@ enum TagMerchant with NumericIdentifiable {
   final int number;
 }
 
-enum TagMoadi with NumericIdentifiable {
+enum TagMoadi with UNumericIdentifiable {
   pending("در انتظار تایید", "Pending", 101),
   approved("تایید شده", "Approved", 102),
   rejected("رد شده", "Rejected", 103);
@@ -845,7 +845,7 @@ enum TagMoadi with NumericIdentifiable {
   final int number;
 }
 
-enum TagFieldType with NumericIdentifiable {
+enum TagFieldType with UNumericIdentifiable {
   text("متن", "Text", 101),
   dropDown("لیست کشویی", "Drop Down", 102),
   file("فایل", "File", 103),
@@ -861,7 +861,7 @@ enum TagFieldType with NumericIdentifiable {
   final int number;
 }
 
-enum TagTextFieldType with NumericIdentifiable {
+enum TagTextFieldType with UNumericIdentifiable {
   text("متن", "Text", 101),
   multilineText("متن چند خطی", "Multiline Text", 102),
   numberDecimal("عدد اعشاری", "Number Decimal", 201),
@@ -882,7 +882,7 @@ enum TagTextFieldType with NumericIdentifiable {
   final int number;
 }
 
-enum TagFileFieldType with NumericIdentifiable {
+enum TagFileFieldType with UNumericIdentifiable {
   image("تصویر", "Image", 101),
   video("ویدئو", "Video", 102),
   pdf("پی دی اف", "Pdf", 103),
@@ -899,7 +899,7 @@ enum TagFileFieldType with NumericIdentifiable {
 }
 
 // NOTE: TagProcessStatus has no counterpart in the C# source — left as-is.
-enum TagProcessStatus with NumericIdentifiable {
+enum TagProcessStatus with UNumericIdentifiable {
   available("موجود", "Available", 101),
   comingSoon("به زودی", "Coming Soon", 102),
   disabled("غیر فعال", "Disabled", 103),
@@ -915,7 +915,7 @@ enum TagProcessStatus with NumericIdentifiable {
   final int number;
 }
 
-enum TagProcessStepStatus with NumericIdentifiable {
+enum TagProcessStepStatus with UNumericIdentifiable {
   notStarted("شروع نشده", "Not Started", 101),
   current("در حال انجام", "Current", 102),
   awaitingVerification("در انتظار تایید", "Awaiting Verification", 103),
@@ -931,7 +931,7 @@ enum TagProcessStepStatus with NumericIdentifiable {
   final int number;
 }
 
-enum TagDormBedContract with NumericIdentifiable {
+enum TagDormBedContract with UNumericIdentifiable {
   daily("روزانه", "Daily", 101),
   weekly("هفتگی", "Weekly", 102),
   monthly("ماهانه", "Monthly", 103),
@@ -948,7 +948,7 @@ enum TagDormBedContract with NumericIdentifiable {
   final int number;
 }
 
-enum TagDormBedInvoice with NumericIdentifiable {
+enum TagDormBedInvoice with UNumericIdentifiable {
   deposit("ودیعه", "Deposit", 101),
   rent("اجاره", "Rent", 102),
   paid("پرداخت شده", "Paid", 201),
@@ -966,7 +966,7 @@ enum TagDormBedInvoice with NumericIdentifiable {
   final int number;
 }
 
-enum TagBed with NumericIdentifiable {
+enum TagBed with UNumericIdentifiable {
   test("تست", "Test", 999);
 
   const TagBed(this.titleFa, this.titleEn, this.number);
@@ -979,7 +979,7 @@ enum TagBed with NumericIdentifiable {
   final int number;
 }
 
-enum TagHotel with NumericIdentifiable {
+enum TagHotel with UNumericIdentifiable {
   hotel("هتل", "Hotel", 101),
   featured("ویژه", "Featured", 201),
   active("فعال", "Active", 202),
@@ -998,7 +998,7 @@ enum TagHotel with NumericIdentifiable {
   final int number;
 }
 
-enum TagHotelReservation with NumericIdentifiable {
+enum TagHotelReservation with UNumericIdentifiable {
   pending("در انتظار", "Pending", 101),
   confirmed("تایید شده", "Confirmed", 102),
   checkedIn("پذیرش شده", "Checked In", 103),
@@ -1016,7 +1016,7 @@ enum TagHotelReservation with NumericIdentifiable {
   final int number;
 }
 
-enum TagHotelInvoice with NumericIdentifiable {
+enum TagHotelInvoice with UNumericIdentifiable {
   full("کامل", "Full", 101),
   paid("پرداخت شده", "Paid", 201),
   paidOnline("پرداخت آنلاین", "Paid Online", 202),
@@ -1034,7 +1034,7 @@ enum TagHotelInvoice with NumericIdentifiable {
   final int number;
 }
 
-enum TagBlog with NumericIdentifiable {
+enum TagBlog with UNumericIdentifiable {
   draft("پیش‌نویس", "Draft", 101),
   published("منتشر شده", "Published", 102),
   archived("بایگانی شده", "Archived", 103),
@@ -1051,7 +1051,7 @@ enum TagBlog with NumericIdentifiable {
   final int number;
 }
 
-enum TagDorm with NumericIdentifiable {
+enum TagDorm with UNumericIdentifiable {
   girls("دختران", "Girls", 101),
   boys("پسران", "Boys", 102),
   featured("ویژه", "Featured", 201),
@@ -1072,7 +1072,7 @@ enum TagDorm with NumericIdentifiable {
   final int number;
 }
 
-enum TagRoom with NumericIdentifiable {
+enum TagRoom with UNumericIdentifiable {
   single("یک تخته", "Single", 101),
   double_("دو تخته", "Double", 102),
   triple("سه تخته", "Triple", 103),
@@ -1093,7 +1093,7 @@ enum TagRoom with NumericIdentifiable {
   final int number;
 }
 
-enum TagDormRoom with NumericIdentifiable {
+enum TagDormRoom with UNumericIdentifiable {
   single("تک نفره", "Single", 101),
   double_("دو نفره", "Double", 102),
   dorm("خوابگاهی", "Dorm", 103);
@@ -1108,7 +1108,7 @@ enum TagDormRoom with NumericIdentifiable {
   final int number;
 }
 
-enum TagDormBed with NumericIdentifiable {
+enum TagDormBed with UNumericIdentifiable {
   single("تک نفره", "Single", 101),
   double_("دو نفره", "Double", 102);
 
@@ -1122,7 +1122,7 @@ enum TagDormBed with NumericIdentifiable {
   final int number;
 }
 
-enum TagApiLog with NumericIdentifiable {
+enum TagApiLog with UNumericIdentifiable {
   get_("GET", "GET", 101),
   post("POST", "POST", 102),
   put("PUT", "PUT", 103),
@@ -1144,7 +1144,7 @@ enum TagApiLog with NumericIdentifiable {
   final int number;
 }
 
-enum TagGoldAsset with NumericIdentifiable {
+enum TagGoldAsset with UNumericIdentifiable {
   gold18("طلای ۱۸ عیار", "Gold 18K", 101),
   irr("ریال", "Rial", 102);
 
@@ -1158,7 +1158,7 @@ enum TagGoldAsset with NumericIdentifiable {
   final int number;
 }
 
-enum TagGoldOrderSide with NumericIdentifiable {
+enum TagGoldOrderSide with UNumericIdentifiable {
   buy("خرید", "Buy", 101),
   sell("فروش", "Sell", 102);
 
@@ -1172,7 +1172,7 @@ enum TagGoldOrderSide with NumericIdentifiable {
   final int number;
 }
 
-enum TagGoldOrderStatus with NumericIdentifiable {
+enum TagGoldOrderStatus with UNumericIdentifiable {
   filled("انجام‌شده", "Filled", 101),
   pending("در انتظار", "Pending", 102),
   failed("ناموفق", "Failed", 103),
@@ -1188,7 +1188,7 @@ enum TagGoldOrderStatus with NumericIdentifiable {
   final int number;
 }
 
-enum TagGoldTxn with NumericIdentifiable {
+enum TagGoldTxn with UNumericIdentifiable {
   buy("خرید طلا", "Buy Gold", 101),
   sell("فروش طلا", "Sell Gold", 102),
   pending("در انتظار", "Pending", 201),
@@ -1206,7 +1206,7 @@ enum TagGoldTxn with NumericIdentifiable {
   final int number;
 }
 
-enum TagIpgPayment with NumericIdentifiable {
+enum TagIpgPayment with UNumericIdentifiable {
   normalSale("خرید عادی", "Normal Sale", 101),
   bill("پرداخت قبض", "Bill", 102),
   topUp("شارژ مستقیم", "Top Up", 103),

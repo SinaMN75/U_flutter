@@ -80,7 +80,7 @@ abstract class UShare {
   }
 
   static Future<ShareResult?> widgetImage({
-    required WidgetToImageController controller,
+    required UWidgetToImageController controller,
     String fileName = "image.png",
     String? text,
     String? subject,

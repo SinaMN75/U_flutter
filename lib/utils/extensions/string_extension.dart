@@ -51,14 +51,14 @@ extension OptionalStringExtension on String? {
 
   String separateNumbers3By3() => (this ?? "").replaceAllMapped(RegExp(r"(\d{1,3})(?=(\d{3})+(?!\d))"), (Match m) => "${m[1]},");
 
-  String toJalaliDateString() => Jalali.fromDateTime(DateTime.parse(this ?? DateTime.now().toString())).formatFullDate();
+  String toJalaliDateString() => UJalali.fromDateTime(DateTime.parse(this ?? DateTime.now().toString())).formatFullDate();
 
   String toJalaliDateTime() {
     final DateTime dateTime = DateTime.parse(this ?? DateTime.now().toString());
-    return "${Jalali.fromDateTime(dateTime).formatCompactDate()} ${dateTime.hour}:${dateTime.minute}";
+    return "${UJalali.fromDateTime(dateTime).formatCompactDate()} ${dateTime.hour}:${dateTime.minute}";
   }
 
-  String toJalaliDate() => Jalali.fromDateTime(DateTime.parse(this ?? DateTime.now().toString())).formatCompactDate();
+  String toJalaliDate() => UJalali.fromDateTime(DateTime.parse(this ?? DateTime.now().toString())).formatCompactDate();
 
   String rial({bool removeNegative = false}) => "${(this ?? "").separateNumbers3By3()} ریال".trim().replaceAll(removeNegative ? "-" : "", "");
 
@@ -68,7 +68,7 @@ extension OptionalStringExtension on String? {
 
   String formatJalaliDateTime({bool toLocal = false}) {
     final DateTime dateTime = DateTime.parse(this ?? DateTime.now().toString()).toLocal();
-    final Jalali jalali = Jalali.fromDateTime(dateTime);
+    final UJalali jalali = UJalali.fromDateTime(dateTime);
     if (dateTime.hour == 0 && dateTime.minute == 0) return "${jalali.year}/${jalali.month}/${jalali.day}";
     return "${dateTime.hour}:${dateTime.minute}:${dateTime.second} ${jalali.year}/${jalali.month}/${jalali.day}";
   }
@@ -122,9 +122,9 @@ extension StringExtensions on String {
     (Match m) => "${m[1]}$separator",
   );
 
-  String toJalaliCompactDateString() => Jalali.fromDateTime(DateTime.parse(this)).formatCompactDate();
+  String toJalaliCompactDateString() => UJalali.fromDateTime(DateTime.parse(this)).formatCompactDate();
 
-  String toJalaliDateString() => Jalali.fromDateTime(DateTime.parse(this)).formatFullDate();
+  String toJalaliDateString() => UJalali.fromDateTime(DateTime.parse(this)).formatFullDate();
 
   String append0() {
     if (length == 1) {
@@ -136,7 +136,7 @@ extension StringExtensions on String {
 
   String formatJalaliDateTime() {
     final DateTime dateTime = DateTime.parse(this);
-    final Jalali jalali = Jalali.fromDateTime(dateTime);
+    final UJalali jalali = UJalali.fromDateTime(dateTime);
     return "${jalali.year}/${jalali.month}/${jalali.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second.toString().append0()}";
   }
 

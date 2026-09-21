@@ -1,6 +1,6 @@
 part of "../data.dart";
 
-class FollowService {
+class UFollowService {
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> follow({
     required UFollowParams p,
     Function(UEmptyResponse r)? onOk,

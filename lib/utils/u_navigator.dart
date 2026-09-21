@@ -29,7 +29,7 @@ abstract class UNavigator {
     bool preventDuplicates = true,
     bool opaque = true,
     bool maintainState = true,
-    RouteTransitions transition = RouteTransitions.rightToLeft,
+    URouteTransitions transition = URouteTransitions.rightToLeft,
     Duration duration = const Duration(milliseconds: 300),
     Curve curve = Curves.easeOut,
     RouteSettings? settings,
@@ -60,7 +60,7 @@ abstract class UNavigator {
 
   static Future<T?> off<T>(
     Widget page, {
-    RouteTransitions transition = RouteTransitions.fade,
+    URouteTransitions transition = URouteTransitions.fade,
     Duration duration = const Duration(milliseconds: 300),
     Curve curve = Curves.easeOut,
     bool fullscreenDialog = false,
@@ -87,7 +87,7 @@ abstract class UNavigator {
 
   static Future<void> offAll(
     Widget page, {
-    RouteTransitions transition = RouteTransitions.fade,
+    URouteTransitions transition = URouteTransitions.fade,
     Duration duration = const Duration(milliseconds: 300),
     Curve curve = Curves.easeOut,
     RouteSettings? settings,
@@ -110,7 +110,7 @@ abstract class UNavigator {
   static Future<T?> offUntil<T>(
     Widget page, {
     required String untilRouteName,
-    RouteTransitions transition = RouteTransitions.rightToLeft,
+    URouteTransitions transition = URouteTransitions.rightToLeft,
     Duration duration = const Duration(milliseconds: 300),
     Curve curve = Curves.easeOut,
     RouteSettings? settings,
@@ -171,7 +171,7 @@ abstract class UNavigator {
     bool barrierDismissible = true,
     bool useRootNavigator = true,
     Color? barrierColor,
-    RouteTransitions transition = RouteTransitions.fadeScale,
+    URouteTransitions transition = URouteTransitions.fadeScale,
     Duration duration = const Duration(milliseconds: 250),
     Curve curve = Curves.easeOut,
     Alignment alignment = Alignment.center,
@@ -575,7 +575,7 @@ abstract class UNavigator {
 
   static Future<T?> fullScreenDialog<T>(
     Widget page, {
-    RouteTransitions transition = RouteTransitions.upToDown,
+    URouteTransitions transition = URouteTransitions.upToDown,
     VoidCallback? onDismiss,
   }) => push<T>(page, fullscreenDialog: true, transition: transition).then((T? value) {
     onDismiss?.call();
@@ -640,16 +640,16 @@ abstract class UNavigator {
     _currentOverlay = null;
   }
 
-  static Widget Function(BuildContext, Animation<double>, Animation<double>, Widget) _getTransition(RouteTransitions transition, [Curve curve = Curves.easeOut]) {
+  static Widget Function(BuildContext, Animation<double>, Animation<double>, Widget) _getTransition(URouteTransitions transition, [Curve curve = Curves.easeOut]) {
     switch (transition) {
-      case RouteTransitions.none:
+      case URouteTransitions.none:
         return (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) => child;
-      case RouteTransitions.fade:
+      case URouteTransitions.fade:
         return (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) => FadeTransition(
           opacity: CurvedAnimation(parent: animation, curve: curve),
           child: child,
         );
-      case RouteTransitions.fadeScale:
+      case URouteTransitions.fadeScale:
         return (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
           final Animation<double> curved = CurvedAnimation(parent: animation, curve: curve);
           return FadeTransition(
@@ -657,7 +657,7 @@ abstract class UNavigator {
             child: ScaleTransition(scale: Tween<double>(begin: 0.9, end: 1).animate(curved), child: child),
           );
         };
-      case RouteTransitions.slideFade:
+      case URouteTransitions.slideFade:
         return (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
           final Animation<double> curved = CurvedAnimation(parent: animation, curve: curve);
           return FadeTransition(
@@ -668,37 +668,37 @@ abstract class UNavigator {
             ),
           );
         };
-      case RouteTransitions.rightToLeft:
+      case URouteTransitions.rightToLeft:
         return (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) => SlideTransition(
           position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero).animate(CurvedAnimation(parent: animation, curve: Curves.fastOutSlowIn)),
           child: child,
         );
-      case RouteTransitions.leftToRight:
+      case URouteTransitions.leftToRight:
         return (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) => SlideTransition(
           position: Tween<Offset>(begin: const Offset(-1, 0), end: Offset.zero).animate(CurvedAnimation(parent: animation, curve: curve)),
           child: child,
         );
-      case RouteTransitions.upToDown:
+      case URouteTransitions.upToDown:
         return (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) => SlideTransition(
           position: Tween<Offset>(begin: const Offset(0, -1), end: Offset.zero).animate(CurvedAnimation(parent: animation, curve: curve)),
           child: child,
         );
-      case RouteTransitions.downToUp:
+      case URouteTransitions.downToUp:
         return (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) => SlideTransition(
           position: Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero).animate(CurvedAnimation(parent: animation, curve: curve)),
           child: child,
         );
-      case RouteTransitions.scale:
+      case URouteTransitions.scale:
         return (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) => ScaleTransition(
           scale: CurvedAnimation(parent: animation, curve: curve),
           child: child,
         );
-      case RouteTransitions.rotate:
+      case URouteTransitions.rotate:
         return (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) => RotationTransition(
           turns: CurvedAnimation(parent: animation, curve: curve),
           child: child,
         );
-      case RouteTransitions.size:
+      case URouteTransitions.size:
         return (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) => Align(
           child: SizeTransition(
             sizeFactor: CurvedAnimation(parent: animation, curve: curve),
@@ -709,7 +709,7 @@ abstract class UNavigator {
   }
 }
 
-enum RouteTransitions {
+enum URouteTransitions {
   none,
   fade,
   fadeScale,

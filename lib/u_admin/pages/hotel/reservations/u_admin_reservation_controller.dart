@@ -49,11 +49,11 @@ class UAdminReservationController extends UBaseController {
         tags: _statusTag == null ? null : <int>[_statusTag!],
         checkInDate: checkInFilter,
         checkOutDate: checkOutFilter,
-        selectorArgs: const HotelReservationSelectorArgs(
-          user: UserSelectorArgs(),
-          room: HotelRoomSelectorArgs(hotel: HotelSelectorArgs()),
-          hotel: HotelSelectorArgs(),
-          invoice: HotelInvoiceSelectorArgs(),
+        selectorArgs: const UHotelReservationSelectorArgs(
+          user: UUserSelectorArgs(),
+          room: UHotelRoomSelectorArgs(hotel: UHotelSelectorArgs()),
+          hotel: UHotelSelectorArgs(),
+          invoice: UHotelInvoiceSelectorArgs(),
         ),
       ),
       onOk: (UResponse<List<UHotelReservationResponse>> r) {
@@ -181,7 +181,7 @@ class UAdminReservationController extends UBaseController {
         availableOnly: true,
         pageSize: 100,
         pageNumber: 1,
-        selectorArgs: const HotelRoomSelectorArgs(hotel: HotelSelectorArgs()),
+        selectorArgs: const UHotelRoomSelectorArgs(hotel: UHotelSelectorArgs()),
       ),
       onOk: (UResponse<List<UHotelRoomResponse>> r) => result.addAll(r.result ?? <UHotelRoomResponse>[]),
       onError: (UEmptyResponse e) {},
@@ -210,5 +210,11 @@ class UAdminReservationController extends UBaseController {
       onException: (String e) {},
     );
     return result;
+  }
+
+  @override
+  void dispose() {
+    guestFilter.dispose();
+    super.dispose();
   }
 }

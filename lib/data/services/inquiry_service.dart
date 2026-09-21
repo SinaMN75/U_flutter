@@ -1,6 +1,6 @@
 part of "../data.dart";
 
-class InquiryService {
+class UInquiryService {
   Future<(UResponse<UBillInfoResponse>?, UEmptyResponse?, String?)> billInfo({
     required UBillInfoParams p,
     Function(UResponse<UBillInfoResponse> r)? onOk,

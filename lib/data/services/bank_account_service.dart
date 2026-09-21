@@ -1,6 +1,6 @@
 part of "../data.dart";
 
-class BankAccountService {
+class UBankAccountService {
   Future<(UResponse<String>?, UEmptyResponse?, String?)> create({
     required UBankAccountCreateParams p,
     Function(UResponse<String> r)? onOk,

@@ -20,8 +20,8 @@ class UAdminPaymentUserCreateUpdateController {
   late TextEditingController controllerLandLine;
   late TextEditingController controllerEmail;
   late TextEditingController controllerBio;
-  late Rx<TagUser> gender = TagUser.unspecified.obs;
-  late Rx<TagUser> role = TagUser.guest.obs;
+  late URx<TagUser> gender = TagUser.unspecified.obs;
+  late URx<TagUser> role = TagUser.guest.obs;
   late DateTime birthdate;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -107,4 +107,16 @@ class UAdminPaymentUserCreateUpdateController {
       );
     },
   );
+
+  /// Releases the text controllers and observables this controller owns.
+  void dispose() {
+    for (final TextEditingController controller in <TextEditingController>[
+      controllerFirstName, controllerLastName, controllerUserName, controllerBirthDate,
+      controllerPassword, controllerEmail, controllerPhoneNumber, controllerFatherName,
+    ]) {
+      controller.dispose();
+    }
+    gender.dispose();
+    role.dispose();
+  }
 }

@@ -1,6 +1,6 @@
 part of "../data.dart";
 
-class IpgService {
+class UIpgService {
   Future<(UResponse<UIpgPayResponse>?, UEmptyResponse?, String?)> pay({
     required UIpgPayParams p,
     Function(UResponse<UIpgPayResponse> r)? onOk,

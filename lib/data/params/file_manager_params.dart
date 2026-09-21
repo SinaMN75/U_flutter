@@ -89,7 +89,7 @@ class UFileManagerDeleteParams {
 class UFileManagerUploadParams {
   UFileManagerUploadParams({required this.file, this.path = ""});
 
-  final FileData file;
+  final UFileData file;
   final String path;
 
   Map<String, dynamic> toMap() => <String, dynamic>{"path": path};

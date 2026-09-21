@@ -32,7 +32,7 @@ class AdvancedPage extends StatelessWidget {
         code: r'''USignaturePad(onSave: (FileData f) => upload(f));''',
         child: SizedBox(
           height: 240,
-          child: USignaturePad(onSave: (FileData f) => UToast.success(message: "Signature captured")),
+          child: USignaturePad(onSave: (UFileData f) => UToast.success(message: "Signature captured")),
         ),
       ),
       DemoSection(

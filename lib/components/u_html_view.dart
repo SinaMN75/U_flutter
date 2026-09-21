@@ -120,7 +120,7 @@ class _UHtmlViewState extends State<UHtmlView> {
       widget.onImageTap!(url);
       return;
     }
-    UNavigator.push(UImageViewer(fileData: FileData(url: url)));
+    UNavigator.push(UImageViewer(fileData: UFileData(url: url)));
   }
 
   @override

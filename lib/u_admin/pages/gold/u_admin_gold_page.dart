@@ -15,6 +15,12 @@ class _UAdminGoldPageState extends State<UAdminGoldPage> {
     c.init();
     super.initState();
   }
+  @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -36,7 +42,7 @@ class _UAdminGoldPageState extends State<UAdminGoldPage> {
     ),
   );
 
-  Widget _overview() => Obx(
+  Widget _overview() => UObx(
     () => SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: UColumn(
@@ -100,7 +106,7 @@ class _UAdminGoldPageState extends State<UAdminGoldPage> {
         desktopRow: _orderDesktop,
         mobileRow: _orderMobile,
       ).expanded(),
-      Obx(
+      UObx(
         () => c.ordersCursor == null
             ? const SizedBox.shrink()
             : UButton(title: U.s.loadMore, type: UButtonType.text, onTap: () => c.readOrders(more: true)).pOnly(bottom: 8),
@@ -162,7 +168,7 @@ class _UAdminGoldPageState extends State<UAdminGoldPage> {
           ],
         ),
       ).expanded(),
-      Obx(
+      UObx(
         () => c.txnsCursor == null
             ? const SizedBox.shrink()
             : UButton(title: U.s.loadMore, type: UButtonType.text, onTap: () => c.readTransactions(more: true)).pOnly(bottom: 8),
@@ -173,7 +179,7 @@ class _UAdminGoldPageState extends State<UAdminGoldPage> {
   String _entries(List<UGoldWalletEntryResponse> entries) =>
       entries.map((UGoldWalletEntryResponse e) => "${e.asset ?? ""} ${e.amount?.toStringAsSmartRound(maxPrecision: 4) ?? ""}".trim()).join(" • ");
 
-  Widget _limits() => Obx(
+  Widget _limits() => UObx(
     () => SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: UColumn(

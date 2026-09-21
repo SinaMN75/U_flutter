@@ -19,7 +19,7 @@ class UAdminPaymentUsersController extends UBaseController {
   DateTime? fromBirthDate;
   DateTime? toBirthDate;
 
-  Rxn<TagUser> verificationStatus = Rxn<TagUser>();
+  URxn<TagUser> verificationStatus = URxn<TagUser>();
 
   Future<void> init() => read();
 
@@ -112,4 +112,21 @@ class UAdminPaymentUsersController extends UBaseController {
       },
     ),
   );
+
+  @override
+  void dispose() {
+    firstNameFilterController.dispose();
+    lastNameFilterController.dispose();
+    userNameFilterController.dispose();
+    phoneNumberFilterController.dispose();
+    nationalCodeFilterController.dispose();
+    emailFilterController.dispose();
+    landLineFilterController.dispose();
+    bioFilterController.dispose();
+    fromCreatedController.dispose();
+    toCreatedController.dispose();
+    fromBirthController.dispose();
+    toBirthController.dispose();
+    super.dispose();
+  }
 }

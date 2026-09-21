@@ -39,7 +39,7 @@ class _UProcessViewState extends State<UProcessView> {
   }
 
   @override
-  Widget build(BuildContext context) => Obx(() {
+  Widget build(BuildContext context) => UObx(() {
     if (c.state.isLoading()) return const Scaffold(body: Center(child: CircularProgressIndicator()));
     if (c.state.isError()) {
       return UScaffold(

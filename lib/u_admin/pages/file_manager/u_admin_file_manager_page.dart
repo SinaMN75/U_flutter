@@ -63,10 +63,10 @@ class _UAdminFileManagerPageState extends State<UAdminFileManagerPage> {
 
   Future<void> _upload() async {
     await UFile.showFilePicker(
-      action: (List<FileData> files) async {
+      action: (List<UFileData> files) async {
         if (files.isEmpty) return;
         ULoading.show();
-        for (final FileData f in files) {
+        for (final UFileData f in files) {
           await UServices.fileManager.upload(
             p: UFileManagerUploadParams(file: f, path: _path),
             onOk: (UResponse<UFileManagerEntryResponse> r) {},

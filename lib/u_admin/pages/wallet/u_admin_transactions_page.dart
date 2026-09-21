@@ -15,6 +15,12 @@ class _TransactionsPageState extends State<UAdminTransactionsPage> {
     c.init();
     super.initState();
   }
+  @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -96,7 +102,7 @@ class _TransactionsPageState extends State<UAdminTransactionsPage> {
                 jalali: true,
                 controller: c.fromCreatedController,
                 labelText: U.s.fromDate,
-                onChange: (DateTime d, Jalali j) {
+                onChange: (DateTime d, UJalali j) {
                   c.fromCreatedController.text = j.formatCompactDate();
                   c.fromCreatedAt = d;
                 },
@@ -105,7 +111,7 @@ class _TransactionsPageState extends State<UAdminTransactionsPage> {
                 jalali: true,
                 controller: c.toCreatedController,
                 labelText: U.s.toDate,
-                onChange: (DateTime d, Jalali j) {
+                onChange: (DateTime d, UJalali j) {
                   c.toCreatedController.text = j.formatCompactDate();
                   c.toCreatedAt = d;
                 },
@@ -132,10 +138,11 @@ class _TransactionsPageState extends State<UAdminTransactionsPage> {
 
   void _showCreateDialog() {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final TextEditingController amount = TextEditingController();
-    final TextEditingController tracking = TextEditingController();
-    final Rx<TagTxn> tag = TagTxn.pending.obs;
-    UNavigator.dialog(
+    final UAdminFields f = UAdminFields();
+    final TextEditingController amount = f.text();
+    final TextEditingController tracking = f.text();
+    final URx<TagTxn> tag = TagTxn.pending.obs;
+    UNavigator.dialog(f.scope(
       AlertDialog(
         title: Text(U.s.createItem(U.s.transactions)),
         content: SizedBox(
@@ -179,16 +186,17 @@ class _TransactionsPageState extends State<UAdminTransactionsPage> {
             ),
           ),
         ),
-      ),
+      )),
     );
   }
 
   void _showEditDialog(UTxnResponse i) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final TextEditingController amount = TextEditingController(text: i.amount.toInt().toString());
-    final TextEditingController tracking = TextEditingController(text: i.trackingNumber);
-    final Rx<TagTxn> tag = (TagTxn.values.fromNumber(i.tags.isEmpty ? TagTxn.pending.number : i.tags.first) ?? TagTxn.pending).obs;
-    UNavigator.dialog(
+    final UAdminFields f = UAdminFields();
+    final TextEditingController amount = f.text(i.amount.toInt().toString());
+    final TextEditingController tracking = f.text(i.trackingNumber);
+    final URx<TagTxn> tag = (TagTxn.values.fromNumber(i.tags.isEmpty ? TagTxn.pending.number : i.tags.first) ?? TagTxn.pending).obs;
+    UNavigator.dialog(f.scope(
       AlertDialog(
         title: Text(U.s.editItem(U.s.transactions)),
         content: SizedBox(
@@ -226,7 +234,7 @@ class _TransactionsPageState extends State<UAdminTransactionsPage> {
             ),
           ),
         ),
-      ),
+      )),
     );
   }
 }

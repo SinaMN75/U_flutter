@@ -1,10 +1,10 @@
 // Abstract base class for date formatting
-abstract class DateFormatter {
+abstract class UDateFormatter {
   static final RegExp _asciiDigits = RegExp("[0-9]");
 
-  final Date date;
+  final UDate date;
 
-  const DateFormatter(this.date);
+  const UDateFormatter(this.date);
 
   // Year as string
   String get y => date.year.toString();
@@ -44,8 +44,8 @@ abstract class DateFormatter {
 }
 
 // Abstract base class for dates
-abstract class Date implements Comparable<Date> {
-  const Date();
+abstract class UDate implements Comparable<UDate> {
+  const UDate();
 
   static const int minJDN = 1925675;
   static const int maxJDN = 3108616;
@@ -70,7 +70,7 @@ abstract class Date implements Comparable<Date> {
 
   int get monthLength;
 
-  DateFormatter get formatter;
+  UDateFormatter get formatter;
 
   bool isLeapYear();
 
@@ -78,39 +78,39 @@ abstract class Date implements Comparable<Date> {
 
   DateTime toUtcDateTime();
 
-  Date copy({int? year, int? month, int? day, int? hour, int? minute, int? second, int? millisecond});
+  UDate copy({int? year, int? month, int? day, int? hour, int? minute, int? second, int? millisecond});
 
-  Date add({int years = 0, int months = 0, int days = 0, int hours = 0, int minutes = 0, int seconds = 0, int milliseconds = 0});
+  UDate add({int years = 0, int months = 0, int days = 0, int hours = 0, int minutes = 0, int seconds = 0, int milliseconds = 0});
 
-  Date operator +(int days);
+  UDate operator +(int days);
 
-  Date operator -(int days);
+  UDate operator -(int days);
 
-  int distanceTo(Date other) => other.julianDayNumber - julianDayNumber;
+  int distanceTo(UDate other) => other.julianDayNumber - julianDayNumber;
 
   @override
-  int compareTo(Date other) => julianDayNumber == other.julianDayNumber ? time.compareTo(other.time) : julianDayNumber - other.julianDayNumber;
+  int compareTo(UDate other) => julianDayNumber == other.julianDayNumber ? time.compareTo(other.time) : julianDayNumber - other.julianDayNumber;
 
   Duration get time => Duration(hours: hour, minutes: minute, seconds: second, milliseconds: millisecond);
 
   @override
-  bool operator ==(Object other) => other is Date && compareTo(other) == 0;
+  bool operator ==(Object other) => other is UDate && compareTo(other) == 0;
 
   @override
   int get hashCode => julianDayNumber.hashCode ^ time.hashCode;
 
-  bool operator >(Date other) => compareTo(other) > 0;
+  bool operator >(UDate other) => compareTo(other) > 0;
 
-  bool operator >=(Date other) => compareTo(other) >= 0;
+  bool operator >=(UDate other) => compareTo(other) >= 0;
 
-  bool operator <(Date other) => compareTo(other) < 0;
+  bool operator <(UDate other) => compareTo(other) < 0;
 
-  bool operator <=(Date other) => compareTo(other) <= 0;
+  bool operator <=(UDate other) => compareTo(other) <= 0;
 }
 
 // Jalali date formatter
-class JalaliFormatter extends DateFormatter {
-  const JalaliFormatter(Jalali super.date);
+class UJalaliFormatter extends UDateFormatter {
+  const UJalaliFormatter(UJalali super.date);
 
   static const List<String> monthNames = <String>["فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند"];
   static const List<String> monthNamesAfghanistan = <String>["حمل", "ثور", "جوزا", "سرطان", "اسد", "سنبله", "میزان", "عقرب", "قوس", "جدی", "دلو", "حوت"];
@@ -134,21 +134,21 @@ class JalaliFormatter extends DateFormatter {
 }
 
 // Jalali date implementation
-class Jalali extends Date {
-  factory Jalali(int year, [int month = 1, int day = 1, int hour = 0, int minute = 0, int second = 0, int millisecond = 0]) =>
+class UJalali extends UDate {
+  factory UJalali(int year, [int month = 1, int day = 1, int hour = 0, int minute = 0, int second = 0, int millisecond = 0]) =>
       _JAlgo.createFromYearMonthDay(year, month, day, hour, minute, second, millisecond);
 
-  const Jalali._raw(this.julianDayNumber, this.year, this.month, this.day, this.hour, this.minute, this.second, this.millisecond, this._isLeap);
+  const UJalali._raw(this.julianDayNumber, this.year, this.month, this.day, this.hour, this.minute, this.second, this.millisecond, this._isLeap);
 
-  factory Jalali.fromJulianDayNumber(int jdn, [int hour = 0, int minute = 0, int second = 0, int millisecond = 0]) => _JAlgo.createFromJulianDayNumber(jdn, hour, minute, second, millisecond);
+  factory UJalali.fromJulianDayNumber(int jdn, [int hour = 0, int minute = 0, int second = 0, int millisecond = 0]) => _JAlgo.createFromJulianDayNumber(jdn, hour, minute, second, millisecond);
 
-  factory Jalali.fromDateTime(DateTime dt) => Gregorian.fromDateTime(dt).toJalali();
+  factory UJalali.fromDateTime(DateTime dt) => UGregorian.fromDateTime(dt).toJalali();
 
-  factory Jalali.fromGregorian(Gregorian g) => Jalali.fromJulianDayNumber(g.julianDayNumber, g.hour, g.minute, g.second, g.millisecond);
+  factory UJalali.fromGregorian(UGregorian g) => UJalali.fromJulianDayNumber(g.julianDayNumber, g.hour, g.minute, g.second, g.millisecond);
 
-  factory Jalali.now() => Gregorian.now().toJalali();
-  static const Jalali min = Jalali._raw(1925675, -61, 1, 1, 0, 0, 0, 0, true);
-  static const Jalali max = Jalali._raw(3108616, 3177, 10, 11, 23, 59, 59, 999, false);
+  factory UJalali.now() => UGregorian.now().toJalali();
+  static const UJalali min = UJalali._raw(1925675, -61, 1, 1, 0, 0, 0, 0, true);
+  static const UJalali max = UJalali._raw(3108616, 3177, 10, 11, 23, 59, 59, 999, false);
 
   @override
   final int julianDayNumber;
@@ -181,7 +181,7 @@ class Jalali extends Date {
       : 29;
 
   @override
-  JalaliFormatter get formatter => JalaliFormatter(this);
+  UJalaliFormatter get formatter => UJalaliFormatter(this);
 
   @override
   bool isLeapYear() => _isLeap;
@@ -192,19 +192,19 @@ class Jalali extends Date {
   @override
   DateTime toUtcDateTime() => toGregorian().toUtcDateTime();
 
-  Gregorian toGregorian() => Gregorian.fromJulianDayNumber(julianDayNumber, hour, minute, second, millisecond);
+  UGregorian toGregorian() => UGregorian.fromJulianDayNumber(julianDayNumber, hour, minute, second, millisecond);
 
   @override
   String toString() => "Jalali($year, $month, $day, $hour:$minute:$second.$millisecond)";
 
   @override
-  Jalali operator +(int days) => addDays(days);
+  UJalali operator +(int days) => addDays(days);
 
   @override
-  Jalali operator -(int days) => addDays(-days);
+  UJalali operator -(int days) => addDays(-days);
 
   @override
-  Jalali copy({int? year, int? month, int? day, int? hour, int? minute, int? second, int? millisecond}) => Jalali(
+  UJalali copy({int? year, int? month, int? day, int? hour, int? minute, int? second, int? millisecond}) => UJalali(
     year ?? this.year,
     month ?? this.month,
     day ?? this.day,
@@ -215,7 +215,7 @@ class Jalali extends Date {
   );
 
   @override
-  Jalali add({int years = 0, int months = 0, int days = 0, int hours = 0, int minutes = 0, int seconds = 0, int milliseconds = 0}) => Jalali(
+  UJalali add({int years = 0, int months = 0, int days = 0, int hours = 0, int minutes = 0, int seconds = 0, int milliseconds = 0}) => UJalali(
     year + years,
     month + months,
     day + days,
@@ -225,7 +225,7 @@ class Jalali extends Date {
     millisecond + milliseconds,
   );
 
-  Jalali addDays(int days) => days == 0 ? this : Jalali.fromJulianDayNumber(julianDayNumber + days, hour, minute, second, millisecond);
+  UJalali addDays(int days) => days == 0 ? this : UJalali.fromJulianDayNumber(julianDayNumber + days, hour, minute, second, millisecond);
 }
 
 // Jalali calculation helper
@@ -255,22 +255,22 @@ class _JAlgo {
     return _JalaliCalculation(leap: leap, gy: gy, march: march);
   }
 
-  static Jalali createFromJulianDayNumber(int jdn, int hour, int minute, int second, int millisecond) {
-    if (jdn < Date.minJDN || jdn > Date.maxJDN) throw RangeError("Julian day out of range");
+  static UJalali createFromJulianDayNumber(int jdn, int hour, int minute, int second, int millisecond) {
+    if (jdn < UDate.minJDN || jdn > UDate.maxJDN) throw RangeError("Julian day out of range");
     if (hour < 0 || hour > 23 || minute < 0 || minute > 59 || second < 0 || second > 59 || millisecond < 0 || millisecond > 999) {
       throw RangeError("Time out of range");
     }
-    final int gy = Gregorian.fromJulianDayNumber(jdn).year;
+    final int gy = UGregorian.fromJulianDayNumber(jdn).year;
     int jy = gy - 621;
     final _JalaliCalculation r = calculate(jy);
-    final int jdn1f = Gregorian(r.gy, 3, r.march).julianDayNumber;
+    final int jdn1f = UGregorian(r.gy, 3, r.march).julianDayNumber;
     int k = jdn - jdn1f;
     bool isLeap = r.leap == 0;
     if (k >= 0) {
       if (k <= 185) {
         final int jm = 1 + (k ~/ 31);
         final int jd = (k % 31) + 1;
-        return Jalali._raw(jdn, jy, jm, jd, hour, minute, second, millisecond, isLeap);
+        return UJalali._raw(jdn, jy, jm, jd, hour, minute, second, millisecond, isLeap);
       }
       k -= 186;
     } else {
@@ -280,10 +280,10 @@ class _JAlgo {
     }
     final int jm = 7 + (k ~/ 30);
     final int jd = (k % 30) + 1;
-    return Jalali._raw(jdn, jy, jm, jd, hour, minute, second, millisecond, isLeap);
+    return UJalali._raw(jdn, jy, jm, jd, hour, minute, second, millisecond, isLeap);
   }
 
-  static Jalali createFromYearMonthDay(int year, int month, int day, int hour, int minute, int second, int millisecond) {
+  static UJalali createFromYearMonthDay(int year, int month, int day, int hour, int minute, int second, int millisecond) {
     if (year < -61 || year > 3177 || month < 1 || month > 12 || day < 1 || (year == 3177 && (month > 10 || (month == 10 && day > 11)))) {
       throw RangeError("Date out of range");
     }
@@ -297,8 +297,8 @@ class _JAlgo {
     if (hour < 0 || hour > 23 || minute < 0 || minute > 59 || second < 0 || second > 59 || millisecond < 0 || millisecond > 999) {
       throw RangeError("Time out of range");
     }
-    final int jdn = Gregorian(r.gy, 3, r.march).julianDayNumber + (month - 1) * 31 - (month ~/ 7) * (month - 7) + day - 1;
-    return Jalali._raw(jdn, year, month, day, hour, minute, second, millisecond, r.leap == 0);
+    final int jdn = UGregorian(r.gy, 3, r.march).julianDayNumber + (month - 1) * 31 - (month ~/ 7) * (month - 7) + day - 1;
+    return UJalali._raw(jdn, year, month, day, hour, minute, second, millisecond, r.leap == 0);
   }
 }
 
@@ -311,8 +311,8 @@ class _JalaliCalculation {
 }
 
 // Gregorian date formatter
-class GregorianFormatter extends DateFormatter {
-  const GregorianFormatter(Gregorian super.date);
+class UGregorianFormatter extends UDateFormatter {
+  const UGregorianFormatter(UGregorian super.date);
 
   static const List<String> _monthNames = <String>["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   static const List<String> _weekDayNames = <String>["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
@@ -325,19 +325,19 @@ class GregorianFormatter extends DateFormatter {
 }
 
 // Gregorian date implementation
-class Gregorian extends Date {
-  factory Gregorian(int year, [int month = 1, int day = 1, int hour = 0, int minute = 0, int second = 0, int millisecond = 0]) =>
+class UGregorian extends UDate {
+  factory UGregorian(int year, [int month = 1, int day = 1, int hour = 0, int minute = 0, int second = 0, int millisecond = 0]) =>
       _GAlgo.createFromYearMonthDay(year, month, day, hour, minute, second, millisecond);
 
-  const Gregorian._raw(this.julianDayNumber, this.year, this.month, this.day, this.hour, this.minute, this.second, this.millisecond);
+  const UGregorian._raw(this.julianDayNumber, this.year, this.month, this.day, this.hour, this.minute, this.second, this.millisecond);
 
-  factory Gregorian.fromJulianDayNumber(int jdn, [int hour = 0, int minute = 0, int second = 0, int millisecond = 0]) => _GAlgo.createFromJulianDayNumber(jdn, hour, minute, second, millisecond);
+  factory UGregorian.fromJulianDayNumber(int jdn, [int hour = 0, int minute = 0, int second = 0, int millisecond = 0]) => _GAlgo.createFromJulianDayNumber(jdn, hour, minute, second, millisecond);
 
-  factory Gregorian.fromDateTime(DateTime dt) => Gregorian(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second, dt.millisecond);
+  factory UGregorian.fromDateTime(DateTime dt) => UGregorian(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second, dt.millisecond);
 
-  factory Gregorian.now() => Gregorian.fromDateTime(DateTime.now());
-  static const Gregorian min = Gregorian._raw(1925675, 560, 3, 20, 0, 0, 0, 0);
-  static const Gregorian max = Gregorian._raw(3108616, 3798, 12, 31, 23, 59, 59, 999);
+  factory UGregorian.now() => UGregorian.fromDateTime(DateTime.now());
+  static const UGregorian min = UGregorian._raw(1925675, 560, 3, 20, 0, 0, 0, 0);
+  static const UGregorian max = UGregorian._raw(3108616, 3798, 12, 31, 23, 59, 59, 999);
 
   @override
   final int julianDayNumber;
@@ -363,7 +363,7 @@ class Gregorian extends Date {
   int get monthLength => _GAlgo.getMonthLength(year, month);
 
   @override
-  GregorianFormatter get formatter => GregorianFormatter(this);
+  UGregorianFormatter get formatter => UGregorianFormatter(this);
 
   @override
   bool isLeapYear() => _GAlgo.isLeapYear(year);
@@ -374,19 +374,19 @@ class Gregorian extends Date {
   @override
   DateTime toUtcDateTime() => DateTime.utc(year, month, day, hour, minute, second, millisecond);
 
-  Jalali toJalali() => Jalali.fromJulianDayNumber(julianDayNumber, hour, minute, second, millisecond);
+  UJalali toJalali() => UJalali.fromJulianDayNumber(julianDayNumber, hour, minute, second, millisecond);
 
   @override
   String toString() => "Gregorian($year, $month, $day, $hour:$minute:$second.$millisecond)";
 
   @override
-  Gregorian operator +(int days) => addDays(days);
+  UGregorian operator +(int days) => addDays(days);
 
   @override
-  Gregorian operator -(int days) => addDays(-days);
+  UGregorian operator -(int days) => addDays(-days);
 
   @override
-  Gregorian copy({int? year, int? month, int? day, int? hour, int? minute, int? second, int? millisecond}) => Gregorian(
+  UGregorian copy({int? year, int? month, int? day, int? hour, int? minute, int? second, int? millisecond}) => UGregorian(
     year ?? this.year,
     month ?? this.month,
     day ?? this.day,
@@ -397,7 +397,7 @@ class Gregorian extends Date {
   );
 
   @override
-  Gregorian add({int years = 0, int months = 0, int days = 0, int hours = 0, int minutes = 0, int seconds = 0, int milliseconds = 0}) => Gregorian(
+  UGregorian add({int years = 0, int months = 0, int days = 0, int hours = 0, int minutes = 0, int seconds = 0, int milliseconds = 0}) => UGregorian(
     year + years,
     month + months,
     day + days,
@@ -407,7 +407,7 @@ class Gregorian extends Date {
     millisecond + milliseconds,
   );
 
-  Gregorian addDays(int days) => days == 0 ? this : Gregorian.fromJulianDayNumber(julianDayNumber + days, hour, minute, second, millisecond);
+  UGregorian addDays(int days) => days == 0 ? this : UGregorian.fromJulianDayNumber(julianDayNumber + days, hour, minute, second, millisecond);
 }
 
 // Gregorian calculation helper
@@ -418,8 +418,8 @@ class _GAlgo {
 
   static int getMonthLength(int year, int month) => month == 2 ? (isLeapYear(year) ? 29 : 28) : _monthLengths[month - 1];
 
-  static Gregorian createFromJulianDayNumber(int jdn, int hour, int minute, int second, int millisecond) {
-    if (jdn < Date.minJDN || jdn > Date.maxJDN) throw RangeError("Julian day out of range");
+  static UGregorian createFromJulianDayNumber(int jdn, int hour, int minute, int second, int millisecond) {
+    if (jdn < UDate.minJDN || jdn > UDate.maxJDN) throw RangeError("Julian day out of range");
     if (hour < 0 || hour > 23 || minute < 0 || minute > 59 || second < 0 || second > 59 || millisecond < 0 || millisecond > 999) {
       throw RangeError("Time out of range");
     }
@@ -428,10 +428,10 @@ class _GAlgo {
     final int gd = (i % 153) ~/ 5 + 1;
     final int gm = (i ~/ 153) % 12 + 1;
     final int gy = j ~/ 1461 - 100100 + (8 - gm) ~/ 6;
-    return Gregorian._raw(jdn, gy, gm, gd, hour, minute, second, millisecond);
+    return UGregorian._raw(jdn, gy, gm, gd, hour, minute, second, millisecond);
   }
 
-  static Gregorian createFromYearMonthDay(int year, int month, int day, int hour, int minute, int second, int millisecond) {
+  static UGregorian createFromYearMonthDay(int year, int month, int day, int hour, int minute, int second, int millisecond) {
     if (year < 560 || year > 3798 || month < 1 || month > 12 || day < 1 || day > getMonthLength(year, month) || (year == 560 && (month < 3 || (month == 3 && day < 20)))) {
       throw RangeError("Date out of range");
     }
@@ -439,13 +439,13 @@ class _GAlgo {
       throw RangeError("Time out of range");
     }
     final int jdn = ((year + ((month - 8) ~/ 6) + 100100) * 1461) ~/ 4 + (153 * ((month + 9) % 12) + 2) ~/ 5 + day - 34840408 - (((year + 100100 + ((month - 8) ~/ 6)) ~/ 100) * 3) ~/ 4 + 752;
-    return Gregorian._raw(jdn, year, month, day, hour, minute, second, millisecond);
+    return UGregorian._raw(jdn, year, month, day, hour, minute, second, millisecond);
   }
 }
 
 // Extensions for additional Jalali functionality
 // Extension for Jalali date with enhanced formatting and utilities
-extension JalaliExt on Jalali {
+extension JalaliExt on UJalali {
   // Constants for weekdays
   static const int monday = 3;
   static const int tuesday = 4;
@@ -478,35 +478,35 @@ extension JalaliExt on Jalali {
   int get millisecondsSinceEpoch => toDateTime().millisecondsSinceEpoch;
 
   // Comparison utilities
-  bool isBefore(Jalali other) => compareTo(other) < 0;
+  bool isBefore(UJalali other) => compareTo(other) < 0;
 
-  bool isAfter(Jalali other) => compareTo(other) > 0;
+  bool isAfter(UJalali other) => compareTo(other) > 0;
 
-  bool isAtSameMomentAs(Jalali other) => compareTo(other) == 0;
+  bool isAtSameMomentAs(UJalali other) => compareTo(other) == 0;
 
-  bool isSameDayAs(Jalali other) => year == other.year && month == other.month && day == other.day;
+  bool isSameDayAs(UJalali other) => year == other.year && month == other.month && day == other.day;
 
   // Formatting utilities
   String formatFullDate({bool persianDigits = false}) {
-    final JalaliFormatter f = formatter;
+    final UJalaliFormatter f = formatter;
     final String result = "${f.wN} ${f.d} ${f.mN} ${f.yyyy}";
     return persianDigits ? f.toPersian(result) : result;
   }
 
   String formatCompactDate({bool persianDigits = false}) {
-    final JalaliFormatter f = formatter;
+    final UJalaliFormatter f = formatter;
     final String result = "${f.yyyy}/${f.mm}/${f.dd}";
     return persianDigits ? f.toPersian(result) : result;
   }
 
   String formatDateTime({bool persianDigits = false}) {
-    final JalaliFormatter f = formatter;
+    final UJalaliFormatter f = formatter;
     final String result = '${f.yyyy}-${f.mm}-${f.dd} ${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}:${second.toString().padLeft(2, '0')}';
     return persianDigits ? f.toPersian(result) : result;
   }
 
   String formatCustom(String pattern, {bool persianDigits = false}) {
-    final JalaliFormatter f = formatter;
+    final UJalaliFormatter f = formatter;
     // FIX: replace "mNAf" before "mN" (otherwise "mN" consumed the prefix and broke the Afghan-month token); narrow weekday now uses a distinct "wW" token (it was a duplicate "wN", which was unreachable after the full-name replacement).
     final String result = pattern
         .replaceAll("yyyy", f.yyyy)
@@ -526,19 +526,19 @@ extension JalaliExt on Jalali {
   }
 
   String formatShortDate({bool persianDigits = false}) {
-    final JalaliFormatter f = formatter;
+    final UJalaliFormatter f = formatter;
     final String result = "${f.dd} ${f.mN} ${f.yyyy}";
     return persianDigits ? f.toPersian(result) : result;
   }
 
   String formatMonthYear({bool persianDigits = false}) {
-    final JalaliFormatter f = formatter;
+    final UJalaliFormatter f = formatter;
     final String result = "${f.mN} ${f.yyyy}";
     return persianDigits ? f.toPersian(result) : result;
   }
 
   String formatAfghanDate({bool persianDigits = false}) {
-    final JalaliFormatter f = formatter;
+    final UJalaliFormatter f = formatter;
     final String result = "${f.wN} ${f.d} ${f.mNAf} ${f.yyyy}";
     return persianDigits ? f.toPersian(result) : result;
   }
@@ -553,59 +553,59 @@ extension JalaliExt on Jalali {
   int get quarter => (month - 1) ~/ 3 + 1;
 
   // Check if date is today
-  bool isToday() => isSameDayAs(Jalali.now());
+  bool isToday() => isSameDayAs(UJalali.now());
 
   // Check if date is in the current month
   bool isThisMonth() {
-    final Jalali now = Jalali.now();
+    final UJalali now = UJalali.now();
     return year == now.year && month == now.month;
   }
 
   // Get the first day of the month
-  Jalali firstDayOfMonth() => Jalali(year, month, 1, hour, minute, second, millisecond);
+  UJalali firstDayOfMonth() => UJalali(year, month, 1, hour, minute, second, millisecond);
 
   // Get the last day of the month
-  Jalali lastDayOfMonth() => Jalali(year, month, monthLength, hour, minute, second, millisecond);
+  UJalali lastDayOfMonth() => UJalali(year, month, monthLength, hour, minute, second, millisecond);
 
   // Get the next day
-  Jalali nextDay() => addDays(1);
+  UJalali nextDay() => addDays(1);
 
   // Get the previous day
-  Jalali previousDay() => addDays(-1);
+  UJalali previousDay() => addDays(-1);
 
   // Get the start of the week (Saturday)
-  Jalali startOfWeek() => addDays(-(weekDay - saturday));
+  UJalali startOfWeek() => addDays(-(weekDay - saturday));
 
   // Get the end of the week (Friday)
-  Jalali endOfWeek() => addDays(friday - weekDay);
+  UJalali endOfWeek() => addDays(friday - weekDay);
 
   // Get days until a specific date
-  int daysUntil(Jalali other) => other.julianDayNumber - julianDayNumber;
+  int daysUntil(UJalali other) => other.julianDayNumber - julianDayNumber;
 
   // Check if date is a weekend (Friday)
   bool isWeekend() => weekDay == friday;
 
   // Get the number of weeks in the year
   int weeksInYear() {
-    final Jalali lastDay = Jalali(year, esfand, isLeapYear() ? 30 : 29);
-    final Jalali firstDay = Jalali(year);
+    final UJalali lastDay = UJalali(year, esfand, isLeapYear() ? 30 : 29);
+    final UJalali firstDay = UJalali(year);
     return (lastDay.julianDayNumber - firstDay.julianDayNumber + weekDay) ~/ 7 + 1;
   }
 
   // Add minutes with overflow handling
-  Jalali addMinutes(int minutes) {
+  UJalali addMinutes(int minutes) {
     final int newMinute = (minute + minutes) % 60;
     final int hourOverflow = (minute + minutes) ~/ 60;
     return copy(minute: newMinute).addHours(hourOverflow);
   }
 
   // Add seconds with overflow handling
-  Jalali addSeconds(int seconds) {
+  UJalali addSeconds(int seconds) {
     final int newSecond = (second + seconds) % 60;
     final int minuteOverflow = (second + seconds) ~/ 60;
     return copy(second: newSecond).addMinutes(minuteOverflow);
   }
 
   // Add hours with overflow handling
-  Jalali addHours(int hours) => copy(hour: (hour + hours) % 24).addDays((hour + hours) ~/ 24);
+  UJalali addHours(int hours) => copy(hour: (hour + hours) % 24).addDays((hour + hours) ~/ 24);
 }

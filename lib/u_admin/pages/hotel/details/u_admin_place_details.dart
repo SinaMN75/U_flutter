@@ -73,7 +73,7 @@ abstract class UAdminPlaceDetails {
   // ---------------------------------------------------------------- hotel
 
   static Future<void> hotel(UHotelResponse item, {VoidCallback? onDone}) async {
-    final (UResponse<UHotelResponse>? fetched, _, _) = await UServices.hotel.readHotelById(p: UIdParams(id: item.id, selectorArgs: const HotelSelectorArgs(media: MediaSelectorArgs())));
+    final (UResponse<UHotelResponse>? fetched, _, _) = await UServices.hotel.readHotelById(p: UIdParams(id: item.id, selectorArgs: const UHotelSelectorArgs(media: UMediaSelectorArgs())));
     final UHotelResponse h = fetched?.result ?? item;
     final UHotelJson d = h.jsonData;
 
@@ -191,7 +191,7 @@ abstract class UAdminPlaceDetails {
   // ---------------------------------------------------------------- hotel room
 
   static Future<void> hotelRoom(UHotelRoomResponse item, {VoidCallback? onDone}) async {
-    final (UResponse<UHotelRoomResponse>? fetched, _, _) = await UServices.hotel.readHotelRoomById(p: UIdParams(id: item.id, selectorArgs: const HotelRoomSelectorArgs(media: MediaSelectorArgs())));
+    final (UResponse<UHotelRoomResponse>? fetched, _, _) = await UServices.hotel.readHotelRoomById(p: UIdParams(id: item.id, selectorArgs: const UHotelRoomSelectorArgs(media: UMediaSelectorArgs())));
     final UHotelRoomResponse r = fetched?.result ?? item;
     final UHotelRoomJson d = r.jsonData;
 
@@ -250,7 +250,7 @@ abstract class UAdminPlaceDetails {
   // ---------------------------------------------------------------- dorm
 
   static Future<void> dorm(UDormResponse item, {VoidCallback? onDone}) async {
-    final (UResponse<UDormResponse>? fetched, _, _) = await UServices.hotel.readDormById(p: UIdParams(id: item.id, selectorArgs: const DormSelectorArgs(media: MediaSelectorArgs())));
+    final (UResponse<UDormResponse>? fetched, _, _) = await UServices.hotel.readDormById(p: UIdParams(id: item.id, selectorArgs: const UDormSelectorArgs(media: UMediaSelectorArgs())));
     final UDormResponse dorm = fetched?.result ?? item;
     final UDormJson d = dorm.jsonData;
 
@@ -374,7 +374,7 @@ abstract class UAdminPlaceDetails {
   // ---------------------------------------------------------------- dorm room
 
   static Future<void> dormRoom(UDormRoomResponse item, {VoidCallback? onDone}) async {
-    final (UResponse<UDormRoomResponse>? fetched, _, _) = await UServices.hotel.readDormRoomById(p: UIdParams(id: item.id, selectorArgs: const DormRoomSelectorArgs(media: MediaSelectorArgs())));
+    final (UResponse<UDormRoomResponse>? fetched, _, _) = await UServices.hotel.readDormRoomById(p: UIdParams(id: item.id, selectorArgs: const UDormRoomSelectorArgs(media: UMediaSelectorArgs())));
     final UDormRoomResponse r = fetched?.result ?? item;
     final UDormRoomJson d = r.jsonData;
 
@@ -422,7 +422,7 @@ abstract class UAdminPlaceDetails {
   // ---------------------------------------------------------------- dorm bed
 
   static Future<void> dormBed(UDormBedResponse item, {VoidCallback? onDone}) async {
-    final (UResponse<UDormBedResponse>? fetched, _, _) = await UServices.hotel.readDormBedById(p: UIdParams(id: item.id, selectorArgs: const DormBedSelectorArgs(media: MediaSelectorArgs())));
+    final (UResponse<UDormBedResponse>? fetched, _, _) = await UServices.hotel.readDormBedById(p: UIdParams(id: item.id, selectorArgs: const UDormBedSelectorArgs(media: UMediaSelectorArgs())));
     final UDormBedResponse b = fetched?.result ?? item;
     final UDormBedJson d = b.jsonData;
 

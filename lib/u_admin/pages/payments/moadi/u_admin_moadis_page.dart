@@ -18,6 +18,12 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
     c.init(user: widget.user);
     super.initState();
   }
+  @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -113,8 +119,9 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
   }
 
   void _showRejectDialog(UMoadiResponse i) {
-    final TextEditingController reason = TextEditingController();
-    UNavigator.dialog(
+    final UAdminFields f = UAdminFields();
+    final TextEditingController reason = f.text();
+    UNavigator.dialog(f.scope(
       AlertDialog(
         title: Text(U.s.reject),
         content: SizedBox(
@@ -130,7 +137,7 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
             onCancel: UNavigator.back,
           ),
         ],
-      ),
+      )),
     ).whenComplete(reason.dispose);
   }
 
@@ -192,7 +199,7 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
                 fetchData: c.readUsers,
                 hintText: U.s.user,
               ).pSymmetric(vertical: 6),
-              Obx(
+              UObx(
                 () => UTextFieldAutoComplete<TagMoadi?>(
                   title: U.s.pendingApproval,
                   items: TagMoadi.values,
@@ -209,7 +216,7 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
                 jalali: true,
                 controller: c.fromCreatedController,
                 labelText: U.s.fromDate,
-                onChange: (DateTime d, Jalali j) {
+                onChange: (DateTime d, UJalali j) {
                   c.fromCreatedController.text = j.formatCompactDate();
                   c.fromCreatedAt = d;
                 },
@@ -218,7 +225,7 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
                 jalali: true,
                 controller: c.toCreatedController,
                 labelText: U.s.toDate,
-                onChange: (DateTime d, Jalali j) {
+                onChange: (DateTime d, UJalali j) {
                   c.toCreatedController.text = j.formatCompactDate();
                   c.toCreatedAt = d;
                 },

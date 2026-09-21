@@ -287,8 +287,8 @@ class _UMapState extends State<UMap> {
   );
 }
 
-class DemoMap extends StatelessWidget {
-  const DemoMap({super.key});
+class UDemoMap extends StatelessWidget {
+  const UDemoMap({super.key});
 
   @override
   Widget build(BuildContext context) {

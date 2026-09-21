@@ -1,6 +1,6 @@
 part of "../data.dart";
 
-class VehicleService {
+class UVehicleService {
   Future<(UResponse<String>?, UEmptyResponse?, String?)> create({
     required UVehicleCreateParams p,
     Function(UResponse<String> r)? onOk,

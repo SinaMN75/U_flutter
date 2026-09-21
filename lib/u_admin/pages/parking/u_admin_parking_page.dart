@@ -17,6 +17,12 @@ class _UAdminParkingPageState extends State<UAdminParkingPage> {
     c.init();
     super.initState();
   }
+  @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -99,13 +105,14 @@ class _UAdminParkingPageState extends State<UAdminParkingPage> {
   );
 
   Future<void> _showEditDialog({UParkingResponse? p}) async {
-    final TextEditingController title = TextEditingController(text: p?.title);
-    final TextEditingController address = TextEditingController(text: p?.address);
-    final TextEditingController phoneNumber = TextEditingController(text: p?.phoneNumber);
-    final TextEditingController capacity = TextEditingController(text: p == null ? "" : p.capacity.toString());
-    final TextEditingController entrance = TextEditingController(text: p?.entrancePrice.toStringAsSmartRound());
-    final TextEditingController hourly = TextEditingController(text: p?.hourlyPrice.toStringAsSmartRound());
-    final TextEditingController daily = TextEditingController(text: p?.dailyPrice.toStringAsSmartRound());
+    final UAdminFields f = UAdminFields();
+    final TextEditingController title = f.text(p?.title);
+    final TextEditingController address = f.text(p?.address);
+    final TextEditingController phoneNumber = f.text(p?.phoneNumber);
+    final TextEditingController capacity = f.text(p == null ? "" : p.capacity.toString());
+    final TextEditingController entrance = f.text(p?.entrancePrice.toStringAsSmartRound());
+    final TextEditingController hourly = f.text(p?.hourlyPrice.toStringAsSmartRound());
+    final TextEditingController daily = f.text(p?.dailyPrice.toStringAsSmartRound());
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     bool isDisabled = p?.tags.contains(TagParking.disabled.number) ?? false;
 
@@ -117,7 +124,7 @@ class _UAdminParkingPageState extends State<UAdminParkingPage> {
       selectedAdmins.addAll(fetched.whereType<UUserResponse>());
     }
 
-    await UNavigator.dialog(
+    await UNavigator.dialog(f.scope(
       StatefulBuilder(
         builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
           title: Text(p == null ? U.s.createItem(U.s.parking) : U.s.editItem(U.s.parking)),
@@ -247,7 +254,7 @@ class _UAdminParkingPageState extends State<UAdminParkingPage> {
             ),
           ),
         ),
-      ),
+      )),
     );
   }
 }

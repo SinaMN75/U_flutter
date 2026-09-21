@@ -1,13 +1,13 @@
 import "package:u/utilities.dart";
 
-typedef OnUrlChanged = void Function(String url, Map<String, String> queryParameters);
+typedef UOnUrlChanged = void Function(String url, Map<String, String> queryParameters);
 
 class UWebView extends StatefulWidget {
   final String initialUrl;
   final String? userAgent;
   final String desktopUserAgent;
   final Color? backgroundColor;
-  final OnUrlChanged? onUrlChanged;
+  final UOnUrlChanged? onUrlChanged;
   final List<String> allowedHosts;
   final Widget? loadingIndicator;
   final bool enableJavaScript;

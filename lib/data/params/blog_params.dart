@@ -280,7 +280,7 @@ class UBlogReadParams {
   final String? title;
   final String? slug;
   final List<String>? categories;
-  final BlogSelectorArgs? selectorArgs;
+  final UBlogSelectorArgs? selectorArgs;
   final int? orderBy;
   final String? code;
   final String? parentId;
@@ -319,7 +319,7 @@ class UBlogReadParams {
     title: json["title"],
     slug: json["slug"],
     categories: json["categories"] == null ? <String>[] : List<String>.from(json["categories"]!.map((dynamic x) => x)),
-    selectorArgs: json["selectorArgs"] == null ? null : BlogSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : UBlogSelectorArgs.fromMap(json["selectorArgs"]),
     orderBy: json["orderBy"],
     code: json["code"],
     parentId: json["parentId"],

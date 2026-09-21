@@ -23,7 +23,7 @@ class UAdminHotelRoomController extends UBaseController {
         title: titleFilter.valueOrNull(),
         minPrice: minPriceFilter.isNullOrEmpty() ? null : minPriceFilter.numDouble(),
         maxPrice: maxPriceFilter.isNullOrEmpty() ? null : maxPriceFilter.numDouble(),
-        selectorArgs: const HotelRoomSelectorArgs(hotel: HotelSelectorArgs()),
+        selectorArgs: const UHotelRoomSelectorArgs(hotel: UHotelSelectorArgs()),
       ),
       onOk: (UResponse<List<UHotelRoomResponse>> r) {
         list = r.result ?? <UHotelRoomResponse>[];
@@ -87,5 +87,13 @@ class UAdminHotelRoomController extends UBaseController {
       onException: (String e) {},
     );
     return result;
+  }
+
+  @override
+  void dispose() {
+    titleFilter.dispose();
+    minPriceFilter.dispose();
+    maxPriceFilter.dispose();
+    super.dispose();
   }
 }

@@ -36,7 +36,7 @@ class UAdminInvoiceController extends UBaseController {
         maxDueDate: maxDueDate,
         minDebtAmount: minDebtController.isNullOrEmpty() ? null : minDebtController.numDouble(),
         maxDebtAmount: maxDebtController.isNullOrEmpty() ? null : maxDebtController.numDouble(),
-        selectorArgs: const DormBedInvoiceSelectorArgs(contract: DormBedContractSelectorArgs(user: UserSelectorArgs())),
+        selectorArgs: const UDormBedInvoiceSelectorArgs(contract: UDormBedContractSelectorArgs(user: UUserSelectorArgs())),
       ),
       onOk: (UResponse<List<UDormBedInvoiceResponse>> r) {
         list = r.result ?? <UDormBedInvoiceResponse>[];
@@ -142,12 +142,21 @@ class UAdminInvoiceController extends UBaseController {
         userName: query,
         pageSize: 100,
         pageNumber: 1,
-        selectorArgs: const DormBedContractSelectorArgs(user: UserSelectorArgs(), bed: DormBedSelectorArgs()),
+        selectorArgs: const UDormBedContractSelectorArgs(user: UUserSelectorArgs(), bed: UDormBedSelectorArgs()),
       ),
       onOk: (UResponse<List<UDormBedContractResponse>> r) => result.addAll(r.result ?? <UDormBedContractResponse>[]),
       onError: (UResponse<dynamic> e) {},
       onException: (String e) {},
     );
     return result;
+  }
+
+  @override
+  void dispose() {
+    minDueDateController.dispose();
+    maxDueDateController.dispose();
+    minDebtController.dispose();
+    maxDebtController.dispose();
+    super.dispose();
   }
 }

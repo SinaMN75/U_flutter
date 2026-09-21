@@ -14,7 +14,7 @@ class UAdminDormController extends UBaseController {
         pageNumber: pageNumber.value,
         pageSize: pageSize,
         title: titleFilter.text.nullIfEmpty(),
-        selectorArgs: const DormSelectorArgs(rooms: DormRoomSelectorArgs()),
+        selectorArgs: const UDormSelectorArgs(rooms: UDormRoomSelectorArgs()),
       ),
       onOk: (UResponse<List<UDormResponse>> r) {
         list = r.result ?? <UDormResponse>[];
@@ -66,4 +66,10 @@ class UAdminDormController extends UBaseController {
       },
     ),
   );
+
+  @override
+  void dispose() {
+    titleFilter.dispose();
+    super.dispose();
+  }
 }

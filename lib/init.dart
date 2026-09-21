@@ -17,17 +17,17 @@ abstract class U {
   static late UAppSettingsResponse appSettings;
   static List<UContentResponse> contents = <UContentResponse>[];
   static List<UCategoryResponse> categories = <UCategoryResponse>[];
-  static final RxList<TabData> tabs = <TabData>[].obs;
+  static final URxList<UTabData> tabs = <UTabData>[].obs;
   static TabController? tabController;
 
   static void addTab(String title, Widget page) {
-    tabs.value = <TabData>[...tabs, TabData(title: title, page: page)];
+    tabs.value = <UTabData>[...tabs, UTabData(title: title, page: page)];
     updateTabController();
   }
 
   static void removeTab(int index) {
     if (index >= 0 && index < tabs.length) {
-      tabs(<TabData>[...tabs]..removeAt(index));
+      tabs(<UTabData>[...tabs]..removeAt(index));
       if (tabController != null && tabController!.index >= tabs.length) {
         tabController!.animateTo(tabs.length - 1);
       }
@@ -46,7 +46,7 @@ abstract class U {
   }
 
   static void addOrSwitchTab(String title, Widget page) {
-    final int existingIndex = tabs.indexWhere((TabData tab) => tab.title == title);
+    final int existingIndex = tabs.indexWhere((UTabData tab) => tab.title == title);
     if (existingIndex != -1) {
       tabController?.animateTo(existingIndex);
     } else {
@@ -56,14 +56,14 @@ abstract class U {
   }
 
   static void replaceTab(String title, Widget page) {
-    final int existingIndex = tabs.indexWhere((TabData tab) => tab.title == title);
+    final int existingIndex = tabs.indexWhere((UTabData tab) => tab.title == title);
 
     if (existingIndex != -1) {
-      tabs.value = <TabData>[...tabs]..removeAt(existingIndex);
+      tabs.value = <UTabData>[...tabs]..removeAt(existingIndex);
 
-      tabs.value = <TabData>[
+      tabs.value = <UTabData>[
         ...tabs.sublist(0, existingIndex),
-        TabData(title: title, page: page),
+        UTabData(title: title, page: page),
         ...tabs.sublist(existingIndex),
       ];
 
@@ -152,9 +152,9 @@ class _UMaterialAppState extends State<UMaterialApp> {
   );
 }
 
-class TabData {
+class UTabData {
   final String title;
   final Widget page;
 
-  TabData({required this.title, required this.page});
+  UTabData({required this.title, required this.page});
 }

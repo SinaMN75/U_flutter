@@ -3,10 +3,10 @@ import "package:u/utilities.dart";
 enum UpdateType { none, optional, force }
 
 class UUpdateResponse {
-  final Os? android;
-  final Os? ios;
-  final Os? windows;
-  final Os? macos;
+  final UOs? android;
+  final UOs? ios;
+  final UOs? windows;
+  final UOs? macos;
 
   UUpdateResponse({
     this.android,
@@ -18,10 +18,10 @@ class UUpdateResponse {
   factory UUpdateResponse.fromJson(String str) => UUpdateResponse.fromMap(json.decode(str));
 
   factory UUpdateResponse.fromMap(Map<String, dynamic> json) => UUpdateResponse(
-    android: json["android"] == null ? null : Os.fromMap(json["android"]),
-    ios: json["ios"] == null ? null : Os.fromMap(json["ios"]),
-    windows: json["windows"] == null ? null : Os.fromMap(json["windows"]),
-    macos: json["macos"] == null ? null : Os.fromMap(json["macos"]),
+    android: json["android"] == null ? null : UOs.fromMap(json["android"]),
+    ios: json["ios"] == null ? null : UOs.fromMap(json["ios"]),
+    windows: json["windows"] == null ? null : UOs.fromMap(json["windows"]),
+    macos: json["macos"] == null ? null : UOs.fromMap(json["macos"]),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -34,7 +34,7 @@ class UUpdateResponse {
   String toJson() => json.encode(toMap());
 }
 
-class Os {
+class UOs {
   final int? min;
   final int? current;
   final String? link1;
@@ -42,7 +42,7 @@ class Os {
   final String? link1Title;
   final String? link2Title;
 
-  Os({
+  UOs({
     this.min,
     this.current,
     this.link1,
@@ -51,7 +51,7 @@ class Os {
     this.link2Title,
   });
 
-  factory Os.fromMap(Map<String, dynamic> json) => Os(
+  factory UOs.fromMap(Map<String, dynamic> json) => UOs(
     min: json["min"],
     current: json["current"],
     link1: json["link1"],
@@ -77,7 +77,7 @@ class UUpdateDialog {
     UUpdateResponse serverData,
     VoidCallback onSkipOrNotAvailable,
   ) async {
-    final Os? info = _platformUpdate(serverData);
+    final UOs? info = _platformUpdate(serverData);
     if (info == null) {
       onSkipOrNotAvailable();
       return;
@@ -153,7 +153,7 @@ class UUpdateDialog {
     );
   }
 
-  static Os? _platformUpdate(UUpdateResponse x) {
+  static UOs? _platformUpdate(UUpdateResponse x) {
     if (UApp.isAndroid) return x.android;
     if (UApp.isIos) return x.ios;
     if (UApp.isWindows) return x.windows;
@@ -161,7 +161,7 @@ class UUpdateDialog {
     return null;
   }
 
-  static Future<UpdateType> _checkUpdate(Os info) async {
+  static Future<UpdateType> _checkUpdate(UOs info) async {
     if (info.min == null || info.current == null) return UpdateType.none;
     if (UApp.buildNumber.toInt() < info.min!) return UpdateType.force;
     if (UApp.buildNumber.toInt() < info.current!) return UpdateType.optional;

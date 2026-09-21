@@ -18,6 +18,12 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
     c.init(merchant: widget.merchant);
     super.initState();
   }
+  @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -131,8 +137,9 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
   );
 
   void _showRejectDialog(UTerminalResponse i) {
-    final TextEditingController reason = TextEditingController();
-    UNavigator.dialog(
+    final UAdminFields f = UAdminFields();
+    final TextEditingController reason = f.text();
+    UNavigator.dialog(f.scope(
       AlertDialog(
         title: Text(U.s.reject),
         content: SizedBox(
@@ -148,7 +155,7 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
             onCancel: UNavigator.back,
           ),
         ],
-      ),
+      )),
     ).whenComplete(reason.dispose);
   }
 
@@ -185,7 +192,7 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                 jalali: true,
                 controller: c.fromCreatedController,
                 labelText: U.s.fromDate,
-                onChange: (DateTime d, Jalali j) {
+                onChange: (DateTime d, UJalali j) {
                   c.fromCreatedController.text = j.formatCompactDate();
                   c.fromCreatedAt = d;
                 },
@@ -194,7 +201,7 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                 jalali: true,
                 controller: c.toCreatedController,
                 labelText: U.s.toDate,
-                onChange: (DateTime d, Jalali j) {
+                onChange: (DateTime d, UJalali j) {
                   c.toCreatedController.text = j.formatCompactDate();
                   c.toCreatedAt = d;
                 },
@@ -221,15 +228,16 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
 
   void _showCreateDialog() {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final TextEditingController serial = TextEditingController();
-    final TextEditingController simCardNumber = TextEditingController();
-    final TextEditingController simCardSerial = TextEditingController();
-    final TextEditingController imei = TextEditingController();
-    final TextEditingController terminalId = TextEditingController();
-    final Rxn<UTerminalBrandResponse> brand = Rxn<UTerminalBrandResponse>();
-    final Rxn<UTerminalBrokerResponse> broker = Rxn<UTerminalBrokerResponse>();
+    final UAdminFields f = UAdminFields();
+    final TextEditingController serial = f.text();
+    final TextEditingController simCardNumber = f.text();
+    final TextEditingController simCardSerial = f.text();
+    final TextEditingController imei = f.text();
+    final TextEditingController terminalId = f.text();
+    final URxn<UTerminalBrandResponse> brand = URxn<UTerminalBrandResponse>();
+    final URxn<UTerminalBrokerResponse> broker = URxn<UTerminalBrokerResponse>();
 
-    UNavigator.dialog(
+    UNavigator.dialog(f.scope(
       AlertDialog(
         title: Text(U.s.createItem(U.s.terminals)),
         content: SizedBox(
@@ -297,21 +305,22 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
             ),
           ),
         ),
-      ),
+      )),
     );
   }
 
   void _showEditDialog(UTerminalResponse i) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final TextEditingController serial = TextEditingController(text: i.serial);
-    final TextEditingController simCardNumber = TextEditingController(text: i.simCardNumber);
-    final TextEditingController simCardSerial = TextEditingController(text: i.simCardSerial);
-    final TextEditingController imei = TextEditingController(text: i.imei);
-    final TextEditingController terminalId = TextEditingController(text: i.terminalId);
-    final Rxn<UTerminalBrandResponse> brand = Rxn<UTerminalBrandResponse>(i.terminalBrand);
-    final Rxn<UTerminalBrokerResponse> broker = Rxn<UTerminalBrokerResponse>(i.terminalBroker);
+    final UAdminFields f = UAdminFields();
+    final TextEditingController serial = f.text(i.serial);
+    final TextEditingController simCardNumber = f.text(i.simCardNumber);
+    final TextEditingController simCardSerial = f.text(i.simCardSerial);
+    final TextEditingController imei = f.text(i.imei);
+    final TextEditingController terminalId = f.text(i.terminalId);
+    final URxn<UTerminalBrandResponse> brand = URxn<UTerminalBrandResponse>(i.terminalBrand);
+    final URxn<UTerminalBrokerResponse> broker = URxn<UTerminalBrokerResponse>(i.terminalBroker);
 
-    UNavigator.dialog(
+    UNavigator.dialog(f.scope(
       AlertDialog(
         title: Text(U.s.editItem(U.s.terminals)),
         content: SizedBox(
@@ -376,18 +385,19 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
             ),
           ),
         ),
-      ),
+      )),
     );
   }
 
   void _showOtpDialog() {
-    final TextEditingController serial = TextEditingController();
-    final TextEditingController length = TextEditingController(text: "6");
-    final TextEditingController otp = TextEditingController();
-    final Rx<bool> generateMode = true.obs;
-    final Rx<bool> admin = false.obs;
-    final Rx<String> result = "".obs;
-    final Rx<bool?> valid = Rx<bool?>(null);
+    final UAdminFields f = UAdminFields();
+    final TextEditingController serial = f.text();
+    final TextEditingController length = f.text("6");
+    final TextEditingController otp = f.text();
+    final URx<bool> generateMode = true.obs;
+    final URx<bool> admin = false.obs;
+    final URx<String> result = "".obs;
+    final URx<bool?> valid = URx<bool?>(null);
 
     void run() {
       final String serialText = serial.text.trim();
@@ -410,13 +420,13 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
       }
     }
 
-    UNavigator.dialog(
+    UNavigator.dialog(f.scope(
       AlertDialog(
         title: Text(U.s.otpTools),
         content: SizedBox(
           width: context.dialogWidth(),
           child: SingleChildScrollView(
-            child: Obx(
+            child: UObx(
               () => UColumn(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
@@ -488,7 +498,7 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
           ),
         ),
         actions: <Widget>[
-          Obx(
+          UObx(
             () => generateMode.value && result.value.isNotEmpty
                 ? UButton(
                     type: UButtonType.text,
@@ -498,9 +508,9 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                 : const SizedBox.shrink(),
           ),
           UButton(type: UButtonType.text, title: U.s.cancel, onTap: UNavigator.back),
-          Obx(() => UButton(title: generateMode.value ? U.s.generate : U.s.verifyOtp, onTap: run)),
+          UObx(() => UButton(title: generateMode.value ? U.s.generate : U.s.verifyOtp, onTap: run)),
         ],
-      ),
+      )),
     );
   }
 }

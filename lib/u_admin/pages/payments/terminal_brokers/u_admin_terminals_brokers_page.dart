@@ -17,6 +17,12 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
     c.init();
     super.initState();
   }
+  @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -80,7 +86,7 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
     width: 40,
     height: 40,
     child: base64.isNotNullOrEmpty()
-        ? UImage("", fileData: FileData(bytes: base64!.toBytesFromBase64()), borderRadius: 8)
+        ? UImage("", fileData: UFileData(bytes: base64!.toBytesFromBase64()), borderRadius: 8)
         : const Icon(Icons.business_center_outlined),
   );
 
@@ -151,21 +157,22 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
 
   void _showFormDialog({UTerminalBrokerResponse? item}) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final TextEditingController title = TextEditingController(text: item?.title);
-    final TextEditingController registrationNumber = TextEditingController(text: item?.jsonData.registrationNumber);
-    final TextEditingController nationalCode = TextEditingController(text: item?.jsonData.nationalCode);
-    final TextEditingController representative = TextEditingController(text: item?.jsonData.representative);
-    final TextEditingController address = TextEditingController(text: item?.jsonData.address);
-    final TextEditingController postalCode = TextEditingController(text: item?.jsonData.postalCode);
-    final TextEditingController phoneNumber = TextEditingController(text: item?.jsonData.phoneNumber);
-    final TextEditingController sign1Owner = TextEditingController(text: item?.jsonData.sign1Owner);
-    final TextEditingController sign2Owner = TextEditingController(text: item?.jsonData.sign2Owner);
+    final UAdminFields f = UAdminFields();
+    final TextEditingController title = f.text(item?.title);
+    final TextEditingController registrationNumber = f.text(item?.jsonData.registrationNumber);
+    final TextEditingController nationalCode = f.text(item?.jsonData.nationalCode);
+    final TextEditingController representative = f.text(item?.jsonData.representative);
+    final TextEditingController address = f.text(item?.jsonData.address);
+    final TextEditingController postalCode = f.text(item?.jsonData.postalCode);
+    final TextEditingController phoneNumber = f.text(item?.jsonData.phoneNumber);
+    final TextEditingController sign1Owner = f.text(item?.jsonData.sign1Owner);
+    final TextEditingController sign2Owner = f.text(item?.jsonData.sign2Owner);
 
     String? logoBase64 = item?.jsonData.logoBase64;
     String? sign1Base64 = item?.jsonData.sign1Base64;
     String? sign2Base64 = item?.jsonData.sign2Base64;
 
-    UNavigator.dialog(
+    UNavigator.dialog(f.scope(
       AlertDialog(
         title: Text(item == null ? U.s.createItem(U.s.brokers) : U.s.editItem(U.s.brokers)),
         content: SizedBox(
@@ -288,7 +295,7 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
             ),
           ),
         ),
-      ),
+      )),
     );
   }
 }
@@ -315,7 +322,7 @@ class _Base64ImagePickerState extends State<_Base64ImagePicker> {
 
   Future<void> _pick() => UFile.showFilePicker(
     allowedExtensions: const <String>["jpg", "jpeg", "png", "webp"],
-    action: (List<FileData> files) {
+    action: (List<UFileData> files) {
       if (files.isEmpty || files.first.bytes == null) return;
       final String encoded = files.first.bytes!.toBase64();
       setState(() => _value = encoded);
@@ -346,7 +353,7 @@ class _Base64ImagePickerState extends State<_Base64ImagePicker> {
               color: scheme.surfaceContainerHighest,
               alignment: Alignment.center,
               child: _value.isNotNullOrEmpty()
-                  ? UImage("", fileData: FileData(bytes: _value!.toBytesFromBase64()), borderRadius: 12)
+                  ? UImage("", fileData: UFileData(bytes: _value!.toBytesFromBase64()), borderRadius: 12)
                   : Icon(Icons.add_photo_alternate_outlined, size: 32, color: scheme.onSurfaceVariant),
             ),
             if (_value.isNotNullOrEmpty())

@@ -41,10 +41,10 @@ class UAdminContractController extends UBaseController {
         upcomingOnly: statusFilter == UAdminContractStatusFilter.upcoming ? true : null,
         expiredOnly: statusFilter == UAdminContractStatusFilter.expired ? true : null,
         expiringWithinDays: statusFilter == UAdminContractStatusFilter.expiringSoon ? 30 : null,
-        selectorArgs: const DormBedContractSelectorArgs(
-          user: UserSelectorArgs(),
-          bed: DormBedSelectorArgs(room: DormRoomSelectorArgs(dorm: DormSelectorArgs())),
-          invoice: DormBedInvoiceSelectorArgs(),
+        selectorArgs: const UDormBedContractSelectorArgs(
+          user: UUserSelectorArgs(),
+          bed: UDormBedSelectorArgs(room: UDormRoomSelectorArgs(dorm: UDormSelectorArgs())),
+          invoice: UDormBedInvoiceSelectorArgs(),
         ),
       ),
       onOk: (UResponse<List<UDormBedContractResponse>> r) {
@@ -128,7 +128,7 @@ class UAdminContractController extends UBaseController {
         dormId: dormFilter?.id,
         pageSize: 100,
         pageNumber: 1,
-        selectorArgs: const DormBedSelectorArgs(room: DormRoomSelectorArgs(dorm: DormSelectorArgs())),
+        selectorArgs: const UDormBedSelectorArgs(room: UDormRoomSelectorArgs(dorm: UDormSelectorArgs())),
       ),
       onOk: (UResponse<List<UDormBedResponse>> r) => result.addAll(r.result ?? <UDormBedResponse>[]),
       onError: (UEmptyResponse e) {},
@@ -146,5 +146,11 @@ class UAdminContractController extends UBaseController {
       onException: (String e) {},
     );
     return result;
+  }
+
+  @override
+  void dispose() {
+    tenantFilter.dispose();
+    super.dispose();
   }
 }

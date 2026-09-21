@@ -32,7 +32,7 @@ class _HotelUserDetailPageState extends State<UAdminHotelUserDetailPage> {
         IconButton(icon: const Icon(Icons.refresh_rounded), tooltip: U.s.refresh, onPressed: c.read),
       ],
     ),
-    body: Obx(() {
+    body: UObx(() {
       if (c.state.isError()) return _error();
       if (!c.state.isLoaded()) return const CircularProgressIndicator().alignAtCenter();
       return SingleChildScrollView(

@@ -18,6 +18,12 @@ class _ReservationPageState extends State<UAdminReservationPage> {
     c.init(hotel: widget.hotel, room: widget.room);
     super.initState();
   }
+  @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -175,10 +181,11 @@ class _ReservationPageState extends State<UAdminReservationPage> {
   );
 
   void _showFilterDialog() {
-    final TextEditingController checkInCtrl = TextEditingController(text: c.checkInFilter?.toJalaliDate());
-    final TextEditingController checkOutCtrl = TextEditingController(text: c.checkOutFilter?.toJalaliDate());
+    final UAdminFields f = UAdminFields();
+    final TextEditingController checkInCtrl = f.text(c.checkInFilter?.toJalaliDate());
+    final TextEditingController checkOutCtrl = f.text(c.checkOutFilter?.toJalaliDate());
 
-    UNavigator.dialog(
+    UNavigator.dialog(f.scope(
       AlertDialog(
         title: Text(U.s.filterItem(U.s.reservations)),
         content: SizedBox(
@@ -211,7 +218,7 @@ class _ReservationPageState extends State<UAdminReservationPage> {
                     labelText: U.s.checkInDate,
                     jalali: true,
                     initialDate: c.checkInFilter,
-                    onChange: (DateTime d, Jalali j) {
+                    onChange: (DateTime d, UJalali j) {
                       c.checkInFilter = d;
                       checkInCtrl.text = d.toJalaliDate();
                     },
@@ -221,7 +228,7 @@ class _ReservationPageState extends State<UAdminReservationPage> {
                     labelText: U.s.checkOutDate,
                     jalali: true,
                     initialDate: c.checkOutFilter,
-                    onChange: (DateTime d, Jalali j) {
+                    onChange: (DateTime d, UJalali j) {
                       c.checkOutFilter = d;
                       checkOutCtrl.text = d.toJalaliDate();
                     },
@@ -244,29 +251,30 @@ class _ReservationPageState extends State<UAdminReservationPage> {
             ),
           ),
         ),
-      ),
+      )),
     );
   }
 
   void _showEditDialog({UHotelReservationResponse? p}) {
     final bool isEdit = p != null;
-    final TextEditingController guestCount = TextEditingController(text: (p?.guestCount ?? 1).toString());
-    final TextEditingController totalPrice = TextEditingController(text: p?.totalPrice.toInt().toString());
-    final TextEditingController penalty = TextEditingController();
-    final TextEditingController guestName = TextEditingController(text: p?.jsonData.guestName);
-    final TextEditingController guestPhone = TextEditingController(text: p?.jsonData.guestPhone);
-    final TextEditingController notes = TextEditingController(text: p?.jsonData.notes);
-    final TextEditingController checkInCtrl = TextEditingController(text: p?.checkInDate.toJalaliDate());
-    final TextEditingController checkOutCtrl = TextEditingController(text: p?.checkOutDate.toJalaliDate());
+    final UAdminFields f = UAdminFields();
+    final TextEditingController guestCount = f.text((p?.guestCount ?? 1).toString());
+    final TextEditingController totalPrice = f.text(p?.totalPrice.toInt().toString());
+    final TextEditingController penalty = f.text();
+    final TextEditingController guestName = f.text(p?.jsonData.guestName);
+    final TextEditingController guestPhone = f.text(p?.jsonData.guestPhone);
+    final TextEditingController notes = f.text(p?.jsonData.notes);
+    final TextEditingController checkInCtrl = f.text(p?.checkInDate.toJalaliDate());
+    final TextEditingController checkOutCtrl = f.text(p?.checkOutDate.toJalaliDate());
 
-    final Rxn<UHotelRoomResponse> room = Rxn<UHotelRoomResponse>();
-    final Rxn<UUserResponse> user = Rxn<UUserResponse>();
+    final URxn<UHotelRoomResponse> room = URxn<UHotelRoomResponse>();
+    final URxn<UUserResponse> user = URxn<UUserResponse>();
     DateTime? checkIn = p?.checkInDate;
     DateTime? checkOut = p?.checkOutDate;
 
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-    UNavigator.dialog(
+    UNavigator.dialog(f.scope(
       AlertDialog(
         title: Text(p == null ? U.s.createItem(U.s.reservation) : U.s.editItem(U.s.reservation)),
         content: SizedBox(
@@ -300,7 +308,7 @@ class _ReservationPageState extends State<UAdminReservationPage> {
                       jalali: true,
                       initialDate: checkIn,
                       validator: UValidators.required(message: ""),
-                      onChange: (DateTime d, Jalali j) {
+                      onChange: (DateTime d, UJalali j) {
                         checkIn = d;
                         checkInCtrl.text = d.toJalaliDate();
                       },
@@ -311,7 +319,7 @@ class _ReservationPageState extends State<UAdminReservationPage> {
                       jalali: true,
                       initialDate: checkOut,
                       validator: UValidators.required(message: ""),
-                      onChange: (DateTime d, Jalali j) {
+                      onChange: (DateTime d, UJalali j) {
                         checkOut = d;
                         checkOutCtrl.text = d.toJalaliDate();
                       },
@@ -392,7 +400,7 @@ class _ReservationPageState extends State<UAdminReservationPage> {
             ),
           ),
         ),
-      ),
+      )),
     );
   }
 }

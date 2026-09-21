@@ -2,7 +2,7 @@ import "dart:ui" as ui;
 
 import "package:u/utilities.dart";
 
-class WidgetToImageController {
+class UWidgetToImageController {
   GlobalKey? _globalKey;
 
   void bind(GlobalKey globalKey) => _globalKey = globalKey;
@@ -22,17 +22,17 @@ class WidgetToImageController {
   }
 }
 
-class WidgetToImage extends StatefulWidget {
-  const WidgetToImage({required this.child, required this.controller, super.key});
+class UWidgetToImage extends StatefulWidget {
+  const UWidgetToImage({required this.child, required this.controller, super.key});
 
   final Widget child;
-  final WidgetToImageController controller;
+  final UWidgetToImageController controller;
 
   @override
-  State<WidgetToImage> createState() => _WidgetToImageState();
+  State<UWidgetToImage> createState() => _WidgetToImageState();
 }
 
-class _WidgetToImageState extends State<WidgetToImage> {
+class _WidgetToImageState extends State<UWidgetToImage> {
   final GlobalKey _globalKey = GlobalKey();
 
   @override

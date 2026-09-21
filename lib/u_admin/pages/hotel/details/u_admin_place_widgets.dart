@@ -426,7 +426,7 @@ class _UAdminFaqEditorState extends State<UAdminFaqEditor> {
 
 /// What the admin changed in the photo list. It is applied when the dialog is saved (see [UAdminMediaSync]).
 class UAdminMediaDraft {
-  final List<FileData> newFiles = <FileData>[];
+  final List<UFileData> newFiles = <UFileData>[];
 
   /// Gallery category (a TagMedia number, or null) of each file in [newFiles].
   final List<int?> newFileCategories = <int?>[];
@@ -471,10 +471,10 @@ class _UAdminMediaManagerState extends State<UAdminMediaManager> {
   Future<void> _pick() => UFile.showFilePicker(
     allowMultiple: true,
     allowedExtensions: const <String>["jpg", "jpeg", "png", "webp"],
-    action: (List<FileData> files) {
+    action: (List<UFileData> files) {
       if (files.isEmpty || !mounted) return;
       setState(() {
-        for (final FileData f in files) {
+        for (final UFileData f in files) {
           _draft.newFiles.add(f);
           _draft.newFileCategories.add(_category);
         }
@@ -570,7 +570,7 @@ class _UAdminMediaManagerState extends State<UAdminMediaManager> {
                 ),
               ),
               ...List<Widget>.generate(_draft.newFiles.length, (int i) {
-                final FileData f = _draft.newFiles[i];
+                final UFileData f = _draft.newFiles[i];
                 final int? cat = _draft.newFileCategories[i];
                 return _tile(
                   isNew: true,

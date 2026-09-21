@@ -33,4 +33,11 @@ class UAdminLoginController extends UBaseController {
       );
     },
   );
+
+  @override
+  void dispose() {
+    controllerUserName.dispose();
+    controllerPassword.dispose();
+    super.dispose();
+  }
 }

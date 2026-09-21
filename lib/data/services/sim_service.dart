@@ -1,6 +1,6 @@
 part of "../data.dart";
 
-class SimService {
+class USimService {
   Future<(UResponse<String>?, UEmptyResponse?, String?)> create({
     required USimCardCreateParams p,
     Function(UResponse<String> r)? onOk,

@@ -1,6 +1,6 @@
 part of "../data.dart";
 
-class ProductService {
+class UProductService {
   Future<(UResponse<String>?, UEmptyResponse?, String?)> create({
     required UProductCreateParams p,
     Function(UResponse<String> r)? onOk,

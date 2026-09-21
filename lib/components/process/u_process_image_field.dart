@@ -17,7 +17,7 @@ class UProcessImagePickerField extends StatefulWidget {
 }
 
 class _UProcessImagePickerFieldState extends State<UProcessImagePickerField> {
-  FileData? _fileData;
+  UFileData? _fileData;
   String? _initialUrl;
 
   @override
@@ -31,9 +31,9 @@ class _UProcessImagePickerFieldState extends State<UProcessImagePickerField> {
       source: UImageSource.camera,
       selfie: widget.field.fileConfig?.isSelfieCamera ?? false,
       cameraOptions: const UCameraOptions(resolution: UCameraResolution.low, photoQuality: 50),
-      action: (List<FileData> files) {
+      action: (List<UFileData> files) {
         if (files.isEmpty) return;
-        final FileData file = files.first;
+        final UFileData file = files.first;
         widget.processStepSend.fields.firstWhere((UProcessField f) => f.key == widget.field.key).value = file.bytes?.toBase64();
         if (mounted) {
           setState(() {

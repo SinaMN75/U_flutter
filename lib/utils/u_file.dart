@@ -3,8 +3,8 @@ import "package:u/utilities.dart";
 
 enum UImageSource { camera, gallery }
 
-class FileData {
-  FileData({
+class UFileData {
+  UFileData({
     this.path,
     this.bytes,
     this.extension,
@@ -20,7 +20,7 @@ class FileData {
   final String? url;
   final String? id;
   final List<int>? tags;
-  final List<FileData>? children;
+  final List<UFileData>? children;
 
   String? get name => path?.split(RegExp(r"[\\/]")).last;
 
@@ -62,16 +62,16 @@ abstract class UFile {
 
   static bool isImageExtension(String? extension) => extension != null && imageExtensions.contains(extension.toLowerCase());
 
-  static Future<List<FileData>> showImagePicker({
+  static Future<List<UFileData>> showImagePicker({
     required UImageSource source,
     bool allowMultiple = false,
     bool isSelfie = false,
     UCropOptions? crop,
-    Function(List<FileData>)? action,
+    Function(List<UFileData>)? action,
   }) => pickImage(source: source, selfie: isSelfie, allowMultiple: allowMultiple, crop: crop, action: action);
 
-  static Future<List<FileData>> showFilePicker({
-    Function(List<FileData>)? action,
+  static Future<List<UFileData>> showFilePicker({
+    Function(List<UFileData>)? action,
     FileType fileType = FileType.any,
     bool allowMultiple = false,
     List<String>? allowedExtensions,
@@ -82,39 +82,39 @@ abstract class UFile {
       if (allowMultiple) {
         final List<PlatformFile> list = await FilePicker.pickFiles(type: type, allowedExtensions: allowedExtensions);
         if (list.isNullOrEmpty()) {
-          action?.call(<FileData>[]);
-          return <FileData>[];
+          action?.call(<UFileData>[]);
+          return <UFileData>[];
         }
-        final List<FileData> files = await _collect(list.map(_fromPlatformFile), crop);
+        final List<UFileData> files = await _collect(list.map(_fromPlatformFile), crop);
         action?.call(files);
         return files;
       } else {
         final PlatformFile? platformFile = await FilePicker.pickFile(type: type, allowedExtensions: allowedExtensions);
         if (platformFile == null) {
-          action?.call(<FileData>[]);
-          return <FileData>[];
+          action?.call(<UFileData>[]);
+          return <UFileData>[];
         }
-        final List<FileData> files = await _collect(<Future<FileData>>[_fromPlatformFile(platformFile)], crop);
+        final List<UFileData> files = await _collect(<Future<UFileData>>[_fromPlatformFile(platformFile)], crop);
         action?.call(files);
         return files;
       }
     } catch (e) {
-      action?.call(<FileData>[]);
-      return <FileData>[];
+      action?.call(<UFileData>[]);
+      return <UFileData>[];
     }
   }
 
-  static Future<List<FileData>> pickImage({
+  static Future<List<UFileData>> pickImage({
     UImageSource source = UImageSource.gallery,
     bool selfie = false,
     bool allowMultiple = false,
     int? maxCount,
     UCropOptions? crop,
     UCameraOptions? cameraOptions,
-    Function(List<FileData>)? action,
+    Function(List<UFileData>)? action,
   }) async {
     try {
-      List<FileData> files;
+      List<UFileData> files;
       if (source == UImageSource.camera) {
         final UCameraOptions base = (cameraOptions ?? const UCameraOptions()).copyWith(
           mode: UCameraMode.photo,
@@ -129,103 +129,103 @@ abstract class UFile {
       action?.call(files);
       return files;
     } catch (_) {
-      action?.call(<FileData>[]);
-      return <FileData>[];
+      action?.call(<UFileData>[]);
+      return <UFileData>[];
     }
   }
 
-  static Future<FileData?> pickSingleImage({
+  static Future<UFileData?> pickSingleImage({
     UImageSource source = UImageSource.gallery,
     bool selfie = false,
     int? imageQuality,
     UCropOptions? crop,
     UCameraOptions? cameraOptions,
-    Function(FileData?)? action,
+    Function(UFileData?)? action,
   }) async {
-    final List<FileData> files = await pickImage(source: source, selfie: selfie, crop: crop, cameraOptions: cameraOptions);
-    final FileData? file = files.isEmpty ? null : files.first;
+    final List<UFileData> files = await pickImage(source: source, selfie: selfie, crop: crop, cameraOptions: cameraOptions);
+    final UFileData? file = files.isEmpty ? null : files.first;
     action?.call(file);
     return file;
   }
 
-  static Future<List<FileData>> pickFiles({
+  static Future<List<UFileData>> pickFiles({
     bool allowMultiple = true,
     FileType fileType = FileType.any,
     List<String>? allowedExtensions,
     UCropOptions? crop,
-    Function(List<FileData>)? action,
+    Function(List<UFileData>)? action,
   }) => showFilePicker(allowMultiple: allowMultiple, fileType: fileType, allowedExtensions: allowedExtensions, crop: crop, action: action);
 
-  static Future<FileData?> pickFile({
+  static Future<UFileData?> pickFile({
     FileType fileType = FileType.any,
     List<String>? allowedExtensions,
     UCropOptions? crop,
-    Function(FileData?)? action,
+    Function(UFileData?)? action,
   }) async {
-    final List<FileData> files = await showFilePicker(fileType: fileType, allowedExtensions: allowedExtensions, crop: crop);
-    final FileData? file = files.isEmpty ? null : files.first;
+    final List<UFileData> files = await showFilePicker(fileType: fileType, allowedExtensions: allowedExtensions, crop: crop);
+    final UFileData? file = files.isEmpty ? null : files.first;
     action?.call(file);
     return file;
   }
 
-  static Future<List<FileData>> openCamera({
+  static Future<List<UFileData>> openCamera({
     UCameraOptions options = const UCameraOptions(),
-    Function(List<FileData>)? action,
+    Function(List<UFileData>)? action,
   }) => UCamera.open(options: options, action: action);
 
-  static Future<FileData?> takePhoto({
+  static Future<UFileData?> takePhoto({
     bool selfie = false,
     UCropOptions? crop,
     UCameraOptions? options,
-    Function(FileData?)? action,
+    Function(UFileData?)? action,
   }) => pickSingleImage(source: UImageSource.camera, selfie: selfie, crop: crop, cameraOptions: options, action: action);
 
-  static Future<List<FileData>> takePhotos({
+  static Future<List<UFileData>> takePhotos({
     int maxCount = 0,
     bool selfie = false,
     UCropOptions? crop,
     UCameraOptions? options,
-    Function(List<FileData>)? action,
+    Function(List<UFileData>)? action,
   }) => pickImage(source: UImageSource.camera, selfie: selfie, allowMultiple: true, maxCount: maxCount, crop: crop, cameraOptions: options, action: action);
 
-  static Future<FileData?> recordVideo({
+  static Future<UFileData?> recordVideo({
     UCameraOptions options = const UCameraOptions(),
-    Function(FileData?)? action,
+    Function(UFileData?)? action,
   }) => UCamera.recordVideo(options: options, action: action);
 
-  static Future<FileData?> pickVideo({
+  static Future<UFileData?> pickVideo({
     UImageSource source = UImageSource.gallery,
     UCameraOptions options = const UCameraOptions(),
-    Function(FileData?)? action,
+    Function(UFileData?)? action,
   }) async {
     if (source == UImageSource.camera) return recordVideo(options: options, action: action);
-    final List<FileData> files = await showFilePicker(fileType: FileType.video);
-    final FileData? file = files.isEmpty ? null : files.first;
+    final List<UFileData> files = await showFilePicker(fileType: FileType.video);
+    final UFileData? file = files.isEmpty ? null : files.first;
     action?.call(file);
     return file;
   }
 
-  static Future<List<FileData>> _applyCrop(List<FileData> files, UCropOptions? crop) async {
+  static Future<List<UFileData>> _applyCrop(List<UFileData> files, UCropOptions? crop) async {
     if (crop == null) return files;
-    final List<FileData> out = <FileData>[];
-    for (final FileData file in files) {
-      final FileData? result = await _maybeCrop(file, crop);
+    final List<UFileData> out = <UFileData>[];
+    for (final UFileData file in files) {
+      final UFileData? result = await _maybeCrop(file, crop);
       if (result != null) out.add(result);
     }
     return out;
   }
 
-  static Future<FileData?> cropImage({
+  static Future<UFileData?> cropImage({
     Uint8List? bytes,
     String? filePath,
     UCropOptions options = const UCropOptions(),
-    Function(FileData file)? action,
+    Function(UFileData file)? action,
   }) async {
     Uint8List? data = bytes;
     if (data == null && filePath != null && !kIsWeb) data = await File(filePath).readAsBytes();
     if (data == null) return null;
 
-    final FileData? cropped = await _openCropper(data, options);
+    final UFileData? cropped = await _openCropper(data, options);
     if (cropped == null) return null;
     action?.call(cropped);
     return cropped;
@@ -236,22 +236,22 @@ abstract class UFile {
     return File("${dir.path}/u_${DateTime.now().microsecondsSinceEpoch}.$extension").writeAsBytes(data);
   }
 
-  static Future<List<FileData>> _collect(Iterable<Future<FileData>> sources, UCropOptions? crop) async {
-    final List<FileData> out = <FileData>[];
-    for (final Future<FileData> source in sources) {
-      final FileData base = await source;
-      final FileData? result = await _maybeCrop(base, crop);
+  static Future<List<UFileData>> _collect(Iterable<Future<UFileData>> sources, UCropOptions? crop) async {
+    final List<UFileData> out = <UFileData>[];
+    for (final Future<UFileData> source in sources) {
+      final UFileData base = await source;
+      final UFileData? result = await _maybeCrop(base, crop);
       if (result != null) out.add(result);
     }
     return out;
   }
 
-  static Future<FileData?> _maybeCrop(FileData file, UCropOptions? crop) async {
+  static Future<UFileData?> _maybeCrop(UFileData file, UCropOptions? crop) async {
     if (crop == null || !file.isImage || file.bytes == null) return file;
     return _openCropper(file.bytes!, crop);
   }
 
-  static Future<FileData?> _openCropper(Uint8List bytes, UCropOptions options) async {
+  static Future<UFileData?> _openCropper(Uint8List bytes, UCropOptions options) async {
     final Uint8List? cropped = await UNavigator.push<Uint8List>(
       UImageCropper(
         bytes: bytes,
@@ -269,12 +269,12 @@ abstract class UFile {
       fullscreenDialog: true,
     );
     if (cropped == null) return null;
-    return FileData(bytes: cropped, path: await _persistTemp(cropped, "png"), extension: "png");
+    return UFileData(bytes: cropped, path: await _persistTemp(cropped, "png"), extension: "png");
   }
 
-  static Future<FileData> _fromPlatformFile(PlatformFile file) async {
+  static Future<UFileData> _fromPlatformFile(PlatformFile file) async {
     final Uint8List bytes = await file.readAsBytes();
-    return FileData(bytes: bytes, path: kIsWeb ? null : file.path, extension: (file.xFile.mimeType ?? _extensionOf(file.name)).toLowerCase());
+    return UFileData(bytes: bytes, path: kIsWeb ? null : file.path, extension: (file.xFile.mimeType ?? _extensionOf(file.name)).toLowerCase());
   }
 
   static Future<String?> _persistTemp(Uint8List bytes, String extension) async {

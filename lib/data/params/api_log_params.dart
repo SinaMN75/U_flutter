@@ -2,7 +2,7 @@ part of "../data.dart";
 
 class UApiLogReadParams {
   final String? creatorId;
-  final ApiLogSelectorArgs? selectorArgs;
+  final UApiLogSelectorArgs? selectorArgs;
   final int? pageSize;
   final int? pageNumber;
   final DateTime? fromCreatedAt;
@@ -43,7 +43,7 @@ class UApiLogReadParams {
 
   factory UApiLogReadParams.fromMap(Map<String, dynamic> json) => UApiLogReadParams(
     creatorId: json["creatorId"],
-    selectorArgs: json["selectorArgs"] == null ? null : ApiLogSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : UApiLogSelectorArgs.fromMap(json["selectorArgs"]),
     pageSize: json["pageSize"],
     pageNumber: json["pageNumber"],
     fromCreatedAt: json["fromCreatedAt"] == null ? null : DateTime.parse(json["fromCreatedAt"]),

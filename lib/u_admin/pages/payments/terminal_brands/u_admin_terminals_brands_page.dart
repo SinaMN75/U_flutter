@@ -17,6 +17,12 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
     c.init();
     super.initState();
   }
+  @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -157,12 +163,13 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
 
   void _showCreateDialog() {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final TextEditingController titleController = TextEditingController();
-    final TextEditingController modelController = TextEditingController();
-    final Rx<TagTerminalBrand> deviceType = TagTerminalBrand.wallCashless.obs;
-    final Rx<TagTerminalBrand> connectionType = TagTerminalBrand.simCard.obs;
+    final UAdminFields f = UAdminFields();
+    final TextEditingController titleController = f.text();
+    final TextEditingController modelController = f.text();
+    final URx<TagTerminalBrand> deviceType = TagTerminalBrand.wallCashless.obs;
+    final URx<TagTerminalBrand> connectionType = TagTerminalBrand.simCard.obs;
 
-    UNavigator.dialog(
+    UNavigator.dialog(f.scope(
       AlertDialog(
         title: Text(U.s.createItem(U.s.brands)),
         content: SizedBox(
@@ -185,7 +192,7 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
                     validator: UValidators.required(message: U.s.required),
                     margin: const EdgeInsets.symmetric(vertical: 6),
                   ),
-                  Obx(
+                  UObx(
                     () => UDropDownField<TagTerminalBrand>(
                       initialValue: deviceType.value,
                       labelText: U.s.deviceType,
@@ -196,7 +203,7 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
                       margin: const EdgeInsets.symmetric(vertical: 6),
                     ),
                   ),
-                  Obx(
+                  UObx(
                     () => UDropDownField<TagTerminalBrand>(
                       initialValue: connectionType.value,
                       labelText: U.s.connectionType,
@@ -228,18 +235,19 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
             ),
           ),
         ),
-      ),
+      )),
     );
   }
 
   void _showEditDialog(UTerminalBrandResponse i) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final TextEditingController title = TextEditingController(text: i.title);
-    final TextEditingController model = TextEditingController(text: i.model);
-    final Rx<TagTerminalBrand> deviceType = (_deviceTypeOf(i) ?? TagTerminalBrand.wallCashless).obs;
-    final Rx<TagTerminalBrand> connectionType = (_connectionTypeOf(i) ?? TagTerminalBrand.simCard).obs;
+    final UAdminFields f = UAdminFields();
+    final TextEditingController title = f.text(i.title);
+    final TextEditingController model = f.text(i.model);
+    final URx<TagTerminalBrand> deviceType = (_deviceTypeOf(i) ?? TagTerminalBrand.wallCashless).obs;
+    final URx<TagTerminalBrand> connectionType = (_connectionTypeOf(i) ?? TagTerminalBrand.simCard).obs;
 
-    UNavigator.dialog(
+    UNavigator.dialog(f.scope(
       AlertDialog(
         title: Text(U.s.editItem(U.s.brands)),
         content: SizedBox(
@@ -262,7 +270,7 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
                     validator: UValidators.required(message: U.s.required),
                     margin: const EdgeInsets.symmetric(vertical: 6),
                   ),
-                  Obx(
+                  UObx(
                     () => UDropDownField<TagTerminalBrand>(
                       initialValue: deviceType.value,
                       labelText: U.s.deviceType,
@@ -273,7 +281,7 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
                       margin: const EdgeInsets.symmetric(vertical: 6),
                     ),
                   ),
-                  Obx(
+                  UObx(
                     () => UDropDownField<TagTerminalBrand>(
                       initialValue: connectionType.value,
                       labelText: U.s.connectionType,
@@ -306,7 +314,7 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
             ),
           ),
         ),
-      ),
+      )),
     );
   }
 }

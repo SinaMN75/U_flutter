@@ -155,7 +155,7 @@ class UParkingReadParams {
   final DateTime? toCreatedAt;
   final List<int>? tags;
   final List<String>? ids;
-  final ParkingSelectorArgs? selectorArgs;
+  final UParkingSelectorArgs? selectorArgs;
   final int? orderBy;
   final String? creatorId;
 
@@ -182,7 +182,7 @@ class UParkingReadParams {
     toCreatedAt: json["toCreatedAt"] == null ? null : DateTime.parse(json["toCreatedAt"]),
     tags: json["tags"] == null ? <int>[] : List<int>.from(json["tags"]!.map((dynamic x) => x)),
     ids: json["ids"] == null ? <String>[] : List<String>.from(json["ids"]!.map((dynamic x) => x)),
-    selectorArgs: json["selectorArgs"] == null ? null : ParkingSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : UParkingSelectorArgs.fromMap(json["selectorArgs"]),
     orderBy: json["orderBy"],
     creatorId: json["creatorId"],
   );
@@ -347,7 +347,7 @@ class UParkingReportReadParams {
   final String? parkingId;
   final DateTime? startDate;
   final DateTime? endDate;
-  final ParkingReportSelectorArgs? selectorArgs;
+  final UParkingReportSelectorArgs? selectorArgs;
   final int? orderBy;
   final String? creatorId;
 
@@ -382,7 +382,7 @@ class UParkingReportReadParams {
     parkingId: json["parkingId"],
     startDate: json["startDate"] == null ? null : DateTime.parse(json["startDate"]),
     endDate: json["endDate"] == null ? null : DateTime.parse(json["endDate"]),
-    selectorArgs: json["selectorArgs"] == null ? null : ParkingReportSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : UParkingReportSelectorArgs.fromMap(json["selectorArgs"]),
     orderBy: json["orderBy"],
     creatorId: json["creatorId"],
   );
@@ -470,7 +470,7 @@ class UParkingUserDeleteParams {
 
 class UParkingUserReadParams {
   final String parkingId;
-  final UserSelectorArgs? selectorArgs;
+  final UUserSelectorArgs? selectorArgs;
 
   UParkingUserReadParams({
     required this.parkingId,
@@ -483,7 +483,7 @@ class UParkingUserReadParams {
 
   factory UParkingUserReadParams.fromMap(Map<String, dynamic> json) => UParkingUserReadParams(
     parkingId: json["parkingId"],
-    selectorArgs: json["selectorArgs"] == null ? null : UserSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : UUserSelectorArgs.fromMap(json["selectorArgs"]),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -729,7 +729,7 @@ class UParkingTariffReadParams {
   final int? vehicleType;
   final int? pageSize;
   final int? pageNumber;
-  final ParkingTariffSelectorArgs? selectorArgs;
+  final UParkingTariffSelectorArgs? selectorArgs;
   final DateTime? fromCreatedAt;
   final DateTime? toCreatedAt;
   final List<int>? tags;
@@ -760,7 +760,7 @@ class UParkingTariffReadParams {
     vehicleType: json["vehicleType"],
     pageSize: json["pageSize"],
     pageNumber: json["pageNumber"],
-    selectorArgs: json["selectorArgs"] == null ? null : ParkingTariffSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : UParkingTariffSelectorArgs.fromMap(json["selectorArgs"]),
     fromCreatedAt: json["fromCreatedAt"] == null ? null : DateTime.parse(json["fromCreatedAt"]),
     toCreatedAt: json["toCreatedAt"] == null ? null : DateTime.parse(json["toCreatedAt"]),
     tags: json["tags"] == null ? null : List<int>.from(json["tags"]!.map((dynamic x) => x)),
@@ -955,7 +955,7 @@ class UParkingSubscriptionReadParams {
   final int? pageSize;
   final int? pageNumber;
   final List<int>? tags;
-  final ParkingSubscriptionSelectorArgs? selectorArgs;
+  final UParkingSubscriptionSelectorArgs? selectorArgs;
   final DateTime? fromCreatedAt;
   final DateTime? toCreatedAt;
   final List<String>? ids;
@@ -996,7 +996,7 @@ class UParkingSubscriptionReadParams {
     pageSize: json["pageSize"],
     pageNumber: json["pageNumber"],
     tags: json["tags"] == null ? null : List<int>.from(json["tags"]!.map((dynamic x) => x)),
-    selectorArgs: json["selectorArgs"] == null ? null : ParkingSubscriptionSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : UParkingSubscriptionSelectorArgs.fromMap(json["selectorArgs"]),
     fromCreatedAt: json["fromCreatedAt"] == null ? null : DateTime.parse(json["fromCreatedAt"]),
     toCreatedAt: json["toCreatedAt"] == null ? null : DateTime.parse(json["toCreatedAt"]),
     ids: json["ids"] == null ? null : List<String>.from(json["ids"]!.map((dynamic x) => x)),
@@ -1170,7 +1170,7 @@ class UParkingPlateFlagReadParams {
   final List<int>? tags;
   final int? pageSize;
   final int? pageNumber;
-  final ParkingPlateFlagSelectorArgs? selectorArgs;
+  final UParkingPlateFlagSelectorArgs? selectorArgs;
   final DateTime? fromCreatedAt;
   final DateTime? toCreatedAt;
   final List<String>? ids;
@@ -1201,7 +1201,7 @@ class UParkingPlateFlagReadParams {
     tags: json["tags"] == null ? null : List<int>.from(json["tags"]!.map((dynamic x) => x)),
     pageSize: json["pageSize"],
     pageNumber: json["pageNumber"],
-    selectorArgs: json["selectorArgs"] == null ? null : ParkingPlateFlagSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : UParkingPlateFlagSelectorArgs.fromMap(json["selectorArgs"]),
     fromCreatedAt: json["fromCreatedAt"] == null ? null : DateTime.parse(json["fromCreatedAt"]),
     toCreatedAt: json["toCreatedAt"] == null ? null : DateTime.parse(json["toCreatedAt"]),
     ids: json["ids"] == null ? null : List<String>.from(json["ids"]!.map((dynamic x) => x)),
@@ -1364,7 +1364,7 @@ class UParkingStaffReadParams {
   final String? parkingId;
   final int? pageSize;
   final int? pageNumber;
-  final ParkingStaffSelectorArgs? selectorArgs;
+  final UParkingStaffSelectorArgs? selectorArgs;
   final DateTime? fromCreatedAt;
   final DateTime? toCreatedAt;
   final List<int>? tags;
@@ -1393,7 +1393,7 @@ class UParkingStaffReadParams {
     parkingId: json["parkingId"],
     pageSize: json["pageSize"],
     pageNumber: json["pageNumber"],
-    selectorArgs: json["selectorArgs"] == null ? null : ParkingStaffSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : UParkingStaffSelectorArgs.fromMap(json["selectorArgs"]),
     fromCreatedAt: json["fromCreatedAt"] == null ? null : DateTime.parse(json["fromCreatedAt"]),
     toCreatedAt: json["toCreatedAt"] == null ? null : DateTime.parse(json["toCreatedAt"]),
     tags: json["tags"] == null ? null : List<int>.from(json["tags"]!.map((dynamic x) => x)),
@@ -1465,7 +1465,7 @@ class UParkingShiftReadParams {
   final bool? isOpen;
   final int? pageSize;
   final int? pageNumber;
-  final ParkingShiftSelectorArgs? selectorArgs;
+  final UParkingShiftSelectorArgs? selectorArgs;
   final DateTime? fromCreatedAt;
   final DateTime? toCreatedAt;
   final List<int>? tags;
@@ -1496,7 +1496,7 @@ class UParkingShiftReadParams {
     isOpen: json["isOpen"],
     pageSize: json["pageSize"],
     pageNumber: json["pageNumber"],
-    selectorArgs: json["selectorArgs"] == null ? null : ParkingShiftSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : UParkingShiftSelectorArgs.fromMap(json["selectorArgs"]),
     fromCreatedAt: json["fromCreatedAt"] == null ? null : DateTime.parse(json["fromCreatedAt"]),
     toCreatedAt: json["toCreatedAt"] == null ? null : DateTime.parse(json["toCreatedAt"]),
     tags: json["tags"] == null ? null : List<int>.from(json["tags"]!.map((dynamic x) => x)),

@@ -1,17 +1,17 @@
 import "package:u/utilities.dart";
 
-enum FlipDirection { vertical, horizontal }
+enum UFlipDirection { vertical, horizontal }
 
-enum CardSide { front, back }
+enum UCardSide { front, back }
 
-enum Fill { none, fillFront, fillBack }
+enum UFill { none, fillFront, fillBack }
 
 class UAnimationCard extends StatelessWidget {
   const UAnimationCard({super.key, this.child, this.animation, this.direction});
 
   final Widget? child;
   final Animation<double>? animation;
-  final FlipDirection? direction;
+  final UFlipDirection? direction;
 
   @override
   Widget build(BuildContext context) => AnimatedBuilder(
@@ -19,7 +19,7 @@ class UAnimationCard extends StatelessWidget {
     builder: (BuildContext context, Widget? child) {
       final Matrix4 transform = Matrix4.identity();
       transform.setEntry(3, 2, 0.001);
-      if (direction == FlipDirection.vertical) {
+      if (direction == UFlipDirection.vertical) {
         transform.rotateX(animation!.value);
       } else {
         transform.rotateY(animation!.value);
@@ -34,42 +34,42 @@ class UAnimationCard extends StatelessWidget {
   );
 }
 
-typedef BoolCallback = void Function(bool isFront);
+typedef UBoolCallback = void Function(bool isFront);
 
-class FlipCard extends StatefulWidget {
-  const FlipCard({
+class UFlipCard extends StatefulWidget {
+  const UFlipCard({
     required this.front,
     required this.back,
     super.key,
     this.speed = 500,
     this.onFlip,
     this.onFlipDone,
-    this.direction = FlipDirection.horizontal,
+    this.direction = UFlipDirection.horizontal,
     this.controller,
     this.flipOnTouch = true,
     this.alignment = Alignment.center,
-    this.fill = Fill.none,
-    this.side = CardSide.front,
+    this.fill = UFill.none,
+    this.side = UCardSide.front,
   });
 
   final Widget front;
   final Widget back;
   final int speed;
-  final FlipDirection direction;
+  final UFlipDirection direction;
   final VoidCallback? onFlip;
-  final BoolCallback? onFlipDone;
-  final FlipCardController? controller;
-  final Fill fill;
-  final CardSide side;
+  final UBoolCallback? onFlipDone;
+  final UFlipCardController? controller;
+  final UFill fill;
+  final UCardSide side;
   final bool flipOnTouch;
   final Alignment alignment;
 
   @override
-  State<StatefulWidget> createState() => FlipCardState();
+  State<StatefulWidget> createState() => UFlipCardState();
 }
 
-class FlipCardState extends State<FlipCard> with SingleTickerProviderStateMixin {
-  FlipCardState();
+class UFlipCardState extends State<UFlipCard> with SingleTickerProviderStateMixin {
+  UFlipCardState();
 
   AnimationController? controller;
   Animation<double>? _frontRotation;
@@ -80,7 +80,7 @@ class FlipCardState extends State<FlipCard> with SingleTickerProviderStateMixin 
   @override
   void initState() {
     super.initState();
-    isFront = widget.side == CardSide.front;
+    isFront = widget.side == UCardSide.front;
     controller = AnimationController(
       value: isFront ? 0.0 : 1.0,
       duration: Duration(milliseconds: widget.speed),
@@ -112,7 +112,7 @@ class FlipCardState extends State<FlipCard> with SingleTickerProviderStateMixin 
   }
 
   @override
-  void didUpdateWidget(FlipCard oldWidget) {
+  void didUpdateWidget(UFlipCard oldWidget) {
     widget.controller?.state ??= this;
     super.didUpdateWidget(oldWidget);
   }
@@ -146,8 +146,8 @@ class FlipCardState extends State<FlipCard> with SingleTickerProviderStateMixin 
 
   @override
   Widget build(BuildContext context) {
-    final Widget Function(Widget child) frontPositioning = widget.fill == Fill.fillFront ? _fill : _noop;
-    final Widget Function(Widget child) backPositioning = widget.fill == Fill.fillBack ? _fill : _noop;
+    final Widget Function(Widget child) frontPositioning = widget.fill == UFill.fillFront ? _fill : _noop;
+    final Widget Function(Widget child) backPositioning = widget.fill == UFill.fillBack ? _fill : _noop;
 
     final Stack child = Stack(
       alignment: widget.alignment,
@@ -188,8 +188,8 @@ Widget _fill(Widget child) => Positioned.fill(child: child);
 
 Widget _noop(Widget child) => child;
 
-class FlipCardController {
-  FlipCardState? state;
+class UFlipCardController {
+  UFlipCardState? state;
 
   AnimationController? get controller {
     assert(state != null, "Controller not attached to any FlipCard. Did you forget to pass the controller to the FlipCard?");

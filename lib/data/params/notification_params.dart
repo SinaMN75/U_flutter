@@ -105,7 +105,7 @@ class UNotificationReadParams {
   final List<String>? ids;
   final String? creatorId;
   final String? userId;
-  final NotificationSelectorArgs? selectorArgs;
+  final UNotificationSelectorArgs? selectorArgs;
   final int? orderBy;
 
   UNotificationReadParams({
@@ -134,7 +134,7 @@ class UNotificationReadParams {
     ids: json["ids"] == null ? <String>[] : List<String>.from(json["ids"]!.map((dynamic x) => x)),
     creatorId: json["creatorId"],
     userId: json["userId"],
-    selectorArgs: json["selectorArgs"] == null ? null : NotificationSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : UNotificationSelectorArgs.fromMap(json["selectorArgs"]),
     orderBy: json["orderBy"],
   );
 

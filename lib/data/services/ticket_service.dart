@@ -1,6 +1,6 @@
 part of "../data.dart";
 
-class TicketService {
+class UTicketService {
   Future<(UResponse<String>?, UEmptyResponse?, String?)> create({
     required UTicketCreateParams p,
     Function(UResponse<String> r)? onOk,

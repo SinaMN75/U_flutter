@@ -2,8 +2,8 @@ import "package:u/utilities.dart";
 
 enum _PickerMode { calendar, selectYear, selectMonth }
 
-class JalaliDatePickerDialog extends StatefulWidget {
-  const JalaliDatePickerDialog({
+class UJalaliDatePickerDialog extends StatefulWidget {
+  const UJalaliDatePickerDialog({
     required this.initialDate,
     required this.onDateSelected,
     this.endYear = 1350,
@@ -11,17 +11,17 @@ class JalaliDatePickerDialog extends StatefulWidget {
     super.key,
   });
 
-  final Jalali initialDate;
+  final UJalali initialDate;
   final int startYear;
   final int endYear;
-  final Function(DateTime, Jalali) onDateSelected;
+  final Function(DateTime, UJalali) onDateSelected;
 
   @override
-  State<JalaliDatePickerDialog> createState() => _JalaliDatePickerDialogState();
+  State<UJalaliDatePickerDialog> createState() => _JalaliDatePickerDialogState();
 }
 
-class _JalaliDatePickerDialogState extends State<JalaliDatePickerDialog> {
-  late Jalali selectedDate;
+class _JalaliDatePickerDialogState extends State<UJalaliDatePickerDialog> {
+  late UJalali selectedDate;
   late int currentYear;
   late int currentMonth;
   _PickerMode mode = _PickerMode.selectYear;
@@ -108,19 +108,19 @@ class _JalaliDatePickerDialogState extends State<JalaliDatePickerDialog> {
           .toList(),
     );
 
-    final int weekdayOffset = Jalali(currentYear, currentMonth).weekDay - 1;
+    final int weekdayOffset = UJalali(currentYear, currentMonth).weekDay - 1;
 
     for (int i = 0; i < weekdayOffset; i++) {
       dayWidgets.add(const SizedBox());
     }
 
-    final int daysInMonth = Jalali(currentYear, currentMonth).monthLength;
+    final int daysInMonth = UJalali(currentYear, currentMonth).monthLength;
     for (int day = 1; day <= daysInMonth; day++) {
       final bool isSelected = selectedDate.year == currentYear && selectedDate.month == currentMonth && selectedDate.day == day;
       final ColorScheme scheme = Theme.of(context).colorScheme;
       dayWidgets.add(
         UContainer(
-          onTap: () => setState(() => selectedDate = Jalali(currentYear, currentMonth, day)),
+          onTap: () => setState(() => selectedDate = UJalali(currentYear, currentMonth, day)),
           margin: const EdgeInsets.all(4),
           color: isSelected ? scheme.primary : scheme.surfaceContainerHighest,
           radius: 6,
@@ -157,7 +157,7 @@ class _JalaliDatePickerDialogState extends State<JalaliDatePickerDialog> {
           return UContainer(
             onTap: () => setState(() {
               currentYear = year;
-              selectedDate = Jalali(currentYear, currentMonth, selectedDate.day);
+              selectedDate = UJalali(currentYear, currentMonth, selectedDate.day);
               mode = _PickerMode.selectMonth;
             }),
             margin: const EdgeInsets.symmetric(vertical: 3),
@@ -185,7 +185,7 @@ class _JalaliDatePickerDialogState extends State<JalaliDatePickerDialog> {
         InkWell(
           onTap: () => setState(() {
             currentMonth = i + 1;
-            selectedDate = Jalali(currentYear, currentMonth, selectedDate.day);
+            selectedDate = UJalali(currentYear, currentMonth, selectedDate.day);
             mode = _PickerMode.calendar;
           }),
           child:

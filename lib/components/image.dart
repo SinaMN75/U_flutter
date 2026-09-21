@@ -65,7 +65,7 @@ class UImage extends StatelessWidget {
 
   final String? package;
   final String source;
-  final FileData? fileData;
+  final UFileData? fileData;
   final Color? color;
   final double? width;
   final double? height;

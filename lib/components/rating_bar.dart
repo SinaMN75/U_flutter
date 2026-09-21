@@ -1,7 +1,7 @@
 import "package:u/utilities.dart";
 
-class RatingWidget {
-  RatingWidget({
+class URatingWidget {
+  URatingWidget({
     required this.full,
     required this.half,
     required this.empty,
@@ -14,10 +14,10 @@ class RatingWidget {
   final Widget empty;
 }
 
-class RatingBar extends StatefulWidget {
-  const RatingBar({
+class URatingBar extends StatefulWidget {
+  const URatingBar({
     required this.onRatingUpdate,
-    required RatingWidget this._ratingWidget,
+    required URatingWidget this._ratingWidget,
     super.key,
     this.glowColor,
     this.maxRating,
@@ -38,7 +38,7 @@ class RatingBar extends StatefulWidget {
     this.wrapAlignment = WrapAlignment.start,
   }) : _itemBuilder = null;
 
-  const RatingBar.builder({
+  const URatingBar.builder({
     required this.onRatingUpdate,
     required IndexedWidgetBuilder this._itemBuilder,
     super.key,
@@ -98,13 +98,13 @@ class RatingBar extends StatefulWidget {
   final WrapAlignment wrapAlignment;
 
   final IndexedWidgetBuilder? _itemBuilder;
-  final RatingWidget? _ratingWidget;
+  final URatingWidget? _ratingWidget;
 
   @override
-  State<RatingBar> createState() => _RatingBarState();
+  State<URatingBar> createState() => _RatingBarState();
 }
 
-class _RatingBarState extends State<RatingBar> {
+class _RatingBarState extends State<URatingBar> {
   double _rating = 0;
   bool _isRTL = false;
   double iconRating = 0;
@@ -123,7 +123,7 @@ class _RatingBarState extends State<RatingBar> {
   }
 
   @override
-  void didUpdateWidget(RatingBar oldWidget) {
+  void didUpdateWidget(URatingBar oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.initialRating != widget.initialRating) {
       _rating = widget.initialRating;
@@ -158,7 +158,7 @@ class _RatingBarState extends State<RatingBar> {
   }
 
   Widget _buildRating(BuildContext context, int index) {
-    final RatingWidget? ratingWidget = widget._ratingWidget;
+    final URatingWidget? ratingWidget = widget._ratingWidget;
     final Widget? item = widget._itemBuilder?.call(context, index);
     final double ratingOffset = widget.allowHalfRating ? 0.5 : 1.0;
 
@@ -411,8 +411,8 @@ class _NoRatingWidget extends StatelessWidget {
   );
 }
 
-class RatingBarIndicator extends StatefulWidget {
-  const RatingBarIndicator({
+class URatingBarIndicator extends StatefulWidget {
+  const URatingBarIndicator({
     required this.itemBuilder,
     super.key,
     this.textDirection,
@@ -444,10 +444,10 @@ class RatingBarIndicator extends StatefulWidget {
   final double rating;
 
   @override
-  State<RatingBarIndicator> createState() => _RatingBarIndicatorState();
+  State<URatingBarIndicator> createState() => _RatingBarIndicatorState();
 }
 
-class _RatingBarIndicatorState extends State<RatingBarIndicator> {
+class _RatingBarIndicatorState extends State<URatingBarIndicator> {
   double _ratingFraction = 0;
   int _ratingNumber = 0;
   bool _isRTL = false;

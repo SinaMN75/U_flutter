@@ -1,7 +1,7 @@
 part of "../../u_admin.dart";
 
 class UAdminFinancialOpsDashboardController extends UBaseController {
-  final Rxn<UFinancialOpsDashboardResponse> report = Rxn<UFinancialOpsDashboardResponse>();
+  final URxn<UFinancialOpsDashboardResponse> report = URxn<UFinancialOpsDashboardResponse>();
 
   DateTime fromDate = DateTime.now().subtract(const Duration(days: 30));
   DateTime toDate = DateTime.now();

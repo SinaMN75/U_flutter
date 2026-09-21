@@ -22,7 +22,7 @@ class UMediaCreateParams {
     this.dormBedId,
   });
 
-  final FileData file;
+  final UFileData file;
   final String? userId;
   final String? contentId;
   final String? commentId;

@@ -15,6 +15,12 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
     c.init();
     super.initState();
   }
+  @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
+
 
   bool get _isWide => MediaQuery.sizeOf(context).width > 1000;
 
@@ -24,7 +30,7 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
       title: Text("${U.s.financialOperations} ⚡"),
       actions: <Widget>[IconButton(icon: const Icon(Icons.refresh_rounded), tooltip: U.s.refresh, onPressed: c.load)],
     ),
-    body: Obx(() {
+    body: UObx(() {
       if (c.state.value.isError()) return TextButton(onPressed: c.load, child: Text(U.s.retry)).alignAtCenter();
       if (!c.state.value.isLoaded()) return const CircularProgressIndicator().alignAtCenter();
       final UFinancialOpsDashboardResponse r = c.report.value!;

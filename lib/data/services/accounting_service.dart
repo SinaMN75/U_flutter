@@ -1,6 +1,6 @@
 part of "../data.dart";
 
-class AccountingService {
+class UAccountingService {
   Future<(UResponse<UAccountingReportResponse>?, UEmptyResponse?, String?)> report({
     required UAccountingReportParams p,
     Function(UResponse<UAccountingReportResponse> r)? onOk,

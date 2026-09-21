@@ -10,7 +10,7 @@ class UImageViewer extends StatelessWidget {
     this.backgroundColor = Colors.black,
   });
 
-  final FileData fileData;
+  final UFileData fileData;
   final String? heroTag;
   final double minScale;
   final double maxScale;
@@ -84,8 +84,8 @@ class UImageViewer extends StatelessWidget {
   );
 }
 
-class BetterImageViewer extends StatefulWidget {
-  const BetterImageViewer({
+class UBetterImageViewer extends StatefulWidget {
+  const UBetterImageViewer({
     required this.fileData,
     super.key,
     this.heroTag,
@@ -94,17 +94,17 @@ class BetterImageViewer extends StatefulWidget {
     this.backgroundColor = Colors.black,
   });
 
-  final FileData fileData;
+  final UFileData fileData;
   final String? heroTag;
   final double minScale;
   final double maxScale;
   final Color backgroundColor;
 
   @override
-  State<BetterImageViewer> createState() => _BetterImageViewerState();
+  State<UBetterImageViewer> createState() => _BetterImageViewerState();
 }
 
-class _BetterImageViewerState extends State<BetterImageViewer> {
+class _BetterImageViewerState extends State<UBetterImageViewer> {
   ImageProvider? _imageProvider;
   Size? _imageSize;
   bool _isLoading = true;
@@ -259,8 +259,8 @@ class _BetterImageViewerState extends State<BetterImageViewer> {
   );
 }
 
-class ImageGalleryViewer extends StatefulWidget {
-  const ImageGalleryViewer({
+class UImageGalleryViewer extends StatefulWidget {
+  const UImageGalleryViewer({
     required this.files,
     super.key,
     this.initialIndex = 0,
@@ -269,17 +269,17 @@ class ImageGalleryViewer extends StatefulWidget {
     this.maxScale = 4.0,
   });
 
-  final List<FileData> files;
+  final List<UFileData> files;
   final int initialIndex;
   final Color backgroundColor;
   final double minScale;
   final double maxScale;
 
   @override
-  State<ImageGalleryViewer> createState() => _ImageGalleryViewerState();
+  State<UImageGalleryViewer> createState() => _ImageGalleryViewerState();
 }
 
-class _ImageGalleryViewerState extends State<ImageGalleryViewer> {
+class _ImageGalleryViewerState extends State<UImageGalleryViewer> {
   late PageController _pageController;
   int _currentIndex = 0;
 
@@ -309,7 +309,7 @@ class _ImageGalleryViewerState extends State<ImageGalleryViewer> {
             });
           },
           itemCount: widget.files.length,
-          itemBuilder: (BuildContext context, int index) => BetterImageViewer(
+          itemBuilder: (BuildContext context, int index) => UBetterImageViewer(
             fileData: widget.files[index],
             minScale: widget.minScale,
             maxScale: widget.maxScale,

@@ -18,6 +18,12 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
     c.init(room: widget.room, dorm: widget.dorm);
     super.initState();
   }
+  @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -117,14 +123,15 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
   );
 
   void _showEditDialog({UDormBedResponse? p}) {
-    final TextEditingController title = TextEditingController(text: p?.title);
-    final TextEditingController deposit = TextEditingController(text: p?.deposit.toInt().toString());
-    final TextEditingController rent = TextEditingController(text: p?.monthlyRent.toInt().toString());
-    final TextEditingController detail = TextEditingController(text: p?.jsonData.detail1);
-    final Rxn<UDormRoomResponse> room = Rxn<UDormRoomResponse>();
+    final UAdminFields f = UAdminFields();
+    final TextEditingController title = f.text(p?.title);
+    final TextEditingController deposit = f.text(p?.deposit.toInt().toString());
+    final TextEditingController rent = f.text(p?.monthlyRent.toInt().toString());
+    final TextEditingController detail = f.text(p?.jsonData.detail1);
+    final URxn<UDormRoomResponse> room = URxn<UDormRoomResponse>();
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-    UNavigator.dialog(
+    UNavigator.dialog(f.scope(
       AlertDialog(
         title: Text(p == null ? U.s.createItem(U.s.bed) : U.s.editItem(U.s.bed)),
         content: SizedBox(
@@ -210,7 +217,7 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
             ),
           ),
         ),
-      ),
+      )),
     );
   }
 }

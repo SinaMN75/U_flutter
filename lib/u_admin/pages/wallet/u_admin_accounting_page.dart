@@ -15,6 +15,12 @@ class _AccountingPageState extends State<UAdminAccountingPage> {
     c.init();
     super.initState();
   }
+  @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) => UScaffold(
@@ -25,7 +31,7 @@ class _AccountingPageState extends State<UAdminAccountingPage> {
         IconButton(icon: const Icon(Icons.refresh), tooltip: U.s.refresh, onPressed: c.load),
       ],
     ),
-    body: Obx(() {
+    body: UObx(() {
       if (c.state.value.isError()) {
         return Center(
           child: TextButton(onPressed: c.load, child: Text(U.s.retry)),
@@ -53,7 +59,7 @@ class _AccountingPageState extends State<UAdminAccountingPage> {
     }),
   );
 
-  Widget _scopeBanner() => Obx(() {
+  Widget _scopeBanner() => UObx(() {
     final UUserResponse? u = c.user.value;
     return UCard(
       child: ListTile(
@@ -169,7 +175,7 @@ class _AccountingPageState extends State<UAdminAccountingPage> {
                 jalali: true,
                 controller: c.fromController,
                 labelText: U.s.fromDate,
-                onChange: (DateTime d, Jalali j) {
+                onChange: (DateTime d, UJalali j) {
                   c.fromController.text = j.formatCompactDate();
                   c.fromDate = d;
                 },
@@ -178,7 +184,7 @@ class _AccountingPageState extends State<UAdminAccountingPage> {
                 jalali: true,
                 controller: c.toController,
                 labelText: U.s.toDate,
-                onChange: (DateTime d, Jalali j) {
+                onChange: (DateTime d, UJalali j) {
                   c.toController.text = j.formatCompactDate();
                   c.toDate = d;
                 },

@@ -15,6 +15,12 @@ class _HotelPageState extends State<UAdminHotelPage> {
     c.init();
     super.initState();
   }
+  @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -119,21 +125,22 @@ class _HotelPageState extends State<UAdminHotelPage> {
   );
 
   Future<void> _showEditDialog({UHotelResponse? p}) async {
-    final TextEditingController title = TextEditingController(text: p?.title);
-    final TextEditingController detail = TextEditingController(text: p?.jsonData.description ?? p?.jsonData.detail1);
-    final TextEditingController stars = TextEditingController(text: p?.stars.toString());
-    final TextEditingController address = TextEditingController(text: p?.address);
-    final TextEditingController phone = TextEditingController(text: p?.phoneNumber);
-    final TextEditingController email = TextEditingController(text: p?.email);
-    final TextEditingController checkInTime = TextEditingController(text: p?.jsonData.checkInTime);
-    final TextEditingController checkOutTime = TextEditingController(text: p?.jsonData.checkOutTime);
-    final TextEditingController policies = TextEditingController(text: p?.jsonData.policies);
-    final TextEditingController amenities = TextEditingController(text: p?.jsonData.amenities.join(", "));
-    final TextEditingController rules = TextEditingController(text: p?.jsonData.rules.join(", "));
-    final TextEditingController latitude = TextEditingController(text: p?.jsonData.latitude?.toString());
-    final TextEditingController longitude = TextEditingController(text: p?.jsonData.longitude?.toString());
-    final TextEditingController cancellationFreeHours = TextEditingController(text: (p?.jsonData.cancellationFreeHours ?? 24).toString());
-    final TextEditingController cancellationPenaltyNights = TextEditingController(text: (p?.jsonData.cancellationPenaltyNights ?? 1).toString());
+    final UAdminFields f = UAdminFields();
+    final TextEditingController title = f.text(p?.title);
+    final TextEditingController detail = f.text(p?.jsonData.description ?? p?.jsonData.detail1);
+    final TextEditingController stars = f.text(p?.stars.toString());
+    final TextEditingController address = f.text(p?.address);
+    final TextEditingController phone = f.text(p?.phoneNumber);
+    final TextEditingController email = f.text(p?.email);
+    final TextEditingController checkInTime = f.text(p?.jsonData.checkInTime);
+    final TextEditingController checkOutTime = f.text(p?.jsonData.checkOutTime);
+    final TextEditingController policies = f.text(p?.jsonData.policies);
+    final TextEditingController amenities = f.text(p?.jsonData.amenities.join(", "));
+    final TextEditingController rules = f.text(p?.jsonData.rules.join(", "));
+    final TextEditingController latitude = f.text(p?.jsonData.latitude?.toString());
+    final TextEditingController longitude = f.text(p?.jsonData.longitude?.toString());
+    final TextEditingController cancellationFreeHours = f.text((p?.jsonData.cancellationFreeHours ?? 24).toString());
+    final TextEditingController cancellationPenaltyNights = f.text((p?.jsonData.cancellationPenaltyNights ?? 1).toString());
     bool isActive = p == null || p.tags.contains(TagHotel.active.number);
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final List<UUserResponse> selectedAdmins = <UUserResponse>[];
@@ -145,7 +152,7 @@ class _HotelPageState extends State<UAdminHotelPage> {
       selectedAdmins.addAll(fetched.whereType<UUserResponse>());
     }
 
-    await UNavigator.dialog(
+    await UNavigator.dialog(f.scope(
       StatefulBuilder(
         builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
           title: Text(p == null ? U.s.createItem(U.s.hotel) : U.s.editItem(U.s.hotel)),
@@ -285,7 +292,7 @@ class _HotelPageState extends State<UAdminHotelPage> {
             ),
           ),
         ),
-      ),
+      )),
     );
   }
 }

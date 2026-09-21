@@ -17,6 +17,12 @@ class _UserPageState extends State<UAdminUserPage> {
     c.init(args: widget.args);
     super.initState();
   }
+  @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -190,7 +196,7 @@ class _UserPageState extends State<UAdminUserPage> {
                     jalali: true,
                     controller: c.fromCreatedAtController,
                     labelText: U.s.fromDate,
-                    onChange: (DateTime d, Jalali j) {
+                    onChange: (DateTime d, UJalali j) {
                       c.fromCreatedAtController.text = j.formatCompactDate();
                       c.fromCreatedAt = d;
                     },
@@ -199,7 +205,7 @@ class _UserPageState extends State<UAdminUserPage> {
                     jalali: true,
                     controller: c.toCreatedAtController,
                     labelText: U.s.toDate,
-                    onChange: (DateTime d, Jalali j) {
+                    onChange: (DateTime d, UJalali j) {
                       c.toCreatedAtController.text = j.formatCompactDate();
                       c.toCreatedAt = d;
                     },

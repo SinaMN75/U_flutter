@@ -17,6 +17,12 @@ class _UAdminParkingShiftPageState extends State<UAdminParkingShiftPage> {
     c.init(parking: widget.parking);
     super.initState();
   }
+  @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -29,7 +35,7 @@ class _UAdminParkingShiftPageState extends State<UAdminParkingShiftPage> {
     },
     body: UColumn(
       children: <Widget>[
-        Obx(() {
+        UObx(() {
           if (!c.state.isLoaded()) return const SizedBox.shrink();
           return UContainer(
             margin: const EdgeInsets.fromLTRB(16, 8, 16, 0),

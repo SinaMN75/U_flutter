@@ -1,12 +1,12 @@
 import "package:u/utilities.dart";
 
-enum TrimMode {
+enum UTrimMode {
   length,
   line,
 }
 
-class ReadMoreText extends StatefulWidget {
-  const ReadMoreText(
+class UReadMoreText extends StatefulWidget {
+  const UReadMoreText(
     this.data, {
     super.key,
     this.preDataText,
@@ -18,7 +18,7 @@ class ReadMoreText extends StatefulWidget {
     this.colorClickableText,
     this.trimLength = 240,
     this.trimLines = 2,
-    this.trimMode = TrimMode.length,
+    this.trimMode = UTrimMode.length,
     this.style,
     this.textAlign,
     this.textDirection,
@@ -36,7 +36,7 @@ class ReadMoreText extends StatefulWidget {
 
   final int trimLength;
   final int trimLines;
-  final TrimMode trimMode;
+  final UTrimMode trimMode;
   final TextStyle? moreStyle;
   final TextStyle? lessStyle;
   final String? preDataText;
@@ -63,14 +63,14 @@ class ReadMoreText extends StatefulWidget {
   final TextStyle? delimiterStyle;
 
   @override
-  ReadMoreTextState createState() => ReadMoreTextState();
+  UReadMoreTextState createState() => UReadMoreTextState();
 }
 
 const String _kEllipsis = "\u2026";
 
 const String _kLineSeparator = "\u2028";
 
-class ReadMoreTextState extends State<ReadMoreText> {
+class UReadMoreTextState extends State<UReadMoreText> {
   bool _readMore = true;
 
   final List<TapGestureRecognizer> _recognizers = <TapGestureRecognizer>[];
@@ -202,7 +202,7 @@ class ReadMoreTextState extends State<ReadMoreText> {
 
         TextSpan textSpan;
         switch (widget.trimMode) {
-          case TrimMode.length:
+          case UTrimMode.length:
             if (widget.trimLength < widget.data.length) {
               textSpan = _buildData(
                 data: _readMore ? widget.data.substring(0, widget.trimLength) : widget.data,
@@ -227,7 +227,7 @@ class ReadMoreTextState extends State<ReadMoreText> {
               );
             }
             break;
-          case TrimMode.line:
+          case UTrimMode.line:
             if (textPainter.didExceedMaxLines) {
               textSpan = _buildData(
                 data: _readMore ? widget.data.substring(0, endIndex) + (linkLongerThanLine ? _kLineSeparator : "") : widget.data,

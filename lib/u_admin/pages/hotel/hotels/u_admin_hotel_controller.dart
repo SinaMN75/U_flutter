@@ -70,4 +70,10 @@ class UAdminHotelController extends UBaseController {
       },
     ),
   );
+
+  @override
+  void dispose() {
+    titleFilter.dispose();
+    super.dispose();
+  }
 }

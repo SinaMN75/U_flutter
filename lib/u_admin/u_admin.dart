@@ -48,6 +48,8 @@ part "u_admin_base_controller.dart";
 part "u_admin_config.dart";
 part "u_admin_list_view.dart";
 part "u_admin_modules.dart";
+part "u_admin_fields.dart";
+part "u_admin_form.dart";
 part "u_admin_responsive.dart";
 part "u_admin_scaffold.dart";
 part "u_admin_shell.dart";

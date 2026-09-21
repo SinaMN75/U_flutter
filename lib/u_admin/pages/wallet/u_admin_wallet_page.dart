@@ -11,6 +11,13 @@ class _WalletPageState extends State<UAdminWalletPage> {
   final UAdminWalletController c = UAdminWalletController();
 
   @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
+
+
+  @override
   Widget build(BuildContext context) => UScaffold(
     appBar: AppBar(title: Text(U.s.walletManagement)),
     body: SingleChildScrollView(
@@ -19,7 +26,7 @@ class _WalletPageState extends State<UAdminWalletPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           const SizedBox(height: 16),
-          Obx(() {
+          UObx(() {
             if (c.selectedUser.value == null) {
               return Padding(
                 padding: const EdgeInsets.only(top: 40),
@@ -81,7 +88,7 @@ class _WalletPageState extends State<UAdminWalletPage> {
     ],
   );
 
-  Widget _summaryCard() => Obx(() {
+  Widget _summaryCard() => UObx(() {
     final UAccountingReportResponse? s = c.summary.value;
     if (s == null) return const SizedBox.shrink();
     return UCard(
@@ -112,7 +119,7 @@ class _WalletPageState extends State<UAdminWalletPage> {
     ),
   );
 
-  Widget _history() => Obx(() {
+  Widget _history() => UObx(() {
     if (c.txns.isEmpty) {
       return Padding(
         padding: const EdgeInsets.all(16),
@@ -140,8 +147,9 @@ class _WalletPageState extends State<UAdminWalletPage> {
 
   void _showChargeDialog() {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final TextEditingController amount = TextEditingController();
-    UNavigator.dialog(
+    final UAdminFields f = UAdminFields();
+    final TextEditingController amount = f.text();
+    UNavigator.dialog(f.scope(
       AlertDialog(
         title: Text(U.s.chargeWallet),
         content: SizedBox(
@@ -173,16 +181,17 @@ class _WalletPageState extends State<UAdminWalletPage> {
             ),
           ),
         ),
-      ),
+      )),
     );
   }
 
   void _showTransferDialog() {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final TextEditingController amount = TextEditingController();
-    final TextEditingController detail = TextEditingController();
-    final Rxn<UUserResponse> receiver = Rxn<UUserResponse>();
-    UNavigator.dialog(
+    final UAdminFields f = UAdminFields();
+    final TextEditingController amount = f.text();
+    final TextEditingController detail = f.text();
+    final URxn<UUserResponse> receiver = URxn<UUserResponse>();
+    UNavigator.dialog(f.scope(
       AlertDialog(
         title: Text(U.s.transferFunds),
         content: SizedBox(
@@ -221,7 +230,7 @@ class _WalletPageState extends State<UAdminWalletPage> {
             ),
           ),
         ),
-      ),
+      )),
     );
   }
 }

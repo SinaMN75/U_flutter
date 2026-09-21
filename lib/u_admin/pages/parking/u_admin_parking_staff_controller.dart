@@ -16,7 +16,7 @@ class UAdminParkingStaffController extends UBaseController {
         parkingId: parking?.id,
         pageNumber: pageNumber.value,
         pageSize: pageSize,
-        selectorArgs: const ParkingStaffSelectorArgs(user: UserSelectorArgs(), creator: UserSelectorArgs()),
+        selectorArgs: const UParkingStaffSelectorArgs(user: UUserSelectorArgs(), creator: UUserSelectorArgs()),
       ),
       onOk: (UResponse<List<UParkingStaffResponse>> r) {
         list = r.result ?? <UParkingStaffResponse>[];
@@ -104,7 +104,7 @@ class UAdminParkingPlateFlagController extends UBaseController {
         parkingId: parking?.id,
         pageNumber: pageNumber.value,
         pageSize: pageSize,
-        selectorArgs: const ParkingPlateFlagSelectorArgs(creator: UserSelectorArgs()),
+        selectorArgs: const UParkingPlateFlagSelectorArgs(creator: UUserSelectorArgs()),
       ),
       onOk: (UResponse<List<UParkingPlateFlagResponse>> r) {
         list = r.result ?? <UParkingPlateFlagResponse>[];
@@ -175,7 +175,7 @@ class UAdminParkingShiftController extends UBaseController {
         parkingId: parking?.id,
         pageNumber: pageNumber.value,
         pageSize: pageSize,
-        selectorArgs: const ParkingShiftSelectorArgs(creator: UserSelectorArgs()),
+        selectorArgs: const UParkingShiftSelectorArgs(creator: UUserSelectorArgs()),
       ),
       onOk: (UResponse<List<UParkingShiftResponse>> r) {
         list = r.result ?? <UParkingShiftResponse>[];

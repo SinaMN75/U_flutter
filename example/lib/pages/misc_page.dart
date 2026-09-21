@@ -23,7 +23,7 @@ class MiscPage extends StatelessWidget {
           code: r'''FlipCard(front: frontWidget, back: backWidget);''',
           child: SizedBox(
             height: 120,
-            child: FlipCard(
+            child: UFlipCard(
               front: _face(scheme.primaryContainer, scheme.onPrimaryContainer, "Front — tap me"),
               back: _face(scheme.tertiaryContainer, scheme.onTertiaryContainer, "Back!"),
             ),
@@ -33,7 +33,7 @@ class MiscPage extends StatelessWidget {
           title: "CreditCardWidget",
           description: "An animated card that detects the brand from the number.",
           code: r'''
-CreditCardWidget(
+UCreditCardWidget(
   cardNumber: "6274 1211 2233 4455",
   expiryDate: "08/29",
   cardHolderName: "SINA MN",
@@ -42,7 +42,7 @@ CreditCardWidget(
 );''',
           child: const SizedBox(
             height: 200,
-            child: CreditCardWidget(
+            child: UCreditCardWidget(
               cardNumber: "6274 1211 2233 4455",
               expiryDate: "08/29",
               cardHolderName: "SINA MN",
@@ -55,7 +55,7 @@ CreditCardWidget(
           title: "ReadMoreText",
           description: "Collapse long text to N lines with a read-more / show-less toggle.",
           code: r'''ReadMoreText("A very long description…", trimLines: 2);''',
-          child: const ReadMoreText(
+          child: const UReadMoreText(
             "The u plugin bundles a large, opinionated toolkit so that you can build a full app from a "
             "single import. This paragraph is intentionally long to show how ReadMoreText clamps text "
             "to a couple of lines and reveals the rest on demand.",
@@ -68,14 +68,14 @@ CreditCardWidget(
           code: r'''ScrollingText(text: "Breaking news — this text scrolls horizontally …");''',
           child: const SizedBox(
             height: 24,
-            child: ScrollingText(text: "Breaking news — this marquee text scrolls horizontally across the row."),
+            child: UScrollingText(text: "Breaking news — this marquee text scrolls horizontally across the row."),
           ),
         ),
         DemoSection(
           title: "BadgeWidget",
           description: "Overlay a count or dot on any child.",
           code: r'''BadgeWidget(badgeContent: UTextLabelSmall("3"), child: Icon(Icons.notifications));''',
-          child: BadgeWidget(
+          child: UBadgeWidget(
             badgeContent: const UTextLabelSmall("3"),
             child: Icon(Icons.notifications, color: scheme.onSurface),
           ),
@@ -97,18 +97,18 @@ CreditCardWidget(
           title: "Jalali date picker",
           description: "A Shamsi calendar dialog; onDateSelected returns the chosen Jalali date.",
           code: r'''
-showDialog(context: context, builder: (_) => JalaliDatePickerDialog(
-  initialDate: Jalali.now(),
-  onDateSelected: (Jalali d) => print(d),
+showDialog(context: context, builder: (_) => UJalaliDatePickerDialog(
+  initialDate: UJalali.now(),
+  onDateSelected: (UJalali d) => print(d),
 ));''',
           child: UButton(
             title: "Pick a Jalali date",
             icon: const Icon(Icons.calendar_month, size: 18),
             onTap: () => showDialog<void>(
               context: context,
-              builder: (BuildContext _) => JalaliDatePickerDialog(
-                initialDate: Jalali.fromDateTime(DateTime.now()),
-                onDateSelected: (DateTime d, Jalali j) => UToast.success(message: j.formatFullDate()),
+              builder: (BuildContext _) => UJalaliDatePickerDialog(
+                initialDate: UJalali.fromDateTime(DateTime.now()),
+                onDateSelected: (DateTime d, UJalali j) => UToast.success(message: j.formatFullDate()),
               ),
             ),
           ),
@@ -117,15 +117,15 @@ showDialog(context: context, builder: (_) => JalaliDatePickerDialog(
           title: "Jalali date picker - material",
           description: "A Jalali clone of Flutter's own Material date picker: month paging, year grid and keyboard entry.",
           code: r'''
-final Jalali? date = await UJalaliDatePicker.show(
+final UJalali? date = await UJalaliDatePicker.show(
   type: UJalaliDatePickerType.material,
-  initialDate: Jalali.now(),
+  initialDate: UJalali.now(),
 );''',
           child: UButton(
             title: "Pick a Jalali date",
             icon: const Icon(Icons.calendar_month, size: 18),
             onTap: () async {
-              final Jalali? date = await UJalaliDatePicker.show(initialDate: Jalali.now());
+              final UJalali? date = await UJalaliDatePicker.show(initialDate: UJalali.now());
               if (date != null) UToast.success(message: date.formatFullDate());
             },
           ),
@@ -134,15 +134,15 @@ final Jalali? date = await UJalaliDatePicker.show(
           title: "Jalali date picker - spinner",
           description: "An iOS style three wheel picker in a bottom sheet; day and month wheels are clamped to the selected month and range.",
           code: r'''
-final Jalali? date = await UJalaliDatePicker.show(
+final UJalali? date = await UJalaliDatePicker.show(
   type: UJalaliDatePickerType.spinner,
-  initialDate: Jalali.now(),
+  initialDate: UJalali.now(),
 );''',
           child: UButton(
             title: "Spin a Jalali date",
             icon: const Icon(Icons.view_day_outlined, size: 18),
             onTap: () async {
-              final Jalali? date = await UJalaliDatePicker.show(type: UJalaliDatePickerType.spinner, initialDate: Jalali.now());
+              final UJalali? date = await UJalaliDatePicker.show(type: UJalaliDatePickerType.spinner, initialDate: UJalali.now());
               if (date != null) UToast.success(message: date.formatFullDate());
             },
           ),

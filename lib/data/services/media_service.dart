@@ -1,6 +1,6 @@
 part of "../data.dart";
 
-class MediaService {
+class UMediaService {
   Future<(UResponse<String>?, UEmptyResponse?, String?)> create({
     required UMediaCreateParams p,
     required Function(UResponse<String> r)? onOk,

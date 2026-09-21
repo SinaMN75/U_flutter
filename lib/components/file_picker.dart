@@ -5,7 +5,7 @@ class UFilePicker extends StatefulWidget {
   const UFilePicker({
     required this.onFilesChanged,
     super.key,
-    this.initialFiles = const <FileData>[],
+    this.initialFiles = const <UFileData>[],
     this.allowMultipleSelection = true,
     this.selectFileTitle = "Select Files",
     this.imageTypes = const <String>["jpg", "jpeg", "png", "gif", "bmp", "webp"],
@@ -14,8 +14,8 @@ class UFilePicker extends StatefulWidget {
     this.fileType = FileType.custom,
   });
 
-  final List<FileData> initialFiles;
-  final ValueChanged<List<FileData>> onFilesChanged;
+  final List<UFileData> initialFiles;
+  final ValueChanged<List<UFileData>> onFilesChanged;
   final bool allowMultipleSelection;
   final String selectFileTitle;
   final List<String> imageTypes;
@@ -28,17 +28,17 @@ class UFilePicker extends StatefulWidget {
 }
 
 class _UFilePickerState extends State<UFilePicker> {
-  late List<FileData> _selectedFiles;
+  late List<UFileData> _selectedFiles;
 
   @override
   void initState() {
     super.initState();
-    _selectedFiles = List<FileData>.from(widget.initialFiles);
+    _selectedFiles = List<UFileData>.from(widget.initialFiles);
   }
 
   Future<void> _pickFiles() async {
     await UFile.showFilePicker(
-      action: (List<FileData> newFiles) {
+      action: (List<UFileData> newFiles) {
         if (newFiles.isEmpty) return;
         if (!mounted) return;
         setState(() {
@@ -56,28 +56,28 @@ class _UFilePickerState extends State<UFilePicker> {
     );
   }
 
-  void _removeFile(FileData file) => setState(() {
+  void _removeFile(UFileData file) => setState(() {
     _selectedFiles.remove(file);
     _notifyParent();
   });
 
-  void _notifyParent() => widget.onFilesChanged(List<FileData>.from(_selectedFiles));
+  void _notifyParent() => widget.onFilesChanged(List<UFileData>.from(_selectedFiles));
 
-  List<FileData> _getFilesByType(String type) {
+  List<UFileData> _getFilesByType(String type) {
     switch (type) {
       case "image":
-        return _selectedFiles.where((FileData file) => widget.imageTypes.contains(file.extension?.toLowerCase())).toList();
+        return _selectedFiles.where((UFileData file) => widget.imageTypes.contains(file.extension?.toLowerCase())).toList();
       case "video":
-        return _selectedFiles.where((FileData file) => widget.videoTypes.contains(file.extension?.toLowerCase())).toList();
+        return _selectedFiles.where((UFileData file) => widget.videoTypes.contains(file.extension?.toLowerCase())).toList();
       case "document":
-        return _selectedFiles.where((FileData file) => widget.documentTypes.contains(file.extension?.toLowerCase())).toList();
+        return _selectedFiles.where((UFileData file) => widget.documentTypes.contains(file.extension?.toLowerCase())).toList();
       default:
-        return <FileData>[];
+        return <UFileData>[];
     }
   }
 
   Widget _buildFileList(String title, String type, IconData icon) {
-    final List<FileData> files = _getFilesByType(type);
+    final List<UFileData> files = _getFilesByType(type);
     if (files.isEmpty) return const SizedBox();
 
     return Column(
@@ -110,7 +110,7 @@ class _UFilePickerState extends State<UFilePicker> {
             child: Column(
               children: files
                   .map(
-                    (FileData file) => ListTile(
+                    (UFileData file) => ListTile(
                       leading: Icon(_getFileIcon(file.extension)),
                       title: Text(
                         _getFileName(file),
@@ -135,7 +135,7 @@ class _UFilePickerState extends State<UFilePicker> {
     );
   }
 
-  String _getFileName(FileData file) {
+  String _getFileName(UFileData file) {
     if (file.path != null) return path.basename(file.path!);
     if (file.url != null) return path.basename(file.url!);
     return "Unknown file";

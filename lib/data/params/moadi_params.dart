@@ -245,7 +245,7 @@ class UMoadiReadParams {
   final String? legalEntity;
   final String? uuid;
   final int? orderBy;
-  final MoadiSelectorArgs? selectorArgs;
+  final UMoadiSelectorArgs? selectorArgs;
 
   UMoadiReadParams({
     this.pageSize,
@@ -286,7 +286,7 @@ class UMoadiReadParams {
     legalEntity: json["legalEntity"],
     uuid: json["uuid"],
     orderBy: json["orderBy"],
-    selectorArgs: json["selectorArgs"] == null ? null : MoadiSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : UMoadiSelectorArgs.fromMap(json["selectorArgs"]),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{

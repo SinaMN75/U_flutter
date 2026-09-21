@@ -1,6 +1,6 @@
 part of "../data.dart";
 
-class DbAdminService {
+class UDbAdminService {
   Future<(UResponse<List<UDbAdminTableResponse>>?, UEmptyResponse?, String?)> tables({
     required UDbAdminTablesParams p,
     required Function(UResponse<List<UDbAdminTableResponse>> r) onOk,

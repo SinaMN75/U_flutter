@@ -29,6 +29,12 @@ class _ContractPageState extends State<UAdminContractPage> {
     c.init(bed: widget.bed, user: widget.user);
     super.initState();
   }
+  @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -151,10 +157,11 @@ class _ContractPageState extends State<UAdminContractPage> {
   );
 
   void _showFilterDialog() {
-    final TextEditingController startCtrl = TextEditingController(text: c.startDateFilter?.toJalaliDate());
-    final TextEditingController endCtrl = TextEditingController(text: c.endDateFilter?.toJalaliDate());
+    final UAdminFields f = UAdminFields();
+    final TextEditingController startCtrl = f.text(c.startDateFilter?.toJalaliDate());
+    final TextEditingController endCtrl = f.text(c.endDateFilter?.toJalaliDate());
 
-    UNavigator.dialog(
+    UNavigator.dialog(f.scope(
       AlertDialog(
         title: Text(U.s.filterItem(U.s.contracts)),
         content: SizedBox(
@@ -204,7 +211,7 @@ class _ContractPageState extends State<UAdminContractPage> {
                     labelText: U.s.startDate,
                     jalali: true,
                     initialDate: c.startDateFilter,
-                    onChange: (DateTime d, Jalali j) {
+                    onChange: (DateTime d, UJalali j) {
                       c.startDateFilter = d;
                       startCtrl.text = d.toJalaliDate();
                     },
@@ -214,7 +221,7 @@ class _ContractPageState extends State<UAdminContractPage> {
                     labelText: U.s.endDate,
                     jalali: true,
                     initialDate: c.endDateFilter,
-                    onChange: (DateTime d, Jalali j) {
+                    onChange: (DateTime d, UJalali j) {
                       c.endDateFilter = d;
                       endCtrl.text = d.toJalaliDate();
                     },
@@ -237,28 +244,29 @@ class _ContractPageState extends State<UAdminContractPage> {
             ),
           ),
         ),
-      ),
+      )),
     );
   }
 
   void _showEditDialog({UDormBedContractResponse? p}) {
     final bool isEdit = p != null;
-    final TextEditingController deposit = TextEditingController(text: p?.deposit.toInt().toString());
-    final TextEditingController rent = TextEditingController(text: p?.rent.toInt().toString());
-    final TextEditingController penalty = TextEditingController();
-    final TextEditingController description = TextEditingController(text: p?.jsonData.detail1);
-    final TextEditingController startCtrl = TextEditingController(text: p?.startDate.toJalaliDate());
-    final TextEditingController endCtrl = TextEditingController(text: p?.endDate.toJalaliDate());
+    final UAdminFields f = UAdminFields();
+    final TextEditingController deposit = f.text(p?.deposit.toInt().toString());
+    final TextEditingController rent = f.text(p?.rent.toInt().toString());
+    final TextEditingController penalty = f.text();
+    final TextEditingController description = f.text(p?.jsonData.detail1);
+    final TextEditingController startCtrl = f.text(p?.startDate.toJalaliDate());
+    final TextEditingController endCtrl = f.text(p?.endDate.toJalaliDate());
 
-    final Rxn<UDormBedResponse> bed = Rxn<UDormBedResponse>();
-    final Rxn<UUserResponse> user = Rxn<UUserResponse>();
+    final URxn<UDormBedResponse> bed = URxn<UDormBedResponse>();
+    final URxn<UUserResponse> user = URxn<UUserResponse>();
     DateTime? startDate = p?.startDate;
     DateTime? endDate = p?.endDate;
     TagDormBedContract type = _typeOf(p ?? _empty()) ?? TagDormBedContract.monthly;
 
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-    UNavigator.dialog(
+    UNavigator.dialog(f.scope(
       AlertDialog(
         title: Text(isEdit ? U.s.editItem(U.s.contract) : U.s.createItem(U.s.contract)),
         content: SizedBox(
@@ -299,7 +307,7 @@ class _ContractPageState extends State<UAdminContractPage> {
                       jalali: true,
                       initialDate: startDate,
                       validator: UValidators.required(message: ""),
-                      onChange: (DateTime d, Jalali j) {
+                      onChange: (DateTime d, UJalali j) {
                         startDate = d;
                         startCtrl.text = d.toJalaliDate();
                       },
@@ -310,7 +318,7 @@ class _ContractPageState extends State<UAdminContractPage> {
                       jalali: true,
                       initialDate: endDate,
                       validator: UValidators.required(message: ""),
-                      onChange: (DateTime d, Jalali j) {
+                      onChange: (DateTime d, UJalali j) {
                         endDate = d;
                         endCtrl.text = d.toJalaliDate();
                       },
@@ -393,7 +401,7 @@ class _ContractPageState extends State<UAdminContractPage> {
             ),
           ),
         ),
-      ),
+      )),
     );
   }
 

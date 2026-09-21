@@ -1,24 +1,24 @@
 part of "../../u_admin.dart";
 
 class UAdminGoldController extends UBaseController {
-  final Rxn<UGoldAccountResponse> account = Rxn<UGoldAccountResponse>();
-  final Rxn<UGoldQuoteResponse> quote = Rxn<UGoldQuoteResponse>();
-  final RxList<UGoldBalanceResponse> balances = <UGoldBalanceResponse>[].obs;
+  final URxn<UGoldAccountResponse> account = URxn<UGoldAccountResponse>();
+  final URxn<UGoldQuoteResponse> quote = URxn<UGoldQuoteResponse>();
+  final URxList<UGoldBalanceResponse> balances = <UGoldBalanceResponse>[].obs;
 
-  final RxState ordersState = RxState();
-  final RxList<UGoldOrderResponse> orders = <UGoldOrderResponse>[].obs;
+  final URxState ordersState = URxState();
+  final URxList<UGoldOrderResponse> orders = <UGoldOrderResponse>[].obs;
   String? ordersCursor;
 
-  final RxState txnsState = RxState();
-  final RxList<UGoldTransactionResponse> txns = <UGoldTransactionResponse>[].obs;
+  final URxState txnsState = URxState();
+  final URxList<UGoldTransactionResponse> txns = <UGoldTransactionResponse>[].obs;
   String? txnsCursor;
 
-  final RxState limitsState = RxState();
-  final Rxn<UGoldTradeLimitsResponse> limits = Rxn<UGoldTradeLimitsResponse>();
-  final Rxn<UGoldCreditFacilitiesResponse> credit = Rxn<UGoldCreditFacilitiesResponse>();
+  final URxState limitsState = URxState();
+  final URxn<UGoldTradeLimitsResponse> limits = URxn<UGoldTradeLimitsResponse>();
+  final URxn<UGoldCreditFacilitiesResponse> credit = URxn<UGoldCreditFacilitiesResponse>();
 
-  final RxState tokensState = RxState();
-  final RxList<UGoldApiTokenResponse> tokens = <UGoldApiTokenResponse>[].obs;
+  final URxState tokensState = URxState();
+  final URxList<UGoldApiTokenResponse> tokens = <UGoldApiTokenResponse>[].obs;
 
   final TextEditingController tokenLabelController = TextEditingController();
   final TextEditingController tokenScopesController = TextEditingController(text: "trade,read");
@@ -167,5 +167,13 @@ class UAdminGoldController extends UBaseController {
         UToast.error(message: e);
       },
     );
+  }
+
+  @override
+  void dispose() {
+    tokenLabelController.dispose();
+    tokenScopesController.dispose();
+    tokenIpsController.dispose();
+    super.dispose();
   }
 }

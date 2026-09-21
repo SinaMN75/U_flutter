@@ -128,7 +128,7 @@ class UVehicleReadParams {
   final List<int>? tags;
   final List<String>? ids;
   final String? creatorId;
-  final VehicleSelectorArgs? selectorArgs;
+  final UVehicleSelectorArgs? selectorArgs;
   final int? orderBy;
   final String? licencePlate;
   final String? brand;
@@ -161,7 +161,7 @@ class UVehicleReadParams {
     tags: json["tags"] == null ? <int>[] : List<int>.from(json["tags"]!.map((dynamic x) => x)),
     ids: json["ids"] == null ? <String>[] : List<String>.from(json["ids"]!.map((dynamic x) => x)),
     creatorId: json["creatorId"],
-    selectorArgs: json["selectorArgs"] == null ? null : VehicleSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : UVehicleSelectorArgs.fromMap(json["selectorArgs"]),
     orderBy: json["orderBy"],
     licencePlate: json["licencePlate"],
     brand: json["brand"],

@@ -4,7 +4,7 @@ class UProcessController {
   UProcessController({this.onCompleted});
 
   final VoidCallback? onCompleted;
-  final RxInt progress = 0.obs;
+  final URxInt progress = 0.obs;
 
   void _complete() {
     if (onCompleted != null) {
@@ -18,9 +18,9 @@ class UProcessController {
 
   late String processId;
 
-  final Rxn<UProcessStepGet> processStep = Rxn<UProcessStepGet>();
+  final URxn<UProcessStepGet> processStep = URxn<UProcessStepGet>();
   late UProcessStepSend processStepSend;
-  final RxState state = RxState();
+  final URxState state = URxState();
 
   void init({required String processId}) {
     this.processId = processId;

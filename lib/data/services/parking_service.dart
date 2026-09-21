@@ -1,6 +1,6 @@
 part of "../data.dart";
 
-class ParkingService {
+class UParkingService {
   Future<(UResponse<String>?, UEmptyResponse?, String?)> createParking({
     required UParkingCreateParams p,
     Function(UResponse<String> r)? onOk,

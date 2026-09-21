@@ -18,7 +18,7 @@ class UAdminBlogController extends UBaseController {
         pageNumber: pageNumber.value,
         pageSize: pageSize,
         title: titleFilter.valueOrNull(),
-        selectorArgs: const BlogSelectorArgs(media: MediaSelectorArgs(), category: CategorySelectorArgs(), commentsCount: true),
+        selectorArgs: const UBlogSelectorArgs(media: UMediaSelectorArgs(), category: UCategorySelectorArgs(), commentsCount: true),
       ),
       onOk: (UResponse<List<UBlogResponse>> r) {
         list = r.result ?? <UBlogResponse>[];
@@ -49,7 +49,7 @@ class UAdminBlogController extends UBaseController {
     return completer.future;
   }
 
-  void create({required UBlogCreateParams p, List<FileData>? files}) => UServices.blog.create(
+  void create({required UBlogCreateParams p, List<UFileData>? files}) => UServices.blog.create(
     p: p,
     onOk: (UResponse<String> r) {
       if (files.isNotNullOrEmpty() && r.result != null) {
@@ -62,7 +62,7 @@ class UAdminBlogController extends UBaseController {
     onException: (String e) => errorCallBack(U.s.errorSubmittingForm, read),
   );
 
-  void update({required UBlogUpdateParams p, List<FileData>? files}) => UServices.blog.update(
+  void update({required UBlogUpdateParams p, List<UFileData>? files}) => UServices.blog.update(
     p: p,
     onOk: (UEmptyResponse r) {
       if (files.isNotNullOrEmpty()) {
@@ -75,8 +75,8 @@ class UAdminBlogController extends UBaseController {
     onException: (String e) => errorCallBack(U.s.errorSubmittingForm, read),
   );
 
-  Future<void> _uploadMedia({required String blogId, required List<FileData> files, required VoidCallback onDone}) async {
-    for (final FileData file in files) {
+  Future<void> _uploadMedia({required String blogId, required List<UFileData> files, required VoidCallback onDone}) async {
+    for (final UFileData file in files) {
       await UServices.media.create(
         p: UMediaCreateParams(file: file, blogId: blogId, tag1: TagMedia.image.number),
         onOk: (_) {},
@@ -120,4 +120,10 @@ class UAdminBlogController extends UBaseController {
     onError: (UEmptyResponse r) => errorCallBack(r.message, read),
     onException: (String e) => errorCallBack(U.s.errorSubmittingForm, read),
   );
+
+  @override
+  void dispose() {
+    titleFilter.dispose();
+    super.dispose();
+  }
 }

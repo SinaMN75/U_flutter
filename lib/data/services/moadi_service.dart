@@ -1,6 +1,6 @@
 part of "../data.dart";
 
-class MoadiService {
+class UMoadiService {
   Future<(UResponse<String>?, UEmptyResponse?, String?)> create({
     required UMoadiCreateParams p,
     Function(UResponse<String> r)? onOk,

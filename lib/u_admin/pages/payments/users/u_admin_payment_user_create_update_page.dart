@@ -27,6 +27,12 @@ class _PaymentUserCreateUpdateDialogState extends State<UAdminPaymentUserCreateU
     _selectedPermissions = TagUser.permissions.where((TagUser t) => existingTags.contains(t.number)).toSet();
     super.initState();
   }
+  @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) => AlertDialog(
@@ -62,8 +68,8 @@ class _PaymentUserCreateUpdateDialogState extends State<UAdminPaymentUserCreateU
                     },
                   ),
                 ),
-              _sectionTitle(U.s.userInformation),
-              _pair(
+              UAdminForm.sectionTitle(U.s.userInformation),
+              UAdminForm.pair(context, 
                 UTextField(
                   controller: c.controllerFirstName,
                   labelText: U.s.firstName,
@@ -75,7 +81,7 @@ class _PaymentUserCreateUpdateDialogState extends State<UAdminPaymentUserCreateU
                   validator: UValidators.required(message: U.s.required),
                 ),
               ),
-              _pair(
+              UAdminForm.pair(context, 
                 UTextField(
                   controller: c.controllerUserName,
                   labelText: U.s.username,
@@ -85,7 +91,7 @@ class _PaymentUserCreateUpdateDialogState extends State<UAdminPaymentUserCreateU
                 ),
                 UTextField(controller: c.controllerFatherName, labelText: U.s.fatherName),
               ),
-              _pair(
+              UAdminForm.pair(context, 
                 UTextField(
                   controller: c.controllerNationalCode,
                   labelText: U.s.nationalCode,
@@ -98,7 +104,7 @@ class _PaymentUserCreateUpdateDialogState extends State<UAdminPaymentUserCreateU
                   jalali: true,
                   controller: c.controllerBirthDate,
                   labelText: U.s.birthdate,
-                  onChange: (DateTime d, Jalali j) {
+                  onChange: (DateTime d, UJalali j) {
                     c.birthdate = d;
                     c.controllerBirthDate.text = d.toJalaliDate();
                   },
@@ -112,7 +118,7 @@ class _PaymentUserCreateUpdateDialogState extends State<UAdminPaymentUserCreateU
                 margin: const EdgeInsets.symmetric(vertical: 6),
               ),
               UTextBodySmall(U.s.gender, color: UAdminTheme.grey).alignAtCenterLeft(),
-              Obx(
+              UObx(
                 () => USegmentedControl<int>(
                   selectedValue: c.gender.value.number,
                   items: <int, String>{
@@ -123,8 +129,8 @@ class _PaymentUserCreateUpdateDialogState extends State<UAdminPaymentUserCreateU
                   onValueChanged: (int? i) => c.gender(TagUser.values.fromNumber(i!) ?? c.gender.value),
                 ).pOnly(top: 6, bottom: 6),
               ),
-              _sectionTitle(U.s.contactInformation),
-              _pair(
+              UAdminForm.sectionTitle(U.s.contactInformation),
+              UAdminForm.pair(context, 
                 UTextFieldPhoneNumber(
                   controller: c.controllerPhoneNumber,
                   labelText: U.s.phoneNumber,
@@ -145,8 +151,8 @@ class _PaymentUserCreateUpdateDialogState extends State<UAdminPaymentUserCreateU
               ),
               UTextField(controller: c.controllerBio, labelText: U.s.bio, lines: 3, margin: const EdgeInsets.symmetric(vertical: 6)),
               if (_canManageRoles) ...<Widget>[
-                _sectionTitle(U.s.roles),
-                Obx(
+                UAdminForm.sectionTitle(U.s.roles),
+                UObx(
                   () => USegmentedControl<int>(
                     selectedValue: c.role.value.number,
                     items: <int, String>{
@@ -157,7 +163,7 @@ class _PaymentUserCreateUpdateDialogState extends State<UAdminPaymentUserCreateU
                     onValueChanged: (int? i) => c.role(TagUser.values.fromNumber(i!) ?? c.role.value),
                   ).pOnly(top: 6, bottom: 6),
                 ),
-                Obx(() {
+                UObx(() {
                   if (c.role.value != TagUser.subAdmin) return const SizedBox.shrink();
                   return UColumn(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -192,27 +198,6 @@ class _PaymentUserCreateUpdateDialogState extends State<UAdminPaymentUserCreateU
       ),
     ),
   );
-
-  Widget _sectionTitle(String title) => UColumn(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      const Divider(height: 20),
-      UTextBodySmall(title, color: UAdminTheme.grey, fontWeight: FontWeight.w700),
-    ],
-  );
-
-  Widget _pair(Widget first, Widget second) => context.isMobileWidth
-      ? UColumn(
-          spacing: 8,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          margin: const EdgeInsets.symmetric(vertical: 6),
-          children: <Widget>[first, second],
-        )
-      : URow(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          margin: const EdgeInsets.symmetric(vertical: 6),
-          children: <Widget>[first.expanded(), const SizedBox(width: 10), second.expanded()],
-        );
 
   void _submit() {
     if (!_isEdit) {

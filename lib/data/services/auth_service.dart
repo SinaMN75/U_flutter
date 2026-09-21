@@ -1,6 +1,6 @@
 part of "../data.dart";
 
-class AuthService {
+class UAuthService {
   Future<(UResponse<ULoginResponse>?, UEmptyResponse?, String?)> register({
     required URegisterParams p,
     Function(UResponse<ULoginResponse> r)? onOk,

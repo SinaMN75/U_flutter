@@ -209,7 +209,7 @@ class UCategoryReadParams {
     ids: json["ids"] == null ? null : List<String>.from(json["ids"].map((dynamic x) => x)),
     pageSize: json["pageSize"],
     pageNumber: json["pageNumber"],
-    selectorArgs: json["selectorArgs"] == null ? null : CategorySelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : UCategorySelectorArgs.fromMap(json["selectorArgs"]),
     tags: json["tags"] == null ? null : List<int>.from(json["tags"].map((dynamic x) => x)),
     orderBy: json["orderBy"],
     fromCreatedAt: json["fromCreatedAt"] == null ? null : DateTime.parse(json["fromCreatedAt"]),
@@ -220,7 +220,7 @@ class UCategoryReadParams {
   final int? pageSize;
   final int? pageNumber;
   final List<int>? tags;
-  final CategorySelectorArgs? selectorArgs;
+  final UCategorySelectorArgs? selectorArgs;
   final int? orderBy;
   final DateTime? fromCreatedAt;
   final DateTime? toCreatedAt;

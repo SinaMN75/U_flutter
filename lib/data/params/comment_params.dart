@@ -165,7 +165,7 @@ class UCommentReadParams {
     pageNumber: json["pageNumber"] ?? 0,
     fromCreatedAt: json["fromCreatedAt"] == null ? null : DateTime.parse(json["fromCreatedAt"]),
     toCreatedAt: json["toCreatedAt"] == null ? null : DateTime.parse(json["toCreatedAt"]),
-    selectorArgs: json["selectorArgs"] == null ? null : CommentSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : UCommentSelectorArgs.fromMap(json["selectorArgs"]),
     tags: json["tags"] == null ? null : List<int>.from(json["tags"].map((dynamic x) => x)),
     orderBy: json["orderBy"],
     ids: json["ids"] == null ? <String>[] : List<String>.from(json["ids"]!.map((dynamic x) => x)),
@@ -180,7 +180,7 @@ class UCommentReadParams {
   final int? pageNumber;
   final DateTime? fromCreatedAt;
   final DateTime? toCreatedAt;
-  final CommentSelectorArgs? selectorArgs;
+  final UCommentSelectorArgs? selectorArgs;
   final List<int>? tags;
   final int? orderBy;
   final List<String>? ids;

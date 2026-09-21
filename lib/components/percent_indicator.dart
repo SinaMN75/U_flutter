@@ -2,18 +2,18 @@ import "dart:math";
 
 import "package:flutter/material.dart";
 
-enum ArcType { half, full }
+enum UArcType { half, full }
 
-enum CircularStrokeCap { butt, round, square }
+enum UCircularStrokeCap { butt, round, square }
 
-extension CircularStrokeCapExtension on CircularStrokeCap {
+extension CircularStrokeCapExtension on UCircularStrokeCap {
   StrokeCap get strokeCap {
     switch (this) {
-      case CircularStrokeCap.butt:
+      case UCircularStrokeCap.butt:
         return StrokeCap.butt;
-      case CircularStrokeCap.round:
+      case UCircularStrokeCap.round:
         return StrokeCap.round;
-      case CircularStrokeCap.square:
+      case UCircularStrokeCap.square:
         return StrokeCap.square;
     }
   }
@@ -21,8 +21,8 @@ extension CircularStrokeCapExtension on CircularStrokeCap {
 
 num radians(num deg) => deg * (pi / 180.0);
 
-class CircularPercentIndicator extends StatefulWidget {
-  CircularPercentIndicator({
+class UCircularPercentIndicator extends StatefulWidget {
+  UCircularPercentIndicator({
     required this.radius,
     super.key,
     this.percent = 0.0,
@@ -39,7 +39,7 @@ class CircularPercentIndicator extends StatefulWidget {
     this.footer,
     this.center,
     this.addAutomaticKeepAlive = true,
-    this.circularStrokeCap = CircularStrokeCap.butt,
+    this.circularStrokeCap = UCircularStrokeCap.butt,
     this.arcBackgroundColor,
     this.arcType,
     this.animateFromLastPercent = false,
@@ -76,11 +76,11 @@ class CircularPercentIndicator extends StatefulWidget {
   final Widget? footer;
   final Widget? center;
   final LinearGradient? linearGradient;
-  final CircularStrokeCap circularStrokeCap;
+  final UCircularStrokeCap circularStrokeCap;
   final double startAngle;
   final bool animateFromLastPercent;
   final bool addAutomaticKeepAlive;
-  final ArcType? arcType;
+  final UArcType? arcType;
   final Color? arcBackgroundColor;
   final bool reverse;
   final MaskFilter? maskFilter;
@@ -91,10 +91,10 @@ class CircularPercentIndicator extends StatefulWidget {
   final bool rotateLinearGradient;
 
   @override
-  State<CircularPercentIndicator> createState() => _CircularPercentIndicatorState();
+  State<UCircularPercentIndicator> createState() => _CircularPercentIndicatorState();
 }
 
-class _CircularPercentIndicatorState extends State<CircularPercentIndicator> with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+class _CircularPercentIndicatorState extends State<UCircularPercentIndicator> with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   AnimationController? _animationController;
   late Animation<double> _animation;
   double _percent = 0;
@@ -133,12 +133,12 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator> wit
     super.initState();
   }
 
-  void _checkIfNeedCancelAnimation(CircularPercentIndicator oldWidget) {
+  void _checkIfNeedCancelAnimation(UCircularPercentIndicator oldWidget) {
     if (oldWidget.animation && !widget.animation && _animationController != null) _animationController!.stop();
   }
 
   @override
-  void didUpdateWidget(CircularPercentIndicator oldWidget) {
+  void didUpdateWidget(UCircularPercentIndicator oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.percent != widget.percent || oldWidget.startAngle != widget.startAngle) {
       if (_animationController != null) {
@@ -189,12 +189,12 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator> wit
           if (widget.widgetIndicator != null && widget.animation)
             Positioned.fill(
               child: Transform.rotate(
-                angle: radians((widget.circularStrokeCap != CircularStrokeCap.butt && widget.reverse) ? -15 : 0).toDouble(),
+                angle: radians((widget.circularStrokeCap != UCircularStrokeCap.butt && widget.reverse) ? -15 : 0).toDouble(),
                 child: Transform.rotate(
                   angle: getCurrentPercent(_percent),
                   child: Transform.translate(
                     offset: Offset(
-                      (widget.circularStrokeCap != CircularStrokeCap.butt) ? widget.lineWidth / 2 : 0,
+                      (widget.circularStrokeCap != UCircularStrokeCap.butt) ? widget.lineWidth / 2 : 0,
                       -widget.radius + widget.lineWidth / 2,
                     ),
                     child: widget.widgetIndicator,
@@ -234,7 +234,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator> wit
       final double angle = _getStartAngleFixedMargin(widget.arcType!).fixedStartAngle;
       final double fixedPercent = 1.0 / widget.percent * _percent;
       late double margin;
-      if (widget.arcType == ArcType.half) {
+      if (widget.arcType == UArcType.half) {
         margin = 180 * widget.percent;
       } else {
         margin = 270 * widget.percent;
@@ -250,10 +250,10 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator> wit
   bool get wantKeepAlive => widget.addAutomaticKeepAlive;
 }
 
-_ArcAngles _getStartAngleFixedMargin(ArcType arcType) {
+_ArcAngles _getStartAngleFixedMargin(UArcType arcType) {
   double fixedStartAngle;
   double startAngleFixedMargin;
-  if (arcType == ArcType.full) {
+  if (arcType == UArcType.full) {
     fixedStartAngle = 220;
     startAngleFixedMargin = 172 / fixedStartAngle;
   } else {
@@ -284,7 +284,7 @@ class _CirclePainter extends CustomPainter {
     required this.reverse,
     required this.rotateLinearGradient,
     this.startAngle = 0.0,
-    this.circularStrokeCap = CircularStrokeCap.butt,
+    this.circularStrokeCap = UCircularStrokeCap.butt,
     this.linearGradient,
     this.arcBackgroundColor,
     this.arcType,
@@ -315,11 +315,11 @@ class _CirclePainter extends CustomPainter {
   final double radius;
   final Color progressColor;
   final Color backgroundColor;
-  final CircularStrokeCap circularStrokeCap;
+  final UCircularStrokeCap circularStrokeCap;
   final double startAngle;
   final LinearGradient? linearGradient;
   final Color? arcBackgroundColor;
-  final ArcType? arcType;
+  final UArcType? arcType;
   final bool reverse;
   final MaskFilter? maskFilter;
   final bool rotateLinearGradient;
@@ -403,8 +403,8 @@ class _CirclePainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => true;
 }
 
-class LinearPercentIndicator extends StatefulWidget {
-  LinearPercentIndicator({
+class ULinearPercentIndicator extends StatefulWidget {
+  ULinearPercentIndicator({
     super.key,
     this.fillColor = Colors.transparent,
     this.percent = 0.0,
@@ -470,10 +470,10 @@ class LinearPercentIndicator extends StatefulWidget {
   final Widget? widgetIndicator;
 
   @override
-  State<LinearPercentIndicator> createState() => _LinearPercentIndicatorState();
+  State<ULinearPercentIndicator> createState() => _LinearPercentIndicatorState();
 }
 
-class _LinearPercentIndicatorState extends State<LinearPercentIndicator> with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+class _LinearPercentIndicatorState extends State<ULinearPercentIndicator> with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   AnimationController? _animationController;
   late Animation<double> _animation;
   double _percent = 0;
@@ -526,14 +526,14 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator> with Si
     super.initState();
   }
 
-  void _checkIfNeedCancelAnimation(LinearPercentIndicator oldWidget) {
+  void _checkIfNeedCancelAnimation(ULinearPercentIndicator oldWidget) {
     if (oldWidget.animation && !widget.animation && _animationController != null) {
       _animationController!.stop();
     }
   }
 
   @override
-  void didUpdateWidget(LinearPercentIndicator oldWidget) {
+  void didUpdateWidget(ULinearPercentIndicator oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.percent != widget.percent) {
       if (_animationController != null) {

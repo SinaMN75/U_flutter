@@ -1,7 +1,7 @@
 import "package:u/utilities.dart";
 
-class ScrollingText extends StatefulWidget {
-  const ScrollingText({
+class UScrollingText extends StatefulWidget {
+  const UScrollingText({
     required this.text,
     super.key,
     this.textStyle,
@@ -25,10 +25,10 @@ class ScrollingText extends StatefulWidget {
   final double ratioOfBlankToScreen;
 
   @override
-  State<StatefulWidget> createState() => ScrollingTextState();
+  State<StatefulWidget> createState() => UScrollingTextState();
 }
 
-class ScrollingTextState extends State<ScrollingText> with SingleTickerProviderStateMixin {
+class UScrollingTextState extends State<UScrollingText> with SingleTickerProviderStateMixin {
   late ScrollController scrollController;
   double? screenWidth;
   double? screenHeight;

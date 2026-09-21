@@ -15,6 +15,12 @@ class _ContentsPageState extends State<UAdminContentsPage> {
     c.init();
     super.initState();
   }
+  @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
+
 
   TagContent? _tagOf(UContentResponse i) => TagContent.values.firstWhereOrNull((TagContent t) => i.tags.contains(t.number));
 
@@ -52,7 +58,7 @@ class _ContentsPageState extends State<UAdminContentsPage> {
   Widget _thumb(String? base64, {double size = 48}) => SizedBox(
     width: size,
     height: size,
-    child: base64.isNotNullOrEmpty() ? UImage("", fileData: FileData(bytes: _decodeBase64(base64!)), borderRadius: 8) : const Icon(Icons.image_outlined),
+    child: base64.isNotNullOrEmpty() ? UImage("", fileData: UFileData(bytes: _decodeBase64(base64!)), borderRadius: 8) : const Icon(Icons.image_outlined),
   );
 
   Widget _itemMobile(UContentResponse i, int index) => UAdminTable.mobileCard(
@@ -101,7 +107,7 @@ class _ContentsPageState extends State<UAdminContentsPage> {
               child: UColumn(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Obx(
+                  UObx(
                     () => UDropDownField<TagContent?>(
                       initialValue: c.tagFilter.value,
                       labelText: U.s.contentType,
@@ -138,26 +144,27 @@ class _ContentsPageState extends State<UAdminContentsPage> {
 
   Future<void> _showEditDialog({UContentResponse? p}) async {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final TextEditingController title = TextEditingController(text: p?.jsonData.title);
-    final TextEditingController subTitle = TextEditingController(text: p?.jsonData.subTitle);
-    final TextEditingController description = TextEditingController(text: p?.jsonData.description);
-    final TextEditingController detail1 = TextEditingController(text: p?.jsonData.detail1);
-    final TextEditingController detail2 = TextEditingController(text: p?.jsonData.detail2);
-    final TextEditingController buttonText = TextEditingController(text: p?.jsonData.buttonText);
-    final TextEditingController buttonLink = TextEditingController(text: p?.jsonData.buttonLink);
-    final TextEditingController link = TextEditingController(text: p?.jsonData.link);
-    final TextEditingController order = TextEditingController(text: p?.jsonData.order?.toString());
-    final TextEditingController instagram = TextEditingController(text: p?.jsonData.instagram);
-    final TextEditingController telegram = TextEditingController(text: p?.jsonData.telegram);
-    final TextEditingController whatsapp = TextEditingController(text: p?.jsonData.whatsapp);
-    final TextEditingController phone = TextEditingController(text: p?.jsonData.phone);
-    final Rx<TagContent> tag = ((p == null ? null : _tagOf(p)) ?? TagContent.aboutUs).obs;
+    final UAdminFields f = UAdminFields();
+    final TextEditingController title = f.text(p?.jsonData.title);
+    final TextEditingController subTitle = f.text(p?.jsonData.subTitle);
+    final TextEditingController description = f.text(p?.jsonData.description);
+    final TextEditingController detail1 = f.text(p?.jsonData.detail1);
+    final TextEditingController detail2 = f.text(p?.jsonData.detail2);
+    final TextEditingController buttonText = f.text(p?.jsonData.buttonText);
+    final TextEditingController buttonLink = f.text(p?.jsonData.buttonLink);
+    final TextEditingController link = f.text(p?.jsonData.link);
+    final TextEditingController order = f.text(p?.jsonData.order?.toString());
+    final TextEditingController instagram = f.text(p?.jsonData.instagram);
+    final TextEditingController telegram = f.text(p?.jsonData.telegram);
+    final TextEditingController whatsapp = f.text(p?.jsonData.whatsapp);
+    final TextEditingController phone = f.text(p?.jsonData.phone);
+    final URx<TagContent> tag = ((p == null ? null : _tagOf(p)) ?? TagContent.aboutUs).obs;
     final List<_ItemForm> items = <_ItemForm>[...?p?.jsonData.items.map(_ItemForm.fromModel)];
     final List<_LinkForm> links = <_LinkForm>[...?p?.jsonData.links.map(_LinkForm.fromModel)];
     String? imageBase64 = p?.jsonData.imageBase64;
     String? iconBase64 = p?.jsonData.iconBase64;
 
-    await UNavigator.dialog(
+    await UNavigator.dialog(f.scope(
       StatefulBuilder(
         builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
           title: Text(p == null ? U.s.createItem(U.s.content) : U.s.editItem(U.s.content)),
@@ -298,7 +305,7 @@ class _ContentsPageState extends State<UAdminContentsPage> {
             ),
           ),
         ),
-      ),
+      )),
     );
   }
 
@@ -390,7 +397,7 @@ class _Base64ImageFieldState extends State<_Base64ImageField> {
 
   Future<void> _pick() => UFile.showFilePicker(
     allowedExtensions: const <String>["jpg", "jpeg", "png", "gif", "webp", "svg"],
-    action: (List<FileData> files) {
+    action: (List<UFileData> files) {
       if (files.isEmpty || files.first.bytes == null) return;
       final String encoded = files.first.bytes!.toBase64();
       setState(() => _value = encoded);
@@ -421,7 +428,7 @@ class _Base64ImageFieldState extends State<_Base64ImageField> {
               color: scheme.surfaceContainerHighest,
               alignment: Alignment.center,
               child: _value.isNotNullOrEmpty()
-                  ? UImage("", fileData: FileData(bytes: _decodeBase64(_value!)), borderRadius: 12)
+                  ? UImage("", fileData: UFileData(bytes: _decodeBase64(_value!)), borderRadius: 12)
                   : Icon(Icons.add_photo_alternate_outlined, size: 32, color: scheme.onSurfaceVariant),
             ),
             if (_value.isNotNullOrEmpty())

@@ -1,6 +1,6 @@
 part of "../data.dart";
 
-class UserService {
+class UUserService {
   Future<(UResponse<String>?, UEmptyResponse?, String?)> create({
     required UUserCreateParams p,
     Function(UResponse<String> r)? onOk,

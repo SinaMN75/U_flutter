@@ -4,7 +4,7 @@ class UAdminContentsController extends UBaseController {
   List<UContentResponse> list = <UContentResponse>[];
   final GlobalKey<FormState> filterFormKey = GlobalKey<FormState>();
 
-  final Rxn<TagContent> tagFilter = Rxn<TagContent>();
+  final URxn<TagContent> tagFilter = URxn<TagContent>();
 
   Future<void> init() async {
     await read();
@@ -17,7 +17,7 @@ class UAdminContentsController extends UBaseController {
         pageNumber: pageNumber.value,
         pageSize: pageSize,
         tags: tagFilter.value == null ? null : <int>[tagFilter.value!.number],
-        selectorArgs: const ContentSelectorArgs(media: MediaSelectorArgs()),
+        selectorArgs: const UContentSelectorArgs(media: UMediaSelectorArgs()),
       ),
       onOk: (UResponse<List<UContentResponse>> r) {
         list = r.result ?? <UContentResponse>[];

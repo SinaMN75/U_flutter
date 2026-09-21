@@ -1,6 +1,6 @@
 part of "../data.dart";
 
-class GoldService {
+class UGoldService {
   Future<(UResponse<UGoldAccountResponse>?, UEmptyResponse?, String?)> readAccount({
     Function(UResponse<UGoldAccountResponse> r)? onOk,
     Function(UEmptyResponse e)? onError,

@@ -1,6 +1,6 @@
 part of "../data.dart";
 
-class NotificationService {
+class UNotificationService {
   Future<(UResponse<String>?, UEmptyResponse?, String?)> create({
     required UNotificationCreateParams p,
     Function(UResponse<String> r)? onOk,

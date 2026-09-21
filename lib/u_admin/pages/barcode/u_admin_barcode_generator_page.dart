@@ -9,7 +9,7 @@ class UAdminBarcodeGeneratorPage extends StatefulWidget {
 
 class _UAdminBarcodeGeneratorPageState extends State<UAdminBarcodeGeneratorPage> {
   final TextEditingController _content = TextEditingController(text: "https://sinamn75.com");
-  final WidgetToImageController _capture = WidgetToImageController();
+  final UWidgetToImageController _capture = UWidgetToImageController();
 
   UBarcodeType _type = UBarcodeType.qrCode;
   Color _barColor = const Color(0xFF000000);
@@ -75,7 +75,7 @@ class _UAdminBarcodeGeneratorPageState extends State<UAdminBarcodeGeneratorPage>
   }
 
   Future<void> _pickLogo() async {
-    final List<FileData> files = await UFile.showImagePicker(source: UImageSource.gallery, crop: const UCropOptions(aspectRatio: 1));
+    final List<UFileData> files = await UFile.showImagePicker(source: UImageSource.gallery, crop: const UCropOptions(aspectRatio: 1));
     if (!mounted || files.isEmpty || files.first.bytes == null) return;
     setState(() => _logo = files.first.bytes);
   }
@@ -158,7 +158,7 @@ class _UAdminBarcodeGeneratorPageState extends State<UAdminBarcodeGeneratorPage>
   );
 
   Widget _preview(ColorScheme cs) => Center(
-    child: WidgetToImage(
+    child: UWidgetToImage(
       controller: _capture,
       child: UContainer(
         padding: const EdgeInsets.all(16),

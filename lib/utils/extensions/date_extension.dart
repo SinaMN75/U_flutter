@@ -14,7 +14,7 @@ extension DateTimeExtensions on DateTime {
 
   String toJalaliDate() => toJalali().formatCompactDate();
 
-  Jalali toJalali() => Jalali.fromDateTime(this);
+  UJalali toJalali() => UJalali.fromDateTime(this);
 
   String toTimeAgo({bool numericDates = false, bool persian = false}) {
     try {

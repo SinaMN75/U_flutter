@@ -1,6 +1,6 @@
 part of "../data.dart";
 
-class AddressService {
+class UAddressService {
   Future<(UResponse<String>?, UEmptyResponse?, String?)> create({
     required UAddressCreateParams p,
     Function(UResponse<String> r)? onOk,

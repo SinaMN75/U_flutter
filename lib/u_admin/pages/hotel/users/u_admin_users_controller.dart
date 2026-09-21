@@ -7,7 +7,7 @@ class UAdminUsersPageArgs {
 class UAdminUsersController extends UBaseController {
   late UAdminUsersPageArgs args;
   final GlobalKey<FormState> filterFormKey = GlobalKey<FormState>();
-  RxList<UUserResponse> list = <UUserResponse>[].obs;
+  URxList<UUserResponse> list = <UUserResponse>[].obs;
 
   TagUser? selectedTag;
 
@@ -115,7 +115,7 @@ class UAdminUsersController extends UBaseController {
   void create({
     required GlobalKey<FormState> formKey,
     required UUserCreateParams p,
-    List<FileData>? files,
+    List<UFileData>? files,
   }) => UValidators.validateForm(
     key: formKey,
     action: () {
@@ -124,7 +124,7 @@ class UAdminUsersController extends UBaseController {
         p: p,
         onOk: (UResponse<String> r) async {
           files?.forEach(
-            (FileData i) async => UServices.media.create(
+            (UFileData i) async => UServices.media.create(
               p: UMediaCreateParams(file: i, userId: r.result, tag1: TagMedia.image.number),
               onOk: (UResponse<String> r) {},
               onError: (UEmptyResponse r) {},
@@ -150,13 +150,13 @@ class UAdminUsersController extends UBaseController {
   void update({
     required GlobalKey<FormState> formKey,
     required UUserUpdateParams p,
-    List<FileData>? files,
+    List<UFileData>? files,
   }) => UValidators.validateForm(
     key: formKey,
     action: () {
       ULoading.show();
       files?.forEach(
-        (FileData i) async => UServices.media.create(
+        (UFileData i) async => UServices.media.create(
           p: UMediaCreateParams(file: i, userId: p.id, tag1: TagMedia.image.number),
           onOk: (UResponse<String> r) {},
           onError: (UEmptyResponse r) {},
@@ -182,4 +182,18 @@ class UAdminUsersController extends UBaseController {
       );
     },
   );
+
+  @override
+  void dispose() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    userNameController.dispose();
+    phoneNumberController.dispose();
+    emailController.dispose();
+    nationalCodeController.dispose();
+    queryController.dispose();
+    fromCreatedAtController.dispose();
+    toCreatedAtController.dispose();
+    super.dispose();
+  }
 }

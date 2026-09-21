@@ -1,6 +1,6 @@
 part of "../data.dart";
 
-class TxnService {
+class UTxnService {
   Future<(UResponse<String>?, UEmptyResponse?, String?)> create({
     required UTxnCreateParams p,
     Function(UResponse<String> r)? onOk,

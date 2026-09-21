@@ -145,7 +145,7 @@ class UBankAccountReadParams {
   final String? iBanNumber;
   final String? bankName;
   final String? ownerName;
-  final BankAccountSelectorArgs? selectorArgs;
+  final UBankAccountSelectorArgs? selectorArgs;
   final int? orderBy;
 
   UBankAccountReadParams({
@@ -182,7 +182,7 @@ class UBankAccountReadParams {
     iBanNumber: json["iBanNumber"],
     bankName: json["bankName"],
     ownerName: json["ownerName"],
-    selectorArgs: json["selectorArgs"] == null ? null : BankAccountSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : UBankAccountSelectorArgs.fromMap(json["selectorArgs"]),
     orderBy: json["orderBy"],
   );
 

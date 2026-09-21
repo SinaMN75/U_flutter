@@ -136,7 +136,7 @@ class UInternetPackageItem {
   };
 }
 
-class ApproveResponse {
+class UApproveResponse {
   final int? reserve;
   final String? serverDateTime;
   final bool? status;
@@ -150,7 +150,7 @@ class ApproveResponse {
   final String? messageSource;
   final String? extCode;
 
-  ApproveResponse({
+  UApproveResponse({
     this.reserve,
     this.serverDateTime,
     this.status,
@@ -165,11 +165,11 @@ class ApproveResponse {
     this.extCode,
   });
 
-  factory ApproveResponse.fromJson(String str) => ApproveResponse.fromMap(json.decode(str));
+  factory UApproveResponse.fromJson(String str) => UApproveResponse.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory ApproveResponse.fromMap(Map<String, dynamic> json) => ApproveResponse(
+  factory UApproveResponse.fromMap(Map<String, dynamic> json) => UApproveResponse(
     reserve: json["reserve"],
     serverDateTime: json["serverDateTime"],
     status: json["status"],

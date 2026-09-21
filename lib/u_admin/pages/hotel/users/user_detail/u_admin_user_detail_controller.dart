@@ -1,8 +1,8 @@
 part of "../../../../u_admin.dart";
 
 class UAdminUserDetailController {
-  final Rx<int> loadingProgress = 0.obs;
-  final RxState state = RxState();
+  final URx<int> loadingProgress = 0.obs;
+  final URxState state = URxState();
   late UUserResponse user;
 
   void init({required UUserResponse user}) {
@@ -16,9 +16,9 @@ class UAdminUserDetailController {
       onProgress: loadingProgress.call,
       p: UIdParams(
         id: user.id,
-        selectorArgs: const UserSelectorArgs(
-          address: AddressSelectorArgs(),
-          media: MediaSelectorArgs(),
+        selectorArgs: const UUserSelectorArgs(
+          address: UAddressSelectorArgs(),
+          media: UMediaSelectorArgs(),
         ),
       ),
       onOk: (UResponse<UUserResponse> response) {
@@ -99,5 +99,11 @@ class UAdminUserDetailController {
         UToast.error(message: e);
       },
     );
+  }
+
+  /// Releases the observables this controller owns.
+  void dispose() {
+    loadingProgress.dispose();
+    state.dispose();
   }
 }

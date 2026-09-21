@@ -38,7 +38,7 @@ class UWalletReadParams {
   final List<int>? tags;
   final List<String>? ids;
   final String creatorId;
-  final WalletSelectorArgs? selectorArgs;
+  final UWalletSelectorArgs? selectorArgs;
 
   UWalletReadParams({
     required this.creatorId,
@@ -64,7 +64,7 @@ class UWalletReadParams {
     toCreatedAt: json["toCreatedAt"] == null ? null : DateTime.parse(json["toCreatedAt"]),
     tags: json["tags"] == null ? <int>[] : List<int>.from(json["tags"]!.map((dynamic x) => x)),
     ids: json["ids"] == null ? <String>[] : List<String>.from(json["ids"]!.map((dynamic x) => x)),
-    selectorArgs: json["selectorArgs"] == null ? null : WalletSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : UWalletSelectorArgs.fromMap(json["selectorArgs"]),
     orderBy: json["orderBy"],
   );
 
@@ -89,7 +89,7 @@ class UWalletTxnReadParams {
   final List<int>? tags;
   final List<String>? ids;
   final String userId;
-  final WalletTxnSelectorArgs? selectorArgs;
+  final UWalletTxnSelectorArgs? selectorArgs;
   final int? orderBy;
   final String? creatorId;
 
@@ -118,7 +118,7 @@ class UWalletTxnReadParams {
     tags: json["tags"] == null ? <int>[] : List<int>.from(json["tags"]!.map((dynamic x) => x)),
     ids: json["ids"] == null ? <String>[] : List<String>.from(json["ids"]!.map((dynamic x) => x)),
     userId: json["userId"],
-    selectorArgs: json["selectorArgs"] == null ? null : WalletTxnSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : UWalletTxnSelectorArgs.fromMap(json["selectorArgs"]),
     orderBy: json["orderBy"],
     creatorId: json["creatorId"],
   );

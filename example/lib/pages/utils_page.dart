@@ -34,16 +34,16 @@ UEncryption.randomKey();''',
         title: "PersianTools",
         description: "National-code and card validation, bank lookup, number-to-words, digit conversion.",
         code: r'''
-PersianTools.validateNationalCode("0067749828");
-PersianTools.getBankNameFromCard("6274121122334455");
-PersianTools.numberToWords(1234);''',
+UPersianTools.validateNationalCode("0067749828");
+UPersianTools.getBankNameFromCard("6274121122334455");
+UPersianTools.numberToWords(1234);''',
         child: UColumn(
           crossAxisAlignment: CrossAxisAlignment.start,
           spacing: 6,
           children: <Widget>[
-            DemoLabel("validateNationalCode('0067749828') = ${PersianTools.validateNationalCode("0067749828")}"),
-            DemoLabel("numberToWords(1234) = ${PersianTools.numberToWords(1234)}"),
-            DemoLabel("bank of 6274… = ${PersianTools.getBankNameFromCard("6274121122334455") ?? "unknown"}"),
+            DemoLabel("validateNationalCode('0067749828') = ${UPersianTools.validateNationalCode("0067749828")}"),
+            DemoLabel("numberToWords(1234) = ${UPersianTools.numberToWords(1234)}"),
+            DemoLabel("bank of 6274… = ${UPersianTools.getBankNameFromCard("6274121122334455") ?? "unknown"}"),
           ],
         ),
       ),

@@ -220,7 +220,7 @@ class UAddressReadParams {
   final List<int>? tags;
   final List<String>? ids;
   final String? creatorId;
-  final AddressSelectorArgs? selectorArgs;
+  final UAddressSelectorArgs? selectorArgs;
   final int? orderBy;
   final String? zipCode;
 
@@ -249,7 +249,7 @@ class UAddressReadParams {
     tags: json["tags"] == null ? <int>[] : List<int>.from(json["tags"]!.map((dynamic x) => x)),
     ids: json["ids"] == null ? <String>[] : List<String>.from(json["ids"]!.map((dynamic x) => x)),
     creatorId: json["creatorId"],
-    selectorArgs: json["selectorArgs"] == null ? null : AddressSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : UAddressSelectorArgs.fromMap(json["selectorArgs"]),
     orderBy: json["orderBy"],
     zipCode: json["zipCode"],
   );

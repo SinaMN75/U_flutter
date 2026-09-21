@@ -13,7 +13,7 @@ class UBusinessCategory {
   }
 }
 
-abstract class BusinessCategories {
+abstract class UBusinessCategories {
   static List<UBusinessCategory> get categories => <UBusinessCategory>[
     const UBusinessCategory(code: "93990008", nameEn: "Foreign Nationals & Sponsorship Office", nameFa: "دفتر کفالت و اتباع خارجی"),
     const UBusinessCategory(code: "07420000", nameEn: "Veterinary Services - Other", nameFa: "خدمات دامپزشکی سایر کسب"),

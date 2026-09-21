@@ -1,6 +1,6 @@
 part of "../data.dart";
 
-class MerchantService {
+class UMerchantService {
   Future<(UResponse<String>?, UEmptyResponse?, String?)> create({
     required UMerchantCreateParams p,
     Function(UResponse<String> r)? onOk,

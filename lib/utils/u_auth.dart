@@ -99,7 +99,7 @@ abstract class UAuth {
     final String? refreshToken = ULocalStorage.getRefreshToken();
     if (refreshToken == null || refreshToken.isEmpty) return false;
     if (isRefreshTokenExpired) return false;
-    final (UResponse<ULoginResponse>?, UEmptyResponse?, String?) result = await AuthService().refreshToken(
+    final (UResponse<ULoginResponse>?, UEmptyResponse?, String?) result = await UAuthService().refreshToken(
       p: URefreshTokenParams(refreshToken: refreshToken),
       onOk: (UResponse<ULoginResponse> r) {},
       onError: (UEmptyResponse e) {},

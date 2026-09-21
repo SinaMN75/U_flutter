@@ -30,6 +30,12 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
     c.init(user: widget.user);
     super.initState();
   }
+  @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
+
 
   List<_Doc> get _docs => <_Doc>[
     _Doc(
@@ -94,7 +100,7 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
       ],
     ),
     body: SingleChildScrollView(
-      child: Obx(() {
+      child: UObx(() {
         if (c.state.isLoading() || c.state.isInitial()) return const CircularProgressIndicator().alignAtCenter().pOnly(top: 80);
         if (c.state.isError()) return UAdminAppErrorRetry(onTap: c.read).pOnly(top: 80);
         return Center(
@@ -344,7 +350,7 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
     boxShadow: <BoxShadow>[BoxShadow(color: UAdminTheme.black.withValues(alpha: 0.04), blurRadius: 8, offset: const Offset(0, 2))],
   );
 
-  void _openImage(String url) => UNavigator.push(UImageViewer(fileData: FileData(url: url)));
+  void _openImage(String url) => UNavigator.push(UImageViewer(fileData: UFileData(url: url)));
 
   void _confirmApprove() => UNavigator.confirm(
     title: U.s.finalApproval,
@@ -364,13 +370,14 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
   );
 
   void _showRejectDialog() {
-    final TextEditingController frontReason = TextEditingController(text: c.user.jsonData.nationalCardFrontRejectionReason);
-    final TextEditingController backReason = TextEditingController(text: c.user.jsonData.nationalCardBackRejectionReason);
-    final TextEditingController birthReason = TextEditingController(text: c.user.jsonData.birthCertificateFirstRejectionReason);
-    final TextEditingController videoReason = TextEditingController(text: c.user.jsonData.visualAuthenticationRejectionReason);
-    final TextEditingController signatureReason = TextEditingController(text: c.user.jsonData.eSignatureRejectionReason);
+    final UAdminFields f = UAdminFields();
+    final TextEditingController frontReason = f.text(c.user.jsonData.nationalCardFrontRejectionReason);
+    final TextEditingController backReason = f.text(c.user.jsonData.nationalCardBackRejectionReason);
+    final TextEditingController birthReason = f.text(c.user.jsonData.birthCertificateFirstRejectionReason);
+    final TextEditingController videoReason = f.text(c.user.jsonData.visualAuthenticationRejectionReason);
+    final TextEditingController signatureReason = f.text(c.user.jsonData.eSignatureRejectionReason);
 
-    UNavigator.dialog(
+    UNavigator.dialog(f.scope(
       AlertDialog(
         title: Text(U.s.rejectDocuments),
         content: SizedBox(
@@ -415,7 +422,7 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
             },
           ),
         ],
-      ),
+      )),
     );
   }
 }

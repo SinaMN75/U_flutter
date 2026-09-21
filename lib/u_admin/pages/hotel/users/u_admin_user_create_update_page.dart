@@ -28,6 +28,12 @@ class _UserCreateUpdateDialogState extends State<UAdminUserCreateUpdateDialog> {
     if (widget.user?.isSubAdmin() ?? false) c.role(TagUser.subAdmin);
     super.initState();
   }
+  @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) => AlertDialog(
@@ -63,44 +69,11 @@ class _UserCreateUpdateDialogState extends State<UAdminUserCreateUpdateDialog> {
                     },
                   ),
                 ),
-              if (context.isMobileWidth)
-                UColumn(
-                  spacing: 8,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  margin: const EdgeInsets.symmetric(vertical: 6),
-                  children: <Widget>[
-                    UTextField(
-                      controller: c.controllerFirstName,
-                      labelText: U.s.firstName,
-                      validator: UValidators.required(message: U.s.required),
-                    ),
-                    UTextField(
-                      controller: c.controllerLastName,
-                      labelText: U.s.lastName,
-                      validator: UValidators.required(message: U.s.required),
-                    ),
-                  ],
-                )
-              else
-                URow(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  margin: const EdgeInsets.symmetric(vertical: 6),
-                  children: <Widget>[
-                    UTextField(
-                      controller: c.controllerFirstName,
-                      labelText: U.s.firstName,
-                      validator: UValidators.required(message: U.s.required),
-                      expanded: 1,
-                    ),
-                    const SizedBox(width: 10),
-                    UTextField(
-                      controller: c.controllerLastName,
-                      labelText: U.s.lastName,
-                      validator: UValidators.required(message: U.s.required),
-                      expanded: 1,
-                    ),
-                  ],
-                ),
+              UAdminForm.pair(
+                context,
+                UTextField(controller: c.controllerFirstName, labelText: U.s.firstName, validator: UValidators.required(message: U.s.required)),
+                UTextField(controller: c.controllerLastName, labelText: U.s.lastName, validator: UValidators.required(message: U.s.required)),
+              ),
               UTextField(
                 controller: c.controllerUserName,
                 labelText: U.s.username,
@@ -133,7 +106,7 @@ class _UserCreateUpdateDialogState extends State<UAdminUserCreateUpdateDialog> {
                 controller: c.controllerBirthDate,
                 labelText: U.s.birthdate,
                 validator: UValidators.required(message: U.s.required),
-                onChange: (DateTime d, Jalali j) {
+                onChange: (DateTime d, UJalali j) {
                   c.birthdate = d;
                   c.controllerBirthDate.text = d.toJalaliDate();
                 },
@@ -147,7 +120,7 @@ class _UserCreateUpdateDialogState extends State<UAdminUserCreateUpdateDialog> {
               ),
               const Divider(height: 20),
               UTextBodySmall(U.s.gender, color: UAdminTheme.grey).alignAtCenterLeft(),
-              Obx(
+              UObx(
                 () => USegmentedControl<int>(
                   selectedValue: c.gender.value.number,
                   items: <int, String>{TagUser.male.number: U.s.male, TagUser.female.number: U.s.female},
@@ -155,7 +128,7 @@ class _UserCreateUpdateDialogState extends State<UAdminUserCreateUpdateDialog> {
                 ).pOnly(top: 6, bottom: 6),
               ),
               if (_canManageRoles) ...<Widget>[
-                Obx(
+                UObx(
                   () => USegmentedControl<int>(
                     selectedValue: c.role.value.number,
                     items: <int, String>{
@@ -166,7 +139,7 @@ class _UserCreateUpdateDialogState extends State<UAdminUserCreateUpdateDialog> {
                     onValueChanged: (int? i) => c.role(TagUser.values.fromNumber(i!) ?? c.role.value),
                   ).pOnly(top: 6, bottom: 6),
                 ),
-                Obx(() {
+                UObx(() {
                   if (c.role.value != TagUser.subAdmin) return const SizedBox.shrink();
                   return UColumn(
                     crossAxisAlignment: CrossAxisAlignment.start,

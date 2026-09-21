@@ -4,32 +4,32 @@ import "package:u/utilities.dart";
 enum UJalaliDatePickerType { classic, material, spinner }
 
 abstract class UJalaliDatePicker {
-  static Future<Jalali?> show({
+  static Future<UJalali?> show({
     UJalaliDatePickerType type = UJalaliDatePickerType.spinner,
-    Jalali? initialDate,
-    Jalali? firstDate,
-    Jalali? lastDate,
+    UJalali? initialDate,
+    UJalali? firstDate,
+    UJalali? lastDate,
     String? helpText,
     bool asDialog = false,
     DatePickerEntryMode initialEntryMode = DatePickerEntryMode.calendar,
   }) {
-    final Jalali initial = initialDate ?? Jalali.now();
-    final Jalali first = firstDate ?? Jalali(initial.year - 100);
-    final Jalali last = lastDate ?? Jalali(initial.year + 50, 12, Jalali(initial.year + 50, 12).monthLength);
-    final Jalali safe = clamp(initial, first, last);
+    final UJalali initial = initialDate ?? UJalali.now();
+    final UJalali first = firstDate ?? UJalali(initial.year - 100);
+    final UJalali last = lastDate ?? UJalali(initial.year + 50, 12, UJalali(initial.year + 50, 12).monthLength);
+    final UJalali safe = clamp(initial, first, last);
 
     switch (type) {
       case UJalaliDatePickerType.classic:
-        return UNavigator.dialog<Jalali>(
-          JalaliDatePickerDialog(
+        return UNavigator.dialog<UJalali>(
+          UJalaliDatePickerDialog(
             initialDate: safe,
             startYear: first.year,
             endYear: last.year,
-            onDateSelected: (DateTime _, Jalali _) {},
+            onDateSelected: (DateTime _, UJalali _) {},
           ),
         );
       case UJalaliDatePickerType.material:
-        return UNavigator.dialog<Jalali>(
+        return UNavigator.dialog<UJalali>(
           UJalaliDatePickerMaterial(
             initialDate: safe,
             firstDate: first,
@@ -46,17 +46,17 @@ abstract class UJalaliDatePicker {
           helpText: helpText,
         );
         return asDialog
-            ? UNavigator.dialog<Jalali>(
+            ? UNavigator.dialog<UJalali>(
                 Dialog(
                   clipBehavior: Clip.antiAlias,
                   child: UContainer(width: 340, child: spinner),
                 ),
               )
-            : UNavigator.bottomSheet<Jalali>(spinner);
+            : UNavigator.bottomSheet<UJalali>(spinner);
     }
   }
 
-  static Jalali clamp(Jalali date, Jalali first, Jalali last) {
+  static UJalali clamp(UJalali date, UJalali first, UJalali last) {
     if (date.julianDayNumber < first.julianDayNumber) return first;
     if (date.julianDayNumber > last.julianDayNumber) return last;
     return date;
@@ -64,11 +64,11 @@ abstract class UJalaliDatePicker {
 
   static String number(int value, {required bool persian}) => persian ? value.toString().toPersianNumber() : value.toString();
 
-  static String monthName(int month, {required bool persian}) => persian ? JalaliFormatter.monthNames[month - 1] : JalaliFormatter.monthNamesLatin[month - 1];
+  static String monthName(int month, {required bool persian}) => persian ? UJalaliFormatter.monthNames[month - 1] : UJalaliFormatter.monthNamesLatin[month - 1];
 
-  static String weekDayName(int weekDay, {required bool persian}) => persian ? JalaliFormatter.weekDayNames[weekDay - 1] : JalaliFormatter.weekDayNamesLatin[weekDay - 1];
+  static String weekDayName(int weekDay, {required bool persian}) => persian ? UJalaliFormatter.weekDayNames[weekDay - 1] : UJalaliFormatter.weekDayNamesLatin[weekDay - 1];
 
-  static String format(Jalali date, {required bool persian}) {
+  static String format(UJalali date, {required bool persian}) {
     final String year = date.year.toString().padLeft(4, "0");
     final String month = date.month.toString().padLeft(2, "0");
     final String day = date.day.toString().padLeft(2, "0");
@@ -76,11 +76,11 @@ abstract class UJalaliDatePicker {
     return persian ? value.toPersianNumber() : value;
   }
 
-  static String headline(Jalali date, {required bool persian}) => persian
-      ? "${JalaliFormatter.weekDayNames[date.weekDay - 1]}، ${number(date.day, persian: true)} ${JalaliFormatter.monthNames[date.month - 1]}"
-      : "${JalaliFormatter.weekDayNamesLatin[date.weekDay - 1]}, ${date.day} ${JalaliFormatter.monthNamesLatin[date.month - 1]}";
+  static String headline(UJalali date, {required bool persian}) => persian
+      ? "${UJalaliFormatter.weekDayNames[date.weekDay - 1]}، ${number(date.day, persian: true)} ${UJalaliFormatter.monthNames[date.month - 1]}"
+      : "${UJalaliFormatter.weekDayNamesLatin[date.weekDay - 1]}, ${date.day} ${UJalaliFormatter.monthNamesLatin[date.month - 1]}";
 
-  static Jalali? parse(String value) {
+  static UJalali? parse(String value) {
     final List<String> parts = value.toLatinNumber().split("/");
     if (parts.length != 3) return null;
     final int? year = int.tryParse(parts[0]);
@@ -88,8 +88,8 @@ abstract class UJalaliDatePicker {
     final int? day = int.tryParse(parts[2]);
     if (year == null || month == null || day == null) return null;
     if (year < 1 || year > 3177 || month < 1 || month > 12 || day < 1) return null;
-    if (day > Jalali(year, month).monthLength) return null;
-    return Jalali(year, month, day);
+    if (day > UJalali(year, month).monthLength) return null;
+    return UJalali(year, month, day);
   }
 }
 
@@ -105,10 +105,10 @@ class UJalaliDatePickerMaterial extends StatefulWidget {
     this.initialPickerMode = DatePickerMode.day,
   });
 
-  final Jalali initialDate;
-  final Jalali firstDate;
-  final Jalali lastDate;
-  final Function(DateTime, Jalali)? onDateSelected;
+  final UJalali initialDate;
+  final UJalali firstDate;
+  final UJalali lastDate;
+  final Function(DateTime, UJalali)? onDateSelected;
   final String? helpText;
   final DatePickerEntryMode initialEntryMode;
   final DatePickerMode initialPickerMode;
@@ -118,7 +118,7 @@ class UJalaliDatePickerMaterial extends StatefulWidget {
 }
 
 class _UJalaliDatePickerMaterialState extends UState<UJalaliDatePickerMaterial> {
-  late Jalali _selected = widget.initialDate;
+  late UJalali _selected = widget.initialDate;
   late int _displayYear = widget.initialDate.year;
   late int _displayMonth = widget.initialDate.month;
   late DatePickerEntryMode _entryMode = widget.initialEntryMode;
@@ -138,7 +138,7 @@ class _UJalaliDatePickerMaterialState extends UState<UJalaliDatePickerMaterial> 
 
   int _monthOfPage(int page) => (widget.firstDate.month - 1 + page) % 12 + 1;
 
-  bool _isOutOfRange(Jalali date) => date.julianDayNumber < widget.firstDate.julianDayNumber || date.julianDayNumber > widget.lastDate.julianDayNumber;
+  bool _isOutOfRange(UJalali date) => date.julianDayNumber < widget.firstDate.julianDayNumber || date.julianDayNumber > widget.lastDate.julianDayNumber;
 
   @override
   void dispose() {
@@ -177,7 +177,7 @@ class _UJalaliDatePickerMaterialState extends UState<UJalaliDatePickerMaterial> 
 
   void _toggleEntryMode() {
     if (_entryMode == DatePickerEntryMode.input) {
-      final Jalali? parsed = UJalaliDatePicker.parse(_inputController.text);
+      final UJalali? parsed = UJalaliDatePicker.parse(_inputController.text);
       setState(() {
         _entryMode = DatePickerEntryMode.calendar;
         _pickerMode = DatePickerMode.day;
@@ -198,7 +198,7 @@ class _UJalaliDatePickerMaterialState extends UState<UJalaliDatePickerMaterial> 
   }
 
   void _onInputChanged(String value) {
-    final Jalali? parsed = UJalaliDatePicker.parse(value);
+    final UJalali? parsed = UJalaliDatePicker.parse(value);
     setState(() {
       if (parsed == null) {
         _inputError = value.isEmpty ? null : U.s.invalidDate;
@@ -312,7 +312,7 @@ class _UJalaliDatePickerMaterialState extends UState<UJalaliDatePickerMaterial> 
     children: List<Widget>.generate(
       7,
       (int index) => UTextBodySmall(
-        isFa ? JalaliFormatter.weekDayNamesShort[index] : JalaliFormatter.weekDayNamesShortLatin[index],
+        isFa ? UJalaliFormatter.weekDayNamesShort[index] : UJalaliFormatter.weekDayNamesShortLatin[index],
         color: scheme.onSurface,
         textAlign: TextAlign.center,
         expanded: 1,
@@ -331,9 +331,9 @@ class _UJalaliDatePickerMaterialState extends UState<UJalaliDatePickerMaterial> 
   );
 
   Widget _daysGrid(int year, int month) {
-    final int offset = Jalali(year, month).weekDay - 1;
-    final int length = Jalali(year, month).monthLength;
-    final Jalali today = Jalali.now();
+    final int offset = UJalali(year, month).weekDay - 1;
+    final int length = UJalali(year, month).monthLength;
+    final UJalali today = UJalali.now();
     return GridView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       physics: const NeverScrollableScrollPhysics(),
@@ -342,7 +342,7 @@ class _UJalaliDatePickerMaterialState extends UState<UJalaliDatePickerMaterial> 
       itemBuilder: (BuildContext context, int index) {
         if (index < offset) return const SizedBox.shrink();
         final int day = index - offset + 1;
-        final Jalali date = Jalali(year, month, day);
+        final UJalali date = UJalali(year, month, day);
         final bool disabled = _isOutOfRange(date);
         final bool selected = _selected.year == year && _selected.month == month && _selected.day == day;
         final bool isToday = today.year == year && today.month == month && today.day == day;
@@ -429,10 +429,10 @@ class UJalaliDatePickerSpinner extends StatefulWidget {
     this.showTodayButton = true,
   });
 
-  final Jalali initialDate;
-  final Jalali firstDate;
-  final Jalali lastDate;
-  final Function(DateTime, Jalali)? onDateSelected;
+  final UJalali initialDate;
+  final UJalali firstDate;
+  final UJalali lastDate;
+  final Function(DateTime, UJalali)? onDateSelected;
   final String? helpText;
   final bool showTodayButton;
 
@@ -459,11 +459,11 @@ class _UJalaliDatePickerSpinnerState extends UState<UJalaliDatePickerSpinner> {
   int get _minDay => _year == _minYear && _month == widget.firstDate.month ? widget.firstDate.day : 1;
 
   int get _maxDay {
-    final int length = Jalali(_year, _month).monthLength;
+    final int length = UJalali(_year, _month).monthLength;
     return _year == _maxYear && _month == widget.lastDate.month ? min(length, widget.lastDate.day) : length;
   }
 
-  Jalali get _value => Jalali(_year, _month, _day);
+  UJalali get _value => UJalali(_year, _month, _day);
 
   @override
   void dispose() {
@@ -503,7 +503,7 @@ class _UJalaliDatePickerSpinnerState extends UState<UJalaliDatePickerSpinner> {
   void _onDayChanged(int index) => setState(() => _day = _minDay + index);
 
   void _goToToday() {
-    final Jalali today = UJalaliDatePicker.clamp(Jalali.now(), widget.firstDate, widget.lastDate);
+    final UJalali today = UJalaliDatePicker.clamp(UJalali.now(), widget.firstDate, widget.lastDate);
     setState(() {
       _year = today.year;
       _month = today.month;

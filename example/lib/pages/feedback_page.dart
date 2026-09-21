@@ -86,7 +86,7 @@ ULoading.show();
 await doWork();
 ULoading.dismiss();
 
-final RxInt progress = 0.obs;
+final URxInt progress = 0.obs;
 ULoading.show(source: "assets/loading.json", percentRx: progress);
 progress.value = 40;''',
         child: URow(
@@ -103,7 +103,7 @@ progress.value = 40;''',
               title: "With percent",
               type: UButtonType.outlined,
               onTap: () {
-                final RxInt progress = 0.obs;
+                final URxInt progress = 0.obs;
                 ULoading.show(percentRx: progress, text: "Downloading");
                 Timer.periodic(const Duration(milliseconds: 200), (Timer timer) {
                   progress.value = progress.value + 10;
@@ -135,7 +135,7 @@ UProgressCircular(value: 65);''',
         title: "RatingBar",
         description: "A half-step rating input; onRatingUpdate reports the new value.",
         code: r'''
-RatingBar.builder(
+URatingBar.builder(
   initialRating: 3.5,
   allowHalfRating: true,
   itemBuilder: (BuildContext context, int _) => const Icon(Icons.star),
@@ -145,7 +145,7 @@ RatingBar.builder(
           crossAxisAlignment: CrossAxisAlignment.start,
           spacing: 8,
           children: <Widget>[
-            RatingBar.builder(
+            URatingBar.builder(
               initialRating: _rating,
               allowHalfRating: true,
               itemSize: 32,

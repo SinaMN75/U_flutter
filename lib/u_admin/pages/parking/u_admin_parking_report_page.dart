@@ -17,6 +17,12 @@ class _UAdminParkingReportPageState extends State<UAdminParkingReportPage> {
     c.init(parking: widget.parking);
     super.initState();
   }
+  @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -30,7 +36,7 @@ class _UAdminParkingReportPageState extends State<UAdminParkingReportPage> {
     body: UColumn(children: <Widget>[_summary(), _list().expanded()]),
   );
 
-  Widget _summary() => Obx(() {
+  Widget _summary() => UObx(() {
     if (!c.state.isLoaded()) return const SizedBox.shrink();
     return UContainer(
       margin: const EdgeInsets.fromLTRB(16, 8, 16, 0),

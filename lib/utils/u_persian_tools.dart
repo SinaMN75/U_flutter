@@ -1,20 +1,20 @@
-enum DigitLocale { en, fa, ar }
+enum UDigitLocale { en, fa, ar }
 
-enum SimCardType { credit, permanent, both }
+enum USimCardType { credit, permanent, both }
 
-class Operator {
-  const Operator._(this.name);
+class UOperator {
+  const UOperator._(this.name);
 
   final String name;
-  static const Operator shatelMobile = Operator._("شاتل موبایل");
-  static const Operator mci = Operator._("همراه اول");
-  static const Operator irancell = Operator._("ایرانسل");
-  static const Operator taliya = Operator._("تالیا");
-  static const Operator rightTel = Operator._("رایتل");
-  static const Operator samanTel = Operator._("سامانتل");
+  static const UOperator shatelMobile = UOperator._("شاتل موبایل");
+  static const UOperator mci = UOperator._("همراه اول");
+  static const UOperator irancell = UOperator._("ایرانسل");
+  static const UOperator taliya = UOperator._("تالیا");
+  static const UOperator rightTel = UOperator._("رایتل");
+  static const UOperator samanTel = UOperator._("سامانتل");
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is Operator && name == other.name;
+  bool operator ==(Object other) => identical(this, other) || other is UOperator && name == other.name;
 
   @override
   int get hashCode => name.hashCode;
@@ -23,30 +23,30 @@ class Operator {
   String toString() => "Operator{name: $name}";
 }
 
-class OperatorDetail {
-  const OperatorDetail({
+class UOperatorDetail {
+  const UOperatorDetail({
     required this.base,
     required this.operator,
     this.provinces = const <String>[],
     this.model,
-    this.type = SimCardType.both,
+    this.type = USimCardType.both,
   });
 
   final String base;
   final List<String> provinces;
   final String? model;
-  final SimCardType type;
-  final Operator operator;
+  final USimCardType type;
+  final UOperator operator;
 
   String get name => operator.name;
 
-  OperatorDetail copyWith({
+  UOperatorDetail copyWith({
     String? base,
     List<String>? provinces,
     String? model,
-    SimCardType? type,
-    Operator? operator,
-  }) => OperatorDetail(
+    USimCardType? type,
+    UOperator? operator,
+  }) => UOperatorDetail(
     base: base ?? this.base,
     provinces: provinces ?? this.provinces,
     model: model ?? this.model,
@@ -56,7 +56,7 @@ class OperatorDetail {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || other is OperatorDetail && base == other.base && provinces == other.provinces && model == other.model && type == other.type && operator == other.operator;
+      identical(this, other) || other is UOperatorDetail && base == other.base && provinces == other.provinces && model == other.model && type == other.type && operator == other.operator;
 
   @override
   int get hashCode => base.hashCode ^ provinces.hashCode ^ model.hashCode ^ type.hashCode ^ operator.hashCode;
@@ -65,8 +65,8 @@ class OperatorDetail {
   String toString() => "OperatorDetail{base: $base, provinces: $provinces, model: $model, type: $type, operator: $operator}";
 }
 
-class AccountNumberModel {
-  const AccountNumberModel({
+class UAccountNumberModel {
+  const UAccountNumberModel({
     required this.accountNumber,
     required this.formattedAccountNumber,
   });
@@ -75,14 +75,14 @@ class AccountNumberModel {
   final String formattedAccountNumber;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is AccountNumberModel && accountNumber == other.accountNumber && formattedAccountNumber == other.formattedAccountNumber;
+  bool operator ==(Object other) => identical(this, other) || other is UAccountNumberModel && accountNumber == other.accountNumber && formattedAccountNumber == other.formattedAccountNumber;
 
   @override
   int get hashCode => accountNumber.hashCode ^ formattedAccountNumber.hashCode;
 }
 
-class BankInfo {
-  const BankInfo({
+class UBankInfo {
+  const UBankInfo({
     required this.nickname,
     required this.name,
     required this.persianName,
@@ -96,19 +96,19 @@ class BankInfo {
   final String name;
   final String persianName;
   final bool isAccountNumberAvailable;
-  final AccountNumberModel Function(String)? process;
+  final UAccountNumberModel Function(String)? process;
   final String? accountNumber;
   final String? formattedAccountNumber;
 
-  BankInfo copyWith({
+  UBankInfo copyWith({
     String? nickname,
     String? name,
     String? persianName,
     bool? isAccountNumberAvailable,
-    AccountNumberModel Function(String)? process,
+    UAccountNumberModel Function(String)? process,
     String? accountNumber,
     String? formattedAccountNumber,
-  }) => BankInfo(
+  }) => UBankInfo(
     nickname: nickname ?? this.nickname,
     name: name ?? this.name,
     persianName: persianName ?? this.persianName,
@@ -121,7 +121,7 @@ class BankInfo {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is BankInfo &&
+      other is UBankInfo &&
           nickname == other.nickname &&
           name == other.name &&
           persianName == other.persianName &&
@@ -133,7 +133,7 @@ class BankInfo {
   int get hashCode => nickname.hashCode ^ name.hashCode ^ persianName.hashCode ^ isAccountNumberAvailable.hashCode ^ accountNumber.hashCode ^ formattedAccountNumber.hashCode;
 }
 
-class PersianTools {
+class UPersianTools {
   static const String _faText = "ابپتثجچحخدذرزژسشصضطظعغفقکگلمنوهی۰۱۲۳۴۵۶۷۸۹َُِآاً";
   static const String _faComplexText = "$_faTextًٌٍَُِّْٰٔءك‌ةۀأإيـئؤ،";
 
@@ -227,43 +227,43 @@ class PersianTools {
     "نهصد": 900,
   };
 
-  static final Map<String, BankInfo> _bankInfo = <String, BankInfo>{
-    "010": const BankInfo(nickname: "central-bank", name: "Central Bank of Iran", persianName: "بانک مرکزی جمهوری اسلامی ایران"),
-    "011": const BankInfo(nickname: "sanat-o-madan", name: "Sanat O Madan Bank", persianName: "بانک صنعت و معدن"),
-    "012": const BankInfo(nickname: "mellat", name: "Mellat Bank", persianName: "بانک ملت"),
-    "013": const BankInfo(nickname: "refah", name: "Refah Bank", persianName: "بانک رفاه کارگران"),
-    "014": const BankInfo(nickname: "maskan", name: "Maskan Bank", persianName: "بانک مسکن"),
-    "015": const BankInfo(nickname: "sepah", name: "Sepah Bank", persianName: "بانک سپه"),
-    "016": const BankInfo(nickname: "keshavarzi", name: "Keshavarzi", persianName: "بانک کشاورزی"),
-    "017": const BankInfo(nickname: "melli", name: "Melli", persianName: "بانک ملی ایران"),
-    "018": const BankInfo(nickname: "tejarat", name: "Tejarat Bank", persianName: "بانک تجارت"),
-    "019": const BankInfo(nickname: "saderat", name: "Saderat Bank", persianName: "بانک صادرات ایران"),
-    "020": const BankInfo(nickname: "tosee-saderat", name: "Tose Saderat Bank", persianName: "بانک توسعه صادرات"),
-    "021": const BankInfo(nickname: "post", name: "Post Bank", persianName: "پست بانک ایران"),
-    "022": const BankInfo(nickname: "toose-taavon", name: "Tosee Taavon Bank", persianName: "بانک توسعه تعاون"),
-    "051": const BankInfo(nickname: "tosee", name: "Tosee Bank", persianName: "موسسه اعتباری توسعه"),
-    "052": const BankInfo(nickname: "ghavamin", name: "Ghavamin Bank", persianName: "بانک قوامین"),
-    "053": const BankInfo(nickname: "karafarin", name: "Karafarin Bank", persianName: "بانک کارآفرین"),
-    "055": const BankInfo(nickname: "eghtesad-novin", name: "Eghtesad Novin Bank", persianName: "بانک اقتصاد نوین"),
-    "056": const BankInfo(nickname: "saman", name: "Saman Bank", persianName: "بانک سامان"),
-    "058": const BankInfo(nickname: "sarmayeh", name: "Sarmayeh Bank", persianName: "بانک سرمایه"),
-    "059": const BankInfo(nickname: "sina", name: "Sina Bank", persianName: "بانک سینا"),
-    "060": const BankInfo(nickname: "mehr-iran", name: "Mehr Iran Bank", persianName: "بانک مهر ایران"),
-    "062": const BankInfo(nickname: "ayandeh", name: "Ayandeh Bank", persianName: "بانک آینده"),
-    "063": const BankInfo(nickname: "ansar", name: "Ansar Bank", persianName: "بانک انصار"),
-    "064": const BankInfo(nickname: "gardeshgari", name: "Gardeshgari Bank", persianName: "بانک گردشگری"),
-    "065": const BankInfo(nickname: "hekmat-iranian", name: "Hekmat Iranian Bank", persianName: "بانک حکمت ایرانیان"),
-    "066": const BankInfo(nickname: "dey", name: "Dey Bank", persianName: "بانک دی"),
-    "069": const BankInfo(nickname: "iran-zamin", name: "Iran Zamin Bank", persianName: "بانک ایران زمین"),
-    "070": const BankInfo(nickname: "resalat", name: "Resalat Bank", persianName: "بانک قرض الحسنه رسالت"),
-    "073": const BankInfo(nickname: "kosar", name: "Kosar Credit Institute", persianName: "موسسه اعتباری کوثر"),
-    "075": const BankInfo(nickname: "melal", name: "Melal Credit Institute", persianName: "موسسه اعتباری ملل"),
-    "078": const BankInfo(nickname: "middle-east-bank", name: "Middle East Bank", persianName: "بانک خاورمیانه"),
-    "080": const BankInfo(nickname: "noor-bank", name: "Noor Credit Institution", persianName: "موسسه اعتباری نور"),
-    "079": const BankInfo(nickname: "mehr-eqtesad", name: "Mehr Eqtesad Bank", persianName: "بانک مهر اقتصاد"),
-    "090": const BankInfo(nickname: "mehr-iran", name: "Mehr Iran Bank", persianName: "بانک مهر ایران"),
-    "095": const BankInfo(nickname: "iran-venezuela", name: "Iran and Venezuela Bank", persianName: "بانک ایران و ونزوئلا"),
-    "061": BankInfo(
+  static final Map<String, UBankInfo> _bankInfo = <String, UBankInfo>{
+    "010": const UBankInfo(nickname: "central-bank", name: "Central Bank of Iran", persianName: "بانک مرکزی جمهوری اسلامی ایران"),
+    "011": const UBankInfo(nickname: "sanat-o-madan", name: "Sanat O Madan Bank", persianName: "بانک صنعت و معدن"),
+    "012": const UBankInfo(nickname: "mellat", name: "Mellat Bank", persianName: "بانک ملت"),
+    "013": const UBankInfo(nickname: "refah", name: "Refah Bank", persianName: "بانک رفاه کارگران"),
+    "014": const UBankInfo(nickname: "maskan", name: "Maskan Bank", persianName: "بانک مسکن"),
+    "015": const UBankInfo(nickname: "sepah", name: "Sepah Bank", persianName: "بانک سپه"),
+    "016": const UBankInfo(nickname: "keshavarzi", name: "Keshavarzi", persianName: "بانک کشاورزی"),
+    "017": const UBankInfo(nickname: "melli", name: "Melli", persianName: "بانک ملی ایران"),
+    "018": const UBankInfo(nickname: "tejarat", name: "Tejarat Bank", persianName: "بانک تجارت"),
+    "019": const UBankInfo(nickname: "saderat", name: "Saderat Bank", persianName: "بانک صادرات ایران"),
+    "020": const UBankInfo(nickname: "tosee-saderat", name: "Tose Saderat Bank", persianName: "بانک توسعه صادرات"),
+    "021": const UBankInfo(nickname: "post", name: "Post Bank", persianName: "پست بانک ایران"),
+    "022": const UBankInfo(nickname: "toose-taavon", name: "Tosee Taavon Bank", persianName: "بانک توسعه تعاون"),
+    "051": const UBankInfo(nickname: "tosee", name: "Tosee Bank", persianName: "موسسه اعتباری توسعه"),
+    "052": const UBankInfo(nickname: "ghavamin", name: "Ghavamin Bank", persianName: "بانک قوامین"),
+    "053": const UBankInfo(nickname: "karafarin", name: "Karafarin Bank", persianName: "بانک کارآفرین"),
+    "055": const UBankInfo(nickname: "eghtesad-novin", name: "Eghtesad Novin Bank", persianName: "بانک اقتصاد نوین"),
+    "056": const UBankInfo(nickname: "saman", name: "Saman Bank", persianName: "بانک سامان"),
+    "058": const UBankInfo(nickname: "sarmayeh", name: "Sarmayeh Bank", persianName: "بانک سرمایه"),
+    "059": const UBankInfo(nickname: "sina", name: "Sina Bank", persianName: "بانک سینا"),
+    "060": const UBankInfo(nickname: "mehr-iran", name: "Mehr Iran Bank", persianName: "بانک مهر ایران"),
+    "062": const UBankInfo(nickname: "ayandeh", name: "Ayandeh Bank", persianName: "بانک آینده"),
+    "063": const UBankInfo(nickname: "ansar", name: "Ansar Bank", persianName: "بانک انصار"),
+    "064": const UBankInfo(nickname: "gardeshgari", name: "Gardeshgari Bank", persianName: "بانک گردشگری"),
+    "065": const UBankInfo(nickname: "hekmat-iranian", name: "Hekmat Iranian Bank", persianName: "بانک حکمت ایرانیان"),
+    "066": const UBankInfo(nickname: "dey", name: "Dey Bank", persianName: "بانک دی"),
+    "069": const UBankInfo(nickname: "iran-zamin", name: "Iran Zamin Bank", persianName: "بانک ایران زمین"),
+    "070": const UBankInfo(nickname: "resalat", name: "Resalat Bank", persianName: "بانک قرض الحسنه رسالت"),
+    "073": const UBankInfo(nickname: "kosar", name: "Kosar Credit Institute", persianName: "موسسه اعتباری کوثر"),
+    "075": const UBankInfo(nickname: "melal", name: "Melal Credit Institute", persianName: "موسسه اعتباری ملل"),
+    "078": const UBankInfo(nickname: "middle-east-bank", name: "Middle East Bank", persianName: "بانک خاورمیانه"),
+    "080": const UBankInfo(nickname: "noor-bank", name: "Noor Credit Institution", persianName: "موسسه اعتباری نور"),
+    "079": const UBankInfo(nickname: "mehr-eqtesad", name: "Mehr Eqtesad Bank", persianName: "بانک مهر اقتصاد"),
+    "090": const UBankInfo(nickname: "mehr-iran", name: "Mehr Iran Bank", persianName: "بانک مهر ایران"),
+    "095": const UBankInfo(nickname: "iran-venezuela", name: "Iran and Venezuela Bank", persianName: "بانک ایران و ونزوئلا"),
+    "061": UBankInfo(
       nickname: "shahr",
       name: "City Bank",
       persianName: "بانک شهر",
@@ -273,10 +273,10 @@ class PersianTools {
         while (s.startsWith("0")) {
           s = s.substring(1);
         }
-        return AccountNumberModel(accountNumber: s, formattedAccountNumber: s);
+        return UAccountNumberModel(accountNumber: s, formattedAccountNumber: s);
       },
     ),
-    "057": BankInfo(
+    "057": UBankInfo(
       nickname: "pasargad",
       name: "Pasargad Bank",
       persianName: "بانک پاسارگاد",
@@ -287,20 +287,20 @@ class PersianTools {
           s = s.substring(1);
         }
         s = s.substring(0, s.length - 1);
-        return AccountNumberModel(
+        return UAccountNumberModel(
           accountNumber: s,
           formattedAccountNumber: "${s.substring(0, 4)}-${s.substring(3, 6)}-${s.substring(6, 14)}-${s[s.length - 1]}",
         );
       },
     ),
-    "054": BankInfo(
+    "054": UBankInfo(
       nickname: "parsian",
       name: "Parsian Bank",
       persianName: "بانک پارسیان",
       isAccountNumberAvailable: true,
       process: (String s) {
         s = s.substring(14);
-        return AccountNumberModel(
+        return UAccountNumberModel(
           accountNumber: s,
           formattedAccountNumber: "0${s.substring(0, 3)}-0${s.substring(2, 8)}-${s.substring(9, 12)}",
         );
@@ -359,82 +359,82 @@ class PersianTools {
   };
 
   static final RegExp _mobileRegex = RegExp(r"^(?:[+|0{2}]?98)?0?(\d{3})+(\d{3})+(\d{4})$");
-  static final Map<String, OperatorDetail> _operators = <String, OperatorDetail>{
-    "910": const OperatorDetail(base: "کشوری", operator: Operator.mci),
-    "914": const OperatorDetail(
+  static final Map<String, UOperatorDetail> _operators = <String, UOperatorDetail>{
+    "910": const UOperatorDetail(base: "کشوری", operator: UOperator.mci),
+    "914": const UOperatorDetail(
       base: "آذربایجان غربی",
       provinces: <String>["آذربایجان شرقی", "اردبیل", "اصفهان"],
-      operator: Operator.mci,
+      operator: UOperator.mci,
     ),
-    "911": const OperatorDetail(
+    "911": const UOperatorDetail(
       base: "مازندران",
       provinces: <String>["گلستان", "گیلان"],
-      operator: Operator.mci,
+      operator: UOperator.mci,
     ),
-    "912": const OperatorDetail(
+    "912": const UOperatorDetail(
       base: "تهران",
       provinces: <String>["البرز", "زنجان", "سمنان", "قزوین", "قم", "برخی از شهرستان های استان مرکزی"],
-      type: SimCardType.permanent,
-      operator: Operator.mci,
+      type: USimCardType.permanent,
+      operator: UOperator.mci,
     ),
-    "913": const OperatorDetail(
+    "913": const UOperatorDetail(
       base: "اصفهان",
       provinces: <String>["یزد", "چهارمحال و بختیاری", "کرمان"],
-      operator: Operator.mci,
+      operator: UOperator.mci,
     ),
-    "915": const OperatorDetail(
+    "915": const UOperatorDetail(
       base: "خراسان رضوی",
       provinces: <String>["خراسان شمالی", "خراسان جنوبی", "سیستان و بلوچستان"],
-      operator: Operator.mci,
+      operator: UOperator.mci,
     ),
-    "916": const OperatorDetail(
+    "916": const UOperatorDetail(
       base: "خوزستان",
       provinces: <String>["لرستان", "فارس", "اصفهان"],
-      operator: Operator.mci,
+      operator: UOperator.mci,
     ),
-    "917": const OperatorDetail(
+    "917": const UOperatorDetail(
       base: "فارس",
       provinces: <String>["بوشهر", "کهگیلویه و بویر احمد", "هرمزگان"],
-      operator: Operator.mci,
+      operator: UOperator.mci,
     ),
-    "918": const OperatorDetail(
+    "918": const UOperatorDetail(
       base: "کرمانشاه",
       provinces: <String>["کردستان", "ایلام", "همدان"],
-      operator: Operator.mci,
+      operator: UOperator.mci,
     ),
-    "919": const OperatorDetail(
+    "919": const UOperatorDetail(
       base: "تهران",
       provinces: <String>["البرز", "سمنان", "قم", "قزوین", "زنجان"],
-      type: SimCardType.credit,
-      operator: Operator.mci,
+      type: USimCardType.credit,
+      operator: UOperator.mci,
     ),
-    "990": const OperatorDetail(base: "کشوری", type: SimCardType.credit, operator: Operator.mci),
-    "991": const OperatorDetail(base: "کشوری", operator: Operator.mci),
-    "992": const OperatorDetail(base: "کشوری", type: SimCardType.credit, operator: Operator.mci),
-    "993": const OperatorDetail(base: "کشوری", type: SimCardType.credit, operator: Operator.mci),
-    "994": const OperatorDetail(base: "کشوری", type: SimCardType.credit, operator: Operator.mci),
-    "995": const OperatorDetail(base: "کشوری", type: SimCardType.credit, operator: Operator.mci),
-    "996": const OperatorDetail(base: "کشوری", type: SimCardType.credit, operator: Operator.mci),
-    "932": const OperatorDetail(base: "کشوری", type: SimCardType.credit, operator: Operator.taliya),
-    "920": const OperatorDetail(base: "کشوری", type: SimCardType.permanent, operator: Operator.rightTel),
-    "921": const OperatorDetail(base: "کشوری", type: SimCardType.credit, operator: Operator.rightTel),
-    "922": const OperatorDetail(base: "کشوری", type: SimCardType.credit, operator: Operator.rightTel),
-    "900": const OperatorDetail(base: "کشوری", operator: Operator.irancell),
-    "930": const OperatorDetail(base: "کشوری", operator: Operator.irancell),
-    "933": const OperatorDetail(base: "کشوری", operator: Operator.irancell),
-    "935": const OperatorDetail(base: "کشوری", operator: Operator.irancell),
-    "936": const OperatorDetail(base: "کشوری", operator: Operator.irancell),
-    "937": const OperatorDetail(base: "کشوری", operator: Operator.irancell),
-    "938": const OperatorDetail(base: "کشوری", operator: Operator.irancell),
-    "939": const OperatorDetail(base: "کشوری", operator: Operator.irancell),
-    "901": const OperatorDetail(base: "کشوری", operator: Operator.irancell),
-    "902": const OperatorDetail(base: "کشوری", operator: Operator.irancell),
-    "903": const OperatorDetail(base: "کشوری", operator: Operator.irancell),
-    "905": const OperatorDetail(base: "کشوری", operator: Operator.irancell),
-    "904": const OperatorDetail(base: "کشوری", model: "سیم‌کارت کودک", type: SimCardType.credit, operator: Operator.irancell),
-    "941": const OperatorDetail(base: "کشوری", model: "TD-LTE", type: SimCardType.credit, operator: Operator.irancell),
-    "998": const OperatorDetail(base: "کشوری", type: SimCardType.credit, operator: Operator.shatelMobile),
-    "999": const OperatorDetail(base: "کشوری", operator: Operator.samanTel),
+    "990": const UOperatorDetail(base: "کشوری", type: USimCardType.credit, operator: UOperator.mci),
+    "991": const UOperatorDetail(base: "کشوری", operator: UOperator.mci),
+    "992": const UOperatorDetail(base: "کشوری", type: USimCardType.credit, operator: UOperator.mci),
+    "993": const UOperatorDetail(base: "کشوری", type: USimCardType.credit, operator: UOperator.mci),
+    "994": const UOperatorDetail(base: "کشوری", type: USimCardType.credit, operator: UOperator.mci),
+    "995": const UOperatorDetail(base: "کشوری", type: USimCardType.credit, operator: UOperator.mci),
+    "996": const UOperatorDetail(base: "کشوری", type: USimCardType.credit, operator: UOperator.mci),
+    "932": const UOperatorDetail(base: "کشوری", type: USimCardType.credit, operator: UOperator.taliya),
+    "920": const UOperatorDetail(base: "کشوری", type: USimCardType.permanent, operator: UOperator.rightTel),
+    "921": const UOperatorDetail(base: "کشوری", type: USimCardType.credit, operator: UOperator.rightTel),
+    "922": const UOperatorDetail(base: "کشوری", type: USimCardType.credit, operator: UOperator.rightTel),
+    "900": const UOperatorDetail(base: "کشوری", operator: UOperator.irancell),
+    "930": const UOperatorDetail(base: "کشوری", operator: UOperator.irancell),
+    "933": const UOperatorDetail(base: "کشوری", operator: UOperator.irancell),
+    "935": const UOperatorDetail(base: "کشوری", operator: UOperator.irancell),
+    "936": const UOperatorDetail(base: "کشوری", operator: UOperator.irancell),
+    "937": const UOperatorDetail(base: "کشوری", operator: UOperator.irancell),
+    "938": const UOperatorDetail(base: "کشوری", operator: UOperator.irancell),
+    "939": const UOperatorDetail(base: "کشوری", operator: UOperator.irancell),
+    "901": const UOperatorDetail(base: "کشوری", operator: UOperator.irancell),
+    "902": const UOperatorDetail(base: "کشوری", operator: UOperator.irancell),
+    "903": const UOperatorDetail(base: "کشوری", operator: UOperator.irancell),
+    "905": const UOperatorDetail(base: "کشوری", operator: UOperator.irancell),
+    "904": const UOperatorDetail(base: "کشوری", model: "سیم‌کارت کودک", type: USimCardType.credit, operator: UOperator.irancell),
+    "941": const UOperatorDetail(base: "کشوری", model: "TD-LTE", type: USimCardType.credit, operator: UOperator.irancell),
+    "998": const UOperatorDetail(base: "کشوری", type: USimCardType.credit, operator: UOperator.shatelMobile),
+    "999": const UOperatorDetail(base: "کشوری", operator: UOperator.samanTel),
   };
 
   static bool isPersian(String input, {bool complex = false}) {
@@ -508,13 +508,13 @@ class PersianTools {
     return int.parse(remainder) % 97 == 1;
   }
 
-  static BankInfo? getBankFromSheba(String sheba) {
+  static UBankInfo? getBankFromSheba(String sheba) {
     if (!isShebaValid(sheba)) return null;
     final String? bankCode = RegExp("IR[0-9]{2}([0-9]{3})").firstMatch(sheba)?[1];
-    final BankInfo? bank = _bankInfo[bankCode];
+    final UBankInfo? bank = _bankInfo[bankCode];
     if (bank == null) return null;
     if (bank.isAccountNumberAvailable && bank.process != null) {
-      final AccountNumberModel data = bank.process!(sheba);
+      final UAccountNumberModel data = bank.process!(sheba);
       return bank.copyWith(
         accountNumber: data.accountNumber,
         formattedAccountNumber: data.formattedAccountNumber,
@@ -530,31 +530,31 @@ class PersianTools {
     return trim((number < 0 ? "منفی " : "") + result);
   }
 
-  static String? wordsToNumberString(String words, {DigitLocale digits = DigitLocale.en, bool addComma = false}) {
+  static String? wordsToNumberString(String words, {UDigitLocale digits = UDigitLocale.en, bool addComma = false}) {
     final int? number = _wordsToNumber(words);
     if (number == null) return null;
     final String result = addComma ? _addCommas(number) : number.toString();
     switch (digits) {
-      case DigitLocale.fa:
+      case UDigitLocale.fa:
         return _convertEnToFa(result);
-      case DigitLocale.ar:
+      case UDigitLocale.ar:
         return _convertEnToAr(result);
-      case DigitLocale.en:
+      case UDigitLocale.en:
         return result;
     }
   }
 
-  static String convertDigits(String digits, DigitLocale from, DigitLocale to) {
+  static String convertDigits(String digits, UDigitLocale from, UDigitLocale to) {
     if (from == to) return digits;
-    if (from == DigitLocale.en && to == DigitLocale.fa) return _convertEnToFa(digits);
-    if (from == DigitLocale.en && to == DigitLocale.ar) return _convertEnToAr(digits);
-    if (from == DigitLocale.fa && to == DigitLocale.en) return _convertFaToEn(digits);
-    if (from == DigitLocale.ar && to == DigitLocale.fa) return _convertArToFa(digits);
-    if (from == DigitLocale.ar && to == DigitLocale.en) return _convertArToEn(digits);
+    if (from == UDigitLocale.en && to == UDigitLocale.fa) return _convertEnToFa(digits);
+    if (from == UDigitLocale.en && to == UDigitLocale.ar) return _convertEnToAr(digits);
+    if (from == UDigitLocale.fa && to == UDigitLocale.en) return _convertFaToEn(digits);
+    if (from == UDigitLocale.ar && to == UDigitLocale.fa) return _convertArToFa(digits);
+    if (from == UDigitLocale.ar && to == UDigitLocale.en) return _convertArToEn(digits);
     return _convertFaToEn(_convertArToFa(digits));
   }
 
-  static OperatorDetail? getPhoneDetails(String phoneNumber) {
+  static UOperatorDetail? getPhoneDetails(String phoneNumber) {
     if (!_mobileRegex.hasMatch(phoneNumber)) return null;
     final String? prefix = _mobileRegex.firstMatch(phoneNumber)?.group(1);
     return prefix != null ? _operators[prefix] : null;

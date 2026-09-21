@@ -114,7 +114,7 @@ class _CameraPageState extends State<CameraPage> {
   // ---------------------------------------------------------------------------
 
   Future<void> _decodeFromFile() async {
-    final FileData? file = await UFile.pickFile(fileType: FileType.image);
+    final UFileData? file = await UFile.pickFile(fileType: FileType.image);
     if (file == null) return;
     ULoading.show();
     final List<UCode> codes = await UCameraController.analyzeImage(
@@ -136,7 +136,7 @@ class _CameraPageState extends State<CameraPage> {
   // ---------------------------------------------------------------------------
 
   Future<void> _quickPhoto() async {
-    final FileData? file = await UCamera.takePhoto();
+    final UFileData? file = await UCamera.takePhoto();
     if (file == null || !mounted) return;
     await UNavigator.dialog<void>(
       UColumn(
@@ -153,7 +153,7 @@ class _CameraPageState extends State<CameraPage> {
   }
 
   Future<void> _quickVideo() async {
-    final FileData? file = await UCamera.recordVideo(
+    final UFileData? file = await UCamera.recordVideo(
       options: const UCameraOptions(mode: UCameraMode.video, videoMaxDuration: Duration(seconds: 15)),
     );
     if (file == null || !mounted) return;
@@ -161,7 +161,7 @@ class _CameraPageState extends State<CameraPage> {
   }
 
   Future<void> _quickMultiPhoto() async {
-    final List<FileData> files = await UCamera.takePhotos(maxCount: 3);
+    final List<UFileData> files = await UCamera.takePhotos(maxCount: 3);
     if (files.isEmpty || !mounted) return;
     UToast.info(message: "Captured ${files.length} photo(s)");
   }
@@ -386,10 +386,10 @@ final List<UCode> codes = await UCameraController.analyzeImage(
               "The shortcuts most screens actually use. Each opens the full camera page and returns "
               "FileData, so the result flows into uploads and pickers exactly like a picked file.",
           code: r'''
-final FileData? photo = await UCamera.takePhoto();
-final List<FileData> many = await UCamera.takePhotos(maxCount: 3);
-final FileData? clip = await UCamera.recordVideo();
-final FileData? viaFile = await UFile.takePhoto(selfie: true);''',
+final UFileData? photo = await UCamera.takePhoto();
+final List<UFileData> many = await UCamera.takePhotos(maxCount: 3);
+final UFileData? clip = await UCamera.recordVideo();
+final UFileData? viaFile = await UFile.takePhoto(selfie: true);''',
           child: Wrap(
             spacing: 8,
             runSpacing: 8,
@@ -401,7 +401,7 @@ final FileData? viaFile = await UFile.takePhoto(selfie: true);''',
                 type: UButtonType.text,
                 title: "UFile.takePhoto(selfie)",
                 onTap: () async {
-                  final FileData? file = await UFile.takePhoto(selfie: true);
+                  final UFileData? file = await UFile.takePhoto(selfie: true);
                   if (file != null) UToast.success(message: "Got ${file.extension}");
                 },
               ),

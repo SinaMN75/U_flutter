@@ -1,12 +1,12 @@
 part of "../../u_admin.dart";
 
 class UAdminWalletController extends UBaseController {
-  final Rxn<UUserResponse> selectedUser = Rxn<UUserResponse>();
+  final URxn<UUserResponse> selectedUser = URxn<UUserResponse>();
 
-  final RxList<UWalletResponse> wallets = <UWalletResponse>[].obs;
-  final RxList<UWalletTxnResponse> txns = <UWalletTxnResponse>[].obs;
+  final URxList<UWalletResponse> wallets = <UWalletResponse>[].obs;
+  final URxList<UWalletTxnResponse> txns = <UWalletTxnResponse>[].obs;
 
-  final Rxn<UAccountingReportResponse> summary = Rxn<UAccountingReportResponse>();
+  final URxn<UAccountingReportResponse> summary = URxn<UAccountingReportResponse>();
 
   double get totalBalance => wallets.fold<double>(0, (double sum, UWalletResponse w) => sum + w.balance);
 
@@ -121,7 +121,7 @@ class UAdminTransactionsController extends UBaseController {
         fromCreatedAt: fromCreatedAt,
         toCreatedAt: toCreatedAt,
         tags: statusFilter == null ? null : <int>[statusFilter!.number],
-        selectorArgs: const TxnSelectorArgs(user: UserSelectorArgs()),
+        selectorArgs: const UTxnSelectorArgs(user: UUserSelectorArgs()),
       ),
       onOk: (UResponse<List<UTxnResponse>> r) {
         list = r.result ?? <UTxnResponse>[];
@@ -203,13 +203,21 @@ class UAdminTransactionsController extends UBaseController {
       },
     ),
   );
+
+  @override
+  void dispose() {
+    trackingFilter.dispose();
+    fromCreatedController.dispose();
+    toCreatedController.dispose();
+    super.dispose();
+  }
 }
 
 class UAdminAccountingController {
-  final RxState state = RxState();
-  final Rxn<UAccountingReportResponse> report = Rxn<UAccountingReportResponse>();
+  final URxState state = URxState();
+  final URxn<UAccountingReportResponse> report = URxn<UAccountingReportResponse>();
 
-  final Rxn<UUserResponse> user = Rxn<UUserResponse>();
+  final URxn<UUserResponse> user = URxn<UUserResponse>();
 
   DateTime? fromDate;
   DateTime? toDate;
@@ -244,5 +252,14 @@ class UAdminAccountingController {
     fromController.clear();
     toController.clear();
     load();
+  }
+
+  /// Releases the observables and text controllers this controller owns.
+  void dispose() {
+    state.dispose();
+    report.dispose();
+    user.dispose();
+    fromController.dispose();
+    toController.dispose();
   }
 }

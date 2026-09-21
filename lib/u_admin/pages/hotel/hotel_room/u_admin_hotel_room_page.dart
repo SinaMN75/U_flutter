@@ -17,6 +17,12 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
     c.init(hotel: widget.hotel);
     super.initState();
   }
+  @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -124,23 +130,24 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
   );
 
   void _showEditDialog({UHotelRoomResponse? p}) {
-    final TextEditingController title = TextEditingController(text: p?.title);
-    final TextEditingController capacity = TextEditingController(text: p?.capacity.toString());
-    final TextEditingController price = TextEditingController(text: p?.pricePerNight.toInt().toString());
-    final TextEditingController detail = TextEditingController(text: p?.jsonData.description ?? p?.jsonData.detail1);
-    final TextEditingController roomNumber = TextEditingController(text: p?.roomNumber);
-    final TextEditingController quantity = TextEditingController(text: (p?.quantity ?? 1).toString());
-    final TextEditingController bedType = TextEditingController(text: p?.jsonData.bedType);
-    final TextEditingController size = TextEditingController(text: p?.jsonData.sizeSquareMeters == null ? null : p!.jsonData.sizeSquareMeters!.toInt().toString());
-    final TextEditingController floor = TextEditingController(text: p?.jsonData.floor?.toString());
-    final TextEditingController amenities = TextEditingController(text: p?.jsonData.amenities.join(", "));
-    final TextEditingController extraGuestCapacity = TextEditingController(text: p?.jsonData.extraGuestCapacity?.toString());
-    final TextEditingController extraGuestPrice = TextEditingController(text: p?.jsonData.extraGuestPrice?.toInt().toString());
+    final UAdminFields f = UAdminFields();
+    final TextEditingController title = f.text(p?.title);
+    final TextEditingController capacity = f.text(p?.capacity.toString());
+    final TextEditingController price = f.text(p?.pricePerNight.toInt().toString());
+    final TextEditingController detail = f.text(p?.jsonData.description ?? p?.jsonData.detail1);
+    final TextEditingController roomNumber = f.text(p?.roomNumber);
+    final TextEditingController quantity = f.text((p?.quantity ?? 1).toString());
+    final TextEditingController bedType = f.text(p?.jsonData.bedType);
+    final TextEditingController size = f.text(p?.jsonData.sizeSquareMeters == null ? null : p!.jsonData.sizeSquareMeters!.toInt().toString());
+    final TextEditingController floor = f.text(p?.jsonData.floor?.toString());
+    final TextEditingController amenities = f.text(p?.jsonData.amenities.join(", "));
+    final TextEditingController extraGuestCapacity = f.text(p?.jsonData.extraGuestCapacity?.toString());
+    final TextEditingController extraGuestPrice = f.text(p?.jsonData.extraGuestPrice?.toInt().toString());
     bool isAvailable = p?.isAvailable ?? true;
-    final Rxn<UHotelResponse> hotel = Rxn<UHotelResponse>();
+    final URxn<UHotelResponse> hotel = URxn<UHotelResponse>();
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-    UNavigator.dialog(
+    UNavigator.dialog(f.scope(
       AlertDialog(
         title: Text(p == null ? U.s.createItem(U.s.room) : U.s.editItem(U.s.room)),
         content: SizedBox(
@@ -264,7 +271,7 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
             ),
           ),
         ),
-      ),
+      )),
     );
   }
 }

@@ -293,7 +293,7 @@ class UTerminalReadParams {
   final String? terminalId;
   final String? insId;
   final String? merchantId;
-  final TerminalSelectorArgs selectorArgs;
+  final UTerminalSelectorArgs selectorArgs;
   final int? orderBy;
 
   UTerminalReadParams({
@@ -342,7 +342,7 @@ class UTerminalReadParams {
     terminalId: json["terminalId"],
     insId: json["insId"],
     merchantId: json["merchantId"],
-    selectorArgs: json["selectorArgs"] == null ? const TerminalSelectorArgs() : TerminalSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? const UTerminalSelectorArgs() : UTerminalSelectorArgs.fromMap(json["selectorArgs"]),
     orderBy: json["orderBy"],
   );
 
@@ -424,7 +424,7 @@ class UTerminalBrandReadParams {
   final String? creatorId;
   final String? title;
   final String? model;
-  final TerminalBrandSelectorArgs selectorArgs;
+  final UTerminalBrandSelectorArgs selectorArgs;
   final int? orderBy;
 
   UTerminalBrandReadParams({
@@ -455,7 +455,7 @@ class UTerminalBrandReadParams {
     creatorId: json["creatorId"],
     title: json["title"],
     model: json["model"],
-    selectorArgs: json["selectorArgs"] == null ? const TerminalBrandSelectorArgs() : TerminalBrandSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? const UTerminalBrandSelectorArgs() : UTerminalBrandSelectorArgs.fromMap(json["selectorArgs"]),
     orderBy: json["orderBy"],
   );
 
@@ -631,7 +631,7 @@ class UTerminalBrokerReadParams {
   final List<String>? ids;
   final String? creatorId;
   final String? title;
-  final TerminalBrokerSelectorArgs selectorArgs;
+  final UTerminalBrokerSelectorArgs selectorArgs;
   final int? orderBy;
 
   UTerminalBrokerReadParams({
@@ -660,7 +660,7 @@ class UTerminalBrokerReadParams {
     ids: json["ids"] == null ? <String>[] : List<String>.from(json["ids"]!.map((dynamic x) => x)),
     creatorId: json["creatorId"],
     title: json["title"],
-    selectorArgs: json["selectorArgs"] == null ? const TerminalBrokerSelectorArgs() : TerminalBrokerSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? const UTerminalBrokerSelectorArgs() : UTerminalBrokerSelectorArgs.fromMap(json["selectorArgs"]),
     orderBy: json["orderBy"],
   );
 

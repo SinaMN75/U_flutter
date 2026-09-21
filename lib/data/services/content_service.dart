@@ -1,6 +1,6 @@
 part of "../data.dart";
 
-class ContentService {
+class UContentService {
   Future<(UResponse<String>?, UEmptyResponse?, String?)> create({
     required UContentCreateParams p,
     Function(UResponse<String> r)? onOk,

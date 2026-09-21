@@ -3,10 +3,10 @@ part of "../../../u_admin.dart";
 class UAdminMerchantController extends UBaseController {
   List<UMerchantResponse> list = <UMerchantResponse>[];
 
-  final Rxn<UBusinessCategory> businessCategory = Rxn<UBusinessCategory>();
-  final Rxn<UProvince> selectedProvince = Rxn<UProvince>();
-  final Rxn<UCity> selectedCity = Rxn<UCity>();
-  final Rxn<UUserResponse> user = Rxn<UUserResponse>();
+  final URxn<UBusinessCategory> businessCategory = URxn<UBusinessCategory>();
+  final URxn<UProvince> selectedProvince = URxn<UProvince>();
+  final URxn<UCity> selectedCity = URxn<UCity>();
+  final URxn<UUserResponse> user = URxn<UUserResponse>();
 
   final TextEditingController titleFilter = TextEditingController();
   final TextEditingController nationalCodeFilter = TextEditingController();
@@ -122,5 +122,19 @@ class UAdminMerchantController extends UBaseController {
       onException: (String e) {},
     );
     return result;
+  }
+
+  @override
+  void dispose() {
+    titleFilter.dispose();
+    nationalCodeFilter.dispose();
+    phoneNumberFilter.dispose();
+    zipCodeFilter.dispose();
+    landlineFilter.dispose();
+    merchantIdFilter.dispose();
+    bankAccountIdFilter.dispose();
+    fromCreatedController.dispose();
+    toCreatedController.dispose();
+    super.dispose();
   }
 }

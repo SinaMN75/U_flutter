@@ -1,7 +1,7 @@
 import "package:u/utilities.dart";
 
-class CreditCardModel {
-  CreditCardModel({
+class UCreditCardModel {
+  UCreditCardModel({
     this.cardNumber = "",
     this.expiryDate = "",
     this.cardHolderName = "",
@@ -16,82 +16,82 @@ class CreditCardModel {
   bool isCvvFocused;
 }
 
-enum CardBrand { visa, mastercard, amex, discover, dinersClub, jcb, unionPay, maestro, mir, unknown }
+enum UCardBrand { visa, mastercard, amex, discover, dinersClub, jcb, unionPay, maestro, mir, unknown }
 
-class CardBrandDetector {
-  static CardBrand detect(String input) {
+class UCardBrandDetector {
+  static UCardBrand detect(String input) {
     final String n = input.replaceAll(RegExp(r"\D"), "");
-    if (n.isEmpty) return CardBrand.unknown;
-    if (RegExp("^220[0-4]").hasMatch(n)) return CardBrand.mir;
-    if (RegExp("^4").hasMatch(n)) return CardBrand.visa;
-    if (RegExp("^3[47]").hasMatch(n)) return CardBrand.amex;
-    if (RegExp("^3(0[0-5]|[68])").hasMatch(n)) return CardBrand.dinersClub;
-    if (RegExp("^35").hasMatch(n)) return CardBrand.jcb;
-    if (RegExp("^(5018|5020|5038|56|57|58|6304|6759|676[1-3])").hasMatch(n)) return CardBrand.maestro;
-    if (RegExp("^(5[1-5]|2[2-7])").hasMatch(n)) return CardBrand.mastercard;
-    if (RegExp("^62").hasMatch(n)) return CardBrand.unionPay;
-    if (RegExp("^6(011|5|4[4-9]|22)").hasMatch(n)) return CardBrand.discover;
-    return CardBrand.unknown;
+    if (n.isEmpty) return UCardBrand.unknown;
+    if (RegExp("^220[0-4]").hasMatch(n)) return UCardBrand.mir;
+    if (RegExp("^4").hasMatch(n)) return UCardBrand.visa;
+    if (RegExp("^3[47]").hasMatch(n)) return UCardBrand.amex;
+    if (RegExp("^3(0[0-5]|[68])").hasMatch(n)) return UCardBrand.dinersClub;
+    if (RegExp("^35").hasMatch(n)) return UCardBrand.jcb;
+    if (RegExp("^(5018|5020|5038|56|57|58|6304|6759|676[1-3])").hasMatch(n)) return UCardBrand.maestro;
+    if (RegExp("^(5[1-5]|2[2-7])").hasMatch(n)) return UCardBrand.mastercard;
+    if (RegExp("^62").hasMatch(n)) return UCardBrand.unionPay;
+    if (RegExp("^6(011|5|4[4-9]|22)").hasMatch(n)) return UCardBrand.discover;
+    return UCardBrand.unknown;
   }
 
-  static String label(CardBrand brand) {
+  static String label(UCardBrand brand) {
     switch (brand) {
-      case CardBrand.visa:
+      case UCardBrand.visa:
         return "VISA";
-      case CardBrand.mastercard:
+      case UCardBrand.mastercard:
         return "Mastercard";
-      case CardBrand.amex:
+      case UCardBrand.amex:
         return "AMEX";
-      case CardBrand.discover:
+      case UCardBrand.discover:
         return "Discover";
-      case CardBrand.dinersClub:
+      case UCardBrand.dinersClub:
         return "Diners Club";
-      case CardBrand.jcb:
+      case UCardBrand.jcb:
         return "JCB";
-      case CardBrand.unionPay:
+      case UCardBrand.unionPay:
         return "UnionPay";
-      case CardBrand.maestro:
+      case UCardBrand.maestro:
         return "Maestro";
-      case CardBrand.mir:
+      case UCardBrand.mir:
         return "MIR";
-      case CardBrand.unknown:
+      case UCardBrand.unknown:
         return "";
     }
   }
 
-  static List<Color> gradientColors(CardBrand brand) {
+  static List<Color> gradientColors(UCardBrand brand) {
     switch (brand) {
-      case CardBrand.visa:
+      case UCardBrand.visa:
         return const <Color>[Color(0xFF1A1F71), Color(0xFF3B4BA0)];
-      case CardBrand.mastercard:
+      case UCardBrand.mastercard:
         return const <Color>[Color(0xFFEB001B), Color(0xFFF79E1B)];
-      case CardBrand.amex:
+      case UCardBrand.amex:
         return const <Color>[Color(0xFF2E7D9E), Color(0xFF16506B)];
-      case CardBrand.discover:
+      case UCardBrand.discover:
         return const <Color>[Color(0xFFF48120), Color(0xFF2A2E33)];
-      case CardBrand.dinersClub:
+      case UCardBrand.dinersClub:
         return const <Color>[Color(0xFF0079BE), Color(0xFF00456B)];
-      case CardBrand.jcb:
+      case UCardBrand.jcb:
         return const <Color>[Color(0xFF1D3F8B), Color(0xFFB01030)];
-      case CardBrand.unionPay:
+      case UCardBrand.unionPay:
         return const <Color>[Color(0xFF00447C), Color(0xFF007B84)];
-      case CardBrand.maestro:
+      case UCardBrand.maestro:
         return const <Color>[Color(0xFF0099DF), Color(0xFFCC0000)];
-      case CardBrand.mir:
+      case UCardBrand.mir:
         return const <Color>[Color(0xFF0F754C), Color(0xFF0A4732)];
-      case CardBrand.unknown:
+      case UCardBrand.unknown:
         return const <Color>[Color(0xFF2C3E50), Color(0xFF4CA1AF)];
     }
   }
 
-  static bool isAmex(CardBrand brand) => brand == CardBrand.amex;
+  static bool isAmex(UCardBrand brand) => brand == UCardBrand.amex;
 }
 
 class _CardNumberFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
     final String digits = newValue.text.replaceAll(RegExp(r"\D"), "");
-    final bool isAmex = CardBrandDetector.isAmex(CardBrandDetector.detect(digits));
+    final bool isAmex = UCardBrandDetector.isAmex(UCardBrandDetector.detect(digits));
     final int maxLen = isAmex ? 15 : 16;
     final String trimmed = digits.length > maxLen ? digits.substring(0, maxLen) : digits;
     final List<int> groups = isAmex ? <int>[4, 6, 5] : <int>[4, 4, 4, 4];
@@ -125,8 +125,8 @@ class _ExpiryFormatter extends TextInputFormatter {
   }
 }
 
-class CreditCardWidget extends StatefulWidget {
-  const CreditCardWidget({
+class UCreditCardWidget extends StatefulWidget {
+  const UCreditCardWidget({
     required this.cardNumber,
     required this.expiryDate,
     required this.cardHolderName,
@@ -157,16 +157,16 @@ class CreditCardWidget extends StatefulWidget {
   final String? brandLabel;
   final Duration animationDuration;
   final bool obscureCardNumber;
-  final ValueChanged<CardBrand>? onBrandChanged;
+  final ValueChanged<UCardBrand>? onBrandChanged;
 
   @override
-  State<CreditCardWidget> createState() => _CreditCardWidgetState();
+  State<UCreditCardWidget> createState() => _CreditCardWidgetState();
 }
 
-class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerProviderStateMixin {
+class _CreditCardWidgetState extends State<UCreditCardWidget> with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   late final Animation<double> _animation;
-  CardBrand _brand = CardBrand.unknown;
+  UCardBrand _brand = UCardBrand.unknown;
 
   @override
   void initState() {
@@ -174,16 +174,16 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
     _controller = AnimationController(vsync: this, duration: widget.animationDuration);
     _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
     if (widget.showBackView) _controller.value = 1.0;
-    _brand = CardBrandDetector.detect(widget.cardNumber);
+    _brand = UCardBrandDetector.detect(widget.cardNumber);
   }
 
   @override
-  void didUpdateWidget(covariant CreditCardWidget oldWidget) {
+  void didUpdateWidget(covariant UCreditCardWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.showBackView != oldWidget.showBackView) {
       widget.showBackView ? _controller.forward() : _controller.reverse();
     }
-    final CardBrand newBrand = CardBrandDetector.detect(widget.cardNumber);
+    final UCardBrand newBrand = UCardBrandDetector.detect(widget.cardNumber);
     if (newBrand != _brand) {
       _brand = newBrand;
       WidgetsBinding.instance.addPostFrameCallback((_) => widget.onBrandChanged?.call(newBrand));
@@ -226,7 +226,7 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
   Gradient get _gradient =>
       widget.gradient ??
       LinearGradient(
-        colors: CardBrandDetector.gradientColors(_brand),
+        colors: UCardBrandDetector.gradientColors(_brand),
         begin: Alignment.topRight,
         end: Alignment.bottomLeft,
       );
@@ -235,7 +235,7 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
     final Widget mark =
         widget.logo ??
         Text(
-          widget.brandLabel ?? CardBrandDetector.label(_brand),
+          widget.brandLabel ?? UCardBrandDetector.label(_brand),
           style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
         );
     return UContainer(
@@ -328,7 +328,7 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
             child:
                 widget.logo ??
                 Text(
-                  widget.brandLabel ?? CardBrandDetector.label(_brand),
+                  widget.brandLabel ?? UCardBrandDetector.label(_brand),
                   style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                 ),
           ),
@@ -354,15 +354,15 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
 
   String _displayNumber() {
     if (widget.cardNumber.isEmpty) {
-      return CardBrandDetector.isAmex(_brand) ? "#### ###### #####" : "#### #### #### ####";
+      return UCardBrandDetector.isAmex(_brand) ? "#### ###### #####" : "#### #### #### ####";
     }
     if (!widget.obscureCardNumber) return widget.cardNumber;
     return widget.cardNumber.replaceAllMapped(RegExp(r"\d(?=\d{4,}$)"), (_) => "*");
   }
 }
 
-class CreditCardForm extends StatefulWidget {
-  const CreditCardForm({
+class UCreditCardForm extends StatefulWidget {
+  const UCreditCardForm({
     required this.model,
     required this.onChanged,
     super.key,
@@ -370,16 +370,16 @@ class CreditCardForm extends StatefulWidget {
     this.obscureCvv = true,
   });
 
-  final CreditCardModel model;
-  final ValueChanged<CreditCardModel> onChanged;
+  final UCreditCardModel model;
+  final ValueChanged<UCreditCardModel> onChanged;
   final GlobalKey<FormState>? formKey;
   final bool obscureCvv;
 
   @override
-  State<CreditCardForm> createState() => _CreditCardFormState();
+  State<UCreditCardForm> createState() => _CreditCardFormState();
 }
 
-class _CreditCardFormState extends State<CreditCardForm> {
+class _CreditCardFormState extends State<UCreditCardForm> {
   late final TextEditingController _numberCtrl;
   late final TextEditingController _expiryCtrl;
   late final TextEditingController _nameCtrl;
@@ -437,7 +437,7 @@ class _CreditCardFormState extends State<CreditCardForm> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isAmex = CardBrandDetector.isAmex(CardBrandDetector.detect(_numberCtrl.text));
+    final bool isAmex = UCardBrandDetector.isAmex(UCardBrandDetector.detect(_numberCtrl.text));
     return Form(
       key: widget.formKey,
       child: Column(

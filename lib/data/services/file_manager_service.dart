@@ -1,6 +1,6 @@
 part of "../data.dart";
 
-class FileManagerService {
+class UFileManagerService {
   Future<(UResponse<UFileManagerListResponse>?, UEmptyResponse?, String?)> browse({
     required UFileManagerBrowseParams p,
     required Function(UResponse<UFileManagerListResponse> r) onOk,

@@ -1,6 +1,6 @@
 part of "../data.dart";
 
-class CommentService {
+class UCommentService {
   Future<(UResponse<String>?, UEmptyResponse?, String?)> create({
     required UCommentCreateParams p,
     Function(UResponse<String> r)? onOk,

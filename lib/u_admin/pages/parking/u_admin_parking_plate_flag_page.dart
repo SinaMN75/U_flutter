@@ -17,6 +17,12 @@ class _UAdminParkingPlateFlagPageState extends State<UAdminParkingPlateFlagPage>
     c.init(parking: widget.parking);
     super.initState();
   }
+  @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -86,14 +92,15 @@ class _UAdminParkingPlateFlagPageState extends State<UAdminParkingPlateFlagPage>
     final String? parkingId = widget.parking?.id;
     if (parkingId == null) return;
 
-    final TextEditingController reason = TextEditingController();
-    final TextEditingController amount = TextEditingController();
-    final TextEditingController spotNumber = TextEditingController();
+    final UAdminFields f = UAdminFields();
+    final TextEditingController reason = f.text();
+    final TextEditingController amount = f.text();
+    final TextEditingController spotNumber = f.text();
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     String plate = "";
     TagParkingPlateFlag kind = TagParkingPlateFlag.debt;
 
-    await UNavigator.dialog(
+    await UNavigator.dialog(f.scope(
       StatefulBuilder(
         builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
           title: Text(U.s.addPlate),
@@ -147,7 +154,7 @@ class _UAdminParkingPlateFlagPageState extends State<UAdminParkingPlateFlagPage>
             ),
           ),
         ),
-      ),
+      )),
     );
   }
 }

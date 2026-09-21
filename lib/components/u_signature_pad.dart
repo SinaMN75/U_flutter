@@ -251,8 +251,8 @@ class USignaturePad extends StatefulWidget {
     this.exportBackground,
   });
 
-  final Function(FileData) onSave;
-  final Function(FileData)? onDraw;
+  final Function(UFileData) onSave;
+  final Function(UFileData)? onDraw;
   final String? saveButtonText;
   final String? clearButtonText;
   final String? emptyMessage;
@@ -311,7 +311,7 @@ class _USignaturePadState extends State<USignaturePad> {
     if (_controller.isEmpty) return;
     final Uint8List? bytes = await _controller.toPngBytes(pixelRatio: widget.exportPixelRatio, background: widget.exportBackground);
     if (bytes == null) return;
-    final FileData file = FileData(bytes: bytes, extension: "png");
+    final UFileData file = UFileData(bytes: bytes, extension: "png");
     widget.onSave(file);
     widget.onDraw?.call(file);
   }

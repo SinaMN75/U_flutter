@@ -1,6 +1,6 @@
 part of "../data.dart";
 
-class DashboardService {
+class UDashboardService {
   Future<(USystemMetricsResponse?, UEmptyResponse?, String?)> readSystemMetrics({
     Function(USystemMetricsResponse r)? onOk,
     VoidCallback? onError,

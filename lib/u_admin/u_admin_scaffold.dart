@@ -12,6 +12,8 @@ class UAdminScaffold extends StatelessWidget {
     this.totalPages,
     this.onPageChanged,
     this.floatingActionButton,
+    this.maxContentWidth = 1400,
+    this.constrained = true,
   });
 
   final String title;
@@ -19,10 +21,17 @@ class UAdminScaffold extends StatelessWidget {
   final VoidCallback? onFilter;
   final VoidCallback? onCreate;
   final List<Widget>? extraActions;
-  final RxInt? pageNumber;
-  final RxInt? totalPages;
+  final URxInt? pageNumber;
+  final URxInt? totalPages;
   final ValueChanged<int>? onPageChanged;
   final Widget? floatingActionButton;
+
+  /// Widest the content is allowed to grow. Past this the page centres itself
+  /// instead of stretching a table across a 2560px monitor.
+  final double maxContentWidth;
+
+  /// Set false for a page that manages its own width (a map, a full-bleed editor).
+  final bool constrained;
 
   bool get _hasPagination => pageNumber != null && totalPages != null && onPageChanged != null;
 
@@ -39,9 +48,9 @@ class UAdminScaffold extends StatelessWidget {
     ),
     body: UColumn(
       children: <Widget>[
-        body.expanded(),
+        (constrained ? UAdminPageBody(maxWidth: maxContentWidth, child: body) : body).expanded(),
         if (_hasPagination)
-          Obx(
+          UObx(
             () => UNumberPagination(
               currentPage: pageNumber!.value,
               totalPages: totalPages!.value,

@@ -163,7 +163,7 @@ class UDormBedReadParams {
   final double? maxDeposit;
   final double? minMonthlyRent;
   final double? maxMonthlyRent;
-  final DormBedSelectorArgs? selectorArgs;
+  final UDormBedSelectorArgs? selectorArgs;
   final int? orderBy;
 
   UDormBedReadParams({
@@ -204,7 +204,7 @@ class UDormBedReadParams {
     maxDeposit: json["maxDeposit"]?.toDouble(),
     minMonthlyRent: json["minMonthlyRent"]?.toDouble(),
     maxMonthlyRent: json["maxMonthlyRent"]?.toDouble(),
-    selectorArgs: json["selectorArgs"] == null ? null : DormBedSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : UDormBedSelectorArgs.fromMap(json["selectorArgs"]),
     orderBy: json["orderBy"],
   );
 
@@ -597,7 +597,7 @@ class UDormReadParams {
   final String? creatorId;
   final String? title;
   final String? cityCode;
-  final DormSelectorArgs? selectorArgs;
+  final UDormSelectorArgs? selectorArgs;
   final int? orderBy;
 
   UDormReadParams({
@@ -634,7 +634,7 @@ class UDormReadParams {
     creatorId: json["creatorId"],
     title: json["title"],
     cityCode: json["cityCode"],
-    selectorArgs: json["selectorArgs"] == null ? null : DormSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : UDormSelectorArgs.fromMap(json["selectorArgs"]),
     orderBy: json["orderBy"],
   );
 
@@ -1059,7 +1059,7 @@ class UHotelReadParams {
   final String? cityCode;
   final int? minStars;
   final int? orderBy;
-  final HotelSelectorArgs? selectorArgs;
+  final UHotelSelectorArgs? selectorArgs;
 
   UHotelReadParams({
     this.pageSize,
@@ -1098,7 +1098,7 @@ class UHotelReadParams {
     cityCode: json["cityCode"],
     minStars: json["minStars"],
     orderBy: json["orderBy"],
-    selectorArgs: json["selectorArgs"] == null ? null : HotelSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : UHotelSelectorArgs.fromMap(json["selectorArgs"]),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -1401,7 +1401,7 @@ class UHotelRoomReadParams {
   final double? minPrice;
   final double? maxPrice;
   final bool? availableOnly;
-  final HotelRoomSelectorArgs? selectorArgs;
+  final UHotelRoomSelectorArgs? selectorArgs;
   final int? orderBy;
   final int? minCapacity;
   final int? maxCapacity;
@@ -1442,7 +1442,7 @@ class UHotelRoomReadParams {
     minPrice: json["minPrice"]?.toDouble(),
     maxPrice: json["maxPrice"]?.toDouble(),
     availableOnly: json["availableOnly"],
-    selectorArgs: json["selectorArgs"] == null ? null : HotelRoomSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : UHotelRoomSelectorArgs.fromMap(json["selectorArgs"]),
     orderBy: json["orderBy"],
     minCapacity: json["minCapacity"],
     maxCapacity: json["maxCapacity"],
@@ -1658,7 +1658,7 @@ class UDormRoomReadParams {
   final String? creatorId;
   final String? title;
   final String? dormId;
-  final DormRoomSelectorArgs? selectorArgs;
+  final UDormRoomSelectorArgs? selectorArgs;
   final int? orderBy;
 
   UDormRoomReadParams({
@@ -1689,7 +1689,7 @@ class UDormRoomReadParams {
     creatorId: json["creatorId"],
     title: json["title"],
     dormId: json["dormId"],
-    selectorArgs: json["selectorArgs"] == null ? null : DormRoomSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : UDormRoomSelectorArgs.fromMap(json["selectorArgs"]),
     orderBy: json["orderBy"],
   );
 
@@ -1794,7 +1794,7 @@ class UDormBedContractReadParams {
   final bool? upcomingOnly;
   final bool? expiredOnly;
   final int? expiringWithinDays;
-  final DormBedContractSelectorArgs? selectorArgs;
+  final UDormBedContractSelectorArgs? selectorArgs;
   final int? orderBy;
 
   UDormBedContractReadParams({
@@ -1841,7 +1841,7 @@ class UDormBedContractReadParams {
     upcomingOnly: json["upcomingOnly"],
     expiredOnly: json["expiredOnly"],
     expiringWithinDays: json["expiringWithinDays"] == null ? null : (json["expiringWithinDays"] as num).toInt(),
-    selectorArgs: json["selectorArgs"] == null ? null : DormBedContractSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : UDormBedContractSelectorArgs.fromMap(json["selectorArgs"]),
     orderBy: json["orderBy"],
   );
 
@@ -2020,7 +2020,7 @@ class UDormBedInvoiceReadParams {
   final DateTime? maxDueDate;
   final double? minDebtAmount;
   final double? maxDebtAmount;
-  final DormBedInvoiceSelectorArgs? selectorArgs;
+  final UDormBedInvoiceSelectorArgs? selectorArgs;
   final String? creatorId;
   final int? orderBy;
 
@@ -2065,7 +2065,7 @@ class UDormBedInvoiceReadParams {
     maxDueDate: json["maxDueDate"] == null ? null : DateTime.parse(json["maxDueDate"]),
     minDebtAmount: json["minDebtAmount"] == null ? null : (json["minDebtAmount"] as num).toDouble(),
     maxDebtAmount: json["maxDebtAmount"] == null ? null : (json["maxDebtAmount"] as num).toDouble(),
-    selectorArgs: json["selectorArgs"] == null ? null : DormBedInvoiceSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : UDormBedInvoiceSelectorArgs.fromMap(json["selectorArgs"]),
     creatorId: json["creatorId"],
     orderBy: json["orderBy"],
   );
@@ -2362,7 +2362,7 @@ class UHotelReservationReadParams {
   final bool? upcomingOnly;
   final bool? pastOnly;
   final int? orderBy;
-  final HotelReservationSelectorArgs? selectorArgs;
+  final UHotelReservationSelectorArgs? selectorArgs;
 
   UHotelReservationReadParams({
     this.pageSize,
@@ -2407,7 +2407,7 @@ class UHotelReservationReadParams {
     upcomingOnly: json["upcomingOnly"],
     pastOnly: json["pastOnly"],
     orderBy: json["orderBy"],
-    selectorArgs: json["selectorArgs"] == null ? null : HotelReservationSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : UHotelReservationSelectorArgs.fromMap(json["selectorArgs"]),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -2598,7 +2598,7 @@ class UHotelInvoiceReadParams {
   final double? minDebtAmount;
   final double? maxDebtAmount;
   final int? orderBy;
-  final HotelInvoiceSelectorArgs? selectorArgs;
+  final UHotelInvoiceSelectorArgs? selectorArgs;
 
   UHotelInvoiceReadParams({
     this.pageSize,
@@ -2643,7 +2643,7 @@ class UHotelInvoiceReadParams {
     minDebtAmount: json["minDebtAmount"]?.toDouble(),
     maxDebtAmount: json["maxDebtAmount"]?.toDouble(),
     orderBy: json["orderBy"],
-    selectorArgs: json["selectorArgs"] == null ? null : HotelInvoiceSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : UHotelInvoiceSelectorArgs.fromMap(json["selectorArgs"]),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -2698,7 +2698,7 @@ class UHotelRoomAvailabilityParams {
   final DateTime checkInDate;
   final DateTime checkOutDate;
   final int guestCount;
-  final HotelRoomSelectorArgs? selectorArgs;
+  final UHotelRoomSelectorArgs? selectorArgs;
 
   UHotelRoomAvailabilityParams({
     required this.checkInDate,
@@ -2719,7 +2719,7 @@ class UHotelRoomAvailabilityParams {
     checkInDate: DateTime.parse(json["checkInDate"]),
     checkOutDate: DateTime.parse(json["checkOutDate"]),
     guestCount: json["guestCount"] == null ? 1 : (json["guestCount"] as num).toInt(),
-    selectorArgs: json["selectorArgs"] == null ? null : HotelRoomSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : UHotelRoomSelectorArgs.fromMap(json["selectorArgs"]),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{

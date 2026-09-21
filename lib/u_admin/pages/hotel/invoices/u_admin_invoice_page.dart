@@ -26,6 +26,12 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
     c.init(contract: widget.contract);
     super.initState();
   }
+  @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -40,7 +46,7 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
     },
     body: UColumn(
       children: <Widget>[
-        if (widget.contract != null) Obx(() => c.state.isLoaded() ? _summary() : const SizedBox.shrink()),
+        if (widget.contract != null) UObx(() => c.state.isLoaded() ? _summary() : const SizedBox.shrink()),
         _statusFilter(),
         _list().expanded(),
       ],
@@ -76,7 +82,7 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
     ),
   );
 
-  Widget _statusFilter() => Obx(() {
+  Widget _statusFilter() => UObx(() {
     c.pageNumber.value;
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -194,7 +200,7 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
                 jalali: true,
                 controller: c.minDueDateController,
                 labelText: U.s.dueDate,
-                onChange: (DateTime d, Jalali j) {
+                onChange: (DateTime d, UJalali j) {
                   c.minDueDate = d;
                   c.minDueDateController.text = d.toJalaliDate();
                 },
@@ -203,7 +209,7 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
                 jalali: true,
                 controller: c.maxDueDateController,
                 labelText: U.s.dueDate,
-                onChange: (DateTime d, Jalali j) {
+                onChange: (DateTime d, UJalali j) {
                   c.maxDueDate = d;
                   c.maxDueDateController.text = d.toJalaliDate();
                 },
@@ -244,20 +250,21 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
 
   void _showEditDialog({UDormBedInvoiceResponse? p}) {
     final bool isEdit = p != null;
-    final TextEditingController debt = TextEditingController(text: p?.debtAmount.toInt().toString());
-    final TextEditingController creditor = TextEditingController(text: p?.creditorAmount.toInt().toString());
-    final TextEditingController paid = TextEditingController(text: p?.paidAmount.toInt().toString());
-    final TextEditingController penalty = TextEditingController(text: p?.penaltyAmount.toInt().toString());
-    final TextEditingController dueCtrl = TextEditingController(text: p?.dueDate.toJalaliDate());
-    final TextEditingController description = TextEditingController(text: p?.jsonData.detail1);
+    final UAdminFields f = UAdminFields();
+    final TextEditingController debt = f.text(p?.debtAmount.toInt().toString());
+    final TextEditingController creditor = f.text(p?.creditorAmount.toInt().toString());
+    final TextEditingController paid = f.text(p?.paidAmount.toInt().toString());
+    final TextEditingController penalty = f.text(p?.penaltyAmount.toInt().toString());
+    final TextEditingController dueCtrl = f.text(p?.dueDate.toJalaliDate());
+    final TextEditingController description = f.text(p?.jsonData.detail1);
 
-    final Rxn<UDormBedContractResponse> contract = Rxn<UDormBedContractResponse>();
+    final URxn<UDormBedContractResponse> contract = URxn<UDormBedContractResponse>();
     DateTime? dueDate = p?.dueDate;
     TagDormBedInvoice type = _types.firstWhere((TagDormBedInvoice t) => p?.tags.contains(t.number) ?? false, orElse: () => TagDormBedInvoice.rent);
 
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-    UNavigator.dialog(
+    UNavigator.dialog(f.scope(
       AlertDialog(
         title: Text(p == null ? U.s.createItem(U.s.invoice) : U.s.editItem(U.s.invoice)),
         content: SizedBox(
@@ -319,7 +326,7 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
                       jalali: true,
                       initialDate: dueDate,
                       validator: UValidators.required(message: ""),
-                      onChange: (DateTime d, Jalali j) {
+                      onChange: (DateTime d, UJalali j) {
                         dueDate = d;
                         dueCtrl.text = d.toJalaliDate();
                       },
@@ -376,7 +383,7 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
             ),
           ),
         ),
-      ),
+      )),
     );
   }
 }

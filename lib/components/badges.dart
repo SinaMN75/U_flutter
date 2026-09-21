@@ -27,14 +27,14 @@ class ULetterBadge extends StatelessWidget {
   );
 }
 
-enum BadgeAnimationType {
+enum UBadgeAnimationType {
   slide,
   scale,
   fade,
 }
 
-class BadgeWidget extends StatefulWidget {
-  const BadgeWidget({
+class UBadgeWidget extends StatefulWidget {
+  const UBadgeWidget({
     super.key,
     this.badgeContent,
     this.child,
@@ -42,12 +42,12 @@ class BadgeWidget extends StatefulWidget {
     this.elevation = 2,
     this.toAnimate = true,
     this.position,
-    this.shape = BadgeShape.circle,
+    this.shape = UBadgeShape.circle,
     this.padding = const EdgeInsets.all(5),
     this.animationDuration = const Duration(milliseconds: 500),
     this.borderRadius = BorderRadius.zero,
     this.alignment = Alignment.center,
-    this.animationType = BadgeAnimationType.slide,
+    this.animationType = UBadgeAnimationType.slide,
     this.showBadge = true,
     this.ignorePointer = false,
     this.borderSide = BorderSide.none,
@@ -59,7 +59,7 @@ class BadgeWidget extends StatefulWidget {
 
   final AlignmentGeometry alignment;
 
-  final BadgePosition? position;
+  final UBadgePosition? position;
 
   final Widget? badgeContent;
 
@@ -75,9 +75,9 @@ class BadgeWidget extends StatefulWidget {
 
   final Duration animationDuration;
 
-  final BadgeAnimationType animationType;
+  final UBadgeAnimationType animationType;
 
-  final BadgeShape shape;
+  final UBadgeShape shape;
 
   final BorderSide borderSide;
 
@@ -90,10 +90,10 @@ class BadgeWidget extends StatefulWidget {
   final bool showBadge;
 
   @override
-  BadgeState createState() => BadgeState();
+  UBadgeState createState() => UBadgeState();
 }
 
-class BadgeState extends State<BadgeWidget> with SingleTickerProviderStateMixin {
+class UBadgeState extends State<UBadgeWidget> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _animation;
 
@@ -108,11 +108,11 @@ class BadgeState extends State<BadgeWidget> with SingleTickerProviderStateMixin 
       vsync: this,
     );
 
-    if (widget.animationType == BadgeAnimationType.slide) {
+    if (widget.animationType == UBadgeAnimationType.slide) {
       _animation = CurvedAnimation(parent: _animationController, curve: Curves.elasticOut);
-    } else if (widget.animationType == BadgeAnimationType.scale) {
+    } else if (widget.animationType == UBadgeAnimationType.scale) {
       _animation = _scaleTween.animate(_animationController);
-    } else if (widget.animationType == BadgeAnimationType.fade) {
+    } else if (widget.animationType == UBadgeAnimationType.fade) {
       _animation = CurvedAnimation(parent: _animationController, curve: Curves.easeIn);
     }
 
@@ -130,7 +130,7 @@ class BadgeState extends State<BadgeWidget> with SingleTickerProviderStateMixin 
         clipBehavior: Clip.none,
         children: <Widget>[
           widget.child!,
-          BadgePositioned(
+          UBadgePositioned(
             position: widget.position,
             child: widget.ignorePointer ? IgnorePointer(child: _getBadge()) : _getBadge(),
           ),
@@ -140,7 +140,7 @@ class BadgeState extends State<BadgeWidget> with SingleTickerProviderStateMixin 
   }
 
   Widget _getBadge() {
-    final OutlinedBorder border = widget.shape == BadgeShape.circle
+    final OutlinedBorder border = widget.shape == UBadgeShape.circle
         ? CircleBorder(side: widget.borderSide)
         : RoundedRectangleBorder(
             side: widget.borderSide,
@@ -165,7 +165,7 @@ class BadgeState extends State<BadgeWidget> with SingleTickerProviderStateMixin 
         shape: border,
         elevation: widget.elevation,
         child: DecoratedBox(
-          decoration: widget.shape == BadgeShape.circle
+          decoration: widget.shape == UBadgeShape.circle
               ? BoxDecoration(gradient: widget.gradient, shape: BoxShape.circle)
               : BoxDecoration(
                   gradient: widget.gradient,
@@ -177,17 +177,17 @@ class BadgeState extends State<BadgeWidget> with SingleTickerProviderStateMixin 
     );
 
     if (widget.toAnimate) {
-      if (widget.animationType == BadgeAnimationType.slide) {
+      if (widget.animationType == UBadgeAnimationType.slide) {
         return SlideTransition(
           position: _positionTween.animate(_animation),
           child: widget.gradient == null ? badgeView() : badgeViewGradient(),
         );
-      } else if (widget.animationType == BadgeAnimationType.scale) {
+      } else if (widget.animationType == UBadgeAnimationType.scale) {
         return ScaleTransition(
           scale: _animation,
           child: widget.gradient == null ? badgeView() : badgeViewGradient(),
         );
-      } else if (widget.animationType == BadgeAnimationType.fade) {
+      } else if (widget.animationType == UBadgeAnimationType.fade) {
         return FadeTransition(
           opacity: _animation,
           child: widget.gradient == null ? badgeView() : badgeViewGradient(),
@@ -199,7 +199,7 @@ class BadgeState extends State<BadgeWidget> with SingleTickerProviderStateMixin 
   }
 
   @override
-  void didUpdateWidget(BadgeWidget oldWidget) {
+  void didUpdateWidget(UBadgeWidget oldWidget) {
     if (widget.badgeContent is Text && oldWidget.badgeContent is Text) {
       final Text newText = widget.badgeContent! as Text;
       final Text oldText = oldWidget.badgeContent! as Text;
@@ -228,18 +228,18 @@ class BadgeState extends State<BadgeWidget> with SingleTickerProviderStateMixin 
   }
 }
 
-class BadgePosition {
-  const BadgePosition({this.top, this.end, this.bottom, this.start, this.isCenter = false});
+class UBadgePosition {
+  const UBadgePosition({this.top, this.end, this.bottom, this.start, this.isCenter = false});
 
-  factory BadgePosition.center() => const BadgePosition(isCenter: true);
+  factory UBadgePosition.center() => const UBadgePosition(isCenter: true);
 
-  factory BadgePosition.topStart({double top = -5, double start = -10}) => BadgePosition(top: top, start: start);
+  factory UBadgePosition.topStart({double top = -5, double start = -10}) => UBadgePosition(top: top, start: start);
 
-  factory BadgePosition.topEnd({double top = -8, double end = -10}) => BadgePosition(top: top, end: end);
+  factory UBadgePosition.topEnd({double top = -8, double end = -10}) => UBadgePosition(top: top, end: end);
 
-  factory BadgePosition.bottomEnd({double bottom = -8, double end = -10}) => BadgePosition(bottom: bottom, end: end);
+  factory UBadgePosition.bottomEnd({double bottom = -8, double end = -10}) => UBadgePosition(bottom: bottom, end: end);
 
-  factory BadgePosition.bottomStart({double bottom = -8, double start = -10}) => BadgePosition(bottom: bottom, start: start);
+  factory UBadgePosition.bottomStart({double bottom = -8, double start = -10}) => UBadgePosition(bottom: bottom, start: start);
   final double? top;
 
   final double? end;
@@ -251,23 +251,23 @@ class BadgePosition {
   final bool isCenter;
 }
 
-enum BadgeShape {
+enum UBadgeShape {
   circle,
   square,
 }
 
-class BadgePositioned extends StatelessWidget {
-  const BadgePositioned({required this.child, super.key, this.position});
+class UBadgePositioned extends StatelessWidget {
+  const UBadgePositioned({required this.child, super.key, this.position});
 
-  final BadgePosition? position;
+  final UBadgePosition? position;
 
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    final BadgePosition? position = this.position;
+    final UBadgePosition? position = this.position;
     if (position == null) {
-      final BadgePosition topRight = BadgePosition.topEnd();
+      final UBadgePosition topRight = UBadgePosition.topEnd();
       return PositionedDirectional(top: topRight.top, end: topRight.end, child: child);
     }
 

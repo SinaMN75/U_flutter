@@ -1692,7 +1692,7 @@ abstract class UEditorDialogs {
 /// Signature for uploading a picked image and returning its final URL (or null
 /// on failure). Provide your own to plug in any backend; when omitted the
 /// editor uploads through `UServices.media`.
-typedef URichImageUploader = Future<String?> Function(FileData file);
+typedef URichImageUploader = Future<String?> Function(UFileData file);
 
 /// Embeddable block-based rich text editor.
 ///
@@ -2215,7 +2215,7 @@ class _URichTextEditorState extends State<URichTextEditor> {
   Future<void> _insertImage() async {
     await UFile.showFilePicker(
       allowedExtensions: const <String>["jpg", "jpeg", "png", "gif", "webp"],
-      action: (List<FileData> files) async {
+      action: (List<UFileData> files) async {
         if (files.isEmpty) return;
         setState(() => _uploading = true);
         final URichImageUploader uploader = widget.onUploadImage ?? _defaultUpload;
@@ -2231,7 +2231,7 @@ class _URichTextEditorState extends State<URichTextEditor> {
     );
   }
 
-  Future<String?> _defaultUpload(FileData file) async {
+  Future<String?> _defaultUpload(UFileData file) async {
     final Completer<String?> completer = Completer<String?>();
     await UServices.media.create(
       p: UMediaCreateParams(file: file, tag1: TagMedia.image.number),

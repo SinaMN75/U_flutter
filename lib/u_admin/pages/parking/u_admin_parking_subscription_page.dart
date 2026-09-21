@@ -17,6 +17,12 @@ class _UAdminParkingSubscriptionPageState extends State<UAdminParkingSubscriptio
     c.init(parking: widget.parking);
     super.initState();
   }
+  @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -57,7 +63,7 @@ class _UAdminParkingSubscriptionPageState extends State<UAdminParkingSubscriptio
     padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
     children: <Widget>[
       UTextField(controller: c.controllerQuery, hintText: U.s.searchAndSelect, prefix: const Icon(Icons.search_rounded), expanded: 1),
-      Obx(
+      UObx(
         () => USegmentedControl<bool>(
           items: <bool, String>{true: U.s.active, false: U.s.expired},
           selectedValue: c.isActive.value ?? true,
@@ -130,15 +136,16 @@ class _UAdminParkingSubscriptionPageState extends State<UAdminParkingSubscriptio
     final String? parkingId = widget.parking?.id;
     if (parkingId == null) return;
 
-    final TextEditingController name = TextEditingController();
-    final TextEditingController phone = TextEditingController();
-    final TextEditingController price = TextEditingController();
+    final UAdminFields f = UAdminFields();
+    final TextEditingController name = f.text();
+    final TextEditingController phone = f.text();
+    final TextEditingController price = f.text();
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     String plate = "";
     TagVehicle vehicleType = TagVehicle.car;
     TagParkingSubscription duration = TagParkingSubscription.monthly;
 
-    await UNavigator.dialog(
+    await UNavigator.dialog(f.scope(
       StatefulBuilder(
         builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
           title: Text(U.s.registerANewSubscription),
@@ -201,7 +208,7 @@ class _UAdminParkingSubscriptionPageState extends State<UAdminParkingSubscriptio
             ),
           ),
         ),
-      ),
+      )),
     );
   }
 }

@@ -22,7 +22,7 @@ class UAdminListView<T> extends StatelessWidget {
     this.desktopBreakpoint = 800,
   });
 
-  final RxState state;
+  final URxState state;
 
   final List<T> Function() items;
   final int Function() totalCount;
@@ -34,7 +34,7 @@ class UAdminListView<T> extends StatelessWidget {
   final double desktopBreakpoint;
 
   @override
-  Widget build(BuildContext context) => Obx(() {
+  Widget build(BuildContext context) => UObx(() {
     if (state.value.isError()) return _AdminListError(onRetry: onRetry);
     if (state.value.isEmpty()) return _AdminListEmpty(text: emptyText);
     if (!state.value.isLoaded()) return const Center(child: CircularProgressIndicator());

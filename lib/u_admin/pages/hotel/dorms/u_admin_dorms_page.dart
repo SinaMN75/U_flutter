@@ -15,6 +15,12 @@ class _DormPageState extends State<UAdminDormPage> {
     c.init();
     super.initState();
   }
+  @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -84,20 +90,21 @@ class _DormPageState extends State<UAdminDormPage> {
   );
 
   Future<void> _showEditDialog({UDormResponse? p}) async {
-    final TextEditingController title = TextEditingController(text: p?.title);
+    final UAdminFields f = UAdminFields();
+    final TextEditingController title = f.text(p?.title);
     UCountry country = UCountries.countryByCode(p?.cityCode ?? "-1") ?? UCountries.iran();
     UProvince province = UCountries.provinceByCode(p?.cityCode ?? "-1") ?? UCountries.iran().provinces.first;
     UCity? city = province.cities.firstOrNull;
-    final TextEditingController detail = TextEditingController(text: p?.jsonData.description);
-    final TextEditingController address = TextEditingController(text: p?.address);
-    final TextEditingController phoneNumber = TextEditingController(text: p?.phoneNumber);
-    final TextEditingController nearbyUniversity = TextEditingController(text: p?.jsonData.nearbyUniversity);
-    final TextEditingController visitingHours = TextEditingController(text: p?.jsonData.visitingHours);
-    final TextEditingController amenities = TextEditingController(text: p?.jsonData.amenities.join("، "));
-    final TextEditingController rules = TextEditingController(text: p?.jsonData.rules.join("، "));
-    final TextEditingController requiredDocuments = TextEditingController(text: p?.jsonData.requiredDocuments.join("، "));
-    final TextEditingController latitude = TextEditingController(text: p?.jsonData.latitude?.toString());
-    final TextEditingController longitude = TextEditingController(text: p?.jsonData.longitude?.toString());
+    final TextEditingController detail = f.text(p?.jsonData.description);
+    final TextEditingController address = f.text(p?.address);
+    final TextEditingController phoneNumber = f.text(p?.phoneNumber);
+    final TextEditingController nearbyUniversity = f.text(p?.jsonData.nearbyUniversity);
+    final TextEditingController visitingHours = f.text(p?.jsonData.visitingHours);
+    final TextEditingController amenities = f.text(p?.jsonData.amenities.join("، "));
+    final TextEditingController rules = f.text(p?.jsonData.rules.join("، "));
+    final TextEditingController requiredDocuments = f.text(p?.jsonData.requiredDocuments.join("، "));
+    final TextEditingController latitude = f.text(p?.jsonData.latitude?.toString());
+    final TextEditingController longitude = f.text(p?.jsonData.longitude?.toString());
     bool isGirls = p == null || p.tags.contains(TagDorm.girls.number);
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final List<UUserResponse> selectedAdmins = <UUserResponse>[];
@@ -107,7 +114,7 @@ class _DormPageState extends State<UAdminDormPage> {
       selectedAdmins.addAll(fetched.whereType<UUserResponse>());
     }
 
-    await UNavigator.dialog(
+    await UNavigator.dialog(f.scope(
       StatefulBuilder(
         builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
           title: Text(p == null ? U.s.createItem(U.s.dorm) : U.s.editItem(U.s.dorm)),
@@ -238,7 +245,7 @@ class _DormPageState extends State<UAdminDormPage> {
             ),
           ),
         ),
-      ),
+      )),
     );
   }
 }

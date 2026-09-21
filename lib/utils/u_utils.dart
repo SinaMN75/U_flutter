@@ -116,7 +116,7 @@ abstract class UValidators {
     bool isRequired = true,
   }) => (String? value) {
     if (isRequired && (value == null || value.isEmpty)) return requiredMessage ?? U.s.required;
-    if (value != null && value.isNotEmpty && !PersianTools.validateNationalCode(value.toLatinNumber())) return invalidMessage ?? U.s.thisFieldIsInvalid;
+    if (value != null && value.isNotEmpty && !UPersianTools.validateNationalCode(value.toLatinNumber())) return invalidMessage ?? U.s.thisFieldIsInvalid;
     return null;
   };
 
@@ -126,7 +126,7 @@ abstract class UValidators {
     bool isRequired = true,
   }) => (String? value) {
     if (isRequired && (value == null || value.isEmpty)) return requiredMessage ?? U.s.required;
-    if (value != null && value.isNotEmpty && !PersianTools.validateTaxMemoryId(value.toLatinNumber())) return invalidMessage ?? U.s.thisFieldIsInvalid;
+    if (value != null && value.isNotEmpty && !UPersianTools.validateTaxMemoryId(value.toLatinNumber())) return invalidMessage ?? U.s.thisFieldIsInvalid;
     return null;
   };
 

@@ -65,7 +65,7 @@ USlider(
         title: "UFilePicker",
         description: "Pick one or more files/images; onFilesChanged returns the selection.",
         code: r'''UFilePicker(onFilesChanged: (List<FileData> files) => setState(...));''',
-        child: UFilePicker(onFilesChanged: (List<FileData> files) => UToast.info(message: "${files.length} file(s)")),
+        child: UFilePicker(onFilesChanged: (List<UFileData> files) => UToast.info(message: "${files.length} file(s)")),
       ),
       DemoSection(
         title: "UHtmlView",

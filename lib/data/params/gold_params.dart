@@ -233,7 +233,7 @@ class UGoldReadUserTxnsParams {
   final int pageSize;
   final int pageNumber;
   final int? orderBy;
-  final GoldTxnSelectorArgs? selectorArgs;
+  final UGoldTxnSelectorArgs? selectorArgs;
   final DateTime? fromCreatedAt;
   final DateTime? toCreatedAt;
   final List<String>? ids;
@@ -262,7 +262,7 @@ class UGoldReadUserTxnsParams {
     pageSize: json["pageSize"] ?? 20,
     pageNumber: json["pageNumber"] ?? 1,
     orderBy: json["orderBy"],
-    selectorArgs: json["selectorArgs"] == null ? null : GoldTxnSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : UGoldTxnSelectorArgs.fromMap(json["selectorArgs"]),
     fromCreatedAt: json["fromCreatedAt"] == null ? null : DateTime.parse(json["fromCreatedAt"]),
     toCreatedAt: json["toCreatedAt"] == null ? null : DateTime.parse(json["toCreatedAt"]),
     ids: json["ids"] == null ? null : List<String>.from(json["ids"]!.map((dynamic x) => x)),

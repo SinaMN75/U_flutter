@@ -1,6 +1,6 @@
 part of "../data.dart";
 
-class BlogService {
+class UBlogService {
   Future<(UResponse<String>?, UEmptyResponse?, String?)> create({
     required UBlogCreateParams p,
     Function(UResponse<String> r)? onOk,

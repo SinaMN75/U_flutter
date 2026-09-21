@@ -44,7 +44,7 @@ class ULoadingSettings {
   final WidgetBuilder? builder;
   final String? source;
   final String? package;
-  final FileData? fileData;
+  final UFileData? fileData;
   final double imageWidth;
   final double imageHeight;
   final BoxFit imageFit;
@@ -79,7 +79,7 @@ class ULoadingSettings {
     WidgetBuilder? builder,
     String? source,
     String? package,
-    FileData? fileData,
+    UFileData? fileData,
     double? imageWidth,
     double? imageHeight,
     BoxFit? imageFit,
@@ -151,8 +151,8 @@ class ULoading {
   static bool _isShowing = false;
   static ULoadingSettings _settings = const ULoadingSettings();
   static ULoadingSettings _activeSettings = const ULoadingSettings();
-  static final RxnInt _percent = RxnInt();
-  static RxInt? _boundPercent;
+  static final URxnInt _percent = URxnInt();
+  static URxInt? _boundPercent;
 
   static ULoadingSettings get settings => _settings;
 
@@ -174,7 +174,7 @@ class ULoading {
     String? source,
     String? package,
     int? percent,
-    RxInt? percentRx,
+    URxInt? percentRx,
   }) {
     if (_isShowing) {
       update(
@@ -205,7 +205,7 @@ class ULoading {
     String? source,
     String? package,
     int? percent,
-    RxInt? percentRx,
+    URxInt? percentRx,
   }) {
     if (!_isShowing) return;
     if (settings != null || customLoader != null || text != null || source != null || package != null) {
@@ -233,7 +233,7 @@ class ULoading {
 
   static bool isShowing() => _isShowing;
 
-  static void _bindPercent({int? percent, RxInt? percentRx}) {
+  static void _bindPercent({int? percent, URxInt? percentRx}) {
     if (percentRx != null) {
       if (_boundPercent != percentRx) {
         _unbindPercent();
@@ -313,7 +313,7 @@ class __LoadingOverlayState extends State<_LoadingOverlay> with SingleTickerProv
     ),
   );
 
-  Widget _buildDefaultLoader(BuildContext context) => Obx(() {
+  Widget _buildDefaultLoader(BuildContext context) => UObx(() {
     final ULoadingSettings settings = widget.settings;
     final int? percent = ULoading._percent.value;
     final String text = settings.text ?? U.s.loading;

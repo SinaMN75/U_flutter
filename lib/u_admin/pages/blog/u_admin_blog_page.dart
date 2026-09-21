@@ -15,6 +15,12 @@ class _BlogPageState extends State<UAdminBlogPage> {
     c.init();
     super.initState();
   }
+  @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -150,16 +156,17 @@ class _BlogPageState extends State<UAdminBlogPage> {
   }
 
   Future<void> _showEditDialog({UBlogResponse? p}) async {
-    final TextEditingController title = TextEditingController(text: p?.title);
-    final TextEditingController subtitle = TextEditingController(text: p?.subtitle);
-    final TextEditingController slug = TextEditingController(text: p?.slug);
-    final TextEditingController content = TextEditingController(text: p?.content);
+    final UAdminFields f = UAdminFields();
+    final TextEditingController title = f.text(p?.title);
+    final TextEditingController subtitle = f.text(p?.subtitle);
+    final TextEditingController slug = f.text(p?.slug);
+    final TextEditingController content = f.text(p?.content);
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    List<FileData> files = <FileData>[];
+    List<UFileData> files = <UFileData>[];
     final List<UCategoryResponse> selectedCategories = <UCategoryResponse>[...(p?.categories ?? <UCategoryResponse>[])];
     final List<UCategoryResponse> allCategories = await c.fetchCategories();
 
-    await UNavigator.dialog(
+    await UNavigator.dialog(f.scope(
       StatefulBuilder(
         builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
           title: Text(p == null ? U.s.createItem(U.s.blog) : U.s.editItem(U.s.blog)),
@@ -220,7 +227,7 @@ class _BlogPageState extends State<UAdminBlogPage> {
                             .toList(),
                       ).pSymmetric(vertical: 6),
                     const SizedBox(height: 12),
-                    UFilePicker(onFilesChanged: (List<FileData> i) => files = i),
+                    UFilePicker(onFilesChanged: (List<UFileData> i) => files = i),
                     const SizedBox(height: 20),
                     UButtonSubmitCancel(
                       onSubmit: () => UValidators.validateForm(
@@ -262,7 +269,7 @@ class _BlogPageState extends State<UAdminBlogPage> {
             ),
           ),
         ),
-      ),
+      )),
     );
   }
 }

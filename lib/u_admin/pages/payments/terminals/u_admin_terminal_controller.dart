@@ -10,7 +10,7 @@ class UAdminTerminalController extends UBaseController {
   final TextEditingController creatorIdFilter = TextEditingController();
   final TextEditingController fromCreatedController = TextEditingController();
   final TextEditingController toCreatedController = TextEditingController();
-  Rxn<TagTerminal> typeFilter = Rxn<TagTerminal>();
+  URxn<TagTerminal> typeFilter = URxn<TagTerminal>();
 
   Future<void> init({UMerchantResponse? merchant}) async {
     this.merchant = merchant;
@@ -30,7 +30,7 @@ class UAdminTerminalController extends UBaseController {
         fromCreatedAt: fromCreatedAt,
         toCreatedAt: toCreatedAt,
         orderBy: tagOrderBy.value.number,
-        selectorArgs: const TerminalSelectorArgs(merchant: MerchantSelectorArgs(), terminalBrand: TerminalBrandSelectorArgs(), terminalBroker: TerminalBrokerSelectorArgs()),
+        selectorArgs: const UTerminalSelectorArgs(merchant: UMerchantSelectorArgs(), terminalBrand: UTerminalBrandSelectorArgs(), terminalBroker: UTerminalBrokerSelectorArgs()),
       ),
       onOk: (UResponse<List<UTerminalResponse>> r) {
         list = r.result ?? <UTerminalResponse>[];
@@ -178,7 +178,7 @@ class UAdminTerminalController extends UBaseController {
     UServices.terminal.read(
       p: UTerminalReadParams(
         ids: <String>[i.id],
-        selectorArgs: const TerminalSelectorArgs(agreement: true),
+        selectorArgs: const UTerminalSelectorArgs(agreement: true),
       ),
       onOk: (UResponse<List<UTerminalResponse>> r) {
         ULoading.dismiss();
@@ -256,7 +256,7 @@ class UAdminTerminalController extends UBaseController {
   );
 
   void import() => UFile.showFilePicker(
-    action: (List<FileData> i) {
+    action: (List<UFileData> i) {
       ULoading.show();
       if (i.length == 1 && i.first.extension!.toLowerCase().contains("xlsx")) {
         UServices.terminal.import(
@@ -283,7 +283,7 @@ class UAdminTerminalController extends UBaseController {
     await UServices.terminal.readBroker(
       p: UTerminalBrokerReadParams(
         title: query,
-        selectorArgs: const TerminalBrokerSelectorArgs(),
+        selectorArgs: const UTerminalBrokerSelectorArgs(),
       ),
       onOk: (UResponse<List<UTerminalBrokerResponse>> r) => result.addAll(r.result ?? <UTerminalBrokerResponse>[]),
       onError: (UEmptyResponse e) {},
@@ -297,12 +297,22 @@ class UAdminTerminalController extends UBaseController {
     await UServices.terminal.readBrand(
       p: UTerminalBrandReadParams(
         title: query,
-        selectorArgs: const TerminalBrandSelectorArgs(),
+        selectorArgs: const UTerminalBrandSelectorArgs(),
       ),
       onOk: (UResponse<List<UTerminalBrandResponse>> r) => result.addAll(r.result ?? <UTerminalBrandResponse>[]),
       onError: (UEmptyResponse e) {},
       onException: (String e) {},
     );
     return result;
+  }
+
+  @override
+  void dispose() {
+    serialFilter.dispose();
+    merchantIdFilter.dispose();
+    creatorIdFilter.dispose();
+    fromCreatedController.dispose();
+    toCreatedController.dispose();
+    super.dispose();
   }
 }

@@ -17,6 +17,12 @@ class _UAdminParkingStaffPageState extends State<UAdminParkingStaffPage> {
     c.init(parking: widget.parking);
     super.initState();
   }
+  @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -98,17 +104,18 @@ class _UAdminParkingStaffPageState extends State<UAdminParkingStaffPage> {
     final String? parkingId = widget.parking?.id;
     if (parkingId == null) return;
 
-    final TextEditingController firstName = TextEditingController();
-    final TextEditingController lastName = TextEditingController();
-    final TextEditingController userName = TextEditingController();
-    final TextEditingController password = TextEditingController();
-    final TextEditingController phone = TextEditingController();
-    final TextEditingController shiftTitle = TextEditingController();
+    final UAdminFields f = UAdminFields();
+    final TextEditingController firstName = f.text();
+    final TextEditingController lastName = f.text();
+    final TextEditingController userName = f.text();
+    final TextEditingController password = f.text();
+    final TextEditingController phone = f.text();
+    final TextEditingController shiftTitle = f.text();
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final Set<TagParkingStaff> permissions = <TagParkingStaff>{TagParkingStaff.registerEntryExit};
     double maxDiscount = 0;
 
-    await UNavigator.dialog(
+    await UNavigator.dialog(f.scope(
       StatefulBuilder(
         builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
           title: Text(U.s.newStaffMember),
@@ -182,19 +189,20 @@ class _UAdminParkingStaffPageState extends State<UAdminParkingStaffPage> {
             ),
           ),
         ),
-      ),
+      )),
     );
   }
 
   Future<void> _showEditDialog(UParkingStaffResponse staff) async {
-    final TextEditingController shiftTitle = TextEditingController(text: staff.shiftTitle);
-    final TextEditingController password = TextEditingController();
+    final UAdminFields f = UAdminFields();
+    final TextEditingController shiftTitle = f.text(staff.shiftTitle);
+    final TextEditingController password = f.text();
     final Set<TagParkingStaff> permissions = <TagParkingStaff>{
       ...TagParkingStaff.values.where((TagParkingStaff t) => staff.tags.contains(t.number)),
     };
     double maxDiscount = staff.maxDiscountPercent.toDouble();
 
-    await UNavigator.dialog(
+    await UNavigator.dialog(f.scope(
       StatefulBuilder(
         builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
           title: Text(U.s.editItem(U.s.staff)),
@@ -252,7 +260,7 @@ class _UAdminParkingStaffPageState extends State<UAdminParkingStaffPage> {
             ),
           ),
         ),
-      ),
+      )),
     );
   }
 }

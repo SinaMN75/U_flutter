@@ -17,6 +17,12 @@ class _AdminUsersPageState extends State<UAdminUsersPage> {
     c.init();
     super.initState();
   }
+  @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -146,7 +152,7 @@ class _AdminUsersPageState extends State<UAdminUsersPage> {
           child: UColumn(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Obx(
+              UObx(
                 () => UDropDownField<TagUser?>(
                   initialValue: c.verificationStatus.value,
                   onChanged: c.verificationStatus.call,
@@ -169,7 +175,7 @@ class _AdminUsersPageState extends State<UAdminUsersPage> {
                 jalali: true,
                 controller: c.fromCreatedController,
                 labelText: U.s.fromDate,
-                onChange: (DateTime d, Jalali j) {
+                onChange: (DateTime d, UJalali j) {
                   c.fromCreatedController.text = j.formatCompactDate();
                   c.fromCreatedAt = d;
                 },
@@ -178,7 +184,7 @@ class _AdminUsersPageState extends State<UAdminUsersPage> {
                 jalali: true,
                 controller: c.toCreatedController,
                 labelText: U.s.toDate,
-                onChange: (DateTime d, Jalali j) {
+                onChange: (DateTime d, UJalali j) {
                   c.toCreatedController.text = j.formatCompactDate();
                   c.toCreatedAt = d;
                 },
@@ -187,7 +193,7 @@ class _AdminUsersPageState extends State<UAdminUsersPage> {
                 jalali: true,
                 controller: c.fromBirthController,
                 labelText: U.s.fromBirthDate,
-                onChange: (DateTime d, Jalali j) {
+                onChange: (DateTime d, UJalali j) {
                   c.fromBirthController.text = j.formatCompactDate();
                   c.fromBirthDate = d;
                 },
@@ -196,7 +202,7 @@ class _AdminUsersPageState extends State<UAdminUsersPage> {
                 jalali: true,
                 controller: c.toBirthController,
                 labelText: U.s.toBirthDate,
-                onChange: (DateTime d, Jalali j) {
+                onChange: (DateTime d, UJalali j) {
                   c.toBirthController.text = j.formatCompactDate();
                   c.toBirthDate = d;
                 },

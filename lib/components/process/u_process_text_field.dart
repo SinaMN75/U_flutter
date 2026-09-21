@@ -48,7 +48,7 @@ class _UProcessTextFieldState extends State<UProcessTextField> {
         validator: _requiredValidator,
         controller: _dateController,
         jalali: true,
-        onChange: (DateTime d, Jalali j) {
+        onChange: (DateTime d, UJalali j) {
           _dateController.text = j.formatCompactDate();
           _setValue(d.toIso8601String());
         },

@@ -123,7 +123,7 @@ class UTxnReadParams {
   final DateTime? toCreatedAt;
   final List<int>? tags;
   final List<String>? ids;
-  final TxnSelectorArgs? selectorArgs;
+  final UTxnSelectorArgs? selectorArgs;
   final int? orderBy;
   final String? creatorId;
 
@@ -150,7 +150,7 @@ class UTxnReadParams {
     toCreatedAt: json["toCreatedAt"] == null ? null : DateTime.parse(json["toCreatedAt"]),
     tags: json["tags"] == null ? <int>[] : List<int>.from(json["tags"]!.map((dynamic x) => x)),
     ids: json["ids"] == null ? <String>[] : List<String>.from(json["ids"]!.map((dynamic x) => x)),
-    selectorArgs: json["selectorArgs"] == null ? null : TxnSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : UTxnSelectorArgs.fromMap(json["selectorArgs"]),
     orderBy: json["orderBy"],
     creatorId: json["creatorId"],
   );

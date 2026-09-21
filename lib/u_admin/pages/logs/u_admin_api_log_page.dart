@@ -40,15 +40,15 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
       child: UColumn(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Obx(_hero),
-          Obx(_osMetricsSection).pSymmetric(vertical: 16),
-          Obx(_chartsSection).pSymmetric(vertical: 16),
-          Obx(_endpointsSection).pSymmetric(),
-          Obx(_slowestRequestsSection).pSymmetric(vertical: 16),
+          UObx(_hero),
+          UObx(_osMetricsSection).pSymmetric(vertical: 16),
+          UObx(_chartsSection).pSymmetric(vertical: 16),
+          UObx(_endpointsSection).pSymmetric(),
+          UObx(_slowestRequestsSection).pSymmetric(vertical: 16),
           _quickFilters(),
           const SizedBox(height: 16),
           _table(),
-          Obx(
+          UObx(
             () => UNumberPagination(
               currentPage: c.pageNumber.value,
               totalPages: c.totalPages.value,
@@ -313,7 +313,7 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
 
   String _bucketLabel(DateTime t) => c.bucket.value == "day" ? "${t.month}/${t.day}" : "${t.hour.toString().padLeft(2, "0")}:${t.minute.toString().padLeft(2, "0")}";
 
-  Widget _bucketButton(String value, String label) => Obx(
+  Widget _bucketButton(String value, String label) => UObx(
     () => TextButton(
       onPressed: () => c.setBucket(value),
       style: TextButton.styleFrom(foregroundColor: c.bucket.value == value ? Theme.of(context).colorScheme.primary : Theme.of(context).disabledColor),
@@ -432,7 +432,7 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
     ),
   );
 
-  Widget _quickFilters() => Obx(
+  Widget _quickFilters() => UObx(
     () => Wrap(
       spacing: 8,
       runSpacing: 8,
@@ -467,7 +467,7 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
     onSelected: (_) => onTap(),
   );
 
-  Widget _table() => Obx(() {
+  Widget _table() => UObx(() {
     if (c.state.value.isError()) return _tableMessage(icon: Icons.cloud_off_rounded, text: U.s.errorReadingData, retry: true);
     if (c.state.value.isEmpty()) return _tableMessage(icon: Icons.inbox_rounded, text: U.s.noData, retry: false);
     if (!c.state.value.isLoaded()) {
@@ -690,7 +690,7 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
               UTextField(controller: c.userIdCtrl, labelText: U.s.userId, margin: const EdgeInsets.symmetric(vertical: 6)),
               UTextField(controller: c.ipAddressCtrl, labelText: U.s.ipAddress, margin: const EdgeInsets.symmetric(vertical: 6)),
               UTextField(controller: c.traceIdCtrl, labelText: U.s.traceId, margin: const EdgeInsets.symmetric(vertical: 6)),
-              Obx(
+              UObx(
                 () => UDropDownField<TagApiLog?>(
                   initialValue: c.methodFilter.value,
                   onChanged: (TagApiLog? v) => c.methodFilter.value = v,
@@ -700,7 +700,7 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
                   ],
                 ),
               ).pSymmetric(vertical: 6),
-              Obx(
+              UObx(
                 () => UDropDownField<TagOrderBy>(
                   initialValue: c.orderBy.value,
                   onChanged: (TagOrderBy? v) => c.orderBy.value = v ?? c.orderBy.value,
@@ -712,7 +712,7 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
                   ],
                 ),
               ).pSymmetric(vertical: 6),
-              Obx(
+              UObx(
                 () => CheckboxListTile(
                   value: c.onlyErrors.value,
                   onChanged: (bool? v) => c.onlyErrors.value = v ?? false,
@@ -720,7 +720,7 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
                   controlAffinity: ListTileControlAffinity.leading,
                 ),
               ),
-              Obx(
+              UObx(
                 () => CheckboxListTile(
                   value: c.onlyExceptions.value,
                   onChanged: (bool? v) => c.onlyExceptions.value = v ?? false,
@@ -773,7 +773,7 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
             IconButton(tooltip: U.s.clearLogs, icon: const Icon(Icons.delete_sweep_rounded), color: UAdminTheme.red, onPressed: _confirmClearAppLogs),
           ],
         ),
-        body: Obx(() {
+        body: UObx(() {
           if (c.appLogsState.value.isLoading() || c.appLogsState.value.isInitial()) return const Center(child: CircularProgressIndicator());
           if (c.appLogsState.value.isError()) return Center(child: UTextBodyMedium(U.s.errorReadingData, color: Theme.of(context).colorScheme.error));
           if (c.appLogs.isEmpty) return Center(child: UTextBodyMedium(U.s.noData, color: Theme.of(context).disabledColor));

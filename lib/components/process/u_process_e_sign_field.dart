@@ -17,10 +17,10 @@ class UProcessESignField extends StatelessWidget {
   final String? saveButtonText;
   final String? clearButtonText;
   final String? emptyMessage;
-  final FileData? initialFile;
+  final UFileData? initialFile;
   final String? initialBase64;
 
-  void _handleSubmit(FileData signature) {
+  void _handleSubmit(UFileData signature) {
     final String? base64 = signature.bytes?.toBase64();
     if (base64 == null) return;
     onSubmit(base64);

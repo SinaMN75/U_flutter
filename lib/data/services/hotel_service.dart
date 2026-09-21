@@ -1,6 +1,6 @@
 part of "../data.dart";
 
-class HotelService {
+class UHotelService {
   Future<(UResponse<String>?, UEmptyResponse?, String?)> createHotel({
     required UHotelCreateParams p,
     Function(UResponse<String> r)? onOk,

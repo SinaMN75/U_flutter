@@ -18,6 +18,12 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
     c.init(user: widget.user);
     super.initState();
   }
+  @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -51,7 +57,7 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
       UAdminTable.cell(i.title),
       UAdminTable.cell(i.nationalCode),
       UAdminTable.cell(i.phoneNumber),
-      UAdminTable.cell(BusinessCategories.categories.firstWhereOrNull((UBusinessCategory j) => j.code == i.mcc)?.localizedName() ?? i.mcc),
+      UAdminTable.cell(UBusinessCategories.categories.firstWhereOrNull((UBusinessCategory j) => j.code == i.mcc)?.localizedName() ?? i.mcc),
       UAdminTable.cell(i.merchantId ?? U.s.unassigned),
       UAdminTable.cell(i.createdAt.toJalaliDate()),
       _menu(i).expanded(),
@@ -65,7 +71,7 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
     fields: <UAdminField>[
       UAdminField(U.s.nationalCode, i.nationalCode),
       UAdminField(U.s.phoneNumber, i.phoneNumber),
-      UAdminField(U.s.mcc, BusinessCategories.categories.firstWhereOrNull((UBusinessCategory j) => j.code == i.mcc)?.localizedName() ?? i.mcc),
+      UAdminField(U.s.mcc, UBusinessCategories.categories.firstWhereOrNull((UBusinessCategory j) => j.code == i.mcc)?.localizedName() ?? i.mcc),
       UAdminField(U.s.merchantId, i.merchantId ?? U.s.unassigned),
       UAdminField(U.s.createdAt, i.createdAt.toJalaliDate()),
     ],
@@ -138,9 +144,9 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
                 fetchData: c.readUsers,
                 hintText: U.s.user,
               ).pSymmetric(vertical: 6),
-              Obx(
+              UObx(
                 () => UTextFieldAutoComplete<UBusinessCategory?>(
-                  items: BusinessCategories.categories,
+                  items: UBusinessCategories.categories,
                   labelBuilder: (UBusinessCategory? i) => i?.localizedName() ?? i?.code ?? "",
                   onChanged: c.businessCategory.call,
                   selectedItem: c.businessCategory.value,
@@ -150,7 +156,7 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
               URow(
                 margin: const EdgeInsets.symmetric(vertical: 6),
                 children: <Widget>[
-                  Obx(
+                  UObx(
                     () => UTextFieldAutoComplete<UProvince?>(
                       title: U.s.province,
                       items: UCountries.iranProvinces,
@@ -163,7 +169,7 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
                     ),
                   ).expanded(),
                   const SizedBox(width: 8),
-                  Obx(
+                  UObx(
                     () => UTextFieldAutoComplete<UCity?>(
                       title: U.s.city,
                       items: c.selectedProvince.value?.cities ?? <UCity>[],
@@ -178,7 +184,7 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
                 jalali: true,
                 controller: c.fromCreatedController,
                 labelText: U.s.fromDate,
-                onChange: (DateTime d, Jalali j) {
+                onChange: (DateTime d, UJalali j) {
                   c.fromCreatedController.text = j.formatCompactDate();
                   c.fromCreatedAt = d;
                 },
@@ -187,7 +193,7 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
                 jalali: true,
                 controller: c.toCreatedController,
                 labelText: U.s.toDate,
-                onChange: (DateTime d, Jalali j) {
+                onChange: (DateTime d, UJalali j) {
                   c.toCreatedController.text = j.formatCompactDate();
                   c.toCreatedAt = d;
                 },
@@ -221,19 +227,20 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
 
   void _showCreateDialog() {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final TextEditingController title = TextEditingController();
-    final TextEditingController businessTitle = TextEditingController();
-    final TextEditingController nationalCode = TextEditingController();
-    final TextEditingController phoneNumber = TextEditingController();
-    final TextEditingController landline = TextEditingController();
-    final TextEditingController zipCode = TextEditingController();
-    final TextEditingController cityCode = TextEditingController();
-    final TextEditingController mcc = TextEditingController();
-    final TextEditingController address = TextEditingController();
-    final TextEditingController ownerName = TextEditingController();
-    final TextEditingController ownerPhoneNumber = TextEditingController();
+    final UAdminFields f = UAdminFields();
+    final TextEditingController title = f.text();
+    final TextEditingController businessTitle = f.text();
+    final TextEditingController nationalCode = f.text();
+    final TextEditingController phoneNumber = f.text();
+    final TextEditingController landline = f.text();
+    final TextEditingController zipCode = f.text();
+    final TextEditingController cityCode = f.text();
+    final TextEditingController mcc = f.text();
+    final TextEditingController address = f.text();
+    final TextEditingController ownerName = f.text();
+    final TextEditingController ownerPhoneNumber = f.text();
 
-    UNavigator.dialog(
+    UNavigator.dialog(f.scope(
       AlertDialog(
         title: Text(U.s.createItem(U.s.merchant)),
         content: SizedBox(
@@ -336,7 +343,7 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
             ),
           ),
         ),
-      ),
+      )),
     );
   }
 }

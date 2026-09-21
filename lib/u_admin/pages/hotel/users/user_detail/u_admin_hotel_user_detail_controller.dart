@@ -7,8 +7,8 @@ class UAdminHotelUserDetailController {
 
   UUserResponse user;
 
-  final RxState state = RxState();
-  final RxList<UDormBedContractResponse> contracts = <UDormBedContractResponse>[].obs;
+  final URxState state = URxState();
+  final URxList<UDormBedContractResponse> contracts = <UDormBedContractResponse>[].obs;
 
   Future<void> init() async => read();
 
@@ -17,7 +17,7 @@ class UAdminHotelUserDetailController {
     await UServices.user.readById(
       p: UIdParams(
         id: user.id,
-        selectorArgs: const UserSelectorArgs(wallet: WalletSelectorArgs(), merchant: MerchantSelectorArgs()),
+        selectorArgs: const UUserSelectorArgs(wallet: UWalletSelectorArgs(), merchant: UMerchantSelectorArgs()),
       ),
       onOk: (UResponse<UUserResponse> r) {
         if (r.result != null) user = r.result!;
@@ -31,9 +31,9 @@ class UAdminHotelUserDetailController {
         userId: user.id,
         pageNumber: 1,
         pageSize: 100,
-        selectorArgs: const DormBedContractSelectorArgs(
-          bed: DormBedSelectorArgs(room: DormRoomSelectorArgs(dorm: DormSelectorArgs())),
-          invoice: DormBedInvoiceSelectorArgs(),
+        selectorArgs: const UDormBedContractSelectorArgs(
+          bed: UDormBedSelectorArgs(room: UDormRoomSelectorArgs(dorm: UDormSelectorArgs())),
+          invoice: UDormBedInvoiceSelectorArgs(),
         ),
       ),
       onOk: (UResponse<List<UDormBedContractResponse>> r) {

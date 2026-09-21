@@ -17,6 +17,12 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
     c.init(dorm: widget.dorm);
     super.initState();
   }
+  @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -110,14 +116,15 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
   );
 
   void _showEditDialog({UDormRoomResponse? p}) {
-    final TextEditingController title = TextEditingController(text: p?.title);
-    final TextEditingController detail = TextEditingController(text: p?.jsonData.description);
-    final TextEditingController capacity = TextEditingController(text: p?.capacity.toString());
-    final TextEditingController floor = TextEditingController(text: p?.jsonData.floor?.toString());
-    final Rxn<UDormResponse> dorm = Rxn<UDormResponse>();
+    final UAdminFields f = UAdminFields();
+    final TextEditingController title = f.text(p?.title);
+    final TextEditingController detail = f.text(p?.jsonData.description);
+    final TextEditingController capacity = f.text(p?.capacity.toString());
+    final TextEditingController floor = f.text(p?.jsonData.floor?.toString());
+    final URxn<UDormResponse> dorm = URxn<UDormResponse>();
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-    UNavigator.dialog(
+    UNavigator.dialog(f.scope(
       AlertDialog(
         title: Text(p == null ? U.s.createItem(U.s.room) : U.s.editItem(U.s.rooms)),
         content: SizedBox(
@@ -192,7 +199,7 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
             ),
           ),
         ),
-      ),
+      )),
     );
   }
 }

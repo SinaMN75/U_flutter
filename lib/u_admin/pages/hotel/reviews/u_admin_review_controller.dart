@@ -16,7 +16,7 @@ class UAdminReviewController extends UBaseController {
         pageNumber: pageNumber.value,
         pageSize: pageSize,
         tags: <int>[status.number],
-        selectorArgs: const CommentSelectorArgs(user: UserSelectorArgs()),
+        selectorArgs: const UCommentSelectorArgs(user: UUserSelectorArgs()),
         orderBy: TagOrderBy.createdAtDescending.number,
       ),
       onOk: (UResponse<List<UCommentResponse>> r) {

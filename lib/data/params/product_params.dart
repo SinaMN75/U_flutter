@@ -327,7 +327,7 @@ class UProductReadParams {
     fromCreatedAt: json["fromCreatedAt"] == null ? null : DateTime.parse(json["fromCreatedAt"]),
     toCreatedAt: json["toCreatedAt"] == null ? null : DateTime.parse(json["toCreatedAt"]),
     tags: json["tags"] == null ? null : List<int>.from(json["tags"].map((dynamic x) => x)),
-    selectorArgs: json["selectorArgs"] == null ? null : ProductSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : UProductSelectorArgs.fromMap(json["selectorArgs"]),
     categories: json["categories"] == null ? null : List<String>.from(json["categories"].map((dynamic x) => x)),
     orderBy: json["orderBy"],
     slug: json["slug"],
@@ -346,7 +346,7 @@ class UProductReadParams {
   final DateTime? toCreatedAt;
   final List<int>? tags;
   final List<String>? categories;
-  final ProductSelectorArgs? selectorArgs;
+  final UProductSelectorArgs? selectorArgs;
   final int? orderBy;
   final String? slug;
 

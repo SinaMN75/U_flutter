@@ -4,7 +4,7 @@ class UserFlowStatus {
   final String currentStep;
   final int totalSteps;
   final List<UserFlowStep> steps;
-  final FlowMetadata? metadata;
+  final UFlowMetadata? metadata;
 
   UserFlowStatus({
     required this.currentStep,
@@ -17,7 +17,7 @@ class UserFlowStatus {
     currentStep: json["currentStep"],
     totalSteps: json["totalSteps"],
     steps: (json["steps"] as List<dynamic>).map((dynamic e) => UserFlowStep.fromJson(e)).toList(),
-    metadata: json["metadata"] != null ? FlowMetadata.fromJson(json["metadata"]) : null,
+    metadata: json["metadata"] != null ? UFlowMetadata.fromJson(json["metadata"]) : null,
   );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -28,14 +28,14 @@ class UserFlowStatus {
   };
 }
 
-class FlowMetadata {
+class UFlowMetadata {
   final String? flowId;
   final String? flowName;
   final String? version;
   final DateTime? lastUpdated;
   final String? timezone;
 
-  FlowMetadata({
+  UFlowMetadata({
     this.flowId,
     this.flowName,
     this.version,
@@ -43,7 +43,7 @@ class FlowMetadata {
     this.timezone,
   });
 
-  factory FlowMetadata.fromJson(Map<String, dynamic> json) => FlowMetadata(
+  factory UFlowMetadata.fromJson(Map<String, dynamic> json) => UFlowMetadata(
     flowId: json["flowId"],
     flowName: json["flowName"],
     version: json["version"],
@@ -69,8 +69,8 @@ class UserFlowStep {
   final String? backgroundImageUrl;
   final List<UserFlowField> fields;
   final List<UserFlowFileRequirement> files;
-  final StepNavigation? navigation;
-  final List<FieldGroup>? fieldGroups;
+  final UStepNavigation? navigation;
+  final List<UFieldGroup>? fieldGroups;
 
   UserFlowStep({
     required this.stepId,
@@ -94,8 +94,8 @@ class UserFlowStep {
     backgroundImageUrl: json["backgroundImageUrl"],
     fields: (json["fields"] as List<dynamic>).map((dynamic e) => UserFlowField.fromJson(e)).toList(),
     files: (json["files"] as List<dynamic>).map((dynamic e) => UserFlowFileRequirement.fromJson(e)).toList(),
-    navigation: json["navigation"] != null ? StepNavigation.fromJson(json["navigation"]) : null,
-    fieldGroups: json["fieldGroups"] != null ? (json["fieldGroups"] as List<dynamic>).map((dynamic e) => FieldGroup.fromJson(e)).toList() : null,
+    navigation: json["navigation"] != null ? UStepNavigation.fromJson(json["navigation"]) : null,
+    fieldGroups: json["fieldGroups"] != null ? (json["fieldGroups"] as List<dynamic>).map((dynamic e) => UFieldGroup.fromJson(e)).toList() : null,
   );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -108,18 +108,18 @@ class UserFlowStep {
     "fields": fields.map((UserFlowField e) => e.toJson()).toList(),
     "files": files.map((UserFlowFileRequirement e) => e.toJson()).toList(),
     "navigation": navigation?.toJson(),
-    "fieldGroups": fieldGroups?.map((FieldGroup e) => e.toJson()).toList(),
+    "fieldGroups": fieldGroups?.map((UFieldGroup e) => e.toJson()).toList(),
   };
 }
 
-class StepNavigation {
+class UStepNavigation {
   final String? enableNextCondition;
   final String? nextButtonLabel;
   final String? previousButtonLabel;
   final String? conditionalNextStep;
   final String? conditionalNextCondition;
 
-  StepNavigation({
+  UStepNavigation({
     this.enableNextCondition,
     this.nextButtonLabel,
     this.previousButtonLabel,
@@ -127,7 +127,7 @@ class StepNavigation {
     this.conditionalNextCondition,
   });
 
-  factory StepNavigation.fromJson(Map<String, dynamic> json) => StepNavigation(
+  factory UStepNavigation.fromJson(Map<String, dynamic> json) => UStepNavigation(
     enableNextCondition: json["enableNextCondition"],
     nextButtonLabel: json["nextButtonLabel"],
     previousButtonLabel: json["previousButtonLabel"],
@@ -144,7 +144,7 @@ class StepNavigation {
   };
 }
 
-class FieldGroup {
+class UFieldGroup {
   final String groupId;
   final String title;
   final String? description;
@@ -152,7 +152,7 @@ class FieldGroup {
   final String? layout;
   final int? columns;
 
-  FieldGroup({
+  UFieldGroup({
     required this.groupId,
     required this.title,
     required this.fieldNames,
@@ -161,7 +161,7 @@ class FieldGroup {
     this.columns,
   });
 
-  factory FieldGroup.fromJson(Map<String, dynamic> json) => FieldGroup(
+  factory UFieldGroup.fromJson(Map<String, dynamic> json) => UFieldGroup(
     groupId: json["groupId"],
     title: json["title"],
     description: json["description"],
@@ -183,7 +183,7 @@ class FieldGroup {
 class UserFlowField {
   final String fieldName;
   final String label;
-  final FieldType type;
+  final UFieldType type;
   final bool isRequired;
   final String? hint;
   final String? placeholder;
@@ -191,19 +191,19 @@ class UserFlowField {
   final bool isDisabled;
   final bool isReadOnly;
   final bool isHidden;
-  final ValidationRules? validation;
-  final List<SelectOption>? options;
-  final DynamicOptionsConfig? dynamicOptions;
-  final DependencyRule? dependency;
-  final VisibilityRule? visibility;
+  final UValidationRules? validation;
+  final List<USelectOption>? options;
+  final UDynamicOptionsConfig? dynamicOptions;
+  final UDependencyRule? dependency;
+  final UVisibilityRule? visibility;
   final String? apiEndpoint;
   final String? httpMethod;
   final Map<String, String>? apiHeaders;
-  final ApiAction? onApiResponse;
+  final UApiAction? onApiResponse;
   final int? debounceMs;
   final bool autoSave;
   final String? cssClass;
-  final FieldWidth width;
+  final UFieldWidth width;
   final int order;
 
   UserFlowField({
@@ -229,16 +229,16 @@ class UserFlowField {
     this.debounceMs,
     this.autoSave = true,
     this.cssClass,
-    this.width = FieldWidth.full,
+    this.width = UFieldWidth.full,
     this.order = 0,
   });
 
   factory UserFlowField.fromJson(Map<String, dynamic> json) => UserFlowField(
     fieldName: json["fieldName"],
     label: json["label"],
-    type: FieldType.values.firstWhere(
-      (FieldType e) => e.name == json["type"],
-      orElse: () => FieldType.text,
+    type: UFieldType.values.firstWhere(
+      (UFieldType e) => e.name == json["type"],
+      orElse: () => UFieldType.text,
     ),
     isRequired: json["isRequired"] ?? true,
     hint: json["hint"],
@@ -247,21 +247,21 @@ class UserFlowField {
     isDisabled: json["isDisabled"] ?? false,
     isReadOnly: json["isReadOnly"] ?? false,
     isHidden: json["isHidden"] ?? false,
-    validation: json["validation"] != null ? ValidationRules.fromJson(json["validation"]) : null,
-    options: json["options"] != null ? (json["options"] as List<dynamic>).map((dynamic e) => SelectOption.fromJson(e)).toList() : null,
-    dynamicOptions: json["dynamicOptions"] != null ? DynamicOptionsConfig.fromJson(json["dynamicOptions"]) : null,
-    dependency: json["dependency"] != null ? DependencyRule.fromJson(json["dependency"]) : null,
-    visibility: json["visibility"] != null ? VisibilityRule.fromJson(json["visibility"]) : null,
+    validation: json["validation"] != null ? UValidationRules.fromJson(json["validation"]) : null,
+    options: json["options"] != null ? (json["options"] as List<dynamic>).map((dynamic e) => USelectOption.fromJson(e)).toList() : null,
+    dynamicOptions: json["dynamicOptions"] != null ? UDynamicOptionsConfig.fromJson(json["dynamicOptions"]) : null,
+    dependency: json["dependency"] != null ? UDependencyRule.fromJson(json["dependency"]) : null,
+    visibility: json["visibility"] != null ? UVisibilityRule.fromJson(json["visibility"]) : null,
     apiEndpoint: json["apiEndpoint"],
     httpMethod: json["httpMethod"] ?? "PUT",
     apiHeaders: json["apiHeaders"] != null ? Map<String, String>.from(json["apiHeaders"]) : null,
-    onApiResponse: json["onApiResponse"] != null ? ApiAction.fromJson(json["onApiResponse"]) : null,
+    onApiResponse: json["onApiResponse"] != null ? UApiAction.fromJson(json["onApiResponse"]) : null,
     debounceMs: json["debounceMs"],
     autoSave: json["autoSave"] ?? true,
     cssClass: json["cssClass"],
-    width: FieldWidth.values.firstWhere(
-      (FieldWidth e) => e.name == json["width"],
-      orElse: () => FieldWidth.full,
+    width: UFieldWidth.values.firstWhere(
+      (UFieldWidth e) => e.name == json["width"],
+      orElse: () => UFieldWidth.full,
     ),
     order: json["order"] ?? 0,
   );
@@ -278,7 +278,7 @@ class UserFlowField {
     "isReadOnly": isReadOnly,
     "isHidden": isHidden,
     "validation": validation?.toJson(),
-    "options": options?.map((SelectOption e) => e.toJson()).toList(),
+    "options": options?.map((USelectOption e) => e.toJson()).toList(),
     "dynamicOptions": dynamicOptions?.toJson(),
     "dependency": dependency?.toJson(),
     "visibility": visibility?.toJson(),
@@ -294,7 +294,7 @@ class UserFlowField {
   };
 }
 
-class DynamicOptionsConfig {
+class UDynamicOptionsConfig {
   final String apiUrl;
   final String? responsePath;
   final String valueField;
@@ -302,7 +302,7 @@ class DynamicOptionsConfig {
   final bool enableSearch;
   final int minCharsForSearch;
 
-  DynamicOptionsConfig({
+  UDynamicOptionsConfig({
     required this.apiUrl,
     this.responsePath,
     this.valueField = "value",
@@ -311,7 +311,7 @@ class DynamicOptionsConfig {
     this.minCharsForSearch = 2,
   });
 
-  factory DynamicOptionsConfig.fromJson(Map<String, dynamic> json) => DynamicOptionsConfig(
+  factory UDynamicOptionsConfig.fromJson(Map<String, dynamic> json) => UDynamicOptionsConfig(
     apiUrl: json["apiUrl"],
     responsePath: json["responsePath"],
     valueField: json["valueField"] ?? "value",
@@ -330,19 +330,19 @@ class DynamicOptionsConfig {
   };
 }
 
-class ApiAction {
-  final ActionType type;
+class UApiAction {
+  final UActionType type;
   final Map<String, dynamic>? parameters;
 
-  ApiAction({
+  UApiAction({
     required this.type,
     this.parameters,
   });
 
-  factory ApiAction.fromJson(Map<String, dynamic> json) => ApiAction(
-    type: ActionType.values.firstWhere(
-      (ActionType e) => e.name == json["type"],
-      orElse: () => ActionType.showToast,
+  factory UApiAction.fromJson(Map<String, dynamic> json) => UApiAction(
+    type: UActionType.values.firstWhere(
+      (UActionType e) => e.name == json["type"],
+      orElse: () => UActionType.showToast,
     ),
     parameters: json["parameters"],
   );
@@ -353,7 +353,7 @@ class ApiAction {
   };
 }
 
-enum ActionType {
+enum UActionType {
   updateField,
   showToast,
   enableStep,
@@ -362,7 +362,7 @@ enum ActionType {
   refreshOptions,
 }
 
-class ValidationRules {
+class UValidationRules {
   final int? minLength;
   final int? maxLength;
   final int? min;
@@ -378,7 +378,7 @@ class ValidationRules {
   final bool disableFutureDates;
   final bool disablePastDates;
 
-  ValidationRules({
+  UValidationRules({
     this.minLength,
     this.maxLength,
     this.min,
@@ -395,7 +395,7 @@ class ValidationRules {
     this.disablePastDates = false,
   });
 
-  factory ValidationRules.fromJson(Map<String, dynamic> json) => ValidationRules(
+  factory UValidationRules.fromJson(Map<String, dynamic> json) => UValidationRules(
     minLength: json["minLength"],
     maxLength: json["maxLength"],
     min: json["min"],
@@ -430,7 +430,7 @@ class ValidationRules {
   };
 }
 
-class SelectOption {
+class USelectOption {
   final String value;
   final String text;
   final bool isDefault;
@@ -438,7 +438,7 @@ class SelectOption {
   final String? group;
   final String? icon;
 
-  SelectOption({
+  USelectOption({
     required this.value,
     required this.text,
     this.isDefault = false,
@@ -447,7 +447,7 @@ class SelectOption {
     this.icon,
   });
 
-  factory SelectOption.fromJson(Map<String, dynamic> json) => SelectOption(
+  factory USelectOption.fromJson(Map<String, dynamic> json) => USelectOption(
     value: json["value"],
     text: json["text"],
     isDefault: json["isDefault"] ?? false,
@@ -466,27 +466,27 @@ class SelectOption {
   };
 }
 
-class DependencyRule {
+class UDependencyRule {
   final String dependsOnField;
   final String dependsOnValue;
-  final ComparisonOperator operator;
+  final UComparisonOperator operator;
   final String? optionsApiEndpoint;
   final String? apiMethod;
 
-  DependencyRule({
+  UDependencyRule({
     required this.dependsOnField,
     required this.dependsOnValue,
-    this.operator = ComparisonOperator.equals,
+    this.operator = UComparisonOperator.equals,
     this.optionsApiEndpoint,
     this.apiMethod = "GET",
   });
 
-  factory DependencyRule.fromJson(Map<String, dynamic> json) => DependencyRule(
+  factory UDependencyRule.fromJson(Map<String, dynamic> json) => UDependencyRule(
     dependsOnField: json["dependsOnField"],
     dependsOnValue: json["dependsOnValue"],
-    operator: ComparisonOperator.values.firstWhere(
-      (ComparisonOperator e) => e.name == json["operator"],
-      orElse: () => ComparisonOperator.equals,
+    operator: UComparisonOperator.values.firstWhere(
+      (UComparisonOperator e) => e.name == json["operator"],
+      orElse: () => UComparisonOperator.equals,
     ),
     optionsApiEndpoint: json["optionsApiEndpoint"],
     apiMethod: json["apiMethod"] ?? "GET",
@@ -501,32 +501,32 @@ class DependencyRule {
   };
 }
 
-class VisibilityRule {
+class UVisibilityRule {
   final String dependsOnField;
   final String dependsOnValue;
-  final ComparisonOperator operator;
-  final List<VisibilityRule>? multipleConditions;
-  final LogicalOperator logicalOperator;
+  final UComparisonOperator operator;
+  final List<UVisibilityRule>? multipleConditions;
+  final ULogicalOperator logicalOperator;
 
-  VisibilityRule({
+  UVisibilityRule({
     required this.dependsOnField,
     required this.dependsOnValue,
-    this.operator = ComparisonOperator.equals,
+    this.operator = UComparisonOperator.equals,
     this.multipleConditions,
-    this.logicalOperator = LogicalOperator.and,
+    this.logicalOperator = ULogicalOperator.and,
   });
 
-  factory VisibilityRule.fromJson(Map<String, dynamic> json) => VisibilityRule(
+  factory UVisibilityRule.fromJson(Map<String, dynamic> json) => UVisibilityRule(
     dependsOnField: json["dependsOnField"],
     dependsOnValue: json["dependsOnValue"],
-    operator: ComparisonOperator.values.firstWhere(
-      (ComparisonOperator e) => e.name == json["operator"],
-      orElse: () => ComparisonOperator.equals,
+    operator: UComparisonOperator.values.firstWhere(
+      (UComparisonOperator e) => e.name == json["operator"],
+      orElse: () => UComparisonOperator.equals,
     ),
-    multipleConditions: json["multipleConditions"] != null ? (json["multipleConditions"] as List<dynamic>).map((dynamic e) => VisibilityRule.fromJson(e)).toList() : null,
-    logicalOperator: LogicalOperator.values.firstWhere(
-      (LogicalOperator e) => e.name == json["logicalOperator"],
-      orElse: () => LogicalOperator.and,
+    multipleConditions: json["multipleConditions"] != null ? (json["multipleConditions"] as List<dynamic>).map((dynamic e) => UVisibilityRule.fromJson(e)).toList() : null,
+    logicalOperator: ULogicalOperator.values.firstWhere(
+      (ULogicalOperator e) => e.name == json["logicalOperator"],
+      orElse: () => ULogicalOperator.and,
     ),
   );
 
@@ -534,12 +534,12 @@ class VisibilityRule {
     "dependsOnField": dependsOnField,
     "dependsOnValue": dependsOnValue,
     "operator": operator.name,
-    "multipleConditions": multipleConditions?.map((VisibilityRule e) => e.toJson()).toList(),
+    "multipleConditions": multipleConditions?.map((UVisibilityRule e) => e.toJson()).toList(),
     "logicalOperator": logicalOperator.name,
   };
 }
 
-enum ComparisonOperator {
+enum UComparisonOperator {
   equals,
   notEquals,
   contains,
@@ -553,7 +553,7 @@ enum ComparisonOperator {
   matchesRegex,
 }
 
-enum LogicalOperator {
+enum ULogicalOperator {
   and,
   or,
 }
@@ -649,7 +649,7 @@ class UserFlowFileRequirement {
   };
 }
 
-enum FieldType {
+enum UFieldType {
   text,
   textarea,
   number,
@@ -696,7 +696,7 @@ enum UFileType {
   any,
 }
 
-enum FieldWidth {
+enum UFieldWidth {
   full,
   half,
   third,
@@ -704,7 +704,7 @@ enum FieldWidth {
   auto,
 }
 
-class PredefinedValidationPatterns {
+class UPredefinedValidationPatterns {
   static const String iranianNationalCode = r"^[0-9]{10}$";
   static const String iranianMobilePhone = r"^09[0-9]{9}$";
   static const String iranianPhoneNumber = r"^0[0-9]{2,3}[0-9]{7,8}$";

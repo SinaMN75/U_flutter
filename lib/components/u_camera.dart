@@ -231,30 +231,30 @@ class UCameraOptions {
 /// One-call helpers that mirror `UFile.showImagePicker`.
 abstract class UCamera {
   /// Opens the full camera page and returns everything captured.
-  static Future<List<FileData>> open({UCameraOptions options = const UCameraOptions(), Function(List<FileData>)? action}) async {
-    final List<FileData>? result = await UNavigator.push<List<FileData>>(UCameraPage(options: options), fullscreenDialog: true);
-    final List<FileData> files = result ?? <FileData>[];
+  static Future<List<UFileData>> open({UCameraOptions options = const UCameraOptions(), Function(List<UFileData>)? action}) async {
+    final List<UFileData>? result = await UNavigator.push<List<UFileData>>(UCameraPage(options: options), fullscreenDialog: true);
+    final List<UFileData> files = result ?? <UFileData>[];
     action?.call(files);
     return files;
   }
 
-  static Future<FileData?> takePhoto({UCameraOptions options = const UCameraOptions(), Function(FileData?)? action}) async {
-    final List<FileData> files = await open(options: options.copyWith(mode: UCameraMode.photo, allowMultiple: false));
-    final FileData? file = files.isEmpty ? null : files.first;
+  static Future<UFileData?> takePhoto({UCameraOptions options = const UCameraOptions(), Function(UFileData?)? action}) async {
+    final List<UFileData> files = await open(options: options.copyWith(mode: UCameraMode.photo, allowMultiple: false));
+    final UFileData? file = files.isEmpty ? null : files.first;
     action?.call(file);
     return file;
   }
 
   /// Captures several photos in one session; [maxCount] 0 means unlimited.
-  static Future<List<FileData>> takePhotos({int maxCount = 0, UCameraOptions options = const UCameraOptions(), Function(List<FileData>)? action}) async {
-    final List<FileData> files = await open(options: options.copyWith(mode: UCameraMode.photo, allowMultiple: true, maxCount: maxCount));
+  static Future<List<UFileData>> takePhotos({int maxCount = 0, UCameraOptions options = const UCameraOptions(), Function(List<UFileData>)? action}) async {
+    final List<UFileData> files = await open(options: options.copyWith(mode: UCameraMode.photo, allowMultiple: true, maxCount: maxCount));
     action?.call(files);
     return files;
   }
 
-  static Future<FileData?> recordVideo({UCameraOptions options = const UCameraOptions(), Function(FileData?)? action}) async {
-    final List<FileData> files = await open(options: options.copyWith(mode: UCameraMode.video, allowMultiple: false));
-    final FileData? file = files.isEmpty ? null : files.first;
+  static Future<UFileData?> recordVideo({UCameraOptions options = const UCameraOptions(), Function(UFileData?)? action}) async {
+    final List<UFileData> files = await open(options: options.copyWith(mode: UCameraMode.video, allowMultiple: false));
+    final UFileData? file = files.isEmpty ? null : files.first;
     action?.call(file);
     return file;
   }
@@ -382,8 +382,8 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
   bool _showManual = false;
 
   late bool _isVideoMode = widget.options.mode == UCameraMode.video;
-  final List<FileData> _captured = <FileData>[];
-  FileData? _review;
+  final List<UFileData> _captured = <UFileData>[];
+  UFileData? _review;
 
   UCameraOptions get _o => widget.options;
 
@@ -532,14 +532,14 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
     try {
       final UCapturedPhoto? photo = await controller.takePhoto();
       if (photo == null || !mounted) return;
-      final FileData file = UCameraUtils.toFileData(photo);
+      final UFileData file = UCameraUtils.toFileData(photo);
       if (_multiPhoto) {
         setState(() => _captured.add(file));
         if (_atLimit) _finish();
       } else if (_o.confirmCapture) {
         setState(() => _review = file);
       } else {
-        _finishWith(<FileData>[file]);
+        _finishWith(<UFileData>[file]);
       }
     } catch (_) {
       // The controller already surfaced the failure; keep the page alive.
@@ -555,11 +555,11 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
       if (controller.value.isRecording) {
         final UCapturedVideo? video = await controller.stopVideoRecording();
         if (video == null || !mounted) return;
-        final FileData file = UCameraUtils.videoToFileData(video);
+        final UFileData file = UCameraUtils.videoToFileData(video);
         if (_o.mode == UCameraMode.both) {
           setState(() => _captured.add(file));
         } else {
-          _finishWith(<FileData>[file]);
+          _finishWith(<UFileData>[file]);
         }
       } else {
         await controller.startVideoRecording(codec: _o.videoCodec, maxDuration: _o.videoMaxDuration);
@@ -571,7 +571,7 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
 
   void _finish() => _finishWith(_captured);
 
-  void _finishWith(List<FileData> files) {
+  void _finishWith(List<UFileData> files) {
     if (!mounted) return;
     Navigator.of(context).pop(files);
   }
@@ -619,7 +619,7 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
             ),
           ),
         ),
-        Positioned(top: 8, left: 8, child: _roundIcon(Icons.close, () => _finishWith(<FileData>[]))),
+        Positioned(top: 8, left: 8, child: _roundIcon(Icons.close, () => _finishWith(<UFileData>[]))),
       ],
     ),
   );
@@ -681,7 +681,7 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
     child: Row(
       children: <Widget>[
-        _roundIcon(Icons.close, () => _finishWith(_multiPhoto ? _captured : <FileData>[])),
+        _roundIcon(Icons.close, () => _finishWith(_multiPhoto ? _captured : <UFileData>[])),
         const Spacer(),
         if (_o.enableFlash && value.capabilities.flash)
           _roundIcon(UCameraUtils.flashIcon(value.flash), () => unawaited(_cycleFlash()), active: value.flash != UFlashMode.off),
@@ -767,7 +767,7 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
       itemCount: _captured.length,
       separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 8),
       itemBuilder: (BuildContext context, int index) {
-        final FileData file = _captured[index];
+        final UFileData file = _captured[index];
         return Stack(
           children: <Widget>[
             ClipRRect(
@@ -961,7 +961,7 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
   );
 
   Widget _reviewView() {
-    final FileData file = _review!;
+    final UFileData file = _review!;
     return SafeArea(
       child: Column(
         children: <Widget>[
@@ -972,7 +972,7 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 UButton(type: UButtonType.outlined, title: _o.labels?.retake ?? U.s.retry, onTap: () => setState(() => _review = null)),
-                UButton(title: _o.labels?.use ?? U.s.confirm, onTap: () => _finishWith(<FileData>[file])),
+                UButton(title: _o.labels?.use ?? U.s.confirm, onTap: () => _finishWith(<UFileData>[file])),
               ],
             ),
           ),

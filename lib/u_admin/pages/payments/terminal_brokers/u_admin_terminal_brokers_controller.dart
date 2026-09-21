@@ -17,7 +17,7 @@ class UAdminTerminalBrokerController extends UBaseController {
         pageSize: pageSize,
         title: titleFilter.text.nullIfEmpty(),
         orderBy: tagOrderBy.value.number,
-        selectorArgs: const TerminalBrokerSelectorArgs(),
+        selectorArgs: const UTerminalBrokerSelectorArgs(),
       ),
       onOk: (UResponse<List<UTerminalBrokerResponse>> r) {
         list = r.result ?? <UTerminalBrokerResponse>[];
@@ -94,4 +94,10 @@ class UAdminTerminalBrokerController extends UBaseController {
       },
     ),
   );
+
+  @override
+  void dispose() {
+    titleFilter.dispose();
+    super.dispose();
+  }
 }

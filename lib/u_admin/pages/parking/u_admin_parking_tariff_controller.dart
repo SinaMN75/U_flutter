@@ -18,7 +18,7 @@ class UAdminParkingTariffController extends UBaseController {
         parkingId: parking?.id,
         pageNumber: pageNumber.value,
         pageSize: pageSize,
-        selectorArgs: const ParkingTariffSelectorArgs(creator: UserSelectorArgs()),
+        selectorArgs: const UParkingTariffSelectorArgs(creator: UUserSelectorArgs()),
       ),
       onOk: (UResponse<List<UParkingTariffResponse>> r) {
         list = r.result ?? <UParkingTariffResponse>[];

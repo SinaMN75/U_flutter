@@ -1,6 +1,6 @@
 part of "../data.dart";
 
-class PnService {
+class UPnService {
   Future<UHttpClientResponse> auth({
     required Map<String, dynamic> body,
     void Function(int status, String body)? onResponse,

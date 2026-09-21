@@ -1,6 +1,6 @@
 part of "../data.dart";
 
-class ChargeInternetService {
+class UChargeInternetService {
   Future<(UResponse<UChargeInternetReserveResponse>?, UEmptyResponse?, String?)> pin({
     required UReserveChargeParams p,
     Function(UResponse<UChargeInternetReserveResponse> r)? onOk,

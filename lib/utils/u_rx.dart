@@ -4,11 +4,11 @@ import "package:flutter/widgets.dart";
 
 class _RxObserver {
   static _RxObserver? active;
-  final Set<Rx<dynamic>> read = <Rx<dynamic>>{};
+  final Set<URx<dynamic>> read = <URx<dynamic>>{};
 }
 
-class Rx<T> extends ChangeNotifier {
-  Rx(this._value);
+class URx<T> extends ChangeNotifier {
+  URx(this._value);
 
   T _value;
 
@@ -34,24 +34,24 @@ class Rx<T> extends ChangeNotifier {
   String toString() => _value.toString();
 }
 
-class RxInt extends Rx<int> {
-  RxInt(super.value);
+class URxInt extends URx<int> {
+  URxInt(super.value);
 }
 
-class RxDouble extends Rx<double> {
-  RxDouble(super.value);
+class URxDouble extends URx<double> {
+  URxDouble(super.value);
 }
 
-class RxNum extends Rx<num> {
-  RxNum(super.value);
+class URxNum extends URx<num> {
+  URxNum(super.value);
 }
 
-class RxString extends Rx<String> {
-  RxString(super.value);
+class URxString extends URx<String> {
+  URxString(super.value);
 }
 
-class RxBool extends Rx<bool> {
-  RxBool(super.value);
+class URxBool extends URx<bool> {
+  URxBool(super.value);
 
   bool get isTrue => value;
 
@@ -60,28 +60,28 @@ class RxBool extends Rx<bool> {
   void toggle() => value = !_value;
 }
 
-class Rxn<T> extends Rx<T?> {
-  Rxn([super.initial]);
+class URxn<T> extends URx<T?> {
+  URxn([super.initial]);
 }
 
-class RxnInt extends Rx<int?> {
-  RxnInt([super.initial]);
+class URxnInt extends URx<int?> {
+  URxnInt([super.initial]);
 }
 
-class RxnDouble extends Rx<double?> {
-  RxnDouble([super.initial]);
+class URxnDouble extends URx<double?> {
+  URxnDouble([super.initial]);
 }
 
-class RxnNum extends Rx<num?> {
-  RxnNum([super.initial]);
+class URxnNum extends URx<num?> {
+  URxnNum([super.initial]);
 }
 
-class RxnString extends Rx<String?> {
-  RxnString([super.initial]);
+class URxnString extends URx<String?> {
+  URxnString([super.initial]);
 }
 
-class RxnBool extends Rx<bool?> {
-  RxnBool([super.initial]);
+class URxnBool extends URx<bool?> {
+  URxnBool([super.initial]);
 
   bool? get isTrue => value;
 
@@ -90,7 +90,7 @@ class RxnBool extends Rx<bool?> {
   void toggle() => value = !(value ?? false);
 }
 
-enum PageState {
+enum UPageState {
   initial,
   loading,
   loaded,
@@ -98,21 +98,21 @@ enum PageState {
   empty,
   paging;
 
-  bool isInitial() => this == PageState.initial;
+  bool isInitial() => this == UPageState.initial;
 
-  bool isLoading() => this == PageState.loading;
+  bool isLoading() => this == UPageState.loading;
 
-  bool isLoaded() => this == PageState.loaded;
+  bool isLoaded() => this == UPageState.loaded;
 
-  bool isError() => this == PageState.error;
+  bool isError() => this == UPageState.error;
 
-  bool isPaging() => this == PageState.paging;
+  bool isPaging() => this == UPageState.paging;
 
-  bool isEmpty() => this == PageState.empty;
+  bool isEmpty() => this == UPageState.empty;
 }
 
-class RxState extends Rx<PageState> {
-  RxState([super.initial = PageState.initial]);
+class URxState extends URx<UPageState> {
+  URxState([super.initial = UPageState.initial]);
 
   bool isInitial() => value.isInitial();
 
@@ -126,21 +126,21 @@ class RxState extends Rx<PageState> {
 
   bool isEmpty() => value.isEmpty();
 
-  PageState initial() => this(PageState.initial);
+  UPageState initial() => this(UPageState.initial);
 
-  PageState loading() => this(PageState.loading);
+  UPageState loading() => this(UPageState.loading);
 
-  PageState loaded() => this(PageState.loaded);
+  UPageState loaded() => this(UPageState.loaded);
 
-  PageState error() => this(PageState.error);
+  UPageState error() => this(UPageState.error);
 
-  PageState paging() => this(PageState.paging);
+  UPageState paging() => this(UPageState.paging);
 
-  PageState emptying() => this(PageState.empty);
+  UPageState emptying() => this(UPageState.empty);
 }
 
-class RxList<E> extends Rx<List<E>> with ListMixin<E> {
-  RxList([List<E>? initial]) : super(initial ?? <E>[]);
+class URxList<E> extends URx<List<E>> with ListMixin<E> {
+  URxList([List<E>? initial]) : super(initial ?? <E>[]);
 
   @override
   int get length {
@@ -264,8 +264,8 @@ class RxList<E> extends Rx<List<E>> with ListMixin<E> {
 
 /// Observable map. Mutating methods notify listeners; behaves like a normal
 /// [Map] elsewhere thanks to [MapMixin].
-class RxMap<K, V> extends Rx<Map<K, V>> with MapMixin<K, V> {
-  RxMap([Map<K, V>? initial]) : super(initial ?? <K, V>{});
+class URxMap<K, V> extends URx<Map<K, V>> with MapMixin<K, V> {
+  URxMap([Map<K, V>? initial]) : super(initial ?? <K, V>{});
 
   @override
   V? operator [](Object? key) {
@@ -330,8 +330,8 @@ class RxMap<K, V> extends Rx<Map<K, V>> with MapMixin<K, V> {
   }
 }
 
-class RxSet<E> extends Rx<Set<E>> with SetMixin<E> {
-  RxSet([Set<E>? initial]) : super(initial ?? <E>{});
+class URxSet<E> extends URx<Set<E>> with SetMixin<E> {
+  URxSet([Set<E>? initial]) : super(initial ?? <E>{});
 
   @override
   bool add(E value) {
@@ -426,84 +426,84 @@ class RxSet<E> extends Rx<Set<E>> with SetMixin<E> {
 }
 
 extension RxObjectExt<T> on T {
-  Rx<T> get obs => Rx<T>(this);
+  URx<T> get obs => URx<T>(this);
 }
 
 extension RxIntExt on int {
-  RxInt get obs => RxInt(this);
+  URxInt get obs => URxInt(this);
 }
 
 extension RxDoubleExt on double {
-  RxDouble get obs => RxDouble(this);
+  URxDouble get obs => URxDouble(this);
 }
 
 extension RxNumExt on num {
-  RxNum get obs => RxNum(this);
+  URxNum get obs => URxNum(this);
 }
 
 extension RxStringExt on String {
-  RxString get obs => RxString(this);
+  URxString get obs => URxString(this);
 }
 
 extension RxBoolExt on bool {
-  RxBool get obs => RxBool(this);
+  URxBool get obs => URxBool(this);
 }
 
 extension RxListExt<E> on List<E> {
-  RxList<E> get obs => RxList<E>(this);
+  URxList<E> get obs => URxList<E>(this);
 }
 
 extension RxMapExt<K, V> on Map<K, V> {
-  RxMap<K, V> get obs => RxMap<K, V>(this);
+  URxMap<K, V> get obs => URxMap<K, V>(this);
 }
 
 extension RxSetExt<E> on Set<E> {
-  RxSet<E> get obs => RxSet<E>(this);
+  URxSet<E> get obs => URxSet<E>(this);
 }
 
 extension RxnListExt<E> on List<E>? {
-  RxList<E> get obs => RxList<E>(this);
+  URxList<E> get obs => URxList<E>(this);
 }
 
 extension RxnMapExt<K, V> on Map<K, V>? {
-  RxMap<K, V> get obs => RxMap<K, V>(this);
+  URxMap<K, V> get obs => URxMap<K, V>(this);
 }
 
 extension RxnSetExt<E> on Set<E>? {
-  RxSet<E> get obs => RxSet<E>(this);
+  URxSet<E> get obs => URxSet<E>(this);
 }
 
 extension RxnIntExt on int? {
-  RxnInt get obs => RxnInt(this);
+  URxnInt get obs => URxnInt(this);
 }
 
 extension RxnDoubleExt on double? {
-  RxnDouble get obs => RxnDouble(this);
+  URxnDouble get obs => URxnDouble(this);
 }
 
 extension RxnNumExt on num? {
-  RxnNum get obs => RxnNum(this);
+  URxnNum get obs => URxnNum(this);
 }
 
 extension RxnStringExt on String? {
-  RxnString get obs => RxnString(this);
+  URxnString get obs => URxnString(this);
 }
 
 extension RxnBoolExt on bool? {
-  RxnBool get obs => RxnBool(this);
+  URxnBool get obs => URxnBool(this);
 }
 
-class Obx extends StatefulWidget {
-  const Obx(this.builder, {super.key});
+class UObx extends StatefulWidget {
+  const UObx(this.builder, {super.key});
 
   final Widget Function() builder;
 
   @override
-  State<Obx> createState() => _ObxState();
+  State<UObx> createState() => _ObxState();
 }
 
-class _ObxState extends State<Obx> {
-  final Set<Rx<dynamic>> _subscriptions = <Rx<dynamic>>{};
+class _ObxState extends State<UObx> {
+  final Set<URx<dynamic>> _subscriptions = <URx<dynamic>>{};
 
   void _onChange() {
     if (mounted) setState(() {});
@@ -520,11 +520,11 @@ class _ObxState extends State<Obx> {
     return child;
   }
 
-  void _sync(Set<Rx<dynamic>> next) {
-    for (final Rx<dynamic> rx in _subscriptions) {
+  void _sync(Set<URx<dynamic>> next) {
+    for (final URx<dynamic> rx in _subscriptions) {
       if (!next.contains(rx)) rx.removeListener(_onChange);
     }
-    for (final Rx<dynamic> rx in next) {
+    for (final URx<dynamic> rx in next) {
       if (!_subscriptions.contains(rx)) rx.addListener(_onChange);
     }
     _subscriptions
@@ -534,7 +534,7 @@ class _ObxState extends State<Obx> {
 
   @override
   void dispose() {
-    for (final Rx<dynamic> rx in _subscriptions) {
+    for (final URx<dynamic> rx in _subscriptions) {
       rx.removeListener(_onChange);
     }
     super.dispose();

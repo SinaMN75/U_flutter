@@ -1,6 +1,6 @@
 import "package:flutter/services.dart";
 
-abstract final class ScreenGuard {
+abstract final class UScreenGuard {
   static const MethodChannel _channel = MethodChannel("u/screen_guard");
   static void Function()? onScreenshot;
   static void Function(bool active)? onScreenRecording;

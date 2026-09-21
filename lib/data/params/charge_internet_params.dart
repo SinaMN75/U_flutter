@@ -76,22 +76,22 @@ class UInternetListParams {
   };
 }
 
-class ApproveParams {
+class UApproveParams {
   final String reference;
   final String? cardNumber;
   final String? nationalCode;
 
-  ApproveParams({
+  UApproveParams({
     required this.reference,
     this.cardNumber,
     this.nationalCode,
   });
 
-  factory ApproveParams.fromJson(String str) => ApproveParams.fromMap(json.decode(str));
+  factory UApproveParams.fromJson(String str) => UApproveParams.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory ApproveParams.fromMap(Map<String, dynamic> json) => ApproveParams(
+  factory UApproveParams.fromMap(Map<String, dynamic> json) => UApproveParams(
     reference: json["reference"],
     cardNumber: json["cardNumber"],
     nationalCode: json["nationalCode"],
@@ -124,18 +124,18 @@ class UGetStatusParams {
   };
 }
 
-class MCITopOfferParams {
+class UMCITopOfferParams {
   final String subscriber;
 
-  MCITopOfferParams({
+  UMCITopOfferParams({
     required this.subscriber,
   });
 
-  factory MCITopOfferParams.fromJson(String str) => MCITopOfferParams.fromMap(json.decode(str));
+  factory UMCITopOfferParams.fromJson(String str) => UMCITopOfferParams.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory MCITopOfferParams.fromMap(Map<String, dynamic> json) => MCITopOfferParams(
+  factory UMCITopOfferParams.fromMap(Map<String, dynamic> json) => UMCITopOfferParams(
     subscriber: json["subscriber"],
   );
 

@@ -1,6 +1,6 @@
 part of "../data.dart";
 
-class CategoryService {
+class UCategoryService {
   Future<(UResponse<String>?, UEmptyResponse?, String?)> create({
     required UCategoryCreateParams p,
     Function(UResponse<String> r)? onOk,

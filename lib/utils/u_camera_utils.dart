@@ -155,15 +155,15 @@ abstract class UCameraUtils {
     return out;
   }
 
-  /// Wraps a captured photo as the [FileData] the rest of the package passes
+  /// Wraps a captured photo as the [UFileData] the rest of the package passes
   /// around, so camera output flows through uploads and pickers unchanged.
-  static FileData toFileData(UCapturedPhoto photo) => FileData(
+  static UFileData toFileData(UCapturedPhoto photo) => UFileData(
     bytes: photo.bytes,
     path: photo.path,
     extension: photo.extension,
   );
 
-  static FileData videoToFileData(UCapturedVideo video, {Uint8List? bytes}) => FileData(
+  static UFileData videoToFileData(UCapturedVideo video, {Uint8List? bytes}) => UFileData(
     bytes: bytes ?? video.bytes,
     path: video.path,
     extension: extensionOf(video.path, video.container.name),

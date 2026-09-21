@@ -14,7 +14,7 @@ class _UAdminShellState extends UState<UAdminShell> with SingleTickerProviderSta
   @override
   void initState() {
     super.initState();
-    U.tabs.value = <TabData>[TabData(title: _dashboard.title, page: _dashboard.page())];
+    U.tabs.value = <UTabData>[UTabData(title: _dashboard.title, page: _dashboard.page())];
     U.updateTabController();
   }
 
@@ -31,7 +31,7 @@ class _UAdminShellState extends UState<UAdminShell> with SingleTickerProviderSta
     body: UColumn(
       children: <Widget>[
         _tabBar(),
-        Obx(
+        UObx(
           () => URow(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
@@ -42,7 +42,7 @@ class _UAdminShellState extends UState<UAdminShell> with SingleTickerProviderSta
                     : TabBarView(
                         controller: U.tabController,
                         physics: const NeverScrollableScrollPhysics(),
-                        children: U.tabs.map((TabData tab) => tab.page).toList(),
+                        children: U.tabs.map((UTabData tab) => tab.page).toList(),
                       ),
               ),
             ],
@@ -52,7 +52,7 @@ class _UAdminShellState extends UState<UAdminShell> with SingleTickerProviderSta
     ),
   );
 
-  Widget _tabBar() => Obx(() {
+  Widget _tabBar() => UObx(() {
     if (U.tabs.isEmpty || U.tabController == null) return const SizedBox.shrink();
     final TabController controller = U.tabController!;
     return AnimatedBuilder(
@@ -64,12 +64,12 @@ class _UAdminShellState extends UState<UAdminShell> with SingleTickerProviderSta
         onClose: _closeTab,
         onReorder: _reorderTabs,
         onMenuAction: _tabMenuAction,
-        tabs: U.tabs.map((TabData tab) => UTab(id: tab.title, title: tab.title)).toList(),
+        tabs: U.tabs.map((UTabData tab) => UTab(id: tab.title, title: tab.title)).toList(),
       ),
     );
   });
 
-  void _applyTabs(List<TabData> newTabs, {int? select}) {
+  void _applyTabs(List<UTabData> newTabs, {int? select}) {
     U.tabs.value = newTabs;
     U.updateTabController();
     if (U.tabController != null && newTabs.isNotEmpty) U.tabController!.index = (select ?? U.tabController!.index).clamp(0, newTabs.length - 1);
@@ -77,7 +77,7 @@ class _UAdminShellState extends UState<UAdminShell> with SingleTickerProviderSta
 
   void _closeTab(int index) {
     final int selected = U.tabController?.index ?? 0;
-    final List<TabData> newTabs = <TabData>[...U.tabs]..removeAt(index);
+    final List<UTabData> newTabs = <UTabData>[...U.tabs]..removeAt(index);
     int select;
     if (newTabs.isEmpty) {
       select = 0;
@@ -92,9 +92,9 @@ class _UAdminShellState extends UState<UAdminShell> with SingleTickerProviderSta
   }
 
   void _reorderTabs(int oldIndex, int newIndex) {
-    final TabData? selectedTab = (U.tabController != null && U.tabs.isNotEmpty) ? U.tabs[U.tabController!.index] : null;
-    final List<TabData> newTabs = <TabData>[...U.tabs];
-    final TabData moved = newTabs.removeAt(oldIndex);
+    final UTabData? selectedTab = (U.tabController != null && U.tabs.isNotEmpty) ? U.tabs[U.tabController!.index] : null;
+    final List<UTabData> newTabs = <UTabData>[...U.tabs];
+    final UTabData moved = newTabs.removeAt(oldIndex);
     newTabs.insert(newIndex, moved);
     U.tabs.value = newTabs;
     if (U.tabController != null && newTabs.isNotEmpty) {
@@ -109,13 +109,13 @@ class _UAdminShellState extends UState<UAdminShell> with SingleTickerProviderSta
         _closeTab(index);
         break;
       case UTabMenuAction.closeOthers:
-        _applyTabs(<TabData>[U.tabs[index]], select: 0);
+        _applyTabs(<UTabData>[U.tabs[index]], select: 0);
         break;
       case UTabMenuAction.closeAll:
-        _applyTabs(<TabData>[]);
+        _applyTabs(<UTabData>[]);
         break;
       case UTabMenuAction.closeToRight:
-        _applyTabs(<TabData>[...U.tabs.sublist(0, index + 1)], select: (U.tabController?.index ?? 0).clamp(0, index));
+        _applyTabs(<UTabData>[...U.tabs.sublist(0, index + 1)], select: (U.tabController?.index ?? 0).clamp(0, index));
         break;
     }
   }

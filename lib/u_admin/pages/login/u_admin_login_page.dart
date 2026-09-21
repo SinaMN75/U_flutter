@@ -11,6 +11,13 @@ class _UAdminLoginPageState extends State<UAdminLoginPage> {
   final UAdminLoginController c = UAdminLoginController();
 
   @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
+
+
+  @override
   Widget build(BuildContext context) => UScaffold(
     decoration: UAdmin.loginBackground == null
         ? null

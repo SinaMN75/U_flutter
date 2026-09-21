@@ -20,7 +20,7 @@ class UAdminDormRoomController extends UBaseController {
         pageSize: pageSize,
         dormId: dorm?.id,
         title: titleFilter.text.nullIfEmpty(),
-        selectorArgs: const DormRoomSelectorArgs(dorm: DormSelectorArgs(), beds: DormBedSelectorArgs()),
+        selectorArgs: const UDormRoomSelectorArgs(dorm: UDormSelectorArgs(), beds: UDormBedSelectorArgs()),
       ),
       onOk: (UResponse<List<UDormRoomResponse>> r) {
         list = r.result ?? <UDormRoomResponse>[];
@@ -88,5 +88,11 @@ class UAdminDormRoomController extends UBaseController {
       onException: (String e) {},
     );
     return result;
+  }
+
+  @override
+  void dispose() {
+    titleFilter.dispose();
+    super.dispose();
   }
 }

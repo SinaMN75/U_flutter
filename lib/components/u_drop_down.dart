@@ -24,13 +24,13 @@ class UCategorySelector extends StatefulWidget {
 }
 
 class _UCategorySelectorState extends State<UCategorySelector> {
-  final RxState pageState = RxState();
+  final URxState pageState = URxState();
 
-  final RxList<UCategoryResponse> categories = <UCategoryResponse>[].obs;
-  final RxList<UCategoryResponse> subCategories = <UCategoryResponse>[].obs;
+  final URxList<UCategoryResponse> categories = <UCategoryResponse>[].obs;
+  final URxList<UCategoryResponse> subCategories = <UCategoryResponse>[].obs;
 
-  final Rxn<UCategoryResponse> selectedCategory = Rxn<UCategoryResponse>();
-  final Rxn<UCategoryResponse> selectedSubCategory = Rxn<UCategoryResponse>();
+  final URxn<UCategoryResponse> selectedCategory = URxn<UCategoryResponse>();
+  final URxn<UCategoryResponse> selectedSubCategory = URxn<UCategoryResponse>();
 
   final UCategoryResponse nullCategory = UCategoryResponse(
     id: "___",
@@ -52,8 +52,8 @@ class _UCategorySelectorState extends State<UCategorySelector> {
     UServices.category.read(
       p: UCategoryReadParams(
         tags: <int>[TagCategory.dorm.number],
-        selectorArgs: const CategorySelectorArgs(
-          children: CategorySelectorArgs(),
+        selectorArgs: const UCategorySelectorArgs(
+          children: UCategorySelectorArgs(),
           childrenDebt: 2,
         ),
       ),
@@ -115,7 +115,7 @@ class _UCategorySelectorState extends State<UCategorySelector> {
   }
 
   @override
-  Widget build(BuildContext context) => Obx(
+  Widget build(BuildContext context) => UObx(
     () {
       if (pageState.isLoading()) {
         return const CircularProgressIndicator().alignAtCenter();
@@ -180,11 +180,11 @@ class UCountryProvincePicker extends StatefulWidget {
 }
 
 class _UCountryProvincePickerState extends State<UCountryProvincePicker> {
-  late final Rx<UCountry> country = (widget.initialCountry ?? UCountries.iran()).obs;
-  late final RxList<UProvince> provinces = country.value.provinces.obs;
-  late final RxList<UCity> cities = province.value.cities.obs;
-  late final Rx<UProvince> province = (widget.initialProvince ?? country.value.provinces.first).obs;
-  late final Rxn<UCity?> city = Rxn<UCity>(province.value.cities.firstOrNull);
+  late final URx<UCountry> country = (widget.initialCountry ?? UCountries.iran()).obs;
+  late final URxList<UProvince> provinces = country.value.provinces.obs;
+  late final URxList<UCity> cities = province.value.cities.obs;
+  late final URx<UProvince> province = (widget.initialProvince ?? country.value.provinces.first).obs;
+  late final URxn<UCity?> city = URxn<UCity>(province.value.cities.firstOrNull);
 
   void _selectCountry(UCountry? i) {
     if (i == null) return;
@@ -221,7 +221,7 @@ class _UCountryProvincePickerState extends State<UCountryProvincePicker> {
   Widget build(BuildContext context) => Column(
     mainAxisSize: MainAxisSize.min,
     children: <Widget>[
-      Obx(
+      UObx(
         () => UTextFieldAutoComplete<UCountry>(
           items: UCountries.countries,
           labelBuilder: (UCountry i) => i.nameFa,
@@ -229,7 +229,7 @@ class _UCountryProvincePickerState extends State<UCountryProvincePicker> {
           selectedItem: country.value,
         ),
       ).pSymmetric(vertical: widget.spacing),
-      Obx(
+      UObx(
         () => UTextFieldAutoComplete<UProvince>(
           items: provinces,
           labelBuilder: (UProvince i) => i.nameFa,
@@ -237,7 +237,7 @@ class _UCountryProvincePickerState extends State<UCountryProvincePicker> {
           selectedItem: province.value,
         ),
       ).pSymmetric(vertical: widget.spacing),
-      Obx(
+      UObx(
         () {
           if (cities.isNotNullOrEmpty()) {
             return UTextFieldAutoComplete<UCity>(

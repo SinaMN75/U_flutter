@@ -248,7 +248,7 @@ class UContentReadParams {
     fromCreatedAt: json["fromCreatedAt"] == null ? null : DateTime.parse(json["fromCreatedAt"]),
     toCreatedAt: json["toCreatedAt"] == null ? null : DateTime.parse(json["toCreatedAt"]),
     tags: json["tags"] == null ? null : List<int>.from(json["tags"].map((dynamic x) => x)),
-    selectorArgs: json["selectorArgs"] == null ? null : ContentSelectorArgs.fromMap(json["selectorArgs"]),
+    selectorArgs: json["selectorArgs"] == null ? null : UContentSelectorArgs.fromMap(json["selectorArgs"]),
     orderBy: json["orderBy"],
     ids: json["ids"] == null ? <String>[] : List<String>.from(json["ids"]!.map((dynamic x) => x)),
     creatorId: json["creatorId"],
@@ -259,7 +259,7 @@ class UContentReadParams {
   final DateTime? fromCreatedAt;
   final DateTime? toCreatedAt;
   final List<int>? tags;
-  final ContentSelectorArgs? selectorArgs;
+  final UContentSelectorArgs? selectorArgs;
   final int? orderBy;
   final List<String>? ids;
   final String? creatorId;

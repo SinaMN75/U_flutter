@@ -17,6 +17,12 @@ class _UAdminParkingTariffPageState extends State<UAdminParkingTariffPage> {
     c.init(parking: widget.parking);
     super.initState();
   }
+  @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -93,21 +99,22 @@ class _UAdminParkingTariffPageState extends State<UAdminParkingTariffPage> {
     final String? parkingId = p?.parkingId ?? widget.parking?.id;
     if (parkingId == null) return;
 
-    final TextEditingController entrance = TextEditingController(text: p?.entrancePrice.toStringAsSmartRound(maxPrecision: 0));
-    final TextEditingController dayHourly = TextEditingController(text: p?.dayHourlyPrice.toStringAsSmartRound(maxPrecision: 0));
-    final TextEditingController nightHourly = TextEditingController(text: p?.nightHourlyPrice.toStringAsSmartRound(maxPrecision: 0));
-    final TextEditingController dailyCap = TextEditingController(text: p?.dailyCap.toStringAsSmartRound(maxPrecision: 0));
-    final TextEditingController weekly = TextEditingController(text: p?.weeklyPrice.toStringAsSmartRound(maxPrecision: 0));
-    final TextEditingController monthly = TextEditingController(text: p?.monthlyPrice.toStringAsSmartRound(maxPrecision: 0));
-    final TextEditingController quarterly = TextEditingController(text: p?.quarterlyPrice.toStringAsSmartRound(maxPrecision: 0));
-    final TextEditingController freeMinutes = TextEditingController(text: (p?.freeMinutes ?? 0).toString());
+    final UAdminFields f = UAdminFields();
+    final TextEditingController entrance = f.text(p?.entrancePrice.toStringAsSmartRound(maxPrecision: 0));
+    final TextEditingController dayHourly = f.text(p?.dayHourlyPrice.toStringAsSmartRound(maxPrecision: 0));
+    final TextEditingController nightHourly = f.text(p?.nightHourlyPrice.toStringAsSmartRound(maxPrecision: 0));
+    final TextEditingController dailyCap = f.text(p?.dailyCap.toStringAsSmartRound(maxPrecision: 0));
+    final TextEditingController weekly = f.text(p?.weeklyPrice.toStringAsSmartRound(maxPrecision: 0));
+    final TextEditingController monthly = f.text(p?.monthlyPrice.toStringAsSmartRound(maxPrecision: 0));
+    final TextEditingController quarterly = f.text(p?.quarterlyPrice.toStringAsSmartRound(maxPrecision: 0));
+    final TextEditingController freeMinutes = f.text((p?.freeMinutes ?? 0).toString());
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     TagVehicle vehicleType = TagVehicle.values.fromNumber(p?.vehicleType ?? TagVehicle.car.number) ?? TagVehicle.car;
     bool roundToFullHour = p?.roundToFullHour ?? false;
     bool perMinuteAfterFirstHour = p?.perMinuteAfterFirstHour ?? true;
 
-    await UNavigator.dialog(
+    await UNavigator.dialog(f.scope(
       StatefulBuilder(
         builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
           title: Text(p == null ? U.s.createItem(U.s.tariff) : U.s.editItem(U.s.tariff)),
@@ -176,7 +183,7 @@ class _UAdminParkingTariffPageState extends State<UAdminParkingTariffPage> {
             ),
           ),
         ),
-      ),
+      )),
     );
   }
 

@@ -3,8 +3,8 @@ part of "../../../u_admin.dart";
 class UAdminMoadiController extends UBaseController {
   List<UMoadiResponse> list = <UMoadiResponse>[];
 
-  final Rxn<UUserResponse> user = Rxn<UUserResponse>();
-  final Rxn<TagMoadi> status = Rxn<TagMoadi>();
+  final URxn<UUserResponse> user = URxn<UUserResponse>();
+  final URxn<TagMoadi> status = URxn<TagMoadi>();
 
   final TextEditingController nameFilter = TextEditingController();
   final TextEditingController economicCodeFilter = TextEditingController();
@@ -32,7 +32,7 @@ class UAdminMoadiController extends UBaseController {
         userId: user.value?.id,
         fromCreatedAt: fromCreatedAt,
         toCreatedAt: toCreatedAt,
-        selectorArgs: const MoadiSelectorArgs(user: UserSelectorArgs()),
+        selectorArgs: const UMoadiSelectorArgs(user: UUserSelectorArgs()),
       ),
       onOk: (UResponse<List<UMoadiResponse>> r) {
         list = r.result ?? <UMoadiResponse>[];
@@ -135,5 +135,16 @@ class UAdminMoadiController extends UBaseController {
       onException: (String e) {},
     );
     return result;
+  }
+
+  @override
+  void dispose() {
+    nameFilter.dispose();
+    economicCodeFilter.dispose();
+    nationalCodeFilter.dispose();
+    uniqueTaxCodeFilter.dispose();
+    fromCreatedController.dispose();
+    toCreatedController.dispose();
+    super.dispose();
   }
 }

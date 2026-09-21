@@ -1,6 +1,6 @@
 part of "../data.dart";
 
-class TerminalService {
+class UTerminalService {
   Future<(UResponse<String>?, UEmptyResponse?, String?)> create({
     required UTerminalCreateParams p,
     Function(UResponse<String> r)? onOk,

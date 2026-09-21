@@ -5,7 +5,7 @@ class UAdminParkingController extends UBaseController {
   List<UParkingResponse> list = <UParkingResponse>[];
 
   // Optional owner/creator filter.
-  final Rxn<UUserResponse> creatorFilter = Rxn<UUserResponse>();
+  final URxn<UUserResponse> creatorFilter = URxn<UUserResponse>();
 
   Future<void> init() => read();
 
@@ -18,7 +18,7 @@ class UAdminParkingController extends UBaseController {
         creatorId: creatorFilter.value?.id,
         fromCreatedAt: fromCreatedAt,
         toCreatedAt: toCreatedAt,
-        selectorArgs: const ParkingSelectorArgs(creator: UserSelectorArgs()),
+        selectorArgs: const UParkingSelectorArgs(creator: UUserSelectorArgs()),
       ),
       onOk: (UResponse<List<UParkingResponse>> r) {
         list = r.result ?? <UParkingResponse>[];

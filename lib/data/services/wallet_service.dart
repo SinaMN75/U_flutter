@@ -1,6 +1,6 @@
 part of "../data.dart";
 
-class WalletService {
+class UWalletService {
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> charge({
     required UWalletChargeParams p,
     Function(UEmptyResponse r)? onOk,
