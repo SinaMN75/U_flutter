@@ -38,18 +38,25 @@ class UListTile extends StatelessWidget {
 }
 
 class UIconBackground extends StatelessWidget {
-  const UIconBackground(this.icon, {required this.color, this.size = 42, super.key});
+  const UIconBackground(
+    this.icon, {
+    required this.color,
+    this.size = 42,
+    this.backgroundColor,
+    super.key,
+  });
 
   final IconData icon;
   final Color color;
   final double size;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) => UContainer(
     width: size,
     height: size,
     alignment: Alignment.center,
-    color: color.withValues(alpha: 0.2),
+    color: backgroundColor ?? color.withValues(alpha: 0.2),
     radius: 12,
     child: Icon(icon, color: color, size: size / 1.8),
   );
