@@ -105,7 +105,10 @@ class USignatureController extends ChangeNotifier {
     final ui.PictureRecorder recorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(recorder);
     canvas.scale(pixelRatio);
-    if (background != null) canvas.drawRect(Offset.zero & canvasSize, Paint()..color = background);
+    canvas.drawColor(Colors.transparent, BlendMode.clear);
+    if (background != null) {
+      canvas.drawRect(Offset.zero & canvasSize, Paint()..color = background);
+    }
     for (final USignatureStroke stroke in _strokes) {
       _USignaturePainter.paintStroke(canvas, stroke);
     }
