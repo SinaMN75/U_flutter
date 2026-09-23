@@ -36,4 +36,30 @@ abstract class UAdminForm {
       UTextBodySmall(title, color: UAdminTheme.grey, fontWeight: FontWeight.w700),
     ],
   );
+
+  /// The shell every admin filter dialog was hand-rolling: a titled dialog whose
+  /// content scrolls, is capped to a sensible dialog width, and optionally sits
+  /// in a [Form].
+  ///
+  /// Pages differed only in whether they remembered the [Form] and how wide they
+  /// made the box, which is why no two filter dialogs behaved quite the same on a
+  /// narrow screen. Pass the fields; the shell is fixed.
+  static Widget filterDialog(
+    BuildContext context, {
+    required Widget title,
+    required List<Widget> children,
+    GlobalKey<FormState>? formKey,
+    double maxWidth = 420,
+  }) {
+    final Widget body = SingleChildScrollView(
+      child: UColumn(mainAxisSize: MainAxisSize.min, children: children),
+    );
+    return AlertDialog(
+      title: title,
+      content: SizedBox(
+        width: context.dialogWidth(max: maxWidth),
+        child: formKey == null ? body : Form(key: formKey, child: body),
+      ),
+    );
+  }
 }

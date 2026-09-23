@@ -123,20 +123,22 @@ class _UAdminBarcodeGeneratorPageState extends State<UAdminBarcodeGeneratorPage>
     final ColorScheme cs = Theme.of(context).colorScheme;
     return UScaffold(
       padding: const EdgeInsets.all(20),
-      body: SingleChildScrollView(
-        child: UColumn(
-          spacing: 20,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            _header(cs),
-            _preview(cs),
-            _actions(cs),
-            _contentCard(cs),
-            _styleCard(cs),
-            if (_is2d) _moduleCard(cs),
-            if (_isQr) _qrCard(cs),
-            if (!_is2d) _showValueCard(cs),
-          ],
+      body: UAdminPageBody(
+        child: SingleChildScrollView(
+          child: UColumn(
+            spacing: 20,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              _header(cs),
+              _preview(cs),
+              _actions(cs),
+              _contentCard(cs),
+              _styleCard(cs),
+              if (_is2d) _moduleCard(cs),
+              if (_isQr) _qrCard(cs),
+              if (!_is2d) _showValueCard(cs),
+            ],
+          ),
         ),
       ),
     );
@@ -333,10 +335,12 @@ class _UAdminBarcodeGeneratorPageState extends State<UAdminBarcodeGeneratorPage>
     child: const SizedBox(width: 28, height: 28),
   ).onTap(onTap);
 
-  Widget _chip(ColorScheme cs, String label, bool active, VoidCallback onTap) =>
-      UTextLabelLarge(label, color: active ? cs.onPrimary : cs.onSurface, fontWeight: FontWeight.w600, margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 9))
-          .container(backgroundColor: active ? cs.primary : cs.surfaceContainerHighest.withValues(alpha: 0.5), radius: 12, borderColor: active ? cs.primary : cs.outlineVariant)
-          .onTap(onTap);
+  Widget _chip(ColorScheme cs, String label, bool active, VoidCallback onTap) => UTextLabelLarge(
+    label,
+    color: active ? cs.onPrimary : cs.onSurface,
+    fontWeight: FontWeight.w600,
+    margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
+  ).container(backgroundColor: active ? cs.primary : cs.surfaceContainerHighest.withValues(alpha: 0.5), radius: 12, borderColor: active ? cs.primary : cs.outlineVariant).onTap(onTap);
 
   Widget _dirChip(ColorScheme cs, String label, Alignment begin, Alignment end) {
     final bool active = _gradientBeginAlign == begin && _gradientEndAlign == end;

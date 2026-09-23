@@ -184,12 +184,14 @@ abstract class UAdminModules {
     page: () => UAdminTerminalsPage(actions: actions),
     roles: roles,
   );
+
   static UAdminModule terminalBrands({List<TagUser>? roles, UAdminActionBuilder<UTerminalBrandResponse>? actions}) => UAdminModule(
     title: U.s.brands,
     icon: Icons.point_of_sale_rounded,
     page: () => UAdminTerminalBrandsPage(actions: actions),
     roles: roles,
   );
+
   static UAdminModule terminalBroker({List<TagUser>? roles, UAdminActionBuilder<UTerminalBrokerResponse>? actions}) => UAdminModule(
     title: U.s.brokers,
     icon: Icons.point_of_sale_rounded,

@@ -17,12 +17,12 @@ class _AdminUsersPageState extends State<UAdminUsersPage> {
     c.init();
     super.initState();
   }
+
   @override
   void dispose() {
     c.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -144,86 +144,79 @@ class _AdminUsersPageState extends State<UAdminUsersPage> {
   );
 
   void _showFilterDialog() => UNavigator.dialog(
-    AlertDialog(
+    UAdminForm.filterDialog(
+      context,
       title: Text(U.s.filterItem(U.s.users)),
-      content: SizedBox(
-        width: context.dialogWidth(),
-        child: SingleChildScrollView(
-          child: UColumn(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              UObx(
-                () => UDropDownField<TagUser?>(
-                  initialValue: c.verificationStatus.value,
-                  onChanged: c.verificationStatus.call,
-                  items: <DropdownMenuItem<TagUser?>>[
-                    DropdownMenuItem<TagUser>(value: TagUser.verified, child: Text(TagUser.verified.localizedTitle)),
-                    DropdownMenuItem<TagUser>(value: TagUser.awaitingVerification, child: Text(TagUser.awaitingVerification.localizedTitle)),
-                    const DropdownMenuItem<TagUser?>(child: Text("---")),
-                  ],
-                ),
-              ).pSymmetric(vertical: 6),
-              UTextField(controller: c.firstNameFilterController, labelText: U.s.firstName, margin: const EdgeInsets.symmetric(vertical: 6)),
-              UTextField(controller: c.lastNameFilterController, labelText: U.s.lastName, margin: const EdgeInsets.symmetric(vertical: 6)),
-              UTextField(controller: c.userNameFilterController, labelText: U.s.username, margin: const EdgeInsets.symmetric(vertical: 6)),
-              UTextFieldPhoneNumber(controller: c.phoneNumberFilterController, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
-              UTextField(controller: c.nationalCodeFilterController, labelText: U.s.nationalCode, margin: const EdgeInsets.symmetric(vertical: 6)),
-              UTextField(controller: c.emailFilterController, labelText: U.s.email, keyboardType: TextInputType.emailAddress, margin: const EdgeInsets.symmetric(vertical: 6)),
-              UTextFieldPhoneNumber(controller: c.landLineFilterController, labelText: U.s.landline, margin: const EdgeInsets.symmetric(vertical: 6)),
-              UTextField(controller: c.bioFilterController, labelText: U.s.bio, margin: const EdgeInsets.symmetric(vertical: 6)),
-              UTextFieldDatePicker(
-                jalali: true,
-                controller: c.fromCreatedController,
-                labelText: U.s.fromDate,
-                onChange: (DateTime d, UJalali j) {
-                  c.fromCreatedController.text = j.formatCompactDate();
-                  c.fromCreatedAt = d;
-                },
-              ).pSymmetric(vertical: 6),
-              UTextFieldDatePicker(
-                jalali: true,
-                controller: c.toCreatedController,
-                labelText: U.s.toDate,
-                onChange: (DateTime d, UJalali j) {
-                  c.toCreatedController.text = j.formatCompactDate();
-                  c.toCreatedAt = d;
-                },
-              ).pSymmetric(vertical: 6),
-              UTextFieldDatePicker(
-                jalali: true,
-                controller: c.fromBirthController,
-                labelText: U.s.fromBirthDate,
-                onChange: (DateTime d, UJalali j) {
-                  c.fromBirthController.text = j.formatCompactDate();
-                  c.fromBirthDate = d;
-                },
-              ).pSymmetric(vertical: 6),
-              UTextFieldDatePicker(
-                jalali: true,
-                controller: c.toBirthController,
-                labelText: U.s.toBirthDate,
-                onChange: (DateTime d, UJalali j) {
-                  c.toBirthController.text = j.formatCompactDate();
-                  c.toBirthDate = d;
-                },
-              ).pSymmetric(vertical: 6),
-              const SizedBox(height: 20),
-              UButtonSubmitCancel(
-                submitTitle: U.s.filter,
-                cancelTitle: U.s.clearFilters,
-                onSubmit: () {
-                  c.applyFilters();
-                  UNavigator.back();
-                },
-                onCancel: () {
-                  c.clearFilters();
-                  UNavigator.back();
-                },
-              ),
+      children: <Widget>[
+        UObx(
+          () => UDropDownField<TagUser?>(
+            initialValue: c.verificationStatus.value,
+            onChanged: c.verificationStatus.call,
+            items: <DropdownMenuItem<TagUser?>>[
+              DropdownMenuItem<TagUser>(value: TagUser.verified, child: Text(TagUser.verified.localizedTitle)),
+              DropdownMenuItem<TagUser>(value: TagUser.awaitingVerification, child: Text(TagUser.awaitingVerification.localizedTitle)),
+              const DropdownMenuItem<TagUser?>(child: Text("---")),
             ],
           ),
+        ).pSymmetric(vertical: 6),
+        UTextField(controller: c.firstNameFilterController, labelText: U.s.firstName, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.lastNameFilterController, labelText: U.s.lastName, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.userNameFilterController, labelText: U.s.username, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextFieldPhoneNumber(controller: c.phoneNumberFilterController, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.nationalCodeFilterController, labelText: U.s.nationalCode, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.emailFilterController, labelText: U.s.email, keyboardType: TextInputType.emailAddress, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextFieldPhoneNumber(controller: c.landLineFilterController, labelText: U.s.landline, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.bioFilterController, labelText: U.s.bio, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextFieldDatePicker(
+          jalali: true,
+          controller: c.fromCreatedController,
+          labelText: U.s.fromDate,
+          onChange: (DateTime d, UJalali j) {
+            c.fromCreatedController.text = j.formatCompactDate();
+            c.fromCreatedAt = d;
+          },
+        ).pSymmetric(vertical: 6),
+        UTextFieldDatePicker(
+          jalali: true,
+          controller: c.toCreatedController,
+          labelText: U.s.toDate,
+          onChange: (DateTime d, UJalali j) {
+            c.toCreatedController.text = j.formatCompactDate();
+            c.toCreatedAt = d;
+          },
+        ).pSymmetric(vertical: 6),
+        UTextFieldDatePicker(
+          jalali: true,
+          controller: c.fromBirthController,
+          labelText: U.s.fromBirthDate,
+          onChange: (DateTime d, UJalali j) {
+            c.fromBirthController.text = j.formatCompactDate();
+            c.fromBirthDate = d;
+          },
+        ).pSymmetric(vertical: 6),
+        UTextFieldDatePicker(
+          jalali: true,
+          controller: c.toBirthController,
+          labelText: U.s.toBirthDate,
+          onChange: (DateTime d, UJalali j) {
+            c.toBirthController.text = j.formatCompactDate();
+            c.toBirthDate = d;
+          },
+        ).pSymmetric(vertical: 6),
+        const SizedBox(height: 20),
+        UButtonSubmitCancel(
+          submitTitle: U.s.filter,
+          cancelTitle: U.s.clearFilters,
+          onSubmit: () {
+            c.applyFilters();
+            UNavigator.back();
+          },
+          onCancel: () {
+            c.clearFilters();
+            UNavigator.back();
+          },
         ),
-      ),
+      ],
     ),
   );
 }

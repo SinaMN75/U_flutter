@@ -16,12 +16,12 @@ class _PlaceVisibilityPageState extends State<UAdminPlaceVisibilityPage> {
     c.init();
     super.initState();
   }
+
   @override
   void dispose() {
     c.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -71,8 +71,16 @@ class _PlaceVisibilityPageState extends State<UAdminPlaceVisibilityPage> {
       Wrap(
         spacing: 8,
         children: <Widget>[
-          FilterChip(label: Text(U.s.featured), selected: i.featured, onSelected: (bool v) => c.setTag(i, i.featuredTag, on: v)),
-          FilterChip(label: Text(U.s.active), selected: i.visible, onSelected: (bool v) => c.setVisible(i, visible: v)),
+          FilterChip(
+            label: Text(U.s.featured),
+            selected: i.featured,
+            onSelected: (bool v) => c.setTag(i, i.featuredTag, on: v),
+          ),
+          FilterChip(
+            label: Text(U.s.active),
+            selected: i.visible,
+            onSelected: (bool v) => c.setVisible(i, visible: v),
+          ),
         ],
       ),
     ],

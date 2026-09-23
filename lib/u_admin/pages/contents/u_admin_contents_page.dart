@@ -15,12 +15,12 @@ class _ContentsPageState extends State<UAdminContentsPage> {
     c.init();
     super.initState();
   }
+
   @override
   void dispose() {
     c.dispose();
     super.dispose();
   }
-
 
   TagContent? _tagOf(UContentResponse i) => TagContent.values.firstWhereOrNull((TagContent t) => i.tags.contains(t.number));
 
@@ -164,148 +164,150 @@ class _ContentsPageState extends State<UAdminContentsPage> {
     String? imageBase64 = p?.jsonData.imageBase64;
     String? iconBase64 = p?.jsonData.iconBase64;
 
-    await UNavigator.dialog(f.scope(
-      StatefulBuilder(
-        builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
-          title: Text(p == null ? U.s.createItem(U.s.content) : U.s.editItem(U.s.content)),
-          content: SizedBox(
-            width: context.dialogWidth(max: 520),
-            child: SingleChildScrollView(
-              child: Form(
-                key: formKey,
-                child: UColumn(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    UDropDownField<TagContent>(
-                      initialValue: tag.value,
-                      labelText: U.s.contentType,
-                      items: TagContent.values.map((TagContent t) => DropdownMenuItem<TagContent>(value: t, child: Text(t.localizedTitle))).toList(),
-                      onChanged: (TagContent? v) {
-                        if (v != null) tag.value = v;
-                      },
-                    ).pSymmetric(vertical: 6),
-                    UTextField(controller: title, labelText: U.s.title, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextField(controller: subTitle, labelText: U.s.subtitle, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextField(controller: description, labelText: U.s.description, lines: 3, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextField(controller: detail1, labelText: U.s.detail1, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextField(controller: detail2, labelText: U.s.detail2, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextField(controller: order, labelText: U.s.order, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    const SizedBox(height: 8),
-                    URow(
-                      spacing: 12,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        _Base64ImageField(label: U.s.image, initial: imageBase64, onChanged: (String? v) => imageBase64 = v).expanded(),
-                        _Base64ImageField(label: U.s.icon, initial: iconBase64, onChanged: (String? v) => iconBase64 = v).expanded(),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    UTextField(controller: buttonText, labelText: U.s.buttonText, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextField(controller: buttonLink, labelText: U.s.buttonLink, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextField(controller: link, labelText: U.s.link, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    const SizedBox(height: 8),
-                    UTextBodyLarge(U.s.socialMedia, margin: const EdgeInsets.only(bottom: 4)),
-                    UTextField(controller: instagram, labelText: U.s.instagram, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextField(controller: telegram, labelText: U.s.telegram, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextField(controller: whatsapp, labelText: U.s.whatsApp, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextFieldPhoneNumber(controller: phone, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    const SizedBox(height: 12),
-                    URow(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        UTextBodyLarge(U.s.items),
-                        TextButton.icon(
-                          onPressed: () => setDialogState(() => items.add(_ItemForm())),
-                          icon: const Icon(Icons.add, size: 18),
-                          label: Text(U.s.addItem("")),
-                        ),
-                      ],
-                    ),
-                    ...items.mapIndexed(
-                      (int index, _ItemForm e) => _itemCard(index, e, () => setDialogState(() => items.removeAt(index))),
-                    ),
-                    const SizedBox(height: 12),
-                    URow(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        UTextBodyLarge(U.s.links),
-                        TextButton.icon(
-                          onPressed: () => setDialogState(() => links.add(_LinkForm())),
-                          icon: const Icon(Icons.add, size: 18),
-                          label: Text(U.s.addItem(U.s.link)),
-                        ),
-                      ],
-                    ),
-                    ...links.mapIndexed(
-                      (int index, _LinkForm e) => _linkCard(index, e, () => setDialogState(() => links.removeAt(index))),
-                    ),
-                    const SizedBox(height: 20),
-                    UButtonSubmitCancel(
-                      onSubmit: () => UValidators.validateForm(
-                        key: formKey,
-                        action: () {
-                          final List<UContentItem> itemModels = items.map((_ItemForm e) => e.toModel()).toList();
-                          final List<UContentLink> linkModels = links.map((_LinkForm e) => e.toModel()).toList();
-                          if (p == null) {
-                            c.create(
-                              p: UContentCreateParams(
-                                tags: <int>[tag.value.number],
-                                title: title.text.nullIfEmpty(),
-                                subTitle: subTitle.text.nullIfEmpty(),
-                                description: description.text.nullIfEmpty(),
-                                detail1: detail1.text.nullIfEmpty(),
-                                detail2: detail2.text.nullIfEmpty(),
-                                imageBase64: imageBase64,
-                                iconBase64: iconBase64,
-                                buttonText: buttonText.text.nullIfEmpty(),
-                                buttonLink: buttonLink.text.nullIfEmpty(),
-                                link: link.text.nullIfEmpty(),
-                                order: int.tryParse(order.text),
-                                instagram: instagram.text.nullIfEmpty(),
-                                telegram: telegram.text.nullIfEmpty(),
-                                whatsapp: whatsapp.text.nullIfEmpty(),
-                                phone: phone.text.nullIfEmpty(),
-                                items: itemModels,
-                                links: linkModels,
-                              ),
-                            );
-                          } else {
-                            c.update(
-                              p: UContentUpdateParams(
-                                id: p.id,
-                                tags: <int>[tag.value.number],
-                                title: title.text.nullIfEmpty(),
-                                subTitle: subTitle.text.nullIfEmpty(),
-                                description: description.text.nullIfEmpty(),
-                                detail1: detail1.text.nullIfEmpty(),
-                                detail2: detail2.text.nullIfEmpty(),
-                                imageBase64: imageBase64,
-                                iconBase64: iconBase64,
-                                buttonText: buttonText.text.nullIfEmpty(),
-                                buttonLink: buttonLink.text.nullIfEmpty(),
-                                link: link.text.nullIfEmpty(),
-                                order: int.tryParse(order.text),
-                                instagram: instagram.text.nullIfEmpty(),
-                                telegram: telegram.text.nullIfEmpty(),
-                                whatsapp: whatsapp.text.nullIfEmpty(),
-                                phone: phone.text.nullIfEmpty(),
-                                items: itemModels,
-                                links: linkModels,
-                              ),
-                            );
-                          }
-                          UNavigator.back();
+    await UNavigator.dialog(
+      f.scope(
+        StatefulBuilder(
+          builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
+            title: Text(p == null ? U.s.createItem(U.s.content) : U.s.editItem(U.s.content)),
+            content: SizedBox(
+              width: context.dialogWidth(max: 520),
+              child: SingleChildScrollView(
+                child: Form(
+                  key: formKey,
+                  child: UColumn(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      UDropDownField<TagContent>(
+                        initialValue: tag.value,
+                        labelText: U.s.contentType,
+                        items: TagContent.values.map((TagContent t) => DropdownMenuItem<TagContent>(value: t, child: Text(t.localizedTitle))).toList(),
+                        onChanged: (TagContent? v) {
+                          if (v != null) tag.value = v;
                         },
+                      ).pSymmetric(vertical: 6),
+                      UTextField(controller: title, labelText: U.s.title, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      UTextField(controller: subTitle, labelText: U.s.subtitle, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      UTextField(controller: description, labelText: U.s.description, lines: 3, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      UTextField(controller: detail1, labelText: U.s.detail1, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      UTextField(controller: detail2, labelText: U.s.detail2, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      UTextField(controller: order, labelText: U.s.order, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      const SizedBox(height: 8),
+                      URow(
+                        spacing: 12,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          _Base64ImageField(label: U.s.image, initial: imageBase64, onChanged: (String? v) => imageBase64 = v).expanded(),
+                          _Base64ImageField(label: U.s.icon, initial: iconBase64, onChanged: (String? v) => iconBase64 = v).expanded(),
+                        ],
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 12),
+                      UTextField(controller: buttonText, labelText: U.s.buttonText, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      UTextField(controller: buttonLink, labelText: U.s.buttonLink, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      UTextField(controller: link, labelText: U.s.link, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      const SizedBox(height: 8),
+                      UTextBodyLarge(U.s.socialMedia, margin: const EdgeInsets.only(bottom: 4)),
+                      UTextField(controller: instagram, labelText: U.s.instagram, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      UTextField(controller: telegram, labelText: U.s.telegram, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      UTextField(controller: whatsapp, labelText: U.s.whatsApp, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      UTextFieldPhoneNumber(controller: phone, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      const SizedBox(height: 12),
+                      URow(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          UTextBodyLarge(U.s.items),
+                          TextButton.icon(
+                            onPressed: () => setDialogState(() => items.add(_ItemForm())),
+                            icon: const Icon(Icons.add, size: 18),
+                            label: Text(U.s.addItem("")),
+                          ),
+                        ],
+                      ),
+                      ...items.mapIndexed(
+                        (int index, _ItemForm e) => _itemCard(index, e, () => setDialogState(() => items.removeAt(index))),
+                      ),
+                      const SizedBox(height: 12),
+                      URow(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          UTextBodyLarge(U.s.links),
+                          TextButton.icon(
+                            onPressed: () => setDialogState(() => links.add(_LinkForm())),
+                            icon: const Icon(Icons.add, size: 18),
+                            label: Text(U.s.addItem(U.s.link)),
+                          ),
+                        ],
+                      ),
+                      ...links.mapIndexed(
+                        (int index, _LinkForm e) => _linkCard(index, e, () => setDialogState(() => links.removeAt(index))),
+                      ),
+                      const SizedBox(height: 20),
+                      UButtonSubmitCancel(
+                        onSubmit: () => UValidators.validateForm(
+                          key: formKey,
+                          action: () {
+                            final List<UContentItem> itemModels = items.map((_ItemForm e) => e.toModel()).toList();
+                            final List<UContentLink> linkModels = links.map((_LinkForm e) => e.toModel()).toList();
+                            if (p == null) {
+                              c.create(
+                                p: UContentCreateParams(
+                                  tags: <int>[tag.value.number],
+                                  title: title.text.nullIfEmpty(),
+                                  subTitle: subTitle.text.nullIfEmpty(),
+                                  description: description.text.nullIfEmpty(),
+                                  detail1: detail1.text.nullIfEmpty(),
+                                  detail2: detail2.text.nullIfEmpty(),
+                                  imageBase64: imageBase64,
+                                  iconBase64: iconBase64,
+                                  buttonText: buttonText.text.nullIfEmpty(),
+                                  buttonLink: buttonLink.text.nullIfEmpty(),
+                                  link: link.text.nullIfEmpty(),
+                                  order: int.tryParse(order.text),
+                                  instagram: instagram.text.nullIfEmpty(),
+                                  telegram: telegram.text.nullIfEmpty(),
+                                  whatsapp: whatsapp.text.nullIfEmpty(),
+                                  phone: phone.text.nullIfEmpty(),
+                                  items: itemModels,
+                                  links: linkModels,
+                                ),
+                              );
+                            } else {
+                              c.update(
+                                p: UContentUpdateParams(
+                                  id: p.id,
+                                  tags: <int>[tag.value.number],
+                                  title: title.text.nullIfEmpty(),
+                                  subTitle: subTitle.text.nullIfEmpty(),
+                                  description: description.text.nullIfEmpty(),
+                                  detail1: detail1.text.nullIfEmpty(),
+                                  detail2: detail2.text.nullIfEmpty(),
+                                  imageBase64: imageBase64,
+                                  iconBase64: iconBase64,
+                                  buttonText: buttonText.text.nullIfEmpty(),
+                                  buttonLink: buttonLink.text.nullIfEmpty(),
+                                  link: link.text.nullIfEmpty(),
+                                  order: int.tryParse(order.text),
+                                  instagram: instagram.text.nullIfEmpty(),
+                                  telegram: telegram.text.nullIfEmpty(),
+                                  whatsapp: whatsapp.text.nullIfEmpty(),
+                                  phone: phone.text.nullIfEmpty(),
+                                  items: itemModels,
+                                  links: linkModels,
+                                ),
+                              );
+                            }
+                            UNavigator.back();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
         ),
-      )),
+      ),
     );
   }
 

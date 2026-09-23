@@ -15,12 +15,12 @@ class _HotelPageState extends State<UAdminHotelPage> {
     c.init();
     super.initState();
   }
+
   @override
   void dispose() {
     c.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -84,43 +84,37 @@ class _HotelPageState extends State<UAdminHotelPage> {
     fallback: (UAdminActionContext<UHotelResponse> ctx) => <UAdminAction>[
       UAdminLinks.hotelRooms(ctx.item),
       UAdminLinks.hotelReservations(ctx.item),
-      UAdminLinks.placeDetails(onTap: () => UAdminPlaceDetails.hotel(ctx.item, onDone: c.read), roles: <TagUser>[TagUser.permissionManageHotels]),
+      UAdminLinks.placeDetails(
+        onTap: () => UAdminPlaceDetails.hotel(ctx.item, onDone: c.read),
+        roles: <TagUser>[TagUser.permissionManageHotels],
+      ),
       ctx.edit(roles: <TagUser>[TagUser.permissionManageHotels]),
       ctx.delete(roles: <TagUser>[TagUser.permissionDeleteHotels]),
     ],
   );
 
   void _showFilterDialog() => UNavigator.dialog(
-    AlertDialog(
+    UAdminForm.filterDialog(
+      context,
       title: Text(U.s.filterItem(U.s.hotels)),
-      content: SizedBox(
-        width: context.dialogWidth(),
-        child: Form(
-          key: c.filterFormKey,
-          child: SingleChildScrollView(
-            child: UColumn(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                UTextField(controller: c.titleFilter, labelText: U.s.title, margin: const EdgeInsets.symmetric(vertical: 6)),
-                UCountryProvincePicker(onCountryChanged: (UCountry i) => c.countryFilter = i, onProvinceChanged: (UProvince i) => c.cityFilter = i).pSymmetric(vertical: 6),
-                const SizedBox(height: 20),
-                UButtonSubmitCancel(
-                  submitTitle: U.s.filter,
-                  cancelTitle: U.s.clearFilters,
-                  onSubmit: () {
-                    c.applyFilters();
-                    UNavigator.back();
-                  },
-                  onCancel: () {
-                    c.clearFilters();
-                    UNavigator.back();
-                  },
-                ),
-              ],
-            ),
-          ),
+      formKey: c.filterFormKey,
+      children: <Widget>[
+        UTextField(controller: c.titleFilter, labelText: U.s.title, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UCountryProvincePicker(onCountryChanged: (UCountry i) => c.countryFilter = i, onProvinceChanged: (UProvince i) => c.cityFilter = i).pSymmetric(vertical: 6),
+        const SizedBox(height: 20),
+        UButtonSubmitCancel(
+          submitTitle: U.s.filter,
+          cancelTitle: U.s.clearFilters,
+          onSubmit: () {
+            c.applyFilters();
+            UNavigator.back();
+          },
+          onCancel: () {
+            c.clearFilters();
+            UNavigator.back();
+          },
         ),
-      ),
+      ],
     ),
   );
 
@@ -151,141 +145,155 @@ class _HotelPageState extends State<UAdminHotelPage> {
       selectedAdmins.addAll(fetched.whereType<UUserResponse>());
     }
 
-    await UNavigator.dialog(f.scope(
-      StatefulBuilder(
-        builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
-          title: Text(p == null ? U.s.createItem(U.s.hotel) : U.s.editItem(U.s.hotel)),
-          content: SizedBox(
-            width: context.dialogWidth(max: 480),
-            child: SingleChildScrollView(
-              child: Form(
-                key: formKey,
-                child: UColumn(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    UTextField(
-                      controller: title,
-                      labelText: U.s.title,
-                      validator: UValidators.required(message: ""),
-                      margin: const EdgeInsets.symmetric(vertical: 6),
-                    ),
-                    UCountryProvincePicker(
-                      onCountryChanged: (UCountry i) {},
-                      onProvinceChanged: (UProvince i) => province = i,
-                      onCityChanged: (UCity? i) => city = i,
-                    ).pSymmetric(vertical: 6),
-                    UTextField(controller: detail, labelText: U.s.description, lines: 3, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextField(controller: stars, labelText: U.s.stars, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextField(controller: address, labelText: U.s.address, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextFieldPhoneNumber(controller: phone, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextField(controller: email, labelText: U.s.email, keyboardType: TextInputType.emailAddress, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextField(controller: checkInTime, labelText: U.s.checkInTime, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextField(controller: checkOutTime, labelText: U.s.checkOutTime, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextField(controller: policies, labelText: U.s.policies, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextField(controller: rules, labelText: U.s.rules, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    URow(
-                      children: <Widget>[
-                        UTextField(expanded: 1, controller: cancellationFreeHours, labelText: U.s.freeCancellationUpToAFewHoursBeforeCheckIn, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
-                        const SizedBox(width: 8),
-                        UTextField(expanded: 1, controller: cancellationPenaltyNights, labelText: U.s.cancellationFee, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      ],
-                    ),
-                    URow(
-                      children: <Widget>[
-                        UTextField(expanded: 1, controller: latitude, labelText: "Latitude", keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
-                        const SizedBox(width: 8),
-                        UTextField(expanded: 1, controller: longitude, labelText: "Longitude", keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      ],
-                    ),
-                    UAdminTagChips<TagHotel>(title: U.s.propertyType, options: TagHotel.values.group(100), tags: tags, single: true),
-                    UAdminTagChips<TagHotel>(title: U.s.status, options: const <TagHotel>[TagHotel.active, TagHotel.inactive], tags: tags, single: true),
-                    const SizedBox(height: 12),
-                    UTextFieldAutoCompleteAsync<UUserResponse>(
-                      hintText: U.s.admins,
-                      selectedItem: null,
-                      labelBuilder: (UUserResponse u) => u.userName,
-                      fetchData: UAdminHotelAdminSearchHelper.searchUsers,
-                      onChanged: (UUserResponse? u) {
-                        if (u == null) return;
-                        if (selectedAdmins.any((UUserResponse x) => x.id == u.id)) return;
-                        setDialogState(() => selectedAdmins.add(u));
-                      },
-                    ).pSymmetric(vertical: 6),
-                    Wrap(
-                      spacing: 6,
-                      runSpacing: 6,
-                      children: selectedAdmins
-                          .map(
-                            (UUserResponse u) => Chip(
-                              label: Text(u.userName),
-                              onDeleted: () => setDialogState(() => selectedAdmins.removeWhere((UUserResponse x) => x.id == u.id)),
-                            ),
-                          )
-                          .toList(),
-                    ).pSymmetric(vertical: 6),
-                    const SizedBox(height: 20),
-                    UButtonSubmitCancel(
-                      onSubmit: () => UValidators.validateForm(
-                        key: formKey,
-                        action: () {
-                          final List<String> adminUserIds = selectedAdmins.map((UUserResponse u) => u.id).toList();
-                          if (p == null) {
-                            c.create(
-                              p: UHotelCreateParams(
-                                tags: tags,
-                                title: title.text,
-                                cityCode: city?.code ?? province.code,
-                                stars: stars.text.isEmpty ? 0 : stars.text.toInt(),
-                                address: address.text.nullIfEmpty(),
-                                phoneNumber: phone.text.nullIfEmpty(),
-                                email: email.text.nullIfEmpty(),
-                                description: detail.text.nullIfEmpty(),
-                                policies: policies.text.nullIfEmpty(),
-                                checkInTime: checkInTime.text.nullIfEmpty(),
-                                checkOutTime: checkOutTime.text.nullIfEmpty(),
-                                rules: rules.text.trim().isEmpty ? null : rules.text.split(",").map((String e) => e.trim()).where((String e) => e.isNotEmpty).toList(),
-                                latitude: double.tryParse(latitude.text.toLatinNumber()),
-                                longitude: double.tryParse(longitude.text.toLatinNumber()),
-                                cancellationFreeHours: int.tryParse(cancellationFreeHours.text.toLatinNumber()),
-                                cancellationPenaltyNights: int.tryParse(cancellationPenaltyNights.text.toLatinNumber()),
-                                adminUserIds: adminUserIds,
-                              ),
-                            );
-                          } else {
-                            c.update(
-                              p: UHotelUpdateParams(
-                                id: p.id,
-                                tags: tags,
-                                title: title.text,
-                                cityCode: city?.code ?? province.code,
-                                stars: stars.text.isEmpty ? null : stars.text.toInt(),
-                                address: address.text.nullIfEmpty(),
-                                phoneNumber: phone.text.nullIfEmpty(),
-                                email: email.text.nullIfEmpty(),
-                                description: detail.text.nullIfEmpty(),
-                                policies: policies.text.nullIfEmpty(),
-                                checkInTime: checkInTime.text.nullIfEmpty(),
-                                checkOutTime: checkOutTime.text.nullIfEmpty(),
-                                rules: rules.text.trim().isEmpty ? null : rules.text.split(",").map((String e) => e.trim()).where((String e) => e.isNotEmpty).toList(),
-                                latitude: double.tryParse(latitude.text.toLatinNumber()),
-                                longitude: double.tryParse(longitude.text.toLatinNumber()),
-                                cancellationFreeHours: int.tryParse(cancellationFreeHours.text.toLatinNumber()),
-                                cancellationPenaltyNights: int.tryParse(cancellationPenaltyNights.text.toLatinNumber()),
-                                adminUserIds: adminUserIds,
-                              ),
-                            );
-                          }
-                          UNavigator.back();
-                        },
+    await UNavigator.dialog(
+      f.scope(
+        StatefulBuilder(
+          builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
+            title: Text(p == null ? U.s.createItem(U.s.hotel) : U.s.editItem(U.s.hotel)),
+            content: SizedBox(
+              width: context.dialogWidth(max: 480),
+              child: SingleChildScrollView(
+                child: Form(
+                  key: formKey,
+                  child: UColumn(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      UTextField(
+                        controller: title,
+                        labelText: U.s.title,
+                        validator: UValidators.required(message: ""),
+                        margin: const EdgeInsets.symmetric(vertical: 6),
                       ),
-                    ),
-                  ],
+                      UCountryProvincePicker(
+                        onCountryChanged: (UCountry i) {},
+                        onProvinceChanged: (UProvince i) => province = i,
+                        onCityChanged: (UCity? i) => city = i,
+                      ).pSymmetric(vertical: 6),
+                      UTextField(controller: detail, labelText: U.s.description, lines: 3, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      UTextField(controller: stars, labelText: U.s.stars, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      UTextField(controller: address, labelText: U.s.address, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      UTextFieldPhoneNumber(controller: phone, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      UTextField(controller: email, labelText: U.s.email, keyboardType: TextInputType.emailAddress, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      UTextField(controller: checkInTime, labelText: U.s.checkInTime, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      UTextField(controller: checkOutTime, labelText: U.s.checkOutTime, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      UTextField(controller: policies, labelText: U.s.policies, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      UTextField(controller: rules, labelText: U.s.rules, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      URow(
+                        children: <Widget>[
+                          UTextField(
+                            expanded: 1,
+                            controller: cancellationFreeHours,
+                            labelText: U.s.freeCancellationUpToAFewHoursBeforeCheckIn,
+                            keyboardType: TextInputType.number,
+                            margin: const EdgeInsets.symmetric(vertical: 6),
+                          ),
+                          const SizedBox(width: 8),
+                          UTextField(
+                            expanded: 1,
+                            controller: cancellationPenaltyNights,
+                            labelText: U.s.cancellationFee,
+                            keyboardType: TextInputType.number,
+                            margin: const EdgeInsets.symmetric(vertical: 6),
+                          ),
+                        ],
+                      ),
+                      URow(
+                        children: <Widget>[
+                          UTextField(expanded: 1, controller: latitude, labelText: "Latitude", keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
+                          const SizedBox(width: 8),
+                          UTextField(expanded: 1, controller: longitude, labelText: "Longitude", keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
+                        ],
+                      ),
+                      UAdminTagChips<TagHotel>(title: U.s.propertyType, options: TagHotel.values.group(100), tags: tags, single: true),
+                      UAdminTagChips<TagHotel>(title: U.s.status, options: const <TagHotel>[TagHotel.active, TagHotel.inactive], tags: tags, single: true),
+                      const SizedBox(height: 12),
+                      UTextFieldAutoCompleteAsync<UUserResponse>(
+                        hintText: U.s.admins,
+                        selectedItem: null,
+                        labelBuilder: (UUserResponse u) => u.userName,
+                        fetchData: UAdminHotelAdminSearchHelper.searchUsers,
+                        onChanged: (UUserResponse? u) {
+                          if (u == null) return;
+                          if (selectedAdmins.any((UUserResponse x) => x.id == u.id)) return;
+                          setDialogState(() => selectedAdmins.add(u));
+                        },
+                      ).pSymmetric(vertical: 6),
+                      Wrap(
+                        spacing: 6,
+                        runSpacing: 6,
+                        children: selectedAdmins
+                            .map(
+                              (UUserResponse u) => Chip(
+                                label: Text(u.userName),
+                                onDeleted: () => setDialogState(() => selectedAdmins.removeWhere((UUserResponse x) => x.id == u.id)),
+                              ),
+                            )
+                            .toList(),
+                      ).pSymmetric(vertical: 6),
+                      const SizedBox(height: 20),
+                      UButtonSubmitCancel(
+                        onSubmit: () => UValidators.validateForm(
+                          key: formKey,
+                          action: () {
+                            final List<String> adminUserIds = selectedAdmins.map((UUserResponse u) => u.id).toList();
+                            if (p == null) {
+                              c.create(
+                                p: UHotelCreateParams(
+                                  tags: tags,
+                                  title: title.text,
+                                  cityCode: city?.code ?? province.code,
+                                  stars: stars.text.isEmpty ? 0 : stars.text.toInt(),
+                                  address: address.text.nullIfEmpty(),
+                                  phoneNumber: phone.text.nullIfEmpty(),
+                                  email: email.text.nullIfEmpty(),
+                                  description: detail.text.nullIfEmpty(),
+                                  policies: policies.text.nullIfEmpty(),
+                                  checkInTime: checkInTime.text.nullIfEmpty(),
+                                  checkOutTime: checkOutTime.text.nullIfEmpty(),
+                                  rules: rules.text.trim().isEmpty ? null : rules.text.split(",").map((String e) => e.trim()).where((String e) => e.isNotEmpty).toList(),
+                                  latitude: double.tryParse(latitude.text.toLatinNumber()),
+                                  longitude: double.tryParse(longitude.text.toLatinNumber()),
+                                  cancellationFreeHours: int.tryParse(cancellationFreeHours.text.toLatinNumber()),
+                                  cancellationPenaltyNights: int.tryParse(cancellationPenaltyNights.text.toLatinNumber()),
+                                  adminUserIds: adminUserIds,
+                                ),
+                              );
+                            } else {
+                              c.update(
+                                p: UHotelUpdateParams(
+                                  id: p.id,
+                                  tags: tags,
+                                  title: title.text,
+                                  cityCode: city?.code ?? province.code,
+                                  stars: stars.text.isEmpty ? null : stars.text.toInt(),
+                                  address: address.text.nullIfEmpty(),
+                                  phoneNumber: phone.text.nullIfEmpty(),
+                                  email: email.text.nullIfEmpty(),
+                                  description: detail.text.nullIfEmpty(),
+                                  policies: policies.text.nullIfEmpty(),
+                                  checkInTime: checkInTime.text.nullIfEmpty(),
+                                  checkOutTime: checkOutTime.text.nullIfEmpty(),
+                                  rules: rules.text.trim().isEmpty ? null : rules.text.split(",").map((String e) => e.trim()).where((String e) => e.isNotEmpty).toList(),
+                                  latitude: double.tryParse(latitude.text.toLatinNumber()),
+                                  longitude: double.tryParse(longitude.text.toLatinNumber()),
+                                  cancellationFreeHours: int.tryParse(cancellationFreeHours.text.toLatinNumber()),
+                                  cancellationPenaltyNights: int.tryParse(cancellationPenaltyNights.text.toLatinNumber()),
+                                  adminUserIds: adminUserIds,
+                                ),
+                              );
+                            }
+                            UNavigator.back();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
         ),
-      )),
+      ),
     );
   }
 }

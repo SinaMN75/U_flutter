@@ -15,12 +15,12 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
     c.init();
     super.initState();
   }
+
   @override
   void dispose() {
     c.dispose();
     super.dispose();
   }
-
 
   bool get _isWide => MediaQuery.sizeOf(context).width > 1000;
 
@@ -30,25 +30,27 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
       title: Text("${U.s.accommodationDashboard} ⚡"),
       actions: <Widget>[IconButton(icon: const Icon(Icons.refresh_rounded), tooltip: U.s.refresh, onPressed: c.load)],
     ),
-    body: UObx(() {
-      if (c.state.value.isError()) return TextButton(onPressed: c.load, child: Text(U.s.retry)).alignAtCenter();
-      if (!c.state.value.isLoaded()) return const CircularProgressIndicator().alignAtCenter();
-      final UPropertyDashboardResponse r = c.report.value!;
-      return SingleChildScrollView(
-        padding: EdgeInsets.all(_isWide ? 24 : 14),
-        child: UColumn(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            _hero(r).pSymmetric(vertical: 16),
-            _entityCards(r).pSymmetric(vertical: 16),
-            _occupancyAndRevenueSection(r).pSymmetric(vertical: 16),
-            _cityBreakdownSection(r).pSymmetric(vertical: 16),
-            _contractsAndInvoicesSection(r).pSymmetric(vertical: 16),
-            _recentSection(r).pSymmetric(vertical: 16),
-          ],
-        ),
-      );
-    }),
+    body: UAdminPageBody(
+      child: UObx(() {
+        if (c.state.value.isError()) return TextButton(onPressed: c.load, child: Text(U.s.retry)).alignAtCenter();
+        if (!c.state.value.isLoaded()) return const CircularProgressIndicator().alignAtCenter();
+        final UPropertyDashboardResponse r = c.report.value!;
+        return SingleChildScrollView(
+          padding: EdgeInsets.all(_isWide ? 24 : 14),
+          child: UColumn(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              _hero(r).pSymmetric(vertical: 16),
+              _entityCards(r).pSymmetric(vertical: 16),
+              _occupancyAndRevenueSection(r).pSymmetric(vertical: 16),
+              _cityBreakdownSection(r).pSymmetric(vertical: 16),
+              _contractsAndInvoicesSection(r).pSymmetric(vertical: 16),
+              _recentSection(r).pSymmetric(vertical: 16),
+            ],
+          ),
+        );
+      }),
+    ),
   );
 
   Widget _hero(UPropertyDashboardResponse r) => UContainer(
@@ -72,27 +74,21 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
           spacing: 8,
           runSpacing: 8,
           children: <Widget>[
-            _heroMetric(U.s.users, r.usersCount.separate3By3(), Icons.groups_rounded),
-            _heroMetric(U.s.hotels, r.hotelsCount.separate3By3(), Icons.apartment_rounded),
-            _heroMetric(U.s.dorms, r.dormsCount.separate3By3(), Icons.bedroom_parent_rounded),
-            _heroMetric(U.s.contracts, r.contractsCount.separate3By3(), Icons.description_rounded),
-            _heroMetric(U.s.invoices, r.invoicesCount.separate3By3(), Icons.receipt_long_rounded),
+            UAdminDashboard.heroMetric(U.s.users, r.usersCount.separate3By3(), Icons.groups_rounded),
+            UAdminDashboard.heroMetric(U.s.hotels, r.hotelsCount.separate3By3(), Icons.apartment_rounded),
+            UAdminDashboard.heroMetric(U.s.dorms, r.dormsCount.separate3By3(), Icons.bedroom_parent_rounded),
+            UAdminDashboard.heroMetric(U.s.contracts, r.contractsCount.separate3By3(), Icons.description_rounded),
+            UAdminDashboard.heroMetric(U.s.invoices, r.invoicesCount.separate3By3(), Icons.receipt_long_rounded),
           ],
         ),
       ],
     ),
   );
 
-  Widget _heroMetric(String label, String value, IconData icon) => ListTile(
-    leading: UIconBackground(icon, color: UAdminTheme.white),
-    title: UTextBodyMedium(label, color: UAdminTheme.white),
-    subtitle: UTextBodyLarge(value, color: UAdminTheme.white),
-  );
-
   Widget _entityCards(UPropertyDashboardResponse r) => UAdminResponsiveGrid(
     children: <Widget>[
-      _statCard(U.s.hotels, r.hotelsCount.separate3By3(), "${r.hotelRoomsCount} ${U.s.rooms}", Icons.apartment_rounded, UAdminTheme.indigo, UAdminPageSwitcher.hotels),
-      _statCard(
+      UAdminDashboard.statCard(U.s.hotels, r.hotelsCount.separate3By3(), "${r.hotelRoomsCount} ${U.s.rooms}", Icons.apartment_rounded, UAdminTheme.indigo, UAdminPageSwitcher.hotels),
+      UAdminDashboard.statCard(
         U.s.hotelOccupancy,
         "${r.hotelOccupancyRate}%",
         "${r.hotelRoomsOccupiedCount}/${r.hotelRoomsCount} ${U.s.occupied}",
@@ -100,24 +96,34 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
         UAdminTheme.orange,
         UAdminPageSwitcher.hotelRooms,
       ),
-      _statCard(U.s.dorms, r.dormsCount.separate3By3(), "${r.dormRoomsCount} ${U.s.rooms}", Icons.bedroom_parent_rounded, UAdminTheme.green, UAdminPageSwitcher.dormList),
-      _statCard(U.s.dormOccupancy, "${r.dormOccupancyRate}%", "${r.dormBedsOccupiedCount}/${r.dormBedsCount} ${U.s.beds}", Icons.bed_rounded, UAdminTheme.pink, UAdminPageSwitcher.dormBeds),
-      _statCard(U.s.contracts, r.contractsCount.separate3By3(), "${r.activeContractsCount} ${U.s.active}", Icons.description_rounded, UAdminTheme.blueGrey, UAdminPageSwitcher.contracts),
-      _statCard(U.s.contractsExpiringSoon, r.expiringSoonContractsCount.separate3By3(), U.s.next30Days, Icons.event_busy_rounded, UAdminTheme.red, UAdminPageSwitcher.contracts),
-      _statCard(U.s.invoices, r.invoicesCount.separate3By3(), "${r.unpaidInvoicesCount} ${U.s.unpaid}", Icons.receipt_long_rounded, UAdminTheme.yellow.shade900, UAdminPageSwitcher.invoices),
-      _statCard(U.s.overdueInvoices, r.overdueInvoicesCount.separate3By3(), r.totalOutstanding.rial(), Icons.warning_amber_rounded, UAdminTheme.red, UAdminPageSwitcher.invoices),
+      UAdminDashboard.statCard(U.s.dorms, r.dormsCount.separate3By3(), "${r.dormRoomsCount} ${U.s.rooms}", Icons.bedroom_parent_rounded, UAdminTheme.green, UAdminPageSwitcher.dormList),
+      UAdminDashboard.statCard(
+        U.s.dormOccupancy,
+        "${r.dormOccupancyRate}%",
+        "${r.dormBedsOccupiedCount}/${r.dormBedsCount} ${U.s.beds}",
+        Icons.bed_rounded,
+        UAdminTheme.pink,
+        UAdminPageSwitcher.dormBeds,
+      ),
+      UAdminDashboard.statCard(
+        U.s.contracts,
+        r.contractsCount.separate3By3(),
+        "${r.activeContractsCount} ${U.s.active}",
+        Icons.description_rounded,
+        UAdminTheme.blueGrey,
+        UAdminPageSwitcher.contracts,
+      ),
+      UAdminDashboard.statCard(U.s.contractsExpiringSoon, r.expiringSoonContractsCount.separate3By3(), U.s.next30Days, Icons.event_busy_rounded, UAdminTheme.red, UAdminPageSwitcher.contracts),
+      UAdminDashboard.statCard(
+        U.s.invoices,
+        r.invoicesCount.separate3By3(),
+        "${r.unpaidInvoicesCount} ${U.s.unpaid}",
+        Icons.receipt_long_rounded,
+        UAdminTheme.yellow.shade900,
+        UAdminPageSwitcher.invoices,
+      ),
+      UAdminDashboard.statCard(U.s.overdueInvoices, r.overdueInvoicesCount.separate3By3(), r.totalOutstanding.rial(), Icons.warning_amber_rounded, UAdminTheme.red, UAdminPageSwitcher.invoices),
     ],
-  );
-
-  Widget _statCard(String title, String value, String sub, IconData icon, Color color, VoidCallback? onTap) => UCard(
-    child: ListTile(
-      contentPadding: const EdgeInsets.all(18),
-      leading: UIconBackground(icon, color: color),
-      title: UTextTitleMedium(value, fontWeight: FontWeight.w800, maxLines: 1),
-      subtitle: UTextBodySmall(title, color: UAdminTheme.grey),
-      trailing: sub.isNullOrEmpty() ? null : UTextBodySmall(sub, color: color, fontWeight: FontWeight.w600),
-      onTap: onTap,
-    ),
   );
 
   Widget _occupancyAndRevenueSection(UPropertyDashboardResponse r) => _isWide
@@ -138,8 +144,9 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
         );
 
   Widget _monthlyRevenueChart(UPropertyDashboardResponse r) {
-    if (r.monthlyRevenue.isEmpty) return _chartCard(title: U.s.monthlyRevenue, child: UTextBodySmall(U.s.noData).alignAtCenter());
-    return _chartCard(
+    if (r.monthlyRevenue.isEmpty) return UAdminDashboard.chartCard(context, title: U.s.monthlyRevenue, child: UTextBodySmall(U.s.noData).alignAtCenter());
+    return UAdminDashboard.chartCard(
+      context,
       title: U.s.monthlyRevenueDebtPaidPenalty,
       child: UBarChart(
         categories: r.monthlyRevenue.map((UDormBedInvoiceChartResponse d) => d.month).toList(),
@@ -152,7 +159,8 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
     );
   }
 
-  Widget _occupancyChart(UPropertyDashboardResponse r) => _chartCard(
+  Widget _occupancyChart(UPropertyDashboardResponse r) => UAdminDashboard.chartCard(
+    context,
     title: U.s.occupancy,
     child: UDonutChart(
       holeFactor: 0.55,
@@ -178,7 +186,8 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
           children: <Widget>[_cityBarChart(U.s.hotelsByCity, r.hotelsByCity, UAdminTheme.indigo), const SizedBox(height: 16), _cityBarChart(U.s.dormsByCity, r.dormsByCity, UAdminTheme.green)],
         );
 
-  Widget _cityBarChart(String title, List<UPropertyBreakdownItem> items, Color color) => _chartCard(
+  Widget _cityBarChart(String title, List<UPropertyBreakdownItem> items, Color color) => UAdminDashboard.chartCard(
+    context,
     title: title,
     child: items.isEmpty
         ? UTextBodySmall(U.s.noData).alignAtCenter()
@@ -186,21 +195,6 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
             categories: items.map((UPropertyBreakdownItem d) => d.name).toList(),
             series: <UChartSeries>[UChartSeries(color: color, values: items.map((UPropertyBreakdownItem d) => d.count.toDouble()).toList())],
           ),
-  );
-
-  Widget _chartCard({required String title, required Widget child}) => UContainer(
-    height: 320,
-    padding: const EdgeInsets.all(18),
-    radius: 20,
-    color: Theme.of(context).cardTheme.color,
-    child: UColumn(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        UTextTitleSmall(title, fontWeight: FontWeight.w700),
-        const Divider(height: 18),
-        child.expanded(),
-      ],
-    ),
   );
 
   Widget _contractsAndInvoicesSection(UPropertyDashboardResponse r) => _isWide

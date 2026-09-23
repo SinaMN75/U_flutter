@@ -111,8 +111,14 @@ class UAdminPaymentUserCreateUpdateController {
   /// Releases the text controllers and observables this controller owns.
   void dispose() {
     for (final TextEditingController controller in <TextEditingController>[
-      controllerFirstName, controllerLastName, controllerUserName, controllerBirthDate,
-      controllerPassword, controllerEmail, controllerPhoneNumber, controllerFatherName,
+      controllerFirstName,
+      controllerLastName,
+      controllerUserName,
+      controllerBirthDate,
+      controllerPassword,
+      controllerEmail,
+      controllerPhoneNumber,
+      controllerFatherName,
     ]) {
       controller.dispose();
     }

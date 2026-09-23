@@ -15,12 +15,12 @@ class _DormPageState extends State<UAdminDormPage> {
     c.init();
     super.initState();
   }
+
   @override
   void dispose() {
     c.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -83,7 +83,10 @@ class _DormPageState extends State<UAdminDormPage> {
     fallback: (UAdminActionContext<UDormResponse> ctx) => <UAdminAction>[
       UAdminLinks.dormRooms(ctx.item),
       UAdminLinks.dormBeds(ctx.item),
-      UAdminLinks.placeDetails(onTap: () => UAdminPlaceDetails.dorm(ctx.item, onDone: c.read), roles: <TagUser>[TagUser.permissionManageDorms]),
+      UAdminLinks.placeDetails(
+        onTap: () => UAdminPlaceDetails.dorm(ctx.item, onDone: c.read),
+        roles: <TagUser>[TagUser.permissionManageDorms],
+      ),
       ctx.edit(roles: <TagUser>[TagUser.permissionManageDorms]),
       ctx.delete(roles: <TagUser>[TagUser.permissionDeleteDorms]),
     ],
@@ -113,132 +116,134 @@ class _DormPageState extends State<UAdminDormPage> {
       selectedAdmins.addAll(fetched.whereType<UUserResponse>());
     }
 
-    await UNavigator.dialog(f.scope(
-      StatefulBuilder(
-        builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
-          title: Text(p == null ? U.s.createItem(U.s.dorm) : U.s.editItem(U.s.dorm)),
-          content: SizedBox(
-            width: context.dialogWidth(max: 480),
-            child: SingleChildScrollView(
-              child: Form(
-                key: formKey,
-                child: UColumn(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    UTextField(
-                      controller: title,
-                      labelText: U.s.title,
-                      validator: UValidators.required(message: ""),
-                      margin: const EdgeInsets.symmetric(vertical: 6),
-                    ),
-                    UCountryProvincePicker(
-                      initialCountry: country,
-                      initialProvince: province,
-                      onCountryChanged: (UCountry i) => country = i,
-                      onProvinceChanged: (UProvince i) => province = i,
-                      onCityChanged: (UCity? i) => city = i,
-                    ).pSymmetric(vertical: 6),
-                    UAdminTagChips<TagDorm>(title: U.s.gender, options: TagDorm.values.group(100), tags: tags, single: true),
-                    UAdminTagChips<TagDorm>(title: U.s.status, options: const <TagDorm>[TagDorm.active, TagDorm.inactive], tags: tags, single: true),
-                    UTextField(
-                      controller: detail,
-                      labelText: U.s.description,
-                      contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
-                      lines: 3,
-                      margin: const EdgeInsets.symmetric(vertical: 6),
-                    ),
-                    UTextField(controller: address, labelText: U.s.address, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextFieldPhoneNumber(controller: phoneNumber, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextField(controller: nearbyUniversity, labelText: U.s.nearbyUniversity, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextField(controller: visitingHours, labelText: U.s.visitingHours, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextField(controller: rules, labelText: U.s.rules, hintText: "،", margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextField(controller: requiredDocuments, labelText: U.s.requiredDocuments, hintText: "،", margin: const EdgeInsets.symmetric(vertical: 6)),
-                    URow(
-                      children: <Widget>[
-                        UTextField(expanded: 1, controller: latitude, labelText: "Latitude", keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
-                        const SizedBox(width: 8),
-                        UTextField(expanded: 1, controller: longitude, labelText: "Longitude", keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    UTextFieldAutoCompleteAsync<UUserResponse>(
-                      hintText: U.s.admins,
-                      selectedItem: null,
-                      labelBuilder: (UUserResponse u) => u.userName,
-                      fetchData: UAdminHotelAdminSearchHelper.searchUsers,
-                      onChanged: (UUserResponse? u) {
-                        if (u == null) return;
-                        if (selectedAdmins.any((UUserResponse x) => x.id == u.id)) return;
-                        setDialogState(() => selectedAdmins.add(u));
-                      },
-                    ).pSymmetric(vertical: 6),
-                    Wrap(
-                      spacing: 6,
-                      runSpacing: 6,
-                      children: selectedAdmins
-                          .map(
-                            (UUserResponse u) => Chip(
-                              label: Text(u.userName),
-                              onDeleted: () => setDialogState(() => selectedAdmins.removeWhere((UUserResponse x) => x.id == u.id)),
-                            ),
-                          )
-                          .toList(),
-                    ).pSymmetric(vertical: 6),
-                    const SizedBox(height: 20),
-                    UButtonSubmitCancel(
-                      onSubmit: () => UValidators.validateForm(
-                        key: formKey,
-                        action: () {
-                          final List<String> adminUserIds = selectedAdmins.map((UUserResponse u) => u.id).toList();
-                          if (p == null) {
-                            c.create(
-                              p: UDormCreateParams(
-                                tags: tags,
-                                title: title.text,
-                                cityCode: city?.code ?? province.code,
-                                address: address.text.nullIfEmpty(),
-                                phoneNumber: phoneNumber.text.nullIfEmpty(),
-                                description: detail.text.nullIfEmpty(),
-                                nearbyUniversity: nearbyUniversity.text.nullIfEmpty(),
-                                visitingHours: visitingHours.text.nullIfEmpty(),
-                                rules: _splitList(rules.text),
-                                requiredDocuments: _splitList(requiredDocuments.text),
-                                latitude: double.tryParse(latitude.text.toLatinNumber()),
-                                longitude: double.tryParse(longitude.text.toLatinNumber()),
-                                adminUserIds: adminUserIds,
-                              ),
-                            );
-                          } else {
-                            c.update(
-                              p: UDormUpdateParams(
-                                id: p.id,
-                                tags: tags,
-                                title: title.text,
-                                cityCode: city?.code ?? province.code,
-                                address: address.text.nullIfEmpty(),
-                                phoneNumber: phoneNumber.text.nullIfEmpty(),
-                                description: detail.text.nullIfEmpty(),
-                                nearbyUniversity: nearbyUniversity.text.nullIfEmpty(),
-                                visitingHours: visitingHours.text.nullIfEmpty(),
-                                rules: _splitList(rules.text),
-                                requiredDocuments: _splitList(requiredDocuments.text),
-                                latitude: double.tryParse(latitude.text.toLatinNumber()),
-                                longitude: double.tryParse(longitude.text.toLatinNumber()),
-                                adminUserIds: adminUserIds,
-                              ),
-                            );
-                          }
-                          UNavigator.back();
-                        },
+    await UNavigator.dialog(
+      f.scope(
+        StatefulBuilder(
+          builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
+            title: Text(p == null ? U.s.createItem(U.s.dorm) : U.s.editItem(U.s.dorm)),
+            content: SizedBox(
+              width: context.dialogWidth(max: 480),
+              child: SingleChildScrollView(
+                child: Form(
+                  key: formKey,
+                  child: UColumn(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      UTextField(
+                        controller: title,
+                        labelText: U.s.title,
+                        validator: UValidators.required(message: ""),
+                        margin: const EdgeInsets.symmetric(vertical: 6),
                       ),
-                    ),
-                  ],
+                      UCountryProvincePicker(
+                        initialCountry: country,
+                        initialProvince: province,
+                        onCountryChanged: (UCountry i) => country = i,
+                        onProvinceChanged: (UProvince i) => province = i,
+                        onCityChanged: (UCity? i) => city = i,
+                      ).pSymmetric(vertical: 6),
+                      UAdminTagChips<TagDorm>(title: U.s.gender, options: TagDorm.values.group(100), tags: tags, single: true),
+                      UAdminTagChips<TagDorm>(title: U.s.status, options: const <TagDorm>[TagDorm.active, TagDorm.inactive], tags: tags, single: true),
+                      UTextField(
+                        controller: detail,
+                        labelText: U.s.description,
+                        contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+                        lines: 3,
+                        margin: const EdgeInsets.symmetric(vertical: 6),
+                      ),
+                      UTextField(controller: address, labelText: U.s.address, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      UTextFieldPhoneNumber(controller: phoneNumber, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      UTextField(controller: nearbyUniversity, labelText: U.s.nearbyUniversity, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      UTextField(controller: visitingHours, labelText: U.s.visitingHours, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      UTextField(controller: rules, labelText: U.s.rules, hintText: "،", margin: const EdgeInsets.symmetric(vertical: 6)),
+                      UTextField(controller: requiredDocuments, labelText: U.s.requiredDocuments, hintText: "،", margin: const EdgeInsets.symmetric(vertical: 6)),
+                      URow(
+                        children: <Widget>[
+                          UTextField(expanded: 1, controller: latitude, labelText: "Latitude", keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
+                          const SizedBox(width: 8),
+                          UTextField(expanded: 1, controller: longitude, labelText: "Longitude", keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      UTextFieldAutoCompleteAsync<UUserResponse>(
+                        hintText: U.s.admins,
+                        selectedItem: null,
+                        labelBuilder: (UUserResponse u) => u.userName,
+                        fetchData: UAdminHotelAdminSearchHelper.searchUsers,
+                        onChanged: (UUserResponse? u) {
+                          if (u == null) return;
+                          if (selectedAdmins.any((UUserResponse x) => x.id == u.id)) return;
+                          setDialogState(() => selectedAdmins.add(u));
+                        },
+                      ).pSymmetric(vertical: 6),
+                      Wrap(
+                        spacing: 6,
+                        runSpacing: 6,
+                        children: selectedAdmins
+                            .map(
+                              (UUserResponse u) => Chip(
+                                label: Text(u.userName),
+                                onDeleted: () => setDialogState(() => selectedAdmins.removeWhere((UUserResponse x) => x.id == u.id)),
+                              ),
+                            )
+                            .toList(),
+                      ).pSymmetric(vertical: 6),
+                      const SizedBox(height: 20),
+                      UButtonSubmitCancel(
+                        onSubmit: () => UValidators.validateForm(
+                          key: formKey,
+                          action: () {
+                            final List<String> adminUserIds = selectedAdmins.map((UUserResponse u) => u.id).toList();
+                            if (p == null) {
+                              c.create(
+                                p: UDormCreateParams(
+                                  tags: tags,
+                                  title: title.text,
+                                  cityCode: city?.code ?? province.code,
+                                  address: address.text.nullIfEmpty(),
+                                  phoneNumber: phoneNumber.text.nullIfEmpty(),
+                                  description: detail.text.nullIfEmpty(),
+                                  nearbyUniversity: nearbyUniversity.text.nullIfEmpty(),
+                                  visitingHours: visitingHours.text.nullIfEmpty(),
+                                  rules: _splitList(rules.text),
+                                  requiredDocuments: _splitList(requiredDocuments.text),
+                                  latitude: double.tryParse(latitude.text.toLatinNumber()),
+                                  longitude: double.tryParse(longitude.text.toLatinNumber()),
+                                  adminUserIds: adminUserIds,
+                                ),
+                              );
+                            } else {
+                              c.update(
+                                p: UDormUpdateParams(
+                                  id: p.id,
+                                  tags: tags,
+                                  title: title.text,
+                                  cityCode: city?.code ?? province.code,
+                                  address: address.text.nullIfEmpty(),
+                                  phoneNumber: phoneNumber.text.nullIfEmpty(),
+                                  description: detail.text.nullIfEmpty(),
+                                  nearbyUniversity: nearbyUniversity.text.nullIfEmpty(),
+                                  visitingHours: visitingHours.text.nullIfEmpty(),
+                                  rules: _splitList(rules.text),
+                                  requiredDocuments: _splitList(requiredDocuments.text),
+                                  latitude: double.tryParse(latitude.text.toLatinNumber()),
+                                  longitude: double.tryParse(longitude.text.toLatinNumber()),
+                                  adminUserIds: adminUserIds,
+                                ),
+                              );
+                            }
+                            UNavigator.back();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
         ),
-      )),
+      ),
     );
   }
 }

@@ -32,28 +32,30 @@ class _HotelUserDetailPageState extends State<UAdminHotelUserDetailPage> {
         IconButton(icon: const Icon(Icons.refresh_rounded), tooltip: U.s.refresh, onPressed: c.read),
       ],
     ),
-    body: UObx(() {
-      if (c.state.isError()) return _error();
-      if (!c.state.isLoaded()) return const CircularProgressIndicator().alignAtCenter();
-      return SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        child: UAdminPageBody(
-          maxWidth: 1100,
-          child: UColumn(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              _header(),
-              const SizedBox(height: 16),
-              _roleSection(),
-              const SizedBox(height: 16),
-              _contractsSection(),
-              const SizedBox(height: 16),
-              _paymentsSection(),
-            ],
+    body: UAdminPageBody(
+      child: UObx(() {
+        if (c.state.isError()) return _error();
+        if (!c.state.isLoaded()) return const CircularProgressIndicator().alignAtCenter();
+        return SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          child: UAdminPageBody(
+            maxWidth: 1100,
+            child: UColumn(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                _header(),
+                const SizedBox(height: 16),
+                _roleSection(),
+                const SizedBox(height: 16),
+                _contractsSection(),
+                const SizedBox(height: 16),
+                _paymentsSection(),
+              ],
+            ),
           ),
-        ),
-      );
-    }),
+        );
+      }),
+    ),
   );
 
   Widget _error() => UColumn(

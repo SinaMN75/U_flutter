@@ -35,65 +35,67 @@ class _AdminSettingsPageState extends State<UAdminSettingsPage> {
   @override
   Widget build(BuildContext context) => UScaffold(
     appBar: AppBar(title: Text(U.s.settings)),
-    body: SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      child: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 720),
-          child: UColumn(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              _accountCard(),
-              const SizedBox(height: 16),
-              _section(U.s.appearance, Icons.palette_outlined, <Widget>[
-                _rowLabel(U.s.theme, Icons.dark_mode_outlined),
-                const SizedBox(height: 8),
-                USegmentedControl<String>(
-                  selectedValue: _themeMode,
-                  items: <String, String>{"light": U.s.light, "dark": U.s.dark, "system": U.s.system},
-                  onValueChanged: (String? v) => _applyTheme(v ?? _themeMode),
-                ),
-              ]),
-              const SizedBox(height: 16),
-              _section(U.s.language, Icons.language_outlined, <Widget>[
-                USegmentedControl<String>(selectedValue: _locale, items: <String, String>{"fa": U.s.persian, "en": U.s.english}, onValueChanged: (String? v) => _applyLocale(v ?? _locale)),
-              ]),
-              const SizedBox(height: 16),
-              _section(U.s.general, Icons.tune_rounded, <Widget>[
-                ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  leading: const Icon(Icons.cleaning_services_outlined),
-                  title: Text(U.s.clearCache),
-                  trailing: const Icon(Icons.chevron_right),
-                  onTap: () async {
-                    await UFileStorage.clear();
-                    UToast.snackBar(message: U.s.cacheCleared);
-                  },
-                ),
-                ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  leading: const Icon(Icons.info_outline),
-                  title: Text(U.s.appVersion),
-                  trailing: Text("v${UApp.version}", style: Theme.of(context).textTheme.bodyMedium),
-                ),
-              ]),
-              const SizedBox(height: 24),
-              UButton(
-                title: U.s.logout,
-                icon: const Icon(Icons.logout_rounded),
-                backgroundColor: Theme.of(context).colorScheme.error,
-                onTap: () => UNavigator.confirm(
+    body: UAdminPageBody(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 720),
+            child: UColumn(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                _accountCard(),
+                const SizedBox(height: 16),
+                _section(U.s.appearance, Icons.palette_outlined, <Widget>[
+                  _rowLabel(U.s.theme, Icons.dark_mode_outlined),
+                  const SizedBox(height: 8),
+                  USegmentedControl<String>(
+                    selectedValue: _themeMode,
+                    items: <String, String>{"light": U.s.light, "dark": U.s.dark, "system": U.s.system},
+                    onValueChanged: (String? v) => _applyTheme(v ?? _themeMode),
+                  ),
+                ]),
+                const SizedBox(height: 16),
+                _section(U.s.language, Icons.language_outlined, <Widget>[
+                  USegmentedControl<String>(selectedValue: _locale, items: <String, String>{"fa": U.s.persian, "en": U.s.english}, onValueChanged: (String? v) => _applyLocale(v ?? _locale)),
+                ]),
+                const SizedBox(height: 16),
+                _section(U.s.general, Icons.tune_rounded, <Widget>[
+                  ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    leading: const Icon(Icons.cleaning_services_outlined),
+                    title: Text(U.s.clearCache),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () async {
+                      await UFileStorage.clear();
+                      UToast.snackBar(message: U.s.cacheCleared);
+                    },
+                  ),
+                  ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    leading: const Icon(Icons.info_outline),
+                    title: Text(U.s.appVersion),
+                    trailing: Text("v${UApp.version}", style: Theme.of(context).textTheme.bodyMedium),
+                  ),
+                ]),
+                const SizedBox(height: 24),
+                UButton(
                   title: U.s.logout,
-                  message: U.s.areYouSureYouWantToLogOut,
-                  destructive: true,
-                  onConfirm: () {
-                    ULocalStorage.remove(UConstants.token);
-                    UNavigator.offAll(const UAdminLoginPage());
-                  },
+                  icon: const Icon(Icons.logout_rounded),
+                  backgroundColor: Theme.of(context).colorScheme.error,
+                  onTap: () => UNavigator.confirm(
+                    title: U.s.logout,
+                    message: U.s.areYouSureYouWantToLogOut,
+                    destructive: true,
+                    onConfirm: () {
+                      ULocalStorage.remove(UConstants.token);
+                      UNavigator.offAll(const UAdminLoginPage());
+                    },
+                  ),
                 ),
-              ),
-              const SizedBox(height: 24),
-            ],
+                const SizedBox(height: 24),
+              ],
+            ),
           ),
         ),
       ),

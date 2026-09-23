@@ -147,19 +147,21 @@ class _UAdminFileManagerPageState extends State<UAdminFileManagerPage> {
     final ColorScheme cs = Theme.of(context).colorScheme;
     return UScaffold(
       padding: const EdgeInsets.all(20),
-      body: UColumn(
-        spacing: 16,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          _header(cs),
-          if (_preview != null)
-            _previewPane(_preview!, cs).expanded()
-          else ...<Widget>[
-            _toolbar(cs),
-            _breadcrumb(cs),
-            _body(cs).expanded(),
+      body: UAdminPageBody(
+        child: UColumn(
+          spacing: 16,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            _header(cs),
+            if (_preview != null)
+              _previewPane(_preview!, cs).expanded()
+            else ...<Widget>[
+              _toolbar(cs),
+              _breadcrumb(cs),
+              _body(cs).expanded(),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }

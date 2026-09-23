@@ -15,12 +15,12 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
     c.init();
     super.initState();
   }
+
   @override
   void dispose() {
     c.dispose();
     super.dispose();
   }
-
 
   bool get _isWide => MediaQuery.sizeOf(context).width > 1000;
 
@@ -30,25 +30,27 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
       title: Text("${U.s.financialOperations} ⚡"),
       actions: <Widget>[IconButton(icon: const Icon(Icons.refresh_rounded), tooltip: U.s.refresh, onPressed: c.load)],
     ),
-    body: UObx(() {
-      if (c.state.value.isError()) return TextButton(onPressed: c.load, child: Text(U.s.retry)).alignAtCenter();
-      if (!c.state.value.isLoaded()) return const CircularProgressIndicator().alignAtCenter();
-      final UFinancialOpsDashboardResponse r = c.report.value!;
-      return SingleChildScrollView(
-        padding: EdgeInsets.all(_isWide ? 24 : 14),
-        child: UColumn(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            _hero(r).pSymmetric(vertical: 16),
-            _entityCards(r).pSymmetric(vertical: 16),
-            _chartsSection(r).pSymmetric(vertical: 16),
-            _breakdownSection(r).pSymmetric(vertical: 16),
-            _topMerchants(r).pSymmetric(vertical: 16),
-            _recentListsSection(r).pSymmetric(vertical: 16),
-          ],
-        ),
-      );
-    }),
+    body: UAdminPageBody(
+      child: UObx(() {
+        if (c.state.value.isError()) return TextButton(onPressed: c.load, child: Text(U.s.retry)).alignAtCenter();
+        if (!c.state.value.isLoaded()) return const CircularProgressIndicator().alignAtCenter();
+        final UFinancialOpsDashboardResponse r = c.report.value!;
+        return SingleChildScrollView(
+          padding: EdgeInsets.all(_isWide ? 24 : 14),
+          child: UColumn(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              _hero(r).pSymmetric(vertical: 16),
+              _entityCards(r).pSymmetric(vertical: 16),
+              _chartsSection(r).pSymmetric(vertical: 16),
+              _breakdownSection(r).pSymmetric(vertical: 16),
+              _topMerchants(r).pSymmetric(vertical: 16),
+              _recentListsSection(r).pSymmetric(vertical: 16),
+            ],
+          ),
+        );
+      }),
+    ),
   );
 
   Widget _hero(UFinancialOpsDashboardResponse r) => UContainer(
@@ -72,27 +74,21 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
           spacing: 8,
           runSpacing: 8,
           children: <Widget>[
-            _heroMetric(U.s.users, r.usersCount.separate3By3(), Icons.groups_rounded),
-            _heroMetric(U.s.merchants, r.merchantsCount.separate3By3(), Icons.storefront_rounded),
-            _heroMetric(U.s.transactions, r.txnCount.separate3By3(), Icons.swap_horiz_rounded),
-            _heroMetric(U.s.net, r.net.rial(), Icons.trending_up_rounded),
+            UAdminDashboard.heroMetric(U.s.users, r.usersCount.separate3By3(), Icons.groups_rounded),
+            UAdminDashboard.heroMetric(U.s.merchants, r.merchantsCount.separate3By3(), Icons.storefront_rounded),
+            UAdminDashboard.heroMetric(U.s.transactions, r.txnCount.separate3By3(), Icons.swap_horiz_rounded),
+            UAdminDashboard.heroMetric(U.s.net, r.net.rial(), Icons.trending_up_rounded),
           ],
         ),
       ],
     ),
   );
 
-  Widget _heroMetric(String label, String value, IconData icon) => ListTile(
-    leading: Icon(icon, color: UAdminTheme.white),
-    title: UTextBodySmall(label, color: UAdminTheme.white),
-    subtitle: UTextBodyLarge(value, color: UAdminTheme.white),
-  );
-
   Widget _entityCards(UFinancialOpsDashboardResponse r) => UAdminResponsiveGrid(
     children: <Widget>[
-      _statCard(U.s.users, r.usersCount.separate3By3(), "+${r.newUsersCount} ${U.s.new_}", Icons.people_alt_rounded, UAdminTheme.indigo, UAdminPageSwitcher.adminUsers),
-      _statCard(U.s.merchants, r.merchantsCount.separate3By3(), "+${r.newMerchantsCount} ${U.s.new_}", Icons.storefront_rounded, UAdminTheme.orange, UAdminPageSwitcher.merchants),
-      _statCard(
+      UAdminDashboard.statCard(U.s.users, r.usersCount.separate3By3(), "+${r.newUsersCount} ${U.s.new_}", Icons.people_alt_rounded, UAdminTheme.indigo, UAdminPageSwitcher.adminUsers),
+      UAdminDashboard.statCard(U.s.merchants, r.merchantsCount.separate3By3(), "+${r.newMerchantsCount} ${U.s.new_}", Icons.storefront_rounded, UAdminTheme.orange, UAdminPageSwitcher.merchants),
+      UAdminDashboard.statCard(
         U.s.terminals,
         r.terminalsCount.separate3By3(),
         "${r.terminalsAssignedCount} ${U.s.assigned}",
@@ -100,29 +96,12 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
         UAdminTheme.green,
         UAdminPageSwitcher.terminals,
       ),
-      _statCard(U.s.transactions, r.txnCount.separate3By3(), "+${r.newTxnCount} ${U.s.new_}", Icons.swap_horiz_rounded, UAdminTheme.pink, UAdminPageSwitcher.transactions),
-      _statCard(U.s.wallets, r.walletsCount.separate3By3(), r.totalWalletBalance.rial(), Icons.account_balance_wallet_rounded, UAdminTheme.blueGrey, UAdminPageSwitcher.wallet),
-      _statCard(U.s.moneyIn, r.totalIn.rial(), "", Icons.south_west_rounded, UAdminTheme.green, null),
-      _statCard(U.s.moneyOut, r.totalOut.rial(), "", Icons.north_east_rounded, UAdminTheme.red, null),
-      _statCard(U.s.unassignedTerminals, r.terminalsUnassignedCount.separate3By3(), "", Icons.link_off_rounded, UAdminTheme.grey, UAdminPageSwitcher.terminals),
+      UAdminDashboard.statCard(U.s.transactions, r.txnCount.separate3By3(), "+${r.newTxnCount} ${U.s.new_}", Icons.swap_horiz_rounded, UAdminTheme.pink, UAdminPageSwitcher.transactions),
+      UAdminDashboard.statCard(U.s.wallets, r.walletsCount.separate3By3(), r.totalWalletBalance.rial(), Icons.account_balance_wallet_rounded, UAdminTheme.blueGrey, UAdminPageSwitcher.wallet),
+      UAdminDashboard.statCard(U.s.moneyIn, r.totalIn.rial(), "", Icons.south_west_rounded, UAdminTheme.green, null),
+      UAdminDashboard.statCard(U.s.moneyOut, r.totalOut.rial(), "", Icons.north_east_rounded, UAdminTheme.red, null),
+      UAdminDashboard.statCard(U.s.unassignedTerminals, r.terminalsUnassignedCount.separate3By3(), "", Icons.link_off_rounded, UAdminTheme.grey, UAdminPageSwitcher.terminals),
     ],
-  );
-
-  Widget _statCard(String title, String value, String sub, IconData icon, Color color, VoidCallback? onTap) => UCard(
-    child: ListTile(
-      contentPadding: const EdgeInsets.all(18),
-      leading: Icon(icon, color: color, size: 26).container(padding: const EdgeInsets.all(12), backgroundColor: color.withValues(alpha: 0.14), radius: 16),
-      title: UTextTitleMedium(value, fontWeight: FontWeight.w800, maxLines: 1),
-      subtitle: UColumn(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          UTextBodySmall(title, color: UAdminTheme.grey),
-          if (sub.isNotEmpty) UTextBodySmall(sub, color: color, fontWeight: FontWeight.w600),
-        ],
-      ),
-      onTap: onTap,
-    ),
   );
 
   Widget _chartsSection(UFinancialOpsDashboardResponse r) => _isWide
@@ -130,8 +109,9 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
       : UColumn(children: <Widget>[_timelineChart(r), const SizedBox(height: 16), _entityBarChart(r)]);
 
   Widget _timelineChart(UFinancialOpsDashboardResponse r) {
-    if (r.dailyTimeline.isEmpty) return _chartCard(title: U.s.dailyInOut, child: UTextBodySmall(U.s.noData).alignAtCenter());
-    return _chartCard(
+    if (r.dailyTimeline.isEmpty) return UAdminDashboard.chartCard(context, title: U.s.dailyInOut, child: UTextBodySmall(U.s.noData).alignAtCenter());
+    return UAdminDashboard.chartCard(
+      context,
       title: U.s.dailyInOut,
       child: UAreaChart(
         categories: r.dailyTimeline.map((UAccountingTimelineItem d) => d.date.toJalaliDate()).toList(),
@@ -150,7 +130,8 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
       _Bar(U.s.terminals, r.terminalsCount, UAdminTheme.green),
       _Bar(U.s.transactions, r.txnCount, UAdminTheme.pink),
     ];
-    return _chartCard(
+    return UAdminDashboard.chartCard(
+      context,
       title: U.s.entityOverview,
       child: UBarChart(
         categories: data.map((_Bar d) => d.label).toList(),
@@ -184,7 +165,8 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
           );
   }
 
-  Widget _doughnutAmount(String title, List<UAccountingBreakdownItem> items) => _chartCard(
+  Widget _doughnutAmount(String title, List<UAccountingBreakdownItem> items) => UAdminDashboard.chartCard(
+    context,
     title: title,
     child: items.isEmpty
         ? UTextBodySmall(U.s.noData).alignAtCenter()
@@ -193,28 +175,14 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
           ),
   );
 
-  Widget _doughnutCount(String title, List<UAccountingBreakdownItem> items) => _chartCard(
+  Widget _doughnutCount(String title, List<UAccountingBreakdownItem> items) => UAdminDashboard.chartCard(
+    context,
     title: title,
     child: items.isEmpty
         ? UTextBodySmall(U.s.noData).alignAtCenter()
         : UPieChart(
             slices: items.map((UAccountingBreakdownItem d) => USlice(value: d.count.toDouble(), label: d.tagName)).toList(),
           ),
-  );
-
-  Widget _chartCard({required String title, required Widget child}) => UContainer(
-    height: 320,
-    padding: const EdgeInsets.all(18),
-    radius: 20,
-    color: Theme.of(context).cardTheme.color,
-    child: UColumn(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        UTextTitleSmall(title, fontWeight: FontWeight.w700),
-        const Divider(height: 18),
-        child.expanded(),
-      ],
-    ),
   );
 
   Widget _topMerchants(UFinancialOpsDashboardResponse r) => UContainer(

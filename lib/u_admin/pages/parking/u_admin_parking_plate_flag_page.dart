@@ -17,12 +17,12 @@ class _UAdminParkingPlateFlagPageState extends State<UAdminParkingPlateFlagPage>
     c.init(parking: widget.parking);
     super.initState();
   }
+
   @override
   void dispose() {
     c.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -100,61 +100,63 @@ class _UAdminParkingPlateFlagPageState extends State<UAdminParkingPlateFlagPage>
     String plate = "";
     TagParkingPlateFlag kind = TagParkingPlateFlag.debt;
 
-    await UNavigator.dialog(f.scope(
-      StatefulBuilder(
-        builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
-          title: Text(U.s.addPlate),
-          content: SizedBox(
-            width: context.dialogWidth(max: 480),
-            child: SingleChildScrollView(
-              child: Form(
-                key: formKey,
-                child: UColumn(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    UPlateField(onPlateChange: (String value) => plate = value).pSymmetric(vertical: 6),
-                    UDropDownField<TagParkingPlateFlag>(
-                      initialValue: kind,
-                      items: TagParkingPlateFlag.values.map((TagParkingPlateFlag v) => DropdownMenuItem<TagParkingPlateFlag>(value: v, child: Text(v.localizedTitle))).toList(),
-                      onChanged: (TagParkingPlateFlag? value) => setDialogState(() => kind = value ?? TagParkingPlateFlag.debt),
-                    ).pSymmetric(vertical: 6),
-                    UTextField(controller: reason, labelText: U.s.reason, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    if (kind == TagParkingPlateFlag.debt)
-                      UTextField(
-                        controller: amount,
-                        labelText: U.s.amount,
-                        keyboardType: TextInputType.number,
-                        formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-                        margin: const EdgeInsets.symmetric(vertical: 6),
+    await UNavigator.dialog(
+      f.scope(
+        StatefulBuilder(
+          builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
+            title: Text(U.s.addPlate),
+            content: SizedBox(
+              width: context.dialogWidth(max: 480),
+              child: SingleChildScrollView(
+                child: Form(
+                  key: formKey,
+                  child: UColumn(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      UPlateField(onPlateChange: (String value) => plate = value).pSymmetric(vertical: 6),
+                      UDropDownField<TagParkingPlateFlag>(
+                        initialValue: kind,
+                        items: TagParkingPlateFlag.values.map((TagParkingPlateFlag v) => DropdownMenuItem<TagParkingPlateFlag>(value: v, child: Text(v.localizedTitle))).toList(),
+                        onChanged: (TagParkingPlateFlag? value) => setDialogState(() => kind = value ?? TagParkingPlateFlag.debt),
+                      ).pSymmetric(vertical: 6),
+                      UTextField(controller: reason, labelText: U.s.reason, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      if (kind == TagParkingPlateFlag.debt)
+                        UTextField(
+                          controller: amount,
+                          labelText: U.s.amount,
+                          keyboardType: TextInputType.number,
+                          formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+                          margin: const EdgeInsets.symmetric(vertical: 6),
+                        ),
+                      if (kind == TagParkingPlateFlag.reservation) UTextField(controller: spotNumber, labelText: U.s.spotNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      const SizedBox(height: 20),
+                      UButtonSubmitCancel(
+                        onSubmit: () => UValidators.validateForm(
+                          key: formKey,
+                          action: () {
+                            if (plate.length < 6) return;
+                            c.create(
+                              p: UParkingPlateFlagCreateParams(
+                                parkingId: parkingId,
+                                licencePlate: plate,
+                                tags: <int>[kind.number],
+                                reason: reason.text.nullIfEmpty(),
+                                amount: amount.isNullOrEmpty() ? null : amount.numDouble(),
+                                spotNumber: spotNumber.text.nullIfEmpty(),
+                              ),
+                            );
+                            UNavigator.back();
+                          },
+                        ),
                       ),
-                    if (kind == TagParkingPlateFlag.reservation) UTextField(controller: spotNumber, labelText: U.s.spotNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    const SizedBox(height: 20),
-                    UButtonSubmitCancel(
-                      onSubmit: () => UValidators.validateForm(
-                        key: formKey,
-                        action: () {
-                          if (plate.length < 6) return;
-                          c.create(
-                            p: UParkingPlateFlagCreateParams(
-                              parkingId: parkingId,
-                              licencePlate: plate,
-                              tags: <int>[kind.number],
-                              reason: reason.text.nullIfEmpty(),
-                              amount: amount.isNullOrEmpty() ? null : amount.numDouble(),
-                              spotNumber: spotNumber.text.nullIfEmpty(),
-                            ),
-                          );
-                          UNavigator.back();
-                        },
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
         ),
-      )),
+      ),
     );
   }
 }

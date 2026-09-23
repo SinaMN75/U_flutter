@@ -27,12 +27,12 @@ class _PaymentUserCreateUpdateDialogState extends State<UAdminPaymentUserCreateU
     _selectedPermissions = TagUser.permissions.where((TagUser t) => existingTags.contains(t.number)).toSet();
     super.initState();
   }
+
   @override
   void dispose() {
     c.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) => AlertDialog(
@@ -69,7 +69,8 @@ class _PaymentUserCreateUpdateDialogState extends State<UAdminPaymentUserCreateU
                   ),
                 ),
               UAdminForm.sectionTitle(U.s.userInformation),
-              UAdminForm.pair(context, 
+              UAdminForm.pair(
+                context,
                 UTextField(
                   controller: c.controllerFirstName,
                   labelText: U.s.firstName,
@@ -81,7 +82,8 @@ class _PaymentUserCreateUpdateDialogState extends State<UAdminPaymentUserCreateU
                   validator: UValidators.required(message: U.s.required),
                 ),
               ),
-              UAdminForm.pair(context, 
+              UAdminForm.pair(
+                context,
                 UTextField(
                   controller: c.controllerUserName,
                   labelText: U.s.username,
@@ -91,7 +93,8 @@ class _PaymentUserCreateUpdateDialogState extends State<UAdminPaymentUserCreateU
                 ),
                 UTextField(controller: c.controllerFatherName, labelText: U.s.fatherName),
               ),
-              UAdminForm.pair(context, 
+              UAdminForm.pair(
+                context,
                 UTextField(
                   controller: c.controllerNationalCode,
                   labelText: U.s.nationalCode,
@@ -130,7 +133,8 @@ class _PaymentUserCreateUpdateDialogState extends State<UAdminPaymentUserCreateU
                 ).pOnly(top: 6, bottom: 6),
               ),
               UAdminForm.sectionTitle(U.s.contactInformation),
-              UAdminForm.pair(context, 
+              UAdminForm.pair(
+                context,
                 UTextFieldPhoneNumber(
                   controller: c.controllerPhoneNumber,
                   labelText: U.s.phoneNumber,

@@ -18,12 +18,12 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
     c.init(merchant: widget.merchant);
     super.initState();
   }
+
   @override
   void dispose() {
     c.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -139,90 +139,85 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
   void _showRejectDialog(UTerminalResponse i) {
     final UAdminFields f = UAdminFields();
     final TextEditingController reason = f.text();
-    UNavigator.dialog(f.scope(
-      AlertDialog(
-        title: Text(U.s.reject),
-        content: SizedBox(
-          width: context.dialogWidth(),
-          child: UTextField(controller: reason, labelText: U.s.rejectionReason, lines: 3),
-        ),
-        actions: <Widget>[
-          UButtonSubmitCancel(
-            onSubmit: () {
-              UNavigator.back();
-              c.reject(i: i, reason: reason.text.nullIfEmpty());
-            },
-            onCancel: UNavigator.back,
+    UNavigator.dialog(
+      f.scope(
+        AlertDialog(
+          title: Text(U.s.reject),
+          content: SizedBox(
+            width: context.dialogWidth(),
+            child: UTextField(controller: reason, labelText: U.s.rejectionReason, lines: 3),
           ),
-        ],
-      )),
+          actions: <Widget>[
+            UButtonSubmitCancel(
+              onSubmit: () {
+                UNavigator.back();
+                c.reject(i: i, reason: reason.text.nullIfEmpty());
+              },
+              onCancel: UNavigator.back,
+            ),
+          ],
+        ),
+      ),
     ).whenComplete(reason.dispose);
   }
 
   void _showFilterDialog() => UNavigator.dialog(
-    AlertDialog(
+    UAdminForm.filterDialog(
+      context,
       title: Text(U.s.filterItem(U.s.terminals)),
-      content: SizedBox(
-        width: context.dialogWidth(),
-        child: SingleChildScrollView(
-          child: UColumn(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              UDropDownField<TagOrderBy>(
-                initialValue: c.tagOrderBy.value,
-                onChanged: c.tagOrderBy.call,
-                items: <DropdownMenuItem<TagOrderBy>>[
-                  DropdownMenuItem<TagOrderBy>(value: TagOrderBy.createdAt, child: Text(TagOrderBy.createdAt.localizedTitle)),
-                  DropdownMenuItem<TagOrderBy>(value: TagOrderBy.createdAtDescending, child: Text(TagOrderBy.createdAtDescending.localizedTitle)),
-                ],
-              ).pSymmetric(vertical: 6),
-              UDropDownField<TagTerminal?>(
-                initialValue: c.typeFilter.value,
-                onChanged: c.typeFilter.call,
-                items: <DropdownMenuItem<TagTerminal>>[
-                  DropdownMenuItem<TagTerminal>(value: TagTerminal.pendingApproval, child: Text(TagTerminal.pendingApproval.localizedTitle)),
-                  DropdownMenuItem<TagTerminal>(value: TagTerminal.approved, child: Text(TagTerminal.approved.localizedTitle)),
-                  DropdownMenuItem<TagTerminal>(value: TagTerminal.rejected, child: Text(TagTerminal.rejected.localizedTitle)),
-                ],
-              ).pSymmetric(vertical: 6),
-              UTextField(controller: c.serialFilter, labelText: U.s.serial, margin: const EdgeInsets.symmetric(vertical: 6)),
-              if (widget.merchant == null) UTextField(controller: c.merchantIdFilter, labelText: U.s.merchantId, margin: const EdgeInsets.symmetric(vertical: 6)),
-              UTextField(controller: c.creatorIdFilter, labelText: U.s.creatorId, margin: const EdgeInsets.symmetric(vertical: 6)),
-              UTextFieldDatePicker(
-                jalali: true,
-                controller: c.fromCreatedController,
-                labelText: U.s.fromDate,
-                onChange: (DateTime d, UJalali j) {
-                  c.fromCreatedController.text = j.formatCompactDate();
-                  c.fromCreatedAt = d;
-                },
-              ).pSymmetric(vertical: 6),
-              UTextFieldDatePicker(
-                jalali: true,
-                controller: c.toCreatedController,
-                labelText: U.s.toDate,
-                onChange: (DateTime d, UJalali j) {
-                  c.toCreatedController.text = j.formatCompactDate();
-                  c.toCreatedAt = d;
-                },
-              ).pSymmetric(vertical: 6),
-              const SizedBox(height: 20),
-              UButtonSubmitCancel(
-                submitTitle: U.s.filter,
-                cancelTitle: U.s.clearFilters,
-                onSubmit: () {
-                  c.applyFilters();
-                  UNavigator.back();
-                },
-                onCancel: () {
-                  c.clearFilters();
-                  UNavigator.back();
-                },
-              ),
-            ],
-          ),
+      children: <Widget>[
+        UDropDownField<TagOrderBy>(
+          initialValue: c.tagOrderBy.value,
+          onChanged: c.tagOrderBy.call,
+          items: <DropdownMenuItem<TagOrderBy>>[
+            DropdownMenuItem<TagOrderBy>(value: TagOrderBy.createdAt, child: Text(TagOrderBy.createdAt.localizedTitle)),
+            DropdownMenuItem<TagOrderBy>(value: TagOrderBy.createdAtDescending, child: Text(TagOrderBy.createdAtDescending.localizedTitle)),
+          ],
+        ).pSymmetric(vertical: 6),
+        UDropDownField<TagTerminal?>(
+          initialValue: c.typeFilter.value,
+          onChanged: c.typeFilter.call,
+          items: <DropdownMenuItem<TagTerminal>>[
+            DropdownMenuItem<TagTerminal>(value: TagTerminal.pendingApproval, child: Text(TagTerminal.pendingApproval.localizedTitle)),
+            DropdownMenuItem<TagTerminal>(value: TagTerminal.approved, child: Text(TagTerminal.approved.localizedTitle)),
+            DropdownMenuItem<TagTerminal>(value: TagTerminal.rejected, child: Text(TagTerminal.rejected.localizedTitle)),
+          ],
+        ).pSymmetric(vertical: 6),
+        UTextField(controller: c.serialFilter, labelText: U.s.serial, margin: const EdgeInsets.symmetric(vertical: 6)),
+        if (widget.merchant == null) UTextField(controller: c.merchantIdFilter, labelText: U.s.merchantId, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.creatorIdFilter, labelText: U.s.creatorId, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextFieldDatePicker(
+          jalali: true,
+          controller: c.fromCreatedController,
+          labelText: U.s.fromDate,
+          onChange: (DateTime d, UJalali j) {
+            c.fromCreatedController.text = j.formatCompactDate();
+            c.fromCreatedAt = d;
+          },
+        ).pSymmetric(vertical: 6),
+        UTextFieldDatePicker(
+          jalali: true,
+          controller: c.toCreatedController,
+          labelText: U.s.toDate,
+          onChange: (DateTime d, UJalali j) {
+            c.toCreatedController.text = j.formatCompactDate();
+            c.toCreatedAt = d;
+          },
+        ).pSymmetric(vertical: 6),
+        const SizedBox(height: 20),
+        UButtonSubmitCancel(
+          submitTitle: U.s.filter,
+          cancelTitle: U.s.clearFilters,
+          onSubmit: () {
+            c.applyFilters();
+            UNavigator.back();
+          },
+          onCancel: () {
+            c.clearFilters();
+            UNavigator.back();
+          },
         ),
-      ),
+      ],
     ),
   );
 
@@ -237,75 +232,77 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
     final URxn<UTerminalBrandResponse> brand = URxn<UTerminalBrandResponse>();
     final URxn<UTerminalBrokerResponse> broker = URxn<UTerminalBrokerResponse>();
 
-    UNavigator.dialog(f.scope(
-      AlertDialog(
-        title: Text(U.s.createItem(U.s.terminals)),
-        content: SizedBox(
-          width: context.dialogWidth(),
-          child: SingleChildScrollView(
-            child: Form(
-              key: formKey,
-              child: UColumn(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  UTextField(
-                    controller: serial,
-                    labelText: U.s.serial,
-                    validator: UValidators.required(message: U.s.required),
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  UTextFieldPhoneNumber(
-                    controller: simCardNumber,
-                    labelText: U.s.simCardNumber,
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  UTextField(controller: simCardSerial, labelText: U.s.simCardSerial, margin: const EdgeInsets.symmetric(vertical: 6)),
-                  UTextField(controller: imei, labelText: U.s.imei, margin: const EdgeInsets.symmetric(vertical: 6)),
-                  UTextFieldAutoCompleteAsync<UTerminalBrandResponse>(
-                    labelBuilder: (UTerminalBrandResponse i) => i.title,
-                    onChanged: brand.call,
-                    selectedItem: brand.value,
-                    fetchData: c.readBrand,
-                    hintText: U.s.bed,
-                  ).pSymmetric(vertical: 6),
-                  UTextFieldAutoCompleteAsync<UTerminalBrokerResponse>(
-                    labelBuilder: (UTerminalBrokerResponse i) => i.title,
-                    onChanged: broker.call,
-                    selectedItem: broker.value,
-                    fetchData: c.readBroker,
-                    hintText: U.s.bed,
-                  ).pSymmetric(vertical: 6),
-                  const SizedBox(height: 20),
-                  UButtonSubmitCancel(
-                    onSubmit: () => UValidators.validateForm(
-                      key: formKey,
-                      action: () {
-                        if (brand.value == null || broker.value == null) {
-                          UToast.error(message: U.s.required);
-                          return;
-                        }
-                        UNavigator.back();
-                        c.create(
-                          p: UTerminalCreateParams(
-                            tags: <int>[TagTerminal.notAssigned.number],
-                            serial: serial.text.trim(),
-                            simCardNumber: simCardNumber.text.nullIfEmpty(),
-                            simCardSerial: simCardSerial.text.nullIfEmpty(),
-                            imei: imei.text.nullIfEmpty(),
-                            terminalId: terminalId.text.nullIfEmpty(),
-                            terminalBrandId: brand.value!.id,
-                            terminalBrokerId: broker.value!.id,
-                          ),
-                        );
-                      },
+    UNavigator.dialog(
+      f.scope(
+        AlertDialog(
+          title: Text(U.s.createItem(U.s.terminals)),
+          content: SizedBox(
+            width: context.dialogWidth(),
+            child: SingleChildScrollView(
+              child: Form(
+                key: formKey,
+                child: UColumn(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    UTextField(
+                      controller: serial,
+                      labelText: U.s.serial,
+                      validator: UValidators.required(message: U.s.required),
+                      margin: const EdgeInsets.symmetric(vertical: 6),
                     ),
-                  ),
-                ],
+                    UTextFieldPhoneNumber(
+                      controller: simCardNumber,
+                      labelText: U.s.simCardNumber,
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
+                    UTextField(controller: simCardSerial, labelText: U.s.simCardSerial, margin: const EdgeInsets.symmetric(vertical: 6)),
+                    UTextField(controller: imei, labelText: U.s.imei, margin: const EdgeInsets.symmetric(vertical: 6)),
+                    UTextFieldAutoCompleteAsync<UTerminalBrandResponse>(
+                      labelBuilder: (UTerminalBrandResponse i) => i.title,
+                      onChanged: brand.call,
+                      selectedItem: brand.value,
+                      fetchData: c.readBrand,
+                      hintText: U.s.bed,
+                    ).pSymmetric(vertical: 6),
+                    UTextFieldAutoCompleteAsync<UTerminalBrokerResponse>(
+                      labelBuilder: (UTerminalBrokerResponse i) => i.title,
+                      onChanged: broker.call,
+                      selectedItem: broker.value,
+                      fetchData: c.readBroker,
+                      hintText: U.s.bed,
+                    ).pSymmetric(vertical: 6),
+                    const SizedBox(height: 20),
+                    UButtonSubmitCancel(
+                      onSubmit: () => UValidators.validateForm(
+                        key: formKey,
+                        action: () {
+                          if (brand.value == null || broker.value == null) {
+                            UToast.error(message: U.s.required);
+                            return;
+                          }
+                          UNavigator.back();
+                          c.create(
+                            p: UTerminalCreateParams(
+                              tags: <int>[TagTerminal.notAssigned.number],
+                              serial: serial.text.trim(),
+                              simCardNumber: simCardNumber.text.nullIfEmpty(),
+                              simCardSerial: simCardSerial.text.nullIfEmpty(),
+                              imei: imei.text.nullIfEmpty(),
+                              terminalId: terminalId.text.nullIfEmpty(),
+                              terminalBrandId: brand.value!.id,
+                              terminalBrokerId: broker.value!.id,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ),
-      )),
+      ),
     );
   }
 
@@ -320,72 +317,74 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
     final URxn<UTerminalBrandResponse> brand = URxn<UTerminalBrandResponse>(i.terminalBrand);
     final URxn<UTerminalBrokerResponse> broker = URxn<UTerminalBrokerResponse>(i.terminalBroker);
 
-    UNavigator.dialog(f.scope(
-      AlertDialog(
-        title: Text(U.s.editItem(U.s.terminals)),
-        content: SizedBox(
-          width: context.dialogWidth(),
-          child: SingleChildScrollView(
-            child: Form(
-              key: formKey,
-              child: UColumn(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  UTextField(
-                    controller: serial,
-                    labelText: U.s.serial,
-                    validator: UValidators.required(message: U.s.required),
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  UTextFieldPhoneNumber(
-                    controller: simCardNumber,
-                    labelText: U.s.simCardNumber,
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  UTextField(controller: simCardSerial, labelText: U.s.simCardSerial, margin: const EdgeInsets.symmetric(vertical: 6)),
-                  UTextField(controller: imei, labelText: U.s.imei, margin: const EdgeInsets.symmetric(vertical: 6)),
-                  UTextField(controller: terminalId, labelText: U.s.terminalId, margin: const EdgeInsets.symmetric(vertical: 6)),
-                  UTextFieldAutoCompleteAsync<UTerminalBrandResponse>(
-                    labelBuilder: (UTerminalBrandResponse x) => x.title,
-                    onChanged: brand.call,
-                    selectedItem: brand.value,
-                    fetchData: c.readBrand,
-                    hintText: U.s.brand,
-                  ).pSymmetric(vertical: 6),
-                  UTextFieldAutoCompleteAsync<UTerminalBrokerResponse>(
-                    labelBuilder: (UTerminalBrokerResponse x) => x.title,
-                    onChanged: broker.call,
-                    selectedItem: broker.value,
-                    fetchData: c.readBroker,
-                    hintText: U.s.broker,
-                  ).pSymmetric(vertical: 6),
-                  const SizedBox(height: 20),
-                  UButtonSubmitCancel(
-                    onSubmit: () => UValidators.validateForm(
-                      key: formKey,
-                      action: () {
-                        UNavigator.back();
-                        c.update(
-                          p: UTerminalUpdateParams(
-                            id: i.id,
-                            serial: serial.text.nullIfEmpty(),
-                            simCardNumber: simCardNumber.text.nullIfEmpty(),
-                            simCardSerial: simCardSerial.text.nullIfEmpty(),
-                            imei: imei.text.nullIfEmpty(),
-                            terminalId: terminalId.text.nullIfEmpty(),
-                            terminalBrandId: brand.value?.id,
-                            terminalBrokerId: broker.value?.id,
-                          ),
-                        );
-                      },
+    UNavigator.dialog(
+      f.scope(
+        AlertDialog(
+          title: Text(U.s.editItem(U.s.terminals)),
+          content: SizedBox(
+            width: context.dialogWidth(),
+            child: SingleChildScrollView(
+              child: Form(
+                key: formKey,
+                child: UColumn(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    UTextField(
+                      controller: serial,
+                      labelText: U.s.serial,
+                      validator: UValidators.required(message: U.s.required),
+                      margin: const EdgeInsets.symmetric(vertical: 6),
                     ),
-                  ),
-                ],
+                    UTextFieldPhoneNumber(
+                      controller: simCardNumber,
+                      labelText: U.s.simCardNumber,
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
+                    UTextField(controller: simCardSerial, labelText: U.s.simCardSerial, margin: const EdgeInsets.symmetric(vertical: 6)),
+                    UTextField(controller: imei, labelText: U.s.imei, margin: const EdgeInsets.symmetric(vertical: 6)),
+                    UTextField(controller: terminalId, labelText: U.s.terminalId, margin: const EdgeInsets.symmetric(vertical: 6)),
+                    UTextFieldAutoCompleteAsync<UTerminalBrandResponse>(
+                      labelBuilder: (UTerminalBrandResponse x) => x.title,
+                      onChanged: brand.call,
+                      selectedItem: brand.value,
+                      fetchData: c.readBrand,
+                      hintText: U.s.brand,
+                    ).pSymmetric(vertical: 6),
+                    UTextFieldAutoCompleteAsync<UTerminalBrokerResponse>(
+                      labelBuilder: (UTerminalBrokerResponse x) => x.title,
+                      onChanged: broker.call,
+                      selectedItem: broker.value,
+                      fetchData: c.readBroker,
+                      hintText: U.s.broker,
+                    ).pSymmetric(vertical: 6),
+                    const SizedBox(height: 20),
+                    UButtonSubmitCancel(
+                      onSubmit: () => UValidators.validateForm(
+                        key: formKey,
+                        action: () {
+                          UNavigator.back();
+                          c.update(
+                            p: UTerminalUpdateParams(
+                              id: i.id,
+                              serial: serial.text.nullIfEmpty(),
+                              simCardNumber: simCardNumber.text.nullIfEmpty(),
+                              simCardSerial: simCardSerial.text.nullIfEmpty(),
+                              imei: imei.text.nullIfEmpty(),
+                              terminalId: terminalId.text.nullIfEmpty(),
+                              terminalBrandId: brand.value?.id,
+                              terminalBrokerId: broker.value?.id,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ),
-      )),
+      ),
     );
   }
 
@@ -420,97 +419,99 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
       }
     }
 
-    UNavigator.dialog(f.scope(
-      AlertDialog(
-        title: Text(U.s.otpTools),
-        content: SizedBox(
-          width: context.dialogWidth(),
-          child: SingleChildScrollView(
-            child: UObx(
-              () => UColumn(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  USegmentedControl<bool>(
-                    selectedValue: generateMode.value,
-                    items: <bool, String>{true: U.s.generateOtp, false: U.s.verifyOtp},
-                    onValueChanged: (bool? v) {
-                      generateMode(v ?? true);
-                      result("");
-                      valid(null);
-                    },
-                  ).pSymmetric(vertical: 6),
-                  UTextField(
-                    controller: serial,
-                    labelText: U.s.serial,
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  if (generateMode.value)
+    UNavigator.dialog(
+      f.scope(
+        AlertDialog(
+          title: Text(U.s.otpTools),
+          content: SizedBox(
+            width: context.dialogWidth(),
+            child: SingleChildScrollView(
+              child: UObx(
+                () => UColumn(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    USegmentedControl<bool>(
+                      selectedValue: generateMode.value,
+                      items: <bool, String>{true: U.s.generateOtp, false: U.s.verifyOtp},
+                      onValueChanged: (bool? v) {
+                        generateMode(v ?? true);
+                        result("");
+                        valid(null);
+                      },
+                    ).pSymmetric(vertical: 6),
                     UTextField(
-                      controller: length,
-                      labelText: U.s.otpLength,
-                      keyboardType: TextInputType.number,
-                      margin: const EdgeInsets.symmetric(vertical: 6),
-                    )
-                  else
-                    UTextField(
-                      controller: otp,
-                      labelText: U.s.otpCode,
-                      keyboardType: TextInputType.number,
+                      controller: serial,
+                      labelText: U.s.serial,
                       margin: const EdgeInsets.symmetric(vertical: 6),
                     ),
-                  URow(
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                    children: <Widget>[
-                      UTextBodyMedium(U.s.adminOtp, expanded: 1),
-                      Switch(value: admin.value, onChanged: admin.call),
-                    ],
-                  ),
-                  if (result.value.isNotEmpty)
-                    UContainer(
-                      width: double.infinity,
-                      margin: const EdgeInsets.symmetric(vertical: 6),
-                      padding: const EdgeInsets.all(12),
-                      color: UAdminTheme.green.withValues(alpha: 0.12),
-                      radius: 8,
-                      child: SelectableText(
-                        result.value,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, letterSpacing: 2),
+                    if (generateMode.value)
+                      UTextField(
+                        controller: length,
+                        labelText: U.s.otpLength,
+                        keyboardType: TextInputType.number,
+                        margin: const EdgeInsets.symmetric(vertical: 6),
+                      )
+                    else
+                      UTextField(
+                        controller: otp,
+                        labelText: U.s.otpCode,
+                        keyboardType: TextInputType.number,
+                        margin: const EdgeInsets.symmetric(vertical: 6),
                       ),
-                    ),
-                  if (valid.value != null)
-                    UContainer(
-                      width: double.infinity,
+                    URow(
                       margin: const EdgeInsets.symmetric(vertical: 6),
-                      padding: const EdgeInsets.all(12),
-                      color: (valid.value! ? UAdminTheme.green : UAdminTheme.red).withValues(alpha: 0.12),
-                      radius: 8,
-                      child: UTextBodyLarge(
-                        valid.value! ? U.s.otpIsValid : U.s.otpIsInvalid,
-                        color: valid.value! ? UAdminTheme.green : UAdminTheme.red,
-                        fontWeight: FontWeight.w600,
-                        textAlign: TextAlign.center,
-                      ),
+                      children: <Widget>[
+                        UTextBodyMedium(U.s.adminOtp, expanded: 1),
+                        Switch(value: admin.value, onChanged: admin.call),
+                      ],
                     ),
-                ],
+                    if (result.value.isNotEmpty)
+                      UContainer(
+                        width: double.infinity,
+                        margin: const EdgeInsets.symmetric(vertical: 6),
+                        padding: const EdgeInsets.all(12),
+                        color: UAdminTheme.green.withValues(alpha: 0.12),
+                        radius: 8,
+                        child: SelectableText(
+                          result.value,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, letterSpacing: 2),
+                        ),
+                      ),
+                    if (valid.value != null)
+                      UContainer(
+                        width: double.infinity,
+                        margin: const EdgeInsets.symmetric(vertical: 6),
+                        padding: const EdgeInsets.all(12),
+                        color: (valid.value! ? UAdminTheme.green : UAdminTheme.red).withValues(alpha: 0.12),
+                        radius: 8,
+                        child: UTextBodyLarge(
+                          valid.value! ? U.s.otpIsValid : U.s.otpIsInvalid,
+                          color: valid.value! ? UAdminTheme.green : UAdminTheme.red,
+                          fontWeight: FontWeight.w600,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                  ],
+                ),
               ),
             ),
           ),
+          actions: <Widget>[
+            UObx(
+              () => generateMode.value && result.value.isNotEmpty
+                  ? UButton(
+                      type: UButtonType.text,
+                      title: U.s.copy,
+                      onTap: () => UClipboard.set(result.value, snackBar: true),
+                    )
+                  : const SizedBox.shrink(),
+            ),
+            UButton(type: UButtonType.text, title: U.s.cancel, onTap: UNavigator.back),
+            UObx(() => UButton(title: generateMode.value ? U.s.generate : U.s.verifyOtp, onTap: run)),
+          ],
         ),
-        actions: <Widget>[
-          UObx(
-            () => generateMode.value && result.value.isNotEmpty
-                ? UButton(
-                    type: UButtonType.text,
-                    title: U.s.copy,
-                    onTap: () => UClipboard.set(result.value, snackBar: true),
-                  )
-                : const SizedBox.shrink(),
-          ),
-          UButton(type: UButtonType.text, title: U.s.cancel, onTap: UNavigator.back),
-          UObx(() => UButton(title: generateMode.value ? U.s.generate : U.s.verifyOtp, onTap: run)),
-        ],
-      )),
+      ),
     );
   }
 }

@@ -17,12 +17,12 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
     c.init(dorm: widget.dorm);
     super.initState();
   }
+
   @override
   void dispose() {
     c.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -79,39 +79,35 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
     ),
     fallback: (UAdminActionContext<UDormRoomResponse> ctx) => <UAdminAction>[
       UAdminLinks.roomBeds(ctx.item),
-      UAdminLinks.placeDetails(onTap: () => UAdminPlaceDetails.dormRoom(ctx.item, onDone: c.read), roles: <TagUser>[TagUser.permissionManageDorms]),
+      UAdminLinks.placeDetails(
+        onTap: () => UAdminPlaceDetails.dormRoom(ctx.item, onDone: c.read),
+        roles: <TagUser>[TagUser.permissionManageDorms],
+      ),
       ctx.edit(roles: <TagUser>[TagUser.permissionManageDorms]),
       ctx.delete(roles: <TagUser>[TagUser.permissionDeleteDorms]),
     ],
   );
 
   void _showFilterDialog() => UNavigator.dialog(
-    AlertDialog(
+    UAdminForm.filterDialog(
+      context,
       title: Text(U.s.filterItem(U.s.rooms)),
-      content: SizedBox(
-        width: context.dialogWidth(),
-        child: SingleChildScrollView(
-          child: UColumn(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              UTextField(controller: c.titleFilter, labelText: U.s.title, margin: const EdgeInsets.symmetric(vertical: 6)),
-              const SizedBox(height: 20),
-              UButtonSubmitCancel(
-                submitTitle: U.s.filter,
-                cancelTitle: U.s.clearFilters,
-                onSubmit: () {
-                  c.applyFilters();
-                  UNavigator.back();
-                },
-                onCancel: () {
-                  c.clearFilters();
-                  UNavigator.back();
-                },
-              ),
-            ],
-          ),
+      children: <Widget>[
+        UTextField(controller: c.titleFilter, labelText: U.s.title, margin: const EdgeInsets.symmetric(vertical: 6)),
+        const SizedBox(height: 20),
+        UButtonSubmitCancel(
+          submitTitle: U.s.filter,
+          cancelTitle: U.s.clearFilters,
+          onSubmit: () {
+            c.applyFilters();
+            UNavigator.back();
+          },
+          onCancel: () {
+            c.clearFilters();
+            UNavigator.back();
+          },
         ),
-      ),
+      ],
     ),
   );
 
@@ -125,84 +121,86 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
     final List<int> tags = List<int>.from(p?.tags ?? <int>[TagDormRoom.dorm.number]);
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-    UNavigator.dialog(f.scope(
-      AlertDialog(
-        title: Text(p == null ? U.s.createItem(U.s.room) : U.s.editItem(U.s.rooms)),
-        content: SizedBox(
-          width: context.dialogWidth(),
-          child: SingleChildScrollView(
-            child: Form(
-              key: formKey,
-              child: UColumn(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  UTextField(
-                    controller: title,
-                    labelText: U.s.title,
-                    validator: UValidators.required(message: ""),
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  if (widget.dorm == null)
-                    UTextFieldAutoCompleteAsync<UDormResponse>(
-                      labelBuilder: (UDormResponse i) => i.title,
-                      onChanged: dorm.call,
-                      selectedItem: dorm.value,
-                      fetchData: c.readDorms,
-                      hintText: U.s.dorm,
-                    ).pSymmetric(vertical: 6),
-                  UAdminTagChips<TagDormRoom>(title: U.s.type, options: TagDormRoom.values.group(100), tags: tags, single: true),
-                  UTextField(controller: detail, labelText: U.s.description, margin: const EdgeInsets.symmetric(vertical: 6)),
-                  URow(
-                    children: <Widget>[
-                      UTextField(expanded: 1, controller: capacity, labelText: U.s.capacity, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      const SizedBox(width: 8),
-                      UTextField(expanded: 1, controller: floor, labelText: U.s.floor, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  UButtonSubmitCancel(
-                    onSubmit: () => UValidators.validateForm(
-                      key: formKey,
-                      action: () {
-                        final String? did = dorm.value?.id ?? widget.dorm?.id;
-                        if (did == null) {
-                          UToast.error(message: U.s.pleaseSelectAItem(U.s.dorm));
-                          return;
-                        }
-                        if (p == null) {
-                          c.create(
-                            p: UDormRoomCreateParams(
-                              tags: tags,
-                              title: title.text,
-                              dormId: did,
-                              description: detail.text.nullIfEmpty(),
-                              capacity: int.tryParse(capacity.text.toLatinNumber()) ?? 0,
-                              floor: int.tryParse(floor.text.toLatinNumber()),
-                            ),
-                          );
-                        } else {
-                          c.update(
-                            p: UDormRoomUpdateParams(
-                              id: p.id,
-                              tags: tags,
-                              title: title.text,
-                              dormId: did,
-                              description: detail.text.nullIfEmpty(),
-                              capacity: int.tryParse(capacity.text.toLatinNumber()),
-                              floor: int.tryParse(floor.text.toLatinNumber()),
-                            ),
-                          );
-                        }
-                        UNavigator.back();
-                      },
+    UNavigator.dialog(
+      f.scope(
+        AlertDialog(
+          title: Text(p == null ? U.s.createItem(U.s.room) : U.s.editItem(U.s.rooms)),
+          content: SizedBox(
+            width: context.dialogWidth(),
+            child: SingleChildScrollView(
+              child: Form(
+                key: formKey,
+                child: UColumn(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    UTextField(
+                      controller: title,
+                      labelText: U.s.title,
+                      validator: UValidators.required(message: ""),
+                      margin: const EdgeInsets.symmetric(vertical: 6),
                     ),
-                  ),
-                ],
+                    if (widget.dorm == null)
+                      UTextFieldAutoCompleteAsync<UDormResponse>(
+                        labelBuilder: (UDormResponse i) => i.title,
+                        onChanged: dorm.call,
+                        selectedItem: dorm.value,
+                        fetchData: c.readDorms,
+                        hintText: U.s.dorm,
+                      ).pSymmetric(vertical: 6),
+                    UAdminTagChips<TagDormRoom>(title: U.s.type, options: TagDormRoom.values.group(100), tags: tags, single: true),
+                    UTextField(controller: detail, labelText: U.s.description, margin: const EdgeInsets.symmetric(vertical: 6)),
+                    URow(
+                      children: <Widget>[
+                        UTextField(expanded: 1, controller: capacity, labelText: U.s.capacity, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
+                        const SizedBox(width: 8),
+                        UTextField(expanded: 1, controller: floor, labelText: U.s.floor, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    UButtonSubmitCancel(
+                      onSubmit: () => UValidators.validateForm(
+                        key: formKey,
+                        action: () {
+                          final String? did = dorm.value?.id ?? widget.dorm?.id;
+                          if (did == null) {
+                            UToast.error(message: U.s.pleaseSelectAItem(U.s.dorm));
+                            return;
+                          }
+                          if (p == null) {
+                            c.create(
+                              p: UDormRoomCreateParams(
+                                tags: tags,
+                                title: title.text,
+                                dormId: did,
+                                description: detail.text.nullIfEmpty(),
+                                capacity: int.tryParse(capacity.text.toLatinNumber()) ?? 0,
+                                floor: int.tryParse(floor.text.toLatinNumber()),
+                              ),
+                            );
+                          } else {
+                            c.update(
+                              p: UDormRoomUpdateParams(
+                                id: p.id,
+                                tags: tags,
+                                title: title.text,
+                                dormId: did,
+                                description: detail.text.nullIfEmpty(),
+                                capacity: int.tryParse(capacity.text.toLatinNumber()),
+                                floor: int.tryParse(floor.text.toLatinNumber()),
+                              ),
+                            );
+                          }
+                          UNavigator.back();
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ),
-      )),
+      ),
     );
   }
 }

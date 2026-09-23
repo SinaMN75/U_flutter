@@ -15,12 +15,12 @@ class _UAdminGoldPageState extends State<UAdminGoldPage> {
     c.init();
     super.initState();
   }
+
   @override
   void dispose() {
     c.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -62,9 +62,7 @@ class _UAdminGoldPageState extends State<UAdminGoldPage> {
           ]),
           _card(
             U.s.providerBalances,
-            c.balances
-                .map((UGoldBalanceResponse b) => UAdminField(b.assetCode, "${b.balance?.toStringAsSmartRound(maxPrecision: 4) ?? "0"}${b.locked ? " 🔒" : ""}"))
-                .toList(),
+            c.balances.map((UGoldBalanceResponse b) => UAdminField(b.assetCode, "${b.balance?.toStringAsSmartRound(maxPrecision: 4) ?? "0"}${b.locked ? " 🔒" : ""}")).toList(),
           ),
         ],
       ),
@@ -107,9 +105,7 @@ class _UAdminGoldPageState extends State<UAdminGoldPage> {
         mobileRow: _orderMobile,
       ).expanded(),
       UObx(
-        () => c.ordersCursor == null
-            ? const SizedBox.shrink()
-            : UButton(title: U.s.loadMore, type: UButtonType.text, onTap: () => c.readOrders(more: true)).pOnly(bottom: 8),
+        () => c.ordersCursor == null ? const SizedBox.shrink() : UButton(title: U.s.loadMore, type: UButtonType.text, onTap: () => c.readOrders(more: true)).pOnly(bottom: 8),
       ),
     ],
   );
@@ -169,9 +165,7 @@ class _UAdminGoldPageState extends State<UAdminGoldPage> {
         ),
       ).expanded(),
       UObx(
-        () => c.txnsCursor == null
-            ? const SizedBox.shrink()
-            : UButton(title: U.s.loadMore, type: UButtonType.text, onTap: () => c.readTransactions(more: true)).pOnly(bottom: 8),
+        () => c.txnsCursor == null ? const SizedBox.shrink() : UButton(title: U.s.loadMore, type: UButtonType.text, onTap: () => c.readTransactions(more: true)).pOnly(bottom: 8),
       ),
     ],
   );
@@ -256,31 +250,24 @@ class _UAdminGoldPageState extends State<UAdminGoldPage> {
   );
 
   void _showCreateTokenDialog() => UNavigator.dialog(
-    AlertDialog(
+    UAdminForm.filterDialog(
+      context,
       title: Text(U.s.createApiToken),
-      content: SizedBox(
-        width: context.dialogWidth(),
-        child: SingleChildScrollView(
-          child: UColumn(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              UTextField(controller: c.tokenLabelController, labelText: U.s.label).pSymmetric(vertical: 6),
-              UTextField(controller: c.tokenScopesController, labelText: U.s.scopes).pSymmetric(vertical: 6),
-              UTextField(controller: c.tokenIpsController, labelText: U.s.allowedIps).pSymmetric(vertical: 6),
-              const SizedBox(height: 20),
-              UButtonSubmitCancel(
-                submitTitle: U.s.create,
-                cancelTitle: U.s.cancel,
-                onSubmit: () {
-                  c.createToken();
-                  UNavigator.back();
-                },
-                onCancel: UNavigator.back,
-              ),
-            ],
-          ),
+      children: <Widget>[
+        UTextField(controller: c.tokenLabelController, labelText: U.s.label).pSymmetric(vertical: 6),
+        UTextField(controller: c.tokenScopesController, labelText: U.s.scopes).pSymmetric(vertical: 6),
+        UTextField(controller: c.tokenIpsController, labelText: U.s.allowedIps).pSymmetric(vertical: 6),
+        const SizedBox(height: 20),
+        UButtonSubmitCancel(
+          submitTitle: U.s.create,
+          cancelTitle: U.s.cancel,
+          onSubmit: () {
+            c.createToken();
+            UNavigator.back();
+          },
+          onCancel: UNavigator.back,
         ),
-      ),
+      ],
     ),
   );
 }

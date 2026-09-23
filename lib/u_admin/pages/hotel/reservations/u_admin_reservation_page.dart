@@ -18,12 +18,12 @@ class _ReservationPageState extends State<UAdminReservationPage> {
     c.init(hotel: widget.hotel, room: widget.room);
     super.initState();
   }
+
   @override
   void dispose() {
     c.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -185,73 +185,75 @@ class _ReservationPageState extends State<UAdminReservationPage> {
     final TextEditingController checkInCtrl = f.text(c.checkInFilter?.toJalaliDate());
     final TextEditingController checkOutCtrl = f.text(c.checkOutFilter?.toJalaliDate());
 
-    UNavigator.dialog(f.scope(
-      AlertDialog(
-        title: Text(U.s.filterItem(U.s.reservations)),
-        content: SizedBox(
-          width: context.dialogWidth(),
-          child: SingleChildScrollView(
-            child: StatefulBuilder(
-              builder: (BuildContext context, void Function(void Function()) setLocal) => UColumn(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  UTextField(controller: c.guestFilter, labelText: U.s.guest, margin: const EdgeInsets.symmetric(vertical: 6)),
-                  if (widget.hotel == null && widget.room == null)
-                    UTextFieldAutoCompleteAsync<UHotelResponse>(
-                      labelBuilder: (UHotelResponse i) => i.title,
-                      onChanged: (UHotelResponse? i) => setLocal(() => c.hotelFilter = i),
-                      selectedItem: c.hotelFilter,
-                      fetchData: c.readHotels,
-                      hintText: U.s.hotel,
+    UNavigator.dialog(
+      f.scope(
+        AlertDialog(
+          title: Text(U.s.filterItem(U.s.reservations)),
+          content: SizedBox(
+            width: context.dialogWidth(),
+            child: SingleChildScrollView(
+              child: StatefulBuilder(
+                builder: (BuildContext context, void Function(void Function()) setLocal) => UColumn(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    UTextField(controller: c.guestFilter, labelText: U.s.guest, margin: const EdgeInsets.symmetric(vertical: 6)),
+                    if (widget.hotel == null && widget.room == null)
+                      UTextFieldAutoCompleteAsync<UHotelResponse>(
+                        labelBuilder: (UHotelResponse i) => i.title,
+                        onChanged: (UHotelResponse? i) => setLocal(() => c.hotelFilter = i),
+                        selectedItem: c.hotelFilter,
+                        fetchData: c.readHotels,
+                        hintText: U.s.hotel,
+                      ).pSymmetric(vertical: 6),
+                    DropdownButtonFormField<UAdminReservationStatusFilter>(
+                      isExpanded: true,
+                      initialValue: c.statusFilter,
+                      decoration: InputDecoration(labelText: U.s.status, border: const OutlineInputBorder()),
+                      items: UAdminReservationStatusFilter.values
+                          .map((UAdminReservationStatusFilter f) => DropdownMenuItem<UAdminReservationStatusFilter>(value: f, child: Text(_statusFilterLabel(f))))
+                          .toList(),
+                      onChanged: (UAdminReservationStatusFilter? v) => setLocal(() => c.statusFilter = v ?? UAdminReservationStatusFilter.all),
                     ).pSymmetric(vertical: 6),
-                  DropdownButtonFormField<UAdminReservationStatusFilter>(
-                    isExpanded: true,
-                    initialValue: c.statusFilter,
-                    decoration: InputDecoration(labelText: U.s.status, border: const OutlineInputBorder()),
-                    items: UAdminReservationStatusFilter.values
-                        .map((UAdminReservationStatusFilter f) => DropdownMenuItem<UAdminReservationStatusFilter>(value: f, child: Text(_statusFilterLabel(f))))
-                        .toList(),
-                    onChanged: (UAdminReservationStatusFilter? v) => setLocal(() => c.statusFilter = v ?? UAdminReservationStatusFilter.all),
-                  ).pSymmetric(vertical: 6),
-                  UTextFieldDatePicker(
-                    controller: checkInCtrl,
-                    labelText: U.s.checkInDate,
-                    jalali: true,
-                    initialDate: c.checkInFilter,
-                    onChange: (DateTime d, UJalali j) {
-                      c.checkInFilter = d;
-                      checkInCtrl.text = d.toJalaliDate();
-                    },
-                  ).pSymmetric(vertical: 6),
-                  UTextFieldDatePicker(
-                    controller: checkOutCtrl,
-                    labelText: U.s.checkOutDate,
-                    jalali: true,
-                    initialDate: c.checkOutFilter,
-                    onChange: (DateTime d, UJalali j) {
-                      c.checkOutFilter = d;
-                      checkOutCtrl.text = d.toJalaliDate();
-                    },
-                  ).pSymmetric(vertical: 6),
-                  const SizedBox(height: 20),
-                  UButtonSubmitCancel(
-                    submitTitle: U.s.filter,
-                    cancelTitle: U.s.clearFilters,
-                    onSubmit: () {
-                      c.applyFilters();
-                      UNavigator.back();
-                    },
-                    onCancel: () {
-                      c.clearFilters();
-                      UNavigator.back();
-                    },
-                  ),
-                ],
+                    UTextFieldDatePicker(
+                      controller: checkInCtrl,
+                      labelText: U.s.checkInDate,
+                      jalali: true,
+                      initialDate: c.checkInFilter,
+                      onChange: (DateTime d, UJalali j) {
+                        c.checkInFilter = d;
+                        checkInCtrl.text = d.toJalaliDate();
+                      },
+                    ).pSymmetric(vertical: 6),
+                    UTextFieldDatePicker(
+                      controller: checkOutCtrl,
+                      labelText: U.s.checkOutDate,
+                      jalali: true,
+                      initialDate: c.checkOutFilter,
+                      onChange: (DateTime d, UJalali j) {
+                        c.checkOutFilter = d;
+                        checkOutCtrl.text = d.toJalaliDate();
+                      },
+                    ).pSymmetric(vertical: 6),
+                    const SizedBox(height: 20),
+                    UButtonSubmitCancel(
+                      submitTitle: U.s.filter,
+                      cancelTitle: U.s.clearFilters,
+                      onSubmit: () {
+                        c.applyFilters();
+                        UNavigator.back();
+                      },
+                      onCancel: () {
+                        c.clearFilters();
+                        UNavigator.back();
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ),
-      )),
+      ),
     );
   }
 
@@ -274,133 +276,135 @@ class _ReservationPageState extends State<UAdminReservationPage> {
 
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-    UNavigator.dialog(f.scope(
-      AlertDialog(
-        title: Text(p == null ? U.s.createItem(U.s.reservation) : U.s.editItem(U.s.reservation)),
-        content: SizedBox(
-          width: context.dialogWidth(max: 480),
-          child: SingleChildScrollView(
-            child: StatefulBuilder(
-              builder: (BuildContext context, void Function(void Function()) setLocal) => Form(
-                key: formKey,
-                child: UColumn(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    if (!isEdit && widget.room == null)
-                      UTextFieldAutoCompleteAsync<UHotelRoomResponse>(
-                        labelBuilder: (UHotelRoomResponse i) => "${i.title} · ${i.pricePerNight.rial()}",
-                        onChanged: room.call,
-                        selectedItem: room.value,
-                        fetchData: c.readRooms,
-                        hintText: U.s.rooms,
-                      ).pSymmetric(vertical: 6),
-                    if (!isEdit)
-                      UTextFieldAutoCompleteAsync<UUserResponse>(
-                        labelBuilder: (UUserResponse i) => i.phoneNumber == null ? i.displayName : "${i.displayName} · ${i.phoneNumber}",
-                        onChanged: user.call,
-                        selectedItem: user.value,
-                        fetchData: c.readUsers,
-                        hintText: U.s.guest,
-                      ).pSymmetric(vertical: 6),
-                    UTextFieldDatePicker(
-                      controller: checkInCtrl,
-                      labelText: U.s.checkInDate,
-                      jalali: true,
-                      initialDate: checkIn,
-                      validator: UValidators.required(message: ""),
-                      onChange: (DateTime d, UJalali j) {
-                        checkIn = d;
-                        checkInCtrl.text = d.toJalaliDate();
-                      },
-                    ).pSymmetric(vertical: 6),
-                    UTextFieldDatePicker(
-                      controller: checkOutCtrl,
-                      labelText: U.s.checkOutDate,
-                      jalali: true,
-                      initialDate: checkOut,
-                      validator: UValidators.required(message: ""),
-                      onChange: (DateTime d, UJalali j) {
-                        checkOut = d;
-                        checkOutCtrl.text = d.toJalaliDate();
-                      },
-                    ).pSymmetric(vertical: 6),
-                    UTextField(
-                      controller: guestCount,
-                      labelText: U.s.numberOfGuests,
-                      keyboardType: TextInputType.number,
-                      validator: UValidators.required(message: ""),
-                      margin: const EdgeInsets.symmetric(vertical: 6),
-                    ),
-                    UTextField(
-                      controller: totalPrice,
-                      labelText: U.s.totalPrice,
-                      keyboardType: TextInputType.number,
-                      formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-                      margin: const EdgeInsets.symmetric(vertical: 6),
-                    ),
-                    UTextField(controller: guestName, labelText: U.s.guestName, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextFieldPhoneNumber(controller: guestPhone, labelText: U.s.guestPhone, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    if (!isEdit) UTextField(controller: penalty, labelText: U.s.dailyPenalty, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextField(controller: notes, labelText: U.s.notes, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    const SizedBox(height: 20),
-                    UButtonSubmitCancel(
-                      onSubmit: () => UValidators.validateForm(
-                        key: formKey,
-                        action: () {
-                          if (checkIn == null || checkOut == null) {
-                            UToast.error(message: U.s.errorSubmittingForm);
-                            return;
-                          }
-                          if (isEdit) {
-                            c.update(
-                              p: UHotelReservationUpdateParams(
-                                id: p.id,
-                                checkInDate: checkIn,
-                                checkOutDate: checkOut,
-                                guestCount: guestCount.text.isEmpty ? null : guestCount.numInt(),
-                                totalPrice: totalPrice.text.isEmpty ? null : totalPrice.numDouble(),
-                                guestName: guestName.text.nullIfEmpty(),
-                                guestPhone: guestPhone.text.nullIfEmpty(),
-                                notes: notes.text.nullIfEmpty(),
-                              ),
-                            );
-                          } else {
-                            final String? rid = room.value?.id ?? widget.room?.id;
-                            if (rid == null) {
-                              UToast.error(message: U.s.pleaseSelectAItem(U.s.room));
-                              return;
-                            }
-                            if (user.value?.id == null) {
-                              UToast.error(message: U.s.pleaseSelectAItem(U.s.user));
-                              return;
-                            }
-                            c.create(
-                              p: UHotelReservationCreateParams(
-                                tags: <int>[TagHotelReservation.pending.number],
-                                checkInDate: checkIn!,
-                                checkOutDate: checkOut!,
-                                guestCount: guestCount.text.isEmpty ? 1 : guestCount.numInt(),
-                                userId: user.value!.id,
-                                roomId: rid,
-                                totalPrice: totalPrice.text.isEmpty ? null : totalPrice.numDouble(),
-                                guestName: guestName.text.nullIfEmpty(),
-                                guestPhone: guestPhone.text.nullIfEmpty(),
-                                notes: notes.text.nullIfEmpty(),
-                                penaltyPrecentEveryDate: penalty.text.isEmpty ? null : penalty.text.toInt(),
-                              ),
-                            );
-                          }
-                          UNavigator.back();
+    UNavigator.dialog(
+      f.scope(
+        AlertDialog(
+          title: Text(p == null ? U.s.createItem(U.s.reservation) : U.s.editItem(U.s.reservation)),
+          content: SizedBox(
+            width: context.dialogWidth(max: 480),
+            child: SingleChildScrollView(
+              child: StatefulBuilder(
+                builder: (BuildContext context, void Function(void Function()) setLocal) => Form(
+                  key: formKey,
+                  child: UColumn(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      if (!isEdit && widget.room == null)
+                        UTextFieldAutoCompleteAsync<UHotelRoomResponse>(
+                          labelBuilder: (UHotelRoomResponse i) => "${i.title} · ${i.pricePerNight.rial()}",
+                          onChanged: room.call,
+                          selectedItem: room.value,
+                          fetchData: c.readRooms,
+                          hintText: U.s.rooms,
+                        ).pSymmetric(vertical: 6),
+                      if (!isEdit)
+                        UTextFieldAutoCompleteAsync<UUserResponse>(
+                          labelBuilder: (UUserResponse i) => i.phoneNumber == null ? i.displayName : "${i.displayName} · ${i.phoneNumber}",
+                          onChanged: user.call,
+                          selectedItem: user.value,
+                          fetchData: c.readUsers,
+                          hintText: U.s.guest,
+                        ).pSymmetric(vertical: 6),
+                      UTextFieldDatePicker(
+                        controller: checkInCtrl,
+                        labelText: U.s.checkInDate,
+                        jalali: true,
+                        initialDate: checkIn,
+                        validator: UValidators.required(message: ""),
+                        onChange: (DateTime d, UJalali j) {
+                          checkIn = d;
+                          checkInCtrl.text = d.toJalaliDate();
                         },
+                      ).pSymmetric(vertical: 6),
+                      UTextFieldDatePicker(
+                        controller: checkOutCtrl,
+                        labelText: U.s.checkOutDate,
+                        jalali: true,
+                        initialDate: checkOut,
+                        validator: UValidators.required(message: ""),
+                        onChange: (DateTime d, UJalali j) {
+                          checkOut = d;
+                          checkOutCtrl.text = d.toJalaliDate();
+                        },
+                      ).pSymmetric(vertical: 6),
+                      UTextField(
+                        controller: guestCount,
+                        labelText: U.s.numberOfGuests,
+                        keyboardType: TextInputType.number,
+                        validator: UValidators.required(message: ""),
+                        margin: const EdgeInsets.symmetric(vertical: 6),
                       ),
-                    ),
-                  ],
+                      UTextField(
+                        controller: totalPrice,
+                        labelText: U.s.totalPrice,
+                        keyboardType: TextInputType.number,
+                        formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+                        margin: const EdgeInsets.symmetric(vertical: 6),
+                      ),
+                      UTextField(controller: guestName, labelText: U.s.guestName, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      UTextFieldPhoneNumber(controller: guestPhone, labelText: U.s.guestPhone, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      if (!isEdit) UTextField(controller: penalty, labelText: U.s.dailyPenalty, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      UTextField(controller: notes, labelText: U.s.notes, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      const SizedBox(height: 20),
+                      UButtonSubmitCancel(
+                        onSubmit: () => UValidators.validateForm(
+                          key: formKey,
+                          action: () {
+                            if (checkIn == null || checkOut == null) {
+                              UToast.error(message: U.s.errorSubmittingForm);
+                              return;
+                            }
+                            if (isEdit) {
+                              c.update(
+                                p: UHotelReservationUpdateParams(
+                                  id: p.id,
+                                  checkInDate: checkIn,
+                                  checkOutDate: checkOut,
+                                  guestCount: guestCount.text.isEmpty ? null : guestCount.numInt(),
+                                  totalPrice: totalPrice.text.isEmpty ? null : totalPrice.numDouble(),
+                                  guestName: guestName.text.nullIfEmpty(),
+                                  guestPhone: guestPhone.text.nullIfEmpty(),
+                                  notes: notes.text.nullIfEmpty(),
+                                ),
+                              );
+                            } else {
+                              final String? rid = room.value?.id ?? widget.room?.id;
+                              if (rid == null) {
+                                UToast.error(message: U.s.pleaseSelectAItem(U.s.room));
+                                return;
+                              }
+                              if (user.value?.id == null) {
+                                UToast.error(message: U.s.pleaseSelectAItem(U.s.user));
+                                return;
+                              }
+                              c.create(
+                                p: UHotelReservationCreateParams(
+                                  tags: <int>[TagHotelReservation.pending.number],
+                                  checkInDate: checkIn!,
+                                  checkOutDate: checkOut!,
+                                  guestCount: guestCount.text.isEmpty ? 1 : guestCount.numInt(),
+                                  userId: user.value!.id,
+                                  roomId: rid,
+                                  totalPrice: totalPrice.text.isEmpty ? null : totalPrice.numDouble(),
+                                  guestName: guestName.text.nullIfEmpty(),
+                                  guestPhone: guestPhone.text.nullIfEmpty(),
+                                  notes: notes.text.nullIfEmpty(),
+                                  penaltyPrecentEveryDate: penalty.text.isEmpty ? null : penalty.text.toInt(),
+                                ),
+                              );
+                            }
+                            UNavigator.back();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
         ),
-      )),
+      ),
     );
   }
 }

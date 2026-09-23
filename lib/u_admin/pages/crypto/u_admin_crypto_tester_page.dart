@@ -164,18 +164,20 @@ class _UAdminCryptoTesterPageState extends State<UAdminCryptoTesterPage> {
     final ColorScheme cs = Theme.of(context).colorScheme;
     return UScaffold(
       padding: const EdgeInsets.all(20),
-      body: SingleChildScrollView(
-        child: UColumn(
-          spacing: 20,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            _header(cs),
-            _algoSelector(cs),
-            _configCard(cs),
-            _inputCard(cs),
-            _actions(cs),
-            if (_output != null || _error != null) _outputCard(cs),
-          ],
+      body: UAdminPageBody(
+        child: SingleChildScrollView(
+          child: UColumn(
+            spacing: 20,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              _header(cs),
+              _algoSelector(cs),
+              _configCard(cs),
+              _inputCard(cs),
+              _actions(cs),
+              if (_output != null || _error != null) _outputCard(cs),
+            ],
+          ),
         ),
       ),
     );

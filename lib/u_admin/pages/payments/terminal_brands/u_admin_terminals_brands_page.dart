@@ -17,12 +17,12 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
     c.init();
     super.initState();
   }
+
   @override
   void dispose() {
     c.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -97,55 +97,48 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
   );
 
   void _showFilterDialog() => UNavigator.dialog(
-    AlertDialog(
+    UAdminForm.filterDialog(
+      context,
       title: Text(U.s.filterItem(U.s.brands)),
-      content: SizedBox(
-        width: context.dialogWidth(),
-        child: SingleChildScrollView(
-          child: UColumn(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              UDropDownField<TagOrderBy>(
-                initialValue: c.tagOrderBy.value,
-                onChanged: c.tagOrderBy.call,
-                items: <DropdownMenuItem<TagOrderBy>>[
-                  DropdownMenuItem<TagOrderBy>(
-                    value: TagOrderBy.createdAt,
-                    child: Text(TagOrderBy.createdAt.localizedTitle),
-                  ),
-                  DropdownMenuItem<TagOrderBy>(
-                    value: TagOrderBy.createdAtDescending,
-                    child: Text(TagOrderBy.createdAtDescending.localizedTitle),
-                  ),
-                ],
-              ).pSymmetric(vertical: 6),
-              UTextField(
-                controller: c.titleFilter,
-                labelText: U.s.title,
-                margin: const EdgeInsets.symmetric(vertical: 6),
-              ),
-              UTextField(
-                controller: c.modelFilter,
-                labelText: U.s.model,
-                margin: const EdgeInsets.symmetric(vertical: 6),
-              ),
-              const SizedBox(height: 20),
-              UButtonSubmitCancel(
-                submitTitle: U.s.filter,
-                cancelTitle: U.s.clearFilters,
-                onSubmit: () {
-                  c.applyFilters();
-                  UNavigator.back();
-                },
-                onCancel: () {
-                  c.clearFilters();
-                  UNavigator.back();
-                },
-              ),
-            ],
-          ),
+      children: <Widget>[
+        UDropDownField<TagOrderBy>(
+          initialValue: c.tagOrderBy.value,
+          onChanged: c.tagOrderBy.call,
+          items: <DropdownMenuItem<TagOrderBy>>[
+            DropdownMenuItem<TagOrderBy>(
+              value: TagOrderBy.createdAt,
+              child: Text(TagOrderBy.createdAt.localizedTitle),
+            ),
+            DropdownMenuItem<TagOrderBy>(
+              value: TagOrderBy.createdAtDescending,
+              child: Text(TagOrderBy.createdAtDescending.localizedTitle),
+            ),
+          ],
+        ).pSymmetric(vertical: 6),
+        UTextField(
+          controller: c.titleFilter,
+          labelText: U.s.title,
+          margin: const EdgeInsets.symmetric(vertical: 6),
         ),
-      ),
+        UTextField(
+          controller: c.modelFilter,
+          labelText: U.s.model,
+          margin: const EdgeInsets.symmetric(vertical: 6),
+        ),
+        const SizedBox(height: 20),
+        UButtonSubmitCancel(
+          submitTitle: U.s.filter,
+          cancelTitle: U.s.clearFilters,
+          onSubmit: () {
+            c.applyFilters();
+            UNavigator.back();
+          },
+          onCancel: () {
+            c.clearFilters();
+            UNavigator.back();
+          },
+        ),
+      ],
     ),
   );
 
@@ -169,73 +162,71 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
     final URx<TagTerminalBrand> deviceType = TagTerminalBrand.wallCashless.obs;
     final URx<TagTerminalBrand> connectionType = TagTerminalBrand.simCard.obs;
 
-    UNavigator.dialog(f.scope(
-      AlertDialog(
-        title: Text(U.s.createItem(U.s.brands)),
-        content: SizedBox(
-          width: context.dialogWidth(),
-          child: SingleChildScrollView(
-            child: Form(
-              key: formKey,
-              child: UColumn(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  UTextField(
-                    controller: titleController,
-                    labelText: U.s.title,
-                    validator: UValidators.required(message: U.s.required),
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  UTextField(
-                    controller: modelController,
-                    labelText: U.s.model,
-                    validator: UValidators.required(message: U.s.required),
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  UObx(
-                    () => UDropDownField<TagTerminalBrand>(
-                      initialValue: deviceType.value,
-                      labelText: U.s.deviceType,
-                      items: _deviceTypes
-                          .map((TagTerminalBrand x) => DropdownMenuItem<TagTerminalBrand>(value: x, child: Text(x.localizedTitle)))
-                          .toList(),
-                      onChanged: deviceType.call,
+    UNavigator.dialog(
+      f.scope(
+        AlertDialog(
+          title: Text(U.s.createItem(U.s.brands)),
+          content: SizedBox(
+            width: context.dialogWidth(),
+            child: SingleChildScrollView(
+              child: Form(
+                key: formKey,
+                child: UColumn(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    UTextField(
+                      controller: titleController,
+                      labelText: U.s.title,
+                      validator: UValidators.required(message: U.s.required),
                       margin: const EdgeInsets.symmetric(vertical: 6),
                     ),
-                  ),
-                  UObx(
-                    () => UDropDownField<TagTerminalBrand>(
-                      initialValue: connectionType.value,
-                      labelText: U.s.connectionType,
-                      items: _connectionTypes
-                          .map((TagTerminalBrand x) => DropdownMenuItem<TagTerminalBrand>(value: x, child: Text(x.localizedTitle)))
-                          .toList(),
-                      onChanged: connectionType.call,
+                    UTextField(
+                      controller: modelController,
+                      labelText: U.s.model,
+                      validator: UValidators.required(message: U.s.required),
                       margin: const EdgeInsets.symmetric(vertical: 6),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  UButtonSubmitCancel(
-                    onSubmit: () => UValidators.validateForm(
-                      key: formKey,
-                      action: () {
-                        UNavigator.back();
-                        c.create(
-                          p: UTerminalBrandCreateParams(
-                            title: titleController.text.trim(),
-                            model: modelController.text.trim(),
-                            tags: <int>[deviceType.value.number, connectionType.value.number],
-                          ),
-                        );
-                      },
+                    UObx(
+                      () => UDropDownField<TagTerminalBrand>(
+                        initialValue: deviceType.value,
+                        labelText: U.s.deviceType,
+                        items: _deviceTypes.map((TagTerminalBrand x) => DropdownMenuItem<TagTerminalBrand>(value: x, child: Text(x.localizedTitle))).toList(),
+                        onChanged: deviceType.call,
+                        margin: const EdgeInsets.symmetric(vertical: 6),
+                      ),
                     ),
-                  ),
-                ],
+                    UObx(
+                      () => UDropDownField<TagTerminalBrand>(
+                        initialValue: connectionType.value,
+                        labelText: U.s.connectionType,
+                        items: _connectionTypes.map((TagTerminalBrand x) => DropdownMenuItem<TagTerminalBrand>(value: x, child: Text(x.localizedTitle))).toList(),
+                        onChanged: connectionType.call,
+                        margin: const EdgeInsets.symmetric(vertical: 6),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    UButtonSubmitCancel(
+                      onSubmit: () => UValidators.validateForm(
+                        key: formKey,
+                        action: () {
+                          UNavigator.back();
+                          c.create(
+                            p: UTerminalBrandCreateParams(
+                              title: titleController.text.trim(),
+                              model: modelController.text.trim(),
+                              tags: <int>[deviceType.value.number, connectionType.value.number],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ),
-      )),
+      ),
     );
   }
 
@@ -247,74 +238,72 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
     final URx<TagTerminalBrand> deviceType = (_deviceTypeOf(i) ?? TagTerminalBrand.wallCashless).obs;
     final URx<TagTerminalBrand> connectionType = (_connectionTypeOf(i) ?? TagTerminalBrand.simCard).obs;
 
-    UNavigator.dialog(f.scope(
-      AlertDialog(
-        title: Text(U.s.editItem(U.s.brands)),
-        content: SizedBox(
-          width: context.dialogWidth(),
-          child: SingleChildScrollView(
-            child: Form(
-              key: formKey,
-              child: UColumn(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  UTextField(
-                    controller: title,
-                    labelText: U.s.title,
-                    validator: UValidators.required(message: U.s.required),
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  UTextField(
-                    controller: model,
-                    labelText: U.s.model,
-                    validator: UValidators.required(message: U.s.required),
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  UObx(
-                    () => UDropDownField<TagTerminalBrand>(
-                      initialValue: deviceType.value,
-                      labelText: U.s.deviceType,
-                      items: _deviceTypes
-                          .map((TagTerminalBrand x) => DropdownMenuItem<TagTerminalBrand>(value: x, child: Text(x.localizedTitle)))
-                          .toList(),
-                      onChanged: deviceType.call,
+    UNavigator.dialog(
+      f.scope(
+        AlertDialog(
+          title: Text(U.s.editItem(U.s.brands)),
+          content: SizedBox(
+            width: context.dialogWidth(),
+            child: SingleChildScrollView(
+              child: Form(
+                key: formKey,
+                child: UColumn(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    UTextField(
+                      controller: title,
+                      labelText: U.s.title,
+                      validator: UValidators.required(message: U.s.required),
                       margin: const EdgeInsets.symmetric(vertical: 6),
                     ),
-                  ),
-                  UObx(
-                    () => UDropDownField<TagTerminalBrand>(
-                      initialValue: connectionType.value,
-                      labelText: U.s.connectionType,
-                      items: _connectionTypes
-                          .map((TagTerminalBrand x) => DropdownMenuItem<TagTerminalBrand>(value: x, child: Text(x.localizedTitle)))
-                          .toList(),
-                      onChanged: connectionType.call,
+                    UTextField(
+                      controller: model,
+                      labelText: U.s.model,
+                      validator: UValidators.required(message: U.s.required),
                       margin: const EdgeInsets.symmetric(vertical: 6),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  UButtonSubmitCancel(
-                    onSubmit: () => UValidators.validateForm(
-                      key: formKey,
-                      action: () {
-                        UNavigator.back();
-                        c.update(
-                          p: UTerminalBrandUpdateParams(
-                            id: i.id,
-                            title: title.text.nullIfEmpty(),
-                            model: model.text.nullIfEmpty(),
-                            tags: <int>[deviceType.value.number, connectionType.value.number],
-                          ),
-                        );
-                      },
+                    UObx(
+                      () => UDropDownField<TagTerminalBrand>(
+                        initialValue: deviceType.value,
+                        labelText: U.s.deviceType,
+                        items: _deviceTypes.map((TagTerminalBrand x) => DropdownMenuItem<TagTerminalBrand>(value: x, child: Text(x.localizedTitle))).toList(),
+                        onChanged: deviceType.call,
+                        margin: const EdgeInsets.symmetric(vertical: 6),
+                      ),
                     ),
-                  ),
-                ],
+                    UObx(
+                      () => UDropDownField<TagTerminalBrand>(
+                        initialValue: connectionType.value,
+                        labelText: U.s.connectionType,
+                        items: _connectionTypes.map((TagTerminalBrand x) => DropdownMenuItem<TagTerminalBrand>(value: x, child: Text(x.localizedTitle))).toList(),
+                        onChanged: connectionType.call,
+                        margin: const EdgeInsets.symmetric(vertical: 6),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    UButtonSubmitCancel(
+                      onSubmit: () => UValidators.validateForm(
+                        key: formKey,
+                        action: () {
+                          UNavigator.back();
+                          c.update(
+                            p: UTerminalBrandUpdateParams(
+                              id: i.id,
+                              title: title.text.nullIfEmpty(),
+                              model: model.text.nullIfEmpty(),
+                              tags: <int>[deviceType.value.number, connectionType.value.number],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ),
-      )),
+      ),
     );
   }
 }

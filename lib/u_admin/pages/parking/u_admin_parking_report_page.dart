@@ -17,12 +17,12 @@ class _UAdminParkingReportPageState extends State<UAdminParkingReportPage> {
     c.init(parking: widget.parking);
     super.initState();
   }
+
   @override
   void dispose() {
     c.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(

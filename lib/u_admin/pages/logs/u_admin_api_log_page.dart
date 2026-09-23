@@ -35,30 +35,32 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
         IconButton(tooltip: U.s.refresh, icon: const Icon(Icons.refresh_rounded), onPressed: c.refreshAll),
       ],
     ),
-    body: SingleChildScrollView(
-      padding: EdgeInsets.all(_isWide ? 24 : 14),
-      child: UColumn(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          UObx(_hero),
-          UObx(_osMetricsSection).pSymmetric(vertical: 16),
-          UObx(_chartsSection).pSymmetric(vertical: 16),
-          UObx(_endpointsSection).pSymmetric(),
-          UObx(_slowestRequestsSection).pSymmetric(vertical: 16),
-          _quickFilters(),
-          const SizedBox(height: 16),
-          _table(),
-          UObx(
-            () => UNumberPagination(
-              currentPage: c.pageNumber.value,
-              totalPages: c.totalPages.value,
-              onPageChanged: (int page) {
-                c.pageNumber(page);
-                c.search();
-              },
-            ).pOnly(bottom: 8, top: 16),
-          ),
-        ],
+    body: UAdminPageBody(
+      child: SingleChildScrollView(
+        padding: EdgeInsets.all(_isWide ? 24 : 14),
+        child: UColumn(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            UObx(_hero),
+            UObx(_osMetricsSection).pSymmetric(vertical: 16),
+            UObx(_chartsSection).pSymmetric(vertical: 16),
+            UObx(_endpointsSection).pSymmetric(),
+            UObx(_slowestRequestsSection).pSymmetric(vertical: 16),
+            _quickFilters(),
+            const SizedBox(height: 16),
+            _table(),
+            UObx(
+              () => UNumberPagination(
+                currentPage: c.pageNumber.value,
+                totalPages: c.totalPages.value,
+                onPageChanged: (int page) {
+                  c.pageNumber(page);
+                  c.search();
+                },
+              ).pOnly(bottom: 8, top: 16),
+            ),
+          ],
+        ),
       ),
     ),
   );
@@ -669,82 +671,75 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
   }
 
   void _showFilterDialog() => UNavigator.dialog(
-    AlertDialog(
+    UAdminForm.filterDialog(
+      context,
       title: Text(U.s.filterItem(U.s.logs)),
-      content: SizedBox(
-        width: context.dialogWidth(),
-        child: SingleChildScrollView(
-          child: UColumn(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              UTextField(controller: c.pathContainsCtrl, labelText: U.s.pathContains, margin: const EdgeInsets.symmetric(vertical: 6)),
-              URow(
-                margin: const EdgeInsets.symmetric(vertical: 6),
-                children: <Widget>[
-                  UTextField(controller: c.minDurationCtrl, labelText: U.s.minDurationMs, keyboardType: TextInputType.number, expanded: 1),
-                  const SizedBox(width: 8),
-                  UTextField(controller: c.maxDurationCtrl, labelText: U.s.maxDurationMs, keyboardType: TextInputType.number, expanded: 1),
-                ],
-              ),
-              UTextField(controller: c.statusCodeCtrl, labelText: U.s.exactStatusCode, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
-              UTextField(controller: c.userIdCtrl, labelText: U.s.userId, margin: const EdgeInsets.symmetric(vertical: 6)),
-              UTextField(controller: c.ipAddressCtrl, labelText: U.s.ipAddress, margin: const EdgeInsets.symmetric(vertical: 6)),
-              UTextField(controller: c.traceIdCtrl, labelText: U.s.traceId, margin: const EdgeInsets.symmetric(vertical: 6)),
-              UObx(
-                () => UDropDownField<TagApiLog?>(
-                  initialValue: c.methodFilter.value,
-                  onChanged: (TagApiLog? v) => c.methodFilter.value = v,
-                  items: <DropdownMenuItem<TagApiLog?>>[
-                    DropdownMenuItem<TagApiLog?>(child: Text(U.s.all)),
-                    ...TagApiLog.values.where((TagApiLog t) => t.number < 200).map((TagApiLog t) => DropdownMenuItem<TagApiLog?>(value: t, child: Text(t.localizedTitle))),
-                  ],
-                ),
-              ).pSymmetric(vertical: 6),
-              UObx(
-                () => UDropDownField<TagOrderBy>(
-                  initialValue: c.orderBy.value,
-                  onChanged: (TagOrderBy? v) => c.orderBy.value = v ?? c.orderBy.value,
-                  items: <DropdownMenuItem<TagOrderBy>>[
-                    DropdownMenuItem<TagOrderBy>(value: TagOrderBy.createdAtDescending, child: Text(TagOrderBy.createdAtDescending.localizedTitle)),
-                    DropdownMenuItem<TagOrderBy>(value: TagOrderBy.createdAt, child: Text(TagOrderBy.createdAt.localizedTitle)),
-                    DropdownMenuItem<TagOrderBy>(value: TagOrderBy.durationMsDescending, child: Text(TagOrderBy.durationMsDescending.localizedTitle)),
-                    DropdownMenuItem<TagOrderBy>(value: TagOrderBy.durationMs, child: Text(TagOrderBy.durationMs.localizedTitle)),
-                  ],
-                ),
-              ).pSymmetric(vertical: 6),
-              UObx(
-                () => CheckboxListTile(
-                  value: c.onlyErrors.value,
-                  onChanged: (bool? v) => c.onlyErrors.value = v ?? false,
-                  title: Text(U.s.onlyErrors),
-                  controlAffinity: ListTileControlAffinity.leading,
-                ),
-              ),
-              UObx(
-                () => CheckboxListTile(
-                  value: c.onlyExceptions.value,
-                  onChanged: (bool? v) => c.onlyExceptions.value = v ?? false,
-                  title: Text(U.s.onlyExceptions),
-                  controlAffinity: ListTileControlAffinity.leading,
-                ),
-              ),
-              const SizedBox(height: 20),
-              UButtonSubmitCancel(
-                submitTitle: U.s.filter,
-                cancelTitle: U.s.clearFilters,
-                onSubmit: () {
-                  c.applyFilters();
-                  UNavigator.back();
-                },
-                onCancel: () {
-                  c.clearFilters();
-                  UNavigator.back();
-                },
-              ),
+      children: <Widget>[
+        UTextField(controller: c.pathContainsCtrl, labelText: U.s.pathContains, margin: const EdgeInsets.symmetric(vertical: 6)),
+        URow(
+          margin: const EdgeInsets.symmetric(vertical: 6),
+          children: <Widget>[
+            UTextField(controller: c.minDurationCtrl, labelText: U.s.minDurationMs, keyboardType: TextInputType.number, expanded: 1),
+            const SizedBox(width: 8),
+            UTextField(controller: c.maxDurationCtrl, labelText: U.s.maxDurationMs, keyboardType: TextInputType.number, expanded: 1),
+          ],
+        ),
+        UTextField(controller: c.statusCodeCtrl, labelText: U.s.exactStatusCode, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.userIdCtrl, labelText: U.s.userId, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.ipAddressCtrl, labelText: U.s.ipAddress, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.traceIdCtrl, labelText: U.s.traceId, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UObx(
+          () => UDropDownField<TagApiLog?>(
+            initialValue: c.methodFilter.value,
+            onChanged: (TagApiLog? v) => c.methodFilter.value = v,
+            items: <DropdownMenuItem<TagApiLog?>>[
+              DropdownMenuItem<TagApiLog?>(child: Text(U.s.all)),
+              ...TagApiLog.values.where((TagApiLog t) => t.number < 200).map((TagApiLog t) => DropdownMenuItem<TagApiLog?>(value: t, child: Text(t.localizedTitle))),
             ],
           ),
+        ).pSymmetric(vertical: 6),
+        UObx(
+          () => UDropDownField<TagOrderBy>(
+            initialValue: c.orderBy.value,
+            onChanged: (TagOrderBy? v) => c.orderBy.value = v ?? c.orderBy.value,
+            items: <DropdownMenuItem<TagOrderBy>>[
+              DropdownMenuItem<TagOrderBy>(value: TagOrderBy.createdAtDescending, child: Text(TagOrderBy.createdAtDescending.localizedTitle)),
+              DropdownMenuItem<TagOrderBy>(value: TagOrderBy.createdAt, child: Text(TagOrderBy.createdAt.localizedTitle)),
+              DropdownMenuItem<TagOrderBy>(value: TagOrderBy.durationMsDescending, child: Text(TagOrderBy.durationMsDescending.localizedTitle)),
+              DropdownMenuItem<TagOrderBy>(value: TagOrderBy.durationMs, child: Text(TagOrderBy.durationMs.localizedTitle)),
+            ],
+          ),
+        ).pSymmetric(vertical: 6),
+        UObx(
+          () => CheckboxListTile(
+            value: c.onlyErrors.value,
+            onChanged: (bool? v) => c.onlyErrors.value = v ?? false,
+            title: Text(U.s.onlyErrors),
+            controlAffinity: ListTileControlAffinity.leading,
+          ),
         ),
-      ),
+        UObx(
+          () => CheckboxListTile(
+            value: c.onlyExceptions.value,
+            onChanged: (bool? v) => c.onlyExceptions.value = v ?? false,
+            title: Text(U.s.onlyExceptions),
+            controlAffinity: ListTileControlAffinity.leading,
+          ),
+        ),
+        const SizedBox(height: 20),
+        UButtonSubmitCancel(
+          submitTitle: U.s.filter,
+          cancelTitle: U.s.clearFilters,
+          onSubmit: () {
+            c.applyFilters();
+            UNavigator.back();
+          },
+          onCancel: () {
+            c.clearFilters();
+            UNavigator.back();
+          },
+        ),
+      ],
     ),
   );
 

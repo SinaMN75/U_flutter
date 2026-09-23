@@ -32,7 +32,10 @@ abstract class UAdminPlaceDetails {
       StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) => AlertDialog(
           title: Text(title),
-          content: SizedBox(width: context.dialogWidth(max: 760), child: SingleChildScrollView(child: body(context, setState))),
+          content: SizedBox(
+            width: context.dialogWidth(max: 760),
+            child: SingleChildScrollView(child: body(context, setState)),
+          ),
           actions: <Widget>[
             TextButton(onPressed: saving ? null : UNavigator.back, child: Text(U.s.cancel)),
             FilledButton(
@@ -67,7 +70,12 @@ abstract class UAdminPlaceDetails {
   // ---------------------------------------------------------------- hotel
 
   static Future<void> hotel(UHotelResponse item, {VoidCallback? onDone}) async {
-    final (UResponse<UHotelResponse>? fetched, _, _) = await UServices.hotel.readHotelById(p: UIdParams(id: item.id, selectorArgs: const UHotelSelectorArgs(media: UMediaSelectorArgs())));
+    final (UResponse<UHotelResponse>? fetched, _, _) = await UServices.hotel.readHotelById(
+      p: UIdParams(
+        id: item.id,
+        selectorArgs: const UHotelSelectorArgs(media: UMediaSelectorArgs()),
+      ),
+    );
     final UHotelResponse h = fetched?.result ?? item;
     final UHotelJson d = h.jsonData;
 
@@ -96,12 +104,18 @@ abstract class UAdminPlaceDetails {
               UAdminTagChips<TagHotel>(title: U.s.approval, options: TagHotel.values.group(400), tags: tags, single: true),
             ],
           ),
-          UAdminSection(title: U.s.photos, children: <Widget>[UAdminMediaManager(media: media, draft: draft)]),
+          UAdminSection(
+            title: U.s.photos,
+            children: <Widget>[UAdminMediaManager(media: media, draft: draft)],
+          ),
           UAdminSection(
             title: U.s.details,
             children: <Widget>[UAdminStringList(title: U.s.highlights, items: highlights, addLabel: U.s.addHighlight, onChanged: (List<String> v) => highlights = v)],
           ),
-          UAdminSection(title: U.s.amenities, children: <Widget>[UAdminTagChips<TagHotel>(title: U.s.amenities, options: TagHotel.values.group(500), tags: tags)]),
+          UAdminSection(
+            title: U.s.amenities,
+            children: <Widget>[UAdminTagChips<TagHotel>(title: U.s.amenities, options: TagHotel.values.group(500), tags: tags)],
+          ),
           UAdminSection(
             title: U.s.policies,
             children: <Widget>[
@@ -110,8 +124,17 @@ abstract class UAdminPlaceDetails {
             ],
           ),
           UAdminSection(title: U.s.socialMedia, children: <Widget>[_text(website, U.s.website), _text(whatsapp, U.s.whatsapp), _text(instagram, U.s.instagram), _text(telegram, U.s.telegram)]),
-          UAdminSection(title: U.s.nearbyPlaces, children: <Widget>[_text(howToGetThere, U.s.howToGetThere, lines: 2), UAdminNearbyEditor(items: nearby, onChanged: (List<UPlaceNearby> v) => nearby = v)]),
-          UAdminSection(title: U.s.faqs, children: <Widget>[UAdminFaqEditor(items: faqs, onChanged: (List<UPlaceFaq> v) => faqs = v)]),
+          UAdminSection(
+            title: U.s.nearbyPlaces,
+            children: <Widget>[
+              _text(howToGetThere, U.s.howToGetThere, lines: 2),
+              UAdminNearbyEditor(items: nearby, onChanged: (List<UPlaceNearby> v) => nearby = v),
+            ],
+          ),
+          UAdminSection(
+            title: U.s.faqs,
+            children: <Widget>[UAdminFaqEditor(items: faqs, onChanged: (List<UPlaceFaq> v) => faqs = v)],
+          ),
         ],
       ),
       save: () async {
@@ -139,7 +162,12 @@ abstract class UAdminPlaceDetails {
   // ---------------------------------------------------------------- hotel room
 
   static Future<void> hotelRoom(UHotelRoomResponse item, {VoidCallback? onDone}) async {
-    final (UResponse<UHotelRoomResponse>? fetched, _, _) = await UServices.hotel.readHotelRoomById(p: UIdParams(id: item.id, selectorArgs: const UHotelRoomSelectorArgs(media: UMediaSelectorArgs())));
+    final (UResponse<UHotelRoomResponse>? fetched, _, _) = await UServices.hotel.readHotelRoomById(
+      p: UIdParams(
+        id: item.id,
+        selectorArgs: const UHotelRoomSelectorArgs(media: UMediaSelectorArgs()),
+      ),
+    );
     final UHotelRoomResponse r = fetched?.result ?? item;
 
     final List<int> tags = List<int>.from(r.tags);
@@ -152,7 +180,10 @@ abstract class UAdminPlaceDetails {
       body: (BuildContext context, StateSetter setState) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          UAdminSection(title: U.s.photos, children: <Widget>[UAdminMediaManager(media: media, draft: draft)]),
+          UAdminSection(
+            title: U.s.photos,
+            children: <Widget>[UAdminMediaManager(media: media, draft: draft)],
+          ),
           UAdminSection(
             title: U.s.details,
             children: <Widget>[
@@ -160,11 +191,16 @@ abstract class UAdminPlaceDetails {
               UAdminTagChips<TagRoom>(title: U.s.policies, options: TagRoom.values.group(300), tags: tags),
             ],
           ),
-          UAdminSection(title: U.s.amenities, children: <Widget>[UAdminTagChips<TagRoom>(title: U.s.amenities, options: TagRoom.values.group(500), tags: tags)]),
+          UAdminSection(
+            title: U.s.amenities,
+            children: <Widget>[UAdminTagChips<TagRoom>(title: U.s.amenities, options: TagRoom.values.group(500), tags: tags)],
+          ),
         ],
       ),
       save: () async {
-        final (UEmptyResponse? ok, UEmptyResponse? error, String? exception) = await UServices.hotel.updateHotelRoom(p: UHotelRoomUpdateParams(id: r.id, tags: tags));
+        final (UEmptyResponse? ok, UEmptyResponse? error, String? exception) = await UServices.hotel.updateHotelRoom(
+          p: UHotelRoomUpdateParams(id: r.id, tags: tags),
+        );
         if (!_isOk(ok, error, exception)) return false;
         await UAdminMediaSync.apply(draft: draft, existing: media, hotelRoomId: r.id);
         return true;
@@ -175,7 +211,12 @@ abstract class UAdminPlaceDetails {
   // ---------------------------------------------------------------- dorm
 
   static Future<void> dorm(UDormResponse item, {VoidCallback? onDone}) async {
-    final (UResponse<UDormResponse>? fetched, _, _) = await UServices.hotel.readDormById(p: UIdParams(id: item.id, selectorArgs: const UDormSelectorArgs(media: UMediaSelectorArgs())));
+    final (UResponse<UDormResponse>? fetched, _, _) = await UServices.hotel.readDormById(
+      p: UIdParams(
+        id: item.id,
+        selectorArgs: const UDormSelectorArgs(media: UMediaSelectorArgs()),
+      ),
+    );
     final UDormResponse dorm = fetched?.result ?? item;
     final UDormJson d = dorm.jsonData;
 
@@ -208,7 +249,10 @@ abstract class UAdminPlaceDetails {
               UAdminTagChips<TagDorm>(title: U.s.approval, options: TagDorm.values.group(400), tags: tags, single: true),
             ],
           ),
-          UAdminSection(title: U.s.photos, children: <Widget>[UAdminMediaManager(media: media, draft: draft)]),
+          UAdminSection(
+            title: U.s.photos,
+            children: <Widget>[UAdminMediaManager(media: media, draft: draft)],
+          ),
           UAdminSection(
             title: U.s.details,
             children: <Widget>[
@@ -223,7 +267,10 @@ abstract class UAdminPlaceDetails {
               UAdminTagChips<TagDorm>(title: U.s.acceptedResidents, options: TagDorm.values.group(300), tags: tags),
             ],
           ),
-          UAdminSection(title: U.s.amenities, children: <Widget>[UAdminTagChips<TagDorm>(title: U.s.amenities, options: TagDorm.values.group(500), tags: tags)]),
+          UAdminSection(
+            title: U.s.amenities,
+            children: <Widget>[UAdminTagChips<TagDorm>(title: U.s.amenities, options: TagDorm.values.group(500), tags: tags)],
+          ),
           UAdminSection(
             title: U.s.servicesIncluded,
             children: <Widget>[
@@ -239,8 +286,17 @@ abstract class UAdminPlaceDetails {
             ],
           ),
           UAdminSection(title: U.s.socialMedia, children: <Widget>[_text(website, U.s.website), _text(whatsapp, U.s.whatsapp), _text(instagram, U.s.instagram), _text(telegram, U.s.telegram)]),
-          UAdminSection(title: U.s.nearbyPlaces, children: <Widget>[_text(howToGetThere, U.s.howToGetThere, lines: 2), UAdminNearbyEditor(items: nearby, onChanged: (List<UPlaceNearby> v) => nearby = v)]),
-          UAdminSection(title: U.s.faqs, children: <Widget>[UAdminFaqEditor(items: faqs, onChanged: (List<UPlaceFaq> v) => faqs = v)]),
+          UAdminSection(
+            title: U.s.nearbyPlaces,
+            children: <Widget>[
+              _text(howToGetThere, U.s.howToGetThere, lines: 2),
+              UAdminNearbyEditor(items: nearby, onChanged: (List<UPlaceNearby> v) => nearby = v),
+            ],
+          ),
+          UAdminSection(
+            title: U.s.faqs,
+            children: <Widget>[UAdminFaqEditor(items: faqs, onChanged: (List<UPlaceFaq> v) => faqs = v)],
+          ),
         ],
       ),
       save: () async {
@@ -272,7 +328,12 @@ abstract class UAdminPlaceDetails {
   // ---------------------------------------------------------------- dorm room
 
   static Future<void> dormRoom(UDormRoomResponse item, {VoidCallback? onDone}) async {
-    final (UResponse<UDormRoomResponse>? fetched, _, _) = await UServices.hotel.readDormRoomById(p: UIdParams(id: item.id, selectorArgs: const UDormRoomSelectorArgs(media: UMediaSelectorArgs())));
+    final (UResponse<UDormRoomResponse>? fetched, _, _) = await UServices.hotel.readDormRoomById(
+      p: UIdParams(
+        id: item.id,
+        selectorArgs: const UDormRoomSelectorArgs(media: UMediaSelectorArgs()),
+      ),
+    );
     final UDormRoomResponse r = fetched?.result ?? item;
 
     final List<int> tags = List<int>.from(r.tags);
@@ -285,7 +346,10 @@ abstract class UAdminPlaceDetails {
       body: (BuildContext context, StateSetter setState) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          UAdminSection(title: U.s.photos, children: <Widget>[UAdminMediaManager(media: media, draft: draft)]),
+          UAdminSection(
+            title: U.s.photos,
+            children: <Widget>[UAdminMediaManager(media: media, draft: draft)],
+          ),
           UAdminSection(
             title: U.s.amenities,
             children: <Widget>[
@@ -296,7 +360,9 @@ abstract class UAdminPlaceDetails {
         ],
       ),
       save: () async {
-        final (UEmptyResponse? ok, UEmptyResponse? error, String? exception) = await UServices.hotel.updateDormRoom(p: UDormRoomUpdateParams(id: r.id, tags: tags));
+        final (UEmptyResponse? ok, UEmptyResponse? error, String? exception) = await UServices.hotel.updateDormRoom(
+          p: UDormRoomUpdateParams(id: r.id, tags: tags),
+        );
         if (!_isOk(ok, error, exception)) return false;
         await UAdminMediaSync.apply(draft: draft, existing: media, dormRoomId: r.id);
         return true;
@@ -307,7 +373,12 @@ abstract class UAdminPlaceDetails {
   // ---------------------------------------------------------------- dorm bed
 
   static Future<void> dormBed(UDormBedResponse item, {VoidCallback? onDone}) async {
-    final (UResponse<UDormBedResponse>? fetched, _, _) = await UServices.hotel.readDormBedById(p: UIdParams(id: item.id, selectorArgs: const UDormBedSelectorArgs(media: UMediaSelectorArgs())));
+    final (UResponse<UDormBedResponse>? fetched, _, _) = await UServices.hotel.readDormBedById(
+      p: UIdParams(
+        id: item.id,
+        selectorArgs: const UDormBedSelectorArgs(media: UMediaSelectorArgs()),
+      ),
+    );
     final UDormBedResponse b = fetched?.result ?? item;
 
     final List<int> tags = List<int>.from(b.tags);
@@ -320,7 +391,10 @@ abstract class UAdminPlaceDetails {
       body: (BuildContext context, StateSetter setState) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          UAdminSection(title: U.s.photos, children: <Widget>[UAdminMediaManager(media: media, draft: draft)]),
+          UAdminSection(
+            title: U.s.photos,
+            children: <Widget>[UAdminMediaManager(media: media, draft: draft)],
+          ),
           UAdminSection(
             title: U.s.details,
             children: <Widget>[
@@ -331,7 +405,9 @@ abstract class UAdminPlaceDetails {
         ],
       ),
       save: () async {
-        final (UEmptyResponse? ok, UEmptyResponse? error, String? exception) = await UServices.hotel.updateDormBed(p: UDormBedUpdateParams(id: b.id, tags: tags));
+        final (UEmptyResponse? ok, UEmptyResponse? error, String? exception) = await UServices.hotel.updateDormBed(
+          p: UDormBedUpdateParams(id: b.id, tags: tags),
+        );
         if (!_isOk(ok, error, exception)) return false;
         await UAdminMediaSync.apply(draft: draft, existing: media, dormBedId: b.id);
         return true;

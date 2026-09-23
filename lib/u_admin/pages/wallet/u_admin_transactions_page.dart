@@ -15,12 +15,12 @@ class _TransactionsPageState extends State<UAdminTransactionsPage> {
     c.init();
     super.initState();
   }
+
   @override
   void dispose() {
     c.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -82,57 +82,50 @@ class _TransactionsPageState extends State<UAdminTransactionsPage> {
   );
 
   void _showFilterDialog() => UNavigator.dialog(
-    AlertDialog(
+    UAdminForm.filterDialog(
+      context,
       title: Text(U.s.filterItem(U.s.transactions)),
-      content: SizedBox(
-        width: context.dialogWidth(),
-        child: SingleChildScrollView(
-          child: UColumn(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              UDropDownField<TagTxn?>(
-                initialValue: c.statusFilter,
-                onChanged: (TagTxn? v) => c.statusFilter = v,
-                items: <DropdownMenuItem<TagTxn?>>[
-                  DropdownMenuItem<TagTxn?>(child: Text(U.s.all)),
-                  ...TagTxn.values.map((TagTxn t) => DropdownMenuItem<TagTxn?>(value: t, child: Text(t.localizedTitle))),
-                ],
-              ),
-              UTextFieldDatePicker(
-                jalali: true,
-                controller: c.fromCreatedController,
-                labelText: U.s.fromDate,
-                onChange: (DateTime d, UJalali j) {
-                  c.fromCreatedController.text = j.formatCompactDate();
-                  c.fromCreatedAt = d;
-                },
-              ).pSymmetric(vertical: 6),
-              UTextFieldDatePicker(
-                jalali: true,
-                controller: c.toCreatedController,
-                labelText: U.s.toDate,
-                onChange: (DateTime d, UJalali j) {
-                  c.toCreatedController.text = j.formatCompactDate();
-                  c.toCreatedAt = d;
-                },
-              ).pSymmetric(vertical: 6),
-              const SizedBox(height: 20),
-              UButtonSubmitCancel(
-                submitTitle: U.s.filter,
-                cancelTitle: U.s.clearFilters,
-                onSubmit: () {
-                  c.applyFilters();
-                  UNavigator.back();
-                },
-                onCancel: () {
-                  c.clearFilters();
-                  UNavigator.back();
-                },
-              ),
-            ],
-          ),
+      children: <Widget>[
+        UDropDownField<TagTxn?>(
+          initialValue: c.statusFilter,
+          onChanged: (TagTxn? v) => c.statusFilter = v,
+          items: <DropdownMenuItem<TagTxn?>>[
+            DropdownMenuItem<TagTxn?>(child: Text(U.s.all)),
+            ...TagTxn.values.map((TagTxn t) => DropdownMenuItem<TagTxn?>(value: t, child: Text(t.localizedTitle))),
+          ],
         ),
-      ),
+        UTextFieldDatePicker(
+          jalali: true,
+          controller: c.fromCreatedController,
+          labelText: U.s.fromDate,
+          onChange: (DateTime d, UJalali j) {
+            c.fromCreatedController.text = j.formatCompactDate();
+            c.fromCreatedAt = d;
+          },
+        ).pSymmetric(vertical: 6),
+        UTextFieldDatePicker(
+          jalali: true,
+          controller: c.toCreatedController,
+          labelText: U.s.toDate,
+          onChange: (DateTime d, UJalali j) {
+            c.toCreatedController.text = j.formatCompactDate();
+            c.toCreatedAt = d;
+          },
+        ).pSymmetric(vertical: 6),
+        const SizedBox(height: 20),
+        UButtonSubmitCancel(
+          submitTitle: U.s.filter,
+          cancelTitle: U.s.clearFilters,
+          onSubmit: () {
+            c.applyFilters();
+            UNavigator.back();
+          },
+          onCancel: () {
+            c.clearFilters();
+            UNavigator.back();
+          },
+        ),
+      ],
     ),
   );
 
@@ -142,51 +135,53 @@ class _TransactionsPageState extends State<UAdminTransactionsPage> {
     final TextEditingController amount = f.text();
     final TextEditingController tracking = f.text();
     final URx<TagTxn> tag = TagTxn.pending.obs;
-    UNavigator.dialog(f.scope(
-      AlertDialog(
-        title: Text(U.s.createItem(U.s.transactions)),
-        content: SizedBox(
-          width: context.dialogWidth(),
-          child: SingleChildScrollView(
-            child: Form(
-              key: formKey,
-              child: UColumn(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  UTextField(
-                    controller: amount,
-                    labelText: U.s.amount,
-                    keyboardType: TextInputType.number,
-                    validator: UValidators.required(message: U.s.required),
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  UTextField(
-                    controller: tracking,
-                    labelText: U.s.trackingNumber,
-                    validator: UValidators.required(message: U.s.required),
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  UDropDownField<TagTxn?>(
-                    initialValue: tag.value,
-                    onChanged: (TagTxn? v) => tag.value = v ?? tag.value,
-                    items: TagTxn.values.map((TagTxn t) => DropdownMenuItem<TagTxn?>(value: t, child: Text(t.localizedTitle))).toList(),
-                  ),
-                  const SizedBox(height: 20),
-                  UButtonSubmitCancel(
-                    onSubmit: () => UValidators.validateForm(
-                      key: formKey,
-                      action: () {
-                        UNavigator.back();
-                        c.create(amount: amount.text.trim().toDouble(), trackingNumber: tracking.text.trim(), tag: tag.value.number);
-                      },
+    UNavigator.dialog(
+      f.scope(
+        AlertDialog(
+          title: Text(U.s.createItem(U.s.transactions)),
+          content: SizedBox(
+            width: context.dialogWidth(),
+            child: SingleChildScrollView(
+              child: Form(
+                key: formKey,
+                child: UColumn(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    UTextField(
+                      controller: amount,
+                      labelText: U.s.amount,
+                      keyboardType: TextInputType.number,
+                      validator: UValidators.required(message: U.s.required),
+                      margin: const EdgeInsets.symmetric(vertical: 6),
                     ),
-                  ),
-                ],
+                    UTextField(
+                      controller: tracking,
+                      labelText: U.s.trackingNumber,
+                      validator: UValidators.required(message: U.s.required),
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
+                    UDropDownField<TagTxn?>(
+                      initialValue: tag.value,
+                      onChanged: (TagTxn? v) => tag.value = v ?? tag.value,
+                      items: TagTxn.values.map((TagTxn t) => DropdownMenuItem<TagTxn?>(value: t, child: Text(t.localizedTitle))).toList(),
+                    ),
+                    const SizedBox(height: 20),
+                    UButtonSubmitCancel(
+                      onSubmit: () => UValidators.validateForm(
+                        key: formKey,
+                        action: () {
+                          UNavigator.back();
+                          c.create(amount: amount.text.trim().toDouble(), trackingNumber: tracking.text.trim(), tag: tag.value.number);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ),
-      )),
+      ),
     );
   }
 
@@ -196,45 +191,47 @@ class _TransactionsPageState extends State<UAdminTransactionsPage> {
     final TextEditingController amount = f.text(i.amount.toInt().toString());
     final TextEditingController tracking = f.text(i.trackingNumber);
     final URx<TagTxn> tag = (TagTxn.values.fromNumber(i.tags.isEmpty ? TagTxn.pending.number : i.tags.first) ?? TagTxn.pending).obs;
-    UNavigator.dialog(f.scope(
-      AlertDialog(
-        title: Text(U.s.editItem(U.s.transactions)),
-        content: SizedBox(
-          width: context.dialogWidth(),
-          child: SingleChildScrollView(
-            child: Form(
-              key: formKey,
-              child: UColumn(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  UTextField(controller: amount, labelText: U.s.amount, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
-                  UTextField(controller: tracking, labelText: U.s.trackingNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
-                  UDropDownField<TagTxn?>(
-                    initialValue: tag.value,
-                    onChanged: (TagTxn? v) => tag.value = v ?? tag.value,
-                    items: TagTxn.values.map((TagTxn t) => DropdownMenuItem<TagTxn?>(value: t, child: Text(t.localizedTitle))).toList(),
-                  ),
-                  const SizedBox(height: 20),
-                  UButtonSubmitCancel(
-                    onSubmit: () => UValidators.validateForm(
-                      key: formKey,
-                      action: () {
-                        UNavigator.back();
-                        c.update(
-                          id: i.id,
-                          amount: amount.text.nullIfEmpty() == null ? null : amount.text.trim().toDouble(),
-                          trackingNumber: tracking.text.nullIfEmpty(),
-                          tags: <int>[tag.value.number],
-                        );
-                      },
+    UNavigator.dialog(
+      f.scope(
+        AlertDialog(
+          title: Text(U.s.editItem(U.s.transactions)),
+          content: SizedBox(
+            width: context.dialogWidth(),
+            child: SingleChildScrollView(
+              child: Form(
+                key: formKey,
+                child: UColumn(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    UTextField(controller: amount, labelText: U.s.amount, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
+                    UTextField(controller: tracking, labelText: U.s.trackingNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
+                    UDropDownField<TagTxn?>(
+                      initialValue: tag.value,
+                      onChanged: (TagTxn? v) => tag.value = v ?? tag.value,
+                      items: TagTxn.values.map((TagTxn t) => DropdownMenuItem<TagTxn?>(value: t, child: Text(t.localizedTitle))).toList(),
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 20),
+                    UButtonSubmitCancel(
+                      onSubmit: () => UValidators.validateForm(
+                        key: formKey,
+                        action: () {
+                          UNavigator.back();
+                          c.update(
+                            id: i.id,
+                            amount: amount.text.nullIfEmpty() == null ? null : amount.text.trim().toDouble(),
+                            trackingNumber: tracking.text.nullIfEmpty(),
+                            tags: <int>[tag.value.number],
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ),
-      )),
+      ),
     );
   }
 }

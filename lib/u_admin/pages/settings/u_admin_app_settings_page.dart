@@ -69,22 +69,24 @@ class _UAdminAppSettingsPageState extends State<UAdminAppSettingsPage> {
           IconButton(icon: const Icon(Icons.refresh_rounded), tooltip: U.s.refresh, onPressed: _loading ? null : _load),
         ],
       ),
-      body: _loading || _m == null
-          ? const Center(child: CircularProgressIndicator())
-          : Column(
-              children: <Widget>[
-                Expanded(
-                  child: SingleChildScrollView(
-                    key: ValueKey<int>(_tick),
-                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
-                    child: Center(
-                      child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: 880), child: _form(cs)),
+      body: UAdminPageBody(
+        child: _loading || _m == null
+            ? const Center(child: CircularProgressIndicator())
+            : Column(
+                children: <Widget>[
+                  Expanded(
+                    child: SingleChildScrollView(
+                      key: ValueKey<int>(_tick),
+                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+                      child: Center(
+                        child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: 880), child: _form(cs)),
+                      ),
                     ),
                   ),
-                ),
-                _saveBar(cs),
-              ],
-            ),
+                  _saveBar(cs),
+                ],
+              ),
+      ),
     );
   }
 

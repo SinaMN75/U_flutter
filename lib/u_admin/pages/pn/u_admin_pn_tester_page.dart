@@ -168,17 +168,19 @@ class _UAdminPnTesterPageState extends State<UAdminPnTesterPage> {
     final ColorScheme cs = Theme.of(context).colorScheme;
     return UScaffold(
       padding: const EdgeInsets.all(20),
-      body: SingleChildScrollView(
-        child: UColumn(
-          spacing: 20,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            _header(cs),
-            _apiKeyCard(cs),
-            _endpointSelector(cs),
-            _requestCard(cs),
-            if (_statusCode != null || _exception != null) _responseCard(cs),
-          ],
+      body: UAdminPageBody(
+        child: SingleChildScrollView(
+          child: UColumn(
+            spacing: 20,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              _header(cs),
+              _apiKeyCard(cs),
+              _endpointSelector(cs),
+              _requestCard(cs),
+              if (_statusCode != null || _exception != null) _responseCard(cs),
+            ],
+          ),
         ),
       ),
     );

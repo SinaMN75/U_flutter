@@ -18,12 +18,12 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
     c.init(user: widget.user);
     super.initState();
   }
+
   @override
   void dispose() {
     c.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -90,32 +90,24 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
   );
 
   void _showDetailDialog(UMerchantResponse i) => UNavigator.dialog(
-    AlertDialog(
+    UAdminForm.filterDialog(
+      context,
       title: Text(i.title),
-      content: SizedBox(
-        width: context.dialogWidth(),
-        child: SingleChildScrollView(
-          child: UColumn(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              _kv(U.s.businessTitle, i.jsonData.businessTitle ?? "-"),
-              _kv(U.s.ownerName, i.jsonData.ownerName ?? "-"),
-              _kv(U.s.ownerPhoneNumber, i.jsonData.ownerPhoneNumber ?? "-"),
-              _kv(U.s.nationalCode, i.nationalCode),
-              _kv(U.s.phoneNumber, i.phoneNumber),
-              _kv(U.s.landline, i.landline),
-              _kv(U.s.zipCode, i.zipCode),
-              _kv(U.s.cityCode, i.cityCode),
-              _kv(U.s.mcc, i.mcc),
-              _kv(U.s.address, i.jsonData.address ?? "-"),
-              _kv(U.s.merchantId, i.merchantId ?? U.s.unassigned),
-              _kv(U.s.institutionId, i.insId ?? U.s.unassigned),
-              UButton(type: UButtonType.text, title: U.s.ok, onTap: UNavigator.back),
-            ],
-          ),
-        ),
-      ),
+      children: <Widget>[
+        _kv(U.s.businessTitle, i.jsonData.businessTitle ?? "-"),
+        _kv(U.s.ownerName, i.jsonData.ownerName ?? "-"),
+        _kv(U.s.ownerPhoneNumber, i.jsonData.ownerPhoneNumber ?? "-"),
+        _kv(U.s.nationalCode, i.nationalCode),
+        _kv(U.s.phoneNumber, i.phoneNumber),
+        _kv(U.s.landline, i.landline),
+        _kv(U.s.zipCode, i.zipCode),
+        _kv(U.s.cityCode, i.cityCode),
+        _kv(U.s.mcc, i.mcc),
+        _kv(U.s.address, i.jsonData.address ?? "-"),
+        _kv(U.s.merchantId, i.merchantId ?? U.s.unassigned),
+        _kv(U.s.institutionId, i.insId ?? U.s.unassigned),
+        UButton(type: UButtonType.text, title: U.s.ok, onTap: UNavigator.back),
+      ],
     ),
   );
 
@@ -129,99 +121,92 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
   );
 
   void _showFilterDialog() => UNavigator.dialog(
-    AlertDialog(
+    UAdminForm.filterDialog(
+      context,
       title: Text(U.s.filterItem(U.s.merchant)),
-      content: SizedBox(
-        width: context.dialogWidth(),
-        child: SingleChildScrollView(
-          child: UColumn(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              UTextFieldAutoCompleteAsync<UUserResponse>(
-                labelBuilder: (UUserResponse i) => "${i.firstName} ${i.lastName} ${i.nationalCode}",
-                onChanged: c.user.call,
-                selectedItem: c.user.value,
-                fetchData: c.readUsers,
-                hintText: U.s.user,
-              ).pSymmetric(vertical: 6),
-              UObx(
-                () => UTextFieldAutoComplete<UBusinessCategory?>(
-                  items: UBusinessCategories.categories,
-                  labelBuilder: (UBusinessCategory? i) => i?.localizedName() ?? i?.code ?? "",
-                  onChanged: c.businessCategory.call,
-                  selectedItem: c.businessCategory.value,
-                  hintText: U.s.businessTitle,
-                ),
-              ).pSymmetric(vertical: 6),
-              URow(
-                margin: const EdgeInsets.symmetric(vertical: 6),
-                children: <Widget>[
-                  UObx(
-                    () => UTextFieldAutoComplete<UProvince?>(
-                      title: U.s.province,
-                      items: UCountries.iranProvinces,
-                      labelBuilder: (UProvince? i) => i?.nameFa ?? "",
-                      selectedItem: c.selectedProvince.value,
-                      onChanged: (UProvince? i) {
-                        c.selectedProvince(i);
-                        c.selectedCity(i!.cities.first);
-                      },
-                    ),
-                  ).expanded(),
-                  const SizedBox(width: 8),
-                  UObx(
-                    () => UTextFieldAutoComplete<UCity?>(
-                      title: U.s.city,
-                      items: c.selectedProvince.value?.cities ?? <UCity>[],
-                      labelBuilder: (UCity? i) => i?.nameFa ?? "",
-                      selectedItem: c.selectedCity.value,
-                      onChanged: c.selectedCity.call,
-                    ),
-                  ).expanded(),
-                ],
-              ),
-              UTextFieldDatePicker(
-                jalali: true,
-                controller: c.fromCreatedController,
-                labelText: U.s.fromDate,
-                onChange: (DateTime d, UJalali j) {
-                  c.fromCreatedController.text = j.formatCompactDate();
-                  c.fromCreatedAt = d;
-                },
-              ).pSymmetric(vertical: 6),
-              UTextFieldDatePicker(
-                jalali: true,
-                controller: c.toCreatedController,
-                labelText: U.s.toDate,
-                onChange: (DateTime d, UJalali j) {
-                  c.toCreatedController.text = j.formatCompactDate();
-                  c.toCreatedAt = d;
-                },
-              ).pSymmetric(vertical: 6),
-              UTextField(controller: c.titleFilter, labelText: U.s.title, margin: const EdgeInsets.symmetric(vertical: 6)),
-              UTextField(controller: c.nationalCodeFilter, labelText: U.s.nationalCode, margin: const EdgeInsets.symmetric(vertical: 6)),
-              UTextFieldPhoneNumber(controller: c.phoneNumberFilter, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
-              UTextFieldPhoneNumber(controller: c.landlineFilter, labelText: U.s.landline, margin: const EdgeInsets.symmetric(vertical: 6)),
-              UTextField(controller: c.zipCodeFilter, labelText: U.s.zipCode, margin: const EdgeInsets.symmetric(vertical: 6)),
-              UTextField(controller: c.merchantIdFilter, labelText: U.s.merchantId, margin: const EdgeInsets.symmetric(vertical: 6)),
-              UTextField(controller: c.bankAccountIdFilter, labelText: U.s.bankAccountId, margin: const EdgeInsets.symmetric(vertical: 6)),
-              const SizedBox(height: 20),
-              UButtonSubmitCancel(
-                submitTitle: U.s.filter,
-                cancelTitle: U.s.clearFilters,
-                onSubmit: () {
-                  c.applyFilters();
-                  UNavigator.back();
-                },
-                onCancel: () {
-                  c.clearFilters();
-                  UNavigator.back();
-                },
-              ),
-            ],
+      children: <Widget>[
+        UTextFieldAutoCompleteAsync<UUserResponse>(
+          labelBuilder: (UUserResponse i) => "${i.firstName} ${i.lastName} ${i.nationalCode}",
+          onChanged: c.user.call,
+          selectedItem: c.user.value,
+          fetchData: c.readUsers,
+          hintText: U.s.user,
+        ).pSymmetric(vertical: 6),
+        UObx(
+          () => UTextFieldAutoComplete<UBusinessCategory?>(
+            items: UBusinessCategories.categories,
+            labelBuilder: (UBusinessCategory? i) => i?.localizedName() ?? i?.code ?? "",
+            onChanged: c.businessCategory.call,
+            selectedItem: c.businessCategory.value,
+            hintText: U.s.businessTitle,
           ),
+        ).pSymmetric(vertical: 6),
+        URow(
+          margin: const EdgeInsets.symmetric(vertical: 6),
+          children: <Widget>[
+            UObx(
+              () => UTextFieldAutoComplete<UProvince?>(
+                title: U.s.province,
+                items: UCountries.iranProvinces,
+                labelBuilder: (UProvince? i) => i?.nameFa ?? "",
+                selectedItem: c.selectedProvince.value,
+                onChanged: (UProvince? i) {
+                  c.selectedProvince(i);
+                  c.selectedCity(i!.cities.first);
+                },
+              ),
+            ).expanded(),
+            const SizedBox(width: 8),
+            UObx(
+              () => UTextFieldAutoComplete<UCity?>(
+                title: U.s.city,
+                items: c.selectedProvince.value?.cities ?? <UCity>[],
+                labelBuilder: (UCity? i) => i?.nameFa ?? "",
+                selectedItem: c.selectedCity.value,
+                onChanged: c.selectedCity.call,
+              ),
+            ).expanded(),
+          ],
         ),
-      ),
+        UTextFieldDatePicker(
+          jalali: true,
+          controller: c.fromCreatedController,
+          labelText: U.s.fromDate,
+          onChange: (DateTime d, UJalali j) {
+            c.fromCreatedController.text = j.formatCompactDate();
+            c.fromCreatedAt = d;
+          },
+        ).pSymmetric(vertical: 6),
+        UTextFieldDatePicker(
+          jalali: true,
+          controller: c.toCreatedController,
+          labelText: U.s.toDate,
+          onChange: (DateTime d, UJalali j) {
+            c.toCreatedController.text = j.formatCompactDate();
+            c.toCreatedAt = d;
+          },
+        ).pSymmetric(vertical: 6),
+        UTextField(controller: c.titleFilter, labelText: U.s.title, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.nationalCodeFilter, labelText: U.s.nationalCode, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextFieldPhoneNumber(controller: c.phoneNumberFilter, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextFieldPhoneNumber(controller: c.landlineFilter, labelText: U.s.landline, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.zipCodeFilter, labelText: U.s.zipCode, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.merchantIdFilter, labelText: U.s.merchantId, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.bankAccountIdFilter, labelText: U.s.bankAccountId, margin: const EdgeInsets.symmetric(vertical: 6)),
+        const SizedBox(height: 20),
+        UButtonSubmitCancel(
+          submitTitle: U.s.filter,
+          cancelTitle: U.s.clearFilters,
+          onSubmit: () {
+            c.applyFilters();
+            UNavigator.back();
+          },
+          onCancel: () {
+            c.clearFilters();
+            UNavigator.back();
+          },
+        ),
+      ],
     ),
   );
 
@@ -240,110 +225,112 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
     final TextEditingController ownerName = f.text();
     final TextEditingController ownerPhoneNumber = f.text();
 
-    UNavigator.dialog(f.scope(
-      AlertDialog(
-        title: Text(U.s.createItem(U.s.merchant)),
-        content: SizedBox(
-          width: context.dialogWidth(),
-          child: SingleChildScrollView(
-            child: Form(
-              key: formKey,
-              child: UColumn(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  UTextField(
-                    controller: title,
-                    labelText: U.s.title,
-                    validator: UValidators.required(message: U.s.required),
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  UTextField(controller: businessTitle, labelText: U.s.businessTitle, margin: const EdgeInsets.symmetric(vertical: 6)),
-                  UTextField(
-                    controller: nationalCode,
-                    labelText: U.s.nationalCode,
-                    validator: UValidators.required(message: U.s.required),
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  UTextFieldPhoneNumber(
-                    controller: phoneNumber,
-                    labelText: U.s.phoneNumber,
-                    required: true,
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  UTextFieldPhoneNumber(
-                    controller: landline,
-                    labelText: U.s.landline,
-                    required: true,
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  UTextField(
-                    controller: zipCode,
-                    labelText: U.s.zipCode,
-                    validator: UValidators.required(message: U.s.required),
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  UTextField(
-                    controller: cityCode,
-                    labelText: U.s.cityCode,
-                    validator: UValidators.required(message: U.s.required),
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  UTextField(
-                    controller: mcc,
-                    labelText: U.s.mcc,
-                    validator: UValidators.required(message: U.s.required),
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  UTextField(
-                    controller: ownerName,
-                    labelText: U.s.ownerName,
-                    validator: UValidators.required(message: U.s.required),
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  UTextFieldPhoneNumber(
-                    controller: ownerPhoneNumber,
-                    labelText: U.s.ownerPhoneNumber,
-                    required: true,
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  UTextField(
-                    controller: address,
-                    labelText: U.s.address,
-                    lines: 2,
-                    validator: UValidators.required(message: U.s.required),
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  const SizedBox(height: 20),
-                  UButtonSubmitCancel(
-                    onSubmit: () => UValidators.validateForm(
-                      key: formKey,
-                      action: () {
-                        UNavigator.back();
-                        c.create(
-                          p: UMerchantCreateParams(
-                            tags: <int>[TagMerchant.normal.number],
-                            title: title.text,
-                            businessTitle: businessTitle.text.nullIfEmpty(),
-                            nationalCode: nationalCode.numString(),
-                            phoneNumber: phoneNumber.trimmedLatin(),
-                            landline: landline.trimmedLatin(),
-                            zipCode: zipCode.numString(),
-                            cityCode: cityCode.numString(),
-                            mcc: mcc.numString(),
-                            ownerName: ownerName.text,
-                            ownerPhoneNumber: ownerPhoneNumber.trimmedLatin(),
-                            address: address.text,
-                          ),
-                        );
-                      },
+    UNavigator.dialog(
+      f.scope(
+        AlertDialog(
+          title: Text(U.s.createItem(U.s.merchant)),
+          content: SizedBox(
+            width: context.dialogWidth(),
+            child: SingleChildScrollView(
+              child: Form(
+                key: formKey,
+                child: UColumn(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    UTextField(
+                      controller: title,
+                      labelText: U.s.title,
+                      validator: UValidators.required(message: U.s.required),
+                      margin: const EdgeInsets.symmetric(vertical: 6),
                     ),
-                  ),
-                ],
+                    UTextField(controller: businessTitle, labelText: U.s.businessTitle, margin: const EdgeInsets.symmetric(vertical: 6)),
+                    UTextField(
+                      controller: nationalCode,
+                      labelText: U.s.nationalCode,
+                      validator: UValidators.required(message: U.s.required),
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
+                    UTextFieldPhoneNumber(
+                      controller: phoneNumber,
+                      labelText: U.s.phoneNumber,
+                      required: true,
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
+                    UTextFieldPhoneNumber(
+                      controller: landline,
+                      labelText: U.s.landline,
+                      required: true,
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
+                    UTextField(
+                      controller: zipCode,
+                      labelText: U.s.zipCode,
+                      validator: UValidators.required(message: U.s.required),
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
+                    UTextField(
+                      controller: cityCode,
+                      labelText: U.s.cityCode,
+                      validator: UValidators.required(message: U.s.required),
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
+                    UTextField(
+                      controller: mcc,
+                      labelText: U.s.mcc,
+                      validator: UValidators.required(message: U.s.required),
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
+                    UTextField(
+                      controller: ownerName,
+                      labelText: U.s.ownerName,
+                      validator: UValidators.required(message: U.s.required),
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
+                    UTextFieldPhoneNumber(
+                      controller: ownerPhoneNumber,
+                      labelText: U.s.ownerPhoneNumber,
+                      required: true,
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
+                    UTextField(
+                      controller: address,
+                      labelText: U.s.address,
+                      lines: 2,
+                      validator: UValidators.required(message: U.s.required),
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
+                    const SizedBox(height: 20),
+                    UButtonSubmitCancel(
+                      onSubmit: () => UValidators.validateForm(
+                        key: formKey,
+                        action: () {
+                          UNavigator.back();
+                          c.create(
+                            p: UMerchantCreateParams(
+                              tags: <int>[TagMerchant.normal.number],
+                              title: title.text,
+                              businessTitle: businessTitle.text.nullIfEmpty(),
+                              nationalCode: nationalCode.numString(),
+                              phoneNumber: phoneNumber.trimmedLatin(),
+                              landline: landline.trimmedLatin(),
+                              zipCode: zipCode.numString(),
+                              cityCode: cityCode.numString(),
+                              mcc: mcc.numString(),
+                              ownerName: ownerName.text,
+                              ownerPhoneNumber: ownerPhoneNumber.trimmedLatin(),
+                              address: address.text,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ),
-      )),
+      ),
     );
   }
 }

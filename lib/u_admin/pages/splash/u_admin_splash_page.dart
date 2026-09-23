@@ -30,12 +30,12 @@ class _UAdminSplashPageState extends State<UAdminSplashPage> {
     );
     super.initState();
   }
+
   @override
   void dispose() {
     c.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) => UScaffold(

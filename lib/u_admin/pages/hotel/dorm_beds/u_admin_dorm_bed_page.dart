@@ -18,12 +18,12 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
     c.init(room: widget.room, dorm: widget.dorm);
     super.initState();
   }
+
   @override
   void dispose() {
     c.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -86,39 +86,35 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
     ),
     fallback: (UAdminActionContext<UDormBedResponse> ctx) => <UAdminAction>[
       UAdminLinks.bedContracts(ctx.item),
-      UAdminLinks.placeDetails(onTap: () => UAdminPlaceDetails.dormBed(ctx.item, onDone: c.read), roles: <TagUser>[TagUser.permissionManageDorms]),
+      UAdminLinks.placeDetails(
+        onTap: () => UAdminPlaceDetails.dormBed(ctx.item, onDone: c.read),
+        roles: <TagUser>[TagUser.permissionManageDorms],
+      ),
       ctx.edit(roles: <TagUser>[TagUser.permissionManageDorms]),
       ctx.delete(roles: <TagUser>[TagUser.permissionDeleteDorms]),
     ],
   );
 
   void _showFilterDialog() => UNavigator.dialog(
-    AlertDialog(
+    UAdminForm.filterDialog(
+      context,
       title: Text(U.s.filterItem(U.s.beds)),
-      content: SizedBox(
-        width: context.dialogWidth(),
-        child: SingleChildScrollView(
-          child: UColumn(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              UTextField(controller: c.titleFilter, labelText: U.s.title, margin: const EdgeInsets.symmetric(vertical: 6)),
-              const SizedBox(height: 20),
-              UButtonSubmitCancel(
-                submitTitle: U.s.filter,
-                cancelTitle: U.s.clearFilters,
-                onSubmit: () {
-                  c.applyFilters();
-                  UNavigator.back();
-                },
-                onCancel: () {
-                  c.clearFilters();
-                  UNavigator.back();
-                },
-              ),
-            ],
-          ),
+      children: <Widget>[
+        UTextField(controller: c.titleFilter, labelText: U.s.title, margin: const EdgeInsets.symmetric(vertical: 6)),
+        const SizedBox(height: 20),
+        UButtonSubmitCancel(
+          submitTitle: U.s.filter,
+          cancelTitle: U.s.clearFilters,
+          onSubmit: () {
+            c.applyFilters();
+            UNavigator.back();
+          },
+          onCancel: () {
+            c.clearFilters();
+            UNavigator.back();
+          },
         ),
-      ),
+      ],
     ),
   );
 
@@ -132,95 +128,97 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
     final List<int> tags = List<int>.from(p?.tags ?? <int>[TagDormBed.single.number]);
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-    UNavigator.dialog(f.scope(
-      AlertDialog(
-        title: Text(p == null ? U.s.createItem(U.s.bed) : U.s.editItem(U.s.bed)),
-        content: SizedBox(
-          width: context.dialogWidth(),
-          child: SingleChildScrollView(
-            child: StatefulBuilder(
-              builder: (BuildContext context, void Function(void Function()) setLocal) => Form(
-                key: formKey,
-                child: UColumn(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    UTextField(
-                      controller: title,
-                      labelText: U.s.title,
-                      validator: UValidators.required(message: ""),
-                      margin: const EdgeInsets.symmetric(vertical: 6),
-                    ),
-                    if (widget.room == null)
-                      UTextFieldAutoCompleteAsync<UDormRoomResponse>(
-                        labelBuilder: (UDormRoomResponse i) => i.dorm == null ? i.title : "${i.dorm!.title} · ${i.title}",
-                        onChanged: room.call,
-                        selectedItem: room.value,
-                        fetchData: c.readRooms,
-                        hintText: U.s.room,
-                      ).pSymmetric(vertical: 6),
-                    UAdminTagChips<TagDormBed>(title: U.s.type, options: TagDormBed.values.group(100), tags: tags, single: true),
-                    UTextField(
-                      controller: deposit,
-                      labelText: U.s.deposit,
-                      keyboardType: TextInputType.number,
-                      validator: UValidators.required(message: ""),
-                      formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-                      margin: const EdgeInsets.symmetric(vertical: 6),
-                    ),
-                    UTextField(
-                      controller: rent,
-                      labelText: U.s.rent,
-                      keyboardType: TextInputType.number,
-                      validator: UValidators.required(message: ""),
-                      formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-                      margin: const EdgeInsets.symmetric(vertical: 6),
-                    ),
-                    UTextField(controller: detail, labelText: U.s.description, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    const SizedBox(height: 20),
-                    UButtonSubmitCancel(
-                      onSubmit: () => UValidators.validateForm(
-                        key: formKey,
-                        action: () {
-                          final String? rid = room.value?.id ?? widget.room?.id;
-                          if (rid == null) {
-                            UToast.error(message: U.s.pleaseSelectAItem(U.s.room));
-                            return;
-                          }
-                          if (p == null) {
-                            c.create(
-                              p: UDormBedCreateParams(
-                                tags: tags,
-                                title: title.text,
-                                deposit: deposit.numDouble(),
-                                monthlyRent: rent.numDouble(),
-                                roomId: rid,
-                                description: detail.text.nullIfEmpty(),
-                              ),
-                            );
-                          } else {
-                            c.update(
-                              p: UDormBedUpdateParams(
-                                id: p.id,
-                                tags: tags,
-                                title: title.text,
-                                deposit: deposit.numDouble(),
-                                monthlyRent: rent.numDouble(),
-                                roomId: rid,
-                                description: detail.text.nullIfEmpty(),
-                              ),
-                            );
-                          }
-                          UNavigator.back();
-                        },
+    UNavigator.dialog(
+      f.scope(
+        AlertDialog(
+          title: Text(p == null ? U.s.createItem(U.s.bed) : U.s.editItem(U.s.bed)),
+          content: SizedBox(
+            width: context.dialogWidth(),
+            child: SingleChildScrollView(
+              child: StatefulBuilder(
+                builder: (BuildContext context, void Function(void Function()) setLocal) => Form(
+                  key: formKey,
+                  child: UColumn(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      UTextField(
+                        controller: title,
+                        labelText: U.s.title,
+                        validator: UValidators.required(message: ""),
+                        margin: const EdgeInsets.symmetric(vertical: 6),
                       ),
-                    ),
-                  ],
+                      if (widget.room == null)
+                        UTextFieldAutoCompleteAsync<UDormRoomResponse>(
+                          labelBuilder: (UDormRoomResponse i) => i.dorm == null ? i.title : "${i.dorm!.title} · ${i.title}",
+                          onChanged: room.call,
+                          selectedItem: room.value,
+                          fetchData: c.readRooms,
+                          hintText: U.s.room,
+                        ).pSymmetric(vertical: 6),
+                      UAdminTagChips<TagDormBed>(title: U.s.type, options: TagDormBed.values.group(100), tags: tags, single: true),
+                      UTextField(
+                        controller: deposit,
+                        labelText: U.s.deposit,
+                        keyboardType: TextInputType.number,
+                        validator: UValidators.required(message: ""),
+                        formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+                        margin: const EdgeInsets.symmetric(vertical: 6),
+                      ),
+                      UTextField(
+                        controller: rent,
+                        labelText: U.s.rent,
+                        keyboardType: TextInputType.number,
+                        validator: UValidators.required(message: ""),
+                        formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+                        margin: const EdgeInsets.symmetric(vertical: 6),
+                      ),
+                      UTextField(controller: detail, labelText: U.s.description, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      const SizedBox(height: 20),
+                      UButtonSubmitCancel(
+                        onSubmit: () => UValidators.validateForm(
+                          key: formKey,
+                          action: () {
+                            final String? rid = room.value?.id ?? widget.room?.id;
+                            if (rid == null) {
+                              UToast.error(message: U.s.pleaseSelectAItem(U.s.room));
+                              return;
+                            }
+                            if (p == null) {
+                              c.create(
+                                p: UDormBedCreateParams(
+                                  tags: tags,
+                                  title: title.text,
+                                  deposit: deposit.numDouble(),
+                                  monthlyRent: rent.numDouble(),
+                                  roomId: rid,
+                                  description: detail.text.nullIfEmpty(),
+                                ),
+                              );
+                            } else {
+                              c.update(
+                                p: UDormBedUpdateParams(
+                                  id: p.id,
+                                  tags: tags,
+                                  title: title.text,
+                                  deposit: deposit.numDouble(),
+                                  monthlyRent: rent.numDouble(),
+                                  roomId: rid,
+                                  description: detail.text.nullIfEmpty(),
+                                ),
+                              );
+                            }
+                            UNavigator.back();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
         ),
-      )),
+      ),
     );
   }
 }

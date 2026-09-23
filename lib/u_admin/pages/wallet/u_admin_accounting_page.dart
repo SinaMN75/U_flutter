@@ -15,12 +15,12 @@ class _AccountingPageState extends State<UAdminAccountingPage> {
     c.init();
     super.initState();
   }
+
   @override
   void dispose() {
     c.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) => UScaffold(
@@ -31,32 +31,34 @@ class _AccountingPageState extends State<UAdminAccountingPage> {
         IconButton(icon: const Icon(Icons.refresh), tooltip: U.s.refresh, onPressed: c.load),
       ],
     ),
-    body: UObx(() {
-      if (c.state.value.isError()) {
-        return Center(
-          child: TextButton(onPressed: c.load, child: Text(U.s.retry)),
+    body: UAdminPageBody(
+      child: UObx(() {
+        if (c.state.value.isError()) {
+          return Center(
+            child: TextButton(onPressed: c.load, child: Text(U.s.retry)),
+          );
+        }
+        if (!c.state.value.isLoaded()) return const Center(child: CircularProgressIndicator());
+        final UAccountingReportResponse? r = c.report.value;
+        if (r == null) return Center(child: Text(U.s.noData));
+        return SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: UColumn(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              _scopeBanner(),
+              const SizedBox(height: 8),
+              _statCards(r),
+              const SizedBox(height: 8),
+              _breakdown(U.s.incomeByType, r.incomeByType, UAdminTheme.green),
+              _breakdown(U.s.spendingByType, r.spendingByType, UAdminTheme.red),
+              _breakdown(U.s.gatewayPaymentsByType, r.gatewayByType, UAdminTheme.blue),
+              _timeline(r),
+            ],
+          ),
         );
-      }
-      if (!c.state.value.isLoaded()) return const Center(child: CircularProgressIndicator());
-      final UAccountingReportResponse? r = c.report.value;
-      if (r == null) return Center(child: Text(U.s.noData));
-      return SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: UColumn(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            _scopeBanner(),
-            const SizedBox(height: 8),
-            _statCards(r),
-            const SizedBox(height: 8),
-            _breakdown(U.s.incomeByType, r.incomeByType, UAdminTheme.green),
-            _breakdown(U.s.spendingByType, r.spendingByType, UAdminTheme.red),
-            _breakdown(U.s.gatewayPaymentsByType, r.gatewayByType, UAdminTheme.blue),
-            _timeline(r),
-          ],
-        ),
-      );
-    }),
+      }),
+    ),
   );
 
   Widget _scopeBanner() => UObx(() {
@@ -163,49 +165,42 @@ class _AccountingPageState extends State<UAdminAccountingPage> {
   }
 
   void _showFilterDialog() => UNavigator.dialog(
-    AlertDialog(
+    UAdminForm.filterDialog(
+      context,
       title: Text(U.s.filterItem(U.s.report)),
-      content: SizedBox(
-        width: context.dialogWidth(),
-        child: SingleChildScrollView(
-          child: UColumn(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              UTextFieldDatePicker(
-                jalali: true,
-                controller: c.fromController,
-                labelText: U.s.fromDate,
-                onChange: (DateTime d, UJalali j) {
-                  c.fromController.text = j.formatCompactDate();
-                  c.fromDate = d;
-                },
-              ).pSymmetric(vertical: 6),
-              UTextFieldDatePicker(
-                jalali: true,
-                controller: c.toController,
-                labelText: U.s.toDate,
-                onChange: (DateTime d, UJalali j) {
-                  c.toController.text = j.formatCompactDate();
-                  c.toDate = d;
-                },
-              ).pSymmetric(vertical: 6),
-              const SizedBox(height: 20),
-              UButtonSubmitCancel(
-                submitTitle: U.s.filter,
-                cancelTitle: U.s.clearFilters,
-                onSubmit: () {
-                  UNavigator.back();
-                  c.load();
-                },
-                onCancel: () {
-                  UNavigator.back();
-                  c.clear();
-                },
-              ),
-            ],
-          ),
+      children: <Widget>[
+        UTextFieldDatePicker(
+          jalali: true,
+          controller: c.fromController,
+          labelText: U.s.fromDate,
+          onChange: (DateTime d, UJalali j) {
+            c.fromController.text = j.formatCompactDate();
+            c.fromDate = d;
+          },
+        ).pSymmetric(vertical: 6),
+        UTextFieldDatePicker(
+          jalali: true,
+          controller: c.toController,
+          labelText: U.s.toDate,
+          onChange: (DateTime d, UJalali j) {
+            c.toController.text = j.formatCompactDate();
+            c.toDate = d;
+          },
+        ).pSymmetric(vertical: 6),
+        const SizedBox(height: 20),
+        UButtonSubmitCancel(
+          submitTitle: U.s.filter,
+          cancelTitle: U.s.clearFilters,
+          onSubmit: () {
+            UNavigator.back();
+            c.load();
+          },
+          onCancel: () {
+            UNavigator.back();
+            c.clear();
+          },
         ),
-      ),
+      ],
     ),
   );
 }

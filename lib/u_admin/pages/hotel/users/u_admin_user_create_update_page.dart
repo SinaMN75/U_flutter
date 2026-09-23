@@ -28,12 +28,12 @@ class _UserCreateUpdateDialogState extends State<UAdminUserCreateUpdateDialog> {
     if (widget.user?.isSubAdmin() ?? false) c.role(TagUser.subAdmin);
     super.initState();
   }
+
   @override
   void dispose() {
     c.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) => AlertDialog(
@@ -71,8 +71,16 @@ class _UserCreateUpdateDialogState extends State<UAdminUserCreateUpdateDialog> {
                 ),
               UAdminForm.pair(
                 context,
-                UTextField(controller: c.controllerFirstName, labelText: U.s.firstName, validator: UValidators.required(message: U.s.required)),
-                UTextField(controller: c.controllerLastName, labelText: U.s.lastName, validator: UValidators.required(message: U.s.required)),
+                UTextField(
+                  controller: c.controllerFirstName,
+                  labelText: U.s.firstName,
+                  validator: UValidators.required(message: U.s.required),
+                ),
+                UTextField(
+                  controller: c.controllerLastName,
+                  labelText: U.s.lastName,
+                  validator: UValidators.required(message: U.s.required),
+                ),
               ),
               UTextField(
                 controller: c.controllerUserName,

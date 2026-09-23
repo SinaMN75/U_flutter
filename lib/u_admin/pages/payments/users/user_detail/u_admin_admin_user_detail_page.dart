@@ -30,12 +30,12 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
     c.init(user: widget.user);
     super.initState();
   }
+
   @override
   void dispose() {
     c.dispose();
     super.dispose();
   }
-
 
   List<_Doc> get _docs => <_Doc>[
     _Doc(
@@ -99,36 +99,38 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
         UButton(type: UButtonType.text, title: U.s.downloadData, icon: const Icon(Icons.download_outlined), onTap: _downloadData),
       ],
     ),
-    body: SingleChildScrollView(
-      child: UObx(() {
-        if (c.state.isLoading() || c.state.isInitial()) return const CircularProgressIndicator().alignAtCenter().pOnly(top: 80);
-        if (c.state.isError()) return UAdminAppErrorRetry(onTap: c.read).pOnly(top: 80);
-        return Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 900),
-            child: UColumn(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                const SizedBox(height: 12),
-                _statusCard(),
-                const SizedBox(height: 16),
-                _userInfo(),
-                const SizedBox(height: 16),
-                _documentsSection(),
-                const SizedBox(height: 20),
-                URow(
-                  children: <Widget>[
-                    UButton(title: U.s.approve, icon: const Icon(Icons.check_circle_outline), onTap: _confirmApprove, expanded: 2),
-                    const SizedBox(width: 12),
-                    UButton(title: U.s.reject, icon: const Icon(Icons.cancel_outlined), backgroundColor: Theme.of(context).colorScheme.error, onTap: _showRejectDialog, expanded: 1),
-                  ],
-                ),
-                const SizedBox(height: 24),
-              ],
+    body: UAdminPageBody(
+      child: SingleChildScrollView(
+        child: UObx(() {
+          if (c.state.isLoading() || c.state.isInitial()) return const CircularProgressIndicator().alignAtCenter().pOnly(top: 80);
+          if (c.state.isError()) return UAdminAppErrorRetry(onTap: c.read).pOnly(top: 80);
+          return Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 900),
+              child: UColumn(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const SizedBox(height: 12),
+                  _statusCard(),
+                  const SizedBox(height: 16),
+                  _userInfo(),
+                  const SizedBox(height: 16),
+                  _documentsSection(),
+                  const SizedBox(height: 20),
+                  URow(
+                    children: <Widget>[
+                      UButton(title: U.s.approve, icon: const Icon(Icons.check_circle_outline), onTap: _confirmApprove, expanded: 2),
+                      const SizedBox(width: 12),
+                      UButton(title: U.s.reject, icon: const Icon(Icons.cancel_outlined), backgroundColor: Theme.of(context).colorScheme.error, onTap: _showRejectDialog, expanded: 1),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                ],
+              ),
             ),
-          ),
-        );
-      }),
+          );
+        }),
+      ),
     ),
   );
 
@@ -377,52 +379,54 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
     final TextEditingController videoReason = f.text(c.user.jsonData.visualAuthenticationRejectionReason);
     final TextEditingController signatureReason = f.text(c.user.jsonData.eSignatureRejectionReason);
 
-    UNavigator.dialog(f.scope(
-      AlertDialog(
-        title: Text(U.s.rejectDocuments),
-        content: SizedBox(
-          width: context.dialogWidth(),
-          child: SingleChildScrollView(
-            child: UColumn(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                UTextField(labelText: U.s.reasonForRejectingItem(U.s.nationalCardFront), controller: frontReason, margin: const EdgeInsets.symmetric(vertical: 6)),
-                UTextField(labelText: U.s.reasonForRejectingItem(U.s.nationalCardBack), controller: backReason, margin: const EdgeInsets.symmetric(vertical: 6)),
-                UTextField(labelText: U.s.reasonForRejectingItem(U.s.birthCertificate), controller: birthReason, margin: const EdgeInsets.symmetric(vertical: 6)),
-                UTextField(labelText: U.s.reasonForRejectingItem(U.s.video), controller: videoReason, margin: const EdgeInsets.symmetric(vertical: 6)),
-                UTextField(labelText: U.s.reasonForRejectingItem(U.s.signature), controller: signatureReason, margin: const EdgeInsets.symmetric(vertical: 6)),
-              ],
+    UNavigator.dialog(
+      f.scope(
+        AlertDialog(
+          title: Text(U.s.rejectDocuments),
+          content: SizedBox(
+            width: context.dialogWidth(),
+            child: SingleChildScrollView(
+              child: UColumn(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  UTextField(labelText: U.s.reasonForRejectingItem(U.s.nationalCardFront), controller: frontReason, margin: const EdgeInsets.symmetric(vertical: 6)),
+                  UTextField(labelText: U.s.reasonForRejectingItem(U.s.nationalCardBack), controller: backReason, margin: const EdgeInsets.symmetric(vertical: 6)),
+                  UTextField(labelText: U.s.reasonForRejectingItem(U.s.birthCertificate), controller: birthReason, margin: const EdgeInsets.symmetric(vertical: 6)),
+                  UTextField(labelText: U.s.reasonForRejectingItem(U.s.video), controller: videoReason, margin: const EdgeInsets.symmetric(vertical: 6)),
+                  UTextField(labelText: U.s.reasonForRejectingItem(U.s.signature), controller: signatureReason, margin: const EdgeInsets.symmetric(vertical: 6)),
+                ],
+              ),
             ),
           ),
+          actions: <Widget>[
+            UButton(type: UButtonType.text, title: U.s.cancel, onTap: UNavigator.back),
+            UButton(
+              title: U.s.reject,
+              backgroundColor: Theme.of(context).colorScheme.error,
+              onTap: () {
+                final List<int> removeTags = <int>[];
+                if (frontReason.text.isNotNullOrEmpty()) removeTags.add(TagUser.nationalCardFrontAwaitingVerification.number);
+                if (backReason.text.isNotNullOrEmpty()) removeTags.add(TagUser.nationalCardBackAwaitingVerification.number);
+                if (birthReason.text.isNotNullOrEmpty()) removeTags.add(TagUser.birthCertificateFirstAwaitingVerification.number);
+                if (videoReason.text.isNotNullOrEmpty()) removeTags.add(TagUser.visualAuthenticationAwaitingVerification.number);
+                if (signatureReason.text.isNotNullOrEmpty()) removeTags.add(TagUser.eSignatureAwaitingVerification.number);
+                UNavigator.back();
+                c.reject(
+                  p: UUserUpdateParams(
+                    id: c.user.id,
+                    nationalCardFrontRejectionReason: frontReason.valueOrNull(),
+                    nationalCardBackRejectionReason: backReason.valueOrNull(),
+                    birthCertificateFirstRejectionReason: birthReason.valueOrNull(),
+                    visualAuthenticationRejectionReason: videoReason.valueOrNull(),
+                    eSignatureRejectionReason: signatureReason.valueOrNull(),
+                    removeTags: removeTags,
+                  ),
+                );
+              },
+            ),
+          ],
         ),
-        actions: <Widget>[
-          UButton(type: UButtonType.text, title: U.s.cancel, onTap: UNavigator.back),
-          UButton(
-            title: U.s.reject,
-            backgroundColor: Theme.of(context).colorScheme.error,
-            onTap: () {
-              final List<int> removeTags = <int>[];
-              if (frontReason.text.isNotNullOrEmpty()) removeTags.add(TagUser.nationalCardFrontAwaitingVerification.number);
-              if (backReason.text.isNotNullOrEmpty()) removeTags.add(TagUser.nationalCardBackAwaitingVerification.number);
-              if (birthReason.text.isNotNullOrEmpty()) removeTags.add(TagUser.birthCertificateFirstAwaitingVerification.number);
-              if (videoReason.text.isNotNullOrEmpty()) removeTags.add(TagUser.visualAuthenticationAwaitingVerification.number);
-              if (signatureReason.text.isNotNullOrEmpty()) removeTags.add(TagUser.eSignatureAwaitingVerification.number);
-              UNavigator.back();
-              c.reject(
-                p: UUserUpdateParams(
-                  id: c.user.id,
-                  nationalCardFrontRejectionReason: frontReason.valueOrNull(),
-                  nationalCardBackRejectionReason: backReason.valueOrNull(),
-                  birthCertificateFirstRejectionReason: birthReason.valueOrNull(),
-                  visualAuthenticationRejectionReason: videoReason.valueOrNull(),
-                  eSignatureRejectionReason: signatureReason.valueOrNull(),
-                  removeTags: removeTags,
-                ),
-              );
-            },
-          ),
-        ],
-      )),
+      ),
     );
   }
 }

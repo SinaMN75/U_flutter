@@ -35,13 +35,23 @@ class UAdminPlaceVisibilityController extends UBaseController {
 
     await UServices.hotel.readHotels(
       p: UHotelReadParams(pageSize: 200, selectorArgs: const UHotelSelectorArgs(media: UMediaSelectorArgs())),
-      onOk: (UResponse<List<UHotelResponse>> r) => rows.addAll((r.result ?? <UHotelResponse>[]).map((UHotelResponse h) => UAdminPlaceRow(id: h.id, isHotel: true, title: h.title, cityCode: h.cityCode, tags: h.tags, coverUrl: (h.media ?? <UMediaResponse>[]).sortedForGallery().firstOrNull?.url))),
+      onOk: (UResponse<List<UHotelResponse>> r) => rows.addAll(
+        (r.result ?? <UHotelResponse>[]).map(
+          (UHotelResponse h) =>
+              UAdminPlaceRow(id: h.id, isHotel: true, title: h.title, cityCode: h.cityCode, tags: h.tags, coverUrl: (h.media ?? <UMediaResponse>[]).sortedForGallery().firstOrNull?.url),
+        ),
+      ),
       onError: (UEmptyResponse e) => failed = true,
       onException: (String e) => failed = true,
     );
     await UServices.hotel.readDorms(
       p: UDormReadParams(pageSize: 200, selectorArgs: const UDormSelectorArgs(media: UMediaSelectorArgs())),
-      onOk: (UResponse<List<UDormResponse>> r) => rows.addAll((r.result ?? <UDormResponse>[]).map((UDormResponse d) => UAdminPlaceRow(id: d.id, isHotel: false, title: d.title, cityCode: d.cityCode, tags: d.tags, coverUrl: (d.media ?? <UMediaResponse>[]).sortedForGallery().firstOrNull?.url))),
+      onOk: (UResponse<List<UDormResponse>> r) => rows.addAll(
+        (r.result ?? <UDormResponse>[]).map(
+          (UDormResponse d) =>
+              UAdminPlaceRow(id: d.id, isHotel: false, title: d.title, cityCode: d.cityCode, tags: d.tags, coverUrl: (d.media ?? <UMediaResponse>[]).sortedForGallery().firstOrNull?.url),
+        ),
+      ),
       onError: (UEmptyResponse e) => failed = true,
       onException: (String e) => failed = true,
     );

@@ -15,12 +15,12 @@ class _BlogPageState extends State<UAdminBlogPage> {
     c.init();
     super.initState();
   }
+
   @override
   void dispose() {
     c.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -166,110 +166,112 @@ class _BlogPageState extends State<UAdminBlogPage> {
     final List<UCategoryResponse> selectedCategories = <UCategoryResponse>[...(p?.categories ?? <UCategoryResponse>[])];
     final List<UCategoryResponse> allCategories = await c.fetchCategories();
 
-    await UNavigator.dialog(f.scope(
-      StatefulBuilder(
-        builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
-          title: Text(p == null ? U.s.createItem(U.s.blog) : U.s.editItem(U.s.blog)),
-          content: SizedBox(
-            width: context.dialogWidth(max: 480),
-            child: SingleChildScrollView(
-              child: Form(
-                key: formKey,
-                child: UColumn(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    UTextField(
-                      controller: title,
-                      labelText: U.s.title,
-                      validator: UValidators.required(message: ""),
-                      margin: const EdgeInsets.symmetric(vertical: 6),
-                    ),
-                    UTextField(controller: subtitle, labelText: U.s.subtitle, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextField(controller: slug, labelText: U.s.slug, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    Align(
-                      alignment: AlignmentDirectional.centerStart,
-                      child: UTextBodyMedium(U.s.content, color: Theme.of(context).colorScheme.onSurfaceVariant),
-                    ).pOnly(top: 6, bottom: 4),
-                    UContainer(
-                      onTap: () async {
-                        final String? html = await URichTextEditor.open(initialHtml: content.text);
-                        if (html != null) setDialogState(() => content.text = html);
-                      },
-                      width: double.infinity,
-                      constraints: const BoxConstraints(minHeight: 72, maxHeight: 220),
-                      padding: const EdgeInsets.all(12),
-                      border: Border.all(color: Theme.of(context).dividerColor),
-                      radius: 8,
-                      margin: const EdgeInsets.symmetric(vertical: 6),
-                      child: content.text.trim().isEmpty
-                          ? URow(children: <Widget>[const Icon(Icons.edit_note), const SizedBox(width: 8), Text(U.s.richTextEditor)])
-                          : SingleChildScrollView(child: UHtmlView(html: content.text)),
-                    ),
-                    const SizedBox(height: 12),
-                    if (allCategories.isNotEmpty)
-                      Wrap(
-                        spacing: 6,
-                        runSpacing: 6,
-                        children: allCategories
-                            .map(
-                              (UCategoryResponse cat) => FilterChip(
-                                label: Text(cat.title),
-                                selected: selectedCategories.any((UCategoryResponse x) => x.id == cat.id),
-                                onSelected: (bool selected) => setDialogState(() {
-                                  if (selected) {
-                                    selectedCategories.add(cat);
-                                  } else {
-                                    selectedCategories.removeWhere((UCategoryResponse x) => x.id == cat.id);
-                                  }
-                                }),
-                              ),
-                            )
-                            .toList(),
-                      ).pSymmetric(vertical: 6),
-                    const SizedBox(height: 12),
-                    UFilePicker(onFilesChanged: (List<UFileData> i) => files = i),
-                    const SizedBox(height: 20),
-                    UButtonSubmitCancel(
-                      onSubmit: () => UValidators.validateForm(
-                        key: formKey,
-                        action: () {
-                          final List<String> categoryIds = selectedCategories.map((UCategoryResponse cat) => cat.id).toList();
-                          if (p == null) {
-                            c.create(
-                              p: UBlogCreateParams(
-                                tags: <int>[TagBlog.draft.number],
-                                title: title.text,
-                                subtitle: subtitle.text.nullIfEmpty(),
-                                slug: slug.text.nullIfEmpty(),
-                                content: content.text.nullIfEmpty(),
-                                categories: categoryIds,
-                              ),
-                              files: files,
-                            );
-                          } else {
-                            c.update(
-                              p: UBlogUpdateParams(
-                                id: p.id,
-                                title: title.text,
-                                subtitle: subtitle.text.nullIfEmpty(),
-                                slug: slug.text.nullIfEmpty(),
-                                content: content.text.nullIfEmpty(),
-                                categories: categoryIds,
-                              ),
-                              files: files,
-                            );
-                          }
-                          UNavigator.back();
-                        },
+    await UNavigator.dialog(
+      f.scope(
+        StatefulBuilder(
+          builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
+            title: Text(p == null ? U.s.createItem(U.s.blog) : U.s.editItem(U.s.blog)),
+            content: SizedBox(
+              width: context.dialogWidth(max: 480),
+              child: SingleChildScrollView(
+                child: Form(
+                  key: formKey,
+                  child: UColumn(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      UTextField(
+                        controller: title,
+                        labelText: U.s.title,
+                        validator: UValidators.required(message: ""),
+                        margin: const EdgeInsets.symmetric(vertical: 6),
                       ),
-                    ),
-                  ],
+                      UTextField(controller: subtitle, labelText: U.s.subtitle, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      UTextField(controller: slug, labelText: U.s.slug, margin: const EdgeInsets.symmetric(vertical: 6)),
+                      Align(
+                        alignment: AlignmentDirectional.centerStart,
+                        child: UTextBodyMedium(U.s.content, color: Theme.of(context).colorScheme.onSurfaceVariant),
+                      ).pOnly(top: 6, bottom: 4),
+                      UContainer(
+                        onTap: () async {
+                          final String? html = await URichTextEditor.open(initialHtml: content.text);
+                          if (html != null) setDialogState(() => content.text = html);
+                        },
+                        width: double.infinity,
+                        constraints: const BoxConstraints(minHeight: 72, maxHeight: 220),
+                        padding: const EdgeInsets.all(12),
+                        border: Border.all(color: Theme.of(context).dividerColor),
+                        radius: 8,
+                        margin: const EdgeInsets.symmetric(vertical: 6),
+                        child: content.text.trim().isEmpty
+                            ? URow(children: <Widget>[const Icon(Icons.edit_note), const SizedBox(width: 8), Text(U.s.richTextEditor)])
+                            : SingleChildScrollView(child: UHtmlView(html: content.text)),
+                      ),
+                      const SizedBox(height: 12),
+                      if (allCategories.isNotEmpty)
+                        Wrap(
+                          spacing: 6,
+                          runSpacing: 6,
+                          children: allCategories
+                              .map(
+                                (UCategoryResponse cat) => FilterChip(
+                                  label: Text(cat.title),
+                                  selected: selectedCategories.any((UCategoryResponse x) => x.id == cat.id),
+                                  onSelected: (bool selected) => setDialogState(() {
+                                    if (selected) {
+                                      selectedCategories.add(cat);
+                                    } else {
+                                      selectedCategories.removeWhere((UCategoryResponse x) => x.id == cat.id);
+                                    }
+                                  }),
+                                ),
+                              )
+                              .toList(),
+                        ).pSymmetric(vertical: 6),
+                      const SizedBox(height: 12),
+                      UFilePicker(onFilesChanged: (List<UFileData> i) => files = i),
+                      const SizedBox(height: 20),
+                      UButtonSubmitCancel(
+                        onSubmit: () => UValidators.validateForm(
+                          key: formKey,
+                          action: () {
+                            final List<String> categoryIds = selectedCategories.map((UCategoryResponse cat) => cat.id).toList();
+                            if (p == null) {
+                              c.create(
+                                p: UBlogCreateParams(
+                                  tags: <int>[TagBlog.draft.number],
+                                  title: title.text,
+                                  subtitle: subtitle.text.nullIfEmpty(),
+                                  slug: slug.text.nullIfEmpty(),
+                                  content: content.text.nullIfEmpty(),
+                                  categories: categoryIds,
+                                ),
+                                files: files,
+                              );
+                            } else {
+                              c.update(
+                                p: UBlogUpdateParams(
+                                  id: p.id,
+                                  title: title.text,
+                                  subtitle: subtitle.text.nullIfEmpty(),
+                                  slug: slug.text.nullIfEmpty(),
+                                  content: content.text.nullIfEmpty(),
+                                  categories: categoryIds,
+                                ),
+                                files: files,
+                              );
+                            }
+                            UNavigator.back();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
         ),
-      )),
+      ),
     );
   }
 }

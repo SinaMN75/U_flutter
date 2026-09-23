@@ -18,12 +18,12 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
     c.init(user: widget.user);
     super.initState();
   }
+
   @override
   void dispose() {
     c.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
@@ -121,56 +121,50 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
   void _showRejectDialog(UMoadiResponse i) {
     final UAdminFields f = UAdminFields();
     final TextEditingController reason = f.text();
-    UNavigator.dialog(f.scope(
-      AlertDialog(
-        title: Text(U.s.reject),
-        content: SizedBox(
-          width: context.dialogWidth(),
-          child: UTextField(controller: reason, labelText: U.s.rejectionReason, lines: 3),
-        ),
-        actions: <Widget>[
-          UButtonSubmitCancel(
-            onSubmit: () {
-              UNavigator.back();
-              c.reject(i, reason.text.nullIfEmpty());
-            },
-            onCancel: UNavigator.back,
+    UNavigator.dialog(
+      f.scope(
+        AlertDialog(
+          title: Text(U.s.reject),
+          content: SizedBox(
+            width: context.dialogWidth(),
+            child: UTextField(controller: reason, labelText: U.s.rejectionReason, lines: 3),
           ),
-        ],
-      )),
+          actions: <Widget>[
+            UButtonSubmitCancel(
+              onSubmit: () {
+                UNavigator.back();
+                c.reject(i, reason.text.nullIfEmpty());
+              },
+              onCancel: UNavigator.back,
+            ),
+          ],
+        ),
+      ),
     ).whenComplete(reason.dispose);
   }
 
   void _showDetailDialog(UMoadiResponse i) => UNavigator.dialog(
-    AlertDialog(
+    UAdminForm.filterDialog(
+      context,
       title: Text(i.name),
-      content: SizedBox(
-        width: context.dialogWidth(),
-        child: SingleChildScrollView(
-          child: UColumn(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              _kv(U.s.pendingApproval, _statusLabel(i.tags)),
-              _kv(U.s.economicCode, i.economicCode),
-              _kv(U.s.legalEntityType, i.legalEntity),
-              _kv(U.s.uniqueTaxCode, i.uniqueTaxCode),
-              _kv(U.s.nationalCode, i.nationalCode ?? "-"),
-              _kv(U.s.postalCode, i.postalCode ?? "-"),
-              _kv(U.s.registrationDate, i.registerDate?.toJalaliDate() ?? "-"),
-              _kv(U.s.registrationNumber, i.registrationNumber ?? "-"),
-              _kv(U.s.address, i.address ?? "-"),
-              _kv(U.s.introductionCode, i.introductionCode ?? "-"),
-              _kv(U.s.ownerName, i.ownerName),
-              _kv(U.s.ownerMobile, i.ownerMobile),
-              _kv(U.s.ownerNationalCode, i.ownerNationalCode),
-              _kv("UUID", i.jsonData.uuid ?? "-"),
-              _kv(U.s.rejectionReason, i.jsonData.rejectReason ?? "-"),
-              UButton(type: UButtonType.text, title: U.s.ok, onTap: UNavigator.back),
-            ],
-          ),
-        ),
-      ),
+      children: <Widget>[
+        _kv(U.s.pendingApproval, _statusLabel(i.tags)),
+        _kv(U.s.economicCode, i.economicCode),
+        _kv(U.s.legalEntityType, i.legalEntity),
+        _kv(U.s.uniqueTaxCode, i.uniqueTaxCode),
+        _kv(U.s.nationalCode, i.nationalCode ?? "-"),
+        _kv(U.s.postalCode, i.postalCode ?? "-"),
+        _kv(U.s.registrationDate, i.registerDate?.toJalaliDate() ?? "-"),
+        _kv(U.s.registrationNumber, i.registrationNumber ?? "-"),
+        _kv(U.s.address, i.address ?? "-"),
+        _kv(U.s.introductionCode, i.introductionCode ?? "-"),
+        _kv(U.s.ownerName, i.ownerName),
+        _kv(U.s.ownerMobile, i.ownerMobile),
+        _kv(U.s.ownerNationalCode, i.ownerNationalCode),
+        _kv("UUID", i.jsonData.uuid ?? "-"),
+        _kv(U.s.rejectionReason, i.jsonData.rejectReason ?? "-"),
+        UButton(type: UButtonType.text, title: U.s.ok, onTap: UNavigator.back),
+      ],
     ),
   );
 
@@ -184,69 +178,62 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
   );
 
   void _showFilterDialog() => UNavigator.dialog(
-    AlertDialog(
+    UAdminForm.filterDialog(
+      context,
       title: Text(U.s.taxpayerRequests),
-      content: SizedBox(
-        width: context.dialogWidth(),
-        child: SingleChildScrollView(
-          child: UColumn(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              UTextFieldAutoCompleteAsync<UUserResponse>(
-                labelBuilder: (UUserResponse i) => "${i.firstName} ${i.lastName} ${i.nationalCode}",
-                onChanged: c.user.call,
-                selectedItem: c.user.value,
-                fetchData: c.readUsers,
-                hintText: U.s.user,
-              ).pSymmetric(vertical: 6),
-              UObx(
-                () => UTextFieldAutoComplete<TagMoadi?>(
-                  title: U.s.pendingApproval,
-                  items: TagMoadi.values,
-                  labelBuilder: (TagMoadi? i) => i == null ? "" : _tagLabel(i),
-                  selectedItem: c.status.value,
-                  onChanged: c.status.call,
-                ),
-              ).pSymmetric(vertical: 6),
-              UTextField(controller: c.nameFilter, labelText: U.s.taxpayerName, margin: const EdgeInsets.symmetric(vertical: 6)),
-              UTextField(controller: c.economicCodeFilter, labelText: U.s.economicCode, margin: const EdgeInsets.symmetric(vertical: 6)),
-              UTextField(controller: c.nationalCodeFilter, labelText: U.s.nationalCode, margin: const EdgeInsets.symmetric(vertical: 6)),
-              UTextField(controller: c.uniqueTaxCodeFilter, labelText: U.s.uniqueTaxCode, margin: const EdgeInsets.symmetric(vertical: 6)),
-              UTextFieldDatePicker(
-                jalali: true,
-                controller: c.fromCreatedController,
-                labelText: U.s.fromDate,
-                onChange: (DateTime d, UJalali j) {
-                  c.fromCreatedController.text = j.formatCompactDate();
-                  c.fromCreatedAt = d;
-                },
-              ).pSymmetric(vertical: 6),
-              UTextFieldDatePicker(
-                jalali: true,
-                controller: c.toCreatedController,
-                labelText: U.s.toDate,
-                onChange: (DateTime d, UJalali j) {
-                  c.toCreatedController.text = j.formatCompactDate();
-                  c.toCreatedAt = d;
-                },
-              ).pSymmetric(vertical: 6),
-              const SizedBox(height: 20),
-              UButtonSubmitCancel(
-                submitTitle: U.s.filter,
-                cancelTitle: U.s.clearFilters,
-                onSubmit: () {
-                  c.applyFilters();
-                  UNavigator.back();
-                },
-                onCancel: () {
-                  c.clearFilters();
-                  UNavigator.back();
-                },
-              ),
-            ],
+      children: <Widget>[
+        UTextFieldAutoCompleteAsync<UUserResponse>(
+          labelBuilder: (UUserResponse i) => "${i.firstName} ${i.lastName} ${i.nationalCode}",
+          onChanged: c.user.call,
+          selectedItem: c.user.value,
+          fetchData: c.readUsers,
+          hintText: U.s.user,
+        ).pSymmetric(vertical: 6),
+        UObx(
+          () => UTextFieldAutoComplete<TagMoadi?>(
+            title: U.s.pendingApproval,
+            items: TagMoadi.values,
+            labelBuilder: (TagMoadi? i) => i == null ? "" : _tagLabel(i),
+            selectedItem: c.status.value,
+            onChanged: c.status.call,
           ),
+        ).pSymmetric(vertical: 6),
+        UTextField(controller: c.nameFilter, labelText: U.s.taxpayerName, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.economicCodeFilter, labelText: U.s.economicCode, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.nationalCodeFilter, labelText: U.s.nationalCode, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.uniqueTaxCodeFilter, labelText: U.s.uniqueTaxCode, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextFieldDatePicker(
+          jalali: true,
+          controller: c.fromCreatedController,
+          labelText: U.s.fromDate,
+          onChange: (DateTime d, UJalali j) {
+            c.fromCreatedController.text = j.formatCompactDate();
+            c.fromCreatedAt = d;
+          },
+        ).pSymmetric(vertical: 6),
+        UTextFieldDatePicker(
+          jalali: true,
+          controller: c.toCreatedController,
+          labelText: U.s.toDate,
+          onChange: (DateTime d, UJalali j) {
+            c.toCreatedController.text = j.formatCompactDate();
+            c.toCreatedAt = d;
+          },
+        ).pSymmetric(vertical: 6),
+        const SizedBox(height: 20),
+        UButtonSubmitCancel(
+          submitTitle: U.s.filter,
+          cancelTitle: U.s.clearFilters,
+          onSubmit: () {
+            c.applyFilters();
+            UNavigator.back();
+          },
+          onCancel: () {
+            c.clearFilters();
+            UNavigator.back();
+          },
         ),
-      ),
+      ],
     ),
   );
 }

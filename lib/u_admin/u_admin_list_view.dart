@@ -172,16 +172,16 @@ abstract class UAdminTable {
   }
 
   static Widget _fieldRow(UAdminField f) => URow(
-      spacing: 12,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        UTextBodySmall(f.label, color: navigatorKey.currentContext!.colorScheme.onSurfaceVariant),
-        Flexible(
-          child: f.valueWidget ?? UTextBodyMedium(f.value ?? "-", textAlign: TextAlign.end, maxLines: 3, overflow: TextOverflow.ellipsis, fontWeight: FontWeight.w500),
-        ),
-      ],
-    );
+    spacing: 12,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: <Widget>[
+      UTextBodySmall(f.label, color: navigatorKey.currentContext!.colorScheme.onSurfaceVariant),
+      Flexible(
+        child: f.valueWidget ?? UTextBodyMedium(f.value ?? "-", textAlign: TextAlign.end, maxLines: 3, overflow: TextOverflow.ellipsis, fontWeight: FontWeight.w500),
+      ),
+    ],
+  );
 
   // The mobile card row (UContainer + dense ListTile) used by every list page.
   static Widget mobileTile(BuildContext context, {required int index, required IconData icon, required String title, required List<Widget> subtitle, Widget? trailing, VoidCallback? onTap}) =>

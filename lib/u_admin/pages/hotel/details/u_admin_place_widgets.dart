@@ -15,7 +15,10 @@ class UAdminSection extends StatelessWidget {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(title, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary)),
+        Text(
+          title,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),
+        ),
         const Divider(height: 16),
         ...children,
       ],
@@ -55,9 +58,7 @@ class _UAdminTagChipsState<T extends UNumericIdentifiable> extends State<UAdminT
         Wrap(
           spacing: 6,
           runSpacing: 6,
-          children: widget.options
-              .map((T o) => FilterChip(label: Text(o.localizedTitle), selected: widget.tags.contains(o.number), onSelected: (bool on) => _toggle(o, on)))
-              .toList(),
+          children: widget.options.map((T o) => FilterChip(label: Text(o.localizedTitle), selected: widget.tags.contains(o.number), onSelected: (bool on) => _toggle(o, on))).toList(),
         ),
       ],
     ),
@@ -117,7 +118,11 @@ class _UAdminStringListState extends State<UAdminStringList> {
         TextField(
           controller: _input,
           onSubmitted: (_) => _add(),
-          decoration: InputDecoration(labelText: widget.addLabel ?? U.s.add, isDense: true, suffixIcon: IconButton(icon: const Icon(Icons.add_circle_outline), onPressed: _add)),
+          decoration: InputDecoration(
+            labelText: widget.addLabel ?? U.s.add,
+            isDense: true,
+            suffixIcon: IconButton(icon: const Icon(Icons.add_circle_outline), onPressed: _add),
+          ),
         ),
       ],
     ),
@@ -166,7 +171,13 @@ class _UAdminNearbyEditorState extends State<UAdminNearbyEditor> {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    Expanded(child: TextField(controller: r.title, onChanged: (_) => _emit(), decoration: InputDecoration(labelText: U.s.title, isDense: true))),
+                    Expanded(
+                      child: TextField(
+                        controller: r.title,
+                        onChanged: (_) => _emit(),
+                        decoration: InputDecoration(labelText: U.s.title, isDense: true),
+                      ),
+                    ),
                     IconButton(
                       icon: const Icon(Icons.delete_outline, color: Colors.red),
                       onPressed: () {
@@ -179,9 +190,23 @@ class _UAdminNearbyEditorState extends State<UAdminNearbyEditor> {
                 const SizedBox(height: 6),
                 Row(
                   children: <Widget>[
-                    Expanded(child: TextField(controller: r.meters, keyboardType: TextInputType.number, onChanged: (_) => _emit(), decoration: InputDecoration(labelText: U.s.distanceMeters, isDense: true))),
+                    Expanded(
+                      child: TextField(
+                        controller: r.meters,
+                        keyboardType: TextInputType.number,
+                        onChanged: (_) => _emit(),
+                        decoration: InputDecoration(labelText: U.s.distanceMeters, isDense: true),
+                      ),
+                    ),
                     const SizedBox(width: 8),
-                    Expanded(child: TextField(controller: r.minutes, keyboardType: TextInputType.number, onChanged: (_) => _emit(), decoration: InputDecoration(labelText: U.s.walkMinutes, isDense: true))),
+                    Expanded(
+                      child: TextField(
+                        controller: r.minutes,
+                        keyboardType: TextInputType.number,
+                        onChanged: (_) => _emit(),
+                        decoration: InputDecoration(labelText: U.s.walkMinutes, isDense: true),
+                      ),
+                    ),
                   ],
                 ),
               ],
@@ -199,9 +224,7 @@ class _UAdminNearbyEditorState extends State<UAdminNearbyEditor> {
 }
 
 class _FaqRow {
-  _FaqRow(UPlaceFaq f)
-    : question = TextEditingController(text: f.question),
-      answer = TextEditingController(text: f.answer);
+  _FaqRow(UPlaceFaq f) : question = TextEditingController(text: f.question), answer = TextEditingController(text: f.answer);
 
   final TextEditingController question;
   final TextEditingController answer;
@@ -238,7 +261,13 @@ class _UAdminFaqEditorState extends State<UAdminFaqEditor> {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    Expanded(child: TextField(controller: r.question, onChanged: (_) => _emit(), decoration: InputDecoration(labelText: U.s.question, isDense: true))),
+                    Expanded(
+                      child: TextField(
+                        controller: r.question,
+                        onChanged: (_) => _emit(),
+                        decoration: InputDecoration(labelText: U.s.question, isDense: true),
+                      ),
+                    ),
                     IconButton(
                       icon: const Icon(Icons.delete_outline, color: Colors.red),
                       onPressed: () {
@@ -249,7 +278,13 @@ class _UAdminFaqEditorState extends State<UAdminFaqEditor> {
                   ],
                 ),
                 const SizedBox(height: 6),
-                TextField(controller: r.answer, minLines: 2, maxLines: 4, onChanged: (_) => _emit(), decoration: InputDecoration(labelText: U.s.answer, isDense: true)),
+                TextField(
+                  controller: r.answer,
+                  minLines: 2,
+                  maxLines: 4,
+                  onChanged: (_) => _emit(),
+                  decoration: InputDecoration(labelText: U.s.answer, isDense: true),
+                ),
               ],
             ),
           ),
@@ -333,7 +368,10 @@ class _UAdminMediaManagerState extends State<UAdminMediaManager> {
       children: <Widget>[
         Stack(
           children: <Widget>[
-            ClipRRect(borderRadius: BorderRadius.circular(10), child: SizedBox(width: 130, height: 90, child: image)),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: SizedBox(width: 130, height: 90, child: image),
+            ),
             if (isCover)
               Positioned(
                 top: 4,
@@ -359,8 +397,18 @@ class _UAdminMediaManagerState extends State<UAdminMediaManager> {
         if (caption.isNotEmpty) Text(caption, style: Theme.of(context).textTheme.bodySmall, overflow: TextOverflow.ellipsis),
         Row(
           children: <Widget>[
-            IconButton(visualDensity: VisualDensity.compact, tooltip: U.s.setAsCover, icon: Icon(isCover ? Icons.star_rounded : Icons.star_border_rounded, color: Colors.amber.shade700), onPressed: onCover),
-            IconButton(visualDensity: VisualDensity.compact, tooltip: U.s.delete, icon: const Icon(Icons.delete_outline, color: Colors.red), onPressed: onDelete),
+            IconButton(
+              visualDensity: VisualDensity.compact,
+              tooltip: U.s.setAsCover,
+              icon: Icon(isCover ? Icons.star_rounded : Icons.star_border_rounded, color: Colors.amber.shade700),
+              onPressed: onCover,
+            ),
+            IconButton(
+              visualDensity: VisualDensity.compact,
+              tooltip: U.s.delete,
+              icon: const Icon(Icons.delete_outline, color: Colors.red),
+              onPressed: onDelete,
+            ),
           ],
         ),
       ],
@@ -457,7 +505,12 @@ abstract class UAdminMediaSync {
     if (draft.isEmpty) return;
 
     for (final String id in draft.deletedIds) {
-      await UServices.media.delete(p: UIdParams(id: id), onOk: (_) {}, onError: (_) {}, onException: (_) {});
+      await UServices.media.delete(
+        p: UIdParams(id: id),
+        onOk: (_) {},
+        onError: (_) {},
+        onException: (_) {},
+      );
     }
 
     final List<String?> uploadedIds = <String?>[];
@@ -486,10 +539,20 @@ abstract class UAdminMediaSync {
     final String? newCoverId = draft.coverExistingId ?? (draft.coverNewIndex == null ? null : uploadedIds[draft.coverNewIndex!]);
     if (newCoverId == null) return;
     for (final UMediaResponse m in existing.where((UMediaResponse m) => m.tags.contains(TagMedia.cover.number) && m.id != newCoverId && !draft.deletedIds.contains(m.id))) {
-      await UServices.media.update(p: UMediaUpdateParams(id: m.id, removeTags: <int>[TagMedia.cover.number]), onOk: (_) {}, onError: (_) {}, onException: (_) {});
+      await UServices.media.update(
+        p: UMediaUpdateParams(id: m.id, removeTags: <int>[TagMedia.cover.number]),
+        onOk: (_) {},
+        onError: (_) {},
+        onException: (_) {},
+      );
     }
     if (draft.coverExistingId != null) {
-      await UServices.media.update(p: UMediaUpdateParams(id: newCoverId, addTags: <int>[TagMedia.cover.number]), onOk: (_) {}, onError: (_) {}, onException: (_) {});
+      await UServices.media.update(
+        p: UMediaUpdateParams(id: newCoverId, addTags: <int>[TagMedia.cover.number]),
+        onOk: (_) {},
+        onError: (_) {},
+        onException: (_) {},
+      );
     }
   }
 }

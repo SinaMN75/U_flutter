@@ -17,12 +17,12 @@ class _UserPageState extends State<UAdminUserPage> {
     c.init(args: widget.args);
     super.initState();
   }
+
   @override
   void dispose() {
     c.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
