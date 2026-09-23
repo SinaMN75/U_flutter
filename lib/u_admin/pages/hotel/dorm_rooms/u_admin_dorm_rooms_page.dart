@@ -122,6 +122,7 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
     final TextEditingController capacity = f.text(p?.capacity.toString());
     final TextEditingController floor = f.text(p?.jsonData.floor?.toString());
     final URxn<UDormResponse> dorm = URxn<UDormResponse>();
+    final List<int> tags = List<int>.from(p?.tags ?? <int>[TagDormRoom.dorm.number]);
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     UNavigator.dialog(f.scope(
@@ -149,6 +150,7 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
                       fetchData: c.readDorms,
                       hintText: U.s.dorm,
                     ).pSymmetric(vertical: 6),
+                  UAdminTagChips<TagDormRoom>(title: U.s.type, options: TagDormRoom.values.group(100), tags: tags, single: true),
                   UTextField(controller: detail, labelText: U.s.description, margin: const EdgeInsets.symmetric(vertical: 6)),
                   URow(
                     children: <Widget>[
@@ -170,7 +172,7 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
                         if (p == null) {
                           c.create(
                             p: UDormRoomCreateParams(
-                              tags: <int>[TagDormRoom.dorm.number],
+                              tags: tags,
                               title: title.text,
                               dormId: did,
                               description: detail.text.nullIfEmpty(),
@@ -182,6 +184,7 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
                           c.update(
                             p: UDormRoomUpdateParams(
                               id: p.id,
+                              tags: tags,
                               title: title.text,
                               dormId: did,
                               description: detail.text.nullIfEmpty(),

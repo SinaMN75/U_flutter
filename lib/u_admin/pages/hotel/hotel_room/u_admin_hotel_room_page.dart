@@ -140,7 +140,8 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
     final TextEditingController bedType = f.text(p?.jsonData.bedType);
     final TextEditingController size = f.text(p?.jsonData.sizeSquareMeters == null ? null : p!.jsonData.sizeSquareMeters!.toInt().toString());
     final TextEditingController floor = f.text(p?.jsonData.floor?.toString());
-    final TextEditingController amenities = f.text(p?.jsonData.amenities.join(", "));
+    // The room type is a tag; the other tags of the room (view, amenities...) are kept as they are.
+    final List<int> tags = List<int>.from(p?.tags ?? <int>[TagRoom.double_.number]);
     final TextEditingController extraGuestCapacity = f.text(p?.jsonData.extraGuestCapacity?.toString());
     final TextEditingController extraGuestPrice = f.text(p?.jsonData.extraGuestPrice?.toInt().toString());
     bool isAvailable = p?.isAvailable ?? true;
@@ -173,6 +174,7 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
                         fetchData: c.readHotels,
                         hintText: U.s.hotel,
                       ).pSymmetric(vertical: 6),
+                    UAdminTagChips<TagRoom>(title: U.s.type, options: TagRoom.values.group(100), tags: tags, single: true),
                     UTextField(
                       controller: capacity,
                       labelText: U.s.capacity,
@@ -194,7 +196,6 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
                     UTextField(controller: bedType, labelText: U.s.bedType, margin: const EdgeInsets.symmetric(vertical: 6)),
                     UTextField(controller: size, labelText: U.s.size, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
                     UTextField(controller: floor, labelText: U.s.floor, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextField(controller: amenities, labelText: U.s.amenities, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
                     URow(
                       children: <Widget>[
                         UTextField(expanded: 1, controller: extraGuestCapacity, labelText: U.s.extraGuestCapacity, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
@@ -223,7 +224,7 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
                           if (p == null) {
                             c.create(
                               p: UHotelRoomCreateParams(
-                                tags: <int>[TagRoom.single.number],
+                                tags: tags,
                                 title: title.text,
                                 capacity: capacity.numInt(),
                                 pricePerNight: price.numDouble(),
@@ -235,7 +236,6 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
                                 bedType: bedType.text.nullIfEmpty(),
                                 sizeSquareMeters: size.text.isEmpty ? null : size.numDouble(),
                                 floor: floor.text.isEmpty ? null : floor.text.toInt(),
-                                amenities: amenities.text.trim().isEmpty ? null : amenities.text.split(",").map((String e) => e.trim()).where((String e) => e.isNotEmpty).toList(),
                                 extraGuestCapacity: extraGuestCapacity.text.isEmpty ? null : extraGuestCapacity.numInt(),
                                 extraGuestPrice: extraGuestPrice.text.isEmpty ? null : extraGuestPrice.numDouble(),
                               ),
@@ -244,6 +244,7 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
                             c.update(
                               p: UHotelRoomUpdateParams(
                                 id: p.id,
+                                tags: tags,
                                 title: title.text,
                                 capacity: capacity.numInt(),
                                 pricePerNight: price.numDouble(),
@@ -255,7 +256,6 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
                                 bedType: bedType.text.nullIfEmpty(),
                                 sizeSquareMeters: size.text.isEmpty ? null : size.numDouble(),
                                 floor: floor.text.isEmpty ? null : floor.text.toInt(),
-                                amenities: amenities.text.trim().isEmpty ? null : amenities.text.split(",").map((String e) => e.trim()).where((String e) => e.isNotEmpty).toList(),
                                 extraGuestCapacity: extraGuestCapacity.text.isEmpty ? null : extraGuestCapacity.numInt(),
                                 extraGuestPrice: extraGuestPrice.text.isEmpty ? null : extraGuestPrice.numDouble(),
                               ),

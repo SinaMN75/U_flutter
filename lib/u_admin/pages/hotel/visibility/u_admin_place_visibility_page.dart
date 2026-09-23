@@ -1,6 +1,6 @@
 import "package:u/utilities.dart";
 
-/// All hotels and dorms in one table: switch "featured", "verified (visited in person)" and "visible" quickly.
+/// All hotels and dorms in one table: switch "featured" and "active" (visible to the public) quickly.
 class UAdminPlaceVisibilityPage extends StatefulWidget {
   const UAdminPlaceVisibilityPage({super.key});
 
@@ -32,7 +32,7 @@ class _PlaceVisibilityPageState extends State<UAdminPlaceVisibilityPage> {
       totalCount: () => c.list.length,
       onRetry: c.read,
       emptyText: U.s.noItemsFound(U.s.hotels),
-      desktopHeader: () => UAdminTable.header(<String>[U.s.title, U.s.type, U.s.city, U.s.featured, U.s.verifiedOnSite, U.s.active]),
+      desktopHeader: () => UAdminTable.header(<String>[U.s.title, U.s.type, U.s.city, U.s.featured, U.s.active]),
       desktopRow: _itemDesktop,
       mobileRow: _itemResponsive,
     ),
@@ -54,7 +54,6 @@ class _PlaceVisibilityPageState extends State<UAdminPlaceVisibilityPage> {
       UAdminTable.cell(i.isHotel ? U.s.hotel : U.s.dorm),
       UAdminTable.cell(_city(i)),
       _switch(i.featured, (bool v) => c.setTag(i, i.featuredTag, on: v)).expanded(),
-      _switch(i.verified, (bool v) => c.setTag(i, i.verifiedTag, on: v)).expanded(),
       _switch(i.visible, (bool v) => c.setVisible(i, visible: v)).expanded(),
     ],
   );
@@ -73,7 +72,6 @@ class _PlaceVisibilityPageState extends State<UAdminPlaceVisibilityPage> {
         spacing: 8,
         children: <Widget>[
           FilterChip(label: Text(U.s.featured), selected: i.featured, onSelected: (bool v) => c.setTag(i, i.featuredTag, on: v)),
-          FilterChip(label: Text(U.s.verifiedOnSite), selected: i.verified, onSelected: (bool v) => c.setTag(i, i.verifiedTag, on: v)),
           FilterChip(label: Text(U.s.active), selected: i.visible, onSelected: (bool v) => c.setVisible(i, visible: v)),
         ],
       ),

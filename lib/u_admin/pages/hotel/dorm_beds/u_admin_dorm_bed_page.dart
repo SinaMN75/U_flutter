@@ -127,8 +127,9 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
     final TextEditingController title = f.text(p?.title);
     final TextEditingController deposit = f.text(p?.deposit.toInt().toString());
     final TextEditingController rent = f.text(p?.monthlyRent.toInt().toString());
-    final TextEditingController detail = f.text(p?.jsonData.detail1);
+    final TextEditingController detail = f.text(p?.jsonData.description ?? p?.jsonData.detail1);
     final URxn<UDormRoomResponse> room = URxn<UDormRoomResponse>();
+    final List<int> tags = List<int>.from(p?.tags ?? <int>[TagDormBed.single.number]);
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     UNavigator.dialog(f.scope(
@@ -157,6 +158,7 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
                         fetchData: c.readRooms,
                         hintText: U.s.room,
                       ).pSymmetric(vertical: 6),
+                    UAdminTagChips<TagDormBed>(title: U.s.type, options: TagDormBed.values.group(100), tags: tags, single: true),
                     UTextField(
                       controller: deposit,
                       labelText: U.s.deposit,
@@ -187,23 +189,24 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
                           if (p == null) {
                             c.create(
                               p: UDormBedCreateParams(
-                                tags: <int>[TagDormBed.single.number],
+                                tags: tags,
                                 title: title.text,
                                 deposit: deposit.numDouble(),
                                 monthlyRent: rent.numDouble(),
                                 roomId: rid,
-                                detail1: detail.text.nullIfEmpty(),
+                                description: detail.text.nullIfEmpty(),
                               ),
                             );
                           } else {
                             c.update(
                               p: UDormBedUpdateParams(
                                 id: p.id,
+                                tags: tags,
                                 title: title.text,
                                 deposit: deposit.numDouble(),
                                 monthlyRent: rent.numDouble(),
                                 roomId: rid,
-                                detail1: detail.text.nullIfEmpty(),
+                                description: detail.text.nullIfEmpty(),
                               ),
                             );
                           }

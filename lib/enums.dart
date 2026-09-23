@@ -47,6 +47,9 @@ extension NumericEnumExtension<T extends Enum> on Iterable<T> {
 
   List<T> fromNumbers(Iterable<int> numbers) => numbers.map(fromNumber).whereType<T>().toList();
 
+  /// The values of one hundred-group, e.g. `TagHotel.values.group(500)` = the hotel amenities (501, 502...).
+  List<T> group(int hundred) => where((dynamic e) => (e as dynamic).number ~/ 100 == hundred ~/ 100).toList();
+
   List<String> titlesFromNumbers(
       Iterable<int> numbers, {
         bool localized = true,
@@ -980,13 +983,61 @@ enum TagBed with UNumericIdentifiable {
 }
 
 enum TagHotel with UNumericIdentifiable {
+  // Type
   hotel("هتل", "Hotel", 101),
+  boutique("بوتیک‌هتل", "Boutique hotel", 102),
+  resort("ریزورت", "Resort", 103),
+  guesthouse("مهمان‌پذیر", "Guest house", 104),
+  apartment("هتل‌آپارتمان", "Apartment hotel", 105),
+  traditional("اقامتگاه سنتی", "Traditional stay", 106),
+  hostel("هاستل", "Hostel", 107),
+  villa("ویلا", "Villa", 108),
+
+  // Status (the public only sees active hotels)
   featured("ویژه", "Featured", 201),
   active("فعال", "Active", 202),
   inactive("غیرفعال", "Inactive", 203),
 
-  /// Visited in person by the team (shown as a trust badge).
-  verified("تأیید شده (بازدید حضوری)", "Verified", 204);
+  // Policies
+  petsAllowed("پذیرش حیوان خانگی", "Pets allowed", 301),
+  smokingAllowed("مجاز به استعمال دخانیات", "Smoking allowed", 302),
+  childrenAllowed("پذیرش کودک", "Children welcome", 303),
+  extraBedAvailable("امکان تخت اضافه", "Extra bed available", 304),
+  priceIncludesTax("قیمت شامل مالیات", "Price includes tax", 305),
+
+  // Approval
+  pendingApproval("در انتظار تأیید", "Pending approval", 401),
+  approved("تأیید شده", "Approved", 402),
+  rejected("رد شده", "Rejected", 403),
+
+  // Amenities
+  wifi("وای‌فای رایگان", "Free Wi-Fi", 501),
+  parking("پارکینگ", "Parking", 502),
+  elevator("آسانسور", "Elevator", 503),
+  reception24("پذیرش ۲۴ ساعته", "24-hour reception", 504),
+  restaurant("رستوران", "Restaurant", 505),
+  cafe("کافه", "Café", 506),
+  roomService("روم‌سرویس", "Room service", 507),
+  laundry("خشکشویی", "Laundry", 508),
+  luggageStorage("انبار چمدان", "Luggage storage", 509),
+  airportShuttle("ترانسفر فرودگاهی", "Airport transfer", 510),
+  pool("استخر", "Swimming pool", 511),
+  gym("باشگاه ورزشی", "Gym", 512),
+  sauna("سونا و جکوزی", "Sauna & jacuzzi", 513),
+  spa("اسپا و ماساژ", "Spa & massage", 514),
+  garden("باغ و حیاط", "Garden & courtyard", 515),
+  meetingRoom("سالن جلسات", "Meeting room", 516),
+  prayerRoom("نمازخانه", "Prayer room", 517),
+  playground("فضای بازی کودکان", "Kids' play area", 518),
+  wheelchair("مناسب افراد دارای معلولیت", "Wheelchair accessible", 519),
+  cctv("دوربین مداربسته", "CCTV", 520),
+
+  // Meal plans
+  roomOnly("فقط اتاق", "Room only", 601),
+  breakfast("با صبحانه", "Breakfast included", 602),
+  halfBoard("نیم‌پانسیون", "Half board", 603),
+  fullBoard("پانسیون کامل", "Full board", 604),
+  allInclusive("همه‌چیز شامل", "All inclusive", 605);
 
   const TagHotel(this.titleFa, this.titleEn, this.number);
 
@@ -1052,15 +1103,55 @@ enum TagBlog with UNumericIdentifiable {
 }
 
 enum TagDorm with UNumericIdentifiable {
+  // Residents
   girls("دختران", "Girls", 101),
   boys("پسران", "Boys", 102),
-  featured("ویژه", "Featured", 201),
 
-  /// Inactive dorms are hidden from the public.
+  // Status (the public only sees active dorms)
+  featured("ویژه", "Featured", 201),
+  active("فعال", "Active", 202),
   inactive("غیرفعال", "Inactive", 203),
 
-  /// Visited in person by the team (shown as a trust badge).
-  verified("تأیید شده (بازدید حضوری)", "Verified", 204);
+  // Accepted residents
+  bachelor("دانشجوی کارشناسی", "Bachelor's students", 301),
+  master("دانشجوی ارشد", "Master's students", 302),
+  phd("دانشجوی دکتری", "PhD students", 303),
+  staff("کارمند و هیئت علمی", "Staff & faculty", 304),
+
+  // Approval
+  pendingApproval("در انتظار تأیید", "Pending approval", 401),
+  approved("تأیید شده", "Approved", 402),
+  rejected("رد شده", "Rejected", 403),
+
+  // Amenities
+  wifi("وای‌فای", "Wi-Fi", 501),
+  parking("پارکینگ", "Parking", 502),
+  elevator("آسانسور", "Elevator", 503),
+  sharedKitchen("آشپزخانه مشترک", "Shared kitchen", 504),
+  selfService("سلف‌سرویس", "Self-service dining", 505),
+  laundry("لباسشویی", "Laundry", 506),
+  studyRoom("اتاق مطالعه", "Study room", 507),
+  library("کتابخانه", "Library", 508),
+  prayerRoom("نمازخانه", "Prayer room", 509),
+  gym("باشگاه ورزشی", "Gym", 510),
+  lounge("سالن نشیمن مشترک", "Common room", 511),
+  garden("حیاط و فضای سبز", "Garden & courtyard", 512),
+  lockers("کمد شخصی", "Personal lockers", 513),
+  cctv("دوربین مداربسته", "CCTV", 514),
+  securityGuard("نگهبان ۲۴ ساعته", "24h security", 515),
+  supervisor("سرپرست مقیم", "Resident supervisor", 516),
+  shuttle("سرویس رفت‌وآمد", "Shuttle service", 517),
+  bikeParking("پارکینگ دوچرخه و موتور", "Bike parking", 518),
+
+  // Meals
+  breakfast("صبحانه", "Breakfast", 601),
+  lunch("ناهار", "Lunch", 602),
+  dinner("شام", "Dinner", 603),
+
+  // Included in the rent
+  internetIncluded("اینترنت", "Internet", 701),
+  utilitiesIncluded("آب، برق و گاز", "Water, power & gas", 702),
+  cleaningIncluded("نظافت", "Cleaning", 703);
 
   const TagDorm(this.titleFa, this.titleEn, this.number);
 
@@ -1073,6 +1164,7 @@ enum TagDorm with UNumericIdentifiable {
 }
 
 enum TagRoom with UNumericIdentifiable {
+  // Type
   single("یک تخته", "Single", 101),
   double_("دو تخته", "Double", 102),
   triple("سه تخته", "Triple", 103),
@@ -1080,8 +1172,38 @@ enum TagRoom with UNumericIdentifiable {
   suite("سوئیت", "Suite", 105),
   family("خانوادگی", "Family", 106),
   deluxe("دلوکس", "Deluxe", 107),
+
+  // Status
   available("در دسترس", "Available", 201),
-  outOfService("خارج از سرویس", "Out Of Service", 202);
+  outOfService("خارج از سرویس", "Out Of Service", 202),
+
+  // Policies
+  nonRefundable("غیرقابل استرداد", "Non-refundable", 301),
+  breakfastIncluded("با صبحانه", "Breakfast included", 302),
+
+  // View
+  cityView("منظره شهر", "City view", 401),
+  gardenView("منظره باغ", "Garden view", 402),
+  courtyardView("رو به حیاط", "Courtyard view", 403),
+  seaView("منظره دریا", "Sea view", 404),
+  mountainView("منظره کوه", "Mountain view", 405),
+  poolView("رو به استخر", "Pool view", 406),
+
+  // Amenities
+  privateBathroom("سرویس بهداشتی اختصاصی", "Private bathroom", 501),
+  bathtub("وان", "Bathtub", 502),
+  airConditioning("تهویه مطبوع", "Air conditioning", 503),
+  heating("گرمایش", "Heating", 504),
+  tv("تلویزیون", "TV", 505),
+  minibar("مینی‌بار", "Minibar", 506),
+  fridge("یخچال", "Refrigerator", 507),
+  kettle("کتری برقی و چای‌ساز", "Kettle & tea set", 508),
+  safeBox("صندوق امانات", "In-room safe", 509),
+  desk("میز کار", "Work desk", 510),
+  balcony("بالکن", "Balcony", 511),
+  hairDryer("سشوار", "Hair dryer", 512),
+  kitchenette("آشپزخانه اختصاصی", "Kitchenette", 513),
+  wardrobe("کمد لباس", "Wardrobe", 514);
 
   const TagRoom(this.titleFa, this.titleEn, this.number);
 
@@ -1094,9 +1216,23 @@ enum TagRoom with UNumericIdentifiable {
 }
 
 enum TagDormRoom with UNumericIdentifiable {
+  // Type
   single("تک نفره", "Single", 101),
   double_("دو نفره", "Double", 102),
-  dorm("خوابگاهی", "Dorm", 103);
+  dorm("خوابگاهی", "Dorm", 103),
+
+  // Features
+  furnished("مبله", "Furnished", 301),
+
+  // Amenities
+  privateBathroom("سرویس بهداشتی اختصاصی", "Private bathroom", 501),
+  airConditioning("تهویه مطبوع", "Air conditioning", 502),
+  heating("گرمایش", "Heating", 503),
+  fridge("یخچال", "Refrigerator", 504),
+  tv("تلویزیون", "TV", 505),
+  balcony("بالکن", "Balcony", 506),
+  wardrobe("کمد لباس", "Wardrobe", 507),
+  desk("میز مطالعه", "Desk", 508);
 
   const TagDormRoom(this.titleFa, this.titleEn, this.number);
 
@@ -1109,8 +1245,21 @@ enum TagDormRoom with UNumericIdentifiable {
 }
 
 enum TagDormBed with UNumericIdentifiable {
+  // Type
   single("تک نفره", "Single", 101),
-  double_("دو نفره", "Double", 102);
+  double_("دو نفره", "Double", 102),
+
+  // Bunk level
+  bunkBottom("تخت پایین", "Bottom bunk", 201),
+  bunkTop("تخت بالا", "Top bunk", 202),
+
+  // Amenities
+  desk("میز مطالعه", "Desk", 501),
+  locker("قفسه شخصی", "Locker", 502),
+  readingLamp("چراغ مطالعه", "Reading lamp", 503),
+  privacyCurtain("پرده حریم", "Privacy curtain", 504),
+  powerOutlet("پریز برق", "Power outlet", 505),
+  shelf("طبقه", "Shelf", 506);
 
   const TagDormBed(this.titleFa, this.titleEn, this.number);
 

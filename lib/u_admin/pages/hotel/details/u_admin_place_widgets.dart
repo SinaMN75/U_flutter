@@ -23,116 +23,26 @@ class UAdminSection extends StatelessWidget {
   );
 }
 
-/// Multi-select of catalog codes (amenities, meal plans...). Codes that are not in the catalog are free text typed by the admin.
-class UAdminOptionPicker extends StatefulWidget {
-  const UAdminOptionPicker({
-    required this.title,
-    required this.options,
-    required this.selected,
-    required this.onChanged,
-    this.categories,
-    this.allowCustom = false,
-    super.key,
+/// On/off chips for one group of tags (amenities, meal plans, policies...).
+/// [tags] is the whole tag list of the item and is edited in place; [single] keeps at most one of [options] selected (type, approval...).
+class UAdminTagChips<T extends UNumericIdentifiable> extends StatefulWidget {
+  const UAdminTagChips({required this.title, required this.options, required this.tags, this.single = false, super.key});
+
+  final String title;
+  final List<T> options;
+  final List<int> tags;
+  final bool single;
+
+  @override
+  State<UAdminTagChips<T>> createState() => _UAdminTagChipsState<T>();
+}
+
+class _UAdminTagChipsState<T extends UNumericIdentifiable> extends State<UAdminTagChips<T>> {
+  void _toggle(T option, bool on) => setState(() {
+    if (widget.single) widget.tags.removeWhere((int t) => widget.options.any((T o) => o.number == t));
+    widget.tags.remove(option.number);
+    if (on) widget.tags.add(option.number);
   });
-
-  final String title;
-  final List<UPlaceOption> options;
-  final List<String> selected;
-  final ValueChanged<List<String>> onChanged;
-
-  /// When set, options are grouped by `UPlaceOption.category`.
-  final List<UPlaceCategory>? categories;
-  final bool allowCustom;
-
-  @override
-  State<UAdminOptionPicker> createState() => _UAdminOptionPickerState();
-}
-
-class _UAdminOptionPickerState extends State<UAdminOptionPicker> {
-  late final List<String> _selected = List<String>.from(widget.selected);
-  final TextEditingController _custom = TextEditingController();
-
-  void _toggle(String key) {
-    setState(() => _selected.contains(key) ? _selected.remove(key) : _selected.add(key));
-    widget.onChanged(List<String>.from(_selected));
-  }
-
-  void _addCustom() {
-    final String text = _custom.text.trim();
-    if (text.isEmpty || _selected.contains(text)) return;
-    setState(() => _selected.add(text));
-    _custom.clear();
-    widget.onChanged(List<String>.from(_selected));
-  }
-
-  Widget _chip(UPlaceOption o) => FilterChip(
-    avatar: Icon(o.icon, size: 16),
-    label: Text(o.localizedTitle),
-    selected: _selected.contains(o.key),
-    onSelected: (bool _) => _toggle(o.key),
-  );
-
-  @override
-  Widget build(BuildContext context) {
-    final List<String> customKeys = _selected.where((String k) => UPlaceCatalog.find(widget.options, k) == null).toList();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(widget.title, style: Theme.of(context).textTheme.labelLarge),
-        const SizedBox(height: 6),
-        if (widget.categories == null)
-          Wrap(spacing: 6, runSpacing: 6, children: widget.options.map(_chip).toList())
-        else
-          ...widget.categories!.map((UPlaceCategory c) {
-            final List<UPlaceOption> items = widget.options.where((UPlaceOption o) => o.category == c.key).toList();
-            if (items.isEmpty) return const SizedBox();
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(c.localizedTitle, style: Theme.of(context).textTheme.bodySmall),
-                  const SizedBox(height: 4),
-                  Wrap(spacing: 6, runSpacing: 6, children: items.map(_chip).toList()),
-                ],
-              ),
-            );
-          }),
-        if (customKeys.isNotEmpty)
-          Wrap(
-            spacing: 6,
-            runSpacing: 6,
-            children: customKeys.map((String k) => InputChip(label: Text(k), onDeleted: () => _toggle(k))).toList(),
-          ),
-        if (widget.allowCustom)
-          Padding(
-            padding: const EdgeInsets.only(top: 6),
-            child: TextField(
-              controller: _custom,
-              onSubmitted: (_) => _addCustom(),
-              decoration: InputDecoration(labelText: U.s.addCustomItem, isDense: true, suffixIcon: IconButton(icon: const Icon(Icons.add_circle_outline), onPressed: _addCustom)),
-            ),
-          ),
-      ],
-    );
-  }
-}
-
-/// Choose one catalog code (tap it again to clear).
-class UAdminSingleChoice extends StatefulWidget {
-  const UAdminSingleChoice({required this.title, required this.options, required this.selected, required this.onChanged, super.key});
-
-  final String title;
-  final List<UPlaceOption> options;
-  final String? selected;
-  final ValueChanged<String?> onChanged;
-
-  @override
-  State<UAdminSingleChoice> createState() => _UAdminSingleChoiceState();
-}
-
-class _UAdminSingleChoiceState extends State<UAdminSingleChoice> {
-  late String? _selected = widget.selected;
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -146,60 +56,9 @@ class _UAdminSingleChoiceState extends State<UAdminSingleChoice> {
           spacing: 6,
           runSpacing: 6,
           children: widget.options
-              .map(
-                (UPlaceOption o) => ChoiceChip(
-                  avatar: Icon(o.icon, size: 16),
-                  label: Text(o.localizedTitle),
-                  selected: _selected == o.key,
-                  onSelected: (bool on) {
-                    setState(() => _selected = on ? o.key : null);
-                    widget.onChanged(_selected);
-                  },
-                ),
-              )
+              .map((T o) => FilterChip(label: Text(o.localizedTitle), selected: widget.tags.contains(o.number), onSelected: (bool on) => _toggle(o, on)))
               .toList(),
         ),
-      ],
-    ),
-  );
-}
-
-/// Yes / No / Not specified.
-class UAdminTriState extends StatefulWidget {
-  const UAdminTriState({required this.title, required this.value, required this.onChanged, super.key});
-
-  final String title;
-  final bool? value;
-  final ValueChanged<bool?> onChanged;
-
-  @override
-  State<UAdminTriState> createState() => _UAdminTriStateState();
-}
-
-class _UAdminTriStateState extends State<UAdminTriState> {
-  late bool? _value = widget.value;
-
-  Widget _chip(String label, bool? v) => ChoiceChip(
-    label: Text(label),
-    selected: _value == v,
-    onSelected: (bool _) {
-      setState(() => _value = v);
-      widget.onChanged(v);
-    },
-  );
-
-  @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 4),
-    child: Wrap(
-      spacing: 6,
-      runSpacing: 4,
-      crossAxisAlignment: WrapCrossAlignment.center,
-      children: <Widget>[
-        SizedBox(width: 150, child: Text(widget.title, style: Theme.of(context).textTheme.labelLarge)),
-        _chip(U.s.yes, true),
-        _chip(U.s.no, false),
-        _chip(U.s.notSpecified, null),
       ],
     ),
   );
@@ -267,20 +126,18 @@ class _UAdminStringListState extends State<UAdminStringList> {
 
 class _NearbyRow {
   _NearbyRow(UPlaceNearby n)
-    : type = n.type,
-      title = TextEditingController(text: n.title),
+    : title = TextEditingController(text: n.title),
       meters = TextEditingController(text: n.distanceMeters?.toString() ?? ""),
       minutes = TextEditingController(text: n.minutes?.toString() ?? "");
 
-  String? type;
   final TextEditingController title;
   final TextEditingController meters;
   final TextEditingController minutes;
 
-  UPlaceNearby toValue() => UPlaceNearby(title: title.text.trim(), type: type, distanceMeters: int.tryParse(meters.text.toLatinNumber()), minutes: int.tryParse(minutes.text.toLatinNumber()));
+  UPlaceNearby toValue() => UPlaceNearby(title: title.text.trim(), distanceMeters: int.tryParse(meters.text.toLatinNumber()), minutes: int.tryParse(minutes.text.toLatinNumber()));
 }
 
-/// Nearby places: type + name + distance + travel time.
+/// Nearby places: name + distance + travel time.
 class UAdminNearbyEditor extends StatefulWidget {
   const UAdminNearbyEditor({required this.items, required this.onChanged, super.key});
 
@@ -309,18 +166,7 @@ class _UAdminNearbyEditorState extends State<UAdminNearbyEditor> {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    Expanded(
-                      child: DropdownButtonFormField<String>(
-                        initialValue: UPlaceCatalog.find(UPlaceCatalog.nearbyTypes, r.type ?? "") == null ? null : r.type,
-                        isExpanded: true,
-                        decoration: InputDecoration(labelText: U.s.type, isDense: true),
-                        items: UPlaceCatalog.nearbyTypes.map((UPlaceOption o) => DropdownMenuItem<String>(value: o.key, child: Text(o.localizedTitle))).toList(),
-                        onChanged: (String? v) {
-                          r.type = v;
-                          _emit();
-                        },
-                      ),
-                    ),
+                    Expanded(child: TextField(controller: r.title, onChanged: (_) => _emit(), decoration: InputDecoration(labelText: U.s.title, isDense: true))),
                     IconButton(
                       icon: const Icon(Icons.delete_outline, color: Colors.red),
                       onPressed: () {
@@ -330,8 +176,6 @@ class _UAdminNearbyEditorState extends State<UAdminNearbyEditor> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 6),
-                TextField(controller: r.title, onChanged: (_) => _emit(), decoration: InputDecoration(labelText: U.s.title, isDense: true)),
                 const SizedBox(height: 6),
                 Row(
                   children: <Widget>[

@@ -13,14 +13,14 @@ class UAdminPlaceRow {
 
   int get featuredTag => isHotel ? TagHotel.featured.number : TagDorm.featured.number;
 
-  int get verifiedTag => isHotel ? TagHotel.verified.number : TagDorm.verified.number;
+  int get activeTag => isHotel ? TagHotel.active.number : TagDorm.active.number;
 
-  /// Hotels are shown when they have the "active" tag; dorms are shown unless they have the "inactive" tag.
-  bool get visible => isHotel ? tags.contains(TagHotel.active.number) : !tags.contains(TagDorm.inactive.number);
+  int get inactiveTag => isHotel ? TagHotel.inactive.number : TagDorm.inactive.number;
+
+  /// Hotels and dorms are shown to the public when they have the "active" tag.
+  bool get visible => tags.contains(activeTag);
 
   bool get featured => tags.contains(featuredTag);
-
-  bool get verified => tags.contains(verifiedTag);
 }
 
 class UAdminPlaceVisibilityController extends UBaseController {
@@ -52,9 +52,16 @@ class UAdminPlaceVisibilityController extends UBaseController {
   }
 
   /// Turns one tag of a place on or off, then reloads.
-  Future<void> setTag(UAdminPlaceRow row, int tag, {required bool on}) async {
-    final List<int> add = on ? <int>[tag] : <int>[];
-    final List<int> remove = on ? <int>[] : <int>[tag];
+  Future<void> setTag(UAdminPlaceRow row, int tag, {required bool on}) => _update(row, add: on ? <int>[tag] : <int>[], remove: on ? <int>[] : <int>[tag]);
+
+  /// Show / hide: "active" and "inactive" are switched together, so a place never has both.
+  Future<void> setVisible(UAdminPlaceRow row, {required bool visible}) => _update(
+    row,
+    add: <int>[if (visible) row.activeTag else row.inactiveTag],
+    remove: <int>[if (visible) row.inactiveTag else row.activeTag],
+  );
+
+  Future<void> _update(UAdminPlaceRow row, {required List<int> add, required List<int> remove}) async {
     if (row.isHotel) {
       await UServices.hotel.updateHotel(
         p: UHotelUpdateParams(id: row.id, addTags: add, removeTags: remove),
@@ -71,9 +78,4 @@ class UAdminPlaceVisibilityController extends UBaseController {
       );
     }
   }
-
-  /// Show / hide: hotels use the "active" tag, dorms use the "inactive" tag.
-  Future<void> setVisible(UAdminPlaceRow row, {required bool visible}) => row.isHotel
-      ? setTag(row, TagHotel.active.number, on: visible)
-      : setTag(row, TagDorm.inactive.number, on: !visible);
 }

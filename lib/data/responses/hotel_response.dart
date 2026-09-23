@@ -12,34 +12,22 @@ extension UInvoiceStatusX on UDormBedInvoiceResponse {
 }
 
 class UDormBedJson {
-  final String? level;
-  final String? description;
-  final List<String> amenities;
-  UDormBedJson({
-    this.detail1,
-    this.detail2,
-    this.level,
-    this.description,
-    this.amenities = const <String>[],
-  });
+  UDormBedJson({this.detail1, this.detail2, this.description});
 
   factory UDormBedJson.fromMap(Map<String, dynamic> json) => UDormBedJson(
-    level: json["level"],
-    description: json["description"],
-    amenities: json["amenities"] == null ? <String>[] : List<String>.from((json["amenities"] as List<dynamic>).map((dynamic e) => e.toString())),
     detail1: json["detail1"],
     detail2: json["detail2"],
+    description: json["description"],
   );
 
   final String? detail1;
   final String? detail2;
+  final String? description;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
-    "level": level,
-    "description": description,
-    "amenities": amenities,
     "detail1": detail1,
     "detail2": detail2,
+    "description": description,
   };
 }
 
@@ -684,40 +672,6 @@ class UDormBedInvoiceChartResponse {
 }
 
 class UHotelJson {
-  final String? type;
-  final List<String> highlights;
-  final String? website;
-  final String? whatsapp;
-  final String? instagram;
-  final String? telegram;
-  final int? yearBuilt;
-  final int? yearRenovated;
-  final int? floorCount;
-  final List<String> languages;
-  final List<String> mealPlans;
-  final List<String> paymentMethods;
-  final bool? petsAllowed;
-  final bool? smokingAllowed;
-  final bool? childrenAllowed;
-  final bool? extraBedAvailable;
-  final bool? priceIncludesTax;
-  final String? childrenPolicy;
-  final String? howToGetThere;
-  final List<UPlaceNearby> nearby;
-  final List<UPlaceFaq> faqs;
-  final String? detail1;
-  final String? detail2;
-  final String? description;
-  final String? policies;
-  final String? checkInTime;
-  final String? checkOutTime;
-  final List<String> amenities;
-  final List<String> rules;
-  final double? latitude;
-  final double? longitude;
-  final int cancellationFreeHours;
-  final int cancellationPenaltyNights;
-
   UHotelJson({
     this.detail1,
     this.detail2,
@@ -725,105 +679,83 @@ class UHotelJson {
     this.policies,
     this.checkInTime,
     this.checkOutTime,
-    this.amenities = const <String>[],
-    this.rules = const <String>[],
-    this.latitude,
-    this.longitude,
-    this.cancellationFreeHours = 24,
-    this.cancellationPenaltyNights = 1,
-    this.type,
     this.highlights = const <String>[],
+    this.rules = const <String>[],
+    this.howToGetThere,
+    this.nearby = const <UPlaceNearby>[],
+    this.faqs = const <UPlaceFaq>[],
     this.website,
     this.whatsapp,
     this.instagram,
     this.telegram,
-    this.yearBuilt,
-    this.yearRenovated,
-    this.floorCount,
-    this.languages = const <String>[],
-    this.mealPlans = const <String>[],
-    this.paymentMethods = const <String>[],
-    this.petsAllowed,
-    this.smokingAllowed,
-    this.childrenAllowed,
-    this.extraBedAvailable,
-    this.priceIncludesTax,
-    this.childrenPolicy,
-    this.howToGetThere,
-    this.nearby = const <UPlaceNearby>[],
-    this.faqs = const <UPlaceFaq>[],
+    this.latitude,
+    this.longitude,
+    this.cancellationFreeHours = 24,
+    this.cancellationPenaltyNights = 1,
   });
 
   factory UHotelJson.fromJson(String str) => UHotelJson.fromMap(json.decode(str));
 
-  String toJson() => json.encode(toMap());
-
   factory UHotelJson.fromMap(Map<String, dynamic> json) => UHotelJson(
-    type: json["type"],
-    highlights: json["highlights"] == null ? <String>[] : List<String>.from((json["highlights"] as List<dynamic>).map((dynamic e) => e.toString())),
-    website: json["website"],
-    whatsapp: json["whatsapp"],
-    instagram: json["instagram"],
-    telegram: json["telegram"],
-    yearBuilt: json["yearBuilt"] == null ? null : (json["yearBuilt"] as num).toInt(),
-    yearRenovated: json["yearRenovated"] == null ? null : (json["yearRenovated"] as num).toInt(),
-    floorCount: json["floorCount"] == null ? null : (json["floorCount"] as num).toInt(),
-    languages: json["languages"] == null ? <String>[] : List<String>.from((json["languages"] as List<dynamic>).map((dynamic e) => e.toString())),
-    mealPlans: json["mealPlans"] == null ? <String>[] : List<String>.from((json["mealPlans"] as List<dynamic>).map((dynamic e) => e.toString())),
-    paymentMethods: json["paymentMethods"] == null ? <String>[] : List<String>.from((json["paymentMethods"] as List<dynamic>).map((dynamic e) => e.toString())),
-    petsAllowed: json["petsAllowed"],
-    smokingAllowed: json["smokingAllowed"],
-    childrenAllowed: json["childrenAllowed"],
-    extraBedAvailable: json["extraBedAvailable"],
-    priceIncludesTax: json["priceIncludesTax"],
-    childrenPolicy: json["childrenPolicy"],
-    howToGetThere: json["howToGetThere"],
-    nearby: json["nearby"] == null ? <UPlaceNearby>[] : List<UPlaceNearby>.from((json["nearby"] as List<dynamic>).map((dynamic e) => UPlaceNearby.fromMap(e))),
-    faqs: json["faqs"] == null ? <UPlaceFaq>[] : List<UPlaceFaq>.from((json["faqs"] as List<dynamic>).map((dynamic e) => UPlaceFaq.fromMap(e))),
     detail1: json["detail1"],
     detail2: json["detail2"],
     description: json["description"],
     policies: json["policies"],
     checkInTime: json["checkInTime"],
     checkOutTime: json["checkOutTime"],
-    amenities: json["amenities"] == null ? <String>[] : List<String>.from(json["amenities"]!.map((dynamic x) => x)),
-    rules: json["rules"] == null ? <String>[] : List<String>.from(json["rules"]!.map((dynamic x) => x)),
+    highlights: json["highlights"] == null ? <String>[] : List<String>.from((json["highlights"] as List<dynamic>).map((dynamic e) => e.toString())),
+    rules: json["rules"] == null ? <String>[] : List<String>.from((json["rules"] as List<dynamic>).map((dynamic e) => e.toString())),
+    howToGetThere: json["howToGetThere"],
+    nearby: json["nearby"] == null ? <UPlaceNearby>[] : List<UPlaceNearby>.from((json["nearby"] as List<dynamic>).map((dynamic e) => UPlaceNearby.fromMap(e))),
+    faqs: json["faqs"] == null ? <UPlaceFaq>[] : List<UPlaceFaq>.from((json["faqs"] as List<dynamic>).map((dynamic e) => UPlaceFaq.fromMap(e))),
+    website: json["website"],
+    whatsapp: json["whatsapp"],
+    instagram: json["instagram"],
+    telegram: json["telegram"],
     latitude: json["latitude"] == null ? null : (json["latitude"] as num).toDouble(),
     longitude: json["longitude"] == null ? null : (json["longitude"] as num).toDouble(),
     cancellationFreeHours: json["cancellationFreeHours"] == null ? 24 : (json["cancellationFreeHours"] as num).toInt(),
     cancellationPenaltyNights: json["cancellationPenaltyNights"] == null ? 1 : (json["cancellationPenaltyNights"] as num).toInt(),
   );
 
+  final String? detail1;
+  final String? detail2;
+  final String? description;
+  final String? policies;
+  final String? checkInTime;
+  final String? checkOutTime;
+  final List<String> highlights;
+  final List<String> rules;
+  final String? howToGetThere;
+  final List<UPlaceNearby> nearby;
+  final List<UPlaceFaq> faqs;
+  final String? website;
+  final String? whatsapp;
+  final String? instagram;
+  final String? telegram;
+  final double? latitude;
+  final double? longitude;
+  final int cancellationFreeHours;
+  final int cancellationPenaltyNights;
+
+  String toJson() => json.encode(toMap());
+
   Map<String, dynamic> toMap() => <String, dynamic>{
-    "type": type,
-    "highlights": highlights,
-    "website": website,
-    "whatsapp": whatsapp,
-    "instagram": instagram,
-    "telegram": telegram,
-    "yearBuilt": yearBuilt,
-    "yearRenovated": yearRenovated,
-    "floorCount": floorCount,
-    "languages": languages,
-    "mealPlans": mealPlans,
-    "paymentMethods": paymentMethods,
-    "petsAllowed": petsAllowed,
-    "smokingAllowed": smokingAllowed,
-    "childrenAllowed": childrenAllowed,
-    "extraBedAvailable": extraBedAvailable,
-    "priceIncludesTax": priceIncludesTax,
-    "childrenPolicy": childrenPolicy,
-    "howToGetThere": howToGetThere,
-    "nearby": nearby.map((UPlaceNearby e) => e.toMap()).toList(),
-    "faqs": faqs.map((UPlaceFaq e) => e.toMap()).toList(),
     "detail1": detail1,
     "detail2": detail2,
     "description": description,
     "policies": policies,
     "checkInTime": checkInTime,
     "checkOutTime": checkOutTime,
-    "amenities": List<String>.from(amenities.map((String x) => x)),
-    "rules": List<String>.from(rules.map((String x) => x)),
+    "highlights": highlights,
+    "rules": rules,
+    "howToGetThere": howToGetThere,
+    "nearby": nearby.map((UPlaceNearby e) => e.toMap()).toList(),
+    "faqs": faqs.map((UPlaceFaq e) => e.toMap()).toList(),
+    "website": website,
+    "whatsapp": whatsapp,
+    "instagram": instagram,
+    "telegram": telegram,
     "latitude": latitude,
     "longitude": longitude,
     "cancellationFreeHours": cancellationFreeHours,
@@ -832,21 +764,19 @@ class UHotelJson {
 }
 
 class UPlaceNearby {
-  UPlaceNearby({this.title = "", this.type, this.distanceMeters, this.minutes});
+  UPlaceNearby({this.title = "", this.distanceMeters, this.minutes});
 
   factory UPlaceNearby.fromMap(Map<String, dynamic> json) => UPlaceNearby(
     title: json["title"] ?? "",
-    type: json["type"],
     distanceMeters: json["distanceMeters"] == null ? null : (json["distanceMeters"] as num).toInt(),
     minutes: json["minutes"] == null ? null : (json["minutes"] as num).toInt(),
   );
 
   final String title;
-  final String? type;
   final int? distanceMeters;
   final int? minutes;
 
-  Map<String, dynamic> toMap() => <String, dynamic>{"title": title, "type": type, "distanceMeters": distanceMeters, "minutes": minutes};
+  Map<String, dynamic> toMap() => <String, dynamic>{"title": title, "distanceMeters": distanceMeters, "minutes": minutes};
 }
 
 class UPlaceFaq {
@@ -860,26 +790,7 @@ class UPlaceFaq {
   Map<String, dynamic> toMap() => <String, dynamic>{"question": question, "answer": answer};
 }
 
-
 class UHotelRoomJson {
-  final String? view;
-  final String? bathroomType;
-  final int? maxAdults;
-  final int? maxChildren;
-  final String? mealPlan;
-  final bool? smokingAllowed;
-  final bool? nonRefundable;
-  final List<String> highlights;
-  final String? detail1;
-  final String? detail2;
-  final String? description;
-  final String? bedType;
-  final double? sizeSquareMeters;
-  final int? floor;
-  final List<String> amenities;
-  final int? extraGuestCapacity;
-  final double? extraGuestPrice;
-
   UHotelRoomJson({
     this.detail1,
     this.detail2,
@@ -887,59 +798,41 @@ class UHotelRoomJson {
     this.bedType,
     this.sizeSquareMeters,
     this.floor,
-    this.amenities = const <String>[],
     this.extraGuestCapacity,
     this.extraGuestPrice,
-    this.view,
-    this.bathroomType,
-    this.maxAdults,
-    this.maxChildren,
-    this.mealPlan,
-    this.smokingAllowed,
-    this.nonRefundable,
-    this.highlights = const <String>[],
   });
 
   factory UHotelRoomJson.fromJson(String str) => UHotelRoomJson.fromMap(json.decode(str));
 
-  String toJson() => json.encode(toMap());
-
   factory UHotelRoomJson.fromMap(Map<String, dynamic> json) => UHotelRoomJson(
-    view: json["view"],
-    bathroomType: json["bathroomType"],
-    maxAdults: json["maxAdults"] == null ? null : (json["maxAdults"] as num).toInt(),
-    maxChildren: json["maxChildren"] == null ? null : (json["maxChildren"] as num).toInt(),
-    mealPlan: json["mealPlan"],
-    smokingAllowed: json["smokingAllowed"],
-    nonRefundable: json["nonRefundable"],
-    highlights: json["highlights"] == null ? <String>[] : List<String>.from((json["highlights"] as List<dynamic>).map((dynamic e) => e.toString())),
     detail1: json["detail1"],
     detail2: json["detail2"],
     description: json["description"],
     bedType: json["bedType"],
     sizeSquareMeters: json["sizeSquareMeters"] == null ? null : (json["sizeSquareMeters"] as num).toDouble(),
     floor: json["floor"] == null ? null : (json["floor"] as num).toInt(),
-    amenities: json["amenities"] == null ? <String>[] : List<String>.from(json["amenities"]!.map((dynamic x) => x)),
     extraGuestCapacity: json["extraGuestCapacity"] == null ? null : (json["extraGuestCapacity"] as num).toInt(),
     extraGuestPrice: json["extraGuestPrice"] == null ? null : (json["extraGuestPrice"] as num).toDouble(),
   );
 
+  final String? detail1;
+  final String? detail2;
+  final String? description;
+  final String? bedType;
+  final double? sizeSquareMeters;
+  final int? floor;
+  final int? extraGuestCapacity;
+  final double? extraGuestPrice;
+
+  String toJson() => json.encode(toMap());
+
   Map<String, dynamic> toMap() => <String, dynamic>{
-    "view": view,
-    "bathroomType": bathroomType,
-    "maxAdults": maxAdults,
-    "maxChildren": maxChildren,
-    "mealPlan": mealPlan,
-    "smokingAllowed": smokingAllowed,
-    "nonRefundable": nonRefundable,
-    "highlights": highlights,
     "detail1": detail1,
     "detail2": detail2,
     "description": description,
     "bedType": bedType,
     "sizeSquareMeters": sizeSquareMeters,
     "floor": floor,
-    "amenities": List<String>.from(amenities.map((String x) => x)),
     "extraGuestCapacity": extraGuestCapacity,
     "extraGuestPrice": extraGuestPrice,
   };
@@ -1248,198 +1141,132 @@ class UHotelInvoiceResponse {
 }
 
 class UDormJson {
-  final List<String> highlights;
-  final String? website;
-  final String? whatsapp;
-  final String? instagram;
-  final String? telegram;
-  final int? yearBuilt;
-  final int? floorCount;
-  final String? curfewTime;
-  final List<String> mealServices;
-  final List<String> servicesIncluded;
-  final List<String> residentTypes;
-  final int? minimumStayMonths;
-  final String? paymentSchedule;
-  final String? depositPolicy;
-  final String? earlyTerminationPolicy;
-  final String? visitorsPolicy;
-  final int? wifiSpeedMbps;
-  final int? universityWalkMinutes;
-  final String? howToGetThere;
-  final List<UPlaceNearby> nearby;
-  final List<UPlaceFaq> faqs;
-  final String? detail1;
-  final String? detail2;
-  final String? description;
-  final String? nearbyUniversity;
-  final String? visitingHours;
-  final List<String> amenities;
-  final List<String> rules;
-  final List<String> requiredDocuments;
-  final double? latitude;
-  final double? longitude;
-
   UDormJson({
     this.detail1,
     this.detail2,
     this.description,
-    this.nearbyUniversity,
-    this.visitingHours,
-    this.amenities = const <String>[],
+    this.policies,
+    this.highlights = const <String>[],
     this.rules = const <String>[],
     this.requiredDocuments = const <String>[],
-    this.latitude,
-    this.longitude,
-    this.highlights = const <String>[],
+    this.nearbyUniversity,
+    this.universityWalkMinutes,
+    this.visitingHours,
+    this.curfewTime,
+    this.minimumStayMonths,
+    this.howToGetThere,
+    this.nearby = const <UPlaceNearby>[],
+    this.faqs = const <UPlaceFaq>[],
     this.website,
     this.whatsapp,
     this.instagram,
     this.telegram,
-    this.yearBuilt,
-    this.floorCount,
-    this.curfewTime,
-    this.mealServices = const <String>[],
-    this.servicesIncluded = const <String>[],
-    this.residentTypes = const <String>[],
-    this.minimumStayMonths,
-    this.paymentSchedule,
-    this.depositPolicy,
-    this.earlyTerminationPolicy,
-    this.visitorsPolicy,
-    this.wifiSpeedMbps,
-    this.universityWalkMinutes,
-    this.howToGetThere,
-    this.nearby = const <UPlaceNearby>[],
-    this.faqs = const <UPlaceFaq>[],
+    this.latitude,
+    this.longitude,
   });
 
   factory UDormJson.fromJson(String str) => UDormJson.fromMap(json.decode(str));
 
-  String toJson() => json.encode(toMap());
-
   factory UDormJson.fromMap(Map<String, dynamic> json) => UDormJson(
+    detail1: json["detail1"],
+    detail2: json["detail2"],
+    description: json["description"],
+    policies: json["policies"],
     highlights: json["highlights"] == null ? <String>[] : List<String>.from((json["highlights"] as List<dynamic>).map((dynamic e) => e.toString())),
+    rules: json["rules"] == null ? <String>[] : List<String>.from((json["rules"] as List<dynamic>).map((dynamic e) => e.toString())),
+    requiredDocuments: json["requiredDocuments"] == null ? <String>[] : List<String>.from((json["requiredDocuments"] as List<dynamic>).map((dynamic e) => e.toString())),
+    nearbyUniversity: json["nearbyUniversity"],
+    universityWalkMinutes: json["universityWalkMinutes"] == null ? null : (json["universityWalkMinutes"] as num).toInt(),
+    visitingHours: json["visitingHours"],
+    curfewTime: json["curfewTime"],
+    minimumStayMonths: json["minimumStayMonths"] == null ? null : (json["minimumStayMonths"] as num).toInt(),
+    howToGetThere: json["howToGetThere"],
+    nearby: json["nearby"] == null ? <UPlaceNearby>[] : List<UPlaceNearby>.from((json["nearby"] as List<dynamic>).map((dynamic e) => UPlaceNearby.fromMap(e))),
+    faqs: json["faqs"] == null ? <UPlaceFaq>[] : List<UPlaceFaq>.from((json["faqs"] as List<dynamic>).map((dynamic e) => UPlaceFaq.fromMap(e))),
     website: json["website"],
     whatsapp: json["whatsapp"],
     instagram: json["instagram"],
     telegram: json["telegram"],
-    yearBuilt: json["yearBuilt"] == null ? null : (json["yearBuilt"] as num).toInt(),
-    floorCount: json["floorCount"] == null ? null : (json["floorCount"] as num).toInt(),
-    curfewTime: json["curfewTime"],
-    mealServices: json["mealServices"] == null ? <String>[] : List<String>.from((json["mealServices"] as List<dynamic>).map((dynamic e) => e.toString())),
-    servicesIncluded: json["servicesIncluded"] == null ? <String>[] : List<String>.from((json["servicesIncluded"] as List<dynamic>).map((dynamic e) => e.toString())),
-    residentTypes: json["residentTypes"] == null ? <String>[] : List<String>.from((json["residentTypes"] as List<dynamic>).map((dynamic e) => e.toString())),
-    minimumStayMonths: json["minimumStayMonths"] == null ? null : (json["minimumStayMonths"] as num).toInt(),
-    paymentSchedule: json["paymentSchedule"],
-    depositPolicy: json["depositPolicy"],
-    earlyTerminationPolicy: json["earlyTerminationPolicy"],
-    visitorsPolicy: json["visitorsPolicy"],
-    wifiSpeedMbps: json["wifiSpeedMbps"] == null ? null : (json["wifiSpeedMbps"] as num).toInt(),
-    universityWalkMinutes: json["universityWalkMinutes"] == null ? null : (json["universityWalkMinutes"] as num).toInt(),
-    howToGetThere: json["howToGetThere"],
-    nearby: json["nearby"] == null ? <UPlaceNearby>[] : List<UPlaceNearby>.from((json["nearby"] as List<dynamic>).map((dynamic e) => UPlaceNearby.fromMap(e))),
-    faqs: json["faqs"] == null ? <UPlaceFaq>[] : List<UPlaceFaq>.from((json["faqs"] as List<dynamic>).map((dynamic e) => UPlaceFaq.fromMap(e))),
-    detail1: json["detail1"],
-    detail2: json["detail2"],
-    description: json["description"],
-    nearbyUniversity: json["nearbyUniversity"],
-    visitingHours: json["visitingHours"],
-    amenities: json["amenities"] == null ? <String>[] : List<String>.from(json["amenities"]!.map((dynamic x) => x)),
-    rules: json["rules"] == null ? <String>[] : List<String>.from(json["rules"]!.map((dynamic x) => x)),
-    requiredDocuments: json["requiredDocuments"] == null ? <String>[] : List<String>.from(json["requiredDocuments"]!.map((dynamic x) => x)),
     latitude: json["latitude"] == null ? null : (json["latitude"] as num).toDouble(),
     longitude: json["longitude"] == null ? null : (json["longitude"] as num).toDouble(),
   );
 
+  final String? detail1;
+  final String? detail2;
+  final String? description;
+  final String? policies;
+  final List<String> highlights;
+  final List<String> rules;
+  final List<String> requiredDocuments;
+  final String? nearbyUniversity;
+  final int? universityWalkMinutes;
+  final String? visitingHours;
+  final String? curfewTime;
+  final int? minimumStayMonths;
+  final String? howToGetThere;
+  final List<UPlaceNearby> nearby;
+  final List<UPlaceFaq> faqs;
+  final String? website;
+  final String? whatsapp;
+  final String? instagram;
+  final String? telegram;
+  final double? latitude;
+  final double? longitude;
+
+  String toJson() => json.encode(toMap());
+
   Map<String, dynamic> toMap() => <String, dynamic>{
+    "detail1": detail1,
+    "detail2": detail2,
+    "description": description,
+    "policies": policies,
     "highlights": highlights,
+    "rules": rules,
+    "requiredDocuments": requiredDocuments,
+    "nearbyUniversity": nearbyUniversity,
+    "universityWalkMinutes": universityWalkMinutes,
+    "visitingHours": visitingHours,
+    "curfewTime": curfewTime,
+    "minimumStayMonths": minimumStayMonths,
+    "howToGetThere": howToGetThere,
+    "nearby": nearby.map((UPlaceNearby e) => e.toMap()).toList(),
+    "faqs": faqs.map((UPlaceFaq e) => e.toMap()).toList(),
     "website": website,
     "whatsapp": whatsapp,
     "instagram": instagram,
     "telegram": telegram,
-    "yearBuilt": yearBuilt,
-    "floorCount": floorCount,
-    "curfewTime": curfewTime,
-    "mealServices": mealServices,
-    "servicesIncluded": servicesIncluded,
-    "residentTypes": residentTypes,
-    "minimumStayMonths": minimumStayMonths,
-    "paymentSchedule": paymentSchedule,
-    "depositPolicy": depositPolicy,
-    "earlyTerminationPolicy": earlyTerminationPolicy,
-    "visitorsPolicy": visitorsPolicy,
-    "wifiSpeedMbps": wifiSpeedMbps,
-    "universityWalkMinutes": universityWalkMinutes,
-    "howToGetThere": howToGetThere,
-    "nearby": nearby.map((UPlaceNearby e) => e.toMap()).toList(),
-    "faqs": faqs.map((UPlaceFaq e) => e.toMap()).toList(),
-    "detail1": detail1,
-    "detail2": detail2,
-    "description": description,
-    "nearbyUniversity": nearbyUniversity,
-    "visitingHours": visitingHours,
-    "amenities": List<String>.from(amenities.map((String x) => x)),
-    "rules": List<String>.from(rules.map((String x) => x)),
-    "requiredDocuments": List<String>.from(requiredDocuments.map((String x) => x)),
     "latitude": latitude,
     "longitude": longitude,
   };
 }
 
 class UDormRoomJson {
-  final String? bathroomType;
-  final String? view;
-  final bool? furnished;
-  final List<String> highlights;
-  final String? detail1;
-  final String? detail2;
-  final String? description;
-  final int? floor;
-  final double? sizeSquareMeters;
-  final List<String> amenities;
-
-  UDormRoomJson({
-    this.detail1,
-    this.detail2,
-    this.description,
-    this.floor,
-    this.sizeSquareMeters,
-    this.amenities = const <String>[],
-    this.bathroomType,
-    this.view,
-    this.furnished,
-    this.highlights = const <String>[],
-  });
+  UDormRoomJson({this.detail1, this.detail2, this.description, this.floor, this.sizeSquareMeters});
 
   factory UDormRoomJson.fromJson(String str) => UDormRoomJson.fromMap(json.decode(str));
 
-  String toJson() => json.encode(toMap());
-
   factory UDormRoomJson.fromMap(Map<String, dynamic> json) => UDormRoomJson(
-    bathroomType: json["bathroomType"],
-    view: json["view"],
-    furnished: json["furnished"],
-    highlights: json["highlights"] == null ? <String>[] : List<String>.from((json["highlights"] as List<dynamic>).map((dynamic e) => e.toString())),
     detail1: json["detail1"],
     detail2: json["detail2"],
     description: json["description"],
     floor: json["floor"] == null ? null : (json["floor"] as num).toInt(),
     sizeSquareMeters: json["sizeSquareMeters"] == null ? null : (json["sizeSquareMeters"] as num).toDouble(),
-    amenities: json["amenities"] == null ? <String>[] : List<String>.from(json["amenities"]!.map((dynamic x) => x)),
   );
 
+  final String? detail1;
+  final String? detail2;
+  final String? description;
+  final int? floor;
+  final double? sizeSquareMeters;
+
+  String toJson() => json.encode(toMap());
+
   Map<String, dynamic> toMap() => <String, dynamic>{
-    "bathroomType": bathroomType,
-    "view": view,
-    "furnished": furnished,
-    "highlights": highlights,
     "detail1": detail1,
     "detail2": detail2,
     "description": description,
     "floor": floor,
     "sizeSquareMeters": sizeSquareMeters,
-    "amenities": List<String>.from(amenities.map((String x) => x)),
   };
 }
 

@@ -83,9 +83,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addAndCollectTheFee => 'Add and collect the fee';
 
   @override
-  String get addCustomItem => 'Add custom item';
-
-  @override
   String get addGuest => 'Add guest';
 
   @override
@@ -218,6 +215,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get approve => 'Approve';
+
+  @override
+  String get approval => 'Approval';
 
   @override
   String get approved => 'Approved';
@@ -367,9 +367,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bassBoost => 'Bass boost';
-
-  @override
-  String get bathroomType => 'Bathroom type';
 
   @override
   String get bed => 'Bed';
@@ -689,9 +686,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get children => 'Children';
-
-  @override
-  String get childrenPolicy => 'Children policy';
 
   @override
   String get chooseAPaymentMethod => 'Choose a payment method';
@@ -1016,9 +1010,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get custom => 'Custom';
 
   @override
-  String get customItem => 'Custom item';
-
-  @override
   String get daily => 'Daily';
 
   @override
@@ -1105,9 +1096,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get deposit => 'Deposit';
-
-  @override
-  String get depositPolicy => 'Deposit policy';
 
   @override
   String get descending => 'Descending';
@@ -1247,9 +1235,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get eachHourAfter => 'Each hour after';
-
-  @override
-  String get earlyTerminationPolicy => 'Early termination policy';
 
   @override
   String get economicCode => 'Economic Code';
@@ -1468,9 +1453,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get exportImages => 'Export images';
 
   @override
-  String get extraBed => 'Extra bed';
-
-  @override
   String get extraGuestCapacity => 'Extra guest capacity';
 
   @override
@@ -1585,9 +1567,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get floor => 'Floor';
 
   @override
-  String get floorCount => 'Number of floors';
-
-  @override
   String get folder => 'Folder';
 
   @override
@@ -1666,9 +1645,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get fullyBooked => 'Fully booked';
-
-  @override
-  String get furnished => 'Furnished';
 
   @override
   String get gatewayPaymentsByType => 'Gateway Payments by Type';
@@ -2140,9 +2116,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get language => 'Language';
 
   @override
-  String get languagesSpoken => 'Languages spoken';
-
-  @override
   String get last30Days => 'Last 30 Days';
 
   @override
@@ -2296,12 +2269,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get matchCase => 'Match Case';
 
   @override
-  String get maxAdults => 'Max adults';
-
-  @override
-  String get maxChildren => 'Max children';
-
-  @override
   String get maxDurationMs => 'Max Duration (ms)';
 
   @override
@@ -2315,9 +2282,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mcc => 'MCC';
-
-  @override
-  String get mealPlan => 'Meal plan';
 
   @override
   String get mealPlans => 'Meal plans';
@@ -2682,9 +2646,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get nonIranianPlate => 'Non-Iranian plate';
 
   @override
-  String get nonRefundable => 'Non-refundable';
-
-  @override
   String get none => 'None';
 
   @override
@@ -2701,9 +2662,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notAssigned => 'Not assigned';
-
-  @override
-  String get notSpecified => 'Not specified';
 
   @override
   String get notUploaded => 'Not Uploaded';
@@ -3017,12 +2975,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get paymentMethod => 'Payment method';
 
   @override
-  String get paymentMethods => 'Payment methods';
-
-  @override
-  String get paymentSchedule => 'Payment schedule';
-
-  @override
   String get paymentStatus => 'Payment Status';
 
   @override
@@ -3075,9 +3027,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get personalInformation => 'Personal information';
-
-  @override
-  String get pets => 'Pets';
 
   @override
   String get phoneNumber => 'Phone Number';
@@ -3206,9 +3155,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get priceDetails => 'Price details';
-
-  @override
-  String get priceIncludesTax => 'Price includes tax';
 
   @override
   String get priceNight => 'Price / Night';
@@ -3564,9 +3510,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get resetsAt => 'Resets at';
-
-  @override
-  String get residentTypes => 'Accepted residents';
 
   @override
   String get resolution => 'Resolution';
@@ -3930,13 +3873,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get slug => 'Slug';
 
   @override
-  String get smoking => 'Smoking';
-
-  @override
   String get smsToCustomer => 'SMS to customer';
-
-  @override
-  String get socialLinks => 'Get in touch';
 
   @override
   String get socialMedia => 'Social Media';
@@ -3975,9 +3912,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get staff => 'Staff';
-
-  @override
-  String get staffLanguages => 'Staff languages';
 
   @override
   String get staffManagement => 'Staff management';
@@ -4647,9 +4581,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get verified => 'Verified';
 
   @override
-  String get verifiedOnSite => 'Visited in person';
-
-  @override
   String get verifyOtp => 'Verify OTP';
 
   @override
@@ -4701,9 +4632,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get visitingHours => 'Visiting hours';
-
-  @override
-  String get visitorsPolicy => 'Visitors policy';
 
   @override
   String get visualAuthentication => 'Visual Authentication';
@@ -4778,9 +4706,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get whichParking => 'Which parking?';
 
   @override
-  String get wifiSpeed => 'Internet speed (Mbps)';
-
-  @override
   String get window => 'Window';
 
   @override
@@ -4800,12 +4725,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get year => 'Year';
-
-  @override
-  String get yearBuilt => 'Year built';
-
-  @override
-  String get yearRenovated => 'Year renovated';
 
   @override
   String get yes => 'Yes';

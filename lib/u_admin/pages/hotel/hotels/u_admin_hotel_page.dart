@@ -135,13 +135,12 @@ class _HotelPageState extends State<UAdminHotelPage> {
     final TextEditingController checkInTime = f.text(p?.jsonData.checkInTime);
     final TextEditingController checkOutTime = f.text(p?.jsonData.checkOutTime);
     final TextEditingController policies = f.text(p?.jsonData.policies);
-    final TextEditingController amenities = f.text(p?.jsonData.amenities.join(", "));
     final TextEditingController rules = f.text(p?.jsonData.rules.join(", "));
     final TextEditingController latitude = f.text(p?.jsonData.latitude?.toString());
     final TextEditingController longitude = f.text(p?.jsonData.longitude?.toString());
     final TextEditingController cancellationFreeHours = f.text((p?.jsonData.cancellationFreeHours ?? 24).toString());
     final TextEditingController cancellationPenaltyNights = f.text((p?.jsonData.cancellationPenaltyNights ?? 1).toString());
-    bool isActive = p == null || p.tags.contains(TagHotel.active.number);
+    final List<int> tags = List<int>.from(p?.tags ?? <int>[TagHotel.hotel.number, TagHotel.active.number]);
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final List<UUserResponse> selectedAdmins = <UUserResponse>[];
     UProvince province = UCountries.iran().provinces.first;
@@ -183,7 +182,6 @@ class _HotelPageState extends State<UAdminHotelPage> {
                     UTextField(controller: checkInTime, labelText: U.s.checkInTime, margin: const EdgeInsets.symmetric(vertical: 6)),
                     UTextField(controller: checkOutTime, labelText: U.s.checkOutTime, margin: const EdgeInsets.symmetric(vertical: 6)),
                     UTextField(controller: policies, labelText: U.s.policies, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextField(controller: amenities, labelText: U.s.amenities, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
                     UTextField(controller: rules, labelText: U.s.rules, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
                     URow(
                       children: <Widget>[
@@ -199,11 +197,8 @@ class _HotelPageState extends State<UAdminHotelPage> {
                         UTextField(expanded: 1, controller: longitude, labelText: "Longitude", keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
                       ],
                     ),
-                    UChipChoice<String>(
-                      options: <String>[TagHotel.active.titleFa, TagHotel.inactive.titleFa],
-                      selected: isActive ? TagHotel.active.titleFa : TagHotel.inactive.titleFa,
-                      onChanged: (int index, bool isSelected, String item) => setDialogState(() => isActive = index == 0),
-                    ).pSymmetric(vertical: 6),
+                    UAdminTagChips<TagHotel>(title: U.s.propertyType, options: TagHotel.values.group(100), tags: tags, single: true),
+                    UAdminTagChips<TagHotel>(title: U.s.status, options: const <TagHotel>[TagHotel.active, TagHotel.inactive], tags: tags, single: true),
                     const SizedBox(height: 12),
                     UTextFieldAutoCompleteAsync<UUserResponse>(
                       hintText: U.s.admins,
@@ -237,7 +232,7 @@ class _HotelPageState extends State<UAdminHotelPage> {
                           if (p == null) {
                             c.create(
                               p: UHotelCreateParams(
-                                tags: <int>[TagHotel.hotel.number, if (isActive) TagHotel.active.number else TagHotel.inactive.number],
+                                tags: tags,
                                 title: title.text,
                                 cityCode: city?.code ?? province.code,
                                 stars: stars.text.isEmpty ? 0 : stars.text.toInt(),
@@ -248,7 +243,6 @@ class _HotelPageState extends State<UAdminHotelPage> {
                                 policies: policies.text.nullIfEmpty(),
                                 checkInTime: checkInTime.text.nullIfEmpty(),
                                 checkOutTime: checkOutTime.text.nullIfEmpty(),
-                                amenities: amenities.text.trim().isEmpty ? null : amenities.text.split(",").map((String e) => e.trim()).where((String e) => e.isNotEmpty).toList(),
                                 rules: rules.text.trim().isEmpty ? null : rules.text.split(",").map((String e) => e.trim()).where((String e) => e.isNotEmpty).toList(),
                                 latitude: double.tryParse(latitude.text.toLatinNumber()),
                                 longitude: double.tryParse(longitude.text.toLatinNumber()),
@@ -261,7 +255,7 @@ class _HotelPageState extends State<UAdminHotelPage> {
                             c.update(
                               p: UHotelUpdateParams(
                                 id: p.id,
-                                tags: <int>[TagHotel.hotel.number, if (isActive) TagHotel.active.number else TagHotel.inactive.number],
+                                tags: tags,
                                 title: title.text,
                                 cityCode: city?.code ?? province.code,
                                 stars: stars.text.isEmpty ? null : stars.text.toInt(),
@@ -272,7 +266,6 @@ class _HotelPageState extends State<UAdminHotelPage> {
                                 policies: policies.text.nullIfEmpty(),
                                 checkInTime: checkInTime.text.nullIfEmpty(),
                                 checkOutTime: checkOutTime.text.nullIfEmpty(),
-                                amenities: amenities.text.trim().isEmpty ? null : amenities.text.split(",").map((String e) => e.trim()).where((String e) => e.isNotEmpty).toList(),
                                 rules: rules.text.trim().isEmpty ? null : rules.text.split(",").map((String e) => e.trim()).where((String e) => e.isNotEmpty).toList(),
                                 latitude: double.tryParse(latitude.text.toLatinNumber()),
                                 longitude: double.tryParse(longitude.text.toLatinNumber()),

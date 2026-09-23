@@ -83,9 +83,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get addAndCollectTheFee => 'افزودن و دریافت هزینه';
 
   @override
-  String get addCustomItem => 'افزودن مورد دلخواه';
-
-  @override
   String get addGuest => 'افزودن مهمان';
 
   @override
@@ -218,6 +215,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get approve => 'تایید';
+
+  @override
+  String get approval => 'وضعیت تأیید';
 
   @override
   String get approved => 'تایید شده';
@@ -367,9 +367,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get bassBoost => 'تقویت بم';
-
-  @override
-  String get bathroomType => 'نوع سرویس بهداشتی';
 
   @override
   String get bed => 'تخت';
@@ -689,9 +686,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get children => 'کودکان';
-
-  @override
-  String get childrenPolicy => 'قوانین کودکان';
 
   @override
   String get chooseAPaymentMethod => 'انتخاب روش پرداخت';
@@ -1016,9 +1010,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get custom => 'سفارشی';
 
   @override
-  String get customItem => 'مورد دلخواه';
-
-  @override
   String get daily => 'روزانه';
 
   @override
@@ -1105,9 +1096,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get deposit => 'رهن';
-
-  @override
-  String get depositPolicy => 'شرایط ودیعه';
 
   @override
   String get descending => 'نزولی';
@@ -1247,9 +1235,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get eachHourAfter => 'هر ساعت بعد';
-
-  @override
-  String get earlyTerminationPolicy => 'شرایط فسخ زودهنگام';
 
   @override
   String get economicCode => 'کد اقتصادی';
@@ -1468,9 +1453,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get exportImages => 'خروجی تصاویر';
 
   @override
-  String get extraBed => 'تخت اضافه';
-
-  @override
   String get extraGuestCapacity => 'ظرفیت نفر اضافه';
 
   @override
@@ -1585,9 +1567,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get floor => 'طبقه';
 
   @override
-  String get floorCount => 'تعداد طبقات';
-
-  @override
   String get folder => 'پوشه';
 
   @override
@@ -1666,9 +1645,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get fullyBooked => 'تکمیل ظرفیت';
-
-  @override
-  String get furnished => 'مبله';
 
   @override
   String get gatewayPaymentsByType => 'پرداخت‌های درگاه بر اساس نوع';
@@ -2140,9 +2116,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get language => 'زبان';
 
   @override
-  String get languagesSpoken => 'زبان‌های پرسنل';
-
-  @override
   String get last30Days => '۳۰ روز گذشته';
 
   @override
@@ -2296,12 +2269,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get matchCase => 'تطابق حروف بزرگ و کوچک';
 
   @override
-  String get maxAdults => 'حداکثر بزرگسال';
-
-  @override
-  String get maxChildren => 'حداکثر کودک';
-
-  @override
   String get maxDurationMs => 'حداکثر مدت (ms)';
 
   @override
@@ -2315,9 +2282,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get mcc => 'کد MCC';
-
-  @override
-  String get mealPlan => 'سرویس غذایی';
 
   @override
   String get mealPlans => 'سرویس‌های غذایی';
@@ -2682,9 +2646,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get nonIranianPlate => 'پلاک غیرایرانی';
 
   @override
-  String get nonRefundable => 'غیرقابل استرداد';
-
-  @override
   String get none => 'هیچ‌کدام';
 
   @override
@@ -2701,9 +2662,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get notAssigned => 'تخصیص داده نشده';
-
-  @override
-  String get notSpecified => 'نامشخص';
 
   @override
   String get notUploaded => 'ثبت نشده';
@@ -3017,12 +2975,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get paymentMethod => 'روش پرداخت';
 
   @override
-  String get paymentMethods => 'روش‌های پرداخت';
-
-  @override
-  String get paymentSchedule => 'نحوه پرداخت اجاره';
-
-  @override
   String get paymentStatus => 'وضعیت پرداخت';
 
   @override
@@ -3075,9 +3027,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get personalInformation => 'اطلاعات شخصی';
-
-  @override
-  String get pets => 'حیوان خانگی';
 
   @override
   String get phoneNumber => 'شماره تلفن';
@@ -3206,9 +3155,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get priceDetails => 'جزئیات قیمت';
-
-  @override
-  String get priceIncludesTax => 'قیمت شامل مالیات است';
 
   @override
   String get priceNight => 'قیمت / شب';
@@ -3564,9 +3510,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get resetsAt => 'بازنشانی در';
-
-  @override
-  String get residentTypes => 'پذیرش ساکنین';
 
   @override
   String get resolution => 'وضوح';
@@ -3930,13 +3873,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get slug => 'اسلاگ';
 
   @override
-  String get smoking => 'استعمال دخانیات';
-
-  @override
   String get smsToCustomer => 'پیامک به مشتری';
-
-  @override
-  String get socialLinks => 'ارتباط با ما';
 
   @override
   String get socialMedia => 'شبکه‌های اجتماعی';
@@ -3975,9 +3912,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get staff => 'کارکنان';
-
-  @override
-  String get staffLanguages => 'زبان‌های پرسنل';
 
   @override
   String get staffManagement => 'مدیریت کارکنان';
@@ -4646,9 +4580,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get verified => 'تایید شده';
 
   @override
-  String get verifiedOnSite => 'بازدید حضوری شده';
-
-  @override
   String get verifyOtp => 'بررسی کد OTP';
 
   @override
@@ -4700,9 +4631,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get visitingHours => 'ساعت بازدید';
-
-  @override
-  String get visitorsPolicy => 'قوانین مهمان';
 
   @override
   String get visualAuthentication => 'احراز هویت تصویری';
@@ -4777,9 +4705,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get whichParking => 'کدام پارکینگ؟';
 
   @override
-  String get wifiSpeed => 'سرعت اینترنت (مگابیت)';
-
-  @override
   String get window => 'بازه معاملاتی';
 
   @override
@@ -4799,12 +4724,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get year => 'سال';
-
-  @override
-  String get yearBuilt => 'سال ساخت';
-
-  @override
-  String get yearRenovated => 'سال بازسازی';
 
   @override
   String get yes => 'بله';

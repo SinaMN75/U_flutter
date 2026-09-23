@@ -236,12 +236,6 @@ abstract class AppLocalizations {
   /// **'Add and collect the fee'**
   String get addAndCollectTheFee;
 
-  /// No description provided for @addCustomItem.
-  ///
-  /// In en, this message translates to:
-  /// **'Add custom item'**
-  String get addCustomItem;
-
   /// No description provided for @addGuest.
   ///
   /// In en, this message translates to:
@@ -505,6 +499,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Approve'**
   String get approve;
+
+  /// No description provided for @approval.
+  ///
+  /// In en, this message translates to:
+  /// **'Approval'**
+  String get approval;
 
   /// No description provided for @approved.
   ///
@@ -799,12 +799,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Bass boost'**
   String get bassBoost;
-
-  /// No description provided for @bathroomType.
-  ///
-  /// In en, this message translates to:
-  /// **'Bathroom type'**
-  String get bathroomType;
 
   /// No description provided for @bed.
   ///
@@ -1436,12 +1430,6 @@ abstract class AppLocalizations {
   /// **'Children'**
   String get children;
 
-  /// No description provided for @childrenPolicy.
-  ///
-  /// In en, this message translates to:
-  /// **'Children policy'**
-  String get childrenPolicy;
-
   /// No description provided for @chooseAPaymentMethod.
   ///
   /// In en, this message translates to:
@@ -2042,12 +2030,6 @@ abstract class AppLocalizations {
   /// **'Custom'**
   String get custom;
 
-  /// No description provided for @customItem.
-  ///
-  /// In en, this message translates to:
-  /// **'Custom item'**
-  String get customItem;
-
   /// No description provided for @daily.
   ///
   /// In en, this message translates to:
@@ -2215,12 +2197,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Deposit'**
   String get deposit;
-
-  /// No description provided for @depositPolicy.
-  ///
-  /// In en, this message translates to:
-  /// **'Deposit policy'**
-  String get depositPolicy;
 
   /// No description provided for @descending.
   ///
@@ -2491,12 +2467,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Each hour after'**
   String get eachHourAfter;
-
-  /// No description provided for @earlyTerminationPolicy.
-  ///
-  /// In en, this message translates to:
-  /// **'Early termination policy'**
-  String get earlyTerminationPolicy;
 
   /// No description provided for @economicCode.
   ///
@@ -2912,12 +2882,6 @@ abstract class AppLocalizations {
   /// **'Export images'**
   String get exportImages;
 
-  /// No description provided for @extraBed.
-  ///
-  /// In en, this message translates to:
-  /// **'Extra bed'**
-  String get extraBed;
-
   /// No description provided for @extraGuestCapacity.
   ///
   /// In en, this message translates to:
@@ -3134,12 +3098,6 @@ abstract class AppLocalizations {
   /// **'Floor'**
   String get floor;
 
-  /// No description provided for @floorCount.
-  ///
-  /// In en, this message translates to:
-  /// **'Number of floors'**
-  String get floorCount;
-
   /// No description provided for @folder.
   ///
   /// In en, this message translates to:
@@ -3295,12 +3253,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Fully booked'**
   String get fullyBooked;
-
-  /// No description provided for @furnished.
-  ///
-  /// In en, this message translates to:
-  /// **'Furnished'**
-  String get furnished;
 
   /// No description provided for @gatewayPaymentsByType.
   ///
@@ -4232,12 +4184,6 @@ abstract class AppLocalizations {
   /// **'Language'**
   String get language;
 
-  /// No description provided for @languagesSpoken.
-  ///
-  /// In en, this message translates to:
-  /// **'Languages spoken'**
-  String get languagesSpoken;
-
   /// No description provided for @last30Days.
   ///
   /// In en, this message translates to:
@@ -4544,18 +4490,6 @@ abstract class AppLocalizations {
   /// **'Match Case'**
   String get matchCase;
 
-  /// No description provided for @maxAdults.
-  ///
-  /// In en, this message translates to:
-  /// **'Max adults'**
-  String get maxAdults;
-
-  /// No description provided for @maxChildren.
-  ///
-  /// In en, this message translates to:
-  /// **'Max children'**
-  String get maxChildren;
-
   /// No description provided for @maxDurationMs.
   ///
   /// In en, this message translates to:
@@ -4585,12 +4519,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'MCC'**
   String get mcc;
-
-  /// No description provided for @mealPlan.
-  ///
-  /// In en, this message translates to:
-  /// **'Meal plan'**
-  String get mealPlan;
 
   /// No description provided for @mealPlans.
   ///
@@ -5312,12 +5240,6 @@ abstract class AppLocalizations {
   /// **'Non-Iranian plate'**
   String get nonIranianPlate;
 
-  /// No description provided for @nonRefundable.
-  ///
-  /// In en, this message translates to:
-  /// **'Non-refundable'**
-  String get nonRefundable;
-
   /// No description provided for @none.
   ///
   /// In en, this message translates to:
@@ -5353,12 +5275,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not assigned'**
   String get notAssigned;
-
-  /// No description provided for @notSpecified.
-  ///
-  /// In en, this message translates to:
-  /// **'Not specified'**
-  String get notSpecified;
 
   /// No description provided for @notUploaded.
   ///
@@ -5978,18 +5894,6 @@ abstract class AppLocalizations {
   /// **'Payment method'**
   String get paymentMethod;
 
-  /// No description provided for @paymentMethods.
-  ///
-  /// In en, this message translates to:
-  /// **'Payment methods'**
-  String get paymentMethods;
-
-  /// No description provided for @paymentSchedule.
-  ///
-  /// In en, this message translates to:
-  /// **'Payment schedule'**
-  String get paymentSchedule;
-
   /// No description provided for @paymentStatus.
   ///
   /// In en, this message translates to:
@@ -6097,12 +6001,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Personal information'**
   String get personalInformation;
-
-  /// No description provided for @pets.
-  ///
-  /// In en, this message translates to:
-  /// **'Pets'**
-  String get pets;
 
   /// No description provided for @phoneNumber.
   ///
@@ -6355,12 +6253,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Price details'**
   String get priceDetails;
-
-  /// No description provided for @priceIncludesTax.
-  ///
-  /// In en, this message translates to:
-  /// **'Price includes tax'**
-  String get priceIncludesTax;
 
   /// No description provided for @priceNight.
   ///
@@ -7063,12 +6955,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Resets at'**
   String get resetsAt;
-
-  /// No description provided for @residentTypes.
-  ///
-  /// In en, this message translates to:
-  /// **'Accepted residents'**
-  String get residentTypes;
 
   /// No description provided for @resolution.
   ///
@@ -7784,23 +7670,11 @@ abstract class AppLocalizations {
   /// **'Slug'**
   String get slug;
 
-  /// No description provided for @smoking.
-  ///
-  /// In en, this message translates to:
-  /// **'Smoking'**
-  String get smoking;
-
   /// No description provided for @smsToCustomer.
   ///
   /// In en, this message translates to:
   /// **'SMS to customer'**
   String get smsToCustomer;
-
-  /// No description provided for @socialLinks.
-  ///
-  /// In en, this message translates to:
-  /// **'Get in touch'**
-  String get socialLinks;
 
   /// No description provided for @socialMedia.
   ///
@@ -7873,12 +7747,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Staff'**
   String get staff;
-
-  /// No description provided for @staffLanguages.
-  ///
-  /// In en, this message translates to:
-  /// **'Staff languages'**
-  String get staffLanguages;
 
   /// No description provided for @staffManagement.
   ///
@@ -9194,12 +9062,6 @@ abstract class AppLocalizations {
   /// **'Verified'**
   String get verified;
 
-  /// No description provided for @verifiedOnSite.
-  ///
-  /// In en, this message translates to:
-  /// **'Visited in person'**
-  String get verifiedOnSite;
-
   /// No description provided for @verifyOtp.
   ///
   /// In en, this message translates to:
@@ -9301,12 +9163,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Visiting hours'**
   String get visitingHours;
-
-  /// No description provided for @visitorsPolicy.
-  ///
-  /// In en, this message translates to:
-  /// **'Visitors policy'**
-  String get visitorsPolicy;
 
   /// No description provided for @visualAuthentication.
   ///
@@ -9452,12 +9308,6 @@ abstract class AppLocalizations {
   /// **'Which parking?'**
   String get whichParking;
 
-  /// No description provided for @wifiSpeed.
-  ///
-  /// In en, this message translates to:
-  /// **'Internet speed (Mbps)'**
-  String get wifiSpeed;
-
   /// No description provided for @window.
   ///
   /// In en, this message translates to:
@@ -9499,18 +9349,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Year'**
   String get year;
-
-  /// No description provided for @yearBuilt.
-  ///
-  /// In en, this message translates to:
-  /// **'Year built'**
-  String get yearBuilt;
-
-  /// No description provided for @yearRenovated.
-  ///
-  /// In en, this message translates to:
-  /// **'Year renovated'**
-  String get yearRenovated;
 
   /// No description provided for @yes.
   ///
