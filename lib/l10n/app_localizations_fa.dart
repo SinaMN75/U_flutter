@@ -9,6 +9,9 @@ class AppLocalizationsFa extends AppLocalizations {
   AppLocalizationsFa([String locale = 'fa']) : super(locale);
 
   @override
+  String get addPoint => 'افزودن نقطه';
+
+  @override
   String get aNewVersionIsAvailableReloadToGetIt => 'نسخه جدیدی منتشر شده است. برای دریافت آن صفحه را بارگذاری مجدد کنید.';
 
   @override
@@ -229,6 +232,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get architecture => 'معماری';
 
   @override
+  String get area => 'مساحت';
+
+  @override
   String get areYouSure => 'آیا مطمئن هستید؟';
 
   @override
@@ -265,6 +271,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get areYouSureYouWantToLogOut => 'آیا از خروج از حساب اطمینان دارید؟';
+
+  @override
+  String get arIsNotSupportedOnThisDevice => 'واقعیت افزوده روی این دستگاه پشتیبانی نمی‌شود';
 
   @override
   String get arrow => 'پیکان';
@@ -523,6 +532,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get calculationBreakdown => 'ریز محاسبه';
 
   @override
+  String get calibrateYourCompassByMovingYourPhoneInAFigureEight => 'قطب‌نما را با حرکت دادن گوشی به شکل عدد ۸ کالیبره کنید';
+
+  @override
   String get callTheDorm => 'تماس با خوابگاه';
 
   @override
@@ -686,6 +698,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get children => 'کودکان';
+
+  @override
+  String get chooseAnItem => 'یک مورد انتخاب کنید';
 
   @override
   String get chooseAPaymentMethod => 'انتخاب روش پرداخت';
@@ -881,6 +896,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get couldNotOpenTheDocument => 'سند باز نشد';
+
+  @override
+  String get couldNotStartAr => 'شروع واقعیت افزوده ممکن نشد';
 
   @override
   String get count => 'تعداد';
@@ -1205,6 +1223,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get draft => 'پیش‌نویس';
 
   @override
+  String get dragToMovePinchToScaleTwistToRotate => 'برای جابه‌جایی بکشید، برای تغییر اندازه دو انگشت را باز و بسته کنید و برای چرخش بچرخانید';
+
+  @override
   String get draw => 'ترسیم';
 
   @override
@@ -1465,6 +1486,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get failed => 'ناموفق';
 
   @override
+  String get failedToLoadTheModel => 'بارگذاری مدل ناموفق بود';
+
+  @override
   String get faqs => 'سؤالات متداول';
 
   @override
@@ -1674,6 +1698,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get getSupportPassword => 'دریافت رمز پشتیبانی';
 
   @override
+  String get googlePlayServicesForArIsRequired => 'نصب سرویس‌های Google Play برای واقعیت افزوده لازم است';
+
+  @override
   String get goToPage => 'رفتن به صفحه';
 
   @override
@@ -1810,6 +1837,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get highlights => 'هایلایت‌ها';
+
+  @override
+  String get holdSteadyWhileTheSessionIsRestored => 'تا بازیابی جلسه، گوشی را ثابت نگه دارید';
 
   @override
   String get holdTheCustomersReceiptUpToTheCamera => 'رسید مشتری را جلوی دوربین بگیرید';
@@ -1978,6 +2008,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get instagram => 'اینستاگرام';
 
   @override
+  String get install => 'نصب';
+
+  @override
   String get installationDate => 'تاریخ نصب';
 
   @override
@@ -2072,6 +2105,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get items => 'آیتم‌ها';
+
+  @override
+  String get itsTooDarkTurnOnMoreLights => 'نور کافی نیست، چراغ‌های بیشتری روشن کنید';
 
   @override
   String get ivEncoding => 'کدگذاری IV';
@@ -2185,6 +2221,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get loadAverage => 'میانگین بار';
 
   @override
+  String get loadingModel => 'در حال بارگذاری مدل';
+
+  @override
   String get loadMore => 'نمایش بیشتر';
 
   @override
@@ -2201,6 +2240,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get location => 'موقعیت مکانی';
+
+  @override
+  String get locationPermissionIsRequired => 'دسترسی به موقعیت مکانی لازم است';
 
   @override
   String get lockControls => 'قفل کنترل‌ها';
@@ -2230,10 +2272,22 @@ class AppLocalizationsFa extends AppLocalizations {
   String get logs => 'لاگ‌ها';
 
   @override
+  String get lookAroundToFindASurface => 'برای پیدا کردن یک سطح، اطراف را نگاه کنید';
+
+  @override
+  String get lookAtTheCamera => 'به دوربین نگاه کنید';
+
+  @override
   String get loudnessNormalization => 'یکسان‌سازی بلندی صدا';
 
   @override
   String get lyrics => 'متن ترانه';
+
+  @override
+  String get measure => 'اندازه‌گیری';
+
+  @override
+  String get moveYourPhoneSlowlyToScanTheArea => 'گوشی را آرام حرکت دهید تا محیط اسکن شود';
 
   @override
   String get mPos => 'کارتخوان سیار';
@@ -2459,6 +2513,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get myVehicles => 'خودروهای من';
+
+  @override
+  String get noPlacesNearby => 'مکانی در نزدیکی نیست';
 
   @override
   String get nUp => 'صفحه در هر برگ';
@@ -2743,6 +2800,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get openOnPublicHolidays => 'تعطیلات رسمی باز است';
+
+  @override
+  String get openSettings => 'باز کردن تنظیمات';
 
   @override
   String get openThisPageInSafariThenAddItToYourHomeScreen => 'این صفحه را در Safari باز کنید، سپس آن را به صفحه اصلی اضافه کنید';
@@ -3056,6 +3116,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get pinned => 'سنجاق شده';
 
   @override
+  String get place => 'قرار دادن';
+
+  @override
   String get placeTheBarcodeInsideTheFrame => 'بارکد را داخل کادر قرار دهید';
 
   @override
@@ -3118,10 +3181,19 @@ class AppLocalizationsFa extends AppLocalizations {
   String get pnApiTester => 'تستر API پی‌ان';
 
   @override
+  String get pointAtASurfaceWithMoreDetail => 'دوربین را به سطحی با جزئیات بیشتر بگیرید';
+
+  @override
   String get pointTheCameraAtAReceiptQrCode => 'دوربین را روی کد QR رسید بگیرید';
 
   @override
   String get pointTheCameraAtThePlate => 'دوربین را روی پلاک بگیرید';
+
+  @override
+  String get pointYourCameraAtAQrCode => 'دوربین را به سمت یک کد QR بگیرید';
+
+  @override
+  String get pointYourCameraAtTheImage => 'دوربین را به سمت تصویر بگیرید';
 
   @override
   String get policies => 'قوانین';
@@ -3257,6 +3329,12 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get quote => 'نقل قول';
+
+  @override
+  String get record => 'ضبط';
+
+  @override
+  String get recording => 'در حال ضبط';
 
   @override
   String get reInquiryWithFee => 'استعلام مجدد (با پرداخت هزینه)';
@@ -3510,6 +3588,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get resetsAt => 'بازنشانی در';
+
+  @override
+  String get resetView => 'بازنشانی نما';
 
   @override
   String get resolution => 'وضوح';
@@ -3864,6 +3945,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get sleepTimer => 'تایمر خواب';
 
   @override
+  String get slowDownYouAreMovingTooFast => 'آرام‌تر، خیلی سریع حرکت می‌کنید';
+
+  @override
   String get slowestPaths => 'کندترین مسیرها';
 
   @override
@@ -3920,6 +4004,12 @@ class AppLocalizationsFa extends AppLocalizations {
   String get stars => 'ستاره';
 
   @override
+  String get startAr => 'شروع واقعیت افزوده';
+
+  @override
+  String get startCapture => 'شروع ثبت';
+
+  @override
   String get startDate => 'تاریخ شروع';
 
   @override
@@ -3945,6 +4035,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get stayDuration => 'مدت توقف';
+
+  @override
+  String get stop => 'توقف';
 
   @override
   String get storageManager => 'مدیریت حافظه';
@@ -4061,13 +4154,22 @@ class AppLocalizationsFa extends AppLocalizations {
   String get tags => 'برچسب‌ها';
 
   @override
+  String get takePhoto => 'گرفتن عکس';
+
+  @override
   String get tapAddInTheTopRightCorner => 'در گوشه بالا-راست «افزودن» را بزنید';
 
   @override
   String get tapTheShareButtonInSafarisToolbar => 'دکمه اشتراک‌گذاری را در نوار ابزار Safari بزنید';
 
   @override
+  String get tapToAddAPoint => 'برای افزودن نقطه ضربه بزنید';
+
+  @override
   String get tapToInquire => 'برای استعلام لمس کنید';
+
+  @override
+  String get tapToPlace => 'برای قرار دادن ضربه بزنید';
 
   @override
   String get tariff => 'تعرفه';
@@ -4607,6 +4709,12 @@ class AppLocalizationsFa extends AppLocalizations {
   String get viewDebt => 'مشاهده بدهی';
 
   @override
+  String get viewInAr => 'مشاهده در واقعیت افزوده';
+
+  @override
+  String get viewInYourSpace => 'مشاهده در فضای شما';
+
+  @override
   String viewItem(Object item) {
     return 'مشاهده $item';
   }
@@ -4637,6 +4745,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get waitingForBankConfirmation => 'در انتظار تأیید بانک…';
+
+  @override
+  String get waitingForLocation => 'در انتظار موقعیت مکانی';
 
   @override
   String get waitingForResponse => 'در انتظار پاسخ';

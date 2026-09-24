@@ -1,5 +1,6 @@
 package com.sinamn75.u
 
+import com.sinamn75.u.ar.UArHandler
 import com.sinamn75.u.camera.UCameraHandler
 import com.sinamn75.u.media.UMediaHandler
 import com.sinamn75.u.media.UMediaSessionHandler
@@ -24,6 +25,7 @@ class UPlugin :
     private var media: UMediaHandler? = null
     private var mediaSession: UMediaSessionHandler? = null
     private var camera: UCameraHandler? = null
+    private var ar: UArHandler? = null
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "u")
@@ -38,6 +40,12 @@ class UPlugin :
         mediaSession = UMediaSessionHandler(flutterPluginBinding.applicationContext, flutterPluginBinding.binaryMessenger)
         camera =
             UCameraHandler(
+                flutterPluginBinding.applicationContext,
+                flutterPluginBinding.binaryMessenger,
+                flutterPluginBinding.textureRegistry,
+            )
+        ar =
+            UArHandler(
                 flutterPluginBinding.applicationContext,
                 flutterPluginBinding.binaryMessenger,
                 flutterPluginBinding.textureRegistry,
@@ -65,6 +73,8 @@ class UPlugin :
         mediaSession = null
         camera?.dispose()
         camera = null
+        ar?.dispose()
+        ar = null
     }
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
@@ -72,6 +82,8 @@ class UPlugin :
         media?.setActivity(binding.activity)
         camera?.setActivity(binding.activity)
         camera?.let { binding.addRequestPermissionsResultListener(it) }
+        ar?.setActivity(binding.activity)
+        ar?.let { binding.addRequestPermissionsResultListener(it) }
     }
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
@@ -79,17 +91,21 @@ class UPlugin :
         media?.setActivity(binding.activity)
         camera?.setActivity(binding.activity)
         camera?.let { binding.addRequestPermissionsResultListener(it) }
+        ar?.setActivity(binding.activity)
+        ar?.let { binding.addRequestPermissionsResultListener(it) }
     }
 
     override fun onDetachedFromActivityForConfigChanges() {
         screenGuard?.setActivity(null)
         media?.setActivity(null)
         camera?.setActivity(null)
+        ar?.setActivity(null)
     }
 
     override fun onDetachedFromActivity() {
         screenGuard?.setActivity(null)
         media?.setActivity(null)
         camera?.setActivity(null)
+        ar?.setActivity(null)
     }
 }

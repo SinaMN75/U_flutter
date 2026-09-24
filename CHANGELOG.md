@@ -1,3 +1,16 @@
+## 2.0.4
+
+* added AR and 3D with no pub packages: ARCore + a built-in OpenGL ES 3 glTF renderer (Android),
+  ARKit + RealityKit (iOS), WebXR + a built-in WebGL2 renderer (web).
+* `UArController` / `UArView`: surfaces (floor, table, wall, ceiling), hit testing, anchors, nodes
+  (glTF / USDZ models, primitives, images, videos, Flutter widgets), animations, depth and people
+  occlusion, light estimation, image / object / face / body tracking, Geospatial and GPS + compass
+  anchors, Cloud Anchors, world maps, collaboration, snapshots, recording, OCR and code detection.
+* ready-made widgets: `UArScene`, `U3DViewer`, `UArGeoView`, `UArMeasure`, `UArFaceTryOn`,
+  `UArImageTrigger`, `UArCodeView`, `UArOverlayLayer`, `UArGate` and `UArExperiences`.
+* `UAr.scanRoom` (RoomPlan), `UAr.captureObject` (Object Capture), `UAr.openNativeViewer`
+  (Scene Viewer / AR Quick Look).
+
 ## 2.0.3
 
 * added `UJalaliDatePicker` with three flavours: `classic` (the original `JalaliDatePickerDialog`),

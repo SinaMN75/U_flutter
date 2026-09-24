@@ -9,6 +9,9 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get addPoint => 'Add point';
+
+  @override
   String get aNewVersionIsAvailableReloadToGetIt => 'A new version is available. Reload to get it.';
 
   @override
@@ -229,6 +232,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get architecture => 'Architecture';
 
   @override
+  String get area => 'Area';
+
+  @override
   String get areYouSure => 'Are you sure?';
 
   @override
@@ -265,6 +271,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get areYouSureYouWantToLogOut => 'Are you sure you want to log out?';
+
+  @override
+  String get arIsNotSupportedOnThisDevice => 'AR is not supported on this device';
 
   @override
   String get arrow => 'Arrow';
@@ -523,6 +532,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get calculationBreakdown => 'Calculation breakdown';
 
   @override
+  String get calibrateYourCompassByMovingYourPhoneInAFigureEight => 'Calibrate your compass by moving your phone in a figure eight';
+
+  @override
   String get callTheDorm => 'Call the dorm';
 
   @override
@@ -686,6 +698,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get children => 'Children';
+
+  @override
+  String get chooseAnItem => 'Choose an item';
 
   @override
   String get chooseAPaymentMethod => 'Choose a payment method';
@@ -881,6 +896,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get couldNotOpenTheDocument => 'Could not open the document';
+
+  @override
+  String get couldNotStartAr => 'Could not start AR';
 
   @override
   String get count => 'Count';
@@ -1205,6 +1223,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get draft => 'Draft';
 
   @override
+  String get dragToMovePinchToScaleTwistToRotate => 'Drag to move, pinch to scale, twist to rotate';
+
+  @override
   String get draw => 'Draw';
 
   @override
@@ -1465,6 +1486,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get failed => 'Failed';
 
   @override
+  String get failedToLoadTheModel => 'Failed to load the model';
+
+  @override
   String get faqs => 'FAQs';
 
   @override
@@ -1674,6 +1698,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get getSupportPassword => 'Get Support Password';
 
   @override
+  String get googlePlayServicesForArIsRequired => 'Google Play Services for AR is required';
+
+  @override
   String get goToPage => 'Go to page';
 
   @override
@@ -1810,6 +1837,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get highlights => 'Highlights';
+
+  @override
+  String get holdSteadyWhileTheSessionIsRestored => 'Hold steady while the session is restored';
 
   @override
   String get holdTheCustomersReceiptUpToTheCamera => 'Hold the customer\'s receipt up to the camera';
@@ -1978,6 +2008,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get instagram => 'Instagram';
 
   @override
+  String get install => 'Install';
+
+  @override
   String get installationDate => 'Installation date';
 
   @override
@@ -2072,6 +2105,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get items => 'Items';
+
+  @override
+  String get itsTooDarkTurnOnMoreLights => 'It\'s too dark, turn on more lights';
 
   @override
   String get ivEncoding => 'IV Encoding';
@@ -2185,6 +2221,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loadAverage => 'Load Average';
 
   @override
+  String get loadingModel => 'Loading model';
+
+  @override
   String get loadMore => 'Load more';
 
   @override
@@ -2201,6 +2240,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get location => 'Location';
+
+  @override
+  String get locationPermissionIsRequired => 'Location permission is required';
 
   @override
   String get lockControls => 'Lock controls';
@@ -2230,10 +2272,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get logs => 'Logs';
 
   @override
+  String get lookAroundToFindASurface => 'Look around to find a surface';
+
+  @override
+  String get lookAtTheCamera => 'Look at the camera';
+
+  @override
   String get loudnessNormalization => 'Loudness normalization';
 
   @override
   String get lyrics => 'Lyrics';
+
+  @override
+  String get measure => 'Measure';
+
+  @override
+  String get moveYourPhoneSlowlyToScanTheArea => 'Move your phone slowly to scan the area';
 
   @override
   String get mPos => 'mPOS';
@@ -2459,6 +2513,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get myVehicles => 'My vehicles';
+
+  @override
+  String get noPlacesNearby => 'No places nearby';
 
   @override
   String get nUp => 'Pages per sheet';
@@ -2743,6 +2800,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get openOnPublicHolidays => 'Open on public holidays';
+
+  @override
+  String get openSettings => 'Open settings';
 
   @override
   String get openThisPageInSafariThenAddItToYourHomeScreen => 'Open this page in Safari, then add it to your Home Screen';
@@ -3056,6 +3116,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pinned => 'Pinned';
 
   @override
+  String get place => 'Place';
+
+  @override
   String get placeTheBarcodeInsideTheFrame => 'Place the barcode inside the frame';
 
   @override
@@ -3118,10 +3181,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pnApiTester => 'Pn API Tester';
 
   @override
+  String get pointAtASurfaceWithMoreDetail => 'Point at a surface with more detail';
+
+  @override
   String get pointTheCameraAtAReceiptQrCode => 'Point the camera at a receipt QR code';
 
   @override
   String get pointTheCameraAtThePlate => 'Point the camera at the plate';
+
+  @override
+  String get pointYourCameraAtAQrCode => 'Point your camera at a QR code';
+
+  @override
+  String get pointYourCameraAtTheImage => 'Point your camera at the image';
 
   @override
   String get policies => 'Policies';
@@ -3257,6 +3329,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get quote => 'Quote';
+
+  @override
+  String get record => 'Record';
+
+  @override
+  String get recording => 'Recording';
 
   @override
   String get reInquiryWithFee => 'Re-inquiry (with fee)';
@@ -3510,6 +3588,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get resetsAt => 'Resets at';
+
+  @override
+  String get resetView => 'Reset view';
 
   @override
   String get resolution => 'Resolution';
@@ -3864,6 +3945,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sleepTimer => 'Sleep timer';
 
   @override
+  String get slowDownYouAreMovingTooFast => 'Slow down, you are moving too fast';
+
+  @override
   String get slowestPaths => 'Slowest Paths';
 
   @override
@@ -3920,6 +4004,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get stars => 'Stars';
 
   @override
+  String get startAr => 'Start AR';
+
+  @override
+  String get startCapture => 'Start capture';
+
+  @override
   String get startDate => 'Start Date';
 
   @override
@@ -3945,6 +4035,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get stayDuration => 'Stay duration';
+
+  @override
+  String get stop => 'Stop';
 
   @override
   String get storageManager => 'Storage Manager';
@@ -4061,13 +4154,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tags => 'Tags';
 
   @override
+  String get takePhoto => 'Take photo';
+
+  @override
   String get tapAddInTheTopRightCorner => 'Tap \"Add\" in the top-right corner';
 
   @override
   String get tapTheShareButtonInSafarisToolbar => 'Tap the Share button in Safari\'s toolbar';
 
   @override
+  String get tapToAddAPoint => 'Tap to add a point';
+
+  @override
   String get tapToInquire => 'Tap to inquire';
+
+  @override
+  String get tapToPlace => 'Tap to place';
 
   @override
   String get tariff => 'Tariff';
@@ -4608,6 +4710,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get viewDebt => 'View debt';
 
   @override
+  String get viewInAr => 'View in AR';
+
+  @override
+  String get viewInYourSpace => 'View in your space';
+
+  @override
   String viewItem(Object item) {
     return 'View $item';
   }
@@ -4638,6 +4746,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get waitingForBankConfirmation => 'Waiting for bank confirmation…';
+
+  @override
+  String get waitingForLocation => 'Waiting for location';
 
   @override
   String get waitingForResponse => 'Waiting for response';

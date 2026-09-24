@@ -82,6 +82,8 @@ dependencies {
     implementation("androidx.media3:media3-exoplayer-rtsp:$media3Version")
     implementation("androidx.media3:media3-session:$media3Version")
 
+    compileOnly("com.google.ar:core:1.45.0")
+
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.mockito:mockito-core:5.0.0")
 }

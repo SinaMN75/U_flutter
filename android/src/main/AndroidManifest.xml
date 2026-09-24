@@ -9,6 +9,9 @@
   <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" android:minSdkVersion="33" />
 
   <application>
+    <meta-data
+      android:name="com.google.ar.core"
+      android:value="optional" />
     <service
       android:name="com.sinamn75.u.media.UMediaService"
       android:exported="true"

@@ -92,6 +92,12 @@ abstract class AppLocalizations {
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[Locale('en'), Locale('fa')];
 
+  /// No description provided for @addPoint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add point'**
+  String get addPoint;
+
   /// No description provided for @aNewVersionIsAvailableReloadToGetIt.
   ///
   /// In en, this message translates to:
@@ -524,6 +530,12 @@ abstract class AppLocalizations {
   /// **'Architecture'**
   String get architecture;
 
+  /// No description provided for @area.
+  ///
+  /// In en, this message translates to:
+  /// **'Area'**
+  String get area;
+
   /// No description provided for @areYouSure.
   ///
   /// In en, this message translates to:
@@ -595,6 +607,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Are you sure you want to log out?'**
   String get areYouSureYouWantToLogOut;
+
+  /// No description provided for @arIsNotSupportedOnThisDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'AR is not supported on this device'**
+  String get arIsNotSupportedOnThisDevice;
 
   /// No description provided for @arrow.
   ///
@@ -1100,6 +1118,12 @@ abstract class AppLocalizations {
   /// **'Calculation breakdown'**
   String get calculationBreakdown;
 
+  /// No description provided for @calibrateYourCompassByMovingYourPhoneInAFigureEight.
+  ///
+  /// In en, this message translates to:
+  /// **'Calibrate your compass by moving your phone in a figure eight'**
+  String get calibrateYourCompassByMovingYourPhoneInAFigureEight;
+
   /// No description provided for @callTheDorm.
   ///
   /// In en, this message translates to:
@@ -1429,6 +1453,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Children'**
   String get children;
+
+  /// No description provided for @chooseAnItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an item'**
+  String get chooseAnItem;
 
   /// No description provided for @chooseAPaymentMethod.
   ///
@@ -1819,6 +1849,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not open the document'**
   String get couldNotOpenTheDocument;
+
+  /// No description provided for @couldNotStartAr.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not start AR'**
+  String get couldNotStartAr;
 
   /// No description provided for @count.
   ///
@@ -2408,6 +2444,12 @@ abstract class AppLocalizations {
   /// **'Draft'**
   String get draft;
 
+  /// No description provided for @dragToMovePinchToScaleTwistToRotate.
+  ///
+  /// In en, this message translates to:
+  /// **'Drag to move, pinch to scale, twist to rotate'**
+  String get dragToMovePinchToScaleTwistToRotate;
+
   /// No description provided for @draw.
   ///
   /// In en, this message translates to:
@@ -2906,6 +2948,12 @@ abstract class AppLocalizations {
   /// **'Failed'**
   String get failed;
 
+  /// No description provided for @failedToLoadTheModel.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load the model'**
+  String get failedToLoadTheModel;
+
   /// No description provided for @faqs.
   ///
   /// In en, this message translates to:
@@ -3308,6 +3356,12 @@ abstract class AppLocalizations {
   /// **'Get Support Password'**
   String get getSupportPassword;
 
+  /// No description provided for @googlePlayServicesForArIsRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Google Play Services for AR is required'**
+  String get googlePlayServicesForArIsRequired;
+
   /// No description provided for @goToPage.
   ///
   /// In en, this message translates to:
@@ -3583,6 +3637,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Highlights'**
   String get highlights;
+
+  /// No description provided for @holdSteadyWhileTheSessionIsRestored.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold steady while the session is restored'**
+  String get holdSteadyWhileTheSessionIsRestored;
 
   /// No description provided for @holdTheCustomersReceiptUpToTheCamera.
   ///
@@ -3908,6 +3968,12 @@ abstract class AppLocalizations {
   /// **'Instagram'**
   String get instagram;
 
+  /// No description provided for @install.
+  ///
+  /// In en, this message translates to:
+  /// **'Install'**
+  String get install;
+
   /// No description provided for @installationDate.
   ///
   /// In en, this message translates to:
@@ -4099,6 +4165,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Items'**
   String get items;
+
+  /// No description provided for @itsTooDarkTurnOnMoreLights.
+  ///
+  /// In en, this message translates to:
+  /// **'It\'s too dark, turn on more lights'**
+  String get itsTooDarkTurnOnMoreLights;
 
   /// No description provided for @ivEncoding.
   ///
@@ -4322,6 +4394,12 @@ abstract class AppLocalizations {
   /// **'Load Average'**
   String get loadAverage;
 
+  /// No description provided for @loadingModel.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading model'**
+  String get loadingModel;
+
   /// No description provided for @loadMore.
   ///
   /// In en, this message translates to:
@@ -4357,6 +4435,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Location'**
   String get location;
+
+  /// No description provided for @locationPermissionIsRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission is required'**
+  String get locationPermissionIsRequired;
 
   /// No description provided for @lockControls.
   ///
@@ -4412,6 +4496,18 @@ abstract class AppLocalizations {
   /// **'Logs'**
   String get logs;
 
+  /// No description provided for @lookAroundToFindASurface.
+  ///
+  /// In en, this message translates to:
+  /// **'Look around to find a surface'**
+  String get lookAroundToFindASurface;
+
+  /// No description provided for @lookAtTheCamera.
+  ///
+  /// In en, this message translates to:
+  /// **'Look at the camera'**
+  String get lookAtTheCamera;
+
   /// No description provided for @loudnessNormalization.
   ///
   /// In en, this message translates to:
@@ -4423,6 +4519,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Lyrics'**
   String get lyrics;
+
+  /// No description provided for @measure.
+  ///
+  /// In en, this message translates to:
+  /// **'Measure'**
+  String get measure;
+
+  /// No description provided for @moveYourPhoneSlowlyToScanTheArea.
+  ///
+  /// In en, this message translates to:
+  /// **'Move your phone slowly to scan the area'**
+  String get moveYourPhoneSlowlyToScanTheArea;
 
   /// No description provided for @mPos.
   ///
@@ -4873,6 +4981,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'My vehicles'**
   String get myVehicles;
+
+  /// No description provided for @noPlacesNearby.
+  ///
+  /// In en, this message translates to:
+  /// **'No places nearby'**
+  String get noPlacesNearby;
 
   /// No description provided for @nUp.
   ///
@@ -5437,6 +5551,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open on public holidays'**
   String get openOnPublicHolidays;
+
+  /// No description provided for @openSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open settings'**
+  String get openSettings;
 
   /// No description provided for @openThisPageInSafariThenAddItToYourHomeScreen.
   ///
@@ -6056,6 +6176,12 @@ abstract class AppLocalizations {
   /// **'Pinned'**
   String get pinned;
 
+  /// No description provided for @place.
+  ///
+  /// In en, this message translates to:
+  /// **'Place'**
+  String get place;
+
   /// No description provided for @placeTheBarcodeInsideTheFrame.
   ///
   /// In en, this message translates to:
@@ -6176,6 +6302,12 @@ abstract class AppLocalizations {
   /// **'Pn API Tester'**
   String get pnApiTester;
 
+  /// No description provided for @pointAtASurfaceWithMoreDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Point at a surface with more detail'**
+  String get pointAtASurfaceWithMoreDetail;
+
   /// No description provided for @pointTheCameraAtAReceiptQrCode.
   ///
   /// In en, this message translates to:
@@ -6187,6 +6319,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Point the camera at the plate'**
   String get pointTheCameraAtThePlate;
+
+  /// No description provided for @pointYourCameraAtAQrCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Point your camera at a QR code'**
+  String get pointYourCameraAtAQrCode;
+
+  /// No description provided for @pointYourCameraAtTheImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Point your camera at the image'**
+  String get pointYourCameraAtTheImage;
 
   /// No description provided for @policies.
   ///
@@ -6457,6 +6601,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Quote'**
   String get quote;
+
+  /// No description provided for @record.
+  ///
+  /// In en, this message translates to:
+  /// **'Record'**
+  String get record;
+
+  /// No description provided for @recording.
+  ///
+  /// In en, this message translates to:
+  /// **'Recording'**
+  String get recording;
 
   /// No description provided for @reInquiryWithFee.
   ///
@@ -6955,6 +7111,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Resets at'**
   String get resetsAt;
+
+  /// No description provided for @resetView.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset view'**
+  String get resetView;
 
   /// No description provided for @resolution.
   ///
@@ -7652,6 +7814,12 @@ abstract class AppLocalizations {
   /// **'Sleep timer'**
   String get sleepTimer;
 
+  /// No description provided for @slowDownYouAreMovingTooFast.
+  ///
+  /// In en, this message translates to:
+  /// **'Slow down, you are moving too fast'**
+  String get slowDownYouAreMovingTooFast;
+
   /// No description provided for @slowestPaths.
   ///
   /// In en, this message translates to:
@@ -7760,6 +7928,18 @@ abstract class AppLocalizations {
   /// **'Stars'**
   String get stars;
 
+  /// No description provided for @startAr.
+  ///
+  /// In en, this message translates to:
+  /// **'Start AR'**
+  String get startAr;
+
+  /// No description provided for @startCapture.
+  ///
+  /// In en, this message translates to:
+  /// **'Start capture'**
+  String get startCapture;
+
   /// No description provided for @startDate.
   ///
   /// In en, this message translates to:
@@ -7813,6 +7993,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Stay duration'**
   String get stayDuration;
+
+  /// No description provided for @stop.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop'**
+  String get stop;
 
   /// No description provided for @storageManager.
   ///
@@ -8042,6 +8228,12 @@ abstract class AppLocalizations {
   /// **'Tags'**
   String get tags;
 
+  /// No description provided for @takePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Take photo'**
+  String get takePhoto;
+
   /// No description provided for @tapAddInTheTopRightCorner.
   ///
   /// In en, this message translates to:
@@ -8054,11 +8246,23 @@ abstract class AppLocalizations {
   /// **'Tap the Share button in Safari\'s toolbar'**
   String get tapTheShareButtonInSafarisToolbar;
 
+  /// No description provided for @tapToAddAPoint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to add a point'**
+  String get tapToAddAPoint;
+
   /// No description provided for @tapToInquire.
   ///
   /// In en, this message translates to:
   /// **'Tap to inquire'**
   String get tapToInquire;
+
+  /// No description provided for @tapToPlace.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to place'**
+  String get tapToPlace;
 
   /// No description provided for @tariff.
   ///
@@ -9116,6 +9320,18 @@ abstract class AppLocalizations {
   /// **'View debt'**
   String get viewDebt;
 
+  /// No description provided for @viewInAr.
+  ///
+  /// In en, this message translates to:
+  /// **'View in AR'**
+  String get viewInAr;
+
+  /// No description provided for @viewInYourSpace.
+  ///
+  /// In en, this message translates to:
+  /// **'View in your space'**
+  String get viewInYourSpace;
+
   /// No description provided for @viewItem.
   ///
   /// In en, this message translates to:
@@ -9175,6 +9391,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Waiting for bank confirmation…'**
   String get waitingForBankConfirmation;
+
+  /// No description provided for @waitingForLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for location'**
+  String get waitingForLocation;
 
   /// No description provided for @waitingForResponse.
   ///

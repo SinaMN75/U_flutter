@@ -44,6 +44,8 @@ enum, API service, and native feature below. No barrel juggling, no dozens of sm
 | UI / utils / extensions |   ✅    | ✅  | ✅  |  ✅   |   ✅    |  ✅   |
 | API layer (`UServices`) |   ✅    | ✅  | ✅  |  ✅   |   ✅    |  ✅   |
 | `ScreenGuard`           |   ✅    | ✅  | ⬜  |  ✅   |   ✅    |  ⬜   |
+| AR (`UArScene`, …)      |   ✅    | ✅  | ✅  |  ⬜   |   ⬜    |  ⬜   |
+| 3D viewer (`U3DViewer`) |   ✅    | ✅  | ✅  |  ⬜   |   ⬜    |  ⬜   |
 
 ⬜ = safe no-op (no OS API to prevent capture).
 
@@ -190,6 +192,28 @@ are safe no-ops.
 
 Each native feature lives in a self-contained folder with its own method channel `u/<feature>`,
 so adding another native capability is a well-defined, repeatable change.
+
+### AR & 3D — `UArScene`, `U3DViewer`, `UArGeoView`, …
+
+No pub packages: ARCore + a built-in OpenGL ES 3 glTF renderer on Android, ARKit + RealityKit on
+iOS, WebXR + a built-in WebGL2 renderer on the web. Setup per platform is documented at the top of
+`lib/components/u_ar.dart` (Android needs `implementation("com.google.ar:core:1.45.0")` in the app).
+
+```dart
+// Place products on floors, tables or walls; move / rotate / scale, photo and video.
+UArExperiences.place(items: <UArPlaceable>[
+  UArPlaceable(id: "sofa", title: "Sofa", source: UArSource.url("https://…/sofa.glb"), iosSource: UArSource.url("https://…/sofa.usdz")),
+]);
+
+// 3D product viewer with hotspots and a "View in AR" button (no permission needed).
+U3DViewer(source: UArSource.asset("assets/chair.glb"));
+
+// Shop / landmark cards around the user (visual positioning or GPS + compass).
+UArExperiences.places(places: <UArPlace>[UArPlace(id: "cafe", latitude: 35.7, longitude: 51.4, title: "Cafe")]);
+
+// Also: UArMeasure, UArFaceTryOn, UArImageTrigger, UArCodeView, UAr.scanRoom, UAr.captureObject,
+// UAr.openNativeViewer — or drive everything yourself with UArController + UArView.
+```
 
 ### `u_admin`
 A complete GetX-based admin panel bundled with the plugin (login, dashboards, blog, CMS, file

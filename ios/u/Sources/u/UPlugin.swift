@@ -5,6 +5,7 @@ public final class UPlugin: NSObject, FlutterPlugin {
     private var screenGuard: ScreenGuardHandler?
     private var media: UMediaHandler?
     private var camera: UCameraHandler?
+    private var ar: UArHandler?
 
     public static func register(
         with registrar: FlutterPluginRegistrar
@@ -25,6 +26,9 @@ public final class UPlugin: NSObject, FlutterPlugin {
         instance.camera = UCameraHandler(
             messenger: registrar.messenger(),
             registry: registrar.textures()
+        )
+        instance.ar = UArHandler(
+            registrar: registrar
         )
         registrar.addMethodCallDelegate(
             instance,
