@@ -9,7 +9,6 @@ class UTerminalResponse {
   final String? imei;
   final String? terminalId;
   final String? agreement;
-  final String? agreementHtml;
   final UBaseJson jsonData;
   final DateTime createdAt;
   final UMerchantResponse? merchant;
@@ -33,7 +32,6 @@ class UTerminalResponse {
     this.simCardNumber,
     this.simCardSerial,
     this.agreement,
-    this.agreementHtml,
     this.imei,
     this.merchant,
     this.terminalBrandId,
@@ -64,7 +62,6 @@ class UTerminalResponse {
     simCardSerial: json["simCardSerial"],
     imei: json["imei"],
     agreement: json["agreement"],
-    agreementHtml: json["agreementHtml"],
     createdAt: DateTime.parse(json["createdAt"]),
     creator: json["creator"] == null ? null : UUserResponse.fromMap(json["creator"]),
     creatorId: json["creatorId"],
@@ -77,7 +74,6 @@ class UTerminalResponse {
     "id": id,
     "terminalId": terminalId,
     "agreement": agreement,
-    "agreementHtml": agreementHtml,
     "serial": serial,
     "simCardNumber": simCardNumber,
     "simCardSerial": simCardSerial,
