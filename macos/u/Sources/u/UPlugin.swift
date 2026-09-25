@@ -7,6 +7,7 @@ public class UPlugin: NSObject, FlutterPlugin {
   private var screenGuard: ScreenGuardHandler?
   private var media: UMediaHandler?
   private var camera: UCameraHandler?
+  private var files: UFilesHandler?
 
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "u", binaryMessenger: registrar.messenger)
@@ -17,6 +18,7 @@ public class UPlugin: NSObject, FlutterPlugin {
       messenger: registrar.messenger, registry: registrar.textures)
     instance.camera = UCameraHandler(
       messenger: registrar.messenger, registry: registrar.textures)
+    instance.files = UFilesHandler(messenger: registrar.messenger)
     registrar.addMethodCallDelegate(instance, channel: channel)
   }
 

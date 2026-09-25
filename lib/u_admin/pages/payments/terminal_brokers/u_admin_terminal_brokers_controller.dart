@@ -3,6 +3,7 @@ part of "../../../u_admin.dart";
 class UAdminTerminalBrokerController extends UBaseController {
   List<UTerminalBrokerResponse> list = <UTerminalBrokerResponse>[];
 
+  final TextEditingController codeFilter = TextEditingController();
   final TextEditingController titleFilter = TextEditingController();
 
   Future<void> init() async {
@@ -15,6 +16,7 @@ class UAdminTerminalBrokerController extends UBaseController {
       p: UTerminalBrokerReadParams(
         pageNumber: pageNumber.value,
         pageSize: pageSize,
+        code: codeFilter.text.nullIfEmpty(),
         title: titleFilter.text.nullIfEmpty(),
         orderBy: tagOrderBy.value.number,
         selectorArgs: const UTerminalBrokerSelectorArgs(),
@@ -33,6 +35,7 @@ class UAdminTerminalBrokerController extends UBaseController {
   void applyFilters() => reloadFirstPage(read);
 
   void clearFilters() {
+    codeFilter.clear();
     titleFilter.clear();
     reloadFirstPage(read);
   }
@@ -97,6 +100,7 @@ class UAdminTerminalBrokerController extends UBaseController {
 
   @override
   void dispose() {
+    codeFilter.dispose();
     titleFilter.dispose();
     super.dispose();
   }

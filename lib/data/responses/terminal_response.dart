@@ -12,9 +12,9 @@ class UTerminalResponse {
   final UBaseJson jsonData;
   final DateTime createdAt;
   final UMerchantResponse? merchant;
-  final String? terminalBrandId;
+  final String terminalBrandId;
   final UTerminalBrandResponse? terminalBrand;
-  final String? terminalBrokerId;
+  final String terminalBrokerId;
   final UTerminalBrokerResponse? terminalBroker;
   final UUserResponse? creator;
   final String? creatorId;
@@ -28,15 +28,15 @@ class UTerminalResponse {
     required this.createdAt,
     required this.id,
     required this.adminUserIds,
+    required this.terminalBrandId,
+    required this.terminalBrokerId,
     this.terminalId,
     this.simCardNumber,
     this.simCardSerial,
     this.agreement,
     this.imei,
     this.merchant,
-    this.terminalBrandId,
     this.terminalBrand,
-    this.terminalBrokerId,
     this.terminalBroker,
     this.creator,
     this.creatorId,
@@ -54,9 +54,9 @@ class UTerminalResponse {
     serial: json["serial"],
     jsonData: UBaseJson.fromMap(json["jsonData"]),
     merchant: json["merchant"] == null ? null : UMerchantResponse.fromMap(json["merchant"]),
-    terminalBrandId: json["terminalBrandId"],
+    terminalBrandId: json["terminalBrandId"] as String,
     terminalBrand: json["terminalBrand"] == null ? null : UTerminalBrandResponse.fromMap(json["terminalBrand"]),
-    terminalBrokerId: json["terminalBrokerId"],
+    terminalBrokerId: json["terminalBrokerId"] as String,
     terminalBroker: json["terminalBroker"] == null ? null : UTerminalBrokerResponse.fromMap(json["terminalBroker"]),
     simCardNumber: json["simCardNumber"],
     simCardSerial: json["simCardSerial"],
@@ -181,6 +181,7 @@ class UTerminalImportResponse {
 }
 
 class UTerminalBrandResponse {
+  final String code;
   final String title;
   final String model;
   final List<int> tags;
@@ -192,6 +193,7 @@ class UTerminalBrandResponse {
   final List<String> adminUserIds;
 
   UTerminalBrandResponse({
+    required this.code,
     required this.title,
     required this.model,
     required this.tags,
@@ -210,6 +212,7 @@ class UTerminalBrandResponse {
   factory UTerminalBrandResponse.fromMap(
     Map<String, dynamic> json,
   ) => UTerminalBrandResponse(
+    code: json["code"] ?? "",
     title: json["title"],
     model: json["model"],
     tags: List<int>.from(json["tags"]!.map((dynamic x) => x)),
@@ -226,6 +229,7 @@ class UTerminalBrandResponse {
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
+    "code": code,
     "title": title,
     "model": model,
     "tags": List<dynamic>.from(tags.map((int x) => x)),
@@ -241,6 +245,7 @@ class UTerminalBrandResponse {
 }
 
 class UTerminalBrokerResponse {
+  final String code;
   final String title;
   final List<int> tags;
   final String id;
@@ -251,6 +256,7 @@ class UTerminalBrokerResponse {
   final List<String> adminUserIds;
 
   UTerminalBrokerResponse({
+    required this.code,
     required this.title,
     required this.tags,
     required this.id,
@@ -268,6 +274,7 @@ class UTerminalBrokerResponse {
   factory UTerminalBrokerResponse.fromMap(
     Map<String, dynamic> json,
   ) => UTerminalBrokerResponse(
+    code: json["code"] ?? "",
     title: json["title"],
     tags: List<int>.from(json["tags"]!.map((dynamic x) => x)),
     id: json["id"],
@@ -283,6 +290,7 @@ class UTerminalBrokerResponse {
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
+    "code": code,
     "title": title,
     "tags": List<dynamic>.from(tags.map((int x) => x)),
     "id": id,

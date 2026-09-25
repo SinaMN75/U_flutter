@@ -47,6 +47,7 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
     desktopHeader: () => UAdminTable.header(
       <String>[
         U.s.logo,
+        U.s.code,
         U.s.title,
         U.s.representative,
         U.s.phoneNumber,
@@ -63,6 +64,7 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
     padding: UAdminTable.rowPadding,
     children: <Widget>[
       _thumb(i.jsonData.logoBase64).alignAtCenter().expanded(),
+      UAdminTable.cell(i.code),
       UAdminTable.cell(i.title),
       UAdminTable.cell(i.jsonData.representative ?? "---"),
       UAdminTable.cell(i.jsonData.phoneNumber ?? "---"),
@@ -76,6 +78,7 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
     title: i.title,
     trailing: _menu(i),
     fields: <UAdminField>[
+      UAdminField(U.s.code, i.code),
       UAdminField(U.s.representative, i.jsonData.representative ?? "---"),
       UAdminField(U.s.phoneNumber, i.jsonData.phoneNumber ?? "---"),
       UAdminField(U.s.createdAt, i.createdAt.toJalaliDate()),
@@ -121,6 +124,11 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
           ],
         ).pSymmetric(vertical: 6),
         UTextField(
+          controller: c.codeFilter,
+          labelText: U.s.code,
+          margin: const EdgeInsets.symmetric(vertical: 6),
+        ),
+        UTextField(
           controller: c.titleFilter,
           labelText: U.s.title,
           margin: const EdgeInsets.symmetric(vertical: 6),
@@ -149,6 +157,7 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
   void _showFormDialog({UTerminalBrokerResponse? item}) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final UAdminFields f = UAdminFields();
+    final TextEditingController code = f.text(item?.code);
     final TextEditingController title = f.text(item?.title);
     final TextEditingController registrationNumber = f.text(item?.jsonData.registrationNumber);
     final TextEditingController nationalCode = f.text(item?.jsonData.nationalCode);
@@ -175,6 +184,12 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
                 child: UColumn(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
+                    UTextField(
+                      controller: code,
+                      labelText: U.s.code,
+                      validator: UValidators.required(message: U.s.required),
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
                     UTextField(
                       controller: title,
                       labelText: U.s.title,
@@ -246,6 +261,7 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
                             c.create(
                               p: UTerminalBrokerCreateParams(
                                 tags: <int>[TagTerminalBroker.test.number],
+                                code: code.text.trim(),
                                 title: title.text.trim(),
                                 registrationNumber: registrationNumber.text.trim(),
                                 nationalCode: nationalCode.text.trim(),
@@ -264,6 +280,7 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
                             c.update(
                               p: UTerminalBrokerUpdateParams(
                                 id: item.id,
+                                code: code.text.trim(),
                                 title: title.text.trim(),
                                 registrationNumber: registrationNumber.text.trim(),
                                 nationalCode: nationalCode.text.trim(),

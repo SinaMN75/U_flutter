@@ -27,8 +27,9 @@ class DemoSection extends StatelessWidget {
         spacing: 10,
         padding: const EdgeInsets.all(16),
         children: <Widget>[
-          UTextTitleMedium(title, fontWeight: FontWeight.w700),
-          UTextBodySmall(description, color: scheme.onSurfaceVariant),
+          UTextTitleMedium(title, fontWeight: FontWeight.w700, maxLines: 2),
+          // UText ellipsizes by default, which truncates to one line unless maxLines is set.
+          UTextBodySmall(description, color: scheme.onSurfaceVariant, maxLines: 12),
           const Divider(height: 1),
           Padding(padding: const EdgeInsets.symmetric(vertical: 4), child: child),
           if (code != null) _CodeBlock(code: code!),
@@ -59,7 +60,7 @@ class _CodeBlock extends StatelessWidget {
           height: 1.5,
           color: scheme.onSurface,
         ),
-      ),
+      ).ltr(),
     );
   }
 }

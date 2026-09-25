@@ -24,7 +24,7 @@ class GalleryPage extends StatelessWidget {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
-            child: UTextBodyMedium(intro, color: scheme.onSurfaceVariant),
+            child: UTextBodyMedium(intro, color: scheme.onSurfaceVariant, maxLines: 8),
           ),
           ...sections,
         ],

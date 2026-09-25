@@ -3,6 +3,7 @@ part of "../../../u_admin.dart";
 class UAdminTerminalBrandController extends UBaseController {
   List<UTerminalBrandResponse> list = <UTerminalBrandResponse>[];
 
+  final TextEditingController codeFilter = TextEditingController();
   final TextEditingController titleFilter = TextEditingController();
   final TextEditingController modelFilter = TextEditingController();
 
@@ -16,6 +17,7 @@ class UAdminTerminalBrandController extends UBaseController {
       p: UTerminalBrandReadParams(
         pageNumber: pageNumber.value,
         pageSize: pageSize,
+        code: codeFilter.text.nullIfEmpty(),
         title: titleFilter.text.nullIfEmpty(),
         model: modelFilter.text.nullIfEmpty(),
         orderBy: tagOrderBy.value.number,
@@ -35,6 +37,7 @@ class UAdminTerminalBrandController extends UBaseController {
   void applyFilters() => reloadFirstPage(read);
 
   void clearFilters() {
+    codeFilter.clear();
     titleFilter.clear();
     modelFilter.clear();
     reloadFirstPage(read);
@@ -100,6 +103,7 @@ class UAdminTerminalBrandController extends UBaseController {
 
   @override
   void dispose() {
+    codeFilter.dispose();
     titleFilter.dispose();
     modelFilter.dispose();
     super.dispose();

@@ -215,6 +215,54 @@ UArExperiences.places(places: <UArPlace>[UArPlace(id: "cafe", latitude: 35.7, lo
 // UAr.openNativeViewer — or drive everything yourself with UArController + UArView.
 ```
 
+### Downloads & storage — `UDownloadManager`, `UFileStorage`
+
+One engine for every kind of download on all six platforms: silent fetches, a persistent
+IDM-style queue with segmented (multi-connection) transfers, pause/resume across restarts,
+checksums, mirrors, speed limits, wifi-only rules and scheduling.
+
+```dart
+// Silent, in memory.
+final Uint8List bytes = await UDownloadManager.instance.fetchBytes(url);
+
+// Into the user's Downloads (MediaStore / Files app / ~/Downloads / the browser).
+await UDownloadManager.instance.download(url);
+
+// Encrypted while downloading — plaintext never touches the disk.
+await UDownloadManager.instance.enqueue(UDownloadRequest(url: url, destination: const UDownloadDestination.vault("lesson-1")));
+
+// Hidden source: resolve an id to a (signed, short-lived) URL per attempt; the URL is never stored.
+UDownloadManager.instance.urlResolver = (UDownloadTask task) async => (await api.signedUrl(task.request.sourceId!)).url;
+await UDownloadManager.instance.enqueue(const UDownloadRequest(sourceId: "file-42", connections: 8));
+
+// OS-owned: keeps going after the app is killed (DownloadManager / background URLSession / BITS).
+await UDownloadManager.instance.enqueue(UDownloadRequest(url: url, useSystemDownloader: true));
+
+// UI
+UNavigator.push(const UDownloadManagerPage());
+UDownloadButton(request: UDownloadRequest(url: url));
+```
+
+`UFileStorage` stores keyed files in four buckets — `support` (private, persistent), `cache`
+(size-capped LRU), `vault` (encrypted at rest, per-file keys, master key in Keystore / Keychain /
+Credential Manager / Secret Service / WebCrypto) and `temp` — with expiry, MIME types, checksums,
+streaming and ranged reads. On the web everything lives in IndexedDB.
+
+Host-app setup:
+
+* **iOS** — to show downloads in the Files app, add `UIFileSharingEnabled` and
+  `LSSupportsOpeningDocumentsInPlace` (both `true`) to `Info.plist`.
+* **macOS** — sandboxed apps need `com.apple.security.files.downloads.read-write` (Downloads) and
+  `com.apple.security.files.user-selected.read-write` ("save as") entitlements, plus
+  `com.apple.security.network.client`.
+* **Android** — nothing to add: the plugin declares the dataSync foreground service, the
+  FileProvider and `WRITE_EXTERNAL_STORAGE` (API ≤ 28 only). Ask for `POST_NOTIFICATIONS` on
+  Android 13+ if you want the progress notification to be visible.
+* **Linux** — install `libsecret-1-dev` at build time to keep the vault key in the Secret Service;
+  without it the key falls back to a private file.
+* **Web** — cross-origin downloads need CORS, and segmented downloads need
+  `Access-Control-Expose-Headers: Content-Range, Accept-Ranges, ETag`.
+
 ### `u_admin`
 A complete GetX-based admin panel bundled with the plugin (login, dashboards, blog, CMS, file
 manager, hotel/dorm suite, parking, payments, wallet, users, logs, push, settings). Reuse the
@@ -270,8 +318,9 @@ Everything below is exported from the single `package:u/utilities.dart` import.
 | --- | --- |
 | `U` | App root config: `baseUrl`, `apiKey`, `user`, `contents`, `categories`, tabs, `s` (l10n) |
 | `UServices` | Entry point to all 31 API service areas |
-| `UHttpClient` | Low-level HTTP: `send`, `upload`, multipart, `downloadFile`, progress |
-| `ULocalStorage` / `UFileStorage` | Key-value + file persistence (expiry, encryption) |
+| `UHttpClient` | Low-level HTTP: `send`, `upload`, multipart, progress |
+| `UDownloadManager` | Segmented, resumable downloads to memory, storage, the vault, Downloads, a path or "save as" |
+| `ULocalStorage` / `UFileStorage` | Key-value + bucketed file storage (support, LRU cache, encrypted vault, temp) |
 | `UNavigator` | `push/off/offAll`, `dialog`, `alert`, `confirm(Async)`, `inputDialog`, `bottomSheet`, `datePicker`, `colorPicker`, `timePicker`, overlays |
 | `UToast` | `success/error/warning/info`, `snackBar`, `banner`, `toast` |
 | `ULoading` | Global blocking spinner: `show`, `dismiss`, `isShowing` |

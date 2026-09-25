@@ -46,6 +46,7 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
     emptyText: U.s.noItemsFound(U.s.brands),
     desktopHeader: () => UAdminTable.header(
       <String>[
+        U.s.code,
         U.s.title,
         U.s.model,
         U.s.deviceType,
@@ -62,6 +63,7 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
     color: UAdminTable.rowColor(context, index),
     padding: UAdminTable.rowPadding,
     children: <Widget>[
+      UAdminTable.cell(i.code),
       UAdminTable.cell(i.title),
       UAdminTable.cell(i.model),
       UAdminTable.cell(_deviceTypeOf(i)?.localizedTitle ?? "---"),
@@ -76,6 +78,7 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
     title: i.title,
     trailing: _menu(i),
     fields: <UAdminField>[
+      UAdminField(U.s.code, i.code),
       UAdminField(U.s.model, i.model),
       UAdminField(U.s.deviceType, _deviceTypeOf(i)?.localizedTitle ?? "---"),
       UAdminField(U.s.connectionType, _connectionTypeOf(i)?.localizedTitle ?? "---"),
@@ -115,6 +118,11 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
             ),
           ],
         ).pSymmetric(vertical: 6),
+        UTextField(
+          controller: c.codeFilter,
+          labelText: U.s.code,
+          margin: const EdgeInsets.symmetric(vertical: 6),
+        ),
         UTextField(
           controller: c.titleFilter,
           labelText: U.s.title,
@@ -157,6 +165,7 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
   void _showCreateDialog() {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final UAdminFields f = UAdminFields();
+    final TextEditingController codeController = f.text();
     final TextEditingController titleController = f.text();
     final TextEditingController modelController = f.text();
     final URx<TagTerminalBrand> deviceType = TagTerminalBrand.wallCashless.obs;
@@ -174,6 +183,12 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
                 child: UColumn(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
+                    UTextField(
+                      controller: codeController,
+                      labelText: U.s.code,
+                      validator: UValidators.required(message: U.s.required),
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
                     UTextField(
                       controller: titleController,
                       labelText: U.s.title,
@@ -212,6 +227,7 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
                           UNavigator.back();
                           c.create(
                             p: UTerminalBrandCreateParams(
+                              code: codeController.text.trim(),
                               title: titleController.text.trim(),
                               model: modelController.text.trim(),
                               tags: <int>[deviceType.value.number, connectionType.value.number],
@@ -233,6 +249,7 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
   void _showEditDialog(UTerminalBrandResponse i) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final UAdminFields f = UAdminFields();
+    final TextEditingController code = f.text(i.code);
     final TextEditingController title = f.text(i.title);
     final TextEditingController model = f.text(i.model);
     final URx<TagTerminalBrand> deviceType = (_deviceTypeOf(i) ?? TagTerminalBrand.wallCashless).obs;
@@ -250,6 +267,12 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
                 child: UColumn(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
+                    UTextField(
+                      controller: code,
+                      labelText: U.s.code,
+                      validator: UValidators.required(message: U.s.required),
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
                     UTextField(
                       controller: title,
                       labelText: U.s.title,
@@ -289,6 +312,7 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
                           c.update(
                             p: UTerminalBrandUpdateParams(
                               id: i.id,
+                              code: code.text.trim().nullIfEmpty(),
                               title: title.text.nullIfEmpty(),
                               model: model.text.nullIfEmpty(),
                               tags: <int>[deviceType.value.number, connectionType.value.number],

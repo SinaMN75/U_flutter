@@ -293,6 +293,8 @@ class UTerminalReadParams {
   final String? terminalId;
   final String? insId;
   final String? merchantId;
+  final String? terminalBrandId;
+  final String? terminalBrokerId;
   final UTerminalSelectorArgs selectorArgs;
   final int? orderBy;
 
@@ -312,6 +314,8 @@ class UTerminalReadParams {
     this.terminalId,
     this.insId,
     this.merchantId,
+    this.terminalBrandId,
+    this.terminalBrokerId,
     this.orderBy,
   });
 
@@ -342,6 +346,8 @@ class UTerminalReadParams {
     terminalId: json["terminalId"],
     insId: json["insId"],
     merchantId: json["merchantId"],
+    terminalBrandId: json["terminalBrandId"],
+    terminalBrokerId: json["terminalBrokerId"],
     selectorArgs: json["selectorArgs"] == null ? const UTerminalSelectorArgs() : UTerminalSelectorArgs.fromMap(json["selectorArgs"]),
     orderBy: json["orderBy"],
   );
@@ -361,6 +367,8 @@ class UTerminalReadParams {
     "terminalId": terminalId,
     "insId": insId,
     "merchantId": merchantId,
+    "terminalBrandId": terminalBrandId,
+    "terminalBrokerId": terminalBrokerId,
     "selectorArgs": selectorArgs.toMap(),
     "orderBy": orderBy,
   };
@@ -369,6 +377,7 @@ class UTerminalReadParams {
 class UTerminalBrandCreateParams {
   final List<int> tags;
   final String? id;
+  final String code;
   final String title;
   final String model;
   final String detail1;
@@ -378,6 +387,7 @@ class UTerminalBrandCreateParams {
 
   UTerminalBrandCreateParams({
     required this.tags,
+    required this.code,
     required this.title,
     required this.model,
     this.id,
@@ -394,6 +404,7 @@ class UTerminalBrandCreateParams {
   factory UTerminalBrandCreateParams.fromMap(Map<String, dynamic> json) => UTerminalBrandCreateParams(
     tags: List<int>.from(json["tags"]!.map((dynamic x) => x)),
     id: json["id"],
+    code: json["code"] as String,
     title: json["title"] as String,
     model: json["model"] as String,
     detail1: json["detail1"] ?? "",
@@ -405,6 +416,7 @@ class UTerminalBrandCreateParams {
   Map<String, dynamic> toMap() => <String, dynamic>{
     "tags": List<dynamic>.from(tags.map((int x) => x)),
     "id": id,
+    "code": code,
     "title": title,
     "model": model,
     "detail1": detail1,
@@ -422,6 +434,7 @@ class UTerminalBrandReadParams {
   final List<int>? tags;
   final List<String>? ids;
   final String? creatorId;
+  final String? code;
   final String? title;
   final String? model;
   final UTerminalBrandSelectorArgs selectorArgs;
@@ -436,6 +449,7 @@ class UTerminalBrandReadParams {
     this.tags,
     this.ids,
     this.creatorId,
+    this.code,
     this.title,
     this.model,
     this.orderBy,
@@ -453,6 +467,7 @@ class UTerminalBrandReadParams {
     tags: json["tags"] == null ? <int>[] : List<int>.from(json["tags"]!.map((dynamic x) => x)),
     ids: json["ids"] == null ? <String>[] : List<String>.from(json["ids"]!.map((dynamic x) => x)),
     creatorId: json["creatorId"],
+    code: json["code"],
     title: json["title"],
     model: json["model"],
     selectorArgs: json["selectorArgs"] == null ? const UTerminalBrandSelectorArgs() : UTerminalBrandSelectorArgs.fromMap(json["selectorArgs"]),
@@ -467,6 +482,7 @@ class UTerminalBrandReadParams {
     "tags": tags == null ? <dynamic>[] : List<dynamic>.from(tags!.map((int x) => x)),
     "ids": ids == null ? <dynamic>[] : List<dynamic>.from(ids!.map((String x) => x)),
     "creatorId": creatorId,
+    "code": code,
     "title": title,
     "model": model,
     "selectorArgs": selectorArgs.toMap(),
@@ -476,6 +492,7 @@ class UTerminalBrandReadParams {
 
 class UTerminalBrandUpdateParams {
   final String id;
+  final String? code;
   final String? title;
   final String? model;
   final List<int>? tags;
@@ -489,6 +506,7 @@ class UTerminalBrandUpdateParams {
 
   UTerminalBrandUpdateParams({
     required this.id,
+    this.code,
     this.title,
     this.model,
     this.tags,
@@ -507,6 +525,7 @@ class UTerminalBrandUpdateParams {
 
   factory UTerminalBrandUpdateParams.fromMap(Map<String, dynamic> json) => UTerminalBrandUpdateParams(
     id: json["id"],
+    code: json["code"],
     title: json["title"],
     model: json["model"],
     tags: json["tags"] == null ? null : List<int>.from(json["tags"]!.map((dynamic x) => x)),
@@ -521,6 +540,7 @@ class UTerminalBrandUpdateParams {
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "id": id,
+    "code": code,
     "title": title,
     "model": model,
     "tags": tags == null ? null : List<dynamic>.from(tags!.map((int x) => x)),
@@ -535,6 +555,7 @@ class UTerminalBrandUpdateParams {
 }
 
 class UTerminalBrokerCreateParams {
+  final String code;
   final String title;
   final String registrationNumber;
   final String nationalCode;
@@ -555,6 +576,7 @@ class UTerminalBrokerCreateParams {
   final List<String>? adminUserIds;
 
   UTerminalBrokerCreateParams({
+    required this.code,
     required this.title,
     required this.registrationNumber,
     required this.nationalCode,
@@ -580,6 +602,7 @@ class UTerminalBrokerCreateParams {
   String toJson() => json.encode(toMap());
 
   factory UTerminalBrokerCreateParams.fromMap(Map<String, dynamic> json) => UTerminalBrokerCreateParams(
+    code: json["code"],
     title: json["title"],
     registrationNumber: json["registrationNumber"],
     nationalCode: json["nationalCode"],
@@ -601,6 +624,7 @@ class UTerminalBrokerCreateParams {
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
+    "code": code,
     "title": title,
     "registrationNumber": registrationNumber,
     "nationalCode": nationalCode,
@@ -630,6 +654,7 @@ class UTerminalBrokerReadParams {
   final List<int>? tags;
   final List<String>? ids;
   final String? creatorId;
+  final String? code;
   final String? title;
   final UTerminalBrokerSelectorArgs selectorArgs;
   final int? orderBy;
@@ -643,6 +668,7 @@ class UTerminalBrokerReadParams {
     this.tags,
     this.ids,
     this.creatorId,
+    this.code,
     this.title,
     this.orderBy,
   });
@@ -659,6 +685,7 @@ class UTerminalBrokerReadParams {
     tags: json["tags"] == null ? <int>[] : List<int>.from(json["tags"]!.map((dynamic x) => x)),
     ids: json["ids"] == null ? <String>[] : List<String>.from(json["ids"]!.map((dynamic x) => x)),
     creatorId: json["creatorId"],
+    code: json["code"],
     title: json["title"],
     selectorArgs: json["selectorArgs"] == null ? const UTerminalBrokerSelectorArgs() : UTerminalBrokerSelectorArgs.fromMap(json["selectorArgs"]),
     orderBy: json["orderBy"],
@@ -672,6 +699,7 @@ class UTerminalBrokerReadParams {
     "tags": tags == null ? <dynamic>[] : List<dynamic>.from(tags!.map((int x) => x)),
     "ids": ids == null ? <dynamic>[] : List<dynamic>.from(ids!.map((String x) => x)),
     "creatorId": creatorId,
+    "code": code,
     "title": title,
     "selectorArgs": selectorArgs.toMap(),
     "orderBy": orderBy,
@@ -679,6 +707,7 @@ class UTerminalBrokerReadParams {
 }
 
 class UTerminalBrokerUpdateParams {
+  final String? code;
   final String? title;
   final String? registrationNumber;
   final String? nationalCode;
@@ -703,6 +732,7 @@ class UTerminalBrokerUpdateParams {
 
   UTerminalBrokerUpdateParams({
     required this.id,
+    this.code,
     this.title,
     this.registrationNumber,
     this.nationalCode,
@@ -730,6 +760,7 @@ class UTerminalBrokerUpdateParams {
   String toJson() => json.encode(toMap());
 
   factory UTerminalBrokerUpdateParams.fromMap(Map<String, dynamic> json) => UTerminalBrokerUpdateParams(
+    code: json["code"],
     title: json["title"],
     registrationNumber: json["registrationNumber"],
     nationalCode: json["nationalCode"],
@@ -754,6 +785,7 @@ class UTerminalBrokerUpdateParams {
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
+    "code": code,
     "title": title,
     "registrationNumber": registrationNumber,
     "nationalCode": nationalCode,

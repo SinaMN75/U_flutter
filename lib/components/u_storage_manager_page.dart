@@ -9,8 +9,7 @@ class UStorageManagerPage extends StatefulWidget {
 
 class _UStorageManagerPageState extends State<UStorageManagerPage> {
   List<_LocalEntry> _localEntries = <_LocalEntry>[];
-  List<_TextFile> _textFiles = <_TextFile>[];
-  Map<String, int> _binaryFiles = <String, int>{};
+  List<_FileEntry> _files = <_FileEntry>[];
   bool _loading = true;
 
   @override
@@ -44,19 +43,18 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
   }
 
   Future<void> _loadFiles() async {
-    if (kIsWeb) {
-      _textFiles = <_TextFile>[];
-      _binaryFiles = <String, int>{};
-      return;
+    await UFileStorage.init();
+    final List<_FileEntry> files = <_FileEntry>[];
+    for (final UStorageEntry entry in UFileStorage.entries()) {
+      final String mime = entry.mimeType ?? "";
+      final bool isText = (mime.startsWith("text/") || mime.contains("json")) && entry.size <= 64 * 1024;
+      files.add(_FileEntry(entry: entry, content: isText ? await UFileStorage.getString(entry.key, bucket: entry.bucket) : null));
     }
-    final List<String> keys = await UFileStorage.getKeys();
-    final List<_TextFile> texts = <_TextFile>[];
-    for (final String key in keys) {
-      texts.add(_TextFile(key: key, content: await UFileStorage.getString(key)));
-    }
-    texts.sort((_TextFile a, _TextFile b) => a.key.compareTo(b.key));
-    _textFiles = texts;
-    _binaryFiles = UFileStorage.allFilesStorageInfo();
+    files.sort((_FileEntry a, _FileEntry b) {
+      final int byBucket = a.entry.bucket.index.compareTo(b.entry.bucket.index);
+      return byBucket != 0 ? byBucket : a.entry.key.compareTo(b.entry.key);
+    });
+    _files = files;
   }
 
   Future<void> _deleteLocal(_LocalEntry entry) async {
@@ -66,9 +64,9 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
     await _loadAll();
   }
 
-  Future<void> _deleteFile(String key) async {
+  Future<void> _deleteFile(UStorageEntry entry) async {
     if (!await UNavigator.confirmAsync(title: U.s.delete, message: U.s.areYouSureYouWantToDeleteThisEntryThisActionCannotBeUndone, destructive: true)) return;
-    await UFileStorage.remove(key);
+    await UFileStorage.remove(entry.key, bucket: entry.bucket);
     await _loadAll();
   }
 
@@ -134,34 +132,42 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
   }
 
   Widget _filesTab(ColorScheme cs) {
-    if (kIsWeb) return UEmptyState(title: U.s.noData);
-    if (_textFiles.isEmpty && _binaryFiles.isEmpty) return UEmptyState(title: U.s.noData);
-    final List<MapEntry<String, int>> binaries = _binaryFiles.entries.toList()..sort((MapEntry<String, int> a, MapEntry<String, int> b) => a.key.compareTo(b.key));
-    final int totalBytes = _binaryFiles.values.fold(0, (int sum, int s) => sum + s);
+    if (_files.isEmpty) return UEmptyState(title: U.s.noData);
     return UColumn(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        _summaryBar(cs, "${U.s.totalSize}: ${_formatBytes(totalBytes)}", onClear: _textFiles.isEmpty && binaries.isEmpty ? null : _clearFiles),
+        _summaryBar(cs, "${U.s.totalSize}: ${_formatBytes(UFileStorage.usage())}", onClear: _clearFiles),
         SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
           child: UColumn(
             spacing: 8,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              if (_textFiles.isNotEmpty) ...<Widget>[
-                _sectionLabel(cs, U.s.textFiles, Icons.description_outlined),
-                ..._textFiles.map((_TextFile f) => _textFileCard(cs, f)),
-              ],
-              if (binaries.isNotEmpty) ...<Widget>[
-                _sectionLabel(cs, U.s.binaryFiles, Icons.data_object_rounded),
-                ...binaries.map((MapEntry<String, int> e) => _binaryFileCard(cs, e.key, e.value)),
-              ],
+              for (final UStorageBucket bucket in UStorageBucket.values)
+                if (_files.any((_FileEntry f) => f.entry.bucket == bucket)) ...<Widget>[
+                  _sectionLabel(cs, "${_bucketLabel(bucket)} · ${_formatBytes(UFileStorage.usage(bucket: bucket))}", _bucketIcon(bucket)),
+                  ..._files.where((_FileEntry f) => f.entry.bucket == bucket).map((_FileEntry f) => _fileCard(cs, f)),
+                ],
             ],
           ),
         ).expanded(),
       ],
     );
   }
+
+  String _bucketLabel(UStorageBucket bucket) => switch (bucket) {
+    UStorageBucket.support => U.s.storageSupport,
+    UStorageBucket.cache => U.s.storageCache,
+    UStorageBucket.vault => U.s.storageVault,
+    UStorageBucket.temp => U.s.storageTemp,
+  };
+
+  IconData _bucketIcon(UStorageBucket bucket) => switch (bucket) {
+    UStorageBucket.support => Icons.folder_outlined,
+    UStorageBucket.cache => Icons.cached_rounded,
+    UStorageBucket.vault => Icons.lock_outline_rounded,
+    UStorageBucket.temp => Icons.hourglass_empty_rounded,
+  };
 
   Widget _summaryBar(ColorScheme cs, String label, {VoidCallback? onClear}) => Padding(
     padding: const EdgeInsets.fromLTRB(16, 12, 8, 4),
@@ -225,7 +231,7 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
     ),
   );
 
-  Widget _textFileCard(ColorScheme cs, _TextFile f) => UContainer(
+  Widget _fileCard(ColorScheme cs, _FileEntry f) => UContainer(
     padding: const EdgeInsets.all(14),
     radius: 16,
     color: cs.surface,
@@ -238,48 +244,26 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
           spacing: 8,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            Icon(f.entry.isEncrypted ? Icons.lock_outline_rounded : Icons.insert_drive_file_outlined, size: 20, color: cs.primary),
             Expanded(
-              child: UTextTitleSmall("${f.key}.txt", fontWeight: FontWeight.w700, maxLines: 2, overflow: TextOverflow.ellipsis),
+              child: UTextTitleSmall(f.entry.key, fontWeight: FontWeight.w700, maxLines: 2, overflow: TextOverflow.ellipsis),
             ),
-            _typeChip(cs, _formatBytes(f.content?.length ?? 0)),
-            _cardActions(cs, onCopy: f.content == null ? null : () => _copy(f.content!), onDelete: () => _deleteFile(f.key)),
+            _typeChip(cs, _formatBytes(f.entry.size)),
+            _cardActions(cs, onCopy: f.content == null ? null : () => _copy(f.content!), onDelete: () => _deleteFile(f.entry)),
           ],
         ),
-        _valueBlock(cs, f.content ?? ""),
-      ],
-    ),
-  );
-
-  Widget _binaryFileCard(ColorScheme cs, String key, int size) => UContainer(
-    padding: const EdgeInsets.all(14),
-    radius: 16,
-    color: cs.surface,
-    border: Border.all(color: cs.outlineVariant.withValues(alpha: 0.5)),
-    child: URow(
-      spacing: 12,
-      children: <Widget>[
-        UContainer(
-          width: 44,
-          height: 44,
-          radius: 12,
-          color: cs.primary.withValues(alpha: 0.12),
-          alignment: Alignment.center,
-          child: Icon(Icons.insert_drive_file_outlined, color: cs.primary, size: 22),
-        ),
-        UColumn(
-          spacing: 2,
-          expanded: 1,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            UTextTitleSmall("$key.dat", fontWeight: FontWeight.w700, maxLines: 1, overflow: TextOverflow.ellipsis),
-            UTextBodySmall("${U.s.size}: ${_formatBytes(size)}", color: cs.onSurfaceVariant),
-          ],
-        ),
-        IconButton(
-          tooltip: U.s.delete,
-          onPressed: () => _deleteFile(key),
-          icon: Icon(Icons.delete_outline_rounded, color: cs.error),
-        ),
+        if (f.content != null) _valueBlock(cs, f.content!),
+        if (f.entry.mimeType != null || f.entry.expires != null)
+          URow(
+            spacing: 8,
+            children: <Widget>[
+              if (f.entry.mimeType != null) UTextBodySmall(f.entry.mimeType!, color: cs.onSurfaceVariant),
+              if (f.entry.expires != null) ...<Widget>[
+                Icon(Icons.schedule_rounded, size: 14, color: cs.onSurfaceVariant),
+                UTextBodySmall("${U.s.expires}: ${f.entry.expires!.formatDate("yyyy/MM/dd HH:mm")}", color: cs.onSurfaceVariant),
+              ],
+            ],
+          ),
       ],
     ),
   );
@@ -348,9 +332,9 @@ class _LocalEntry {
   final DateTime? expiry;
 }
 
-class _TextFile {
-  const _TextFile({required this.key, this.content});
+class _FileEntry {
+  const _FileEntry({required this.entry, this.content});
 
-  final String key;
+  final UStorageEntry entry;
   final String? content;
 }

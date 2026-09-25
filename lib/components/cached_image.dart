@@ -32,23 +32,14 @@ class _CachedNetworkImageState extends State<CachedNetworkImage> {
   }
 
   Future<Uint8List?> _loadImage() async {
-    final String diskKey = "img_${widget.imageUrl.hashCode}";
-    if (kIsWeb) {
-      final String? cachedBase64 = ULocalStorage.getString(widget.imageUrl);
-      if (cachedBase64 != null) return base64.decode(cachedBase64);
-    } else {
-      final Uint8List? cachedBytes = await UFileStorage.getBytes(diskKey);
-      if (cachedBytes != null) return cachedBytes;
-    }
+    final String key = "img_${widget.imageUrl}";
+    final Uint8List? cached = await UFileStorage.getBytes(key, bucket: UStorageBucket.cache);
+    if (cached != null) return cached;
     try {
       final Response response = await get(Uri.parse(widget.imageUrl));
       if (response.statusCode == 200) {
         final Uint8List bytes = response.bodyBytes;
-        if (kIsWeb) {
-          ULocalStorage.set(widget.imageUrl, base64.encode(bytes));
-        } else {
-          await UFileStorage.setBytes(diskKey, bytes);
-        }
+        await UFileStorage.setBytes(key, bytes, bucket: UStorageBucket.cache, mimeType: response.headers["content-type"]);
         return bytes;
       }
     } catch (e) {

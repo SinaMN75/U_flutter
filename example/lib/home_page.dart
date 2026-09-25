@@ -6,6 +6,7 @@ import "pages/api_reference_page.dart";
 import "pages/ar_page.dart";
 import "pages/buttons_page.dart";
 import "pages/camera_page.dart";
+import "pages/downloads/downloads_page.dart";
 import "pages/extensions_page.dart";
 import "pages/feedback_page.dart";
 import "pages/formatters_page.dart";
@@ -42,6 +43,7 @@ final List<GalleryEntry> kEntries = <GalleryEntry>[
   GalleryEntry(title: "Utilities", subtitle: "Crypto, Persian, storage", icon: Icons.handyman, builder: () => const UtilsPage()),
   GalleryEntry(title: "Formatters", subtitle: "Money, numbers, Jalali", icon: Icons.calculate, builder: () => const FormattersPage()),
   GalleryEntry(title: "Extensions", subtitle: "Widget & value sugar", icon: Icons.extension, builder: () => const ExtensionsPage()),
+  GalleryEntry(title: "Downloads & storage", subtitle: "Segmented, encrypted, resumable", icon: Icons.download_for_offline, builder: () => const DownloadsPage()),
   GalleryEntry(title: "u_media", subtitle: "Native audio & video engine", icon: Icons.play_circle_fill, builder: () => const MediaPlayerPage()),
   GalleryEntry(title: "Camera & scanning", subtitle: "Native camera + Dart barcode engine", icon: Icons.photo_camera, builder: () => const CameraPage()),
   GalleryEntry(title: "AR & 3D", subtitle: "Place, measure, geo cards, 3D viewer", icon: Icons.view_in_ar, builder: () => const ArPage()),

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Locations UFilesHandler may hand to other apps (open with...) through the u FileProvider. -->
+<paths>
+  <files-path name="u_files" path="." />
+  <cache-path name="u_cache" path="." />
+  <external-files-path name="u_external_files" path="." />
+  <external-cache-path name="u_external_cache" path="." />
+</paths>

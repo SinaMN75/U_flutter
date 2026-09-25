@@ -1,6 +1,7 @@
 #include "u_plugin.h"
 
 #include "camera/u_camera.h"
+#include "files/u_files.h"
 #include "media/u_media.h"
 #include "screen_guard/screen_guard.h"
 
@@ -40,6 +41,7 @@ void UPlugin::RegisterWithRegistrar(
   ScreenGuard::RegisterWithRegistrar(registrar);
   UMedia::RegisterWithRegistrar(registrar);
   UCamera::RegisterWithRegistrar(registrar);
+  UFiles::RegisterWithRegistrar(registrar);
 }
 
 UPlugin::UPlugin() {}

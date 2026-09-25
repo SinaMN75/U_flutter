@@ -16,9 +16,13 @@ list(APPEND PLUGIN_SOURCES
   "u_plugin.cc"
   "media/u_media.cc"
   "camera/u_camera.cc"
+  "files/u_files.cc"
 )
 
 pkg_check_modules(GSTREAMER IMPORTED_TARGET gstreamer-1.0 gstreamer-app-1.0 gstreamer-video-1.0)
+# Optional: stores the vault key in the Secret Service (GNOME Keyring / KWallet).
+# Without it the key falls back to a private file in the app's support directory.
+pkg_check_modules(LIBSECRET IMPORTED_TARGET libsecret-1)
 
 # Define the plugin library target. Its name must not be changed (see comment
 # on PLUGIN_NAME above).
@@ -44,6 +48,10 @@ target_include_directories(${PLUGIN_NAME} INTERFACE
   "${CMAKE_CURRENT_SOURCE_DIR}/include")
 target_link_libraries(${PLUGIN_NAME} PRIVATE flutter)
 target_link_libraries(${PLUGIN_NAME} PRIVATE PkgConfig::GTK)
+if(LIBSECRET_FOUND)
+  target_link_libraries(${PLUGIN_NAME} PRIVATE PkgConfig::LIBSECRET)
+  target_compile_definitions(${PLUGIN_NAME} PRIVATE U_HAS_LIBSECRET)
+endif()
 if(GSTREAMER_FOUND)
   target_link_libraries(${PLUGIN_NAME} PRIVATE PkgConfig::GSTREAMER)
   target_compile_definitions(${PLUGIN_NAME} PRIVATE U_HAS_GSTREAMER)

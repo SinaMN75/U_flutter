@@ -2,6 +2,7 @@ package com.sinamn75.u
 
 import com.sinamn75.u.ar.UArHandler
 import com.sinamn75.u.camera.UCameraHandler
+import com.sinamn75.u.files.UFilesHandler
 import com.sinamn75.u.media.UMediaHandler
 import com.sinamn75.u.media.UMediaSessionHandler
 import com.sinamn75.u.screenguard.ScreenGuardHandler
@@ -26,6 +27,7 @@ class UPlugin :
     private var mediaSession: UMediaSessionHandler? = null
     private var camera: UCameraHandler? = null
     private var ar: UArHandler? = null
+    private var files: UFilesHandler? = null
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "u")
@@ -50,6 +52,7 @@ class UPlugin :
                 flutterPluginBinding.binaryMessenger,
                 flutterPluginBinding.textureRegistry,
             )
+        files = UFilesHandler(flutterPluginBinding.applicationContext, flutterPluginBinding.binaryMessenger)
     }
 
     override fun onMethodCall(
@@ -75,6 +78,8 @@ class UPlugin :
         camera = null
         ar?.dispose()
         ar = null
+        files?.dispose()
+        files = null
     }
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
@@ -84,6 +89,11 @@ class UPlugin :
         camera?.let { binding.addRequestPermissionsResultListener(it) }
         ar?.setActivity(binding.activity)
         ar?.let { binding.addRequestPermissionsResultListener(it) }
+        files?.setActivity(binding.activity)
+        files?.let {
+            binding.addActivityResultListener(it)
+            binding.addRequestPermissionsResultListener(it)
+        }
     }
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
@@ -93,6 +103,11 @@ class UPlugin :
         camera?.let { binding.addRequestPermissionsResultListener(it) }
         ar?.setActivity(binding.activity)
         ar?.let { binding.addRequestPermissionsResultListener(it) }
+        files?.setActivity(binding.activity)
+        files?.let {
+            binding.addActivityResultListener(it)
+            binding.addRequestPermissionsResultListener(it)
+        }
     }
 
     override fun onDetachedFromActivityForConfigChanges() {
@@ -100,6 +115,7 @@ class UPlugin :
         media?.setActivity(null)
         camera?.setActivity(null)
         ar?.setActivity(null)
+        files?.setActivity(null)
     }
 
     override fun onDetachedFromActivity() {
@@ -107,5 +123,6 @@ class UPlugin :
         media?.setActivity(null)
         camera?.setActivity(null)
         ar?.setActivity(null)
+        files?.setActivity(null)
     }
 }

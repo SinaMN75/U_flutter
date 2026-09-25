@@ -301,26 +301,31 @@ final List<UTrackRecord> hits = UMediaLibrary.instance.search("شجریان");''
 
   DemoSection _downloadSection() => DemoSection(
     title: "Offline downloads",
-    description: "Range-request downloads that resume after a restart, with pause, cancel and a wifi-only guard.",
+    description: "Segmented, resumable downloads that survive a restart, with pause, cancel, a wifi-only guard and a full manager page.",
     code: r'''
-await UDownloadManager.instance.load();
-await UDownloadManager.instance.enqueue(url, wifiOnly: true);''',
+await UDownloadManager.instance.download(url, wifiOnly: true);
+UNavigator.push(const UDownloadManagerPage());''',
     child: AnimatedBuilder(
       animation: UDownloadManager.instance,
       builder: (BuildContext context, Widget? child) => UColumn(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         spacing: 8,
         children: <Widget>[
-          UButton(type: UButtonType.outlined, title: "Download the sample track", onTap: () => unawaited(UDownloadManager.instance.enqueue(_audioUrl))),
-          ...UDownloadManager.instance.tasks.map(
-            (UDownloadTask task) => UColumn(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                UTextLabelSmall("${task.fileName} · ${task.state.name} · ${(task.progress * 100).toStringAsFixed(0)}%"),
-                LinearProgressIndicator(value: task.progress),
-              ],
-            ),
+          URow(
+            spacing: 8,
+            children: <Widget>[
+              Expanded(
+                child: UButton(
+                  type: UButtonType.outlined,
+                  title: "Download the sample track",
+                  onTap: () => unawaited(UDownloadManager.instance.download(_audioUrl, destination: const UDownloadDestination.storage("sample_track"))),
+                ),
+              ),
+              UDownloadButton(request: const UDownloadRequest(url: _audioUrl, destination: UDownloadDestination.downloads())),
+            ],
           ),
+          ...UDownloadManager.instance.tasks.take(3).map((UDownloadTask task) => UDownloadTile(task: task)),
+          UButton(type: UButtonType.text, title: "Open the download manager", onTap: () => UNavigator.push(const UDownloadManagerPage())),
         ],
       ),
     ),

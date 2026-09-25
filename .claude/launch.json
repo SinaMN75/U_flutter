@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "example-web",
+      "runtimeExecutable": "/bin/sh",
+      "runtimeArgs": ["-c", "cd /private/tmp/claude-501/-Users-sinamn75-Documents-U-u-flutter/ebf65e77-356e-47ae-b495-6b6213f41d1d/scratchpad/web && exec python3 -m http.server 8765 --bind 127.0.0.1"],
+      "port": 8765
+    }
+  ]
+}

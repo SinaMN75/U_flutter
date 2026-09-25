@@ -26,6 +26,8 @@ list(APPEND PLUGIN_SOURCES
   "media/u_media.h"
   "camera/u_camera.cpp"
   "camera/u_camera.h"
+  "files/u_files.cpp"
+  "files/u_files.h"
 )
 
 # Define the plugin library target. Its name must not be changed (see comment
@@ -54,6 +56,7 @@ target_include_directories(${PLUGIN_NAME} INTERFACE
   "${CMAKE_CURRENT_SOURCE_DIR}/include")
 target_link_libraries(${PLUGIN_NAME} PRIVATE flutter flutter_wrapper_plugin)
 target_link_libraries(${PLUGIN_NAME} PRIVATE mf mfplat mfuuid mfreadwrite d3d11 dxgi windowsapp windowscodecs shlwapi)
+target_link_libraries(${PLUGIN_NAME} PRIVATE ole32 shell32 advapi32 uuid)
 
 # List of absolute paths to libraries that should be bundled with the plugin.
 # This list could contain prebuilt libraries, or libraries created by an

@@ -11,6 +11,8 @@ class UAdminTerminalController extends UBaseController {
   final TextEditingController fromCreatedController = TextEditingController();
   final TextEditingController toCreatedController = TextEditingController();
   URxn<TagTerminal> typeFilter = URxn<TagTerminal>();
+  URxn<UTerminalBrandResponse> brandFilter = URxn<UTerminalBrandResponse>();
+  URxn<UTerminalBrokerResponse> brokerFilter = URxn<UTerminalBrokerResponse>();
 
   Future<void> init({UMerchantResponse? merchant}) async {
     this.merchant = merchant;
@@ -26,6 +28,8 @@ class UAdminTerminalController extends UBaseController {
         merchantId: merchant?.id ?? merchantIdFilter.text.nullIfEmpty(),
         serial: serialFilter.text.nullIfEmpty(),
         creatorId: creatorIdFilter.text.nullIfEmpty(),
+        terminalBrandId: brandFilter.value?.id,
+        terminalBrokerId: brokerFilter.value?.id,
         tags: typeFilter.value == null ? null : <int>[typeFilter.value!.number],
         fromCreatedAt: fromCreatedAt,
         toCreatedAt: toCreatedAt,
@@ -52,6 +56,8 @@ class UAdminTerminalController extends UBaseController {
     fromCreatedController.clear();
     toCreatedController.clear();
     typeFilter(null);
+    brandFilter(null);
+    brokerFilter(null);
     reloadFirstPage(read);
   }
 
@@ -256,36 +262,74 @@ class UAdminTerminalController extends UBaseController {
   );
 
   void import() => UFile.showFilePicker(
+    allowedExtensions: const <String>["xlsx"],
     action: (List<UFileData> i) {
+      if (i.length != 1 || i.first.bytes == null || !(i.first.extension ?? "").toLowerCase().contains("xlsx")) return;
       ULoading.show();
-      if (i.length == 1 && i.first.extension!.toLowerCase().contains("xlsx")) {
-        UServices.terminal.import(
-          p: UTerminalImportParams(file: i.first.bytes!.toBase64()),
-          onOk: (UResponse<UTerminalImportResponse> response) {
-            ULoading.dismiss();
-            UToast.snackBar(message: response.message);
-          },
-          onError: (UEmptyResponse response) {
-            ULoading.dismiss();
-            UToast.snackBar(message: response.message);
-          },
-          onException: (String response) {
-            ULoading.dismiss();
-            UToast.error(message: response);
-          },
-        );
-      }
+      UServices.terminal.import(
+        p: UTerminalImportParams(file: i.first.bytes!.toBase64()),
+        onOk: (UResponse<UTerminalImportResponse> response) {
+          ULoading.dismiss();
+          read();
+          if (response.result != null) _showImportResult(response.result!);
+        },
+        onError: (UEmptyResponse response) {
+          ULoading.dismiss();
+          UToast.error(message: response.message);
+        },
+        onException: (String response) {
+          ULoading.dismiss();
+          UToast.error(message: response);
+        },
+      );
     },
+  );
+
+  void _showImportResult(UTerminalImportResponse r) => UNavigator.dialog(
+    AlertDialog(
+      title: Text(U.s.bulkImportTerminals),
+      content: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 420),
+        child: SingleChildScrollView(
+          child: UColumn(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              UTextBodyLarge("${U.s.total}: ${r.totalRows}"),
+              UTextBodyLarge("${U.s.imported}: ${r.imported}", color: UAdminTheme.green),
+              UTextBodyLarge("${U.s.skipped}: ${r.skipped}", color: r.skipped > 0 ? UAdminTheme.red : null),
+              if (r.skippedSerials.isNotEmpty) ...<Widget>[
+                const SizedBox(height: 12),
+                UTextTitleSmall(U.s.skippedRows),
+                const SizedBox(height: 4),
+                ...r.skippedSerials.map((String x) => SelectableText("• $x")),
+              ],
+            ],
+          ),
+        ),
+      ),
+      actions: <Widget>[
+        if (r.skippedSerials.isNotEmpty)
+          UButton(
+            type: UButtonType.text,
+            title: U.s.copy,
+            onTap: () => UClipboard.set(r.skippedSerials.join("\n"), snackBar: true),
+          ),
+        UButton(type: UButtonType.text, title: U.s.close, onTap: UNavigator.back),
+      ],
+    ),
   );
 
   Future<List<UTerminalBrokerResponse>> readBroker(String query) async {
     final List<UTerminalBrokerResponse> result = <UTerminalBrokerResponse>[];
     await UServices.terminal.readBroker(
       p: UTerminalBrokerReadParams(
-        title: query,
+        pageSize: 100,
         selectorArgs: const UTerminalBrokerSelectorArgs(),
       ),
-      onOk: (UResponse<List<UTerminalBrokerResponse>> r) => result.addAll(r.result ?? <UTerminalBrokerResponse>[]),
+      onOk: (UResponse<List<UTerminalBrokerResponse>> r) => result.addAll(
+        (r.result ?? <UTerminalBrokerResponse>[]).where((UTerminalBrokerResponse x) => _matches(query, x.title, x.code)),
+      ),
       onError: (UEmptyResponse e) {},
       onException: (String e) {},
     );
@@ -296,14 +340,21 @@ class UAdminTerminalController extends UBaseController {
     final List<UTerminalBrandResponse> result = <UTerminalBrandResponse>[];
     await UServices.terminal.readBrand(
       p: UTerminalBrandReadParams(
-        title: query,
+        pageSize: 100,
         selectorArgs: const UTerminalBrandSelectorArgs(),
       ),
-      onOk: (UResponse<List<UTerminalBrandResponse>> r) => result.addAll(r.result ?? <UTerminalBrandResponse>[]),
+      onOk: (UResponse<List<UTerminalBrandResponse>> r) => result.addAll(
+        (r.result ?? <UTerminalBrandResponse>[]).where((UTerminalBrandResponse x) => _matches(query, x.title, x.code)),
+      ),
       onError: (UEmptyResponse e) {},
       onException: (String e) {},
     );
     return result;
+  }
+
+  bool _matches(String query, String title, String code) {
+    final String q = query.trim().toLowerCase();
+    return q.isEmpty || title.toLowerCase().contains(q) || code.toLowerCase().contains(q);
   }
 
   @override

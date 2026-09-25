@@ -508,7 +508,7 @@ final class UGltfAsset {
             }
             if info.alphaMode == "BLEND" || info.baseColor.w < 1 { material.blending = .transparent(opacity: .init(floatLiteral: info.baseColor.w)) }
             if info.alphaMode == "MASK" { material.opacityThreshold = info.alphaCutoff }
-            material.faceCulling = .none
+            if #available(iOS 18.0, *) { material.faceCulling = .none }
             return material
         }
         var material = PhysicallyBasedMaterial()
@@ -998,7 +998,8 @@ final class UArSession: NSObject, FlutterPlatformView, FlutterStreamHandler, ARS
         #if canImport(RoomPlan)
             if #available(iOS 16.0, *) { caps["roomPlan"] = RoomCaptureSession.isSupported }
         #endif
-        if #available(iOS 17.0, *) { caps["objectCapture"] = ObjectCaptureSession.isSupported }
+        // Always reached from Flutter method-channel / platform-view callbacks, which run on the main thread.
+        if #available(iOS 17.0, *) { caps["objectCapture"] = MainActor.assumeIsolated { ObjectCaptureSession.isSupported } }
         return caps
     }
 
@@ -1933,7 +1934,7 @@ final class UArSession: NSObject, FlutterPlatformView, FlutterStreamHandler, ARS
                 material.color = .init(tint: color.withAlphaComponent(1))
                 if opacity < 1 { material.blending = .transparent(opacity: .init(floatLiteral: opacity)) }
             }
-            if map["doubleSided"] as? Bool == true { material.faceCulling = .none }
+            if #available(iOS 18.0, *), map["doubleSided"] as? Bool == true { material.faceCulling = .none }
             return material
         }
         var material = PhysicallyBasedMaterial()
@@ -2619,7 +2620,8 @@ final class UArObjectCaptureModel: ObservableObject {
 
     private func reconstruct() {
         let output = root.appendingPathComponent("model.usdz")
-        let level: PhotogrammetrySession.Request.Detail = detail == "medium" || detail == "full" || detail == "raw" ? .medium : .reduced
+        // iOS only supports `.reduced`; higher detail levels are macOS-only.
+        let level: PhotogrammetrySession.Request.Detail = .reduced
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {

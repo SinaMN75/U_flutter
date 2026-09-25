@@ -85,6 +85,10 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
 
   bool _isPending(UTerminalResponse i) => i.tags.contains(TagTerminal.pendingApproval.number);
 
+  String _brandLabel(UTerminalBrandResponse x) => "${x.title} (${x.code})";
+
+  String _brokerLabel(UTerminalBrokerResponse x) => "${x.title} (${x.code})";
+
   Widget _itemDesktop(UTerminalResponse i, int index) => URow(
     color: UAdminTable.rowColor(context, index),
     padding: UAdminTable.rowPadding,
@@ -92,8 +96,8 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
       UAdminTable.cell(TagTerminal.values.titlesFromNumbers(i.tags).join(" , ")),
       UAdminTable.cell(i.serial),
       UAdminTable.cell(i.simCardSerial ?? "-"),
-      UAdminTable.cell(i.terminalBrand?.title ?? "---"),
-      UAdminTable.cell(i.terminalBroker?.title ?? "---"),
+      UAdminTable.cell(i.terminalBrand == null ? "---" : _brandLabel(i.terminalBrand!)),
+      UAdminTable.cell(i.terminalBroker == null ? "---" : _brokerLabel(i.terminalBroker!)),
       UAdminTable.cell(i.merchant?.title ?? U.s.noMerchantSelected),
       _statusChip(i).alignAtCenter().expanded(),
       UAdminTable.cell(i.createdAt.toJalaliDate()),
@@ -108,6 +112,8 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
     trailing: _menu(i),
     fields: <UAdminField>[
       UAdminField(U.s.simCardSerial, i.simCardSerial ?? "-"),
+      UAdminField(U.s.brand, i.terminalBrand == null ? "---" : _brandLabel(i.terminalBrand!)),
+      UAdminField(U.s.broker, i.terminalBroker == null ? "---" : _brokerLabel(i.terminalBroker!)),
       UAdminField(U.s.merchant, i.merchant?.title ?? U.s.noMerchantSelected),
       UAdminField(U.s.createdAt, i.createdAt.toJalaliDate()),
     ],
@@ -184,6 +190,20 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
           ],
         ).pSymmetric(vertical: 6),
         UTextField(controller: c.serialFilter, labelText: U.s.serial, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextFieldAutoCompleteAsync<UTerminalBrandResponse>(
+          labelBuilder: _brandLabel,
+          onChanged: c.brandFilter.call,
+          selectedItem: c.brandFilter.value,
+          fetchData: c.readBrand,
+          hintText: U.s.brand,
+        ).pSymmetric(vertical: 6),
+        UTextFieldAutoCompleteAsync<UTerminalBrokerResponse>(
+          labelBuilder: _brokerLabel,
+          onChanged: c.brokerFilter.call,
+          selectedItem: c.brokerFilter.value,
+          fetchData: c.readBroker,
+          hintText: U.s.broker,
+        ).pSymmetric(vertical: 6),
         if (widget.merchant == null) UTextField(controller: c.merchantIdFilter, labelText: U.s.merchantId, margin: const EdgeInsets.symmetric(vertical: 6)),
         UTextField(controller: c.creatorIdFilter, labelText: U.s.creatorId, margin: const EdgeInsets.symmetric(vertical: 6)),
         UTextFieldDatePicker(
@@ -258,18 +278,18 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                     UTextField(controller: simCardSerial, labelText: U.s.simCardSerial, margin: const EdgeInsets.symmetric(vertical: 6)),
                     UTextField(controller: imei, labelText: U.s.imei, margin: const EdgeInsets.symmetric(vertical: 6)),
                     UTextFieldAutoCompleteAsync<UTerminalBrandResponse>(
-                      labelBuilder: (UTerminalBrandResponse i) => i.title,
+                      labelBuilder: _brandLabel,
                       onChanged: brand.call,
                       selectedItem: brand.value,
                       fetchData: c.readBrand,
-                      hintText: U.s.bed,
+                      hintText: U.s.brand,
                     ).pSymmetric(vertical: 6),
                     UTextFieldAutoCompleteAsync<UTerminalBrokerResponse>(
-                      labelBuilder: (UTerminalBrokerResponse i) => i.title,
+                      labelBuilder: _brokerLabel,
                       onChanged: broker.call,
                       selectedItem: broker.value,
                       fetchData: c.readBroker,
-                      hintText: U.s.bed,
+                      hintText: U.s.broker,
                     ).pSymmetric(vertical: 6),
                     const SizedBox(height: 20),
                     UButtonSubmitCancel(
@@ -344,14 +364,14 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                     UTextField(controller: imei, labelText: U.s.imei, margin: const EdgeInsets.symmetric(vertical: 6)),
                     UTextField(controller: terminalId, labelText: U.s.terminalId, margin: const EdgeInsets.symmetric(vertical: 6)),
                     UTextFieldAutoCompleteAsync<UTerminalBrandResponse>(
-                      labelBuilder: (UTerminalBrandResponse x) => x.title,
+                      labelBuilder: _brandLabel,
                       onChanged: brand.call,
                       selectedItem: brand.value,
                       fetchData: c.readBrand,
                       hintText: U.s.brand,
                     ).pSymmetric(vertical: 6),
                     UTextFieldAutoCompleteAsync<UTerminalBrokerResponse>(
-                      labelBuilder: (UTerminalBrokerResponse x) => x.title,
+                      labelBuilder: _brokerLabel,
                       onChanged: broker.call,
                       selectedItem: broker.value,
                       fetchData: c.readBroker,

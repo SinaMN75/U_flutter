@@ -1,3 +1,28 @@
+## 3.0.0
+
+* **Fix: signing out no longer deletes the user's files on desktop.** `UFileStorage` used
+  `getApplicationDocumentsDirectory()`, which is the user's own `~/Documents` on Windows, Linux and
+  unsandboxed macOS, and `clear()` (called by `UAuth.signOut`) deleted every `.txt` file there.
+  Storage now lives in the app's private support/cache directories; existing data is migrated once.
+* new `UDownloadManager` replacing `UDownload` and the media-only download manager: silent fetches,
+  a persistent queue, segmented multi-connection downloads with dynamic re-splitting, safe resume
+  (`If-Range`), pause/resume across restarts, priorities, per-host limits, speed limits, wifi-only,
+  scheduling, mirrors, checksums, `sourceId` downloads whose URL is never stored, and hand-off to
+  the OS (Android DownloadManager, Apple background URLSession, Windows BITS).
+* destinations: memory, private storage, cache, the encrypted vault (encrypted while downloading),
+  the user's Downloads (MediaStore on Android, Files app on iOS, the browser on web), a path, or
+  "save as".
+* `UFileStorage` rewritten: `support` / `cache` (LRU, size cap) / `vault` (streaming
+  ChaCha20-Poly1305 or WebCrypto AES-GCM with per-file keys) / `temp` buckets, hashed file names,
+  atomic writes, expiry, MIME types, checksums, ranged streaming reads, and IndexedDB on the web.
+* new native `u/files` channel on all platforms: free space, save-as dialogs, open / reveal,
+  keep-awake (Android dataSync foreground service with progress), key-store secrets.
+* new widgets: `UDownloadManagerPage`, `UDownloadTile`, `USegmentProgressBar`, `UDownloadButton`,
+  `UAddDownloadSheet`, `UDownloadSettingsSheet`.
+* new `UHasher` (streaming MD5 / SHA-1 / SHA-256) and `UChaCha20Poly1305`.
+* breaking: `UFileStorage.getBytesSync`, `getDatKeys` and `getDatPaths` were removed; the other 2.x
+  names remain as deprecated aliases. `UDownload` is a deprecated wrapper over `UDownloadManager`.
+
 ## 2.0.4
 
 * added AR and 3D with no pub packages: ARCore + a built-in OpenGL ES 3 glTF renderer (Android),
