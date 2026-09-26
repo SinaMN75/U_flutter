@@ -82,10 +82,78 @@ flutter:
 
 #  flutter pub upgrade --major-versions --tighten
 
-#  flutter pub global activate rename
-#  flutter pub global run rename setBundleId --value ""
-#  flutter pub global run rename setAppName --value ""
 #  flutter pub run flutter_launcher_icons:main
+
+# ───────────────────────── u:app: native app settings for all 6 platforms ─────────────────────────
+# Run these inside the app that depends on u (not in this plugin). Every command accepts:
+#   --platforms android,ios,macos,linux,windows,web   only touch these platforms
+#   --dry-run                                         show what would change, write nothing
+#   --help                                            usage + examples for that command
+#
+# dart run u:app help
+# dart run u:app info
+# dart run u:app doctor
+#
+# Name & id:
+# dart run u:app name "My App"
+# dart run u:app name "My App" --short "MyApp"
+# dart run u:app id com.company.app
+# dart run u:app id com.company.app --ios com.company.appIos --macos com.company.appMac
+#
+# Minimum OS / SDK levels:
+# dart run u:app min-sdk android 24
+# dart run u:app min-sdk ios 18
+# dart run u:app min-sdk macos 14
+# dart run u:app min-sdk android 24 ios 18 macos 14
+# dart run u:app min-sdk android default
+# dart run u:app target-sdk 36
+# dart run u:app compile-sdk 36
+# dart run u:app ndk 27.0.12077973
+# dart run u:app java 17
+#
+# Version & description:
+# dart run u:app version 1.0.0+1
+# dart run u:app bump
+# dart run u:app bump patch
+# dart run u:app bump minor
+# dart run u:app bump major
+# dart run u:app description "What the app does"
+#
+# Permissions (friendly names → AndroidManifest, iOS/macOS Info.plist, macOS entitlements):
+# dart run u:app permission list
+# dart run u:app permission add internet
+# dart run u:app permission add camera microphone
+# dart run u:app permission add location
+# dart run u:app permission add location-always
+# dart run u:app permission add photos save-photos
+# dart run u:app permission add notifications alarm vibrate
+# dart run u:app permission add camera --message "We need the camera to scan QR codes"
+# dart run u:app permission remove contacts
+#   names: internet, network-state, camera, microphone, speech, location, location-always, photos,
+#          save-photos, music, storage, contacts, calendar, reminders, bluetooth, notifications, alarm,
+#          vibrate, biometric, motion, nfc, phone, sms, wake-lock, foreground-service, background-audio,
+#          background-fetch, remote-notifications, local-network, tracking, install-apk, overlay
+#
+# Orientation & deep links:
+# dart run u:app orientation portrait
+# dart run u:app orientation landscape
+# dart run u:app orientation all
+# dart run u:app deep-link myapp
+# dart run u:app deep-link myapp --host open
+# dart run u:app deep-link remove myapp
+#
+# Apple signing / desktop identity / web:
+# dart run u:app team ABCDE12345
+# dart run u:app binary my_app
+# dart run u:app company "My Company"
+# dart run u:app copyright "© 2026 My Company"
+# dart run u:app web-color "#0175C2"
+# dart run u:app web-color "#0175C2" --background "#FFFFFF"
+#
+# Android release signing (asks for the passwords, writes android/key.properties + Gradle config):
+# dart run u:app signing --keystore ~/keys/upload.jks --create
+# dart run u:app signing --keystore ~/keys/upload.jks --alias upload
+# ─────────────────────────────────────────────────────────────────────────────────────────────────────
 
 # Android:
 # N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .) && flutter clean && flutter pub get && flutter build apk --target-platform android-arm64,android-arm --release && cp build/app/outputs/flutter-apk/app-release.apk ~/Desktop/$N-$V.apk

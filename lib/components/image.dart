@@ -138,6 +138,20 @@ class UImage extends StatelessWidget {
     if (source.startsWith("http")) {
       return UImageNetwork(source, width: width, height: height, fit: fit, color: color, placeholder: placeholder);
     }
+    final UBase64Image? base64Image = UBase64Image.tryParse(source);
+    if (base64Image != null) {
+      return switch (base64Image.kind) {
+        UBase64ImageKind.svg => SvgPicture.memory(
+          base64Image.bytes,
+          width: width,
+          height: height,
+          fit: fit,
+          colorFilter: color == null ? null : ColorFilter.mode(color!, BlendMode.srcIn),
+        ),
+        UBase64ImageKind.lottie => Lottie.memory(base64Image.bytes, width: width, height: height, fit: fit, repeat: true),
+        UBase64ImageKind.raster => UImageMemory(base64Image.bytes, width: width, height: height, color: color, fit: fit, placeholder: placeholder),
+      };
+    }
     return UImageAsset(source, width: width, height: height, fit: fit, placeholder: placeholder, color: color, package: package);
   }
 
@@ -860,5 +874,105 @@ class UImageMemory extends StatelessWidget {
       positionedWidth: positionedWidth,
       positionedHeight: positionedHeight,
     );
+  }
+}
+
+enum UBase64ImageKind { raster, svg, lottie }
+
+/// A decoded base64 image source: either a `data:<mime>;base64,<payload>` URI
+/// or a bare base64 payload whose bytes carry a known image signature.
+class UBase64Image {
+  const UBase64Image._(this.bytes, this.kind);
+
+  final Uint8List bytes;
+  final UBase64ImageKind kind;
+
+  static const int _maxCacheEntries = 64;
+  static const int _minBarePayloadLength = 64;
+  static final Map<String, UBase64Image?> _cache = <String, UBase64Image?>{};
+  static final RegExp _alphabet = RegExp(r"^[A-Za-z0-9+/\-_]+={0,2}$");
+  static final RegExp _whitespace = RegExp(r"\s");
+
+  static bool isBase64(String source) => tryParse(source) != null;
+
+  static UBase64Image? tryParse(String source) {
+    final bool isDataUri = source.startsWith("data:");
+    if (!isDataUri && (source.length < _minBarePayloadLength || source.contains("."))) return null;
+
+    if (_cache.containsKey(source)) {
+      final UBase64Image? hit = _cache.remove(source);
+      _cache[source] = hit;
+      return hit;
+    }
+    final UBase64Image? parsed = _parse(source, isDataUri);
+    if (_cache.length >= _maxCacheEntries) _cache.remove(_cache.keys.first);
+    _cache[source] = parsed;
+    return parsed;
+  }
+
+  static UBase64Image? _parse(String source, bool isDataUri) {
+    String payload = source;
+    String mime = "";
+    if (isDataUri) {
+      final int comma = source.indexOf(",");
+      if (comma < 0) return null;
+      final String header = source.substring(5, comma).toLowerCase();
+      if (!header.contains(";base64")) return null;
+      mime = header.split(";").first;
+      payload = source.substring(comma + 1);
+    }
+    payload = payload.replaceAll(_whitespace, "");
+    if (payload.isEmpty || !_alphabet.hasMatch(payload)) return null;
+
+    final Uint8List bytes;
+    try {
+      bytes = base64.decode(base64.normalize(payload));
+    } catch (_) {
+      return null;
+    }
+    if (bytes.isEmpty) return null;
+
+    final UBase64ImageKind? kind = _kindFromMime(mime) ?? _kindFromBytes(bytes);
+    if (kind == null) return isDataUri ? UBase64Image._(bytes, UBase64ImageKind.raster) : null;
+    return UBase64Image._(bytes, kind);
+  }
+
+  static UBase64ImageKind? _kindFromMime(String mime) {
+    if (mime.contains("svg")) return UBase64ImageKind.svg;
+    if (mime.contains("json")) return UBase64ImageKind.lottie;
+    if (mime.startsWith("image/")) return UBase64ImageKind.raster;
+    return null;
+  }
+
+  static UBase64ImageKind? _kindFromBytes(Uint8List b) {
+    bool starts(List<int> sig, [int offset = 0]) {
+      if (b.length < offset + sig.length) return false;
+      for (int i = 0; i < sig.length; i++) {
+        if (b[offset + i] != sig[i]) return false;
+      }
+      return true;
+    }
+
+    if (starts(<int>[0x89, 0x50, 0x4E, 0x47]) || // PNG
+        starts(<int>[0xFF, 0xD8, 0xFF]) || // JPEG
+        starts(<int>[0x47, 0x49, 0x46, 0x38]) || // GIF
+        (starts(<int>[0x52, 0x49, 0x46, 0x46]) && starts(<int>[0x57, 0x45, 0x42, 0x50], 8)) || // WEBP
+        starts(<int>[0x42, 0x4D]) || // BMP
+        starts(<int>[0x00, 0x00, 0x01, 0x00]) || // ICO
+        starts(<int>[0x66, 0x74, 0x79, 0x70], 4)) {
+      return UBase64ImageKind.raster;
+    }
+
+    int i = starts(<int>[0xEF, 0xBB, 0xBF]) ? 3 : 0;
+    while (i < b.length && (b[i] == 0x20 || b[i] == 0x09 || b[i] == 0x0A || b[i] == 0x0D)) {
+      i++;
+    }
+    if (i >= b.length) return null;
+    if (b[i] == 0x3C) {
+      final String head = utf8.decode(b.sublist(i, (i + 512).clamp(0, b.length)), allowMalformed: true).toLowerCase();
+      if (head.contains("<svg")) return UBase64ImageKind.svg;
+    }
+    if (b[i] == 0x7B) return UBase64ImageKind.lottie; // "{"
+    return null;
   }
 }

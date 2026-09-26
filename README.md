@@ -92,6 +92,46 @@ class MyApp extends StatelessWidget {
 }
 ```
 
+## App settings CLI — `dart run u:app`
+
+Change your app's native settings on all 6 platforms with one command, run from the app that depends
+on `u`. It edits the real files (Gradle, AndroidManifest, `project.pbxproj`, Info.plist, Podfile,
+entitlements, xcconfig, CMake, `Runner.rc`, `main.cpp`, `manifest.json`, `index.html`), keeps their
+formatting, and is safe to re-run.
+
+```bash
+dart run u:app info                                   # current name, ids, SDK levels, permissions…
+dart run u:app doctor                                 # template leftovers & cross-platform mismatches
+dart run u:app name "My Shop"                         # launcher / home screen / window / tab title
+dart run u:app id com.company.shop                    # applicationId + bundle ids (moves MainActivity)
+dart run u:app min-sdk android 24 ios 18 macos 14     # minimum OS versions (+ Podfile)
+dart run u:app permission add camera location internet
+dart run u:app orientation portrait
+dart run u:app deep-link myshop                       # myshop:// on Android, iOS, macOS
+dart run u:app bump patch                             # 1.2.3+7 → 1.2.4+8
+dart run u:app signing --keystore ~/keys/upload.jks --create
+```
+
+| Command | Android | iOS | macOS | Linux | Windows | Web |
+| --- | :-: | :-: | :-: | :-: | :-: | :-: |
+| `name`, `id` | ✅ | ✅ | ✅ | ✅ | name | name |
+| `min-sdk` | ✅ | ✅ | ✅ | — | — | — |
+| `target-sdk`, `compile-sdk`, `ndk`, `java`, `signing` | ✅ | | | | | |
+| `permission add/remove/list` | ✅ | ✅ | ✅ | — | — | — |
+| `orientation` | ✅ | ✅ | | | | ✅ |
+| `deep-link` | ✅ | ✅ | ✅ | | | |
+| `team` | | ✅ | ✅ | | | |
+| `binary`, `company`, `copyright` | | | copyright | binary | ✅ | |
+| `version`, `bump`, `description` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+
+Permissions use friendly names (`camera`, `microphone`, `location`, `location-always`, `photos`,
+`bluetooth`, `notifications`, `contacts`, `storage`, … `dart run u:app permission list` shows all 32);
+each one becomes the right `<uses-permission>`/`<uses-feature>`, Info.plist usage strings (override
+with `--message`), UIBackgroundModes and macOS sandbox entitlements. `version`/`bump` write the
+pubspec version, which every platform reads at build time. Every command takes
+`--platforms android,ios` and `--dry-run`; `dart run u:app <command> --help` shows examples. The
+full copy-paste list lives at the bottom of this package's `pubspec.yaml`.
+
 ## What's inside
 
 ### Text — `UText*`

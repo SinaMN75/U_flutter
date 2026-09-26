@@ -333,6 +333,9 @@ class UContentBentoPage extends StatelessWidget {
   }
 
   Widget? _followTile(BuildContext context, UContentJson j) {
+    if (!_has(j.instagram) && !_has(j.telegram) && !_has(j.whatsapp) && !_has(j.link)) {
+      return null;
+    }
     final ColorScheme scheme = Theme.of(context).colorScheme;
     return _surface(
       context,

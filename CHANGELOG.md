@@ -1,5 +1,14 @@
 ## 3.0.0
 
+* **new `dart run u:app` CLI** to change the host app's native settings on Android, iOS, macOS,
+  Linux, Windows and web from one command: `name`, `id` (moves `MainActivity` to the new package),
+  `min-sdk`, `target-sdk`, `compile-sdk`, `ndk`, `java`, `version`, `bump`, `description`,
+  `permission add/remove/list` (32 friendly names such as `camera` / `location` / `internet`, mapped
+  to manifest entries, Info.plist usage strings, background modes and macOS entitlements),
+  `orientation`, `deep-link`, `team`, `binary`, `company`, `copyright`, `web-color`, Android release
+  `signing`, plus `info` and `doctor`. Supports `--platforms` and `--dry-run`, keeps file formatting,
+  and is idempotent.
+
 * **Fix: signing out no longer deletes the user's files on desktop.** `UFileStorage` used
   `getApplicationDocumentsDirectory()`, which is the user's own `~/Documents` on Windows, Linux and
   unsandboxed macOS, and `clear()` (called by `UAuth.signOut`) deleted every `.txt` file there.
