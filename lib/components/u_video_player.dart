@@ -1573,9 +1573,9 @@ class _UVideoSettingsSheetState extends State<UVideoSettingsSheet> {
 
   Future<void> _pickSubtitle() async {
     final UFileData? picked = await UFile.pickFile(fileType: FileType.custom, allowedExtensions: <String>["srt", "vtt", "ass", "ssa", "sub", "lrc"]);
-    final String? path = picked?.path;
-    if (path == null) return;
-    await widget.controller.loadSubtitle(UExternalSubtitle(uri: path, label: picked?.name));
+    final Uint8List? bytes = picked?.bytes;
+    if (bytes == null) return;
+    await widget.controller.loadSubtitleData(USubtitleParser.parseBytes(bytes, label: picked?.name));
   }
 
   Future<void> _takeScreenshot() async {

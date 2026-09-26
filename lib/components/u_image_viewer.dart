@@ -21,8 +21,6 @@ class UImageViewer extends StatelessWidget {
       return MemoryImage(fileData.bytes!);
     } else if (fileData.url != null) {
       return NetworkImage(fileData.url!);
-    } else if (fileData.path != null) {
-      return FileImage(File(fileData.path!));
     } else {
       return const AssetImage("assets/placeholder.png");
     }
@@ -124,8 +122,6 @@ class _BetterImageViewerState extends State<UBetterImageViewer> {
         provider = MemoryImage(widget.fileData.bytes!);
       } else if (widget.fileData.url != null) {
         provider = NetworkImage(widget.fileData.url!);
-      } else if (widget.fileData.path != null) {
-        provider = FileImage(File(widget.fileData.path!));
       } else {
         throw Exception("No image source available");
       }

@@ -1,4 +1,3 @@
-import "package:path/path.dart" as path;
 import "package:u/utilities.dart";
 
 class UFilePicker extends StatefulWidget {
@@ -136,8 +135,8 @@ class _UFilePickerState extends State<UFilePicker> {
   }
 
   String _getFileName(UFileData file) {
-    if (file.path != null) return path.basename(file.path!);
-    if (file.url != null) return path.basename(file.url!);
+    if (file.name != null) return file.name!;
+    if (file.url != null) return file.url!.fileName;
     return "Unknown file";
   }
 

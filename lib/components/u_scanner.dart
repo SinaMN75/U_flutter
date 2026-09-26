@@ -299,7 +299,6 @@ class _UScannerState extends State<UScanner> with SingleTickerProviderStateMixin
     final List<UFileData> files = await UFile.showImagePicker(source: UImageSource.gallery);
     if (files.isEmpty) return;
     final List<UCode> codes = await UCameraController.analyzeImage(
-      path: files.first.path,
       bytes: files.first.bytes,
       options: UCodeScanOptions(formats: widget.formats, multiple: !widget.singleScan, tryInvert: true),
       engine: widget.engine,

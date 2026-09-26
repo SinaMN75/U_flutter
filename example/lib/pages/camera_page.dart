@@ -6,10 +6,6 @@ import "../widgets/gallery_page.dart";
 import "camera_studio_page.dart";
 import "scanner_studio_page.dart";
 
-/// Exercises the whole native camera + scanning stack of the `u` plugin.
-///
-/// The decoder self-test at the top needs no camera at all, so it is the
-/// fastest way to confirm the engine works on a machine with no webcam.
 class CameraPage extends StatefulWidget {
   const CameraPage({super.key});
 
@@ -85,15 +81,7 @@ class _CameraPageState extends State<CameraPage> {
         failure = error.toString();
       }
       stopwatch.stop();
-      results.add(
-        _DecoderCheck(
-          format: testCase.format,
-          expected: testCase.payload,
-          decoded: decoded,
-          micros: stopwatch.elapsedMicroseconds,
-          failure: failure,
-        ),
-      );
+      results.add(_DecoderCheck(format: testCase.format, expected: testCase.payload, decoded: decoded, micros: stopwatch.elapsedMicroseconds, failure: failure));
       if (!mounted) return;
       setState(() => _checks = List<_DecoderCheck>.from(results));
       await Future<void>.delayed(const Duration(milliseconds: 16));
@@ -117,11 +105,7 @@ class _CameraPageState extends State<CameraPage> {
     final UFileData? file = await UFile.pickFile(fileType: FileType.image);
     if (file == null) return;
     ULoading.show();
-    final List<UCode> codes = await UCameraController.analyzeImage(
-      path: file.path,
-      bytes: file.bytes,
-      options: const UCodeScanOptions(multiple: true, tryInvert: true),
-    );
+    final List<UCode> codes = await UCameraController.analyzeImage(bytes: file.bytes, options: const UCodeScanOptions(multiple: true, tryInvert: true));
     ULoading.dismiss();
     if (!mounted) return;
     setState(() {
@@ -157,7 +141,7 @@ class _CameraPageState extends State<CameraPage> {
       options: const UCameraOptions(mode: UCameraMode.video, videoMaxDuration: Duration(seconds: 15)),
     );
     if (file == null || !mounted) return;
-    UToast.success(message: "Recorded ${file.name ?? file.path ?? ""}");
+    UToast.success(message: "Recorded ${file.name ?? ""}");
   }
 
   Future<void> _quickMultiPhoto() async {
@@ -219,8 +203,7 @@ final List<UCameraDevice> devices = await UCameraController.availableCameras();'
                               "${device.hasFlash ? " · flash" : ""}${device.isLogical ? " · logical" : ""}",
                               color: scheme.onSurfaceVariant,
                             ),
-                            if (device.largestFormat != null)
-                              UTextBodySmall("max ${device.largestFormat}", color: scheme.onSurfaceVariant),
+                            if (device.largestFormat != null) UTextBodySmall("max ${device.largestFormat}", color: scheme.onSurfaceVariant),
                           ],
                         ),
                       ),
@@ -256,17 +239,8 @@ final List<UCode> codes = UCodeReader.decodeBits(
               URow(
                 spacing: 8,
                 children: <Widget>[
-                  UButton(
-                    title: _running ? "Running..." : "Run self-test",
-                    icon: const Icon(Icons.play_arrow_rounded, size: 18),
-                    onTap: _running ? null : () => unawaited(_runSelfTest()),
-                  ),
-                  if (_checks.isNotEmpty)
-                    UTextLabelLarge(
-                      "${_checks.where((_DecoderCheck c) => c.passed).length}/${_checks.length} passed",
-                      fontWeight: FontWeight.w700,
-                      color: _checks.every((_DecoderCheck c) => c.passed) ? scheme.primary : scheme.error,
-                    ),
+                  UButton(title: _running ? "Running..." : "Run self-test", icon: const Icon(Icons.play_arrow_rounded, size: 18), onTap: _running ? null : () => unawaited(_runSelfTest())),
+                  if (_checks.isNotEmpty) UTextLabelLarge("${_checks.where((_DecoderCheck c) => c.passed).length}/${_checks.length} passed", fontWeight: FontWeight.w700, color: _checks.every((_DecoderCheck c) => c.passed) ? scheme.primary : scheme.error),
                 ],
               ),
               ..._checks.map((_DecoderCheck check) => _checkRow(check, scheme)),
@@ -286,12 +260,7 @@ final UCameraController controller = UCameraController(
 );
 await controller.initialize();
 UCameraPreview(controller: controller);''',
-          child: UButton(
-            fullWidth: true,
-            title: "Open camera studio",
-            icon: const Icon(Icons.camera_alt_rounded, size: 18),
-            onTap: () => UNavigator.push<void>(const CameraStudioPage()),
-          ),
+          child: UButton(fullWidth: true, title: "Open camera studio", icon: const Icon(Icons.camera_alt_rounded, size: 18), onTap: () => UNavigator.push<void>(const CameraStudioPage())),
         ),
 
         DemoSection(
@@ -310,11 +279,7 @@ UScanner(
           child: URow(
             spacing: 8,
             children: <Widget>[
-              UButton(
-                title: "Open scanner",
-                icon: const Icon(Icons.qr_code_scanner_rounded, size: 18),
-                onTap: () => UNavigator.push<void>(const ScannerStudioPage()),
-              ),
+              UButton(title: "Open scanner", icon: const Icon(Icons.qr_code_scanner_rounded, size: 18), onTap: () => UNavigator.push<void>(const ScannerStudioPage())),
               UButton(
                 type: UButtonType.outlined,
                 title: "Quick scan",
@@ -335,7 +300,6 @@ UScanner(
               "Dart engine everywhere else.",
           code: r'''
 final List<UCode> codes = await UCameraController.analyzeImage(
-  path: file.path,
   bytes: file.bytes,
   options: const UCodeScanOptions(multiple: true, tryInvert: true),
 );''',
@@ -359,17 +323,8 @@ final List<UCode> codes = await UCameraController.analyzeImage(
           child: UColumn(
             spacing: 12,
             children: <Widget>[
-              UTextField(
-                initialValue: _generated,
-                labelText: "Payload",
-                onChanged: (String value) => setState(() => _generated = value.isEmpty ? " " : value),
-              ),
-              UChipChoice<UBarcodeType>(
-                options: const <UBarcodeType>[UBarcodeType.qrCode, UBarcodeType.code128, UBarcodeType.pdf417, UBarcodeType.dataMatrix, UBarcodeType.aztec],
-                selected: _generatedType,
-                chipBuilder: (UBarcodeType type, bool isSelected, int index) => Text(type.name),
-                onChanged: (int index, bool isSelected, UBarcodeType item) => setState(() => _generatedType = item),
-              ),
+              UTextField(initialValue: _generated, labelText: "Payload", onChanged: (String value) => setState(() => _generated = value.isEmpty ? " " : value)),
+              UChipChoice<UBarcodeType>(options: const <UBarcodeType>[UBarcodeType.qrCode, UBarcodeType.code128, UBarcodeType.pdf417, UBarcodeType.dataMatrix, UBarcodeType.aztec], selected: _generatedType, chipBuilder: (UBarcodeType type, bool isSelected, int index) => Text(type.name), onChanged: (int index, bool isSelected, UBarcodeType item) => setState(() => _generatedType = item)),
               UContainer(
                 color: const Color(0xFFFFFFFF),
                 radius: 12,
@@ -438,21 +393,14 @@ final UFileData? viaFile = await UFile.takePhoto(selfie: true);''',
     child: URow(
       spacing: 10,
       children: <Widget>[
-        Icon(
-          check.passed ? Icons.check_rounded : Icons.close_rounded,
-          size: 18,
-          color: check.passed ? scheme.onPrimaryContainer : scheme.onErrorContainer,
-        ),
+        Icon(check.passed ? Icons.check_rounded : Icons.close_rounded, size: 18, color: check.passed ? scheme.onPrimaryContainer : scheme.onErrorContainer),
         Expanded(
           child: UColumn(
             crossAxisAlignment: CrossAxisAlignment.start,
             spacing: 2,
             children: <Widget>[
               UTextLabelLarge(check.format.label, fontWeight: FontWeight.w700),
-              UTextBodySmall(
-                check.passed ? check.expected : "expected ${check.expected} · got ${check.failure ?? check.decoded ?? "nothing"}",
-                maxLines: 2,
-              ),
+              UTextBodySmall(check.passed ? check.expected : "expected ${check.expected} · got ${check.failure ?? check.decoded ?? "nothing"}", maxLines: 2),
             ],
           ),
         ),
@@ -482,19 +430,8 @@ final UFileData? viaFile = await UFile.takePhoto(selfie: true);''',
             ],
           ),
           SelectableText(code.text, style: const TextStyle(fontFamily: "monospace", fontSize: 12.5)),
-          if (code.version != null || code.errorCorrectionLevel != null)
-            UTextBodySmall(
-              <String>[
-                if (code.version != null) "version ${code.version}",
-                if (code.errorCorrectionLevel != null) "EC ${code.errorCorrectionLevel}",
-                if (code.eci != null) "ECI ${code.eci}",
-                if (code.corners.isNotEmpty) "${code.angle.toStringAsFixed(0)}°",
-              ].join(" · "),
-              color: scheme.onSurfaceVariant,
-            ),
-          ...parsed.entries
-              .where((MapEntry<String, String> entry) => entry.key != "text")
-              .map((MapEntry<String, String> entry) => UTextBodySmall("${entry.key}: ${entry.value}", color: scheme.onSurfaceVariant)),
+          if (code.version != null || code.errorCorrectionLevel != null) UTextBodySmall(<String>[if (code.version != null) "version ${code.version}", if (code.errorCorrectionLevel != null) "EC ${code.errorCorrectionLevel}", if (code.eci != null) "ECI ${code.eci}", if (code.corners.isNotEmpty) "${code.angle.toStringAsFixed(0)}°"].join(" · "), color: scheme.onSurfaceVariant),
+          ...parsed.entries.where((MapEntry<String, String> entry) => entry.key != "text").map((MapEntry<String, String> entry) => UTextBodySmall("${entry.key}: ${entry.value}", color: scheme.onSurfaceVariant)),
         ],
       ),
     );
@@ -586,37 +523,11 @@ UBitMatrix _render1D(bc.Barcode1D code, String data, {int scale = 3, int quiet =
 }
 
 final List<_SelfTestCase> _selfTestCases = <_SelfTestCase>[
-  _SelfTestCase(
-    format: UCodeFormat.qr,
-    payload: "https://sinamn75.com/checkout?id=123456",
-    render: () => _render2D(
-      const bc.BarcodeQR(null, bc.BarcodeQRCorrectionLevel.medium).convert(Uint8List.fromList(utf8.encode("https://sinamn75.com/checkout?id=123456"))),
-      scale: 4,
-    ),
-  ),
-  _SelfTestCase(
-    format: UCodeFormat.qr,
-    payload: "سلام دنیا",
-    render: () => _render2D(
-      const bc.BarcodeQR(null, bc.BarcodeQRCorrectionLevel.high).convert(Uint8List.fromList(utf8.encode("سلام دنیا"))),
-      scale: 4,
-    ),
-  ),
-  _SelfTestCase(
-    format: UCodeFormat.dataMatrix,
-    payload: "DM-TEST-123",
-    render: () => _render2D(const bc.BarcodeDataMatrix().convert((bc.DataMatrixEncoder()..ascii("DM-TEST-123")).toBytes())),
-  ),
-  _SelfTestCase(
-    format: UCodeFormat.aztec,
-    payload: "AZTEC-TEST-123",
-    render: () => _render2D(const bc.BarcodeAztec(33, 0).convert(Uint8List.fromList(utf8.encode("AZTEC-TEST-123")))),
-  ),
-  _SelfTestCase(
-    format: UCodeFormat.pdf417,
-    payload: "PDF417-TEST-123",
-    render: () => _renderPdf417(const bc.BarcodePDF417(bc.Pdf417SecurityLevel.level2, 2, 3).convert(Uint8List.fromList(utf8.encode("PDF417-TEST-123")))),
-  ),
+  _SelfTestCase(format: UCodeFormat.qr, payload: "https://sinamn75.com/checkout?id=123456", render: () => _render2D(const bc.BarcodeQR(null, bc.BarcodeQRCorrectionLevel.medium).convert(Uint8List.fromList(utf8.encode("https://sinamn75.com/checkout?id=123456"))), scale: 4)),
+  _SelfTestCase(format: UCodeFormat.qr, payload: "سلام دنیا", render: () => _render2D(const bc.BarcodeQR(null, bc.BarcodeQRCorrectionLevel.high).convert(Uint8List.fromList(utf8.encode("سلام دنیا"))), scale: 4)),
+  _SelfTestCase(format: UCodeFormat.dataMatrix, payload: "DM-TEST-123", render: () => _render2D(const bc.BarcodeDataMatrix().convert((bc.DataMatrixEncoder()..ascii("DM-TEST-123")).toBytes()))),
+  _SelfTestCase(format: UCodeFormat.aztec, payload: "AZTEC-TEST-123", render: () => _render2D(const bc.BarcodeAztec(33, 0).convert(Uint8List.fromList(utf8.encode("AZTEC-TEST-123"))))),
+  _SelfTestCase(format: UCodeFormat.pdf417, payload: "PDF417-TEST-123", render: () => _renderPdf417(const bc.BarcodePDF417(bc.Pdf417SecurityLevel.level2, 2, 3).convert(Uint8List.fromList(utf8.encode("PDF417-TEST-123"))))),
   _SelfTestCase(format: UCodeFormat.code128, payload: "U-POS-2026", render: () => _render1D(bc.Barcode.code128() as bc.Barcode1D, "U-POS-2026")),
   _SelfTestCase(format: UCodeFormat.code39, payload: "HELLO-39", render: () => _render1D(bc.Barcode.code39() as bc.Barcode1D, "HELLO-39")),
   _SelfTestCase(format: UCodeFormat.code93, payload: "CODE93TEST", render: () => _render1D(bc.Barcode.code93() as bc.Barcode1D, "CODE93TEST")),

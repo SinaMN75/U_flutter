@@ -9,10 +9,7 @@ class UMediaService {
   }) async {
     (UResponse<String>?, UEmptyResponse?, String?) result = (null, null, null);
     final List<MultipartFile> files = <MultipartFile>[
-      if (p.file.path != null)
-        await UHttpClient.multipartFileFromFile("File", File(p.file.path!), filename: p.file.path!.split("/").last)
-      else if (p.file.bytes != null)
-        await UHttpClient.multipartFileFromUint8List("File", p.file.bytes!, filename: p.file.path?.split("/").last ?? "file.${p.file.extension ?? "png"}"),
+      if (p.file.bytes != null) await UHttpClient.multipartFileFromUint8List("File", p.file.bytes!, filename: p.file.name ?? "file.${p.file.extension ?? "png"}"),
     ];
     await UHttpClient.upload(
       endpoint: "${U.baseUrl}/Media/Create",

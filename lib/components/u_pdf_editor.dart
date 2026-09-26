@@ -474,13 +474,13 @@ class UPdfEditController extends ChangeNotifier {
     return true;
   }
 
-  Future<bool> mergeFile(String path) async {
+  Future<bool> mergeFile(Uint8List data) async {
     attach();
     final UPdfEdit? edit = _edit;
     final UPdfDocument? target = viewer.document;
     if (edit == null || target == null) return false;
     try {
-      final UPdfDocument other = await UPdfDocument.open(path: path);
+      final UPdfDocument other = await UPdfDocument.open(bytes: data);
       final UPdfComposer composer = UPdfComposer();
       for (int i = 0; i < target.pageCount; i++) {
         await composer.addPage(target, i);

@@ -157,17 +157,36 @@ abstract class UCameraUtils {
 
   /// Wraps a captured photo as the [UFileData] the rest of the package passes
   /// around, so camera output flows through uploads and pickers unchanged.
-  static UFileData toFileData(UCapturedPhoto photo) => UFileData(
-    bytes: photo.bytes,
-    path: photo.path,
+  static Future<UFileData> toFileData(UCapturedPhoto photo) async => UFileData(
+    bytes: photo.bytes ?? await _readBytes(photo.path),
+    name: "${path.basenameWithoutExtension(photo.path ?? "photo")}.${photo.extension}",
     extension: photo.extension,
   );
 
-  static UFileData videoToFileData(UCapturedVideo video, {Uint8List? bytes}) => UFileData(
-    bytes: bytes ?? video.bytes,
-    path: video.path,
-    extension: extensionOf(video.path, video.container.name),
-  );
+  static Future<UFileData> videoToFileData(UCapturedVideo video, {Uint8List? bytes}) async {
+    final String extension = extensionOf(video.path, video.container.name);
+    return UFileData(
+      bytes: bytes ?? video.bytes ?? await _readBytes(video.path),
+      name: "${path.basenameWithoutExtension(video.path)}.$extension",
+      extension: extension,
+    );
+  }
+
+  static Future<Uint8List?> _readBytes(String? source) async {
+    if (source == null || source.isEmpty) return null;
+    try {
+      if (!kIsWeb) return await File(source).readAsBytes();
+      final Client client = Client();
+      try {
+        final Response response = await client.get(Uri.parse(source));
+        return response.statusCode >= 200 && response.statusCode < 300 ? response.bodyBytes : null;
+      } finally {
+        client.close();
+      }
+    } catch (_) {
+      return null;
+    }
+  }
 
   static String extensionOf(String source, String fallback) {
     final String raw = path.extension(source);

@@ -532,7 +532,7 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
     try {
       final UCapturedPhoto? photo = await controller.takePhoto();
       if (photo == null || !mounted) return;
-      final UFileData file = UCameraUtils.toFileData(photo);
+      final UFileData file = await UCameraUtils.toFileData(photo);
       if (_multiPhoto) {
         setState(() => _captured.add(file));
         if (_atLimit) _finish();
@@ -555,7 +555,7 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
       if (controller.value.isRecording) {
         final UCapturedVideo? video = await controller.stopVideoRecording();
         if (video == null || !mounted) return;
-        final UFileData file = UCameraUtils.videoToFileData(video);
+        final UFileData file = await UCameraUtils.videoToFileData(video);
         if (_o.mode == UCameraMode.both) {
           setState(() => _captured.add(file));
         } else {

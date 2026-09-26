@@ -5,24 +5,24 @@ enum UImageSource { camera, gallery }
 
 class UFileData {
   UFileData({
-    this.path,
     this.bytes,
     this.extension,
     this.url,
     this.id,
     this.tags,
     this.children,
+    this._name,
   });
 
-  final String? path;
   final Uint8List? bytes;
   final String? extension;
   final String? url;
   final String? id;
   final List<int>? tags;
   final List<UFileData>? children;
+  final String? _name;
 
-  String? get name => path?.split(RegExp(r"[\\/]")).last;
+  String? get name => _name;
 
   int? get sizeInBytes => bytes?.lengthInBytes;
 
@@ -269,24 +269,12 @@ abstract class UFile {
       fullscreenDialog: true,
     );
     if (cropped == null) return null;
-    return UFileData(bytes: cropped, path: await _persistTemp(cropped, "png"), extension: "png");
+    return UFileData(bytes: cropped, extension: "png");
   }
 
   static Future<UFileData> _fromPlatformFile(PlatformFile file) async {
     final Uint8List bytes = await file.readAsBytes();
-    return UFileData(bytes: bytes, path: kIsWeb ? null : file.path, extension: (file.xFile.mimeType ?? _extensionOf(file.name)).toLowerCase());
-  }
-
-  static Future<String?> _persistTemp(Uint8List bytes, String extension) async {
-    if (kIsWeb) return null;
-    try {
-      final Directory dir = await getTemporaryDirectory();
-      final File file = File("${dir.path}/u_${DateTime.now().microsecondsSinceEpoch}.$extension");
-      await file.writeAsBytes(bytes);
-      return file.path;
-    } catch (_) {
-      return null;
-    }
+    return UFileData(bytes: bytes, name: file.name, extension: _extensionOf(file.name));
   }
 
   static String _extensionOf(String? source, [String fallback = ""]) {

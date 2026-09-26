@@ -208,9 +208,9 @@ class _UPdfPageManagerPanelState extends State<UPdfPageManagerPanel> {
                     : () => unawaited(
                         _run(() async {
                           final UFileData? picked = await UFile.pickFile(fileType: FileType.custom, allowedExtensions: <String>["pdf"]);
-                          final String? path = picked?.path;
-                          if (path == null) return;
-                          final bool merged = await widget.editor.mergeFile(path);
+                          final Uint8List? bytes = picked?.bytes;
+                          if (bytes == null) return;
+                          final bool merged = await widget.editor.mergeFile(bytes);
                           if (!merged) UToast.errorToast(message: U.s.couldNotOpenTheDocument);
                         }),
                       ),

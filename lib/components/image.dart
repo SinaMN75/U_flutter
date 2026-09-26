@@ -126,7 +126,7 @@ class UImage extends StatelessWidget {
       if (fileData?.bytes != null) {
         return UImageMemory(fileData!.bytes!, width: width, height: height, color: color, fit: fit, placeholder: placeholder);
       }
-      return UImageFile(File(fileData!.path!), width: width, height: height, color: color, fit: fit);
+      return UImageNetwork(fileData!.url ?? "", width: width, height: height, fit: fit, color: color, placeholder: placeholder);
     }
     if (source.length <= 5) {
       if (placeholder == null) return SizedBox(width: width, height: height);
