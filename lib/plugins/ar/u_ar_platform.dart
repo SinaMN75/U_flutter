@@ -411,7 +411,8 @@ class UArSource {
   String? get path => value is String ? value as String? : null;
 
   static String _extensionOf(String path) {
-    final String clean = path.split("?").first.split("#").first;
+    // Only the last segment carries an extension: "picsum.photos/id/1/800/600" has none.
+    final String clean = path.split("?").first.split("#").first.split("/").last;
     final int dot = clean.lastIndexOf(".");
     return dot < 0 ? "" : clean.substring(dot + 1).toLowerCase();
   }
@@ -917,7 +918,7 @@ class UArConfig {
     this.instantPlacement = true,
     this.reticle = false,
     this.reticleColor = const Color(0xFFFFFFFF),
-    this.coaching = true,
+    this.coaching = false,
     this.coachingGoal = UArCoachingGoal.anyPlane,
     this.images = const <UArReferenceImage>[],
     this.maxTrackedImages = 4,
@@ -1012,6 +1013,8 @@ class UArConfig {
   final Color reticleColor;
 
   /// Shows the platform's own "move your phone" guidance where one exists (iOS).
+  /// Off by default: ARKit's coaching overlay blacks out the camera until a
+  /// surface is found, and the built-in widgets already show their own hints.
   final bool coaching;
   final UArCoachingGoal coachingGoal;
   final List<UArReferenceImage> images;
@@ -2391,7 +2394,11 @@ class UArController extends ValueNotifier<UArValue> {
         }
         _nodeEventController.add(<String, Object?>{"id": id, "event": kind, "message": event["message"]});
       case "error":
-        _errorController.add(UArException(code: _enumOf(UArErrorCode.values, event["code"], UArErrorCode.unknown), message: "${event["message"] ?? ""}"));
+        final UArException error = UArException(code: _enumOf(UArErrorCode.values, event["code"], UArErrorCode.unknown), message: "${event["message"] ?? ""}");
+        // Session-level failures stop the camera; surface them through the state
+        // so [UArView] can say so instead of showing a frozen or black view.
+        if (error.code == UArErrorCode.permission || error.code == UArErrorCode.sessionFailed) value = value.copyWith(state: UArSessionState.error, error: error);
+        _errorController.add(error);
       case "config":
         value = value.copyWith(capabilities: UArCapabilities.fromMap(_map(event["capabilities"])));
     }
@@ -2912,11 +2919,29 @@ class _UArViewState extends State<UArView> {
               _surface(value),
               if (value.state == UArSessionState.initializing || value.state == UArSessionState.uninitialized && !_isIos) ?widget.placeholder,
               ?child,
+              if (value.state == UArSessionState.error && value.error != null) _failure(value.error!),
             ],
           ),
           child: widget.child,
         );
       },
+    );
+  }
+
+  Widget _failure(UArException error) {
+    final Widget? custom = widget.unsupported;
+    if (error.code == UArErrorCode.unsupported && custom != null) return custom;
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: DecoratedBox(
+          decoration: BoxDecoration(color: const Color(0xCC000000), borderRadius: BorderRadius.circular(16)),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+            child: Text(error.message, textAlign: TextAlign.center, style: const TextStyle(color: Color(0xFFFFFFFF), fontSize: 15)),
+          ),
+        ),
+      ),
     );
   }
 

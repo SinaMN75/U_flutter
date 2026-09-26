@@ -105,7 +105,7 @@ final class UArSourceLoader {
             return
         }
         let kind = source["kind"] as? String ?? "url"
-        let ext = (source["ext"] as? String).flatMap { $0.isEmpty ? nil : $0 } ?? "bin"
+        let ext = (source["ext"] as? String).map { String($0.filter { $0.isLetter || $0.isNumber }.prefix(8)) }.flatMap { $0.isEmpty ? nil : $0 } ?? "bin"
         switch kind {
         case "file":
             completion(URL(fileURLWithPath: source["value"] as? String ?? ""), nil)
@@ -144,27 +144,27 @@ final class UArSourceLoader {
             return
         }
         URLSession.shared.downloadTask(with: url) { location, response, error in
-            DispatchQueue.main.async {
-                if let error {
-                    completion(nil, error.localizedDescription)
-                    return
-                }
-                if let http = response as? HTTPURLResponse, !(200 ..< 300).contains(http.statusCode) {
-                    completion(nil, "HTTP \(http.statusCode)")
-                    return
-                }
-                guard let location else {
-                    completion(nil, "Download failed")
-                    return
-                }
-                try? FileManager.default.removeItem(at: target)
+            // The temporary file is deleted as soon as this handler returns, so it
+            // has to be moved here, before hopping to the main queue.
+            var failure: String?
+            if let error {
+                failure = error.localizedDescription
+            } else if let http = response as? HTTPURLResponse, !(200 ..< 300).contains(http.statusCode) {
+                failure = "HTTP \(http.statusCode)"
+            } else if let location {
+                let partial = self.cacheDirectory.appendingPathComponent("\(UUID().uuidString).part")
                 do {
-                    try FileManager.default.moveItem(at: location, to: target)
-                    completion(target, nil)
+                    try? FileManager.default.removeItem(at: partial)
+                    try FileManager.default.moveItem(at: location, to: partial)
+                    try? FileManager.default.removeItem(at: target)
+                    try FileManager.default.moveItem(at: partial, to: target)
                 } catch {
-                    completion(nil, error.localizedDescription)
+                    failure = error.localizedDescription
                 }
+            } else {
+                failure = "Download failed"
             }
+            DispatchQueue.main.async { failure == nil ? completion(target, nil) : completion(nil, failure) }
         }.resume()
     }
 
@@ -908,6 +908,8 @@ final class UArSession: NSObject, FlutterPlatformView, FlutterStreamHandler, ARS
     private var recordingStart = Date()
     private var nextId = 1
     private var configuration: ARConfiguration?
+    private var vpsAvailable: Bool?
+    private var degraded = false
     private var planeTextureCache: TextureResource?
 
     init(frame: CGRect, viewId: Int64, arguments: Any?, messenger: FlutterBinaryMessenger, loader: UArSourceLoader) {
@@ -926,6 +928,53 @@ final class UArSession: NSObject, FlutterPlatformView, FlutterStreamHandler, ARS
         container.addSubview(view)
         arView = view
         applyViewOptions()
+        UArSession.live.add(self)
+        UArSession.arbitrateRendering()
+    }
+
+    // RealityKit stops drawing a camera ARView while another, camera-less ARView
+    // (a 3D viewer on the page underneath) is still rendering: the AR view goes
+    // black. Viewers therefore leave the window while any AR session is alive.
+    private static let live = NSHashTable<UArSession>.weakObjects()
+
+    private static func arbitrateRendering() {
+        let sessions = live.allObjects.filter { !$0.disposed }
+        let arActive = sessions.contains { !$0.isViewer }
+        for session in sessions where session.isViewer {
+            session.setRendering(!arActive)
+        }
+    }
+
+    private var parkedAnchors: [HasAnchoring]?
+
+    /// Destroys this viewer's ARView while an AR session runs (hiding it is not
+    /// enough) and rebuilds it with the same scene content afterwards.
+    private func setRendering(_ enabled: Bool) {
+        if enabled {
+            guard let anchors = parkedAnchors, arView == nil, !disposed else { return }
+            parkedAnchors = nil
+            let view = ARView(frame: container.bounds, cameraMode: .nonAR, automaticallyConfigureSession: false)
+            view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            view.isUserInteractionEnabled = false
+            container.insertSubview(view, at: 0)
+            arView = view
+            applyViewOptions()
+            for anchor in anchors { view.scene.addAnchor(anchor) }
+            if started {
+                sceneSubscription = view.scene.subscribe(to: SceneEvents.Update.self) { [weak self] event in
+                    self?.onSceneUpdate(Float(event.deltaTime))
+                }
+            }
+        } else {
+            guard let view = arView, parkedAnchors == nil else { return }
+            sceneSubscription?.cancel()
+            sceneSubscription = nil
+            let anchors = Array(view.scene.anchors)
+            view.scene.anchors.removeAll()
+            parkedAnchors = anchors
+            view.removeFromSuperview()
+            arView = nil
+        }
     }
 
     func view() -> UIView { container }
@@ -1069,7 +1118,7 @@ final class UArSession: NSObject, FlutterPlatformView, FlutterStreamHandler, ARS
             return configuration
         case "orientation":
             return AROrientationTrackingConfiguration()
-        case "geo" where config["geoMode"] as? String != "gps" && ARGeoTrackingConfiguration.isSupported:
+        case "geo" where config["geoMode"] as? String != "gps" && ARGeoTrackingConfiguration.isSupported && vpsAvailable == true:
             let configuration = ARGeoTrackingConfiguration()
             configuration.planeDetection = planes
             configuration.environmentTexturing = .automatic
@@ -1177,19 +1226,46 @@ final class UArSession: NSObject, FlutterPlatformView, FlutterStreamHandler, ARS
             emit(["type": "state", "session": "running", "tracking": "normal", "reason": "none"])
             return
         }
-        loadReferences { [weak self] images, objects, worldMap in
-            guard let self, !self.disposed, let arView = self.arView else { return }
-            guard let configuration = self.makeConfiguration(images: images, objects: objects, worldMap: worldMap) else {
-                result(FlutterError(code: "unsupported", message: "This AR mode is not supported on this device", details: nil))
-                return
+        checkGeoAvailability { [weak self] in
+            self?.loadReferences { [weak self] images, objects, worldMap in
+                guard let self, !self.disposed, let arView = self.arView else {
+                    result(FlutterError(code: "cancelled", message: "The AR view was disposed", details: nil))
+                    return
+                }
+                guard let configuration = self.makeConfiguration(images: images, objects: objects, worldMap: worldMap) else {
+                    result(FlutterError(code: "unsupported", message: "This AR mode is not supported on this device", details: nil))
+                    return
+                }
+                self.configuration = configuration
+                arView.session.delegate = self
+                arView.session.run(configuration, options: [])
+                if self.config["coaching"] as? Bool != false { self.addCoaching() }
+                result(["capabilities": self.sessionCapabilities()])
+                self.emit(["type": "state", "session": "running", "tracking": "notAvailable", "reason": "initializing"])
             }
-            self.configuration = configuration
-            arView.session.delegate = self
-            arView.session.run(configuration, options: [])
-            if self.config["coaching"] as? Bool != false { self.addCoaching() }
-            result(["capabilities": UArSession.capabilities()])
-            self.emit(["type": "state", "session": "running", "tracking": "notAvailable", "reason": "initializing"])
         }
+    }
+
+    /// Apple's visual positioning only covers some cities; the device check alone
+    /// is not enough. Where it is missing, geo mode runs world tracking aligned to
+    /// north and content is placed by GPS + compass instead.
+    private func checkGeoAvailability(_ done: @escaping () -> Void) {
+        guard config["mode"] as? String == "geo", config["geoMode"] as? String != "gps", ARGeoTrackingConfiguration.isSupported else {
+            done()
+            return
+        }
+        ARGeoTrackingConfiguration.checkAvailability { [weak self] available, _ in
+            DispatchQueue.main.async {
+                self?.vpsAvailable = available
+                done()
+            }
+        }
+    }
+
+    private func sessionCapabilities() -> [String: Any] {
+        var caps = UArSession.capabilities()
+        if config["mode"] as? String == "geo" { caps["geospatial"] = configuration is ARGeoTrackingConfiguration }
+        return caps
     }
 
     private func addCoaching() {
@@ -1277,6 +1353,8 @@ final class UArSession: NSObject, FlutterPlatformView, FlutterStreamHandler, ARS
         arView?.removeFromSuperview()
         arView = nil
         if RPScreenRecorder.shared().isRecording { RPScreenRecorder.shared().stopRecording(handler: nil) }
+        UArSession.live.remove(self)
+        UArSession.arbitrateRendering()
     }
 
     // -------------------------------------------------------------------------
@@ -1479,8 +1557,19 @@ final class UArSession: NSObject, FlutterPlatformView, FlutterStreamHandler, ARS
         }
     }
 
-    func session(_: ARSession, didFailWithError error: Error) {
-        let code = (error as? ARError)?.code == .cameraUnauthorized ? "permission" : "sessionFailed"
+    func session(_ session: ARSession, didFailWithError error: Error) {
+        let arCode = (error as? ARError)?.code
+        // Occlusion extras are the usual reason a configuration is refused; retry
+        // once without them rather than leaving a frozen, black view.
+        if arCode == .unsupportedConfiguration, !degraded, let world = configuration as? ARWorldTrackingConfiguration {
+            degraded = true
+            world.frameSemantics = []
+            world.sceneReconstruction = []
+            arView?.environment.sceneUnderstanding.options = []
+            session.run(world, options: [.resetTracking, .removeExistingAnchors])
+            return
+        }
+        let code = arCode == .cameraUnauthorized ? "permission" : "sessionFailed"
         emit(["type": "error", "code": code, "message": error.localizedDescription])
     }
 
@@ -1997,7 +2086,13 @@ final class UArSession: NSObject, FlutterPlatformView, FlutterStreamHandler, ARS
         let size = bounds.extents
         let largest = max(size.x, max(size.y, size.z))
         var scale: Float = 1
-        if let fit = (record.map["fitSize"] as? NSNumber)?.floatValue, largest > 0 { scale = fit / largest }
+        if let fit = (record.map["fitSize"] as? NSNumber)?.floatValue, largest > 0 {
+            scale = fit / largest
+        } else if largest > 20 {
+            // Older USDZ exports are in centimetres without metersPerUnit, which
+            // RealityKit reads as metres: a 1.9 m figure arrives 190 m tall.
+            scale = 0.01
+        }
         var offset = SIMD3<Float>(0, 0, 0)
         switch record.map["pivot"] as? String {
         case "bottom": offset = SIMD3<Float>(-bounds.center.x, -bounds.min.y, -bounds.center.z)
@@ -2949,7 +3044,12 @@ public final class UArHandler: NSObject, CLLocationManagerDelegate, QLPreviewCon
                         result(self.permissionMap())
                     }
                 }
-                if location, self.locationManager.authorizationStatus == .notDetermined {
+                // Without the usage string iOS ignores the request and never calls back.
+                let declared = Bundle.main.object(forInfoDictionaryKey: "NSLocationWhenInUseUsageDescription") != nil
+                if !declared, location {
+                    NSLog("[u/ar] NSLocationWhenInUseUsageDescription is missing from Info.plist; location permission cannot be requested")
+                }
+                if location, declared, self.locationManager.authorizationStatus == .notDetermined {
                     self.locationWaiters.append(finish)
                     self.locationManager.requestWhenInUseAuthorization()
                 } else {

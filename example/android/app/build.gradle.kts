@@ -50,4 +50,6 @@ flutter {
 }
 dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
+    // ARCore: the only native library the u plugin's AR needs (the renderer ships with the plugin).
+    implementation("com.google.ar:core:1.45.0")
 }

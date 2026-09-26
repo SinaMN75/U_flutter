@@ -27,7 +27,11 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Used to take photos and record video.</string>
+	<string>Used to take photos, record video and show AR content in your space.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Used to show places around you in AR.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Used to save AR photos and videos.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Used to record audio with your videos.</string>
 	<key>UIApplicationSceneManifest</key>

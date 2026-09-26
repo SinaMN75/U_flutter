@@ -493,7 +493,7 @@ internal class UArSourceLoader(
         val ext = (source["ext"] as? String ?: "bin").ifEmpty { "bin" }
         return when (kind) {
             "file" -> File(value as String)
-            "url" -> download(value as String)
+            "url" -> download(value as String, ext)
             "asset" -> {
                 val target = File(cacheDir, "asset_${hash(value as String)}.$ext")
                 if (!target.exists()) target.writeBytes(readAsset(value))
@@ -513,8 +513,13 @@ internal class UArSourceLoader(
         return context.assets.open(key).use { it.readBytes() }
     }
 
-    fun download(url: String): File {
-        val ext = url.substringBefore('?').substringAfterLast('.', "bin").take(8)
+    fun download(
+        url: String,
+        extension: String? = null,
+    ): File {
+        // Only the last path segment can carry an extension: "picsum.photos/id/1/800/600" has none.
+        val fromUrl = url.substringBefore('?').substringBefore('#').substringAfterLast('/').substringAfterLast('.', "")
+        val ext = (extension?.takeIf { it.isNotEmpty() && it != "bin" } ?: fromUrl).filter { it.isLetterOrDigit() }.take(8).ifEmpty { "bin" }
         val target = File(cacheDir, "${hash(url)}.$ext")
         if (target.exists() && target.length() > 0) return target
         var current = url
@@ -526,7 +531,7 @@ internal class UArSourceLoader(
             connection.instanceFollowRedirects = true
             val code = connection.responseCode
             if (code in 300..399 && redirects < 5) {
-                current = connection.getHeaderField("Location") ?: break
+                current = URL(URL(current), connection.getHeaderField("Location") ?: break).toString()
                 redirects++
                 connection.disconnect()
                 continue
@@ -535,10 +540,13 @@ internal class UArSourceLoader(
                 connection.disconnect()
                 throw IllegalStateException("HTTP $code for $url")
             }
-            val temp = File(cacheDir, "${hash(url)}.part")
+            val temp = File(cacheDir, "${hash(url)}.${System.nanoTime()}.part")
             connection.inputStream.use { input -> temp.outputStream().use { input.copyTo(it) } }
             connection.disconnect()
-            temp.renameTo(target)
+            if (!temp.renameTo(target)) {
+                temp.copyTo(target, overwrite = true)
+                temp.delete()
+            }
             return target
         }
         throw IllegalStateException("Too many redirects for $url")

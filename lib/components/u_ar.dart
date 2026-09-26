@@ -145,6 +145,7 @@ class UArLabels {
 class UArStyle {
   const UArStyle({
     this.accentColor,
+    this.onAccentColor,
     this.surfaceColor,
     this.onSurfaceColor,
     this.hintBackground,
@@ -155,6 +156,9 @@ class UArStyle {
   });
 
   final Color? accentColor;
+
+  /// Text and icons drawn on [accentColor].
+  final Color? onAccentColor;
   final Color? surfaceColor;
   final Color? onSurfaceColor;
   final Color? hintBackground;
@@ -165,6 +169,12 @@ class UArStyle {
 
   Color accent(BuildContext context) => accentColor ?? Theme.of(context).colorScheme.primary;
 
+  Color onAccent(BuildContext context) {
+    if (onAccentColor != null) return onAccentColor!;
+    if (accentColor == null) return Theme.of(context).colorScheme.onPrimary;
+    return ThemeData.estimateBrightnessForColor(accentColor!) == Brightness.dark ? const Color(0xFFFFFFFF) : const Color(0xFF000000);
+  }
+
   Color surface(BuildContext context) => surfaceColor ?? Theme.of(context).colorScheme.surface.withValues(alpha: 0.9);
 
   Color onSurface(BuildContext context) => onSurfaceColor ?? Theme.of(context).colorScheme.onSurface;
@@ -172,6 +182,30 @@ class UArStyle {
   Color hintBg(BuildContext context) => hintBackground ?? Theme.of(context).colorScheme.inverseSurface.withValues(alpha: 0.72);
 
   Color hintFg(BuildContext context) => hintForeground ?? Theme.of(context).colorScheme.onInverseSurface;
+}
+
+/// Forces [color] on text and icons below, including `UText*` widgets, which
+/// read their colour from the theme's text styles rather than [DefaultTextStyle].
+class UArForeground extends StatelessWidget {
+  const UArForeground({required this.color, required this.child, super.key});
+
+  final Color color;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    return Theme(
+      data: theme.copyWith(
+        textTheme: theme.textTheme.apply(bodyColor: color, displayColor: color),
+        iconTheme: theme.iconTheme.copyWith(color: color),
+      ),
+      child: DefaultTextStyle.merge(
+        style: TextStyle(color: color),
+        child: IconTheme.merge(data: IconThemeData(color: color), child: child),
+      ),
+    );
+  }
 }
 
 // =============================================================================
@@ -317,13 +351,7 @@ class UArPill extends StatelessWidget {
       decoration: BoxDecoration(color: style.hintBg(context), borderRadius: BorderRadius.circular(style.borderRadius)),
       child: Padding(
         padding: padding,
-        child: DefaultTextStyle.merge(
-          style: TextStyle(color: style.hintFg(context)),
-          child: IconTheme.merge(
-            data: IconThemeData(color: style.hintFg(context)),
-            child: child,
-          ),
-        ),
+        child: UArForeground(color: style.hintFg(context), child: child),
       ),
     );
     if (!style.blur) return content;
@@ -347,7 +375,7 @@ class UArRoundButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color background = active ? style.accent(context) : style.hintBg(context);
-    final Color foreground = active ? Theme.of(context).colorScheme.onPrimary : style.hintFg(context);
+    final Color foreground = active ? style.onAccent(context) : style.hintFg(context);
     final Widget button = Material(
       color: background,
       shape: const CircleBorder(),
@@ -407,12 +435,16 @@ class UArGate extends StatefulWidget {
     this.fallback,
     this.labels = const UArLabels(),
     this.style = const UArStyle(),
+    this.showCloseButton = true,
     super.key,
   });
 
   final Widget Function(BuildContext context, UArCapabilities capabilities) builder;
   final bool needsCamera;
   final bool needsLocation;
+
+  /// Shows a close button over the error screens, which otherwise cover the page.
+  final bool showCloseButton;
 
   /// Shown instead of the error card when AR is unavailable, e.g. a 3D viewer.
   final Widget Function(BuildContext context, UArAvailability availability)? fallback;
@@ -485,24 +517,50 @@ class _UArGateState extends State<UArGate> {
     return widget.builder(context, availability.capabilities);
   }
 
-  Widget _message(String text, String? action, Future<void> Function()? onAction) => Center(
-    child: Padding(
-      padding: widget.style.padding,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Icon(Icons.view_in_ar_outlined, size: 56, color: widget.style.accent(context)),
-          const SizedBox(height: 16),
-          UTextBodyLarge(text, textAlign: TextAlign.center),
-          if (action != null && onAction != null) ...<Widget>[
-            const SizedBox(height: 16),
-            UButton(title: action, onTap: () => unawaited(onAction())),
-          ],
-          const SizedBox(height: 8),
-          UButton(title: U.s.retry, type: UButtonType.text, onTap: () => unawaited(_check())),
-        ],
+  // Drawn on a card so it reads on the black AR page in light and dark themes.
+  Widget _message(String text, String? action, Future<void> Function()? onAction) => Stack(
+    fit: StackFit.expand,
+    children: <Widget>[
+      Center(
+        child: Padding(
+          padding: widget.style.padding,
+          child: DecoratedBox(
+            decoration: BoxDecoration(color: widget.style.surface(context), borderRadius: BorderRadius.circular(widget.style.borderRadius)),
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: UArForeground(
+                color: widget.style.onSurface(context),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Icon(Icons.view_in_ar_outlined, size: 56, color: widget.style.accent(context)),
+                    const SizedBox(height: 16),
+                    UTextBodyLarge(text, textAlign: TextAlign.center, maxLines: 6),
+                    if (action != null && onAction != null) ...<Widget>[
+                      const SizedBox(height: 16),
+                      UButton(
+                        title: action,
+                        backgroundColor: widget.style.accent(context),
+                        foregroundColor: widget.style.onAccent(context),
+                        onTap: () => unawaited(onAction()),
+                      ),
+                    ],
+                    const SizedBox(height: 8),
+                    UButton(title: U.s.retry, type: UButtonType.text, foregroundColor: widget.style.accent(context), onTap: () => unawaited(_check())),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
       ),
-    ),
+      if (widget.showCloseButton)
+        PositionedDirectional(
+          top: MediaQuery.paddingOf(context).top + 12,
+          start: 12,
+          child: UArRoundButton(icon: Icons.close, tooltip: U.s.close, style: widget.style, onTap: () => Navigator.of(context).maybePop()),
+        ),
+    ],
   );
 }
 
@@ -538,6 +596,7 @@ class UArWebStartButton extends StatelessWidget {
           title: label ?? U.s.startAr,
           icon: const Icon(Icons.view_in_ar),
           backgroundColor: style.accent(context),
+          foregroundColor: style.onAccent(context),
           borderRadius: 24,
           onTap: () async {
             final bool ok = await controller.enterXr();
@@ -729,6 +788,8 @@ class UArSceneState extends State<UArScene> with WidgetsBindingObserver, UArLife
   UArVector3 _startScale = UArVector3.one;
   UArQuaternion _startRotation = UArQuaternion.identity;
   StreamSubscription<UArException>? _errors;
+  String? _errorText;
+  Timer? _errorTimer;
 
   UArSceneOptions get _o => widget.options;
 
@@ -739,7 +800,7 @@ class UArSceneState extends State<UArScene> with WidgetsBindingObserver, UArLife
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    _errors = controller.errors.listen((UArException error) => widget.onError?.call(error));
+    _errors = controller.errors.listen(_reportError);
     unawaited(controller.ready.then((_) => widget.onCreated?.call(controller)).catchError((Object _) {}));
   }
 
@@ -747,8 +808,24 @@ class UArSceneState extends State<UArScene> with WidgetsBindingObserver, UArLife
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     unawaited(_errors?.cancel());
+    _errorTimer?.cancel();
     if (widget.controller == null) controller.dispose();
     super.dispose();
+  }
+
+  /// Hands errors to [UArScene.onError], or shows them in the hint area so a
+  /// model that fails to load never just silently does nothing.
+  void _reportError(UArException error) {
+    if (widget.onError != null) {
+      widget.onError!(error);
+      return;
+    }
+    if (!mounted) return;
+    _errorTimer?.cancel();
+    setState(() => _errorText = error.message.isEmpty ? (widget.labels.loadFailed ?? U.s.failedToLoadTheModel) : error.message);
+    _errorTimer = Timer(const Duration(seconds: 5), () {
+      if (mounted) setState(() => _errorText = null);
+    });
   }
 
   UArPlaceable? get currentItem => widget.items.isEmpty ? null : widget.items[selectedItem];
@@ -766,6 +843,20 @@ class UArSceneState extends State<UArScene> with WidgetsBindingObserver, UArLife
       UArSurface.table => !hit.isWall && (hit.isTable || raised && hit.classification == UArPlaneClassification.none),
       UArSurface.ceiling => hit.isCeiling,
     };
+  }
+
+  /// The best hit for [surface]: an exact match (a floor for floor items), else
+  /// any surface with the right orientation, so a tap on a table still places a
+  /// floor item instead of silently doing nothing.
+  UArHitResult? _pick(List<UArHitResult> hits, UArSurface surface) {
+    final UArHitResult? exact = hits.where((UArHitResult h) => _matches(h, surface)).firstOrNull;
+    if (exact != null) return exact;
+    final UArSurface loose = switch (surface) {
+      UArSurface.floor || UArSurface.table => UArSurface.horizontal,
+      UArSurface.wall => UArSurface.vertical,
+      _ => surface,
+    };
+    return loose == surface ? null : hits.where((UArHitResult h) => _matches(h, loose) && !h.isCeiling).firstOrNull;
   }
 
   /// World pose for content placed on [hit]: upright and facing the camera on
@@ -788,7 +879,7 @@ class UArSceneState extends State<UArScene> with WidgetsBindingObserver, UArLife
   Future<UArPlacedItem?> place(UArHitResult hit, {UArPlaceable? item}) async {
     final UArPlaceable? placeable = item ?? currentItem;
     if (placeable == null || busy) return null;
-    if (!_matches(hit, placeable.surface)) return null;
+    if (_pick(<UArHitResult>[hit], placeable.surface) == null) return null;
     final int count = placed.where((UArPlacedItem p) => p.item.id == placeable.id).length;
     if (placeable.maxCount > 0 && count >= placeable.maxCount) {
       final UArPlacedItem existing = placed.firstWhere((UArPlacedItem p) => p.item.id == placeable.id);
@@ -824,7 +915,7 @@ class UArSceneState extends State<UArScene> with WidgetsBindingObserver, UArLife
       widget.onPlaced?.call(result);
       return result;
     } on UArException catch (error) {
-      widget.onError?.call(error);
+      _reportError(error);
       return null;
     } finally {
       if (mounted) setState(() => busy = false);
@@ -901,7 +992,7 @@ class UArSceneState extends State<UArScene> with WidgetsBindingObserver, UArLife
       } else {
         final List<UArHitResult> hits = await controller.hitTest(point);
         final UArSurface surface = currentItem?.surface ?? UArSurface.any;
-        hit = hits.where((UArHitResult h) => _matches(h, surface)).firstOrNull;
+        hit = _pick(hits, surface);
       }
       if (hit == null) return;
       if (currentItem == null) {
@@ -911,7 +1002,7 @@ class UArSceneState extends State<UArScene> with WidgetsBindingObserver, UArLife
       }
       await place(hit);
     } on UArException catch (error) {
-      widget.onError?.call(error);
+      _reportError(error);
     }
   }
 
@@ -942,7 +1033,7 @@ class UArSceneState extends State<UArScene> with WidgetsBindingObserver, UArLife
       if (details.pointerCount == 1 && _dragging && _o.enableDrag) {
         final UArPlacedItem? item = placed.where((UArPlacedItem p) => p.nodeId == id).firstOrNull;
         final List<UArHitResult> hits = await controller.hitTest(details.localFocalPoint, types: const <UArHitType>[UArHitType.plane, UArHitType.depth, UArHitType.estimated]);
-        final UArHitResult? hit = hits.where((UArHitResult h) => _matches(h, item?.item.surface ?? UArSurface.any)).firstOrNull;
+        final UArHitResult? hit = _pick(hits, item?.item.surface ?? UArSurface.any);
         if (hit != null && item != null) {
           _dragHit = hit;
           final UArPose pose = placementPose(hit);
@@ -1056,7 +1147,7 @@ class UArSceneState extends State<UArScene> with WidgetsBindingObserver, UArLife
   }
 
   Widget _hints(BuildContext context, UArValue value) {
-    String? hint = uArTrackingHint(value, widget.labels, needsSurface: widget.items.isNotEmpty);
+    String? hint = _errorText ?? uArTrackingHint(value, widget.labels, needsSurface: widget.items.isNotEmpty);
     if (hint == null && widget.items.isNotEmpty && placed.isEmpty && value.isTracking) hint = widget.labels.tapToPlace ?? U.s.tapToPlace;
     if (hint == null && _showGestureHint) hint = widget.labels.gestures ?? U.s.dragToMovePinchToScaleTwistToRotate;
     if (kIsWeb && !value.isXrActive) hint = null;
@@ -1459,6 +1550,7 @@ class U3DViewerState extends State<U3DViewer> with SingleTickerProviderStateMixi
                   icon: const Icon(Icons.view_in_ar),
                   borderRadius: 24,
                   backgroundColor: widget.style.accent(context),
+                  foregroundColor: widget.style.onAccent(context),
                   onTap: () => unawaited(openInAr()),
                 ),
           ),
@@ -1775,7 +1867,7 @@ class UArGeoViewState extends State<UArGeoView> with WidgetsBindingObserver, UAr
             CircleAvatar(
               radius: 28,
               backgroundColor: widget.style.accent(context),
-              child: Icon(place.icon ?? Icons.storefront, color: Theme.of(context).colorScheme.onPrimary),
+              child: Icon(place.icon ?? Icons.storefront, color: widget.style.onAccent(context)),
             ),
           const SizedBox(width: 10),
           Expanded(
@@ -2145,7 +2237,7 @@ class UArFaceTryOn extends StatefulWidget {
 
 class UArFaceTryOnState extends State<UArFaceTryOn> with WidgetsBindingObserver, UArLifecycle<UArFaceTryOn> {
   late final UArController controller = UArController(
-    config: UArConfig(mode: UArMode.face, camera: UArCameraFacing.front, planeDetection: UArPlaneDetection.none, showFaceMesh: widget.showFaceMesh, coaching: false),
+    config: UArConfig(mode: UArMode.face, camera: UArCameraFacing.front, planeDetection: UArPlaneDetection.none, showFaceMesh: widget.showFaceMesh),
   );
   late int index = widget.initialIndex.clamp(0, max(0, widget.items.length - 1));
   bool _hasFace = false;
@@ -2363,7 +2455,6 @@ class UArImageTriggerState extends State<UArImageTrigger> with WidgetsBindingObs
       images: widget.targets.map((UArImageTarget t) => t.reference).toList(),
       maxTrackedImages: widget.maxTracked,
       planeStyle: UArPlaneStyle.hidden,
-      coaching: false,
     ),
   );
   final Set<String> _built = <String>{};
@@ -2512,7 +2603,7 @@ class UArCodeView extends StatefulWidget {
 }
 
 class UArCodeViewState extends State<UArCodeView> with WidgetsBindingObserver, UArLifecycle<UArCodeView> {
-  late final UArController controller = UArController(config: const UArConfig(planeStyle: UArPlaneStyle.hidden, coaching: false));
+  late final UArController controller = UArController(config: const UArConfig(planeStyle: UArPlaneStyle.hidden));
   final Map<String, String> anchors = <String, String>{};
   Timer? _timer;
   bool _scanning = false;
@@ -2741,6 +2832,7 @@ class _NativeFallback extends StatelessWidget {
                   icon: const Icon(Icons.view_in_ar),
                   borderRadius: 24,
                   backgroundColor: style.accent(context),
+                  foregroundColor: style.onAccent(context),
                   onTap: () => unawaited(UAr.openNativeViewer(UArNativeViewerOptions(source: item.source!, iosSource: item.iosSource, title: item.title))),
                 ),
               ],
