@@ -26,9 +26,14 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
-    title: widget.dorm?.title == null ? U.s.dormRooms : "${U.s.rooms} · ${widget.dorm?.title}",
-    onFilter: _showFilterDialog,
-    onCreate: U.user.hasPermission(TagUser.permissionManageDorms) ? _showEditDialog : null,
+    title: widget.dorm == null ? U.s.dormRooms : "${U.s.rooms} · ${widget.dorm!.title}",
+    onFilter: () => UAdminForm.filter(
+      title: U.s.filterItem(U.s.rooms),
+      children: (_) => <Widget>[UAdminForm.text(c.titleFilter, U.s.title)],
+      onApply: c.applyFilters,
+      onClear: c.clearFilters,
+    ),
+    onCreate: U.user.hasPermission(TagUser.permissionManageDorms) ? _form : null,
     pageNumber: c.pageNumber,
     totalPages: c.totalPages,
     onPageChanged: (int page) {
@@ -42,165 +47,68 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
       onRetry: c.read,
       emptyText: U.s.noItemsFound(U.s.room),
       desktopHeader: () => UAdminTable.header(<String>[U.s.title, U.s.dorm, U.s.beds, U.s.created, U.s.operations]),
-      desktopRow: _itemDesktop,
-      mobileRow: _itemResponsive,
+      desktopRow: (UDormRoomResponse i, int index) => URow(
+        spacing: 8,
+        color: UAdminTable.rowColor(context, index),
+        padding: UAdminTable.rowPadding,
+        children: <Widget>[
+          UAdminTable.cell(i.title),
+          UAdminTable.cell(i.dorm?.title ?? "-"),
+          UAdminTable.cell((i.beds?.length ?? 0).toString()),
+          UAdminTable.cell(i.createdAt.toJalaliDate()),
+          _menu(i).expanded(),
+        ],
+      ),
+      mobileRow: (UDormRoomResponse i, int index) => UAdminTable.mobileCard(
+        icon: Icons.meeting_room_rounded,
+        title: i.title,
+        trailing: _menu(i),
+        fields: <UAdminField>[
+          UAdminField(U.s.dorm, i.dorm?.title ?? "-"),
+          UAdminField(U.s.beds, (i.beds?.length ?? 0).toString()),
+          UAdminField(U.s.created, i.createdAt.toJalaliDate()),
+        ],
+      ),
     ),
-  );
-
-  Widget _itemDesktop(UDormRoomResponse i, int index) => URow(
-    spacing: 8,
-    color: UAdminTable.rowColor(context, index),
-    padding: UAdminTable.rowPadding,
-    children: <Widget>[
-      UAdminTable.cell(i.title),
-      UAdminTable.cell(i.dorm?.title ?? "-"),
-      UAdminTable.cell((i.beds?.length ?? 0).toString()),
-      UAdminTable.cell(i.createdAt.toJalaliDate()),
-      _menu(i).expanded(),
-    ],
-  );
-
-  Widget _itemResponsive(UDormRoomResponse i, int index) => UAdminTable.mobileCard(
-    icon: Icons.meeting_room_rounded,
-    title: i.title,
-    trailing: _menu(i),
-    fields: <UAdminField>[
-      UAdminField(U.s.dorm, i.dorm?.title ?? "-"),
-      UAdminField(U.s.beds, (i.beds?.length ?? 0).toString()),
-      UAdminField(U.s.created, i.createdAt.toJalaliDate()),
-    ],
   );
 
   Widget _menu(UDormRoomResponse i) => UAdminOps.menu<UDormRoomResponse>(
     item: i,
-    handlers: UAdminActionHandlers<UDormRoomResponse>(
-      onEdit: (UDormRoomResponse r) => _showEditDialog(p: r),
-      onDelete: c.delete,
-    ),
+    handlers: UAdminActionHandlers<UDormRoomResponse>(onEdit: _form, onDelete: c.delete),
     fallback: (UAdminActionContext<UDormRoomResponse> ctx) => <UAdminAction>[
       UAdminLinks.roomBeds(ctx.item),
-      UAdminLinks.placeDetails(
-        onTap: () => UAdminPlaceDetails.dormRoom(ctx.item, onDone: c.read),
-        roles: <TagUser>[TagUser.permissionManageDorms],
-      ),
       ctx.edit(roles: <TagUser>[TagUser.permissionManageDorms]),
       ctx.delete(roles: <TagUser>[TagUser.permissionDeleteDorms]),
     ],
   );
 
-  void _showFilterDialog() => UNavigator.dialog(
-    UAdminForm.filterDialog(
-      context,
-      title: Text(U.s.filterItem(U.s.rooms)),
-      children: <Widget>[
-        UTextField(controller: c.titleFilter, labelText: U.s.title, margin: const EdgeInsets.symmetric(vertical: 6)),
-        const SizedBox(height: 20),
-        UButtonSubmitCancel(
-          submitTitle: U.s.filter,
-          cancelTitle: U.s.clearFilters,
-          onSubmit: () {
-            c.applyFilters();
-            UNavigator.back();
-          },
-          onCancel: () {
-            c.clearFilters();
-            UNavigator.back();
-          },
-        ),
+  /// Create ([r] == null) and edit share this one dialog.
+  Future<void> _form([UDormRoomResponse? r]) async {
+    await c.loadForm(r);
+    await UAdminForm.editDialog(
+      title: r == null ? U.s.createItem(U.s.room) : "${U.s.editItem(U.s.room)} — ${r.title}",
+      formKey: c.formKey,
+      maxWidth: 760,
+      onSubmit: c.save,
+      children: (BuildContext context, StateSetter setState) => <Widget>[
+        UAdminForm.text(c.title, U.s.title, required: true),
+        if (widget.dorm == null)
+          UTextFieldAutoCompleteAsync<UDormResponse>(
+            hintText: U.s.dorm,
+            labelBuilder: (UDormResponse i) => i.title,
+            selectedItem: c.formDorm,
+            fetchData: c.searchDorms,
+            onChanged: (UDormResponse? i) => c.formDorm = i,
+          ).pSymmetric(vertical: 6),
+        UTagChips<TagDormRoom>(title: U.s.type, options: TagDormRoom.values.group(100), tags: c.tags, single: true),
+        UAdminForm.text(c.description, U.s.description, lines: 2),
+        UAdminForm.pair(context, UAdminForm.text(c.capacity, U.s.capacity, number: true), UAdminForm.text(c.floor, U.s.floor, number: true)),
+        UAdminForm.sectionTitle(U.s.photos),
+        UFilePicker.gallery(c.photos),
+        UAdminForm.sectionTitle(U.s.amenities),
+        UTagChips<TagDormRoom>(title: U.s.details, options: TagDormRoom.values.group(300), tags: c.tags),
+        UTagChips<TagDormRoom>(title: U.s.amenities, options: TagDormRoom.values.group(500), tags: c.tags),
       ],
-    ),
-  );
-
-  void _showEditDialog({UDormRoomResponse? p}) {
-    final UAdminFields f = UAdminFields();
-    final TextEditingController title = f.text(p?.title);
-    final TextEditingController detail = f.text(p?.jsonData.description);
-    final TextEditingController capacity = f.text(p?.capacity.toString());
-    final TextEditingController floor = f.text(p?.jsonData.floor?.toString());
-    final URxn<UDormResponse> dorm = URxn<UDormResponse>();
-    final List<int> tags = List<int>.from(p?.tags ?? <int>[TagDormRoom.dorm.number]);
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
-    UNavigator.dialog(
-      f.scope(
-        AlertDialog(
-          title: Text(p == null ? U.s.createItem(U.s.room) : U.s.editItem(U.s.rooms)),
-          content: SizedBox(
-            width: context.dialogWidth(),
-            child: SingleChildScrollView(
-              child: Form(
-                key: formKey,
-                child: UColumn(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    UTextField(
-                      controller: title,
-                      labelText: U.s.title,
-                      validator: UValidators.required(message: ""),
-                      margin: const EdgeInsets.symmetric(vertical: 6),
-                    ),
-                    if (widget.dorm == null)
-                      UTextFieldAutoCompleteAsync<UDormResponse>(
-                        labelBuilder: (UDormResponse i) => i.title,
-                        onChanged: dorm.call,
-                        selectedItem: dorm.value,
-                        fetchData: c.readDorms,
-                        hintText: U.s.dorm,
-                      ).pSymmetric(vertical: 6),
-                    UAdminTagChips<TagDormRoom>(title: U.s.type, options: TagDormRoom.values.group(100), tags: tags, single: true),
-                    UTextField(controller: detail, labelText: U.s.description, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    URow(
-                      children: <Widget>[
-                        UTextField(expanded: 1, controller: capacity, labelText: U.s.capacity, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
-                        const SizedBox(width: 8),
-                        UTextField(expanded: 1, controller: floor, labelText: U.s.floor, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    UButtonSubmitCancel(
-                      onSubmit: () => UValidators.validateForm(
-                        key: formKey,
-                        action: () {
-                          final String? did = dorm.value?.id ?? widget.dorm?.id;
-                          if (did == null) {
-                            UToast.error(message: U.s.pleaseSelectAItem(U.s.dorm));
-                            return;
-                          }
-                          if (p == null) {
-                            c.create(
-                              p: UDormRoomCreateParams(
-                                tags: tags,
-                                title: title.text,
-                                dormId: did,
-                                description: detail.text.nullIfEmpty(),
-                                capacity: int.tryParse(capacity.text.toLatinNumber()) ?? 0,
-                                floor: int.tryParse(floor.text.toLatinNumber()),
-                              ),
-                            );
-                          } else {
-                            c.update(
-                              p: UDormRoomUpdateParams(
-                                id: p.id,
-                                tags: tags,
-                                title: title.text,
-                                dormId: did,
-                                description: detail.text.nullIfEmpty(),
-                                capacity: int.tryParse(capacity.text.toLatinNumber()),
-                                floor: int.tryParse(floor.text.toLatinNumber()),
-                              ),
-                            );
-                          }
-                          UNavigator.back();
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

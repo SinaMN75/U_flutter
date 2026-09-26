@@ -2,14 +2,24 @@ part of "../../../u_admin.dart";
 
 class UAdminDormRoomController extends UBaseController {
   List<UDormRoomResponse> list = <UDormRoomResponse>[];
-
   UDormResponse? dorm;
-
   final TextEditingController titleFilter = TextEditingController();
 
-  Future<void> init({UDormResponse? dorm}) async {
+  // ---------------------------------------------------------------- form (create and edit)
+
+  UDormRoomResponse? editing;
+  UDormResponse? formDorm;
+  late final TextEditingController title = fields.text();
+  late final TextEditingController description = fields.text();
+  late final TextEditingController capacity = fields.text();
+  late final TextEditingController floor = fields.text();
+  List<int> tags = <int>[];
+  List<UMediaResponse> media = <UMediaResponse>[];
+  UFilePickerController photos = UFilePickerController();
+
+  void init({UDormResponse? dorm}) {
     this.dorm = dorm;
-    await read();
+    read();
   }
 
   Future<void> read() async {
@@ -19,7 +29,7 @@ class UAdminDormRoomController extends UBaseController {
         pageNumber: pageNumber.value,
         pageSize: pageSize,
         dormId: dorm?.id,
-        title: titleFilter.text.nullIfEmpty(),
+        title: titleFilter.valueOrNull(),
         selectorArgs: const UDormRoomSelectorArgs(dorm: UDormSelectorArgs(), beds: UDormBedSelectorArgs()),
       ),
       onOk: (UResponse<List<UDormRoomResponse>> r) {
@@ -39,60 +49,63 @@ class UAdminDormRoomController extends UBaseController {
     reloadFirstPage(read);
   }
 
-  void create({required UDormRoomCreateParams p}) => UServices.hotel.createDormRoom(
-    p: p,
-    onOk: (UResponse<String> r) => okCallback(r.message, read),
-    onError: (UEmptyResponse r) => errorCallBack(r.message, read),
-    onException: (String e) => errorCallBack(
-      U.s.errorSubmittingForm,
-      read,
-    ),
-  );
+  Future<List<UDormResponse>> searchDorms(String query) async => (await UServices.hotel.readDorms(p: UDormReadParams(title: query, pageSize: 100, pageNumber: 1))).$1?.result ?? <UDormResponse>[];
 
-  void update({required UDormRoomUpdateParams p}) => UServices.hotel.updateDormRoom(
-    p: p,
-    onOk: (UEmptyResponse r) => okCallback(r.message, read),
-    onError: (UEmptyResponse r) => errorCallBack(r.message, read),
-    onException: (String e) => errorCallBack(
-      U.s.errorSubmittingForm,
-      read,
-    ),
-  );
-
-  void delete(UDormRoomResponse i) => UNavigator.confirm(
-    title: U.s.delete,
-    message: U.s.areYouSureYouWantToDelete,
-    onConfirm: () => UServices.hotel.deleteDormRoom(
-      p: UIdParams(id: i.id),
-      onOk: (UEmptyResponse r) {
-        UNavigator.back();
-        okCallback(r.message, read);
-      },
-      onError: (UEmptyResponse r) {
-        UNavigator.back();
-        errorCallBack(r.message, read);
-      },
-      onException: (String e) {
-        UNavigator.back();
-        UToast.error(message: e);
-      },
-    ),
-  );
-
-  Future<List<UDormResponse>> readDorms(String query) async {
-    final List<UDormResponse> result = <UDormResponse>[];
-    await UServices.hotel.readDorms(
-      p: UDormReadParams(title: query, pageSize: 100, pageNumber: 1),
-      onOk: (UResponse<List<UDormResponse>> r) => result.addAll(r.result ?? <UDormResponse>[]),
-      onError: (UEmptyResponse e) {},
-      onException: (String e) {},
-    );
-    return result;
+  /// Fills the form: empty for [item] == null, otherwise with the full room (photos included).
+  Future<void> loadForm(UDormRoomResponse? item) async {
+    final UDormRoomResponse? r = item == null
+        ? null
+        : (await UServices.hotel.readDormRoomById(
+                p: UIdParams(
+                  id: item.id,
+                  selectorArgs: const UDormRoomSelectorArgs(media: UMediaSelectorArgs()),
+                ),
+              )).$1?.result ??
+              item;
+    editing = r;
+    formDorm = r?.dorm ?? item?.dorm ?? dorm;
+    title.text = r?.title ?? "";
+    description.text = r?.jsonData.description ?? "";
+    capacity.text = r?.capacity.toString() ?? "";
+    floor.text = r?.jsonData.floor?.toString() ?? "";
+    tags = List<int>.from(r?.tags ?? <int>[TagDormRoom.dorm.number]);
+    media = (r?.media ?? <UMediaResponse>[]).sortedForGallery();
+    photos.dispose();
+    photos = UFilePickerController.fromMedia(media);
   }
+
+  /// Creates or updates the room, then saves its photos. Returns true when the dialog can close.
+  Future<bool> save() async {
+    final String? dormId = formDorm?.id ?? editing?.dormId;
+    if (dormId == null) {
+      UToast.error(message: U.s.pleaseSelectAItem(U.s.dorm));
+      return false;
+    }
+    final UDormRoomUpdateParams p = UDormRoomUpdateParams(
+      id: editing?.id ?? "",
+      tags: tags,
+      title: title.text.trim(),
+      dormId: dormId,
+      description: description.text.nullIfEmpty(),
+      capacity: intOf(capacity) ?? 0,
+      floor: intOf(floor),
+    );
+    final dynamic ok = await submit(
+      editing == null ? UServices.hotel.createDormRoom(p: UDormRoomCreateParams.fromMap(p.toMap()..remove("id"))) : UServices.hotel.updateDormRoom(p: p),
+      () {},
+    );
+    if (ok == null) return false;
+    await UServices.media.syncGallery(photos, existing: media, dormRoomId: editing?.id ?? ok.result);
+    unawaited(read());
+    return true;
+  }
+
+  void delete(UDormRoomResponse i) => confirmAction(() => UServices.hotel.deleteDormRoom(p: UIdParams(id: i.id)), read);
 
   @override
   void dispose() {
     titleFilter.dispose();
+    photos.dispose();
     super.dispose();
   }
 }

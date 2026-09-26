@@ -12,15 +12,6 @@ class UAdminInvoicePage extends StatefulWidget {
 class _InvoicePageState extends State<UAdminInvoicePage> {
   final UAdminInvoiceController c = UAdminInvoiceController();
 
-  static const List<TagDormBedInvoice> _types = <TagDormBedInvoice>[TagDormBedInvoice.deposit, TagDormBedInvoice.rent];
-
-  String _typeLabel(UDormBedInvoiceResponse i) {
-    for (final TagDormBedInvoice t in _types) {
-      if (i.tags.contains(t.number)) return t.localizedTitle;
-    }
-    return "-";
-  }
-
   @override
   void initState() {
     c.init(contract: widget.contract);
@@ -36,8 +27,18 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
   @override
   Widget build(BuildContext context) => UAdminScaffold(
     title: widget.contract == null ? U.s.invoices : "${U.s.invoices} · ${widget.contract?.user?.displayName ?? ""}",
-    onFilter: _showFilterDialog,
-    onCreate: widget.contract != null && U.user.hasPermission(TagUser.permissionManageInvoices) ? _showEditDialog : null,
+    onFilter: () => UAdminForm.filter(
+      title: U.s.filter,
+      onApply: c.applyFilters,
+      onClear: c.clearFilters,
+      children: (_) => <Widget>[
+        UAdminForm.date(c.minDueText, U.s.dueDate, (DateTime d) => c.minDueDate = d, initial: c.minDueDate),
+        UAdminForm.date(c.maxDueText, U.s.dueDate, (DateTime d) => c.maxDueDate = d, initial: c.maxDueDate),
+        UAdminForm.text(c.minDebtFilter, U.s.minPrice, money: true),
+        UAdminForm.text(c.maxDebtFilter, U.s.maxPrice, money: true),
+      ],
+    ),
+    onCreate: widget.contract != null && U.user.hasPermission(TagUser.permissionManageInvoices) ? _form : null,
     pageNumber: c.pageNumber,
     totalPages: c.totalPages,
     onPageChanged: (int page) {
@@ -46,339 +47,142 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
     },
     body: UColumn(
       children: <Widget>[
-        if (widget.contract != null) UObx(() => c.state.isLoaded() ? _summary() : const SizedBox.shrink()),
-        _statusFilter(),
-        _list().expanded(),
+        if (widget.contract != null)
+          UObx(
+            () => !c.state.isLoaded()
+                ? const SizedBox.shrink()
+                : SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    child: URow(
+                      spacing: 8,
+                      children: <Widget>[
+                        _total(U.s.totalDebt, c.totalDebt, UAdminTheme.blueGrey),
+                        _total(U.s.totalPaid, c.totalPaid, UAdminTheme.green),
+                        _total(U.s.totalRemaining, c.totalRemaining, UAdminTheme.orange),
+                        _total(U.s.totalPenalty, c.totalPenalty, UAdminTheme.red),
+                      ],
+                    ),
+                  ),
+          ),
+        // Rebuilt by the loading state, which every status change goes through.
+        UObx(() {
+          c.state.value;
+          return Wrap(
+            spacing: 8,
+            children: <(String, UAdminInvoiceStatusFilter)>[
+              (U.s.all, UAdminInvoiceStatusFilter.all),
+              (U.s.paid, UAdminInvoiceStatusFilter.paid),
+              (U.s.unpaid, UAdminInvoiceStatusFilter.unpaid),
+              (U.s.overdue, UAdminInvoiceStatusFilter.overdue),
+            ].map(((String, UAdminInvoiceStatusFilter) f) => ChoiceChip(label: Text(f.$1), selected: c.statusFilter == f.$2, onSelected: (_) => c.setStatus(f.$2))).toList(),
+          ).pSymmetric(horizontal: 12, vertical: 6);
+        }),
+        UAdminListView<UDormBedInvoiceResponse>(
+          state: c.state,
+          items: () => c.list,
+          totalCount: () => c.totalCount,
+          onRetry: c.read,
+          emptyText: U.s.noItemsFound(U.s.invoices),
+          desktopBreakpoint: 900,
+          desktopHeader: () => UAdminTable.header(<String>[U.s.tenant, U.s.invoiceType, U.s.dueDate, U.s.debtAmount, U.s.paidAmount, U.s.penalty, U.s.paymentStatus, U.s.operations]),
+          desktopRow: (UDormBedInvoiceResponse i, int index) => URow(
+            spacing: 8,
+            color: UAdminTable.rowColor(context, index),
+            padding: UAdminTable.rowPadding,
+            children: <Widget>[
+              UAdminTable.cell(_tenant(i)),
+              UAdminTable.cell(c.typeOf(i)?.localizedTitle ?? "-"),
+              UAdminTable.cell(i.dueDate.toJalaliDate()),
+              UAdminTable.cell(i.debtAmount.rial()),
+              UAdminTable.cell(i.paidAmount.rial()),
+              UAdminTable.cell(i.penaltyAmount.rial()),
+              _status(i).alignAtCenter().expanded(),
+              _menu(i).expanded(),
+            ],
+          ),
+          mobileRow: (UDormBedInvoiceResponse i, int index) => UAdminTable.mobileCard(
+            icon: Icons.receipt_long_rounded,
+            title: _tenant(i),
+            subtitle: c.typeOf(i)?.localizedTitle ?? "-",
+            badge: _status(i),
+            trailing: _menu(i),
+            fields: <UAdminField>[
+              UAdminField(U.s.dueDate, i.dueDate.toJalaliDate()),
+              UAdminField(U.s.debtAmount, i.debtAmount.rial()),
+              UAdminField(U.s.paidAmount, i.paidAmount.rial()),
+              UAdminField(U.s.penalty, i.penaltyAmount.rial()),
+            ],
+          ),
+        ).expanded(),
       ],
     ),
   );
 
-  Widget _summary() => SingleChildScrollView(
-    scrollDirection: Axis.horizontal,
-    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-    child: URow(
-      children: <Widget>[
-        _summaryCard(U.s.totalDebt, c.totalDebt, UAdminTheme.blueGrey),
-        _summaryCard(U.s.totalPaid, c.totalPaid, UAdminTheme.green),
-        _summaryCard(U.s.totalRemaining, c.totalRemaining, UAdminTheme.orange),
-        _summaryCard(U.s.totalPenalty, c.totalPenalty, UAdminTheme.red),
-      ],
-    ),
-  );
+  String _tenant(UDormBedInvoiceResponse i) => i.contract?.user?.displayName ?? widget.contract?.user?.displayName ?? "-";
 
-  Widget _summaryCard(String label, double value, Color color) => UContainer(
-    margin: const EdgeInsets.symmetric(horizontal: 4),
+  Widget _total(String label, double value, Color color) => UContainer(
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
     radius: 12,
     color: color.withValues(alpha: 0.11),
     child: UColumn(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
+      spacing: 4,
       children: <Widget>[
         UTextBodySmall(label, color: color),
-        const SizedBox(height: 4),
         UTextBodyMedium(value.rial(), color: color),
       ],
     ),
   );
 
-  Widget _statusFilter() => UObx(() {
-    c.pageNumber.value;
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      child: URow(
-        children: <Widget>[
-          _chip(U.s.all, UAdminInvoiceStatusFilter.all),
-          _chip(U.s.paid, UAdminInvoiceStatusFilter.paid),
-          _chip(U.s.unpaid, UAdminInvoiceStatusFilter.unpaid),
-          _chip(U.s.overdue, UAdminInvoiceStatusFilter.overdue),
-        ],
-      ),
-    );
-  });
-
-  Widget _chip(String label, UAdminInvoiceStatusFilter value) => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 4),
-    child: ChoiceChip(label: Text(label), selected: c.statusFilter == value, onSelected: (_) => c.setStatus(value)),
-  );
-
-  Widget _list() => UAdminListView<UDormBedInvoiceResponse>(
-    state: c.state,
-    items: () => c.list,
-    totalCount: () => c.totalCount,
-    onRetry: c.read,
-    emptyText: U.s.noItemsFound(U.s.invoices),
-    desktopBreakpoint: 900,
-    desktopHeader: () => UAdminTable.header(<String>[U.s.tenant, U.s.invoiceType, U.s.dueDate, U.s.debtAmount, U.s.paidAmount, U.s.penalty, U.s.paymentStatus, U.s.operations]),
-    desktopRow: _itemDesktop,
-    mobileRow: _itemResponsive,
-  );
-
-  Widget _statusChip(UDormBedInvoiceResponse i) {
-    final Color color = i.isPaid
-        ? UAdminTheme.green
-        : i.isOverdue
-        ? UAdminTheme.red
-        : UAdminTheme.orange;
-    final String label = i.isPaid
-        ? U.s.paid
-        : i.isOverdue
-        ? U.s.overdue
-        : U.s.unpaid;
-    return UContainer(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      radius: 20,
-      color: color.withValues(alpha: 0.15),
-      child: UTextBodySmall(label, color: color),
-    );
-  }
-
-  String _tenantLabel(UDormBedInvoiceResponse i) => i.contract?.user?.displayName ?? widget.contract?.user?.displayName ?? "-";
-
-  Widget _itemDesktop(UDormBedInvoiceResponse i, int index) => URow(
-    spacing: 8,
-    color: UAdminTable.rowColor(context, index),
-    padding: UAdminTable.rowPadding,
-    children: <Widget>[
-      UAdminTable.cell(_tenantLabel(i)),
-      UAdminTable.cell(_typeLabel(i)),
-      UAdminTable.cell(i.dueDate.toJalaliDate()),
-      UAdminTable.cell(i.debtAmount.rial()),
-      UAdminTable.cell(i.paidAmount.rial()),
-      UAdminTable.cell(i.penaltyAmount.rial()),
-      Center(child: _statusChip(i)).expanded(),
-      _menu(i).expanded(),
-    ],
-  );
-
-  Widget _itemResponsive(UDormBedInvoiceResponse i, int index) => UAdminTable.mobileCard(
-    icon: Icons.receipt_long_rounded,
-    title: _tenantLabel(i),
-    subtitle: _typeLabel(i),
-    badge: _statusChip(i),
-    trailing: _menu(i),
-    fields: <UAdminField>[
-      UAdminField(U.s.invoiceType, _typeLabel(i)),
-      UAdminField(U.s.dueDate, i.dueDate.toJalaliDate()),
-      UAdminField(U.s.debtAmount, i.debtAmount.rial()),
-      UAdminField(U.s.paidAmount, i.paidAmount.rial()),
-      UAdminField(U.s.penalty, i.penaltyAmount.rial()),
-    ],
-  );
+  Widget _status(UDormBedInvoiceResponse i) => i.isPaid
+      ? UAdminTable.statusChip(label: U.s.paid, color: UAdminTheme.green)
+      : i.isOverdue
+      ? UAdminTable.statusChip(label: U.s.overdue, color: UAdminTheme.red)
+      : UAdminTable.statusChip(label: U.s.unpaid, color: UAdminTheme.orange);
 
   Widget _menu(UDormBedInvoiceResponse i) => UAdminOps.menu<UDormBedInvoiceResponse>(
     item: i,
-    handlers: UAdminActionHandlers<UDormBedInvoiceResponse>(
-      onEdit: (UDormBedInvoiceResponse x) => _showEditDialog(p: x),
-      onDelete: c.delete,
-      extras: <String, void Function(UDormBedInvoiceResponse)>{
-        "pay": c.pay,
-        "payLink": (UDormBedInvoiceResponse x) => UAdminPayLink.dormBedInvoice(x, onClosed: c.read),
-        "copyLink": UAdminPayLink.copyDormBedInvoiceLink,
-      },
-    ),
+    handlers: UAdminActionHandlers<UDormBedInvoiceResponse>(onEdit: _form, onDelete: c.delete),
     fallback: (UAdminActionContext<UDormBedInvoiceResponse> ctx) => <UAdminAction>[
-      ctx.extra("payLink", label: "${U.s.payment} ${U.s.link}", icon: Icons.link_rounded, visible: !ctx.item.isPaid, roles: <TagUser>[TagUser.permissionPayInvoices]),
-      ctx.extra("copyLink", label: "${U.s.copy} ${U.s.link}", icon: Icons.copy_rounded, visible: !ctx.item.isPaid, roles: <TagUser>[TagUser.permissionPayInvoices]),
-      ctx.extra("pay", label: U.s.markAsPaid, icon: Icons.payments_rounded, visible: !ctx.item.isPaid, color: UAdminTheme.green.shade700, roles: <TagUser>[TagUser.permissionPayInvoices]),
+      if (!i.isPaid) ...<UAdminAction>[
+        UAdminAction(label: "${U.s.payment} ${U.s.link}", icon: Icons.link_rounded, roles: <TagUser>[TagUser.permissionPayInvoices], onTap: () => c.pay(i)),
+        UAdminAction(label: "${U.s.copy} ${U.s.link}", icon: Icons.copy_rounded, roles: <TagUser>[TagUser.permissionPayInvoices], onTap: () => c.copyPayLink(i)),
+        UAdminAction(label: U.s.markAsPaid, icon: Icons.payments_rounded, color: UAdminTheme.green.shade700, roles: <TagUser>[TagUser.permissionPayInvoices], onTap: () => c.markPaid(i)),
+      ],
       ctx.edit(roles: <TagUser>[TagUser.permissionManageInvoices]),
       ctx.delete(roles: <TagUser>[TagUser.permissionDeleteInvoices]),
     ],
   );
 
-  void _showFilterDialog() => UNavigator.dialog(
-    UAdminForm.filterDialog(
-      context,
-      title: Text(U.s.filter),
-      children: <Widget>[
-        UTextFieldDatePicker(
-          jalali: true,
-          controller: c.minDueDateController,
-          labelText: U.s.dueDate,
-          onChange: (DateTime d, UJalali j) {
-            c.minDueDate = d;
-            c.minDueDateController.text = d.toJalaliDate();
-          },
+  /// Create ([p] == null) and edit share this one dialog.
+  void _form([UDormBedInvoiceResponse? p]) {
+    c.loadForm(p);
+    UAdminForm.editDialog(
+      title: p == null ? U.s.createItem(U.s.invoice) : U.s.editItem(U.s.invoice),
+      formKey: c.formKey,
+      onSubmit: c.save,
+      children: (BuildContext context, StateSetter setState) => <Widget>[
+        if (p == null && widget.contract == null)
+          UTextFieldAutoCompleteAsync<UDormBedContractResponse>(
+            hintText: U.s.contract,
+            labelBuilder: (UDormBedContractResponse i) => "${i.user?.displayName ?? "-"} · ${i.bed?.title ?? ""} · ${i.startDate.toJalaliDate()}",
+            selectedItem: c.formContract,
+            fetchData: c.searchContracts,
+            onChanged: (UDormBedContractResponse? i) => c.formContract = i,
+          ).pSymmetric(vertical: 6),
+        UDropDownField<TagDormBedInvoice>(
+          labelText: U.s.invoiceType,
+          initialValue: c.type,
+          items: UAdminInvoiceController.types.map((TagDormBedInvoice t) => DropdownMenuItem<TagDormBedInvoice>(value: t, child: Text(t.localizedTitle))).toList(),
+          onChanged: (TagDormBedInvoice? v) => c.type = v ?? c.type,
         ).pSymmetric(vertical: 6),
-        UTextFieldDatePicker(
-          jalali: true,
-          controller: c.maxDueDateController,
-          labelText: U.s.dueDate,
-          onChange: (DateTime d, UJalali j) {
-            c.maxDueDate = d;
-            c.maxDueDateController.text = d.toJalaliDate();
-          },
-        ).pSymmetric(vertical: 6),
-        UTextField(
-          controller: c.minDebtController,
-          labelText: U.s.minPrice,
-          keyboardType: TextInputType.number,
-          formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-          margin: const EdgeInsets.symmetric(vertical: 6),
-        ),
-        UTextField(
-          controller: c.maxDebtController,
-          labelText: U.s.maxPrice,
-          keyboardType: TextInputType.number,
-          formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-          margin: const EdgeInsets.symmetric(vertical: 6),
-        ),
-        const SizedBox(height: 20),
-        UButtonSubmitCancel(
-          submitTitle: U.s.filter,
-          cancelTitle: U.s.clearFilters,
-          onSubmit: () {
-            c.applyExtraFilters();
-            UNavigator.back();
-          },
-          onCancel: () {
-            c.clearExtraFilters();
-            UNavigator.back();
-          },
-        ),
+        UAdminForm.text(c.debt, U.s.debtAmount, money: true, required: true),
+        UAdminForm.pair(context, UAdminForm.text(c.creditor, U.s.creditor, money: true), UAdminForm.text(c.paid, U.s.paidAmount, money: true)),
+        UAdminForm.text(c.penalty, U.s.penaltyAmount, money: true),
+        UAdminForm.date(c.dueText, U.s.dueDate, (DateTime d) => c.dueDate = d, initial: c.dueDate, required: true),
+        UAdminForm.text(c.description, U.s.description, lines: 2),
       ],
-    ),
-  );
-
-  void _showEditDialog({UDormBedInvoiceResponse? p}) {
-    final bool isEdit = p != null;
-    final UAdminFields f = UAdminFields();
-    final TextEditingController debt = f.text(p?.debtAmount.toInt().toString());
-    final TextEditingController creditor = f.text(p?.creditorAmount.toInt().toString());
-    final TextEditingController paid = f.text(p?.paidAmount.toInt().toString());
-    final TextEditingController penalty = f.text(p?.penaltyAmount.toInt().toString());
-    final TextEditingController dueCtrl = f.text(p?.dueDate.toJalaliDate());
-    final TextEditingController description = f.text(p?.jsonData.detail1);
-
-    final URxn<UDormBedContractResponse> contract = URxn<UDormBedContractResponse>();
-    DateTime? dueDate = p?.dueDate;
-    TagDormBedInvoice type = _types.firstWhere((TagDormBedInvoice t) => p?.tags.contains(t.number) ?? false, orElse: () => TagDormBedInvoice.rent);
-
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
-    UNavigator.dialog(
-      f.scope(
-        AlertDialog(
-          title: Text(p == null ? U.s.createItem(U.s.invoice) : U.s.editItem(U.s.invoice)),
-          content: SizedBox(
-            width: context.dialogWidth(max: 480),
-            child: SingleChildScrollView(
-              child: StatefulBuilder(
-                builder: (BuildContext context, void Function(void Function()) setLocal) => Form(
-                  key: formKey,
-                  child: UColumn(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      if (!isEdit && widget.contract == null)
-                        UTextFieldAutoCompleteAsync<UDormBedContractResponse>(
-                          labelBuilder: (UDormBedContractResponse i) => "${i.user?.displayName ?? "-"} · ${i.bed?.title ?? ""} · ${i.startDate.toJalaliDate()}",
-                          onChanged: contract.call,
-                          selectedItem: contract.value,
-                          fetchData: c.readContracts,
-                          hintText: U.s.contract,
-                        ).pSymmetric(vertical: 6),
-                      DropdownButtonFormField<int>(
-                        isExpanded: true,
-                        initialValue: type.number,
-                        decoration: InputDecoration(labelText: U.s.invoiceType, border: const OutlineInputBorder()),
-                        items: _types.map((TagDormBedInvoice t) => DropdownMenuItem<int>(value: t.number, child: Text(t.localizedTitle))).toList(),
-                        onChanged: (int? v) => setLocal(() => type = _types.firstWhere((TagDormBedInvoice t) => t.number == v)),
-                      ).pSymmetric(vertical: 6),
-                      UTextField(
-                        controller: debt,
-                        labelText: U.s.debtAmount,
-                        keyboardType: TextInputType.number,
-                        validator: UValidators.required(message: ""),
-                        formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                      ),
-                      UTextField(
-                        controller: creditor,
-                        labelText: U.s.creditor,
-                        keyboardType: TextInputType.number,
-                        formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                      ),
-                      UTextField(
-                        controller: paid,
-                        labelText: U.s.paidAmount,
-                        keyboardType: TextInputType.number,
-                        formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                      ),
-                      UTextField(
-                        controller: penalty,
-                        labelText: U.s.penaltyAmount,
-                        keyboardType: TextInputType.number,
-                        formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                      ),
-                      UTextFieldDatePicker(
-                        controller: dueCtrl,
-                        labelText: U.s.dueDate,
-                        jalali: true,
-                        initialDate: dueDate,
-                        validator: UValidators.required(message: ""),
-                        onChange: (DateTime d, UJalali j) {
-                          dueDate = d;
-                          dueCtrl.text = d.toJalaliDate();
-                        },
-                      ).pSymmetric(vertical: 6),
-                      UTextField(controller: description, labelText: U.s.description, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      const SizedBox(height: 20),
-                      UButtonSubmitCancel(
-                        onSubmit: () => UValidators.validateForm(
-                          key: formKey,
-                          action: () {
-                            if (dueDate == null) {
-                              UToast.error(message: U.s.errorSubmittingForm);
-                              return;
-                            }
-                            if (isEdit) {
-                              c.update(
-                                p: UDormBedInvoiceUpdateParams(
-                                  id: p.id,
-                                  tags: <int>[type.number],
-                                  debtAmount: debt.text.isEmpty ? null : debt.numDouble(),
-                                  creditorAmount: creditor.text.isEmpty ? null : creditor.numDouble(),
-                                  paidAmount: paid.text.isEmpty ? null : paid.numDouble(),
-                                  penaltyAmount: penalty.text.isEmpty ? null : penalty.numDouble(),
-                                  dueDate: dueDate,
-                                  detail1: description.text.nullIfEmpty(),
-                                ),
-                              );
-                            } else {
-                              final String? cid = contract.value?.id ?? widget.contract?.id;
-                              if (cid == null) {
-                                UToast.error(message: U.s.errorSubmittingForm);
-                                return;
-                              }
-                              c.create(
-                                p: UDormBedInvoiceCreateParams(
-                                  tags: <int>[TagDormBedInvoice.notPaid.number, type.number],
-                                  debtAmount: debt.text.isEmpty ? 0 : debt.numDouble(),
-                                  creditorAmount: creditor.text.isEmpty ? 0 : creditor.numDouble(),
-                                  paidAmount: paid.text.isEmpty ? 0 : paid.numDouble(),
-                                  penaltyAmount: penalty.text.isEmpty ? 0 : penalty.numDouble(),
-                                  contractId: cid,
-                                  dueDate: dueDate!,
-                                  detail1: description.text.trim(),
-                                ),
-                              );
-                            }
-                            UNavigator.back();
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

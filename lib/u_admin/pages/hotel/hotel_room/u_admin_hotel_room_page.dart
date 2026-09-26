@@ -26,9 +26,18 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
 
   @override
   Widget build(BuildContext context) => UAdminScaffold(
-    title: widget.hotel?.title == null ? U.s.hotelRooms : "${U.s.rooms} · ${widget.hotel?.title}",
-    onFilter: _showFilterDialog,
-    onCreate: U.user.hasPermission(TagUser.permissionManageHotels) ? _showEditDialog : null,
+    title: widget.hotel == null ? U.s.hotelRooms : "${U.s.rooms} · ${widget.hotel!.title}",
+    onFilter: () => UAdminForm.filter(
+      title: U.s.filterItem(U.s.rooms),
+      children: (_) => <Widget>[
+        UAdminForm.text(c.titleFilter, U.s.title),
+        UAdminForm.text(c.minPriceFilter, U.s.minPrice, money: true),
+        UAdminForm.text(c.maxPriceFilter, U.s.maxPrice, money: true),
+      ],
+      onApply: c.applyFilters,
+      onClear: c.clearFilters,
+    ),
+    onCreate: U.user.hasPermission(TagUser.permissionManageHotels) ? _form : null,
     pageNumber: c.pageNumber,
     totalPages: c.totalPages,
     onPageChanged: (int page) {
@@ -42,240 +51,74 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
       onRetry: c.read,
       emptyText: U.s.noItemsFound(U.s.rooms),
       desktopHeader: () => UAdminTable.header(<String>[U.s.title, U.s.hotel, U.s.capacity, U.s.priceNight, U.s.operations]),
-      desktopRow: _itemDesktop,
-      mobileRow: _itemResponsive,
+      desktopRow: (UHotelRoomResponse i, int index) => URow(
+        spacing: 8,
+        color: UAdminTable.rowColor(context, index),
+        padding: UAdminTable.rowPadding,
+        children: <Widget>[
+          UAdminTable.cell(i.title),
+          UAdminTable.cell(i.hotel?.title ?? "-"),
+          UAdminTable.cell(i.capacity.toString()),
+          UAdminTable.cell(i.pricePerNight.rial()),
+          _menu(i).expanded(),
+        ],
+      ),
+      mobileRow: (UHotelRoomResponse i, int index) => UAdminTable.mobileCard(
+        icon: Icons.meeting_room_rounded,
+        title: i.title,
+        trailing: _menu(i),
+        fields: <UAdminField>[
+          UAdminField(U.s.hotel, i.hotel?.title ?? "-"),
+          UAdminField(U.s.capacity, i.capacity.toString()),
+          UAdminField(U.s.priceNight, i.pricePerNight.rial()),
+        ],
+      ),
     ),
-  );
-
-  Widget _itemDesktop(UHotelRoomResponse i, int index) => URow(
-    spacing: 8,
-    color: UAdminTable.rowColor(context, index),
-    padding: UAdminTable.rowPadding,
-    children: <Widget>[
-      UAdminTable.cell(i.title),
-      UAdminTable.cell(i.hotel?.title ?? "-"),
-      UAdminTable.cell(i.capacity.toString()),
-      UAdminTable.cell(i.pricePerNight.rial()),
-      _menu(i).expanded(),
-    ],
-  );
-
-  Widget _itemResponsive(UHotelRoomResponse i, int index) => UAdminTable.mobileCard(
-    icon: Icons.meeting_room_rounded,
-    title: i.title,
-    trailing: _menu(i),
-    fields: <UAdminField>[
-      UAdminField(U.s.hotel, i.hotel?.title ?? "-"),
-      UAdminField(U.s.capacity, i.capacity.toString()),
-      UAdminField(U.s.priceNight, i.pricePerNight.rial()),
-    ],
   );
 
   Widget _menu(UHotelRoomResponse i) => UAdminOps.menu<UHotelRoomResponse>(
     item: i,
-    handlers: UAdminActionHandlers<UHotelRoomResponse>(
-      onEdit: (UHotelRoomResponse r) => _showEditDialog(p: r),
-      onDelete: c.delete,
-    ),
+    handlers: UAdminActionHandlers<UHotelRoomResponse>(onEdit: _form, onDelete: c.delete),
     fallback: (UAdminActionContext<UHotelRoomResponse> ctx) => <UAdminAction>[
       UAdminLinks.roomReservations(ctx.item),
-      UAdminLinks.placeDetails(
-        onTap: () => UAdminPlaceDetails.hotelRoom(ctx.item, onDone: c.read),
-        roles: <TagUser>[TagUser.permissionManageHotels],
-      ),
       ctx.edit(roles: <TagUser>[TagUser.permissionManageHotels]),
       ctx.delete(roles: <TagUser>[TagUser.permissionDeleteHotels]),
     ],
   );
 
-  void _showFilterDialog() => UNavigator.dialog(
-    UAdminForm.filterDialog(
-      context,
-      title: Text(U.s.filterItem(U.s.rooms)),
-      children: <Widget>[
-        UTextField(controller: c.titleFilter, labelText: U.s.title, margin: const EdgeInsets.symmetric(vertical: 6)),
-        UTextField(
-          controller: c.minPriceFilter,
-          labelText: U.s.minPrice,
-          keyboardType: TextInputType.number,
-          formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-          margin: const EdgeInsets.symmetric(vertical: 6),
-        ),
-        UTextField(
-          controller: c.maxPriceFilter,
-          labelText: U.s.maxPrice,
-          keyboardType: TextInputType.number,
-          formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-          margin: const EdgeInsets.symmetric(vertical: 6),
-        ),
-        const SizedBox(height: 20),
-        UButtonSubmitCancel(
-          submitTitle: U.s.filter,
-          cancelTitle: U.s.clearFilters,
-          onSubmit: () {
-            c.applyFilters();
-            UNavigator.back();
-          },
-          onCancel: () {
-            c.clearFilters();
-            UNavigator.back();
-          },
-        ),
+  /// Create ([r] == null) and edit share this one dialog.
+  Future<void> _form([UHotelRoomResponse? r]) async {
+    await c.loadForm(r);
+    await UAdminForm.editDialog(
+      title: r == null ? U.s.createItem(U.s.room) : "${U.s.editItem(U.s.room)} — ${r.title}",
+      formKey: c.formKey,
+      maxWidth: 760,
+      onSubmit: c.save,
+      children: (BuildContext context, StateSetter setState) => <Widget>[
+        UAdminForm.text(c.title, U.s.title, required: true),
+        if (widget.hotel == null)
+          UTextFieldAutoCompleteAsync<UHotelResponse>(
+            hintText: U.s.hotel,
+            labelBuilder: (UHotelResponse i) => i.title,
+            selectedItem: c.formHotel,
+            fetchData: c.searchHotels,
+            onChanged: (UHotelResponse? i) => c.formHotel = i,
+          ).pSymmetric(vertical: 6),
+        UTagChips<TagRoom>(title: U.s.type, options: TagRoom.values.group(100), tags: c.tags, single: true),
+        UAdminForm.pair(context, UAdminForm.text(c.capacity, U.s.capacity, number: true, required: true), UAdminForm.text(c.price, U.s.priceNight, money: true, required: true)),
+        UAdminForm.text(c.description, U.s.description, lines: 2),
+        UAdminForm.pair(context, UAdminForm.text(c.roomNumber, U.s.roomNumber), UAdminForm.text(c.quantity, U.s.quantity, number: true)),
+        UAdminForm.pair(context, UAdminForm.text(c.bedType, U.s.bedType), UAdminForm.text(c.size, U.s.size, number: true)),
+        UAdminForm.text(c.floor, U.s.floor, number: true),
+        UAdminForm.pair(context, UAdminForm.text(c.extraGuestCapacity, U.s.extraGuestCapacity, number: true), UAdminForm.text(c.extraGuestPrice, U.s.extraGuestPrice, money: true)),
+        SwitchListTile(contentPadding: EdgeInsets.zero, title: Text(U.s.available), value: c.isAvailable, onChanged: (bool v) => setState(() => c.isAvailable = v)),
+        UAdminForm.sectionTitle(U.s.photos),
+        UFilePicker.gallery(c.photos),
+        UAdminForm.sectionTitle(U.s.details),
+        UTagChips<TagRoom>(title: U.s.roomView, options: TagRoom.values.group(400), tags: c.tags, single: true),
+        UTagChips<TagRoom>(title: U.s.policies, options: TagRoom.values.group(300), tags: c.tags),
+        UTagChips<TagRoom>(title: U.s.amenities, options: TagRoom.values.group(500), tags: c.tags),
       ],
-    ),
-  );
-
-  void _showEditDialog({UHotelRoomResponse? p}) {
-    final UAdminFields f = UAdminFields();
-    final TextEditingController title = f.text(p?.title);
-    final TextEditingController capacity = f.text(p?.capacity.toString());
-    final TextEditingController price = f.text(p?.pricePerNight.toInt().toString());
-    final TextEditingController detail = f.text(p?.jsonData.description ?? p?.jsonData.detail1);
-    final TextEditingController roomNumber = f.text(p?.roomNumber);
-    final TextEditingController quantity = f.text((p?.quantity ?? 1).toString());
-    final TextEditingController bedType = f.text(p?.jsonData.bedType);
-    final TextEditingController size = f.text(p?.jsonData.sizeSquareMeters == null ? null : p!.jsonData.sizeSquareMeters!.toInt().toString());
-    final TextEditingController floor = f.text(p?.jsonData.floor?.toString());
-    // The room type is a tag; the other tags of the room (view, amenities...) are kept as they are.
-    final List<int> tags = List<int>.from(p?.tags ?? <int>[TagRoom.double_.number]);
-    final TextEditingController extraGuestCapacity = f.text(p?.jsonData.extraGuestCapacity?.toString());
-    final TextEditingController extraGuestPrice = f.text(p?.jsonData.extraGuestPrice?.toInt().toString());
-    bool isAvailable = p?.isAvailable ?? true;
-    final URxn<UHotelResponse> hotel = URxn<UHotelResponse>();
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
-    UNavigator.dialog(
-      f.scope(
-        AlertDialog(
-          title: Text(p == null ? U.s.createItem(U.s.room) : U.s.editItem(U.s.room)),
-          content: SizedBox(
-            width: context.dialogWidth(max: 480),
-            child: SingleChildScrollView(
-              child: StatefulBuilder(
-                builder: (BuildContext context, void Function(void Function()) setLocal) => Form(
-                  key: formKey,
-                  child: UColumn(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      UTextField(
-                        controller: title,
-                        labelText: U.s.title,
-                        validator: UValidators.required(message: ""),
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                      ),
-                      if (widget.hotel == null)
-                        UTextFieldAutoCompleteAsync<UHotelResponse>(
-                          labelBuilder: (UHotelResponse i) => i.title,
-                          onChanged: hotel.call,
-                          selectedItem: hotel.value,
-                          fetchData: c.readHotels,
-                          hintText: U.s.hotel,
-                        ).pSymmetric(vertical: 6),
-                      UAdminTagChips<TagRoom>(title: U.s.type, options: TagRoom.values.group(100), tags: tags, single: true),
-                      UTextField(
-                        controller: capacity,
-                        labelText: U.s.capacity,
-                        keyboardType: TextInputType.number,
-                        validator: UValidators.required(message: ""),
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                      ),
-                      UTextField(
-                        controller: price,
-                        labelText: U.s.priceNight,
-                        keyboardType: TextInputType.number,
-                        validator: UValidators.required(message: ""),
-                        formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                      ),
-                      UTextField(controller: detail, labelText: U.s.description, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      UTextField(controller: roomNumber, labelText: U.s.roomNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      UTextField(controller: quantity, labelText: U.s.quantity, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      UTextField(controller: bedType, labelText: U.s.bedType, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      UTextField(controller: size, labelText: U.s.size, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      UTextField(controller: floor, labelText: U.s.floor, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      URow(
-                        children: <Widget>[
-                          UTextField(
-                            expanded: 1,
-                            controller: extraGuestCapacity,
-                            labelText: U.s.extraGuestCapacity,
-                            keyboardType: TextInputType.number,
-                            margin: const EdgeInsets.symmetric(vertical: 6),
-                          ),
-                          const SizedBox(width: 8),
-                          UTextField(
-                            expanded: 1,
-                            controller: extraGuestPrice,
-                            labelText: U.s.extraGuestPrice,
-                            keyboardType: TextInputType.number,
-                            formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-                            margin: const EdgeInsets.symmetric(vertical: 6),
-                          ),
-                        ],
-                      ),
-                      SwitchListTile(contentPadding: EdgeInsets.zero, title: Text(U.s.available), value: isAvailable, onChanged: (bool v) => setLocal(() => isAvailable = v)),
-                      const SizedBox(height: 20),
-                      UButtonSubmitCancel(
-                        onSubmit: () => UValidators.validateForm(
-                          key: formKey,
-                          action: () {
-                            final String? hid = hotel.value?.id ?? widget.hotel?.id;
-                            if (hid == null) {
-                              UToast.error(message: U.s.pleaseSelectAItem(U.s.hotel));
-                              return;
-                            }
-                            if (p == null) {
-                              c.create(
-                                p: UHotelRoomCreateParams(
-                                  tags: tags,
-                                  title: title.text,
-                                  capacity: capacity.numInt(),
-                                  pricePerNight: price.numDouble(),
-                                  hotelId: hid,
-                                  roomNumber: roomNumber.text.nullIfEmpty(),
-                                  quantity: quantity.text.isEmpty ? 1 : quantity.text.toInt(),
-                                  isAvailable: isAvailable,
-                                  description: detail.text.nullIfEmpty(),
-                                  bedType: bedType.text.nullIfEmpty(),
-                                  sizeSquareMeters: size.text.isEmpty ? null : size.numDouble(),
-                                  floor: floor.text.isEmpty ? null : floor.text.toInt(),
-                                  extraGuestCapacity: extraGuestCapacity.text.isEmpty ? null : extraGuestCapacity.numInt(),
-                                  extraGuestPrice: extraGuestPrice.text.isEmpty ? null : extraGuestPrice.numDouble(),
-                                ),
-                              );
-                            } else {
-                              c.update(
-                                p: UHotelRoomUpdateParams(
-                                  id: p.id,
-                                  tags: tags,
-                                  title: title.text,
-                                  capacity: capacity.numInt(),
-                                  pricePerNight: price.numDouble(),
-                                  hotelId: hid,
-                                  roomNumber: roomNumber.text.nullIfEmpty(),
-                                  quantity: quantity.text.isEmpty ? null : quantity.text.toInt(),
-                                  isAvailable: isAvailable,
-                                  description: detail.text.nullIfEmpty(),
-                                  bedType: bedType.text.nullIfEmpty(),
-                                  sizeSquareMeters: size.text.isEmpty ? null : size.numDouble(),
-                                  floor: floor.text.isEmpty ? null : floor.text.toInt(),
-                                  extraGuestCapacity: extraGuestCapacity.text.isEmpty ? null : extraGuestCapacity.numInt(),
-                                  extraGuestPrice: extraGuestPrice.text.isEmpty ? null : extraGuestPrice.numDouble(),
-                                ),
-                              );
-                            }
-                            UNavigator.back();
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

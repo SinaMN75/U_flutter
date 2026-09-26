@@ -32,8 +32,13 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
         : widget.dorm != null
         ? "${U.s.beds} · ${widget.dorm!.title}"
         : U.s.dormBeds,
-    onFilter: _showFilterDialog,
-    onCreate: U.user.hasPermission(TagUser.permissionManageDorms) ? _showEditDialog : null,
+    onFilter: () => UAdminForm.filter(
+      title: U.s.filterItem(U.s.beds),
+      children: (_) => <Widget>[UAdminForm.text(c.titleFilter, U.s.title)],
+      onApply: c.applyFilters,
+      onClear: c.clearFilters,
+    ),
+    onCreate: U.user.hasPermission(TagUser.permissionManageDorms) ? _form : null,
     pageNumber: c.pageNumber,
     totalPages: c.totalPages,
     onPageChanged: (int page) {
@@ -47,178 +52,73 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
       onRetry: c.read,
       emptyText: U.s.noItemsFound(U.s.beds),
       desktopHeader: () => UAdminTable.header(<String>[U.s.title, U.s.deposit, U.s.rent, U.s.occupancy, U.s.operations]),
-      desktopRow: _itemDesktop,
-      mobileRow: _itemResponsive,
+      desktopRow: (UDormBedResponse i, int index) => URow(
+        spacing: 8,
+        color: UAdminTable.rowColor(context, index),
+        padding: UAdminTable.rowPadding,
+        children: <Widget>[
+          UAdminTable.cell(i.title),
+          UAdminTable.cell(i.deposit.rial()),
+          UAdminTable.cell(i.monthlyRent.rial()),
+          _occupancy(i).alignAtCenter().expanded(),
+          _menu(i).expanded(),
+        ],
+      ),
+      mobileRow: (UDormBedResponse i, int index) => UAdminTable.mobileCard(
+        icon: Icons.bed_rounded,
+        title: i.title,
+        badge: _occupancy(i),
+        trailing: _menu(i),
+        fields: <UAdminField>[
+          UAdminField(U.s.deposit, i.deposit.rial()),
+          UAdminField(U.s.rent, i.monthlyRent.rial()),
+        ],
+      ),
     ),
   );
 
-  bool _isFree(UDormBedResponse i) => i.contracts?.where((UDormBedContractResponse i) => i.isActive).isEmpty ?? true;
-
-  Widget _itemDesktop(UDormBedResponse i, int index) => URow(
-    spacing: 8,
-    color: UAdminTable.rowColor(context, index),
-    padding: UAdminTable.rowPadding,
-    children: <Widget>[
-      UAdminTable.cell(i.title),
-      UAdminTable.cell(i.deposit.rial()),
-      UAdminTable.cell(i.monthlyRent.rial()),
-      UAdminTable.statusChip(label: _isFree(i) ? U.s.free : U.s.occupied, color: _isFree(i) ? UAdminTheme.green : UAdminTheme.orange).alignAtCenter().expanded(),
-      _menu(i).expanded(),
-    ],
-  );
-
-  Widget _itemResponsive(UDormBedResponse i, int index) => UAdminTable.mobileCard(
-    icon: Icons.bed_rounded,
-    title: i.title,
-    badge: UAdminTable.statusChip(label: _isFree(i) ? U.s.free : U.s.occupied, color: _isFree(i) ? UAdminTheme.green : UAdminTheme.orange),
-    trailing: _menu(i),
-    fields: <UAdminField>[
-      UAdminField(U.s.deposit, i.deposit.rial()),
-      UAdminField(U.s.rent, i.monthlyRent.rial()),
-    ],
+  Widget _occupancy(UDormBedResponse i) => UAdminTable.statusChip(
+    label: c.isFree(i) ? U.s.free : U.s.occupied,
+    color: c.isFree(i) ? UAdminTheme.green : UAdminTheme.orange,
   );
 
   Widget _menu(UDormBedResponse i) => UAdminOps.menu<UDormBedResponse>(
     item: i,
-    handlers: UAdminActionHandlers<UDormBedResponse>(
-      onEdit: (UDormBedResponse b) => _showEditDialog(p: b),
-      onDelete: c.delete,
-    ),
+    handlers: UAdminActionHandlers<UDormBedResponse>(onEdit: _form, onDelete: c.delete),
     fallback: (UAdminActionContext<UDormBedResponse> ctx) => <UAdminAction>[
       UAdminLinks.bedContracts(ctx.item),
-      UAdminLinks.placeDetails(
-        onTap: () => UAdminPlaceDetails.dormBed(ctx.item, onDone: c.read),
-        roles: <TagUser>[TagUser.permissionManageDorms],
-      ),
       ctx.edit(roles: <TagUser>[TagUser.permissionManageDorms]),
       ctx.delete(roles: <TagUser>[TagUser.permissionDeleteDorms]),
     ],
   );
 
-  void _showFilterDialog() => UNavigator.dialog(
-    UAdminForm.filterDialog(
-      context,
-      title: Text(U.s.filterItem(U.s.beds)),
-      children: <Widget>[
-        UTextField(controller: c.titleFilter, labelText: U.s.title, margin: const EdgeInsets.symmetric(vertical: 6)),
-        const SizedBox(height: 20),
-        UButtonSubmitCancel(
-          submitTitle: U.s.filter,
-          cancelTitle: U.s.clearFilters,
-          onSubmit: () {
-            c.applyFilters();
-            UNavigator.back();
-          },
-          onCancel: () {
-            c.clearFilters();
-            UNavigator.back();
-          },
-        ),
+  /// Create ([b] == null) and edit share this one dialog.
+  Future<void> _form([UDormBedResponse? b]) async {
+    await c.loadForm(b);
+    await UAdminForm.editDialog(
+      title: b == null ? U.s.createItem(U.s.bed) : "${U.s.editItem(U.s.bed)} — ${b.title}",
+      formKey: c.formKey,
+      maxWidth: 760,
+      onSubmit: c.save,
+      children: (BuildContext context, StateSetter setState) => <Widget>[
+        UAdminForm.text(c.title, U.s.title, required: true),
+        if (widget.room == null)
+          UTextFieldAutoCompleteAsync<UDormRoomResponse>(
+            hintText: U.s.room,
+            labelBuilder: (UDormRoomResponse i) => i.dorm == null ? i.title : "${i.dorm!.title} · ${i.title}",
+            selectedItem: c.formRoom,
+            fetchData: c.searchRooms,
+            onChanged: (UDormRoomResponse? i) => c.formRoom = i,
+          ).pSymmetric(vertical: 6),
+        UTagChips<TagDormBed>(title: U.s.type, options: TagDormBed.values.group(100), tags: c.tags, single: true),
+        UAdminForm.pair(context, UAdminForm.text(c.deposit, U.s.deposit, money: true, required: true), UAdminForm.text(c.rent, U.s.rent, money: true, required: true)),
+        UAdminForm.text(c.description, U.s.description, lines: 2),
+        UAdminForm.sectionTitle(U.s.photos),
+        UFilePicker.gallery(c.photos),
+        UAdminForm.sectionTitle(U.s.details),
+        UTagChips<TagDormBed>(title: U.s.bedLevel, options: TagDormBed.values.group(200), tags: c.tags, single: true),
+        UTagChips<TagDormBed>(title: U.s.bedAmenities, options: TagDormBed.values.group(500), tags: c.tags),
       ],
-    ),
-  );
-
-  void _showEditDialog({UDormBedResponse? p}) {
-    final UAdminFields f = UAdminFields();
-    final TextEditingController title = f.text(p?.title);
-    final TextEditingController deposit = f.text(p?.deposit.toInt().toString());
-    final TextEditingController rent = f.text(p?.monthlyRent.toInt().toString());
-    final TextEditingController detail = f.text(p?.jsonData.description ?? p?.jsonData.detail1);
-    final URxn<UDormRoomResponse> room = URxn<UDormRoomResponse>();
-    final List<int> tags = List<int>.from(p?.tags ?? <int>[TagDormBed.single.number]);
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
-    UNavigator.dialog(
-      f.scope(
-        AlertDialog(
-          title: Text(p == null ? U.s.createItem(U.s.bed) : U.s.editItem(U.s.bed)),
-          content: SizedBox(
-            width: context.dialogWidth(),
-            child: SingleChildScrollView(
-              child: StatefulBuilder(
-                builder: (BuildContext context, void Function(void Function()) setLocal) => Form(
-                  key: formKey,
-                  child: UColumn(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      UTextField(
-                        controller: title,
-                        labelText: U.s.title,
-                        validator: UValidators.required(message: ""),
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                      ),
-                      if (widget.room == null)
-                        UTextFieldAutoCompleteAsync<UDormRoomResponse>(
-                          labelBuilder: (UDormRoomResponse i) => i.dorm == null ? i.title : "${i.dorm!.title} · ${i.title}",
-                          onChanged: room.call,
-                          selectedItem: room.value,
-                          fetchData: c.readRooms,
-                          hintText: U.s.room,
-                        ).pSymmetric(vertical: 6),
-                      UAdminTagChips<TagDormBed>(title: U.s.type, options: TagDormBed.values.group(100), tags: tags, single: true),
-                      UTextField(
-                        controller: deposit,
-                        labelText: U.s.deposit,
-                        keyboardType: TextInputType.number,
-                        validator: UValidators.required(message: ""),
-                        formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                      ),
-                      UTextField(
-                        controller: rent,
-                        labelText: U.s.rent,
-                        keyboardType: TextInputType.number,
-                        validator: UValidators.required(message: ""),
-                        formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                      ),
-                      UTextField(controller: detail, labelText: U.s.description, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      const SizedBox(height: 20),
-                      UButtonSubmitCancel(
-                        onSubmit: () => UValidators.validateForm(
-                          key: formKey,
-                          action: () {
-                            final String? rid = room.value?.id ?? widget.room?.id;
-                            if (rid == null) {
-                              UToast.error(message: U.s.pleaseSelectAItem(U.s.room));
-                              return;
-                            }
-                            if (p == null) {
-                              c.create(
-                                p: UDormBedCreateParams(
-                                  tags: tags,
-                                  title: title.text,
-                                  deposit: deposit.numDouble(),
-                                  monthlyRent: rent.numDouble(),
-                                  roomId: rid,
-                                  description: detail.text.nullIfEmpty(),
-                                ),
-                              );
-                            } else {
-                              c.update(
-                                p: UDormBedUpdateParams(
-                                  id: p.id,
-                                  tags: tags,
-                                  title: title.text,
-                                  deposit: deposit.numDouble(),
-                                  monthlyRent: rent.numDouble(),
-                                  roomId: rid,
-                                  description: detail.text.nullIfEmpty(),
-                                ),
-                              );
-                            }
-                            UNavigator.back();
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

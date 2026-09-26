@@ -25,8 +25,13 @@ class _HotelPageState extends State<UAdminHotelPage> {
   @override
   Widget build(BuildContext context) => UAdminScaffold(
     title: U.s.hotels,
-    onFilter: _showFilterDialog,
-    onCreate: U.user.hasPermission(TagUser.permissionManageHotels) ? _showEditDialog : null,
+    onFilter: () => UAdminForm.filter(
+      title: U.s.filterItem(U.s.hotels),
+      children: (_) => <Widget>[UAdminForm.text(c.titleFilter, U.s.title)],
+      onApply: c.applyFilters,
+      onClear: c.clearFilters,
+    ),
+    onCreate: U.user.hasPermission(TagUser.permissionManageHotels) ? _form : null,
     pageNumber: c.pageNumber,
     totalPages: c.totalPages,
     onPageChanged: (int page) {
@@ -39,286 +44,117 @@ class _HotelPageState extends State<UAdminHotelPage> {
       totalCount: () => c.totalCount,
       onRetry: c.read,
       emptyText: U.s.noItemsFound(U.s.hotels),
-      desktopHeader: () => UAdminTable.header(<String>[U.s.title, U.s.city, U.s.rooms, U.s.created, U.s.operations]),
-      desktopRow: _itemDesktop,
-      mobileRow: _itemResponsive,
+      desktopHeader: () => UAdminTable.header(<String>[U.s.title, U.s.city, U.s.rooms, U.s.created, U.s.featured, U.s.active, U.s.operations]),
+      desktopRow: (UHotelResponse i, int index) => URow(
+        spacing: 8,
+        color: UAdminTable.rowColor(context, index),
+        padding: UAdminTable.rowPadding,
+        children: <Widget>[
+          UAdminTable.cell(i.title),
+          UAdminTable.cell(UCountries.cityFullName(i.cityCode) ?? "-"),
+          UAdminTable.cell((i.rooms?.length ?? 0).toString()),
+          UAdminTable.cell(i.createdAt.toJalaliDate()),
+          _featured(i).expanded(),
+          _active(i).expanded(),
+          _menu(i).expanded(),
+        ],
+      ),
+      mobileRow: (UHotelResponse i, int index) => UAdminTable.mobileCard(
+        icon: Icons.apartment_rounded,
+        title: i.title,
+        trailing: _menu(i),
+        fields: <UAdminField>[
+          UAdminField(U.s.city, UCountries.cityFullName(i.cityCode) ?? "-"),
+          UAdminField(U.s.rooms, (i.rooms?.length ?? 0).toString()),
+          UAdminField(U.s.created, i.createdAt.toJalaliDate()),
+          UAdminField(U.s.featured, null, valueWidget: _featured(i)),
+          UAdminField(U.s.active, null, valueWidget: _active(i)),
+        ],
+      ),
     ),
   );
 
-  Widget _itemDesktop(UHotelResponse i, int index) {
-    final UCountryCityInfo city = UCountries.infoByCode(i.cityCode);
-    return URow(
-      spacing: 8,
-      color: UAdminTable.rowColor(context, index),
-      padding: UAdminTable.rowPadding,
-      children: <Widget>[
-        UAdminTable.cell(i.title),
-        UAdminTable.cell("${city.country?.nameFa ?? ""} - ${city.province?.nameFa ?? ""} - ${city.city?.nameFa ?? ""}"),
-        UAdminTable.cell((i.rooms?.length ?? 0).toString()),
-        UAdminTable.cell(i.createdAt.toJalaliDate()),
-        _menu(i).expanded(),
-      ],
-    );
-  }
+  bool get _canManage => U.user.hasPermission(TagUser.permissionManageHotels);
 
-  Widget _itemResponsive(UHotelResponse i, int index) {
-    final UCountryCityInfo city = UCountries.infoByCode(i.cityCode);
-    return UAdminTable.mobileCard(
-      icon: Icons.apartment_rounded,
-      title: i.title,
-      trailing: _menu(i),
-      fields: <UAdminField>[
-        UAdminField(U.s.city, "${city.country?.nameFa ?? ""} - ${city.province?.nameFa ?? ""} - ${city.city?.nameFa ?? ""}"),
-        UAdminField(U.s.rooms, (i.rooms?.length ?? 0).toString()),
-        UAdminField(U.s.created, i.createdAt.toJalaliDate()),
-      ],
-    );
-  }
+  Widget _featured(UHotelResponse i) => Switch(value: i.tags.contains(TagHotel.featured.number), onChanged: _canManage ? (bool on) => c.setTag(i, TagHotel.featured, on) : null);
+
+  /// Active = shown to the public.
+  Widget _active(UHotelResponse i) =>
+      Switch(value: i.tags.contains(TagHotel.active.number), onChanged: _canManage ? (bool on) => c.setTag(i, TagHotel.active, on, opposite: TagHotel.inactive) : null);
 
   Widget _menu(UHotelResponse i) => UAdminOps.menu<UHotelResponse>(
     item: i,
-    handlers: UAdminActionHandlers<UHotelResponse>(
-      onEdit: (UHotelResponse h) => _showEditDialog(p: h),
-      onDelete: c.delete,
-    ),
+    handlers: UAdminActionHandlers<UHotelResponse>(onEdit: _form, onDelete: c.delete),
     fallback: (UAdminActionContext<UHotelResponse> ctx) => <UAdminAction>[
       UAdminLinks.hotelRooms(ctx.item),
       UAdminLinks.hotelReservations(ctx.item),
-      UAdminLinks.placeDetails(
-        onTap: () => UAdminPlaceDetails.hotel(ctx.item, onDone: c.read),
-        roles: <TagUser>[TagUser.permissionManageHotels],
-      ),
       ctx.edit(roles: <TagUser>[TagUser.permissionManageHotels]),
       ctx.delete(roles: <TagUser>[TagUser.permissionDeleteHotels]),
     ],
   );
 
-  void _showFilterDialog() => UNavigator.dialog(
-    UAdminForm.filterDialog(
-      context,
-      title: Text(U.s.filterItem(U.s.hotels)),
-      formKey: c.filterFormKey,
-      children: <Widget>[
-        UTextField(controller: c.titleFilter, labelText: U.s.title, margin: const EdgeInsets.symmetric(vertical: 6)),
-        UCountryProvincePicker(onCountryChanged: (UCountry i) => c.countryFilter = i, onProvinceChanged: (UProvince i) => c.cityFilter = i).pSymmetric(vertical: 6),
-        const SizedBox(height: 20),
-        UButtonSubmitCancel(
-          submitTitle: U.s.filter,
-          cancelTitle: U.s.clearFilters,
-          onSubmit: () {
-            c.applyFilters();
-            UNavigator.back();
-          },
-          onCancel: () {
-            c.clearFilters();
-            UNavigator.back();
-          },
+  /// Create ([h] == null) and edit share this one dialog.
+  Future<void> _form([UHotelResponse? h]) async {
+    await c.loadForm(h);
+    final UCountryCityInfo city = UCountries.infoByCode(c.cityCode);
+    await UAdminForm.editDialog(
+      title: h == null ? U.s.createItem(U.s.hotel) : "${U.s.editItem(U.s.hotel)} — ${h.title}",
+      formKey: c.formKey,
+      maxWidth: 760,
+      onSubmit: c.save,
+      children: (BuildContext context, StateSetter setState) => <Widget>[
+        UAdminForm.text(c.title, U.s.title, required: true),
+        UCountryProvincePicker(
+          initialCountry: city.country,
+          initialProvince: city.province,
+          initialCity: city.city,
+          onProvinceChanged: (UProvince i) => c.cityCode = i.code,
+          onCityChanged: (UCity? i) => c.cityCode = i?.code ?? c.cityCode,
+        ).pSymmetric(vertical: 6),
+        UAdminForm.text(c.description, U.s.description, lines: 3),
+        UAdminForm.text(c.stars, U.s.stars, number: true),
+        UAdminForm.text(c.address, U.s.address, lines: 2),
+        UTextFieldPhoneNumber(controller: c.phone, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UAdminForm.text(c.email, U.s.email),
+        UAdminForm.pair(context, UAdminForm.text(c.latitude, "Latitude", number: true), UAdminForm.text(c.longitude, "Longitude", number: true)),
+        UTagChips<TagHotel>(title: U.s.propertyType, options: TagHotel.values.group(100), tags: c.tags, single: true),
+        UAdminForm.sectionTitle(U.s.status),
+        UTagChips<TagHotel>(title: U.s.status, options: const <TagHotel>[TagHotel.active, TagHotel.inactive], tags: c.tags, single: true),
+        UTagChips<TagHotel>(title: U.s.featured, options: const <TagHotel>[TagHotel.featured], tags: c.tags),
+        UTagChips<TagHotel>(title: U.s.approval, options: TagHotel.values.group(400), tags: c.tags, single: true),
+        UAdminForm.sectionTitle(U.s.admins),
+        UTextFieldAutoCompleteAsyncMulti<UUserResponse>(
+          selected: c.admins,
+          hintText: U.s.admins,
+          labelBuilder: (UUserResponse u) => u.userName,
+          fetchData: c.searchUsers,
+          margin: const EdgeInsets.symmetric(vertical: 6),
         ),
+        UAdminForm.sectionTitle(U.s.photos),
+        UFilePicker.gallery(c.photos),
+        UAdminForm.sectionTitle(U.s.details),
+        UListEditor.strings(title: U.s.highlights, addLabel: U.s.addHighlight, items: c.highlights, onChanged: (List<String> v) => c.highlights = v),
+        UTagChips<TagHotel>(title: U.s.amenities, options: TagHotel.values.group(500), tags: c.tags),
+        UTagChips<TagHotel>(title: U.s.mealPlans, options: TagHotel.values.group(600), tags: c.tags),
+        UAdminForm.sectionTitle(U.s.policies),
+        UTagChips<TagHotel>(title: U.s.policies, options: TagHotel.values.group(300), tags: c.tags),
+        UAdminForm.pair(context, UAdminForm.text(c.checkInTime, U.s.checkInTime), UAdminForm.text(c.checkOutTime, U.s.checkOutTime)),
+        UAdminForm.pair(
+          context,
+          UAdminForm.text(c.cancellationFreeHours, U.s.freeCancellationUpToAFewHoursBeforeCheckIn, number: true),
+          UAdminForm.text(c.cancellationPenaltyNights, U.s.cancellationFee, number: true),
+        ),
+        UAdminForm.text(c.policies, U.s.policies, lines: 2),
+        UAdminForm.text(c.rules, U.s.rules, lines: 2),
+        UAdminForm.sectionTitle(U.s.socialMedia),
+        UAdminForm.pair(context, UAdminForm.text(c.website, U.s.website), UAdminForm.text(c.whatsapp, U.s.whatsapp)),
+        UAdminForm.pair(context, UAdminForm.text(c.instagram, U.s.instagram), UAdminForm.text(c.telegram, U.s.telegram)),
+        UAdminForm.sectionTitle(U.s.nearbyPlaces),
+        UAdminForm.text(c.howToGetThere, U.s.howToGetThere, lines: 2),
+        UListEditor.nearby(items: c.nearby, onChanged: (List<UPlaceNearby> v) => c.nearby = v),
+        UAdminForm.sectionTitle(U.s.faqs),
+        UListEditor.faqs(items: c.faqs, onChanged: (List<UPlaceFaq> v) => c.faqs = v),
       ],
-    ),
-  );
-
-  Future<void> _showEditDialog({UHotelResponse? p}) async {
-    final UAdminFields f = UAdminFields();
-    final TextEditingController title = f.text(p?.title);
-    final TextEditingController detail = f.text(p?.jsonData.description ?? p?.jsonData.detail1);
-    final TextEditingController stars = f.text(p?.stars.toString());
-    final TextEditingController address = f.text(p?.address);
-    final TextEditingController phone = f.text(p?.phoneNumber);
-    final TextEditingController email = f.text(p?.email);
-    final TextEditingController checkInTime = f.text(p?.jsonData.checkInTime);
-    final TextEditingController checkOutTime = f.text(p?.jsonData.checkOutTime);
-    final TextEditingController policies = f.text(p?.jsonData.policies);
-    final TextEditingController rules = f.text(p?.jsonData.rules.join(", "));
-    final TextEditingController latitude = f.text(p?.jsonData.latitude?.toString());
-    final TextEditingController longitude = f.text(p?.jsonData.longitude?.toString());
-    final TextEditingController cancellationFreeHours = f.text((p?.jsonData.cancellationFreeHours ?? 24).toString());
-    final TextEditingController cancellationPenaltyNights = f.text((p?.jsonData.cancellationPenaltyNights ?? 1).toString());
-    final List<int> tags = List<int>.from(p?.tags ?? <int>[TagHotel.hotel.number, TagHotel.active.number]);
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final List<UUserResponse> selectedAdmins = <UUserResponse>[];
-    UProvince province = UCountries.iran().provinces.first;
-    UCity? city = province.cities.firstOrNull;
-
-    if (p != null && p.adminUserIds.isNotEmpty) {
-      final List<UUserResponse?> fetched = await Future.wait(p.adminUserIds.map(UAdminHotelAdminSearchHelper.fetchUserById));
-      selectedAdmins.addAll(fetched.whereType<UUserResponse>());
-    }
-
-    await UNavigator.dialog(
-      f.scope(
-        StatefulBuilder(
-          builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
-            title: Text(p == null ? U.s.createItem(U.s.hotel) : U.s.editItem(U.s.hotel)),
-            content: SizedBox(
-              width: context.dialogWidth(max: 480),
-              child: SingleChildScrollView(
-                child: Form(
-                  key: formKey,
-                  child: UColumn(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      UTextField(
-                        controller: title,
-                        labelText: U.s.title,
-                        validator: UValidators.required(message: ""),
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                      ),
-                      UCountryProvincePicker(
-                        onCountryChanged: (UCountry i) {},
-                        onProvinceChanged: (UProvince i) => province = i,
-                        onCityChanged: (UCity? i) => city = i,
-                      ).pSymmetric(vertical: 6),
-                      UTextField(controller: detail, labelText: U.s.description, lines: 3, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      UTextField(controller: stars, labelText: U.s.stars, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      UTextField(controller: address, labelText: U.s.address, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      UTextFieldPhoneNumber(controller: phone, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      UTextField(controller: email, labelText: U.s.email, keyboardType: TextInputType.emailAddress, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      UTextField(controller: checkInTime, labelText: U.s.checkInTime, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      UTextField(controller: checkOutTime, labelText: U.s.checkOutTime, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      UTextField(controller: policies, labelText: U.s.policies, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      UTextField(controller: rules, labelText: U.s.rules, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      URow(
-                        children: <Widget>[
-                          UTextField(
-                            expanded: 1,
-                            controller: cancellationFreeHours,
-                            labelText: U.s.freeCancellationUpToAFewHoursBeforeCheckIn,
-                            keyboardType: TextInputType.number,
-                            margin: const EdgeInsets.symmetric(vertical: 6),
-                          ),
-                          const SizedBox(width: 8),
-                          UTextField(
-                            expanded: 1,
-                            controller: cancellationPenaltyNights,
-                            labelText: U.s.cancellationFee,
-                            keyboardType: TextInputType.number,
-                            margin: const EdgeInsets.symmetric(vertical: 6),
-                          ),
-                        ],
-                      ),
-                      URow(
-                        children: <Widget>[
-                          UTextField(expanded: 1, controller: latitude, labelText: "Latitude", keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
-                          const SizedBox(width: 8),
-                          UTextField(expanded: 1, controller: longitude, labelText: "Longitude", keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
-                        ],
-                      ),
-                      UAdminTagChips<TagHotel>(title: U.s.propertyType, options: TagHotel.values.group(100), tags: tags, single: true),
-                      UAdminTagChips<TagHotel>(title: U.s.status, options: const <TagHotel>[TagHotel.active, TagHotel.inactive], tags: tags, single: true),
-                      const SizedBox(height: 12),
-                      UTextFieldAutoCompleteAsync<UUserResponse>(
-                        hintText: U.s.admins,
-                        selectedItem: null,
-                        labelBuilder: (UUserResponse u) => u.userName,
-                        fetchData: UAdminHotelAdminSearchHelper.searchUsers,
-                        onChanged: (UUserResponse? u) {
-                          if (u == null) return;
-                          if (selectedAdmins.any((UUserResponse x) => x.id == u.id)) return;
-                          setDialogState(() => selectedAdmins.add(u));
-                        },
-                      ).pSymmetric(vertical: 6),
-                      Wrap(
-                        spacing: 6,
-                        runSpacing: 6,
-                        children: selectedAdmins
-                            .map(
-                              (UUserResponse u) => Chip(
-                                label: Text(u.userName),
-                                onDeleted: () => setDialogState(() => selectedAdmins.removeWhere((UUserResponse x) => x.id == u.id)),
-                              ),
-                            )
-                            .toList(),
-                      ).pSymmetric(vertical: 6),
-                      const SizedBox(height: 20),
-                      UButtonSubmitCancel(
-                        onSubmit: () => UValidators.validateForm(
-                          key: formKey,
-                          action: () {
-                            final List<String> adminUserIds = selectedAdmins.map((UUserResponse u) => u.id).toList();
-                            if (p == null) {
-                              c.create(
-                                p: UHotelCreateParams(
-                                  tags: tags,
-                                  title: title.text,
-                                  cityCode: city?.code ?? province.code,
-                                  stars: stars.text.isEmpty ? 0 : stars.text.toInt(),
-                                  address: address.text.nullIfEmpty(),
-                                  phoneNumber: phone.text.nullIfEmpty(),
-                                  email: email.text.nullIfEmpty(),
-                                  description: detail.text.nullIfEmpty(),
-                                  policies: policies.text.nullIfEmpty(),
-                                  checkInTime: checkInTime.text.nullIfEmpty(),
-                                  checkOutTime: checkOutTime.text.nullIfEmpty(),
-                                  rules: rules.text.trim().isEmpty ? null : rules.text.split(",").map((String e) => e.trim()).where((String e) => e.isNotEmpty).toList(),
-                                  latitude: double.tryParse(latitude.text.toLatinNumber()),
-                                  longitude: double.tryParse(longitude.text.toLatinNumber()),
-                                  cancellationFreeHours: int.tryParse(cancellationFreeHours.text.toLatinNumber()),
-                                  cancellationPenaltyNights: int.tryParse(cancellationPenaltyNights.text.toLatinNumber()),
-                                  adminUserIds: adminUserIds,
-                                ),
-                              );
-                            } else {
-                              c.update(
-                                p: UHotelUpdateParams(
-                                  id: p.id,
-                                  tags: tags,
-                                  title: title.text,
-                                  cityCode: city?.code ?? province.code,
-                                  stars: stars.text.isEmpty ? null : stars.text.toInt(),
-                                  address: address.text.nullIfEmpty(),
-                                  phoneNumber: phone.text.nullIfEmpty(),
-                                  email: email.text.nullIfEmpty(),
-                                  description: detail.text.nullIfEmpty(),
-                                  policies: policies.text.nullIfEmpty(),
-                                  checkInTime: checkInTime.text.nullIfEmpty(),
-                                  checkOutTime: checkOutTime.text.nullIfEmpty(),
-                                  rules: rules.text.trim().isEmpty ? null : rules.text.split(",").map((String e) => e.trim()).where((String e) => e.isNotEmpty).toList(),
-                                  latitude: double.tryParse(latitude.text.toLatinNumber()),
-                                  longitude: double.tryParse(longitude.text.toLatinNumber()),
-                                  cancellationFreeHours: int.tryParse(cancellationFreeHours.text.toLatinNumber()),
-                                  cancellationPenaltyNights: int.tryParse(cancellationPenaltyNights.text.toLatinNumber()),
-                                  adminUserIds: adminUserIds,
-                                ),
-                              );
-                            }
-                            UNavigator.back();
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
     );
-  }
-}
-
-class UAdminHotelAdminSearchHelper {
-  static Future<List<UUserResponse>> searchUsers(String query) async {
-    final Completer<List<UUserResponse>> completer = Completer<List<UUserResponse>>();
-    await UServices.user.read(
-      p: UUserReadParams(query: query.nullIfEmpty(), pageSize: 20),
-      onOk: (UResponse<List<UUserResponse>> r) => completer.complete(r.result ?? <UUserResponse>[]),
-      onError: (_) => completer.complete(<UUserResponse>[]),
-      onException: (_) => completer.complete(<UUserResponse>[]),
-    );
-    return completer.future;
-  }
-
-  static Future<UUserResponse?> fetchUserById(String id) async {
-    final Completer<UUserResponse?> completer = Completer<UUserResponse?>();
-    await UServices.user.readById(
-      p: UIdParams(id: id),
-      onOk: (UResponse<UUserResponse> r) => completer.complete(r.result),
-      onError: (_) => completer.complete(null),
-      onException: (_) => completer.complete(null),
-      onProgress: (int e) {},
-    );
-    return completer.future;
   }
 }

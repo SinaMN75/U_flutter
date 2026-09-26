@@ -108,13 +108,6 @@ abstract class UAdminModules {
     roles: roles,
   );
 
-  static UAdminModule placesVisibility({List<TagUser>? roles}) => UAdminModule(
-    title: U.s.placesVisibility,
-    icon: Icons.verified_rounded,
-    page: () => const UAdminPlaceVisibilityPage(),
-    roles: roles,
-  );
-
   static UAdminModule reviews({List<TagUser>? roles}) => UAdminModule(
     title: U.s.reviews,
     icon: Icons.rate_review_rounded,
@@ -160,7 +153,7 @@ abstract class UAdminModules {
   static UAdminModule users({List<TagUser>? roles}) => UAdminModule(
     title: U.s.users,
     icon: Icons.person_rounded,
-    page: () => UAdminUserPage(args: UAdminUsersPageArgs()),
+    page: () => const UAdminUserPage(),
     roles: roles,
   );
 

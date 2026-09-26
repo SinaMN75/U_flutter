@@ -4,24 +4,39 @@ enum UAdminContractStatusFilter { all, active, upcoming, expired, expiringSoon }
 
 class UAdminContractController extends UBaseController {
   List<UDormBedContractResponse> list = <UDormBedContractResponse>[];
-
   UDormBedResponse? bed;
-
   UUserResponse? user;
 
+  /// Only two contract kinds exist: monthly (rent + deposit) and daily (one invoice, no deposit).
+  static const List<TagDormBedContract> types = <TagDormBedContract>[TagDormBedContract.monthly, TagDormBedContract.daily];
+
   final TextEditingController tenantFilter = TextEditingController();
+  final TextEditingController startFilterText = TextEditingController();
+  final TextEditingController endFilterText = TextEditingController();
   int? typeFilter;
   UAdminContractStatusFilter statusFilter = UAdminContractStatusFilter.all;
-
   UDormResponse? dormFilter;
   UDormBedResponse? bedFilter;
   DateTime? startDateFilter;
   DateTime? endDateFilter;
 
-  Future<void> init({UDormBedResponse? bed, UUserResponse? user}) async {
+  // ---------------------------------------------------------------- form (create and edit)
+
+  UDormBedContractResponse? editing;
+  UDormBedResponse? formBed;
+  UUserResponse? formUser;
+  TagDormBedContract type = TagDormBedContract.monthly;
+  late final TextEditingController startText = fields.text();
+  late final TextEditingController endText = fields.text();
+  late final TextEditingController deposit = fields.text();
+  late final TextEditingController rent = fields.text();
+  late final TextEditingController penalty = fields.text();
+  late final TextEditingController description = fields.text();
+
+  void init({UDormBedResponse? bed, UUserResponse? user}) {
     this.bed = bed;
     this.user = user;
-    await read();
+    read();
   }
 
   Future<void> read() async {
@@ -35,7 +50,7 @@ class UAdminContractController extends UBaseController {
         dormId: dormFilter?.id,
         startDate: startDateFilter,
         endDate: endDateFilter,
-        userName: tenantFilter.text.nullIfEmpty(),
+        userName: tenantFilter.valueOrNull(),
         tags: typeFilter == null ? null : <int>[typeFilter!],
         activeOnly: statusFilter == UAdminContractStatusFilter.active ? true : null,
         upcomingOnly: statusFilter == UAdminContractStatusFilter.upcoming ? true : null,
@@ -61,6 +76,8 @@ class UAdminContractController extends UBaseController {
 
   void clearFilters() {
     tenantFilter.clear();
+    startFilterText.clear();
+    endFilterText.clear();
     typeFilter = null;
     dormFilter = null;
     bedFilter = null;
@@ -70,87 +87,87 @@ class UAdminContractController extends UBaseController {
     reloadFirstPage(read);
   }
 
-  void setStatus(UAdminContractStatusFilter f) {
-    statusFilter = f;
-    reloadFirstPage(read);
+  TagDormBedContract? typeOf(UDormBedContractResponse i) => types.where((TagDormBedContract t) => i.tags.contains(t.number)).firstOrNull;
+
+  bool isActive(UDormBedContractResponse i) => !i.startDate.isAfter(DateTime.now()) && !i.endDate.isBefore(DateTime.now());
+
+  Future<List<UDormBedResponse>> searchBeds(String query) async =>
+      (await UServices.hotel.readDormBeds(
+        p: UDormBedReadParams(
+          title: query,
+          dormId: dormFilter?.id,
+          pageSize: 100,
+          pageNumber: 1,
+          selectorArgs: const UDormBedSelectorArgs(room: UDormRoomSelectorArgs(dorm: UDormSelectorArgs())),
+        ),
+      )).$1?.result ??
+      <UDormBedResponse>[];
+
+  Future<List<UDormResponse>> searchDorms(String query) async => (await UServices.hotel.readDorms(p: UDormReadParams(title: query, pageSize: 100, pageNumber: 1))).$1?.result ?? <UDormResponse>[];
+
+  void loadForm(UDormBedContractResponse? i) {
+    editing = i;
+    formBed = bed;
+    formUser = null;
+    type = (i == null ? null : typeOf(i)) ?? TagDormBedContract.monthly;
+    startDate = i?.startDate;
+    endDate = i?.endDate;
+    startText.text = i?.startDate.toJalaliDate() ?? "";
+    endText.text = i?.endDate.toJalaliDate() ?? "";
+    deposit.text = i?.deposit.toInt().toString() ?? "";
+    rent.text = i?.rent.toInt().toString() ?? "";
+    penalty.clear();
+    description.text = i?.jsonData.detail1 ?? "";
   }
 
-  void create({required UDormBedContractCreateParams p}) => UServices.hotel.createDormBedContract(
-    p: p,
-    onOk: (UResponse<String> r) => okCallback(r.message, read),
-    onError: (UResponse<dynamic> r) => errorCallBack(r.message, read),
-    onException: (String e) => errorCallBack(U.s.errorSubmittingForm, read),
-  );
-
-  void update({required UDormBedContractUpdateParams p}) => UServices.hotel.updateDormBedContract(
-    p: p,
-    onOk: (UEmptyResponse r) => okCallback(r.message, read),
-    onError: (UResponse<dynamic> r) => errorCallBack(r.message, read),
-    onException: (String e) => errorCallBack(U.s.errorSubmittingForm, read),
-  );
-
-  void delete(UDormBedContractResponse i) => UNavigator.confirm(
-    title: U.s.delete,
-    message: U.s.areYouSureYouWantToDelete,
-    onConfirm: () => UServices.hotel.deleteDormBedContract(
-      p: UIdParams(id: i.id),
-      onOk: (UResponse<dynamic> r) {
-        UNavigator.back();
-        okCallback(r.message, read);
-      },
-      onError: (UResponse<dynamic> r) {
-        UNavigator.back();
-        errorCallBack(r.message, read);
-      },
-      onException: (String e) {
-        UNavigator.back();
-        UToast.error(message: e);
-      },
-    ),
-  );
-
-  Future<List<UUserResponse>> readUsers(String query) async {
-    final List<UUserResponse> result = <UUserResponse>[];
-    await UServices.user.read(
-      p: UUserReadParams(query: query, pageSize: 100, pageNumber: 1),
-      onOk: (UResponse<List<UUserResponse>> r) => result.addAll(r.result ?? <UUserResponse>[]),
-      onError: (UEmptyResponse e) {},
-      onException: (String e) {},
-    );
-    return result;
+  /// Creates or updates the contract. Returns true when the dialog can close.
+  Future<bool> save() async {
+    // Daily contracts are single-invoice with no deposit; monthly ones keep rent + deposit.
+    final bool isDaily = type == TagDormBedContract.daily;
+    final List<int> tags = <int>[type.number, if (isDaily) TagDormBedContract.singleInvoice.number];
+    if (editing != null) {
+      return await submit(
+            UServices.hotel.updateDormBedContract(
+              p: UDormBedContractUpdateParams(id: editing!.id, tags: tags, startDate: startDate, endDate: endDate, deposit: isDaily ? 0 : numOf(deposit), rent: numOf(rent)),
+            ),
+            read,
+          ) !=
+          null;
+    }
+    if (formBed == null) {
+      UToast.error(message: U.s.selectAItem(U.s.bed));
+      return false;
+    }
+    if (formUser == null) {
+      UToast.error(message: U.s.selectAItem(U.s.user));
+      return false;
+    }
+    return await submit(
+          UServices.hotel.createDormBedContract(
+            p: UDormBedContractCreateParams(
+              tags: tags,
+              startDate: startDate!,
+              endDate: endDate!,
+              userId: formUser!.id,
+              bedId: formBed!.id,
+              deposit: isDaily ? null : numOf(deposit),
+              rent: numOf(rent),
+              penaltyPrecentEveryDate: isDaily ? null : intOf(penalty),
+              detail1: description.text.nullIfEmpty(),
+            ),
+          ),
+          read,
+        ) !=
+        null;
   }
 
-  Future<List<UDormBedResponse>> readBeds(String query) async {
-    final List<UDormBedResponse> result = <UDormBedResponse>[];
-    await UServices.hotel.readDormBeds(
-      p: UDormBedReadParams(
-        title: query,
-        dormId: dormFilter?.id,
-        pageSize: 100,
-        pageNumber: 1,
-        selectorArgs: const UDormBedSelectorArgs(room: UDormRoomSelectorArgs(dorm: UDormSelectorArgs())),
-      ),
-      onOk: (UResponse<List<UDormBedResponse>> r) => result.addAll(r.result ?? <UDormBedResponse>[]),
-      onError: (UEmptyResponse e) {},
-      onException: (String e) {},
-    );
-    return result;
-  }
-
-  Future<List<UDormResponse>> readDorms(String query) async {
-    final List<UDormResponse> result = <UDormResponse>[];
-    await UServices.hotel.readDorms(
-      p: UDormReadParams(title: query, pageSize: 100, pageNumber: 1),
-      onOk: (UResponse<List<UDormResponse>> r) => result.addAll(r.result ?? <UDormResponse>[]),
-      onError: (UEmptyResponse e) {},
-      onException: (String e) {},
-    );
-    return result;
-  }
+  void delete(UDormBedContractResponse i) => confirmAction(() => UServices.hotel.deleteDormBedContract(p: UIdParams(id: i.id)), read);
 
   @override
   void dispose() {
     tenantFilter.dispose();
+    startFilterText.dispose();
+    endFilterText.dispose();
     super.dispose();
   }
 }

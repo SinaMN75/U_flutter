@@ -169,3 +169,40 @@ class _UChipChoiceState<T> extends State<UChipChoice<T>> {
     }
   }
 }
+
+/// On/off chips for one group of numeric tags (amenities, policies, type...).
+/// [tags] is the item's whole tag list and is edited in place; [single] keeps at most one of [options] selected.
+class UTagChips<T extends UNumericIdentifiable> extends StatefulWidget {
+  const UTagChips({required this.title, required this.options, required this.tags, this.single = false, super.key});
+
+  final String title;
+  final List<T> options;
+  final List<int> tags;
+  final bool single;
+
+  @override
+  State<UTagChips<T>> createState() => _UTagChipsState<T>();
+}
+
+class _UTagChipsState<T extends UNumericIdentifiable> extends State<UTagChips<T>> {
+  void _toggle(T option, bool on) => setState(() {
+    if (widget.single) widget.tags.removeWhere((int t) => widget.options.any((T o) => o.number == t));
+    widget.tags.remove(option.number);
+    if (on) widget.tags.add(option.number);
+  });
+
+  @override
+  Widget build(BuildContext context) => UColumn(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    margin: const EdgeInsets.symmetric(vertical: 6),
+    spacing: 6,
+    children: <Widget>[
+      Text(widget.title, style: Theme.of(context).textTheme.labelLarge),
+      Wrap(
+        spacing: 6,
+        runSpacing: 6,
+        children: widget.options.map((T o) => FilterChip(label: Text(o.localizedTitle), selected: widget.tags.contains(o.number), onSelected: (bool on) => _toggle(o, on))).toList(),
+      ),
+    ],
+  );
+}

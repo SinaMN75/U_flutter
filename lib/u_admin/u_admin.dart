@@ -14,10 +14,6 @@ part "pages/hotel/contracts/u_admin_contract_controller.dart";
 
 part "pages/hotel/dashboard/u_admin_hotel_dashboard_controller.dart";
 
-part "pages/hotel/details/u_admin_place_details.dart";
-
-part "pages/hotel/details/u_admin_place_widgets.dart";
-
 part "pages/hotel/dorm_beds/u_admin_dorm_bed_controller.dart";
 
 part "pages/hotel/dorm_rooms/u_admin_dorm_room_controller.dart";
@@ -34,15 +30,9 @@ part "pages/hotel/reservations/u_admin_reservation_controller.dart";
 
 part "pages/hotel/reviews/u_admin_review_controller.dart";
 
-part "pages/hotel/visibility/u_admin_place_visibility_controller.dart";
-
-part "pages/hotel/u_admin_pay_link.dart";
-
 part "pages/hotel/users/u_admin_users_controller.dart";
 
-part "pages/hotel/users/user_detail/u_admin_hotel_user_detail_controller.dart";
-
-part "pages/hotel/users/user_detail/u_admin_user_detail_controller.dart";
+part "pages/payments/users/user_detail/u_admin_user_detail_controller.dart";
 
 part "pages/login/u_admin_login_controller.dart";
 

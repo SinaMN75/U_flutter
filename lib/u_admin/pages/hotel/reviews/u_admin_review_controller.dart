@@ -35,38 +35,20 @@ class UAdminReviewController extends UBaseController {
     reloadFirstPage(read);
   }
 
-  void _setStatus(UCommentResponse c, TagComment to) => UServices.comment.update(
-    p: UCommentUpdateParams(
-      id: c.id,
-      addTags: <int>[to.number],
-      removeTags: <int>[TagComment.released.number, TagComment.inQueue.number, TagComment.rejected.number].where((int t) => t != to.number).toList(),
+  void _setStatus(UCommentResponse c, TagComment to) => submit(
+    UServices.comment.update(
+      p: UCommentUpdateParams(
+        id: c.id,
+        addTags: <int>[to.number],
+        removeTags: <int>[TagComment.released.number, TagComment.inQueue.number, TagComment.rejected.number].where((int t) => t != to.number).toList(),
+      ),
     ),
-    onOk: (UEmptyResponse r) => okCallback(r.message, read),
-    onError: (UEmptyResponse r) => errorCallBack(r.message, read),
-    onException: (String e) => errorCallBack(U.s.errorSubmittingForm, read),
+    read,
   );
 
   void approve(UCommentResponse c) => _setStatus(c, TagComment.released);
 
   void reject(UCommentResponse c) => _setStatus(c, TagComment.rejected);
 
-  void delete(UCommentResponse c) => UNavigator.confirm(
-    title: U.s.delete,
-    message: U.s.areYouSureYouWantToDelete,
-    onConfirm: () => UServices.comment.delete(
-      p: UIdParams(id: c.id),
-      onOk: (UEmptyResponse r) {
-        UNavigator.back();
-        okCallback(r.message, read);
-      },
-      onError: (UEmptyResponse r) {
-        UNavigator.back();
-        errorCallBack(r.message, read);
-      },
-      onException: (String e) {
-        UNavigator.back();
-        UToast.error(message: e);
-      },
-    ),
-  );
+  void delete(UCommentResponse c) => confirmAction(() => UServices.comment.delete(p: UIdParams(id: c.id)), read);
 }

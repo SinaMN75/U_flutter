@@ -2,16 +2,26 @@ part of "../../../u_admin.dart";
 
 class UAdminDormBedController extends UBaseController {
   List<UDormBedResponse> list = <UDormBedResponse>[];
-
   UDormRoomResponse? room;
   UDormResponse? dorm;
-
   final TextEditingController titleFilter = TextEditingController();
 
-  Future<void> init({UDormRoomResponse? room, UDormResponse? dorm}) async {
+  // ---------------------------------------------------------------- form (create and edit)
+
+  UDormBedResponse? editing;
+  UDormRoomResponse? formRoom;
+  late final TextEditingController title = fields.text();
+  late final TextEditingController deposit = fields.text();
+  late final TextEditingController rent = fields.text();
+  late final TextEditingController description = fields.text();
+  List<int> tags = <int>[];
+  List<UMediaResponse> media = <UMediaResponse>[];
+  UFilePickerController photos = UFilePickerController();
+
+  void init({UDormRoomResponse? room, UDormResponse? dorm}) {
     this.room = room;
     this.dorm = dorm;
-    await read();
+    read();
   }
 
   Future<void> read() async {
@@ -22,7 +32,7 @@ class UAdminDormBedController extends UBaseController {
         pageSize: pageSize,
         roomId: room?.id,
         dormId: dorm?.id,
-        title: titleFilter.text.nullIfEmpty(),
+        title: titleFilter.valueOrNull(),
         selectorArgs: const UDormBedSelectorArgs(contract: UDormBedContractSelectorArgs(), room: UDormRoomSelectorArgs()),
       ),
       onOk: (UResponse<List<UDormBedResponse>> r) {
@@ -42,54 +52,70 @@ class UAdminDormBedController extends UBaseController {
     reloadFirstPage(read);
   }
 
-  void create({required UDormBedCreateParams p}) => UServices.hotel.createDormBed(
-    p: p,
-    onOk: (UResponse<String> r) => okCallback(r.message, read),
-    onError: (UEmptyResponse r) => errorCallBack(r.message, read),
-    onException: (String e) => errorCallBack(U.s.errorSubmittingForm, read),
-  );
+  /// A bed is free when none of its contracts is active.
+  bool isFree(UDormBedResponse i) => !(i.contracts?.any((UDormBedContractResponse c) => c.isActive) ?? false);
 
-  void update({required UDormBedUpdateParams p}) => UServices.hotel.updateDormBed(
-    p: p,
-    onOk: (UEmptyResponse r) => okCallback(r.message, read),
-    onError: (UEmptyResponse r) => errorCallBack(r.message, read),
-    onException: (String e) => errorCallBack(U.s.errorSubmittingForm, read),
-  );
+  Future<List<UDormRoomResponse>> searchRooms(String query) async =>
+      (await UServices.hotel.readDormRooms(
+        p: UDormRoomReadParams(title: query, dormId: dorm?.id, pageSize: 100, pageNumber: 1),
+      )).$1?.result ??
+      <UDormRoomResponse>[];
 
-  void delete(UDormBedResponse i) => UNavigator.confirm(
-    title: U.s.delete,
-    message: U.s.areYouSureYouWantToDelete,
-    onConfirm: () => UServices.hotel.deleteDormBed(
-      p: UIdParams(id: i.id),
-      onOk: (UEmptyResponse r) {
-        UNavigator.back();
-        okCallback(r.message, read);
-      },
-      onError: (UEmptyResponse r) {
-        UNavigator.back();
-        errorCallBack(r.message, read);
-      },
-      onException: (String e) {
-        UNavigator.back();
-        UToast.error(message: e);
-      },
-    ),
-  );
-
-  Future<List<UDormRoomResponse>> readRooms(String query) async {
-    final List<UDormRoomResponse> result = <UDormRoomResponse>[];
-    await UServices.hotel.readDormRooms(
-      p: UDormRoomReadParams(title: query, dormId: dorm?.id, pageSize: 100, pageNumber: 1),
-      onOk: (UResponse<List<UDormRoomResponse>> r) => result.addAll(r.result ?? <UDormRoomResponse>[]),
-      onError: (UEmptyResponse e) {},
-      onException: (String e) {},
-    );
-    return result;
+  /// Fills the form: empty for [item] == null, otherwise with the full bed (photos included).
+  Future<void> loadForm(UDormBedResponse? item) async {
+    final UDormBedResponse? b = item == null
+        ? null
+        : (await UServices.hotel.readDormBedById(
+                p: UIdParams(
+                  id: item.id,
+                  selectorArgs: const UDormBedSelectorArgs(media: UMediaSelectorArgs()),
+                ),
+              )).$1?.result ??
+              item;
+    editing = b;
+    formRoom = b?.room ?? item?.room ?? room;
+    title.text = b?.title ?? "";
+    deposit.text = b?.deposit.toInt().toString() ?? "";
+    rent.text = b?.monthlyRent.toInt().toString() ?? "";
+    description.text = b?.jsonData.description ?? b?.jsonData.detail1 ?? "";
+    tags = List<int>.from(b?.tags ?? <int>[TagDormBed.single.number]);
+    media = (b?.media ?? <UMediaResponse>[]).sortedForGallery();
+    photos.dispose();
+    photos = UFilePickerController.fromMedia(media);
   }
+
+  /// Creates or updates the bed, then saves its photos. Returns true when the dialog can close.
+  Future<bool> save() async {
+    final String? roomId = formRoom?.id ?? editing?.roomId;
+    if (roomId == null) {
+      UToast.error(message: U.s.pleaseSelectAItem(U.s.room));
+      return false;
+    }
+    final UDormBedUpdateParams p = UDormBedUpdateParams(
+      id: editing?.id ?? "",
+      tags: tags,
+      title: title.text.trim(),
+      deposit: numOf(deposit),
+      monthlyRent: numOf(rent),
+      roomId: roomId,
+      description: description.text.nullIfEmpty(),
+    );
+    final dynamic ok = await submit(
+      editing == null ? UServices.hotel.createDormBed(p: UDormBedCreateParams.fromMap(p.toMap()..remove("id"))) : UServices.hotel.updateDormBed(p: p),
+      () {},
+    );
+    if (ok == null) return false;
+    await UServices.media.syncGallery(photos, existing: media, dormBedId: editing?.id ?? ok.result);
+    unawaited(read());
+    return true;
+  }
+
+  void delete(UDormBedResponse i) => confirmAction(() => UServices.hotel.deleteDormBed(p: UIdParams(id: i.id)), read);
 
   @override
   void dispose() {
     titleFilter.dispose();
+    photos.dispose();
     super.dispose();
   }
 }

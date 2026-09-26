@@ -162,6 +162,7 @@ class UCountryProvincePicker extends StatefulWidget {
     super.key,
     this.initialCountry,
     this.initialProvince,
+    this.initialCity,
     this.onCountryChanged,
     this.onProvinceChanged,
     this.onCityChanged,
@@ -170,6 +171,7 @@ class UCountryProvincePicker extends StatefulWidget {
 
   final UCountry? initialCountry;
   final UProvince? initialProvince;
+  final UCity? initialCity;
   final void Function(UCountry country)? onCountryChanged;
   final void Function(UProvince province)? onProvinceChanged;
   final void Function(UCity? city)? onCityChanged;
@@ -184,7 +186,7 @@ class _UCountryProvincePickerState extends State<UCountryProvincePicker> {
   late final URxList<UProvince> provinces = country.value.provinces.obs;
   late final URxList<UCity> cities = province.value.cities.obs;
   late final URx<UProvince> province = (widget.initialProvince ?? country.value.provinces.first).obs;
-  late final URxn<UCity?> city = URxn<UCity>(province.value.cities.firstOrNull);
+  late final URxn<UCity?> city = URxn<UCity>(widget.initialCity ?? province.value.cities.firstOrNull);
 
   void _selectCountry(UCountry? i) {
     if (i == null) return;

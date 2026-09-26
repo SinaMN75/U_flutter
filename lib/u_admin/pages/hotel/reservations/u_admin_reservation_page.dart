@@ -32,379 +32,165 @@ class _ReservationPageState extends State<UAdminReservationPage> {
         : widget.hotel != null
         ? "${U.s.reservations} · ${widget.hotel!.title}"
         : U.s.reservations,
-    onFilter: _showFilterDialog,
-    onCreate: U.user.hasPermission(TagUser.permissionManageReservations) ? _showEditDialog : null,
+    onFilter: _filter,
+    onCreate: U.user.hasPermission(TagUser.permissionManageReservations) ? _form : null,
     pageNumber: c.pageNumber,
     totalPages: c.totalPages,
     onPageChanged: (int page) {
       c.pageNumber(page);
       c.read();
     },
-    body: _list(),
-  );
-
-  String _statusFilterLabel(UAdminReservationStatusFilter f) {
-    switch (f) {
-      case UAdminReservationStatusFilter.all:
-        return U.s.all;
-      case UAdminReservationStatusFilter.pending:
-        return U.s.pending;
-      case UAdminReservationStatusFilter.confirmed:
-        return U.s.confirmed;
-      case UAdminReservationStatusFilter.checkedIn:
-        return U.s.checkedIn;
-      case UAdminReservationStatusFilter.checkedOut:
-        return U.s.checkedOut;
-      case UAdminReservationStatusFilter.cancelled:
-        return U.s.cancelled;
-    }
-  }
-
-  Color _statusColor(TagHotelReservation? s) {
-    switch (s) {
-      case TagHotelReservation.confirmed:
-      case TagHotelReservation.checkedIn:
-        return UAdminTheme.green;
-      case TagHotelReservation.cancelled:
-      case TagHotelReservation.noShow:
-        return UAdminTheme.red;
-      case TagHotelReservation.checkedOut:
-        return UAdminTheme.blue;
-      case TagHotelReservation.pending:
-      case null:
-        return UAdminTheme.orange;
-    }
-  }
-
-  Widget _statusChip(UHotelReservationResponse i) {
-    final TagHotelReservation? s = i.status;
-    final Color color = _statusColor(s);
-    return UContainer(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      radius: 20,
-      color: color.withValues(alpha: 0.15),
-      child: UTextBodySmall(s == null ? "-" : (s.localizedTitle), color: color),
-    );
-  }
-
-  Widget _list() => UAdminListView<UHotelReservationResponse>(
-    state: c.state,
-    items: () => c.list,
-    totalCount: () => c.totalCount,
-    onRetry: c.read,
-    emptyText: U.s.noItemsFound(U.s.reservations),
-    desktopBreakpoint: 900,
-    desktopHeader: () => UAdminTable.header(<String>[U.s.guest, U.s.rooms, U.s.checkInDate, U.s.checkOutDate, U.s.totalPrice, U.s.status, U.s.operations]),
-    desktopRow: _itemDesktop,
-    mobileRow: _itemResponsive,
-  );
-
-  String _guestLabel(UHotelReservationResponse i) => i.user?.displayName ?? i.jsonData.guestName ?? "-";
-
-  String _roomLabel(UHotelReservationResponse i) => i.room?.title ?? widget.room?.title ?? "-";
-
-  Widget _itemDesktop(UHotelReservationResponse i, int index) => URow(
-    spacing: 8,
-    color: UAdminTable.rowColor(context, index),
-    padding: UAdminTable.rowPadding,
-    children: <Widget>[
-      UAdminTable.cell(_guestLabel(i)),
-      UAdminTable.cell(_roomLabel(i)),
-      UAdminTable.cell(i.checkInDate.toJalaliDate()),
-      UAdminTable.cell(i.checkOutDate.toJalaliDate()),
-      UAdminTable.cell(i.totalPrice.rial()),
-      Center(child: _statusChip(i)).expanded(),
-      _menu(i).expanded(),
-    ],
-  );
-
-  Widget _itemResponsive(UHotelReservationResponse i, int index) => UAdminTable.mobileCard(
-    icon: Icons.event_available_rounded,
-    title: _guestLabel(i),
-    badge: _statusChip(i),
-    trailing: _menu(i),
-    fields: <UAdminField>[
-      UAdminField(U.s.rooms, _roomLabel(i)),
-      UAdminField(U.s.checkInDate, i.checkInDate.toJalaliDate()),
-      UAdminField(U.s.checkOutDate, i.checkOutDate.toJalaliDate()),
-      UAdminField(U.s.nights, "${i.jsonData.nightCount ?? 0}"),
-      UAdminField(U.s.guests, i.guestCount.toString()),
-      UAdminField(U.s.totalPrice, i.totalPrice.rial()),
-    ],
-  );
-
-  Widget _menu(UHotelReservationResponse i) => UAdminOps.menu<UHotelReservationResponse>(
-    item: i,
-    handlers: UAdminActionHandlers<UHotelReservationResponse>(
-      onEdit: (UHotelReservationResponse x) => _showEditDialog(p: x),
-      onDelete: c.delete,
-      extras: <String, void Function(UHotelReservationResponse)>{
-        "guest": (UHotelReservationResponse x) {
-          if (x.user != null) UAdminPageSwitcher.hotelUserDetail(user: x.user!);
-        },
-        "confirm": c.confirm,
-        "checkIn": c.checkIn,
-        "checkOut": c.checkOut,
-        "cancel": c.cancel,
-        "pay": (UHotelReservationResponse x) {
-          final UHotelInvoiceResponse? unpaid = c.unpaidInvoiceOf(x);
-          if (unpaid != null) c.payInvoice(unpaid);
-        },
-      },
+    body: UAdminListView<UHotelReservationResponse>(
+      state: c.state,
+      items: () => c.list,
+      totalCount: () => c.totalCount,
+      onRetry: c.read,
+      emptyText: U.s.noItemsFound(U.s.reservations),
+      desktopBreakpoint: 900,
+      desktopHeader: () => UAdminTable.header(<String>[U.s.guest, U.s.rooms, U.s.checkInDate, U.s.checkOutDate, U.s.totalPrice, U.s.status, U.s.operations]),
+      desktopRow: (UHotelReservationResponse i, int index) => URow(
+        spacing: 8,
+        color: UAdminTable.rowColor(context, index),
+        padding: UAdminTable.rowPadding,
+        children: <Widget>[
+          UAdminTable.cell(_guest(i)),
+          UAdminTable.cell(i.room?.title ?? widget.room?.title ?? "-"),
+          UAdminTable.cell(i.checkInDate.toJalaliDate()),
+          UAdminTable.cell(i.checkOutDate.toJalaliDate()),
+          UAdminTable.cell(i.totalPrice.rial()),
+          _status(i).alignAtCenter().expanded(),
+          _menu(i).expanded(),
+        ],
+      ),
+      mobileRow: (UHotelReservationResponse i, int index) => UAdminTable.mobileCard(
+        icon: Icons.event_available_rounded,
+        title: _guest(i),
+        badge: _status(i),
+        trailing: _menu(i),
+        fields: <UAdminField>[
+          UAdminField(U.s.rooms, i.room?.title ?? widget.room?.title ?? "-"),
+          UAdminField(U.s.checkInDate, i.checkInDate.toJalaliDate()),
+          UAdminField(U.s.checkOutDate, i.checkOutDate.toJalaliDate()),
+          UAdminField(U.s.nights, "${i.jsonData.nightCount ?? 0}"),
+          UAdminField(U.s.guests, i.guestCount.toString()),
+          UAdminField(U.s.totalPrice, i.totalPrice.rial()),
+        ],
+      ),
     ),
-    fallback: (UAdminActionContext<UHotelReservationResponse> ctx) {
-      final TagHotelReservation? s = ctx.item.status;
-      final UHotelInvoiceResponse? unpaid = c.unpaidInvoiceOf(ctx.item);
-      return <UAdminAction>[
-        ctx.extra("guest", label: U.s.guest, icon: Icons.person_outline, visible: ctx.item.user != null),
-        ctx.extra("confirm", label: U.s.confirm, icon: Icons.check_circle_outline, visible: s == TagHotelReservation.pending, roles: <TagUser>[TagUser.permissionManageReservations]),
-        ctx.extra("checkIn", label: U.s.checkIn, icon: Icons.login_rounded, visible: s == TagHotelReservation.confirmed, roles: <TagUser>[TagUser.permissionManageReservations]),
-        ctx.extra("checkOut", label: U.s.checkOut, icon: Icons.logout_rounded, visible: s == TagHotelReservation.checkedIn, roles: <TagUser>[TagUser.permissionManageReservations]),
-        ctx.extra(
-          "cancel",
-          label: U.s.cancel,
-          icon: Icons.cancel_outlined,
-          visible: s == TagHotelReservation.pending || s == TagHotelReservation.confirmed,
-          roles: <TagUser>[TagUser.permissionManageReservations],
-        ),
-        ctx.extra(
-          "pay",
-          label: unpaid == null ? U.s.pay : "${U.s.pay} · ${unpaid.netDue.rial()}",
-          icon: Icons.payments_outlined,
-          visible: unpaid != null,
-          roles: <TagUser>[TagUser.permissionPayInvoices],
-        ),
-        ctx.edit(roles: <TagUser>[TagUser.permissionManageReservations]),
-        ctx.delete(roles: <TagUser>[TagUser.permissionDeleteReservations]),
-      ];
+  );
+
+  String _guest(UHotelReservationResponse i) => i.user?.displayName ?? i.jsonData.guestName ?? "-";
+
+  Widget _status(UHotelReservationResponse i) => UAdminTable.statusChip(
+    label: i.status?.localizedTitle ?? "-",
+    color: switch (i.status) {
+      TagHotelReservation.confirmed || TagHotelReservation.checkedIn => UAdminTheme.green,
+      TagHotelReservation.cancelled || TagHotelReservation.noShow => UAdminTheme.red,
+      TagHotelReservation.checkedOut => UAdminTheme.blue,
+      TagHotelReservation.pending || null => UAdminTheme.orange,
     },
   );
 
-  void _showFilterDialog() {
-    final UAdminFields f = UAdminFields();
-    final TextEditingController checkInCtrl = f.text(c.checkInFilter?.toJalaliDate());
-    final TextEditingController checkOutCtrl = f.text(c.checkOutFilter?.toJalaliDate());
+  String _statusLabel(UAdminReservationStatusFilter f) => switch (f) {
+    UAdminReservationStatusFilter.all => U.s.all,
+    UAdminReservationStatusFilter.pending => U.s.pending,
+    UAdminReservationStatusFilter.confirmed => U.s.confirmed,
+    UAdminReservationStatusFilter.checkedIn => U.s.checkedIn,
+    UAdminReservationStatusFilter.checkedOut => U.s.checkedOut,
+    UAdminReservationStatusFilter.cancelled => U.s.cancelled,
+  };
 
-    UNavigator.dialog(
-      f.scope(
-        AlertDialog(
-          title: Text(U.s.filterItem(U.s.reservations)),
-          content: SizedBox(
-            width: context.dialogWidth(),
-            child: SingleChildScrollView(
-              child: StatefulBuilder(
-                builder: (BuildContext context, void Function(void Function()) setLocal) => UColumn(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    UTextField(controller: c.guestFilter, labelText: U.s.guest, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    if (widget.hotel == null && widget.room == null)
-                      UTextFieldAutoCompleteAsync<UHotelResponse>(
-                        labelBuilder: (UHotelResponse i) => i.title,
-                        onChanged: (UHotelResponse? i) => setLocal(() => c.hotelFilter = i),
-                        selectedItem: c.hotelFilter,
-                        fetchData: c.readHotels,
-                        hintText: U.s.hotel,
-                      ).pSymmetric(vertical: 6),
-                    DropdownButtonFormField<UAdminReservationStatusFilter>(
-                      isExpanded: true,
-                      initialValue: c.statusFilter,
-                      decoration: InputDecoration(labelText: U.s.status, border: const OutlineInputBorder()),
-                      items: UAdminReservationStatusFilter.values
-                          .map((UAdminReservationStatusFilter f) => DropdownMenuItem<UAdminReservationStatusFilter>(value: f, child: Text(_statusFilterLabel(f))))
-                          .toList(),
-                      onChanged: (UAdminReservationStatusFilter? v) => setLocal(() => c.statusFilter = v ?? UAdminReservationStatusFilter.all),
-                    ).pSymmetric(vertical: 6),
-                    UTextFieldDatePicker(
-                      controller: checkInCtrl,
-                      labelText: U.s.checkInDate,
-                      jalali: true,
-                      initialDate: c.checkInFilter,
-                      onChange: (DateTime d, UJalali j) {
-                        c.checkInFilter = d;
-                        checkInCtrl.text = d.toJalaliDate();
-                      },
-                    ).pSymmetric(vertical: 6),
-                    UTextFieldDatePicker(
-                      controller: checkOutCtrl,
-                      labelText: U.s.checkOutDate,
-                      jalali: true,
-                      initialDate: c.checkOutFilter,
-                      onChange: (DateTime d, UJalali j) {
-                        c.checkOutFilter = d;
-                        checkOutCtrl.text = d.toJalaliDate();
-                      },
-                    ).pSymmetric(vertical: 6),
-                    const SizedBox(height: 20),
-                    UButtonSubmitCancel(
-                      submitTitle: U.s.filter,
-                      cancelTitle: U.s.clearFilters,
-                      onSubmit: () {
-                        c.applyFilters();
-                        UNavigator.back();
-                      },
-                      onCancel: () {
-                        c.clearFilters();
-                        UNavigator.back();
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
+  Widget _menu(UHotelReservationResponse i) {
+    final TagHotelReservation? s = i.status;
+    final UHotelInvoiceResponse? unpaid = c.unpaidInvoiceOf(i);
+    const List<TagUser> manage = <TagUser>[TagUser.permissionManageReservations];
+    return UAdminOps.menu<UHotelReservationResponse>(
+      item: i,
+      handlers: UAdminActionHandlers<UHotelReservationResponse>(onEdit: _form, onDelete: c.delete),
+      fallback: (UAdminActionContext<UHotelReservationResponse> ctx) => <UAdminAction>[
+        if (i.user != null)
+          UAdminAction(
+            label: U.s.guest,
+            icon: Icons.person_outline,
+            onTap: () => UAdminPageSwitcher.hotelUserDetail(user: i.user!),
           ),
-        ),
-      ),
+        if (s == TagHotelReservation.pending) UAdminAction(label: U.s.confirm, icon: Icons.check_circle_outline, roles: manage, onTap: () => c.confirm(i)),
+        if (s == TagHotelReservation.confirmed) UAdminAction(label: U.s.checkIn, icon: Icons.login_rounded, roles: manage, onTap: () => c.checkInGuest(i)),
+        if (s == TagHotelReservation.checkedIn) UAdminAction(label: U.s.checkOut, icon: Icons.logout_rounded, roles: manage, onTap: () => c.checkOutGuest(i)),
+        if (s == TagHotelReservation.pending || s == TagHotelReservation.confirmed) UAdminAction(label: U.s.cancel, icon: Icons.cancel_outlined, roles: manage, onTap: () => c.cancel(i)),
+        if (unpaid != null)
+          UAdminAction(
+            label: "${U.s.pay} · ${unpaid.netDue.rial()}",
+            icon: Icons.payments_outlined,
+            roles: <TagUser>[TagUser.permissionPayInvoices],
+            onTap: () => c.payInvoice(unpaid),
+          ),
+        ctx.edit(roles: manage),
+        ctx.delete(roles: <TagUser>[TagUser.permissionDeleteReservations]),
+      ],
     );
   }
 
-  void _showEditDialog({UHotelReservationResponse? p}) {
-    final bool isEdit = p != null;
-    final UAdminFields f = UAdminFields();
-    final TextEditingController guestCount = f.text((p?.guestCount ?? 1).toString());
-    final TextEditingController totalPrice = f.text(p?.totalPrice.toInt().toString());
-    final TextEditingController penalty = f.text();
-    final TextEditingController guestName = f.text(p?.jsonData.guestName);
-    final TextEditingController guestPhone = f.text(p?.jsonData.guestPhone);
-    final TextEditingController notes = f.text(p?.jsonData.notes);
-    final TextEditingController checkInCtrl = f.text(p?.checkInDate.toJalaliDate());
-    final TextEditingController checkOutCtrl = f.text(p?.checkOutDate.toJalaliDate());
+  void _filter() => UAdminForm.filter(
+    title: U.s.filterItem(U.s.reservations),
+    onApply: c.applyFilters,
+    onClear: c.clearFilters,
+    children: (StateSetter setState) => <Widget>[
+      UAdminForm.text(c.guestFilter, U.s.guest),
+      if (widget.hotel == null && widget.room == null)
+        UTextFieldAutoCompleteAsync<UHotelResponse>(
+          hintText: U.s.hotel,
+          labelBuilder: (UHotelResponse i) => i.title,
+          selectedItem: c.hotelFilter,
+          fetchData: c.searchHotels,
+          onChanged: (UHotelResponse? i) => c.hotelFilter = i,
+        ).pSymmetric(vertical: 6),
+      UDropDownField<UAdminReservationStatusFilter>(
+        labelText: U.s.status,
+        initialValue: c.statusFilter,
+        items: UAdminReservationStatusFilter.values.map((UAdminReservationStatusFilter f) => DropdownMenuItem<UAdminReservationStatusFilter>(value: f, child: Text(_statusLabel(f)))).toList(),
+        onChanged: (UAdminReservationStatusFilter? v) => c.statusFilter = v ?? UAdminReservationStatusFilter.all,
+      ).pSymmetric(vertical: 6),
+      UAdminForm.date(c.checkInFilterText, U.s.checkInDate, (DateTime d) => c.checkInFilter = d, initial: c.checkInFilter),
+      UAdminForm.date(c.checkOutFilterText, U.s.checkOutDate, (DateTime d) => c.checkOutFilter = d, initial: c.checkOutFilter),
+    ],
+  );
 
-    final URxn<UHotelRoomResponse> room = URxn<UHotelRoomResponse>();
-    final URxn<UUserResponse> user = URxn<UUserResponse>();
-    DateTime? checkIn = p?.checkInDate;
-    DateTime? checkOut = p?.checkOutDate;
-
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
-    UNavigator.dialog(
-      f.scope(
-        AlertDialog(
-          title: Text(p == null ? U.s.createItem(U.s.reservation) : U.s.editItem(U.s.reservation)),
-          content: SizedBox(
-            width: context.dialogWidth(max: 480),
-            child: SingleChildScrollView(
-              child: StatefulBuilder(
-                builder: (BuildContext context, void Function(void Function()) setLocal) => Form(
-                  key: formKey,
-                  child: UColumn(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      if (!isEdit && widget.room == null)
-                        UTextFieldAutoCompleteAsync<UHotelRoomResponse>(
-                          labelBuilder: (UHotelRoomResponse i) => "${i.title} · ${i.pricePerNight.rial()}",
-                          onChanged: room.call,
-                          selectedItem: room.value,
-                          fetchData: c.readRooms,
-                          hintText: U.s.rooms,
-                        ).pSymmetric(vertical: 6),
-                      if (!isEdit)
-                        UTextFieldAutoCompleteAsync<UUserResponse>(
-                          labelBuilder: (UUserResponse i) => i.phoneNumber == null ? i.displayName : "${i.displayName} · ${i.phoneNumber}",
-                          onChanged: user.call,
-                          selectedItem: user.value,
-                          fetchData: c.readUsers,
-                          hintText: U.s.guest,
-                        ).pSymmetric(vertical: 6),
-                      UTextFieldDatePicker(
-                        controller: checkInCtrl,
-                        labelText: U.s.checkInDate,
-                        jalali: true,
-                        initialDate: checkIn,
-                        validator: UValidators.required(message: ""),
-                        onChange: (DateTime d, UJalali j) {
-                          checkIn = d;
-                          checkInCtrl.text = d.toJalaliDate();
-                        },
-                      ).pSymmetric(vertical: 6),
-                      UTextFieldDatePicker(
-                        controller: checkOutCtrl,
-                        labelText: U.s.checkOutDate,
-                        jalali: true,
-                        initialDate: checkOut,
-                        validator: UValidators.required(message: ""),
-                        onChange: (DateTime d, UJalali j) {
-                          checkOut = d;
-                          checkOutCtrl.text = d.toJalaliDate();
-                        },
-                      ).pSymmetric(vertical: 6),
-                      UTextField(
-                        controller: guestCount,
-                        labelText: U.s.numberOfGuests,
-                        keyboardType: TextInputType.number,
-                        validator: UValidators.required(message: ""),
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                      ),
-                      UTextField(
-                        controller: totalPrice,
-                        labelText: U.s.totalPrice,
-                        keyboardType: TextInputType.number,
-                        formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                      ),
-                      UTextField(controller: guestName, labelText: U.s.guestName, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      UTextFieldPhoneNumber(controller: guestPhone, labelText: U.s.guestPhone, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      if (!isEdit) UTextField(controller: penalty, labelText: U.s.dailyPenalty, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      UTextField(controller: notes, labelText: U.s.notes, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      const SizedBox(height: 20),
-                      UButtonSubmitCancel(
-                        onSubmit: () => UValidators.validateForm(
-                          key: formKey,
-                          action: () {
-                            if (checkIn == null || checkOut == null) {
-                              UToast.error(message: U.s.errorSubmittingForm);
-                              return;
-                            }
-                            if (isEdit) {
-                              c.update(
-                                p: UHotelReservationUpdateParams(
-                                  id: p.id,
-                                  checkInDate: checkIn,
-                                  checkOutDate: checkOut,
-                                  guestCount: guestCount.text.isEmpty ? null : guestCount.numInt(),
-                                  totalPrice: totalPrice.text.isEmpty ? null : totalPrice.numDouble(),
-                                  guestName: guestName.text.nullIfEmpty(),
-                                  guestPhone: guestPhone.text.nullIfEmpty(),
-                                  notes: notes.text.nullIfEmpty(),
-                                ),
-                              );
-                            } else {
-                              final String? rid = room.value?.id ?? widget.room?.id;
-                              if (rid == null) {
-                                UToast.error(message: U.s.pleaseSelectAItem(U.s.room));
-                                return;
-                              }
-                              if (user.value?.id == null) {
-                                UToast.error(message: U.s.pleaseSelectAItem(U.s.user));
-                                return;
-                              }
-                              c.create(
-                                p: UHotelReservationCreateParams(
-                                  tags: <int>[TagHotelReservation.pending.number],
-                                  checkInDate: checkIn!,
-                                  checkOutDate: checkOut!,
-                                  guestCount: guestCount.text.isEmpty ? 1 : guestCount.numInt(),
-                                  userId: user.value!.id,
-                                  roomId: rid,
-                                  totalPrice: totalPrice.text.isEmpty ? null : totalPrice.numDouble(),
-                                  guestName: guestName.text.nullIfEmpty(),
-                                  guestPhone: guestPhone.text.nullIfEmpty(),
-                                  notes: notes.text.nullIfEmpty(),
-                                  penaltyPrecentEveryDate: penalty.text.isEmpty ? null : penalty.text.toInt(),
-                                ),
-                              );
-                            }
-                            UNavigator.back();
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
+  /// Create ([p] == null) and edit share this one dialog.
+  void _form([UHotelReservationResponse? p]) {
+    c.loadForm(p);
+    UAdminForm.editDialog(
+      title: p == null ? U.s.createItem(U.s.reservation) : U.s.editItem(U.s.reservation),
+      formKey: c.formKey,
+      onSubmit: c.save,
+      children: (BuildContext context, StateSetter setState) => <Widget>[
+        if (p == null && widget.room == null)
+          UTextFieldAutoCompleteAsync<UHotelRoomResponse>(
+            hintText: U.s.rooms,
+            labelBuilder: (UHotelRoomResponse i) => "${i.title} · ${i.pricePerNight.rial()}",
+            selectedItem: c.formRoom,
+            fetchData: c.searchRooms,
+            onChanged: (UHotelRoomResponse? i) => c.formRoom = i,
+          ).pSymmetric(vertical: 6),
+        if (p == null)
+          UTextFieldAutoCompleteAsync<UUserResponse>(
+            hintText: U.s.guest,
+            labelBuilder: (UUserResponse i) => i.phoneNumber == null ? i.displayName : "${i.displayName} · ${i.phoneNumber}",
+            selectedItem: c.formUser,
+            fetchData: c.searchUsers,
+            onChanged: (UUserResponse? i) => c.formUser = i,
+          ).pSymmetric(vertical: 6),
+        UAdminForm.pair(
+          context,
+          UAdminForm.date(c.checkInText, U.s.checkInDate, (DateTime d) => c.checkIn = d, initial: c.checkIn, required: true),
+          UAdminForm.date(c.checkOutText, U.s.checkOutDate, (DateTime d) => c.checkOut = d, initial: c.checkOut, required: true),
         ),
-      ),
+        UAdminForm.pair(context, UAdminForm.text(c.guestCount, U.s.numberOfGuests, number: true, required: true), UAdminForm.text(c.totalPrice, U.s.totalPrice, money: true)),
+        UAdminForm.text(c.guestName, U.s.guestName),
+        UTextFieldPhoneNumber(controller: c.guestPhone, labelText: U.s.guestPhone, margin: const EdgeInsets.symmetric(vertical: 6)),
+        if (p == null) UAdminForm.text(c.penalty, U.s.dailyPenalty, number: true),
+        UAdminForm.text(c.notes, U.s.notes, lines: 2),
+      ],
     );
   }
 }

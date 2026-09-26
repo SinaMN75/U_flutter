@@ -4,38 +4,47 @@ enum UAdminReservationStatusFilter { all, pending, confirmed, checkedIn, checked
 
 class UAdminReservationController extends UBaseController {
   List<UHotelReservationResponse> list = <UHotelReservationResponse>[];
-
   UHotelResponse? hotel;
   UHotelRoomResponse? room;
 
   final TextEditingController guestFilter = TextEditingController();
+  final TextEditingController checkInFilterText = TextEditingController();
+  final TextEditingController checkOutFilterText = TextEditingController();
   UHotelResponse? hotelFilter;
   UAdminReservationStatusFilter statusFilter = UAdminReservationStatusFilter.all;
   DateTime? checkInFilter;
   DateTime? checkOutFilter;
 
-  Future<void> init({UHotelResponse? hotel, UHotelRoomResponse? room}) async {
+  // ---------------------------------------------------------------- form (create and edit)
+
+  UHotelReservationResponse? editing;
+  UHotelRoomResponse? formRoom;
+  UUserResponse? formUser;
+  DateTime? checkIn;
+  DateTime? checkOut;
+  late final TextEditingController checkInText = fields.text();
+  late final TextEditingController checkOutText = fields.text();
+  late final TextEditingController guestCount = fields.text();
+  late final TextEditingController totalPrice = fields.text();
+  late final TextEditingController penalty = fields.text();
+  late final TextEditingController guestName = fields.text();
+  late final TextEditingController guestPhone = fields.text();
+  late final TextEditingController notes = fields.text();
+
+  void init({UHotelResponse? hotel, UHotelRoomResponse? room}) {
     this.hotel = hotel;
     this.room = room;
-    await read();
+    read();
   }
 
-  int? get _statusTag {
-    switch (statusFilter) {
-      case UAdminReservationStatusFilter.pending:
-        return TagHotelReservation.pending.number;
-      case UAdminReservationStatusFilter.confirmed:
-        return TagHotelReservation.confirmed.number;
-      case UAdminReservationStatusFilter.checkedIn:
-        return TagHotelReservation.checkedIn.number;
-      case UAdminReservationStatusFilter.checkedOut:
-        return TagHotelReservation.checkedOut.number;
-      case UAdminReservationStatusFilter.cancelled:
-        return TagHotelReservation.cancelled.number;
-      case UAdminReservationStatusFilter.all:
-        return null;
-    }
-  }
+  int? get _statusTag => switch (statusFilter) {
+    UAdminReservationStatusFilter.all => null,
+    UAdminReservationStatusFilter.pending => TagHotelReservation.pending.number,
+    UAdminReservationStatusFilter.confirmed => TagHotelReservation.confirmed.number,
+    UAdminReservationStatusFilter.checkedIn => TagHotelReservation.checkedIn.number,
+    UAdminReservationStatusFilter.checkedOut => TagHotelReservation.checkedOut.number,
+    UAdminReservationStatusFilter.cancelled => TagHotelReservation.cancelled.number,
+  };
 
   Future<void> read() async {
     state.loading();
@@ -45,7 +54,7 @@ class UAdminReservationController extends UBaseController {
         pageSize: pageSize,
         hotelId: hotelFilter?.id ?? hotel?.id,
         roomId: room?.id,
-        userName: guestFilter.text.nullIfEmpty(),
+        userName: guestFilter.valueOrNull(),
         tags: _statusTag == null ? null : <int>[_statusTag!],
         checkInDate: checkInFilter,
         checkOutDate: checkOutFilter,
@@ -70,6 +79,8 @@ class UAdminReservationController extends UBaseController {
 
   void clearFilters() {
     guestFilter.clear();
+    checkInFilterText.clear();
+    checkOutFilterText.clear();
     hotelFilter = null;
     statusFilter = UAdminReservationStatusFilter.all;
     checkInFilter = null;
@@ -77,144 +88,109 @@ class UAdminReservationController extends UBaseController {
     reloadFirstPage(read);
   }
 
-  void setStatus(UAdminReservationStatusFilter f) {
-    statusFilter = f;
-    reloadFirstPage(read);
+  UHotelInvoiceResponse? unpaidInvoiceOf(UHotelReservationResponse i) => i.invoices?.where((UHotelInvoiceResponse inv) => !inv.isPaid).firstOrNull;
+
+  Future<List<UHotelRoomResponse>> searchRooms(String query) async =>
+      (await UServices.hotel.readHotelRooms(
+        p: UHotelRoomReadParams(
+          title: query,
+          hotelId: hotelFilter?.id ?? hotel?.id,
+          availableOnly: true,
+          pageSize: 100,
+          pageNumber: 1,
+          selectorArgs: const UHotelRoomSelectorArgs(hotel: UHotelSelectorArgs()),
+        ),
+      )).$1?.result ??
+      <UHotelRoomResponse>[];
+
+  Future<List<UHotelResponse>> searchHotels(String query) async => (await UServices.hotel.readHotels(p: UHotelReadParams(title: query, pageSize: 100, pageNumber: 1))).$1?.result ?? <UHotelResponse>[];
+
+  void loadForm(UHotelReservationResponse? i) {
+    editing = i;
+    formRoom = room;
+    formUser = null;
+    checkIn = i?.checkInDate;
+    checkOut = i?.checkOutDate;
+    checkInText.text = i?.checkInDate.toJalaliDate() ?? "";
+    checkOutText.text = i?.checkOutDate.toJalaliDate() ?? "";
+    guestCount.text = (i?.guestCount ?? 1).toString();
+    totalPrice.text = i?.totalPrice.toInt().toString() ?? "";
+    penalty.clear();
+    guestName.text = i?.jsonData.guestName ?? "";
+    guestPhone.text = i?.jsonData.guestPhone ?? "";
+    notes.text = i?.jsonData.notes ?? "";
   }
 
-  void create({required UHotelReservationCreateParams p}) => UServices.hotel.createHotelReservation(
-    p: p,
-    onOk: (UResponse<String> r) => okCallback(r.message, read),
-    onError: (UResponse<dynamic> r) => errorCallBack(r.message, read),
-    onException: (String e) => errorCallBack(U.s.errorSubmittingForm, read),
-  );
-
-  void update({required UHotelReservationUpdateParams p}) => UServices.hotel.updateHotelReservation(
-    p: p,
-    onOk: (UEmptyResponse r) => okCallback(r.message, read),
-    onError: (UResponse<dynamic> r) => errorCallBack(r.message, read),
-    onException: (String e) => errorCallBack(U.s.errorSubmittingForm, read),
-  );
-
-  void delete(UHotelReservationResponse i) => UNavigator.confirm(
-    title: U.s.delete,
-    message: U.s.areYouSureYouWantToDelete,
-    onConfirm: () => UServices.hotel.deleteHotelReservation(
-      p: UIdParams(id: i.id),
-      onOk: (UEmptyResponse r) {
-        UNavigator.back();
-        okCallback(r.message, read);
-      },
-      onError: (UResponse<dynamic> r) {
-        UNavigator.back();
-        errorCallBack(r.message, read);
-      },
-      onException: (String e) {
-        UNavigator.back();
-        UToast.error(message: e);
-      },
-    ),
-  );
-
-  void confirm(UHotelReservationResponse i) => UServices.hotel.confirmHotelReservation(
-    p: UIdParams(id: i.id),
-    onOk: (UEmptyResponse r) => okCallback(r.message, read),
-    onError: (UResponse<dynamic> r) => errorCallBack(r.message, read),
-    onException: (String e) => errorCallBack(U.s.errorSubmittingForm, read),
-  );
-
-  void checkIn(UHotelReservationResponse i) => UServices.hotel.checkInHotelReservation(
-    p: UIdParams(id: i.id),
-    onOk: (UEmptyResponse r) => okCallback(r.message, read),
-    onError: (UResponse<dynamic> r) => errorCallBack(r.message, read),
-    onException: (String e) => errorCallBack(U.s.errorSubmittingForm, read),
-  );
-
-  void checkOut(UHotelReservationResponse i) => UServices.hotel.checkOutHotelReservation(
-    p: UIdParams(id: i.id),
-    onOk: (UEmptyResponse r) => okCallback(r.message, read),
-    onError: (UResponse<dynamic> r) => errorCallBack(r.message, read),
-    onException: (String e) => errorCallBack(U.s.errorSubmittingForm, read),
-  );
-
-  void cancel(UHotelReservationResponse i) => UNavigator.confirm(
-    title: U.s.cancel,
-    message: U.s.areYouSureYouWantToDelete,
-    onConfirm: () => UServices.hotel.cancelHotelReservation(
-      p: UIdParams(id: i.id),
-      onOk: (UEmptyResponse r) {
-        UNavigator.back();
-        okCallback(r.message, read);
-      },
-      onError: (UResponse<dynamic> r) {
-        UNavigator.back();
-        errorCallBack(r.message, read);
-      },
-      onException: (String e) {
-        UNavigator.back();
-        UToast.error(message: e);
-      },
-    ),
-  );
-
-  void payInvoice(UHotelInvoiceResponse inv) => UServices.hotel.payHotelInvoice(
-    p: UIdParams(id: inv.id),
-    onOk: (UEmptyResponse r) => okCallback(r.message, read),
-    onError: (UResponse<dynamic> r) => errorCallBack(r.message, read),
-    onException: (String e) => errorCallBack(U.s.errorSubmittingForm, read),
-  );
-
-  UHotelInvoiceResponse? unpaidInvoiceOf(UHotelReservationResponse i) {
-    final List<UHotelInvoiceResponse> invoices = i.invoices ?? <UHotelInvoiceResponse>[];
-    for (final UHotelInvoiceResponse inv in invoices) {
-      if (!inv.isPaid) return inv;
+  /// Creates or updates the reservation. Returns true when the dialog can close.
+  Future<bool> save() async {
+    if (editing != null) {
+      return await submit(
+            UServices.hotel.updateHotelReservation(
+              p: UHotelReservationUpdateParams(
+                id: editing!.id,
+                checkInDate: checkIn,
+                checkOutDate: checkOut,
+                guestCount: intOf(guestCount),
+                totalPrice: numOf(totalPrice),
+                guestName: guestName.text.nullIfEmpty(),
+                guestPhone: guestPhone.text.nullIfEmpty(),
+                notes: notes.text.nullIfEmpty(),
+              ),
+            ),
+            read,
+          ) !=
+          null;
     }
-    return null;
+    if (formRoom == null) {
+      UToast.error(message: U.s.pleaseSelectAItem(U.s.room));
+      return false;
+    }
+    if (formUser == null) {
+      UToast.error(message: U.s.pleaseSelectAItem(U.s.user));
+      return false;
+    }
+    return await submit(
+          UServices.hotel.createHotelReservation(
+            p: UHotelReservationCreateParams(
+              tags: <int>[TagHotelReservation.pending.number],
+              checkInDate: checkIn!,
+              checkOutDate: checkOut!,
+              guestCount: intOf(guestCount) ?? 1,
+              userId: formUser!.id,
+              roomId: formRoom!.id,
+              totalPrice: numOf(totalPrice),
+              guestName: guestName.text.nullIfEmpty(),
+              guestPhone: guestPhone.text.nullIfEmpty(),
+              notes: notes.text.nullIfEmpty(),
+              penaltyPrecentEveryDate: intOf(penalty),
+            ),
+          ),
+          read,
+        ) !=
+        null;
   }
 
-  Future<List<UHotelRoomResponse>> readRooms(String query) async {
-    final List<UHotelRoomResponse> result = <UHotelRoomResponse>[];
-    await UServices.hotel.readHotelRooms(
-      p: UHotelRoomReadParams(
-        title: query,
-        hotelId: hotelFilter?.id ?? hotel?.id,
-        availableOnly: true,
-        pageSize: 100,
-        pageNumber: 1,
-        selectorArgs: const UHotelRoomSelectorArgs(hotel: UHotelSelectorArgs()),
-      ),
-      onOk: (UResponse<List<UHotelRoomResponse>> r) => result.addAll(r.result ?? <UHotelRoomResponse>[]),
-      onError: (UEmptyResponse e) {},
-      onException: (String e) {},
-    );
-    return result;
-  }
+  void confirm(UHotelReservationResponse i) => submit(UServices.hotel.confirmHotelReservation(p: UIdParams(id: i.id)), read);
 
-  Future<List<UUserResponse>> readUsers(String query) async {
-    final List<UUserResponse> result = <UUserResponse>[];
-    await UServices.user.read(
-      p: UUserReadParams(query: query.nullIfEmpty(), pageSize: 100, pageNumber: 1),
-      onOk: (UResponse<List<UUserResponse>> r) => result.addAll(r.result ?? <UUserResponse>[]),
-      onError: (UEmptyResponse e) {},
-      onException: (String e) {},
-    );
-    return result;
-  }
+  void checkInGuest(UHotelReservationResponse i) => submit(UServices.hotel.checkInHotelReservation(p: UIdParams(id: i.id)), read);
 
-  Future<List<UHotelResponse>> readHotels(String query) async {
-    final List<UHotelResponse> result = <UHotelResponse>[];
-    await UServices.hotel.readHotels(
-      p: UHotelReadParams(title: query, pageSize: 100, pageNumber: 1),
-      onOk: (UResponse<List<UHotelResponse>> r) => result.addAll(r.result ?? <UHotelResponse>[]),
-      onError: (UEmptyResponse e) {},
-      onException: (String e) {},
-    );
-    return result;
-  }
+  void checkOutGuest(UHotelReservationResponse i) => submit(UServices.hotel.checkOutHotelReservation(p: UIdParams(id: i.id)), read);
+
+  void cancel(UHotelReservationResponse i) => confirmAction(
+    () => UServices.hotel.cancelHotelReservation(p: UIdParams(id: i.id)),
+    read,
+    title: U.s.cancel,
+  );
+
+  void payInvoice(UHotelInvoiceResponse inv) => submit(UServices.hotel.payHotelInvoice(p: UIdParams(id: inv.id)), read);
+
+  void delete(UHotelReservationResponse i) => confirmAction(() => UServices.hotel.deleteHotelReservation(p: UIdParams(id: i.id)), read);
 
   @override
   void dispose() {
     guestFilter.dispose();
+    checkInFilterText.dispose();
+    checkOutFilterText.dispose();
     super.dispose();
   }
 }

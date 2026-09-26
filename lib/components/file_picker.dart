@@ -15,6 +15,12 @@ class UFilePickerController extends ChangeNotifier {
     : _existing = List<UFileData>.from(existingFiles),
       _files = List<UFileData>.from(files);
 
+  /// Starts from already-uploaded media; the one tagged [TagMedia.cover] is the cover.
+  factory UFilePickerController.fromMedia(List<UMediaResponse> media) {
+    final List<UFileData> existing = media.map((UMediaResponse m) => UFileData(id: m.id, url: m.url, tags: m.tags, name: m.path.fileName)).toList();
+    return UFilePickerController(existingFiles: existing, cover: existing.where((UFileData f) => f.tags?.contains(TagMedia.cover.number) ?? false).firstOrNull);
+  }
+
   final List<UFileData> _existing;
   final List<UFileData> _files;
   final List<UFileData> _removed = <UFileData>[];
@@ -126,6 +132,16 @@ class UFilePicker extends StatefulWidget {
   /// Preferred tile width; the grid fits as many columns as the width allows.
   final double tileExtent;
   final IconData icon;
+
+  /// Photos of a place (hotel, room, dorm, bed): images only, a category per photo and a cover. Save with [UMediaService.syncGallery].
+  static Widget gallery(UFilePickerController controller) => UFilePicker(
+    controller: controller,
+    selectFileTitle: U.s.addPhotos,
+    allowedExtensions: const <String>["jpg", "jpeg", "png", "webp"],
+    categoryTitle: U.s.photoCategory,
+    categories: TagMedia.values.group(300).map((TagMedia c) => UFilePickerCategory(value: c.number, title: c.localizedTitle)).toList(),
+    selectCover: true,
+  );
 
   @override
   State<UFilePicker> createState() => _UFilePickerState();

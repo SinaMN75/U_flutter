@@ -173,18 +173,8 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
     ),
   );
 
-  Widget _cityBreakdownSection(UPropertyDashboardResponse r) => _isWide
-      ? URow(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            _cityBarChart(U.s.hotelsByCity, r.hotelsByCity, UAdminTheme.indigo).expanded(),
-            const SizedBox(width: 16),
-            _cityBarChart(U.s.dormsByCity, r.dormsByCity, UAdminTheme.green).expanded(),
-          ],
-        )
-      : UColumn(
-          children: <Widget>[_cityBarChart(U.s.hotelsByCity, r.hotelsByCity, UAdminTheme.indigo), const SizedBox(height: 16), _cityBarChart(U.s.dormsByCity, r.dormsByCity, UAdminTheme.green)],
-        );
+  Widget _cityBreakdownSection(UPropertyDashboardResponse r) =>
+      _pair(_cityBarChart(U.s.hotelsByCity, r.hotelsByCity, UAdminTheme.indigo), _cityBarChart(U.s.dormsByCity, r.dormsByCity, UAdminTheme.green));
 
   Widget _cityBarChart(String title, List<UPropertyBreakdownItem> items, Color color) => UAdminDashboard.chartCard(
     context,
@@ -197,162 +187,92 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
           ),
   );
 
-  Widget _contractsAndInvoicesSection(UPropertyDashboardResponse r) => _isWide
-      ? URow(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[_expiringContracts(r).expanded(), const SizedBox(width: 16), _overdueInvoices(r).expanded()])
-      : UColumn(children: <Widget>[_expiringContracts(r), const SizedBox(height: 16), _overdueInvoices(r)]);
-
-  Widget _expiringContracts(UPropertyDashboardResponse r) => UContainer(
-    padding: const EdgeInsets.all(20),
-    radius: 20,
-    child: UColumn(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        URow(
-          children: <Widget>[
-            const Icon(Icons.event_busy_rounded, size: 20),
-            const SizedBox(width: 8),
-            UTextTitleSmall(U.s.contractsExpiringSoon, fontWeight: FontWeight.w700, expanded: 1),
-            TextButton(onPressed: UAdminPageSwitcher.contracts, child: Text(U.s.contracts)),
-          ],
-        ),
-        const Divider(height: 16),
-        if (r.expiringContracts.isEmpty)
-          UTextBodySmall(U.s.noData, margin: const EdgeInsets.symmetric(vertical: 12))
-        else
-          ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: r.expiringContracts.length,
-            separatorBuilder: (BuildContext context, int index) => const Divider(height: 8),
-            itemBuilder: (BuildContext context, int index) {
-              final UExpiringContractItem item = r.expiringContracts[index];
-              return ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.bed_rounded),
-                title: Text("${item.userName ?? "-"} · ${item.dormTitle} / ${item.bedTitle}"),
-                subtitle: Text("${U.s.ends} ${item.endDate.toJalaliDate()} · ${item.rent.rial()}"),
-              );
-            },
-          ),
-      ],
+  Widget _contractsAndInvoicesSection(UPropertyDashboardResponse r) => _pair(
+    _list<UExpiringContractItem>(
+      Icons.event_busy_rounded,
+      U.s.contractsExpiringSoon,
+      U.s.contracts,
+      UAdminPageSwitcher.contracts,
+      r.expiringContracts,
+      (UExpiringContractItem i, int _) => ListTile(
+        contentPadding: EdgeInsets.zero,
+        leading: const Icon(Icons.bed_rounded),
+        title: Text("${i.userName ?? "-"} · ${i.dormTitle} / ${i.bedTitle}"),
+        subtitle: Text("${U.s.ends} ${i.endDate.toJalaliDate()} · ${i.rent.rial()}"),
+      ),
+    ),
+    _list<UOverdueInvoiceItem>(
+      Icons.warning_amber_rounded,
+      U.s.overdueInvoices,
+      U.s.invoices,
+      UAdminPageSwitcher.invoices,
+      r.overdueInvoices,
+      (UOverdueInvoiceItem i, int _) => ListTile(
+        contentPadding: EdgeInsets.zero,
+        leading: const Icon(Icons.receipt_long_rounded, color: UAdminTheme.red),
+        title: Text(i.userName ?? "-"),
+        subtitle: Text("${U.s.due} ${i.dueDate.toJalaliDate()} · ${i.daysOverdue} ${U.s.daysOverdue}"),
+        trailing: UTextBodyMedium(i.debtAmount.rial(), fontWeight: FontWeight.w700),
+      ),
     ),
   );
 
-  Widget _overdueInvoices(UPropertyDashboardResponse r) => UContainer(
-    padding: const EdgeInsets.all(20),
-    radius: 20,
-    child: UColumn(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        URow(
-          children: <Widget>[
-            const Icon(Icons.warning_amber_rounded, size: 20),
-            const SizedBox(width: 8),
-            UTextTitleSmall(U.s.overdueInvoices, fontWeight: FontWeight.w700, expanded: 1),
-            TextButton(onPressed: UAdminPageSwitcher.invoices, child: Text(U.s.invoices)),
-          ],
+  Widget _recentSection(UPropertyDashboardResponse r) => _pair(
+    _list<URecentContractItem>(
+      Icons.description_rounded,
+      U.s.recentContracts,
+      U.s.contracts,
+      UAdminPageSwitcher.contracts,
+      r.recentContracts,
+      (URecentContractItem i, int _) => ListTile(
+        contentPadding: EdgeInsets.zero,
+        leading: const Icon(Icons.description_rounded),
+        title: Text("${i.userName ?? "-"} · ${i.dormTitle} / ${i.bedTitle}"),
+        subtitle: Text("${i.startDate.toJalaliDate()} → ${i.endDate.toJalaliDate()} · ${i.rent.rial()}"),
+      ),
+    ),
+    _list<URecentUserItem>(
+      Icons.person_add_alt_1_rounded,
+      U.s.recentlyJoined,
+      U.s.users,
+      UAdminPageSwitcher.adminUsers,
+      r.recentUsers,
+      (URecentUserItem u, int index) => ListTile(
+        contentPadding: EdgeInsets.zero,
+        leading: CircleAvatar(
+          backgroundColor: UAdminTheme.primaries[index % UAdminTheme.primaries.length].shade100,
+          child: Text(u.displayName.isNotEmpty ? u.displayName.substring(0, 1).toUpperCase() : "?", style: const TextStyle(fontWeight: FontWeight.bold)),
         ),
-        const Divider(height: 16),
-        if (r.overdueInvoices.isEmpty)
-          UTextBodySmall(U.s.noData, margin: const EdgeInsets.symmetric(vertical: 12))
-        else
-          ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: r.overdueInvoices.length,
-            separatorBuilder: (BuildContext context, int index) => const Divider(height: 8),
-            itemBuilder: (BuildContext context, int index) {
-              final UOverdueInvoiceItem item = r.overdueInvoices[index];
-              return ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.receipt_long_rounded, color: UAdminTheme.red),
-                title: Text(item.userName ?? "-"),
-                subtitle: Text("${U.s.due} ${item.dueDate.toJalaliDate()} · ${item.daysOverdue} ${U.s.daysOverdue}"),
-                trailing: UTextBodyMedium(item.debtAmount.rial(), fontWeight: FontWeight.w700),
-              );
-            },
-          ),
-      ],
+        title: Text(u.displayName),
+        subtitle: Text(u.userName ?? u.phoneNumber ?? ""),
+      ),
     ),
   );
 
-  Widget _recentSection(UPropertyDashboardResponse r) => _isWide
-      ? URow(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[_recentContracts(r).expanded(), const SizedBox(width: 16), _recentUsers(r).expanded()])
-      : UColumn(children: <Widget>[_recentContracts(r), const SizedBox(height: 16), _recentUsers(r)]);
+  /// Two cards side by side on a wide screen, stacked otherwise.
+  Widget _pair(Widget a, Widget b) =>
+      _isWide ? URow(crossAxisAlignment: CrossAxisAlignment.start, spacing: 16, children: <Widget>[a.expanded(), b.expanded()]) : UColumn(spacing: 16, children: <Widget>[a, b]);
 
-  Widget _recentContracts(UPropertyDashboardResponse r) => UContainer(
+  /// A titled card listing [items], with a link to the page that has all of them.
+  Widget _list<T>(IconData icon, String title, String linkTitle, VoidCallback onLink, List<T> items, Widget Function(T item, int index) tile) => UContainer(
     padding: const EdgeInsets.all(20),
     radius: 20,
     child: UColumn(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         URow(
+          spacing: 8,
           children: <Widget>[
-            const Icon(Icons.description_rounded, size: 20),
-            const SizedBox(width: 8),
-            UTextTitleSmall(U.s.recentContracts, fontWeight: FontWeight.w700, expanded: 1),
-            TextButton(onPressed: UAdminPageSwitcher.contracts, child: Text(U.s.contracts)),
+            Icon(icon, size: 20),
+            UTextTitleSmall(title, fontWeight: FontWeight.w700, expanded: 1),
+            TextButton(onPressed: onLink, child: Text(linkTitle)),
           ],
         ),
         const Divider(height: 16),
-        if (r.recentContracts.isEmpty)
+        if (items.isEmpty)
           UTextBodySmall(U.s.noData, margin: const EdgeInsets.symmetric(vertical: 12))
         else
-          ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: r.recentContracts.length,
-            separatorBuilder: (BuildContext context, int index) => const Divider(height: 8),
-            itemBuilder: (BuildContext context, int index) {
-              final URecentContractItem item = r.recentContracts[index];
-              return ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.description_rounded),
-                title: Text("${item.userName ?? "-"} · ${item.dormTitle} / ${item.bedTitle}"),
-                subtitle: Text("${item.startDate.toJalaliDate()} → ${item.endDate.toJalaliDate()} · ${item.rent.rial()}"),
-              );
-            },
-          ),
-      ],
-    ),
-  );
-
-  Widget _recentUsers(UPropertyDashboardResponse r) => UContainer(
-    padding: const EdgeInsets.all(20),
-    radius: 20,
-    child: UColumn(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        URow(
-          children: <Widget>[
-            const Icon(Icons.person_add_alt_1_rounded, size: 20),
-            const SizedBox(width: 8),
-            Text(U.s.recentlyJoined, style: const TextStyle(fontWeight: FontWeight.w700)).expanded(),
-            TextButton(onPressed: UAdminPageSwitcher.adminUsers, child: Text(U.s.users)),
-          ],
-        ),
-        const Divider(height: 16),
-        if (r.recentUsers.isEmpty)
-          UTextBodySmall(U.s.noData, margin: const EdgeInsets.symmetric(vertical: 12))
-        else
-          ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: r.recentUsers.length,
-            separatorBuilder: (BuildContext context, int index) => const Divider(height: 8),
-            itemBuilder: (BuildContext context, int index) {
-              final URecentUserItem u = r.recentUsers[index];
-              return ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: CircleAvatar(
-                  backgroundColor: UAdminTheme.primaries[index % UAdminTheme.primaries.length].shade100,
-                  child: Text(u.displayName.isNotEmpty ? u.displayName.substring(0, 1).toUpperCase() : "?", style: const TextStyle(fontWeight: FontWeight.bold)),
-                ),
-                title: Text(u.displayName),
-                subtitle: Text(u.userName ?? u.phoneNumber ?? ""),
-              );
-            },
-          ),
+          for (int i = 0; i < items.length; i++) ...<Widget>[if (i > 0) const Divider(height: 8), tile(items[i], i)],
       ],
     ),
   );

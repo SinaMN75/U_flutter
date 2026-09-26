@@ -1317,3 +1317,45 @@ class UPhoneNumberData {
     required this.primaryLanguage,
   });
 }
+
+/// Picks several items with a [UTextFieldAutoCompleteAsync]; picked items show as removable chips.
+/// [selected] is edited in place; two items are the same when their labels match.
+class UTextFieldAutoCompleteAsyncMulti<T> extends StatefulWidget {
+  const UTextFieldAutoCompleteAsyncMulti({required this.selected, required this.fetchData, required this.labelBuilder, this.hintText, this.margin, super.key});
+
+  final List<T> selected;
+  final Future<List<T>> Function(String query) fetchData;
+  final String Function(T) labelBuilder;
+  final String? hintText;
+  final EdgeInsetsGeometry? margin;
+
+  @override
+  State<UTextFieldAutoCompleteAsyncMulti<T>> createState() => _UTextFieldAutoCompleteAsyncMultiState<T>();
+}
+
+class _UTextFieldAutoCompleteAsyncMultiState<T> extends State<UTextFieldAutoCompleteAsyncMulti<T>> {
+  bool _has(T item) => widget.selected.any((T x) => widget.labelBuilder(x) == widget.labelBuilder(item));
+
+  @override
+  Widget build(BuildContext context) => UColumn(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    margin: widget.margin,
+    spacing: 6,
+    children: <Widget>[
+      UTextFieldAutoCompleteAsync<T>(
+        hintText: widget.hintText,
+        selectedItem: null,
+        labelBuilder: widget.labelBuilder,
+        fetchData: widget.fetchData,
+        onChanged: (T? i) {
+          if (i != null && !_has(i)) setState(() => widget.selected.add(i));
+        },
+      ),
+      Wrap(
+        spacing: 6,
+        runSpacing: 6,
+        children: widget.selected.map((T i) => Chip(label: Text(widget.labelBuilder(i)), onDeleted: () => setState(() => widget.selected.remove(i)))).toList(),
+      ),
+    ],
+  );
+}

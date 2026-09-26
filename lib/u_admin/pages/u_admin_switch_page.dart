@@ -41,7 +41,7 @@ abstract class UAdminPageSwitcher {
     UAdminParkingShiftPage(parking: parking),
   );
 
-  static void users({required UAdminUsersPageArgs args}) => U.addOrSwitchTab(U.s.users, UAdminUserPage(args: args));
+  static void users() => U.addOrSwitchTab(U.s.users, const UAdminUserPage());
 
   static void hotelUserDetail({required UUserResponse user}) =>
       U.addOrSwitchTab("${user.firstName ?? ""} ${user.lastName ?? ""}".trim().nullIfEmpty() ?? user.userName, UAdminHotelUserDetailPage(user: user));
@@ -112,8 +112,6 @@ abstract class UAdminPageSwitcher {
   static void settings() => U.addOrSwitchTab(U.s.settings, const UAdminSettingsPage());
 
   static void apiLogs() => U.addOrSwitchTab(U.s.apiRequestLogs, const UAdminApiLogPage());
-
-  static Future<void> userCreateUpdate({UUserResponse? user}) => UAdminUserCreateUpdateDialog.show(user: user);
 
   static Future<void> paymentUserCreateUpdate({UUserResponse? user}) => UAdminPaymentUserCreateUpdateDialog.show(user: user);
 }
