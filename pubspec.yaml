@@ -95,15 +95,15 @@ flutter:
 # dart run u:app doctor
 #
 # Name & id:
-# dart run u:app name "My App"
-# dart run u:app name "My App" --short "MyApp"
+# dart run u:app name ""
+# dart run u:app name "" --short ""
 # dart run u:app id com.company.app
 # dart run u:app id com.company.app --ios com.company.appIos --macos com.company.appMac
 #
 # Minimum OS / SDK levels:
 # dart run u:app min-sdk android 24
 # dart run u:app min-sdk ios 18
-# dart run u:app min-sdk macos 14
+# dart run u:app min-sdk macos 15
 # dart run u:app min-sdk android 24 ios 18 macos 14
 # dart run u:app min-sdk android default
 # dart run u:app target-sdk 36
