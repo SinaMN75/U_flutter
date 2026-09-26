@@ -126,6 +126,33 @@ extension StringExtensions on String {
 
   String toJalaliDateString() => UJalali.fromDateTime(DateTime.parse(this)).formatFullDate();
 
+  String get fileName {
+    if (trim().isEmpty) return "";
+    String url = this;
+    final int endIndex = url.indexOf(RegExp("[?#]"));
+    if (endIndex >= 0) {
+      url = url.substring(0, endIndex);
+    }
+    url = url.replaceAll(RegExp(r"/+$"), "");
+    final int lastSlash = url.lastIndexOf("/");
+    final String name = lastSlash >= 0 ? url.substring(lastSlash + 1) : url;
+    return Uri.decodeComponent(name);
+  }
+
+  String get fileNameWithoutExtension {
+    final String name = fileName;
+    if (name.isEmpty) return "";
+    final int dotIndex = name.lastIndexOf(".");
+    return dotIndex > 0 ? name.substring(0, dotIndex) : name;
+  }
+
+  String get fileExtension {
+    final String name = fileName;
+    if (name.isEmpty) return "";
+    final int dotIndex = name.lastIndexOf(".");
+    return dotIndex > 0 ? name.substring(dotIndex) : "";
+  }
+
   String append0() {
     if (length == 1) {
       return "0$this";
