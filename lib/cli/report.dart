@@ -193,7 +193,7 @@ void cmdDoctor(Project p, Args a) {
       d.warn("No INTERNET permission in the main manifest. Release builds can't reach the network. Fix: dart run u:app permission add internet");
     }
     if (_releaseUsesDebugKeys(gradle)) {
-      d.warn("Release builds are signed with debug keys (Play Console rejects them). Fix: dart run u:app signing --keystore ~/keys/upload.jks --create");
+      d.warn("Release builds are signed with debug keys (Play Console rejects them). Fix: dart run u:app signing --create");
     }
     for (final String k in <String>["versionCode", "versionName"]) {
       final String? v = Gradle.get(gradle, <String>[k]);

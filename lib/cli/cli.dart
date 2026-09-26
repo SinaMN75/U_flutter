@@ -86,15 +86,10 @@ const List<_Command> _commands = <_Command>[
   _Command("web-color", "web-color <#hex> [--background <#hex>]", "Web manifest theme/background color + <meta theme-color>", cmdWebColor, examples: <String>["web-color \"#0175C2\""]),
   _Command(
     "signing",
-    "signing --keystore <path> [--create] [--password x | --random-password] [--alias upload] [--name x] [--org x] [--unit x] [--city x] [--state x] [--country XX] [--years 30] [--dname \"CN=...\"] [--key-password x]",
-    "Android release signing: create the .jks in one line, write key.properties + Gradle signingConfig",
+    "signing --create   |   signing",
+    "Android release signing: create a .jks step by step (like Android Studio) or use an existing one",
     cmdSigning,
-    examples: <String>[
-      "signing --keystore ~/keys/shop.jks --create --random-password",
-      "signing --keystore ~/keys/shop.jks --create --name \"Sina\" --org \"Sina Co.\" --country IR",
-      "signing --keystore ~/keys/shop.jks --create --password \"myStrongPass\"",
-      "signing --keystore ~/keys/existing.jks --alias upload",
-    ],
+    examples: <String>["signing --create", "signing"],
   ),
 ];
 

@@ -1,5 +1,4 @@
 import "dart:io";
-import "dart:math";
 
 import "package:u/cli/core.dart";
 import "package:u/cli/permissions.dart";
@@ -1035,144 +1034,216 @@ Future<void> cmdSigning(Project p, Args a) async {
   if (!_need(p, Target.android)) {
     return;
   }
-  final String? keystoreArg = a.option("keystore");
-  if (keystoreArg == null) {
-    throw CliException("Pass the keystore path.\n  Usage: dart run u:app signing --keystore ~/keys/upload.jks --create [--random-password] [--name \"Sina\" --org \"Sina Co.\" --country IR]");
-  }
-  final String home = Platform.environment["HOME"] ?? Platform.environment["USERPROFILE"] ?? "";
-  final String expanded = keystoreArg.startsWith("~") ? "$home${keystoreArg.substring(1)}" : keystoreArg;
-  final String keystore = File(expanded).absolute.uri.normalizePath().toFilePath();
-  final String alias = a.option("alias") ?? "upload";
-  final bool create = a.flag("create");
   Out.header("android");
+  final _Keystore k = a.flag("create") ? await _createKeystoreWizard(p, a) : _existingKeystoreWizard(p, a);
 
-  if (create && File(keystore).existsSync()) {
-    throw CliException("$keystore already exists. Drop --create to use it.");
-  }
-  if (!create && !File(keystore).existsSync()) {
-    Out.warn("$keystore doesn't exist yet. Add --create to generate it.");
-  }
-
-  // Passwords are collected up front, so keytool never has to ask anything.
-  String? storePassword = a.option("password") ?? a.option("store-password");
-  String? keyPassword = a.option("key-password");
-  final bool generated = storePassword == null && a.flag("random-password");
-  if (generated) {
-    storePassword = _randomPassword();
-  }
-  if (!p.dryRun) {
-    storePassword ??= create ? _askNewSecret() : _askSecret("Keystore password: ");
-    keyPassword ??= create ? storePassword : _askSecret("Key password (Enter = same as keystore): ", fallback: storePassword);
-  }
-  keyPassword ??= storePassword;
-  if (create && storePassword != null && (storePassword.length < 6 || keyPassword!.length < 6)) {
-    throw CliException("keytool needs passwords of at least 6 characters.");
-  }
-
-  if (create) {
-    final String dname = a.option("dname") ?? _dname(p, a);
-    final int years = int.tryParse(a.option("years") ?? "") ?? 30;
-    p.changes++;
-    if (p.dryRun) {
-      Out.changed(keystore, "new keystore: alias $alias, $years years, $dname", dryRun: true);
-    } else {
-      File(keystore).parent.createSync(recursive: true);
-      final int code = await _keytool(
-        <String>[
-          "-genkeypair", "-v", "-noprompt", //
-          "-keystore", keystore, "-storetype", "JKS", "-alias", alias,
-          "-keyalg", "RSA", "-keysize", "2048", "-validity", "${years * 365}",
-          "-dname", dname,
-          // Passed through the environment, so they never appear in the process list.
-          "-storepass:env", "U_KEYSTORE_PASS", "-keypass:env", "U_KEY_PASS",
-        ],
-        <String, String>{"U_KEYSTORE_PASS": storePassword!, "U_KEY_PASS": keyPassword!},
-      );
-      if (code != 0 || !File(keystore).existsSync()) {
-        throw CliException("keytool failed (exit code $code).");
-      }
-      Out.changed(keystore, "new keystore: alias $alias, valid $years years, $dname", dryRun: false);
-    }
-  }
-
+  // Gradle's file() resolves against android/app, so a keystore inside the project is stored
+  // relative to it: the project keeps working after it's moved or cloned somewhere else.
+  final String rootPrefix = "${p.root}${Platform.pathSeparator}";
+  final String storeFile = k.path.startsWith(rootPrefix) ? "../../${k.path.substring(rootPrefix.length).replaceAll("\\", "/")}" : k.path.replaceAll("\\", "/");
   String prop(String v) => v.replaceAll("\\", "\\\\");
   p.write(
     AndroidFiles.keyProperties,
-    "storePassword=${prop(storePassword ?? "")}\nkeyPassword=${prop(keyPassword ?? "")}\nkeyAlias=$alias\nstoreFile=${keystore.replaceAll("\\", "/")}\n",
-    "keystore settings (keep this file out of git)",
+    "storePassword=${prop(k.storePassword)}\nkeyPassword=${prop(k.keyPassword)}\nkeyAlias=${k.alias}\nstoreFile=$storeFile\n",
+    "passwords + alias + storeFile=$storeFile",
   );
 
   final bool kts = AndroidFiles.kts(p);
-  p.edit(AndroidFiles.gradle(p), (String t) => kts ? _signingKts(t) : _signingGroovy(t), "release signingConfig reads key.properties (debug keys if it's missing)");
+  p.edit(AndroidFiles.gradle(p), (String t) => kts ? _signingKts(t) : _signingGroovy(t), "release builds are signed with key.properties");
 
-  p.edit("android/.gitignore", (String t) {
-    String out = t.endsWith("\n") || t.isEmpty ? t : "$t\n";
-    for (final String line in <String>["key.properties", "**/*.jks", "**/*.keystore"]) {
-      if (!RegExp("^${RegExp.escape(line)}\\s*\$", multiLine: true).hasMatch(out)) {
-        out += "$line\n";
-      }
+  String ignore(String t, List<String> lines) {
+    String out = t.isEmpty || t.endsWith("\n") ? t : "$t\n";
+    final List<String> missing = lines.where((String l) => !RegExp("^${RegExp.escape(l)}\\s*\$", multiLine: true).hasMatch(out)).toList();
+    if (missing.isNotEmpty) {
+      out += "\n# Android signing secrets (dart run u:app signing)\n${missing.join("\n")}\n";
     }
     return out;
-  }, "ignores key.properties / *.jks", optional: true);
+  }
+
+  if (!p.exists(".gitignore")) {
+    p.write(".gitignore", "", "created");
+  }
+  p.edit(".gitignore", (String t) => ignore(t, <String>["*.jks", "*.keystore", "key.properties"]), "ignores *.jks / *.keystore / key.properties");
+  p.edit("android/.gitignore", (String t) => ignore(t, <String>["key.properties", "**/*.jks", "**/*.keystore"]), "ignores key.properties / *.jks", optional: true);
+
   Out.line();
-  if (generated && !p.dryRun) {
-    Out.warn("Generated password: $storePassword");
-    Out.warn("It's saved in android/key.properties. Also store it in your password manager.");
-  }
-  Out.note("Every release build is now signed: flutter build apk --release / flutter build appbundle");
-  Out.warn("Back up $keystore and its password. If you lose them you can't publish updates to the same app.");
+  Out.note("From now on every `flutter build apk --release` / `flutter build appbundle` is signed with this key.");
+  Out.warn("The .jks and key.properties are git-ignored, so git won't save them. Back up ${k.path} and both passwords somewhere safe. Without them you can't publish updates.");
 }
 
-/// The certificate owner line (`CN=..., O=..., C=...`), from flags with the app name as default.
-String _dname(Project p, Args a) {
-  String esc(String v) => v.replaceAllMapped(RegExp(r'[,+"\\<>;=]'), (Match m) => "\\${m.group(0)}").trim();
-  final String? country = a.option("country");
-  if (country != null && !RegExp(r"^[A-Za-z]{2}$").hasMatch(country)) {
-    throw CliException("--country takes a 2-letter code, e.g. IR, US, DE.");
-  }
-  final String cn = a.option("name") ?? androidName(p) ?? RegExp(r"^name:\s*(\S+)", multiLine: true).firstMatch(p.read("pubspec.yaml") ?? "")?.group(1) ?? "Android";
-  final List<String> parts = <String>[
-    "CN=${esc(cn)}",
-    if (a.option("unit") != null) "OU=${esc(a.option("unit")!)}",
-    if (a.option("org") != null) "O=${esc(a.option("org")!)}",
-    if (a.option("city") != null) "L=${esc(a.option("city")!)}",
-    if (a.option("state") != null) "ST=${esc(a.option("state")!)}",
-    if (country != null) "C=${country.toUpperCase()}",
+class _Keystore {
+  const _Keystore(this.path, this.storePassword, this.alias, this.keyPassword);
+
+  final String path;
+  final String storePassword;
+  final String alias;
+  final String keyPassword;
+}
+
+/// Asks the same questions as Android Studio's "New Key Store" dialog, then creates the .jks.
+Future<_Keystore> _createKeystoreWizard(Project p, Args a) async {
+  final String defaultPath = a.option("keystore") ?? "${p.root}${Platform.pathSeparator}upload-keystore.jks";
+  Out.line(Out.dim("  Creating a new upload keystore. Press Enter to keep the value in [brackets].\n"));
+
+  Out.line(Out.bold("  Key store"));
+  final String path = _askUntil("Path", defaultPath, (String v) {
+    final String full = _absolute(v);
+    if (File(full).existsSync()) {
+      return "$full already exists. Pick another name, or run without --create to use it.";
+    }
+    return full.endsWith(".jks") || full.endsWith(".keystore") ? null : "Use a .jks file name.";
+  }, map: _absolute);
+  final String storePassword = _askNewPassword("Password", "Confirm");
+
+  Out.line(Out.bold("\n  Key"));
+  final String alias = _askUntil("Alias", "upload", (String v) => RegExp(r"^[A-Za-z0-9_.-]+$").hasMatch(v) ? null : "Use letters, digits, _ . - only.");
+  final String keyPassword = _askNewPassword("Password", "Confirm", sameAs: storePassword);
+  final int years = int.parse(_askUntil("Validity (years)", "25", (String v) {
+    final int? n = int.tryParse(v);
+    return n != null && n >= 1 && n <= 100 ? null : "Enter a number of years (Google Play needs 25+).";
+  }));
+
+  Out.line(Out.bold("\n  Certificate") + Out.dim("  (at least one field)"));
+  final String name = _ask("First and last name");
+  final String unit = _ask("Organizational unit");
+  final String org = _ask("Organization");
+  final String city = _ask("City or locality");
+  final String state = _ask("State or province");
+  final String country = _askUntil("Country code (XX)", "", (String v) => v.isEmpty || RegExp(r"^[A-Za-z]{2}$").hasMatch(v) ? null : "Two letters, e.g. IR, US, DE.").toUpperCase();
+
+  String esc(String v) => v.replaceAllMapped(RegExp(r'[,+"\\<>;=]'), (Match m) => "\\${m.group(0)}");
+  final List<String> dn = <String>[
+    if (name.isNotEmpty) "CN=${esc(name)}",
+    if (unit.isNotEmpty) "OU=${esc(unit)}",
+    if (org.isNotEmpty) "O=${esc(org)}",
+    if (city.isNotEmpty) "L=${esc(city)}",
+    if (state.isNotEmpty) "ST=${esc(state)}",
+    if (country.isNotEmpty) "C=$country",
   ];
-  return parts.join(", ");
+  if (dn.isEmpty) {
+    dn.add("CN=${esc(androidName(p) ?? "Android")}");
+    Out.note("No certificate fields given, using ${dn.first}");
+  }
+  if (years < 25) {
+    Out.warn("Google Play requires keys valid until at least 2033. 25+ years is recommended.");
+  }
+
+  Out.line();
+  if (!_confirm("Create $path?")) {
+    throw CliException("Cancelled. Nothing was written.");
+  }
+  p.changes++;
+  if (p.dryRun) {
+    Out.changed(path, "new keystore, alias $alias, $years years, ${dn.join(", ")}", dryRun: true);
+  } else {
+    File(path).parent.createSync(recursive: true);
+    final int code = await _keytool(
+      <String>[
+        "-genkeypair", "-noprompt", //
+        "-keystore", path, "-storetype", "JKS", "-alias", alias,
+        "-keyalg", "RSA", "-keysize", "2048", "-validity", "${years * 365}",
+        "-dname", dn.join(", "),
+        // Passed through the environment, so they never appear in the process list.
+        "-storepass:env", "U_KEYSTORE_PASS", "-keypass:env", "U_KEY_PASS",
+      ],
+      <String, String>{"U_KEYSTORE_PASS": storePassword, "U_KEY_PASS": keyPassword},
+    );
+    if (code != 0 || !File(path).existsSync()) {
+      throw CliException("keytool failed (exit code $code).");
+    }
+    Out.changed(path, "new keystore, alias $alias, $years years, ${dn.join(", ")}", dryRun: false);
+  }
+  return _Keystore(path, storePassword, alias, keyPassword);
 }
 
-String _randomPassword() {
-  const String chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789";
-  final Random r = Random.secure();
-  return List<String>.generate(24, (int _) => chars[r.nextInt(chars.length)]).join();
+/// Points the app at a keystore that already exists.
+_Keystore _existingKeystoreWizard(Project p, Args a) {
+  final String defaultPath = a.option("keystore") ?? "${p.root}${Platform.pathSeparator}upload-keystore.jks";
+  Out.line(Out.dim("  Using an existing keystore (add --create to make a new one). Press Enter to keep the value in [brackets].\n"));
+  final String path = _askUntil("Key store path", defaultPath, (String v) => File(_absolute(v)).existsSync() ? null : "${_absolute(v)} doesn't exist.", map: _absolute);
+  final String storePassword = _askSecret("Key store password");
+  final String alias = _askUntil("Key alias", "upload", (String v) => v.isEmpty ? "Required." : null);
+  final String keyPassword = _askSecret("Key password", fallback: storePassword, hint: "Enter = same as key store");
+  return _Keystore(path, storePassword, alias, keyPassword);
 }
 
-String _askSecret(String prompt, {String? fallback}) {
-  if (!stdin.hasTerminal) {
-    throw CliException("No terminal to ask for passwords. Pass --password (or --random-password).");
-  }
-  stdout.write("  $prompt");
-  stdin.echoMode = false;
-  final String value = stdin.readLineSync() ?? "";
-  stdin.echoMode = true;
-  stdout.writeln();
-  if (value.isEmpty && fallback != null) {
-    return fallback;
-  }
-  if (value.isEmpty) {
-    throw CliException("A password is required.");
-  }
-  return value;
+String _absolute(String v) {
+  final String home = Platform.environment["HOME"] ?? Platform.environment["USERPROFILE"] ?? "";
+  final String expanded = v.startsWith("~") ? "$home${v.substring(1)}" : v;
+  return File(expanded).absolute.uri.normalizePath().toFilePath();
 }
 
-/// Asks for a new password twice.
-String _askNewSecret() {
-  final String first = _askSecret("New keystore password (6+ characters): ");
-  if (_askSecret("Repeat it: ") != first) {
-    throw CliException("The passwords don't match.");
+/// Reads one line; works both in a terminal and with piped input.
+String _readLine({bool secret = false}) {
+  final bool tty = stdin.hasTerminal;
+  if (secret && tty) {
+    stdin.echoMode = false;
   }
-  return first;
+  final String? line = stdin.readLineSync();
+  if (secret && tty) {
+    stdin.echoMode = true;
+    stdout.writeln();
+  }
+  if (line == null) {
+    throw CliException("Input ended before all questions were answered.");
+  }
+  return line.trim();
+}
+
+String _ask(String label, [String def = ""]) {
+  stdout.write("    $label${def.isEmpty ? "" : " ${Out.dim("[$def]")}"}: ");
+  final String v = _readLine();
+  return v.isEmpty ? def : v;
+}
+
+/// Asks until [check] returns null (valid); [map] turns the answer into the stored value.
+String _askUntil(String label, String def, String? Function(String v) check, {String Function(String v)? map}) {
+  while (true) {
+    final String v = _ask(label, def);
+    final String? error = check(v);
+    if (error == null) {
+      return map == null ? v : map(v);
+    }
+    Out.line("      ${Out.yellow(error)}");
+  }
+}
+
+String _askSecret(String label, {String? fallback, String? hint}) {
+  while (true) {
+    stdout.write("    $label${hint == null ? "" : " ${Out.dim("($hint)")}"}: ");
+    final String v = _readLine(secret: true);
+    if (v.isEmpty && fallback != null) {
+      return fallback;
+    }
+    if (v.isNotEmpty) {
+      return v;
+    }
+    Out.line("      ${Out.yellow("Required.")}");
+  }
+}
+
+/// A new password typed twice, 6+ characters. With [sameAs], Enter reuses that password.
+String _askNewPassword(String label, String confirmLabel, {String? sameAs}) {
+  while (true) {
+    final String first = _askSecret(label, fallback: sameAs, hint: sameAs == null ? "6+ characters" : "Enter = same as key store");
+    if (identical(first, sameAs)) {
+      return first;
+    }
+    if (first.length < 6) {
+      Out.line("      ${Out.yellow("At least 6 characters.")}");
+      continue;
+    }
+    if (_askSecret(confirmLabel) == first) {
+      return first;
+    }
+    Out.line("      ${Out.yellow("The passwords don't match. Try again.")}");
+  }
+}
+
+bool _confirm(String question) {
+  stdout.write("  $question ${Out.dim("[Y/n]")}: ");
+  final String v = _readLine().toLowerCase();
+  return v.isEmpty || v == "y" || v == "yes";
 }
 
 /// Real keytool binaries, best first. On macOS `/usr/bin/keytool` is only a stub when no

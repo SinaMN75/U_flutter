@@ -150,13 +150,11 @@ flutter:
 # dart run u:app web-color "#0175C2"
 # dart run u:app web-color "#0175C2" --background "#FFFFFF"
 #
-# Android release signing: creates the .jks in one line (no keytool questions), writes android/key.properties
-# (git-ignored) and the Gradle signingConfig, so every `flutter build apk/appbundle --release` is signed after that:
-# dart run u:app signing --keystore ~/keys/upload.jks --create --random-password
-# dart run u:app signing --keystore ~/keys/upload.jks --create --name "Sina" --org "Sina Co." --city "Tehran" --country IR
-# dart run u:app signing --keystore ~/keys/upload.jks --create --password "myStrongPass" --years 50
-# dart run u:app signing --keystore ~/keys/upload.jks --create                   (asks for the password once, hidden)
-# dart run u:app signing --keystore ~/keys/existing.jks --alias upload           (use a keystore you already have)
+# Android release signing: asks every question Android Studio asks (store password, key alias, key password,
+# validity, name, organization, city, country…), creates upload-keystore.jks in the project root, writes
+# android/key.properties and the Gradle signingConfig. After that every release build is signed.
+# dart run u:app signing --create
+# dart run u:app signing                     (use a .jks you already have)
 # ─────────────────────────────────────────────────────────────────────────────────────────────────────
 
 # Android:
