@@ -109,7 +109,7 @@ dart run u:app permission add camera location internet
 dart run u:app orientation portrait
 dart run u:app deep-link myshop                       # myshop:// on Android, iOS, macOS
 dart run u:app bump patch                             # 1.2.3+7 → 1.2.4+8
-dart run u:app signing --keystore ~/keys/upload.jks --create
+dart run u:app signing --keystore ~/keys/upload.jks --create --random-password   # .jks + Gradle, one line
 ```
 
 | Command | Android | iOS | macOS | Linux | Windows | Web |

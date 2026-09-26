@@ -1,4 +1,5 @@
 import "dart:io";
+import "dart:math";
 
 import "package:u/cli/core.dart";
 import "package:u/cli/permissions.dart";
@@ -1036,39 +1037,64 @@ Future<void> cmdSigning(Project p, Args a) async {
   }
   final String? keystoreArg = a.option("keystore");
   if (keystoreArg == null) {
-    throw CliException("Pass the keystore path.\n  Usage: dart run u:app signing --keystore ~/keys/upload.jks [--alias upload] [--create]");
+    throw CliException("Pass the keystore path.\n  Usage: dart run u:app signing --keystore ~/keys/upload.jks --create [--random-password] [--name \"Sina\" --org \"Sina Co.\" --country IR]");
   }
   final String home = Platform.environment["HOME"] ?? Platform.environment["USERPROFILE"] ?? "";
   final String expanded = keystoreArg.startsWith("~") ? "$home${keystoreArg.substring(1)}" : keystoreArg;
   final String keystore = File(expanded).absolute.uri.normalizePath().toFilePath();
   final String alias = a.option("alias") ?? "upload";
+  final bool create = a.flag("create");
   Out.header("android");
 
-  if (a.flag("create")) {
-    if (File(keystore).existsSync()) {
-      throw CliException("$keystore already exists. Drop --create to use it.");
-    }
-    if (p.dryRun) {
-      Out.changed(keystore, "new keystore (alias $alias)", dryRun: true);
-    } else {
-      File(keystore).parent.createSync(recursive: true);
-      Out.line("  Creating $keystore with keytool. It asks for a password and your name/organisation:\n");
-      final int code = await _keytool(<String>["-genkeypair", "-v", "-keystore", keystore, "-storetype", "JKS", "-keyalg", "RSA", "-keysize", "2048", "-validity", "10000", "-alias", alias]);
-      if (code != 0) {
-        throw CliException("keytool failed (exit code $code).");
-      }
-      Out.line();
-    }
-  } else if (!File(keystore).existsSync()) {
+  if (create && File(keystore).existsSync()) {
+    throw CliException("$keystore already exists. Drop --create to use it.");
+  }
+  if (!create && !File(keystore).existsSync()) {
     Out.warn("$keystore doesn't exist yet. Add --create to generate it.");
   }
 
-  String? storePassword = a.option("store-password");
+  // Passwords are collected up front, so keytool never has to ask anything.
+  String? storePassword = a.option("password") ?? a.option("store-password");
   String? keyPassword = a.option("key-password");
-  if (!p.dryRun) {
-    storePassword ??= _askSecret("Keystore password: ");
-    keyPassword ??= _askSecret("Key password (Enter = same as keystore): ", fallback: storePassword);
+  final bool generated = storePassword == null && a.flag("random-password");
+  if (generated) {
+    storePassword = _randomPassword();
   }
+  if (!p.dryRun) {
+    storePassword ??= create ? _askNewSecret() : _askSecret("Keystore password: ");
+    keyPassword ??= create ? storePassword : _askSecret("Key password (Enter = same as keystore): ", fallback: storePassword);
+  }
+  keyPassword ??= storePassword;
+  if (create && storePassword != null && (storePassword.length < 6 || keyPassword!.length < 6)) {
+    throw CliException("keytool needs passwords of at least 6 characters.");
+  }
+
+  if (create) {
+    final String dname = a.option("dname") ?? _dname(p, a);
+    final int years = int.tryParse(a.option("years") ?? "") ?? 30;
+    p.changes++;
+    if (p.dryRun) {
+      Out.changed(keystore, "new keystore: alias $alias, $years years, $dname", dryRun: true);
+    } else {
+      File(keystore).parent.createSync(recursive: true);
+      final int code = await _keytool(
+        <String>[
+          "-genkeypair", "-v", "-noprompt", //
+          "-keystore", keystore, "-storetype", "JKS", "-alias", alias,
+          "-keyalg", "RSA", "-keysize", "2048", "-validity", "${years * 365}",
+          "-dname", dname,
+          // Passed through the environment, so they never appear in the process list.
+          "-storepass:env", "U_KEYSTORE_PASS", "-keypass:env", "U_KEY_PASS",
+        ],
+        <String, String>{"U_KEYSTORE_PASS": storePassword!, "U_KEY_PASS": keyPassword!},
+      );
+      if (code != 0 || !File(keystore).existsSync()) {
+        throw CliException("keytool failed (exit code $code).");
+      }
+      Out.changed(keystore, "new keystore: alias $alias, valid $years years, $dname", dryRun: false);
+    }
+  }
+
   String prop(String v) => v.replaceAll("\\", "\\\\");
   p.write(
     AndroidFiles.keyProperties,
@@ -1089,13 +1115,42 @@ Future<void> cmdSigning(Project p, Args a) async {
     return out;
   }, "ignores key.properties / *.jks", optional: true);
   Out.line();
-  Out.note("Build a signed release with: flutter build appbundle");
-  Out.warn("Back up $keystore and its passwords. If you lose them you can't publish updates to the same app.");
+  if (generated && !p.dryRun) {
+    Out.warn("Generated password: $storePassword");
+    Out.warn("It's saved in android/key.properties. Also store it in your password manager.");
+  }
+  Out.note("Every release build is now signed: flutter build apk --release / flutter build appbundle");
+  Out.warn("Back up $keystore and its password. If you lose them you can't publish updates to the same app.");
+}
+
+/// The certificate owner line (`CN=..., O=..., C=...`), from flags with the app name as default.
+String _dname(Project p, Args a) {
+  String esc(String v) => v.replaceAllMapped(RegExp(r'[,+"\\<>;=]'), (Match m) => "\\${m.group(0)}").trim();
+  final String? country = a.option("country");
+  if (country != null && !RegExp(r"^[A-Za-z]{2}$").hasMatch(country)) {
+    throw CliException("--country takes a 2-letter code, e.g. IR, US, DE.");
+  }
+  final String cn = a.option("name") ?? androidName(p) ?? RegExp(r"^name:\s*(\S+)", multiLine: true).firstMatch(p.read("pubspec.yaml") ?? "")?.group(1) ?? "Android";
+  final List<String> parts = <String>[
+    "CN=${esc(cn)}",
+    if (a.option("unit") != null) "OU=${esc(a.option("unit")!)}",
+    if (a.option("org") != null) "O=${esc(a.option("org")!)}",
+    if (a.option("city") != null) "L=${esc(a.option("city")!)}",
+    if (a.option("state") != null) "ST=${esc(a.option("state")!)}",
+    if (country != null) "C=${country.toUpperCase()}",
+  ];
+  return parts.join(", ");
+}
+
+String _randomPassword() {
+  const String chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789";
+  final Random r = Random.secure();
+  return List<String>.generate(24, (int _) => chars[r.nextInt(chars.length)]).join();
 }
 
 String _askSecret(String prompt, {String? fallback}) {
   if (!stdin.hasTerminal) {
-    throw CliException("No terminal to ask for passwords. Pass --store-password and --key-password.");
+    throw CliException("No terminal to ask for passwords. Pass --password (or --random-password).");
   }
   stdout.write("  $prompt");
   stdin.echoMode = false;
@@ -1111,19 +1166,75 @@ String _askSecret(String prompt, {String? fallback}) {
   return value;
 }
 
-Future<int> _keytool(List<String> args) async {
-  final String? javaHome = Platform.environment["JAVA_HOME"];
-  final List<String> candidates = <String>[
-    "keytool",
-    if (javaHome != null) "$javaHome/bin/keytool",
-    "/Applications/Android Studio.app/Contents/jbr/Contents/Home/bin/keytool",
-    r"C:\Program Files\Android\Android Studio\jbr\bin\keytool.exe",
-    "/opt/android-studio/jbr/bin/keytool",
+/// Asks for a new password twice.
+String _askNewSecret() {
+  final String first = _askSecret("New keystore password (6+ characters): ");
+  if (_askSecret("Repeat it: ") != first) {
+    throw CliException("The passwords don't match.");
+  }
+  return first;
+}
+
+/// Real keytool binaries, best first. On macOS `/usr/bin/keytool` is only a stub when no
+/// default Java is set, so JDKs that Android Studio / Flutter / Homebrew install come first.
+List<String> _keytoolCandidates() {
+  final Map<String, String> env = Platform.environment;
+  final String home = env["HOME"] ?? env["USERPROFILE"] ?? "";
+  final String exe = Platform.isWindows ? "keytool.exe" : "keytool";
+  final List<String> dirs = <String>[
+    if (env["JAVA_HOME"] != null) "${env["JAVA_HOME"]}/bin",
   ];
-  for (final String exe in candidates) {
+  final File flutterSettings = File("$home/.config/flutter/settings");
+  if (flutterSettings.existsSync()) {
+    final String? jdk = RegExp(r'"jdk-dir"\s*:\s*"([^"]+)"').firstMatch(flutterSettings.readAsStringSync())?.group(1);
+    if (jdk != null) {
+      dirs.add("$jdk/bin");
+    }
+  }
+  void scan(String parent, String suffix, {bool Function(String name)? where}) {
+    final Directory d = Directory(parent);
+    if (!d.existsSync()) {
+      return;
+    }
+    final List<FileSystemEntity> items = d.listSync()..sort((FileSystemEntity x, FileSystemEntity y) => y.path.compareTo(x.path));
+    for (final FileSystemEntity e in items) {
+      if (where == null || where(e.path.split(Platform.pathSeparator).last)) {
+        dirs.add("${e.path}$suffix");
+      }
+    }
+  }
+
+  if (Platform.isMacOS) {
+    for (final String apps in <String>["/Applications", "$home/Applications"]) {
+      scan(apps, "/Contents/jbr/Contents/Home/bin", where: (String n) => n.startsWith("Android Studio"));
+    }
+    scan("/Library/Java/JavaVirtualMachines", "/Contents/Home/bin");
+    scan("$home/Library/Java/JavaVirtualMachines", "/Contents/Home/bin");
+    scan("/opt/homebrew/opt", "/bin", where: (String n) => n.startsWith("openjdk"));
+    scan("/usr/local/opt", "/bin", where: (String n) => n.startsWith("openjdk"));
+  } else if (Platform.isWindows) {
+    dirs.add(r"C:\Program Files\Android\Android Studio\jbr\bin");
+    scan(r"C:\Program Files\Java", r"\bin");
+    scan(r"C:\Program Files\Eclipse Adoptium", r"\bin");
+  } else {
+    dirs.addAll(<String>["/opt/android-studio/jbr/bin", "$home/android-studio/jbr/bin", "/snap/android-studio/current/jbr/bin"]);
+    scan("/usr/lib/jvm", "/bin");
+  }
+  return <String>[
+    ...dirs.map((String d) => "$d${Platform.pathSeparator}$exe").where((String f) => File(f).existsSync()),
+    exe,
+  ];
+}
+
+/// Runs keytool quietly; its output (e.g. the JKS-format advice) is only shown when it fails.
+Future<int> _keytool(List<String> args, Map<String, String> environment) async {
+  for (final String exe in _keytoolCandidates()) {
     try {
-      final Process proc = await Process.start(exe, args, mode: ProcessStartMode.inheritStdio);
-      return await proc.exitCode;
+      final ProcessResult r = await Process.run(exe, args, environment: environment);
+      if (r.exitCode != 0) {
+        Out.line("${r.stdout}${r.stderr}".trim());
+      }
+      return r.exitCode;
     } on ProcessException {
       continue;
     }
