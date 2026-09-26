@@ -55,6 +55,12 @@ class UNumericKeyboard extends StatelessWidget {
     this.hapticFeedback = true,
     this.enabled = true,
     this.keyBuilder,
+    this.keyBorderColor,
+    this.keyBorderWidth = 1,
+    this.backspaceChild,
+    this.extraKey = "000",
+    this.keyHeight,
+    this.actionHeight,
   });
 
   final void Function(String value) onKeyTap;
@@ -77,6 +83,12 @@ class UNumericKeyboard extends StatelessWidget {
   final bool hapticFeedback;
   final bool enabled;
   final Widget Function(BuildContext context, String value)? keyBuilder;
+  final Color? keyBorderColor;
+  final double keyBorderWidth;
+  final Widget? backspaceChild;
+  final String? extraKey;
+  final double? keyHeight;
+  final double? actionHeight;
 
   static const List<List<String>> _digits = <List<String>>[
     <String>["1", "2", "3"],
@@ -90,7 +102,7 @@ class UNumericKeyboard extends StatelessWidget {
     final int columns = sideActions ? 4 : 3;
     final double available = 300 - padding.horizontal;
     final double keyWidth = (available - spacing * (columns - 1)) / columns;
-    final double keyHeight = keyWidth / keyAspectRatio;
+    final double keyHeight = this.keyHeight ?? keyWidth / keyAspectRatio;
     final double gridHeight = keyHeight * 4 + runSpacing * 3;
     return Padding(
       padding: padding,
@@ -111,7 +123,7 @@ class UNumericKeyboard extends StatelessWidget {
           ),
           if (actions.isNotEmpty && actionsPosition == UNumericKeyboardActionsPosition.bottom) ...<Widget>[
             SizedBox(height: runSpacing),
-            SizedBox(height: keyHeight, child: _actionRow(context)),
+            SizedBox(height: actionHeight ?? keyHeight, child: _actionRow(context)),
           ],
         ],
       ),
@@ -141,23 +153,26 @@ class UNumericKeyboard extends StatelessWidget {
             Expanded(
               child: _actionKey(
                 context,
-                UNumericKeyboardAction(
-                  onTap: onBackspace,
-                  onLongPress: onBackspaceLongPress,
-                  icon: Icons.backspace_outlined,
-                  backgroundColor: backgroundColor,
-                  foregroundColor: foregroundColor,
-                ),
+                _backspaceAction,
               ),
             ),
             SizedBox(width: spacing),
             Expanded(child: _digitKey(context, "0")),
             SizedBox(width: spacing),
-            Expanded(child: _zeroZeroZeroKey(context)),
+            Expanded(child: extraKey == null ? const SizedBox.shrink() : _zeroZeroZeroKey(context)),
           ],
         ),
       ),
     ],
+  );
+
+  UNumericKeyboardAction get _backspaceAction => UNumericKeyboardAction(
+    onTap: onBackspace,
+    onLongPress: onBackspaceLongPress,
+    icon: backspaceChild == null ? Icons.backspace_outlined : null,
+    child: backspaceChild,
+    backgroundColor: backgroundColor,
+    foregroundColor: foregroundColor,
   );
 
   Widget _actionColumn(BuildContext context) => Column(
@@ -170,13 +185,7 @@ class UNumericKeyboard extends StatelessWidget {
       Expanded(
         child: _actionKey(
           context,
-          UNumericKeyboardAction(
-            onTap: onBackspace,
-            onLongPress: onBackspaceLongPress,
-            icon: Icons.backspace_outlined,
-            backgroundColor: backgroundColor,
-            foregroundColor: foregroundColor,
-          ),
+          _backspaceAction,
         ),
       ),
     ],
@@ -192,17 +201,18 @@ class UNumericKeyboard extends StatelessWidget {
   );
 
   Widget _zeroZeroZeroKey(BuildContext context) {
-    if (keyBuilder != null) return keyBuilder!(context, "000");
+    if (keyBuilder != null) return keyBuilder!(context, extraKey!);
     final Color fg = foregroundColor ?? Theme.of(context).colorScheme.onSurface;
     return _UKey(
-      onTap: () => onKeyTap("000"),
+      onTap: () => onKeyTap(extraKey!),
       borderRadius: borderRadius,
       elevation: elevation,
       hapticFeedback: hapticFeedback,
       enabled: enabled,
+      border: _keyBorder,
       backgroundColor: backgroundColor ?? Theme.of(context).colorScheme.surfaceContainerHighest,
       child: Text(
-        "000",
+        extraKey!,
         style: context.textTheme.bodyLarge!.copyWith(
           color: fg,
           fontWeight: fontWeight ?? FontWeight.w600,
@@ -221,6 +231,7 @@ class UNumericKeyboard extends StatelessWidget {
       elevation: elevation,
       hapticFeedback: hapticFeedback,
       enabled: enabled,
+      border: _keyBorder,
       backgroundColor: backgroundColor ?? Theme.of(context).colorScheme.surfaceContainerHighest,
       child: Text(
         value,
@@ -232,6 +243,8 @@ class UNumericKeyboard extends StatelessWidget {
       ),
     );
   }
+
+  BorderSide get _keyBorder => keyBorderColor == null ? BorderSide.none : BorderSide(color: keyBorderColor!, width: keyBorderWidth);
 
   Widget _actionKey(BuildContext context, UNumericKeyboardAction action) {
     final bool isSideOrBottom = actions.contains(action);
@@ -246,6 +259,7 @@ class UNumericKeyboard extends StatelessWidget {
       elevation: elevation,
       hapticFeedback: hapticFeedback,
       enabled: enabled && action.enabled,
+      border: isSideOrBottom ? BorderSide.none : _keyBorder,
       backgroundColor: bg,
       child:
           action.child ??
@@ -257,7 +271,7 @@ class UNumericKeyboard extends StatelessWidget {
                   style: context.textTheme.bodyLarge!.copyWith(
                     color: fg,
                     fontWeight: action.fontWeight ?? FontWeight.w600,
-                    fontSize: fontSize,
+                    fontSize: action.fontSize ?? fontSize,
                   ),
                 )),
     );
@@ -274,6 +288,7 @@ class _UKey extends StatelessWidget {
     required this.enabled,
     required this.backgroundColor,
     this.onLongPress,
+    this.border = BorderSide.none,
   });
 
   final VoidCallback onTap;
@@ -284,6 +299,7 @@ class _UKey extends StatelessWidget {
   final bool hapticFeedback;
   final bool enabled;
   final Color backgroundColor;
+  final BorderSide border;
 
   @override
   Widget build(BuildContext context) {
@@ -291,7 +307,7 @@ class _UKey extends StatelessWidget {
     return Material(
       color: enabled ? backgroundColor : backgroundColor.withValues(alpha: 0.4),
       elevation: elevation,
-      borderRadius: radius,
+      shape: RoundedRectangleBorder(borderRadius: radius, side: border),
       child: InkWell(
         borderRadius: radius,
         onTap: enabled

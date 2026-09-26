@@ -45,6 +45,9 @@ class UOtpField extends StatefulWidget {
     this.inputFormatters,
     this.separatorBuilder,
     this.cellBuilder,
+    this.filledBorderColor,
+    this.activeBoxShadow,
+    this.characterFormatter,
   });
 
   final TextEditingController? controller;
@@ -85,6 +88,9 @@ class UOtpField extends StatefulWidget {
   final List<TextInputFormatter>? inputFormatters;
   final Widget Function(BuildContext context, int index)? separatorBuilder;
   final Widget Function(BuildContext context, int index, String character, UOtpCellState state)? cellBuilder;
+  final Color? filledBorderColor;
+  final List<BoxShadow>? activeBoxShadow;
+  final String Function(String character)? characterFormatter;
 
   @override
   State<UOtpField> createState() => _UOtpFieldState();
@@ -195,7 +201,7 @@ class _UOtpFieldState extends State<UOtpField> with TickerProviderStateMixin {
     UOtpCellState.disabled => scheme.onSurface.withValues(alpha: 0.2),
     UOtpCellState.error => widget.errorColor ?? scheme.error,
     UOtpCellState.active => widget.activeColor ?? scheme.primary,
-    UOtpCellState.filled => (widget.activeColor ?? scheme.primary).withValues(alpha: 0.5),
+    UOtpCellState.filled => widget.filledBorderColor ?? (widget.activeColor ?? scheme.primary).withValues(alpha: 0.5),
     UOtpCellState.empty => widget.borderColor ?? scheme.outlineVariant,
   };
 
@@ -262,7 +268,7 @@ class _UOtpFieldState extends State<UOtpField> with TickerProviderStateMixin {
     final bool filled = index < value.length;
     final UOtpCellState state = _cellState(index, hasError);
     final String raw = filled ? value[index] : "";
-    final String character = filled ? (widget.obscureText ? widget.obscuringCharacter : raw) : "";
+    final String character = filled ? (widget.obscureText ? widget.obscuringCharacter : widget.characterFormatter?.call(raw) ?? raw) : "";
 
     if (widget.cellBuilder != null) return widget.cellBuilder!(context, index, character, state);
 
@@ -275,6 +281,7 @@ class _UOtpFieldState extends State<UOtpField> with TickerProviderStateMixin {
         color: state == UOtpCellState.active ? widget.focusedFillColor ?? widget.fillColor : widget.fillColor,
         borderRadius: BorderRadius.circular(widget.borderRadius),
         border: Border.all(color: _borderColor(state, scheme), width: state == UOtpCellState.active ? widget.borderWidth + 1 : widget.borderWidth),
+        boxShadow: state == UOtpCellState.active ? widget.activeBoxShadow : null,
       ),
       child: filled
           ? Text(

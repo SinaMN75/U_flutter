@@ -50,6 +50,8 @@ class UTextField extends StatefulWidget {
     this.bottom,
     this.positionedWidth,
     this.positionedHeight,
+    this.borderRadius,
+    this.floatingLabelBehavior,
   });
 
   final bool obscureText;
@@ -99,6 +101,8 @@ class UTextField extends StatefulWidget {
   final double? bottom;
   final double? positionedWidth;
   final double? positionedHeight;
+  final double? borderRadius;
+  final FloatingLabelBehavior? floatingLabelBehavior;
 
   @override
   State<UTextField> createState() => _UTextFieldState();
@@ -113,75 +117,92 @@ class _UTextFieldState extends State<UTextField> {
     super.initState();
   }
 
+  InputBorder? _rounded(InputBorder? border) {
+    if (widget.borderRadius == null || border == null) return null;
+    final BorderRadius radius = BorderRadius.circular(widget.borderRadius!);
+    if (border is OutlineInputBorder) return border.copyWith(borderRadius: radius);
+    return OutlineInputBorder(borderRadius: radius, borderSide: border.borderSide);
+  }
+
   @override
-  Widget build(BuildContext context) => uWrap(
-    Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        if (widget.text != null)
-          UIconTextHorizontal(
-            leading: Text(widget.text!, style: Theme.of(context).textTheme.titleSmall),
-            trailing: widget.required ? UTextBodyMedium("*", color: Theme.of(context).colorScheme.error) : const SizedBox(),
-          ).pSymmetric(vertical: 8),
-        TextFormField(
-          focusNode: widget.focusNode,
-          autofillHints: widget.autoFillHints,
-          textDirection: widget.keyboardType == TextInputType.number || widget.keyboardType == TextInputType.phone ? TextDirection.ltr : null,
-          inputFormatters: widget.formatters ?? (widget.keyboardType == TextInputType.number || widget.keyboardType == TextInputType.phone ? <TextInputFormatter>[UNumberInputFormatter()] : null),
-          style: TextStyle(fontSize: widget.fontSize, color: widget.textColor),
-          maxLength: widget.maxLength,
-          onChanged: widget.onChanged,
-          readOnly: widget.readOnly,
-          initialValue: widget.initialValue,
-          textAlign: widget.textAlign,
-          onSaved: widget.onSave,
-          onTap: widget.onTap,
-          controller: widget.controller,
-          keyboardType: widget.keyboardType,
-          obscureText: obscure,
-          validator: widget.validator,
-          minLines: widget.lines,
-          onFieldSubmitted: widget.onFieldSubmitted,
-          maxLines: widget.lines == 1 ? 1 : 20,
-          decoration: InputDecoration(
-            labelText: widget.labelText,
-            isDense: widget.isDense,
-            helperStyle: const TextStyle(fontSize: 0),
-            hintText: widget.hintText,
-            contentPadding: widget.contentPadding ?? (widget.lines > 1 ? const EdgeInsets.symmetric(vertical: 20, horizontal: 12) : const EdgeInsets.symmetric(vertical: 2, horizontal: 12)),
-            suffixIcon: widget.obscureText
-                ? IconButton(
-                    splashRadius: 1,
-                    onPressed: () => setState(() => obscure = !obscure),
-                    icon: obscure ? const Icon(Icons.visibility) : const Icon(Icons.visibility_off),
-                  )
-                : widget.suffix,
-            prefixIcon: widget.prefix,
+  Widget build(BuildContext context) {
+    final InputDecorationThemeData inputTheme = Theme.of(context).inputDecorationTheme;
+    return uWrap(
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          if (widget.text != null)
+            UIconTextHorizontal(
+              leading: Text(widget.text!, style: Theme.of(context).textTheme.titleSmall),
+              trailing: widget.required ? UTextBodyMedium("*", color: Theme.of(context).colorScheme.error) : const SizedBox(),
+            ).pSymmetric(vertical: 8),
+          TextFormField(
+            focusNode: widget.focusNode,
+            autofillHints: widget.autoFillHints,
+            textDirection: widget.keyboardType == TextInputType.number || widget.keyboardType == TextInputType.phone ? TextDirection.ltr : null,
+            inputFormatters: widget.formatters ?? (widget.keyboardType == TextInputType.number || widget.keyboardType == TextInputType.phone ? <TextInputFormatter>[UNumberInputFormatter()] : null),
+            style: TextStyle(fontSize: widget.fontSize, color: widget.textColor),
+            maxLength: widget.maxLength,
+            onChanged: widget.onChanged,
+            readOnly: widget.readOnly,
+            initialValue: widget.initialValue,
+            textAlign: widget.textAlign,
+            onSaved: widget.onSave,
+            onTap: widget.onTap,
+            controller: widget.controller,
+            keyboardType: widget.keyboardType,
+            obscureText: obscure,
+            validator: widget.validator,
+            minLines: widget.lines,
+            onFieldSubmitted: widget.onFieldSubmitted,
+            maxLines: widget.lines == 1 ? 1 : 20,
+            decoration: InputDecoration(
+              labelText: widget.labelText,
+              floatingLabelBehavior: widget.floatingLabelBehavior,
+              border: _rounded(inputTheme.border),
+              enabledBorder: _rounded(inputTheme.enabledBorder),
+              focusedBorder: _rounded(inputTheme.focusedBorder),
+              errorBorder: _rounded(inputTheme.errorBorder),
+              focusedErrorBorder: _rounded(inputTheme.focusedErrorBorder),
+              disabledBorder: _rounded(inputTheme.disabledBorder),
+              isDense: widget.isDense,
+              helperStyle: const TextStyle(fontSize: 0),
+              hintText: widget.hintText,
+              contentPadding: widget.contentPadding ?? (widget.lines > 1 ? const EdgeInsets.symmetric(vertical: 20, horizontal: 12) : const EdgeInsets.symmetric(vertical: 2, horizontal: 12)),
+              suffixIcon: widget.obscureText
+                  ? IconButton(
+                      splashRadius: 1,
+                      onPressed: () => setState(() => obscure = !obscure),
+                      icon: obscure ? const Icon(Icons.visibility) : const Icon(Icons.visibility_off),
+                    )
+                  : widget.suffix,
+              prefixIcon: widget.prefix,
+            ),
           ),
-        ),
-      ],
-    ),
-    margin: widget.margin,
-    visible: widget.visible,
-    opacity: widget.opacity,
-    fit: widget.fit,
-    fitAlignment: widget.fitAlignment,
-    scale: widget.scale,
-    rotate: widget.rotate,
-    translate: widget.translate,
-    center: widget.center,
-    safeArea: widget.safeArea,
-    expanded: widget.expanded,
-    flexible: widget.flexible,
-    positioned: widget.positioned,
-    left: widget.left,
-    top: widget.top,
-    right: widget.right,
-    bottom: widget.bottom,
-    positionedWidth: widget.positionedWidth,
-    positionedHeight: widget.positionedHeight,
-  );
+        ],
+      ),
+      margin: widget.margin,
+      visible: widget.visible,
+      opacity: widget.opacity,
+      fit: widget.fit,
+      fitAlignment: widget.fitAlignment,
+      scale: widget.scale,
+      rotate: widget.rotate,
+      translate: widget.translate,
+      center: widget.center,
+      safeArea: widget.safeArea,
+      expanded: widget.expanded,
+      flexible: widget.flexible,
+      positioned: widget.positioned,
+      left: widget.left,
+      top: widget.top,
+      right: widget.right,
+      bottom: widget.bottom,
+      positionedWidth: widget.positionedWidth,
+      positionedHeight: widget.positionedHeight,
+    );
+  }
 }
 
 class UDropDownField<T> extends StatefulWidget {

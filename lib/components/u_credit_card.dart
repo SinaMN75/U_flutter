@@ -142,6 +142,19 @@ class UCreditCardWidget extends StatefulWidget {
     this.animationDuration = const Duration(milliseconds: 500),
     this.obscureCardNumber = true,
     this.onBrandChanged,
+    this.chipColor = const Color(0xFFD4AF37),
+    this.borderRadius = 18,
+    this.boxShadow = const <BoxShadow>[BoxShadow(color: Colors.black26, blurRadius: 12, offset: Offset(0, 6))],
+    this.padding = const EdgeInsets.all(20),
+    this.numberStyle,
+    this.spreadNumberGroups = false,
+    this.showCvvOnFront = false,
+    this.cardHolderLabel = "",
+    this.expiryLabel = "EXP",
+    this.cvvLabel = "CVV",
+    this.labelStyle,
+    this.valueStyle,
+    this.digitsFormatter,
   });
 
   final String cardNumber;
@@ -158,6 +171,19 @@ class UCreditCardWidget extends StatefulWidget {
   final Duration animationDuration;
   final bool obscureCardNumber;
   final ValueChanged<UCardBrand>? onBrandChanged;
+  final Color chipColor;
+  final double borderRadius;
+  final List<BoxShadow>? boxShadow;
+  final EdgeInsetsGeometry padding;
+  final TextStyle? numberStyle;
+  final bool spreadNumberGroups;
+  final bool showCvvOnFront;
+  final String cardHolderLabel;
+  final String expiryLabel;
+  final String cvvLabel;
+  final TextStyle? labelStyle;
+  final TextStyle? valueStyle;
+  final String Function(String value)? digitsFormatter;
 
   @override
   State<UCreditCardWidget> createState() => _CreditCardWidgetState();
@@ -238,13 +264,14 @@ class _CreditCardWidgetState extends State<UCreditCardWidget> with SingleTickerP
           widget.brandLabel ?? UCardBrandDetector.label(_brand),
           style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
         );
+    final String expiry = widget.expiryDate.isEmpty ? "MM/YY" : _digits(widget.expiryDate);
     return UContainer(
       width: width,
       height: height,
-      padding: const EdgeInsets.all(20),
+      padding: widget.padding,
       gradient: _gradient,
-      radius: 18,
-      boxShadow: const <BoxShadow>[BoxShadow(color: Colors.black26, blurRadius: 12, offset: Offset(0, 6))],
+      radius: widget.borderRadius,
+      boxShadow: widget.boxShadow,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -252,10 +279,10 @@ class _CreditCardWidgetState extends State<UCreditCardWidget> with SingleTickerP
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              const UContainer(
+              UContainer(
                 width: 42,
                 height: 30,
-                color: Color(0xFFD4AF37),
+                color: widget.chipColor,
                 radius: 6,
               ),
               mark,
@@ -271,19 +298,26 @@ class _CreditCardWidgetState extends State<UCreditCardWidget> with SingleTickerP
             ),
           ],
           const Spacer(),
-          Text(
-            _displayNumber(),
-            style: const TextStyle(color: Colors.white, fontSize: 20, fontFamily: "monospace"),
-          ),
+          _number(),
           const Spacer(),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Expanded(child: _labelled("", widget.cardHolderName.isEmpty ? "—" : widget.cardHolderName)),
-              _labelled("EXP", widget.expiryDate.isEmpty ? "MM/YY" : widget.expiryDate),
-            ],
-          ),
+          if (widget.showCvvOnFront)
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                Expanded(flex: 2, child: _labelled(widget.cardHolderLabel, widget.cardHolderName.isEmpty ? "—" : widget.cardHolderName)),
+                Expanded(child: _labelled(widget.expiryLabel, expiry)),
+                Expanded(child: _labelled(widget.cvvLabel, widget.cvvCode.isEmpty ? "***" : _digits(widget.cvvCode))),
+              ],
+            )
+          else
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Expanded(child: _labelled(widget.cardHolderLabel, widget.cardHolderName.isEmpty ? "—" : widget.cardHolderName)),
+                _labelled(widget.expiryLabel, expiry),
+              ],
+            ),
         ],
       ),
     );
@@ -293,8 +327,8 @@ class _CreditCardWidgetState extends State<UCreditCardWidget> with SingleTickerP
     width: width,
     height: height,
     gradient: _gradient,
-    radius: 18,
-    boxShadow: const <BoxShadow>[BoxShadow(color: Colors.black26, blurRadius: 12, offset: Offset(0, 6))],
+    radius: widget.borderRadius,
+    boxShadow: widget.boxShadow,
     child: Column(
       children: <Widget>[
         const SizedBox(height: 20),
@@ -341,16 +375,28 @@ class _CreditCardWidgetState extends State<UCreditCardWidget> with SingleTickerP
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisSize: MainAxisSize.min,
     children: <Widget>[
-      Text(caption, style: const TextStyle(color: Colors.white70, fontSize: 9, letterSpacing: 1)),
+      Text(caption, style: widget.labelStyle ?? const TextStyle(color: Colors.white70, fontSize: 9, letterSpacing: 1)),
       const SizedBox(height: 4),
       Text(
         value,
-        style: const TextStyle(color: Colors.white, fontSize: 14),
+        style: widget.valueStyle ?? const TextStyle(color: Colors.white, fontSize: 14),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
     ],
   );
+
+  String _digits(String value) => widget.digitsFormatter?.call(value) ?? value;
+
+  Widget _number() {
+    final TextStyle style = widget.numberStyle ?? const TextStyle(color: Colors.white, fontSize: 20, fontFamily: "monospace");
+    final String number = _displayNumber();
+    if (!widget.spreadNumberGroups) return Text(_digits(number), style: style);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: number.trim().split(RegExp(r"\s+")).map((String group) => Text(_digits(group), style: style)).toList(),
+    );
+  }
 
   String _displayNumber() {
     if (widget.cardNumber.isEmpty) {

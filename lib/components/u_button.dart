@@ -83,6 +83,7 @@ class UButton extends StatefulWidget {
     this.counterOnCounting,
     this.counterResetCounterOnTap,
     this.onCountdownFinish,
+    this.counterFormatter,
     this.heroTag,
     this.margin,
     this.visible = true,
@@ -157,6 +158,7 @@ class UButton extends StatefulWidget {
   final String? counterDescription;
   final Function(int)? counterOnCounting;
   final bool? counterResetCounterOnTap;
+  final String Function(int secondsLeft)? counterFormatter;
   final VoidCallback? onCountdownFinish;
   final String? heroTag;
   final EdgeInsetsGeometry? margin;
@@ -219,7 +221,7 @@ class _UButtonState extends State<UButton> {
     _timer?.cancel();
     _counter = widget.counter ?? 0;
     _onTap = null;
-    _title = "$_counter ${widget.counterDescription ?? ""}";
+    _title = _counterTitle;
     _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
       if (!mounted) {
         timer.cancel();
@@ -234,11 +236,19 @@ class _UButtonState extends State<UButton> {
           _onTap = widget.onTap;
           widget.onCountdownFinish?.call();
         } else {
-          _title = "$_counter ${widget.counterDescription ?? ""}";
+          _title = _counterTitle;
           widget.counterOnCounting?.call(_counter);
         }
       });
     });
+  }
+
+  String get _counterTitle => widget.counterFormatter?.call(_counter) ?? "${_formatCountdown(_counter)} ${widget.counterDescription ?? ""}".trim();
+
+  static String _formatCountdown(int seconds) {
+    final String minutes = (seconds % 3600 ~/ 60).toString().padLeft(2, "0");
+    final String secs = (seconds % 60).toString().padLeft(2, "0");
+    return seconds >= 3600 ? "${seconds ~/ 3600}:$minutes:$secs" : "$minutes:$secs";
   }
 
   void _handleTap() {

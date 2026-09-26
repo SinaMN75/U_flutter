@@ -43,6 +43,7 @@ class UIconBackground extends StatelessWidget {
     required this.color,
     this.size = 42,
     this.backgroundColor,
+    this.radius = 12,
     super.key,
   });
 
@@ -50,6 +51,7 @@ class UIconBackground extends StatelessWidget {
   final Color color;
   final double size;
   final Color? backgroundColor;
+  final double radius;
 
   @override
   Widget build(BuildContext context) => UContainer(
@@ -57,7 +59,7 @@ class UIconBackground extends StatelessWidget {
     height: size,
     alignment: Alignment.center,
     color: backgroundColor ?? color.withValues(alpha: 0.2),
-    radius: 12,
+    radius: radius,
     child: Icon(icon, color: color, size: size / 1.8),
   );
 }
