@@ -50,7 +50,7 @@ abstract final class UFilesChannel {
     } on MissingPluginException {
       return null;
     } on PlatformException catch (e) {
-      debugPrint("u/files.$method failed: ${e.code}");
+      debugPrint("u/files.$method failed: ${e.code}${e.message == null ? "" : " — ${e.message}"}");
       return null;
     }
   }
@@ -61,7 +61,7 @@ abstract final class UFilesChannel {
     } on MissingPluginException {
       return null;
     } on PlatformException catch (e) {
-      debugPrint("u/files.$method failed: ${e.code}");
+      debugPrint("u/files.$method failed: ${e.code}${e.message == null ? "" : " — ${e.message}"}");
       return null;
     }
   }
@@ -71,26 +71,42 @@ abstract final class UFilesChannel {
 
   /// Android: copies [sourcePath] into the public Downloads collection through MediaStore
   /// (or the legacy public directory below API 29). Returns the resulting content URI.
+  ///
+  /// This copies a file that is already on the device. To download a URL into Downloads use
+  /// `UDownloadManager.instance.download(url)`, which downloads and then calls this for you.
   static Future<String?> saveToDownloads({
     required String sourcePath,
     required String fileName,
     String? mimeType,
     String? subfolder,
-  }) => _call<String>("saveToDownloads", <String, Object?>{
-    "sourcePath": sourcePath,
-    "fileName": fileName,
-    "mimeType": mimeType,
-    "subfolder": subfolder,
-  });
+  }) {
+    if (sourcePath.startsWith("http://") || sourcePath.startsWith("https://")) {
+      throw ArgumentError.value(
+        sourcePath,
+        "sourcePath",
+        "must be a local file path, not a URL. Use UDownloadManager.instance.download(url) to download into Downloads",
+      );
+    }
+    return _call<String>("saveToDownloads", <String, Object?>{
+      "sourcePath": sourcePath,
+      "fileName": fileName,
+      "mimeType": _mime(mimeType),
+      "subfolder": subfolder,
+    });
+  }
+
+  // Accepts "application/pdf"; anything without a slash (e.g. "pdf") is dropped so the native
+  // side derives the type from the file name instead of rejecting an invalid MIME type.
+  static String? _mime(String? mimeType) => mimeType != null && mimeType.contains("/") ? mimeType : null;
 
   /// Shows the native "save as" UI and copies [sourcePath] to the chosen place.
   /// Returns the destination (path or URI), or null when the user cancelled.
   static Future<String?> saveAs({required String sourcePath, required String fileName, String? mimeType}) =>
-      _call<String>("saveAs", <String, Object?>{"sourcePath": sourcePath, "fileName": fileName, "mimeType": mimeType});
+      _call<String>("saveAs", <String, Object?>{"sourcePath": sourcePath, "fileName": fileName, "mimeType": _mime(mimeType)});
 
   /// Opens a file (path or content URI) with the default app.
   static Future<bool> open(String pathOrUri, {String? mimeType}) async =>
-      await _call<bool>("open", <String, Object?>{"path": pathOrUri, "mimeType": mimeType}) ?? false;
+      await _call<bool>("open", <String, Object?>{"path": pathOrUri, "mimeType": _mime(mimeType)}) ?? false;
 
   /// Shows the file in Finder / Explorer / the Files app / the Downloads app.
   static Future<bool> reveal(String pathOrUri) async => await _call<bool>("reveal", <String, Object?>{"path": pathOrUri}) ?? false;

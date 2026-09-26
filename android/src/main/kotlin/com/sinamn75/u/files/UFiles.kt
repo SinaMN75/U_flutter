@@ -117,7 +117,7 @@ class UFilesHandler(
                 val value = work()
                 main.post { result.success(value) }
             } catch (e: Exception) {
-                main.post { result.error("u_files", e.message, null) }
+                main.post { result.error("u_files", e.message ?: e.javaClass.simpleName, null) }
             }
         }
     }
@@ -140,6 +140,10 @@ class UFilesHandler(
         val fileName = call.argument<String>("fileName")!!
         val mimeType = call.argument<String>("mimeType") ?: guessMime(fileName)
         val subfolder = call.argument<String>("subfolder")
+        if (!source.isFile) {
+            result.error("source_missing", "No local file at ${source.path}; download it first (UDownloadManager.download)", null)
+            return
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             background(result) {
                 val resolver = context.contentResolver
