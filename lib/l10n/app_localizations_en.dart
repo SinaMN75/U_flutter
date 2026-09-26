@@ -2605,6 +2605,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get myVehicles => 'My vehicles';
 
   @override
+  String get newFile => 'New';
+
+  @override
   String get nUp => 'Pages per sheet';
 
   @override
@@ -3916,6 +3919,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get selectDates => 'Select dates';
 
   @override
+  String get selectFiles => 'Select files';
+
+  @override
   String get selectInternetPackage => 'Select internet package';
 
   @override
@@ -4308,6 +4314,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tapToAddAPoint => 'Tap to add a point';
+
+  @override
+  String get tapToBrowseYourFiles => 'Tap to browse your files';
 
   @override
   String get tapToInquire => 'Tap to inquire';

@@ -5162,6 +5162,12 @@ abstract class AppLocalizations {
   /// **'My vehicles'**
   String get myVehicles;
 
+  /// No description provided for @newFile.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get newFile;
+
   /// No description provided for @nUp.
   ///
   /// In en, this message translates to:
@@ -7760,6 +7766,12 @@ abstract class AppLocalizations {
   /// **'Select dates'**
   String get selectDates;
 
+  /// No description provided for @selectFiles.
+  ///
+  /// In en, this message translates to:
+  /// **'Select files'**
+  String get selectFiles;
+
   /// No description provided for @selectInternetPackage.
   ///
   /// In en, this message translates to:
@@ -8539,6 +8551,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tap to add a point'**
   String get tapToAddAPoint;
+
+  /// No description provided for @tapToBrowseYourFiles.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to browse your files'**
+  String get tapToBrowseYourFiles;
 
   /// No description provided for @tapToInquire.
   ///

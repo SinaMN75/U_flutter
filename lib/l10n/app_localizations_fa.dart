@@ -2605,6 +2605,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get myVehicles => 'خودروهای من';
 
   @override
+  String get newFile => 'جدید';
+
+  @override
   String get nUp => 'صفحه در هر برگ';
 
   @override
@@ -3916,6 +3919,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get selectDates => 'انتخاب تاریخ';
 
   @override
+  String get selectFiles => 'انتخاب فایل‌ها';
+
+  @override
   String get selectInternetPackage => 'انتخاب بسته اینترنت';
 
   @override
@@ -4308,6 +4314,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get tapToAddAPoint => 'برای افزودن نقطه ضربه بزنید';
+
+  @override
+  String get tapToBrowseYourFiles => 'برای انتخاب فایل ضربه بزنید';
 
   @override
   String get tapToInquire => 'برای استعلام لمس کنید';

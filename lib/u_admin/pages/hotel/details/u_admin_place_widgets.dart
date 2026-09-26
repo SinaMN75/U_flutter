@@ -303,198 +303,28 @@ class _UAdminFaqEditorState extends State<UAdminFaqEditor> {
 // Photos
 // ---------------------------------------------------------------------------------------------------------------------
 
-/// What the admin changed in the photo list. It is applied when the dialog is saved (see [UAdminMediaSync]).
-class UAdminMediaDraft {
-  final List<UFileData> newFiles = <UFileData>[];
-
-  /// Gallery category (a TagMedia number, or null) of each file in [newFiles].
-  final List<int?> newFileCategories = <int?>[];
-  final Set<String> deletedIds = <String>{};
-
-  /// An existing photo that should become the cover.
-  String? coverExistingId;
-
-  /// Index in [newFiles] of a new photo that should become the cover.
-  int? coverNewIndex;
-
-  bool get isEmpty => newFiles.isEmpty && deletedIds.isEmpty && coverExistingId == null && coverNewIndex == null;
-}
-
-/// The photo manager: shows existing photos and pending uploads; cover, category and delete.
-class UAdminMediaManager extends StatefulWidget {
-  const UAdminMediaManager({required this.media, required this.draft, super.key});
-
-  final List<UMediaResponse> media;
-  final UAdminMediaDraft draft;
-
-  @override
-  State<UAdminMediaManager> createState() => _UAdminMediaManagerState();
-}
-
-class _UAdminMediaManagerState extends State<UAdminMediaManager> {
-  int? _category;
-
-  static const List<TagMedia> _categories = <TagMedia>[TagMedia.exterior, TagMedia.interior, TagMedia.room, TagMedia.bathroom, TagMedia.dining, TagMedia.facility, TagMedia.surroundings];
-
-  UAdminMediaDraft get _draft => widget.draft;
-
-  bool _isCover(UMediaResponse m) => _draft.coverExistingId != null ? _draft.coverExistingId == m.id : (_draft.coverNewIndex == null && m.tags.contains(TagMedia.cover.number));
-
-  String _categoryTitle(List<int> tags) {
-    for (final TagMedia c in _categories) {
-      if (tags.contains(c.number)) return c.localizedTitle;
-    }
-    return "";
-  }
-
-  Future<void> _pick() => UFile.showFilePicker(
-    allowMultiple: true,
-    allowedExtensions: const <String>["jpg", "jpeg", "png", "webp"],
-    action: (List<UFileData> files) {
-      if (files.isEmpty || !mounted) return;
-      setState(() {
-        for (final UFileData f in files) {
-          _draft.newFiles.add(f);
-          _draft.newFileCategories.add(_category);
-        }
-      });
-    },
-  );
-
-  Widget _tile({required Widget image, required bool isCover, required String caption, required VoidCallback onCover, required VoidCallback onDelete, bool isNew = false}) => SizedBox(
-    width: 130,
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Stack(
-          children: <Widget>[
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: SizedBox(width: 130, height: 90, child: image),
-            ),
-            if (isCover)
-              Positioned(
-                top: 4,
-                left: 4,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                  decoration: BoxDecoration(color: Colors.amber.shade700, borderRadius: BorderRadius.circular(8)),
-                  child: Text(U.s.cover, style: const TextStyle(fontSize: 11, color: Colors.white)),
-                ),
-              ),
-            if (isNew)
-              Positioned(
-                bottom: 4,
-                left: 4,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                  decoration: BoxDecoration(color: Colors.green.shade700, borderRadius: BorderRadius.circular(8)),
-                  child: const Text("NEW", style: TextStyle(fontSize: 10, color: Colors.white)),
-                ),
-              ),
-          ],
-        ),
-        if (caption.isNotEmpty) Text(caption, style: Theme.of(context).textTheme.bodySmall, overflow: TextOverflow.ellipsis),
-        Row(
-          children: <Widget>[
-            IconButton(
-              visualDensity: VisualDensity.compact,
-              tooltip: U.s.setAsCover,
-              icon: Icon(isCover ? Icons.star_rounded : Icons.star_border_rounded, color: Colors.amber.shade700),
-              onPressed: onCover,
-            ),
-            IconButton(
-              visualDensity: VisualDensity.compact,
-              tooltip: U.s.delete,
-              icon: const Icon(Icons.delete_outline, color: Colors.red),
-              onPressed: onDelete,
-            ),
-          ],
-        ),
-      ],
-    ),
-  );
-
-  @override
-  Widget build(BuildContext context) {
-    final List<UMediaResponse> existing = widget.media.where((UMediaResponse m) => !_draft.deletedIds.contains(m.id)).toList();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(U.s.photoCategory, style: Theme.of(context).textTheme.labelLarge),
-        const SizedBox(height: 6),
-        Wrap(
-          spacing: 6,
-          runSpacing: 6,
-          children: _categories
-              .map(
-                (TagMedia c) => ChoiceChip(
-                  label: Text(c.localizedTitle),
-                  selected: _category == c.number,
-                  onSelected: (bool on) => setState(() => _category = on ? c.number : null),
-                ),
-              )
-              .toList(),
-        ),
-        const SizedBox(height: 8),
-        FilledButton.tonalIcon(onPressed: _pick, icon: const Icon(Icons.add_photo_alternate_outlined), label: Text(U.s.addPhotos)),
-        const SizedBox(height: 12),
-        if (existing.isEmpty && _draft.newFiles.isEmpty)
-          Text(U.s.noPhotosYet)
-        else
-          Wrap(
-            spacing: 10,
-            runSpacing: 10,
-            children: <Widget>[
-              ...existing.map(
-                (UMediaResponse m) => _tile(
-                  image: UImage(m.url ?? "", fit: BoxFit.cover),
-                  isCover: _isCover(m),
-                  caption: _categoryTitle(m.tags),
-                  onCover: () => setState(() {
-                    _draft.coverExistingId = m.id;
-                    _draft.coverNewIndex = null;
-                  }),
-                  onDelete: () => setState(() {
-                    _draft.deletedIds.add(m.id);
-                    if (_draft.coverExistingId == m.id) _draft.coverExistingId = null;
-                  }),
-                ),
-              ),
-              ...List<Widget>.generate(_draft.newFiles.length, (int i) {
-                final UFileData f = _draft.newFiles[i];
-                final int? cat = _draft.newFileCategories[i];
-                return _tile(
-                  isNew: true,
-                  image: f.hasBytes ? Image.memory(f.bytes!, fit: BoxFit.cover) : const Icon(Icons.image_outlined),
-                  isCover: _draft.coverNewIndex == i,
-                  caption: cat == null ? "" : _categories.firstWhere((TagMedia c) => c.number == cat).localizedTitle,
-                  onCover: () => setState(() {
-                    _draft.coverNewIndex = i;
-                    _draft.coverExistingId = null;
-                  }),
-                  onDelete: () => setState(() {
-                    _draft.newFiles.removeAt(i);
-                    _draft.newFileCategories.removeAt(i);
-                    if (_draft.coverNewIndex == i) {
-                      _draft.coverNewIndex = null;
-                    } else if (_draft.coverNewIndex != null && _draft.coverNewIndex! > i) {
-                      _draft.coverNewIndex = _draft.coverNewIndex! - 1;
-                    }
-                  }),
-                );
-              }),
-            ],
-          ),
-      ],
-    );
-  }
-}
-
-/// Applies an [UAdminMediaDraft]: deletes removed photos, uploads new ones and moves the cover mark.
+/// Connects a place's photos to a [UFilePicker]: builds its controller, then saves what changed.
 abstract class UAdminMediaSync {
+  static const List<String> extensions = <String>["jpg", "jpeg", "png", "webp"];
+
+  static List<UFilePickerCategory> get categories => <TagMedia>[
+    TagMedia.exterior,
+    TagMedia.interior,
+    TagMedia.room,
+    TagMedia.bathroom,
+    TagMedia.dining,
+    TagMedia.facility,
+    TagMedia.surroundings,
+  ].map((TagMedia c) => UFilePickerCategory(value: c.number, title: c.localizedTitle)).toList();
+
+  static UFilePickerController controller(List<UMediaResponse> media) {
+    final List<UFileData> existing = media.map((UMediaResponse m) => UFileData(id: m.id, url: m.url, tags: m.tags, name: m.path.fileName)).toList();
+    return UFilePickerController(existingFiles: existing, cover: existing.where((UFileData f) => f.tags?.contains(TagMedia.cover.number) ?? false).firstOrNull);
+  }
+
+  /// Deletes removed photos, uploads new ones (category = first tag) and moves the cover mark.
   static Future<void> apply({
-    required UAdminMediaDraft draft,
+    required UFilePickerController photos,
     required List<UMediaResponse> existing,
     String? hotelId,
     String? hotelRoomId,
@@ -502,9 +332,10 @@ abstract class UAdminMediaSync {
     String? dormRoomId,
     String? dormBedId,
   }) async {
-    if (draft.isEmpty) return;
+    if (!photos.hasChanges) return;
 
-    for (final String id in draft.deletedIds) {
+    final Set<String> deletedIds = photos.removedFiles.map((UFileData f) => f.id!).toSet();
+    for (final String id in deletedIds) {
       await UServices.media.delete(
         p: UIdParams(id: id),
         onOk: (_) {},
@@ -513,15 +344,19 @@ abstract class UAdminMediaSync {
       );
     }
 
+    final List<UFileData> newFiles = photos.files;
+    final UFileData? cover = photos.coverChanged ? photos.cover : null;
+    final String? coverExistingId = cover?.id;
+    final int coverNewIndex = cover != null && cover.id == null ? newFiles.indexOf(cover) : -1;
+
     final List<String?> uploadedIds = <String?>[];
-    for (int i = 0; i < draft.newFiles.length; i++) {
-      final int? category = draft.newFileCategories[i];
+    for (int i = 0; i < newFiles.length; i++) {
       final (UResponse<String>? ok, UEmptyResponse? _, String? _) = await UServices.media.create(
         p: UMediaCreateParams(
-          file: draft.newFiles[i],
+          file: newFiles[i],
           tag1: TagMedia.image.number,
-          tag2: category,
-          tag3: draft.coverNewIndex == i ? TagMedia.cover.number : null,
+          tag2: newFiles[i].tags?.firstOrNull,
+          tag3: coverNewIndex == i ? TagMedia.cover.number : null,
           hotelId: hotelId,
           hotelRoomId: hotelRoomId,
           dormId: dormId,
@@ -536,9 +371,9 @@ abstract class UAdminMediaSync {
     }
 
     // The cover mark lives on exactly one photo.
-    final String? newCoverId = draft.coverExistingId ?? (draft.coverNewIndex == null ? null : uploadedIds[draft.coverNewIndex!]);
+    final String? newCoverId = coverExistingId ?? (coverNewIndex < 0 ? null : uploadedIds[coverNewIndex]);
     if (newCoverId == null) return;
-    for (final UMediaResponse m in existing.where((UMediaResponse m) => m.tags.contains(TagMedia.cover.number) && m.id != newCoverId && !draft.deletedIds.contains(m.id))) {
+    for (final UMediaResponse m in existing.where((UMediaResponse m) => m.tags.contains(TagMedia.cover.number) && m.id != newCoverId && !deletedIds.contains(m.id))) {
       await UServices.media.update(
         p: UMediaUpdateParams(id: m.id, removeTags: <int>[TagMedia.cover.number]),
         onOk: (_) {},
@@ -546,7 +381,7 @@ abstract class UAdminMediaSync {
         onException: (_) {},
       );
     }
-    if (draft.coverExistingId != null) {
+    if (coverExistingId != null) {
       await UServices.media.update(
         p: UMediaUpdateParams(id: newCoverId, addTags: <int>[TagMedia.cover.number]),
         onOk: (_) {},

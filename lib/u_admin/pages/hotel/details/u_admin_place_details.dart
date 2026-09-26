@@ -88,8 +88,8 @@ abstract class UAdminPlaceDetails {
     final TextEditingController instagram = TextEditingController(text: d.instagram);
     final TextEditingController telegram = TextEditingController(text: d.telegram);
     final TextEditingController howToGetThere = TextEditingController(text: d.howToGetThere);
-    final UAdminMediaDraft draft = UAdminMediaDraft();
     final List<UMediaResponse> media = (h.media ?? <UMediaResponse>[]).sortedForGallery();
+    final UFilePickerController photos = UAdminMediaSync.controller(media);
 
     await _open(
       title: "${U.s.detailsAndPhotos} — ${h.title}",
@@ -106,7 +106,16 @@ abstract class UAdminPlaceDetails {
           ),
           UAdminSection(
             title: U.s.photos,
-            children: <Widget>[UAdminMediaManager(media: media, draft: draft)],
+            children: <Widget>[
+              UFilePicker(
+                controller: photos,
+                selectFileTitle: U.s.addPhotos,
+                allowedExtensions: UAdminMediaSync.extensions,
+                categoryTitle: U.s.photoCategory,
+                categories: UAdminMediaSync.categories,
+                selectCover: true,
+              ),
+            ],
           ),
           UAdminSection(
             title: U.s.details,
@@ -153,7 +162,7 @@ abstract class UAdminPlaceDetails {
           ),
         );
         if (!_isOk(ok, error, exception)) return false;
-        await UAdminMediaSync.apply(draft: draft, existing: media, hotelId: h.id);
+        await UAdminMediaSync.apply(photos: photos, existing: media, hotelId: h.id);
         return true;
       },
     );
@@ -171,8 +180,8 @@ abstract class UAdminPlaceDetails {
     final UHotelRoomResponse r = fetched?.result ?? item;
 
     final List<int> tags = List<int>.from(r.tags);
-    final UAdminMediaDraft draft = UAdminMediaDraft();
     final List<UMediaResponse> media = (r.media ?? <UMediaResponse>[]).sortedForGallery();
+    final UFilePickerController photos = UAdminMediaSync.controller(media);
 
     await _open(
       title: "${U.s.detailsAndPhotos} — ${r.title}",
@@ -182,7 +191,16 @@ abstract class UAdminPlaceDetails {
         children: <Widget>[
           UAdminSection(
             title: U.s.photos,
-            children: <Widget>[UAdminMediaManager(media: media, draft: draft)],
+            children: <Widget>[
+              UFilePicker(
+                controller: photos,
+                selectFileTitle: U.s.addPhotos,
+                allowedExtensions: UAdminMediaSync.extensions,
+                categoryTitle: U.s.photoCategory,
+                categories: UAdminMediaSync.categories,
+                selectCover: true,
+              ),
+            ],
           ),
           UAdminSection(
             title: U.s.details,
@@ -202,7 +220,7 @@ abstract class UAdminPlaceDetails {
           p: UHotelRoomUpdateParams(id: r.id, tags: tags),
         );
         if (!_isOk(ok, error, exception)) return false;
-        await UAdminMediaSync.apply(draft: draft, existing: media, hotelRoomId: r.id);
+        await UAdminMediaSync.apply(photos: photos, existing: media, hotelRoomId: r.id);
         return true;
       },
     );
@@ -233,8 +251,8 @@ abstract class UAdminPlaceDetails {
     final TextEditingController walk = TextEditingController(text: d.universityWalkMinutes?.toString());
     final TextEditingController policies = TextEditingController(text: d.policies);
     final TextEditingController howToGetThere = TextEditingController(text: d.howToGetThere);
-    final UAdminMediaDraft draft = UAdminMediaDraft();
     final List<UMediaResponse> media = (dorm.media ?? <UMediaResponse>[]).sortedForGallery();
+    final UFilePickerController photos = UAdminMediaSync.controller(media);
 
     await _open(
       title: "${U.s.detailsAndPhotos} — ${dorm.title}",
@@ -251,7 +269,16 @@ abstract class UAdminPlaceDetails {
           ),
           UAdminSection(
             title: U.s.photos,
-            children: <Widget>[UAdminMediaManager(media: media, draft: draft)],
+            children: <Widget>[
+              UFilePicker(
+                controller: photos,
+                selectFileTitle: U.s.addPhotos,
+                allowedExtensions: UAdminMediaSync.extensions,
+                categoryTitle: U.s.photoCategory,
+                categories: UAdminMediaSync.categories,
+                selectCover: true,
+              ),
+            ],
           ),
           UAdminSection(
             title: U.s.details,
@@ -319,7 +346,7 @@ abstract class UAdminPlaceDetails {
           ),
         );
         if (!_isOk(ok, error, exception)) return false;
-        await UAdminMediaSync.apply(draft: draft, existing: media, dormId: dorm.id);
+        await UAdminMediaSync.apply(photos: photos, existing: media, dormId: dorm.id);
         return true;
       },
     );
@@ -337,8 +364,8 @@ abstract class UAdminPlaceDetails {
     final UDormRoomResponse r = fetched?.result ?? item;
 
     final List<int> tags = List<int>.from(r.tags);
-    final UAdminMediaDraft draft = UAdminMediaDraft();
     final List<UMediaResponse> media = (r.media ?? <UMediaResponse>[]).sortedForGallery();
+    final UFilePickerController photos = UAdminMediaSync.controller(media);
 
     await _open(
       title: "${U.s.detailsAndPhotos} — ${r.title}",
@@ -348,7 +375,16 @@ abstract class UAdminPlaceDetails {
         children: <Widget>[
           UAdminSection(
             title: U.s.photos,
-            children: <Widget>[UAdminMediaManager(media: media, draft: draft)],
+            children: <Widget>[
+              UFilePicker(
+                controller: photos,
+                selectFileTitle: U.s.addPhotos,
+                allowedExtensions: UAdminMediaSync.extensions,
+                categoryTitle: U.s.photoCategory,
+                categories: UAdminMediaSync.categories,
+                selectCover: true,
+              ),
+            ],
           ),
           UAdminSection(
             title: U.s.amenities,
@@ -364,7 +400,7 @@ abstract class UAdminPlaceDetails {
           p: UDormRoomUpdateParams(id: r.id, tags: tags),
         );
         if (!_isOk(ok, error, exception)) return false;
-        await UAdminMediaSync.apply(draft: draft, existing: media, dormRoomId: r.id);
+        await UAdminMediaSync.apply(photos: photos, existing: media, dormRoomId: r.id);
         return true;
       },
     );
@@ -382,8 +418,8 @@ abstract class UAdminPlaceDetails {
     final UDormBedResponse b = fetched?.result ?? item;
 
     final List<int> tags = List<int>.from(b.tags);
-    final UAdminMediaDraft draft = UAdminMediaDraft();
     final List<UMediaResponse> media = (b.media ?? <UMediaResponse>[]).sortedForGallery();
+    final UFilePickerController photos = UAdminMediaSync.controller(media);
 
     await _open(
       title: "${U.s.detailsAndPhotos} — ${b.title}",
@@ -393,7 +429,16 @@ abstract class UAdminPlaceDetails {
         children: <Widget>[
           UAdminSection(
             title: U.s.photos,
-            children: <Widget>[UAdminMediaManager(media: media, draft: draft)],
+            children: <Widget>[
+              UFilePicker(
+                controller: photos,
+                selectFileTitle: U.s.addPhotos,
+                allowedExtensions: UAdminMediaSync.extensions,
+                categoryTitle: U.s.photoCategory,
+                categories: UAdminMediaSync.categories,
+                selectCover: true,
+              ),
+            ],
           ),
           UAdminSection(
             title: U.s.details,
@@ -409,7 +454,7 @@ abstract class UAdminPlaceDetails {
           p: UDormBedUpdateParams(id: b.id, tags: tags),
         );
         if (!_isOk(ok, error, exception)) return false;
-        await UAdminMediaSync.apply(draft: draft, existing: media, dormBedId: b.id);
+        await UAdminMediaSync.apply(photos: photos, existing: media, dormBedId: b.id);
         return true;
       },
     );
