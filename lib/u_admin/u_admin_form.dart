@@ -18,8 +18,6 @@ abstract class UAdminForm {
           ],
         );
 
-  static Widget fields(List<Widget> children, {double minFieldWidth = 240}) => UAdminResponsiveGrid(minTileWidth: minFieldWidth, spacing: 10, runSpacing: 4, children: children);
-
   static Widget sectionTitle(String title) => UColumn(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[

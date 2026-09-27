@@ -182,44 +182,6 @@ abstract class UAdminTable {
       ),
     ],
   );
-
-  // The mobile card row (UContainer + dense ListTile) used by every list page.
-  static Widget mobileTile(BuildContext context, {required int index, required IconData icon, required String title, required List<Widget> subtitle, Widget? trailing, VoidCallback? onTap}) =>
-      UContainer(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-        margin: const EdgeInsets.symmetric(vertical: 4),
-        color: index.isOdd ? Theme.of(context).colorScheme.surface : Theme.of(context).colorScheme.primary.withValues(alpha: 0.12),
-        radius: 8,
-        child: ListTile(
-          dense: true,
-          onTap: onTap,
-          leading: Icon(icon),
-          title: UTextBodyMedium(title),
-          subtitle: UColumn(crossAxisAlignment: CrossAxisAlignment.start, children: subtitle),
-          trailing: trailing,
-        ),
-      );
-}
-
-class UAdminSortHeader extends StatelessWidget {
-  const UAdminSortHeader({required this.title, required this.onTap, this.direction, super.key});
-
-  final String title;
-  final VoidCallback onTap;
-  final bool? direction;
-
-  @override
-  Widget build(BuildContext context) => URow(
-    onTap: onTap,
-    mainAxisAlignment: MainAxisAlignment.center,
-    expanded: 1,
-    children: <Widget>[
-      Flexible(
-        child: UTextBodyLarge(title, color: Theme.of(context).colorScheme.onPrimary, textAlign: .center, maxLines: 1, overflow: TextOverflow.ellipsis),
-      ),
-      if (direction != null) Icon(direction! ? Icons.arrow_upward : Icons.arrow_downward, size: 16, color: Theme.of(context).colorScheme.onPrimary),
-    ],
-  );
 }
 
 class _AdminListError extends StatelessWidget {

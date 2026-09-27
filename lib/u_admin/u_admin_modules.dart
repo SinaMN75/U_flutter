@@ -15,59 +15,20 @@ class UAdminModule {
 }
 
 class UAdminGroup {
-  UAdminGroup({
-    required this.title,
-    required this.icon,
-    this.modules = const <UAdminModule>[],
-    this.groups = const <UAdminGroup>[],
-    this.id,
-    this.header,
-    this.roles,
-    this.expanded = false,
-  });
+  UAdminGroup({required this.title, required this.icon, required this.modules, this.header, this.roles});
 
   final String title;
   final IconData icon;
   final List<UAdminModule> modules;
-  final List<UAdminGroup> groups;
-  final String? id;
   final String? header;
-  final bool expanded;
   final List<TagUser>? roles;
 
-  String get resolvedId => id ?? title;
-
-  List<UMenuEntry> _children() {
-    final List<UMenuEntry> children = <UMenuEntry>[];
-    for (final UAdminModule m in modules.where((UAdminModule m) => m.visible)) {
-      children.add(m.toItem());
-    }
-    for (final UAdminGroup g in groups) {
-      final UMenuGroup? sub = g._toGroup();
-      if (sub != null) children.add(sub);
-    }
-    return children;
-  }
-
-  UMenuGroup? _toGroup() {
-    if (!UAdmin.canAccess(roles)) return null;
-    final List<UMenuEntry> children = _children();
-    if (children.isEmpty) return null;
-    return UMenuGroup(
-      id: resolvedId,
-      title: title,
-      icon: icon,
-      initiallyExpanded: expanded,
-      children: children,
-    );
-  }
-
   List<UMenuEntry> toEntries() {
-    final UMenuGroup? group = _toGroup();
-    if (group == null) return <UMenuEntry>[];
+    final List<UMenuEntry> items = modules.where((UAdminModule m) => m.visible).map((UAdminModule m) => m.toItem()).toList();
+    if (!UAdmin.canAccess(roles) || items.isEmpty) return <UMenuEntry>[];
     return <UMenuEntry>[
       if (header != null) UMenuHeader(header!),
-      group,
+      UMenuGroup(id: title, title: title, icon: icon, children: items),
     ];
   }
 }

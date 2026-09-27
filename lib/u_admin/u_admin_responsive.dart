@@ -1,22 +1,12 @@
 part of "u_admin.dart";
 
-enum UAdminScreenType { mobile, tablet, desktop }
-
 extension UAdminResponsiveContext on BuildContext {
-  UAdminScreenType get screenType {
+  bool get isMobileWidth => MediaQuery.sizeOf(this).width < 720;
+
+  double get pagePadding {
     final double w = MediaQuery.sizeOf(this).width;
-    if (w < 720) return UAdminScreenType.mobile;
-    if (w < 1100) return UAdminScreenType.tablet;
-    return UAdminScreenType.desktop;
+    return w < 720 ? 12 : (w < 1100 ? 20 : 28);
   }
-
-  bool get isMobileWidth => screenType == UAdminScreenType.mobile;
-
-  bool get isTabletWidth => screenType == UAdminScreenType.tablet;
-
-  bool get isDesktopWidth => screenType == UAdminScreenType.desktop;
-
-  double get pagePadding => isMobileWidth ? 12 : (isTabletWidth ? 20 : 28);
 
   double dialogWidth({double max = 420}) {
     final double available = MediaQuery.sizeOf(this).width - 48;
@@ -27,12 +17,6 @@ extension UAdminResponsiveContext on BuildContext {
     final double available = MediaQuery.sizeOf(this).height - 96;
     return available < max ? available : max;
   }
-
-  T responsive<T>({required T mobile, required T desktop, T? tablet}) => switch (screenType) {
-    UAdminScreenType.mobile => mobile,
-    UAdminScreenType.tablet => tablet ?? desktop,
-    UAdminScreenType.desktop => desktop,
-  };
 }
 
 class UAdminResponsiveGrid extends StatelessWidget {
