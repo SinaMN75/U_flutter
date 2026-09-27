@@ -1,4 +1,4 @@
-import "package:u/utilities.dart";
+part of "../../u_admin.dart";
 
 class UAdminFinancialOpsDashboardPage extends StatefulWidget {
   const UAdminFinancialOpsDashboardPage({super.key});
@@ -13,10 +13,10 @@ class UAdminFinancialOpsDashboardPage extends StatefulWidget {
   );
 
   @override
-  State<UAdminFinancialOpsDashboardPage> createState() => _FinancialOpsDashboardPageState();
+  State<UAdminFinancialOpsDashboardPage> createState() => _UAdminFinancialOpsDashboardPageState();
 }
 
-class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardPage> {
+class _UAdminFinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardPage> {
   final UAdminFinancialOpsDashboardController c = UAdminFinancialOpsDashboardController();
 
   @override
@@ -37,11 +37,11 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
   Widget build(BuildContext context) => UScaffold(
     appBar: AppBar(
       title: Text("${U.s.financialOperations} ⚡"),
-      actions: <Widget>[IconButton(icon: const Icon(Icons.refresh_rounded), tooltip: U.s.refresh, onPressed: c.load)],
+      actions: <Widget>[IconButton(icon: const Icon(Icons.refresh_rounded), tooltip: U.s.refresh, onPressed: c.read)],
     ),
     body: UAdminPageBody(
       child: UObx(() {
-        if (c.state.value.isError()) return TextButton(onPressed: c.load, child: Text(U.s.retry)).alignAtCenter();
+        if (c.state.value.isError()) return TextButton(onPressed: c.read, child: Text(U.s.retry)).alignAtCenter();
         if (!c.state.value.isLoaded()) return const CircularProgressIndicator().alignAtCenter();
         final UFinancialOpsDashboardResponse r = c.report.value!;
         return SingleChildScrollView(
@@ -95,21 +95,21 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
 
   Widget _entityCards(UFinancialOpsDashboardResponse r) => UAdminResponsiveGrid(
     children: <Widget>[
-      UAdminDashboard.statCard(U.s.users, r.usersCount.separate3By3(), "+${r.newUsersCount} ${U.s.new_}", Icons.people_alt_rounded, UAdminTheme.indigo, UAdminUsersPage.open),
-      UAdminDashboard.statCard(U.s.merchants, r.merchantsCount.separate3By3(), "+${r.newMerchantsCount} ${U.s.new_}", Icons.storefront_rounded, UAdminTheme.orange, UAdminMerchantsPage.open),
+      UAdminDashboard.statCard(U.s.users, r.usersCount.separate3By3(), "+${r.newUsersCount} ${U.s.new_}", Icons.people_alt_rounded, UAdminTheme.indigo, UAdminPaymentUserPage.open),
+      UAdminDashboard.statCard(U.s.merchants, r.merchantsCount.separate3By3(), "+${r.newMerchantsCount} ${U.s.new_}", Icons.storefront_rounded, UAdminTheme.orange, UAdminPaymentMerchantPage.open),
       UAdminDashboard.statCard(
         U.s.terminals,
         r.terminalsCount.separate3By3(),
         "${r.terminalsAssignedCount} ${U.s.assigned}",
         Icons.point_of_sale_rounded,
         UAdminTheme.green,
-        UAdminTerminalsPage.open,
+        UAdminPaymentTerminalPage.open,
       ),
-      UAdminDashboard.statCard(U.s.transactions, r.txnCount.separate3By3(), "+${r.newTxnCount} ${U.s.new_}", Icons.swap_horiz_rounded, UAdminTheme.pink, UAdminTransactionsPage.open),
+      UAdminDashboard.statCard(U.s.transactions, r.txnCount.separate3By3(), "+${r.newTxnCount} ${U.s.new_}", Icons.swap_horiz_rounded, UAdminTheme.pink, UAdminWalletTransactionPage.open),
       UAdminDashboard.statCard(U.s.wallets, r.walletsCount.separate3By3(), r.totalWalletBalance.rial(), Icons.account_balance_wallet_rounded, UAdminTheme.blueGrey, UAdminWalletPage.open),
       UAdminDashboard.statCard(U.s.moneyIn, r.totalIn.rial(), "", Icons.south_west_rounded, UAdminTheme.green, null),
       UAdminDashboard.statCard(U.s.moneyOut, r.totalOut.rial(), "", Icons.north_east_rounded, UAdminTheme.red, null),
-      UAdminDashboard.statCard(U.s.unassignedTerminals, r.terminalsUnassignedCount.separate3By3(), "", Icons.link_off_rounded, UAdminTheme.grey, UAdminTerminalsPage.open),
+      UAdminDashboard.statCard(U.s.unassignedTerminals, r.terminalsUnassignedCount.separate3By3(), "", Icons.link_off_rounded, UAdminTheme.grey, UAdminPaymentTerminalPage.open),
     ],
   );
 
@@ -205,7 +205,7 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
             const Icon(Icons.workspace_premium_rounded, size: 20),
             const SizedBox(width: 8),
             UTextTitleSmall(U.s.topMerchantsByTerminalCount, fontWeight: FontWeight.w700, expanded: 1),
-            TextButton(onPressed: UAdminMerchantsPage.open, child: Text(U.s.merchants)),
+            TextButton(onPressed: UAdminPaymentMerchantPage.open, child: Text(U.s.merchants)),
           ],
         ),
         const Divider(height: 16),
@@ -253,7 +253,7 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
             const Icon(Icons.receipt_long_rounded, size: 20),
             const SizedBox(width: 8),
             UTextTitleSmall(U.s.recentTransactions, fontWeight: FontWeight.w700, expanded: 1),
-            TextButton(onPressed: UAdminTransactionsPage.open, child: Text(U.s.transactions)),
+            TextButton(onPressed: UAdminWalletTransactionPage.open, child: Text(U.s.transactions)),
           ],
         ),
         const Divider(height: 16),
@@ -293,7 +293,7 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
                 const Icon(Icons.storefront_rounded, size: 20),
                 const SizedBox(width: 8),
                 UTextTitleSmall(U.s.recentlyOnboardedMerchants, fontWeight: FontWeight.w700, expanded: 1),
-                TextButton(onPressed: UAdminMerchantsPage.open, child: Text(U.s.merchants)),
+                TextButton(onPressed: UAdminPaymentMerchantPage.open, child: Text(U.s.merchants)),
               ],
             ),
             const Divider(height: 16),
@@ -325,7 +325,7 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
                 const Icon(Icons.person_add_alt_1_rounded, size: 20),
                 const SizedBox(width: 8),
                 Text(U.s.recentlyJoined, style: const TextStyle(fontWeight: FontWeight.w700)).expanded(),
-                TextButton(onPressed: UAdminUsersPage.open, child: Text(U.s.users)),
+                TextButton(onPressed: UAdminPaymentUserPage.open, child: Text(U.s.users)),
               ],
             ),
             const Divider(height: 16),

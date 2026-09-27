@@ -541,6 +541,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cached => 'Cached';
 
   @override
+  String get cacheHitRatio => 'Cache hit ratio';
+
+  @override
   String get calculationBreakdown => 'Calculation breakdown';
 
   @override
@@ -835,6 +838,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get connectionLost => 'Connection lost';
 
   @override
+  String get connectionsByState => 'Connections by state';
+
+  @override
   String get connectionToNetworkWasNotPossible => 'Connection to Network was Not possible';
 
   @override
@@ -899,6 +905,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get copy => 'Copy';
+
+  @override
+  String get copyJson => 'Copy JSON';
 
   @override
   String get copyThisTokenNowItIsShownOnlyOnce => 'Copy this token now, it is shown only once';
@@ -1079,7 +1088,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dashboard => 'Dashboard';
 
   @override
+  String get data => 'Data';
+
+  @override
+  String get database => 'Database';
+
+  @override
   String get databaseConsole => 'Database Console';
+
+  @override
+  String get databaseSize => 'Database size';
 
   @override
   String get date => 'Date';
@@ -1108,6 +1126,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get daysOverdue => 'Days Overdue';
 
   @override
+  String get deadRowsVacuum => 'Dead rows (vacuum)';
+
+  @override
   String get debit => 'Debit';
 
   @override
@@ -1132,6 +1153,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String deleteItem(Object item) {
     return 'Delete $item';
   }
+
+  @override
+  String get deleteRow => 'Delete row';
+
+  @override
+  String get deleteThisRowCannotBeUndone => 'Delete this row? This cannot be undone.';
 
   @override
   String get deposit => 'Deposit';
@@ -1351,6 +1378,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get editProfile => 'Edit profile';
+
+  @override
+  String get editRow => 'Edit row';
 
   @override
   String get electricityWaterGas => 'Electricity, water, gas';
@@ -1699,6 +1729,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get foreigners => 'Foreigners';
 
   @override
+  String get foreignKeys => 'Foreign Keys';
+
+  @override
   String get forgotPassword => 'Forgot password';
 
   @override
@@ -2029,6 +2062,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get importHostConfig => 'Import host config';
 
   @override
+  String get indexes => 'Indexes';
+
+  @override
+  String get indexUsage => 'Index usage';
+
+  @override
   String get inPerson => 'In person';
 
   @override
@@ -2087,6 +2126,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get insertLink => 'Insert Link';
+
+  @override
+  String get insertRow => 'Insert row';
 
   @override
   String get insertTable => 'Insert Table';
@@ -2257,6 +2299,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get later => 'Later';
 
   @override
+  String get latitude => 'Latitude';
+
+  @override
   String get leaveMaskedToKeepTheCurrentValue => 'Leave masked to keep the current value';
 
   @override
@@ -2360,6 +2405,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get logs => 'Logs';
+
+  @override
+  String get longitude => 'Longitude';
 
   @override
   String get lookAroundToFindASurface => 'Look around to find a surface';
@@ -2606,6 +2654,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get newFile => 'New';
+
+  @override
+  String get noRows => 'No rows';
+
+  @override
+  String get noRowsMatchTheFilter => 'No rows match the filter.';
+
+  @override
+  String get noStructure => 'No structure';
+
+  @override
+  String get noTables => 'No tables';
+
+  @override
+  String get noTableSelected => 'No table selected';
 
   @override
   String get nUp => 'Pages per sheet';
@@ -3203,6 +3266,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get photos => 'Photos';
 
   @override
+  String get pickATableToBrowseOrOpenQuery => 'Pick a table from the left to browse and edit its data, or open the Query tab.';
+
+  @override
   String get pickYourDatesToSeePrices => 'Pick your dates to see prices';
 
   @override
@@ -3421,6 +3487,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get quarterly => 'Quarterly';
 
   @override
+  String get query => 'Query';
+
+  @override
   String get queryString => 'Query String';
 
   @override
@@ -3434,6 +3503,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get quote => 'Quote';
+
+  @override
+  String get recentRowsSelected => 'Recent rows (selected)';
+
+  @override
+  String get refreshTables => 'Refresh tables';
 
   @override
   String get reInquiryWithFee => 'Re-inquiry (with fee)';
@@ -3571,6 +3646,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get rejectionReason => 'Rejection Reason';
+
+  @override
+  String get reload => 'Reload';
 
   @override
   String get remaining => 'Remaining';
@@ -3779,10 +3857,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get roundUpToAFullHour => 'Round up to a full hour';
 
   @override
+  String get rowCountsPerTable => 'Row counts per table';
+
+  @override
+  String get rowDetails => 'Row details';
+
+  @override
   String get rows => 'Rows';
 
   @override
+  String get rowsPerPage => 'Rows per page';
+
+  @override
   String get rules => 'Rules';
+
+  @override
+  String get run => 'Run';
 
   @override
   String get saturation => 'Saturation';
@@ -3869,6 +3959,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get searchResults => 'Search results';
 
   @override
+  String get searchTables => 'Search tables';
+
+  @override
   String get searchVehicle => 'Search vehicle';
 
   @override
@@ -3893,6 +3986,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String selectAItem(Object item) {
     return 'Select a $item';
   }
+
+  @override
+  String get selectATableToGetStarted => 'Select a table to get started';
 
   @override
   String get selectAUserToManageTheirWallet => 'Select a user to manage their wallet';
@@ -4095,6 +4191,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get smsToCustomer => 'SMS to customer';
 
   @override
+  String get snippets => 'Snippets';
+
+  @override
   String get socialMedia => 'Social Media';
 
   @override
@@ -4125,6 +4224,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String spotSpotIsReservedForThisPlate(Object spot) {
     return 'Spot $spot is reserved for this plate.';
   }
+
+  @override
+  String get sqlEditor => 'SQL Editor';
+
+  @override
+  String get sqlQuery => 'SQL Query';
 
   @override
   String get square => 'Square';
@@ -4206,6 +4311,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get strong => 'Strong';
+
+  @override
+  String get structure => 'Structure';
 
   @override
   String get subAdmin => 'Sub Admin';
@@ -4301,6 +4409,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get table => 'Table';
 
   @override
+  String get tableSizes => 'Table sizes';
+
+  @override
   String get tags => 'Tags';
 
   @override
@@ -4308,6 +4419,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tapAddInTheTopRightCorner => 'Tap \"Add\" in the top-right corner';
+
+  @override
+  String get tapTheMenuToPickATable => 'Tap the menu to pick a table, or open the Query tab.';
 
   @override
   String get tapTheShareButtonInSafarisToolbar => 'Tap the Share button in Safari\'s toolbar';
@@ -4515,6 +4629,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get thisServiceWillLaunchSoon => 'This service will launch soon';
+
+  @override
+  String get thisTableIsEmpty => 'This table is empty.';
 
   @override
   String get thisVehicleHasAReservation => 'This vehicle has a reservation';

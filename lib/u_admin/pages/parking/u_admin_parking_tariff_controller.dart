@@ -2,7 +2,7 @@ part of "../../u_admin.dart";
 
 /// Tariffs are one row per parking + vehicle type, carrying both the hourly rates and the
 /// subscription prices, so the list is short and edited in place.
-class UAdminParkingTariffController extends UBaseController {
+class UAdminParkingTariffController extends UAdminBaseController {
   List<UParkingTariffResponse> list = <UParkingTariffResponse>[];
   UParkingResponse? parking;
 
@@ -36,7 +36,7 @@ class UAdminParkingTariffController extends UBaseController {
       onOk: (UResponse<List<UParkingTariffResponse>> r) {
         list = r.result ?? <UParkingTariffResponse>[];
         setTotalPages(r.totalCount);
-        setListState(isEmpty: list.isEmpty);
+        list.isEmpty ? state.emptying() : state.loaded();
       },
       onError: (UEmptyResponse e) => setError(e.message),
       onException: setError,
@@ -58,29 +58,28 @@ class UAdminParkingTariffController extends UBaseController {
     perMinuteAfterFirstHour = t?.perMinuteAfterFirstHour ?? true;
   }
 
-  Future<bool> save() async {
-    final dynamic ok = await submit(
-      UServices.parking.createParkingTariff(
-        p: UParkingTariffCreateParams(
-          parkingId: parkingId,
-          vehicleType: vehicleType.number,
-          tags: <int>[TagParkingTariff.hourly.number, TagParkingTariff.subscription.number],
-          entrancePrice: numOf(entranceController) ?? 0,
-          dayHourlyPrice: numOf(dayHourlyController) ?? 0,
-          nightHourlyPrice: numOf(nightHourlyController) ?? 0,
-          dailyCap: numOf(dailyCapController) ?? 0,
-          weeklyPrice: numOf(weeklyController) ?? 0,
-          monthlyPrice: numOf(monthlyController) ?? 0,
-          quarterlyPrice: numOf(quarterlyController) ?? 0,
-          freeMinutes: intOf(freeMinutesController) ?? 0,
-          roundToFullHour: roundToFullHour,
-          perMinuteAfterFirstHour: perMinuteAfterFirstHour,
+  Future<bool> save() async =>
+      await submit(
+        UServices.parking.createParkingTariff(
+          p: UParkingTariffCreateParams(
+            parkingId: parkingId,
+            vehicleType: vehicleType.number,
+            tags: <int>[TagParkingTariff.hourly.number, TagParkingTariff.subscription.number],
+            entrancePrice: numOf(entranceController) ?? 0,
+            dayHourlyPrice: numOf(dayHourlyController) ?? 0,
+            nightHourlyPrice: numOf(nightHourlyController) ?? 0,
+            dailyCap: numOf(dailyCapController) ?? 0,
+            weeklyPrice: numOf(weeklyController) ?? 0,
+            monthlyPrice: numOf(monthlyController) ?? 0,
+            quarterlyPrice: numOf(quarterlyController) ?? 0,
+            freeMinutes: intOf(freeMinutesController) ?? 0,
+            roundToFullHour: roundToFullHour,
+            perMinuteAfterFirstHour: perMinuteAfterFirstHour,
+          ),
         ),
-      ),
-      read,
-    );
-    return ok != null;
-  }
+        read,
+      ) !=
+      null;
 
   void delete(UParkingTariffResponse i) => confirmAction(() => UServices.parking.deleteParkingTariff(p: UIdParams(id: i.id)), read);
 

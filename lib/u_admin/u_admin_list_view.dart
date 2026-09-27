@@ -81,9 +81,6 @@ abstract class UAdminTable {
   // A single primary-colored, centered header cell (use [flex] for wider columns).
   static Widget headerCell(String title, {int flex = 1}) => UTextBodyLarge(title, color: UAdminTheme.white, textAlign: TextAlign.center, expanded: flex);
 
-  // Primary-colored, centered header cells from column titles (all equal width).
-  static List<Widget> header(List<String> titles) => titles.map(headerCell).toList();
-
   // A centered body cell for a desktop row (use [flex] to match a wider header column).
   static Widget cell(String text, {int flex = 1}) => UTextBodyMedium(text, textAlign: TextAlign.center, expanded: flex);
 

@@ -1,7 +1,7 @@
 part of "../../u_admin.dart";
 
 // Parking reports (vehicle sessions): read-only list, optionally scoped to one parking.
-class UAdminParkingReportController extends UBaseController {
+class UAdminParkingReportController extends UAdminBaseController {
   List<UParkingReportResponse> list = <UParkingReportResponse>[];
 
   // Optional page-context scope: only this parking's reports.
@@ -28,7 +28,7 @@ class UAdminParkingReportController extends UBaseController {
       onOk: (UResponse<List<UParkingReportResponse>> r) {
         list = r.result ?? <UParkingReportResponse>[];
         setTotalPages(r.totalCount);
-        setListState(isEmpty: list.isEmpty);
+        list.isEmpty ? state.emptying() : state.loaded();
       },
       onError: (UEmptyResponse e) => setError(e.message),
       onException: setError,

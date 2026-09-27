@@ -1,6 +1,6 @@
 part of "../../u_admin.dart";
 
-class UAdminWalletController extends UBaseController {
+class UAdminWalletController extends UAdminBaseController {
   final URxn<UUserResponse> selectedUser = URxn<UUserResponse>();
 
   final URxList<UWalletResponse> wallets = <UWalletResponse>[].obs;
@@ -33,36 +33,16 @@ class UAdminWalletController extends UBaseController {
     state.loading();
     await UServices.wallet.readByUserId(
       p: UIdParams(id: u.id),
-      onOk: (UResponse<List<UWalletResponse>> r) {
+      onOk: (UResponse<List<UWalletResponse>> r) async {
         wallets.value = r.result ?? <UWalletResponse>[];
         state.loaded();
-        _loadTxns();
-        _loadSummary();
+        final (UResponse<List<UWalletTxnResponse>>? t, UEmptyResponse? e, String? x) = await UServices.wallet.readTxn(p: UWalletTxnReadParams(userId: u.id, pageSize: 50, pageNumber: 1));
+        if (t == null) UToast.error(message: e?.message ?? x ?? U.s.errorReadingData);
+        txns.value = t?.result ?? <UWalletTxnResponse>[];
+        summary.value = (await UServices.accounting.report(p: UAccountingReportParams(userId: u.id))).$1?.result;
       },
       onError: (UEmptyResponse e) => setError(e.message),
       onException: setError,
-    );
-  }
-
-  Future<void> _loadTxns() async {
-    final UUserResponse? u = selectedUser.value;
-    if (u == null) return;
-    await UServices.wallet.readTxn(
-      p: UWalletTxnReadParams(userId: u.id, pageSize: 50, pageNumber: 1),
-      onOk: (UResponse<List<UWalletTxnResponse>> r) => txns.value = r.result ?? <UWalletTxnResponse>[],
-      onError: (UEmptyResponse e) => UToast.error(message: e.message),
-      onException: (String e) => UToast.error(message: e),
-    );
-  }
-
-  Future<void> _loadSummary() async {
-    final UUserResponse? u = selectedUser.value;
-    if (u == null) return;
-    await UServices.accounting.report(
-      p: UAccountingReportParams(userId: u.id),
-      onOk: (UResponse<UAccountingReportResponse> r) => summary.value = r.result,
-      onError: (UEmptyResponse e) {},
-      onException: (String e) {},
     );
   }
 
@@ -78,7 +58,7 @@ class UAdminWalletController extends UBaseController {
       UToast.error(message: U.s.selectAItem(U.s.receiver));
       return false;
     }
-    final dynamic ok = await submit(
+    return await submit(
       UServices.wallet.transfer(
         p: UWalletTransferParams(
           senderId: selectedUser.value?.id,
@@ -89,8 +69,8 @@ class UAdminWalletController extends UBaseController {
         ),
       ),
       read,
-    );
-    return ok != null;
+    ) !=
+        null;
   }
 
   @override

@@ -1,9 +1,9 @@
-import "package:u/utilities.dart";
+part of "../../u_admin.dart";
 
 class UAdminParkingPage extends StatefulWidget {
   const UAdminParkingPage({super.key});
 
-  static void open() => U.addOrSwitchTab(U.s.parkingManagement, const UAdminParkingPage());
+  static void open() => U.addOrSwitchTab(U.s.parking, const UAdminParkingPage());
 
   static UAdminModule module({List<TagUser>? roles}) => UAdminModule(
     title: U.s.parking,
@@ -57,7 +57,7 @@ class _UAdminParkingPageState extends State<UAdminParkingPage> {
         UAdminTable.headerCell(U.s.operations),
       ],
       desktopRow: _itemDesktop,
-      mobileRow: _itemResponsive,
+      mobileRow: _itemMobile,
     ),
   );
 
@@ -78,7 +78,7 @@ class _UAdminParkingPageState extends State<UAdminParkingPage> {
     ],
   );
 
-  Widget _itemResponsive(UParkingResponse i, int index) => UAdminTable.mobileCard(
+  Widget _itemMobile(UParkingResponse i, int index) => UAdminTable.mobileCard(
     icon: Icons.local_parking_rounded,
     title: i.title,
     trailing: _menu(i),

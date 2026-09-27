@@ -1,6 +1,6 @@
 part of "../../u_admin.dart";
 
-class UAdminApiLogController extends UBaseController {
+class UAdminApiLogController extends UAdminBaseController {
   UAdminApiLogController() {
     pageSize = 25;
   }
@@ -10,6 +10,7 @@ class UAdminApiLogController extends UBaseController {
   final URx<String> bucket = "hour".obs;
 
   final URxn<UOsMetricsResponse> osMetrics = URxn<UOsMetricsResponse>();
+  final URxState statsState = URxState();
   final URxState osMetricsState = URxState();
   Timer? _osMetricsTimer;
 
@@ -27,19 +28,19 @@ class UAdminApiLogController extends UBaseController {
   Future<void> init() async {
     tagOrderBy(TagOrderBy.createdAtDescending);
     startOsMetricsPolling();
-    await refreshAll();
+    await read();
   }
 
-  Future<void> refreshAll() async {
-    await Future.wait<void>(<Future<void>>[search(), loadStats()]);
+  Future<void> read() async {
+    await Future.wait<void>(<Future<void>>[search(), readStats()]);
   }
 
   void startOsMetricsPolling() {
-    loadOsMetrics();
-    _osMetricsTimer = Timer.periodic(const Duration(seconds: 15), (_) => loadOsMetrics());
+    readOsMetrics();
+    _osMetricsTimer = Timer.periodic(const Duration(seconds: 15), (_) => readOsMetrics());
   }
 
-  Future<void> loadOsMetrics() async {
+  Future<void> readOsMetrics() async {
     if (osMetrics.value == null) osMetricsState.loading();
     await UServices.dashboard.readOsMetrics(
       onOk: (UResponse<UOsMetricsResponse> r) {
@@ -53,6 +54,7 @@ class UAdminApiLogController extends UBaseController {
 
   @override
   void dispose() {
+    statsState.dispose();
     pathContainsController.dispose();
     statusCodeController.dispose();
     userIdController.dispose();
@@ -94,34 +96,34 @@ class UAdminApiLogController extends UBaseController {
       onOk: (UResponse<List<UApiLogResponse>> r) {
         list(r.result ?? <UApiLogResponse>[]);
         setTotalPages(r.totalCount);
-        setListState(isEmpty: list.isEmpty);
+        list.isEmpty ? state.emptying() : state.loaded();
       },
       onError: (UEmptyResponse e) => setError(e.message),
       onException: setError,
     );
   }
 
-  Future<void> loadStats() async {
-    state2.loading();
+  Future<void> readStats() async {
+    statsState.loading();
     await UServices.dashboard.apiLogStats(
       p: UApiLogStatsParams(fromCreatedAt: startDate, toCreatedAt: endDate, bucket: bucket.value),
       onOk: (UResponse<UApiLogStatsResponse> r) {
         stats.value = r.result;
-        state2.loaded();
+        statsState.loaded();
       },
-      onError: (UEmptyResponse e) => state2.error(),
-      onException: (String e) => state2.error(),
+      onError: (UEmptyResponse e) => statsState.error(),
+      onException: (String e) => statsState.error(),
     );
   }
 
   void refreshList() {
-    firstPage();
+    pageNumber(1);
     search();
   }
 
   void applyFilters() {
-    firstPage();
-    refreshAll();
+    pageNumber(1);
+    read();
   }
 
   void clearFilters() {
@@ -143,7 +145,7 @@ class UAdminApiLogController extends UBaseController {
 
   void setBucket(String b) {
     bucket(b);
-    loadStats();
+    readStats();
   }
 
   void openDetail(UApiLogResponse item, Function(UApiLogResponse detail) onOk) {
@@ -168,7 +170,7 @@ class UAdminApiLogController extends UBaseController {
   final URxList<String> appLogs = <String>[].obs;
   final URxState appLogsState = URxState();
 
-  Future<void> loadAppLogs() async {
+  Future<void> readAppLogs() async {
     appLogsState.loading();
     await UServices.dashboard.readAppLogs(
       onOk: (List<String> r) {

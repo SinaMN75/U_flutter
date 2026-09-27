@@ -1,6 +1,6 @@
 part of "../../u_admin.dart";
 
-class UAdminParkingStaffController extends UBaseController {
+class UAdminParkingStaffController extends UAdminBaseController {
   List<UParkingStaffResponse> list = <UParkingStaffResponse>[];
   UParkingResponse? parking;
 
@@ -39,7 +39,7 @@ class UAdminParkingStaffController extends UBaseController {
       onOk: (UResponse<List<UParkingStaffResponse>> r) {
         list = r.result ?? <UParkingStaffResponse>[];
         setTotalPages(r.totalCount);
-        setListState(isEmpty: list.isEmpty);
+        list.isEmpty ? state.emptying() : state.loaded();
       },
       onError: (UEmptyResponse e) => setError(e.message),
       onException: setError,
@@ -64,7 +64,7 @@ class UAdminParkingStaffController extends UBaseController {
 
   Future<bool> save() async {
     final UParkingStaffResponse? s = editing;
-    final dynamic ok = await submit(
+    return await submit(
       s == null
           ? UServices.parking.createParkingStaff(
               p: UParkingStaffCreateParams(
@@ -89,8 +89,8 @@ class UAdminParkingStaffController extends UBaseController {
               ),
             ),
       read,
-    );
-    return ok != null;
+    ) !=
+        null;
   }
 
   void delete(UParkingStaffResponse i) => confirmAction(() => UServices.parking.deleteParkingStaff(p: UIdParams(id: i.id)), read, message: U.s.areYouSureToDeleteThisUser);

@@ -1,4 +1,4 @@
-import "package:u/utilities.dart";
+part of "../../u_admin.dart";
 
 class UAdminParkingStaffPage extends StatefulWidget {
   const UAdminParkingStaffPage({super.key, this.parking});
@@ -61,7 +61,7 @@ class _UAdminParkingStaffPageState extends State<UAdminParkingStaffPage> {
         UAdminTable.headerCell(U.s.operations),
       ],
       desktopRow: _itemDesktop,
-      mobileRow: _itemResponsive,
+      mobileRow: _itemMobile,
     ),
   );
 
@@ -85,7 +85,7 @@ class _UAdminParkingStaffPageState extends State<UAdminParkingStaffPage> {
     ],
   );
 
-  Widget _itemResponsive(UParkingStaffResponse i, int index) => UAdminTable.mobileCard(
+  Widget _itemMobile(UParkingStaffResponse i, int index) => UAdminTable.mobileCard(
     icon: Icons.badge_outlined,
     title: _name(i),
     trailing: _menu(i),

@@ -1,6 +1,6 @@
 part of "../../u_admin.dart";
 
-class UAdminGoldController extends UBaseController {
+class UAdminGoldController extends UAdminBaseController {
   final URxn<UGoldAccountResponse> account = URxn<UGoldAccountResponse>();
   final URxn<UGoldQuoteResponse> quote = URxn<UGoldQuoteResponse>();
   final URxList<UGoldBalanceResponse> balances = <UGoldBalanceResponse>[].obs;
@@ -24,13 +24,9 @@ class UAdminGoldController extends UBaseController {
   final TextEditingController tokenScopesController = TextEditingController(text: "trade,read");
   final TextEditingController tokenIpsController = TextEditingController();
 
-  void init() {
-    readOverview();
-    readOrders();
-    readTransactions();
-    readLimits();
-    readTokens();
-  }
+  void init() => read();
+
+  Future<void> read() => Future.wait<void>(<Future<void>>[readOverview(), readOrders(), readTransactions(), readLimits(), readTokens()]);
 
   Future<void> readOverview() async {
     state.loading();
@@ -128,8 +124,7 @@ class UAdminGoldController extends UBaseController {
       return false;
     }
     final UResponse<UGoldApiTokenResponse>? ok =
-        await submit(UServices.gold.createApiToken(p: UGoldCreateApiTokenParams(scopes: scopes, label: tokenLabelController.text.trim(), ipWhitelist: ips.isEmpty ? null : ips)), readTokens)
-            as UResponse<UGoldApiTokenResponse>?;
+        await submit(UServices.gold.createApiToken(p: UGoldCreateApiTokenParams(scopes: scopes, label: tokenLabelController.text.trim(), ipWhitelist: ips.isEmpty ? null : ips)), readTokens);
     final String? raw = ok?.result?.rawToken;
     if (raw != null) {
       unawaited(UClipboard.set(raw));

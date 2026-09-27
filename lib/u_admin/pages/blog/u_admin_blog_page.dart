@@ -1,4 +1,4 @@
-import "package:u/utilities.dart";
+part of "../../u_admin.dart";
 
 class UAdminBlogPage extends StatefulWidget {
   const UAdminBlogPage({super.key});
@@ -13,10 +13,10 @@ class UAdminBlogPage extends StatefulWidget {
   );
 
   @override
-  State<UAdminBlogPage> createState() => _BlogPageState();
+  State<UAdminBlogPage> createState() => _UAdminBlogPageState();
 }
 
-class _BlogPageState extends State<UAdminBlogPage> {
+class _UAdminBlogPageState extends State<UAdminBlogPage> {
   final UAdminBlogController c = UAdminBlogController();
 
   @override
@@ -57,7 +57,7 @@ class _BlogPageState extends State<UAdminBlogPage> {
         UAdminTable.headerCell(U.s.operations),
       ],
       desktopRow: _itemDesktop,
-      mobileRow: _itemResponsive,
+      mobileRow: _itemMobile,
     ),
   );
 
@@ -75,7 +75,7 @@ class _BlogPageState extends State<UAdminBlogPage> {
     ],
   );
 
-  Widget _itemResponsive(UBlogResponse i, int index) => UAdminTable.mobileCard(
+  Widget _itemMobile(UBlogResponse i, int index) => UAdminTable.mobileCard(
     leading: i.media?.firstOrNull?.url != null ? SizedBox(width: 44, height: 44, child: UImage(i.media!.first.url!, borderRadius: 12)) : UAdminTable.leadingIcon(Icons.article_outlined),
     title: i.title,
     badge: UAdminTable.statusChip(label: _isPublished(i) ? U.s.published : U.s.draft, color: _isPublished(i) ? UAdminTheme.green : UAdminTheme.grey),

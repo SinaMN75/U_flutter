@@ -1,9 +1,9 @@
 part of "../../u_admin.dart";
 
-class UAdminParkingSubscriptionController extends UBaseController {
+class UAdminParkingSubscriptionController extends UAdminBaseController {
   List<UParkingSubscriptionResponse> list = <UParkingSubscriptionResponse>[];
   UParkingResponse? parking;
-  final URxnBool isActive = URxnBool(true);
+  bool isActive = true;
   final TextEditingController queryController = TextEditingController();
 
   final TextEditingController nameController = TextEditingController();
@@ -24,8 +24,8 @@ class UAdminParkingSubscriptionController extends UBaseController {
       p: UParkingSubscriptionReadParams(
         parkingId: parking?.id,
         query: queryController.trimmedLatin().nullIfEmpty(),
-        isActive: isActive.value == true ? true : null,
-        isExpired: isActive.value == false ? true : null,
+        isActive: isActive ? true : null,
+        isExpired: isActive ? null : true,
         pageNumber: pageNumber.value,
         pageSize: pageSize,
         selectorArgs: const UParkingSubscriptionSelectorArgs(vehicle: UVehicleSelectorArgs(), creator: UUserSelectorArgs()),
@@ -33,11 +33,23 @@ class UAdminParkingSubscriptionController extends UBaseController {
       onOk: (UResponse<List<UParkingSubscriptionResponse>> r) {
         list = r.result ?? <UParkingSubscriptionResponse>[];
         setTotalPages(r.totalCount);
-        setListState(isEmpty: list.isEmpty);
+        list.isEmpty ? state.emptying() : state.loaded();
       },
       onError: (UEmptyResponse e) => setError(e.message),
       onException: setError,
     );
+  }
+
+  void applyFilters() {
+    pageNumber(1);
+    read();
+  }
+
+  void clearFilters() {
+    queryController.clear();
+    isActive = true;
+    pageNumber(1);
+    read();
   }
 
   void loadForm() {
@@ -51,7 +63,7 @@ class UAdminParkingSubscriptionController extends UBaseController {
 
   Future<bool> save() async {
     if (plate.length < 6) return false;
-    final dynamic ok = await submit(
+    return await submit(
       UServices.parking.createParkingSubscription(
         p: UParkingSubscriptionCreateParams(
           parkingId: parking?.id ?? "",
@@ -64,8 +76,8 @@ class UAdminParkingSubscriptionController extends UBaseController {
         ),
       ),
       read,
-    );
-    return ok != null;
+    ) !=
+        null;
   }
 
   void renew(UParkingSubscriptionResponse i) {
@@ -87,7 +99,6 @@ class UAdminParkingSubscriptionController extends UBaseController {
     nameController.dispose();
     phoneController.dispose();
     priceController.dispose();
-    isActive.dispose();
     super.dispose();
   }
 }

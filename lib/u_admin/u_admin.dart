@@ -1,100 +1,90 @@
 import "package:u/utilities.dart";
 
 part "pages/analytics/u_admin_financial_ops_dashboard_controller.dart";
-
+part "pages/analytics/u_admin_financial_ops_dashboard_page.dart";
 part "pages/blog/u_admin_blog_controller.dart";
-
-part "pages/contents/u_admin_contents_controller.dart";
-
+part "pages/blog/u_admin_blog_page.dart";
+part "pages/content/u_admin_content_controller.dart";
+part "pages/content/u_admin_content_page.dart";
 part "pages/gold/u_admin_gold_controller.dart";
-
-part "pages/hotel/contracts/u_admin_contract_controller.dart";
-
-part "pages/hotel/dashboard/u_admin_hotel_dashboard_controller.dart";
-
-part "pages/hotel/dorm_beds/u_admin_dorm_bed_controller.dart";
-
-part "pages/hotel/dorm_rooms/u_admin_dorm_room_controller.dart";
-
-part "pages/hotel/dorms/u_admin_dorm_controller.dart";
-
-part "pages/hotel/hotel_room/u_admin_hotel_room_controller.dart";
-
-part "pages/hotel/hotels/u_admin_hotel_controller.dart";
-
-part "pages/hotel/invoices/u_admin_invoice_controller.dart";
-
-part "pages/hotel/reservations/u_admin_reservation_controller.dart";
-
-part "pages/hotel/reviews/u_admin_review_controller.dart";
-
-part "pages/hotel/users/u_admin_users_controller.dart";
-
-part "pages/payments/users/user_detail/u_admin_user_detail_controller.dart";
-
+part "pages/gold/u_admin_gold_page.dart";
+part "pages/hotel/u_admin_hotel_contract_controller.dart";
+part "pages/hotel/u_admin_hotel_contract_page.dart";
+part "pages/hotel/u_admin_hotel_controller.dart";
+part "pages/hotel/u_admin_hotel_dashboard_controller.dart";
+part "pages/hotel/u_admin_hotel_dashboard_page.dart";
+part "pages/hotel/u_admin_hotel_dorm_bed_controller.dart";
+part "pages/hotel/u_admin_hotel_dorm_bed_page.dart";
+part "pages/hotel/u_admin_hotel_dorm_controller.dart";
+part "pages/hotel/u_admin_hotel_dorm_page.dart";
+part "pages/hotel/u_admin_hotel_dorm_room_controller.dart";
+part "pages/hotel/u_admin_hotel_dorm_room_page.dart";
+part "pages/hotel/u_admin_hotel_invoice_controller.dart";
+part "pages/hotel/u_admin_hotel_invoice_page.dart";
+part "pages/hotel/u_admin_hotel_page.dart";
+part "pages/hotel/u_admin_hotel_reservation_controller.dart";
+part "pages/hotel/u_admin_hotel_reservation_page.dart";
+part "pages/hotel/u_admin_hotel_review_controller.dart";
+part "pages/hotel/u_admin_hotel_review_page.dart";
+part "pages/hotel/u_admin_hotel_room_controller.dart";
+part "pages/hotel/u_admin_hotel_room_page.dart";
+part "pages/hotel/u_admin_hotel_user_controller.dart";
+part "pages/hotel/u_admin_hotel_user_detail_controller.dart";
+part "pages/hotel/u_admin_hotel_user_detail_dialog.dart";
+part "pages/hotel/u_admin_hotel_user_page.dart";
 part "pages/login/u_admin_login_controller.dart";
-
+part "pages/login/u_admin_login_page.dart";
 part "pages/logs/u_admin_api_log_controller.dart";
-
+part "pages/logs/u_admin_api_log_page.dart";
 part "pages/parking/u_admin_parking_controller.dart";
-
+part "pages/parking/u_admin_parking_page.dart";
 part "pages/parking/u_admin_parking_plate_flag_controller.dart";
-
+part "pages/parking/u_admin_parking_plate_flag_page.dart";
 part "pages/parking/u_admin_parking_report_controller.dart";
-
+part "pages/parking/u_admin_parking_report_page.dart";
 part "pages/parking/u_admin_parking_shift_controller.dart";
-
+part "pages/parking/u_admin_parking_shift_page.dart";
 part "pages/parking/u_admin_parking_staff_controller.dart";
-
+part "pages/parking/u_admin_parking_staff_page.dart";
 part "pages/parking/u_admin_parking_subscription_controller.dart";
-
+part "pages/parking/u_admin_parking_subscription_page.dart";
 part "pages/parking/u_admin_parking_tariff_controller.dart";
-
-part "pages/payments/merchants/u_admin_merchant_controller.dart";
-
-part "pages/payments/moadi/u_admin_moadi_controller.dart";
-
-part "pages/payments/terminals/u_admin_terminal_controller.dart";
-
-part "pages/payments/terminals/u_admin_terminals_page.dart";
-
-part "pages/payments/terminal_brands/u_admin_terminals_brands_page.dart";
-
-part "pages/payments/terminal_brands/u_admin_terminal_brands_controller.dart";
-
-part "pages/payments/terminal_brokers/u_admin_terminals_brokers_page.dart";
-
-part "pages/payments/terminal_brokers/u_admin_terminal_brokers_controller.dart";
-
-part "pages/payments/users/u_admin_payment_users_controller.dart";
-
+part "pages/parking/u_admin_parking_tariff_page.dart";
+part "pages/payment/u_admin_payment_merchant_controller.dart";
+part "pages/payment/u_admin_payment_merchant_page.dart";
+part "pages/payment/u_admin_payment_moadi_controller.dart";
+part "pages/payment/u_admin_payment_moadi_page.dart";
+part "pages/payment/u_admin_payment_terminal_brand_controller.dart";
+part "pages/payment/u_admin_payment_terminal_brand_page.dart";
+part "pages/payment/u_admin_payment_terminal_broker_controller.dart";
+part "pages/payment/u_admin_payment_terminal_broker_page.dart";
+part "pages/payment/u_admin_payment_terminal_controller.dart";
+part "pages/payment/u_admin_payment_terminal_page.dart";
+part "pages/payment/u_admin_payment_user_controller.dart";
+part "pages/payment/u_admin_payment_user_detail_controller.dart";
+part "pages/payment/u_admin_payment_user_detail_dialog.dart";
+part "pages/payment/u_admin_payment_user_page.dart";
+part "pages/settings/u_admin_app_settings_page.dart";
+part "pages/settings/u_admin_settings_page.dart";
 part "pages/splash/u_admin_splash_controller.dart";
-
 part "pages/splash/u_admin_splash_page.dart";
-
-part "pages/wallet/u_admin_accounting_controller.dart";
-
-part "pages/wallet/u_admin_transactions_controller.dart";
-
+part "pages/tools/u_admin_tool_barcode_page.dart";
+part "pages/tools/u_admin_tool_crypto_page.dart";
+part "pages/tools/u_admin_tool_database_page.dart";
+part "pages/tools/u_admin_tool_file_manager_page.dart";
+part "pages/tools/u_admin_tool_pn_page.dart";
+part "pages/wallet/u_admin_wallet_accounting_controller.dart";
+part "pages/wallet/u_admin_wallet_accounting_page.dart";
 part "pages/wallet/u_admin_wallet_controller.dart";
-
-
+part "pages/wallet/u_admin_wallet_page.dart";
+part "pages/wallet/u_admin_wallet_transaction_controller.dart";
+part "pages/wallet/u_admin_wallet_transaction_page.dart";
 part "u_admin_app.dart";
-
 part "u_admin_base_controller.dart";
-
 part "u_admin_config.dart";
-
-part "u_admin_list_view.dart";
-
-part "u_admin_modules.dart";
-
-
-
 part "u_admin_dashboard.dart";
-
+part "u_admin_list_view.dart";
+part "u_admin_modules.dart";
 part "u_admin_responsive.dart";
-
 part "u_admin_scaffold.dart";
-
 part "u_admin_shell.dart";

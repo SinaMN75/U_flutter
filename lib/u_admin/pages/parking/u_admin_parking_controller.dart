@@ -1,6 +1,6 @@
 part of "../../u_admin.dart";
 
-class UAdminParkingController extends UBaseController {
+class UAdminParkingController extends UAdminBaseController {
   List<UParkingResponse> list = <UParkingResponse>[];
 
   UParkingResponse? editing;
@@ -28,7 +28,7 @@ class UAdminParkingController extends UBaseController {
       onOk: (UResponse<List<UParkingResponse>> r) {
         list = r.result ?? <UParkingResponse>[];
         setTotalPages(r.totalCount);
-        setListState(isEmpty: list.isEmpty);
+        list.isEmpty ? state.emptying() : state.loaded();
       },
       onError: (UEmptyResponse e) => setError(e.message),
       onException: setError,
@@ -54,7 +54,7 @@ class UAdminParkingController extends UBaseController {
     final TagParking on = disabled ? TagParking.disabled : TagParking.active;
     final TagParking off = disabled ? TagParking.active : TagParking.disabled;
     final List<String> adminUserIds = admins.map((UUserResponse u) => u.id).toList();
-    final dynamic ok = await submit(
+    return await submit(
       p == null
           ? UServices.parking.createParking(
               p: UParkingCreateParams(
@@ -86,8 +86,8 @@ class UAdminParkingController extends UBaseController {
               ),
             ),
       read,
-    );
-    return ok != null;
+    ) !=
+        null;
   }
 
   void delete(UParkingResponse i) => confirmAction(() => UServices.parking.deleteParking(p: UIdParams(id: i.id)), read);

@@ -1,8 +1,7 @@
 part of "u_admin.dart";
 
-abstract class UBaseController {
+abstract class UAdminBaseController {
   final URxState state = URxState();
-  final URxState state2 = URxState();
   final GlobalKey<FormState> formKey = GlobalKey();
 
   int totalCount = 0;
@@ -22,18 +21,9 @@ abstract class UBaseController {
     totalPages((count / pageSize).ceil().clamp(1, 1 << 30));
   }
 
-  void firstPage() => pageNumber(1);
-
-  void setListState({required bool isEmpty}) => isEmpty ? state.emptying() : state.loaded();
-
   void setError([String? message]) {
     state.error();
     if (message != null) UToast.error(message: message);
-  }
-
-  void reloadFirstPage(void Function() read) {
-    firstPage();
-    read();
   }
 
   void clearDates() {
@@ -44,14 +34,24 @@ abstract class UBaseController {
   }
 
   /// Awaits a service call's `(ok, error, exception)` result: on success toasts and runs [reload], otherwise toasts the error.
-  /// Returns the ok response (its `result` is the new id on create), or null on failure.
-  Future<dynamic> submit(Future<(dynamic, dynamic, String?)> call, VoidCallback? reload) async {
-    final (dynamic ok, dynamic error, String? exception) = await call;
+  /// Returns the ok response (on create its `result` is the new id), or null when it failed.
+  Future<T?> submit<T>(Future<(T?, Object?, String?)> call, VoidCallback? reload) async {
+    final (T? ok, Object? error, String? exception) = await call;
     if (ok == null) {
-      UToast.error(message: (error?.message as String?).nullIfEmpty() ?? exception.nullIfEmpty() ?? U.s.errorSubmittingForm);
+      final String? errorMessage = switch (error) {
+        final UEmptyResponse e => e.message,
+        final UResponse<dynamic> e => e.message,
+        _ => null,
+      };
+      UToast.error(message: errorMessage.nullIfEmpty() ?? exception.nullIfEmpty() ?? U.s.errorSubmittingForm);
       return null;
     }
-    UToast.snackBar(message: (ok.message as String?).nullIfEmpty() ?? U.s.submitted);
+    final String? okMessage = switch (ok) {
+      final UEmptyResponse r => r.message,
+      final UResponse<dynamic> r => r.message,
+      _ => null,
+    };
+    UToast.snackBar(message: okMessage.nullIfEmpty() ?? U.s.submitted);
     reload?.call();
     return ok;
   }
@@ -86,7 +86,6 @@ abstract class UBaseController {
   @mustCallSuper
   void dispose() {
     state.dispose();
-    state2.dispose();
     pageNumber.dispose();
     totalPages.dispose();
     tagOrderBy.dispose();

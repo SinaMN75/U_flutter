@@ -1136,6 +1136,12 @@ abstract class AppLocalizations {
   /// **'Cached'**
   String get cached;
 
+  /// No description provided for @cacheHitRatio.
+  ///
+  /// In en, this message translates to:
+  /// **'Cache hit ratio'**
+  String get cacheHitRatio;
+
   /// No description provided for @calculationBreakdown.
   ///
   /// In en, this message translates to:
@@ -1724,6 +1730,12 @@ abstract class AppLocalizations {
   /// **'Connection lost'**
   String get connectionLost;
 
+  /// No description provided for @connectionsByState.
+  ///
+  /// In en, this message translates to:
+  /// **'Connections by state'**
+  String get connectionsByState;
+
   /// No description provided for @connectionToNetworkWasNotPossible.
   ///
   /// In en, this message translates to:
@@ -1855,6 +1867,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Copy'**
   String get copy;
+
+  /// No description provided for @copyJson.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy JSON'**
+  String get copyJson;
 
   /// No description provided for @copyThisTokenNowItIsShownOnlyOnce.
   ///
@@ -2168,11 +2186,29 @@ abstract class AppLocalizations {
   /// **'Dashboard'**
   String get dashboard;
 
+  /// No description provided for @data.
+  ///
+  /// In en, this message translates to:
+  /// **'Data'**
+  String get data;
+
+  /// No description provided for @database.
+  ///
+  /// In en, this message translates to:
+  /// **'Database'**
+  String get database;
+
   /// No description provided for @databaseConsole.
   ///
   /// In en, this message translates to:
   /// **'Database Console'**
   String get databaseConsole;
+
+  /// No description provided for @databaseSize.
+  ///
+  /// In en, this message translates to:
+  /// **'Database size'**
+  String get databaseSize;
 
   /// No description provided for @date.
   ///
@@ -2222,6 +2258,12 @@ abstract class AppLocalizations {
   /// **'Days Overdue'**
   String get daysOverdue;
 
+  /// No description provided for @deadRowsVacuum.
+  ///
+  /// In en, this message translates to:
+  /// **'Dead rows (vacuum)'**
+  String get deadRowsVacuum;
+
   /// No description provided for @debit.
   ///
   /// In en, this message translates to:
@@ -2269,6 +2311,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delete {item}'**
   String deleteItem(Object item);
+
+  /// No description provided for @deleteRow.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete row'**
+  String get deleteRow;
+
+  /// No description provided for @deleteThisRowCannotBeUndone.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this row? This cannot be undone.'**
+  String get deleteThisRowCannotBeUndone;
 
   /// No description provided for @deposit.
   ///
@@ -2695,6 +2749,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Edit profile'**
   String get editProfile;
+
+  /// No description provided for @editRow.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit row'**
+  String get editRow;
 
   /// No description provided for @electricityWaterGas.
   ///
@@ -3362,6 +3422,12 @@ abstract class AppLocalizations {
   /// **'Foreigners'**
   String get foreigners;
 
+  /// No description provided for @foreignKeys.
+  ///
+  /// In en, this message translates to:
+  /// **'Foreign Keys'**
+  String get foreignKeys;
+
   /// No description provided for @forgotPassword.
   ///
   /// In en, this message translates to:
@@ -4010,6 +4076,18 @@ abstract class AppLocalizations {
   /// **'Import host config'**
   String get importHostConfig;
 
+  /// No description provided for @indexes.
+  ///
+  /// In en, this message translates to:
+  /// **'Indexes'**
+  String get indexes;
+
+  /// No description provided for @indexUsage.
+  ///
+  /// In en, this message translates to:
+  /// **'Index usage'**
+  String get indexUsage;
+
   /// No description provided for @inPerson.
   ///
   /// In en, this message translates to:
@@ -4129,6 +4207,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Insert Link'**
   String get insertLink;
+
+  /// No description provided for @insertRow.
+  ///
+  /// In en, this message translates to:
+  /// **'Insert row'**
+  String get insertRow;
 
   /// No description provided for @insertTable.
   ///
@@ -4466,6 +4550,12 @@ abstract class AppLocalizations {
   /// **'Later'**
   String get later;
 
+  /// No description provided for @latitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Latitude'**
+  String get latitude;
+
   /// No description provided for @leaveMaskedToKeepTheCurrentValue.
   ///
   /// In en, this message translates to:
@@ -4675,6 +4765,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Logs'**
   String get logs;
+
+  /// No description provided for @longitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Longitude'**
+  String get longitude;
 
   /// No description provided for @lookAroundToFindASurface.
   ///
@@ -5167,6 +5263,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'New'**
   String get newFile;
+
+  /// No description provided for @noRows.
+  ///
+  /// In en, this message translates to:
+  /// **'No rows'**
+  String get noRows;
+
+  /// No description provided for @noRowsMatchTheFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'No rows match the filter.'**
+  String get noRowsMatchTheFilter;
+
+  /// No description provided for @noStructure.
+  ///
+  /// In en, this message translates to:
+  /// **'No structure'**
+  String get noStructure;
+
+  /// No description provided for @noTables.
+  ///
+  /// In en, this message translates to:
+  /// **'No tables'**
+  String get noTables;
+
+  /// No description provided for @noTableSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'No table selected'**
+  String get noTableSelected;
 
   /// No description provided for @nUp.
   ///
@@ -6350,6 +6476,12 @@ abstract class AppLocalizations {
   /// **'Photos'**
   String get photos;
 
+  /// No description provided for @pickATableToBrowseOrOpenQuery.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a table from the left to browse and edit its data, or open the Query tab.'**
+  String get pickATableToBrowseOrOpenQuery;
+
   /// No description provided for @pickYourDatesToSeePrices.
   ///
   /// In en, this message translates to:
@@ -6782,6 +6914,12 @@ abstract class AppLocalizations {
   /// **'Quarterly'**
   String get quarterly;
 
+  /// No description provided for @query.
+  ///
+  /// In en, this message translates to:
+  /// **'Query'**
+  String get query;
+
   /// No description provided for @queryString.
   ///
   /// In en, this message translates to:
@@ -6811,6 +6949,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Quote'**
   String get quote;
+
+  /// No description provided for @recentRowsSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent rows (selected)'**
+  String get recentRowsSelected;
+
+  /// No description provided for @refreshTables.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh tables'**
+  String get refreshTables;
 
   /// No description provided for @reInquiryWithFee.
   ///
@@ -7081,6 +7231,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Rejection Reason'**
   String get rejectionReason;
+
+  /// No description provided for @reload.
+  ///
+  /// In en, this message translates to:
+  /// **'Reload'**
+  String get reload;
 
   /// No description provided for @remaining.
   ///
@@ -7490,17 +7646,41 @@ abstract class AppLocalizations {
   /// **'Round up to a full hour'**
   String get roundUpToAFullHour;
 
+  /// No description provided for @rowCountsPerTable.
+  ///
+  /// In en, this message translates to:
+  /// **'Row counts per table'**
+  String get rowCountsPerTable;
+
+  /// No description provided for @rowDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Row details'**
+  String get rowDetails;
+
   /// No description provided for @rows.
   ///
   /// In en, this message translates to:
   /// **'Rows'**
   String get rows;
 
+  /// No description provided for @rowsPerPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Rows per page'**
+  String get rowsPerPage;
+
   /// No description provided for @rules.
   ///
   /// In en, this message translates to:
   /// **'Rules'**
   String get rules;
+
+  /// No description provided for @run.
+  ///
+  /// In en, this message translates to:
+  /// **'Run'**
+  String get run;
 
   /// No description provided for @saturation.
   ///
@@ -7670,6 +7850,12 @@ abstract class AppLocalizations {
   /// **'Search results'**
   String get searchResults;
 
+  /// No description provided for @searchTables.
+  ///
+  /// In en, this message translates to:
+  /// **'Search tables'**
+  String get searchTables;
+
   /// No description provided for @searchVehicle.
   ///
   /// In en, this message translates to:
@@ -7717,6 +7903,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select a {item}'**
   String selectAItem(Object item);
+
+  /// No description provided for @selectATableToGetStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a table to get started'**
+  String get selectATableToGetStarted;
 
   /// No description provided for @selectAUserToManageTheirWallet.
   ///
@@ -8114,6 +8306,12 @@ abstract class AppLocalizations {
   /// **'SMS to customer'**
   String get smsToCustomer;
 
+  /// No description provided for @snippets.
+  ///
+  /// In en, this message translates to:
+  /// **'Snippets'**
+  String get snippets;
+
   /// No description provided for @socialMedia.
   ///
   /// In en, this message translates to:
@@ -8173,6 +8371,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Spot {spot} is reserved for this plate.'**
   String spotSpotIsReservedForThisPlate(Object spot);
+
+  /// No description provided for @sqlEditor.
+  ///
+  /// In en, this message translates to:
+  /// **'SQL Editor'**
+  String get sqlEditor;
+
+  /// No description provided for @sqlQuery.
+  ///
+  /// In en, this message translates to:
+  /// **'SQL Query'**
+  String get sqlQuery;
 
   /// No description provided for @square.
   ///
@@ -8335,6 +8545,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Strong'**
   String get strong;
+
+  /// No description provided for @structure.
+  ///
+  /// In en, this message translates to:
+  /// **'Structure'**
+  String get structure;
 
   /// No description provided for @subAdmin.
   ///
@@ -8522,6 +8738,12 @@ abstract class AppLocalizations {
   /// **'Table'**
   String get table;
 
+  /// No description provided for @tableSizes.
+  ///
+  /// In en, this message translates to:
+  /// **'Table sizes'**
+  String get tableSizes;
+
   /// No description provided for @tags.
   ///
   /// In en, this message translates to:
@@ -8539,6 +8761,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tap \"Add\" in the top-right corner'**
   String get tapAddInTheTopRightCorner;
+
+  /// No description provided for @tapTheMenuToPickATable.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the menu to pick a table, or open the Query tab.'**
+  String get tapTheMenuToPickATable;
 
   /// No description provided for @tapTheShareButtonInSafarisToolbar.
   ///
@@ -8935,6 +9163,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This service will launch soon'**
   String get thisServiceWillLaunchSoon;
+
+  /// No description provided for @thisTableIsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'This table is empty.'**
+  String get thisTableIsEmpty;
 
   /// No description provided for @thisVehicleHasAReservation.
   ///

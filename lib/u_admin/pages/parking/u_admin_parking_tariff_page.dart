@@ -1,4 +1,4 @@
-import "package:u/utilities.dart";
+part of "../../u_admin.dart";
 
 class UAdminParkingTariffPage extends StatefulWidget {
   const UAdminParkingTariffPage({super.key, this.parking});
@@ -62,7 +62,7 @@ class _UAdminParkingTariffPageState extends State<UAdminParkingTariffPage> {
         UAdminTable.headerCell(U.s.operations),
       ],
       desktopRow: _itemDesktop,
-      mobileRow: _itemResponsive,
+      mobileRow: _itemMobile,
     ),
   );
 
@@ -83,7 +83,7 @@ class _UAdminParkingTariffPageState extends State<UAdminParkingTariffPage> {
     ],
   );
 
-  Widget _itemResponsive(UParkingTariffResponse i, int index) => UAdminTable.mobileCard(
+  Widget _itemMobile(UParkingTariffResponse i, int index) => UAdminTable.mobileCard(
     icon: Icons.request_quote_outlined,
     title: _vehicle(i),
     trailing: _menu(i),

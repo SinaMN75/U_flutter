@@ -1,4 +1,4 @@
-import "package:u/utilities.dart";
+part of "../../u_admin.dart";
 
 class UAdminParkingPlateFlagPage extends StatefulWidget {
   const UAdminParkingPlateFlagPage({super.key, this.parking});
@@ -61,7 +61,7 @@ class _UAdminParkingPlateFlagPageState extends State<UAdminParkingPlateFlagPage>
         UAdminTable.headerCell(U.s.operations),
       ],
       desktopRow: _itemDesktop,
-      mobileRow: _itemResponsive,
+      mobileRow: _itemMobile,
     ),
   );
 
@@ -81,7 +81,7 @@ class _UAdminParkingPlateFlagPageState extends State<UAdminParkingPlateFlagPage>
     ],
   );
 
-  Widget _itemResponsive(UParkingPlateFlagResponse i, int index) => UAdminTable.mobileCard(
+  Widget _itemMobile(UParkingPlateFlagResponse i, int index) => UAdminTable.mobileCard(
     icon: Icons.gpp_maybe_outlined,
     title: i.licencePlate,
     trailing: _menu(i),

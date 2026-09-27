@@ -1,6 +1,6 @@
 part of "../../u_admin.dart";
 
-class UAdminParkingShiftController extends UBaseController {
+class UAdminParkingShiftController extends UAdminBaseController {
   List<UParkingShiftResponse> list = <UParkingShiftResponse>[];
   UParkingResponse? parking;
 
@@ -23,7 +23,7 @@ class UAdminParkingShiftController extends UBaseController {
       onOk: (UResponse<List<UParkingShiftResponse>> r) {
         list = r.result ?? <UParkingShiftResponse>[];
         setTotalPages(r.totalCount);
-        setListState(isEmpty: list.isEmpty);
+        list.isEmpty ? state.emptying() : state.loaded();
       },
       onError: (UEmptyResponse e) => setError(e.message),
       onException: setError,

@@ -1,4 +1,4 @@
-import "package:u/utilities.dart";
+part of "../../u_admin.dart";
 
 class UAdminApiLogPage extends StatefulWidget {
   const UAdminApiLogPage({super.key});
@@ -13,10 +13,10 @@ class UAdminApiLogPage extends StatefulWidget {
   );
 
   @override
-  State<UAdminApiLogPage> createState() => _ApiLogPageState();
+  State<UAdminApiLogPage> createState() => _UAdminApiLogPageState();
 }
 
-class _ApiLogPageState extends State<UAdminApiLogPage> {
+class _UAdminApiLogPageState extends State<UAdminApiLogPage> {
   final UAdminApiLogController c = UAdminApiLogController();
 
   @override
@@ -41,7 +41,7 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
       actions: <Widget>[
         IconButton(tooltip: U.s.applicationLogs, icon: const Icon(Icons.terminal_rounded), onPressed: _openAppLogs),
         IconButton(tooltip: U.s.filter, icon: const Icon(Icons.tune_rounded), onPressed: _filter),
-        IconButton(tooltip: U.s.refresh, icon: const Icon(Icons.refresh_rounded), onPressed: c.refreshAll),
+        IconButton(tooltip: U.s.refresh, icon: const Icon(Icons.refresh_rounded), onPressed: c.read),
       ],
     ),
     body: UAdminPageBody(
@@ -95,9 +95,9 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
             trailing: UTextHeadlineSmall(U.s.apiRequestLogs, color: UAdminTheme.white, fontWeight: FontWeight.w800),
           ),
           const SizedBox(height: 16),
-          if (c.state2.value.isLoading())
+          if (c.statsState.value.isLoading())
             const CircularProgressIndicator(color: UAdminTheme.white).alignAtCenter().pSymmetric(vertical: 20)
-          else if (c.state2.value.isError())
+          else if (c.statsState.value.isError())
             UIconTextHorizontal(
               leading: const Icon(Icons.cloud_off_rounded, color: UAdminTheme.white),
               trailing: UTextBodyMedium(U.s.errorReadingData, color: UAdminTheme.white),
@@ -280,7 +280,7 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
 
   Widget _chartsSection() {
     final UApiLogStatsResponse? s = c.stats.value;
-    if (c.state2.value.isLoading() || s == null) return const SizedBox.shrink();
+    if (c.statsState.value.isLoading() || s == null) return const SizedBox.shrink();
     return _isWide
         ? URow(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -364,7 +364,7 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
 
   Widget _endpointsSection() {
     final UApiLogStatsResponse? s = c.stats.value;
-    if (c.state2.value.isLoading() || s == null) return const SizedBox.shrink();
+    if (c.statsState.value.isLoading() || s == null) return const SizedBox.shrink();
     return _isWide
         ? URow(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -394,7 +394,7 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
   );
 
   Widget _slowestRequestsSection() {
-    if (c.state2.value.isLoading() || c.stats.value == null) return const SizedBox.shrink();
+    if (c.statsState.value.isLoading() || c.stats.value == null) return const SizedBox.shrink();
     final List<UApiLogResponse> items = c.stats.value!.slowestRequests;
     return UContainer(
       padding: const EdgeInsets.all(18),
@@ -514,7 +514,7 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
         : UListView(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (BuildContext context, int index) => _itemResponsive(i: data[index], index: index),
+            itemBuilder: (BuildContext context, int index) => _itemMobile(i: data[index], index: index),
             itemCount: data.length,
           );
 
@@ -569,7 +569,7 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
     ],
   );
 
-  Widget _itemResponsive({required UApiLogResponse i, required int index}) => UContainer(
+  Widget _itemMobile({required UApiLogResponse i, required int index}) => UContainer(
     padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
     margin: const EdgeInsets.symmetric(vertical: 4),
     color: index.isOdd ? Theme.of(context).colorScheme.surface : Theme.of(context).colorScheme.primary.withValues(alpha: 0.12),
@@ -752,14 +752,14 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
   });
 
   void _openAppLogs() {
-    c.loadAppLogs();
+    c.readAppLogs();
     UNavigator.dialog(
       UScaffold(
         appBar: AppBar(
           title: Text(U.s.applicationLogs),
           leading: const IconButton(icon: Icon(Icons.close_rounded), onPressed: UNavigator.back),
           actions: <Widget>[
-            IconButton(tooltip: U.s.refresh, icon: const Icon(Icons.refresh_rounded), onPressed: c.loadAppLogs),
+            IconButton(tooltip: U.s.refresh, icon: const Icon(Icons.refresh_rounded), onPressed: c.readAppLogs),
             IconButton(tooltip: U.s.clearLogs, icon: const Icon(Icons.delete_sweep_rounded), color: UAdminTheme.red, onPressed: _confirmClearAppLogs),
           ],
         ),

@@ -1,4 +1,4 @@
-import "package:u/utilities.dart";
+part of "../../u_admin.dart";
 
 class UAdminParkingSubscriptionPage extends StatefulWidget {
   const UAdminParkingSubscriptionPage({super.key, this.parking});
@@ -39,6 +39,7 @@ class _UAdminParkingSubscriptionPageState extends State<UAdminParkingSubscriptio
   @override
   Widget build(BuildContext context) => UAdminScaffold(
     title: widget.parking == null ? U.s.subscriptions : "${U.s.subscriptions} · ${widget.parking!.title}",
+    onFilter: _filter,
     onCreate: widget.parking == null ? null : _form,
     pageNumber: c.pageNumber,
     totalPages: c.totalPages,
@@ -46,46 +47,36 @@ class _UAdminParkingSubscriptionPageState extends State<UAdminParkingSubscriptio
       c.pageNumber(page);
       c.read();
     },
-    body: UColumn(
-      children: <Widget>[
-        _filters(),
-        UAdminListView<UParkingSubscriptionResponse>(
-          state: c.state,
-          items: () => c.list,
-          totalCount: () => c.totalCount,
-          onRetry: c.read,
-          emptyText: U.s.noItemsFound(U.s.subscriptions),
-          desktopHeader: () => <Widget>[
-            UAdminTable.headerCell(U.s.licencePlate),
-            UAdminTable.headerCell(U.s.fullName, flex: 2),
-            UAdminTable.headerCell(U.s.subscriptionType),
-            UAdminTable.headerCell(U.s.amount),
-            UAdminTable.headerCell(U.s.validUntil),
-            UAdminTable.headerCell(U.s.operations),
-          ],
-          desktopRow: _itemDesktop,
-          mobileRow: _itemResponsive,
-        ).expanded(),
+    body: UAdminListView<UParkingSubscriptionResponse>(
+      state: c.state,
+      items: () => c.list,
+      totalCount: () => c.totalCount,
+      onRetry: c.read,
+      emptyText: U.s.noItemsFound(U.s.subscriptions),
+      desktopHeader: () => <Widget>[
+        UAdminTable.headerCell(U.s.licencePlate),
+        UAdminTable.headerCell(U.s.fullName, flex: 2),
+        UAdminTable.headerCell(U.s.subscriptionType),
+        UAdminTable.headerCell(U.s.amount),
+        UAdminTable.headerCell(U.s.validUntil),
+        UAdminTable.headerCell(U.s.operations),
       ],
+      desktopRow: _itemDesktop,
+      mobileRow: _itemMobile,
     ),
   );
 
-  Widget _filters() => URow(
-    spacing: 8,
-    padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-    children: <Widget>[
-      UTextField(controller: c.queryController, hintText: U.s.searchAndSelect, prefix: const Icon(Icons.search_rounded), expanded: 1),
-      UObx(
-        () => USegmentedControl<bool>(
-          items: <bool, String>{true: U.s.active, false: U.s.expired},
-          selectedValue: c.isActive.value ?? true,
-          onValueChanged: (bool? value) {
-            c.isActive(value ?? true);
-            c.reloadFirstPage(c.read);
-          },
-        ),
-      ),
-      UButton(title: U.s.search, onTap: () => c.reloadFirstPage(c.read)),
+  void _filter() => UFilterDialog.show(
+    title: U.s.filterItem(U.s.subscriptions),
+    onApply: c.applyFilters,
+    onClear: c.clearFilters,
+    children: (StateSetter setState) => <Widget>[
+      UTextField(controller: c.queryController, labelText: U.s.search, margin: const EdgeInsets.symmetric(vertical: 6)),
+      USegmentedControl<bool>(
+        items: <bool, String>{true: U.s.active, false: U.s.expired},
+        selectedValue: c.isActive,
+        onValueChanged: (bool? v) => setState(() => c.isActive = v ?? true),
+      ).pSymmetric(vertical: 6),
     ],
   );
 
@@ -105,7 +96,7 @@ class _UAdminParkingSubscriptionPageState extends State<UAdminParkingSubscriptio
     ],
   );
 
-  Widget _itemResponsive(UParkingSubscriptionResponse i, int index) => UAdminTable.mobileCard(
+  Widget _itemMobile(UParkingSubscriptionResponse i, int index) => UAdminTable.mobileCard(
     icon: Icons.card_membership_outlined,
     title: i.vehicle?.licencePlate ?? "-",
     trailing: _menu(i),

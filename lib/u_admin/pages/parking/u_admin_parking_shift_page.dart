@@ -1,4 +1,4 @@
-import "package:u/utilities.dart";
+part of "../../u_admin.dart";
 
 class UAdminParkingShiftPage extends StatefulWidget {
   const UAdminParkingShiftPage({super.key, this.parking});
@@ -79,7 +79,7 @@ class _UAdminParkingShiftPageState extends State<UAdminParkingShiftPage> {
             UAdminTable.headerCell(U.s.cashDifference),
           ],
           desktopRow: _itemDesktop,
-          mobileRow: _itemResponsive,
+          mobileRow: _itemMobile,
         ).expanded(),
       ],
     ),
@@ -101,7 +101,7 @@ class _UAdminParkingShiftPageState extends State<UAdminParkingShiftPage> {
     ],
   );
 
-  Widget _itemResponsive(UParkingShiftResponse i, int index) => UAdminTable.mobileCard(
+  Widget _itemMobile(UParkingShiftResponse i, int index) => UAdminTable.mobileCard(
     icon: Icons.point_of_sale_outlined,
     title: _operator(i),
     fields: <UAdminField>[

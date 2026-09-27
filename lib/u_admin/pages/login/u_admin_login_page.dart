@@ -1,4 +1,4 @@
-import "package:u/utilities.dart";
+part of "../../u_admin.dart";
 
 class UAdminLoginPage extends StatefulWidget {
   const UAdminLoginPage({super.key});

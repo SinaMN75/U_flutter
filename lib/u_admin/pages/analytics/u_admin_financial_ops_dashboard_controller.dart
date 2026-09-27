@@ -1,11 +1,11 @@
 part of "../../u_admin.dart";
 
-class UAdminFinancialOpsDashboardController extends UBaseController {
+class UAdminFinancialOpsDashboardController extends UAdminBaseController {
   final URxn<UFinancialOpsDashboardResponse> report = URxn<UFinancialOpsDashboardResponse>();
 
-  Future<void> init() => load();
+  Future<void> init() => read();
 
-  Future<void> load() async {
+  Future<void> read() async {
     state.loading();
     await UServices.dashboard.readFinancialOpsDashboard(
       p: UDashboardRangeParams(fromDate: startDate ?? DateTime.now().subtract(const Duration(days: 30)), toDate: endDate ?? DateTime.now()),

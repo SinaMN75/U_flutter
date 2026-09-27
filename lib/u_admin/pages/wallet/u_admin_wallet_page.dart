@@ -1,9 +1,9 @@
-import "package:u/utilities.dart";
+part of "../../u_admin.dart";
 
 class UAdminWalletPage extends StatefulWidget {
   const UAdminWalletPage({super.key});
 
-  static void open() => U.addOrSwitchTab(U.s.walletManagement, const UAdminWalletPage());
+  static void open() => U.addOrSwitchTab(U.s.wallets, const UAdminWalletPage());
 
   static UAdminModule module({List<TagUser>? roles}) => UAdminModule(
     title: U.s.wallets,
@@ -13,10 +13,10 @@ class UAdminWalletPage extends StatefulWidget {
   );
 
   @override
-  State<UAdminWalletPage> createState() => _WalletPageState();
+  State<UAdminWalletPage> createState() => _UAdminWalletPageState();
 }
 
-class _WalletPageState extends State<UAdminWalletPage> {
+class _UAdminWalletPageState extends State<UAdminWalletPage> {
   final UAdminWalletController c = UAdminWalletController();
 
   @override

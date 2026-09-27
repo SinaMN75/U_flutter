@@ -541,6 +541,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get cached => 'ذخیره‌شده';
 
   @override
+  String get cacheHitRatio => 'نرخ برخورد کش';
+
+  @override
   String get calculationBreakdown => 'ریز محاسبه';
 
   @override
@@ -835,6 +838,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get connectionLost => 'اتصال قطع است';
 
   @override
+  String get connectionsByState => 'اتصال‌ها بر اساس وضعیت';
+
+  @override
   String get connectionToNetworkWasNotPossible => 'ارتباط با اینترنت برقرار نیست';
 
   @override
@@ -899,6 +905,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get copy => 'کپی';
+
+  @override
+  String get copyJson => 'کپی JSON';
 
   @override
   String get copyThisTokenNowItIsShownOnlyOnce => 'همین حالا این توکن را ذخیره کنید؛ فقط یک بار نمایش داده می‌شود';
@@ -1079,7 +1088,16 @@ class AppLocalizationsFa extends AppLocalizations {
   String get dashboard => 'داشبورد';
 
   @override
+  String get data => 'داده‌ها';
+
+  @override
+  String get database => 'پایگاه داده';
+
+  @override
   String get databaseConsole => 'کنسول پایگاه داده';
+
+  @override
+  String get databaseSize => 'حجم پایگاه داده';
 
   @override
   String get date => 'تاریخ';
@@ -1108,6 +1126,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get daysOverdue => 'روز تأخیر';
 
   @override
+  String get deadRowsVacuum => 'ردیف‌های مرده (vacuum)';
+
+  @override
   String get debit => 'برداشت';
 
   @override
@@ -1132,6 +1153,12 @@ class AppLocalizationsFa extends AppLocalizations {
   String deleteItem(Object item) {
     return 'حذف $item';
   }
+
+  @override
+  String get deleteRow => 'حذف ردیف';
+
+  @override
+  String get deleteThisRowCannotBeUndone => 'این ردیف حذف شود؟ این کار قابل بازگشت نیست.';
 
   @override
   String get deposit => 'رهن';
@@ -1351,6 +1378,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get editProfile => 'ویرایش پروفایل';
+
+  @override
+  String get editRow => 'ویرایش ردیف';
 
   @override
   String get electricityWaterGas => 'برق، آب، گاز';
@@ -1699,6 +1729,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get foreigners => 'اتباع خارجی';
 
   @override
+  String get foreignKeys => 'کلیدهای خارجی';
+
+  @override
   String get forgotPassword => 'فراموشی رمز عبور';
 
   @override
@@ -2029,6 +2062,12 @@ class AppLocalizationsFa extends AppLocalizations {
   String get importHostConfig => 'درون‌ریزی تنظیمات مرکز';
 
   @override
+  String get indexes => 'ایندکس‌ها';
+
+  @override
+  String get indexUsage => 'میزان استفاده از ایندکس‌ها';
+
+  @override
   String get inPerson => 'حضوری';
 
   @override
@@ -2087,6 +2126,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get insertLink => 'درج پیوند';
+
+  @override
+  String get insertRow => 'افزودن ردیف';
 
   @override
   String get insertTable => 'درج جدول';
@@ -2257,6 +2299,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get later => 'بعداً';
 
   @override
+  String get latitude => 'عرض جغرافیایی';
+
+  @override
   String get leaveMaskedToKeepTheCurrentValue => 'برای حفظ مقدار فعلی، ماسک را تغییر ندهید';
 
   @override
@@ -2360,6 +2405,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get logs => 'لاگ‌ها';
+
+  @override
+  String get longitude => 'طول جغرافیایی';
 
   @override
   String get lookAroundToFindASurface => 'برای پیدا کردن یک سطح، اطراف را نگاه کنید';
@@ -2606,6 +2654,21 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get newFile => 'جدید';
+
+  @override
+  String get noRows => 'ردیفی وجود ندارد';
+
+  @override
+  String get noRowsMatchTheFilter => 'هیچ ردیفی با فیلتر مطابقت ندارد.';
+
+  @override
+  String get noStructure => 'ساختاری وجود ندارد';
+
+  @override
+  String get noTables => 'جدولی وجود ندارد';
+
+  @override
+  String get noTableSelected => 'جدولی انتخاب نشده است';
 
   @override
   String get nUp => 'صفحه در هر برگ';
@@ -3203,6 +3266,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get photos => 'تصاویر';
 
   @override
+  String get pickATableToBrowseOrOpenQuery => 'از سمت چپ یک جدول انتخاب کنید تا داده‌هایش را ببینید و ویرایش کنید، یا زبانه‌ی کوئری را باز کنید.';
+
+  @override
   String get pickYourDatesToSeePrices => 'تاریخ ورود و خروج را انتخاب کنید تا قیمت‌ها را ببینید';
 
   @override
@@ -3421,6 +3487,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get quarterly => 'فصلی';
 
   @override
+  String get query => 'کوئری';
+
+  @override
   String get queryString => 'رشته پرس‌وجو';
 
   @override
@@ -3434,6 +3503,12 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get quote => 'نقل قول';
+
+  @override
+  String get recentRowsSelected => 'ردیف‌های اخیر (جدول انتخاب‌شده)';
+
+  @override
+  String get refreshTables => 'بارگذاری دوباره‌ی جدول‌ها';
 
   @override
   String get reInquiryWithFee => 'استعلام مجدد (با پرداخت هزینه)';
@@ -3571,6 +3646,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get rejectionReason => 'دلیل رد';
+
+  @override
+  String get reload => 'بارگذاری دوباره';
 
   @override
   String get remaining => 'باقی‌مانده';
@@ -3779,10 +3857,22 @@ class AppLocalizationsFa extends AppLocalizations {
   String get roundUpToAFullHour => 'گرد کردن به ساعت کامل';
 
   @override
+  String get rowCountsPerTable => 'تعداد ردیف‌های هر جدول';
+
+  @override
+  String get rowDetails => 'جزئیات ردیف';
+
+  @override
   String get rows => 'ردیف‌ها';
 
   @override
+  String get rowsPerPage => 'تعداد ردیف در هر صفحه';
+
+  @override
   String get rules => 'قواعد';
+
+  @override
+  String get run => 'اجرا';
 
   @override
   String get saturation => 'اشباع رنگ';
@@ -3869,6 +3959,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get searchResults => 'نتایج جستجو';
 
   @override
+  String get searchTables => 'جستجوی جدول‌ها';
+
+  @override
   String get searchVehicle => 'جستجوی خودرو';
 
   @override
@@ -3893,6 +3986,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String selectAItem(Object item) {
     return 'انتخاب $item';
   }
+
+  @override
+  String get selectATableToGetStarted => 'برای شروع یک جدول انتخاب کنید';
 
   @override
   String get selectAUserToManageTheirWallet => 'برای مدیریت کیف پول، کاربری را انتخاب کنید';
@@ -4095,6 +4191,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get smsToCustomer => 'پیامک به مشتری';
 
   @override
+  String get snippets => 'قطعه‌کدها';
+
+  @override
   String get socialMedia => 'شبکه‌های اجتماعی';
 
   @override
@@ -4125,6 +4224,12 @@ class AppLocalizationsFa extends AppLocalizations {
   String spotSpotIsReservedForThisPlate(Object spot) {
     return 'جای پارک $spot برای این پلاک رزرو شده است.';
   }
+
+  @override
+  String get sqlEditor => 'ویرایشگر SQL';
+
+  @override
+  String get sqlQuery => 'کوئری SQL';
 
   @override
   String get square => 'مربع';
@@ -4206,6 +4311,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get strong => 'قوی';
+
+  @override
+  String get structure => 'ساختار';
 
   @override
   String get subAdmin => 'زیرمجموعه ادمین';
@@ -4301,6 +4409,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get table => 'جدول';
 
   @override
+  String get tableSizes => 'حجم جدول‌ها';
+
+  @override
   String get tags => 'برچسب‌ها';
 
   @override
@@ -4308,6 +4419,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get tapAddInTheTopRightCorner => 'در گوشه بالا-راست «افزودن» را بزنید';
+
+  @override
+  String get tapTheMenuToPickATable => 'از منو یک جدول انتخاب کنید یا زبانه‌ی کوئری را باز کنید.';
 
   @override
   String get tapTheShareButtonInSafarisToolbar => 'دکمه اشتراک‌گذاری را در نوار ابزار Safari بزنید';
@@ -4514,6 +4628,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get thisServiceWillLaunchSoon => 'این خدمت به زودی راه‌اندازی می‌شود';
+
+  @override
+  String get thisTableIsEmpty => 'این جدول خالی است.';
 
   @override
   String get thisVehicleHasAReservation => 'این خودرو رزرو دارد';

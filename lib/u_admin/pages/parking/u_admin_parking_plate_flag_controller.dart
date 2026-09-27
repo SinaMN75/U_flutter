@@ -1,6 +1,6 @@
 part of "../../u_admin.dart";
 
-class UAdminParkingPlateFlagController extends UBaseController {
+class UAdminParkingPlateFlagController extends UAdminBaseController {
   List<UParkingPlateFlagResponse> list = <UParkingPlateFlagResponse>[];
   UParkingResponse? parking;
 
@@ -27,7 +27,7 @@ class UAdminParkingPlateFlagController extends UBaseController {
       onOk: (UResponse<List<UParkingPlateFlagResponse>> r) {
         list = r.result ?? <UParkingPlateFlagResponse>[];
         setTotalPages(r.totalCount);
-        setListState(isEmpty: list.isEmpty);
+        list.isEmpty ? state.emptying() : state.loaded();
       },
       onError: (UEmptyResponse e) => setError(e.message),
       onException: setError,
@@ -44,7 +44,7 @@ class UAdminParkingPlateFlagController extends UBaseController {
 
   Future<bool> save() async {
     if (plate.length < 6) return false;
-    final dynamic ok = await submit(
+    return await submit(
       UServices.parking.createParkingPlateFlag(
         p: UParkingPlateFlagCreateParams(
           parkingId: parking?.id ?? "",
@@ -56,8 +56,8 @@ class UAdminParkingPlateFlagController extends UBaseController {
         ),
       ),
       read,
-    );
-    return ok != null;
+    ) !=
+        null;
   }
 
   void delete(UParkingPlateFlagResponse i) => confirmAction(() => UServices.parking.deleteParkingPlateFlag(p: UIdParams(id: i.id)), read);

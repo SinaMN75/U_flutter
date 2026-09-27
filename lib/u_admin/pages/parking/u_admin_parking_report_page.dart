@@ -1,4 +1,4 @@
-import "package:u/utilities.dart";
+part of "../../u_admin.dart";
 
 class UAdminParkingReportPage extends StatefulWidget {
   const UAdminParkingReportPage({super.key, this.parking});
@@ -45,7 +45,23 @@ class _UAdminParkingReportPageState extends State<UAdminParkingReportPage> {
       c.pageNumber(page);
       c.read();
     },
-    body: UColumn(children: <Widget>[_summary(), _list().expanded()]),
+    body: UColumn(children: <Widget>[_summary(), UAdminListView<UParkingReportResponse>(
+      state: c.state,
+      items: () => c.list,
+      totalCount: () => c.totalCount,
+      onRetry: c.read,
+      emptyText: U.s.noItemsFound(U.s.parkingReport),
+      desktopHeader: () => <Widget>[
+        UAdminTable.headerCell(U.s.parking, flex: 2),
+        UAdminTable.headerCell(U.s.licencePlate, flex: 2),
+        UAdminTable.headerCell(U.s.startDate),
+        UAdminTable.headerCell(U.s.endDate),
+        UAdminTable.headerCell(U.s.amount),
+        UAdminTable.headerCell(U.s.operations, flex: 0),
+      ],
+      desktopRow: _itemDesktop,
+      mobileRow: _itemMobile,
+    ).expanded()]),
   );
 
   Widget _summary() => UObx(() {
@@ -65,24 +81,6 @@ class _UAdminParkingReportPageState extends State<UAdminParkingReportPage> {
     );
   });
 
-  Widget _list() => UAdminListView<UParkingReportResponse>(
-    state: c.state,
-    items: () => c.list,
-    totalCount: () => c.totalCount,
-    onRetry: c.read,
-    emptyText: U.s.noItemsFound(U.s.parkingReport),
-    desktopHeader: () => <Widget>[
-      UAdminTable.headerCell(U.s.parking, flex: 2),
-      UAdminTable.headerCell(U.s.licencePlate, flex: 2),
-      UAdminTable.headerCell(U.s.startDate),
-      UAdminTable.headerCell(U.s.endDate),
-      UAdminTable.headerCell(U.s.amount),
-      UAdminTable.headerCell(U.s.operations, flex: 0),
-    ],
-    desktopRow: _itemDesktop,
-    mobileRow: _itemResponsive,
-  );
-
   Widget _itemDesktop(UParkingReportResponse i, int index) => URow(
     spacing: 8,
     color: UAdminTable.rowColor(context, index),
@@ -100,7 +98,7 @@ class _UAdminParkingReportPageState extends State<UAdminParkingReportPage> {
     ],
   );
 
-  Widget _itemResponsive(UParkingReportResponse i, int index) => UAdminTable.mobileCard(
+  Widget _itemMobile(UParkingReportResponse i, int index) => UAdminTable.mobileCard(
     icon: Icons.directions_car_rounded,
     title: i.vehicle?.licencePlate ?? "-",
     subtitle: i.parking?.title,

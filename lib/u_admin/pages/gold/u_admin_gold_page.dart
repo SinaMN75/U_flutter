@@ -1,4 +1,4 @@
-import "package:u/utilities.dart";
+part of "../../u_admin.dart";
 
 class UAdminGoldPage extends StatefulWidget {
   const UAdminGoldPage({super.key});
@@ -32,7 +32,7 @@ class _UAdminGoldPageState extends State<UAdminGoldPage> {
   @override
   Widget build(BuildContext context) => UAdminScaffold(
     title: U.s.gold,
-    extraActions: <Widget>[IconButton(icon: const Icon(Icons.refresh), tooltip: U.s.refresh, onPressed: c.init)],
+    extraActions: <Widget>[IconButton(icon: const Icon(Icons.refresh), tooltip: U.s.refresh, onPressed: c.read)],
     body: UDefaultTabBar(
       isScrollable: true,
       tabBar: TabBar(
@@ -107,7 +107,14 @@ class _UAdminGoldPageState extends State<UAdminGoldPage> {
         totalCount: () => c.orders.length,
         onRetry: c.readOrders,
         emptyText: U.s.noGoldOrdersYet,
-        desktopHeader: () => UAdminTable.header(<String>[U.s.type, U.s.amountInGram, U.s.amount, U.s.unitPrice, U.s.status, U.s.date]),
+        desktopHeader: () => <Widget>[
+          UAdminTable.headerCell(U.s.type),
+          UAdminTable.headerCell(U.s.amountInGram),
+          UAdminTable.headerCell(U.s.amount),
+          UAdminTable.headerCell(U.s.unitPrice),
+          UAdminTable.headerCell(U.s.status),
+          UAdminTable.headerCell(U.s.date),
+        ],
         desktopRow: _orderDesktop,
         mobileRow: _orderMobile,
       ).expanded(),
@@ -151,7 +158,11 @@ class _UAdminGoldPageState extends State<UAdminGoldPage> {
         totalCount: () => c.txns.length,
         onRetry: c.readTransactions,
         emptyText: U.s.noGoldTransactionsYet,
-        desktopHeader: () => UAdminTable.header(<String>[U.s.id, U.s.details, U.s.date]),
+        desktopHeader: () => <Widget>[
+          UAdminTable.headerCell(U.s.id),
+          UAdminTable.headerCell(U.s.details),
+          UAdminTable.headerCell(U.s.date),
+        ],
         desktopRow: (UGoldTransactionResponse i, int index) => URow(
           spacing: 8,
           color: UAdminTable.rowColor(context, index),
@@ -219,7 +230,13 @@ class _UAdminGoldPageState extends State<UAdminGoldPage> {
         totalCount: () => c.tokens.length,
         onRetry: c.readTokens,
         emptyText: U.s.noApiTokensYet,
-        desktopHeader: () => UAdminTable.header(<String>[U.s.label, U.s.tokenPrefix, U.s.scopes, U.s.status, U.s.operations]),
+        desktopHeader: () => <Widget>[
+          UAdminTable.headerCell(U.s.label),
+          UAdminTable.headerCell(U.s.tokenPrefix),
+          UAdminTable.headerCell(U.s.scopes),
+          UAdminTable.headerCell(U.s.status),
+          UAdminTable.headerCell(U.s.operations),
+        ],
         desktopRow: (UGoldApiTokenResponse i, int index) => URow(
           spacing: 8,
           color: UAdminTable.rowColor(context, index),

@@ -1,6 +1,6 @@
 part of "../../u_admin.dart";
 
-class UAdminBlogController extends UBaseController {
+class UAdminBlogController extends UAdminBaseController {
   List<UBlogResponse> list = <UBlogResponse>[];
   final TextEditingController titleFilterController = TextEditingController();
 
@@ -27,18 +27,22 @@ class UAdminBlogController extends UBaseController {
       onOk: (UResponse<List<UBlogResponse>> r) {
         list = r.result ?? <UBlogResponse>[];
         setTotalPages(r.totalCount);
-        setListState(isEmpty: list.isEmpty);
+        list.isEmpty ? state.emptying() : state.loaded();
       },
       onError: (UEmptyResponse e) => setError(e.message),
       onException: (String e) => setError(),
     );
   }
 
-  void applyFilters() => reloadFirstPage(read);
+  void applyFilters() {
+    pageNumber(1);
+    read();
+  }
 
   void clearFilters() {
     titleFilterController.clear();
-    reloadFirstPage(read);
+    pageNumber(1);
+    read();
   }
 
   Future<void> loadForm(UBlogResponse? b) async {
@@ -59,7 +63,7 @@ class UAdminBlogController extends UBaseController {
   Future<bool> save() async {
     final UBlogResponse? b = editing;
     final List<String> categoryIds = selectedCategories.map((UCategoryResponse cat) => cat.id).toList();
-    final dynamic ok = await submit(
+    final Object? ok = await submit(
       b == null
           ? UServices.blog.create(
               p: UBlogCreateParams(
@@ -84,7 +88,7 @@ class UAdminBlogController extends UBaseController {
       null,
     );
     if (ok == null) return false;
-    final String? id = b?.id ?? ok.result as String?;
+    final String? id = b?.id ?? (ok as UResponse<String>).result;
     if (id != null) {
       for (final UFileData file in files) {
         await UServices.media.create(
