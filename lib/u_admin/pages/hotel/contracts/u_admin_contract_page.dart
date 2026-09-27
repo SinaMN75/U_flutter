@@ -137,8 +137,8 @@ class _ContractPageState extends State<UAdminContractPage> {
         items: UAdminContractStatusFilter.values.map((UAdminContractStatusFilter f) => DropdownMenuItem<UAdminContractStatusFilter>(value: f, child: Text(_statusLabel(f)))).toList(),
         onChanged: (UAdminContractStatusFilter? v) => c.statusFilter = v ?? UAdminContractStatusFilter.all,
       ).pSymmetric(vertical: 6),
-      UAdminForm.date(c.startFilterText, U.s.startDate, (DateTime d) => c.startDateFilter = d, initial: c.startDateFilter),
-      UAdminForm.date(c.endFilterText, U.s.endDate, (DateTime d) => c.endDateFilter = d, initial: c.endDateFilter),
+      UAdminForm.date(c.controllerStartDate, U.s.startDate, (DateTime d) => c.startDate = d, initial: c.startDate),
+      UAdminForm.date(c.controllerEndDate, U.s.endDate, (DateTime d) => c.endDate = d, initial: c.endDate),
     ],
   );
 
@@ -174,8 +174,8 @@ class _ContractPageState extends State<UAdminContractPage> {
             items: UAdminContractController.types.map((TagDormBedContract t) => DropdownMenuItem<TagDormBedContract>(value: t, child: Text(t.localizedTitle))).toList(),
             onChanged: (TagDormBedContract? v) => setState(() => c.type = v ?? c.type),
           ).pSymmetric(vertical: 6),
-          UAdminForm.date(c.startText, U.s.startDate, (DateTime d) => c.startDate = d, initial: c.startDate, required: true),
-          UAdminForm.date(c.endText, U.s.endDate, (DateTime d) => c.endDate = d, initial: c.endDate, required: true),
+          UAdminForm.date(c.startText, U.s.startDate, (DateTime d) => c.contractStart = d, initial: c.contractStart, required: true),
+          UAdminForm.date(c.endText, U.s.endDate, (DateTime d) => c.contractEnd = d, initial: c.contractEnd, required: true),
           if (!daily) UAdminForm.text(c.deposit, U.s.deposit, money: true),
           // The rent is the fixed per-day price of a daily contract.
           UAdminForm.text(c.rent, daily ? U.s.dailyPrice : U.s.rent, money: true),

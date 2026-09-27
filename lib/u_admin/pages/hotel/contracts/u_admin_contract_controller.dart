@@ -10,15 +10,11 @@ class UAdminContractController extends UBaseController {
   /// Only two contract kinds exist: monthly (rent + deposit) and daily (one invoice, no deposit).
   static const List<TagDormBedContract> types = <TagDormBedContract>[TagDormBedContract.monthly, TagDormBedContract.daily];
 
-  final TextEditingController tenantFilter = TextEditingController();
-  final TextEditingController startFilterText = TextEditingController();
-  final TextEditingController endFilterText = TextEditingController();
+  late final TextEditingController tenantFilter = fields.text();
   int? typeFilter;
   UAdminContractStatusFilter statusFilter = UAdminContractStatusFilter.all;
   UDormResponse? dormFilter;
   UDormBedResponse? bedFilter;
-  DateTime? startDateFilter;
-  DateTime? endDateFilter;
 
   // ---------------------------------------------------------------- form (create and edit)
 
@@ -26,6 +22,8 @@ class UAdminContractController extends UBaseController {
   UDormBedResponse? formBed;
   UUserResponse? formUser;
   TagDormBedContract type = TagDormBedContract.monthly;
+  DateTime? contractStart;
+  DateTime? contractEnd;
   late final TextEditingController startText = fields.text();
   late final TextEditingController endText = fields.text();
   late final TextEditingController deposit = fields.text();
@@ -48,8 +46,8 @@ class UAdminContractController extends UBaseController {
         bedId: bedFilter?.id ?? bed?.id,
         userId: user?.id,
         dormId: dormFilter?.id,
-        startDate: startDateFilter,
-        endDate: endDateFilter,
+        startDate: startDate,
+        endDate: endDate,
         userName: tenantFilter.valueOrNull(),
         tags: typeFilter == null ? null : <int>[typeFilter!],
         activeOnly: statusFilter == UAdminContractStatusFilter.active ? true : null,
@@ -76,13 +74,10 @@ class UAdminContractController extends UBaseController {
 
   void clearFilters() {
     tenantFilter.clear();
-    startFilterText.clear();
-    endFilterText.clear();
+    clearDates();
     typeFilter = null;
     dormFilter = null;
     bedFilter = null;
-    startDateFilter = null;
-    endDateFilter = null;
     statusFilter = UAdminContractStatusFilter.all;
     reloadFirstPage(read);
   }
@@ -110,8 +105,8 @@ class UAdminContractController extends UBaseController {
     formBed = bed;
     formUser = null;
     type = (i == null ? null : typeOf(i)) ?? TagDormBedContract.monthly;
-    startDate = i?.startDate;
-    endDate = i?.endDate;
+    contractStart = i?.startDate;
+    contractEnd = i?.endDate;
     startText.text = i?.startDate.toJalaliDate() ?? "";
     endText.text = i?.endDate.toJalaliDate() ?? "";
     deposit.text = i?.deposit.toInt().toString() ?? "";
@@ -128,7 +123,7 @@ class UAdminContractController extends UBaseController {
     if (editing != null) {
       return await submit(
             UServices.hotel.updateDormBedContract(
-              p: UDormBedContractUpdateParams(id: editing!.id, tags: tags, startDate: startDate, endDate: endDate, deposit: isDaily ? 0 : numOf(deposit), rent: numOf(rent)),
+              p: UDormBedContractUpdateParams(id: editing!.id, tags: tags, startDate: contractStart, endDate: contractEnd, deposit: isDaily ? 0 : numOf(deposit), rent: numOf(rent)),
             ),
             read,
           ) !=
@@ -146,8 +141,8 @@ class UAdminContractController extends UBaseController {
           UServices.hotel.createDormBedContract(
             p: UDormBedContractCreateParams(
               tags: tags,
-              startDate: startDate!,
-              endDate: endDate!,
+              startDate: contractStart!,
+              endDate: contractEnd!,
               userId: formUser!.id,
               bedId: formBed!.id,
               deposit: isDaily ? null : numOf(deposit),
@@ -162,12 +157,4 @@ class UAdminContractController extends UBaseController {
   }
 
   void delete(UDormBedContractResponse i) => confirmAction(() => UServices.hotel.deleteDormBedContract(p: UIdParams(id: i.id)), read);
-
-  @override
-  void dispose() {
-    tenantFilter.dispose();
-    startFilterText.dispose();
-    endFilterText.dispose();
-    super.dispose();
-  }
 }

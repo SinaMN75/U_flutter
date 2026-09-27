@@ -74,6 +74,10 @@ part "pages/splash/u_admin_splash_controller.dart";
 
 part "pages/splash/u_admin_splash_page.dart";
 
+part "pages/wallet/u_admin_accounting_controller.dart";
+
+part "pages/wallet/u_admin_transactions_controller.dart";
+
 part "pages/wallet/u_admin_wallet_controller.dart";
 
 

@@ -9,8 +9,6 @@ class UAdminMoadiController extends UBaseController {
   late final TextEditingController economicCodeFilter = fields.text();
   late final TextEditingController nationalCodeFilter = fields.text();
   late final TextEditingController uniqueTaxCodeFilter = fields.text();
-  late final TextEditingController fromCreatedController = fields.text();
-  late final TextEditingController toCreatedController = fields.text();
 
   late final TextEditingController rejectReason = fields.text();
 
@@ -31,13 +29,12 @@ class UAdminMoadiController extends UBaseController {
         uniqueTaxCode: uniqueTaxCodeFilter.text.nullIfEmpty(),
         tags: status == null ? null : <int>[status!.number],
         userId: user?.id,
-        fromCreatedAt: fromCreatedAt,
-        toCreatedAt: toCreatedAt,
+        fromCreatedAt: startDate,
+        toCreatedAt: endDate,
         selectorArgs: const UMoadiSelectorArgs(user: UUserSelectorArgs()),
       ),
       onOk: (UResponse<List<UMoadiResponse>> r) {
         list = r.result ?? <UMoadiResponse>[];
-        totalCount = r.totalCount;
         setTotalPages(r.totalCount);
         setListState(isEmpty: list.isEmpty);
       },
@@ -53,12 +50,9 @@ class UAdminMoadiController extends UBaseController {
     economicCodeFilter.clear();
     nationalCodeFilter.clear();
     uniqueTaxCodeFilter.clear();
-    fromCreatedController.clear();
-    toCreatedController.clear();
     status = null;
     user = null;
-    fromCreatedAt = null;
-    toCreatedAt = null;
+    clearDates();
     reloadFirstPage(read);
   }
 

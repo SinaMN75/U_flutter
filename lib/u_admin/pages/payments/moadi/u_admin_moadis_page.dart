@@ -181,8 +181,8 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
       UAdminForm.text(c.economicCodeFilter, U.s.economicCode),
       UAdminForm.text(c.nationalCodeFilter, U.s.nationalCode),
       UAdminForm.text(c.uniqueTaxCodeFilter, U.s.uniqueTaxCode),
-      UAdminForm.date(c.fromCreatedController, U.s.fromDate, (DateTime d) => c.fromCreatedAt = d),
-      UAdminForm.date(c.toCreatedController, U.s.toDate, (DateTime d) => c.toCreatedAt = d),
+      UAdminForm.date(c.controllerStartDate, U.s.fromDate, (DateTime d) => c.startDate = d),
+      UAdminForm.date(c.controllerEndDate, U.s.toDate, (DateTime d) => c.endDate = d),
     ],
   );
 }

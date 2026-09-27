@@ -8,12 +8,8 @@ class UAdminInvoiceController extends UBaseController {
   static const List<TagDormBedInvoice> types = <TagDormBedInvoice>[TagDormBedInvoice.deposit, TagDormBedInvoice.rent];
 
   UAdminInvoiceStatusFilter statusFilter = UAdminInvoiceStatusFilter.all;
-  final TextEditingController minDueText = TextEditingController();
-  final TextEditingController maxDueText = TextEditingController();
-  final TextEditingController minDebtFilter = TextEditingController();
-  final TextEditingController maxDebtFilter = TextEditingController();
-  DateTime? minDueDate;
-  DateTime? maxDueDate;
+  late final TextEditingController minDebtFilter = fields.text();
+  late final TextEditingController maxDebtFilter = fields.text();
 
   /// Totals of the whole contract, shown when the page is opened for one contract.
   double totalDebt = 0;
@@ -52,8 +48,8 @@ class UAdminInvoiceController extends UBaseController {
           _ => false,
         },
         isOverdue: statusFilter == UAdminInvoiceStatusFilter.overdue ? true : null,
-        minDueDate: minDueDate,
-        maxDueDate: maxDueDate,
+        minDueDate: startDate,
+        maxDueDate: endDate,
         minDebtAmount: numOf(minDebtFilter),
         maxDebtAmount: numOf(maxDebtFilter),
         selectorArgs: const UDormBedInvoiceSelectorArgs(contract: UDormBedContractSelectorArgs(user: UUserSelectorArgs())),
@@ -78,12 +74,9 @@ class UAdminInvoiceController extends UBaseController {
   void applyFilters() => reloadFirstPage(read);
 
   void clearFilters() {
-    minDueText.clear();
-    maxDueText.clear();
+    clearDates();
     minDebtFilter.clear();
     maxDebtFilter.clear();
-    minDueDate = null;
-    maxDueDate = null;
     reloadFirstPage(read);
   }
 
@@ -184,12 +177,4 @@ class UAdminInvoiceController extends UBaseController {
 
   void delete(UDormBedInvoiceResponse i) => confirmAction(() => UServices.hotel.deleteDormBedInvoice(p: UIdParams(id: i.id)), read);
 
-  @override
-  void dispose() {
-    minDueText.dispose();
-    maxDueText.dispose();
-    minDebtFilter.dispose();
-    maxDebtFilter.dispose();
-    super.dispose();
-  }
 }

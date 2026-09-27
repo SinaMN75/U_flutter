@@ -25,8 +25,8 @@ class _BlogPageState extends State<UAdminBlogPage> {
   @override
   Widget build(BuildContext context) => UAdminScaffold(
     title: U.s.blogs,
-    onFilter: _showFilterDialog,
-    onCreate: _showEditDialog,
+    onFilter: _filter,
+    onCreate: _form,
     pageNumber: c.pageNumber,
     totalPages: c.totalPages,
     onPageChanged: (int page) {
@@ -51,8 +51,6 @@ class _BlogPageState extends State<UAdminBlogPage> {
       mobileRow: _itemResponsive,
     ),
   );
-
-  bool _isPublished(UBlogResponse i) => i.tags.contains(TagBlog.published.number);
 
   Widget _itemDesktop(UBlogResponse i, int index) => URow(
     spacing: 8,
@@ -81,44 +79,23 @@ class _BlogPageState extends State<UAdminBlogPage> {
 
   Widget _menu(UBlogResponse i) => UPopupMenu(
     items: <UPopupMenuItem>[
-      UPopupMenuItem(label: U.s.edit, icon: Icons.edit, onTap: () => _showEditDialog(p: i)),
-      UPopupMenuItem(label: _isPublished(i) ? U.s.unpublish : U.s.publish, icon: _isPublished(i) ? Icons.unpublished_outlined : Icons.publish_rounded, onTap: () => _isPublished(i) ? c.unpublish(i) : c.publish(i)),
-      UPopupMenuItem(label: U.s.comments, icon: Icons.comment_outlined, onTap: () => _showCommentsDialog(i)),
+      UPopupMenuItem(label: U.s.edit, icon: Icons.edit, onTap: () => _form(i)),
+      UPopupMenuItem(label: _isPublished(i) ? U.s.unpublish : U.s.publish, icon: _isPublished(i) ? Icons.unpublished_outlined : Icons.publish_rounded, onTap: () => c.setPublished(i, !_isPublished(i))),
+      UPopupMenuItem(label: U.s.comments, icon: Icons.comment_outlined, onTap: () => _comments(i)),
       UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, onTap: () => c.delete(i)),
     ],
   );
 
-  void _showFilterDialog() => UNavigator.dialog(
-    AlertDialog(
-      title: Text(U.s.filterItem(U.s.blogs)),
-      content: Form(
-        key: c.filterFormKey,
-        child: SingleChildScrollView(
-          child: UColumn(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              UTextField(controller: c.titleFilter, labelText: U.s.title, margin: const EdgeInsets.symmetric(vertical: 6)),
-              const SizedBox(height: 20),
-              UButtonSubmitCancel(
-                submitTitle: U.s.filter,
-                cancelTitle: U.s.clearFilters,
-                onSubmit: () {
-                  c.applyFilters();
-                  UNavigator.back();
-                },
-                onCancel: () {
-                  c.clearFilters();
-                  UNavigator.back();
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
-    ),
+  void _filter() => UAdminForm.filter(
+    title: U.s.filterItem(U.s.blogs),
+    onApply: c.applyFilters,
+    onClear: c.clearFilters,
+    children: (StateSetter setState) => <Widget>[UAdminForm.text(c.titleFilter, U.s.title)],
   );
 
-  void _showCommentsDialog(UBlogResponse i) {
+  bool _isPublished(UBlogResponse i) => i.tags.contains(TagBlog.published.number);
+
+  void _comments(UBlogResponse i) {
     UNavigator.dialog(
       AlertDialog(
         title: Text("${U.s.comments} · ${i.title}"),
@@ -146,123 +123,48 @@ class _BlogPageState extends State<UAdminBlogPage> {
     );
   }
 
-  Future<void> _showEditDialog({UBlogResponse? p}) async {
-    final UAdminFields f = UAdminFields();
-    final TextEditingController title = f.text(p?.title);
-    final TextEditingController subtitle = f.text(p?.subtitle);
-    final TextEditingController slug = f.text(p?.slug);
-    final TextEditingController content = f.text(p?.content);
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    List<UFileData> files = <UFileData>[];
-    final List<UCategoryResponse> selectedCategories = <UCategoryResponse>[...(p?.categories ?? <UCategoryResponse>[])];
-    final List<UCategoryResponse> allCategories = await c.fetchCategories();
-
-    await UNavigator.dialog(
-      f.scope(
-        StatefulBuilder(
-          builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
-            title: Text(p == null ? U.s.createItem(U.s.blog) : U.s.editItem(U.s.blog)),
-            content: SizedBox(
-              width: context.dialogWidth(max: 480),
-              child: SingleChildScrollView(
-                child: Form(
-                  key: formKey,
-                  child: UColumn(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      UTextField(
-                        controller: title,
-                        labelText: U.s.title,
-                        validator: UValidators.required(message: ""),
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                      ),
-                      UTextField(controller: subtitle, labelText: U.s.subtitle, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      UTextField(controller: slug, labelText: U.s.slug, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      Align(
-                        alignment: AlignmentDirectional.centerStart,
-                        child: UTextBodyMedium(U.s.content, color: Theme.of(context).colorScheme.onSurfaceVariant),
-                      ).pOnly(top: 6, bottom: 4),
-                      UContainer(
-                        onTap: () async {
-                          final String? html = await URichTextEditor.open(initialHtml: content.text);
-                          if (html != null) setDialogState(() => content.text = html);
-                        },
-                        width: double.infinity,
-                        constraints: const BoxConstraints(minHeight: 72, maxHeight: 220),
-                        padding: const EdgeInsets.all(12),
-                        border: Border.all(color: Theme.of(context).dividerColor),
-                        radius: 8,
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                        child: content.text.trim().isEmpty
-                            ? URow(children: <Widget>[const Icon(Icons.edit_note), const SizedBox(width: 8), Text(U.s.richTextEditor)])
-                            : SingleChildScrollView(child: UHtmlView(html: content.text)),
-                      ),
-                      const SizedBox(height: 12),
-                      if (allCategories.isNotEmpty)
-                        Wrap(
-                          spacing: 6,
-                          runSpacing: 6,
-                          children: allCategories
-                              .map(
-                                (UCategoryResponse cat) => FilterChip(
-                                  label: Text(cat.title),
-                                  selected: selectedCategories.any((UCategoryResponse x) => x.id == cat.id),
-                                  onSelected: (bool selected) => setDialogState(() {
-                                    if (selected) {
-                                      selectedCategories.add(cat);
-                                    } else {
-                                      selectedCategories.removeWhere((UCategoryResponse x) => x.id == cat.id);
-                                    }
-                                  }),
-                                ),
-                              )
-                              .toList(),
-                        ).pSymmetric(vertical: 6),
-                      const SizedBox(height: 12),
-                      UFilePicker(onFilesChanged: (List<UFileData> i) => files = i),
-                      const SizedBox(height: 20),
-                      UButtonSubmitCancel(
-                        onSubmit: () => UValidators.validateForm(
-                          key: formKey,
-                          action: () {
-                            final List<String> categoryIds = selectedCategories.map((UCategoryResponse cat) => cat.id).toList();
-                            if (p == null) {
-                              c.create(
-                                p: UBlogCreateParams(
-                                  tags: <int>[TagBlog.draft.number],
-                                  title: title.text,
-                                  subtitle: subtitle.text.nullIfEmpty(),
-                                  slug: slug.text.nullIfEmpty(),
-                                  content: content.text.nullIfEmpty(),
-                                  categories: categoryIds,
-                                ),
-                                files: files,
-                              );
-                            } else {
-                              c.update(
-                                p: UBlogUpdateParams(
-                                  id: p.id,
-                                  title: title.text,
-                                  subtitle: subtitle.text.nullIfEmpty(),
-                                  slug: slug.text.nullIfEmpty(),
-                                  content: content.text.nullIfEmpty(),
-                                  categories: categoryIds,
-                                ),
-                                files: files,
-                              );
-                            }
-                            UNavigator.back();
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
+  Future<void> _form([UBlogResponse? b]) async {
+    await c.loadForm(b);
+    await UAdminForm.editDialog(
+      title: b == null ? U.s.createItem(U.s.blog) : U.s.editItem(U.s.blog),
+      formKey: c.formKey,
+      onSubmit: c.save,
+      children: (BuildContext context, StateSetter setState) => <Widget>[
+        UAdminForm.text(c.title, U.s.title, required: true),
+        UAdminForm.text(c.subtitle, U.s.subtitle),
+        UAdminForm.text(c.slug, U.s.slug),
+        UAdminForm.sectionTitle(U.s.content),
+        UContainer(
+          onTap: () async {
+            final String? html = await URichTextEditor.open(initialHtml: c.content.text);
+            if (html != null) setState(() => c.content.text = html);
+          },
+          width: double.infinity,
+          constraints: const BoxConstraints(minHeight: 72, maxHeight: 220),
+          padding: const EdgeInsets.all(12),
+          border: Border.all(color: Theme.of(context).dividerColor),
+          radius: 8,
+          margin: const EdgeInsets.symmetric(vertical: 6),
+          child: c.content.text.trim().isEmpty
+              ? URow(children: <Widget>[const Icon(Icons.edit_note), const SizedBox(width: 8), Text(U.s.richTextEditor)])
+              : SingleChildScrollView(child: UHtmlView(html: c.content.text)),
         ),
-      ),
+        if (c.categories.isNotEmpty)
+          Wrap(
+            spacing: 6,
+            runSpacing: 6,
+            children: c.categories
+                .map(
+                  (UCategoryResponse cat) => FilterChip(
+                    label: Text(cat.title),
+                    selected: c.isSelected(cat),
+                    onSelected: (bool on) => setState(() => c.toggleCategory(cat, on)),
+                  ),
+                )
+                .toList(),
+          ).pSymmetric(vertical: 12),
+        UFilePicker(onFilesChanged: (List<UFileData> i) => c.files = i),
+      ],
     );
   }
 }

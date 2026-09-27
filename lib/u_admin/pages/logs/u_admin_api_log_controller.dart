@@ -13,19 +13,19 @@ class UAdminApiLogController extends UBaseController {
   final URxState osMetricsState = URxState();
   Timer? _osMetricsTimer;
 
-  final TextEditingController pathContainsCtrl = TextEditingController();
-  final TextEditingController statusCodeCtrl = TextEditingController();
-  final TextEditingController userIdCtrl = TextEditingController();
-  final TextEditingController ipAddressCtrl = TextEditingController();
-  final TextEditingController traceIdCtrl = TextEditingController();
-  final TextEditingController minDurationCtrl = TextEditingController();
-  final TextEditingController maxDurationCtrl = TextEditingController();
+  late final TextEditingController pathContainsCtrl = fields.text();
+  late final TextEditingController statusCodeCtrl = fields.text();
+  late final TextEditingController userIdCtrl = fields.text();
+  late final TextEditingController ipAddressCtrl = fields.text();
+  late final TextEditingController traceIdCtrl = fields.text();
+  late final TextEditingController minDurationCtrl = fields.text();
+  late final TextEditingController maxDurationCtrl = fields.text();
   final URxn<TagApiLog> methodFilter = URxn<TagApiLog>();
   final URxBool onlyErrors = false.obs;
   final URxBool onlyExceptions = false.obs;
-  final URx<TagOrderBy> orderBy = TagOrderBy.createdAtDescending.obs;
 
   Future<void> init() async {
+    tagOrderBy(TagOrderBy.createdAtDescending);
     startOsMetricsPolling();
     await refreshAll();
   }
@@ -53,13 +53,6 @@ class UAdminApiLogController extends UBaseController {
 
   @override
   void dispose() {
-    pathContainsCtrl.dispose();
-    statusCodeCtrl.dispose();
-    userIdCtrl.dispose();
-    ipAddressCtrl.dispose();
-    traceIdCtrl.dispose();
-    minDurationCtrl.dispose();
-    maxDurationCtrl.dispose();
     _osMetricsTimer?.cancel();
     super.dispose();
   }
@@ -74,8 +67,8 @@ class UAdminApiLogController extends UBaseController {
   UApiLogReadParams _buildSearchParams() => UApiLogReadParams(
     pageSize: pageSize,
     pageNumber: pageNumber.value,
-    fromCreatedAt: fromCreatedAt,
-    toCreatedAt: toCreatedAt,
+    fromCreatedAt: startDate,
+    toCreatedAt: endDate,
     tags: _buildTags(),
     pathContains: pathContainsCtrl.text.nullIfEmpty(),
     statusCode: int.tryParse(statusCodeCtrl.text),
@@ -84,7 +77,7 @@ class UAdminApiLogController extends UBaseController {
     userId: userIdCtrl.text.nullIfEmpty(),
     ipAddress: ipAddressCtrl.text.nullIfEmpty(),
     onlyErrors: onlyErrors.value ? true : null,
-    orderBy: orderBy.value.number,
+    orderBy: tagOrderBy.value.number,
   );
 
   Future<void> search() async {
@@ -93,7 +86,6 @@ class UAdminApiLogController extends UBaseController {
       p: _buildSearchParams(),
       onOk: (UResponse<List<UApiLogResponse>> r) {
         list(r.result ?? <UApiLogResponse>[]);
-        totalCount = r.totalCount;
         setTotalPages(r.totalCount);
         setListState(isEmpty: list.isEmpty);
       },
@@ -105,7 +97,7 @@ class UAdminApiLogController extends UBaseController {
   Future<void> loadStats() async {
     state2.loading();
     await UServices.dashboard.apiLogStats(
-      p: UApiLogStatsParams(fromCreatedAt: fromCreatedAt, toCreatedAt: toCreatedAt, bucket: bucket.value),
+      p: UApiLogStatsParams(fromCreatedAt: startDate, toCreatedAt: endDate, bucket: bucket.value),
       onOk: (UResponse<UApiLogStatsResponse> r) {
         stats.value = r.result;
         state2.loaded();
@@ -136,9 +128,9 @@ class UAdminApiLogController extends UBaseController {
     methodFilter(null);
     onlyErrors(false);
     onlyExceptions(false);
-    orderBy(TagOrderBy.createdAtDescending);
-    fromCreatedAt = null;
-    toCreatedAt = null;
+    tagOrderBy(TagOrderBy.createdAtDescending);
+    startDate = null;
+    endDate = null;
     applyFilters();
   }
 

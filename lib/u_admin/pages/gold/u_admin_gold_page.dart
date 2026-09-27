@@ -205,7 +205,7 @@ class _UAdminGoldPageState extends State<UAdminGoldPage> {
 
   Widget _tokens() => UColumn(
     children: <Widget>[
-      UButton(title: U.s.createApiToken, icon: const Icon(Icons.add), fullWidth: true, onTap: _showCreateTokenDialog).pAll(16),
+      UButton(title: U.s.createApiToken, icon: const Icon(Icons.add), fullWidth: true, onTap: _createToken).pAll(16),
       UAdminListView<UGoldApiTokenResponse>(
         state: c.tokensState,
         items: () => c.tokens,
@@ -222,7 +222,7 @@ class _UAdminGoldPageState extends State<UAdminGoldPage> {
             UAdminTable.cell(i.tokenPrefix ?? "-"),
             UAdminTable.cell(i.scopes.join(", ")),
             UAdminTable.cell(i.active ? U.s.active : U.s.inactive),
-            IconButton(icon: const Icon(Icons.delete_outline), onPressed: () => _confirmDelete(i)).expanded(),
+            IconButton(icon: const Icon(Icons.delete_outline), onPressed: () => c.deleteToken(i)).expanded(),
           ],
         ),
         mobileRow: (UGoldApiTokenResponse i, int index) => UAdminTable.mobileCard(
@@ -232,7 +232,7 @@ class _UAdminGoldPageState extends State<UAdminGoldPage> {
             label: i.active ? U.s.active : U.s.inactive,
             color: i.active ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.error,
           ),
-          trailing: IconButton(icon: const Icon(Icons.delete_outline), onPressed: () => _confirmDelete(i)),
+          trailing: IconButton(icon: const Icon(Icons.delete_outline), onPressed: () => c.deleteToken(i)),
           fields: <UAdminField>[
             UAdminField(U.s.scopes, i.scopes.join(", ")),
             UAdminField(U.s.allowedIps, i.ipWhitelist.join(", ")),
@@ -243,31 +243,14 @@ class _UAdminGoldPageState extends State<UAdminGoldPage> {
     ],
   );
 
-  void _confirmDelete(UGoldApiTokenResponse i) => UNavigator.confirm(
-    title: U.s.revokeApiToken,
-    message: i.label ?? i.tokenPrefix ?? i.id,
-    onConfirm: () => c.deleteToken(i.id),
-  );
-
-  void _showCreateTokenDialog() => UNavigator.dialog(
-    UAdminForm.filterDialog(
-      context,
-      title: Text(U.s.createApiToken),
-      children: <Widget>[
-        UTextField(controller: c.tokenLabelController, labelText: U.s.label).pSymmetric(vertical: 6),
-        UTextField(controller: c.tokenScopesController, labelText: U.s.scopes).pSymmetric(vertical: 6),
-        UTextField(controller: c.tokenIpsController, labelText: U.s.allowedIps).pSymmetric(vertical: 6),
-        const SizedBox(height: 20),
-        UButtonSubmitCancel(
-          submitTitle: U.s.create,
-          cancelTitle: U.s.cancel,
-          onSubmit: () {
-            c.createToken();
-            UNavigator.back();
-          },
-          onCancel: UNavigator.back,
-        ),
-      ],
-    ),
+  void _createToken() => UAdminForm.editDialog(
+    title: U.s.createApiToken,
+    formKey: c.formKey,
+    onSubmit: c.createToken,
+    children: (BuildContext context, StateSetter setState) => <Widget>[
+      UAdminForm.text(c.tokenLabel, U.s.label),
+      UAdminForm.text(c.tokenScopes, U.s.scopes, required: true),
+      UAdminForm.text(c.tokenIps, U.s.allowedIps),
+    ],
   );
 }

@@ -35,7 +35,6 @@ class UAdminParkingTariffController extends UBaseController {
       ),
       onOk: (UResponse<List<UParkingTariffResponse>> r) {
         list = r.result ?? <UParkingTariffResponse>[];
-        totalCount = r.totalCount;
         setTotalPages(r.totalCount);
         setListState(isEmpty: list.isEmpty);
       },

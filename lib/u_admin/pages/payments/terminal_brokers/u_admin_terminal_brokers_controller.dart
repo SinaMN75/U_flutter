@@ -36,7 +36,6 @@ class UAdminTerminalBrokerController extends UBaseController {
       ),
       onOk: (UResponse<List<UTerminalBrokerResponse>> r) {
         list = r.result ?? <UTerminalBrokerResponse>[];
-        totalCount = r.totalCount;
         setTotalPages(r.totalCount);
         setListState(isEmpty: list.isEmpty);
       },

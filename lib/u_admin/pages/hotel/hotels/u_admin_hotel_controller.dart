@@ -2,7 +2,7 @@ part of "../../../u_admin.dart";
 
 class UAdminHotelController extends UBaseController {
   List<UHotelResponse> list = <UHotelResponse>[];
-  final TextEditingController titleFilter = TextEditingController();
+  late final TextEditingController titleFilter = fields.text();
 
   UHotelResponse? editing;
   late final TextEditingController title = fields.text();
@@ -154,7 +154,6 @@ class UAdminHotelController extends UBaseController {
 
   @override
   void dispose() {
-    titleFilter.dispose();
     photos.dispose();
     super.dispose();
   }

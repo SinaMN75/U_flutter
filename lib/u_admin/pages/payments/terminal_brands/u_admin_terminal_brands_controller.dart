@@ -37,7 +37,6 @@ class UAdminTerminalBrandController extends UBaseController {
       ),
       onOk: (UResponse<List<UTerminalBrandResponse>> r) {
         list = r.result ?? <UTerminalBrandResponse>[];
-        totalCount = r.totalCount;
         setTotalPages(r.totalCount);
         setListState(isEmpty: list.isEmpty);
       },

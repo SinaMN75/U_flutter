@@ -83,9 +83,9 @@ class _WalletPageState extends State<UAdminWalletPage> {
 
   Widget _actions() => URow(
     children: <Widget>[
-      UButton(title: U.s.charge, icon: const Icon(Icons.add_card_rounded, size: 18), onTap: _showChargeDialog, expanded: 1),
+      UButton(title: U.s.charge, icon: const Icon(Icons.add_card_rounded, size: 18), onTap: _charge, expanded: 1),
       const SizedBox(width: 12),
-      UButton(title: U.s.transfer, icon: const Icon(Icons.swap_horiz_rounded, size: 18), onTap: _showTransferDialog, expanded: 1),
+      UButton(title: U.s.transfer, icon: const Icon(Icons.swap_horiz_rounded, size: 18), onTap: _transfer, expanded: 1),
     ],
   );
 
@@ -146,96 +146,30 @@ class _WalletPageState extends State<UAdminWalletPage> {
     );
   });
 
-  void _showChargeDialog() {
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final UAdminFields f = UAdminFields();
-    final TextEditingController amount = f.text();
-    UNavigator.dialog(
-      f.scope(
-        AlertDialog(
-          title: Text(U.s.chargeWallet),
-          content: SizedBox(
-            width: context.dialogWidth(max: 380),
-            child: Form(
-              key: formKey,
-              child: UColumn(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  UTextField(
-                    controller: amount,
-                    labelText: U.s.amount,
-                    keyboardType: TextInputType.number,
-                    validator: UValidators.required(message: U.s.required),
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                  ),
-                  const SizedBox(height: 20),
-                  UButtonSubmitCancel(
-                    submitTitle: U.s.charge,
-                    onSubmit: () => UValidators.validateForm(
-                      key: formKey,
-                      action: () {
-                        UNavigator.back();
-                        c.charge(amount.text.trim().toDouble());
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
+  void _charge() {
+    c.chargeAmount.clear();
+    UAdminForm.editDialog(
+      title: U.s.chargeWallet,
+      formKey: c.formKey,
+      maxWidth: 380,
+      onSubmit: c.charge,
+      children: (BuildContext context, StateSetter setState) => <Widget>[UAdminForm.text(c.chargeAmount, U.s.amount, money: true, required: true)],
     );
   }
 
-  void _showTransferDialog() {
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final UAdminFields f = UAdminFields();
-    final TextEditingController amount = f.text();
-    final TextEditingController detail = f.text();
-    final URxn<UUserResponse> receiver = URxn<UUserResponse>();
-    UNavigator.dialog(
-      f.scope(
-        AlertDialog(
-          title: Text(U.s.transferFunds),
-          content: SizedBox(
-            width: context.dialogWidth(max: 380),
-            child: SingleChildScrollView(
-              child: Form(
-                key: formKey,
-                child: UColumn(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    UTextField(
-                      controller: amount,
-                      labelText: U.s.amount,
-                      keyboardType: TextInputType.number,
-                      validator: UValidators.required(message: U.s.required),
-                      margin: const EdgeInsets.symmetric(vertical: 6),
-                    ),
-                    UTextField(controller: detail, labelText: U.s.description, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    const SizedBox(height: 20),
-                    UButtonSubmitCancel(
-                      submitTitle: U.s.transfer,
-                      onSubmit: () => UValidators.validateForm(
-                        key: formKey,
-                        action: () {
-                          if (receiver.value == null) {
-                            UToast.error(message: U.s.selectAItem(U.s.receiver));
-                            return;
-                          }
-                          UNavigator.back();
-                          c.transfer(receiverId: receiver.value!.id, amount: amount.text.trim().toDouble(), detail: detail.text.nullIfEmpty());
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
+  void _transfer() {
+    c.transferAmount.clear();
+    c.transferDetail.clear();
+    c.receiver = null;
+    UAdminForm.editDialog(
+      title: U.s.transferFunds,
+      formKey: c.formKey,
+      maxWidth: 380,
+      onSubmit: c.transfer,
+      children: (BuildContext context, StateSetter setState) => <Widget>[
+        UAdminForm.text(c.transferAmount, U.s.amount, money: true, required: true),
+        UAdminForm.text(c.transferDetail, U.s.description),
+      ],
     );
   }
 }

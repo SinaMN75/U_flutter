@@ -27,8 +27,6 @@ class UAdminPaymentUsersController extends UBaseController {
   late final TextEditingController emailFilter = fields.text();
   late final TextEditingController landLineFilter = fields.text();
   late final TextEditingController bioFilter = fields.text();
-  late final TextEditingController fromCreatedController = fields.text();
-  late final TextEditingController toCreatedController = fields.text();
   late final TextEditingController fromBirthController = fields.text();
   late final TextEditingController toBirthController = fields.text();
   DateTime? fromBirthDate;
@@ -75,14 +73,13 @@ class UAdminPaymentUsersController extends UBaseController {
         landLine: landLineFilter.valueOrNull(),
         bio: bioFilter.valueOrNull(),
         tags: tags.map((TagUser i) => i.number).toList(),
-        fromCreatedAt: fromCreatedAt,
-        toCreatedAt: toCreatedAt,
+        fromCreatedAt: startDate,
+        toCreatedAt: endDate,
         startBirthDate: fromBirthDate,
         endBirthDate: toBirthDate,
       ),
       onOk: (UResponse<List<UUserResponse>> r) {
         list = r.result ?? <UUserResponse>[];
-        totalCount = r.totalCount;
         setTotalPages(r.totalCount);
         setListState(isEmpty: list.isEmpty);
       },
@@ -103,15 +100,12 @@ class UAdminPaymentUsersController extends UBaseController {
       emailFilter,
       landLineFilter,
       bioFilter,
-      fromCreatedController,
-      toCreatedController,
       fromBirthController,
       toBirthController,
     ]) {
       t.clear();
     }
-    fromCreatedAt = null;
-    toCreatedAt = null;
+    clearDates();
     fromBirthDate = null;
     toBirthDate = null;
     verificationStatus = null;

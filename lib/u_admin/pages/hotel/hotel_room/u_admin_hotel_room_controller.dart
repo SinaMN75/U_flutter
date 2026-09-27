@@ -4,9 +4,9 @@ class UAdminHotelRoomController extends UBaseController {
   List<UHotelRoomResponse> list = <UHotelRoomResponse>[];
   UHotelResponse? hotel;
 
-  final TextEditingController titleFilter = TextEditingController();
-  final TextEditingController minPriceFilter = TextEditingController();
-  final TextEditingController maxPriceFilter = TextEditingController();
+  late final TextEditingController titleFilter = fields.text();
+  late final TextEditingController minPriceFilter = fields.text();
+  late final TextEditingController maxPriceFilter = fields.text();
 
   // ---------------------------------------------------------------- form (create and edit)
 
@@ -136,9 +136,6 @@ class UAdminHotelRoomController extends UBaseController {
 
   @override
   void dispose() {
-    titleFilter.dispose();
-    minPriceFilter.dispose();
-    maxPriceFilter.dispose();
     photos.dispose();
     super.dispose();
   }

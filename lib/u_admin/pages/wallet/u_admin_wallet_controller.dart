@@ -8,6 +8,11 @@ class UAdminWalletController extends UBaseController {
 
   final URxn<UAccountingReportResponse> summary = URxn<UAccountingReportResponse>();
 
+  late final TextEditingController chargeAmount = fields.text();
+  late final TextEditingController transferAmount = fields.text();
+  late final TextEditingController transferDetail = fields.text();
+  UUserResponse? receiver;
+
   double get totalBalance => wallets.fold<double>(0, (double sum, UWalletResponse w) => sum + w.balance);
 
   void selectUser(UUserResponse? u) {
@@ -61,205 +66,30 @@ class UAdminWalletController extends UBaseController {
     );
   }
 
-  void charge(double amount) {
+  Future<bool> charge() async {
     final UUserResponse? u = selectedUser.value;
-    if (u == null) return;
-    ULoading.show();
-    UServices.wallet.charge(
-      p: UWalletChargeParams(userId: u.id, amount: amount),
-      onOk: (UEmptyResponse r) {
-        ULoading.dismiss();
-        okCallback(r.message, read);
-      },
-      onError: (UEmptyResponse e) {
-        ULoading.dismiss();
-        errorCallBack(e.message, read);
-      },
-      onException: (String e) {
-        ULoading.dismiss();
-        UToast.error(message: e);
-      },
-    );
+    if (u == null) return false;
+    return await submit(UServices.wallet.charge(p: UWalletChargeParams(userId: u.id, amount: numOf(chargeAmount) ?? 0)), read) != null;
   }
 
-  void transfer({required String receiverId, required double amount, String? detail}) {
-    ULoading.show();
-    UServices.wallet.transfer(
-      p: UWalletTransferParams(senderId: selectedUser.value?.id, receiverId: receiverId, amount: amount, detail1: detail, tagWalletTxn: <int>[TagWalletTxn.transfer.number]),
-      onOk: (UResponse<UWalletTxnResponse> r) {
-        ULoading.dismiss();
-        okCallback(r.message, read);
-      },
-      onError: (UEmptyResponse e) {
-        ULoading.dismiss();
-        errorCallBack(e.message, read);
-      },
-      onException: (String e) {
-        ULoading.dismiss();
-        UToast.error(message: e);
-      },
-    );
-  }
-}
-
-class UAdminTransactionsController extends UBaseController {
-  List<UTxnResponse> list = <UTxnResponse>[];
-
-  final TextEditingController trackingFilter = TextEditingController();
-  final TextEditingController fromCreatedController = TextEditingController();
-  final TextEditingController toCreatedController = TextEditingController();
-  TagTxn? statusFilter;
-
-  Future<void> init() => read();
-
-  Future<void> read() async {
-    state.loading();
-    await UServices.txn.read(
-      p: UTxnReadParams(
-        pageNumber: pageNumber.value,
-        pageSize: pageSize,
-        fromCreatedAt: fromCreatedAt,
-        toCreatedAt: toCreatedAt,
-        tags: statusFilter == null ? null : <int>[statusFilter!.number],
-        selectorArgs: const UTxnSelectorArgs(user: UUserSelectorArgs()),
+  Future<bool> transfer() async {
+    final UUserResponse? r = receiver;
+    if (r == null) {
+      UToast.error(message: U.s.selectAItem(U.s.receiver));
+      return false;
+    }
+    final dynamic ok = await submit(
+      UServices.wallet.transfer(
+        p: UWalletTransferParams(
+          senderId: selectedUser.value?.id,
+          receiverId: r.id,
+          amount: numOf(transferAmount) ?? 0,
+          detail1: transferDetail.text.nullIfEmpty(),
+          tagWalletTxn: <int>[TagWalletTxn.transfer.number],
+        ),
       ),
-      onOk: (UResponse<List<UTxnResponse>> r) {
-        list = r.result ?? <UTxnResponse>[];
-        totalCount = r.totalCount;
-        setTotalPages(r.totalCount);
-        setListState(isEmpty: list.isEmpty);
-      },
-      onError: (UEmptyResponse e) => setError(e.message),
-      onException: setError,
+      read,
     );
-  }
-
-  void applyFilters() => reloadFirstPage(read);
-
-  void clearFilters() {
-    trackingFilter.clear();
-    fromCreatedController.clear();
-    toCreatedController.clear();
-    fromCreatedAt = null;
-    toCreatedAt = null;
-    statusFilter = null;
-    reloadFirstPage(read);
-  }
-
-  void create({required double amount, required String trackingNumber, required int tag}) {
-    ULoading.show();
-    UServices.txn.create(
-      p: UTxnCreateParams(amount: amount, trackingNumber: trackingNumber, tags: <int>[tag]),
-      onOk: (UResponse<String> r) {
-        ULoading.dismiss();
-        okCallback(r.message, read);
-      },
-      onError: (UEmptyResponse e) {
-        ULoading.dismiss();
-        errorCallBack(e.message, read);
-      },
-      onException: (String e) {
-        ULoading.dismiss();
-        UToast.error(message: e);
-      },
-    );
-  }
-
-  void update({required String id, double? amount, String? trackingNumber, List<int>? tags}) {
-    ULoading.show();
-    UServices.txn.update(
-      p: UTxnUpdateParams(id: id, amount: amount, trackingNumber: trackingNumber, tags: tags),
-      onOk: (UEmptyResponse r) {
-        ULoading.dismiss();
-        okCallback(r.message, read);
-      },
-      onError: (UEmptyResponse e) {
-        ULoading.dismiss();
-        errorCallBack(e.message, read);
-      },
-      onException: (String e) {
-        ULoading.dismiss();
-        UToast.error(message: e);
-      },
-    );
-  }
-
-  void delete(UTxnResponse i) => UNavigator.confirm(
-    title: U.s.deleteItem(U.s.transactions),
-    message: U.s.areYouSureYouWantToDeleteThisItem(U.s.transactions),
-    onConfirm: () => UServices.txn.delete(
-      p: UIdParams(id: i.id),
-      onOk: (UEmptyResponse r) {
-        UNavigator.back();
-        okCallback(r.message, read);
-      },
-      onError: (UEmptyResponse r) {
-        UNavigator.back();
-        errorCallBack(r.message, read);
-      },
-      onException: (String e) {
-        UNavigator.back();
-        UToast.error(message: e);
-      },
-    ),
-  );
-
-  @override
-  void dispose() {
-    trackingFilter.dispose();
-    fromCreatedController.dispose();
-    toCreatedController.dispose();
-    super.dispose();
-  }
-}
-
-class UAdminAccountingController {
-  final URxState state = URxState();
-  final URxn<UAccountingReportResponse> report = URxn<UAccountingReportResponse>();
-
-  final URxn<UUserResponse> user = URxn<UUserResponse>();
-
-  DateTime? fromDate;
-  DateTime? toDate;
-  final TextEditingController fromController = TextEditingController();
-  final TextEditingController toController = TextEditingController();
-
-  Future<void> init() => load();
-
-  Future<void> load() async {
-    state.loading();
-    await UServices.accounting.report(
-      p: UAccountingReportParams(userId: user.value?.id, fromDate: fromDate, toDate: toDate),
-      onOk: (UResponse<UAccountingReportResponse> r) {
-        report.value = r.result;
-        state.loaded();
-      },
-      onError: (UEmptyResponse e) {
-        state.error();
-        UToast.error(message: e.message);
-      },
-      onException: (String e) {
-        state.error();
-        UToast.error(message: e);
-      },
-    );
-  }
-
-  void clear() {
-    user.value = null;
-    fromDate = null;
-    toDate = null;
-    fromController.clear();
-    toController.clear();
-    load();
-  }
-
-  /// Releases the observables and text controllers this controller owns.
-  void dispose() {
-    state.dispose();
-    report.dispose();
-    user.dispose();
-    fromController.dispose();
-    toController.dispose();
+    return ok != null;
   }
 }

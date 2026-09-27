@@ -38,7 +38,6 @@ class UAdminParkingStaffController extends UBaseController {
       ),
       onOk: (UResponse<List<UParkingStaffResponse>> r) {
         list = r.result ?? <UParkingStaffResponse>[];
-        totalCount = r.totalCount;
         setTotalPages(r.totalCount);
         setListState(isEmpty: list.isEmpty);
       },

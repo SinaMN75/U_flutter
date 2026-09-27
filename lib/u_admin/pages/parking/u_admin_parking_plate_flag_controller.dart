@@ -26,7 +26,6 @@ class UAdminParkingPlateFlagController extends UBaseController {
       ),
       onOk: (UResponse<List<UParkingPlateFlagResponse>> r) {
         list = r.result ?? <UParkingPlateFlagResponse>[];
-        totalCount = r.totalCount;
         setTotalPages(r.totalCount);
         setListState(isEmpty: list.isEmpty);
       },

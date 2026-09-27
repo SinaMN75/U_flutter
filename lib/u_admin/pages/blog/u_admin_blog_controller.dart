@@ -2,14 +2,18 @@ part of "../../u_admin.dart";
 
 class UAdminBlogController extends UBaseController {
   List<UBlogResponse> list = <UBlogResponse>[];
-  final GlobalKey<FormState> filterFormKey = GlobalKey<FormState>();
+  late final TextEditingController titleFilter = fields.text();
 
-  final TextEditingController titleFilter = TextEditingController();
-  bool? onlyPublishedFilter;
+  UBlogResponse? editing;
+  late final TextEditingController title = fields.text();
+  late final TextEditingController subtitle = fields.text();
+  late final TextEditingController slug = fields.text();
+  late final TextEditingController content = fields.text();
+  List<UCategoryResponse> categories = <UCategoryResponse>[];
+  List<UCategoryResponse> selectedCategories = <UCategoryResponse>[];
+  List<UFileData> files = <UFileData>[];
 
-  Future<void> init() async {
-    await read();
-  }
+  Future<void> init() => read();
 
   Future<void> read() async {
     state.loading();
@@ -34,96 +38,77 @@ class UAdminBlogController extends UBaseController {
 
   void clearFilters() {
     titleFilter.clear();
-    onlyPublishedFilter = null;
     reloadFirstPage(read);
   }
 
-  Future<List<UCategoryResponse>> fetchCategories() async {
-    final Completer<List<UCategoryResponse>> completer = Completer<List<UCategoryResponse>>();
-    await UServices.category.read(
-      p: UCategoryReadParams(pageSize: 200),
-      onOk: (UResponse<List<UCategoryResponse>> r) => completer.complete(r.result ?? <UCategoryResponse>[]),
-      onError: (_) => completer.complete(<UCategoryResponse>[]),
-      onException: (_) => completer.complete(<UCategoryResponse>[]),
+  Future<void> loadForm(UBlogResponse? b) async {
+    editing = b;
+    title.text = b?.title ?? "";
+    subtitle.text = b?.subtitle ?? "";
+    slug.text = b?.slug ?? "";
+    content.text = b?.content ?? "";
+    selectedCategories = <UCategoryResponse>[...?b?.categories];
+    files = <UFileData>[];
+    categories = (await UServices.category.read(p: UCategoryReadParams(pageSize: 200))).$1?.result ?? <UCategoryResponse>[];
+  }
+
+  bool isSelected(UCategoryResponse cat) => selectedCategories.any((UCategoryResponse x) => x.id == cat.id);
+
+  void toggleCategory(UCategoryResponse cat, bool on) => on ? selectedCategories.add(cat) : selectedCategories.removeWhere((UCategoryResponse x) => x.id == cat.id);
+
+  Future<bool> save() async {
+    final UBlogResponse? b = editing;
+    final List<String> categoryIds = selectedCategories.map((UCategoryResponse cat) => cat.id).toList();
+    final dynamic ok = await submit(
+      b == null
+          ? UServices.blog.create(
+              p: UBlogCreateParams(
+                tags: <int>[TagBlog.draft.number],
+                title: title.text,
+                subtitle: subtitle.text.nullIfEmpty(),
+                slug: slug.text.nullIfEmpty(),
+                content: content.text.nullIfEmpty(),
+                categories: categoryIds,
+              ),
+            )
+          : UServices.blog.update(
+              p: UBlogUpdateParams(
+                id: b.id,
+                title: title.text,
+                subtitle: subtitle.text.nullIfEmpty(),
+                slug: slug.text.nullIfEmpty(),
+                content: content.text.nullIfEmpty(),
+                categories: categoryIds,
+              ),
+            ),
+      null,
     );
-    return completer.future;
-  }
-
-  void create({required UBlogCreateParams p, List<UFileData>? files}) => UServices.blog.create(
-    p: p,
-    onOk: (UResponse<String> r) {
-      if (files.isNotNullOrEmpty() && r.result != null) {
-        _uploadMedia(blogId: r.result!, files: files!, onDone: () => okCallback(r.message, read));
-      } else {
-        okCallback(r.message, read);
+    if (ok == null) return false;
+    final String? id = b?.id ?? ok.result as String?;
+    if (id != null) {
+      for (final UFileData file in files) {
+        await UServices.media.create(
+          p: UMediaCreateParams(file: file, blogId: id, tag1: TagMedia.image.number),
+          onOk: (_) {},
+          onError: (_) {},
+          onException: (_) {},
+        );
       }
-    },
-    onError: (UEmptyResponse r) => errorCallBack(r.message, read),
-    onException: (String e) => errorCallBack(U.s.errorSubmittingForm, read),
-  );
-
-  void update({required UBlogUpdateParams p, List<UFileData>? files}) => UServices.blog.update(
-    p: p,
-    onOk: (UEmptyResponse r) {
-      if (files.isNotNullOrEmpty()) {
-        _uploadMedia(blogId: p.id, files: files!, onDone: () => okCallback(r.message, read));
-      } else {
-        okCallback(r.message, read);
-      }
-    },
-    onError: (UEmptyResponse r) => errorCallBack(r.message, read),
-    onException: (String e) => errorCallBack(U.s.errorSubmittingForm, read),
-  );
-
-  Future<void> _uploadMedia({required String blogId, required List<UFileData> files, required VoidCallback onDone}) async {
-    for (final UFileData file in files) {
-      await UServices.media.create(
-        p: UMediaCreateParams(file: file, blogId: blogId, tag1: TagMedia.image.number),
-        onOk: (_) {},
-        onError: (_) {},
-        onException: (_) {},
-      );
     }
-    onDone();
+    unawaited(read());
+    return true;
   }
 
-  void delete(UBlogResponse i) => UNavigator.confirm(
-    title: U.s.delete,
-    message: U.s.areYouSureYouWantToDelete,
-    onConfirm: () => UServices.blog.delete(
-      p: UIdParams(id: i.id),
-      onOk: (UEmptyResponse r) {
-        UNavigator.back();
-        okCallback(r.message, read);
-      },
-      onError: (UEmptyResponse r) {
-        UNavigator.back();
-        errorCallBack(r.message, read);
-      },
-      onException: (String e) {
-        UNavigator.back();
-        UToast.error(message: e);
-      },
+  void setPublished(UBlogResponse i, bool on) => submit(
+    UServices.blog.update(
+      p: UBlogUpdateParams(
+        id: i.id,
+        addTags: <int>[if (on) TagBlog.published.number else TagBlog.draft.number],
+        removeTags: <int>[if (on) TagBlog.draft.number else TagBlog.published.number],
+      ),
     ),
+    read,
   );
 
-  void publish(UBlogResponse i) => UServices.blog.update(
-    p: UBlogUpdateParams(id: i.id, addTags: <int>[TagBlog.published.number], removeTags: <int>[TagBlog.draft.number]),
-    onOk: (UEmptyResponse r) => okCallback(r.message, read),
-    onError: (UEmptyResponse r) => errorCallBack(r.message, read),
-    onException: (String e) => errorCallBack(U.s.errorSubmittingForm, read),
-  );
-
-  void unpublish(UBlogResponse i) => UServices.blog.update(
-    p: UBlogUpdateParams(id: i.id, addTags: <int>[TagBlog.draft.number], removeTags: <int>[TagBlog.published.number]),
-    onOk: (UEmptyResponse r) => okCallback(r.message, read),
-    onError: (UEmptyResponse r) => errorCallBack(r.message, read),
-    onException: (String e) => errorCallBack(U.s.errorSubmittingForm, read),
-  );
-
-  @override
-  void dispose() {
-    titleFilter.dispose();
-    super.dispose();
-  }
+  void delete(UBlogResponse i) => confirmAction(() => UServices.blog.delete(p: UIdParams(id: i.id)), read);
 }

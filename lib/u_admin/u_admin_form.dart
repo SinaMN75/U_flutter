@@ -93,25 +93,6 @@ abstract class UAdminForm {
     },
   ).pSymmetric(vertical: 6);
 
-  static Widget filterDialog(
-    BuildContext context, {
-    required Widget title,
-    required List<Widget> children,
-    GlobalKey<FormState>? formKey,
-    double maxWidth = 420,
-  }) {
-    final Widget body = SingleChildScrollView(
-      child: UColumn(mainAxisSize: MainAxisSize.min, children: children),
-    );
-    return AlertDialog(
-      title: title,
-      content: SizedBox(
-        width: context.dialogWidth(max: maxWidth),
-        child: formKey == null ? body : Form(key: formKey, child: body),
-      ),
-    );
-  }
-
   static Future<void> filter({
     required String title,
     required List<Widget> Function(StateSetter setState) children,
@@ -119,25 +100,32 @@ abstract class UAdminForm {
     required VoidCallback onClear,
   }) => UNavigator.dialog<void>(
     StatefulBuilder(
-      builder: (BuildContext context, StateSetter setState) => filterDialog(
-        context,
+      builder: (BuildContext context, StateSetter setState) => AlertDialog(
         title: Text(title),
-        children: <Widget>[
-          ...children(setState),
-          const SizedBox(height: 20),
-          UButtonSubmitCancel(
-            submitTitle: U.s.filter,
-            cancelTitle: U.s.clearFilters,
-            onSubmit: () {
-              UNavigator.back();
-              onApply();
-            },
-            onCancel: () {
-              UNavigator.back();
-              onClear();
-            },
+        content: SizedBox(
+          width: context.dialogWidth(),
+          child: SingleChildScrollView(
+            child: UColumn(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ...children(setState),
+                const SizedBox(height: 20),
+                UButtonSubmitCancel(
+                  submitTitle: U.s.filter,
+                  cancelTitle: U.s.clearFilters,
+                  onSubmit: () {
+                    UNavigator.back();
+                    onApply();
+                  },
+                  onCancel: () {
+                    UNavigator.back();
+                    onClear();
+                  },
+                ),
+              ],
+            ),
           ),
-        ],
+        ),
       ),
     ),
   );

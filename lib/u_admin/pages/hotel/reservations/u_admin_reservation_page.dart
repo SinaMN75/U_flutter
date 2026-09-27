@@ -139,8 +139,8 @@ class _ReservationPageState extends State<UAdminReservationPage> {
         items: UAdminReservationStatusFilter.values.map((UAdminReservationStatusFilter f) => DropdownMenuItem<UAdminReservationStatusFilter>(value: f, child: Text(_statusLabel(f)))).toList(),
         onChanged: (UAdminReservationStatusFilter? v) => c.statusFilter = v ?? UAdminReservationStatusFilter.all,
       ).pSymmetric(vertical: 6),
-      UAdminForm.date(c.checkInFilterText, U.s.checkInDate, (DateTime d) => c.checkInFilter = d, initial: c.checkInFilter),
-      UAdminForm.date(c.checkOutFilterText, U.s.checkOutDate, (DateTime d) => c.checkOutFilter = d, initial: c.checkOutFilter),
+      UAdminForm.date(c.controllerStartDate, U.s.checkInDate, (DateTime d) => c.startDate = d, initial: c.startDate),
+      UAdminForm.date(c.controllerEndDate, U.s.checkOutDate, (DateTime d) => c.endDate = d, initial: c.endDate),
     ],
   );
 

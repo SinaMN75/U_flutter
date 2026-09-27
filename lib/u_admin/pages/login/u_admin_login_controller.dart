@@ -1,12 +1,8 @@
 part of "../../u_admin.dart";
 
 class UAdminLoginController extends UBaseController {
-  final TextEditingController controllerUserName = TextEditingController(
-    text: kDebugMode ? "SystemAdmin" : "",
-  );
-  final TextEditingController controllerPassword = TextEditingController(
-    text: kDebugMode ? "SystemAdmin" : "",
-  );
+  late final TextEditingController controllerUserName = fields.text(kDebugMode ? "SystemAdmin" : "");
+  late final TextEditingController controllerPassword = fields.text(kDebugMode ? "SystemAdmin" : "");
 
   void init() {}
 
@@ -34,10 +30,4 @@ class UAdminLoginController extends UBaseController {
     },
   );
 
-  @override
-  void dispose() {
-    controllerUserName.dispose();
-    controllerPassword.dispose();
-    super.dispose();
-  }
 }

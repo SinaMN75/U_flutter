@@ -4,7 +4,7 @@ class UAdminDormBedController extends UBaseController {
   List<UDormBedResponse> list = <UDormBedResponse>[];
   UDormRoomResponse? room;
   UDormResponse? dorm;
-  final TextEditingController titleFilter = TextEditingController();
+  late final TextEditingController titleFilter = fields.text();
 
   // ---------------------------------------------------------------- form (create and edit)
 
@@ -114,7 +114,6 @@ class UAdminDormBedController extends UBaseController {
 
   @override
   void dispose() {
-    titleFilter.dispose();
     photos.dispose();
     super.dispose();
   }

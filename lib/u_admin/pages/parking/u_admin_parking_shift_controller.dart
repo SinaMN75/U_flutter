@@ -22,7 +22,6 @@ class UAdminParkingShiftController extends UBaseController {
       ),
       onOk: (UResponse<List<UParkingShiftResponse>> r) {
         list = r.result ?? <UParkingShiftResponse>[];
-        totalCount = r.totalCount;
         setTotalPages(r.totalCount);
         setListState(isEmpty: list.isEmpty);
       },

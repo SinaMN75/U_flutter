@@ -27,7 +27,7 @@ class _AccountingPageState extends State<UAdminAccountingPage> {
     appBar: AppBar(
       title: Text(U.s.accounting),
       actions: <Widget>[
-        IconButton(icon: const Icon(Icons.filter_alt), tooltip: U.s.filter, onPressed: _showFilterDialog),
+        IconButton(icon: const Icon(Icons.filter_alt), tooltip: U.s.filter, onPressed: _filter),
         IconButton(icon: const Icon(Icons.refresh), tooltip: U.s.refresh, onPressed: c.load),
       ],
     ),
@@ -75,8 +75,8 @@ class _AccountingPageState extends State<UAdminAccountingPage> {
   });
 
   String _rangeLabel() {
-    final String from = c.fromController.text.nullIfEmpty() ?? U.s.last30Days;
-    final String to = c.toController.text.nullIfEmpty() ?? "";
+    final String from = c.controllerStartDate.text.nullIfEmpty() ?? U.s.last30Days;
+    final String to = c.controllerEndDate.text.nullIfEmpty() ?? "";
     return to.isEmpty ? from : "$from → $to";
   }
 
@@ -164,43 +164,13 @@ class _AccountingPageState extends State<UAdminAccountingPage> {
     );
   }
 
-  void _showFilterDialog() => UNavigator.dialog(
-    UAdminForm.filterDialog(
-      context,
-      title: Text(U.s.filterItem(U.s.report)),
-      children: <Widget>[
-        UTextFieldDatePicker(
-          jalali: true,
-          controller: c.fromController,
-          labelText: U.s.fromDate,
-          onChange: (DateTime d, UJalali j) {
-            c.fromController.text = j.formatCompactDate();
-            c.fromDate = d;
-          },
-        ).pSymmetric(vertical: 6),
-        UTextFieldDatePicker(
-          jalali: true,
-          controller: c.toController,
-          labelText: U.s.toDate,
-          onChange: (DateTime d, UJalali j) {
-            c.toController.text = j.formatCompactDate();
-            c.toDate = d;
-          },
-        ).pSymmetric(vertical: 6),
-        const SizedBox(height: 20),
-        UButtonSubmitCancel(
-          submitTitle: U.s.filter,
-          cancelTitle: U.s.clearFilters,
-          onSubmit: () {
-            UNavigator.back();
-            c.load();
-          },
-          onCancel: () {
-            UNavigator.back();
-            c.clear();
-          },
-        ),
-      ],
-    ),
+  void _filter() => UAdminForm.filter(
+    title: U.s.filterItem(U.s.report),
+    onApply: c.load,
+    onClear: c.clear,
+    children: (StateSetter setState) => <Widget>[
+      UAdminForm.date(c.controllerStartDate, U.s.fromDate, (DateTime d) => c.startDate = d),
+      UAdminForm.date(c.controllerEndDate, U.s.toDate, (DateTime d) => c.endDate = d),
+    ],
   );
 }

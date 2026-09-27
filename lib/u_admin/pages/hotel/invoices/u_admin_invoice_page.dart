@@ -32,8 +32,8 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
       onApply: c.applyFilters,
       onClear: c.clearFilters,
       children: (_) => <Widget>[
-        UAdminForm.date(c.minDueText, U.s.dueDate, (DateTime d) => c.minDueDate = d, initial: c.minDueDate),
-        UAdminForm.date(c.maxDueText, U.s.dueDate, (DateTime d) => c.maxDueDate = d, initial: c.maxDueDate),
+        UAdminForm.date(c.controllerStartDate, U.s.dueDate, (DateTime d) => c.startDate = d, initial: c.startDate),
+        UAdminForm.date(c.controllerEndDate, U.s.dueDate, (DateTime d) => c.endDate = d, initial: c.endDate),
         UAdminForm.text(c.minDebtFilter, U.s.minPrice, money: true),
         UAdminForm.text(c.maxDebtFilter, U.s.maxPrice, money: true),
       ],

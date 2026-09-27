@@ -184,17 +184,17 @@ class _UserPageState extends State<UAdminUserPage> {
       ).pSymmetric(vertical: 6),
       UAdminForm.pair(
         context,
-        UAdminForm.date(c.controllerStartDate, U.s.fromDate, (DateTime d) => c.fromCreatedAt = d, initial: c.fromCreatedAt),
-        UAdminForm.date(c.controllerEndDate, U.s.toDate, (DateTime d) => c.toCreatedAt = d, initial: c.toCreatedAt),
+        UAdminForm.date(c.controllerStartDate, U.s.fromDate, (DateTime d) => c.startDate = d, initial: c.startDate),
+        UAdminForm.date(c.controllerEndDate, U.s.toDate, (DateTime d) => c.endDate = d, initial: c.endDate),
       ),
-      UDropDownField<bool>(
+      UDropDownField<TagOrderBy>(
         labelText: U.s.createdDate,
-        initialValue: c.orderByCreatedAtDesc,
-        items: <DropdownMenuItem<bool>>[
-          DropdownMenuItem<bool>(value: false, child: Text(U.s.accenting)),
-          DropdownMenuItem<bool>(value: true, child: Text(U.s.descending)),
+        initialValue: c.tagOrderBy.value,
+        items: <DropdownMenuItem<TagOrderBy>>[
+          DropdownMenuItem<TagOrderBy>(value: TagOrderBy.createdAt, child: Text(U.s.accenting)),
+          DropdownMenuItem<TagOrderBy>(value: TagOrderBy.createdAtDescending, child: Text(U.s.descending)),
         ],
-        onChanged: (bool? v) => c.orderByCreatedAtDesc = v ?? false,
+        onChanged: c.tagOrderBy.call,
       ).pSymmetric(vertical: 6),
       UDropDownField<TagUser?>(
         labelText: U.s.tags,

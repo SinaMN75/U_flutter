@@ -22,13 +22,11 @@ class _ContentsPageState extends State<UAdminContentsPage> {
     super.dispose();
   }
 
-  TagContent? _tagOf(UContentResponse i) => TagContent.values.firstWhereOrNull((TagContent t) => i.tags.contains(t.number));
-
   @override
   Widget build(BuildContext context) => UAdminScaffold(
     title: U.s.contents,
-    onFilter: _showFilterDialog,
-    onCreate: _showEditDialog,
+    onFilter: _filter,
+    onCreate: _form,
     pageNumber: c.pageNumber,
     totalPages: c.totalPages,
     onPageChanged: (int page) {
@@ -64,7 +62,7 @@ class _ContentsPageState extends State<UAdminContentsPage> {
   Widget _itemMobile(UContentResponse i, int index) => UAdminTable.mobileCard(
     leading: _thumb(i.jsonData.imageBase64 ?? i.jsonData.iconBase64, size: 44),
     title: i.jsonData.title ?? "---",
-    badge: UAdminTable.statusChip(label: _tagOf(i)?.localizedTitle ?? "---", color: Theme.of(context).colorScheme.primary),
+    badge: UAdminTable.statusChip(label: UAdminContentsController.tagOf(i)?.localizedTitle ?? "---", color: Theme.of(context).colorScheme.primary),
     trailing: _menu(i),
     fields: <UAdminField>[
       UAdminField(U.s.description, i.jsonData.description ?? i.jsonData.detail1 ?? "---"),
@@ -78,7 +76,7 @@ class _ContentsPageState extends State<UAdminContentsPage> {
     padding: UAdminTable.rowPadding,
     children: <Widget>[
       _thumb(i.jsonData.imageBase64 ?? i.jsonData.iconBase64).expanded(),
-      UAdminTable.cell(_tagOf(i)?.localizedTitle ?? "---"),
+      UAdminTable.cell(UAdminContentsController.tagOf(i)?.localizedTitle ?? "---"),
       UAdminTable.cell(i.jsonData.title ?? "---"),
       UTextBodyMedium(i.jsonData.description ?? i.jsonData.detail1 ?? "---", textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis, expanded: 2),
       UAdminTable.cell(i.createdAt.toJalaliDate()),
@@ -88,228 +86,83 @@ class _ContentsPageState extends State<UAdminContentsPage> {
 
   Widget _menu(UContentResponse i) => UPopupMenu(
     items: <UPopupMenuItem>[
-      UPopupMenuItem(label: U.s.edit, icon: Icons.edit, onTap: () => _showEditDialog(p: i)),
+      UPopupMenuItem(label: U.s.edit, icon: Icons.edit, onTap: () => _form(i)),
       UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, onTap: () => c.delete(i)),
     ],
   );
 
-  void _showFilterDialog() => UNavigator.dialog(
-    Builder(
-      builder: (BuildContext context) => AlertDialog(
-        title: Text(U.s.filterItem(U.s.contents)),
-        content: SizedBox(
-          width: context.dialogWidth(),
-          child: Form(
-            key: c.filterFormKey,
-            child: SingleChildScrollView(
-              child: UColumn(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  UObx(
-                    () => UDropDownField<TagContent?>(
-                      initialValue: c.tagFilter.value,
-                      labelText: U.s.contentType,
-                      items: <DropdownMenuItem<TagContent?>>[
-                        DropdownMenuItem<TagContent?>(child: Text(U.s.all)),
-                        ...TagContent.values.map(
-                          (TagContent t) => DropdownMenuItem<TagContent?>(value: t, child: Text(t.localizedTitle)),
-                        ),
-                      ],
-                      onChanged: (TagContent? v) => c.tagFilter.value = v,
-                    ),
-                  ).pSymmetric(vertical: 6),
-                  const SizedBox(height: 20),
-                  UButtonSubmitCancel(
-                    submitTitle: U.s.filter,
-                    cancelTitle: U.s.clearFilters,
-                    onSubmit: () {
-                      c.applyFilters();
-                      UNavigator.back();
-                    },
-                    onCancel: () {
-                      c.clearFilters();
-                      UNavigator.back();
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    ),
+  void _filter() => UAdminForm.filter(
+    title: U.s.filterItem(U.s.contents),
+    onApply: c.applyFilters,
+    onClear: c.clearFilters,
+    children: (StateSetter setState) => <Widget>[
+      UDropDownField<TagContent?>(
+        initialValue: c.tagFilter,
+        labelText: U.s.contentType,
+        items: <DropdownMenuItem<TagContent?>>[
+          DropdownMenuItem<TagContent?>(child: Text(U.s.all)),
+          ...TagContent.values.map((TagContent t) => DropdownMenuItem<TagContent?>(value: t, child: Text(t.localizedTitle))),
+        ],
+        onChanged: (TagContent? v) => c.tagFilter = v,
+      ).pSymmetric(vertical: 6),
+    ],
   );
 
-  Future<void> _showEditDialog({UContentResponse? p}) async {
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final UAdminFields f = UAdminFields();
-    final TextEditingController title = f.text(p?.jsonData.title);
-    final TextEditingController subTitle = f.text(p?.jsonData.subTitle);
-    final TextEditingController description = f.text(p?.jsonData.description);
-    final TextEditingController detail1 = f.text(p?.jsonData.detail1);
-    final TextEditingController detail2 = f.text(p?.jsonData.detail2);
-    final TextEditingController buttonText = f.text(p?.jsonData.buttonText);
-    final TextEditingController buttonLink = f.text(p?.jsonData.buttonLink);
-    final TextEditingController link = f.text(p?.jsonData.link);
-    final TextEditingController order = f.text(p?.jsonData.order?.toString());
-    final TextEditingController instagram = f.text(p?.jsonData.instagram);
-    final TextEditingController telegram = f.text(p?.jsonData.telegram);
-    final TextEditingController whatsapp = f.text(p?.jsonData.whatsapp);
-    final TextEditingController phone = f.text(p?.jsonData.phone);
-    final URx<TagContent> tag = ((p == null ? null : _tagOf(p)) ?? TagContent.aboutUs).obs;
-    final List<_ItemForm> items = <_ItemForm>[...?p?.jsonData.items.map(_ItemForm.fromModel)];
-    final List<_LinkForm> links = <_LinkForm>[...?p?.jsonData.links.map(_LinkForm.fromModel)];
-    String? imageBase64 = p?.jsonData.imageBase64;
-    String? iconBase64 = p?.jsonData.iconBase64;
-
-    await UNavigator.dialog(
-      f.scope(
-        StatefulBuilder(
-          builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
-            title: Text(p == null ? U.s.createItem(U.s.content) : U.s.editItem(U.s.content)),
-            content: SizedBox(
-              width: context.dialogWidth(max: 520),
-              child: SingleChildScrollView(
-                child: Form(
-                  key: formKey,
-                  child: UColumn(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      UDropDownField<TagContent>(
-                        initialValue: tag.value,
-                        labelText: U.s.contentType,
-                        items: TagContent.values.map((TagContent t) => DropdownMenuItem<TagContent>(value: t, child: Text(t.localizedTitle))).toList(),
-                        onChanged: (TagContent? v) {
-                          if (v != null) tag.value = v;
-                        },
-                      ).pSymmetric(vertical: 6),
-                      UTextField(controller: title, labelText: U.s.title, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      UTextField(controller: subTitle, labelText: U.s.subtitle, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      UTextField(controller: description, labelText: U.s.description, lines: 3, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      UTextField(controller: detail1, labelText: U.s.detail1, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      UTextField(controller: detail2, labelText: U.s.detail2, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      UTextField(controller: order, labelText: U.s.order, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      const SizedBox(height: 8),
-                      URow(
-                        spacing: 12,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          _Base64ImageField(label: U.s.image, initial: imageBase64, onChanged: (String? v) => imageBase64 = v).expanded(),
-                          _Base64ImageField(label: U.s.icon, initial: iconBase64, onChanged: (String? v) => iconBase64 = v).expanded(),
-                        ],
-                      ),
-                      const SizedBox(height: 12),
-                      UTextField(controller: buttonText, labelText: U.s.buttonText, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      UTextField(controller: buttonLink, labelText: U.s.buttonLink, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      UTextField(controller: link, labelText: U.s.link, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      const SizedBox(height: 8),
-                      UTextBodyLarge(U.s.socialMedia, margin: const EdgeInsets.only(bottom: 4)),
-                      UTextField(controller: instagram, labelText: U.s.instagram, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      UTextField(controller: telegram, labelText: U.s.telegram, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      UTextField(controller: whatsapp, labelText: U.s.whatsApp, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      UTextFieldPhoneNumber(controller: phone, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      const SizedBox(height: 12),
-                      URow(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          UTextBodyLarge(U.s.items),
-                          TextButton.icon(
-                            onPressed: () => setDialogState(() => items.add(_ItemForm())),
-                            icon: const Icon(Icons.add, size: 18),
-                            label: Text(U.s.addItem("")),
-                          ),
-                        ],
-                      ),
-                      ...items.mapIndexed(
-                        (int index, _ItemForm e) => _itemCard(index, e, () => setDialogState(() => items.removeAt(index))),
-                      ),
-                      const SizedBox(height: 12),
-                      URow(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          UTextBodyLarge(U.s.links),
-                          TextButton.icon(
-                            onPressed: () => setDialogState(() => links.add(_LinkForm())),
-                            icon: const Icon(Icons.add, size: 18),
-                            label: Text(U.s.addItem(U.s.link)),
-                          ),
-                        ],
-                      ),
-                      ...links.mapIndexed(
-                        (int index, _LinkForm e) => _linkCard(index, e, () => setDialogState(() => links.removeAt(index))),
-                      ),
-                      const SizedBox(height: 20),
-                      UButtonSubmitCancel(
-                        onSubmit: () => UValidators.validateForm(
-                          key: formKey,
-                          action: () {
-                            final List<UContentItem> itemModels = items.map((_ItemForm e) => e.toModel()).toList();
-                            final List<UContentLink> linkModels = links.map((_LinkForm e) => e.toModel()).toList();
-                            if (p == null) {
-                              c.create(
-                                p: UContentCreateParams(
-                                  tags: <int>[tag.value.number],
-                                  title: title.text.nullIfEmpty(),
-                                  subTitle: subTitle.text.nullIfEmpty(),
-                                  description: description.text.nullIfEmpty(),
-                                  detail1: detail1.text.nullIfEmpty(),
-                                  detail2: detail2.text.nullIfEmpty(),
-                                  imageBase64: imageBase64,
-                                  iconBase64: iconBase64,
-                                  buttonText: buttonText.text.nullIfEmpty(),
-                                  buttonLink: buttonLink.text.nullIfEmpty(),
-                                  link: link.text.nullIfEmpty(),
-                                  order: int.tryParse(order.text),
-                                  instagram: instagram.text.nullIfEmpty(),
-                                  telegram: telegram.text.nullIfEmpty(),
-                                  whatsapp: whatsapp.text.nullIfEmpty(),
-                                  phone: phone.text.nullIfEmpty(),
-                                  items: itemModels,
-                                  links: linkModels,
-                                ),
-                              );
-                            } else {
-                              c.update(
-                                p: UContentUpdateParams(
-                                  id: p.id,
-                                  tags: <int>[tag.value.number],
-                                  title: title.text.nullIfEmpty(),
-                                  subTitle: subTitle.text.nullIfEmpty(),
-                                  description: description.text.nullIfEmpty(),
-                                  detail1: detail1.text.nullIfEmpty(),
-                                  detail2: detail2.text.nullIfEmpty(),
-                                  imageBase64: imageBase64,
-                                  iconBase64: iconBase64,
-                                  buttonText: buttonText.text.nullIfEmpty(),
-                                  buttonLink: buttonLink.text.nullIfEmpty(),
-                                  link: link.text.nullIfEmpty(),
-                                  order: int.tryParse(order.text),
-                                  instagram: instagram.text.nullIfEmpty(),
-                                  telegram: telegram.text.nullIfEmpty(),
-                                  whatsapp: whatsapp.text.nullIfEmpty(),
-                                  phone: phone.text.nullIfEmpty(),
-                                  items: itemModels,
-                                  links: linkModels,
-                                ),
-                              );
-                            }
-                            UNavigator.back();
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
+  Future<void> _form([UContentResponse? p]) async {
+    c.loadForm(p);
+    await UAdminForm.editDialog(
+      title: p == null ? U.s.createItem(U.s.content) : U.s.editItem(U.s.content),
+      formKey: c.formKey,
+      maxWidth: 520,
+      onSubmit: c.save,
+      children: (BuildContext context, StateSetter setState) => <Widget>[
+        UDropDownField<TagContent>(
+          initialValue: c.tag,
+          labelText: U.s.contentType,
+          items: TagContent.values.map((TagContent t) => DropdownMenuItem<TagContent>(value: t, child: Text(t.localizedTitle))).toList(),
+          onChanged: (TagContent? v) => c.tag = v ?? c.tag,
+        ).pSymmetric(vertical: 6),
+        UAdminForm.text(c.title, U.s.title),
+        UAdminForm.text(c.subTitle, U.s.subtitle),
+        UAdminForm.text(c.description, U.s.description, lines: 3),
+        UAdminForm.text(c.detail1, U.s.detail1, lines: 2),
+        UAdminForm.text(c.detail2, U.s.detail2, lines: 2),
+        UAdminForm.text(c.order, U.s.order, number: true),
+        URow(
+          spacing: 12,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          margin: const EdgeInsets.symmetric(vertical: 8),
+          children: <Widget>[
+            _Base64ImageField(label: U.s.image, initial: c.imageBase64, onChanged: (String? v) => c.imageBase64 = v).expanded(),
+            _Base64ImageField(label: U.s.icon, initial: c.iconBase64, onChanged: (String? v) => c.iconBase64 = v).expanded(),
+          ],
         ),
-      ),
+        UAdminForm.text(c.buttonText, U.s.buttonText),
+        UAdminForm.text(c.buttonLink, U.s.buttonLink),
+        UAdminForm.text(c.link, U.s.link),
+        UAdminForm.sectionTitle(U.s.socialMedia),
+        UAdminForm.text(c.instagram, U.s.instagram),
+        UAdminForm.text(c.telegram, U.s.telegram),
+        UAdminForm.text(c.whatsapp, U.s.whatsApp),
+        UTextFieldPhoneNumber(controller: c.phone, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
+        _listHeader(U.s.items, U.s.addItem(""), () => setState(c.addItem)),
+        ...c.items.mapIndexed((int index, UAdminContentItemForm e) => _itemCard(index, e, () => setState(() => c.items.removeAt(index)))),
+        _listHeader(U.s.links, U.s.addItem(U.s.link), () => setState(c.addLink)),
+        ...c.links.mapIndexed((int index, UAdminContentLinkForm e) => _linkCard(index, e, () => setState(() => c.links.removeAt(index)))),
+      ],
     );
   }
 
-  Widget _itemCard(int index, _ItemForm e, VoidCallback onRemove) => UContainer(
+  Widget _listHeader(String title, String addLabel, VoidCallback onAdd) => URow(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    margin: const EdgeInsets.only(top: 12),
+    children: <Widget>[
+      UTextBodyLarge(title),
+      TextButton.icon(onPressed: onAdd, icon: const Icon(Icons.add, size: 18), label: Text(addLabel)),
+    ],
+  );
+
+  Widget _itemCard(int index, UAdminContentItemForm e, VoidCallback onRemove) => UContainer(
     padding: const EdgeInsets.all(12),
     margin: const EdgeInsets.symmetric(vertical: 6),
     color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.06),
@@ -345,7 +198,7 @@ class _ContentsPageState extends State<UAdminContentsPage> {
     ),
   );
 
-  Widget _linkCard(int index, _LinkForm e, VoidCallback onRemove) => UContainer(
+  Widget _linkCard(int index, UAdminContentLinkForm e, VoidCallback onRemove) => UContainer(
     padding: const EdgeInsets.all(12),
     margin: const EdgeInsets.symmetric(vertical: 6),
     color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.06),
@@ -448,57 +301,4 @@ class _Base64ImageFieldState extends State<_Base64ImageField> {
       ],
     );
   }
-}
-
-class _ItemForm {
-  _ItemForm({String? title, String? subTitle, String? description, String? link, int? order, this.iconBase64, this.imageBase64})
-    : title = TextEditingController(text: title),
-      subTitle = TextEditingController(text: subTitle),
-      description = TextEditingController(text: description),
-      link = TextEditingController(text: link),
-      order = TextEditingController(text: order?.toString());
-
-  factory _ItemForm.fromModel(UContentItem m) => _ItemForm(
-    title: m.title,
-    subTitle: m.subTitle,
-    description: m.description,
-    link: m.link,
-    order: m.order,
-    iconBase64: m.iconBase64,
-    imageBase64: m.imageBase64,
-  );
-
-  final TextEditingController title;
-  final TextEditingController subTitle;
-  final TextEditingController description;
-  final TextEditingController link;
-  final TextEditingController order;
-  String? iconBase64;
-  String? imageBase64;
-
-  UContentItem toModel() => UContentItem(
-    title: title.text.nullIfEmpty(),
-    subTitle: subTitle.text.nullIfEmpty(),
-    description: description.text.nullIfEmpty(),
-    link: link.text.nullIfEmpty(),
-    order: int.tryParse(order.text),
-    iconBase64: iconBase64,
-    imageBase64: imageBase64,
-  );
-}
-
-class _LinkForm {
-  _LinkForm({String? title, String? url, this.iconBase64}) : title = TextEditingController(text: title), url = TextEditingController(text: url);
-
-  factory _LinkForm.fromModel(UContentLink m) => _LinkForm(title: m.title, url: m.url, iconBase64: m.iconBase64);
-
-  final TextEditingController title;
-  final TextEditingController url;
-  String? iconBase64;
-
-  UContentLink toModel() => UContentLink(
-    title: title.text.nullIfEmpty(),
-    url: url.text.nullIfEmpty(),
-    iconBase64: iconBase64,
-  );
 }

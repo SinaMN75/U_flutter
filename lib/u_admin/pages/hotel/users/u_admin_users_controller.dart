@@ -9,13 +9,13 @@ class UAdminUsersController extends UBaseController {
   TagUser? tagFilter;
   TagUser? genderFilter;
   bool verifiedOnly = false;
-  final TextEditingController firstNameFilter = TextEditingController();
-  final TextEditingController lastNameFilter = TextEditingController();
-  final TextEditingController userNameFilter = TextEditingController();
-  final TextEditingController phoneFilter = TextEditingController();
-  final TextEditingController emailFilter = TextEditingController();
-  final TextEditingController nationalCodeFilter = TextEditingController();
-  final TextEditingController queryFilter = TextEditingController();
+  late final TextEditingController firstNameFilter = fields.text();
+  late final TextEditingController lastNameFilter = fields.text();
+  late final TextEditingController userNameFilter = fields.text();
+  late final TextEditingController phoneFilter = fields.text();
+  late final TextEditingController emailFilter = fields.text();
+  late final TextEditingController nationalCodeFilter = fields.text();
+  late final TextEditingController queryFilter = fields.text();
 
   // ---------------------------------------------------------------- form (create and edit)
 
@@ -56,9 +56,9 @@ class UAdminUsersController extends UBaseController {
         email: emailFilter.valueOrNull(),
         nationalCode: nationalCodeFilter.valueOrNull(),
         tags: tags.isEmpty ? null : tags,
-        fromCreatedAt: fromCreatedAt,
-        toCreatedAt: toCreatedAt,
-        orderBy: orderByCreatedAtDesc ? TagOrderBy.createdAtDescending.number : TagOrderBy.createdAt.number,
+        fromCreatedAt: startDate,
+        toCreatedAt: endDate,
+        orderBy: tagOrderBy.value.number,
         pageNumber: pageNumber.value,
         pageSize: pageSize,
       ),
@@ -83,17 +83,14 @@ class UAdminUsersController extends UBaseController {
       emailFilter,
       nationalCodeFilter,
       queryFilter,
-      controllerStartDate,
-      controllerEndDate,
     ]) {
       c.clear();
     }
     tagFilter = null;
     genderFilter = null;
     verifiedOnly = false;
-    fromCreatedAt = null;
-    toCreatedAt = null;
-    orderByCreatedAtDesc = false;
+    clearDates();
+    tagOrderBy(TagOrderBy.createdAt);
     reloadFirstPage(read);
   }
 

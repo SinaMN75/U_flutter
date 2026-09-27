@@ -14,8 +14,6 @@ class UAdminMerchantController extends UBaseController {
   late final TextEditingController landlineFilter = fields.text();
   late final TextEditingController merchantIdFilter = fields.text();
   late final TextEditingController bankAccountIdFilter = fields.text();
-  late final TextEditingController fromCreatedController = fields.text();
-  late final TextEditingController toCreatedController = fields.text();
 
   late final TextEditingController title = fields.text();
   late final TextEditingController businessTitle = fields.text();
@@ -50,12 +48,11 @@ class UAdminMerchantController extends UBaseController {
         merchantId: merchantIdFilter.text.nullIfEmpty(),
         userId: user?.id,
         bankAccountId: bankAccountIdFilter.text.nullIfEmpty(),
-        fromCreatedAt: fromCreatedAt,
-        toCreatedAt: toCreatedAt,
+        fromCreatedAt: startDate,
+        toCreatedAt: endDate,
       ),
       onOk: (UResponse<List<UMerchantResponse>> r) {
         list = r.result ?? <UMerchantResponse>[];
-        totalCount = r.totalCount;
         setTotalPages(r.totalCount);
         setListState(isEmpty: list.isEmpty);
       },
@@ -75,8 +72,6 @@ class UAdminMerchantController extends UBaseController {
       landlineFilter,
       merchantIdFilter,
       bankAccountIdFilter,
-      fromCreatedController,
-      toCreatedController,
     ]) {
       t.clear();
     }
@@ -84,8 +79,7 @@ class UAdminMerchantController extends UBaseController {
     businessCategory = null;
     province = null;
     city = null;
-    fromCreatedAt = null;
-    toCreatedAt = null;
+    clearDates();
     reloadFirstPage(read);
   }
 

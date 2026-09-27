@@ -7,8 +7,6 @@ class UAdminTerminalController extends UBaseController {
   late final TextEditingController serialFilter = fields.text();
   late final TextEditingController merchantIdFilter = fields.text();
   late final TextEditingController creatorIdFilter = fields.text();
-  late final TextEditingController fromCreatedController = fields.text();
-  late final TextEditingController toCreatedController = fields.text();
   TagTerminal? typeFilter;
   UTerminalBrandResponse? brandFilter;
   UTerminalBrokerResponse? brokerFilter;
@@ -49,14 +47,13 @@ class UAdminTerminalController extends UBaseController {
         terminalBrandId: brandFilter?.id,
         terminalBrokerId: brokerFilter?.id,
         tags: typeFilter == null ? null : <int>[typeFilter!.number],
-        fromCreatedAt: fromCreatedAt,
-        toCreatedAt: toCreatedAt,
+        fromCreatedAt: startDate,
+        toCreatedAt: endDate,
         orderBy: tagOrderBy.value.number,
         selectorArgs: const UTerminalSelectorArgs(merchant: UMerchantSelectorArgs(), terminalBrand: UTerminalBrandSelectorArgs(), terminalBroker: UTerminalBrokerSelectorArgs()),
       ),
       onOk: (UResponse<List<UTerminalResponse>> r) {
         list = r.result ?? <UTerminalResponse>[];
-        totalCount = r.totalCount;
         setTotalPages(r.totalCount);
         setListState(isEmpty: list.isEmpty);
       },
@@ -71,11 +68,10 @@ class UAdminTerminalController extends UBaseController {
     serialFilter.clear();
     merchantIdFilter.clear();
     creatorIdFilter.clear();
-    fromCreatedController.clear();
-    toCreatedController.clear();
     typeFilter = null;
     brandFilter = null;
     brokerFilter = null;
+    clearDates();
     reloadFirstPage(read);
   }
 

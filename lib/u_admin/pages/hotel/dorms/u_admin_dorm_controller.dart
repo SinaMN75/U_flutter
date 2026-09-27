@@ -2,7 +2,7 @@ part of "../../../u_admin.dart";
 
 class UAdminDormController extends UBaseController {
   List<UDormResponse> list = <UDormResponse>[];
-  final TextEditingController titleFilter = TextEditingController();
+  late final TextEditingController titleFilter = fields.text();
 
   // ---------------------------------------------------------------- form (create and edit)
 
@@ -166,7 +166,6 @@ class UAdminDormController extends UBaseController {
 
   @override
   void dispose() {
-    titleFilter.dispose();
     photos.dispose();
     super.dispose();
   }

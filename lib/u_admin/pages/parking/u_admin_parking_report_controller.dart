@@ -27,7 +27,6 @@ class UAdminParkingReportController extends UBaseController {
       ),
       onOk: (UResponse<List<UParkingReportResponse>> r) {
         list = r.result ?? <UParkingReportResponse>[];
-        totalCount = r.totalCount;
         setTotalPages(r.totalCount);
         setListState(isEmpty: list.isEmpty);
       },

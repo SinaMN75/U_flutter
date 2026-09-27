@@ -20,9 +20,9 @@ class UAdminGoldController extends UBaseController {
   final URxState tokensState = URxState();
   final URxList<UGoldApiTokenResponse> tokens = <UGoldApiTokenResponse>[].obs;
 
-  final TextEditingController tokenLabelController = TextEditingController();
-  final TextEditingController tokenScopesController = TextEditingController(text: "trade,read");
-  final TextEditingController tokenIpsController = TextEditingController();
+  late final TextEditingController tokenLabel = fields.text();
+  late final TextEditingController tokenScopes = fields.text("trade,read");
+  late final TextEditingController tokenIps = fields.text();
 
   void init() {
     readOverview();
@@ -120,60 +120,28 @@ class UAdminGoldController extends UBaseController {
     );
   }
 
-  void createToken() {
-    final List<String> scopes = tokenScopesController.text.split(",").map((String s) => s.trim()).where((String s) => s.isNotEmpty).toList();
-    final List<String> ips = tokenIpsController.text.split(",").map((String s) => s.trim()).where((String s) => s.isNotEmpty).toList();
+  Future<bool> createToken() async {
+    final List<String> scopes = splitList(tokenScopes.text);
+    final List<String> ips = splitList(tokenIps.text);
     if (scopes.isEmpty) {
       UToast.error(message: U.s.scopes);
-      return;
+      return false;
     }
-    ULoading.show();
-    UServices.gold.createApiToken(
-      p: UGoldCreateApiTokenParams(scopes: scopes, label: tokenLabelController.text.trim(), ipWhitelist: ips.isEmpty ? null : ips),
-      onOk: (UResponse<UGoldApiTokenResponse> r) {
-        ULoading.dismiss();
-        final String? raw = r.result?.rawToken;
-        if (raw != null) {
-          UClipboard.set(raw);
-          UToast.success(message: U.s.copyThisTokenNowItIsShownOnlyOnce);
-        }
-        okCallback(r.message, readTokens);
-      },
-      onError: (UEmptyResponse e) {
-        ULoading.dismiss();
-        errorCallBack(e.message, readTokens);
-      },
-      onException: (String e) {
-        ULoading.dismiss();
-        UToast.error(message: e);
-      },
-    );
+    final UResponse<UGoldApiTokenResponse>? ok =
+        await submit(UServices.gold.createApiToken(p: UGoldCreateApiTokenParams(scopes: scopes, label: tokenLabel.text.trim(), ipWhitelist: ips.isEmpty ? null : ips)), readTokens)
+            as UResponse<UGoldApiTokenResponse>?;
+    final String? raw = ok?.result?.rawToken;
+    if (raw != null) {
+      unawaited(UClipboard.set(raw));
+      UToast.success(message: U.s.copyThisTokenNowItIsShownOnlyOnce);
+    }
+    return ok != null;
   }
 
-  void deleteToken(String id) {
-    ULoading.show();
-    UServices.gold.deleteApiToken(
-      p: UGoldDeleteApiTokenParams(tokenId: id),
-      onOk: (UEmptyResponse r) {
-        ULoading.dismiss();
-        okCallback(r.message, readTokens);
-      },
-      onError: (UEmptyResponse e) {
-        ULoading.dismiss();
-        errorCallBack(e.message, readTokens);
-      },
-      onException: (String e) {
-        ULoading.dismiss();
-        UToast.error(message: e);
-      },
-    );
-  }
-
-  @override
-  void dispose() {
-    tokenLabelController.dispose();
-    tokenScopesController.dispose();
-    tokenIpsController.dispose();
-    super.dispose();
-  }
+  void deleteToken(UGoldApiTokenResponse i) => confirmAction(
+    () => UServices.gold.deleteApiToken(p: UGoldDeleteApiTokenParams(tokenId: i.id)),
+    readTokens,
+    title: U.s.revokeApiToken,
+    message: i.label ?? i.tokenPrefix ?? i.id,
+  );
 }

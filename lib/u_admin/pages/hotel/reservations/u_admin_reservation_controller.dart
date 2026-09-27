@@ -7,13 +7,9 @@ class UAdminReservationController extends UBaseController {
   UHotelResponse? hotel;
   UHotelRoomResponse? room;
 
-  final TextEditingController guestFilter = TextEditingController();
-  final TextEditingController checkInFilterText = TextEditingController();
-  final TextEditingController checkOutFilterText = TextEditingController();
+  late final TextEditingController guestFilter = fields.text();
   UHotelResponse? hotelFilter;
   UAdminReservationStatusFilter statusFilter = UAdminReservationStatusFilter.all;
-  DateTime? checkInFilter;
-  DateTime? checkOutFilter;
 
   // ---------------------------------------------------------------- form (create and edit)
 
@@ -56,8 +52,8 @@ class UAdminReservationController extends UBaseController {
         roomId: room?.id,
         userName: guestFilter.valueOrNull(),
         tags: _statusTag == null ? null : <int>[_statusTag!],
-        checkInDate: checkInFilter,
-        checkOutDate: checkOutFilter,
+        checkInDate: startDate,
+        checkOutDate: endDate,
         selectorArgs: const UHotelReservationSelectorArgs(
           user: UUserSelectorArgs(),
           room: UHotelRoomSelectorArgs(hotel: UHotelSelectorArgs()),
@@ -79,12 +75,9 @@ class UAdminReservationController extends UBaseController {
 
   void clearFilters() {
     guestFilter.clear();
-    checkInFilterText.clear();
-    checkOutFilterText.clear();
+    clearDates();
     hotelFilter = null;
     statusFilter = UAdminReservationStatusFilter.all;
-    checkInFilter = null;
-    checkOutFilter = null;
     reloadFirstPage(read);
   }
 
@@ -186,11 +179,4 @@ class UAdminReservationController extends UBaseController {
 
   void delete(UHotelReservationResponse i) => confirmAction(() => UServices.hotel.deleteHotelReservation(p: UIdParams(id: i.id)), read);
 
-  @override
-  void dispose() {
-    guestFilter.dispose();
-    checkInFilterText.dispose();
-    checkOutFilterText.dispose();
-    super.dispose();
-  }
 }

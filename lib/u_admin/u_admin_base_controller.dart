@@ -2,29 +2,26 @@ part of "u_admin.dart";
 
 abstract class UBaseController {
   final URxState state = URxState();
-  URxState state2 = URxState();
+  final URxState state2 = URxState();
   final GlobalKey<FormState> formKey = GlobalKey();
-
   final UAdminFields fields = UAdminFields();
 
   int totalCount = 0;
-  URxInt pageNumber = 1.obs;
-  URxInt totalPages = 1.obs;
+  final URxInt pageNumber = 1.obs;
+  final URxInt totalPages = 1.obs;
   int pageSize = 20;
-  URx<TagOrderBy> tagOrderBy = TagOrderBy.createdAt.obs;
+  final URx<TagOrderBy> tagOrderBy = TagOrderBy.createdAt.obs;
 
-  DateTime? fromCreatedAt;
-  DateTime? toCreatedAt;
+  /// The list filter's date range; pick it with `UAdminForm.date(controllerStartDate, …)` / `(controllerEndDate, …)`.
   DateTime? startDate;
   DateTime? endDate;
+  late final TextEditingController controllerStartDate = fields.text();
+  late final TextEditingController controllerEndDate = fields.text();
 
-  bool orderByCreatedAt = false;
-  bool orderByCreatedAtDesc = false;
-
-  final TextEditingController controllerStartDate = TextEditingController();
-  final TextEditingController controllerEndDate = TextEditingController();
-
-  void setTotalPages(int totalCount) => totalPages((totalCount / pageSize).ceil().clamp(1, 1 << 30));
+  void setTotalPages(int count) {
+    totalCount = count;
+    totalPages((count / pageSize).ceil().clamp(1, 1 << 30));
+  }
 
   void firstPage() => pageNumber(1);
 
@@ -40,14 +37,11 @@ abstract class UBaseController {
     read();
   }
 
-  void okCallback(String? message, VoidCallback? reload) {
-    UToast.snackBar(message: message ?? U.s.submitted);
-    reload?.call();
-  }
-
-  void errorCallBack(String? message, void Function() reload) {
-    UToast.error(message: message ?? U.s.errorSubmittingForm);
-    reload();
+  void clearDates() {
+    startDate = null;
+    endDate = null;
+    controllerStartDate.clear();
+    controllerEndDate.clear();
   }
 
   /// Awaits a service call's `(ok, error, exception)` result: on success toasts and runs [reload], otherwise toasts the error.
@@ -58,7 +52,8 @@ abstract class UBaseController {
       UToast.error(message: (error?.message as String?).nullIfEmpty() ?? exception.nullIfEmpty() ?? U.s.errorSubmittingForm);
       return null;
     }
-    okCallback((ok.message as String?).nullIfEmpty(), reload?.call);
+    UToast.snackBar(message: (ok.message as String?).nullIfEmpty() ?? U.s.submitted);
+    reload?.call();
     return ok;
   }
 
@@ -87,16 +82,10 @@ abstract class UBaseController {
     onConfirm: () => submit(call(), reload),
   );
 
-  /// Releases everything this controller owns. The page that created the
-  /// controller calls this from its own `State.dispose()`; a subclass that adds
-  /// its own controllers overrides this and ends with `super.dispose()`.
-  ///
-  /// Both the text controllers and the [URx] fields are [ChangeNotifier]s, so
-  /// without this every page visit leaves its listeners behind.
+  /// Releases everything this controller owns. The page that created the controller calls this from its own
+  /// `State.dispose()`; a subclass that adds its own notifiers overrides this and ends with `super.dispose()`.
   @mustCallSuper
   void dispose() {
-    controllerStartDate.dispose();
-    controllerEndDate.dispose();
     state.dispose();
     state2.dispose();
     pageNumber.dispose();

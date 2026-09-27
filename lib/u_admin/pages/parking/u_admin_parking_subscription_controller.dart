@@ -4,7 +4,7 @@ class UAdminParkingSubscriptionController extends UBaseController {
   List<UParkingSubscriptionResponse> list = <UParkingSubscriptionResponse>[];
   UParkingResponse? parking;
   final URxnBool isActive = URxnBool(true);
-  final TextEditingController controllerQuery = TextEditingController();
+  late final TextEditingController controllerQuery = fields.text();
 
   late final TextEditingController name = fields.text();
   late final TextEditingController phone = fields.text();
@@ -32,7 +32,6 @@ class UAdminParkingSubscriptionController extends UBaseController {
       ),
       onOk: (UResponse<List<UParkingSubscriptionResponse>> r) {
         list = r.result ?? <UParkingSubscriptionResponse>[];
-        totalCount = r.totalCount;
         setTotalPages(r.totalCount);
         setListState(isEmpty: list.isEmpty);
       },
@@ -84,7 +83,6 @@ class UAdminParkingSubscriptionController extends UBaseController {
 
   @override
   void dispose() {
-    controllerQuery.dispose();
     isActive.dispose();
     super.dispose();
   }
