@@ -106,7 +106,7 @@ class UAdminPaymentMerchantController extends UBaseController {
   }
 
   Future<bool> save() async =>
-      await submit(
+      await send(
         UServices.merchant.create(
           p: UMerchantCreateParams(
             tags: <int>[TagMerchant.normal.number],

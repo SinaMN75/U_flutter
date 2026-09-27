@@ -133,7 +133,7 @@ class UAdminHotelController extends UBaseController {
       nearby: nearby,
       faqs: faqs,
     );
-    final Object? ok = await submit(
+    final Object? ok = await send(
       isNew ? UServices.hotel.createHotel(p: UHotelCreateParams.fromMap(p.toMap()..remove("id"))) : UServices.hotel.updateHotel(p: p),
       () {},
     );
@@ -143,7 +143,7 @@ class UAdminHotelController extends UBaseController {
     return true;
   }
 
-  void setTag(UHotelResponse i, TagHotel tag, bool on, {TagHotel? opposite}) => submit(
+  void setTag(UHotelResponse i, TagHotel tag, bool on, {TagHotel? opposite}) => send(
     UServices.hotel.updateHotel(
       p: UHotelUpdateParams(
         id: i.id,

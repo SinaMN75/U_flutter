@@ -67,7 +67,7 @@ class UAdminPaymentMoadiController extends UBaseController {
     message: U.s.areYouSureYouWantToApproveAndRegisterThisTaxpayerInTheNamatSystem,
   );
 
-  Future<bool> reject(UMoadiResponse i) async => await submit(UServices.moadi.reject(p: UMoadiRejectParams(id: i.id, reason: rejectReasonController.text.nullIfEmpty())), read) != null;
+  Future<bool> reject(UMoadiResponse i) async => await send(UServices.moadi.reject(p: UMoadiRejectParams(id: i.id, reason: rejectReasonController.text.nullIfEmpty())), read) != null;
 
   void delete(UMoadiResponse i) => confirmAction(() => UServices.moadi.delete(p: UIdParams(id: i.id)), read);
 

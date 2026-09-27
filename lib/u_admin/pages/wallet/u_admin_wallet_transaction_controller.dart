@@ -54,7 +54,7 @@ class UAdminWalletTransactionController extends UBaseController {
 
   Future<bool> save() async {
     final UTxnResponse? t = editing;
-    return await submit(
+    return await send(
       t == null
           ? UServices.txn.create(p: UTxnCreateParams(amount: numOf(amountController) ?? 0, trackingNumber: trackingController.text.trim(), tags: <int>[tag.number]))
           : UServices.txn.update(p: UTxnUpdateParams(id: t.id, amount: numOf(amountController), trackingNumber: trackingController.text.nullIfEmpty(), tags: <int>[tag.number])),

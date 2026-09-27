@@ -94,7 +94,7 @@ class UAdminHotelDormRoomController extends UBaseController {
       capacity: intOf(capacityController) ?? 0,
       floor: intOf(floorController),
     );
-    final Object? ok = await submit(
+    final Object? ok = await send(
       editing == null ? UServices.hotel.createDormRoom(p: UDormRoomCreateParams.fromMap(p.toMap()..remove("id"))) : UServices.hotel.updateDormRoom(p: p),
       () {},
     );

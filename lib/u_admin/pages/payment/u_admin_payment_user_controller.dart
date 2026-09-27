@@ -148,7 +148,7 @@ class UAdminPaymentUserController extends UBaseController {
   Future<bool> save() async {
     final UUserResponse? u = editing;
     if (u == null) {
-      return await submit(
+      return await send(
         UServices.user.create(
           p: UUserCreateParams(
             firstName: firstNameController.text,
@@ -185,7 +185,7 @@ class UAdminPaymentUserController extends UBaseController {
         removeTags.addAll(TagUser.permissions.map((TagUser t) => t.number));
       }
     }
-    return await submit(
+    return await send(
       UServices.user.update(
         p: UUserUpdateParams(
           id: u.id,

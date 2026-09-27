@@ -63,7 +63,7 @@ class UAdminBlogController extends UBaseController {
   Future<bool> save() async {
     final UBlogResponse? b = editing;
     final List<String> categoryIds = selectedCategories.map((UCategoryResponse cat) => cat.id).toList();
-    final Object? ok = await submit(
+    final Object? ok = await send(
       b == null
           ? UServices.blog.create(
               p: UBlogCreateParams(
@@ -103,7 +103,7 @@ class UAdminBlogController extends UBaseController {
     return true;
   }
 
-  void setPublished(UBlogResponse i, bool on) => submit(
+  void setPublished(UBlogResponse i, bool on) => send(
     UServices.blog.update(
       p: UBlogUpdateParams(
         id: i.id,

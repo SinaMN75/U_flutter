@@ -96,7 +96,7 @@ class UAdminPaymentTerminalController extends UBaseController {
       UToast.error(message: U.s.required);
       return false;
     }
-    return await submit(
+    return await send(
       t == null
           ? UServices.terminal.create(
               p: UTerminalCreateParams(
@@ -134,7 +134,7 @@ class UAdminPaymentTerminalController extends UBaseController {
   );
 
   Future<bool> reject(UTerminalResponse i) async =>
-      await submit(UServices.terminal.reject(p: UTerminalRejectParams(id: i.id, reason: rejectReasonController.text.nullIfEmpty())), read) != null;
+      await send(UServices.terminal.reject(p: UTerminalRejectParams(id: i.id, reason: rejectReasonController.text.nullIfEmpty())), read) != null;
 
   void delete(UTerminalResponse i) => confirmAction(() => UServices.terminal.delete(p: UIdParams(id: i.id)), read);
 

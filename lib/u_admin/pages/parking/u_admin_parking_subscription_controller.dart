@@ -63,7 +63,7 @@ class UAdminParkingSubscriptionController extends UBaseController {
 
   Future<bool> save() async {
     if (plate.length < 6) return false;
-    return await submit(
+    return await send(
       UServices.parking.createParkingSubscription(
         p: UParkingSubscriptionCreateParams(
           parkingId: parking?.id ?? "",
@@ -88,7 +88,7 @@ class UAdminParkingSubscriptionController extends UBaseController {
       _ => 30,
     };
     final DateTime base = i.expiryDate.isAfter(DateTime.now()) ? i.expiryDate : DateTime.now();
-    submit(UServices.parking.updateParkingSubscription(p: UParkingSubscriptionUpdateParams(id: i.id, expiryDate: base.add(Duration(days: days)))), read);
+    send(UServices.parking.updateParkingSubscription(p: UParkingSubscriptionUpdateParams(id: i.id, expiryDate: base.add(Duration(days: days)))), read);
   }
 
   void delete(UParkingSubscriptionResponse i) => confirmAction(() => UServices.parking.deleteParkingSubscription(p: UIdParams(id: i.id)), read);

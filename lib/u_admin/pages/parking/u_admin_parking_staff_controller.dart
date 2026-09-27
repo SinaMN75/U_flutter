@@ -64,7 +64,7 @@ class UAdminParkingStaffController extends UBaseController {
 
   Future<bool> save() async {
     final UParkingStaffResponse? s = editing;
-    return await submit(
+    return await send(
       s == null
           ? UServices.parking.createParkingStaff(
               p: UParkingStaffCreateParams(

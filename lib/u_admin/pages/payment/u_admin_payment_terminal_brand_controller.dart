@@ -70,7 +70,7 @@ class UAdminPaymentTerminalBrandController extends UBaseController {
   Future<bool> save() async {
     final UTerminalBrandResponse? b = editing;
     final List<int> tags = <int>[deviceType.number, connectionType.number];
-    return await submit(
+    return await send(
       b == null
           ? UServices.terminal.createBrand(p: UTerminalBrandCreateParams(code: codeController.text.trim(), title: titleController.text.trim(), model: modelController.text.trim(), tags: tags))
           : UServices.terminal.updateBrand(

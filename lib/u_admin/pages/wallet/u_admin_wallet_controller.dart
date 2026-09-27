@@ -49,7 +49,7 @@ class UAdminWalletController extends UBaseController {
   Future<bool> charge() async {
     final UUserResponse? u = selectedUser.value;
     if (u == null) return false;
-    return await submit(UServices.wallet.charge(p: UWalletChargeParams(userId: u.id, amount: numOf(chargeAmountController) ?? 0)), read) != null;
+    return await send(UServices.wallet.charge(p: UWalletChargeParams(userId: u.id, amount: numOf(chargeAmountController) ?? 0)), read) != null;
   }
 
   Future<bool> transfer() async {
@@ -58,7 +58,7 @@ class UAdminWalletController extends UBaseController {
       UToast.error(message: U.s.selectAItem(U.s.receiver));
       return false;
     }
-    return await submit(
+    return await send(
       UServices.wallet.transfer(
         p: UWalletTransferParams(
           senderId: selectedUser.value?.id,

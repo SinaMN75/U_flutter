@@ -35,7 +35,7 @@ abstract class UBaseController {
 
   /// Awaits a service call's `(ok, error, exception)` result: on success toasts and runs [reload], otherwise toasts the error.
   /// Returns the ok response (on create its `result` is the new id), or null when it failed.
-  Future<T?> submit<T>(Future<(T?, Object?, String?)> call, VoidCallback? reload) async {
+  Future<T?> send<T>(Future<(T?, Object?, String?)> call, VoidCallback? reload) async {
     final (T? ok, Object? error, String? exception) = await call;
     if (ok == null) {
       final String? errorMessage = switch (error) {
@@ -73,12 +73,12 @@ abstract class UBaseController {
   /// "a, b، c" → ["a", "b", "c"] (Latin and Persian commas).
   List<String> splitList(String text) => text.split(RegExp("[،,]")).map((String i) => i.trim()).where((String i) => i.isNotEmpty).toList();
 
-  /// Asks for confirmation (the dialog closes itself), then runs [call] through [submit]. Defaults to a delete prompt.
+  /// Asks for confirmation (the dialog closes itself), then runs [call] through [send]. Defaults to a delete prompt.
   void confirmAction(Future<(dynamic, dynamic, String?)> Function() call, void Function() reload, {String? title, String? message}) => UNavigator.confirm(
     title: title ?? U.s.delete,
     message: message ?? U.s.areYouSureYouWantToDelete,
     destructive: title == null,
-    onConfirm: () => submit(call(), reload),
+    onConfirm: () => send(call(), reload),
   );
 
   /// Releases everything this controller owns. The page that created the controller calls this from its own

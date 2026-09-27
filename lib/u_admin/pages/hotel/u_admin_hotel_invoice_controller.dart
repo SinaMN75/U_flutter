@@ -119,7 +119,7 @@ class UAdminHotelInvoiceController extends UBaseController {
   /// Creates or updates the invoice. Returns true when the dialog can close.
   Future<bool> save() async {
     if (editing != null) {
-      return await submit(
+      return await send(
             UServices.hotel.updateDormBedInvoice(
               p: UDormBedInvoiceUpdateParams(
                 id: editing!.id,
@@ -140,7 +140,7 @@ class UAdminHotelInvoiceController extends UBaseController {
       UToast.error(message: U.s.selectAItem(U.s.contract));
       return false;
     }
-    return await submit(
+    return await send(
           UServices.hotel.createDormBedInvoice(
             p: UDormBedInvoiceCreateParams(
               tags: <int>[TagDormBedInvoice.notPaid.number, type.number],

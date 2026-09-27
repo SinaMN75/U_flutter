@@ -104,7 +104,7 @@ class UAdminHotelDormBedController extends UBaseController {
       roomId: roomId,
       description: descriptionController.text.nullIfEmpty(),
     );
-    final Object? ok = await submit(
+    final Object? ok = await send(
       editing == null ? UServices.hotel.createDormBed(p: UDormBedCreateParams.fromMap(p.toMap()..remove("id"))) : UServices.hotel.updateDormBed(p: p),
       () {},
     );

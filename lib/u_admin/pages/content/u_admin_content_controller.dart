@@ -103,7 +103,7 @@ class UAdminContentController extends UBaseController {
     final UContentResponse? p = editing;
     final List<UContentItem> itemModels = items.map((UAdminContentItemForm e) => e.toModel()).toList();
     final List<UContentLink> linkModels = links.map((UAdminContentLinkForm e) => e.toModel()).toList();
-    return await submit(
+    return await send(
       p == null
           ? UServices.content.create(
               p: UContentCreateParams(

@@ -44,7 +44,7 @@ class UAdminParkingPlateFlagController extends UBaseController {
 
   Future<bool> save() async {
     if (plate.length < 6) return false;
-    return await submit(
+    return await send(
       UServices.parking.createParkingPlateFlag(
         p: UParkingPlateFlagCreateParams(
           parkingId: parking?.id ?? "",

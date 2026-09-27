@@ -36,7 +36,7 @@ class UAdminHotelReviewController extends UBaseController {
     read();
   }
 
-  void _setStatus(UCommentResponse c, TagComment to) => submit(
+  void _setStatus(UCommentResponse c, TagComment to) => send(
     UServices.comment.update(
       p: UCommentUpdateParams(
         id: c.id,

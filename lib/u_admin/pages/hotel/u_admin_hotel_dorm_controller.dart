@@ -144,7 +144,7 @@ class UAdminHotelDormController extends UBaseController {
       nearby: nearby,
       faqs: faqs,
     );
-    final Object? ok = await submit(
+    final Object? ok = await send(
       isNew ? UServices.hotel.createDorm(p: UDormCreateParams.fromMap(p.toMap()..remove("id"))) : UServices.hotel.updateDorm(p: p),
       () {},
     );
@@ -155,7 +155,7 @@ class UAdminHotelDormController extends UBaseController {
   }
 
   /// Quick switch from the list: turns [tag] on or off; [opposite] is swapped the other way (active ↔ inactive).
-  void setTag(UDormResponse i, TagDorm tag, bool on, {TagDorm? opposite}) => submit(
+  void setTag(UDormResponse i, TagDorm tag, bool on, {TagDorm? opposite}) => send(
     UServices.hotel.updateDorm(
       p: UDormUpdateParams(
         id: i.id,

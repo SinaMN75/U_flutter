@@ -126,7 +126,7 @@ class UAdminHotelRoomController extends UBaseController {
       extraGuestCapacity: intOf(extraGuestCapacityController),
       extraGuestPrice: numOf(extraGuestPriceController),
     );
-    final Object? ok = await submit(
+    final Object? ok = await send(
       editing == null ? UServices.hotel.createHotelRoom(p: UHotelRoomCreateParams.fromMap(p.toMap()..remove("id"))) : UServices.hotel.updateHotelRoom(p: p),
       () {},
     );

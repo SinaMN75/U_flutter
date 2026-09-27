@@ -59,7 +59,7 @@ class UAdminParkingTariffController extends UBaseController {
   }
 
   Future<bool> save() async =>
-      await submit(
+      await send(
         UServices.parking.createParkingTariff(
           p: UParkingTariffCreateParams(
             parkingId: parkingId,

@@ -125,7 +125,7 @@ class UAdminHotelContractController extends UBaseController {
     final bool isDaily = type == TagDormBedContract.daily;
     final List<int> tags = <int>[type.number, if (isDaily) TagDormBedContract.singleInvoice.number];
     if (editing != null) {
-      return await submit(
+      return await send(
             UServices.hotel.updateDormBedContract(
               p: UDormBedContractUpdateParams(id: editing!.id, tags: tags, startDate: contractStart, endDate: contractEnd, deposit: isDaily ? 0 : numOf(depositController), rent: numOf(rentController)),
             ),
@@ -141,7 +141,7 @@ class UAdminHotelContractController extends UBaseController {
       UToast.error(message: U.s.selectAItem(U.s.user));
       return false;
     }
-    return await submit(
+    return await send(
           UServices.hotel.createDormBedContract(
             p: UDormBedContractCreateParams(
               tags: tags,

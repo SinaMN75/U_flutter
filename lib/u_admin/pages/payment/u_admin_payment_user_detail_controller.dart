@@ -75,7 +75,7 @@ class UAdminPaymentUserDetailController extends UBaseController {
   }
 
   Future<bool> reject() async =>
-      await submit(
+      await send(
         UServices.user.update(
           p: UUserUpdateParams(
             id: user.id,

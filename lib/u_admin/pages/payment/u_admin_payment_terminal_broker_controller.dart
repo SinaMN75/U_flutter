@@ -79,7 +79,7 @@ class UAdminPaymentTerminalBrokerController extends UBaseController {
       UToast.error(message: U.s.required);
       return false;
     }
-    return await submit(
+    return await send(
       b == null
           ? UServices.terminal.createBroker(
               p: UTerminalBrokerCreateParams(

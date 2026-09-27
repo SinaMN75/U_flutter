@@ -125,7 +125,7 @@ class UAdminHotelUserController extends UBaseController {
       if (canManageRoles && role == TagUser.subAdmin) ...permissions.map((TagUser t) => t.number),
     ];
     if (editing == null) {
-      return await submit(
+      return await send(
             UServices.user.create(
               p: UUserCreateParams(
                 firstName: firstNameController.text,
@@ -148,7 +148,7 @@ class UAdminHotelUserController extends UBaseController {
       if (gender == TagUser.male) TagUser.female.number else TagUser.male.number,
       if (canManageRoles) ...<TagUser>[TagUser.superAdmin, TagUser.subAdmin, TagUser.guest, ...TagUser.permissions].map((TagUser t) => t.number).where((int n) => !roleTags.contains(n)),
     ];
-    return await submit(
+    return await send(
           UServices.user.update(
             p: UUserUpdateParams(
               id: editing!.id,

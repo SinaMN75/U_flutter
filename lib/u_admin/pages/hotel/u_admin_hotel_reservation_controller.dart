@@ -121,7 +121,7 @@ class UAdminHotelReservationController extends UBaseController {
   /// Creates or updates the reservation. Returns true when the dialog can close.
   Future<bool> save() async {
     if (editing != null) {
-      return await submit(
+      return await send(
             UServices.hotel.updateHotelReservation(
               p: UHotelReservationUpdateParams(
                 id: editing!.id,
@@ -146,7 +146,7 @@ class UAdminHotelReservationController extends UBaseController {
       UToast.error(message: U.s.pleaseSelectAItem(U.s.user));
       return false;
     }
-    return await submit(
+    return await send(
           UServices.hotel.createHotelReservation(
             p: UHotelReservationCreateParams(
               tags: <int>[TagHotelReservation.pending.number],
@@ -167,11 +167,11 @@ class UAdminHotelReservationController extends UBaseController {
         null;
   }
 
-  void confirm(UHotelReservationResponse i) => submit(UServices.hotel.confirmHotelReservation(p: UIdParams(id: i.id)), read);
+  void confirm(UHotelReservationResponse i) => send(UServices.hotel.confirmHotelReservation(p: UIdParams(id: i.id)), read);
 
-  void checkInGuest(UHotelReservationResponse i) => submit(UServices.hotel.checkInHotelReservation(p: UIdParams(id: i.id)), read);
+  void checkInGuest(UHotelReservationResponse i) => send(UServices.hotel.checkInHotelReservation(p: UIdParams(id: i.id)), read);
 
-  void checkOutGuest(UHotelReservationResponse i) => submit(UServices.hotel.checkOutHotelReservation(p: UIdParams(id: i.id)), read);
+  void checkOutGuest(UHotelReservationResponse i) => send(UServices.hotel.checkOutHotelReservation(p: UIdParams(id: i.id)), read);
 
   void cancel(UHotelReservationResponse i) => confirmAction(
     () => UServices.hotel.cancelHotelReservation(p: UIdParams(id: i.id)),
@@ -179,7 +179,7 @@ class UAdminHotelReservationController extends UBaseController {
     title: U.s.cancel,
   );
 
-  void payInvoice(UHotelInvoiceResponse inv) => submit(UServices.hotel.payHotelInvoice(p: UIdParams(id: inv.id)), read);
+  void payInvoice(UHotelInvoiceResponse inv) => send(UServices.hotel.payHotelInvoice(p: UIdParams(id: inv.id)), read);
 
   void delete(UHotelReservationResponse i) => confirmAction(() => UServices.hotel.deleteHotelReservation(p: UIdParams(id: i.id)), read);
 

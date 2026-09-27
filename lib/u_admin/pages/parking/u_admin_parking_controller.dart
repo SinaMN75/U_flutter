@@ -54,7 +54,7 @@ class UAdminParkingController extends UBaseController {
     final TagParking on = disabled ? TagParking.disabled : TagParking.active;
     final TagParking off = disabled ? TagParking.active : TagParking.disabled;
     final List<String> adminUserIds = admins.map((UUserResponse u) => u.id).toList();
-    return await submit(
+    return await send(
       p == null
           ? UServices.parking.createParking(
               p: UParkingCreateParams(

@@ -124,7 +124,7 @@ class UAdminGoldController extends UBaseController {
       return false;
     }
     final UResponse<UGoldApiTokenResponse>? ok =
-        await submit(UServices.gold.createApiToken(p: UGoldCreateApiTokenParams(scopes: scopes, label: tokenLabelController.text.trim(), ipWhitelist: ips.isEmpty ? null : ips)), readTokens);
+        await send(UServices.gold.createApiToken(p: UGoldCreateApiTokenParams(scopes: scopes, label: tokenLabelController.text.trim(), ipWhitelist: ips.isEmpty ? null : ips)), readTokens);
     final String? raw = ok?.result?.rawToken;
     if (raw != null) {
       unawaited(UClipboard.set(raw));
