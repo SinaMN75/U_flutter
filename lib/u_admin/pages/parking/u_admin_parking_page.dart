@@ -107,18 +107,35 @@ class _UAdminParkingPageState extends State<UAdminParkingPage> {
 
   Future<void> _form([UParkingResponse? p]) async {
     await c.loadForm(p);
-    await UAdminForm.editDialog(
+    await UFormDialog.show(
       title: p == null ? U.s.createItem(U.s.parking) : U.s.editItem(U.s.parking),
-      formKey: c.formKey,
       onSubmit: c.save,
       children: (BuildContext context, StateSetter setState) => <Widget>[
-        UAdminForm.text(c.title, U.s.title, required: true),
-        UAdminForm.text(c.address, U.s.address),
-        UTextFieldPhoneNumber(controller: c.phone, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
-        UAdminForm.text(c.capacity, U.s.capacity, number: true),
-        UAdminForm.text(c.entrance, U.s.entrancePrice, money: true),
-        UAdminForm.text(c.hourly, U.s.hourlyPrice, money: true),
-        UAdminForm.text(c.daily, U.s.dailyPrice, money: true),
+        UTextField(controller: c.titleController, labelText: U.s.title, validator: UValidators.required(message: ""), margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.addressController, labelText: U.s.address, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextFieldPhoneNumber(controller: c.phoneController, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.capacityController, labelText: U.s.capacity, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(
+          controller: c.entranceController,
+          labelText: U.s.entrancePrice,
+          keyboardType: TextInputType.number,
+          formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+          margin: const EdgeInsets.symmetric(vertical: 6),
+        ),
+        UTextField(
+          controller: c.hourlyController,
+          labelText: U.s.hourlyPrice,
+          keyboardType: TextInputType.number,
+          formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+          margin: const EdgeInsets.symmetric(vertical: 6),
+        ),
+        UTextField(
+          controller: c.dailyController,
+          labelText: U.s.dailyPrice,
+          keyboardType: TextInputType.number,
+          formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+          margin: const EdgeInsets.symmetric(vertical: 6),
+        ),
         SwitchListTile(
           value: c.disabled,
           title: UTextBodyMedium(U.s.disabled),

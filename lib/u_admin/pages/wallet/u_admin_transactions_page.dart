@@ -91,7 +91,7 @@ class _TransactionsPageState extends State<UAdminTransactionsPage> {
     ],
   );
 
-  void _filter() => UAdminForm.filter(
+  void _filter() => UFilterDialog.show(
     title: U.s.filterItem(U.s.transactions),
     onApply: c.applyFilters,
     onClear: c.clearFilters,
@@ -104,20 +104,43 @@ class _TransactionsPageState extends State<UAdminTransactionsPage> {
           ...TagTxn.values.map((TagTxn t) => DropdownMenuItem<TagTxn?>(value: t, child: Text(t.localizedTitle))),
         ],
       ).pSymmetric(vertical: 6),
-      UAdminForm.date(c.controllerStartDate, U.s.fromDate, (DateTime d) => c.startDate = d),
-      UAdminForm.date(c.controllerEndDate, U.s.toDate, (DateTime d) => c.endDate = d),
+      UTextFieldDatePicker(
+        controller: c.startDateController,
+        labelText: U.s.fromDate,
+        jalali: true,
+        margin: const EdgeInsets.symmetric(vertical: 6),
+        onChange: (DateTime d, UJalali j) {
+          c.startDate = d;
+          c.startDateController.text = d.toJalaliDate();
+        },
+      ),
+      UTextFieldDatePicker(
+        controller: c.endDateController,
+        labelText: U.s.toDate,
+        jalali: true,
+        margin: const EdgeInsets.symmetric(vertical: 6),
+        onChange: (DateTime d, UJalali j) {
+          c.endDate = d;
+          c.endDateController.text = d.toJalaliDate();
+        },
+      ),
     ],
   );
 
   Future<void> _form([UTxnResponse? t]) async {
     c.loadForm(t);
-    await UAdminForm.editDialog(
+    await UFormDialog.show(
       title: t == null ? U.s.createItem(U.s.transactions) : U.s.editItem(U.s.transactions),
-      formKey: c.formKey,
       onSubmit: c.save,
       children: (BuildContext context, StateSetter setState) => <Widget>[
-        UAdminForm.text(c.amount, U.s.amount, number: true, required: t == null),
-        UAdminForm.text(c.tracking, U.s.trackingNumber, required: t == null),
+        UTextField(
+          controller: c.amountController,
+          labelText: U.s.amount,
+          keyboardType: TextInputType.number,
+          validator: t == null ? UValidators.required(message: "") : null,
+          margin: const EdgeInsets.symmetric(vertical: 6),
+        ),
+        UTextField(controller: c.trackingController, labelText: U.s.trackingNumber, validator: t == null ? UValidators.required(message: "") : null, margin: const EdgeInsets.symmetric(vertical: 6)),
         UDropDownField<TagTxn>(
           initialValue: c.tag,
           onChanged: (TagTxn? v) => c.tag = v ?? c.tag,

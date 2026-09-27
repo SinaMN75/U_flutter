@@ -4,11 +4,11 @@ class UAdminParkingSubscriptionController extends UBaseController {
   List<UParkingSubscriptionResponse> list = <UParkingSubscriptionResponse>[];
   UParkingResponse? parking;
   final URxnBool isActive = URxnBool(true);
-  late final TextEditingController controllerQuery = fields.text();
+  final TextEditingController queryController = TextEditingController();
 
-  late final TextEditingController name = fields.text();
-  late final TextEditingController phone = fields.text();
-  late final TextEditingController price = fields.text();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController priceController = TextEditingController();
   String plate = "";
   TagVehicle vehicleType = TagVehicle.car;
   TagParkingSubscription duration = TagParkingSubscription.monthly;
@@ -23,7 +23,7 @@ class UAdminParkingSubscriptionController extends UBaseController {
     await UServices.parking.readParkingSubscription(
       p: UParkingSubscriptionReadParams(
         parkingId: parking?.id,
-        query: controllerQuery.trimmedLatin().nullIfEmpty(),
+        query: queryController.trimmedLatin().nullIfEmpty(),
         isActive: isActive.value == true ? true : null,
         isExpired: isActive.value == false ? true : null,
         pageNumber: pageNumber.value,
@@ -41,9 +41,9 @@ class UAdminParkingSubscriptionController extends UBaseController {
   }
 
   void loadForm() {
-    name.clear();
-    phone.clear();
-    price.clear();
+    nameController.clear();
+    phoneController.clear();
+    priceController.clear();
     plate = "";
     vehicleType = TagVehicle.car;
     duration = TagParkingSubscription.monthly;
@@ -58,9 +58,9 @@ class UAdminParkingSubscriptionController extends UBaseController {
           licencePlate: plate,
           vehicleType: vehicleType.number,
           tags: <int>[duration.number],
-          customerName: name.text.nullIfEmpty(),
-          customerPhoneNumber: phone.trimmedLatin().nullIfEmpty(),
-          price: numOf(price) ?? 0,
+          customerName: nameController.text.nullIfEmpty(),
+          customerPhoneNumber: phoneController.trimmedLatin().nullIfEmpty(),
+          price: numOf(priceController) ?? 0,
         ),
       ),
       read,
@@ -83,6 +83,10 @@ class UAdminParkingSubscriptionController extends UBaseController {
 
   @override
   void dispose() {
+    queryController.dispose();
+    nameController.dispose();
+    phoneController.dispose();
+    priceController.dispose();
     isActive.dispose();
     super.dispose();
   }

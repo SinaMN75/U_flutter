@@ -6,8 +6,8 @@ class UAdminTransactionsController extends UBaseController {
   TagTxn? statusFilter;
 
   UTxnResponse? editing;
-  late final TextEditingController amount = fields.text();
-  late final TextEditingController tracking = fields.text();
+  final TextEditingController amountController = TextEditingController();
+  final TextEditingController trackingController = TextEditingController();
   TagTxn tag = TagTxn.pending;
 
   Future<void> init() => read();
@@ -43,8 +43,8 @@ class UAdminTransactionsController extends UBaseController {
 
   void loadForm(UTxnResponse? t) {
     editing = t;
-    amount.text = t?.amount.toInt().toString() ?? "";
-    tracking.text = t?.trackingNumber ?? "";
+    amountController.text = t?.amount.toInt().toString() ?? "";
+    trackingController.text = t?.trackingNumber ?? "";
     tag = TagTxn.values.fromNumber(t?.tags.firstOrNull ?? TagTxn.pending.number) ?? TagTxn.pending;
   }
 
@@ -52,8 +52,8 @@ class UAdminTransactionsController extends UBaseController {
     final UTxnResponse? t = editing;
     final dynamic ok = await submit(
       t == null
-          ? UServices.txn.create(p: UTxnCreateParams(amount: numOf(amount) ?? 0, trackingNumber: tracking.text.trim(), tags: <int>[tag.number]))
-          : UServices.txn.update(p: UTxnUpdateParams(id: t.id, amount: numOf(amount), trackingNumber: tracking.text.nullIfEmpty(), tags: <int>[tag.number])),
+          ? UServices.txn.create(p: UTxnCreateParams(amount: numOf(amountController) ?? 0, trackingNumber: trackingController.text.trim(), tags: <int>[tag.number]))
+          : UServices.txn.update(p: UTxnUpdateParams(id: t.id, amount: numOf(amountController), trackingNumber: trackingController.text.nullIfEmpty(), tags: <int>[tag.number])),
       read,
     );
     return ok != null;
@@ -65,4 +65,11 @@ class UAdminTransactionsController extends UBaseController {
     title: U.s.deleteItem(U.s.transactions),
     message: U.s.areYouSureYouWantToDeleteThisItem(U.s.transactions),
   );
+
+  @override
+  void dispose() {
+    amountController.dispose();
+    trackingController.dispose();
+    super.dispose();
+  }
 }

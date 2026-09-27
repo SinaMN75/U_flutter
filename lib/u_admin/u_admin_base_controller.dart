@@ -4,7 +4,6 @@ abstract class UBaseController {
   final URxState state = URxState();
   final URxState state2 = URxState();
   final GlobalKey<FormState> formKey = GlobalKey();
-  final UAdminFields fields = UAdminFields();
 
   int totalCount = 0;
   final URxInt pageNumber = 1.obs;
@@ -12,11 +11,11 @@ abstract class UBaseController {
   int pageSize = 20;
   final URx<TagOrderBy> tagOrderBy = TagOrderBy.createdAt.obs;
 
-  /// The list filter's date range; pick it with `UAdminForm.date(controllerStartDate, …)` / `(controllerEndDate, …)`.
+  /// The list filter's date range, shown in [startDateController] / [endDateController].
   DateTime? startDate;
   DateTime? endDate;
-  late final TextEditingController controllerStartDate = fields.text();
-  late final TextEditingController controllerEndDate = fields.text();
+  final TextEditingController startDateController = TextEditingController();
+  final TextEditingController endDateController = TextEditingController();
 
   void setTotalPages(int count) {
     totalCount = count;
@@ -40,8 +39,8 @@ abstract class UBaseController {
   void clearDates() {
     startDate = null;
     endDate = null;
-    controllerStartDate.clear();
-    controllerEndDate.clear();
+    startDateController.clear();
+    endDateController.clear();
   }
 
   /// Awaits a service call's `(ok, error, exception)` result: on success toasts and runs [reload], otherwise toasts the error.
@@ -91,6 +90,7 @@ abstract class UBaseController {
     pageNumber.dispose();
     totalPages.dispose();
     tagOrderBy.dispose();
-    fields.dispose();
+    startDateController.dispose();
+    endDateController.dispose();
   }
 }

@@ -9,25 +9,25 @@ class UAdminUsersController extends UBaseController {
   TagUser? tagFilter;
   TagUser? genderFilter;
   bool verifiedOnly = false;
-  late final TextEditingController firstNameFilter = fields.text();
-  late final TextEditingController lastNameFilter = fields.text();
-  late final TextEditingController userNameFilter = fields.text();
-  late final TextEditingController phoneFilter = fields.text();
-  late final TextEditingController emailFilter = fields.text();
-  late final TextEditingController nationalCodeFilter = fields.text();
-  late final TextEditingController queryFilter = fields.text();
+  final TextEditingController firstNameFilterController = TextEditingController();
+  final TextEditingController lastNameFilterController = TextEditingController();
+  final TextEditingController userNameFilterController = TextEditingController();
+  final TextEditingController phoneFilterController = TextEditingController();
+  final TextEditingController emailFilterController = TextEditingController();
+  final TextEditingController nationalCodeFilterController = TextEditingController();
+  final TextEditingController queryFilterController = TextEditingController();
 
   // ---------------------------------------------------------------- form (create and edit)
 
   UUserResponse? editing;
-  late final TextEditingController firstName = fields.text();
-  late final TextEditingController lastName = fields.text();
-  late final TextEditingController userName = fields.text();
-  late final TextEditingController fatherName = fields.text();
-  late final TextEditingController phone = fields.text();
-  late final TextEditingController email = fields.text();
-  late final TextEditingController password = fields.text();
-  late final TextEditingController birthText = fields.text();
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController userNameController = TextEditingController();
+  final TextEditingController fatherNameController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController birthDateController = TextEditingController();
   DateTime birthdate = DateTime.now().toUtc();
   TagUser gender = TagUser.female;
   TagUser role = TagUser.guest;
@@ -48,13 +48,13 @@ class UAdminUsersController extends UBaseController {
     final List<int> tags = <int>[?tagFilter?.number, ?genderFilter?.number, if (verifiedOnly) TagUser.verified.number];
     await UServices.user.read(
       p: UUserReadParams(
-        query: queryFilter.valueOrNull(),
-        firstName: firstNameFilter.valueOrNull(),
-        lastName: lastNameFilter.valueOrNull(),
-        userName: userNameFilter.valueOrNull(),
-        phoneNumber: phoneFilter.valueOrNull(),
-        email: emailFilter.valueOrNull(),
-        nationalCode: nationalCodeFilter.valueOrNull(),
+        query: queryFilterController.valueOrNull(),
+        firstName: firstNameFilterController.valueOrNull(),
+        lastName: lastNameFilterController.valueOrNull(),
+        userName: userNameFilterController.valueOrNull(),
+        phoneNumber: phoneFilterController.valueOrNull(),
+        email: emailFilterController.valueOrNull(),
+        nationalCode: nationalCodeFilterController.valueOrNull(),
         tags: tags.isEmpty ? null : tags,
         fromCreatedAt: startDate,
         toCreatedAt: endDate,
@@ -76,13 +76,13 @@ class UAdminUsersController extends UBaseController {
 
   void clearFilters() {
     for (final TextEditingController c in <TextEditingController>[
-      firstNameFilter,
-      lastNameFilter,
-      userNameFilter,
-      phoneFilter,
-      emailFilter,
-      nationalCodeFilter,
-      queryFilter,
+      firstNameFilterController,
+      lastNameFilterController,
+      userNameFilterController,
+      phoneFilterController,
+      emailFilterController,
+      nationalCodeFilterController,
+      queryFilterController,
     ]) {
       c.clear();
     }
@@ -103,14 +103,14 @@ class UAdminUsersController extends UBaseController {
 
   void loadForm(UUserResponse? u) {
     editing = u;
-    firstName.text = u?.firstName ?? "";
-    lastName.text = u?.lastName ?? "";
-    userName.text = u?.userName ?? "";
-    fatherName.text = u?.jsonData.fatherName ?? "";
-    phone.text = u?.phoneNumber ?? "";
-    email.text = u?.email ?? "";
-    password.clear();
-    birthText.text = u?.birthdate?.toJalaliDate() ?? "";
+    firstNameController.text = u?.firstName ?? "";
+    lastNameController.text = u?.lastName ?? "";
+    userNameController.text = u?.userName ?? "";
+    fatherNameController.text = u?.jsonData.fatherName ?? "";
+    phoneController.text = u?.phoneNumber ?? "";
+    emailController.text = u?.email ?? "";
+    passwordController.clear();
+    birthDateController.text = u?.birthdate?.toJalaliDate() ?? "";
     birthdate = u?.birthdate ?? DateTime.now().toUtc();
     gender = (u?.isMale() ?? false) ? TagUser.male : TagUser.female;
     role = (u?.isSuperAdmin() ?? false)
@@ -131,14 +131,14 @@ class UAdminUsersController extends UBaseController {
       return await submit(
             UServices.user.create(
               p: UUserCreateParams(
-                firstName: firstName.text,
-                lastName: lastName.text,
-                password: password.trimmedLatin(),
-                email: email.trimmedLatin(),
-                phoneNumber: phone.trimmedLatin(),
-                userName: userName.trimmedLatin(),
+                firstName: firstNameController.text,
+                lastName: lastNameController.text,
+                password: passwordController.trimmedLatin(),
+                email: emailController.trimmedLatin(),
+                phoneNumber: phoneController.trimmedLatin(),
+                userName: userNameController.trimmedLatin(),
                 birthdate: birthdate,
-                fatherName: fatherName.text,
+                fatherName: fatherNameController.text,
                 tags: <int>[gender.number, ...roleTags],
               ),
             ),
@@ -155,14 +155,14 @@ class UAdminUsersController extends UBaseController {
           UServices.user.update(
             p: UUserUpdateParams(
               id: editing!.id,
-              firstName: firstName.text,
-              lastName: lastName.text,
-              password: password.text,
-              email: email.text.toLatinNumber(),
-              phoneNumber: phone.trimmedLatin(),
-              userName: userName.numString(),
+              firstName: firstNameController.text,
+              lastName: lastNameController.text,
+              password: passwordController.text,
+              email: emailController.text.toLatinNumber(),
+              phoneNumber: phoneController.trimmedLatin(),
+              userName: userNameController.numString(),
               birthdate: birthdate,
-              fatherName: fatherName.text,
+              fatherName: fatherNameController.text,
               addTags: <int>[gender.number, ...roleTags],
               removeTags: removeTags,
             ),
@@ -221,7 +221,22 @@ class UAdminUsersController extends UBaseController {
 
   @override
   void dispose() {
-    for (final TextEditingController c in <TextEditingController>[firstNameFilter, lastNameFilter, userNameFilter, phoneFilter, emailFilter, nationalCodeFilter, queryFilter]) {
+    firstNameFilterController.dispose();
+    lastNameFilterController.dispose();
+    userNameFilterController.dispose();
+    phoneFilterController.dispose();
+    emailFilterController.dispose();
+    nationalCodeFilterController.dispose();
+    queryFilterController.dispose();
+    firstNameController.dispose();
+    lastNameController.dispose();
+    userNameController.dispose();
+    fatherNameController.dispose();
+    phoneController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    birthDateController.dispose();
+    for (final TextEditingController c in <TextEditingController>[firstNameFilterController, lastNameFilterController, userNameFilterController, phoneFilterController, emailFilterController, nationalCodeFilterController, queryFilterController]) {
       c.dispose();
     }
     list.dispose();

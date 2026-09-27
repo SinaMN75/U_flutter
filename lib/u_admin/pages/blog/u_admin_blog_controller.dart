@@ -2,13 +2,13 @@ part of "../../u_admin.dart";
 
 class UAdminBlogController extends UBaseController {
   List<UBlogResponse> list = <UBlogResponse>[];
-  late final TextEditingController titleFilter = fields.text();
+  final TextEditingController titleFilterController = TextEditingController();
 
   UBlogResponse? editing;
-  late final TextEditingController title = fields.text();
-  late final TextEditingController subtitle = fields.text();
-  late final TextEditingController slug = fields.text();
-  late final TextEditingController content = fields.text();
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController subtitleController = TextEditingController();
+  final TextEditingController slugController = TextEditingController();
+  final TextEditingController contentController = TextEditingController();
   List<UCategoryResponse> categories = <UCategoryResponse>[];
   List<UCategoryResponse> selectedCategories = <UCategoryResponse>[];
   List<UFileData> files = <UFileData>[];
@@ -21,7 +21,7 @@ class UAdminBlogController extends UBaseController {
       p: UBlogReadParams(
         pageNumber: pageNumber.value,
         pageSize: pageSize,
-        title: titleFilter.valueOrNull(),
+        title: titleFilterController.valueOrNull(),
         selectorArgs: const UBlogSelectorArgs(media: UMediaSelectorArgs(), category: UCategorySelectorArgs(), commentsCount: true),
       ),
       onOk: (UResponse<List<UBlogResponse>> r) {
@@ -37,16 +37,16 @@ class UAdminBlogController extends UBaseController {
   void applyFilters() => reloadFirstPage(read);
 
   void clearFilters() {
-    titleFilter.clear();
+    titleFilterController.clear();
     reloadFirstPage(read);
   }
 
   Future<void> loadForm(UBlogResponse? b) async {
     editing = b;
-    title.text = b?.title ?? "";
-    subtitle.text = b?.subtitle ?? "";
-    slug.text = b?.slug ?? "";
-    content.text = b?.content ?? "";
+    titleController.text = b?.title ?? "";
+    subtitleController.text = b?.subtitle ?? "";
+    slugController.text = b?.slug ?? "";
+    contentController.text = b?.content ?? "";
     selectedCategories = <UCategoryResponse>[...?b?.categories];
     files = <UFileData>[];
     categories = (await UServices.category.read(p: UCategoryReadParams(pageSize: 200))).$1?.result ?? <UCategoryResponse>[];
@@ -64,20 +64,20 @@ class UAdminBlogController extends UBaseController {
           ? UServices.blog.create(
               p: UBlogCreateParams(
                 tags: <int>[TagBlog.draft.number],
-                title: title.text,
-                subtitle: subtitle.text.nullIfEmpty(),
-                slug: slug.text.nullIfEmpty(),
-                content: content.text.nullIfEmpty(),
+                title: titleController.text,
+                subtitle: subtitleController.text.nullIfEmpty(),
+                slug: slugController.text.nullIfEmpty(),
+                content: contentController.text.nullIfEmpty(),
                 categories: categoryIds,
               ),
             )
           : UServices.blog.update(
               p: UBlogUpdateParams(
                 id: b.id,
-                title: title.text,
-                subtitle: subtitle.text.nullIfEmpty(),
-                slug: slug.text.nullIfEmpty(),
-                content: content.text.nullIfEmpty(),
+                title: titleController.text,
+                subtitle: subtitleController.text.nullIfEmpty(),
+                slug: slugController.text.nullIfEmpty(),
+                content: contentController.text.nullIfEmpty(),
                 categories: categoryIds,
               ),
             ),
@@ -111,4 +111,14 @@ class UAdminBlogController extends UBaseController {
   );
 
   void delete(UBlogResponse i) => confirmAction(() => UServices.blog.delete(p: UIdParams(id: i.id)), read);
+
+  @override
+  void dispose() {
+    titleFilterController.dispose();
+    titleController.dispose();
+    subtitleController.dispose();
+    slugController.dispose();
+    contentController.dispose();
+    super.dispose();
+  }
 }

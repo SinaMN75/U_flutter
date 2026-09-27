@@ -95,11 +95,11 @@ class _BlogPageState extends State<UAdminBlogPage> {
     ],
   );
 
-  void _filter() => UAdminForm.filter(
+  void _filter() => UFilterDialog.show(
     title: U.s.filterItem(U.s.blogs),
     onApply: c.applyFilters,
     onClear: c.clearFilters,
-    children: (StateSetter setState) => <Widget>[UAdminForm.text(c.titleFilter, U.s.title)],
+    children: (StateSetter setState) => <Widget>[UTextField(controller: c.titleFilterController, labelText: U.s.title, margin: const EdgeInsets.symmetric(vertical: 6))],
   );
 
   bool _isPublished(UBlogResponse i) => i.tags.contains(TagBlog.published.number);
@@ -134,19 +134,19 @@ class _BlogPageState extends State<UAdminBlogPage> {
 
   Future<void> _form([UBlogResponse? b]) async {
     await c.loadForm(b);
-    await UAdminForm.editDialog(
+    await UFormDialog.show(
       title: b == null ? U.s.createItem(U.s.blog) : U.s.editItem(U.s.blog),
-      formKey: c.formKey,
       onSubmit: c.save,
       children: (BuildContext context, StateSetter setState) => <Widget>[
-        UAdminForm.text(c.title, U.s.title, required: true),
-        UAdminForm.text(c.subtitle, U.s.subtitle),
-        UAdminForm.text(c.slug, U.s.slug),
-        UAdminForm.sectionTitle(U.s.content),
+        UTextField(controller: c.titleController, labelText: U.s.title, validator: UValidators.required(message: ""), margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.subtitleController, labelText: U.s.subtitle, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.slugController, labelText: U.s.slug, margin: const EdgeInsets.symmetric(vertical: 6)),
+        const Divider(height: 20),
+        UTextBodySmall(U.s.content, color: UAdminTheme.grey, fontWeight: FontWeight.w700),
         UContainer(
           onTap: () async {
-            final String? html = await URichTextEditor.open(initialHtml: c.content.text);
-            if (html != null) setState(() => c.content.text = html);
+            final String? html = await URichTextEditor.open(initialHtml: c.contentController.text);
+            if (html != null) setState(() => c.contentController.text = html);
           },
           width: double.infinity,
           constraints: const BoxConstraints(minHeight: 72, maxHeight: 220),
@@ -154,9 +154,9 @@ class _BlogPageState extends State<UAdminBlogPage> {
           border: Border.all(color: Theme.of(context).dividerColor),
           radius: 8,
           margin: const EdgeInsets.symmetric(vertical: 6),
-          child: c.content.text.trim().isEmpty
+          child: c.contentController.text.trim().isEmpty
               ? URow(children: <Widget>[const Icon(Icons.edit_note), const SizedBox(width: 8), Text(U.s.richTextEditor)])
-              : SingleChildScrollView(child: UHtmlView(html: c.content.text)),
+              : SingleChildScrollView(child: UHtmlView(html: c.contentController.text)),
         ),
         if (c.categories.isNotEmpty)
           Wrap(

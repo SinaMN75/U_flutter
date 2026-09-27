@@ -10,7 +10,7 @@ class UAdminContractController extends UBaseController {
   /// Only two contract kinds exist: monthly (rent + deposit) and daily (one invoice, no deposit).
   static const List<TagDormBedContract> types = <TagDormBedContract>[TagDormBedContract.monthly, TagDormBedContract.daily];
 
-  late final TextEditingController tenantFilter = fields.text();
+  final TextEditingController tenantFilterController = TextEditingController();
   int? typeFilter;
   UAdminContractStatusFilter statusFilter = UAdminContractStatusFilter.all;
   UDormResponse? dormFilter;
@@ -24,12 +24,12 @@ class UAdminContractController extends UBaseController {
   TagDormBedContract type = TagDormBedContract.monthly;
   DateTime? contractStart;
   DateTime? contractEnd;
-  late final TextEditingController startText = fields.text();
-  late final TextEditingController endText = fields.text();
-  late final TextEditingController deposit = fields.text();
-  late final TextEditingController rent = fields.text();
-  late final TextEditingController penalty = fields.text();
-  late final TextEditingController description = fields.text();
+  final TextEditingController contractStartController = TextEditingController();
+  final TextEditingController contractEndController = TextEditingController();
+  final TextEditingController depositController = TextEditingController();
+  final TextEditingController rentController = TextEditingController();
+  final TextEditingController penaltyController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
 
   void init({UDormBedResponse? bed, UUserResponse? user}) {
     this.bed = bed;
@@ -48,7 +48,7 @@ class UAdminContractController extends UBaseController {
         dormId: dormFilter?.id,
         startDate: startDate,
         endDate: endDate,
-        userName: tenantFilter.valueOrNull(),
+        userName: tenantFilterController.valueOrNull(),
         tags: typeFilter == null ? null : <int>[typeFilter!],
         activeOnly: statusFilter == UAdminContractStatusFilter.active ? true : null,
         upcomingOnly: statusFilter == UAdminContractStatusFilter.upcoming ? true : null,
@@ -73,7 +73,7 @@ class UAdminContractController extends UBaseController {
   void applyFilters() => reloadFirstPage(read);
 
   void clearFilters() {
-    tenantFilter.clear();
+    tenantFilterController.clear();
     clearDates();
     typeFilter = null;
     dormFilter = null;
@@ -107,12 +107,12 @@ class UAdminContractController extends UBaseController {
     type = (i == null ? null : typeOf(i)) ?? TagDormBedContract.monthly;
     contractStart = i?.startDate;
     contractEnd = i?.endDate;
-    startText.text = i?.startDate.toJalaliDate() ?? "";
-    endText.text = i?.endDate.toJalaliDate() ?? "";
-    deposit.text = i?.deposit.toInt().toString() ?? "";
-    rent.text = i?.rent.toInt().toString() ?? "";
-    penalty.clear();
-    description.text = i?.jsonData.detail1 ?? "";
+    contractStartController.text = i?.startDate.toJalaliDate() ?? "";
+    contractEndController.text = i?.endDate.toJalaliDate() ?? "";
+    depositController.text = i?.deposit.toInt().toString() ?? "";
+    rentController.text = i?.rent.toInt().toString() ?? "";
+    penaltyController.clear();
+    descriptionController.text = i?.jsonData.detail1 ?? "";
   }
 
   /// Creates or updates the contract. Returns true when the dialog can close.
@@ -123,7 +123,7 @@ class UAdminContractController extends UBaseController {
     if (editing != null) {
       return await submit(
             UServices.hotel.updateDormBedContract(
-              p: UDormBedContractUpdateParams(id: editing!.id, tags: tags, startDate: contractStart, endDate: contractEnd, deposit: isDaily ? 0 : numOf(deposit), rent: numOf(rent)),
+              p: UDormBedContractUpdateParams(id: editing!.id, tags: tags, startDate: contractStart, endDate: contractEnd, deposit: isDaily ? 0 : numOf(depositController), rent: numOf(rentController)),
             ),
             read,
           ) !=
@@ -145,10 +145,10 @@ class UAdminContractController extends UBaseController {
               endDate: contractEnd!,
               userId: formUser!.id,
               bedId: formBed!.id,
-              deposit: isDaily ? null : numOf(deposit),
-              rent: numOf(rent),
-              penaltyPrecentEveryDate: isDaily ? null : intOf(penalty),
-              detail1: description.text.nullIfEmpty(),
+              deposit: isDaily ? null : numOf(depositController),
+              rent: numOf(rentController),
+              penaltyPrecentEveryDate: isDaily ? null : intOf(penaltyController),
+              detail1: descriptionController.text.nullIfEmpty(),
             ),
           ),
           read,
@@ -157,4 +157,16 @@ class UAdminContractController extends UBaseController {
   }
 
   void delete(UDormBedContractResponse i) => confirmAction(() => UServices.hotel.deleteDormBedContract(p: UIdParams(id: i.id)), read);
+
+  @override
+  void dispose() {
+    tenantFilterController.dispose();
+    contractStartController.dispose();
+    contractEndController.dispose();
+    depositController.dispose();
+    rentController.dispose();
+    penaltyController.dispose();
+    descriptionController.dispose();
+    super.dispose();
+  }
 }

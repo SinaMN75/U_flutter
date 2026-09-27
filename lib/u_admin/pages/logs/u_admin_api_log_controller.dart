@@ -13,13 +13,13 @@ class UAdminApiLogController extends UBaseController {
   final URxState osMetricsState = URxState();
   Timer? _osMetricsTimer;
 
-  late final TextEditingController pathContainsCtrl = fields.text();
-  late final TextEditingController statusCodeCtrl = fields.text();
-  late final TextEditingController userIdCtrl = fields.text();
-  late final TextEditingController ipAddressCtrl = fields.text();
-  late final TextEditingController traceIdCtrl = fields.text();
-  late final TextEditingController minDurationCtrl = fields.text();
-  late final TextEditingController maxDurationCtrl = fields.text();
+  final TextEditingController pathContainsController = TextEditingController();
+  final TextEditingController statusCodeController = TextEditingController();
+  final TextEditingController userIdController = TextEditingController();
+  final TextEditingController ipAddressController = TextEditingController();
+  final TextEditingController traceIdController = TextEditingController();
+  final TextEditingController minDurationController = TextEditingController();
+  final TextEditingController maxDurationController = TextEditingController();
   final URxn<TagApiLog> methodFilter = URxn<TagApiLog>();
   final URxBool onlyErrors = false.obs;
   final URxBool onlyExceptions = false.obs;
@@ -53,6 +53,13 @@ class UAdminApiLogController extends UBaseController {
 
   @override
   void dispose() {
+    pathContainsController.dispose();
+    statusCodeController.dispose();
+    userIdController.dispose();
+    ipAddressController.dispose();
+    traceIdController.dispose();
+    minDurationController.dispose();
+    maxDurationController.dispose();
     _osMetricsTimer?.cancel();
     super.dispose();
   }
@@ -70,12 +77,12 @@ class UAdminApiLogController extends UBaseController {
     fromCreatedAt: startDate,
     toCreatedAt: endDate,
     tags: _buildTags(),
-    pathContains: pathContainsCtrl.text.nullIfEmpty(),
-    statusCode: int.tryParse(statusCodeCtrl.text),
-    minDurationMs: int.tryParse(minDurationCtrl.text),
-    maxDurationMs: int.tryParse(maxDurationCtrl.text),
-    userId: userIdCtrl.text.nullIfEmpty(),
-    ipAddress: ipAddressCtrl.text.nullIfEmpty(),
+    pathContains: pathContainsController.text.nullIfEmpty(),
+    statusCode: int.tryParse(statusCodeController.text),
+    minDurationMs: int.tryParse(minDurationController.text),
+    maxDurationMs: int.tryParse(maxDurationController.text),
+    userId: userIdController.text.nullIfEmpty(),
+    ipAddress: ipAddressController.text.nullIfEmpty(),
     onlyErrors: onlyErrors.value ? true : null,
     orderBy: tagOrderBy.value.number,
   );
@@ -118,13 +125,13 @@ class UAdminApiLogController extends UBaseController {
   }
 
   void clearFilters() {
-    pathContainsCtrl.clear();
-    statusCodeCtrl.clear();
-    userIdCtrl.clear();
-    ipAddressCtrl.clear();
-    traceIdCtrl.clear();
-    minDurationCtrl.clear();
-    maxDurationCtrl.clear();
+    pathContainsController.clear();
+    statusCodeController.clear();
+    userIdController.clear();
+    ipAddressController.clear();
+    traceIdController.clear();
+    minDurationController.clear();
+    maxDurationController.clear();
     methodFilter(null);
     onlyErrors(false);
     onlyExceptions(false);

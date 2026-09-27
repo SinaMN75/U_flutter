@@ -370,16 +370,15 @@ class _AdminUserDetailPageState extends State<UAdminUserDetailPage> {
 
   void _reject() {
     c.loadRejectForm();
-    UAdminForm.editDialog(
+    UFormDialog.show(
       title: U.s.rejectDocuments,
-      formKey: c.formKey,
       onSubmit: c.reject,
       children: (BuildContext context, StateSetter setState) => <Widget>[
-        UAdminForm.text(c.frontReason, U.s.reasonForRejectingItem(U.s.nationalCardFront)),
-        UAdminForm.text(c.backReason, U.s.reasonForRejectingItem(U.s.nationalCardBack)),
-        UAdminForm.text(c.birthReason, U.s.reasonForRejectingItem(U.s.birthCertificate)),
-        UAdminForm.text(c.videoReason, U.s.reasonForRejectingItem(U.s.video)),
-        UAdminForm.text(c.signatureReason, U.s.reasonForRejectingItem(U.s.signature)),
+        UTextField(controller: c.frontReasonController, labelText: U.s.reasonForRejectingItem(U.s.nationalCardFront), margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.backReasonController, labelText: U.s.reasonForRejectingItem(U.s.nationalCardBack), margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.birthReasonController, labelText: U.s.reasonForRejectingItem(U.s.birthCertificate), margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.videoReasonController, labelText: U.s.reasonForRejectingItem(U.s.video), margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.signatureReasonController, labelText: U.s.reasonForRejectingItem(U.s.signature), margin: const EdgeInsets.symmetric(vertical: 6)),
       ],
     );
   }

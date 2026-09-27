@@ -20,9 +20,9 @@ class UAdminGoldController extends UBaseController {
   final URxState tokensState = URxState();
   final URxList<UGoldApiTokenResponse> tokens = <UGoldApiTokenResponse>[].obs;
 
-  late final TextEditingController tokenLabel = fields.text();
-  late final TextEditingController tokenScopes = fields.text("trade,read");
-  late final TextEditingController tokenIps = fields.text();
+  final TextEditingController tokenLabelController = TextEditingController();
+  final TextEditingController tokenScopesController = TextEditingController(text: "trade,read");
+  final TextEditingController tokenIpsController = TextEditingController();
 
   void init() {
     readOverview();
@@ -121,14 +121,14 @@ class UAdminGoldController extends UBaseController {
   }
 
   Future<bool> createToken() async {
-    final List<String> scopes = splitList(tokenScopes.text);
-    final List<String> ips = splitList(tokenIps.text);
+    final List<String> scopes = splitList(tokenScopesController.text);
+    final List<String> ips = splitList(tokenIpsController.text);
     if (scopes.isEmpty) {
       UToast.error(message: U.s.scopes);
       return false;
     }
     final UResponse<UGoldApiTokenResponse>? ok =
-        await submit(UServices.gold.createApiToken(p: UGoldCreateApiTokenParams(scopes: scopes, label: tokenLabel.text.trim(), ipWhitelist: ips.isEmpty ? null : ips)), readTokens)
+        await submit(UServices.gold.createApiToken(p: UGoldCreateApiTokenParams(scopes: scopes, label: tokenLabelController.text.trim(), ipWhitelist: ips.isEmpty ? null : ips)), readTokens)
             as UResponse<UGoldApiTokenResponse>?;
     final String? raw = ok?.result?.rawToken;
     if (raw != null) {
@@ -144,4 +144,12 @@ class UAdminGoldController extends UBaseController {
     title: U.s.revokeApiToken,
     message: i.label ?? i.tokenPrefix ?? i.id,
   );
+
+  @override
+  void dispose() {
+    tokenLabelController.dispose();
+    tokenScopesController.dispose();
+    tokenIpsController.dispose();
+    super.dispose();
+  }
 }

@@ -8,8 +8,8 @@ class UAdminInvoiceController extends UBaseController {
   static const List<TagDormBedInvoice> types = <TagDormBedInvoice>[TagDormBedInvoice.deposit, TagDormBedInvoice.rent];
 
   UAdminInvoiceStatusFilter statusFilter = UAdminInvoiceStatusFilter.all;
-  late final TextEditingController minDebtFilter = fields.text();
-  late final TextEditingController maxDebtFilter = fields.text();
+  final TextEditingController minDebtFilterController = TextEditingController();
+  final TextEditingController maxDebtFilterController = TextEditingController();
 
   /// Totals of the whole contract, shown when the page is opened for one contract.
   double totalDebt = 0;
@@ -23,12 +23,12 @@ class UAdminInvoiceController extends UBaseController {
   UDormBedContractResponse? formContract;
   TagDormBedInvoice type = TagDormBedInvoice.rent;
   DateTime? dueDate;
-  late final TextEditingController dueText = fields.text();
-  late final TextEditingController debt = fields.text();
-  late final TextEditingController creditor = fields.text();
-  late final TextEditingController paid = fields.text();
-  late final TextEditingController penalty = fields.text();
-  late final TextEditingController description = fields.text();
+  final TextEditingController dueDateController = TextEditingController();
+  final TextEditingController debtController = TextEditingController();
+  final TextEditingController creditorController = TextEditingController();
+  final TextEditingController paidController = TextEditingController();
+  final TextEditingController penaltyController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
 
   void init({UDormBedContractResponse? contract}) {
     this.contract = contract;
@@ -50,8 +50,8 @@ class UAdminInvoiceController extends UBaseController {
         isOverdue: statusFilter == UAdminInvoiceStatusFilter.overdue ? true : null,
         minDueDate: startDate,
         maxDueDate: endDate,
-        minDebtAmount: numOf(minDebtFilter),
-        maxDebtAmount: numOf(maxDebtFilter),
+        minDebtAmount: numOf(minDebtFilterController),
+        maxDebtAmount: numOf(maxDebtFilterController),
         selectorArgs: const UDormBedInvoiceSelectorArgs(contract: UDormBedContractSelectorArgs(user: UUserSelectorArgs())),
       ),
       onOk: (UResponse<List<UDormBedInvoiceResponse>> r) {
@@ -75,8 +75,8 @@ class UAdminInvoiceController extends UBaseController {
 
   void clearFilters() {
     clearDates();
-    minDebtFilter.clear();
-    maxDebtFilter.clear();
+    minDebtFilterController.clear();
+    maxDebtFilterController.clear();
     reloadFirstPage(read);
   }
 
@@ -103,12 +103,12 @@ class UAdminInvoiceController extends UBaseController {
     formContract = contract;
     type = (i == null ? null : typeOf(i)) ?? TagDormBedInvoice.rent;
     dueDate = i?.dueDate;
-    dueText.text = i?.dueDate.toJalaliDate() ?? "";
-    debt.text = i?.debtAmount.toInt().toString() ?? "";
-    creditor.text = i?.creditorAmount.toInt().toString() ?? "";
-    paid.text = i?.paidAmount.toInt().toString() ?? "";
-    penalty.text = i?.penaltyAmount.toInt().toString() ?? "";
-    description.text = i?.jsonData.detail1 ?? "";
+    dueDateController.text = i?.dueDate.toJalaliDate() ?? "";
+    debtController.text = i?.debtAmount.toInt().toString() ?? "";
+    creditorController.text = i?.creditorAmount.toInt().toString() ?? "";
+    paidController.text = i?.paidAmount.toInt().toString() ?? "";
+    penaltyController.text = i?.penaltyAmount.toInt().toString() ?? "";
+    descriptionController.text = i?.jsonData.detail1 ?? "";
   }
 
   /// Creates or updates the invoice. Returns true when the dialog can close.
@@ -119,12 +119,12 @@ class UAdminInvoiceController extends UBaseController {
               p: UDormBedInvoiceUpdateParams(
                 id: editing!.id,
                 tags: <int>[type.number],
-                debtAmount: numOf(debt),
-                creditorAmount: numOf(creditor),
-                paidAmount: numOf(paid),
-                penaltyAmount: numOf(penalty),
+                debtAmount: numOf(debtController),
+                creditorAmount: numOf(creditorController),
+                paidAmount: numOf(paidController),
+                penaltyAmount: numOf(penaltyController),
                 dueDate: dueDate,
-                detail1: description.text.nullIfEmpty(),
+                detail1: descriptionController.text.nullIfEmpty(),
               ),
             ),
             read,
@@ -139,13 +139,13 @@ class UAdminInvoiceController extends UBaseController {
           UServices.hotel.createDormBedInvoice(
             p: UDormBedInvoiceCreateParams(
               tags: <int>[TagDormBedInvoice.notPaid.number, type.number],
-              debtAmount: numOf(debt) ?? 0,
-              creditorAmount: numOf(creditor) ?? 0,
-              paidAmount: numOf(paid) ?? 0,
-              penaltyAmount: numOf(penalty) ?? 0,
+              debtAmount: numOf(debtController) ?? 0,
+              creditorAmount: numOf(creditorController) ?? 0,
+              paidAmount: numOf(paidController) ?? 0,
+              penaltyAmount: numOf(penaltyController) ?? 0,
               contractId: formContract!.id,
               dueDate: dueDate!,
-              detail1: description.text.trim(),
+              detail1: descriptionController.text.trim(),
             ),
           ),
           read,
@@ -177,4 +177,16 @@ class UAdminInvoiceController extends UBaseController {
 
   void delete(UDormBedInvoiceResponse i) => confirmAction(() => UServices.hotel.deleteDormBedInvoice(p: UIdParams(id: i.id)), read);
 
+  @override
+  void dispose() {
+    minDebtFilterController.dispose();
+    maxDebtFilterController.dispose();
+    dueDateController.dispose();
+    debtController.dispose();
+    creditorController.dispose();
+    paidController.dispose();
+    penaltyController.dispose();
+    descriptionController.dispose();
+    super.dispose();
+  }
 }

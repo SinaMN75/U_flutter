@@ -35,13 +35,13 @@ class _UAdminLoginPageState extends State<UAdminLoginPage> {
                 UImage(UAdmin.logo, width: 100, height: 100, margin: const EdgeInsets.symmetric(vertical: 8)),
                 UTextField(
                   hintText: U.s.username,
-                  controller: c.controllerUserName,
+                  controller: c.userNameController,
                   validator: UValidators.required(message: ""),
                   margin: const EdgeInsets.symmetric(vertical: 8),
                 ),
                 UTextField(
                   hintText: U.s.password,
-                  controller: c.controllerPassword,
+                  controller: c.passwordController,
                   validator: UValidators.required(message: ""),
                   keyboardType: TextInputType.visiblePassword,
                   obscureText: true,

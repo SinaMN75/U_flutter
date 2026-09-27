@@ -115,12 +115,12 @@ class _ContractPageState extends State<UAdminContractPage> {
     ],
   );
 
-  void _filter() => UAdminForm.filter(
+  void _filter() => UFilterDialog.show(
     title: U.s.filterItem(U.s.contracts),
     onApply: c.applyFilters,
     onClear: c.clearFilters,
     children: (StateSetter setState) => <Widget>[
-      UAdminForm.text(c.tenantFilter, U.s.tenant),
+      UTextField(controller: c.tenantFilterController, labelText: U.s.tenant, margin: const EdgeInsets.symmetric(vertical: 6)),
       UTextFieldAutoCompleteAsync<UDormResponse>(
         hintText: U.s.dorm,
         labelBuilder: (UDormResponse i) => i.title,
@@ -153,17 +153,36 @@ class _ContractPageState extends State<UAdminContractPage> {
         items: UAdminContractStatusFilter.values.map((UAdminContractStatusFilter f) => DropdownMenuItem<UAdminContractStatusFilter>(value: f, child: Text(_statusLabel(f)))).toList(),
         onChanged: (UAdminContractStatusFilter? v) => c.statusFilter = v ?? UAdminContractStatusFilter.all,
       ).pSymmetric(vertical: 6),
-      UAdminForm.date(c.controllerStartDate, U.s.startDate, (DateTime d) => c.startDate = d, initial: c.startDate),
-      UAdminForm.date(c.controllerEndDate, U.s.endDate, (DateTime d) => c.endDate = d, initial: c.endDate),
+      UTextFieldDatePicker(
+        controller: c.startDateController,
+        labelText: U.s.startDate,
+        jalali: true,
+        initialDate: c.startDate,
+        margin: const EdgeInsets.symmetric(vertical: 6),
+        onChange: (DateTime d, UJalali j) {
+          c.startDate = d;
+          c.startDateController.text = d.toJalaliDate();
+        },
+      ),
+      UTextFieldDatePicker(
+        controller: c.endDateController,
+        labelText: U.s.endDate,
+        jalali: true,
+        initialDate: c.endDate,
+        margin: const EdgeInsets.symmetric(vertical: 6),
+        onChange: (DateTime d, UJalali j) {
+          c.endDate = d;
+          c.endDateController.text = d.toJalaliDate();
+        },
+      ),
     ],
   );
 
   /// Create ([p] == null) and edit share this one dialog.
   void _form([UDormBedContractResponse? p]) {
     c.loadForm(p);
-    UAdminForm.editDialog(
+    UFormDialog.show(
       title: p == null ? U.s.createItem(U.s.contract) : U.s.editItem(U.s.contract),
-      formKey: c.formKey,
       onSubmit: c.save,
       children: (BuildContext context, StateSetter setState) {
         final bool daily = c.type == TagDormBedContract.daily;
@@ -190,14 +209,49 @@ class _ContractPageState extends State<UAdminContractPage> {
             items: UAdminContractController.types.map((TagDormBedContract t) => DropdownMenuItem<TagDormBedContract>(value: t, child: Text(t.localizedTitle))).toList(),
             onChanged: (TagDormBedContract? v) => setState(() => c.type = v ?? c.type),
           ).pSymmetric(vertical: 6),
-          UAdminForm.date(c.startText, U.s.startDate, (DateTime d) => c.contractStart = d, initial: c.contractStart, required: true),
-          UAdminForm.date(c.endText, U.s.endDate, (DateTime d) => c.contractEnd = d, initial: c.contractEnd, required: true),
-          if (!daily) UAdminForm.text(c.deposit, U.s.deposit, money: true),
+          UTextFieldDatePicker(
+            controller: c.contractStartController,
+            labelText: U.s.startDate,
+            jalali: true,
+            initialDate: c.contractStart,
+            validator: UValidators.required(message: ""),
+            margin: const EdgeInsets.symmetric(vertical: 6),
+            onChange: (DateTime d, UJalali j) {
+              c.contractStart = d;
+              c.contractStartController.text = d.toJalaliDate();
+            },
+          ),
+          UTextFieldDatePicker(
+            controller: c.contractEndController,
+            labelText: U.s.endDate,
+            jalali: true,
+            initialDate: c.contractEnd,
+            validator: UValidators.required(message: ""),
+            margin: const EdgeInsets.symmetric(vertical: 6),
+            onChange: (DateTime d, UJalali j) {
+              c.contractEnd = d;
+              c.contractEndController.text = d.toJalaliDate();
+            },
+          ),
+          if (!daily)
+            UTextField(
+              controller: c.depositController,
+              labelText: U.s.deposit,
+              keyboardType: TextInputType.number,
+              formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+              margin: const EdgeInsets.symmetric(vertical: 6),
+            ),
           // The rent is the fixed per-day price of a daily contract.
-          UAdminForm.text(c.rent, daily ? U.s.dailyPrice : U.s.rent, money: true),
+          UTextField(
+            controller: c.rentController,
+            labelText: daily ? U.s.dailyPrice : U.s.rent,
+            keyboardType: TextInputType.number,
+            formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+            margin: const EdgeInsets.symmetric(vertical: 6),
+          ),
           // A late-payment penalty only applies to recurring monthly invoices.
-          if (p == null && !daily) UAdminForm.text(c.penalty, U.s.dailyPenalty, number: true),
-          UAdminForm.text(c.description, U.s.description, lines: 2),
+          if (p == null && !daily) UTextField(controller: c.penaltyController, labelText: U.s.dailyPenalty, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
+          UTextField(controller: c.descriptionController, labelText: U.s.description, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
         ];
       },
     );

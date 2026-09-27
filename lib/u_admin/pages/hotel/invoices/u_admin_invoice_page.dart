@@ -39,15 +39,47 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
   @override
   Widget build(BuildContext context) => UAdminScaffold(
     title: widget.contract == null ? U.s.invoices : "${U.s.invoices} · ${widget.contract?.user?.displayName ?? ""}",
-    onFilter: () => UAdminForm.filter(
+    onFilter: () => UFilterDialog.show(
       title: U.s.filter,
       onApply: c.applyFilters,
       onClear: c.clearFilters,
       children: (_) => <Widget>[
-        UAdminForm.date(c.controllerStartDate, U.s.dueDate, (DateTime d) => c.startDate = d, initial: c.startDate),
-        UAdminForm.date(c.controllerEndDate, U.s.dueDate, (DateTime d) => c.endDate = d, initial: c.endDate),
-        UAdminForm.text(c.minDebtFilter, U.s.minPrice, money: true),
-        UAdminForm.text(c.maxDebtFilter, U.s.maxPrice, money: true),
+        UTextFieldDatePicker(
+          controller: c.startDateController,
+          labelText: U.s.dueDate,
+          jalali: true,
+          initialDate: c.startDate,
+          margin: const EdgeInsets.symmetric(vertical: 6),
+          onChange: (DateTime d, UJalali j) {
+            c.startDate = d;
+            c.startDateController.text = d.toJalaliDate();
+          },
+        ),
+        UTextFieldDatePicker(
+          controller: c.endDateController,
+          labelText: U.s.dueDate,
+          jalali: true,
+          initialDate: c.endDate,
+          margin: const EdgeInsets.symmetric(vertical: 6),
+          onChange: (DateTime d, UJalali j) {
+            c.endDate = d;
+            c.endDateController.text = d.toJalaliDate();
+          },
+        ),
+        UTextField(
+          controller: c.minDebtFilterController,
+          labelText: U.s.minPrice,
+          keyboardType: TextInputType.number,
+          formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+          margin: const EdgeInsets.symmetric(vertical: 6),
+        ),
+        UTextField(
+          controller: c.maxDebtFilterController,
+          labelText: U.s.maxPrice,
+          keyboardType: TextInputType.number,
+          formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+          margin: const EdgeInsets.symmetric(vertical: 6),
+        ),
       ],
     ),
     onCreate: widget.contract != null && U.user.hasPermission(TagUser.permissionManageInvoices) ? _form : null,
@@ -166,9 +198,8 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
   /// Create ([p] == null) and edit share this one dialog.
   void _form([UDormBedInvoiceResponse? p]) {
     c.loadForm(p);
-    UAdminForm.editDialog(
+    UFormDialog.show(
       title: p == null ? U.s.createItem(U.s.invoice) : U.s.editItem(U.s.invoice),
-      formKey: c.formKey,
       onSubmit: c.save,
       children: (BuildContext context, StateSetter setState) => <Widget>[
         if (p == null && widget.contract == null)
@@ -185,11 +216,50 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
           items: UAdminInvoiceController.types.map((TagDormBedInvoice t) => DropdownMenuItem<TagDormBedInvoice>(value: t, child: Text(t.localizedTitle))).toList(),
           onChanged: (TagDormBedInvoice? v) => c.type = v ?? c.type,
         ).pSymmetric(vertical: 6),
-        UAdminForm.text(c.debt, U.s.debtAmount, money: true, required: true),
-        UAdminForm.pair(context, UAdminForm.text(c.creditor, U.s.creditor, money: true), UAdminForm.text(c.paid, U.s.paidAmount, money: true)),
-        UAdminForm.text(c.penalty, U.s.penaltyAmount, money: true),
-        UAdminForm.date(c.dueText, U.s.dueDate, (DateTime d) => c.dueDate = d, initial: c.dueDate, required: true),
-        UAdminForm.text(c.description, U.s.description, lines: 2),
+        UTextField(
+          controller: c.debtController,
+          labelText: U.s.debtAmount,
+          keyboardType: TextInputType.number,
+          formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+          validator: UValidators.required(message: ""),
+          margin: const EdgeInsets.symmetric(vertical: 6),
+        ),
+        UFieldPair(
+          UTextField(
+            controller: c.creditorController,
+            labelText: U.s.creditor,
+            keyboardType: TextInputType.number,
+            formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+            margin: const EdgeInsets.symmetric(vertical: 6),
+          ),
+          UTextField(
+            controller: c.paidController,
+            labelText: U.s.paidAmount,
+            keyboardType: TextInputType.number,
+            formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+            margin: const EdgeInsets.symmetric(vertical: 6),
+          ),
+        ),
+        UTextField(
+          controller: c.penaltyController,
+          labelText: U.s.penaltyAmount,
+          keyboardType: TextInputType.number,
+          formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+          margin: const EdgeInsets.symmetric(vertical: 6),
+        ),
+        UTextFieldDatePicker(
+          controller: c.dueDateController,
+          labelText: U.s.dueDate,
+          jalali: true,
+          initialDate: c.dueDate,
+          validator: UValidators.required(message: ""),
+          margin: const EdgeInsets.symmetric(vertical: 6),
+          onChange: (DateTime d, UJalali j) {
+            c.dueDate = d;
+            c.dueDateController.text = d.toJalaliDate();
+          },
+        ),
+        UTextField(controller: c.descriptionController, labelText: U.s.description, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
       ],
     );
   }

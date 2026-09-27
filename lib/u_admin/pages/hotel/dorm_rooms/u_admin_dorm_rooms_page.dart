@@ -36,9 +36,9 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
   @override
   Widget build(BuildContext context) => UAdminScaffold(
     title: widget.dorm == null ? U.s.dormRooms : "${U.s.rooms} · ${widget.dorm!.title}",
-    onFilter: () => UAdminForm.filter(
+    onFilter: () => UFilterDialog.show(
       title: U.s.filterItem(U.s.rooms),
-      children: (_) => <Widget>[UAdminForm.text(c.titleFilter, U.s.title)],
+      children: (_) => <Widget>[UTextField(controller: c.titleFilterController, labelText: U.s.title, margin: const EdgeInsets.symmetric(vertical: 6))],
       onApply: c.applyFilters,
       onClear: c.clearFilters,
     ),
@@ -92,13 +92,12 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
   /// Create ([r] == null) and edit share this one dialog.
   Future<void> _form([UDormRoomResponse? r]) async {
     await c.loadForm(r);
-    await UAdminForm.editDialog(
+    await UFormDialog.show(
       title: r == null ? U.s.createItem(U.s.room) : "${U.s.editItem(U.s.room)} — ${r.title}",
-      formKey: c.formKey,
       maxWidth: 760,
       onSubmit: c.save,
       children: (BuildContext context, StateSetter setState) => <Widget>[
-        UAdminForm.text(c.title, U.s.title, required: true),
+        UTextField(controller: c.titleController, labelText: U.s.title, validator: UValidators.required(message: ""), margin: const EdgeInsets.symmetric(vertical: 6)),
         if (widget.dorm == null)
           UTextFieldAutoCompleteAsync<UDormResponse>(
             hintText: U.s.dorm,
@@ -108,11 +107,16 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
             onChanged: (UDormResponse? i) => c.formDorm = i,
           ).pSymmetric(vertical: 6),
         UTagChips<TagDormRoom>(title: U.s.type, options: TagDormRoom.values.group(100), tags: c.tags, single: true),
-        UAdminForm.text(c.description, U.s.description, lines: 2),
-        UAdminForm.pair(context, UAdminForm.text(c.capacity, U.s.capacity, number: true), UAdminForm.text(c.floor, U.s.floor, number: true)),
-        UAdminForm.sectionTitle(U.s.photos),
+        UTextField(controller: c.descriptionController, labelText: U.s.description, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UFieldPair(
+          UTextField(controller: c.capacityController, labelText: U.s.capacity, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
+          UTextField(controller: c.floorController, labelText: U.s.floor, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
+        ),
+        const Divider(height: 20),
+        UTextBodySmall(U.s.photos, color: UAdminTheme.grey, fontWeight: FontWeight.w700),
         UFilePicker.gallery(c.photos),
-        UAdminForm.sectionTitle(U.s.amenities),
+        const Divider(height: 20),
+        UTextBodySmall(U.s.amenities, color: UAdminTheme.grey, fontWeight: FontWeight.w700),
         UTagChips<TagDormRoom>(title: U.s.details, options: TagDormRoom.values.group(300), tags: c.tags),
         UTagChips<TagDormRoom>(title: U.s.amenities, options: TagDormRoom.values.group(500), tags: c.tags),
       ],

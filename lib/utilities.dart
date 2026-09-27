@@ -64,6 +64,7 @@ export "components/u_drop_down.dart";
 export "components/u_epub_reader.dart";
 export "components/u_gauges.dart";
 export "components/u_general_widgets.dart";
+export "components/u_form.dart";
 export "components/u_gold.dart";
 export "components/u_html_view.dart";
 export "components/u_image_cropper.dart";

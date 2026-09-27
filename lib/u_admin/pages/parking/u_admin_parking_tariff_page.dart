@@ -107,9 +107,8 @@ class _UAdminParkingTariffPageState extends State<UAdminParkingTariffPage> {
 
   Future<void> _form([UParkingTariffResponse? t]) async {
     c.loadForm(t);
-    await UAdminForm.editDialog(
+    await UFormDialog.show(
       title: t == null ? U.s.createItem(U.s.tariff) : U.s.editItem(U.s.tariff),
-      formKey: c.formKey,
       onSubmit: c.save,
       children: (BuildContext context, StateSetter setState) => <Widget>[
         UDropDownField<TagVehicle>(
@@ -117,14 +116,61 @@ class _UAdminParkingTariffPageState extends State<UAdminParkingTariffPage> {
           items: TagVehicle.values.map((TagVehicle v) => DropdownMenuItem<TagVehicle>(value: v, child: Text(v.localizedTitle))).toList(),
           onChanged: (TagVehicle? v) => setState(() => c.vehicleType = v ?? TagVehicle.car),
         ).pSymmetric(vertical: 6),
-        UAdminForm.text(c.entrance, U.s.entrancePrice, money: true),
-        UAdminForm.text(c.dayHourly, U.s.dayRate, money: true),
-        UAdminForm.text(c.nightHourly, U.s.nightRate, money: true),
-        UAdminForm.text(c.dailyCap, U.s.dailyCap, money: true),
-        UAdminForm.text(c.weekly, U.s.weekly, money: true),
-        UAdminForm.text(c.monthly, U.s.monthly, money: true),
-        UAdminForm.text(c.quarterly, U.s.quarterly, money: true),
-        UAdminForm.text(c.freeMinutes, U.s.firstMinutesMinutesFree(c.freeMinutes.text), number: true),
+        UTextField(
+          controller: c.entranceController,
+          labelText: U.s.entrancePrice,
+          keyboardType: TextInputType.number,
+          formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+          margin: const EdgeInsets.symmetric(vertical: 6),
+        ),
+        UTextField(
+          controller: c.dayHourlyController,
+          labelText: U.s.dayRate,
+          keyboardType: TextInputType.number,
+          formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+          margin: const EdgeInsets.symmetric(vertical: 6),
+        ),
+        UTextField(
+          controller: c.nightHourlyController,
+          labelText: U.s.nightRate,
+          keyboardType: TextInputType.number,
+          formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+          margin: const EdgeInsets.symmetric(vertical: 6),
+        ),
+        UTextField(
+          controller: c.dailyCapController,
+          labelText: U.s.dailyCap,
+          keyboardType: TextInputType.number,
+          formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+          margin: const EdgeInsets.symmetric(vertical: 6),
+        ),
+        UTextField(
+          controller: c.weeklyController,
+          labelText: U.s.weekly,
+          keyboardType: TextInputType.number,
+          formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+          margin: const EdgeInsets.symmetric(vertical: 6),
+        ),
+        UTextField(
+          controller: c.monthlyController,
+          labelText: U.s.monthly,
+          keyboardType: TextInputType.number,
+          formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+          margin: const EdgeInsets.symmetric(vertical: 6),
+        ),
+        UTextField(
+          controller: c.quarterlyController,
+          labelText: U.s.quarterly,
+          keyboardType: TextInputType.number,
+          formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+          margin: const EdgeInsets.symmetric(vertical: 6),
+        ),
+        UTextField(
+          controller: c.freeMinutesController,
+          labelText: U.s.firstMinutesMinutesFree(c.freeMinutesController.text),
+          keyboardType: TextInputType.number,
+          margin: const EdgeInsets.symmetric(vertical: 6),
+        ),
         SwitchListTile(
           value: c.roundToFullHour,
           title: UTextBodyMedium(U.s.roundUpToAFullHour),

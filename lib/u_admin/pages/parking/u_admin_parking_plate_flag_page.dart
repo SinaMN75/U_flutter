@@ -102,9 +102,8 @@ class _UAdminParkingPlateFlagPageState extends State<UAdminParkingPlateFlagPage>
 
   Future<void> _form() async {
     c.loadForm();
-    await UAdminForm.editDialog(
+    await UFormDialog.show(
       title: U.s.addPlate,
-      formKey: c.formKey,
       onSubmit: c.save,
       children: (BuildContext context, StateSetter setState) => <Widget>[
         UPlateField(onPlateChange: (String v) => c.plate = v).pSymmetric(vertical: 6),
@@ -113,9 +112,16 @@ class _UAdminParkingPlateFlagPageState extends State<UAdminParkingPlateFlagPage>
           items: TagParkingPlateFlag.values.map((TagParkingPlateFlag v) => DropdownMenuItem<TagParkingPlateFlag>(value: v, child: Text(v.localizedTitle))).toList(),
           onChanged: (TagParkingPlateFlag? v) => setState(() => c.kind = v ?? TagParkingPlateFlag.debt),
         ).pSymmetric(vertical: 6),
-        UAdminForm.text(c.reason, U.s.reason, lines: 2),
-        if (c.kind == TagParkingPlateFlag.debt) UAdminForm.text(c.amount, U.s.amount, money: true),
-        if (c.kind == TagParkingPlateFlag.reservation) UAdminForm.text(c.spotNumber, U.s.spotNumber),
+        UTextField(controller: c.reasonController, labelText: U.s.reason, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
+        if (c.kind == TagParkingPlateFlag.debt)
+          UTextField(
+            controller: c.amountController,
+            labelText: U.s.amount,
+            keyboardType: TextInputType.number,
+            formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+            margin: const EdgeInsets.symmetric(vertical: 6),
+          ),
+        if (c.kind == TagParkingPlateFlag.reservation) UTextField(controller: c.spotNumberController, labelText: U.s.spotNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
       ],
     );
   }

@@ -74,7 +74,7 @@ class _UAdminParkingSubscriptionPageState extends State<UAdminParkingSubscriptio
     spacing: 8,
     padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
     children: <Widget>[
-      UTextField(controller: c.controllerQuery, hintText: U.s.searchAndSelect, prefix: const Icon(Icons.search_rounded), expanded: 1),
+      UTextField(controller: c.queryController, hintText: U.s.searchAndSelect, prefix: const Icon(Icons.search_rounded), expanded: 1),
       UObx(
         () => USegmentedControl<bool>(
           items: <bool, String>{true: U.s.active, false: U.s.expired},
@@ -128,9 +128,8 @@ class _UAdminParkingSubscriptionPageState extends State<UAdminParkingSubscriptio
 
   Future<void> _form() async {
     c.loadForm();
-    await UAdminForm.editDialog(
+    await UFormDialog.show(
       title: U.s.registerANewSubscription,
-      formKey: c.formKey,
       onSubmit: c.save,
       children: (BuildContext context, StateSetter setState) => <Widget>[
         UPlateField(onPlateChange: (String v) => c.plate = v).pSymmetric(vertical: 6),
@@ -148,9 +147,15 @@ class _UAdminParkingSubscriptionPageState extends State<UAdminParkingSubscriptio
           ].map((TagParkingSubscription v) => DropdownMenuItem<TagParkingSubscription>(value: v, child: Text(v.localizedTitle))).toList(),
           onChanged: (TagParkingSubscription? v) => setState(() => c.duration = v ?? TagParkingSubscription.monthly),
         ).pSymmetric(vertical: 6),
-        UAdminForm.text(c.name, U.s.fullName),
-        UTextFieldPhoneNumber(controller: c.phone, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
-        UAdminForm.text(c.price, U.s.amount, money: true),
+        UTextField(controller: c.nameController, labelText: U.s.fullName, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextFieldPhoneNumber(controller: c.phoneController, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(
+          controller: c.priceController,
+          labelText: U.s.amount,
+          keyboardType: TextInputType.number,
+          formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+          margin: const EdgeInsets.symmetric(vertical: 6),
+        ),
       ],
     );
   }

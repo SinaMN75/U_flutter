@@ -7,7 +7,7 @@ class UAdminReservationController extends UBaseController {
   UHotelResponse? hotel;
   UHotelRoomResponse? room;
 
-  late final TextEditingController guestFilter = fields.text();
+  final TextEditingController guestFilterController = TextEditingController();
   UHotelResponse? hotelFilter;
   UAdminReservationStatusFilter statusFilter = UAdminReservationStatusFilter.all;
 
@@ -18,14 +18,14 @@ class UAdminReservationController extends UBaseController {
   UUserResponse? formUser;
   DateTime? checkIn;
   DateTime? checkOut;
-  late final TextEditingController checkInText = fields.text();
-  late final TextEditingController checkOutText = fields.text();
-  late final TextEditingController guestCount = fields.text();
-  late final TextEditingController totalPrice = fields.text();
-  late final TextEditingController penalty = fields.text();
-  late final TextEditingController guestName = fields.text();
-  late final TextEditingController guestPhone = fields.text();
-  late final TextEditingController notes = fields.text();
+  final TextEditingController checkInController = TextEditingController();
+  final TextEditingController checkOutController = TextEditingController();
+  final TextEditingController guestCountController = TextEditingController();
+  final TextEditingController totalPriceController = TextEditingController();
+  final TextEditingController penaltyController = TextEditingController();
+  final TextEditingController guestNameController = TextEditingController();
+  final TextEditingController guestPhoneController = TextEditingController();
+  final TextEditingController notesController = TextEditingController();
 
   void init({UHotelResponse? hotel, UHotelRoomResponse? room}) {
     this.hotel = hotel;
@@ -50,7 +50,7 @@ class UAdminReservationController extends UBaseController {
         pageSize: pageSize,
         hotelId: hotelFilter?.id ?? hotel?.id,
         roomId: room?.id,
-        userName: guestFilter.valueOrNull(),
+        userName: guestFilterController.valueOrNull(),
         tags: _statusTag == null ? null : <int>[_statusTag!],
         checkInDate: startDate,
         checkOutDate: endDate,
@@ -74,7 +74,7 @@ class UAdminReservationController extends UBaseController {
   void applyFilters() => reloadFirstPage(read);
 
   void clearFilters() {
-    guestFilter.clear();
+    guestFilterController.clear();
     clearDates();
     hotelFilter = null;
     statusFilter = UAdminReservationStatusFilter.all;
@@ -104,14 +104,14 @@ class UAdminReservationController extends UBaseController {
     formUser = null;
     checkIn = i?.checkInDate;
     checkOut = i?.checkOutDate;
-    checkInText.text = i?.checkInDate.toJalaliDate() ?? "";
-    checkOutText.text = i?.checkOutDate.toJalaliDate() ?? "";
-    guestCount.text = (i?.guestCount ?? 1).toString();
-    totalPrice.text = i?.totalPrice.toInt().toString() ?? "";
-    penalty.clear();
-    guestName.text = i?.jsonData.guestName ?? "";
-    guestPhone.text = i?.jsonData.guestPhone ?? "";
-    notes.text = i?.jsonData.notes ?? "";
+    checkInController.text = i?.checkInDate.toJalaliDate() ?? "";
+    checkOutController.text = i?.checkOutDate.toJalaliDate() ?? "";
+    guestCountController.text = (i?.guestCount ?? 1).toString();
+    totalPriceController.text = i?.totalPrice.toInt().toString() ?? "";
+    penaltyController.clear();
+    guestNameController.text = i?.jsonData.guestName ?? "";
+    guestPhoneController.text = i?.jsonData.guestPhone ?? "";
+    notesController.text = i?.jsonData.notes ?? "";
   }
 
   /// Creates or updates the reservation. Returns true when the dialog can close.
@@ -123,11 +123,11 @@ class UAdminReservationController extends UBaseController {
                 id: editing!.id,
                 checkInDate: checkIn,
                 checkOutDate: checkOut,
-                guestCount: intOf(guestCount),
-                totalPrice: numOf(totalPrice),
-                guestName: guestName.text.nullIfEmpty(),
-                guestPhone: guestPhone.text.nullIfEmpty(),
-                notes: notes.text.nullIfEmpty(),
+                guestCount: intOf(guestCountController),
+                totalPrice: numOf(totalPriceController),
+                guestName: guestNameController.text.nullIfEmpty(),
+                guestPhone: guestPhoneController.text.nullIfEmpty(),
+                notes: notesController.text.nullIfEmpty(),
               ),
             ),
             read,
@@ -148,14 +148,14 @@ class UAdminReservationController extends UBaseController {
               tags: <int>[TagHotelReservation.pending.number],
               checkInDate: checkIn!,
               checkOutDate: checkOut!,
-              guestCount: intOf(guestCount) ?? 1,
+              guestCount: intOf(guestCountController) ?? 1,
               userId: formUser!.id,
               roomId: formRoom!.id,
-              totalPrice: numOf(totalPrice),
-              guestName: guestName.text.nullIfEmpty(),
-              guestPhone: guestPhone.text.nullIfEmpty(),
-              notes: notes.text.nullIfEmpty(),
-              penaltyPrecentEveryDate: intOf(penalty),
+              totalPrice: numOf(totalPriceController),
+              guestName: guestNameController.text.nullIfEmpty(),
+              guestPhone: guestPhoneController.text.nullIfEmpty(),
+              notes: notesController.text.nullIfEmpty(),
+              penaltyPrecentEveryDate: intOf(penaltyController),
             ),
           ),
           read,
@@ -179,4 +179,17 @@ class UAdminReservationController extends UBaseController {
 
   void delete(UHotelReservationResponse i) => confirmAction(() => UServices.hotel.deleteHotelReservation(p: UIdParams(id: i.id)), read);
 
+  @override
+  void dispose() {
+    guestFilterController.dispose();
+    checkInController.dispose();
+    checkOutController.dispose();
+    guestCountController.dispose();
+    totalPriceController.dispose();
+    penaltyController.dispose();
+    guestNameController.dispose();
+    guestPhoneController.dispose();
+    notesController.dispose();
+    super.dispose();
+  }
 }

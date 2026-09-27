@@ -115,12 +115,16 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
   }
 
   void _reject(UMoadiResponse i) {
-    c.rejectReason.clear();
-    UAdminForm.editDialog(
+    c.rejectReasonController.clear();
+    UFormDialog.show(
       title: U.s.reject,
-      formKey: c.formKey,
       onSubmit: () => c.reject(i),
-      children: (BuildContext context, StateSetter setState) => <Widget>[UAdminForm.text(c.rejectReason, U.s.rejectionReason, lines: 3)],
+      children: (BuildContext context, StateSetter setState) => <Widget>[UTextField(
+        controller: c.rejectReasonController,
+        labelText: U.s.rejectionReason,
+        lines: 3,
+        margin: const EdgeInsets.symmetric(vertical: 6),
+      )],
     );
   }
 
@@ -165,7 +169,7 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
     ],
   );
 
-  void _filter() => UAdminForm.filter(
+  void _filter() => UFilterDialog.show(
     title: U.s.taxpayerRequests,
     onApply: c.applyFilters,
     onClear: c.clearFilters,
@@ -184,12 +188,30 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
         selectedItem: c.status,
         onChanged: (TagMoadi? v) => c.status = v,
       ).pSymmetric(vertical: 6),
-      UAdminForm.text(c.nameFilter, U.s.taxpayerName),
-      UAdminForm.text(c.economicCodeFilter, U.s.economicCode),
-      UAdminForm.text(c.nationalCodeFilter, U.s.nationalCode),
-      UAdminForm.text(c.uniqueTaxCodeFilter, U.s.uniqueTaxCode),
-      UAdminForm.date(c.controllerStartDate, U.s.fromDate, (DateTime d) => c.startDate = d),
-      UAdminForm.date(c.controllerEndDate, U.s.toDate, (DateTime d) => c.endDate = d),
+      UTextField(controller: c.nameFilterController, labelText: U.s.taxpayerName, margin: const EdgeInsets.symmetric(vertical: 6)),
+      UTextField(controller: c.economicCodeFilterController, labelText: U.s.economicCode, margin: const EdgeInsets.symmetric(vertical: 6)),
+      UTextField(controller: c.nationalCodeFilterController, labelText: U.s.nationalCode, margin: const EdgeInsets.symmetric(vertical: 6)),
+      UTextField(controller: c.uniqueTaxCodeFilterController, labelText: U.s.uniqueTaxCode, margin: const EdgeInsets.symmetric(vertical: 6)),
+      UTextFieldDatePicker(
+        controller: c.startDateController,
+        labelText: U.s.fromDate,
+        jalali: true,
+        margin: const EdgeInsets.symmetric(vertical: 6),
+        onChange: (DateTime d, UJalali j) {
+          c.startDate = d;
+          c.startDateController.text = d.toJalaliDate();
+        },
+      ),
+      UTextFieldDatePicker(
+        controller: c.endDateController,
+        labelText: U.s.toDate,
+        jalali: true,
+        margin: const EdgeInsets.symmetric(vertical: 6),
+        onChange: (DateTime d, UJalali j) {
+          c.endDate = d;
+          c.endDateController.text = d.toJalaliDate();
+        },
+      ),
     ],
   );
 }

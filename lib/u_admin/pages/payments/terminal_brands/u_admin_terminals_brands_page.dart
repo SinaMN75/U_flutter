@@ -98,7 +98,7 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
     ],
   );
 
-  void _filter() => UAdminForm.filter(
+  void _filter() => UFilterDialog.show(
     title: U.s.filterItem(U.s.brands),
     onApply: c.applyFilters,
     onClear: c.clearFilters,
@@ -108,22 +108,21 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
         onChanged: c.tagOrderBy.call,
         items: <TagOrderBy>[TagOrderBy.createdAt, TagOrderBy.createdAtDescending].map((TagOrderBy x) => DropdownMenuItem<TagOrderBy>(value: x, child: Text(x.localizedTitle))).toList(),
       ).pSymmetric(vertical: 6),
-      UAdminForm.text(c.codeFilter, U.s.code),
-      UAdminForm.text(c.titleFilter, U.s.title),
-      UAdminForm.text(c.modelFilter, U.s.model),
+      UTextField(controller: c.codeFilterController, labelText: U.s.code, margin: const EdgeInsets.symmetric(vertical: 6)),
+      UTextField(controller: c.titleFilterController, labelText: U.s.title, margin: const EdgeInsets.symmetric(vertical: 6)),
+      UTextField(controller: c.modelFilterController, labelText: U.s.model, margin: const EdgeInsets.symmetric(vertical: 6)),
     ],
   );
 
   Future<void> _form([UTerminalBrandResponse? b]) async {
     c.loadForm(b);
-    await UAdminForm.editDialog(
+    await UFormDialog.show(
       title: b == null ? U.s.createItem(U.s.brands) : U.s.editItem(U.s.brands),
-      formKey: c.formKey,
       onSubmit: c.save,
       children: (BuildContext context, StateSetter setState) => <Widget>[
-        UAdminForm.text(c.code, U.s.code, required: true),
-        UAdminForm.text(c.title, U.s.title, required: true),
-        UAdminForm.text(c.model, U.s.model, required: true),
+        UTextField(controller: c.codeController, labelText: U.s.code, validator: UValidators.required(message: ""), margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.titleController, labelText: U.s.title, validator: UValidators.required(message: ""), margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.modelController, labelText: U.s.model, validator: UValidators.required(message: ""), margin: const EdgeInsets.symmetric(vertical: 6)),
         UDropDownField<TagTerminalBrand>(
           initialValue: c.deviceType,
           labelText: U.s.deviceType,

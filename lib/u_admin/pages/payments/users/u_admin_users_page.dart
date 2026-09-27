@@ -14,9 +14,8 @@ class UAdminUsersPage extends StatefulWidget {
 
   static Future<void> form(UAdminPaymentUsersController c, [UUserResponse? user]) {
     c.loadForm(user);
-    return UAdminForm.editDialog(
+    return UFormDialog.show(
       title: user == null ? U.s.register : "${U.s.edit} · ${user.displayName}",
-      formKey: c.formKey,
       maxWidth: 520,
       onSubmit: c.save,
       children: (BuildContext context, StateSetter setState) => <Widget>[
@@ -33,33 +32,38 @@ class UAdminUsersPage extends StatefulWidget {
               },
             ),
           ),
-        UAdminForm.sectionTitle(U.s.userInformation),
-        UAdminForm.pair(context, UAdminForm.text(c.firstName, U.s.firstName, required: true), UAdminForm.text(c.lastName, U.s.lastName, required: true)),
-        UAdminForm.pair(
-          context,
-          UTextField(
-            controller: c.userName,
+        const Divider(height: 20),
+        UTextBodySmall(U.s.userInformation, color: UAdminTheme.grey, fontWeight: FontWeight.w700),
+        UFieldPair(
+          UTextField(controller: c.firstNameController, labelText: U.s.firstName, validator: UValidators.required(message: ""), margin: const EdgeInsets.symmetric(vertical: 6)),
+          UTextField(controller: c.lastNameController, labelText: U.s.lastName, validator: UValidators.required(message: ""), margin: const EdgeInsets.symmetric(vertical: 6)),
+        ),
+        UFieldPair(UTextField(
+            controller: c.userNameController,
             labelText: U.s.username,
             readOnly: user != null,
             prefix: const Icon(Icons.alternate_email_rounded, size: 18),
             validator: UValidators.required(message: U.s.required),
-          ),
-          UTextField(controller: c.fatherName, labelText: U.s.fatherName),
-        ),
-        UAdminForm.pair(
-          context,
-          UTextField(
-            controller: c.nationalCode,
+          ), UTextField(controller: c.fatherNameController, labelText: U.s.fatherName)),
+        UFieldPair(UTextField(
+            controller: c.nationalCodeController,
             labelText: U.s.nationalCode,
             keyboardType: TextInputType.number,
             maxLength: 10,
             prefix: const Icon(Icons.badge_outlined, size: 18),
             validator: UValidators.iranianNationalCode(isRequired: false),
-          ),
-          UAdminForm.date(c.birthDate, U.s.birthdate, (DateTime d) => c.birthdate = d),
-        ),
+          ), UTextFieldDatePicker(
+            controller: c.birthDateController,
+            labelText: U.s.birthdate,
+            jalali: true,
+            margin: const EdgeInsets.symmetric(vertical: 6),
+            onChange: (DateTime d, UJalali j) {
+              c.birthdate = d;
+              c.birthDateController.text = d.toJalaliDate();
+            },
+          )),
         UTextField(
-          controller: c.password,
+          controller: c.passwordController,
           labelText: U.s.password,
           keyboardType: TextInputType.visiblePassword,
           prefix: const Icon(Icons.lock_outline_rounded, size: 18),
@@ -71,23 +75,24 @@ class UAdminUsersPage extends StatefulWidget {
           items: <TagUser, String>{TagUser.male: U.s.male, TagUser.female: U.s.female, TagUser.unspecified: TagUser.unspecified.localizedTitle},
           onValueChanged: (TagUser? v) => setState(() => c.gender = v ?? c.gender),
         ).pOnly(top: 6, bottom: 6),
-        UAdminForm.sectionTitle(U.s.contactInformation),
-        UAdminForm.pair(
-          context,
-          UTextFieldPhoneNumber(controller: c.phoneNumber, labelText: U.s.phoneNumber, required: true),
-          UTextFieldPhoneNumber(controller: c.landLine, labelText: U.s.landline),
+        const Divider(height: 20),
+        UTextBodySmall(U.s.contactInformation, color: UAdminTheme.grey, fontWeight: FontWeight.w700),
+        UFieldPair(
+          UTextFieldPhoneNumber(controller: c.phoneNumberController, labelText: U.s.phoneNumber, required: true),
+          UTextFieldPhoneNumber(controller: c.landLineController, labelText: U.s.landline),
         ),
         UTextField(
-          controller: c.email,
+          controller: c.emailController,
           labelText: U.s.email,
           keyboardType: TextInputType.emailAddress,
           prefix: const Icon(Icons.email_rounded, size: 18),
           validator: UValidators.email(isRequired: false),
           margin: const EdgeInsets.symmetric(vertical: 6),
         ),
-        UAdminForm.text(c.bio, U.s.bio, lines: 3),
+        UTextField(controller: c.bioController, labelText: U.s.bio, lines: 3, margin: const EdgeInsets.symmetric(vertical: 6)),
         if (c.canManageRoles) ...<Widget>[
-          UAdminForm.sectionTitle(U.s.roles),
+          const Divider(height: 20),
+          UTextBodySmall(U.s.roles, color: UAdminTheme.grey, fontWeight: FontWeight.w700),
           USegmentedControl<TagUser>(
             selectedValue: c.role,
             items: <TagUser, String>{TagUser.superAdmin: U.s.admin, TagUser.subAdmin: U.s.subAdmin, TagUser.guest: U.s.guest},
@@ -227,7 +232,7 @@ class _AdminUsersPageState extends State<UAdminUsersPage> {
     ],
   );
 
-  void _filter() => UAdminForm.filter(
+  void _filter() => UFilterDialog.show(
     title: U.s.filterItem(U.s.users),
     onApply: c.applyFilters,
     onClear: c.clearFilters,
@@ -241,18 +246,54 @@ class _AdminUsersPageState extends State<UAdminUsersPage> {
           const DropdownMenuItem<TagUser?>(child: Text("---")),
         ],
       ).pSymmetric(vertical: 6),
-      UAdminForm.text(c.firstNameFilter, U.s.firstName),
-      UAdminForm.text(c.lastNameFilter, U.s.lastName),
-      UAdminForm.text(c.userNameFilter, U.s.username),
-      UTextFieldPhoneNumber(controller: c.phoneNumberFilter, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
-      UAdminForm.text(c.nationalCodeFilter, U.s.nationalCode),
-      UAdminForm.text(c.emailFilter, U.s.email),
-      UTextFieldPhoneNumber(controller: c.landLineFilter, labelText: U.s.landline, margin: const EdgeInsets.symmetric(vertical: 6)),
-      UAdminForm.text(c.bioFilter, U.s.bio),
-      UAdminForm.date(c.controllerStartDate, U.s.fromDate, (DateTime d) => c.startDate = d),
-      UAdminForm.date(c.controllerEndDate, U.s.toDate, (DateTime d) => c.endDate = d),
-      UAdminForm.date(c.fromBirthController, U.s.fromBirthDate, (DateTime d) => c.fromBirthDate = d),
-      UAdminForm.date(c.toBirthController, U.s.toBirthDate, (DateTime d) => c.toBirthDate = d),
+      UTextField(controller: c.firstNameFilterController, labelText: U.s.firstName, margin: const EdgeInsets.symmetric(vertical: 6)),
+      UTextField(controller: c.lastNameFilterController, labelText: U.s.lastName, margin: const EdgeInsets.symmetric(vertical: 6)),
+      UTextField(controller: c.userNameFilterController, labelText: U.s.username, margin: const EdgeInsets.symmetric(vertical: 6)),
+      UTextFieldPhoneNumber(controller: c.phoneNumberFilterController, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
+      UTextField(controller: c.nationalCodeFilterController, labelText: U.s.nationalCode, margin: const EdgeInsets.symmetric(vertical: 6)),
+      UTextField(controller: c.emailFilterController, labelText: U.s.email, margin: const EdgeInsets.symmetric(vertical: 6)),
+      UTextFieldPhoneNumber(controller: c.landLineFilterController, labelText: U.s.landline, margin: const EdgeInsets.symmetric(vertical: 6)),
+      UTextField(controller: c.bioFilterController, labelText: U.s.bio, margin: const EdgeInsets.symmetric(vertical: 6)),
+      UTextFieldDatePicker(
+        controller: c.startDateController,
+        labelText: U.s.fromDate,
+        jalali: true,
+        margin: const EdgeInsets.symmetric(vertical: 6),
+        onChange: (DateTime d, UJalali j) {
+          c.startDate = d;
+          c.startDateController.text = d.toJalaliDate();
+        },
+      ),
+      UTextFieldDatePicker(
+        controller: c.endDateController,
+        labelText: U.s.toDate,
+        jalali: true,
+        margin: const EdgeInsets.symmetric(vertical: 6),
+        onChange: (DateTime d, UJalali j) {
+          c.endDate = d;
+          c.endDateController.text = d.toJalaliDate();
+        },
+      ),
+      UTextFieldDatePicker(
+        controller: c.fromBirthController,
+        labelText: U.s.fromBirthDate,
+        jalali: true,
+        margin: const EdgeInsets.symmetric(vertical: 6),
+        onChange: (DateTime d, UJalali j) {
+          c.fromBirthDate = d;
+          c.fromBirthController.text = d.toJalaliDate();
+        },
+      ),
+      UTextFieldDatePicker(
+        controller: c.toBirthController,
+        labelText: U.s.toBirthDate,
+        jalali: true,
+        margin: const EdgeInsets.symmetric(vertical: 6),
+        onChange: (DateTime d, UJalali j) {
+          c.toBirthDate = d;
+          c.toBirthController.text = d.toJalaliDate();
+        },
+      ),
     ],
   );
 }

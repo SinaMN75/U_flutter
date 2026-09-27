@@ -3,16 +3,16 @@ part of "../../../u_admin.dart";
 class UAdminDormRoomController extends UBaseController {
   List<UDormRoomResponse> list = <UDormRoomResponse>[];
   UDormResponse? dorm;
-  late final TextEditingController titleFilter = fields.text();
+  final TextEditingController titleFilterController = TextEditingController();
 
   // ---------------------------------------------------------------- form (create and edit)
 
   UDormRoomResponse? editing;
   UDormResponse? formDorm;
-  late final TextEditingController title = fields.text();
-  late final TextEditingController description = fields.text();
-  late final TextEditingController capacity = fields.text();
-  late final TextEditingController floor = fields.text();
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController capacityController = TextEditingController();
+  final TextEditingController floorController = TextEditingController();
   List<int> tags = <int>[];
   List<UMediaResponse> media = <UMediaResponse>[];
   UFilePickerController photos = UFilePickerController();
@@ -29,7 +29,7 @@ class UAdminDormRoomController extends UBaseController {
         pageNumber: pageNumber.value,
         pageSize: pageSize,
         dormId: dorm?.id,
-        title: titleFilter.valueOrNull(),
+        title: titleFilterController.valueOrNull(),
         selectorArgs: const UDormRoomSelectorArgs(dorm: UDormSelectorArgs(), beds: UDormBedSelectorArgs()),
       ),
       onOk: (UResponse<List<UDormRoomResponse>> r) {
@@ -45,7 +45,7 @@ class UAdminDormRoomController extends UBaseController {
   void applyFilters() => reloadFirstPage(read);
 
   void clearFilters() {
-    titleFilter.clear();
+    titleFilterController.clear();
     reloadFirstPage(read);
   }
 
@@ -64,10 +64,10 @@ class UAdminDormRoomController extends UBaseController {
               item;
     editing = r;
     formDorm = r?.dorm ?? item?.dorm ?? dorm;
-    title.text = r?.title ?? "";
-    description.text = r?.jsonData.description ?? "";
-    capacity.text = r?.capacity.toString() ?? "";
-    floor.text = r?.jsonData.floor?.toString() ?? "";
+    titleController.text = r?.title ?? "";
+    descriptionController.text = r?.jsonData.description ?? "";
+    capacityController.text = r?.capacity.toString() ?? "";
+    floorController.text = r?.jsonData.floor?.toString() ?? "";
     tags = List<int>.from(r?.tags ?? <int>[TagDormRoom.dorm.number]);
     media = (r?.media ?? <UMediaResponse>[]).sortedForGallery();
     photos.dispose();
@@ -84,11 +84,11 @@ class UAdminDormRoomController extends UBaseController {
     final UDormRoomUpdateParams p = UDormRoomUpdateParams(
       id: editing?.id ?? "",
       tags: tags,
-      title: title.text.trim(),
+      title: titleController.text.trim(),
       dormId: dormId,
-      description: description.text.nullIfEmpty(),
-      capacity: intOf(capacity) ?? 0,
-      floor: intOf(floor),
+      description: descriptionController.text.nullIfEmpty(),
+      capacity: intOf(capacityController) ?? 0,
+      floor: intOf(floorController),
     );
     final dynamic ok = await submit(
       editing == null ? UServices.hotel.createDormRoom(p: UDormRoomCreateParams.fromMap(p.toMap()..remove("id"))) : UServices.hotel.updateDormRoom(p: p),
@@ -104,6 +104,11 @@ class UAdminDormRoomController extends UBaseController {
 
   @override
   void dispose() {
+    titleFilterController.dispose();
+    titleController.dispose();
+    descriptionController.dispose();
+    capacityController.dispose();
+    floorController.dispose();
     photos.dispose();
     super.dispose();
   }

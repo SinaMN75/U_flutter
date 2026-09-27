@@ -5,12 +5,12 @@ class UAdminMoadiController extends UBaseController {
 
   UUserResponse? user;
   TagMoadi? status;
-  late final TextEditingController nameFilter = fields.text();
-  late final TextEditingController economicCodeFilter = fields.text();
-  late final TextEditingController nationalCodeFilter = fields.text();
-  late final TextEditingController uniqueTaxCodeFilter = fields.text();
+  final TextEditingController nameFilterController = TextEditingController();
+  final TextEditingController economicCodeFilterController = TextEditingController();
+  final TextEditingController nationalCodeFilterController = TextEditingController();
+  final TextEditingController uniqueTaxCodeFilterController = TextEditingController();
 
-  late final TextEditingController rejectReason = fields.text();
+  final TextEditingController rejectReasonController = TextEditingController();
 
   Future<void> init({UUserResponse? user}) {
     this.user = user;
@@ -23,10 +23,10 @@ class UAdminMoadiController extends UBaseController {
       p: UMoadiReadParams(
         pageNumber: pageNumber.value,
         pageSize: pageSize,
-        name: nameFilter.text.nullIfEmpty(),
-        economicCode: economicCodeFilter.text.nullIfEmpty(),
-        nationalCode: nationalCodeFilter.text.nullIfEmpty(),
-        uniqueTaxCode: uniqueTaxCodeFilter.text.nullIfEmpty(),
+        name: nameFilterController.text.nullIfEmpty(),
+        economicCode: economicCodeFilterController.text.nullIfEmpty(),
+        nationalCode: nationalCodeFilterController.text.nullIfEmpty(),
+        uniqueTaxCode: uniqueTaxCodeFilterController.text.nullIfEmpty(),
         tags: status == null ? null : <int>[status!.number],
         userId: user?.id,
         fromCreatedAt: startDate,
@@ -46,10 +46,10 @@ class UAdminMoadiController extends UBaseController {
   void applyFilters() => reloadFirstPage(read);
 
   void clearFilters() {
-    nameFilter.clear();
-    economicCodeFilter.clear();
-    nationalCodeFilter.clear();
-    uniqueTaxCodeFilter.clear();
+    nameFilterController.clear();
+    economicCodeFilterController.clear();
+    nationalCodeFilterController.clear();
+    uniqueTaxCodeFilterController.clear();
     status = null;
     user = null;
     clearDates();
@@ -63,7 +63,17 @@ class UAdminMoadiController extends UBaseController {
     message: U.s.areYouSureYouWantToApproveAndRegisterThisTaxpayerInTheNamatSystem,
   );
 
-  Future<bool> reject(UMoadiResponse i) async => await submit(UServices.moadi.reject(p: UMoadiRejectParams(id: i.id, reason: rejectReason.text.nullIfEmpty())), read) != null;
+  Future<bool> reject(UMoadiResponse i) async => await submit(UServices.moadi.reject(p: UMoadiRejectParams(id: i.id, reason: rejectReasonController.text.nullIfEmpty())), read) != null;
 
   void delete(UMoadiResponse i) => confirmAction(() => UServices.moadi.delete(p: UIdParams(id: i.id)), read);
+
+  @override
+  void dispose() {
+    nameFilterController.dispose();
+    economicCodeFilterController.dispose();
+    nationalCodeFilterController.dispose();
+    uniqueTaxCodeFilterController.dispose();
+    rejectReasonController.dispose();
+    super.dispose();
+  }
 }

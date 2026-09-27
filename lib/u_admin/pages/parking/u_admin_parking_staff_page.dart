@@ -108,19 +108,23 @@ class _UAdminParkingStaffPageState extends State<UAdminParkingStaffPage> {
   Future<void> _form([UParkingStaffResponse? staff]) async {
     c.loadForm(staff);
     final bool isNew = staff == null;
-    await UAdminForm.editDialog(
+    await UFormDialog.show(
       title: isNew ? U.s.newStaffMember : U.s.editItem(U.s.staff),
-      formKey: c.formKey,
       onSubmit: c.save,
       children: (BuildContext context, StateSetter setState) => <Widget>[
         if (isNew) ...<Widget>[
-          UAdminForm.text(c.firstName, U.s.firstName),
-          UAdminForm.text(c.lastName, U.s.lastName),
-          UAdminForm.text(c.userName, U.s.username, required: true),
+          UTextField(controller: c.firstNameController, labelText: U.s.firstName, margin: const EdgeInsets.symmetric(vertical: 6)),
+          UTextField(controller: c.lastNameController, labelText: U.s.lastName, margin: const EdgeInsets.symmetric(vertical: 6)),
+          UTextField(controller: c.userNameController, labelText: U.s.username, validator: UValidators.required(message: ""), margin: const EdgeInsets.symmetric(vertical: 6)),
         ],
-        UAdminForm.text(c.password, isNew ? U.s.password : U.s.newPassword, required: isNew),
-        if (isNew) UTextFieldPhoneNumber(controller: c.phone, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
-        UAdminForm.text(c.shiftTitle, U.s.shift),
+        UTextField(
+          controller: c.passwordController,
+          labelText: isNew ? U.s.password : U.s.newPassword,
+          validator: isNew ? UValidators.required(message: "") : null,
+          margin: const EdgeInsets.symmetric(vertical: 6),
+        ),
+        if (isNew) UTextFieldPhoneNumber(controller: c.phoneController, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.shiftTitleController, labelText: U.s.shift, margin: const EdgeInsets.symmetric(vertical: 6)),
         ...UAdminParkingStaffController.selectablePermissions.map(
           (TagParkingStaff t) => CheckboxListTile(
             value: c.permissions.contains(t),

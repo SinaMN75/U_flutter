@@ -13,12 +13,12 @@ class UAdminParkingStaffController extends UBaseController {
   ];
 
   UParkingStaffResponse? editing;
-  late final TextEditingController firstName = fields.text();
-  late final TextEditingController lastName = fields.text();
-  late final TextEditingController userName = fields.text();
-  late final TextEditingController password = fields.text();
-  late final TextEditingController phone = fields.text();
-  late final TextEditingController shiftTitle = fields.text();
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController userNameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController shiftTitleController = TextEditingController();
   Set<TagParkingStaff> permissions = <TagParkingStaff>{};
   double maxDiscount = 0;
 
@@ -48,12 +48,12 @@ class UAdminParkingStaffController extends UBaseController {
 
   void loadForm(UParkingStaffResponse? s) {
     editing = s;
-    firstName.clear();
-    lastName.clear();
-    userName.clear();
-    password.clear();
-    phone.clear();
-    shiftTitle.text = s?.shiftTitle ?? "";
+    firstNameController.clear();
+    lastNameController.clear();
+    userNameController.clear();
+    passwordController.clear();
+    phoneController.clear();
+    shiftTitleController.text = s?.shiftTitle ?? "";
     permissions = s == null
         ? <TagParkingStaff>{TagParkingStaff.registerEntryExit}
         : TagParkingStaff.values.where((TagParkingStaff t) => s.tags.contains(t.number)).toSet();
@@ -69,21 +69,21 @@ class UAdminParkingStaffController extends UBaseController {
           ? UServices.parking.createParkingStaff(
               p: UParkingStaffCreateParams(
                 parkingId: parking?.id ?? "",
-                userName: userName.trimmedLatin(),
-                password: password.trimmedLatin(),
+                userName: userNameController.trimmedLatin(),
+                password: passwordController.trimmedLatin(),
                 tags: permissions.isEmpty ? <int>[TagParkingStaff.registerEntryExit.number] : permissions.map((TagParkingStaff t) => t.number).toList(),
-                firstName: firstName.text.nullIfEmpty(),
-                lastName: lastName.text.nullIfEmpty(),
-                phoneNumber: phone.trimmedLatin().nullIfEmpty(),
-                shiftTitle: shiftTitle.text.nullIfEmpty(),
+                firstName: firstNameController.text.nullIfEmpty(),
+                lastName: lastNameController.text.nullIfEmpty(),
+                phoneNumber: phoneController.trimmedLatin().nullIfEmpty(),
+                shiftTitle: shiftTitleController.text.nullIfEmpty(),
                 maxDiscountPercent: maxDiscount.round(),
               ),
             )
           : UServices.parking.updateParkingStaff(
               p: UParkingStaffUpdateParams(
                 id: s.id,
-                shiftTitle: shiftTitle.text.nullIfEmpty(),
-                password: password.text.nullIfEmpty(),
+                shiftTitle: shiftTitleController.text.nullIfEmpty(),
+                password: passwordController.text.nullIfEmpty(),
                 maxDiscountPercent: maxDiscount.round(),
                 tags: permissions.map((TagParkingStaff t) => t.number).toList(),
               ),
@@ -94,4 +94,15 @@ class UAdminParkingStaffController extends UBaseController {
   }
 
   void delete(UParkingStaffResponse i) => confirmAction(() => UServices.parking.deleteParkingStaff(p: UIdParams(id: i.id)), read, message: U.s.areYouSureToDeleteThisUser);
+
+  @override
+  void dispose() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    userNameController.dispose();
+    passwordController.dispose();
+    phoneController.dispose();
+    shiftTitleController.dispose();
+    super.dispose();
+  }
 }

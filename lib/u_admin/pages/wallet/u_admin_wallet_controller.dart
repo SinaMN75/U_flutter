@@ -8,9 +8,9 @@ class UAdminWalletController extends UBaseController {
 
   final URxn<UAccountingReportResponse> summary = URxn<UAccountingReportResponse>();
 
-  late final TextEditingController chargeAmount = fields.text();
-  late final TextEditingController transferAmount = fields.text();
-  late final TextEditingController transferDetail = fields.text();
+  final TextEditingController chargeAmountController = TextEditingController();
+  final TextEditingController transferAmountController = TextEditingController();
+  final TextEditingController transferDetailController = TextEditingController();
   UUserResponse? receiver;
 
   double get totalBalance => wallets.fold<double>(0, (double sum, UWalletResponse w) => sum + w.balance);
@@ -69,7 +69,7 @@ class UAdminWalletController extends UBaseController {
   Future<bool> charge() async {
     final UUserResponse? u = selectedUser.value;
     if (u == null) return false;
-    return await submit(UServices.wallet.charge(p: UWalletChargeParams(userId: u.id, amount: numOf(chargeAmount) ?? 0)), read) != null;
+    return await submit(UServices.wallet.charge(p: UWalletChargeParams(userId: u.id, amount: numOf(chargeAmountController) ?? 0)), read) != null;
   }
 
   Future<bool> transfer() async {
@@ -83,13 +83,21 @@ class UAdminWalletController extends UBaseController {
         p: UWalletTransferParams(
           senderId: selectedUser.value?.id,
           receiverId: r.id,
-          amount: numOf(transferAmount) ?? 0,
-          detail1: transferDetail.text.nullIfEmpty(),
+          amount: numOf(transferAmountController) ?? 0,
+          detail1: transferDetailController.text.nullIfEmpty(),
           tagWalletTxn: <int>[TagWalletTxn.transfer.number],
         ),
       ),
       read,
     );
     return ok != null;
+  }
+
+  @override
+  void dispose() {
+    chargeAmountController.dispose();
+    transferAmountController.dispose();
+    transferDetailController.dispose();
+    super.dispose();
   }
 }

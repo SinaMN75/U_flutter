@@ -135,12 +135,12 @@ class _ReservationPageState extends State<UAdminReservationPage> {
     );
   }
 
-  void _filter() => UAdminForm.filter(
+  void _filter() => UFilterDialog.show(
     title: U.s.filterItem(U.s.reservations),
     onApply: c.applyFilters,
     onClear: c.clearFilters,
     children: (StateSetter setState) => <Widget>[
-      UAdminForm.text(c.guestFilter, U.s.guest),
+      UTextField(controller: c.guestFilterController, labelText: U.s.guest, margin: const EdgeInsets.symmetric(vertical: 6)),
       if (widget.hotel == null && widget.room == null)
         UTextFieldAutoCompleteAsync<UHotelResponse>(
           hintText: U.s.hotel,
@@ -155,17 +155,36 @@ class _ReservationPageState extends State<UAdminReservationPage> {
         items: UAdminReservationStatusFilter.values.map((UAdminReservationStatusFilter f) => DropdownMenuItem<UAdminReservationStatusFilter>(value: f, child: Text(_statusLabel(f)))).toList(),
         onChanged: (UAdminReservationStatusFilter? v) => c.statusFilter = v ?? UAdminReservationStatusFilter.all,
       ).pSymmetric(vertical: 6),
-      UAdminForm.date(c.controllerStartDate, U.s.checkInDate, (DateTime d) => c.startDate = d, initial: c.startDate),
-      UAdminForm.date(c.controllerEndDate, U.s.checkOutDate, (DateTime d) => c.endDate = d, initial: c.endDate),
+      UTextFieldDatePicker(
+        controller: c.startDateController,
+        labelText: U.s.checkInDate,
+        jalali: true,
+        initialDate: c.startDate,
+        margin: const EdgeInsets.symmetric(vertical: 6),
+        onChange: (DateTime d, UJalali j) {
+          c.startDate = d;
+          c.startDateController.text = d.toJalaliDate();
+        },
+      ),
+      UTextFieldDatePicker(
+        controller: c.endDateController,
+        labelText: U.s.checkOutDate,
+        jalali: true,
+        initialDate: c.endDate,
+        margin: const EdgeInsets.symmetric(vertical: 6),
+        onChange: (DateTime d, UJalali j) {
+          c.endDate = d;
+          c.endDateController.text = d.toJalaliDate();
+        },
+      ),
     ],
   );
 
   /// Create ([p] == null) and edit share this one dialog.
   void _form([UHotelReservationResponse? p]) {
     c.loadForm(p);
-    UAdminForm.editDialog(
+    UFormDialog.show(
       title: p == null ? U.s.createItem(U.s.reservation) : U.s.editItem(U.s.reservation),
-      formKey: c.formKey,
       onSubmit: c.save,
       children: (BuildContext context, StateSetter setState) => <Widget>[
         if (p == null && widget.room == null)
@@ -184,16 +203,49 @@ class _ReservationPageState extends State<UAdminReservationPage> {
             fetchData: c.searchUsers,
             onChanged: (UUserResponse? i) => c.formUser = i,
           ).pSymmetric(vertical: 6),
-        UAdminForm.pair(
-          context,
-          UAdminForm.date(c.checkInText, U.s.checkInDate, (DateTime d) => c.checkIn = d, initial: c.checkIn, required: true),
-          UAdminForm.date(c.checkOutText, U.s.checkOutDate, (DateTime d) => c.checkOut = d, initial: c.checkOut, required: true),
+        UFieldPair(UTextFieldDatePicker(
+            controller: c.checkInController,
+            labelText: U.s.checkInDate,
+            jalali: true,
+            initialDate: c.checkIn,
+            validator: UValidators.required(message: ""),
+            margin: const EdgeInsets.symmetric(vertical: 6),
+            onChange: (DateTime d, UJalali j) {
+              c.checkIn = d;
+              c.checkInController.text = d.toJalaliDate();
+            },
+          ), UTextFieldDatePicker(
+            controller: c.checkOutController,
+            labelText: U.s.checkOutDate,
+            jalali: true,
+            initialDate: c.checkOut,
+            validator: UValidators.required(message: ""),
+            margin: const EdgeInsets.symmetric(vertical: 6),
+            onChange: (DateTime d, UJalali j) {
+              c.checkOut = d;
+              c.checkOutController.text = d.toJalaliDate();
+            },
+          )),
+        UFieldPair(
+          UTextField(
+            controller: c.guestCountController,
+            labelText: U.s.numberOfGuests,
+            keyboardType: TextInputType.number,
+            validator: UValidators.required(message: ""),
+            margin: const EdgeInsets.symmetric(vertical: 6),
+          ),
+          UTextField(
+            controller: c.totalPriceController,
+            labelText: U.s.totalPrice,
+            keyboardType: TextInputType.number,
+            formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+            margin: const EdgeInsets.symmetric(vertical: 6),
+          ),
         ),
-        UAdminForm.pair(context, UAdminForm.text(c.guestCount, U.s.numberOfGuests, number: true, required: true), UAdminForm.text(c.totalPrice, U.s.totalPrice, money: true)),
-        UAdminForm.text(c.guestName, U.s.guestName),
-        UTextFieldPhoneNumber(controller: c.guestPhone, labelText: U.s.guestPhone, margin: const EdgeInsets.symmetric(vertical: 6)),
-        if (p == null) UAdminForm.text(c.penalty, U.s.dailyPenalty, number: true),
-        UAdminForm.text(c.notes, U.s.notes, lines: 2),
+        UTextField(controller: c.guestNameController, labelText: U.s.guestName, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextFieldPhoneNumber(controller: c.guestPhoneController, labelText: U.s.guestPhone, margin: const EdgeInsets.symmetric(vertical: 6)),
+        if (p == null) UTextField(controller: c.penaltyController, labelText: U.s.dailyPenalty, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.notesController, labelText: U.s.notes, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
       ],
     );
   }

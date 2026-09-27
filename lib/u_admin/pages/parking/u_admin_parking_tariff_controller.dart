@@ -7,14 +7,14 @@ class UAdminParkingTariffController extends UBaseController {
   UParkingResponse? parking;
 
   String parkingId = "";
-  late final TextEditingController entrance = fields.text();
-  late final TextEditingController dayHourly = fields.text();
-  late final TextEditingController nightHourly = fields.text();
-  late final TextEditingController dailyCap = fields.text();
-  late final TextEditingController weekly = fields.text();
-  late final TextEditingController monthly = fields.text();
-  late final TextEditingController quarterly = fields.text();
-  late final TextEditingController freeMinutes = fields.text();
+  final TextEditingController entranceController = TextEditingController();
+  final TextEditingController dayHourlyController = TextEditingController();
+  final TextEditingController nightHourlyController = TextEditingController();
+  final TextEditingController dailyCapController = TextEditingController();
+  final TextEditingController weeklyController = TextEditingController();
+  final TextEditingController monthlyController = TextEditingController();
+  final TextEditingController quarterlyController = TextEditingController();
+  final TextEditingController freeMinutesController = TextEditingController();
   TagVehicle vehicleType = TagVehicle.car;
   bool roundToFullHour = false;
   bool perMinuteAfterFirstHour = true;
@@ -45,14 +45,14 @@ class UAdminParkingTariffController extends UBaseController {
 
   void loadForm(UParkingTariffResponse? t) {
     parkingId = t?.parkingId ?? parking?.id ?? "";
-    entrance.text = t?.entrancePrice.toStringAsSmartRound(maxPrecision: 0) ?? "";
-    dayHourly.text = t?.dayHourlyPrice.toStringAsSmartRound(maxPrecision: 0) ?? "";
-    nightHourly.text = t?.nightHourlyPrice.toStringAsSmartRound(maxPrecision: 0) ?? "";
-    dailyCap.text = t?.dailyCap.toStringAsSmartRound(maxPrecision: 0) ?? "";
-    weekly.text = t?.weeklyPrice.toStringAsSmartRound(maxPrecision: 0) ?? "";
-    monthly.text = t?.monthlyPrice.toStringAsSmartRound(maxPrecision: 0) ?? "";
-    quarterly.text = t?.quarterlyPrice.toStringAsSmartRound(maxPrecision: 0) ?? "";
-    freeMinutes.text = (t?.freeMinutes ?? 0).toString();
+    entranceController.text = t?.entrancePrice.toStringAsSmartRound(maxPrecision: 0) ?? "";
+    dayHourlyController.text = t?.dayHourlyPrice.toStringAsSmartRound(maxPrecision: 0) ?? "";
+    nightHourlyController.text = t?.nightHourlyPrice.toStringAsSmartRound(maxPrecision: 0) ?? "";
+    dailyCapController.text = t?.dailyCap.toStringAsSmartRound(maxPrecision: 0) ?? "";
+    weeklyController.text = t?.weeklyPrice.toStringAsSmartRound(maxPrecision: 0) ?? "";
+    monthlyController.text = t?.monthlyPrice.toStringAsSmartRound(maxPrecision: 0) ?? "";
+    quarterlyController.text = t?.quarterlyPrice.toStringAsSmartRound(maxPrecision: 0) ?? "";
+    freeMinutesController.text = (t?.freeMinutes ?? 0).toString();
     vehicleType = TagVehicle.values.fromNumber(t?.vehicleType ?? TagVehicle.car.number) ?? TagVehicle.car;
     roundToFullHour = t?.roundToFullHour ?? false;
     perMinuteAfterFirstHour = t?.perMinuteAfterFirstHour ?? true;
@@ -65,14 +65,14 @@ class UAdminParkingTariffController extends UBaseController {
           parkingId: parkingId,
           vehicleType: vehicleType.number,
           tags: <int>[TagParkingTariff.hourly.number, TagParkingTariff.subscription.number],
-          entrancePrice: numOf(entrance) ?? 0,
-          dayHourlyPrice: numOf(dayHourly) ?? 0,
-          nightHourlyPrice: numOf(nightHourly) ?? 0,
-          dailyCap: numOf(dailyCap) ?? 0,
-          weeklyPrice: numOf(weekly) ?? 0,
-          monthlyPrice: numOf(monthly) ?? 0,
-          quarterlyPrice: numOf(quarterly) ?? 0,
-          freeMinutes: intOf(freeMinutes) ?? 0,
+          entrancePrice: numOf(entranceController) ?? 0,
+          dayHourlyPrice: numOf(dayHourlyController) ?? 0,
+          nightHourlyPrice: numOf(nightHourlyController) ?? 0,
+          dailyCap: numOf(dailyCapController) ?? 0,
+          weeklyPrice: numOf(weeklyController) ?? 0,
+          monthlyPrice: numOf(monthlyController) ?? 0,
+          quarterlyPrice: numOf(quarterlyController) ?? 0,
+          freeMinutes: intOf(freeMinutesController) ?? 0,
           roundToFullHour: roundToFullHour,
           perMinuteAfterFirstHour: perMinuteAfterFirstHour,
         ),
@@ -83,4 +83,17 @@ class UAdminParkingTariffController extends UBaseController {
   }
 
   void delete(UParkingTariffResponse i) => confirmAction(() => UServices.parking.deleteParkingTariff(p: UIdParams(id: i.id)), read);
+
+  @override
+  void dispose() {
+    entranceController.dispose();
+    dayHourlyController.dispose();
+    nightHourlyController.dispose();
+    dailyCapController.dispose();
+    weeklyController.dispose();
+    monthlyController.dispose();
+    quarterlyController.dispose();
+    freeMinutesController.dispose();
+    super.dispose();
+  }
 }

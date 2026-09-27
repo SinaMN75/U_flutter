@@ -142,12 +142,16 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
   );
 
   void _reject(UTerminalResponse i) {
-    c.rejectReason.clear();
-    UAdminForm.editDialog(
+    c.rejectReasonController.clear();
+    UFormDialog.show(
       title: U.s.reject,
-      formKey: c.formKey,
       onSubmit: () => c.reject(i),
-      children: (BuildContext context, StateSetter setState) => <Widget>[UAdminForm.text(c.rejectReason, U.s.rejectionReason, lines: 3)],
+      children: (BuildContext context, StateSetter setState) => <Widget>[UTextField(
+        controller: c.rejectReasonController,
+        labelText: U.s.rejectionReason,
+        lines: 3,
+        margin: const EdgeInsets.symmetric(vertical: 6),
+      )],
     );
   }
 
@@ -202,7 +206,7 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
     ),
   );
 
-  void _filter() => UAdminForm.filter(
+  void _filter() => UFilterDialog.show(
     title: U.s.filterItem(U.s.terminals),
     onApply: c.applyFilters,
     onClear: c.clearFilters,
@@ -217,7 +221,7 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
         onChanged: (TagTerminal? v) => c.typeFilter = v,
         items: <TagTerminal>[TagTerminal.pendingApproval, TagTerminal.approved, TagTerminal.rejected].map((TagTerminal x) => DropdownMenuItem<TagTerminal>(value: x, child: Text(x.localizedTitle))).toList(),
       ).pSymmetric(vertical: 6),
-      UAdminForm.text(c.serialFilter, U.s.serial),
+      UTextField(controller: c.serialFilterController, labelText: U.s.serial, margin: const EdgeInsets.symmetric(vertical: 6)),
       UTextFieldAutoCompleteAsync<UTerminalBrandResponse>(
         labelBuilder: _brandLabel,
         onChanged: (UTerminalBrandResponse? v) => c.brandFilter = v,
@@ -232,25 +236,42 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
         fetchData: c.searchBrokers,
         hintText: U.s.broker,
       ).pSymmetric(vertical: 6),
-      if (widget.merchant == null) UAdminForm.text(c.merchantIdFilter, U.s.merchantId),
-      UAdminForm.text(c.creatorIdFilter, U.s.creatorId),
-      UAdminForm.date(c.controllerStartDate, U.s.fromDate, (DateTime d) => c.startDate = d),
-      UAdminForm.date(c.controllerEndDate, U.s.toDate, (DateTime d) => c.endDate = d),
+      if (widget.merchant == null) UTextField(controller: c.merchantIdFilterController, labelText: U.s.merchantId, margin: const EdgeInsets.symmetric(vertical: 6)),
+      UTextField(controller: c.creatorIdFilterController, labelText: U.s.creatorId, margin: const EdgeInsets.symmetric(vertical: 6)),
+      UTextFieldDatePicker(
+        controller: c.startDateController,
+        labelText: U.s.fromDate,
+        jalali: true,
+        margin: const EdgeInsets.symmetric(vertical: 6),
+        onChange: (DateTime d, UJalali j) {
+          c.startDate = d;
+          c.startDateController.text = d.toJalaliDate();
+        },
+      ),
+      UTextFieldDatePicker(
+        controller: c.endDateController,
+        labelText: U.s.toDate,
+        jalali: true,
+        margin: const EdgeInsets.symmetric(vertical: 6),
+        onChange: (DateTime d, UJalali j) {
+          c.endDate = d;
+          c.endDateController.text = d.toJalaliDate();
+        },
+      ),
     ],
   );
 
   Future<void> _form([UTerminalResponse? t]) async {
     c.loadForm(t);
-    await UAdminForm.editDialog(
+    await UFormDialog.show(
       title: t == null ? U.s.createItem(U.s.terminals) : U.s.editItem(U.s.terminals),
-      formKey: c.formKey,
       onSubmit: c.save,
       children: (BuildContext context, StateSetter setState) => <Widget>[
-        UAdminForm.text(c.serial, U.s.serial, required: true),
-        UTextFieldPhoneNumber(controller: c.simCardNumber, labelText: U.s.simCardNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
-        UAdminForm.text(c.simCardSerial, U.s.simCardSerial),
-        UAdminForm.text(c.imei, U.s.imei),
-        if (t != null) UAdminForm.text(c.terminalId, U.s.terminalId),
+        UTextField(controller: c.serialController, labelText: U.s.serial, validator: UValidators.required(message: ""), margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextFieldPhoneNumber(controller: c.simCardNumberController, labelText: U.s.simCardNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.simCardSerialController, labelText: U.s.simCardSerial, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.imeiController, labelText: U.s.imei, margin: const EdgeInsets.symmetric(vertical: 6)),
+        if (t != null) UTextField(controller: c.terminalIdController, labelText: U.s.terminalId, margin: const EdgeInsets.symmetric(vertical: 6)),
         UTextFieldAutoCompleteAsync<UTerminalBrandResponse>(
           labelBuilder: _brandLabel,
           onChanged: (UTerminalBrandResponse? v) => c.brand = v,
@@ -290,8 +311,14 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
                       c.otpValid = null;
                     }),
                   ).pSymmetric(vertical: 6),
-                  UAdminForm.text(c.otpSerial, U.s.serial),
-                  if (c.otpGenerate) UAdminForm.text(c.otpLength, U.s.otpLength, number: true) else UAdminForm.text(c.otpCode, U.s.otpCode, number: true),
+                  UTextField(controller: c.otpSerialController, labelText: U.s.serial, margin: const EdgeInsets.symmetric(vertical: 6)),
+                  if (c.otpGenerate)
+                    UTextField(
+                      controller: c.otpLengthController,
+                      labelText: U.s.otpLength,
+                      keyboardType: TextInputType.number,
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ) else UTextField(controller: c.otpCodeController, labelText: U.s.otpCode, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
                   URow(
                     margin: const EdgeInsets.symmetric(vertical: 6),
                     children: <Widget>[

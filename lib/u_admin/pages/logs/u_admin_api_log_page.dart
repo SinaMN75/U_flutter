@@ -679,24 +679,24 @@ class _ApiLogPageState extends State<UAdminApiLogPage> {
     return UAdminTheme.grey;
   }
 
-  void _filter() => UAdminForm.filter(
+  void _filter() => UFilterDialog.show(
     title: U.s.filterItem(U.s.logs),
     onApply: c.applyFilters,
     onClear: c.clearFilters,
     children: (StateSetter setState) => <Widget>[
-      UTextField(controller: c.pathContainsCtrl, labelText: U.s.pathContains, margin: const EdgeInsets.symmetric(vertical: 6)),
+      UTextField(controller: c.pathContainsController, labelText: U.s.pathContains, margin: const EdgeInsets.symmetric(vertical: 6)),
       URow(
         margin: const EdgeInsets.symmetric(vertical: 6),
         children: <Widget>[
-          UTextField(controller: c.minDurationCtrl, labelText: U.s.minDurationMs, keyboardType: TextInputType.number, expanded: 1),
+          UTextField(controller: c.minDurationController, labelText: U.s.minDurationMs, keyboardType: TextInputType.number, expanded: 1),
           const SizedBox(width: 8),
-          UTextField(controller: c.maxDurationCtrl, labelText: U.s.maxDurationMs, keyboardType: TextInputType.number, expanded: 1),
+          UTextField(controller: c.maxDurationController, labelText: U.s.maxDurationMs, keyboardType: TextInputType.number, expanded: 1),
         ],
       ),
-      UTextField(controller: c.statusCodeCtrl, labelText: U.s.exactStatusCode, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
-      UTextField(controller: c.userIdCtrl, labelText: U.s.userId, margin: const EdgeInsets.symmetric(vertical: 6)),
-      UTextField(controller: c.ipAddressCtrl, labelText: U.s.ipAddress, margin: const EdgeInsets.symmetric(vertical: 6)),
-      UTextField(controller: c.traceIdCtrl, labelText: U.s.traceId, margin: const EdgeInsets.symmetric(vertical: 6)),
+      UTextField(controller: c.statusCodeController, labelText: U.s.exactStatusCode, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
+      UTextField(controller: c.userIdController, labelText: U.s.userId, margin: const EdgeInsets.symmetric(vertical: 6)),
+      UTextField(controller: c.ipAddressController, labelText: U.s.ipAddress, margin: const EdgeInsets.symmetric(vertical: 6)),
+      UTextField(controller: c.traceIdController, labelText: U.s.traceId, margin: const EdgeInsets.symmetric(vertical: 6)),
       UObx(
         () => UDropDownField<TagApiLog?>(
           initialValue: c.methodFilter.value,

@@ -101,7 +101,7 @@ class _ContentsPageState extends State<UAdminContentsPage> {
     ],
   );
 
-  void _filter() => UAdminForm.filter(
+  void _filter() => UFilterDialog.show(
     title: U.s.filterItem(U.s.contents),
     onApply: c.applyFilters,
     onClear: c.clearFilters,
@@ -120,9 +120,8 @@ class _ContentsPageState extends State<UAdminContentsPage> {
 
   Future<void> _form([UContentResponse? p]) async {
     c.loadForm(p);
-    await UAdminForm.editDialog(
+    await UFormDialog.show(
       title: p == null ? U.s.createItem(U.s.content) : U.s.editItem(U.s.content),
-      formKey: c.formKey,
       maxWidth: 520,
       onSubmit: c.save,
       children: (BuildContext context, StateSetter setState) => <Widget>[
@@ -132,12 +131,12 @@ class _ContentsPageState extends State<UAdminContentsPage> {
           items: TagContent.values.map((TagContent t) => DropdownMenuItem<TagContent>(value: t, child: Text(t.localizedTitle))).toList(),
           onChanged: (TagContent? v) => c.tag = v ?? c.tag,
         ).pSymmetric(vertical: 6),
-        UAdminForm.text(c.title, U.s.title),
-        UAdminForm.text(c.subTitle, U.s.subtitle),
-        UAdminForm.text(c.description, U.s.description, lines: 3),
-        UAdminForm.text(c.detail1, U.s.detail1, lines: 2),
-        UAdminForm.text(c.detail2, U.s.detail2, lines: 2),
-        UAdminForm.text(c.order, U.s.order, number: true),
+        UTextField(controller: c.titleController, labelText: U.s.title, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.subTitleController, labelText: U.s.subtitle, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.descriptionController, labelText: U.s.description, lines: 3, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.detail1Controller, labelText: U.s.detail1, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.detail2Controller, labelText: U.s.detail2, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.orderController, labelText: U.s.order, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
         URow(
           spacing: 12,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -147,18 +146,19 @@ class _ContentsPageState extends State<UAdminContentsPage> {
             _Base64ImageField(label: U.s.icon, initial: c.iconBase64, onChanged: (String? v) => c.iconBase64 = v).expanded(),
           ],
         ),
-        UAdminForm.text(c.buttonText, U.s.buttonText),
-        UAdminForm.text(c.buttonLink, U.s.buttonLink),
-        UAdminForm.text(c.link, U.s.link),
-        UAdminForm.sectionTitle(U.s.socialMedia),
-        UAdminForm.text(c.instagram, U.s.instagram),
-        UAdminForm.text(c.telegram, U.s.telegram),
-        UAdminForm.text(c.whatsapp, U.s.whatsApp),
-        UTextFieldPhoneNumber(controller: c.phone, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.buttonTextController, labelText: U.s.buttonText, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.buttonLinkController, labelText: U.s.buttonLink, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.linkController, labelText: U.s.link, margin: const EdgeInsets.symmetric(vertical: 6)),
+        const Divider(height: 20),
+        UTextBodySmall(U.s.socialMedia, color: UAdminTheme.grey, fontWeight: FontWeight.w700),
+        UTextField(controller: c.instagramController, labelText: U.s.instagram, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.telegramController, labelText: U.s.telegram, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.whatsappController, labelText: U.s.whatsApp, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextFieldPhoneNumber(controller: c.phoneController, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
         _listHeader(U.s.items, U.s.addItem(""), () => setState(c.addItem)),
-        ...c.items.mapIndexed((int index, UAdminContentItemForm e) => _itemCard(index, e, () => setState(() => c.items.removeAt(index)))),
+        ...c.items.mapIndexed((int index, UAdminContentItemForm e) => _itemCard(index, e, () => setState(() => c.removeItem(index)))),
         _listHeader(U.s.links, U.s.addItem(U.s.link), () => setState(c.addLink)),
-        ...c.links.mapIndexed((int index, UAdminContentLinkForm e) => _linkCard(index, e, () => setState(() => c.links.removeAt(index)))),
+        ...c.links.mapIndexed((int index, UAdminContentLinkForm e) => _linkCard(index, e, () => setState(() => c.removeLink(index)))),
       ],
     );
   }
@@ -190,11 +190,11 @@ class _ContentsPageState extends State<UAdminContentsPage> {
             ),
           ],
         ),
-        UTextField(controller: e.title, labelText: U.s.title, margin: const EdgeInsets.symmetric(vertical: 4)),
-        UTextField(controller: e.subTitle, labelText: U.s.subtitle, margin: const EdgeInsets.symmetric(vertical: 4)),
-        UTextField(controller: e.description, labelText: U.s.description, lines: 2, margin: const EdgeInsets.symmetric(vertical: 4)),
-        UTextField(controller: e.link, labelText: U.s.link, margin: const EdgeInsets.symmetric(vertical: 4)),
-        UTextField(controller: e.order, labelText: U.s.order, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 4)),
+        UTextField(controller: e.titleController, labelText: U.s.title, margin: const EdgeInsets.symmetric(vertical: 4)),
+        UTextField(controller: e.subTitleController, labelText: U.s.subtitle, margin: const EdgeInsets.symmetric(vertical: 4)),
+        UTextField(controller: e.descriptionController, labelText: U.s.description, lines: 2, margin: const EdgeInsets.symmetric(vertical: 4)),
+        UTextField(controller: e.linkController, labelText: U.s.link, margin: const EdgeInsets.symmetric(vertical: 4)),
+        UTextField(controller: e.orderController, labelText: U.s.order, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 4)),
         const SizedBox(height: 8),
         URow(
           spacing: 12,
@@ -226,8 +226,8 @@ class _ContentsPageState extends State<UAdminContentsPage> {
             ),
           ],
         ),
-        UTextField(controller: e.title, labelText: U.s.title, margin: const EdgeInsets.symmetric(vertical: 4)),
-        UTextField(controller: e.url, labelText: U.s.url, margin: const EdgeInsets.symmetric(vertical: 4)),
+        UTextField(controller: e.titleController, labelText: U.s.title, margin: const EdgeInsets.symmetric(vertical: 4)),
+        UTextField(controller: e.urlController, labelText: U.s.url, margin: const EdgeInsets.symmetric(vertical: 4)),
         const SizedBox(height: 8),
         _Base64ImageField(label: U.s.icon, initial: e.iconBase64, onChanged: (String? v) => e.iconBase64 = v),
       ],

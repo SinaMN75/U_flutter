@@ -19,31 +19,31 @@ class UAdminPaymentUsersController extends UBaseController {
   ];
 
   TagUser? verificationStatus;
-  late final TextEditingController firstNameFilter = fields.text();
-  late final TextEditingController lastNameFilter = fields.text();
-  late final TextEditingController userNameFilter = fields.text();
-  late final TextEditingController phoneNumberFilter = fields.text();
-  late final TextEditingController nationalCodeFilter = fields.text();
-  late final TextEditingController emailFilter = fields.text();
-  late final TextEditingController landLineFilter = fields.text();
-  late final TextEditingController bioFilter = fields.text();
-  late final TextEditingController fromBirthController = fields.text();
-  late final TextEditingController toBirthController = fields.text();
+  final TextEditingController firstNameFilterController = TextEditingController();
+  final TextEditingController lastNameFilterController = TextEditingController();
+  final TextEditingController userNameFilterController = TextEditingController();
+  final TextEditingController phoneNumberFilterController = TextEditingController();
+  final TextEditingController nationalCodeFilterController = TextEditingController();
+  final TextEditingController emailFilterController = TextEditingController();
+  final TextEditingController landLineFilterController = TextEditingController();
+  final TextEditingController bioFilterController = TextEditingController();
+  final TextEditingController fromBirthController = TextEditingController();
+  final TextEditingController toBirthController = TextEditingController();
   DateTime? fromBirthDate;
   DateTime? toBirthDate;
 
   UUserResponse? editing;
-  late final TextEditingController firstName = fields.text();
-  late final TextEditingController lastName = fields.text();
-  late final TextEditingController userName = fields.text();
-  late final TextEditingController fatherName = fields.text();
-  late final TextEditingController nationalCode = fields.text();
-  late final TextEditingController birthDate = fields.text();
-  late final TextEditingController password = fields.text();
-  late final TextEditingController phoneNumber = fields.text();
-  late final TextEditingController landLine = fields.text();
-  late final TextEditingController email = fields.text();
-  late final TextEditingController bio = fields.text();
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController userNameController = TextEditingController();
+  final TextEditingController fatherNameController = TextEditingController();
+  final TextEditingController nationalCodeController = TextEditingController();
+  final TextEditingController birthDateController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController phoneNumberController = TextEditingController();
+  final TextEditingController landLineController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController bioController = TextEditingController();
   DateTime birthdate = DateTime.now().toUtc();
   TagUser gender = TagUser.unspecified;
   TagUser role = TagUser.guest;
@@ -64,14 +64,14 @@ class UAdminPaymentUsersController extends UBaseController {
       p: UUserReadParams(
         pageNumber: pageNumber.value,
         pageSize: pageSize,
-        firstName: firstNameFilter.valueOrNull(),
-        lastName: lastNameFilter.valueOrNull(),
-        userName: userNameFilter.valueOrNull(),
-        phoneNumber: phoneNumberFilter.valueOrNull(),
-        nationalCode: nationalCodeFilter.valueOrNull(),
-        email: emailFilter.valueOrNull(),
-        landLine: landLineFilter.valueOrNull(),
-        bio: bioFilter.valueOrNull(),
+        firstName: firstNameFilterController.valueOrNull(),
+        lastName: lastNameFilterController.valueOrNull(),
+        userName: userNameFilterController.valueOrNull(),
+        phoneNumber: phoneNumberFilterController.valueOrNull(),
+        nationalCode: nationalCodeFilterController.valueOrNull(),
+        email: emailFilterController.valueOrNull(),
+        landLine: landLineFilterController.valueOrNull(),
+        bio: bioFilterController.valueOrNull(),
         tags: tags.map((TagUser i) => i.number).toList(),
         fromCreatedAt: startDate,
         toCreatedAt: endDate,
@@ -92,14 +92,14 @@ class UAdminPaymentUsersController extends UBaseController {
 
   void clearFilters() {
     for (final TextEditingController t in <TextEditingController>[
-      firstNameFilter,
-      lastNameFilter,
-      userNameFilter,
-      phoneNumberFilter,
-      nationalCodeFilter,
-      emailFilter,
-      landLineFilter,
-      bioFilter,
+      firstNameFilterController,
+      lastNameFilterController,
+      userNameFilterController,
+      phoneNumberFilterController,
+      nationalCodeFilterController,
+      emailFilterController,
+      landLineFilterController,
+      bioFilterController,
       fromBirthController,
       toBirthController,
     ]) {
@@ -114,17 +114,17 @@ class UAdminPaymentUsersController extends UBaseController {
 
   void loadForm(UUserResponse? u) {
     editing = u;
-    firstName.text = u?.firstName ?? "";
-    lastName.text = u?.lastName ?? "";
-    userName.text = u?.userName ?? "";
-    fatherName.text = u?.jsonData.fatherName ?? "";
-    nationalCode.text = u?.nationalCode ?? "";
-    birthDate.text = u?.birthdate?.toJalaliDate() ?? "";
-    password.clear();
-    phoneNumber.text = u?.phoneNumber ?? "";
-    landLine.text = u?.landLine ?? "";
-    email.text = u?.email ?? "";
-    bio.text = u?.bio ?? "";
+    firstNameController.text = u?.firstName ?? "";
+    lastNameController.text = u?.lastName ?? "";
+    userNameController.text = u?.userName ?? "";
+    fatherNameController.text = u?.jsonData.fatherName ?? "";
+    nationalCodeController.text = u?.nationalCode ?? "";
+    birthDateController.text = u?.birthdate?.toJalaliDate() ?? "";
+    passwordController.clear();
+    phoneNumberController.text = u?.phoneNumber ?? "";
+    landLineController.text = u?.landLine ?? "";
+    emailController.text = u?.email ?? "";
+    bioController.text = u?.bio ?? "";
     birthdate = u?.birthdate ?? DateTime.now().toUtc();
     gender = (u?.isMale() ?? false)
         ? TagUser.male
@@ -147,17 +147,17 @@ class UAdminPaymentUsersController extends UBaseController {
       final dynamic ok = await submit(
         UServices.user.create(
           p: UUserCreateParams(
-            firstName: firstName.text,
-            lastName: lastName.text,
-            userName: userName.trimmedLatin(),
-            password: password.trimmedLatin(),
-            fatherName: fatherName.text.nullIfEmpty(),
-            nationalCode: nationalCode.valueOrNull()?.toLatinNumber(),
+            firstName: firstNameController.text,
+            lastName: lastNameController.text,
+            userName: userNameController.trimmedLatin(),
+            password: passwordController.trimmedLatin(),
+            fatherName: fatherNameController.text.nullIfEmpty(),
+            nationalCode: nationalCodeController.valueOrNull()?.toLatinNumber(),
             birthdate: birthdate,
-            phoneNumber: phoneNumber.trimmedLatin(),
-            landLine: landLine.valueOrNull()?.toLatinNumber(),
-            email: email.trimmedLatin().nullIfEmpty(),
-            bio: bio.valueOrNull(),
+            phoneNumber: phoneNumberController.trimmedLatin(),
+            landLine: landLineController.valueOrNull()?.toLatinNumber(),
+            email: emailController.trimmedLatin().nullIfEmpty(),
+            bio: bioController.valueOrNull(),
             tags: <int>[
               gender.number,
               if (canManageRoles) role.number,
@@ -185,17 +185,17 @@ class UAdminPaymentUsersController extends UBaseController {
       UServices.user.update(
         p: UUserUpdateParams(
           id: u.id,
-          firstName: firstName.text,
-          lastName: lastName.text,
-          userName: userName.trimmedLatin(),
-          password: password.text.nullIfEmpty(),
-          fatherName: fatherName.text.nullIfEmpty(),
-          nationalCode: nationalCode.valueOrNull()?.toLatinNumber(),
+          firstName: firstNameController.text,
+          lastName: lastNameController.text,
+          userName: userNameController.trimmedLatin(),
+          password: passwordController.text.nullIfEmpty(),
+          fatherName: fatherNameController.text.nullIfEmpty(),
+          nationalCode: nationalCodeController.valueOrNull()?.toLatinNumber(),
           birthdate: birthdate,
-          phoneNumber: phoneNumber.trimmedLatin(),
-          landLine: landLine.valueOrNull()?.toLatinNumber(),
-          email: email.text.toLatinNumber().nullIfEmpty(),
-          bio: bio.valueOrNull(),
+          phoneNumber: phoneNumberController.trimmedLatin(),
+          landLine: landLineController.valueOrNull()?.toLatinNumber(),
+          email: emailController.text.toLatinNumber().nullIfEmpty(),
+          bio: bioController.valueOrNull(),
           addTags: addTags,
           removeTags: removeTags,
         ),
@@ -211,4 +211,30 @@ class UAdminPaymentUsersController extends UBaseController {
     title: U.s.deleteItem(U.s.user),
     message: U.s.areYouSureToDeleteThisUser,
   );
+
+  @override
+  void dispose() {
+    firstNameFilterController.dispose();
+    lastNameFilterController.dispose();
+    userNameFilterController.dispose();
+    phoneNumberFilterController.dispose();
+    nationalCodeFilterController.dispose();
+    emailFilterController.dispose();
+    landLineFilterController.dispose();
+    bioFilterController.dispose();
+    fromBirthController.dispose();
+    toBirthController.dispose();
+    firstNameController.dispose();
+    lastNameController.dispose();
+    userNameController.dispose();
+    fatherNameController.dispose();
+    nationalCodeController.dispose();
+    birthDateController.dispose();
+    passwordController.dispose();
+    phoneNumberController.dispose();
+    landLineController.dispose();
+    emailController.dispose();
+    bioController.dispose();
+    super.dispose();
+  }
 }

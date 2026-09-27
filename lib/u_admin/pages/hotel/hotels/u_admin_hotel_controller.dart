@@ -2,28 +2,28 @@ part of "../../../u_admin.dart";
 
 class UAdminHotelController extends UBaseController {
   List<UHotelResponse> list = <UHotelResponse>[];
-  late final TextEditingController titleFilter = fields.text();
+  final TextEditingController titleFilterController = TextEditingController();
 
   UHotelResponse? editing;
-  late final TextEditingController title = fields.text();
-  late final TextEditingController description = fields.text();
-  late final TextEditingController stars = fields.text();
-  late final TextEditingController address = fields.text();
-  late final TextEditingController phone = fields.text();
-  late final TextEditingController email = fields.text();
-  late final TextEditingController checkInTime = fields.text();
-  late final TextEditingController checkOutTime = fields.text();
-  late final TextEditingController policies = fields.text();
-  late final TextEditingController rules = fields.text();
-  late final TextEditingController latitude = fields.text();
-  late final TextEditingController longitude = fields.text();
-  late final TextEditingController cancellationFreeHours = fields.text();
-  late final TextEditingController cancellationPenaltyNights = fields.text();
-  late final TextEditingController website = fields.text();
-  late final TextEditingController whatsapp = fields.text();
-  late final TextEditingController instagram = fields.text();
-  late final TextEditingController telegram = fields.text();
-  late final TextEditingController howToGetThere = fields.text();
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController starsController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController checkInTimeController = TextEditingController();
+  final TextEditingController checkOutTimeController = TextEditingController();
+  final TextEditingController policiesController = TextEditingController();
+  final TextEditingController rulesController = TextEditingController();
+  final TextEditingController latitudeController = TextEditingController();
+  final TextEditingController longitudeController = TextEditingController();
+  final TextEditingController cancellationFreeHoursController = TextEditingController();
+  final TextEditingController cancellationPenaltyNightsController = TextEditingController();
+  final TextEditingController websiteController = TextEditingController();
+  final TextEditingController whatsappController = TextEditingController();
+  final TextEditingController instagramController = TextEditingController();
+  final TextEditingController telegramController = TextEditingController();
+  final TextEditingController howToGetThereController = TextEditingController();
   String cityCode = "";
   List<int> tags = <int>[];
   List<String> highlights = <String>[];
@@ -38,7 +38,7 @@ class UAdminHotelController extends UBaseController {
   Future<void> read() async {
     state.loading();
     await UServices.hotel.readHotels(
-      p: UHotelReadParams(pageNumber: pageNumber.value, pageSize: pageSize, title: titleFilter.valueOrNull()),
+      p: UHotelReadParams(pageNumber: pageNumber.value, pageSize: pageSize, title: titleFilterController.valueOrNull()),
       onOk: (UResponse<List<UHotelResponse>> r) {
         list = r.result ?? <UHotelResponse>[];
         setTotalPages(r.totalCount);
@@ -52,7 +52,7 @@ class UAdminHotelController extends UBaseController {
   void applyFilters() => reloadFirstPage(read);
 
   void clearFilters() {
-    titleFilter.clear();
+    titleFilterController.clear();
     reloadFirstPage(read);
   }
 
@@ -68,25 +68,25 @@ class UAdminHotelController extends UBaseController {
               item;
     final UHotelJson? d = h?.jsonData;
     editing = h;
-    title.text = h?.title ?? "";
-    description.text = d?.description ?? d?.detail1 ?? "";
-    stars.text = h?.stars.toString() ?? "";
-    address.text = h?.address ?? "";
-    phone.text = h?.phoneNumber ?? "";
-    email.text = h?.email ?? "";
-    checkInTime.text = d?.checkInTime ?? "";
-    checkOutTime.text = d?.checkOutTime ?? "";
-    policies.text = d?.policies ?? "";
-    rules.text = d?.rules.join(", ") ?? "";
-    latitude.text = d?.latitude?.toString() ?? "";
-    longitude.text = d?.longitude?.toString() ?? "";
-    cancellationFreeHours.text = (d?.cancellationFreeHours ?? 24).toString();
-    cancellationPenaltyNights.text = (d?.cancellationPenaltyNights ?? 1).toString();
-    website.text = d?.website ?? "";
-    whatsapp.text = d?.whatsapp ?? "";
-    instagram.text = d?.instagram ?? "";
-    telegram.text = d?.telegram ?? "";
-    howToGetThere.text = d?.howToGetThere ?? "";
+    titleController.text = h?.title ?? "";
+    descriptionController.text = d?.description ?? d?.detail1 ?? "";
+    starsController.text = h?.stars.toString() ?? "";
+    addressController.text = h?.address ?? "";
+    phoneController.text = h?.phoneNumber ?? "";
+    emailController.text = h?.email ?? "";
+    checkInTimeController.text = d?.checkInTime ?? "";
+    checkOutTimeController.text = d?.checkOutTime ?? "";
+    policiesController.text = d?.policies ?? "";
+    rulesController.text = d?.rules.join(", ") ?? "";
+    latitudeController.text = d?.latitude?.toString() ?? "";
+    longitudeController.text = d?.longitude?.toString() ?? "";
+    cancellationFreeHoursController.text = (d?.cancellationFreeHours ?? 24).toString();
+    cancellationPenaltyNightsController.text = (d?.cancellationPenaltyNights ?? 1).toString();
+    websiteController.text = d?.website ?? "";
+    whatsappController.text = d?.whatsapp ?? "";
+    instagramController.text = d?.instagram ?? "";
+    telegramController.text = d?.telegram ?? "";
+    howToGetThereController.text = d?.howToGetThere ?? "";
     cityCode = h?.cityCode ?? UCountries.iran().provinces.first.cities.firstOrNull?.code ?? "";
     tags = List<int>.from(h?.tags ?? <int>[TagHotel.hotel.number, TagHotel.active.number]);
     highlights = List<String>.from(d?.highlights ?? <String>[]);
@@ -104,28 +104,28 @@ class UAdminHotelController extends UBaseController {
     final UHotelUpdateParams p = UHotelUpdateParams(
       id: editing?.id ?? "",
       tags: tags,
-      title: title.text.trim(),
+      title: titleController.text.trim(),
       cityCode: cityCode,
-      stars: intOf(stars),
-      address: t(address),
-      phoneNumber: phone.text.nullIfEmpty(),
-      email: email.text.nullIfEmpty(),
-      description: t(description),
-      policies: t(policies),
-      checkInTime: t(checkInTime),
-      checkOutTime: t(checkOutTime),
-      rules: splitList(rules.text),
-      latitude: numOf(latitude),
-      longitude: numOf(longitude),
-      cancellationFreeHours: intOf(cancellationFreeHours),
-      cancellationPenaltyNights: intOf(cancellationPenaltyNights),
+      stars: intOf(starsController),
+      address: t(addressController),
+      phoneNumber: phoneController.text.nullIfEmpty(),
+      email: emailController.text.nullIfEmpty(),
+      description: t(descriptionController),
+      policies: t(policiesController),
+      checkInTime: t(checkInTimeController),
+      checkOutTime: t(checkOutTimeController),
+      rules: splitList(rulesController.text),
+      latitude: numOf(latitudeController),
+      longitude: numOf(longitudeController),
+      cancellationFreeHours: intOf(cancellationFreeHoursController),
+      cancellationPenaltyNights: intOf(cancellationPenaltyNightsController),
       adminUserIds: admins.map((UUserResponse u) => u.id).toList(),
       highlights: highlights,
-      website: t(website),
-      whatsapp: t(whatsapp),
-      instagram: t(instagram),
-      telegram: t(telegram),
-      howToGetThere: t(howToGetThere),
+      website: t(websiteController),
+      whatsapp: t(whatsappController),
+      instagram: t(instagramController),
+      telegram: t(telegramController),
+      howToGetThere: t(howToGetThereController),
       nearby: nearby,
       faqs: faqs,
     );
@@ -154,6 +154,26 @@ class UAdminHotelController extends UBaseController {
 
   @override
   void dispose() {
+    titleFilterController.dispose();
+    titleController.dispose();
+    descriptionController.dispose();
+    starsController.dispose();
+    addressController.dispose();
+    phoneController.dispose();
+    emailController.dispose();
+    checkInTimeController.dispose();
+    checkOutTimeController.dispose();
+    policiesController.dispose();
+    rulesController.dispose();
+    latitudeController.dispose();
+    longitudeController.dispose();
+    cancellationFreeHoursController.dispose();
+    cancellationPenaltyNightsController.dispose();
+    websiteController.dispose();
+    whatsappController.dispose();
+    instagramController.dispose();
+    telegramController.dispose();
+    howToGetThereController.dispose();
     photos.dispose();
     super.dispose();
   }

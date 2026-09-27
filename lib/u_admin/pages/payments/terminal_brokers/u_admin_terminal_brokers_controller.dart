@@ -3,20 +3,20 @@ part of "../../../u_admin.dart";
 class UAdminTerminalBrokerController extends UBaseController {
   List<UTerminalBrokerResponse> list = <UTerminalBrokerResponse>[];
 
-  late final TextEditingController codeFilter = fields.text();
-  late final TextEditingController titleFilter = fields.text();
+  final TextEditingController codeFilterController = TextEditingController();
+  final TextEditingController titleFilterController = TextEditingController();
 
   UTerminalBrokerResponse? editing;
-  late final TextEditingController code = fields.text();
-  late final TextEditingController title = fields.text();
-  late final TextEditingController registrationNumber = fields.text();
-  late final TextEditingController nationalCode = fields.text();
-  late final TextEditingController representative = fields.text();
-  late final TextEditingController address = fields.text();
-  late final TextEditingController postalCode = fields.text();
-  late final TextEditingController phoneNumber = fields.text();
-  late final TextEditingController sign1Owner = fields.text();
-  late final TextEditingController sign2Owner = fields.text();
+  final TextEditingController codeController = TextEditingController();
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController registrationNumberController = TextEditingController();
+  final TextEditingController nationalCodeController = TextEditingController();
+  final TextEditingController representativeController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
+  final TextEditingController postalCodeController = TextEditingController();
+  final TextEditingController phoneNumberController = TextEditingController();
+  final TextEditingController sign1OwnerController = TextEditingController();
+  final TextEditingController sign2OwnerController = TextEditingController();
   String? logoBase64;
   String? sign1Base64;
   String? sign2Base64;
@@ -29,8 +29,8 @@ class UAdminTerminalBrokerController extends UBaseController {
       p: UTerminalBrokerReadParams(
         pageNumber: pageNumber.value,
         pageSize: pageSize,
-        code: codeFilter.text.nullIfEmpty(),
-        title: titleFilter.text.nullIfEmpty(),
+        code: codeFilterController.text.nullIfEmpty(),
+        title: titleFilterController.text.nullIfEmpty(),
         orderBy: tagOrderBy.value.number,
         selectorArgs: const UTerminalBrokerSelectorArgs(),
       ),
@@ -47,23 +47,23 @@ class UAdminTerminalBrokerController extends UBaseController {
   void applyFilters() => reloadFirstPage(read);
 
   void clearFilters() {
-    codeFilter.clear();
-    titleFilter.clear();
+    codeFilterController.clear();
+    titleFilterController.clear();
     reloadFirstPage(read);
   }
 
   void loadForm(UTerminalBrokerResponse? b) {
     editing = b;
-    code.text = b?.code ?? "";
-    title.text = b?.title ?? "";
-    registrationNumber.text = b?.jsonData.registrationNumber ?? "";
-    nationalCode.text = b?.jsonData.nationalCode ?? "";
-    representative.text = b?.jsonData.representative ?? "";
-    address.text = b?.jsonData.address ?? "";
-    postalCode.text = b?.jsonData.postalCode ?? "";
-    phoneNumber.text = b?.jsonData.phoneNumber ?? "";
-    sign1Owner.text = b?.jsonData.sign1Owner ?? "";
-    sign2Owner.text = b?.jsonData.sign2Owner ?? "";
+    codeController.text = b?.code ?? "";
+    titleController.text = b?.title ?? "";
+    registrationNumberController.text = b?.jsonData.registrationNumber ?? "";
+    nationalCodeController.text = b?.jsonData.nationalCode ?? "";
+    representativeController.text = b?.jsonData.representative ?? "";
+    addressController.text = b?.jsonData.address ?? "";
+    postalCodeController.text = b?.jsonData.postalCode ?? "";
+    phoneNumberController.text = b?.jsonData.phoneNumber ?? "";
+    sign1OwnerController.text = b?.jsonData.sign1Owner ?? "";
+    sign2OwnerController.text = b?.jsonData.sign2Owner ?? "";
     logoBase64 = b?.jsonData.logoBase64;
     sign1Base64 = b?.jsonData.sign1Base64;
     sign2Base64 = b?.jsonData.sign2Base64;
@@ -80,36 +80,36 @@ class UAdminTerminalBrokerController extends UBaseController {
           ? UServices.terminal.createBroker(
               p: UTerminalBrokerCreateParams(
                 tags: <int>[TagTerminalBroker.test.number],
-                code: code.text.trim(),
-                title: title.text.trim(),
-                registrationNumber: registrationNumber.text.trim(),
-                nationalCode: nationalCode.text.trim(),
-                representative: representative.text.trim(),
-                address: address.text.trim(),
-                postalCode: postalCode.text.trim(),
-                phoneNumber: phoneNumber.text.trim(),
+                code: codeController.text.trim(),
+                title: titleController.text.trim(),
+                registrationNumber: registrationNumberController.text.trim(),
+                nationalCode: nationalCodeController.text.trim(),
+                representative: representativeController.text.trim(),
+                address: addressController.text.trim(),
+                postalCode: postalCodeController.text.trim(),
+                phoneNumber: phoneNumberController.text.trim(),
                 sign1Base64: sign1Base64!,
-                sign1Owner: sign1Owner.text.trim(),
+                sign1Owner: sign1OwnerController.text.trim(),
                 sign2Base64: sign2Base64,
-                sign2Owner: sign2Owner.text.trim().nullIfEmpty(),
+                sign2Owner: sign2OwnerController.text.trim().nullIfEmpty(),
                 logoBase64: logoBase64!,
               ),
             )
           : UServices.terminal.updateBroker(
               p: UTerminalBrokerUpdateParams(
                 id: b.id,
-                code: code.text.trim(),
-                title: title.text.trim(),
-                registrationNumber: registrationNumber.text.trim(),
-                nationalCode: nationalCode.text.trim(),
-                representative: representative.text.trim(),
-                address: address.text.trim(),
-                postalCode: postalCode.text.trim(),
-                phoneNumber: phoneNumber.text.trim(),
+                code: codeController.text.trim(),
+                title: titleController.text.trim(),
+                registrationNumber: registrationNumberController.text.trim(),
+                nationalCode: nationalCodeController.text.trim(),
+                representative: representativeController.text.trim(),
+                address: addressController.text.trim(),
+                postalCode: postalCodeController.text.trim(),
+                phoneNumber: phoneNumberController.text.trim(),
                 sign1Base64: sign1Base64,
-                sign1Owner: sign1Owner.text.trim(),
+                sign1Owner: sign1OwnerController.text.trim(),
                 sign2Base64: sign2Base64,
-                sign2Owner: sign2Owner.text.trim(),
+                sign2Owner: sign2OwnerController.text.trim(),
                 logoBase64: logoBase64,
               ),
             ),
@@ -119,4 +119,21 @@ class UAdminTerminalBrokerController extends UBaseController {
   }
 
   void delete(UTerminalBrokerResponse i) => confirmAction(() => UServices.terminal.deleteBroker(p: UIdParams(id: i.id)), read);
+
+  @override
+  void dispose() {
+    codeFilterController.dispose();
+    titleFilterController.dispose();
+    codeController.dispose();
+    titleController.dispose();
+    registrationNumberController.dispose();
+    nationalCodeController.dispose();
+    representativeController.dispose();
+    addressController.dispose();
+    postalCodeController.dispose();
+    phoneNumberController.dispose();
+    sign1OwnerController.dispose();
+    sign2OwnerController.dispose();
+    super.dispose();
+  }
 }

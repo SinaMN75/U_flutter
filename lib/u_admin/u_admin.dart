@@ -1,5 +1,3 @@
-import "package:u/u_admin/pages/barcode/u_admin_barcode_generator_page.dart";
-import "package:u/u_admin/pages/crypto/u_admin_crypto_tester_page.dart";
 import "package:u/utilities.dart";
 
 part "pages/analytics/u_admin_financial_ops_dashboard_controller.dart";
@@ -91,9 +89,7 @@ part "u_admin_list_view.dart";
 
 part "u_admin_modules.dart";
 
-part "u_admin_fields.dart";
 
-part "u_admin_form.dart";
 
 part "u_admin_dashboard.dart";
 

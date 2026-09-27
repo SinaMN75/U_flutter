@@ -2,31 +2,31 @@ part of "../../../u_admin.dart";
 
 class UAdminDormController extends UBaseController {
   List<UDormResponse> list = <UDormResponse>[];
-  late final TextEditingController titleFilter = fields.text();
+  final TextEditingController titleFilterController = TextEditingController();
 
   // ---------------------------------------------------------------- form (create and edit)
 
   /// The dorm being edited; null while creating.
   UDormResponse? editing;
-  late final TextEditingController title = fields.text();
-  late final TextEditingController description = fields.text();
-  late final TextEditingController address = fields.text();
-  late final TextEditingController phone = fields.text();
-  late final TextEditingController nearbyUniversity = fields.text();
-  late final TextEditingController universityWalkMinutes = fields.text();
-  late final TextEditingController visitingHours = fields.text();
-  late final TextEditingController curfewTime = fields.text();
-  late final TextEditingController minimumStayMonths = fields.text();
-  late final TextEditingController policies = fields.text();
-  late final TextEditingController rules = fields.text();
-  late final TextEditingController requiredDocuments = fields.text();
-  late final TextEditingController latitude = fields.text();
-  late final TextEditingController longitude = fields.text();
-  late final TextEditingController website = fields.text();
-  late final TextEditingController whatsapp = fields.text();
-  late final TextEditingController instagram = fields.text();
-  late final TextEditingController telegram = fields.text();
-  late final TextEditingController howToGetThere = fields.text();
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController nearbyUniversityController = TextEditingController();
+  final TextEditingController universityWalkMinutesController = TextEditingController();
+  final TextEditingController visitingHoursController = TextEditingController();
+  final TextEditingController curfewTimeController = TextEditingController();
+  final TextEditingController minimumStayMonthsController = TextEditingController();
+  final TextEditingController policiesController = TextEditingController();
+  final TextEditingController rulesController = TextEditingController();
+  final TextEditingController requiredDocumentsController = TextEditingController();
+  final TextEditingController latitudeController = TextEditingController();
+  final TextEditingController longitudeController = TextEditingController();
+  final TextEditingController websiteController = TextEditingController();
+  final TextEditingController whatsappController = TextEditingController();
+  final TextEditingController instagramController = TextEditingController();
+  final TextEditingController telegramController = TextEditingController();
+  final TextEditingController howToGetThereController = TextEditingController();
   String cityCode = "";
   List<int> tags = <int>[];
   List<String> highlights = <String>[];
@@ -44,7 +44,7 @@ class UAdminDormController extends UBaseController {
       p: UDormReadParams(
         pageNumber: pageNumber.value,
         pageSize: pageSize,
-        title: titleFilter.valueOrNull(),
+        title: titleFilterController.valueOrNull(),
         selectorArgs: const UDormSelectorArgs(rooms: UDormRoomSelectorArgs()),
       ),
       onOk: (UResponse<List<UDormResponse>> r) {
@@ -60,7 +60,7 @@ class UAdminDormController extends UBaseController {
   void applyFilters() => reloadFirstPage(read);
 
   void clearFilters() {
-    titleFilter.clear();
+    titleFilterController.clear();
     reloadFirstPage(read);
   }
 
@@ -77,25 +77,25 @@ class UAdminDormController extends UBaseController {
               item;
     final UDormJson? d = h?.jsonData;
     editing = h;
-    title.text = h?.title ?? "";
-    description.text = d?.description ?? "";
-    address.text = h?.address ?? "";
-    phone.text = h?.phoneNumber ?? "";
-    nearbyUniversity.text = d?.nearbyUniversity ?? "";
-    universityWalkMinutes.text = d?.universityWalkMinutes?.toString() ?? "";
-    visitingHours.text = d?.visitingHours ?? "";
-    curfewTime.text = d?.curfewTime ?? "";
-    minimumStayMonths.text = d?.minimumStayMonths?.toString() ?? "";
-    policies.text = d?.policies ?? "";
-    rules.text = d?.rules.join("، ") ?? "";
-    requiredDocuments.text = d?.requiredDocuments.join("، ") ?? "";
-    latitude.text = d?.latitude?.toString() ?? "";
-    longitude.text = d?.longitude?.toString() ?? "";
-    website.text = d?.website ?? "";
-    whatsapp.text = d?.whatsapp ?? "";
-    instagram.text = d?.instagram ?? "";
-    telegram.text = d?.telegram ?? "";
-    howToGetThere.text = d?.howToGetThere ?? "";
+    titleController.text = h?.title ?? "";
+    descriptionController.text = d?.description ?? "";
+    addressController.text = h?.address ?? "";
+    phoneController.text = h?.phoneNumber ?? "";
+    nearbyUniversityController.text = d?.nearbyUniversity ?? "";
+    universityWalkMinutesController.text = d?.universityWalkMinutes?.toString() ?? "";
+    visitingHoursController.text = d?.visitingHours ?? "";
+    curfewTimeController.text = d?.curfewTime ?? "";
+    minimumStayMonthsController.text = d?.minimumStayMonths?.toString() ?? "";
+    policiesController.text = d?.policies ?? "";
+    rulesController.text = d?.rules.join("، ") ?? "";
+    requiredDocumentsController.text = d?.requiredDocuments.join("، ") ?? "";
+    latitudeController.text = d?.latitude?.toString() ?? "";
+    longitudeController.text = d?.longitude?.toString() ?? "";
+    websiteController.text = d?.website ?? "";
+    whatsappController.text = d?.whatsapp ?? "";
+    instagramController.text = d?.instagram ?? "";
+    telegramController.text = d?.telegram ?? "";
+    howToGetThereController.text = d?.howToGetThere ?? "";
     cityCode = h?.cityCode ?? UCountries.iran().provinces.first.cities.firstOrNull?.code ?? "";
     tags = List<int>.from(h?.tags ?? <int>[TagDorm.girls.number, TagDorm.active.number]);
     highlights = List<String>.from(d?.highlights ?? <String>[]);
@@ -115,28 +115,28 @@ class UAdminDormController extends UBaseController {
     final UDormUpdateParams p = UDormUpdateParams(
       id: editing?.id ?? "",
       tags: tags,
-      title: title.text.trim(),
+      title: titleController.text.trim(),
       cityCode: cityCode,
-      address: t(address),
-      phoneNumber: phone.text.nullIfEmpty(),
-      description: t(description),
-      nearbyUniversity: t(nearbyUniversity),
-      universityWalkMinutes: intOf(universityWalkMinutes),
-      visitingHours: t(visitingHours),
-      curfewTime: t(curfewTime),
-      minimumStayMonths: intOf(minimumStayMonths),
-      policies: t(policies),
-      rules: splitList(rules.text),
-      requiredDocuments: splitList(requiredDocuments.text),
-      latitude: numOf(latitude),
-      longitude: numOf(longitude),
+      address: t(addressController),
+      phoneNumber: phoneController.text.nullIfEmpty(),
+      description: t(descriptionController),
+      nearbyUniversity: t(nearbyUniversityController),
+      universityWalkMinutes: intOf(universityWalkMinutesController),
+      visitingHours: t(visitingHoursController),
+      curfewTime: t(curfewTimeController),
+      minimumStayMonths: intOf(minimumStayMonthsController),
+      policies: t(policiesController),
+      rules: splitList(rulesController.text),
+      requiredDocuments: splitList(requiredDocumentsController.text),
+      latitude: numOf(latitudeController),
+      longitude: numOf(longitudeController),
       adminUserIds: admins.map((UUserResponse u) => u.id).toList(),
       highlights: highlights,
-      website: t(website),
-      whatsapp: t(whatsapp),
-      instagram: t(instagram),
-      telegram: t(telegram),
-      howToGetThere: t(howToGetThere),
+      website: t(websiteController),
+      whatsapp: t(whatsappController),
+      instagram: t(instagramController),
+      telegram: t(telegramController),
+      howToGetThere: t(howToGetThereController),
       nearby: nearby,
       faqs: faqs,
     );
@@ -166,6 +166,26 @@ class UAdminDormController extends UBaseController {
 
   @override
   void dispose() {
+    titleFilterController.dispose();
+    titleController.dispose();
+    descriptionController.dispose();
+    addressController.dispose();
+    phoneController.dispose();
+    nearbyUniversityController.dispose();
+    universityWalkMinutesController.dispose();
+    visitingHoursController.dispose();
+    curfewTimeController.dispose();
+    minimumStayMonthsController.dispose();
+    policiesController.dispose();
+    rulesController.dispose();
+    requiredDocumentsController.dispose();
+    latitudeController.dispose();
+    longitudeController.dispose();
+    websiteController.dispose();
+    whatsappController.dispose();
+    instagramController.dispose();
+    telegramController.dispose();
+    howToGetThereController.dispose();
     photos.dispose();
     super.dispose();
   }

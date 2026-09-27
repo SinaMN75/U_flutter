@@ -250,14 +250,13 @@ class _UAdminGoldPageState extends State<UAdminGoldPage> {
     ],
   );
 
-  void _createToken() => UAdminForm.editDialog(
+  void _createToken() => UFormDialog.show(
     title: U.s.createApiToken,
-    formKey: c.formKey,
     onSubmit: c.createToken,
     children: (BuildContext context, StateSetter setState) => <Widget>[
-      UAdminForm.text(c.tokenLabel, U.s.label),
-      UAdminForm.text(c.tokenScopes, U.s.scopes, required: true),
-      UAdminForm.text(c.tokenIps, U.s.allowedIps),
+      UTextField(controller: c.tokenLabelController, labelText: U.s.label, margin: const EdgeInsets.symmetric(vertical: 6)),
+      UTextField(controller: c.tokenScopesController, labelText: U.s.scopes, validator: UValidators.required(message: ""), margin: const EdgeInsets.symmetric(vertical: 6)),
+      UTextField(controller: c.tokenIpsController, labelText: U.s.allowedIps, margin: const EdgeInsets.symmetric(vertical: 6)),
     ],
   );
 }

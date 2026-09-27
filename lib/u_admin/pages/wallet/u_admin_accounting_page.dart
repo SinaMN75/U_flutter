@@ -84,8 +84,8 @@ class _AccountingPageState extends State<UAdminAccountingPage> {
   });
 
   String _rangeLabel() {
-    final String from = c.controllerStartDate.text.nullIfEmpty() ?? U.s.last30Days;
-    final String to = c.controllerEndDate.text.nullIfEmpty() ?? "";
+    final String from = c.startDateController.text.nullIfEmpty() ?? U.s.last30Days;
+    final String to = c.endDateController.text.nullIfEmpty() ?? "";
     return to.isEmpty ? from : "$from → $to";
   }
 
@@ -173,13 +173,31 @@ class _AccountingPageState extends State<UAdminAccountingPage> {
     );
   }
 
-  void _filter() => UAdminForm.filter(
+  void _filter() => UFilterDialog.show(
     title: U.s.filterItem(U.s.report),
     onApply: c.load,
     onClear: c.clear,
     children: (StateSetter setState) => <Widget>[
-      UAdminForm.date(c.controllerStartDate, U.s.fromDate, (DateTime d) => c.startDate = d),
-      UAdminForm.date(c.controllerEndDate, U.s.toDate, (DateTime d) => c.endDate = d),
+      UTextFieldDatePicker(
+        controller: c.startDateController,
+        labelText: U.s.fromDate,
+        jalali: true,
+        margin: const EdgeInsets.symmetric(vertical: 6),
+        onChange: (DateTime d, UJalali j) {
+          c.startDate = d;
+          c.startDateController.text = d.toJalaliDate();
+        },
+      ),
+      UTextFieldDatePicker(
+        controller: c.endDateController,
+        labelText: U.s.toDate,
+        jalali: true,
+        margin: const EdgeInsets.symmetric(vertical: 6),
+        onChange: (DateTime d, UJalali j) {
+          c.endDate = d;
+          c.endDateController.text = d.toJalaliDate();
+        },
+      ),
     ],
   );
 }

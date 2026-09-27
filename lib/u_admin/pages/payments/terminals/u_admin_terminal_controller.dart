@@ -4,27 +4,27 @@ class UAdminTerminalController extends UBaseController {
   List<UTerminalResponse> list = <UTerminalResponse>[];
   UMerchantResponse? merchant;
 
-  late final TextEditingController serialFilter = fields.text();
-  late final TextEditingController merchantIdFilter = fields.text();
-  late final TextEditingController creatorIdFilter = fields.text();
+  final TextEditingController serialFilterController = TextEditingController();
+  final TextEditingController merchantIdFilterController = TextEditingController();
+  final TextEditingController creatorIdFilterController = TextEditingController();
   TagTerminal? typeFilter;
   UTerminalBrandResponse? brandFilter;
   UTerminalBrokerResponse? brokerFilter;
 
   UTerminalResponse? editing;
-  late final TextEditingController serial = fields.text();
-  late final TextEditingController simCardNumber = fields.text();
-  late final TextEditingController simCardSerial = fields.text();
-  late final TextEditingController imei = fields.text();
-  late final TextEditingController terminalId = fields.text();
+  final TextEditingController serialController = TextEditingController();
+  final TextEditingController simCardNumberController = TextEditingController();
+  final TextEditingController simCardSerialController = TextEditingController();
+  final TextEditingController imeiController = TextEditingController();
+  final TextEditingController terminalIdController = TextEditingController();
   UTerminalBrandResponse? brand;
   UTerminalBrokerResponse? broker;
 
-  late final TextEditingController rejectReason = fields.text();
+  final TextEditingController rejectReasonController = TextEditingController();
 
-  late final TextEditingController otpSerial = fields.text();
-  late final TextEditingController otpLength = fields.text("6");
-  late final TextEditingController otpCode = fields.text();
+  final TextEditingController otpSerialController = TextEditingController();
+  final TextEditingController otpLengthController = TextEditingController(text: "6");
+  final TextEditingController otpCodeController = TextEditingController();
   bool otpGenerate = true;
   bool otpAdmin = false;
   String otpResult = "";
@@ -41,9 +41,9 @@ class UAdminTerminalController extends UBaseController {
       p: UTerminalReadParams(
         pageNumber: pageNumber.value,
         pageSize: pageSize,
-        merchantId: merchant?.id ?? merchantIdFilter.text.nullIfEmpty(),
-        serial: serialFilter.text.nullIfEmpty(),
-        creatorId: creatorIdFilter.text.nullIfEmpty(),
+        merchantId: merchant?.id ?? merchantIdFilterController.text.nullIfEmpty(),
+        serial: serialFilterController.text.nullIfEmpty(),
+        creatorId: creatorIdFilterController.text.nullIfEmpty(),
         terminalBrandId: brandFilter?.id,
         terminalBrokerId: brokerFilter?.id,
         tags: typeFilter == null ? null : <int>[typeFilter!.number],
@@ -65,9 +65,9 @@ class UAdminTerminalController extends UBaseController {
   void applyFilters() => reloadFirstPage(read);
 
   void clearFilters() {
-    serialFilter.clear();
-    merchantIdFilter.clear();
-    creatorIdFilter.clear();
+    serialFilterController.clear();
+    merchantIdFilterController.clear();
+    creatorIdFilterController.clear();
     typeFilter = null;
     brandFilter = null;
     brokerFilter = null;
@@ -77,11 +77,11 @@ class UAdminTerminalController extends UBaseController {
 
   void loadForm(UTerminalResponse? t) {
     editing = t;
-    serial.text = t?.serial ?? "";
-    simCardNumber.text = t?.simCardNumber ?? "";
-    simCardSerial.text = t?.simCardSerial ?? "";
-    imei.text = t?.imei ?? "";
-    terminalId.text = t?.terminalId ?? "";
+    serialController.text = t?.serial ?? "";
+    simCardNumberController.text = t?.simCardNumber ?? "";
+    simCardSerialController.text = t?.simCardSerial ?? "";
+    imeiController.text = t?.imei ?? "";
+    terminalIdController.text = t?.terminalId ?? "";
     brand = t?.terminalBrand;
     broker = t?.terminalBroker;
   }
@@ -97,10 +97,10 @@ class UAdminTerminalController extends UBaseController {
           ? UServices.terminal.create(
               p: UTerminalCreateParams(
                 tags: <int>[TagTerminal.notAssigned.number],
-                serial: serial.text.trim(),
-                simCardNumber: simCardNumber.text.nullIfEmpty(),
-                simCardSerial: simCardSerial.text.nullIfEmpty(),
-                imei: imei.text.nullIfEmpty(),
+                serial: serialController.text.trim(),
+                simCardNumber: simCardNumberController.text.nullIfEmpty(),
+                simCardSerial: simCardSerialController.text.nullIfEmpty(),
+                imei: imeiController.text.nullIfEmpty(),
                 terminalBrandId: brand!.id,
                 terminalBrokerId: broker!.id,
               ),
@@ -108,11 +108,11 @@ class UAdminTerminalController extends UBaseController {
           : UServices.terminal.update(
               p: UTerminalUpdateParams(
                 id: t.id,
-                serial: serial.text.nullIfEmpty(),
-                simCardNumber: simCardNumber.text.nullIfEmpty(),
-                simCardSerial: simCardSerial.text.nullIfEmpty(),
-                imei: imei.text.nullIfEmpty(),
-                terminalId: terminalId.text.nullIfEmpty(),
+                serial: serialController.text.nullIfEmpty(),
+                simCardNumber: simCardNumberController.text.nullIfEmpty(),
+                simCardSerial: simCardSerialController.text.nullIfEmpty(),
+                imei: imeiController.text.nullIfEmpty(),
+                terminalId: terminalIdController.text.nullIfEmpty(),
                 terminalBrandId: brand?.id,
                 terminalBrokerId: broker?.id,
               ),
@@ -130,7 +130,7 @@ class UAdminTerminalController extends UBaseController {
   );
 
   Future<bool> reject(UTerminalResponse i) async =>
-      await submit(UServices.terminal.reject(p: UTerminalRejectParams(id: i.id, reason: rejectReason.text.nullIfEmpty())), read) != null;
+      await submit(UServices.terminal.reject(p: UTerminalRejectParams(id: i.id, reason: rejectReasonController.text.nullIfEmpty())), read) != null;
 
   void delete(UTerminalResponse i) => confirmAction(() => UServices.terminal.delete(p: UIdParams(id: i.id)), read);
 
@@ -170,9 +170,9 @@ class UAdminTerminalController extends UBaseController {
   );
 
   void loadOtp() {
-    otpSerial.clear();
-    otpLength.text = "6";
-    otpCode.clear();
+    otpSerialController.clear();
+    otpLengthController.text = "6";
+    otpCodeController.clear();
     otpGenerate = true;
     otpAdmin = false;
     otpResult = "";
@@ -180,15 +180,15 @@ class UAdminTerminalController extends UBaseController {
   }
 
   void runOtp() {
-    final String s = otpSerial.text.trim();
+    final String s = otpSerialController.text.trim();
     if (s.isEmpty) return UToast.error(message: U.s.required);
     if (otpGenerate) {
-      final int len = int.tryParse(otpLength.text.trim()) ?? 6;
+      final int len = int.tryParse(otpLengthController.text.trim()) ?? 6;
       otpResult = otpAdmin ? UOtp.generateAdminOtp(s, len) : UOtp.generateOtp(s, len);
       otpValid = null;
       return;
     }
-    final String code = otpCode.text.trim();
+    final String code = otpCodeController.text.trim();
     if (code.isEmpty) return UToast.error(message: U.s.required);
     otpValid = otpAdmin ? UOtp.verifyAdminOtp(s, code) : UOtp.verifyOtp(s, code);
     otpResult = "";
@@ -207,5 +207,22 @@ class UAdminTerminalController extends UBaseController {
   bool _matches(String query, String title, String code) {
     final String q = query.trim().toLowerCase();
     return q.isEmpty || title.toLowerCase().contains(q) || code.toLowerCase().contains(q);
+  }
+
+  @override
+  void dispose() {
+    serialFilterController.dispose();
+    merchantIdFilterController.dispose();
+    creatorIdFilterController.dispose();
+    serialController.dispose();
+    simCardNumberController.dispose();
+    simCardSerialController.dispose();
+    imeiController.dispose();
+    terminalIdController.dispose();
+    rejectReasonController.dispose();
+    otpSerialController.dispose();
+    otpLengthController.dispose();
+    otpCodeController.dispose();
+    super.dispose();
   }
 }

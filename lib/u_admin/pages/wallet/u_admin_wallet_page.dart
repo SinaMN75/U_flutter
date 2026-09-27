@@ -156,28 +156,40 @@ class _WalletPageState extends State<UAdminWalletPage> {
   });
 
   void _charge() {
-    c.chargeAmount.clear();
-    UAdminForm.editDialog(
+    c.chargeAmountController.clear();
+    UFormDialog.show(
       title: U.s.chargeWallet,
-      formKey: c.formKey,
       maxWidth: 380,
       onSubmit: c.charge,
-      children: (BuildContext context, StateSetter setState) => <Widget>[UAdminForm.text(c.chargeAmount, U.s.amount, money: true, required: true)],
+      children: (BuildContext context, StateSetter setState) => <Widget>[UTextField(
+        controller: c.chargeAmountController,
+        labelText: U.s.amount,
+        keyboardType: TextInputType.number,
+        formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+        validator: UValidators.required(message: ""),
+        margin: const EdgeInsets.symmetric(vertical: 6),
+      )],
     );
   }
 
   void _transfer() {
-    c.transferAmount.clear();
-    c.transferDetail.clear();
+    c.transferAmountController.clear();
+    c.transferDetailController.clear();
     c.receiver = null;
-    UAdminForm.editDialog(
+    UFormDialog.show(
       title: U.s.transferFunds,
-      formKey: c.formKey,
       maxWidth: 380,
       onSubmit: c.transfer,
       children: (BuildContext context, StateSetter setState) => <Widget>[
-        UAdminForm.text(c.transferAmount, U.s.amount, money: true, required: true),
-        UAdminForm.text(c.transferDetail, U.s.description),
+        UTextField(
+          controller: c.transferAmountController,
+          labelText: U.s.amount,
+          keyboardType: TextInputType.number,
+          formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+          validator: UValidators.required(message: ""),
+          margin: const EdgeInsets.symmetric(vertical: 6),
+        ),
+        UTextField(controller: c.transferDetailController, labelText: U.s.description, margin: const EdgeInsets.symmetric(vertical: 6)),
       ],
     );
   }

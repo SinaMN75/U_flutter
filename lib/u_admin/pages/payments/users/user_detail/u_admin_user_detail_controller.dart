@@ -4,11 +4,11 @@ class UAdminUserDetailController extends UBaseController {
   final URx<int> loadingProgress = 0.obs;
   late UUserResponse user;
 
-  late final TextEditingController frontReason = fields.text();
-  late final TextEditingController backReason = fields.text();
-  late final TextEditingController birthReason = fields.text();
-  late final TextEditingController videoReason = fields.text();
-  late final TextEditingController signatureReason = fields.text();
+  final TextEditingController frontReasonController = TextEditingController();
+  final TextEditingController backReasonController = TextEditingController();
+  final TextEditingController birthReasonController = TextEditingController();
+  final TextEditingController videoReasonController = TextEditingController();
+  final TextEditingController signatureReasonController = TextEditingController();
 
   void init({required UUserResponse user}) {
     this.user = user;
@@ -67,11 +67,11 @@ class UAdminUserDetailController extends UBaseController {
   );
 
   void loadRejectForm() {
-    frontReason.text = user.jsonData.nationalCardFrontRejectionReason ?? "";
-    backReason.text = user.jsonData.nationalCardBackRejectionReason ?? "";
-    birthReason.text = user.jsonData.birthCertificateFirstRejectionReason ?? "";
-    videoReason.text = user.jsonData.visualAuthenticationRejectionReason ?? "";
-    signatureReason.text = user.jsonData.eSignatureRejectionReason ?? "";
+    frontReasonController.text = user.jsonData.nationalCardFrontRejectionReason ?? "";
+    backReasonController.text = user.jsonData.nationalCardBackRejectionReason ?? "";
+    birthReasonController.text = user.jsonData.birthCertificateFirstRejectionReason ?? "";
+    videoReasonController.text = user.jsonData.visualAuthenticationRejectionReason ?? "";
+    signatureReasonController.text = user.jsonData.eSignatureRejectionReason ?? "";
   }
 
   Future<bool> reject() async {
@@ -79,17 +79,17 @@ class UAdminUserDetailController extends UBaseController {
       UServices.user.update(
         p: UUserUpdateParams(
           id: user.id,
-          nationalCardFrontRejectionReason: frontReason.valueOrNull(),
-          nationalCardBackRejectionReason: backReason.valueOrNull(),
-          birthCertificateFirstRejectionReason: birthReason.valueOrNull(),
-          visualAuthenticationRejectionReason: videoReason.valueOrNull(),
-          eSignatureRejectionReason: signatureReason.valueOrNull(),
+          nationalCardFrontRejectionReason: frontReasonController.valueOrNull(),
+          nationalCardBackRejectionReason: backReasonController.valueOrNull(),
+          birthCertificateFirstRejectionReason: birthReasonController.valueOrNull(),
+          visualAuthenticationRejectionReason: videoReasonController.valueOrNull(),
+          eSignatureRejectionReason: signatureReasonController.valueOrNull(),
           removeTags: <int>[
-            if (frontReason.text.isNotEmpty) TagUser.nationalCardFrontAwaitingVerification.number,
-            if (backReason.text.isNotEmpty) TagUser.nationalCardBackAwaitingVerification.number,
-            if (birthReason.text.isNotEmpty) TagUser.birthCertificateFirstAwaitingVerification.number,
-            if (videoReason.text.isNotEmpty) TagUser.visualAuthenticationAwaitingVerification.number,
-            if (signatureReason.text.isNotEmpty) TagUser.eSignatureAwaitingVerification.number,
+            if (frontReasonController.text.isNotEmpty) TagUser.nationalCardFrontAwaitingVerification.number,
+            if (backReasonController.text.isNotEmpty) TagUser.nationalCardBackAwaitingVerification.number,
+            if (birthReasonController.text.isNotEmpty) TagUser.birthCertificateFirstAwaitingVerification.number,
+            if (videoReasonController.text.isNotEmpty) TagUser.visualAuthenticationAwaitingVerification.number,
+            if (signatureReasonController.text.isNotEmpty) TagUser.eSignatureAwaitingVerification.number,
           ],
         ),
       ),
@@ -100,6 +100,11 @@ class UAdminUserDetailController extends UBaseController {
 
   @override
   void dispose() {
+    frontReasonController.dispose();
+    backReasonController.dispose();
+    birthReasonController.dispose();
+    videoReasonController.dispose();
+    signatureReasonController.dispose();
     loadingProgress.dispose();
     super.dispose();
   }

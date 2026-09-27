@@ -7,25 +7,25 @@ class UAdminMerchantController extends UBaseController {
   UBusinessCategory? businessCategory;
   UProvince? province;
   UCity? city;
-  late final TextEditingController titleFilter = fields.text();
-  late final TextEditingController nationalCodeFilter = fields.text();
-  late final TextEditingController phoneNumberFilter = fields.text();
-  late final TextEditingController zipCodeFilter = fields.text();
-  late final TextEditingController landlineFilter = fields.text();
-  late final TextEditingController merchantIdFilter = fields.text();
-  late final TextEditingController bankAccountIdFilter = fields.text();
+  final TextEditingController titleFilterController = TextEditingController();
+  final TextEditingController nationalCodeFilterController = TextEditingController();
+  final TextEditingController phoneNumberFilterController = TextEditingController();
+  final TextEditingController zipCodeFilterController = TextEditingController();
+  final TextEditingController landlineFilterController = TextEditingController();
+  final TextEditingController merchantIdFilterController = TextEditingController();
+  final TextEditingController bankAccountIdFilterController = TextEditingController();
 
-  late final TextEditingController title = fields.text();
-  late final TextEditingController businessTitle = fields.text();
-  late final TextEditingController nationalCode = fields.text();
-  late final TextEditingController phoneNumber = fields.text();
-  late final TextEditingController landline = fields.text();
-  late final TextEditingController zipCode = fields.text();
-  late final TextEditingController cityCode = fields.text();
-  late final TextEditingController mcc = fields.text();
-  late final TextEditingController address = fields.text();
-  late final TextEditingController ownerName = fields.text();
-  late final TextEditingController ownerPhoneNumber = fields.text();
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController businessTitleController = TextEditingController();
+  final TextEditingController nationalCodeController = TextEditingController();
+  final TextEditingController phoneNumberController = TextEditingController();
+  final TextEditingController landlineController = TextEditingController();
+  final TextEditingController zipCodeController = TextEditingController();
+  final TextEditingController cityCodeController = TextEditingController();
+  final TextEditingController mccController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
+  final TextEditingController ownerNameController = TextEditingController();
+  final TextEditingController ownerPhoneNumberController = TextEditingController();
 
   Future<void> init({UUserResponse? user}) {
     this.user = user;
@@ -38,16 +38,16 @@ class UAdminMerchantController extends UBaseController {
       p: UMerchantReadParams(
         pageNumber: pageNumber.value,
         pageSize: pageSize,
-        title: titleFilter.text.nullIfEmpty(),
-        nationalCode: nationalCodeFilter.text.nullIfEmpty(),
-        phoneNumber: phoneNumberFilter.text.nullIfEmpty(),
+        title: titleFilterController.text.nullIfEmpty(),
+        nationalCode: nationalCodeFilterController.text.nullIfEmpty(),
+        phoneNumber: phoneNumberFilterController.text.nullIfEmpty(),
         mcc: businessCategory?.code,
         cityCode: city?.code,
-        zipCode: zipCodeFilter.text.nullIfEmpty(),
-        landline: landlineFilter.text.nullIfEmpty(),
-        merchantId: merchantIdFilter.text.nullIfEmpty(),
+        zipCode: zipCodeFilterController.text.nullIfEmpty(),
+        landline: landlineFilterController.text.nullIfEmpty(),
+        merchantId: merchantIdFilterController.text.nullIfEmpty(),
         userId: user?.id,
-        bankAccountId: bankAccountIdFilter.text.nullIfEmpty(),
+        bankAccountId: bankAccountIdFilterController.text.nullIfEmpty(),
         fromCreatedAt: startDate,
         toCreatedAt: endDate,
       ),
@@ -65,13 +65,13 @@ class UAdminMerchantController extends UBaseController {
 
   void clearFilters() {
     for (final TextEditingController t in <TextEditingController>[
-      titleFilter,
-      nationalCodeFilter,
-      phoneNumberFilter,
-      zipCodeFilter,
-      landlineFilter,
-      merchantIdFilter,
-      bankAccountIdFilter,
+      titleFilterController,
+      nationalCodeFilterController,
+      phoneNumberFilterController,
+      zipCodeFilterController,
+      landlineFilterController,
+      merchantIdFilterController,
+      bankAccountIdFilterController,
     ]) {
       t.clear();
     }
@@ -85,17 +85,17 @@ class UAdminMerchantController extends UBaseController {
 
   void loadForm() {
     for (final TextEditingController t in <TextEditingController>[
-      title,
-      businessTitle,
-      nationalCode,
-      phoneNumber,
-      landline,
-      zipCode,
-      cityCode,
-      mcc,
-      address,
-      ownerName,
-      ownerPhoneNumber,
+      titleController,
+      businessTitleController,
+      nationalCodeController,
+      phoneNumberController,
+      landlineController,
+      zipCodeController,
+      cityCodeController,
+      mccController,
+      addressController,
+      ownerNameController,
+      ownerPhoneNumberController,
     ]) {
       t.clear();
     }
@@ -106,17 +106,17 @@ class UAdminMerchantController extends UBaseController {
       UServices.merchant.create(
         p: UMerchantCreateParams(
           tags: <int>[TagMerchant.normal.number],
-          title: title.text,
-          businessTitle: businessTitle.text.nullIfEmpty(),
-          nationalCode: nationalCode.numString(),
-          phoneNumber: phoneNumber.trimmedLatin(),
-          landline: landline.trimmedLatin(),
-          zipCode: zipCode.numString(),
-          cityCode: cityCode.numString(),
-          mcc: mcc.numString(),
-          ownerName: ownerName.text,
-          ownerPhoneNumber: ownerPhoneNumber.trimmedLatin(),
-          address: address.text,
+          title: titleController.text,
+          businessTitle: businessTitleController.text.nullIfEmpty(),
+          nationalCode: nationalCodeController.numString(),
+          phoneNumber: phoneNumberController.trimmedLatin(),
+          landline: landlineController.trimmedLatin(),
+          zipCode: zipCodeController.numString(),
+          cityCode: cityCodeController.numString(),
+          mcc: mccController.numString(),
+          ownerName: ownerNameController.text,
+          ownerPhoneNumber: ownerPhoneNumberController.trimmedLatin(),
+          address: addressController.text,
         ),
       ),
       read,
@@ -125,4 +125,27 @@ class UAdminMerchantController extends UBaseController {
   }
 
   void delete(UMerchantResponse i) => confirmAction(() => UServices.merchant.delete(p: UIdParams(id: i.id)), read);
+
+  @override
+  void dispose() {
+    titleFilterController.dispose();
+    nationalCodeFilterController.dispose();
+    phoneNumberFilterController.dispose();
+    zipCodeFilterController.dispose();
+    landlineFilterController.dispose();
+    merchantIdFilterController.dispose();
+    bankAccountIdFilterController.dispose();
+    titleController.dispose();
+    businessTitleController.dispose();
+    nationalCodeController.dispose();
+    phoneNumberController.dispose();
+    landlineController.dispose();
+    zipCodeController.dispose();
+    cityCodeController.dispose();
+    mccController.dispose();
+    addressController.dispose();
+    ownerNameController.dispose();
+    ownerPhoneNumberController.dispose();
+    super.dispose();
+  }
 }

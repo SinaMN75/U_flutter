@@ -10,14 +10,14 @@ class UAdminTerminalBrandController extends UBaseController {
 
   static TagTerminalBrand? connectionTypeOf(UTerminalBrandResponse i) => connectionTypes.firstWhereOrNull((TagTerminalBrand x) => i.tags.contains(x.number));
 
-  late final TextEditingController codeFilter = fields.text();
-  late final TextEditingController titleFilter = fields.text();
-  late final TextEditingController modelFilter = fields.text();
+  final TextEditingController codeFilterController = TextEditingController();
+  final TextEditingController titleFilterController = TextEditingController();
+  final TextEditingController modelFilterController = TextEditingController();
 
   UTerminalBrandResponse? editing;
-  late final TextEditingController code = fields.text();
-  late final TextEditingController title = fields.text();
-  late final TextEditingController model = fields.text();
+  final TextEditingController codeController = TextEditingController();
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController modelController = TextEditingController();
   TagTerminalBrand deviceType = TagTerminalBrand.wallCashless;
   TagTerminalBrand connectionType = TagTerminalBrand.simCard;
 
@@ -29,9 +29,9 @@ class UAdminTerminalBrandController extends UBaseController {
       p: UTerminalBrandReadParams(
         pageNumber: pageNumber.value,
         pageSize: pageSize,
-        code: codeFilter.text.nullIfEmpty(),
-        title: titleFilter.text.nullIfEmpty(),
-        model: modelFilter.text.nullIfEmpty(),
+        code: codeFilterController.text.nullIfEmpty(),
+        title: titleFilterController.text.nullIfEmpty(),
+        model: modelFilterController.text.nullIfEmpty(),
         orderBy: tagOrderBy.value.number,
         selectorArgs: const UTerminalBrandSelectorArgs(),
       ),
@@ -48,17 +48,17 @@ class UAdminTerminalBrandController extends UBaseController {
   void applyFilters() => reloadFirstPage(read);
 
   void clearFilters() {
-    codeFilter.clear();
-    titleFilter.clear();
-    modelFilter.clear();
+    codeFilterController.clear();
+    titleFilterController.clear();
+    modelFilterController.clear();
     reloadFirstPage(read);
   }
 
   void loadForm(UTerminalBrandResponse? b) {
     editing = b;
-    code.text = b?.code ?? "";
-    title.text = b?.title ?? "";
-    model.text = b?.model ?? "";
+    codeController.text = b?.code ?? "";
+    titleController.text = b?.title ?? "";
+    modelController.text = b?.model ?? "";
     deviceType = (b == null ? null : deviceTypeOf(b)) ?? TagTerminalBrand.wallCashless;
     connectionType = (b == null ? null : connectionTypeOf(b)) ?? TagTerminalBrand.simCard;
   }
@@ -68,9 +68,9 @@ class UAdminTerminalBrandController extends UBaseController {
     final List<int> tags = <int>[deviceType.number, connectionType.number];
     final dynamic ok = await submit(
       b == null
-          ? UServices.terminal.createBrand(p: UTerminalBrandCreateParams(code: code.text.trim(), title: title.text.trim(), model: model.text.trim(), tags: tags))
+          ? UServices.terminal.createBrand(p: UTerminalBrandCreateParams(code: codeController.text.trim(), title: titleController.text.trim(), model: modelController.text.trim(), tags: tags))
           : UServices.terminal.updateBrand(
-              p: UTerminalBrandUpdateParams(id: b.id, code: code.text.trim().nullIfEmpty(), title: title.text.nullIfEmpty(), model: model.text.nullIfEmpty(), tags: tags),
+              p: UTerminalBrandUpdateParams(id: b.id, code: codeController.text.trim().nullIfEmpty(), title: titleController.text.nullIfEmpty(), model: modelController.text.nullIfEmpty(), tags: tags),
             ),
       read,
     );
@@ -78,4 +78,15 @@ class UAdminTerminalBrandController extends UBaseController {
   }
 
   void delete(UTerminalBrandResponse i) => confirmAction(() => UServices.terminal.deleteBrand(p: UIdParams(id: i.id)), read);
+
+  @override
+  void dispose() {
+    codeFilterController.dispose();
+    titleFilterController.dispose();
+    modelFilterController.dispose();
+    codeController.dispose();
+    titleController.dispose();
+    modelController.dispose();
+    super.dispose();
+  }
 }

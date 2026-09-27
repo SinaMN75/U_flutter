@@ -4,9 +4,9 @@ class UAdminParkingPlateFlagController extends UBaseController {
   List<UParkingPlateFlagResponse> list = <UParkingPlateFlagResponse>[];
   UParkingResponse? parking;
 
-  late final TextEditingController reason = fields.text();
-  late final TextEditingController amount = fields.text();
-  late final TextEditingController spotNumber = fields.text();
+  final TextEditingController reasonController = TextEditingController();
+  final TextEditingController amountController = TextEditingController();
+  final TextEditingController spotNumberController = TextEditingController();
   String plate = "";
   TagParkingPlateFlag kind = TagParkingPlateFlag.debt;
 
@@ -35,9 +35,9 @@ class UAdminParkingPlateFlagController extends UBaseController {
   }
 
   void loadForm() {
-    reason.clear();
-    amount.clear();
-    spotNumber.clear();
+    reasonController.clear();
+    amountController.clear();
+    spotNumberController.clear();
     plate = "";
     kind = TagParkingPlateFlag.debt;
   }
@@ -50,9 +50,9 @@ class UAdminParkingPlateFlagController extends UBaseController {
           parkingId: parking?.id ?? "",
           licencePlate: plate,
           tags: <int>[kind.number],
-          reason: reason.text.nullIfEmpty(),
-          amount: numOf(amount),
-          spotNumber: spotNumber.text.nullIfEmpty(),
+          reason: reasonController.text.nullIfEmpty(),
+          amount: numOf(amountController),
+          spotNumber: spotNumberController.text.nullIfEmpty(),
         ),
       ),
       read,
@@ -61,4 +61,12 @@ class UAdminParkingPlateFlagController extends UBaseController {
   }
 
   void delete(UParkingPlateFlagResponse i) => confirmAction(() => UServices.parking.deleteParkingPlateFlag(p: UIdParams(id: i.id)), read);
+
+  @override
+  void dispose() {
+    reasonController.dispose();
+    amountController.dispose();
+    spotNumberController.dispose();
+    super.dispose();
+  }
 }

@@ -15,27 +15,41 @@ class UAdminUserPage extends StatefulWidget {
   /// The one create ([user] == null) and edit dialog of a user; also opened from [UAdminHotelUserDetailPage].
   static Future<void> form(UAdminUsersController c, [UUserResponse? user]) {
     c.loadForm(user);
-    return UAdminForm.editDialog(
+    return UFormDialog.show(
       title: user == null ? U.s.register : "${U.s.edit} · ${user.displayName}",
-      formKey: c.formKey,
       maxWidth: 440,
       onSubmit: c.save,
       children: (BuildContext context, StateSetter setState) => <Widget>[
-        UAdminForm.pair(context, UAdminForm.text(c.firstName, U.s.firstName, required: true), UAdminForm.text(c.lastName, U.s.lastName, required: true)),
+        UFieldPair(
+          UTextField(controller: c.firstNameController, labelText: U.s.firstName, validator: UValidators.required(message: ""), margin: const EdgeInsets.symmetric(vertical: 6)),
+          UTextField(controller: c.lastNameController, labelText: U.s.lastName, validator: UValidators.required(message: ""), margin: const EdgeInsets.symmetric(vertical: 6)),
+        ),
         UTextField(
-          controller: c.userName,
+          controller: c.userNameController,
           labelText: U.s.username,
           readOnly: user != null,
           prefix: const Icon(Icons.alternate_email_rounded, size: 18),
           validator: UValidators.required(message: U.s.required),
           margin: const EdgeInsets.symmetric(vertical: 6),
         ),
-        UAdminForm.text(c.fatherName, U.s.fatherName, required: true),
-        UTextFieldPhoneNumber(controller: c.phone, labelText: U.s.phoneNumber, required: true, margin: const EdgeInsets.symmetric(vertical: 6)),
-        UAdminForm.text(c.email, U.s.email),
-        UAdminForm.date(c.birthText, U.s.birthdate, (DateTime d) => c.birthdate = d, initial: c.birthdate, required: true),
-        UAdminForm.text(c.password, U.s.password),
-        UAdminForm.sectionTitle(U.s.gender),
+        UTextField(controller: c.fatherNameController, labelText: U.s.fatherName, validator: UValidators.required(message: ""), margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextFieldPhoneNumber(controller: c.phoneController, labelText: U.s.phoneNumber, required: true, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.emailController, labelText: U.s.email, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextFieldDatePicker(
+          controller: c.birthDateController,
+          labelText: U.s.birthdate,
+          jalali: true,
+          initialDate: c.birthdate,
+          validator: UValidators.required(message: ""),
+          margin: const EdgeInsets.symmetric(vertical: 6),
+          onChange: (DateTime d, UJalali j) {
+            c.birthdate = d;
+            c.birthDateController.text = d.toJalaliDate();
+          },
+        ),
+        UTextField(controller: c.passwordController, labelText: U.s.password, margin: const EdgeInsets.symmetric(vertical: 6)),
+        const Divider(height: 20),
+        UTextBodySmall(U.s.gender, color: UAdminTheme.grey, fontWeight: FontWeight.w700),
         USegmentedControl<int>(
           selectedValue: c.gender.number,
           items: <int, String>{TagUser.male.number: U.s.male, TagUser.female.number: U.s.female},
@@ -170,17 +184,20 @@ class _UserPageState extends State<UAdminUserPage> {
     ],
   );
 
-  void _filter() => UAdminForm.filter(
+  void _filter() => UFilterDialog.show(
     title: U.s.filterItem(U.s.users),
     onApply: c.applyFilters,
     onClear: c.clearFilters,
     children: (StateSetter setState) => <Widget>[
-      UTextField(controller: c.queryFilter, labelText: U.s.search, prefix: const Icon(Icons.search), margin: const EdgeInsets.symmetric(vertical: 6)),
-      UAdminForm.text(c.userNameFilter, U.s.username),
-      UTextFieldPhoneNumber(controller: c.phoneFilter, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
-      UAdminForm.text(c.emailFilter, U.s.email),
-      UAdminForm.pair(context, UAdminForm.text(c.firstNameFilter, U.s.firstName), UAdminForm.text(c.lastNameFilter, U.s.lastName)),
-      UAdminForm.text(c.nationalCodeFilter, U.s.nationalCode, number: true),
+      UTextField(controller: c.queryFilterController, labelText: U.s.search, prefix: const Icon(Icons.search), margin: const EdgeInsets.symmetric(vertical: 6)),
+      UTextField(controller: c.userNameFilterController, labelText: U.s.username, margin: const EdgeInsets.symmetric(vertical: 6)),
+      UTextFieldPhoneNumber(controller: c.phoneFilterController, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
+      UTextField(controller: c.emailFilterController, labelText: U.s.email, margin: const EdgeInsets.symmetric(vertical: 6)),
+      UFieldPair(
+        UTextField(controller: c.firstNameFilterController, labelText: U.s.firstName, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.lastNameFilterController, labelText: U.s.lastName, margin: const EdgeInsets.symmetric(vertical: 6)),
+      ),
+      UTextField(controller: c.nationalCodeFilterController, labelText: U.s.nationalCode, keyboardType: TextInputType.number, margin: const EdgeInsets.symmetric(vertical: 6)),
       UDropDownField<TagUser?>(
         labelText: U.s.gender,
         initialValue: c.genderFilter,
@@ -191,11 +208,27 @@ class _UserPageState extends State<UAdminUserPage> {
         ],
         onChanged: (TagUser? v) => c.genderFilter = v,
       ).pSymmetric(vertical: 6),
-      UAdminForm.pair(
-        context,
-        UAdminForm.date(c.controllerStartDate, U.s.fromDate, (DateTime d) => c.startDate = d, initial: c.startDate),
-        UAdminForm.date(c.controllerEndDate, U.s.toDate, (DateTime d) => c.endDate = d, initial: c.endDate),
-      ),
+      UFieldPair(UTextFieldDatePicker(
+          controller: c.startDateController,
+          labelText: U.s.fromDate,
+          jalali: true,
+          initialDate: c.startDate,
+          margin: const EdgeInsets.symmetric(vertical: 6),
+          onChange: (DateTime d, UJalali j) {
+            c.startDate = d;
+            c.startDateController.text = d.toJalaliDate();
+          },
+        ), UTextFieldDatePicker(
+          controller: c.endDateController,
+          labelText: U.s.toDate,
+          jalali: true,
+          initialDate: c.endDate,
+          margin: const EdgeInsets.symmetric(vertical: 6),
+          onChange: (DateTime d, UJalali j) {
+            c.endDate = d;
+            c.endDateController.text = d.toJalaliDate();
+          },
+        )),
       UDropDownField<TagOrderBy>(
         labelText: U.s.createdDate,
         initialValue: c.tagOrderBy.value,

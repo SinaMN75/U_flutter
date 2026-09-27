@@ -4,16 +4,16 @@ class UAdminDormBedController extends UBaseController {
   List<UDormBedResponse> list = <UDormBedResponse>[];
   UDormRoomResponse? room;
   UDormResponse? dorm;
-  late final TextEditingController titleFilter = fields.text();
+  final TextEditingController titleFilterController = TextEditingController();
 
   // ---------------------------------------------------------------- form (create and edit)
 
   UDormBedResponse? editing;
   UDormRoomResponse? formRoom;
-  late final TextEditingController title = fields.text();
-  late final TextEditingController deposit = fields.text();
-  late final TextEditingController rent = fields.text();
-  late final TextEditingController description = fields.text();
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController depositController = TextEditingController();
+  final TextEditingController rentController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
   List<int> tags = <int>[];
   List<UMediaResponse> media = <UMediaResponse>[];
   UFilePickerController photos = UFilePickerController();
@@ -32,7 +32,7 @@ class UAdminDormBedController extends UBaseController {
         pageSize: pageSize,
         roomId: room?.id,
         dormId: dorm?.id,
-        title: titleFilter.valueOrNull(),
+        title: titleFilterController.valueOrNull(),
         selectorArgs: const UDormBedSelectorArgs(contract: UDormBedContractSelectorArgs(), room: UDormRoomSelectorArgs()),
       ),
       onOk: (UResponse<List<UDormBedResponse>> r) {
@@ -48,7 +48,7 @@ class UAdminDormBedController extends UBaseController {
   void applyFilters() => reloadFirstPage(read);
 
   void clearFilters() {
-    titleFilter.clear();
+    titleFilterController.clear();
     reloadFirstPage(read);
   }
 
@@ -74,10 +74,10 @@ class UAdminDormBedController extends UBaseController {
               item;
     editing = b;
     formRoom = b?.room ?? item?.room ?? room;
-    title.text = b?.title ?? "";
-    deposit.text = b?.deposit.toInt().toString() ?? "";
-    rent.text = b?.monthlyRent.toInt().toString() ?? "";
-    description.text = b?.jsonData.description ?? b?.jsonData.detail1 ?? "";
+    titleController.text = b?.title ?? "";
+    depositController.text = b?.deposit.toInt().toString() ?? "";
+    rentController.text = b?.monthlyRent.toInt().toString() ?? "";
+    descriptionController.text = b?.jsonData.description ?? b?.jsonData.detail1 ?? "";
     tags = List<int>.from(b?.tags ?? <int>[TagDormBed.single.number]);
     media = (b?.media ?? <UMediaResponse>[]).sortedForGallery();
     photos.dispose();
@@ -94,11 +94,11 @@ class UAdminDormBedController extends UBaseController {
     final UDormBedUpdateParams p = UDormBedUpdateParams(
       id: editing?.id ?? "",
       tags: tags,
-      title: title.text.trim(),
-      deposit: numOf(deposit),
-      monthlyRent: numOf(rent),
+      title: titleController.text.trim(),
+      deposit: numOf(depositController),
+      monthlyRent: numOf(rentController),
       roomId: roomId,
-      description: description.text.nullIfEmpty(),
+      description: descriptionController.text.nullIfEmpty(),
     );
     final dynamic ok = await submit(
       editing == null ? UServices.hotel.createDormBed(p: UDormBedCreateParams.fromMap(p.toMap()..remove("id"))) : UServices.hotel.updateDormBed(p: p),
@@ -114,6 +114,11 @@ class UAdminDormBedController extends UBaseController {
 
   @override
   void dispose() {
+    titleFilterController.dispose();
+    titleController.dispose();
+    depositController.dispose();
+    rentController.dispose();
+    descriptionController.dispose();
     photos.dispose();
     super.dispose();
   }

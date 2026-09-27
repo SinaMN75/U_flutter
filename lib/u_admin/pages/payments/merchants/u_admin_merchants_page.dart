@@ -134,7 +134,7 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
     ],
   );
 
-  void _filter() => UAdminForm.filter(
+  void _filter() => UFilterDialog.show(
     title: U.s.filterItem(U.s.merchant),
     onApply: c.applyFilters,
     onClear: c.clearFilters,
@@ -180,36 +180,53 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
           ),
         ],
       ),
-      UAdminForm.date(c.controllerStartDate, U.s.fromDate, (DateTime d) => c.startDate = d),
-      UAdminForm.date(c.controllerEndDate, U.s.toDate, (DateTime d) => c.endDate = d),
-      UAdminForm.text(c.titleFilter, U.s.title),
-      UAdminForm.text(c.nationalCodeFilter, U.s.nationalCode),
-      UTextFieldPhoneNumber(controller: c.phoneNumberFilter, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
-      UTextFieldPhoneNumber(controller: c.landlineFilter, labelText: U.s.landline, margin: const EdgeInsets.symmetric(vertical: 6)),
-      UAdminForm.text(c.zipCodeFilter, U.s.zipCode),
-      UAdminForm.text(c.merchantIdFilter, U.s.merchantId),
-      UAdminForm.text(c.bankAccountIdFilter, U.s.bankAccountId),
+      UTextFieldDatePicker(
+        controller: c.startDateController,
+        labelText: U.s.fromDate,
+        jalali: true,
+        margin: const EdgeInsets.symmetric(vertical: 6),
+        onChange: (DateTime d, UJalali j) {
+          c.startDate = d;
+          c.startDateController.text = d.toJalaliDate();
+        },
+      ),
+      UTextFieldDatePicker(
+        controller: c.endDateController,
+        labelText: U.s.toDate,
+        jalali: true,
+        margin: const EdgeInsets.symmetric(vertical: 6),
+        onChange: (DateTime d, UJalali j) {
+          c.endDate = d;
+          c.endDateController.text = d.toJalaliDate();
+        },
+      ),
+      UTextField(controller: c.titleFilterController, labelText: U.s.title, margin: const EdgeInsets.symmetric(vertical: 6)),
+      UTextField(controller: c.nationalCodeFilterController, labelText: U.s.nationalCode, margin: const EdgeInsets.symmetric(vertical: 6)),
+      UTextFieldPhoneNumber(controller: c.phoneNumberFilterController, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
+      UTextFieldPhoneNumber(controller: c.landlineFilterController, labelText: U.s.landline, margin: const EdgeInsets.symmetric(vertical: 6)),
+      UTextField(controller: c.zipCodeFilterController, labelText: U.s.zipCode, margin: const EdgeInsets.symmetric(vertical: 6)),
+      UTextField(controller: c.merchantIdFilterController, labelText: U.s.merchantId, margin: const EdgeInsets.symmetric(vertical: 6)),
+      UTextField(controller: c.bankAccountIdFilterController, labelText: U.s.bankAccountId, margin: const EdgeInsets.symmetric(vertical: 6)),
     ],
   );
 
   Future<void> _form() async {
     c.loadForm();
-    await UAdminForm.editDialog(
+    await UFormDialog.show(
       title: U.s.createItem(U.s.merchant),
-      formKey: c.formKey,
       onSubmit: c.save,
       children: (BuildContext context, StateSetter setState) => <Widget>[
-        UAdminForm.text(c.title, U.s.title, required: true),
-        UAdminForm.text(c.businessTitle, U.s.businessTitle),
-        UAdminForm.text(c.nationalCode, U.s.nationalCode, required: true),
-        UTextFieldPhoneNumber(controller: c.phoneNumber, labelText: U.s.phoneNumber, required: true, margin: const EdgeInsets.symmetric(vertical: 6)),
-        UTextFieldPhoneNumber(controller: c.landline, labelText: U.s.landline, required: true, margin: const EdgeInsets.symmetric(vertical: 6)),
-        UAdminForm.text(c.zipCode, U.s.zipCode, required: true),
-        UAdminForm.text(c.cityCode, U.s.cityCode, required: true),
-        UAdminForm.text(c.mcc, U.s.mcc, required: true),
-        UAdminForm.text(c.ownerName, U.s.ownerName, required: true),
-        UTextFieldPhoneNumber(controller: c.ownerPhoneNumber, labelText: U.s.ownerPhoneNumber, required: true, margin: const EdgeInsets.symmetric(vertical: 6)),
-        UAdminForm.text(c.address, U.s.address, lines: 2, required: true),
+        UTextField(controller: c.titleController, labelText: U.s.title, validator: UValidators.required(message: ""), margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.businessTitleController, labelText: U.s.businessTitle, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.nationalCodeController, labelText: U.s.nationalCode, validator: UValidators.required(message: ""), margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextFieldPhoneNumber(controller: c.phoneNumberController, labelText: U.s.phoneNumber, required: true, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextFieldPhoneNumber(controller: c.landlineController, labelText: U.s.landline, required: true, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.zipCodeController, labelText: U.s.zipCode, validator: UValidators.required(message: ""), margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.cityCodeController, labelText: U.s.cityCode, validator: UValidators.required(message: ""), margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.mccController, labelText: U.s.mcc, validator: UValidators.required(message: ""), margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.ownerNameController, labelText: U.s.ownerName, validator: UValidators.required(message: ""), margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextFieldPhoneNumber(controller: c.ownerPhoneNumberController, labelText: U.s.ownerPhoneNumber, required: true, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.addressController, labelText: U.s.address, lines: 2, validator: UValidators.required(message: ""), margin: const EdgeInsets.symmetric(vertical: 6)),
       ],
     );
   }

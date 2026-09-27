@@ -15,7 +15,7 @@ class UAdminBarcodeGeneratorPage extends StatefulWidget {
 }
 
 class _UAdminBarcodeGeneratorPageState extends State<UAdminBarcodeGeneratorPage> {
-  final TextEditingController _content = TextEditingController(text: "https://sinamn75.com");
+  final TextEditingController _contentController = TextEditingController(text: "https://sinamn75.com");
   final UWidgetToImageController _capture = UWidgetToImageController();
 
   UBarcodeType _type = UBarcodeType.qrCode;
@@ -67,13 +67,13 @@ class _UAdminBarcodeGeneratorPageState extends State<UAdminBarcodeGeneratorPage>
   @override
   void initState() {
     super.initState();
-    _content.addListener(_onChanged);
+    _contentController.addListener(_onChanged);
   }
 
   @override
   void dispose() {
-    _content.removeListener(_onChanged);
-    _content.dispose();
+    _contentController.removeListener(_onChanged);
+    _contentController.dispose();
     super.dispose();
   }
 
@@ -97,7 +97,7 @@ class _UAdminBarcodeGeneratorPageState extends State<UAdminBarcodeGeneratorPage>
 
   void _copySvg() {
     final String svg = UBarcode.toSvg(
-      value: _content.text.trim(),
+      value: _contentController.text.trim(),
       type: _type,
       width: 400,
       height: _is2d ? 400 : 160,
@@ -177,7 +177,7 @@ class _UAdminBarcodeGeneratorPageState extends State<UAdminBarcodeGeneratorPage>
           width: _size,
           height: _size,
           child: UBarcode(
-            value: _content.text.trim().isEmpty ? " " : _content.text.trim(),
+            value: _contentController.text.trim().isEmpty ? " " : _contentController.text.trim(),
             type: _type,
             barColor: _barColor,
             backgroundColor: _bgColor,
@@ -210,7 +210,7 @@ class _UAdminBarcodeGeneratorPageState extends State<UAdminBarcodeGeneratorPage>
   );
 
   Widget _contentCard(ColorScheme cs) => _card(cs, Icons.edit_note_rounded, U.s.content, <Widget>[
-    UTextField(controller: _content, hintText: U.s.content, lines: 3, contentPadding: const EdgeInsets.all(16)),
+    UTextField(controller: _contentController, hintText: U.s.content, lines: 3, contentPadding: const EdgeInsets.all(16)),
     UDropDownField<UBarcodeType>(
       initialValue: _type,
       labelText: U.s.barcodeType,

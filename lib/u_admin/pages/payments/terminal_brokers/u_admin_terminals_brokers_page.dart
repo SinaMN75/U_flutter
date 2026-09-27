@@ -103,7 +103,7 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
     ],
   );
 
-  void _filter() => UAdminForm.filter(
+  void _filter() => UFilterDialog.show(
     title: U.s.filterItem(U.s.brokers),
     onApply: c.applyFilters,
     onClear: c.clearFilters,
@@ -113,33 +113,34 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
         onChanged: c.tagOrderBy.call,
         items: <TagOrderBy>[TagOrderBy.createdAt, TagOrderBy.createdAtDescending].map((TagOrderBy x) => DropdownMenuItem<TagOrderBy>(value: x, child: Text(x.localizedTitle))).toList(),
       ).pSymmetric(vertical: 6),
-      UAdminForm.text(c.codeFilter, U.s.code),
-      UAdminForm.text(c.titleFilter, U.s.title),
+      UTextField(controller: c.codeFilterController, labelText: U.s.code, margin: const EdgeInsets.symmetric(vertical: 6)),
+      UTextField(controller: c.titleFilterController, labelText: U.s.title, margin: const EdgeInsets.symmetric(vertical: 6)),
     ],
   );
 
   Future<void> _form([UTerminalBrokerResponse? b]) async {
     c.loadForm(b);
-    await UAdminForm.editDialog(
+    await UFormDialog.show(
       title: b == null ? U.s.createItem(U.s.brokers) : U.s.editItem(U.s.brokers),
-      formKey: c.formKey,
       maxWidth: 520,
       onSubmit: c.save,
       children: (BuildContext context, StateSetter setState) => <Widget>[
-        UAdminForm.text(c.code, U.s.code, required: true),
-        UAdminForm.text(c.title, U.s.title, required: true),
-        UAdminForm.text(c.registrationNumber, U.s.registrationNumber, required: true),
-        UAdminForm.text(c.nationalCode, U.s.nationalCode, required: true),
-        UAdminForm.text(c.representative, U.s.representative, required: true),
-        UAdminForm.text(c.address, U.s.address, lines: 2, required: true),
-        UAdminForm.text(c.postalCode, U.s.postalCode, required: true),
-        UTextFieldPhoneNumber(controller: c.phoneNumber, labelText: U.s.phoneNumber, required: true, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.codeController, labelText: U.s.code, validator: UValidators.required(message: ""), margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.titleController, labelText: U.s.title, validator: UValidators.required(message: ""), margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.registrationNumberController, labelText: U.s.registrationNumber, validator: UValidators.required(message: ""), margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.nationalCodeController, labelText: U.s.nationalCode, validator: UValidators.required(message: ""), margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.representativeController, labelText: U.s.representative, validator: UValidators.required(message: ""), margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.addressController, labelText: U.s.address, lines: 2, validator: UValidators.required(message: ""), margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextField(controller: c.postalCodeController, labelText: U.s.postalCode, validator: UValidators.required(message: ""), margin: const EdgeInsets.symmetric(vertical: 6)),
+        UTextFieldPhoneNumber(controller: c.phoneNumberController, labelText: U.s.phoneNumber, required: true, margin: const EdgeInsets.symmetric(vertical: 6)),
         _Base64ImagePicker(label: U.s.logo, initial: c.logoBase64, onChanged: (String? v) => c.logoBase64 = v),
-        UAdminForm.sectionTitle(U.s.firstSignatory),
-        UAdminForm.text(c.sign1Owner, U.s.signatoryName, required: true),
+        const Divider(height: 20),
+        UTextBodySmall(U.s.firstSignatory, color: UAdminTheme.grey, fontWeight: FontWeight.w700),
+        UTextField(controller: c.sign1OwnerController, labelText: U.s.signatoryName, validator: UValidators.required(message: ""), margin: const EdgeInsets.symmetric(vertical: 6)),
         _Base64ImagePicker(label: U.s.signature, initial: c.sign1Base64, onChanged: (String? v) => c.sign1Base64 = v),
-        UAdminForm.sectionTitle(U.s.secondSignatory),
-        UAdminForm.text(c.sign2Owner, U.s.signatoryName),
+        const Divider(height: 20),
+        UTextBodySmall(U.s.secondSignatory, color: UAdminTheme.grey, fontWeight: FontWeight.w700),
+        UTextField(controller: c.sign2OwnerController, labelText: U.s.signatoryName, margin: const EdgeInsets.symmetric(vertical: 6)),
         _Base64ImagePicker(label: U.s.signature, initial: c.sign2Base64, onChanged: (String? v) => c.sign2Base64 = v),
       ],
     );

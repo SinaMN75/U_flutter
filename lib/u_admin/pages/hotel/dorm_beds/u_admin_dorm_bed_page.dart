@@ -48,9 +48,9 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
         : widget.dorm != null
         ? "${U.s.beds} · ${widget.dorm!.title}"
         : U.s.dormBeds,
-    onFilter: () => UAdminForm.filter(
+    onFilter: () => UFilterDialog.show(
       title: U.s.filterItem(U.s.beds),
-      children: (_) => <Widget>[UAdminForm.text(c.titleFilter, U.s.title)],
+      children: (_) => <Widget>[UTextField(controller: c.titleFilterController, labelText: U.s.title, margin: const EdgeInsets.symmetric(vertical: 6))],
       onApply: c.applyFilters,
       onClear: c.clearFilters,
     ),
@@ -109,13 +109,12 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
   /// Create ([b] == null) and edit share this one dialog.
   Future<void> _form([UDormBedResponse? b]) async {
     await c.loadForm(b);
-    await UAdminForm.editDialog(
+    await UFormDialog.show(
       title: b == null ? U.s.createItem(U.s.bed) : "${U.s.editItem(U.s.bed)} — ${b.title}",
-      formKey: c.formKey,
       maxWidth: 760,
       onSubmit: c.save,
       children: (BuildContext context, StateSetter setState) => <Widget>[
-        UAdminForm.text(c.title, U.s.title, required: true),
+        UTextField(controller: c.titleController, labelText: U.s.title, validator: UValidators.required(message: ""), margin: const EdgeInsets.symmetric(vertical: 6)),
         if (widget.room == null)
           UTextFieldAutoCompleteAsync<UDormRoomResponse>(
             hintText: U.s.room,
@@ -125,11 +124,30 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
             onChanged: (UDormRoomResponse? i) => c.formRoom = i,
           ).pSymmetric(vertical: 6),
         UTagChips<TagDormBed>(title: U.s.type, options: TagDormBed.values.group(100), tags: c.tags, single: true),
-        UAdminForm.pair(context, UAdminForm.text(c.deposit, U.s.deposit, money: true, required: true), UAdminForm.text(c.rent, U.s.rent, money: true, required: true)),
-        UAdminForm.text(c.description, U.s.description, lines: 2),
-        UAdminForm.sectionTitle(U.s.photos),
+        UFieldPair(
+          UTextField(
+            controller: c.depositController,
+            labelText: U.s.deposit,
+            keyboardType: TextInputType.number,
+            formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+            validator: UValidators.required(message: ""),
+            margin: const EdgeInsets.symmetric(vertical: 6),
+          ),
+          UTextField(
+            controller: c.rentController,
+            labelText: U.s.rent,
+            keyboardType: TextInputType.number,
+            formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
+            validator: UValidators.required(message: ""),
+            margin: const EdgeInsets.symmetric(vertical: 6),
+          ),
+        ),
+        UTextField(controller: c.descriptionController, labelText: U.s.description, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
+        const Divider(height: 20),
+        UTextBodySmall(U.s.photos, color: UAdminTheme.grey, fontWeight: FontWeight.w700),
         UFilePicker.gallery(c.photos),
-        UAdminForm.sectionTitle(U.s.details),
+        const Divider(height: 20),
+        UTextBodySmall(U.s.details, color: UAdminTheme.grey, fontWeight: FontWeight.w700),
         UTagChips<TagDormBed>(title: U.s.bedLevel, options: TagDormBed.values.group(200), tags: c.tags, single: true),
         UTagChips<TagDormBed>(title: U.s.bedAmenities, options: TagDormBed.values.group(500), tags: c.tags),
       ],

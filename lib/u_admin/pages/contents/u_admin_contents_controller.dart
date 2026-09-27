@@ -5,19 +5,19 @@ class UAdminContentsController extends UBaseController {
   TagContent? tagFilter;
 
   UContentResponse? editing;
-  late final TextEditingController title = fields.text();
-  late final TextEditingController subTitle = fields.text();
-  late final TextEditingController description = fields.text();
-  late final TextEditingController detail1 = fields.text();
-  late final TextEditingController detail2 = fields.text();
-  late final TextEditingController buttonText = fields.text();
-  late final TextEditingController buttonLink = fields.text();
-  late final TextEditingController link = fields.text();
-  late final TextEditingController order = fields.text();
-  late final TextEditingController instagram = fields.text();
-  late final TextEditingController telegram = fields.text();
-  late final TextEditingController whatsapp = fields.text();
-  late final TextEditingController phone = fields.text();
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController subTitleController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController detail1Controller = TextEditingController();
+  final TextEditingController detail2Controller = TextEditingController();
+  final TextEditingController buttonTextController = TextEditingController();
+  final TextEditingController buttonLinkController = TextEditingController();
+  final TextEditingController linkController = TextEditingController();
+  final TextEditingController orderController = TextEditingController();
+  final TextEditingController instagramController = TextEditingController();
+  final TextEditingController telegramController = TextEditingController();
+  final TextEditingController whatsappController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
   TagContent tag = TagContent.aboutUs;
   String? imageBase64;
   String? iconBase64;
@@ -57,29 +57,43 @@ class UAdminContentsController extends UBaseController {
   void loadForm(UContentResponse? p) {
     final UContentJson? d = p?.jsonData;
     editing = p;
-    title.text = d?.title ?? "";
-    subTitle.text = d?.subTitle ?? "";
-    description.text = d?.description ?? "";
-    detail1.text = d?.detail1 ?? "";
-    detail2.text = d?.detail2 ?? "";
-    buttonText.text = d?.buttonText ?? "";
-    buttonLink.text = d?.buttonLink ?? "";
-    link.text = d?.link ?? "";
-    order.text = d?.order?.toString() ?? "";
-    instagram.text = d?.instagram ?? "";
-    telegram.text = d?.telegram ?? "";
-    whatsapp.text = d?.whatsapp ?? "";
-    phone.text = d?.phone ?? "";
+    titleController.text = d?.title ?? "";
+    subTitleController.text = d?.subTitle ?? "";
+    descriptionController.text = d?.description ?? "";
+    detail1Controller.text = d?.detail1 ?? "";
+    detail2Controller.text = d?.detail2 ?? "";
+    buttonTextController.text = d?.buttonText ?? "";
+    buttonLinkController.text = d?.buttonLink ?? "";
+    linkController.text = d?.link ?? "";
+    orderController.text = d?.order?.toString() ?? "";
+    instagramController.text = d?.instagram ?? "";
+    telegramController.text = d?.telegram ?? "";
+    whatsappController.text = d?.whatsapp ?? "";
+    phoneController.text = d?.phone ?? "";
     tag = (p == null ? null : tagOf(p)) ?? TagContent.aboutUs;
     imageBase64 = d?.imageBase64;
     iconBase64 = d?.iconBase64;
-    items = <UAdminContentItemForm>[...?d?.items.map((UContentItem m) => UAdminContentItemForm(fields, m))];
-    links = <UAdminContentLinkForm>[...?d?.links.map((UContentLink m) => UAdminContentLinkForm(fields, m))];
+    _disposeRows();
+    items = <UAdminContentItemForm>[...?d?.items.map(UAdminContentItemForm.new)];
+    links = <UAdminContentLinkForm>[...?d?.links.map(UAdminContentLinkForm.new)];
   }
 
-  void addItem() => items.add(UAdminContentItemForm(fields));
+  void addItem() => items.add(UAdminContentItemForm());
 
-  void addLink() => links.add(UAdminContentLinkForm(fields));
+  void removeItem(int index) => items.removeAt(index).dispose();
+
+  void addLink() => links.add(UAdminContentLinkForm());
+
+  void removeLink(int index) => links.removeAt(index).dispose();
+
+  void _disposeRows() {
+    for (final UAdminContentItemForm i in items) {
+      i.dispose();
+    }
+    for (final UAdminContentLinkForm l in links) {
+      l.dispose();
+    }
+  }
 
   Future<bool> save() async {
     final UContentResponse? p = editing;
@@ -90,21 +104,21 @@ class UAdminContentsController extends UBaseController {
           ? UServices.content.create(
               p: UContentCreateParams(
                 tags: <int>[tag.number],
-                title: title.text.nullIfEmpty(),
-                subTitle: subTitle.text.nullIfEmpty(),
-                description: description.text.nullIfEmpty(),
-                detail1: detail1.text.nullIfEmpty(),
-                detail2: detail2.text.nullIfEmpty(),
+                title: titleController.text.nullIfEmpty(),
+                subTitle: subTitleController.text.nullIfEmpty(),
+                description: descriptionController.text.nullIfEmpty(),
+                detail1: detail1Controller.text.nullIfEmpty(),
+                detail2: detail2Controller.text.nullIfEmpty(),
                 imageBase64: imageBase64,
                 iconBase64: iconBase64,
-                buttonText: buttonText.text.nullIfEmpty(),
-                buttonLink: buttonLink.text.nullIfEmpty(),
-                link: link.text.nullIfEmpty(),
-                order: int.tryParse(order.text),
-                instagram: instagram.text.nullIfEmpty(),
-                telegram: telegram.text.nullIfEmpty(),
-                whatsapp: whatsapp.text.nullIfEmpty(),
-                phone: phone.text.nullIfEmpty(),
+                buttonText: buttonTextController.text.nullIfEmpty(),
+                buttonLink: buttonLinkController.text.nullIfEmpty(),
+                link: linkController.text.nullIfEmpty(),
+                order: int.tryParse(orderController.text),
+                instagram: instagramController.text.nullIfEmpty(),
+                telegram: telegramController.text.nullIfEmpty(),
+                whatsapp: whatsappController.text.nullIfEmpty(),
+                phone: phoneController.text.nullIfEmpty(),
                 items: itemModels,
                 links: linkModels,
               ),
@@ -113,21 +127,21 @@ class UAdminContentsController extends UBaseController {
               p: UContentUpdateParams(
                 id: p.id,
                 tags: <int>[tag.number],
-                title: title.text.nullIfEmpty(),
-                subTitle: subTitle.text.nullIfEmpty(),
-                description: description.text.nullIfEmpty(),
-                detail1: detail1.text.nullIfEmpty(),
-                detail2: detail2.text.nullIfEmpty(),
+                title: titleController.text.nullIfEmpty(),
+                subTitle: subTitleController.text.nullIfEmpty(),
+                description: descriptionController.text.nullIfEmpty(),
+                detail1: detail1Controller.text.nullIfEmpty(),
+                detail2: detail2Controller.text.nullIfEmpty(),
                 imageBase64: imageBase64,
                 iconBase64: iconBase64,
-                buttonText: buttonText.text.nullIfEmpty(),
-                buttonLink: buttonLink.text.nullIfEmpty(),
-                link: link.text.nullIfEmpty(),
-                order: int.tryParse(order.text),
-                instagram: instagram.text.nullIfEmpty(),
-                telegram: telegram.text.nullIfEmpty(),
-                whatsapp: whatsapp.text.nullIfEmpty(),
-                phone: phone.text.nullIfEmpty(),
+                buttonText: buttonTextController.text.nullIfEmpty(),
+                buttonLink: buttonLinkController.text.nullIfEmpty(),
+                link: linkController.text.nullIfEmpty(),
+                order: int.tryParse(orderController.text),
+                instagram: instagramController.text.nullIfEmpty(),
+                telegram: telegramController.text.nullIfEmpty(),
+                whatsapp: whatsappController.text.nullIfEmpty(),
+                phone: phoneController.text.nullIfEmpty(),
                 items: itemModels,
                 links: linkModels,
               ),
@@ -138,45 +152,77 @@ class UAdminContentsController extends UBaseController {
   }
 
   void delete(UContentResponse i) => confirmAction(() => UServices.content.delete(p: UIdParams(id: i.id)), read);
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    subTitleController.dispose();
+    descriptionController.dispose();
+    detail1Controller.dispose();
+    detail2Controller.dispose();
+    buttonTextController.dispose();
+    buttonLinkController.dispose();
+    linkController.dispose();
+    orderController.dispose();
+    instagramController.dispose();
+    telegramController.dispose();
+    whatsappController.dispose();
+    phoneController.dispose();
+    _disposeRows();
+    super.dispose();
+  }
 }
 
-/// One editable row of a content's `items`; its text controllers live in the page controller's field bag.
+/// One editable row of a content's `items`.
 class UAdminContentItemForm {
-  UAdminContentItemForm(UAdminFields f, [UContentItem? m])
-    : title = f.text(m?.title),
-      subTitle = f.text(m?.subTitle),
-      description = f.text(m?.description),
-      link = f.text(m?.link),
-      order = f.text(m?.order?.toString()),
+  UAdminContentItemForm([UContentItem? m])
+    : titleController = TextEditingController(text: m?.title),
+      subTitleController = TextEditingController(text: m?.subTitle),
+      descriptionController = TextEditingController(text: m?.description),
+      linkController = TextEditingController(text: m?.link),
+      orderController = TextEditingController(text: m?.order?.toString()),
       iconBase64 = m?.iconBase64,
       imageBase64 = m?.imageBase64;
 
-  final TextEditingController title;
-  final TextEditingController subTitle;
-  final TextEditingController description;
-  final TextEditingController link;
-  final TextEditingController order;
+  final TextEditingController titleController;
+  final TextEditingController subTitleController;
+  final TextEditingController descriptionController;
+  final TextEditingController linkController;
+  final TextEditingController orderController;
   String? iconBase64;
   String? imageBase64;
 
   UContentItem toModel() => UContentItem(
-    title: title.text.nullIfEmpty(),
-    subTitle: subTitle.text.nullIfEmpty(),
-    description: description.text.nullIfEmpty(),
-    link: link.text.nullIfEmpty(),
-    order: int.tryParse(order.text),
+    title: titleController.text.nullIfEmpty(),
+    subTitle: subTitleController.text.nullIfEmpty(),
+    description: descriptionController.text.nullIfEmpty(),
+    link: linkController.text.nullIfEmpty(),
+    order: int.tryParse(orderController.text),
     iconBase64: iconBase64,
     imageBase64: imageBase64,
   );
+
+  void dispose() {
+    titleController.dispose();
+    subTitleController.dispose();
+    descriptionController.dispose();
+    linkController.dispose();
+    orderController.dispose();
+  }
 }
 
 /// One editable row of a content's `links`.
 class UAdminContentLinkForm {
-  UAdminContentLinkForm(UAdminFields f, [UContentLink? m]) : title = f.text(m?.title), url = f.text(m?.url), iconBase64 = m?.iconBase64;
+  UAdminContentLinkForm([UContentLink? m]) : titleController = TextEditingController(text: m?.title), urlController = TextEditingController(text: m?.url), iconBase64 = m?.iconBase64;
 
-  final TextEditingController title;
-  final TextEditingController url;
+  final TextEditingController titleController;
+  final TextEditingController urlController;
   String? iconBase64;
 
-  UContentLink toModel() => UContentLink(title: title.text.nullIfEmpty(), url: url.text.nullIfEmpty(), iconBase64: iconBase64);
+  UContentLink toModel() => UContentLink(title: titleController.text.nullIfEmpty(), url: urlController.text.nullIfEmpty(), iconBase64: iconBase64);
+
+  void dispose() {
+    titleController.dispose();
+    urlController.dispose();
+  }
 }

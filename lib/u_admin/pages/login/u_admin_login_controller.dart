@@ -1,8 +1,8 @@
 part of "../../u_admin.dart";
 
 class UAdminLoginController extends UBaseController {
-  late final TextEditingController controllerUserName = fields.text(kDebugMode ? "SystemAdmin" : "");
-  late final TextEditingController controllerPassword = fields.text(kDebugMode ? "SystemAdmin" : "");
+  final TextEditingController userNameController = TextEditingController(text: kDebugMode ? "SystemAdmin" : "");
+  final TextEditingController passwordController = TextEditingController(text: kDebugMode ? "SystemAdmin" : "");
 
   void init() {}
 
@@ -12,8 +12,8 @@ class UAdminLoginController extends UBaseController {
       ULoading.show();
       UServices.auth.login(
         p: ULoginParams(
-          userName: controllerUserName.text,
-          password: controllerPassword.text,
+          userName: userNameController.text,
+          password: passwordController.text,
         ),
         onOk: (UResponse<ULoginResponse> r) {
           ULocalStorage.set(UConstants.token, r.result!.token);
@@ -30,4 +30,10 @@ class UAdminLoginController extends UBaseController {
     },
   );
 
+  @override
+  void dispose() {
+    userNameController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 }
