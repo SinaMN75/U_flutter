@@ -3,23 +3,34 @@ part of "../../../u_admin.dart";
 class UAdminMerchantController extends UBaseController {
   List<UMerchantResponse> list = <UMerchantResponse>[];
 
-  final URxn<UBusinessCategory> businessCategory = URxn<UBusinessCategory>();
-  final URxn<UProvince> selectedProvince = URxn<UProvince>();
-  final URxn<UCity> selectedCity = URxn<UCity>();
-  final URxn<UUserResponse> user = URxn<UUserResponse>();
+  UUserResponse? user;
+  UBusinessCategory? businessCategory;
+  UProvince? province;
+  UCity? city;
+  late final TextEditingController titleFilter = fields.text();
+  late final TextEditingController nationalCodeFilter = fields.text();
+  late final TextEditingController phoneNumberFilter = fields.text();
+  late final TextEditingController zipCodeFilter = fields.text();
+  late final TextEditingController landlineFilter = fields.text();
+  late final TextEditingController merchantIdFilter = fields.text();
+  late final TextEditingController bankAccountIdFilter = fields.text();
+  late final TextEditingController fromCreatedController = fields.text();
+  late final TextEditingController toCreatedController = fields.text();
 
-  final TextEditingController titleFilter = TextEditingController();
-  final TextEditingController nationalCodeFilter = TextEditingController();
-  final TextEditingController phoneNumberFilter = TextEditingController();
-  final TextEditingController zipCodeFilter = TextEditingController();
-  final TextEditingController landlineFilter = TextEditingController();
-  final TextEditingController merchantIdFilter = TextEditingController();
-  final TextEditingController bankAccountIdFilter = TextEditingController();
-  final TextEditingController fromCreatedController = TextEditingController();
-  final TextEditingController toCreatedController = TextEditingController();
+  late final TextEditingController title = fields.text();
+  late final TextEditingController businessTitle = fields.text();
+  late final TextEditingController nationalCode = fields.text();
+  late final TextEditingController phoneNumber = fields.text();
+  late final TextEditingController landline = fields.text();
+  late final TextEditingController zipCode = fields.text();
+  late final TextEditingController cityCode = fields.text();
+  late final TextEditingController mcc = fields.text();
+  late final TextEditingController address = fields.text();
+  late final TextEditingController ownerName = fields.text();
+  late final TextEditingController ownerPhoneNumber = fields.text();
 
   Future<void> init({UUserResponse? user}) {
-    if (user != null) this.user.value = user;
+    this.user = user;
     return read();
   }
 
@@ -32,12 +43,12 @@ class UAdminMerchantController extends UBaseController {
         title: titleFilter.text.nullIfEmpty(),
         nationalCode: nationalCodeFilter.text.nullIfEmpty(),
         phoneNumber: phoneNumberFilter.text.nullIfEmpty(),
-        mcc: businessCategory.value?.code,
-        cityCode: selectedCity.value?.code,
+        mcc: businessCategory?.code,
+        cityCode: city?.code,
         zipCode: zipCodeFilter.text.nullIfEmpty(),
         landline: landlineFilter.text.nullIfEmpty(),
         merchantId: merchantIdFilter.text.nullIfEmpty(),
-        userId: user.value?.id,
+        userId: user?.id,
         bankAccountId: bankAccountIdFilter.text.nullIfEmpty(),
         fromCreatedAt: fromCreatedAt,
         toCreatedAt: toCreatedAt,
@@ -56,85 +67,68 @@ class UAdminMerchantController extends UBaseController {
   void applyFilters() => reloadFirstPage(read);
 
   void clearFilters() {
-    titleFilter.clear();
-    nationalCodeFilter.clear();
-    phoneNumberFilter.clear();
-    businessCategory.value = null;
-    selectedCity.value = null;
-    selectedProvince.value = null;
-    zipCodeFilter.clear();
-    landlineFilter.clear();
-    merchantIdFilter.clear();
-    user.value = null;
-    bankAccountIdFilter.clear();
-    fromCreatedController.clear();
-    toCreatedController.clear();
+    for (final TextEditingController t in <TextEditingController>[
+      titleFilter,
+      nationalCodeFilter,
+      phoneNumberFilter,
+      zipCodeFilter,
+      landlineFilter,
+      merchantIdFilter,
+      bankAccountIdFilter,
+      fromCreatedController,
+      toCreatedController,
+    ]) {
+      t.clear();
+    }
+    user = null;
+    businessCategory = null;
+    province = null;
+    city = null;
     fromCreatedAt = null;
     toCreatedAt = null;
     reloadFirstPage(read);
   }
 
-  void create({required UMerchantCreateParams p}) {
-    ULoading.show();
-    UServices.merchant.create(
-      p: p,
-      onOk: (UResponse<String> r) {
-        ULoading.dismiss();
-        okCallback(r.message, read);
-      },
-      onError: (UEmptyResponse r) {
-        ULoading.dismiss();
-        errorCallBack(r.message, read);
-      },
-      onException: (String e) {
-        ULoading.dismiss();
-        errorCallBack(U.s.errorSubmittingForm, read);
-      },
+  void loadForm() {
+    for (final TextEditingController t in <TextEditingController>[
+      title,
+      businessTitle,
+      nationalCode,
+      phoneNumber,
+      landline,
+      zipCode,
+      cityCode,
+      mcc,
+      address,
+      ownerName,
+      ownerPhoneNumber,
+    ]) {
+      t.clear();
+    }
+  }
+
+  Future<bool> save() async {
+    final dynamic ok = await submit(
+      UServices.merchant.create(
+        p: UMerchantCreateParams(
+          tags: <int>[TagMerchant.normal.number],
+          title: title.text,
+          businessTitle: businessTitle.text.nullIfEmpty(),
+          nationalCode: nationalCode.numString(),
+          phoneNumber: phoneNumber.trimmedLatin(),
+          landline: landline.trimmedLatin(),
+          zipCode: zipCode.numString(),
+          cityCode: cityCode.numString(),
+          mcc: mcc.numString(),
+          ownerName: ownerName.text,
+          ownerPhoneNumber: ownerPhoneNumber.trimmedLatin(),
+          address: address.text,
+        ),
+      ),
+      read,
     );
+    return ok != null;
   }
 
-  void delete(UMerchantResponse i) => UNavigator.confirm(
-    title: U.s.delete,
-    message: U.s.areYouSureYouWantToDelete,
-    onConfirm: () => UServices.merchant.delete(
-      p: UIdParams(id: i.id),
-      onOk: (UEmptyResponse r) {
-        UNavigator.back();
-        okCallback(r.message, read);
-      },
-      onError: (UEmptyResponse r) {
-        UNavigator.back();
-        errorCallBack(r.message, read);
-      },
-      onException: (String e) {
-        UNavigator.back();
-        UToast.error(message: e);
-      },
-    ),
-  );
-
-  Future<List<UUserResponse>> readUsers(String query) async {
-    final List<UUserResponse> result = <UUserResponse>[];
-    await UServices.user.read(
-      p: UUserReadParams(query: query, pageSize: 100, pageNumber: 1),
-      onOk: (UResponse<List<UUserResponse>> r) => result.addAll(r.result ?? <UUserResponse>[]),
-      onError: (UEmptyResponse e) {},
-      onException: (String e) {},
-    );
-    return result;
-  }
-
-  @override
-  void dispose() {
-    titleFilter.dispose();
-    nationalCodeFilter.dispose();
-    phoneNumberFilter.dispose();
-    zipCodeFilter.dispose();
-    landlineFilter.dispose();
-    merchantIdFilter.dispose();
-    bankAccountIdFilter.dispose();
-    fromCreatedController.dispose();
-    toCreatedController.dispose();
-    super.dispose();
-  }
+  void delete(UMerchantResponse i) => confirmAction(() => UServices.merchant.delete(p: UIdParams(id: i.id)), read);
 }

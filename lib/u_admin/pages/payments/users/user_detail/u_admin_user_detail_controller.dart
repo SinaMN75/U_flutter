@@ -1,9 +1,14 @@
 part of "../../../../u_admin.dart";
 
-class UAdminUserDetailController {
+class UAdminUserDetailController extends UBaseController {
   final URx<int> loadingProgress = 0.obs;
-  final URxState state = URxState();
   late UUserResponse user;
+
+  late final TextEditingController frontReason = fields.text();
+  late final TextEditingController backReason = fields.text();
+  late final TextEditingController birthReason = fields.text();
+  late final TextEditingController videoReason = fields.text();
+  late final TextEditingController signatureReason = fields.text();
 
   void init({required UUserResponse user}) {
     this.user = user;
@@ -16,31 +21,21 @@ class UAdminUserDetailController {
       onProgress: loadingProgress.call,
       p: UIdParams(
         id: user.id,
-        selectorArgs: const UUserSelectorArgs(
-          address: UAddressSelectorArgs(),
-          media: UMediaSelectorArgs(),
-        ),
+        selectorArgs: const UUserSelectorArgs(address: UAddressSelectorArgs(), media: UMediaSelectorArgs()),
       ),
-      onOk: (UResponse<UUserResponse> response) {
-        user = response.result!;
+      onOk: (UResponse<UUserResponse> r) {
+        user = r.result!;
         state.loaded();
       },
-      onError: (UEmptyResponse response) {
-        state.error();
-        UToast.error(message: response.message);
-      },
-      onException: (String response) {
-        state.error();
-        UToast.error(message: response);
-      },
+      onError: (UEmptyResponse e) => setError(e.message),
+      onException: setError,
     );
   }
 
   bool get isFullyVerified => user.tags.contains(TagUser.verified.number);
 
-  void approve() {
-    ULoading.show();
-    UServices.user.update(
+  void approve() => confirmAction(
+    () => UServices.user.update(
       p: UUserUpdateParams(
         id: user.id,
         birthCertificateFirstRejectionReason: "",
@@ -65,45 +60,47 @@ class UAdminUserDetailController {
           TagUser.visualAuthenticationAwaitingVerification.number,
         ],
       ),
-      onOk: (UEmptyResponse r) {
-        ULoading.dismiss();
-        UToast.snackBar(message: r.message);
-        UNavigator.back();
-      },
-      onError: (UEmptyResponse r) {
-        ULoading.dismiss();
-        UToast.error(message: r.message);
-      },
-      onException: (String e) {
-        ULoading.dismiss();
-        UToast.error(message: e);
-      },
-    );
+    ),
+    read,
+    title: U.s.finalApproval,
+    message: U.s.areYouSureYouWantToApproveThisUserWithAllOfTheirDocuments,
+  );
+
+  void loadRejectForm() {
+    frontReason.text = user.jsonData.nationalCardFrontRejectionReason ?? "";
+    backReason.text = user.jsonData.nationalCardBackRejectionReason ?? "";
+    birthReason.text = user.jsonData.birthCertificateFirstRejectionReason ?? "";
+    videoReason.text = user.jsonData.visualAuthenticationRejectionReason ?? "";
+    signatureReason.text = user.jsonData.eSignatureRejectionReason ?? "";
   }
 
-  void reject({required UUserUpdateParams p}) {
-    ULoading.show();
-    UServices.user.update(
-      p: p,
-      onOk: (UEmptyResponse r) {
-        ULoading.dismiss();
-        UToast.snackBar(message: r.message);
-        UNavigator.back();
-      },
-      onError: (UEmptyResponse r) {
-        ULoading.dismiss();
-        UToast.error(message: r.message);
-      },
-      onException: (String e) {
-        ULoading.dismiss();
-        UToast.error(message: e);
-      },
+  Future<bool> reject() async {
+    final dynamic ok = await submit(
+      UServices.user.update(
+        p: UUserUpdateParams(
+          id: user.id,
+          nationalCardFrontRejectionReason: frontReason.valueOrNull(),
+          nationalCardBackRejectionReason: backReason.valueOrNull(),
+          birthCertificateFirstRejectionReason: birthReason.valueOrNull(),
+          visualAuthenticationRejectionReason: videoReason.valueOrNull(),
+          eSignatureRejectionReason: signatureReason.valueOrNull(),
+          removeTags: <int>[
+            if (frontReason.text.isNotEmpty) TagUser.nationalCardFrontAwaitingVerification.number,
+            if (backReason.text.isNotEmpty) TagUser.nationalCardBackAwaitingVerification.number,
+            if (birthReason.text.isNotEmpty) TagUser.birthCertificateFirstAwaitingVerification.number,
+            if (videoReason.text.isNotEmpty) TagUser.visualAuthenticationAwaitingVerification.number,
+            if (signatureReason.text.isNotEmpty) TagUser.eSignatureAwaitingVerification.number,
+          ],
+        ),
+      ),
+      read,
     );
+    return ok != null;
   }
 
-  /// Releases the observables this controller owns.
+  @override
   void dispose() {
     loadingProgress.dispose();
-    state.dispose();
+    super.dispose();
   }
 }

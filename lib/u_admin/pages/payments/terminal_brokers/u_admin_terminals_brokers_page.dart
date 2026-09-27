@@ -3,7 +3,6 @@ part of "../../../u_admin.dart";
 class UAdminTerminalBrokersPage extends StatefulWidget {
   const UAdminTerminalBrokersPage({super.key});
 
-
   @override
   State<UAdminTerminalBrokersPage> createState() => _TerminalBrokersPageState();
 }
@@ -26,8 +25,8 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
   @override
   Widget build(BuildContext context) => UAdminScaffold(
     title: U.s.brokers,
-    onFilter: _showFilterDialog,
-    onCreate: _showCreateDialog,
+    onFilter: _filter,
+    onCreate: _form,
     pageNumber: c.pageNumber,
     totalPages: c.totalPages,
     onPageChanged: (int page) {
@@ -92,213 +91,50 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
 
   Widget _menu(UTerminalBrokerResponse i) => UPopupMenu(
     items: <UPopupMenuItem>[
-      UPopupMenuItem(label: U.s.edit, icon: Icons.edit, onTap: () => _showEditDialog(i)),
+      UPopupMenuItem(label: U.s.edit, icon: Icons.edit, onTap: () => _form(i)),
       UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, onTap: () => c.delete(i)),
     ],
   );
 
-  void _showFilterDialog() => UNavigator.dialog(
-    UAdminForm.filterDialog(
-      context,
-      title: Text(U.s.filterItem(U.s.brokers)),
-      children: <Widget>[
-        UDropDownField<TagOrderBy>(
-          initialValue: c.tagOrderBy.value,
-          onChanged: c.tagOrderBy.call,
-          items: <DropdownMenuItem<TagOrderBy>>[
-            DropdownMenuItem<TagOrderBy>(
-              value: TagOrderBy.createdAt,
-              child: Text(TagOrderBy.createdAt.localizedTitle),
-            ),
-            DropdownMenuItem<TagOrderBy>(
-              value: TagOrderBy.createdAtDescending,
-              child: Text(TagOrderBy.createdAtDescending.localizedTitle),
-            ),
-          ],
-        ).pSymmetric(vertical: 6),
-        UTextField(
-          controller: c.codeFilter,
-          labelText: U.s.code,
-          margin: const EdgeInsets.symmetric(vertical: 6),
-        ),
-        UTextField(
-          controller: c.titleFilter,
-          labelText: U.s.title,
-          margin: const EdgeInsets.symmetric(vertical: 6),
-        ),
-        const SizedBox(height: 20),
-        UButtonSubmitCancel(
-          submitTitle: U.s.filter,
-          cancelTitle: U.s.clearFilters,
-          onSubmit: () {
-            c.applyFilters();
-            UNavigator.back();
-          },
-          onCancel: () {
-            c.clearFilters();
-            UNavigator.back();
-          },
-        ),
-      ],
-    ),
+  void _filter() => UAdminForm.filter(
+    title: U.s.filterItem(U.s.brokers),
+    onApply: c.applyFilters,
+    onClear: c.clearFilters,
+    children: (StateSetter setState) => <Widget>[
+      UDropDownField<TagOrderBy>(
+        initialValue: c.tagOrderBy.value,
+        onChanged: c.tagOrderBy.call,
+        items: <TagOrderBy>[TagOrderBy.createdAt, TagOrderBy.createdAtDescending].map((TagOrderBy x) => DropdownMenuItem<TagOrderBy>(value: x, child: Text(x.localizedTitle))).toList(),
+      ).pSymmetric(vertical: 6),
+      UAdminForm.text(c.codeFilter, U.s.code),
+      UAdminForm.text(c.titleFilter, U.s.title),
+    ],
   );
 
-  void _showCreateDialog() => _showFormDialog();
-
-  void _showEditDialog(UTerminalBrokerResponse i) => _showFormDialog(item: i);
-
-  void _showFormDialog({UTerminalBrokerResponse? item}) {
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final UAdminFields f = UAdminFields();
-    final TextEditingController code = f.text(item?.code);
-    final TextEditingController title = f.text(item?.title);
-    final TextEditingController registrationNumber = f.text(item?.jsonData.registrationNumber);
-    final TextEditingController nationalCode = f.text(item?.jsonData.nationalCode);
-    final TextEditingController representative = f.text(item?.jsonData.representative);
-    final TextEditingController address = f.text(item?.jsonData.address);
-    final TextEditingController postalCode = f.text(item?.jsonData.postalCode);
-    final TextEditingController phoneNumber = f.text(item?.jsonData.phoneNumber);
-    final TextEditingController sign1Owner = f.text(item?.jsonData.sign1Owner);
-    final TextEditingController sign2Owner = f.text(item?.jsonData.sign2Owner);
-
-    String? logoBase64 = item?.jsonData.logoBase64;
-    String? sign1Base64 = item?.jsonData.sign1Base64;
-    String? sign2Base64 = item?.jsonData.sign2Base64;
-
-    UNavigator.dialog(
-      f.scope(
-        AlertDialog(
-          title: Text(item == null ? U.s.createItem(U.s.brokers) : U.s.editItem(U.s.brokers)),
-          content: SizedBox(
-            width: context.dialogWidth(max: 520),
-            child: SingleChildScrollView(
-              child: Form(
-                key: formKey,
-                child: UColumn(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    UTextField(
-                      controller: code,
-                      labelText: U.s.code,
-                      validator: UValidators.required(message: U.s.required),
-                      margin: const EdgeInsets.symmetric(vertical: 6),
-                    ),
-                    UTextField(
-                      controller: title,
-                      labelText: U.s.title,
-                      validator: UValidators.required(message: U.s.required),
-                      margin: const EdgeInsets.symmetric(vertical: 6),
-                    ),
-                    UTextField(
-                      controller: registrationNumber,
-                      labelText: U.s.registrationNumber,
-                      validator: UValidators.required(message: U.s.required),
-                      margin: const EdgeInsets.symmetric(vertical: 6),
-                    ),
-                    UTextField(
-                      controller: nationalCode,
-                      labelText: U.s.nationalCode,
-                      validator: UValidators.required(message: U.s.required),
-                      margin: const EdgeInsets.symmetric(vertical: 6),
-                    ),
-                    UTextField(
-                      controller: representative,
-                      labelText: U.s.representative,
-                      validator: UValidators.required(message: U.s.required),
-                      margin: const EdgeInsets.symmetric(vertical: 6),
-                    ),
-                    UTextField(
-                      controller: address,
-                      labelText: U.s.address,
-                      lines: 2,
-                      validator: UValidators.required(message: U.s.required),
-                      margin: const EdgeInsets.symmetric(vertical: 6),
-                    ),
-                    UTextField(
-                      controller: postalCode,
-                      labelText: U.s.postalCode,
-                      validator: UValidators.required(message: U.s.required),
-                      margin: const EdgeInsets.symmetric(vertical: 6),
-                    ),
-                    UTextFieldPhoneNumber(
-                      controller: phoneNumber,
-                      labelText: U.s.phoneNumber,
-                      required: true,
-                      margin: const EdgeInsets.symmetric(vertical: 6),
-                    ),
-                    _Base64ImagePicker(label: U.s.logo, initial: logoBase64, onChanged: (String? v) => logoBase64 = v),
-                    const SizedBox(height: 12),
-                    UTextBodyLarge(U.s.firstSignatory, margin: const EdgeInsets.only(bottom: 4)),
-                    UTextField(
-                      controller: sign1Owner,
-                      labelText: U.s.signatoryName,
-                      validator: UValidators.required(message: U.s.required),
-                      margin: const EdgeInsets.symmetric(vertical: 6),
-                    ),
-                    _Base64ImagePicker(label: U.s.signature, initial: sign1Base64, onChanged: (String? v) => sign1Base64 = v),
-                    const SizedBox(height: 12),
-                    UTextBodyLarge(U.s.secondSignatory, margin: const EdgeInsets.only(bottom: 4)),
-                    UTextField(controller: sign2Owner, labelText: U.s.signatoryName, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    _Base64ImagePicker(label: U.s.signature, initial: sign2Base64, onChanged: (String? v) => sign2Base64 = v),
-                    const SizedBox(height: 20),
-                    UButtonSubmitCancel(
-                      onSubmit: () => UValidators.validateForm(
-                        key: formKey,
-                        action: () {
-                          if (item == null && (logoBase64.isNullOrEmpty() || sign1Base64.isNullOrEmpty())) {
-                            UToast.error(message: U.s.required);
-                            return;
-                          }
-                          UNavigator.back();
-                          if (item == null) {
-                            c.create(
-                              p: UTerminalBrokerCreateParams(
-                                tags: <int>[TagTerminalBroker.test.number],
-                                code: code.text.trim(),
-                                title: title.text.trim(),
-                                registrationNumber: registrationNumber.text.trim(),
-                                nationalCode: nationalCode.text.trim(),
-                                representative: representative.text.trim(),
-                                address: address.text.trim(),
-                                postalCode: postalCode.text.trim(),
-                                phoneNumber: phoneNumber.text.trim(),
-                                sign1Base64: sign1Base64!,
-                                sign1Owner: sign1Owner.text.trim(),
-                                sign2Base64: sign2Base64,
-                                sign2Owner: sign2Owner.text.trim().nullIfEmpty(),
-                                logoBase64: logoBase64!,
-                              ),
-                            );
-                          } else {
-                            c.update(
-                              p: UTerminalBrokerUpdateParams(
-                                id: item.id,
-                                code: code.text.trim(),
-                                title: title.text.trim(),
-                                registrationNumber: registrationNumber.text.trim(),
-                                nationalCode: nationalCode.text.trim(),
-                                representative: representative.text.trim(),
-                                address: address.text.trim(),
-                                postalCode: postalCode.text.trim(),
-                                phoneNumber: phoneNumber.text.trim(),
-                                sign1Base64: sign1Base64,
-                                sign1Owner: sign1Owner.text.trim(),
-                                sign2Base64: sign2Base64,
-                                sign2Owner: sign2Owner.text.trim(),
-                                logoBase64: logoBase64,
-                              ),
-                            );
-                          }
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
+  Future<void> _form([UTerminalBrokerResponse? b]) async {
+    c.loadForm(b);
+    await UAdminForm.editDialog(
+      title: b == null ? U.s.createItem(U.s.brokers) : U.s.editItem(U.s.brokers),
+      formKey: c.formKey,
+      maxWidth: 520,
+      onSubmit: c.save,
+      children: (BuildContext context, StateSetter setState) => <Widget>[
+        UAdminForm.text(c.code, U.s.code, required: true),
+        UAdminForm.text(c.title, U.s.title, required: true),
+        UAdminForm.text(c.registrationNumber, U.s.registrationNumber, required: true),
+        UAdminForm.text(c.nationalCode, U.s.nationalCode, required: true),
+        UAdminForm.text(c.representative, U.s.representative, required: true),
+        UAdminForm.text(c.address, U.s.address, lines: 2, required: true),
+        UAdminForm.text(c.postalCode, U.s.postalCode, required: true),
+        UTextFieldPhoneNumber(controller: c.phoneNumber, labelText: U.s.phoneNumber, required: true, margin: const EdgeInsets.symmetric(vertical: 6)),
+        _Base64ImagePicker(label: U.s.logo, initial: c.logoBase64, onChanged: (String? v) => c.logoBase64 = v),
+        UAdminForm.sectionTitle(U.s.firstSignatory),
+        UAdminForm.text(c.sign1Owner, U.s.signatoryName, required: true),
+        _Base64ImagePicker(label: U.s.signature, initial: c.sign1Base64, onChanged: (String? v) => c.sign1Base64 = v),
+        UAdminForm.sectionTitle(U.s.secondSignatory),
+        UAdminForm.text(c.sign2Owner, U.s.signatoryName),
+        _Base64ImagePicker(label: U.s.signature, initial: c.sign2Base64, onChanged: (String? v) => c.sign2Base64 = v),
+      ],
     );
   }
 }

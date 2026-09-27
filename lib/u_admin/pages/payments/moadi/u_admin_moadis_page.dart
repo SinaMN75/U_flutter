@@ -27,7 +27,7 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
   @override
   Widget build(BuildContext context) => UAdminScaffold(
     title: U.s.taxpayerRequests,
-    onFilter: _showFilterDialog,
+    onFilter: _filter,
     pageNumber: c.pageNumber,
     totalPages: c.totalPages,
     onPageChanged: (int page) {
@@ -100,60 +100,52 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
     return UPopupMenu(
       items: <UPopupMenuItem>[
         UPopupMenuItem(label: U.s.approve, icon: Icons.check_circle_outline, color: UAdminTheme.green, visible: isPending, onTap: () => c.approve(i)),
-        UPopupMenuItem(label: U.s.reject, icon: Icons.cancel_outlined, destructive: true, visible: isPending, onTap: () => _showRejectDialog(i)),
-        UPopupMenuItem(label: U.s.viewItem(U.s.details), icon: Icons.info_outline, onTap: () => _showDetailDialog(i)),
+        UPopupMenuItem(label: U.s.reject, icon: Icons.cancel_outlined, destructive: true, visible: isPending, onTap: () => _reject(i)),
+        UPopupMenuItem(label: U.s.viewItem(U.s.details), icon: Icons.info_outline, onTap: () => _detail(i)),
         UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, onTap: () => c.delete(i)),
       ],
     );
   }
 
-  void _showRejectDialog(UMoadiResponse i) {
-    final UAdminFields f = UAdminFields();
-    final TextEditingController reason = f.text();
-    UNavigator.dialog(
-      f.scope(
-        AlertDialog(
-          title: Text(U.s.reject),
-          content: SizedBox(
-            width: context.dialogWidth(),
-            child: UTextField(controller: reason, labelText: U.s.rejectionReason, lines: 3),
-          ),
-          actions: <Widget>[
-            UButtonSubmitCancel(
-              onSubmit: () {
-                UNavigator.back();
-                c.reject(i, reason.text.nullIfEmpty());
-              },
-              onCancel: UNavigator.back,
-            ),
-          ],
-        ),
-      ),
-    ).whenComplete(reason.dispose);
+  void _reject(UMoadiResponse i) {
+    c.rejectReason.clear();
+    UAdminForm.editDialog(
+      title: U.s.reject,
+      formKey: c.formKey,
+      onSubmit: () => c.reject(i),
+      children: (BuildContext context, StateSetter setState) => <Widget>[UAdminForm.text(c.rejectReason, U.s.rejectionReason, lines: 3)],
+    );
   }
 
-  void _showDetailDialog(UMoadiResponse i) => UNavigator.dialog(
-    UAdminForm.filterDialog(
-      context,
+  void _detail(UMoadiResponse i) => UNavigator.dialog(
+    AlertDialog(
       title: Text(i.name),
-      children: <Widget>[
-        _kv(U.s.pendingApproval, _statusLabel(i.tags)),
-        _kv(U.s.economicCode, i.economicCode),
-        _kv(U.s.legalEntityType, i.legalEntity),
-        _kv(U.s.uniqueTaxCode, i.uniqueTaxCode),
-        _kv(U.s.nationalCode, i.nationalCode ?? "-"),
-        _kv(U.s.postalCode, i.postalCode ?? "-"),
-        _kv(U.s.registrationDate, i.registerDate?.toJalaliDate() ?? "-"),
-        _kv(U.s.registrationNumber, i.registrationNumber ?? "-"),
-        _kv(U.s.address, i.address ?? "-"),
-        _kv(U.s.introductionCode, i.introductionCode ?? "-"),
-        _kv(U.s.ownerName, i.ownerName),
-        _kv(U.s.ownerMobile, i.ownerMobile),
-        _kv(U.s.ownerNationalCode, i.ownerNationalCode),
-        _kv("UUID", i.jsonData.uuid ?? "-"),
-        _kv(U.s.rejectionReason, i.jsonData.rejectReason ?? "-"),
-        UButton(type: UButtonType.text, title: U.s.ok, onTap: UNavigator.back),
-      ],
+      content: SizedBox(
+        width: context.dialogWidth(),
+        child: SingleChildScrollView(
+          child: UColumn(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              _kv(U.s.pendingApproval, _statusLabel(i.tags)),
+              _kv(U.s.economicCode, i.economicCode),
+              _kv(U.s.legalEntityType, i.legalEntity),
+              _kv(U.s.uniqueTaxCode, i.uniqueTaxCode),
+              _kv(U.s.nationalCode, i.nationalCode ?? "-"),
+              _kv(U.s.postalCode, i.postalCode ?? "-"),
+              _kv(U.s.registrationDate, i.registerDate?.toJalaliDate() ?? "-"),
+              _kv(U.s.registrationNumber, i.registrationNumber ?? "-"),
+              _kv(U.s.address, i.address ?? "-"),
+              _kv(U.s.introductionCode, i.introductionCode ?? "-"),
+              _kv(U.s.ownerName, i.ownerName),
+              _kv(U.s.ownerMobile, i.ownerMobile),
+              _kv(U.s.ownerNationalCode, i.ownerNationalCode),
+              _kv("UUID", i.jsonData.uuid ?? "-"),
+              _kv(U.s.rejectionReason, i.jsonData.rejectReason ?? "-"),
+            ],
+          ),
+        ),
+      ),
+      actions: <Widget>[UButton(type: UButtonType.text, title: U.s.ok, onTap: UNavigator.back)],
     ),
   );
 
@@ -166,63 +158,31 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
     ],
   );
 
-  void _showFilterDialog() => UNavigator.dialog(
-    UAdminForm.filterDialog(
-      context,
-      title: Text(U.s.taxpayerRequests),
-      children: <Widget>[
-        UTextFieldAutoCompleteAsync<UUserResponse>(
-          labelBuilder: (UUserResponse i) => "${i.firstName} ${i.lastName} ${i.nationalCode}",
-          onChanged: c.user.call,
-          selectedItem: c.user.value,
-          fetchData: c.readUsers,
-          hintText: U.s.user,
-        ).pSymmetric(vertical: 6),
-        UObx(
-          () => UTextFieldAutoComplete<TagMoadi?>(
-            title: U.s.pendingApproval,
-            items: TagMoadi.values,
-            labelBuilder: (TagMoadi? i) => i == null ? "" : _tagLabel(i),
-            selectedItem: c.status.value,
-            onChanged: c.status.call,
-          ),
-        ).pSymmetric(vertical: 6),
-        UTextField(controller: c.nameFilter, labelText: U.s.taxpayerName, margin: const EdgeInsets.symmetric(vertical: 6)),
-        UTextField(controller: c.economicCodeFilter, labelText: U.s.economicCode, margin: const EdgeInsets.symmetric(vertical: 6)),
-        UTextField(controller: c.nationalCodeFilter, labelText: U.s.nationalCode, margin: const EdgeInsets.symmetric(vertical: 6)),
-        UTextField(controller: c.uniqueTaxCodeFilter, labelText: U.s.uniqueTaxCode, margin: const EdgeInsets.symmetric(vertical: 6)),
-        UTextFieldDatePicker(
-          jalali: true,
-          controller: c.fromCreatedController,
-          labelText: U.s.fromDate,
-          onChange: (DateTime d, UJalali j) {
-            c.fromCreatedController.text = j.formatCompactDate();
-            c.fromCreatedAt = d;
-          },
-        ).pSymmetric(vertical: 6),
-        UTextFieldDatePicker(
-          jalali: true,
-          controller: c.toCreatedController,
-          labelText: U.s.toDate,
-          onChange: (DateTime d, UJalali j) {
-            c.toCreatedController.text = j.formatCompactDate();
-            c.toCreatedAt = d;
-          },
-        ).pSymmetric(vertical: 6),
-        const SizedBox(height: 20),
-        UButtonSubmitCancel(
-          submitTitle: U.s.filter,
-          cancelTitle: U.s.clearFilters,
-          onSubmit: () {
-            c.applyFilters();
-            UNavigator.back();
-          },
-          onCancel: () {
-            c.clearFilters();
-            UNavigator.back();
-          },
-        ),
-      ],
-    ),
+  void _filter() => UAdminForm.filter(
+    title: U.s.taxpayerRequests,
+    onApply: c.applyFilters,
+    onClear: c.clearFilters,
+    children: (StateSetter setState) => <Widget>[
+      UTextFieldAutoCompleteAsync<UUserResponse>(
+        labelBuilder: (UUserResponse i) => "${i.firstName} ${i.lastName} ${i.nationalCode}",
+        onChanged: (UUserResponse? v) => c.user = v,
+        selectedItem: c.user,
+        fetchData: c.searchUsers,
+        hintText: U.s.user,
+      ).pSymmetric(vertical: 6),
+      UTextFieldAutoComplete<TagMoadi?>(
+        title: U.s.pendingApproval,
+        items: TagMoadi.values,
+        labelBuilder: (TagMoadi? i) => i == null ? "" : _tagLabel(i),
+        selectedItem: c.status,
+        onChanged: (TagMoadi? v) => c.status = v,
+      ).pSymmetric(vertical: 6),
+      UAdminForm.text(c.nameFilter, U.s.taxpayerName),
+      UAdminForm.text(c.economicCodeFilter, U.s.economicCode),
+      UAdminForm.text(c.nationalCodeFilter, U.s.nationalCode),
+      UAdminForm.text(c.uniqueTaxCodeFilter, U.s.uniqueTaxCode),
+      UAdminForm.date(c.fromCreatedController, U.s.fromDate, (DateTime d) => c.fromCreatedAt = d),
+      UAdminForm.date(c.toCreatedController, U.s.toDate, (DateTime d) => c.toCreatedAt = d),
+    ],
   );
 }

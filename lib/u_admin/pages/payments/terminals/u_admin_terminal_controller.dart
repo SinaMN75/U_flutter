@@ -2,21 +2,39 @@ part of "../../../u_admin.dart";
 
 class UAdminTerminalController extends UBaseController {
   List<UTerminalResponse> list = <UTerminalResponse>[];
-
   UMerchantResponse? merchant;
 
-  final TextEditingController serialFilter = TextEditingController();
-  final TextEditingController merchantIdFilter = TextEditingController();
-  final TextEditingController creatorIdFilter = TextEditingController();
-  final TextEditingController fromCreatedController = TextEditingController();
-  final TextEditingController toCreatedController = TextEditingController();
-  URxn<TagTerminal> typeFilter = URxn<TagTerminal>();
-  URxn<UTerminalBrandResponse> brandFilter = URxn<UTerminalBrandResponse>();
-  URxn<UTerminalBrokerResponse> brokerFilter = URxn<UTerminalBrokerResponse>();
+  late final TextEditingController serialFilter = fields.text();
+  late final TextEditingController merchantIdFilter = fields.text();
+  late final TextEditingController creatorIdFilter = fields.text();
+  late final TextEditingController fromCreatedController = fields.text();
+  late final TextEditingController toCreatedController = fields.text();
+  TagTerminal? typeFilter;
+  UTerminalBrandResponse? brandFilter;
+  UTerminalBrokerResponse? brokerFilter;
 
-  Future<void> init({UMerchantResponse? merchant}) async {
+  UTerminalResponse? editing;
+  late final TextEditingController serial = fields.text();
+  late final TextEditingController simCardNumber = fields.text();
+  late final TextEditingController simCardSerial = fields.text();
+  late final TextEditingController imei = fields.text();
+  late final TextEditingController terminalId = fields.text();
+  UTerminalBrandResponse? brand;
+  UTerminalBrokerResponse? broker;
+
+  late final TextEditingController rejectReason = fields.text();
+
+  late final TextEditingController otpSerial = fields.text();
+  late final TextEditingController otpLength = fields.text("6");
+  late final TextEditingController otpCode = fields.text();
+  bool otpGenerate = true;
+  bool otpAdmin = false;
+  String otpResult = "";
+  bool? otpValid;
+
+  Future<void> init({UMerchantResponse? merchant}) {
     this.merchant = merchant;
-    await read();
+    return read();
   }
 
   Future<void> read() async {
@@ -28,9 +46,9 @@ class UAdminTerminalController extends UBaseController {
         merchantId: merchant?.id ?? merchantIdFilter.text.nullIfEmpty(),
         serial: serialFilter.text.nullIfEmpty(),
         creatorId: creatorIdFilter.text.nullIfEmpty(),
-        terminalBrandId: brandFilter.value?.id,
-        terminalBrokerId: brokerFilter.value?.id,
-        tags: typeFilter.value == null ? null : <int>[typeFilter.value!.number],
+        terminalBrandId: brandFilter?.id,
+        terminalBrokerId: brokerFilter?.id,
+        tags: typeFilter == null ? null : <int>[typeFilter!.number],
         fromCreatedAt: fromCreatedAt,
         toCreatedAt: toCreatedAt,
         orderBy: tagOrderBy.value.number,
@@ -55,315 +73,143 @@ class UAdminTerminalController extends UBaseController {
     creatorIdFilter.clear();
     fromCreatedController.clear();
     toCreatedController.clear();
-    typeFilter(null);
-    brandFilter(null);
-    brokerFilter(null);
+    typeFilter = null;
+    brandFilter = null;
+    brokerFilter = null;
     reloadFirstPage(read);
   }
 
-  void create({required UTerminalCreateParams p}) {
-    ULoading.show();
-    UServices.terminal.create(
-      p: p,
-      onOk: (UResponse<String> r) {
-        ULoading.dismiss();
-        okCallback(r.message, read);
-      },
-      onError: (UEmptyResponse r) {
-        ULoading.dismiss();
-        errorCallBack(r.message, read);
-      },
-      onException: (String e) {
-        ULoading.dismiss();
-        errorCallBack(U.s.errorSubmittingForm, read);
-      },
-    );
+  void loadForm(UTerminalResponse? t) {
+    editing = t;
+    serial.text = t?.serial ?? "";
+    simCardNumber.text = t?.simCardNumber ?? "";
+    simCardSerial.text = t?.simCardSerial ?? "";
+    imei.text = t?.imei ?? "";
+    terminalId.text = t?.terminalId ?? "";
+    brand = t?.terminalBrand;
+    broker = t?.terminalBroker;
   }
 
-  void bulkCreate({required UTerminalBulkCreateParams p}) {
-    ULoading.show();
-    UServices.terminal.bulkCreate(
-      p: p,
-      onOk: (UEmptyResponse r) {
-        ULoading.dismiss();
-        okCallback(r.message, read);
-      },
-      onError: (UEmptyResponse r) {
-        ULoading.dismiss();
-        errorCallBack(r.message, read);
-      },
-      onException: (String e) {
-        ULoading.dismiss();
-        errorCallBack(U.s.errorSubmittingForm, read);
-      },
+  Future<bool> save() async {
+    final UTerminalResponse? t = editing;
+    if (t == null && (brand == null || broker == null)) {
+      UToast.error(message: U.s.required);
+      return false;
+    }
+    final dynamic ok = await submit(
+      t == null
+          ? UServices.terminal.create(
+              p: UTerminalCreateParams(
+                tags: <int>[TagTerminal.notAssigned.number],
+                serial: serial.text.trim(),
+                simCardNumber: simCardNumber.text.nullIfEmpty(),
+                simCardSerial: simCardSerial.text.nullIfEmpty(),
+                imei: imei.text.nullIfEmpty(),
+                terminalBrandId: brand!.id,
+                terminalBrokerId: broker!.id,
+              ),
+            )
+          : UServices.terminal.update(
+              p: UTerminalUpdateParams(
+                id: t.id,
+                serial: serial.text.nullIfEmpty(),
+                simCardNumber: simCardNumber.text.nullIfEmpty(),
+                simCardSerial: simCardSerial.text.nullIfEmpty(),
+                imei: imei.text.nullIfEmpty(),
+                terminalId: terminalId.text.nullIfEmpty(),
+                terminalBrandId: brand?.id,
+                terminalBrokerId: broker?.id,
+              ),
+            ),
+      read,
     );
+    return ok != null;
   }
 
-  void update({required UTerminalUpdateParams p}) {
-    ULoading.show();
-    UServices.terminal.update(
-      p: p,
-      onOk: (UEmptyResponse r) {
-        ULoading.dismiss();
-        okCallback(r.message, read);
-      },
-      onError: (UEmptyResponse r) {
-        ULoading.dismiss();
-        errorCallBack(r.message, read);
-      },
-      onException: (String e) {
-        ULoading.dismiss();
-        errorCallBack(U.s.errorSubmittingForm, read);
-      },
-    );
-  }
-
-  void assign({required UTerminalAssignParams p}) {
-    ULoading.show();
-    UServices.terminal.assign(
-      p: p,
-      onOk: (UResponse<UTerminalResponse> r) {
-        ULoading.dismiss();
-        okCallback(r.message, read);
-      },
-      onError: (UEmptyResponse r) {
-        ULoading.dismiss();
-        errorCallBack(r.message, read);
-      },
-      onException: (String e) {
-        ULoading.dismiss();
-        errorCallBack(U.s.errorSubmittingForm, read);
-      },
-    );
-  }
-
-  void approve(UTerminalResponse i) => UNavigator.confirm(
+  void approve(UTerminalResponse i) => confirmAction(
+    () => UServices.terminal.approve(p: UIdParams(id: i.id)),
+    read,
     title: U.s.approve,
     message: U.s.areYouSureYouWantToApproveAndRegisterThisTerminalInTheAvreenSystem,
-    onConfirm: () {
-      ULoading.show();
-      UServices.terminal.approve(
-        p: UIdParams(id: i.id),
-        onOk: (UResponse<UTerminalResponse> r) {
-          ULoading.dismiss();
-          okCallback(r.message, read);
-        },
-        onError: (UEmptyResponse r) {
-          ULoading.dismiss();
-          errorCallBack(r.message, read);
-        },
-        onException: (String e) {
-          ULoading.dismiss();
-          UToast.error(message: e);
-        },
-      );
-    },
   );
 
-  void reject({required UTerminalResponse i, String? reason}) {
+  Future<bool> reject(UTerminalResponse i) async =>
+      await submit(UServices.terminal.reject(p: UTerminalRejectParams(id: i.id, reason: rejectReason.text.nullIfEmpty())), read) != null;
+
+  void delete(UTerminalResponse i) => confirmAction(() => UServices.terminal.delete(p: UIdParams(id: i.id)), read);
+
+  Future<void> viewAgreement(UTerminalResponse i) async {
     ULoading.show();
-    UServices.terminal.reject(
-      p: UTerminalRejectParams(id: i.id, reason: reason),
-      onOk: (UEmptyResponse r) {
-        ULoading.dismiss();
-        okCallback(r.message, read);
-      },
-      onError: (UEmptyResponse r) {
-        ULoading.dismiss();
-        errorCallBack(r.message, read);
-      },
-      onException: (String e) {
-        ULoading.dismiss();
-        UToast.error(message: e);
-      },
+    final (UResponse<List<UTerminalResponse>>? ok, UEmptyResponse? error, String? exception) = await UServices.terminal.read(
+      p: UTerminalReadParams(ids: <String>[i.id], selectorArgs: const UTerminalSelectorArgs(agreement: true)),
     );
+    ULoading.dismiss();
+    if (ok == null) return UToast.error(message: error?.message ?? exception ?? U.s.errorReadingData);
+    final String? agreement = ok.result?.firstOrNull?.agreement;
+    if (agreement == null) return UToast.error(message: U.s.noItemsFound(U.s.agreement));
+    unawaited(UPdf.open(base64Pdf: agreement));
   }
 
-  void viewAgreement(UTerminalResponse i) {
+  Future<String?> supportPassword(UTerminalResponse i) async {
     ULoading.show();
-    UServices.terminal.read(
-      p: UTerminalReadParams(
-        ids: <String>[i.id],
-        selectorArgs: const UTerminalSelectorArgs(agreement: true),
-      ),
-      onOk: (UResponse<List<UTerminalResponse>> r) {
-        ULoading.dismiss();
-        final String? agreement = r.result?.firstOrNull?.agreement;
-        if (agreement == null) {
-          UToast.error(message: U.s.noItemsFound(U.s.agreement));
-          return;
-        }
-        UPdf.open(base64Pdf: agreement);
-      },
-      onError: (UEmptyResponse r) {
-        ULoading.dismiss();
-        UToast.error(message: r.message);
-      },
-      onException: (String e) {
-        ULoading.dismiss();
-        UToast.error(message: e);
-      },
-    );
+    final (UResponse<UTerminalSupportPasswordResponse>? ok, UEmptyResponse? error, String? exception) = await UServices.terminal.readSupportPassword(p: UIdParams(id: i.id));
+    ULoading.dismiss();
+    if (ok == null) UToast.error(message: error?.message ?? exception ?? U.s.errorReadingData);
+    return ok == null ? null : ok.result?.password ?? "-";
   }
 
-  void supportPassword(UTerminalResponse i) {
-    ULoading.show();
-    UServices.terminal.readSupportPassword(
-      p: UIdParams(id: i.id),
-      onOk: (UResponse<UTerminalSupportPasswordResponse> r) {
-        ULoading.dismiss();
-        final String pass = r.result?.password ?? "-";
-        UNavigator.dialog(
-          AlertDialog(
-            title: Text(U.s.supportPassword),
-            content: SelectableText(pass, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-            actions: <Widget>[
-              UButton(
-                type: UButtonType.text,
-                title: U.s.ok,
-                onTap: () {
-                  UClipboard.set(pass);
-                  UNavigator.back();
-                },
-              ),
-            ],
-          ),
-        );
-      },
-      onError: (UEmptyResponse r) {
-        ULoading.dismiss();
-        UToast.error(message: r.message);
-      },
-      onException: (String e) {
-        ULoading.dismiss();
-        UToast.error(message: e);
-      },
-    );
-  }
-
-  void delete(UTerminalResponse i) => UNavigator.confirm(
-    title: U.s.delete,
-    message: U.s.areYouSureYouWantToDelete,
-    onConfirm: () => UServices.terminal.delete(
-      p: UIdParams(id: i.id),
-      onOk: (UEmptyResponse r) {
-        UNavigator.back();
-        okCallback(r.message, read);
-      },
-      onError: (UEmptyResponse r) {
-        UNavigator.back();
-        errorCallBack(r.message, read);
-      },
-      onException: (String e) {
-        UNavigator.back();
-        UToast.error(message: e);
-      },
-    ),
-  );
-
-  void import() => UFile.showFilePicker(
+  void import(void Function(UTerminalImportResponse r) onResult) => UFile.showFilePicker(
     allowedExtensions: const <String>["xlsx"],
-    action: (List<UFileData> i) {
-      if (i.length != 1 || i.first.bytes == null || !(i.first.extension ?? "").toLowerCase().contains("xlsx")) return;
+    action: (List<UFileData> files) async {
+      if (files.length != 1 || files.first.bytes == null || !(files.first.extension ?? "").toLowerCase().contains("xlsx")) return;
       ULoading.show();
-      UServices.terminal.import(
-        p: UTerminalImportParams(file: i.first.bytes!.toBase64()),
-        onOk: (UResponse<UTerminalImportResponse> response) {
-          ULoading.dismiss();
-          read();
-          if (response.result != null) _showImportResult(response.result!);
-        },
-        onError: (UEmptyResponse response) {
-          ULoading.dismiss();
-          UToast.error(message: response.message);
-        },
-        onException: (String response) {
-          ULoading.dismiss();
-          UToast.error(message: response);
-        },
+      final (UResponse<UTerminalImportResponse>? ok, UEmptyResponse? error, String? exception) = await UServices.terminal.import(
+        p: UTerminalImportParams(file: files.first.bytes!.toBase64()),
       );
+      ULoading.dismiss();
+      if (ok == null) return UToast.error(message: error?.message ?? exception ?? U.s.errorReadingData);
+      unawaited(read());
+      if (ok.result != null) onResult(ok.result!);
     },
   );
 
-  void _showImportResult(UTerminalImportResponse r) => UNavigator.dialog(
-    AlertDialog(
-      title: Text(U.s.bulkImportTerminals),
-      content: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 420),
-        child: SingleChildScrollView(
-          child: UColumn(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              UTextBodyLarge("${U.s.total}: ${r.totalRows}"),
-              UTextBodyLarge("${U.s.imported}: ${r.imported}", color: UAdminTheme.green),
-              UTextBodyLarge("${U.s.skipped}: ${r.skipped}", color: r.skipped > 0 ? UAdminTheme.red : null),
-              if (r.skippedSerials.isNotEmpty) ...<Widget>[
-                const SizedBox(height: 12),
-                UTextTitleSmall(U.s.skippedRows),
-                const SizedBox(height: 4),
-                ...r.skippedSerials.map((String x) => SelectableText("• $x")),
-              ],
-            ],
-          ),
-        ),
-      ),
-      actions: <Widget>[
-        if (r.skippedSerials.isNotEmpty)
-          UButton(
-            type: UButtonType.text,
-            title: U.s.copy,
-            onTap: () => UClipboard.set(r.skippedSerials.join("\n"), snackBar: true),
-          ),
-        UButton(type: UButtonType.text, title: U.s.close, onTap: UNavigator.back),
-      ],
-    ),
-  );
-
-  Future<List<UTerminalBrokerResponse>> readBroker(String query) async {
-    final List<UTerminalBrokerResponse> result = <UTerminalBrokerResponse>[];
-    await UServices.terminal.readBroker(
-      p: UTerminalBrokerReadParams(
-        pageSize: 100,
-        selectorArgs: const UTerminalBrokerSelectorArgs(),
-      ),
-      onOk: (UResponse<List<UTerminalBrokerResponse>> r) => result.addAll(
-        (r.result ?? <UTerminalBrokerResponse>[]).where((UTerminalBrokerResponse x) => _matches(query, x.title, x.code)),
-      ),
-      onError: (UEmptyResponse e) {},
-      onException: (String e) {},
-    );
-    return result;
+  void loadOtp() {
+    otpSerial.clear();
+    otpLength.text = "6";
+    otpCode.clear();
+    otpGenerate = true;
+    otpAdmin = false;
+    otpResult = "";
+    otpValid = null;
   }
 
-  Future<List<UTerminalBrandResponse>> readBrand(String query) async {
-    final List<UTerminalBrandResponse> result = <UTerminalBrandResponse>[];
-    await UServices.terminal.readBrand(
-      p: UTerminalBrandReadParams(
-        pageSize: 100,
-        selectorArgs: const UTerminalBrandSelectorArgs(),
-      ),
-      onOk: (UResponse<List<UTerminalBrandResponse>> r) => result.addAll(
-        (r.result ?? <UTerminalBrandResponse>[]).where((UTerminalBrandResponse x) => _matches(query, x.title, x.code)),
-      ),
-      onError: (UEmptyResponse e) {},
-      onException: (String e) {},
-    );
-    return result;
+  void runOtp() {
+    final String s = otpSerial.text.trim();
+    if (s.isEmpty) return UToast.error(message: U.s.required);
+    if (otpGenerate) {
+      final int len = int.tryParse(otpLength.text.trim()) ?? 6;
+      otpResult = otpAdmin ? UOtp.generateAdminOtp(s, len) : UOtp.generateOtp(s, len);
+      otpValid = null;
+      return;
+    }
+    final String code = otpCode.text.trim();
+    if (code.isEmpty) return UToast.error(message: U.s.required);
+    otpValid = otpAdmin ? UOtp.verifyAdminOtp(s, code) : UOtp.verifyOtp(s, code);
+    otpResult = "";
   }
+
+  Future<List<UTerminalBrandResponse>> searchBrands(String query) async =>
+      ((await UServices.terminal.readBrand(p: UTerminalBrandReadParams(pageSize: 100, selectorArgs: const UTerminalBrandSelectorArgs()))).$1?.result ?? <UTerminalBrandResponse>[])
+          .where((UTerminalBrandResponse x) => _matches(query, x.title, x.code))
+          .toList();
+
+  Future<List<UTerminalBrokerResponse>> searchBrokers(String query) async =>
+      ((await UServices.terminal.readBroker(p: UTerminalBrokerReadParams(pageSize: 100, selectorArgs: const UTerminalBrokerSelectorArgs()))).$1?.result ?? <UTerminalBrokerResponse>[])
+          .where((UTerminalBrokerResponse x) => _matches(query, x.title, x.code))
+          .toList();
 
   bool _matches(String query, String title, String code) {
     final String q = query.trim().toLowerCase();
     return q.isEmpty || title.toLowerCase().contains(q) || code.toLowerCase().contains(q);
-  }
-
-  @override
-  void dispose() {
-    serialFilter.dispose();
-    merchantIdFilter.dispose();
-    creatorIdFilter.dispose();
-    fromCreatedController.dispose();
-    toCreatedController.dispose();
-    super.dispose();
   }
 }

@@ -3,13 +3,25 @@ part of "../../../u_admin.dart";
 class UAdminTerminalBrandController extends UBaseController {
   List<UTerminalBrandResponse> list = <UTerminalBrandResponse>[];
 
-  final TextEditingController codeFilter = TextEditingController();
-  final TextEditingController titleFilter = TextEditingController();
-  final TextEditingController modelFilter = TextEditingController();
+  static const List<TagTerminalBrand> deviceTypes = <TagTerminalBrand>[TagTerminalBrand.atm, TagTerminalBrand.wallCashless, TagTerminalBrand.deskCashless];
+  static const List<TagTerminalBrand> connectionTypes = <TagTerminalBrand>[TagTerminalBrand.simCard, TagTerminalBrand.wifi];
 
-  Future<void> init() async {
-    await read();
-  }
+  static TagTerminalBrand? deviceTypeOf(UTerminalBrandResponse i) => deviceTypes.firstWhereOrNull((TagTerminalBrand x) => i.tags.contains(x.number));
+
+  static TagTerminalBrand? connectionTypeOf(UTerminalBrandResponse i) => connectionTypes.firstWhereOrNull((TagTerminalBrand x) => i.tags.contains(x.number));
+
+  late final TextEditingController codeFilter = fields.text();
+  late final TextEditingController titleFilter = fields.text();
+  late final TextEditingController modelFilter = fields.text();
+
+  UTerminalBrandResponse? editing;
+  late final TextEditingController code = fields.text();
+  late final TextEditingController title = fields.text();
+  late final TextEditingController model = fields.text();
+  TagTerminalBrand deviceType = TagTerminalBrand.wallCashless;
+  TagTerminalBrand connectionType = TagTerminalBrand.simCard;
+
+  Future<void> init() => read();
 
   Future<void> read() async {
     state.loading();
@@ -43,69 +55,28 @@ class UAdminTerminalBrandController extends UBaseController {
     reloadFirstPage(read);
   }
 
-  void create({required UTerminalBrandCreateParams p}) {
-    ULoading.show();
-    UServices.terminal.createBrand(
-      p: p,
-      onOk: (UResponse<String> r) {
-        ULoading.dismiss();
-        okCallback(r.message, read);
-      },
-      onError: (UEmptyResponse r) {
-        ULoading.dismiss();
-        errorCallBack(r.message, read);
-      },
-      onException: (String e) {
-        ULoading.dismiss();
-        errorCallBack(U.s.errorSubmittingForm, read);
-      },
+  void loadForm(UTerminalBrandResponse? b) {
+    editing = b;
+    code.text = b?.code ?? "";
+    title.text = b?.title ?? "";
+    model.text = b?.model ?? "";
+    deviceType = (b == null ? null : deviceTypeOf(b)) ?? TagTerminalBrand.wallCashless;
+    connectionType = (b == null ? null : connectionTypeOf(b)) ?? TagTerminalBrand.simCard;
+  }
+
+  Future<bool> save() async {
+    final UTerminalBrandResponse? b = editing;
+    final List<int> tags = <int>[deviceType.number, connectionType.number];
+    final dynamic ok = await submit(
+      b == null
+          ? UServices.terminal.createBrand(p: UTerminalBrandCreateParams(code: code.text.trim(), title: title.text.trim(), model: model.text.trim(), tags: tags))
+          : UServices.terminal.updateBrand(
+              p: UTerminalBrandUpdateParams(id: b.id, code: code.text.trim().nullIfEmpty(), title: title.text.nullIfEmpty(), model: model.text.nullIfEmpty(), tags: tags),
+            ),
+      read,
     );
+    return ok != null;
   }
 
-  void update({required UTerminalBrandUpdateParams p}) {
-    ULoading.show();
-    UServices.terminal.updateBrand(
-      p: p,
-      onOk: (UEmptyResponse r) {
-        ULoading.dismiss();
-        okCallback(r.message, read);
-      },
-      onError: (UEmptyResponse r) {
-        ULoading.dismiss();
-        errorCallBack(r.message, read);
-      },
-      onException: (String e) {
-        ULoading.dismiss();
-        errorCallBack(U.s.errorSubmittingForm, read);
-      },
-    );
-  }
-
-  void delete(UTerminalBrandResponse i) => UNavigator.confirm(
-    title: U.s.delete,
-    message: U.s.areYouSureYouWantToDelete,
-    onConfirm: () => UServices.terminal.deleteBrand(
-      p: UIdParams(id: i.id),
-      onOk: (UEmptyResponse r) {
-        UNavigator.back();
-        okCallback(r.message, read);
-      },
-      onError: (UEmptyResponse r) {
-        UNavigator.back();
-        errorCallBack(r.message, read);
-      },
-      onException: (String e) {
-        UNavigator.back();
-        UToast.error(message: e);
-      },
-    ),
-  );
-
-  @override
-  void dispose() {
-    codeFilter.dispose();
-    titleFilter.dispose();
-    modelFilter.dispose();
-    super.dispose();
-  }
+  void delete(UTerminalBrandResponse i) => confirmAction(() => UServices.terminal.deleteBrand(p: UIdParams(id: i.id)), read);
 }

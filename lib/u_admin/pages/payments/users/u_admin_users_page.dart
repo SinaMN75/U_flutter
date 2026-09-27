@@ -3,6 +3,104 @@ import "package:u/utilities.dart";
 class UAdminUsersPage extends StatefulWidget {
   const UAdminUsersPage({super.key});
 
+  static Future<void> form(UAdminPaymentUsersController c, [UUserResponse? user]) {
+    c.loadForm(user);
+    return UAdminForm.editDialog(
+      title: user == null ? U.s.register : "${U.s.edit} · ${user.displayName}",
+      formKey: c.formKey,
+      maxWidth: 520,
+      onSubmit: c.save,
+      children: (BuildContext context, StateSetter setState) => <Widget>[
+        if (user != null)
+          Align(
+            alignment: AlignmentDirectional.centerStart,
+            child: UButton(
+              type: UButtonType.text,
+              title: U.s.userDetails,
+              icon: const Icon(Icons.link_rounded, size: 18),
+              onTap: () {
+                UNavigator.back();
+                UAdminPageSwitcher.adminUserDetail(user: user);
+              },
+            ),
+          ),
+        UAdminForm.sectionTitle(U.s.userInformation),
+        UAdminForm.pair(context, UAdminForm.text(c.firstName, U.s.firstName, required: true), UAdminForm.text(c.lastName, U.s.lastName, required: true)),
+        UAdminForm.pair(
+          context,
+          UTextField(
+            controller: c.userName,
+            labelText: U.s.username,
+            readOnly: user != null,
+            prefix: const Icon(Icons.alternate_email_rounded, size: 18),
+            validator: UValidators.required(message: U.s.required),
+          ),
+          UTextField(controller: c.fatherName, labelText: U.s.fatherName),
+        ),
+        UAdminForm.pair(
+          context,
+          UTextField(
+            controller: c.nationalCode,
+            labelText: U.s.nationalCode,
+            keyboardType: TextInputType.number,
+            maxLength: 10,
+            prefix: const Icon(Icons.badge_outlined, size: 18),
+            validator: UValidators.iranianNationalCode(isRequired: false),
+          ),
+          UAdminForm.date(c.birthDate, U.s.birthdate, (DateTime d) => c.birthdate = d),
+        ),
+        UTextField(
+          controller: c.password,
+          labelText: U.s.password,
+          keyboardType: TextInputType.visiblePassword,
+          prefix: const Icon(Icons.lock_outline_rounded, size: 18),
+          margin: const EdgeInsets.symmetric(vertical: 6),
+        ),
+        UTextBodySmall(U.s.gender, color: UAdminTheme.grey).alignAtCenterLeft(),
+        USegmentedControl<TagUser>(
+          selectedValue: c.gender,
+          items: <TagUser, String>{TagUser.male: U.s.male, TagUser.female: U.s.female, TagUser.unspecified: TagUser.unspecified.localizedTitle},
+          onValueChanged: (TagUser? v) => setState(() => c.gender = v ?? c.gender),
+        ).pOnly(top: 6, bottom: 6),
+        UAdminForm.sectionTitle(U.s.contactInformation),
+        UAdminForm.pair(
+          context,
+          UTextFieldPhoneNumber(controller: c.phoneNumber, labelText: U.s.phoneNumber, required: true),
+          UTextFieldPhoneNumber(controller: c.landLine, labelText: U.s.landline),
+        ),
+        UTextField(
+          controller: c.email,
+          labelText: U.s.email,
+          keyboardType: TextInputType.emailAddress,
+          prefix: const Icon(Icons.email_rounded, size: 18),
+          validator: UValidators.email(isRequired: false),
+          margin: const EdgeInsets.symmetric(vertical: 6),
+        ),
+        UAdminForm.text(c.bio, U.s.bio, lines: 3),
+        if (c.canManageRoles) ...<Widget>[
+          UAdminForm.sectionTitle(U.s.roles),
+          USegmentedControl<TagUser>(
+            selectedValue: c.role,
+            items: <TagUser, String>{TagUser.superAdmin: U.s.admin, TagUser.subAdmin: U.s.subAdmin, TagUser.guest: U.s.guest},
+            onValueChanged: (TagUser? v) => setState(() => c.role = v ?? c.role),
+          ).pOnly(top: 6, bottom: 6),
+          if (c.role == TagUser.subAdmin) ...<Widget>[
+            UTextBodySmall(U.s.permissions, color: UAdminTheme.grey).pOnly(top: 6),
+            ...TagUser.permissions.map(
+              (TagUser t) => CheckboxListTile(
+                dense: true,
+                contentPadding: EdgeInsets.zero,
+                controlAffinity: ListTileControlAffinity.leading,
+                title: Text(t.localizedTitle),
+                value: c.permissions.contains(t),
+                onChanged: (bool? v) => setState(() => c.togglePermission(t, v ?? false)),
+              ),
+            ),
+          ],
+        ],
+      ],
+    );
+  }
 
   @override
   State<UAdminUsersPage> createState() => _AdminUsersPageState();
@@ -26,8 +124,8 @@ class _AdminUsersPageState extends State<UAdminUsersPage> {
   @override
   Widget build(BuildContext context) => UAdminScaffold(
     title: U.s.usersManagement,
-    onFilter: _showFilterDialog,
-    onCreate: U.user.hasPermission(TagUser.permissionManageUsers) ? () => UAdminPageSwitcher.paymentUserCreateUpdate().then((_) => c.read()) : null,
+    onFilter: _filter,
+    onCreate: U.user.hasPermission(TagUser.permissionManageUsers) ? () => UAdminUsersPage.form(c).then((_) => c.read()) : null,
     pageNumber: c.pageNumber,
     totalPages: c.totalPages,
     onPageChanged: (int page) {
@@ -57,24 +155,8 @@ class _AdminUsersPageState extends State<UAdminUsersPage> {
   );
 
   Widget _statusChip(UUserResponse i) {
-    final bool verified = i.tags.containsAny(
-      <int>[
-        TagUser.nationalCardFrontVerified.number,
-        TagUser.nationalCardBackVerified.number,
-        TagUser.birthCertificateFirstVerified.number,
-        TagUser.eSignatureVerified.number,
-        TagUser.visualAuthenticationVerified.number,
-      ],
-    );
-    final bool awaiting = i.tags.containsAny(
-      <int>[
-        TagUser.nationalCardFrontAwaitingVerification.number,
-        TagUser.nationalCardBackAwaitingVerification.number,
-        TagUser.birthCertificateFirstAwaitingVerification.number,
-        TagUser.eSignatureAwaitingVerification.number,
-        TagUser.visualAuthenticationAwaitingVerification.number,
-      ],
-    );
+    final bool verified = i.tags.containsAny(UAdminPaymentUsersController.verifiedTags.map((TagUser t) => t.number).toList());
+    final bool awaiting = i.tags.containsAny(UAdminPaymentUsersController.awaitingTags.map((TagUser t) => t.number).toList());
     final Color color = verified
         ? UAdminTheme.green
         : awaiting
@@ -131,85 +213,37 @@ class _AdminUsersPageState extends State<UAdminUsersPage> {
       UPopupMenuItem(label: U.s.viewItem(U.s.details), icon: Icons.visibility_outlined, onTap: () => UAdminPageSwitcher.adminUserDetail(user: i)),
       UPopupMenuItem(label: U.s.merchants, icon: Icons.storefront_outlined, onTap: () => UAdminPageSwitcher.merchants(user: i)),
       UPopupMenuItem(label: U.s.contracts, icon: Icons.description_outlined, onTap: () => UAdminPageSwitcher.contracts(user: i)),
-      UPopupMenuItem(label: U.s.edit, icon: Icons.edit, visible: UAdmin.canAccess(<TagUser>[TagUser.permissionManageUsers]), onTap: () => UAdminPageSwitcher.paymentUserCreateUpdate(user: i).then((_) => c.read())),
+      UPopupMenuItem(label: U.s.edit, icon: Icons.edit, visible: UAdmin.canAccess(<TagUser>[TagUser.permissionManageUsers]), onTap: () => UAdminUsersPage.form(c, i).then((_) => c.read())),
       UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, visible: UAdmin.canAccess(<TagUser>[TagUser.permissionDeleteUsers]), onTap: () => c.delete(i)),
     ],
   );
 
-  void _showFilterDialog() => UNavigator.dialog(
-    UAdminForm.filterDialog(
-      context,
-      title: Text(U.s.filterItem(U.s.users)),
-      children: <Widget>[
-        UObx(
-          () => UDropDownField<TagUser?>(
-            initialValue: c.verificationStatus.value,
-            onChanged: c.verificationStatus.call,
-            items: <DropdownMenuItem<TagUser?>>[
-              DropdownMenuItem<TagUser>(value: TagUser.verified, child: Text(TagUser.verified.localizedTitle)),
-              DropdownMenuItem<TagUser>(value: TagUser.awaitingVerification, child: Text(TagUser.awaitingVerification.localizedTitle)),
-              const DropdownMenuItem<TagUser?>(child: Text("---")),
-            ],
-          ),
-        ).pSymmetric(vertical: 6),
-        UTextField(controller: c.firstNameFilterController, labelText: U.s.firstName, margin: const EdgeInsets.symmetric(vertical: 6)),
-        UTextField(controller: c.lastNameFilterController, labelText: U.s.lastName, margin: const EdgeInsets.symmetric(vertical: 6)),
-        UTextField(controller: c.userNameFilterController, labelText: U.s.username, margin: const EdgeInsets.symmetric(vertical: 6)),
-        UTextFieldPhoneNumber(controller: c.phoneNumberFilterController, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
-        UTextField(controller: c.nationalCodeFilterController, labelText: U.s.nationalCode, margin: const EdgeInsets.symmetric(vertical: 6)),
-        UTextField(controller: c.emailFilterController, labelText: U.s.email, keyboardType: TextInputType.emailAddress, margin: const EdgeInsets.symmetric(vertical: 6)),
-        UTextFieldPhoneNumber(controller: c.landLineFilterController, labelText: U.s.landline, margin: const EdgeInsets.symmetric(vertical: 6)),
-        UTextField(controller: c.bioFilterController, labelText: U.s.bio, margin: const EdgeInsets.symmetric(vertical: 6)),
-        UTextFieldDatePicker(
-          jalali: true,
-          controller: c.fromCreatedController,
-          labelText: U.s.fromDate,
-          onChange: (DateTime d, UJalali j) {
-            c.fromCreatedController.text = j.formatCompactDate();
-            c.fromCreatedAt = d;
-          },
-        ).pSymmetric(vertical: 6),
-        UTextFieldDatePicker(
-          jalali: true,
-          controller: c.toCreatedController,
-          labelText: U.s.toDate,
-          onChange: (DateTime d, UJalali j) {
-            c.toCreatedController.text = j.formatCompactDate();
-            c.toCreatedAt = d;
-          },
-        ).pSymmetric(vertical: 6),
-        UTextFieldDatePicker(
-          jalali: true,
-          controller: c.fromBirthController,
-          labelText: U.s.fromBirthDate,
-          onChange: (DateTime d, UJalali j) {
-            c.fromBirthController.text = j.formatCompactDate();
-            c.fromBirthDate = d;
-          },
-        ).pSymmetric(vertical: 6),
-        UTextFieldDatePicker(
-          jalali: true,
-          controller: c.toBirthController,
-          labelText: U.s.toBirthDate,
-          onChange: (DateTime d, UJalali j) {
-            c.toBirthController.text = j.formatCompactDate();
-            c.toBirthDate = d;
-          },
-        ).pSymmetric(vertical: 6),
-        const SizedBox(height: 20),
-        UButtonSubmitCancel(
-          submitTitle: U.s.filter,
-          cancelTitle: U.s.clearFilters,
-          onSubmit: () {
-            c.applyFilters();
-            UNavigator.back();
-          },
-          onCancel: () {
-            c.clearFilters();
-            UNavigator.back();
-          },
-        ),
-      ],
-    ),
+  void _filter() => UAdminForm.filter(
+    title: U.s.filterItem(U.s.users),
+    onApply: c.applyFilters,
+    onClear: c.clearFilters,
+    children: (StateSetter setState) => <Widget>[
+      UDropDownField<TagUser?>(
+        initialValue: c.verificationStatus,
+        onChanged: (TagUser? v) => c.verificationStatus = v,
+        items: <DropdownMenuItem<TagUser?>>[
+          DropdownMenuItem<TagUser>(value: TagUser.verified, child: Text(TagUser.verified.localizedTitle)),
+          DropdownMenuItem<TagUser>(value: TagUser.awaitingVerification, child: Text(TagUser.awaitingVerification.localizedTitle)),
+          const DropdownMenuItem<TagUser?>(child: Text("---")),
+        ],
+      ).pSymmetric(vertical: 6),
+      UAdminForm.text(c.firstNameFilter, U.s.firstName),
+      UAdminForm.text(c.lastNameFilter, U.s.lastName),
+      UAdminForm.text(c.userNameFilter, U.s.username),
+      UTextFieldPhoneNumber(controller: c.phoneNumberFilter, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
+      UAdminForm.text(c.nationalCodeFilter, U.s.nationalCode),
+      UAdminForm.text(c.emailFilter, U.s.email),
+      UTextFieldPhoneNumber(controller: c.landLineFilter, labelText: U.s.landline, margin: const EdgeInsets.symmetric(vertical: 6)),
+      UAdminForm.text(c.bioFilter, U.s.bio),
+      UAdminForm.date(c.fromCreatedController, U.s.fromDate, (DateTime d) => c.fromCreatedAt = d),
+      UAdminForm.date(c.toCreatedController, U.s.toDate, (DateTime d) => c.toCreatedAt = d),
+      UAdminForm.date(c.fromBirthController, U.s.fromBirthDate, (DateTime d) => c.fromBirthDate = d),
+      UAdminForm.date(c.toBirthController, U.s.toBirthDate, (DateTime d) => c.toBirthDate = d),
+    ],
   );
 }
