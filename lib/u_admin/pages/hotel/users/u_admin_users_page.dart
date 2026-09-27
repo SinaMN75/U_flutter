@@ -152,14 +152,12 @@ class _UserPageState extends State<UAdminUserPage> {
       ? const Icon(Icons.female_rounded, color: UAdminTheme.pink)
       : const Icon(Icons.person_outline_rounded, color: UAdminTheme.grey);
 
-  Widget _menu(UUserResponse i) => UAdminOps.menu<UUserResponse>(
-    item: i,
-    handlers: UAdminActionHandlers<UUserResponse>(onEdit: (UUserResponse u) => UAdminUserPage.form(c, u), onDelete: c.delete),
-    fallback: (UAdminActionContext<UUserResponse> ctx) => <UAdminAction>[
-      UAdminLinks.hotelUserDetail(ctx.item),
-      UAdminLinks.userContracts(ctx.item),
-      ctx.edit(roles: <TagUser>[TagUser.permissionManageUsers]),
-      ctx.delete(roles: <TagUser>[TagUser.permissionDeleteUsers]),
+  Widget _menu(UUserResponse i) => UPopupMenu(
+    items: <UPopupMenuItem>[
+      UPopupMenuItem(label: U.s.details, icon: Icons.badge_outlined, onTap: () => UAdminPageSwitcher.hotelUserDetail(user: i)),
+      UPopupMenuItem(label: U.s.contracts, icon: Icons.description_outlined, onTap: () => UAdminPageSwitcher.contracts(user: i)),
+      UPopupMenuItem(label: U.s.edit, icon: Icons.edit, visible: UAdmin.canAccess(<TagUser>[TagUser.permissionManageUsers]), onTap: () => UAdminUserPage.form(c, i)),
+      UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, visible: UAdmin.canAccess(<TagUser>[TagUser.permissionDeleteUsers]), onTap: () => c.delete(i)),
     ],
   );
 

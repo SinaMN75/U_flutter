@@ -36,7 +36,7 @@ abstract class UAdmin {
   static bool canAccess(List<TagUser>? roles) {
     if (roles == null || roles.isEmpty) return true;
     try {
-      if (U.user.tags.contains(TagUser.superAdmin.number) || U.user.tags.contains(TagUser.systemAdmin.number)) return true;
+      if (U.user.tags.containsAny(<int>[TagUser.superAdmin.number, TagUser.systemAdmin.number])) return true;
       return roles.any((TagUser r) => U.user.tags.contains(r.number));
     } catch (_) {
       return false;

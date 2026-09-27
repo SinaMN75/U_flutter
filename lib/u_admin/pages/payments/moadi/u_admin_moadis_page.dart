@@ -1,10 +1,9 @@
 import "package:u/utilities.dart";
 
 class UAdminMoadisPage extends StatefulWidget {
-  const UAdminMoadisPage({super.key, this.user, this.actions});
+  const UAdminMoadisPage({super.key, this.user});
 
   final UUserResponse? user;
-  final UAdminActionBuilder<UMoadiResponse>? actions;
 
   @override
   State<UAdminMoadisPage> createState() => _MoadisPageState();
@@ -98,22 +97,12 @@ class _MoadisPageState extends State<UAdminMoadisPage> {
 
   Widget _menu(UMoadiResponse i) {
     final bool isPending = !i.tags.contains(TagMoadi.approved.number) && !i.tags.contains(TagMoadi.rejected.number);
-    return UAdminOps.menu<UMoadiResponse>(
-      item: i,
-      actions: widget.actions,
-      handlers: UAdminActionHandlers<UMoadiResponse>(
-        onDelete: c.delete,
-        onDetail: _showDetailDialog,
-        extras: <String, void Function(UMoadiResponse item)>{
-          "approve": c.approve,
-          "reject": _showRejectDialog,
-        },
-      ),
-      fallback: (UAdminActionContext<UMoadiResponse> ctx) => <UAdminAction>[
-        ctx.extra("approve", label: U.s.approve, icon: Icons.check_circle_outline, visible: isPending, color: UAdminTheme.green),
-        ctx.extra("reject", label: U.s.reject, icon: Icons.cancel_outlined, visible: isPending, destructive: true),
-        ctx.detail(),
-        ctx.delete(),
+    return UPopupMenu(
+      items: <UPopupMenuItem>[
+        UPopupMenuItem(label: U.s.approve, icon: Icons.check_circle_outline, color: UAdminTheme.green, visible: isPending, onTap: () => c.approve(i)),
+        UPopupMenuItem(label: U.s.reject, icon: Icons.cancel_outlined, destructive: true, visible: isPending, onTap: () => _showRejectDialog(i)),
+        UPopupMenuItem(label: U.s.viewItem(U.s.details), icon: Icons.info_outline, onTap: () => _showDetailDialog(i)),
+        UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, onTap: () => c.delete(i)),
       ],
     );
   }

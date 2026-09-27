@@ -1,9 +1,8 @@
 part of "../../../u_admin.dart";
 
 class UAdminTerminalBrandsPage extends StatefulWidget {
-  const UAdminTerminalBrandsPage({super.key, this.actions});
+  const UAdminTerminalBrandsPage({super.key});
 
-  final UAdminActionBuilder<UTerminalBrandResponse>? actions;
 
   @override
   State<UAdminTerminalBrandsPage> createState() => _TerminalBrandsPageState();
@@ -86,16 +85,10 @@ class _TerminalBrandsPageState extends State<UAdminTerminalBrandsPage> {
     ],
   );
 
-  Widget _menu(UTerminalBrandResponse i) => UAdminOps.menu<UTerminalBrandResponse>(
-    item: i,
-    actions: widget.actions,
-    handlers: UAdminActionHandlers<UTerminalBrandResponse>(
-      onEdit: _showEditDialog,
-      onDelete: c.delete,
-    ),
-    fallback: (UAdminActionContext<UTerminalBrandResponse> ctx) => <UAdminAction>[
-      ctx.edit(),
-      ctx.delete(),
+  Widget _menu(UTerminalBrandResponse i) => UPopupMenu(
+    items: <UPopupMenuItem>[
+      UPopupMenuItem(label: U.s.edit, icon: Icons.edit, onTap: () => _showEditDialog(i)),
+      UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, onTap: () => c.delete(i)),
     ],
   );
 

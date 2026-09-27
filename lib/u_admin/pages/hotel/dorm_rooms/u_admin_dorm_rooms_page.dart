@@ -72,13 +72,11 @@ class _DormRoomPageState extends State<UAdminDormRoomPage> {
     ),
   );
 
-  Widget _menu(UDormRoomResponse i) => UAdminOps.menu<UDormRoomResponse>(
-    item: i,
-    handlers: UAdminActionHandlers<UDormRoomResponse>(onEdit: _form, onDelete: c.delete),
-    fallback: (UAdminActionContext<UDormRoomResponse> ctx) => <UAdminAction>[
-      UAdminLinks.roomBeds(ctx.item),
-      ctx.edit(roles: <TagUser>[TagUser.permissionManageDorms]),
-      ctx.delete(roles: <TagUser>[TagUser.permissionDeleteDorms]),
+  Widget _menu(UDormRoomResponse i) => UPopupMenu(
+    items: <UPopupMenuItem>[
+      UPopupMenuItem(label: U.s.beds, icon: Icons.bed_outlined, onTap: () => UAdminPageSwitcher.dormBeds(room: i)),
+      UPopupMenuItem(label: U.s.edit, icon: Icons.edit, visible: UAdmin.canAccess(<TagUser>[TagUser.permissionManageDorms]), onTap: () => _form(i)),
+      UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, visible: UAdmin.canAccess(<TagUser>[TagUser.permissionDeleteDorms]), onTap: () => c.delete(i)),
     ],
   );
 

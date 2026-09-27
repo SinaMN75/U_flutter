@@ -76,13 +76,11 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
     ),
   );
 
-  Widget _menu(UHotelRoomResponse i) => UAdminOps.menu<UHotelRoomResponse>(
-    item: i,
-    handlers: UAdminActionHandlers<UHotelRoomResponse>(onEdit: _form, onDelete: c.delete),
-    fallback: (UAdminActionContext<UHotelRoomResponse> ctx) => <UAdminAction>[
-      UAdminLinks.roomReservations(ctx.item),
-      ctx.edit(roles: <TagUser>[TagUser.permissionManageHotels]),
-      ctx.delete(roles: <TagUser>[TagUser.permissionDeleteHotels]),
+  Widget _menu(UHotelRoomResponse i) => UPopupMenu(
+    items: <UPopupMenuItem>[
+      UPopupMenuItem(label: U.s.reservations, icon: Icons.event_available_outlined, onTap: () => UAdminPageSwitcher.reservations(room: i)),
+      UPopupMenuItem(label: U.s.edit, icon: Icons.edit, visible: UAdmin.canAccess(<TagUser>[TagUser.permissionManageHotels]), onTap: () => _form(i)),
+      UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, visible: UAdmin.canAccess(<TagUser>[TagUser.permissionDeleteHotels]), onTap: () => c.delete(i)),
     ],
   );
 

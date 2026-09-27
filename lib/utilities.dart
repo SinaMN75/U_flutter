@@ -77,6 +77,7 @@ export "components/u_pdf_editor.dart";
 export "components/u_pdf_tools.dart";
 export "components/u_pdf_viewer.dart";
 export "components/u_plate_field.dart";
+export "components/u_popup_menu.dart";
 export "components/u_progress.dart";
 export "components/u_rich_text_editor.dart";
 export "components/u_scanner.dart";

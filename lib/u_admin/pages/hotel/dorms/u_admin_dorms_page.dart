@@ -82,14 +82,12 @@ class _DormPageState extends State<UAdminDormPage> {
   Widget _active(UDormResponse i) =>
       Switch(value: i.tags.contains(TagDorm.active.number), onChanged: _canManage ? (bool on) => c.setTag(i, TagDorm.active, on, opposite: TagDorm.inactive) : null);
 
-  Widget _menu(UDormResponse i) => UAdminOps.menu<UDormResponse>(
-    item: i,
-    handlers: UAdminActionHandlers<UDormResponse>(onEdit: _form, onDelete: c.delete),
-    fallback: (UAdminActionContext<UDormResponse> ctx) => <UAdminAction>[
-      UAdminLinks.dormRooms(ctx.item),
-      UAdminLinks.dormBeds(ctx.item),
-      ctx.edit(roles: <TagUser>[TagUser.permissionManageDorms]),
-      ctx.delete(roles: <TagUser>[TagUser.permissionDeleteDorms]),
+  Widget _menu(UDormResponse i) => UPopupMenu(
+    items: <UPopupMenuItem>[
+      UPopupMenuItem(label: U.s.room, icon: Icons.meeting_room_outlined, onTap: () => UAdminPageSwitcher.dormRooms(dorm: i)),
+      UPopupMenuItem(label: U.s.beds, icon: Icons.bed_outlined, onTap: () => UAdminPageSwitcher.dormBeds(dorm: i)),
+      UPopupMenuItem(label: U.s.edit, icon: Icons.edit, visible: UAdmin.canAccess(<TagUser>[TagUser.permissionManageDorms]), onTap: () => _form(i)),
+      UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, visible: UAdmin.canAccess(<TagUser>[TagUser.permissionDeleteDorms]), onTap: () => c.delete(i)),
     ],
   );
 

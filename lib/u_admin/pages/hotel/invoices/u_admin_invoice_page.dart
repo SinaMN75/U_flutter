@@ -141,17 +141,13 @@ class _InvoicePageState extends State<UAdminInvoicePage> {
       ? UAdminTable.statusChip(label: U.s.overdue, color: UAdminTheme.red)
       : UAdminTable.statusChip(label: U.s.unpaid, color: UAdminTheme.orange);
 
-  Widget _menu(UDormBedInvoiceResponse i) => UAdminOps.menu<UDormBedInvoiceResponse>(
-    item: i,
-    handlers: UAdminActionHandlers<UDormBedInvoiceResponse>(onEdit: _form, onDelete: c.delete),
-    fallback: (UAdminActionContext<UDormBedInvoiceResponse> ctx) => <UAdminAction>[
-      if (!i.isPaid) ...<UAdminAction>[
-        UAdminAction(label: "${U.s.payment} ${U.s.link}", icon: Icons.link_rounded, roles: <TagUser>[TagUser.permissionPayInvoices], onTap: () => c.pay(i)),
-        UAdminAction(label: "${U.s.copy} ${U.s.link}", icon: Icons.copy_rounded, roles: <TagUser>[TagUser.permissionPayInvoices], onTap: () => c.copyPayLink(i)),
-        UAdminAction(label: U.s.markAsPaid, icon: Icons.payments_rounded, color: UAdminTheme.green.shade700, roles: <TagUser>[TagUser.permissionPayInvoices], onTap: () => c.markPaid(i)),
-      ],
-      ctx.edit(roles: <TagUser>[TagUser.permissionManageInvoices]),
-      ctx.delete(roles: <TagUser>[TagUser.permissionDeleteInvoices]),
+  Widget _menu(UDormBedInvoiceResponse i) => UPopupMenu(
+    items: <UPopupMenuItem>[
+      UPopupMenuItem(label: "${U.s.payment} ${U.s.link}", icon: Icons.link_rounded, visible: !i.isPaid && UAdmin.canAccess(<TagUser>[TagUser.permissionPayInvoices]), onTap: () => c.pay(i)),
+      UPopupMenuItem(label: "${U.s.copy} ${U.s.link}", icon: Icons.copy_rounded, visible: !i.isPaid && UAdmin.canAccess(<TagUser>[TagUser.permissionPayInvoices]), onTap: () => c.copyPayLink(i)),
+      UPopupMenuItem(label: U.s.markAsPaid, icon: Icons.payments_rounded, color: UAdminTheme.green.shade700, visible: !i.isPaid && UAdmin.canAccess(<TagUser>[TagUser.permissionPayInvoices]), onTap: () => c.markPaid(i)),
+      UPopupMenuItem(label: U.s.edit, icon: Icons.edit, visible: UAdmin.canAccess(<TagUser>[TagUser.permissionManageInvoices]), onTap: () => _form(i)),
+      UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, visible: UAdmin.canAccess(<TagUser>[TagUser.permissionDeleteInvoices]), onTap: () => c.delete(i)),
     ],
   );
 

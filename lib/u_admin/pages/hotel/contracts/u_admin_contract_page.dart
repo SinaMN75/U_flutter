@@ -88,26 +88,14 @@ class _ContractPageState extends State<UAdminContractPage> {
     UAdminContractStatusFilter.expiringSoon => U.s.expiringSoon,
   };
 
-  Widget _menu(UDormBedContractResponse i) => UAdminOps.menu<UDormBedContractResponse>(
-    item: i,
-    handlers: UAdminActionHandlers<UDormBedContractResponse>(onEdit: _form, onDelete: c.delete),
-    fallback: (UAdminActionContext<UDormBedContractResponse> ctx) => <UAdminAction>[
-      if (i.user != null) UAdminLinks.contractTenant(i.user!),
-      UAdminLinks.contractInvoices(i),
-      if (i.bed?.room != null)
-        UAdminAction(
-          label: U.s.bed,
-          icon: Icons.bed_outlined,
-          onTap: () => UAdminPageSwitcher.dormBeds(room: i.bed!.room),
-        ),
-      if (i.bed?.room?.dorm != null)
-        UAdminAction(
-          label: U.s.dorm,
-          icon: Icons.bedroom_parent_outlined,
-          onTap: () => UAdminPageSwitcher.dormRooms(dorm: i.bed!.room!.dorm),
-        ),
-      ctx.edit(roles: <TagUser>[TagUser.permissionManageContracts]),
-      ctx.delete(roles: <TagUser>[TagUser.permissionDeleteContracts]),
+  Widget _menu(UDormBedContractResponse i) => UPopupMenu(
+    items: <UPopupMenuItem>[
+      UPopupMenuItem(label: U.s.tenant, icon: Icons.person_outline, visible: i.user != null, onTap: () => UAdminPageSwitcher.hotelUserDetail(user: i.user!)),
+      UPopupMenuItem(label: U.s.viewItem(U.s.invoices), icon: Icons.receipt_long_outlined, onTap: () => UAdminPageSwitcher.invoices(contract: i)),
+      UPopupMenuItem(label: U.s.bed, icon: Icons.bed_outlined, visible: i.bed?.room != null, onTap: () => UAdminPageSwitcher.dormBeds(room: i.bed!.room)),
+      UPopupMenuItem(label: U.s.dorm, icon: Icons.bedroom_parent_outlined, visible: i.bed?.room?.dorm != null, onTap: () => UAdminPageSwitcher.dormRooms(dorm: i.bed!.room!.dorm)),
+      UPopupMenuItem(label: U.s.edit, icon: Icons.edit, visible: UAdmin.canAccess(<TagUser>[TagUser.permissionManageContracts]), onTap: () => _form(i)),
+      UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, visible: UAdmin.canAccess(<TagUser>[TagUser.permissionDeleteContracts]), onTap: () => c.delete(i)),
     ],
   );
 

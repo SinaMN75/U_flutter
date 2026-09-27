@@ -1,9 +1,8 @@
 import "package:u/utilities.dart";
 
 class UAdminParkingPage extends StatefulWidget {
-  const UAdminParkingPage({super.key, this.actions});
+  const UAdminParkingPage({super.key});
 
-  final UAdminActionBuilder<UParkingResponse>? actions;
 
   @override
   State<UAdminParkingPage> createState() => _UAdminParkingPageState();
@@ -85,22 +84,16 @@ class _UAdminParkingPageState extends State<UAdminParkingPage> {
     ],
   );
 
-  Widget _menu(UParkingResponse i) => UAdminOps.menu<UParkingResponse>(
-    item: i,
-    actions: widget.actions,
-    handlers: UAdminActionHandlers<UParkingResponse>(
-      onEdit: (UParkingResponse x) => _showEditDialog(p: x),
-      onDelete: c.delete,
-    ),
-    fallback: (UAdminActionContext<UParkingResponse> ctx) => <UAdminAction>[
-      UAdminLinks.parkingReport(ctx.item),
-      UAdminLinks.parkingTariff(ctx.item),
-      UAdminLinks.parkingSubscription(ctx.item),
-      UAdminLinks.parkingStaff(ctx.item),
-      UAdminLinks.parkingPlateFlag(ctx.item),
-      UAdminLinks.parkingShift(ctx.item),
-      ctx.edit(),
-      ctx.delete(),
+  Widget _menu(UParkingResponse i) => UPopupMenu(
+    items: <UPopupMenuItem>[
+      UPopupMenuItem(label: U.s.viewItem(U.s.parkingReports), icon: Icons.assessment_outlined, onTap: () => UAdminPageSwitcher.parkingReport(parking: i)),
+      UPopupMenuItem(label: U.s.tariffs, icon: Icons.request_quote_outlined, onTap: () => UAdminPageSwitcher.parkingTariff(parking: i)),
+      UPopupMenuItem(label: U.s.subscriptions, icon: Icons.card_membership_outlined, onTap: () => UAdminPageSwitcher.parkingSubscription(parking: i)),
+      UPopupMenuItem(label: U.s.staff, icon: Icons.badge_outlined, onTap: () => UAdminPageSwitcher.parkingStaff(parking: i)),
+      UPopupMenuItem(label: U.s.specialPlates, icon: Icons.gpp_maybe_outlined, onTap: () => UAdminPageSwitcher.parkingPlateFlag(parking: i)),
+      UPopupMenuItem(label: U.s.shift, icon: Icons.point_of_sale_outlined, onTap: () => UAdminPageSwitcher.parkingShift(parking: i)),
+      UPopupMenuItem(label: U.s.edit, icon: Icons.edit, onTap: () => _showEditDialog(p: i)),
+      UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, onTap: () => c.delete(i)),
     ],
   );
 

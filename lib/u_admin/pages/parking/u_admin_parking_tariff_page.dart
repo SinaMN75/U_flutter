@@ -86,13 +86,11 @@ class _UAdminParkingTariffPageState extends State<UAdminParkingTariffPage> {
     ],
   );
 
-  Widget _menu(UParkingTariffResponse i) => UAdminOps.menu<UParkingTariffResponse>(
-    item: i,
-    handlers: UAdminActionHandlers<UParkingTariffResponse>(
-      onEdit: (UParkingTariffResponse x) => _showEditDialog(p: x),
-      onDelete: c.delete,
-    ),
-    fallback: (UAdminActionContext<UParkingTariffResponse> ctx) => <UAdminAction>[ctx.edit(), ctx.delete()],
+  Widget _menu(UParkingTariffResponse i) => UPopupMenu(
+    items: <UPopupMenuItem>[
+      UPopupMenuItem(label: U.s.edit, icon: Icons.edit, onTap: () => _showEditDialog(p: i)),
+      UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, onTap: () => c.delete(i)),
+    ],
   );
 
   Future<void> _showEditDialog({UParkingTariffResponse? p}) async {

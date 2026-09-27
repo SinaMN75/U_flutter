@@ -75,10 +75,11 @@ class _TransactionsPageState extends State<UAdminTransactionsPage> {
     ],
   );
 
-  Widget _menu(UTxnResponse i) => UAdminOps.menu<UTxnResponse>(
-    item: i,
-    handlers: UAdminActionHandlers<UTxnResponse>(onEdit: _showEditDialog, onDelete: c.delete),
-    fallback: (UAdminActionContext<UTxnResponse> ctx) => <UAdminAction>[ctx.edit(), ctx.delete()],
+  Widget _menu(UTxnResponse i) => UPopupMenu(
+    items: <UPopupMenuItem>[
+      UPopupMenuItem(label: U.s.edit, icon: Icons.edit, onTap: () => _showEditDialog(i)),
+      UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, onTap: () => c.delete(i)),
+    ],
   );
 
   void _showFilterDialog() => UNavigator.dialog(

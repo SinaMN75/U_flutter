@@ -86,13 +86,11 @@ class _ContentsPageState extends State<UAdminContentsPage> {
     ],
   );
 
-  Widget _menu(UContentResponse i) => UAdminOps.menu<UContentResponse>(
-    item: i,
-    handlers: UAdminActionHandlers<UContentResponse>(
-      onEdit: (UContentResponse x) => _showEditDialog(p: x),
-      onDelete: c.delete,
-    ),
-    fallback: (UAdminActionContext<UContentResponse> ctx) => <UAdminAction>[ctx.edit(), ctx.delete()],
+  Widget _menu(UContentResponse i) => UPopupMenu(
+    items: <UPopupMenuItem>[
+      UPopupMenuItem(label: U.s.edit, icon: Icons.edit, onTap: () => _showEditDialog(p: i)),
+      UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, onTap: () => c.delete(i)),
+    ],
   );
 
   void _showFilterDialog() => UNavigator.dialog(

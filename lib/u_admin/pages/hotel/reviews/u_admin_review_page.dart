@@ -94,13 +94,11 @@ class _ReviewPageState extends State<UAdminReviewPage> {
     ],
   );
 
-  Widget _menu(UCommentResponse i) => UAdminOps.menu<UCommentResponse>(
-    item: i,
-    handlers: UAdminActionHandlers<UCommentResponse>(onDelete: c.delete),
-    fallback: (UAdminActionContext<UCommentResponse> ctx) => <UAdminAction>[
-      if (!i.tags.contains(TagComment.released.number)) UAdminAction(label: U.s.approve, icon: Icons.check_circle_outline, onTap: () => c.approve(i)),
-      if (!i.tags.contains(TagComment.rejected.number)) UAdminAction(label: U.s.reject, icon: Icons.block_outlined, onTap: () => c.reject(i)),
-      ctx.delete(roles: <TagUser>[TagUser.permissionDeleteHotels]),
+  Widget _menu(UCommentResponse i) => UPopupMenu(
+    items: <UPopupMenuItem>[
+      UPopupMenuItem(label: U.s.approve, icon: Icons.check_circle_outline, visible: !i.tags.contains(TagComment.released.number), onTap: () => c.approve(i)),
+      UPopupMenuItem(label: U.s.reject, icon: Icons.block_outlined, visible: !i.tags.contains(TagComment.rejected.number), onTap: () => c.reject(i)),
+      UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, visible: UAdmin.canAccess(<TagUser>[TagUser.permissionDeleteHotels]), onTap: () => c.delete(i)),
     ],
   );
 }

@@ -82,10 +82,10 @@ class _UAdminParkingPlateFlagPageState extends State<UAdminParkingPlateFlagPage>
     ],
   );
 
-  Widget _menu(UParkingPlateFlagResponse i) => UAdminOps.menu<UParkingPlateFlagResponse>(
-    item: i,
-    handlers: UAdminActionHandlers<UParkingPlateFlagResponse>(onDelete: c.delete),
-    fallback: (UAdminActionContext<UParkingPlateFlagResponse> ctx) => <UAdminAction>[ctx.delete()],
+  Widget _menu(UParkingPlateFlagResponse i) => UPopupMenu(
+    items: <UPopupMenuItem>[
+      UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, onTap: () => c.delete(i)),
+    ],
   );
 
   Future<void> _showCreateDialog() async {

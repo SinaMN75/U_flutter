@@ -157,45 +157,45 @@ abstract class UAdminModules {
     roles: roles,
   );
 
-  static UAdminModule adminUsers({List<TagUser>? roles, UAdminActionBuilder<UUserResponse>? actions}) => UAdminModule(
+  static UAdminModule adminUsers({List<TagUser>? roles}) => UAdminModule(
     title: U.s.users,
     icon: Icons.manage_accounts_rounded,
-    page: () => UAdminUsersPage(actions: actions),
+    page: () => const UAdminUsersPage(),
     roles: roles,
   );
 
-  static UAdminModule merchants({List<TagUser>? roles, UAdminActionBuilder<UMerchantResponse>? actions}) => UAdminModule(
+  static UAdminModule merchants({List<TagUser>? roles}) => UAdminModule(
     title: U.s.merchants,
     icon: Icons.storefront_rounded,
-    page: () => UAdminMerchantsPage(actions: actions),
+    page: () => const UAdminMerchantsPage(),
     roles: roles,
   );
 
-  static UAdminModule terminals({List<TagUser>? roles, UAdminActionBuilder<UTerminalResponse>? actions}) => UAdminModule(
+  static UAdminModule terminals({List<TagUser>? roles}) => UAdminModule(
     title: U.s.terminals,
     icon: Icons.point_of_sale_rounded,
-    page: () => UAdminTerminalsPage(actions: actions),
+    page: () => const UAdminTerminalsPage(),
     roles: roles,
   );
 
-  static UAdminModule terminalBrands({List<TagUser>? roles, UAdminActionBuilder<UTerminalBrandResponse>? actions}) => UAdminModule(
+  static UAdminModule terminalBrands({List<TagUser>? roles}) => UAdminModule(
     title: U.s.brands,
     icon: Icons.point_of_sale_rounded,
-    page: () => UAdminTerminalBrandsPage(actions: actions),
+    page: () => const UAdminTerminalBrandsPage(),
     roles: roles,
   );
 
-  static UAdminModule terminalBroker({List<TagUser>? roles, UAdminActionBuilder<UTerminalBrokerResponse>? actions}) => UAdminModule(
+  static UAdminModule terminalBroker({List<TagUser>? roles}) => UAdminModule(
     title: U.s.brokers,
     icon: Icons.point_of_sale_rounded,
-    page: () => UAdminTerminalBrokersPage(actions: actions),
+    page: () => const UAdminTerminalBrokersPage(),
     roles: roles,
   );
 
-  static UAdminModule moadis({List<TagUser>? roles, UAdminActionBuilder<UMoadiResponse>? actions}) => UAdminModule(
+  static UAdminModule moadis({List<TagUser>? roles}) => UAdminModule(
     title: U.s.taxpayerRequests,
     icon: Icons.receipt_long_rounded,
-    page: () => UAdminMoadisPage(actions: actions),
+    page: () => const UAdminMoadisPage(),
     roles: roles,
   );
 
@@ -227,10 +227,10 @@ abstract class UAdminModules {
     roles: roles,
   );
 
-  static UAdminModule parking({List<TagUser>? roles, UAdminActionBuilder<UParkingResponse>? actions}) => UAdminModule(
+  static UAdminModule parking({List<TagUser>? roles}) => UAdminModule(
     title: U.s.parking,
     icon: Icons.local_parking_rounded,
-    page: () => UAdminParkingPage(actions: actions),
+    page: () => const UAdminParkingPage(),
     roles: roles,
   );
 

@@ -1,9 +1,8 @@
 part of "../../../u_admin.dart";
 
 class UAdminTerminalBrokersPage extends StatefulWidget {
-  const UAdminTerminalBrokersPage({super.key, this.actions});
+  const UAdminTerminalBrokersPage({super.key});
 
-  final UAdminActionBuilder<UTerminalBrokerResponse>? actions;
 
   @override
   State<UAdminTerminalBrokersPage> createState() => _TerminalBrokersPageState();
@@ -91,16 +90,10 @@ class _TerminalBrokersPageState extends State<UAdminTerminalBrokersPage> {
     child: base64.isNotNullOrEmpty() ? UImage("", fileData: UFileData(bytes: base64!.toBytesFromBase64()), borderRadius: 8) : const Icon(Icons.business_center_outlined),
   );
 
-  Widget _menu(UTerminalBrokerResponse i) => UAdminOps.menu<UTerminalBrokerResponse>(
-    item: i,
-    actions: widget.actions,
-    handlers: UAdminActionHandlers<UTerminalBrokerResponse>(
-      onEdit: _showEditDialog,
-      onDelete: c.delete,
-    ),
-    fallback: (UAdminActionContext<UTerminalBrokerResponse> ctx) => <UAdminAction>[
-      ctx.edit(),
-      ctx.delete(),
+  Widget _menu(UTerminalBrokerResponse i) => UPopupMenu(
+    items: <UPopupMenuItem>[
+      UPopupMenuItem(label: U.s.edit, icon: Icons.edit, onTap: () => _showEditDialog(i)),
+      UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, onTap: () => c.delete(i)),
     ],
   );
 

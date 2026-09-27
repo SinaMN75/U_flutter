@@ -86,10 +86,11 @@ class _UAdminParkingStaffPageState extends State<UAdminParkingStaffPage> {
     ],
   );
 
-  Widget _menu(UParkingStaffResponse i) => UAdminOps.menu<UParkingStaffResponse>(
-    item: i,
-    handlers: UAdminActionHandlers<UParkingStaffResponse>(onEdit: _showEditDialog, onDelete: c.delete),
-    fallback: (UAdminActionContext<UParkingStaffResponse> ctx) => <UAdminAction>[ctx.edit(), ctx.delete()],
+  Widget _menu(UParkingStaffResponse i) => UPopupMenu(
+    items: <UPopupMenuItem>[
+      UPopupMenuItem(label: U.s.edit, icon: Icons.edit, onTap: () => _showEditDialog(i)),
+      UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, onTap: () => c.delete(i)),
+    ],
   );
 
   static const List<TagParkingStaff> _selectablePermissions = <TagParkingStaff>[

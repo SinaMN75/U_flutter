@@ -103,30 +103,18 @@ class _ReservationPageState extends State<UAdminReservationPage> {
   Widget _menu(UHotelReservationResponse i) {
     final TagHotelReservation? s = i.status;
     final UHotelInvoiceResponse? unpaid = c.unpaidInvoiceOf(i);
-    const List<TagUser> manage = <TagUser>[TagUser.permissionManageReservations];
-    return UAdminOps.menu<UHotelReservationResponse>(
-      item: i,
-      handlers: UAdminActionHandlers<UHotelReservationResponse>(onEdit: _form, onDelete: c.delete),
-      fallback: (UAdminActionContext<UHotelReservationResponse> ctx) => <UAdminAction>[
-        if (i.user != null)
-          UAdminAction(
-            label: U.s.guest,
-            icon: Icons.person_outline,
-            onTap: () => UAdminPageSwitcher.hotelUserDetail(user: i.user!),
-          ),
-        if (s == TagHotelReservation.pending) UAdminAction(label: U.s.confirm, icon: Icons.check_circle_outline, roles: manage, onTap: () => c.confirm(i)),
-        if (s == TagHotelReservation.confirmed) UAdminAction(label: U.s.checkIn, icon: Icons.login_rounded, roles: manage, onTap: () => c.checkInGuest(i)),
-        if (s == TagHotelReservation.checkedIn) UAdminAction(label: U.s.checkOut, icon: Icons.logout_rounded, roles: manage, onTap: () => c.checkOutGuest(i)),
-        if (s == TagHotelReservation.pending || s == TagHotelReservation.confirmed) UAdminAction(label: U.s.cancel, icon: Icons.cancel_outlined, roles: manage, onTap: () => c.cancel(i)),
+    final bool canManage = UAdmin.canAccess(<TagUser>[TagUser.permissionManageReservations]);
+    return UPopupMenu(
+      items: <UPopupMenuItem>[
+        UPopupMenuItem(label: U.s.guest, icon: Icons.person_outline, visible: i.user != null, onTap: () => UAdminPageSwitcher.hotelUserDetail(user: i.user!)),
+        UPopupMenuItem(label: U.s.confirm, icon: Icons.check_circle_outline, visible: canManage && s == TagHotelReservation.pending, onTap: () => c.confirm(i)),
+        UPopupMenuItem(label: U.s.checkIn, icon: Icons.login_rounded, visible: canManage && s == TagHotelReservation.confirmed, onTap: () => c.checkInGuest(i)),
+        UPopupMenuItem(label: U.s.checkOut, icon: Icons.logout_rounded, visible: canManage && s == TagHotelReservation.checkedIn, onTap: () => c.checkOutGuest(i)),
+        UPopupMenuItem(label: U.s.cancel, icon: Icons.cancel_outlined, visible: canManage && (s == TagHotelReservation.pending || s == TagHotelReservation.confirmed), onTap: () => c.cancel(i)),
         if (unpaid != null)
-          UAdminAction(
-            label: "${U.s.pay} · ${unpaid.netDue.rial()}",
-            icon: Icons.payments_outlined,
-            roles: <TagUser>[TagUser.permissionPayInvoices],
-            onTap: () => c.payInvoice(unpaid),
-          ),
-        ctx.edit(roles: manage),
-        ctx.delete(roles: <TagUser>[TagUser.permissionDeleteReservations]),
+          UPopupMenuItem(label: "${U.s.pay} · ${unpaid.netDue.rial()}", icon: Icons.payments_outlined, visible: UAdmin.canAccess(<TagUser>[TagUser.permissionPayInvoices]), onTap: () => c.payInvoice(unpaid)),
+        UPopupMenuItem(label: U.s.edit, icon: Icons.edit, visible: canManage, onTap: () => _form(i)),
+        UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, visible: UAdmin.canAccess(<TagUser>[TagUser.permissionDeleteReservations]), onTap: () => c.delete(i)),
       ],
     );
   }

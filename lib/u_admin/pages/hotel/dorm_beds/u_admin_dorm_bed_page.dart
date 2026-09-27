@@ -82,13 +82,11 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
     color: c.isFree(i) ? UAdminTheme.green : UAdminTheme.orange,
   );
 
-  Widget _menu(UDormBedResponse i) => UAdminOps.menu<UDormBedResponse>(
-    item: i,
-    handlers: UAdminActionHandlers<UDormBedResponse>(onEdit: _form, onDelete: c.delete),
-    fallback: (UAdminActionContext<UDormBedResponse> ctx) => <UAdminAction>[
-      UAdminLinks.bedContracts(ctx.item),
-      ctx.edit(roles: <TagUser>[TagUser.permissionManageDorms]),
-      ctx.delete(roles: <TagUser>[TagUser.permissionDeleteDorms]),
+  Widget _menu(UDormBedResponse i) => UPopupMenu(
+    items: <UPopupMenuItem>[
+      UPopupMenuItem(label: U.s.contracts, icon: Icons.description_outlined, onTap: () => UAdminPageSwitcher.contracts(bed: i)),
+      UPopupMenuItem(label: U.s.edit, icon: Icons.edit, visible: UAdmin.canAccess(<TagUser>[TagUser.permissionManageDorms]), onTap: () => _form(i)),
+      UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, visible: UAdmin.canAccess(<TagUser>[TagUser.permissionDeleteDorms]), onTap: () => c.delete(i)),
     ],
   );
 

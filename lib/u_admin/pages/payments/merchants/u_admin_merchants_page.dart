@@ -1,10 +1,9 @@
 import "package:u/utilities.dart";
 
 class UAdminMerchantsPage extends StatefulWidget {
-  const UAdminMerchantsPage({super.key, this.user, this.actions});
+  const UAdminMerchantsPage({super.key, this.user});
 
   final UUserResponse? user;
-  final UAdminActionBuilder<UMerchantResponse>? actions;
 
   @override
   State<UAdminMerchantsPage> createState() => _MerchantsPageState();
@@ -77,15 +76,11 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
     ],
   );
 
-  // Built-in operations; the app can override them via UAdminMerchantsPage(actions: ...).
-  Widget _menu(UMerchantResponse i) => UAdminOps.menu<UMerchantResponse>(
-    item: i,
-    actions: widget.actions,
-    handlers: UAdminActionHandlers<UMerchantResponse>(onDelete: c.delete, onDetail: _showDetailDialog),
-    fallback: (UAdminActionContext<UMerchantResponse> ctx) => <UAdminAction>[
-      UAdminLinks.merchantTerminals(ctx.item),
-      ctx.detail(),
-      ctx.delete(),
+  Widget _menu(UMerchantResponse i) => UPopupMenu(
+    items: <UPopupMenuItem>[
+      UPopupMenuItem(label: U.s.viewItem(U.s.terminals), icon: Icons.point_of_sale_outlined, onTap: () => UAdminPageSwitcher.terminals(merchant: i)),
+      UPopupMenuItem(label: U.s.viewItem(U.s.details), icon: Icons.info_outline, onTap: () => _showDetailDialog(i)),
+      UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, onTap: () => c.delete(i)),
     ],
   );
 

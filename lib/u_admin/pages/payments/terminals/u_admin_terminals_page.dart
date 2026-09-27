@@ -1,10 +1,9 @@
 part of "../../../u_admin.dart";
 
 class UAdminTerminalsPage extends StatefulWidget {
-  const UAdminTerminalsPage({super.key, this.merchant, this.actions});
+  const UAdminTerminalsPage({super.key, this.merchant});
 
   final UMerchantResponse? merchant;
-  final UAdminActionBuilder<UTerminalResponse>? actions;
 
   @override
   State<UAdminTerminalsPage> createState() => _TerminalsPageState();
@@ -119,26 +118,14 @@ class _TerminalsPageState extends State<UAdminTerminalsPage> {
     ],
   );
 
-  Widget _menu(UTerminalResponse i) => UAdminOps.menu<UTerminalResponse>(
-    item: i,
-    actions: widget.actions,
-    handlers: UAdminActionHandlers<UTerminalResponse>(
-      onEdit: _showEditDialog,
-      onDelete: c.delete,
-      extras: <String, void Function(UTerminalResponse)>{
-        "supportPassword": c.supportPassword,
-        "approve": c.approve,
-        "reject": _showRejectDialog,
-        "viewAgreement": c.viewAgreement,
-      },
-    ),
-    fallback: (UAdminActionContext<UTerminalResponse> ctx) => <UAdminAction>[
-      ctx.extra("approve", label: U.s.approve, icon: Icons.check_circle_outline, visible: _isPending(i), color: UAdminTheme.green),
-      ctx.extra("reject", label: U.s.reject, icon: Icons.cancel_outlined, visible: _isPending(i), destructive: true),
-      ctx.extra("viewAgreement", label: U.s.viewAgreement, icon: Icons.description_outlined, visible: i.merchantId.isNotNullOrEmpty()),
-      ctx.extra("supportPassword", label: U.s.getSupportPassword, icon: Icons.password),
-      ctx.edit(),
-      ctx.delete(),
+  Widget _menu(UTerminalResponse i) => UPopupMenu(
+    items: <UPopupMenuItem>[
+      UPopupMenuItem(label: U.s.approve, icon: Icons.check_circle_outline, color: UAdminTheme.green, visible: _isPending(i), onTap: () => c.approve(i)),
+      UPopupMenuItem(label: U.s.reject, icon: Icons.cancel_outlined, destructive: true, visible: _isPending(i), onTap: () => _showRejectDialog(i)),
+      UPopupMenuItem(label: U.s.viewAgreement, icon: Icons.description_outlined, visible: i.merchantId.isNotNullOrEmpty(), onTap: () => c.viewAgreement(i)),
+      UPopupMenuItem(label: U.s.getSupportPassword, icon: Icons.password, onTap: () => c.supportPassword(i)),
+      UPopupMenuItem(label: U.s.edit, icon: Icons.edit, onTap: () => _showEditDialog(i)),
+      UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, onTap: () => c.delete(i)),
     ],
   );
 

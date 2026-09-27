@@ -107,12 +107,10 @@ class _UAdminParkingSubscriptionPageState extends State<UAdminParkingSubscriptio
     ],
   );
 
-  Widget _menu(UParkingSubscriptionResponse i) => UAdminOps.menu<UParkingSubscriptionResponse>(
-    item: i,
-    handlers: UAdminActionHandlers<UParkingSubscriptionResponse>(onDelete: c.delete),
-    fallback: (UAdminActionContext<UParkingSubscriptionResponse> ctx) => <UAdminAction>[
-      UAdminAction(label: U.s.renewSubscription, icon: Icons.autorenew_rounded, onTap: () => _renew(i)),
-      ctx.delete(),
+  Widget _menu(UParkingSubscriptionResponse i) => UPopupMenu(
+    items: <UPopupMenuItem>[
+      UPopupMenuItem(label: U.s.renewSubscription, icon: Icons.autorenew_rounded, onTap: () => _renew(i)),
+      UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, onTap: () => c.delete(i)),
     ],
   );
 

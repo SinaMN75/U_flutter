@@ -79,21 +79,12 @@ class _BlogPageState extends State<UAdminBlogPage> {
     ],
   );
 
-  Widget _menu(UBlogResponse i) => UAdminOps.menu<UBlogResponse>(
-    item: i,
-    handlers: UAdminActionHandlers<UBlogResponse>(
-      onEdit: (UBlogResponse x) => _showEditDialog(p: x),
-      onDelete: c.delete,
-      extras: <String, void Function(UBlogResponse)>{
-        "togglePublish": (UBlogResponse x) => _isPublished(x) ? c.unpublish(x) : c.publish(x),
-        "comments": _showCommentsDialog,
-      },
-    ),
-    fallback: (UAdminActionContext<UBlogResponse> ctx) => <UAdminAction>[
-      ctx.edit(),
-      ctx.extra("togglePublish", label: _isPublished(ctx.item) ? U.s.unpublish : U.s.publish, icon: _isPublished(ctx.item) ? Icons.unpublished_outlined : Icons.publish_rounded),
-      ctx.extra("comments", label: U.s.comments, icon: Icons.comment_outlined),
-      ctx.delete(),
+  Widget _menu(UBlogResponse i) => UPopupMenu(
+    items: <UPopupMenuItem>[
+      UPopupMenuItem(label: U.s.edit, icon: Icons.edit, onTap: () => _showEditDialog(p: i)),
+      UPopupMenuItem(label: _isPublished(i) ? U.s.unpublish : U.s.publish, icon: _isPublished(i) ? Icons.unpublished_outlined : Icons.publish_rounded, onTap: () => _isPublished(i) ? c.unpublish(i) : c.publish(i)),
+      UPopupMenuItem(label: U.s.comments, icon: Icons.comment_outlined, onTap: () => _showCommentsDialog(i)),
+      UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, onTap: () => c.delete(i)),
     ],
   );
 
