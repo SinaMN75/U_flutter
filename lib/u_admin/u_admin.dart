@@ -40,7 +40,11 @@ part "pages/logs/u_admin_api_log_controller.dart";
 
 part "pages/parking/u_admin_parking_controller.dart";
 
+part "pages/parking/u_admin_parking_plate_flag_controller.dart";
+
 part "pages/parking/u_admin_parking_report_controller.dart";
+
+part "pages/parking/u_admin_parking_shift_controller.dart";
 
 part "pages/parking/u_admin_parking_staff_controller.dart";
 

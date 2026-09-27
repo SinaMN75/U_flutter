@@ -27,7 +27,7 @@ class _UAdminParkingStaffPageState extends State<UAdminParkingStaffPage> {
   @override
   Widget build(BuildContext context) => UAdminScaffold(
     title: widget.parking == null ? U.s.staffManagement : "${U.s.staff} · ${widget.parking!.title}",
-    onCreate: widget.parking == null ? null : _showCreateDialog,
+    onCreate: widget.parking == null ? null : _form,
     pageNumber: c.pageNumber,
     totalPages: c.totalPages,
     onPageChanged: (int page) {
@@ -88,184 +88,52 @@ class _UAdminParkingStaffPageState extends State<UAdminParkingStaffPage> {
 
   Widget _menu(UParkingStaffResponse i) => UPopupMenu(
     items: <UPopupMenuItem>[
-      UPopupMenuItem(label: U.s.edit, icon: Icons.edit, onTap: () => _showEditDialog(i)),
+      UPopupMenuItem(label: U.s.edit, icon: Icons.edit, onTap: () => _form(i)),
       UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, onTap: () => c.delete(i)),
     ],
   );
 
-  static const List<TagParkingStaff> _selectablePermissions = <TagParkingStaff>[
-    TagParkingStaff.registerEntryExit,
-    TagParkingStaff.applyManualDiscount,
-    TagParkingStaff.manageSubscriptions,
-    TagParkingStaff.changeTariff,
-    TagParkingStaff.viewFinancialReports,
-  ];
-
-  Future<void> _showCreateDialog() async {
-    final String? parkingId = widget.parking?.id;
-    if (parkingId == null) return;
-
-    final UAdminFields f = UAdminFields();
-    final TextEditingController firstName = f.text();
-    final TextEditingController lastName = f.text();
-    final TextEditingController userName = f.text();
-    final TextEditingController password = f.text();
-    final TextEditingController phone = f.text();
-    final TextEditingController shiftTitle = f.text();
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final Set<TagParkingStaff> permissions = <TagParkingStaff>{TagParkingStaff.registerEntryExit};
-    double maxDiscount = 0;
-
-    await UNavigator.dialog(
-      f.scope(
-        StatefulBuilder(
-          builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
-            title: Text(U.s.newStaffMember),
-            content: SizedBox(
-              width: context.dialogWidth(max: 480),
-              child: SingleChildScrollView(
-                child: Form(
-                  key: formKey,
-                  child: UColumn(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      UTextField(controller: firstName, labelText: U.s.firstName, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      UTextField(controller: lastName, labelText: U.s.lastName, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      UTextField(
-                        controller: userName,
-                        labelText: U.s.username,
-                        validator: UValidators.required(message: ""),
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                      ),
-                      UTextField(
-                        controller: password,
-                        labelText: U.s.password,
-                        validator: UValidators.required(message: ""),
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                      ),
-                      UTextFieldPhoneNumber(controller: phone, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      UTextField(controller: shiftTitle, labelText: U.s.shift, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      const SizedBox(height: 8),
-                      ..._selectablePermissions.map(
-                        (TagParkingStaff permission) => CheckboxListTile(
-                          value: permissions.contains(permission),
-                          title: UTextBodyMedium(permission.localizedTitle),
-                          contentPadding: EdgeInsets.zero,
-                          controlAffinity: ListTileControlAffinity.leading,
-                          onChanged: (bool? value) => setDialogState(() => value ?? false ? permissions.add(permission) : permissions.remove(permission)),
-                        ),
-                      ),
-                      UTextBodyMedium("${U.s.maximumDiscountAllowed}: ${maxDiscount.round()}%"),
-                      Slider(
-                        value: maxDiscount,
-                        max: 100,
-                        divisions: 20,
-                        label: "${maxDiscount.round()}%",
-                        onChanged: (double value) => setDialogState(() => maxDiscount = value),
-                      ),
-                      const SizedBox(height: 20),
-                      UButtonSubmitCancel(
-                        onSubmit: () => UValidators.validateForm(
-                          key: formKey,
-                          action: () {
-                            c.create(
-                              p: UParkingStaffCreateParams(
-                                parkingId: parkingId,
-                                userName: userName.trimmedLatin(),
-                                password: password.trimmedLatin(),
-                                tags: permissions.isEmpty ? <int>[TagParkingStaff.registerEntryExit.number] : permissions.map((TagParkingStaff t) => t.number).toList(),
-                                firstName: firstName.text.nullIfEmpty(),
-                                lastName: lastName.text.nullIfEmpty(),
-                                phoneNumber: phone.trimmedLatin().nullIfEmpty(),
-                                shiftTitle: shiftTitle.text.nullIfEmpty(),
-                                maxDiscountPercent: maxDiscount.round(),
-                              ),
-                            );
-                            UNavigator.back();
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+  Future<void> _form([UParkingStaffResponse? staff]) async {
+    c.loadForm(staff);
+    final bool isNew = staff == null;
+    await UAdminForm.editDialog(
+      title: isNew ? U.s.newStaffMember : U.s.editItem(U.s.staff),
+      formKey: c.formKey,
+      onSubmit: c.save,
+      children: (BuildContext context, StateSetter setState) => <Widget>[
+        if (isNew) ...<Widget>[
+          UAdminForm.text(c.firstName, U.s.firstName),
+          UAdminForm.text(c.lastName, U.s.lastName),
+          UAdminForm.text(c.userName, U.s.username, required: true),
+        ],
+        UAdminForm.text(c.password, isNew ? U.s.password : U.s.newPassword, required: isNew),
+        if (isNew) UTextFieldPhoneNumber(controller: c.phone, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UAdminForm.text(c.shiftTitle, U.s.shift),
+        ...UAdminParkingStaffController.selectablePermissions.map(
+          (TagParkingStaff t) => CheckboxListTile(
+            value: c.permissions.contains(t),
+            title: UTextBodyMedium(t.localizedTitle),
+            contentPadding: EdgeInsets.zero,
+            controlAffinity: ListTileControlAffinity.leading,
+            onChanged: (bool? v) => setState(() => c.togglePermission(t, v ?? false)),
           ),
         ),
-      ),
-    );
-  }
-
-  Future<void> _showEditDialog(UParkingStaffResponse staff) async {
-    final UAdminFields f = UAdminFields();
-    final TextEditingController shiftTitle = f.text(staff.shiftTitle);
-    final TextEditingController password = f.text();
-    final Set<TagParkingStaff> permissions = <TagParkingStaff>{
-      ...TagParkingStaff.values.where((TagParkingStaff t) => staff.tags.contains(t.number)),
-    };
-    double maxDiscount = staff.maxDiscountPercent.toDouble();
-
-    await UNavigator.dialog(
-      f.scope(
-        StatefulBuilder(
-          builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
-            title: Text(U.s.editItem(U.s.staff)),
-            content: SizedBox(
-              width: context.dialogWidth(max: 480),
-              child: SingleChildScrollView(
-                child: UColumn(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    UTextField(controller: shiftTitle, labelText: U.s.shift, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    UTextField(controller: password, labelText: U.s.newPassword, margin: const EdgeInsets.symmetric(vertical: 6)),
-                    const SizedBox(height: 8),
-                    ..._selectablePermissions.map(
-                      (TagParkingStaff permission) => CheckboxListTile(
-                        value: permissions.contains(permission),
-                        title: UTextBodyMedium(permission.localizedTitle),
-                        contentPadding: EdgeInsets.zero,
-                        controlAffinity: ListTileControlAffinity.leading,
-                        onChanged: (bool? value) => setDialogState(() => value ?? false ? permissions.add(permission) : permissions.remove(permission)),
-                      ),
-                    ),
-                    SwitchListTile(
-                      value: permissions.contains(TagParkingStaff.disabled),
-                      title: UTextBodyMedium(U.s.disabled),
-                      contentPadding: EdgeInsets.zero,
-                      onChanged: (bool value) => setDialogState(
-                        () => value ? permissions.add(TagParkingStaff.disabled) : permissions.remove(TagParkingStaff.disabled),
-                      ),
-                    ),
-                    UTextBodyMedium("${U.s.maximumDiscountAllowed}: ${maxDiscount.round()}%"),
-                    Slider(
-                      value: maxDiscount,
-                      max: 100,
-                      divisions: 20,
-                      label: "${maxDiscount.round()}%",
-                      onChanged: (double value) => setDialogState(() => maxDiscount = value),
-                    ),
-                    const SizedBox(height: 20),
-                    UButtonSubmitCancel(
-                      onSubmit: () {
-                        c.update(
-                          p: UParkingStaffUpdateParams(
-                            id: staff.id,
-                            shiftTitle: shiftTitle.text.nullIfEmpty(),
-                            password: password.text.nullIfEmpty(),
-                            maxDiscountPercent: maxDiscount.round(),
-                            tags: permissions.map((TagParkingStaff t) => t.number).toList(),
-                          ),
-                        );
-                        UNavigator.back();
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
+        if (!isNew)
+          SwitchListTile(
+            value: c.permissions.contains(TagParkingStaff.disabled),
+            title: UTextBodyMedium(U.s.disabled),
+            contentPadding: EdgeInsets.zero,
+            onChanged: (bool v) => setState(() => c.togglePermission(TagParkingStaff.disabled, v)),
           ),
+        UTextBodyMedium("${U.s.maximumDiscountAllowed}: ${c.maxDiscount.round()}%"),
+        Slider(
+          value: c.maxDiscount,
+          max: 100,
+          divisions: 20,
+          label: "${c.maxDiscount.round()}%",
+          onChanged: (double v) => setState(() => c.maxDiscount = v),
         ),
-      ),
+      ],
     );
   }
 }

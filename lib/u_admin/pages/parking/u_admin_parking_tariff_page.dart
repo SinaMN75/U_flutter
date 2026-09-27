@@ -27,7 +27,7 @@ class _UAdminParkingTariffPageState extends State<UAdminParkingTariffPage> {
   @override
   Widget build(BuildContext context) => UAdminScaffold(
     title: widget.parking == null ? U.s.tariffs : "${U.s.tariffs} · ${widget.parking!.title}",
-    onCreate: widget.parking == null ? null : _showEditDialog,
+    onCreate: widget.parking == null ? null : _form,
     pageNumber: c.pageNumber,
     totalPages: c.totalPages,
     onPageChanged: (int page) {
@@ -88,115 +88,44 @@ class _UAdminParkingTariffPageState extends State<UAdminParkingTariffPage> {
 
   Widget _menu(UParkingTariffResponse i) => UPopupMenu(
     items: <UPopupMenuItem>[
-      UPopupMenuItem(label: U.s.edit, icon: Icons.edit, onTap: () => _showEditDialog(p: i)),
+      UPopupMenuItem(label: U.s.edit, icon: Icons.edit, onTap: () => _form(i)),
       UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, onTap: () => c.delete(i)),
     ],
   );
 
-  Future<void> _showEditDialog({UParkingTariffResponse? p}) async {
-    final String? parkingId = p?.parkingId ?? widget.parking?.id;
-    if (parkingId == null) return;
-
-    final UAdminFields f = UAdminFields();
-    final TextEditingController entrance = f.text(p?.entrancePrice.toStringAsSmartRound(maxPrecision: 0));
-    final TextEditingController dayHourly = f.text(p?.dayHourlyPrice.toStringAsSmartRound(maxPrecision: 0));
-    final TextEditingController nightHourly = f.text(p?.nightHourlyPrice.toStringAsSmartRound(maxPrecision: 0));
-    final TextEditingController dailyCap = f.text(p?.dailyCap.toStringAsSmartRound(maxPrecision: 0));
-    final TextEditingController weekly = f.text(p?.weeklyPrice.toStringAsSmartRound(maxPrecision: 0));
-    final TextEditingController monthly = f.text(p?.monthlyPrice.toStringAsSmartRound(maxPrecision: 0));
-    final TextEditingController quarterly = f.text(p?.quarterlyPrice.toStringAsSmartRound(maxPrecision: 0));
-    final TextEditingController freeMinutes = f.text((p?.freeMinutes ?? 0).toString());
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
-    TagVehicle vehicleType = TagVehicle.values.fromNumber(p?.vehicleType ?? TagVehicle.car.number) ?? TagVehicle.car;
-    bool roundToFullHour = p?.roundToFullHour ?? false;
-    bool perMinuteAfterFirstHour = p?.perMinuteAfterFirstHour ?? true;
-
-    await UNavigator.dialog(
-      f.scope(
-        StatefulBuilder(
-          builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
-            title: Text(p == null ? U.s.createItem(U.s.tariff) : U.s.editItem(U.s.tariff)),
-            content: SizedBox(
-              width: context.dialogWidth(max: 480),
-              child: SingleChildScrollView(
-                child: Form(
-                  key: formKey,
-                  child: UColumn(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      UDropDownField<TagVehicle>(
-                        initialValue: vehicleType,
-                        items: TagVehicle.values.map((TagVehicle v) => DropdownMenuItem<TagVehicle>(value: v, child: Text(v.localizedTitle))).toList(),
-                        onChanged: (TagVehicle? value) => setDialogState(() => vehicleType = value ?? TagVehicle.car),
-                      ).pSymmetric(vertical: 6),
-                      _money(entrance, U.s.entrancePrice),
-                      _money(dayHourly, U.s.dayRate),
-                      _money(nightHourly, U.s.nightRate),
-                      _money(dailyCap, U.s.dailyCap),
-                      _money(weekly, U.s.weekly),
-                      _money(monthly, U.s.monthly),
-                      _money(quarterly, U.s.quarterly),
-                      UTextField(
-                        controller: freeMinutes,
-                        labelText: U.s.firstMinutesMinutesFree(freeMinutes.text),
-                        keyboardType: TextInputType.number,
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                      ),
-                      SwitchListTile(
-                        value: roundToFullHour,
-                        title: UTextBodyMedium(U.s.roundUpToAFullHour),
-                        contentPadding: EdgeInsets.zero,
-                        onChanged: (bool v) => setDialogState(() => roundToFullHour = v),
-                      ),
-                      SwitchListTile(
-                        value: perMinuteAfterFirstHour,
-                        title: UTextBodyMedium(U.s.perMinuteAfterTheFirstHour),
-                        contentPadding: EdgeInsets.zero,
-                        onChanged: (bool v) => setDialogState(() => perMinuteAfterFirstHour = v),
-                      ),
-                      const SizedBox(height: 20),
-                      UButtonSubmitCancel(
-                        onSubmit: () => UValidators.validateForm(
-                          key: formKey,
-                          action: () {
-                            c.save(
-                              p: UParkingTariffCreateParams(
-                                parkingId: parkingId,
-                                vehicleType: vehicleType.number,
-                                tags: <int>[TagParkingTariff.hourly.number, TagParkingTariff.subscription.number],
-                                entrancePrice: entrance.isNullOrEmpty() ? 0 : entrance.numDouble(),
-                                dayHourlyPrice: dayHourly.isNullOrEmpty() ? 0 : dayHourly.numDouble(),
-                                nightHourlyPrice: nightHourly.isNullOrEmpty() ? 0 : nightHourly.numDouble(),
-                                dailyCap: dailyCap.isNullOrEmpty() ? 0 : dailyCap.numDouble(),
-                                weeklyPrice: weekly.isNullOrEmpty() ? 0 : weekly.numDouble(),
-                                monthlyPrice: monthly.isNullOrEmpty() ? 0 : monthly.numDouble(),
-                                quarterlyPrice: quarterly.isNullOrEmpty() ? 0 : quarterly.numDouble(),
-                                freeMinutes: freeMinutes.isNullOrEmpty() ? 0 : freeMinutes.numInt(),
-                                roundToFullHour: roundToFullHour,
-                                perMinuteAfterFirstHour: perMinuteAfterFirstHour,
-                              ),
-                            );
-                            UNavigator.back();
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
+  Future<void> _form([UParkingTariffResponse? t]) async {
+    c.loadForm(t);
+    await UAdminForm.editDialog(
+      title: t == null ? U.s.createItem(U.s.tariff) : U.s.editItem(U.s.tariff),
+      formKey: c.formKey,
+      onSubmit: c.save,
+      children: (BuildContext context, StateSetter setState) => <Widget>[
+        UDropDownField<TagVehicle>(
+          initialValue: c.vehicleType,
+          items: TagVehicle.values.map((TagVehicle v) => DropdownMenuItem<TagVehicle>(value: v, child: Text(v.localizedTitle))).toList(),
+          onChanged: (TagVehicle? v) => setState(() => c.vehicleType = v ?? TagVehicle.car),
+        ).pSymmetric(vertical: 6),
+        UAdminForm.text(c.entrance, U.s.entrancePrice, money: true),
+        UAdminForm.text(c.dayHourly, U.s.dayRate, money: true),
+        UAdminForm.text(c.nightHourly, U.s.nightRate, money: true),
+        UAdminForm.text(c.dailyCap, U.s.dailyCap, money: true),
+        UAdminForm.text(c.weekly, U.s.weekly, money: true),
+        UAdminForm.text(c.monthly, U.s.monthly, money: true),
+        UAdminForm.text(c.quarterly, U.s.quarterly, money: true),
+        UAdminForm.text(c.freeMinutes, U.s.firstMinutesMinutesFree(c.freeMinutes.text), number: true),
+        SwitchListTile(
+          value: c.roundToFullHour,
+          title: UTextBodyMedium(U.s.roundUpToAFullHour),
+          contentPadding: EdgeInsets.zero,
+          onChanged: (bool v) => setState(() => c.roundToFullHour = v),
         ),
-      ),
+        SwitchListTile(
+          value: c.perMinuteAfterFirstHour,
+          title: UTextBodyMedium(U.s.perMinuteAfterTheFirstHour),
+          contentPadding: EdgeInsets.zero,
+          onChanged: (bool v) => setState(() => c.perMinuteAfterFirstHour = v),
+        ),
+      ],
     );
   }
-
-  Widget _money(TextEditingController controller, String label) => UTextField(
-    controller: controller,
-    labelText: label,
-    keyboardType: TextInputType.number,
-    formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-    margin: const EdgeInsets.symmetric(vertical: 6),
-  );
 }

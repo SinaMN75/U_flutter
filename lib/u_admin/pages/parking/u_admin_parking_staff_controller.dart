@@ -4,6 +4,24 @@ class UAdminParkingStaffController extends UBaseController {
   List<UParkingStaffResponse> list = <UParkingStaffResponse>[];
   UParkingResponse? parking;
 
+  static const List<TagParkingStaff> selectablePermissions = <TagParkingStaff>[
+    TagParkingStaff.registerEntryExit,
+    TagParkingStaff.applyManualDiscount,
+    TagParkingStaff.manageSubscriptions,
+    TagParkingStaff.changeTariff,
+    TagParkingStaff.viewFinancialReports,
+  ];
+
+  UParkingStaffResponse? editing;
+  late final TextEditingController firstName = fields.text();
+  late final TextEditingController lastName = fields.text();
+  late final TextEditingController userName = fields.text();
+  late final TextEditingController password = fields.text();
+  late final TextEditingController phone = fields.text();
+  late final TextEditingController shiftTitle = fields.text();
+  Set<TagParkingStaff> permissions = <TagParkingStaff>{};
+  double maxDiscount = 0;
+
   Future<void> init({UParkingResponse? parking}) {
     this.parking = parking;
     return read();
@@ -29,162 +47,52 @@ class UAdminParkingStaffController extends UBaseController {
     );
   }
 
-  void create({required UParkingStaffCreateParams p}) {
-    ULoading.show();
-    UServices.parking.createParkingStaff(
-      p: p,
-      onOk: (UResponse<String> r) {
-        ULoading.dismiss();
-        okCallback(r.message, read);
-      },
-      onError: (UEmptyResponse r) {
-        ULoading.dismiss();
-        errorCallBack(r.message, read);
-      },
-      onException: (String e) {
-        ULoading.dismiss();
-        errorCallBack(U.s.errorSubmittingForm, read);
-      },
+  void loadForm(UParkingStaffResponse? s) {
+    editing = s;
+    firstName.clear();
+    lastName.clear();
+    userName.clear();
+    password.clear();
+    phone.clear();
+    shiftTitle.text = s?.shiftTitle ?? "";
+    permissions = s == null
+        ? <TagParkingStaff>{TagParkingStaff.registerEntryExit}
+        : TagParkingStaff.values.where((TagParkingStaff t) => s.tags.contains(t.number)).toSet();
+    maxDiscount = s?.maxDiscountPercent.toDouble() ?? 0;
+  }
+
+  void togglePermission(TagParkingStaff t, bool on) => on ? permissions.add(t) : permissions.remove(t);
+
+  Future<bool> save() async {
+    final UParkingStaffResponse? s = editing;
+    final dynamic ok = await submit(
+      s == null
+          ? UServices.parking.createParkingStaff(
+              p: UParkingStaffCreateParams(
+                parkingId: parking?.id ?? "",
+                userName: userName.trimmedLatin(),
+                password: password.trimmedLatin(),
+                tags: permissions.isEmpty ? <int>[TagParkingStaff.registerEntryExit.number] : permissions.map((TagParkingStaff t) => t.number).toList(),
+                firstName: firstName.text.nullIfEmpty(),
+                lastName: lastName.text.nullIfEmpty(),
+                phoneNumber: phone.trimmedLatin().nullIfEmpty(),
+                shiftTitle: shiftTitle.text.nullIfEmpty(),
+                maxDiscountPercent: maxDiscount.round(),
+              ),
+            )
+          : UServices.parking.updateParkingStaff(
+              p: UParkingStaffUpdateParams(
+                id: s.id,
+                shiftTitle: shiftTitle.text.nullIfEmpty(),
+                password: password.text.nullIfEmpty(),
+                maxDiscountPercent: maxDiscount.round(),
+                tags: permissions.map((TagParkingStaff t) => t.number).toList(),
+              ),
+            ),
+      read,
     );
+    return ok != null;
   }
 
-  void update({required UParkingStaffUpdateParams p}) {
-    ULoading.show();
-    UServices.parking.updateParkingStaff(
-      p: p,
-      onOk: (UEmptyResponse r) {
-        ULoading.dismiss();
-        okCallback(r.message, read);
-      },
-      onError: (UEmptyResponse r) {
-        ULoading.dismiss();
-        errorCallBack(r.message, read);
-      },
-      onException: (String e) {
-        ULoading.dismiss();
-        errorCallBack(U.s.errorSubmittingForm, read);
-      },
-    );
-  }
-
-  void delete(UParkingStaffResponse i) => UNavigator.confirm(
-    title: U.s.delete,
-    message: U.s.areYouSureToDeleteThisUser,
-    onConfirm: () => UServices.parking.deleteParkingStaff(
-      p: UIdParams(id: i.id),
-      onOk: (UEmptyResponse r) {
-        UNavigator.back();
-        okCallback(r.message, read);
-      },
-      onError: (UEmptyResponse r) {
-        UNavigator.back();
-        errorCallBack(r.message, read);
-      },
-      onException: (String e) {
-        UNavigator.back();
-        UToast.error(message: e);
-      },
-    ),
-  );
-}
-
-class UAdminParkingPlateFlagController extends UBaseController {
-  List<UParkingPlateFlagResponse> list = <UParkingPlateFlagResponse>[];
-  UParkingResponse? parking;
-
-  Future<void> init({UParkingResponse? parking}) {
-    this.parking = parking;
-    return read();
-  }
-
-  Future<void> read() async {
-    state.loading();
-    await UServices.parking.readParkingPlateFlag(
-      p: UParkingPlateFlagReadParams(
-        parkingId: parking?.id,
-        pageNumber: pageNumber.value,
-        pageSize: pageSize,
-        selectorArgs: const UParkingPlateFlagSelectorArgs(creator: UUserSelectorArgs()),
-      ),
-      onOk: (UResponse<List<UParkingPlateFlagResponse>> r) {
-        list = r.result ?? <UParkingPlateFlagResponse>[];
-        totalCount = r.totalCount;
-        setTotalPages(r.totalCount);
-        setListState(isEmpty: list.isEmpty);
-      },
-      onError: (UEmptyResponse e) => setError(e.message),
-      onException: setError,
-    );
-  }
-
-  void create({required UParkingPlateFlagCreateParams p}) {
-    ULoading.show();
-    UServices.parking.createParkingPlateFlag(
-      p: p,
-      onOk: (UResponse<String> r) {
-        ULoading.dismiss();
-        okCallback(r.message, read);
-      },
-      onError: (UEmptyResponse r) {
-        ULoading.dismiss();
-        errorCallBack(r.message, read);
-      },
-      onException: (String e) {
-        ULoading.dismiss();
-        errorCallBack(U.s.errorSubmittingForm, read);
-      },
-    );
-  }
-
-  void delete(UParkingPlateFlagResponse i) => UNavigator.confirm(
-    title: U.s.delete,
-    message: U.s.areYouSureYouWantToDelete,
-    onConfirm: () => UServices.parking.deleteParkingPlateFlag(
-      p: UIdParams(id: i.id),
-      onOk: (UEmptyResponse r) {
-        UNavigator.back();
-        okCallback(r.message, read);
-      },
-      onError: (UEmptyResponse r) {
-        UNavigator.back();
-        errorCallBack(r.message, read);
-      },
-      onException: (String e) {
-        UNavigator.back();
-        UToast.error(message: e);
-      },
-    ),
-  );
-}
-
-class UAdminParkingShiftController extends UBaseController {
-  List<UParkingShiftResponse> list = <UParkingShiftResponse>[];
-  UParkingResponse? parking;
-
-  double get totalRevenue => list.fold(0, (double sum, UParkingShiftResponse i) => sum + i.total);
-
-  Future<void> init({UParkingResponse? parking}) {
-    this.parking = parking;
-    return read();
-  }
-
-  Future<void> read() async {
-    state.loading();
-    await UServices.parking.readParkingShift(
-      p: UParkingShiftReadParams(
-        parkingId: parking?.id,
-        pageNumber: pageNumber.value,
-        pageSize: pageSize,
-        selectorArgs: const UParkingShiftSelectorArgs(creator: UUserSelectorArgs()),
-      ),
-      onOk: (UResponse<List<UParkingShiftResponse>> r) {
-        list = r.result ?? <UParkingShiftResponse>[];
-        totalCount = r.totalCount;
-        setTotalPages(r.totalCount);
-        setListState(isEmpty: list.isEmpty);
-      },
-      onError: (UEmptyResponse e) => setError(e.message),
-      onException: setError,
-    );
-  }
+  void delete(UParkingStaffResponse i) => confirmAction(() => UServices.parking.deleteParkingStaff(p: UIdParams(id: i.id)), read, message: U.s.areYouSureToDeleteThisUser);
 }

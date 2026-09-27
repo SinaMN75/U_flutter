@@ -1,11 +1,19 @@
 part of "../../u_admin.dart";
 
-// Parking management: list, create (with owner + assigned admins), update, delete.
 class UAdminParkingController extends UBaseController {
   List<UParkingResponse> list = <UParkingResponse>[];
 
-  // Optional owner/creator filter.
-  final URxn<UUserResponse> creatorFilter = URxn<UUserResponse>();
+  UParkingResponse? editing;
+  late final TextEditingController title = fields.text();
+  late final TextEditingController address = fields.text();
+  late final TextEditingController phone = fields.text();
+  late final TextEditingController capacity = fields.text();
+  late final TextEditingController entrance = fields.text();
+  late final TextEditingController hourly = fields.text();
+  late final TextEditingController daily = fields.text();
+  bool disabled = false;
+  UUserResponse? owner;
+  List<UUserResponse> admins = <UUserResponse>[];
 
   Future<void> init() => read();
 
@@ -15,9 +23,6 @@ class UAdminParkingController extends UBaseController {
       p: UParkingReadParams(
         pageNumber: pageNumber.value,
         pageSize: pageSize,
-        creatorId: creatorFilter.value?.id,
-        fromCreatedAt: fromCreatedAt,
-        toCreatedAt: toCreatedAt,
         selectorArgs: const UParkingSelectorArgs(creator: UUserSelectorArgs()),
       ),
       onOk: (UResponse<List<UParkingResponse>> r) {
@@ -31,94 +36,60 @@ class UAdminParkingController extends UBaseController {
     );
   }
 
-  void applyFilters() => reloadFirstPage(read);
-
-  void clearFilters() {
-    creatorFilter.value = null;
-    fromCreatedAt = null;
-    toCreatedAt = null;
-    reloadFirstPage(read);
+  Future<void> loadForm(UParkingResponse? p) async {
+    editing = p;
+    title.text = p?.title ?? "";
+    address.text = p?.address ?? "";
+    phone.text = p?.phoneNumber ?? "";
+    capacity.text = p?.capacity.toString() ?? "";
+    entrance.text = p?.entrancePrice.toStringAsSmartRound() ?? "";
+    hourly.text = p?.hourlyPrice.toStringAsSmartRound() ?? "";
+    daily.text = p?.dailyPrice.toStringAsSmartRound() ?? "";
+    disabled = p?.tags.contains(TagParking.disabled.number) ?? false;
+    owner = p?.creator;
+    admins = await readUsersById(p?.adminUserIds ?? <String>[]);
   }
 
-  void create({required UParkingCreateParams p}) {
-    ULoading.show();
-    UServices.parking.createParking(
-      p: p,
-      onOk: (UResponse<String> r) {
-        ULoading.dismiss();
-        okCallback(r.message, read);
-      },
-      onError: (UEmptyResponse r) {
-        ULoading.dismiss();
-        errorCallBack(r.message, read);
-      },
-      onException: (String e) {
-        ULoading.dismiss();
-        errorCallBack(U.s.errorSubmittingForm, read);
-      },
+  Future<bool> save() async {
+    final UParkingResponse? p = editing;
+    final TagParking on = disabled ? TagParking.disabled : TagParking.active;
+    final TagParking off = disabled ? TagParking.active : TagParking.disabled;
+    final List<String> adminUserIds = admins.map((UUserResponse u) => u.id).toList();
+    final dynamic ok = await submit(
+      p == null
+          ? UServices.parking.createParking(
+              p: UParkingCreateParams(
+                tags: <int>[on.number],
+                title: title.text,
+                address: address.text.nullIfEmpty(),
+                phoneNumber: phone.text.nullIfEmpty(),
+                capacity: intOf(capacity) ?? 0,
+                entrancePrice: numOf(entrance) ?? 0,
+                hourlyPrice: numOf(hourly) ?? 0,
+                dailyPrice: numOf(daily) ?? 0,
+                creatorId: owner?.id,
+                adminUserIds: adminUserIds,
+              ),
+            )
+          : UServices.parking.updateParking(
+              p: UParkingUpdateParams(
+                id: p.id,
+                title: title.text.nullIfEmpty(),
+                address: address.text,
+                phoneNumber: phone.text,
+                capacity: intOf(capacity),
+                addTags: <int>[on.number],
+                removeTags: <int>[off.number],
+                entrancePrice: numOf(entrance),
+                hourlyPrice: numOf(hourly),
+                dailyPrice: numOf(daily),
+                adminUserIds: adminUserIds,
+              ),
+            ),
+      read,
     );
+    return ok != null;
   }
 
-  void update({required UParkingUpdateParams p}) {
-    ULoading.show();
-    UServices.parking.updateParking(
-      p: p,
-      onOk: (UEmptyResponse r) {
-        ULoading.dismiss();
-        okCallback(r.message, read);
-      },
-      onError: (UEmptyResponse r) {
-        ULoading.dismiss();
-        errorCallBack(r.message, read);
-      },
-      onException: (String e) {
-        ULoading.dismiss();
-        errorCallBack(U.s.errorSubmittingForm, read);
-      },
-    );
-  }
-
-  void delete(UParkingResponse i) => UNavigator.confirm(
-    title: U.s.delete,
-    message: U.s.areYouSureYouWantToDelete,
-    onConfirm: () => UServices.parking.deleteParking(
-      p: UIdParams(id: i.id),
-      onOk: (UEmptyResponse r) {
-        UNavigator.back();
-        okCallback(r.message, read);
-      },
-      onError: (UEmptyResponse r) {
-        UNavigator.back();
-        errorCallBack(r.message, read);
-      },
-      onException: (String e) {
-        UNavigator.back();
-        UToast.error(message: e);
-      },
-    ),
-  );
-
-  // Query-based user search for the owner / assigned-admins pickers.
-  Future<List<UUserResponse>> readUsers(String query) async {
-    final List<UUserResponse> result = <UUserResponse>[];
-    await UServices.user.read(
-      p: UUserReadParams(query: query.nullIfEmpty(), pageSize: 100, pageNumber: 1),
-      onOk: (UResponse<List<UUserResponse>> r) => result.addAll(r.result ?? <UUserResponse>[]),
-      onError: (UEmptyResponse e) {},
-      onException: (String e) {},
-    );
-    return result;
-  }
-
-  Future<UUserResponse?> fetchUserById(String id) async {
-    final Completer<UUserResponse?> completer = Completer<UUserResponse?>();
-    await UServices.user.readById(
-      p: UIdParams(id: id),
-      onOk: (UResponse<UUserResponse> r) => completer.complete(r.result),
-      onError: (_) => completer.complete(null),
-      onException: (_) => completer.complete(null),
-      onProgress: (int e) {},
-    );
-    return completer.future;
-  }
+  void delete(UParkingResponse i) => confirmAction(() => UServices.parking.deleteParking(p: UIdParams(id: i.id)), read);
 }

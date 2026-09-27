@@ -7,8 +7,6 @@ class UAdminParkingReportController extends UBaseController {
   // Optional page-context scope: only this parking's reports.
   UParkingResponse? parking;
 
-  final URxn<UUserResponse> creatorFilter = URxn<UUserResponse>();
-
   Future<void> init({UParkingResponse? parking}) async {
     this.parking = parking;
     await read();
@@ -21,9 +19,6 @@ class UAdminParkingReportController extends UBaseController {
         pageNumber: pageNumber.value,
         pageSize: pageSize,
         parkingId: parking?.id,
-        creatorId: creatorFilter.value?.id,
-        fromCreatedAt: fromCreatedAt,
-        toCreatedAt: toCreatedAt,
         selectorArgs: const UParkingReportSelectorArgs(
           parking: UParkingSelectorArgs(creator: UUserSelectorArgs()),
           creator: UUserSelectorArgs(),
@@ -41,35 +36,8 @@ class UAdminParkingReportController extends UBaseController {
     );
   }
 
-  void applyFilters() => reloadFirstPage(read);
-
-  void clearFilters() {
-    creatorFilter.value = null;
-    fromCreatedAt = null;
-    toCreatedAt = null;
-    reloadFirstPage(read);
-  }
-
   // Convenience totals for the report header.
   double get totalAmount => list.fold(0, (double sum, UParkingReportResponse r) => sum + (r.amount ?? 0));
 
-  void delete(UParkingReportResponse i) => UNavigator.confirm(
-    title: U.s.delete,
-    message: U.s.areYouSureYouWantToDelete,
-    onConfirm: () => UServices.parking.deleteParkingReport(
-      p: UIdParams(id: i.id),
-      onOk: (UEmptyResponse r) {
-        UNavigator.back();
-        okCallback(r.message, read);
-      },
-      onError: (UEmptyResponse r) {
-        UNavigator.back();
-        errorCallBack(r.message, read);
-      },
-      onException: (String e) {
-        UNavigator.back();
-        UToast.error(message: e);
-      },
-    ),
-  );
+  void delete(UParkingReportResponse i) => confirmAction(() => UServices.parking.deleteParkingReport(p: UIdParams(id: i.id)), read);
 }

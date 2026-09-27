@@ -27,7 +27,7 @@ class _UAdminParkingPlateFlagPageState extends State<UAdminParkingPlateFlagPage>
   @override
   Widget build(BuildContext context) => UAdminScaffold(
     title: widget.parking == null ? U.s.specialPlates : "${U.s.specialPlates} · ${widget.parking!.title}",
-    onCreate: widget.parking == null ? null : _showCreateDialog,
+    onCreate: widget.parking == null ? null : _form,
     pageNumber: c.pageNumber,
     totalPages: c.totalPages,
     onPageChanged: (int page) {
@@ -88,75 +88,23 @@ class _UAdminParkingPlateFlagPageState extends State<UAdminParkingPlateFlagPage>
     ],
   );
 
-  Future<void> _showCreateDialog() async {
-    final String? parkingId = widget.parking?.id;
-    if (parkingId == null) return;
-
-    final UAdminFields f = UAdminFields();
-    final TextEditingController reason = f.text();
-    final TextEditingController amount = f.text();
-    final TextEditingController spotNumber = f.text();
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    String plate = "";
-    TagParkingPlateFlag kind = TagParkingPlateFlag.debt;
-
-    await UNavigator.dialog(
-      f.scope(
-        StatefulBuilder(
-          builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
-            title: Text(U.s.addPlate),
-            content: SizedBox(
-              width: context.dialogWidth(max: 480),
-              child: SingleChildScrollView(
-                child: Form(
-                  key: formKey,
-                  child: UColumn(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      UPlateField(onPlateChange: (String value) => plate = value).pSymmetric(vertical: 6),
-                      UDropDownField<TagParkingPlateFlag>(
-                        initialValue: kind,
-                        items: TagParkingPlateFlag.values.map((TagParkingPlateFlag v) => DropdownMenuItem<TagParkingPlateFlag>(value: v, child: Text(v.localizedTitle))).toList(),
-                        onChanged: (TagParkingPlateFlag? value) => setDialogState(() => kind = value ?? TagParkingPlateFlag.debt),
-                      ).pSymmetric(vertical: 6),
-                      UTextField(controller: reason, labelText: U.s.reason, lines: 2, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      if (kind == TagParkingPlateFlag.debt)
-                        UTextField(
-                          controller: amount,
-                          labelText: U.s.amount,
-                          keyboardType: TextInputType.number,
-                          formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-                          margin: const EdgeInsets.symmetric(vertical: 6),
-                        ),
-                      if (kind == TagParkingPlateFlag.reservation) UTextField(controller: spotNumber, labelText: U.s.spotNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      const SizedBox(height: 20),
-                      UButtonSubmitCancel(
-                        onSubmit: () => UValidators.validateForm(
-                          key: formKey,
-                          action: () {
-                            if (plate.length < 6) return;
-                            c.create(
-                              p: UParkingPlateFlagCreateParams(
-                                parkingId: parkingId,
-                                licencePlate: plate,
-                                tags: <int>[kind.number],
-                                reason: reason.text.nullIfEmpty(),
-                                amount: amount.isNullOrEmpty() ? null : amount.numDouble(),
-                                spotNumber: spotNumber.text.nullIfEmpty(),
-                              ),
-                            );
-                            UNavigator.back();
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
+  Future<void> _form() async {
+    c.loadForm();
+    await UAdminForm.editDialog(
+      title: U.s.addPlate,
+      formKey: c.formKey,
+      onSubmit: c.save,
+      children: (BuildContext context, StateSetter setState) => <Widget>[
+        UPlateField(onPlateChange: (String v) => c.plate = v).pSymmetric(vertical: 6),
+        UDropDownField<TagParkingPlateFlag>(
+          initialValue: c.kind,
+          items: TagParkingPlateFlag.values.map((TagParkingPlateFlag v) => DropdownMenuItem<TagParkingPlateFlag>(value: v, child: Text(v.localizedTitle))).toList(),
+          onChanged: (TagParkingPlateFlag? v) => setState(() => c.kind = v ?? TagParkingPlateFlag.debt),
+        ).pSymmetric(vertical: 6),
+        UAdminForm.text(c.reason, U.s.reason, lines: 2),
+        if (c.kind == TagParkingPlateFlag.debt) UAdminForm.text(c.amount, U.s.amount, money: true),
+        if (c.kind == TagParkingPlateFlag.reservation) UAdminForm.text(c.spotNumber, U.s.spotNumber),
+      ],
     );
   }
 }

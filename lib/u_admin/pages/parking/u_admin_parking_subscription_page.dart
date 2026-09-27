@@ -27,7 +27,7 @@ class _UAdminParkingSubscriptionPageState extends State<UAdminParkingSubscriptio
   @override
   Widget build(BuildContext context) => UAdminScaffold(
     title: widget.parking == null ? U.s.subscriptions : "${U.s.subscriptions} · ${widget.parking!.title}",
-    onCreate: widget.parking == null ? null : _showCreateDialog,
+    onCreate: widget.parking == null ? null : _form,
     pageNumber: c.pageNumber,
     totalPages: c.totalPages,
     onPageChanged: (int page) {
@@ -109,106 +109,37 @@ class _UAdminParkingSubscriptionPageState extends State<UAdminParkingSubscriptio
 
   Widget _menu(UParkingSubscriptionResponse i) => UPopupMenu(
     items: <UPopupMenuItem>[
-      UPopupMenuItem(label: U.s.renewSubscription, icon: Icons.autorenew_rounded, onTap: () => _renew(i)),
+      UPopupMenuItem(label: U.s.renewSubscription, icon: Icons.autorenew_rounded, onTap: () => c.renew(i)),
       UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, onTap: () => c.delete(i)),
     ],
   );
 
-  void _renew(UParkingSubscriptionResponse i) {
-    final TagParkingSubscription duration = TagParkingSubscription.values.firstWhereOrNull((TagParkingSubscription t) => i.tags.contains(t.number)) ?? TagParkingSubscription.monthly;
-    final int days = switch (duration) {
-      TagParkingSubscription.weekly => 7,
-      TagParkingSubscription.quarterly => 90,
-      _ => 30,
-    };
-    final DateTime base = i.expiryDate.isAfter(DateTime.now()) ? i.expiryDate : DateTime.now();
-    c.update(
-      p: UParkingSubscriptionUpdateParams(
-        id: i.id,
-        expiryDate: base.add(Duration(days: days)),
-      ),
-    );
-  }
-
-  Future<void> _showCreateDialog() async {
-    final String? parkingId = widget.parking?.id;
-    if (parkingId == null) return;
-
-    final UAdminFields f = UAdminFields();
-    final TextEditingController name = f.text();
-    final TextEditingController phone = f.text();
-    final TextEditingController price = f.text();
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    String plate = "";
-    TagVehicle vehicleType = TagVehicle.car;
-    TagParkingSubscription duration = TagParkingSubscription.monthly;
-
-    await UNavigator.dialog(
-      f.scope(
-        StatefulBuilder(
-          builder: (BuildContext context, StateSetter setDialogState) => AlertDialog(
-            title: Text(U.s.registerANewSubscription),
-            content: SizedBox(
-              width: context.dialogWidth(max: 480),
-              child: SingleChildScrollView(
-                child: Form(
-                  key: formKey,
-                  child: UColumn(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      UPlateField(onPlateChange: (String value) => plate = value).pSymmetric(vertical: 6),
-                      UDropDownField<TagVehicle>(
-                        initialValue: vehicleType,
-                        items: TagVehicle.values.map((TagVehicle v) => DropdownMenuItem<TagVehicle>(value: v, child: Text(v.localizedTitle))).toList(),
-                        onChanged: (TagVehicle? value) => setDialogState(() => vehicleType = value ?? TagVehicle.car),
-                      ).pSymmetric(vertical: 6),
-                      UDropDownField<TagParkingSubscription>(
-                        initialValue: duration,
-                        items: <TagParkingSubscription>[
-                          TagParkingSubscription.weekly,
-                          TagParkingSubscription.monthly,
-                          TagParkingSubscription.quarterly,
-                        ].map((TagParkingSubscription v) => DropdownMenuItem<TagParkingSubscription>(value: v, child: Text(v.localizedTitle))).toList(),
-                        onChanged: (TagParkingSubscription? value) => setDialogState(() => duration = value ?? TagParkingSubscription.monthly),
-                      ).pSymmetric(vertical: 6),
-                      UTextField(controller: name, labelText: U.s.fullName, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      UTextFieldPhoneNumber(controller: phone, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
-                      UTextField(
-                        controller: price,
-                        labelText: U.s.amount,
-                        keyboardType: TextInputType.number,
-                        formatters: <TextInputFormatter>[UCurrencyInputFormatter()],
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                      ),
-                      const SizedBox(height: 20),
-                      UButtonSubmitCancel(
-                        onSubmit: () => UValidators.validateForm(
-                          key: formKey,
-                          action: () {
-                            if (plate.length < 6) return;
-                            c.create(
-                              p: UParkingSubscriptionCreateParams(
-                                parkingId: parkingId,
-                                licencePlate: plate,
-                                vehicleType: vehicleType.number,
-                                tags: <int>[duration.number],
-                                customerName: name.text.nullIfEmpty(),
-                                customerPhoneNumber: phone.trimmedLatin().nullIfEmpty(),
-                                price: price.isNullOrEmpty() ? 0 : price.numDouble(),
-                              ),
-                            );
-                            UNavigator.back();
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
+  Future<void> _form() async {
+    c.loadForm();
+    await UAdminForm.editDialog(
+      title: U.s.registerANewSubscription,
+      formKey: c.formKey,
+      onSubmit: c.save,
+      children: (BuildContext context, StateSetter setState) => <Widget>[
+        UPlateField(onPlateChange: (String v) => c.plate = v).pSymmetric(vertical: 6),
+        UDropDownField<TagVehicle>(
+          initialValue: c.vehicleType,
+          items: TagVehicle.values.map((TagVehicle v) => DropdownMenuItem<TagVehicle>(value: v, child: Text(v.localizedTitle))).toList(),
+          onChanged: (TagVehicle? v) => setState(() => c.vehicleType = v ?? TagVehicle.car),
+        ).pSymmetric(vertical: 6),
+        UDropDownField<TagParkingSubscription>(
+          initialValue: c.duration,
+          items: <TagParkingSubscription>[
+            TagParkingSubscription.weekly,
+            TagParkingSubscription.monthly,
+            TagParkingSubscription.quarterly,
+          ].map((TagParkingSubscription v) => DropdownMenuItem<TagParkingSubscription>(value: v, child: Text(v.localizedTitle))).toList(),
+          onChanged: (TagParkingSubscription? v) => setState(() => c.duration = v ?? TagParkingSubscription.monthly),
+        ).pSymmetric(vertical: 6),
+        UAdminForm.text(c.name, U.s.fullName),
+        UTextFieldPhoneNumber(controller: c.phone, labelText: U.s.phoneNumber, margin: const EdgeInsets.symmetric(vertical: 6)),
+        UAdminForm.text(c.price, U.s.amount, money: true),
+      ],
     );
   }
 }

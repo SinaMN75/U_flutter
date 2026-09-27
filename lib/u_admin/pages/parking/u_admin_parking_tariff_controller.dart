@@ -6,6 +6,19 @@ class UAdminParkingTariffController extends UBaseController {
   List<UParkingTariffResponse> list = <UParkingTariffResponse>[];
   UParkingResponse? parking;
 
+  String parkingId = "";
+  late final TextEditingController entrance = fields.text();
+  late final TextEditingController dayHourly = fields.text();
+  late final TextEditingController nightHourly = fields.text();
+  late final TextEditingController dailyCap = fields.text();
+  late final TextEditingController weekly = fields.text();
+  late final TextEditingController monthly = fields.text();
+  late final TextEditingController quarterly = fields.text();
+  late final TextEditingController freeMinutes = fields.text();
+  TagVehicle vehicleType = TagVehicle.car;
+  bool roundToFullHour = false;
+  bool perMinuteAfterFirstHour = true;
+
   Future<void> init({UParkingResponse? parking}) {
     this.parking = parking;
     return read();
@@ -31,42 +44,44 @@ class UAdminParkingTariffController extends UBaseController {
     );
   }
 
-  void save({required UParkingTariffCreateParams p}) {
-    ULoading.show();
-    UServices.parking.createParkingTariff(
-      p: p,
-      onOk: (UResponse<String> r) {
-        ULoading.dismiss();
-        okCallback(r.message, read);
-      },
-      onError: (UEmptyResponse r) {
-        ULoading.dismiss();
-        errorCallBack(r.message, read);
-      },
-      onException: (String e) {
-        ULoading.dismiss();
-        errorCallBack(U.s.errorSubmittingForm, read);
-      },
-    );
+  void loadForm(UParkingTariffResponse? t) {
+    parkingId = t?.parkingId ?? parking?.id ?? "";
+    entrance.text = t?.entrancePrice.toStringAsSmartRound(maxPrecision: 0) ?? "";
+    dayHourly.text = t?.dayHourlyPrice.toStringAsSmartRound(maxPrecision: 0) ?? "";
+    nightHourly.text = t?.nightHourlyPrice.toStringAsSmartRound(maxPrecision: 0) ?? "";
+    dailyCap.text = t?.dailyCap.toStringAsSmartRound(maxPrecision: 0) ?? "";
+    weekly.text = t?.weeklyPrice.toStringAsSmartRound(maxPrecision: 0) ?? "";
+    monthly.text = t?.monthlyPrice.toStringAsSmartRound(maxPrecision: 0) ?? "";
+    quarterly.text = t?.quarterlyPrice.toStringAsSmartRound(maxPrecision: 0) ?? "";
+    freeMinutes.text = (t?.freeMinutes ?? 0).toString();
+    vehicleType = TagVehicle.values.fromNumber(t?.vehicleType ?? TagVehicle.car.number) ?? TagVehicle.car;
+    roundToFullHour = t?.roundToFullHour ?? false;
+    perMinuteAfterFirstHour = t?.perMinuteAfterFirstHour ?? true;
   }
 
-  void delete(UParkingTariffResponse i) => UNavigator.confirm(
-    title: U.s.delete,
-    message: U.s.areYouSureYouWantToDelete,
-    onConfirm: () => UServices.parking.deleteParkingTariff(
-      p: UIdParams(id: i.id),
-      onOk: (UEmptyResponse r) {
-        UNavigator.back();
-        okCallback(r.message, read);
-      },
-      onError: (UEmptyResponse r) {
-        UNavigator.back();
-        errorCallBack(r.message, read);
-      },
-      onException: (String e) {
-        UNavigator.back();
-        UToast.error(message: e);
-      },
-    ),
-  );
+  Future<bool> save() async {
+    final dynamic ok = await submit(
+      UServices.parking.createParkingTariff(
+        p: UParkingTariffCreateParams(
+          parkingId: parkingId,
+          vehicleType: vehicleType.number,
+          tags: <int>[TagParkingTariff.hourly.number, TagParkingTariff.subscription.number],
+          entrancePrice: numOf(entrance) ?? 0,
+          dayHourlyPrice: numOf(dayHourly) ?? 0,
+          nightHourlyPrice: numOf(nightHourly) ?? 0,
+          dailyCap: numOf(dailyCap) ?? 0,
+          weeklyPrice: numOf(weekly) ?? 0,
+          monthlyPrice: numOf(monthly) ?? 0,
+          quarterlyPrice: numOf(quarterly) ?? 0,
+          freeMinutes: intOf(freeMinutes) ?? 0,
+          roundToFullHour: roundToFullHour,
+          perMinuteAfterFirstHour: perMinuteAfterFirstHour,
+        ),
+      ),
+      read,
+    );
+    return ok != null;
+  }
+
+  void delete(UParkingTariffResponse i) => confirmAction(() => UServices.parking.deleteParkingTariff(p: UIdParams(id: i.id)), read);
 }
