@@ -1,6 +1,6 @@
 part of "../../u_admin.dart";
 
-class UAdminPaymentUserController extends UAdminBaseController {
+class UAdminPaymentUserController extends UBaseController {
   List<UUserResponse> list = <UUserResponse>[];
 
   static const List<TagUser> verifiedTags = <TagUser>[

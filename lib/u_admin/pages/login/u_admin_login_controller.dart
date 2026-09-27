@@ -1,6 +1,6 @@
 part of "../../u_admin.dart";
 
-class UAdminLoginController extends UAdminBaseController {
+class UAdminLoginController extends UBaseController {
   final TextEditingController userNameController = TextEditingController(text: kDebugMode ? "SystemAdmin" : "");
   final TextEditingController passwordController = TextEditingController(text: kDebugMode ? "SystemAdmin" : "");
 

@@ -1,6 +1,6 @@
 part of "../../u_admin.dart";
 
-class UAdminParkingShiftController extends UAdminBaseController {
+class UAdminParkingShiftController extends UBaseController {
   List<UParkingShiftResponse> list = <UParkingShiftResponse>[];
   UParkingResponse? parking;
 

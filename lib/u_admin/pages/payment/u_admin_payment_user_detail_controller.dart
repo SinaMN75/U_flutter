@@ -1,6 +1,6 @@
 part of "../../u_admin.dart";
 
-class UAdminPaymentUserDetailController extends UAdminBaseController {
+class UAdminPaymentUserDetailController extends UBaseController {
   final URx<int> loadingProgress = 0.obs;
   late UUserResponse user;
 

@@ -1,7 +1,7 @@
 part of "../../u_admin.dart";
 
 /// Hotel users list and the create/edit user dialog.
-class UAdminHotelUserController extends UAdminBaseController {
+class UAdminHotelUserController extends UBaseController {
   URxList<UUserResponse> list = <UUserResponse>[].obs;
 
   TagUser? tagFilter;

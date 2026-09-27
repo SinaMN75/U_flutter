@@ -1,6 +1,6 @@
 part of "../../u_admin.dart";
 
-class UAdminContentController extends UAdminBaseController {
+class UAdminContentController extends UBaseController {
   List<UContentResponse> list = <UContentResponse>[];
   TagContent? tagFilter;
 

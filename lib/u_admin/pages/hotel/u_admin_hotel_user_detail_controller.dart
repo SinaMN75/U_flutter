@@ -3,7 +3,7 @@ part of "../../u_admin.dart";
 enum UAdminHotelContractLifecycle { active, upcoming, expired }
 
 /// One hotel user: wallets, merchants, dorm contracts and payments.
-class UAdminHotelUserDetailController extends UAdminBaseController {
+class UAdminHotelUserDetailController extends UBaseController {
   late UUserResponse user;
   List<UDormBedContractResponse> contracts = <UDormBedContractResponse>[];
 

@@ -1,6 +1,6 @@
 part of "../../u_admin.dart";
 
-class UAdminPaymentTerminalBrokerController extends UAdminBaseController {
+class UAdminPaymentTerminalBrokerController extends UBaseController {
   List<UTerminalBrokerResponse> list = <UTerminalBrokerResponse>[];
 
   final TextEditingController codeFilterController = TextEditingController();

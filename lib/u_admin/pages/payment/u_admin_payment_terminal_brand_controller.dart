@@ -1,6 +1,6 @@
 part of "../../u_admin.dart";
 
-class UAdminPaymentTerminalBrandController extends UAdminBaseController {
+class UAdminPaymentTerminalBrandController extends UBaseController {
   List<UTerminalBrandResponse> list = <UTerminalBrandResponse>[];
 
   static const List<TagTerminalBrand> deviceTypes = <TagTerminalBrand>[TagTerminalBrand.atm, TagTerminalBrand.wallCashless, TagTerminalBrand.deskCashless];

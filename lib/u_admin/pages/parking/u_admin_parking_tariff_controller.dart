@@ -2,7 +2,7 @@ part of "../../u_admin.dart";
 
 /// Tariffs are one row per parking + vehicle type, carrying both the hourly rates and the
 /// subscription prices, so the list is short and edited in place.
-class UAdminParkingTariffController extends UAdminBaseController {
+class UAdminParkingTariffController extends UBaseController {
   List<UParkingTariffResponse> list = <UParkingTariffResponse>[];
   UParkingResponse? parking;
 

@@ -1,6 +1,6 @@
 part of "../../u_admin.dart";
 
-class UAdminSplashController extends UAdminBaseController {
+class UAdminSplashController extends UBaseController {
   void init({
     required VoidCallback onFinish,
     required VoidCallback onError,

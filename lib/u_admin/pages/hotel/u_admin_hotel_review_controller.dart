@@ -1,7 +1,7 @@
 part of "../../u_admin.dart";
 
 /// Moderation of the reviews guests write about hotels and dorms.
-class UAdminHotelReviewController extends UAdminBaseController {
+class UAdminHotelReviewController extends UBaseController {
   List<UCommentResponse> list = <UCommentResponse>[];
 
   /// Which reviews are listed: waiting for approval by default.

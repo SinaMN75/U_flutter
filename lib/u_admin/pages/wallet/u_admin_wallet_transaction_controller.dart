@@ -1,6 +1,6 @@
 part of "../../u_admin.dart";
 
-class UAdminWalletTransactionController extends UAdminBaseController {
+class UAdminWalletTransactionController extends UBaseController {
   List<UTxnResponse> list = <UTxnResponse>[];
 
   TagTxn? statusFilter;

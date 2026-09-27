@@ -2,7 +2,7 @@ part of "../../u_admin.dart";
 
 enum UAdminHotelContractStatusFilter { all, active, upcoming, expired, expiringSoon }
 
-class UAdminHotelContractController extends UAdminBaseController {
+class UAdminHotelContractController extends UBaseController {
   List<UDormBedContractResponse> list = <UDormBedContractResponse>[];
   UDormBedResponse? bed;
   UUserResponse? user;

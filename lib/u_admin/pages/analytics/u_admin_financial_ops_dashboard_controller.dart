@@ -1,6 +1,6 @@
 part of "../../u_admin.dart";
 
-class UAdminFinancialOpsDashboardController extends UAdminBaseController {
+class UAdminFinancialOpsDashboardController extends UBaseController {
   final URxn<UFinancialOpsDashboardResponse> report = URxn<UFinancialOpsDashboardResponse>();
 
   Future<void> init() => read();

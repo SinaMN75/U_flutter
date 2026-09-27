@@ -1,6 +1,6 @@
 part of "../../u_admin.dart";
 
-class UAdminBlogController extends UAdminBaseController {
+class UAdminBlogController extends UBaseController {
   List<UBlogResponse> list = <UBlogResponse>[];
   final TextEditingController titleFilterController = TextEditingController();
 

@@ -2,7 +2,7 @@ part of "../../u_admin.dart";
 
 enum UAdminHotelInvoiceStatusFilter { all, paid, unpaid, overdue }
 
-class UAdminHotelInvoiceController extends UAdminBaseController {
+class UAdminHotelInvoiceController extends UBaseController {
   List<UDormBedInvoiceResponse> list = <UDormBedInvoiceResponse>[];
   UDormBedContractResponse? contract;
   static const List<TagDormBedInvoice> types = <TagDormBedInvoice>[TagDormBedInvoice.deposit, TagDormBedInvoice.rent];

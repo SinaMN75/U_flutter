@@ -1,6 +1,6 @@
 part of "../../u_admin.dart";
 
-class UAdminParkingSubscriptionController extends UAdminBaseController {
+class UAdminParkingSubscriptionController extends UBaseController {
   List<UParkingSubscriptionResponse> list = <UParkingSubscriptionResponse>[];
   UParkingResponse? parking;
   bool isActive = true;

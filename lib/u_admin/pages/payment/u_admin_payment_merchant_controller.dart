@@ -1,6 +1,6 @@
 part of "../../u_admin.dart";
 
-class UAdminPaymentMerchantController extends UAdminBaseController {
+class UAdminPaymentMerchantController extends UBaseController {
   List<UMerchantResponse> list = <UMerchantResponse>[];
 
   UUserResponse? user;

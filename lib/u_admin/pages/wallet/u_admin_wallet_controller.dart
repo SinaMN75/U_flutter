@@ -1,6 +1,6 @@
 part of "../../u_admin.dart";
 
-class UAdminWalletController extends UAdminBaseController {
+class UAdminWalletController extends UBaseController {
   final URxn<UUserResponse> selectedUser = URxn<UUserResponse>();
 
   final URxList<UWalletResponse> wallets = <UWalletResponse>[].obs;

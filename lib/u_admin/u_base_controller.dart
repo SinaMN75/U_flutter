@@ -1,6 +1,6 @@
 part of "u_admin.dart";
 
-abstract class UAdminBaseController {
+abstract class UBaseController {
   final URxState state = URxState();
   final GlobalKey<FormState> formKey = GlobalKey();
 

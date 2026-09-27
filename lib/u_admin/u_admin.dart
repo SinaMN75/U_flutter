@@ -80,7 +80,7 @@ part "pages/wallet/u_admin_wallet_page.dart";
 part "pages/wallet/u_admin_wallet_transaction_controller.dart";
 part "pages/wallet/u_admin_wallet_transaction_page.dart";
 part "u_admin_app.dart";
-part "u_admin_base_controller.dart";
+part "u_base_controller.dart";
 part "u_admin_config.dart";
 part "u_admin_dashboard.dart";
 part "u_admin_list_view.dart";

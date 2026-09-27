@@ -1,6 +1,6 @@
 part of "../../u_admin.dart";
 
-class UAdminHotelDormController extends UAdminBaseController {
+class UAdminHotelDormController extends UBaseController {
   List<UDormResponse> list = <UDormResponse>[];
   final TextEditingController titleFilterController = TextEditingController();
 

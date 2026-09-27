@@ -1,6 +1,6 @@
 part of "../../u_admin.dart";
 
-class UAdminPaymentMoadiController extends UAdminBaseController {
+class UAdminPaymentMoadiController extends UBaseController {
   List<UMoadiResponse> list = <UMoadiResponse>[];
 
   UUserResponse? user;

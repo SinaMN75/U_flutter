@@ -1,6 +1,6 @@
 part of "../../u_admin.dart";
 
-class UAdminParkingPlateFlagController extends UAdminBaseController {
+class UAdminParkingPlateFlagController extends UBaseController {
   List<UParkingPlateFlagResponse> list = <UParkingPlateFlagResponse>[];
   UParkingResponse? parking;
 

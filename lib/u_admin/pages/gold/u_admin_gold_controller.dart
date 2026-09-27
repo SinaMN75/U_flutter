@@ -1,6 +1,6 @@
 part of "../../u_admin.dart";
 
-class UAdminGoldController extends UAdminBaseController {
+class UAdminGoldController extends UBaseController {
   final URxn<UGoldAccountResponse> account = URxn<UGoldAccountResponse>();
   final URxn<UGoldQuoteResponse> quote = URxn<UGoldQuoteResponse>();
   final URxList<UGoldBalanceResponse> balances = <UGoldBalanceResponse>[].obs;
