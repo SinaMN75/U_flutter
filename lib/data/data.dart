@@ -212,6 +212,10 @@ part "services/vehicle_service.dart";
 
 part "services/wallet_service.dart";
 
+part "payment/ipg_browser_controller.dart";
+
+part "payment/ipg_browser_page.dart";
+
 part "payment/ipg_flow.dart";
 
 part "payment/ipg_web_view_controller.dart";

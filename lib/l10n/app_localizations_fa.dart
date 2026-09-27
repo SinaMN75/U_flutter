@@ -796,6 +796,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get companyCode => 'کد شرکت';
 
   @override
+  String get completeThePaymentInTheBrowserThenComeBackHere => 'پرداخت را در مرورگر انجام دهید و سپس به اینجا برگردید.';
+
+  @override
   String get completeUserInformation => 'تکمیل اطلاعات کاربری';
 
   @override

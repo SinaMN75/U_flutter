@@ -796,6 +796,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get companyCode => 'Company code';
 
   @override
+  String get completeThePaymentInTheBrowserThenComeBackHere => 'Complete the payment in the browser, then come back here.';
+
+  @override
   String get completeUserInformation => 'Complete user information';
 
   @override

@@ -23,6 +23,7 @@ abstract class UIpgFlow {
     required UIpgPayParams p,
     Function(bool)? onPaid,
     UReceipt? receipt,
+    bool inBrowser = false,
   }) async {
     final Completer<bool> completer = Completer<bool>();
     bool paid = false;
@@ -42,7 +43,9 @@ abstract class UIpgFlow {
       onOk: (UResponse<UIpgPayResponse> response) async {
         ULoading.dismiss();
         final UIpgAdditionalData requested = response.result!.additionalData;
-        final UIpgAdditionalData? settled = await UNavigator.push<UIpgAdditionalData>(UIpgWebViewPage(url: response.result!.url, additionalData: requested));
+        final UIpgAdditionalData? settled = await UNavigator.push<UIpgAdditionalData>(
+          inBrowser ? UIpgBrowserPage(url: response.result!.url, additionalData: requested) : UIpgWebViewPage(url: response.result!.url, additionalData: requested),
+        );
         paid = settled?.paid ?? false;
         if (paid && receipt != null) {
           await _showReceipt(

@@ -1646,6 +1646,12 @@ abstract class AppLocalizations {
   /// **'Company code'**
   String get companyCode;
 
+  /// No description provided for @completeThePaymentInTheBrowserThenComeBackHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete the payment in the browser, then come back here.'**
+  String get completeThePaymentInTheBrowserThenComeBackHere;
+
   /// No description provided for @completeUserInformation.
   ///
   /// In en, this message translates to:
