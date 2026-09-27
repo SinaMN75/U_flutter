@@ -3,6 +3,18 @@ import "package:u/utilities.dart";
 class UAdminParkingTariffPage extends StatefulWidget {
   const UAdminParkingTariffPage({super.key, this.parking});
 
+  static void open({UParkingResponse? parking}) => U.addOrSwitchTab(
+    parking == null ? U.s.tariffs : "${U.s.tariffs} · ${parking.title}",
+    UAdminParkingTariffPage(parking: parking),
+  );
+
+  static UAdminModule module({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.tariffs,
+    icon: Icons.request_quote_rounded,
+    page: () => const UAdminParkingTariffPage(),
+    roles: roles,
+  );
+
   final UParkingResponse? parking;
 
   @override

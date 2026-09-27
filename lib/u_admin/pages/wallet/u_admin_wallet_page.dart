@@ -3,6 +3,15 @@ import "package:u/utilities.dart";
 class UAdminWalletPage extends StatefulWidget {
   const UAdminWalletPage({super.key});
 
+  static void open() => U.addOrSwitchTab(U.s.walletManagement, const UAdminWalletPage());
+
+  static UAdminModule module({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.wallets,
+    icon: Icons.account_balance_wallet_rounded,
+    page: () => const UAdminWalletPage(),
+    roles: roles,
+  );
+
   @override
   State<UAdminWalletPage> createState() => _WalletPageState();
 }

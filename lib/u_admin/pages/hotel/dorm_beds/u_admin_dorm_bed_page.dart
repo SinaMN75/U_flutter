@@ -3,6 +3,22 @@ import "package:u/utilities.dart";
 class UAdminDormBedPage extends StatefulWidget {
   const UAdminDormBedPage({this.room, this.dorm, super.key});
 
+  static void open({UDormRoomResponse? room, UDormResponse? dorm}) => U.addOrSwitchTab(
+    room != null
+        ? "${U.s.beds} · ${room.title}"
+        : dorm != null
+        ? "${U.s.beds} · ${dorm.title}"
+        : U.s.dormBeds,
+    UAdminDormBedPage(room: room, dorm: dorm),
+  );
+
+  static UAdminModule module({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.beds,
+    icon: Icons.bed_rounded,
+    page: () => const UAdminDormBedPage(),
+    roles: roles,
+  );
+
   final UDormRoomResponse? room;
   final UDormResponse? dorm;
 
@@ -84,7 +100,7 @@ class _DormBedPageState extends State<UAdminDormBedPage> {
 
   Widget _menu(UDormBedResponse i) => UPopupMenu(
     items: <UPopupMenuItem>[
-      UPopupMenuItem(label: U.s.contracts, icon: Icons.description_outlined, onTap: () => UAdminPageSwitcher.contracts(bed: i)),
+      UPopupMenuItem(label: U.s.contracts, icon: Icons.description_outlined, onTap: () => UAdminContractPage.open(bed: i)),
       UPopupMenuItem(label: U.s.edit, icon: Icons.edit, visible: UAdmin.canAccess(<TagUser>[TagUser.permissionManageDorms]), onTap: () => _form(i)),
       UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, visible: UAdmin.canAccess(<TagUser>[TagUser.permissionDeleteDorms]), onTap: () => c.delete(i)),
     ],

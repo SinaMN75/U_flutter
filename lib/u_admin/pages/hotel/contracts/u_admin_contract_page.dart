@@ -3,6 +3,22 @@ import "package:u/utilities.dart";
 class UAdminContractPage extends StatefulWidget {
   const UAdminContractPage({this.bed, this.user, super.key});
 
+  static void open({UDormBedResponse? bed, UUserResponse? user}) => U.addOrSwitchTab(
+    bed != null
+        ? "${U.s.contracts} · ${bed.title}"
+        : user != null
+        ? "${U.s.contracts} · ${user.displayName}"
+        : U.s.contracts,
+    UAdminContractPage(bed: bed, user: user),
+  );
+
+  static UAdminModule module({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.contracts,
+    icon: Icons.description_rounded,
+    page: () => const UAdminContractPage(),
+    roles: roles,
+  );
+
   final UDormBedResponse? bed;
   final UUserResponse? user;
 
@@ -90,10 +106,10 @@ class _ContractPageState extends State<UAdminContractPage> {
 
   Widget _menu(UDormBedContractResponse i) => UPopupMenu(
     items: <UPopupMenuItem>[
-      UPopupMenuItem(label: U.s.tenant, icon: Icons.person_outline, visible: i.user != null, onTap: () => UAdminPageSwitcher.hotelUserDetail(user: i.user!)),
-      UPopupMenuItem(label: U.s.viewItem(U.s.invoices), icon: Icons.receipt_long_outlined, onTap: () => UAdminPageSwitcher.invoices(contract: i)),
-      UPopupMenuItem(label: U.s.bed, icon: Icons.bed_outlined, visible: i.bed?.room != null, onTap: () => UAdminPageSwitcher.dormBeds(room: i.bed!.room)),
-      UPopupMenuItem(label: U.s.dorm, icon: Icons.bedroom_parent_outlined, visible: i.bed?.room?.dorm != null, onTap: () => UAdminPageSwitcher.dormRooms(dorm: i.bed!.room!.dorm)),
+      UPopupMenuItem(label: U.s.tenant, icon: Icons.person_outline, visible: i.user != null, onTap: () => UAdminHotelUserDetailPage.open(user: i.user!)),
+      UPopupMenuItem(label: U.s.viewItem(U.s.invoices), icon: Icons.receipt_long_outlined, onTap: () => UAdminInvoicePage.open(contract: i)),
+      UPopupMenuItem(label: U.s.bed, icon: Icons.bed_outlined, visible: i.bed?.room != null, onTap: () => UAdminDormBedPage.open(room: i.bed!.room)),
+      UPopupMenuItem(label: U.s.dorm, icon: Icons.bedroom_parent_outlined, visible: i.bed?.room?.dorm != null, onTap: () => UAdminDormRoomPage.open(dorm: i.bed!.room!.dorm)),
       UPopupMenuItem(label: U.s.edit, icon: Icons.edit, visible: UAdmin.canAccess(<TagUser>[TagUser.permissionManageContracts]), onTap: () => _form(i)),
       UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, visible: UAdmin.canAccess(<TagUser>[TagUser.permissionDeleteContracts]), onTap: () => c.delete(i)),
     ],

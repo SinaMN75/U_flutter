@@ -3,6 +3,13 @@ part of "../../../u_admin.dart";
 class UAdminTerminalBrokersPage extends StatefulWidget {
   const UAdminTerminalBrokersPage({super.key});
 
+  static UAdminModule module({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.brokers,
+    icon: Icons.point_of_sale_rounded,
+    page: () => const UAdminTerminalBrokersPage(),
+    roles: roles,
+  );
+
   @override
   State<UAdminTerminalBrokersPage> createState() => _TerminalBrokersPageState();
 }

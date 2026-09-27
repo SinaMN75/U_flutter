@@ -3,6 +3,13 @@ import "package:u/utilities.dart";
 class UAdminPnTesterPage extends StatefulWidget {
   const UAdminPnTesterPage({super.key});
 
+  static UAdminModule module({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.pnApiTester,
+    icon: Icons.api_rounded,
+    page: () => const UAdminPnTesterPage(),
+    roles: roles,
+  );
+
   @override
   State<UAdminPnTesterPage> createState() => _UAdminPnTesterPageState();
 }

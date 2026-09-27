@@ -3,6 +3,13 @@ import "package:u/utilities.dart";
 class UAdminReviewPage extends StatefulWidget {
   const UAdminReviewPage({super.key});
 
+  static UAdminModule module({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.reviews,
+    icon: Icons.rate_review_rounded,
+    page: () => const UAdminReviewPage(),
+    roles: roles,
+  );
+
   @override
   State<UAdminReviewPage> createState() => _ReviewPageState();
 }

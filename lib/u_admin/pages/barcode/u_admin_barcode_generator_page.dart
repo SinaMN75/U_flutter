@@ -3,6 +3,13 @@ import "package:u/utilities.dart";
 class UAdminBarcodeGeneratorPage extends StatefulWidget {
   const UAdminBarcodeGeneratorPage({super.key});
 
+  static UAdminModule module({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.barcodeQrGenerator,
+    icon: Icons.qr_code_2_rounded,
+    page: () => const UAdminBarcodeGeneratorPage(),
+    roles: roles,
+  );
+
   @override
   State<UAdminBarcodeGeneratorPage> createState() => _UAdminBarcodeGeneratorPageState();
 }

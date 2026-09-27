@@ -3,6 +3,18 @@ part of "../../../u_admin.dart";
 class UAdminTerminalsPage extends StatefulWidget {
   const UAdminTerminalsPage({super.key, this.merchant});
 
+  static void open({UMerchantResponse? merchant}) => U.addOrSwitchTab(
+    merchant == null ? U.s.terminalsManagement : "${U.s.terminals} · ${merchant.title}",
+    UAdminTerminalsPage(merchant: merchant),
+  );
+
+  static UAdminModule module({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.terminals,
+    icon: Icons.point_of_sale_rounded,
+    page: () => const UAdminTerminalsPage(),
+    roles: roles,
+  );
+
   final UMerchantResponse? merchant;
 
   @override

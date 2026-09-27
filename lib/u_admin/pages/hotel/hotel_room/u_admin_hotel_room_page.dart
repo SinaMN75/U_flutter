@@ -3,6 +3,15 @@ import "package:u/utilities.dart";
 class UAdminHotelRoomPage extends StatefulWidget {
   const UAdminHotelRoomPage({this.hotel, super.key});
 
+  static void open({UHotelResponse? hotel}) => U.addOrSwitchTab(hotel == null ? U.s.hotelRooms : "${U.s.rooms} · ${hotel.title}", UAdminHotelRoomPage(hotel: hotel));
+
+  static UAdminModule module({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.hotelRooms,
+    icon: Icons.meeting_room_rounded,
+    page: () => const UAdminHotelRoomPage(),
+    roles: roles,
+  );
+
   final UHotelResponse? hotel;
 
   @override
@@ -78,7 +87,7 @@ class _HotelRoomPageState extends State<UAdminHotelRoomPage> {
 
   Widget _menu(UHotelRoomResponse i) => UPopupMenu(
     items: <UPopupMenuItem>[
-      UPopupMenuItem(label: U.s.reservations, icon: Icons.event_available_outlined, onTap: () => UAdminPageSwitcher.reservations(room: i)),
+      UPopupMenuItem(label: U.s.reservations, icon: Icons.event_available_outlined, onTap: () => UAdminReservationPage.open(room: i)),
       UPopupMenuItem(label: U.s.edit, icon: Icons.edit, visible: UAdmin.canAccess(<TagUser>[TagUser.permissionManageHotels]), onTap: () => _form(i)),
       UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, visible: UAdmin.canAccess(<TagUser>[TagUser.permissionDeleteHotels]), onTap: () => c.delete(i)),
     ],

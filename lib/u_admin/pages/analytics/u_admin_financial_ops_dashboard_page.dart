@@ -3,6 +3,15 @@ import "package:u/utilities.dart";
 class UAdminFinancialOpsDashboardPage extends StatefulWidget {
   const UAdminFinancialOpsDashboardPage({super.key});
 
+  static void open() => U.addOrSwitchTab(U.s.financialOperations, const UAdminFinancialOpsDashboardPage());
+
+  static UAdminModule module({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.financialOperations,
+    icon: Icons.account_balance_wallet_rounded,
+    page: () => const UAdminFinancialOpsDashboardPage(),
+    roles: roles,
+  );
+
   @override
   State<UAdminFinancialOpsDashboardPage> createState() => _FinancialOpsDashboardPageState();
 }
@@ -86,21 +95,21 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
 
   Widget _entityCards(UFinancialOpsDashboardResponse r) => UAdminResponsiveGrid(
     children: <Widget>[
-      UAdminDashboard.statCard(U.s.users, r.usersCount.separate3By3(), "+${r.newUsersCount} ${U.s.new_}", Icons.people_alt_rounded, UAdminTheme.indigo, UAdminPageSwitcher.adminUsers),
-      UAdminDashboard.statCard(U.s.merchants, r.merchantsCount.separate3By3(), "+${r.newMerchantsCount} ${U.s.new_}", Icons.storefront_rounded, UAdminTheme.orange, UAdminPageSwitcher.merchants),
+      UAdminDashboard.statCard(U.s.users, r.usersCount.separate3By3(), "+${r.newUsersCount} ${U.s.new_}", Icons.people_alt_rounded, UAdminTheme.indigo, UAdminUsersPage.open),
+      UAdminDashboard.statCard(U.s.merchants, r.merchantsCount.separate3By3(), "+${r.newMerchantsCount} ${U.s.new_}", Icons.storefront_rounded, UAdminTheme.orange, UAdminMerchantsPage.open),
       UAdminDashboard.statCard(
         U.s.terminals,
         r.terminalsCount.separate3By3(),
         "${r.terminalsAssignedCount} ${U.s.assigned}",
         Icons.point_of_sale_rounded,
         UAdminTheme.green,
-        UAdminPageSwitcher.terminals,
+        UAdminTerminalsPage.open,
       ),
-      UAdminDashboard.statCard(U.s.transactions, r.txnCount.separate3By3(), "+${r.newTxnCount} ${U.s.new_}", Icons.swap_horiz_rounded, UAdminTheme.pink, UAdminPageSwitcher.transactions),
-      UAdminDashboard.statCard(U.s.wallets, r.walletsCount.separate3By3(), r.totalWalletBalance.rial(), Icons.account_balance_wallet_rounded, UAdminTheme.blueGrey, UAdminPageSwitcher.wallet),
+      UAdminDashboard.statCard(U.s.transactions, r.txnCount.separate3By3(), "+${r.newTxnCount} ${U.s.new_}", Icons.swap_horiz_rounded, UAdminTheme.pink, UAdminTransactionsPage.open),
+      UAdminDashboard.statCard(U.s.wallets, r.walletsCount.separate3By3(), r.totalWalletBalance.rial(), Icons.account_balance_wallet_rounded, UAdminTheme.blueGrey, UAdminWalletPage.open),
       UAdminDashboard.statCard(U.s.moneyIn, r.totalIn.rial(), "", Icons.south_west_rounded, UAdminTheme.green, null),
       UAdminDashboard.statCard(U.s.moneyOut, r.totalOut.rial(), "", Icons.north_east_rounded, UAdminTheme.red, null),
-      UAdminDashboard.statCard(U.s.unassignedTerminals, r.terminalsUnassignedCount.separate3By3(), "", Icons.link_off_rounded, UAdminTheme.grey, UAdminPageSwitcher.terminals),
+      UAdminDashboard.statCard(U.s.unassignedTerminals, r.terminalsUnassignedCount.separate3By3(), "", Icons.link_off_rounded, UAdminTheme.grey, UAdminTerminalsPage.open),
     ],
   );
 
@@ -196,7 +205,7 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
             const Icon(Icons.workspace_premium_rounded, size: 20),
             const SizedBox(width: 8),
             UTextTitleSmall(U.s.topMerchantsByTerminalCount, fontWeight: FontWeight.w700, expanded: 1),
-            TextButton(onPressed: UAdminPageSwitcher.merchants, child: Text(U.s.merchants)),
+            TextButton(onPressed: UAdminMerchantsPage.open, child: Text(U.s.merchants)),
           ],
         ),
         const Divider(height: 16),
@@ -244,7 +253,7 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
             const Icon(Icons.receipt_long_rounded, size: 20),
             const SizedBox(width: 8),
             UTextTitleSmall(U.s.recentTransactions, fontWeight: FontWeight.w700, expanded: 1),
-            TextButton(onPressed: UAdminPageSwitcher.transactions, child: Text(U.s.transactions)),
+            TextButton(onPressed: UAdminTransactionsPage.open, child: Text(U.s.transactions)),
           ],
         ),
         const Divider(height: 16),
@@ -284,7 +293,7 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
                 const Icon(Icons.storefront_rounded, size: 20),
                 const SizedBox(width: 8),
                 UTextTitleSmall(U.s.recentlyOnboardedMerchants, fontWeight: FontWeight.w700, expanded: 1),
-                TextButton(onPressed: UAdminPageSwitcher.merchants, child: Text(U.s.merchants)),
+                TextButton(onPressed: UAdminMerchantsPage.open, child: Text(U.s.merchants)),
               ],
             ),
             const Divider(height: 16),
@@ -316,7 +325,7 @@ class _FinancialOpsDashboardPageState extends State<UAdminFinancialOpsDashboardP
                 const Icon(Icons.person_add_alt_1_rounded, size: 20),
                 const SizedBox(width: 8),
                 Text(U.s.recentlyJoined, style: const TextStyle(fontWeight: FontWeight.w700)).expanded(),
-                TextButton(onPressed: UAdminPageSwitcher.adminUsers, child: Text(U.s.users)),
+                TextButton(onPressed: UAdminUsersPage.open, child: Text(U.s.users)),
               ],
             ),
             const Divider(height: 16),

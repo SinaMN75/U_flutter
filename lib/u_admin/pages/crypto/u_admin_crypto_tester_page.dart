@@ -3,6 +3,13 @@ import "package:u/utilities.dart";
 class UAdminCryptoTesterPage extends StatefulWidget {
   const UAdminCryptoTesterPage({super.key});
 
+  static UAdminModule module({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.cryptoTester,
+    icon: Icons.security_rounded,
+    page: () => const UAdminCryptoTesterPage(),
+    roles: roles,
+  );
+
   @override
   State<UAdminCryptoTesterPage> createState() => _UAdminCryptoTesterPageState();
 }

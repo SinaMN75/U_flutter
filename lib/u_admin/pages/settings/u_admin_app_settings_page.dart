@@ -3,6 +3,13 @@ import "package:u/utilities.dart";
 class UAdminAppSettingsPage extends StatefulWidget {
   const UAdminAppSettingsPage({super.key});
 
+  static UAdminModule module({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.appSettings,
+    icon: Icons.tune_rounded,
+    page: () => const UAdminAppSettingsPage(),
+    roles: roles,
+  );
+
   @override
   State<UAdminAppSettingsPage> createState() => _UAdminAppSettingsPageState();
 }

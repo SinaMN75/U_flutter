@@ -3,6 +3,15 @@ import "package:u/utilities.dart";
 class UAdminApiLogPage extends StatefulWidget {
   const UAdminApiLogPage({super.key});
 
+  static void open() => U.addOrSwitchTab(U.s.apiRequestLogs, const UAdminApiLogPage());
+
+  static UAdminModule module({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.apiRequestLogs,
+    icon: Icons.travel_explore_rounded,
+    page: () => const UAdminApiLogPage(),
+    roles: roles,
+  );
+
   @override
   State<UAdminApiLogPage> createState() => _ApiLogPageState();
 }

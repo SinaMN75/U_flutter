@@ -3,6 +3,13 @@ import "package:u/utilities.dart";
 class UAdminDbAdminPage extends StatefulWidget {
   const UAdminDbAdminPage({super.key});
 
+  static UAdminModule module({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.databaseConsole,
+    icon: Icons.storage_rounded,
+    page: () => const UAdminDbAdminPage(),
+    roles: roles,
+  );
+
   @override
   State<UAdminDbAdminPage> createState() => _UAdminDbAdminPageState();
 }

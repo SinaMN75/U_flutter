@@ -3,6 +3,22 @@ import "package:u/utilities.dart";
 class UAdminReservationPage extends StatefulWidget {
   const UAdminReservationPage({this.hotel, this.room, super.key});
 
+  static void open({UHotelResponse? hotel, UHotelRoomResponse? room}) => U.addOrSwitchTab(
+    room != null
+        ? "${U.s.reservations} · ${room.title}"
+        : hotel != null
+        ? "${U.s.reservations} · ${hotel.title}"
+        : U.s.reservations,
+    UAdminReservationPage(hotel: hotel, room: room),
+  );
+
+  static UAdminModule module({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.reservations,
+    icon: Icons.event_available_rounded,
+    page: () => const UAdminReservationPage(),
+    roles: roles,
+  );
+
   final UHotelResponse? hotel;
   final UHotelRoomResponse? room;
 
@@ -106,7 +122,7 @@ class _ReservationPageState extends State<UAdminReservationPage> {
     final bool canManage = UAdmin.canAccess(<TagUser>[TagUser.permissionManageReservations]);
     return UPopupMenu(
       items: <UPopupMenuItem>[
-        UPopupMenuItem(label: U.s.guest, icon: Icons.person_outline, visible: i.user != null, onTap: () => UAdminPageSwitcher.hotelUserDetail(user: i.user!)),
+        UPopupMenuItem(label: U.s.guest, icon: Icons.person_outline, visible: i.user != null, onTap: () => UAdminHotelUserDetailPage.open(user: i.user!)),
         UPopupMenuItem(label: U.s.confirm, icon: Icons.check_circle_outline, visible: canManage && s == TagHotelReservation.pending, onTap: () => c.confirm(i)),
         UPopupMenuItem(label: U.s.checkIn, icon: Icons.login_rounded, visible: canManage && s == TagHotelReservation.confirmed, onTap: () => c.checkInGuest(i)),
         UPopupMenuItem(label: U.s.checkOut, icon: Icons.logout_rounded, visible: canManage && s == TagHotelReservation.checkedIn, onTap: () => c.checkOutGuest(i)),

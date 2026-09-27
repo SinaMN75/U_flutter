@@ -3,6 +3,15 @@ import "package:u/utilities.dart";
 class UAdminAccountingPage extends StatefulWidget {
   const UAdminAccountingPage({super.key});
 
+  static void open() => U.addOrSwitchTab(U.s.accounting, const UAdminAccountingPage());
+
+  static UAdminModule module({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.accounting,
+    icon: Icons.bar_chart_rounded,
+    page: () => const UAdminAccountingPage(),
+    roles: roles,
+  );
+
   @override
   State<UAdminAccountingPage> createState() => _AccountingPageState();
 }

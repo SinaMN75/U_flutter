@@ -139,8 +139,10 @@ export "plugins/camera/u_code_decoder.dart";
 export "plugins/files/u_files_channel.dart";
 export "plugins/screen_guard.dart";
 export "u_admin/pages/analytics/u_admin_financial_ops_dashboard_page.dart";
+export "u_admin/pages/barcode/u_admin_barcode_generator_page.dart";
 export "u_admin/pages/blog/u_admin_blog_page.dart";
 export "u_admin/pages/contents/u_admin_contents_page.dart";
+export "u_admin/pages/crypto/u_admin_crypto_tester_page.dart";
 export "u_admin/pages/db_admin/u_admin_db_admin_page.dart";
 export "u_admin/pages/file_manager/u_admin_file_manager_page.dart";
 export "u_admin/pages/gold/u_admin_gold_page.dart";
@@ -171,7 +173,6 @@ export "u_admin/pages/payments/users/user_detail/u_admin_admin_user_detail_page.
 export "u_admin/pages/pn/u_admin_pn_tester_page.dart";
 export "u_admin/pages/settings/u_admin_admin_settings_page.dart";
 export "u_admin/pages/settings/u_admin_app_settings_page.dart";
-export "u_admin/pages/u_admin_switch_page.dart";
 export "u_admin/pages/wallet/u_admin_accounting_page.dart";
 export "u_admin/pages/wallet/u_admin_transactions_page.dart";
 export "u_admin/pages/wallet/u_admin_wallet_page.dart";

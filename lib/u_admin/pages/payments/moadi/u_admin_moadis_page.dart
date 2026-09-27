@@ -3,6 +3,13 @@ import "package:u/utilities.dart";
 class UAdminMoadisPage extends StatefulWidget {
   const UAdminMoadisPage({super.key, this.user});
 
+  static UAdminModule module({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.taxpayerRequests,
+    icon: Icons.receipt_long_rounded,
+    page: () => const UAdminMoadisPage(),
+    roles: roles,
+  );
+
   final UUserResponse? user;
 
   @override

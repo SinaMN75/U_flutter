@@ -3,6 +3,16 @@ import "package:u/utilities.dart";
 class UAdminContentsPage extends StatefulWidget {
   const UAdminContentsPage({super.key});
 
+  static void open() => U.addOrSwitchTab(U.s.content, const UAdminContentsPage());
+
+  static UAdminModule module({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.content,
+    icon: Icons.content_copy,
+    selectedIcon: Icons.content_copy_outlined,
+    page: () => const UAdminContentsPage(),
+    roles: roles,
+  );
+
   @override
   State<UAdminContentsPage> createState() => _ContentsPageState();
 }

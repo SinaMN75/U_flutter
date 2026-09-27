@@ -3,6 +3,18 @@ import "package:u/utilities.dart";
 class UAdminMerchantsPage extends StatefulWidget {
   const UAdminMerchantsPage({super.key, this.user});
 
+  static void open({UUserResponse? user}) => U.addOrSwitchTab(
+    user == null ? U.s.merchantsManagement : "${U.s.merchants} · ${user.displayName}",
+    UAdminMerchantsPage(user: user),
+  );
+
+  static UAdminModule module({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.merchants,
+    icon: Icons.storefront_rounded,
+    page: () => const UAdminMerchantsPage(),
+    roles: roles,
+  );
+
   final UUserResponse? user;
 
   @override
@@ -78,7 +90,7 @@ class _MerchantsPageState extends State<UAdminMerchantsPage> {
 
   Widget _menu(UMerchantResponse i) => UPopupMenu(
     items: <UPopupMenuItem>[
-      UPopupMenuItem(label: U.s.viewItem(U.s.terminals), icon: Icons.point_of_sale_outlined, onTap: () => UAdminPageSwitcher.terminals(merchant: i)),
+      UPopupMenuItem(label: U.s.viewItem(U.s.terminals), icon: Icons.point_of_sale_outlined, onTap: () => UAdminTerminalsPage.open(merchant: i)),
       UPopupMenuItem(label: U.s.viewItem(U.s.details), icon: Icons.info_outline, onTap: () => _detail(i)),
       UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, onTap: () => c.delete(i)),
     ],

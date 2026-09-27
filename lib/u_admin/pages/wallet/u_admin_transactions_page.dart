@@ -3,6 +3,15 @@ import "package:u/utilities.dart";
 class UAdminTransactionsPage extends StatefulWidget {
   const UAdminTransactionsPage({super.key});
 
+  static void open() => U.addOrSwitchTab(U.s.transactions, const UAdminTransactionsPage());
+
+  static UAdminModule module({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.transactions,
+    icon: Icons.swap_horiz_rounded,
+    page: () => const UAdminTransactionsPage(),
+    roles: roles,
+  );
+
   @override
   State<UAdminTransactionsPage> createState() => _TransactionsPageState();
 }

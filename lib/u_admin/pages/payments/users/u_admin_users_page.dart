@@ -3,6 +3,15 @@ import "package:u/utilities.dart";
 class UAdminUsersPage extends StatefulWidget {
   const UAdminUsersPage({super.key});
 
+  static void open() => U.addOrSwitchTab(U.s.usersManagement, const UAdminUsersPage());
+
+  static UAdminModule module({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.users,
+    icon: Icons.manage_accounts_rounded,
+    page: () => const UAdminUsersPage(),
+    roles: roles,
+  );
+
   static Future<void> form(UAdminPaymentUsersController c, [UUserResponse? user]) {
     c.loadForm(user);
     return UAdminForm.editDialog(
@@ -20,7 +29,7 @@ class UAdminUsersPage extends StatefulWidget {
               icon: const Icon(Icons.link_rounded, size: 18),
               onTap: () {
                 UNavigator.back();
-                UAdminPageSwitcher.adminUserDetail(user: user);
+                UAdminUserDetailPage.open(user: user);
               },
             ),
           ),
@@ -195,7 +204,7 @@ class _AdminUsersPageState extends State<UAdminUsersPage> {
     title: "${i.firstName ?? ""} ${i.lastName ?? ""}".trim().nullIfEmpty() ?? i.userName,
     subtitle: i.userName,
     badge: _statusChip(i),
-    onTap: () => UAdminPageSwitcher.adminUserDetail(user: i),
+    onTap: () => UAdminUserDetailPage.open(user: i),
     trailing: _menu(i),
     fields: <UAdminField>[
       UAdminField(
@@ -210,9 +219,9 @@ class _AdminUsersPageState extends State<UAdminUsersPage> {
 
   Widget _menu(UUserResponse i) => UPopupMenu(
     items: <UPopupMenuItem>[
-      UPopupMenuItem(label: U.s.viewItem(U.s.details), icon: Icons.visibility_outlined, onTap: () => UAdminPageSwitcher.adminUserDetail(user: i)),
-      UPopupMenuItem(label: U.s.merchants, icon: Icons.storefront_outlined, onTap: () => UAdminPageSwitcher.merchants(user: i)),
-      UPopupMenuItem(label: U.s.contracts, icon: Icons.description_outlined, onTap: () => UAdminPageSwitcher.contracts(user: i)),
+      UPopupMenuItem(label: U.s.viewItem(U.s.details), icon: Icons.visibility_outlined, onTap: () => UAdminUserDetailPage.open(user: i)),
+      UPopupMenuItem(label: U.s.merchants, icon: Icons.storefront_outlined, onTap: () => UAdminMerchantsPage.open(user: i)),
+      UPopupMenuItem(label: U.s.contracts, icon: Icons.description_outlined, onTap: () => UAdminContractPage.open(user: i)),
       UPopupMenuItem(label: U.s.edit, icon: Icons.edit, visible: UAdmin.canAccess(<TagUser>[TagUser.permissionManageUsers]), onTap: () => UAdminUsersPage.form(c, i).then((_) => c.read())),
       UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, visible: UAdmin.canAccess(<TagUser>[TagUser.permissionDeleteUsers]), onTap: () => c.delete(i)),
     ],

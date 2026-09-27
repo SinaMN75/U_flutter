@@ -3,6 +3,18 @@ import "package:u/utilities.dart";
 class UAdminParkingStaffPage extends StatefulWidget {
   const UAdminParkingStaffPage({super.key, this.parking});
 
+  static void open({UParkingResponse? parking}) => U.addOrSwitchTab(
+    parking == null ? U.s.staffManagement : "${U.s.staff} · ${parking.title}",
+    UAdminParkingStaffPage(parking: parking),
+  );
+
+  static UAdminModule module({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.staffManagement,
+    icon: Icons.badge_rounded,
+    page: () => const UAdminParkingStaffPage(),
+    roles: roles,
+  );
+
   final UParkingResponse? parking;
 
   @override

@@ -3,6 +3,13 @@ import "package:u/utilities.dart";
 class UAdminFileManagerPage extends StatefulWidget {
   const UAdminFileManagerPage({super.key});
 
+  static UAdminModule module({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.fileManager,
+    icon: Icons.folder_open_rounded,
+    page: () => const UAdminFileManagerPage(),
+    roles: roles,
+  );
+
   @override
   State<UAdminFileManagerPage> createState() => _UAdminFileManagerPageState();
 }

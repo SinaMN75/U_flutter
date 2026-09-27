@@ -3,6 +3,18 @@ import "package:u/utilities.dart";
 class UAdminInvoicePage extends StatefulWidget {
   const UAdminInvoicePage({this.contract, super.key});
 
+  static void open({UDormBedContractResponse? contract}) => U.addOrSwitchTab(
+    contract == null ? U.s.invoices : "${U.s.invoices} · ${contract.user?.displayName ?? ""}",
+    UAdminInvoicePage(contract: contract),
+  );
+
+  static UAdminModule module({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.invoices,
+    icon: Icons.receipt_long_rounded,
+    page: () => const UAdminInvoicePage(),
+    roles: roles,
+  );
+
   final UDormBedContractResponse? contract;
 
   @override

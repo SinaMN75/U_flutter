@@ -3,6 +3,15 @@ import "package:u/utilities.dart";
 class UAdminUserPage extends StatefulWidget {
   const UAdminUserPage({super.key});
 
+  static void open() => U.addOrSwitchTab(U.s.users, const UAdminUserPage());
+
+  static UAdminModule module({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.users,
+    icon: Icons.person_rounded,
+    page: () => const UAdminUserPage(),
+    roles: roles,
+  );
+
   /// The one create ([user] == null) and edit dialog of a user; also opened from [UAdminHotelUserDetailPage].
   static Future<void> form(UAdminUsersController c, [UUserResponse? user]) {
     c.loadForm(user);
@@ -100,7 +109,7 @@ class _UserPageState extends State<UAdminUserPage> {
         children: <Widget>[
           _genderIcon(i).alignAtCenter().expanded(),
           URow(
-            onTap: () => UAdminPageSwitcher.hotelUserDetail(user: i),
+            onTap: () => UAdminHotelUserDetailPage.open(user: i),
             spacing: 6,
             mainAxisAlignment: MainAxisAlignment.center,
             expanded: 1,
@@ -124,7 +133,7 @@ class _UserPageState extends State<UAdminUserPage> {
         subtitle: i.userName,
         badge: _role(i),
         trailing: _menu(i),
-        onTap: () => UAdminPageSwitcher.hotelUserDetail(user: i),
+        onTap: () => UAdminHotelUserDetailPage.open(user: i),
         fields: <UAdminField>[
           UAdminField(
             U.s.phoneNumber,
@@ -154,8 +163,8 @@ class _UserPageState extends State<UAdminUserPage> {
 
   Widget _menu(UUserResponse i) => UPopupMenu(
     items: <UPopupMenuItem>[
-      UPopupMenuItem(label: U.s.details, icon: Icons.badge_outlined, onTap: () => UAdminPageSwitcher.hotelUserDetail(user: i)),
-      UPopupMenuItem(label: U.s.contracts, icon: Icons.description_outlined, onTap: () => UAdminPageSwitcher.contracts(user: i)),
+      UPopupMenuItem(label: U.s.details, icon: Icons.badge_outlined, onTap: () => UAdminHotelUserDetailPage.open(user: i)),
+      UPopupMenuItem(label: U.s.contracts, icon: Icons.description_outlined, onTap: () => UAdminContractPage.open(user: i)),
       UPopupMenuItem(label: U.s.edit, icon: Icons.edit, visible: UAdmin.canAccess(<TagUser>[TagUser.permissionManageUsers]), onTap: () => UAdminUserPage.form(c, i)),
       UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, visible: UAdmin.canAccess(<TagUser>[TagUser.permissionDeleteUsers]), onTap: () => c.delete(i)),
     ],
@@ -213,6 +222,9 @@ class _UserPageState extends State<UAdminUserPage> {
 /// One user: role and permissions, dorm contracts and payments.
 class UAdminHotelUserDetailPage extends StatefulWidget {
   const UAdminHotelUserDetailPage({required this.user, super.key});
+
+  static void open({required UUserResponse user}) =>
+      U.addOrSwitchTab("${user.firstName ?? ""} ${user.lastName ?? ""}".trim().nullIfEmpty() ?? user.userName, UAdminHotelUserDetailPage(user: user));
 
   final UUserResponse user;
 
@@ -407,7 +419,7 @@ class _HotelUserDetailPageState extends State<UAdminHotelUserDetailPage> {
             type: UButtonType.text,
             title: U.s.invoices,
             icon: const Icon(Icons.open_in_new_rounded, size: 16),
-            onTap: () => UAdminPageSwitcher.invoices(contract: ct),
+            onTap: () => UAdminInvoicePage.open(contract: ct),
           ),
         ],
       ),

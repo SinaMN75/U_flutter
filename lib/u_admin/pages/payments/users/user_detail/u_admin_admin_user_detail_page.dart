@@ -16,6 +16,11 @@ class _Doc {
 class UAdminUserDetailPage extends StatefulWidget {
   const UAdminUserDetailPage({required this.user, super.key});
 
+  static void open({required UUserResponse user}) => U.addOrSwitchTab(
+    "${user.firstName ?? ""} ${user.lastName ?? ""}".trim().nullIfEmpty() ?? user.userName,
+    UAdminUserDetailPage(user: user),
+  );
+
   final UUserResponse user;
 
   @override

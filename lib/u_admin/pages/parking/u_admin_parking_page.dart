@@ -3,6 +3,15 @@ import "package:u/utilities.dart";
 class UAdminParkingPage extends StatefulWidget {
   const UAdminParkingPage({super.key});
 
+  static void open() => U.addOrSwitchTab(U.s.parkingManagement, const UAdminParkingPage());
+
+  static UAdminModule module({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.parking,
+    icon: Icons.local_parking_rounded,
+    page: () => const UAdminParkingPage(),
+    roles: roles,
+  );
+
   @override
   State<UAdminParkingPage> createState() => _UAdminParkingPageState();
 }
@@ -85,12 +94,12 @@ class _UAdminParkingPageState extends State<UAdminParkingPage> {
 
   Widget _menu(UParkingResponse i) => UPopupMenu(
     items: <UPopupMenuItem>[
-      UPopupMenuItem(label: U.s.viewItem(U.s.parkingReports), icon: Icons.assessment_outlined, onTap: () => UAdminPageSwitcher.parkingReport(parking: i)),
-      UPopupMenuItem(label: U.s.tariffs, icon: Icons.request_quote_outlined, onTap: () => UAdminPageSwitcher.parkingTariff(parking: i)),
-      UPopupMenuItem(label: U.s.subscriptions, icon: Icons.card_membership_outlined, onTap: () => UAdminPageSwitcher.parkingSubscription(parking: i)),
-      UPopupMenuItem(label: U.s.staff, icon: Icons.badge_outlined, onTap: () => UAdminPageSwitcher.parkingStaff(parking: i)),
-      UPopupMenuItem(label: U.s.specialPlates, icon: Icons.gpp_maybe_outlined, onTap: () => UAdminPageSwitcher.parkingPlateFlag(parking: i)),
-      UPopupMenuItem(label: U.s.shift, icon: Icons.point_of_sale_outlined, onTap: () => UAdminPageSwitcher.parkingShift(parking: i)),
+      UPopupMenuItem(label: U.s.viewItem(U.s.parkingReports), icon: Icons.assessment_outlined, onTap: () => UAdminParkingReportPage.open(parking: i)),
+      UPopupMenuItem(label: U.s.tariffs, icon: Icons.request_quote_outlined, onTap: () => UAdminParkingTariffPage.open(parking: i)),
+      UPopupMenuItem(label: U.s.subscriptions, icon: Icons.card_membership_outlined, onTap: () => UAdminParkingSubscriptionPage.open(parking: i)),
+      UPopupMenuItem(label: U.s.staff, icon: Icons.badge_outlined, onTap: () => UAdminParkingStaffPage.open(parking: i)),
+      UPopupMenuItem(label: U.s.specialPlates, icon: Icons.gpp_maybe_outlined, onTap: () => UAdminParkingPlateFlagPage.open(parking: i)),
+      UPopupMenuItem(label: U.s.shift, icon: Icons.point_of_sale_outlined, onTap: () => UAdminParkingShiftPage.open(parking: i)),
       UPopupMenuItem(label: U.s.edit, icon: Icons.edit, onTap: () => _form(i)),
       UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, onTap: () => c.delete(i)),
     ],

@@ -3,6 +3,15 @@ import "package:u/utilities.dart";
 class UAdminDormPage extends StatefulWidget {
   const UAdminDormPage({super.key});
 
+  static void open() => U.addOrSwitchTab(U.s.dorms, const UAdminDormPage());
+
+  static UAdminModule module({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.dorms,
+    icon: Icons.bedroom_parent_rounded,
+    page: () => const UAdminDormPage(),
+    roles: roles,
+  );
+
   @override
   State<UAdminDormPage> createState() => _DormPageState();
 }
@@ -84,8 +93,8 @@ class _DormPageState extends State<UAdminDormPage> {
 
   Widget _menu(UDormResponse i) => UPopupMenu(
     items: <UPopupMenuItem>[
-      UPopupMenuItem(label: U.s.room, icon: Icons.meeting_room_outlined, onTap: () => UAdminPageSwitcher.dormRooms(dorm: i)),
-      UPopupMenuItem(label: U.s.beds, icon: Icons.bed_outlined, onTap: () => UAdminPageSwitcher.dormBeds(dorm: i)),
+      UPopupMenuItem(label: U.s.room, icon: Icons.meeting_room_outlined, onTap: () => UAdminDormRoomPage.open(dorm: i)),
+      UPopupMenuItem(label: U.s.beds, icon: Icons.bed_outlined, onTap: () => UAdminDormBedPage.open(dorm: i)),
       UPopupMenuItem(label: U.s.edit, icon: Icons.edit, visible: UAdmin.canAccess(<TagUser>[TagUser.permissionManageDorms]), onTap: () => _form(i)),
       UPopupMenuItem(label: U.s.delete, icon: Icons.delete, destructive: true, visible: UAdmin.canAccess(<TagUser>[TagUser.permissionDeleteDorms]), onTap: () => c.delete(i)),
     ],

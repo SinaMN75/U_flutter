@@ -3,6 +3,13 @@ import "package:u/utilities.dart";
 class UAdminGoldPage extends StatefulWidget {
   const UAdminGoldPage({super.key});
 
+  static UAdminModule module({List<TagUser>? roles}) => UAdminModule(
+    title: U.s.gold,
+    icon: Icons.diamond_rounded,
+    page: () => const UAdminGoldPage(),
+    roles: roles,
+  );
+
   @override
   State<UAdminGoldPage> createState() => _UAdminGoldPageState();
 }

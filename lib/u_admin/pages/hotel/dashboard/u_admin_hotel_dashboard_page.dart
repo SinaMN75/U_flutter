@@ -3,6 +3,15 @@ import "package:u/utilities.dart";
 class UAdminHotelDashboardPage extends StatefulWidget {
   const UAdminHotelDashboardPage({super.key});
 
+  static void open() => U.addOrSwitchTab(U.s.accommodationDashboard, const UAdminHotelDashboardPage());
+
+  static UAdminModule module({List<TagUser>? roles}) => UAdminModule(
+    title: "${U.s.accommodationDashboard} ⚡",
+    icon: Icons.apartment_rounded,
+    page: () => const UAdminHotelDashboardPage(),
+    roles: roles,
+  );
+
   @override
   State<UAdminHotelDashboardPage> createState() => _HotelDashboardPageState();
 }
@@ -87,23 +96,23 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
 
   Widget _entityCards(UPropertyDashboardResponse r) => UAdminResponsiveGrid(
     children: <Widget>[
-      UAdminDashboard.statCard(U.s.hotels, r.hotelsCount.separate3By3(), "${r.hotelRoomsCount} ${U.s.rooms}", Icons.apartment_rounded, UAdminTheme.indigo, UAdminPageSwitcher.hotels),
+      UAdminDashboard.statCard(U.s.hotels, r.hotelsCount.separate3By3(), "${r.hotelRoomsCount} ${U.s.rooms}", Icons.apartment_rounded, UAdminTheme.indigo, UAdminHotelPage.open),
       UAdminDashboard.statCard(
         U.s.hotelOccupancy,
         "${r.hotelOccupancyRate}%",
         "${r.hotelRoomsOccupiedCount}/${r.hotelRoomsCount} ${U.s.occupied}",
         Icons.hotel_rounded,
         UAdminTheme.orange,
-        UAdminPageSwitcher.hotelRooms,
+        UAdminHotelRoomPage.open,
       ),
-      UAdminDashboard.statCard(U.s.dorms, r.dormsCount.separate3By3(), "${r.dormRoomsCount} ${U.s.rooms}", Icons.bedroom_parent_rounded, UAdminTheme.green, UAdminPageSwitcher.dormList),
+      UAdminDashboard.statCard(U.s.dorms, r.dormsCount.separate3By3(), "${r.dormRoomsCount} ${U.s.rooms}", Icons.bedroom_parent_rounded, UAdminTheme.green, UAdminDormPage.open),
       UAdminDashboard.statCard(
         U.s.dormOccupancy,
         "${r.dormOccupancyRate}%",
         "${r.dormBedsOccupiedCount}/${r.dormBedsCount} ${U.s.beds}",
         Icons.bed_rounded,
         UAdminTheme.pink,
-        UAdminPageSwitcher.dormBeds,
+        UAdminDormBedPage.open,
       ),
       UAdminDashboard.statCard(
         U.s.contracts,
@@ -111,18 +120,18 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
         "${r.activeContractsCount} ${U.s.active}",
         Icons.description_rounded,
         UAdminTheme.blueGrey,
-        UAdminPageSwitcher.contracts,
+        UAdminContractPage.open,
       ),
-      UAdminDashboard.statCard(U.s.contractsExpiringSoon, r.expiringSoonContractsCount.separate3By3(), U.s.next30Days, Icons.event_busy_rounded, UAdminTheme.red, UAdminPageSwitcher.contracts),
+      UAdminDashboard.statCard(U.s.contractsExpiringSoon, r.expiringSoonContractsCount.separate3By3(), U.s.next30Days, Icons.event_busy_rounded, UAdminTheme.red, UAdminContractPage.open),
       UAdminDashboard.statCard(
         U.s.invoices,
         r.invoicesCount.separate3By3(),
         "${r.unpaidInvoicesCount} ${U.s.unpaid}",
         Icons.receipt_long_rounded,
         UAdminTheme.yellow.shade900,
-        UAdminPageSwitcher.invoices,
+        UAdminInvoicePage.open,
       ),
-      UAdminDashboard.statCard(U.s.overdueInvoices, r.overdueInvoicesCount.separate3By3(), r.totalOutstanding.rial(), Icons.warning_amber_rounded, UAdminTheme.red, UAdminPageSwitcher.invoices),
+      UAdminDashboard.statCard(U.s.overdueInvoices, r.overdueInvoicesCount.separate3By3(), r.totalOutstanding.rial(), Icons.warning_amber_rounded, UAdminTheme.red, UAdminInvoicePage.open),
     ],
   );
 
@@ -192,7 +201,7 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
       Icons.event_busy_rounded,
       U.s.contractsExpiringSoon,
       U.s.contracts,
-      UAdminPageSwitcher.contracts,
+      UAdminContractPage.open,
       r.expiringContracts,
       (UExpiringContractItem i, int _) => ListTile(
         contentPadding: EdgeInsets.zero,
@@ -205,7 +214,7 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
       Icons.warning_amber_rounded,
       U.s.overdueInvoices,
       U.s.invoices,
-      UAdminPageSwitcher.invoices,
+      UAdminInvoicePage.open,
       r.overdueInvoices,
       (UOverdueInvoiceItem i, int _) => ListTile(
         contentPadding: EdgeInsets.zero,
@@ -222,7 +231,7 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
       Icons.description_rounded,
       U.s.recentContracts,
       U.s.contracts,
-      UAdminPageSwitcher.contracts,
+      UAdminContractPage.open,
       r.recentContracts,
       (URecentContractItem i, int _) => ListTile(
         contentPadding: EdgeInsets.zero,
@@ -235,7 +244,7 @@ class _HotelDashboardPageState extends State<UAdminHotelDashboardPage> {
       Icons.person_add_alt_1_rounded,
       U.s.recentlyJoined,
       U.s.users,
-      UAdminPageSwitcher.adminUsers,
+      UAdminUsersPage.open,
       r.recentUsers,
       (URecentUserItem u, int index) => ListTile(
         contentPadding: EdgeInsets.zero,
