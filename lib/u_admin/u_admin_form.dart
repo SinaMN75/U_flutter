@@ -1,13 +1,6 @@
 part of "u_admin.dart";
 
-/// Layout primitives shared by every admin form, so a field pair is responsive
-/// by construction instead of each page re-deciding with its own `isMobileWidth`
-/// branch — the thing that made two otherwise identical user forms diverge.
 abstract class UAdminForm {
-  /// Two fields side by side on a wide screen, stacked on a phone.
-  ///
-  /// The branch exists because two text fields sharing a 360px row leave each
-  /// one too narrow to read what it holds.
   static Widget pair(BuildContext context, Widget first, Widget second, {double gap = 10}) => context.isMobileWidth
       ? UColumn(
           spacing: 8,
@@ -25,10 +18,8 @@ abstract class UAdminForm {
           ],
         );
 
-  /// Any number of fields laid out in as many columns as the width allows.
   static Widget fields(List<Widget> children, {double minFieldWidth = 240}) => UAdminResponsiveGrid(minTileWidth: minFieldWidth, spacing: 10, runSpacing: 4, children: children);
 
-  /// A divider plus a small muted caption, used to break a long form into groups.
   static Widget sectionTitle(String title) => UColumn(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
@@ -37,8 +28,6 @@ abstract class UAdminForm {
     ],
   );
 
-  /// The one create/edit dialog of every admin page: a titled, width-capped, scrolling [Form] ending with submit/cancel.
-  /// [onSubmit] runs once the form validates and returns true to close the dialog; the submit button spins meanwhile.
   static Future<void> editDialog({
     required String title,
     required GlobalKey<FormState> formKey,
@@ -83,7 +72,6 @@ abstract class UAdminForm {
     );
   }
 
-  /// A text field with the admin forms' spacing.
   static Widget text(TextEditingController controller, String label, {int lines = 1, bool number = false, bool money = false, bool required = false, int? expanded}) => UTextField(
     controller: controller,
     labelText: label,
@@ -95,7 +83,6 @@ abstract class UAdminForm {
     margin: const EdgeInsets.symmetric(vertical: 6),
   );
 
-  /// A Jalali date field bound to [controller]; [onChanged] gets the picked date.
   static Widget date(TextEditingController controller, String label, ValueChanged<DateTime> onChanged, {DateTime? initial, bool required = false}) => UTextFieldDatePicker(
     controller: controller,
     labelText: label,
@@ -108,13 +95,6 @@ abstract class UAdminForm {
     },
   ).pSymmetric(vertical: 6);
 
-  /// The shell every admin filter dialog was hand-rolling: a titled dialog whose
-  /// content scrolls, is capped to a sensible dialog width, and optionally sits
-  /// in a [Form].
-  ///
-  /// Pages differed only in whether they remembered the [Form] and how wide they
-  /// made the box, which is why no two filter dialogs behaved quite the same on a
-  /// narrow screen. Pass the fields; the shell is fixed.
   static Widget filterDialog(
     BuildContext context, {
     required Widget title,
@@ -134,7 +114,6 @@ abstract class UAdminForm {
     );
   }
 
-  /// Shows a filter dialog: [children] (rebuilt through its setState) then "filter" / "clear filters", each closing the dialog.
   static Future<void> filter({
     required String title,
     required List<Widget> Function(StateSetter setState) children,

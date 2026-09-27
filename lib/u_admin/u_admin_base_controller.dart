@@ -5,7 +5,6 @@ abstract class UBaseController {
   URxState state2 = URxState();
   final GlobalKey<FormState> formKey = GlobalKey();
 
-  /// Bag for any extra text controllers a subclass needs; disposed with the controller.
   final UAdminFields fields = UAdminFields();
 
   int totalCount = 0;
@@ -41,9 +40,9 @@ abstract class UBaseController {
     read();
   }
 
-  void okCallback(String? message, void Function() reload) {
+  void okCallback(String? message, VoidCallback? reload) {
     UToast.snackBar(message: message ?? U.s.submitted);
-    reload();
+    reload?.call();
   }
 
   void errorCallBack(String? message, void Function() reload) {
@@ -53,13 +52,13 @@ abstract class UBaseController {
 
   /// Awaits a service call's `(ok, error, exception)` result: on success toasts and runs [reload], otherwise toasts the error.
   /// Returns the ok response (its `result` is the new id on create), or null on failure.
-  Future<dynamic> submit(Future<(dynamic, dynamic, String?)> call, void Function() reload) async {
+  Future<dynamic> submit(Future<(dynamic, dynamic, String?)> call, VoidCallback? reload) async {
     final (dynamic ok, dynamic error, String? exception) = await call;
     if (ok == null) {
       UToast.error(message: (error?.message as String?).nullIfEmpty() ?? exception.nullIfEmpty() ?? U.s.errorSubmittingForm);
       return null;
     }
-    okCallback((ok.message as String?).nullIfEmpty(), reload);
+    okCallback((ok.message as String?).nullIfEmpty(), reload?.call);
     return ok;
   }
 

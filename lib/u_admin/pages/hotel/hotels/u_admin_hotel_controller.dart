@@ -4,9 +4,6 @@ class UAdminHotelController extends UBaseController {
   List<UHotelResponse> list = <UHotelResponse>[];
   final TextEditingController titleFilter = TextEditingController();
 
-  // ---------------------------------------------------------------- form (create and edit)
-
-  /// The hotel being edited; null while creating.
   UHotelResponse? editing;
   late final TextEditingController title = fields.text();
   late final TextEditingController description = fields.text();
@@ -59,7 +56,6 @@ class UAdminHotelController extends UBaseController {
     reloadFirstPage(read);
   }
 
-  /// Fills the form: empty for [item] == null, otherwise with the full hotel (photos and admins included).
   Future<void> loadForm(UHotelResponse? item) async {
     final UHotelResponse? h = item == null
         ? null
@@ -102,10 +98,8 @@ class UAdminHotelController extends UBaseController {
     admins = await readUsersById(h?.adminUserIds ?? <String>[]);
   }
 
-  /// Creates or updates the hotel, then saves its photos. Returns true when the dialog can close.
   Future<bool> save() async {
     final bool isNew = editing == null;
-    // On edit an empty text is sent as "" so a field can be cleared; on create it is simply left out.
     String? t(TextEditingController c) => isNew ? c.text.trim().nullIfEmpty() : c.text.trim();
     final UHotelUpdateParams p = UHotelUpdateParams(
       id: editing?.id ?? "",
@@ -145,7 +139,6 @@ class UAdminHotelController extends UBaseController {
     return true;
   }
 
-  /// Quick switch from the list: turns [tag] on or off; [opposite] is swapped the other way (active ↔ inactive).
   void setTag(UHotelResponse i, TagHotel tag, bool on, {TagHotel? opposite}) => submit(
     UServices.hotel.updateHotel(
       p: UHotelUpdateParams(
@@ -154,7 +147,7 @@ class UAdminHotelController extends UBaseController {
         removeTags: <int>[if (on) ?opposite?.number else tag.number],
       ),
     ),
-    read,
+    null,
   );
 
   void delete(UHotelResponse i) => confirmAction(() => UServices.hotel.deleteHotel(p: UIdParams(id: i.id)), read);

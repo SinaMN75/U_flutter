@@ -44,7 +44,17 @@ class _HotelPageState extends State<UAdminHotelPage> {
       totalCount: () => c.totalCount,
       onRetry: c.read,
       emptyText: U.s.noItemsFound(U.s.hotels),
-      desktopHeader: () => UAdminTable.header(<String>[U.s.title, U.s.city, U.s.rooms, U.s.created, U.s.featured, U.s.active, U.s.operations]),
+      desktopHeader: () => UAdminTable.header(
+        <String>[
+          U.s.title,
+          U.s.city,
+          U.s.rooms,
+          U.s.created,
+          U.s.featured,
+          U.s.active,
+          U.s.operations,
+        ],
+      ),
       desktopRow: (UHotelResponse i, int index) => URow(
         spacing: 8,
         color: UAdminTable.rowColor(context, index),
@@ -54,8 +64,14 @@ class _HotelPageState extends State<UAdminHotelPage> {
           UAdminTable.cell(UCountries.cityFullName(i.cityCode) ?? "-"),
           UAdminTable.cell((i.rooms?.length ?? 0).toString()),
           UAdminTable.cell(i.createdAt.toJalaliDate()),
-          _featured(i).expanded(),
-          _active(i).expanded(),
+          Switch(
+            value: i.tags.contains(TagHotel.featured.number),
+            onChanged: _canManage ? (bool on) => c.setTag(i, TagHotel.featured, on) : null,
+          ).expanded(),
+          Switch(
+            value: i.tags.contains(TagHotel.active.number),
+            onChanged: _canManage ? (bool on) => c.setTag(i, TagHotel.active, on, opposite: TagHotel.inactive) : null,
+          ).expanded(),
           _menu(i).expanded(),
         ],
       ),
@@ -67,20 +83,28 @@ class _HotelPageState extends State<UAdminHotelPage> {
           UAdminField(U.s.city, UCountries.cityFullName(i.cityCode) ?? "-"),
           UAdminField(U.s.rooms, (i.rooms?.length ?? 0).toString()),
           UAdminField(U.s.created, i.createdAt.toJalaliDate()),
-          UAdminField(U.s.featured, null, valueWidget: _featured(i)),
-          UAdminField(U.s.active, null, valueWidget: _active(i)),
+          UAdminField(
+            U.s.featured,
+            null,
+            valueWidget: Switch(
+              value: i.tags.contains(TagHotel.featured.number),
+              onChanged: _canManage ? (bool on) => c.setTag(i, TagHotel.featured, on) : null,
+            ),
+          ),
+          UAdminField(
+            U.s.active,
+            null,
+            valueWidget: Switch(
+              value: i.tags.contains(TagHotel.active.number),
+              onChanged: _canManage ? (bool on) => c.setTag(i, TagHotel.active, on, opposite: TagHotel.inactive) : null,
+            ),
+          ),
         ],
       ),
     ),
   );
 
   bool get _canManage => U.user.hasPermission(TagUser.permissionManageHotels);
-
-  Widget _featured(UHotelResponse i) => Switch(value: i.tags.contains(TagHotel.featured.number), onChanged: _canManage ? (bool on) => c.setTag(i, TagHotel.featured, on) : null);
-
-  /// Active = shown to the public.
-  Widget _active(UHotelResponse i) =>
-      Switch(value: i.tags.contains(TagHotel.active.number), onChanged: _canManage ? (bool on) => c.setTag(i, TagHotel.active, on, opposite: TagHotel.inactive) : null);
 
   Widget _menu(UHotelResponse i) => UAdminOps.menu<UHotelResponse>(
     item: i,
@@ -93,7 +117,6 @@ class _HotelPageState extends State<UAdminHotelPage> {
     ],
   );
 
-  /// Create ([h] == null) and edit share this one dialog.
   Future<void> _form([UHotelResponse? h]) async {
     await c.loadForm(h);
     final UCountryCityInfo city = UCountries.infoByCode(c.cityCode);
