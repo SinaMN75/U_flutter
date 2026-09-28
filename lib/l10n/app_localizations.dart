@@ -1094,6 +1094,12 @@ abstract class AppLocalizations {
   /// **'Buy gold'**
   String get buyGold;
 
+  /// No description provided for @buyingGoldIsClosedRightNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Buying gold is not possible right now'**
+  String get buyingGoldIsClosedRightNow;
+
   /// No description provided for @buyItem.
   ///
   /// In en, this message translates to:
@@ -3601,6 +3607,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Get Support Password'**
   String get getSupportPassword;
+
+  /// No description provided for @goldPriceUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Price unavailable'**
+  String get goldPriceUnavailable;
 
   /// No description provided for @goToPage.
   ///
@@ -8012,6 +8024,12 @@ abstract class AppLocalizations {
   /// **'Sell gold'**
   String get sellGold;
 
+  /// No description provided for @sellingGoldIsClosedRightNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Selling gold is not possible right now'**
+  String get sellingGoldIsClosedRightNow;
+
   /// No description provided for @sellPrice.
   ///
   /// In en, this message translates to:
@@ -10213,6 +10231,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your gold balance is not enough'**
   String get yourGoldBalanceIsNotEnough;
+
+  /// No description provided for @yourGoldOrderIsBeingProcessed.
+  ///
+  /// In en, this message translates to:
+  /// **'Your gold order is being processed. Your balance will be updated shortly.'**
+  String get yourGoldOrderIsBeingProcessed;
 
   /// No description provided for @yourGoldOrderWasPlaced.
   ///

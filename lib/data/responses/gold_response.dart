@@ -31,6 +31,8 @@ class UGoldQuoteResponse {
   final double? baseUnitPrice;
   final double? buyUnitPrice;
   final double? sellUnitPrice;
+  final bool canBuy;
+  final bool canSell;
   final DateTime? updatedAt;
 
   UGoldQuoteResponse({
@@ -40,6 +42,8 @@ class UGoldQuoteResponse {
     this.baseUnitPrice,
     this.buyUnitPrice,
     this.sellUnitPrice,
+    this.canBuy = false,
+    this.canSell = false,
     this.updatedAt,
   });
 
@@ -54,6 +58,8 @@ class UGoldQuoteResponse {
     baseUnitPrice: json["baseUnitPrice"] == null ? null : (json["baseUnitPrice"] as num).toDouble(),
     buyUnitPrice: json["buyUnitPrice"] == null ? null : (json["buyUnitPrice"] as num).toDouble(),
     sellUnitPrice: json["sellUnitPrice"] == null ? null : (json["sellUnitPrice"] as num).toDouble(),
+    canBuy: json["canBuy"] ?? false,
+    canSell: json["canSell"] ?? false,
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
   );
 
@@ -64,6 +70,8 @@ class UGoldQuoteResponse {
     "baseUnitPrice": baseUnitPrice,
     "buyUnitPrice": buyUnitPrice,
     "sellUnitPrice": sellUnitPrice,
+    "canBuy": canBuy,
+    "canSell": canSell,
     "updatedAt": updatedAt?.toIso8601String(),
   };
 }
@@ -592,13 +600,28 @@ extension UGoldTxnExtension on UGoldTxnResponse {
 
 class UGoldUserBalanceResponse {
   final double balance;
+  final double? baseUnitPrice;
   final double? buyUnitPrice;
   final double? sellUnitPrice;
+  final bool canBuy;
+  final bool canSell;
   final double? value;
   final String? unit;
+  final String? priceError;
   final DateTime? updatedAt;
 
-  UGoldUserBalanceResponse({required this.balance, this.buyUnitPrice, this.sellUnitPrice, this.value, this.unit, this.updatedAt});
+  UGoldUserBalanceResponse({
+    required this.balance,
+    this.baseUnitPrice,
+    this.buyUnitPrice,
+    this.sellUnitPrice,
+    this.canBuy = false,
+    this.canSell = false,
+    this.value,
+    this.unit,
+    this.priceError,
+    this.updatedAt,
+  });
 
   factory UGoldUserBalanceResponse.fromJson(String str) => UGoldUserBalanceResponse.fromMap(json.decode(str));
 
@@ -606,19 +629,27 @@ class UGoldUserBalanceResponse {
 
   factory UGoldUserBalanceResponse.fromMap(Map<String, dynamic> json) => UGoldUserBalanceResponse(
     balance: json["balance"] == null ? 0 : (json["balance"] as num).toDouble(),
+    baseUnitPrice: json["baseUnitPrice"] == null ? null : (json["baseUnitPrice"] as num).toDouble(),
     buyUnitPrice: json["buyUnitPrice"] == null ? null : (json["buyUnitPrice"] as num).toDouble(),
     sellUnitPrice: json["sellUnitPrice"] == null ? null : (json["sellUnitPrice"] as num).toDouble(),
+    canBuy: json["canBuy"] ?? false,
+    canSell: json["canSell"] ?? false,
     value: json["value"] == null ? null : (json["value"] as num).toDouble(),
     unit: json["unit"],
+    priceError: json["priceError"],
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "balance": balance,
+    "baseUnitPrice": baseUnitPrice,
     "buyUnitPrice": buyUnitPrice,
     "sellUnitPrice": sellUnitPrice,
+    "canBuy": canBuy,
+    "canSell": canSell,
     "value": value,
     "unit": unit,
+    "priceError": priceError,
     "updatedAt": updatedAt?.toIso8601String(),
   };
 }

@@ -21,7 +21,9 @@ class UAdminGoldController extends UBaseController {
   final URxList<UGoldApiTokenResponse> tokens = <UGoldApiTokenResponse>[].obs;
 
   final TextEditingController tokenLabelController = TextEditingController();
-  final TextEditingController tokenScopesController = TextEditingController(text: "trade,read");
+  final TextEditingController tokenScopesController = TextEditingController(
+    text: "business:account:read,business:quotes:read,business:orders:read,business:orders:write,business:wallets:read,business:trade-limits:read,business:credit-facilities:read",
+  );
   final TextEditingController tokenIpsController = TextEditingController();
 
   void init() => read();

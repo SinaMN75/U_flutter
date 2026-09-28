@@ -518,6 +518,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get buyGold => 'خرید طلا';
 
   @override
+  String get buyingGoldIsClosedRightNow => 'در حال حاضر امکان خرید طلا وجود ندارد';
+
+  @override
   String buyItem(Object item) {
     return 'خرید $item';
   }
@@ -1819,6 +1822,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get getSupportPassword => 'دریافت رمز پشتیبانی';
+
+  @override
+  String get goldPriceUnavailable => 'قیمت در دسترس نیست';
 
   @override
   String get goToPage => 'رفتن به صفحه';
@@ -4044,6 +4050,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get sellGold => 'فروش طلا';
 
   @override
+  String get sellingGoldIsClosedRightNow => 'در حال حاضر امکان فروش طلا وجود ندارد';
+
+  @override
   String get sellPrice => 'قیمت فروش';
 
   @override
@@ -5158,6 +5167,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get yourGoldBalanceIsNotEnough => 'موجودی طلای شما کافی نیست';
+
+  @override
+  String get yourGoldOrderIsBeingProcessed => 'سفارش طلای شما در حال پردازش است و موجودی شما به‌زودی به‌روز می‌شود.';
 
   @override
   String get yourGoldOrderWasPlaced => 'سفارش طلای شما ثبت شد';

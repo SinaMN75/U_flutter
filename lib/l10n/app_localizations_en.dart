@@ -518,6 +518,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get buyGold => 'Buy gold';
 
   @override
+  String get buyingGoldIsClosedRightNow => 'Buying gold is not possible right now';
+
+  @override
   String buyItem(Object item) {
     return 'Buy $item';
   }
@@ -1819,6 +1822,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get getSupportPassword => 'Get Support Password';
+
+  @override
+  String get goldPriceUnavailable => 'Price unavailable';
 
   @override
   String get goToPage => 'Go to page';
@@ -4044,6 +4050,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sellGold => 'Sell gold';
 
   @override
+  String get sellingGoldIsClosedRightNow => 'Selling gold is not possible right now';
+
+  @override
   String get sellPrice => 'Sell price';
 
   @override
@@ -5159,6 +5168,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get yourGoldBalanceIsNotEnough => 'Your gold balance is not enough';
+
+  @override
+  String get yourGoldOrderIsBeingProcessed => 'Your gold order is being processed. Your balance will be updated shortly.';
 
   @override
   String get yourGoldOrderWasPlaced => 'Your gold order was placed';

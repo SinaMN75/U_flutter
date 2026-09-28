@@ -62,9 +62,11 @@ class _UAdminGoldPageState extends State<UAdminGoldPage> {
             UAdminField(U.s.allowedIps, (c.account.value?.ipWhitelist ?? <String>[]).join(", ")),
           ]),
           _card(U.s.goldPrice, <UAdminField>[
-            UAdminField(U.s.buyPrice, c.quote.value?.buyUnitPrice.rial()),
-            UAdminField(U.s.sellPrice, c.quote.value?.sellUnitPrice.rial()),
-            UAdminField(U.s.pricePerGram, c.quote.value?.baseUnitPrice.rial()),
+            UAdminField(U.s.buyPrice, c.quote.value?.buyUnitPrice?.toInt().rial()),
+            UAdminField(U.s.sellPrice, c.quote.value?.sellUnitPrice?.toInt().rial()),
+            UAdminField(U.s.pricePerGram, c.quote.value?.baseUnitPrice?.toInt().rial()),
+            UAdminField(U.s.buyGold, c.quote.value == null ? null : (c.quote.value!.canBuy ? U.s.active : U.s.inactive)),
+            UAdminField(U.s.sellGold, c.quote.value == null ? null : (c.quote.value!.canSell ? U.s.active : U.s.inactive)),
             UAdminField(U.s.lastUpdated, c.quote.value?.updatedAt?.toJalaliDateTime() ?? "-"),
           ]),
           _card(
@@ -131,8 +133,8 @@ class _UAdminGoldPageState extends State<UAdminGoldPage> {
     children: <Widget>[
       UAdminTable.cell(i.side?.localizedTitle ?? "-"),
       UAdminTable.cell(i.dealtBaseAmount?.toStringAsSmartRound(maxPrecision: 4) ?? "-"),
-      UAdminTable.cell(i.dealtQuoteAmount.rial()),
-      UAdminTable.cell(i.effectivePrice.rial()),
+      UAdminTable.cell(i.dealtQuoteAmount?.toInt().rial() ?? "-"),
+      UAdminTable.cell(i.effectivePrice?.toInt().rial() ?? "-"),
       UAdminTable.cell(i.status?.localizedTitle ?? "-"),
       UAdminTable.cell(i.createdAt?.toJalaliDate() ?? "-"),
     ],
@@ -143,8 +145,8 @@ class _UAdminGoldPageState extends State<UAdminGoldPage> {
     title: "${i.side?.localizedTitle ?? "-"} • ${i.dealtBaseAmount?.toStringAsSmartRound(maxPrecision: 4) ?? "-"} ${U.s.gram}",
     badge: UAdminTable.statusChip(label: i.status?.localizedTitle ?? "-", color: Theme.of(context).colorScheme.primary),
     fields: <UAdminField>[
-      UAdminField(U.s.amount, i.dealtQuoteAmount.rial()),
-      UAdminField(U.s.unitPrice, i.effectivePrice.rial()),
+      UAdminField(U.s.amount, i.dealtQuoteAmount?.toInt().rial()),
+      UAdminField(U.s.unitPrice, i.effectivePrice?.toInt().rial()),
       UAdminField(U.s.orderId, i.id),
       UAdminField(U.s.date, i.createdAt?.toJalaliDateTime() ?? "-"),
     ],
@@ -210,7 +212,7 @@ class _UAdminGoldPageState extends State<UAdminGoldPage> {
           _card(U.s.creditFacilities, <UAdminField>[
             UAdminField(U.s.timezone, c.credit.value?.timezone ?? "-"),
             ...(c.credit.value?.items ?? <UGoldCreditFacilityResponse>[]).map(
-              (UGoldCreditFacilityResponse f) => UAdminField("${f.type ?? "-"} (${f.asset ?? "-"})", "${U.s.availableCredit}: ${f.availableCredit.rial()}"),
+              (UGoldCreditFacilityResponse f) => UAdminField("${f.type ?? "-"} (${f.asset ?? "-"})", "${U.s.availableCredit}: ${f.availableCredit?.toInt().rial() ?? "-"}"),
             ),
             ...(c.credit.value?.balances ?? <UGoldAssetBalanceResponse>[]).map(
               (UGoldAssetBalanceResponse b) => UAdminField(b.asset ?? "-", b.availableToTrade?.toStringAsSmartRound(maxPrecision: 4) ?? "-"),

@@ -64,8 +64,9 @@ class UGoldCreateOrderParams {
 class UGoldReadOrdersParams {
   final String? cursor;
   final int limit;
+  final String? idempotencyKey;
 
-  UGoldReadOrdersParams({this.cursor, this.limit = 20});
+  UGoldReadOrdersParams({this.cursor, this.limit = 20, this.idempotencyKey});
 
   factory UGoldReadOrdersParams.fromJson(String str) => UGoldReadOrdersParams.fromMap(json.decode(str));
 
@@ -74,11 +75,13 @@ class UGoldReadOrdersParams {
   factory UGoldReadOrdersParams.fromMap(Map<String, dynamic> json) => UGoldReadOrdersParams(
     cursor: json["cursor"],
     limit: json["limit"] ?? 20,
+    idempotencyKey: json["idempotencyKey"],
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     if (cursor != null) "cursor": cursor,
     "limit": limit,
+    if (idempotencyKey != null) "idempotencyKey": idempotencyKey,
   };
 }
 
@@ -201,7 +204,7 @@ class UGoldBuyParams {
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
-    if (amount != null) "amount": amount,
+    if (amount != null) "amount": amount!.floor(),
     if (goldAmount != null) "goldAmount": goldAmount,
   };
 }
@@ -222,7 +225,7 @@ class UGoldSellParams {
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
-    if (amount != null) "amount": amount,
+    if (amount != null) "amount": amount!.floor(),
     if (goldAmount != null) "goldAmount": goldAmount,
   };
 }

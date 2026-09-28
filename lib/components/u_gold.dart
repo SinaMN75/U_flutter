@@ -12,6 +12,7 @@ class UGoldBalanceCard extends StatelessWidget {
     this.updatedAt,
     this.isLoading = false,
     this.errorText,
+    this.priceError,
     this.gradient,
     this.onRefresh,
     this.onHistory,
@@ -24,6 +25,7 @@ class UGoldBalanceCard extends StatelessWidget {
   final DateTime? updatedAt;
   final bool isLoading;
   final String? errorText;
+  final String? priceError;
   final Gradient? gradient;
   final VoidCallback? onRefresh;
   final VoidCallback? onHistory;
@@ -57,7 +59,10 @@ class UGoldBalanceCard extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
           const SizedBox(height: 4),
-          UTextBodySmall(value.rial(), color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.85)),
+          UTextBodySmall(
+            value?.toInt().rial() ?? priceError ?? U.s.goldPriceUnavailable,
+            color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.85),
+          ),
         ],
         const SizedBox(height: 16),
         URow(
@@ -106,7 +111,7 @@ class UGoldPriceChip extends StatelessWidget {
       children: <Widget>[
         UTextLabelSmall(title, color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.8)),
         const SizedBox(height: 2),
-        UTextBodySmall(price.rial(), color: Theme.of(context).colorScheme.onPrimary, fontWeight: FontWeight.bold),
+        UTextBodySmall(price?.toInt().rial() ?? "-", color: Theme.of(context).colorScheme.onPrimary, fontWeight: FontWeight.bold),
       ],
     ),
   );
@@ -133,12 +138,23 @@ class UGoldTradeField extends StatelessWidget {
   final List<double> quickAmounts;
   final String? hintText;
 
-  double get _typed => controller.text.replaceAll(",", "").toDouble();
+  // Parses what the user typed (Persian or Latin digits, thousands separators, "." or "٫" as decimal point).
+  // Rial is a whole number; grams keep at most 3 decimals, which is what the gold provider accepts.
+  static double parse(String text, UGoldInputMode mode) {
+    final String latin = text.toLatinNumber().replaceAll("٫", ".").replaceAll(RegExp("[^0-9.]"), "");
+    if (mode == UGoldInputMode.amount) return latin.replaceAll(".", "").toDouble();
+    final List<String> parts = latin.split(".");
+    if (parts.length == 1) return latin.toDouble();
+    final String decimals = parts.skip(1).join();
+    return "${parts.first}.${decimals.length > 3 ? decimals.substring(0, 3) : decimals}".toDouble();
+  }
+
+  double get _typed => parse(controller.text, mode);
 
   String get _estimate {
     final double price = unitPrice ?? 0;
     if (price <= 0 || _typed <= 0) return "-";
-    return mode == UGoldInputMode.amount ? "${(_typed / price).toStringAsSmartRound(maxPrecision: 4)} ${U.s.gram}" : (_typed * price).rial();
+    return mode == UGoldInputMode.amount ? "${(_typed / price).toStringAsSmartRound(maxPrecision: 4)} ${U.s.gram}" : (_typed * price).toInt().rial();
   }
 
   @override
@@ -167,7 +183,7 @@ class UGoldTradeField extends StatelessWidget {
           children: quickAmounts
               .map(
                 (double a) => UButton(
-                  title: mode == UGoldInputMode.amount ? a.rial() : "${a.toStringAsSmartRound(maxPrecision: 4)} ${U.s.gram}",
+                  title: mode == UGoldInputMode.amount ? a.toInt().rial() : "${a.toStringAsSmartRound(maxPrecision: 4)} ${U.s.gram}",
                   type: UButtonType.outlined,
                   size: UButtonSize.small,
                   onTap: () {
@@ -225,7 +241,7 @@ class UGoldTxnTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
-          UTextBodySmall(txn.amount.rial(), fontWeight: FontWeight.bold),
+          UTextBodySmall(txn.amount.toInt().rial(), fontWeight: FontWeight.bold),
           UTextLabelSmall(txn.status.localizedTitle, color: _statusColor(context)),
         ],
       ),
