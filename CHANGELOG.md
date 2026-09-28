@@ -1,3 +1,38 @@
+## 3.1.0
+
+* **Document annotations (PDF & EPUB).** New shared `UDocAnnotationController` with highlight,
+  underline, strike-through, squiggly, border and note markups, page/position bookmarks, undo/redo,
+  local persistence, `export()`/`import()` (base64 JSON for server sync, newest-wins merge) and import
+  of the legacy SinApp `{"markers":…,"pageMarks":…}` format. Reusable `UDocAnnotationsPanel`,
+  `UDocBookmarksPanel`, `UDocSelectionMenu`, `UDocMarkupMenu`, `UDocNoteEditor`, `UDocWatermark`,
+  `USecureArea`.
+* **Fix: Persian/Arabic PDF highlighting.** Text runs are rebuilt with per-character rectangles and
+  proper visual→logical bidi reordering (numbers, Latin inside RTL, ZWNJ, diacritics), `/ActualText`
+  is honoured, and runs whose glyph metrics look wrong fall back to whole-line boxes (pdfrx approach).
+  `UDocTextGeometry.auto | precise | box` is selectable in the viewer settings.
+* **`UPdfViewer`**: sidebar (thumbnails, outline, notes, bookmarks, search with snippets), selection
+  with mouse/touch/keyboard (double/triple click), two-page & cover spreads, smooth pinch/trackpad/
+  ctrl-scroll zoom, scroll thumb, page indicator, `allowCopy`, `secure`, watermark, `pageOverlayBuilder`,
+  keyboard shortcuts, legacy-annotation placement.
+* **`UEpubReader`**: the same markup tools on reflowable text (anchored to block + offsets, survive
+  re-flow and paged mode), grouped multi-paragraph selections, position bookmarks, block-level search,
+  exact jump to TOC/footnote anchors, span-preserving pagination, full typography settings, image
+  zoom, time-left estimate. Fixes: tap-to-toggle never fired under `SelectionArea`, dark-theme text.
+* **Video**: `UMediaNotesController` + `UMediaNotesPanel` (timestamp notes, seek-bar markers, overlays,
+  SRT/Markdown export, legacy import), `UVideoWithNotes`, resume position, ±seek buttons, quick speed
+  menu and fine speed slider, desktop hover/volume slider/scroll-wheel volume, mouse double-click
+  fullscreen, `UMovingWatermark`, `secure`, Android auto picture-in-picture + PiP state events,
+  iOS PiP that waits until possible, hls.js on web browsers without native HLS.
+* Graceful errors when a platform has no media backend; replay after completion.
+* **Fixes after QA:** PDF selection/markup boxes floated above the text (Chrome/Skia writes a positive
+  font Descent — metrics are now sanitised; older saved markups are re-placed automatically, guarded
+  by a pixel-coverage test); EPUB crash "SelectionListenerNotifier is already registered" when a
+  paragraph got its first markup; EPUB markups drawn at the wrong x on short/list paragraphs and
+  spilling into margins (painter now uses the paragraph's real width and one trimmed box per line);
+  EPUB menu buttons lost the selection on web/desktop; debug assertions from ListTiles on coloured
+  sidebars; page counters in RTL; mouse drag selection starting late; search snippet highlight offset.
+* **Audio player:** ±seek buttons, timestamp notes with seek-bar markers, resume position, fine speed.
+
 ## 3.0.0
 
 * **new `dart run u:app` CLI** to change the host app's native settings on Android, iOS, macOS,

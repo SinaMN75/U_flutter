@@ -1928,5 +1928,73 @@
   "yourWalletBalanceIsNotEnough": "Your wallet balance is not enough",
   "zipCode": "Zip Code",
   "zoomIn": "Zoom in",
-  "zoomOut": "Zoom out"
+  "zoomOut": "Zoom out",
+  "squiggly": "Squiggly",
+  "border": "Border",
+  "bookmarks": "Bookmarks",
+  "bookmark": "Bookmark",
+  "editNote": "Edit note",
+  "addNote": "Add note",
+  "writeYourNote": "Write your note…",
+  "noAnnotationsYet": "No highlights or notes yet. Select some text to add one.",
+  "noBookmarksYet": "No bookmarks yet.",
+  "fitPage": "Fit page",
+  "actualSize": "Actual size",
+  "twoPages": "Two pages",
+  "coverPage": "Cover + two pages",
+  "spread": "Page layout",
+  "export": "Copy data",
+  "importData": "Import",
+  "exportAnnotations": "Share notes",
+  "importAnnotations": "Import annotations",
+  "clearAnnotations": "Clear all annotations",
+  "nextPage": "Next page",
+  "previousPage": "Previous page",
+  "bookmarkPage": "Bookmark this page",
+  "bookmarkPosition": "Bookmark this position",
+  "removeBookmark": "Remove bookmark",
+  "lineBox": "Whole line",
+  "precise": "Precise",
+  "selectionAccuracy": "Highlight accuracy",
+  "readingProgress": "Reading progress",
+  "addBookmark": "Add bookmark",
+  "seekForward": "Seek forward",
+  "seekBackward": "Seek backward",
+  "volume": "Volume",
+  "loop": "Loop",
+  "startOver": "Start over",
+  "chapters": "Chapters",
+  "noNotesYet": "No notes yet. Add a note at the current time with the + button.",
+  "addTimestampNote": "Add note at current time",
+  "videoNotes": "Video notes",
+  "fontFamily": "Font",
+  "defaultFont": "Default",
+  "paragraphSpacing": "Paragraph spacing",
+  "letterSpacing": "Letter spacing",
+  "wordSpacing": "Word spacing",
+  "autoPip": "Auto picture-in-picture",
+  "rememberPosition": "Remember position",
+  "keyboardShortcuts": "Keyboard shortcuts",
+  "fineSpeed": "Fine speed",
+  "previousChapter": "Previous chapter",
+  "nextChapter": "Next chapter",
+  "resumeFrom": "Resume from {position}",
+  "@resumeFrom": {
+    "placeholders": {
+      "position": {}
+    }
+  },
+  "pageOfTotal": "Page {page} of {total}",
+  "@pageOfTotal": {
+    "placeholders": {
+      "page": {},
+      "total": {}
+    }
+  },
+  "minutesLeftInChapter": "{minutes} min left in chapter",
+  "@minutesLeftInChapter": {
+    "placeholders": {
+      "minutes": {}
+    }
+  }
 }

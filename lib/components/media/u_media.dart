@@ -1285,7 +1285,18 @@ class UMediaController extends ValueNotifier<UMediaValue> {
   }
 
   Future<void> _load(UMediaSource source, {bool autoPlay = false, Duration? resumeAt}) async {
-    await _ensureCreated();
+    try {
+      await _ensureCreated();
+    } on MissingPluginException {
+      _emit(value.copyWith(state: UMediaState.error, error: UMediaError(code: UMediaErrorCode.unsupportedFormat, message: "Media playback is not available on this platform", sourceId: source.id)));
+      return;
+    } on PlatformException catch (exception) {
+      _emit(value.copyWith(state: UMediaState.error, error: UMediaChannel.toError(exception, sourceId: source.id)));
+      return;
+    } on UMediaError catch (error) {
+      _emit(value.copyWith(state: UMediaState.error, error: error));
+      return;
+    }
     final int? id = _playerId;
     if (id == null) return;
 
@@ -1322,6 +1333,7 @@ class UMediaController extends ValueNotifier<UMediaValue> {
   Future<void> play() async {
     final int? id = _playerId;
     if (id == null) return;
+    if (value.state == UMediaState.completed) await seek(Duration.zero);
     final bool granted = await UMediaSession.requestFocus(this);
     if (!granted) return;
     _pausedByInterruption = false;
@@ -1587,16 +1599,42 @@ class UMediaController extends ValueNotifier<UMediaValue> {
     _updateCues(value.position);
   }
 
-  Future<void> enterPip({double? aspectRatio}) async {
+  Future<bool> enterPip({double? aspectRatio}) async {
     final int? id = _playerId;
-    if (id == null) return;
-    await UMediaChannel.call<void>(id, "enterPip", <String, Object?>{"aspectRatio": aspectRatio ?? value.aspectRatio});
+    if (id == null) return false;
+    try {
+      return (await UMediaChannel.call<bool>(id, "enterPip", <String, Object?>{"aspectRatio": aspectRatio ?? value.aspectRatio})) ?? false;
+    } on PlatformException {
+      return false;
+    } on MissingPluginException {
+      return false;
+    }
   }
 
   Future<void> exitPip() async {
     final int? id = _playerId;
     if (id == null) return;
-    await UMediaChannel.call<void>(id, "exitPip");
+    try {
+      await UMediaChannel.call<void>(id, "exitPip");
+    } on PlatformException {
+      return;
+    } on MissingPluginException {
+      return;
+    }
+  }
+
+  /// Enters picture-in-picture automatically when the user leaves the app
+  /// while this player is playing (Android; a no-op where unsupported).
+  Future<void> setAutoPip(bool enabled) async {
+    final int? id = _playerId;
+    if (id == null) return;
+    try {
+      await UMediaChannel.call<void>(id, "setAutoPip", <String, Object?>{"enabled": enabled, "aspectRatio": value.aspectRatio});
+    } on PlatformException {
+      return;
+    } on MissingPluginException {
+      return;
+    }
   }
 
   Future<void> startVisualizer({int bands = 48}) async {
@@ -1627,7 +1665,13 @@ class UMediaController extends ValueNotifier<UMediaValue> {
   Future<Uint8List?> screenshot() async {
     final int? id = _playerId;
     if (id == null) return null;
-    return UMediaChannel.call<Uint8List>(id, "screenshot");
+    try {
+      return await UMediaChannel.call<Uint8List>(id, "screenshot");
+    } on PlatformException {
+      return null;
+    } on MissingPluginException {
+      return null;
+    }
   }
 
   Future<void> setNotification({required UMediaMetadata metadata, bool showSeekBar = true}) async {

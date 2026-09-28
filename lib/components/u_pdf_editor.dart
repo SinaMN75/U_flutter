@@ -627,6 +627,8 @@ class _UPdfEditorPageState extends State<UPdfEditorPage> {
               key: _viewerKey,
               controller: _viewer,
               editController: _editor,
+              enableMarkup: false,
+              showBottomBar: false,
             ),
           ),
           _buildToolbar(),

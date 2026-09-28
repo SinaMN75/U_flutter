@@ -181,6 +181,9 @@ public final class UMediaPlayer: NSObject, FlutterTexture, FlutterStreamHandler 
         private var displayLink: CADisplayLink?
         private var pictureInPictureController: AVPictureInPictureController?
         private var pictureInPictureLayer: AVPlayerLayer?
+        private var pipPossibleObservation: NSKeyValueObservation?
+        private var pipStartPending = false
+        private var autoPip = false
     #else
         private var frameTimer: Timer?
     #endif
@@ -542,10 +545,11 @@ public final class UMediaPlayer: NSObject, FlutterTexture, FlutterStreamHandler 
         #endif
     }
 
-    public func enterPip(aspectRatio _: Double) -> Bool {
-        #if os(iOS)
-            guard AVPictureInPictureController.isPictureInPictureSupported() else { return false }
-            if pictureInPictureLayer == nil {
+    #if os(iOS)
+        /// Creates the (1x1, on-window) layer AVKit needs and waits until PiP is possible.
+        private func preparePip() -> AVPictureInPictureController? {
+            guard AVPictureInPictureController.isPictureInPictureSupported() else { return nil }
+            if pictureInPictureController == nil {
                 let layer = AVPlayerLayer(player: player)
                 layer.frame = CGRect(x: 0, y: 0, width: 1, height: 1)
                 UIApplication.shared.connectedScenes
@@ -554,11 +558,30 @@ public final class UMediaPlayer: NSObject, FlutterTexture, FlutterStreamHandler 
                     .layer
                     .addSublayer(layer)
                 pictureInPictureLayer = layer
-                pictureInPictureController = AVPictureInPictureController(playerLayer: layer)
+                let controller = AVPictureInPictureController(playerLayer: layer)
+                controller?.delegate = self
+                pictureInPictureController = controller
+                pipPossibleObservation = controller?.observe(\.isPictureInPicturePossible, options: [.new]) { [weak self] observed, _ in
+                    guard let self = self, observed.isPictureInPicturePossible, self.pipStartPending else { return }
+                    self.pipStartPending = false
+                    observed.startPictureInPicture()
+                }
             }
-            guard let controller = pictureInPictureController else { return false }
-            controller.startPictureInPicture()
-            send(["event": "pip", "state": "active"])
+            if #available(iOS 14.2, *) {
+                pictureInPictureController?.canStartPictureInPictureAutomaticallyFromInline = autoPip
+            }
+            return pictureInPictureController
+        }
+    #endif
+
+    public func enterPip(aspectRatio _: Double) -> Bool {
+        #if os(iOS)
+            guard let controller = preparePip() else { return false }
+            if controller.isPictureInPicturePossible {
+                controller.startPictureInPicture()
+            } else {
+                pipStartPending = true
+            }
             return true
         #else
             return false
@@ -567,8 +590,19 @@ public final class UMediaPlayer: NSObject, FlutterTexture, FlutterStreamHandler 
 
     public func exitPip() {
         #if os(iOS)
+            pipStartPending = false
             pictureInPictureController?.stopPictureInPicture()
-            send(["event": "pip", "state": "available"])
+        #endif
+    }
+
+    public func setAutoPip(_ enabled: Bool) {
+        #if os(iOS)
+            autoPip = enabled
+            if enabled {
+                _ = preparePip()
+            } else if #available(iOS 14.2, *) {
+                pictureInPictureController?.canStartPictureInPictureAutomaticallyFromInline = false
+            }
         #endif
     }
 
@@ -625,6 +659,8 @@ public final class UMediaPlayer: NSObject, FlutterTexture, FlutterStreamHandler 
         eventChannel = nil
         sink = nil
         #if os(iOS)
+            pipPossibleObservation?.invalidate()
+            pipPossibleObservation = nil
             pictureInPictureController = nil
             pictureInPictureLayer?.removeFromSuperlayer()
             pictureInPictureLayer = nil
@@ -749,6 +785,9 @@ public final class UMediaHandler: NSObject {
         case "exitPip":
             player.exitPip()
             result(nil)
+        case "setAutoPip":
+            player.setAutoPip(arguments["enabled"] as? Bool ?? false)
+            result(nil)
         case "screenshot":
             if let data = player.screenshot() {
                 result(FlutterStandardTypedData(bytes: data))
@@ -773,3 +812,19 @@ public final class UMediaHandler: NSObject {
         players.removeAll()
     }
 }
+
+#if os(iOS)
+    extension UMediaPlayer: AVPictureInPictureControllerDelegate {
+        public func pictureInPictureControllerDidStartPictureInPicture(_: AVPictureInPictureController) {
+            send(["event": "pip", "state": "active"])
+        }
+
+        public func pictureInPictureControllerDidStopPictureInPicture(_: AVPictureInPictureController) {
+            send(["event": "pip", "state": "available"])
+        }
+
+        public func pictureInPictureController(_: AVPictureInPictureController, failedToStartPictureInPictureWithError _: Error) {
+            send(["event": "pip", "state": "available"])
+        }
+    }
+#endif

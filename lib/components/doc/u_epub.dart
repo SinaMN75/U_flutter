@@ -929,6 +929,45 @@ class UEpubSpan {
   final String? href;
   final String? anchorId;
   final String? fontFamily;
+
+  UEpubSpan withText(String value) => UEpubSpan(
+    text: value,
+    bold: bold,
+    italic: italic,
+    underline: underline,
+    strike: strike,
+    monospace: monospace,
+    superscript: superscript,
+    subscript: subscript,
+    color: color,
+    background: background,
+    sizeFactor: sizeFactor,
+    href: href,
+    anchorId: anchorId,
+    fontFamily: fontFamily,
+  );
+}
+
+/// A contiguous piece of one block: the whole block, or the part that fits on a page.
+class UEpubSlice {
+  const UEpubSlice({required this.blockIndex, this.start = 0, this.end = -1});
+
+  final int blockIndex;
+  final int start;
+
+  /// Exclusive end offset, or -1 for "to the end of the block".
+  final int end;
+
+  bool get isWhole => start == 0 && end < 0;
+
+  int endIn(UEpubBlock block) => end < 0 ? block.text.length : end;
+}
+
+/// A search match inside one EPUB block.
+class UEpubSearchHit extends UDocSearchHit {
+  const UEpubSearchHit({required super.pageIndex, required this.blockIndex, required super.start, required super.end, required super.snippet, super.matchIndex}) : super(rects: const <Rect>[]);
+
+  final int blockIndex;
 }
 
 class UEpubBlock {
@@ -969,6 +1008,25 @@ class UEpubBlock {
   }
 
   bool get isEmpty => spans.isEmpty && imageHref == null && cells.isEmpty && kind != UEpubBlockKind.rule && kind != UEpubBlockKind.pageBreak;
+
+  bool get isText => spans.isNotEmpty && kind != UEpubBlockKind.image && kind != UEpubBlockKind.rule && kind != UEpubBlockKind.tableRow && kind != UEpubBlockKind.pageBreak;
+
+  /// Spans covering `[start, end)` of [text] with their inline formatting intact.
+  List<UEpubSpan> sliceSpans(int start, int end) {
+    final List<UEpubSpan> out = <UEpubSpan>[];
+    int cursor = 0;
+    for (final UEpubSpan span in spans) {
+      final int spanEnd = cursor + span.text.length;
+      if (spanEnd > start && cursor < end) {
+        final int from = max(start, cursor) - cursor;
+        final int to = min(end, spanEnd) - cursor;
+        out.add(from == 0 && to == span.text.length ? span : span.withText(span.text.substring(from, to)));
+      }
+      cursor = spanEnd;
+      if (cursor >= end) break;
+    }
+    return out;
+  }
 }
 
 class UEpubChapter {
@@ -1693,6 +1751,59 @@ class UEpubController extends UDocController {
   @override
   Future<ui.Image?> renderThumbnail(int pageIndex, {int maxSize = 240}) async => null;
 
+  /// Reading position stored by [saveProgress], if any.
+  UEpubPosition? get savedPosition {
+    final UEpubBook? book = _book;
+    if (book == null) return null;
+    return UEpubPosition.decode(UDocProgressStore.instance.get(book.fingerprint)?.cfi);
+  }
+
+  double get savedPercent {
+    final UEpubBook? book = _book;
+    if (book == null) return 0;
+    return UDocProgressStore.instance.get(book.fingerprint)?.percent ?? 0;
+  }
+
+  /// Searches block by block so every hit knows its exact block and offsets.
+  Future<List<UEpubSearchHit>> searchBlocks(String query, {UDocSearchOptions options = const UDocSearchOptions()}) async {
+    final UEpubBook? book = _book;
+    final String trimmed = query.trim();
+    if (book == null || trimmed.isEmpty) {
+      clearSearch();
+      return const <UEpubSearchHit>[];
+    }
+    final int token = ++_searchToken;
+    emit(value.copyWith(searchQuery: trimmed, isSearching: true, searchHits: const <UDocSearchHit>[], searchHitIndex: -1));
+    final String needle = options.normalizePersian ? UDocText.forSearch(trimmed) : (options.caseSensitive ? trimmed : trimmed.toLowerCase());
+    final List<UEpubSearchHit> hits = <UEpubSearchHit>[];
+    for (int index = 0; index < book.chapterCount; index++) {
+      if (token != _searchToken || isDisposed) return hits;
+      final UEpubChapter chapter = await this.chapter(index);
+      for (int blockIndex = 0; blockIndex < chapter.blocks.length; blockIndex++) {
+        final UEpubBlock block = chapter.blocks[blockIndex];
+        if (!block.isText) continue;
+        final String text = block.text;
+        final UDocNormalizedText normalized = options.normalizePersian
+            ? UDocNormalizedText.build(text)
+            : UDocNormalizedText(options.caseSensitive ? text : text.toLowerCase(), List<int>.generate(text.length, (int i) => i));
+        for (final int position in UDocText.findAll(normalized.text, needle, wholeWord: options.wholeWord)) {
+          final int start = normalized.sourceAt(position);
+          final int end = normalized.sourceAt(position + needle.length - 1) + 1;
+          final int snippetStart = max(0, start - 48);
+          final int snippetEnd = min(text.length, end + 48);
+          hits.add(UEpubSearchHit(pageIndex: index, blockIndex: blockIndex, start: start, end: end, snippet: text.substring(snippetStart, snippetEnd).replaceAll("\n", " "), matchIndex: hits.length));
+          if (hits.length >= options.maxHits) break;
+        }
+        if (hits.length >= options.maxHits) break;
+      }
+      liveHits.value = List<UDocSearchHit>.from(hits);
+      if (hits.length >= options.maxHits) break;
+    }
+    if (token != _searchToken || isDisposed) return hits;
+    emit(value.copyWith(searchHits: hits, isSearching: false, searchHitIndex: hits.isEmpty ? -1 : 0));
+    return hits;
+  }
+
   Future<List<UDocSearchHit>> search(String query, {UDocSearchOptions options = const UDocSearchOptions()}) async {
     final UEpubBook? book = _book;
     final String trimmed = query.trim();
@@ -1763,12 +1874,23 @@ class UEpubController extends UDocController {
 }
 
 class UEpubPage {
-  const UEpubPage({required this.spineIndex, required this.pageIndex, required this.blocks, required this.startBlock});
+  const UEpubPage({required this.spineIndex, required this.pageIndex, required this.blocks, required this.startBlock, this.slices = const <UEpubSlice>[]});
 
   final int spineIndex;
   final int pageIndex;
   final List<UEpubBlock> blocks;
   final int startBlock;
+
+  /// Exact block ranges on this page (filled by [UEpubPaginator.paginateSlices]).
+  final List<UEpubSlice> slices;
+
+  bool contains(int blockIndex, int offset) {
+    for (final UEpubSlice slice in slices) {
+      if (slice.blockIndex != blockIndex) continue;
+      if (offset >= slice.start && (slice.end < 0 || offset < slice.end)) return true;
+    }
+    return false;
+  }
 }
 
 class UEpubPaginator {
@@ -1825,6 +1947,97 @@ class UEpubPaginator {
     final double height = painter.height;
     painter.dispose();
     return height;
+  }
+
+  /// Splits a chapter into pages of [UEpubSlice]s. [painterFor] must return a
+  /// laid-out painter for a text block using exactly the style it is rendered
+  /// with, so page breaks land on real line boundaries.
+  List<UEpubPage> paginateSlices(UEpubChapter chapter, {required TextPainter Function(UEpubBlock block, double width) painterFor, double Function(UEpubBlock block, double width)? measureOther}) {
+    final double width = size.width - typography.horizontalMargin * 2;
+    final double limit = size.height - typography.verticalMargin * 2;
+    final List<UEpubPage> pages = <UEpubPage>[];
+    if (chapter.blocks.isEmpty || width <= 0 || limit <= 0) {
+      return <UEpubPage>[UEpubPage(spineIndex: chapter.spineIndex, pageIndex: 0, blocks: chapter.blocks, startBlock: 0, slices: <UEpubSlice>[for (int i = 0; i < chapter.blocks.length; i++) UEpubSlice(blockIndex: i)])];
+    }
+    List<UEpubSlice> current = <UEpubSlice>[];
+    double used = 0;
+    void flush() {
+      if (current.isEmpty) return;
+      pages.add(
+        UEpubPage(
+          spineIndex: chapter.spineIndex,
+          pageIndex: pages.length,
+          blocks: current.map((UEpubSlice slice) => chapter.blocks[slice.blockIndex]).toList(),
+          startBlock: current.first.blockIndex,
+          slices: current,
+        ),
+      );
+      current = <UEpubSlice>[];
+      used = 0;
+    }
+
+    for (int index = 0; index < chapter.blocks.length; index++) {
+      final UEpubBlock block = chapter.blocks[index];
+      if (block.kind == UEpubBlockKind.pageBreak) {
+        flush();
+        continue;
+      }
+      final double margins = block.marginTop + block.marginBottom + typography.paragraphSpacing / 2;
+      if (!block.isText) {
+        final double height = min(limit, (measureOther?.call(block, width) ?? _blockHeight(block, width)) + margins);
+        if (used + height > limit) flush();
+        current.add(UEpubSlice(blockIndex: index));
+        used += height;
+        continue;
+      }
+      final double textWidth = max(40, width - (block.indent > 0 ? block.indent : 0) - (block.kind == UEpubBlockKind.listItem ? 32 : 0) - (block.kind == UEpubBlockKind.blockquote ? 27 : 0));
+      final TextPainter painter = painterFor(block, textWidth);
+      final List<ui.LineMetrics> lines = painter.computeLineMetrics();
+      final int length = block.text.length;
+      if (used + painter.height + margins <= limit || lines.isEmpty) {
+        if (used + painter.height + margins > limit) flush();
+        current.add(UEpubSlice(blockIndex: index));
+        used += painter.height + margins;
+        painter.dispose();
+        continue;
+      }
+      int start = 0;
+      int line = 0;
+      while (line < lines.length && start < length) {
+        double available = limit - used - block.marginTop;
+        if (available < lines[line].height) {
+          flush();
+          available = limit - block.marginTop;
+        }
+        double consumed = 0;
+        int last = line;
+        while (last < lines.length && consumed + lines[last].height <= available) {
+          consumed += lines[last].height;
+          last++;
+        }
+        if (last == line) {
+          consumed = lines[line].height;
+          last = line + 1;
+        }
+        final bool finished = last >= lines.length;
+        int end = length;
+        if (!finished) {
+          final ui.LineMetrics next = lines[last];
+          end = painter.getPositionForOffset(Offset(block.rtl ? textWidth - 1 : 1, next.baseline - next.ascent / 2)).offset;
+          final TextRange boundary = painter.getLineBoundary(TextPosition(offset: end));
+          end = boundary.start.clamp(start + 1, length);
+        }
+        current.add(UEpubSlice(blockIndex: index, start: start, end: finished ? -1 : end));
+        used += consumed + (finished ? margins : block.marginTop);
+        start = end;
+        line = last;
+        if (!finished) flush();
+      }
+      painter.dispose();
+    }
+    flush();
+    if (pages.isEmpty) pages.add(UEpubPage(spineIndex: chapter.spineIndex, pageIndex: 0, blocks: chapter.blocks, startBlock: 0, slices: <UEpubSlice>[for (int i = 0; i < chapter.blocks.length; i++) UEpubSlice(blockIndex: i)]));
+    return pages;
   }
 
   List<UEpubPage> paginate(UEpubChapter chapter) {

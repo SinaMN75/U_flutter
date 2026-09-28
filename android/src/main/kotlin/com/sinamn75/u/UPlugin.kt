@@ -13,6 +13,7 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
+import io.flutter.plugin.common.PluginRegistry
 
 /** UPlugin: root registration point for every native feature of the `u` plugin. */
 class UPlugin :
@@ -28,6 +29,8 @@ class UPlugin :
     private var camera: UCameraHandler? = null
     private var ar: UArHandler? = null
     private var files: UFilesHandler? = null
+    private var activityBinding: ActivityPluginBinding? = null
+    private val userLeaveHint = PluginRegistry.UserLeaveHintListener { media?.onUserLeaveHint() }
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "u")
@@ -83,6 +86,7 @@ class UPlugin :
     }
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
+        attachLeaveHint(binding)
         screenGuard?.setActivity(binding.activity)
         media?.setActivity(binding.activity)
         camera?.setActivity(binding.activity)
@@ -97,6 +101,7 @@ class UPlugin :
     }
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
+        attachLeaveHint(binding)
         screenGuard?.setActivity(binding.activity)
         media?.setActivity(binding.activity)
         camera?.setActivity(binding.activity)
@@ -110,7 +115,19 @@ class UPlugin :
         }
     }
 
+    private fun attachLeaveHint(binding: ActivityPluginBinding) {
+        activityBinding?.removeOnUserLeaveHintListener(userLeaveHint)
+        binding.addOnUserLeaveHintListener(userLeaveHint)
+        activityBinding = binding
+    }
+
+    private fun detachLeaveHint() {
+        activityBinding?.removeOnUserLeaveHintListener(userLeaveHint)
+        activityBinding = null
+    }
+
     override fun onDetachedFromActivityForConfigChanges() {
+        detachLeaveHint()
         screenGuard?.setActivity(null)
         media?.setActivity(null)
         camera?.setActivity(null)
@@ -119,6 +136,7 @@ class UPlugin :
     }
 
     override fun onDetachedFromActivity() {
+        detachLeaveHint()
         screenGuard?.setActivity(null)
         media?.setActivity(null)
         camera?.setActivity(null)

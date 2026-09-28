@@ -3,9 +3,11 @@ import "package:u/utilities.dart";
 import "pages/admin_reference_page.dart";
 import "pages/advanced_page.dart";
 import "pages/api_reference_page.dart";
+import "pages/audio_notes_page.dart";
 import "pages/ar_page.dart";
 import "pages/buttons_page.dart";
 import "pages/camera_page.dart";
+import "pages/document_reader_page.dart";
 import "pages/downloads/downloads_page.dart";
 import "pages/extensions_page.dart";
 import "pages/feedback_page.dart";
@@ -19,6 +21,7 @@ import "pages/navigation_page.dart";
 import "pages/screen_guard_page.dart";
 import "pages/text_page.dart";
 import "pages/utils_page.dart";
+import "pages/video_notes_page.dart";
 
 /// One tappable card on the gallery home grid.
 class GalleryEntry {
@@ -31,6 +34,9 @@ class GalleryEntry {
 }
 
 final List<GalleryEntry> kEntries = <GalleryEntry>[
+  GalleryEntry(title: "Document reader", subtitle: "PDF & EPUB, highlights, notes", icon: Icons.menu_book_rounded, builder: () => const DocumentReaderPage()),
+  GalleryEntry(title: "Video course", subtitle: "Timestamp notes, resume, PiP", icon: Icons.ondemand_video_rounded, builder: () => const VideoNotesPage()),
+  GalleryEntry(title: "Audio lecture", subtitle: "Voice player with notes", icon: Icons.headphones_rounded, builder: () => const AudioNotesPage()),
   GalleryEntry(title: "Text", subtitle: "UText* type scale", icon: Icons.title, builder: () => const TextPage()),
   GalleryEntry(title: "Buttons", subtitle: "UButton & variants", icon: Icons.smart_button, builder: () => const ButtonsPage()),
   GalleryEntry(title: "Inputs", subtitle: "Fields, OTP, validators", icon: Icons.edit_note, builder: () => const InputsPage()),

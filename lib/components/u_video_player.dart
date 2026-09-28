@@ -649,6 +649,8 @@ class UVideoGestures extends StatefulWidget {
     this.onZoomChanged,
     this.onBrightnessChanged,
     this.onDismiss,
+    this.onMouseDoubleTap,
+    this.onMouseTap,
     this.enabled = true,
   });
 
@@ -656,6 +658,12 @@ class UVideoGestures extends StatefulWidget {
   final Widget child;
   final UVideoGestureConfig config;
   final VoidCallback? onToggleControls;
+
+  /// Double click with a mouse (desktop/web); typically toggles fullscreen.
+  final VoidCallback? onMouseDoubleTap;
+
+  /// Single click with a mouse; typically play/pause.
+  final VoidCallback? onMouseTap;
   final void Function(double zoom)? onZoomChanged;
   final void Function(double brightness)? onBrightnessChanged;
   final VoidCallback? onDismiss;
@@ -845,9 +853,25 @@ class _UVideoGesturesState extends State<UVideoGestures> {
         final Size size = Size(constraints.maxWidth, constraints.maxHeight);
         return GestureDetector(
           behavior: HitTestBehavior.opaque,
-          onTap: widget.config.tapToToggleControls ? widget.onToggleControls : null,
-          onDoubleTapDown: widget.config.doubleTapSeek ? (TapDownDetails d) => _handleDoubleTap(d.localPosition, size) : null,
-          onDoubleTap: widget.config.doubleTapSeek ? () {} : null,
+          onTapUp: widget.config.tapToToggleControls || widget.onMouseTap != null
+              ? (TapUpDetails d) {
+                  if (d.kind == PointerDeviceKind.mouse && widget.onMouseTap != null) {
+                    widget.onMouseTap!();
+                  } else if (widget.config.tapToToggleControls) {
+                    widget.onToggleControls?.call();
+                  }
+                }
+              : null,
+          onDoubleTapDown: widget.config.doubleTapSeek || widget.onMouseDoubleTap != null
+              ? (TapDownDetails d) {
+                  if (d.kind == PointerDeviceKind.mouse && widget.onMouseDoubleTap != null) {
+                    widget.onMouseDoubleTap!();
+                  } else if (widget.config.doubleTapSeek) {
+                    _handleDoubleTap(d.localPosition, size);
+                  }
+                }
+              : null,
+          onDoubleTap: widget.config.doubleTapSeek || widget.onMouseDoubleTap != null ? () {} : null,
           onLongPressStart: widget.config.longPressSpeed ? (LongPressStartDetails _) => unawaited(_onLongPressStart()) : null,
           onLongPressEnd: widget.config.longPressSpeed ? (LongPressEndDetails _) => unawaited(_onLongPressEnd()) : null,
           onScaleStart: wantsPan ? (ScaleStartDetails d) => _onScaleStart(d, size) : null,
@@ -915,9 +939,15 @@ class UVideoSeekBar extends StatefulWidget {
     this.onScrubStart,
     this.onScrubEnd,
     this.thumbnailBuilder,
+    this.trackColor = const Color(0x40FFFFFF),
+    this.bufferColor = const Color(0x66FFFFFF),
   });
 
   final UMediaController controller;
+
+  /// Track colours; the defaults suit the dark video overlay.
+  final Color trackColor;
+  final Color bufferColor;
   final List<UVideoMarker> markers;
   final Color? accentColor;
   final double height;
@@ -932,6 +962,59 @@ class UVideoSeekBar extends StatefulWidget {
 
 class _UVideoSeekBarState extends State<UVideoSeekBar> {
   double? _dragValue;
+  double? _hoverValue;
+
+  UVideoMarker? _markerAt(Duration position, int total) {
+    final int slop = max(1500, total ~/ 120);
+    UVideoMarker? best;
+    int bestDistance = 1 << 30;
+    for (final UVideoMarker marker in widget.markers) {
+      if (marker.contains(position)) return marker;
+      final int distance = (marker.start.inMilliseconds - position.inMilliseconds).abs();
+      if (distance <= slop && distance < bestDistance) {
+        best = marker;
+        bestDistance = distance;
+      }
+    }
+    return best;
+  }
+
+  Widget _bubble(BuildContext context, double fraction, int total, double width, Color accent) {
+    final Duration position = Duration(milliseconds: (total * fraction).round());
+    final UVideoMarker? marker = _markerAt(position, total);
+    final String label = marker?.label ?? "";
+    const double bubbleWidth = 180;
+    final double left = (width * fraction - bubbleWidth / 2).clamp(0, max(0, width - bubbleWidth)).toDouble();
+    return Positioned(
+      left: left,
+      bottom: 28,
+      width: bubbleWidth,
+      child: IgnorePointer(
+        child: Center(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            decoration: BoxDecoration(color: const Color(0xE6000000), borderRadius: BorderRadius.circular(8), border: marker == null ? null : Border.all(color: marker.color ?? accent)),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                if (widget.thumbnailBuilder != null) Padding(padding: const EdgeInsets.only(bottom: 4), child: widget.thumbnailBuilder!(context, position)),
+                Text(uFormatDuration(position), style: const TextStyle(color: Color(0xFFFFFFFF), fontSize: 12, fontWeight: FontWeight.w700)),
+                if (label.isNotEmpty)
+                  Text(
+                    label,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    textDirection: UDocText.isRtl(label) ? TextDirection.rtl : TextDirection.ltr,
+                    style: const TextStyle(color: Color(0xFFFFFFFF), fontSize: 11),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -939,58 +1022,59 @@ class _UVideoSeekBarState extends State<UVideoSeekBar> {
     return Directionality(
       textDirection: TextDirection.ltr,
       child: ValueListenableBuilder<UMediaValue>(
-      valueListenable: widget.controller,
-      builder: (BuildContext context, UMediaValue value, Widget? child) {
-        final int total = value.duration.inMilliseconds;
-        final double position = _dragValue ?? (total <= 0 ? 0 : value.position.inMilliseconds / total);
-        final double buffered = total <= 0 ? 0 : (value.bufferedPosition.inMilliseconds / total).clamp(0, 1).toDouble();
-
-        return UColumn(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            if (_dragValue != null && widget.thumbnailBuilder != null)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: widget.thumbnailBuilder!(context, Duration(milliseconds: (total * _dragValue!).round())),
-              ),
-            SizedBox(
-              height: 24,
-              child: Stack(
-                alignment: Alignment.center,
-                children: <Widget>[
-                  _track(context, accent, position, buffered, total),
-                  SliderTheme(
-                    data: SliderTheme.of(context).copyWith(
-                      trackHeight: widget.height,
-                      activeTrackColor: const Color(0x00000000),
-                      inactiveTrackColor: const Color(0x00000000),
-                      thumbColor: accent,
-                      overlayColor: accent.withValues(alpha: 0.2),
-                      thumbShape: RoundSliderThumbShape(enabledThumbRadius: widget.thumbRadius),
-                      overlayShape: RoundSliderOverlayShape(overlayRadius: widget.thumbRadius * 2),
-                      trackShape: const RectangularSliderTrackShape(),
+        valueListenable: widget.controller,
+        builder: (BuildContext context, UMediaValue value, Widget? child) {
+          final int total = value.duration.inMilliseconds;
+          final double position = _dragValue ?? (total <= 0 ? 0 : value.position.inMilliseconds / total);
+          final double buffered = total <= 0 ? 0 : (value.bufferedPosition.inMilliseconds / total).clamp(0, 1).toDouble();
+          final double? preview = _dragValue ?? _hoverValue;
+          return LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) => MouseRegion(
+              onHover: (PointerHoverEvent event) => setState(() => _hoverValue = (event.localPosition.dx / max(1, constraints.maxWidth)).clamp(0, 1).toDouble()),
+              onExit: (PointerExitEvent event) => setState(() => _hoverValue = null),
+              child: SizedBox(
+                height: 24,
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  alignment: Alignment.center,
+                  children: <Widget>[
+                    _track(context, accent, position, buffered, total),
+                    SliderTheme(
+                      data: SliderTheme.of(context).copyWith(
+                        trackHeight: widget.height,
+                        activeTrackColor: const Color(0x00000000),
+                        inactiveTrackColor: const Color(0x00000000),
+                        thumbColor: accent,
+                        overlayColor: accent.withValues(alpha: 0.2),
+                        thumbShape: RoundSliderThumbShape(enabledThumbRadius: widget.thumbRadius),
+                        overlayShape: RoundSliderOverlayShape(overlayRadius: widget.thumbRadius * 2),
+                        trackShape: const RectangularSliderTrackShape(),
+                      ),
+                      child: Slider(
+                        value: position.clamp(0, 1),
+                        onChangeStart: total <= 0
+                            ? null
+                            : (double _) {
+                                widget.onScrubStart?.call();
+                                setState(() => _dragValue = position);
+                              },
+                        onChanged: total <= 0 ? null : (double next) => setState(() => _dragValue = next),
+                        onChangeEnd: total <= 0
+                            ? null
+                            : (double next) {
+                                setState(() => _dragValue = null);
+                                widget.onScrubEnd?.call();
+                                unawaited(widget.controller.seekToProgress(next));
+                              },
+                      ),
                     ),
-                    child: Slider(
-                      value: position.clamp(0, 1),
-                      onChangeStart: (double _) {
-                        widget.onScrubStart?.call();
-                        setState(() => _dragValue = position);
-                      },
-                      onChanged: (double next) => setState(() => _dragValue = next),
-                      onChangeEnd: (double next) {
-                        setState(() => _dragValue = null);
-                        widget.onScrubEnd?.call();
-                        unawaited(widget.controller.seekToProgress(next));
-                      },
-                    ),
-                  ),
-                ],
+                    if (preview != null && total > 0) _bubble(context, preview, total, constraints.maxWidth, accent),
+                  ],
+                ),
               ),
             ),
-          ],
-        );
-      },
+          );
+        },
       ),
     );
   }
@@ -999,11 +1083,11 @@ class _UVideoSeekBarState extends State<UVideoSeekBar> {
     builder: (BuildContext context, BoxConstraints constraints) => Stack(
       alignment: Alignment.centerLeft,
       children: <Widget>[
-        Container(height: widget.height, decoration: BoxDecoration(color: const Color(0x40FFFFFF), borderRadius: BorderRadius.circular(widget.height))),
+        Container(height: widget.height, decoration: BoxDecoration(color: widget.trackColor, borderRadius: BorderRadius.circular(widget.height))),
         Container(
           height: widget.height,
           width: constraints.maxWidth * buffered,
-          decoration: BoxDecoration(color: const Color(0x66FFFFFF), borderRadius: BorderRadius.circular(widget.height)),
+          decoration: BoxDecoration(color: widget.bufferColor, borderRadius: BorderRadius.circular(widget.height)),
         ),
         Container(
           height: widget.height,
@@ -1013,11 +1097,11 @@ class _UVideoSeekBarState extends State<UVideoSeekBar> {
         if (total > 0)
           for (final UVideoMarker marker in widget.markers)
             Positioned(
-              left: (constraints.maxWidth * (marker.start.inMilliseconds / total)).clamp(0, constraints.maxWidth - 2),
+              left: (constraints.maxWidth * (marker.start.inMilliseconds / total)).clamp(0, max(0, constraints.maxWidth - 3)).toDouble(),
               child: Container(
-                width: marker.end == null ? 2 : ((constraints.maxWidth * ((marker.end!.inMilliseconds - marker.start.inMilliseconds) / total)).clamp(2, constraints.maxWidth)),
-                height: widget.height + 2,
-                color: marker.color ?? const Color(0xFFFFD54F),
+                width: marker.end == null ? 3 : (constraints.maxWidth * ((marker.end!.inMilliseconds - marker.start.inMilliseconds) / total)).clamp(3, constraints.maxWidth).toDouble(),
+                height: widget.height + 4,
+                decoration: BoxDecoration(color: marker.color ?? const Color(0xFFFFD54F), borderRadius: BorderRadius.circular(1.5)),
               ),
             ),
       ],
@@ -1041,13 +1125,20 @@ class UVideoControls extends StatelessWidget {
     this.showSubtitles = true,
     this.showQueue = false,
     this.showLock = true,
+    this.showSeekButtons = true,
+    this.showVolumeSlider = false,
+    this.seekStep = const Duration(seconds: 10),
     this.isFullscreen = false,
     this.locked = false,
+    this.notesCount = 0,
+    this.topActions = const <Widget>[],
     this.onBack,
     this.onToggleFullscreen,
     this.onToggleLock,
     this.onOpenSettings,
     this.onOpenQueue,
+    this.onAddNote,
+    this.onOpenNotes,
     this.onScrubStart,
     this.onScrubEnd,
     this.thumbnailBuilder,
@@ -1066,13 +1157,20 @@ class UVideoControls extends StatelessWidget {
   final bool showSubtitles;
   final bool showQueue;
   final bool showLock;
+  final bool showSeekButtons;
+  final bool showVolumeSlider;
+  final Duration seekStep;
   final bool isFullscreen;
   final bool locked;
+  final int notesCount;
+  final List<Widget> topActions;
   final VoidCallback? onBack;
   final VoidCallback? onToggleFullscreen;
   final VoidCallback? onToggleLock;
   final VoidCallback? onOpenSettings;
   final VoidCallback? onOpenQueue;
+  final VoidCallback? onAddNote;
+  final VoidCallback? onOpenNotes;
   final VoidCallback? onScrubStart;
   final VoidCallback? onScrubEnd;
   final Widget Function(BuildContext context, Duration position)? thumbnailBuilder;
@@ -1088,14 +1186,14 @@ class UVideoControls extends StatelessWidget {
       child: Directionality(
         textDirection: TextDirection.ltr,
         child: DecoratedBox(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: <Color>[Color(0x8C000000), Color(0x00000000), Color(0x00000000), Color(0xA6000000)],
-            stops: <double>[0, 0.28, 0.62, 1],
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: <Color>[Color(0x8C000000), Color(0x00000000), Color(0x00000000), Color(0xA6000000)],
+              stops: <double>[0, 0.28, 0.62, 1],
+            ),
           ),
-        ),
           child: locked ? _lockedLayer(context) : _fullLayer(context),
         ),
       ),
@@ -1111,18 +1209,23 @@ class UVideoControls extends StatelessWidget {
   );
 
   Widget _fullLayer(BuildContext context) => SafeArea(
-    child: UColumn(
-      children: <Widget>[
-        _topBar(context),
-        const Spacer(),
-        _centerRow(context),
-        const Spacer(),
-        _bottomBar(context),
-      ],
+    child: LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        final bool compact = constraints.maxWidth < 420 || constraints.maxHeight < 220;
+        return UColumn(
+          children: <Widget>[
+            _topBar(context, compact),
+            const Spacer(),
+            _centerRow(context, compact),
+            const Spacer(),
+            _bottomBar(context, compact),
+          ],
+        );
+      },
     ),
   );
 
-  Widget _topBar(BuildContext context) => Padding(
+  Widget _topBar(BuildContext context, bool compact) => Padding(
     padding: const EdgeInsets.fromLTRB(4, 4, 4, 0),
     child: URow(
       children: <Widget>[
@@ -1139,36 +1242,63 @@ class UVideoControls extends StatelessWidget {
           )
         else
           const Spacer(),
+        ...topActions,
+        if (onAddNote != null) _iconButton(Icons.add_comment_rounded, U.s.addTimestampNote, onAddNote),
+        if (onOpenNotes != null)
+          Stack(
+            clipBehavior: Clip.none,
+            children: <Widget>[
+              _iconButton(Icons.sticky_note_2_outlined, U.s.videoNotes, onOpenNotes),
+              if (notesCount > 0)
+                Positioned(
+                  right: 4,
+                  top: 4,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                    decoration: BoxDecoration(color: accentColor ?? Theme.of(context).colorScheme.primary, borderRadius: BorderRadius.circular(8)),
+                    child: Text("$notesCount", style: const TextStyle(color: _onDark, fontSize: 9, fontWeight: FontWeight.w700)),
+                  ),
+                ),
+            ],
+          ),
         if (showLock && isFullscreen) _iconButton(Icons.lock_open_rounded, U.s.lockControls, onToggleLock),
-        if (showPip && !kIsWeb) _iconButton(Icons.picture_in_picture_alt_rounded, U.s.pictureInPicture, () => unawaited(controller.enterPip())),
+        if (showPip && !compact) _iconButton(Icons.picture_in_picture_alt_rounded, U.s.pictureInPicture, () => unawaited(controller.enterPip())),
         if (showQueue) _iconButton(Icons.queue_music_rounded, U.s.queue, onOpenQueue),
         _iconButton(Icons.settings_rounded, U.s.settings, onOpenSettings),
       ],
     ),
   );
 
-  Widget _centerRow(BuildContext context) => ValueListenableBuilder<UMediaValue>(
+  Widget _centerRow(BuildContext context, bool compact) => ValueListenableBuilder<UMediaValue>(
     valueListenable: controller,
-    builder: (BuildContext context, UMediaValue value, Widget? child) => URow(
-      mainAxisAlignment: MainAxisAlignment.center,
-      spacing: 28,
-      children: <Widget>[
-        _circleButton(Icons.skip_previous_rounded, U.s.previous, controller.hasPrevious ? () => unawaited(controller.previous()) : null, 30),
-        if (value.isBuffering)
-          const SizedBox(width: 64, height: 64, child: Center(child: CircularProgressIndicator(color: _onDark, strokeWidth: 3)))
-        else
-          _circleButton(
-            value.state == UMediaState.completed ? Icons.replay_rounded : (value.isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded),
-            value.isPlaying ? U.s.pause : U.s.play,
-            () => unawaited(value.state == UMediaState.completed ? controller.seek(Duration.zero).then((_) => controller.play()) : controller.playPause()),
-            44,
-          ),
-        _circleButton(Icons.skip_next_rounded, U.s.next, controller.hasNext ? () => unawaited(controller.next()) : null, 30),
-      ],
-    ),
+    builder: (BuildContext context, UMediaValue value, Widget? child) {
+      final bool queue = controller.queue.length > 1;
+      final int seconds = seekStep.inSeconds;
+      return URow(
+        mainAxisAlignment: MainAxisAlignment.center,
+        spacing: compact ? 14 : 24,
+        children: <Widget>[
+          if (queue) _circleButton(Icons.skip_previous_rounded, U.s.previous, controller.hasPrevious ? () => unawaited(controller.previous()) : null, compact ? 24 : 28),
+          if (showSeekButtons && !value.isLive)
+            _circleButton(seconds == 10 ? Icons.replay_10_rounded : (seconds == 5 ? Icons.replay_5_rounded : (seconds == 30 ? Icons.replay_30_rounded : Icons.replay_rounded)), U.s.seekBackward, () => unawaited(controller.seekBy(-seekStep)), compact ? 24 : 30),
+          if (value.isBuffering)
+            SizedBox(width: compact ? 52 : 64, height: compact ? 52 : 64, child: const Center(child: CircularProgressIndicator(color: _onDark, strokeWidth: 3)))
+          else
+            _circleButton(
+              value.state == UMediaState.completed ? Icons.replay_rounded : (value.isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded),
+              value.isPlaying ? U.s.pause : U.s.play,
+              () => unawaited(controller.playPause()),
+              compact ? 34 : 44,
+            ),
+          if (showSeekButtons && !value.isLive)
+            _circleButton(seconds == 10 ? Icons.forward_10_rounded : (seconds == 5 ? Icons.forward_5_rounded : (seconds == 30 ? Icons.forward_30_rounded : Icons.forward_rounded)), U.s.seekForward, () => unawaited(controller.seekBy(seekStep)), compact ? 24 : 30),
+          if (queue) _circleButton(Icons.skip_next_rounded, U.s.next, controller.hasNext ? () => unawaited(controller.next()) : null, compact ? 24 : 28),
+        ],
+      );
+    },
   );
 
-  Widget _bottomBar(BuildContext context) => ValueListenableBuilder<UMediaValue>(
+  Widget _bottomBar(BuildContext context, bool compact) => ValueListenableBuilder<UMediaValue>(
     valueListenable: controller,
     builder: (BuildContext context, UMediaValue value, Widget? child) => Padding(
       padding: const EdgeInsets.fromLTRB(12, 0, 12, 6),
@@ -1191,10 +1321,25 @@ class UVideoControls extends StatelessWidget {
               else
                 UTextBodySmall("${uFormatDuration(value.position)} / ${uFormatDuration(value.duration)}", color: _onDark),
               const Spacer(),
-              if (showSubtitles) _iconButton(controller.subtitles == null ? Icons.closed_caption_off_rounded : Icons.closed_caption_rounded, U.s.subtitles, onOpenSettings),
-              if (showQuality) _textButton(_qualityLabel(value), U.s.quality, onOpenSettings),
-              if (showSpeed) _textButton("${value.speed}x", U.s.playbackSpeed, onOpenSettings),
-              _iconButton(value.muted ? Icons.volume_off_rounded : Icons.volume_up_rounded, value.muted ? U.s.unmute : U.s.mute, () => unawaited(controller.toggleMute())),
+              _iconButton(value.muted || value.volume == 0 ? Icons.volume_off_rounded : Icons.volume_up_rounded, value.muted ? U.s.unmute : U.s.mute, () => unawaited(controller.toggleMute())),
+              if (showVolumeSlider && !compact)
+                SizedBox(
+                  width: 90,
+                  child: SliderTheme(
+                    data: SliderTheme.of(context).copyWith(
+                      trackHeight: 2,
+                      thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 5),
+                      overlayShape: const RoundSliderOverlayShape(overlayRadius: 10),
+                      activeTrackColor: _onDark,
+                      inactiveTrackColor: const Color(0x55FFFFFF),
+                      thumbColor: _onDark,
+                    ),
+                    child: Slider(value: value.muted ? 0 : value.volume.clamp(0, 1).toDouble(), onChanged: (double next) => unawaited(controller.setVolume(next))),
+                  ),
+                ),
+              if (showSubtitles && !compact) _iconButton(controller.subtitles == null ? Icons.closed_caption_off_rounded : Icons.closed_caption_rounded, U.s.subtitles, onOpenSettings),
+              if (showQuality && !compact) _textButton(_qualityLabel(value), U.s.quality, onOpenSettings),
+              if (showSpeed) _speedButton(value),
               if (showFullscreen) _iconButton(isFullscreen ? Icons.fullscreen_exit_rounded : Icons.fullscreen_rounded, isFullscreen ? U.s.exitFullscreen : U.s.fullscreen, onToggleFullscreen),
             ],
           ),
@@ -1202,6 +1347,19 @@ class UVideoControls extends StatelessWidget {
       ),
     ),
   );
+
+  Widget _speedButton(UMediaValue value) => PopupMenuButton<double>(
+    tooltip: U.s.playbackSpeed,
+    initialValue: value.speed,
+    onSelected: (double speed) => unawaited(controller.setSpeed(speed)),
+    itemBuilder: (BuildContext context) => uSpeedPresets.map((double speed) => PopupMenuItem<double>(value: speed, child: Text("${speed}x", style: TextStyle(fontWeight: speed == value.speed ? FontWeight.w800 : FontWeight.w400)))).toList(),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      child: UTextBodySmall("${_trim(value.speed)}x", color: _onDark, fontWeight: FontWeight.w700),
+    ),
+  );
+
+  static String _trim(double speed) => speed == speed.roundToDouble() ? speed.toStringAsFixed(0) : speed.toStringAsFixed(2).replaceAll(RegExp(r"0$"), "");
 
   String _qualityLabel(UMediaValue value) {
     final UMediaTrack? selected = value.selectedTrack(UMediaTrackType.video);
@@ -1449,6 +1607,10 @@ class _UVideoSettingsSheetState extends State<UVideoSettingsSheet> {
             )
             .toList(growable: false),
       ).pSymmetric(horizontal: 16),
+      ValueListenableBuilder<UMediaValue>(
+        valueListenable: widget.controller,
+        builder: (BuildContext context, UMediaValue value, Widget? child) => _slider(U.s.fineSpeed, value.speed, 0.25, 4, (double next) => unawaited(widget.controller.setSpeed((next * 20).round() / 20)), suffix: "x"),
+      ),
       const Divider(),
       ListTile(
         leading: const Icon(Icons.high_quality_rounded),
@@ -1670,6 +1832,7 @@ class UVideo extends StatefulWidget {
     this.settings,
     this.title,
     this.markers = const <UVideoMarker>[],
+    this.notes,
     this.gestures = const UVideoGestureConfig(),
     this.accentColor,
     this.backgroundColor = const Color(0xFF000000),
@@ -1677,11 +1840,20 @@ class UVideo extends StatefulWidget {
     this.showControls = true,
     this.showFullscreenButton = true,
     this.showQueueButton = false,
+    this.showSeekButtons = true,
+    this.showNoteOverlays = true,
+    this.seekStep = const Duration(seconds: 10),
     this.autoHide = const Duration(seconds: 3),
     this.aspectRatio,
     this.placeholder,
     this.isFullscreen = false,
+    this.watermark,
+    this.secure = false,
+    this.resumeKey,
+    this.autoPip = false,
+    this.topActions = const <Widget>[],
     this.onDismiss,
+    this.onOpenNotes,
     this.thumbnailBuilder,
     this.controlsBuilder,
   });
@@ -1690,6 +1862,9 @@ class UVideo extends StatefulWidget {
   final UVideoSettings? settings;
   final String? title;
   final List<UVideoMarker> markers;
+
+  /// Time-stamped notes: shown on the seek bar, as overlays and via the add-note button.
+  final UMediaNotesController? notes;
   final UVideoGestureConfig gestures;
   final Color? accentColor;
   final Color backgroundColor;
@@ -1697,11 +1872,28 @@ class UVideo extends StatefulWidget {
   final bool showControls;
   final bool showFullscreenButton;
   final bool showQueueButton;
+  final bool showSeekButtons;
+  final bool showNoteOverlays;
+  final Duration seekStep;
   final Duration autoHide;
   final double? aspectRatio;
   final Widget? placeholder;
   final bool isFullscreen;
+  final UDocWatermark? watermark;
+
+  /// Blocks screenshots and screen recording while visible.
+  final bool secure;
+
+  /// Remembers and offers to resume the playback position under this key.
+  final String? resumeKey;
+
+  /// Enter picture-in-picture automatically when leaving the app while playing (Android).
+  final bool autoPip;
+  final List<Widget> topActions;
   final VoidCallback? onDismiss;
+
+  /// Opens a notes list; when null and [notes] is set, a bottom sheet is used.
+  final VoidCallback? onOpenNotes;
   final Widget Function(BuildContext context, Duration position)? thumbnailBuilder;
   final Widget Function(BuildContext context, UMediaController controller, bool visible)? controlsBuilder;
 
@@ -1712,39 +1904,103 @@ class UVideo extends StatefulWidget {
 class _UVideoState extends State<UVideo> {
   late final UVideoSettings _settings = widget.settings ?? UVideoSettings();
   late final bool _ownsSettings = widget.settings == null;
-  final FocusNode _focusNode = FocusNode();
+  final FocusNode _focusNode = FocusNode(debugLabel: "UVideo");
 
   bool _controlsVisible = true;
   bool _locked = false;
+  bool _hovering = false;
+  bool _resumeChecked = false;
+  Duration? _resumeOffer;
   Timer? _hideTimer;
+  Timer? _resumeTimer;
+  DateTime _lastResumeSave = DateTime.fromMillisecondsSinceEpoch(0);
+  bool _wasPlaying = false;
+
+  bool get _desktop => kIsWeb || UApp.isDesktop;
 
   @override
   void initState() {
     super.initState();
     widget.controller.addListener(_onValueChanged);
+    widget.notes?.addListener(_onNotesChanged);
     _restartHideTimer();
+    if (widget.autoPip) unawaited(widget.controller.setAutoPip(true));
+  }
+
+  @override
+  void didUpdateWidget(UVideo oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller != widget.controller) {
+      oldWidget.controller.removeListener(_onValueChanged);
+      widget.controller.addListener(_onValueChanged);
+    }
+    if (oldWidget.notes != widget.notes) {
+      oldWidget.notes?.removeListener(_onNotesChanged);
+      widget.notes?.addListener(_onNotesChanged);
+    }
+    if (oldWidget.autoPip != widget.autoPip) unawaited(widget.controller.setAutoPip(widget.autoPip));
   }
 
   @override
   void dispose() {
+    _saveResume(force: true);
     _hideTimer?.cancel();
+    _resumeTimer?.cancel();
     widget.controller.removeListener(_onValueChanged);
+    widget.notes?.removeListener(_onNotesChanged);
+    if (widget.autoPip && !widget.isFullscreen) unawaited(widget.controller.setAutoPip(false));
     _focusNode.dispose();
     if (_ownsSettings) _settings.dispose();
     super.dispose();
   }
 
+  void _onNotesChanged() {
+    if (mounted) setState(() {});
+  }
+
   void _onValueChanged() {
-    if (!_settings.hasAbRepeat) return;
     final UMediaValue value = widget.controller.value;
-    if (value.position >= _settings.repeatEnd!) unawaited(widget.controller.seek(_settings.repeatStart!));
+    if (_settings.hasAbRepeat && value.position >= _settings.repeatEnd!) unawaited(widget.controller.seek(_settings.repeatStart!));
+    _checkResume(value);
+    _saveResume();
+    if (value.isPlaying != _wasPlaying) {
+      _wasPlaying = value.isPlaying;
+      if (value.isPlaying) {
+        _restartHideTimer();
+      } else if (mounted && !_controlsVisible) {
+        setState(() => _controlsVisible = true);
+      }
+    }
+  }
+
+  void _checkResume(UMediaValue value) {
+    final String? key = widget.resumeKey;
+    if (key == null || _resumeChecked || widget.isFullscreen || value.duration <= Duration.zero) return;
+    _resumeChecked = true;
+    final Duration? saved = UMediaResume.get(key);
+    if (saved == null || saved >= value.duration - const Duration(seconds: 8)) return;
+    unawaited(widget.controller.seek(saved));
+    setState(() => _resumeOffer = saved);
+    _resumeTimer = Timer(const Duration(seconds: 7), () {
+      if (mounted) setState(() => _resumeOffer = null);
+    });
+  }
+
+  void _saveResume({bool force = false}) {
+    final String? key = widget.resumeKey;
+    if (key == null || widget.isFullscreen || !_resumeChecked) return;
+    final DateTime now = DateTime.now();
+    if (!force && now.difference(_lastResumeSave) < const Duration(seconds: 4)) return;
+    _lastResumeSave = now;
+    final UMediaValue value = widget.controller.value;
+    if (value.duration > Duration.zero) UMediaResume.save(key, value.position, value.duration);
   }
 
   void _restartHideTimer() {
     _hideTimer?.cancel();
     if (widget.autoHide <= Duration.zero) return;
     _hideTimer = Timer(widget.autoHide, () {
-      if (mounted && widget.controller.value.isPlaying) setState(() => _controlsVisible = false);
+      if (mounted && widget.controller.value.isPlaying && !_hovering) setState(() => _controlsVisible = false);
     });
   }
 
@@ -1769,39 +2025,71 @@ class _UVideoState extends State<UVideo> {
       settings: _settings,
       title: widget.title,
       markers: widget.markers,
+      notes: widget.notes,
       gestures: widget.gestures,
       accentColor: widget.accentColor,
       thumbnailBuilder: widget.thumbnailBuilder,
+      watermark: widget.watermark,
+      seekStep: widget.seekStep,
+      forceLandscape: !_desktop && widget.controller.value.aspectRatio >= 1,
     );
   }
 
-  KeyEventResult _onKey(FocusNode node, KeyEvent event) {
-    if (event is! KeyDownEvent) return KeyEventResult.ignored;
-    final UMediaController controller = widget.controller;
-    _keepVisible();
+  Future<void> _addNote() async {
+    final UMediaNotesController? notes = widget.notes;
+    if (notes == null) return;
+    _hideTimer?.cancel();
+    await UMediaNotes.addAtCurrentTime(notes, widget.controller);
+    _restartHideTimer();
+  }
 
-    if (event.logicalKey == LogicalKeyboardKey.space || event.logicalKey == LogicalKeyboardKey.keyK) {
+  void _openNotes() {
+    final UMediaNotesController? notes = widget.notes;
+    if (widget.onOpenNotes != null) {
+      widget.onOpenNotes!();
+    } else if (notes != null) {
+      unawaited(UMediaNotes.showPanel(notes, widget.controller));
+    }
+  }
+
+  KeyEventResult _onKey(FocusNode node, KeyEvent event) {
+    if (event is! KeyDownEvent && event is! KeyRepeatEvent) return KeyEventResult.ignored;
+    final UMediaController controller = widget.controller;
+    final bool shift = HardwareKeyboard.instance.isShiftPressed;
+    final LogicalKeyboardKey key = event.logicalKey;
+    _keepVisible();
+    if (key == LogicalKeyboardKey.space || key == LogicalKeyboardKey.keyK || key == LogicalKeyboardKey.mediaPlayPause) {
       unawaited(controller.playPause());
-    } else if (event.logicalKey == LogicalKeyboardKey.arrowRight || event.logicalKey == LogicalKeyboardKey.keyL) {
-      unawaited(controller.seekBy(const Duration(seconds: 10)));
-    } else if (event.logicalKey == LogicalKeyboardKey.arrowLeft || event.logicalKey == LogicalKeyboardKey.keyJ) {
-      unawaited(controller.seekBy(const Duration(seconds: -10)));
-    } else if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
-      unawaited(controller.setVolume((controller.value.volume + 0.1).clamp(0, 1).toDouble()));
-    } else if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
-      unawaited(controller.setVolume((controller.value.volume - 0.1).clamp(0, 1).toDouble()));
-    } else if (event.logicalKey == LogicalKeyboardKey.keyF) {
+    } else if (key == LogicalKeyboardKey.arrowRight || key == LogicalKeyboardKey.keyL) {
+      unawaited(controller.seekBy(key == LogicalKeyboardKey.arrowRight && !shift ? const Duration(seconds: 5) : widget.seekStep));
+    } else if (key == LogicalKeyboardKey.arrowLeft || key == LogicalKeyboardKey.keyJ) {
+      unawaited(controller.seekBy(key == LogicalKeyboardKey.arrowLeft && !shift ? const Duration(seconds: -5) : -widget.seekStep));
+    } else if (key == LogicalKeyboardKey.arrowUp) {
+      unawaited(controller.setVolume((controller.value.volume + 0.05).clamp(0, 1).toDouble()));
+    } else if (key == LogicalKeyboardKey.arrowDown) {
+      unawaited(controller.setVolume((controller.value.volume - 0.05).clamp(0, 1).toDouble()));
+    } else if (key == LogicalKeyboardKey.keyF) {
       unawaited(_toggleFullscreen());
-    } else if (event.logicalKey == LogicalKeyboardKey.keyM) {
+    } else if (key == LogicalKeyboardKey.keyM) {
       unawaited(controller.toggleMute());
-    } else if (event.logicalKey == LogicalKeyboardKey.escape && widget.isFullscreen) {
+    } else if (key == LogicalKeyboardKey.keyN && widget.notes != null) {
+      unawaited(_addNote());
+    } else if (key == LogicalKeyboardKey.keyP && !kIsWeb) {
+      unawaited(controller.enterPip());
+    } else if (key == LogicalKeyboardKey.escape && widget.isFullscreen) {
       Navigator.of(context).pop();
-    } else if (event.logicalKey == LogicalKeyboardKey.bracketRight) {
+    } else if (key == LogicalKeyboardKey.bracketRight || (shift && key == LogicalKeyboardKey.period)) {
       unawaited(controller.setSpeed((controller.value.speed + 0.25).clamp(0.25, 4).toDouble()));
-    } else if (event.logicalKey == LogicalKeyboardKey.bracketLeft) {
+    } else if (key == LogicalKeyboardKey.bracketLeft || (shift && key == LogicalKeyboardKey.comma)) {
       unawaited(controller.setSpeed((controller.value.speed - 0.25).clamp(0.25, 4).toDouble()));
+    } else if (key == LogicalKeyboardKey.period && !controller.value.isPlaying) {
+      unawaited(controller.stepFrame());
+    } else if (key == LogicalKeyboardKey.home) {
+      unawaited(controller.seek(Duration.zero));
+    } else if (key == LogicalKeyboardKey.end) {
+      unawaited(controller.seek(controller.value.duration));
     } else {
-      final int? digit = _digitOf(event.logicalKey);
+      final int? digit = _digitOf(key);
       if (digit == null) return KeyEventResult.ignored;
       unawaited(controller.seekToProgress(digit / 10));
     }
@@ -1825,13 +2113,26 @@ class _UVideoState extends State<UVideo> {
     return index < 0 ? null : index;
   }
 
+  void _onPointerSignal(PointerSignalEvent event) {
+    if (event is! PointerScrollEvent || !_hovering) return;
+    GestureBinding.instance.pointerSignalResolver.register(event, (PointerSignalEvent resolved) {
+      final double delta = (resolved as PointerScrollEvent).scrollDelta.dy;
+      final double volume = (widget.controller.value.volume + (delta < 0 ? 0.05 : -0.05)).clamp(0, 1).toDouble();
+      unawaited(widget.controller.setVolume(volume));
+      _keepVisible();
+    });
+  }
+
   void _openSettings() {
     _keepVisible();
     UNavigator.bottomSheet(UVideoSettingsSheet(controller: widget.controller, settings: _settings));
   }
 
+  List<UVideoMarker> get _markers => <UVideoMarker>[...widget.markers, ...?widget.notes?.markers];
+
   @override
   Widget build(BuildContext context) {
+    final UDocWatermark? watermark = widget.watermark;
     final Widget player = AnimatedBuilder(
       animation: _settings,
       builder: (BuildContext context, Widget? child) => Stack(
@@ -1851,6 +2152,7 @@ class _UVideoState extends State<UVideo> {
             ),
           ),
           USubtitleView(controller: widget.controller, style: _settings.subtitleStyle, scale: _settings.subtitleScale),
+          if (watermark != null) Positioned.fill(child: UMovingWatermark(watermark: watermark)),
           if (_settings.showStats) Positioned(top: 12, left: 12, child: UVideoStatsOverlay(controller: widget.controller)),
         ],
       ),
@@ -1860,6 +2162,11 @@ class _UVideoState extends State<UVideo> {
       controller: widget.controller,
       config: widget.gestures,
       onToggleControls: _toggleControls,
+      onMouseTap: () {
+        unawaited(widget.controller.playPause());
+        _keepVisible();
+      },
+      onMouseDoubleTap: widget.showFullscreenButton ? () => unawaited(_toggleFullscreen()) : null,
       onZoomChanged: (double zoom) => _settings.zoom = zoom,
       onBrightnessChanged: (double value) => _settings.screenBrightness = value,
       onDismiss: widget.onDismiss,
@@ -1867,28 +2174,39 @@ class _UVideoState extends State<UVideo> {
       child: player,
     );
 
+    final bool inPip = widget.controller.value.pip == UPipState.active && !kIsWeb;
     final Widget stacked = Stack(
       fit: StackFit.expand,
       children: <Widget>[
         gestured,
-        if (widget.showControls)
+        if (widget.showNoteOverlays && widget.notes != null && !inPip) _noteOverlay(),
+        if (_resumeOffer != null && !inPip) _resumeBanner(_resumeOffer!),
+        if (widget.showControls && !inPip)
           widget.controlsBuilder?.call(context, widget.controller, _controlsVisible) ??
               UVideoControls(
                 controller: widget.controller,
                 visible: _controlsVisible,
                 title: widget.title,
-                markers: widget.markers,
+                markers: _markers,
                 accentColor: widget.accentColor,
                 showBack: widget.isFullscreen,
                 showFullscreen: widget.showFullscreenButton,
                 showQueue: widget.showQueueButton,
+                showSeekButtons: widget.showSeekButtons,
+                showVolumeSlider: _desktop,
+                showPip: !kIsWeb || widget.isFullscreen,
+                seekStep: widget.seekStep,
                 isFullscreen: widget.isFullscreen,
                 locked: _locked,
+                notesCount: widget.notes?.length ?? 0,
+                topActions: widget.topActions,
                 onBack: () => Navigator.of(context).pop(),
                 onToggleFullscreen: () => unawaited(_toggleFullscreen()),
                 onToggleLock: () => setState(() => _locked = !_locked),
                 onOpenSettings: _openSettings,
                 onOpenQueue: () => UNavigator.bottomSheet(UMediaQueueSheet(controller: widget.controller)),
+                onAddNote: widget.notes == null ? null : () => unawaited(_addNote()),
+                onOpenNotes: widget.notes == null && widget.onOpenNotes == null ? null : _openNotes,
                 onScrubStart: () => _hideTimer?.cancel(),
                 onScrubEnd: _restartHideTimer,
                 thumbnailBuilder: widget.thumbnailBuilder,
@@ -1896,7 +2214,28 @@ class _UVideoState extends State<UVideo> {
       ],
     );
 
-    final Widget focused = Focus(focusNode: _focusNode, autofocus: widget.isFullscreen, onKeyEvent: _onKey, child: stacked);
+    final Widget interactive = MouseRegion(
+      cursor: _desktop && !_controlsVisible && widget.controller.value.isPlaying ? SystemMouseCursors.none : MouseCursor.defer,
+      onEnter: (PointerEnterEvent event) => _hovering = true,
+      onHover: (PointerHoverEvent event) {
+        _hovering = true;
+        if (_desktop) _keepVisible();
+      },
+      onExit: (PointerExitEvent event) {
+        _hovering = false;
+        _restartHideTimer();
+      },
+      child: Listener(
+        onPointerDown: (PointerDownEvent event) => _focusNode.requestFocus(),
+        onPointerSignal: _onPointerSignal,
+        child: stacked,
+      ),
+    );
+
+    final Widget focused = USecureArea(
+      enabled: widget.secure,
+      child: Focus(focusNode: _focusNode, autofocus: widget.isFullscreen || _desktop, onKeyEvent: _onKey, child: interactive),
+    );
 
     if (widget.isFullscreen) return ColoredBox(color: widget.backgroundColor, child: focused);
 
@@ -1916,13 +2255,86 @@ class _UVideoState extends State<UVideo> {
     );
   }
 
+  Widget _noteOverlay() => ValueListenableBuilder<UMediaValue>(
+    valueListenable: widget.controller,
+    builder: (BuildContext context, UMediaValue value, Widget? child) {
+      final List<UMediaNote> active = widget.notes!.activeAt(value.position).where((UMediaNote note) => note.text.trim().isNotEmpty).toList();
+      return Positioned(
+        top: 56,
+        left: 12,
+        right: 12,
+        child: IgnorePointer(
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 250),
+            child: active.isEmpty
+                ? const SizedBox.shrink()
+                : Align(
+                    key: ValueKey<String>(active.first.id),
+                    alignment: Alignment.topLeft,
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 360),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: const Color(0xCC000000),
+                          borderRadius: BorderRadius.circular(10),
+                          border: BorderDirectional(start: BorderSide(color: active.first.color, width: 4)),
+                        ),
+                        child: Text(
+                          active.first.text,
+                          maxLines: 4,
+                          overflow: TextOverflow.ellipsis,
+                          textDirection: UDocText.isRtl(active.first.text) ? TextDirection.rtl : TextDirection.ltr,
+                          style: const TextStyle(color: Color(0xFFFFFFFF), fontSize: 13, height: 1.35, fontFamily: "Vazir", package: "u"),
+                        ),
+                      ),
+                    ),
+                  ),
+          ),
+        ),
+      );
+    },
+  );
+
+  Widget _resumeBanner(Duration position) => Positioned(
+    left: 12,
+    bottom: 72,
+    child: Material(
+      color: const Color(0xE6000000),
+      borderRadius: BorderRadius.circular(12),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(12, 4, 4, 4),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            const Icon(Icons.history_rounded, color: Color(0xFFFFFFFF), size: 18),
+            const SizedBox(width: 8),
+            UTextBodySmall(U.s.resumeFrom(uFormatDuration(position)), color: const Color(0xFFFFFFFF)),
+            TextButton(
+              onPressed: () {
+                unawaited(widget.controller.seek(Duration.zero));
+                setState(() => _resumeOffer = null);
+              },
+              child: UTextBodySmall(U.s.startOver, color: widget.accentColor ?? Theme.of(context).colorScheme.inversePrimary, fontWeight: FontWeight.w700),
+            ),
+            IconButton(
+              visualDensity: VisualDensity.compact,
+              onPressed: () => setState(() => _resumeOffer = null),
+              icon: const Icon(Icons.close_rounded, color: Color(0xB3FFFFFF), size: 18),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+
   Widget _errorBuilder(BuildContext context, UMediaError error) => Center(
     child: UColumn(
       mainAxisSize: MainAxisSize.min,
       spacing: 8,
       children: <Widget>[
         const Icon(Icons.error_outline_rounded, color: Color(0xB3FFFFFF), size: 40),
-        UTextBodySmall(error.message.isEmpty ? U.s.errorLoadingVideo : error.message, color: const Color(0xB3FFFFFF)),
+        UTextBodySmall(error.message.isEmpty ? U.s.errorLoadingVideo : error.message, color: const Color(0xB3FFFFFF), textAlign: TextAlign.center),
         UButton(
           type: UButtonType.text,
           title: U.s.tryAgain,
@@ -1943,9 +2355,12 @@ abstract final class UVideoFullscreen {
     UVideoSettings? settings,
     String? title,
     List<UVideoMarker> markers = const <UVideoMarker>[],
+    UMediaNotesController? notes,
     UVideoGestureConfig gestures = const UVideoGestureConfig(),
     Color? accentColor,
     Widget Function(BuildContext context, Duration position)? thumbnailBuilder,
+    UDocWatermark? watermark,
+    Duration seekStep = const Duration(seconds: 10),
     bool forceLandscape = true,
   }) async {
     if (forceLandscape) {
@@ -1964,16 +2379,18 @@ abstract final class UVideoFullscreen {
             settings: settings,
             title: title,
             markers: markers,
+            notes: notes,
             gestures: gestures,
             accentColor: accentColor,
             borderRadius: 0,
             isFullscreen: true,
+            watermark: watermark,
+            seekStep: seekStep,
             thumbnailBuilder: thumbnailBuilder,
             onDismiss: () => Navigator.of(context).pop(),
           ),
         ),
-        transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondary, Widget child) =>
-            FadeTransition(opacity: animation, child: child),
+        transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondary, Widget child) => FadeTransition(opacity: animation, child: child),
       ),
     );
 
@@ -2083,6 +2500,7 @@ class UVideoPlayer extends StatefulWidget {
     this.bytes,
     this.filePath,
     this.assetPath,
+    this.headers = const <String, String>{},
     this.autoPlay = false,
     this.looping = false,
     this.muted = false,
@@ -2098,6 +2516,18 @@ class UVideoPlayer extends StatefulWidget {
     this.placeholder,
     this.title,
     this.gestures = const UVideoGestureConfig(),
+    this.notes,
+    this.notesData,
+    this.notesStorageKey,
+    this.onNotesChanged,
+    this.markers = const <UVideoMarker>[],
+    this.subtitles = const <UExternalSubtitle>[],
+    this.watermark,
+    this.secure = false,
+    this.resumeKey,
+    this.autoPip = false,
+    this.seekStep = const Duration(seconds: 10),
+    this.onControllerReady,
   }) : assert(
          url != null || base64 != null || bytes != null || filePath != null || assetPath != null,
          "Provide one video source",
@@ -2108,6 +2538,7 @@ class UVideoPlayer extends StatefulWidget {
   final Uint8List? bytes;
   final String? filePath;
   final String? assetPath;
+  final Map<String, String> headers;
   final bool autoPlay;
   final bool looping;
   final bool muted;
@@ -2123,6 +2554,20 @@ class UVideoPlayer extends StatefulWidget {
   final Widget? placeholder;
   final String? title;
   final UVideoGestureConfig gestures;
+
+  /// External notes controller; when null and [notesStorageKey]/[notesData]/[onNotesChanged] is given, one is created.
+  final UMediaNotesController? notes;
+  final String? notesData;
+  final String? notesStorageKey;
+  final void Function(String data)? onNotesChanged;
+  final List<UVideoMarker> markers;
+  final List<UExternalSubtitle> subtitles;
+  final UDocWatermark? watermark;
+  final bool secure;
+  final String? resumeKey;
+  final bool autoPip;
+  final Duration seekStep;
+  final void Function(UMediaController controller)? onControllerReady;
 
   static UMediaFit fitOf(BoxFit fit) {
     switch (fit) {
@@ -2149,6 +2594,9 @@ class UVideoPlayer extends StatefulWidget {
 class _UVideoPlayerState extends State<UVideoPlayer> {
   late final UMediaController _controller;
   late final UVideoSettings _settings;
+  UMediaNotesController? _ownedNotes;
+
+  UMediaNotesController? get _notes => widget.notes ?? _ownedNotes;
 
   @override
   void initState() {
@@ -2161,13 +2609,22 @@ class _UVideoPlayerState extends State<UVideoPlayer> {
         repeat: widget.looping ? URepeatMode.one : URepeatMode.off,
       ),
     );
+    if (widget.notes == null && (widget.notesStorageKey != null || widget.notesData != null || widget.onNotesChanged != null)) {
+      _ownedNotes = UMediaNotesController(
+        storageKey: widget.notesStorageKey,
+        initialData: widget.notesData,
+        onChanged: (UMediaNotesController notes) => widget.onNotesChanged?.call(notes.export()),
+      );
+      unawaited(_ownedNotes!.load());
+    }
     unawaited(_controller.open(_source(), autoPlay: widget.autoPlay));
+    widget.onControllerReady?.call(_controller);
   }
 
   @override
   void didUpdateWidget(covariant UVideoPlayer oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.url != widget.url || oldWidget.filePath != widget.filePath || oldWidget.assetPath != widget.assetPath) {
+    if (oldWidget.url != widget.url || oldWidget.filePath != widget.filePath || oldWidget.assetPath != widget.assetPath || oldWidget.bytes != widget.bytes || oldWidget.base64 != widget.base64) {
       unawaited(_controller.open(_source(), autoPlay: widget.autoPlay));
     }
     if (oldWidget.fit != widget.fit) _settings.fit = UVideoPlayer.fitOf(widget.fit);
@@ -2184,18 +2641,19 @@ class _UVideoPlayerState extends State<UVideoPlayer> {
     }
 
     final String? path = widget.filePath;
-    if (path != null) return UMediaSource.file(path);
+    if (path != null) return UMediaSource.file(path, externalSubtitles: widget.subtitles);
 
     final String? asset = widget.assetPath;
     if (asset != null) return UMediaSource.asset(asset);
 
-    return UMediaSource.network(widget.url ?? "");
+    return UMediaSource.network(widget.url ?? "", headers: widget.headers, externalSubtitles: widget.subtitles);
   }
 
   @override
   void dispose() {
     _controller.dispose();
     _settings.dispose();
+    _ownedNotes?.dispose();
     super.dispose();
   }
 
@@ -2213,7 +2671,95 @@ class _UVideoPlayerState extends State<UVideoPlayer> {
     autoHide: widget.autoHideControls ? const Duration(seconds: 3) : Duration.zero,
     aspectRatio: widget.aspectRatio,
     placeholder: widget.placeholder,
+    markers: widget.markers,
+    notes: _notes,
+    watermark: widget.watermark,
+    secure: widget.secure,
+    resumeKey: widget.resumeKey,
+    autoPip: widget.autoPip,
+    seekStep: widget.seekStep,
   );
+}
+
+/// Video with a notes panel: side by side on wide screens, stacked on phones.
+/// Switches to a video-only view while in Android picture-in-picture.
+class UVideoWithNotes extends StatelessWidget {
+  const UVideoWithNotes({
+    required this.controller,
+    required this.notes,
+    this.settings,
+    this.title,
+    this.markers = const <UVideoMarker>[],
+    this.watermark,
+    this.secure = false,
+    this.resumeKey,
+    this.autoPip = true,
+    this.showNotes = true,
+    this.accentColor,
+    this.panelWidth = 340,
+    super.key,
+  });
+
+  final UMediaController controller;
+  final UMediaNotesController notes;
+  final UVideoSettings? settings;
+  final String? title;
+  final List<UVideoMarker> markers;
+  final UDocWatermark? watermark;
+  final bool secure;
+  final String? resumeKey;
+  final bool autoPip;
+  final bool showNotes;
+  final Color? accentColor;
+  final double panelWidth;
+
+  @override
+  Widget build(BuildContext context) {
+    final Widget video = UVideo(
+      controller: controller,
+      settings: settings,
+      title: title,
+      markers: markers,
+      notes: notes,
+      watermark: watermark,
+      secure: secure,
+      resumeKey: resumeKey,
+      autoPip: autoPip,
+      accentColor: accentColor,
+      borderRadius: 0,
+    );
+    return UMediaPipSwitcher(
+      controller: controller,
+      child: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          final bool wide = constraints.maxWidth >= 860;
+          final Widget panel = UMediaNotesPanel(notes: notes, controller: controller);
+          if (!showNotes) return Center(child: video);
+          if (wide) {
+            return Row(
+              children: <Widget>[
+                Expanded(child: ColoredBox(color: const Color(0xFF000000), child: Center(child: video))),
+                SizedBox(
+                  width: panelWidth,
+                  child: Material(
+                    color: Theme.of(context).colorScheme.surface,
+                    shape: BorderDirectional(start: BorderSide(color: Theme.of(context).dividerColor)),
+                    child: panel,
+                  ),
+                ),
+              ],
+            );
+          }
+          return Column(
+            children: <Widget>[
+              ColoredBox(color: const Color(0xFF000000), child: video),
+              Expanded(child: Material(color: Theme.of(context).colorScheme.surface, child: panel)),
+            ],
+          );
+        },
+      ),
+    );
+  }
 }
 
 /// Opens a player full-width inside a bottom sheet. Accepts the same sources as

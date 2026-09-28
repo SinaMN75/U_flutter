@@ -7,6 +7,50 @@ import "package:flutter/services.dart";
 import "package:flutter_web_plugins/flutter_web_plugins.dart";
 import "package:web/web.dart" as web;
 
+/// Minimal binding to hls.js (loaded on demand from jsDelivr) for HLS on
+/// browsers without native support.
+@JS("Hls")
+extension type _Hls._(JSObject _) implements JSObject {
+  external factory _Hls();
+
+  external static bool isSupported();
+
+  external void loadSource(String url);
+
+  external void attachMedia(web.HTMLMediaElement media);
+
+  external void destroy();
+}
+
+@JS("Hls")
+external JSAny? get _hlsGlobal;
+
+abstract final class _HlsLoader {
+  static const String _url = "https://cdn.jsdelivr.net/npm/hls.js@1/dist/hls.min.js";
+  static Future<bool>? _loading;
+
+  static Future<bool> ensure() {
+    if (_hlsGlobal != null) return Future<bool>.value(true);
+    return _loading ??= _load();
+  }
+
+  static Future<bool> _load() {
+    final Completer<bool> completer = Completer<bool>();
+    final web.HTMLScriptElement script = web.HTMLScriptElement()
+      ..src = _url
+      ..async = true;
+    script.onLoad.listen((web.Event _) {
+      if (!completer.isCompleted) completer.complete(_hlsGlobal != null);
+    });
+    script.onError.listen((web.Event _) {
+      _loading = null;
+      if (!completer.isCompleted) completer.complete(false);
+    });
+    web.document.head?.append(script);
+    return completer.future;
+  }
+}
+
 class UMediaWeb {
   UMediaWeb(this._messenger);
 
@@ -41,6 +85,8 @@ class UMediaWeb {
     if (call.method == "create") {
       final int id = _nextId++;
       final Map<Object?, Object?> config = (arguments["config"] as Map<Object?, Object?>?) ?? <Object?, Object?>{};
+      // Answer the EventChannel's listen/cancel handshake; events are pushed with _emit.
+      MethodChannel("u/media/events/$id", _codec, _messenger).setMethodCallHandler((MethodCall call) async => null);
       _players[id] = _WebPlayer(id, config, _emit, arguments["kind"] == "video");
       return id;
     }
@@ -87,6 +133,7 @@ class UMediaWeb {
       case "setMaxHeight":
       case "setAudioDelay":
       case "setNotification":
+      case "setAutoPip":
         return null;
       case "enterPip":
         return player.enterPip();
@@ -98,6 +145,7 @@ class UMediaWeb {
       case "dispose":
         player.dispose();
         _players.remove(id);
+        MethodChannel("u/media/events/$id", _codec, _messenger).setMethodCallHandler(null);
         return null;
       default:
         throw MissingPluginException("u/media.${call.method}");
@@ -133,6 +181,7 @@ class _WebPlayer {
 
   Timer? _ticker;
   bool _announced = false;
+  _Hls? _hls;
 
   String get viewType => "u-media-$id";
 
@@ -252,14 +301,30 @@ class _WebPlayer {
       _emit(id, <String, Object?>{"event": "error", "code": "notFound", "message": "Unsupported source"});
       return;
     }
+    _hls?.destroy();
+    _hls = null;
+    _emit(id, <String, Object?>{"event": "state", "state": "loading"});
     if (url.toLowerCase().contains(".m3u8") && element.canPlayType("application/vnd.apple.mpegurl").isEmpty) {
-      _emit(id, <String, Object?>{"event": "error", "code": "unsupportedFormat", "message": "HLS is not natively supported by this browser"});
+      unawaited(_openHls(url, autoPlay, resumeMs));
       return;
     }
     element.src = url;
     element.load();
     if (resumeMs != null && resumeMs > 0) element.currentTime = resumeMs / 1000;
-    _emit(id, <String, Object?>{"event": "state", "state": "loading"});
+    if (autoPlay) unawaited(play());
+  }
+
+  Future<void> _openHls(String url, bool autoPlay, int? resumeMs) async {
+    final bool ready = await _HlsLoader.ensure();
+    if (!ready || !_Hls.isSupported()) {
+      _emit(id, <String, Object?>{"event": "error", "code": "unsupportedFormat", "message": "HLS is not supported by this browser"});
+      return;
+    }
+    final _Hls hls = _Hls();
+    _hls = hls;
+    hls.loadSource(url);
+    hls.attachMedia(element);
+    if (resumeMs != null && resumeMs > 0) element.currentTime = resumeMs / 1000;
     if (autoPlay) unawaited(play());
   }
 
@@ -329,9 +394,18 @@ class _WebPlayer {
   }
 
   bool enterPip() {
-    element.requestPictureInPicture();
-    _emit(id, <String, Object?>{"event": "pip", "state": "active"});
-    return true;
+    try {
+      unawaited(
+        element.requestPictureInPicture().toDart.then(
+          (JSObject _) => _emit(id, <String, Object?>{"event": "pip", "state": "active"}),
+          onError: (Object _) => _emit(id, <String, Object?>{"event": "pip", "state": "unavailable"}),
+        ),
+      );
+      element.addEventListener("leavepictureinpicture", ((web.Event _) => _emit(id, <String, Object?>{"event": "pip", "state": "available"})).toJS);
+      return true;
+    } on Object {
+      return false;
+    }
   }
 
   void exitPip() {
@@ -341,18 +415,25 @@ class _WebPlayer {
 
   Uint8List? screenshot() {
     if (element.videoWidth == 0) return null;
-    final web.HTMLCanvasElement canvas = web.HTMLCanvasElement()
-      ..width = element.videoWidth
-      ..height = element.videoHeight;
-    final web.CanvasRenderingContext2D context = canvas.getContext("2d")! as web.CanvasRenderingContext2D;
-    context.drawImage(element, 0, 0);
-    final String data = canvas.toDataURL("image/png");
-    final int comma = data.indexOf(",");
-    if (comma < 0) return null;
-    return base64Decode(data.substring(comma + 1));
+    try {
+      final web.HTMLCanvasElement canvas = web.HTMLCanvasElement()
+        ..width = element.videoWidth
+        ..height = element.videoHeight;
+      final web.CanvasRenderingContext2D context = canvas.getContext("2d")! as web.CanvasRenderingContext2D;
+      context.drawImage(element, 0, 0);
+      final String data = canvas.toDataURL("image/png");
+      final int comma = data.indexOf(",");
+      if (comma < 0) return null;
+      return base64Decode(data.substring(comma + 1));
+    } on Object {
+      // Cross-origin video without CORS headers taints the canvas.
+      return null;
+    }
   }
 
   void dispose() {
+    _hls?.destroy();
+    _hls = null;
     _stopTicker();
     element.pause();
     element.removeAttribute("src");

@@ -5216,4 +5216,166 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get zoomOut => 'Zoom out';
+
+  @override
+  String get squiggly => 'Squiggly';
+
+  @override
+  String get border => 'Border';
+
+  @override
+  String get bookmarks => 'Bookmarks';
+
+  @override
+  String get bookmark => 'Bookmark';
+
+  @override
+  String get editNote => 'Edit note';
+
+  @override
+  String get addNote => 'Add note';
+
+  @override
+  String get writeYourNote => 'Write your note…';
+
+  @override
+  String get noAnnotationsYet => 'No highlights or notes yet. Select some text to add one.';
+
+  @override
+  String get noBookmarksYet => 'No bookmarks yet.';
+
+  @override
+  String get fitPage => 'Fit page';
+
+  @override
+  String get actualSize => 'Actual size';
+
+  @override
+  String get twoPages => 'Two pages';
+
+  @override
+  String get coverPage => 'Cover + two pages';
+
+  @override
+  String get spread => 'Page layout';
+
+  @override
+  String get export => 'Copy data';
+
+  @override
+  String get importData => 'Import';
+
+  @override
+  String get exportAnnotations => 'Share notes';
+
+  @override
+  String get importAnnotations => 'Import annotations';
+
+  @override
+  String get clearAnnotations => 'Clear all annotations';
+
+  @override
+  String get nextPage => 'Next page';
+
+  @override
+  String get previousPage => 'Previous page';
+
+  @override
+  String get bookmarkPage => 'Bookmark this page';
+
+  @override
+  String get bookmarkPosition => 'Bookmark this position';
+
+  @override
+  String get removeBookmark => 'Remove bookmark';
+
+  @override
+  String get lineBox => 'Whole line';
+
+  @override
+  String get precise => 'Precise';
+
+  @override
+  String get selectionAccuracy => 'Highlight accuracy';
+
+  @override
+  String get readingProgress => 'Reading progress';
+
+  @override
+  String get addBookmark => 'Add bookmark';
+
+  @override
+  String get seekForward => 'Seek forward';
+
+  @override
+  String get seekBackward => 'Seek backward';
+
+  @override
+  String get volume => 'Volume';
+
+  @override
+  String get loop => 'Loop';
+
+  @override
+  String get startOver => 'Start over';
+
+  @override
+  String get chapters => 'Chapters';
+
+  @override
+  String get noNotesYet => 'No notes yet. Add a note at the current time with the + button.';
+
+  @override
+  String get addTimestampNote => 'Add note at current time';
+
+  @override
+  String get videoNotes => 'Video notes';
+
+  @override
+  String get fontFamily => 'Font';
+
+  @override
+  String get defaultFont => 'Default';
+
+  @override
+  String get paragraphSpacing => 'Paragraph spacing';
+
+  @override
+  String get letterSpacing => 'Letter spacing';
+
+  @override
+  String get wordSpacing => 'Word spacing';
+
+  @override
+  String get autoPip => 'Auto picture-in-picture';
+
+  @override
+  String get rememberPosition => 'Remember position';
+
+  @override
+  String get keyboardShortcuts => 'Keyboard shortcuts';
+
+  @override
+  String get fineSpeed => 'Fine speed';
+
+  @override
+  String get previousChapter => 'Previous chapter';
+
+  @override
+  String get nextChapter => 'Next chapter';
+
+  @override
+  String resumeFrom(Object position) {
+    return 'Resume from $position';
+  }
+
+  @override
+  String pageOfTotal(Object page, Object total) {
+    return 'Page $page of $total';
+  }
+
+  @override
+  String minutesLeftInChapter(Object minutes) {
+    return '$minutes min left in chapter';
+  }
 }

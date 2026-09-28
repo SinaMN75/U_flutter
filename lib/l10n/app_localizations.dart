@@ -10327,6 +10327,318 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Zoom out'**
   String get zoomOut;
+
+  /// No description provided for @squiggly.
+  ///
+  /// In en, this message translates to:
+  /// **'Squiggly'**
+  String get squiggly;
+
+  /// No description provided for @border.
+  ///
+  /// In en, this message translates to:
+  /// **'Border'**
+  String get border;
+
+  /// No description provided for @bookmarks.
+  ///
+  /// In en, this message translates to:
+  /// **'Bookmarks'**
+  String get bookmarks;
+
+  /// No description provided for @bookmark.
+  ///
+  /// In en, this message translates to:
+  /// **'Bookmark'**
+  String get bookmark;
+
+  /// No description provided for @editNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit note'**
+  String get editNote;
+
+  /// No description provided for @addNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Add note'**
+  String get addNote;
+
+  /// No description provided for @writeYourNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Write your note…'**
+  String get writeYourNote;
+
+  /// No description provided for @noAnnotationsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No highlights or notes yet. Select some text to add one.'**
+  String get noAnnotationsYet;
+
+  /// No description provided for @noBookmarksYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No bookmarks yet.'**
+  String get noBookmarksYet;
+
+  /// No description provided for @fitPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Fit page'**
+  String get fitPage;
+
+  /// No description provided for @actualSize.
+  ///
+  /// In en, this message translates to:
+  /// **'Actual size'**
+  String get actualSize;
+
+  /// No description provided for @twoPages.
+  ///
+  /// In en, this message translates to:
+  /// **'Two pages'**
+  String get twoPages;
+
+  /// No description provided for @coverPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Cover + two pages'**
+  String get coverPage;
+
+  /// No description provided for @spread.
+  ///
+  /// In en, this message translates to:
+  /// **'Page layout'**
+  String get spread;
+
+  /// No description provided for @export.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy data'**
+  String get export;
+
+  /// No description provided for @importData.
+  ///
+  /// In en, this message translates to:
+  /// **'Import'**
+  String get importData;
+
+  /// No description provided for @exportAnnotations.
+  ///
+  /// In en, this message translates to:
+  /// **'Share notes'**
+  String get exportAnnotations;
+
+  /// No description provided for @importAnnotations.
+  ///
+  /// In en, this message translates to:
+  /// **'Import annotations'**
+  String get importAnnotations;
+
+  /// No description provided for @clearAnnotations.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear all annotations'**
+  String get clearAnnotations;
+
+  /// No description provided for @nextPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Next page'**
+  String get nextPage;
+
+  /// No description provided for @previousPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous page'**
+  String get previousPage;
+
+  /// No description provided for @bookmarkPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Bookmark this page'**
+  String get bookmarkPage;
+
+  /// No description provided for @bookmarkPosition.
+  ///
+  /// In en, this message translates to:
+  /// **'Bookmark this position'**
+  String get bookmarkPosition;
+
+  /// No description provided for @removeBookmark.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove bookmark'**
+  String get removeBookmark;
+
+  /// No description provided for @lineBox.
+  ///
+  /// In en, this message translates to:
+  /// **'Whole line'**
+  String get lineBox;
+
+  /// No description provided for @precise.
+  ///
+  /// In en, this message translates to:
+  /// **'Precise'**
+  String get precise;
+
+  /// No description provided for @selectionAccuracy.
+  ///
+  /// In en, this message translates to:
+  /// **'Highlight accuracy'**
+  String get selectionAccuracy;
+
+  /// No description provided for @readingProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading progress'**
+  String get readingProgress;
+
+  /// No description provided for @addBookmark.
+  ///
+  /// In en, this message translates to:
+  /// **'Add bookmark'**
+  String get addBookmark;
+
+  /// No description provided for @seekForward.
+  ///
+  /// In en, this message translates to:
+  /// **'Seek forward'**
+  String get seekForward;
+
+  /// No description provided for @seekBackward.
+  ///
+  /// In en, this message translates to:
+  /// **'Seek backward'**
+  String get seekBackward;
+
+  /// No description provided for @volume.
+  ///
+  /// In en, this message translates to:
+  /// **'Volume'**
+  String get volume;
+
+  /// No description provided for @loop.
+  ///
+  /// In en, this message translates to:
+  /// **'Loop'**
+  String get loop;
+
+  /// No description provided for @startOver.
+  ///
+  /// In en, this message translates to:
+  /// **'Start over'**
+  String get startOver;
+
+  /// No description provided for @chapters.
+  ///
+  /// In en, this message translates to:
+  /// **'Chapters'**
+  String get chapters;
+
+  /// No description provided for @noNotesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No notes yet. Add a note at the current time with the + button.'**
+  String get noNotesYet;
+
+  /// No description provided for @addTimestampNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Add note at current time'**
+  String get addTimestampNote;
+
+  /// No description provided for @videoNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Video notes'**
+  String get videoNotes;
+
+  /// No description provided for @fontFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Font'**
+  String get fontFamily;
+
+  /// No description provided for @defaultFont.
+  ///
+  /// In en, this message translates to:
+  /// **'Default'**
+  String get defaultFont;
+
+  /// No description provided for @paragraphSpacing.
+  ///
+  /// In en, this message translates to:
+  /// **'Paragraph spacing'**
+  String get paragraphSpacing;
+
+  /// No description provided for @letterSpacing.
+  ///
+  /// In en, this message translates to:
+  /// **'Letter spacing'**
+  String get letterSpacing;
+
+  /// No description provided for @wordSpacing.
+  ///
+  /// In en, this message translates to:
+  /// **'Word spacing'**
+  String get wordSpacing;
+
+  /// No description provided for @autoPip.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto picture-in-picture'**
+  String get autoPip;
+
+  /// No description provided for @rememberPosition.
+  ///
+  /// In en, this message translates to:
+  /// **'Remember position'**
+  String get rememberPosition;
+
+  /// No description provided for @keyboardShortcuts.
+  ///
+  /// In en, this message translates to:
+  /// **'Keyboard shortcuts'**
+  String get keyboardShortcuts;
+
+  /// No description provided for @fineSpeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Fine speed'**
+  String get fineSpeed;
+
+  /// No description provided for @previousChapter.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous chapter'**
+  String get previousChapter;
+
+  /// No description provided for @nextChapter.
+  ///
+  /// In en, this message translates to:
+  /// **'Next chapter'**
+  String get nextChapter;
+
+  /// No description provided for @resumeFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'Resume from {position}'**
+  String resumeFrom(Object position);
+
+  /// No description provided for @pageOfTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Page {page} of {total}'**
+  String pageOfTotal(Object page, Object total);
+
+  /// No description provided for @minutesLeftInChapter.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min left in chapter'**
+  String minutesLeftInChapter(Object minutes);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

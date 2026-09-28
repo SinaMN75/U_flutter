@@ -5215,4 +5215,166 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get zoomOut => 'کوچک‌نمایی';
+
+  @override
+  String get squiggly => 'خط موج‌دار';
+
+  @override
+  String get border => 'کادر';
+
+  @override
+  String get bookmarks => 'نشانک‌ها';
+
+  @override
+  String get bookmark => 'نشانک';
+
+  @override
+  String get editNote => 'ویرایش یادداشت';
+
+  @override
+  String get addNote => 'افزودن یادداشت';
+
+  @override
+  String get writeYourNote => 'یادداشت خود را بنویسید…';
+
+  @override
+  String get noAnnotationsYet => 'هنوز هایلایت یا یادداشتی ندارید. برای افزودن، بخشی از متن را انتخاب کنید.';
+
+  @override
+  String get noBookmarksYet => 'هنوز نشانکی اضافه نشده است.';
+
+  @override
+  String get fitPage => 'نمایش کامل صفحه';
+
+  @override
+  String get actualSize => 'اندازه واقعی';
+
+  @override
+  String get twoPages => 'دو صفحه‌ای';
+
+  @override
+  String get coverPage => 'جلد + دو صفحه‌ای';
+
+  @override
+  String get spread => 'چیدمان صفحات';
+
+  @override
+  String get export => 'کپی داده‌ها';
+
+  @override
+  String get importData => 'وارد کردن';
+
+  @override
+  String get exportAnnotations => 'اشتراک‌گذاری یادداشت‌ها';
+
+  @override
+  String get importAnnotations => 'وارد کردن یادداشت‌ها';
+
+  @override
+  String get clearAnnotations => 'حذف همه یادداشت‌ها';
+
+  @override
+  String get nextPage => 'صفحه بعد';
+
+  @override
+  String get previousPage => 'صفحه قبل';
+
+  @override
+  String get bookmarkPage => 'نشانک‌گذاری این صفحه';
+
+  @override
+  String get bookmarkPosition => 'نشانک‌گذاری این قسمت';
+
+  @override
+  String get removeBookmark => 'حذف نشانک';
+
+  @override
+  String get lineBox => 'کل سطر';
+
+  @override
+  String get precise => 'دقیق';
+
+  @override
+  String get selectionAccuracy => 'دقت هایلایت';
+
+  @override
+  String get readingProgress => 'پیشرفت مطالعه';
+
+  @override
+  String get addBookmark => 'افزودن نشانک';
+
+  @override
+  String get seekForward => 'جلو رفتن';
+
+  @override
+  String get seekBackward => 'عقب رفتن';
+
+  @override
+  String get volume => 'صدا';
+
+  @override
+  String get loop => 'تکرار';
+
+  @override
+  String get startOver => 'شروع از ابتدا';
+
+  @override
+  String get chapters => 'فصل‌ها';
+
+  @override
+  String get noNotesYet => 'هنوز یادداشتی ندارید. با دکمه + در زمان فعلی یادداشت بگذارید.';
+
+  @override
+  String get addTimestampNote => 'افزودن یادداشت در زمان فعلی';
+
+  @override
+  String get videoNotes => 'یادداشت‌های ویدیو';
+
+  @override
+  String get fontFamily => 'فونت';
+
+  @override
+  String get defaultFont => 'پیش‌فرض';
+
+  @override
+  String get paragraphSpacing => 'فاصله پاراگراف';
+
+  @override
+  String get letterSpacing => 'فاصله حروف';
+
+  @override
+  String get wordSpacing => 'فاصله کلمات';
+
+  @override
+  String get autoPip => 'تصویر در تصویر خودکار';
+
+  @override
+  String get rememberPosition => 'به خاطر سپردن موقعیت';
+
+  @override
+  String get keyboardShortcuts => 'میان‌برهای صفحه‌کلید';
+
+  @override
+  String get fineSpeed => 'تنظیم دقیق سرعت';
+
+  @override
+  String get previousChapter => 'فصل قبل';
+
+  @override
+  String get nextChapter => 'فصل بعد';
+
+  @override
+  String resumeFrom(Object position) {
+    return 'ادامه از $position';
+  }
+
+  @override
+  String pageOfTotal(Object page, Object total) {
+    return 'صفحه $page از $total';
+  }
+
+  @override
+  String minutesLeftInChapter(Object minutes) {
+    return '$minutes دقیقه تا پایان فصل';
+  }
 }

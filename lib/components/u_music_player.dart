@@ -901,6 +901,7 @@ class UMusicPlayerTheme {
     this.showSleepTimer = true,
     this.showVolume = true,
     this.showFavorite = false,
+    this.showSeekButtons = true,
     this.visualizerStyle = UVisualizerStyle.mirroredBars,
     this.visualizerHeight = 90,
   });
@@ -927,6 +928,9 @@ class UMusicPlayerTheme {
   final bool showSleepTimer;
   final bool showVolume;
   final bool showFavorite;
+
+  /// Rewind / fast-forward buttons around play (essential for lectures and voice notes).
+  final bool showSeekButtons;
   final UVisualizerStyle visualizerStyle;
   final double visualizerHeight;
 
@@ -961,9 +965,19 @@ class UMusicPlayer extends StatefulWidget {
     this.seekBarBuilder,
     this.controlsBuilder,
     this.extrasBuilder,
+    this.notes,
+    this.resumeKey,
+    this.seekStep = const Duration(seconds: 15),
   });
 
   final UMediaController? controller;
+
+  /// Time-stamped notes: markers on the seek bar plus add/list buttons.
+  final UMediaNotesController? notes;
+
+  /// Remembers and restores the playback position under this key.
+  final String? resumeKey;
+  final Duration seekStep;
   final UMusicPlayerLayout layout;
   final UMusicPlayerTheme theme;
   final Widget? header;
@@ -991,26 +1005,62 @@ class _UMusicPlayerState extends State<UMusicPlayer> {
   ULyrics _lyrics = ULyrics.empty;
   String? _lyricsForId;
   bool _showingLyrics = false;
-  double? _scrubValue;
   Timer? _sleepTimer;
   DateTime? _sleepAt;
+
+  bool _resumeChecked = false;
+  DateTime _lastResumeSave = DateTime.fromMillisecondsSinceEpoch(0);
 
   @override
   void initState() {
     super.initState();
     _controller.addListener(_onChanged);
+    widget.notes?.addListener(_onNotes);
     unawaited(_loadLyrics());
   }
 
   @override
+  void didUpdateWidget(UMusicPlayer oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.notes != widget.notes) {
+      oldWidget.notes?.removeListener(_onNotes);
+      widget.notes?.addListener(_onNotes);
+    }
+  }
+
+  @override
   void dispose() {
+    _saveResume(force: true);
     _sleepTimer?.cancel();
     _controller.removeListener(_onChanged);
+    widget.notes?.removeListener(_onNotes);
     super.dispose();
+  }
+
+  void _onNotes() {
+    if (mounted) setState(() {});
   }
 
   void _onChanged() {
     if (_controller.currentSource?.id != _lyricsForId) unawaited(_loadLyrics());
+    final String? key = widget.resumeKey;
+    final UMediaValue value = _controller.value;
+    if (key != null && !_resumeChecked && value.duration > Duration.zero) {
+      _resumeChecked = true;
+      final Duration? saved = UMediaResume.get(key);
+      if (saved != null && saved < value.duration - const Duration(seconds: 8)) unawaited(_controller.seek(saved));
+    }
+    _saveResume();
+  }
+
+  void _saveResume({bool force = false}) {
+    final String? key = widget.resumeKey;
+    if (key == null || !_resumeChecked) return;
+    final DateTime now = DateTime.now();
+    if (!force && now.difference(_lastResumeSave) < const Duration(seconds: 4)) return;
+    _lastResumeSave = now;
+    final UMediaValue value = _controller.value;
+    if (value.duration > Duration.zero) UMediaResume.save(key, value.position, value.duration);
   }
 
   Future<void> _loadLyrics() async {
@@ -1148,21 +1198,14 @@ class _UMusicPlayerState extends State<UMusicPlayer> {
       child: UColumn(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          SliderTheme(
-            data: SliderTheme.of(context).copyWith(
-              trackHeight: 4,
-              thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 7),
-              activeTrackColor: _accent(context),
-              thumbColor: _accent(context),
-            ),
-            child: Slider(
-              value: (_scrubValue ?? value.progress).clamp(0, 1),
-              onChanged: (double next) => setState(() => _scrubValue = next),
-              onChangeEnd: (double next) {
-                setState(() => _scrubValue = null);
-                unawaited(_controller.seekToProgress(next));
-              },
-            ),
+          UVideoSeekBar(
+            controller: _controller,
+            markers: widget.notes?.markers ?? const <UVideoMarker>[],
+            accentColor: _accent(context),
+            height: 4,
+            thumbRadius: 7,
+            trackColor: scheme.onSurface.withValues(alpha: 0.12),
+            bufferColor: scheme.onSurface.withValues(alpha: 0.22),
           ),
           if (_theme.showTimes)
             Padding(
@@ -1193,11 +1236,17 @@ class _UMusicPlayerState extends State<UMusicPlayer> {
             onPressed: () => unawaited(_controller.toggleShuffle()),
             icon: Icon(Icons.shuffle_rounded, color: value.shuffle ? _accent(context) : scheme.onSurfaceVariant),
           ),
-        if (_theme.showSkip)
+        if (_theme.showSkip && _controller.queue.length > 1)
           IconButton(
             tooltip: U.s.previous,
             onPressed: _controller.hasPrevious ? () => unawaited(_controller.previous()) : null,
             icon: Icon(Icons.skip_previous_rounded, size: _theme.controlSize),
+          ),
+        if (_theme.showSeekButtons && !value.isLive)
+          IconButton(
+            tooltip: U.s.seekBackward,
+            onPressed: () => unawaited(_controller.seekBy(-widget.seekStep)),
+            icon: Icon(_seekIcon(forward: false), size: _theme.controlSize * 0.9),
           ),
         UContainer(
           onTap: () => unawaited(_controller.playPause()),
@@ -1210,7 +1259,13 @@ class _UMusicPlayerState extends State<UMusicPlayer> {
             color: scheme.onPrimary,
           ),
         ),
-        if (_theme.showSkip)
+        if (_theme.showSeekButtons && !value.isLive)
+          IconButton(
+            tooltip: U.s.seekForward,
+            onPressed: () => unawaited(_controller.seekBy(widget.seekStep)),
+            icon: Icon(_seekIcon(forward: true), size: _theme.controlSize * 0.9),
+          ),
+        if (_theme.showSkip && _controller.queue.length > 1)
           IconButton(
             tooltip: U.s.next,
             onPressed: _controller.hasNext ? () => unawaited(_controller.next()) : null,
@@ -1233,7 +1288,20 @@ class _UMusicPlayerState extends State<UMusicPlayer> {
     final Widget Function(BuildContext, UMediaValue)? builder = widget.extrasBuilder;
     if (builder != null) return builder(context, value);
     final ColorScheme scheme = Theme.of(context).colorScheme;
+    final UMediaNotesController? notes = widget.notes;
     final List<Widget> items = <Widget>[
+      if (notes != null)
+        IconButton(
+          tooltip: U.s.addTimestampNote,
+          onPressed: () => unawaited(UMediaNotes.addAtCurrentTime(notes, _controller)),
+          icon: const Icon(Icons.add_comment_rounded),
+        ),
+      if (notes != null)
+        IconButton(
+          tooltip: U.s.videoNotes,
+          onPressed: () => unawaited(UMediaNotes.showPanel(notes, _controller)),
+          icon: Badge(isLabelVisible: notes.length > 0, label: Text("${notes.length}"), child: const Icon(Icons.sticky_note_2_outlined)),
+        ),
       if (_theme.showFavorite)
         IconButton(
           tooltip: U.s.favorites,
@@ -1271,10 +1339,36 @@ class _UMusicPlayerState extends State<UMusicPlayer> {
     return URow(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: items);
   }
 
+  IconData _seekIcon({required bool forward}) {
+    switch (widget.seekStep.inSeconds) {
+      case 5:
+        return forward ? Icons.forward_5_rounded : Icons.replay_5_rounded;
+      case 10:
+        return forward ? Icons.forward_10_rounded : Icons.replay_10_rounded;
+      case 30:
+        return forward ? Icons.forward_30_rounded : Icons.replay_30_rounded;
+      default:
+        return forward ? Icons.fast_forward_rounded : Icons.fast_rewind_rounded;
+    }
+  }
+
   void _speedSheet(BuildContext context) => UNavigator.bottomSheet(
     UColumn(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
+        ValueListenableBuilder<UMediaValue>(
+          valueListenable: _controller,
+          builder: (BuildContext context, UMediaValue value, Widget? child) => Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+            child: URow(
+              children: <Widget>[
+                UTextLabelLarge(U.s.fineSpeed),
+                Expanded(child: Slider(value: value.speed.clamp(0.25, 4), min: 0.25, max: 4, divisions: 75, label: "${value.speed.toStringAsFixed(2)}x", onChanged: (double next) => unawaited(_controller.setSpeed(next)))),
+                UTextLabelMedium("${value.speed.toStringAsFixed(2)}x"),
+              ],
+            ),
+          ),
+        ),
         for (final double speed in uSpeedPresets)
           ListTile(
             title: UTextBodyMedium("${speed}x"),

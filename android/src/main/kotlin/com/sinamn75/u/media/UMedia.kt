@@ -19,6 +19,7 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.Rational
+import android.view.ViewTreeObserver
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.Format
@@ -520,6 +521,37 @@ object UMediaPip {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
         if (current.isInPictureInPictureMode) current.moveTaskToBack(false)
     }
+
+    fun isActive(activity: Activity?): Boolean {
+        val current = activity ?: return false
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return false
+        return current.isInPictureInPictureMode
+    }
+
+    /**
+     * Android 12+ enters picture-in-picture by itself when the user leaves the app
+     * while auto-enter is armed; older versions rely on onUserLeaveHint instead.
+     */
+    fun setAuto(
+        activity: Activity?,
+        enabled: Boolean,
+        aspectRatio: Double,
+    ) {
+        val current = activity ?: return
+        if (!isSupported(current) || Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return
+        val safeRatio =
+            if (aspectRatio.isFinite() && aspectRatio > 0.42 && aspectRatio < 2.38) aspectRatio else 16.0 / 9.0
+        runCatching {
+            current.setPictureInPictureParams(
+                PictureInPictureParams
+                    .Builder()
+                    .setAspectRatio(Rational((safeRatio * 1000).toInt(), 1000))
+                    .setAutoEnterEnabled(enabled)
+                    .setSeamlessResizeEnabled(true)
+                    .build(),
+            )
+        }
+    }
 }
 
 @UnstableApi
@@ -566,6 +598,18 @@ class UMediaPlayer(
     private val handler = Handler(Looper.getMainLooper())
     private val eventChannel = EventChannel(messenger, "u/media/events/$id")
     private var sink: EventChannel.EventSink? = null
+
+    /** Picture-in-picture is entered automatically when the app is left while this player plays. */
+    var autoPip = false
+    var autoPipAspectRatio = 16.0 / 9.0
+    var onPlayingChanged: (() -> Unit)? = null
+
+    val isPlayingNow: Boolean
+        get() = player.isPlaying
+
+    fun notifyPip(active: Boolean) {
+        send(mapOf("event" to "pip", "state" to if (active) "active" else "available"))
+    }
 
     private val effects = UMediaEffects()
     private val spectrum = UMediaSpectrum { bands -> emitSpectrum(bands) }
@@ -956,6 +1000,7 @@ class UMediaPlayer(
 
     override fun onIsPlayingChanged(isPlaying: Boolean) {
         send(mapOf("event" to "state", "state" to if (isPlaying) "playing" else "paused"))
+        onPlayingChanged?.invoke()
         if (isPlaying) {
             handler.removeCallbacks(positionTicker)
             handler.post(positionTicker)
@@ -1041,16 +1086,50 @@ class UMediaHandler(
     private val players = mutableMapOf<Int, UMediaPlayer>()
     private var nextId = 1
     private var activity: Activity? = null
+    private var pipActive = false
+    private var observedActivity: Activity? = null
+    private val layoutListener =
+        ViewTreeObserver.OnGlobalLayoutListener {
+            val active = UMediaPip.isActive(activity)
+            if (active != pipActive) {
+                pipActive = active
+                players.values.forEach { it.notifyPip(active) }
+            }
+        }
 
     init {
         channel.setMethodCallHandler(this)
     }
 
     fun setActivity(value: Activity?) {
+        observedActivity?.window?.decorView?.viewTreeObserver?.let { observer ->
+            if (observer.isAlive) observer.removeOnGlobalLayoutListener(layoutListener)
+        }
+        observedActivity = null
         activity = value
+        value?.window?.decorView?.viewTreeObserver?.let { observer ->
+            observer.addOnGlobalLayoutListener(layoutListener)
+            observedActivity = value
+        }
+        updateAutoPip()
+    }
+
+    /** Arms auto-enter picture-in-picture only while an opted-in player is actually playing. */
+    private fun updateAutoPip() {
+        val candidate = players.values.firstOrNull { it.autoPip && it.isPlayingNow }
+        val any = players.values.firstOrNull { it.autoPip }
+        UMediaPip.setAuto(activity, candidate != null, (candidate ?: any)?.autoPipAspectRatio ?: (16.0 / 9.0))
+    }
+
+    /** Called from the activity's onUserLeaveHint (Android 8–11 path). */
+    fun onUserLeaveHint() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) return
+        val candidate = players.values.firstOrNull { it.autoPip && it.isPlayingNow } ?: return
+        UMediaPip.enter(activity, candidate.autoPipAspectRatio)
     }
 
     fun dispose() {
+        setActivity(null)
         channel.setMethodCallHandler(null)
         players.values.forEach { it.dispose() }
         players.clear()
@@ -1070,8 +1149,9 @@ class UMediaHandler(
             val kind = call.argument<String>("kind") ?: "video"
             val config = call.argument<Map<String, Any?>>("config") ?: emptyMap()
             val id = nextId++
-            players[id] =
-                UMediaPlayer(id, context, messenger, textureRegistry, config, kind == "video")
+            val created = UMediaPlayer(id, context, messenger, textureRegistry, config, kind == "video")
+            created.onPlayingChanged = { updateAutoPip() }
+            players[id] = created
             result.success(id)
             return
         }
@@ -1238,11 +1318,20 @@ class UMediaHandler(
                 result.success(null)
             }
 
+            "setAutoPip" -> {
+                player.autoPip = call.argument<Boolean>("enabled") ?: false
+                call.argument<Number>("aspectRatio")?.toDouble()?.let { player.autoPipAspectRatio = it }
+                updateAutoPip()
+                result.success(null)
+            }
+
             "screenshot" -> result.success(player.screenshot())
             "setNotification" -> result.success(null)
             "dispose" -> {
+                player.onPlayingChanged = null
                 player.dispose()
                 players.remove(id)
+                updateAutoPip()
                 result.success(null)
             }
 

@@ -743,7 +743,69 @@ abstract class UDocText {
   static bool isRtlCode(int code) =>
       (code >= 0x0590 && code <= 0x08FF) || (code >= 0xFB1D && code <= 0xFDFF) || (code >= 0xFE70 && code <= 0xFEFF) || (code >= 0x10800 && code <= 0x10FFF) || (code >= 0x1E800 && code <= 0x1EFFF);
 
-  static bool isNeutralCode(int code) => code <= 0x40 || (code >= 0x5B && code <= 0x60) || (code >= 0x7B && code <= 0xBF) || code == 0x00D7 || code == 0x00F7;
+  static bool isNeutralCode(int code) =>
+      code <= 0x40 ||
+      (code >= 0x5B && code <= 0x60) ||
+      (code >= 0x7B && code <= 0xBF) ||
+      code == 0x00D7 ||
+      code == 0x00F7 ||
+      isFormatCode(code) ||
+      (code >= 0x2000 && code <= 0x206F) ||
+      (code >= 0x3000 && code <= 0x303F) ||
+      code == 0xFFFD;
+
+  /// Zero-width joiners, direction marks and other invisible format characters.
+  static bool isFormatCode(int code) => (code >= 0x200B && code <= 0x200F) || (code >= 0x202A && code <= 0x202E) || (code >= 0x2060 && code <= 0x2069) || code == 0xFEFF || code == 0x061C;
+
+  static bool isJoinerCode(int code) => code == 0x200C || code == 0x200D;
+
+  static bool isDigitCode(int code) => (code >= 0x30 && code <= 0x39) || (code >= 0x0660 && code <= 0x0669) || (code >= 0x06F0 && code <= 0x06F9);
+
+  static bool isCombiningMark(int code) =>
+      (code >= 0x0300 && code <= 0x036F) || (code >= 0x0610 && code <= 0x061A) || (code >= 0x064B && code <= 0x065F) || code == 0x0670 || (code >= 0x06D6 && code <= 0x06ED) || (code >= 0xFE20 && code <= 0xFE2F);
+
+  static bool isStrongLtrCode(int code) => !isRtlCode(code) && !isDigitCode(code) && !isNeutralCode(code) && !isCombiningMark(code) && code > 0x20;
+
+  static int mirrorCode(int code) {
+    switch (code) {
+      case 0x28:
+        return 0x29;
+      case 0x29:
+        return 0x28;
+      case 0x5B:
+        return 0x5D;
+      case 0x5D:
+        return 0x5B;
+      case 0x7B:
+        return 0x7D;
+      case 0x7D:
+        return 0x7B;
+      case 0x3C:
+        return 0x3E;
+      case 0x3E:
+        return 0x3C;
+      case 0xAB:
+        return 0xBB;
+      case 0xBB:
+        return 0xAB;
+      default:
+        return code;
+    }
+  }
+
+  /// Strong direction of a paragraph by majority vote of strong characters.
+  static bool isMostlyRtl(String text) {
+    int rtl = 0;
+    int ltr = 0;
+    for (final int code in text.runes) {
+      if (isRtlCode(code) && !isDigitCode(code) && !isCombiningMark(code)) {
+        rtl++;
+      } else if (isStrongLtrCode(code)) {
+        ltr++;
+      }
+    }
+    return rtl > ltr;
+  }
 
   static bool isRtl(String text) {
     for (final int code in text.runes) {
@@ -849,6 +911,144 @@ abstract class UDocText {
     }
     return buffer.toString();
   }
+}
+
+/// Recovers logical (reading) order from visually ordered text pieces.
+///
+/// PDF glyphs are positioned visually, left to right. Unicode's bidi algorithm
+/// turns logical text into visual order by reversing runs of embedding level
+/// `>= k` for k = max..1; applying those same reversals for k = 1..max undoes
+/// it. Levels are estimated per piece: RTL letters are odd, Latin letters in
+/// an RTL paragraph and digits inside RTL text are raised to an even level so
+/// numbers such as "۱۴۰۳" or "2024" keep their left-to-right order.
+abstract class UDocBidi {
+  static const int _left = 0;
+  static const int _right = 1;
+  static const int _number = 2;
+  static const int _neutral = 3;
+  static const int _mark = 4;
+
+  static int _classOf(String text) {
+    int rtl = 0;
+    int ltr = 0;
+    int digits = 0;
+    int marks = 0;
+    for (final int code in text.runes) {
+      if (UDocText.isCombiningMark(code)) {
+        marks++;
+      } else if (UDocText.isDigitCode(code)) {
+        digits++;
+      } else if (UDocText.isRtlCode(code)) {
+        rtl++;
+      } else if (UDocText.isStrongLtrCode(code)) {
+        ltr++;
+      }
+    }
+    if (rtl > 0 && rtl >= ltr) return _right;
+    if (ltr > 0) return _left;
+    if (digits > 0) return _number;
+    if (marks > 0 && text.runes.length == marks) return _mark;
+    return _neutral;
+  }
+
+  /// Returns (logical order indexes, embedding level per original index).
+  static (List<int>, List<int>) reorder(List<String> visual, {required bool baseRtl}) {
+    final int count = visual.length;
+    final List<int> classes = visual.map(_classOf).toList();
+    final List<int> levels = List<int>.filled(count, baseRtl ? 1 : 0);
+    final int base = baseRtl ? 1 : 0;
+
+    int strongNear(int index, int step) {
+      for (int i = index + step; i >= 0 && i < count; i += step) {
+        final int kind = classes[i];
+        if (kind == _left || kind == _right) return kind;
+      }
+      return baseRtl ? _right : _left;
+    }
+
+    // Numbers take the direction of neighbouring Latin text (bidi rule W7,
+    // approximated on visual neighbours), otherwise they behave like RTL.
+    final List<int> resolved = List<int>.from(classes);
+    for (int i = 0; i < count; i++) {
+      if (classes[i] != _number) continue;
+      resolved[i] = strongNear(i, -1) == _left || strongNear(i, 1) == _left ? _left : _right;
+    }
+    for (int i = 0; i < count; i++) {
+      switch (classes[i]) {
+        case _right:
+          levels[i] = 1;
+          break;
+        case _left:
+          levels[i] = baseRtl ? 2 : 0;
+          break;
+        case _number:
+          levels[i] = resolved[i] == _left ? (baseRtl ? 2 : 0) : 2;
+          break;
+        default:
+          break;
+      }
+    }
+    for (int i = 0; i < count; i++) {
+      final int kind = classes[i];
+      if (kind != _neutral && kind != _mark) continue;
+      int left = i - 1;
+      while (left >= 0 && (classes[left] == _neutral || classes[left] == _mark)) {
+        left--;
+      }
+      int right = i + 1;
+      while (right < count && (classes[right] == _neutral || classes[right] == _mark)) {
+        right++;
+      }
+      final int leftDir = left < 0 ? (baseRtl ? _right : _left) : resolved[left];
+      final int rightDir = right >= count ? (baseRtl ? _right : _left) : resolved[right];
+      if (kind == _mark && left >= 0) {
+        levels[i] = levels[left];
+      } else if (leftDir == rightDir) {
+        levels[i] = leftDir == _right ? 1 : (baseRtl ? 2 : 0);
+      } else {
+        levels[i] = base;
+      }
+      if (levels[i] < base) levels[i] = base;
+    }
+    // Digits touching each other across separators ("1.5", "۱۴۰۳/۰۱") stay one number.
+    for (int i = 1; i < count - 1; i++) {
+      if (classes[i] == _neutral && classes[i - 1] == _number && classes[i + 1] == _number && visual[i].trim().length == 1 && ".,/:-٫٬".contains(visual[i].trim())) {
+        levels[i] = levels[i - 1];
+      }
+    }
+
+    final List<int> order = List<int>.generate(count, (int i) => i);
+    int maxLevel = 0;
+    for (final int level in levels) {
+      if (level > maxLevel) maxLevel = level;
+    }
+    for (int k = 1; k <= maxLevel; k++) {
+      int i = 0;
+      while (i < count) {
+        if (levels[order[i]] < k) {
+          i++;
+          continue;
+        }
+        int j = i;
+        while (j + 1 < count && levels[order[j + 1]] >= k) {
+          j++;
+        }
+        int a = i;
+        int b = j;
+        while (a < b) {
+          final int swap = order[a];
+          order[a] = order[b];
+          order[b] = swap;
+          a++;
+          b--;
+        }
+        i = j + 1;
+      }
+    }
+    return (order, levels);
+  }
+
+  static String mirror(String text) => String.fromCharCodes(text.runes.map(UDocText.mirrorCode));
 }
 
 class UDocMetadata {
@@ -1051,17 +1251,102 @@ class UDocGlyph {
   final bool spaceAfter;
 }
 
+/// How text ranges are turned into rectangles.
+///
+/// [precise] uses per-character geometry, [box] always covers the whole text
+/// run (the pdfrx approach for fonts whose glyph metrics are broken), and
+/// [auto] is precise wherever the run's geometry looks trustworthy and falls
+/// back to the whole box otherwise. Persian/Arabic PDFs often ship fonts
+/// without usable widths, which is exactly what [auto] guards against.
+enum UDocTextGeometry { auto, precise, box }
+
 class UDocTextRun {
-  const UDocTextRun({required this.text, required this.rect, required this.rtl, required this.glyphs, this.fontName, this.fontSize = 0, this.lineIndex = 0, this.blockIndex = 0});
+  const UDocTextRun({
+    required this.text,
+    required this.rect,
+    required this.rtl,
+    required this.glyphs,
+    this.charRects = const <Rect>[],
+    this.reliable = true,
+    this.fontName,
+    this.fontSize = 0,
+    this.lineIndex = 0,
+    this.blockIndex = 0,
+  });
 
   final String text;
   final Rect rect;
   final bool rtl;
   final List<UDocGlyph> glyphs;
+
+  /// One rectangle per UTF-16 unit of [text], in logical order.
+  final List<Rect> charRects;
+
+  /// False when glyph widths/positions of this run are not trustworthy.
+  final bool reliable;
   final String? fontName;
   final double fontSize;
   final int lineIndex;
   final int blockIndex;
+
+  bool get hasCharGeometry => charRects.length == text.length && text.isNotEmpty;
+
+  bool usesBox(UDocTextGeometry geometry) => geometry == UDocTextGeometry.box || !hasCharGeometry || (geometry == UDocTextGeometry.auto && !reliable);
+
+  Rect charRect(int index) => index >= 0 && index < charRects.length ? charRects[index] : rect;
+
+  List<Rect> rectsFor(int start, int end, {UDocTextGeometry geometry = UDocTextGeometry.auto}) {
+    final int from = start.clamp(0, text.length);
+    final int to = end.clamp(0, text.length);
+    if (to <= from) return const <Rect>[];
+    if (usesBox(geometry)) return <Rect>[rect];
+    final List<Rect> pieces = <Rect>[];
+    for (int i = from; i < to; i++) {
+      final Rect piece = charRects[i];
+      if (piece.width <= 0.01 || piece.height <= 0.01) continue;
+      pieces.add(piece);
+    }
+    if (pieces.isEmpty) return <Rect>[rect];
+    pieces.sort((Rect a, Rect b) => a.left.compareTo(b.left));
+    final List<Rect> merged = <Rect>[];
+    Rect current = pieces.first;
+    for (int i = 1; i < pieces.length; i++) {
+      final Rect next = pieces[i];
+      if (next.left <= current.right + current.height * 0.6) {
+        current = current.expandToInclude(next);
+      } else {
+        merged.add(current);
+        current = next;
+      }
+    }
+    merged.add(current);
+    return merged;
+  }
+
+  /// Nearest logical text offset to [point], or null when the point is outside the run's reach.
+  int offsetAt(Offset point) {
+    if (text.isEmpty) return 0;
+    if (!hasCharGeometry || !reliable) {
+      final double width = rect.width <= 0 ? 1 : rect.width;
+      final double t = ((point.dx - rect.left) / width).clamp(0, 1).toDouble();
+      final int index = ((rtl ? 1 - t : t) * text.length).floor();
+      return index.clamp(0, text.length - 1);
+    }
+    int best = 0;
+    double bestDistance = double.infinity;
+    for (int i = 0; i < charRects.length; i++) {
+      final Rect piece = charRects[i];
+      if (piece.contains(point)) return i;
+      final double dx = point.dx < piece.left ? piece.left - point.dx : (point.dx > piece.right ? point.dx - piece.right : 0);
+      final double dy = point.dy < piece.top ? piece.top - point.dy : (point.dy > piece.bottom ? point.dy - piece.bottom : 0);
+      final double distance = dx * dx + dy * dy;
+      if (distance < bestDistance) {
+        bestDistance = distance;
+        best = i;
+      }
+    }
+    return best;
+  }
 }
 
 class UDocTextPage {
@@ -1076,18 +1361,25 @@ class UDocTextPage {
 
   bool get isEmpty => runs.isEmpty;
 
+  /// Share of runs whose geometry is trustworthy (1 = everything precise).
+  double get reliability {
+    if (runs.isEmpty) return 1;
+    int good = 0;
+    for (final UDocTextRun run in runs) {
+      if (run.reliable && run.hasCharGeometry) good++;
+    }
+    return good / runs.length;
+  }
+
   Rect? rectForRange(int start, int end) {
     Rect? union;
-    int cursor = 0;
-    for (final UDocTextRun run in runs) {
-      final int runEnd = cursor + run.text.length;
-      if (runEnd > start && cursor < end) union = union == null ? run.rect : union.expandToInclude(run.rect);
-      cursor = runEnd + 1;
+    for (final Rect rect in rectsForRange(start, end)) {
+      union = union == null ? rect : union.expandToInclude(rect);
     }
     return union;
   }
 
-  List<Rect> rectsForRange(int start, int end) {
+  List<Rect> rectsForRange(int start, int end, {UDocTextGeometry geometry = UDocTextGeometry.auto}) {
     final List<Rect> rects = <Rect>[];
     int cursor = 0;
     for (final UDocTextRun run in runs) {
@@ -1095,20 +1387,104 @@ class UDocTextPage {
       if (runEnd > start && cursor < end) {
         final int localStart = start > cursor ? start - cursor : 0;
         final int localEnd = end < runEnd ? end - cursor : run.text.length;
-        rects.add(_glyphUnion(run, localStart, localEnd));
+        rects.addAll(run.rectsFor(localStart, localEnd, geometry: geometry));
       }
       cursor = runEnd + 1;
     }
     return rects;
   }
 
-  Rect _glyphUnion(UDocTextRun run, int start, int end) {
-    Rect? union;
-    for (int i = start; i < end && i < run.glyphs.length; i++) {
-      final Rect rect = run.glyphs[i].rect;
-      union = union == null ? rect : union.expandToInclude(rect);
+  /// Page-text offset of the run that starts at [runIndex].
+  int runStart(int runIndex) {
+    int cursor = 0;
+    for (int i = 0; i < runIndex && i < runs.length; i++) {
+      cursor += runs[i].text.length + 1;
     }
-    return union ?? run.rect;
+    return cursor;
+  }
+
+  /// The logical offset nearest to [point], or null when nothing is within [maxDistance].
+  int? offsetAt(Offset point, {double maxDistance = 48}) {
+    int cursor = 0;
+    int? bestRun;
+    int bestCursor = 0;
+    double bestDistance = double.infinity;
+    for (int i = 0; i < runs.length; i++) {
+      final UDocTextRun run = runs[i];
+      final Rect area = run.rect;
+      final double dx = point.dx < area.left ? area.left - point.dx : (point.dx > area.right ? point.dx - area.right : 0);
+      final double dy = point.dy < area.top ? area.top - point.dy : (point.dy > area.bottom ? point.dy - area.bottom : 0);
+      final double distance = dx * dx + dy * dy * 4;
+      if (distance < bestDistance) {
+        bestDistance = distance;
+        bestRun = i;
+        bestCursor = cursor;
+      }
+      cursor += run.text.length + 1;
+    }
+    if (bestRun == null || bestDistance > maxDistance * maxDistance) return null;
+    return bestCursor + runs[bestRun].offsetAt(point);
+  }
+
+  /// Word boundaries around [offset] (start inclusive, end exclusive).
+  (int, int)? wordAround(int offset) {
+    if (text.isEmpty) return null;
+    final int safe = offset.clamp(0, text.length - 1);
+    bool isBreak(int code) => code == 0x20 || code == 0x0A || code == 0x09 || code == 0x0D || code == 0x200C;
+    int start = safe;
+    int end = safe;
+    while (start > 0 && !isBreak(text.codeUnitAt(start - 1))) {
+      start--;
+    }
+    while (end < text.length && !isBreak(text.codeUnitAt(end))) {
+      end++;
+    }
+    if (end <= start) return null;
+    return (start, end);
+  }
+
+  /// Full line (run) boundaries around [offset].
+  (int, int)? lineAround(int offset) {
+    int cursor = 0;
+    for (final UDocTextRun run in runs) {
+      final int runEnd = cursor + run.text.length;
+      if (offset >= cursor && offset <= runEnd) return (cursor, runEnd);
+      cursor = runEnd + 1;
+    }
+    return null;
+  }
+
+  String textFor(int start, int end) {
+    final int from = start.clamp(0, text.length);
+    final int to = end.clamp(0, text.length);
+    return to <= from ? "" : text.substring(from, to);
+  }
+
+  /// Finds [needle] on the page, first exactly, then Persian/Arabic-normalised.
+  (int, int)? locate(String needle, {int near = -1}) {
+    final String trimmed = needle.trim();
+    if (trimmed.isEmpty || text.isEmpty) return null;
+    final List<int> exact = UDocText.findAll(text, trimmed);
+    if (exact.isNotEmpty) {
+      final int pick = _closest(exact, near);
+      return (pick, pick + trimmed.length);
+    }
+    final UDocNormalizedText normalized = UDocNormalizedText.build(text);
+    final String target = UDocText.normalize(trimmed);
+    if (target.isEmpty) return null;
+    final List<int> hits = UDocText.findAll(normalized.text, target);
+    if (hits.isEmpty) return null;
+    final int pick = _closest(hits, near < 0 ? -1 : near);
+    return (normalized.sourceAt(pick), normalized.sourceAt(pick + target.length - 1) + 1);
+  }
+
+  static int _closest(List<int> positions, int near) {
+    if (near < 0) return positions.first;
+    int best = positions.first;
+    for (final int position in positions) {
+      if ((position - near).abs() < (best - near).abs()) best = position;
+    }
+    return best;
   }
 }
 
@@ -1914,6 +2290,7 @@ class UDocViewSettings {
     this.showAnnotations = true,
     this.showForms = true,
     this.customMatrix,
+    this.textGeometry = UDocTextGeometry.auto,
   });
 
   final UDocScrollMode scrollMode;
@@ -1934,6 +2311,7 @@ class UDocViewSettings {
   final bool showAnnotations;
   final bool showForms;
   final List<double>? customMatrix;
+  final UDocTextGeometry textGeometry;
 
   bool get isPaged => scrollMode == UDocScrollMode.pagedVertical || scrollMode == UDocScrollMode.pagedHorizontal || scrollMode == UDocScrollMode.singlePage;
 
@@ -1962,6 +2340,7 @@ class UDocViewSettings {
     bool? showAnnotations,
     bool? showForms,
     List<double>? customMatrix,
+    UDocTextGeometry? textGeometry,
   }) => UDocViewSettings(
     scrollMode: scrollMode ?? this.scrollMode,
     spread: spread ?? this.spread,
@@ -1981,6 +2360,7 @@ class UDocViewSettings {
     showAnnotations: showAnnotations ?? this.showAnnotations,
     showForms: showForms ?? this.showForms,
     customMatrix: customMatrix ?? this.customMatrix,
+    textGeometry: textGeometry ?? this.textGeometry,
   );
 }
 

@@ -3967,14 +3967,24 @@ class UPdfRenderResult {
   final bool truncated;
 }
 
+class _UPdfActualText {
+  _UPdfActualText(this.text);
+
+  final String? text;
+  int glyphIndex = -1;
+}
+
 class _UPdfGlyphRecord {
-  const _UPdfGlyphRecord({required this.text, required this.rect, required this.fontSize, required this.fontName, required this.isSpace});
+  const _UPdfGlyphRecord({required this.text, required this.rect, required this.fontSize, required this.fontName, required this.isSpace, this.logical = false});
 
   final String text;
   final Rect rect;
   final double fontSize;
   final String fontName;
   final bool isSpace;
+
+  /// True when [text] came from /ActualText (already logical, never mirrored).
+  final bool logical;
 }
 
 class _UPdfState {
@@ -4163,6 +4173,10 @@ class _UPdfContentExecutor {
   final List<Object?> _operands = <Object?>[];
   final List<_UPdfGlyphRecord> _glyphs = <_UPdfGlyphRecord>[];
   final Map<String, UPdfFont> _fonts = <String, UPdfFont>{};
+
+  /// Marked-content stack; entries carry `/ActualText` (the authoritative text
+  /// for shaped glyphs, used by Chrome/Word for Arabic and Persian).
+  final List<_UPdfActualText> _actualText = <_UPdfActualText>[];
 
   late _UPdfState _state;
   Path _path = Path();
@@ -4603,14 +4617,17 @@ class _UPdfContentExecutor {
         } else if (await _isHiddenMarkedContent(resources)) {
           _hiddenDepth = 1;
         }
+        _actualText.add(_UPdfActualText(await _actualTextOf(resources)));
         break;
       case "BMC":
         _markedDepth++;
         if (_hiddenDepth > 0) _hiddenDepth++;
+        _actualText.add(_UPdfActualText(null));
         break;
       case "EMC":
         if (_markedDepth > 0) _markedDepth--;
         if (_hiddenDepth > 0) _hiddenDepth--;
+        if (_actualText.isNotEmpty) _actualText.removeLast();
         break;
       case "d0":
       case "d1":
@@ -4624,6 +4641,18 @@ class _UPdfContentExecutor {
       default:
         break;
     }
+  }
+
+  Future<String?> _actualTextOf(UPdfDict? resources) async {
+    if (!options.collectText || _operands.length < 2) return null;
+    Object? properties = _operands[1];
+    if (properties is UPdfName) {
+      final Object? all = await document.resolve(resources?["Properties"]);
+      properties = all is UPdfDict ? await document.resolve(all[properties.value]) : null;
+    }
+    if (properties is! UPdfDict) return null;
+    final Object? text = await document.resolve(properties["ActualText"]);
+    return text is UPdfString ? text.text : null;
   }
 
   Future<bool> _isHiddenMarkedContent(UPdfDict? resources) async {
@@ -4835,8 +4864,9 @@ class _UPdfContentExecutor {
   }
 
   void _recordGlyph(String text, List<double> trm, double width0, UPdfFont font, bool isSpace) {
-    final double ascent = (font.ascent == 0 ? 750 : font.ascent) / 1000;
-    final double descent = (font.descent == 0 ? -250 : font.descent) / 1000;
+    final (double, double) metrics = _boxMetrics(font);
+    final double ascent = metrics.$1;
+    final double descent = metrics.$2;
     final List<double> device = uPdfMul(trm, _state.ctm);
     final Offset p1 = uPdfApply(device, 0, descent);
     final Offset p2 = uPdfApply(device, width0, descent);
@@ -4847,8 +4877,44 @@ class _UPdfContentExecutor {
     final double top = <double>[p1.dy, p2.dy, p3.dy, p4.dy].reduce(min);
     final double bottom = <double>[p1.dy, p2.dy, p3.dy, p4.dy].reduce(max);
     final double size = (bottom - top).abs();
-    _glyphs.add(_UPdfGlyphRecord(text: text, rect: Rect.fromLTRB(left, top, right, bottom), fontSize: size, fontName: font.baseFont, isSpace: isSpace || text.trim().isEmpty));
+    final Rect rect = Rect.fromLTRB(left, top, right, bottom);
+    _UPdfActualText? span;
+    for (int i = _actualText.length - 1; i >= 0; i--) {
+      if (_actualText[i].text != null) {
+        span = _actualText[i];
+        break;
+      }
+    }
+    if (span != null) {
+      final int previous = span.glyphIndex;
+      if (previous >= 0 && previous < _glyphs.length) {
+        // Further glyphs of the same span only widen the first one's box.
+        final _UPdfGlyphRecord first = _glyphs[previous];
+        _glyphs[previous] = _UPdfGlyphRecord(text: first.text, rect: first.rect.expandToInclude(rect), fontSize: first.fontSize, fontName: first.fontName, isSpace: first.isSpace, logical: true);
+        return;
+      }
+      final String actual = span.text!;
+      span.glyphIndex = _glyphs.length;
+      _glyphs.add(_UPdfGlyphRecord(text: actual, rect: rect, fontSize: size, fontName: font.baseFont, isSpace: actual.trim().isEmpty && !actual.contains("\u200C"), logical: true));
+      return;
+    }
+    _glyphs.add(_UPdfGlyphRecord(text: text, rect: rect, fontSize: size, fontName: font.baseFont, isSpace: isSpace || text.trim().isEmpty));
     if (_glyphs.length > 400000) _glyphs.removeRange(0, 1000);
+  }
+
+  /// Vertical glyph box (ascent, descent) in text space. Producers write odd
+  /// metrics (Chrome/Skia emits a positive Descent for subset TrueType fonts,
+  /// Type3 fonts usually have none), so the values are sanitised into a
+  /// sensible band around the baseline.
+  static (double, double) _boxMetrics(UPdfFont font) {
+    double ascent = font.ascent / 1000;
+    double descent = font.descent / 1000;
+    if (descent > 0) descent = -descent;
+    if (ascent <= 0.2 || ascent > 1.6) ascent = 0.8;
+    if (descent < -0.8 || descent > -0.05) descent = -0.25;
+    ascent = min(ascent, 1);
+    descent = max(descent, -0.45);
+    return (ascent, descent);
   }
 
   Future<void> _doXObject(String name, UPdfDict? resources, int depth) async {
@@ -5088,111 +5154,289 @@ class _UPdfContentExecutor {
     canvas.restore();
   }
 
-  UDocTextPage buildTextPage(int pageIndex, Size size) {
-    if (_glyphs.isEmpty) return UDocTextPage(pageIndex: pageIndex, runs: const <UDocTextRun>[], text: "", size: size);
-    final List<_UPdfGlyphRecord> sorted = List<_UPdfGlyphRecord>.from(_glyphs)
-      ..sort((_UPdfGlyphRecord a, _UPdfGlyphRecord b) {
-        final double dy = a.rect.center.dy - b.rect.center.dy;
-        if (dy.abs() > (a.rect.height + b.rect.height) / 4) return dy < 0 ? -1 : 1;
-        return a.rect.left.compareTo(b.rect.left);
-      });
-    final List<List<_UPdfGlyphRecord>> lines = <List<_UPdfGlyphRecord>>[];
-    List<_UPdfGlyphRecord> current = <_UPdfGlyphRecord>[];
-    for (final _UPdfGlyphRecord glyph in sorted) {
-      if (current.isEmpty) {
-        current.add(glyph);
-        continue;
-      }
-      final _UPdfGlyphRecord previous = current.last;
-      final double tolerance = (previous.rect.height + glyph.rect.height) / 4;
-      if ((glyph.rect.center.dy - previous.rect.center.dy).abs() > tolerance) {
+  UDocTextPage buildTextPage(int pageIndex, Size size) => UPdfTextLayout.build(
+    pageIndex,
+    size,
+    _glyphs.map((_UPdfGlyphRecord glyph) => UPdfPositionedGlyph(text: glyph.text, rect: glyph.rect, fontSize: glyph.fontSize, fontName: glyph.fontName, isSpace: glyph.isSpace, logical: glyph.logical)).toList(),
+  );
+}
+
+/// A glyph as positioned on the page, before being grouped into text runs.
+class UPdfPositionedGlyph {
+  const UPdfPositionedGlyph({required this.text, required this.rect, this.fontSize = 0, this.fontName = "", this.isSpace = false, this.logical = false});
+
+  final String text;
+  final Rect rect;
+  final double fontSize;
+  final String fontName;
+  final bool isSpace;
+
+  /// Text is already in logical order (from /ActualText) and must not be mirrored.
+  final bool logical;
+}
+
+class _UPdfTextPiece {
+  _UPdfTextPiece({required this.text, required this.rect, required this.space, this.fontSize = 0, this.fontName = "", this.logical = false});
+
+  String text;
+  Rect rect;
+  final bool space;
+  final double fontSize;
+  final String fontName;
+  final bool logical;
+}
+
+/// Turns positioned glyphs into logically ordered text runs with one rectangle
+/// per character, so selections and highlights on RTL (Persian/Arabic) pages
+/// land exactly on the glyphs that were selected.
+abstract class UPdfTextLayout {
+  static const String _placeholder = "�";
+
+  static UDocTextPage build(int pageIndex, Size size, List<UPdfPositionedGlyph> glyphs) {
+    if (glyphs.isEmpty) return UDocTextPage(pageIndex: pageIndex, runs: const <UDocTextRun>[], text: "", size: size);
+    final List<UPdfPositionedGlyph> usable = <UPdfPositionedGlyph>[];
+    final List<UPdfPositionedGlyph> marks = <UPdfPositionedGlyph>[];
+    for (final UPdfPositionedGlyph glyph in glyphs) {
+      if (!glyph.rect.isFinite || glyph.rect.height <= 0.2) continue;
+      (_isAttachable(glyph.text) || _isSeparator(glyph.text) || glyph.text.trim().isEmpty ? marks : usable).add(glyph);
+    }
+    usable.sort((UPdfPositionedGlyph a, UPdfPositionedGlyph b) => a.rect.center.dy.compareTo(b.rect.center.dy));
+    final List<List<UPdfPositionedGlyph>> lines = <List<UPdfPositionedGlyph>>[];
+    List<UPdfPositionedGlyph> current = <UPdfPositionedGlyph>[];
+    double center = 0;
+    double height = 0;
+    for (final UPdfPositionedGlyph glyph in usable) {
+      if (current.isNotEmpty) {
+        final double tolerance = max(height, glyph.rect.height) * 0.45;
+        if ((glyph.rect.center.dy - center).abs() <= tolerance) {
+          current.add(glyph);
+          center = (center * (current.length - 1) + glyph.rect.center.dy) / current.length;
+          height = max(height, glyph.rect.height);
+          continue;
+        }
         lines.add(current);
-        current = <_UPdfGlyphRecord>[glyph];
-        continue;
       }
-      current.add(glyph);
+      current = <UPdfPositionedGlyph>[glyph];
+      center = glyph.rect.center.dy;
+      height = glyph.rect.height;
     }
     if (current.isNotEmpty) lines.add(current);
+    // Diacritics and zero-width joiners may come from a fallback font with a
+    // different box: attach each to the line it overlaps instead of its own line.
+    for (final UPdfPositionedGlyph mark in marks) {
+      List<UPdfPositionedGlyph>? best;
+      double bestScore = double.infinity;
+      for (final List<UPdfPositionedGlyph> line in lines) {
+        double top = double.infinity;
+        double bottom = double.negativeInfinity;
+        double left = double.infinity;
+        double right = double.negativeInfinity;
+        for (final UPdfPositionedGlyph glyph in line) {
+          top = min(top, glyph.rect.top);
+          bottom = max(bottom, glyph.rect.bottom);
+          left = min(left, glyph.rect.left);
+          right = max(right, glyph.rect.right);
+        }
+        if (mark.rect.center.dx < left - 2 || mark.rect.center.dx > right + 2) continue;
+        final double score = (mark.rect.center.dy - (top + bottom) / 2).abs() / max(1, max(bottom - top, mark.rect.height));
+        if (score < bestScore) {
+          bestScore = score;
+          best = line;
+        }
+      }
+      if (best != null && bestScore < 1.2) best.add(mark);
+    }
+
     final List<UDocTextRun> runs = <UDocTextRun>[];
     final StringBuffer pageText = StringBuffer();
     int lineIndex = 0;
-    for (final List<_UPdfGlyphRecord> line in lines) {
-      final List<UDocGlyph> glyphs = <UDocGlyph>[];
-      final StringBuffer buffer = StringBuffer();
-      Rect? bounds;
-      double maxSize = 0;
-      String fontName = "";
-      double previousRight = double.negativeInfinity;
-      for (final _UPdfGlyphRecord glyph in line) {
-        if (glyph.text.isEmpty && !glyph.isSpace) continue;
-        final bool gap = previousRight.isFinite && glyph.rect.left - previousRight > glyph.rect.height * 0.28;
-        if (gap && buffer.isNotEmpty && !buffer.toString().endsWith(" ")) {
-          buffer.write(" ");
-          glyphs.add(UDocGlyph(text: " ", rect: Rect.fromLTRB(previousRight, glyph.rect.top, glyph.rect.left, glyph.rect.bottom), rtl: false));
-        }
-        final String text = glyph.isSpace && glyph.text.isEmpty ? " " : glyph.text;
-        if (text.isEmpty) continue;
-        buffer.write(text);
-        glyphs.add(UDocGlyph(text: text, rect: glyph.rect, rtl: UDocText.isRtl(text), fontSize: glyph.fontSize));
-        bounds = bounds == null ? glyph.rect : bounds.expandToInclude(glyph.rect);
-        if (glyph.fontSize > maxSize) maxSize = glyph.fontSize;
-        if (fontName.isEmpty) fontName = glyph.fontName;
-        previousRight = glyph.rect.right;
+    for (final List<UPdfPositionedGlyph> line in lines) {
+      line.sort((UPdfPositionedGlyph a, UPdfPositionedGlyph b) => a.rect.left.compareTo(b.rect.left));
+      bool emitted = false;
+      for (final List<UPdfPositionedGlyph> segment in _segments(line)) {
+        final UDocTextRun? run = _run(segment, lineIndex);
+        if (run == null) continue;
+        runs.add(run);
+        pageText.writeln(run.text);
+        emitted = true;
       }
-      final String raw = buffer.toString();
-      if (raw.trim().isEmpty || bounds == null) continue;
-      final bool rtl = UDocText.isRtl(raw);
-      final String logical = rtl ? _reverseVisual(raw) : raw;
-      runs.add(UDocTextRun(text: logical, rect: bounds, rtl: rtl, glyphs: rtl ? glyphs.reversed.toList() : glyphs, fontName: fontName, fontSize: maxSize, lineIndex: lineIndex));
-      pageText.writeln(logical);
-      lineIndex++;
+      if (emitted) lineIndex++;
     }
     return UDocTextPage(pageIndex: pageIndex, runs: runs, text: pageText.toString().trimRight(), size: size);
   }
 
-  String _reverseVisual(String text) {
-    final String unfolded = UDocText.unfoldPresentationForms(text);
-    final List<int> runes = unfolded.runes.toList();
-    final List<int> out = <int>[];
-    int index = runes.length - 1;
-    while (index >= 0) {
-      final int code = runes[index];
-      if (!UDocText.isRtlCode(code) && !UDocText.isNeutralCode(code) && code > 0x20) {
-        int start = index;
-        while (start >= 0 && !UDocText.isRtlCode(runes[start]) && runes[start] > 0x20) {
-          start--;
-        }
-        out.addAll(runes.sublist(start + 1, index + 1));
-        index = start;
-        continue;
+  /// Splits a visual line at large gaps so side-by-side columns become separate runs.
+  static List<List<UPdfPositionedGlyph>> _segments(List<UPdfPositionedGlyph> line) {
+    final List<List<UPdfPositionedGlyph>> segments = <List<UPdfPositionedGlyph>>[];
+    List<UPdfPositionedGlyph> current = <UPdfPositionedGlyph>[];
+    double right = double.negativeInfinity;
+    for (final UPdfPositionedGlyph glyph in line) {
+      if (current.isNotEmpty && glyph.rect.left - right > glyph.rect.height * 2.8) {
+        segments.add(current);
+        current = <UPdfPositionedGlyph>[];
       }
-      out.add(_mirror(code));
-      index--;
+      current.add(glyph);
+      if (glyph.rect.right > right) right = glyph.rect.right;
     }
-    return String.fromCharCodes(out);
+    if (current.isNotEmpty) segments.add(current);
+    return segments;
   }
 
-  int _mirror(int code) {
-    switch (code) {
-      case 0x28:
-        return 0x29;
-      case 0x29:
-        return 0x28;
-      case 0x5B:
-        return 0x5D;
-      case 0x5D:
-        return 0x5B;
-      case 0x7B:
-        return 0x7D;
-      case 0x7D:
-        return 0x7B;
-      case 0x3C:
-        return 0x3E;
-      case 0x3E:
-        return 0x3C;
-      default:
-        return code;
+  /// Glyphs that belong to a neighbouring letter rather than standing alone.
+  static bool _isAttachable(String text) => text.isNotEmpty && text.runes.every((int code) => UDocText.isCombiningMark(code) || UDocText.isJoinerCode(code));
+
+  static bool _isSeparator(String text) => text.isNotEmpty && text.runes.every((int code) => code == 0x20 || code == 0xA0 || code == 0x200B || code == 0x200C || code == 0x200D);
+
+  /// Space-like glyphs are ambiguous: some producers draw a ZWNJ with the space
+  /// glyph at zero advance, others map a real word space to U+200C. Geometry
+  /// decides: a separator sharing its origin with a letter is a zero-width
+  /// joiner, anything else is a word space.
+  static String _classifySeparator(UPdfPositionedGlyph glyph, List<UPdfPositionedGlyph> segment) {
+    final double tolerance = max(0.4, glyph.rect.height * 0.04);
+    for (final UPdfPositionedGlyph other in segment) {
+      if (identical(other, glyph) || _isSeparator(other.text) || other.text.isEmpty) continue;
+      if ((other.rect.left - glyph.rect.left).abs() <= tolerance) return "\u200C";
     }
+    return " ";
+  }
+
+  static UDocTextRun? _run(List<UPdfPositionedGlyph> segment, int lineIndex) {
+    final List<_UPdfTextPiece> pieces = <_UPdfTextPiece>[];
+    final List<UPdfPositionedGlyph> attachable = <UPdfPositionedGlyph>[];
+    double previousRight = double.negativeInfinity;
+    for (final UPdfPositionedGlyph glyph in segment) {
+      String text = _isSeparator(glyph.text) || (glyph.isSpace && glyph.text.trim().isEmpty) ? _classifySeparator(glyph, segment) : UDocText.unfoldPresentationForms(glyph.text);
+      if (_isAttachable(text)) {
+        attachable.add(UPdfPositionedGlyph(text: text, rect: glyph.rect));
+        continue;
+      }
+      if (text.isEmpty) text = _placeholder;
+      final bool space = text.trim().isEmpty;
+      // Word gaps: compare against the font size (box height includes ascent + descent).
+      final double gapThreshold = max(0.6, glyph.rect.height * 0.12);
+      final bool gap = previousRight.isFinite && glyph.rect.left - previousRight > gapThreshold;
+      if (gap && pieces.isNotEmpty && !pieces.last.space && !space) {
+        pieces.add(_UPdfTextPiece(text: " ", rect: Rect.fromLTRB(previousRight, glyph.rect.top, glyph.rect.left, glyph.rect.bottom), space: true));
+      }
+      if (space) {
+        if (pieces.isEmpty || pieces.last.space) {
+          previousRight = max(previousRight, glyph.rect.right);
+          continue;
+        }
+        pieces.add(_UPdfTextPiece(text: " ", rect: glyph.rect, space: true));
+      } else {
+        pieces.add(_UPdfTextPiece(text: text, rect: glyph.rect, space: false, fontSize: glyph.fontSize, fontName: glyph.fontName, logical: glyph.logical));
+      }
+      previousRight = max(previousRight, glyph.rect.right);
+    }
+    for (final UPdfPositionedGlyph mark in attachable) {
+      _UPdfTextPiece? base;
+      double best = double.infinity;
+      for (final _UPdfTextPiece piece in pieces) {
+        if (piece.space) continue;
+        final double distance = (piece.rect.center.dx - mark.rect.center.dx).abs() - (piece.rect.width / 2);
+        if (distance < best) {
+          best = distance;
+          base = piece;
+        }
+      }
+      if (base != null) base.text = "${base.text}${mark.text}";
+    }
+    // A joiner never separates two words: drop gap spaces that only mirror a ZWNJ.
+    for (int i = pieces.length - 2; i > 0; i--) {
+      if (pieces[i].space && pieces[i - 1].text.endsWith("\u200C")) pieces.removeAt(i);
+    }
+    while (pieces.isNotEmpty && pieces.last.space) {
+      pieces.removeLast();
+    }
+    while (pieces.isNotEmpty && pieces.first.space) {
+      pieces.removeAt(0);
+    }
+    if (pieces.isEmpty) return null;
+
+    final bool rtl = UDocText.isMostlyRtl(pieces.map((_UPdfTextPiece piece) => piece.text).join());
+    final (List<int> order, List<int> levels) = UDocBidi.reorder(pieces.map((_UPdfTextPiece piece) => piece.text).toList(), baseRtl: rtl);
+
+    final StringBuffer text = StringBuffer();
+    final List<Rect> charRects = <Rect>[];
+    final List<UDocGlyph> glyphs = <UDocGlyph>[];
+    Rect bounds = pieces.first.rect;
+    double maxSize = 0;
+    String fontName = "";
+    for (final int index in order) {
+      final _UPdfTextPiece piece = pieces[index];
+      final bool pieceRtl = levels[index].isOdd;
+      final String pieceText = pieceRtl && !piece.logical ? UDocBidi.mirror(piece.text) : piece.text;
+      text.write(pieceText);
+      charRects.addAll(_split(piece.rect, pieceText, rtl: pieceRtl));
+      glyphs.add(UDocGlyph(text: pieceText, rect: piece.rect, rtl: pieceRtl, fontSize: piece.fontSize, spaceAfter: piece.space));
+      bounds = bounds.expandToInclude(piece.rect);
+      if (piece.fontSize > maxSize) maxSize = piece.fontSize;
+      if (fontName.isEmpty && piece.fontName.isNotEmpty) fontName = piece.fontName;
+    }
+    final String value = text.toString();
+    if (value.trim().isEmpty) return null;
+    return UDocTextRun(
+      text: value,
+      rect: bounds,
+      rtl: rtl,
+      glyphs: glyphs,
+      charRects: charRects,
+      reliable: _reliable(pieces, bounds),
+      fontName: fontName,
+      fontSize: maxSize,
+      lineIndex: lineIndex,
+    );
+  }
+
+  /// One rect per UTF-16 unit: multi-character glyphs (ligatures, lam-alef)
+  /// share their glyph box in reading order; combining marks share the base.
+  static List<Rect> _split(Rect rect, String text, {required bool rtl}) {
+    final List<int> units = text.codeUnits;
+    if (units.length <= 1) return <Rect>[rect];
+    final List<int> bases = <int>[];
+    for (int i = 0; i < units.length; i++) {
+      final int code = units[i];
+      final bool lowSurrogate = code >= 0xDC00 && code <= 0xDFFF && i > 0;
+      if (!UDocText.isCombiningMark(code) && !lowSurrogate) bases.add(i);
+    }
+    final int slots = bases.isEmpty ? 1 : bases.length;
+    final double width = rect.width / slots;
+    final List<Rect> out = <Rect>[];
+    int slot = -1;
+    for (int i = 0; i < units.length; i++) {
+      if (bases.contains(i) || slot < 0) slot++;
+      final int position = rtl ? slots - 1 - slot.clamp(0, slots - 1) : slot.clamp(0, slots - 1);
+      out.add(Rect.fromLTWH(rect.left + width * position, rect.top, width, rect.height));
+    }
+    return out;
+  }
+
+  /// Heuristic check that glyph boxes are usable for precise highlighting.
+  static bool _reliable(List<_UPdfTextPiece> pieces, Rect bounds) {
+    final List<Rect> boxes = pieces.where((_UPdfTextPiece piece) => !piece.space).map((_UPdfTextPiece piece) => piece.rect).toList();
+    if (boxes.isEmpty) return false;
+    if (boxes.length == 1) return boxes.first.width > boxes.first.height * 0.05;
+    int degenerate = 0;
+    int overlapping = 0;
+    double covered = 0;
+    final List<Rect> sorted = List<Rect>.from(boxes)..sort((Rect a, Rect b) => a.left.compareTo(b.left));
+    for (int i = 0; i < sorted.length; i++) {
+      final Rect box = sorted[i];
+      covered += box.width;
+      if (box.width < box.height * 0.06) degenerate++;
+      if (i > 0) {
+        final Rect previous = sorted[i - 1];
+        final double overlap = previous.right - box.left;
+        final double narrow = min(previous.width, box.width);
+        if (narrow > 0 && overlap > narrow * 0.55) overlapping++;
+      }
+    }
+    final int count = sorted.length;
+    if (degenerate / count > 0.3) return false;
+    if (overlapping / count > 0.3) return false;
+    if (bounds.width > 0 && covered > bounds.width * 1.8) return false;
+    return true;
   }
 }
 
