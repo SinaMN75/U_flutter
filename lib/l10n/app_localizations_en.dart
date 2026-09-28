@@ -5378,4 +5378,73 @@ class AppLocalizationsEn extends AppLocalizations {
   String minutesLeftInChapter(Object minutes) {
     return '$minutes min left in chapter';
   }
+
+  @override
+  String get read => 'Read';
+
+  @override
+  String get pen => 'Pen';
+
+  @override
+  String get highlighterPen => 'Highlighter pen';
+
+  @override
+  String get line => 'Line';
+
+  @override
+  String get doubleArrow => 'Double arrow';
+
+  @override
+  String get roundedRectangle => 'Rounded rectangle';
+
+  @override
+  String get areaHighlight => 'Area highlight';
+
+  @override
+  String get fill => 'Fill';
+
+  @override
+  String get noFill => 'No fill';
+
+  @override
+  String get lightFill => 'Light fill';
+
+  @override
+  String get solidFill => 'Solid fill';
+
+  @override
+  String get whiteFill => 'White fill (cover)';
+
+  @override
+  String get dashed => 'Dashed';
+
+  @override
+  String get keepProportions => 'Keep proportions (square / circle)';
+
+  @override
+  String get showFor => 'Show on video for';
+
+  @override
+  String get drawings => 'Drawings';
+
+  @override
+  String get clearDrawings => 'Clear drawings';
+
+  @override
+  String get clearDrawingsConfirm => 'Remove every drawing on this page?';
+
+  @override
+  String get duplicate => 'Duplicate';
+
+  @override
+  String get bringToFront => 'Bring to front';
+
+  @override
+  String get sendToBack => 'Send to back';
+
+  @override
+  String get drawOnVideo => 'Draw on video';
+
+  @override
+  String get shapes => 'Shapes';
 }

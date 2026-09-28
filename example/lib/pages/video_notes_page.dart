@@ -99,6 +99,7 @@ class _VideoNotesPageState extends State<VideoNotesPage> {
                 FilterChip(label: const Text("Watermark"), selected: _watermark, onSelected: (bool value) => setState(() => _watermark = value)),
                 FilterChip(label: const Text("Secure"), selected: _secure, onSelected: (bool value) => setState(() => _secure = value)),
                 FilterChip(label: const Text("Auto PiP"), selected: _autoPip, onSelected: (bool value) => setState(() => _autoPip = value)),
+                const UTextLabelSmall("✎ in the player pauses and draws on the frame; drawings show for the chosen time and are saved with the notes."),
                 if (_payload.isNotEmpty) UTextLabelSmall("sync payload: ${_payload.length} chars"),
               ],
             ),

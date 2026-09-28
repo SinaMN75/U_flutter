@@ -1047,6 +1047,7 @@
   "minDurationMs": "Min Duration (ms)",
   "minPrice": "Min Price",
   "minimumStayMonths": "Minimum stay (months)",
+  "minimumPurchase": "Minimum purchase",
   "minute": "Minute",
   "minuteUnit": "min",
   "minutes": "minutes",
@@ -1996,5 +1997,28 @@
     "placeholders": {
       "minutes": {}
     }
-  }
+  },
+  "read": "Read",
+  "pen": "Pen",
+  "highlighterPen": "Highlighter pen",
+  "line": "Line",
+  "doubleArrow": "Double arrow",
+  "roundedRectangle": "Rounded rectangle",
+  "areaHighlight": "Area highlight",
+  "fill": "Fill",
+  "noFill": "No fill",
+  "lightFill": "Light fill",
+  "solidFill": "Solid fill",
+  "whiteFill": "White fill (cover)",
+  "dashed": "Dashed",
+  "keepProportions": "Keep proportions (square / circle)",
+  "showFor": "Show on video for",
+  "drawings": "Drawings",
+  "clearDrawings": "Clear drawings",
+  "clearDrawingsConfirm": "Remove every drawing on this page?",
+  "duplicate": "Duplicate",
+  "bringToFront": "Bring to front",
+  "sendToBack": "Send to back",
+  "drawOnVideo": "Draw on video",
+  "shapes": "Shapes"
 }

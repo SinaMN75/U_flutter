@@ -257,10 +257,11 @@ class UDocBookmark {
 }
 
 class _UDocSnapshot {
-  const _UDocSnapshot(this.markups, this.bookmarks);
+  const _UDocSnapshot(this.markups, this.bookmarks, this.shapes);
 
   final List<UDocMarkup> markups;
   final List<UDocBookmark> bookmarks;
+  final List<UDocShape> shapes;
 }
 
 /// Owns every markup and bookmark of one document.
@@ -281,9 +282,14 @@ class UDocAnnotationController extends ChangeNotifier {
 
   final List<UDocMarkup> _markups = <UDocMarkup>[];
   final List<UDocBookmark> _bookmarks = <UDocBookmark>[];
+  final List<UDocShape> _shapes = <UDocShape>[];
   final List<_UDocSnapshot> _undo = <_UDocSnapshot>[];
   final List<_UDocSnapshot> _redo = <_UDocSnapshot>[];
   Map<int, List<UDocMarkup>>? _byPage;
+  Map<int, List<UDocShape>>? _shapesByPage;
+  String? _lastShapeEdit;
+  DateTime _lastShapeEditAt = DateTime.fromMillisecondsSinceEpoch(0);
+  Timer? _saveTimer;
 
   String? _storageKey;
   Color _color;
@@ -294,6 +300,9 @@ class UDocAnnotationController extends ChangeNotifier {
   List<UDocMarkup> get markups => List<UDocMarkup>.unmodifiable(_markups);
 
   List<UDocBookmark> get bookmarks => List<UDocBookmark>.unmodifiable(_bookmarks);
+
+  /// Free drawings, shapes, text boxes and sticky notes (see [UDocShapeLayer]).
+  List<UDocShape> get shapes => List<UDocShape>.unmodifiable(_shapes);
 
   String? get storageKey => _storageKey;
 
@@ -307,7 +316,7 @@ class UDocAnnotationController extends ChangeNotifier {
 
   bool get canRedo => _redo.isNotEmpty;
 
-  bool get isEmpty => _markups.isEmpty && _bookmarks.isEmpty;
+  bool get isEmpty => _markups.isEmpty && _bookmarks.isEmpty && _shapes.isEmpty;
 
   int get noteCount => _markups.where((UDocMarkup markup) => markup.hasNote).length;
 
@@ -340,6 +349,30 @@ class UDocAnnotationController extends ChangeNotifier {
       (index[markup.pageIndex] ??= <UDocMarkup>[]).add(markup);
     }
     return index;
+  }
+
+  /// Shapes of one PDF page / EPUB chapter, in paint order.
+  List<UDocShape> shapesOn(int pageIndex) {
+    final Map<int, List<UDocShape>> index = _shapesByPage ??= _buildShapeIndex();
+    return index[pageIndex] ?? const <UDocShape>[];
+  }
+
+  /// Shapes of one EPUB paragraph.
+  List<UDocShape> shapesOnBlock(int pageIndex, int blockIndex) => shapesOn(pageIndex).where((UDocShape shape) => shape.blockIndex == blockIndex).toList();
+
+  Map<int, List<UDocShape>> _buildShapeIndex() {
+    final Map<int, List<UDocShape>> index = <int, List<UDocShape>>{};
+    for (final UDocShape shape in _shapes) {
+      (index[shape.pageIndex] ??= <UDocShape>[]).add(shape);
+    }
+    return index;
+  }
+
+  UDocShape? shapeById(String id) {
+    for (final UDocShape shape in _shapes) {
+      if (shape.id == id) return shape;
+    }
+    return null;
   }
 
   UDocMarkup? byId(String id) {
@@ -393,18 +426,99 @@ class UDocAnnotationController extends ChangeNotifier {
     return null;
   }
 
+  _UDocSnapshot _snapshot() => _UDocSnapshot(List<UDocMarkup>.from(_markups), List<UDocBookmark>.from(_bookmarks), List<UDocShape>.from(_shapes));
+
   void _checkpoint() {
-    _undo.add(_UDocSnapshot(List<UDocMarkup>.from(_markups), List<UDocBookmark>.from(_bookmarks)));
+    _lastShapeEdit = null;
+    _undo.add(_snapshot());
     if (_undo.length > maxUndo) _undo.removeAt(0);
     _redo.clear();
   }
 
-  void _commit() {
+  void _commit({bool debounce = false}) {
     _byPage = null;
+    _shapesByPage = null;
     _updatedAt = DateTime.now();
     notifyListeners();
+    _saveTimer?.cancel();
+    if (debounce) {
+      _saveTimer = Timer(const Duration(milliseconds: 350), _flush);
+    } else {
+      _flush();
+    }
+  }
+
+  void _flush() {
+    _saveTimer?.cancel();
+    _saveTimer = null;
     unawaited(save());
     onChanged?.call(this);
+  }
+
+  // ───────── shapes ─────────
+
+  UDocShape addShape(UDocShape shape) {
+    _checkpoint();
+    _shapes.add(shape);
+    _commit();
+    return shape;
+  }
+
+  /// Replaces a shape. Rapid edits of the same shape (dragging, resizing)
+  /// share one undo step and one save.
+  void updateShape(UDocShape shape) {
+    final int index = _shapes.indexWhere((UDocShape existing) => existing.id == shape.id);
+    if (index < 0) return;
+    final DateTime now = DateTime.now();
+    final bool continuing = _lastShapeEdit == shape.id && now.difference(_lastShapeEditAt) < const Duration(milliseconds: 900);
+    if (!continuing) _checkpoint();
+    _lastShapeEdit = shape.id;
+    _lastShapeEditAt = now;
+    _shapes[index] = shape;
+    _commit(debounce: true);
+  }
+
+  void removeShape(String id) {
+    final int index = _shapes.indexWhere((UDocShape shape) => shape.id == id);
+    if (index < 0) return;
+    _checkpoint();
+    _shapes.removeAt(index);
+    _commit();
+  }
+
+  /// Removes every shape, or only those of [pageIndex].
+  void clearShapes({int? pageIndex}) {
+    if (!_shapes.any((UDocShape shape) => pageIndex == null || shape.pageIndex == pageIndex)) return;
+    _checkpoint();
+    _shapes.removeWhere((UDocShape shape) => pageIndex == null || shape.pageIndex == pageIndex);
+    _commit();
+  }
+
+  void bringShapeToFront(String id) => _reorderShape(id, toFront: true);
+
+  void sendShapeToBack(String id) => _reorderShape(id, toFront: false);
+
+  void _reorderShape(String id, {required bool toFront}) {
+    final int index = _shapes.indexWhere((UDocShape shape) => shape.id == id);
+    if (index < 0) return;
+    _checkpoint();
+    final UDocShape shape = _shapes.removeAt(index);
+    toFront ? _shapes.add(shape) : _shapes.insert(0, shape);
+    _commit();
+  }
+
+  /// Copies a shape slightly offset and returns the copy.
+  UDocShape? duplicateShape(String id) {
+    final UDocShape? shape = shapeById(id);
+    if (shape == null) return null;
+    final UDocShape copy = shape.translated(const Offset(0.02, 0.02)).placed(copy: true);
+    return addShape(copy);
+  }
+
+  @override
+  void dispose() {
+    if (_saveTimer != null) _flush();
+    super.dispose();
   }
 
   UDocMarkup add(UDocMarkup markup) {
@@ -515,18 +629,21 @@ class UDocAnnotationController extends ChangeNotifier {
     _checkpoint();
     _markups.clear();
     _bookmarks.clear();
+    _shapes.clear();
     _commit();
   }
 
   void undo() {
     if (_undo.isEmpty) return;
-    _redo.add(_UDocSnapshot(List<UDocMarkup>.from(_markups), List<UDocBookmark>.from(_bookmarks)));
+    _lastShapeEdit = null;
+    _redo.add(_snapshot());
     _restore(_undo.removeLast());
   }
 
   void redo() {
     if (_redo.isEmpty) return;
-    _undo.add(_UDocSnapshot(List<UDocMarkup>.from(_markups), List<UDocBookmark>.from(_bookmarks)));
+    _lastShapeEdit = null;
+    _undo.add(_snapshot());
     _restore(_redo.removeLast());
   }
 
@@ -537,6 +654,9 @@ class UDocAnnotationController extends ChangeNotifier {
     _bookmarks
       ..clear()
       ..addAll(snapshot.bookmarks);
+    _shapes
+      ..clear()
+      ..addAll(snapshot.shapes);
     _commit();
   }
 
@@ -546,6 +666,7 @@ class UDocAnnotationController extends ChangeNotifier {
     if (author.isNotEmpty) "author": author,
     "markups": _markups.map((UDocMarkup markup) => markup.toJson()).toList(),
     "bookmarks": _bookmarks.map((UDocBookmark bookmark) => bookmark.toJson()).toList(),
+    if (_shapes.isNotEmpty) "shapes": _shapes.map((UDocShape shape) => shape.toJson()).toList(),
   };
 
   /// Base64 of the JSON payload — a compact, transport-safe string for servers.
@@ -562,7 +683,11 @@ class UDocAnnotationController extends ChangeNotifier {
     if (json == null) return false;
     final List<UDocMarkup> markups = <UDocMarkup>[];
     final List<UDocBookmark> bookmarks = <UDocBookmark>[];
-    if (json.containsKey("markups") || json.containsKey("bookmarks")) {
+    final List<UDocShape> shapes = <UDocShape>[];
+    if (json.containsKey("markups") || json.containsKey("bookmarks") || json.containsKey("shapes")) {
+      for (final Object? entry in (json["shapes"] as List<Object?>?) ?? const <Object?>[]) {
+        if (entry is Map<String, Object?>) shapes.add(UDocShape.fromJson(entry));
+      }
       for (final Object? entry in (json["markups"] as List<Object?>?) ?? const <Object?>[]) {
         if (entry is Map<String, Object?>) markups.add(UDocMarkup.fromJson(entry));
       }
@@ -580,7 +705,11 @@ class UDocAnnotationController extends ChangeNotifier {
     if (!merge) {
       _markups.clear();
       _bookmarks.clear();
+      _shapes.clear();
     }
+    final Set<String> drawn = _shapes.map((UDocShape shape) => shape.id).toSet();
+    _shapes.addAll(shapes.where((UDocShape shape) => !drawn.contains(shape.id)));
+    _shapesByPage = null;
     final Set<String> known = _markups.map((UDocMarkup markup) => markup.id).toSet();
     _markups.addAll(markups.where((UDocMarkup markup) => !known.contains(markup.id)));
     final Set<String> marked = _bookmarks.map((UDocBookmark bookmark) => "${bookmark.id}|${bookmark.pageIndex}:${bookmark.blockIndex}").toSet();
@@ -697,6 +826,13 @@ class UDocAnnotationController extends ChangeNotifier {
         buffer.writeln("- **${label(first.pageIndex)}** · ${UDocPalette.labelOf(first.kind)}");
         if (quote.isNotEmpty) buffer.writeln("  > $quote");
         if (first.hasNote) buffer.writeln("  ${first.note}");
+      }
+    }
+    final List<UDocShape> written = _shapes.where((UDocShape shape) => shape.hasText).toList()..sort((UDocShape a, UDocShape b) => a.pageIndex != b.pageIndex ? a.pageIndex.compareTo(b.pageIndex) : a.bounds.top.compareTo(b.bounds.top));
+    if (written.isNotEmpty) {
+      buffer.writeln("\n## ${U.s.drawings}\n");
+      for (final UDocShape shape in written) {
+        buffer.writeln("- **${label(shape.pageIndex)}** · ${shape.text.trim()}");
       }
     }
     return buffer.toString().trimRight();

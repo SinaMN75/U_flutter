@@ -37,9 +37,24 @@ class _DocumentReaderPageState extends State<DocumentReaderPage> {
 
   void _onSync(String data) => setState(() => _lastSync = data);
 
-  Future<void> _openPdf({String? asset, String? url, String? path, Uint8List? bytes, String? title, String? annotationData, String? storageKey}) => UNavigator.push<void>(
+  Future<void> _openPdf({
+    String? asset,
+    String? url,
+    String? path,
+    Uint8List? bytes,
+    String? title,
+    String? annotationData,
+    String? storageKey,
+    bool persist = true,
+    bool draw = false,
+    bool editorTools = false,
+    void Function(String data)? onChanged,
+  }) => UNavigator.push<void>(
     UScaffold(
       body: UPdfViewer(
+        persistAnnotations: persist,
+        drawController: draw ? UDocDrawController(tool: UDocDrawTool.pen) : null,
+        enableAnnotations: editorTools,
         asset: asset,
         url: url,
         filePath: path,
@@ -58,12 +73,28 @@ class _DocumentReaderPageState extends State<DocumentReaderPage> {
         colorMode: _night ? UDocColorMode.night : UDocColorMode.normal,
         annotationData: annotationData,
         annotationStorageKey: storageKey,
-        onAnnotationsChanged: _onSync,
+        onAnnotationsChanged: (String data) {
+          print(data);
+          _onSync(data);
+          onChanged?.call(data);
+        },
       ),
     ),
   );
 
-  Future<void> _openEpub({String? asset, String? path, Uint8List? bytes}) async {
+  static const String _savedKey = "demo_pdf_saved_string";
+
+  /// The whole annotation state (highlights, notes, bookmarks, drawings, text
+  /// boxes) is one string: store it anywhere and hand it back to restore.
+  Future<void> _openWithSavedString() => _openPdf(
+    asset: _pdfAsset,
+    title: "Saved in SharedPreferences",
+    persist: false,
+    annotationData: ULocalStorage.getString(_savedKey),
+    onChanged: (String data) => ULocalStorage.set(_savedKey, data),
+  );
+
+  Future<void> _openEpub({String? asset, String? path, Uint8List? bytes, bool draw = false}) async {
     final UEpubController controller = UEpubController();
     await UNavigator.push<void>(
       UScaffold(
@@ -83,6 +114,7 @@ class _DocumentReaderPageState extends State<DocumentReaderPage> {
             secure: _secure,
             watermark: _mark,
             noteDisplay: _noteDisplay,
+            drawController: draw ? UDocDrawController(tool: UDocDrawTool.pen) : null,
             onAnnotationsChanged: _onSync,
           ),
         ),
@@ -109,6 +141,8 @@ class _DocumentReaderPageState extends State<DocumentReaderPage> {
     intro:
         "Pure-Dart PDF and EPUB readers with highlights, underline, strike-through, squiggly, border and notes, "
         "page/position bookmarks, search, outline, thumbnails, reading themes, secure mode and watermarks. "
+        "The ✎ button opens drawing: pen, highlighter, area highlight, lines, arrows, rectangles, rounded rectangles, circles/ovals "
+        "(with or without a fill), text boxes you type on the page and sticky notes — all selectable, movable, resizable and saved in the same string. "
         "Persian/Arabic PDFs keep correct reading order and fall back to whole-line boxes when a font's metrics are unreliable.",
     sections: <Widget>[
       _optionsSection(),
@@ -177,7 +211,9 @@ class _DocumentReaderPageState extends State<DocumentReaderPage> {
     title: "UPdfViewer",
     description:
         "Select text (long-press, or drag with a mouse; double/triple click selects a word/line) and pick a colour and a style. "
-        "Tap a markup to recolour, restyle, annotate or delete it. The side panel lists thumbnails, outline, notes, bookmarks and search results.",
+        "Tap a markup to recolour, restyle, annotate or delete it. The side panel lists thumbnails, outline, notes, bookmarks and search results. "
+        "✎ opens the drawing bar: pick a tool, colour, fill (none / light / solid / white cover), thickness, opacity, dashes and font size. "
+        "Select (arrow tool) to move a shape, drag its blue corner to resize, tap a selected text box to edit it. Shift or 'Keep proportions' draws squares, circles and 45° lines.",
     code: r'''
 UPdfViewer(
   asset: "assets/docs/sample_fa_en.pdf",
@@ -186,12 +222,16 @@ UPdfViewer(
   watermark: UDocWatermark(lines: <String>[user.name, user.mobile]),
   annotationData: fromServer,     // newest of server vs. local wins
   onAnnotationsChanged: (String data) => api.save(data),
+  // Starts with the pen selected; drawings are part of the same string.
+  drawController: UDocDrawController(tool: UDocDrawTool.pen),
 )''',
     child: Wrap(
       spacing: 8,
       runSpacing: 8,
       children: <Widget>[
         FilledButton.icon(onPressed: () => unawaited(_openPdf(asset: _pdfAsset, title: "نمونه‌ی فارسی / English")), icon: const Icon(Icons.picture_as_pdf_rounded), label: const Text("Persian + English sample")),
+        FilledButton.tonalIcon(onPressed: () => unawaited(_openPdf(asset: _pdfAsset, title: "Draw & type", draw: true)), icon: const Icon(Icons.draw_rounded), label: const Text("Draw & type on pages")),
+        FilledButton.tonalIcon(onPressed: () => unawaited(_openWithSavedString()), icon: const Icon(Icons.save_rounded), label: const Text("Save in SharedPreferences & restore")),
         OutlinedButton.icon(onPressed: () => unawaited(_openPdf(url: _pdfUrl, title: "dummy.pdf")), icon: const Icon(Icons.public_rounded), label: const Text("From URL")),
         OutlinedButton.icon(onPressed: () => unawaited(_pick("pdf")), icon: const Icon(Icons.folder_open_rounded), label: const Text("Open a PDF…")),
         OutlinedButton.icon(
@@ -200,6 +240,11 @@ UPdfViewer(
           label: const Text("SinApp legacy annotations"),
         ),
         OutlinedButton.icon(onPressed: () => unawaited(UNavigator.push<void>(const UPdfEditorPage(asset: _pdfAsset))), icon: const Icon(Icons.edit_document), label: const Text("PDF editor (writes into file)")),
+        OutlinedButton.icon(
+          onPressed: () => unawaited(_openPdf(asset: _pdfAsset, title: "Viewer + file editor tools", editorTools: true)),
+          icon: const Icon(Icons.handyman_outlined),
+          label: const Text("Viewer with file-editing tools"),
+        ),
       ],
     ),
   );
@@ -220,6 +265,7 @@ UEpubReader(
       runSpacing: 8,
       children: <Widget>[
         FilledButton.icon(onPressed: () => unawaited(_openEpub(asset: _epubAsset)), icon: const Icon(Icons.menu_book_rounded), label: const Text("Persian EPUB sample")),
+        FilledButton.tonalIcon(onPressed: () => unawaited(_openEpub(asset: _epubAsset, draw: true)), icon: const Icon(Icons.draw_rounded), label: const Text("Draw on the EPUB")),
         OutlinedButton.icon(onPressed: () => unawaited(_pick("epub")), icon: const Icon(Icons.folder_open_rounded), label: const Text("Open an EPUB…")),
       ],
     ),

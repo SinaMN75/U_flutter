@@ -1,5 +1,27 @@
 ## 3.1.0
 
+* **Drawing on PDFs, EPUBs and videos.** New `UDocShapeLayer` / `UDocDrawToolbar` /
+  `UDocDrawController`: pen, highlighter pen, area highlight (manual highlighting anywhere), line,
+  arrow, double arrow, rectangle, rounded rectangle, ellipse/circle — each with no fill, light fill,
+  solid fill or white "cover" fill — text boxes typed directly on the page, and sticky notes. Colour,
+  thickness, opacity, dashes, bold and font size; Shift / "Keep proportions" for squares, circles and
+  45° lines. Select to move, drag the corner to resize, recolour, fill or delete; eraser; undo/redo
+  (a drag is one undo step); Delete, Esc and Ctrl/Cmd+D shortcuts.
+* Drawings are saved in the **same annotation string** as highlights and bookmarks
+  (`UDocAnnotationController.export()` → `"shapes"`, `UMediaNotesController.export()` → `"shapes"`),
+  so storing that one string (e.g. in SharedPreferences via `ULocalStorage`) and passing it back
+  restores everything. Geometry is normalised, so drawings stay in place at any zoom or window size.
+* `UPdfViewer`: ✎ button in the toolbar (`enableDrawing`, `drawController`; pass a controller with
+  an active tool to open in drawing mode). While drawing, one-finger drags draw and the wheel,
+  trackpad and scroll thumb still scroll. The file-writing editor tools (`enableAnnotations: true`,
+  `UPdfEditorPage`) are unchanged.
+* `UEpubReader`: the same tools per paragraph (anchored to the paragraph, width-normalised, and kept
+  in place when a paragraph is split across pages); drawing never starts a text selection.
+* `UVideo` / `UVideoWithNotes`: ✎ in the player pauses and draws on the frame (letterboxing
+  excluded). Each drawing shows for a chosen time (2 s, 5 s, 10 s, 30 s or until the end) and
+  appears on the seek bar.
+* Viewer hotkeys (space, arrows…) no longer fire while typing in a text box.
+
 * **Document annotations (PDF & EPUB).** New shared `UDocAnnotationController` with highlight,
   underline, strike-through, squiggly, border and note markups, page/position bookmarks, undo/redo,
   local persistence, `export()`/`import()` (base64 JSON for server sync, newest-wins merge) and import

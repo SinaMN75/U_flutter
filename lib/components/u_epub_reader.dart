@@ -169,6 +169,8 @@ class UEpubReader extends StatefulWidget {
     this.allowCopy = true,
     this.allowShare = true,
     this.enableMarkup = true,
+    this.enableDrawing = true,
+    this.drawController,
     this.markupKinds = UDocMarkupKind.values,
     this.annotationData,
     this.annotationStorageKey,
@@ -200,6 +202,11 @@ class UEpubReader extends StatefulWidget {
   final bool allowCopy;
   final bool allowShare;
   final bool enableMarkup;
+
+  /// Pen, highlighter, shapes, text boxes and notes drawn over paragraphs;
+  /// saved in the annotation string.
+  final bool enableDrawing;
+  final UDocDrawController? drawController;
   final List<UDocMarkupKind> markupKinds;
   final String? annotationData;
   final String? annotationStorageKey;
@@ -230,6 +237,9 @@ class UEpubReaderState extends State<UEpubReader> {
   bool _ownsController = false;
   late UDocAnnotationController _markup;
   bool _ownsMarkup = false;
+  late final UDocDrawController _draw = widget.drawController ?? UDocDrawController();
+  late final bool _ownsDraw = widget.drawController == null;
+  bool _drawOpen = false;
 
   final ScrollController _scroll = ScrollController();
   final TextEditingController _searchField = TextEditingController();
@@ -293,6 +303,8 @@ class UEpubReaderState extends State<UEpubReader> {
     _markup = markup ?? UDocAnnotationController(onChanged: (UDocAnnotationController controller) => widget.onAnnotationsChanged?.call(controller.export()));
     _ownsMarkup = markup == null;
     _markup.addListener(_onChanged);
+    _draw.addListener(_onChanged);
+    _drawOpen = _draw.isActive && _drawingEnabled;
     _scroll.addListener(_onScroll);
     unawaited(_start());
     _progressTimer = Timer.periodic(const Duration(seconds: 12), (Timer timer) => _saveProgress());
@@ -958,9 +970,22 @@ class UEpubReaderState extends State<UEpubReader> {
 
   KeyEventResult _onKey(FocusNode node, KeyEvent event) {
     if (event is! KeyDownEvent && event is! KeyRepeatEvent) return KeyEventResult.ignored;
+    if (UDocDrawController.isTyping) return KeyEventResult.ignored;
     final bool command = HardwareKeyboard.instance.isControlPressed || HardwareKeyboard.instance.isMetaPressed;
     final bool shift = HardwareKeyboard.instance.isShiftPressed;
     final LogicalKeyboardKey key = event.logicalKey;
+    if (_drawOpen) {
+      final String? selected = _draw.selectedId;
+      if (key == LogicalKeyboardKey.escape) {
+        selected != null ? _draw.selectedId = null : toggleDrawing(false);
+        return KeyEventResult.handled;
+      }
+      if (selected != null && (key == LogicalKeyboardKey.delete || key == LogicalKeyboardKey.backspace)) {
+        _draw.selectedId = null;
+        _markup.removeShape(selected);
+        return KeyEventResult.handled;
+      }
+    }
     final bool rtl = _controller.settings.isRtl;
     if (command && key == LogicalKeyboardKey.keyF) {
       _openSidebar(_UEpubSidebarTab.search);
@@ -1013,7 +1038,27 @@ class UEpubReaderState extends State<UEpubReader> {
     return KeyEventResult.ignored;
   }
 
+  UDocDrawController get drawing => _draw;
+
+  bool get _drawingEnabled => widget.enableDrawing && widget.enableMarkup;
+
+  bool get _drawActive => _drawingEnabled && _drawOpen && _draw.isActive;
+
+  /// Opens or closes the drawing toolbar.
+  void toggleDrawing([bool? open]) {
+    final bool next = open ?? !_drawOpen;
+    if (next && !_draw.isActive) _draw.tool = UDocDrawTool.pen;
+    if (!next) _draw.tool = UDocDrawTool.none;
+    _clearSelection();
+    setState(() {
+      _drawOpen = next;
+      _activeMarkup = null;
+      _chromeVisible = true;
+    });
+  }
+
   void _onTap(Offset position, Size size) {
+    if (_drawActive) return;
     if (_markupTapped || _linkTapped) {
       _markupTapped = false;
       _linkTapped = false;
@@ -1045,6 +1090,8 @@ class UEpubReaderState extends State<UEpubReader> {
     _controller.removeListener(_onChanged);
     _markup.removeListener(_onChanged);
     if (_ownsMarkup) _markup.dispose();
+    _draw.removeListener(_onChanged);
+    if (_ownsDraw) _draw.dispose();
     _scroll.dispose();
     _pageController?.dispose();
     _searchField.dispose();
@@ -1168,7 +1215,12 @@ class UEpubReaderState extends State<UEpubReader> {
       key: _viewportKey,
       builder: (BuildContext context, BoxConstraints constraints) {
         if (_controller.book?.fixedLayout ?? false) return _buildFixedLayout(chapter);
-        return _paged ? _buildPaged(chapter, constraints) : _buildContinuous(chapter);
+        final Widget view = _paged ? _buildPaged(chapter, constraints) : _buildContinuous(chapter);
+        // A drawing tool owns single-finger drags; wheel and trackpad still scroll.
+        return ScrollConfiguration(
+          behavior: _drawActive ? ScrollConfiguration.of(context).copyWith(dragDevices: const <PointerDeviceKind>{PointerDeviceKind.trackpad}) : ScrollConfiguration.of(context),
+          child: view,
+        );
       },
     );
     final Widget selectable = SelectionArea(
@@ -1343,6 +1395,12 @@ class UEpubReaderState extends State<UEpubReader> {
       onImageTap: (String href) => unawaited(_showImage(href)),
       onRegister: _register,
       onUnregister: _unregister,
+      shapes: _drawingEnabled ? _markup.shapesOnBlock(chapter.spineIndex, slice.blockIndex) : const <UDocShape>[],
+      drawTools: _drawingEnabled ? _draw : null,
+      drawing: _drawOpen,
+      onShapeAdd: (UDocShape shape) => _markup.addShape(shape.placed(pageIndex: chapter.spineIndex, blockIndex: slice.blockIndex)),
+      onShapeUpdate: _markup.updateShape,
+      onShapeRemove: _markup.removeShape,
     );
   }
 
@@ -1418,48 +1476,70 @@ class UEpubReaderState extends State<UEpubReader> {
       elevation: 2,
       child: SafeArea(
         bottom: false,
-        child: SizedBox(
-          height: 56,
-          child: Row(
-            children: <Widget>[
-              if (widget.showBackButton) IconButton(icon: const BackButtonIcon(), tooltip: U.s.back, onPressed: widget.onBack ?? () => Navigator.of(context).maybePop()),
-              if (widget.showSidebar && value.isReady) IconButton(icon: const Icon(Icons.view_sidebar_outlined), tooltip: U.s.contents, onPressed: _toggleSidebar),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    UTextTitleSmall(_title, maxLines: 1, overflow: TextOverflow.ellipsis),
-                    if ((_chapter?.title ?? "").isNotEmpty && _chapter!.title != _title) UTextBodySmall(_chapter!.title, maxLines: 1, overflow: TextOverflow.ellipsis),
-                  ],
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            SizedBox(
+              height: 56,
+              child: Row(
+                children: <Widget>[
+                  if (widget.showBackButton) IconButton(icon: const BackButtonIcon(), tooltip: U.s.back, onPressed: widget.onBack ?? () => Navigator.of(context).maybePop()),
+                  if (widget.showSidebar && value.isReady) IconButton(icon: const Icon(Icons.view_sidebar_outlined), tooltip: U.s.contents, onPressed: _toggleSidebar),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        UTextTitleSmall(_title, maxLines: 1, overflow: TextOverflow.ellipsis),
+                        if ((_chapter?.title ?? "").isNotEmpty && _chapter!.title != _title) UTextBodySmall(_chapter!.title, maxLines: 1, overflow: TextOverflow.ellipsis),
+                      ],
+                    ),
+                  ),
+                  ...widget.actions,
+                  if (value.isReady) IconButton(icon: const Icon(Icons.search_rounded), tooltip: U.s.search, onPressed: () => _openSidebar(_UEpubSidebarTab.search)),
+                  if (value.isReady && widget.enableMarkup)
+                    IconButton(
+                      icon: Icon(bookmarked ? Icons.bookmark_rounded : Icons.bookmark_add_outlined, color: bookmarked ? _currentBookmarks.first.color : null),
+                      tooltip: bookmarked ? U.s.removeBookmark : U.s.bookmarkPosition,
+                      onPressed: _toggleBookmark,
+                    ),
+                  if (value.isReady && widget.enableMarkup && !compact) IconButton(icon: const Icon(Icons.undo_rounded), tooltip: U.s.undo, onPressed: _markup.canUndo ? _markup.undo : null),
+                  if (value.isReady && _drawingEnabled)
+                    IconButton(
+                      icon: Icon(_drawOpen ? Icons.draw_rounded : Icons.draw_outlined, color: _drawOpen ? Theme.of(context).colorScheme.primary : null),
+                      tooltip: U.s.draw,
+                      isSelected: _drawOpen,
+                      onPressed: toggleDrawing,
+                    ),
+                  if (value.isReady) IconButton(icon: const Icon(Icons.text_fields_rounded), tooltip: U.s.readingMode, onPressed: () => unawaited(_openSettings())),
+                  if (value.isReady && widget.enableMarkup)
+                    PopupMenuButton<String>(
+                      icon: const Icon(Icons.more_vert_rounded),
+                      tooltip: U.s.more,
+                      onSelected: (String action) => unawaited(_onMenu(action)),
+                      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                        _menuItem("annotations", Icons.sticky_note_2_outlined, U.s.annotations),
+                        _menuItem("bookmarks", Icons.bookmarks_outlined, U.s.bookmarks),
+                        _menuItem("exportNotes", Icons.ios_share_rounded, U.s.exportAnnotations),
+                        _menuItem("exportData", Icons.data_object_rounded, U.s.export),
+                        _menuItem("importData", Icons.download_rounded, U.s.importAnnotations),
+                        _menuItem("clearAll", Icons.delete_sweep_outlined, U.s.clearAnnotations),
+                      ],
+                    ),
+                ],
+              ),
+            ),
+            if (_drawOpen)
+              SizedBox(
+                height: 52,
+                child: UDocDrawToolbar(
+                  tools: _draw,
+                  onUndo: _markup.canUndo ? _markup.undo : null,
+                  onRedo: _markup.canRedo ? _markup.redo : null,
+                  onDone: () => toggleDrawing(false),
                 ),
               ),
-              ...widget.actions,
-              if (value.isReady) IconButton(icon: const Icon(Icons.search_rounded), tooltip: U.s.search, onPressed: () => _openSidebar(_UEpubSidebarTab.search)),
-              if (value.isReady && widget.enableMarkup)
-                IconButton(
-                  icon: Icon(bookmarked ? Icons.bookmark_rounded : Icons.bookmark_add_outlined, color: bookmarked ? _currentBookmarks.first.color : null),
-                  tooltip: bookmarked ? U.s.removeBookmark : U.s.bookmarkPosition,
-                  onPressed: _toggleBookmark,
-                ),
-              if (value.isReady && widget.enableMarkup && !compact) IconButton(icon: const Icon(Icons.undo_rounded), tooltip: U.s.undo, onPressed: _markup.canUndo ? _markup.undo : null),
-              if (value.isReady) IconButton(icon: const Icon(Icons.text_fields_rounded), tooltip: U.s.readingMode, onPressed: () => unawaited(_openSettings())),
-              if (value.isReady && widget.enableMarkup)
-                PopupMenuButton<String>(
-                  icon: const Icon(Icons.more_vert_rounded),
-                  tooltip: U.s.more,
-                  onSelected: (String action) => unawaited(_onMenu(action)),
-                  itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                    _menuItem("annotations", Icons.sticky_note_2_outlined, U.s.annotations),
-                    _menuItem("bookmarks", Icons.bookmarks_outlined, U.s.bookmarks),
-                    _menuItem("exportNotes", Icons.ios_share_rounded, U.s.exportAnnotations),
-                    _menuItem("exportData", Icons.data_object_rounded, U.s.export),
-                    _menuItem("importData", Icons.download_rounded, U.s.importAnnotations),
-                    _menuItem("clearAll", Icons.delete_sweep_outlined, U.s.clearAnnotations),
-                  ],
-                ),
-            ],
-          ),
+          ],
         ),
       ),
     );
@@ -1713,6 +1793,12 @@ class UEpubBlockView extends StatefulWidget {
     this.onImageTap,
     this.onRegister,
     this.onUnregister,
+    this.shapes = const <UDocShape>[],
+    this.drawTools,
+    this.drawing = false,
+    this.onShapeAdd,
+    this.onShapeUpdate,
+    this.onShapeRemove,
     super.key,
   });
 
@@ -1733,6 +1819,16 @@ class UEpubBlockView extends StatefulWidget {
   final void Function(String href)? onImageTap;
   final void Function(String key, UEpubSlice slice, SelectionListenerNotifier notifier)? onRegister;
   final void Function(String key, SelectionListenerNotifier notifier)? onUnregister;
+
+  /// Drawings anchored to this paragraph (x and y normalised by its width).
+  final List<UDocShape> shapes;
+
+  /// Enables the drawing layer; keep it constant for the widget's lifetime.
+  final UDocDrawController? drawTools;
+  final bool drawing;
+  final void Function(UDocShape shape)? onShapeAdd;
+  final void Function(UDocShape shape)? onShapeUpdate;
+  final void Function(String id)? onShapeRemove;
 
   @override
   State<UEpubBlockView> createState() => _UEpubBlockViewState();
@@ -1787,6 +1883,48 @@ class _UEpubBlockViewState extends State<UEpubBlockView> {
 
   @override
   Widget build(BuildContext context) {
+    final UDocDrawController? tools = widget.drawTools;
+    final Widget content = _buildContent(context);
+    if (tools == null) return content;
+    // Always the same Stack so the SelectionListener below never re-registers.
+    return Stack(
+      clipBehavior: Clip.none,
+      children: <Widget>[
+        content,
+        Positioned.fill(
+          child: LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) => UDocShapeLayer(
+              shapes: widget.shapes,
+              tools: tools,
+              enabled: widget.drawing,
+              space: UDocShapeSpace.width,
+              origin: Offset(0, _sliceTop(context, constraints.maxWidth)),
+              onAdd: (UDocShape shape) => widget.onShapeAdd?.call(shape),
+              onUpdate: (UDocShape shape) => widget.onShapeUpdate?.call(shape),
+              onRemove: (String id) => widget.onShapeRemove?.call(id),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// Top of this slice inside the whole paragraph, so drawings stay put when a
+  /// paragraph is split across pages.
+  double _sliceTop(BuildContext context, double width) {
+    if (widget.sliceStart <= 0 || (widget.shapes.isEmpty && !widget.drawing)) return 0;
+    final UEpubBlock block = widget.block;
+    double textWidth = width - max(0, block.indent);
+    if (block.kind == UEpubBlockKind.listItem) textWidth -= 32;
+    if (block.kind == UEpubBlockKind.blockquote) textWidth -= 27;
+    if (block.kind == UEpubBlockKind.preformatted) textWidth -= 20;
+    final TextPainter painter = UEpubTextStyler.painter(context, block, widget.typography, widget.colorMode, max(20, textWidth));
+    final double top = painter.getOffsetForCaret(TextPosition(offset: widget.sliceStart), Rect.zero).dy;
+    painter.dispose();
+    return block.marginTop + top;
+  }
+
+  Widget _buildContent(BuildContext context) {
     final UEpubBlock block = widget.block;
     if (block.kind == UEpubBlockKind.rule) {
       return Padding(
@@ -1861,8 +1999,12 @@ class _UEpubBlockViewState extends State<UEpubBlockView> {
     text = Listener(
       onPointerUp: ranges.isEmpty ? null : _onPointerUp,
       child: CustomPaint(
-        painter: ranges.isEmpty ? null : _UEpubRangePainter(context: context, span: span, align: align, direction: direction, ranges: ranges, foreground: false, noteDisplay: widget.noteDisplay, fontSize: fontSize),
-        foregroundPainter: ranges.isEmpty ? null : _UEpubRangePainter(context: context, span: span, align: align, direction: direction, ranges: ranges, foreground: true, noteDisplay: widget.noteDisplay, fontSize: fontSize),
+        painter: ranges.isEmpty
+            ? null
+            : _UEpubRangePainter(context: context, span: span, align: align, direction: direction, ranges: ranges, foreground: false, noteDisplay: widget.noteDisplay, fontSize: fontSize),
+        foregroundPainter: ranges.isEmpty
+            ? null
+            : _UEpubRangePainter(context: context, span: span, align: align, direction: direction, ranges: ranges, foreground: true, noteDisplay: widget.noteDisplay, fontSize: fontSize),
         child: SelectionListener(selectionNotifier: _notifier, child: text),
       ),
     );

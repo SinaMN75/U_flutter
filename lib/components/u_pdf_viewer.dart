@@ -30,6 +30,8 @@ class UPdfViewer extends StatefulWidget {
     this.allowShare = true,
     this.enableMarkup = true,
     this.enableAnnotations = false,
+    this.enableDrawing = true,
+    this.drawController,
     this.markupKinds = UDocMarkupKind.values,
     this.annotationData,
     this.annotationStorageKey,
@@ -81,6 +83,14 @@ class UPdfViewer extends StatefulWidget {
   final bool allowShare;
   final bool enableMarkup;
   final bool enableAnnotations;
+
+  /// Pen, highlighter, shapes, text boxes and sticky notes drawn over the
+  /// pages. They are saved in the annotation string with the highlights.
+  final bool enableDrawing;
+
+  /// Tool/style state for drawing. Created internally when null; pass one
+  /// with an active tool to open the viewer in drawing mode.
+  final UDocDrawController? drawController;
   final List<UDocMarkupKind> markupKinds;
 
   /// Previously exported annotations (e.g. from a server); the newest of this and the local copy wins.
@@ -118,6 +128,9 @@ class UPdfViewerState extends State<UPdfViewer> {
   bool _ownsController = false;
   late UDocAnnotationController _markup;
   bool _ownsMarkup = false;
+  late UDocDrawController _draw;
+  bool _ownsDraw = false;
+  bool _drawOpen = false;
 
   final ScrollController _vertical = ScrollController();
   final ScrollController _horizontal = ScrollController();
@@ -169,6 +182,29 @@ class UPdfViewerState extends State<UPdfViewer> {
 
   UPdfEditController? get editor => widget.editController ?? _internalEditor;
 
+  UDocDrawController get drawing => _draw;
+
+  bool get _drawingEnabled => widget.enableDrawing && widget.enableMarkup;
+
+  /// A drawing tool owns single-finger drags (scrolling stays on wheel, trackpad and the scroll thumb).
+  bool get _drawActive => _drawingEnabled && _drawOpen && _draw.isActive;
+
+  /// Opens or closes the drawing toolbar.
+  void toggleDrawing([bool? open]) {
+    final bool next = open ?? !_drawOpen;
+    if (next && _toolsOpen) {
+      _toolsOpen = false;
+      editor?.setTool(UPdfTool.select);
+    }
+    if (next && !_draw.isActive) _draw.tool = UDocDrawTool.pen;
+    if (!next) _draw.tool = UDocDrawTool.none;
+    _clearSelection();
+    applyState(() {
+      _drawOpen = next;
+      _activeMarkup = null;
+    });
+  }
+
   int get currentPage => _visiblePage;
 
   void applyState(VoidCallback action) {
@@ -195,6 +231,11 @@ class UPdfViewerState extends State<UPdfViewer> {
     _markup = markup ?? UDocAnnotationController(onChanged: _notifyAnnotations);
     _ownsMarkup = markup == null;
     _markup.addListener(_onMarkupChanged);
+    final UDocDrawController? draw = widget.drawController;
+    _draw = draw ?? UDocDrawController();
+    _ownsDraw = draw == null;
+    _draw.addListener(_onControllerChanged);
+    _drawOpen = _draw.isActive && _drawingEnabled;
     if (widget.editController == null && widget.enableAnnotations) _internalEditor = UPdfEditController(viewer: _controller);
     _internalEditor?.addListener(_onControllerChanged);
     _vertical.addListener(_onScroll);
@@ -897,6 +938,7 @@ class UPdfViewerState extends State<UPdfViewer> {
 
   KeyEventResult _onKey(FocusNode node, KeyEvent event) {
     if (event is! KeyDownEvent && event is! KeyRepeatEvent) return KeyEventResult.ignored;
+    if (UDocDrawController.isTyping) return KeyEventResult.ignored;
     final bool command = HardwareKeyboard.instance.isControlPressed || HardwareKeyboard.instance.isMetaPressed;
     final bool shift = HardwareKeyboard.instance.isShiftPressed;
     final LogicalKeyboardKey key = event.logicalKey;
@@ -932,7 +974,25 @@ class UPdfViewerState extends State<UPdfViewer> {
       _toggleBookmark();
       return KeyEventResult.handled;
     }
+    if (_drawActive && _draw.selectedId != null && (key == LogicalKeyboardKey.delete || key == LogicalKeyboardKey.backspace)) {
+      _markup.removeShape(_draw.selectedId!);
+      _draw.selectedId = null;
+      return KeyEventResult.handled;
+    }
+    if (command && key == LogicalKeyboardKey.keyD && _drawActive && _draw.selectedId != null) {
+      final UDocShape? copy = _markup.duplicateShape(_draw.selectedId!);
+      if (copy != null) _draw.selectedId = copy.id;
+      return KeyEventResult.handled;
+    }
     if (key == LogicalKeyboardKey.escape) {
+      if (_drawOpen) {
+        if (_draw.selectedId != null) {
+          _draw.selectedId = null;
+        } else {
+          toggleDrawing(false);
+        }
+        return KeyEventResult.handled;
+      }
       if (_selection.isNotEmpty || _activeMarkup != null) {
         _clearSelection();
         setState(() => _activeMarkup = null);
@@ -1157,6 +1217,11 @@ class UPdfViewerState extends State<UPdfViewer> {
         if (data == null || data.trim().isEmpty) return;
         if (!_markup.import(data, merge: true)) UToast.errorToast(message: U.s.thisFieldIsInvalid);
         break;
+      case "clearDrawings":
+        final int page = _visiblePage;
+        final bool clear = await UNavigator.confirmAsync(title: U.s.clearDrawings, message: U.s.clearDrawingsConfirm, destructive: true);
+        if (clear) _markup.clearShapes(pageIndex: page);
+        break;
       case "clearAll":
         final bool confirmed = await UNavigator.confirmAsync(title: U.s.clearAnnotations, message: U.s.areYouSureYouWantToDeleteThisItem(U.s.annotations), destructive: true);
         if (confirmed) _markup.clear();
@@ -1226,6 +1291,8 @@ class UPdfViewerState extends State<UPdfViewer> {
     _controller.removeListener(_onControllerChanged);
     _markup.removeListener(_onMarkupChanged);
     if (_ownsMarkup) _markup.dispose();
+    _draw.removeListener(_onControllerChanged);
+    if (_ownsDraw) _draw.dispose();
     _vertical.dispose();
     _horizontal.dispose();
     _pageController?.dispose();
@@ -1311,7 +1378,7 @@ class UPdfViewerState extends State<UPdfViewer> {
     );
   }
 
-  double get _toolbarInset => widget.showToolbar && _chromeVisible ? 56 + MediaQuery.paddingOf(context).top + (_searchOpen ? 52 : 0) + (_toolsOpen && editor != null ? 52 : 0) : 0;
+  double get _toolbarInset => widget.showToolbar && _chromeVisible ? 56 + MediaQuery.paddingOf(context).top + (_searchOpen ? 52 : 0) + (_toolsOpen && editor != null ? 52 : 0) + (_drawOpen ? 52 : 0) : 0;
 
   double get _bottomInset => widget.showBottomBar && _chromeVisible ? 60 + MediaQuery.paddingOf(context).bottom : 0;
 
@@ -1331,7 +1398,13 @@ class UPdfViewerState extends State<UPdfViewer> {
         _ensureRows();
         _computeBaseScale();
         _ensureOffsets();
-        final Widget content = settings.isPaged ? _buildPaged(settings) : _buildContinuous(settings);
+        Widget content = settings.isPaged ? _buildPaged(settings) : _buildContinuous(settings);
+        if (_drawActive) {
+          content = ScrollConfiguration(
+            behavior: ScrollConfiguration.of(context).copyWith(dragDevices: const <PointerDeviceKind>{PointerDeviceKind.trackpad}),
+            child: content,
+          );
+        }
         final Widget scaled = _gestureScale == 1
             ? content
             : Transform.scale(
@@ -1348,7 +1421,7 @@ class UPdfViewerState extends State<UPdfViewer> {
           },
           onPointerPanZoomEnd: (PointerPanZoomEndEvent event) => _endVisualZoom(),
           child: GestureDetector(
-            supportedDevices: const <PointerDeviceKind>{PointerDeviceKind.touch, PointerDeviceKind.stylus},
+            supportedDevices: _drawActive ? const <PointerDeviceKind>{} : const <PointerDeviceKind>{PointerDeviceKind.touch, PointerDeviceKind.stylus},
             onScaleStart: (ScaleStartDetails details) => _beginVisualZoom(details.localFocalPoint),
             onScaleUpdate: (ScaleUpdateDetails details) {
               if (details.pointerCount >= 2) _updateVisualZoom(details.scale, details.localFocalPoint);
@@ -1508,6 +1581,20 @@ class UPdfViewerState extends State<UPdfViewer> {
       if (watermark != null)
         Positioned.fill(
           child: UDocWatermarkLayer(watermark: watermark, pageIndex: index, scale: scale),
+        ),
+      if (_drawingEnabled)
+        Positioned.fill(
+          child: UDocShapeLayer(
+            key: ValueKey<String>("shapes$index"),
+            shapes: _markup.shapesOn(index),
+            tools: _draw,
+            enabled: _drawOpen,
+            zoom: _zoom,
+            prepare: (UDocShape shape) => shape.placed(pageIndex: index),
+            onAdd: _markup.addShape,
+            onUpdate: _markup.updateShape,
+            onRemove: _markup.removeShape,
+          ),
         ),
       if (widget.pageOverlayBuilder != null) Positioned.fill(child: widget.pageOverlayBuilder!(context, index, display, scale)),
       if (widget.enableMarkup && _markup.isBookmarked(index))
@@ -1727,6 +1814,13 @@ extension _UPdfViewerChrome on UPdfViewerState {
                     ),
                   if (value.isReady && widget.enableMarkup && !compact) IconButton(icon: const Icon(Icons.undo_rounded), tooltip: U.s.undo, onPressed: _markup.canUndo ? _markup.undo : null),
                   if (value.isReady && widget.enableMarkup && !compact) IconButton(icon: const Icon(Icons.redo_rounded), tooltip: U.s.redo, onPressed: _markup.canRedo ? _markup.redo : null),
+                  if (_drawingEnabled && value.isReady)
+                    IconButton(
+                      icon: Icon(_drawOpen ? Icons.draw_rounded : Icons.draw_outlined, color: _drawOpen ? scheme.primary : null),
+                      tooltip: U.s.draw,
+                      isSelected: _drawOpen,
+                      onPressed: toggleDrawing,
+                    ),
                   if (target != null && value.isReady)
                     IconButton(
                       icon: Icon(_toolsOpen ? Icons.edit_off_rounded : Icons.edit_rounded),
@@ -1734,6 +1828,7 @@ extension _UPdfViewerChrome on UPdfViewerState {
                       isSelected: _toolsOpen,
                       onPressed: () {
                         target.attach();
+                        if (!_toolsOpen && _drawOpen) toggleDrawing(false);
                         applyState(() {
                           _toolsOpen = !_toolsOpen;
                           if (!_toolsOpen) target.setTool(UPdfTool.select);
@@ -1753,6 +1848,7 @@ extension _UPdfViewerChrome on UPdfViewerState {
                           _menuItem("exportNotes", Icons.ios_share_rounded, U.s.exportAnnotations),
                           _menuItem("exportData", Icons.data_object_rounded, U.s.export),
                           _menuItem("importData", Icons.download_rounded, U.s.importAnnotations),
+                          if (_drawingEnabled && _markup.shapesOn(_visiblePage).isNotEmpty) _menuItem("clearDrawings", Icons.layers_clear_outlined, U.s.clearDrawings),
                           _menuItem("clearAll", Icons.delete_sweep_outlined, U.s.clearAnnotations),
                         ],
                         if (target != null) ...<PopupMenuEntry<String>>[
@@ -1770,6 +1866,16 @@ extension _UPdfViewerChrome on UPdfViewerState {
             ),
             if (_searchOpen) _buildSearchBar(value),
             if (_toolsOpen && target != null) _buildToolsRow(target),
+            if (_drawOpen)
+              SizedBox(
+                height: 52,
+                child: UDocDrawToolbar(
+                  tools: _draw,
+                  onUndo: _markup.canUndo ? _markup.undo : null,
+                  onRedo: _markup.canRedo ? _markup.redo : null,
+                  onDone: () => toggleDrawing(false),
+                ),
+              ),
           ],
         ),
       ),

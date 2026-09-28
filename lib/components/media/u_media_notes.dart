@@ -68,15 +68,25 @@ class UMediaNotesController extends ChangeNotifier {
   final int maxUndo;
 
   final List<UMediaNote> _notes = <UMediaNote>[];
-  final List<List<UMediaNote>> _undo = <List<UMediaNote>>[];
-  final List<List<UMediaNote>> _redo = <List<UMediaNote>>[];
+  final List<UDocShape> _shapes = <UDocShape>[];
+  final List<(List<UMediaNote>, List<UDocShape>)> _undo = <(List<UMediaNote>, List<UDocShape>)>[];
+  final List<(List<UMediaNote>, List<UDocShape>)> _redo = <(List<UMediaNote>, List<UDocShape>)>[];
+  String? _lastShapeEdit;
+  DateTime _lastShapeEditAt = DateTime.fromMillisecondsSinceEpoch(0);
+  Timer? _saveTimer;
   String? _storageKey;
   Color _color;
   DateTime _updatedAt = DateTime.fromMillisecondsSinceEpoch(0);
 
   List<UMediaNote> get notes => List<UMediaNote>.unmodifiable(_notes);
 
-  bool get isEmpty => _notes.isEmpty;
+  bool get isEmpty => _notes.isEmpty && _shapes.isEmpty;
+
+  /// Drawings over the video frame, each visible during its time range.
+  List<UDocShape> get shapes => List<UDocShape>.unmodifiable(_shapes);
+
+  /// Drawings to show at [position].
+  List<UDocShape> shapesAt(Duration position) => _shapes.where((UDocShape shape) => shape.visibleAt(position)).toList();
 
   int get length => _notes.length;
 
@@ -95,8 +105,20 @@ class UMediaNotesController extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Seek-bar markers for every note.
-  List<UVideoMarker> get markers => _notes.map((UMediaNote note) => UVideoMarker(start: note.position, end: note.end, label: note.text, color: note.color)).toList();
+  /// Seek-bar markers for every note and drawing.
+  List<UVideoMarker> get markers => <UVideoMarker>[
+    ..._notes.map((UMediaNote note) => UVideoMarker(start: note.position, end: note.end, label: note.text, color: note.color)),
+    ..._shapes
+        .where((UDocShape shape) => shape.startMs != null)
+        .map(
+          (UDocShape shape) => UVideoMarker(
+            start: Duration(milliseconds: shape.startMs!),
+            end: shape.endMs == null ? null : Duration(milliseconds: shape.endMs!),
+            label: shape.hasText ? shape.text : U.s.drawings,
+            color: shape.strokeColor,
+          ),
+        ),
+  ];
 
   UMediaNote? byId(String id) {
     for (final UMediaNote note in _notes) {
@@ -127,18 +149,85 @@ class UMediaNotesController extends ChangeNotifier {
     return _notes.where((UMediaNote note) => UDocText.forSearch(note.text).contains(needle)).toList();
   }
 
+  (List<UMediaNote>, List<UDocShape>) _snapshot() => (List<UMediaNote>.from(_notes), List<UDocShape>.from(_shapes));
+
   void _checkpoint() {
-    _undo.add(List<UMediaNote>.from(_notes));
+    _lastShapeEdit = null;
+    _undo.add(_snapshot());
     if (_undo.length > maxUndo) _undo.removeAt(0);
     _redo.clear();
   }
 
-  void _commit() {
+  void _commit({bool debounce = false}) {
     _notes.sort((UMediaNote a, UMediaNote b) => a.position.compareTo(b.position));
     _updatedAt = DateTime.now();
     notifyListeners();
+    _saveTimer?.cancel();
+    if (debounce) {
+      _saveTimer = Timer(const Duration(milliseconds: 350), _flush);
+    } else {
+      _flush();
+    }
+  }
+
+  void _flush() {
+    _saveTimer?.cancel();
+    _saveTimer = null;
     unawaited(save());
     onChanged?.call(this);
+  }
+
+  void _restore((List<UMediaNote>, List<UDocShape>) snapshot) {
+    _notes
+      ..clear()
+      ..addAll(snapshot.$1);
+    _shapes
+      ..clear()
+      ..addAll(snapshot.$2);
+    _commit();
+  }
+
+  // ───────── drawings ─────────
+
+  UDocShape addShape(UDocShape shape) {
+    _checkpoint();
+    _shapes.add(shape);
+    _commit();
+    return shape;
+  }
+
+  /// Rapid edits of one shape (dragging, resizing) share one undo step.
+  void updateShape(UDocShape shape) {
+    final int index = _shapes.indexWhere((UDocShape existing) => existing.id == shape.id);
+    if (index < 0) return;
+    final DateTime now = DateTime.now();
+    if (_lastShapeEdit != shape.id || now.difference(_lastShapeEditAt) >= const Duration(milliseconds: 900)) _checkpoint();
+    _lastShapeEdit = shape.id;
+    _lastShapeEditAt = now;
+    _shapes[index] = shape;
+    _commit(debounce: true);
+  }
+
+  void removeShape(String id) {
+    if (!_shapes.any((UDocShape shape) => shape.id == id)) return;
+    _checkpoint();
+    _shapes.removeWhere((UDocShape shape) => shape.id == id);
+    _commit();
+  }
+
+  /// Removes every drawing, or only those visible at [at].
+  void clearShapes({Duration? at}) {
+    bool matches(UDocShape shape) => at == null || shape.visibleAt(at);
+    if (!_shapes.any(matches)) return;
+    _checkpoint();
+    _shapes.removeWhere(matches);
+    _commit();
+  }
+
+  @override
+  void dispose() {
+    if (_saveTimer != null) _flush();
+    super.dispose();
   }
 
   UMediaNote add({required Duration position, String text = "", Color? color, Duration? end}) {
@@ -165,34 +254,32 @@ class UMediaNotesController extends ChangeNotifier {
   }
 
   void clear() {
-    if (_notes.isEmpty) return;
+    if (isEmpty) return;
     _checkpoint();
     _notes.clear();
+    _shapes.clear();
     _commit();
   }
 
   void undo() {
     if (_undo.isEmpty) return;
-    _redo.add(List<UMediaNote>.from(_notes));
-    _notes
-      ..clear()
-      ..addAll(_undo.removeLast());
-    _commit();
+    _lastShapeEdit = null;
+    _redo.add(_snapshot());
+    _restore(_undo.removeLast());
   }
 
   void redo() {
     if (_redo.isEmpty) return;
-    _undo.add(List<UMediaNote>.from(_notes));
-    _notes
-      ..clear()
-      ..addAll(_redo.removeLast());
-    _commit();
+    _lastShapeEdit = null;
+    _undo.add(_snapshot());
+    _restore(_redo.removeLast());
   }
 
   Map<String, Object?> toJson() => <String, Object?>{
     "version": 1,
     "updated": _updatedAt.toIso8601String(),
     "notes": _notes.map((UMediaNote note) => note.toJson()).toList(),
+    if (_shapes.isNotEmpty) "shapes": _shapes.map((UDocShape shape) => shape.toJson()).toList(),
   };
 
   String export({bool base64 = true}) {
@@ -206,8 +293,12 @@ class UMediaNotesController extends ChangeNotifier {
     final Map<String, Object?>? json = UDocAnnotationController.decode(data);
     if (json == null) return false;
     final List<UMediaNote> incoming = <UMediaNote>[];
-    if (json["notes"] is List<Object?>) {
-      for (final Object? entry in json["notes"]! as List<Object?>) {
+    final List<UDocShape> drawings = <UDocShape>[];
+    for (final Object? entry in (json["shapes"] as List<Object?>?) ?? const <Object?>[]) {
+      if (entry is Map<String, Object?>) drawings.add(UDocShape.fromJson(entry));
+    }
+    if (json["notes"] is List<Object?> || drawings.isNotEmpty) {
+      for (final Object? entry in (json["notes"] as List<Object?>?) ?? const <Object?>[]) {
         if (entry is Map<String, Object?>) incoming.add(UMediaNote.fromJson(entry));
       }
       _updatedAt = DateTime.tryParse((json["updated"] as String?) ?? "") ?? DateTime.now();
@@ -222,7 +313,12 @@ class UMediaNotesController extends ChangeNotifier {
       return false;
     }
     if (notify) _checkpoint();
-    if (!merge) _notes.clear();
+    if (!merge) {
+      _notes.clear();
+      _shapes.clear();
+    }
+    final Set<String> drawn = _shapes.map((UDocShape shape) => shape.id).toSet();
+    _shapes.addAll(drawings.where((UDocShape shape) => !drawn.contains(shape.id)));
     final Set<String> known = _notes.map((UMediaNote note) => note.id).toSet();
     _notes.addAll(incoming.where((UMediaNote note) => !known.contains(note.id)));
     _notes.sort((UMediaNote a, UMediaNote b) => a.position.compareTo(b.position));
@@ -245,7 +341,7 @@ class UMediaNotesController extends ChangeNotifier {
     try {
       final String? raw = ULocalStorage.getString(key);
       if (raw == null || raw.isEmpty) return;
-      import(raw, merge: _notes.isNotEmpty, notify: false);
+      import(raw, merge: !isEmpty, notify: false);
       notifyListeners();
     } on Object {
       return;

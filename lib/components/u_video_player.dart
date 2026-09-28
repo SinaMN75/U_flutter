@@ -1139,6 +1139,7 @@ class UVideoControls extends StatelessWidget {
     this.onOpenQueue,
     this.onAddNote,
     this.onOpenNotes,
+    this.onDraw,
     this.onScrubStart,
     this.onScrubEnd,
     this.thumbnailBuilder,
@@ -1171,6 +1172,9 @@ class UVideoControls extends StatelessWidget {
   final VoidCallback? onOpenQueue;
   final VoidCallback? onAddNote;
   final VoidCallback? onOpenNotes;
+
+  /// Opens the drawing tools (pen, shapes, text) over the paused frame.
+  final VoidCallback? onDraw;
   final VoidCallback? onScrubStart;
   final VoidCallback? onScrubEnd;
   final Widget Function(BuildContext context, Duration position)? thumbnailBuilder;
@@ -1243,6 +1247,7 @@ class UVideoControls extends StatelessWidget {
         else
           const Spacer(),
         ...topActions,
+        if (onDraw != null) _iconButton(Icons.draw_rounded, U.s.drawOnVideo, onDraw),
         if (onAddNote != null) _iconButton(Icons.add_comment_rounded, U.s.addTimestampNote, onAddNote),
         if (onOpenNotes != null)
           Stack(
@@ -1842,6 +1847,8 @@ class UVideo extends StatefulWidget {
     this.showQueueButton = false,
     this.showSeekButtons = true,
     this.showNoteOverlays = true,
+    this.enableDrawing = true,
+    this.drawController,
     this.seekStep = const Duration(seconds: 10),
     this.autoHide = const Duration(seconds: 3),
     this.aspectRatio,
@@ -1874,6 +1881,11 @@ class UVideo extends StatefulWidget {
   final bool showQueueButton;
   final bool showSeekButtons;
   final bool showNoteOverlays;
+
+  /// Pen, shapes, highlights and text boxes over the frame (needs [notes]).
+  /// Each drawing shows for a chosen time range and is saved with the notes.
+  final bool enableDrawing;
+  final UDocDrawController? drawController;
   final Duration seekStep;
   final Duration autoHide;
   final double? aspectRatio;
@@ -1908,6 +1920,9 @@ class _UVideoState extends State<UVideo> {
 
   bool _controlsVisible = true;
   bool _locked = false;
+  bool _drawing = false;
+  late final UDocDrawController _draw = widget.drawController ?? UDocDrawController();
+  late final bool _ownsDraw = widget.drawController == null;
   bool _hovering = false;
   bool _resumeChecked = false;
   Duration? _resumeOffer;
@@ -1949,6 +1964,7 @@ class _UVideoState extends State<UVideo> {
     widget.controller.removeListener(_onValueChanged);
     widget.notes?.removeListener(_onNotesChanged);
     if (widget.autoPip && !widget.isFullscreen) unawaited(widget.controller.setAutoPip(false));
+    if (_ownsDraw) _draw.dispose();
     _focusNode.dispose();
     if (_ownsSettings) _settings.dispose();
     super.dispose();
@@ -1995,6 +2011,89 @@ class _UVideoState extends State<UVideo> {
     final UMediaValue value = widget.controller.value;
     if (value.duration > Duration.zero) UMediaResume.save(key, value.position, value.duration);
   }
+
+  bool get _drawingEnabled => widget.enableDrawing && widget.notes != null;
+
+  /// Pauses on the current frame and shows the drawing tools (or hides them).
+  void _toggleDrawing([bool? open]) {
+    final bool next = open ?? !_drawing;
+    if (next) {
+      unawaited(widget.controller.pause());
+      _hideTimer?.cancel();
+      if (!_draw.isActive) _draw.tool = UDocDrawTool.pen;
+    } else {
+      _draw.tool = UDocDrawTool.none;
+    }
+    setState(() {
+      _drawing = next;
+      _controlsVisible = !next;
+    });
+    if (!next) _restartHideTimer();
+  }
+
+  /// New drawings appear from the paused moment for [UDocDrawController.videoDuration] (0 = until the end).
+  UDocShape _stampTime(UDocShape shape) {
+    final int start = widget.controller.value.position.inMilliseconds;
+    final int length = _draw.videoDuration.inMilliseconds;
+    return length <= 0 ? shape.placed(startMs: start) : shape.placed(startMs: start, endMs: start + length);
+  }
+
+  /// Where the picture actually is inside the player (letterboxing excluded).
+  Rect _frameRect(Size box, UMediaValue value) {
+    final UMediaFit fit = _settings.fit;
+    if (fit == UMediaFit.cover || fit == UMediaFit.fill || box.height <= 0) return Offset.zero & box;
+    double ratio = UVideoView.ratioOf(fit) ?? value.aspectRatio;
+    if (ratio <= 0 || !ratio.isFinite) ratio = 16 / 9;
+    final Size size = box.width / box.height > ratio ? Size(box.height * ratio, box.height) : Size(box.width, box.width / ratio);
+    return Rect.fromCenter(center: box.center(Offset.zero), width: size.width, height: size.height);
+  }
+
+  Widget _drawOverlay() => ValueListenableBuilder<UMediaValue>(
+    valueListenable: widget.controller,
+    builder: (BuildContext context, UMediaValue value, Widget? child) {
+      final UMediaNotesController notes = widget.notes!;
+      final List<UDocShape> shapes = notes.shapesAt(value.position);
+      if (shapes.isEmpty && !_drawing) return const SizedBox.shrink();
+      return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          Widget layer = UDocShapeLayer(
+            shapes: shapes,
+            tools: _draw,
+            enabled: _drawing,
+            prepare: _stampTime,
+            onAdd: notes.addShape,
+            onUpdate: notes.updateShape,
+            onRemove: notes.removeShape,
+          );
+          if (_settings.zoom != 1) layer = Transform.scale(scale: _settings.zoom, child: layer);
+          return Stack(children: <Widget>[Positioned.fromRect(rect: _frameRect(constraints.biggest, value), child: layer)]);
+        },
+      );
+    },
+  );
+
+  Widget _drawToolbar() => Positioned(
+    left: 0,
+    right: 0,
+    top: 0,
+    child: Material(
+      color: const Color(0xD9000000),
+      child: SafeArea(
+        bottom: false,
+        child: SizedBox(
+          height: 52,
+          child: UDocDrawToolbar(
+            tools: _draw,
+            dark: true,
+            showVideoDuration: true,
+            onUndo: widget.notes!.canUndo ? widget.notes!.undo : null,
+            onRedo: widget.notes!.canRedo ? widget.notes!.redo : null,
+            onDone: () => _toggleDrawing(false),
+          ),
+        ),
+      ),
+    ),
+  );
 
   void _restartHideTimer() {
     _hideTimer?.cancel();
@@ -2057,6 +2156,22 @@ class _UVideoState extends State<UVideo> {
     final UMediaController controller = widget.controller;
     final bool shift = HardwareKeyboard.instance.isShiftPressed;
     final LogicalKeyboardKey key = event.logicalKey;
+    if (UDocDrawController.isTyping) return KeyEventResult.ignored;
+    if (_drawing) {
+      final String? selected = _draw.selectedId;
+      final bool command = HardwareKeyboard.instance.isControlPressed || HardwareKeyboard.instance.isMetaPressed;
+      if (key == LogicalKeyboardKey.escape) {
+        selected != null ? _draw.selectedId = null : _toggleDrawing(false);
+      } else if (selected != null && (key == LogicalKeyboardKey.delete || key == LogicalKeyboardKey.backspace)) {
+        _draw.selectedId = null;
+        widget.notes!.removeShape(selected);
+      } else if (command && key == LogicalKeyboardKey.keyZ) {
+        shift ? widget.notes!.redo() : widget.notes!.undo();
+      } else {
+        return KeyEventResult.ignored;
+      }
+      return KeyEventResult.handled;
+    }
     _keepVisible();
     if (key == LogicalKeyboardKey.space || key == LogicalKeyboardKey.keyK || key == LogicalKeyboardKey.mediaPlayPause) {
       unawaited(controller.playPause());
@@ -2179,9 +2294,11 @@ class _UVideoState extends State<UVideo> {
       fit: StackFit.expand,
       children: <Widget>[
         gestured,
-        if (widget.showNoteOverlays && widget.notes != null && !inPip) _noteOverlay(),
+        if (_drawingEnabled && !inPip) _drawOverlay(),
+        if (widget.showNoteOverlays && widget.notes != null && !inPip && !_drawing) _noteOverlay(),
         if (_resumeOffer != null && !inPip) _resumeBanner(_resumeOffer!),
-        if (widget.showControls && !inPip)
+        if (_drawing && !inPip) _drawToolbar(),
+        if (widget.showControls && !inPip && !_drawing)
           widget.controlsBuilder?.call(context, widget.controller, _controlsVisible) ??
               UVideoControls(
                 controller: widget.controller,
@@ -2207,6 +2324,7 @@ class _UVideoState extends State<UVideo> {
                 onOpenQueue: () => UNavigator.bottomSheet(UMediaQueueSheet(controller: widget.controller)),
                 onAddNote: widget.notes == null ? null : () => unawaited(_addNote()),
                 onOpenNotes: widget.notes == null && widget.onOpenNotes == null ? null : _openNotes,
+                onDraw: _drawingEnabled ? _toggleDrawing : null,
                 onScrubStart: () => _hideTimer?.cancel(),
                 onScrubEnd: _restartHideTimer,
                 thumbnailBuilder: widget.thumbnailBuilder,
@@ -2695,6 +2813,8 @@ class UVideoWithNotes extends StatelessWidget {
     this.resumeKey,
     this.autoPip = true,
     this.showNotes = true,
+    this.enableDrawing = true,
+    this.drawController,
     this.accentColor,
     this.panelWidth = 340,
     super.key,
@@ -2710,6 +2830,8 @@ class UVideoWithNotes extends StatelessWidget {
   final String? resumeKey;
   final bool autoPip;
   final bool showNotes;
+  final bool enableDrawing;
+  final UDocDrawController? drawController;
   final Color? accentColor;
   final double panelWidth;
 
@@ -2725,6 +2847,8 @@ class UVideoWithNotes extends StatelessWidget {
       secure: secure,
       resumeKey: resumeKey,
       autoPip: autoPip,
+      enableDrawing: enableDrawing,
+      drawController: drawController,
       accentColor: accentColor,
       borderRadius: 0,
     );

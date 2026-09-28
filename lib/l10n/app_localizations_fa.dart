@@ -5377,4 +5377,73 @@ class AppLocalizationsFa extends AppLocalizations {
   String minutesLeftInChapter(Object minutes) {
     return '$minutes دقیقه تا پایان فصل';
   }
+
+  @override
+  String get read => 'مطالعه';
+
+  @override
+  String get pen => 'قلم';
+
+  @override
+  String get highlighterPen => 'ماژیک هایلایت';
+
+  @override
+  String get line => 'خط';
+
+  @override
+  String get doubleArrow => 'فلش دوطرفه';
+
+  @override
+  String get roundedRectangle => 'مستطیل گرد';
+
+  @override
+  String get areaHighlight => 'هایلایت ناحیه';
+
+  @override
+  String get fill => 'پس‌زمینه';
+
+  @override
+  String get noFill => 'بدون پس‌زمینه';
+
+  @override
+  String get lightFill => 'پس‌زمینه کم‌رنگ';
+
+  @override
+  String get solidFill => 'پس‌زمینه پررنگ';
+
+  @override
+  String get whiteFill => 'پس‌زمینه سفید (پوشاندن)';
+
+  @override
+  String get dashed => 'خط‌چین';
+
+  @override
+  String get keepProportions => 'حفظ تناسب (مربع / دایره)';
+
+  @override
+  String get showFor => 'مدت نمایش روی ویدیو';
+
+  @override
+  String get drawings => 'طراحی‌ها';
+
+  @override
+  String get clearDrawings => 'پاک کردن طراحی‌ها';
+
+  @override
+  String get clearDrawingsConfirm => 'همه طراحی‌های این صفحه حذف شود؟';
+
+  @override
+  String get duplicate => 'تکثیر';
+
+  @override
+  String get bringToFront => 'آوردن به جلو';
+
+  @override
+  String get sendToBack => 'بردن به عقب';
+
+  @override
+  String get drawOnVideo => 'طراحی روی ویدیو';
+
+  @override
+  String get shapes => 'شکل‌ها';
 }

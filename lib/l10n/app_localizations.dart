@@ -10639,6 +10639,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{minutes} min left in chapter'**
   String minutesLeftInChapter(Object minutes);
+
+  /// No description provided for @read.
+  ///
+  /// In en, this message translates to:
+  /// **'Read'**
+  String get read;
+
+  /// No description provided for @pen.
+  ///
+  /// In en, this message translates to:
+  /// **'Pen'**
+  String get pen;
+
+  /// No description provided for @highlighterPen.
+  ///
+  /// In en, this message translates to:
+  /// **'Highlighter pen'**
+  String get highlighterPen;
+
+  /// No description provided for @line.
+  ///
+  /// In en, this message translates to:
+  /// **'Line'**
+  String get line;
+
+  /// No description provided for @doubleArrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Double arrow'**
+  String get doubleArrow;
+
+  /// No description provided for @roundedRectangle.
+  ///
+  /// In en, this message translates to:
+  /// **'Rounded rectangle'**
+  String get roundedRectangle;
+
+  /// No description provided for @areaHighlight.
+  ///
+  /// In en, this message translates to:
+  /// **'Area highlight'**
+  String get areaHighlight;
+
+  /// No description provided for @fill.
+  ///
+  /// In en, this message translates to:
+  /// **'Fill'**
+  String get fill;
+
+  /// No description provided for @noFill.
+  ///
+  /// In en, this message translates to:
+  /// **'No fill'**
+  String get noFill;
+
+  /// No description provided for @lightFill.
+  ///
+  /// In en, this message translates to:
+  /// **'Light fill'**
+  String get lightFill;
+
+  /// No description provided for @solidFill.
+  ///
+  /// In en, this message translates to:
+  /// **'Solid fill'**
+  String get solidFill;
+
+  /// No description provided for @whiteFill.
+  ///
+  /// In en, this message translates to:
+  /// **'White fill (cover)'**
+  String get whiteFill;
+
+  /// No description provided for @dashed.
+  ///
+  /// In en, this message translates to:
+  /// **'Dashed'**
+  String get dashed;
+
+  /// No description provided for @keepProportions.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep proportions (square / circle)'**
+  String get keepProportions;
+
+  /// No description provided for @showFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Show on video for'**
+  String get showFor;
+
+  /// No description provided for @drawings.
+  ///
+  /// In en, this message translates to:
+  /// **'Drawings'**
+  String get drawings;
+
+  /// No description provided for @clearDrawings.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear drawings'**
+  String get clearDrawings;
+
+  /// No description provided for @clearDrawingsConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove every drawing on this page?'**
+  String get clearDrawingsConfirm;
+
+  /// No description provided for @duplicate.
+  ///
+  /// In en, this message translates to:
+  /// **'Duplicate'**
+  String get duplicate;
+
+  /// No description provided for @bringToFront.
+  ///
+  /// In en, this message translates to:
+  /// **'Bring to front'**
+  String get bringToFront;
+
+  /// No description provided for @sendToBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Send to back'**
+  String get sendToBack;
+
+  /// No description provided for @drawOnVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Draw on video'**
+  String get drawOnVideo;
+
+  /// No description provided for @shapes.
+  ///
+  /// In en, this message translates to:
+  /// **'Shapes'**
+  String get shapes;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
