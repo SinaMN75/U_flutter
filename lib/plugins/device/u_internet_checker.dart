@@ -1,0 +1,135 @@
+import "package:u/utilities.dart";
+
+// Legacy internet check: opens a TCP socket to public DNS servers (port 53).
+// Superseded by UConnectivity.hasInternet(); kept so existing apps still compile.
+
+class UAddressCheckOptions {
+  UAddressCheckOptions(
+    this.address, {
+    this.port = UInternetConnectionChecker.defaultPort,
+    this.timeout = UInternetConnectionChecker.defaultTimeout,
+  });
+
+  final InternetAddress address;
+  final int port;
+  final Duration timeout;
+
+  @override
+  String toString() => "AddressCheckOptions($address, $port, $timeout)";
+}
+
+class UAddressCheckResult {
+  UAddressCheckResult(this.options, this.isSuccess);
+
+  final UAddressCheckOptions options;
+
+  final bool isSuccess;
+
+  @override
+  String toString() => "AddressCheckResult($options, $isSuccess)";
+}
+
+@Deprecated("Use UConnectivity.hasInternet() / UNetwork.hasInternet(): it probes your own server and works on the web.")
+class UInternetConnectionChecker {
+  factory UInternetConnectionChecker() => _instance;
+
+  UInternetConnectionChecker._() {
+    _statusController.onListen = _maybeEmitStatusUpdate;
+
+    _statusController.onCancel = () {
+      _timerHandle?.cancel();
+      _lastStatus = null;
+    };
+  }
+
+  static const int defaultPort = 53;
+
+  static const Duration defaultTimeout = Duration(seconds: 10);
+
+  static const Duration defaultInterval = Duration(seconds: 10);
+
+  static final List<UAddressCheckOptions> defaultAddresses = List<UAddressCheckOptions>.unmodifiable(
+    <UAddressCheckOptions>[
+      UAddressCheckOptions(InternetAddress("1.1.1.1", type: InternetAddressType.IPv4)),
+      UAddressCheckOptions(InternetAddress("2606:4700:4700::1111", type: InternetAddressType.IPv6)),
+      UAddressCheckOptions(InternetAddress("8.8.4.4", type: InternetAddressType.IPv4)),
+      UAddressCheckOptions(InternetAddress("2001:4860:4860::8888", type: InternetAddressType.IPv6)),
+      UAddressCheckOptions(InternetAddress("208.67.222.222", type: InternetAddressType.IPv4)),
+      UAddressCheckOptions(InternetAddress("2620:0:ccc::2", type: InternetAddressType.IPv6)),
+    ],
+  );
+
+  List<UAddressCheckOptions> addresses = defaultAddresses;
+
+  static final UInternetConnectionChecker _instance = UInternetConnectionChecker._();
+
+  Future<UAddressCheckResult> isHostReachable(UAddressCheckOptions options) async {
+    Socket? sock;
+    try {
+      sock =
+          await Socket.connect(
+              options.address,
+              options.port,
+              timeout: options.timeout,
+            )
+            ..destroy();
+      return UAddressCheckResult(
+        options,
+        true,
+      );
+    } catch (e) {
+      sock?.destroy();
+      return UAddressCheckResult(
+        options,
+        false,
+      );
+    }
+  }
+
+  Future<bool> get hasConnection async {
+    final Completer<bool> result = Completer<bool>();
+    int length = addresses.length;
+
+    for (final UAddressCheckOptions addressOptions in addresses) {
+      await isHostReachable(addressOptions).then(
+        (UAddressCheckResult request) {
+          length -= 1;
+          if (!result.isCompleted) {
+            if (request.isSuccess) {
+              result.complete(true);
+            } else if (length == 0) {
+              result.complete(false);
+            }
+          }
+        },
+      );
+    }
+    return result.future;
+  }
+
+  Future<UInternetConnectionStatus> get connectionStatus async => await hasConnection ? UInternetConnectionStatus.connected : UInternetConnectionStatus.disconnected;
+
+  Duration checkInterval = defaultInterval;
+
+  Future<void> _maybeEmitStatusUpdate([Timer? timer]) async {
+    _timerHandle?.cancel();
+    timer?.cancel();
+    final UInternetConnectionStatus currentStatus = await connectionStatus;
+    if (_lastStatus != currentStatus && _statusController.hasListener) _statusController.add(currentStatus);
+    if (!_statusController.hasListener) return;
+    _timerHandle = Timer(checkInterval, _maybeEmitStatusUpdate);
+    _lastStatus = currentStatus;
+  }
+
+  UInternetConnectionStatus? _lastStatus;
+  Timer? _timerHandle;
+  final StreamController<UInternetConnectionStatus> _statusController = StreamController<UInternetConnectionStatus>.broadcast();
+
+  Stream<UInternetConnectionStatus> get onStatusChange => _statusController.stream;
+
+  bool get hasListeners => _statusController.hasListener;
+
+  bool get isActivelyChecking => _statusController.hasListener;
+}
+
+enum UInternetConnectionStatus { connected, disconnected }
