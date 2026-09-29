@@ -2,22 +2,19 @@ import "package:u/utilities.dart";
 import "package:u/utils/web/u_web_native.dart" if (dart.library.js_interop) "package:u/utils/web/u_web_browser.dart";
 
 abstract class UApp {
-  static late PackageInfo packageInfo;
-  static DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-  static late AndroidDeviceInfo androidDeviceInfo;
-  static late IosDeviceInfo iosDeviceInfo;
-  static late WebBrowserInfo webBrowserInfo;
-  static late MacOsDeviceInfo macOsDeviceInfo;
-  static late WindowsDeviceInfo windowsDeviceInfo;
-  static late LinuxDeviceInfo linuxDeviceInfo;
+  /// This app's package info (same field names as package_info_plus). See [UPackage].
+  static UPackageInfo get packageInfo => UPackage.info;
 
-  static String name = packageInfo.appName;
+  /// This device's info on every platform in one model. See [UDevice].
+  static UDeviceInfo get deviceInfo => UDevice.info;
 
-  static String packageName = packageInfo.packageName;
+  static String get name => UPackage.appName;
 
-  static String version = packageInfo.version;
+  static String get packageName => UPackage.packageName;
 
-  static String buildNumber = packageInfo.buildNumber;
+  static String get version => UPackage.version;
+
+  static String get buildNumber => UPackage.buildNumber;
 
   static bool get isWeb => kIsWeb;
 
@@ -39,18 +36,8 @@ abstract class UApp {
 
   static bool get isDarkMode => UAppState.isDarkMode;
 
-  static String deviceId() {
-    try {
-      if (isAndroid) return androidDeviceInfo.id;
-      if (isIos) return iosDeviceInfo.identifierForVendor ?? "";
-      if (isMacOs) return macOsDeviceInfo.systemGUID ?? "";
-      if (isWindows) return windowsDeviceInfo.deviceId;
-      if (isLinux) return linuxDeviceInfo.machineId ?? "";
-    } catch (_) {
-      return "";
-    }
-    return "";
-  }
+  /// Stable device id; see [UDevice.id]. Empty before `initU()` completes.
+  static String deviceId() => UDevice.isReady ? UDevice.id : "";
 
   static bool isLandscape() => MediaQuery.of(navigatorKey.currentContext!).orientation == Orientation.landscape;
 
@@ -97,12 +84,5 @@ abstract class UApp {
     return UWebBridge.isEmbedded();
   }
 
-  static Future<void> initDeviceInfo() async {
-    if (UApp.isAndroid) UApp.androidDeviceInfo = await UApp.deviceInfo.androidInfo;
-    if (UApp.isIos) UApp.iosDeviceInfo = await UApp.deviceInfo.iosInfo;
-    if (UApp.isWeb) UApp.webBrowserInfo = await UApp.deviceInfo.webBrowserInfo;
-    if (UApp.isWindows) UApp.windowsDeviceInfo = await UApp.deviceInfo.windowsInfo;
-    if (UApp.isMacOs) UApp.macOsDeviceInfo = await UApp.deviceInfo.macOsInfo;
-    if (UApp.isLinux) UApp.linuxDeviceInfo = await UApp.deviceInfo.linuxInfo;
-  }
+  static Future<void> initDeviceInfo() => UDevice.init();
 }

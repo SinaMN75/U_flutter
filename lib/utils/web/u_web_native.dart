@@ -49,4 +49,22 @@ abstract class UWebBridge {
 
   // Nothing gets hidden and shown off the web; returns a no-op disposer.
   static void Function() listenVisible(void Function() onVisible) => () {};
+
+  // No shared_preferences localStorage off the web (native stores are read by UStorageLegacy).
+  static Map<String, Object?> legacyPrefs() => <String, Object?>{};
+
+  static void clearLegacyPrefs() {}
+
+  // Native platforms report network state through the "u/device" channel instead.
+  static Map<String, Object?> networkStatus() => <String, Object?>{};
+
+  static void Function() listenNetwork(void Function(Map<String, Object?> status) onChange) => () {};
+
+  static Future<bool> probe(String url, int timeoutMs) async => false;
+
+  static Map<String, Object?> deviceInfo() => <String, Object?>{};
+
+  static Future<Map<String, Object?>> deviceStatus() async => <String, Object?>{};
+
+  static Map<String, Object?> integrity() => <String, Object?>{};
 }

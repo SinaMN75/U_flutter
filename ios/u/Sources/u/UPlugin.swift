@@ -7,6 +7,7 @@ public final class UPlugin: NSObject, FlutterPlugin {
     private var camera: UCameraHandler?
     private var ar: UArHandler?
     private var files: UFilesHandler?
+    private var device: UDeviceHandler?
 
     public static func register(
         with registrar: FlutterPluginRegistrar
@@ -32,6 +33,9 @@ public final class UPlugin: NSObject, FlutterPlugin {
             registrar: registrar
         )
         instance.files = UFilesHandler(
+            messenger: registrar.messenger()
+        )
+        instance.device = UDeviceHandler(
             messenger: registrar.messenger()
         )
         registrar.addApplicationDelegate(instance)

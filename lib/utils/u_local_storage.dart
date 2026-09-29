@@ -1,51 +1,34 @@
 import "package:u/utilities.dart";
 
+/// The original key/value API, now backed by [UStorage]. Signatures are unchanged.
+/// Keys in [UStorage.secureKeys] (token, refresh token and its expiry) live in the
+/// encrypted [UStorage.secure] store; everything else in the default store.
 abstract class ULocalStorage {
-  static late SharedPreferences _sp;
+  static Future<void> init() => UStorage.init();
 
-  static Future<void> init() async => _sp = await SharedPreferences.getInstance();
+  static UStore _storeFor(String key) => UStorage.secureKeys.contains(key) ? UStorage.secure : UStorage.instance;
 
-  static Set<String> getKeys() => _sp.getKeys();
+  static Set<String> getKeys() => <String>{...UStorage.instance.keys, ...UStorage.secure.keys};
 
   static void set(String key, dynamic value, {Duration? expireTime, (String, String)? encryptKeyIv}) {
-    if (value is String) {
-      _sp.setString(
-        key,
-        encryptKeyIv == null
-            ? value
-            : UEncryption.aesEncrypt(
-                plainText: value,
-                key: encryptKeyIv.$1,
-                iv: encryptKeyIv.$2,
-              ),
-      );
-    } else if (value is bool) {
-      _sp.setBool(key, value);
-    } else if (value is double) {
-      _sp.setDouble(key, value);
-    } else if (value is int) {
-      _sp.setInt(key, value);
-    } else if (value is List<String>) {
-      _sp.setStringList(key, value);
-    } else {
+    if (value is! String && value is! bool && value is! double && value is! int && value is! List<String>) {
       throw ArgumentError("Unsupported value type for key: $key");
     }
-
-    if (expireTime != null) {
-      _sp.setInt("_expiry_$key", DateTime.now().add(expireTime).millisecondsSinceEpoch);
-    }
+    final Object stored = value is String && encryptKeyIv != null ? UEncryption.aesEncrypt(plainText: value, key: encryptKeyIv.$1, iv: encryptKeyIv.$2) : value as Object;
+    unawaited(_storeFor(key).set(key, stored, ttl: expireTime));
   }
 
   static Future<void> setBatch(Map<String, dynamic> keyValuePairs) async {
     for (final MapEntry<String, dynamic> entry in keyValuePairs.entries) {
       set(entry.key, entry.value);
     }
+    await UStorage.flushAll();
   }
 
-  static int? getInt(String key) => getIfNotExpired(key);
+  static int? getInt(String key) => _storeFor(key).get<int>(key);
 
   static String? getString(String key, {(String, String)? encryptKeyIv}) {
-    final String? value = getIfNotExpired(key);
+    final String? value = _storeFor(key).get<String>(key);
     if (value == null) return null;
     if (encryptKeyIv == null) return value;
 
@@ -56,11 +39,11 @@ abstract class ULocalStorage {
     );
   }
 
-  static bool? getBool(String key) => getIfNotExpired(key);
+  static bool? getBool(String key) => _storeFor(key).get<bool>(key);
 
-  static double? getDouble(String key) => getIfNotExpired(key);
+  static double? getDouble(String key) => _storeFor(key).get<double>(key);
 
-  static List<String>? getStringList(String key) => getIfNotExpired(key);
+  static List<String>? getStringList(String key) => _storeFor(key).get<List<String>>(key);
 
   static void setToken(String value, {Duration? expireTime}) => set(UConstants.token, value, expireTime: expireTime);
 
@@ -80,46 +63,30 @@ abstract class ULocalStorage {
 
   static void setUserId(String userId) => set(UConstants.userId, userId);
 
-  static String? getToken() => getIfNotExpired(UConstants.token);
+  static String? getToken() => getString(UConstants.token);
 
-  static String? getRefreshToken() => getIfNotExpired(UConstants.refreshToken);
+  static String? getRefreshToken() => getString(UConstants.refreshToken);
 
   static DateTime? getRefreshTokenExpiresAt() {
     final int? value = getInt(UConstants.refreshTokenExpiresAt);
     return value == null ? null : DateTime.fromMillisecondsSinceEpoch(value, isUtc: true);
   }
 
-  static String? getLocale() => getIfNotExpired(UConstants.locale);
+  static String? getLocale() => getString(UConstants.locale);
 
-  static bool hasToken() => getIfNotExpired(UConstants.token) != null;
+  static bool hasToken() => getToken() != null;
 
-  static bool isDarkMode() => getIfNotExpired(UConstants.isDarkMode) ?? false;
+  static bool isDarkMode() => getBool(UConstants.isDarkMode) ?? false;
 
-  static String? getUserId() => getIfNotExpired(UConstants.userId);
+  static String? getUserId() => getString(UConstants.userId);
 
-  static bool containsKey(String key) => _sp.containsKey(key);
+  static bool containsKey(String key) => _storeFor(key).has(key);
 
-  static Future<void> remove(String key) async => _sp.remove(key);
+  static Future<void> remove(String key) => _storeFor(key).remove(key);
 
-  static Future<void> clear() async => _sp.clear();
+  static Future<void> clear() => Future.wait(<Future<void>>[UStorage.instance.clear(), UStorage.secure.clear()]);
 
-  static Map<String, dynamic> getAll() {
-    final Set<String> keys = getKeys();
-    final Map<String, dynamic> data = <String, dynamic>{};
-    for (final String key in keys) {
-      data[key] = _sp.get(key);
-    }
-    return data;
-  }
+  static Map<String, dynamic> getAll() => <String, dynamic>{...UStorage.instance.toMap(), ...UStorage.secure.toMap()};
 
-  static dynamic getIfNotExpired(String key) {
-    final String expiryKey = "_expiry_$key";
-    final int? expiryTime = _sp.getInt(expiryKey);
-    if (expiryTime != null && DateTime.now().millisecondsSinceEpoch > expiryTime) {
-      remove(key);
-      remove(expiryKey);
-      return null;
-    }
-    return _sp.get(key);
-  }
+  static dynamic getIfNotExpired(String key) => _storeFor(key).get<Object>(key);
 }

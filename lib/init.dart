@@ -97,10 +97,12 @@ Future<void> initU({
   WidgetsFlutterBinding.ensureInitialized();
   await Future.wait(<Future<void>>[
     if (!kIsWeb) SystemChrome.setPreferredOrientations(deviceOrientations),
-    ULocalStorage.init(),
+    UStorage.init(),
     UFileStorage.init(),
-    PackageInfo.fromPlatform().then((PackageInfo info) => UApp.packageInfo = info),
-    UApp.initDeviceInfo(),
+    // One native round trip fills all three.
+    UDevice.init(),
+    UPackage.init(),
+    UConnectivity.init(),
   ]);
   ULoading.initialize(key: navigatorKey, settings: loadingSettings);
   UWebUpdate.startWatching(silent: true);

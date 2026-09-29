@@ -132,7 +132,7 @@ class UDownloadManager extends ChangeNotifier {
   final StreamController<UDownloadTask> _events = StreamController<UDownloadTask>.broadcast();
   final _RateLimiter _globalLimiter = _RateLimiter(0);
   UDownloadTransport? _transport;
-  StreamSubscription<List<ConnectivityResult>>? _connectivity;
+  StreamSubscription<UNetworkStatus>? _connectivity;
   Timer? _ticker;
   Timer? _saveTimer;
   Future<void>? _ready;
@@ -195,19 +195,20 @@ class UDownloadManager extends ChangeNotifier {
       if (task.status == UDownloadStatus.scheduled) _schedule(task);
     }
     try {
-      _applyConnectivity(await Connectivity().checkConnectivity());
-      _connectivity = Connectivity().onConnectivityChanged.listen(_applyConnectivity);
+      await UConnectivity.init();
+      _applyConnectivity(UConnectivity.status);
+      _connectivity = UConnectivity.stream.listen(_applyConnectivity);
     } catch (_) {
-      // No connectivity plugin (tests, unsupported platform): assume online.
+      // No native side (tests, unsupported platform): assume online.
     }
     notifyListeners();
     _ensureTicker();
     _pump();
   }
 
-  void _applyConnectivity(List<ConnectivityResult> results) {
-    final bool online = results.any((ConnectivityResult r) => r != ConnectivityResult.none);
-    final bool wifi = results.any((ConnectivityResult r) => r == ConnectivityResult.wifi || r == ConnectivityResult.ethernet);
+  void _applyConnectivity(UNetworkStatus status) {
+    final bool online = status.isOnline;
+    final bool wifi = status.isWifi || status.isEthernet;
     _online = online;
     _wifi = wifi;
     for (final UDownloadTask task in _tasks) {

@@ -1,57 +1,25 @@
 import "package:u/utilities.dart";
 
+/// The original network helpers, now backed by [UConnectivity] (accurate on the web too).
 abstract class UNetwork {
-  static Future<bool> hasCellular() async {
-    if (!kIsWeb) {
-      final List<ConnectivityResult> connectivityResult = await Connectivity().checkConnectivity();
-      return connectivityResult.contains(ConnectivityResult.mobile);
-    }
-    return true;
-  }
+  static Future<bool> hasCellular() async => (await _status()).isCellular;
 
-  static Future<bool> hasWifi() async {
-    if (!kIsWeb) {
-      final List<ConnectivityResult> connectivityResult = await Connectivity().checkConnectivity();
-      return connectivityResult.contains(ConnectivityResult.wifi);
-    }
-    return true;
-  }
+  static Future<bool> hasWifi() async => (await _status()).isWifi;
 
-  static Future<bool> hasVpn() async {
-    if (!kIsWeb) {
-      final List<ConnectivityResult> connectivityResult = await Connectivity().checkConnectivity();
-      return connectivityResult.contains(ConnectivityResult.vpn);
-    }
-    return true;
-  }
+  static Future<bool> hasVpn() async => (await _status()).isVpn;
 
-  static Future<bool> hasEthernet() async {
-    if (!kIsWeb) {
-      final List<ConnectivityResult> connectivityResult = await Connectivity().checkConnectivity();
-      return connectivityResult.contains(ConnectivityResult.ethernet);
-    }
-    return true;
-  }
+  static Future<bool> hasEthernet() async => (await _status()).isEthernet;
 
-  static Future<bool> hasBluetooth() async {
-    if (!kIsWeb) {
-      final List<ConnectivityResult> connectivityResult = await Connectivity().checkConnectivity();
-      return connectivityResult.contains(ConnectivityResult.bluetooth);
-    }
-    return true;
-  }
+  static Future<bool> hasBluetooth() async => (await _status()).isBluetooth;
 
-  static Future<bool> hasNetworkConnection() async {
-    if (!kIsWeb) {
-      return UInternetConnectionChecker().hasConnection;
-    }
-    return true;
-  }
+  /// A real round trip (by default to `U.baseUrl`), not just an interface check.
+  static Future<bool> hasNetworkConnection() => UConnectivity.hasInternet();
 
-  static Future<bool> hasAnyConnection() async {
-    if (kIsWeb) return true;
-    final List<ConnectivityResult> result = await Connectivity().checkConnectivity();
-    return result.contains(ConnectivityResult.mobile) || result.contains(ConnectivityResult.wifi) || result.contains(ConnectivityResult.ethernet);
+  static Future<bool> hasAnyConnection() async => (await _status()).isOnline;
+
+  static Future<UNetworkStatus> _status() async {
+    await UConnectivity.init();
+    return UConnectivity.status;
   }
 }
 

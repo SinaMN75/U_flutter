@@ -1,3 +1,5 @@
+import "dart:async";
+import "dart:convert";
 import "dart:js_interop";
 import "dart:js_interop_unsafe";
 
@@ -211,5 +213,198 @@ abstract class UWebBridge {
     final JSExportedDartFunction<void Function(web.Event event)> listener = handle.toJS;
     web.document.addEventListener("visibilitychange", listener);
     return () => web.document.removeEventListener("visibilitychange", listener);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Device, network and legacy storage (UDevice, UConnectivity, UStorage)
+  // ---------------------------------------------------------------------------
+
+  static JSObject get _nav => web.window.navigator as JSObject;
+
+  static Object? _prop(JSObject? o, String name) {
+    try {
+      if (o == null || !o.has(name)) return null;
+      return o.getProperty<JSAny?>(name.toJS).dartify();
+    } catch (_) {
+      return null;
+    }
+  }
+
+  static JSObject? _connection() {
+    try {
+      for (final String name in const <String>["connection", "mozConnection", "webkitConnection"]) {
+        if (_nav.has(name)) return _nav.getProperty<JSObject?>(name.toJS);
+      }
+    } catch (_) {}
+    return null;
+  }
+
+  /// shared_preferences' web data: localStorage keys starting with "flutter.", JSON-decoded.
+  static Map<String, Object?> legacyPrefs() {
+    final Map<String, Object?> out = <String, Object?>{};
+    try {
+      final web.Storage storage = web.window.localStorage;
+      for (int i = 0; i < storage.length; i++) {
+        final String? key = storage.key(i);
+        if (key == null || !key.startsWith("flutter.")) continue;
+        final String? raw = storage.getItem(key);
+        if (raw == null) continue;
+        try {
+          out[key] = jsonDecode(raw);
+        } catch (_) {}
+      }
+    } catch (_) {}
+    return out;
+  }
+
+  static void clearLegacyPrefs() {
+    try {
+      final web.Storage storage = web.window.localStorage;
+      final List<String> keys = <String>[
+        for (int i = 0; i < storage.length; i++)
+          if (storage.key(i)?.startsWith("flutter.") ?? false) storage.key(i)!,
+      ];
+      for (final String key in keys) {
+        storage.removeItem(key);
+      }
+    } catch (_) {}
+  }
+
+  /// navigator.onLine plus the Network Information API where the browser has it (Chromium).
+  static Map<String, Object?> networkStatus() {
+    final bool online = web.window.navigator.onLine;
+    final JSObject? c = _connection();
+    final String? type = _prop(c, "type") as String?;
+    final bool saveData = _prop(c, "saveData") == true;
+    final num? downlink = _prop(c, "downlink") as num?;
+    final num? rtt = _prop(c, "rtt") as num?;
+    final String? kind = switch (type) {
+      "wifi" || "cellular" || "ethernet" || "bluetooth" => type,
+      "wimax" || "mixed" || "other" => "other",
+      _ => null,
+    };
+    return <String, Object?>{
+      "types": <String>[if (online && kind != null) kind],
+      "connected": online && type != "none",
+      // onLine=true only means "a network exists"; false is reliable.
+      "internet": online ? null : false,
+      "metered": type == "cellular" || saveData,
+      "constrained": saveData,
+      "cellular": _prop(c, "effectiveType"),
+      "downKbps": downlink == null ? null : (downlink * 1000).round(),
+      "rttMs": rtt?.round(),
+    };
+  }
+
+  /// Calls [onChange] with a fresh [networkStatus] on online/offline and connection changes.
+  static void Function() listenNetwork(void Function(Map<String, Object?> status) onChange) {
+    void handle(web.Event _) => onChange(networkStatus());
+    final JSExportedDartFunction<void Function(web.Event)> listener = handle.toJS;
+    final JSObject? c = _connection();
+    web.window.addEventListener("online", listener);
+    web.window.addEventListener("offline", listener);
+    if (c != null && c.has("addEventListener")) c.callMethod<JSAny?>("addEventListener".toJS, "change".toJS, listener);
+    return () {
+      web.window.removeEventListener("online", listener);
+      web.window.removeEventListener("offline", listener);
+      if (c != null && c.has("removeEventListener")) c.callMethod<JSAny?>("removeEventListener".toJS, "change".toJS, listener);
+    };
+  }
+
+  /// True when [url] answers at all. `no-cors` makes cross-origin hosts usable as probes:
+  /// the response is opaque, but getting one proves the round trip.
+  static Future<bool> probe(String url, int timeoutMs) async {
+    try {
+      await web.window.fetch(url.toJS, web.RequestInit(mode: "no-cors", cache: "no-store")).toDart.timeout(Duration(milliseconds: timeoutMs));
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  static String? _timeZone() {
+    try {
+      final JSObject intl = globalContext.getProperty<JSObject>("Intl".toJS);
+      final JSObject format = intl.callMethod<JSObject>("DateTimeFormat".toJS);
+      return format.callMethod<JSObject>("resolvedOptions".toJS).getProperty<JSString?>("timeZone".toJS)?.toDart;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  static bool? _is24h() {
+    try {
+      final JSObject intl = globalContext.getProperty<JSObject>("Intl".toJS);
+      final JSObject options = JSObject()..["hour"] = "numeric".toJS;
+      final JSObject format = intl.callMethod<JSObject>("DateTimeFormat".toJS, JSArray<JSString>(), options);
+      final String? cycle = format.callMethod<JSObject>("resolvedOptions".toJS).getProperty<JSString?>("hourCycle".toJS)?.toDart;
+      return cycle == null ? null : cycle == "h23" || cycle == "h24";
+    } catch (_) {
+      return null;
+    }
+  }
+
+  /// Raw navigator facts; UDevice parses the user agent into os / browser / type.
+  static Map<String, Object?> deviceInfo() {
+    final web.Navigator n = web.window.navigator;
+    final Object? uaData = _prop(_nav, "userAgentData");
+    final num? memoryGb = _prop(_nav, "deviceMemory") as num?;
+    List<String> languages = const <String>[];
+    try {
+      languages = n.languages.toDart.map((JSString l) => l.toDart).toList();
+    } catch (_) {}
+    return <String, Object?>{
+      "userAgent": n.userAgent,
+      "vendor": n.vendor,
+      "uaPlatform": uaData is Map ? uaData["platform"] as String? : n.platform,
+      "mobile": uaData is Map ? uaData["mobile"] as bool? : null,
+      "touchPoints": n.maxTouchPoints,
+      "webdriver": n.webdriver,
+      "cores": n.hardwareConcurrency,
+      "memory": memoryGb == null ? null : (memoryGb * 1024 * 1024 * 1024).round(),
+      "locales": languages.isEmpty ? <String>[n.language] : languages,
+      "timeZone": _timeZone(),
+      "is24h": _is24h(),
+      "extra": <String, Object?>{
+        "screenWidth": web.window.screen.width,
+        "screenHeight": web.window.screen.height,
+        "pixelRatio": web.window.devicePixelRatio,
+        "cookiesEnabled": n.cookieEnabled,
+        "standalone": isStandalone(),
+        "embedded": isEmbedded(),
+      },
+    };
+  }
+
+  /// Battery (Chromium's getBattery), storage quota and approximate RAM.
+  static Future<Map<String, Object?>> deviceStatus() async {
+    final Map<String, Object?> out = <String, Object?>{};
+    try {
+      if (_nav.has("getBattery")) {
+        final JSObject battery = await _nav.callMethod<JSPromise<JSObject>>("getBattery".toJS).toDart;
+        final num level = (_prop(battery, "level") as num?) ?? 0;
+        final bool charging = _prop(battery, "charging") == true;
+        out["battery"] = (level * 100).round();
+        out["batteryState"] = charging ? (level >= 1 ? "full" : "charging") : "discharging";
+      }
+    } catch (_) {}
+    try {
+      final web.StorageEstimate estimate = await web.window.navigator.storage.estimate().toDart;
+      final int quota = estimate.quota.round();
+      out["diskTotal"] = quota;
+      out["diskFree"] = quota - estimate.usage.round();
+    } catch (_) {}
+    final num? memoryGb = _prop(_nav, "deviceMemory") as num?;
+    if (memoryGb != null) out["memTotal"] = (memoryGb * 1024 * 1024 * 1024).round();
+    return out;
+  }
+
+  /// The only integrity signal a page can see: whether automation drives the browser.
+  static Map<String, Object?> integrity() {
+    final bool automated = web.window.navigator.webdriver;
+    return <String, Object?>{
+      "automation": automated,
+      "reasons": <String>[if (automated) "navigator.webdriver is set"],
+    };
   }
 }

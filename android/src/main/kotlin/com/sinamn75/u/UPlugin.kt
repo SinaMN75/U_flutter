@@ -2,6 +2,7 @@ package com.sinamn75.u
 
 import com.sinamn75.u.ar.UArHandler
 import com.sinamn75.u.camera.UCameraHandler
+import com.sinamn75.u.device.UDeviceHandler
 import com.sinamn75.u.files.UFilesHandler
 import com.sinamn75.u.media.UMediaHandler
 import com.sinamn75.u.media.UMediaSessionHandler
@@ -29,6 +30,7 @@ class UPlugin :
     private var camera: UCameraHandler? = null
     private var ar: UArHandler? = null
     private var files: UFilesHandler? = null
+    private var device: UDeviceHandler? = null
     private var activityBinding: ActivityPluginBinding? = null
     private val userLeaveHint = PluginRegistry.UserLeaveHintListener { media?.onUserLeaveHint() }
 
@@ -56,6 +58,7 @@ class UPlugin :
                 flutterPluginBinding.textureRegistry,
             )
         files = UFilesHandler(flutterPluginBinding.applicationContext, flutterPluginBinding.binaryMessenger)
+        device = UDeviceHandler(flutterPluginBinding.applicationContext, flutterPluginBinding.binaryMessenger)
     }
 
     override fun onMethodCall(
@@ -83,6 +86,8 @@ class UPlugin :
         ar = null
         files?.dispose()
         files = null
+        device?.dispose()
+        device = null
     }
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {

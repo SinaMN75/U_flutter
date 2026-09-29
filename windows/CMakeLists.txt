@@ -28,6 +28,8 @@ list(APPEND PLUGIN_SOURCES
   "camera/u_camera.h"
   "files/u_files.cpp"
   "files/u_files.h"
+  "device/u_device.cpp"
+  "device/u_device.h"
 )
 
 # Define the plugin library target. Its name must not be changed (see comment
@@ -57,6 +59,8 @@ target_include_directories(${PLUGIN_NAME} INTERFACE
 target_link_libraries(${PLUGIN_NAME} PRIVATE flutter flutter_wrapper_plugin)
 target_link_libraries(${PLUGIN_NAME} PRIVATE mf mfplat mfuuid mfreadwrite d3d11 dxgi windowsapp windowscodecs shlwapi)
 target_link_libraries(${PLUGIN_NAME} PRIVATE ole32 shell32 advapi32 uuid)
+# u/device: IP Helper change notifications, sockets for GetBestInterfaceEx, version resources.
+target_link_libraries(${PLUGIN_NAME} PRIVATE iphlpapi ws2_32 version)
 
 # List of absolute paths to libraries that should be bundled with the plugin.
 # This list could contain prebuilt libraries, or libraries created by an

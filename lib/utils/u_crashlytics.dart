@@ -97,48 +97,19 @@ class UCrashlytics {
 
   static Future<Map<String, dynamic>> _getDeviceInfo() async {
     try {
-      if (UApp.isAndroid) {
-        return <String, dynamic>{
-          "type": "Android",
-          "model": UApp.androidDeviceInfo.model,
-          "manufacturer": UApp.androidDeviceInfo.manufacturer,
-          "osVersion": UApp.androidDeviceInfo.version.release,
-        };
-      } else if (UApp.isIos) {
-        return <String, dynamic>{
-          "type": "iOS",
-          "model": UApp.iosDeviceInfo.model,
-          "osVersion": UApp.iosDeviceInfo.systemVersion,
-        };
-      } else if (UApp.isWeb) {
-        return <String, dynamic>{
-          "type": "Web",
-          "browser": UApp.webBrowserInfo.browserName.name,
-          "version": UApp.webBrowserInfo.appVersion,
-        };
-      } else if (UApp.isMacOs) {
-        return <String, dynamic>{
-          "type": "macOS",
-          "model": UApp.macOsDeviceInfo.model,
-          "osVersion": UApp.macOsDeviceInfo.osRelease,
-        };
-      } else if (UApp.isWindows) {
-        return <String, dynamic>{
-          "type": "Windows",
-          "computerName": UApp.windowsDeviceInfo.computerName,
-          "version": UApp.windowsDeviceInfo.majorVersion,
-        };
-      } else if (UApp.isLinux) {
-        return <String, dynamic>{
-          "type": "Linux",
-          "name": UApp.linuxDeviceInfo.name,
-          "version": UApp.linuxDeviceInfo.version,
-        };
-      }
+      await UDevice.init();
+      final UDeviceInfo device = UDevice.info;
+      return <String, dynamic>{
+        "type": device.os,
+        "model": device.model,
+        "manufacturer": device.manufacturer,
+        "osVersion": device.osVersion,
+        "physical": device.isPhysical,
+        if (UApp.isWeb) "browser": "${device.extra["browser"]} ${device.extra["browserVersion"]}",
+      };
     } catch (e) {
       return <String, dynamic>{"error": "Failed to get detailed device info: $e"};
     }
-    return <String, dynamic>{"type": "Unknown device"};
   }
 
   static Map<String, dynamic> _getScreenInfo() {
