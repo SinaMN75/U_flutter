@@ -3,8 +3,8 @@ import "dart:js_interop";
 import "dart:js_interop_unsafe";
 import "dart:typed_data";
 
-import "package:u/utils/files/u_download_platform.dart";
-import "package:u/utils/files/u_storage_backend.dart";
+import "package:u/plugins/files/u_download_platform.dart";
+import "package:u/plugins/files/u_storage_backend.dart";
 import "package:web/web.dart" as web;
 
 bool get isWeb => true;

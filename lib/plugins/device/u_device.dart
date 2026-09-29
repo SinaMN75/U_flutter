@@ -5,9 +5,9 @@ import "dart:io";
 import "package:flutter/foundation.dart";
 import "package:u/plugins/device/u_device_channel.dart";
 import "package:u/plugins/device/u_package.dart";
-import "package:u/utils/files/u_storage_backend.dart";
-import "package:u/utils/files/u_vault.dart";
-import "package:u/utils/web/u_web_native.dart" if (dart.library.js_interop) "package:u/utils/web/u_web_browser.dart";
+import "package:u/plugins/files/u_storage_backend.dart";
+import "package:u/plugins/files/u_vault.dart";
+import "package:u/plugins/web/u_web_native.dart" if (dart.library.js_interop) "package:u/plugins/web/u_web_browser.dart";
 
 // =============================================================================
 // u_device — one device model for every platform. Replaces device_info_plus.

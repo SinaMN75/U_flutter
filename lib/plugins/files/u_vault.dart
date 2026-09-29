@@ -1,8 +1,8 @@
 import "dart:math";
 import "dart:typed_data";
 
-import "package:u/utils/files/u_crypto_stream.dart";
-import "package:u/utils/files/u_storage_backend.dart";
+import "package:u/plugins/files/u_crypto_stream.dart";
+import "package:u/plugins/files/u_storage_backend.dart";
 
 // =============================================================================
 // u_vault — encrypted-at-rest files with streaming, random-access decryption.

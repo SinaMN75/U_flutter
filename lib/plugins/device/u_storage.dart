@@ -5,8 +5,8 @@ import "dart:typed_data";
 import "package:flutter/foundation.dart";
 import "package:flutter/widgets.dart";
 import "package:u/plugins/device/u_storage_legacy.dart";
-import "package:u/utils/files/u_storage_backend.dart";
-import "package:u/utils/files/u_vault.dart";
+import "package:u/plugins/files/u_storage_backend.dart";
+import "package:u/plugins/files/u_vault.dart";
 import "package:u/utils/u_constants.dart";
 
 // =============================================================================

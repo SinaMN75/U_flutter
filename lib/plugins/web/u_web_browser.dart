@@ -4,7 +4,7 @@ import "dart:js_interop";
 import "dart:js_interop_unsafe";
 
 import "package:flutter_web_plugins/flutter_web_plugins.dart";
-import "package:u/components/media/u_media_web.dart";
+import "package:u/plugins/media/u_media_web.dart";
 import "package:u/plugins/ar/u_ar_web.dart";
 import "package:u/plugins/camera/u_camera_web.dart";
 import "package:web/web.dart" as web;

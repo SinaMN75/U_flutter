@@ -2718,90 +2718,9 @@ class UArPage extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(backgroundColor: const Color(0xFF000000), body: child);
 }
 
-abstract class UArExperiences {
-  /// Lets the user place products / furniture / art in their space.
-  static Future<void> place({
-    required List<UArPlaceable> items,
-    int initialItem = 0,
-    UArConfig config = const UArConfig(reticle: true),
-    UArSceneOptions options = const UArSceneOptions(),
-    List<UArOverlay> overlays = const <UArOverlay>[],
-    UArLabels labels = const UArLabels(),
-    UArStyle style = const UArStyle(),
-    void Function(UArPlacedItem placed)? onPlaced,
-  }) async {
-    await UNavigator.push<void>(
-      UArPage(
-        child: UArGate(
-          labels: labels,
-          style: style,
-          fallback: (BuildContext context, UArAvailability availability) => _NativeFallback(items: items, labels: labels, style: style),
-          builder: (BuildContext context, UArCapabilities capabilities) => UArScene(
-            gate: false,
-            items: items,
-            initialItem: initialItem,
-            config: config,
-            options: options,
-            overlays: overlays,
-            labels: labels,
-            style: style,
-            onPlaced: onPlaced,
-          ),
-        ),
-      ),
-      fullscreenDialog: true,
-    );
-  }
-
-  /// A full-screen 3D product viewer with a "View in AR" button.
-  static Future<void> viewProduct({required UArSource source, UArSource? iosSource, String? title, List<UArHotspot> hotspots = const <UArHotspot>[], UArLabels labels = const UArLabels()}) =>
-      UNavigator.push<void>(
-        Scaffold(
-          appBar: AppBar(title: title == null ? null : UTextTitleMedium(title)),
-          body: U3DViewer(source: source, iosSource: iosSource, title: title, hotspots: hotspots, labels: labels),
-        ),
-      );
-
-  static Future<void> measure({UArMeasureUnit unit = UArMeasureUnit.metric, bool closeShape = false}) => UNavigator.push<void>(
-    UArPage(
-      child: UArMeasure(unit: unit, closeShape: closeShape),
-    ),
-    fullscreenDialog: true,
-  );
-
-  static Future<void> tryOn({required List<UArTryOnItem> items, int initialIndex = 0}) => UNavigator.push<void>(
-    UArPage(
-      child: UArFaceTryOn(items: items, initialIndex: initialIndex),
-    ),
-    fullscreenDialog: true,
-  );
-
-  static Future<void> images({required List<UArImageTarget> targets}) => UNavigator.push<void>(UArPage(child: UArImageTrigger(targets: targets)), fullscreenDialog: true);
-
-  static Future<void> places({required List<UArPlace> places, void Function(UArPlace place)? onPlaceTap, double maxDistance = 800}) => UNavigator.push<void>(
-    UArPage(
-      child: UArGeoView(places: places, onPlaceTap: onPlaceTap, maxDistance: maxDistance),
-    ),
-    fullscreenDialog: true,
-  );
-
-  static Future<void> codes({required Widget Function(BuildContext context, String code, UArProjection projection) cardBuilder}) =>
-      UNavigator.push<void>(UArPage(child: UArCodeView(cardBuilder: cardBuilder)), fullscreenDialog: true);
-
-  static Future<UArRoomScanResult?> scanRoom() => UAr.scanRoom(
-    options: UArRoomScanOptions(doneLabel: U.s.done, cancelLabel: U.s.cancel),
-  );
-
-  static Future<UArObjectCaptureResult?> captureObject({UArObjectCaptureDetail detail = UArObjectCaptureDetail.reduced}) => UAr.captureObject(
-    options: UArObjectCaptureOptions(
-      detail: detail,
-      labels: <String, String>{"continue": U.s.next, "start": U.s.startCapture, "finish": U.s.finish, "cancel": U.s.cancel, "processing": U.s.processing},
-    ),
-  );
-}
-
-class _NativeFallback extends StatelessWidget {
-  const _NativeFallback({required this.items, required this.labels, required this.style});
+/// Shown by UArExperiences.place when live AR is unavailable: opens the OS 3D/AR viewer instead.
+class UArNativeFallback extends StatelessWidget {
+  const UArNativeFallback({required this.items, this.labels = const UArLabels(), this.style = const UArStyle(), super.key});
 
   final List<UArPlaceable> items;
   final UArLabels labels;

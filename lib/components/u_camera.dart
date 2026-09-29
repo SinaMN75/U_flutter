@@ -228,44 +228,6 @@ class UCameraOptions {
   );
 }
 
-/// One-call helpers that mirror `UFile.showImagePicker`.
-abstract class UCamera {
-  /// Opens the full camera page and returns everything captured.
-  static Future<List<UFileData>> open({UCameraOptions options = const UCameraOptions(), Function(List<UFileData>)? action}) async {
-    final List<UFileData>? result = await UNavigator.push<List<UFileData>>(UCameraPage(options: options), fullscreenDialog: true);
-    final List<UFileData> files = result ?? <UFileData>[];
-    action?.call(files);
-    return files;
-  }
-
-  static Future<UFileData?> takePhoto({UCameraOptions options = const UCameraOptions(), Function(UFileData?)? action}) async {
-    final List<UFileData> files = await open(options: options.copyWith(mode: UCameraMode.photo, allowMultiple: false));
-    final UFileData? file = files.isEmpty ? null : files.first;
-    action?.call(file);
-    return file;
-  }
-
-  /// Captures several photos in one session; [maxCount] 0 means unlimited.
-  static Future<List<UFileData>> takePhotos({int maxCount = 0, UCameraOptions options = const UCameraOptions(), Function(List<UFileData>)? action}) async {
-    final List<UFileData> files = await open(options: options.copyWith(mode: UCameraMode.photo, allowMultiple: true, maxCount: maxCount));
-    action?.call(files);
-    return files;
-  }
-
-  static Future<UFileData?> recordVideo({UCameraOptions options = const UCameraOptions(), Function(UFileData?)? action}) async {
-    final List<UFileData> files = await open(options: options.copyWith(mode: UCameraMode.video, allowMultiple: false));
-    final UFileData? file = files.isEmpty ? null : files.first;
-    action?.call(file);
-    return file;
-  }
-
-  static Future<List<UCameraDevice>> devices() => UCameraController.availableCameras();
-
-  static Future<UCameraPermissionState> permission() => UCameraController.permissionStatus();
-
-  static Future<UCameraPermissionState> requestPermission({bool audio = false}) => UCameraController.requestPermission(audio: audio);
-}
-
 /// Renders the live preview of [controller]. Uses a GPU texture everywhere
 /// except the web, where the browser's own video element is embedded.
 class UCameraPreview extends StatelessWidget {

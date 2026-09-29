@@ -6,7 +6,7 @@ import "package:flutter/foundation.dart";
 import "package:flutter/services.dart";
 import "package:u/plugins/device/u_device_channel.dart";
 import "package:u/plugins/device/u_storage.dart";
-import "package:u/utils/web/u_web_native.dart" if (dart.library.js_interop) "package:u/utils/web/u_web_browser.dart";
+import "package:u/plugins/web/u_web_native.dart" if (dart.library.js_interop) "package:u/plugins/web/u_web_browser.dart";
 
 // =============================================================================
 // u_package — this app's identity and launch history. Replaces package_info_plus.

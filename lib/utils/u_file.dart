@@ -58,10 +58,13 @@ class UCropOptions {
 }
 
 abstract class UFile {
+  /// File extensions treated as images.
   static const Set<String> imageExtensions = <String>{"jpg", "jpeg", "png", "gif", "webp", "bmp", "heic", "heif"};
 
+  /// True when [extension] is an image type (jpg, png, …).
   static bool isImageExtension(String? extension) => extension != null && imageExtensions.contains(extension.toLowerCase());
 
+  /// Picks images from the gallery or camera (same as pickImage).
   static Future<List<UFileData>> showImagePicker({
     required UImageSource source,
     bool allowMultiple = false,
@@ -70,6 +73,7 @@ abstract class UFile {
     Function(List<UFileData>)? action,
   }) => pickImage(source: source, selfie: isSelfie, allowMultiple: allowMultiple, crop: crop, action: action);
 
+  /// Picks any files (same as pickFiles).
   static Future<List<UFileData>> showFilePicker({
     Function(List<UFileData>)? action,
     FileType fileType = FileType.any,
@@ -104,6 +108,7 @@ abstract class UFile {
     }
   }
 
+  /// Picks one or more images from the gallery or camera, optionally cropped.
   static Future<List<UFileData>> pickImage({
     UImageSource source = UImageSource.gallery,
     bool selfie = false,
@@ -134,6 +139,7 @@ abstract class UFile {
     }
   }
 
+  /// Picks one image from the gallery or camera, optionally cropped.
   static Future<UFileData?> pickSingleImage({
     UImageSource source = UImageSource.gallery,
     bool selfie = false,
@@ -148,6 +154,7 @@ abstract class UFile {
     return file;
   }
 
+  /// Picks one or more files of any type.
   static Future<List<UFileData>> pickFiles({
     bool allowMultiple = true,
     FileType fileType = FileType.any,
@@ -156,6 +163,7 @@ abstract class UFile {
     Function(List<UFileData>)? action,
   }) => showFilePicker(allowMultiple: allowMultiple, fileType: fileType, allowedExtensions: allowedExtensions, crop: crop, action: action);
 
+  /// Picks one file of any type.
   static Future<UFileData?> pickFile({
     FileType fileType = FileType.any,
     List<String>? allowedExtensions,
@@ -168,11 +176,13 @@ abstract class UFile {
     return file;
   }
 
+  /// Opens the camera page and returns everything captured.
   static Future<List<UFileData>> openCamera({
     UCameraOptions options = const UCameraOptions(),
     Function(List<UFileData>)? action,
   }) => UCamera.open(options: options, action: action);
 
+  /// Takes one photo with the camera, optionally cropped.
   static Future<UFileData?> takePhoto({
     bool selfie = false,
     UCropOptions? crop,
@@ -180,6 +190,7 @@ abstract class UFile {
     Function(UFileData?)? action,
   }) => pickSingleImage(source: UImageSource.camera, selfie: selfie, crop: crop, cameraOptions: options, action: action);
 
+  /// Takes several photos in one camera session.
   static Future<List<UFileData>> takePhotos({
     int maxCount = 0,
     bool selfie = false,
@@ -188,11 +199,13 @@ abstract class UFile {
     Function(List<UFileData>)? action,
   }) => pickImage(source: UImageSource.camera, selfie: selfie, allowMultiple: true, maxCount: maxCount, crop: crop, cameraOptions: options, action: action);
 
+  /// Records one video with the camera.
   static Future<UFileData?> recordVideo({
     UCameraOptions options = const UCameraOptions(),
     Function(UFileData?)? action,
   }) => UCamera.recordVideo(options: options, action: action);
 
+  /// Picks a video from the gallery or records one.
   static Future<UFileData?> pickVideo({
     UImageSource source = UImageSource.gallery,
     UCameraOptions options = const UCameraOptions(),
@@ -215,6 +228,7 @@ abstract class UFile {
     return out;
   }
 
+  /// Opens the cropper for an image and returns the cropped file.
   static Future<UFileData?> cropImage({
     Uint8List? bytes,
     String? filePath,
@@ -231,10 +245,127 @@ abstract class UFile {
     return cropped;
   }
 
+  /// Writes bytes to a new temporary file and returns it.
   static Future<File> writeToFile(Uint8List data, {String extension = "tmp"}) async {
     final Directory dir = await getTemporaryDirectory();
     return File("${dir.path}/u_${DateTime.now().microsecondsSinceEpoch}.$extension").writeAsBytes(data);
   }
+
+  // --- App file storage (UFileStorage): keyed files, cached index, expiry, encrypted vault ---------
+
+  /// Sets up file storage (initU() already does this).
+  static Future<void> initStorage({int? cacheMaxBytes}) => UFileStorage.init(cacheMaxBytes: cacheMaxBytes);
+
+  /// Saves bytes under [key]; use bucket cache/vault/temp for other places.
+  static Future<void> saveBytes(String key, List<int> bytes, {UStorageBucket bucket = UStorageBucket.support, Duration? expireIn, String? mimeType}) =>
+      UFileStorage.setBytes(key, bytes, bucket: bucket, expireIn: expireIn, mimeType: mimeType);
+
+  /// Saves text under [key].
+  static Future<void> saveString(String key, String value, {UStorageBucket bucket = UStorageBucket.support, Duration? expireIn}) =>
+      UFileStorage.setString(key, value, bucket: bucket, expireIn: expireIn);
+
+  /// Saves any JSON value under [key].
+  static Future<void> saveJson(String key, Object? value, {UStorageBucket bucket = UStorageBucket.support, Duration? expireIn}) =>
+      UFileStorage.setJson(key, value, bucket: bucket, expireIn: expireIn);
+
+  /// Saves bytes encrypted (vault) under [key].
+  static Future<void> saveSecure(String key, List<int> bytes) => UFileStorage.setBytes(key, bytes, bucket: UStorageBucket.vault);
+
+  /// Saves bytes as re-creatable cache under [key] (may be evicted when space is low).
+  static Future<void> saveCache(String key, List<int> bytes, {Duration? expireIn}) => UFileStorage.setBytes(key, bytes, bucket: UStorageBucket.cache, expireIn: expireIn);
+
+  /// Reads the bytes saved under [key] (null if missing).
+  static Future<Uint8List?> readBytes(String key, {UStorageBucket bucket = UStorageBucket.support}) => UFileStorage.getBytes(key, bucket: bucket);
+
+  /// Reads the text saved under [key].
+  static Future<String?> readString(String key, {UStorageBucket bucket = UStorageBucket.support}) => UFileStorage.getString(key, bucket: bucket);
+
+  /// Reads the JSON saved under [key].
+  static Future<dynamic> readJson(String key, {UStorageBucket bucket = UStorageBucket.support}) => UFileStorage.getJson(key, bucket: bucket);
+
+  /// Reads encrypted bytes saved with [saveSecure].
+  static Future<Uint8List?> readSecure(String key) => UFileStorage.getBytes(key, bucket: UStorageBucket.vault);
+
+  /// Reads cached bytes saved with [saveCache].
+  static Future<Uint8List?> readCache(String key) => UFileStorage.getBytes(key, bucket: UStorageBucket.cache);
+
+  /// Streams the bytes under [key] (optionally a byte range), for big files.
+  static Stream<Uint8List> readStream(String key, {UStorageBucket bucket = UStorageBucket.support, int start = 0, int? end}) =>
+      UFileStorage.read(key, bucket: bucket, start: start, end: end);
+
+  /// Copies a file from disk into storage under [key].
+  static Future<void> importFile(String sourcePath, String key, {UStorageBucket bucket = UStorageBucket.support, bool deleteSource = false}) =>
+      UFileStorage.importFile(sourcePath, key, bucket: bucket, deleteSource: deleteSource);
+
+  /// Copies the file under [key] out to [destinationPath].
+  static Future<bool> exportFile(String key, String destinationPath, {UStorageBucket bucket = UStorageBucket.support}) =>
+      UFileStorage.exportFile(key, destinationPath, bucket: bucket);
+
+  /// True when something is saved under [key].
+  static bool exists(String key, {UStorageBucket bucket = UStorageBucket.support}) => UFileStorage.contains(key, bucket: bucket);
+
+  /// Size in bytes of the file under [key].
+  static int sizeOf(String key, {UStorageBucket bucket = UStorageBucket.support}) => UFileStorage.size(key, bucket: bucket);
+
+  /// Real file path of [key] (null on the web or for vault files).
+  static String? pathOf(String key, {UStorageBucket bucket = UStorageBucket.support}) => UFileStorage.pathOf(key, bucket: bucket);
+
+  /// All keys saved in [bucket].
+  static List<String> storageKeys({UStorageBucket bucket = UStorageBucket.support}) => UFileStorage.keys(bucket: bucket);
+
+  /// All stored files with their size, dates and tags.
+  static List<UStorageEntry> storageEntries({UStorageBucket? bucket}) => UFileStorage.entries(bucket: bucket);
+
+  /// Bytes used by storage (one bucket or all).
+  static int storageUsage({UStorageBucket? bucket}) => UFileStorage.usage(bucket: bucket);
+
+  /// Deletes the file under [key].
+  static Future<void> delete(String key, {UStorageBucket bucket = UStorageBucket.support}) => UFileStorage.remove(key, bucket: bucket);
+
+  /// Deletes every stored file (one bucket or all).
+  static Future<void> deleteAll({UStorageBucket? bucket, bool includeDownloads = false}) => UFileStorage.clear(bucket: bucket, includeDownloads: includeDownloads);
+
+  /// Copies a stored file to another key.
+  static Future<void> copy(String from, String to, {UStorageBucket bucket = UStorageBucket.support, UStorageBucket? toBucket}) =>
+      UFileStorage.copy(from, to, bucket: bucket, toBucket: toBucket);
+
+  /// Moves a stored file to another key.
+  static Future<void> move(String from, String to, {UStorageBucket bucket = UStorageBucket.support, UStorageBucket? toBucket}) =>
+      UFileStorage.move(from, to, bucket: bucket, toBucket: toBucket);
+
+  /// Emits whenever a stored file is added, changed or removed.
+  static Stream<UStorageEvent> get storageChanges => UFileStorage.changes;
+
+  /// Deletes expired files now.
+  static Future<void> deleteExpired() => UFileStorage.evictExpired();
+
+  /// Shrinks the cache bucket to its size limit now.
+  static Future<void> trimCache() => UFileStorage.trimCache();
+
+  /// Opens the built-in storage manager screen.
+  static Future<void> openStoragePage() => UNavigator.push<void>(const UStorageManagerPage());
+
+  // --- Native file actions (UFilesChannel) ---------------------------------------------------
+
+  /// Opens a file with the default app.
+  static Future<bool> open(String pathOrUri, {String? mimeType}) => UFilesChannel.open(pathOrUri, mimeType: mimeType);
+
+  /// Shows a file in Finder / Explorer / Files.
+  static Future<bool> reveal(String pathOrUri) => UFilesChannel.reveal(pathOrUri);
+
+  /// Shows the "Save as" dialog and copies [sourcePath] there; returns where it was saved.
+  static Future<String?> saveAs({required String sourcePath, required String fileName, String? mimeType}) =>
+      UFilesChannel.saveAs(sourcePath: sourcePath, fileName: fileName, mimeType: mimeType);
+
+  /// Copies a local file into the public Downloads folder (Android).
+  static Future<String?> saveToDownloads({required String sourcePath, required String fileName, String? mimeType, String? subfolder}) =>
+      UFilesChannel.saveToDownloads(sourcePath: sourcePath, fileName: fileName, mimeType: mimeType, subfolder: subfolder);
+
+  /// Free disk space in bytes where [path] lives.
+  static Future<int?> freeSpace(String path) => UFilesChannel.freeSpace(path);
+
+  /// Keeps [path] out of iCloud / device backups (iOS, macOS).
+  static Future<void> excludeFromBackup(String path) => UFilesChannel.excludeFromBackup(path);
 
   static Future<List<UFileData>> _collect(Iterable<Future<UFileData>> sources, UCropOptions? crop) async {
     final List<UFileData> out = <UFileData>[];

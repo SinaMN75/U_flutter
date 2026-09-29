@@ -4,7 +4,7 @@ import "dart:io";
 import "package:flutter/foundation.dart";
 import "package:path_provider/path_provider.dart";
 import "package:u/plugins/device/u_device_channel.dart";
-import "package:u/utils/web/u_web_native.dart" if (dart.library.js_interop) "package:u/utils/web/u_web_browser.dart";
+import "package:u/plugins/web/u_web_native.dart" if (dart.library.js_interop) "package:u/plugins/web/u_web_browser.dart";
 
 // =============================================================================
 // u_storage_legacy — reads what shared_preferences saved, once, for migration.

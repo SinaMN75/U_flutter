@@ -1,6 +1,6 @@
 import "dart:typed_data";
 
-import "package:u/utils/files/u_storage_backend_io.dart" if (dart.library.js_interop) "package:u/utils/files/u_storage_backend_web.dart" as impl;
+import "package:u/plugins/files/u_storage_backend_io.dart" if (dart.library.js_interop) "package:u/plugins/files/u_storage_backend_web.dart" as impl;
 
 // =============================================================================
 // u_storage_backend — the byte store underneath UFileStorage, the vault and the

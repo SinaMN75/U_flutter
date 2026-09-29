@@ -3,8 +3,8 @@ import "dart:js_interop";
 import "dart:js_interop_unsafe";
 import "dart:typed_data";
 
-import "package:u/utils/files/u_crypto_stream.dart";
-import "package:u/utils/files/u_storage_backend.dart";
+import "package:u/plugins/files/u_crypto_stream.dart";
+import "package:u/plugins/files/u_storage_backend.dart";
 import "package:web/web.dart" as web;
 
 // IndexedDB layout (database "u_storage", version 1):

@@ -6,7 +6,7 @@ import "package:flutter/widgets.dart";
 import "package:http/http.dart" as http;
 import "package:u/init.dart";
 import "package:u/plugins/device/u_device_channel.dart";
-import "package:u/utils/web/u_web_native.dart" if (dart.library.js_interop) "package:u/utils/web/u_web_browser.dart";
+import "package:u/plugins/web/u_web_native.dart" if (dart.library.js_interop) "package:u/plugins/web/u_web_browser.dart";
 
 // =============================================================================
 // u_connectivity — network state for every platform. Replaces connectivity_plus.

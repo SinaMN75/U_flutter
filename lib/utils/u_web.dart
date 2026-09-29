@@ -1,5 +1,5 @@
 import "package:u/utilities.dart";
-import "package:u/utils/web/u_web_native.dart" if (dart.library.js_interop) "package:u/utils/web/u_web_browser.dart";
+import "package:u/plugins/web/u_web_native.dart" if (dart.library.js_interop) "package:u/plugins/web/u_web_browser.dart";
 
 // =============================================================================
 // u_web — everything web-specific you are meant to call, read and change.
@@ -15,8 +15,7 @@ typedef UWebMessageHandler = void Function(String origin, Map<String, dynamic> d
 /// `window.postMessage` traffic, used by flows that hand control to a page we do not own
 /// (an IPG checkout, an OAuth popup) and wait for it to report back.
 abstract class UWebMessage {
-  /// Starts listening and returns a disposer. Call the disposer from `dispose()`;
-  /// off the web it is a no-op, so callers need no platform check.
+  /// Listens for window.postMessage messages; call the returned function to stop.
   static void Function() listen(UWebMessageHandler onMessage) => UWebBridge.listenMessage(onMessage);
 }
 
@@ -46,17 +45,19 @@ abstract class UWebMessage {
 abstract class UPwa {
   static String get _ua => UWebBridge.userAgent().toLowerCase();
 
-  /// True when the app was launched from the home screen rather than a browser tab.
+  /// True when the web app was opened from the home screen (installed PWA).
   static bool get isStandalone => UApp.isWeb && UWebBridge.isStandalone();
 
+  /// True in a browser on an iPhone.
   static bool get isIphoneBrowser => UApp.isWeb && _ua.contains("iphone");
 
+  /// True in a browser on iPhone / iPad / iPod.
   static bool get isIosBrowser => UApp.isWeb && (_ua.contains("iphone") || _ua.contains("ipad") || _ua.contains("ipod"));
 
+  /// True in a browser on Android.
   static bool get isAndroidBrowser => UApp.isWeb && _ua.contains("android");
 
-  /// True only for real Safari. Chrome, Firefox, Edge and Opera on iOS are WebKit too but
-  /// cannot install to the home screen, so they get the "open this in Safari" hint instead.
+  /// True only in real Safari on iOS (the only iOS browser that can install PWAs).
   static bool get isIosSafari {
     if (!isIosBrowser) return false;
     const List<String> nonSafari = <String>["crios", "fxios", "edgios", "opios", "mercury", "gsa"];
@@ -64,13 +65,10 @@ abstract class UPwa {
     return _ua.contains("safari");
   }
 
-  /// True when showing the install walkthrough would make sense: an iOS browser, not yet installed.
+  /// True when an "Add to Home Screen" guide makes sense (iOS browser, not installed).
   static bool get canPromptIosInstall => isIosBrowser && !isStandalone;
 
-  /// Opens a bottom sheet walking the user through "Share → Add to Home Screen".
-  ///
-  /// Does nothing unless [canPromptIosInstall], which [force] overrides so the sheet can also
-  /// sit behind a help button. Every string falls back to the localized default.
+  /// Shows a sheet explaining Share → Add to Home Screen ([force] shows it anyway).
   static Future<void> promptIosInstall({
     bool force = false,
     String? title,
@@ -236,7 +234,7 @@ class UWebBuild {
 /// final UWebBuild? deployed = await UWebUpdate.serverBuild();
 /// ```
 abstract class UWebUpdate {
-  /// Build id compiled into this bundle by `--dart-define=U_BUILD_ID=...`, empty when not passed.
+  /// Build id baked in with --dart-define=U_BUILD_ID.
   static const String buildId = String.fromEnvironment("U_BUILD_ID");
 
   // A build we already reloaded for. Persisted so a host that keeps serving the old files cannot
@@ -247,7 +245,7 @@ abstract class UWebUpdate {
   // declining once does not pin the browser to an old build forever.
   static const String _declinedBuildKey = "u_web_declined_build";
 
-  /// Files re-downloaded before reloading, relative to the deployment base. Missing ones are ignored.
+  /// Files re-downloaded by refresh().
   static const List<String> defaultAssets = <String>[
     "index.html",
     "flutter_bootstrap.js",
@@ -261,7 +259,7 @@ abstract class UWebUpdate {
     "assets/NOTICES",
   ];
 
-  /// How long a probe of the server may take before it is treated as "nothing new".
+  /// How long a build check may take.
   static Duration timeout = const Duration(seconds: 10);
 
   static final RegExp _serviceWorkerVersionPattern = RegExp("serviceWorkerVersion[\"']?\\s*:\\s*[\"']([0-9]+)");
@@ -270,12 +268,7 @@ abstract class UWebUpdate {
   static void Function()? _visibilityDisposer;
   static bool _checking = false;
 
-  /// Throws away every browser-side copy of the app and reloads into the deployed build.
-  ///
-  /// Unregisters the service workers, empties CacheStorage, re-downloads [assets] with a
-  /// cache-bypassing fetch so the HTTP cache ends up holding the server copy, then reloads.
-  /// Pass [bustUrl] when the host serves `index.html` itself under an `immutable` policy — it
-  /// appends a `_u` query parameter, which changes the URL the user sees.
+  /// Clears service workers and caches and reloads into the newest deployed build.
   static Future<void> refresh({
     List<String> assets = defaultAssets,
     bool bustUrl = false,
@@ -288,20 +281,20 @@ abstract class UWebUpdate {
     UWebBridge.reload(bustUrl ? _bustedUrl() : null);
   }
 
-  /// The build the server is serving right now, read past every cache. Null off the web or when offline.
+  /// The build the server is serving now (null off the web or offline).
   static Future<UWebBuild?> serverBuild() => _build("no-store");
 
-  /// The build the browser would serve from its own HTTP cache, which is what this tab is running.
+  /// The build this tab is running (from the browser cache).
   static Future<UWebBuild?> cachedBuild() => _build("force-cache");
 
-  /// Service worker version serving this page, or null when no service worker controls it.
+  /// Version of the service worker serving this page.
   static String? runningServiceWorkerVersion() {
     final String? url = UWebBridge.activeServiceWorkerUrl();
     if (url == null) return null;
     return Uri.tryParse(url)?.queryParameters["v"];
   }
 
-  /// Whether the server holds a build other than the one this tab is running.
+  /// True when a newer build is deployed than the one running.
   static Future<bool> hasUpdate() async {
     if (!UApp.isWeb) return false;
     if (await UWebBridge.serviceWorkerHasPendingUpdate().timeout(timeout, onTimeout: () => false)) return true;
@@ -321,12 +314,7 @@ abstract class UWebUpdate {
     return cached != null && cached.signature != server.signature;
   }
 
-  /// Checks the server and, when a newer build is deployed, reloads into it. Returns whether a refresh started.
-  ///
-  /// [silent] refreshes without asking, otherwise the user confirms first. [once] keeps a build
-  /// the user declined from being offered again, and keeps a build that was already reloaded for
-  /// from being reloaded for a second time, which is what stops an endless auto-refresh when a
-  /// misconfigured host keeps handing out the old files.
+  /// Reloads into a newer build if one is deployed ([silent] skips asking); true if it did.
   static Future<bool> checkAndRefresh({
     bool silent = false,
     bool once = true,
@@ -369,12 +357,7 @@ abstract class UWebUpdate {
     }
   }
 
-  /// Watches for new builds: once at startup, every [interval], and whenever the tab is brought
-  /// back to the foreground. Safe to call before `runApp`. End it with [stopWatching].
-  ///
-  /// The startup check is [silentOnStart] because nothing is in flight yet, so reloading costs the
-  /// user nothing and needs no navigator. Later checks use [silent], which defaults to asking
-  /// first — a reload in the middle of a half-filled form would throw that input away.
+  /// Checks for new builds at startup, every [interval] and when the tab comes back.
   static void startWatching({
     Duration interval = const Duration(minutes: 15),
     bool silent = false,
@@ -390,6 +373,7 @@ abstract class UWebUpdate {
     if (checkNow) unawaited(checkAndRefresh(silent: silentOnStart, bustUrl: bustUrl));
   }
 
+  /// Stops checking for new builds.
   static void stopWatching() {
     _timer?.cancel();
     _timer = null;

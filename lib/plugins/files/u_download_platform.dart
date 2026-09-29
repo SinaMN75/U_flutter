@@ -1,7 +1,7 @@
 import "dart:typed_data";
 
-import "package:u/utils/files/u_download_platform_io.dart" if (dart.library.js_interop) "package:u/utils/files/u_download_platform_web.dart" as impl;
-import "package:u/utils/files/u_storage_backend.dart";
+import "package:u/plugins/files/u_download_platform_io.dart" if (dart.library.js_interop) "package:u/plugins/files/u_download_platform_web.dart" as impl;
+import "package:u/plugins/files/u_storage_backend.dart";
 
 // =============================================================================
 // u_download_platform — what differs between native and the browser when

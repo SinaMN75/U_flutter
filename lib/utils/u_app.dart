@@ -1,5 +1,5 @@
 import "package:u/utilities.dart";
-import "package:u/utils/web/u_web_native.dart" if (dart.library.js_interop) "package:u/utils/web/u_web_browser.dart";
+import "package:u/plugins/web/u_web_native.dart" if (dart.library.js_interop) "package:u/plugins/web/u_web_browser.dart";
 
 abstract class UApp {
   /// All info about this app (name, id, version, build, install time, …).

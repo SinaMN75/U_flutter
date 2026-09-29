@@ -4,9 +4,9 @@ import "dart:typed_data";
 
 import "package:path_provider/path_provider.dart";
 import "package:u/plugins/files/u_files_channel.dart";
-import "package:u/utils/files/u_crypto_stream.dart";
-import "package:u/utils/files/u_download_platform.dart";
-import "package:u/utils/files/u_storage_backend.dart";
+import "package:u/plugins/files/u_crypto_stream.dart";
+import "package:u/plugins/files/u_download_platform.dart";
+import "package:u/plugins/files/u_storage_backend.dart";
 import "package:url_launcher/url_launcher.dart";
 
 bool get isWeb => false;
