@@ -6,19 +6,19 @@ double _dialogWidth(BuildContext context, double max) {
 }
 
 /// A dialog around a [Form]: Submit validates it, runs [onSubmit] with a loading button,
-/// and closes the dialog when [onSubmit] returns true.
+/// and closes the dialog when [onSubmit] returns true. Without [onSubmit] it is view-only and shows a Close button.
 class UFormDialog extends StatefulWidget {
-  const UFormDialog({required this.title, required this.onSubmit, required this.children, super.key, this.maxWidth = 480});
+  const UFormDialog({required this.title, required this.children, super.key, this.onSubmit, this.maxWidth = 480});
 
   final String title;
-  final Future<bool> Function() onSubmit;
+  final Future<bool> Function()? onSubmit;
   final List<Widget> Function(BuildContext context, StateSetter setState) children;
   final double maxWidth;
 
   static Future<void> show({
     required String title,
-    required Future<bool> Function() onSubmit,
     required List<Widget> Function(BuildContext context, StateSetter setState) children,
+    Future<bool> Function()? onSubmit,
     double maxWidth = 480,
   }) => UNavigator.dialog<void>(UFormDialog(title: title, onSubmit: onSubmit, maxWidth: maxWidth, children: children));
 
@@ -33,7 +33,7 @@ class _UFormDialogState extends State<UFormDialog> {
   Future<void> _submit() async {
     if (_saving || !(_formKey.currentState?.validate() ?? false)) return;
     setState(() => _saving = true);
-    final bool ok = await widget.onSubmit();
+    final bool ok = await widget.onSubmit!();
     if (!mounted) return;
     if (ok) return UNavigator.back();
     setState(() => _saving = false);
@@ -53,7 +53,7 @@ class _UFormDialogState extends State<UFormDialog> {
             children: <Widget>[
               ...widget.children(context, setState),
               const SizedBox(height: 20),
-              UButtonSubmitCancel(isLoading: _saving, onSubmit: _submit),
+              if (widget.onSubmit == null) UButton(title: U.s.close, onTap: UNavigator.back) else UButtonSubmitCancel(isLoading: _saving, onSubmit: _submit),
             ],
           ),
         ),

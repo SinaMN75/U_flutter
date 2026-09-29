@@ -2542,6 +2542,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get minimumStayMonths => 'حداقل مدت اقامت (ماه)';
 
   @override
+  String get minimumPurchase => 'حداقل مبلغ خرید';
+
+  @override
   String get minute => 'دقیقه';
 
   @override

@@ -3,8 +3,6 @@ part of "../../u_admin.dart";
 class UAdminSettingsPage extends StatefulWidget {
   const UAdminSettingsPage({super.key});
 
-  static void open() => U.addOrSwitchTab(U.s.settings, const UAdminSettingsPage());
-
   static UAdminModule module({List<TagUser>? roles}) => UAdminModule(
     title: U.s.settings,
     icon: Icons.settings_rounded,

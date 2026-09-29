@@ -11,7 +11,9 @@ class UAdminModule {
 
   bool get visible => UAdmin.canAccess(roles);
 
-  UMenuItem toItem() => UMenuItem(id: title, title: title, icon: icon, selectedIcon: selectedIcon, onTap: () => U.addOrSwitchTab(title, page()));
+  void open() => U.addOrSwitchTab(title, page());
+
+  UMenuItem toItem() => UMenuItem(id: title, title: title, icon: icon, selectedIcon: selectedIcon, onTap: open);
 }
 
 class UAdminGroup {

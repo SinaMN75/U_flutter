@@ -5036,6 +5036,12 @@ abstract class AppLocalizations {
   /// **'Minimum stay (months)'**
   String get minimumStayMonths;
 
+  /// No description provided for @minimumPurchase.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum purchase'**
+  String get minimumPurchase;
+
   /// No description provided for @minute.
   ///
   /// In en, this message translates to:

@@ -2542,6 +2542,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get minimumStayMonths => 'Minimum stay (months)';
 
   @override
+  String get minimumPurchase => 'Minimum purchase';
+
+  @override
   String get minute => 'Minute';
 
   @override
