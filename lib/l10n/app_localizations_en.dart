@@ -5453,4 +5453,43 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get shapes => 'Shapes';
+
+  @override
+  String get prepaid => 'Prepaid';
+
+  @override
+  String get postpaid => 'Postpaid';
+
+  @override
+  String get tdLte => 'TD-LTE';
+
+  @override
+  String get roaming => 'Roaming';
+
+  @override
+  String get companionPackages => 'Companion packages';
+
+  @override
+  String get normalCharge => 'Regular';
+
+  @override
+  String get amazingCharge => 'Amazing';
+
+  @override
+  String get excitingCharge => 'Exciting (Shoorangiz)';
+
+  @override
+  String get youthCharge => 'Youth';
+
+  @override
+  String get womenCharge => 'Women';
+
+  @override
+  String get chargeType => 'Charge type';
+
+  @override
+  String get simType => 'SIM type';
+
+  @override
+  String get operatorServiceIsTemporarilyUnavailable => 'This operator\'s service is temporarily unavailable, so the purchase may fail. Please try again in a few minutes.';
 }

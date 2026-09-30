@@ -10789,6 +10789,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Shapes'**
   String get shapes;
+
+  /// No description provided for @prepaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Prepaid'**
+  String get prepaid;
+
+  /// No description provided for @postpaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Postpaid'**
+  String get postpaid;
+
+  /// No description provided for @tdLte.
+  ///
+  /// In en, this message translates to:
+  /// **'TD-LTE'**
+  String get tdLte;
+
+  /// No description provided for @roaming.
+  ///
+  /// In en, this message translates to:
+  /// **'Roaming'**
+  String get roaming;
+
+  /// No description provided for @companionPackages.
+  ///
+  /// In en, this message translates to:
+  /// **'Companion packages'**
+  String get companionPackages;
+
+  /// No description provided for @normalCharge.
+  ///
+  /// In en, this message translates to:
+  /// **'Regular'**
+  String get normalCharge;
+
+  /// No description provided for @amazingCharge.
+  ///
+  /// In en, this message translates to:
+  /// **'Amazing'**
+  String get amazingCharge;
+
+  /// No description provided for @excitingCharge.
+  ///
+  /// In en, this message translates to:
+  /// **'Exciting (Shoorangiz)'**
+  String get excitingCharge;
+
+  /// No description provided for @youthCharge.
+  ///
+  /// In en, this message translates to:
+  /// **'Youth'**
+  String get youthCharge;
+
+  /// No description provided for @womenCharge.
+  ///
+  /// In en, this message translates to:
+  /// **'Women'**
+  String get womenCharge;
+
+  /// No description provided for @chargeType.
+  ///
+  /// In en, this message translates to:
+  /// **'Charge type'**
+  String get chargeType;
+
+  /// No description provided for @simType.
+  ///
+  /// In en, this message translates to:
+  /// **'SIM type'**
+  String get simType;
+
+  /// No description provided for @operatorServiceIsTemporarilyUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'This operator\'s service is temporarily unavailable, so the purchase may fail. Please try again in a few minutes.'**
+  String get operatorServiceIsTemporarilyUnavailable;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

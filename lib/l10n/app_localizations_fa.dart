@@ -5452,4 +5452,43 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get shapes => 'شکل‌ها';
+
+  @override
+  String get prepaid => 'اعتباری';
+
+  @override
+  String get postpaid => 'دائمی';
+
+  @override
+  String get tdLte => 'TD-LTE';
+
+  @override
+  String get roaming => 'رومینگ';
+
+  @override
+  String get companionPackages => 'بسته‌های همراهی';
+
+  @override
+  String get normalCharge => 'معمولی';
+
+  @override
+  String get amazingCharge => 'شگفت‌انگیز';
+
+  @override
+  String get excitingCharge => 'شورانگیز';
+
+  @override
+  String get youthCharge => 'جوانان';
+
+  @override
+  String get womenCharge => 'بانوان';
+
+  @override
+  String get chargeType => 'نوع شارژ';
+
+  @override
+  String get simType => 'نوع سیم‌کارت';
+
+  @override
+  String get operatorServiceIsTemporarilyUnavailable => 'سرویس این اپراتور موقتاً در دسترس نیست و ممکن است خرید با خطا مواجه شود. لطفاً چند دقیقه دیگر دوباره تلاش کنید.';
 }
