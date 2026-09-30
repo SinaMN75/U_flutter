@@ -104,7 +104,11 @@ class BackendWebPage extends StatelessWidget {
                 minBuildNumber: 1,
                 jsonData: UAppVersionJson(
                   latestVersionName: "9.9.9",
-                  links: <UAppVersionLink>[UAppVersionLink(title: "Google Play", url: "https://play.google.com")],
+                  description: "Faster startup\nNew wallet screen\nBug fixes",
+                  links: <UAppVersionLink>[
+                    UAppVersionLink(title: "Google Play", url: "https://play.google.com"),
+                    UAppVersionLink(title: "Direct download", url: "https://example.com/app.apk"),
+                  ],
                 ),
               ),
             ],

@@ -10925,7 +10925,7 @@ abstract class AppLocalizations {
   /// No description provided for @minBuildNumber.
   ///
   /// In en, this message translates to:
-  /// **'Minimum build number (older builds must update)'**
+  /// **'Minimum build number'**
   String get minBuildNumber;
 
   /// No description provided for @latestVersionName.

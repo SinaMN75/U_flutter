@@ -5521,7 +5521,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get latestBuildNumber => 'Latest build number';
 
   @override
-  String get minBuildNumber => 'Minimum build number (older builds must update)';
+  String get minBuildNumber => 'Minimum build number';
 
   @override
   String get latestVersionName => 'Latest version name';

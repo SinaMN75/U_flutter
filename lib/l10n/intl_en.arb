@@ -2044,7 +2044,7 @@
   "appVersions": "App versions",
   "platform": "Platform",
   "latestBuildNumber": "Latest build number",
-  "minBuildNumber": "Minimum build number (older builds must update)",
+  "minBuildNumber": "Minimum build number",
   "latestVersionName": "Latest version name",
   "downloadLinks": "Download links"
 }

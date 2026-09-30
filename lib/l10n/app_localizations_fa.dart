@@ -5520,7 +5520,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get latestBuildNumber => 'آخرین شماره بیلد';
 
   @override
-  String get minBuildNumber => 'حداقل شماره بیلد (بیلدهای قدیمی‌تر باید به‌روزرسانی کنند)';
+  String get minBuildNumber => 'حداقل شماره بیلد';
 
   @override
   String get latestVersionName => 'نام آخرین نسخه';

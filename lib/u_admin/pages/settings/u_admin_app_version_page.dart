@@ -43,25 +43,116 @@ class _UAdminAppVersionPageState extends State<UAdminAppVersionPage> {
     body: UAdminPageBody(
       child: _loading
           ? const Center(child: CircularProgressIndicator())
-          : ListView(
+          : SingleChildScrollView(
               padding: const EdgeInsets.symmetric(vertical: 16),
-              children: TagAppVersion.values.map((TagAppVersion p) {
-                final UAppVersionResponse? v = _list.firstWhereOrNull((UAppVersionResponse i) => i.platform == p);
-                return Card(
-                  child: ListTile(
-                    title: Text(p.localizedTitle),
-                    subtitle: Text(
-                      "${U.s.latestVersionName}: ${v?.jsonData.latestVersionName ?? "---"}   "
-                      "${U.s.latestBuildNumber}: ${v?.latestBuildNumber ?? 0}   "
-                      "${U.s.minBuildNumber}: ${v?.minBuildNumber ?? 0}   "
-                      "${U.s.downloadLinks}: ${v?.jsonData.links.length ?? 0}",
-                    ),
-                    trailing: const Icon(Icons.edit),
-                    onTap: () => _form(p, v),
-                  ),
-                );
-              }).toList(),
+              child: Wrap(
+                spacing: 12,
+                runSpacing: 12,
+                children: TagAppVersion.values.map((TagAppVersion p) => _card(p, _list.firstWhereOrNull((UAppVersionResponse i) => i.platform == p))).toList(),
+              ),
             ),
+    ),
+  );
+
+  static IconData _platformIcon(TagAppVersion p) => switch (p) {
+    TagAppVersion.android => Icons.android_rounded,
+    TagAppVersion.ios => Icons.apple_rounded,
+    TagAppVersion.windows => Icons.window_rounded,
+    TagAppVersion.macOs => Icons.laptop_mac_rounded,
+    TagAppVersion.linux => Icons.terminal_rounded,
+    TagAppVersion.web => Icons.language_rounded,
+  };
+
+  Widget _card(TagAppVersion p, UAppVersionResponse? v) {
+    final ColorScheme cs = Theme.of(context).colorScheme;
+    final List<UAppVersionLink> links = v?.jsonData.links ?? <UAppVersionLink>[];
+    return SizedBox(
+      width: 320,
+      child: Material(
+        color: cs.surfaceContainerLow,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: BorderSide(color: cs.outlineVariant),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: () => _form(p, v),
+          child: UColumn(
+            spacing: 14,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            padding: const EdgeInsets.all(16),
+            children: <Widget>[
+              URow(
+                spacing: 12,
+                children: <Widget>[
+                  UContainer(
+                    padding: const EdgeInsets.all(10),
+                    radius: 14,
+                    color: cs.primary.withValues(alpha: 0.12),
+                    child: Icon(_platformIcon(p), color: cs.primary),
+                  ),
+                  UColumn(
+                    expanded: 1,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      UTextTitleMedium(p.localizedTitle, fontWeight: FontWeight.w700),
+                      UTextBodySmall(v?.jsonData.latestVersionName.nullIfEmpty() ?? "---", color: cs.onSurfaceVariant),
+                    ],
+                  ),
+                  Icon(Icons.edit_outlined, size: 20, color: cs.onSurfaceVariant),
+                ],
+              ),
+              URow(
+                spacing: 8,
+                children: <Widget>[
+                  _stat(cs, U.s.latestBuildNumber, (v?.latestBuildNumber ?? 0).toString(), cs.primary).expanded(),
+                  _stat(cs, U.s.minBuildNumber, (v?.minBuildNumber ?? 0).toString(), cs.error).expanded(),
+                ],
+              ),
+              URow(
+                spacing: 6,
+                children: <Widget>[
+                  UTextLabelMedium("${U.s.downloadLinks} (${links.length})", color: cs.onSurfaceVariant, expanded: 1),
+                  ...links
+                      .take(5)
+                      .map(
+                        (UAppVersionLink i) => Tooltip(
+                          message: i.title ?? "",
+                          child: UContainer(
+                            width: 28,
+                            height: 28,
+                            radius: 8,
+                            color: cs.surface,
+                            clipBehavior: Clip.antiAlias,
+                            child: i.iconBase64.isNullOrEmpty()
+                                ? Icon(Icons.storefront_rounded, size: 16, color: i.url.isNullOrEmpty() ? cs.outline : cs.primary)
+                                : UImage(
+                                    "",
+                                    fileData: UFileData(bytes: i.iconBase64!.split(",").last.toBytesFromBase64()),
+                                    fit: BoxFit.cover,
+                                  ),
+                          ),
+                        ),
+                      ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _stat(ColorScheme cs, String label, String value, Color color) => UContainer(
+    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+    radius: 12,
+    color: color.withValues(alpha: 0.08),
+    child: UColumn(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        UTextTitleMedium(value, color: color, fontWeight: FontWeight.w700),
+        UTextLabelSmall(label, color: cs.onSurfaceVariant, maxLines: 1, overflow: TextOverflow.ellipsis),
+      ],
     ),
   );
 
