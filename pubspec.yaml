@@ -23,7 +23,7 @@ dependencies:
   flutter_web_plugins:
     sdk: flutter
 
-  webview_all: ^1.4.2
+  webview_all: ^1.4.3
   flutter_svg: ^2.3.0
   flutter_map: ^8.3.2
   lottie: ^3.6.1
