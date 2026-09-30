@@ -10,8 +10,13 @@ class UProcessFields extends StatelessWidget {
     super.key,
   });
 
+  /// The step to render.
   final UProcessStepGet processStepGet;
+
+  /// Where answers are written.
   final UProcessStepSend processStepSend;
+
+  /// Text style (defaults to the theme).
   final UProcessStyle style;
 
   @override

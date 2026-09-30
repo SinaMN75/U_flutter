@@ -14,8 +14,7 @@ import "package:u/utilities.dart";
 // Data models
 // ----------------------------------------------------------------------------
 
-/// A named list of Y values sharing a single category (X) axis. Used by line,
-/// area, bar, radar and histogram charts.
+/// One named line/bar series of Y values over the shared categories. `UChartSeries(name: "Sales", values: [3, 5, 2, 8])`
 class UChartSeries {
   const UChartSeries({
     required this.values,
@@ -27,9 +26,16 @@ class UChartSeries {
     this.dashed = false,
   });
 
+  /// Y values, one per category.
   final List<double> values;
+
+  /// Name.
   final String? name;
+
+  /// Main color (defaults to the theme).
   final Color? color;
+
+  /// Background gradient (overrides the color).
   final List<Color>? gradient;
 
   /// Optional per-point colors (e.g. a distinctly colored bar per category).
@@ -37,38 +43,54 @@ class UChartSeries {
 
   /// Per-series fill override for line charts; falls back to the widget's value.
   final bool? filled;
+
+  /// Draws the line dashed.
   final bool dashed;
 }
 
-/// A single free (x, y) sample with an optional bubble [size]. Used by scatter
-/// and bubble charts.
+/// One (x, y) point; [size] sets the bubble size in bubble charts. `UChartPoint(x: 1, y: 3)`
 class UChartPoint {
   const UChartPoint({required this.x, required this.y, this.size});
 
+  /// X value.
   final double x;
+
+  /// Y value.
   final double y;
+
+  /// Bubble size (bubble charts only).
   final double? size;
 }
 
-/// A named collection of free points sharing color, for scatter/bubble charts.
+/// A named group of points for scatter/bubble charts. `UPointSeries(name: "A", points: [UChartPoint(x: 1, y: 2)])`
 class UPointSeries {
   const UPointSeries({required this.points, this.name, this.color});
 
+  /// The points.
   final List<UChartPoint> points;
+
+  /// Name.
   final String? name;
+
+  /// Main color (defaults to the theme).
   final Color? color;
 }
 
-/// A single proportional slice for pie, donut, funnel and treemap charts.
+/// One slice of a pie, donut, funnel or treemap. `USlice(label: "Food", value: 40)`
 class USlice {
   const USlice({required this.value, this.label, this.color});
 
+  /// Slice size (any positive number; shares are computed).
   final double value;
+
+  /// Label text.
   final String? label;
+
+  /// Main color (defaults to the theme).
   final Color? color;
 }
 
-/// One open/high/low/close candle for financial charts.
+/// One open/high/low/close candle. `UCandle(open: 10, high: 12, low: 9, close: 11, label: "Mon")`
 class UCandle {
   const UCandle({
     required this.open,
@@ -78,17 +100,26 @@ class UCandle {
     this.label,
   });
 
+  /// Opening price.
   final double open;
+
+  /// Highest price.
   final double high;
+
+  /// Lowest price.
   final double low;
+
+  /// Closing price.
   final double close;
+
+  /// Label text.
   final String? label;
 
+  /// True when it closed higher than it opened.
   bool get bullish => close >= open;
 }
 
-/// One step of a waterfall chart. When [isTotal] is true the bar is drawn from
-/// the baseline instead of stacking on the running total.
+/// One step of a waterfall chart; [isTotal] draws a running-total bar. `UWaterfallItem(label: "Tax", value: -120)`
 class UWaterfallItem {
   const UWaterfallItem({
     required this.value,
@@ -97,9 +128,16 @@ class UWaterfallItem {
     this.color,
   });
 
+  /// Current value.
   final double value;
+
+  /// Label text.
   final String? label;
+
+  /// Draws a total bar from zero instead of a change.
   final bool isTotal;
+
+  /// Main color (defaults to the theme).
   final Color? color;
 }
 
@@ -107,8 +145,7 @@ class UWaterfallItem {
 // Styling
 // ----------------------------------------------------------------------------
 
-/// Shared, fully-optional styling for every chart. Any field left null is
-/// resolved from the active [ColorScheme]/[TextTheme] at build time.
+/// Shared look of every chart; null fields follow the theme. `UChartStyle(showLegend: true, valueFormatter: (v) => v.toInt().toString())`
 class UChartStyle {
   const UChartStyle({
     this.palette,
@@ -131,23 +168,58 @@ class UChartStyle {
     this.valueFormatter,
   });
 
+  /// Series/slice colors (a palette from the theme when null).
   final List<Color>? palette;
+
+  /// Background color.
   final Color? backgroundColor;
+
+  /// Grid line color.
   final Color? gridColor;
+
+  /// Axis line color.
   final Color? axisColor;
+
+  /// Axis label color.
   final Color? labelColor;
+
+  /// Axis label size.
   final double labelFontSize;
+
+  /// Draws grid lines.
   final bool showGrid;
+
+  /// Draws the axes.
   final bool showAxis;
+
+  /// Draws axis labels.
   final bool showLabels;
+
+  /// Shows a legend.
   final bool showLegend;
+
+  /// Writes values on bars/points.
   final bool showValues;
+
+  /// Animates changes.
   final bool animate;
+
+  /// Length of the animation.
   final Duration animationDuration;
+
+  /// Entry animation curve.
   final Curve animationCurve;
+
+  /// Space inside, around the content.
   final EdgeInsets padding;
+
+  /// Number of horizontal grid lines.
   final int gridDivisions;
+
+  /// Bar corner radius.
   final double cornerRadius;
+
+  /// Turns a number into label text, e.g. money.
   final String Function(double value)? valueFormatter;
 }
 
@@ -353,9 +425,16 @@ class UChartAnimator extends StatefulWidget {
     super.key,
   });
 
+  /// Builds the content.
   final Widget Function(double t) builder;
+
+  /// How long it lasts.
   final Duration duration;
+
+  /// Animation curve.
   final Curve curve;
+
+  /// Animates changes.
   final bool animate;
 
   @override
@@ -693,8 +772,7 @@ class _LinePainter extends CustomPainter {
   bool shouldRepaint(covariant _LinePainter old) => old.progress != progress || old.series != series || old.bounds != bounds;
 }
 
-/// A multi-series line chart. Set [smooth] for spline curves and [filled] to
-/// shade the area under each line.
+/// Line chart for one or more series; [smooth] curves, [filled] shades under lines. `ULineChart(series: [UChartSeries(values: [1, 3, 2])], categories: ["Jan", "Feb", "Mar"])`
 class ULineChart extends StatelessWidget {
   const ULineChart({
     required this.series,
@@ -709,14 +787,31 @@ class ULineChart extends StatelessWidget {
     this.strokeWidth = 3,
   });
 
+  /// The lines.
   final List<UChartSeries> series;
+
+  /// X labels, one per value.
   final List<String>? categories;
+
+  /// Title text.
   final String? title;
+
+  /// Text style (defaults to the theme).
   final UChartStyle style;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
+
+  /// Draws smooth curves.
   final bool smooth;
+
+  /// Fills the background.
   final bool filled;
+
+  /// Draws a dot at each value.
   final bool showDots;
+
+  /// Line thickness.
   final double strokeWidth;
 
   @override
@@ -746,7 +841,7 @@ class ULineChart extends StatelessWidget {
   }
 }
 
-/// A smooth-curve line chart (spline interpolation).
+/// Smooth-curve line chart. `USplineChart(series: series, categories: months)`
 class USplineChart extends StatelessWidget {
   const USplineChart({
     required this.series,
@@ -760,13 +855,28 @@ class USplineChart extends StatelessWidget {
     this.strokeWidth = 3,
   });
 
+  /// The lines.
   final List<UChartSeries> series;
+
+  /// X labels, one per value.
   final List<String>? categories;
+
+  /// Title text.
   final String? title;
+
+  /// Text style (defaults to the theme).
   final UChartStyle style;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
+
+  /// Fills the background.
   final bool filled;
+
+  /// Draws a dot at each value.
   final bool showDots;
+
+  /// Line thickness.
   final double strokeWidth;
 
   @override
@@ -783,7 +893,7 @@ class USplineChart extends StatelessWidget {
   );
 }
 
-/// A step-interpolated line chart, ideal for discrete state over time.
+/// Step line chart for values that jump (states, prices). `UStepLineChart(series: series)`
 class UStepLineChart extends StatelessWidget {
   const UStepLineChart({
     required this.series,
@@ -797,13 +907,28 @@ class UStepLineChart extends StatelessWidget {
     this.strokeWidth = 3,
   });
 
+  /// The lines.
   final List<UChartSeries> series;
+
+  /// X labels, one per value.
   final List<String>? categories;
+
+  /// Title text.
   final String? title;
+
+  /// Text style (defaults to the theme).
   final UChartStyle style;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
+
+  /// Fills the background.
   final bool filled;
+
+  /// Draws a dot at each value.
   final bool showDots;
+
+  /// Line thickness.
   final double strokeWidth;
 
   @override
@@ -833,7 +958,7 @@ class UStepLineChart extends StatelessWidget {
   }
 }
 
-/// A filled area chart (line with a gradient fill to the baseline).
+/// Line chart with a gradient fill under each line. `UAreaChart(series: series, categories: days)`
 class UAreaChart extends StatelessWidget {
   const UAreaChart({
     required this.series,
@@ -847,13 +972,28 @@ class UAreaChart extends StatelessWidget {
     this.strokeWidth = 3,
   });
 
+  /// The areas.
   final List<UChartSeries> series;
+
+  /// X labels, one per value.
   final List<String>? categories;
+
+  /// Title text.
   final String? title;
+
+  /// Text style (defaults to the theme).
   final UChartStyle style;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
+
+  /// Draws smooth curves.
   final bool smooth;
+
+  /// Draws a dot at each value.
   final bool showDots;
+
+  /// Line thickness.
   final double strokeWidth;
 
   @override
@@ -1155,7 +1295,7 @@ class _StackedAreaPainter extends CustomPainter {
   bool shouldRepaint(covariant _StackedAreaPainter old) => old.progress != progress || old.series != series;
 }
 
-/// A vertical bar/column chart. Multiple series are drawn side-by-side (grouped).
+/// Vertical bar chart; several series are drawn side by side. `UBarChart(series: [UChartSeries(values: [4, 7, 3])], categories: ["A", "B", "C"])`
 class UBarChart extends StatelessWidget {
   const UBarChart({
     required this.series,
@@ -1166,10 +1306,19 @@ class UBarChart extends StatelessWidget {
     this.height = 260,
   });
 
+  /// The bar series.
   final List<UChartSeries> series;
+
+  /// X labels, one per value.
   final List<String>? categories;
+
+  /// Title text.
   final String? title;
+
+  /// Text style (defaults to the theme).
   final UChartStyle style;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
 
   @override
@@ -1187,8 +1336,7 @@ class UBarChart extends StatelessWidget {
   }
 }
 
-/// Explicit grouped (clustered) bar chart. Identical to [UBarChart] with
-/// multiple series.
+/// Bars grouped per category (same as UBarChart with several series).
 class UGroupedBarChart extends StatelessWidget {
   const UGroupedBarChart({
     required this.series,
@@ -1199,17 +1347,26 @@ class UGroupedBarChart extends StatelessWidget {
     this.height = 260,
   });
 
+  /// The bar series.
   final List<UChartSeries> series;
+
+  /// X labels, one per value.
   final List<String>? categories;
+
+  /// Title text.
   final String? title;
+
+  /// Text style (defaults to the theme).
   final UChartStyle style;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
 
   @override
   Widget build(BuildContext context) => UBarChart(series: series, categories: categories, title: title, style: style, height: height);
 }
 
-/// A horizontal bar chart. Multiple series are grouped within each category row.
+/// Horizontal bar chart, good for long labels. `UHorizontalBarChart(series: series, categories: names)`
 class UHorizontalBarChart extends StatelessWidget {
   const UHorizontalBarChart({
     required this.series,
@@ -1220,10 +1377,19 @@ class UHorizontalBarChart extends StatelessWidget {
     this.height = 260,
   });
 
+  /// The bar series.
   final List<UChartSeries> series;
+
+  /// Row labels, one per value.
   final List<String>? categories;
+
+  /// Title text.
   final String? title;
+
+  /// Text style (defaults to the theme).
   final UChartStyle style;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
 
   @override
@@ -1241,7 +1407,7 @@ class UHorizontalBarChart extends StatelessWidget {
   }
 }
 
-/// A stacked bar chart (series stacked on top of one another per category).
+/// Bars stacked on top of each other per category.
 class UStackedBarChart extends StatelessWidget {
   const UStackedBarChart({
     required this.series,
@@ -1252,10 +1418,19 @@ class UStackedBarChart extends StatelessWidget {
     this.height = 260,
   });
 
+  /// The stacked series.
   final List<UChartSeries> series;
+
+  /// X labels, one per value.
   final List<String>? categories;
+
+  /// Title text.
   final String? title;
+
+  /// Text style (defaults to the theme).
   final UChartStyle style;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
 
   @override
@@ -1273,8 +1448,7 @@ class UStackedBarChart extends StatelessWidget {
   }
 }
 
-/// A 100%-stacked bar chart: each category fills the full height, showing each
-/// series' share as a percentage.
+/// 100% stacked bars showing each series' share per category.
 class UStacked100BarChart extends StatelessWidget {
   const UStacked100BarChart({
     required this.series,
@@ -1285,10 +1459,19 @@ class UStacked100BarChart extends StatelessWidget {
     this.height = 260,
   });
 
+  /// The stacked series.
   final List<UChartSeries> series;
+
+  /// X labels, one per value.
   final List<String>? categories;
+
+  /// Title text.
   final String? title;
+
+  /// Text style (defaults to the theme).
   final UChartStyle style;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
 
   @override
@@ -1314,7 +1497,7 @@ class UStacked100BarChart extends StatelessWidget {
   }
 }
 
-/// A stacked area chart.
+/// Areas stacked on top of each other.
 class UStackedAreaChart extends StatelessWidget {
   const UStackedAreaChart({
     required this.series,
@@ -1325,10 +1508,19 @@ class UStackedAreaChart extends StatelessWidget {
     this.height = 260,
   });
 
+  /// The stacked series.
   final List<UChartSeries> series;
+
+  /// X labels, one per value.
   final List<String>? categories;
+
+  /// Title text.
   final String? title;
+
+  /// Text style (defaults to the theme).
   final UChartStyle style;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
 
   @override
@@ -1559,7 +1751,7 @@ class _TreemapPainter extends CustomPainter {
   bool shouldRepaint(covariant _TreemapPainter old) => old.progress != progress || old.items != items;
 }
 
-/// A pie chart.
+/// Pie chart. `UPieChart(slices: [USlice(label: "A", value: 3), USlice(label: "B", value: 1)])`
 class UPieChart extends StatelessWidget {
   const UPieChart({
     required this.slices,
@@ -1569,9 +1761,16 @@ class UPieChart extends StatelessWidget {
     this.height = 260,
   });
 
+  /// The slices.
   final List<USlice> slices;
+
+  /// Title text.
   final String? title;
+
+  /// Text style (defaults to the theme).
   final UChartStyle style;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
 
   @override
@@ -1588,7 +1787,7 @@ class UPieChart extends StatelessWidget {
   }
 }
 
-/// A donut chart. Provide [centerText] to label the hole (e.g. a total).
+/// Donut chart with an optional center text (e.g. the total). `UDonutChart(slices: slices, centerText: "100")`
 class UDonutChart extends StatelessWidget {
   const UDonutChart({
     required this.slices,
@@ -1600,11 +1799,22 @@ class UDonutChart extends StatelessWidget {
     this.height = 260,
   });
 
+  /// The slices.
   final List<USlice> slices;
+
+  /// Title text.
   final String? title;
+
+  /// Text in the hole.
   final String? centerText;
+
+  /// Hole size, 0-1 of the radius.
   final double holeFactor;
+
+  /// Text style (defaults to the theme).
   final UChartStyle style;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
 
   @override
@@ -1621,7 +1831,7 @@ class UDonutChart extends StatelessWidget {
   }
 }
 
-/// A funnel chart, useful for conversion/pipeline stages.
+/// Funnel chart for conversion steps (largest first). `UFunnelChart(slices: steps)`
 class UFunnelChart extends StatelessWidget {
   const UFunnelChart({
     required this.slices,
@@ -1631,9 +1841,16 @@ class UFunnelChart extends StatelessWidget {
     this.height = 260,
   });
 
+  /// The steps.
   final List<USlice> slices;
+
+  /// Title text.
   final String? title;
+
+  /// Text style (defaults to the theme).
   final UChartStyle style;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
 
   @override
@@ -1650,7 +1867,7 @@ class UFunnelChart extends StatelessWidget {
   }
 }
 
-/// A treemap chart — nested rectangles sized by value.
+/// Treemap: nested rectangles sized by value. `UTreemapChart(slices: categories)`
 class UTreemapChart extends StatelessWidget {
   const UTreemapChart({
     required this.slices,
@@ -1660,9 +1877,16 @@ class UTreemapChart extends StatelessWidget {
     this.height = 260,
   });
 
+  /// The rectangles.
   final List<USlice> slices;
+
+  /// Title text.
   final String? title;
+
+  /// Text style (defaults to the theme).
   final UChartStyle style;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
 
   @override
@@ -1875,7 +2099,7 @@ class _RadarPainter extends CustomPainter {
   bool shouldRepaint(covariant _RadarPainter old) => old.progress != progress || old.series != series;
 }
 
-/// A scatter chart plotting free (x, y) points.
+/// Scatter chart of free (x, y) points. `UScatterChart(data: [UPointSeries(points: pts)])`
 class UScatterChart extends StatelessWidget {
   const UScatterChart({
     required this.data,
@@ -1886,10 +2110,19 @@ class UScatterChart extends StatelessWidget {
     this.dotRadius = 5,
   });
 
+  /// The data to show.
   final List<UPointSeries> data;
+
+  /// Title text.
   final String? title;
+
+  /// Text style (defaults to the theme).
   final UChartStyle style;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
+
+  /// Dot size.
   final double dotRadius;
 
   @override
@@ -1908,8 +2141,7 @@ class UScatterChart extends StatelessWidget {
   }
 }
 
-/// A bubble chart — a scatter chart where each point's [UChartPoint.size]
-/// controls the bubble radius (by area).
+/// Bubble chart: scatter where each point's size sets the bubble. `UBubbleChart(data: series)`
 class UBubbleChart extends StatelessWidget {
   const UBubbleChart({
     required this.data,
@@ -1919,9 +2151,16 @@ class UBubbleChart extends StatelessWidget {
     this.height = 260,
   });
 
+  /// The data to show.
   final List<UPointSeries> data;
+
+  /// Title text.
   final String? title;
+
+  /// Text style (defaults to the theme).
   final UChartStyle style;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
 
   @override
@@ -1946,7 +2185,7 @@ class UBubbleChart extends StatelessWidget {
   }
 }
 
-/// A radar (spider) chart comparing several series across shared axes.
+/// Radar/spider chart comparing series across axes. `URadarChart(axes: ["Speed", "Power", "Range"], series: [UChartSeries(values: [3, 4, 2])])`
 class URadarChart extends StatelessWidget {
   const URadarChart({
     required this.series,
@@ -1958,11 +2197,22 @@ class URadarChart extends StatelessWidget {
     this.height = 280,
   });
 
+  /// The series (one value per axis).
   final List<UChartSeries> series;
+
+  /// Axis names.
   final List<String> axes;
+
+  /// Title text.
   final String? title;
+
+  /// Fills the background.
   final bool filled;
+
+  /// Text style (defaults to the theme).
   final UChartStyle style;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
 
   @override
@@ -2291,7 +2541,7 @@ class _SparklinePainter extends CustomPainter {
   bool shouldRepaint(covariant _SparklinePainter old) => old.progress != progress || old.values != values;
 }
 
-/// A candlestick (OHLC body) chart for financial data.
+/// Candlestick chart for prices. `UCandlestickChart(candles: candles)`
 class UCandlestickChart extends StatelessWidget {
   const UCandlestickChart({
     required this.candles,
@@ -2303,18 +2553,29 @@ class UCandlestickChart extends StatelessWidget {
     this.height = 280,
   });
 
+  /// The candles.
   final List<UCandle> candles;
+
+  /// Title text.
   final String? title;
+
+  /// Color of rising candles.
   final Color? upColor;
+
+  /// Color of falling candles.
   final Color? downColor;
+
+  /// Text style (defaults to the theme).
   final UChartStyle style;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
 
   @override
   Widget build(BuildContext context) => _buildCandles(context, candles, title, upColor, downColor, style, height, ohlc: false);
 }
 
-/// An OHLC bar chart (open tick left, close tick right) for financial data.
+/// OHLC bar chart for prices. `UOhlcChart(candles: candles)`
 class UOhlcChart extends StatelessWidget {
   const UOhlcChart({
     required this.candles,
@@ -2326,11 +2587,22 @@ class UOhlcChart extends StatelessWidget {
     this.height = 280,
   });
 
+  /// The candles.
   final List<UCandle> candles;
+
+  /// Title text.
   final String? title;
+
+  /// Color of rising bars.
   final Color? upColor;
+
+  /// Color of falling bars.
   final Color? downColor;
+
+  /// Text style (defaults to the theme).
   final UChartStyle style;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
 
   @override
@@ -2364,7 +2636,7 @@ Widget _buildCandles(BuildContext context, List<UCandle> candles, String? title,
   );
 }
 
-/// A histogram of raw samples, bucketed into [bins] equal-width bars.
+/// Histogram: counts how many values fall into each of [bins] ranges. `UHistogramChart(data: ages, bins: 8)`
 class UHistogramChart extends StatelessWidget {
   const UHistogramChart({
     required this.data,
@@ -2376,11 +2648,22 @@ class UHistogramChart extends StatelessWidget {
     this.height = 260,
   });
 
+  /// The data to show.
   final List<double> data;
+
+  /// Number of ranges.
   final int bins;
+
+  /// Title text.
   final String? title;
+
+  /// Main color (defaults to the theme).
   final Color? color;
+
+  /// Text style (defaults to the theme).
   final UChartStyle style;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
 
   @override
@@ -2417,7 +2700,7 @@ class UHistogramChart extends StatelessWidget {
   }
 }
 
-/// A heatmap of a 2-D matrix; cell color intensity encodes the value.
+/// Heatmap of a matrix with row/column labels. `UHeatmapChart(matrix: [[1, 2], [3, 4]])`
 class UHeatmapChart extends StatelessWidget {
   const UHeatmapChart({
     required this.matrix,
@@ -2430,12 +2713,25 @@ class UHeatmapChart extends StatelessWidget {
     this.height = 280,
   });
 
+  /// Values by row, then column.
   final List<List<double>> matrix;
+
+  /// Row labels.
   final List<String>? rowLabels;
+
+  /// Column labels.
   final List<String>? colLabels;
+
+  /// Title text.
   final String? title;
+
+  /// Main color (defaults to the theme).
   final Color? color;
+
+  /// Text style (defaults to the theme).
   final UChartStyle style;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
 
   @override
@@ -2453,8 +2749,7 @@ class UHeatmapChart extends StatelessWidget {
   }
 }
 
-/// A waterfall chart showing how sequential positive/negative changes build to
-/// a total. Mark cumulative bars with [UWaterfallItem.isTotal].
+/// Waterfall chart of gains/losses with totals. `UWaterfallChart(items: steps)`
 class UWaterfallChart extends StatelessWidget {
   const UWaterfallChart({
     required this.items,
@@ -2467,12 +2762,25 @@ class UWaterfallChart extends StatelessWidget {
     this.height = 260,
   });
 
+  /// The items to show.
   final List<UWaterfallItem> items;
+
+  /// Title text.
   final String? title;
+
+  /// Color of increases.
   final Color? upColor;
+
+  /// Color of decreases.
   final Color? downColor;
+
+  /// Color of total bars.
   final Color? totalColor;
+
+  /// Text style (defaults to the theme).
   final UChartStyle style;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
 
   @override
@@ -2510,7 +2818,7 @@ class UWaterfallChart extends StatelessWidget {
   }
 }
 
-/// A tiny, axis-free trend line — perfect inside list tiles and stat cards.
+/// Tiny inline trend line (no axes), e.g. in a table cell. `USparkline(values: [3, 5, 4, 8])`
 class USparkline extends StatelessWidget {
   const USparkline({
     required this.values,
@@ -2523,12 +2831,25 @@ class USparkline extends StatelessWidget {
     this.animate = true,
   });
 
+  /// The values.
   final List<double> values;
+
+  /// Main color (defaults to the theme).
   final Color? color;
+
+  /// Shades under the line.
   final bool fill;
+
+  /// Line thickness.
   final double strokeWidth;
+
+  /// Width in logical pixels (null = size to content).
   final double width;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
+
+  /// Animates changes.
   final bool animate;
 
   @override

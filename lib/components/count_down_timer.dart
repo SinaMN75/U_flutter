@@ -1,5 +1,6 @@
 import "package:u/utilities.dart";
 
+/// "Resend code in 01:59" countdown that turns into a button. `USendAgainCountDown(counter: 120, onSendAgainTap: resend, buttonTitle: "Resend", counterDescription: "until resend")`
 class USendAgainCountDown extends StatefulWidget {
   const USendAgainCountDown({
     required this.counter,
@@ -9,9 +10,16 @@ class USendAgainCountDown extends StatefulWidget {
     super.key,
   });
 
+  /// Seconds to count down.
   final int counter;
+
+  /// Called by the button (the countdown restarts).
   final VoidCallback onSendAgainTap;
+
+  /// Button text.
   final String buttonTitle;
+
+  /// Text next to the countdown.
   final String counterDescription;
 
   @override

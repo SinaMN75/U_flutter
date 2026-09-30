@@ -1,5 +1,6 @@
 import "package:u/utilities.dart";
 
+/// Two drop-downs: a category and its sub-category (from U.categories). `UCategorySelector(onCategorySelected: (c) {}, onSubCategorySelected: (s) {})`
 class UCategorySelector extends StatefulWidget {
   const UCategorySelector({
     required this.onCategorySelected,
@@ -11,12 +12,22 @@ class UCategorySelector extends StatefulWidget {
     super.key,
   });
 
+  /// Hint of the category drop-down.
   final String? hint1;
+
+  /// Hint of the sub-category drop-down.
   final String? hint2;
+
+  /// Called with the chosen category.
   final Function(UCategoryResponse? category) onCategorySelected;
+
+  /// Called with the chosen sub-category.
   final Function(UCategoryResponse? subCategory) onSubCategorySelected;
 
+  /// Selected category.
   final UCategoryResponse? category;
+
+  /// Selected sub-category.
   final UCategoryResponse? subCategory;
 
   @override
@@ -157,6 +168,7 @@ class _UCategorySelectorState extends State<UCategorySelector> {
   );
 }
 
+/// Country → province → city drop-downs (Iran data built in). `UCountryProvincePicker(onCityChanged: (c) => city = c)`
 class UCountryProvincePicker extends StatefulWidget {
   const UCountryProvincePicker({
     super.key,
@@ -169,12 +181,25 @@ class UCountryProvincePicker extends StatefulWidget {
     this.spacing = 6,
   });
 
+  /// Country selected at start.
   final UCountry? initialCountry;
+
+  /// Province selected at start.
   final UProvince? initialProvince;
+
+  /// City selected at start.
   final UCity? initialCity;
+
+  /// Called with the chosen country.
   final void Function(UCountry country)? onCountryChanged;
+
+  /// Called with the chosen province.
   final void Function(UProvince province)? onProvinceChanged;
+
+  /// Called with the chosen city.
   final void Function(UCity? city)? onCityChanged;
+
+  /// Gap between items.
   final double spacing;
 
   @override

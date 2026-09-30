@@ -1,29 +1,24 @@
 import "dart:convert";
 
-// =============================================================================
-// u_convert — zero-dependency data-format conversions for the `u` plugin:
-// JSON <-> XML, JSON <-> CSV, Map <-> query string, and JSON pretty/minify.
-// Pure Dart (dart:convert only); no third-party packages.
-// =============================================================================
-
+/// Data format conversions in pure Dart: JSON pretty/minify, JSON⇄XML, JSON⇄CSV, Map⇄query string. `UConvert.prettyJson(body)`
 abstract class UConvert {
-  // -------------------------------------------------------------------------
-  // JSON pretty / minify.
-  // -------------------------------------------------------------------------
+  /// Re-indents JSON text for display. `UConvert.prettyJson('{"a":1}')`
   static String prettyJson(String json, {int indent = 2}) => JsonEncoder.withIndent(" " * indent).convert(jsonDecode(json));
 
+  /// Removes all whitespace from JSON text.
   static String minifyJson(String json) => jsonEncode(jsonDecode(json));
 
+  /// Any value → JSON text, optionally pretty. `UConvert.encodeJson(map, pretty: true)`
   static String encodeJson(Object? value, {bool pretty = false, int indent = 2}) => pretty ? JsonEncoder.withIndent(" " * indent).convert(value) : jsonEncode(value);
 
+  /// JSON text → Map/List/value.
   static dynamic decodeJson(String json) => jsonDecode(json);
 
-  // -------------------------------------------------------------------------
-  // Map <-> query string (x-www-form-urlencoded).
-  // -------------------------------------------------------------------------
+  /// Map → "a=1&b=x%20y". `UConvert.mapToQueryString({"q": "hi"})`
   static String mapToQueryString(Map<String, dynamic> map) =>
       map.entries.map((MapEntry<String, dynamic> e) => "${Uri.encodeQueryComponent(e.key)}=${Uri.encodeQueryComponent("${e.value}")}").join("&");
 
+  /// "?a=1&b=2" → {"a": "1", "b": "2"}.
   static Map<String, String> queryStringToMap(String query) {
     final Map<String, String> out = <String, String>{};
     final String clean = query.startsWith("?") ? query.substring(1) : query;
@@ -39,21 +34,21 @@ abstract class UConvert {
     return out;
   }
 
-  // -------------------------------------------------------------------------
-  // JSON <-> XML.
-  // -------------------------------------------------------------------------
+  /// JSON text → XML under [rootName]. `UConvert.jsonToXml('{"a":1}')`
   static String jsonToXml(String json, {String rootName = "root", bool pretty = true}) {
     final StringBuffer sb = StringBuffer();
     _emitXml(sb, rootName, jsonDecode(json), pretty ? 0 : -1);
     return sb.toString().trimRight();
   }
 
+  /// Any Dart value → XML.
   static String valueToXml(Object? value, {String rootName = "root", bool pretty = true}) {
     final StringBuffer sb = StringBuffer();
     _emitXml(sb, rootName, value, pretty ? 0 : -1);
     return sb.toString().trimRight();
   }
 
+  /// XML text → JSON text (attributes become "@name", repeated tags become lists).
   static String xmlToJson(String xml, {bool pretty = false, bool includeRoot = true}) {
     final _XmlNode root = _parseXml(xml);
     final dynamic value = _xmlToValue(root);
@@ -61,9 +56,7 @@ abstract class UConvert {
     return pretty ? const JsonEncoder.withIndent("  ").convert(result) : jsonEncode(result);
   }
 
-  // -------------------------------------------------------------------------
-  // JSON <-> CSV (JSON must be an array of flat objects).
-  // -------------------------------------------------------------------------
+  /// JSON array of flat objects → CSV with a header row. `UConvert.jsonToCsv(jsonEncode(rows))`
   static String jsonToCsv(String json, {String delimiter = ","}) {
     final dynamic decoded = jsonDecode(json);
     if (decoded is! List) throw const FormatException("jsonToCsv expects a JSON array of objects.");
@@ -84,6 +77,7 @@ abstract class UConvert {
     return sb.toString().trimRight();
   }
 
+  /// CSV with a header row → JSON array of objects (quotes and newlines handled).
   static String csvToJson(String csv, {String delimiter = ",", bool pretty = false}) {
     final List<List<String>> rows = _parseCsv(csv, delimiter);
     if (rows.isEmpty) return "[]";

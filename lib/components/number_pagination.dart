@@ -1,5 +1,6 @@
 import "package:u/utilities.dart";
 
+/// Page number buttons (1 2 3 … 10) with prev/next, for tables. `UNumberPagination(currentPage: page, totalPages: 12, onPageChanged: (p) => load(p))`
 class UNumberPagination extends StatelessWidget {
   const UNumberPagination({
     required this.currentPage,
@@ -14,14 +15,31 @@ class UNumberPagination extends StatelessWidget {
     this.nextIcon,
   });
 
+  /// Current page (1-based).
   final int currentPage;
+
+  /// Number of pages.
   final int totalPages;
+
+  /// How many page buttons show at once.
   final int threshold;
+
+  /// Called with the new page index.
   final ValueChanged<int> onPageChanged;
+
+  /// Current page color.
   final Color? selectedColor;
+
+  /// Other pages color.
   final Color? unselectedColor;
+
+  /// Shows prev/next buttons.
   final bool showPrevNext;
+
+  /// Prev icon.
   final Icon? prevIcon;
+
+  /// Next icon.
   final Icon? nextIcon;
 
   // Computes the ordered pages to display; a null entry represents an ellipsis gap. Always includes

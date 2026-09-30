@@ -1132,6 +1132,7 @@
   "noCardIssuedForThisProfile": "No card issued for this profile",
   "noCardReaderIsAvailableOnThisDevice": "No card reader is available on this device",
   "noChargeWillBeTaken": "No charge will be taken",
+  "noInternet": "No internet connection",
   "noData": "No data",
   "noDeviceFound": "No device found",
   "noDownloads": "No downloads yet",

@@ -2,9 +2,12 @@ import "dart:ui";
 
 import "package:u/utilities.dart";
 
+/// Builds your own percent label for ULoading, from 0-100.
 typedef ULoadingPercentBuilder = Widget Function(BuildContext context, int percent);
 
+/// Look of the ULoading overlay: spinner or image/Lottie, text, blur, colors, percent. `initU(loadingSettings: const ULoadingSettings(text: "Please wait"))`
 class ULoadingSettings {
+  /// Loading overlay look; every field has a sensible default.
   const ULoadingSettings({
     this.builder,
     this.source,
@@ -41,40 +44,106 @@ class ULoadingSettings {
     this.onDismiss,
   });
 
+  /// Your own loader widget instead of the spinner.
   final WidgetBuilder? builder;
+
+  /// Image/Lottie/SVG asset or URL shown instead of the spinner.
   final String? source;
+
+  /// Package of [source] when it is a package asset.
   final String? package;
+
+  /// Image shown instead of the spinner, from bytes/url.
   final UFileData? fileData;
+
+  /// Width of the image loader.
   final double imageWidth;
+
+  /// Height of the image loader.
   final double imageHeight;
+
+  /// How the image loader fits its box.
   final BoxFit imageFit;
+
+  /// Tint of the image loader.
   final Color? imageColor;
+
+  /// Corner radius of the image loader.
   final double imageBorderRadius;
+
+  /// Asset shown while the image loader loads.
   final String? imagePlaceholder;
+
+  /// Color of the dimmed background.
   final Color overlayColor;
+
+  /// Fade in/out time.
   final Duration animationDuration;
+
+  /// Fade in/out curve.
   final Curve animationCurve;
+
+  /// Background blur (0 = none).
   final double blurAmount;
+
+  /// Lets a tap on the background close it.
   final bool dismissible;
+
+  /// Uses the built-in spinner.
   final bool useDefaultLoader;
+
+  /// Text under the loader, e.g. "Uploading…".
   final String? text;
+
+  /// Color of [text].
   final Color textColor;
+
+  /// Spinner color.
   final Color spinnerColor;
+
+  /// Spinner size.
   final double spinnerSize;
+
+  /// Spinner line width.
   final double spinnerStrokeWidth;
+
+  /// Shows a determinate ring when a percent is set.
   final bool useProgressIndicator;
+
+  /// Gap between loader and text.
   final double spacing;
+
+  /// Padding of the loader card.
   final EdgeInsetsGeometry? padding;
+
+  /// Margin of the loader card.
   final EdgeInsetsGeometry? margin;
+
+  /// Loader card color (none by default).
   final Color? backgroundColor;
+
+  /// Loader card corner radius.
   final double borderRadius;
+
+  /// Where the loader sits on screen.
   final AlignmentGeometry alignment;
+
+  /// Shows the percent number.
   final bool showPercent;
+
+  /// Text after the number, "%" by default.
   final String percentSuffix;
+
+  /// Color of the percent number.
   final Color? percentTextColor;
+
+  /// Your own percent widget.
   final ULoadingPercentBuilder? percentBuilder;
+
+  /// Runs when the overlay closes.
   final VoidCallback? onDismiss;
 
+  /// Copy with some fields changed.
   ULoadingSettings copyWith({
     WidgetBuilder? builder,
     String? source,
@@ -146,6 +215,7 @@ class ULoadingSettings {
   );
 }
 
+/// Full-screen blocking loader over the whole app, from anywhere; UHttpClient-based services show it for you. `ULoading.show(); await save(); ULoading.dismiss();`
 class ULoading {
   static OverlayEntry? _overlayEntry;
   static bool _isShowing = false;
@@ -154,10 +224,13 @@ class ULoading {
   static final URxnInt _percent = URxnInt();
   static URxInt? _boundPercent;
 
+  /// Current default look.
   static ULoadingSettings get settings => _settings;
 
+  /// Current percent, or null when indeterminate.
   static int? get percent => _percent.value;
 
+  /// Sets the default look; initU() already calls it.
   static void initialize({ULoadingSettings? settings, GlobalKey<NavigatorState>? key}) {
     if (settings != null) {
       _settings = settings;
@@ -166,6 +239,7 @@ class ULoading {
     if (key != null) navigatorKey = key;
   }
 
+  /// Shows the loader (once; calling again only updates it); [percent] shows progress. `ULoading.show(text: "Uploading", percent: 0)`
   static void show({
     BuildContext? context,
     ULoadingSettings? settings,
@@ -198,6 +272,7 @@ class ULoading {
     _isShowing = true;
   }
 
+  /// Changes text/percent/look of the visible loader. `ULoading.update(text: "Almost done")`
   static void update({
     ULoadingSettings? settings,
     WidgetBuilder? customLoader,
@@ -215,11 +290,13 @@ class ULoading {
     if (percent != null || percentRx != null) _bindPercent(percent: percent, percentRx: percentRx);
   }
 
+  /// Updates the percent (null = spinner). `ULoading.setPercent(60)`
   static void setPercent(int? percent) {
     _unbindPercent();
     _percent.value = percent?.clamp(0, 100);
   }
 
+  /// Hides the loader.
   static void dismiss() {
     if (!_isShowing) return;
     _overlayEntry?.remove();
@@ -231,6 +308,7 @@ class ULoading {
     _activeSettings = _settings;
   }
 
+  /// True while the loader is visible.
   static bool isShowing() => _isShowing;
 
   static void _bindPercent({int? percent, URxInt? percentRx}) {

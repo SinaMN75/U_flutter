@@ -8,7 +8,10 @@ class UProcessStepsIndicator extends StatelessWidget {
     super.key,
   });
 
+  /// Status of each step.
   final List<UProcessStepStatus> steps;
+
+  /// Text style (defaults to the theme).
   final UProcessStyle style;
 
   @override

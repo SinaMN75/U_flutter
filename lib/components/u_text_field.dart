@@ -1,5 +1,6 @@
 import "package:u/utilities.dart";
 
+/// Text field with label, validator, clear button, password eye, formatters and u's layout options. `UTextField(labelText: "Email", validator: UValidators.email(), keyboardType: TextInputType.emailAddress)`
 class UTextField extends StatefulWidget {
   const UTextField({
     super.key,
@@ -54,54 +55,151 @@ class UTextField extends StatefulWidget {
     this.floatingLabelBehavior,
   });
 
+  /// Hides the text (passwords) and shows an eye button to reveal it.
   final bool obscureText;
+
+  /// Shows an × button that clears the text.
   final bool hasClearButton;
+
+  /// Marks the field as required.
   final bool required;
+
+  /// Smaller vertical padding.
   final bool isDense;
+
+  /// Shows the value without allowing edits.
   final bool readOnly;
+
+  /// Text to show.
   final String? text;
+
+  /// Floating label text.
   final String? labelText;
+
+  /// Grey hint shown while empty.
   final String? hintText;
+
+  /// Starting value.
   final String? initialValue;
+
+  /// Form validator; return an error text or null (see UValidators).
   final String? Function(String?)? validator;
+
+  /// Font size.
   final double? fontSize;
+
+  /// Line height of the text.
   final double? textHeight;
+
+  /// Controller to read or change it from code.
   final TextEditingController? controller;
+
+  /// Keyboard to show (number, email, phone, multiline…).
   final TextInputType keyboardType;
+
+  /// Number of text lines.
   final int lines;
+
+  /// Maximum characters (shows a counter).
   final int? maxLength;
+
+  /// Padding inside the field.
   final EdgeInsetsGeometry? contentPadding;
+
+  /// Called when tapped.
   final VoidCallback? onTap;
+
+  /// Widget before the text.
   final Widget? prefix;
+
+  /// Widget after the text.
   final Widget? suffix;
+
+  /// Called when saved.
   final Function(String? value)? onSave;
+
+  /// Text alignment.
   final TextAlign textAlign;
+
+  /// Called with the new value when the user changes it.
   final ValueChanged<String>? onChanged;
+
+  /// Called when the user presses the keyboard's done/enter.
   final ValueChanged<String>? onFieldSubmitted;
+
+  /// Input formatters, e.g. UTextFieldFormatter / digits only.
   final List<TextInputFormatter>? formatters;
+
+  /// Autofill hints (email, password, oneTimeCode…) for password managers and SMS codes.
   final List<String>? autoFillHints;
+
+  /// Text color.
   final Color? textColor;
+
+  /// Focus node to control keyboard focus.
   final FocusNode? focusNode;
+
+  /// Space outside, around the widget.
   final EdgeInsetsGeometry? margin;
+
+  /// False hides it completely (takes no space).
   final bool visible;
+
+  /// See-through amount, 0 (invisible) to 1 (solid).
   final double? opacity;
+
+  /// How the content fits its box (BoxFit).
   final BoxFit? fit;
+
+  /// Alignment inside the box when it does not fill it.
   final AlignmentGeometry fitAlignment;
+
+  /// Scales the painted widget (1 = normal size).
   final double? scale;
+
+  /// Rotation in radians.
   final double? rotate;
+
+  /// Moves the painted widget by this offset (layout unchanged).
   final Offset? translate;
+
+  /// Centers it in the available space.
   final bool center;
+
+  /// Keeps it out of the notch and system bars.
   final bool safeArea;
+
+  /// Flex value to fill the remaining space in a Row/Column (null = off).
   final int? expanded;
+
+  /// Flex value to shrink in a Row/Column when space is tight (null = off).
   final int? flexible;
+
+  /// Wraps it in a Positioned (use inside a Stack) with top/left/right/bottom.
   final bool positioned;
+
+  /// Distance from the left when [positioned] in a Stack.
   final double? left;
+
+  /// Distance from the top when [positioned] in a Stack.
   final double? top;
+
+  /// Distance from the right when [positioned] in a Stack.
   final double? right;
+
+  /// Distance from the bottom when [positioned] in a Stack.
   final double? bottom;
+
+  /// Width when [positioned].
   final double? positionedWidth;
+
+  /// Height when [positioned].
   final double? positionedHeight;
+
+  /// Corner radius.
   final double? borderRadius;
+
+  /// When the label floats above the field.
   final FloatingLabelBehavior? floatingLabelBehavior;
 
   @override
@@ -205,6 +303,7 @@ class _UTextFieldState extends State<UTextField> {
   }
 }
 
+/// Drop-down in text-field style, with validator. `UDropDownField<int>(initialValue: 1, items: const [DropdownMenuItem(value: 1, child: Text("One"))], onChanged: (v) {})`
 class UDropDownField<T> extends StatefulWidget {
   const UDropDownField({
     required this.initialValue,
@@ -245,41 +344,109 @@ class UDropDownField<T> extends StatefulWidget {
     this.positionedHeight,
   });
 
+  /// The items to show.
   final List<DropdownMenuItem<T>> items;
+
+  /// Called with the new value when the user changes it.
   final ValueChanged<T> onChanged;
+
+  /// Starting value.
   final T initialValue;
 
+  /// Marks the field as required.
   final bool required;
+
+  /// Smaller vertical padding.
   final bool isDense;
+
+  /// Text to show.
   final String? text;
+
+  /// Floating label text.
   final String? labelText;
+
+  /// Grey hint shown while empty.
   final String? hintText;
+
+  /// Form validator; return an error text or null (see UValidators).
   final String? Function(T?)? validator;
+
+  /// Font size.
   final double? fontSize;
+
+  /// Line height of the text.
   final double? textHeight;
+
+  /// Padding inside the field.
   final EdgeInsetsGeometry? contentPadding;
+
+  /// Called when tapped.
   final VoidCallback? onTap;
+
+  /// Widget before the text.
   final Widget? prefix;
+
+  /// Widget after the text.
   final Widget? suffix;
+
+  /// Called when saved.
   final Function(T? value)? onSave;
+
+  /// Space outside, around the widget.
   final EdgeInsetsGeometry? margin;
+
+  /// False hides it completely (takes no space).
   final bool visible;
+
+  /// See-through amount, 0 (invisible) to 1 (solid).
   final double? opacity;
+
+  /// How the content fits its box (BoxFit).
   final BoxFit? fit;
+
+  /// Alignment inside the box when it does not fill it.
   final AlignmentGeometry fitAlignment;
+
+  /// Scales the painted widget (1 = normal size).
   final double? scale;
+
+  /// Rotation in radians.
   final double? rotate;
+
+  /// Moves the painted widget by this offset (layout unchanged).
   final Offset? translate;
+
+  /// Centers it in the available space.
   final bool center;
+
+  /// Keeps it out of the notch and system bars.
   final bool safeArea;
+
+  /// Flex value to fill the remaining space in a Row/Column (null = off).
   final int? expanded;
+
+  /// Flex value to shrink in a Row/Column when space is tight (null = off).
   final int? flexible;
+
+  /// Wraps it in a Positioned (use inside a Stack) with top/left/right/bottom.
   final bool positioned;
+
+  /// Distance from the left when [positioned] in a Stack.
   final double? left;
+
+  /// Distance from the top when [positioned] in a Stack.
   final double? top;
+
+  /// Distance from the right when [positioned] in a Stack.
   final double? right;
+
+  /// Distance from the bottom when [positioned] in a Stack.
   final double? bottom;
+
+  /// Width when [positioned].
   final double? positionedWidth;
+
+  /// Height when [positioned].
   final double? positionedHeight;
 
   @override
@@ -339,6 +506,7 @@ class _UDropDownFieldState<T> extends State<UDropDownField<T>> {
   );
 }
 
+/// Read-only field that opens a Gregorian or Jalali date (and time) picker on tap. `UTextFieldDatePicker(jalali: true, labelText: "Birth date", onChange: (d) => birth = d)`
 class UTextFieldDatePicker extends StatefulWidget {
   const UTextFieldDatePicker({
     required this.onChange,
@@ -384,45 +552,124 @@ class UTextFieldDatePicker extends StatefulWidget {
     this.positionedHeight,
   });
 
+  /// Called with the picked DateTime.
   final Function(DateTime, UJalali) onChange;
+
+  /// Text to show.
   final String? text;
+
+  /// Font size.
   final double? fontSize;
+
+  /// Grey hint shown while empty.
   final String? hintText;
+
+  /// Floating label text.
   final String? labelText;
+
+  /// Widget before the text.
   final Widget? prefix;
+
+  /// Shows the value without allowing edits.
   final bool readOnly;
+
+  /// Widget after the text.
   final Widget? suffix;
+
+  /// Text alignment.
   final TextAlign textAlign;
+
+  /// Line height of the text.
   final double? textHeight;
+
+  /// Controller to read or change it from code.
   final TextEditingController? controller;
+
+  /// Date selected at start.
   final DateTime? initialDate;
+
+  /// First selectable year.
   final int? startYear;
+
+  /// Last selectable year.
   final int? endYear;
+
+  /// Form validator; return an error text or null (see UValidators).
   final String? Function(String?)? validator;
+
+  /// Asks for a date.
   final bool date;
+
+  /// Also asks for a time.
   final bool time;
+
+  /// Uses the Jalali (Persian) calendar.
   final bool jalali;
+
+  /// Jalali picker look: classic, material or spinner.
   final UJalaliDatePickerType jalaliType;
+
+  /// Shows the spinner picker in a dialog instead of a bottom sheet.
   final bool spinnerAsDialog;
+
+  /// Header text of the picker.
   final String? helpText;
+
+  /// Space outside, around the widget.
   final EdgeInsetsGeometry? margin;
+
+  /// False hides it completely (takes no space).
   final bool visible;
+
+  /// See-through amount, 0 (invisible) to 1 (solid).
   final double? opacity;
+
+  /// How the content fits its box (BoxFit).
   final BoxFit? fit;
+
+  /// Alignment inside the box when it does not fill it.
   final AlignmentGeometry fitAlignment;
+
+  /// Scales the painted widget (1 = normal size).
   final double? scale;
+
+  /// Rotation in radians.
   final double? rotate;
+
+  /// Moves the painted widget by this offset (layout unchanged).
   final Offset? translate;
+
+  /// Centers it in the available space.
   final bool center;
+
+  /// Keeps it out of the notch and system bars.
   final bool safeArea;
+
+  /// Flex value to fill the remaining space in a Row/Column (null = off).
   final int? expanded;
+
+  /// Flex value to shrink in a Row/Column when space is tight (null = off).
   final int? flexible;
+
+  /// Wraps it in a Positioned (use inside a Stack) with top/left/right/bottom.
   final bool positioned;
+
+  /// Distance from the left when [positioned] in a Stack.
   final double? left;
+
+  /// Distance from the top when [positioned] in a Stack.
   final double? top;
+
+  /// Distance from the right when [positioned] in a Stack.
   final double? right;
+
+  /// Distance from the bottom when [positioned] in a Stack.
   final double? bottom;
+
+  /// Width when [positioned].
   final double? positionedWidth;
+
+  /// Height when [positioned].
   final double? positionedHeight;
 
   @override
@@ -541,6 +788,7 @@ class _UTextFieldDatePickerState extends State<UTextFieldDatePicker> {
   );
 }
 
+/// Field that suggests from a local list as you type. `UTextFieldAutoComplete<City>(items: cities, labelBuilder: (c) => c.name, selectedItem: city, onChanged: (c) => city = c)`
 class UTextFieldAutoComplete<T> extends StatefulWidget {
   const UTextFieldAutoComplete({
     required this.items,
@@ -571,30 +819,79 @@ class UTextFieldAutoComplete<T> extends StatefulWidget {
     this.positionedHeight,
   });
 
+  /// The items to show.
   final List<T> items;
+
+  /// Text shown for an item.
   final String Function(T) labelBuilder;
+
+  /// Called with the new value when the user changes it.
   final void Function(T) onChanged;
+
+  /// Item shown as selected.
   final T selectedItem;
+
+  /// Grey hint shown while empty.
   final String? hintText;
+
+  /// Title text.
   final String? title;
+
+  /// Space outside, around the widget.
   final EdgeInsetsGeometry? margin;
+
+  /// False hides it completely (takes no space).
   final bool visible;
+
+  /// See-through amount, 0 (invisible) to 1 (solid).
   final double? opacity;
+
+  /// How the content fits its box (BoxFit).
   final BoxFit? fit;
+
+  /// Alignment inside the box when it does not fill it.
   final AlignmentGeometry fitAlignment;
+
+  /// Scales the painted widget (1 = normal size).
   final double? scale;
+
+  /// Rotation in radians.
   final double? rotate;
+
+  /// Moves the painted widget by this offset (layout unchanged).
   final Offset? translate;
+
+  /// Centers it in the available space.
   final bool center;
+
+  /// Keeps it out of the notch and system bars.
   final bool safeArea;
+
+  /// Flex value to fill the remaining space in a Row/Column (null = off).
   final int? expanded;
+
+  /// Flex value to shrink in a Row/Column when space is tight (null = off).
   final int? flexible;
+
+  /// Wraps it in a Positioned (use inside a Stack) with top/left/right/bottom.
   final bool positioned;
+
+  /// Distance from the left when [positioned] in a Stack.
   final double? left;
+
+  /// Distance from the top when [positioned] in a Stack.
   final double? top;
+
+  /// Distance from the right when [positioned] in a Stack.
   final double? right;
+
+  /// Distance from the bottom when [positioned] in a Stack.
   final double? bottom;
+
+  /// Width when [positioned].
   final double? positionedWidth;
+
+  /// Height when [positioned].
   final double? positionedHeight;
 
   @override
@@ -689,6 +986,7 @@ class _UTextFieldAutoCompleteState<T> extends State<UTextFieldAutoComplete<T>> {
   );
 }
 
+/// Field that searches your API as you type (debounced). `UTextFieldAutoCompleteAsync<User>(fetchData: api.searchUsers, labelBuilder: (u) => u.name, selectedItem: null, onChanged: (u) {})`
 class UTextFieldAutoCompleteAsync<T> extends StatefulWidget {
   const UTextFieldAutoCompleteAsync({
     required this.labelBuilder,
@@ -719,30 +1017,79 @@ class UTextFieldAutoCompleteAsync<T> extends StatefulWidget {
     this.positionedHeight,
   });
 
+  /// Text shown for an item.
   final String Function(T) labelBuilder;
+
+  /// Called with the new value when the user changes it.
   final void Function(T?) onChanged;
+
+  /// Item shown as selected.
   final T? selectedItem;
+
+  /// Grey hint shown while empty.
   final String? hintText;
+
+  /// Wait after typing stops before searching.
   final Duration debounceDuration;
+
+  /// Returns results for the typed query.
   final Future<List<T>> Function(String query) fetchData;
+
+  /// Space outside, around the widget.
   final EdgeInsetsGeometry? margin;
+
+  /// False hides it completely (takes no space).
   final bool visible;
+
+  /// See-through amount, 0 (invisible) to 1 (solid).
   final double? opacity;
+
+  /// How the content fits its box (BoxFit).
   final BoxFit? fit;
+
+  /// Alignment inside the box when it does not fill it.
   final AlignmentGeometry fitAlignment;
+
+  /// Scales the painted widget (1 = normal size).
   final double? scale;
+
+  /// Rotation in radians.
   final double? rotate;
+
+  /// Moves the painted widget by this offset (layout unchanged).
   final Offset? translate;
+
+  /// Centers it in the available space.
   final bool center;
+
+  /// Keeps it out of the notch and system bars.
   final bool safeArea;
+
+  /// Flex value to fill the remaining space in a Row/Column (null = off).
   final int? expanded;
+
+  /// Flex value to shrink in a Row/Column when space is tight (null = off).
   final int? flexible;
+
+  /// Wraps it in a Positioned (use inside a Stack) with top/left/right/bottom.
   final bool positioned;
+
+  /// Distance from the left when [positioned] in a Stack.
   final double? left;
+
+  /// Distance from the top when [positioned] in a Stack.
   final double? top;
+
+  /// Distance from the right when [positioned] in a Stack.
   final double? right;
+
+  /// Distance from the bottom when [positioned] in a Stack.
   final double? bottom;
+
+  /// Width when [positioned].
   final double? positionedWidth;
+
+  /// Height when [positioned].
   final double? positionedHeight;
 
   @override
@@ -912,6 +1259,7 @@ class _UTextFieldAutoCompleteAsyncState<T> extends State<UTextFieldAutoCompleteA
   );
 }
 
+/// Phone field with country picker, flag, per-country validation and formatting. `UTextFieldPhoneNumber(onChanged: (p) => phone = p.phoneNumber)`
 class UTextFieldPhoneNumber extends StatefulWidget {
   const UTextFieldPhoneNumber({
     super.key,
@@ -949,37 +1297,100 @@ class UTextFieldPhoneNumber extends StatefulWidget {
     this.positionedHeight,
   });
 
+  /// How the country picker opens: dropdown, dialog or bottom sheet.
   final UCountryPickerMode pickerMode;
+
+  /// Called with the new value when the user changes it.
   final Function(UPhoneNumberData)? onChanged;
+
+  /// Controller to read or change it from code.
   final TextEditingController? controller;
+
+  /// Starting value.
   final String? initialValue;
+
+  /// Starting country (ISO or dial code); defaults to U.defaultPhoneCountryCode.
   final String? initialCountryCode;
+
+  /// Text to show.
   final String? text;
+
+  /// Floating label text.
   final String? labelText;
+
+  /// Grey hint shown while empty.
   final String? hintText;
+
+  /// Form validator; return an error text or null (see UValidators).
   final String? Function(String?)? validator;
+
+  /// Marks the field as required.
   final bool required;
+
+  /// Shows the value without allowing edits.
   final bool readOnly;
+
+  /// Padding inside the field.
   final EdgeInsetsGeometry? contentPadding;
+
+  /// Focus node to control keyboard focus.
   final FocusNode? focusNode;
+
+  /// Space outside, around the widget.
   final EdgeInsetsGeometry? margin;
+
+  /// False hides it completely (takes no space).
   final bool visible;
+
+  /// See-through amount, 0 (invisible) to 1 (solid).
   final double? opacity;
+
+  /// How the content fits its box (BoxFit).
   final BoxFit? fit;
+
+  /// Alignment inside the box when it does not fill it.
   final AlignmentGeometry fitAlignment;
+
+  /// Scales the painted widget (1 = normal size).
   final double? scale;
+
+  /// Rotation in radians.
   final double? rotate;
+
+  /// Moves the painted widget by this offset (layout unchanged).
   final Offset? translate;
+
+  /// Centers it in the available space.
   final bool center;
+
+  /// Keeps it out of the notch and system bars.
   final bool safeArea;
+
+  /// Flex value to fill the remaining space in a Row/Column (null = off).
   final int? expanded;
+
+  /// Flex value to shrink in a Row/Column when space is tight (null = off).
   final int? flexible;
+
+  /// Wraps it in a Positioned (use inside a Stack) with top/left/right/bottom.
   final bool positioned;
+
+  /// Distance from the left when [positioned] in a Stack.
   final double? left;
+
+  /// Distance from the top when [positioned] in a Stack.
   final double? top;
+
+  /// Distance from the right when [positioned] in a Stack.
   final double? right;
+
+  /// Distance from the bottom when [positioned] in a Stack.
   final double? bottom;
+
+  /// Width when [positioned].
   final double? positionedWidth;
+
+  /// Height when [positioned].
   final double? positionedHeight;
 
   @override
@@ -1185,10 +1596,14 @@ class _CountrySelector extends StatelessWidget {
   );
 }
 
+/// Flag image of a country (bundled with u). `UCountryFlag(country: UCountries.iran())`
 class UCountryFlag extends StatelessWidget {
   const UCountryFlag({required this.country, super.key, this.width = 26});
 
+  /// The country.
   final UCountry country;
+
+  /// Width in logical pixels (null = size to content).
   final double width;
 
   @override
@@ -1292,19 +1707,39 @@ class _UCountryPickerState extends UState<_UCountryPicker> {
   );
 }
 
+/// How UTextFieldPhoneNumber opens its country list.
 enum UCountryPickerMode { dropdown, dialog, bottomSheet }
 
+/// What UTextFieldPhoneNumber reports: full number, number without code and the country's details.
 class UPhoneNumberData {
+  /// Dial code, e.g. "+98".
   final String countryCode;
+
+  /// Full international number, e.g. "+989121234567".
   final String phoneNumber;
+
+  /// National number without dial code.
   final String phoneWithoutCode;
+
+  /// Country name.
   final String countryName;
+
+  /// Capital city.
   final String capital;
+
+  /// Continent.
   final String continent;
+
+  /// Main religion.
   final String primaryReligion;
+
+  /// Currency.
   final String currency;
+
+  /// Main language.
   final String primaryLanguage;
 
+  /// Phone number with country details.
   UPhoneNumberData({
     required this.countryCode,
     required this.phoneNumber,
@@ -1318,16 +1753,27 @@ class UPhoneNumberData {
   });
 }
 
-/// Picks several items with a [UTextFieldAutoCompleteAsync]; picked items show as removable chips.
-/// [selected] is edited in place; two items are the same when their labels match.
+/// Async search field that collects several picks as removable chips. `UTextFieldAutoCompleteAsyncMulti<Tag>(selected: tags, fetchData: api.searchTags, labelBuilder: (t) => t.title)`
 class UTextFieldAutoCompleteAsyncMulti<T> extends StatefulWidget {
-  const UTextFieldAutoCompleteAsyncMulti({required this.selected, required this.fetchData, required this.labelBuilder, this.hintText, this.margin, super.key});
+  const UTextFieldAutoCompleteAsyncMulti({required this.selected, required this.fetchData, required this.labelBuilder, this.hintText, this.margin, this.onChanged, super.key});
 
+  /// The picked items; this list is updated in place.
   final List<T> selected;
+
+  /// Returns results for the typed query.
   final Future<List<T>> Function(String query) fetchData;
+
+  /// Text shown for an item (also used to spot duplicates).
   final String Function(T) labelBuilder;
+
+  /// Grey hint shown while empty.
   final String? hintText;
+
+  /// Space outside, around the widget.
   final EdgeInsetsGeometry? margin;
+
+  /// Called with the list after an item is added or removed.
+  final void Function(List<T> selected)? onChanged;
 
   @override
   State<UTextFieldAutoCompleteAsyncMulti<T>> createState() => _UTextFieldAutoCompleteAsyncMultiState<T>();
@@ -1348,13 +1794,26 @@ class _UTextFieldAutoCompleteAsyncMultiState<T> extends State<UTextFieldAutoComp
         labelBuilder: widget.labelBuilder,
         fetchData: widget.fetchData,
         onChanged: (T? i) {
-          if (i != null && !_has(i)) setState(() => widget.selected.add(i));
+          if (i != null && !_has(i)) {
+            setState(() => widget.selected.add(i));
+            widget.onChanged?.call(widget.selected);
+          }
         },
       ),
       Wrap(
         spacing: 6,
         runSpacing: 6,
-        children: widget.selected.map((T i) => Chip(label: Text(widget.labelBuilder(i)), onDeleted: () => setState(() => widget.selected.remove(i)))).toList(),
+        children: widget.selected
+            .map(
+              (T i) => Chip(
+                label: Text(widget.labelBuilder(i)),
+                onDeleted: () {
+                  setState(() => widget.selected.remove(i));
+                  widget.onChanged?.call(widget.selected);
+                },
+              ),
+            )
+            .toList(),
       ),
     ],
   );

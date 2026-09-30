@@ -1,7 +1,9 @@
 import "package:u/utilities.dart";
 
+/// Letters used on Iranian car plates.
 const List<String> uPlateLetters = <String>["ب", "ج", "د", "س", "ص", "ط", "ق", "ک", "ل", "م", "ن", "و", "ه", "ی"];
 
+/// Iranian car plate input (2 digits, letter, 3 digits, Iran code). `UPlateField(onPlateChange: (p) => plate = p)`
 class UPlateField extends StatefulWidget {
   const UPlateField({
     this.onPlateChange,
@@ -9,7 +11,10 @@ class UPlateField extends StatefulWidget {
     this.initialPlate = "",
   });
 
+  /// Plate shown at start.
   final String initialPlate;
+
+  /// Called with the plate text.
   final ValueChanged<String>? onPlateChange;
 
   @override

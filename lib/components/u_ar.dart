@@ -74,8 +74,10 @@ import "package:u/utilities.dart";
 
 enum UArPlacementMode { tap, reticle }
 
+/// Which surfaces an item may be placed on: any, horizontal, vertical, floor, wall, table, ceiling.
 enum UArSurface { any, horizontal, vertical, floor, wall, table, ceiling }
 
+/// Units of UArMeasure: metric (cm/m) or imperial (in/ft).
 enum UArMeasureUnit { metric, imperial }
 
 /// Optional label overrides; anything left null falls back to l10n.
@@ -111,33 +113,88 @@ class UArLabels {
     this.recording,
   });
 
+  /// "AR is not supported on this device".
   final String? unsupported;
+
+  /// "Install Google Play Services for AR".
   final String? installRequired;
+
+  /// Install button text.
   final String? install;
+
+  /// Camera permission explanation.
   final String? permission;
+
+  /// Location permission explanation (geo AR).
   final String? locationPermission;
+
+  /// "Open settings" button text.
   final String? openSettings;
+
+  /// Web: "Start AR" button text.
   final String? startAr;
+
+  /// "View in your space" button text.
   final String? viewInYourSpace;
+
+  /// "View in AR" button text.
   final String? viewInAr;
+
+  /// "Loading model…".
   final String? loadingModel;
+
+  /// "Could not load the model".
   final String? loadFailed;
+
+  /// "Move your phone slowly".
   final String? scanning;
+
+  /// "Moving too fast".
   final String? tooFast;
+
+  /// "Point at a textured surface".
   final String? moreDetail;
+
+  /// "Too dark".
   final String? tooDark;
+
+  /// "Finding your place again".
   final String? relocalizing;
+
+  /// "Find a flat surface".
   final String? findSurface;
+
+  /// "Tap to place".
   final String? tapToPlace;
+
+  /// Which touch gestures are on (tap, double-tap seek, swipes, pinch…).
   final String? gestures;
+
+  /// "Choose an item".
   final String? chooseItem;
+
+  /// "No places nearby".
   final String? noPlaces;
+
+  /// "Waiting for location".
   final String? waitingForLocation;
+
+  /// "Move your phone in a figure 8".
   final String? calibrateCompass;
+
+  /// Measure: "Tap to add a point".
   final String? tapToAddPoint;
+
+  /// Try-on: "Look at the camera".
   final String? lookAtCamera;
+
+  /// "Point at the image".
   final String? pointAtImage;
+
+  /// "Point at a QR code".
   final String? pointAtCode;
+
+  /// "Recording".
   final String? recording;
 }
 
@@ -155,32 +212,53 @@ class UArStyle {
     this.blur = true,
   });
 
+  /// Highlight color (defaults to the theme's primary).
   final Color? accentColor;
 
   /// Text and icons drawn on [accentColor].
   final Color? onAccentColor;
+
+  /// Panel background.
   final Color? surfaceColor;
+
+  /// Panel text/icon color.
   final Color? onSurfaceColor;
+
+  /// Hint bubble background.
   final Color? hintBackground;
+
+  /// Hint bubble text color.
   final Color? hintForeground;
+
+  /// Corner radius.
   final double borderRadius;
+
+  /// Space inside, around the content.
   final EdgeInsets padding;
+
+  /// Blurs panel backgrounds.
   final bool blur;
 
+  /// Accent color resolved from the theme.
   Color accent(BuildContext context) => accentColor ?? Theme.of(context).colorScheme.primary;
 
+  /// Color on top of the accent.
   Color onAccent(BuildContext context) {
     if (onAccentColor != null) return onAccentColor!;
     if (accentColor == null) return Theme.of(context).colorScheme.onPrimary;
     return ThemeData.estimateBrightnessForColor(accentColor!) == Brightness.dark ? const Color(0xFFFFFFFF) : const Color(0xFF000000);
   }
 
+  /// Panel color resolved from the theme.
   Color surface(BuildContext context) => surfaceColor ?? Theme.of(context).colorScheme.surface.withValues(alpha: 0.9);
 
+  /// Panel text color resolved from the theme.
   Color onSurface(BuildContext context) => onSurfaceColor ?? Theme.of(context).colorScheme.onSurface;
 
+  /// Hint background resolved from the theme.
   Color hintBg(BuildContext context) => hintBackground ?? Theme.of(context).colorScheme.inverseSurface.withValues(alpha: 0.72);
 
+  /// Hint text color resolved from the theme.
   Color hintFg(BuildContext context) => hintForeground ?? Theme.of(context).colorScheme.onInverseSurface;
 }
 
@@ -189,7 +267,10 @@ class UArStyle {
 class UArForeground extends StatelessWidget {
   const UArForeground({required this.color, required this.child, super.key});
 
+  /// Main color (defaults to the theme).
   final Color color;
+
+  /// The widget inside.
   final Widget child;
 
   @override
@@ -202,7 +283,10 @@ class UArForeground extends StatelessWidget {
       ),
       child: DefaultTextStyle.merge(
         style: TextStyle(color: color),
-        child: IconTheme.merge(data: IconThemeData(color: color), child: child),
+        child: IconTheme.merge(
+          data: IconThemeData(color: color),
+          child: child,
+        ),
       ),
     );
   }
@@ -230,9 +314,16 @@ class UArOverlay {
     this.onTap,
   });
 
+  /// Unique id.
   final String id;
+
+  /// Builds the content.
   final Widget Function(BuildContext context, UArProjection projection) builder;
+
+  /// 3D node the widget follows.
   final String? nodeId;
+
+  /// AR anchor the widget follows.
   final String? anchorId;
 
   /// Local to the node / anchor, or a world point when neither is set.
@@ -240,12 +331,26 @@ class UArOverlay {
 
   /// Which point of the widget sits on the tracked point.
   final Alignment alignment;
+
+  /// Shrinks the widget as it gets farther away.
   final bool scaleWithDistance;
+
+  /// Distance (m) at which the widget has its normal size.
   final double referenceDistance;
+
+  /// Smallest zoom.
   final double minScale;
+
+  /// Largest zoom.
   final double maxScale;
+
+  /// Hides the widget beyond this distance (m).
   final double? maxDistance;
+
+  /// Hides the widget when its point is off screen.
   final bool hideWhenOffscreen;
+
+  /// Called when tapped.
   final VoidCallback? onTap;
 }
 
@@ -253,7 +358,10 @@ class UArOverlay {
 class UArOverlayLayer extends StatefulWidget {
   const UArOverlayLayer({required this.controller, required this.overlays, super.key});
 
+  /// Controller to read or change it from code.
   final UArController controller;
+
+  /// Widgets pinned to 3D points.
   final List<UArOverlay> overlays;
 
   @override
@@ -341,8 +449,13 @@ class _UArOverlayLayerState extends State<UArOverlayLayer> {
 class UArPill extends StatelessWidget {
   const UArPill({required this.child, this.style = const UArStyle(), this.padding = const EdgeInsets.symmetric(horizontal: 14, vertical: 10), super.key});
 
+  /// The widget inside.
   final Widget child;
+
+  /// Text style (defaults to the theme).
   final UArStyle style;
+
+  /// Space inside, around the content.
   final EdgeInsets padding;
 
   @override
@@ -362,14 +475,26 @@ class UArPill extends StatelessWidget {
   }
 }
 
+/// Round translucent AR toolbar button.
 class UArRoundButton extends StatelessWidget {
   const UArRoundButton({required this.icon, required this.onTap, this.tooltip, this.size = 48, this.active = false, this.style = const UArStyle(), super.key});
 
+  /// Icon shown with it.
   final IconData icon;
+
+  /// Called when tapped.
   final VoidCallback? onTap;
+
+  /// Text shown on long press / mouse hover.
   final String? tooltip;
+
+  /// Size in logical pixels.
   final double size;
+
+  /// Highlighted (toggled on).
   final bool active;
+
+  /// Text style (defaults to the theme).
   final UArStyle style;
 
   @override
@@ -413,6 +538,7 @@ String? uArTrackingHint(UArValue value, UArLabels labels, {bool needsSurface = t
   return null;
 }
 
+/// Metres → "85 m" / "1.2 km" (or feet/miles). `uArFormatDistance(1250)`
 String uArFormatDistance(double metres, {UArMeasureUnit unit = UArMeasureUnit.metric}) {
   if (unit == UArMeasureUnit.imperial) {
     final double inches = metres / 0.0254;
@@ -439,8 +565,13 @@ class UArGate extends StatefulWidget {
     super.key,
   });
 
+  /// Builds the content.
   final Widget Function(BuildContext context, UArCapabilities capabilities) builder;
+
+  /// Asks for the camera before showing AR.
   final bool needsCamera;
+
+  /// Also asks for location (geo AR).
   final bool needsLocation;
 
   /// Shows a close button over the error screens, which otherwise cover the page.
@@ -448,7 +579,11 @@ class UArGate extends StatefulWidget {
 
   /// Shown instead of the error card when AR is unavailable, e.g. a 3D viewer.
   final Widget Function(BuildContext context, UArAvailability availability)? fallback;
+
+  /// Labels.
   final UArLabels labels;
+
+  /// Text style (defaults to the theme).
   final UArStyle style;
 
   @override
@@ -566,6 +701,7 @@ class _UArGateState extends State<UArGate> {
 
 /// Pauses the session with the app and resumes it after.
 mixin UArLifecycle<T extends StatefulWidget> on State<T>, WidgetsBindingObserver {
+  /// The controller paused/resumed with the app lifecycle.
   UArController? get lifecycleController;
 
   @override
@@ -581,9 +717,16 @@ mixin UArLifecycle<T extends StatefulWidget> on State<T>, WidgetsBindingObserver
 class UArWebStartButton extends StatelessWidget {
   const UArWebStartButton({required this.controller, this.label, this.onFailed, this.style = const UArStyle(), super.key});
 
+  /// Controller to read or change it from code.
   final UArController controller;
+
+  /// Label text.
   final String? label;
+
+  /// Web: called when the AR session could not start.
   final VoidCallback? onFailed;
+
+  /// Text style (defaults to the theme).
   final UArStyle style;
 
   @override
@@ -627,14 +770,25 @@ class UArPlaceable {
     this.data = const <String, Object?>{},
   });
 
+  /// Unique id.
   final String id;
+
+  /// Title text.
   final String title;
+
+  /// Where the content comes from (asset, URL or path).
   final UArSource? source;
+
+  /// iOS-only model (USDZ / Reality), preferred over source there.
   final UArSource? iosSource;
+
+  /// Picture shown in the item picker.
   final Widget? thumbnail;
 
   /// Largest side in metres; null keeps the model's true (real-world) size.
   final double? fitSize;
+
+  /// Surfaces this item may be placed on.
   final UArSurface surface;
 
   /// How many copies can be placed; 0 is unlimited.
@@ -642,6 +796,8 @@ class UArPlaceable {
 
   /// Builds a custom node instead of loading [source] (primitives, groups, widget cards).
   final UArNode Function(String nodeId)? builder;
+
+  /// The data to show.
   final Map<String, Object?> data;
 
   UArNode build(String nodeId) =>
@@ -649,16 +805,27 @@ class UArPlaceable {
       UArNode.model(id: nodeId, source: source ?? UArSource.url(""), iosSource: iosSource, fitSize: fitSize, pivot: surface == UArSurface.wall ? UArPivot.center : UArPivot.bottom, data: data);
 }
 
+/// An item the user placed: its node, anchor, hit point and size.
 class UArPlacedItem {
   const UArPlacedItem({required this.nodeId, required this.anchorId, required this.item, required this.hit, this.info});
 
+  /// Id of the 3D node.
   final String nodeId;
+
+  /// Id of the AR anchor.
   final String anchorId;
+
+  /// Which item was placed.
   final UArPlaceable item;
+
+  /// Where it was placed.
   final UArHitResult hit;
+
+  /// Model size/bounds after loading.
   final UArNodeInfo? info;
 }
 
+/// Behaviour of UArScene: placement by tap or reticle, gestures, toolbar, picker, snapshot, recording.
 class UArSceneOptions {
   const UArSceneOptions({
     this.placementMode = UArPlacementMode.tap,
@@ -683,29 +850,64 @@ class UArSceneOptions {
     this.haptics = true,
   });
 
+  /// Place by tapping, or at the center reticle.
   final UArPlacementMode placementMode;
+
+  /// Most items at once (0 = unlimited).
   final int maxPlacements;
 
   /// When [maxPlacements] is reached, the oldest is moved instead of refusing.
   final bool replaceWhenFull;
+
+  /// Selects an item right after placing it.
   final bool selectOnPlace;
+
+  /// Drag items to move them.
   final bool enableDrag;
+
+  /// Two-finger twist rotates items.
   final bool enableRotate;
+
+  /// Pinch scales items.
   final bool enableScale;
+
+  /// Smallest zoom.
   final double minScale;
+
+  /// Largest zoom.
   final double maxScale;
+
+  /// Shows guidance hints.
   final bool showHints;
+
+  /// Shows a gesture tutorial once.
   final bool showGestureHint;
+
+  /// Shows the item picker strip.
   final bool showItemPicker;
+
+  /// Shows the toolbar.
   final bool showToolbar;
+
+  /// Shows a photo button.
   final bool enableSnapshot;
+
+  /// Shows a video record button.
   final bool enableRecording;
+
+  /// Shows a reset button.
   final bool enableReset;
+
+  /// Shows a delete button for the selected item.
   final bool enableDelete;
+
+  /// Shows a close button.
   final bool showCloseButton;
 
   /// Opens the share sheet after a snapshot or recording when no callback is given.
   final bool shareSnapshots;
+
+  /// Vibrates on placement and gestures.
   final bool haptics;
 }
 
@@ -739,32 +941,67 @@ class UArScene extends StatefulWidget {
     super.key,
   });
 
+  /// The items to show.
   final List<UArPlaceable> items;
+
+  /// Index of the item selected at start.
   final int initialItem;
 
   /// Supply one to drive the session yourself; otherwise one is created.
   final UArController? controller;
+
+  /// Settings.
   final UArConfig config;
+
+  /// Options.
   final UArSceneOptions options;
+
+  /// Widgets pinned to 3D points.
   final List<UArOverlay> overlays;
+
+  /// Labels.
   final UArLabels labels;
+
+  /// Text style (defaults to the theme).
   final UArStyle style;
+
+  /// Called with the AR controller once ready.
   final void Function(UArController controller)? onCreated;
+
+  /// Called when the user places an item.
   final void Function(UArPlacedItem placed)? onPlaced;
+
+  /// Called when a 3D node is tapped.
   final void Function(UArNodeHit hit, UArNode? node)? onNodeTap;
 
   /// Called for taps on surfaces when nothing is being placed.
   final void Function(UArHitResult hit)? onSurfaceTap;
+
+  /// Called with the PNG from the photo button.
   final void Function(Uint8List image)? onSnapshot;
+
+  /// Called with the recorded video.
   final void Function(UArRecording recording)? onRecorded;
+
+  /// Called on an AR error.
   final void Function(UArException error)? onError;
+
+  /// Called when it closes.
   final VoidCallback? onClose;
+
+  /// Your own hint bubble.
   final Widget Function(BuildContext context, String hint)? hintBuilder;
+
+  /// Your own toolbar.
   final Widget Function(BuildContext context, UArSceneState state)? toolbarBuilder;
+
+  /// Your own item picker.
   final Widget Function(BuildContext context, UArSceneState state)? pickerBuilder;
 
   /// Anything else drawn over the view, below the built-in chrome.
   final Widget Function(BuildContext context, UArController controller)? overlayBuilder;
+
+  /// Shown while loading.
   final Widget? placeholder;
 
   /// Checks availability and asks for the camera before starting.
@@ -774,11 +1011,21 @@ class UArScene extends StatefulWidget {
   State<UArScene> createState() => UArSceneState();
 }
 
+/// State of UArScene; reach it with a GlobalKey to place/remove/snapshot from code.
 class UArSceneState extends State<UArScene> with WidgetsBindingObserver, UArLifecycle<UArScene> {
+  /// The AR controller.
   late final UArController controller = widget.controller ?? UArController(config: widget.config);
+
+  /// Every placed item.
   final List<UArPlacedItem> placed = <UArPlacedItem>[];
+
+  /// Index of the item that will be placed next.
   late int selectedItem = widget.initialItem.clamp(0, max(0, widget.items.length - 1));
+
+  /// Node id of the selected placed item.
   String? selectedNode;
+
+  /// True while an action runs.
   bool busy = false;
   bool _dragging = false;
   UArHitResult? _dragHit;
@@ -828,8 +1075,10 @@ class UArSceneState extends State<UArScene> with WidgetsBindingObserver, UArLife
     });
   }
 
+  /// The item that will be placed next.
   UArPlaceable? get currentItem => widget.items.isEmpty ? null : widget.items[selectedItem];
 
+  /// Chooses the item to place next.
   void selectItem(int index) => setState(() => selectedItem = index);
 
   bool _matches(UArHitResult hit, UArSurface surface) {
@@ -922,6 +1171,7 @@ class UArSceneState extends State<UArScene> with WidgetsBindingObserver, UArLife
     }
   }
 
+  /// Removes a placed item.
   Future<void> remove(String nodeId) async {
     final UArPlacedItem? item = placed.where((UArPlacedItem p) => p.nodeId == nodeId).firstOrNull;
     placed.removeWhere((UArPlacedItem p) => p.nodeId == nodeId);
@@ -934,6 +1184,7 @@ class UArSceneState extends State<UArScene> with WidgetsBindingObserver, UArLife
     if (mounted) setState(() {});
   }
 
+  /// Removes everything and restarts tracking.
   Future<void> reset() async {
     placed.clear();
     selectedNode = null;
@@ -941,6 +1192,7 @@ class UArSceneState extends State<UArScene> with WidgetsBindingObserver, UArLife
     if (mounted) setState(() {});
   }
 
+  /// Takes a photo of the AR view.
   Future<void> snapshot() async {
     final Uint8List? image = await controller.takeSnapshot();
     if (image == null) return;
@@ -952,6 +1204,7 @@ class UArSceneState extends State<UArScene> with WidgetsBindingObserver, UArLife
     }
   }
 
+  /// Starts/stops recording a video.
   Future<void> toggleRecording() async {
     if (controller.value.isRecording) {
       final UArRecording? recording = await controller.stopRecording();
@@ -1250,12 +1503,20 @@ class UArSceneState extends State<UArScene> with WidgetsBindingObserver, UArLife
 class UArHotspot {
   const UArHotspot({required this.id, required this.position, required this.builder, this.onTap});
 
+  /// Unique id.
   final String id;
+
+  /// Where it is placed.
   final UArVector3 position;
+
+  /// Builds the content.
   final Widget Function(BuildContext context, UArProjection projection) builder;
+
+  /// Called when tapped.
   final VoidCallback? onTap;
 }
 
+/// Interactive 3D model viewer (rotate, zoom, pan, hotspots, animation) with a "View in AR" button; works on every platform. `U3DViewer(source: UArSource.url(glbUrl))`
 class U3DViewer extends StatefulWidget {
   const U3DViewer({
     required this.source,
@@ -1296,57 +1557,126 @@ class U3DViewer extends StatefulWidget {
     super.key,
   });
 
+  /// Where the content comes from (asset, URL or path).
   final UArSource source;
+
+  /// iOS-only model (USDZ) for Quick Look / RealityKit.
   final UArSource? iosSource;
+
+  /// Title text.
   final String? title;
+
+  /// Controller to read or change it from code.
   final UArController? controller;
+
+  /// Background widget/color.
   final Color? background;
+
+  /// Transparent background.
   final bool transparent;
+
+  /// Turns slowly until touched.
   final bool autoRotate;
 
   /// Degrees per second.
   final double autoRotateSpeed;
+
+  /// Idle time before auto-rotate starts again.
   final Duration autoRotateDelay;
+
+  /// Drag rotates the model.
   final bool enableRotate;
+
+  /// Pinch/scroll zooms.
   final bool enableZoom;
+
+  /// Two-finger drag pans.
   final bool enablePan;
+
+  /// Closest zoom.
   final double minZoom;
+
+  /// Farthest zoom.
   final double maxZoom;
+
+  /// Lowest camera angle (degrees).
   final double minPitch;
+
+  /// Highest camera angle (degrees).
   final double maxPitch;
+
+  /// Starting horizontal angle (degrees).
   final double initialYaw;
+
+  /// Starting vertical angle (degrees).
   final double initialPitch;
+
+  /// Camera field of view (degrees).
   final double fov;
+
+  /// Lighting exposure.
   final double exposure;
+
+  /// Environment light strength.
   final double environmentIntensity;
+
+  /// Draws a ground shadow.
   final bool shadows;
+
+  /// Ground shadow darkness.
   final double shadowOpacity;
+
+  /// Model animation to play.
   final UArAnimation? animation;
+
+  /// Labels pinned to points on the model.
   final List<UArHotspot> hotspots;
+
+  /// Shows "View in AR" where AR is supported.
   final bool showArButton;
 
   /// Where the model goes when opened in AR.
   final UArSurface arSurface;
+
+  /// Your own AR button.
   final Widget Function(BuildContext context, VoidCallback open)? arButtonBuilder;
 
   /// Replaces the default "View in AR" behaviour.
   final VoidCallback? onArPressed;
+
+  /// Called with the model's size/bounds after loading.
   final void Function(UArNodeInfo info)? onLoaded;
+
+  /// Called when tapped.
   final void Function(UArNodeHit? hit)? onTap;
+
+  /// Shown while loading.
   final Widget? placeholder;
+
+  /// Shown when loading fails.
   final Widget Function(BuildContext context, UArException error)? errorBuilder;
+
+  /// Labels.
   final UArLabels labels;
+
+  /// Text style (defaults to the theme).
   final UArStyle style;
 
   @override
   State<U3DViewer> createState() => U3DViewerState();
 }
 
+/// State of U3DViewer; use it to open AR from code.
 class U3DViewerState extends State<U3DViewer> with SingleTickerProviderStateMixin {
+  /// Node id of the model.
   static const String nodeId = "model";
   UArController? _controller;
   late final Ticker _ticker = createTicker(_tick);
+
+  /// Model size/bounds after loading.
   UArNodeInfo? info;
+
+  /// Load error, if any.
   UArException? error;
   late UArOrbit _orbit = UArOrbit(yaw: widget.initialYaw, pitch: widget.initialPitch, fov: widget.fov);
   UArOrbit _home = const UArOrbit();
@@ -1359,6 +1689,7 @@ class U3DViewerState extends State<U3DViewer> with SingleTickerProviderStateMixi
   bool _pushing = false;
   UArOrbit? _pending;
 
+  /// The 3D controller.
   UArController get controller => _controller!;
 
   UArConfig get _config => UArConfig.viewer(
@@ -1446,6 +1777,7 @@ class U3DViewerState extends State<U3DViewer> with SingleTickerProviderStateMixi
     _lastInteraction = DateTime.now();
   }
 
+  /// Opens the model in AR (or the OS viewer).
   Future<void> openInAr() async {
     if (widget.onArPressed != null) {
       widget.onArPressed!();
@@ -1563,6 +1895,7 @@ class U3DViewerState extends State<U3DViewer> with SingleTickerProviderStateMixi
 // Location-based cards (shops, landmarks, events, …)
 // =============================================================================
 
+/// A real-world place for UArGeoView: coordinates, title, optional 3D model.
 class UArPlace {
   const UArPlace({
     required this.id,
@@ -1578,12 +1911,25 @@ class UArPlace {
     this.data = const <String, Object?>{},
   });
 
+  /// Unique id.
   final String id;
+
+  /// Latitude.
   final double latitude;
+
+  /// Longitude.
   final double longitude;
+
+  /// Title text.
   final String title;
+
+  /// Second line of text.
   final String? subtitle;
+
+  /// Image address.
   final String? imageUrl;
+
+  /// Icon shown with it.
   final IconData? icon;
 
   /// Where the card floats, in metres above the ground.
@@ -1591,10 +1937,15 @@ class UArPlace {
 
   /// Optional 3D pin or sign drawn at the place.
   final UArSource? model;
+
+  /// Size of its 3D model in metres.
   final double modelSize;
+
+  /// The data to show.
   final Map<String, Object?> data;
 }
 
+/// Camera view with floating labels over nearby places (distance, compass). Needs `permission add camera location`. `UArGeoView(places: places)`
 class UArGeoView extends StatefulWidget {
   const UArGeoView({
     required this.places,
@@ -1615,15 +1966,28 @@ class UArGeoView extends StatefulWidget {
     super.key,
   });
 
+  /// Places to show.
   final List<UArPlace> places;
+
+  /// Settings.
   final UArConfig config;
 
   /// Places farther than this many metres are skipped.
   final double maxDistance;
+
+  /// Most labels at once (nearest first).
   final int maxVisible;
+
+  /// Your own label for a place.
   final Widget Function(BuildContext context, UArPlace place, double distance, UArProjection projection)? cardBuilder;
+
+  /// Your own arrow for places off screen.
   final Widget Function(BuildContext context, UArPlace place, double distance, bool left)? edgeIndicatorBuilder;
+
+  /// Shows arrows toward off-screen places.
   final bool showEdgeIndicators;
+
+  /// Shows a compass.
   final bool showCompass;
 
   /// Pushes overlapping cards apart vertically.
@@ -1634,16 +1998,26 @@ class UArGeoView extends StatefulWidget {
 
   /// How often GPS anchors are re-placed from the latest fix.
   final Duration refreshInterval;
+
+  /// Called when a label is tapped.
   final void Function(UArPlace place)? onPlaceTap;
+
+  /// Labels.
   final UArLabels labels;
+
+  /// Text style (defaults to the theme).
   final UArStyle style;
+
+  /// Shows a close button.
   final bool showCloseButton;
 
   @override
   State<UArGeoView> createState() => UArGeoViewState();
 }
 
+/// State of UArGeoView.
 class UArGeoViewState extends State<UArGeoView> with WidgetsBindingObserver, UArLifecycle<UArGeoView> {
+  /// The AR controller.
   late final UArController controller = UArController(config: widget.config);
   final Map<String, String> _anchors = <String, String>{};
   Timer? _refresh;
@@ -1933,6 +2307,7 @@ class UArGeoViewState extends State<UArGeoView> with WidgetsBindingObserver, UAr
 // Measuring tape
 // =============================================================================
 
+/// Tape measure: tap points to measure lengths and areas (Android ARCore, iOS ARKit). `UArMeasure(unit: UArMeasureUnit.metric)`
 class UArMeasure extends StatefulWidget {
   const UArMeasure({
     this.unit = UArMeasureUnit.metric,
@@ -1946,25 +2321,42 @@ class UArMeasure extends StatefulWidget {
     super.key,
   });
 
+  /// Metric or imperial.
   final UArMeasureUnit unit;
 
   /// Also measures the closing edge and the enclosed floor area.
   final bool closeShape;
+
+  /// Line color.
   final Color? lineColor;
+
+  /// Point color.
   final Color? pointColor;
+
+  /// Called with the new value when the user changes it.
   final void Function(List<UArVector3> points, double total, double area)? onChanged;
+
+  /// Labels.
   final UArLabels labels;
+
+  /// Text style (defaults to the theme).
   final UArStyle style;
+
+  /// Shows a close button.
   final bool showCloseButton;
 
   @override
   State<UArMeasure> createState() => UArMeasureState();
 }
 
+/// State of UArMeasure; add/undo/clear points from code.
 class UArMeasureState extends State<UArMeasure> with WidgetsBindingObserver, UArLifecycle<UArMeasure> {
+  /// The AR controller.
   late final UArController controller = UArController(
     config: const UArConfig(reticle: true, planeStyle: UArPlaneStyle.dots, planeColor: Color(0x55FFFFFF)),
   );
+
+  /// Measured points in 3D.
   final List<UArVector3> points = <UArVector3>[];
   StreamSubscription<UArFrame>? _frames;
   bool _previewReady = false;
@@ -1990,6 +2382,7 @@ class UArMeasureState extends State<UArMeasure> with WidgetsBindingObserver, UAr
     super.dispose();
   }
 
+  /// Total length in metres.
   double get total {
     double sum = 0;
     for (int i = 1; i < points.length; i++) {
@@ -1999,6 +2392,7 @@ class UArMeasureState extends State<UArMeasure> with WidgetsBindingObserver, UAr
     return sum;
   }
 
+  /// Enclosed area in m² (3+ points).
   double get area {
     if (points.length < 3) return 0;
     double sum = 0;
@@ -2030,6 +2424,7 @@ class UArMeasureState extends State<UArMeasure> with WidgetsBindingObserver, UAr
     }
   }
 
+  /// Adds a point at the reticle.
   Future<void> addPoint() async {
     final Color pointColor = widget.pointColor ?? Theme.of(context).colorScheme.onPrimary;
     final UArHitResult? hit = controller.value.frame.centerHit ?? (await controller.hitTestCenter()).firstOrNull;
@@ -2066,6 +2461,7 @@ class UArMeasureState extends State<UArMeasure> with WidgetsBindingObserver, UAr
     }
   }
 
+  /// Removes the last point.
   Future<void> undo() async {
     if (points.isEmpty) return;
     final int index = points.length - 1;
@@ -2083,6 +2479,7 @@ class UArMeasureState extends State<UArMeasure> with WidgetsBindingObserver, UAr
     _notify();
   }
 
+  /// Removes every point.
   Future<void> clear() async {
     points.clear();
     _previewReady = false;
@@ -2183,6 +2580,7 @@ class UArMeasureState extends State<UArMeasure> with WidgetsBindingObserver, UAr
 // Face try-on (glasses, hats, masks, makeup textures)
 // =============================================================================
 
+/// A face accessory (glasses, hat, mask) for UArFaceTryOn.
 class UArTryOnItem {
   const UArTryOnItem({
     required this.id,
@@ -2196,19 +2594,35 @@ class UArTryOnItem {
     this.scale = UArVector3.one,
   });
 
+  /// Unique id.
   final String id;
+
+  /// Title text.
   final String title;
+
+  /// Where the content comes from (asset, URL or path).
   final UArSource source;
+
+  /// iOS-only model (USDZ / Reality).
   final UArSource? iosSource;
+
+  /// Picture shown in the picker.
   final Widget? thumbnail;
 
   /// Offset from the centre of the head: +Y up, -Z out of the face on both platforms.
   final UArVector3 position;
+
+  /// Rotation.
   final UArQuaternion rotation;
+
+  /// Width in metres to fit the face.
   final double? fitSize;
+
+  /// Scales the painted widget (1 = normal size).
   final UArVector3 scale;
 }
 
+/// Front-camera face try-on with an item picker (iOS TrueDepth, Android ARCore faces). `UArFaceTryOn(items: glasses)`
 class UArFaceTryOn extends StatefulWidget {
   const UArFaceTryOn({
     required this.items,
@@ -2222,23 +2636,42 @@ class UArFaceTryOn extends StatefulWidget {
     super.key,
   });
 
+  /// The items to show.
   final List<UArTryOnItem> items;
+
+  /// Index selected at start.
   final int initialIndex;
+
+  /// Draws the tracked face mesh (debug/fun).
   final bool showFaceMesh;
+
+  /// Called with the PNG from the photo button.
   final void Function(Uint8List image)? onSnapshot;
+
+  /// Labels.
   final UArLabels labels;
+
+  /// Text style (defaults to the theme).
   final UArStyle style;
+
+  /// Draws your own overlay over the preview.
   final Widget Function(BuildContext context, UArController controller)? overlayBuilder;
+
+  /// Shows a close button.
   final bool showCloseButton;
 
   @override
   State<UArFaceTryOn> createState() => UArFaceTryOnState();
 }
 
+/// State of UArFaceTryOn.
 class UArFaceTryOnState extends State<UArFaceTryOn> with WidgetsBindingObserver, UArLifecycle<UArFaceTryOn> {
+  /// The AR controller.
   late final UArController controller = UArController(
     config: UArConfig(mode: UArMode.face, camera: UArCameraFacing.front, planeDetection: UArPlaneDetection.none, showFaceMesh: widget.showFaceMesh),
   );
+
+  /// Index of the item being worn.
   late int index = widget.initialIndex.clamp(0, max(0, widget.items.length - 1));
   bool _hasFace = false;
 
@@ -2269,6 +2702,7 @@ class UArFaceTryOnState extends State<UArFaceTryOn> with WidgetsBindingObserver,
     if (mounted) setState(() {});
   }
 
+  /// Switches to another item.
   Future<void> select(int value) async {
     index = value;
     if (widget.items.isEmpty) return;
@@ -2294,6 +2728,7 @@ class UArFaceTryOnState extends State<UArFaceTryOn> with WidgetsBindingObserver,
     if (mounted) setState(() {});
   }
 
+  /// Takes a photo.
   Future<void> snapshot() async {
     final Uint8List? image = await controller.takeSnapshot();
     if (image == null) return;
@@ -2382,6 +2817,7 @@ class UArFaceTryOnState extends State<UArFaceTryOn> with WidgetsBindingObserver,
 // Image triggers (posters, catalogues, packaging, menus, business cards)
 // =============================================================================
 
+/// An image to recognise (poster, package) and what to show on it.
 class UArImageTarget {
   const UArImageTarget({
     required this.name,
@@ -2395,7 +2831,10 @@ class UArImageTarget {
     this.overlayOffset = const UArVector3(0, 0.02, 0),
   });
 
+  /// Name.
   final String name;
+
+  /// Where the content comes from (asset, URL or path).
   final UArSource source;
 
   /// Printed width in metres; the closer to reality, the steadier the tracking.
@@ -2406,6 +2845,8 @@ class UArImageTarget {
 
   /// Stands on the image.
   final UArSource? model;
+
+  /// Size of the model shown on the image, in metres.
   final double? modelSize;
 
   /// Anything else, attached to the image (use `anchorId: "image:$name"`).
@@ -2417,9 +2858,11 @@ class UArImageTarget {
   /// Local to the image: +Y out of the image.
   final UArVector3 overlayOffset;
 
+  /// The reference image given to the AR engine.
   UArReferenceImage get reference => UArReferenceImage(name: name, source: source, physicalWidth: physicalWidth);
 }
 
+/// Shows content when the camera sees one of the target images. `UArImageTrigger(targets: targets)`
 class UArImageTrigger extends StatefulWidget {
   const UArImageTrigger({
     required this.targets,
@@ -2433,22 +2876,37 @@ class UArImageTrigger extends StatefulWidget {
     super.key,
   });
 
+  /// Images to look for.
   final List<UArImageTarget> targets;
 
   /// Tracks only images (cheaper; iOS) instead of the whole world.
   final bool imageOnly;
+
+  /// How many images can be tracked at once.
   final int maxTracked;
+
+  /// Called when an image is found.
   final void Function(UArTrackedImage image)? onDetected;
+
+  /// Called when an image is lost.
   final void Function(UArTrackedImage image)? onLost;
+
+  /// Labels.
   final UArLabels labels;
+
+  /// Text style (defaults to the theme).
   final UArStyle style;
+
+  /// Shows a close button.
   final bool showCloseButton;
 
   @override
   State<UArImageTrigger> createState() => UArImageTriggerState();
 }
 
+/// State of UArImageTrigger.
 class UArImageTriggerState extends State<UArImageTrigger> with WidgetsBindingObserver, UArLifecycle<UArImageTrigger> {
+  /// The AR controller.
   late final UArController controller = UArController(
     config: UArConfig(
       mode: widget.imageOnly ? UArMode.image : UArMode.world,
@@ -2574,6 +3032,7 @@ class UArImageTriggerState extends State<UArImageTrigger> with WidgetsBindingObs
 // QR / barcode anchored cards (store shelves, exhibition booths, machines)
 // =============================================================================
 
+/// Floats your own card over every QR code the camera sees. `UArCodeView(cardBuilder: (c, code, p) => Text(code))`
 class UArCodeView extends StatefulWidget {
   const UArCodeView({
     required this.cardBuilder,
@@ -2587,23 +3046,40 @@ class UArCodeView extends StatefulWidget {
     super.key,
   });
 
+  /// Builds the card for a code.
   final Widget Function(BuildContext context, String code, UArProjection projection) cardBuilder;
 
   /// Return false to ignore a code.
   final bool Function(String code)? filter;
+
+  /// Called for each new code.
   final void Function(String code)? onCode;
+
+  /// Time between scans.
   final Duration scanInterval;
+
+  /// Most codes shown at once.
   final int maxCodes;
+
+  /// Labels.
   final UArLabels labels;
+
+  /// Text style (defaults to the theme).
   final UArStyle style;
+
+  /// Shows a close button.
   final bool showCloseButton;
 
   @override
   State<UArCodeView> createState() => UArCodeViewState();
 }
 
+/// State of UArCodeView.
 class UArCodeViewState extends State<UArCodeView> with WidgetsBindingObserver, UArLifecycle<UArCodeView> {
+  /// The AR controller.
   late final UArController controller = UArController(config: const UArConfig(planeStyle: UArPlaneStyle.hidden));
+
+  /// Code text → anchor id.
   final Map<String, String> anchors = <String, String>{};
   Timer? _timer;
   bool _scanning = false;
@@ -2712,6 +3188,7 @@ class UArCodeViewState extends State<UArCodeView> with WidgetsBindingObserver, U
 class UArPage extends StatelessWidget {
   const UArPage({required this.child, super.key});
 
+  /// The widget inside.
   final Widget child;
 
   @override
@@ -2722,8 +3199,13 @@ class UArPage extends StatelessWidget {
 class UArNativeFallback extends StatelessWidget {
   const UArNativeFallback({required this.items, this.labels = const UArLabels(), this.style = const UArStyle(), super.key});
 
+  /// The items to show.
   final List<UArPlaceable> items;
+
+  /// Labels.
   final UArLabels labels;
+
+  /// Text style (defaults to the theme).
   final UArStyle style;
 
   @override

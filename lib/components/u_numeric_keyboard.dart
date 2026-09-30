@@ -1,7 +1,9 @@
 import "package:u/utilities.dart";
 
+/// Where extra action buttons go: top, bottom, start or end.
 enum UNumericKeyboardActionsPosition { right, bottom }
 
+/// An extra button on the numeric keyboard (e.g. "Pay").
 class UNumericKeyboardAction {
   const UNumericKeyboardAction({
     required this.onTap,
@@ -18,20 +20,44 @@ class UNumericKeyboardAction {
     this.enabled = true,
   });
 
+  /// Called when tapped.
   final VoidCallback onTap;
+
+  /// Called on long press.
   final VoidCallback? onLongPress;
+
+  /// Label text.
   final String? label;
+
+  /// Icon shown with it.
   final IconData? icon;
+
+  /// The widget inside.
   final Widget? child;
+
+  /// Width share among action buttons.
   final int flex;
+
+  /// Background color.
   final Color? backgroundColor;
+
+  /// Text/icon color.
   final Color? foregroundColor;
+
+  /// Corner radius.
   final double? borderRadius;
+
+  /// Font size.
   final double? fontSize;
+
+  /// Font weight.
   final FontWeight? fontWeight;
+
+  /// False disables interaction and greys it out.
   final bool enabled;
 }
 
+/// On-screen number pad for PIN, amount and POS screens (no system keyboard). `UNumericKeyboard(onKeyTap: controller.appendCharacter, onBackspace: controller.dropLastCharacter, onBackspaceLongPress: controller.clear)`
 class UNumericKeyboard extends StatelessWidget {
   const UNumericKeyboard({
     required this.onKeyTap,
@@ -63,31 +89,82 @@ class UNumericKeyboard extends StatelessWidget {
     this.actionHeight,
   });
 
+  /// Called with the tapped digit.
   final void Function(String value) onKeyTap;
+
+  /// Called by backspace.
   final VoidCallback onBackspace;
+
+  /// Called by holding backspace (clear all).
   final VoidCallback onBackspaceLongPress;
+
+  /// Action widgets/buttons.
   final List<UNumericKeyboardAction> actions;
+
+  /// Where action buttons go.
   final UNumericKeyboardActionsPosition actionsPosition;
+
+  /// Gap between items.
   final double spacing;
+
+  /// Gap between rows.
   final double runSpacing;
+
+  /// Key width / height.
   final double keyAspectRatio;
+
+  /// Corner radius.
   final double borderRadius;
+
+  /// Shadow depth.
   final double elevation;
+
+  /// Background color.
   final Color? backgroundColor;
+
+  /// Text/icon color.
   final Color? foregroundColor;
+
+  /// Action button background.
   final Color? actionBackgroundColor;
+
+  /// Action button text color.
   final Color? actionForegroundColor;
+
+  /// Font size.
   final double? fontSize;
+
+  /// Font weight.
   final FontWeight? fontWeight;
+
+  /// Space inside, around the content.
   final EdgeInsets padding;
+
+  /// Vibrates lightly on interaction (mobile).
   final bool hapticFeedback;
+
+  /// False disables interaction and greys it out.
   final bool enabled;
+
+  /// Your own key widget.
   final Widget Function(BuildContext context, String value)? keyBuilder;
+
+  /// Key border color.
   final Color? keyBorderColor;
+
+  /// Key border width.
   final double keyBorderWidth;
+
+  /// Your own backspace icon.
   final Widget? backspaceChild;
+
+  /// Key left of 0, e.g. "." or "000".
   final String? extraKey;
+
+  /// Fixed key height.
   final double? keyHeight;
+
+  /// Action button height.
   final double? actionHeight;
 
   static const List<List<String>> _digits = <List<String>>[

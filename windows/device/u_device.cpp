@@ -567,6 +567,17 @@ void UDevice::HandleMethodCall(const flutter::MethodCall<EncodableValue>& call, 
     result->Success(EncodableValue(Status()));
   } else if (method == "integrity") {
     result->Success(EncodableValue(Integrity()));
+  } else if (method == "keepScreenOn") {
+    bool on = false;
+    if (const auto* args = std::get_if<EncodableMap>(call.arguments())) {
+      auto it = args->find(EncodableValue("on"));
+      if (it != args->end()) {
+        if (const bool* value = std::get_if<bool>(&it->second)) on = *value;
+      }
+    }
+    // Always called on the platform thread, so the state stays set for the app's lifetime.
+    SetThreadExecutionState(on ? (ES_CONTINUOUS | ES_DISPLAY_REQUIRED | ES_SYSTEM_REQUIRED) : ES_CONTINUOUS);
+    result->Success(EncodableValue(true));
   } else {
     result->NotImplemented();
   }

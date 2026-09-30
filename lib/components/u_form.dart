@@ -10,11 +10,19 @@ double _dialogWidth(BuildContext context, double max) {
 class UFormDialog extends StatefulWidget {
   const UFormDialog({required this.title, required this.children, super.key, this.onSubmit, this.maxWidth = 480});
 
+  /// Title text.
   final String title;
+
+  /// Called when submitted.
   final Future<bool> Function()? onSubmit;
+
+  /// Child widgets.
   final List<Widget> Function(BuildContext context, StateSetter setState) children;
+
+  /// Maximum width.
   final double maxWidth;
 
+  /// Opens a form dialog; [onSubmit] returns true to close it. `UFormDialog.show(title: "Edit", children: (c, set) => [UTextField(labelText: "Name")], onSubmit: () async => true)`
   static Future<void> show({
     required String title,
     required List<Widget> Function(BuildContext context, StateSetter setState) children,
@@ -66,11 +74,19 @@ class _UFormDialogState extends State<UFormDialog> {
 class UFilterDialog extends StatefulWidget {
   const UFilterDialog({required this.title, required this.onApply, required this.onClear, required this.children, super.key});
 
+  /// Title text.
   final String title;
+
+  /// Called by Apply.
   final VoidCallback onApply;
+
+  /// Called by Clear.
   final VoidCallback onClear;
+
+  /// Child widgets.
   final List<Widget> Function(StateSetter setState) children;
 
+  /// Opens a filter dialog with Apply/Clear buttons.
   static Future<void> show({
     required String title,
     required VoidCallback onApply,
@@ -117,7 +133,10 @@ class _UFilterDialogState extends State<UFilterDialog> {
 class UFieldPair extends StatelessWidget {
   const UFieldPair(this.first, this.second, {super.key});
 
+  /// First field.
   final Widget first;
+
+  /// Second field.
   final Widget second;
 
   @override

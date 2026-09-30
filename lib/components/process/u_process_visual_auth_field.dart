@@ -1,5 +1,6 @@
 part of "u_process.dart";
 
+/// Video selfie (visual authentication) field of a process step. Needs `permission add camera microphone`.
 class UProcessVisualAuthField extends StatefulWidget {
   const UProcessVisualAuthField({
     required this.field,
@@ -8,8 +9,13 @@ class UProcessVisualAuthField extends StatefulWidget {
     super.key,
   });
 
+  /// The field definition.
   final UProcessField field;
+
+  /// Where the video is written.
   final UProcessStepSend processStepSend;
+
+  /// Text style (defaults to the theme).
   final UProcessStyle style;
 
   @override
@@ -94,7 +100,15 @@ class _UProcessVisualAuthFieldState extends State<UProcessVisualAuthField> with 
       final UCameraDevice? front = UCameraUtils.pickDevice(cameras, facing: UCameraFacing.front);
 
       _cameraController = UCameraController(
-        config: UCameraConfig(facing: UCameraFacing.front, deviceId: front?.id, photoQuality: 50, resolution: UCameraResolution.low, frameDownscale: 10, fps: 25, photoResolution: UCameraResolution.low,),
+        config: UCameraConfig(
+          facing: UCameraFacing.front,
+          deviceId: front?.id,
+          photoQuality: 50,
+          resolution: UCameraResolution.low,
+          frameDownscale: 10,
+          fps: 25,
+          photoResolution: UCameraResolution.low,
+        ),
       );
       await _cameraController!.initialize();
 

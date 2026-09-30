@@ -2,6 +2,7 @@ import "dart:ui" as ui;
 
 import "package:u/utilities.dart";
 
+/// Crop frame shape: rectangle or circle.
 enum UCropShape { rectangle, circle }
 
 enum _Handle { move, tl, tr, bl, br, t, b, l, r }
@@ -11,14 +12,14 @@ enum _Handle { move, tl, tr, bl, br, t, b, l, r }
 class UCropAspectRatio {
   const UCropAspectRatio(this.label, this.ratio);
 
+  /// Label text.
   final String label;
+
+  /// Width / height (null = free).
   final double? ratio;
 }
 
-/// A fully pure-Dart image cropper built on `dart:ui`. Unlike native plugins it
-/// runs on every platform (mobile, web, Windows, macOS, Linux) and adds
-/// rectangle/circle crop, aspect presets, 90° rotation, horizontal/vertical
-/// flip and brightness/contrast/saturation adjustment. Pops a PNG [Uint8List].
+/// Image cropper page (ratios, rotate, flip, brightness/contrast/saturation; pure Dart, all platforms) that pops the cropped bytes; UFile.cropImage wraps it. `final Uint8List? out = await UNavigator.push<Uint8List>(UImageCropper(bytes: imageBytes))`
 class UImageCropper extends StatefulWidget {
   const UImageCropper({
     required this.bytes,
@@ -35,16 +36,37 @@ class UImageCropper extends StatefulWidget {
     this.maxHeight,
   });
 
+  /// Content as bytes in memory.
   final Uint8List bytes;
+
+  /// Title text.
   final String? title;
+
+  /// Crop frame shape (rectangle or circle).
   final UCropShape shape;
+
+  /// Ratios the user can choose.
   final List<UCropAspectRatio>? aspectRatios;
+
+  /// Ratio selected at start.
   final double? initialAspectRatio;
+
+  /// Shows rotate buttons.
   final bool allowRotate;
+
+  /// Shows flip buttons.
   final bool allowFlip;
+
+  /// Shows brightness/contrast/saturation.
   final bool allowAdjust;
+
+  /// Lets the user switch rectangle/circle.
   final bool allowShapeToggle;
+
+  /// Maximum width.
   final int? maxWidth;
+
+  /// Maximum height.
   final int? maxHeight;
 
   @override

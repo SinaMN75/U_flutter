@@ -2,11 +2,14 @@ import "dart:ui" as ui;
 
 import "package:u/utilities.dart";
 
+/// Captures a UWidgetToImage as PNG bytes.
 class UWidgetToImageController {
   GlobalKey? _globalKey;
 
+  /// Connects the controller (done by the widget).
   void bind(GlobalKey globalKey) => _globalKey = globalKey;
 
+  /// PNG bytes of the widget. `final png = await controller.capture();`
   Future<Uint8List?> capture() async {
     if (_globalKey?.currentContext == null) return null;
 
@@ -22,10 +25,14 @@ class UWidgetToImageController {
   }
 }
 
+/// Wraps a widget so it can be saved/shared as an image (receipts, cards). `UWidgetToImage(controller: c, child: receipt)`
 class UWidgetToImage extends StatefulWidget {
   const UWidgetToImage({required this.child, required this.controller, super.key});
 
+  /// The widget inside.
   final Widget child;
+
+  /// Controller to read or change it from code.
   final UWidgetToImageController controller;
 
   @override

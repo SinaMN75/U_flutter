@@ -1,5 +1,6 @@
 import "package:u/utilities.dart";
 
+/// Marquee: text scrolls sideways (or up) when it is too long. `UScrollingText(text: "Breaking news: …")`
 class UScrollingText extends StatefulWidget {
   const UScrollingText({
     required this.text,
@@ -14,25 +15,52 @@ class UScrollingText extends StatefulWidget {
     this.ratioOfBlankToScreen = 0.25,
   });
 
+  /// Text to show.
   final String text;
+
+  /// Text style.
   final TextStyle? textStyle;
+
+  /// Texts longer than this many characters scroll.
   final int maxLengthForScrolling;
+
+  /// Horizontal or vertical.
   final Axis scrollAxis;
+
+  /// Text alignment.
   final TextAlign? textAlign;
+
+  /// Main color (defaults to the theme).
   final Color? color;
+
+  /// Height in logical pixels (null = size to content).
   final double? height;
+
+  /// Width in logical pixels (null = size to content).
   final double? width;
+
+  /// Gap between repeats, as a share of the width.
   final double ratioOfBlankToScreen;
 
   @override
   State<StatefulWidget> createState() => UScrollingTextState();
 }
 
+/// State of UScrollingText.
 class UScrollingTextState extends State<UScrollingText> with SingleTickerProviderStateMixin {
+  /// The scroll controller.
   late ScrollController scrollController;
+
+  /// Measured width.
   double? screenWidth;
+
+  /// Measured height.
   double? screenHeight;
+
+  /// Current scroll position.
   double position = 0;
+
+  /// Scroll timer.
   Timer? timer;
   final double _moveDistance = 3;
   final int _timerRest = 100;
@@ -47,6 +75,7 @@ class UScrollingTextState extends State<UScrollingText> with SingleTickerProvide
     });
   }
 
+  /// Starts scrolling.
   void startTimer() {
     if (_key.currentContext != null) {
       final double widgetWidth = _key.currentContext!.findRenderObject()!.paintBounds.size.width;
@@ -80,6 +109,7 @@ class UScrollingTextState extends State<UScrollingText> with SingleTickerProvide
     screenHeight = MediaQuery.of(navigatorKey.currentContext!).size.height;
   }
 
+  /// Text widget used at both ends.
   Widget getBothEndsChild() {
     if (widget.scrollAxis == Axis.vertical) {
       final String newString = widget.text.split("").join("\n");
@@ -96,6 +126,7 @@ class UScrollingTextState extends State<UScrollingText> with SingleTickerProvide
     );
   }
 
+  /// Text widget used in the middle.
   Widget getCenterChild() {
     if (widget.scrollAxis == Axis.horizontal) {
       return UContainer(width: screenWidth! * widget.ratioOfBlankToScreen);

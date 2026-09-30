@@ -1,5 +1,6 @@
 import "package:u/utilities.dart";
 
+/// Bento-grid page for a UContentResponse (about us, landing).
 class UContentBentoPage extends StatelessWidget {
   const UContentBentoPage({
     required this.content,
@@ -8,8 +9,13 @@ class UContentBentoPage extends StatelessWidget {
     this.padding = const EdgeInsets.all(16),
   });
 
+  /// The content to show.
   final UContentResponse? content;
+
+  /// Title text.
   final String? title;
+
+  /// Space inside, around the content.
   final EdgeInsets padding;
 
   @override

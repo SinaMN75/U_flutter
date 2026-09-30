@@ -1,9 +1,12 @@
 import "package:flutter/cupertino.dart" show CupertinoPicker;
 import "package:u/utilities.dart";
 
+/// Jalali picker look: classic dialog, material calendar or spinner wheels.
 enum UJalaliDatePickerType { classic, material, spinner }
 
+/// Jalali (Persian) date picker dialogs and helpers. `final UJalali? d = await UJalaliDatePicker.show();`
 abstract class UJalaliDatePicker {
+  /// Opens a Jalali date picker and returns the date (null when cancelled). `await UJalaliDatePicker.show(type: UJalaliDatePickerType.material)`
   static Future<UJalali?> show({
     UJalaliDatePickerType type = UJalaliDatePickerType.spinner,
     UJalali? initialDate,
@@ -56,18 +59,23 @@ abstract class UJalaliDatePicker {
     }
   }
 
+  /// Keeps a date between [first] and [last].
   static UJalali clamp(UJalali date, UJalali first, UJalali last) {
     if (date.julianDayNumber < first.julianDayNumber) return first;
     if (date.julianDayNumber > last.julianDayNumber) return last;
     return date;
   }
 
+  /// Number with Persian digits (or Latin).
   static String number(int value, {required bool persian}) => persian ? value.toString().toPersianNumber() : value.toString();
 
+  /// Month name.
   static String monthName(int month, {required bool persian}) => persian ? UJalaliFormatter.monthNames[month - 1] : UJalaliFormatter.monthNamesLatin[month - 1];
 
+  /// Weekday name.
   static String weekDayName(int weekDay, {required bool persian}) => persian ? UJalaliFormatter.weekDayNames[weekDay - 1] : UJalaliFormatter.weekDayNamesLatin[weekDay - 1];
 
+  /// Date as picker text.
   static String format(UJalali date, {required bool persian}) {
     final String year = date.year.toString().padLeft(4, "0");
     final String month = date.month.toString().padLeft(2, "0");
@@ -76,10 +84,12 @@ abstract class UJalaliDatePicker {
     return persian ? value.toPersianNumber() : value;
   }
 
+  /// Long date for the picker header.
   static String headline(UJalali date, {required bool persian}) => persian
       ? "${UJalaliFormatter.weekDayNames[date.weekDay - 1]}، ${number(date.day, persian: true)} ${UJalaliFormatter.monthNames[date.month - 1]}"
       : "${UJalaliFormatter.weekDayNamesLatin[date.weekDay - 1]}, ${date.day} ${UJalaliFormatter.monthNamesLatin[date.month - 1]}";
 
+  /// Parses "1403/01/15" text.
   static UJalali? parse(String value) {
     final List<String> parts = value.toLatinNumber().split("/");
     if (parts.length != 3) return null;
@@ -93,6 +103,7 @@ abstract class UJalaliDatePicker {
   }
 }
 
+/// Material-style Jalali calendar picker.
 class UJalaliDatePickerMaterial extends StatefulWidget {
   const UJalaliDatePickerMaterial({
     required this.initialDate,
@@ -105,12 +116,25 @@ class UJalaliDatePickerMaterial extends StatefulWidget {
     this.initialPickerMode = DatePickerMode.day,
   });
 
+  /// Date selected at start.
   final UJalali initialDate;
+
+  /// Earliest selectable date.
   final UJalali firstDate;
+
+  /// Latest selectable date.
   final UJalali lastDate;
+
+  /// Called with the chosen date.
   final Function(DateTime, UJalali)? onDateSelected;
+
+  /// Header text of the picker.
   final String? helpText;
+
+  /// Calendar or text input first.
   final DatePickerEntryMode initialEntryMode;
+
+  /// Day or year view first.
   final DatePickerMode initialPickerMode;
 
   @override
@@ -418,6 +442,7 @@ class _UJalaliDatePickerMaterialState extends UState<UJalaliDatePickerMaterial> 
   ).pLTRB(8, 4, 8, 8);
 }
 
+/// Jalali picker with year/month/day wheels.
 class UJalaliDatePickerSpinner extends StatefulWidget {
   const UJalaliDatePickerSpinner({
     required this.initialDate,
@@ -429,11 +454,22 @@ class UJalaliDatePickerSpinner extends StatefulWidget {
     this.showTodayButton = true,
   });
 
+  /// Date selected at start.
   final UJalali initialDate;
+
+  /// Earliest selectable date.
   final UJalali firstDate;
+
+  /// Latest selectable date.
   final UJalali lastDate;
+
+  /// Called with the chosen date.
   final Function(DateTime, UJalali)? onDateSelected;
+
+  /// Header text of the picker.
   final String? helpText;
+
+  /// Shows a "Today" button.
   final bool showTodayButton;
 
   @override

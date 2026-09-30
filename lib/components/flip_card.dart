@@ -1,16 +1,25 @@
 import "package:u/utilities.dart";
 
+/// Flip axis: horizontal or vertical.
 enum UFlipDirection { vertical, horizontal }
 
+/// Which side shows first: front or back.
 enum UCardSide { front, back }
 
+/// Which side sets the size: none, fillFront, fillBack.
 enum UFill { none, fillFront, fillBack }
 
+/// One side of a UFlipCard during the flip.
 class UAnimationCard extends StatelessWidget {
   const UAnimationCard({super.key, this.child, this.animation, this.direction});
 
+  /// The widget inside.
   final Widget? child;
+
+  /// The flip animation.
   final Animation<double>? animation;
+
+  /// Layout direction.
   final UFlipDirection? direction;
 
   @override
@@ -34,8 +43,10 @@ class UAnimationCard extends StatelessWidget {
   );
 }
 
+/// Called with true when the front is showing.
 typedef UBoolCallback = void Function(bool isFront);
 
+/// Card that flips to show its back on tap or from code. `UFlipCard(front: const Text("Q"), back: const Text("A"))`
 class UFlipCard extends StatefulWidget {
   const UFlipCard({
     required this.front,
@@ -52,29 +63,53 @@ class UFlipCard extends StatefulWidget {
     this.side = UCardSide.front,
   });
 
+  /// Front side.
   final Widget front;
+
+  /// Back side.
   final Widget back;
+
+  /// Speed.
   final int speed;
+
+  /// Layout direction.
   final UFlipDirection direction;
+
+  /// Called when a flip starts.
   final VoidCallback? onFlip;
+
+  /// Called with isFront when a flip ends.
   final UBoolCallback? onFlipDone;
+
+  /// Controller to read or change it from code.
   final UFlipCardController? controller;
+
+  /// Which side sets the size.
   final UFill fill;
+
+  /// Side shown first.
   final UCardSide side;
+
+  /// Flips on tap.
   final bool flipOnTouch;
+
+  /// Alignment of the content.
   final Alignment alignment;
 
   @override
   State<StatefulWidget> createState() => UFlipCardState();
 }
 
+/// State of UFlipCard.
 class UFlipCardState extends State<UFlipCard> with SingleTickerProviderStateMixin {
   UFlipCardState();
 
+  /// The flip animation.
   AnimationController? controller;
   Animation<double>? _frontRotation;
   Animation<double>? _backRotation;
 
+  /// True while the front shows.
   bool isFront = true;
 
   @override
@@ -117,6 +152,7 @@ class UFlipCardState extends State<UFlipCard> with SingleTickerProviderStateMixi
     super.didUpdateWidget(oldWidget);
   }
 
+  /// Flips with animation.
   Future<void> toggleCard() async {
     widget.onFlip?.call();
 
@@ -131,6 +167,7 @@ class UFlipCardState extends State<UFlipCard> with SingleTickerProviderStateMixi
     });
   }
 
+  /// Flips instantly.
   void toggleCardWithoutAnimation() {
     controller!.stop();
 
@@ -188,18 +225,24 @@ Widget _fill(Widget child) => Positioned.fill(child: child);
 
 Widget _noop(Widget child) => child;
 
+/// Flips a UFlipCard from code.
 class UFlipCardController {
+  /// The connected card.
   UFlipCardState? state;
 
+  /// Its animation.
   AnimationController? get controller {
     assert(state != null, "Controller not attached to any FlipCard. Did you forget to pass the controller to the FlipCard?");
     return state!.controller;
   }
 
+  /// Flips with animation.
   Future<void> toggleCard() async => await state?.toggleCard();
 
+  /// Flips instantly.
   void toggleCardWithoutAnimation() => state?.toggleCardWithoutAnimation();
 
+  /// Tilts the card part way (a teaser).
   Future<void> skew(double amount, {Duration? duration, Curve? curve}) async {
     assert(0 <= amount && amount <= 1);
 
@@ -207,6 +250,7 @@ class UFlipCardController {
     await controller?.animateTo(target, duration: duration, curve: curve ?? Curves.linear).asStream().first;
   }
 
+  /// Tilts and returns to hint that it can flip.
   Future<void> hint({Duration? duration, Duration? total}) async {
     assert(controller is AnimationController);
     if (controller is! AnimationController) return;

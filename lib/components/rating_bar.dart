@@ -1,5 +1,6 @@
 import "package:u/utilities.dart";
 
+/// Full / half / empty widgets used by URatingBar.
 class URatingWidget {
   URatingWidget({
     required this.full,
@@ -7,13 +8,17 @@ class URatingWidget {
     required this.empty,
   });
 
+  /// Full item.
   final Widget full;
 
+  /// Half item.
   final Widget half;
 
+  /// Shown when there is nothing to show.
   final Widget empty;
 }
 
+/// Tappable/draggable star (or any icon) rating with half steps. `URatingBar.builder(itemBuilder: (c, i) => const Icon(Icons.star, color: Colors.amber), onRatingUpdate: (r) => rating = r)`
 class URatingBar extends StatefulWidget {
   const URatingBar({
     required this.onRatingUpdate,
@@ -38,6 +43,7 @@ class URatingBar extends StatefulWidget {
     this.wrapAlignment = WrapAlignment.start,
   }) : _itemBuilder = null;
 
+  /// Rating bar whose items come from [itemBuilder].
   const URatingBar.builder({
     required this.onRatingUpdate,
     required IndexedWidgetBuilder this._itemBuilder,
@@ -61,40 +67,58 @@ class URatingBar extends StatefulWidget {
     this.wrapAlignment = WrapAlignment.start,
   }) : _ratingWidget = null;
 
+  /// Called with the new rating.
   final ValueChanged<double> onRatingUpdate;
 
+  /// Glow color while dragging.
   final Color? glowColor;
 
+  /// Highest value (defaults to item count).
   final double? maxRating;
 
+  /// Text direction (RTL/LTR); defaults to the app's.
   final TextDirection? textDirection;
 
+  /// Color of unrated items.
   final Color? unratedColor;
 
+  /// Allows .5 steps.
   final bool allowHalfRating;
 
+  /// Layout direction.
   final Axis direction;
 
+  /// Glows while dragging.
   final bool glow;
 
+  /// Glow size.
   final double glowRadius;
 
+  /// Read-only.
   final bool ignoreGestures;
 
+  /// Starting rating.
   final double initialRating;
 
+  /// Number of items.
   final int itemCount;
 
+  /// Padding of each item.
   final EdgeInsetsGeometry itemPadding;
 
+  /// Item size.
   final double itemSize;
 
+  /// Lowest value.
   final double minRating;
 
+  /// Only taps (no drag).
   final bool tapOnlyMode;
 
+  /// Reports while dragging.
   final bool updateOnDrag;
 
+  /// Alignment when items wrap.
   final WrapAlignment wrapAlignment;
 
   final IndexedWidgetBuilder? _itemBuilder;
@@ -411,6 +435,7 @@ class _NoRatingWidget extends StatelessWidget {
   );
 }
 
+/// Read-only rating display with exact fractions (e.g. 4.3). `URatingBarIndicator(rating: 4.3, itemBuilder: (c, i) => const Icon(Icons.star, color: Colors.amber))`
 class URatingBarIndicator extends StatefulWidget {
   const URatingBarIndicator({
     required this.itemBuilder,
@@ -425,22 +450,31 @@ class URatingBarIndicator extends StatefulWidget {
     this.rating = 0.0,
   });
 
+  /// Builds one item.
   final IndexedWidgetBuilder itemBuilder;
 
+  /// Text direction (RTL/LTR); defaults to the app's.
   final TextDirection? textDirection;
 
+  /// Color of the unrated part.
   final Color? unratedColor;
 
+  /// Layout direction.
   final Axis direction;
 
+  /// Number of items.
   final int itemCount;
 
+  /// Padding of each item.
   final EdgeInsets itemPadding;
 
+  /// Item size.
   final double itemSize;
 
+  /// Scroll physics.
   final ScrollPhysics physics;
 
+  /// Rating to show.
   final double rating;
 
   @override

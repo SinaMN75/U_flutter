@@ -4,11 +4,16 @@ import "package:u/utilities.dart";
 class UListEditorField<T> {
   const UListEditorField(this.label, this.value, {this.number = false, this.lines = 1});
 
+  /// Label text.
   final String label;
 
   /// The field's starting text for an existing item.
   final String? Function(T item) value;
+
+  /// Numbers-only field.
   final bool number;
+
+  /// Number of text lines.
   final int lines;
 }
 
@@ -25,11 +30,22 @@ class UListEditor<T> extends StatefulWidget {
     super.key,
   });
 
+  /// Title text.
   final String? title;
+
+  /// The items to show.
   final List<T> items;
+
+  /// Columns of each row.
   final List<UListEditorField<T>> fields;
+
+  /// Builds an item from the typed texts (null = invalid row).
   final T? Function(List<String> texts) toItem;
+
+  /// Called with the new value when the user changes it.
   final ValueChanged<List<T>> onChanged;
+
+  /// Add button text.
   final String addLabel;
 
   /// A list of short texts (highlights...).
@@ -124,7 +140,10 @@ class _UListEditorState<T> extends State<UListEditor<T>> {
                   ),
                 ),
               ),
-              IconButton(icon: Icon(Icons.delete_outline, color: Theme.of(context).colorScheme.error), onPressed: () => _remove(row)),
+              IconButton(
+                icon: Icon(Icons.delete_outline, color: Theme.of(context).colorScheme.error),
+                onPressed: () => _remove(row),
+              ),
             ],
           ),
         ),

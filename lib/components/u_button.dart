@@ -1,12 +1,16 @@
 import "package:flutter/cupertino.dart" show CupertinoActivityIndicator, CupertinoButton;
 import "package:u/utilities.dart";
 
+/// Button look: elevated, filled, filledTonal, text, outlined, icon, fab, cupertino, or custom.
 enum UButtonType { elevated, filled, filledTonal, text, outlined, icon, fab, cupertino, custom }
 
+/// Icon before (leading) or after (trailing) the title.
 enum UButtonIconPosition { leading, trailing }
 
+/// Preset height/padding: small, medium, large.
 enum UButtonSize { small, medium, large }
 
+/// Where the spinner shows while loading: replace the content, leading or trailing.
 enum UButtonLoadingPosition { replace, leading, trailing }
 
 double _uButtonHeight(UButtonSize size) => switch (size) {
@@ -27,6 +31,7 @@ double _uButtonIconSize(UButtonSize size) => switch (size) {
   UButtonSize.large => 22,
 };
 
+/// Button with loading state, icon, sizes, full width, and a built-in "resend in 59s" countdown. `UButton(title: "Save", onTap: save, isLoading: saving)`
 class UButton extends StatefulWidget {
   const UButton({
     this.title,
@@ -106,79 +111,226 @@ class UButton extends StatefulWidget {
     this.positionedHeight,
   });
 
+  /// Title text.
   final String? title;
+
+  /// Style variant.
   final UButtonType type;
+
+  /// Size in logical pixels.
   final UButtonSize size;
+
+  /// Called when tapped.
   final VoidCallback? onTap;
+
+  /// Called on long press.
   final VoidCallback? onLongPress;
+
+  /// The widget inside.
   final Widget? child;
+
+  /// Icon shown with it.
   final Widget? icon;
+
+  /// Icon before or after the title.
   final UButtonIconPosition iconPosition;
+
+  /// Gap between icon and title.
   final double iconGap;
+
+  /// Icon size.
   final double? iconSize;
+
+  /// Stretches to the full width.
   final bool fullWidth;
+
+  /// Width in logical pixels (null = size to content).
   final double? width;
+
+  /// Height in logical pixels (null = size to content).
   final double? height;
+
+  /// Minimum width.
   final double? minWidth;
+
+  /// Maximum width.
   final double? maxWidth;
+
+  /// Minimum height.
   final double? minHeight;
+
+  /// Maximum height.
   final double? maxHeight;
+
+  /// Text style.
   final TextStyle? textStyle;
+
+  /// Background color.
   final Color? backgroundColor;
+
+  /// Background gradient (overrides the color).
   final Gradient? gradient;
+
+  /// Text/icon color.
   final Color? foregroundColor;
+
+  /// Background while disabled (onTap null or counting down).
   final Color? disabledBackgroundColor;
+
+  /// Text/icon color while disabled.
   final Color? disabledForegroundColor;
+
+  /// Opacity while disabled.
   final double disabledOpacity;
+
+  /// Corner radius.
   final double borderRadius;
+
+  /// Border thickness.
   final double borderWidth;
+
+  /// Border color.
   final Color? borderColor;
+
+  /// Border around it.
   final BoxBorder? border;
+
+  /// Shadows under it.
   final List<BoxShadow>? boxShadow;
+
+  /// Shape of the widget.
   final OutlinedBorder? shape;
+
+  /// Space inside, around the content.
   final EdgeInsetsGeometry? padding;
+
+  /// Shadow depth.
   final double elevation;
+
+  /// Shows a Material ripple on tap.
   final bool splash;
+
+  /// Ripple color.
   final Color? splashColor;
+
+  /// Pressed highlight color.
   final Color? highlightColor;
+
+  /// Scale while pressed, e.g. 0.95 for a subtle shrink.
   final double? pressedScale;
+
+  /// Shows a loading state.
   final bool isLoading;
+
+  /// Your own loading indicator.
   final Widget? loadingWidget;
+
+  /// Spinner color.
   final Color? loadingColor;
+
+  /// Spinner size.
   final double loadingSize;
+
+  /// Spinner line width.
   final double loadingStrokeWidth;
+
+  /// Where the spinner shows.
   final UButtonLoadingPosition loadingPosition;
+
+  /// False disables interaction and greys it out.
   final bool enabled;
+
+  /// Text shown on long press / mouse hover.
   final String? tooltip;
+
+  /// Label read by screen readers.
   final String? semanticLabel;
+
+  /// Focuses the button on start (keyboard/TV).
   final bool autofocus;
+
+  /// Focus node to control keyboard focus.
   final FocusNode? focusNode;
+
+  /// Vibrates lightly on interaction (mobile).
   final bool hapticFeedback;
+
+  /// Seconds of countdown before the button is enabled, e.g. 60 for "resend code". `UButton(title: "Resend", counter: 60, onTap: resend)`
   final int? counter;
+
+  /// Text after the countdown, e.g. "until resend".
   final String? counterDescription;
+
+  /// Called every second with the seconds left.
   final Function(int)? counterOnCounting;
+
+  /// Starts the countdown again after each tap.
   final bool? counterResetCounterOnTap;
+
+  /// Builds the countdown text from seconds left.
   final String Function(int secondsLeft)? counterFormatter;
+
+  /// Called when the countdown reaches zero.
   final VoidCallback? onCountdownFinish;
+
+  /// Hero tag for a shared-element animation between pages.
   final String? heroTag;
+
+  /// Space outside, around the widget.
   final EdgeInsetsGeometry? margin;
+
+  /// False hides it completely (takes no space).
   final bool visible;
+
+  /// See-through amount, 0 (invisible) to 1 (solid).
   final double? opacity;
+
+  /// How the content fits its box (BoxFit).
   final BoxFit? fit;
+
+  /// Alignment inside the box when it does not fill it.
   final AlignmentGeometry fitAlignment;
+
+  /// Scales the painted widget (1 = normal size).
   final double? scale;
+
+  /// Rotation in radians.
   final double? rotate;
+
+  /// Moves the painted widget by this offset (layout unchanged).
   final Offset? translate;
+
+  /// Centers it in the available space.
   final bool center;
+
+  /// Keeps it out of the notch and system bars.
   final bool safeArea;
+
+  /// Flex value to fill the remaining space in a Row/Column (null = off).
   final int? expanded;
+
+  /// Flex value to shrink in a Row/Column when space is tight (null = off).
   final int? flexible;
+
+  /// Wraps it in a Positioned (use inside a Stack) with top/left/right/bottom.
   final bool positioned;
+
+  /// Distance from the left when [positioned] in a Stack.
   final double? left;
+
+  /// Distance from the top when [positioned] in a Stack.
   final double? top;
+
+  /// Distance from the right when [positioned] in a Stack.
   final double? right;
+
+  /// Distance from the bottom when [positioned] in a Stack.
   final double? bottom;
+
+  /// Width when [positioned].
   final double? positionedWidth;
+
+  /// Height when [positioned].
   final double? positionedHeight;
 
   @override
@@ -608,6 +760,7 @@ class _UButtonState extends State<UButton> {
   }
 }
 
+/// Submit + cancel buttons side by side (for forms and dialogs). `UButtonSubmitCancel(onSubmit: save)`
 class UButtonSubmitCancel extends StatelessWidget {
   const UButtonSubmitCancel({
     required this.onSubmit,
@@ -647,39 +800,106 @@ class UButtonSubmitCancel extends StatelessWidget {
     this.positionedHeight,
   });
 
+  /// Submit text (default "Submit").
   final String? submitTitle;
+
+  /// Cancel text (default "Cancel").
   final String? cancelTitle;
+
+  /// Called when submitted.
   final VoidCallback onSubmit;
+
+  /// Called on cancel (default: go back).
   final VoidCallback? onCancel;
+
+  /// Shows a loading state.
   final bool isLoading;
+
+  /// False disables interaction and greys it out.
   final bool enabled;
+
+  /// Called when tapped, with a press-down shrink effect.
   final VoidCallback? onPress;
+
+  /// Called on long press.
   final VoidCallback? onLongPress;
+
+  /// Mouse cursor on hover (desktop, web).
   final MouseCursor? cursor;
+
+  /// Called with true/false when a mouse enters/leaves (desktop, web).
   final ValueChanged<bool>? onHover;
+
+  /// Space outside, around the widget.
   final EdgeInsetsGeometry? margin;
+
+  /// See-through amount, 0 (invisible) to 1 (solid).
   final double? opacity;
+
+  /// False hides it completely (takes no space).
   final bool visible;
+
+  /// Text shown on long press / mouse hover.
   final String? tooltip;
+
+  /// Hero tag for a shared-element animation between pages.
   final String? heroTag;
+
+  /// How the content fits its box (BoxFit).
   final BoxFit? fit;
+
+  /// Alignment inside the box when it does not fill it.
   final AlignmentGeometry fitAlignment;
+
+  /// Scales the painted widget (1 = normal size).
   final double? scale;
+
+  /// Rotation in radians.
   final double? rotate;
+
+  /// Moves the painted widget by this offset (layout unchanged).
   final Offset? translate;
+
+  /// Centers it in the available space.
   final bool center;
+
+  /// Keeps it out of the notch and system bars.
   final bool safeArea;
+
+  /// Makes the content scroll when it does not fit.
   final Axis? scrollable;
+
+  /// Scroll controller.
   final ScrollController? scrollController;
+
+  /// Text direction (RTL/LTR); defaults to the app's.
   final TextDirection? textDirection;
+
+  /// Flex value to fill the remaining space in a Row/Column (null = off).
   final int? expanded;
+
+  /// Flex value to shrink in a Row/Column when space is tight (null = off).
   final int? flexible;
+
+  /// Wraps it in a Positioned (use inside a Stack) with top/left/right/bottom.
   final bool positioned;
+
+  /// Distance from the left when [positioned] in a Stack.
   final double? left;
+
+  /// Distance from the top when [positioned] in a Stack.
   final double? top;
+
+  /// Distance from the right when [positioned] in a Stack.
   final double? right;
+
+  /// Distance from the bottom when [positioned] in a Stack.
   final double? bottom;
+
+  /// Width when [positioned].
   final double? positionedWidth;
+
+  /// Height when [positioned].
   final double? positionedHeight;
 
   @override
@@ -734,6 +954,7 @@ class UButtonSubmitCancel extends StatelessWidget {
   );
 }
 
+/// Makes any widget shrink a bit while pressed, then calls onTap. `UPressable(onTap: open, child: card)`
 class UPressable extends StatefulWidget {
   const UPressable({
     required this.child,
@@ -768,34 +989,91 @@ class UPressable extends StatefulWidget {
     this.positionedHeight,
   });
 
+  /// The widget inside.
   final Widget child;
+
+  /// Called when tapped.
   final VoidCallback onTap;
+
+  /// Scale while pressed, e.g. 0.95 for a subtle shrink.
   final double pressedScale;
+
+  /// How long it lasts.
   final Duration duration;
+
+  /// False disables interaction and greys it out.
   final bool enabled;
+
+  /// Space outside, around the widget.
   final EdgeInsetsGeometry? margin;
+
+  /// See-through amount, 0 (invisible) to 1 (solid).
   final double? opacity;
+
+  /// False hides it completely (takes no space).
   final bool visible;
+
+  /// Text shown on long press / mouse hover.
   final String? tooltip;
+
+  /// Hero tag for a shared-element animation between pages.
   final String? heroTag;
+
+  /// How the content fits its box (BoxFit).
   final BoxFit? fit;
+
+  /// Alignment inside the box when it does not fill it.
   final AlignmentGeometry fitAlignment;
+
+  /// Scales the painted widget (1 = normal size).
   final double? scale;
+
+  /// Rotation in radians.
   final double? rotate;
+
+  /// Moves the painted widget by this offset (layout unchanged).
   final Offset? translate;
+
+  /// Centers it in the available space.
   final bool center;
+
+  /// Keeps it out of the notch and system bars.
   final bool safeArea;
+
+  /// Makes the content scroll when it does not fit.
   final Axis? scrollable;
+
+  /// Scroll controller.
   final ScrollController? scrollController;
+
+  /// Text direction (RTL/LTR); defaults to the app's.
   final TextDirection? textDirection;
+
+  /// Flex value to fill the remaining space in a Row/Column (null = off).
   final int? expanded;
+
+  /// Flex value to shrink in a Row/Column when space is tight (null = off).
   final int? flexible;
+
+  /// Wraps it in a Positioned (use inside a Stack) with top/left/right/bottom.
   final bool positioned;
+
+  /// Distance from the left when [positioned] in a Stack.
   final double? left;
+
+  /// Distance from the top when [positioned] in a Stack.
   final double? top;
+
+  /// Distance from the right when [positioned] in a Stack.
   final double? right;
+
+  /// Distance from the bottom when [positioned] in a Stack.
   final double? bottom;
+
+  /// Width when [positioned].
   final double? positionedWidth;
+
+  /// Height when [positioned].
   final double? positionedHeight;
 
   @override

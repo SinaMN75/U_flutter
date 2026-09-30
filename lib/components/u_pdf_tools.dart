@@ -1,9 +1,13 @@
 import "package:u/utilities.dart";
 
+/// List of every annotation; tap to jump to its page.
 class UPdfAnnotationsPanel extends StatefulWidget {
   const UPdfAnnotationsPanel({required this.editor, required this.onJump, super.key});
 
+  /// The editor.
   final UPdfEditController editor;
+
+  /// Called with a page index to show.
   final void Function(int pageIndex) onJump;
 
   @override
@@ -107,11 +111,17 @@ class _UPdfAnnotationsPanelState extends State<UPdfAnnotationsPanel> {
   );
 }
 
+/// Page thumbnails with rotate/delete/move actions.
 class UPdfPageManagerPanel extends StatefulWidget {
   const UPdfPageManagerPanel({required this.viewer, required this.editor, this.onJump, super.key});
 
+  /// The viewer.
   final UPdfController viewer;
+
+  /// The editor.
   final UPdfEditController editor;
+
+  /// Called with a page index to show.
   final void Function(int pageIndex)? onJump;
 
   @override
@@ -286,10 +296,14 @@ class _UPdfPageManagerPanelState extends State<UPdfPageManagerPanel> {
   );
 }
 
+/// Whole-document tools: watermark, page numbers, metadata, merge, export, optimize.
 class UPdfDocumentToolsPanel extends StatefulWidget {
   const UPdfDocumentToolsPanel({required this.viewer, required this.editor, super.key});
 
+  /// The viewer.
   final UPdfController viewer;
+
+  /// The editor.
   final UPdfEditController editor;
 
   @override

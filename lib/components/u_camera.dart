@@ -92,11 +92,22 @@ enum UCameraMode { photo, video, both }
 class UCameraLabels {
   const UCameraLabels({this.retake, this.use, this.done, this.cancel, this.noCameraMessage, this.permissionMessage});
 
+  /// "Retake" text.
   final String? retake;
+
+  /// "Use photo" text.
   final String? use;
+
+  /// "Done" text.
   final String? done;
+
+  /// "Cancel" text.
   final String? cancel;
+
+  /// Shown when there is no camera.
   final String? noCameraMessage;
+
+  /// Shown when permission is denied.
   final String? permissionMessage;
 }
 
@@ -137,48 +148,100 @@ class UCameraOptions {
     this.overlayBuilder,
   });
 
+  /// Mode.
   final UCameraMode mode;
+
+  /// Lets the user take several photos.
   final bool allowMultiple;
 
   /// Maximum photos in multi mode; 0 means unlimited.
   final int maxCount;
+
+  /// Resolution.
   final UCameraResolution resolution;
+
+  /// Starts with the front camera.
   final bool startFront;
+
+  /// Shows the flash button.
   final bool enableFlash;
+
+  /// Shows the switch camera button.
   final bool enableCameraSwitch;
+
+  /// Shows the grid button.
   final bool enableGrid;
 
   /// Shows a horizon level line over the preview.
   final bool enableLevel;
+
+  /// Pinch to zoom.
   final bool enablePinchZoom;
+
+  /// Shows a zoom slider.
   final bool enableZoomSlider;
 
   /// Shows 0.5x / 1x / 2x quick-zoom chips when the lens range allows it.
   final bool enableZoomPresets;
+
+  /// Tap to focus.
   final bool enableTapToFocus;
+
+  /// Shows an exposure slider.
   final bool enableExposure;
+
+  /// Shows a self-timer button.
   final bool enableSelfTimer;
+
+  /// Records sound with video (needs microphone permission).
   final bool enableAudio;
+
+  /// Uses video stabilization when available.
   final bool enableStabilization;
+
+  /// Uses HDR when available.
   final bool enableHdr;
 
   /// Reveals ISO, shutter and white-balance sliders on capable devices.
   final bool enableManualControls;
+
+  /// Lets the user switch 4:3/16:9/1:1.
   final bool enableAspectRatioToggle;
+
+  /// Shows a "use / retake" step after each shot.
   final bool confirmCapture;
+
+  /// Mirrors the front camera preview.
   final bool mirrorFrontPreview;
+
+  /// Mirrors front camera photos.
   final bool mirrorFrontCapture;
+
+  /// Stops recording after this long.
   final Duration? videoMaxDuration;
+
+  /// Video codec (H.264/HEVC…).
   final UVideoCodec videoCodec;
+
+  /// Photo format (JPEG/PNG/HEIC…).
   final UPhotoFormat photoFormat;
+
+  /// JPEG quality 1-100.
   final int photoQuality;
+
+  /// How the content fits its box (BoxFit).
   final BoxFit fit;
+
+  /// Highlight color (defaults to the theme's primary).
   final Color? accentColor;
+
+  /// Labels.
   final UCameraLabels? labels;
 
   /// Extra chrome drawn over the preview, below the built-in controls.
   final Widget Function(BuildContext context, UCameraController controller)? overlayBuilder;
 
+  /// Copy with some fields changed.
   UCameraOptions copyWith({UCameraMode? mode, bool? allowMultiple, int? maxCount, bool? startFront, UCameraResolution? resolution}) => UCameraOptions(
     mode: mode ?? this.mode,
     allowMultiple: allowMultiple ?? this.allowMultiple,
@@ -213,6 +276,7 @@ class UCameraOptions {
     overlayBuilder: overlayBuilder,
   );
 
+  /// The engine config these options produce.
   UCameraConfig toConfig() => UCameraConfig(
     facing: startFront ? UCameraFacing.front : UCameraFacing.back,
     resolution: resolution,
@@ -233,11 +297,16 @@ class UCameraOptions {
 class UCameraPreview extends StatelessWidget {
   const UCameraPreview({required this.controller, this.fit = BoxFit.cover, this.mirror, this.placeholder, this.child, super.key});
 
+  /// Controller to read or change it from code.
   final UCameraController controller;
+
+  /// How the content fits its box (BoxFit).
   final BoxFit fit;
 
   /// Overrides the automatic front-camera mirroring.
   final bool? mirror;
+
+  /// Shown while loading.
   final Widget? placeholder;
 
   /// Drawn on top of the preview, sized to the widget.
@@ -290,11 +359,16 @@ class UCameraPreview extends StatelessWidget {
 class UCameraGrid extends StatelessWidget {
   const UCameraGrid({this.color = const Color(0x33FFFFFF), this.divisions = 3, super.key});
 
+  /// Main color (defaults to the theme).
   final Color color;
+
+  /// Grid lines per side (3 = rule of thirds).
   final int divisions;
 
   @override
-  Widget build(BuildContext context) => IgnorePointer(child: CustomPaint(painter: _UGridPainter(color, divisions), size: Size.infinite));
+  Widget build(BuildContext context) => IgnorePointer(
+    child: CustomPaint(painter: _UGridPainter(color, divisions), size: Size.infinite),
+  );
 }
 
 class _UGridPainter extends CustomPainter {
@@ -320,9 +394,11 @@ class _UGridPainter extends CustomPainter {
   bool shouldRepaint(_UGridPainter oldDelegate) => oldDelegate.color != color || oldDelegate.divisions != divisions;
 }
 
+/// The full-screen camera page used by UCamera.open (photo, video, multi-shot).
 class UCameraPage extends StatefulWidget {
   const UCameraPage({this.options = const UCameraOptions(), super.key});
 
+  /// Options.
   final UCameraOptions options;
 
   @override
@@ -645,14 +721,12 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
       children: <Widget>[
         _roundIcon(Icons.close, () => _finishWith(_multiPhoto ? _captured : <UFileData>[])),
         const Spacer(),
-        if (_o.enableFlash && value.capabilities.flash)
-          _roundIcon(UCameraUtils.flashIcon(value.flash), () => unawaited(_cycleFlash()), active: value.flash != UFlashMode.off),
+        if (_o.enableFlash && value.capabilities.flash) _roundIcon(UCameraUtils.flashIcon(value.flash), () => unawaited(_cycleFlash()), active: value.flash != UFlashMode.off),
         if (_o.enableGrid) _roundIcon(Icons.grid_3x3_rounded, () => setState(() => _showGrid = !_showGrid), active: _showGrid),
         if (_o.enableSelfTimer && !_isVideoMode) _roundIcon(_selfTimerSeconds == 0 ? Icons.timer_off_rounded : Icons.timer_rounded, _cycleSelfTimer, active: _selfTimerSeconds > 0),
         if (_o.enableHdr && value.capabilities.hdr)
           _roundIcon(Icons.hdr_on_rounded, () => unawaited(controller.setHdr(value.hdr == UHdrMode.on ? UHdrMode.off : UHdrMode.on)), active: value.hdr == UHdrMode.on),
-        if (_o.enableManualControls && value.capabilities.manualExposure)
-          _roundIcon(Icons.tune_rounded, () => setState(() => _showManual = !_showManual), active: _showManual),
+        if (_o.enableManualControls && value.capabilities.manualExposure) _roundIcon(Icons.tune_rounded, () => setState(() => _showManual = !_showManual), active: _showManual),
       ],
     ),
   );
@@ -839,7 +913,10 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
           if (!iso.isFixed)
             Row(
               children: <Widget>[
-                const SizedBox(width: 44, child: Text("ISO", style: TextStyle(color: Color(0xFFFFFFFF), fontSize: 12))),
+                const SizedBox(
+                  width: 44,
+                  child: Text("ISO", style: TextStyle(color: Color(0xFFFFFFFF), fontSize: 12)),
+                ),
                 Expanded(
                   child: Slider(
                     value: iso.clamp(value.iso ?? iso.min),
@@ -901,7 +978,10 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
               child: Container(
                 width: 60,
                 height: 60,
-                decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: _accent, width: 2)),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: _accent, width: 2),
+                ),
               ),
             ),
           ),

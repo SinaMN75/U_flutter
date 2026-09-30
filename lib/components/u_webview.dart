@@ -1,43 +1,116 @@
 import "package:u/utilities.dart";
 
+/// Called with a new URL and its query parameters.
 typedef UOnUrlChanged = void Function(String url, Map<String, String> queryParameters);
 
+/// In-app browser widget with top bar, progress, desktop mode, zoom, share and JavaScript channels; all 6 platforms (web: iframe, some sites refuse it). `UWebView(initialUrl: "https://sinamn75.com")`
 class UWebView extends StatefulWidget {
+  /// First page to load.
   final String initialUrl;
+
+  /// Custom User-Agent.
   final String? userAgent;
+
+  /// User-Agent used in desktop mode.
   final String desktopUserAgent;
+
+  /// Background color.
   final Color? backgroundColor;
+
+  /// Called whenever the page URL changes (e.g. to catch a payment callback).
   final UOnUrlChanged? onUrlChanged;
+
+  /// Hosts the page may navigate to.
   final List<String> allowedHosts;
+
+  /// Shown while loading.
   final Widget? loadingIndicator;
+
+  /// Runs JavaScript.
   final bool enableJavaScript;
+
+  /// Allows pinch zoom.
   final bool enablePinchZoom;
+
+  /// Shows alert/confirm/prompt dialogs.
   final bool enableJavaScriptDialogs;
+
+  /// Blocks navigation outside [allowedHosts].
   final bool restrictToAllowedHosts;
+
+  /// Allows camera/microphone requests from the page.
   final bool autoGrantMediaPermissions;
+
+  /// Shows the browser bar.
   final bool showTopBar;
+
+  /// Shows the address field.
   final bool showUrlBar;
+
+  /// Shows a back button.
   final bool showBackButton;
+
+  /// Shows the forward button.
   final bool showForwardButton;
+
+  /// Shows the refresh button.
   final bool showRefreshButton;
+
+  /// Shows the home button.
   final bool showHomeButton;
+
+  /// Shows the loading bar.
   final bool showProgressBar;
+
+  /// Shows the ⋮ menu.
   final bool showMoreMenu;
+
+  /// Menu: share link.
   final bool showShareAction;
+
+  /// Menu: open in browser.
   final bool showOpenInBrowserAction;
+
+  /// Menu: copy link.
   final bool showCopyLinkAction;
+
+  /// Menu: desktop site.
   final bool showDesktopModeAction;
+
+  /// Menu: zoom in/out.
   final bool showZoomActions;
+
+  /// Dart functions the page can call: window.name.postMessage("…").
   final Map<String, void Function(String message)>? javaScriptChannels;
+
+  /// HTTP headers for the first request.
   final Map<String, String>? initialHeaders;
+
+  /// Shown when loading fails.
   final Widget Function(BuildContext context, String message, VoidCallback retry)? errorBuilder;
+
+  /// Decides camera/mic permission requests yourself.
   final Future<void> Function(WebViewPermissionRequest request)? onPermissionRequest;
+
+  /// Called when a page starts loading.
   final void Function(String url)? onPageStarted;
+
+  /// Called when a page finished loading.
   final void Function(String url)? onPageFinished;
+
+  /// Called on a load error.
   final void Function(WebResourceError error)? onWebResourceError;
+
+  /// Gives you the WebViewController.
   final void Function(WebViewController controller)? onWebViewCreated;
+
+  /// Return false to block a navigation.
   final bool Function(String url)? onNavigationRequest;
+
+  /// Replaces the share action.
   final void Function(String url)? onShareRequested;
+
+  /// Replaces the open-in-browser action.
   final void Function(String url)? onOpenInBrowserRequested;
 
   const UWebView({
@@ -86,16 +159,33 @@ class UWebView extends StatefulWidget {
   State<UWebView> createState() => UWebViewState();
 }
 
+/// State of UWebView; use a GlobalKey to navigate from code.
 class UWebViewState extends State<UWebView> {
+  /// The WebViewController.
   late final WebViewController controller;
 
+  /// Current URL (listenable).
   final ValueNotifier<String> currentUrl = ValueNotifier<String>("");
+
+  /// Shows a loading state.
   final ValueNotifier<bool> isLoading = ValueNotifier<bool>(false);
+
+  /// Loading progress 0-1 (listenable).
   final ValueNotifier<double> progress = ValueNotifier<double>(0);
+
+  /// True when back is possible (listenable).
   final ValueNotifier<bool> canGoBack = ValueNotifier<bool>(false);
+
+  /// True when forward is possible (listenable).
   final ValueNotifier<bool> canGoForward = ValueNotifier<bool>(false);
+
+  /// True in desktop mode (listenable).
   final ValueNotifier<bool> isDesktopMode = ValueNotifier<bool>(false);
+
+  /// Last load error (listenable).
   final ValueNotifier<String?> loadError = ValueNotifier<String?>(null);
+
+  /// Controller of the address field.
   final TextEditingController urlFieldController = TextEditingController();
 
   @override
@@ -250,26 +340,34 @@ class UWebViewState extends State<UWebView> {
     canGoForward.value = await controller.canGoForward();
   }
 
+  /// Opens a URL.
   Future<void> loadUrl(String url) => _load(url);
 
+  /// Reloads.
   Future<void> reload() => controller.reload();
 
+  /// Goes back.
   Future<void> goBack() => controller.goBack();
 
+  /// Goes forward.
   Future<void> goForward() => controller.goForward();
 
+  /// Goes to the initial URL.
   Future<void> goHome() => _load(widget.initialUrl, headers: widget.initialHeaders);
 
+  /// Switches mobile/desktop site.
   Future<void> toggleDesktopMode() async {
     isDesktopMode.value = !isDesktopMode.value;
     await controller.setUserAgent(isDesktopMode.value ? widget.desktopUserAgent : widget.userAgent);
     await controller.reload();
   }
 
+  /// Zooms in.
   Future<void> zoomIn() => controller.runJavaScript(
     "document.body.style.zoom = (parseFloat(document.body.style.zoom || 1) + 0.1).toString();",
   );
 
+  /// Zooms out.
   Future<void> zoomOut() => controller.runJavaScript(
     "document.body.style.zoom = Math.max(0.5, parseFloat(document.body.style.zoom || 1) - 0.1).toString();",
   );

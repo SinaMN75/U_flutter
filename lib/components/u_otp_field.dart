@@ -1,9 +1,12 @@
 import "package:u/utilities.dart";
 
+/// Keyboard for UOtpField: system keyboard or the built-in numeric pad.
 enum UOtpKeyboardMode { system, external }
 
+/// State of one OTP cell: empty, focused, filled, error.
 enum UOtpCellState { empty, active, filled, error, disabled }
 
+/// One-time-code boxes with paste, SMS autofill, obscuring and error state. `UOtpField(length: 6, onCompleted: verify)`
 class UOtpField extends StatefulWidget {
   const UOtpField({
     super.key,
@@ -50,46 +53,127 @@ class UOtpField extends StatefulWidget {
     this.characterFormatter,
   });
 
+  /// Controller to read or change it from code.
   final TextEditingController? controller;
+
+  /// Focus node to control keyboard focus.
   final FocusNode? focusNode;
+
+  /// Number of digits.
   final int length;
+
+  /// System keyboard or built-in pad.
   final UOtpKeyboardMode keyboardMode;
+
+  /// Called with the new value when the user changes it.
   final ValueChanged<String>? onChanged;
+
+  /// Called when the input is complete.
   final ValueChanged<String>? onCompleted;
+
+  /// Called when the keyboard's done is pressed.
   final ValueChanged<String>? onSubmitted;
+
+  /// Form validator; return an error text or null (see UValidators).
   final String? Function(String?)? validator;
+
+  /// Form save callback.
   final Function(String? value)? onSaved;
+
+  /// Focuses the first box on start.
   final bool autoFocus;
+
+  /// False disables interaction and greys it out.
   final bool enabled;
+
+  /// Shows the value without allowing edits.
   final bool readOnly;
+
+  /// Hides the digits.
   final bool obscureText;
+
+  /// Character shown instead of digits.
   final String obscuringCharacter;
+
+  /// Closes the keyboard when complete.
   final bool autoDismissKeyboard;
+
+  /// Vibrates lightly on interaction (mobile).
   final bool hapticFeedback;
+
+  /// Offers the code from SMS (iOS/Android autofill).
   final bool enableSmsAutoFill;
+
+  /// Shows a blinking cursor.
   final bool showCursor;
+
+  /// Stretches boxes to the full width.
   final bool expand;
+
+  /// Box width.
   final double fieldWidth;
+
+  /// Box height.
   final double fieldHeight;
+
+  /// Gap between items.
   final double spacing;
+
+  /// Corner radius.
   final double borderRadius;
+
+  /// Border thickness.
   final double borderWidth;
+
+  /// Text style.
   final TextStyle? textStyle;
+
+  /// Fill color.
   final Color? fillColor;
+
+  /// Fill of the focused box.
   final Color? focusedFillColor;
+
+  /// Cursor color.
   final Color? cursorColor;
+
+  /// Border of the focused box.
   final Color? activeColor;
+
+  /// Border color.
   final Color? borderColor;
+
+  /// Border color on error.
   final Color? errorColor;
+
+  /// Text color.
   final Color? textColor;
+
+  /// How children are placed along the main axis.
   final MainAxisAlignment mainAxisAlignment;
+
+  /// Length of the animation.
   final Duration animationDuration;
+
+  /// Keyboard type (numbers by default).
   final TextInputType keyboardType;
+
+  /// Input formatters.
   final List<TextInputFormatter>? inputFormatters;
+
+  /// Widget between boxes (e.g. a dash after 3).
   final Widget Function(BuildContext context, int index)? separatorBuilder;
+
+  /// Your own box widget.
   final Widget Function(BuildContext context, int index, String character, UOtpCellState state)? cellBuilder;
+
+  /// Border of filled boxes.
   final Color? filledBorderColor;
+
+  /// Shadow of the focused box.
   final List<BoxShadow>? activeBoxShadow;
+
+  /// Formats each character (e.g. Persian digits).
   final String Function(String character)? characterFormatter;
 
   @override

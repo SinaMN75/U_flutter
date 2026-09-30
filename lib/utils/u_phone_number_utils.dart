@@ -1,6 +1,8 @@
 import "package:u/utilities.dart";
 
+/// International phone numbers: clean input, validate per country, format, convert to E.164 (+989121234567). `UPhoneNumberUtils.toE164("0912 123 4567", countryCode: "IR")`
 class UPhoneNumberUtils {
+  /// Cleans a number for storage/API: Latin digits, no spaces, no trunk 0. `UPhoneNumberUtils.normalizePhone("۰۹۱۲ ۱۲۳", countryCode: "IR")`
   static String normalizePhone(
     String rawInput, {
     required String countryCode,
@@ -37,18 +39,25 @@ class UPhoneNumberUtils {
     return input;
   }
 
+  /// Keeps digits and +, converting Persian/Arabic digits.
   static String sanitize(String rawInput) => rawInput.toLatinNumber().replaceAll(RegExp(r"[^\d+]"), "");
 
+  /// Dial code of an ISO code or dial code. `UPhoneNumberUtils.dialCodeOf("IR")` → "+98"
   static String dialCodeOf(String countryCode) {
     final String code = countryCode.trim();
     return code.startsWith("+") ? code : "+$code";
   }
 
+  /// Longest allowed E.164 number (15 digits).
   static const int e164MaxDigits = 15;
+
+  /// Shortest national number accepted.
   static const int nationalMinDigits = 4;
 
+  /// Countries whose leading 0 is part of the number (Italy, Ivory Coast).
   static const Set<String> significantLeadingZeroDialCodes = <String>{"+39", "+225"};
 
+  /// National trunk prefixes other than "0".
   static const Map<String, String> trunkPrefixes = <String, String>{
     "+1": "1",
     "+7": "8",
@@ -57,6 +66,7 @@ class UPhoneNumberUtils {
     "+375": "8",
   };
 
+  /// Main country for dial codes shared by several countries (+1 → US).
   static const Map<String, String> primaryCountryByDialCode = <String, String>{
     "+1": "US",
     "+7": "RU",
@@ -74,14 +84,17 @@ class UPhoneNumberUtils {
     "+672": "NF",
   };
 
+  /// Country of a dial code, e.g. "+98" → Iran.
   static UCountry? countryOfDialCode(String? countryCode) {
     if (countryCode == null || countryCode.trim().isEmpty) return null;
     final String code = dialCodeOf(countryCode);
     return UCountries.byIsoCode(primaryCountryByDialCode[code]) ?? UCountries.byDialCode(code);
   }
 
+  /// Country from an ISO code, dial code or number; the app default when unknown.
   static UCountry resolveCountry(String? value) => UCountries.byIsoCode(value) ?? countryOfDialCode(value) ?? countryOf(value ?? "") ?? U.defaultPhoneCountry;
 
+  /// Country guessed from an international number ("+44…").
   static UCountry? countryOf(String rawInput) {
     final String input = sanitize(rawInput);
     final String international = input.startsWith("+")
@@ -97,6 +110,7 @@ class UPhoneNumberUtils {
     return countryOfDialCode(dialCode);
   }
 
+  /// Number without dial code and trunk prefix. `UPhoneNumberUtils.nationalNumber("+989121234567", countryCode: "IR")` → "9121234567"
   static String nationalNumber(String rawInput, {required String countryCode}) {
     String input = sanitize(rawInput);
     if (input.isEmpty) return "";
@@ -115,6 +129,7 @@ class UPhoneNumberUtils {
     return stripTrunkPrefix(input.replaceAll("+", ""), countryCode: code);
   }
 
+  /// Removes the national trunk prefix (usually the leading 0).
   static String stripTrunkPrefix(String digits, {required String countryCode}) {
     final String code = dialCodeOf(countryCode);
     if (significantLeadingZeroDialCodes.contains(code)) return digits;
@@ -132,14 +147,17 @@ class UPhoneNumberUtils {
     return result;
   }
 
+  /// Most national digits a country allows.
   static int maxNationalDigits(String countryCode) => e164MaxDigits - (dialCodeOf(countryCode).length - 1);
 
+  /// International format "+989121234567"; "" when empty. `UPhoneNumberUtils.toE164(input, countryCode: "IR")`
   static String toE164(String rawInput, {required String countryCode}) {
     final String national = nationalNumber(rawInput, countryCode: countryCode);
     if (national.isEmpty) return "";
     return "${dialCodeOf(countryCode)}$national";
   }
 
+  /// True when the number has a valid length/shape for [countryCode]. `UPhoneNumberUtils.isValid("09121234567", countryCode: "IR")`
   static bool isValid(String rawInput, {required String countryCode}) {
     final String code = dialCodeOf(countryCode);
     final String national = nationalNumber(rawInput, countryCode: code);
@@ -149,6 +167,7 @@ class UPhoneNumberUtils {
     return lengths == null || lengths.contains(national.length);
   }
 
+  /// Display masks per dial code and length.
   static const Map<String, Map<int, String>> nationalFormats = <String, Map<int, String>>{
     "+1": <int, String>{10: "(###) ###-####"},
     "+7": <int, String>{10: "(###) ###-##-##"},
@@ -249,6 +268,7 @@ class UPhoneNumberUtils {
     "+998": <int, String>{9: "## ### ## ##"},
   };
 
+  /// Display mask for [length] digits, e.g. "### ### ####".
   static String formatMask(int length, String countryCode) {
     final String? mask = nationalFormats[dialCodeOf(countryCode)]?[length];
     if (mask != null) return mask;
@@ -272,6 +292,7 @@ class UPhoneNumberUtils {
     }
   }
 
+  /// Digits formatted for display, e.g. "912 123 4567".
   static String formatNational(String digits, {required String countryCode}) {
     if (digits.isEmpty) return "";
     final String mask = formatMask(digits.length, countryCode);
@@ -293,12 +314,14 @@ class UPhoneNumberUtils {
     return out.toString();
   }
 
+  /// "+98 912 123 4567" style display of an E.164 number.
   static String formatE164(String e164) {
     final UCountry? country = countryOf(e164);
     if (country == null) return e164;
     return "${country.dialCode} ${formatNational(nationalNumber(e164, countryCode: country.dialCode), countryCode: country.dialCode)}";
   }
 
+  /// How many digits a phone field should accept.
   static int maxInputDigits(String countryCode) {
     final List<int>? lengths = nationalDigitLengths[dialCodeOf(countryCode)];
     if (lengths == null || lengths.isEmpty) return maxNationalDigits(countryCode);
@@ -309,18 +332,21 @@ class UPhoneNumberUtils {
     return max;
   }
 
+  /// Example number for a field hint.
   static String placeholder(String countryCode) {
     final List<int>? lengths = nationalDigitLengths[dialCodeOf(countryCode)];
     final int length = lengths == null || lengths.isEmpty ? 9 : lengths.last;
     return formatMask(length, countryCode).replaceAll("#", "0");
   }
 
+  /// Cleans typed text for a phone field (drops trunk 0, cuts to max length).
   static String inputDigits(String rawInput, {required String countryCode}) {
     final String digits = stripTrunkPrefix(sanitize(rawInput).replaceAll("+", ""), countryCode: countryCode);
     final int max = maxInputDigits(countryCode);
     return digits.length > max ? digits.substring(0, max) : digits;
   }
 
+  /// Valid national number lengths per dial code.
   static const Map<String, List<int>> nationalDigitLengths = <String, List<int>>{
     "+98": <int>[10],
     "+1": <int>[10],

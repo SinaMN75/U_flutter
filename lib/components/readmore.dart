@@ -1,10 +1,12 @@
 import "package:u/utilities.dart";
 
+/// Cut by characters (length) or by lines.
 enum UTrimMode {
   length,
   line,
 }
 
+/// Long text that shows "Read more / Show less" and supports links. `UReadMoreText(longText, trimLines: 3)`
 class UReadMoreText extends StatefulWidget {
   const UReadMoreText(
     this.data, {
@@ -34,32 +36,76 @@ class UReadMoreText extends StatefulWidget {
     this.linkTextStyle,
   });
 
+  /// Characters shown when trimming by length.
   final int trimLength;
+
+  /// Lines shown when trimming by lines.
   final int trimLines;
+
+  /// Trim by length or lines.
   final UTrimMode trimMode;
+
+  /// Style of "Read more".
   final TextStyle? moreStyle;
+
+  /// Style of "Show less".
   final TextStyle? lessStyle;
+
+  /// Text before the content (e.g. a username).
   final String? preDataText;
+
+  /// Text after the content.
   final String? postDataText;
+
+  /// Style of preDataText.
   final TextStyle? preDataTextStyle;
+
+  /// Style of postDataText.
   final TextStyle? postDataTextStyle;
+
+  /// Called with true when collapsed, false when expanded.
   final Function(bool val)? callback;
 
+  /// Called with a tapped URL (links are detected).
   final ValueChanged<String>? onLinkPressed;
 
+  /// Link style.
   final TextStyle? linkTextStyle;
 
+  /// Text before "Read more", e.g. "… ".
   final String delimiter;
+
+  /// The data to show.
   final String data;
+
+  /// "Show less" text.
   final String trimExpandedText;
+
+  /// "Read more" text.
   final String trimCollapsedText;
+
+  /// Color of read more/less.
   final Color? colorClickableText;
+
+  /// Text style (defaults to the theme).
   final TextStyle? style;
+
+  /// Text alignment.
   final TextAlign? textAlign;
+
+  /// Text direction (RTL/LTR); defaults to the app's.
   final TextDirection? textDirection;
+
+  /// Locale for measuring text.
   final Locale? locale;
+
+  /// Text scale for measuring.
   final double? textScaleFactor;
+
+  /// Label read by screen readers.
   final String? semanticsLabel;
+
+  /// Style of the delimiter.
   final TextStyle? delimiterStyle;
 
   @override
@@ -70,6 +116,7 @@ const String _kEllipsis = "\u2026";
 
 const String _kLineSeparator = "\u2028";
 
+/// State of UReadMoreText.
 class UReadMoreTextState extends State<UReadMoreText> {
   bool _readMore = true;
 

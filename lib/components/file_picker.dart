@@ -2,10 +2,14 @@ import "dart:ui" as ui;
 
 import "package:u/utilities.dart";
 
+/// A tag/category (e.g. TagMedia) users can assign to picked files.
 class UFilePickerCategory {
   const UFilePickerCategory({required this.value, required this.title});
 
+  /// Current value.
   final int value;
+
+  /// Title text.
   final String title;
 }
 
@@ -36,23 +40,31 @@ class UFilePickerController extends ChangeNotifier {
   /// Already-uploaded files the user removed.
   List<UFileData> get removedFiles => List<UFileData>.unmodifiable(_removed);
 
+  /// Every file (existing + new).
   List<UFileData> get all => <UFileData>[..._existing, ..._files];
 
+  /// File marked as cover.
   UFileData? get cover => _cover;
 
+  /// True when the cover changed.
   bool get coverChanged => _coverChanged;
 
+  /// True when files were added/removed/changed.
   bool get hasChanges => _files.isNotEmpty || _removed.isNotEmpty || _coverChanged;
 
+  /// True for a file picked in this session (not uploaded yet).
   bool isNew(UFileData file) => _files.contains(file);
 
+  /// True when [file] is the cover.
   bool isCover(UFileData file) => identical(file, _cover);
 
+  /// Adds files.
   void add(Iterable<UFileData> files) {
     _files.addAll(files);
     notifyListeners();
   }
 
+  /// Replaces all files.
   void replace(Iterable<UFileData> files) {
     if (_files.contains(_cover)) _setCover(null);
     _files
@@ -61,6 +73,7 @@ class UFilePickerController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Removes a file.
   void remove(UFileData file) {
     if (identical(file, _cover)) _setCover(null);
     if (_existing.remove(file)) {
@@ -71,6 +84,7 @@ class UFilePickerController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Marks the cover file.
   void setCover(UFileData? file) {
     _setCover(file);
     notifyListeners();
@@ -114,23 +128,47 @@ class UFilePicker extends StatefulWidget {
 
   /// New files to start with when no [controller] is given.
   final List<UFileData> initialFiles;
+
+  /// Lets the user pick several files.
   final bool allowMultipleSelection;
+
+  /// Title of the add button.
   final String? selectFileTitle;
+
+  /// Second line of text.
   final String? subtitle;
+
+  /// Extensions treated as images.
   final List<String> imageTypes;
+
+  /// Extensions treated as videos.
   final List<String> videoTypes;
+
+  /// Extensions treated as documents.
   final List<String> documentTypes;
 
   /// Overrides [imageTypes] + [videoTypes] + [documentTypes] as the accepted extensions.
   final List<String>? allowedExtensions;
+
+  /// Which files the picker offers.
   final FileType fileType;
+
+  /// Categories users can assign.
   final List<UFilePickerCategory> categories;
+
+  /// Title of the category chooser.
   final String? categoryTitle;
+
+  /// Lets the user mark a cover image.
   final bool selectCover;
+
+  /// False disables interaction and greys it out.
   final bool enabled;
 
   /// Preferred tile width; the grid fits as many columns as the width allows.
   final double tileExtent;
+
+  /// Icon shown with it.
   final IconData icon;
 
   /// Photos of a place (hotel, room, dorm, bed): images only, a category per photo and a cover. Save with [UMediaService.syncGallery].

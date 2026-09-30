@@ -1,5 +1,6 @@
 import "package:u/utilities.dart";
 
+/// Map tiles: openStreetMap, mapBox, openTopoMap… (online).
 enum UMapTileProvider {
   openStreetMap,
   mapBox,
@@ -7,6 +8,7 @@ enum UMapTileProvider {
   stamenTerrain,
 }
 
+/// Map with markers, my-location button and tile providers (flutter_map, all platforms). `UMap(controller: MapController(), center: const LatLng(35.7, 51.4))`
 class UMap extends StatefulWidget {
   const UMap({
     required this.controller,
@@ -118,7 +120,6 @@ class _UMapState extends State<UMap> {
       debugPrint("Error getting user location: $e");
     }
   }
-
 
   String _getTileUrlTemplate() {
     switch (widget.tileProvider) {
@@ -260,6 +261,7 @@ class _UMapState extends State<UMap> {
   );
 }
 
+/// A ready demo map to try UMap quickly.
 class UDemoMap extends StatelessWidget {
   const UDemoMap({super.key});
 

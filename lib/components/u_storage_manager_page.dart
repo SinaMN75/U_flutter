@@ -1,5 +1,6 @@
 import "package:u/utilities.dart";
 
+/// "Storage" screen: usage per bucket and clear buttons (UFile.openStoragePage opens it).
 class UStorageManagerPage extends StatefulWidget {
   const UStorageManagerPage({super.key});
 
@@ -48,7 +49,12 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
     for (final UStorageEntry entry in UFileStorage.entries()) {
       final String mime = entry.mimeType ?? "";
       final bool isText = (mime.startsWith("text/") || mime.contains("json")) && entry.size <= 64 * 1024;
-      files.add(_FileEntry(entry: entry, content: isText ? await UFileStorage.getString(entry.key, bucket: entry.bucket) : null));
+      files.add(
+        _FileEntry(
+          entry: entry,
+          content: isText ? await UFileStorage.getString(entry.key, bucket: entry.bucket) : null,
+        ),
+      );
     }
     files.sort((_FileEntry a, _FileEntry b) {
       final int byBucket = a.entry.bucket.index.compareTo(b.entry.bucket.index);

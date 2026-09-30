@@ -9,7 +9,10 @@ class UProcessImagePickerField extends StatefulWidget {
     super.key,
   });
 
+  /// The field definition.
   final UProcessField field;
+
+  /// Where the image is written.
   final UProcessStepSend processStepSend;
 
   @override

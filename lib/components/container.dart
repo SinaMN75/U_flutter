@@ -171,6 +171,7 @@ Widget _uModifiers(
   return current;
 }
 
+/// Adds u's box, tap, hover, tooltip, hero, fit, transform and position options to any widget (what every U-widget uses). `uWrap(Text("Hi"), onTap: open, tooltip: "Open")`
 Widget uWrap(
   Widget child, {
   BorderRadius? borderRadius,
@@ -443,6 +444,7 @@ Widget _uBox({
 // Widgets
 // ===========================================================================
 
+/// Scaffold that also closes the keyboard on outside taps, adds SafeArea and pads/decorates the body. `UScaffold(appBar: AppBar(title: const Text("Home")), body: content)`
 class UScaffold extends StatelessWidget {
   const UScaffold({
     required this.body,
@@ -476,33 +478,88 @@ class UScaffold extends StatelessWidget {
     this.dismissKeyboardOnTap = true,
   });
 
+  /// Page content.
   final Widget body;
+
+  /// Top app bar.
   final PreferredSizeWidget? appBar;
+
+  /// Left side menu (right side in RTL).
   final Widget? drawer;
+
+  /// Right side menu (left side in RTL).
   final Widget? endDrawer;
+
+  /// Floating button; a FloatingActionButton goes bottom-end, anything else bottom-center.
   final Widget? floatingActionButton;
+
+  /// Bottom navigation bar.
   final Widget? bottomNavigationBar;
+
+  /// Persistent bottom sheet.
   final Widget? bottomSheet;
+
+  /// Buttons fixed at the bottom.
   final List<Widget>? persistentFooterButtons;
+
+  /// Space inside, around the content.
   final EdgeInsetsGeometry? padding;
+
+  /// Space outside, around the widget.
   final EdgeInsetsGeometry? margin;
+
+  /// Main color (defaults to the theme).
   final Color? color;
+
+  /// Decoration of the body box (e.g. a gradient background).
   final BoxDecoration? decoration;
+
+  /// Lets the body go under a transparent app bar.
   final bool extendBodyBehindAppBar;
+
+  /// Lets the body go under the bottom bar.
   final bool extendBody;
+
+  /// Primary color.
   final bool primary;
+
+  /// Dim color behind an open drawer.
   final Color? drawerScrimColor;
+
+  /// Where the floating button sits.
   final FloatingActionButtonLocation? floatingActionButtonLocation;
+
+  /// How the floating button animates between locations.
   final FloatingActionButtonAnimator? floatingActionButtonAnimator;
+
+  /// Extra size limits.
   final BoxConstraints? constraints;
+
+  /// Width in logical pixels (null = size to content).
   final double? width;
+
+  /// Height in logical pixels (null = size to content).
   final double? height;
+
+  /// Called when the drawer opens/closes.
   final DrawerCallback? onDrawerChanged;
+
+  /// Called when the end drawer opens/closes.
   final DrawerCallback? onEndDrawerChanged;
+
+  /// Alignment of the content.
   final Alignment? alignment;
+
+  /// Keeps it out of the notch and system bars.
   final bool safeArea;
+
+  /// Extra padding added around the SafeArea when [safeArea] is on.
   final EdgeInsets safeAreaEdges;
+
+  /// Shrinks the body when the keyboard opens.
   final bool? resizeToAvoidBottomInset;
+
+  /// Closes the keyboard when tapping outside a field (default true).
   final bool dismissKeyboardOnTap;
 
   @override
@@ -556,6 +613,7 @@ class UScaffold extends StatelessWidget {
   }
 }
 
+/// Tab bar + swipeable pages in one widget. `UDefaultTabBar(tabBar: const TabBar(tabs: [Tab(text: "A"), Tab(text: "B")]), children: [PageA(), PageB()])`
 class UDefaultTabBar extends StatelessWidget {
   const UDefaultTabBar({
     required this.children,
@@ -576,20 +634,49 @@ class UDefaultTabBar extends StatelessWidget {
     this.constraints,
   });
 
+  /// Child widgets.
   final List<Widget> children;
+
+  /// The tab bar shown above the pages.
   final Widget tabBar;
+
+  /// Width in logical pixels (null = size to content).
   final double? width;
+
+  /// Height in logical pixels (null = size to content).
   final double? height;
+
+  /// Index selected at start.
   final int initialIndex;
+
+  /// Controller to read or change it from code.
   final TabController? controller;
+
+  /// Scroll physics.
   final ScrollPhysics? physics;
+
+  /// Indicator color.
   final Color? indicatorColor;
+
+  /// Selected tab text style.
   final TextStyle? labelStyle;
+
+  /// Unselected tab text style.
   final TextStyle? unselectedLabelStyle;
+
+  /// Indicator thickness.
   final double indicatorWeight;
+
+  /// Lets many tabs scroll sideways.
   final bool isScrollable;
+
+  /// When a swipe starts.
   final DragStartBehavior dragStartBehavior;
+
+  /// Part of the width each page takes (1 = full).
   final double viewportFraction;
+
+  /// Extra size limits.
   final BoxConstraints? constraints;
 
   @override
@@ -620,6 +707,7 @@ class UDefaultTabBar extends StatelessWidget {
   );
 }
 
+/// Container with everything built in: radius, border, gradient, shadow, tap/press/hover, tooltip, hero, fit, flex, position. `UContainer(radius: 12, color: Colors.white, padding: const EdgeInsets.all(16), onTap: open, child: Text("Card"))`
 class UContainer extends StatelessWidget {
   const UContainer({
     this.child,
@@ -692,72 +780,205 @@ class UContainer extends StatelessWidget {
     this.positionedHeight,
   });
 
+  /// The widget inside.
   final Widget? child;
+
+  /// Space inside, around the content.
   final EdgeInsetsGeometry? padding;
+
+  /// Space outside, around the widget.
   final EdgeInsetsGeometry? margin;
+
+  /// Main color (defaults to the theme).
   final Color? color;
+
+  /// Background gradient (overrides the color).
   final Gradient? gradient;
+
+  /// Image to show.
   final DecorationImage? image;
+
+  /// Border around it.
   final BoxBorder? border;
+
+  /// Corner radius.
   final double? radius;
+
+  /// Corner radius.
   final BorderRadius? borderRadius;
+
+  /// Shadows under it.
   final List<BoxShadow>? boxShadow;
+
+  /// Width in logical pixels (null = size to content).
   final double? width;
+
+  /// Height in logical pixels (null = size to content).
   final double? height;
+
+  /// Minimum width.
   final double? minWidth;
+
+  /// Maximum width.
   final double? maxWidth;
+
+  /// Minimum height.
   final double? minHeight;
+
+  /// Maximum height.
   final double? maxHeight;
+
+  /// Extra size limits.
   final BoxConstraints? constraints;
+
+  /// Alignment of the content.
   final AlignmentGeometry? alignment;
+
+  /// How content outside the bounds is clipped.
   final Clip clipBehavior;
+
+  /// Matrix transform applied when painting.
   final Matrix4? transform;
+
+  /// Origin of [transform].
   final AlignmentGeometry? transformAlignment;
+
+  /// Decoration painted on top of the child.
   final Decoration? foregroundDecoration;
+
+  /// Shape of the widget.
   final BoxShape shape;
+
+  /// Blend mode of the background with what is behind.
   final BlendMode? backgroundBlendMode;
+
+  /// Called when tapped.
   final GestureTapCallback? onTap;
+
+  /// Called on double tap.
   final GestureTapCallback? onDoubleTap;
+
+  /// Called on long press.
   final GestureLongPressCallback? onLongPress;
+
+  /// Called when a finger touches down.
   final GestureTapDownCallback? onTapDown;
+
+  /// Called when the finger lifts after a tap.
   final GestureTapUpCallback? onTapUp;
+
+  /// Called when a tap is cancelled.
   final GestureTapCancelCallback? onTapCancel;
+
+  /// Called on right-click / secondary tap.
   final GestureTapCallback? onSecondaryTap;
+
+  /// How taps on transparent areas are handled.
   final HitTestBehavior? hitTestBehavior;
+
+  /// Shows a Material ripple on tap.
   final bool splash;
+
+  /// Ripple color.
   final Color? splashColor;
+
+  /// Pressed highlight color.
   final Color? highlightColor;
+
+  /// Color while a mouse hovers (desktop, web).
   final Color? hoverColor;
+
+  /// Scale while pressed, e.g. 0.95 for a subtle shrink.
   final double? pressedScale;
+
+  /// Length of the press-shrink animation.
   final Duration pressDuration;
+
+  /// Plays the platform click sound/haptic on tap.
   final bool enableFeedback;
+
+  /// Mouse cursor on hover (desktop, web).
   final MouseCursor? cursor;
+
+  /// Called with true/false when a mouse enters/leaves (desktop, web).
   final ValueChanged<bool>? onHover;
+
+  /// See-through amount, 0 (invisible) to 1 (solid).
   final double? opacity;
+
+  /// Text shown on long press / mouse hover.
   final String? tooltip;
+
+  /// Label read by screen readers.
   final String? semanticsLabel;
+
+  /// Tells screen readers this is a button.
   final bool? semanticsButton;
+
+  /// False hides it completely (takes no space).
   final bool visible;
+
+  /// Hero tag for a shared-element animation between pages.
   final String? heroTag;
+
+  /// Called when tapped, with a press-down shrink effect.
   final VoidCallback? onPress;
+
+  /// How the content fits its box (BoxFit).
   final BoxFit? fit;
+
+  /// Alignment inside the box when it does not fill it.
   final AlignmentGeometry fitAlignment;
+
+  /// Scales the painted widget (1 = normal size).
   final double? scale;
+
+  /// Rotation in radians.
   final double? rotate;
+
+  /// Moves the painted widget by this offset (layout unchanged).
   final Offset? translate;
+
+  /// Centers it in the available space.
   final bool center;
+
+  /// Keeps it out of the notch and system bars.
   final bool safeArea;
+
+  /// Makes the content scroll when it does not fit.
   final Axis? scrollable;
+
+  /// Scroll controller.
   final ScrollController? scrollController;
+
+  /// Text direction (RTL/LTR); defaults to the app's.
   final TextDirection? textDirection;
+
+  /// Flex value to fill the remaining space in a Row/Column (null = off).
   final int? expanded;
+
+  /// Flex value to shrink in a Row/Column when space is tight (null = off).
   final int? flexible;
+
+  /// Wraps it in a Positioned (use inside a Stack) with top/left/right/bottom.
   final bool positioned;
+
+  /// Distance from the left when [positioned] in a Stack.
   final double? left;
+
+  /// Distance from the top when [positioned] in a Stack.
   final double? top;
+
+  /// Distance from the right when [positioned] in a Stack.
   final double? right;
+
+  /// Distance from the bottom when [positioned] in a Stack.
   final double? bottom;
+
+  /// Width when [positioned].
   final double? positionedWidth;
+
+  /// Height when [positioned].
   final double? positionedHeight;
 
   @override
@@ -832,6 +1053,7 @@ class UContainer extends StatelessWidget {
   );
 }
 
+/// Column with gap [spacing], box decoration, tap and flex options. `UColumn(spacing: 8, children: [a, b, c])`
 class UColumn extends StatelessWidget {
   const UColumn({
     required this.children,
@@ -906,75 +1128,211 @@ class UColumn extends StatelessWidget {
     this.positionedHeight,
   });
 
+  /// Child widgets.
   final List<Widget> children;
+
+  /// Gap between items.
   final double spacing;
+
+  /// Width in logical pixels (null = size to content).
   final double? width;
+
+  /// Height in logical pixels (null = size to content).
   final double? height;
+
+  /// Minimum width.
   final double? minWidth;
+
+  /// Maximum width.
   final double? maxWidth;
+
+  /// Minimum height.
   final double? minHeight;
+
+  /// Maximum height.
   final double? maxHeight;
+
+  /// How children are placed along the main axis.
   final MainAxisAlignment mainAxisAlignment;
+
+  /// How children are placed across the main axis.
   final CrossAxisAlignment crossAxisAlignment;
+
+  /// Whether it takes all space on the main axis or only what children need.
   final MainAxisSize mainAxisSize;
+
+  /// Corner radius.
   final double? radius;
+
+  /// Corner radius.
   final BorderRadius? borderRadius;
+
+  /// Space inside, around the content.
   final EdgeInsetsGeometry? padding;
+
+  /// Space outside, around the widget.
   final EdgeInsetsGeometry? margin;
+
+  /// Border around it.
   final BoxBorder? border;
+
+  /// Main color (defaults to the theme).
   final Color? color;
+
+  /// Background gradient (overrides the color).
   final Gradient? gradient;
+
+  /// Image to show.
   final DecorationImage? image;
+
+  /// Shadows under it.
   final List<BoxShadow>? boxShadow;
+
+  /// Extra size limits.
   final BoxConstraints? constraints;
+
+  /// Alignment of the content.
   final AlignmentGeometry? alignment;
+
+  /// How content outside the bounds is clipped.
   final Clip clipBehavior;
+
+  /// Matrix transform applied when painting.
   final Matrix4? transform;
+
+  /// Origin of [transform].
   final AlignmentGeometry? transformAlignment;
+
+  /// Decoration painted on top of the child.
   final Decoration? foregroundDecoration;
+
+  /// Shape of the widget.
   final BoxShape shape;
+
+  /// Blend mode of the background with what is behind.
   final BlendMode? backgroundBlendMode;
+
+  /// Called when tapped.
   final GestureTapCallback? onTap;
+
+  /// Called on double tap.
   final GestureTapCallback? onDoubleTap;
+
+  /// Called on long press.
   final GestureLongPressCallback? onLongPress;
+
+  /// Called when a finger touches down.
   final GestureTapDownCallback? onTapDown;
+
+  /// Called when the finger lifts after a tap.
   final GestureTapUpCallback? onTapUp;
+
+  /// Called when a tap is cancelled.
   final GestureTapCancelCallback? onTapCancel;
+
+  /// Called on right-click / secondary tap.
   final GestureTapCallback? onSecondaryTap;
+
+  /// How taps on transparent areas are handled.
   final HitTestBehavior? hitTestBehavior;
+
+  /// Shows a Material ripple on tap.
   final bool splash;
+
+  /// Ripple color.
   final Color? splashColor;
+
+  /// Pressed highlight color.
   final Color? highlightColor;
+
+  /// Color while a mouse hovers (desktop, web).
   final Color? hoverColor;
+
+  /// Scale while pressed, e.g. 0.95 for a subtle shrink.
   final double? pressedScale;
+
+  /// Mouse cursor on hover (desktop, web).
   final MouseCursor? cursor;
+
+  /// Called with true/false when a mouse enters/leaves (desktop, web).
   final ValueChanged<bool>? onHover;
+
+  /// See-through amount, 0 (invisible) to 1 (solid).
   final double? opacity;
+
+  /// Text shown on long press / mouse hover.
   final String? tooltip;
+
+  /// Label read by screen readers.
   final String? semanticsLabel;
+
+  /// Tells screen readers this is a button.
   final bool? semanticsButton;
+
+  /// False hides it completely (takes no space).
   final bool visible;
+
+  /// Hero tag for a shared-element animation between pages.
   final String? heroTag;
 
+  /// Called when tapped, with a press-down shrink effect.
   final VoidCallback? onPress;
+
+  /// How the content fits its box (BoxFit).
   final BoxFit? fit;
+
+  /// Alignment inside the box when it does not fill it.
   final AlignmentGeometry fitAlignment;
+
+  /// Scales the painted widget (1 = normal size).
   final double? scale;
+
+  /// Rotation in radians.
   final double? rotate;
+
+  /// Moves the painted widget by this offset (layout unchanged).
   final Offset? translate;
+
+  /// Centers it in the available space.
   final bool center;
+
+  /// Keeps it out of the notch and system bars.
   final bool safeArea;
+
+  /// Makes the content scroll when it does not fit.
   final Axis? scrollable;
+
+  /// Scroll controller.
   final ScrollController? scrollController;
+
+  /// Text direction (RTL/LTR); defaults to the app's.
   final TextDirection? textDirection;
+
+  /// Flex value to fill the remaining space in a Row/Column (null = off).
   final int? expanded;
+
+  /// Flex value to shrink in a Row/Column when space is tight (null = off).
   final int? flexible;
+
+  /// Wraps it in a Positioned (use inside a Stack) with top/left/right/bottom.
   final bool positioned;
+
+  /// Distance from the left when [positioned] in a Stack.
   final double? left;
+
+  /// Distance from the top when [positioned] in a Stack.
   final double? top;
+
+  /// Distance from the right when [positioned] in a Stack.
   final double? right;
+
+  /// Distance from the bottom when [positioned] in a Stack.
   final double? bottom;
+
+  /// Width when [positioned].
   final double? positionedWidth;
+
+  /// Height when [positioned].
   final double? positionedHeight;
 
   @override
@@ -1053,6 +1411,7 @@ class UColumn extends StatelessWidget {
   );
 }
 
+/// Row with gap [spacing], box decoration, tap and flex options. `URow(spacing: 8, children: [icon, text])`
 class URow extends StatelessWidget {
   const URow({
     required this.children,
@@ -1127,75 +1486,211 @@ class URow extends StatelessWidget {
     this.positionedHeight,
   });
 
+  /// Child widgets.
   final List<Widget> children;
+
+  /// Gap between items.
   final double spacing;
+
+  /// Width in logical pixels (null = size to content).
   final double? width;
+
+  /// Height in logical pixels (null = size to content).
   final double? height;
+
+  /// Minimum width.
   final double? minWidth;
+
+  /// Maximum width.
   final double? maxWidth;
+
+  /// Minimum height.
   final double? minHeight;
+
+  /// Maximum height.
   final double? maxHeight;
+
+  /// How children are placed along the main axis.
   final MainAxisAlignment mainAxisAlignment;
+
+  /// How children are placed across the main axis.
   final CrossAxisAlignment crossAxisAlignment;
+
+  /// Whether it takes all space on the main axis or only what children need.
   final MainAxisSize mainAxisSize;
+
+  /// Corner radius.
   final double? radius;
+
+  /// Corner radius.
   final BorderRadius? borderRadius;
+
+  /// Space inside, around the content.
   final EdgeInsetsGeometry? padding;
+
+  /// Space outside, around the widget.
   final EdgeInsetsGeometry? margin;
+
+  /// Border around it.
   final BoxBorder? border;
+
+  /// Main color (defaults to the theme).
   final Color? color;
+
+  /// Background gradient (overrides the color).
   final Gradient? gradient;
+
+  /// Image to show.
   final DecorationImage? image;
+
+  /// Shadows under it.
   final List<BoxShadow>? boxShadow;
+
+  /// Extra size limits.
   final BoxConstraints? constraints;
+
+  /// Alignment of the content.
   final AlignmentGeometry? alignment;
+
+  /// How content outside the bounds is clipped.
   final Clip clipBehavior;
+
+  /// Matrix transform applied when painting.
   final Matrix4? transform;
+
+  /// Origin of [transform].
   final AlignmentGeometry? transformAlignment;
+
+  /// Decoration painted on top of the child.
   final Decoration? foregroundDecoration;
+
+  /// Shape of the widget.
   final BoxShape shape;
+
+  /// Blend mode of the background with what is behind.
   final BlendMode? backgroundBlendMode;
+
+  /// Called when tapped.
   final GestureTapCallback? onTap;
+
+  /// Called on double tap.
   final GestureTapCallback? onDoubleTap;
+
+  /// Called on long press.
   final GestureLongPressCallback? onLongPress;
+
+  /// Called when a finger touches down.
   final GestureTapDownCallback? onTapDown;
+
+  /// Called when the finger lifts after a tap.
   final GestureTapUpCallback? onTapUp;
+
+  /// Called when a tap is cancelled.
   final GestureTapCancelCallback? onTapCancel;
+
+  /// Called on right-click / secondary tap.
   final GestureTapCallback? onSecondaryTap;
+
+  /// How taps on transparent areas are handled.
   final HitTestBehavior? hitTestBehavior;
+
+  /// Shows a Material ripple on tap.
   final bool splash;
+
+  /// Ripple color.
   final Color? splashColor;
+
+  /// Pressed highlight color.
   final Color? highlightColor;
+
+  /// Color while a mouse hovers (desktop, web).
   final Color? hoverColor;
+
+  /// Scale while pressed, e.g. 0.95 for a subtle shrink.
   final double? pressedScale;
+
+  /// Mouse cursor on hover (desktop, web).
   final MouseCursor? cursor;
+
+  /// Called with true/false when a mouse enters/leaves (desktop, web).
   final ValueChanged<bool>? onHover;
+
+  /// See-through amount, 0 (invisible) to 1 (solid).
   final double? opacity;
+
+  /// Text shown on long press / mouse hover.
   final String? tooltip;
+
+  /// Label read by screen readers.
   final String? semanticsLabel;
+
+  /// Tells screen readers this is a button.
   final bool? semanticsButton;
+
+  /// False hides it completely (takes no space).
   final bool visible;
+
+  /// Hero tag for a shared-element animation between pages.
   final String? heroTag;
 
+  /// Called when tapped, with a press-down shrink effect.
   final VoidCallback? onPress;
+
+  /// How the content fits its box (BoxFit).
   final BoxFit? fit;
+
+  /// Alignment inside the box when it does not fill it.
   final AlignmentGeometry fitAlignment;
+
+  /// Scales the painted widget (1 = normal size).
   final double? scale;
+
+  /// Rotation in radians.
   final double? rotate;
+
+  /// Moves the painted widget by this offset (layout unchanged).
   final Offset? translate;
+
+  /// Centers it in the available space.
   final bool center;
+
+  /// Keeps it out of the notch and system bars.
   final bool safeArea;
+
+  /// Makes the content scroll when it does not fit.
   final Axis? scrollable;
+
+  /// Scroll controller.
   final ScrollController? scrollController;
+
+  /// Text direction (RTL/LTR); defaults to the app's.
   final TextDirection? textDirection;
+
+  /// Flex value to fill the remaining space in a Row/Column (null = off).
   final int? expanded;
+
+  /// Flex value to shrink in a Row/Column when space is tight (null = off).
   final int? flexible;
+
+  /// Wraps it in a Positioned (use inside a Stack) with top/left/right/bottom.
   final bool positioned;
+
+  /// Distance from the left when [positioned] in a Stack.
   final double? left;
+
+  /// Distance from the top when [positioned] in a Stack.
   final double? top;
+
+  /// Distance from the right when [positioned] in a Stack.
   final double? right;
+
+  /// Distance from the bottom when [positioned] in a Stack.
   final double? bottom;
+
+  /// Width when [positioned].
   final double? positionedWidth;
+
+  /// Height when [positioned].
   final double? positionedHeight;
 
   @override
@@ -1274,6 +1769,7 @@ class URow extends StatelessWidget {
   );
 }
 
+/// Stack with box decoration, tap and flex options. `UStack(children: [image, badge.position(top: 4, right: 4)])`
 class UStack extends StatelessWidget {
   const UStack({
     required this.children,
@@ -1332,59 +1828,163 @@ class UStack extends StatelessWidget {
     this.positionedHeight,
   });
 
+  /// Child widgets.
   final List<Widget> children;
+
+  /// How non-positioned children are aligned.
   final AlignmentGeometry stackAlignment;
+
+  /// How the content fits its box (BoxFit).
   final StackFit fit;
+
+  /// Clips children that go outside.
   final Clip stackClip;
+
+  /// Text direction (RTL/LTR); defaults to the app's.
   final TextDirection? textDirection;
+
+  /// Width in logical pixels (null = size to content).
   final double? width;
+
+  /// Height in logical pixels (null = size to content).
   final double? height;
+
+  /// Minimum width.
   final double? minWidth;
+
+  /// Maximum width.
   final double? maxWidth;
+
+  /// Minimum height.
   final double? minHeight;
+
+  /// Maximum height.
   final double? maxHeight;
+
+  /// Space inside, around the content.
   final EdgeInsetsGeometry? padding;
+
+  /// Space outside, around the widget.
   final EdgeInsetsGeometry? margin;
+
+  /// Main color (defaults to the theme).
   final Color? color;
+
+  /// Background gradient (overrides the color).
   final Gradient? gradient;
+
+  /// Image to show.
   final DecorationImage? image;
+
+  /// Border around it.
   final BoxBorder? border;
+
+  /// Corner radius.
   final double? radius;
+
+  /// Corner radius.
   final BorderRadius? borderRadius;
+
+  /// Shadows under it.
   final List<BoxShadow>? boxShadow;
+
+  /// Extra size limits.
   final BoxConstraints? constraints;
+
+  /// Shape of the widget.
   final BoxShape shape;
+
+  /// Blend mode of the background with what is behind.
   final BlendMode? backgroundBlendMode;
+
+  /// Decoration painted on top of the child.
   final Decoration? foregroundDecoration;
+
+  /// Called when tapped.
   final GestureTapCallback? onTap;
+
+  /// Called on long press.
   final GestureLongPressCallback? onLongPress;
+
+  /// Called on double tap.
   final GestureTapCallback? onDoubleTap;
+
+  /// Shows a Material ripple on tap.
   final bool splash;
+
+  /// Scale while pressed, e.g. 0.95 for a subtle shrink.
   final double? pressedScale;
+
+  /// Mouse cursor on hover (desktop, web).
   final MouseCursor? cursor;
+
+  /// Called with true/false when a mouse enters/leaves (desktop, web).
   final ValueChanged<bool>? onHover;
+
+  /// See-through amount, 0 (invisible) to 1 (solid).
   final double? opacity;
+
+  /// Text shown on long press / mouse hover.
   final String? tooltip;
+
+  /// Label read by screen readers.
   final String? semanticsLabel;
+
+  /// False hides it completely (takes no space).
   final bool visible;
+
+  /// Hero tag for a shared-element animation between pages.
   final String? heroTag;
 
+  /// Called when tapped, with a press-down shrink effect.
   final VoidCallback? onPress;
+
+  /// Scales the painted widget (1 = normal size).
   final double? scale;
+
+  /// Rotation in radians.
   final double? rotate;
+
+  /// Moves the painted widget by this offset (layout unchanged).
   final Offset? translate;
+
+  /// Centers it in the available space.
   final bool center;
+
+  /// Keeps it out of the notch and system bars.
   final bool safeArea;
+
+  /// Makes the content scroll when it does not fit.
   final Axis? scrollable;
+
+  /// Scroll controller.
   final ScrollController? scrollController;
+
+  /// Flex value to fill the remaining space in a Row/Column (null = off).
   final int? expanded;
+
+  /// Flex value to shrink in a Row/Column when space is tight (null = off).
   final int? flexible;
+
+  /// Wraps it in a Positioned (use inside a Stack) with top/left/right/bottom.
   final bool positioned;
+
+  /// Distance from the left when [positioned] in a Stack.
   final double? left;
+
+  /// Distance from the top when [positioned] in a Stack.
   final double? top;
+
+  /// Distance from the right when [positioned] in a Stack.
   final double? right;
+
+  /// Distance from the bottom when [positioned] in a Stack.
   final double? bottom;
+
+  /// Width when [positioned].
   final double? positionedWidth;
+
+  /// Height when [positioned].
   final double? positionedHeight;
 
   @override
@@ -1448,6 +2048,7 @@ class UStack extends StatelessWidget {
   );
 }
 
+/// Wrap (flows children onto new lines) with decoration and tap options. `UWrap(spacing: 8, runSpacing: 8, children: chips)`
 class UWrap extends StatelessWidget {
   const UWrap({
     required this.children,
@@ -1513,66 +2114,184 @@ class UWrap extends StatelessWidget {
     this.positionedHeight,
   });
 
+  /// Child widgets.
   final List<Widget> children;
+
+  /// Gap between items.
   final double spacing;
+
+  /// Gap between lines.
   final double runSpacing;
+
+  /// Layout direction.
   final Axis direction;
+
+  /// How items are placed in a line.
   final WrapAlignment wrapAlignment;
+
+  /// How lines are placed.
   final WrapAlignment runAlignment;
+
+  /// How children are placed across the main axis.
   final WrapCrossAlignment crossAxisAlignment;
+
+  /// Top-down or bottom-up lines.
   final VerticalDirection verticalDirection;
+
+  /// Text direction (RTL/LTR); defaults to the app's.
   final TextDirection? textDirection;
+
+  /// Clips children that go outside.
   final Clip wrapClip;
+
+  /// Width in logical pixels (null = size to content).
   final double? width;
+
+  /// Height in logical pixels (null = size to content).
   final double? height;
+
+  /// Minimum width.
   final double? minWidth;
+
+  /// Maximum width.
   final double? maxWidth;
+
+  /// Minimum height.
   final double? minHeight;
+
+  /// Maximum height.
   final double? maxHeight;
+
+  /// Space inside, around the content.
   final EdgeInsetsGeometry? padding;
+
+  /// Space outside, around the widget.
   final EdgeInsetsGeometry? margin;
+
+  /// Main color (defaults to the theme).
   final Color? color;
+
+  /// Background gradient (overrides the color).
   final Gradient? gradient;
+
+  /// Image to show.
   final DecorationImage? image;
+
+  /// Border around it.
   final BoxBorder? border;
+
+  /// Corner radius.
   final double? radius;
+
+  /// Corner radius.
   final BorderRadius? borderRadius;
+
+  /// Shadows under it.
   final List<BoxShadow>? boxShadow;
+
+  /// Extra size limits.
   final BoxConstraints? constraints;
+
+  /// Alignment of the content.
   final AlignmentGeometry? alignment;
+
+  /// Shape of the widget.
   final BoxShape shape;
+
+  /// Blend mode of the background with what is behind.
   final BlendMode? backgroundBlendMode;
+
+  /// Called when tapped.
   final GestureTapCallback? onTap;
+
+  /// Called on long press.
   final GestureLongPressCallback? onLongPress;
+
+  /// Called on double tap.
   final GestureTapCallback? onDoubleTap;
+
+  /// Shows a Material ripple on tap.
   final bool splash;
+
+  /// Scale while pressed, e.g. 0.95 for a subtle shrink.
   final double? pressedScale;
+
+  /// Mouse cursor on hover (desktop, web).
   final MouseCursor? cursor;
+
+  /// Called with true/false when a mouse enters/leaves (desktop, web).
   final ValueChanged<bool>? onHover;
+
+  /// See-through amount, 0 (invisible) to 1 (solid).
   final double? opacity;
+
+  /// Text shown on long press / mouse hover.
   final String? tooltip;
+
+  /// Label read by screen readers.
   final String? semanticsLabel;
+
+  /// False hides it completely (takes no space).
   final bool visible;
+
+  /// Hero tag for a shared-element animation between pages.
   final String? heroTag;
 
+  /// Called when tapped, with a press-down shrink effect.
   final VoidCallback? onPress;
+
+  /// How the content fits its box (BoxFit).
   final BoxFit? fit;
+
+  /// Alignment inside the box when it does not fill it.
   final AlignmentGeometry fitAlignment;
+
+  /// Scales the painted widget (1 = normal size).
   final double? scale;
+
+  /// Rotation in radians.
   final double? rotate;
+
+  /// Moves the painted widget by this offset (layout unchanged).
   final Offset? translate;
+
+  /// Centers it in the available space.
   final bool center;
+
+  /// Keeps it out of the notch and system bars.
   final bool safeArea;
+
+  /// Makes the content scroll when it does not fit.
   final Axis? scrollable;
+
+  /// Scroll controller.
   final ScrollController? scrollController;
+
+  /// Flex value to fill the remaining space in a Row/Column (null = off).
   final int? expanded;
+
+  /// Flex value to shrink in a Row/Column when space is tight (null = off).
   final int? flexible;
+
+  /// Wraps it in a Positioned (use inside a Stack) with top/left/right/bottom.
   final bool positioned;
+
+  /// Distance from the left when [positioned] in a Stack.
   final double? left;
+
+  /// Distance from the top when [positioned] in a Stack.
   final double? top;
+
+  /// Distance from the right when [positioned] in a Stack.
   final double? right;
+
+  /// Distance from the bottom when [positioned] in a Stack.
   final double? bottom;
+
+  /// Width when [positioned].
   final double? positionedWidth;
+
+  /// Height when [positioned].
   final double? positionedHeight;
 
   @override
@@ -1643,6 +2362,7 @@ class UWrap extends StatelessWidget {
   );
 }
 
+/// Icon/leading widget next to text/trailing widget, with spacing and box options. `UIconTextHorizontal(leading: const Icon(Icons.phone), trailing: const Text("0912…"))`
 class UIconTextHorizontal extends StatelessWidget {
   const UIconTextHorizontal({
     required this.leading,
@@ -1695,53 +2415,145 @@ class UIconTextHorizontal extends StatelessWidget {
     this.positionedHeight,
   });
 
+  /// Widget at the start.
   final Widget leading;
+
+  /// Widget at the end.
   final Widget trailing;
+
+  /// Gap between the two parts.
   final double spaceBetween;
+
+  /// How children are placed along the main axis.
   final MainAxisAlignment mainAxisAlignment;
+
+  /// How children are placed across the main axis.
   final CrossAxisAlignment crossAxisAlignment;
+
+  /// Whether it takes all space on the main axis or only what children need.
   final MainAxisSize mainAxisSize;
+
+  /// Called when tapped.
   final GestureTapCallback? onTap;
+
+  /// Called on long press.
   final GestureLongPressCallback? onLongPress;
+
+  /// Called on double tap.
   final GestureTapCallback? onDoubleTap;
+
+  /// Called with true/false when a mouse enters/leaves (desktop, web).
   final ValueChanged<bool>? onHover;
+
+  /// Space inside, around the content.
   final EdgeInsetsGeometry? padding;
+
+  /// Space outside, around the widget.
   final EdgeInsetsGeometry? margin;
+
+  /// Width in logical pixels (null = size to content).
   final double? width;
+
+  /// Height in logical pixels (null = size to content).
   final double? height;
+
+  /// Main color (defaults to the theme).
   final Color? color;
+
+  /// Background gradient (overrides the color).
   final Gradient? gradient;
+
+  /// Border around it.
   final BoxBorder? border;
+
+  /// Corner radius.
   final double? radius;
+
+  /// Shadows under it.
   final List<BoxShadow>? boxShadow;
+
+  /// Alignment of the content.
   final AlignmentGeometry? alignment;
+
+  /// See-through amount, 0 (invisible) to 1 (solid).
   final double? opacity;
+
+  /// Text shown on long press / mouse hover.
   final String? tooltip;
+
+  /// Label read by screen readers.
   final String? semanticsLabel;
+
+  /// Mouse cursor on hover (desktop, web).
   final MouseCursor? cursor;
+
+  /// Shows a Material ripple on tap.
   final bool splash;
+
+  /// Scale while pressed, e.g. 0.95 for a subtle shrink.
   final double? pressedScale;
+
+  /// False hides it completely (takes no space).
   final bool visible;
 
+  /// Called when tapped, with a press-down shrink effect.
   final VoidCallback? onPress;
+
+  /// How the content fits its box (BoxFit).
   final BoxFit? fit;
+
+  /// Alignment inside the box when it does not fill it.
   final AlignmentGeometry fitAlignment;
+
+  /// Scales the painted widget (1 = normal size).
   final double? scale;
+
+  /// Rotation in radians.
   final double? rotate;
+
+  /// Moves the painted widget by this offset (layout unchanged).
   final Offset? translate;
+
+  /// Centers it in the available space.
   final bool center;
+
+  /// Keeps it out of the notch and system bars.
   final bool safeArea;
+
+  /// Makes the content scroll when it does not fit.
   final Axis? scrollable;
+
+  /// Scroll controller.
   final ScrollController? scrollController;
+
+  /// Text direction (RTL/LTR); defaults to the app's.
   final TextDirection? textDirection;
+
+  /// Flex value to fill the remaining space in a Row/Column (null = off).
   final int? expanded;
+
+  /// Flex value to shrink in a Row/Column when space is tight (null = off).
   final int? flexible;
+
+  /// Wraps it in a Positioned (use inside a Stack) with top/left/right/bottom.
   final bool positioned;
+
+  /// Distance from the left when [positioned] in a Stack.
   final double? left;
+
+  /// Distance from the top when [positioned] in a Stack.
   final double? top;
+
+  /// Distance from the right when [positioned] in a Stack.
   final double? right;
+
+  /// Distance from the bottom when [positioned] in a Stack.
   final double? bottom;
+
+  /// Width when [positioned].
   final double? positionedWidth;
+
+  /// Height when [positioned].
   final double? positionedHeight;
 
   @override
@@ -1800,6 +2612,7 @@ class UIconTextHorizontal extends StatelessWidget {
   );
 }
 
+/// Leading widget above trailing widget, with spacing and box options.
 class UIconTextVertical extends StatelessWidget {
   const UIconTextVertical({
     required this.leading,
@@ -1852,53 +2665,145 @@ class UIconTextVertical extends StatelessWidget {
     this.positionedHeight,
   });
 
+  /// Widget at the start.
   final Widget leading;
+
+  /// Widget at the end.
   final Widget trailing;
+
+  /// Gap between the two parts.
   final double spaceBetween;
+
+  /// How children are placed along the main axis.
   final MainAxisAlignment mainAxisAlignment;
+
+  /// How children are placed across the main axis.
   final CrossAxisAlignment crossAxisAlignment;
+
+  /// Whether it takes all space on the main axis or only what children need.
   final MainAxisSize mainAxisSize;
+
+  /// Called when tapped.
   final GestureTapCallback? onTap;
+
+  /// Called on long press.
   final GestureLongPressCallback? onLongPress;
+
+  /// Called on double tap.
   final GestureTapCallback? onDoubleTap;
+
+  /// Called with true/false when a mouse enters/leaves (desktop, web).
   final ValueChanged<bool>? onHover;
+
+  /// Space inside, around the content.
   final EdgeInsetsGeometry? padding;
+
+  /// Space outside, around the widget.
   final EdgeInsetsGeometry? margin;
+
+  /// Width in logical pixels (null = size to content).
   final double? width;
+
+  /// Height in logical pixels (null = size to content).
   final double? height;
+
+  /// Main color (defaults to the theme).
   final Color? color;
+
+  /// Background gradient (overrides the color).
   final Gradient? gradient;
+
+  /// Border around it.
   final BoxBorder? border;
+
+  /// Corner radius.
   final double? radius;
+
+  /// Shadows under it.
   final List<BoxShadow>? boxShadow;
+
+  /// Alignment of the content.
   final AlignmentGeometry? alignment;
+
+  /// See-through amount, 0 (invisible) to 1 (solid).
   final double? opacity;
+
+  /// Text shown on long press / mouse hover.
   final String? tooltip;
+
+  /// Label read by screen readers.
   final String? semanticsLabel;
+
+  /// Mouse cursor on hover (desktop, web).
   final MouseCursor? cursor;
+
+  /// Shows a Material ripple on tap.
   final bool splash;
+
+  /// Scale while pressed, e.g. 0.95 for a subtle shrink.
   final double? pressedScale;
+
+  /// False hides it completely (takes no space).
   final bool visible;
 
+  /// Called when tapped, with a press-down shrink effect.
   final VoidCallback? onPress;
+
+  /// How the content fits its box (BoxFit).
   final BoxFit? fit;
+
+  /// Alignment inside the box when it does not fill it.
   final AlignmentGeometry fitAlignment;
+
+  /// Scales the painted widget (1 = normal size).
   final double? scale;
+
+  /// Rotation in radians.
   final double? rotate;
+
+  /// Moves the painted widget by this offset (layout unchanged).
   final Offset? translate;
+
+  /// Centers it in the available space.
   final bool center;
+
+  /// Keeps it out of the notch and system bars.
   final bool safeArea;
+
+  /// Makes the content scroll when it does not fit.
   final Axis? scrollable;
+
+  /// Scroll controller.
   final ScrollController? scrollController;
+
+  /// Text direction (RTL/LTR); defaults to the app's.
   final TextDirection? textDirection;
+
+  /// Flex value to fill the remaining space in a Row/Column (null = off).
   final int? expanded;
+
+  /// Flex value to shrink in a Row/Column when space is tight (null = off).
   final int? flexible;
+
+  /// Wraps it in a Positioned (use inside a Stack) with top/left/right/bottom.
   final bool positioned;
+
+  /// Distance from the left when [positioned] in a Stack.
   final double? left;
+
+  /// Distance from the top when [positioned] in a Stack.
   final double? top;
+
+  /// Distance from the right when [positioned] in a Stack.
   final double? right;
+
+  /// Distance from the bottom when [positioned] in a Stack.
   final double? bottom;
+
+  /// Width when [positioned].
   final double? positionedWidth;
+
+  /// Height when [positioned].
   final double? positionedHeight;
 
   @override
@@ -1957,6 +2862,7 @@ class UIconTextVertical extends StatelessWidget {
   );
 }
 
+/// Key on one side, value on the other (spaceBetween), with box options. `UKeyValue(leading: const Text("Price"), trailing: Text(price.toman()))`
 class UKeyValue extends StatelessWidget {
   const UKeyValue({
     required this.leading,
@@ -2001,45 +2907,121 @@ class UKeyValue extends StatelessWidget {
     this.positionedHeight,
   });
 
+  /// Widget at the start.
   final Widget leading;
+
+  /// Widget at the end.
   final Widget trailing;
+
+  /// How children are placed along the main axis.
   final MainAxisAlignment mainAxisAlignment;
+
+  /// How children are placed across the main axis.
   final CrossAxisAlignment crossAxisAlignment;
+
+  /// Called when tapped.
   final GestureTapCallback? onTap;
+
+  /// Called on long press.
   final GestureLongPressCallback? onLongPress;
+
+  /// Called with true/false when a mouse enters/leaves (desktop, web).
   final ValueChanged<bool>? onHover;
+
+  /// Space inside, around the content.
   final EdgeInsetsGeometry? padding;
+
+  /// Space outside, around the widget.
   final EdgeInsetsGeometry? margin;
+
+  /// Main color (defaults to the theme).
   final Color? color;
+
+  /// Background gradient (overrides the color).
   final Gradient? gradient;
+
+  /// Border around it.
   final BoxBorder? border;
+
+  /// Corner radius.
   final double? radius;
+
+  /// Shadows under it.
   final List<BoxShadow>? boxShadow;
+
+  /// See-through amount, 0 (invisible) to 1 (solid).
   final double? opacity;
+
+  /// Text shown on long press / mouse hover.
   final String? tooltip;
+
+  /// Label read by screen readers.
   final String? semanticsLabel;
+
+  /// Shows a Material ripple on tap.
   final bool splash;
+
+  /// False hides it completely (takes no space).
   final bool visible;
 
+  /// Called when tapped, with a press-down shrink effect.
   final VoidCallback? onPress;
+
+  /// How the content fits its box (BoxFit).
   final BoxFit? fit;
+
+  /// Alignment inside the box when it does not fill it.
   final AlignmentGeometry fitAlignment;
+
+  /// Scales the painted widget (1 = normal size).
   final double? scale;
+
+  /// Rotation in radians.
   final double? rotate;
+
+  /// Moves the painted widget by this offset (layout unchanged).
   final Offset? translate;
+
+  /// Centers it in the available space.
   final bool center;
+
+  /// Keeps it out of the notch and system bars.
   final bool safeArea;
+
+  /// Makes the content scroll when it does not fit.
   final Axis? scrollable;
+
+  /// Scroll controller.
   final ScrollController? scrollController;
+
+  /// Text direction (RTL/LTR); defaults to the app's.
   final TextDirection? textDirection;
+
+  /// Flex value to fill the remaining space in a Row/Column (null = off).
   final int? expanded;
+
+  /// Flex value to shrink in a Row/Column when space is tight (null = off).
   final int? flexible;
+
+  /// Wraps it in a Positioned (use inside a Stack) with top/left/right/bottom.
   final bool positioned;
+
+  /// Distance from the left when [positioned] in a Stack.
   final double? left;
+
+  /// Distance from the top when [positioned] in a Stack.
   final double? top;
+
+  /// Distance from the right when [positioned] in a Stack.
   final double? right;
+
+  /// Distance from the bottom when [positioned] in a Stack.
   final double? bottom;
+
+  /// Width when [positioned].
   final double? positionedWidth;
+
+  /// Height when [positioned].
   final double? positionedHeight;
 
   @override
@@ -2090,6 +3072,7 @@ class UKeyValue extends StatelessWidget {
   );
 }
 
+/// Material card with u's box, tap and flex options. `UCard(onTap: open, child: content)`
 class UCard extends StatelessWidget {
   const UCard({
     required this.child,
@@ -2139,49 +3122,136 @@ class UCard extends StatelessWidget {
     this.positionedHeight,
   });
 
+  /// The widget inside.
   final Widget child;
+
+  /// Shadow depth.
   final double elevation;
+
+  /// Width in logical pixels (null = size to content).
   final double? width;
+
+  /// Height in logical pixels (null = size to content).
   final double? height;
+
+  /// Main color (defaults to the theme).
   final Color? color;
+
+  /// Corner radius.
   final BorderRadius borderRadius;
+
+  /// Space outside, around the widget.
   final EdgeInsets margin;
+
+  /// Space inside, around the content.
   final EdgeInsetsGeometry? padding;
+
+  /// Shadow color.
   final Color? shadowColor;
+
+  /// Material 3 tint over the surface.
   final Color? surfaceTintColor;
+
+  /// Called when tapped.
   final GestureTapCallback? onTap;
+
+  /// Called on long press.
   final GestureLongPressCallback? onLongPress;
+
+  /// Called on double tap.
   final GestureTapCallback? onDoubleTap;
+
+  /// Called with true/false when a mouse enters/leaves (desktop, web).
   final ValueChanged<bool>? onHover;
+
+  /// Ripple color.
   final Color? splashColor;
+
+  /// Pressed highlight color.
   final Color? highlightColor;
+
+  /// Color while a mouse hovers (desktop, web).
   final Color? hoverColor;
+
+  /// Border around it.
   final BorderSide? border;
+
+  /// Label read by screen readers.
   final String? semanticsLabel;
+
+  /// Called when tapped, with a press-down shrink effect.
   final VoidCallback? onPress;
+
+  /// See-through amount, 0 (invisible) to 1 (solid).
   final double? opacity;
+
+  /// False hides it completely (takes no space).
   final bool visible;
+
+  /// Text shown on long press / mouse hover.
   final String? tooltip;
+
+  /// Hero tag for a shared-element animation between pages.
   final String? heroTag;
+
+  /// Mouse cursor on hover (desktop, web).
   final MouseCursor? cursor;
+
+  /// How the content fits its box (BoxFit).
   final BoxFit? fit;
+
+  /// Alignment inside the box when it does not fill it.
   final AlignmentGeometry fitAlignment;
+
+  /// Scales the painted widget (1 = normal size).
   final double? scale;
+
+  /// Rotation in radians.
   final double? rotate;
+
+  /// Moves the painted widget by this offset (layout unchanged).
   final Offset? translate;
+
+  /// Centers it in the available space.
   final bool center;
+
+  /// Keeps it out of the notch and system bars.
   final bool safeArea;
+
+  /// Makes the content scroll when it does not fit.
   final Axis? scrollable;
+
+  /// Scroll controller.
   final ScrollController? scrollController;
+
+  /// Text direction (RTL/LTR); defaults to the app's.
   final TextDirection? textDirection;
+
+  /// Flex value to fill the remaining space in a Row/Column (null = off).
   final int? expanded;
+
+  /// Flex value to shrink in a Row/Column when space is tight (null = off).
   final int? flexible;
+
+  /// Wraps it in a Positioned (use inside a Stack) with top/left/right/bottom.
   final bool positioned;
+
+  /// Distance from the left when [positioned] in a Stack.
   final double? left;
+
+  /// Distance from the top when [positioned] in a Stack.
   final double? top;
+
+  /// Distance from the right when [positioned] in a Stack.
   final double? right;
+
+  /// Distance from the bottom when [positioned] in a Stack.
   final double? bottom;
+
+  /// Width when [positioned].
   final double? positionedWidth;
+
+  /// Height when [positioned].
   final double? positionedHeight;
 
   @override
@@ -2251,6 +3321,7 @@ class UCard extends StatelessWidget {
   }
 }
 
+/// UContainer that animates size, color, radius and padding changes. `UAnimatedContainer(duration: 300.ms, width: open ? 200 : 60, child: icon)`
 class UAnimatedContainer extends StatelessWidget {
   const UAnimatedContainer({
     this.child,
@@ -2318,67 +3389,190 @@ class UAnimatedContainer extends StatelessWidget {
     this.positionedHeight,
   });
 
+  /// The widget inside.
   final Widget? child;
+
+  /// How long it lasts.
   final Duration duration;
+
+  /// Animation curve.
   final Curve curve;
+
+  /// Space inside, around the content.
   final EdgeInsetsGeometry? padding;
+
+  /// Space outside, around the widget.
   final EdgeInsetsGeometry? margin;
+
+  /// Main color (defaults to the theme).
   final Color? color;
+
+  /// Background gradient (overrides the color).
   final Gradient? gradient;
+
+  /// Image to show.
   final DecorationImage? image;
+
+  /// Border around it.
   final BoxBorder? border;
+
+  /// Corner radius.
   final double? radius;
+
+  /// Corner radius.
   final BorderRadius? borderRadius;
+
+  /// Shadows under it.
   final List<BoxShadow>? boxShadow;
+
+  /// Width in logical pixels (null = size to content).
   final double? width;
+
+  /// Height in logical pixels (null = size to content).
   final double? height;
+
+  /// Minimum width.
   final double? minWidth;
+
+  /// Maximum width.
   final double? maxWidth;
+
+  /// Minimum height.
   final double? minHeight;
+
+  /// Maximum height.
   final double? maxHeight;
+
+  /// Extra size limits.
   final BoxConstraints? constraints;
+
+  /// Alignment of the content.
   final AlignmentGeometry? alignment;
+
+  /// How content outside the bounds is clipped.
   final Clip clipBehavior;
+
+  /// Matrix transform applied when painting.
   final Matrix4? transform;
+
+  /// Origin of [transform].
   final AlignmentGeometry? transformAlignment;
+
+  /// Decoration painted on top of the child.
   final Decoration? foregroundDecoration;
+
+  /// Shape of the widget.
   final BoxShape shape;
+
+  /// Blend mode of the background with what is behind.
   final BlendMode? backgroundBlendMode;
+
+  /// Called when tapped.
   final GestureTapCallback? onTap;
+
+  /// Called on double tap.
   final GestureTapCallback? onDoubleTap;
+
+  /// Called on long press.
   final GestureLongPressCallback? onLongPress;
+
+  /// Shows a Material ripple on tap.
   final bool splash;
+
+  /// Ripple color.
   final Color? splashColor;
+
+  /// Pressed highlight color.
   final Color? highlightColor;
+
+  /// Color while a mouse hovers (desktop, web).
   final Color? hoverColor;
+
+  /// Scale while pressed, e.g. 0.95 for a subtle shrink.
   final double? pressedScale;
+
+  /// Mouse cursor on hover (desktop, web).
   final MouseCursor? cursor;
+
+  /// Called with true/false when a mouse enters/leaves (desktop, web).
   final ValueChanged<bool>? onHover;
+
+  /// See-through amount, 0 (invisible) to 1 (solid).
   final double? opacity;
+
+  /// Text shown on long press / mouse hover.
   final String? tooltip;
+
+  /// Label read by screen readers.
   final String? semanticsLabel;
+
+  /// False hides it completely (takes no space).
   final bool visible;
+
+  /// Hero tag for a shared-element animation between pages.
   final String? heroTag;
+
+  /// Called when an animation finishes.
   final VoidCallback? onEnd;
+
+  /// Called when tapped, with a press-down shrink effect.
   final VoidCallback? onPress;
+
+  /// How the content fits its box (BoxFit).
   final BoxFit? fit;
+
+  /// Alignment inside the box when it does not fill it.
   final AlignmentGeometry fitAlignment;
+
+  /// Scales the painted widget (1 = normal size).
   final double? scale;
+
+  /// Rotation in radians.
   final double? rotate;
+
+  /// Moves the painted widget by this offset (layout unchanged).
   final Offset? translate;
+
+  /// Centers it in the available space.
   final bool center;
+
+  /// Keeps it out of the notch and system bars.
   final bool safeArea;
+
+  /// Makes the content scroll when it does not fit.
   final Axis? scrollable;
+
+  /// Scroll controller.
   final ScrollController? scrollController;
+
+  /// Text direction (RTL/LTR); defaults to the app's.
   final TextDirection? textDirection;
+
+  /// Flex value to fill the remaining space in a Row/Column (null = off).
   final int? expanded;
+
+  /// Flex value to shrink in a Row/Column when space is tight (null = off).
   final int? flexible;
+
+  /// Wraps it in a Positioned (use inside a Stack) with top/left/right/bottom.
   final bool positioned;
+
+  /// Distance from the left when [positioned] in a Stack.
   final double? left;
+
+  /// Distance from the top when [positioned] in a Stack.
   final double? top;
+
+  /// Distance from the right when [positioned] in a Stack.
   final double? right;
+
+  /// Distance from the bottom when [positioned] in a Stack.
   final double? bottom;
+
+  /// Width when [positioned].
   final double? positionedWidth;
+
+  /// Height when [positioned].
   final double? positionedHeight;
 
   @override
@@ -2461,6 +3655,7 @@ class UAnimatedContainer extends StatelessWidget {
   }
 }
 
+/// ListView with separators, box options and shrinkWrap. `UListView(itemCount: items.length, itemBuilder: (c, i) => Text(items[i]))`
 class UListView extends StatelessWidget {
   const UListView({
     required this.itemBuilder,
@@ -2499,38 +3694,103 @@ class UListView extends StatelessWidget {
     this.positionedHeight,
   });
 
+  /// Builds one item.
   final IndexedWidgetBuilder itemBuilder;
+
+  /// Number of items.
   final int itemCount;
+
+  /// Widget at the top.
   final Widget? header;
+
+  /// Widget at the bottom.
   final Widget? footer;
+
+  /// Scroll physics.
   final ScrollPhysics? physics;
+
+  /// Sizes to its content (inside another scrollable).
   final bool shrinkWrap;
+
+  /// Space inside, around the content.
   final EdgeInsetsGeometry? padding;
+
+  /// Scroll controller.
   final ScrollController? scrollController;
+
+  /// Primary color.
   final bool? primary;
+
+  /// Reverses the order.
   final bool reverse;
+
+  /// Scroll axis.
   final Axis scrollDirection;
+
+  /// Widget between items.
   final IndexedWidgetBuilder? separatorBuilder;
+
+  /// Space outside, around the widget.
   final EdgeInsetsGeometry? margin;
+
+  /// See-through amount, 0 (invisible) to 1 (solid).
   final double? opacity;
+
+  /// False hides it completely (takes no space).
   final bool visible;
+
+  /// Text shown on long press / mouse hover.
   final String? tooltip;
+
+  /// Hero tag for a shared-element animation between pages.
   final String? heroTag;
+
+  /// How the content fits its box (BoxFit).
   final BoxFit? fit;
+
+  /// Alignment inside the box when it does not fill it.
   final AlignmentGeometry fitAlignment;
+
+  /// Scales the painted widget (1 = normal size).
   final double? scale;
+
+  /// Rotation in radians.
   final double? rotate;
+
+  /// Moves the painted widget by this offset (layout unchanged).
   final Offset? translate;
+
+  /// Centers it in the available space.
   final bool center;
+
+  /// Keeps it out of the notch and system bars.
   final bool safeArea;
+
+  /// Flex value to fill the remaining space in a Row/Column (null = off).
   final int? expanded;
+
+  /// Flex value to shrink in a Row/Column when space is tight (null = off).
   final int? flexible;
+
+  /// Wraps it in a Positioned (use inside a Stack) with top/left/right/bottom.
   final bool positioned;
+
+  /// Distance from the left when [positioned] in a Stack.
   final double? left;
+
+  /// Distance from the top when [positioned] in a Stack.
   final double? top;
+
+  /// Distance from the right when [positioned] in a Stack.
   final double? right;
+
+  /// Distance from the bottom when [positioned] in a Stack.
   final double? bottom;
+
+  /// Width when [positioned].
   final double? positionedWidth;
+
+  /// Height when [positioned].
   final double? positionedHeight;
 
   Widget _wrap(Widget child) => uWrap(
@@ -2602,6 +3862,7 @@ class UListView extends StatelessWidget {
   }
 }
 
+/// GridView by column count or max tile width. `UGridView(crossAxisCount: 2, itemCount: items.length, itemBuilder: (c, i) => Tile(items[i]))`
 class UGridView extends StatelessWidget {
   const UGridView({
     required this.itemBuilder,
@@ -2642,40 +3903,109 @@ class UGridView extends StatelessWidget {
     this.positionedHeight,
   });
 
+  /// Builds one item.
   final IndexedWidgetBuilder itemBuilder;
+
+  /// Number of items.
   final int itemCount;
+
+  /// Number of columns.
   final int? crossAxisCount;
+
+  /// Max tile width (columns adapt to screen width).
   final double? maxCrossAxisExtent;
+
+  /// Gap between rows.
   final double mainAxisSpacing;
+
+  /// Gap between columns.
   final double crossAxisSpacing;
+
+  /// Tile width / height.
   final double childAspectRatio;
+
+  /// Scroll physics.
   final ScrollPhysics? physics;
+
+  /// Sizes to its content (inside another scrollable).
   final bool shrinkWrap;
+
+  /// Space inside, around the content.
   final EdgeInsetsGeometry? padding;
+
+  /// Scroll controller.
   final ScrollController? scrollController;
+
+  /// Primary color.
   final bool? primary;
+
+  /// Reverses the order.
   final bool reverse;
+
+  /// Scroll axis.
   final Axis scrollDirection;
+
+  /// Space outside, around the widget.
   final EdgeInsetsGeometry? margin;
+
+  /// See-through amount, 0 (invisible) to 1 (solid).
   final double? opacity;
+
+  /// False hides it completely (takes no space).
   final bool visible;
+
+  /// Text shown on long press / mouse hover.
   final String? tooltip;
+
+  /// Hero tag for a shared-element animation between pages.
   final String? heroTag;
+
+  /// How the content fits its box (BoxFit).
   final BoxFit? fit;
+
+  /// Alignment inside the box when it does not fill it.
   final AlignmentGeometry fitAlignment;
+
+  /// Scales the painted widget (1 = normal size).
   final double? scale;
+
+  /// Rotation in radians.
   final double? rotate;
+
+  /// Moves the painted widget by this offset (layout unchanged).
   final Offset? translate;
+
+  /// Centers it in the available space.
   final bool center;
+
+  /// Keeps it out of the notch and system bars.
   final bool safeArea;
+
+  /// Flex value to fill the remaining space in a Row/Column (null = off).
   final int? expanded;
+
+  /// Flex value to shrink in a Row/Column when space is tight (null = off).
   final int? flexible;
+
+  /// Wraps it in a Positioned (use inside a Stack) with top/left/right/bottom.
   final bool positioned;
+
+  /// Distance from the left when [positioned] in a Stack.
   final double? left;
+
+  /// Distance from the top when [positioned] in a Stack.
   final double? top;
+
+  /// Distance from the right when [positioned] in a Stack.
   final double? right;
+
+  /// Distance from the bottom when [positioned] in a Stack.
   final double? bottom;
+
+  /// Width when [positioned].
   final double? positionedWidth;
+
+  /// Height when [positioned].
   final double? positionedHeight;
 
   Widget _wrap(Widget child) => uWrap(
@@ -2736,6 +4066,7 @@ class UGridView extends StatelessWidget {
   }
 }
 
+/// Sliver list for CustomScrollView.
 class USliverList extends StatelessWidget {
   const USliverList({
     required this.itemBuilder,
@@ -2744,8 +4075,13 @@ class USliverList extends StatelessWidget {
     this.padding,
   });
 
+  /// Builds one item.
   final IndexedWidgetBuilder itemBuilder;
+
+  /// Number of items.
   final int itemCount;
+
+  /// Space inside, around the content.
   final EdgeInsetsGeometry? padding;
 
   @override
@@ -2758,6 +4094,7 @@ class USliverList extends StatelessWidget {
   }
 }
 
+/// Sliver grid for CustomScrollView.
 class USliverGrid extends StatelessWidget {
   const USliverGrid({
     required this.itemBuilder,
@@ -2771,13 +4108,28 @@ class USliverGrid extends StatelessWidget {
     this.padding,
   });
 
+  /// Builds one item.
   final IndexedWidgetBuilder itemBuilder;
+
+  /// Number of items.
   final int itemCount;
+
+  /// Number of columns.
   final int? crossAxisCount;
+
+  /// Max tile width (columns adapt to screen width).
   final double? maxCrossAxisExtent;
+
+  /// Gap between rows.
   final double mainAxisSpacing;
+
+  /// Gap between columns.
   final double crossAxisSpacing;
+
+  /// Tile width / height.
   final double childAspectRatio;
+
+  /// Space inside, around the content.
   final EdgeInsetsGeometry? padding;
 
   @override
@@ -2805,6 +4157,7 @@ class USliverGrid extends StatelessWidget {
   }
 }
 
+/// Center with size factors. `UCenter(child: logo)`
 class UCenter extends StatelessWidget {
   const UCenter({
     required this.child,
@@ -2813,8 +4166,13 @@ class UCenter extends StatelessWidget {
     this.heightFactor,
   });
 
+  /// The widget inside.
   final Widget child;
+
+  /// Own width = child width × this (null = fill).
   final double? widthFactor;
+
+  /// Own height = child height × this (null = fill).
   final double? heightFactor;
 
   @override
@@ -2825,6 +4183,7 @@ class UCenter extends StatelessWidget {
   );
 }
 
+/// Keeps a width/height ratio. `UAspectRatio(aspectRatio: 16 / 9, child: video)`
 class UAspectRatio extends StatelessWidget {
   const UAspectRatio({
     required this.aspectRatio,
@@ -2832,13 +4191,17 @@ class UAspectRatio extends StatelessWidget {
     super.key,
   });
 
+  /// Width / height ratio.
   final double aspectRatio;
+
+  /// The widget inside.
   final Widget child;
 
   @override
   Widget build(BuildContext context) => AspectRatio(aspectRatio: aspectRatio, child: child);
 }
 
+/// Applies min/max width and height. `UConstrained(maxWidth: 600, child: form)`
 class UConstrained extends StatelessWidget {
   const UConstrained({
     required this.child,
@@ -2849,10 +4212,19 @@ class UConstrained extends StatelessWidget {
     this.maxHeight,
   });
 
+  /// The widget inside.
   final Widget child;
+
+  /// Minimum width.
   final double? minWidth;
+
+  /// Maximum width.
   final double? maxWidth;
+
+  /// Minimum height.
   final double? minHeight;
+
+  /// Maximum height.
   final double? maxHeight;
 
   @override
@@ -2867,6 +4239,7 @@ class UConstrained extends StatelessWidget {
   );
 }
 
+/// Horizontal or vertical line. `const UDivider()`, `const UDivider(axis: Axis.vertical)`
 class UDivider extends StatelessWidget {
   const UDivider({
     super.key,
@@ -2878,11 +4251,22 @@ class UDivider extends StatelessWidget {
     this.space,
   });
 
+  /// Horizontal (default) or vertical.
   final Axis axis;
+
+  /// Line thickness.
   final double? thickness;
+
+  /// Main color (defaults to the theme).
   final Color? color;
+
+  /// Empty space before the line.
   final double? indent;
+
+  /// Empty space after the line.
   final double? endIndent;
+
+  /// Total space the divider takes across its axis.
   final double? space;
 
   @override
@@ -2891,6 +4275,7 @@ class UDivider extends StatelessWidget {
       : VerticalDivider(thickness: thickness, color: color, indent: indent, endIndent: endIndent, width: space);
 }
 
+/// Shows a different widget on phone (<850), tablet (850-1100) and desktop (1100+) widths. `UResponsive(mobile: const ListLayout(), desktop: const GridLayout())`
 class UResponsive extends StatelessWidget {
   const UResponsive({
     required this.mobile,
@@ -2899,8 +4284,13 @@ class UResponsive extends StatelessWidget {
     this.desktop,
   });
 
+  /// Widget under 850 wide.
   final Widget mobile;
+
+  /// Widget from 850 to 1100 wide (falls back to mobile).
   final Widget? tablet;
+
+  /// Widget at 1100+ (falls back to tablet, then mobile).
   final Widget? desktop;
 
   @override

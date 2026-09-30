@@ -1,5 +1,5 @@
 import "package:u/utilities.dart";
-import "package:u/plugins/web/u_web_native.dart" if (dart.library.js_interop) "package:u/plugins/web/u_web_browser.dart";
+import "package:u/src/web/u_web_native.dart" if (dart.library.js_interop) "package:u/src/web/u_web_browser.dart";
 
 // =============================================================================
 // u_web — everything web-specific you are meant to call, read and change.
@@ -10,12 +10,12 @@ import "package:u/plugins/web/u_web_native.dart" if (dart.library.js_interop) "p
 // the guards that are here exist to skip work, not to avoid crashes.
 // =============================================================================
 
+/// Callback for window.postMessage: the sender's origin and its JSON data.
 typedef UWebMessageHandler = void Function(String origin, Map<String, dynamic> data);
 
-/// `window.postMessage` traffic, used by flows that hand control to a page we do not own
-/// (an IPG checkout, an OAuth popup) and wait for it to report back.
+/// Web only: listens to window.postMessage (IPG checkout pages, OAuth popups, parent iframes). Does nothing elsewhere.
 abstract class UWebMessage {
-  /// Listens for window.postMessage messages; call the returned function to stop.
+  /// Calls [onMessage] for every postMessage; call the returned function to stop. `final stop = UWebMessage.listen((origin, data) => print(data));`
   static void Function() listen(UWebMessageHandler onMessage) => UWebBridge.listenMessage(onMessage);
 }
 
@@ -23,41 +23,23 @@ abstract class UWebMessage {
 // PWA
 // -----------------------------------------------------------------------------
 
-/// Browser and install-state questions, plus the iOS "Add to Home Screen" walkthrough.
-///
-/// iOS has no `beforeinstallprompt`, so the only way to get a PWA onto an iPhone home
-/// screen is to tell the user which buttons to press — that is what [promptIosInstall] does.
-/// Every getter is false off the web.
-///
-/// ```dart
-/// // Show the install hint once when an iPhone user opens the web app in a browser.
-/// if (UPwa.canPromptIosInstall) UPwa.promptIosInstall();
-///
-/// // Only iPhone Safari (the one that can actually install):
-/// if (UPwa.isIphoneBrowser && UPwa.isIosSafari) UPwa.promptIosInstall();
-///
-/// // Force-show the instructions, e.g. behind a "How to install" button:
-/// UPwa.promptIosInstall(force: true);
-///
-/// // Skip in-app install UI when it is already installed:
-/// if (!UPwa.isStandalone) showInstallBanner();
-/// ```
+/// Web only: install state and the iOS "Add to Home Screen" guide; every getter is false off the web. `if (UPwa.canPromptIosInstall) UPwa.promptIosInstall()`
 abstract class UPwa {
   static String get _ua => UWebBridge.userAgent().toLowerCase();
 
-  /// True when the web app was opened from the home screen (installed PWA).
+  /// True when opened from the home screen as an installed PWA.
   static bool get isStandalone => UApp.isWeb && UWebBridge.isStandalone();
 
   /// True in a browser on an iPhone.
   static bool get isIphoneBrowser => UApp.isWeb && _ua.contains("iphone");
 
-  /// True in a browser on iPhone / iPad / iPod.
+  /// True in a browser on iPhone/iPad/iPod.
   static bool get isIosBrowser => UApp.isWeb && (_ua.contains("iphone") || _ua.contains("ipad") || _ua.contains("ipod"));
 
   /// True in a browser on Android.
   static bool get isAndroidBrowser => UApp.isWeb && _ua.contains("android");
 
-  /// True only in real Safari on iOS (the only iOS browser that can install PWAs).
+  /// True only in real Safari on iOS (the only iOS browser that installs PWAs).
   static bool get isIosSafari {
     if (!isIosBrowser) return false;
     const List<String> nonSafari = <String>["crios", "fxios", "edgios", "opios", "mercury", "gsa"];
@@ -65,10 +47,10 @@ abstract class UPwa {
     return _ua.contains("safari");
   }
 
-  /// True when an "Add to Home Screen" guide makes sense (iOS browser, not installed).
+  /// True when showing the "Add to Home Screen" guide makes sense (iOS browser, not installed yet).
   static bool get canPromptIosInstall => isIosBrowser && !isStandalone;
 
-  /// Shows a sheet explaining Share → Add to Home Screen ([force] shows it anyway).
+  /// Shows a sheet explaining Share → Add to Home Screen; [force] shows it even when it would not. `UPwa.promptIosInstall()`
   static Future<void> promptIosInstall({
     bool force = false,
     String? title,
@@ -170,8 +152,9 @@ class _IosInstallSheet extends StatelessWidget {
 // Build freshness
 // -----------------------------------------------------------------------------
 
-/// Fingerprint of a Flutter web build — either the one a browser holds or the one the server serves.
+/// Fingerprint of a Flutter web build (the one a tab runs or the one the server has).
 class UWebBuild {
+  /// Makes a build fingerprint.
   const UWebBuild({
     required this.signature,
     this.serviceWorkerVersion,
@@ -191,50 +174,16 @@ class UWebBuild {
   /// `build_number` field of `version.json`, i.e. the `+n` suffix in pubspec.yaml.
   final String? buildNumber;
 
-  /// pubspec-style id of this build, e.g. `0.2.0+20`. Empty when `version.json` was unreadable.
+  /// pubspec-style id, e.g. "0.2.0+20"; empty when version.json could not be read.
   String get id => version == null ? "" : "$version+${buildNumber ?? ""}";
 
   @override
   String toString() => "UWebBuild(signature: $signature, id: $id, serviceWorkerVersion: $serviceWorkerVersion)";
 }
 
-/// Keeps a Flutter web app on the build that is actually deployed.
-///
-/// A browser can keep serving a superseded app from three independent places: the HTTP disk cache
-/// (a `Cache-Control: immutable` asset is not even revalidated on a normal reload), the CacheStorage
-/// buckets that older Flutter service workers filled, and a service worker that stays `waiting`
-/// until every tab of the site is closed. [refresh] clears all three and reloads into the deployed
-/// build; [hasUpdate] says whether that is worth doing. Every member is a no-op off the web.
-///
-/// Detection is only as good as the signal the build carries. Build with
-/// `--dart-define=U_BUILD_ID=<pubspec version>` to get an exact answer:
-///
-/// ```bash
-/// flutter build web --dart-define=U_BUILD_ID=$(grep "^version:" pubspec.yaml | cut -d " " -f2)
-/// ```
-///
-/// Without it, [hasUpdate] falls back to comparing the browser's cached `flutter_bootstrap.js`
-/// against the server's, which misses the case where only `main.dart.js` is stale. [refresh]
-/// itself never depends on any of this and always works.
-///
-/// ```dart
-/// // The blunt one: a button that always lands on whatever is deployed.
-/// UButton(title: U.s.refresh, onTap: UWebUpdate.refresh);
-///
-/// // Ask the user once, right after the app starts.
-/// unawaited(UWebUpdate.checkAndRefresh());
-///
-/// // The solid default, already wired into initU: silent at startup, ask for anything found later.
-/// UWebUpdate.startWatching();
-///
-/// // Keep every open tab current without ever asking.
-/// UWebUpdate.startWatching(silent: true);
-///
-/// // Read what is deployed, e.g. to show it next to the running version.
-/// final UWebBuild? deployed = await UWebUpdate.serverBuild();
-/// ```
+/// Web only: keeps every open tab on the latest deployed build (clears stale caches/service workers); initU() already starts it. Build with `--dart-define=U_BUILD_ID=<version>` for exact checks. `UWebUpdate.checkAndRefresh()`
 abstract class UWebUpdate {
-  /// Build id baked in with --dart-define=U_BUILD_ID.
+  /// Build id from --dart-define=U_BUILD_ID (empty when not given).
   static const String buildId = String.fromEnvironment("U_BUILD_ID");
 
   // A build we already reloaded for. Persisted so a host that keeps serving the old files cannot
@@ -268,7 +217,7 @@ abstract class UWebUpdate {
   static void Function()? _visibilityDisposer;
   static bool _checking = false;
 
-  /// Clears service workers and caches and reloads into the newest deployed build.
+  /// Clears service workers and caches and reloads into the newest build; always works. `UButton(title: "Update", onTap: UWebUpdate.refresh)`
   static Future<void> refresh({
     List<String> assets = defaultAssets,
     bool bustUrl = false,
@@ -281,10 +230,10 @@ abstract class UWebUpdate {
     UWebBridge.reload(bustUrl ? _bustedUrl() : null);
   }
 
-  /// The build the server is serving now (null off the web or offline).
+  /// The build the server serves now; null off the web or offline.
   static Future<UWebBuild?> serverBuild() => _build("no-store");
 
-  /// The build this tab is running (from the browser cache).
+  /// The build this tab is running.
   static Future<UWebBuild?> cachedBuild() => _build("force-cache");
 
   /// Version of the service worker serving this page.
@@ -294,7 +243,7 @@ abstract class UWebUpdate {
     return Uri.tryParse(url)?.queryParameters["v"];
   }
 
-  /// True when a newer build is deployed than the one running.
+  /// True when a newer build is deployed. `if (await UWebUpdate.hasUpdate()) …`
   static Future<bool> hasUpdate() async {
     if (!UApp.isWeb) return false;
     if (await UWebBridge.serviceWorkerHasPendingUpdate().timeout(timeout, onTimeout: () => false)) return true;
@@ -314,7 +263,7 @@ abstract class UWebUpdate {
     return cached != null && cached.signature != server.signature;
   }
 
-  /// Reloads into a newer build if one is deployed ([silent] skips asking); true if it did.
+  /// Reloads into a newer build when there is one; asks first unless [silent]. `await UWebUpdate.checkAndRefresh()`
   static Future<bool> checkAndRefresh({
     bool silent = false,
     bool once = true,
@@ -357,7 +306,7 @@ abstract class UWebUpdate {
     }
   }
 
-  /// Checks for new builds at startup, every [interval] and when the tab comes back.
+  /// Checks at startup, every [interval] and when the tab comes back (initU() calls it silently).
   static void startWatching({
     Duration interval = const Duration(minutes: 15),
     bool silent = false,

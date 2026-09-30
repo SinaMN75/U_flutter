@@ -1132,6 +1132,7 @@
   "noCardIssuedForThisProfile": "کارتی برای این پرونده صادر نشده",
   "noCardReaderIsAvailableOnThisDevice": "کارت‌خوانی روی این دستگاه در دسترس نیست",
   "noChargeWillBeTaken": "هزینه‌ای دریافت نمی‌شود",
+  "noInternet": "اتصال اینترنت برقرار نیست",
   "noData": "داده‌ای موجود نیست",
   "noDeviceFound": "دستگاهی یافت نشد",
   "noDownloads": "هنوز دانلودی وجود ندارد",

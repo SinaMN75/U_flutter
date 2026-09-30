@@ -1,5 +1,6 @@
 import "package:u/utilities.dart";
 
+/// Card details typed in UCreditCardForm (number, expiry, holder, CVV).
 class UCreditCardModel {
   UCreditCardModel({
     this.cardNumber = "",
@@ -9,16 +10,28 @@ class UCreditCardModel {
     this.isCvvFocused = false,
   });
 
+  /// Card number.
   String cardNumber;
+
+  /// Expiry "MM/YY".
   String expiryDate;
+
+  /// Holder name.
   String cardHolderName;
+
+  /// CVV / CVV2.
   String cvvCode;
+
+  /// True while the CVV field is focused (card flips).
   bool isCvvFocused;
 }
 
+/// Card network or Iranian bank detected from the number.
 enum UCardBrand { visa, mastercard, amex, discover, dinersClub, jcb, unionPay, maestro, mir, unknown }
 
+/// Detects card brand/bank from the first digits and gives its colors.
 class UCardBrandDetector {
+  /// Brand from a (partial) card number. `UCardBrandDetector.detect("6037")`
   static UCardBrand detect(String input) {
     final String n = input.replaceAll(RegExp(r"\D"), "");
     if (n.isEmpty) return UCardBrand.unknown;
@@ -34,6 +47,7 @@ class UCardBrandDetector {
     return UCardBrand.unknown;
   }
 
+  /// Brand display name.
   static String label(UCardBrand brand) {
     switch (brand) {
       case UCardBrand.visa:
@@ -59,6 +73,7 @@ class UCardBrandDetector {
     }
   }
 
+  /// Card background colors of a brand.
   static List<Color> gradientColors(UCardBrand brand) {
     switch (brand) {
       case UCardBrand.visa:
@@ -84,6 +99,7 @@ class UCardBrandDetector {
     }
   }
 
+  /// True for American Express (4-digit CVV).
   static bool isAmex(UCardBrand brand) => brand == UCardBrand.amex;
 }
 
@@ -125,6 +141,7 @@ class _ExpiryFormatter extends TextInputFormatter {
   }
 }
 
+/// Animated bank card that flips to the back for CVV, with brand colors. `UCreditCardWidget(cardNumber: n, expiryDate: e, cardHolderName: h, cvvCode: c, showBackView: false)`
 class UCreditCardWidget extends StatefulWidget {
   const UCreditCardWidget({
     required this.cardNumber,
@@ -157,32 +174,85 @@ class UCreditCardWidget extends StatefulWidget {
     this.digitsFormatter,
   });
 
+  /// Card number to show.
   final String cardNumber;
+
+  /// Expiry to show.
   final String expiryDate;
+
+  /// Holder name to show.
   final String cardHolderName;
+
+  /// CVV to show on the back.
   final String cvvCode;
+
+  /// Flips to the back.
   final bool showBackView;
+
+  /// Height in logical pixels (null = size to content).
   final double? height;
+
+  /// Width in logical pixels (null = size to content).
   final double? width;
+
+  /// Background gradient (overrides the color).
   final Gradient? gradient;
+
+  /// Title text.
   final String? title;
+
+  /// Your own brand logo.
   final Widget? logo;
+
+  /// Brand text override.
   final String? brandLabel;
+
+  /// Length of the animation.
   final Duration animationDuration;
+
+  /// Hides the middle digits.
   final bool obscureCardNumber;
+
+  /// Called when the detected brand changes.
   final ValueChanged<UCardBrand>? onBrandChanged;
+
+  /// Chip color.
   final Color chipColor;
+
+  /// Corner radius.
   final double borderRadius;
+
+  /// Shadows under it.
   final List<BoxShadow>? boxShadow;
+
+  /// Space inside, around the content.
   final EdgeInsetsGeometry padding;
+
+  /// Number text style.
   final TextStyle? numberStyle;
+
+  /// Spreads the 4-digit groups across the card.
   final bool spreadNumberGroups;
+
+  /// Shows CVV on the front (some Iranian cards).
   final bool showCvvOnFront;
+
+  /// Label above the holder name.
   final String cardHolderLabel;
+
+  /// Label above the expiry.
   final String expiryLabel;
+
+  /// Label of the CVV.
   final String cvvLabel;
+
+  /// Label style.
   final TextStyle? labelStyle;
+
+  /// Value style.
   final TextStyle? valueStyle;
+
+  /// Formats digits for display (e.g. Persian digits).
   final String Function(String value)? digitsFormatter;
 
   @override
@@ -407,6 +477,7 @@ class _CreditCardWidgetState extends State<UCreditCardWidget> with SingleTickerP
   }
 }
 
+/// Card number / expiry / holder / CVV fields that fill a UCreditCardModel. `UCreditCardForm(model: model, onChanged: (m) => setState(() {}))`
 class UCreditCardForm extends StatefulWidget {
   const UCreditCardForm({
     required this.model,
@@ -416,9 +487,16 @@ class UCreditCardForm extends StatefulWidget {
     this.obscureCvv = true,
   });
 
+  /// The model the fields fill.
   final UCreditCardModel model;
+
+  /// Called with the new value when the user changes it.
   final ValueChanged<UCreditCardModel> onChanged;
+
+  /// Form key for validation.
   final GlobalKey<FormState>? formKey;
+
+  /// Hides the CVV while typing.
   final bool obscureCvv;
 
   @override

@@ -8,6 +8,7 @@ import AppKit
 import FlutterMacOS
 import IOKit
 import IOKit.ps
+import IOKit.pwr_mgt
 import SystemConfiguration
 #endif
 import Darwin
@@ -27,6 +28,8 @@ final class UDeviceHandler: NSObject, FlutterStreamHandler {
     private var sink: FlutterEventSink?
     #if os(iOS)
     private let telephony = CTTelephonyNetworkInfo()
+    #else
+    private var displayAssertion: IOPMAssertionID = 0
     #endif
 
     init(messenger: FlutterBinaryMessenger) {
@@ -44,6 +47,7 @@ final class UDeviceHandler: NSObject, FlutterStreamHandler {
     }
 
     func dispose() {
+        keepScreenOn(false)
         monitor.cancel()
         channel.setMethodCallHandler(nil)
         events.setStreamHandler(nil)
@@ -62,9 +66,26 @@ final class UDeviceHandler: NSObject, FlutterStreamHandler {
                 let value = self.integrity()
                 DispatchQueue.main.async { result(value) }
             }
+        case "keepScreenOn":
+            keepScreenOn((call.arguments as? [String: Any])?["on"] as? Bool ?? false)
+            result(true)
         default:
             result(FlutterMethodNotImplemented)
         }
+    }
+
+    /// iOS: stops the idle timer. macOS: a power assertion that keeps the display awake.
+    private func keepScreenOn(_ on: Bool) {
+        #if os(iOS)
+        UIApplication.shared.isIdleTimerDisabled = on
+        #else
+        if on, displayAssertion == 0 {
+            IOPMAssertionCreateWithName(kIOPMAssertionTypeNoDisplaySleep as CFString, IOPMAssertionLevel(kIOPMAssertionLevelOn), "Keeping the screen on" as CFString, &displayAssertion)
+        } else if !on, displayAssertion != 0 {
+            IOPMAssertionRelease(displayAssertion)
+            displayAssertion = 0
+        }
+        #endif
     }
 
     // MARK: - Device

@@ -7,6 +7,7 @@ import "package:u/utilities.dart";
 // stay live without any state management of their own.
 // =============================================================================
 
+/// Bytes → "1.5 MB". `uFormatBytes(1536000)`
 String uFormatBytes(int bytes) {
   if (bytes < 0) return "—";
   const List<String> units = <String>["B", "KB", "MB", "GB", "TB"];
@@ -24,6 +25,7 @@ String _formatDuration(Duration d) {
   return "${d.inMinutes}:${(d.inSeconds % 60).toString().padLeft(2, "0")}";
 }
 
+/// Human text for a download's status.
 String uDownloadStatusLabel(UDownloadTask task) => switch (task.status) {
   UDownloadStatus.queued => U.s.downloadQueued,
   UDownloadStatus.scheduled => U.s.downloadScheduled,
@@ -37,6 +39,7 @@ String uDownloadStatusLabel(UDownloadTask task) => switch (task.status) {
   UDownloadStatus.canceled => U.s.cancelled,
 };
 
+/// Human text for a download error.
 String uDownloadErrorLabel(UDownloadError? error) => switch (error?.code) {
   UDownloadErrorCode.network => U.s.downloadErrorNetwork,
   UDownloadErrorCode.timeout => U.s.downloadErrorTimeout,
@@ -54,6 +57,7 @@ String uDownloadErrorLabel(UDownloadError? error) => switch (error?.code) {
   _ => U.s.downloadErrorUnknown,
 };
 
+/// Icon for a download category (video, audio, document…).
 IconData uDownloadCategoryIcon(UDownloadCategory category) => switch (category) {
   UDownloadCategory.document => Icons.description_outlined,
   UDownloadCategory.image => Icons.image_outlined,
@@ -80,10 +84,13 @@ enum _Filter { all, active, completed, failed }
 class UDownloadManagerPage extends StatefulWidget {
   const UDownloadManagerPage({super.key, this.manager, this.allowAdd = true, this.title});
 
+  /// Manager to show (the shared one by default).
   final UDownloadManager? manager;
 
   /// Shows the "add download" action for pasting a URL.
   final bool allowAdd;
+
+  /// Title text.
   final String? title;
 
   @override
@@ -132,7 +139,12 @@ class _UDownloadManagerPageState extends State<UDownloadManagerPage> {
               ],
             ),
             actions: <Widget>[
-              if (widget.allowAdd) IconButton(tooltip: U.s.addDownload, onPressed: () => unawaited(UAddDownloadSheet.show(manager: _manager)), icon: const Icon(Icons.add_link_rounded)),
+              if (widget.allowAdd)
+                IconButton(
+                  tooltip: U.s.addDownload,
+                  onPressed: () => unawaited(UAddDownloadSheet.show(manager: _manager)),
+                  icon: const Icon(Icons.add_link_rounded),
+                ),
               PopupMenuButton<String>(
                 onSelected: (String value) => unawaited(switch (value) {
                   "pause" => _manager.pauseAll(),
@@ -203,8 +215,13 @@ class _UDownloadManagerPageState extends State<UDownloadManagerPage> {
 class UDownloadTile extends StatelessWidget {
   const UDownloadTile({required this.task, super.key, this.manager, this.showSegments = true});
 
+  /// The download.
   final UDownloadTask task;
+
+  /// Its manager.
   final UDownloadManager? manager;
+
+  /// Shows per-connection progress.
   final bool showSegments;
 
   UDownloadManager get _manager => manager ?? UDownloadManager.instance;
@@ -271,8 +288,12 @@ class UDownloadTile extends StatelessWidget {
   }
 
   List<Widget> _actions(ColorScheme cs) {
-    IconButton button(IconData icon, String tooltip, VoidCallback onPressed, {Color? color}) =>
-        IconButton(tooltip: tooltip, visualDensity: VisualDensity.compact, onPressed: onPressed, icon: Icon(icon, size: 20, color: color ?? cs.primary));
+    IconButton button(IconData icon, String tooltip, VoidCallback onPressed, {Color? color}) => IconButton(
+      tooltip: tooltip,
+      visualDensity: VisualDensity.compact,
+      onPressed: onPressed,
+      icon: Icon(icon, size: 20, color: color ?? cs.primary),
+    );
     if (task.status == UDownloadStatus.completed) {
       return <Widget>[
         if (task.request.destination.target != UDownloadTarget.memory) button(Icons.open_in_new_rounded, U.s.open, () => unawaited(_manager.open(task))),
@@ -288,7 +309,10 @@ class UDownloadTile extends StatelessWidget {
             if (!UDownloadPlatform.isWeb) PopupMenuItem<String>(value: "reveal", child: UTextBodyMedium(U.s.showInFolder)),
             if (!UDownloadPlatform.isWeb) PopupMenuItem<String>(value: "share", child: UTextBodyMedium(U.s.share)),
             PopupMenuItem<String>(value: "remove", child: UTextBodyMedium(U.s.remove)),
-            PopupMenuItem<String>(value: "delete", child: UTextBodyMedium(U.s.delete, color: cs.error)),
+            PopupMenuItem<String>(
+              value: "delete",
+              child: UTextBodyMedium(U.s.delete, color: cs.error),
+            ),
           ],
         ),
       ];
@@ -310,8 +334,13 @@ class UDownloadTile extends StatelessWidget {
 class USegmentProgressBar extends StatelessWidget {
   const USegmentProgressBar({required this.task, super.key, this.height = 8, this.color});
 
+  /// The download.
   final UDownloadTask task;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
+
+  /// Main color (defaults to the theme).
   final Color? color;
 
   @override
@@ -376,9 +405,16 @@ class UDownloadButton extends StatefulWidget {
     this.onCompleted,
   });
 
+  /// What to download when tapped.
   final UDownloadRequest request;
+
+  /// Manager to use.
   final UDownloadManager? manager;
+
+  /// Size in logical pixels.
   final double size;
+
+  /// Called when the input is complete.
   final void Function(UDownloadTask task)? onCompleted;
 
   @override
@@ -400,10 +436,7 @@ class _UDownloadButtonState extends State<UDownloadButton> {
   Future<void> _attach() async {
     await _manager.init();
     final UDownloadTask? existing = _manager.allTasks.cast<UDownloadTask?>().lastWhere(
-      (UDownloadTask? t) =>
-          t!.request.url == widget.request.url &&
-          t.request.sourceId == widget.request.sourceId &&
-          t.status != UDownloadStatus.canceled,
+      (UDownloadTask? t) => t!.request.url == widget.request.url && t.request.sourceId == widget.request.sourceId && t.status != UDownloadStatus.canceled,
       orElse: () => null,
     );
     if (mounted && existing != null) setState(() => _task = existing);
@@ -415,9 +448,11 @@ class _UDownloadButtonState extends State<UDownloadButton> {
       final UDownloadTask created = await _manager.enqueue(widget.request);
       if (!mounted) return;
       setState(() => _task = created);
-      unawaited(created.done.then((UDownloadTask t) {
-        if (t.status == UDownloadStatus.completed) widget.onCompleted?.call(t);
-      }));
+      unawaited(
+        created.done.then((UDownloadTask t) {
+          if (t.status == UDownloadStatus.completed) widget.onCompleted?.call(t);
+        }),
+      );
       return;
     }
     if (task.status == UDownloadStatus.completed) {
@@ -472,9 +507,13 @@ class _UDownloadButtonState extends State<UDownloadButton> {
 class UAddDownloadSheet extends StatefulWidget {
   const UAddDownloadSheet({super.key, this.manager, this.initialUrl});
 
+  /// Manager to use.
   final UDownloadManager? manager;
+
+  /// Pre-filled URL.
   final String? initialUrl;
 
+  /// Opens the "add download" sheet; returns the new task. `UAddDownloadSheet.show()`
   static Future<UDownloadTask?> show({UDownloadManager? manager, String? initialUrl}) =>
       UNavigator.bottomSheet<UDownloadTask>(UAddDownloadSheet(manager: manager, initialUrl: initialUrl), showDragHandle: true);
 
@@ -547,7 +586,10 @@ class _UAddDownloadSheetState extends State<UAddDownloadSheet> {
           autofocus: widget.initialUrl == null,
           decoration: InputDecoration(labelText: U.s.url, prefixIcon: const Icon(Icons.link_rounded)),
         ).ltr(),
-        TextField(controller: _name, decoration: InputDecoration(labelText: U.s.fileName)),
+        TextField(
+          controller: _name,
+          decoration: InputDecoration(labelText: U.s.fileName),
+        ),
         UTextLabelLarge(U.s.saveTo),
         Wrap(
           spacing: 8,
@@ -582,8 +624,10 @@ class _UAddDownloadSheetState extends State<UAddDownloadSheet> {
 class UDownloadSettingsSheet extends StatefulWidget {
   const UDownloadSettingsSheet({super.key, this.manager});
 
+  /// Manager to configure.
   final UDownloadManager? manager;
 
+  /// Opens the download settings sheet.
   static Future<void> show({UDownloadManager? manager}) => UNavigator.bottomSheet<void>(UDownloadSettingsSheet(manager: manager), showDragHandle: true);
 
   @override

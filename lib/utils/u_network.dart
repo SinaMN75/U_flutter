@@ -1,116 +1,115 @@
 import "package:u/utilities.dart";
 
-/// Network state: connection type, metered/roaming, speed, real internet checks. Wraps [UConnectivity].
+/// Connection state on all 6 platforms: online, wifi/cellular/vpn, metered, speed, real internet checks, change streams. `if (UNetwork.isOffline) …`
 abstract class UNetwork {
-  /// Full network snapshot (types, metered, roaming, speed, …).
+  /// Full snapshot (types, metered, roaming, speed, captive portal…). `UNetwork.status.types`
   static UNetworkStatus get status => UConnectivity.status;
 
-  /// True when connected (instant, no network request).
+  /// True when a network is connected (instant, no request; use hasInternet() to be sure). `if (UNetwork.isOnline) sync()`
   static bool get isOnline => UConnectivity.isOnline;
 
-  /// True when not connected (instant, no network request).
+  /// True when no network is connected.
   static bool get isOffline => UConnectivity.isOffline;
 
-  /// True when on Wi-Fi.
+  /// True on Wi-Fi.
   static bool get isWifi => UConnectivity.isWifi;
 
-  /// True when on mobile data.
+  /// True on mobile data.
   static bool get isCellular => UConnectivity.isCellular;
 
-  /// True when on a wired connection.
+  /// True on a cable.
   static bool get isEthernet => UConnectivity.isEthernet;
 
-  /// True when a VPN is active.
+  /// True while a VPN is active (web: never detectable).
   static bool get isVpn => UConnectivity.isVpn;
 
   /// True when tethered over Bluetooth.
   static bool get isBluetooth => status.isBluetooth;
 
-  /// True when data costs money (mobile data, hotspot).
+  /// True when data may cost money (mobile data, hotspot). `if (!UNetwork.isMetered) autoDownload()`
   static bool get isMetered => UConnectivity.isMetered;
 
-  /// True when Data Saver / Low Data Mode is on.
+  /// True when Data Saver / Low Data Mode is on (Android, Apple, web Save-Data).
   static bool get isConstrained => status.constrained;
 
-  /// True when roaming (null when unknown).
+  /// True when roaming; null when the platform cannot tell (Android only).
   static bool? get isRoaming => status.roaming;
 
-  /// True on Wi-Fi that needs a sign-in page first (hotel, airport).
+  /// True on Wi-Fi that wants a sign-in page first (hotel, airport); Android/Linux/Windows.
   static bool get isBehindCaptivePortal => status.captivePortal;
 
-  /// True when online on free data with no data saver: safe for big downloads.
+  /// True when online on free data without a data saver: safe for big downloads.
   static bool get isUnmetered => status.isUnmetered;
 
-  /// True when the connection is good enough for video / big files.
+  /// True when good enough for video / big files (wifi, ethernet, 4G+, or fast web downlink).
   static bool get isFast => status.isFast;
 
-  /// Main connection type: wifi, cellular, ethernet, …
+  /// Main connection type (wifi, cellular, ethernet…); null when offline.
   static UNetworkType? get type => status.primary;
 
-  /// All connection types in use (e.g. wifi + vpn).
+  /// Every connection type in use, e.g. {wifi, vpn}.
   static Set<UNetworkType> get types => status.types;
 
-  /// Mobile network generation: "2g", "3g", "4g" or "5g".
+  /// Mobile generation "2g"/"3g"/"4g"/"5g" (Android, iOS; web effectiveType); null elsewhere.
   static String? get cellularGeneration => status.cellularGeneration;
 
-  /// Estimated download speed in kbps.
+  /// Estimated download speed in kbps (Android, web); null elsewhere.
   static int? get downlinkKbps => status.downlinkKbps;
 
-  /// Estimated upload speed in kbps.
+  /// Estimated upload speed in kbps (Android); null elsewhere.
   static int? get uplinkKbps => status.uplinkKbps;
 
-  /// Estimated round-trip time in ms (web).
+  /// Estimated round trip in ms (web only).
   static int? get rttMs => status.rttMs;
 
-  /// Signal strength in dBm (Android).
+  /// Wi-Fi/cell signal in dBm (Android only).
   static int? get signalStrength => status.signalStrength;
 
-  /// Name of the active network interface, e.g. "wlan0".
+  /// Active interface name, e.g. "wlan0", "en0"; null on web.
   static String? get interfaceName => status.interfaceName;
 
-  /// Emits every time the network changes.
+  /// Emits the full status every time the network changes. `UNetwork.stream.listen((s) => print(s.primary))`
   static Stream<UNetworkStatus> get stream => UConnectivity.stream;
 
-  /// Emits true/false only when going online or offline.
+  /// Emits true/false only when going online or offline. `UNetwork.onlineStream.listen((on) => on ? retry() : null)`
   static Stream<bool> get onlineStream => UConnectivity.onlineStream;
 
-  /// Network state for ValueListenableBuilder.
+  /// Network status for ValueListenableBuilder. `ValueListenableBuilder(valueListenable: UNetwork.listenable, builder: (c, s, _) => Text("${s.primary}"))`
   static ValueListenable<UNetworkStatus> get listenable => UConnectivity.listenable;
 
-  /// Calls [onChange] every time the network changes.
+  /// Calls [onChange] on every network change; cancel the returned subscription in dispose(). `final sub = UNetwork.listen(update);`
   static StreamSubscription<UNetworkStatus> listen(void Function(UNetworkStatus status) onChange) => UConnectivity.listen(onChange);
 
-  /// Starts watching the network (initU() already does this).
+  /// Starts watching the network; initU() already does it.
   static Future<void> init() => UConnectivity.init();
 
-  /// Re-reads the network state from the OS right now.
+  /// Reads the state from the OS again right now. `await UNetwork.refresh()`
   static Future<UNetworkStatus> refresh() => UConnectivity.refresh();
 
-  /// Waits until the device is online.
+  /// Waits until the device is online ([timeout] throws TimeoutException). `await UNetwork.whenOnline(); upload();`
   static Future<void> whenOnline({Duration? timeout}) => UConnectivity.whenOnline(timeout: timeout);
 
-  /// True when the internet really answers (pings your server, cached 5s).
+  /// True when the internet really answers (pings your baseUrl + 2 public hosts, cached 5s). `if (await UNetwork.hasInternet()) …`
   static Future<bool> hasInternet({bool force = false, Duration timeout = const Duration(seconds: 5)}) => UConnectivity.hasInternet(force: force, timeout: timeout);
 
-  /// All IP addresses of this device.
+  /// Every IP address of this device (empty on web). `await UNetwork.addresses()`
   static Future<List<UNetworkAddress>> addresses({bool includeLoopback = false}) => UConnectivity.addresses(includeLoopback: includeLoopback);
 
-  /// This device's local IPv4 address, e.g. "192.168.1.20".
+  /// Local IPv4, e.g. "192.168.1.20" (null on web). `await UNetwork.localIp()`
   static Future<String?> localIp() => UConnectivity.localIp();
 
-  /// URLs hasInternet() pings (null = your baseUrl + 2 public ones).
+  /// URLs hasInternet() pings; null means your baseUrl + 2 public hosts. Set it to use your own. `UNetwork.probeUrls = [Uri.parse("https://api.x.com/health")]`
   static List<Uri>? get probeUrls => UConnectivity.probeUrls;
 
-  /// Changes the URLs hasInternet() pings.
+  /// URLs hasInternet() pings; null means your baseUrl + 2 public hosts. Set it to use your own. `UNetwork.probeUrls = [Uri.parse("https://api.x.com/health")]`
   static set probeUrls(List<Uri>? urls) => UConnectivity.probeUrls = urls;
 
-  /// How long offline must last before it is reported.
+  /// How long "offline" must last before it is reported (hides short drops). `UNetwork.offlineGrace = 2.seconds`
   static Duration get offlineGrace => UConnectivity.offlineGrace;
 
-  /// Changes how long offline must last before it is reported.
+  /// How long "offline" must last before it is reported (hides short drops). `UNetwork.offlineGrace = 2.seconds`
   static set offlineGrace(Duration value) => UConnectivity.offlineGrace = value;
 
   /// Stops watching the network.
   static Future<void> dispose() => UConnectivity.dispose();
-
 }

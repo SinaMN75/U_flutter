@@ -1,36 +1,80 @@
 import "package:flutter/material.dart";
 import "package:u/components/container.dart";
 
+/// One tab of UTabBar: id, title, icon, badge. `UTab(id: "users", title: "Users", icon: Icons.people)`
 class UTab {
+  /// Unique id.
   final String id;
+
+  /// Title text.
   final String title;
+
+  /// Icon shown with it.
   final IconData? icon;
 
+  /// Small widget after the title (e.g. a count).
   final Widget? badge;
 
   const UTab({required this.id, required this.title, this.icon, this.badge});
 }
 
+/// Tab context menu actions: close, closeOthers, closeAll, closeToRight.
 enum UTabMenuAction { close, closeOthers, closeAll, closeToRight }
 
+/// Colors and sizes of UTabBar; UTabBarTheme.from(context) follows the app theme.
 class UTabBarTheme {
+  /// Background color.
   final Color backgroundColor;
+
+  /// Bar background gradient.
   final Gradient? backgroundGradient;
+
+  /// Selected tab background.
   final Color selectedTabColor;
+
+  /// Tab background on mouse hover.
   final Color hoverTabColor;
+
+  /// Tab background.
   final Color unselectedTabColor;
+
+  /// Selected tab text color.
   final Color selectedTextColor;
+
+  /// Tab text color.
   final Color unselectedTextColor;
+
+  /// Indicator color.
   final Color indicatorColor;
+
+  /// Close/menu icon color.
   final Color controlColor;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
+
+  /// Tab height.
   final double tabHeight;
+
+  /// Narrowest tab.
   final double minTabWidth;
+
+  /// Widest tab.
   final double maxTabWidth;
+
+  /// Gap between tabs.
   final double gap;
+
+  /// Tab corner radius.
   final BorderRadius tabRadius;
+
+  /// Length of the animation.
   final Duration animationDuration;
+
+  /// Animation curve.
   final Curve animationCurve;
+
+  /// Underlines the selected tab.
   final bool showSelectedUnderline;
 
   const UTabBarTheme({
@@ -54,6 +98,7 @@ class UTabBarTheme {
     this.showSelectedUnderline = true,
   });
 
+  /// Theme built from the app's colors.
   factory UTabBarTheme.from(BuildContext context) {
     final ColorScheme cs = Theme.of(context).colorScheme;
     final Color bg = cs.primary;
@@ -78,6 +123,7 @@ class UTabBarTheme {
     );
   }
 
+  /// Copy with some fields changed.
   UTabBarTheme copyWith({
     Color? backgroundColor,
     Gradient? backgroundGradient,
@@ -119,6 +165,7 @@ class UTabBarTheme {
   );
 }
 
+/// Browser-style closable, reorderable tabs for desktop/admin apps. `UTabBar(tabs: tabs, selectedIndex: i, onSelect: (i) => setState(() => current = i), onClose: close)`
 class UTabBar extends StatefulWidget {
   const UTabBar({
     required this.tabs,
@@ -137,18 +184,43 @@ class UTabBar extends StatefulWidget {
     this.trailing,
   });
 
+  /// The tabs.
   final List<UTab> tabs;
+
+  /// Index of the selected tab.
   final int selectedIndex;
+
+  /// Called with the tapped tab index.
   final ValueChanged<int> onSelect;
+
+  /// Called when it closes.
   final ValueChanged<int> onClose;
+
+  /// Called when a tab is dragged to a new place.
   final void Function(int oldIndex, int newIndex)? onReorder;
+
+  /// Called with a context menu action and tab index.
   final void Function(UTabMenuAction action, int index)? onMenuAction;
+
+  /// Colors and styles.
   final UTabBarTheme? theme;
+
+  /// Allows dragging tabs.
   final bool enableReorder;
+
+  /// Right-click/long-press menu on tabs.
   final bool enableContextMenu;
+
+  /// Shows a menu of all tabs when they do not fit.
   final bool showOverflowMenu;
+
+  /// Texts of the menu actions.
   final Map<UTabMenuAction, String> closeLabels;
+
+  /// Widget at the start.
   final Widget? leading;
+
+  /// Widget at the end.
   final Widget? trailing;
 
   @override

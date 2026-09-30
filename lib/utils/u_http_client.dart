@@ -2,26 +2,41 @@ import "dart:developer" as developer;
 
 import "package:u/utilities.dart";
 
+/// How UHttpClient encodes a Map body: json or formData (x-www-form-urlencoded).
 enum URequestBodyType { json, formData }
 
+/// Result of UHttpClient.send: exactly one of response (body), error (body) or exception (message) is set.
 class UHttpClientResponse {
+  /// Response body on 2xx.
   final String? response;
+
+  /// Response body on non-2xx.
   final String? error;
+
+  /// Message when no response came (offline, timeout, crash).
   final String? exception;
 
+  /// Result of a request.
   UHttpClientResponse({this.response, this.error, this.exception});
 
+  /// True on 2xx.
   bool get isSuccessful => response != null;
 
+  /// True when the server answered with an error status.
   bool get isError => error != null;
 
+  /// True when no response came.
   bool get isException => exception != null;
 }
 
+/// HTTP with retries, offline/cache, upload/download progress, and automatic token refresh on expired tokens. `UHttpClient.send(method: "GET", endpoint: "$base/users", onSuccess: …, onError: …, onException: …)`
 abstract class UHttpClient {
   static final Client _client = Client();
+
+  /// Runs once when the session can no longer be refreshed, e.g. go to login. `UHttpClient.onAuthFailed = () async => UNavigator.offAll(LoginPage())`
   static Future<void> Function()? onAuthFailed;
 
+  /// Sends a request: retries network failures 3×, refreshes an expired token once, [offline]/[cacheDuration] cache the body, [onProgress] reports 0-100.
   static Future<UHttpClientResponse> send({
     required String method,
     required String endpoint,
@@ -232,6 +247,7 @@ abstract class UHttpClient {
     }
   }
 
+  /// Multipart upload with progress (files + fields); 5 minute timeout by default. `UHttpClient.upload(endpoint: url, files: [f], onSuccess: ok, onError: err, onException: fail)`
   static Future<void> upload({
     required String endpoint,
     required List<MultipartFile> files,
@@ -285,13 +301,14 @@ abstract class UHttpClient {
     return uri;
   }
 
+  /// A multipart file from disk, streamed (not on web). `await UHttpClient.multipartFileFromFile("file", File(path))`
   static Future<MultipartFile> multipartFileFromFile(
     String fieldName,
     File file, {
     String? filename,
     MediaType? contentType,
   }) async {
-    filename ??= file.path.split("/").last;
+    filename ??= file.path.fileName;
     final Stream<List<int>> stream = file.openRead();
     final int length = await file.length();
     return MultipartFile(
@@ -303,6 +320,7 @@ abstract class UHttpClient {
     );
   }
 
+  /// A multipart file from bytes (works on web). `await UHttpClient.multipartFileFromUint8List("file", bytes, filename: "a.jpg")`
   static Future<MultipartFile> multipartFileFromUint8List(
     String fieldName,
     Uint8List bytes, {
@@ -310,18 +328,33 @@ abstract class UHttpClient {
     MediaType? contentType,
   }) async => MultipartFile.fromBytes(fieldName, bytes, contentType: contentType, filename: filename);
 
+  /// Copy of a JSON map/list without null values (the original is not changed).
   static T? removeNullEntries<T>(T? json) {
-    if (json == null) return null;
+    final Object? cleaned = _withoutNulls(json);
+    return cleaned is T ? cleaned : json;
+  }
 
-    if (json is List) {
-      json.removeWhere((dynamic e) => e == null);
-      json.forEach(removeNullEntries);
-    } else if (json is Map) {
-      json.removeWhere((dynamic key, dynamic value) => key == null || value == null);
-      json.values.forEach(removeNullEntries);
+  // Returns copies, so const / unmodifiable maps and lists from the caller are never touched.
+  static Object? _withoutNulls(Object? value) {
+    if (value is Map<String, dynamic>) {
+      return <String, dynamic>{
+        for (final MapEntry<String, dynamic> e in value.entries)
+          if (e.value != null) e.key: _withoutNulls(e.value),
+      };
     }
-
-    return json;
+    if (value is Map) {
+      return <dynamic, dynamic>{
+        for (final MapEntry<dynamic, dynamic> e in value.entries)
+          if (e.key != null && e.value != null) e.key: _withoutNulls(e.value),
+      };
+    }
+    if (value is List) {
+      return <dynamic>[
+        for (final dynamic e in value)
+          if (e != null) _withoutNulls(e),
+      ];
+    }
+    return value;
   }
 
   static final RegExp _nonWord = RegExp(r"[^\w]");
@@ -386,11 +419,15 @@ class _UProgressMultipartRequest extends MultipartRequest {
   }
 }
 
+/// Status helpers on an http Response. `if (response.isSuccessful()) …`
 extension HTTP on Response? {
+  /// True for status 200-299.
   bool isSuccessful() => (this?.statusCode ?? 999) >= 200 && (this?.statusCode ?? 999) <= 299;
 
+  /// True for status 500-599.
   bool isServerError() => (this?.statusCode ?? 999) >= 500 && (this?.statusCode ?? 999) <= 599;
 
+  /// Logs method, url, status, params and body to the debug console.
   void prettyLog({String params = ""}) => developer.log(
     "${this?.request?.method} - ${this?.request?.url} - ${this?.statusCode} \nPARAMS: $params \nRESPONSE: ${this?.body}",
   );

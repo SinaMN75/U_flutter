@@ -1,5 +1,6 @@
 import "package:u/utilities.dart";
 
+/// Auto-playing image slider (banners) with dots. `USlider(images: banners.map((b) => UImage(b)).toList())`
 class USlider extends StatefulWidget {
   const USlider({
     required this.images,
@@ -21,18 +22,43 @@ class USlider extends StatefulWidget {
     this.onPageChanged,
   });
 
+  /// Slides.
   final List<Widget> images;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
+
+  /// Dot row height.
   final double indicatorHeight;
+
+  /// Current dot color.
   final Color activeIndicatorColor;
+
+  /// Other dot color.
   final Color inactiveIndicatorColor;
+
+  /// Current dot size.
   final double indicatorActiveSize;
+
+  /// Other dot size.
   final double indicatorInactiveSize;
+
+  /// Seconds per slide (0 = no auto play).
   final int autoPlayDuration;
+
+  /// How images fill a slide.
   final BoxFit imageFit;
+
+  /// Corner radius.
   final double radius;
+
+  /// Color while loading.
   final Color imagePlaceholderColor;
+
+  /// Shown when an image fails.
   final Widget? errorWidget;
+
+  /// Shows the dots.
   final bool withIndicator;
 
   /// When false the slider never advances on its own.
@@ -139,6 +165,7 @@ class _USliderState extends State<USlider> {
   );
 }
 
+/// Moves a UCarousel from code and controls auto play.
 class UCarouselController {
   _UCarouselBinding? _binding;
 
@@ -148,20 +175,28 @@ class UCarouselController {
     if (identical(_binding, binding)) _binding = null;
   }
 
+  /// Next page.
   void next() => _binding?.next();
 
+  /// Previous page.
   void previous() => _binding?.previous();
 
+  /// Goes to a page.
   void animateToPage(int page, {bool animate = true}) => _binding?.animateToPage(page, animate: animate);
 
+  /// Starts auto play.
   void startAutoPlay() => _binding?.startAutoPlay();
 
+  /// Stops auto play.
   void stopAutoPlay() => _binding?.stopAutoPlay();
 
+  /// Starts/stops auto play.
   void toggleAutoPlay() => isAutoPlaying ? stopAutoPlay() : startAutoPlay();
 
+  /// True while auto playing.
   bool get isAutoPlaying => _binding?.isAutoPlaying ?? false;
 
+  /// Current page index.
   int get currentPage => _binding?.currentPage ?? 0;
 }
 
@@ -181,6 +216,7 @@ abstract class _UCarouselBinding {
   int get currentPage;
 }
 
+/// Carousel of any items with peeking neighbours, loop, auto play and dots. `UCarousel<Product>(items: products, itemBuilder: (c, p, i) => ProductCard(p))`
 class UCarousel<T> extends StatefulWidget {
   const UCarousel({
     required this.items,
@@ -209,28 +245,73 @@ class UCarousel<T> extends StatefulWidget {
     this.indicatorInactiveSize = 7,
   });
 
+  /// The items to show.
   final List<T> items;
+
+  /// Builds one item.
   final Widget Function(BuildContext context, T item, int index) itemBuilder;
+
+  /// Controller to read or change it from code.
   final UCarouselController? controller;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
+
+  /// Part of the width each item takes (0.8 shows neighbours).
   final double viewportFraction;
+
+  /// First page.
   final int initialPage;
+
+  /// Gap between items.
   final double itemSpacing;
+
+  /// Starts playing as soon as it is ready.
   final bool autoPlay;
+
+  /// Time per page in auto play.
   final Duration autoPlayInterval;
+
+  /// Page change animation length.
   final Duration autoPlayAnimationDuration;
+
+  /// Page change curve.
   final Curve autoPlayCurve;
+
+  /// Pauses while touched.
   final bool pauseAutoPlayOnTouch;
+
+  /// Wraps around at the ends.
   final bool loop;
+
+  /// Centers the first/last item.
   final bool padEnds;
+
+  /// Scroll axis.
   final Axis scrollDirection;
+
+  /// Scroll physics.
   final ScrollPhysics? physics;
+
+  /// Called with the new page index.
   final void Function(T item, int index)? onPageChanged;
+
+  /// Shows dots.
   final bool withIndicator;
+
+  /// Dot row height.
   final double indicatorHeight;
+
+  /// Current dot color.
   final Color? activeIndicatorColor;
+
+  /// Other dot color.
   final Color? inactiveIndicatorColor;
+
+  /// Current dot size.
   final double indicatorActiveSize;
+
+  /// Other dot size.
   final double indicatorInactiveSize;
 
   @override

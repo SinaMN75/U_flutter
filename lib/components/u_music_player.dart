@@ -1,8 +1,10 @@
 import "package:u/utilities.dart";
 
+/// Bottom sheet listing the play queue (tap to jump, drag to reorder, swipe to remove).
 class UMediaQueueSheet extends StatelessWidget {
   const UMediaQueueSheet({required this.controller, super.key});
 
+  /// Controller to read or change it from code.
   final UMediaController controller;
 
   @override
@@ -87,13 +89,23 @@ class UMediaQueueSheet extends StatelessWidget {
   }
 }
 
+/// Slim "now playing" bar with artwork, title and play/pause (put it above your bottom navigation). `UMiniPlayerBar(controller: UAudio.controller, onTap: openPlayer)`
 class UMiniPlayerBar extends StatelessWidget {
   const UMiniPlayerBar({required this.controller, super.key, this.onTap, this.onClose, this.height = 64, this.showProgress = true});
 
+  /// Controller to read or change it from code.
   final UMediaController controller;
+
+  /// Called when tapped.
   final VoidCallback? onTap;
+
+  /// Called when it closes.
   final VoidCallback? onClose;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
+
+  /// Shows a thin progress line.
   final bool showProgress;
 
   @override
@@ -161,8 +173,7 @@ class UMiniPlayerBar extends StatelessWidget {
                           ],
                         ),
                       ),
-                      if (onClose != null)
-                        IconButton(tooltip: U.s.close, onPressed: onClose, icon: const Icon(Icons.close_rounded, size: 18)),
+                      if (onClose != null) IconButton(tooltip: U.s.close, onPressed: onClose, icon: const Icon(Icons.close_rounded, size: 18)),
                     ],
                   ),
                 ),
@@ -175,6 +186,7 @@ class UMiniPlayerBar extends StatelessWidget {
   }
 }
 
+/// Memory cache of album art so lists do not decode the same picture twice.
 abstract final class UArtworkCache {
   static const int _maxEntries = 30;
   static const int _maxBytes = 16 * 1024 * 1024;
@@ -183,13 +195,16 @@ abstract final class UArtworkCache {
   static final Map<String, Uint8List> _memory = <String, Uint8List>{};
   static int _bytesHeld = 0;
 
+  /// Bytes of artwork currently cached.
   static int get bytesHeld => _bytesHeld;
 
+  /// Empties the cache.
   static void clear() {
     _memory.clear();
     _bytesHeld = 0;
   }
 
+  /// Cached artwork, or null without loading.
   static Uint8List? peek(UArtworkRef ref) {
     final Uint8List? cached = _memory.remove(ref.cacheKey);
     if (cached == null) return null;
@@ -197,6 +212,7 @@ abstract final class UArtworkCache {
     return cached;
   }
 
+  /// Loads (and caches) artwork bytes.
   static Future<Uint8List?> load(UArtworkRef ref) async {
     if (ref.isEmpty) return null;
     final Uint8List? cached = peek(ref);
@@ -235,13 +251,23 @@ abstract final class UArtworkCache {
   }
 }
 
+/// Album art from a track's artwork reference, with placeholder. `UArtwork(artwork: track.artwork, size: 56)`
 class UArtwork extends StatefulWidget {
   const UArtwork({super.key, this.artwork, this.size = 56, this.borderRadius = 8, this.placeholder, this.fit = BoxFit.cover});
 
+  /// Where the artwork comes from (URL, file tag, bytes).
   final UArtworkRef? artwork;
+
+  /// Size in logical pixels.
   final double size;
+
+  /// Corner radius.
   final double borderRadius;
+
+  /// Shown while loading.
   final Widget? placeholder;
+
+  /// How the content fits its box (BoxFit).
   final BoxFit fit;
 
   @override
@@ -293,12 +319,23 @@ class _UArtworkState extends State<UArtwork> {
     if (_bytes != null) {
       child = Image.memory(_bytes!, width: widget.size, height: widget.size, fit: widget.fit, cacheWidth: cacheSize, cacheHeight: cacheSize, gaplessPlayback: true);
     } else if (ref != null && ref.uri != null && ref.uri!.isNotEmpty) {
-      child = Image.network(ref.uri!, width: widget.size, height: widget.size, fit: widget.fit, cacheWidth: cacheSize, cacheHeight: cacheSize, errorBuilder: (BuildContext context, Object error, StackTrace? stack) => _fallback(context));
+      child = Image.network(
+        ref.uri!,
+        width: widget.size,
+        height: widget.size,
+        fit: widget.fit,
+        cacheWidth: cacheSize,
+        cacheHeight: cacheSize,
+        errorBuilder: (BuildContext context, Object error, StackTrace? stack) => _fallback(context),
+      );
     } else {
       child = _fallback(context);
     }
 
-    return ClipRRect(borderRadius: BorderRadius.circular(widget.borderRadius), child: SizedBox(width: widget.size, height: widget.size, child: child));
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(widget.borderRadius),
+      child: SizedBox(width: widget.size, height: widget.size, child: child),
+    );
   }
 
   Widget _fallback(BuildContext context) =>
@@ -309,19 +346,29 @@ class _UArtworkState extends State<UArtwork> {
       );
 }
 
+/// Song lyrics, synced (LRC) or plain. `ULyrics.fromText(lrcText)`
 class ULyrics {
   const ULyrics({required this.lines, this.synced = false, this.source});
 
+  /// Number of text lines.
   final List<USubtitleCue> lines;
+
+  /// True when lines have times (LRC).
   final bool synced;
+
+  /// Where the content comes from (asset, URL or path).
   final String? source;
 
+  /// No lyrics.
   static const ULyrics empty = ULyrics(lines: <USubtitleCue>[]);
 
+  /// True when there are no lines.
   bool get isEmpty => lines.isEmpty;
 
+  /// All lines as plain text.
   String get plainText => lines.map((USubtitleCue cue) => cue.text).join("\n");
 
+  /// Line index to highlight at [position].
   int indexAt(Duration position) {
     if (!synced || lines.isEmpty) return -1;
     int low = 0;
@@ -339,6 +386,7 @@ class ULyrics {
     return found;
   }
 
+  /// Parses LRC or plain text.
   static ULyrics fromText(String text, {String? source}) {
     final String trimmed = text.trim();
     if (trimmed.isEmpty) return empty;
@@ -355,6 +403,7 @@ class ULyrics {
     return ULyrics(lines: lines, source: source);
   }
 
+  /// Loads lyrics from the file's tags or a side .lrc file.
   static Future<ULyrics> load(UMediaSource source) async {
     final String? embedded = source.metadata?.lyrics;
     if (embedded != null && embedded.trim().isNotEmpty) return fromText(embedded, source: "embedded");
@@ -380,13 +429,23 @@ class ULyrics {
   }
 }
 
+/// Scrolling lyrics that highlight the current line; tap a line to seek. `ULyricsView(controller: UAudio.controller, lyrics: lyrics)`
 class ULyricsView extends StatefulWidget {
   const ULyricsView({required this.controller, required this.lyrics, super.key, this.textAlign = TextAlign.center, this.autoScroll = true, this.onSeek});
 
+  /// Controller to read or change it from code.
   final UMediaController controller;
+
+  /// The lyrics.
   final ULyrics lyrics;
+
+  /// Text alignment.
   final TextAlign textAlign;
+
+  /// Keeps the current line centered.
   final bool autoScroll;
+
+  /// Called with a line's time when tapped.
   final void Function(Duration position)? onSeek;
 
   @override
@@ -457,17 +516,29 @@ class _ULyricsViewState extends State<ULyricsView> {
   }
 }
 
+/// One equalizer band: center frequency and gain in dB.
 class UEqualizerBand {
   const UEqualizerBand({required this.index, required this.centerFrequencyHz, required this.gainDb, required this.minDb, required this.maxDb});
 
+  /// Band number.
   final int index;
+
+  /// Center frequency in Hz.
   final int centerFrequencyHz;
+
+  /// Current gain in dB.
   final double gainDb;
+
+  /// Lowest allowed gain.
   final double minDb;
+
+  /// Highest allowed gain.
   final double maxDb;
 
+  /// "60 Hz" / "14 kHz".
   String get label => centerFrequencyHz >= 1000 ? "${(centerFrequencyHz / 1000).toStringAsFixed(centerFrequencyHz % 1000 == 0 ? 0 : 1)}k" : "$centerFrequencyHz";
 
+  /// Reads a band from the native map.
   factory UEqualizerBand.fromMap(Map<Object?, Object?> map) => UEqualizerBand(
     index: (map["index"] as int?) ?? 0,
     centerFrequencyHz: (map["centerFrequencyHz"] as int?) ?? 0,
@@ -476,22 +547,48 @@ class UEqualizerBand {
     maxDb: (map["maxDb"] as num?)?.toDouble() ?? 15,
   );
 
-  UEqualizerBand copyWith({double? gainDb}) =>
-      UEqualizerBand(index: index, centerFrequencyHz: centerFrequencyHz, gainDb: gainDb ?? this.gainDb, minDb: minDb, maxDb: maxDb);
+  /// Copy with a new gain.
+  UEqualizerBand copyWith({double? gainDb}) => UEqualizerBand(index: index, centerFrequencyHz: centerFrequencyHz, gainDb: gainDb ?? this.gainDb, minDb: minDb, maxDb: maxDb);
 }
 
+/// Equalizer state: bands, presets, bass boost, virtualizer, loudness.
 class UEqualizerState {
-  const UEqualizerState({this.available = false, this.enabled = false, this.bands = const <UEqualizerBand>[], this.presets = const <String>[], this.preset, this.bassBoost = 0, this.virtualizer = 0, this.loudness = 0});
+  const UEqualizerState({
+    this.available = false,
+    this.enabled = false,
+    this.bands = const <UEqualizerBand>[],
+    this.presets = const <String>[],
+    this.preset,
+    this.bassBoost = 0,
+    this.virtualizer = 0,
+    this.loudness = 0,
+  });
 
+  /// False on platforms without an equalizer (everything except Android).
   final bool available;
+
+  /// False disables interaction and greys it out.
   final bool enabled;
+
+  /// The bands.
   final List<UEqualizerBand> bands;
+
+  /// Built-in preset names.
   final List<String> presets;
+
+  /// Current preset.
   final String? preset;
+
+  /// Bass boost strength 0-1.
   final double bassBoost;
+
+  /// Virtual surround strength 0-1.
   final double virtualizer;
+
+  /// Loudness gain in dB.
   final double loudness;
 
+  /// Reads the state from the native map.
   factory UEqualizerState.fromMap(Map<Object?, Object?> map) => UEqualizerState(
     available: map["available"] == true,
     enabled: map["enabled"] == true,
@@ -503,6 +600,7 @@ class UEqualizerState {
     loudness: (map["loudness"] as num?)?.toDouble() ?? 0,
   );
 
+  /// Copy with some fields changed.
   UEqualizerState copyWith({bool? enabled, List<UEqualizerBand>? bands, String? preset, double? bassBoost, double? virtualizer, double? loudness}) => UEqualizerState(
     available: available,
     enabled: enabled ?? this.enabled,
@@ -515,11 +613,14 @@ class UEqualizerState {
   );
 }
 
+/// Audio equalizer for a player (Android only; available is false elsewhere). `final eq = UEqualizer(UAudio.controller); await eq.setBand(0, 3)`
 class UEqualizer {
   UEqualizer(this.controller);
 
+  /// Controller to read or change it from code.
   final UMediaController controller;
 
+  /// Reads the current equalizer state.
   Future<UEqualizerState> read() async {
     final int? id = controller.playerId;
     if (id == null) return const UEqualizerState();
@@ -533,16 +634,22 @@ class UEqualizer {
     }
   }
 
+  /// Turns the equalizer on/off.
   Future<void> setEnabled(bool enabled) => _call("setEqualizerEnabled", <String, Object?>{"enabled": enabled});
 
+  /// Sets one band's gain in dB.
   Future<void> setBand(int index, double gainDb) => _call("setEqualizerBand", <String, Object?>{"index": index, "gainDb": gainDb});
 
+  /// Applies a built-in preset by name.
   Future<void> setPreset(String preset) => _call("setEqualizerPreset", <String, Object?>{"preset": preset});
 
+  /// Bass boost strength 0-1.
   Future<void> setBassBoost(double strength) => _call("setBassBoost", <String, Object?>{"strength": strength});
 
+  /// Virtual surround strength 0-1.
   Future<void> setVirtualizer(double strength) => _call("setVirtualizer", <String, Object?>{"strength": strength});
 
+  /// Loudness gain in dB.
   Future<void> setLoudness(double gainDb) => _call("setLoudness", <String, Object?>{"gainDb": gainDb});
 
   Future<void> _call(String method, Map<String, Object?> arguments) async {
@@ -558,9 +665,11 @@ class UEqualizer {
   }
 }
 
+/// Bottom sheet with equalizer sliders and presets (Android).
 class UEqualizerSheet extends StatefulWidget {
   const UEqualizerSheet({required this.controller, super.key});
 
+  /// Controller to read or change it from code.
   final UMediaController controller;
 
   @override
@@ -702,8 +811,10 @@ class _UEqualizerSheetState extends State<UEqualizerSheet> {
   );
 }
 
+/// Visualizer look: bars, mirroredBars, wave or circle.
 enum UVisualizerStyle { bars, mirroredBars, wave, circle }
 
+/// Live audio visualizer of a player (real FFT on Android, animated estimate elsewhere). `UVisualizer(controller: UAudio.controller)`
 class UVisualizer extends StatefulWidget {
   const UVisualizer({
     required this.controller,
@@ -718,14 +829,31 @@ class UVisualizer extends StatefulWidget {
     this.smoothing = 0.35,
   });
 
+  /// Controller to read or change it from code.
   final UMediaController controller;
+
+  /// Text style (defaults to the theme).
   final UVisualizerStyle style;
+
+  /// Number of bars.
   final int barCount;
+
+  /// Main color (defaults to the theme).
   final Color? color;
+
+  /// Background gradient (overrides the color).
   final List<Color>? gradient;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
+
+  /// Gap between items.
   final double spacing;
+
+  /// Corner radius.
   final double borderRadius;
+
+  /// How smoothly bars move, 0-1.
   final double smoothing;
 
   @override
@@ -833,9 +961,7 @@ class _VisualizerPainter extends CustomPainter {
       final double magnitude = magnitudes[i].clamp(0, 1).toDouble();
       final double barHeight = (mirrored ? size.height / 2 : size.height) * magnitude;
       final double left = i * (barWidth + spacing);
-      final Rect rect = mirrored
-          ? Rect.fromLTWH(left, size.height / 2 - barHeight, barWidth, barHeight * 2)
-          : Rect.fromLTWH(left, size.height - barHeight, barWidth, barHeight);
+      final Rect rect = mirrored ? Rect.fromLTWH(left, size.height / 2 - barHeight, barWidth, barHeight * 2) : Rect.fromLTWH(left, size.height - barHeight, barWidth, barHeight);
       canvas.drawRRect(RRect.fromRectAndRadius(rect, Radius.circular(borderRadius)), paint);
     }
   }
@@ -863,11 +989,15 @@ class _VisualizerPainter extends CustomPainter {
       final double angle = i * sweep - pi / 2;
       final Offset start = center + Offset(cos(angle) * radius, sin(angle) * radius);
       final Offset end = center + Offset(cos(angle) * (radius + magnitude * radius), sin(angle) * (radius + magnitude * radius));
-      canvas.drawLine(start, end, Paint()
-        ..color = paint.color
-        ..shader = paint.shader
-        ..strokeWidth = 3
-        ..strokeCap = StrokeCap.round);
+      canvas.drawLine(
+        start,
+        end,
+        Paint()
+          ..color = paint.color
+          ..shader = paint.shader
+          ..strokeWidth = 3
+          ..strokeCap = StrokeCap.round,
+      );
     }
   }
 
@@ -875,8 +1005,10 @@ class _VisualizerPainter extends CustomPainter {
   bool shouldRepaint(covariant _VisualizerPainter oldDelegate) => true;
 }
 
+/// UMusicPlayer layout: full page, card or compact row.
 enum UMusicPlayerLayout { full, card, compact }
 
+/// Which parts UMusicPlayer shows and how big they are.
 class UMusicPlayerTheme {
   const UMusicPlayerTheme({
     this.accentColor,
@@ -906,34 +1038,82 @@ class UMusicPlayerTheme {
     this.visualizerHeight = 90,
   });
 
+  /// Highlight color (defaults to the theme's primary).
   final Color? accentColor;
+
+  /// Background color.
   final Color? backgroundColor;
+
+  /// Artwork size.
   final double? artworkSize;
+
+  /// Artwork corner radius.
   final double artworkRadius;
+
+  /// Control icon size.
   final double controlSize;
+
+  /// Play button size.
   final double playButtonSize;
+
+  /// Space inside, around the content.
   final EdgeInsetsGeometry padding;
+
+  /// Shows the artwork.
   final bool showArtwork;
+
+  /// Shows title and artist.
   final bool showTitle;
+
+  /// Shows the seek bar.
   final bool showSeekBar;
+
+  /// Shows position and duration.
   final bool showTimes;
+
+  /// Shows the shuffle button.
   final bool showShuffle;
+
+  /// Shows the repeat button.
   final bool showRepeat;
+
+  /// Shows previous/next.
   final bool showSkip;
+
+  /// Shows the queue button.
   final bool showQueue;
+
+  /// Shows the lyrics button.
   final bool showLyrics;
+
+  /// Shows the equalizer button (Android).
   final bool showEqualizer;
+
+  /// Shows the visualizer.
   final bool showVisualizer;
+
+  /// Shows the speed button.
   final bool showSpeed;
+
+  /// Shows the sleep timer button.
   final bool showSleepTimer;
+
+  /// Shows a volume slider.
   final bool showVolume;
+
+  /// Shows the favourite button.
   final bool showFavorite;
 
   /// Rewind / fast-forward buttons around play (essential for lectures and voice notes).
   final bool showSeekButtons;
+
+  /// Visualizer look.
   final UVisualizerStyle visualizerStyle;
+
+  /// Visualizer height.
   final double visualizerHeight;
 
+  /// Only artwork, title, seek bar and play controls.
   static const UMusicPlayerTheme minimal = UMusicPlayerTheme(
     showShuffle: false,
     showRepeat: false,
@@ -946,8 +1126,7 @@ class UMusicPlayerTheme {
   );
 }
 
-/// The music player component. Every region has a builder slot, so the default
-/// layout can be replaced piece by piece without rewriting the widget.
+/// Complete music player UI (artwork, seek bar, controls, queue, lyrics, equalizer, sleep timer); uses UAudio when no controller is given. `UMusicPlayer(layout: UMusicPlayerLayout.card)`
 class UMusicPlayer extends StatefulWidget {
   const UMusicPlayer({
     super.key,
@@ -970,6 +1149,7 @@ class UMusicPlayer extends StatefulWidget {
     this.seekStep = const Duration(seconds: 15),
   });
 
+  /// Controller to read or change it from code.
   final UMediaController? controller;
 
   /// Time-stamped notes: markers on the seek bar plus add/list buttons.
@@ -977,20 +1157,47 @@ class UMusicPlayer extends StatefulWidget {
 
   /// Remembers and restores the playback position under this key.
   final String? resumeKey;
+
+  /// How far the seek buttons / double tap jump.
   final Duration seekStep;
+
+  /// Full page, card or compact.
   final UMusicPlayerLayout layout;
+
+  /// Colors and styles.
   final UMusicPlayerTheme theme;
+
+  /// Widget at the top.
   final Widget? header;
+
+  /// Widget at the bottom.
   final Widget? footer;
+
+  /// Action widgets/buttons.
   final List<Widget> actions;
+
+  /// Called when it closes.
   final VoidCallback? onClose;
+
+  /// Called by the favourite button.
   final VoidCallback? onFavorite;
+
+  /// Fills the favourite icon.
   final bool isFavorite;
 
+  /// Your own artwork widget.
   final Widget Function(BuildContext context, UMediaMetadata? metadata, double size)? artworkBuilder;
+
+  /// Your own title widget.
   final Widget Function(BuildContext context, UMediaMetadata? metadata)? titleBuilder;
+
+  /// Your own seek bar.
   final Widget Function(BuildContext context, UMediaValue value)? seekBarBuilder;
+
+  /// Your own control row.
   final Widget Function(BuildContext context, UMediaValue value)? controlsBuilder;
+
+  /// Extra widgets under the controls.
   final Widget Function(BuildContext context, UMediaValue value)? extrasBuilder;
 
   @override
@@ -1085,9 +1292,7 @@ class _UMusicPlayerState extends State<UMusicPlayer> {
       valueListenable: _controller,
       builder: (BuildContext context, UMediaValue value, Widget? child) {
         final UMediaMetadata? metadata = value.metadata ?? _controller.currentSource?.metadata;
-        final Widget content = widget.layout == UMusicPlayerLayout.card
-            ? _cardBody(context, value, metadata)
-            : _fullBody(context, value, metadata);
+        final Widget content = widget.layout == UMusicPlayerLayout.card ? _cardBody(context, value, metadata) : _fullBody(context, value, metadata);
         final Color? background = _theme.backgroundColor;
         return background == null ? content : ColoredBox(color: background, child: content);
       },
@@ -1101,12 +1306,9 @@ class _UMusicPlayerState extends State<UMusicPlayer> {
       children: <Widget>[
         widget.header ?? _defaultHeader(context),
         Expanded(
-          child: _showingLyrics
-              ? ULyricsView(controller: _controller, lyrics: _lyrics, onSeek: (Duration p) => unawaited(_controller.seek(p)))
-              : Center(child: _artwork(context, metadata, artwork)),
+          child: _showingLyrics ? ULyricsView(controller: _controller, lyrics: _lyrics, onSeek: (Duration p) => unawaited(_controller.seek(p))) : Center(child: _artwork(context, metadata, artwork)),
         ),
-        if (_theme.showVisualizer)
-          UVisualizer(controller: _controller, style: _theme.visualizerStyle, height: _theme.visualizerHeight, color: _accent(context)),
+        if (_theme.showVisualizer) UVisualizer(controller: _controller, style: _theme.visualizerStyle, height: _theme.visualizerHeight, color: _accent(context)),
         if (_theme.showTitle) Padding(padding: _theme.padding, child: _title(context, metadata)),
         if (_theme.showSeekBar) Directionality(textDirection: TextDirection.ltr, child: _seekBar(context, value)),
         Directionality(textDirection: TextDirection.ltr, child: _controls(context, value)),
@@ -1149,7 +1351,9 @@ class _UMusicPlayerState extends State<UMusicPlayer> {
         onPressed: widget.onClose ?? () => Navigator.of(context).maybePop(),
         icon: const Icon(Icons.keyboard_arrow_down_rounded),
       ),
-      Expanded(child: Center(child: UTextLabelLarge(U.s.nowPlaying, fontWeight: FontWeight.w700))),
+      Expanded(
+        child: Center(child: UTextLabelLarge(U.s.nowPlaying, fontWeight: FontWeight.w700)),
+      ),
       ...widget.actions,
       if (_theme.showQueue)
         IconButton(
@@ -1314,8 +1518,7 @@ class _UMusicPlayerState extends State<UMusicPlayer> {
           onPressed: () => setState(() => _showingLyrics = !_showingLyrics),
           icon: Icon(Icons.lyrics_rounded, color: _showingLyrics ? _accent(context) : scheme.onSurfaceVariant),
         ),
-      if (_theme.showSpeed)
-        IconButton(tooltip: U.s.playbackSpeed, onPressed: () => _speedSheet(context), icon: const Icon(Icons.speed_rounded)),
+      if (_theme.showSpeed) IconButton(tooltip: U.s.playbackSpeed, onPressed: () => _speedSheet(context), icon: const Icon(Icons.speed_rounded)),
       if (_theme.showEqualizer)
         IconButton(
           tooltip: U.s.equalizer,
@@ -1363,7 +1566,16 @@ class _UMusicPlayerState extends State<UMusicPlayer> {
             child: URow(
               children: <Widget>[
                 UTextLabelLarge(U.s.fineSpeed),
-                Expanded(child: Slider(value: value.speed.clamp(0.25, 4), min: 0.25, max: 4, divisions: 75, label: "${value.speed.toStringAsFixed(2)}x", onChanged: (double next) => unawaited(_controller.setSpeed(next)))),
+                Expanded(
+                  child: Slider(
+                    value: value.speed.clamp(0.25, 4),
+                    min: 0.25,
+                    max: 4,
+                    divisions: 75,
+                    label: "${value.speed.toStringAsFixed(2)}x",
+                    onChanged: (double next) => unawaited(_controller.setSpeed(next)),
+                  ),
+                ),
                 UTextLabelMedium("${value.speed.toStringAsFixed(2)}x"),
               ],
             ),

@@ -1,5 +1,6 @@
 part of "u_process.dart";
 
+/// Text/number/date field of a process step.
 class UProcessTextField extends StatefulWidget {
   const UProcessTextField({
     required this.field,
@@ -7,7 +8,10 @@ class UProcessTextField extends StatefulWidget {
     super.key,
   });
 
+  /// The field definition.
   final UProcessField field;
+
+  /// Where the answer is written.
   final UProcessStepSend processStepSend;
 
   @override

@@ -7,6 +7,7 @@ typedef UPdfPageOverlayBuilder = Widget Function(BuildContext context, int pageI
 
 enum _UPdfSidebarTab { thumbnails, outline, annotations, bookmarks, search }
 
+/// Full PDF reader in pure Dart (all platforms): search, select/copy, outline, thumbnails, night mode, highlights, notes, drawing, save. `UPdfViewer(url: "https://x.com/a.pdf")`
 class UPdfViewer extends StatefulWidget {
   const UPdfViewer({
     this.base64Pdf,
@@ -56,11 +57,22 @@ class UPdfViewer extends StatefulWidget {
     super.key,
   }) : assert(base64Pdf != null || bytes != null || url != null || filePath != null || asset != null || controller != null, "Provide one PDF source");
 
+  /// PDF as base64 text.
   final String? base64Pdf;
+
+  /// Content as bytes in memory.
   final Uint8List? bytes;
+
+  /// Web address of the content.
   final String? url;
+
+  /// Local file path.
   final String? filePath;
+
+  /// Asset path.
   final String? asset;
+
+  /// Controller to read or change it from code.
   final UPdfController? controller;
 
   /// Writes real PDF annotations into the file (ink, shapes, stamps…).
@@ -68,20 +80,44 @@ class UPdfViewer extends StatefulWidget {
 
   /// Overlay highlights, notes and bookmarks. Created internally when null.
   final UDocAnnotationController? annotations;
+
+  /// Password of an encrypted PDF.
   final String password;
+
+  /// Page to open first (0-based).
   final int initialPage;
+
+  /// Title text.
   final String? title;
+
+  /// Shows the top toolbar.
   final bool showToolbar;
+
+  /// Shows the page bar at the bottom.
   final bool showBottomBar;
+
+  /// Shows the outline/thumbnail sidebar.
   final bool showSidebar;
+
+  /// Shows a draggable scroll thumb with the page number.
   final bool showScrollThumb;
+
+  /// Shows a back button.
   final bool showBackButton;
+
+  /// Lets the user select and copy text.
   final bool allowSelection;
 
   /// When false the text can still be highlighted but never copied or shared.
   final bool allowCopy;
+
+  /// Shows a share button.
   final bool allowShare;
+
+  /// Allows highlight/underline/strike/notes.
   final bool enableMarkup;
+
+  /// Shows the PDF's own annotations.
   final bool enableAnnotations;
 
   /// Pen, highlighter, shapes, text boxes and sticky notes drawn over the
@@ -91,38 +127,75 @@ class UPdfViewer extends StatefulWidget {
   /// Tool/style state for drawing. Created internally when null; pass one
   /// with an active tool to open the viewer in drawing mode.
   final UDocDrawController? drawController;
+
+  /// Which markup tools are offered.
   final List<UDocMarkupKind> markupKinds;
 
   /// Previously exported annotations (e.g. from a server); the newest of this and the local copy wins.
   final String? annotationData;
+
+  /// Saves markups under this key automatically.
   final String? annotationStorageKey;
+
+  /// Keeps markups between app launches.
   final bool persistAnnotations;
 
   /// Called with [UDocAnnotationController.export] after every change.
   final void Function(String data)? onAnnotationsChanged;
+
+  /// How notes appear (icon, inline, hidden).
   final UDocNoteDisplay noteDisplay;
+
+  /// How text positions are measured for selection.
   final UDocTextGeometry textGeometry;
+
+  /// Where "Save" writes the edited PDF.
   final String? savePath;
+
+  /// Vertical, horizontal or page-by-page.
   final UDocScrollMode scrollMode;
+
+  /// One page or two side by side.
   final UDocSpread spread;
+
+  /// Layout direction.
   final UDocDirection? direction;
+
+  /// Normal, night, sepia…
   final UDocColorMode colorMode;
+
+  /// HTTP headers for the video URL (e.g. auth).
   final Map<String, String>? headers;
+
+  /// Watermark text painted over the content.
   final UDocWatermark? watermark;
+
+  /// Draws your own widgets over each page.
   final UPdfPageOverlayBuilder? pageOverlayBuilder;
 
   /// Blocks screenshots and screen recording while the viewer is visible.
   final bool secure;
+
+  /// Action widgets/buttons.
   final List<Widget> actions;
+
+  /// Gives you the controller once the PDF is open.
   final void Function(UPdfController controller)? onControllerReady;
+
+  /// Called with the new page index.
   final void Function(int pageIndex)? onPageChanged;
+
+  /// Called when a link is tapped (default: open it).
   final void Function(UDocLink link)? onLinkTapped;
+
+  /// Called when the back button is pressed.
   final VoidCallback? onBack;
 
   @override
   State<UPdfViewer> createState() => UPdfViewerState();
 }
 
+/// State of UPdfViewer; use a GlobalKey to control it (pages, zoom, annotations).
 class UPdfViewerState extends State<UPdfViewer> {
   late UPdfController _controller;
   bool _ownsController = false;
@@ -172,16 +245,22 @@ class UPdfViewerState extends State<UPdfViewer> {
 
   /// Markups whose rects were computed with older text geometry are re-placed from their text.
   static const String geometryKey = "gv";
+
+  /// Version of the saved text geometry format.
   static const int geometryVersion = 2;
 
   static bool _needsPlacement(UDocMarkup markup) => !markup.isPlaced || markup.extra[geometryKey] != geometryVersion;
 
+  /// The PDF controller.
   UPdfController get controller => _controller;
 
+  /// Markup controller.
   UDocAnnotationController get annotations => _markup;
 
+  /// Edit controller (when editing).
   UPdfEditController? get editor => widget.editController ?? _internalEditor;
 
+  /// Drawing controller.
   UDocDrawController get drawing => _draw;
 
   bool get _drawingEnabled => widget.enableDrawing && widget.enableMarkup;
@@ -205,8 +284,10 @@ class UPdfViewerState extends State<UPdfViewer> {
     });
   }
 
+  /// Current page (0-based).
   int get currentPage => _visiblePage;
 
+  /// Runs [action] and rebuilds.
   void applyState(VoidCallback action) {
     if (mounted) setState(action);
   }
@@ -535,10 +616,13 @@ class UPdfViewerState extends State<UPdfViewer> {
     _jumpToPage(destination.pageIndex, pageY: device.dy);
   }
 
+  /// Goes to the next page.
   void nextPage() => _jumpToPage(_controller.settings.isPaged ? (_rows.isEmpty ? _visiblePage + 1 : (_rows[min(_rowOf(_visiblePage) + 1, _rows.length - 1)].first)) : _visiblePage + 1);
 
+  /// Goes to the previous page.
   void previousPage() => _jumpToPage(_controller.settings.isPaged ? (_rows.isEmpty ? _visiblePage - 1 : (_rows[max(_rowOf(_visiblePage) - 1, 0)].first)) : _visiblePage - 1);
 
+  /// Sets the zoom.
   void setZoom(double zoom) => _setZoom(zoom);
 
   void _setZoom(double next, {Offset? focal}) {
@@ -1378,7 +1462,8 @@ class UPdfViewerState extends State<UPdfViewer> {
     );
   }
 
-  double get _toolbarInset => widget.showToolbar && _chromeVisible ? 56 + MediaQuery.paddingOf(context).top + (_searchOpen ? 52 : 0) + (_toolsOpen && editor != null ? 52 : 0) + (_drawOpen ? 52 : 0) : 0;
+  double get _toolbarInset =>
+      widget.showToolbar && _chromeVisible ? 56 + MediaQuery.paddingOf(context).top + (_searchOpen ? 52 : 0) + (_toolsOpen && editor != null ? 52 : 0) + (_drawOpen ? 52 : 0) : 0;
 
   double get _bottomInset => widget.showBottomBar && _chromeVisible ? 60 + MediaQuery.paddingOf(context).bottom : 0;
 
@@ -2292,6 +2377,7 @@ class _UPdfMarkupPainter extends CustomPainter {
   bool shouldRepaint(_UPdfMarkupPainter oldDelegate) => oldDelegate.markups != markups || oldDelegate.size != size || oldDelegate.activeId != activeId || oldDelegate.showBadges != showBadges;
 }
 
+/// One rendered PDF page with highlights and selection (a building block of UPdfViewer).
 class UPdfPageView extends StatefulWidget {
   const UPdfPageView({
     required this.controller,
@@ -2315,25 +2401,58 @@ class UPdfPageView extends StatefulWidget {
     super.key,
   });
 
+  /// Controller to read or change it from code.
   final UPdfController controller;
+
+  /// Page number (0-based).
   final int pageIndex;
+
+  /// Render scale.
   final double displayScale;
+
+  /// Normal, night, sepia…
   final UDocColorMode colorMode;
+
+  /// Search hits to highlight.
   final List<UDocSearchHit> highlights;
+
+  /// The current search hit.
   final UDocSearchHit? activeHit;
+
+  /// Selected text rectangles.
   final List<Rect> selectionRects;
+
+  /// Selection color.
   final Color selectionColor;
+
+  /// Shows selection handles.
   final bool showHandles;
+
+  /// Allows text selection.
   final bool selectable;
+
+  /// Called when tapped.
   final void Function(Offset point)? onTap;
 
   /// Mouse clicks with their click count (1 = click, 2 = double, 3 = triple).
   final void Function(int count, Offset point)? onMouseTap;
+
+  /// Called on long press.
   final void Function(Offset point)? onLongPress;
+
+  /// Called while drag-selecting.
   final void Function(Offset point)? onDragSelect;
+
+  /// Selection started.
   final void Function(Offset point)? onSelectStart;
+
+  /// Selection moved.
   final void Function(Offset point)? onSelectUpdate;
+
+  /// Selection finished.
   final VoidCallback? onSelectEnd;
+
+  /// A selection handle was dragged.
   final void Function(bool isStart, Offset point)? onHandleDrag;
 
   @override
@@ -2609,12 +2728,20 @@ class _UPdfHighlightPainter extends CustomPainter {
       oldDelegate.selectionColor != selectionColor;
 }
 
+/// Table of contents panel of a PDF.
 class UPdfOutlinePanel extends StatelessWidget {
   const UPdfOutlinePanel({required this.controller, required this.onSelected, this.embedded = false, this.currentPage = -1, super.key});
 
+  /// Controller to read or change it from code.
   final UPdfController controller;
+
+  /// Called with the selected item.
   final void Function(UDocDestination destination) onSelected;
+
+  /// Drawn inside another panel (no own header).
   final bool embedded;
+
+  /// Current page to highlight.
   final int currentPage;
 
   List<Widget> _build(BuildContext context, List<UDocOutlineNode> nodes, int depth) {
@@ -2664,11 +2791,17 @@ class UPdfOutlinePanel extends StatelessWidget {
   }
 }
 
+/// Grid of page thumbnails.
 class UPdfThumbnailPanel extends StatelessWidget {
   const UPdfThumbnailPanel({required this.controller, required this.currentPage, required this.onSelected, super.key});
 
+  /// Controller to read or change it from code.
   final UPdfController controller;
+
+  /// Current page to highlight.
   final int currentPage;
+
+  /// Called with the selected item.
   final void Function(int pageIndex) onSelected;
 
   @override
@@ -2707,11 +2840,17 @@ class UPdfThumbnailPanel extends StatelessWidget {
   );
 }
 
+/// Thumbnail image of one page.
 class UPdfThumbnail extends StatefulWidget {
   const UPdfThumbnail({required this.controller, required this.pageIndex, this.maxSize = 220, super.key});
 
+  /// Controller to read or change it from code.
   final UPdfController controller;
+
+  /// Page number (0-based).
   final int pageIndex;
+
+  /// Longest side in pixels.
   final int maxSize;
 
   @override
@@ -2750,11 +2889,17 @@ class _UPdfThumbnailState extends State<UPdfThumbnail> {
   }
 }
 
+/// View settings (scroll mode, spread, color mode, fit).
 class UPdfSettingsPanel extends StatefulWidget {
   const UPdfSettingsPanel({required this.controller, required this.onChanged, this.onFit, super.key});
 
+  /// Controller to read or change it from code.
   final UPdfController controller;
+
+  /// Called with the new value when the user changes it.
   final VoidCallback onChanged;
+
+  /// Called with the chosen fit.
   final void Function(UDocFit fit)? onFit;
 
   @override
@@ -2929,7 +3074,9 @@ class _UPdfSettingsPanelState extends State<UPdfSettingsPanel> {
   );
 }
 
+/// PDF shortcuts: open a viewer, read text, read metadata; pure Dart, all platforms. `UPdf.show(url: url)`
 abstract class UPdf {
+  /// Opens a full-screen PDF viewer from url/bytes/file/asset/base64. `UPdf.show(url: "https://x.com/a.pdf")`
   static Future<void> show({String? base64Pdf, Uint8List? bytes, String? url, String? filePath, String? asset, String password = "", int initialPage = 0, String? title}) =>
       UNavigator.bottomSheet<void>(
         UScaffold(
@@ -2978,6 +3125,7 @@ abstract class UPdf {
     ),
   );
 
+  /// All text of a PDF (for search or AI).
   static Future<String> extractText({String? filePath, Uint8List? bytes, String? url, String password = "", int startPage = 0, int endPage = -1}) async {
     final UPdfDocument document = await UPdfDocument.open(path: filePath, bytes: bytes, url: url, password: password);
     final UPdfPageRenderer renderer = UPdfPageRenderer(document);
@@ -2992,6 +3140,7 @@ abstract class UPdf {
     return buffer.toString();
   }
 
+  /// Title, author, page count and other metadata.
   static Future<UDocMetadata?> info({String? filePath, Uint8List? bytes, String? url, String password = ""}) async {
     try {
       final UPdfDocument document = await UPdfDocument.open(path: filePath, bytes: bytes, url: url, password: password);

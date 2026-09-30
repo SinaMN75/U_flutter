@@ -1,6 +1,7 @@
-import "package:u/components/cached_image.dart";
+import "package:u/src/image/u_cached_image.dart";
 import "package:u/utilities.dart";
 
+/// One widget for any image: asset, URL (cached), SVG, Lottie (.json), base64 (raster/SVG/Lottie) or UFileData, with u's box and tap options. `UImage("https://x.com/a.jpg", width: 80, height: 80, borderRadius: 12)`
 class UImage extends StatelessWidget {
   const UImage(
     this.source, {
@@ -63,62 +64,175 @@ class UImage extends StatelessWidget {
     this.positionedHeight,
   });
 
+  /// Package the asset belongs to (for assets from other packages).
   final String? package;
+
+  /// Where the content comes from (asset, URL or path).
   final String source;
+
+  /// Content as UFileData (bytes or URL).
   final UFileData? fileData;
+
+  /// Main color (defaults to the theme).
   final Color? color;
+
+  /// Width in logical pixels (null = size to content).
   final double? width;
+
+  /// Height in logical pixels (null = size to content).
   final double? height;
+
+  /// How the content fits its box (BoxFit).
   final BoxFit fit;
+
+  /// Corner radius.
   final double borderRadius;
+
+  /// Shown while loading.
   final String? placeholder;
+
+  /// Shape of the widget.
   final BoxShape shape;
+
+  /// Border around it.
   final BoxBorder? border;
+
+  /// Shadows under it.
   final List<BoxShadow>? boxShadow;
+
+  /// Background gradient (overrides the color).
   final Gradient? gradient;
+
+  /// Background color.
   final Color? backgroundColor;
+
+  /// Space inside, around the content.
   final EdgeInsetsGeometry? padding;
+
+  /// Space outside, around the widget.
   final EdgeInsetsGeometry? margin;
+
+  /// Called when tapped.
   final GestureTapCallback? onTap;
+
+  /// Called on long press.
   final GestureLongPressCallback? onLongPress;
+
+  /// Called on double tap.
   final GestureTapCallback? onDoubleTap;
+
+  /// Shows a Material ripple on tap.
   final bool splash;
+
+  /// Scale while pressed, e.g. 0.95 for a subtle shrink.
   final double? pressedScale;
+
+  /// See-through amount, 0 (invisible) to 1 (solid).
   final double? opacity;
+
+  /// Hero tag for a shared-element animation between pages.
   final String? heroTag;
+
+  /// Text shown on long press / mouse hover.
   final String? tooltip;
+
+  /// Label read by screen readers.
   final String? semanticsLabel;
+
+  /// Tells screen readers this is a button.
   final bool? semanticsButton;
+
+  /// False hides it completely (takes no space).
   final bool visible;
+
+  /// Minimum width.
   final double? minWidth;
+
+  /// Maximum width.
   final double? maxWidth;
+
+  /// Minimum height.
   final double? minHeight;
+
+  /// Maximum height.
   final double? maxHeight;
+
+  /// Alignment of the content.
   final AlignmentGeometry? alignment;
+
+  /// Called when tapped, with a press-down shrink effect.
   final VoidCallback? onPress;
+
+  /// Called when a finger touches down.
   final GestureTapDownCallback? onTapDown;
+
+  /// Called when the finger lifts after a tap.
   final GestureTapUpCallback? onTapUp;
+
+  /// Called when a tap is cancelled.
   final GestureTapCancelCallback? onTapCancel;
+
+  /// Called on right-click / secondary tap.
   final GestureTapCallback? onSecondaryTap;
+
+  /// How taps on transparent areas are handled.
   final HitTestBehavior? hitTestBehavior;
+
+  /// Ripple color.
   final Color? splashColor;
+
+  /// Pressed highlight color.
   final Color? highlightColor;
+
+  /// Color while a mouse hovers (desktop, web).
   final Color? hoverColor;
+
+  /// Mouse cursor on hover (desktop, web).
   final MouseCursor? cursor;
+
+  /// Called with true/false when a mouse enters/leaves (desktop, web).
   final ValueChanged<bool>? onHover;
+
+  /// Scales the painted widget (1 = normal size).
   final double? scale;
+
+  /// Rotation in radians.
   final double? rotate;
+
+  /// Moves the painted widget by this offset (layout unchanged).
   final Offset? translate;
+
+  /// Centers it in the available space.
   final bool center;
+
+  /// Keeps it out of the notch and system bars.
   final bool safeArea;
+
+  /// Flex value to fill the remaining space in a Row/Column (null = off).
   final int? expanded;
+
+  /// Flex value to shrink in a Row/Column when space is tight (null = off).
   final int? flexible;
+
+  /// Wraps it in a Positioned (use inside a Stack) with top/left/right/bottom.
   final bool positioned;
+
+  /// Distance from the left when [positioned] in a Stack.
   final double? left;
+
+  /// Distance from the top when [positioned] in a Stack.
   final double? top;
+
+  /// Distance from the right when [positioned] in a Stack.
   final double? right;
+
+  /// Distance from the bottom when [positioned] in a Stack.
   final double? bottom;
+
+  /// Width when [positioned].
   final double? positionedWidth;
+
+  /// Height when [positioned].
   final double? positionedHeight;
 
   Widget _image(BuildContext context) {
@@ -211,6 +325,7 @@ class UImage extends StatelessWidget {
   );
 }
 
+/// Icon-sized UImage tinted with the theme's primary color (SVG/PNG icons). `UIconPrimary("assets/icons/home.svg", width: 24)`
 class UIconPrimary extends StatelessWidget {
   const UIconPrimary(
     this.source, {
@@ -250,39 +365,106 @@ class UIconPrimary extends StatelessWidget {
     this.positionedHeight,
   });
 
+  /// Package the asset belongs to (for assets from other packages).
   final String? package;
+
+  /// Where the content comes from (asset, URL or path).
   final String source;
+
+  /// Main color (defaults to the theme).
   final Color? color;
+
+  /// Width in logical pixels (null = size to content).
   final double? width;
+
+  /// Height in logical pixels (null = size to content).
   final double? height;
+
+  /// How the content fits its box (BoxFit).
   final BoxFit fit;
+
+  /// Shown while loading.
   final String? placeholder;
+
+  /// Called when tapped.
   final GestureTapCallback? onTap;
+
+  /// Called when tapped, with a press-down shrink effect.
   final VoidCallback? onPress;
+
+  /// Called on long press.
   final GestureLongPressCallback? onLongPress;
+
+  /// Called on double tap.
   final GestureTapCallback? onDoubleTap;
+
+  /// Shows a Material ripple on tap.
   final bool splash;
+
+  /// Scale while pressed, e.g. 0.95 for a subtle shrink.
   final double? pressedScale;
+
+  /// Mouse cursor on hover (desktop, web).
   final MouseCursor? cursor;
+
+  /// Called with true/false when a mouse enters/leaves (desktop, web).
   final ValueChanged<bool>? onHover;
+
+  /// Space outside, around the widget.
   final EdgeInsetsGeometry? margin;
+
+  /// See-through amount, 0 (invisible) to 1 (solid).
   final double? opacity;
+
+  /// Text shown on long press / mouse hover.
   final String? tooltip;
+
+  /// Hero tag for a shared-element animation between pages.
   final String? heroTag;
+
+  /// False hides it completely (takes no space).
   final bool visible;
+
+  /// Scales the painted widget (1 = normal size).
   final double? scale;
+
+  /// Rotation in radians.
   final double? rotate;
+
+  /// Moves the painted widget by this offset (layout unchanged).
   final Offset? translate;
+
+  /// Centers it in the available space.
   final bool center;
+
+  /// Keeps it out of the notch and system bars.
   final bool safeArea;
+
+  /// Flex value to fill the remaining space in a Row/Column (null = off).
   final int? expanded;
+
+  /// Flex value to shrink in a Row/Column when space is tight (null = off).
   final int? flexible;
+
+  /// Wraps it in a Positioned (use inside a Stack) with top/left/right/bottom.
   final bool positioned;
+
+  /// Distance from the left when [positioned] in a Stack.
   final double? left;
+
+  /// Distance from the top when [positioned] in a Stack.
   final double? top;
+
+  /// Distance from the right when [positioned] in a Stack.
   final double? right;
+
+  /// Distance from the bottom when [positioned] in a Stack.
   final double? bottom;
+
+  /// Width when [positioned].
   final double? positionedWidth;
+
+  /// Height when [positioned].
   final double? positionedHeight;
 
   @override
@@ -324,6 +506,7 @@ class UIconPrimary extends StatelessWidget {
   );
 }
 
+/// Asset image (PNG/JPG/WebP/SVG by extension). `UImageAsset("assets/logo.png", width: 120)`
 class UImageAsset extends StatelessWidget {
   const UImageAsset(
     this.path, {
@@ -364,40 +547,109 @@ class UImageAsset extends StatelessWidget {
     super.key,
   });
 
+  /// Package the asset belongs to (for assets from other packages).
   final String? package;
+
+  /// Asset path.
   final String path;
+
+  /// Shown while loading.
   final String? placeholder;
+
+  /// Main color (defaults to the theme).
   final Color? color;
+
+  /// Width in logical pixels (null = size to content).
   final double? width;
+
+  /// Height in logical pixels (null = size to content).
   final double? height;
+
+  /// How the content fits its box (BoxFit).
   final BoxFit fit;
+
+  /// How content outside the bounds is clipped.
   final Clip clipBehavior;
+
+  /// Called when tapped.
   final GestureTapCallback? onTap;
+
+  /// Called when tapped, with a press-down shrink effect.
   final VoidCallback? onPress;
+
+  /// Called on long press.
   final GestureLongPressCallback? onLongPress;
+
+  /// Called on double tap.
   final GestureTapCallback? onDoubleTap;
+
+  /// Shows a Material ripple on tap.
   final bool splash;
+
+  /// Scale while pressed, e.g. 0.95 for a subtle shrink.
   final double? pressedScale;
+
+  /// Mouse cursor on hover (desktop, web).
   final MouseCursor? cursor;
+
+  /// Called with true/false when a mouse enters/leaves (desktop, web).
   final ValueChanged<bool>? onHover;
+
+  /// Space outside, around the widget.
   final EdgeInsetsGeometry? margin;
+
+  /// See-through amount, 0 (invisible) to 1 (solid).
   final double? opacity;
+
+  /// Text shown on long press / mouse hover.
   final String? tooltip;
+
+  /// Hero tag for a shared-element animation between pages.
   final String? heroTag;
+
+  /// False hides it completely (takes no space).
   final bool visible;
+
+  /// Scales the painted widget (1 = normal size).
   final double? scale;
+
+  /// Rotation in radians.
   final double? rotate;
+
+  /// Moves the painted widget by this offset (layout unchanged).
   final Offset? translate;
+
+  /// Centers it in the available space.
   final bool center;
+
+  /// Keeps it out of the notch and system bars.
   final bool safeArea;
+
+  /// Flex value to fill the remaining space in a Row/Column (null = off).
   final int? expanded;
+
+  /// Flex value to shrink in a Row/Column when space is tight (null = off).
   final int? flexible;
+
+  /// Wraps it in a Positioned (use inside a Stack) with top/left/right/bottom.
   final bool positioned;
+
+  /// Distance from the left when [positioned] in a Stack.
   final double? left;
+
+  /// Distance from the top when [positioned] in a Stack.
   final double? top;
+
+  /// Distance from the right when [positioned] in a Stack.
   final double? right;
+
+  /// Distance from the bottom when [positioned] in a Stack.
   final double? bottom;
+
+  /// Width when [positioned].
   final double? positionedWidth;
+
+  /// Height when [positioned].
   final double? positionedHeight;
 
   @override
@@ -473,6 +725,7 @@ class UImageAsset extends StatelessWidget {
   );
 }
 
+/// Network image with disk cache and placeholder (SVG by extension). `UImageNetwork(url, width: 64, height: 64)`
 class UImageNetwork extends StatelessWidget {
   const UImageNetwork(
     this.url, {
@@ -513,40 +766,109 @@ class UImageNetwork extends StatelessWidget {
     super.key,
   });
 
+  /// Package the asset belongs to (for assets from other packages).
   final String? package;
+
+  /// Web address of the content.
   final String url;
+
+  /// Main color (defaults to the theme).
   final Color? color;
+
+  /// Width in logical pixels (null = size to content).
   final double? width;
+
+  /// Height in logical pixels (null = size to content).
   final double? height;
+
+  /// How the content fits its box (BoxFit).
   final BoxFit fit;
+
+  /// How content outside the bounds is clipped.
   final Clip clipBehavior;
+
+  /// Shown while loading.
   final String? placeholder;
+
+  /// Called when tapped.
   final GestureTapCallback? onTap;
+
+  /// Called when tapped, with a press-down shrink effect.
   final VoidCallback? onPress;
+
+  /// Called on long press.
   final GestureLongPressCallback? onLongPress;
+
+  /// Called on double tap.
   final GestureTapCallback? onDoubleTap;
+
+  /// Shows a Material ripple on tap.
   final bool splash;
+
+  /// Scale while pressed, e.g. 0.95 for a subtle shrink.
   final double? pressedScale;
+
+  /// Mouse cursor on hover (desktop, web).
   final MouseCursor? cursor;
+
+  /// Called with true/false when a mouse enters/leaves (desktop, web).
   final ValueChanged<bool>? onHover;
+
+  /// Space outside, around the widget.
   final EdgeInsetsGeometry? margin;
+
+  /// See-through amount, 0 (invisible) to 1 (solid).
   final double? opacity;
+
+  /// Text shown on long press / mouse hover.
   final String? tooltip;
+
+  /// Hero tag for a shared-element animation between pages.
   final String? heroTag;
+
+  /// False hides it completely (takes no space).
   final bool visible;
+
+  /// Scales the painted widget (1 = normal size).
   final double? scale;
+
+  /// Rotation in radians.
   final double? rotate;
+
+  /// Moves the painted widget by this offset (layout unchanged).
   final Offset? translate;
+
+  /// Centers it in the available space.
   final bool center;
+
+  /// Keeps it out of the notch and system bars.
   final bool safeArea;
+
+  /// Flex value to fill the remaining space in a Row/Column (null = off).
   final int? expanded;
+
+  /// Flex value to shrink in a Row/Column when space is tight (null = off).
   final int? flexible;
+
+  /// Wraps it in a Positioned (use inside a Stack) with top/left/right/bottom.
   final bool positioned;
+
+  /// Distance from the left when [positioned] in a Stack.
   final double? left;
+
+  /// Distance from the top when [positioned] in a Stack.
   final double? top;
+
+  /// Distance from the right when [positioned] in a Stack.
   final double? right;
+
+  /// Distance from the bottom when [positioned] in a Stack.
   final double? bottom;
+
+  /// Width when [positioned].
   final double? positionedWidth;
+
+  /// Height when [positioned].
   final double? positionedHeight;
 
   @override
@@ -636,6 +958,7 @@ class UImageNetwork extends StatelessWidget {
   );
 }
 
+/// Image from a File on disk (not on web). `UImageFile(File(path))`
 class UImageFile extends StatelessWidget {
   const UImageFile(
     this.file, {
@@ -673,37 +996,100 @@ class UImageFile extends StatelessWidget {
     super.key,
   });
 
+  /// The image file.
   final File file;
+
+  /// Main color (defaults to the theme).
   final Color? color;
+
+  /// Width in logical pixels (null = size to content).
   final double? width;
+
+  /// Height in logical pixels (null = size to content).
   final double? height;
+
+  /// How the content fits its box (BoxFit).
   final BoxFit fit;
+
+  /// Called when tapped.
   final GestureTapCallback? onTap;
+
+  /// Called when tapped, with a press-down shrink effect.
   final VoidCallback? onPress;
+
+  /// Called on long press.
   final GestureLongPressCallback? onLongPress;
+
+  /// Called on double tap.
   final GestureTapCallback? onDoubleTap;
+
+  /// Shows a Material ripple on tap.
   final bool splash;
+
+  /// Scale while pressed, e.g. 0.95 for a subtle shrink.
   final double? pressedScale;
+
+  /// Mouse cursor on hover (desktop, web).
   final MouseCursor? cursor;
+
+  /// Called with true/false when a mouse enters/leaves (desktop, web).
   final ValueChanged<bool>? onHover;
+
+  /// Space outside, around the widget.
   final EdgeInsetsGeometry? margin;
+
+  /// See-through amount, 0 (invisible) to 1 (solid).
   final double? opacity;
+
+  /// Text shown on long press / mouse hover.
   final String? tooltip;
+
+  /// Hero tag for a shared-element animation between pages.
   final String? heroTag;
+
+  /// False hides it completely (takes no space).
   final bool visible;
+
+  /// Scales the painted widget (1 = normal size).
   final double? scale;
+
+  /// Rotation in radians.
   final double? rotate;
+
+  /// Moves the painted widget by this offset (layout unchanged).
   final Offset? translate;
+
+  /// Centers it in the available space.
   final bool center;
+
+  /// Keeps it out of the notch and system bars.
   final bool safeArea;
+
+  /// Flex value to fill the remaining space in a Row/Column (null = off).
   final int? expanded;
+
+  /// Flex value to shrink in a Row/Column when space is tight (null = off).
   final int? flexible;
+
+  /// Wraps it in a Positioned (use inside a Stack) with top/left/right/bottom.
   final bool positioned;
+
+  /// Distance from the left when [positioned] in a Stack.
   final double? left;
+
+  /// Distance from the top when [positioned] in a Stack.
   final double? top;
+
+  /// Distance from the right when [positioned] in a Stack.
   final double? right;
+
+  /// Distance from the bottom when [positioned] in a Stack.
   final double? bottom;
+
+  /// Width when [positioned].
   final double? positionedWidth;
+
+  /// Height when [positioned].
   final double? positionedHeight;
 
   @override
@@ -751,6 +1137,7 @@ class UImageFile extends StatelessWidget {
   }
 }
 
+/// Image from bytes in memory. `UImageMemory(bytes, width: 100)`
 class UImageMemory extends StatelessWidget {
   const UImageMemory(
     this.file, {
@@ -789,38 +1176,103 @@ class UImageMemory extends StatelessWidget {
     super.key,
   });
 
+  /// The image bytes.
   final Uint8List file;
+
+  /// Main color (defaults to the theme).
   final Color? color;
+
+  /// Width in logical pixels (null = size to content).
   final double? width;
+
+  /// Height in logical pixels (null = size to content).
   final double? height;
+
+  /// How the content fits its box (BoxFit).
   final BoxFit fit;
+
+  /// Shown while loading.
   final String? placeholder;
+
+  /// Called when tapped.
   final GestureTapCallback? onTap;
+
+  /// Called when tapped, with a press-down shrink effect.
   final VoidCallback? onPress;
+
+  /// Called on long press.
   final GestureLongPressCallback? onLongPress;
+
+  /// Called on double tap.
   final GestureTapCallback? onDoubleTap;
+
+  /// Shows a Material ripple on tap.
   final bool splash;
+
+  /// Scale while pressed, e.g. 0.95 for a subtle shrink.
   final double? pressedScale;
+
+  /// Mouse cursor on hover (desktop, web).
   final MouseCursor? cursor;
+
+  /// Called with true/false when a mouse enters/leaves (desktop, web).
   final ValueChanged<bool>? onHover;
+
+  /// Space outside, around the widget.
   final EdgeInsetsGeometry? margin;
+
+  /// See-through amount, 0 (invisible) to 1 (solid).
   final double? opacity;
+
+  /// Text shown on long press / mouse hover.
   final String? tooltip;
+
+  /// Hero tag for a shared-element animation between pages.
   final String? heroTag;
+
+  /// False hides it completely (takes no space).
   final bool visible;
+
+  /// Scales the painted widget (1 = normal size).
   final double? scale;
+
+  /// Rotation in radians.
   final double? rotate;
+
+  /// Moves the painted widget by this offset (layout unchanged).
   final Offset? translate;
+
+  /// Centers it in the available space.
   final bool center;
+
+  /// Keeps it out of the notch and system bars.
   final bool safeArea;
+
+  /// Flex value to fill the remaining space in a Row/Column (null = off).
   final int? expanded;
+
+  /// Flex value to shrink in a Row/Column when space is tight (null = off).
   final int? flexible;
+
+  /// Wraps it in a Positioned (use inside a Stack) with top/left/right/bottom.
   final bool positioned;
+
+  /// Distance from the left when [positioned] in a Stack.
   final double? left;
+
+  /// Distance from the top when [positioned] in a Stack.
   final double? top;
+
+  /// Distance from the right when [positioned] in a Stack.
   final double? right;
+
+  /// Distance from the bottom when [positioned] in a Stack.
   final double? bottom;
+
+  /// Width when [positioned].
   final double? positionedWidth;
+
+  /// Height when [positioned].
   final double? positionedHeight;
 
   @override
@@ -877,6 +1329,7 @@ class UImageMemory extends StatelessWidget {
   }
 }
 
+/// What a base64 image holds: raster (PNG/JPG…), SVG or Lottie JSON.
 enum UBase64ImageKind { raster, svg, lottie }
 
 /// A decoded base64 image source: either a `data:<mime>;base64,<payload>` URI
@@ -884,7 +1337,10 @@ enum UBase64ImageKind { raster, svg, lottie }
 class UBase64Image {
   const UBase64Image._(this.bytes, this.kind);
 
+  /// Content as bytes in memory.
   final Uint8List bytes;
+
+  /// What the decoded bytes are.
   final UBase64ImageKind kind;
 
   static const int _maxCacheEntries = 64;
@@ -893,8 +1349,10 @@ class UBase64Image {
   static final RegExp _alphabet = RegExp(r"^[A-Za-z0-9+/\-_]+={0,2}$");
   static final RegExp _whitespace = RegExp(r"\s");
 
+  /// True when [source] looks like base64 image data (with or without a data: prefix).
   static bool isBase64(String source) => tryParse(source) != null;
 
+  /// Decodes base64 image text and detects its kind; null when it is not base64.
   static UBase64Image? tryParse(String source) {
     final bool isDataUri = source.startsWith("data:");
     if (!isDataUri && (source.length < _minBarePayloadLength || source.contains("."))) return null;

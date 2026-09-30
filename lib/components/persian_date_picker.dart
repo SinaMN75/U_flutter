@@ -2,6 +2,7 @@ import "package:u/utilities.dart";
 
 enum _PickerMode { calendar, selectYear, selectMonth }
 
+/// Classic Jalali date picker dialog.
 class UJalaliDatePickerDialog extends StatefulWidget {
   const UJalaliDatePickerDialog({
     required this.initialDate,
@@ -11,9 +12,16 @@ class UJalaliDatePickerDialog extends StatefulWidget {
     super.key,
   });
 
+  /// Date selected at start.
   final UJalali initialDate;
+
+  /// First year.
   final int startYear;
+
+  /// Last year.
   final int endYear;
+
+  /// Called with the chosen date.
   final Function(DateTime, UJalali) onDateSelected;
 
   @override

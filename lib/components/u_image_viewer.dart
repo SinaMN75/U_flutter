@@ -1,5 +1,6 @@
 import "package:u/utilities.dart";
 
+/// Full-screen zoomable image (pinch, double-tap, hero). `UNavigator.push(UImageViewer(fileData: UFileData(url: url)))`
 class UImageViewer extends StatelessWidget {
   const UImageViewer({
     required this.fileData,
@@ -10,10 +11,19 @@ class UImageViewer extends StatelessWidget {
     this.backgroundColor = Colors.black,
   });
 
+  /// Content as UFileData (bytes or URL).
   final UFileData fileData;
+
+  /// Hero tag for a shared-element animation between pages.
   final String? heroTag;
+
+  /// Smallest zoom.
   final double minScale;
+
+  /// Largest zoom.
   final double maxScale;
+
+  /// Background color.
   final Color backgroundColor;
 
   ImageProvider _getImageProvider() {
@@ -82,6 +92,7 @@ class UImageViewer extends StatelessWidget {
   );
 }
 
+/// Zoomable image viewer with swipe-down to close and smooth double-tap zoom. `UBetterImageViewer(fileData: file)`
 class UBetterImageViewer extends StatefulWidget {
   const UBetterImageViewer({
     required this.fileData,
@@ -92,10 +103,19 @@ class UBetterImageViewer extends StatefulWidget {
     this.backgroundColor = Colors.black,
   });
 
+  /// Content as UFileData (bytes or URL).
   final UFileData fileData;
+
+  /// Hero tag for a shared-element animation between pages.
   final String? heroTag;
+
+  /// Smallest zoom.
   final double minScale;
+
+  /// Largest zoom.
   final double maxScale;
+
+  /// Background color.
   final Color backgroundColor;
 
   @override
@@ -255,6 +275,7 @@ class _BetterImageViewerState extends State<UBetterImageViewer> {
   );
 }
 
+/// Swipeable full-screen gallery of zoomable images. `UImageGalleryViewer(files: photos, initialIndex: 2)`
 class UImageGalleryViewer extends StatefulWidget {
   const UImageGalleryViewer({
     required this.files,
@@ -265,10 +286,19 @@ class UImageGalleryViewer extends StatefulWidget {
     this.maxScale = 4.0,
   });
 
+  /// The images.
   final List<UFileData> files;
+
+  /// Index selected at start.
   final int initialIndex;
+
+  /// Background color.
   final Color backgroundColor;
+
+  /// Smallest zoom.
   final double minScale;
+
+  /// Largest zoom.
   final double maxScale;
 
   @override

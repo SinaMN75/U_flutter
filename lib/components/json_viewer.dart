@@ -1,8 +1,14 @@
 import "package:u/utilities.dart";
 
+/// Collapsible, colored JSON tree (debug screens, API logs). `UJsonViewer(jsonString: body)`
 class UJsonViewer extends StatelessWidget {
+  /// JSON text to show.
   final String jsonString;
+
+  /// Font size.
   final double fontSize;
+
+  /// Space inside, around the content.
   final EdgeInsets padding;
 
   const UJsonViewer({

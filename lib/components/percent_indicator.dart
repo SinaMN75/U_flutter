@@ -2,11 +2,15 @@ import "dart:math";
 
 import "package:flutter/material.dart";
 
+/// Arc style of UCircularPercentIndicator: half (180°) or full.
 enum UArcType { half, full }
 
+/// End shape of the progress line: round, square or butt.
 enum UCircularStrokeCap { butt, round, square }
 
+/// Converts UCircularStrokeCap to a StrokeCap.
 extension CircularStrokeCapExtension on UCircularStrokeCap {
+  /// The matching StrokeCap.
   StrokeCap get strokeCap {
     switch (this) {
       case UCircularStrokeCap.butt:
@@ -19,8 +23,10 @@ extension CircularStrokeCapExtension on UCircularStrokeCap {
   }
 }
 
+/// Degrees → radians. `radians(90)`
 num radians(num deg) => deg * (pi / 180.0);
 
+/// Animated circular progress with a center widget. `UCircularPercentIndicator(radius: 40, percent: 0.7, center: const Text("70%"))`
 class UCircularPercentIndicator extends StatefulWidget {
   UCircularPercentIndicator({
     required this.radius,
@@ -63,31 +69,82 @@ class UCircularPercentIndicator extends StatefulWidget {
     }
   }
 
+  /// Progress 0-1.
   final double percent;
+
+  /// Corner radius.
   final double radius;
+
+  /// Progress line width.
   final double lineWidth;
+
+  /// Background ring width.
   final double backgroundWidth;
+
+  /// Fill color.
   final Color fillColor;
+
+  /// Background color.
   final Color backgroundColor;
+
+  /// Color of the progress part.
   final Color? progressColor;
+
+  /// Animates changes.
   final bool animation;
+
+  /// Length of the animation.
   final int animationDuration;
+
+  /// Widget at the top.
   final Widget? header;
+
+  /// Widget at the bottom.
   final Widget? footer;
+
+  /// Centers it in the available space.
   final Widget? center;
+
+  /// Gradient for the progress line.
   final LinearGradient? linearGradient;
+
+  /// Line end shape.
   final UCircularStrokeCap circularStrokeCap;
+
+  /// Start angle in degrees.
   final double startAngle;
+
+  /// Animates from the previous value instead of 0.
   final bool animateFromLastPercent;
+
+  /// Keeps its state in lists.
   final bool addAutomaticKeepAlive;
+
+  /// Half or full arc (null = full circle).
   final UArcType? arcType;
+
+  /// Arc background color.
   final Color? arcBackgroundColor;
+
+  /// Reverses the order.
   final bool reverse;
+
+  /// Glow/blur on the line.
   final MaskFilter? maskFilter;
+
+  /// Animation curve.
   final Curve curve;
+
+  /// Plays the animation again on rebuild.
   final bool restartAnimation;
+
+  /// Called when the animation ends.
   final VoidCallback? onAnimationEnd;
+
+  /// Widget riding on the tip of the progress.
   final Widget? widgetIndicator;
+
+  /// Rotates the gradient with the progress.
   final bool rotateLinearGradient;
 
   @override
@@ -403,6 +460,7 @@ class _CirclePainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => true;
 }
 
+/// Animated progress bar with leading/trailing/center widgets. `ULinearPercentIndicator(percent: 0.4, lineHeight: 8)`
 class ULinearPercentIndicator extends StatefulWidget {
   ULinearPercentIndicator({
     super.key,
@@ -443,30 +501,79 @@ class ULinearPercentIndicator extends StatefulWidget {
     }
   }
 
+  /// Progress 0-1.
   final double percent;
+
+  /// Width in logical pixels (null = size to content).
   final double? width;
+
+  /// Bar thickness.
   final double lineHeight;
+
+  /// Fill color.
   final Color fillColor;
+
+  /// Background color.
   final Color backgroundColor;
+
+  /// Gradient for the background.
   final LinearGradient? linearGradientBackgroundColor;
+
+  /// Color of the progress part.
   final Color progressColor;
+
+  /// Animates changes.
   final bool animation;
+
+  /// Length of the animation.
   final int animationDuration;
+
+  /// Widget at the start.
   final Widget? leading;
+
+  /// Widget at the end.
   final Widget? trailing;
+
+  /// Centers it in the available space.
   final Widget? center;
+
+  /// Bar corner radius.
   final Radius? barRadius;
+
+  /// Alignment of the content.
   final MainAxisAlignment alignment;
+
+  /// Space inside, around the content.
   final EdgeInsets padding;
+
+  /// Animates from the previous value instead of 0.
   final bool animateFromLastPercent;
+
+  /// Gradient for the progress.
   final LinearGradient? linearGradient;
+
+  /// Keeps its state in lists.
   final bool addAutomaticKeepAlive;
+
+  /// Fills from right to left.
   final bool isRTL;
+
+  /// Glow/blur on the bar.
   final MaskFilter? maskFilter;
+
+  /// Clips the gradient to the progress.
   final bool clipLinearGradient;
+
+  /// Animation curve.
   final Curve curve;
+
+  /// Plays the animation again on rebuild.
   final bool restartAnimation;
+
+  /// Called when the animation ends.
   final VoidCallback? onAnimationEnd;
+
+  /// Widget riding on the tip of the progress.
   final Widget? widgetIndicator;
 
   @override

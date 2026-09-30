@@ -1,5 +1,6 @@
 import "package:u/utilities.dart";
 
+/// Small rounded square with the first letter of [label] (avatars, steps). `ULetterBadge("Sina", background: Colors.teal, foreground: Colors.white)`
 class ULetterBadge extends StatelessWidget {
   const ULetterBadge(
     this.label, {
@@ -10,10 +11,19 @@ class ULetterBadge extends StatelessWidget {
     super.key,
   });
 
+  /// Label text.
   final String label;
+
+  /// Box color.
   final Color background;
+
+  /// Letter color.
   final Color foreground;
+
+  /// Size in logical pixels.
   final double size;
+
+  /// Corner radius.
   final double radius;
 
   @override
@@ -23,16 +33,18 @@ class ULetterBadge extends StatelessWidget {
     radius: radius,
     color: background,
     alignment: Alignment.center,
-    child: UTextLabelLarge(label.substring(0, 1), color: foreground, fontWeight: FontWeight.bold),
+    child: UTextLabelLarge(label.isEmpty ? "" : label.characters.first, color: foreground, fontWeight: FontWeight.bold),
   );
 }
 
+/// Badge appear animation: slide, fade, scale or none.
 enum UBadgeAnimationType {
   slide,
   scale,
   fade,
 }
 
+/// Puts a badge (count, dot) on a corner of any widget. `UBadgeWidget(badgeContent: const Text("3"), child: const Icon(Icons.shopping_cart))`
 class UBadgeWidget extends StatefulWidget {
   const UBadgeWidget({
     super.key,
@@ -55,44 +67,62 @@ class UBadgeWidget extends StatefulWidget {
     this.gradient,
   });
 
+  /// The widget inside.
   final Widget? child;
 
+  /// Alignment of the content.
   final AlignmentGeometry alignment;
 
+  /// Where it is placed.
   final UBadgePosition? position;
 
+  /// Inside the badge (text or icon); null = a dot.
   final Widget? badgeContent;
 
+  /// Lets taps pass through the badge.
   final bool ignorePointer;
 
+  /// Badge color.
   final Color badgeColor;
 
+  /// Background gradient (overrides the color).
   final Gradient? gradient;
 
+  /// Shadow depth.
   final double elevation;
 
+  /// Animates when content changes.
   final bool toAnimate;
 
+  /// Length of the animation.
   final Duration animationDuration;
 
+  /// Animation type.
   final UBadgeAnimationType animationType;
 
+  /// Shape of the widget.
   final UBadgeShape shape;
 
+  /// Badge border.
   final BorderSide borderSide;
 
+  /// How the child fills the stack.
   final StackFit stackFit;
 
+  /// Corner radius.
   final BorderRadiusGeometry borderRadius;
 
+  /// Space inside, around the content.
   final EdgeInsetsGeometry padding;
 
+  /// False hides the badge.
   final bool showBadge;
 
   @override
   UBadgeState createState() => UBadgeState();
 }
 
+/// State of UBadgeWidget.
 class UBadgeState extends State<UBadgeWidget> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _animation;
@@ -228,39 +258,55 @@ class UBadgeState extends State<UBadgeWidget> with SingleTickerProviderStateMixi
   }
 }
 
+/// Where the badge sits on the child.
 class UBadgePosition {
   const UBadgePosition({this.top, this.end, this.bottom, this.start, this.isCenter = false});
 
+  /// In the middle.
   factory UBadgePosition.center() => const UBadgePosition(isCenter: true);
 
+  /// Top-start corner.
   factory UBadgePosition.topStart({double top = -5, double start = -10}) => UBadgePosition(top: top, start: start);
 
+  /// Top-end corner (default).
   factory UBadgePosition.topEnd({double top = -8, double end = -10}) => UBadgePosition(top: top, end: end);
 
+  /// Bottom-end corner.
   factory UBadgePosition.bottomEnd({double bottom = -8, double end = -10}) => UBadgePosition(bottom: bottom, end: end);
 
+  /// Bottom-start corner.
   factory UBadgePosition.bottomStart({double bottom = -8, double start = -10}) => UBadgePosition(bottom: bottom, start: start);
+
+  /// Distance from the top when [positioned] in a Stack.
   final double? top;
 
+  /// Distance from the end edge.
   final double? end;
 
+  /// Distance from the start edge.
   final double? start;
 
+  /// Distance from the bottom when [positioned] in a Stack.
   final double? bottom;
 
+  /// True when centered.
   final bool isCenter;
 }
 
+/// Badge shape: circle, square or pill.
 enum UBadgeShape {
   circle,
   square,
 }
 
+/// Positions a badge inside UBadgeWidget.
 class UBadgePositioned extends StatelessWidget {
   const UBadgePositioned({required this.child, super.key, this.position});
 
+  /// Where it is placed.
   final UBadgePosition? position;
 
+  /// The widget inside.
   final Widget child;
 
   @override

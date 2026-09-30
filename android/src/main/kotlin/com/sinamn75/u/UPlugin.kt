@@ -117,6 +117,7 @@ class UPlugin :
         location?.attach(binding)
         notify?.attach(binding)
         screenGuard?.setActivity(binding.activity)
+        device?.setActivity(binding.activity)
         media?.setActivity(binding.activity)
         camera?.setActivity(binding.activity)
         camera?.let { binding.addRequestPermissionsResultListener(it) }
@@ -136,6 +137,7 @@ class UPlugin :
         location?.attach(binding)
         notify?.attach(binding)
         screenGuard?.setActivity(binding.activity)
+        device?.setActivity(binding.activity)
         media?.setActivity(binding.activity)
         camera?.setActivity(binding.activity)
         camera?.let { binding.addRequestPermissionsResultListener(it) }
@@ -166,6 +168,7 @@ class UPlugin :
     override fun onDetachedFromActivityForConfigChanges() {
         detachLeaveHint()
         screenGuard?.setActivity(null)
+        device?.setActivity(null)
         media?.setActivity(null)
         camera?.setActivity(null)
         ar?.setActivity(null)
@@ -175,6 +178,7 @@ class UPlugin :
     override fun onDetachedFromActivity() {
         detachLeaveHint()
         screenGuard?.setActivity(null)
+        device?.setActivity(null)
         media?.setActivity(null)
         camera?.setActivity(null)
         ar?.setActivity(null)

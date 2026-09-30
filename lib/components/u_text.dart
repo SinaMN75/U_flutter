@@ -237,6 +237,7 @@ abstract class _UText extends StatelessWidget {
   }
 }
 
+/// Text in the theme's displayLarge style with color/weight/lines options. `UTextDisplayLarge("Welcome")`
 class UTextDisplayLarge extends _UText {
   const UTextDisplayLarge(
     super.text, {
@@ -309,6 +310,7 @@ class UTextDisplayLarge extends _UText {
   TextStyle _baseStyle(BuildContext context) => Theme.of(context).textTheme.displayLarge!;
 }
 
+/// Text in displayMedium style. `UTextDisplayMedium("1,250")`
 class UTextDisplayMedium extends _UText {
   const UTextDisplayMedium(
     super.text, {
@@ -381,6 +383,7 @@ class UTextDisplayMedium extends _UText {
   TextStyle _baseStyle(BuildContext context) => Theme.of(context).textTheme.displayMedium!;
 }
 
+/// Text in displaySmall style.
 class UTextDisplaySmall extends _UText {
   const UTextDisplaySmall(
     super.text, {
@@ -453,6 +456,7 @@ class UTextDisplaySmall extends _UText {
   TextStyle _baseStyle(BuildContext context) => Theme.of(context).textTheme.displaySmall!;
 }
 
+/// Text in headlineLarge style.
 class UTextHeadlineLarge extends _UText {
   const UTextHeadlineLarge(
     super.text, {
@@ -525,6 +529,7 @@ class UTextHeadlineLarge extends _UText {
   TextStyle _baseStyle(BuildContext context) => Theme.of(context).textTheme.headlineLarge!;
 }
 
+/// Text in headlineMedium style.
 class UTextHeadlineMedium extends _UText {
   const UTextHeadlineMedium(
     super.text, {
@@ -597,6 +602,7 @@ class UTextHeadlineMedium extends _UText {
   TextStyle _baseStyle(BuildContext context) => Theme.of(context).textTheme.headlineMedium!;
 }
 
+/// Text in headlineSmall style.
 class UTextHeadlineSmall extends _UText {
   const UTextHeadlineSmall(
     super.text, {
@@ -669,6 +675,7 @@ class UTextHeadlineSmall extends _UText {
   TextStyle _baseStyle(BuildContext context) => Theme.of(context).textTheme.headlineSmall!;
 }
 
+/// Text in titleLarge style (page/card titles). `UTextTitleLarge("Orders")`
 class UTextTitleLarge extends _UText {
   const UTextTitleLarge(
     super.text, {
@@ -741,6 +748,7 @@ class UTextTitleLarge extends _UText {
   TextStyle _baseStyle(BuildContext context) => Theme.of(context).textTheme.titleLarge!;
 }
 
+/// Text in titleMedium style.
 class UTextTitleMedium extends _UText {
   const UTextTitleMedium(
     super.text, {
@@ -813,6 +821,7 @@ class UTextTitleMedium extends _UText {
   TextStyle _baseStyle(BuildContext context) => Theme.of(context).textTheme.titleMedium!;
 }
 
+/// Text in titleSmall style.
 class UTextTitleSmall extends _UText {
   const UTextTitleSmall(
     super.text, {
@@ -885,6 +894,7 @@ class UTextTitleSmall extends _UText {
   TextStyle _baseStyle(BuildContext context) => Theme.of(context).textTheme.titleSmall!;
 }
 
+/// Text in bodyLarge style.
 class UTextBodyLarge extends _UText {
   const UTextBodyLarge(
     super.text, {
@@ -957,6 +967,7 @@ class UTextBodyLarge extends _UText {
   TextStyle _baseStyle(BuildContext context) => Theme.of(context).textTheme.bodyLarge!;
 }
 
+/// Text in bodyMedium style (normal text). `UTextBodyMedium(description, maxLines: 2)`
 class UTextBodyMedium extends _UText {
   const UTextBodyMedium(
     super.text, {
@@ -1029,6 +1040,7 @@ class UTextBodyMedium extends _UText {
   TextStyle _baseStyle(BuildContext context) => Theme.of(context).textTheme.bodyMedium!;
 }
 
+/// Text in bodySmall style (secondary text).
 class UTextBodySmall extends _UText {
   const UTextBodySmall(
     super.text, {
@@ -1101,6 +1113,7 @@ class UTextBodySmall extends _UText {
   TextStyle _baseStyle(BuildContext context) => Theme.of(context).textTheme.bodySmall!;
 }
 
+/// Text in labelLarge style (buttons).
 class UTextLabelLarge extends _UText {
   const UTextLabelLarge(
     super.text, {
@@ -1173,6 +1186,7 @@ class UTextLabelLarge extends _UText {
   TextStyle _baseStyle(BuildContext context) => Theme.of(context).textTheme.labelLarge!;
 }
 
+/// Text in labelMedium style.
 class UTextLabelMedium extends _UText {
   const UTextLabelMedium(
     super.text, {
@@ -1245,6 +1259,7 @@ class UTextLabelMedium extends _UText {
   TextStyle _baseStyle(BuildContext context) => Theme.of(context).textTheme.labelMedium!;
 }
 
+/// Text in labelSmall style (captions).
 class UTextLabelSmall extends _UText {
   const UTextLabelSmall(
     super.text, {
@@ -1317,6 +1332,7 @@ class UTextLabelSmall extends _UText {
   TextStyle _baseStyle(BuildContext context) => Theme.of(context).textTheme.labelSmall!;
 }
 
+/// Counts from 0 up to [value] when shown (dashboards, balances). `UAnimatedCounter(value: 1250, builder: (c, v) => Text(v.toInt().separate3By3()))`
 class UAnimatedCounter extends StatelessWidget {
   const UAnimatedCounter({
     required this.value,
@@ -1325,8 +1341,13 @@ class UAnimatedCounter extends StatelessWidget {
     this.duration = const Duration(milliseconds: 1500),
   });
 
+  /// Current value.
   final double value;
+
+  /// Builds the text for the current animated number.
   final Widget Function(BuildContext context, double value) builder;
+
+  /// How long it lasts.
   final Duration duration;
 
   @override

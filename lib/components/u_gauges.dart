@@ -9,18 +9,24 @@ import "package:u/utilities.dart";
 // animated needle/fill. Colors default to the active [ColorScheme].
 // =============================================================================
 
-/// A colored value band on any gauge (e.g. red/amber/green zones).
+/// A colored zone on a gauge, e.g. green 0-60, red 80-100. `UGaugeBand(start: 80, end: 100, color: Colors.red)`
 class UGaugeBand {
   const UGaugeBand({required this.start, required this.end, required this.color, this.label});
 
+  /// Zone start value.
   final double start;
+
+  /// Zone end value.
   final double end;
+
+  /// Main color (defaults to the theme).
   final Color color;
+
+  /// Label text.
   final String? label;
 }
 
-/// Shared, fully-optional styling for every gauge. Null fields resolve from the
-/// active theme at build time.
+/// Shared look of every gauge; null fields follow the theme.
 class UGaugeStyle {
   const UGaugeStyle({
     this.trackColor,
@@ -38,18 +44,43 @@ class UGaugeStyle {
     this.animationCurve = Curves.easeOutCubic,
   });
 
+  /// Background track color.
   final Color? trackColor;
+
+  /// Fill color.
   final Color? fillColor;
+
+  /// Needle color.
   final Color? needleColor;
+
+  /// Tick color.
   final Color? tickColor;
+
+  /// Label color.
   final Color? labelColor;
+
+  /// Color of the value text.
   final Color? valueColor;
+
+  /// Track thickness.
   final double? thickness;
+
+  /// Draws ticks.
   final bool showTicks;
+
+  /// Draws tick labels.
   final bool showLabels;
+
+  /// Shows the value text.
   final bool showValue;
+
+  /// Animates changes.
   final bool animate;
+
+  /// Length of the animation.
   final Duration animationDuration;
+
+  /// Needle/fill animation curve.
   final Curve animationCurve;
 }
 
@@ -357,8 +388,7 @@ Widget _radialFrame({
   );
 }
 
-/// A classic 270° radial gauge with needle, ticks, labels and optional colored
-/// [bands].
+/// Classic 270° gauge with needle, ticks and zones. `URadialGauge(value: 72, bands: [UGaugeBand(start: 80, end: 100, color: Colors.red)])`
 class URadialGauge extends StatelessWidget {
   const URadialGauge({
     required this.value,
@@ -372,13 +402,28 @@ class URadialGauge extends StatelessWidget {
     this.style = const UGaugeStyle(),
   });
 
+  /// Current value.
   final double value;
+
+  /// Smallest allowed value.
   final double min;
+
+  /// Largest allowed value.
   final double max;
+
+  /// Colored zones.
   final List<UGaugeBand> bands;
+
+  /// Size in logical pixels.
   final double size;
+
+  /// Number of labelled ticks.
   final int majorTicks;
+
+  /// Text under the value, e.g. "km/h".
   final String? valueLabel;
+
+  /// Text style (defaults to the theme).
   final UGaugeStyle style;
 
   @override
@@ -401,7 +446,7 @@ class URadialGauge extends StatelessWidget {
   );
 }
 
-/// A 240° speedometer with colored zones and a needle.
+/// 240° speedometer with zones and needle. `USpeedometerGauge(value: speed, max: 200)`
 class USpeedometerGauge extends StatelessWidget {
   const USpeedometerGauge({
     required this.value,
@@ -415,13 +460,28 @@ class USpeedometerGauge extends StatelessWidget {
     this.style = const UGaugeStyle(),
   });
 
+  /// Current value.
   final double value;
+
+  /// Smallest allowed value.
   final double min;
+
+  /// Largest allowed value.
   final double max;
+
+  /// Colored zones.
   final List<UGaugeBand> bands;
+
+  /// Size in logical pixels.
   final double size;
+
+  /// Number of labelled ticks.
   final int majorTicks;
+
+  /// Text under the value.
   final String? valueLabel;
+
+  /// Text style (defaults to the theme).
   final UGaugeStyle style;
 
   @override
@@ -444,7 +504,7 @@ class USpeedometerGauge extends StatelessWidget {
   );
 }
 
-/// A 180° semicircular gauge that sits on its flat edge.
+/// 180° half-circle gauge. `USemiCircleGauge(value: 40)`
 class USemiCircleGauge extends StatelessWidget {
   const USemiCircleGauge({
     required this.value,
@@ -459,14 +519,31 @@ class USemiCircleGauge extends StatelessWidget {
     this.style = const UGaugeStyle(),
   });
 
+  /// Current value.
   final double value;
+
+  /// Smallest allowed value.
   final double min;
+
+  /// Largest allowed value.
   final double max;
+
+  /// Colored zones.
   final List<UGaugeBand> bands;
+
+  /// Size in logical pixels.
   final double size;
+
+  /// Number of labelled ticks.
   final int majorTicks;
+
+  /// Draws a needle (else only the fill).
   final bool needle;
+
+  /// Text under the value.
   final String? valueLabel;
+
+  /// Text style (defaults to the theme).
   final UGaugeStyle style;
 
   @override
@@ -489,7 +566,7 @@ class USemiCircleGauge extends StatelessWidget {
   );
 }
 
-/// A modern gradient progress arc (no needle) with a large centered value.
+/// Gradient progress arc with a big value in the middle. `UArcGauge(value: 64)`
 class UArcGauge extends StatelessWidget {
   const UArcGauge({
     required this.value,
@@ -502,12 +579,25 @@ class UArcGauge extends StatelessWidget {
     this.style = const UGaugeStyle(showTicks: false, showLabels: false),
   });
 
+  /// Current value.
   final double value;
+
+  /// Smallest allowed value.
   final double min;
+
+  /// Largest allowed value.
   final double max;
+
+  /// Colored zones.
   final List<UGaugeBand> bands;
+
+  /// Size in logical pixels.
   final double size;
+
+  /// Text under the value.
   final String? valueLabel;
+
+  /// Text style (defaults to the theme).
   final UGaugeStyle style;
 
   @override
@@ -587,7 +677,7 @@ class _RingPainter extends CustomPainter {
   bool shouldRepaint(covariant _RingPainter old) => old.progress != progress;
 }
 
-/// A circular progress ring with a centered value, ideal for KPIs and loaders.
+/// Circular progress ring with a centered value (KPIs). `UProgressRingGauge(value: 80, label: "Done")`
 class UProgressRingGauge extends StatelessWidget {
   const UProgressRingGauge({
     required this.value,
@@ -600,12 +690,25 @@ class UProgressRingGauge extends StatelessWidget {
     this.style = const UGaugeStyle(),
   });
 
+  /// Current value.
   final double value;
+
+  /// Smallest allowed value.
   final double min;
+
+  /// Largest allowed value.
   final double max;
+
+  /// Size in logical pixels.
   final double size;
+
+  /// Label text.
   final String? label;
+
+  /// Text under the value.
   final String? valueLabel;
+
+  /// Text style (defaults to the theme).
   final UGaugeStyle style;
 
   @override
@@ -739,7 +842,7 @@ class _LinearPainter extends CustomPainter {
   bool shouldRepaint(covariant _LinearPainter old) => old.value != value || old.bands != bands;
 }
 
-/// A horizontal linear gauge with a pointer, ticks and optional [bands].
+/// Horizontal gauge with a pointer and zones. `ULinearGauge(value: 30)`
 class ULinearGauge extends StatelessWidget {
   const ULinearGauge({
     required this.value,
@@ -754,21 +857,38 @@ class ULinearGauge extends StatelessWidget {
     this.style = const UGaugeStyle(),
   });
 
+  /// Current value.
   final double value;
+
+  /// Smallest allowed value.
   final double min;
+
+  /// Largest allowed value.
   final double max;
+
+  /// Colored zones.
   final List<UGaugeBand> bands;
+
+  /// Width in logical pixels (null = size to content).
   final double width;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
+
+  /// Number of labelled ticks.
   final int majorTicks;
+
+  /// Text next to the value.
   final String? valueLabel;
+
+  /// Text style (defaults to the theme).
   final UGaugeStyle style;
 
   @override
   Widget build(BuildContext context) => _linearFrame(context, style, width, height, min, max, value, bands, majorTicks, valueLabel, vertical: false);
 }
 
-/// A vertical linear gauge (column style).
+/// Vertical gauge (column style). `UVerticalLinearGauge(value: 55)`
 class UVerticalLinearGauge extends StatelessWidget {
   const UVerticalLinearGauge({
     required this.value,
@@ -783,14 +903,31 @@ class UVerticalLinearGauge extends StatelessWidget {
     this.style = const UGaugeStyle(),
   });
 
+  /// Current value.
   final double value;
+
+  /// Smallest allowed value.
   final double min;
+
+  /// Largest allowed value.
   final double max;
+
+  /// Colored zones.
   final List<UGaugeBand> bands;
+
+  /// Width in logical pixels (null = size to content).
   final double width;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
+
+  /// Number of labelled ticks.
   final int majorTicks;
+
+  /// Text next to the value.
   final String? valueLabel;
+
+  /// Text style (defaults to the theme).
   final UGaugeStyle style;
 
   @override
@@ -876,7 +1013,7 @@ class _BatteryPainter extends CustomPainter {
   bool shouldRepaint(covariant _BatteryPainter old) => old.level != level;
 }
 
-/// A battery / tank fill gauge. Turns [lowColor] below [lowThreshold].
+/// Battery/tank fill that turns [lowColor] below [lowThreshold]. `UBatteryGauge(value: 18)`
 class UBatteryGauge extends StatelessWidget {
   const UBatteryGauge({
     required this.value,
@@ -891,14 +1028,31 @@ class UBatteryGauge extends StatelessWidget {
     this.style = const UGaugeStyle(),
   });
 
+  /// Current value.
   final double value;
+
+  /// Smallest allowed value.
   final double min;
+
+  /// Largest allowed value.
   final double max;
+
+  /// Width in logical pixels (null = size to content).
   final double width;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
+
+  /// Value under which it shows the low color.
   final double lowThreshold;
+
+  /// Color when low.
   final Color? lowColor;
+
+  /// Text next to the value.
   final String? valueLabel;
+
+  /// Text style (defaults to the theme).
   final UGaugeStyle style;
 
   @override
@@ -986,7 +1140,7 @@ class _ThermometerPainter extends CustomPainter {
   bool shouldRepaint(covariant _ThermometerPainter old) => old.value != value;
 }
 
-/// A thermometer gauge with a bulb, rising column and side scale.
+/// Thermometer with bulb, column and scale. `UThermometerGauge(value: 37, min: 30, max: 45)`
 class UThermometerGauge extends StatelessWidget {
   const UThermometerGauge({
     required this.value,
@@ -1001,14 +1155,31 @@ class UThermometerGauge extends StatelessWidget {
     this.style = const UGaugeStyle(),
   });
 
+  /// Current value.
   final double value;
+
+  /// Smallest allowed value.
   final double min;
+
+  /// Largest allowed value.
   final double max;
+
+  /// Width in logical pixels (null = size to content).
   final double width;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
+
+  /// Number of labelled ticks.
   final int majorTicks;
+
+  /// Fill color.
   final Color? fillColor;
+
+  /// Text next to the value, e.g. "°C".
   final String? valueLabel;
+
+  /// Text style (defaults to the theme).
   final UGaugeStyle style;
 
   @override
@@ -1106,7 +1277,7 @@ class _CompassPainter extends CustomPainter {
   bool shouldRepaint(covariant _CompassPainter old) => old.heading != heading;
 }
 
-/// A compass gauge. [value] is a heading in degrees (0 = North, clockwise).
+/// Compass dial; value is the heading in degrees (0 = north). `UCompassGauge(value: heading)`
 class UCompassGauge extends StatelessWidget {
   const UCompassGauge({
     required this.value,
@@ -1116,9 +1287,16 @@ class UCompassGauge extends StatelessWidget {
     this.style = const UGaugeStyle(),
   });
 
+  /// Current value.
   final double value;
+
+  /// Size in logical pixels.
   final double size;
+
+  /// Color of the north pointer.
   final Color? northColor;
+
+  /// Text style (defaults to the theme).
   final UGaugeStyle style;
 
   @override
@@ -1211,7 +1389,7 @@ class _SegmentedPainter extends CustomPainter {
   bool shouldRepaint(covariant _SegmentedPainter old) => old.progress != progress;
 }
 
-/// A segmented arc gauge — discrete blocks light up to the value.
+/// Arc of blocks that light up to the value. `USegmentedGauge(value: 70, segments: 12)`
 class USegmentedGauge extends StatelessWidget {
   const USegmentedGauge({
     required this.value,
@@ -1225,13 +1403,28 @@ class USegmentedGauge extends StatelessWidget {
     this.style = const UGaugeStyle(),
   });
 
+  /// Current value.
   final double value;
+
+  /// Smallest allowed value.
   final double min;
+
+  /// Largest allowed value.
   final double max;
+
+  /// Number of blocks.
   final int segments;
+
+  /// Size in logical pixels.
   final double size;
+
+  /// Fill color.
   final Color? fillColor;
+
+  /// Text under the value.
   final String? valueLabel;
+
+  /// Text style (defaults to the theme).
   final UGaugeStyle style;
 
   @override
@@ -1309,8 +1502,7 @@ class _BulletPainter extends CustomPainter {
   bool shouldRepaint(covariant _BulletPainter old) => old.value != value || old.target != target;
 }
 
-/// A bullet graph — a compact KPI gauge with qualitative [bands], a measure bar
-/// and an optional [target] marker.
+/// Compact KPI bar with zones, a measure bar and a target mark. `UBulletGauge(value: 70, target: 85)`
 class UBulletGauge extends StatelessWidget {
   const UBulletGauge({
     required this.value,
@@ -1325,14 +1517,31 @@ class UBulletGauge extends StatelessWidget {
     this.style = const UGaugeStyle(),
   });
 
+  /// Current value.
   final double value;
+
+  /// Smallest allowed value.
   final double min;
+
+  /// Largest allowed value.
   final double max;
+
+  /// Target mark value.
   final double? target;
+
+  /// Qualitative zones behind the bar.
   final List<UGaugeBand> bands;
+
+  /// Width in logical pixels (null = size to content).
   final double width;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
+
+  /// Measure bar color.
   final Color? measureColor;
+
+  /// Text style (defaults to the theme).
   final UGaugeStyle style;
 
   @override

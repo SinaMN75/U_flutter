@@ -1,9 +1,13 @@
 import "package:u/utilities.dart";
 
+/// Tap-to-edit field that opens the full rich text editor and returns HTML. `URichTextEditorField(content: html, onSubmit: (h) => html = h)`
 class URichTextEditorField extends StatefulWidget {
   const URichTextEditorField({required this.onSubmit, required this.content, super.key});
 
+  /// Current HTML.
   final String content;
+
+  /// Called when submitted.
   final Function(String) onSubmit;
 
   @override
@@ -88,13 +92,22 @@ const List<UInlineAttr> uBooleanInlineAttrs = <UInlineAttr>[
 class UStyleSpan {
   UStyleSpan({required this.start, required this.end, required this.attr, this.value});
 
+  /// First character index.
   int start;
+
+  /// Index after the last character.
   int end;
+
+  /// The style.
   final UInlineAttr attr;
+
+  /// Current value.
   final Object? value;
 
+  /// True for on/off styles (bold, italic…) rather than valued ones (color, size).
   bool get isBoolean => value == null;
 
+  /// A copy.
   UStyleSpan copy() => UStyleSpan(start: start, end: end, attr: attr, value: value);
 }
 
@@ -105,6 +118,7 @@ class UStyleSpan {
 class URichTextController extends TextEditingController {
   URichTextController({super.text, List<UStyleSpan>? spans}) : spans = spans ?? <UStyleSpan>[];
 
+  /// Styled ranges of the text.
   final List<UStyleSpan> spans;
 
   /// Formatting queued for the next typed character while the selection is
@@ -431,25 +445,34 @@ class UTableData {
     ],
   );
 
+  /// Cell texts by row.
   final List<List<String>> rows;
+
+  /// First row is a header.
   bool hasHeader;
 
+  /// Number of rows.
   int get rowCount => rows.length;
 
+  /// Number of columns.
   int get columnCount => rows.isEmpty ? 0 : rows.first.length;
 
+  /// Adds an empty row.
   void addRow() => rows.add(<String>[for (int c = 0; c < columnCount; c++) ""]);
 
+  /// Adds an empty column.
   void addColumn() {
     for (final List<String> row in rows) {
       row.add("");
     }
   }
 
+  /// Removes a row.
   void removeRow(int index) {
     if (rows.length > 1 && index >= 0 && index < rows.length) rows.removeAt(index);
   }
 
+  /// Removes a column.
   void removeColumn(int index) {
     if (columnCount <= 1) return;
     for (final List<String> row in rows) {
@@ -457,6 +480,7 @@ class UTableData {
     }
   }
 
+  /// A copy.
   UTableData copy() => UTableData(rows: <List<String>>[for (final List<String> r in rows) List<String>.from(r)], hasHeader: hasHeader);
 }
 
@@ -478,21 +502,46 @@ class UEditorBlock {
 
   static int _seq = 0;
 
+  /// Unique id.
   final String id;
+
+  /// Paragraph, heading, list, quote, code, image, table…
   UBlockType type;
+
+  /// Text controller of a text block.
   URichTextController? controller;
+
+  /// Focus of a text block.
   FocusNode? focusNode;
+
+  /// Image address of an image block.
   String? imageUrl;
+
+  /// Image alt text.
   String? imageAlt;
+
+  /// Image width.
   double? imageWidth;
+
+  /// Text alignment.
   TextAlign align;
+
+  /// Indent level.
   int indent;
+
+  /// Checklist item done.
   bool checked;
+
+  /// Code block language.
   String? language;
+
+  /// Table data of a table block.
   UTableData? table;
 
+  /// True for blocks with editable text.
   bool get isText => type != UBlockType.image && type != UBlockType.divider && type != UBlockType.table;
 
+  /// True for bulleted/numbered/check lists.
   bool get isList => type == UBlockType.bulleted || type == UBlockType.numbered || type == UBlockType.checklist;
 
   /// Convenience factory for a text block seeded with [text] and [spans].
@@ -532,6 +581,7 @@ abstract class UHtmlDocument {
 
   // ---- serialize (blocks -> html) -----------------------------------------
 
+  /// Blocks → HTML.
   static String serialize(List<UEditorBlock> blocks) {
     final StringBuffer sb = StringBuffer();
     int i = 0;
@@ -706,12 +756,15 @@ abstract class UHtmlDocument {
     return tags;
   }
 
+  /// Escapes text for HTML.
   static String escapeHtml(String s) => s.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 
+  /// Escapes text for an HTML attribute.
   static String escapeAttr(String s) => escapeHtml(s).replaceAll('"', "&quot;");
 
   // ---- parse (html -> blocks) ---------------------------------------------
 
+  /// HTML → editor blocks.
   static List<UEditorBlock> parse(String? html) {
     final String input = (html ?? "").trim();
     if (input.isEmpty) return <UEditorBlock>[UEditorBlock.text(UBlockType.paragraph)];
@@ -1273,6 +1326,7 @@ abstract class UEditorStyles {
     0xFFFFFFFF,
   ];
 
+  /// Text style of a block type.
   static TextStyle baseStyle(BuildContext context, UBlockType type) {
     final TextTheme t = Theme.of(context).textTheme;
     final ColorScheme cs = Theme.of(context).colorScheme;
@@ -1401,10 +1455,19 @@ abstract class UEditorStyles {
 class UEditorToolButton extends StatelessWidget {
   const UEditorToolButton({required this.icon, required this.tooltip, super.key, this.active = false, this.onTap, this.size = 20});
 
+  /// Icon shown with it.
   final IconData icon;
+
+  /// Text shown on long press / mouse hover.
   final String tooltip;
+
+  /// Highlighted (style is on).
   final bool active;
+
+  /// Called when tapped.
   final VoidCallback? onTap;
+
+  /// Size in logical pixels.
   final double size;
 
   @override
@@ -1437,10 +1500,19 @@ class UEditorToolSeparator extends StatelessWidget {
 class UEditorDropdown<T> extends StatelessWidget {
   const UEditorDropdown({required this.label, required this.items, required this.onSelected, super.key, this.tooltip, this.width});
 
+  /// Label text.
   final String label;
+
+  /// The items to show.
   final List<UEditorMenuEntry<T>> items;
+
+  /// Called with the selected item.
   final ValueChanged<T> onSelected;
+
+  /// Text shown on long press / mouse hover.
   final String? tooltip;
+
+  /// Width in logical pixels (null = size to content).
   final double? width;
 
   @override
@@ -1474,8 +1546,13 @@ class UEditorDropdown<T> extends StatelessWidget {
 class UEditorMenuEntry<T> {
   UEditorMenuEntry({required this.value, required this.label, this.style});
 
+  /// Current value.
   final T value;
+
+  /// Label text.
   final String label;
+
+  /// Text style (defaults to the theme).
   final TextStyle? style;
 }
 
@@ -1483,9 +1560,16 @@ class UEditorMenuEntry<T> {
 class UFindReplaceRequest {
   UFindReplaceRequest({required this.find, required this.replace, this.matchCase = false, this.replaceAll = true});
 
+  /// Text to find.
   final String find;
+
+  /// Replacement text.
   final String replace;
+
+  /// Case sensitive.
   final bool matchCase;
+
+  /// Replace every match.
   final bool replaceAll;
 }
 
@@ -1712,15 +1796,26 @@ class URichTextEditor extends StatefulWidget {
     this.showStatusBar = true,
   });
 
+  /// Starting HTML.
   final String? initialHtml;
+
+  /// Called with the new value when the user changes it.
   final ValueChanged<String>? onChanged;
+
+  /// Uploads a picked image and returns its URL (else images are embedded as base64).
   final URichImageUploader? onUploadImage;
 
   /// Called with the current HTML every [autoSaveInterval] while the document
   /// has unsaved edits.
   final ValueChanged<String>? onAutoSave;
+
+  /// How often onAutoSave runs.
   final Duration autoSaveInterval;
+
+  /// Space inside, around the content.
   final EdgeInsets padding;
+
+  /// Shows the value without allowing edits.
   final bool readOnly;
 
   /// Show the word/character count footer.
@@ -2262,12 +2357,14 @@ class _URichTextEditorState extends State<URichTextEditor> {
       if (!widget.readOnly) _toolbar(),
       if (_uploading) LinearProgressIndicator(minHeight: 2, color: Theme.of(context).colorScheme.primary),
       const Divider(height: 1),
-      ReorderableListView.builder(
-        padding: widget.padding,
-        buildDefaultDragHandles: false,
-        itemCount: _blocks.length,
-        onReorderItem: _reorder,
-        itemBuilder: (BuildContext context, int index) => _blockRow(index),
+      Expanded(
+        child: ReorderableListView.builder(
+          padding: widget.padding,
+          buildDefaultDragHandles: false,
+          itemCount: _blocks.length,
+          onReorderItem: _reorder,
+          itemBuilder: (BuildContext context, int index) => _blockRow(index),
+        ),
       ),
       if (widget.showStatusBar) _statusBar(),
     ],

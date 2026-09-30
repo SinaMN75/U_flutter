@@ -444,6 +444,43 @@ FlValue* Integrity() {
   return map;
 }
 
+// --- keep screen on ------------------------------------------------------------
+
+// org.freedesktop.ScreenSaver.Inhibit returns a cookie that UnInhibit releases. Calls are async;
+// `wanted` settles a toggle that arrives while a call is still in flight.
+struct ScreenInhibit {
+  bool wanted = false;
+  bool pending = false;
+  guint32 cookie = 0;
+};
+ScreenInhibit g_inhibit;
+
+void ApplyScreenOn();
+
+void OnInhibited(GObject* source, GAsyncResult* res, gpointer) {
+  g_inhibit.pending = false;
+  g_autoptr(GError) error = nullptr;
+  g_autoptr(GVariant) reply = g_dbus_connection_call_finish(G_DBUS_CONNECTION(source), res, &error);
+  if (reply != nullptr) g_variant_get(reply, "(u)", &g_inhibit.cookie);
+  ApplyScreenOn();
+}
+
+void ApplyScreenOn() {
+  if (g_inhibit.pending) return;
+  g_autoptr(GDBusConnection) bus = g_bus_get_sync(G_BUS_TYPE_SESSION, nullptr, nullptr);
+  if (bus == nullptr) return;
+  if (g_inhibit.wanted && g_inhibit.cookie == 0) {
+    g_inhibit.pending = true;
+    g_dbus_connection_call(bus, "org.freedesktop.ScreenSaver", "/org/freedesktop/ScreenSaver", "org.freedesktop.ScreenSaver", "Inhibit",
+                           g_variant_new("(ss)", g_get_prgname() != nullptr ? g_get_prgname() : "u", "Keeping the screen on"), G_VARIANT_TYPE("(u)"),
+                           G_DBUS_CALL_FLAGS_NONE, 2000, nullptr, OnInhibited, nullptr);
+  } else if (!g_inhibit.wanted && g_inhibit.cookie != 0) {
+    g_dbus_connection_call(bus, "org.freedesktop.ScreenSaver", "/org/freedesktop/ScreenSaver", "org.freedesktop.ScreenSaver", "UnInhibit",
+                           g_variant_new("(u)", g_inhibit.cookie), nullptr, G_DBUS_CALL_FLAGS_NONE, 2000, nullptr, nullptr, nullptr);
+    g_inhibit.cookie = 0;
+  }
+}
+
 // --- channel ------------------------------------------------------------------
 
 void HandleMethodCall(FlMethodChannel*, FlMethodCall* call, gpointer) {
@@ -460,6 +497,12 @@ void HandleMethodCall(FlMethodChannel*, FlMethodCall* call, gpointer) {
     result = Status();
   } else if (strcmp(method, "integrity") == 0) {
     result = Integrity();
+  } else if (strcmp(method, "keepScreenOn") == 0) {
+    FlValue* args = fl_method_call_get_args(call);
+    FlValue* on = args != nullptr && fl_value_get_type(args) == FL_VALUE_TYPE_MAP ? fl_value_lookup_string(args, "on") : nullptr;
+    g_inhibit.wanted = on != nullptr && fl_value_get_type(on) == FL_VALUE_TYPE_BOOL && fl_value_get_bool(on);
+    ApplyScreenOn();
+    result = fl_value_new_bool(true);
   }
   g_autoptr(FlMethodResponse) response = nullptr;
   if (result != nullptr) {

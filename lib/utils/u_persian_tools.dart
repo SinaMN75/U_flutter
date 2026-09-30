@@ -1,16 +1,32 @@
+/// Digit style for UPersianTools.convertDigits: en (0-9), fa (۰-۹), ar (٠-٩).
 enum UDigitLocale { en, fa, ar }
 
+/// Iranian SIM type: credit (اعتباری), permanent (دائمی) or both.
 enum USimCardType { credit, permanent, both }
 
+/// Iranian mobile operator (همراه اول، ایرانسل، رایتل…).
 class UOperator {
   const UOperator._(this.name);
 
+  /// Operator name in Persian.
   final String name;
+
+  /// Shatel Mobile.
   static const UOperator shatelMobile = UOperator._("شاتل موبایل");
+
+  /// Hamrah-e Aval (MCI).
   static const UOperator mci = UOperator._("همراه اول");
+
+  /// Irancell.
   static const UOperator irancell = UOperator._("ایرانسل");
+
+  /// Taliya.
   static const UOperator taliya = UOperator._("تالیا");
+
+  /// RighTel.
   static const UOperator rightTel = UOperator._("رایتل");
+
+  /// SamanTel.
   static const UOperator samanTel = UOperator._("سامانتل");
 
   @override
@@ -23,7 +39,9 @@ class UOperator {
   String toString() => "Operator{name: $name}";
 }
 
+/// What a mobile prefix says: operator, SIM type, province, model.
 class UOperatorDetail {
+  /// Operator details of a prefix.
   const UOperatorDetail({
     required this.base,
     required this.operator,
@@ -32,14 +50,25 @@ class UOperatorDetail {
     this.type = USimCardType.both,
   });
 
+  /// Region of the prefix.
   final String base;
+
+  /// Provinces the prefix was issued in.
   final List<String> provinces;
+
+  /// SIM model, if known.
   final String? model;
+
+  /// SIM type (credit/permanent).
   final USimCardType type;
+
+  /// The operator.
   final UOperator operator;
 
+  /// Operator name in Persian.
   String get name => operator.name;
 
+  /// Copy with some fields changed.
   UOperatorDetail copyWith({
     String? base,
     List<String>? provinces,
@@ -65,13 +94,18 @@ class UOperatorDetail {
   String toString() => "OperatorDetail{base: $base, provinces: $provinces, model: $model, type: $type, operator: $operator}";
 }
 
+/// A bank account number and its display format.
 class UAccountNumberModel {
+  /// Account number with its formatted version.
   const UAccountNumberModel({
     required this.accountNumber,
     required this.formattedAccountNumber,
   });
 
+  /// Raw account number.
   final String accountNumber;
+
+  /// Account number formatted for display.
   final String formattedAccountNumber;
 
   @override
@@ -81,7 +115,9 @@ class UAccountNumberModel {
   int get hashCode => accountNumber.hashCode ^ formattedAccountNumber.hashCode;
 }
 
+/// An Iranian bank: nickname, English and Persian name, account number from a Sheba.
 class UBankInfo {
+  /// Bank info.
   const UBankInfo({
     required this.nickname,
     required this.name,
@@ -92,14 +128,28 @@ class UBankInfo {
     this.formattedAccountNumber,
   });
 
+  /// Short id, e.g. "mellat".
   final String nickname;
+
+  /// English name.
   final String name;
+
+  /// Persian name, e.g. "بانک ملت".
   final String persianName;
+
+  /// True when the account number can be read from the Sheba.
   final bool isAccountNumberAvailable;
+
+  /// Extracts the account number from a Sheba.
   final UAccountNumberModel Function(String)? process;
+
+  /// Account number (after getBankFromSheba).
   final String? accountNumber;
+
+  /// Formatted account number (after getBankFromSheba).
   final String? formattedAccountNumber;
 
+  /// Copy with some fields changed.
   UBankInfo copyWith({
     String? nickname,
     String? name,
@@ -133,6 +183,7 @@ class UBankInfo {
   int get hashCode => nickname.hashCode ^ name.hashCode ^ persianName.hashCode ^ isAccountNumberAvailable.hashCode ^ accountNumber.hashCode ^ formattedAccountNumber.hashCode;
 }
 
+/// Iranian helpers: national code, card/Sheba checks and bank names, number ⇄ Persian words, mobile operator lookup. `UPersianTools.validateNationalCode("0012345678")`
 class UPersianTools {
   static const String _faText = "ابپتثجچحخدذرزژسشصضطظعغفقکگلمنوهی۰۱۲۳۴۵۶۷۸۹َُِآاً";
   static const String _faComplexText = "$_faTextًٌٍَُِّْٰٔءك‌ةۀأإيـئؤ،";
@@ -437,6 +488,7 @@ class UPersianTools {
     "999": const UOperatorDetail(base: "کشوری", operator: UOperator.samanTel),
   };
 
+  /// True when [input] is Persian text only (spaces/punctuation allowed). `UPersianTools.isPersian("سلام")`
   static bool isPersian(String input, {bool complex = false}) {
     if (input.isEmpty) return false;
     final RegExp pattern = RegExp('["\'-+()؟\\s.]');
@@ -445,18 +497,22 @@ class UPersianTools {
     return RegExp("^[$faRegExp]+\$").hasMatch(rawText);
   }
 
+  /// True when [input] contains any Persian letter.
   static bool hasPersian(String input, {bool complex = false}) {
     final String faRegExp = complex ? _faComplexText : _faText;
     return RegExp("[$faRegExp]").hasMatch(input);
   }
 
+  /// Trims spaces.
   static String trim(String input) => input.trim();
 
+  /// Replaces every key of [mapPattern] found in [input] with its value.
   static String replaceMapValue(String input, Map<String, String> mapPattern) => input.replaceAllMapped(
     RegExp(mapPattern.keys.join("|"), caseSensitive: false),
     (Match match) => mapPattern[match.group(0)]!,
   );
 
+  /// Checks an Iranian national code (کد ملی) checksum. `UPersianTools.validateNationalCode(code)`
   static bool validateNationalCode(String? input) {
     if (input == null) return false;
     final String code = input.trim();
@@ -472,6 +528,7 @@ class UPersianTools {
     return expected == digits[9];
   }
 
+  /// Checks an Iranian tax memory id format.
   static bool validateTaxMemoryId(String? input) {
     if (input == null) return false;
     final String code = input.trim().toUpperCase();
@@ -479,6 +536,7 @@ class UPersianTools {
     return RegExp(r"^[A-Z0-9]{6}$").hasMatch(code);
   }
 
+  /// Checks a 16-digit bank card number (Luhn). `UPersianTools.validateCardNumber("6037991234567890")`
   static bool validateCardNumber(String cardNumber) {
     if (!RegExp(r"^\d{16}$").hasMatch(cardNumber) || int.parse(cardNumber.substring(1, 11)) == 0) return false;
     int sum = 0;
@@ -490,11 +548,13 @@ class UPersianTools {
     return sum % 10 == 0;
   }
 
+  /// Bank name from a card's first 6 digits. `UPersianTools.getBankNameFromCard(card)` → "بانک ملی"
   static String? getBankNameFromCard(String cardNumber) {
     if (cardNumber.length != 16) return null;
     return _bankCardPrefixes[cardNumber.substring(0, 6)];
   }
 
+  /// Checks an IBAN/Sheba "IR" + 24 digits (mod 97). `UPersianTools.isShebaValid("IR062960000000100324200001")`
   static bool isShebaValid(String sheba) {
     if (sheba.length != 26 || !RegExp("IR[0-9]{24}").hasMatch(sheba)) return false;
     final int d1 = sheba.codeUnitAt(0) - 65 + 10;
@@ -508,6 +568,7 @@ class UPersianTools {
     return int.parse(remainder) % 97 == 1;
   }
 
+  /// Bank (and account number when possible) from a Sheba.
   static UBankInfo? getBankFromSheba(String sheba) {
     if (!isShebaValid(sheba)) return null;
     final String? bankCode = RegExp("IR[0-9]{2}([0-9]{3})").firstMatch(sheba)?[1];
@@ -523,6 +584,7 @@ class UPersianTools {
     return bank;
   }
 
+  /// Number in Persian words; [ordinal] gives "یکم، دوم…". `UPersianTools.numberToWords(1250)` → "یک هزار و دویست و پنجاه"
   static String? numberToWords(num number, {bool ordinal = false}) {
     if (number == 0) return "صفر";
     final String result = _convertNumberToWords(number.abs().toInt());
@@ -530,6 +592,7 @@ class UPersianTools {
     return trim((number < 0 ? "منفی " : "") + result);
   }
 
+  /// Persian words → number text. `UPersianTools.wordsToNumberString("سیصد و پنج")` → "305"
   static String? wordsToNumberString(String words, {UDigitLocale digits = UDigitLocale.en, bool addComma = false}) {
     final int? number = _wordsToNumber(words);
     if (number == null) return null;
@@ -544,6 +607,7 @@ class UPersianTools {
     }
   }
 
+  /// Converts digits between English, Persian and Arabic. `UPersianTools.convertDigits("123", UDigitLocale.en, UDigitLocale.fa)`
   static String convertDigits(String digits, UDigitLocale from, UDigitLocale to) {
     if (from == to) return digits;
     if (from == UDigitLocale.en && to == UDigitLocale.fa) return _convertEnToFa(digits);
@@ -554,18 +618,21 @@ class UPersianTools {
     return _convertFaToEn(_convertArToFa(digits));
   }
 
+  /// Operator, SIM type and province of an Iranian mobile number. `UPersianTools.getPhoneDetails("09121234567")?.name`
   static UOperatorDetail? getPhoneDetails(String phoneNumber) {
     if (!_mobileRegex.hasMatch(phoneNumber)) return null;
     final String? prefix = _mobileRegex.firstMatch(phoneNumber)?.group(1);
     return prefix != null ? _operators[prefix] : null;
   }
 
+  /// "+98912-123-4567" style, or null when not a mobile number.
   static String? formatPhoneNumber(String phoneNumber) {
     if (!_mobileRegex.hasMatch(phoneNumber)) return null;
     final RegExpMatch match = _mobileRegex.firstMatch(phoneNumber)!;
     return "+98${match.group(1)}-${match.group(2)}-${match.group(3)}";
   }
 
+  /// "6037-9912-3456-7890", or null when invalid.
   static String? formatCardNumber(String cardNumber) {
     if (!validateCardNumber(cardNumber)) return null;
     return "${cardNumber.substring(0, 4)}-${cardNumber.substring(4, 8)}-${cardNumber.substring(8, 12)}-${cardNumber.substring(12)}";

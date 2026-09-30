@@ -1,14 +1,30 @@
 import "package:flutter/cupertino.dart";
 import "package:u/utilities.dart";
 
+/// iOS-style segmented switch between a few options. `USegmentedControl<int>(items: const {0: "Day", 1: "Week"}, selectedValue: tab, onValueChanged: (v) => tab = v)`
 class USegmentedControl<T extends Object> extends StatefulWidget {
+  /// The items to show.
   final Map<T, String> items;
+
+  /// Selected option.
   final T? selectedValue;
+
+  /// Called with the new option.
   final ValueChanged<T?> onValueChanged;
+
+  /// Space inside, around the content.
   final EdgeInsetsGeometry? padding;
+
+  /// Selected segment color.
   final Color? selectedColor;
+
+  /// Other segments color.
   final Color? unselectedColor;
+
+  /// Background color.
   final Color? backgroundColor;
+
+  /// False disables interaction and greys it out.
   final bool enabled;
 
   const USegmentedControl({

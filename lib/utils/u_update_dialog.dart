@@ -1,13 +1,23 @@
 import "package:u/utilities.dart";
 
+/// Result of the version check: none, optional (can skip) or force (must update).
 enum UpdateType { none, optional, force }
 
+/// Your server's update info per platform (min and current build numbers, download links). `UUpdateResponse.fromMap(json)`
 class UUpdateResponse {
+  /// Android update info.
   final UOs? android;
+
+  /// iOS update info.
   final UOs? ios;
+
+  /// Windows update info.
   final UOs? windows;
+
+  /// macOS update info.
   final UOs? macos;
 
+  /// Update info for each platform.
   UUpdateResponse({
     this.android,
     this.ios,
@@ -15,8 +25,10 @@ class UUpdateResponse {
     this.macos,
   });
 
+  /// Parses JSON text.
   factory UUpdateResponse.fromJson(String str) => UUpdateResponse.fromMap(json.decode(str));
 
+  /// Parses a decoded JSON map.
   factory UUpdateResponse.fromMap(Map<String, dynamic> json) => UUpdateResponse(
     android: json["android"] == null ? null : UOs.fromMap(json["android"]),
     ios: json["ios"] == null ? null : UOs.fromMap(json["ios"]),
@@ -24,6 +36,7 @@ class UUpdateResponse {
     macos: json["macos"] == null ? null : UOs.fromMap(json["macos"]),
   );
 
+  /// Back to a map.
   Map<String, dynamic> toMap() => <String, dynamic>{
     "android": android?.toMap(),
     "ios": ios?.toMap(),
@@ -31,17 +44,31 @@ class UUpdateResponse {
     "macos": macos?.toMap(),
   };
 
+  /// Back to JSON text.
   String toJson() => json.encode(toMap());
 }
 
+/// Update info of one platform: builds below [min] must update, below [current] may update.
 class UOs {
+  /// Lowest build number still allowed (older builds are forced to update).
   final int? min;
+
+  /// Latest build number (older builds are offered an update).
   final int? current;
+
+  /// First download link (e.g. Google Play).
   final String? link1;
+
+  /// Second download link (e.g. Bazaar or direct APK).
   final String? link2;
+
+  /// Button text for link1.
   final String? link1Title;
+
+  /// Button text for link2.
   final String? link2Title;
 
+  /// Update info of one platform.
   UOs({
     this.min,
     this.current,
@@ -51,6 +78,7 @@ class UOs {
     this.link2Title,
   });
 
+  /// Parses a decoded JSON map.
   factory UOs.fromMap(Map<String, dynamic> json) => UOs(
     min: json["min"],
     current: json["current"],
@@ -60,6 +88,7 @@ class UOs {
     link2Title: json["link2Title"],
   );
 
+  /// Back to a map.
   Map<String, dynamic> toMap() => <String, dynamic>{
     "min": min,
     "current": current,
@@ -70,9 +99,11 @@ class UOs {
   };
 }
 
+/// Shows "Update available / required" from your server data, comparing build numbers (Android, iOS, Windows, macOS). `UUpdateDialog.checkAndShow(data, () => UNavigator.offAll(HomePage()))`
 class UUpdateDialog {
   static const String _skipKey = "skip_update_version";
 
+  /// Shows the dialog when needed; [onSkipOrNotAvailable] runs when there is nothing to do or the user taps Later.
   static Future<void> checkAndShow(
     UUpdateResponse serverData,
     VoidCallback onSkipOrNotAvailable,
@@ -125,12 +156,12 @@ class UUpdateDialog {
                   onTap: () => ULaunch.url(info.link2!),
                   title: info.link2Title ?? "",
                 ).pOnly(top: 8),
-              if (type == UpdateType.optional)
+              if (type == UpdateType.force)
                 UButton(
                   width: MediaQuery.sizeOf(navigatorKey.currentContext!).width,
                   type: UButtonType.text,
                   textStyle: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium!.copyWith(color: Colors.red),
-                  onTap: () => exit(0),
+                  onTap: UApp.exit,
                   title: "Exit",
                 ).pOnly(top: 8)
               else

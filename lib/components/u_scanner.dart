@@ -8,12 +8,15 @@ import "package:u/utilities.dart";
 // downloadable model. Every visual element is configurable.
 // =============================================================================
 
+/// Hint above (top) or below (bottom) the scan window.
 enum UScannerHintPosition { top, bottom }
 
 /// How aggressively frames are decoded. Slower settings cost less battery.
 enum UScanSpeed { unrestricted, normal, slow }
 
+/// Timing of a UScanSpeed.
 extension UScanSpeedX on UScanSpeed {
+  /// Minimum time between two decodes.
   Duration get interval {
     switch (this) {
       case UScanSpeed.unrestricted:
@@ -25,6 +28,7 @@ extension UScanSpeedX on UScanSpeed {
     }
   }
 
+  /// Frames per second analysed.
   double get maxFps {
     switch (this) {
       case UScanSpeed.unrestricted:
@@ -37,6 +41,7 @@ extension UScanSpeedX on UScanSpeed {
   }
 }
 
+/// Live QR/barcode scanner widget with scan window, torch, zoom, gallery and hint; all 6 platforms. Needs `dart run u:app permission add camera`. `UScanner(onScan: (text) => print(text))`
 class UScanner extends StatefulWidget {
   const UScanner({
     this.onScan,
@@ -113,88 +118,199 @@ class UScanner extends StatefulWidget {
 
   /// Called with every symbol in each detection, with geometry and metadata.
   final ValueChanged<List<UCode>>? onCodes;
+
+  /// Called when scanning fails (camera or decoder error).
   final void Function(Object error, StackTrace stackTrace)? onScanError;
 
   /// External controller. When given, the session options below are ignored.
   final UCameraController? controller;
 
+  /// Starts the camera as soon as it is shown.
   final bool autoStart;
+
+  /// Which camera to start with: back or front.
   final UCameraFacing facing;
+
+  /// Resolution.
   final UCameraResolution resolution;
+
+  /// Preferred lens (wide, ultra-wide, telephoto) when the device has several.
   final UCameraLens? lensType;
+
+  /// Speed.
   final UScanSpeed speed;
+
+  /// Ignores the same code again within this time.
   final Duration dedupeWindow;
 
   /// Empty means every supported symbology. Restricting this is the single
   /// biggest speed win available.
   final List<UCodeFormat> formats;
+
+  /// Decoder: native (fast, uses the OS) or pure Dart (works everywhere).
   final UScanEngine engine;
+
+  /// Starts with the flashlight on.
   final bool torchEnabled;
 
   /// Also try the inverted image, for light-on-dark symbols.
   final bool tryInvert;
+
+  /// Zooms in automatically on small/far codes.
   final bool autoZoom;
+
+  /// Starting zoom level.
   final double? initialZoom;
 
+  /// How the content fits its box (BoxFit).
   final BoxFit fit;
+
+  /// Shown when loading fails.
   final Widget Function(BuildContext context, UCameraException error)? errorBuilder;
+
+  /// Shown while the camera starts or when it is unavailable.
   final WidgetBuilder? placeholderBuilder;
+
+  /// Draws your own overlay over the preview.
   final LayoutWidgetBuilder? overlayBuilder;
 
   /// Explicit detection window in widget coordinates. Overrides
   /// [restrictToScanWindow] plus [scanWindowSize].
   final Rect? scanWindow;
+
+  /// Only reads codes inside the scan window.
   final bool restrictToScanWindow;
+
+  /// Pauses the camera when the app goes to the background.
   final bool useAppLifecycleState;
+
+  /// Tap on the preview to focus there.
   final bool tapToFocus;
+
+  /// Pinch to zoom.
   final bool pinchToZoom;
 
   /// Stop reporting after the first successful scan.
   final bool singleScan;
+
+  /// Vibrates when a code is read (mobile).
   final bool hapticOnScan;
 
+  /// Dims everything outside the scan window.
   final bool showOverlay;
+
+  /// Color of the dimmed area.
   final Color? overlayColor;
+
+  /// Size of the scan window.
   final Size scanWindowSize;
+
+  /// Border color.
   final Color? borderColor;
+
+  /// Border thickness.
   final double borderWidth;
+
+  /// Corner radius.
   final double borderRadius;
+
+  /// Length of the corner marks.
   final double cornerLength;
+
+  /// Shows corner marks on the scan window.
   final bool showCorners;
+
+  /// Draws the whole scan window border.
   final bool showFullBorder;
+
+  /// Shows the moving scan line.
   final bool showScanLine;
+
+  /// Scan line color.
   final Color? scanLineColor;
+
+  /// Scan line thickness.
   final double scanLineThickness;
+
+  /// Time for one pass of the scan line.
   final Duration scanLineDuration;
 
   /// Draws a live box around each detected symbol.
   final bool showTrackingBoxes;
 
+  /// Grey hint shown while empty.
   final String? hintText;
+
+  /// Shows the hint text.
   final bool showHint;
+
+  /// Hint text style.
   final TextStyle? hintTextStyle;
+
+  /// Hint above or below the scan window.
   final UScannerHintPosition hintPosition;
+
+  /// Gap between the scan window and the hint.
   final double hintGap;
+
+  /// Padding inside the hint bubble.
   final EdgeInsets hintPadding;
+
+  /// Hint bubble color.
   final Color? hintBackgroundColor;
+
+  /// Hint bubble corner radius.
   final double hintBorderRadius;
 
+  /// Shows the torch/switch/gallery/zoom controls.
   final bool showControls;
+
+  /// Shows the flashlight button.
   final bool showTorchButton;
+
+  /// Shows the front/back camera button.
   final bool showSwitchCameraButton;
+
+  /// Shows a button to scan a picked image.
   final bool showGalleryButton;
+
+  /// Shows a zoom slider.
   final bool showZoomSlider;
+
+  /// Where the controls sit.
   final Alignment controlsAlignment;
+
+  /// Gap between control buttons.
   final double controlsSpacing;
+
+  /// Padding around the controls.
   final EdgeInsets controlsPadding;
+
+  /// Control icon color.
   final Color? controlIconColor;
+
+  /// Control icon color when on (torch).
   final Color? controlActiveIconColor;
+
+  /// Control button background.
   final Color? controlBackgroundColor;
+
+  /// Control button size.
   final double controlButtonSize;
+
+  /// Control icon size.
   final double controlIconSize;
+
+  /// Icon when the torch is on.
   final IconData torchOnIcon;
+
+  /// Icon when the torch is off.
   final IconData torchOffIcon;
+
+  /// Switch camera icon.
   final IconData switchCameraIcon;
+
+  /// Gallery icon.
   final IconData galleryIcon;
 
   @override
@@ -762,74 +878,208 @@ class UScannerPage extends StatelessWidget {
     return scanned;
   }
 
+  /// Title text.
   final String? title;
+
+  /// Custom app bar.
   final PreferredSizeWidget? appBar;
+
+  /// Shows an app bar with a back button.
   final bool showAppBar;
+
+  /// Background color.
   final Color? backgroundColor;
+
+  /// Closes the page with the first code as its result.
   final bool autoPopOnScan;
 
+  /// Called with the text of each code.
   final ValueChanged<String>? onScan;
+
+  /// Called with every code found in a frame (format, corners, raw bytes).
   final ValueChanged<List<UCode>>? onCodes;
+
+  /// Called when scanning fails (camera or decoder error).
   final void Function(Object error, StackTrace stackTrace)? onScanError;
+
+  /// Controller to read or change it from code.
   final UCameraController? controller;
+
+  /// Starts the camera as soon as it is shown.
   final bool autoStart;
+
+  /// Which camera to start with: back or front.
   final UCameraFacing facing;
+
+  /// Resolution.
   final UCameraResolution resolution;
+
+  /// Speed.
   final UScanSpeed speed;
+
+  /// Code formats to look for (empty = all).
   final List<UCodeFormat> formats;
+
+  /// Decoder: native (fast, uses the OS) or pure Dart (works everywhere).
   final UScanEngine engine;
+
+  /// Starts with the flashlight on.
   final bool torchEnabled;
+
+  /// Also reads white-on-black codes (slower).
   final bool tryInvert;
+
+  /// Starting zoom level.
   final double? initialZoom;
+
+  /// How the content fits its box (BoxFit).
   final BoxFit fit;
+
+  /// Shown when loading fails.
   final Widget Function(BuildContext context, UCameraException error)? errorBuilder;
+
+  /// Shown while the camera starts or when it is unavailable.
   final WidgetBuilder? placeholderBuilder;
+
+  /// Draws your own overlay over the preview.
   final LayoutWidgetBuilder? overlayBuilder;
+
+  /// Scan window rectangle (null = centered [scanWindowSize]).
   final Rect? scanWindow;
+
+  /// Only reads codes inside the scan window.
   final bool restrictToScanWindow;
+
+  /// Pauses the camera when the app goes to the background.
   final bool useAppLifecycleState;
+
+  /// Tap on the preview to focus there.
   final bool tapToFocus;
+
+  /// Pinch to zoom.
   final bool pinchToZoom;
+
+  /// Stops after the first code.
   final bool singleScan;
+
+  /// Vibrates when a code is read (mobile).
   final bool hapticOnScan;
+
+  /// Dims everything outside the scan window.
   final bool showOverlay;
+
+  /// Color of the dimmed area.
   final Color? overlayColor;
+
+  /// Size of the scan window.
   final Size scanWindowSize;
+
+  /// Border color.
   final Color? borderColor;
+
+  /// Border thickness.
   final double borderWidth;
+
+  /// Corner radius.
   final double borderRadius;
+
+  /// Length of the corner marks.
   final double cornerLength;
+
+  /// Shows corner marks on the scan window.
   final bool showCorners;
+
+  /// Draws the whole scan window border.
   final bool showFullBorder;
+
+  /// Shows the moving scan line.
   final bool showScanLine;
+
+  /// Scan line color.
   final Color? scanLineColor;
+
+  /// Scan line thickness.
   final double scanLineThickness;
+
+  /// Time for one pass of the scan line.
   final Duration scanLineDuration;
+
+  /// Draws a box around each detected code.
   final bool showTrackingBoxes;
+
+  /// Grey hint shown while empty.
   final String? hintText;
+
+  /// Shows the hint text.
   final bool showHint;
+
+  /// Hint text style.
   final TextStyle? hintTextStyle;
+
+  /// Hint above or below the scan window.
   final UScannerHintPosition hintPosition;
+
+  /// Gap between the scan window and the hint.
   final double hintGap;
+
+  /// Padding inside the hint bubble.
   final EdgeInsets hintPadding;
+
+  /// Hint bubble color.
   final Color? hintBackgroundColor;
+
+  /// Hint bubble corner radius.
   final double hintBorderRadius;
+
+  /// Shows the torch/switch/gallery/zoom controls.
   final bool showControls;
+
+  /// Shows the flashlight button.
   final bool showTorchButton;
+
+  /// Shows the front/back camera button.
   final bool showSwitchCameraButton;
+
+  /// Shows a button to scan a picked image.
   final bool showGalleryButton;
+
+  /// Shows a zoom slider.
   final bool showZoomSlider;
+
+  /// Where the controls sit.
   final Alignment controlsAlignment;
+
+  /// Gap between control buttons.
   final double controlsSpacing;
+
+  /// Padding around the controls.
   final EdgeInsets controlsPadding;
+
+  /// Control icon color.
   final Color? controlIconColor;
+
+  /// Control icon color when on (torch).
   final Color? controlActiveIconColor;
+
+  /// Control button background.
   final Color? controlBackgroundColor;
+
+  /// Control button size.
   final double controlButtonSize;
+
+  /// Control icon size.
   final double controlIconSize;
+
+  /// Icon when the torch is on.
   final IconData torchOnIcon;
+
+  /// Icon when the torch is off.
   final IconData torchOffIcon;
+
+  /// Switch camera icon.
   final IconData switchCameraIcon;
+
+  /// Gallery icon.
   final IconData galleryIcon;
 
   @override

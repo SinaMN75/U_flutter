@@ -1,5 +1,6 @@
 part of "u_process.dart";
 
+/// Signature field of a process step.
 class UProcessESignField extends StatelessWidget {
   const UProcessESignField({
     required this.onSubmit,
@@ -12,12 +13,25 @@ class UProcessESignField extends StatelessWidget {
     this.initialBase64,
   });
 
+  /// Called when submitted.
   final ValueChanged<String> onSubmit;
+
+  /// Title text.
   final String? title;
+
+  /// Save button text.
   final String? saveButtonText;
+
+  /// Clear button text.
   final String? clearButtonText;
+
+  /// Shown when saving an empty pad.
   final String? emptyMessage;
+
+  /// Signature already given.
   final UFileData? initialFile;
+
+  /// Signature already given, as base64.
   final String? initialBase64;
 
   void _handleSubmit(UFileData signature) {

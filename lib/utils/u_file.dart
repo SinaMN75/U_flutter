@@ -1,9 +1,12 @@
 import "package:path/path.dart" as path;
 import "package:u/utilities.dart";
 
+/// Where pickImage/pickVideo take media from: the gallery or the camera.
 enum UImageSource { camera, gallery }
 
+/// A picked or captured file: bytes, name, extension, url or id. `file.bytes`, `file.name`, `file.isImage`
 class UFileData {
+  /// Holds a file in memory ([bytes]) or remotely ([url]/[id]); [tags] and [children] are for your own grouping.
   UFileData({
     this.bytes,
     this.extension,
@@ -14,23 +17,39 @@ class UFileData {
     this._name,
   });
 
+  /// File content (null for remote files).
   final Uint8List? bytes;
+
+  /// Extension without the dot, e.g. "jpg".
   final String? extension;
+
+  /// Remote address when the file lives on a server.
   final String? url;
+
+  /// Your own id, e.g. the server media id.
   final String? id;
+
+  /// Your own numeric tags (e.g. TagMedia numbers).
   final List<int>? tags;
+
+  /// Related files, e.g. pages of a document.
   final List<UFileData>? children;
   final String? _name;
 
+  /// File name with extension, e.g. "photo.jpg".
   String? get name => _name;
 
+  /// Size of [bytes]; null when not loaded.
   int? get sizeInBytes => bytes?.lengthInBytes;
 
+  /// True when the content is in memory.
   bool get hasBytes => bytes != null && bytes!.isNotEmpty;
 
+  /// True for image extensions (jpg, png, webp, heic…).
   bool get isImage => UFile.isImageExtension(extension);
 }
 
+/// How the cropper opens: shape, aspect ratio(s), max size, rotate/flip/adjust tools. `UCropOptions(aspectRatio: 1, shape: UCropShape.circle)`
 class UCropOptions {
   const UCropOptions({
     this.shape = UCropShape.rectangle,
@@ -45,26 +64,46 @@ class UCropOptions {
     this.title,
   });
 
+  /// Crop frame shape: rectangle or circle.
   final UCropShape shape;
+
+  /// Fixed width/height ratio, e.g. 1 for square, 16/9; null = free.
   final double? aspectRatio;
+
+  /// Ratios the user can switch between.
   final List<UCropAspectRatio>? aspectRatios;
+
+  /// Scales the result down to this width.
   final int? maxWidth;
+
+  /// Scales the result down to this height.
   final int? maxHeight;
+
+  /// Shows the rotate button.
   final bool allowRotate;
+
+  /// Shows the flip button.
   final bool allowFlip;
+
+  /// Shows brightness/contrast/saturation sliders.
   final bool allowAdjust;
+
+  /// Lets the user switch rectangle/circle.
   final bool allowShapeToggle;
+
+  /// Title of the crop screen.
   final String? title;
 }
 
+/// Pick, capture, crop, store, open and share files on all 6 platforms. `final UFileData? img = await UFile.pickSingleImage();`
 abstract class UFile {
-  /// File extensions treated as images.
+  /// Extensions treated as images.
   static const Set<String> imageExtensions = <String>{"jpg", "jpeg", "png", "gif", "webp", "bmp", "heic", "heif"};
 
-  /// True when [extension] is an image type (jpg, png, …).
+  /// True when [extension] is an image type. `UFile.isImageExtension("png")` → true
   static bool isImageExtension(String? extension) => extension != null && imageExtensions.contains(extension.toLowerCase());
 
-  /// Picks one or more files of any type.
+  /// Opens the system file picker; [allowedExtensions] filters, [crop] crops picked images. `await UFile.pickFiles(allowedExtensions: ["pdf", "docx"])`
   static Future<List<UFileData>> pickFiles({
     bool allowMultiple = true,
     FileType fileType = FileType.any,
@@ -99,7 +138,7 @@ abstract class UFile {
     }
   }
 
-  /// Picks one or more images from the gallery or camera, optionally cropped.
+  /// Picks images from the gallery, or takes them with the camera; optional crop. Camera: `permission add camera`. `await UFile.pickImage(allowMultiple: true, maxCount: 5)`
   static Future<List<UFileData>> pickImage({
     UImageSource source = UImageSource.gallery,
     bool selfie = false,
@@ -130,7 +169,7 @@ abstract class UFile {
     }
   }
 
-  /// Picks one image from the gallery or camera, optionally cropped.
+  /// Picks one image from the gallery or camera, optionally cropped. `await UFile.pickSingleImage(crop: const UCropOptions(aspectRatio: 1))`
   static Future<UFileData?> pickSingleImage({
     UImageSource source = UImageSource.gallery,
     bool selfie = false,
@@ -145,7 +184,7 @@ abstract class UFile {
     return file;
   }
 
-  /// Picks one file of any type.
+  /// Picks one file of any type. `await UFile.pickFile(allowedExtensions: ["pdf"])`
   static Future<UFileData?> pickFile({
     FileType fileType = FileType.any,
     List<String>? allowedExtensions,
@@ -158,13 +197,13 @@ abstract class UFile {
     return file;
   }
 
-  /// Opens the camera page and returns everything captured.
+  /// Opens the full camera screen (photos and/or video) and returns everything captured. Needs `permission add camera microphone`. `await UFile.openCamera()`
   static Future<List<UFileData>> openCamera({
     UCameraOptions options = const UCameraOptions(),
     Function(List<UFileData>)? action,
   }) => UCamera.open(options: options, action: action);
 
-  /// Takes one photo with the camera, optionally cropped.
+  /// Takes one photo, optionally cropped; [selfie] starts with the front camera. `await UFile.takePhoto(selfie: true)`
   static Future<UFileData?> takePhoto({
     bool selfie = false,
     UCropOptions? crop,
@@ -172,7 +211,7 @@ abstract class UFile {
     Function(UFileData?)? action,
   }) => pickSingleImage(source: UImageSource.camera, selfie: selfie, crop: crop, cameraOptions: options, action: action);
 
-  /// Takes several photos in one camera session.
+  /// Takes several photos in one camera session ([maxCount] 0 = unlimited). `await UFile.takePhotos(maxCount: 4)`
   static Future<List<UFileData>> takePhotos({
     int maxCount = 0,
     bool selfie = false,
@@ -181,13 +220,13 @@ abstract class UFile {
     Function(List<UFileData>)? action,
   }) => pickImage(source: UImageSource.camera, selfie: selfie, allowMultiple: true, maxCount: maxCount, crop: crop, cameraOptions: options, action: action);
 
-  /// Records one video with the camera.
+  /// Records one video. Needs `permission add camera microphone`. `await UFile.recordVideo()`
   static Future<UFileData?> recordVideo({
     UCameraOptions options = const UCameraOptions(),
     Function(UFileData?)? action,
   }) => UCamera.recordVideo(options: options, action: action);
 
-  /// Picks a video from the gallery or records one.
+  /// Picks a video from the gallery, or records one with source camera. `await UFile.pickVideo()`
   static Future<UFileData?> pickVideo({
     UImageSource source = UImageSource.gallery,
     UCameraOptions options = const UCameraOptions(),
@@ -210,7 +249,7 @@ abstract class UFile {
     return out;
   }
 
-  /// Opens the cropper for an image and returns the cropped file.
+  /// Opens the cropper for bytes or a file path and returns the cropped image. `await UFile.cropImage(bytes: data, options: const UCropOptions(shape: UCropShape.circle))`
   static Future<UFileData?> cropImage({
     Uint8List? bytes,
     String? filePath,
@@ -227,7 +266,7 @@ abstract class UFile {
     return cropped;
   }
 
-  /// Writes bytes to a new temporary file and returns it.
+  /// Writes bytes to a new temp file and returns it (not on web). `final File f = await UFile.writeToFile(bytes, extension: "pdf")`
   static Future<File> writeToFile(Uint8List data, {String extension = "tmp"}) async {
     final Directory dir = await getTemporaryDirectory();
     return File("${dir.path}/u_${DateTime.now().microsecondsSinceEpoch}.$extension").writeAsBytes(data);
@@ -235,118 +274,127 @@ abstract class UFile {
 
   // --- App file storage (UFileStorage): keyed files, cached index, expiry, encrypted vault ---------
 
-  /// Sets up file storage (initU() already does this).
+  /// Sets up file storage; initU() already does it. [cacheMaxBytes] limits the cache bucket.
   static Future<void> initStorage({int? cacheMaxBytes}) => UFileStorage.init(cacheMaxBytes: cacheMaxBytes);
 
-  /// Saves bytes under [key]; use bucket cache/vault/temp for other places.
+  /// Saves bytes under [key] in app storage (all platforms; web uses IndexedDB). `await UFile.saveBytes("avatar.png", bytes)`
   static Future<void> saveBytes(String key, List<int> bytes, {UStorageBucket bucket = UStorageBucket.support, Duration? expireIn, String? mimeType}) =>
       UFileStorage.setBytes(key, bytes, bucket: bucket, expireIn: expireIn, mimeType: mimeType);
 
-  /// Saves text under [key].
+  /// Saves text under [key]. `await UFile.saveString("notes.txt", text)`
   static Future<void> saveString(String key, String value, {UStorageBucket bucket = UStorageBucket.support, Duration? expireIn}) =>
       UFileStorage.setString(key, value, bucket: bucket, expireIn: expireIn);
 
-  /// Saves any JSON value under [key].
-  static Future<void> saveJson(String key, Object? value, {UStorageBucket bucket = UStorageBucket.support, Duration? expireIn}) =>
-      UFileStorage.setJson(key, value, bucket: bucket, expireIn: expireIn);
+  /// Saves any JSON value under [key]. `await UFile.saveJson("draft", map)`
+  static Future<void> saveJson(String key, Object? value, {UStorageBucket bucket = UStorageBucket.support, Duration? expireIn}) => UFileStorage.setJson(key, value, bucket: bucket, expireIn: expireIn);
 
-  /// Saves bytes encrypted (vault) under [key].
+  /// Saves bytes encrypted in the vault (key in Keychain/Keystore). `await UFile.saveSecure("id-card", bytes)`
   static Future<void> saveSecure(String key, List<int> bytes) => UFileStorage.setBytes(key, bytes, bucket: UStorageBucket.vault);
 
-  /// Saves bytes as re-creatable cache under [key] (may be evicted when space is low).
+  /// Saves re-creatable cache; the OS/size limit may delete it. `await UFile.saveCache("thumb_1", bytes, expireIn: 7.days)`
   static Future<void> saveCache(String key, List<int> bytes, {Duration? expireIn}) => UFileStorage.setBytes(key, bytes, bucket: UStorageBucket.cache, expireIn: expireIn);
 
-  /// Reads the bytes saved under [key] (null if missing).
+  /// Reads bytes saved under [key], or null. `await UFile.readBytes("avatar.png")`
   static Future<Uint8List?> readBytes(String key, {UStorageBucket bucket = UStorageBucket.support}) => UFileStorage.getBytes(key, bucket: bucket);
 
-  /// Reads the text saved under [key].
+  /// Reads text saved under [key].
   static Future<String?> readString(String key, {UStorageBucket bucket = UStorageBucket.support}) => UFileStorage.getString(key, bucket: bucket);
 
-  /// Reads the JSON saved under [key].
+  /// Reads JSON saved under [key].
   static Future<dynamic> readJson(String key, {UStorageBucket bucket = UStorageBucket.support}) => UFileStorage.getJson(key, bucket: bucket);
 
-  /// Reads encrypted bytes saved with [saveSecure].
+  /// Reads bytes saved with saveSecure().
   static Future<Uint8List?> readSecure(String key) => UFileStorage.getBytes(key, bucket: UStorageBucket.vault);
 
-  /// Reads cached bytes saved with [saveCache].
+  /// Reads bytes saved with saveCache() (null when evicted).
   static Future<Uint8List?> readCache(String key) => UFileStorage.getBytes(key, bucket: UStorageBucket.cache);
 
-  /// Streams the bytes under [key] (optionally a byte range), for big files.
-  static Stream<Uint8List> readStream(String key, {UStorageBucket bucket = UStorageBucket.support, int start = 0, int? end}) =>
-      UFileStorage.read(key, bucket: bucket, start: start, end: end);
+  /// Streams a big stored file in chunks, optionally a byte range (video, audio). `UFile.readStream("movie.mp4")`
+  static Stream<Uint8List> readStream(String key, {UStorageBucket bucket = UStorageBucket.support, int start = 0, int? end}) => UFileStorage.read(key, bucket: bucket, start: start, end: end);
 
-  /// Copies a file from disk into storage under [key].
+  /// Copies a file from disk into app storage under [key] (not on web). `await UFile.importFile(pickedPath, "docs/contract.pdf")`
   static Future<void> importFile(String sourcePath, String key, {UStorageBucket bucket = UStorageBucket.support, bool deleteSource = false}) =>
       UFileStorage.importFile(sourcePath, key, bucket: bucket, deleteSource: deleteSource);
 
-  /// Copies the file under [key] out to [destinationPath].
-  static Future<bool> exportFile(String key, String destinationPath, {UStorageBucket bucket = UStorageBucket.support}) =>
-      UFileStorage.exportFile(key, destinationPath, bucket: bucket);
+  /// Copies the stored file under [key] to [destinationPath] (not on web).
+  static Future<bool> exportFile(String key, String destinationPath, {UStorageBucket bucket = UStorageBucket.support}) => UFileStorage.exportFile(key, destinationPath, bucket: bucket);
 
-  /// True when something is saved under [key].
+  /// True when something is stored under [key].
   static bool exists(String key, {UStorageBucket bucket = UStorageBucket.support}) => UFileStorage.contains(key, bucket: bucket);
 
-  /// Size in bytes of the file under [key].
+  /// Size in bytes of the stored file.
   static int sizeOf(String key, {UStorageBucket bucket = UStorageBucket.support}) => UFileStorage.size(key, bucket: bucket);
 
-  /// Real file path of [key] (null on the web or for vault files).
+  /// Real disk path of a stored file (null on web and for vault files). `UFile.pathOf("avatar.png")`
   static String? pathOf(String key, {UStorageBucket bucket = UStorageBucket.support}) => UFileStorage.pathOf(key, bucket: bucket);
 
-  /// All keys saved in [bucket].
+  /// Every key in [bucket].
   static List<String> storageKeys({UStorageBucket bucket = UStorageBucket.support}) => UFileStorage.keys(bucket: bucket);
 
-  /// All stored files with their size, dates and tags.
+  /// Every stored file with size, dates and tags (for a storage screen).
   static List<UStorageEntry> storageEntries({UStorageBucket? bucket}) => UFileStorage.entries(bucket: bucket);
 
-  /// Bytes used by storage (one bucket or all).
+  /// Bytes used by one bucket or all. `UFile.storageUsage().toBKMG()`
   static int storageUsage({UStorageBucket? bucket}) => UFileStorage.usage(bucket: bucket);
 
-  /// Deletes the file under [key].
+  /// Deletes a stored file. `await UFile.delete("avatar.png")`
   static Future<void> delete(String key, {UStorageBucket bucket = UStorageBucket.support}) => UFileStorage.remove(key, bucket: bucket);
 
-  /// Deletes every stored file (one bucket or all).
+  /// Deletes every stored file (one bucket or all); [includeDownloads] also deletes downloads.
   static Future<void> deleteAll({UStorageBucket? bucket, bool includeDownloads = false}) => UFileStorage.clear(bucket: bucket, includeDownloads: includeDownloads);
 
   /// Copies a stored file to another key.
-  static Future<void> copy(String from, String to, {UStorageBucket bucket = UStorageBucket.support, UStorageBucket? toBucket}) =>
-      UFileStorage.copy(from, to, bucket: bucket, toBucket: toBucket);
+  static Future<void> copy(String from, String to, {UStorageBucket bucket = UStorageBucket.support, UStorageBucket? toBucket}) => UFileStorage.copy(from, to, bucket: bucket, toBucket: toBucket);
 
-  /// Moves a stored file to another key.
-  static Future<void> move(String from, String to, {UStorageBucket bucket = UStorageBucket.support, UStorageBucket? toBucket}) =>
-      UFileStorage.move(from, to, bucket: bucket, toBucket: toBucket);
+  /// Renames a stored file.
+  static Future<void> move(String from, String to, {UStorageBucket bucket = UStorageBucket.support, UStorageBucket? toBucket}) => UFileStorage.move(from, to, bucket: bucket, toBucket: toBucket);
 
-  /// Emits whenever a stored file is added, changed or removed.
+  /// Emits when a stored file is added, changed or removed.
   static Stream<UStorageEvent> get storageChanges => UFileStorage.changes;
 
-  /// Deletes expired files now.
+  /// Deletes files whose ttl passed (runs automatically too).
   static Future<void> deleteExpired() => UFileStorage.evictExpired();
 
   /// Shrinks the cache bucket to its size limit now.
   static Future<void> trimCache() => UFileStorage.trimCache();
 
-  /// Opens the built-in storage manager screen.
+  /// Opens the built-in "Storage" screen (usage per bucket, clear buttons). `UFile.openStoragePage()`
   static Future<void> openStoragePage() => UNavigator.push<void>(const UStorageManagerPage());
 
   // --- Native file actions (UFilesChannel) ---------------------------------------------------
 
-  /// Opens a file with the default app.
+  /// Opens a file with its default app (web: new tab). `UFile.open("/path/report.pdf")`
   static Future<bool> open(String pathOrUri, {String? mimeType}) => UFilesChannel.open(pathOrUri, mimeType: mimeType);
 
-  /// Shows a file in Finder / Explorer / Files.
+  /// Shows a file in Finder / Explorer / Files / the file manager. `UFile.reveal(path)`
   static Future<bool> reveal(String pathOrUri) => UFilesChannel.reveal(pathOrUri);
 
-  /// Shows the "Save as" dialog and copies [sourcePath] there; returns where it was saved.
-  static Future<String?> saveAs({required String sourcePath, required String fileName, String? mimeType}) =>
-      UFilesChannel.saveAs(sourcePath: sourcePath, fileName: fileName, mimeType: mimeType);
+  /// "Save as" dialog, then copies [sourcePath] there; returns the new location or null (Android, iOS, macOS, Windows, Linux). `await UFile.saveAs(sourcePath: p, fileName: "invoice.pdf")`
+  static Future<String?> saveAs({required String sourcePath, required String fileName, String? mimeType}) => UFilesChannel.saveAs(sourcePath: sourcePath, fileName: fileName, mimeType: mimeType);
 
-  /// Copies a local file into the public Downloads folder (Android).
-  static Future<String?> saveToDownloads({required String sourcePath, required String fileName, String? mimeType, String? subfolder}) =>
-      UFilesChannel.saveToDownloads(sourcePath: sourcePath, fileName: fileName, mimeType: mimeType, subfolder: subfolder);
+  /// Copies a local file into the Downloads folder (Android: public Downloads; desktop: ~/Downloads); null on iOS/web. `await UFile.saveToDownloads(sourcePath: p, fileName: "a.pdf")`
+  static Future<String?> saveToDownloads({required String sourcePath, required String fileName, String? mimeType, String? subfolder}) async {
+    if (kIsWeb || Platform.isIOS) return null;
+    if (Platform.isAndroid) return UFilesChannel.saveToDownloads(sourcePath: sourcePath, fileName: fileName, mimeType: mimeType, subfolder: subfolder);
+    // Desktop: copy into the user's Downloads folder, adding " (1)", " (2)"… instead of overwriting.
+    final Directory? downloads = await getDownloadsDirectory();
+    if (downloads == null) return null;
+    final Directory folder = Directory(subfolder == null ? downloads.path : path.join(downloads.path, subfolder));
+    await folder.create(recursive: true);
+    final String base = path.basenameWithoutExtension(fileName);
+    final String ext = path.extension(fileName);
+    String target = path.join(folder.path, fileName);
+    for (int i = 1; File(target).existsSync(); i++) {
+      target = path.join(folder.path, "$base ($i)$ext");
+    }
+    await File(sourcePath).copy(target);
+    return target;
+  }
 
-  /// Free disk space in bytes where [path] lives.
+  /// Free bytes on the disk that holds [path] (null on web).
   static Future<int?> freeSpace(String path) => UFilesChannel.freeSpace(path);
 
-  /// Keeps [path] out of iCloud / device backups (iOS, macOS).
+  /// Keeps [path] out of iCloud/device backups (iOS, macOS; ignored elsewhere).
   static Future<void> excludeFromBackup(String path) => UFilesChannel.excludeFromBackup(path);
 
   static Future<List<UFileData>> _collect(Iterable<Future<UFileData>> sources, UCropOptions? crop) async {

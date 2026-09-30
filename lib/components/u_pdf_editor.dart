@@ -1,10 +1,13 @@
 import "package:u/utilities.dart";
 
+/// PDF editor tool: select, highlight, underline, strikeOut, ink, eraser, note, textBox, rectangle, ellipse, arrow, redact.
 enum UPdfTool { select, highlight, underline, strikeOut, ink, eraser, note, textBox, rectangle, ellipse, arrow, redact }
 
+/// Edits a PDF: markups, ink, notes, text boxes, page rotate/delete/move/insert, redaction, watermark, merge, save.
 class UPdfEditController extends ChangeNotifier {
   UPdfEditController({required this.viewer});
 
+  /// The viewer being edited.
   final UPdfController viewer;
 
   UPdfEdit? _edit;
@@ -18,88 +21,112 @@ class UPdfEditController extends ChangeNotifier {
   final List<int> _undoStack = <int>[];
   final Map<int, List<Offset>> _liveStrokes = <int, List<Offset>>{};
 
+  /// Current tool.
   UPdfTool get tool => _tool;
 
+  /// Markup color.
   Color get color => _color;
 
+  /// Pen color.
   Color get inkColor => _inkColor;
 
+  /// Pen width.
   double get strokeWidth => _strokeWidth;
 
+  /// Markup opacity.
   double get opacity => _opacity;
 
+  /// Text box font size.
   double get fontSize => _fontSize;
 
+  /// Author written into new annotations.
   String get author => _author;
 
+  /// True while a pen stroke is in progress.
   bool get isDrawing => _tool == UPdfTool.ink || _tool == UPdfTool.rectangle || _tool == UPdfTool.ellipse || _tool == UPdfTool.arrow || _tool == UPdfTool.redact;
 
+  /// True when there are unsaved changes.
   bool get hasChanges => _edit?.hasChanges ?? false;
 
+  /// True when undo is possible.
   bool get canUndo => _undoStack.isNotEmpty;
 
+  /// The underlying editable document.
   UPdfEdit? get edit => _edit;
 
+  /// Points of the stroke being drawn on a page.
   List<Offset> liveStroke(int pageIndex) => _liveStrokes[pageIndex] ?? const <Offset>[];
 
+  /// Connects to the viewer (called by the editor page).
   void attach() {
     final UPdfDocument? document = viewer.document;
     if (document == null) return;
     _edit ??= UPdfEdit(document);
   }
 
+  /// Chooses the tool.
   void setTool(UPdfTool tool) {
     _tool = tool;
     notifyListeners();
   }
 
+  /// Sets the markup color.
   void setColor(Color color) {
     _color = color;
     notifyListeners();
   }
 
+  /// Sets the pen color.
   void setInkColor(Color color) {
     _inkColor = color;
     notifyListeners();
   }
 
+  /// Sets the pen width.
   void setStrokeWidth(double width) {
     _strokeWidth = width;
     notifyListeners();
   }
 
+  /// Sets markup opacity.
   void setOpacity(double opacity) {
     _opacity = opacity.clamp(0.05, 1).toDouble();
     notifyListeners();
   }
 
+  /// Sets text box font size.
   void setFontSize(double size) {
     _fontSize = size.clamp(6, 96).toDouble();
     notifyListeners();
   }
 
+  /// Sets the annotation author.
   void setAuthor(String author) {
     _author = author;
     notifyListeners();
   }
 
+  /// Screen point → PDF coordinates.
   Offset devicePointToPdf(UDocPageInfo info, Offset point) {
     final Rect box = info.cropBox ?? Rect.fromLTWH(0, 0, info.size.width, info.size.height);
     final List<double> matrix = uPdfInvert(uPdfBaseMatrix(box, info.rotation, 1));
     return uPdfApply(matrix, point.dx, point.dy);
   }
 
+  /// Screen rect → PDF coordinates.
   Rect deviceRectToPdf(UDocPageInfo info, Rect rect) {
     final Offset a = devicePointToPdf(info, rect.topLeft);
     final Offset b = devicePointToPdf(info, rect.bottomRight);
     return Rect.fromLTRB(min(a.dx, b.dx), min(a.dy, b.dy), max(a.dx, b.dx), max(a.dy, b.dy));
   }
 
+  /// Starts a pen stroke.
   void beginStroke(int pageIndex, Offset devicePoint) {
     _liveStrokes[pageIndex] = <Offset>[devicePoint];
     notifyListeners();
   }
 
+  /// Adds a point to the stroke.
   void extendStroke(int pageIndex, Offset devicePoint) {
     final List<Offset>? points = _liveStrokes[pageIndex];
     if (points == null) return;
@@ -108,6 +135,7 @@ class UPdfEditController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Finishes the stroke and saves it.
   Future<void> endStroke(int pageIndex) async {
     final List<Offset>? points = _liveStrokes.remove(pageIndex);
     notifyListeners();
@@ -178,6 +206,7 @@ class UPdfEditController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Highlights/underlines/strikes the selected text with the current tool.
   Future<bool> annotateSelection(UDocSelection selection, UDocTextPage text) async {
     if (selection.isEmpty) return false;
     attach();
@@ -215,6 +244,7 @@ class UPdfEditController extends ChangeNotifier {
     return number > 0;
   }
 
+  /// Adds a sticky note.
   Future<bool> addNote(int pageIndex, Offset devicePoint, String contents) async {
     attach();
     final UPdfEdit? edit = _edit;
@@ -231,6 +261,7 @@ class UPdfEditController extends ChangeNotifier {
     return number > 0;
   }
 
+  /// Adds a text box.
   Future<bool> addTextBox(int pageIndex, Offset devicePoint, String contents, {double width = 200, double height = 60}) async {
     attach();
     final UPdfEdit? edit = _edit;
@@ -257,6 +288,7 @@ class UPdfEditController extends ChangeNotifier {
     return number > 0;
   }
 
+  /// Deletes the annotation under a point.
   Future<bool> eraseAt(int pageIndex, Offset devicePoint) async {
     attach();
     final UPdfEdit? edit = _edit;
@@ -278,6 +310,7 @@ class UPdfEditController extends ChangeNotifier {
     return false;
   }
 
+  /// Undoes the last change.
   Future<void> undo() async {
     final UPdfEdit? edit = _edit;
     if (edit == null || _undoStack.isEmpty) return;
@@ -293,6 +326,7 @@ class UPdfEditController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Rotates a page by 90/180/270°.
   Future<bool> rotatePage(int pageIndex, int degrees) async {
     attach();
     final UPdfEdit? edit = _edit;
@@ -303,6 +337,7 @@ class UPdfEditController extends ChangeNotifier {
     return true;
   }
 
+  /// Deletes a page.
   Future<bool> deletePage(int pageIndex) async {
     attach();
     final UPdfEdit? edit = _edit;
@@ -313,6 +348,7 @@ class UPdfEditController extends ChangeNotifier {
     return done;
   }
 
+  /// Duplicates a page.
   Future<bool> duplicatePage(int pageIndex) async {
     attach();
     final UPdfEdit? edit = _edit;
@@ -323,6 +359,7 @@ class UPdfEditController extends ChangeNotifier {
     return done;
   }
 
+  /// Moves a page.
   Future<bool> movePage(int from, int to) async {
     attach();
     final UPdfEdit? edit = _edit;
@@ -333,6 +370,7 @@ class UPdfEditController extends ChangeNotifier {
     return done;
   }
 
+  /// Inserts an empty page.
   Future<bool> insertBlankPage(int at) async {
     attach();
     final UPdfEdit? edit = _edit;
@@ -343,6 +381,7 @@ class UPdfEditController extends ChangeNotifier {
     return done;
   }
 
+  /// Annotations of one page.
   Future<List<UPdfAnnotationInfo>> annotationsOn(int pageIndex) async {
     attach();
     final UPdfEdit? edit = _edit;
@@ -350,6 +389,7 @@ class UPdfEditController extends ChangeNotifier {
     return edit.annotations(pageIndex);
   }
 
+  /// Every annotation.
   Future<List<UPdfAnnotationInfo>> allAnnotations() async {
     attach();
     final UPdfEdit? edit = _edit;
@@ -361,6 +401,7 @@ class UPdfEditController extends ChangeNotifier {
     return out;
   }
 
+  /// Annotation under a point.
   Future<UPdfAnnotationInfo?> annotationAt(int pageIndex, Offset devicePoint) async {
     final List<UPdfAnnotationInfo> list = await annotationsOn(pageIndex);
     final UDocPageInfo info = viewer.pageInfo(pageIndex);
@@ -371,6 +412,7 @@ class UPdfEditController extends ChangeNotifier {
     return null;
   }
 
+  /// Changes an annotation's text/color.
   Future<bool> updateAnnotation(int pageIndex, int objectNumber, {Rect? rect, Color? color, double? opacity, String? contents}) async {
     attach();
     final UPdfEdit? edit = _edit;
@@ -383,6 +425,7 @@ class UPdfEditController extends ChangeNotifier {
     return done;
   }
 
+  /// Deletes an annotation.
   Future<bool> deleteAnnotation(int pageIndex, int objectNumber) async {
     attach();
     final UPdfEdit? edit = _edit;
@@ -396,6 +439,7 @@ class UPdfEditController extends ChangeNotifier {
     return done;
   }
 
+  /// Permanently blacks out areas of a page.
   Future<int> applyRedactions(int pageIndex, List<Rect> areas) async {
     attach();
     final UPdfEdit? edit = _edit;
@@ -406,6 +450,7 @@ class UPdfEditController extends ChangeNotifier {
     return removed;
   }
 
+  /// Applies every redaction mark.
   Future<int> applyPendingRedactions() async {
     attach();
     final UPdfEdit? edit = _edit;
@@ -425,6 +470,7 @@ class UPdfEditController extends ChangeNotifier {
     return removed;
   }
 
+  /// Burns annotations/form fields into the page content.
   Future<int> flatten({bool widgetsOnly = false}) async {
     attach();
     final UPdfEdit? edit = _edit;
@@ -435,6 +481,7 @@ class UPdfEditController extends ChangeNotifier {
     return count;
   }
 
+  /// Stamps text on every page.
   Future<bool> addWatermark(String text, {double fontSize = 48, Color color = const Color(0x33000000), double rotation = 45}) async {
     attach();
     final UPdfEdit? edit = _edit;
@@ -445,6 +492,7 @@ class UPdfEditController extends ChangeNotifier {
     return true;
   }
 
+  /// Adds page numbers.
   Future<bool> addPageNumbers({double fontSize = 10, int startAt = 1, bool rightAligned = true}) async {
     attach();
     final UPdfEdit? edit = _edit;
@@ -455,6 +503,7 @@ class UPdfEditController extends ChangeNotifier {
     return true;
   }
 
+  /// Sets title, author, subject…
   Future<bool> setMetadata(UDocMetadata metadata) async {
     attach();
     final UPdfEdit? edit = _edit;
@@ -464,6 +513,7 @@ class UPdfEditController extends ChangeNotifier {
     return true;
   }
 
+  /// Crops a page.
   Future<bool> setCrop(int pageIndex, Rect box) async {
     attach();
     final UPdfEdit? edit = _edit;
@@ -474,6 +524,7 @@ class UPdfEditController extends ChangeNotifier {
     return true;
   }
 
+  /// Appends another PDF.
   Future<bool> mergeFile(Uint8List data) async {
     attach();
     final UPdfEdit? edit = _edit;
@@ -501,12 +552,14 @@ class UPdfEditController extends ChangeNotifier {
     }
   }
 
+  /// New PDF with only some pages.
   Future<Uint8List?> exportPages(List<int> indices) async {
     final UPdfDocument? target = viewer.document;
     if (target == null) return null;
     return UPdfOps.extractPages(target, indices);
   }
 
+  /// Saves a smaller, rewritten PDF.
   Future<bool> saveOptimized(String path) async {
     attach();
     final UPdfEdit? edit = _edit;
@@ -514,6 +567,7 @@ class UPdfEditController extends ChangeNotifier {
     return edit.saveOptimizedTo(path);
   }
 
+  /// Saves to a file path (not on web).
   Future<bool> saveTo(String path) async {
     final UPdfEdit? edit = _edit;
     if (edit == null) return false;
@@ -525,9 +579,11 @@ class UPdfEditController extends ChangeNotifier {
     return saved;
   }
 
+  /// Saves to bytes (works on web).
   Future<Uint8List?> saveToBytes() async => _edit?.saveToBytes();
 }
 
+/// Full PDF editor screen (tools, pages, forms, save). `UPdfEditorPage(filePath: path, onSaved: (p) => print(p))`
 class UPdfEditorPage extends StatefulWidget {
   const UPdfEditorPage({
     this.filePath,
@@ -542,14 +598,31 @@ class UPdfEditorPage extends StatefulWidget {
     super.key,
   });
 
+  /// Local file path.
   final String? filePath;
+
+  /// Content as bytes in memory.
   final Uint8List? bytes;
+
+  /// Web address of the content.
   final String? url;
+
+  /// Asset path.
   final String? asset;
+
+  /// PDF as base64 text.
   final String? base64Pdf;
+
+  /// Password of an encrypted PDF.
   final String password;
+
+  /// Author name for new annotations.
   final String author;
+
+  /// Where to save (asks when null).
   final String? savePath;
+
+  /// Called with the saved path.
   final void Function(String path)? onSaved;
 
   @override
@@ -776,10 +849,14 @@ class _UPdfEditorPageState extends State<UPdfEditorPage> {
   }
 }
 
+/// Page organizer (rotate, delete, reorder, insert).
 class UPdfPageManager extends StatefulWidget {
   const UPdfPageManager({required this.viewer, required this.editor, super.key});
 
+  /// The viewer.
   final UPdfController viewer;
+
+  /// The editor.
   final UPdfEditController editor;
 
   @override
@@ -866,11 +943,17 @@ class _UPdfPageManagerState extends State<UPdfPageManager> {
   );
 }
 
+/// Fills PDF form fields.
 class UPdfFormPanel extends StatefulWidget {
   const UPdfFormPanel({required this.edit, required this.fields, required this.onChanged, super.key});
 
+  /// The editable document.
   final UPdfEdit edit;
+
+  /// The form fields.
   final List<UPdfFormField> fields;
+
+  /// Called with the new value when the user changes it.
   final void Function(int pageIndex) onChanged;
 
   @override

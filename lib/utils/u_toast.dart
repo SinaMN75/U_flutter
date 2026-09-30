@@ -1,10 +1,14 @@
 import "package:u/utilities.dart";
 
+/// Color and icon style of a message: neutral, info, success, warning, error.
 enum UToastType { neutral, info, success, warning, error }
 
+/// Where a toast appears: top, center or bottom.
 enum UToastPosition { top, center, bottom }
 
+/// Snackbars, toasts and banners from anywhere, no BuildContext needed (uses navigatorKey). `UToast.success(message: "Saved")`
 abstract class UToast {
+  /// The theme used to color messages.
   static ThemeData get theme => Theme.of(navigatorKey.currentContext!);
 
   static ColorScheme get _scheme => theme.colorScheme;
@@ -59,6 +63,7 @@ abstract class UToast {
     }
   }
 
+  /// Material snackbar at the bottom with optional title, icon, action and close button. `UToast.snackBar(message: "Deleted", actionLabel: "Undo", onAction: undo)`
   static void snackBar({
     required String message,
     String? title,
@@ -127,6 +132,7 @@ abstract class UToast {
         .then((_) => onDismiss?.call());
   }
 
+  /// Green success snackbar. `UToast.success(message: "Saved")`
   static void success({
     required String message,
     String? title,
@@ -148,6 +154,7 @@ abstract class UToast {
     onDismiss: onDismiss,
   );
 
+  /// Orange warning snackbar. `UToast.warning(message: "Check your input")`
   static void warning({
     required String message,
     String? title,
@@ -169,6 +176,7 @@ abstract class UToast {
     onDismiss: onDismiss,
   );
 
+  /// Blue info snackbar. `UToast.info(message: "New version available")`
   static void info({
     required String message,
     String? title,
@@ -190,6 +198,7 @@ abstract class UToast {
     onDismiss: onDismiss,
   );
 
+  /// Red error snackbar. `UToast.error(message: "Could not connect")`
   static void error({
     required String message,
     String? title,
@@ -211,8 +220,10 @@ abstract class UToast {
     onDismiss: onDismiss,
   );
 
+  /// Removes every visible and queued snackbar.
   static void clearSnackBars() => ScaffoldMessenger.of(navigatorKey.currentContext!).clearSnackBars();
 
+  /// Material banner under the app bar that stays until dismissed or an action is tapped. `UToast.banner(message: "You are offline", type: UToastType.warning)`
   static void banner({
     required String message,
     String? title,
@@ -273,10 +284,12 @@ abstract class UToast {
     );
   }
 
+  /// Hides the current banner.
   static void dismissBanner() => ScaffoldMessenger.of(navigatorKey.currentContext!).hideCurrentMaterialBanner();
 
   static OverlayEntry? _toastEntry;
 
+  /// Floating pill message (top/center/bottom) that disappears by itself; works over dialogs too. `UToast.toast(message: "Copied", position: UToastPosition.top)`
   static void toast({
     required String message,
     String? title,
@@ -338,6 +351,7 @@ abstract class UToast {
     }
   }
 
+  /// Hides the current toast now.
   static void clearToast() {
     final OverlayEntry? entry = _toastEntry;
 
@@ -348,6 +362,7 @@ abstract class UToast {
     }
   }
 
+  /// Green floating toast. `UToast.successToast(message: "Done")`
   static void successToast({
     required String message,
     String? title,
@@ -358,6 +373,7 @@ abstract class UToast {
     VoidCallback? onDismiss,
   }) => toast(message: message, title: title, type: UToastType.success, icon: icon, position: position, duration: duration, onTap: onTap, onDismiss: onDismiss);
 
+  /// Red floating toast.
   static void errorToast({
     required String message,
     String? title,
@@ -368,6 +384,7 @@ abstract class UToast {
     VoidCallback? onDismiss,
   }) => toast(message: message, title: title, type: UToastType.error, icon: icon, position: position, duration: duration, onTap: onTap, onDismiss: onDismiss);
 
+  /// Orange floating toast.
   static void warningToast({
     required String message,
     String? title,
@@ -378,6 +395,7 @@ abstract class UToast {
     VoidCallback? onDismiss,
   }) => toast(message: message, title: title, type: UToastType.warning, icon: icon, position: position, duration: duration, onTap: onTap, onDismiss: onDismiss);
 
+  /// Blue floating toast.
   static void infoToast({
     required String message,
     String? title,

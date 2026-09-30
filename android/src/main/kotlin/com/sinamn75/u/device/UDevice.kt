@@ -58,12 +58,29 @@ class UDeviceHandler(
     private val connectivity = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
     private var sink: EventChannel.EventSink? = null
+    private var activity: android.app.Activity? = null
+    private var screenOn = false
     private var callback: ConnectivityManager.NetworkCallback? = null
     private var dataSaverReceiver: BroadcastReceiver? = null
 
     init {
         channel.setMethodCallHandler(this)
         events.setStreamHandler(this)
+    }
+
+    /** The window flag lives on the activity; re-applied after a config change recreates it. */
+    fun setActivity(value: android.app.Activity?) {
+        activity = value
+        if (screenOn) applyScreenOn()
+    }
+
+    private fun applyScreenOn() {
+        val window = activity?.window ?: return
+        if (screenOn) {
+            window.addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        } else {
+            window.clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        }
     }
 
     fun dispose() {
@@ -82,6 +99,11 @@ class UDeviceHandler(
             "network" -> result.success(network())
             "status" -> background(result) { status() }
             "integrity" -> background(result) { integrity() }
+            "keepScreenOn" -> {
+                screenOn = call.argument<Boolean>("on") == true
+                applyScreenOn()
+                result.success(activity != null)
+            }
             else -> result.notImplemented()
         }
     }

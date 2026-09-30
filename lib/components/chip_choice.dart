@@ -1,5 +1,6 @@
 import "package:u/utilities.dart";
 
+/// Single or multi select chips. `UChipChoice<String>(options: const ["A", "B"], selected: "A", onChanged: (i, on, item) {})`
 class UChipChoice<T> extends StatefulWidget {
   const UChipChoice({
     required this.options,
@@ -175,9 +176,16 @@ class _UChipChoiceState<T> extends State<UChipChoice<T>> {
 class UTagChips<T extends UNumericIdentifiable> extends StatefulWidget {
   const UTagChips({required this.title, required this.options, required this.tags, this.single = false, super.key});
 
+  /// Title text.
   final String title;
+
+  /// Options.
   final List<T> options;
+
+  /// Selected tag numbers.
   final List<int> tags;
+
+  /// Only one tag at a time.
   final bool single;
 
   @override

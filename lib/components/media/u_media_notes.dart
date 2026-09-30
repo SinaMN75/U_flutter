@@ -5,13 +5,24 @@ String _noteId() => "${DateTime.now().microsecondsSinceEpoch.toRadixString(36)}$
 /// A note pinned to a moment (or a range) of a video / audio track.
 @immutable
 class UMediaNote {
-  const UMediaNote({required this.id, required this.position, required this.createdAt, required this.updatedAt, this.end, this.text = "", this.color = const Color(0xFFFFC107), this.extra = const <String, Object?>{}});
+  const UMediaNote({
+    required this.id,
+    required this.position,
+    required this.createdAt,
+    required this.updatedAt,
+    this.end,
+    this.text = "",
+    this.color = const Color(0xFFFFC107),
+    this.extra = const <String, Object?>{},
+  });
 
+  /// New note at [position] (optionally a range to [end]).
   factory UMediaNote.create({required Duration position, Duration? end, String text = "", Color color = const Color(0xFFFFC107)}) {
     final DateTime now = DateTime.now();
     return UMediaNote(id: _noteId(), position: position, end: end, text: text, color: color, createdAt: now, updatedAt: now);
   }
 
+  /// Reads a note from JSON.
   factory UMediaNote.fromJson(Map<String, Object?> json) => UMediaNote(
     id: (json["id"] as String?) ?? _noteId(),
     position: Duration(milliseconds: (json["ms"] as num?)?.toInt() ?? 0),
@@ -23,17 +34,34 @@ class UMediaNote {
     extra: <String, Object?>{...?(json["extra"] as Map<String, Object?>?)},
   );
 
+  /// Unique id.
   final String id;
+
+  /// Where it is placed.
   final Duration position;
+
+  /// End of a range note (null = a single moment).
   final Duration? end;
+
+  /// Text to show.
   final String text;
+
+  /// Main color (defaults to the theme).
   final Color color;
+
+  /// When the note was created.
   final DateTime createdAt;
+
+  /// When the note was last changed.
   final DateTime updatedAt;
+
+  /// Your own data.
   final Map<String, Object?> extra;
 
+  /// True when the note covers a range.
   bool get isRange => end != null && end! > position;
 
+  /// Copy with some fields changed.
   UMediaNote copyWith({Duration? position, Duration? end, bool clearEnd = false, String? text, Color? color}) => UMediaNote(
     id: id,
     position: position ?? this.position,
@@ -45,6 +73,7 @@ class UMediaNote {
     extra: extra,
   );
 
+  /// Note as JSON.
   Map<String, Object?> toJson() => <String, Object?>{
     "id": id,
     "ms": position.inMilliseconds,
@@ -64,7 +93,10 @@ class UMediaNotesController extends ChangeNotifier {
     if (initialData != null && initialData.isNotEmpty) import(initialData, notify: false);
   }
 
+  /// Called with the new value when the user changes it.
   final void Function(UMediaNotesController controller)? onChanged;
+
+  /// How many steps undo remembers.
   final int maxUndo;
 
   final List<UMediaNote> _notes = <UMediaNote>[];
@@ -78,8 +110,10 @@ class UMediaNotesController extends ChangeNotifier {
   Color _color;
   DateTime _updatedAt = DateTime.fromMillisecondsSinceEpoch(0);
 
+  /// Notes sorted by time.
   List<UMediaNote> get notes => List<UMediaNote>.unmodifiable(_notes);
 
+  /// True when there are no notes.
   bool get isEmpty => _notes.isEmpty && _shapes.isEmpty;
 
   /// Drawings over the video frame, each visible during its time range.
@@ -88,18 +122,25 @@ class UMediaNotesController extends ChangeNotifier {
   /// Drawings to show at [position].
   List<UDocShape> shapesAt(Duration position) => _shapes.where((UDocShape shape) => shape.visibleAt(position)).toList();
 
+  /// Number of notes.
   int get length => _notes.length;
 
+  /// Color for new notes.
   Color get color => _color;
 
+  /// True when undo is possible.
   bool get canUndo => _undo.isNotEmpty;
 
+  /// True when redo is possible.
   bool get canRedo => _redo.isNotEmpty;
 
+  /// Last change time.
   DateTime get updatedAt => _updatedAt;
 
+  /// Key the notes are saved under.
   String? get storageKey => _storageKey;
 
+  /// Color for new notes.
   set color(Color value) {
     _color = value;
     notifyListeners();
@@ -120,6 +161,7 @@ class UMediaNotesController extends ChangeNotifier {
         ),
   ];
 
+  /// Finds a note.
   UMediaNote? byId(String id) {
     for (final UMediaNote note in _notes) {
       if (note.id == id) return note;
@@ -143,6 +185,7 @@ class UMediaNotesController extends ChangeNotifier {
     return found;
   }
 
+  /// Notes whose text contains [query].
   List<UMediaNote> search(String query) {
     final String needle = UDocText.forSearch(query);
     if (needle.isEmpty) return notes;
@@ -189,6 +232,7 @@ class UMediaNotesController extends ChangeNotifier {
 
   // ───────── drawings ─────────
 
+  /// Adds a drawing shape.
   UDocShape addShape(UDocShape shape) {
     _checkpoint();
     _shapes.add(shape);
@@ -208,6 +252,7 @@ class UMediaNotesController extends ChangeNotifier {
     _commit(debounce: true);
   }
 
+  /// Removes a drawing shape.
   void removeShape(String id) {
     if (!_shapes.any((UDocShape shape) => shape.id == id)) return;
     _checkpoint();
@@ -230,6 +275,7 @@ class UMediaNotesController extends ChangeNotifier {
     super.dispose();
   }
 
+  /// Adds a note at [position]. `notes.add(position: controller.value.position, text: "Important")`
   UMediaNote add({required Duration position, String text = "", Color? color, Duration? end}) {
     final UMediaNote note = UMediaNote.create(position: position, end: end, text: text, color: color ?? _color);
     _checkpoint();
@@ -238,6 +284,7 @@ class UMediaNotesController extends ChangeNotifier {
     return note;
   }
 
+  /// Replaces a note (same id).
   void replace(UMediaNote note) {
     final int index = _notes.indexWhere((UMediaNote existing) => existing.id == note.id);
     if (index < 0) return;
@@ -246,6 +293,7 @@ class UMediaNotesController extends ChangeNotifier {
     _commit();
   }
 
+  /// Deletes a note.
   void remove(String id) {
     if (!_notes.any((UMediaNote note) => note.id == id)) return;
     _checkpoint();
@@ -253,6 +301,7 @@ class UMediaNotesController extends ChangeNotifier {
     _commit();
   }
 
+  /// Deletes every note.
   void clear() {
     if (isEmpty) return;
     _checkpoint();
@@ -261,6 +310,7 @@ class UMediaNotesController extends ChangeNotifier {
     _commit();
   }
 
+  /// Undoes the last change.
   void undo() {
     if (_undo.isEmpty) return;
     _lastShapeEdit = null;
@@ -268,6 +318,7 @@ class UMediaNotesController extends ChangeNotifier {
     _restore(_undo.removeLast());
   }
 
+  /// Redoes an undone change.
   void redo() {
     if (_redo.isEmpty) return;
     _lastShapeEdit = null;
@@ -275,6 +326,7 @@ class UMediaNotesController extends ChangeNotifier {
     _restore(_redo.removeLast());
   }
 
+  /// All notes as JSON.
   Map<String, Object?> toJson() => <String, Object?>{
     "version": 1,
     "updated": _updatedAt.toIso8601String(),
@@ -282,6 +334,7 @@ class UMediaNotesController extends ChangeNotifier {
     if (_shapes.isNotEmpty) "shapes": _shapes.map((UDocShape shape) => shape.toJson()).toList(),
   };
 
+  /// All notes as a compact string (base64 by default).
   String export({bool base64 = true}) {
     final String json = jsonEncode(toJson());
     return base64 ? json.toBase64() : json;
@@ -306,7 +359,13 @@ class UMediaNotesController extends ChangeNotifier {
       for (final Object? entry in json["markers"]! as List<Object?>) {
         if (entry is! Map<String, Object?>) continue;
         final num seconds = (entry["seconds"] as num?) ?? 0;
-        incoming.add(UMediaNote.create(position: Duration(milliseconds: (seconds * 1000).round()), text: (entry["text"] as String?) ?? "", color: Color((entry["color"] as num?)?.toInt() ?? 0xFFFFC107)));
+        incoming.add(
+          UMediaNote.create(
+            position: Duration(milliseconds: (seconds * 1000).round()),
+            text: (entry["text"] as String?) ?? "",
+            color: Color((entry["color"] as num?)?.toInt() ?? 0xFFFFC107),
+          ),
+        );
       }
       _updatedAt = DateTime.now();
     } else {
@@ -329,12 +388,14 @@ class UMediaNotesController extends ChangeNotifier {
     return true;
   }
 
+  /// Loads and auto-saves notes under [key].
   Future<void> attachStorage(String key) async {
     if (_storageKey == key) return;
     _storageKey = key;
     await load();
   }
 
+  /// Loads saved notes.
   Future<void> load() async {
     final String? key = _storageKey;
     if (key == null) return;
@@ -348,6 +409,7 @@ class UMediaNotesController extends ChangeNotifier {
     }
   }
 
+  /// Saves notes now.
   Future<void> save() async {
     final String? key = _storageKey;
     if (key == null) return;
@@ -358,6 +420,7 @@ class UMediaNotesController extends ChangeNotifier {
     }
   }
 
+  /// Notes as Markdown (for sharing).
   String toMarkdown({String title = ""}) {
     final StringBuffer buffer = StringBuffer();
     if (title.isNotEmpty) buffer.writeln("# $title\n");
@@ -391,6 +454,7 @@ class UMediaNotesController extends ChangeNotifier {
 abstract final class UMediaResume {
   static String _key(String id) => "u_media_resume_${id.hashCode.toUnsigned(32).toRadixString(36)}_${id.length}";
 
+  /// Saved "continue watching" position of [id].
   static Duration? get(String id) {
     try {
       final int? ms = ULocalStorage.getInt(_key(id));
@@ -400,6 +464,7 @@ abstract final class UMediaResume {
     }
   }
 
+  /// Saves the position of [id].
   static void save(String id, Duration position, Duration duration) {
     try {
       final bool nearEnd = duration > Duration.zero && position >= duration - const Duration(seconds: 8);
@@ -413,6 +478,7 @@ abstract final class UMediaResume {
     }
   }
 
+  /// Forgets the position of [id].
   static void clear(String id) {
     try {
       unawaited(ULocalStorage.remove(_key(id)));
@@ -426,10 +492,19 @@ abstract final class UMediaResume {
 class UMediaNotesPanel extends StatefulWidget {
   const UMediaNotesPanel({required this.notes, required this.controller, this.onSeek, this.showHeader = true, this.pauseWhileEditing = true, super.key});
 
+  /// The notes.
   final UMediaNotesController notes;
+
+  /// Controller to read or change it from code.
   final UMediaController controller;
+
+  /// Called with a note's time when tapped.
   final void Function(Duration position)? onSeek;
+
+  /// Shows the panel header.
   final bool showHeader;
+
+  /// Pauses playback while typing a note.
   final bool pauseWhileEditing;
 
   @override
@@ -516,13 +591,22 @@ class _UMediaNotesPanelState extends State<UMediaNotesPanel> {
                   ),
                 ),
                 const SizedBox(width: 8),
-                FilledButton.icon(onPressed: () => unawaited(_addNote()), icon: const Icon(Icons.add_comment_rounded, size: 18), label: UTextBodySmall(U.s.addNote, color: scheme.onPrimary)),
+                FilledButton.icon(
+                  onPressed: () => unawaited(_addNote()),
+                  icon: const Icon(Icons.add_comment_rounded, size: 18),
+                  label: UTextBodySmall(U.s.addNote, color: scheme.onPrimary),
+                ),
               ],
             ),
           ),
           Expanded(
             child: notes.isEmpty
-                ? Center(child: Padding(padding: const EdgeInsets.all(24), child: UTextBodyMedium(U.s.noNotesYet, textAlign: TextAlign.center, maxLines: 4)))
+                ? Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: UTextBodyMedium(U.s.noNotesYet, textAlign: TextAlign.center, maxLines: 4),
+                    ),
+                  )
                 : ValueListenableBuilder<UMediaValue>(
                     valueListenable: widget.controller,
                     builder: (BuildContext context, UMediaValue value, Widget? child) {
@@ -549,7 +633,11 @@ class _UMediaNotesPanelState extends State<UMediaNotesPanel> {
                                       decoration: BoxDecoration(color: note.color, borderRadius: BorderRadius.circular(8)),
                                       child: Directionality(
                                         textDirection: TextDirection.ltr,
-                                        child: UTextLabelMedium("${uFormatDuration(note.position)}${note.isRange ? "–${uFormatDuration(note.end!)}" : ""}", color: note.color.computeLuminance() > 0.5 ? const Color(0xFF000000) : const Color(0xFFFFFFFF), fontWeight: FontWeight.w700),
+                                        child: UTextLabelMedium(
+                                          "${uFormatDuration(note.position)}${note.isRange ? "–${uFormatDuration(note.end!)}" : ""}",
+                                          color: note.color.computeLuminance() > 0.5 ? const Color(0xFF000000) : const Color(0xFFFFFFFF),
+                                          fontWeight: FontWeight.w700,
+                                        ),
                                       ),
                                     ),
                                     const SizedBox(width: 10),
@@ -598,6 +686,7 @@ class _UMediaNotesPanelState extends State<UMediaNotesPanel> {
   );
 }
 
+/// Shortcuts for media notes.
 abstract final class UMediaNotes {
   /// Pauses (optionally), asks for the note text and pins it to the current position.
   static Future<UMediaNote?> addAtCurrentTime(UMediaNotesController notes, UMediaController controller, {bool pause = true}) async {
@@ -611,6 +700,7 @@ abstract final class UMediaNotes {
     return note;
   }
 
+  /// Opens the notes panel in a bottom sheet.
   static Future<void> showPanel(UMediaNotesController notes, UMediaController controller) => UNavigator.bottomSheet<void>(
     SizedBox(
       height: MediaQuery.sizeOf(navigatorKey.currentContext!).height * 0.7,
@@ -623,7 +713,10 @@ abstract final class UMediaNotes {
 class UMovingWatermark extends StatefulWidget {
   const UMovingWatermark({required this.watermark, this.interval = const Duration(seconds: 12), super.key});
 
+  /// Watermark text painted over the content.
   final UDocWatermark watermark;
+
+  /// How often the watermark jumps to a new spot.
   final Duration interval;
 
   @override
@@ -689,8 +782,13 @@ class _UMovingWatermarkState extends State<UMovingWatermark> {
 class UMediaPipSwitcher extends StatelessWidget {
   const UMediaPipSwitcher({required this.controller, required this.child, this.pip, super.key});
 
+  /// Controller to read or change it from code.
   final UMediaController controller;
+
+  /// The widget inside.
   final Widget child;
+
+  /// Widget shown in picture-in-picture mode.
   final Widget? pip;
 
   @override
@@ -698,7 +796,11 @@ class UMediaPipSwitcher extends StatelessWidget {
     valueListenable: controller,
     builder: (BuildContext context, UMediaValue value, Widget? built) {
       if (value.pip != UPipState.active || kIsWeb || !UApp.isAndroid) return built!;
-      return pip ?? ColoredBox(color: const Color(0xFF000000), child: UVideoView(controller: controller));
+      return pip ??
+          ColoredBox(
+            color: const Color(0xFF000000),
+            child: UVideoView(controller: controller),
+          );
     },
     child: child,
   );

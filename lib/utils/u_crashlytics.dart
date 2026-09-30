@@ -1,19 +1,27 @@
 import "package:u/utilities.dart";
 
+/// Receives each crash report as a JSON-ready map (error, stack, app, device, screen).
 typedef UCrashListener = void Function(Map<String, dynamic> errorData);
 
+/// Catches every uncaught Dart/Flutter error with app, device and screen info, so you can send it to your server. `UCrashlytics.initialize(onCrash: (report) => api.logCrash(report))`
 class UCrashlytics {
   static UCrashListener? _crashListener;
 
+  /// Starts catching errors; previous handlers (console, other reporters) keep working. Call it in main() after initU().
   static Future<void> initialize({UCrashListener? onCrash}) async {
     _crashListener = onCrash;
-
+    // Chain the previous handlers so errors still reach the console / other reporters.
+    final bool Function(Object, StackTrace)? previousPlatform = PlatformDispatcher.instance.onError;
     PlatformDispatcher.instance.onError = (Object error, StackTrace stack) {
       _recordError(error, stack);
+      previousPlatform?.call(error, stack);
       return true;
     };
-
-    FlutterError.onError = _recordFlutterError;
+    final FlutterExceptionHandler? previousFlutter = FlutterError.onError;
+    FlutterError.onError = (FlutterErrorDetails details) {
+      _recordFlutterError(details);
+      previousFlutter?.call(details);
+    };
   }
 
   static Future<void> _recordError(dynamic error, StackTrace stack) async {
@@ -142,6 +150,7 @@ class UCrashlytics {
     return "Unknown";
   }
 
+  /// Reports an error you caught yourself. `catch (e, s) { UCrashlytics.reportError(e, s); }`
   static void reportError(dynamic error, StackTrace stackTrace) {
     _recordError(error, stackTrace);
   }

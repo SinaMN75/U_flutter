@@ -1,5 +1,6 @@
 import "package:u/utilities.dart";
 
+/// Per-player view settings: fit, zoom, rotation, mirror, color filters, subtitle style/delay, A-B repeat, sleep timer.
 class UVideoSettings extends ChangeNotifier {
   UVideoSettings({this._fit = UMediaFit.contain, this._subtitleStyle = const USubtitleStyleConfig()});
 
@@ -21,116 +22,150 @@ class UVideoSettings extends ChangeNotifier {
   Timer? _sleepTimer;
   DateTime? _sleepAt;
 
+  /// How the video fills the screen (contain, cover, 16:9…).
   UMediaFit get fit => _fit;
 
+  /// Zoom level (1 = none).
   double get zoom => _zoom;
 
+  /// Rotation in quarter turns.
   int get rotation => _rotation;
 
+  /// Mirrors the picture.
   bool get mirrored => _mirrored;
 
+  /// Screen brightness override while playing (0-1).
   double get screenBrightness => _screenBrightness;
 
+  /// Picture brightness filter (0 = normal).
   double get brightness => _brightness;
 
+  /// Picture contrast filter (1 = normal).
   double get contrast => _contrast;
 
+  /// Picture saturation filter (1 = normal).
   double get saturation => _saturation;
 
+  /// Picture hue shift in degrees.
   double get hue => _hue;
 
+  /// Shows the technical stats overlay.
   bool get showStats => _showStats;
 
+  /// Subtitle font, colors and outline.
   USubtitleStyleConfig get subtitleStyle => _subtitleStyle;
 
+  /// Subtitle size multiplier.
   double get subtitleScale => _subtitleScale;
 
+  /// Subtitle timing shift.
   Duration get subtitleDelay => _subtitleDelay;
 
+  /// A point of A-B repeat.
   Duration? get repeatStart => _repeatStart;
 
+  /// B point of A-B repeat.
   Duration? get repeatEnd => _repeatEnd;
 
+  /// When the sleep timer stops playback.
   DateTime? get sleepAt => _sleepAt;
 
+  /// True when any color filter is changed.
   bool get hasFilters => _brightness != 0 || _contrast != 1 || _saturation != 1 || _hue != 0;
 
+  /// True when A-B repeat is set.
   bool get hasAbRepeat => _repeatStart != null && _repeatEnd != null;
 
+  /// How the video fills the screen (contain, cover, 16:9…).
   set fit(UMediaFit value) {
     _fit = value;
     notifyListeners();
   }
 
+  /// Zoom level (1 = none).
   set zoom(double value) {
     _zoom = value.clamp(1, 4).toDouble();
     notifyListeners();
   }
 
+  /// Rotation in quarter turns.
   set rotation(int value) {
     _rotation = value % 360;
     notifyListeners();
   }
 
+  /// Mirrors the picture.
   set mirrored(bool value) {
     _mirrored = value;
     notifyListeners();
   }
 
+  /// Screen brightness override while playing (0-1).
   set screenBrightness(double value) {
     _screenBrightness = value.clamp(0.05, 1).toDouble();
     notifyListeners();
   }
 
+  /// Picture brightness filter (0 = normal).
   set brightness(double value) {
     _brightness = value.clamp(-1, 1).toDouble();
     notifyListeners();
   }
 
+  /// Picture contrast filter (1 = normal).
   set contrast(double value) {
     _contrast = value.clamp(0, 3).toDouble();
     notifyListeners();
   }
 
+  /// Picture saturation filter (1 = normal).
   set saturation(double value) {
     _saturation = value.clamp(0, 3).toDouble();
     notifyListeners();
   }
 
+  /// Picture hue shift in degrees.
   set hue(double value) {
     _hue = value.clamp(-180, 180).toDouble();
     notifyListeners();
   }
 
+  /// Shows the technical stats overlay.
   set showStats(bool value) {
     _showStats = value;
     notifyListeners();
   }
 
+  /// Subtitle font, colors and outline.
   set subtitleStyle(USubtitleStyleConfig value) {
     _subtitleStyle = value;
     notifyListeners();
   }
 
+  /// Subtitle size multiplier.
   set subtitleScale(double value) {
     _subtitleScale = value.clamp(0.5, 3).toDouble();
     notifyListeners();
   }
 
+  /// Shifts subtitles on [controller] by [value].
   void setSubtitleDelay(UMediaController controller, Duration value) {
     _subtitleDelay = value;
     controller.setSubtitleDelay(value);
     notifyListeners();
   }
 
+  /// Switches to the next fit mode.
   void cycleFit() {
     const List<UMediaFit> order = <UMediaFit>[UMediaFit.contain, UMediaFit.cover, UMediaFit.fill, UMediaFit.ratio16x9, UMediaFit.ratio4x3, UMediaFit.original];
     final int index = order.indexOf(_fit);
     fit = order[(index + 1) % order.length];
   }
 
+  /// Rotates 90°.
   void rotateQuarter() => rotation = _rotation + 90;
 
+  /// Resets brightness/contrast/saturation/hue.
   void resetFilters() {
     _brightness = 0;
     _contrast = 1;
@@ -139,6 +174,7 @@ class UVideoSettings extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Resets zoom, rotation and mirror.
   void resetView() {
     _zoom = 1;
     _rotation = 0;
@@ -147,24 +183,28 @@ class UVideoSettings extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Sets the A point of A-B repeat.
   void markRepeatStart(Duration position) {
     _repeatStart = position;
     _repeatEnd = null;
     notifyListeners();
   }
 
+  /// Sets the B point of A-B repeat.
   void markRepeatEnd(Duration position) {
     if (_repeatStart == null || position <= _repeatStart!) return;
     _repeatEnd = position;
     notifyListeners();
   }
 
+  /// Turns A-B repeat off.
   void clearRepeat() {
     _repeatStart = null;
     _repeatEnd = null;
     notifyListeners();
   }
 
+  /// Calls [onElapsed] after [duration] (e.g. pause).
   void startSleepTimer(Duration duration, VoidCallback onElapsed) {
     _sleepTimer?.cancel();
     _sleepAt = DateTime.now().add(duration);
@@ -176,6 +216,7 @@ class UVideoSettings extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Cancels the sleep timer.
   void cancelSleepTimer() {
     _sleepTimer?.cancel();
     _sleepTimer = null;
@@ -190,7 +231,9 @@ class UVideoSettings extends ChangeNotifier {
   }
 }
 
+/// Color matrices for video brightness/contrast/saturation/hue filters.
 abstract final class UVideoColorMatrix {
+  /// The "no change" matrix.
   static List<double> identity() => <double>[1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0];
 
   static List<double> build({double brightness = 0, double contrast = 1, double saturation = 1, double hue = 0}) {
@@ -228,13 +271,30 @@ abstract final class UVideoColorMatrix {
     final double cosine = cos(radians);
     final double sine = sin(radians);
     return <double>[
-      0.213 + cosine * 0.787 - sine * 0.213, 0.715 - cosine * 0.715 - sine * 0.715, 0.072 - cosine * 0.072 + sine * 0.928, 0, 0,
-      0.213 - cosine * 0.213 + sine * 0.143, 0.715 + cosine * 0.285 + sine * 0.140, 0.072 - cosine * 0.072 - sine * 0.283, 0, 0,
-      0.213 - cosine * 0.213 - sine * 0.787, 0.715 - cosine * 0.715 + sine * 0.715, 0.072 + cosine * 0.928 + sine * 0.072, 0, 0,
-      0, 0, 0, 1, 0,
+      0.213 + cosine * 0.787 - sine * 0.213,
+      0.715 - cosine * 0.715 - sine * 0.715,
+      0.072 - cosine * 0.072 + sine * 0.928,
+      0,
+      0,
+      0.213 - cosine * 0.213 + sine * 0.143,
+      0.715 + cosine * 0.285 + sine * 0.140,
+      0.072 - cosine * 0.072 - sine * 0.283,
+      0,
+      0,
+      0.213 - cosine * 0.213 - sine * 0.787,
+      0.715 - cosine * 0.715 + sine * 0.715,
+      0.072 + cosine * 0.928 + sine * 0.072,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
     ];
   }
 
+  /// Combines two color matrices.
   static List<double> multiply(List<double> a, List<double> b) {
     final List<double> result = List<double>.filled(20, 0);
     for (int row = 0; row < 4; row++) {
@@ -251,10 +311,14 @@ abstract final class UVideoColorMatrix {
   }
 }
 
+/// Applies UVideoSettings color filters to a child.
 class UVideoFilterLayer extends StatelessWidget {
   const UVideoFilterLayer({required this.settings, required this.child, super.key});
 
+  /// Settings.
   final UVideoSettings settings;
+
+  /// The widget inside.
   final Widget child;
 
   @override
@@ -278,6 +342,7 @@ class UVideoFilterLayer extends StatelessWidget {
   );
 }
 
+/// The video surface of a UMediaController (fit, zoom, pan, rotation). `UVideoView(controller: c)`
 class UVideoView extends StatelessWidget {
   const UVideoView({
     required this.controller,
@@ -292,16 +357,34 @@ class UVideoView extends StatelessWidget {
     this.errorBuilder,
   });
 
+  /// Controller to read or change it from code.
   final UMediaController controller;
+
+  /// How the content fits its box (BoxFit).
   final UMediaFit fit;
+
+  /// Zoom level.
   final double zoom;
+
+  /// Pan offset while zoomed.
   final Offset pan;
+
+  /// Rotation in degrees.
   final int rotationDegrees;
+
+  /// Mirrors horizontally.
   final bool mirrored;
+
+  /// Background color.
   final Color? backgroundColor;
+
+  /// Shown while loading.
   final Widget? placeholder;
+
+  /// Shown when loading fails.
   final Widget Function(BuildContext context, UMediaError error)? errorBuilder;
 
+  /// Aspect ratio of a fit mode (null = the video's own).
   static double? ratioOf(UMediaFit fit) {
     switch (fit) {
       case UMediaFit.ratio16x9:
@@ -323,6 +406,7 @@ class UVideoView extends StatelessWidget {
     }
   }
 
+  /// BoxFit of a fit mode.
   static BoxFit boxFitOf(UMediaFit fit) {
     switch (fit) {
       case UMediaFit.cover:
@@ -391,7 +475,11 @@ class UVideoView extends StatelessWidget {
     if (fit == UMediaFit.cover || fit == UMediaFit.fill) return ClipRect(child: content);
 
     final double ratio = ratioOf(fit) ?? value.aspectRatio;
-    return ClipRect(child: Center(child: AspectRatio(aspectRatio: ratio <= 0 ? 16 / 9 : ratio, child: content)));
+    return ClipRect(
+      child: Center(
+        child: AspectRatio(aspectRatio: ratio <= 0 ? 16 / 9 : ratio, child: content),
+      ),
+    );
   }
 
   Widget _surface() {
@@ -404,6 +492,7 @@ class UVideoView extends StatelessWidget {
   }
 }
 
+/// Subtitle look: size, color, outline, background, fonts (separate RTL font), padding, max lines.
 class USubtitleStyleConfig {
   const USubtitleStyleConfig({
     this.fontSize = 18,
@@ -422,21 +511,49 @@ class USubtitleStyleConfig {
     this.maxLines = 4,
   });
 
+  /// Font size.
   final double fontSize;
+
+  /// Main color (defaults to the theme).
   final Color color;
+
+  /// Text outline color.
   final Color outlineColor;
+
+  /// Text outline width.
   final double outlineWidth;
+
+  /// Background color.
   final Color backgroundColor;
+
+  /// Font weight.
   final FontWeight fontWeight;
+
+  /// Font for left-to-right text.
   final String? fontFamily;
+
+  /// Font for Persian/Arabic text.
   final String? rtlFontFamily;
+
+  /// Distance from the bottom.
   final double bottomPadding;
+
+  /// Side padding.
   final double horizontalPadding;
+
+  /// Line height.
   final double lineHeight;
+
+  /// Adds a drop shadow.
   final bool shadow;
+
+  /// Uses colors/positions from ASS/SSA files.
   final bool honorAssStyling;
+
+  /// Most lines shown at once.
   final int maxLines;
 
+  /// Copy with some fields changed.
   USubtitleStyleConfig copyWith({double? fontSize, Color? color, double? outlineWidth, double? bottomPadding, Color? backgroundColor}) => USubtitleStyleConfig(
     fontSize: fontSize ?? this.fontSize,
     color: color ?? this.color,
@@ -455,11 +572,17 @@ class USubtitleStyleConfig {
   );
 }
 
+/// Draws the current subtitle cue of a controller.
 class USubtitleView extends StatelessWidget {
   const USubtitleView({required this.controller, super.key, this.style = const USubtitleStyleConfig(), this.scale = 1});
 
+  /// Controller to read or change it from code.
   final UMediaController controller;
+
+  /// Text style (defaults to the theme).
   final USubtitleStyleConfig style;
+
+  /// Scales the painted widget (1 = normal size).
   final double scale;
 
   @override
@@ -547,9 +670,7 @@ class USubtitleView extends StatelessWidget {
     height: style.lineHeight,
     fontFamily: rtl ? style.rtlFontFamily : style.fontFamily,
     package: rtl && style.rtlFontFamily == "Vazir" ? "u" : null,
-    shadows: style.shadow
-        ? <Shadow>[Shadow(color: style.outlineColor.withValues(alpha: 0.6), blurRadius: 4 * scale, offset: Offset(0, 1 * scale))]
-        : null,
+    shadows: style.shadow ? <Shadow>[Shadow(color: style.outlineColor.withValues(alpha: 0.6), blurRadius: 4 * scale, offset: Offset(0, 1 * scale))] : null,
   );
 
   TextStyle _strokeStyle(double size, bool rtl) => TextStyle(
@@ -576,9 +697,7 @@ class USubtitleView extends StatelessWidget {
                   : base.copyWith(
                       fontWeight: span.bold ? FontWeight.w800 : null,
                       fontStyle: span.italic ? FontStyle.italic : null,
-                      decoration: span.underline
-                          ? TextDecoration.underline
-                          : (span.strikethrough ? TextDecoration.lineThrough : null),
+                      decoration: span.underline ? TextDecoration.underline : (span.strikethrough ? TextDecoration.lineThrough : null),
                       color: isStroke ? null : span.color,
                       fontSize: span.fontScale == null ? null : size * span.fontScale!,
                     ),
@@ -594,6 +713,7 @@ class USubtitleView extends StatelessWidget {
   );
 }
 
+/// Which player gestures are on: tap, double-tap seek, horizontal scrub, vertical volume/brightness, long-press 2×, pinch zoom, swipe-down close.
 class UVideoGestureConfig {
   const UVideoGestureConfig({
     this.tapToToggleControls = true,
@@ -610,21 +730,46 @@ class UVideoGestureConfig {
     this.haptics = true,
   });
 
+  /// Tap shows/hides the controls.
   final bool tapToToggleControls;
+
+  /// Double tap left/right seeks back/forward.
   final bool doubleTapSeek;
+
+  /// How far a double tap seeks.
   final Duration doubleTapStep;
+
+  /// Horizontal drag seeks.
   final bool horizontalScrub;
+
+  /// Vertical drag on the right changes volume.
   final bool verticalVolume;
+
+  /// Vertical drag on the left changes brightness.
   final bool verticalBrightness;
+
+  /// Long press plays faster while held.
   final bool longPressSpeed;
+
+  /// Speed while long-pressing.
   final double longPressSpeedValue;
+
+  /// Pinch zooms the picture.
   final bool pinchZoom;
+
+  /// Swipe down closes (full screen/sheets).
   final bool swipeDownToDismiss;
+
+  /// Swipe speed needed to close.
   final double dismissVelocity;
+
+  /// Light vibration on gesture steps.
   final bool haptics;
 
+  /// True when any vertical gesture is on.
   bool get hasVertical => verticalVolume || verticalBrightness;
 
+  /// Every gesture off.
   static const UVideoGestureConfig none = UVideoGestureConfig(
     tapToToggleControls: false,
     doubleTapSeek: false,
@@ -639,6 +784,7 @@ class UVideoGestureConfig {
 
 enum _UDragAxis { none, undecided, horizontal, vertical, zoom }
 
+/// Gesture layer over a video (see UVideoGestureConfig).
 class UVideoGestures extends StatefulWidget {
   const UVideoGestures({
     required this.controller,
@@ -654,9 +800,16 @@ class UVideoGestures extends StatefulWidget {
     this.enabled = true,
   });
 
+  /// Controller to read or change it from code.
   final UMediaController controller;
+
+  /// The widget inside.
   final Widget child;
+
+  /// Settings.
   final UVideoGestureConfig config;
+
+  /// Called on tap to show/hide controls.
   final VoidCallback? onToggleControls;
 
   /// Double click with a mouse (desktop/web); typically toggles fullscreen.
@@ -664,9 +817,17 @@ class UVideoGestures extends StatefulWidget {
 
   /// Single click with a mouse; typically play/pause.
   final VoidCallback? onMouseTap;
+
+  /// Called with the new zoom.
   final void Function(double zoom)? onZoomChanged;
+
+  /// Called with the new brightness.
   final void Function(double brightness)? onBrightnessChanged;
+
+  /// Called when the user swipes down to close.
   final VoidCallback? onDismiss;
+
+  /// False disables interaction and greys it out.
   final bool enabled;
 
   @override
@@ -881,7 +1042,10 @@ class _UVideoGesturesState extends State<UVideoGestures> {
             fit: StackFit.expand,
             children: <Widget>[
               widget.child,
-              if (_brightness < 1) IgnorePointer(child: ColoredBox(color: const Color(0xFF000000).withValues(alpha: 1 - _brightness))),
+              if (_brightness < 1)
+                IgnorePointer(
+                  child: ColoredBox(color: const Color(0xFF000000).withValues(alpha: 1 - _brightness)),
+                ),
               if (_feedback != null) IgnorePointer(child: Center(child: _feedbackChip(context))),
             ],
           ),
@@ -905,15 +1069,26 @@ class _UVideoGesturesState extends State<UVideoGestures> {
   );
 }
 
+/// A labelled range on the seek bar (chapter, intro to skip).
 class UVideoMarker {
   const UVideoMarker({required this.start, this.end, this.label, this.color, this.skippable = false});
 
+  /// Start time.
   final Duration start;
+
+  /// End time (null = a single point).
   final Duration? end;
+
+  /// Label text.
   final String? label;
+
+  /// Main color (defaults to the theme).
   final Color? color;
+
+  /// Shows a "Skip" button while inside it.
   final bool skippable;
 
+  /// True when [position] is inside the marker.
   bool contains(Duration position) {
     final Duration? finish = end;
     if (finish == null) return false;
@@ -921,6 +1096,7 @@ class UVideoMarker {
   }
 }
 
+/// Duration → "1:02:03" / "02:03". `uFormatDuration(95.seconds)` → "01:35"
 String uFormatDuration(Duration value) {
   String two(int n) => n.toString().padLeft(2, "0");
   final String minutes = two(value.inMinutes.remainder(60));
@@ -928,6 +1104,7 @@ String uFormatDuration(Duration value) {
   return value.inHours > 0 ? "${two(value.inHours)}:$minutes:$seconds" : "$minutes:$seconds";
 }
 
+/// Seek bar with buffer, markers and scrub preview.
 class UVideoSeekBar extends StatefulWidget {
   const UVideoSeekBar({
     required this.controller,
@@ -943,17 +1120,34 @@ class UVideoSeekBar extends StatefulWidget {
     this.bufferColor = const Color(0x66FFFFFF),
   });
 
+  /// Controller to read or change it from code.
   final UMediaController controller;
 
   /// Track colours; the defaults suit the dark video overlay.
   final Color trackColor;
+
+  /// Color of the buffered part.
   final Color bufferColor;
+
+  /// Chapter/intro markers drawn on the seek bar (skippable ones show a "Skip" button).
   final List<UVideoMarker> markers;
+
+  /// Highlight color (defaults to the theme's primary).
   final Color? accentColor;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
+
+  /// Thumb size.
   final double thumbRadius;
+
+  /// Called when the user starts dragging the seek bar.
   final VoidCallback? onScrubStart;
+
+  /// Called when the user releases the seek bar.
   final VoidCallback? onScrubEnd;
+
+  /// Preview shown above the seek bar while scrubbing.
   final Widget Function(BuildContext context, Duration position)? thumbnailBuilder;
 
   @override
@@ -993,12 +1187,19 @@ class _UVideoSeekBarState extends State<UVideoSeekBar> {
         child: Center(
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            decoration: BoxDecoration(color: const Color(0xE6000000), borderRadius: BorderRadius.circular(8), border: marker == null ? null : Border.all(color: marker.color ?? accent)),
+            decoration: BoxDecoration(
+              color: const Color(0xE6000000),
+              borderRadius: BorderRadius.circular(8),
+              border: marker == null ? null : Border.all(color: marker.color ?? accent),
+            ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 if (widget.thumbnailBuilder != null) Padding(padding: const EdgeInsets.only(bottom: 4), child: widget.thumbnailBuilder!(context, position)),
-                Text(uFormatDuration(position), style: const TextStyle(color: Color(0xFFFFFFFF), fontSize: 12, fontWeight: FontWeight.w700)),
+                Text(
+                  uFormatDuration(position),
+                  style: const TextStyle(color: Color(0xFFFFFFFF), fontSize: 12, fontWeight: FontWeight.w700),
+                ),
                 if (label.isNotEmpty)
                   Text(
                     label,
@@ -1083,7 +1284,10 @@ class _UVideoSeekBarState extends State<UVideoSeekBar> {
     builder: (BuildContext context, BoxConstraints constraints) => Stack(
       alignment: Alignment.centerLeft,
       children: <Widget>[
-        Container(height: widget.height, decoration: BoxDecoration(color: widget.trackColor, borderRadius: BorderRadius.circular(widget.height))),
+        Container(
+          height: widget.height,
+          decoration: BoxDecoration(color: widget.trackColor, borderRadius: BorderRadius.circular(widget.height)),
+        ),
         Container(
           height: widget.height,
           width: constraints.maxWidth * buffered,
@@ -1109,6 +1313,7 @@ class _UVideoSeekBarState extends State<UVideoSeekBar> {
   );
 }
 
+/// Full control layer: play/pause, seek bar, speed, quality, subtitles, PiP, lock, fullscreen, queue, notes.
 class UVideoControls extends StatelessWidget {
   const UVideoControls({
     required this.controller,
@@ -1145,38 +1350,97 @@ class UVideoControls extends StatelessWidget {
     this.thumbnailBuilder,
   });
 
+  /// Controller to read or change it from code.
   final UMediaController controller;
+
+  /// False hides it completely (takes no space).
   final bool visible;
+
+  /// Title text.
   final String? title;
+
+  /// Chapter/intro markers drawn on the seek bar (skippable ones show a "Skip" button).
   final List<UVideoMarker> markers;
+
+  /// Highlight color (defaults to the theme's primary).
   final Color? accentColor;
+
+  /// Shows a back button.
   final bool showBack;
+
+  /// Shows the fullscreen button.
   final bool showFullscreen;
+
+  /// Shows the picture-in-picture button (Android, iOS, macOS, web).
   final bool showPip;
+
+  /// Shows the speed button.
   final bool showSpeed;
+
+  /// Shows the quality button (HLS/DASH).
   final bool showQuality;
+
+  /// Shows the subtitle/audio track button.
   final bool showSubtitles;
+
+  /// Shows the playlist button.
   final bool showQueue;
+
+  /// Shows the screen lock button.
   final bool showLock;
+
+  /// Shows the jump back/forward buttons.
   final bool showSeekButtons;
+
+  /// Shows a volume slider (desktop, web).
   final bool showVolumeSlider;
+
+  /// How far the seek buttons / double tap jump.
   final Duration seekStep;
+
+  /// True when shown full screen (changes the fullscreen icon).
   final bool isFullscreen;
+
+  /// True while the screen lock is on.
   final bool locked;
+
+  /// Number of notes (badge on the notes button).
   final int notesCount;
+
+  /// Extra buttons in the top bar.
   final List<Widget> topActions;
+
+  /// Called when the back button is pressed.
   final VoidCallback? onBack;
+
+  /// Called by the fullscreen button.
   final VoidCallback? onToggleFullscreen;
+
+  /// Called by the lock button.
   final VoidCallback? onToggleLock;
+
+  /// Called by the settings button.
   final VoidCallback? onOpenSettings;
+
+  /// Called by the playlist button.
   final VoidCallback? onOpenQueue;
+
+  /// Called by the add-note button.
   final VoidCallback? onAddNote;
+
+  /// Called by the notes button.
   final VoidCallback? onOpenNotes;
 
   /// Opens the drawing tools (pen, shapes, text) over the paused frame.
   final VoidCallback? onDraw;
+
+  /// Called when the user starts dragging the seek bar.
   final VoidCallback? onScrubStart;
+
+  /// Called when the user releases the seek bar.
   final VoidCallback? onScrubEnd;
+
+  /// Preview shown above the seek bar while scrubbing.
   final Widget Function(BuildContext context, Duration position)? thumbnailBuilder;
 
   static const Color _onDark = Color(0xFFFFFFFF);
@@ -1261,7 +1525,10 @@ class UVideoControls extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
                     decoration: BoxDecoration(color: accentColor ?? Theme.of(context).colorScheme.primary, borderRadius: BorderRadius.circular(8)),
-                    child: Text("$notesCount", style: const TextStyle(color: _onDark, fontSize: 9, fontWeight: FontWeight.w700)),
+                    child: Text(
+                      "$notesCount",
+                      style: const TextStyle(color: _onDark, fontSize: 9, fontWeight: FontWeight.w700),
+                    ),
                   ),
                 ),
             ],
@@ -1285,9 +1552,18 @@ class UVideoControls extends StatelessWidget {
         children: <Widget>[
           if (queue) _circleButton(Icons.skip_previous_rounded, U.s.previous, controller.hasPrevious ? () => unawaited(controller.previous()) : null, compact ? 24 : 28),
           if (showSeekButtons && !value.isLive)
-            _circleButton(seconds == 10 ? Icons.replay_10_rounded : (seconds == 5 ? Icons.replay_5_rounded : (seconds == 30 ? Icons.replay_30_rounded : Icons.replay_rounded)), U.s.seekBackward, () => unawaited(controller.seekBy(-seekStep)), compact ? 24 : 30),
+            _circleButton(
+              seconds == 10 ? Icons.replay_10_rounded : (seconds == 5 ? Icons.replay_5_rounded : (seconds == 30 ? Icons.replay_30_rounded : Icons.replay_rounded)),
+              U.s.seekBackward,
+              () => unawaited(controller.seekBy(-seekStep)),
+              compact ? 24 : 30,
+            ),
           if (value.isBuffering)
-            SizedBox(width: compact ? 52 : 64, height: compact ? 52 : 64, child: const Center(child: CircularProgressIndicator(color: _onDark, strokeWidth: 3)))
+            SizedBox(
+              width: compact ? 52 : 64,
+              height: compact ? 52 : 64,
+              child: const Center(child: CircularProgressIndicator(color: _onDark, strokeWidth: 3)),
+            )
           else
             _circleButton(
               value.state == UMediaState.completed ? Icons.replay_rounded : (value.isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded),
@@ -1296,7 +1572,12 @@ class UVideoControls extends StatelessWidget {
               compact ? 34 : 44,
             ),
           if (showSeekButtons && !value.isLive)
-            _circleButton(seconds == 10 ? Icons.forward_10_rounded : (seconds == 5 ? Icons.forward_5_rounded : (seconds == 30 ? Icons.forward_30_rounded : Icons.forward_rounded)), U.s.seekForward, () => unawaited(controller.seekBy(seekStep)), compact ? 24 : 30),
+            _circleButton(
+              seconds == 10 ? Icons.forward_10_rounded : (seconds == 5 ? Icons.forward_5_rounded : (seconds == 30 ? Icons.forward_30_rounded : Icons.forward_rounded)),
+              U.s.seekForward,
+              () => unawaited(controller.seekBy(seekStep)),
+              compact ? 24 : 30,
+            ),
           if (queue) _circleButton(Icons.skip_next_rounded, U.s.next, controller.hasNext ? () => unawaited(controller.next()) : null, compact ? 24 : 28),
         ],
       );
@@ -1321,10 +1602,7 @@ class UVideoControls extends StatelessWidget {
             ),
           URow(
             children: <Widget>[
-              if (value.isLive)
-                _liveBadge(context, value)
-              else
-                UTextBodySmall("${uFormatDuration(value.position)} / ${uFormatDuration(value.duration)}", color: _onDark),
+              if (value.isLive) _liveBadge(context, value) else UTextBodySmall("${uFormatDuration(value.position)} / ${uFormatDuration(value.duration)}", color: _onDark),
               const Spacer(),
               _iconButton(value.muted || value.volume == 0 ? Icons.volume_off_rounded : Icons.volume_up_rounded, value.muted ? U.s.unmute : U.s.mute, () => unawaited(controller.toggleMute())),
               if (showVolumeSlider && !compact)
@@ -1357,7 +1635,14 @@ class UVideoControls extends StatelessWidget {
     tooltip: U.s.playbackSpeed,
     initialValue: value.speed,
     onSelected: (double speed) => unawaited(controller.setSpeed(speed)),
-    itemBuilder: (BuildContext context) => uSpeedPresets.map((double speed) => PopupMenuItem<double>(value: speed, child: Text("${speed}x", style: TextStyle(fontWeight: speed == value.speed ? FontWeight.w800 : FontWeight.w400)))).toList(),
+    itemBuilder: (BuildContext context) => uSpeedPresets
+        .map(
+          (double speed) => PopupMenuItem<double>(
+            value: speed,
+            child: Text("${speed}x", style: TextStyle(fontWeight: speed == value.speed ? FontWeight.w800 : FontWeight.w400)),
+          ),
+        )
+        .toList(),
     child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       child: UTextBodySmall("${_trim(value.speed)}x", color: _onDark, fontWeight: FontWeight.w700),
@@ -1376,7 +1661,11 @@ class UVideoControls extends StatelessWidget {
     mainAxisSize: MainAxisSize.min,
     spacing: 6,
     children: <Widget>[
-      Container(width: 8, height: 8, decoration: const BoxDecoration(color: Color(0xFFE53935), shape: BoxShape.circle)),
+      Container(
+        width: 8,
+        height: 8,
+        decoration: const BoxDecoration(color: Color(0xFFE53935), shape: BoxShape.circle),
+      ),
       UTextBodySmall(U.s.live, color: _onDark, fontWeight: FontWeight.w700),
     ],
   );
@@ -1409,11 +1698,14 @@ class UVideoControls extends StatelessWidget {
   );
 }
 
+/// Playback speeds offered in the speed menu.
 const List<double> uSpeedPresets = <double>[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 3, 4];
 
+/// Technical stats over the video (resolution, bitrate, buffer, dropped frames).
 class UVideoStatsOverlay extends StatelessWidget {
   const UVideoStatsOverlay({required this.controller, super.key});
 
+  /// Controller to read or change it from code.
   final UMediaController controller;
 
   @override
@@ -1457,11 +1749,17 @@ class UVideoStatsOverlay extends StatelessWidget {
   );
 }
 
+/// Bottom sheet to pick a video quality, audio track or subtitle.
 class UMediaTrackSheet extends StatelessWidget {
   const UMediaTrackSheet({required this.controller, required this.type, super.key, this.allowOff = false});
 
+  /// Controller to read or change it from code.
   final UMediaController controller;
+
+  /// Style variant.
   final UMediaTrackType type;
+
+  /// Adds an "Off" option (subtitles).
   final bool allowOff;
 
   String get _title {
@@ -1485,7 +1783,10 @@ class UMediaTrackSheet extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         padding: const EdgeInsets.symmetric(vertical: 12),
         children: <Widget>[
-          Padding(padding: const EdgeInsets.fromLTRB(20, 4, 20, 8), child: UTextTitleMedium(_title, fontWeight: FontWeight.w700)),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 4, 20, 8),
+            child: UTextTitleMedium(_title, fontWeight: FontWeight.w700),
+          ),
           if (type == UMediaTrackType.video)
             ListTile(
               leading: const Icon(Icons.hd_rounded),
@@ -1556,10 +1857,14 @@ class UMediaTrackSheet extends StatelessWidget {
   }
 }
 
+/// The player settings sheet (fit, filters, subtitles, A-B repeat, sleep timer).
 class UVideoSettingsSheet extends StatefulWidget {
   const UVideoSettingsSheet({required this.controller, required this.settings, super.key});
 
+  /// Controller to read or change it from code.
   final UMediaController controller;
+
+  /// Settings.
   final UVideoSettings settings;
 
   @override
@@ -1614,7 +1919,8 @@ class _UVideoSettingsSheetState extends State<UVideoSettingsSheet> {
       ).pSymmetric(horizontal: 16),
       ValueListenableBuilder<UMediaValue>(
         valueListenable: widget.controller,
-        builder: (BuildContext context, UMediaValue value, Widget? child) => _slider(U.s.fineSpeed, value.speed, 0.25, 4, (double next) => unawaited(widget.controller.setSpeed((next * 20).round() / 20)), suffix: "x"),
+        builder: (BuildContext context, UMediaValue value, Widget? child) =>
+            _slider(U.s.fineSpeed, value.speed, 0.25, 4, (double next) => unawaited(widget.controller.setSpeed((next * 20).round() / 20)), suffix: "x"),
       ),
       const Divider(),
       ListTile(
@@ -1711,9 +2017,7 @@ class _UVideoSettingsSheetState extends State<UVideoSettingsSheet> {
               ? "${uFormatDuration(widget.settings.repeatStart!)} — ${uFormatDuration(widget.settings.repeatEnd!)}"
               : (widget.settings.repeatStart == null ? U.s.setPointA : U.s.setPointB),
         ),
-        trailing: widget.settings.repeatStart == null
-            ? null
-            : IconButton(onPressed: widget.settings.clearRepeat, icon: const Icon(Icons.close_rounded)),
+        trailing: widget.settings.repeatStart == null ? null : IconButton(onPressed: widget.settings.clearRepeat, icon: const Icon(Icons.close_rounded)),
         onTap: () {
           if (widget.settings.repeatStart == null) {
             widget.settings.markRepeatStart(widget.controller.value.position);
@@ -1830,6 +2134,7 @@ class _UVideoSettingsSheetState extends State<UVideoSettingsSheet> {
   }
 }
 
+/// Complete video player for a UMediaController: gestures, controls, subtitles, markers, notes. `UVideo(controller: UMedia.video()..open(UMedia.network(url)))`
 class UVideo extends StatefulWidget {
   const UVideo({
     required this.controller,
@@ -1865,32 +2170,71 @@ class UVideo extends StatefulWidget {
     this.controlsBuilder,
   });
 
+  /// Controller to read or change it from code.
   final UMediaController controller;
+
+  /// Settings.
   final UVideoSettings? settings;
+
+  /// Title text.
   final String? title;
+
+  /// Chapter/intro markers drawn on the seek bar (skippable ones show a "Skip" button).
   final List<UVideoMarker> markers;
 
   /// Time-stamped notes: shown on the seek bar, as overlays and via the add-note button.
   final UMediaNotesController? notes;
+
+  /// Which touch gestures are on (tap, double-tap seek, swipes, pinch…).
   final UVideoGestureConfig gestures;
+
+  /// Highlight color (defaults to the theme's primary).
   final Color? accentColor;
+
+  /// Background color.
   final Color backgroundColor;
+
+  /// Corner radius.
   final double borderRadius;
+
+  /// Shows the torch/switch/gallery/zoom controls.
   final bool showControls;
+
+  /// Shows the fullscreen button.
   final bool showFullscreenButton;
+
+  /// Shows the playlist button.
   final bool showQueueButton;
+
+  /// Shows the jump back/forward buttons.
   final bool showSeekButtons;
+
+  /// Shows note drawings over the video.
   final bool showNoteOverlays;
 
   /// Pen, shapes, highlights and text boxes over the frame (needs [notes]).
   /// Each drawing shows for a chosen time range and is saved with the notes.
   final bool enableDrawing;
+
+  /// Controller for drawing notes on the video.
   final UDocDrawController? drawController;
+
+  /// How far the seek buttons / double tap jump.
   final Duration seekStep;
+
+  /// Hides the controls after this long without touch.
   final Duration autoHide;
+
+  /// Width / height ratio.
   final double? aspectRatio;
+
+  /// Shown while loading.
   final Widget? placeholder;
+
+  /// True when shown full screen (changes the fullscreen icon).
   final bool isFullscreen;
+
+  /// Watermark text painted over the content.
   final UDocWatermark? watermark;
 
   /// Blocks screenshots and screen recording while visible.
@@ -1901,12 +2245,20 @@ class UVideo extends StatefulWidget {
 
   /// Enter picture-in-picture automatically when leaving the app while playing (Android).
   final bool autoPip;
+
+  /// Extra buttons in the top bar.
   final List<Widget> topActions;
+
+  /// Called when the user swipes down to close.
   final VoidCallback? onDismiss;
 
   /// Opens a notes list; when null and [notes] is set, a bottom sheet is used.
   final VoidCallback? onOpenNotes;
+
+  /// Preview shown above the seek bar while scrubbing.
   final Widget Function(BuildContext context, Duration position)? thumbnailBuilder;
+
+  /// Your own controls instead of UVideoControls.
   final Widget Function(BuildContext context, UMediaController controller, bool visible)? controlsBuilder;
 
   @override
@@ -2066,7 +2418,9 @@ class _UVideoState extends State<UVideo> {
             onRemove: notes.removeShape,
           );
           if (_settings.zoom != 1) layer = Transform.scale(scale: _settings.zoom, child: layer);
-          return Stack(children: <Widget>[Positioned.fromRect(rect: _frameRect(constraints.biggest, value), child: layer)]);
+          return Stack(
+            children: <Widget>[Positioned.fromRect(rect: _frameRect(constraints.biggest, value), child: layer)],
+          );
         },
       );
     },
@@ -2466,7 +2820,9 @@ class _UVideoState extends State<UVideo> {
   );
 }
 
+/// Opens a controller full screen (landscape, hides system bars).
 abstract final class UVideoFullscreen {
+  /// Opens [controller] full screen. `UVideoFullscreen.open(context, controller: c)`
   static Future<void> open(
     BuildContext context, {
     required UMediaController controller,
@@ -2517,6 +2873,7 @@ abstract final class UVideoFullscreen {
   }
 }
 
+/// Small draggable floating player (keeps playing while browsing).
 class UFloatingMiniPlayer extends StatefulWidget {
   const UFloatingMiniPlayer({
     required this.controller,
@@ -2528,11 +2885,22 @@ class UFloatingMiniPlayer extends StatefulWidget {
     this.onClose,
   });
 
+  /// Controller to read or change it from code.
   final UMediaController controller;
+
+  /// Width in logical pixels (null = size to content).
   final double width;
+
+  /// Space outside, around the widget.
   final double margin;
+
+  /// Corner radius.
   final double borderRadius;
+
+  /// Called when the mini player is tapped to expand.
   final VoidCallback? onExpand;
+
+  /// Called when it closes.
   final VoidCallback? onClose;
 
   @override
@@ -2610,6 +2978,7 @@ class _UFloatingMiniPlayerState extends State<UFloatingMiniPlayer> {
   );
 }
 
+/// Drop-in player from a URL/file/asset/base64 with every feature; all 6 platforms (Linux needs GStreamer). `UVideoPlayer(url: "https://x.com/v.m3u8", resumeKey: "movie-1")`
 class UVideoPlayer extends StatefulWidget {
   const UVideoPlayer({
     super.key,
@@ -2651,42 +3020,106 @@ class UVideoPlayer extends StatefulWidget {
          "Provide one video source",
        );
 
+  /// Web address of the content.
   final String? url;
+
+  /// Video as base64 text.
   final String? base64;
+
+  /// Content as bytes in memory.
   final Uint8List? bytes;
+
+  /// Local file path.
   final String? filePath;
+
+  /// Flutter asset path.
   final String? assetPath;
+
+  /// HTTP headers for the video URL (e.g. auth).
   final Map<String, String> headers;
+
+  /// Starts playing as soon as it is ready.
   final bool autoPlay;
+
+  /// Starts again at the end.
   final bool looping;
+
+  /// Starts muted.
   final bool muted;
+
+  /// Shows the torch/switch/gallery/zoom controls.
   final bool showControls;
+
+  /// Shows the fullscreen button.
   final bool allowFullScreen;
+
+  /// Shows the speed button.
   final bool allowPlaybackSpeed;
+
+  /// Hides controls after a few seconds.
   final bool autoHideControls;
+
+  /// Width / height ratio.
   final double? aspectRatio;
+
+  /// How the content fits its box (BoxFit).
   final BoxFit fit;
+
+  /// Highlight color (defaults to the theme's primary).
   final Color? accentColor;
+
+  /// Background color.
   final Color backgroundColor;
+
+  /// Corner radius.
   final double borderRadius;
+
+  /// Shown while loading.
   final Widget? placeholder;
+
+  /// Title text.
   final String? title;
+
+  /// Which touch gestures are on (tap, double-tap seek, swipes, pinch…).
   final UVideoGestureConfig gestures;
 
   /// External notes controller; when null and [notesStorageKey]/[notesData]/[onNotesChanged] is given, one is created.
   final UMediaNotesController? notes;
+
+  /// Saved notes JSON to show.
   final String? notesData;
+
+  /// Saves notes automatically under this key.
   final String? notesStorageKey;
+
+  /// Called with the notes JSON after each change.
   final void Function(String data)? onNotesChanged;
+
+  /// Chapter/intro markers drawn on the seek bar (skippable ones show a "Skip" button).
   final List<UVideoMarker> markers;
+
+  /// External subtitle files (SRT/VTT/ASS URLs or text).
   final List<UExternalSubtitle> subtitles;
+
+  /// Watermark text painted over the content.
   final UDocWatermark? watermark;
+
+  /// Blocks screenshots and screen recording while playing (see UScreenGuard).
   final bool secure;
+
+  /// Saves and restores the position under this id ("continue watching").
   final String? resumeKey;
+
+  /// Goes picture-in-picture when the user leaves the app (Android, iOS).
   final bool autoPip;
+
+  /// How far the seek buttons / double tap jump.
   final Duration seekStep;
+
+  /// Gives you the controller once it is created.
   final void Function(UMediaController controller)? onControllerReady;
 
+  /// Converts a BoxFit to the player's fit mode.
   static UMediaFit fitOf(BoxFit fit) {
     switch (fit) {
       case BoxFit.cover:
@@ -2799,8 +3232,7 @@ class _UVideoPlayerState extends State<UVideoPlayer> {
   );
 }
 
-/// Video with a notes panel: side by side on wide screens, stacked on phones.
-/// Switches to a video-only view while in Android picture-in-picture.
+/// Video with a side panel of time-stamped notes and drawing.
 class UVideoWithNotes extends StatelessWidget {
   const UVideoWithNotes({
     required this.controller,
@@ -2820,19 +3252,46 @@ class UVideoWithNotes extends StatelessWidget {
     super.key,
   });
 
+  /// Controller to read or change it from code.
   final UMediaController controller;
+
+  /// Notes controller.
   final UMediaNotesController notes;
+
+  /// Settings.
   final UVideoSettings? settings;
+
+  /// Title text.
   final String? title;
+
+  /// Chapter/intro markers drawn on the seek bar (skippable ones show a "Skip" button).
   final List<UVideoMarker> markers;
+
+  /// Watermark text painted over the content.
   final UDocWatermark? watermark;
+
+  /// Blocks screenshots and screen recording while playing (see UScreenGuard).
   final bool secure;
+
+  /// Saves and restores the position under this id ("continue watching").
   final String? resumeKey;
+
+  /// Goes picture-in-picture when the user leaves the app (Android, iOS).
   final bool autoPip;
+
+  /// Shows the notes panel.
   final bool showNotes;
+
+  /// Allows drawing on frames.
   final bool enableDrawing;
+
+  /// Controller for drawing notes on the video.
   final UDocDrawController? drawController;
+
+  /// Highlight color (defaults to the theme's primary).
   final Color? accentColor;
+
+  /// Width of the notes panel.
   final double panelWidth;
 
   @override
@@ -2862,7 +3321,12 @@ class UVideoWithNotes extends StatelessWidget {
           if (wide) {
             return Row(
               children: <Widget>[
-                Expanded(child: ColoredBox(color: const Color(0xFF000000), child: Center(child: video))),
+                Expanded(
+                  child: ColoredBox(
+                    color: const Color(0xFF000000),
+                    child: Center(child: video),
+                  ),
+                ),
                 SizedBox(
                   width: panelWidth,
                   child: Material(
@@ -2877,7 +3341,9 @@ class UVideoWithNotes extends StatelessWidget {
           return Column(
             children: <Widget>[
               ColoredBox(color: const Color(0xFF000000), child: video),
-              Expanded(child: Material(color: Theme.of(context).colorScheme.surface, child: panel)),
+              Expanded(
+                child: Material(color: Theme.of(context).colorScheme.surface, child: panel),
+              ),
             ],
           );
         },
@@ -2890,6 +3356,7 @@ class UVideoWithNotes extends StatelessWidget {
 /// [UVideoPlayer].
 
 abstract final class UVideoSheet {
+  /// Plays a video in a bottom sheet; give one of url/bytes/base64/filePath/assetPath. `UVideoSheet.show(url: url)`
   static Future<void> show({
     String? url,
     String? base64,
@@ -2900,7 +3367,10 @@ abstract final class UVideoSheet {
     bool autoPlay = true,
   }) => UNavigator.bottomSheet(
     UScaffold(
-      appBar: AppBar(backgroundColor: const Color(0xFF000000), iconTheme: const IconThemeData(color: Color(0xFFFFFFFF))),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF000000),
+        iconTheme: const IconThemeData(color: Color(0xFFFFFFFF)),
+      ),
       color: const Color(0xFF000000),
       body: Center(
         child: UVideoPlayer(

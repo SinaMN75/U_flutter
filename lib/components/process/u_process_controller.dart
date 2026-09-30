@@ -1,9 +1,13 @@
 part of "u_process.dart";
 
+/// Loads, fills and sends the steps of a server-driven process (KYC, onboarding).
 class UProcessController {
   UProcessController({this.onCompleted});
 
+  /// Called when the input is complete.
   final VoidCallback? onCompleted;
+
+  /// Upload progress 0-100.
   final URxInt progress = 0.obs;
 
   void _complete() {
@@ -14,19 +18,28 @@ class UProcessController {
     }
   }
 
+  /// Closes the process page.
   void dismiss() => UNavigator.back();
 
+  /// Id of the process.
   late String processId;
 
+  /// Current step from the server.
   final URxn<UProcessStepGet> processStep = URxn<UProcessStepGet>();
+
+  /// Answers of the current step.
   late UProcessStepSend processStepSend;
+
+  /// Loading state.
   final URxState state = URxState();
 
+  /// Starts a process by id.
   void init({required String processId}) {
     this.processId = processId;
     read();
   }
 
+  /// Loads the current step.
   void read() {
     state.loading();
     UServices.process.get(
@@ -47,6 +60,7 @@ class UProcessController {
     );
   }
 
+  /// Sends the current step's answers.
   void send() {
     ULoading.show();
     UServices.process.send(

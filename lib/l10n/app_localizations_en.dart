@@ -2797,6 +2797,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noChargeWillBeTaken => 'No charge will be taken';
 
   @override
+  String get noInternet => 'No internet connection';
+
+  @override
   String get noData => 'No data';
 
   @override

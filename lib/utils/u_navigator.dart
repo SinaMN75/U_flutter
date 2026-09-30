@@ -1,6 +1,8 @@
 import "package:u/utilities.dart";
 
+/// One row of UNavigator.actionSheet: label, icon, destructive style, enabled.
 class UNavAction {
+  /// An action-sheet row.
   const UNavAction({
     required this.label,
     required this.onTap,
@@ -9,20 +11,34 @@ class UNavAction {
     this.enabled = true,
   });
 
+  /// Row text.
   final String label;
+
+  /// Runs when the row is tapped (close the sheet yourself with UNavigator.back()).
   final VoidCallback onTap;
+
+  /// Leading icon.
   final IconData? icon;
+
+  /// Paints the row in the error color (delete, logout).
   final bool isDestructive;
+
+  /// False greys the row out.
   final bool enabled;
 }
 
+/// Navigation, dialogs, sheets, pickers and overlays from anywhere, no BuildContext needed (uses navigatorKey). `UNavigator.push(ProfilePage())`
 abstract class UNavigator {
+  /// The navigator's context (for APIs that need one).
   static BuildContext get context => navigatorKey.currentContext!;
 
+  /// True when there is a page to go back to.
   static bool get canPop => Navigator.of(context).canPop();
 
+  /// Name of the current route, if it has one.
   static String? get currentRouteName => ModalRoute.of(context)?.settings.name;
 
+  /// Opens a page with a transition (slide by default). `final bool? ok = await UNavigator.push<bool>(EditPage())`
   static Future<T?> push<T>(
     Widget page, {
     bool fullscreenDialog = false,
@@ -58,6 +74,7 @@ abstract class UNavigator {
     });
   }
 
+  /// Replaces the current page (e.g. splash → home). `UNavigator.off(HomePage())`
   static Future<T?> off<T>(
     Widget page, {
     URouteTransitions transition = URouteTransitions.fade,
@@ -85,6 +102,7 @@ abstract class UNavigator {
         return value;
       });
 
+  /// Clears the stack and opens a page (e.g. after logout). `UNavigator.offAll(LoginPage())`
   static Future<void> offAll(
     Widget page, {
     URouteTransitions transition = URouteTransitions.fade,
@@ -107,6 +125,7 @@ abstract class UNavigator {
     ).then((_) => onDismiss?.call());
   }
 
+  /// Opens a page and removes pages until the route named [untilRouteName].
   static Future<T?> offUntil<T>(
     Widget page, {
     required String untilRouteName,
@@ -127,18 +146,23 @@ abstract class UNavigator {
     (Route<dynamic> route) => route.settings.name == untilRouteName,
   );
 
+  /// Closes the current page/dialog/sheet, optionally with a result. `UNavigator.back(true)`
   static void back<T>([T? result]) {
     if (Navigator.of(navigatorKey.currentContext!).canPop()) {
       Navigator.pop<T>(navigatorKey.currentContext!, result);
     }
   }
 
+  /// Goes back if the page allows it (respects PopScope); true when it did.
   static Future<bool> maybeBack<T>([T? result]) => Navigator.of(context).maybePop<T>(result);
 
+  /// Goes back until the route named [routeName].
   static void backUntil(String routeName) => Navigator.of(context).popUntil((Route<dynamic> route) => route.settings.name == routeName);
 
+  /// Goes back to the first page.
   static void backToRoot() => Navigator.of(context).popUntil((Route<dynamic> route) => route.isFirst);
 
+  /// Goes back [count] pages.
   static void backCount(int count) {
     final NavigatorState navigator = Navigator.of(context);
     for (int i = 0; i < count && navigator.canPop(); i++) {
@@ -146,6 +170,7 @@ abstract class UNavigator {
     }
   }
 
+  /// Shows any widget as a dialog; returns what it pops with. `UNavigator.dialog(const AlertDialog(title: Text("Hi")))`
   static Future<T?> dialog<T>(
     Widget child, {
     bool barrierDismissible = true,
@@ -166,6 +191,7 @@ abstract class UNavigator {
         return value;
       });
 
+  /// Dialog with a custom enter animation and alignment.
   static Future<T?> animatedDialog<T>(
     Widget child, {
     bool barrierDismissible = true,
@@ -192,6 +218,7 @@ abstract class UNavigator {
         return value;
       });
 
+  /// Bottom sheet on phones, dialog on tablets/desktop. `UNavigator.dialogResponsive(child: form, title: const Text("Edit"))`
   static Future<T?> dialogResponsive<T>({
     required Widget child,
     Widget? title,
@@ -235,6 +262,7 @@ abstract class UNavigator {
     );
   }
 
+  /// Simple message dialog with an OK button. `UNavigator.alert(title: "Done", message: "Saved")`
   static Future<void> alert({
     required String title,
     required String message,
@@ -253,6 +281,7 @@ abstract class UNavigator {
     barrierDismissible: barrierDismissible,
   );
 
+  /// Yes/no dialog with callbacks. `UNavigator.confirm(title: "Delete?", message: "Cannot be undone", destructive: true, onConfirm: delete)`
   static void confirm({
     required String title,
     required String message,
@@ -293,6 +322,7 @@ abstract class UNavigator {
     onDismiss: onDismiss,
   );
 
+  /// Yes/no dialog that returns true/false. `if (await UNavigator.confirmAsync(title: "Logout?", message: "")) logout()`
   static Future<bool> confirmAsync({
     required String title,
     required String message,
@@ -321,6 +351,7 @@ abstract class UNavigator {
     return result ?? false;
   }
 
+  /// Dialog with a text field; returns the text or null. `final String? name = await UNavigator.inputDialog(title: "Name", hint: "Your name")`
   static Future<String?> inputDialog({
     required String title,
     required String hint,
@@ -373,6 +404,7 @@ abstract class UNavigator {
     return text;
   }
 
+  /// Dialog with color swatches; returns the chosen color. `await UNavigator.colorPicker(defaultColor: Colors.blue)`
   static Future<Color?> colorPicker({
     required Color defaultColor,
     List<Color>? colors,
@@ -408,6 +440,7 @@ abstract class UNavigator {
     ),
   );
 
+  /// Material Gregorian date picker (use UJalaliDatePicker for Persian). `await UNavigator.datePicker()`
   static Future<DateTime?> datePicker({
     DateTime? initialDate,
     DateTime? firstDate,
@@ -425,6 +458,7 @@ abstract class UNavigator {
     initialDatePickerMode: initialDatePickerMode,
   );
 
+  /// Material date range picker.
   static Future<DateTimeRange?> dateRangePicker({
     DateTimeRange? initialRange,
     DateTime? firstDate,
@@ -438,6 +472,7 @@ abstract class UNavigator {
     helpText: helpText,
   );
 
+  /// Material time picker. `await UNavigator.timePicker()`
   static Future<TimeOfDay?> timePicker({
     TimeOfDay? initialTime,
     String? helpText,
@@ -449,6 +484,7 @@ abstract class UNavigator {
     initialEntryMode: initialEntryMode,
   );
 
+  /// Modal bottom sheet that moves above the keyboard. `UNavigator.bottomSheet(const FilterSheet())`
   static Future<T?> bottomSheet<T>(
     Widget child, {
     bool isScrollControlled = true,
@@ -497,6 +533,7 @@ abstract class UNavigator {
     });
   }
 
+  /// Bottom sheet the user can drag between sizes (0-1 of screen height).
   static Future<T?> draggableSheet<T>(
     Widget child, {
     double initialChildSize = 0.5,
@@ -535,6 +572,7 @@ abstract class UNavigator {
         return value;
       });
 
+  /// List of actions in a bottom sheet with a Cancel row. `UNavigator.actionSheet(actions: [UNavAction(label: "Edit", onTap: edit)])`
   static Future<T?> actionSheet<T>({
     required List<UNavAction> actions,
     String? title,
@@ -558,7 +596,7 @@ abstract class UNavigator {
             (UNavAction action) => ListTile(
               enabled: action.enabled,
               leading: action.icon != null ? Icon(action.icon, color: action.isDestructive ? Theme.of(context).colorScheme.error : null) : null,
-              trailing: Icon(Icons.arrow_forward_ios, color: action.isDestructive ? Theme.of(context).colorScheme.error: null),
+              trailing: Icon(Icons.arrow_forward_ios, color: action.isDestructive ? Theme.of(context).colorScheme.error : null),
               title: UTextBodyLarge(action.label, color: action.isDestructive ? Theme.of(context).colorScheme.error : null),
               onTap: action.onTap,
             ),
@@ -573,6 +611,7 @@ abstract class UNavigator {
     ),
   );
 
+  /// Opens a page as a full-screen dialog (close button, slides from top).
   static Future<T?> fullScreenDialog<T>(
     Widget page, {
     URouteTransitions transition = URouteTransitions.upToDown,
@@ -584,6 +623,7 @@ abstract class UNavigator {
 
   static OverlayEntry? _currentOverlay;
 
+  /// Shows a widget above everything for [duration] (0 = until dismissOverlay). `UNavigator.showOverlay(child: const Text("Saved"))`
   static void showOverlay({
     required Widget child,
     Duration duration = const Duration(seconds: 3),
@@ -635,6 +675,7 @@ abstract class UNavigator {
     }
   }
 
+  /// Removes the current overlay.
   static void dismissOverlay() {
     _currentOverlay?.remove();
     _currentOverlay = null;
@@ -709,6 +750,7 @@ abstract class UNavigator {
   }
 }
 
+/// Page transition for push/off/dialogs: none, fade, fadeScale, slideFade, rightToLeft, leftToRight, upToDown, downToUp, scale, rotate, size.
 enum URouteTransitions {
   none,
   fade,

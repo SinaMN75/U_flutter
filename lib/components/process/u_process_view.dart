@@ -13,8 +13,13 @@ class UProcessView extends StatefulWidget {
     super.key,
   });
 
+  /// Id of the process to show.
   final String processId;
+
+  /// Called when the input is complete.
   final VoidCallback? onCompleted;
+
+  /// Text style (defaults to the theme).
   final UProcessStyle style;
 
   /// One-liner to push any process: `UProcessView.open("kyc")`. Avoids needing a

@@ -2,8 +2,10 @@ import "dart:math" as math;
 
 import "package:flutter/material.dart";
 
+/// Builds the label from the value (null value = indeterminate).
 typedef UProgressLabelBuilder = Widget? Function(BuildContext context, int? value);
 
+/// Progress bar (determinate 0-100 or indeterminate) with label, rounded ends, vertical option. `UProgressLinear(value: 40)`
 class UProgressLinear extends StatefulWidget {
   const UProgressLinear({
     super.key,
@@ -25,18 +27,44 @@ class UProgressLinear extends StatefulWidget {
 
   /// Progress from 0 to 100. Null shows an indeterminate animation.
   final int? value;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
+
+  /// Width in logical pixels (null = size to content).
   final double? width;
+
+  /// Corner radius.
   final BorderRadius? borderRadius;
+
+  /// Background color.
   final Color? backgroundColor;
+
+  /// Color of the progress part.
   final Color? progressColor;
+
+  /// Background gradient (overrides the color).
   final Gradient? gradient;
+
+  /// How long it lasts.
   final Duration duration;
+
+  /// Animation curve.
   final Curve curve;
+
+  /// Speed of the indeterminate animation.
   final Duration indeterminateDuration;
+
+  /// Length of the moving segment.
   final double indeterminateSegmentFraction;
+
+  /// Builds a label, e.g. "40%".
   final UProgressLabelBuilder? labelBuilder;
+
+  /// Horizontal or vertical.
   final Axis axis;
+
+  /// Reverses the order.
   final bool reverse;
 
   @override
@@ -186,18 +214,44 @@ class UProgressCircular extends StatefulWidget {
 
   /// Progress from 0 to 100. Null shows a spinning indeterminate arc.
   final int? value;
+
+  /// Size in logical pixels.
   final double size;
+
+  /// Line thickness.
   final double strokeWidth;
+
+  /// Background color.
   final Color? backgroundColor;
+
+  /// Color of the progress part.
   final Color? progressColor;
+
+  /// Background gradient (overrides the color).
   final Gradient? gradient;
+
+  /// Line end shape.
   final StrokeCap strokeCap;
+
+  /// How long it lasts.
   final Duration duration;
+
+  /// Animation curve.
   final Curve curve;
+
+  /// Speed of the indeterminate animation.
   final Duration indeterminateDuration;
+
+  /// Arc length while indeterminate.
   final double indeterminateSweep;
+
+  /// Start angle.
   final double startAngle;
+
+  /// Fills clockwise.
   final bool clockwise;
+
+  /// Builds the center label.
   final UProgressLabelBuilder? labelBuilder;
 
   @override

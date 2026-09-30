@@ -2,17 +2,25 @@ import "dart:ui" as ui;
 
 import "package:u/utilities.dart";
 
+/// One point of a signature stroke with its pen width.
 class USignaturePoint {
   const USignaturePoint(this.offset, this.width);
 
+  /// Position.
   final Offset offset;
+
+  /// Width in logical pixels (null = size to content).
   final double width;
 }
 
+/// One continuous stroke of a signature.
 class USignatureStroke {
   USignatureStroke({required this.color, required this.points});
 
+  /// Main color (defaults to the theme).
   final Color color;
+
+  /// The stroke's points.
   final List<USignaturePoint> points;
 }
 
@@ -23,7 +31,11 @@ class USignatureController extends ChangeNotifier {
   USignatureController({this._penColor = const Color(0xFF1A1A1A), this.minWidth = 1.5, this.maxWidth = 4.5, this.velocityScale = 1.6});
 
   Color _penColor;
+
+  /// Thinnest line (fast strokes).
   double minWidth;
+
+  /// Thickest line (slow strokes).
   double maxWidth;
 
   /// Pen velocity (logical px/ms) at which the stroke reaches [minWidth].
@@ -33,28 +45,39 @@ class USignatureController extends ChangeNotifier {
   final List<USignatureStroke> _redo = <USignatureStroke>[];
   USignatureStroke? _active;
   double _lastWidth = 0;
+
+  /// Size of the drawing area.
   Size canvasSize = Size.zero;
 
+  /// Pen color.
   Color get penColor => _penColor;
 
+  /// Pen color.
   set penColor(Color value) {
     if (value == _penColor) return;
     _penColor = value;
     notifyListeners();
   }
 
+  /// Finished strokes.
   List<USignatureStroke> get strokes => _strokes;
 
+  /// Stroke being drawn.
   USignatureStroke? get activeStroke => _active;
 
+  /// True when nothing is drawn.
   bool get isEmpty => _strokes.isEmpty && _active == null;
 
+  /// True when something is drawn.
   bool get isNotEmpty => !isEmpty;
 
+  /// True when undo is possible.
   bool get canUndo => _strokes.isNotEmpty;
 
+  /// True when redo is possible.
   bool get canRedo => _redo.isNotEmpty;
 
+  /// Starts a stroke.
   void beginStroke(Offset point) {
     _redo.clear();
     _lastWidth = (minWidth + maxWidth) / 2;
@@ -62,6 +85,7 @@ class USignatureController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Adds a point; faster = thinner.
   void extendStroke(Offset point, double speed) {
     final USignatureStroke? stroke = _active;
     if (stroke == null) return;
@@ -72,6 +96,7 @@ class USignatureController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Finishes the stroke.
   void commitStroke() {
     final USignatureStroke? stroke = _active;
     if (stroke == null) return;
@@ -80,6 +105,7 @@ class USignatureController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Erases everything.
   void clear() {
     if (isEmpty) return;
     _strokes.clear();
@@ -88,18 +114,21 @@ class USignatureController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Removes the last stroke.
   void undo() {
     if (_strokes.isEmpty) return;
     _redo.add(_strokes.removeLast());
     notifyListeners();
   }
 
+  /// Restores an undone stroke.
   void redo() {
     if (_redo.isEmpty) return;
     _strokes.add(_redo.removeLast());
     notifyListeners();
   }
 
+  /// Exports the signature as PNG bytes.
   Future<Uint8List?> toPngBytes({double pixelRatio = 3, Color? background}) async {
     if (canvasSize.isEmpty) return null;
     final ui.PictureRecorder recorder = ui.PictureRecorder();
@@ -177,9 +206,16 @@ class _USignaturePainter extends CustomPainter {
 class USignaturePadRaw extends StatefulWidget {
   const USignaturePadRaw({required this.controller, this.baselineColor, this.onStrokeStart, this.onStrokeEnd, super.key});
 
+  /// Controller to read or change it from code.
   final USignatureController controller;
+
+  /// Color of the sign-here line.
   final Color? baselineColor;
+
+  /// Called when a stroke starts.
   final VoidCallback? onStrokeStart;
+
+  /// Called when a stroke ends.
   final VoidCallback? onStrokeEnd;
 
   @override
@@ -254,23 +290,58 @@ class USignaturePad extends StatefulWidget {
     this.exportBackground,
   });
 
+  /// Called when saved.
   final Function(UFileData) onSave;
+
+  /// Called with the PNG when the user saves.
   final Function(UFileData)? onDraw;
+
+  /// Save button text.
   final String? saveButtonText;
+
+  /// Clear button text.
   final String? clearButtonText;
+
+  /// Shown when saving an empty pad.
   final String? emptyMessage;
+
+  /// Controller to read or change it from code.
   final USignatureController? controller;
+
+  /// Background color.
   final Color? backgroundColor;
+
+  /// Pen color.
   final Color? strokeColor;
+
+  /// Colors offered in the picker.
   final List<Color>? penColors;
+
+  /// Minimum width.
   final double minWidth;
+
+  /// Maximum width.
   final double maxWidth;
+
+  /// Height in logical pixels (null = size to content).
   final double height;
+
+  /// Shows undo/redo/clear/save.
   final bool showToolbar;
+
+  /// Shows pen colors.
   final bool showColorPicker;
+
+  /// Shows a pen width slider.
   final bool showWidthSlider;
+
+  /// Draws a sign-here line.
   final bool showBaseline;
+
+  /// PNG resolution multiplier.
   final double exportPixelRatio;
+
+  /// PNG background (transparent when null).
   final Color? exportBackground;
 
   @override

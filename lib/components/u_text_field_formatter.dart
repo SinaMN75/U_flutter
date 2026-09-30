@@ -1,6 +1,8 @@
 import "package:u/utilities.dart";
 
+/// Keeps only digits (Persian digits converted), up to [maxDigits]. `UTextField(formatters: [UNumberInputFormatter(maxDigits: 10)])`
 class UNumberInputFormatter extends TextInputFormatter {
+  /// Most digits allowed.
   final int maxDigits;
 
   UNumberInputFormatter({
@@ -55,7 +57,9 @@ class UNumberInputFormatter extends TextInputFormatter {
   }
 }
 
+/// Formats a phone number as you type for [countryCode]. `UTextField(formatters: [UPhoneInputFormatter(countryCode: "IR")])`
 class UPhoneInputFormatter extends TextInputFormatter {
+  /// Country whose format is used.
   final String countryCode;
 
   UPhoneInputFormatter({
@@ -122,11 +126,17 @@ class UPhoneInputFormatter extends TextInputFormatter {
   }
 }
 
+/// Groups thousands as you type (1,250,000). `UTextField(formatters: [UCurrencyInputFormatter()])`
 class UCurrencyInputFormatter extends TextInputFormatter {
   static final RegExp _nonNumeric = RegExp(r"[^\d.]");
 
+  /// Thousands separator.
   final String thousandSeparator;
+
+  /// Decimal separator.
   final String decimalSeparator;
+
+  /// Most digits allowed.
   final int maxDigits;
 
   UCurrencyInputFormatter({

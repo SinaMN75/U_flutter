@@ -1,5 +1,6 @@
 import "package:u/utilities.dart";
 
+/// Offline one-time codes tied to a POS serial and today's date (Verhoeff checksums), for terminals without internet. `final code = UOtp.generateOtp(serial, 8);`
 abstract class UOtp {
   static const List<List<int>> _d = <List<int>>[
     <int>[0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
@@ -27,6 +28,7 @@ abstract class UOtp {
 
   static const List<int> _inv = <int>[0, 4, 3, 2, 1, 5, 6, 7, 8, 9];
 
+  /// Verhoeff check digit of a digit string. `UOtp.generateVerhoeff("236")` → "3"
   static String generateVerhoeff(String num) {
     int c = 0;
     final List<int> reversed = num.split("").reversed.map(int.parse).toList();
@@ -71,11 +73,15 @@ abstract class UOtp {
     return pinSerialCD == serialCD && pinRandomCD == randomCD && pinNowCD == nowCD;
   }
 
+  /// New code for [posSerial]; [length] includes 3 check digits (min 4). `UOtp.generateOtp("POS1234", 8)`
   static String generateOtp(String posSerial, int length) => _generate(posSerial, length, admin: false);
 
+  /// New admin code that validates against the serial alone.
   static String generateAdminOtp(String posSerial, int length) => _generate(posSerial, length, admin: true);
 
+  /// True when [otp] was generated today for [posSerial]. `UOtp.verifyOtp(serial, input)`
   static bool verifyOtp(String posSerial, String otp) => _verify(posSerial, otp, admin: false);
 
+  /// True when an admin code is valid today for [posSerial].
   static bool verifyAdminOtp(String posSerial, String otp) => _verify(posSerial, otp, admin: true);
 }

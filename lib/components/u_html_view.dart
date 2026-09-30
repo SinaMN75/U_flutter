@@ -31,6 +31,7 @@ class UHtmlView extends StatefulWidget {
     this.scrollable = false,
   });
 
+  /// HTML to render.
   final String html;
 
   /// Called when a link is tapped. Defaults to opening it with [ULaunch].
@@ -52,11 +53,13 @@ class UHtmlView extends StatefulWidget {
   /// Show a copy button on code blocks.
   final bool showCodeCopyButton;
 
+  /// Space inside, around the content.
   final EdgeInsets padding;
 
   /// Overrides the base text style every block is derived from.
   final TextStyle? textStyle;
 
+  /// Text direction (RTL/LTR); defaults to the app's.
   final TextDirection? textDirection;
 
   /// Fixed height for images. Null keeps the intrinsic aspect ratio.

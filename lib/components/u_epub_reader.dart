@@ -5,6 +5,7 @@ enum _UEpubSidebarTab { contents, annotations, bookmarks, search }
 /// Builds the exact [TextSpan] a block is rendered with, so pagination,
 /// highlight painting and hit-testing all agree on the same layout.
 abstract final class UEpubTextStyler {
+  /// Text color for a color mode.
   static Color foreground(BuildContext context, UDocColorMode mode) {
     switch (mode) {
       case UDocColorMode.night:
@@ -20,8 +21,10 @@ abstract final class UEpubTextStyler {
     }
   }
 
+  /// Page color for a color mode.
   static Color background(BuildContext context, UDocColorMode mode) => mode == UDocColorMode.normal ? Theme.of(context).colorScheme.surface : UDocColorFilters.pageBackground(mode);
 
+  /// Size factor of a heading level.
   static double headingScale(int level) {
     switch (level) {
       case 1:
@@ -39,11 +42,14 @@ abstract final class UEpubTextStyler {
     }
   }
 
+  /// Alignment of a block.
   static TextAlign align(UEpubBlock block, UEpubTypography typography) =>
       block.align ?? (block.kind == UEpubBlockKind.heading ? TextAlign.start : (typography.justify ? TextAlign.justify : TextAlign.start));
 
+  /// Text direction of a block (RTL for Persian).
   static TextDirection direction(UEpubBlock block) => block.rtl || UDocText.isMostlyRtl(block.text) ? TextDirection.rtl : TextDirection.ltr;
 
+  /// Styled text of a block.
   static TextSpan span(
     BuildContext context,
     UEpubBlock block,
@@ -97,6 +103,7 @@ abstract final class UEpubTextStyler {
     );
   }
 
+  /// Text painter of a block (for measuring pages).
   static TextPainter painter(BuildContext context, UEpubBlock block, UEpubTypography typography, UDocColorMode mode, double width, {int start = 0, int end = -1}) => TextPainter(
     text: span(context, block, typography, mode, start: start, end: end),
     textAlign: align(block, typography),
@@ -151,6 +158,7 @@ abstract final class UEpubTextStyler {
   }
 }
 
+/// Full EPUB reader in pure Dart (all platforms): chapters, fonts, themes, search, highlights, notes, drawing, resume position. `UEpubReader(url: "https://x.com/book.epub")`
 class UEpubReader extends StatefulWidget {
   const UEpubReader({
     this.filePath,
@@ -186,38 +194,95 @@ class UEpubReader extends StatefulWidget {
     super.key,
   }) : assert(filePath != null || bytes != null || url != null || asset != null || controller != null, "Provide one EPUB source");
 
+  /// Local file path.
   final String? filePath;
+
+  /// Content as bytes in memory.
   final Uint8List? bytes;
+
+  /// Web address of the content.
   final String? url;
+
+  /// Asset path.
   final String? asset;
+
+  /// Controller to read or change it from code.
   final UEpubController? controller;
+
+  /// Markup controller (created when null).
   final UDocAnnotationController? annotations;
+
+  /// Chapter to open first.
   final int initialChapter;
+
+  /// Title text.
   final String? title;
+
+  /// Shows the top toolbar.
   final bool showToolbar;
+
+  /// Shows the progress bar.
   final bool showBottomBar;
+
+  /// Shows the table of contents sidebar.
   final bool showSidebar;
+
+  /// Shows a back button.
   final bool showBackButton;
+
+  /// Lets the user select text.
   final bool allowSelection;
+
+  /// Allows copying selected text.
   final bool allowCopy;
+
+  /// Allows sharing selected text.
   final bool allowShare;
+
+  /// Allows highlights and notes.
   final bool enableMarkup;
 
   /// Pen, highlighter, shapes, text boxes and notes drawn over paragraphs;
   /// saved in the annotation string.
   final bool enableDrawing;
+
+  /// Controller for drawing notes on the video.
   final UDocDrawController? drawController;
+
+  /// Which markup tools are offered.
   final List<UDocMarkupKind> markupKinds;
+
+  /// Saved markups JSON to show.
   final String? annotationData;
+
+  /// Saves markups under this key automatically.
   final String? annotationStorageKey;
+
+  /// Keeps markups between app launches.
   final bool persistAnnotations;
+
+  /// Called with the markups JSON after each change.
   final void Function(String data)? onAnnotationsChanged;
+
+  /// How notes appear.
   final UDocNoteDisplay noteDisplay;
+
+  /// Watermark text painted over the content.
   final UDocWatermark? watermark;
+
+  /// Blocks screenshots and screen recording while playing (see UScreenGuard).
   final bool secure;
+
+  /// Opens where the user left off.
   final bool restorePosition;
+
+  /// Action widgets/buttons.
   final List<Widget> actions;
+
+  /// Called with the new chapter index.
   final void Function(int chapterIndex)? onChapterChanged;
+
+  /// Called when the back button is pressed.
   final VoidCallback? onBack;
 
   @override
@@ -232,6 +297,7 @@ class _UEpubSelectionRange {
   final int end;
 }
 
+/// State of UEpubReader; use a GlobalKey to control it.
 class UEpubReaderState extends State<UEpubReader> {
   late UEpubController _controller;
   bool _ownsController = false;
@@ -278,12 +344,16 @@ class UEpubReaderState extends State<UEpubReader> {
   List<double>? _estimates;
   String _estimatesKey = "";
 
+  /// The EPUB controller.
   UEpubController get controller => _controller;
 
+  /// Markup controller.
   UDocAnnotationController get annotations => _markup;
 
+  /// Current chapter.
   UEpubChapter? get chapter => _chapter;
 
+  /// Runs [action] and rebuilds.
   void applyState(VoidCallback action) {
     if (mounted) setState(action);
   }
@@ -340,7 +410,6 @@ class UEpubReaderState extends State<UEpubReader> {
       if (newest != local) _markup.import(newest);
     }
   }
-
 
   Future<void> _loadChapter(int index, {String? anchor, int? block, int? offset, bool atEnd = false}) async {
     if (_controller.pageCount == 0) {
@@ -542,6 +611,7 @@ class UEpubReaderState extends State<UEpubReader> {
 
   bool get _hasNextChapter => _controller.value.pageIndex < _controller.pageCount - 1;
 
+  /// Next page.
   void nextPage() {
     if (_paged) {
       if (_pageInChapter < _pages.length - 1) {
@@ -560,6 +630,7 @@ class UEpubReaderState extends State<UEpubReader> {
     unawaited(_scroll.animateTo((_scroll.offset + viewport * 0.85).clamp(0, _scroll.position.maxScrollExtent).toDouble(), duration: const Duration(milliseconds: 240), curve: Curves.easeOut));
   }
 
+  /// Previous page.
   void previousPage() {
     if (_paged) {
       if (_pageInChapter > 0) {
@@ -1001,6 +1072,7 @@ class UEpubReaderState extends State<UEpubReader> {
     return KeyEventResult.ignored;
   }
 
+  /// Drawing controller.
   UDocDrawController get drawing => _draw;
 
   bool get _drawingEnabled => widget.enableDrawing && widget.enableMarkup;
@@ -1765,22 +1837,55 @@ class UEpubBlockView extends StatefulWidget {
     super.key,
   });
 
+  /// The block to draw.
   final UEpubBlock block;
+
+  /// Font and spacing settings.
   final UEpubTypography typography;
+
+  /// Color mode.
   final UDocColorMode colorMode;
+
+  /// Controller to read or change it from code.
   final UEpubController controller;
+
+  /// Called when a link is tapped.
   final Future<void> Function(String href) onLinkTapped;
+
+  /// Block number in the chapter.
   final int blockIndex;
+
+  /// First character on this page.
   final int sliceStart;
+
+  /// Character after the last one on this page.
   final int sliceEnd;
+
+  /// Highlights on this block.
   final List<UDocMarkup> markups;
+
+  /// Highlight to emphasise.
   final String? activeMarkupId;
+
+  /// Search hits to highlight.
   final List<(int, int)> searchRanges;
+
+  /// Current search hit.
   final (int, int)? activeSearch;
+
+  /// How notes appear.
   final UDocNoteDisplay noteDisplay;
+
+  /// Called when a highlight is tapped.
   final bool Function(UDocMarkup markup, Offset globalPosition)? onMarkupTap;
+
+  /// Called when an image is tapped.
   final void Function(String href)? onImageTap;
+
+  /// Registers the block for selection.
   final void Function(String key, UEpubSlice slice, SelectionListenerNotifier notifier)? onRegister;
+
+  /// Unregisters the block.
   final void Function(String key, SelectionListenerNotifier notifier)? onUnregister;
 
   /// Drawings anchored to this paragraph (x and y normalised by its width).
@@ -1788,9 +1893,17 @@ class UEpubBlockView extends StatefulWidget {
 
   /// Enables the drawing layer; keep it constant for the widget's lifetime.
   final UDocDrawController? drawTools;
+
+  /// True while drawing mode is on.
   final bool drawing;
+
+  /// A drawing shape was added.
   final void Function(UDocShape shape)? onShapeAdd;
+
+  /// A drawing shape changed.
   final void Function(UDocShape shape)? onShapeUpdate;
+
+  /// A drawing shape was removed.
   final void Function(String id)? onShapeRemove;
 
   @override
@@ -2098,10 +2211,14 @@ class _UEpubRangePainter extends CustomPainter {
       oldDelegate.span != span || oldDelegate.ranges != ranges || oldDelegate.align != align || oldDelegate.direction != direction || oldDelegate.fontSize != fontSize;
 }
 
+/// An image inside an EPUB.
 class UEpubImageView extends StatefulWidget {
   const UEpubImageView({required this.controller, required this.href, super.key});
 
+  /// Controller to read or change it from code.
   final UEpubController controller;
+
+  /// Image path inside the book.
   final String href;
 
   @override
@@ -2142,10 +2259,14 @@ class _UEpubImageViewState extends State<UEpubImageView> {
   }
 }
 
+/// Reading settings (font, size, spacing, theme, margins).
 class UEpubSettingsPanel extends StatefulWidget {
   const UEpubSettingsPanel({required this.controller, required this.onChanged, super.key});
 
+  /// Controller to read or change it from code.
   final UEpubController controller;
+
+  /// Called with the new value when the user changes it.
   final VoidCallback onChanged;
 
   @override
@@ -2320,6 +2441,7 @@ class _UEpubSettingsPanelState extends State<UEpubSettingsPanel> {
   }
 }
 
+/// EPUB shortcuts: metadata, cover image and full text; pure Dart, all platforms. `await UEpub.cover(url: url)`
 abstract class UEpub {
   /// Pushes a full-screen reader with every feature enabled.
   static Future<void> show({
@@ -2354,6 +2476,7 @@ abstract class UEpub {
     ),
   );
 
+  /// Title, author, language and other metadata.
   static Future<UDocMetadata?> info({String? filePath, Uint8List? bytes, String? url}) async {
     try {
       final UEpubBook book = await UEpubBook.open(path: filePath, bytes: bytes, url: url);
@@ -2365,6 +2488,7 @@ abstract class UEpub {
     }
   }
 
+  /// Cover image bytes.
   static Future<Uint8List?> cover({String? filePath, Uint8List? bytes, String? url}) async {
     try {
       final UEpubBook book = await UEpubBook.open(path: filePath, bytes: bytes, url: url);
@@ -2377,6 +2501,7 @@ abstract class UEpub {
     }
   }
 
+  /// All text of the book.
   static Future<String> extractText({String? filePath, Uint8List? bytes, String? url}) async {
     final UEpubBook book = await UEpubBook.open(path: filePath, bytes: bytes, url: url);
     final StringBuffer buffer = StringBuffer();

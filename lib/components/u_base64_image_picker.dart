@@ -5,8 +5,13 @@ import "package:u/utilities.dart";
 class UBase64ImagePicker extends StatefulWidget {
   const UBase64ImagePicker({required this.label, required this.initial, required this.onChanged, super.key});
 
+  /// Label text.
   final String label;
+
+  /// Base64 image shown at start.
   final String? initial;
+
+  /// Called with the new value when the user changes it.
   final ValueChanged<String?> onChanged;
 
   @override

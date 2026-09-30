@@ -31,7 +31,6 @@ dependencies:
 
   intl: ^0.20.3
   web: ^1.1.1
-  uuid: ^4.6.0
   path: ^1.9.1
   async: ^2.13.1
   http: ^1.6.0
@@ -70,7 +69,7 @@ flutter:
         pluginClass: UPluginCApi
       web:
         pluginClass: UWeb
-        fileName: plugins/web/u_web_browser.dart
+        fileName: src/web/u_web_browser.dart
 
 #  flutter pub upgrade --major-versions --tighten
 

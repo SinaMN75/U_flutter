@@ -5546,6 +5546,12 @@ abstract class AppLocalizations {
   /// **'No charge will be taken'**
   String get noChargeWillBeTaken;
 
+  /// No description provided for @noInternet.
+  ///
+  /// In en, this message translates to:
+  /// **'No internet connection'**
+  String get noInternet;
+
   /// No description provided for @noData.
   ///
   /// In en, this message translates to:

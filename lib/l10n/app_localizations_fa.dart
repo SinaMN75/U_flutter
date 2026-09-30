@@ -2797,6 +2797,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get noChargeWillBeTaken => 'هزینه‌ای دریافت نمی‌شود';
 
   @override
+  String get noInternet => 'اتصال اینترنت برقرار نیست';
+
+  @override
   String get noData => 'داده‌ای موجود نیست';
 
   @override

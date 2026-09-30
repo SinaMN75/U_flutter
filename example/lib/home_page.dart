@@ -1,31 +1,37 @@
 import "package:u/utilities.dart";
 
-import "pages/admin_reference_page.dart";
-import "pages/advanced_page.dart";
-import "pages/api_reference_page.dart";
-import "pages/audio_notes_page.dart";
-import "pages/ar_page.dart";
-import "pages/buttons_page.dart";
-import "pages/camera_page.dart";
-import "pages/document_reader_page.dart";
-import "pages/downloads/downloads_page.dart";
-import "pages/extensions_page.dart";
-import "pages/feedback_page.dart";
-import "pages/formatters_page.dart";
-import "pages/inputs_page.dart";
-import "pages/layout_page.dart";
-import "pages/media_page.dart";
-import "pages/media_player_page.dart";
-import "pages/misc_page.dart";
-import "pages/navigation_page.dart";
-import "pages/screen_guard_page.dart";
-import "pages/text_page.dart";
-import "pages/utils_page.dart";
-import "pages/video_notes_page.dart";
+import "pages/backend/admin_reference_page.dart";
+import "pages/backend/api_reference_page.dart";
+import "pages/components/charts_navigation_page.dart";
+import "pages/components/documents_page.dart";
+import "pages/components/inputs_page.dart";
+import "pages/components/layout_page.dart";
+import "pages/components/media_components_page.dart";
+import "pages/components/video_ar_process_page.dart";
+import "pages/showcases/ar_page.dart";
+import "pages/showcases/audio_notes_page.dart";
+import "pages/showcases/camera_page.dart";
+import "pages/showcases/camera_studio_page.dart";
+import "pages/showcases/document_reader_page.dart";
+import "pages/showcases/downloads/downloads_page.dart";
+import "pages/showcases/media_player_page.dart";
+import "pages/showcases/scanner_studio_page.dart";
+import "pages/showcases/video_notes_page.dart";
+import "pages/utils/app_page.dart";
+import "pages/utils/backend_web_page.dart";
+import "pages/utils/crypto_data_page.dart";
+import "pages/utils/extensions_page.dart";
+import "pages/utils/files_page.dart";
+import "pages/utils/launch_share_page.dart";
+import "pages/utils/location_notification_page.dart";
+import "pages/utils/media_camera_page.dart";
+import "pages/utils/persian_dates_state_page.dart";
+import "pages/utils/storage_page.dart";
+import "pages/utils/ui_helpers_page.dart";
 
-/// One tappable card on the gallery home grid.
+/// One row of the catalog: a page and the API names it demonstrates (used by search).
 class GalleryEntry {
-  const GalleryEntry({required this.title, required this.subtitle, required this.icon, required this.builder});
+  const GalleryEntry(this.title, this.subtitle, this.icon, this.builder);
 
   final String title;
   final String subtitle;
@@ -33,66 +39,97 @@ class GalleryEntry {
   final Widget Function() builder;
 }
 
-final List<GalleryEntry> kEntries = <GalleryEntry>[
-  GalleryEntry(title: "Document reader", subtitle: "PDF & EPUB, highlights, notes", icon: Icons.menu_book_rounded, builder: () => const DocumentReaderPage()),
-  GalleryEntry(title: "Video course", subtitle: "Timestamp notes, resume, PiP", icon: Icons.ondemand_video_rounded, builder: () => const VideoNotesPage()),
-  GalleryEntry(title: "Audio lecture", subtitle: "Voice player with notes", icon: Icons.headphones_rounded, builder: () => const AudioNotesPage()),
-  GalleryEntry(title: "Text", subtitle: "UText* type scale", icon: Icons.title, builder: () => const TextPage()),
-  GalleryEntry(title: "Buttons", subtitle: "UButton & variants", icon: Icons.smart_button, builder: () => const ButtonsPage()),
-  GalleryEntry(title: "Inputs", subtitle: "Fields, OTP, validators", icon: Icons.edit_note, builder: () => const InputsPage()),
-  GalleryEntry(title: "Layout", subtitle: "Scaffold, cards, lists", icon: Icons.dashboard, builder: () => const LayoutPage()),
-  GalleryEntry(title: "Navigation", subtitle: "Tab bar & side menu", icon: Icons.menu_open, builder: () => const NavigationPage()),
-  GalleryEntry(title: "Feedback", subtitle: "Toast, dialogs, progress", icon: Icons.notifications_active, builder: () => const FeedbackPage()),
-  GalleryEntry(title: "Media & files", subtitle: "Images, QR, web, files", icon: Icons.perm_media, builder: () => const MediaPage()),
-  GalleryEntry(title: "Cards & misc", subtitle: "Flip, credit card, badges", icon: Icons.style, builder: () => const MiscPage()),
-  GalleryEntry(title: "Advanced forms", subtitle: "Rich text, signature, process", icon: Icons.edit_document, builder: () => const AdvancedPage()),
-  GalleryEntry(title: "Utilities", subtitle: "Crypto, Persian, storage", icon: Icons.handyman, builder: () => const UtilsPage()),
-  GalleryEntry(title: "Formatters", subtitle: "Money, numbers, Jalali", icon: Icons.calculate, builder: () => const FormattersPage()),
-  GalleryEntry(title: "Extensions", subtitle: "Widget & value sugar", icon: Icons.extension, builder: () => const ExtensionsPage()),
-  GalleryEntry(title: "Downloads & storage", subtitle: "Segmented, encrypted, resumable", icon: Icons.download_for_offline, builder: () => const DownloadsPage()),
-  GalleryEntry(title: "u_media", subtitle: "Native audio & video engine", icon: Icons.play_circle_fill, builder: () => const MediaPlayerPage()),
-  GalleryEntry(title: "Camera & scanning", subtitle: "Native camera + Dart barcode engine", icon: Icons.photo_camera, builder: () => const CameraPage()),
-  GalleryEntry(title: "AR & 3D", subtitle: "Place, measure, geo cards, 3D viewer", icon: Icons.view_in_ar, builder: () => const ArPage()),
-  GalleryEntry(title: "ScreenGuard", subtitle: "Native capture block", icon: Icons.screenshot_monitor, builder: () => const ScreenGuardPage()),
-  GalleryEntry(title: "API services", subtitle: "UServices reference", icon: Icons.cloud, builder: () => const ApiReferencePage()),
-  GalleryEntry(title: "Admin panel", subtitle: "u_admin reference", icon: Icons.admin_panel_settings, builder: () => const AdminReferencePage()),
-];
+/// The catalog, by section. Every public utility, extension and widget of the plugin has a runnable example in one of these pages.
+final Map<String, List<GalleryEntry>> kSections = <String, List<GalleryEntry>>{
+  "Utilities": <GalleryEntry>[
+    GalleryEntry("App & device", "UApp, UAppState, U, UDevice info, theme, locale, keepScreenOn", Icons.phone_android, () => const AppPage()),
+    GalleryEntry("UI helpers", "UNavigator, UToast, ULoading, UValidators, UDebouncer, UThrottler, URetry", Icons.handyman, () => const UiHelpersPage()),
+    GalleryEntry("Storage & network", "ULocalStorage, UNetwork", Icons.storage, () => const StoragePage()),
+    GalleryEntry("Files & downloads", "UFile, UDownloads", Icons.folder_open, () => const FilesPage()),
+    GalleryEntry("Launch, share, guard", "ULaunch, UShare, UScreenGuard", Icons.share, () => const LaunchSharePage()),
+    GalleryEntry("Location & notifications", "ULocation, UNotification", Icons.location_on, () => const LocationNotificationPage()),
+    GalleryEntry("Media & camera", "UMedia, UAudio, USound, UCamera, UArExperiences", Icons.perm_media, () => const MediaCameraPage()),
+    GalleryEntry("Crypto & data", "UEncryption, UUUID, UOtp, UConvert, UClipboard, UTimezone", Icons.lock, () => const CryptoDataPage()),
+    GalleryEntry("Persian, dates, state", "UPersianTools, UPhoneNumberUtils, UJalali, UGregorian, URx", Icons.calendar_month, () => const PersianDatesStatePage()),
+    GalleryEntry("Backend & web", "UHttpClient, UAuth, UCrashlytics, UUpdateDialog, UWeb, UIso", Icons.cloud_sync, () => const BackendWebPage()),
+    GalleryEntry("Extensions", "String, num, Duration, DateTime, Iterable, Map, BuildContext, Widget", Icons.extension, () => const ExtensionsPage()),
+  ],
+  "Components": <GalleryEntry>[
+    GalleryEntry("Layout & basics", "Boxes, text, buttons, badges, progress, skeleton, async builders", Icons.dashboard, () => const LayoutComponentsPage()),
+    GalleryEntry("Inputs & forms", "Text fields, pickers, selectors, OTP, keyboards, signature, card", Icons.edit_note, () => const InputsComponentsPage()),
+    GalleryEntry("Charts & navigation", "Charts, gauges, pagination, side menu, tab bar, carousel", Icons.insights, () => const ChartsNavigationPage()),
+    GalleryEntry("Media widgets", "Images, viewers, cropper, barcodes, scanner, notes, lyrics, web, map", Icons.image, () => const MediaComponentsPage()),
+    GalleryEntry("Documents", "PDF viewer & editor, EPUB, rich text editor", Icons.description, () => const DocumentsComponentsPage()),
+    GalleryEntry("Video, AR, process", "Video building blocks, AR widgets, KYC process, download helpers", Icons.view_in_ar, () => const VideoArProcessPage()),
+  ],
+  "Showcases": <GalleryEntry>[
+    GalleryEntry("Document reader", "PDF & EPUB, highlights, notes", Icons.menu_book_rounded, () => const DocumentReaderPage()),
+    GalleryEntry("Video course", "Timestamp notes, resume, PiP", Icons.ondemand_video_rounded, () => const VideoNotesPage()),
+    GalleryEntry("Audio lecture", "Voice player with notes", Icons.headphones_rounded, () => const AudioNotesPage()),
+    GalleryEntry("Media player", "Native audio & video engine", Icons.play_circle_fill, () => const MediaPlayerPage()),
+    GalleryEntry("Camera & scanning", "Native camera + Dart barcode engine", Icons.photo_camera, () => const CameraPage()),
+    GalleryEntry("Camera studio", "Full camera UI", Icons.camera, () => const CameraStudioPage()),
+    GalleryEntry("Scanner studio", "Barcode scanner UI", Icons.qr_code_scanner, () => const ScannerStudioPage()),
+    GalleryEntry("AR & 3D", "Place, measure, geo cards, 3D viewer", Icons.threed_rotation, () => const ArPage()),
+    GalleryEntry("Downloads", "Segmented, encrypted, resumable", Icons.download_for_offline, () => const DownloadsPage()),
+  ],
+  "Backend reference": <GalleryEntry>[
+    GalleryEntry("API services", "UServices reference", Icons.cloud, () => const ApiReferencePage()),
+    GalleryEntry("Admin panel", "u_admin reference", Icons.admin_panel_settings, () => const AdminReferencePage()),
+  ],
+};
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  String _query = "";
+
+  bool _matches(GalleryEntry e) => _query.isBlank || "${e.title} ${e.subtitle}".toLowerCase().contains(_query.toLowerCase());
 
   @override
   Widget build(BuildContext context) {
     final ColorScheme scheme = Theme.of(context).colorScheme;
     return UScaffold(
       appBar: AppBar(title: const UTextTitleLarge("u plugin gallery", fontWeight: FontWeight.w700), centerTitle: false),
-      body: GridView.builder(
+      body: ListView(
         padding: const EdgeInsets.all(16),
-        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(maxCrossAxisExtent: 220, mainAxisSpacing: 12, crossAxisSpacing: 12, childAspectRatio: 1.15),
-        itemCount: kEntries.length,
-        itemBuilder: (BuildContext context, int index) {
-          final GalleryEntry e = kEntries[index];
-          return UCard(
-            child: UColumn(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: 8,
-              padding: const EdgeInsets.all(16),
-              children: <Widget>[
-                UContainer(
-                  color: scheme.primaryContainer,
-                  radius: 12,
-                  padding: const EdgeInsets.all(10),
-                  child: Icon(e.icon, color: scheme.onPrimaryContainer),
+        children: <Widget>[
+          USearchField(hint: "Search a class or feature (e.g. UJalali, toast, pdf)", debounce: Duration.zero, onSearch: (String q) => setState(() => _query = q)),
+          for (final MapEntry<String, List<GalleryEntry>> section in kSections.entries)
+            if (section.value.any(_matches)) ...<Widget>[
+              Padding(
+                padding: const EdgeInsets.only(top: 20, bottom: 8),
+                child: UTextTitleMedium(section.key, color: scheme.primary),
+              ),
+              UCard(
+                child: Column(
+                  children: section.value
+                      .where(_matches)
+                      .map(
+                        (GalleryEntry e) => ListTile(
+                          leading: UContainer(
+                            color: scheme.primaryContainer,
+                            radius: 10,
+                            padding: const EdgeInsets.all(8),
+                            child: Icon(e.icon, color: scheme.onPrimaryContainer, size: 20),
+                          ),
+                          title: UTextTitleSmall(e.title),
+                          subtitle: UTextBodySmall(e.subtitle, maxLines: 2),
+                          trailing: const Icon(Icons.chevron_right),
+                          onTap: () => UNavigator.push<void>(e.builder()),
+                        ),
+                      )
+                      .toList()
+                      .withDividers(),
                 ),
-                const Spacer(),
-                UTextTitleSmall(e.title, fontWeight: FontWeight.w700),
-                UTextBodySmall(e.subtitle, color: scheme.onSurfaceVariant, maxLines: 2),
-              ],
-            ),
-            onPress: () => UNavigator.push<void>(e.builder()),
-          );
-        },
+              ),
+            ],
+        ],
       ),
     );
   }
