@@ -157,11 +157,13 @@ abstract final class UStorage {
 
 /// One key/value store. Obtain with [UStorage.instance], [UStorage.secure] or [UStorage.open].
 class UStore {
-  UStore._(this.name, this._path, this._aead);
+  UStore._(this.name, this._path, {required this.isSecure});
 
   final String name;
   final String _path;
-  final UAead? _aead;
+  // Secure stores fetch the platform key only when there is a file to read or something to write,
+  // so an app that never stores a secret never touches the Keychain (and never shows its prompt).
+  UAead? _aead;
 
   final Map<String, Object> _values = <String, Object>{};
   final Map<String, String> _encoded = <String, String>{};
@@ -173,7 +175,7 @@ class UStore {
   Completer<void>? _pending;
   Future<void>? _writing;
 
-  bool get isSecure => _aead != null;
+  final bool isSecure;
 
   // ---------------------------------------------------------------------------
   // Reading
@@ -386,8 +388,10 @@ class UStore {
         ..write(e.value);
     }
     out.write("}}");
+    // An empty secure store that was never written has no file: nothing to write, no key needed.
+    if (isSecure && _aead == null && _encoded.isEmpty) return;
     final Uint8List plain = utf8.encode(out.toString());
-    await UStorageBackend.instance.writeAll(_path, _aead == null ? plain : await _seal(_aead, plain));
+    await UStorageBackend.instance.writeAll(_path, isSecure ? await _seal(_aead ??= await _masterAead(), plain) : plain);
   }
 
   Future<void> _deleteFile() => UStorageBackend.instance.delete(_path);
@@ -403,12 +407,21 @@ class UStore {
 
   static Future<UStore> _load(String name, {required bool secure}) async {
     final String path = await _pathOf(name, secure: secure);
-    final UAead? aead = secure ? await _masterAead() : null;
-    final UStore store = UStore._(name, path, aead);
+    final UStore store = UStore._(name, path, isSecure: secure);
     final Uint8List? bytes = await UStorageBackend.instance.readAll(path);
     if (bytes == null || bytes.isEmpty) return store;
+    if (secure) {
+      try {
+        store._aead = await _masterAead();
+      } catch (e) {
+        // Key store locked or access denied: start empty for this run. Writes fail too (same key),
+        // so the file on disk stays intact for the next launch.
+        debugPrint("UStorage: key for store '$name' is unavailable, starting empty ($e).");
+        return store;
+      }
+    }
     try {
-      final Uint8List plain = aead == null ? bytes : await _open(aead, bytes);
+      final Uint8List plain = secure ? await _open(store._aead!, bytes) : bytes;
       store._decode(utf8.decode(plain));
     } catch (e) {
       // A corrupt file or a lost key (e.g. restored from a backup to a new device) must not

@@ -185,7 +185,7 @@ abstract class ULocalStorage {
 
   // Secure store, for any key (tokens are routed there automatically).
 
-  /// Saves a value encrypted. `await ULocalStorage.setSecure("pin", "1234")`
+  /// Saves a value encrypted (key in Keychain/Keystore/Credential Manager/libsecret). `await ULocalStorage.setSecure("pin", "1234")`. macOS: unsigned debug builds show a Keychain password prompt after each rebuild; Team-signed apps never do.
   static Future<void> setSecure(String key, Object? value, {Duration? expireTime}) => UStorage.secure.set(key, value, ttl: expireTime);
 
   /// Reads an encrypted value. `ULocalStorage.getSecure<String>("pin")`

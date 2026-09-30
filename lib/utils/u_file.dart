@@ -288,7 +288,7 @@ abstract class UFile {
   /// Saves any JSON value under [key]. `await UFile.saveJson("draft", map)`
   static Future<void> saveJson(String key, Object? value, {UStorageBucket bucket = UStorageBucket.support, Duration? expireIn}) => UFileStorage.setJson(key, value, bucket: bucket, expireIn: expireIn);
 
-  /// Saves bytes encrypted in the vault (key in Keychain/Keystore). `await UFile.saveSecure("id-card", bytes)`
+  /// Saves bytes encrypted in the vault (key in Keychain/Keystore). `await UFile.saveSecure("id-card", bytes)`. macOS: unsigned debug builds show a Keychain password prompt after each rebuild; Team-signed apps never do.
   static Future<void> saveSecure(String key, List<int> bytes) => UFileStorage.setBytes(key, bytes, bucket: UStorageBucket.vault);
 
   /// Saves re-creatable cache; the OS/size limit may delete it. `await UFile.saveCache("thumb_1", bytes, expireIn: 7.days)`

@@ -264,8 +264,20 @@ private final class UFilesPreviewDelegate: NSObject, UIDocumentInteractionContro
 enum UFilesKeychain {
     private static let service = "u.files.secrets"
 
-    private static func query(_ alias: String) -> [String: Any] {
-        [kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: service, kSecAttrAccount as String: alias]
+    #if os(macOS)
+    /// macOS has two keychains. The legacy login keychain ties each item to the exact code signature
+    /// that created it, so every re-signed build (ad-hoc debug builds change on each compile) shows a
+    /// password prompt. The data protection keychain behaves like iOS and never prompts, but it needs
+    /// a Team ID signature; unsigned builds get errSecMissingEntitlement and stay on the legacy one.
+    private static var dataProtection = true
+    #endif
+
+    private static func query(_ alias: String, legacy: Bool = false) -> [String: Any] {
+        var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: service, kSecAttrAccount as String: alias]
+        #if os(macOS)
+        if dataProtection && !legacy { query[kSecUseDataProtectionKeychain as String] = true }
+        #endif
+        return query
     }
 
     static func store(alias: String, data: Data) -> Bool {
@@ -274,22 +286,51 @@ enum UFilesKeychain {
         item[kSecValueData as String] = data
         // Readable in the background after the first unlock, never synced or migrated to another device.
         item[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
-        return SecItemAdd(item as CFDictionary, nil) == errSecSuccess
+        let status = SecItemAdd(item as CFDictionary, nil)
+        #if os(macOS)
+        if status == errSecMissingEntitlement && dataProtection {
+            dataProtection = false
+            return store(alias: alias, data: data)
+        }
+        #endif
+        return status == errSecSuccess
     }
 
     static func load(alias: String) throws -> Data? {
-        var item = query(alias)
-        item[kSecReturnData as String] = true
-        item[kSecMatchLimit as String] = kSecMatchLimitOne
-        var out: CFTypeRef?
-        let status = SecItemCopyMatching(item as CFDictionary, &out)
+        let (status, data) = copy(query(alias))
+        #if os(macOS)
+        if status == errSecMissingEntitlement && dataProtection {
+            dataProtection = false
+            return try load(alias: alias)
+        }
+        if status == errSecItemNotFound && dataProtection {
+            // Written by an older version into the legacy keychain: move it over once.
+            let (legacyStatus, legacyData) = copy(query(alias, legacy: true))
+            if legacyStatus == errSecItemNotFound { return nil }
+            guard legacyStatus == errSecSuccess, let legacyData else { throw NSError(domain: NSOSStatusErrorDomain, code: Int(legacyStatus)) }
+            if store(alias: alias, data: legacyData) && dataProtection { SecItemDelete(query(alias, legacy: true) as CFDictionary) }
+            return legacyData
+        }
+        #endif
         if status == errSecItemNotFound { return nil }
         guard status == errSecSuccess else { throw NSError(domain: NSOSStatusErrorDomain, code: Int(status)) }
-        return out as? Data
+        return data
     }
 
     static func delete(alias: String) {
         SecItemDelete(query(alias) as CFDictionary)
+        #if os(macOS)
+        if dataProtection { SecItemDelete(query(alias, legacy: true) as CFDictionary) }
+        #endif
+    }
+
+    private static func copy(_ query: [String: Any]) -> (OSStatus, Data?) {
+        var item = query
+        item[kSecReturnData as String] = true
+        item[kSecMatchLimit as String] = kSecMatchLimitOne
+        var out: CFTypeRef?
+        let status = SecItemCopyMatching(item as CFDictionary, &out)
+        return (status, out as? Data)
     }
 }
 
