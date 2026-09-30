@@ -119,10 +119,12 @@ class UChargeInternet {
 class UChargeInternetPreDefinedAmounts {
   final String title;
   final double amount;
+  final int type;
 
   UChargeInternetPreDefinedAmounts({
     required this.title,
     required this.amount,
+    this.type = 0,
   });
 
   factory UChargeInternetPreDefinedAmounts.fromJson(String str) => UChargeInternetPreDefinedAmounts.fromMap(json.decode(str));
@@ -132,10 +134,12 @@ class UChargeInternetPreDefinedAmounts {
   factory UChargeInternetPreDefinedAmounts.fromMap(Map<String, dynamic> json) => UChargeInternetPreDefinedAmounts(
     title: json["title"],
     amount: (json["amount"] as num).toDouble(),
+    type: json["type"] ?? 0,
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "title": title,
     "amount": amount,
+    "type": type,
   };
 }
