@@ -1,30 +1,7 @@
 import "package:u/utilities.dart";
 
-/// The original network helpers, now backed by [UConnectivity] (accurate on the web too).
+/// Network state: connection type, metered/roaming, speed, real internet checks. Wraps [UConnectivity].
 abstract class UNetwork {
-  /// True when on mobile data.
-  static Future<bool> hasCellular() async => (await _status()).isCellular;
-
-  /// True when on Wi-Fi.
-  static Future<bool> hasWifi() async => (await _status()).isWifi;
-
-  /// True when a VPN is active.
-  static Future<bool> hasVpn() async => (await _status()).isVpn;
-
-  /// True when on a wired connection.
-  static Future<bool> hasEthernet() async => (await _status()).isEthernet;
-
-  /// True when tethered over Bluetooth.
-  static Future<bool> hasBluetooth() async => (await _status()).isBluetooth;
-
-  /// True when the internet really answers (pings your server).
-  static Future<bool> hasNetworkConnection() => UConnectivity.hasInternet();
-
-  /// True when there is a usable network connection.
-  static Future<bool> hasAnyConnection() async => (await _status()).isOnline;
-
-  // --- UConnectivity, one wrapper each ---------------------------------------------------
-
   /// Full network snapshot (types, metered, roaming, speed, …).
   static UNetworkStatus get status => UConnectivity.status;
 
@@ -136,8 +113,4 @@ abstract class UNetwork {
   /// Stops watching the network.
   static Future<void> dispose() => UConnectivity.dispose();
 
-  static Future<UNetworkStatus> _status() async {
-    await UConnectivity.init();
-    return UConnectivity.status;
-  }
 }

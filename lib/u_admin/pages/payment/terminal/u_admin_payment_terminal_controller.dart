@@ -97,32 +97,32 @@ class UAdminPaymentTerminalController extends UBaseController {
       return false;
     }
     return await send(
-      t == null
-          ? UServices.terminal.create(
-              p: UTerminalCreateParams(
-                tags: <int>[TagTerminal.notAssigned.number],
-                serial: serialController.text.trim(),
-                simCardNumber: simCardNumberController.text.nullIfEmpty(),
-                simCardSerial: simCardSerialController.text.nullIfEmpty(),
-                imei: imeiController.text.nullIfEmpty(),
-                terminalBrandId: brand!.id,
-                terminalBrokerId: broker!.id,
-              ),
-            )
-          : UServices.terminal.update(
-              p: UTerminalUpdateParams(
-                id: t.id,
-                serial: serialController.text.nullIfEmpty(),
-                simCardNumber: simCardNumberController.text.nullIfEmpty(),
-                simCardSerial: simCardSerialController.text.nullIfEmpty(),
-                imei: imeiController.text.nullIfEmpty(),
-                terminalId: terminalIdController.text.nullIfEmpty(),
-                terminalBrandId: brand?.id,
-                terminalBrokerId: broker?.id,
-              ),
-            ),
-      read,
-    ) !=
+          t == null
+              ? UServices.terminal.create(
+                  p: UTerminalCreateParams(
+                    tags: <int>[TagTerminal.notAssigned.number],
+                    serial: serialController.text.trim(),
+                    simCardNumber: simCardNumberController.text.nullIfEmpty(),
+                    simCardSerial: simCardSerialController.text.nullIfEmpty(),
+                    imei: imeiController.text.nullIfEmpty(),
+                    terminalBrandId: brand!.id,
+                    terminalBrokerId: broker!.id,
+                  ),
+                )
+              : UServices.terminal.update(
+                  p: UTerminalUpdateParams(
+                    id: t.id,
+                    serial: serialController.text.nullIfEmpty(),
+                    simCardNumber: simCardNumberController.text.nullIfEmpty(),
+                    simCardSerial: simCardSerialController.text.nullIfEmpty(),
+                    imei: imeiController.text.nullIfEmpty(),
+                    terminalId: terminalIdController.text.nullIfEmpty(),
+                    terminalBrandId: brand?.id,
+                    terminalBrokerId: broker?.id,
+                  ),
+                ),
+          read,
+        ) !=
         null;
   }
 
@@ -134,7 +134,13 @@ class UAdminPaymentTerminalController extends UBaseController {
   );
 
   Future<bool> reject(UTerminalResponse i) async =>
-      await send(UServices.terminal.reject(p: UTerminalRejectParams(id: i.id, reason: rejectReasonController.text.nullIfEmpty())), read) != null;
+      await send(
+        UServices.terminal.reject(
+          p: UTerminalRejectParams(id: i.id, reason: rejectReasonController.text.nullIfEmpty()),
+        ),
+        read,
+      ) !=
+      null;
 
   void delete(UTerminalResponse i) => confirmAction(() => UServices.terminal.delete(p: UIdParams(id: i.id)), read);
 
@@ -158,7 +164,8 @@ class UAdminPaymentTerminalController extends UBaseController {
     return ok == null ? null : ok.result?.password ?? "-";
   }
 
-  void import(void Function(UTerminalImportResponse r) onResult) => UFile.showFilePicker(
+  void import(void Function(UTerminalImportResponse r) onResult) => UFile.pickFiles(
+    allowMultiple: false,
     allowedExtensions: const <String>["xlsx"],
     action: (List<UFileData> files) async {
       if (files.length != 1 || files.first.bytes == null || !(files.first.extension ?? "").toLowerCase().contains("xlsx")) return;

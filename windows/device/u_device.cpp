@@ -140,9 +140,8 @@ EncodableMap DeviceInfo() {
   DWORD name_length = 256;
   if (!GetComputerNameExW(ComputerNamePhysicalDnsHostname, name, &name_length)) name[0] = L'\0';
 
-  // Same source device_info_plus used for deviceId, so ids registered by older builds still match.
-  std::wstring id = RegString(HKEY_LOCAL_MACHINE, L"SOFTWARE\\Microsoft\\SQMClient", L"MachineId");
-  if (id.empty()) id = RegString(HKEY_LOCAL_MACHINE, L"SOFTWARE\\Microsoft\\Cryptography", L"MachineGuid");
+  // Set once at Windows setup, unique per installation.
+  const std::wstring id = RegString(HKEY_LOCAL_MACHINE, L"SOFTWARE\\Microsoft\\Cryptography", L"MachineGuid");
 
   SYSTEM_INFO system = {};
   GetNativeSystemInfo(&system);
@@ -569,7 +568,6 @@ void UDevice::HandleMethodCall(const flutter::MethodCall<EncodableValue>& call, 
   } else if (method == "integrity") {
     result->Success(EncodableValue(Integrity()));
   } else {
-    // legacyPrefs lives in a JSON file on Windows; Dart reads it directly.
     result->NotImplemented();
   }
 }

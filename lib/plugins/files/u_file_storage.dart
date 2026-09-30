@@ -128,7 +128,6 @@ abstract class UFileStorage {
       _indexes[bucket] = index;
       await _loadIndex(index);
     }
-    await _migrateLegacy();
     await evictExpired();
     await trimCache();
   }
@@ -628,62 +627,4 @@ abstract class UFileStorage {
   // ---------------------------------------------------------------------------
   // One-time migration from the 2.x layout (Documents/big_files/*.dat, Documents/*.txt)
   // ---------------------------------------------------------------------------
-
-  static Future<void> _migrateLegacy() async {
-    if (kIsWeb) return;
-    final String marker = uJoinPath(_index(UStorageBucket.support).root, ".migrated_v3");
-    if (await _backend.exists(marker)) return;
-    try {
-      final Directory documents = await getApplicationDocumentsDirectory();
-      final Directory big = Directory(uJoinPath(documents.path, "big_files"));
-      if (big.existsSync()) {
-        for (final File file in big.listSync().whereType<File>().where((File f) => f.path.endsWith(".dat"))) {
-          final String name = file.uri.pathSegments.last;
-          final String key = name.substring(0, name.length - 4);
-          await importFile(file.path, key, bucket: _legacyBucket(key), deleteSource: true);
-        }
-        if (big.listSync().isEmpty) await big.delete();
-      }
-      // Only where Documents is private to the app. On desktop it is the user's own folder,
-      // and a .txt there is far more likely to be theirs than ours.
-      final bool privateDocuments = Platform.isAndroid || Platform.isIOS || (Platform.isMacOS && documents.path.contains("/Library/Containers/"));
-      if (privateDocuments) {
-        for (final File file in documents.listSync().whereType<File>().where((File f) => f.path.endsWith(".txt"))) {
-          final String name = file.uri.pathSegments.last;
-          final String key = name.substring(0, name.length - 4);
-          await importFile(file.path, key, bucket: _legacyBucket(key), deleteSource: true, mimeType: "text/plain; charset=utf-8");
-        }
-      }
-    } catch (e) {
-      debugPrint("UFileStorage: legacy migration skipped ($e).");
-    }
-    await _backend.writeAll(marker, <int>[1]);
-  }
-
-  static UStorageBucket _legacyBucket(String key) => key.startsWith("img_") || key.startsWith("cache_") ? UStorageBucket.cache : UStorageBucket.support;
-
-  // ---------------------------------------------------------------------------
-  // 2.x names, kept so existing apps compile. Each maps onto the support bucket.
-  // ---------------------------------------------------------------------------
-
-  @Deprecated("Use setString")
-  static Future<void> set(String key, String value) => setString(key, value);
-
-  @Deprecated("Use keys()")
-  static Future<List<String>> getKeys() async => keys();
-
-  @Deprecated("Use contains()")
-  static bool fileExists(String key) => contains(key);
-
-  @Deprecated("Use size()")
-  static Future<int> fileSize(String key) async => size(key);
-
-  @Deprecated("Use usage()")
-  static int totalStorageUsed() => usage();
-
-  @Deprecated("Use entries()")
-  static Map<String, int> allFilesStorageInfo() => <String, int>{for (final UStorageEntry e in entries(bucket: UStorageBucket.support)) e.key: e.size};
-
-  @Deprecated("Use copy()")
-  static Future<void> copyFile(String sourceKey, String destinationKey) => copy(sourceKey, destinationKey);
 }

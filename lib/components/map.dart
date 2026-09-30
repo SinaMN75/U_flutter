@@ -107,7 +107,7 @@ class _UMapState extends State<UMap> {
 
   Future<void> _centerOnUserLocation() async {
     try {
-      final Position? position = await _getUserLocation();
+      final UPosition? position = await ULocation.position();
       if (mounted && position != null) {
         widget.controller.move(
           LatLng(position.latitude, position.longitude),
@@ -119,33 +119,6 @@ class _UMapState extends State<UMap> {
     }
   }
 
-  Future<Position?> _getUserLocation() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return null;
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return null;
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      return null;
-    }
-
-    return Geolocator.getCurrentPosition(
-      locationSettings: const LocationSettings(
-        accuracy: LocationAccuracy.high,
-      ),
-    );
-  }
 
   String _getTileUrlTemplate() {
     switch (widget.tileProvider) {

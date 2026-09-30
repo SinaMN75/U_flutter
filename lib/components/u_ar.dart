@@ -948,7 +948,7 @@ class UArSceneState extends State<UArScene> with WidgetsBindingObserver, UArLife
     if (widget.onSnapshot != null) {
       widget.onSnapshot!(image);
     } else if (_o.shareSnapshots) {
-      await UShare.bytes(bytes: image, fileName: "ar_${DateTime.now().millisecondsSinceEpoch}.jpg", mimeType: "image/jpeg");
+      await UShare.bytes(image, name: "ar_${DateTime.now().millisecondsSinceEpoch}.jpg", mimeType: "image/jpeg");
     }
   }
 
@@ -962,9 +962,9 @@ class UArSceneState extends State<UArScene> with WidgetsBindingObserver, UArLife
         final String? path = recording.path;
         final Uint8List? bytes = recording.bytes;
         if (path != null) {
-          await UShare.file(path: path);
+          await UShare.file(path);
         } else if (bytes != null) {
-          await UShare.bytes(bytes: bytes, fileName: "ar_${DateTime.now().millisecondsSinceEpoch}.webm", mimeType: recording.mimeType);
+          await UShare.bytes(bytes, name: "ar_${DateTime.now().millisecondsSinceEpoch}.webm", mimeType: recording.mimeType);
         }
       }
     } else {
@@ -1690,7 +1690,7 @@ class UArGeoViewState extends State<UArGeoView> with WidgetsBindingObserver, UAr
   }
 
   double _distanceTo(UArPlace place) {
-    final Position? here = controller.lastPosition;
+    final UPosition? here = controller.lastPosition;
     final UArGeoPose? vps = controller.value.geo;
     if (vps != null && vps.source != "gps" && vps.isTracking) return UArGeo.distance(vps.latitude, vps.longitude, place.latitude, place.longitude);
     if (here == null) return double.infinity;
@@ -1764,7 +1764,7 @@ class UArGeoViewState extends State<UArGeoView> with WidgetsBindingObserver, UAr
     final List<(UArPlace, UArProjection, double)> onScreen = <(UArPlace, UArProjection, double)>[];
     final List<(UArPlace, double, bool)> offScreen = <(UArPlace, double, bool)>[];
     final double? heading = controller.value.frame.heading;
-    final Position? here = controller.lastPosition;
+    final UPosition? here = controller.lastPosition;
     for (final UArPlace place in widget.places) {
       final UArProjection? projection = projections[place.id];
       if (projection == null) continue;
@@ -2300,7 +2300,7 @@ class UArFaceTryOnState extends State<UArFaceTryOn> with WidgetsBindingObserver,
     if (widget.onSnapshot != null) {
       widget.onSnapshot!(image);
     } else {
-      await UShare.bytes(bytes: image, fileName: "tryon_${DateTime.now().millisecondsSinceEpoch}.jpg", mimeType: "image/jpeg");
+      await UShare.bytes(image, name: "tryon_${DateTime.now().millisecondsSinceEpoch}.jpg", mimeType: "image/jpeg");
     }
   }
 

@@ -339,45 +339,8 @@ class UEpubReaderState extends State<UEpubReader> {
       final String newest = UDocAnnotationController.pickNewest(local, remote);
       if (newest != local) _markup.import(newest);
     }
-    await _migrateLegacyHighlights();
   }
 
-  /// Moves highlights saved by the previous reader version into the shared annotation store.
-  Future<void> _migrateLegacyHighlights() async {
-    final String key = "u_epub_migrated_${_controller.documentId}";
-    try {
-      if (_controller.highlights.isEmpty || ULocalStorage.getBool(key) == true) return;
-    } on Object {
-      return;
-    }
-    final List<UDocMarkup> migrated = <UDocMarkup>[];
-    for (final UEpubHighlight highlight in _controller.highlights) {
-      final UEpubChapter chapter = await _controller.chapter(highlight.position.spineIndex);
-      for (int i = 0; i < chapter.blocks.length; i++) {
-        final int at = chapter.blocks[i].text.indexOf(highlight.text);
-        if (at < 0) continue;
-        migrated.add(
-          UDocMarkup.create(
-            kind: highlight.note.isEmpty ? UDocMarkupKind.highlight : UDocMarkupKind.note,
-            pageIndex: highlight.position.spineIndex,
-            blockIndex: i,
-            start: at,
-            end: at + highlight.text.length,
-            text: highlight.text,
-            color: Color(highlight.color),
-            note: highlight.note,
-          ),
-        );
-        break;
-      }
-    }
-    if (migrated.isNotEmpty) _markup.addAll(migrated);
-    try {
-      ULocalStorage.set(key, true);
-    } on Object {
-      return;
-    }
-  }
 
   Future<void> _loadChapter(int index, {String? anchor, int? block, int? offset, bool atEnd = false}) async {
     if (_controller.pageCount == 0) {
@@ -878,7 +841,7 @@ class UEpubReaderState extends State<UEpubReader> {
         break;
       case "exportNotes":
         await UShare.text(
-          text: _markup.toMarkdown(title: _title, pageLabel: _chapterLabel),
+          _markup.toMarkdown(title: _title, pageLabel: _chapterLabel),
         );
         break;
       case "exportData":
@@ -1444,7 +1407,7 @@ class UEpubReaderState extends State<UEpubReader> {
                     _clearSelection();
                   }
                 : null,
-            onShare: widget.allowCopy && widget.allowShare ? () => unawaited(UShare.text(text: _selectedText)) : null,
+            onShare: widget.allowCopy && widget.allowShare ? () => unawaited(UShare.text(_selectedText)) : null,
             onSearch: () {
               final String query = _selectedText.split("\n").first;
               _clearSelection();

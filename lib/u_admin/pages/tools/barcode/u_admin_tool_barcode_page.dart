@@ -82,7 +82,7 @@ class _UAdminToolBarcodePageState extends State<UAdminToolBarcodePage> {
   }
 
   Future<void> _pickLogo() async {
-    final List<UFileData> files = await UFile.showImagePicker(source: UImageSource.gallery, crop: const UCropOptions(aspectRatio: 1));
+    final List<UFileData> files = await UFile.pickImage(crop: const UCropOptions(aspectRatio: 1));
     if (!mounted || files.isEmpty || files.first.bytes == null) return;
     setState(() => _logo = files.first.bytes);
   }
@@ -92,7 +92,7 @@ class _UAdminToolBarcodePageState extends State<UAdminToolBarcodePage> {
     final Uint8List? bytes = await _capture.capture();
     if (mounted) setState(() => _busy = false);
     if (bytes == null) return;
-    await UShare.bytes(bytes: bytes, fileName: "barcode.png", mimeType: "image/png");
+    await UShare.bytes(bytes, name: "barcode.png", mimeType: "image/png");
   }
 
   void _copySvg() {

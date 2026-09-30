@@ -64,22 +64,13 @@ abstract class UFile {
   /// True when [extension] is an image type (jpg, png, …).
   static bool isImageExtension(String? extension) => extension != null && imageExtensions.contains(extension.toLowerCase());
 
-  /// Picks images from the gallery or camera (same as pickImage).
-  static Future<List<UFileData>> showImagePicker({
-    required UImageSource source,
-    bool allowMultiple = false,
-    bool isSelfie = false,
-    UCropOptions? crop,
-    Function(List<UFileData>)? action,
-  }) => pickImage(source: source, selfie: isSelfie, allowMultiple: allowMultiple, crop: crop, action: action);
-
-  /// Picks any files (same as pickFiles).
-  static Future<List<UFileData>> showFilePicker({
-    Function(List<UFileData>)? action,
+  /// Picks one or more files of any type.
+  static Future<List<UFileData>> pickFiles({
+    bool allowMultiple = true,
     FileType fileType = FileType.any,
-    bool allowMultiple = false,
     List<String>? allowedExtensions,
     UCropOptions? crop,
+    Function(List<UFileData>)? action,
   }) async {
     try {
       final FileType type = allowedExtensions != null && allowedExtensions.isNotEmpty ? FileType.custom : (fileType == FileType.custom ? FileType.any : fileType);
@@ -129,7 +120,7 @@ abstract class UFile {
         );
         files = await _applyCrop(await UCamera.open(options: base), crop);
       } else {
-        files = await showFilePicker(fileType: FileType.image, allowMultiple: allowMultiple, crop: crop);
+        files = await pickFiles(fileType: FileType.image, allowMultiple: allowMultiple, crop: crop);
       }
       action?.call(files);
       return files;
@@ -154,15 +145,6 @@ abstract class UFile {
     return file;
   }
 
-  /// Picks one or more files of any type.
-  static Future<List<UFileData>> pickFiles({
-    bool allowMultiple = true,
-    FileType fileType = FileType.any,
-    List<String>? allowedExtensions,
-    UCropOptions? crop,
-    Function(List<UFileData>)? action,
-  }) => showFilePicker(allowMultiple: allowMultiple, fileType: fileType, allowedExtensions: allowedExtensions, crop: crop, action: action);
-
   /// Picks one file of any type.
   static Future<UFileData?> pickFile({
     FileType fileType = FileType.any,
@@ -170,7 +152,7 @@ abstract class UFile {
     UCropOptions? crop,
     Function(UFileData?)? action,
   }) async {
-    final List<UFileData> files = await showFilePicker(fileType: fileType, allowedExtensions: allowedExtensions, crop: crop);
+    final List<UFileData> files = await pickFiles(allowMultiple: false, fileType: fileType, allowedExtensions: allowedExtensions, crop: crop);
     final UFileData? file = files.isEmpty ? null : files.first;
     action?.call(file);
     return file;
@@ -212,7 +194,7 @@ abstract class UFile {
     Function(UFileData?)? action,
   }) async {
     if (source == UImageSource.camera) return recordVideo(options: options, action: action);
-    final List<UFileData> files = await showFilePicker(fileType: FileType.video);
+    final List<UFileData> files = await pickFiles(allowMultiple: false, fileType: FileType.video);
     final UFileData? file = files.isEmpty ? null : files.first;
     action?.call(file);
     return file;

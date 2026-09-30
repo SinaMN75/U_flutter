@@ -7,7 +7,7 @@ import "package:u/plugins/files/u_files_channel.dart";
 import "package:u/plugins/files/u_crypto_stream.dart";
 import "package:u/plugins/files/u_download_platform.dart";
 import "package:u/plugins/files/u_storage_backend.dart";
-import "package:url_launcher/url_launcher.dart";
+import "package:u/plugins/launch/u_launch_channel.dart";
 
 bool get isWeb => false;
 
@@ -130,7 +130,7 @@ Future<String?> saveAs(UStorageBackend backend, String sourcePath, String fileNa
 
 Future<bool> open(String pathOrUri, {String? mimeType}) async {
   if (await UFilesChannel.open(pathOrUri, mimeType: mimeType)) return true;
-  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) return launchUrl(Uri.file(pathOrUri));
+  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) return ULaunchChannel.open(Uri.file(pathOrUri).toString());
   return false;
 }
 

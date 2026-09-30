@@ -54,14 +54,14 @@ class _ArPageState extends State<ArPage> {
   ];
 
   Future<void> _places() async {
-    final Position? found;
+    final UPosition? found;
     try {
-      found = await ULocation.getUserLocation();
+      found = await ULocation.position();
     } catch (error) {
       UToast.error(message: "$error");
       return;
     }
-    final Position? here = found;
+    final UPosition? here = found;
     if (here == null) {
       UToast.error(message: "Turn on location and allow access to see places around you.");
       return;

@@ -8,6 +8,9 @@
 
 #include "camera/u_camera.h"
 #include "device/u_device.h"
+#include "launch/u_launch.h"
+#include "location/u_location.h"
+#include "notification/u_notification.h"
 #include "files/u_files.h"
 #include "media/u_media.h"
 #include "u_plugin_private.h"
@@ -80,6 +83,9 @@ void u_plugin_register_with_registrar(FlPluginRegistrar* registrar) {
   u_camera_register(registrar);
   u_files_register(registrar);
   u_device_register(registrar);
+  u_launch_register(registrar);
+  u_location_register(registrar);
+  u_notification_register(registrar);
 
   g_object_unref(plugin);
 }

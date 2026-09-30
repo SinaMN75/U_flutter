@@ -1,7 +1,11 @@
 #include "u_plugin.h"
 
 #include "camera/u_camera.h"
+#include "common/u_platform.h"
 #include "device/u_device.h"
+#include "launch/u_launch.h"
+#include "location/u_location.h"
+#include "notification/u_notification.h"
 #include "files/u_files.h"
 #include "media/u_media.h"
 #include "screen_guard/screen_guard.h"
@@ -44,6 +48,14 @@ void UPlugin::RegisterWithRegistrar(
   UCamera::RegisterWithRegistrar(registrar);
   UFiles::RegisterWithRegistrar(registrar);
   UDevice::RegisterWithRegistrar(registrar);
+
+  // Dialogs (share sheet, mail compose) need the app's top-level window as their owner.
+  platform::Initialize();
+  if (registrar->GetView() != nullptr) platform::SetOwnerWindow(registrar->GetView()->GetNativeWindow());
+  RegisterLaunch(registrar);
+  RegisterShare(registrar);
+  RegisterLocation(registrar);
+  RegisterNotification(registrar);
 }
 
 UPlugin::UPlugin() {}

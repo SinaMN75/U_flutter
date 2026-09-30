@@ -4,6 +4,10 @@ import com.sinamn75.u.ar.UArHandler
 import com.sinamn75.u.camera.UCameraHandler
 import com.sinamn75.u.device.UDeviceHandler
 import com.sinamn75.u.files.UFilesHandler
+import com.sinamn75.u.launch.ULaunchHandler
+import com.sinamn75.u.location.ULocationHandler
+import com.sinamn75.u.notification.UNotificationHandler
+import com.sinamn75.u.share.UShareHandler
 import com.sinamn75.u.media.UMediaHandler
 import com.sinamn75.u.media.UMediaSessionHandler
 import com.sinamn75.u.screenguard.ScreenGuardHandler
@@ -31,6 +35,10 @@ class UPlugin :
     private var ar: UArHandler? = null
     private var files: UFilesHandler? = null
     private var device: UDeviceHandler? = null
+    private var launch: ULaunchHandler? = null
+    private var share: UShareHandler? = null
+    private var location: ULocationHandler? = null
+    private var notify: UNotificationHandler? = null
     private var activityBinding: ActivityPluginBinding? = null
     private val userLeaveHint = PluginRegistry.UserLeaveHintListener { media?.onUserLeaveHint() }
 
@@ -59,6 +67,10 @@ class UPlugin :
             )
         files = UFilesHandler(flutterPluginBinding.applicationContext, flutterPluginBinding.binaryMessenger)
         device = UDeviceHandler(flutterPluginBinding.applicationContext, flutterPluginBinding.binaryMessenger)
+        launch = ULaunchHandler(flutterPluginBinding.applicationContext, flutterPluginBinding.binaryMessenger)
+        share = UShareHandler(flutterPluginBinding.applicationContext, flutterPluginBinding.binaryMessenger)
+        location = ULocationHandler(flutterPluginBinding.applicationContext, flutterPluginBinding.binaryMessenger)
+        notify = UNotificationHandler(flutterPluginBinding.applicationContext, flutterPluginBinding.binaryMessenger)
     }
 
     override fun onMethodCall(
@@ -88,10 +100,22 @@ class UPlugin :
         files = null
         device?.dispose()
         device = null
+        launch?.dispose()
+        launch = null
+        share?.dispose()
+        share = null
+        location?.dispose()
+        location = null
+        notify?.dispose()
+        notify = null
     }
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
         attachLeaveHint(binding)
+        launch?.attach(binding)
+        share?.attach(binding)
+        location?.attach(binding)
+        notify?.attach(binding)
         screenGuard?.setActivity(binding.activity)
         media?.setActivity(binding.activity)
         camera?.setActivity(binding.activity)
@@ -107,6 +131,10 @@ class UPlugin :
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
         attachLeaveHint(binding)
+        launch?.attach(binding)
+        share?.attach(binding)
+        location?.attach(binding)
+        notify?.attach(binding)
         screenGuard?.setActivity(binding.activity)
         media?.setActivity(binding.activity)
         camera?.setActivity(binding.activity)
@@ -127,6 +155,10 @@ class UPlugin :
     }
 
     private fun detachLeaveHint() {
+        launch?.detach()
+        share?.detach()
+        location?.detach()
+        notify?.detach()
         activityBinding?.removeOnUserLeaveHintListener(userLeaveHint)
         activityBinding = null
     }

@@ -136,7 +136,7 @@ class _UPdfPageManagerPanelState extends State<UPdfPageManagerPanel> {
       UToast.errorToast(message: U.s.couldNotOpenTheDocument);
       return;
     }
-    await UShare.bytes(bytes: bytes, fileName: suggested, mimeType: "application/pdf");
+    await UShare.bytes(bytes, name: suggested, mimeType: "application/pdf");
   }
 
   @override
@@ -396,7 +396,7 @@ class _UPdfDocumentToolsPanelState extends State<UPdfDocumentToolsPanel> {
               if (edit == null) return;
               final Uint8List? bytes = await edit.composeCurrent();
               if (bytes == null) return;
-              await UShare.bytes(bytes: bytes, fileName: "optimized.pdf", mimeType: "application/pdf");
+              await UShare.bytes(bytes, name: "optimized.pdf", mimeType: "application/pdf");
             }),
           ),
         ),
@@ -409,7 +409,7 @@ class _UPdfDocumentToolsPanelState extends State<UPdfDocumentToolsPanel> {
               if (document == null) return;
               final Uint8List? bytes = await UPdfOps.nUp(document);
               if (bytes == null) return;
-              await UShare.bytes(bytes: bytes, fileName: "nup.pdf", mimeType: "application/pdf");
+              await UShare.bytes(bytes, name: "nup.pdf", mimeType: "application/pdf");
             }),
           ),
         ),

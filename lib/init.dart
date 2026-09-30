@@ -104,6 +104,8 @@ Future<void> initU({
     UPackage.init(),
     UConnectivity.init(),
   ]);
+  // Needs the package name (Windows app id), so after UPackage.
+  await UNotification.init();
   ULoading.initialize(key: navigatorKey, settings: loadingSettings);
   UWebUpdate.startWatching(silent: true);
 }

@@ -140,7 +140,7 @@ class UDownloadManager extends ChangeNotifier {
   bool _wifi = true;
   bool _awake = false;
   bool _polling = false;
-  FlutterLocalNotificationsPlugin? _notifications;
+  StreamSubscription<UNotificationEvent>? _notificationTaps;
 
   /// Visible tasks, newest first.
   List<UDownloadTask> get tasks => List<UDownloadTask>.unmodifiable(_tasks.where((UDownloadTask t) => t.request.visible).toList().reversed);
@@ -447,7 +447,7 @@ class UDownloadManager extends ChangeNotifier {
   Future<void> share(UDownloadTask task) async {
     final String? path = await _plainLocation(task);
     if (path == null) return;
-    await UShare.file(path: path, fileName: task.fileName);
+    await UShare.file(path, name: task.fileName);
   }
 
   /// A readable location for a finished task. Vault files are decrypted to a temp file first.
@@ -920,30 +920,22 @@ class UDownloadManager extends ChangeNotifier {
   Future<void> _notifyDone(UDownloadTask task) async {
     if (UDownloadPlatform.isWeb) return;
     try {
-      FlutterLocalNotificationsPlugin? plugin = _notifications;
-      if (plugin == null) {
-        plugin = FlutterLocalNotificationsPlugin();
-        await plugin.initialize(
-          settings: InitializationSettings(
-            android: AndroidInitializationSettings(config.notificationIcon),
-            iOS: const DarwinInitializationSettings(),
-            macOS: const DarwinInitializationSettings(),
-            linux: const LinuxInitializationSettings(defaultActionName: "Open"),
-          ),
-          onDidReceiveNotificationResponse: (NotificationResponse response) {
-            final UDownloadTask? tapped = response.payload == null ? null : this.task(response.payload!);
-            if (tapped != null) unawaited(open(tapped));
-          },
-        );
-        _notifications = plugin;
-      }
-      await plugin.show(
-        id: task.id.hashCode & 0x7FFFFFFF,
-        title: task.displayName,
-        body: _formatBytes(max(0, task.total)),
-        payload: task.id,
-        notificationDetails: const NotificationDetails(
-          android: AndroidNotificationDetails("u_downloads_done", "Downloads"),
+      await UNotifyChannel.init(androidIcon: config.notificationIcon);
+      // Tapping the notification opens the file.
+      _notificationTaps ??= UNotifyChannel.events.listen((UNotificationEvent event) {
+        final Object? id = event.payload?["u_download"];
+        final UDownloadTask? tapped = id == null ? null : this.task("$id");
+        if (event.type == UNotificationEventType.tap && tapped != null) unawaited(open(tapped));
+      });
+      await UNotifyChannel.show(
+        UNotificationRequest(
+          id: task.id.hashCode & 0x7FFFFFFF,
+          title: task.displayName,
+          body: _formatBytes(max(0, task.total)),
+          payload: <String, Object?>{"u_download": task.id},
+          channelId: "u_downloads_done",
+          importance: UNotificationImportance.normal,
+          group: "u_downloads",
         ),
       );
     } catch (e) {
@@ -957,6 +949,7 @@ class UDownloadManager extends ChangeNotifier {
       runner.stop(_StopReason.pause);
     }
     unawaited(_connectivity?.cancel());
+    unawaited(_notificationTaps?.cancel());
     _ticker?.cancel();
     _saveTimer?.cancel();
     for (final Timer timer in _scheduled.values) {

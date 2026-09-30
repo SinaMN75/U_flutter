@@ -18,14 +18,6 @@ abstract class ULocalStorage {
     unawaited(_storeFor(key).set(key, stored, ttl: expireTime));
   }
 
-  /// Saves many values at once.
-  static Future<void> setBatch(Map<String, dynamic> keyValuePairs) async {
-    for (final MapEntry<String, dynamic> entry in keyValuePairs.entries) {
-      set(entry.key, entry.value);
-    }
-    await UStorage.flushAll();
-  }
-
   /// Reads an int.
   static int? getInt(String key) => _storeFor(key).get<int>(key);
 
@@ -110,9 +102,6 @@ abstract class ULocalStorage {
 
   /// All saved keys and values.
   static Map<String, dynamic> getAll() => <String, dynamic>{...UStorage.instance.toMap(), ...UStorage.secure.toMap()};
-
-  /// Reads any value, or null if missing or expired.
-  static dynamic getIfNotExpired(String key) => _storeFor(key).get<Object>(key);
 
   // --- UStorage, one wrapper each ------------------------------------------------------------
 

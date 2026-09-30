@@ -30,6 +30,15 @@ list(APPEND PLUGIN_SOURCES
   "files/u_files.h"
   "device/u_device.cpp"
   "device/u_device.h"
+  "common/u_platform.cpp"
+  "common/u_platform.h"
+  "launch/u_launch.cpp"
+  "launch/u_share.cpp"
+  "launch/u_launch.h"
+  "location/u_location.cpp"
+  "location/u_location.h"
+  "notification/u_notification.cpp"
+  "notification/u_notification.h"
 )
 
 # Define the plugin library target. Its name must not be changed (see comment
@@ -61,6 +70,8 @@ target_link_libraries(${PLUGIN_NAME} PRIVATE mf mfplat mfuuid mfreadwrite d3d11 
 target_link_libraries(${PLUGIN_NAME} PRIVATE ole32 shell32 advapi32 uuid)
 # u/device: IP Helper change notifications, sockets for GetBestInterfaceEx, version resources.
 target_link_libraries(${PLUGIN_NAME} PRIVATE iphlpapi ws2_32 version)
+# u/notify: shortcut properties (propsys), taskbar badge drawing (gdi32 / user32).
+target_link_libraries(${PLUGIN_NAME} PRIVATE propsys gdi32 user32)
 
 # List of absolute paths to libraries that should be bundled with the plugin.
 # This list could contain prebuilt libraries, or libraries created by an

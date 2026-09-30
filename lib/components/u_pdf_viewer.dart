@@ -1161,7 +1161,7 @@ class UPdfViewerState extends State<UPdfViewer> {
     } else {
       final Uint8List? bytes = await target.saveToBytes();
       if (bytes != null) {
-        await UShare.bytes(bytes: bytes, fileName: "document.pdf", mimeType: "application/pdf");
+        await UShare.bytes(bytes, name: "document.pdf", mimeType: "application/pdf");
         saved = true;
       }
     }
@@ -1206,7 +1206,7 @@ class UPdfViewerState extends State<UPdfViewer> {
         _openSidebar(_UPdfSidebarTab.bookmarks);
         break;
       case "exportNotes":
-        await UShare.text(text: _markup.toMarkdown(title: _title));
+        await UShare.text(_markup.toMarkdown(title: _title));
         break;
       case "exportData":
         await UClipboard.set(_markup.export());
@@ -1747,7 +1747,7 @@ class UPdfViewerState extends State<UPdfViewer> {
           onColor: (Color color) => _markup.color = color,
           onMarkup: (UDocMarkupKind kind) => unawaited(_applyMarkup(kind)),
           onCopy: widget.allowCopy ? () => unawaited(_copySelection()) : null,
-          onShare: widget.allowCopy && widget.allowShare ? () => unawaited(UShare.text(text: _selection.text)) : null,
+          onShare: widget.allowCopy && widget.allowShare ? () => unawaited(UShare.text(_selection.text)) : null,
           onSearch: () {
             final String query = _selection.text;
             _clearSelection();

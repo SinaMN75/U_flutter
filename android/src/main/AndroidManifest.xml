@@ -8,9 +8,42 @@
   <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
   <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
   <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" />
   <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" android:minSdkVersion="33" />
   <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" android:minSdkVersion="33" />
+
+  <!-- Android 11+ package visibility: exactly what ULaunch / UShare check, no QUERY_ALL_PACKAGES. -->
+  <queries>
+    <intent><action android:name="android.intent.action.VIEW" /><data android:scheme="http" /></intent>
+    <intent><action android:name="android.intent.action.VIEW" /><data android:scheme="https" /></intent>
+    <intent><action android:name="android.intent.action.VIEW" /><data android:scheme="tel" /></intent>
+    <intent><action android:name="android.intent.action.VIEW" /><data android:scheme="geo" /></intent>
+    <intent><action android:name="android.intent.action.VIEW" /><data android:scheme="market" /></intent>
+    <intent><action android:name="android.intent.action.SENDTO" /><data android:scheme="mailto" /></intent>
+    <intent><action android:name="android.intent.action.SENDTO" /><data android:scheme="smsto" /></intent>
+    <intent><action android:name="android.intent.action.SEND" /><data android:mimeType="*/*" /></intent>
+    <intent><action android:name="android.support.customtabs.action.CustomTabsService" /></intent>
+    <package android:name="com.whatsapp" />
+    <package android:name="com.whatsapp.w4b" />
+    <package android:name="org.telegram.messenger" />
+    <package android:name="org.thunderdog.challegram" />
+    <package android:name="ir.eitaa.messenger" />
+    <package android:name="ir.resaneh1.iptv" />
+    <package android:name="ir.nasim" />
+    <package android:name="mobi.mmdt.ottplus" />
+    <package android:name="com.instagram.android" />
+    <package android:name="com.twitter.android" />
+    <package android:name="com.google.android.apps.maps" />
+    <package android:name="com.waze" />
+    <package android:name="org.rajman.neshan.traffic.tehran" />
+    <package android:name="ir.balad" />
+    <package android:name="com.farsitel.bazaar" />
+    <package android:name="ir.mservices.market" />
+    <package android:name="com.android.vending" />
+    <package android:name="com.sec.android.app.samsungapps" />
+    <package android:name="com.huawei.appmarket" />
+  </queries>
 
   <application>
     <meta-data
@@ -28,6 +61,23 @@
       android:name="com.sinamn75.u.files.UDownloadService"
       android:exported="false"
       android:foregroundServiceType="dataSync" />
+    <receiver
+      android:name="com.sinamn75.u.location.UGeofenceReceiver"
+      android:exported="false" />
+    <receiver
+      android:name="com.sinamn75.u.notification.UNotificationReceiver"
+      android:exported="false" />
+    <receiver
+      android:name="com.sinamn75.u.notification.UBootReceiver"
+      android:exported="false">
+      <intent-filter>
+        <action android:name="android.intent.action.BOOT_COMPLETED" />
+        <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+        <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+        <action android:name="android.intent.action.TIME_SET" />
+        <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+      </intent-filter>
+    </receiver>
     <provider
       android:name="androidx.core.content.FileProvider"
       android:authorities="${applicationId}.u.fileprovider"

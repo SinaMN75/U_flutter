@@ -27,19 +27,11 @@ import android.os.SystemClock
 import android.provider.Settings
 import android.telephony.TelephonyManager
 import android.text.format.DateFormat
-import android.util.Base64
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
-import org.json.JSONArray
-import java.io.ByteArrayInputStream
 import java.io.File
-import java.io.IOException
-import java.io.InputStream
-import java.io.ObjectInputStream
-import java.io.ObjectStreamClass
-import java.math.BigInteger
 import java.net.InetSocketAddress
 import java.net.Socket
 import java.security.MessageDigest
@@ -48,7 +40,7 @@ import java.util.TimeZone
 import java.util.concurrent.Executors
 
 /**
- * Native side of UDevice, UPackage, UConnectivity and the UStorage migration ("u/device").
+ * Native side of UDevice, UPackage and UConnectivity ("u/device").
  *
  * Everything that touches the disk or PackageManager runs on one background thread and replies
  * on the main thread. Network changes come from a default-network callback, so the Dart side
@@ -90,8 +82,6 @@ class UDeviceHandler(
             "network" -> result.success(network())
             "status" -> background(result) { status() }
             "integrity" -> background(result) { integrity() }
-            "legacyPrefs" -> background(result) { UDeviceLegacyPrefs.read(context) }
-            "clearLegacyPrefs" -> background(result) { UDeviceLegacyPrefs.clear(context) }
             else -> result.notImplemented()
         }
     }
@@ -534,61 +524,5 @@ class UDeviceHandler(
                 "/data/local/xbin/su",
                 "/vendor/bin/su",
             )
-    }
-}
-
-/** Reads and deletes what shared_preferences stored in FlutterSharedPreferences.xml. */
-internal object UDeviceLegacyPrefs {
-    private const val NAME = "FlutterSharedPreferences"
-    private const val LIST_PREFIX = "VGhpcyBpcyB0aGUgcHJlZml4IGZvciBhIGxpc3Qu"
-    private const val JSON_LIST_PREFIX = "$LIST_PREFIX!"
-    private const val BIG_INTEGER_PREFIX = "VGhpcyBpcyB0aGUgcHJlZml4IGZvciBCaWdJbnRlZ2Vy"
-    private const val DOUBLE_PREFIX = "VGhpcyBpcyB0aGUgcHJlZml4IGZvciBEb3VibGUu"
-
-    fun read(context: Context): Map<String, Any?> {
-        val out = mutableMapOf<String, Any?>()
-        for ((key, value) in context.getSharedPreferences(NAME, Context.MODE_PRIVATE).all) {
-            try {
-                out[key] = decode(value) ?: continue
-            } catch (_: Exception) {
-                // One unreadable value must not block migrating the rest.
-            }
-        }
-        return out
-    }
-
-    fun clear(context: Context): Boolean {
-        context.getSharedPreferences(NAME, Context.MODE_PRIVATE).edit().clear().commit()
-        return context.deleteSharedPreferences(NAME)
-    }
-
-    private fun decode(value: Any?): Any? =
-        when (value) {
-            is String ->
-                when {
-                    value.startsWith(JSON_LIST_PREFIX) -> JSONArray(value.substring(JSON_LIST_PREFIX.length)).let { a -> (0 until a.length()).map { a.getString(it) } }
-                    value.startsWith(LIST_PREFIX) -> decodeSerializedList(value.substring(LIST_PREFIX.length))
-                    value.startsWith(BIG_INTEGER_PREFIX) -> BigInteger(value.substring(BIG_INTEGER_PREFIX.length), Character.MAX_RADIX).let { if (it.bitLength() < 64) it.toLong() else it.toString() }
-                    value.startsWith(DOUBLE_PREFIX) -> value.substring(DOUBLE_PREFIX.length).toDouble()
-                    else -> value
-                }
-            is Set<*> -> value.map { "$it" }
-            is Float -> value.toDouble()
-            is Int -> value.toLong()
-            else -> value
-        }
-
-    private fun decodeSerializedList(encoded: String): List<String> {
-        val stream = StringListObjectInputStream(ByteArrayInputStream(Base64.decode(encoded, 0)))
-        return stream.use { (it.readObject() as List<*>).map { e -> "$e" } }
-    }
-
-    /** Only string lists may be deserialized, so a tampered prefs file cannot instantiate arbitrary classes. */
-    private class StringListObjectInputStream(input: InputStream) : ObjectInputStream(input) {
-        override fun resolveClass(desc: ObjectStreamClass?): Class<*>? {
-            val allowed = setOf("java.util.Arrays\$ArrayList", "java.util.ArrayList", "java.lang.String", "[Ljava.lang.String;")
-            if (desc != null && desc.name !in allowed) throw IOException("Refusing to deserialize ${desc.name}")
-            return super.resolveClass(desc)
-        }
     }
 }

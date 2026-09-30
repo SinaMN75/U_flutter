@@ -112,9 +112,6 @@ abstract class UApp {
     return UWebBridge.isEmbedded();
   }
 
-  /// Loads device info (initU() already does this).
-  static Future<void> initDeviceInfo() => UDevice.init();
-
   // --- UDevice, one wrapper each ------------------------------------------------------------
   // Prefixed with "device" / "os" where UApp already uses the plain name for something else
   // (name = app name, isTablet() = screen size, isDesktop = platform).

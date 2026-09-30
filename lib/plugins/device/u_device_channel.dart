@@ -29,11 +29,6 @@ abstract final class UDeviceChannel {
 
   static Future<Map<String, Object?>?> network() => _map("network");
 
-  /// Values `shared_preferences` left in the platform store (keys still carry the `flutter.` prefix).
-  static Future<Map<String, Object?>?> legacyPrefs() => _map("legacyPrefs");
-
-  static Future<void> clearLegacyPrefs() => _call<void>("clearLegacyPrefs");
-
   /// Network snapshots pushed by the OS whenever the default route or its capabilities change.
   static Stream<Map<String, Object?>> networkEvents() => _network.receiveBroadcastStream().map((dynamic event) => asStringMap(event) ?? <String, Object?>{});
 

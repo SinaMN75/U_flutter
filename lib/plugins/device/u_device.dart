@@ -289,7 +289,7 @@ abstract final class UDevice {
   /// A stable identifier for this install of the app on this device:
   ///   * Android — `Settings.Secure.ANDROID_ID` (per signing key and user; survives reinstall).
   ///   * iOS — `identifierForVendor`, pinned in the Keychain so it also survives reinstall.
-  ///   * macOS — IOPlatformUUID; Windows — SQMClient MachineId (MachineGuid fallback); Linux — /etc/machine-id.
+  ///   * macOS — IOPlatformUUID; Windows — MachineGuid; Linux — /etc/machine-id.
   ///   * Web — a random UUID kept in encrypted IndexedDB, per browser profile and origin.
   static String get id => info.id;
 

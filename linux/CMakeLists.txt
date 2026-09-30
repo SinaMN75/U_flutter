@@ -18,6 +18,9 @@ list(APPEND PLUGIN_SOURCES
   "camera/u_camera.cc"
   "files/u_files.cc"
   "device/u_device.cc"
+  "launch/u_launch.cc"
+  "location/u_location.cc"
+  "notification/u_notification.cc"
 )
 
 pkg_check_modules(GSTREAMER IMPORTED_TARGET gstreamer-1.0 gstreamer-app-1.0 gstreamer-video-1.0)

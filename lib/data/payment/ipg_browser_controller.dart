@@ -17,7 +17,7 @@ class UIpgBrowserController {
   late final AppLifecycleListener _lifecycle;
   late final Timer _poll;
 
-  Future<void> open() => launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication, webOnlyWindowName: "_blank");
+  Future<void> open() => ULaunch.external(url);
 
   Future<void> check({bool showPending = false}) async {
     if (finished || _checking) return;

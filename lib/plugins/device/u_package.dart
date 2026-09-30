@@ -16,10 +16,6 @@ import "package:u/plugins/web/u_web_native.dart" if (dart.library.js_interop) "p
 //   UPackage.isFirstLaunch / .justUpdated / .previousVersion / .launchCount
 //   UPackage.installer                         // play, appStore, testFlight, bazaar, myket, sideload, …
 //   UPackage.signatureSha256                   // detect re-signed (tampered) Android builds
-//
-// Field names of [UPackageInfo] match package_info_plus (appName, packageName, version,
-// buildNumber, installerStore, installTime, updateTime, buildSignature), so code that
-// used `UApp.packageInfo.version` keeps compiling.
 // =============================================================================
 
 enum UInstaller { playStore, appStore, testFlight, bazaar, myket, galaxyStore, huaweiAppGallery, amazon, microsoftStore, macAppStore, sideload, debug, web, unknown }
@@ -84,9 +80,6 @@ class UPackageInfo {
   final bool isTestFlight;
 
   final String? executablePath;
-
-  /// package_info_plus name for [signatureSha256].
-  String get buildSignature => signatureSha256 ?? "";
 
   String get fullVersion => buildNumber.isEmpty || buildNumber == "0" ? version : "$version+$buildNumber";
 

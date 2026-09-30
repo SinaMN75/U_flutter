@@ -6,7 +6,7 @@
 	<array/>
 	<key>NSPrivacyAccessedAPITypes</key>
 	<array>
-		<!-- UStorage reads (once) and deletes the values shared_preferences left in this app's own defaults. -->
+		<!-- UFiles keeps its own background-download bookkeeping in this app's defaults. -->
 		<dict>
 			<key>NSPrivacyAccessedAPIType</key>
 			<string>NSPrivacyAccessedAPICategoryUserDefaults</string>

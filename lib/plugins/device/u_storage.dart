@@ -4,7 +4,6 @@ import "dart:typed_data";
 
 import "package:flutter/foundation.dart";
 import "package:flutter/widgets.dart";
-import "package:u/plugins/device/u_storage_legacy.dart";
 import "package:u/plugins/files/u_storage_backend.dart";
 import "package:u/plugins/files/u_vault.dart";
 import "package:u/utils/u_constants.dart";
@@ -32,8 +31,6 @@ import "package:u/utils/u_constants.dart";
 //     and any object with toJson().
 //   * Secure stores are sealed with ChaCha20-Poly1305 (AES-GCM on web) under a
 //     master key held by the platform key store — one key-store access per launch.
-//   * First launch after upgrading imports everything shared_preferences had saved,
-//     moves the auth token into the secure store and deletes the old copy.
 // =============================================================================
 
 /// A change in a store. [value] is null when the key was removed, expired or cleared.
@@ -58,17 +55,15 @@ abstract final class UStorage {
   static Future<void>? _init;
   static AppLifecycleListener? _lifecycle;
 
-  /// Keys that `ULocalStorage` routes to [secure] and that migration moves there.
+  /// Keys that `ULocalStorage` always keeps in [secure] (auth tokens).
   static Set<String> get secureKeys => <String>{UConstants.token, UConstants.refreshToken, UConstants.refreshTokenExpiresAt};
 
-  /// Opens the default and the secure store and imports legacy shared_preferences data once.
+  /// Opens the default and the secure store.
   /// Idempotent and cheap to call again; `initU()` calls it for you.
   static Future<void> init() => _init ??= _initialize();
 
   static Future<void> _initialize() async {
-    final bool firstRun = !await UStore._exists(defaultStoreName, secure: false);
     await Future.wait(<Future<UStore>>[open(defaultStoreName), open(secureStoreName, secure: true)]);
-    if (firstRun) await _migrateLegacy();
     _lifecycle ??= AppLifecycleListener(
       onStateChange: (AppLifecycleState state) {
         if (state != AppLifecycleState.resumed) unawaited(flushAll());
@@ -159,54 +154,6 @@ abstract final class UStorage {
 
   static Stream<UStorageChange> get changes => instance.changes;
 
-  // --- migration ------------------------------------------------------------
-
-  static Future<void> _migrateLegacy() async {
-    final Map<String, Object?> legacy;
-    try {
-      legacy = await UStorageLegacy.read();
-    } catch (e) {
-      debugPrint("UStorage: could not read legacy shared_preferences ($e).");
-      return;
-    }
-    final int now = DateTime.now().millisecondsSinceEpoch;
-    final Set<String> secretKeys = secureKeys;
-    int moved = 0;
-    for (final MapEntry<String, Object?> entry in legacy.entries) {
-      final String key = entry.key;
-      final Object? value = entry.value;
-      if (key.startsWith("_expiry_") || value == null) continue;
-      final int? expiresAt = switch (legacy["_expiry_$key"]) {
-        final num n => n.toInt(),
-        _ => null,
-      };
-      if (expiresAt != null && expiresAt <= now) continue;
-      final UStore target = secretKeys.contains(key) ? secure : instance;
-      try {
-        target._put(key, value, expiresAt, notify: false);
-        moved++;
-      } catch (e) {
-        debugPrint("UStorage: skipped legacy key '$key' ($e).");
-      }
-    }
-    try {
-      // Secure first: the default file doubles as the "migration done" marker, so if anything
-      // fails before it exists, the next launch simply migrates again.
-      await secure._writeOrThrow();
-      await instance._writeOrThrow();
-    } catch (e) {
-      debugPrint("UStorage: migration could not be saved, will retry next launch ($e).");
-      return;
-    }
-    if (legacy.isEmpty) return;
-    // Only now that both stores are durably on disk: drop the plaintext copy (it held the token).
-    try {
-      await UStorageLegacy.clear();
-    } catch (e) {
-      debugPrint("UStorage: could not clear legacy shared_preferences ($e).");
-    }
-    debugPrint("UStorage: imported $moved value(s) from shared_preferences.");
-  }
 }
 
 /// One key/value store. Obtain with [UStorage.instance], [UStorage.secure] or [UStorage.open].
@@ -402,23 +349,6 @@ class UStore {
     return _flushNow();
   }
 
-  // Writes the whole store now, even when nothing changed, and reports failure to the caller
-  // (normal writes only log). Used by migration, which must not delete the source on failure.
-  Future<void> _writeOrThrow() async {
-    _timer?.cancel();
-    _timer = null;
-    while (_writing != null) {
-      await _writing;
-    }
-    final Completer<void>? pending = _pending;
-    _pending = null;
-    try {
-      await _write();
-    } finally {
-      pending?.complete();
-    }
-  }
-
   Future<void> _schedule() {
     final Completer<void> pending = _pending ??= Completer<void>();
     _timer ??= Timer(Duration.zero, _flushNow);
@@ -471,8 +401,6 @@ class UStore {
     final String safe = name.replaceAll(RegExp("[^A-Za-z0-9_.-]"), "_");
     return uJoinPath(uJoinPath(await UStorageBackend.instance.root(UStorageBucket.support), "u_store"), "$safe.${secure ? "sec" : "json"}");
   }
-
-  static Future<bool> _exists(String name, {required bool secure}) async => UStorageBackend.instance.exists(await _pathOf(name, secure: secure));
 
   static Future<UStore> _load(String name, {required bool secure}) async {
     final String path = await _pathOf(name, secure: secure);

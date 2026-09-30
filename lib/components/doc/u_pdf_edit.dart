@@ -2154,7 +2154,7 @@ abstract class UPdfExport {
   static Future<bool> sharePrintable(UPdfController controller, {List<int>? pages, double dpi = 150, String fileName = "print.pdf"}) async {
     final Uint8List? bytes = await printablePdf(controller, pages: pages, dpi: dpi);
     if (bytes == null) return false;
-    await UShare.bytes(bytes: bytes, fileName: fileName, mimeType: "application/pdf");
+    await UShare.bytes(bytes, name: fileName, mimeType: "application/pdf");
     return true;
   }
 
@@ -2162,7 +2162,7 @@ abstract class UPdfExport {
     final List<Uint8List> images = await pageImages(controller, pages: pages, dpi: dpi);
     if (images.isEmpty) return false;
     if (images.length == 1) {
-      await UShare.bytes(bytes: images.first, fileName: "page.png", mimeType: "image/png");
+      await UShare.bytes(images.first, name: "page.png", mimeType: "image/png");
       return true;
     }
     if (kIsWeb) return false;
@@ -2173,7 +2173,7 @@ abstract class UPdfExport {
       await file.writeAsBytes(images[i], flush: true);
       paths.add(file.path);
     }
-    await UShare.files(paths: paths);
+    await UShare.files(paths);
     return true;
   }
 }

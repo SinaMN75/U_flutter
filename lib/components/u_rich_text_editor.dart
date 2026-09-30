@@ -2213,7 +2213,8 @@ class _URichTextEditorState extends State<URichTextEditor> {
   }
 
   Future<void> _insertImage() async {
-    await UFile.showFilePicker(
+    await UFile.pickFiles(
+      allowMultiple: false,
       allowedExtensions: const <String>["jpg", "jpeg", "png", "gif", "webp"],
       action: (List<UFileData> files) async {
         if (files.isEmpty) return;

@@ -466,7 +466,6 @@ void HandleMethodCall(FlMethodChannel*, FlMethodCall* call, gpointer) {
     response = FL_METHOD_RESPONSE(fl_method_success_response_new(result));
     fl_value_unref(result);
   } else {
-    // legacyPrefs lives in a JSON file on Linux; Dart reads it directly.
     response = FL_METHOD_RESPONSE(fl_method_not_implemented_response_new());
   }
   fl_method_call_respond(call, response, nullptr);

@@ -15,7 +15,7 @@ import Foundation
 import MachO
 import Network
 
-/// Native side of UDevice, UPackage, UConnectivity and the UStorage migration ("u/device").
+/// Native side of UDevice, UPackage and UConnectivity ("u/device").
 ///
 /// One NWPathMonitor runs for the plugin's lifetime on its own queue, so a network snapshot is
 /// always a property read. Everything else is cheap sysctl / Bundle / FileManager reads.
@@ -62,18 +62,6 @@ final class UDeviceHandler: NSObject, FlutterStreamHandler {
                 let value = self.integrity()
                 DispatchQueue.main.async { result(value) }
             }
-        case "legacyPrefs":
-            let defaults = UserDefaults.standard.dictionaryRepresentation()
-            var out: [String: Any] = [:]
-            for (key, value) in defaults where key.hasPrefix("flutter.") {
-                if value is String || value is NSNumber || value is [Any] { out[key] = value }
-            }
-            result(out)
-        case "clearLegacyPrefs":
-            for key in UserDefaults.standard.dictionaryRepresentation().keys where key.hasPrefix("flutter.") {
-                UserDefaults.standard.removeObject(forKey: key)
-            }
-            result(true)
         default:
             result(FlutterMethodNotImplemented)
         }

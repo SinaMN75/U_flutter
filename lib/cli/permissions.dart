@@ -12,6 +12,15 @@ class AndroidPermission {
   String get fullName => name.contains(".") ? name : "android.permission.$name";
 }
 
+/// An Android `<service>` a permission needs declared in the app (plugins that ship a service
+/// but must not force its declaration on every app, e.g. background location).
+class AndroidService {
+  const AndroidService(this.name, this.foregroundServiceType);
+
+  final String name;
+  final String foregroundServiceType;
+}
+
 /// One friendly permission and everything it means on each platform.
 class UPermission {
   const UPermission(
@@ -20,6 +29,7 @@ class UPermission {
     this.aliases = const <String>[],
     this.android = const <AndroidPermission>[],
     this.androidFeatures = const <String>[],
+    this.androidServices = const <AndroidService>[],
     this.ios = const <String, String>{},
     this.iosBackgroundModes = const <String>[],
     this.iosFlags = const <String>[],
@@ -36,6 +46,9 @@ class UPermission {
 
   /// `<uses-feature android:required="false">` entries, so the Play Store doesn't filter devices out.
   final List<String> androidFeatures;
+
+  /// `<service>` elements added inside `<application>`.
+  final List<AndroidService> androidServices;
 
   /// iOS Info.plist usage-description keys and their default text.
   final Map<String, String> ios;
@@ -55,7 +68,7 @@ class UPermission {
   final String? note;
 
   bool on(Target t) => switch (t) {
-    Target.android => android.isNotEmpty || androidFeatures.isNotEmpty,
+    Target.android => android.isNotEmpty || androidFeatures.isNotEmpty || androidServices.isNotEmpty,
     Target.ios => ios.isNotEmpty || iosBackgroundModes.isNotEmpty || iosFlags.isNotEmpty,
     Target.macos => macos.isNotEmpty || macEntitlements.isNotEmpty,
     _ => false,
@@ -119,7 +132,13 @@ const List<UPermission> uPermissions = <UPermission>[
     "Location in the background (also adds location)",
     aliases: <String>["background-location"],
     requires: <String>["location"],
-    android: <AndroidPermission>[AndroidPermission("ACCESS_BACKGROUND_LOCATION")],
+    android: <AndroidPermission>[
+      AndroidPermission("ACCESS_BACKGROUND_LOCATION"),
+      AndroidPermission("FOREGROUND_SERVICE"),
+      AndroidPermission("FOREGROUND_SERVICE_LOCATION"),
+    ],
+    // ULocation.stream(background: true) keeps tracking through this foreground service.
+    androidServices: <AndroidService>[AndroidService("com.sinamn75.u.location.ULocationService", "location")],
     ios: <String, String>{"NSLocationAlwaysAndWhenInUseUsageDescription": "This app uses your location in the background to keep tracking your route."},
     iosBackgroundModes: <String>["location"],
     macos: <String, String>{"NSLocationAlwaysAndWhenInUseUsageDescription": "This app uses your location in the background to keep tracking your route."},
@@ -229,6 +248,13 @@ const List<UPermission> uPermissions = <UPermission>[
     "Exact scheduled notifications / alarms that survive reboot",
     aliases: <String>["exact-alarm", "schedule"],
     android: <AndroidPermission>[AndroidPermission("SCHEDULE_EXACT_ALARM"), AndroidPermission("RECEIVE_BOOT_COMPLETED")],
+  ),
+  UPermission(
+    "full-screen",
+    "Full-screen notifications over the lock screen (incoming calls, alarms)",
+    aliases: <String>["full-screen-intent", "call-screen"],
+    android: <AndroidPermission>[AndroidPermission("USE_FULL_SCREEN_INTENT")],
+    note: "Google Play only grants full-screen intents automatically to calling and alarm apps (Android 14+); others must ask the user in settings.",
   ),
   UPermission("vibrate", "Vibrate the device", aliases: <String>["vibration", "haptics"], android: <AndroidPermission>[AndroidPermission("VIBRATE")]),
   UPermission(
@@ -375,8 +401,23 @@ RegExp _usesPermission(String fullName) => RegExp('<uses-permission(?:-sdk-23)?\
 
 RegExp _usesFeature(String name) => RegExp('<uses-feature\\s[^>]*android:name="${RegExp.escape(name)}"[^>]*?(?:/>|>\\s*</uses-feature>)');
 
+RegExp _service(String name) => RegExp('<service\\s[^>]*android:name="${RegExp.escape(name)}"[^>]*?(?:/>|>[\\s\\S]*?</service>)');
+
 bool androidHas(String manifest, UPermission p) =>
-    p.android.every((AndroidPermission a) => _usesPermission(a.fullName).hasMatch(manifest)) && p.androidFeatures.every((String f) => _usesFeature(f).hasMatch(manifest));
+    p.android.every((AndroidPermission a) => _usesPermission(a.fullName).hasMatch(manifest)) &&
+    p.androidFeatures.every((String f) => _usesFeature(f).hasMatch(manifest)) &&
+    p.androidServices.every((AndroidService s) => _service(s.name).hasMatch(manifest));
+
+/// Inserts [line] just before `</application>`, indented like the application's children.
+String _insertInApplication(String text, String line) {
+  final int close = text.lastIndexOf("</application>");
+  final (int, int)? app = Xml.openTag(text, "application");
+  if (close < 0 || app == null) {
+    throw EditSkip("<application> not found");
+  }
+  final int at = lineStart(text, close);
+  return text.replaceRange(at, at, "${indentAt(text, app.$1)}    $line\n");
+}
 
 /// Inserts [line] after the last match of [after] or else before `<application`.
 String _insertManifestLine(String text, String line, List<RegExp> after) {
@@ -412,6 +453,12 @@ String androidAdd(String text, UPermission p) {
     }
     out = _insertManifestLine(out, "<uses-feature android:name=\"$f\" android:required=\"false\" />", <RegExp>[anyFeature, anyPermission]);
   }
+  for (final AndroidService s in p.androidServices) {
+    if (_service(s.name).hasMatch(out)) {
+      continue;
+    }
+    out = _insertInApplication(out, "<service android:name=\"${s.name}\" android:exported=\"false\" android:foregroundServiceType=\"${s.foregroundServiceType}\" />");
+  }
   return out;
 }
 
@@ -432,6 +479,15 @@ String androidRemove(String text, UPermission p, bool Function(Object item) keep
     }
     Match? m;
     while ((m = _usesFeature(f).firstMatch(out)) != null) {
+      out = Xml.removeLine(out, m!);
+    }
+  }
+  for (final AndroidService s in p.androidServices) {
+    if (keep(s.name)) {
+      continue;
+    }
+    Match? m;
+    while ((m = _service(s.name).firstMatch(out)) != null) {
       out = Xml.removeLine(out, m!);
     }
   }

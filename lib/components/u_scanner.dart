@@ -296,7 +296,7 @@ class _UScannerState extends State<UScanner> with SingleTickerProviderStateMixin
   }
 
   Future<void> _scanFromGallery() async {
-    final List<UFileData> files = await UFile.showImagePicker(source: UImageSource.gallery);
+    final List<UFileData> files = await UFile.pickImage();
     if (files.isEmpty) return;
     final List<UCode> codes = await UCameraController.analyzeImage(
       bytes: files.first.bytes,

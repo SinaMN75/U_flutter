@@ -33,7 +33,8 @@ class _UBase64ImagePickerState extends State<UBase64ImagePicker> {
         Stack(
           children: <Widget>[
             UContainer(
-              onTap: () => UFile.showFilePicker(
+              onTap: () => UFile.pickFiles(
+                allowMultiple: false,
                 allowedExtensions: const <String>["jpg", "jpeg", "png", "gif", "webp", "svg"],
                 action: (List<UFileData> files) {
                   if (files.isEmpty || files.first.bytes == null) return;

@@ -709,7 +709,7 @@ void _permissionRemove(Project p, List<UPermission> removing) {
     final bool Function(Object) keep = keeper(
       Target.android,
       (UPermission x) => androidHas(manifest, x),
-      (UPermission x) => <Object>[...x.android.map((AndroidPermission a) => a.fullName), ...x.androidFeatures],
+      (UPermission x) => <Object>[...x.android.map((AndroidPermission a) => a.fullName), ...x.androidFeatures, ...x.androidServices.map((AndroidService s) => s.name)],
     );
     p.edit(AndroidFiles.manifest, (String t) => removing.fold(t, (String acc, UPermission x) => androidRemove(acc, x, keep)), "− ${_names(removing)}");
   });
@@ -903,7 +903,7 @@ void cmdDeepLink(Project p, Args a) {
   }
   if (!remove) {
     Out.line();
-    Out.note("Test: open $scheme://anything on the device. Read it in Dart with the app_links package or Flutter's deep-link routing.");
+    Out.note("Test: open $scheme://anything on the device. Read it in Dart with ULaunch.onLink((Uri link) => ...).");
   }
 }
 
@@ -944,6 +944,176 @@ String _androidRemoveScheme(String t, String scheme) {
   final String next = block.replaceAllMapped(RegExp(r"[ \t]*<intent-filter[^>]*>[\s\S]*?</intent-filter>[ \t]*\n?"), (Match m) => m.group(0)!.contains("android:scheme=\"$scheme\"") ? "" : m.group(0)!);
   return t.replaceRange(act.$1, act.$2, next);
 }
+
+// =============================================================================================
+// share-target
+
+const Map<String, String> _mimeShortcuts = <String, String>{
+  "any": "*/*",
+  "all": "*/*",
+  "image": "image/*",
+  "images": "image/*",
+  "video": "video/*",
+  "videos": "video/*",
+  "audio": "audio/*",
+  "text": "text/*",
+  "pdf": "application/pdf",
+};
+
+const String _shareMarker = "<!-- u:share-target -->";
+const String _documentTypeName = "u share target";
+
+String _utiFor(String mime) => switch (mime) {
+  "image/*" => "public.image",
+  "video/*" => "public.movie",
+  "audio/*" => "public.audio",
+  "text/*" => "public.text",
+  "text/plain" => "public.plain-text",
+  "application/pdf" => "com.adobe.pdf",
+  "image/jpeg" => "public.jpeg",
+  "image/png" => "public.png",
+  _ => "public.data",
+};
+
+void cmdShareTarget(Project p, Args a) {
+  final List<String> pos = a.positional;
+  final bool remove = pos.isNotEmpty && <String>{"remove", "rm", "delete"}.contains(pos.first.toLowerCase());
+  final List<String> rest = pos.isNotEmpty && <String>{"add", "remove", "rm", "delete"}.contains(pos.first.toLowerCase()) ? pos.skip(1).toList() : pos;
+  final List<String> types = <String>[
+    for (final String raw in rest.expand((String s) => s.split(",")))
+      if (raw.trim().isNotEmpty) _mimeShortcuts[raw.trim().toLowerCase()] ?? raw.trim().toLowerCase(),
+  ];
+  if (types.isEmpty) types.add("*/*");
+  for (final String t in types) {
+    if (!RegExp(r"^[a-z*]+/[a-z0-9.+*-]+$").hasMatch(t)) throw CliException("\"$t\" isn't a MIME type. Use image, video, audio, text, pdf, any, or image/png style types.");
+  }
+  _requireAny(p, <Target>[Target.android, Target.ios, Target.macos], "share-target");
+
+  p.section(Target.android, () {
+    p.edit(AndroidFiles.manifest, (String t) => remove ? _androidRemoveShare(t) : _androidAddShare(_androidRemoveShare(t), types), remove ? "− share / open-with filters" : "+ share / open-with filters for ${types.join(", ")}");
+  });
+  for (final AppleFiles f in <AppleFiles>[_ios, _macos]) {
+    p.section(f.target, () {
+      editPlist(p, f.infoPlist, (Plist pl) {
+        if (remove) {
+          if ((pl.raw("CFBundleDocumentTypes") ?? "").contains(_documentTypeName)) {
+            pl.remove("CFBundleDocumentTypes");
+            if (pl.getBool("LSSupportsOpeningDocumentsInPlace") == false) pl.remove("LSSupportsOpeningDocumentsInPlace");
+          }
+          return;
+        }
+        if (pl.has("CFBundleDocumentTypes") && !(pl.raw("CFBundleDocumentTypes") ?? "").contains(_documentTypeName)) {
+          throw EditSkip("CFBundleDocumentTypes already has your own entries: add ${types.map(_utiFor).toSet().join(", ")} there by hand");
+        }
+        final List<String> utis = types.map(_utiFor).toSet().toList();
+        pl.setRaw("CFBundleDocumentTypes", (String ind) {
+          final String i1 = "$ind\t";
+          final String i2 = "$i1\t";
+          final String i3 = "$i2\t";
+          return "<array>\n$i1<dict>\n"
+              "$i2<key>CFBundleTypeName</key>\n$i2<string>$_documentTypeName</string>\n"
+              "$i2<key>CFBundleTypeRole</key>\n$i2<string>Viewer</string>\n"
+              "$i2<key>LSHandlerRank</key>\n$i2<string>Alternate</string>\n"
+              "$i2<key>LSItemContentTypes</key>\n$i2<array>\n${utis.map((String u) => "$i3<string>$u</string>\n").join()}$i2</array>\n"
+              "$i1</dict>\n$ind</array>";
+        });
+        // UShare copies what it receives, so the original never has to stay open in place.
+        if (f.target == Target.ios) pl.setBool("LSSupportsOpeningDocumentsInPlace", value: false);
+      }, remove ? "− CFBundleDocumentTypes" : "+ CFBundleDocumentTypes (${types.join(", ")})");
+    });
+  }
+  for (final Target t in <Target>[Target.linux, Target.windows, Target.web]) {
+    p.section(t, () => Out.note(t == Target.web ? "Installed PWAs: add \"file_handlers\" to web/manifest.json; UShare reads them through launchQueue." : "The installer registers file associations; UShare reads files passed on the command line."));
+  }
+  if (!remove) {
+    Out.line();
+    Out.note("Receive in Dart: UShare.onReceive((UReceivedShare share) => ...).");
+    Out.note("iOS: this adds \"Open with\" (Files, Mail, …). Appearing in other apps' share sheet also needs a Share Extension target in Xcode.");
+  }
+}
+
+String _androidAddShare(String t, List<String> types) {
+  final (int, int)? act = Xml.launcherActivity(t);
+  if (act == null) throw EditSkip("<activity> not found");
+  final String block = t.substring(act.$1, act.$2);
+  final int close = block.lastIndexOf("</activity>");
+  if (close < 0) throw EditSkip("the launcher <activity> has no closing tag");
+  final Match? existing = RegExp(r"^([ \t]*)<intent-filter", multiLine: true).firstMatch(block);
+  final String ind = existing?.group(1) ?? "${indentAt(t, act.$1)}    ";
+  final String i2 = "$ind    ";
+  String filter(String action, {bool content = false}) =>
+      "$ind$_shareMarker\n$ind<intent-filter>\n$i2<action android:name=\"android.intent.action.$action\" />\n$i2<category android:name=\"android.intent.category.DEFAULT\" />\n"
+      "${types.map((String m) => content ? "$i2<data android:scheme=\"content\" android:mimeType=\"$m\" />\n" : "$i2<data android:mimeType=\"$m\" />\n").join()}$ind</intent-filter>\n";
+  final String filters = filter("SEND") + filter("SEND_MULTIPLE") + filter("VIEW", content: true);
+  final int at = lineStart(t, act.$1 + close);
+  return t.replaceRange(at, at, filters);
+}
+
+String _androidRemoveShare(String t) => t.replaceAll(RegExp("[ \\t]*${RegExp.escape(_shareMarker)}\\s*<intent-filter[^>]*>[\\s\\S]*?</intent-filter>[ \\t]*\\n?"), "");
+
+// =============================================================================================
+// query-schemes
+
+const List<String> _defaultQuerySchemes = <String>["whatsapp", "tg", "instagram", "comgooglemaps", "waze"];
+
+void cmdQuerySchemes(Project p, Args a) {
+  final List<String> pos = a.positional;
+  final bool remove = pos.isNotEmpty && <String>{"remove", "rm", "delete"}.contains(pos.first.toLowerCase());
+  final List<String> rest = pos.isNotEmpty && <String>{"add", "remove", "rm", "delete"}.contains(pos.first.toLowerCase()) ? pos.skip(1).toList() : pos;
+  final List<String> items = <String>[
+    for (final String raw in rest.expand((String s) => s.split(",")))
+      if (raw.trim().isNotEmpty) raw.trim().replaceAll(RegExp(r"://.*$"), ""),
+  ];
+  if (items.isEmpty) {
+    if (remove) throw CliException("Name what to remove.\n  Usage: dart run u:app query-schemes remove whatsapp");
+    items.addAll(_defaultQuerySchemes);
+  }
+  // Dotted names are Android packages; the rest are URL schemes.
+  final List<String> packages = items.where((String s) => s.contains(".")).toList();
+  final List<String> schemes = items.where((String s) => !s.contains(".")).map((String s) => s.toLowerCase()).toList();
+  for (final String s in schemes) {
+    if (!RegExp(r"^[a-z][a-z0-9+.-]*$").hasMatch(s)) throw CliException("\"$s\" isn't a valid URL scheme.");
+  }
+  _requireAny(p, <Target>[Target.android, Target.ios], "query-schemes");
+  if (schemes.isNotEmpty) {
+    p.section(Target.ios, () {
+      editPlist(p, _ios.infoPlist, (Plist pl) {
+        for (final String s in schemes) {
+          if (remove) {
+            pl.removeFromArray("LSApplicationQueriesSchemes", s);
+          } else {
+            pl.addToArray("LSApplicationQueriesSchemes", s);
+          }
+        }
+      }, "${remove ? "−" : "+"} LSApplicationQueriesSchemes ${schemes.join(", ")}");
+    });
+  }
+  if (packages.isNotEmpty) {
+    p.section(Target.android, () {
+      p.edit(AndroidFiles.manifest, (String t) => packages.fold(t, (String acc, String pkg) => remove ? _androidRemoveQuery(acc, pkg) : _androidAddQuery(acc, pkg)), "${remove ? "−" : "+"} <queries> ${packages.join(", ")}");
+    });
+  }
+  if (!remove) {
+    Out.line();
+    Out.note("Now ULaunch.canOpen / isInstalled / UShare.canShareTo can see these apps (the u plugin already declares WhatsApp, Telegram, maps and stores on Android).");
+  }
+}
+
+String _androidAddQuery(String t, String pkg) {
+  if (t.contains("<package android:name=\"$pkg\"")) return t;
+  final int close = t.indexOf("</queries>");
+  if (close >= 0) {
+    final int at = lineStart(t, close);
+    return t.replaceRange(at, at, "${indentAt(t, close)}    <package android:name=\"$pkg\" />\n");
+  }
+  final (int, int)? app = Xml.openTag(t, "application");
+  if (app == null) throw EditSkip("<application> not found");
+  final String ind = indentAt(t, app.$1);
+  final int at = lineStart(t, app.$1);
+  return t.replaceRange(at, at, "$ind<queries>\n$ind    <package android:name=\"$pkg\" />\n$ind</queries>\n");
+}
+
+String _androidRemoveQuery(String t, String pkg) => t.replaceAll(RegExp("[ \\t]*<package android:name=\"${RegExp.escape(pkg)}\"\\s*/>[ \\t]*\\n?"), "");
 
 final RegExp _urlSchemesArray = RegExp(r"(<key>CFBundleURLSchemes</key>\s*<array>)([\s\S]*?)(</array>)");
 

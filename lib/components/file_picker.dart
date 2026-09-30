@@ -197,7 +197,7 @@ class _UFilePickerState extends State<UFilePicker> {
     if (_picking || !widget.enabled) return;
     setState(() => _picking = true);
     final List<String>? extensions = _extensions;
-    final List<UFileData> picked = await UFile.showFilePicker(
+    final List<UFileData> picked = await UFile.pickFiles(
       allowMultiple: widget.allowMultipleSelection,
       fileType: extensions == null ? widget.fileType : FileType.custom,
       allowedExtensions: extensions,

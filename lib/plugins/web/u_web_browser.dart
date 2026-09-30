@@ -1,5 +1,4 @@
 import "dart:async";
-import "dart:convert";
 import "dart:js_interop";
 import "dart:js_interop_unsafe";
 
@@ -216,7 +215,7 @@ abstract class UWebBridge {
   }
 
   // ---------------------------------------------------------------------------
-  // Device, network and legacy storage (UDevice, UConnectivity, UStorage)
+  // Device and network (UDevice, UConnectivity)
   // ---------------------------------------------------------------------------
 
   static JSObject get _nav => web.window.navigator as JSObject;
@@ -237,37 +236,6 @@ abstract class UWebBridge {
       }
     } catch (_) {}
     return null;
-  }
-
-  /// shared_preferences' web data: localStorage keys starting with "flutter.", JSON-decoded.
-  static Map<String, Object?> legacyPrefs() {
-    final Map<String, Object?> out = <String, Object?>{};
-    try {
-      final web.Storage storage = web.window.localStorage;
-      for (int i = 0; i < storage.length; i++) {
-        final String? key = storage.key(i);
-        if (key == null || !key.startsWith("flutter.")) continue;
-        final String? raw = storage.getItem(key);
-        if (raw == null) continue;
-        try {
-          out[key] = jsonDecode(raw);
-        } catch (_) {}
-      }
-    } catch (_) {}
-    return out;
-  }
-
-  static void clearLegacyPrefs() {
-    try {
-      final web.Storage storage = web.window.localStorage;
-      final List<String> keys = <String>[
-        for (int i = 0; i < storage.length; i++)
-          if (storage.key(i)?.startsWith("flutter.") ?? false) storage.key(i)!,
-      ];
-      for (final String key in keys) {
-        storage.removeItem(key);
-      }
-    } catch (_) {}
   }
 
   /// navigator.onLine plus the Network Information API where the browser has it (Chromium).

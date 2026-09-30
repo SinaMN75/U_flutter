@@ -69,7 +69,8 @@ class _UAdminToolFileManagerPageState extends State<UAdminToolFileManagerPage> {
   }
 
   Future<void> _upload() async {
-    await UFile.showFilePicker(
+    await UFile.pickFiles(
+      allowMultiple: false,
       action: (List<UFileData> files) async {
         if (files.isEmpty) return;
         ULoading.show();
@@ -143,9 +144,9 @@ class _UAdminToolFileManagerPageState extends State<UAdminToolFileManagerPage> {
     }
   }
 
-  void _download(UFileManagerEntryResponse entry) => launchUrl(Uri.parse(UServices.fileManager.downloadUrl(entry.path)), mode: LaunchMode.externalApplication);
+  void _download(UFileManagerEntryResponse entry) => ULaunch.external(UServices.fileManager.downloadUrl(entry.path));
 
-  void _openInBrowser(UFileManagerEntryResponse entry) => launchUrl(Uri.parse(entry.url ?? UServices.fileManager.downloadUrl(entry.path)), mode: LaunchMode.externalApplication);
+  void _openInBrowser(UFileManagerEntryResponse entry) => ULaunch.external(entry.url ?? UServices.fileManager.downloadUrl(entry.path));
 
   // ---------------------------------------------------------------------------
 

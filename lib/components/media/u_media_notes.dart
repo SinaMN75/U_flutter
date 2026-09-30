@@ -478,12 +478,12 @@ class _UMediaNotesPanelState extends State<UMediaNotesPanel> {
                   PopupMenuButton<String>(
                     tooltip: U.s.more,
                     onSelected: (String action) async {
-                      if (action == "share") await UShare.text(text: widget.notes.toMarkdown());
+                      if (action == "share") await UShare.text(widget.notes.toMarkdown());
                       if (action == "copy") {
                         await UClipboard.set(widget.notes.export());
                         UToast.toast(message: U.s.copied);
                       }
-                      if (action == "srt") await UShare.text(text: widget.notes.toSrt());
+                      if (action == "srt") await UShare.text(widget.notes.toSrt());
                       if (action == "import") {
                         final String? data = await UNavigator.inputDialog(title: U.s.importAnnotations, hint: U.s.importAnnotations);
                         if (data != null && data.trim().isNotEmpty && !widget.notes.import(data, merge: true)) UToast.errorToast(message: U.s.thisFieldIsInvalid);

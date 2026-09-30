@@ -2170,8 +2170,8 @@ class UArController extends ValueNotifier<UArValue> {
   double _pixelRatio = 1;
   int _nextId = 1;
   StreamSubscription<Map<Object?, Object?>>? _events;
-  StreamSubscription<Position>? _positionSubscription;
-  Position? _lastPosition;
+  StreamSubscription<UPosition>? _positionSubscription;
+  UPosition? _lastPosition;
   UArVector3 _positionOrigin = UArVector3.zero;
   final Map<String, _GpsAnchor> _gpsAnchors = <String, _GpsAnchor>{};
   final Map<String, _Track> _tracks = <String, _Track>{};
@@ -2756,7 +2756,7 @@ class UArController extends ValueNotifier<UArValue> {
   }
 
   UArPose _gpsPose(_GpsAnchor target) {
-    final Position? here = _lastPosition;
+    final UPosition? here = _lastPosition;
     final UArGeoPose? vps = value.frame.geo;
     final double originLat = vps != null && vps.source != "gps" && vps.isTracking ? vps.latitude : here?.latitude ?? target.latitude;
     final double originLng = vps != null && vps.source != "gps" && vps.isTracking ? vps.longitude : here?.longitude ?? target.longitude;
@@ -2775,29 +2775,26 @@ class UArController extends ValueNotifier<UArValue> {
   /// Streams the device position for GPS placement. Started automatically.
   Future<void> startLocationUpdates({int distanceFilter = 1}) async {
     if (_positionSubscription != null) return;
-    LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) permission = await Geolocator.requestPermission();
-    if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) {
-      throw const UArException(code: UArErrorCode.permission, message: "Location permission is required");
-    }
-    _positionSubscription = Geolocator.getPositionStream(locationSettings: LocationSettings(distanceFilter: distanceFilter)).listen(_onPosition);
-    try {
-      _onPosition(await Geolocator.getCurrentPosition());
-    } catch (_) {}
+    final ULocationError? blocked = await ULocationChannel.ensureReady();
+    if (blocked != null) throw UArException(code: UArErrorCode.permission, message: "Location unavailable: ${blocked.name}");
+    _positionSubscription = ULocationChannel.positions(ULocationSettings(distanceFilter: distanceFilter.toDouble())).listen(_onPosition, onError: (Object _) {});
+    final ULocationResult now = await ULocationChannel.current(askPermission: false);
+    final UPosition? fix = now.position;
+    if (fix != null) _onPosition(fix);
   }
 
-  void _onPosition(Position position) {
-    final Position? previous = _lastPosition;
-    final bool better = previous == null || position.accuracy <= previous.accuracy + 2;
+  void _onPosition(UPosition position) {
+    final UPosition? previous = _lastPosition;
+    final bool better = previous == null || (position.accuracy ?? double.infinity) <= (previous.accuracy ?? double.infinity) + 2;
     if (!better) return;
     _lastPosition = position;
     _positionOrigin = value.frame.camera.position;
     unawaited(
-      _safe(() => _invoke<void>("updateLocation", <String, Object?>{"latitude": position.latitude, "longitude": position.longitude, "altitude": position.altitude, "accuracy": position.accuracy})),
+      _safe(() => _invoke<void>("updateLocation", <String, Object?>{"latitude": position.latitude, "longitude": position.longitude, "altitude": position.altitude ?? 0, "accuracy": position.accuracy ?? 0})),
     );
   }
 
-  Position? get lastPosition => _lastPosition;
+  UPosition? get lastPosition => _lastPosition;
 
   /// Re-places GPS anchors from the latest fix and heading. Call after the
   /// position accuracy improves or when the user walks a long way.

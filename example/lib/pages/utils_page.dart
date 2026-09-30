@@ -58,7 +58,7 @@ UPersianTools.numberToWords(1234);''',
         description: "Copy text to the clipboard or open the OS share sheet.",
         code: r'''
 UClipboard.set("copied text");
-UShare.text(text: "Check out the u plugin");''',
+UShare.text("Check out the u plugin");''',
         child: Wrap(
           spacing: 12,
           runSpacing: 12,
@@ -73,7 +73,7 @@ UShare.text(text: "Check out the u plugin");''',
               title: "Share",
               type: UButtonType.outlined,
               icon: const Icon(Icons.ios_share, size: 16),
-              onTap: () => UShare.text(text: "Check out the u plugin"),
+              onTap: () => UShare.text("Check out the u plugin"),
             ),
           ],
         ),
@@ -82,7 +82,7 @@ UShare.text(text: "Check out the u plugin");''',
         title: "ULaunch",
         description: "Deep-link to phone, SMS, maps, WhatsApp, Telegram, Instagram or any URL.",
         code: r'''
-ULaunch.launchURL("https://sinamn75.com");
+ULaunch.url("https://sinamn75.com");
 ULaunch.call("+989120000000");''',
         child: Wrap(
           spacing: 12,

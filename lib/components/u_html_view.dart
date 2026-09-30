@@ -11,7 +11,7 @@ typedef UHtmlImageBuilder = Widget Function(BuildContext context, String url, St
 /// UHtmlView(
 ///   html: post.body,
 ///   selectable: true,
-///   onLinkTap: (String href) => ULaunch.launchURL(href),
+///   onLinkTap: (String href) => ULaunch.url(href),
 /// )
 /// ```
 class UHtmlView extends StatefulWidget {

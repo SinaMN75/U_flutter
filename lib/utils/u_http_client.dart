@@ -52,7 +52,7 @@ abstract class UHttpClient {
 
     final bool isTokenIssuingEndpoint = UAuth.isTokenIssuingEndpoint(endpoint);
 
-    final bool hasNetworkConnection = await UNetwork.hasAnyConnection();
+    final bool hasNetworkConnection = UNetwork.isOnline;
 
     if (!hasNetworkConnection && offline == false) {
       final String message = noNetworkMessage ?? U.s.connectionToNetworkWasNotPossible;

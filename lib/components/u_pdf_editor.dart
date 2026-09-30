@@ -602,7 +602,7 @@ class _UPdfEditorPageState extends State<UPdfEditorPage> {
         UToast.errorToast(message: U.s.couldNotOpenTheDocument);
         return;
       }
-      await UShare.bytes(bytes: bytes, fileName: "document.pdf", mimeType: "application/pdf");
+      await UShare.bytes(bytes, name: "document.pdf", mimeType: "application/pdf");
       return;
     }
     setState(() => _saving = true);
