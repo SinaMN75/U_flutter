@@ -22,6 +22,13 @@ class UChargeInternetService {
     Function(String e)? onException,
   }) => _Api.call("/ChargeInternet/InternetList", p.toMap(), _Api.one(UInternetPackageResponse.fromMap), _Api.empty, onOk, onError, onException);
 
+  Future<(UResponse<UInternetPackageResponse>?, UEmptyResponse?, String?)> mciTopOffer({
+    required UMCITopOfferParams p,
+    Function(UResponse<UInternetPackageResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/ChargeInternet/MciTopOffer", p.toMap(), _Api.one(UInternetPackageResponse.fromMap), _Api.empty, onOk, onError, onException);
+
   Future<(UResponse<UChargeInternetReserveResponse>?, UEmptyResponse?, String?)> internetReserve({
     required UInternetReserveParams p,
     Function(UResponse<UChargeInternetReserveResponse> r)? onOk,

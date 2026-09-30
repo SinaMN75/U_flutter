@@ -106,9 +106,11 @@ class UApproveParams {
 
 class UGetStatusParams {
   final String reference;
+  final String? reserve;
 
   UGetStatusParams({
     required this.reference,
+    this.reserve,
   });
 
   factory UGetStatusParams.fromJson(String str) => UGetStatusParams.fromMap(json.decode(str));
@@ -117,10 +119,12 @@ class UGetStatusParams {
 
   factory UGetStatusParams.fromMap(Map<String, dynamic> json) => UGetStatusParams(
     reference: json["reference"],
+    reserve: json["reserve"],
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "reference": reference,
+    "reserve": reserve,
   };
 }
 
@@ -149,14 +153,14 @@ class UInternetReserveParams {
   final String operatorId;
   final String packageId;
   final double amount;
-  final String device;
+  final String? device;
 
   UInternetReserveParams({
     required this.subscriber,
     required this.operatorId,
     required this.packageId,
     required this.amount,
-    required this.device,
+    this.device,
   });
 
   factory UInternetReserveParams.fromJson(String str) => UInternetReserveParams.fromMap(json.decode(str));

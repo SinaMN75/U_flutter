@@ -639,7 +639,8 @@ enum TagWalletTxn with UNumericIdentifiable {
   goldPurchaseRefund("استرداد خرید طلا", "Gold Purchase Refund", 215),
   chargeSimPin("خرید شارژ پین سیم‌کارت", "SIM Charge (PIN)", 301),
   chargeSimTopup("شارژ مستقیم سیم‌کارت", "SIM Top-up", 302),
-  internetSim("خرید بسته اینترنت", "Internet Package", 303);
+  internetSim("خرید بسته اینترنت", "Internet Package", 303),
+  chargeInternetRefund("استرداد خرید شارژ / بسته اینترنت", "Charge / Internet Refund", 304);
 
   const TagWalletTxn(this.titleFa, this.titleEn, this.number);
 

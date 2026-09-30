@@ -2005,5 +2005,18 @@
   "bringToFront": "آوردن به جلو",
   "sendToBack": "بردن به عقب",
   "drawOnVideo": "طراحی روی ویدیو",
-  "shapes": "شکل‌ها"
+  "shapes": "شکل‌ها",
+  "prepaid": "اعتباری",
+  "postpaid": "دائمی",
+  "tdLte": "TD-LTE",
+  "roaming": "رومینگ",
+  "companionPackages": "بسته‌های همراهی",
+  "normalCharge": "معمولی",
+  "amazingCharge": "شگفت‌انگیز",
+  "excitingCharge": "شورانگیز",
+  "youthCharge": "جوانان",
+  "womenCharge": "بانوان",
+  "chargeType": "نوع شارژ",
+  "simType": "نوع سیم‌کارت",
+  "operatorServiceIsTemporarilyUnavailable": "سرویس این اپراتور موقتاً در دسترس نیست و ممکن است خرید با خطا مواجه شود. لطفاً چند دقیقه دیگر دوباره تلاش کنید."
 }

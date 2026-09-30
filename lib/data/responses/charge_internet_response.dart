@@ -12,6 +12,7 @@ class UChargeInternetReserveResponse {
   final String? help;
   final String? messageSource;
   final String? pin;
+  final String? serial;
 
   UChargeInternetReserveResponse({
     this.reserve,
@@ -25,6 +26,7 @@ class UChargeInternetReserveResponse {
     this.help,
     this.messageSource,
     this.pin,
+    this.serial,
   });
 
   factory UChargeInternetReserveResponse.fromJson(String str) => UChargeInternetReserveResponse.fromMap(json.decode(str));
@@ -43,6 +45,7 @@ class UChargeInternetReserveResponse {
     help: json["help"],
     messageSource: json["messageSource"],
     pin: json["pin"],
+    serial: json["serial"],
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -57,6 +60,7 @@ class UChargeInternetReserveResponse {
     "help": help,
     "messageSource": messageSource,
     "pin": pin,
+    "serial": serial,
   };
 }
 
@@ -92,6 +96,7 @@ class UInternetPackageItem {
   final String? id;
   final String? title;
   final int? amount;
+  final int? price;
   final int? simType;
   final String? duration;
   final String? offerCode;
@@ -102,6 +107,7 @@ class UInternetPackageItem {
     this.id,
     this.title,
     this.amount,
+    this.price,
     this.simType,
     this.duration,
     this.offerCode,
@@ -117,6 +123,7 @@ class UInternetPackageItem {
     id: json["id"],
     title: json["title"],
     amount: json["amount"],
+    price: json["price"],
     simType: json["simType"],
     duration: json["duration"],
     offerCode: json["offerCode"],
@@ -128,6 +135,7 @@ class UInternetPackageItem {
     "id": id,
     "title": title,
     "amount": amount,
+    "price": price,
     "simType": simType,
     "duration": duration,
     "offerCode": offerCode,

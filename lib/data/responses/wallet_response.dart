@@ -39,6 +39,8 @@ extension NullableWalletExtension on UWalletTxnResponse {
         return Icons.sim_card_outlined;
       case TagWalletTxn.internetSim:
         return Icons.wifi;
+      case TagWalletTxn.chargeInternetRefund:
+        return Icons.replay;
       case TagWalletTxn.vehicleViolationsDetail:
       case TagWalletTxn.licencePlateDetail:
       case TagWalletTxn.freewayTolls:

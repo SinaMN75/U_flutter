@@ -2021,5 +2021,18 @@
   "bringToFront": "Bring to front",
   "sendToBack": "Send to back",
   "drawOnVideo": "Draw on video",
-  "shapes": "Shapes"
+  "shapes": "Shapes",
+  "prepaid": "Prepaid",
+  "postpaid": "Postpaid",
+  "tdLte": "TD-LTE",
+  "roaming": "Roaming",
+  "companionPackages": "Companion packages",
+  "normalCharge": "Regular",
+  "amazingCharge": "Amazing",
+  "excitingCharge": "Exciting (Shoorangiz)",
+  "youthCharge": "Youth",
+  "womenCharge": "Women",
+  "chargeType": "Charge type",
+  "simType": "SIM type",
+  "operatorServiceIsTemporarilyUnavailable": "This operator's service is temporarily unavailable, so the purchase may fail. Please try again in a few minutes."
 }
