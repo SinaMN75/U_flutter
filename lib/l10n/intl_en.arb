@@ -2034,5 +2034,17 @@
   "womenCharge": "Women",
   "chargeType": "Charge type",
   "simType": "SIM type",
-  "operatorServiceIsTemporarilyUnavailable": "This operator's service is temporarily unavailable, so the purchase may fail. Please try again in a few minutes."
+  "operatorServiceIsTemporarilyUnavailable": "This operator's service is temporarily unavailable, so the purchase may fail. Please try again in a few minutes.",
+  "updateRequired": "Update required",
+  "updateAvailableDescription": "A new version of the app is available. Update to get the latest features and fixes.",
+  "updateRequiredDescription": "This version of the app is no longer supported. Please update to continue.",
+  "skipThisVersion": "Skip this version",
+  "exitApp": "Exit app",
+  "whatsNew": "What's new",
+  "appVersions": "App versions",
+  "platform": "Platform",
+  "latestBuildNumber": "Latest build number",
+  "minBuildNumber": "Minimum build number (older builds must update)",
+  "latestVersionName": "Latest version name",
+  "downloadLinks": "Download links"
 }

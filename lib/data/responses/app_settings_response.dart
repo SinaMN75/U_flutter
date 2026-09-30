@@ -3,17 +3,20 @@ part of "../data.dart";
 class UAppSettingsResponse {
   final List<UChargeInternet> chargeInternet;
   final double chargeInternetTaxPercent;
+  final List<UAppVersionResponse> appVersions;
 
   UAppSettingsResponse({
     required this.apiCallCosts,
     required this.chargeInternet,
     required this.chargeInternetTaxPercent,
+    this.appVersions = const <UAppVersionResponse>[],
   });
 
   factory UAppSettingsResponse.fromMap(Map<String, dynamic> json) => UAppSettingsResponse(
     apiCallCosts: UApiCallCosts.fromMap(json["apiCallCosts"] ?? <String, dynamic>{}),
     chargeInternet: json["chargeInternet"] == null ? <UChargeInternet>[] : List<UChargeInternet>.from(json["chargeInternet"]!.map((dynamic x) => UChargeInternet.fromMap(x))),
     chargeInternetTaxPercent: (json["chargeInternetTaxPercent"] ?? 0).toString().toDouble(),
+    appVersions: json["appVersions"] == null ? <UAppVersionResponse>[] : List<UAppVersionResponse>.from(json["appVersions"]!.map((dynamic x) => UAppVersionResponse.fromMap(x))),
   );
 
   final UApiCallCosts apiCallCosts;
@@ -22,6 +25,7 @@ class UAppSettingsResponse {
     "chargeInternet": List<dynamic>.from(chargeInternet.map((UChargeInternet x) => x.toMap())),
     "apiCallCosts": apiCallCosts.toMap(),
     "chargeInternetTaxPercent": chargeInternetTaxPercent,
+    "appVersions": List<dynamic>.from(appVersions.map((UAppVersionResponse x) => x.toMap())),
   };
 
   String toJson() => json.encode(toMap());
@@ -141,5 +145,79 @@ class UChargeInternetPreDefinedAmounts {
     "title": title,
     "amount": amount,
     "type": type,
+  };
+}
+
+class UAppVersionResponse {
+  UAppVersionResponse({
+    required this.id,
+    required this.tags,
+    required this.latestBuildNumber,
+    required this.minBuildNumber,
+    required this.jsonData,
+  });
+
+  factory UAppVersionResponse.fromMap(Map<String, dynamic> json) => UAppVersionResponse(
+    id: json["id"],
+    tags: List<int>.from(json["tags"].map((dynamic x) => x)),
+    latestBuildNumber: json["latestBuildNumber"] ?? 0,
+    minBuildNumber: json["minBuildNumber"] ?? 0,
+    jsonData: UAppVersionJson.fromMap(json["jsonData"] ?? <String, dynamic>{}),
+  );
+
+  final String id;
+  final List<int> tags;
+  final int latestBuildNumber;
+  final int minBuildNumber;
+  final UAppVersionJson jsonData;
+
+  TagAppVersion? get platform => TagAppVersion.values.firstWhereOrNull((TagAppVersion t) => tags.contains(t.number));
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "tags": List<dynamic>.from(tags.map((int x) => x)),
+    "latestBuildNumber": latestBuildNumber,
+    "minBuildNumber": minBuildNumber,
+    "jsonData": jsonData.toMap(),
+  };
+}
+
+class UAppVersionJson {
+  UAppVersionJson({this.latestVersionName, this.description, this.links = const <UAppVersionLink>[]});
+
+  factory UAppVersionJson.fromMap(Map<String, dynamic> json) => UAppVersionJson(
+    latestVersionName: json["latestVersionName"],
+    description: json["description"],
+    links: json["links"] == null ? <UAppVersionLink>[] : List<UAppVersionLink>.from(json["links"]!.map((dynamic x) => UAppVersionLink.fromMap(x))),
+  );
+
+  final String? latestVersionName;
+  final String? description;
+  final List<UAppVersionLink> links;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "latestVersionName": latestVersionName,
+    "description": description,
+    "links": List<dynamic>.from(links.map((UAppVersionLink x) => x.toMap())),
+  };
+}
+
+class UAppVersionLink {
+  UAppVersionLink({this.title, this.url, this.iconBase64});
+
+  factory UAppVersionLink.fromMap(Map<String, dynamic> json) => UAppVersionLink(
+    title: json["title"],
+    url: json["url"],
+    iconBase64: json["iconBase64"],
+  );
+
+  final String? title;
+  final String? url;
+  final String? iconBase64;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "title": title,
+    "url": url,
+    "iconBase64": iconBase64,
   };
 }

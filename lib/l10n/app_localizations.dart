@@ -10867,6 +10867,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This operator\'s service is temporarily unavailable, so the purchase may fail. Please try again in a few minutes.'**
   String get operatorServiceIsTemporarilyUnavailable;
+
+  /// No description provided for @updateRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Update required'**
+  String get updateRequired;
+
+  /// No description provided for @updateAvailableDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'A new version of the app is available. Update to get the latest features and fixes.'**
+  String get updateAvailableDescription;
+
+  /// No description provided for @updateRequiredDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'This version of the app is no longer supported. Please update to continue.'**
+  String get updateRequiredDescription;
+
+  /// No description provided for @skipThisVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip this version'**
+  String get skipThisVersion;
+
+  /// No description provided for @exitApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Exit app'**
+  String get exitApp;
+
+  /// No description provided for @whatsNew.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s new'**
+  String get whatsNew;
+
+  /// No description provided for @appVersions.
+  ///
+  /// In en, this message translates to:
+  /// **'App versions'**
+  String get appVersions;
+
+  /// No description provided for @platform.
+  ///
+  /// In en, this message translates to:
+  /// **'Platform'**
+  String get platform;
+
+  /// No description provided for @latestBuildNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Latest build number'**
+  String get latestBuildNumber;
+
+  /// No description provided for @minBuildNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum build number (older builds must update)'**
+  String get minBuildNumber;
+
+  /// No description provided for @latestVersionName.
+  ///
+  /// In en, this message translates to:
+  /// **'Latest version name'**
+  String get latestVersionName;
+
+  /// No description provided for @downloadLinks.
+  ///
+  /// In en, this message translates to:
+  /// **'Download links'**
+  String get downloadLinks;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

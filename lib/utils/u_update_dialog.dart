@@ -3,199 +3,97 @@ import "package:u/utilities.dart";
 /// Result of the version check: none, optional (can skip) or force (must update).
 enum UpdateType { none, optional, force }
 
-/// Your server's update info per platform (min and current build numbers, download links). `UUpdateResponse.fromMap(json)`
-class UUpdateResponse {
-  /// Android update info.
-  final UOs? android;
-
-  /// iOS update info.
-  final UOs? ios;
-
-  /// Windows update info.
-  final UOs? windows;
-
-  /// macOS update info.
-  final UOs? macos;
-
-  /// Update info for each platform.
-  UUpdateResponse({
-    this.android,
-    this.ios,
-    this.windows,
-    this.macos,
-  });
-
-  /// Parses JSON text.
-  factory UUpdateResponse.fromJson(String str) => UUpdateResponse.fromMap(json.decode(str));
-
-  /// Parses a decoded JSON map.
-  factory UUpdateResponse.fromMap(Map<String, dynamic> json) => UUpdateResponse(
-    android: json["android"] == null ? null : UOs.fromMap(json["android"]),
-    ios: json["ios"] == null ? null : UOs.fromMap(json["ios"]),
-    windows: json["windows"] == null ? null : UOs.fromMap(json["windows"]),
-    macos: json["macos"] == null ? null : UOs.fromMap(json["macos"]),
-  );
-
-  /// Back to a map.
-  Map<String, dynamic> toMap() => <String, dynamic>{
-    "android": android?.toMap(),
-    "ios": ios?.toMap(),
-    "windows": windows?.toMap(),
-    "macos": macos?.toMap(),
-  };
-
-  /// Back to JSON text.
-  String toJson() => json.encode(toMap());
-}
-
-/// Update info of one platform: builds below [min] must update, below [current] may update.
-class UOs {
-  /// Lowest build number still allowed (older builds are forced to update).
-  final int? min;
-
-  /// Latest build number (older builds are offered an update).
-  final int? current;
-
-  /// First download link (e.g. Google Play).
-  final String? link1;
-
-  /// Second download link (e.g. Bazaar or direct APK).
-  final String? link2;
-
-  /// Button text for link1.
-  final String? link1Title;
-
-  /// Button text for link2.
-  final String? link2Title;
-
-  /// Update info of one platform.
-  UOs({
-    this.min,
-    this.current,
-    this.link1,
-    this.link2,
-    this.link1Title,
-    this.link2Title,
-  });
-
-  /// Parses a decoded JSON map.
-  factory UOs.fromMap(Map<String, dynamic> json) => UOs(
-    min: json["min"],
-    current: json["current"],
-    link1: json["link1"],
-    link2: json["link2"],
-    link1Title: json["link1Title"],
-    link2Title: json["link2Title"],
-  );
-
-  /// Back to a map.
-  Map<String, dynamic> toMap() => <String, dynamic>{
-    "min": min,
-    "current": current,
-    "link1": link1,
-    "link2": link2,
-    "link1Title": link1Title,
-    "link2Title": link2Title,
-  };
-}
-
-/// Shows "Update available / required" from your server data, comparing build numbers (Android, iOS, Windows, macOS). `UUpdateDialog.checkAndShow(data, () => UNavigator.offAll(HomePage()))`
+/// Shows "Update available / required" from `UAppSettingsResponse.appVersions`, comparing build numbers.
+/// `UUpdateDialog.checkAndShow(U.appSettings.appVersions, () => UNavigator.offAll(HomePage()))`
 class UUpdateDialog {
   static const String _skipKey = "skip_update_version";
 
-  /// Shows the dialog when needed; [onSkipOrNotAvailable] runs when there is nothing to do or the user taps Later.
-  static Future<void> checkAndShow(
-    UUpdateResponse serverData,
-    VoidCallback onSkipOrNotAvailable,
-  ) async {
-    final UOs? info = _platformUpdate(serverData);
-    if (info == null) {
+  /// Shows the dialog when needed; [onSkipOrNotAvailable] runs when there is nothing to do, or the user taps Later / Skip this version.
+  static Future<void> checkAndShow(List<UAppVersionResponse> versions, VoidCallback onSkipOrNotAvailable) async {
+    final UAppVersionResponse? info = versions.firstWhereOrNull((UAppVersionResponse i) => i.platform == TagAppVersion.current);
+    final UpdateType type = info == null ? UpdateType.none : _checkUpdate(info);
+
+    if (info == null || type == UpdateType.none || (type == UpdateType.optional && ULocalStorage.getInt(_skipKey) == info.latestBuildNumber)) {
       onSkipOrNotAvailable();
       return;
     }
 
-    final UpdateType type = await _checkUpdate(info);
-
-    if (type == UpdateType.none) {
-      onSkipOrNotAvailable();
-      return;
-    }
-
-    if (type == UpdateType.optional) {
-      final int? skipped = ULocalStorage.getInt(_skipKey);
-      if (skipped == info.current) {
-        onSkipOrNotAvailable();
-        return;
-      }
-    }
-
+    final bool force = type == UpdateType.force;
     await showDialog(
-      barrierDismissible: type == UpdateType.optional,
+      barrierDismissible: false,
       context: navigatorKey.currentContext!,
-      builder: (_) => PopScope(
-        canPop: type == UpdateType.optional,
+      builder: (BuildContext context) => PopScope(
+        canPop: false,
         child: AlertDialog(
-          title: Text(type == UpdateType.force ? "Update Required" : "Update Available"),
-          content: UColumn(
-            spacing: 8,
-            width: 200,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(
-                type == UpdateType.force ? "You must update to continue using the app." : "A newer version of the app is available.",
-              ),
-              if (info.link1 != null && info.link1Title != null)
-                UButton(
-                  width: MediaQuery.sizeOf(navigatorKey.currentContext!).width,
-                  onTap: () => ULaunch.url(info.link1!),
-                  title: info.link1Title ?? "---",
-                ).pOnly(top: 8),
-              if (info.link2 != null && info.link2Title != null)
-                UButton(
-                  width: MediaQuery.sizeOf(navigatorKey.currentContext!).width,
-                  onTap: () => ULaunch.url(info.link2!),
-                  title: info.link2Title ?? "",
-                ).pOnly(top: 8),
-              if (type == UpdateType.force)
-                UButton(
-                  width: MediaQuery.sizeOf(navigatorKey.currentContext!).width,
-                  type: UButtonType.text,
-                  textStyle: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium!.copyWith(color: Colors.red),
-                  onTap: UApp.exit,
-                  title: "Exit",
-                ).pOnly(top: 8)
-              else
-                UButton(
-                  width: MediaQuery.sizeOf(navigatorKey.currentContext!).width,
-                  type: UButtonType.text,
-                  title: "Later",
-                  onTap: () {
-                    if (info.current != null) {
-                      ULocalStorage.set(_skipKey, info.current);
-                    }
-                    UNavigator.back();
-                    onSkipOrNotAvailable();
-                  },
-                ).pOnly(top: 8),
-            ],
+          title: Text(force ? U.s.updateRequired : U.s.updateAvailable),
+          content: SingleChildScrollView(
+            child: UColumn(
+              spacing: 8,
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                UTextBodyMedium(force ? U.s.updateRequiredDescription : U.s.updateAvailableDescription),
+                if (info.jsonData.latestVersionName.isNotNullOrEmpty()) UTextLabelLarge("${U.s.version} ${info.jsonData.latestVersionName}"),
+                if (info.jsonData.description.isNotNullOrEmpty()) ...<Widget>[
+                  UTextTitleSmall(U.s.whatsNew),
+                  UTextBodySmall(info.jsonData.description!),
+                ],
+                ...info.jsonData.links
+                    .where((UAppVersionLink i) => i.url.isNotNullOrEmpty())
+                    .map(
+                      (UAppVersionLink i) => ListTile(
+                        onTap: () => ULaunch.url(i.url!, mode: ULaunchMode.external),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          side: BorderSide(color: Theme.of(context).colorScheme.outlineVariant),
+                        ),
+                        leading: SizedBox.square(
+                          dimension: 32,
+                          child: i.iconBase64.isNullOrEmpty()
+                              ? const Icon(Icons.shop_outlined)
+                              : UImage("", fileData: UFileData(bytes: i.iconBase64!.split(",").last.toBytesFromBase64()), borderRadius: 6),
+                        ),
+                        title: Text(i.title ?? i.url!),
+                        trailing: const Icon(Icons.download_rounded),
+                      ),
+                    ),
+              ],
+            ),
           ),
+          actions: force
+              ? <Widget>[
+                  TextButton(
+                    onPressed: UApp.exit,
+                    child: Text(U.s.exitApp, style: TextStyle(color: Theme.of(context).colorScheme.error)),
+                  ),
+                ]
+              : <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      ULocalStorage.set(_skipKey, info.latestBuildNumber);
+                      UNavigator.back();
+                      onSkipOrNotAvailable();
+                    },
+                    child: Text(U.s.skipThisVersion),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      UNavigator.back();
+                      onSkipOrNotAvailable();
+                    },
+                    child: Text(U.s.later),
+                  ),
+                ],
         ),
       ),
     );
   }
 
-  static UOs? _platformUpdate(UUpdateResponse x) {
-    if (UApp.isAndroid) return x.android;
-    if (UApp.isIos) return x.ios;
-    if (UApp.isWindows) return x.windows;
-    if (UApp.isMacOs) return x.macos;
-    return null;
-  }
-
-  static Future<UpdateType> _checkUpdate(UOs info) async {
-    if (info.min == null || info.current == null) return UpdateType.none;
-    if (UApp.buildNumber.toInt() < info.min!) return UpdateType.force;
-    if (UApp.buildNumber.toInt() < info.current!) return UpdateType.optional;
+  static UpdateType _checkUpdate(UAppVersionResponse info) {
+    final int? build = int.tryParse(UApp.buildNumber);
+    if (build == null) return UpdateType.none;
+    if (build < info.minBuildNumber) return UpdateType.force;
+    if (build < info.latestBuildNumber) return UpdateType.optional;
     return UpdateType.none;
   }
 }

@@ -5492,4 +5492,40 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get operatorServiceIsTemporarilyUnavailable => 'This operator\'s service is temporarily unavailable, so the purchase may fail. Please try again in a few minutes.';
+
+  @override
+  String get updateRequired => 'Update required';
+
+  @override
+  String get updateAvailableDescription => 'A new version of the app is available. Update to get the latest features and fixes.';
+
+  @override
+  String get updateRequiredDescription => 'This version of the app is no longer supported. Please update to continue.';
+
+  @override
+  String get skipThisVersion => 'Skip this version';
+
+  @override
+  String get exitApp => 'Exit app';
+
+  @override
+  String get whatsNew => 'What\'s new';
+
+  @override
+  String get appVersions => 'App versions';
+
+  @override
+  String get platform => 'Platform';
+
+  @override
+  String get latestBuildNumber => 'Latest build number';
+
+  @override
+  String get minBuildNumber => 'Minimum build number (older builds must update)';
+
+  @override
+  String get latestVersionName => 'Latest version name';
+
+  @override
+  String get downloadLinks => 'Download links';
 }

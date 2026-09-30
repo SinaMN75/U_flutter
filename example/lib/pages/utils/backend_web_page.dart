@@ -96,12 +96,18 @@ class BackendWebPage extends StatelessWidget {
         Fn(
           "UUpdateDialog.checkAndShow(data, onSkip)",
           () => UUpdateDialog.checkAndShow(
-            UUpdateResponse(
-              android: UOs(min: 1, current: 999999, link1: "https://play.google.com", link1Title: "Google Play"),
-              ios: UOs(min: 1, current: 999999, link1: "https://apps.apple.com", link1Title: "App Store"),
-              macos: UOs(min: 1, current: 999999, link1: "https://apps.apple.com", link1Title: "App Store"),
-              windows: UOs(min: 1, current: 999999, link1: "https://apps.microsoft.com", link1Title: "Microsoft Store"),
-            ),
+            <UAppVersionResponse>[
+              UAppVersionResponse(
+                id: "demo",
+                tags: <int>[TagAppVersion.current.number],
+                latestBuildNumber: 999999,
+                minBuildNumber: 1,
+                jsonData: UAppVersionJson(
+                  latestVersionName: "9.9.9",
+                  links: <UAppVersionLink>[UAppVersionLink(title: "Google Play", url: "https://play.google.com")],
+                ),
+              ),
+            ],
             () => UToast.info(message: "Skipped / nothing to update"),
           ),
         ),

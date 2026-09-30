@@ -61,6 +61,7 @@ part "pages/payment/terminal_broker/u_admin_payment_terminal_broker_page.dart";
 part "pages/payment/user/u_admin_payment_user_controller.dart";
 part "pages/payment/user/u_admin_payment_user_page.dart";
 part "pages/settings/u_admin_app_settings_page.dart";
+part "pages/settings/u_admin_app_version_page.dart";
 part "pages/settings/u_admin_settings_page.dart";
 part "pages/splash/u_admin_splash_controller.dart";
 part "pages/splash/u_admin_splash_page.dart";

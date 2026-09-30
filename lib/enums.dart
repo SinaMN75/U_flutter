@@ -1371,3 +1371,32 @@ enum TagIpgPayment with UNumericIdentifiable {
   @override
   final int number;
 }
+
+/// Platform of an app version (UAppSettingsResponse.appVersions). `TagAppVersion.current`
+enum TagAppVersion with UNumericIdentifiable {
+  android("اندروید", "Android", 101),
+  ios("آی‌او‌اس", "iOS", 102),
+  windows("ویندوز", "Windows", 103),
+  macOs("مک", "macOS", 104),
+  linux("لینوکس", "Linux", 105),
+  web("وب", "Web", 106);
+
+  const TagAppVersion(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+
+  /// The platform this app is running on.
+  static TagAppVersion get current {
+    if (UApp.isWeb) return TagAppVersion.web;
+    if (UApp.isAndroid) return TagAppVersion.android;
+    if (UApp.isIos) return TagAppVersion.ios;
+    if (UApp.isWindows) return TagAppVersion.windows;
+    if (UApp.isMacOs) return TagAppVersion.macOs;
+    return TagAppVersion.linux;
+  }
+}

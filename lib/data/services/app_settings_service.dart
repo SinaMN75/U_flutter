@@ -11,8 +11,7 @@ class UAppSettingsService {
     Function(UResponse<UAppSettings> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) =>
-      _Api.call("/AppSettings/ReadAll", <String, dynamic>{}, _Api.one(UAppSettings.fromMap), _Api.empty, onOk, onError, onException);
+  }) => _Api.call("/AppSettings/ReadAll", <String, dynamic>{}, _Api.one(UAppSettings.fromMap), _Api.empty, onOk, onError, onException);
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> update({
     required UAppSettingsUpdateParams p,
@@ -20,4 +19,11 @@ class UAppSettingsService {
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
   }) => _Api.call("/AppSettings/Update", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> updateAppVersion({
+    required UAppVersionUpdateParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/AppSettings/UpdateAppVersion", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 }

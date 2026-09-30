@@ -5491,4 +5491,40 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get operatorServiceIsTemporarilyUnavailable => 'سرویس این اپراتور موقتاً در دسترس نیست و ممکن است خرید با خطا مواجه شود. لطفاً چند دقیقه دیگر دوباره تلاش کنید.';
+
+  @override
+  String get updateRequired => 'به‌روزرسانی ضروری';
+
+  @override
+  String get updateAvailableDescription => 'نسخه جدید برنامه منتشر شده است. برای استفاده از امکانات و اصلاحات جدید، برنامه را به‌روزرسانی کنید.';
+
+  @override
+  String get updateRequiredDescription => 'این نسخه از برنامه دیگر پشتیبانی نمی‌شود. برای ادامه، لطفاً برنامه را به‌روزرسانی کنید.';
+
+  @override
+  String get skipThisVersion => 'این نسخه را نشان نده';
+
+  @override
+  String get exitApp => 'خروج از برنامه';
+
+  @override
+  String get whatsNew => 'تغییرات این نسخه';
+
+  @override
+  String get appVersions => 'نسخه‌های برنامه';
+
+  @override
+  String get platform => 'پلتفرم';
+
+  @override
+  String get latestBuildNumber => 'آخرین شماره بیلد';
+
+  @override
+  String get minBuildNumber => 'حداقل شماره بیلد (بیلدهای قدیمی‌تر باید به‌روزرسانی کنند)';
+
+  @override
+  String get latestVersionName => 'نام آخرین نسخه';
+
+  @override
+  String get downloadLinks => 'لینک‌های دانلود';
 }
