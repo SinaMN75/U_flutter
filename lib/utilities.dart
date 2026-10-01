@@ -213,4 +213,3 @@ export "src/share/u_share_channel.dart";
 export "data/data.dart";
 export "enums.dart";
 export "l10n/app_localizations.dart";
-export "u_admin/u_admin.dart";

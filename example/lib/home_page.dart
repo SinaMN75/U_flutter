@@ -1,7 +1,5 @@
 import "package:u/utilities.dart";
 
-import "pages/backend/admin_reference_page.dart";
-import "pages/backend/api_reference_page.dart";
 import "pages/components/charts_navigation_page.dart";
 import "pages/components/documents_page.dart";
 import "pages/components/inputs_page.dart";
@@ -72,10 +70,6 @@ final Map<String, List<GalleryEntry>> kSections = <String, List<GalleryEntry>>{
     GalleryEntry("Scanner studio", "Barcode scanner UI", Icons.qr_code_scanner, () => const ScannerStudioPage()),
     GalleryEntry("AR & 3D", "Place, measure, geo cards, 3D viewer", Icons.threed_rotation, () => const ArPage()),
     GalleryEntry("Downloads", "Segmented, encrypted, resumable", Icons.download_for_offline, () => const DownloadsPage()),
-  ],
-  "Backend reference": <GalleryEntry>[
-    GalleryEntry("API services", "UServices reference", Icons.cloud, () => const ApiReferencePage()),
-    GalleryEntry("Admin panel", "u_admin reference", Icons.admin_panel_settings, () => const AdminReferencePage()),
   ],
 };
 
