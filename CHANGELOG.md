@@ -1,3 +1,222 @@
+## 3.2.0
+
+Nine pub plugins are replaced by u's own native code on all six platforms, the admin panel is
+removed, and the source tree is reorganised. This release has breaking changes; see
+**Breaking changes** and **Upgrade notes** at the end of this entry.
+
+### Native engines replace nine plugins
+
+The plugins below are no longer dependencies and are no longer re-exported. Each one is replaced
+by Kotlin, Swift (iOS and macOS), C++ (Windows and Linux) and web code inside u. Every call
+returns `false` or `null` instead of throwing when the platform can't do it.
+
+* **`UStorage` replaces `shared_preferences`.**
+  * Reads are memory lookups.
+  * Writes in the same frame are combined into one atomic file replace.
+  * Values keep their type: `DateTime`, `Duration`, `Uint8List`, enums and `toJson` objects.
+  * Values can have a TTL.
+  * Named stores come from `UStorage.open`.
+  * Change streams and `listenable<T>()` are available.
+  * Secure stores use ChaCha20-Poly1305 (AES-GCM on web) under a master key held by the
+    platform key store.
+* **`UDevice` replaces `device_info_plus`.** It covers model, OS, a stable id, type (phone /
+  tablet / desktop / TV…), locales, time zone and 24-hour clock. `status()` reports battery,
+  charging, power saver, thermal state and free RAM/disk. `integrity()` detects root / jailbreak,
+  emulators, Frida/Xposed hooks, a debugger and developer mode. `headers` provides `X-Device-*` /
+  `X-App-*` headers.
+* **`UPackage` replaces `package_info_plus`.** It gives the version, build, `isAtLeast`, first
+  launch, `justUpdated`, `previousVersion` and `launchCount`. `installer` reports Play, App Store,
+  TestFlight, Bazaar, Myket, Microsoft Store or sideload. `signatureSha256` detects re-signed
+  Android builds.
+* **`UConnectivity` / `UNetwork` replace `connectivity_plus`.** They report wifi / cellular / VPN /
+  ethernet, metered, roaming, cellular generation, bandwidth, RTT and captive portals.
+  `whenOnline()` waits for a connection, and `hasInternet()` makes a real round trip.
+  `offlineGrace` stops a Wi-Fi → LTE handoff from flashing an offline state.
+  `UNetworkBuilder` rebuilds a widget on network changes.
+* **`ULaunch` replaces `url_launcher`.**
+  * URL modes: `url`, `inApp` (Custom Tabs on Android without `androidx.browser`, Safari view
+    on iOS), `external`, `nativeApp` and `withPackage`.
+  * Apps: `canOpen`, `isInstalled` and `openApp`.
+  * Settings and stores: system `settings` pages, `store` (auto-detects the store) and
+    `requestReview`.
+  * Compose screens: `email` with attachments, `sms` and `call` (USSD too).
+  * Messengers: `chat` for WhatsApp, Telegram, Eitaa, Rubika, Bale, Soroush, Instagram and X.
+  * Maps: `map` and `directions` in Neshan, Balad, Google Maps, Waze or Apple Maps.
+  * OAuth: `authenticate`, which uses `ASWebAuthenticationSession` on Apple and a popup on web.
+  * Deep links: `initialLink` and `onLink`.
+* **`UShare` replaces `share_plus`.** It shares text, links (with a rich preview on Apple), files,
+  bytes and widget images. iPad and macOS popovers anchor with `originOf(context)`. `to(...)`
+  shares straight to one app, and `canShareTo` checks first. `initialReceived` and `onReceive`
+  receive shares and "Open with" files. Linux has no share sheet, so it falls back to the
+  clipboard or the file manager.
+* **`ULocation` replaces `geolocator`.**
+  * Reading position: `current` (with an exact failure reason), `position`, `lastKnown` and
+    `stream`, including background updates.
+  * Permissions: precise vs approximate, `requestPrecise` and `ensureReady`.
+  * Geofences that fire in the background, and events received while the app was closed.
+  * Sensors and places: compass `heading`, iOS `visits`, and geocoding with `addressOf` / `find`.
+  * Math: `distance` and `bearing`.
+  * Android uses no Google Play Services; Linux uses GeoClue2.
+* **`UNotification` replaces `flutter_local_notifications`.**
+  * Show and schedule: `show`, `showRequest`, `progress`, `schedule`, `after`, `daily`, `weekly`
+    and `monthlyJalali`. Monthly and yearly repeats can follow the Jalali calendar.
+  * Content: action buttons, inline replies, big pictures, groups and Android channels and
+    channel groups.
+  * Permissions and alarms: exact alarms, provisional / critical permission on iOS, and the
+    `full-screen` permission.
+  * Badges: on iOS, macOS, Windows, Linux launchers and PWAs.
+  * Events: `listen` and `launchEvent`.
+  * Android reschedules after a reboot or a time-zone change. Windows toast clicks work after the
+    app has closed.
+* **`UUUID` no longer depends on `uuid`.** v1, v4, v5, v6, v7 and v8 are generated in pure Dart
+  (RFC 9562).
+* `initU()` now fills device, package and network info in **one native round trip**, then starts
+  notifications.
+
+### New APIs
+
+* **Facades:** `UDownloads` (downloads), `UMedia` (players, sources, subtitles, HLS/DASH,
+  library, playlists), `UCamera` (camera screen, photos, video, scanning) and `UScreenGuard`
+  (`set(enabled:)` added). `UIso` / `UIsoClient` moved to `lib/utils`.
+* **`UApp`:**
+  * Device and power: `deviceStatus`, `batteryLevel`, `isCharging`, `isLowBattery`,
+    `isPowerSaveMode`, `shouldSaveEnergy`, `freeDiskSpace` and `freeMemory`.
+  * Security: `deviceIntegrity`, `isDeviceCompromised` and `isRooted`.
+  * Versions: `isVersionAtLeast`, `isVersionOlderThan` and `compareVersions`.
+  * System UI: `haptic` (`UHapticType`), `keepScreenOn`, `setFullScreen`, `setOrientations`,
+    `setStatusBarLight`, `hideKeyboard` and `exit`.
+  * App info: `initPackageInfo`, plus all the new `UPackage` / `UDevice` fields.
+* **`ULocalStorage`:**
+  * Typed reads: `get<T>`, `getOr`, `getDateTime`, `getDuration`, `getBytes`, `getEnum`,
+    `getMap`, `getList`, `getObject` and `getObjects`.
+  * Secure values: `setSecure`, `getSecure`, `removeSecure`, `containsSecure` and
+    `clearSecure`.
+  * Writing: `setAndWait`, `setAll`, `flush`, `update` and `increment`.
+  * Expiry: `expire` and `ttlOf`.
+  * Watching: `watch` and `listenable`.
+  * Removing: `removeAll` and `removeWhere`.
+  * Named stores: `openStore`, `store` and `deleteStore`.
+* **`UFile`:**
+  * Keyed storage: `saveBytes`, `saveString`, `saveJson`, `saveCache`, `saveSecure` and their
+    `read*` counterparts, plus `readStream`.
+  * File operations: `copy`, `move`, `delete`, `deleteAll`, `deleteExpired`, `exists`, `sizeOf`
+    and `pathOf`.
+  * Opening and exporting: `open`, `reveal`, `saveAs`, `saveToDownloads`, `exportFile` and
+    `importFile`.
+  * Storage management: `excludeFromBackup`, `freeSpace`, `trimCache`, `storageUsage`,
+    `storageKeys`, `storageEntries` and `openStoragePage`.
+* **`UValidators`:** `cardNumber`, `iban`, `matchController` and `isValid`.
+* **Helpers:** `UThrottler`, `URetry`, `UTimezone.offsetText`, and `UEncryption.sha1Bytes`,
+  `sha256Bytes`, `hmacSha256Bytes` and `randomBytes`.
+* **`UMaterialApp`:** new `title`, `builder`, `routes`, `onGenerateRoute`, `navigatorObservers`
+  and `localizationsDelegates` parameters.
+
+### New widgets
+
+* **Async:** `UAsyncBuilder` (loading / error + retry / empty / data), `UStreamView`,
+  `UPaginatedList` (infinite scroll with pull-to-refresh), `UOnlineBuilder`, `UOfflineBanner` and
+  `UNetworkBuilder`.
+* **Building blocks:** `USkeleton`, `UAvatar`, `USearchField` (debounced) and `UCopyText`.
+
+### Extensions
+
+* **`BuildContext`:** `screenSize`, `isRtl`, `locale`, `responsive`, `isKeyboardOpen` and
+  `hideKeyboard`.
+* **`DateTime`:**
+  * Checks: `isToday`, `isYesterday`, `isTomorrow`, `isPast`, `isFuture` and `isSameDay`.
+  * Boundaries: `startOfDay`, `endOfDay` and `startOfMonth`.
+  * Math: `addMonths`, `age` and `daysUntil`.
+  * Other: `copyWith` and `toJalaliFormat`.
+* **`Iterable`:** `groupBy`, `distinctBy`, `chunked`, `sumBy`, `averageBy`, `minBy`, `maxBy`,
+  `separatedBy`, `orEmpty` and `where`.
+* **`List<Widget>`:** `withSpacing` and `withDividers`.
+* **`Map`:** `getOr`, `pick`, `omit`, `removeNulls` and `deepMerge`.
+* **`num`:**
+  * Durations: `ms`, `seconds`, `minutes`, `hours`, `days` and `delay`.
+  * Formatting: `toBKMG`, `toHuman`, `withCommas`, `toPersianWords`, `toClock` and `twoDigits`.
+  * Percentages and ranges: `toPercent`, `percentOf` and `between`.
+  * Other: `toDateTime`.
+* **`Duration`:** `toClock`.
+* **`String`:**
+  * Checks: `isBlank`, `isNullOrBlank`, `isPersian` and `hasPersian`.
+  * Transforms: `normalizePersian`, `capitalize`, `toTitleCase`, `toSlug`, `mask`, `reversed`
+    and `orIfBlank`.
+  * Parsing: `toIntOrNull`, `toDoubleOrNull`, `toDateTime`, `toColor`, `toHex` and `countOf`.
+* **`Widget`:**
+  * Layout: `center`, `sized`, `flexible`, `sliver` and `opacity`.
+  * State: `visible`, `disabled`, `tooltip` and `hero`.
+  * Clipping and effects: `clipRadius`, `clipCircle` and `skeleton`.
+
+### CLI (`dart run u:app`)
+
+* **New `share-target`** registers the app to receive shares and "Open with" files on Android, iOS
+  and macOS, for `UShare.onReceive`. It takes `image`, `video`, `audio`, `text`, `pdf`, `any` or
+  MIME types.
+* **New `query-schemes`** adds iOS `LSApplicationQueriesSchemes` and Android `<queries>` packages
+  so `ULaunch.canOpen` and `isInstalled` can see other apps.
+* **New `full-screen` permission**, bringing the total to 33. Permissions can now add Android
+  `<service>` entries, and print store-review notes.
+
+### Platform / build
+
+* **Android manifest:** the plugin now declares `ACCESS_NETWORK_STATE`, `RECEIVE_BOOT_COMPLETED`,
+  the geofence, notification and boot receivers, and a scoped `<queries>` block for browsers,
+  dialer, maps, stores and messengers. It does not use `QUERY_ALL_PACKAGES`.
+* **Android build:** `consumer-rules.pro` lets apps without ARCore pass R8.
+* **iOS / macOS:** a `PrivacyInfo.xcprivacy` privacy manifest declares the UserDefaults, disk
+  space, boot time and file timestamp APIs.
+* **Windows:** links `iphlpapi`, `ws2_32`, `version`, `propsys`, `gdi32` and `user32`.
+* **Requirements:** Flutter ≥ 3.47.0, Dart ≥ 3.12.0.
+
+### Project layout
+
+* **`lib/src/<feature>/`** holds the engines and channels. It replaces `lib/plugins/`, the
+  top-level `lib/cli/` and `lib/iso8583/`, `lib/models/` and `lib/utils/files|web`.
+* **`lib/utils/`** holds only the documented static helpers.
+* **`lib/components/`** holds the widgets.
+* **Engine splits:** the barcode encoders moved to `src/barcode`, the crypto algorithms to
+  `src/crypto`, and the media engine was split into `src/media` (controller, library, HLS/DASH
+  and playlist parsers, subtitles, tags, text decoding).
+* **Docs:** every public member now has a one-line doc comment with an example, and with the
+  permission and platforms it needs.
+
+### Breaking changes
+
+* **Re-exports removed.** `connectivity_plus`, `device_info_plus`, `flutter_local_notifications`,
+  `geolocator`, `package_info_plus`, `share_plus`, `shared_preferences` and `url_launcher` are no
+  longer re-exported. Code that used their types (`Position`, `SharedPreferences`, `launchUrl`,
+  `PackageInfo`, `ShareResult`, …) through `package:u/utilities.dart` must use the u APIs or add
+  the package itself.
+* **`UApp` types changed.** `UApp.packageInfo` is a `UPackageInfo` and `UApp.deviceInfo` is a
+  `UDeviceInfo`. `UApp.initDeviceInfo()` is removed, because `initU()` does it.
+* **Removed types:** `UInternetConnectionChecker`, `UInternetConnectionStatus`,
+  `UAddressCheckOptions`, `UAddressCheckResult`, `UOs` and `UUpdateResponse`.
+* **Renamed or replaced members:**
+
+| Before | Now |
+| --- | --- |
+| `ULocation.getUserLocation()` | `ULocation.position()` / `current()` |
+| `UNotification.showNotification(...)` | `UNotification.show(id, title:, body:)` |
+| `UNetwork.hasWifi()` / `hasCellular()` / `hasVpn()` / `hasEthernet()` / `hasBluetooth()` (async) | `UNetwork.isWifi` / `isCellular` / `isVpn` / `isEthernet` / `isBluetooth` (sync) |
+| `UNetwork.hasAnyConnection()` / `hasNetworkConnection()` | `UNetwork.isOnline`, or `await UNetwork.hasInternet()` |
+| `ULaunch.whatsApp` / `telegram` / `instagram` | `ULaunch.chat(UMessenger.whatsapp, …)` |
+| `ULaunch.shareText` / `shareFile` / `shareWith*` | `UShare.text` / `file` / `to(UShareTarget.…)` |
+| `UShare.xFiles(...)` / `wasShared(result)` | `UShare.files(...)` / `result.isSuccess` |
+| `UFile.showImagePicker` / `showFilePicker` | `UFile.pickImage` / `pickFiles` |
+| `ULocalStorage.getIfNotExpired` / `setBatch` | `ULocalStorage.get<T>` / `setAll` |
+| `context.size` | `context.screenSize` |
+| `UUpdateDialog.checkAndShow(UUpdateResponse, …)` | `UUpdateDialog.checkAndShow(U.appSettings.appVersions, …)` |
+
+### Upgrade notes
+
+* **Saved data is not migrated.** Values that earlier versions saved through `shared_preferences`
+  (tokens, locale, dark mode and anything written with `ULocalStorage`) are not carried over to
+  `UStorage`, so existing users start signed out with default settings after updating.
+* **Scheduled notifications are not migrated.** Notifications that `flutter_local_notifications`
+  scheduled are not re-armed, so schedule them again after upgrading.
+* **Run `dart run u:app doctor` after upgrading.** To use the new features, also run
+  `permission add …`, `share-target` and `query-schemes`.
+
 ## 3.1.0
 
 * **Drawing on PDFs, EPUBs and videos.** New `UDocShapeLayer` / `UDocDrawToolbar` /
