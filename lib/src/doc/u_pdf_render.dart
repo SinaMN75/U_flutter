@@ -5504,13 +5504,38 @@ class UPdfController extends UDocController {
   @override
   UDocKind get kind => UDocKind.pdf;
 
-  Future<void> open({String? path, String? url, Uint8List? bytes, String? asset, Object? blob, Map<String, String>? headers, String password = ""}) async {
+  /// [storageKey] opens a UFileStorage entry (vault by default) without a plaintext copy.
+  /// [private] keeps document bytes and extracted text off disk (no temp spill, in-memory text index).
+  Future<void> open({
+    String? path,
+    String? url,
+    Uint8List? bytes,
+    String? asset,
+    Object? blob,
+    Map<String, String>? headers,
+    String? storageKey,
+    UStorageBucket storageBucket = UStorageBucket.vault,
+    bool private = false,
+    String password = "",
+  }) async {
     emit(value.copyWith(state: UDocState.opening, isBusy: true, clearError: true));
     try {
-      final UPdfDocument document = await UPdfDocument.open(path: path, url: url, bytes: bytes, asset: asset, blob: blob, headers: headers, password: password);
+      final bool offDisk = private || storageKey != null;
+      final UPdfDocument document = await UPdfDocument.open(
+        path: path,
+        url: url,
+        bytes: bytes,
+        asset: asset,
+        blob: blob,
+        headers: headers,
+        storageKey: storageKey,
+        storageBucket: storageBucket,
+        private: offDisk,
+        password: password,
+      );
       _document = document;
       _renderer = UPdfPageRenderer(document);
-      _index = await UDocTextIndex.open(document.fingerprint);
+      _index = await UDocTextIndex.open(document.fingerprint, persistent: !offDisk);
       await _loadHiddenGroups(document);
       final UDocMetadata metadata = await document.metadata();
       final UPdfPage? first = await document.page(0);

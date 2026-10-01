@@ -74,6 +74,10 @@ abstract final class UMedia {
   /// A source from an Android content:// URI (e.g. from the file picker).
   static UMediaSource content(String uri, {String? id, UMediaMetadata? metadata, Duration? startPosition}) => UMediaSource.content(uri, id: id, metadata: metadata, startPosition: startPosition);
 
+  /// A UFileStorage entry (encrypted vault by default), streamed privately; no plaintext file is written. Native only. `UMedia.vault("course.mp4")`
+  static UMediaSource vault(String key, {UStorageBucket bucket = UStorageBucket.vault, String? mimeType, String? id, UMediaMetadata? metadata, Duration? startPosition}) =>
+      UMediaSource.vault(key, bucket: bucket, mimeType: mimeType, id: id, metadata: metadata, startPosition: startPosition);
+
   // --- Screens ------------------------------------------------------------------------------
 
   /// Plays a video in a tall bottom sheet with full controls; give one of url/bytes/base64/filePath/assetPath. `UMedia.showVideo(url: url, title: "Intro")`

@@ -33,7 +33,7 @@ enum UDocPermission { print, printHighQuality, modify, copy, annotate, fillForms
 enum UDocSaveMode { incremental, rewrite, optimize }
 
 /// Where a document comes from: file, bytes, url, asset.
-enum UDocSourceKind { file, memory, network, asset, blob }
+enum UDocSourceKind { file, memory, network, asset, blob, storage }
 
 /// PDF annotation types (highlight, ink, note, link, widget…).
 enum UDocAnnotationKind {
@@ -250,6 +250,38 @@ class UMemoryByteSource extends UDocByteSource {
   Future<Uint8List> read(int offset, int count) async {
     final int safe = clampCount(offset, count);
     return Uint8List.sublistView(bytes, offset, offset + safe);
+  }
+
+  @override
+  Future<void> close() async {}
+}
+
+/// Internal: bytes of a UFileStorage entry; vault entries are decrypted chunk by chunk, in memory only.
+class UStorageByteSource extends UDocByteSource {
+  UStorageByteSource(this.key, {this.bucket = UStorageBucket.vault}) : _length = UFileStorage.size(key, bucket: bucket);
+
+  final String key;
+  final UStorageBucket bucket;
+  final int _length;
+
+  @override
+  String get id => "storage:${bucket.name}:$key:$_length";
+
+  @override
+  int get length => _length;
+
+  @override
+  UDocSourceKind get kind => UDocSourceKind.storage;
+
+  @override
+  Future<Uint8List> read(int offset, int count) async {
+    final int safe = clampCount(offset, count);
+    if (safe == 0) return Uint8List(0);
+    final BytesBuilder out = BytesBuilder(copy: false);
+    await for (final Uint8List chunk in UFileStorage.read(key, bucket: bucket, start: offset, end: offset + safe)) {
+      out.add(chunk);
+    }
+    return out.takeBytes();
   }
 
   @override
@@ -501,12 +533,48 @@ typedef UDocBlobSourceBuilder = Future<UDocByteSource> Function(Object handle, {
 abstract class UDocSources {
   static UDocBlobSourceBuilder? blobBuilder;
 
-  static Future<UCachedByteSource> open({String? path, String? url, Uint8List? bytes, String? asset, Object? blob, Map<String, String>? headers, int cacheBytes = uDocSourceCacheBytes}) async {
-    final UDocByteSource source = await _resolve(path: path, url: url, bytes: bytes, asset: asset, blob: blob, headers: headers);
+  /// [storageKey] reads a UFileStorage entry (vault by default). [private] never writes document bytes to disk (no temp spill).
+  static Future<UCachedByteSource> open({
+    String? path,
+    String? url,
+    Uint8List? bytes,
+    String? asset,
+    Object? blob,
+    Map<String, String>? headers,
+    String? storageKey,
+    UStorageBucket storageBucket = UStorageBucket.vault,
+    bool private = false,
+    int cacheBytes = uDocSourceCacheBytes,
+  }) async {
+    final UDocByteSource source = await _resolve(
+      path: path,
+      url: url,
+      bytes: bytes,
+      asset: asset,
+      blob: blob,
+      headers: headers,
+      storageKey: storageKey,
+      storageBucket: storageBucket,
+      private: private,
+    );
     return UCachedByteSource(source, maxBytes: cacheBytes);
   }
 
-  static Future<UDocByteSource> _resolve({String? path, String? url, Uint8List? bytes, String? asset, Object? blob, Map<String, String>? headers}) async {
+  static Future<UDocByteSource> _resolve({
+    String? path,
+    String? url,
+    Uint8List? bytes,
+    String? asset,
+    Object? blob,
+    Map<String, String>? headers,
+    String? storageKey,
+    UStorageBucket storageBucket = UStorageBucket.vault,
+    bool private = false,
+  }) async {
+    if (storageKey != null) {
+      if (!UFileStorage.contains(storageKey, bucket: storageBucket)) throw UDocError(code: UDocErrorCode.notFound, message: "No stored document", path: storageKey);
+      return UStorageByteSource(storageKey, bucket: storageBucket);
+    }
     if (bytes != null) return UMemoryByteSource(bytes);
     if (blob != null) {
       final UDocBlobSourceBuilder? builder = blobBuilder;
@@ -519,7 +587,7 @@ abstract class UDocSources {
     }
     if (path != null) return UFileByteSource.open(path);
     if (url != null) {
-      final Directory? spill = kIsWeb ? null : await getTemporaryDirectory();
+      final Directory? spill = kIsWeb || private ? null : await getTemporaryDirectory();
       return UHttpRangeByteSource.open(url, headers: headers, spillDirectory: spill);
     }
     throw const UDocError(code: UDocErrorCode.notFound, message: "No document source was provided");
@@ -1654,8 +1722,9 @@ class UDocTextIndex {
 
   static int _textSize(String value) => value.length * 2;
 
-  static Future<UDocTextIndex> open(String fingerprint) async {
-    if (kIsWeb) return UDocTextIndex._(fingerprint, null);
+  /// [persistent] false keeps the extracted text in memory only (for private documents).
+  static Future<UDocTextIndex> open(String fingerprint, {bool persistent = true}) async {
+    if (kIsWeb || !persistent) return UDocTextIndex._(fingerprint, null);
     try {
       final Directory support = await getApplicationSupportDirectory();
       final Directory directory = Directory("${support.path}${Platform.pathSeparator}$_folder");

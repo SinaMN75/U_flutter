@@ -15,6 +15,8 @@ class UPdfViewer extends StatefulWidget {
     this.url,
     this.filePath,
     this.asset,
+    this.vaultKey,
+    this.storageBucket = UStorageBucket.vault,
     this.controller,
     this.editController,
     this.annotations,
@@ -55,7 +57,7 @@ class UPdfViewer extends StatefulWidget {
     this.onLinkTapped,
     this.onBack,
     super.key,
-  }) : assert(base64Pdf != null || bytes != null || url != null || filePath != null || asset != null || controller != null, "Provide one PDF source");
+  }) : assert(base64Pdf != null || bytes != null || url != null || filePath != null || asset != null || vaultKey != null || controller != null, "Provide one PDF source");
 
   /// PDF as base64 text.
   final String? base64Pdf;
@@ -71,6 +73,12 @@ class UPdfViewer extends StatefulWidget {
 
   /// Asset path.
   final String? asset;
+
+  /// UFileStorage key (encrypted vault by default): decrypted on demand in memory, never copied to disk; share/save-as are off.
+  final String? vaultKey;
+
+  /// Bucket of [vaultKey].
+  final UStorageBucket storageBucket;
 
   /// Controller to read or change it from code.
   final UPdfController? controller;
@@ -260,6 +268,9 @@ class UPdfViewerState extends State<UPdfViewer> {
   /// Edit controller (when editing).
   UPdfEditController? get editor => widget.editController ?? _internalEditor;
 
+  /// Secure or stored documents never leave memory: no temp files, no persistent text index, no share/save-as.
+  bool get _private => widget.secure || widget.vaultKey != null;
+
   /// Drawing controller.
   UDocDrawController get drawing => _draw;
 
@@ -334,7 +345,12 @@ class UPdfViewerState extends State<UPdfViewer> {
   void didUpdateWidget(UPdfViewer oldWidget) {
     super.didUpdateWidget(oldWidget);
     final bool sourceChanged =
-        oldWidget.url != widget.url || oldWidget.filePath != widget.filePath || oldWidget.asset != widget.asset || oldWidget.bytes != widget.bytes || oldWidget.base64Pdf != widget.base64Pdf;
+        oldWidget.url != widget.url ||
+        oldWidget.filePath != widget.filePath ||
+        oldWidget.asset != widget.asset ||
+        oldWidget.bytes != widget.bytes ||
+        oldWidget.base64Pdf != widget.base64Pdf ||
+        oldWidget.vaultKey != widget.vaultKey;
     if (sourceChanged && _ownsController) {
       _resolving.clear();
       _links.clear();
@@ -353,6 +369,9 @@ class UPdfViewerState extends State<UPdfViewer> {
       bytes: widget.bytes ?? widget.base64Pdf?.toBytesFromBase64(),
       asset: widget.asset,
       headers: widget.headers,
+      storageKey: widget.vaultKey,
+      storageBucket: widget.storageBucket,
+      private: _private,
       password: widget.password,
     );
     if (!mounted) return;
@@ -404,6 +423,9 @@ class UPdfViewerState extends State<UPdfViewer> {
       bytes: widget.bytes ?? widget.base64Pdf?.toBytesFromBase64(),
       asset: widget.asset,
       headers: widget.headers,
+      storageKey: widget.vaultKey,
+      storageBucket: widget.storageBucket,
+      private: _private,
       password: password,
     );
     await _prepareAnnotations();
@@ -1242,7 +1264,7 @@ class UPdfViewerState extends State<UPdfViewer> {
     bool saved = false;
     if (path != null) {
       saved = await target.saveTo(path);
-    } else {
+    } else if (!_private) {
       final Uint8List? bytes = await target.saveToBytes();
       if (bytes != null) {
         await UShare.bytes(bytes, name: "document.pdf", mimeType: "application/pdf");
@@ -1930,8 +1952,10 @@ extension _UPdfViewerChrome on UPdfViewerState {
                         if (widget.enableMarkup) ...<PopupMenuEntry<String>>[
                           _menuItem("annotations", Icons.sticky_note_2_outlined, U.s.annotations),
                           _menuItem("bookmarks", Icons.bookmarks_outlined, U.s.bookmarks),
-                          _menuItem("exportNotes", Icons.ios_share_rounded, U.s.exportAnnotations),
-                          _menuItem("exportData", Icons.data_object_rounded, U.s.export),
+                          if (widget.allowCopy) ...<PopupMenuEntry<String>>[
+                            _menuItem("exportNotes", Icons.ios_share_rounded, U.s.exportAnnotations),
+                            _menuItem("exportData", Icons.data_object_rounded, U.s.export),
+                          ],
                           _menuItem("importData", Icons.download_rounded, U.s.importAnnotations),
                           if (_drawingEnabled && _markup.shapesOn(_visiblePage).isNotEmpty) _menuItem("clearDrawings", Icons.layers_clear_outlined, U.s.clearDrawings),
                           _menuItem("clearAll", Icons.delete_sweep_outlined, U.s.clearAnnotations),

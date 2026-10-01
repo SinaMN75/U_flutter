@@ -15,7 +15,7 @@ enum URepeatMode { off, one, all }
 enum UMediaTrackType { video, audio, subtitle }
 
 /// Source type: network, file, asset, bytes, content.
-enum UMediaSourceKind { network, file, asset, bytes, content, stream }
+enum UMediaSourceKind { network, file, asset, bytes, content, stream, vault }
 
 /// Stream type: progressive, hls, dash, rtsp, rtmp.
 enum UStreamProtocol { progressive, hls, dash, smoothStreaming, rtsp, rtmp, srt, webrtc }
@@ -534,6 +534,27 @@ sealed class UMediaSource {
 
   static UMediaSource content(String uri, {String? id, UMediaMetadata? metadata, Duration? startPosition}) => UContentSource(uri, id: id, metadata: metadata, startPosition: startPosition);
 
+  /// A UFileStorage entry (encrypted vault by default) streamed over a private loopback URL; plaintext never touches disk. Native only.
+  static UMediaSource vault(
+    String key, {
+    UStorageBucket bucket = UStorageBucket.vault,
+    String? mimeType,
+    String? id,
+    UMediaMetadata? metadata,
+    Duration? startPosition,
+    Duration? endPosition,
+    List<UExternalSubtitle> externalSubtitles = const <UExternalSubtitle>[],
+  }) => UVaultSource(
+    key,
+    bucket: bucket,
+    mimeType: mimeType,
+    id: id,
+    metadata: metadata,
+    startPosition: startPosition,
+    endPosition: endPosition,
+    externalSubtitles: externalSubtitles,
+  );
+
   Map<String, Object?> toMap();
 
   Map<String, Object?> _base() => <String, Object?>{
@@ -631,6 +652,41 @@ final class UBytesSource extends UMediaSource {
 
   @override
   Map<String, Object?> toMap() => <String, Object?>{..._base(), "bytes": data, "mimeType": mimeType};
+}
+
+/// Media from a UFileStorage entry; UMediaController serves it through UStorageServer.
+final class UVaultSource extends UMediaSource {
+  UVaultSource(
+    this.key, {
+    this.bucket = UStorageBucket.vault,
+    this.mimeType,
+    String? id,
+    super.metadata,
+    super.startPosition,
+    super.endPosition,
+    super.externalSubtitles,
+  }) : super(id: id ?? "vault:$key");
+
+  final String key;
+  final UStorageBucket bucket;
+  final String? mimeType;
+
+  @override
+  UMediaSourceKind get kind => UMediaSourceKind.vault;
+
+  /// The network source the native player actually opens.
+  UNetworkSource served(Uri url) => UNetworkSource(
+    url.toString(),
+    id: id,
+    metadata: metadata,
+    protocol: UStreamProtocol.progressive,
+    startPosition: startPosition,
+    endPosition: endPosition,
+    externalSubtitles: externalSubtitles,
+  );
+
+  @override
+  Map<String, Object?> toMap() => <String, Object?>{..._base(), "key": key, "bucket": bucket.name, "mimeType": mimeType};
 }
 
 /// Media from an Android content URI.

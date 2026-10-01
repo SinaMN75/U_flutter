@@ -296,7 +296,8 @@ class UDownloadTile extends StatelessWidget {
     );
     if (task.status == UDownloadStatus.completed) {
       return <Widget>[
-        if (task.request.destination.target != UDownloadTarget.memory) button(Icons.open_in_new_rounded, U.s.open, () => unawaited(_manager.open(task))),
+        if (task.request.destination.target != UDownloadTarget.memory && !task.request.destination.isEncrypted)
+          button(Icons.open_in_new_rounded, U.s.open, () => unawaited(_manager.open(task))),
         PopupMenuButton<String>(
           icon: Icon(Icons.more_vert_rounded, color: cs.onSurfaceVariant),
           onSelected: (String value) => unawaited(switch (value) {
@@ -306,8 +307,10 @@ class UDownloadTile extends StatelessWidget {
             _ => _manager.remove(task.id),
           }),
           itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-            if (!UDownloadPlatform.isWeb) PopupMenuItem<String>(value: "reveal", child: UTextBodyMedium(U.s.showInFolder)),
-            if (!UDownloadPlatform.isWeb) PopupMenuItem<String>(value: "share", child: UTextBodyMedium(U.s.share)),
+            if (!UDownloadPlatform.isWeb && !task.request.destination.isEncrypted) ...<PopupMenuEntry<String>>[
+              PopupMenuItem<String>(value: "reveal", child: UTextBodyMedium(U.s.showInFolder)),
+              PopupMenuItem<String>(value: "share", child: UTextBodyMedium(U.s.share)),
+            ],
             PopupMenuItem<String>(value: "remove", child: UTextBodyMedium(U.s.remove)),
             PopupMenuItem<String>(
               value: "delete",

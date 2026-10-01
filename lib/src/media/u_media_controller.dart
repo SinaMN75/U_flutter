@@ -24,6 +24,8 @@ class UMediaController extends ValueNotifier<UMediaValue> {
   bool _pausedByInterruption = false;
   double _volumeBeforeDuck = 1;
 
+  Uri? _servedUrl;
+
   USubtitleData? _subtitles;
   Duration _subtitleDelay = Duration.zero;
   double _subtitleScale = 1;
@@ -265,9 +267,22 @@ class UMediaController extends ValueNotifier<UMediaValue> {
     _subtitles = null;
     activeCues.value = const <USubtitleCue>[];
 
+    final Map<String, Object?> sourceMap;
+    try {
+      sourceMap = await _nativeSource(source);
+    } catch (error) {
+      _emit(
+        value.copyWith(
+          state: UMediaState.error,
+          error: UMediaError(code: kIsWeb ? UMediaErrorCode.unsupportedFormat : UMediaErrorCode.notFound, message: "Cannot open stored media", detail: "$error", sourceId: source.id),
+        ),
+      );
+      return;
+    }
+
     try {
       await UMediaChannel.call<void>(id, "open", <String, Object?>{
-        "source": source.toMap(),
+        "source": sourceMap,
         "autoPlay": autoPlay,
         "resumeMs": (resumeAt ?? source.startPosition)?.inMilliseconds,
       });
@@ -282,6 +297,21 @@ class UMediaController extends ValueNotifier<UMediaValue> {
         ),
       );
     }
+  }
+
+  // Vault sources become a private loopback URL; the previous one is revoked first.
+  Future<Map<String, Object?>> _nativeSource(UMediaSource source) async {
+    final Uri? previous = _servedUrl;
+    _servedUrl = null;
+    if (previous != null) await UStorageServer.revoke(previous);
+    if (source is! UVaultSource) return source.toMap();
+    final Uri url = await UStorageServer.register(source.key, bucket: source.bucket, mimeType: source.mimeType);
+    if (_disposed) {
+      await UStorageServer.revoke(url);
+      throw StateError("Controller disposed");
+    }
+    _servedUrl = url;
+    return source.served(url).toMap();
   }
 
   UExternalSubtitle? _preferredSubtitle(UMediaSource source) {
@@ -678,6 +708,9 @@ class UMediaController extends ValueNotifier<UMediaValue> {
     _events = null;
     UMediaSession.unregister(this);
     if (id != null) unawaited(UMediaChannel.call<void>(id, "dispose"));
+    final Uri? served = _servedUrl;
+    _servedUrl = null;
+    if (served != null) unawaited(UStorageServer.revoke(served));
     unawaited(_stateController.close());
     activeCues.dispose();
     audioSpectrum.dispose();

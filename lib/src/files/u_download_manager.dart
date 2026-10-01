@@ -143,6 +143,10 @@ class UDownloadManager extends ChangeNotifier {
   bool _awake = false;
   bool _polling = false;
   StreamSubscription<UNotificationEvent>? _notificationTaps;
+  final StreamController<UDownloadTask> _taps = StreamController<UDownloadTask>.broadcast();
+
+  /// Completion-notification taps. Non-encrypted files are also opened; vault files never are, so react here.
+  Stream<UDownloadTask> get onNotificationTap => _taps.stream;
 
   /// Visible tasks, newest first.
   List<UDownloadTask> get tasks => List<UDownloadTask>.unmodifiable(_tasks.where((UDownloadTask t) => t.request.visible).toList().reversed);
@@ -452,15 +456,14 @@ class UDownloadManager extends ChangeNotifier {
     await UShare.file(path, name: task.fileName);
   }
 
-  /// A readable location for a finished task. Vault files are decrypted to a temp file first.
+  /// A readable location for a finished task. Vault files have none: they never leave the app
+  /// (open/reveal/share/openWhenDone are no-ops for them); read them with UFileStorage.read.
   Future<String?> _plainLocation(UDownloadTask task) async {
     if (task.status != UDownloadStatus.completed || task.result == null) return null;
     final UDownloadDestination destination = task.request.destination;
     if (destination.target != UDownloadTarget.storage) return task.result;
-    if (!destination.isEncrypted) return UFileStorage.pathOf(destination.key!, bucket: destination.bucket);
-    if (!UFileStorage.hasFileSystem) return null;
-    final String path = uJoinPath(await UFileStorage.backend.root(UStorageBucket.temp), task.fileName ?? task.id);
-    return await UFileStorage.exportFile(destination.key!, path, bucket: destination.bucket) ? path : null;
+    if (destination.isEncrypted) return null;
+    return UFileStorage.pathOf(destination.key!, bucket: destination.bucket);
   }
 
   // ---------------------------------------------------------------------------
@@ -923,11 +926,13 @@ class UDownloadManager extends ChangeNotifier {
     if (UDownloadPlatform.isWeb) return;
     try {
       await UNotifyChannel.init(androidIcon: config.notificationIcon);
-      // Tapping the notification opens the file.
+      // Tapping the notification opens the file (never a vault file) and is reported on onNotificationTap.
       _notificationTaps ??= UNotifyChannel.events.listen((UNotificationEvent event) {
         final Object? id = event.payload?["u_download"];
         final UDownloadTask? tapped = id == null ? null : this.task("$id");
-        if (event.type == UNotificationEventType.tap && tapped != null) unawaited(open(tapped));
+        if (event.type != UNotificationEventType.tap || tapped == null) return;
+        if (!_taps.isClosed) _taps.add(tapped);
+        if (!tapped.request.destination.isEncrypted) unawaited(open(tapped));
       });
       await UNotifyChannel.show(
         UNotificationRequest(
@@ -952,6 +957,7 @@ class UDownloadManager extends ChangeNotifier {
     }
     unawaited(_connectivity?.cancel());
     unawaited(_notificationTaps?.cancel());
+    unawaited(_taps.close());
     _ticker?.cancel();
     _saveTimer?.cancel();
     for (final Timer timer in _scheduled.values) {

@@ -161,6 +161,7 @@ export "src/files/u_download_platform.dart" show UDownloadPlatform, UTransportOp
 export "src/files/u_file_storage.dart";
 export "src/files/u_files_channel.dart";
 export "src/files/u_storage_backend.dart" show UAead, UStorageBackend, UStorageBucket, UStorageSink, uJoinPath;
+export "src/files/u_storage_server.dart";
 export "src/files/u_vault.dart" show UVaultHeader, UVaultKeys, UVaultWriter;
 export "src/iso8583/bit_set.dart";
 export "src/iso8583/card.dart";

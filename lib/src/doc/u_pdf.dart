@@ -2170,8 +2170,29 @@ class UPdfDocument {
     return total;
   }
 
-  static Future<UPdfDocument> open({String? path, String? url, Uint8List? bytes, String? asset, Object? blob, Map<String, String>? headers, String password = ""}) async {
-    final UCachedByteSource source = await UDocSources.open(path: path, url: url, bytes: bytes, asset: asset, blob: blob, headers: headers);
+  static Future<UPdfDocument> open({
+    String? path,
+    String? url,
+    Uint8List? bytes,
+    String? asset,
+    Object? blob,
+    Map<String, String>? headers,
+    String? storageKey,
+    UStorageBucket storageBucket = UStorageBucket.vault,
+    bool private = false,
+    String password = "",
+  }) async {
+    final UCachedByteSource source = await UDocSources.open(
+      path: path,
+      url: url,
+      bytes: bytes,
+      asset: asset,
+      blob: blob,
+      headers: headers,
+      storageKey: storageKey,
+      storageBucket: storageBucket,
+      private: private,
+    );
     final String fingerprint = await UDocSources.fingerprint(source);
     final UPdfDocument document = UPdfDocument._(source, fingerprint);
     await document._load(password);
