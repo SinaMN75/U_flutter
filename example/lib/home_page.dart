@@ -12,6 +12,7 @@ import "pages/showcases/camera_page.dart";
 import "pages/showcases/camera_studio_page.dart";
 import "pages/showcases/document_reader_page.dart";
 import "pages/showcases/downloads/downloads_page.dart";
+import "pages/showcases/maps/maps_page.dart";
 import "pages/showcases/media_player_page.dart";
 import "pages/showcases/scanner_studio_page.dart";
 import "pages/showcases/video_notes_page.dart";
@@ -20,6 +21,7 @@ import "pages/utils/backend_web_page.dart";
 import "pages/utils/crypto_data_page.dart";
 import "pages/utils/extensions_page.dart";
 import "pages/utils/files_page.dart";
+import "pages/utils/geo_page.dart";
 import "pages/utils/launch_share_page.dart";
 import "pages/utils/location_notification_page.dart";
 import "pages/utils/media_camera_page.dart";
@@ -46,6 +48,7 @@ final Map<String, List<GalleryEntry>> kSections = <String, List<GalleryEntry>>{
     GalleryEntry("Files & downloads", "UFile, UDownloads", Icons.folder_open, () => const FilesPage()),
     GalleryEntry("Launch, share, guard", "ULaunch, UShare, UScreenGuard", Icons.share, () => const LaunchSharePage()),
     GalleryEntry("Location & notifications", "ULocation, UNotification", Icons.location_on, () => const LocationNotificationPage()),
+    GalleryEntry("Geo & maps", "UGeo, UMaps: distances, shapes, codes, GPX/KML/GeoJSON, search, routing, offline", Icons.public, () => const GeoPage()),
     GalleryEntry("Media & camera", "UMedia, UAudio, USound, UCamera, UArExperiences", Icons.perm_media, () => const MediaCameraPage()),
     GalleryEntry("Crypto & data", "UEncryption, UUUID, UOtp, UConvert, UClipboard, UTimezone", Icons.lock, () => const CryptoDataPage()),
     GalleryEntry("Persian, dates, state", "UPersianTools, UPhoneNumberUtils, UJalali, UGregorian, URx", Icons.calendar_month, () => const PersianDatesStatePage()),
@@ -70,6 +73,7 @@ final Map<String, List<GalleryEntry>> kSections = <String, List<GalleryEntry>>{
     GalleryEntry("Scanner studio", "Barcode scanner UI", Icons.qr_code_scanner, () => const ScannerStudioPage()),
     GalleryEntry("AR & 3D", "Place, measure, geo cards, 3D viewer", Icons.threed_rotation, () => const ArPage()),
     GalleryEntry("Downloads", "Segmented, encrypted, resumable", Icons.download_for_offline, () => const DownloadsPage()),
+    GalleryEntry("Maps", "UMap: vector styles, clusters, drawing, heatmaps, routing, navigation, offline", Icons.map, () => const MapsPage()),
   ],
 };
 
