@@ -5153,6 +5153,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get youDoNotHaveAccessToAnyParking => 'You do not have access to any parking';
 
   @override
+  String get youDoNotHaveAccessToThisPanel => 'You do not have access to this panel';
+
+  @override
   String get youHaveNoContracts => 'You have no contracts';
 
   @override

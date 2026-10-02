@@ -10202,6 +10202,12 @@ abstract class AppLocalizations {
   /// **'You do not have access to any parking'**
   String get youDoNotHaveAccessToAnyParking;
 
+  /// No description provided for @youDoNotHaveAccessToThisPanel.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not have access to this panel'**
+  String get youDoNotHaveAccessToThisPanel;
+
   /// No description provided for @youHaveNoContracts.
   ///
   /// In en, this message translates to:

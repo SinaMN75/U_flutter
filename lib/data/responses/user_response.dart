@@ -5,13 +5,15 @@ extension TagListExtension on UUserResponse {
 
   bool isFemaleMale() => tags.contains(TagUser.female.number);
 
-  bool isSuperAdmin() => tags.contains(TagUser.superAdmin.number);
+  bool isSystemAdmin() => tags.contains(TagUser.systemAdmin.number);
 
-  bool isFullAdmin() => isSuperAdmin() || tags.contains(TagUser.systemAdmin.number) || tags.contains(TagUser.systemUser.number);
+  bool isSuperAdmin() => isSystemAdmin() || tags.contains(TagUser.superAdmin.number);
 
   bool isSubAdmin() => tags.contains(TagUser.subAdmin.number);
 
-  bool hasPermission(TagUser permission) => isFullAdmin() || tags.contains(permission.number);
+  bool hasPermission(TagUser permission) => isSystemAdmin() || isSuperAdmin() || isSubAdmin() && tags.contains(permission.number);
+
+  int adminRank() => isSystemAdmin() ? 3 : isSystemAdmin() || isSuperAdmin() ? 2 : isSubAdmin() ? 1 : 0;
 
   String get displayName {
     final String full = "${firstName ?? ""} ${lastName ?? ""}".trim();

@@ -64,6 +64,7 @@ export "utils/u_toast.dart";
 export "utils/u_update_dialog.dart";
 export "utils/u_utils.dart";
 export "utils/u_web.dart";
+export "utils/u_base_controller.dart";
 
 // --- Extensions on String, num, DateTime, Iterable, Map, Widget, BuildContext ------------------------
 export "utils/extensions/context_extension.dart";

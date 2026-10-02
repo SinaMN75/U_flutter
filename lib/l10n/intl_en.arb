@@ -1908,6 +1908,7 @@
   "you": "You",
   "youAreOffline": "You are offline",
   "youDoNotHaveAccessToAnyParking": "You do not have access to any parking",
+  "youDoNotHaveAccessToThisPanel": "You do not have access to this panel",
   "youHaveNoContracts": "You have no contracts",
   "youHaveNoInvoices": "You have no invoices",
   "youHaveNoReservationsYet": "You have no reservations yet",

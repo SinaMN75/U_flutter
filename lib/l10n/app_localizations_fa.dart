@@ -5152,6 +5152,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get youDoNotHaveAccessToAnyParking => 'دسترسی به پارکینگ ندارید';
 
   @override
+  String get youDoNotHaveAccessToThisPanel => 'به این پنل دسترسی ندارید';
+
+  @override
   String get youHaveNoContracts => 'قراردادی ندارید';
 
   @override

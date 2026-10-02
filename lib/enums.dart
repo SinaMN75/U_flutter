@@ -192,7 +192,7 @@ enum TagUser with UNumericIdentifiable {
   visualAuthenticationAwaitingVerification("احراز هویت تصویری در انتظار تایید", "Visual Authentication Awaiting Verification", 508),
   eSignatureAwaitingVerification("امضای الکترونیکی در انتظار تایید", "E-Signature Awaiting Verification", 509),
 
-  // ---- Granular admin-panel permissions (only enforced for non-full-admins, e.g. subAdmin) ----
+  // ---- subAdmin permissions (6xx). super/system admins have all of them; only a superAdmin or systemAdmin can give them ----
   permissionManageHotels("مدیریت هتل‌ها", "Manage Hotels", 601),
   permissionDeleteHotels("حذف هتل‌ها", "Delete Hotels", 602),
   permissionManageDorms("مدیریت خوابگاه‌ها", "Manage Dorms", 603),
@@ -205,7 +205,16 @@ enum TagUser with UNumericIdentifiable {
   permissionManageUsers("مدیریت کاربران", "Manage Users", 610),
   permissionDeleteUsers("حذف کاربران", "Delete Users", 611),
   permissionManageReservations("مدیریت رزروها", "Manage Reservations", 612),
-  permissionDeleteReservations("حذف رزروها", "Delete Reservations", 613);
+  permissionDeleteReservations("حذف رزروها", "Delete Reservations", 613),
+  permissionManageMerchants("مدیریت پذیرنده‌ها", "Manage Merchants", 614),
+  permissionDeleteMerchants("حذف پذیرنده‌ها", "Delete Merchants", 615),
+  permissionManageTerminals("مدیریت پایانه‌ها", "Manage Terminals", 616),
+  permissionDeleteTerminals("حذف پایانه‌ها", "Delete Terminals", 617),
+  permissionManageMoadis("مدیریت مودیان", "Manage Taxpayers", 618),
+  permissionDeleteMoadis("حذف مودیان", "Delete Taxpayers", 619),
+  permissionManageWallets("مدیریت کیف پول‌ها", "Manage Wallets", 620),
+  permissionManageContents("مدیریت محتوا", "Manage Contents", 621),
+  permissionViewDashboard("مشاهده داشبورد", "View Dashboard", 622);
 
   const TagUser(this.titleFa, this.titleEn, this.number);
 
@@ -218,7 +227,7 @@ enum TagUser with UNumericIdentifiable {
 
   bool isMale() => this == TagUser.male;
 
-  /// Permission tags that a full admin can grant to a subAdmin to unlock a specific restricted action.
+  /// All permission tags a superAdmin can give to a subAdmin (each admin brand shows its own part of it).
   static const List<TagUser> permissions = <TagUser>[
     permissionManageHotels,
     permissionDeleteHotels,
@@ -233,6 +242,15 @@ enum TagUser with UNumericIdentifiable {
     permissionDeleteUsers,
     permissionManageReservations,
     permissionDeleteReservations,
+    permissionManageMerchants,
+    permissionDeleteMerchants,
+    permissionManageTerminals,
+    permissionDeleteTerminals,
+    permissionManageMoadis,
+    permissionDeleteMoadis,
+    permissionManageWallets,
+    permissionManageContents,
+    permissionViewDashboard,
   ];
 }
 
