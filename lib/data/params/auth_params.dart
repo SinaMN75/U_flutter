@@ -163,3 +163,68 @@ class UAuthCompleteProfileParams {
     "lastName": lastName,
   };
 }
+
+class UGoogleLoginParams {
+  UGoogleLoginParams({
+    required this.idToken,
+  });
+
+  factory UGoogleLoginParams.fromJson(String str) => UGoogleLoginParams.fromMap(json.decode(str));
+
+  factory UGoogleLoginParams.fromMap(Map<String, dynamic> json) => UGoogleLoginParams(
+    idToken: json["idToken"],
+  );
+  final String idToken;
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "idToken": idToken,
+  };
+}
+
+class UForgotPasswordParams {
+  UForgotPasswordParams({
+    required this.email,
+  });
+
+  factory UForgotPasswordParams.fromJson(String str) => UForgotPasswordParams.fromMap(json.decode(str));
+
+  factory UForgotPasswordParams.fromMap(Map<String, dynamic> json) => UForgotPasswordParams(
+    email: json["email"],
+  );
+  final String email;
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "email": email,
+  };
+}
+
+class UResetPasswordParams {
+  UResetPasswordParams({
+    required this.email,
+    required this.code,
+    required this.newPassword,
+  });
+
+  factory UResetPasswordParams.fromJson(String str) => UResetPasswordParams.fromMap(json.decode(str));
+
+  factory UResetPasswordParams.fromMap(Map<String, dynamic> json) => UResetPasswordParams(
+    email: json["email"],
+    code: json["code"],
+    newPassword: json["newPassword"],
+  );
+  final String email;
+  final String code;
+  final String newPassword;
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "email": email,
+    "code": code,
+    "newPassword": newPassword,
+  };
+}

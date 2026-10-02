@@ -188,6 +188,7 @@ class UUserJson {
     this.eSignatureRejectionReason,
     this.detail1,
     this.detail2,
+    this.googleId,
   });
 
   factory UUserJson.fromJson(String str) => UUserJson.fromMap(json.decode(str));
@@ -208,6 +209,7 @@ class UUserJson {
     eSignatureRejectionReason: json["eSignatureRejectionReason"],
     detail1: json["detail1"],
     detail2: json["detail2"],
+    googleId: json["googleId"],
   );
   final String? fcmToken;
   final double? weight;
@@ -224,6 +226,7 @@ class UUserJson {
   final String? eSignatureRejectionReason;
   final String? detail1;
   final String? detail2;
+  final String? googleId;
 
   String toJson() => json.encode(toMap());
 
@@ -243,6 +246,7 @@ class UUserJson {
     "eSignatureRejectionReason": eSignatureRejectionReason,
     "detail1": detail1,
     "detail2": detail2,
+    "googleId": googleId,
   };
 }
 

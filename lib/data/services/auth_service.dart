@@ -165,6 +165,39 @@ class UAuthService {
     return result;
   }
 
+  Future<(UResponse<ULoginResponse>?, UEmptyResponse?, String?)> loginWithGoogle({
+    required UGoogleLoginParams p,
+    Function(UResponse<ULoginResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call(
+    "/auth/LoginWithGoogle",
+    p.toMap(),
+    (String body) {
+      final UResponse<ULoginResponse> response = UResponse<ULoginResponse>.fromJson(body, (dynamic i) => ULoginResponse.fromMap(i));
+      setUserData(response.result!);
+      return response;
+    },
+    _Api.empty,
+    onOk,
+    onError,
+    onException,
+  );
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> forgotPassword({
+    required UForgotPasswordParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/auth/ForgotPassword", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> resetPassword({
+    required UResetPasswordParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/auth/ResetPassword", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
   void setUserData(ULoginResponse response) {
     ULocalStorage.setUserId(response.user.id);
     ULocalStorage.setToken(response.token);
