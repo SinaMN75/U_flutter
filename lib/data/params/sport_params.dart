@@ -606,6 +606,7 @@ class UTournamentRegisterParams {
     required this.tournamentId,
     this.title,
     this.partnerEmail,
+    this.payFromWallet = false,
   });
 
   factory UTournamentRegisterParams.fromJson(String str) => UTournamentRegisterParams.fromMap(json.decode(str));
@@ -614,6 +615,7 @@ class UTournamentRegisterParams {
     tournamentId: json["tournamentId"],
     title: json["title"],
     partnerEmail: json["partnerEmail"],
+    payFromWallet: json["payFromWallet"] ?? false,
   );
   final String tournamentId;
   final String? title;
@@ -621,12 +623,16 @@ class UTournamentRegisterParams {
   /// Doubles only: the partner's account email.
   final String? partnerEmail;
 
+  /// Pays the entry fee from the wallet now; otherwise it is paid to the organizer at the venue.
+  final bool payFromWallet;
+
   String toJson() => json.encode(toMap());
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "tournamentId": tournamentId,
     "title": title,
     "partnerEmail": partnerEmail,
+    "payFromWallet": payFromWallet,
   };
 }
 
@@ -707,5 +713,582 @@ class UTournamentMatchUpdateParams {
     "scheduledAt": scheduledAt?.toUtc().toIso8601String(),
     "court": court,
     "tags": tags,
+  };
+}
+
+class UTournamentMatchReadParams {
+  UTournamentMatchReadParams({
+    this.userId,
+    this.tournamentId,
+    this.sportId,
+    this.upcoming,
+    this.tags,
+    this.ids,
+    this.orderBy,
+    this.pageSize,
+    this.pageNumber,
+    this.selectorArgs,
+  });
+
+  factory UTournamentMatchReadParams.fromJson(String str) => UTournamentMatchReadParams.fromMap(json.decode(str));
+
+  factory UTournamentMatchReadParams.fromMap(Map<String, dynamic> json) => UTournamentMatchReadParams(
+    userId: json["userId"],
+    tournamentId: json["tournamentId"],
+    sportId: json["sportId"],
+    upcoming: json["upcoming"],
+    tags: json["tags"] == null ? null : List<int>.from(json["tags"].map((dynamic x) => x)),
+    ids: json["ids"] == null ? null : List<String>.from(json["ids"].map((dynamic x) => x)),
+    orderBy: json["orderBy"],
+    pageSize: json["pageSize"],
+    pageNumber: json["pageNumber"],
+    selectorArgs: json["selectorArgs"] == null ? null : UTournamentMatchSelectorArgs.fromMap(json["selectorArgs"]),
+  );
+
+  /// Matches this user plays in.
+  final String? userId;
+  final String? tournamentId;
+  final String? sportId;
+
+  /// true: not played yet, soonest first; false: played, latest first.
+  final bool? upcoming;
+  final List<int>? tags;
+  final List<String>? ids;
+  final int? orderBy;
+  final int? pageSize;
+  final int? pageNumber;
+  final UTournamentMatchSelectorArgs? selectorArgs;
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "userId": userId,
+    "tournamentId": tournamentId,
+    "sportId": sportId,
+    "upcoming": upcoming,
+    "tags": tags,
+    "ids": ids,
+    "orderBy": orderBy,
+    "pageSize": pageSize,
+    "pageNumber": pageNumber,
+    "selectorArgs": selectorArgs?.toMap(),
+  };
+}
+
+class UPlayerRatingHistoryReadParams {
+  UPlayerRatingHistoryReadParams({
+    this.userId,
+    this.sportId,
+    this.tags,
+    this.ids,
+    this.orderBy,
+    this.pageSize,
+    this.pageNumber,
+  });
+
+  factory UPlayerRatingHistoryReadParams.fromJson(String str) => UPlayerRatingHistoryReadParams.fromMap(json.decode(str));
+
+  factory UPlayerRatingHistoryReadParams.fromMap(Map<String, dynamic> json) => UPlayerRatingHistoryReadParams(
+    userId: json["userId"],
+    sportId: json["sportId"],
+    tags: json["tags"] == null ? null : List<int>.from(json["tags"].map((dynamic x) => x)),
+    ids: json["ids"] == null ? null : List<String>.from(json["ids"].map((dynamic x) => x)),
+    orderBy: json["orderBy"],
+    pageSize: json["pageSize"],
+    pageNumber: json["pageNumber"],
+  );
+
+  final String? userId;
+  final String? sportId;
+  final List<int>? tags;
+  final List<String>? ids;
+  final int? orderBy;
+  final int? pageSize;
+  final int? pageNumber;
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "userId": userId,
+    "sportId": sportId,
+    "tags": tags,
+    "ids": ids,
+    "orderBy": orderBy,
+    "pageSize": pageSize,
+    "pageNumber": pageNumber,
+  };
+}
+
+class UPlayerAchievementReadParams {
+  UPlayerAchievementReadParams({
+    this.userId,
+    this.sportId,
+    this.tournamentId,
+    this.tags,
+    this.ids,
+    this.orderBy,
+    this.pageSize,
+    this.pageNumber,
+    this.selectorArgs,
+  });
+
+  factory UPlayerAchievementReadParams.fromJson(String str) => UPlayerAchievementReadParams.fromMap(json.decode(str));
+
+  factory UPlayerAchievementReadParams.fromMap(Map<String, dynamic> json) => UPlayerAchievementReadParams(
+    userId: json["userId"],
+    sportId: json["sportId"],
+    tournamentId: json["tournamentId"],
+    tags: json["tags"] == null ? null : List<int>.from(json["tags"].map((dynamic x) => x)),
+    ids: json["ids"] == null ? null : List<String>.from(json["ids"].map((dynamic x) => x)),
+    orderBy: json["orderBy"],
+    pageSize: json["pageSize"],
+    pageNumber: json["pageNumber"],
+    selectorArgs: json["selectorArgs"] == null ? null : UPlayerAchievementSelectorArgs.fromMap(json["selectorArgs"]),
+  );
+
+  final String? userId;
+  final String? sportId;
+  final String? tournamentId;
+  final List<int>? tags;
+  final List<String>? ids;
+  final int? orderBy;
+  final int? pageSize;
+  final int? pageNumber;
+  final UPlayerAchievementSelectorArgs? selectorArgs;
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "userId": userId,
+    "sportId": sportId,
+    "tournamentId": tournamentId,
+    "tags": tags,
+    "ids": ids,
+    "orderBy": orderBy,
+    "pageSize": pageSize,
+    "pageNumber": pageNumber,
+    "selectorArgs": selectorArgs?.toMap(),
+  };
+}
+
+/// Only the hidden tag changes: a player shows or hides a trophy.
+class UPlayerAchievementUpdateParams {
+  UPlayerAchievementUpdateParams({
+    required this.id,
+    this.tags,
+    this.addTags,
+    this.removeTags,
+    this.detail1,
+    this.detail2,
+  });
+
+  factory UPlayerAchievementUpdateParams.fromJson(String str) => UPlayerAchievementUpdateParams.fromMap(json.decode(str));
+
+  factory UPlayerAchievementUpdateParams.fromMap(Map<String, dynamic> json) => UPlayerAchievementUpdateParams(
+    id: json["id"],
+    tags: json["tags"] == null ? null : List<int>.from(json["tags"].map((dynamic x) => x)),
+    addTags: json["addTags"] == null ? null : List<int>.from(json["addTags"].map((dynamic x) => x)),
+    removeTags: json["removeTags"] == null ? null : List<int>.from(json["removeTags"].map((dynamic x) => x)),
+    detail1: json["detail1"],
+    detail2: json["detail2"],
+  );
+
+  final String id;
+  final List<int>? tags;
+  final List<int>? addTags;
+  final List<int>? removeTags;
+  final String? detail1;
+  final String? detail2;
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "tags": tags,
+    "addTags": addTags,
+    "removeTags": removeTags,
+    "detail1": detail1,
+    "detail2": detail2,
+  };
+}
+
+class ULeaderboardParams {
+  ULeaderboardParams({
+    required this.sportId,
+    this.byPoints = false,
+    this.year,
+    this.country,
+    this.city,
+    this.pageSize,
+    this.pageNumber,
+  });
+
+  factory ULeaderboardParams.fromJson(String str) => ULeaderboardParams.fromMap(json.decode(str));
+
+  factory ULeaderboardParams.fromMap(Map<String, dynamic> json) => ULeaderboardParams(
+    sportId: json["sportId"],
+    byPoints: json["byPoints"] ?? false,
+    year: json["year"],
+    country: json["country"],
+    city: json["city"],
+    pageSize: json["pageSize"],
+    pageNumber: json["pageNumber"],
+  );
+
+  final String sportId;
+
+  /// Ranking points from tournament placements; otherwise the level.
+  final bool byPoints;
+
+  /// Points of this year only (the season); null = all time.
+  final int? year;
+  final String? country;
+  final String? city;
+  final int? pageSize;
+  final int? pageNumber;
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "sportId": sportId,
+    "byPoints": byPoints,
+    "year": year,
+    "country": country,
+    "city": city,
+    "pageSize": pageSize,
+    "pageNumber": pageNumber,
+  };
+}
+
+class UPlayerStatsParams {
+  UPlayerStatsParams({
+    this.userId,
+    this.sportId,
+  });
+
+  factory UPlayerStatsParams.fromJson(String str) => UPlayerStatsParams.fromMap(json.decode(str));
+
+  factory UPlayerStatsParams.fromMap(Map<String, dynamic> json) => UPlayerStatsParams(
+    userId: json["userId"],
+    sportId: json["sportId"],
+  );
+
+  /// null = the signed-in user.
+  final String? userId;
+  final String? sportId;
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "userId": userId,
+    "sportId": sportId,
+  };
+}
+
+class UOpenMatchCreateParams {
+  UOpenMatchCreateParams({
+    required this.sportId,
+    required this.startAt,
+    this.tags = const <int>[],
+    this.durationMinutes = 90,
+    this.capacity = 4,
+    this.minLevel,
+    this.maxLevel,
+    this.pricePerPlayer = 0,
+    this.venueId,
+    this.bookingId,
+    this.title,
+    this.description,
+    this.place,
+    this.latitude,
+    this.longitude,
+    this.invitedUserIds = const <String>[],
+    this.adminUserIds,
+    this.id,
+    this.detail1,
+    this.detail2,
+  });
+
+  factory UOpenMatchCreateParams.fromJson(String str) => UOpenMatchCreateParams.fromMap(json.decode(str));
+
+  factory UOpenMatchCreateParams.fromMap(Map<String, dynamic> json) => UOpenMatchCreateParams(
+    sportId: json["sportId"],
+    startAt: DateTime.parse(json["startAt"]),
+    tags: json["tags"] == null ? const <int>[] : List<int>.from(json["tags"].map((dynamic x) => x)),
+    durationMinutes: json["durationMinutes"] ?? 90,
+    capacity: json["capacity"] ?? 4,
+    minLevel: json["minLevel"]?.toDouble(),
+    maxLevel: json["maxLevel"]?.toDouble(),
+    pricePerPlayer: json["pricePerPlayer"]?.toDouble() ?? 0,
+    venueId: json["venueId"],
+    bookingId: json["bookingId"],
+    title: json["title"],
+    description: json["description"],
+    place: json["place"],
+    latitude: json["latitude"]?.toDouble(),
+    longitude: json["longitude"]?.toDouble(),
+    invitedUserIds: json["invitedUserIds"] == null ? const <String>[] : List<String>.from(json["invitedUserIds"].map((dynamic x) => x)),
+    adminUserIds: json["adminUserIds"] == null ? null : List<String>.from(json["adminUserIds"].map((dynamic x) => x)),
+    id: json["id"],
+    detail1: json["detail1"],
+    detail2: json["detail2"],
+  );
+
+  final String sportId;
+  final DateTime startAt;
+  final List<int> tags;
+  final int durationMinutes;
+  final int capacity;
+  final double? minLevel;
+  final double? maxLevel;
+  final double pricePerPlayer;
+  final String? venueId;
+  final String? bookingId;
+  final String? title;
+  final String? description;
+  final String? place;
+  final double? latitude;
+  final double? longitude;
+
+  /// They may join without approval (a challenge invites its opponents).
+  final List<String> invitedUserIds;
+  final List<String>? adminUserIds;
+  final String? id;
+  final String? detail1;
+  final String? detail2;
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "sportId": sportId,
+    "startAt": startAt.toUtc().toIso8601String(),
+    "tags": tags,
+    "durationMinutes": durationMinutes,
+    "capacity": capacity,
+    "minLevel": minLevel,
+    "maxLevel": maxLevel,
+    "pricePerPlayer": pricePerPlayer,
+    "venueId": venueId,
+    "bookingId": bookingId,
+    "title": title,
+    "description": description,
+    "place": place,
+    "latitude": latitude,
+    "longitude": longitude,
+    "invitedUserIds": invitedUserIds,
+    "adminUserIds": adminUserIds,
+    "id": id,
+    "detail1": detail1,
+    "detail2": detail2,
+  };
+}
+
+class UOpenMatchUpdateParams {
+  UOpenMatchUpdateParams({
+    required this.id,
+    this.startAt,
+    this.durationMinutes,
+    this.capacity,
+    this.minLevel,
+    this.maxLevel,
+    this.pricePerPlayer,
+    this.venueId,
+    this.title,
+    this.description,
+    this.place,
+    this.latitude,
+    this.longitude,
+    this.approveUserIds,
+    this.removeUserIds,
+    this.inviteUserIds,
+    this.tags,
+    this.addTags,
+    this.removeTags,
+    this.detail1,
+    this.detail2,
+  });
+
+  factory UOpenMatchUpdateParams.fromJson(String str) => UOpenMatchUpdateParams.fromMap(json.decode(str));
+
+  factory UOpenMatchUpdateParams.fromMap(Map<String, dynamic> json) => UOpenMatchUpdateParams(
+    id: json["id"],
+    startAt: json["startAt"] == null ? null : DateTime.parse(json["startAt"]),
+    durationMinutes: json["durationMinutes"],
+    capacity: json["capacity"],
+    minLevel: json["minLevel"]?.toDouble(),
+    maxLevel: json["maxLevel"]?.toDouble(),
+    pricePerPlayer: json["pricePerPlayer"]?.toDouble(),
+    venueId: json["venueId"],
+    title: json["title"],
+    description: json["description"],
+    place: json["place"],
+    latitude: json["latitude"]?.toDouble(),
+    longitude: json["longitude"]?.toDouble(),
+    approveUserIds: json["approveUserIds"] == null ? null : List<String>.from(json["approveUserIds"].map((dynamic x) => x)),
+    removeUserIds: json["removeUserIds"] == null ? null : List<String>.from(json["removeUserIds"].map((dynamic x) => x)),
+    inviteUserIds: json["inviteUserIds"] == null ? null : List<String>.from(json["inviteUserIds"].map((dynamic x) => x)),
+    tags: json["tags"] == null ? null : List<int>.from(json["tags"].map((dynamic x) => x)),
+    addTags: json["addTags"] == null ? null : List<int>.from(json["addTags"].map((dynamic x) => x)),
+    removeTags: json["removeTags"] == null ? null : List<int>.from(json["removeTags"].map((dynamic x) => x)),
+    detail1: json["detail1"],
+    detail2: json["detail2"],
+  );
+
+  final String id;
+  final DateTime? startAt;
+  final int? durationMinutes;
+  final int? capacity;
+  final double? minLevel;
+  final double? maxLevel;
+  final double? pricePerPlayer;
+  final String? venueId;
+  final String? title;
+  final String? description;
+  final String? place;
+  final double? latitude;
+  final double? longitude;
+
+  /// Players who asked to join a private game.
+  final List<String>? approveUserIds;
+  final List<String>? removeUserIds;
+  final List<String>? inviteUserIds;
+  final List<int>? tags;
+  final List<int>? addTags;
+  final List<int>? removeTags;
+  final String? detail1;
+  final String? detail2;
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "startAt": startAt?.toUtc().toIso8601String(),
+    "durationMinutes": durationMinutes,
+    "capacity": capacity,
+    "minLevel": minLevel,
+    "maxLevel": maxLevel,
+    "pricePerPlayer": pricePerPlayer,
+    "venueId": venueId,
+    "title": title,
+    "description": description,
+    "place": place,
+    "latitude": latitude,
+    "longitude": longitude,
+    "approveUserIds": approveUserIds,
+    "removeUserIds": removeUserIds,
+    "inviteUserIds": inviteUserIds,
+    "tags": tags,
+    "addTags": addTags,
+    "removeTags": removeTags,
+    "detail1": detail1,
+    "detail2": detail2,
+  };
+}
+
+class UOpenMatchReadParams {
+  UOpenMatchReadParams({
+    this.sportId,
+    this.userId,
+    this.venueId,
+    this.upcoming,
+    this.forMyLevel = false,
+    this.latitude,
+    this.longitude,
+    this.radiusKm,
+    this.tags,
+    this.ids,
+    this.orderBy,
+    this.pageSize,
+    this.pageNumber,
+    this.selectorArgs,
+  });
+
+  factory UOpenMatchReadParams.fromJson(String str) => UOpenMatchReadParams.fromMap(json.decode(str));
+
+  factory UOpenMatchReadParams.fromMap(Map<String, dynamic> json) => UOpenMatchReadParams(
+    sportId: json["sportId"],
+    userId: json["userId"],
+    venueId: json["venueId"],
+    upcoming: json["upcoming"],
+    forMyLevel: json["forMyLevel"] ?? false,
+    latitude: json["latitude"]?.toDouble(),
+    longitude: json["longitude"]?.toDouble(),
+    radiusKm: json["radiusKm"]?.toDouble(),
+    tags: json["tags"] == null ? null : List<int>.from(json["tags"].map((dynamic x) => x)),
+    ids: json["ids"] == null ? null : List<String>.from(json["ids"].map((dynamic x) => x)),
+    orderBy: json["orderBy"],
+    pageSize: json["pageSize"],
+    pageNumber: json["pageNumber"],
+    selectorArgs: json["selectorArgs"] == null ? null : UOpenMatchSelectorArgs.fromMap(json["selectorArgs"]),
+  );
+
+  final String? sportId;
+
+  /// Games this user plays in or organizes.
+  final String? userId;
+  final String? venueId;
+  final bool? upcoming;
+  final bool forMyLevel;
+  final double? latitude;
+  final double? longitude;
+  final double? radiusKm;
+  final List<int>? tags;
+  final List<String>? ids;
+  final int? orderBy;
+  final int? pageSize;
+  final int? pageNumber;
+  final UOpenMatchSelectorArgs? selectorArgs;
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "sportId": sportId,
+    "userId": userId,
+    "venueId": venueId,
+    "upcoming": upcoming,
+    "forMyLevel": forMyLevel,
+    "latitude": latitude,
+    "longitude": longitude,
+    "radiusKm": radiusKm,
+    "tags": tags,
+    "ids": ids,
+    "orderBy": orderBy,
+    "pageSize": pageSize,
+    "pageNumber": pageNumber,
+    "selectorArgs": selectorArgs?.toMap(),
+  };
+}
+
+class UOpenMatchResultParams {
+  UOpenMatchResultParams({
+    required this.id,
+    required this.teamA,
+    required this.teamB,
+    required this.sets,
+  });
+
+  factory UOpenMatchResultParams.fromJson(String str) => UOpenMatchResultParams.fromMap(json.decode(str));
+
+  factory UOpenMatchResultParams.fromMap(Map<String, dynamic> json) => UOpenMatchResultParams(
+    id: json["id"],
+    teamA: List<String>.from(json["teamA"].map((dynamic x) => x)),
+    teamB: List<String>.from(json["teamB"].map((dynamic x) => x)),
+    sets: List<UMatchSetScore>.from(json["sets"].map((dynamic x) => UMatchSetScore.fromMap(x))),
+  );
+
+  final String id;
+  final List<String> teamA;
+  final List<String> teamB;
+
+  /// An empty list clears the result.
+  final List<UMatchSetScore> sets;
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "teamA": teamA,
+    "teamB": teamB,
+    "sets": sets.map((UMatchSetScore x) => x.toMap()).toList(),
   };
 }

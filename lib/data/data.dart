@@ -20,6 +20,8 @@ part "params/blog_params.dart";
 
 part "params/category_params.dart";
 
+part "params/chat_params.dart";
+
 part "params/charge_internet_params.dart";
 
 part "params/comment_params.dart";
@@ -58,6 +60,8 @@ part "params/selectors.dart";
 
 part "params/sim_params.dart";
 
+part "params/social_params.dart";
+
 part "params/sport_params.dart";
 
 part "params/terminal_params.dart";
@@ -69,6 +73,8 @@ part "params/txn_params.dart";
 part "params/user_params.dart";
 
 part "params/vehicle_params.dart";
+
+part "params/venue_params.dart";
 
 part "params/wallet_params.dart";
 
@@ -91,6 +97,8 @@ part "responses/base_response.dart";
 part "responses/blog_response.dart";
 
 part "responses/category_response.dart";
+
+part "responses/chat_response.dart";
 
 part "responses/charge_internet_response.dart";
 
@@ -134,6 +142,8 @@ part "responses/product_response.dart";
 
 part "responses/sim_response.dart";
 
+part "responses/social_response.dart";
+
 part "responses/sport_response.dart";
 
 part "responses/terminal_response.dart";
@@ -147,6 +157,8 @@ part "responses/user_flow.dart";
 part "responses/user_response.dart";
 
 part "responses/vehicle_response.dart";
+
+part "responses/venue_response.dart";
 
 part "responses/wallet_response.dart";
 
@@ -163,6 +175,8 @@ part "services/bank_account_service.dart";
 part "services/blog_service.dart";
 
 part "services/category_service.dart";
+
+part "services/chat_service.dart";
 
 part "services/charge_internet_service.dart";
 
@@ -204,6 +218,8 @@ part "services/product_service.dart";
 
 part "services/sim_service.dart";
 
+part "services/social_service.dart";
+
 part "services/sport_service.dart";
 
 part "services/terminal_service.dart";
@@ -215,6 +231,8 @@ part "services/txn_service.dart";
 part "services/user_service.dart";
 
 part "services/vehicle_service.dart";
+
+part "services/venue_service.dart";
 
 part "services/wallet_service.dart";
 
@@ -267,4 +285,7 @@ class UServices {
   static UFileManagerService fileManager = UFileManagerService();
   static UDbAdminService dbAdmin = UDbAdminService();
   static USportService sport = USportService();
+  static UVenueService venue = UVenueService();
+  static USocialService social = USocialService();
+  static UChatService chat = UChatService();
 }

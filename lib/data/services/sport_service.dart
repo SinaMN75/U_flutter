@@ -148,4 +148,102 @@ class USportService {
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
   }) => _Api.call("/Sport/TournamentMatch/Update", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<List<UTournamentMatchResponse>>?, UEmptyResponse?, String?)> readTournamentMatches({
+    required UTournamentMatchReadParams p,
+    Function(UResponse<List<UTournamentMatchResponse>> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Sport/TournamentMatch/Read", p.toMap(), _Api.list(UTournamentMatchResponse.fromMap), _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<List<UPlayerRatingHistoryResponse>>?, UEmptyResponse?, String?)> readPlayerRatingHistory({
+    required UPlayerRatingHistoryReadParams p,
+    Function(UResponse<List<UPlayerRatingHistoryResponse>> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Sport/PlayerRatingHistory/Read", p.toMap(), _Api.list(UPlayerRatingHistoryResponse.fromMap), _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<List<UPlayerAchievementResponse>>?, UEmptyResponse?, String?)> readPlayerAchievements({
+    required UPlayerAchievementReadParams p,
+    Function(UResponse<List<UPlayerAchievementResponse>> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Sport/PlayerAchievement/Read", p.toMap(), _Api.list(UPlayerAchievementResponse.fromMap), _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> updatePlayerAchievement({
+    required UPlayerAchievementUpdateParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Sport/PlayerAchievement/Update", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<List<ULeaderboardRowResponse>>?, UEmptyResponse?, String?)> readLeaderboard({
+    required ULeaderboardParams p,
+    Function(UResponse<List<ULeaderboardRowResponse>> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Sport/Leaderboard/Read", p.toMap(), _Api.list(ULeaderboardRowResponse.fromMap), _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<UPlayerStatsResponse>?, UEmptyResponse?, String?)> readPlayerStats({
+    required UPlayerStatsParams p,
+    Function(UResponse<UPlayerStatsResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Sport/Player/Stats", p.toMap(), _Api.one(UPlayerStatsResponse.fromMap), _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<String>?, UEmptyResponse?, String?)> createOpenMatch({
+    required UOpenMatchCreateParams p,
+    Function(UResponse<String> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Sport/OpenMatch/Create", p.toMap(), _Api.raw<String>(), _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<List<UOpenMatchResponse>>?, UEmptyResponse?, String?)> readOpenMatches({
+    required UOpenMatchReadParams p,
+    Function(UResponse<List<UOpenMatchResponse>> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Sport/OpenMatch/Read", p.toMap(), _Api.list(UOpenMatchResponse.fromMap), _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<UOpenMatchResponse>?, UEmptyResponse?, String?)> readOpenMatchById({
+    required UIdParams p,
+    Function(UResponse<UOpenMatchResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Sport/OpenMatch/ReadById", p.toMap(), _Api.one(UOpenMatchResponse.fromMap), _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> updateOpenMatch({
+    required UOpenMatchUpdateParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Sport/OpenMatch/Update", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteOpenMatch({
+    required UIdParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Sport/OpenMatch/Delete", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> joinOpenMatch({
+    required UIdParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Sport/OpenMatch/Join", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> leaveOpenMatch({
+    required UIdParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Sport/OpenMatch/Leave", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> setOpenMatchResult({
+    required UOpenMatchResultParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Sport/OpenMatch/Result", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 }

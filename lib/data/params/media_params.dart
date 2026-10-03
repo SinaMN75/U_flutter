@@ -20,6 +20,8 @@ class UMediaCreateParams {
     this.dormId,
     this.dormRoomId,
     this.dormBedId,
+    this.venueId,
+    this.postId,
   });
 
   final UFileData file;
@@ -40,6 +42,8 @@ class UMediaCreateParams {
   final String? dormId;
   final String? dormRoomId;
   final String? dormBedId;
+  final String? venueId;
+  final String? postId;
 
   String toJson() => json.encode(toMap());
 
@@ -61,6 +65,8 @@ class UMediaCreateParams {
     "dormId": dormId,
     "dormRoomId": dormRoomId,
     "dormBedId": dormBedId,
+    "venueId": venueId,
+    "postId": postId,
   };
 }
 

@@ -13,7 +13,13 @@ extension TagListExtension on UUserResponse {
 
   bool hasPermission(TagUser permission) => isSystemAdmin() || isSuperAdmin() || isSubAdmin() && tags.contains(permission.number);
 
-  int adminRank() => isSystemAdmin() ? 3 : isSystemAdmin() || isSuperAdmin() ? 2 : isSubAdmin() ? 1 : 0;
+  int adminRank() => isSystemAdmin()
+      ? 3
+      : isSystemAdmin() || isSuperAdmin()
+      ? 2
+      : isSubAdmin()
+      ? 1
+      : 0;
 
   String get displayName {
     final String full = "${firstName ?? ""} ${lastName ?? ""}".trim();
@@ -189,6 +195,10 @@ class UUserJson {
     this.detail1,
     this.detail2,
     this.googleId,
+    this.country,
+    this.city,
+    this.referralCode,
+    this.referrerId,
   });
 
   factory UUserJson.fromJson(String str) => UUserJson.fromMap(json.decode(str));
@@ -210,6 +220,10 @@ class UUserJson {
     detail1: json["detail1"],
     detail2: json["detail2"],
     googleId: json["googleId"],
+    country: json["country"],
+    city: json["city"],
+    referralCode: json["referralCode"],
+    referrerId: json["referrerId"],
   );
   final String? fcmToken;
   final double? weight;
@@ -227,6 +241,10 @@ class UUserJson {
   final String? detail1;
   final String? detail2;
   final String? googleId;
+  final String? country;
+  final String? city;
+  final String? referralCode;
+  final String? referrerId;
 
   String toJson() => json.encode(toMap());
 
@@ -247,6 +265,10 @@ class UUserJson {
     "detail1": detail1,
     "detail2": detail2,
     "googleId": googleId,
+    "country": country,
+    "city": city,
+    "referralCode": referralCode,
+    "referrerId": referrerId,
   };
 }
 

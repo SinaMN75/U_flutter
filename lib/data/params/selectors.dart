@@ -1043,8 +1043,12 @@ class UTournamentEntrySelectorArgs {
 
 class UTournamentMatchSelectorArgs {
   final UUserSelectorArgs? creator;
+  final UTournamentSelectorArgs? tournament;
 
-  const UTournamentMatchSelectorArgs({this.creator});
+  /// Both sides' entries with their players.
+  final bool entries;
+
+  const UTournamentMatchSelectorArgs({this.creator, this.tournament, this.entries = false});
 
   factory UTournamentMatchSelectorArgs.fromJson(String str) => UTournamentMatchSelectorArgs.fromMap(json.decode(str));
 
@@ -1052,9 +1056,205 @@ class UTournamentMatchSelectorArgs {
 
   factory UTournamentMatchSelectorArgs.fromMap(Map<String, dynamic> json) => UTournamentMatchSelectorArgs(
     creator: json["creator"] == null ? null : UUserSelectorArgs.fromMap(json["creator"]),
+    tournament: json["tournament"] == null ? null : UTournamentSelectorArgs.fromMap(json["tournament"]),
+    entries: json["entries"] ?? false,
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "creator": creator?.toMap(),
+    "tournament": tournament?.toMap(),
+    "entries": entries,
+  };
+}
+
+class UPlayerAchievementSelectorArgs {
+  final bool user;
+  final USportSelectorArgs? sport;
+
+  const UPlayerAchievementSelectorArgs({this.user = false, this.sport});
+
+  factory UPlayerAchievementSelectorArgs.fromJson(String str) => UPlayerAchievementSelectorArgs.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UPlayerAchievementSelectorArgs.fromMap(Map<String, dynamic> json) => UPlayerAchievementSelectorArgs(
+    user: json["user"] ?? false,
+    sport: json["sport"] == null ? null : USportSelectorArgs.fromMap(json["sport"]),
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "user": user,
+    "sport": sport?.toMap(),
+  };
+}
+
+class UOpenMatchSelectorArgs {
+  final UUserSelectorArgs? creator;
+  final USportSelectorArgs? sport;
+  final UVenueSelectorArgs? venue;
+  final bool users;
+
+  const UOpenMatchSelectorArgs({this.creator, this.sport, this.venue, this.users = false});
+
+  factory UOpenMatchSelectorArgs.fromJson(String str) => UOpenMatchSelectorArgs.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UOpenMatchSelectorArgs.fromMap(Map<String, dynamic> json) => UOpenMatchSelectorArgs(
+    creator: json["creator"] == null ? null : UUserSelectorArgs.fromMap(json["creator"]),
+    sport: json["sport"] == null ? null : USportSelectorArgs.fromMap(json["sport"]),
+    venue: json["venue"] == null ? null : UVenueSelectorArgs.fromMap(json["venue"]),
+    users: json["users"] ?? false,
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "creator": creator?.toMap(),
+    "sport": sport?.toMap(),
+    "venue": venue?.toMap(),
+    "users": users,
+  };
+}
+
+class UVenueSelectorArgs {
+  final UUserSelectorArgs? creator;
+  final UCourtSelectorArgs? courts;
+  final UMediaSelectorArgs? media;
+
+  const UVenueSelectorArgs({this.creator, this.courts, this.media});
+
+  factory UVenueSelectorArgs.fromJson(String str) => UVenueSelectorArgs.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UVenueSelectorArgs.fromMap(Map<String, dynamic> json) => UVenueSelectorArgs(
+    creator: json["creator"] == null ? null : UUserSelectorArgs.fromMap(json["creator"]),
+    courts: json["courts"] == null ? null : UCourtSelectorArgs.fromMap(json["courts"]),
+    media: json["media"] == null ? null : UMediaSelectorArgs.fromMap(json["media"]),
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "creator": creator?.toMap(),
+    "courts": courts?.toMap(),
+    "media": media?.toMap(),
+  };
+}
+
+class UCourtSelectorArgs {
+  final UVenueSelectorArgs? venue;
+  final USportSelectorArgs? sport;
+
+  const UCourtSelectorArgs({this.venue, this.sport});
+
+  factory UCourtSelectorArgs.fromJson(String str) => UCourtSelectorArgs.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UCourtSelectorArgs.fromMap(Map<String, dynamic> json) => UCourtSelectorArgs(
+    venue: json["venue"] == null ? null : UVenueSelectorArgs.fromMap(json["venue"]),
+    sport: json["sport"] == null ? null : USportSelectorArgs.fromMap(json["sport"]),
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "venue": venue?.toMap(),
+    "sport": sport?.toMap(),
+  };
+}
+
+class UBookingSelectorArgs {
+  final bool user;
+  final UCourtSelectorArgs? court;
+  final UVenueSelectorArgs? venue;
+
+  const UBookingSelectorArgs({this.user = false, this.court, this.venue});
+
+  factory UBookingSelectorArgs.fromJson(String str) => UBookingSelectorArgs.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UBookingSelectorArgs.fromMap(Map<String, dynamic> json) => UBookingSelectorArgs(
+    user: json["user"] ?? false,
+    court: json["court"] == null ? null : UCourtSelectorArgs.fromMap(json["court"]),
+    venue: json["venue"] == null ? null : UVenueSelectorArgs.fromMap(json["venue"]),
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "user": user,
+    "court": court?.toMap(),
+    "venue": venue?.toMap(),
+  };
+}
+
+class UPostSelectorArgs {
+  final UMediaSelectorArgs? media;
+  final UPostSelectorArgs? children;
+
+  const UPostSelectorArgs({this.media, this.children});
+
+  factory UPostSelectorArgs.fromJson(String str) => UPostSelectorArgs.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UPostSelectorArgs.fromMap(Map<String, dynamic> json) => UPostSelectorArgs(
+    media: json["media"] == null ? null : UMediaSelectorArgs.fromMap(json["media"]),
+    children: json["children"] == null ? null : UPostSelectorArgs.fromMap(json["children"]),
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "media": media?.toMap(),
+    "children": children?.toMap(),
+  };
+}
+
+class UReportSelectorArgs {
+  final UUserSelectorArgs? creator;
+
+  const UReportSelectorArgs({this.creator});
+
+  factory UReportSelectorArgs.fromJson(String str) => UReportSelectorArgs.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UReportSelectorArgs.fromMap(Map<String, dynamic> json) => UReportSelectorArgs(
+    creator: json["creator"] == null ? null : UUserSelectorArgs.fromMap(json["creator"]),
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "creator": creator?.toMap(),
+  };
+}
+
+class UConversationSelectorArgs {
+  final bool users;
+
+  const UConversationSelectorArgs({this.users = false});
+
+  factory UConversationSelectorArgs.fromJson(String str) => UConversationSelectorArgs.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UConversationSelectorArgs.fromMap(Map<String, dynamic> json) => UConversationSelectorArgs(
+    users: json["users"] ?? false,
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "users": users,
+  };
+}
+
+class UMessageSelectorArgs {
+  final bool user;
+
+  const UMessageSelectorArgs({this.user = false});
+
+  factory UMessageSelectorArgs.fromJson(String str) => UMessageSelectorArgs.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UMessageSelectorArgs.fromMap(Map<String, dynamic> json) => UMessageSelectorArgs(
+    user: json["user"] ?? false,
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "user": user,
   };
 }

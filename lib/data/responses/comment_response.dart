@@ -16,6 +16,7 @@ class UCommentResponse {
   final String? blogId;
   final String? hotelId;
   final String? dormId;
+  final String? venueId;
   final List<UCommentResponse>? children;
   final List<UMediaResponse>? media;
   final List<String> adminUserIds;
@@ -37,6 +38,7 @@ class UCommentResponse {
     this.blogId,
     this.hotelId,
     this.dormId,
+    this.venueId,
     this.children,
     this.media,
   });
@@ -61,6 +63,7 @@ class UCommentResponse {
     blogId: json["blogId"],
     hotelId: json["hotelId"],
     dormId: json["dormId"],
+    venueId: json["venueId"],
     children: json["children"] == null ? <UCommentResponse>[] : List<UCommentResponse>.from(json["children"].map((dynamic x) => UCommentResponse.fromMap(x))),
     media: json["media"] == null ? <UMediaResponse>[] : List<UMediaResponse>.from(json["media"].map((dynamic x) => UMediaResponse.fromMap(x))),
     adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
@@ -82,6 +85,7 @@ class UCommentResponse {
     "blogId": blogId,
     "hotelId": hotelId,
     "dormId": dormId,
+    "venueId": venueId,
     "children": children == null ? null : List<dynamic>.from(children!.map((UCommentResponse x) => x.toMap())),
     "media": media == null ? null : List<dynamic>.from(media!.map((UMediaResponse x) => x.toMap())),
     "adminUserIds": List<dynamic>.from(adminUserIds.map((String x) => x)),

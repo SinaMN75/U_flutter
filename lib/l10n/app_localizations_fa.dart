@@ -5860,4 +5860,763 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get quarterFinal => 'یک‌چهارم نهایی';
+
+  @override
+  String notifTournamentStarted(Object subject) {
+    return '$subject شروع شد؛ برنامه‌ی بازی‌ها آماده است';
+  }
+
+  @override
+  String notifTournamentFinished(Object subject) {
+    return '$subject تمام شد؛ رتبه‌بندی نهایی را ببینید';
+  }
+
+  @override
+  String notifTournamentCancelled(Object subject) {
+    return '$subject لغو شد';
+  }
+
+  @override
+  String notifNewEntry(Object subject) {
+    return 'ثبت‌نام جدید در $subject';
+  }
+
+  @override
+  String notifEntryApproved(Object subject) {
+    return 'ثبت‌نام شما در $subject تأیید شد';
+  }
+
+  @override
+  String notifEntryRejected(Object subject) {
+    return 'ثبت‌نام شما در $subject رد شد';
+  }
+
+  @override
+  String notifMatchResult(Object subject) {
+    return 'نتیجه‌ی یک بازی در $subject ثبت شد';
+  }
+
+  @override
+  String notifMatchSoon(Object subject) {
+    return 'بازی شما در $subject کمتر از یک ساعت دیگر شروع می‌شود';
+  }
+
+  @override
+  String notifNewBadge(Object subject) {
+    return 'نشان جدید: $subject';
+  }
+
+  @override
+  String notifChallenge(Object subject) {
+    return '$subject شما را به بازی دعوت کرد';
+  }
+
+  @override
+  String notifGameInvite(Object subject) {
+    return '$subject شما را به یک بازی دعوت کرد';
+  }
+
+  @override
+  String notifJoinRequest(Object subject) {
+    return '$subject درخواست پیوستن به بازی شما را داد';
+  }
+
+  @override
+  String notifJoinApproved(Object subject) {
+    return 'درخواست شما برای $subject پذیرفته شد';
+  }
+
+  @override
+  String notifPlayerJoined(Object subject) {
+    return '$subject به بازی شما پیوست';
+  }
+
+  @override
+  String notifPlayerLeft(Object subject) {
+    return '$subject از بازی شما خارج شد';
+  }
+
+  @override
+  String notifGameCancelled(Object subject) {
+    return 'بازی $subject لغو شد';
+  }
+
+  @override
+  String notifGameSoon(Object subject) {
+    return 'بازی $subject کمتر از یک ساعت دیگر شروع می‌شود';
+  }
+
+  @override
+  String notifNewBooking(Object subject) {
+    return 'رزرو جدید در $subject';
+  }
+
+  @override
+  String notifBookingShare(Object subject) {
+    return 'در رزرو $subject سهیم هستید؛ سهم خود را بپردازید';
+  }
+
+  @override
+  String notifBookingCancelled(Object subject) {
+    return 'یک رزرو در $subject لغو شد';
+  }
+
+  @override
+  String notifBookingSoon(Object subject) {
+    return 'رزرو شما در $subject کمتر از یک ساعت دیگر شروع می‌شود';
+  }
+
+  @override
+  String notifVenueApproved(Object subject) {
+    return '$subject تأیید شد و در نقشه نمایش داده می‌شود';
+  }
+
+  @override
+  String notifVenueRejected(Object subject) {
+    return '$subject تأیید نشد';
+  }
+
+  @override
+  String notifVenueSuspended(Object subject) {
+    return '$subject معلق شد';
+  }
+
+  @override
+  String notifNewReply(Object subject) {
+    return '$subject به پست شما پاسخ داد';
+  }
+
+  @override
+  String notifNewReaction(Object subject) {
+    return '$subject پست شما را پسندید';
+  }
+
+  @override
+  String get badgeFirstMatch => 'اولین بازی';
+
+  @override
+  String get badgeFirstMatchDescription => 'اولین بازی ثبت‌شده را انجام داد';
+
+  @override
+  String get badgeTenMatches => '۱۰ بازی';
+
+  @override
+  String get badgeTenMatchesDescription => '۱۰ بازی ثبت‌شده انجام داد';
+
+  @override
+  String get badgeFiftyMatches => '۵۰ بازی';
+
+  @override
+  String get badgeFiftyMatchesDescription => '۵۰ بازی ثبت‌شده انجام داد';
+
+  @override
+  String get badgeFirstWin => 'اولین برد';
+
+  @override
+  String get badgeFirstWinDescription => 'اولین بازی را برد';
+
+  @override
+  String get badgeWinStreak5 => '۵ برد پیاپی';
+
+  @override
+  String get badgeWinStreak5Description => 'پنج بازی پشت سر هم برد';
+
+  @override
+  String get badgeChampion => 'قهرمان';
+
+  @override
+  String get badgeChampionDescription => 'قهرمان یک تورنمنت شد';
+
+  @override
+  String get badgePodium => 'سکو';
+
+  @override
+  String get badgePodiumDescription => 'در یک تورنمنت جزو سه نفر اول شد';
+
+  @override
+  String get badgeOrganizer => 'برگزارکننده';
+
+  @override
+  String get badgeOrganizerDescription => 'یک تورنمنت برگزار کرد';
+
+  @override
+  String get badgeRecruiter => 'دعوت‌کننده';
+
+  @override
+  String get badgeRecruiterDescription => 'سه دوست را دعوت کرد که عضو شدند';
+
+  @override
+  String get badgeRegular => 'همیشگی';
+
+  @override
+  String get badgeRegularDescription => 'چهار هفته پشت سر هم بازی کرد';
+
+  @override
+  String get addCourt => 'افزودن زمین';
+
+  @override
+  String get addPhotosOfThePlace => 'حداقل ۳ عکس از زمین و امکانات';
+
+  @override
+  String get addSpecialPrice => 'افزودن قیمت ویژه';
+
+  @override
+  String get addYourFirstCourt => 'اولین زمین را اضافه کنید تا بازیکن‌ها رزرو کنند';
+
+  @override
+  String get addressOnMap => 'آدرس روی نقشه';
+
+  @override
+  String get allPlayersWillBeNotified => 'به همه‌ی بازیکن‌ها خبر داده می‌شود';
+
+  @override
+  String get allowPayingAtTheVenue => 'امکان پرداخت در محل';
+
+  @override
+  String get amenityCafe => 'کافه';
+
+  @override
+  String get amenityIndoor => 'سرپوشیده';
+
+  @override
+  String get amenityLight => 'نورپردازی';
+
+  @override
+  String get amenityLocker => 'کمد';
+
+  @override
+  String get amenityParking => 'پارکینگ';
+
+  @override
+  String get amenityRent => 'اجاره راکت';
+
+  @override
+  String get amenityShower => 'دوش';
+
+  @override
+  String get approveWhoJoins => 'خودم بازیکن‌ها را تأیید می‌کنم';
+
+  @override
+  String get badges => 'نشان‌ها';
+
+  @override
+  String get beTheFirstToReply => 'اولین پاسخ را شما بدهید';
+
+  @override
+  String get block => 'مسدود کردن';
+
+  @override
+  String get blockDescription => 'او دیگر پست‌های شما را نمی‌بیند و نمی‌تواند به شما پیام بدهد؛ شما هم پست‌های او را نمی‌بینید.';
+
+  @override
+  String get blocked => 'مسدود شد';
+
+  @override
+  String get blockedUsers => 'کاربران مسدود';
+
+  @override
+  String get bookACourt => 'رزرو زمین';
+
+  @override
+  String get bookedSuccessfully => 'رزرو شد!';
+
+  @override
+  String get bookings => 'رزروها';
+
+  @override
+  String get bookingsThisMonth => 'رزروهای این ماه';
+
+  @override
+  String get byLevel => 'بر اساس سطح';
+
+  @override
+  String get byPoints => 'بر اساس امتیاز';
+
+  @override
+  String get call => 'تماس';
+
+  @override
+  String get cancelBooking => 'لغو رزرو';
+
+  @override
+  String cancelBookingPolicy(Object hours) {
+    return 'لغو رایگان تا $hours ساعت قبل؛ بعد از آن بخشی از مبلغ برنمی‌گردد.';
+  }
+
+  @override
+  String get cancelTheGame => 'لغو بازی';
+
+  @override
+  String get challenge => 'چالش';
+
+  @override
+  String get chatWithHost => 'چت با میزبان';
+
+  @override
+  String checkOutVenue(Object name) {
+    return '$name را در اسپورتوپیا ببین';
+  }
+
+  @override
+  String get chooseAVenue => 'انتخاب مجموعه';
+
+  @override
+  String get closed => 'تعطیل';
+
+  @override
+  String get closedOnThisDay => 'در این روز زمان آزادی نیست';
+
+  @override
+  String get closures => 'تعطیلی‌ها';
+
+  @override
+  String get club => 'باشگاه';
+
+  @override
+  String get clubs => 'باشگاه‌ها';
+
+  @override
+  String get confirmAndPay => 'تأیید و پرداخت';
+
+  @override
+  String get costPerPerson => 'هزینه‌ی هر نفر';
+
+  @override
+  String get courtNameExample => 'مثلاً زمین ۱';
+
+  @override
+  String get courts => 'زمین‌ها';
+
+  @override
+  String get createAGameHere => 'ساخت بازی اینجا';
+
+  @override
+  String get deleteConversation => 'حذف گفتگو';
+
+  @override
+  String get editResult => 'ویرایش نتیجه';
+
+  @override
+  String get edited => 'ویرایش‌شده';
+
+  @override
+  String get explore => 'کشف';
+
+  @override
+  String get feed => 'فید';
+
+  @override
+  String get findPartner => 'هم‌بازی';
+
+  @override
+  String get findPlayers => 'پیدا کردن هم‌بازی';
+
+  @override
+  String get findPlayersForThisBooking => 'برای این رزرو هم‌بازی پیدا کنیم؟';
+
+  @override
+  String get findPlayersForYourGame => 'برای بازی‌ات هم‌بازی پیدا کن';
+
+  @override
+  String get follow => 'دنبال کردن';
+
+  @override
+  String get followPlayersToSeeTheirPosts => 'بازیکن‌ها را دنبال کنید تا پست‌هایشان اینجا بیاید';
+
+  @override
+  String followTournament(Object name) {
+    return '$name را زنده در اسپورتوپیا دنبال کن';
+  }
+
+  @override
+  String get followers => 'دنبال‌کننده';
+
+  @override
+  String get following => 'دنبال می‌کنید';
+
+  @override
+  String get forMyLevel => 'مناسب سطح من';
+
+  @override
+  String freeCancellationUntilHoursBefore(Object hours) {
+    return 'لغو رایگان تا $hours ساعت قبل';
+  }
+
+  @override
+  String get friday => 'جمعه';
+
+  @override
+  String get friendlyGamesDontChangeLevels => 'نتیجه روی سطح کسی اثر ندارد';
+
+  @override
+  String friendsJoinedCount(Object count) {
+    return '$count دوست با کد شما عضو شدند';
+  }
+
+  @override
+  String get game => 'بازی';
+
+  @override
+  String get groupChat => 'چت گروهی';
+
+  @override
+  String hiName(Object name) {
+    return 'سلام $name';
+  }
+
+  @override
+  String get hidden => 'مخفی';
+
+  @override
+  String get home => 'خانه';
+
+  @override
+  String get imIn => 'هستم';
+
+  @override
+  String get invitationCodeOptional => 'کد دعوت (اختیاری)';
+
+  @override
+  String get invite => 'دعوت';
+
+  @override
+  String get inviteFriends => 'دعوت دوستان';
+
+  @override
+  String get inviteFriendsDescription => 'کدتان را بفرستید؛ دوستانتان موقع ثبت‌نام واردش می‌کنند.';
+
+  @override
+  String inviteText(Object code) {
+    return 'به اسپورتوپیا بیا؛ هم‌بازی پیدا کن، زمین رزرو کن و قهرمان شو. کد دعوت من: $code';
+  }
+
+  @override
+  String joinMyGame(Object sport, Object time) {
+    return 'به بازی $sport من بپیوند؛ $time';
+  }
+
+  @override
+  String get joinRequests => 'درخواست‌های پیوستن';
+
+  @override
+  String get joined => 'عضو هستید';
+
+  @override
+  String kilometersAway(Object km) {
+    return '$km کیلومتر';
+  }
+
+  @override
+  String get leaderboard => 'لیدربورد';
+
+  @override
+  String get leaveTheGame => 'خروج از بازی';
+
+  @override
+  String get levelAdjustsAutomatically => 'سطح بعد از هر بازی ثبت‌شده خودکار تنظیم می‌شود';
+
+  @override
+  String get levelHistory => 'تاریخچه‌ی سطح';
+
+  @override
+  String get listACourt => 'ثبت زمین';
+
+  @override
+  String get listAShop => 'ثبت فروشگاه';
+
+  @override
+  String get listYourCourtOrShop => 'زمین یا فروشگاه خود را ثبت کنید';
+
+  @override
+  String get manage => 'مدیریت';
+
+  @override
+  String get message => 'پیام';
+
+  @override
+  String get messages => 'پیام‌ها';
+
+  @override
+  String minutesCount(Object count) {
+    return '$count دقیقه';
+  }
+
+  @override
+  String get monday => 'دوشنبه';
+
+  @override
+  String get myBookings => 'رزروهای من';
+
+  @override
+  String get myGames => 'بازی‌های من';
+
+  @override
+  String get myVenues => 'مجموعه‌های من';
+
+  @override
+  String get nearYou => 'نزدیک تو';
+
+  @override
+  String get newPost => 'پست جدید';
+
+  @override
+  String get newStory => 'استوری';
+
+  @override
+  String get noBookingsOnThisDay => 'در این روز رزروی نیست';
+
+  @override
+  String get noConversationsYet => 'هنوز گفتگویی ندارید';
+
+  @override
+  String get noGamesYet => 'هنوز بازی‌ای نیست';
+
+  @override
+  String get noOpenGamesBeTheFirst => 'فعلاً درخواست هم‌بازی نیست؛ اولین را شما بسازید';
+
+  @override
+  String get notApproved => 'تأیید نشد';
+
+  @override
+  String get onlyMyFollowers => 'فقط دنبال‌کننده‌های من';
+
+  @override
+  String get openGames => 'درخواست‌های هم‌بازی';
+
+  @override
+  String get openTheLinkedItem => 'مشاهده';
+
+  @override
+  String get orTypeThePlace => 'یا نام مکان را بنویسید';
+
+  @override
+  String get payAtTheVenue => 'پرداخت در محل';
+
+  @override
+  String get payMyShare => 'پرداخت سهم من';
+
+  @override
+  String get payTheOrganizerAtTheVenue => 'به برگزارکننده در محل پرداخت کنید';
+
+  @override
+  String get perPerson => 'هر نفر';
+
+  @override
+  String get pickATime => 'یک زمان انتخاب کنید';
+
+  @override
+  String get pickTheLocationOnTheMap => 'روی نقشه بزنید تا مکان ثبت شود';
+
+  @override
+  String get pickTheTeams => 'تیم‌ها را مشخص کنید';
+
+  @override
+  String placeOf(Object rank, Object count) {
+    return 'رتبه‌ی $rank از $count';
+  }
+
+  @override
+  String get playARecordedMatchToSeeYourLevelMove => 'بعد از اولین بازی ثبت‌شده، تغییرات سطح اینجا می‌آید';
+
+  @override
+  String get players => 'بازیکن‌ها';
+
+  @override
+  String get playersNeeded => 'تعداد بازیکن';
+
+  @override
+  String pointsCount(Object count) {
+    return '$count امتیاز';
+  }
+
+  @override
+  String get post => 'پست';
+
+  @override
+  String get posts => 'پست‌ها';
+
+  @override
+  String get pricePerHour => 'قیمت هر ساعت';
+
+  @override
+  String get refundedIfYouWithdrawBeforeTheStart => 'اگر قبل از شروع انصراف دهید برمی‌گردد';
+
+  @override
+  String get replies => 'پاسخ‌ها';
+
+  @override
+  String get requested => 'درخواست شد';
+
+  @override
+  String get result => 'نتیجه';
+
+  @override
+  String get revenueThisMonth => 'درآمد این ماه';
+
+  @override
+  String get sameLevelPlayers => 'بازیکن‌های هم‌سطح';
+
+  @override
+  String get saturday => 'شنبه';
+
+  @override
+  String get sayHello => 'سلام کنید 👋';
+
+  @override
+  String get searchCourtsAndShops => 'جستجوی زمین و فروشگاه…';
+
+  @override
+  String get shareInTheFeed => 'اشتراک در فید';
+
+  @override
+  String get shareResult => 'اشتراک نتیجه';
+
+  @override
+  String get shop => 'فروشگاه';
+
+  @override
+  String get shops => 'فروشگاه‌ها';
+
+  @override
+  String get shown => 'نمایش';
+
+  @override
+  String get slotLength => 'طول هر نوبت';
+
+  @override
+  String get specialPrices => 'قیمت‌های ویژه';
+
+  @override
+  String get splitCostWithFriends => 'تقسیم هزینه با دوستان';
+
+  @override
+  String spotsLeft(Object count) {
+    return '$count جای خالی';
+  }
+
+  @override
+  String get submitAndPublish => 'ثبت و انتشار';
+
+  @override
+  String get sunday => 'یکشنبه';
+
+  @override
+  String get surface => 'نوع کف';
+
+  @override
+  String get thanksForYourReport => 'ممنون، گزارش شما بررسی می‌شود';
+
+  @override
+  String get theLinkedItemIsSharedWithThePost => 'همراه پست به اشتراک گذاشته می‌شود';
+
+  @override
+  String get thisMessageWasDeleted => 'این پیام حذف شد';
+
+  @override
+  String get thisSeason => 'این فصل';
+
+  @override
+  String get thisVenueHasNoCourtsYet => 'این مجموعه هنوز زمینی ندارد';
+
+  @override
+  String get thursday => 'پنجشنبه';
+
+  @override
+  String get trophies => 'افتخارات';
+
+  @override
+  String get tuesday => 'سه‌شنبه';
+
+  @override
+  String get upcomingTournaments => 'تورنمنت‌های پیش رو';
+
+  @override
+  String get venuesAreListedAfterReview => 'بعد از بررسی روی نقشه نمایش داده می‌شود.';
+
+  @override
+  String get viewProfile => 'مشاهده‌ی پروفایل';
+
+  @override
+  String get viewVenue => 'مشاهده‌ی مجموعه';
+
+  @override
+  String get views => 'بازدید';
+
+  @override
+  String get wednesday => 'چهارشنبه';
+
+  @override
+  String get weeksInARow => 'هفته‌ی پیاپی';
+
+  @override
+  String get whatArePlayingToday => 'امروز چی بازی می‌کنی؟';
+
+  @override
+  String get whatIsWrongWithIt => 'چه مشکلی دارد؟';
+
+  @override
+  String get whatsOnYourMind => 'چه خبر؟';
+
+  @override
+  String get when => 'کی';
+
+  @override
+  String get where => 'کجا';
+
+  @override
+  String get whereIsTheGame => 'مجموعه را انتخاب کنید یا مکان را بنویسید';
+
+  @override
+  String get winRate => 'درصد برد';
+
+  @override
+  String get winStreak => 'برد پیاپی';
+
+  @override
+  String get wins => 'برد';
+
+  @override
+  String get writeAReply => 'پاسخی بنویسید…';
+
+  @override
+  String get writeSomethingOrAddAPhoto => 'چیزی بنویسید یا عکس اضافه کنید';
+
+  @override
+  String get youHaveNotBlockedAnyone => 'کسی را مسدود نکرده‌اید';
+
+  @override
+  String get youJoinedTheGame => 'به بازی پیوستید';
+
+  @override
+  String get yourExperience => 'تجربه‌تان چطور بود؟';
+
+  @override
+  String get yourRequestWasSent => 'درخواست شما فرستاده شد';
+
+  @override
+  String get yourShareIsPaidNow => 'سهم شما همین حالا از کیف پول پرداخت می‌شود';
+
+  @override
+  String get yourShareIsUnpaid => 'سهم شما پرداخت نشده';
+
+  @override
+  String get yourVenueWasSentForReview => 'برای بررسی فرستاده شد؛ بعد از تأیید روی نقشه می‌آید';
+
+  @override
+  String get copyId => 'کپی شناسه';
+
+  @override
+  String get player => 'بازیکن';
+
+  @override
+  String get scoreFormatHint => 'هر ست به شکل A-B و با فاصله از هم؛ خالی یعنی پاک کردن نتیجه.';
+
+  @override
+  String get social => 'اجتماعی';
+
+  @override
+  String get text => 'متن';
+
+  @override
+  String get venues => 'مجموعه‌ها';
 }

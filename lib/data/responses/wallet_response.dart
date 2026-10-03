@@ -66,6 +66,15 @@ extension NullableWalletExtension on UWalletTxnResponse {
       case TagWalletTxn.goldSale:
       case TagWalletTxn.goldPurchaseRefund:
         return Icons.savings_outlined;
+      case TagWalletTxn.courtBooking:
+      case TagWalletTxn.courtBookingSettlement:
+        return Icons.sports_tennis_outlined;
+      case TagWalletTxn.tournamentEntryFee:
+      case TagWalletTxn.tournamentEntrySettlement:
+        return Icons.emoji_events_outlined;
+      case TagWalletTxn.courtBookingRefund:
+      case TagWalletTxn.tournamentEntryRefund:
+        return Icons.replay;
     }
   }
 }

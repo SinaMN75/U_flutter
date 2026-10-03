@@ -428,7 +428,7 @@ class UTournamentEntryResponse {
   factory UTournamentEntryResponse.fromMap(Map<String, dynamic> json) => UTournamentEntryResponse(
     id: json["id"],
     createdAt: DateTime.parse(json["createdAt"]),
-    jsonData: UBaseJson.fromMap(json["jsonData"]),
+    jsonData: UTournamentEntryJson.fromMap(json["jsonData"]),
     tags: List<int>.from(json["tags"].map((dynamic x) => x)),
     tournamentId: json["tournamentId"],
     creatorId: json["creatorId"],
@@ -440,7 +440,7 @@ class UTournamentEntryResponse {
   );
   final String id;
   final DateTime createdAt;
-  final UBaseJson jsonData;
+  final UTournamentEntryJson jsonData;
   final List<int> tags;
   final String tournamentId;
   final String? creatorId;
@@ -454,7 +454,9 @@ class UTournamentEntryResponse {
 
   /// The team name, or the players' names. `entry.displayName` → "Sara Ahmadi / Ali Karimi"
   String get displayName =>
-      title.nullIfEmpty() ?? (users ?? <UUserResponse>[]).map((UUserResponse u) => "${u.firstName ?? ""} ${u.lastName ?? ""}".trim()).where((String i) => i.isNotEmpty).join(" / ").nullIfEmpty() ?? "-";
+      title.nullIfEmpty() ??
+      (users ?? <UUserResponse>[]).map((UUserResponse u) => "${u.firstName ?? ""} ${u.lastName ?? ""}".trim()).where((String i) => i.isNotEmpty).join(" / ").nullIfEmpty() ??
+      "-";
 
   String toJson() => json.encode(toMap());
 
@@ -494,6 +496,11 @@ class UTournamentMatchResponse {
     this.nextMatchSlot,
     this.loserNextMatchId,
     this.loserNextMatchSlot,
+    this.tournament,
+    this.entryA,
+    this.entryB,
+    this.partnerA,
+    this.partnerB,
   });
 
   factory UTournamentMatchResponse.fromJson(String str) => UTournamentMatchResponse.fromMap(json.decode(str));
@@ -518,6 +525,11 @@ class UTournamentMatchResponse {
     nextMatchSlot: json["nextMatchSlot"],
     loserNextMatchId: json["loserNextMatchId"],
     loserNextMatchSlot: json["loserNextMatchSlot"],
+    tournament: json["tournament"] == null ? null : UTournamentResponse.fromMap(json["tournament"]),
+    entryA: json["entryA"] == null ? null : UTournamentEntryResponse.fromMap(json["entryA"]),
+    entryB: json["entryB"] == null ? null : UTournamentEntryResponse.fromMap(json["entryB"]),
+    partnerA: json["partnerA"] == null ? null : UTournamentEntryResponse.fromMap(json["partnerA"]),
+    partnerB: json["partnerB"] == null ? null : UTournamentEntryResponse.fromMap(json["partnerB"]),
   );
   final String id;
   final DateTime createdAt;
@@ -540,6 +552,34 @@ class UTournamentMatchResponse {
   final int? nextMatchSlot;
   final String? loserNextMatchId;
   final int? loserNextMatchSlot;
+
+  /// Filled when read with the match history (UTournamentMatchSelectorArgs.tournament / entries).
+  final UTournamentResponse? tournament;
+  final UTournamentEntryResponse? entryA;
+  final UTournamentEntryResponse? entryB;
+  final UTournamentEntryResponse? partnerA;
+  final UTournamentEntryResponse? partnerB;
+
+  /// Side A's name from the read entries. `match.sideAName` → "Sara / Ali"
+  String get sideAName => <UTournamentEntryResponse?>[entryA, partnerA].whereType<UTournamentEntryResponse>().map((UTournamentEntryResponse e) => e.displayName).join(" / ").nullIfEmpty() ?? "-";
+
+  String get sideBName => <UTournamentEntryResponse?>[entryB, partnerB].whereType<UTournamentEntryResponse>().map((UTournamentEntryResponse e) => e.displayName).join(" / ").nullIfEmpty() ?? "-";
+
+  /// 1 won, 0 drawn, -1 lost, null if the user isn't in it (read with entries).
+  int? resultFor(String? userId) {
+    bool has(UTournamentEntryResponse? e) => e?.users?.any((UUserResponse u) => u.id == userId) ?? false;
+    final bool onA = has(entryA) || has(partnerA);
+    final bool onB = has(entryB) || has(partnerB);
+    if (!onA && !onB || !isFinished) return null;
+    final int scoreA = jsonData.sets.fold(0, (int s, UMatchSetScore x) => s + x.a);
+    final int scoreB = jsonData.sets.fold(0, (int s, UMatchSetScore x) => s + x.b);
+    final int resultA = winnerEntryId != null
+        ? (winnerEntryId == entryAId ? 1 : -1)
+        : partnerAId != null
+        ? (scoreA - scoreB).sign
+        : 0;
+    return onA ? resultA : -resultA;
+  }
 
   bool get isFinished => tags.contains(TagTournamentMatch.finished.number);
 
@@ -579,6 +619,11 @@ class UTournamentMatchResponse {
     "nextMatchSlot": nextMatchSlot,
     "loserNextMatchId": loserNextMatchId,
     "loserNextMatchSlot": loserNextMatchSlot,
+    "tournament": tournament?.toMap(),
+    "entryA": entryA?.toMap(),
+    "entryB": entryB?.toMap(),
+    "partnerA": partnerA?.toMap(),
+    "partnerB": partnerB?.toMap(),
   };
 }
 
@@ -694,8 +739,7 @@ class UTournamentStandingResponse {
   /// Box league: 1 moves up a box, -1 moves down.
   final int promotion;
 
-  String get displayName =>
-      title.nullIfEmpty() ?? users.map((UUserResponse u) => "${u.firstName ?? ""} ${u.lastName ?? ""}".trim()).where((String i) => i.isNotEmpty).join(" / ").nullIfEmpty() ?? "-";
+  String get displayName => title.nullIfEmpty() ?? users.map((UUserResponse u) => "${u.firstName ?? ""} ${u.lastName ?? ""}".trim()).where((String i) => i.isNotEmpty).join(" / ").nullIfEmpty() ?? "-";
 
   String toJson() => json.encode(toMap());
 
@@ -715,5 +759,544 @@ class UTournamentStandingResponse {
     "points": points,
     "groupNumber": groupNumber,
     "promotion": promotion,
+  };
+}
+
+class UTournamentEntryJson {
+  UTournamentEntryJson({
+    this.paidAmount = 0,
+    this.refunded = false,
+    this.settled = false,
+    this.detail1,
+    this.detail2,
+  });
+
+  factory UTournamentEntryJson.fromJson(String str) => UTournamentEntryJson.fromMap(json.decode(str));
+
+  factory UTournamentEntryJson.fromMap(Map<String, dynamic> json) => UTournamentEntryJson(
+    paidAmount: json["paidAmount"]?.toDouble() ?? 0,
+    refunded: json["refunded"] ?? false,
+    settled: json["settled"] ?? false,
+    detail1: json["detail1"],
+    detail2: json["detail2"],
+  );
+
+  /// The entry fee paid from the wallet.
+  final double paidAmount;
+  final bool refunded;
+  final bool settled;
+  final String? detail1;
+  final String? detail2;
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "paidAmount": paidAmount,
+    "refunded": refunded,
+    "settled": settled,
+    "detail1": detail1,
+    "detail2": detail2,
+  };
+}
+
+class UPlayerRatingHistoryResponse {
+  UPlayerRatingHistoryResponse({
+    required this.id,
+    required this.createdAt,
+    required this.jsonData,
+    required this.tags,
+    required this.userId,
+    required this.sportId,
+    required this.matchId,
+    this.creatorId,
+    this.levelBefore = 0,
+    this.levelAfter = 0,
+  });
+
+  factory UPlayerRatingHistoryResponse.fromJson(String str) => UPlayerRatingHistoryResponse.fromMap(json.decode(str));
+
+  factory UPlayerRatingHistoryResponse.fromMap(Map<String, dynamic> json) => UPlayerRatingHistoryResponse(
+    id: json["id"],
+    createdAt: DateTime.parse(json["createdAt"]),
+    jsonData: UBaseJson.fromMap(json["jsonData"]),
+    tags: List<int>.from(json["tags"].map((dynamic x) => x)),
+    creatorId: json["creatorId"],
+    userId: json["userId"],
+    sportId: json["sportId"],
+    matchId: json["matchId"],
+    levelBefore: json["levelBefore"]?.toDouble() ?? 0,
+    levelAfter: json["levelAfter"]?.toDouble() ?? 0,
+  );
+
+  final String id;
+  final DateTime createdAt;
+  final UBaseJson jsonData;
+  final List<int> tags;
+  final String? creatorId;
+  final String userId;
+  final String sportId;
+  final String matchId;
+  final double levelBefore;
+  final double levelAfter;
+
+  double get change => levelAfter - levelBefore;
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "createdAt": createdAt.toIso8601String(),
+    "jsonData": jsonData.toMap(),
+    "tags": tags,
+    "creatorId": creatorId,
+    "userId": userId,
+    "sportId": sportId,
+    "matchId": matchId,
+    "levelBefore": levelBefore,
+    "levelAfter": levelAfter,
+  };
+}
+
+class UPlayerAchievementJson {
+  UPlayerAchievementJson({
+    this.title,
+    this.badge,
+    this.entryCount = 0,
+    this.detail1,
+    this.detail2,
+  });
+
+  factory UPlayerAchievementJson.fromJson(String str) => UPlayerAchievementJson.fromMap(json.decode(str));
+
+  factory UPlayerAchievementJson.fromMap(Map<String, dynamic> json) => UPlayerAchievementJson(
+    title: json["title"],
+    badge: json["badge"],
+    entryCount: json["entryCount"] ?? 0,
+    detail1: json["detail1"],
+    detail2: json["detail2"],
+  );
+
+  /// The tournament's title when it was won.
+  final String? title;
+
+  /// A badge key (UBadges); translate it with UBadges.label.
+  final String? badge;
+  final int entryCount;
+  final String? detail1;
+  final String? detail2;
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "title": title,
+    "badge": badge,
+    "entryCount": entryCount,
+    "detail1": detail1,
+    "detail2": detail2,
+  };
+}
+
+class UPlayerAchievementResponse {
+  UPlayerAchievementResponse({
+    required this.id,
+    required this.createdAt,
+    required this.jsonData,
+    required this.tags,
+    required this.userId,
+    this.creatorId,
+    this.sportId,
+    this.tournamentId,
+    this.rank,
+    this.points = 0,
+    this.user,
+    this.sport,
+  });
+
+  factory UPlayerAchievementResponse.fromJson(String str) => UPlayerAchievementResponse.fromMap(json.decode(str));
+
+  factory UPlayerAchievementResponse.fromMap(Map<String, dynamic> json) => UPlayerAchievementResponse(
+    id: json["id"],
+    createdAt: DateTime.parse(json["createdAt"]),
+    jsonData: UPlayerAchievementJson.fromMap(json["jsonData"]),
+    tags: List<int>.from(json["tags"].map((dynamic x) => x)),
+    creatorId: json["creatorId"],
+    userId: json["userId"],
+    sportId: json["sportId"],
+    tournamentId: json["tournamentId"],
+    rank: json["rank"],
+    points: json["points"] ?? 0,
+    user: json["user"] == null ? null : UUserResponse.fromMap(json["user"]),
+    sport: json["sport"] == null ? null : USportResponse.fromMap(json["sport"]),
+  );
+
+  final String id;
+  final DateTime createdAt;
+  final UPlayerAchievementJson jsonData;
+  final List<int> tags;
+  final String? creatorId;
+  final String userId;
+  final String? sportId;
+  final String? tournamentId;
+  final int? rank;
+  final int points;
+  final UUserResponse? user;
+  final USportResponse? sport;
+
+  bool get isHidden => tags.contains(TagPlayerAchievement.hidden.number);
+
+  bool get isBadge => tags.contains(TagPlayerAchievement.badge.number);
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "createdAt": createdAt.toIso8601String(),
+    "jsonData": jsonData.toMap(),
+    "tags": tags,
+    "creatorId": creatorId,
+    "userId": userId,
+    "sportId": sportId,
+    "tournamentId": tournamentId,
+    "rank": rank,
+    "points": points,
+    "user": user?.toMap(),
+    "sport": sport?.toMap(),
+  };
+}
+
+class ULeaderboardRowResponse {
+  ULeaderboardRowResponse({
+    required this.rank,
+    required this.user,
+    this.level = 0,
+    this.points = 0,
+    this.matchesPlayed = 0,
+  });
+
+  factory ULeaderboardRowResponse.fromJson(String str) => ULeaderboardRowResponse.fromMap(json.decode(str));
+
+  factory ULeaderboardRowResponse.fromMap(Map<String, dynamic> json) => ULeaderboardRowResponse(
+    rank: json["rank"],
+    user: UUserResponse.fromMap(json["user"]),
+    level: json["level"]?.toDouble() ?? 0,
+    points: json["points"] ?? 0,
+    matchesPlayed: json["matchesPlayed"] ?? 0,
+  );
+
+  final int rank;
+  final UUserResponse user;
+  final double level;
+  final int points;
+  final int matchesPlayed;
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "rank": rank,
+    "user": user.toMap(),
+    "level": level,
+    "points": points,
+    "matchesPlayed": matchesPlayed,
+  };
+}
+
+class UPlayerStatsResponse {
+  UPlayerStatsResponse({
+    this.user,
+    this.matchesPlayed = 0,
+    this.wins = 0,
+    this.losses = 0,
+    this.draws = 0,
+    this.winRate = 0,
+    this.currentWinStreak = 0,
+    this.bestWinStreak = 0,
+    this.weeklyStreak = 0,
+    this.tournamentsPlayed = 0,
+    this.tournamentWins = 0,
+    this.podiums = 0,
+    this.rankingPoints = 0,
+    this.followers = 0,
+    this.following = 0,
+    this.referralCode,
+    this.referralCount = 0,
+  });
+
+  factory UPlayerStatsResponse.fromJson(String str) => UPlayerStatsResponse.fromMap(json.decode(str));
+
+  factory UPlayerStatsResponse.fromMap(Map<String, dynamic> json) => UPlayerStatsResponse(
+    user: json["user"] == null ? null : UUserResponse.fromMap(json["user"]),
+    matchesPlayed: json["matchesPlayed"] ?? 0,
+    wins: json["wins"] ?? 0,
+    losses: json["losses"] ?? 0,
+    draws: json["draws"] ?? 0,
+    winRate: json["winRate"] ?? 0,
+    currentWinStreak: json["currentWinStreak"] ?? 0,
+    bestWinStreak: json["bestWinStreak"] ?? 0,
+    weeklyStreak: json["weeklyStreak"] ?? 0,
+    tournamentsPlayed: json["tournamentsPlayed"] ?? 0,
+    tournamentWins: json["tournamentWins"] ?? 0,
+    podiums: json["podiums"] ?? 0,
+    rankingPoints: json["rankingPoints"] ?? 0,
+    followers: json["followers"] ?? 0,
+    following: json["following"] ?? 0,
+    referralCode: json["referralCode"],
+    referralCount: json["referralCount"] ?? 0,
+  );
+
+  /// Public fields only.
+  final UUserResponse? user;
+  final int matchesPlayed;
+  final int wins;
+  final int losses;
+  final int draws;
+
+  /// Percent.
+  final int winRate;
+  final int currentWinStreak;
+  final int bestWinStreak;
+
+  /// Weeks in a row with at least one match.
+  final int weeklyStreak;
+  final int tournamentsPlayed;
+  final int tournamentWins;
+  final int podiums;
+  final int rankingPoints;
+  final int followers;
+  final int following;
+
+  /// The signed-in user's own only.
+  final String? referralCode;
+  final int referralCount;
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "user": user?.toMap(),
+    "matchesPlayed": matchesPlayed,
+    "wins": wins,
+    "losses": losses,
+    "draws": draws,
+    "winRate": winRate,
+    "currentWinStreak": currentWinStreak,
+    "bestWinStreak": bestWinStreak,
+    "weeklyStreak": weeklyStreak,
+    "tournamentsPlayed": tournamentsPlayed,
+    "tournamentWins": tournamentWins,
+    "podiums": podiums,
+    "rankingPoints": rankingPoints,
+    "followers": followers,
+    "following": following,
+    "referralCode": referralCode,
+    "referralCount": referralCount,
+  };
+}
+
+class UOpenMatchJson {
+  UOpenMatchJson({
+    this.title,
+    this.description,
+    this.place,
+    this.latitude,
+    this.longitude,
+    this.bookingId,
+    this.pendingUserIds = const <String>[],
+    this.invitedUserIds = const <String>[],
+    this.teamA = const <String>[],
+    this.teamB = const <String>[],
+    this.sets = const <UMatchSetScore>[],
+    this.detail1,
+    this.detail2,
+  });
+
+  factory UOpenMatchJson.fromJson(String str) => UOpenMatchJson.fromMap(json.decode(str));
+
+  factory UOpenMatchJson.fromMap(Map<String, dynamic> json) => UOpenMatchJson(
+    title: json["title"],
+    description: json["description"],
+    place: json["place"],
+    latitude: json["latitude"]?.toDouble(),
+    longitude: json["longitude"]?.toDouble(),
+    bookingId: json["bookingId"],
+    pendingUserIds: json["pendingUserIds"] == null ? const <String>[] : List<String>.from(json["pendingUserIds"].map((dynamic x) => x)),
+    invitedUserIds: json["invitedUserIds"] == null ? const <String>[] : List<String>.from(json["invitedUserIds"].map((dynamic x) => x)),
+    teamA: json["teamA"] == null ? const <String>[] : List<String>.from(json["teamA"].map((dynamic x) => x)),
+    teamB: json["teamB"] == null ? const <String>[] : List<String>.from(json["teamB"].map((dynamic x) => x)),
+    sets: json["sets"] == null ? const <UMatchSetScore>[] : List<UMatchSetScore>.from(json["sets"].map((dynamic x) => UMatchSetScore.fromMap(x))),
+    detail1: json["detail1"],
+    detail2: json["detail2"],
+  );
+
+  final String? title;
+  final String? description;
+  final String? place;
+  final double? latitude;
+  final double? longitude;
+  final String? bookingId;
+  final List<String> pendingUserIds;
+  final List<String> invitedUserIds;
+  final List<String> teamA;
+  final List<String> teamB;
+  final List<UMatchSetScore> sets;
+  final String? detail1;
+  final String? detail2;
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "title": title,
+    "description": description,
+    "place": place,
+    "latitude": latitude,
+    "longitude": longitude,
+    "bookingId": bookingId,
+    "pendingUserIds": pendingUserIds,
+    "invitedUserIds": invitedUserIds,
+    "teamA": teamA,
+    "teamB": teamB,
+    "sets": sets.map((UMatchSetScore x) => x.toMap()).toList(),
+    "detail1": detail1,
+    "detail2": detail2,
+  };
+}
+
+class UOpenMatchResponse {
+  UOpenMatchResponse({
+    required this.id,
+    required this.createdAt,
+    required this.jsonData,
+    required this.tags,
+    required this.startAt,
+    required this.capacity,
+    required this.sportId,
+    this.creatorId,
+    this.durationMinutes = 90,
+    this.minLevel,
+    this.maxLevel,
+    this.pricePerPlayer = 0,
+    this.venueId,
+    this.playerCount = 0,
+    this.adminUserIds = const <String>[],
+    this.sport,
+    this.venue,
+    this.users,
+    this.creator,
+  });
+
+  factory UOpenMatchResponse.fromJson(String str) => UOpenMatchResponse.fromMap(json.decode(str));
+
+  factory UOpenMatchResponse.fromMap(Map<String, dynamic> json) => UOpenMatchResponse(
+    id: json["id"],
+    createdAt: DateTime.parse(json["createdAt"]),
+    jsonData: UOpenMatchJson.fromMap(json["jsonData"]),
+    tags: List<int>.from(json["tags"].map((dynamic x) => x)),
+    creatorId: json["creatorId"],
+    startAt: DateTime.parse(json["startAt"]),
+    capacity: json["capacity"],
+    sportId: json["sportId"],
+    durationMinutes: json["durationMinutes"] ?? 90,
+    minLevel: json["minLevel"]?.toDouble(),
+    maxLevel: json["maxLevel"]?.toDouble(),
+    pricePerPlayer: json["pricePerPlayer"]?.toDouble() ?? 0,
+    venueId: json["venueId"],
+    playerCount: json["playerCount"] ?? 0,
+    adminUserIds: json["adminUserIds"] == null ? const <String>[] : List<String>.from(json["adminUserIds"].map((dynamic x) => x)),
+    sport: json["sport"] == null ? null : USportResponse.fromMap(json["sport"]),
+    venue: json["venue"] == null ? null : UVenueResponse.fromMap(json["venue"]),
+    users: json["users"] == null ? null : List<UUserResponse>.from(json["users"].map((dynamic x) => UUserResponse.fromMap(x))),
+    creator: json["creator"] == null ? null : UUserResponse.fromMap(json["creator"]),
+  );
+
+  final String id;
+  final DateTime createdAt;
+  final UOpenMatchJson jsonData;
+  final List<int> tags;
+  final String? creatorId;
+  final DateTime startAt;
+  final int capacity;
+  final String sportId;
+  final int durationMinutes;
+  final double? minLevel;
+  final double? maxLevel;
+  final double pricePerPlayer;
+  final String? venueId;
+  final int playerCount;
+  final List<String> adminUserIds;
+  final USportResponse? sport;
+  final UVenueResponse? venue;
+
+  /// Only public fields.
+  final List<UUserResponse>? users;
+  final UUserResponse? creator;
+
+  TagOpenMatch? get status => TagOpenMatch.values.group(100).firstWhereOrNull((TagOpenMatch t) => tags.contains(t.number));
+
+  bool get isPrivate => tags.contains(TagOpenMatch.private.number);
+
+  bool get isCompetitive => tags.contains(TagOpenMatch.competitive.number);
+
+  bool get isChallenge => tags.contains(TagOpenMatch.challenge.number);
+
+  bool isOrganizer(String? userId) => userId != null && (creatorId == userId || adminUserIds.contains(userId));
+
+  bool hasPlayer(String? userId) => users?.any((UUserResponse u) => u.id == userId) ?? false;
+
+  /// Where it is played: the venue's title or the typed place.
+  String get placeTitle => venue?.title ?? jsonData.place ?? "-";
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "createdAt": createdAt.toIso8601String(),
+    "jsonData": jsonData.toMap(),
+    "tags": tags,
+    "creatorId": creatorId,
+    "startAt": startAt.toIso8601String(),
+    "capacity": capacity,
+    "sportId": sportId,
+    "durationMinutes": durationMinutes,
+    "minLevel": minLevel,
+    "maxLevel": maxLevel,
+    "pricePerPlayer": pricePerPlayer,
+    "venueId": venueId,
+    "playerCount": playerCount,
+    "adminUserIds": adminUserIds,
+    "sport": sport?.toMap(),
+    "venue": venue?.toMap(),
+    "users": users?.map((UUserResponse x) => x.toMap()).toList(),
+    "creator": creator?.toMap(),
+  };
+}
+
+/// Badge keys from the server and their texts. `UBadges.label(a.jsonData.badge)` → "First win"
+abstract class UBadges {
+  static const List<String> all = <String>["firstMatch", "tenMatches", "fiftyMatches", "firstWin", "winStreak5", "champion", "podium", "organizer", "recruiter", "regular"];
+
+  static String label(String? key) => switch (key) {
+    "firstMatch" => U.s.badgeFirstMatch,
+    "tenMatches" => U.s.badgeTenMatches,
+    "fiftyMatches" => U.s.badgeFiftyMatches,
+    "firstWin" => U.s.badgeFirstWin,
+    "winStreak5" => U.s.badgeWinStreak5,
+    "champion" => U.s.badgeChampion,
+    "podium" => U.s.badgePodium,
+    "organizer" => U.s.badgeOrganizer,
+    "recruiter" => U.s.badgeRecruiter,
+    "regular" => U.s.badgeRegular,
+    _ => key ?? "-",
+  };
+
+  static String description(String? key) => switch (key) {
+    "firstMatch" => U.s.badgeFirstMatchDescription,
+    "tenMatches" => U.s.badgeTenMatchesDescription,
+    "fiftyMatches" => U.s.badgeFiftyMatchesDescription,
+    "firstWin" => U.s.badgeFirstWinDescription,
+    "winStreak5" => U.s.badgeWinStreak5Description,
+    "champion" => U.s.badgeChampionDescription,
+    "podium" => U.s.badgePodiumDescription,
+    "organizer" => U.s.badgeOrganizerDescription,
+    "recruiter" => U.s.badgeRecruiterDescription,
+    "regular" => U.s.badgeRegularDescription,
+    _ => "",
   };
 }

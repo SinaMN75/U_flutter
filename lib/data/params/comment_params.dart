@@ -11,6 +11,7 @@ class UCommentCreateParams {
     this.blogId,
     this.hotelId,
     this.dormId,
+    this.venueId,
     this.userId,
     this.creatorId,
     this.detail1,
@@ -30,6 +31,7 @@ class UCommentCreateParams {
     blogId: json["blogId"],
     hotelId: json["hotelId"],
     dormId: json["dormId"],
+    venueId: json["venueId"],
     userId: json["userId"],
     creatorId: json["creatorId"],
     tags: List<int>.from(json["tags"].map((dynamic x) => x)),
@@ -46,6 +48,7 @@ class UCommentCreateParams {
   final String? blogId;
   final String? hotelId;
   final String? dormId;
+  final String? venueId;
   final String? userId;
   final String? creatorId;
   final List<int> tags;
@@ -65,6 +68,7 @@ class UCommentCreateParams {
     "blogId": blogId,
     "hotelId": hotelId,
     "dormId": dormId,
+    "venueId": venueId,
     "userId": userId,
     "creatorId": creatorId,
     "tags": List<dynamic>.from(tags.map((dynamic x) => x)),
@@ -141,6 +145,7 @@ class UCommentReadParams {
     this.blogId,
     this.hotelId,
     this.dormId,
+    this.venueId,
     this.userId,
     this.pageSize,
     this.pageNumber,
@@ -160,6 +165,7 @@ class UCommentReadParams {
     blogId: json["blogId"],
     hotelId: json["hotelId"],
     dormId: json["dormId"],
+    venueId: json["venueId"],
     userId: json["userId"],
     pageSize: json["pageSize"] ?? 0,
     pageNumber: json["pageNumber"] ?? 0,
@@ -175,6 +181,7 @@ class UCommentReadParams {
   final String? blogId;
   final String? hotelId;
   final String? dormId;
+  final String? venueId;
   final String? userId;
   final int? pageSize;
   final int? pageNumber;
@@ -193,6 +200,7 @@ class UCommentReadParams {
     "blogId": blogId,
     "hotelId": hotelId,
     "dormId": dormId,
+    "venueId": venueId,
     "userId": userId,
     "pageSize": pageSize,
     "pageNumber": pageNumber,

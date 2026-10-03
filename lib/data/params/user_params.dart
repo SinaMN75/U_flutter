@@ -268,6 +268,8 @@ class UUserUpdateParams {
     this.birthdate,
     this.fcmToken,
     this.fatherName,
+    this.country,
+    this.city,
     this.weight,
     this.height,
     this.categories,
@@ -314,6 +316,8 @@ class UUserUpdateParams {
     birthdate: json["birthdate"] == null ? null : DateTime.parse(json["birthdate"]),
     fcmToken: json["fcmToken"],
     fatherName: json["fatherName"],
+    country: json["country"],
+    city: json["city"],
     weight: json["weight"]?.toDouble(),
     height: json["height"]?.toDouble(),
     nationalCardFront: json["nationalCardFront"],
@@ -357,6 +361,8 @@ class UUserUpdateParams {
   final DateTime? birthdate;
   final String? fcmToken;
   final String? fatherName;
+  final String? country;
+  final String? city;
   final double? weight;
   final double? height;
   final List<String>? categories;
@@ -403,6 +409,8 @@ class UUserUpdateParams {
     "birthdate": birthdate?.toIso8601String(),
     "fcmToken": fcmToken,
     "fatherName": fatherName,
+    "country": country,
+    "city": city,
     "weight": weight,
     "height": height,
     "nationalCardFront": nationalCardFront,

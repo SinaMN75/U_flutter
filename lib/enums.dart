@@ -18,7 +18,7 @@ extension NumericEnumExtension<T extends Enum> on Iterable<T> {
   List<String> get titlesEn => map((dynamic e) => (e as dynamic).titleEn as String).toList();
 
   List<Map<String, dynamic>> toMapList() => map(
-        (dynamic e) => <String, dynamic>{
+    (dynamic e) => <String, dynamic>{
       "number": (e as dynamic).number,
       "titleFa": (e as dynamic).titleFa,
       "titleEn": (e as dynamic).titleEn,
@@ -51,14 +51,14 @@ extension NumericEnumExtension<T extends Enum> on Iterable<T> {
   List<T> group(int hundred) => where((dynamic e) => (e as dynamic).number ~/ 100 == hundred ~/ 100).toList();
 
   List<String> titlesFromNumbers(
-      Iterable<int> numbers, {
-        bool localized = true,
-      }) => numbers
+    Iterable<int> numbers, {
+    bool localized = true,
+  }) => numbers
       .map(fromNumber)
       .whereType<T>()
       .map(
         (dynamic e) => localized ? (e as dynamic).localizedTitle as String : (e as dynamic).titleEn as String,
-  )
+      )
       .toList();
 }
 
@@ -655,6 +655,12 @@ enum TagWalletTxn with UNumericIdentifiable {
   goldPurchase("خرید طلا", "Gold Purchase", 213),
   goldSale("فروش طلا", "Gold Sale", 214),
   goldPurchaseRefund("استرداد خرید طلا", "Gold Purchase Refund", 215),
+  courtBooking("رزرو زمین", "Court booking", 216),
+  courtBookingRefund("استرداد رزرو زمین", "Court booking refund", 217),
+  courtBookingSettlement("تسویه‌ی رزرو زمین", "Court booking payout", 218),
+  tournamentEntryFee("ورودیه‌ی تورنمنت", "Tournament entry fee", 219),
+  tournamentEntryRefund("استرداد ورودیه‌ی تورنمنت", "Tournament entry refund", 220),
+  tournamentEntrySettlement("تسویه‌ی ورودیه‌های تورنمنت", "Tournament entry payout", 221),
   chargeSimPin("خرید شارژ پین سیم‌کارت", "SIM Charge (PIN)", 301),
   chargeSimTopup("شارژ مستقیم سیم‌کارت", "SIM Top-up", 302),
   internetSim("خرید بسته اینترنت", "Internet Package", 303),
@@ -775,6 +781,12 @@ enum TagNotification with UNumericIdentifiable {
   invoiceDue("سررسید فاکتور", "Invoice Due", 106),
   invoiceOverdue("فاکتور معوق", "Invoice Overdue", 107),
   invoicePaid("پرداخت فاکتور", "Invoice Paid", 108),
+  sport("ورزش", "Sport", 109),
+  booking("رزرو زمین", "Booking", 110),
+  social("اجتماعی", "Social", 111),
+  message("پیام", "Message", 112),
+  achievement("افتخار", "Achievement", 113),
+  reminder("یادآوری", "Reminder", 114),
   unread("خوانده نشده", "Unread", 201),
   read("خوانده شده", "Read", 202),
   test("تست", "Test", 999);
@@ -1516,6 +1528,178 @@ enum TagTournamentMatch with UNumericIdentifiable {
   thirdPlace("رده‌بندی", "Third place", 205);
 
   const TagTournamentMatch(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagPlayerAchievement with UNumericIdentifiable {
+  placement("رتبه‌ی تورنمنت", "Tournament placement", 101),
+  badge("نشان", "Badge", 102),
+  hidden("مخفی", "Hidden", 201);
+
+  const TagPlayerAchievement(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagOpenMatch with UNumericIdentifiable {
+  open("باز", "Open", 101),
+  full("تکمیل", "Full", 102),
+  finished("تمام‌شده", "Finished", 103),
+  cancelled("لغو شده", "Cancelled", 104),
+  public("عمومی", "Public", 201),
+  private("خصوصی", "Private", 202),
+  competitive("رقابتی", "Competitive", 301),
+  friendly("دوستانه", "Friendly", 302),
+  challenge("چالش", "Challenge", 401);
+
+  const TagOpenMatch(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagVenue with UNumericIdentifiable {
+  club("باشگاه", "Club", 101),
+  shop("فروشگاه", "Shop", 102),
+  pending("در انتظار تأیید", "Pending", 201),
+  approved("تأیید شده", "Approved", 202),
+  rejected("رد شده", "Rejected", 203),
+  suspended("معلق", "Suspended", 204),
+  payAtVenue("پرداخت در محل", "Pay at the venue", 301);
+
+  const TagVenue(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagCourt with UNumericIdentifiable {
+  indoor("سرپوشیده", "Indoor", 101),
+  outdoor("روباز", "Outdoor", 102),
+  active("فعال", "Active", 201),
+  inactive("غیرفعال", "Inactive", 202);
+
+  const TagCourt(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagBooking with UNumericIdentifiable {
+  pending("در انتظار", "Pending", 101),
+  confirmed("قطعی", "Confirmed", 102),
+  cancelled("لغو شده", "Cancelled", 103),
+  completed("انجام شده", "Completed", 104),
+  noShow("عدم حضور", "No-show", 105),
+  paidFromWallet("پرداخت از کیف پول", "Paid from wallet", 201),
+  payAtVenue("پرداخت در محل", "Pay at the venue", 202);
+
+  const TagBooking(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagPost with UNumericIdentifiable {
+  post("پست", "Post", 101),
+  story("استوری", "Story", 102),
+  comment("پاسخ", "Reply", 103),
+  public("عمومی", "Public", 201),
+  followers("دنبال‌کننده‌ها", "Followers", 202),
+  hidden("پنهان", "Hidden", 301);
+
+  const TagPost(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagReport with UNumericIdentifiable {
+  post("پست", "Post", 101),
+  user("کاربر", "User", 102),
+  message("پیام", "Message", 103),
+  venue("مجموعه", "Venue", 104),
+  comment("نظر", "Comment", 105),
+  pending("در انتظار بررسی", "Pending", 201),
+  resolved("رسیدگی شد", "Resolved", 202),
+  dismissed("رد شد", "Dismissed", 203);
+
+  const TagReport(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagBlock with UNumericIdentifiable {
+  user("کاربر", "User", 101);
+
+  const TagBlock(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagConversation with UNumericIdentifiable {
+  direct("خصوصی", "Direct", 101),
+  group("گروهی", "Group", 102);
+
+  const TagConversation(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagMessage with UNumericIdentifiable {
+  text("متن", "Text", 101),
+  system("سیستمی", "System", 102),
+  shared("اشتراکی", "Shared", 103),
+  edited("ویرایش شده", "Edited", 201),
+  deleted("حذف شده", "Deleted", 202);
+
+  const TagMessage(this.titleFa, this.titleEn, this.number);
 
   @override
   final String titleFa;

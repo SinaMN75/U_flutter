@@ -5861,4 +5861,763 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get quarterFinal => 'Quarter-final';
+
+  @override
+  String notifTournamentStarted(Object subject) {
+    return '$subject has started — your matches are out';
+  }
+
+  @override
+  String notifTournamentFinished(Object subject) {
+    return '$subject is over — see the final standings';
+  }
+
+  @override
+  String notifTournamentCancelled(Object subject) {
+    return '$subject was cancelled';
+  }
+
+  @override
+  String notifNewEntry(Object subject) {
+    return 'New registration in $subject';
+  }
+
+  @override
+  String notifEntryApproved(Object subject) {
+    return 'Your registration in $subject was approved';
+  }
+
+  @override
+  String notifEntryRejected(Object subject) {
+    return 'Your registration in $subject was rejected';
+  }
+
+  @override
+  String notifMatchResult(Object subject) {
+    return 'A result was recorded in $subject';
+  }
+
+  @override
+  String notifMatchSoon(Object subject) {
+    return 'Your match in $subject starts within an hour';
+  }
+
+  @override
+  String notifNewBadge(Object subject) {
+    return 'New badge: $subject';
+  }
+
+  @override
+  String notifChallenge(Object subject) {
+    return '$subject challenged you to a game';
+  }
+
+  @override
+  String notifGameInvite(Object subject) {
+    return '$subject invited you to a game';
+  }
+
+  @override
+  String notifJoinRequest(Object subject) {
+    return '$subject asked to join your game';
+  }
+
+  @override
+  String notifJoinApproved(Object subject) {
+    return 'You\'re in: $subject';
+  }
+
+  @override
+  String notifPlayerJoined(Object subject) {
+    return '$subject joined your game';
+  }
+
+  @override
+  String notifPlayerLeft(Object subject) {
+    return '$subject left your game';
+  }
+
+  @override
+  String notifGameCancelled(Object subject) {
+    return 'The game $subject was cancelled';
+  }
+
+  @override
+  String notifGameSoon(Object subject) {
+    return 'Your game $subject starts within an hour';
+  }
+
+  @override
+  String notifNewBooking(Object subject) {
+    return 'New booking at $subject';
+  }
+
+  @override
+  String notifBookingShare(Object subject) {
+    return 'You share a booking at $subject — pay your share';
+  }
+
+  @override
+  String notifBookingCancelled(Object subject) {
+    return 'A booking at $subject was cancelled';
+  }
+
+  @override
+  String notifBookingSoon(Object subject) {
+    return 'Your booking at $subject starts within an hour';
+  }
+
+  @override
+  String notifVenueApproved(Object subject) {
+    return '$subject was approved and is now listed';
+  }
+
+  @override
+  String notifVenueRejected(Object subject) {
+    return '$subject was not approved';
+  }
+
+  @override
+  String notifVenueSuspended(Object subject) {
+    return '$subject was suspended';
+  }
+
+  @override
+  String notifNewReply(Object subject) {
+    return '$subject replied to your post';
+  }
+
+  @override
+  String notifNewReaction(Object subject) {
+    return '$subject liked your post';
+  }
+
+  @override
+  String get badgeFirstMatch => 'First match';
+
+  @override
+  String get badgeFirstMatchDescription => 'Played a first recorded match';
+
+  @override
+  String get badgeTenMatches => '10 matches';
+
+  @override
+  String get badgeTenMatchesDescription => 'Played 10 recorded matches';
+
+  @override
+  String get badgeFiftyMatches => '50 matches';
+
+  @override
+  String get badgeFiftyMatchesDescription => 'Played 50 recorded matches';
+
+  @override
+  String get badgeFirstWin => 'First win';
+
+  @override
+  String get badgeFirstWinDescription => 'Won a first match';
+
+  @override
+  String get badgeWinStreak5 => '5 wins in a row';
+
+  @override
+  String get badgeWinStreak5Description => 'Won five matches in a row';
+
+  @override
+  String get badgeChampion => 'Champion';
+
+  @override
+  String get badgeChampionDescription => 'Won a tournament';
+
+  @override
+  String get badgePodium => 'Podium';
+
+  @override
+  String get badgePodiumDescription => 'Finished in the top three of a tournament';
+
+  @override
+  String get badgeOrganizer => 'Organizer';
+
+  @override
+  String get badgeOrganizerDescription => 'Organized a tournament';
+
+  @override
+  String get badgeRecruiter => 'Recruiter';
+
+  @override
+  String get badgeRecruiterDescription => 'Invited three friends who joined';
+
+  @override
+  String get badgeRegular => 'Regular';
+
+  @override
+  String get badgeRegularDescription => 'Played four weeks in a row';
+
+  @override
+  String get addCourt => 'Add court';
+
+  @override
+  String get addPhotosOfThePlace => 'At least 3 photos of the courts and facilities';
+
+  @override
+  String get addSpecialPrice => 'Add a special price';
+
+  @override
+  String get addYourFirstCourt => 'Add your first court so players can book it';
+
+  @override
+  String get addressOnMap => 'Address on the map';
+
+  @override
+  String get allPlayersWillBeNotified => 'All players will be notified';
+
+  @override
+  String get allowPayingAtTheVenue => 'Players may pay at the venue';
+
+  @override
+  String get amenityCafe => 'Café';
+
+  @override
+  String get amenityIndoor => 'Indoor';
+
+  @override
+  String get amenityLight => 'Floodlights';
+
+  @override
+  String get amenityLocker => 'Lockers';
+
+  @override
+  String get amenityParking => 'Parking';
+
+  @override
+  String get amenityRent => 'Racket rental';
+
+  @override
+  String get amenityShower => 'Showers';
+
+  @override
+  String get approveWhoJoins => 'I approve who joins';
+
+  @override
+  String get badges => 'Badges';
+
+  @override
+  String get beTheFirstToReply => 'Be the first to reply';
+
+  @override
+  String get block => 'Block';
+
+  @override
+  String get blockDescription => 'They won\'t see your posts or message you, and you won\'t see theirs.';
+
+  @override
+  String get blocked => 'Blocked';
+
+  @override
+  String get blockedUsers => 'Blocked users';
+
+  @override
+  String get bookACourt => 'Book a court';
+
+  @override
+  String get bookedSuccessfully => 'Booked!';
+
+  @override
+  String get bookings => 'Bookings';
+
+  @override
+  String get bookingsThisMonth => 'Bookings this month';
+
+  @override
+  String get byLevel => 'By level';
+
+  @override
+  String get byPoints => 'By points';
+
+  @override
+  String get call => 'Call';
+
+  @override
+  String get cancelBooking => 'Cancel booking';
+
+  @override
+  String cancelBookingPolicy(Object hours) {
+    return 'Free cancellation until $hours hours before; after that a part of the price is kept.';
+  }
+
+  @override
+  String get cancelTheGame => 'Cancel the game';
+
+  @override
+  String get challenge => 'Challenge';
+
+  @override
+  String get chatWithHost => 'Chat with host';
+
+  @override
+  String checkOutVenue(Object name) {
+    return 'Check out $name on Sportopia';
+  }
+
+  @override
+  String get chooseAVenue => 'Choose a venue';
+
+  @override
+  String get closed => 'Closed';
+
+  @override
+  String get closedOnThisDay => 'No free times on this day';
+
+  @override
+  String get closures => 'Closures';
+
+  @override
+  String get club => 'Club';
+
+  @override
+  String get clubs => 'Clubs';
+
+  @override
+  String get confirmAndPay => 'Confirm & pay';
+
+  @override
+  String get costPerPerson => 'Cost per person';
+
+  @override
+  String get courtNameExample => 'e.g. Court 1';
+
+  @override
+  String get courts => 'Courts';
+
+  @override
+  String get createAGameHere => 'Create a game here';
+
+  @override
+  String get deleteConversation => 'Delete conversation';
+
+  @override
+  String get editResult => 'Edit result';
+
+  @override
+  String get edited => 'edited';
+
+  @override
+  String get explore => 'Explore';
+
+  @override
+  String get feed => 'Feed';
+
+  @override
+  String get findPartner => 'Find partner';
+
+  @override
+  String get findPlayers => 'Find players';
+
+  @override
+  String get findPlayersForThisBooking => 'Want to find players for this booking?';
+
+  @override
+  String get findPlayersForYourGame => 'Find players for your game';
+
+  @override
+  String get follow => 'Follow';
+
+  @override
+  String get followPlayersToSeeTheirPosts => 'Follow players to see their posts here';
+
+  @override
+  String followTournament(Object name) {
+    return 'Follow $name live on Sportopia';
+  }
+
+  @override
+  String get followers => 'Followers';
+
+  @override
+  String get following => 'Following';
+
+  @override
+  String get forMyLevel => 'For my level';
+
+  @override
+  String freeCancellationUntilHoursBefore(Object hours) {
+    return 'Free cancellation until $hours hours before';
+  }
+
+  @override
+  String get friday => 'Friday';
+
+  @override
+  String get friendlyGamesDontChangeLevels => 'The result won\'t change anyone\'s level';
+
+  @override
+  String friendsJoinedCount(Object count) {
+    return '$count friends joined with your code';
+  }
+
+  @override
+  String get game => 'Game';
+
+  @override
+  String get groupChat => 'Group chat';
+
+  @override
+  String hiName(Object name) {
+    return 'Hi $name';
+  }
+
+  @override
+  String get hidden => 'Hidden';
+
+  @override
+  String get home => 'Home';
+
+  @override
+  String get imIn => 'I\'m in';
+
+  @override
+  String get invitationCodeOptional => 'Invitation code (optional)';
+
+  @override
+  String get invite => 'Invite';
+
+  @override
+  String get inviteFriends => 'Invite friends';
+
+  @override
+  String get inviteFriendsDescription => 'Share your code; your friends enter it when they sign up.';
+
+  @override
+  String inviteText(Object code) {
+    return 'Join me on Sportopia — find partners, book courts and win titles. My invitation code: $code';
+  }
+
+  @override
+  String joinMyGame(Object sport, Object time) {
+    return 'Join my $sport game — $time';
+  }
+
+  @override
+  String get joinRequests => 'Join requests';
+
+  @override
+  String get joined => 'Joined';
+
+  @override
+  String kilometersAway(Object km) {
+    return '$km km';
+  }
+
+  @override
+  String get leaderboard => 'Leaderboard';
+
+  @override
+  String get leaveTheGame => 'Leave the game';
+
+  @override
+  String get levelAdjustsAutomatically => 'Your level adjusts automatically after every recorded match';
+
+  @override
+  String get levelHistory => 'Level history';
+
+  @override
+  String get listACourt => 'List a court';
+
+  @override
+  String get listAShop => 'List a shop';
+
+  @override
+  String get listYourCourtOrShop => 'List your court or shop';
+
+  @override
+  String get manage => 'Manage';
+
+  @override
+  String get message => 'Message';
+
+  @override
+  String get messages => 'Messages';
+
+  @override
+  String minutesCount(Object count) {
+    return '$count min';
+  }
+
+  @override
+  String get monday => 'Monday';
+
+  @override
+  String get myBookings => 'My bookings';
+
+  @override
+  String get myGames => 'My games';
+
+  @override
+  String get myVenues => 'My venues';
+
+  @override
+  String get nearYou => 'Near you';
+
+  @override
+  String get newPost => 'New post';
+
+  @override
+  String get newStory => 'Story';
+
+  @override
+  String get noBookingsOnThisDay => 'No bookings on this day';
+
+  @override
+  String get noConversationsYet => 'No conversations yet';
+
+  @override
+  String get noGamesYet => 'No games yet';
+
+  @override
+  String get noOpenGamesBeTheFirst => 'No open games — create the first one';
+
+  @override
+  String get notApproved => 'Not approved';
+
+  @override
+  String get onlyMyFollowers => 'Only my followers';
+
+  @override
+  String get openGames => 'Open game requests';
+
+  @override
+  String get openTheLinkedItem => 'Open';
+
+  @override
+  String get orTypeThePlace => 'or type the place';
+
+  @override
+  String get payAtTheVenue => 'Pay at the venue';
+
+  @override
+  String get payMyShare => 'Pay my share';
+
+  @override
+  String get payTheOrganizerAtTheVenue => 'Pay the organizer at the venue';
+
+  @override
+  String get perPerson => 'Per person';
+
+  @override
+  String get pickATime => 'Pick a time';
+
+  @override
+  String get pickTheLocationOnTheMap => 'Tap the map to set the location';
+
+  @override
+  String get pickTheTeams => 'Pick the teams';
+
+  @override
+  String placeOf(Object rank, Object count) {
+    return 'Place $rank of $count';
+  }
+
+  @override
+  String get playARecordedMatchToSeeYourLevelMove => 'Play a recorded match to see your level move';
+
+  @override
+  String get players => 'Players';
+
+  @override
+  String get playersNeeded => 'Players needed';
+
+  @override
+  String pointsCount(Object count) {
+    return '$count pts';
+  }
+
+  @override
+  String get post => 'Post';
+
+  @override
+  String get posts => 'Posts';
+
+  @override
+  String get pricePerHour => 'Price per hour';
+
+  @override
+  String get refundedIfYouWithdrawBeforeTheStart => 'Refunded if you withdraw before the start';
+
+  @override
+  String get replies => 'Replies';
+
+  @override
+  String get requested => 'Requested';
+
+  @override
+  String get result => 'Result';
+
+  @override
+  String get revenueThisMonth => 'Revenue this month';
+
+  @override
+  String get sameLevelPlayers => 'Same-level players';
+
+  @override
+  String get saturday => 'Saturday';
+
+  @override
+  String get sayHello => 'Say hello 👋';
+
+  @override
+  String get searchCourtsAndShops => 'Search courts and shops…';
+
+  @override
+  String get shareInTheFeed => 'Share in the feed';
+
+  @override
+  String get shareResult => 'Share the result';
+
+  @override
+  String get shop => 'Shop';
+
+  @override
+  String get shops => 'Shops';
+
+  @override
+  String get shown => 'Shown';
+
+  @override
+  String get slotLength => 'Slot length';
+
+  @override
+  String get specialPrices => 'Special prices';
+
+  @override
+  String get splitCostWithFriends => 'Split the cost with friends';
+
+  @override
+  String spotsLeft(Object count) {
+    return '$count spots left';
+  }
+
+  @override
+  String get submitAndPublish => 'Submit & publish';
+
+  @override
+  String get sunday => 'Sunday';
+
+  @override
+  String get surface => 'Surface';
+
+  @override
+  String get thanksForYourReport => 'Thanks, we\'ll review your report';
+
+  @override
+  String get theLinkedItemIsSharedWithThePost => 'It will be shared with the post';
+
+  @override
+  String get thisMessageWasDeleted => 'This message was deleted';
+
+  @override
+  String get thisSeason => 'This season';
+
+  @override
+  String get thisVenueHasNoCourtsYet => 'This venue has no courts yet';
+
+  @override
+  String get thursday => 'Thursday';
+
+  @override
+  String get trophies => 'Trophies';
+
+  @override
+  String get tuesday => 'Tuesday';
+
+  @override
+  String get upcomingTournaments => 'Upcoming tournaments';
+
+  @override
+  String get venuesAreListedAfterReview => 'It is listed on the map after review.';
+
+  @override
+  String get viewProfile => 'View profile';
+
+  @override
+  String get viewVenue => 'View venue';
+
+  @override
+  String get views => 'views';
+
+  @override
+  String get wednesday => 'Wednesday';
+
+  @override
+  String get weeksInARow => 'weeks in a row';
+
+  @override
+  String get whatArePlayingToday => 'What are you playing today?';
+
+  @override
+  String get whatIsWrongWithIt => 'What\'s wrong with it?';
+
+  @override
+  String get whatsOnYourMind => 'What\'s on your mind?';
+
+  @override
+  String get when => 'When';
+
+  @override
+  String get where => 'Where';
+
+  @override
+  String get whereIsTheGame => 'Choose a venue or type the place';
+
+  @override
+  String get winRate => 'Win rate';
+
+  @override
+  String get winStreak => 'wins in a row';
+
+  @override
+  String get wins => 'Wins';
+
+  @override
+  String get writeAReply => 'Write a reply…';
+
+  @override
+  String get writeSomethingOrAddAPhoto => 'Write something or add a photo';
+
+  @override
+  String get youHaveNotBlockedAnyone => 'You haven\'t blocked anyone';
+
+  @override
+  String get youJoinedTheGame => 'You joined the game';
+
+  @override
+  String get yourExperience => 'How was it?';
+
+  @override
+  String get yourRequestWasSent => 'Your request was sent';
+
+  @override
+  String get yourShareIsPaidNow => 'Your share is paid now from the wallet';
+
+  @override
+  String get yourShareIsUnpaid => 'Your share is unpaid';
+
+  @override
+  String get yourVenueWasSentForReview => 'Sent for review — it shows on the map once approved';
+
+  @override
+  String get copyId => 'Copy ID';
+
+  @override
+  String get player => 'Player';
+
+  @override
+  String get scoreFormatHint => 'Each set as A-B, separated by spaces; empty clears the result.';
+
+  @override
+  String get social => 'Social';
+
+  @override
+  String get text => 'Text';
+
+  @override
+  String get venues => 'Venues';
 }

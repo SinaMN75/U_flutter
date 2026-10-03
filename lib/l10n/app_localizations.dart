@@ -11593,6 +11593,1368 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Quarter-final'**
   String get quarterFinal;
+
+  /// No description provided for @notifTournamentStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'{subject} has started — your matches are out'**
+  String notifTournamentStarted(Object subject);
+
+  /// No description provided for @notifTournamentFinished.
+  ///
+  /// In en, this message translates to:
+  /// **'{subject} is over — see the final standings'**
+  String notifTournamentFinished(Object subject);
+
+  /// No description provided for @notifTournamentCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'{subject} was cancelled'**
+  String notifTournamentCancelled(Object subject);
+
+  /// No description provided for @notifNewEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'New registration in {subject}'**
+  String notifNewEntry(Object subject);
+
+  /// No description provided for @notifEntryApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'Your registration in {subject} was approved'**
+  String notifEntryApproved(Object subject);
+
+  /// No description provided for @notifEntryRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Your registration in {subject} was rejected'**
+  String notifEntryRejected(Object subject);
+
+  /// No description provided for @notifMatchResult.
+  ///
+  /// In en, this message translates to:
+  /// **'A result was recorded in {subject}'**
+  String notifMatchResult(Object subject);
+
+  /// No description provided for @notifMatchSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Your match in {subject} starts within an hour'**
+  String notifMatchSoon(Object subject);
+
+  /// No description provided for @notifNewBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'New badge: {subject}'**
+  String notifNewBadge(Object subject);
+
+  /// No description provided for @notifChallenge.
+  ///
+  /// In en, this message translates to:
+  /// **'{subject} challenged you to a game'**
+  String notifChallenge(Object subject);
+
+  /// No description provided for @notifGameInvite.
+  ///
+  /// In en, this message translates to:
+  /// **'{subject} invited you to a game'**
+  String notifGameInvite(Object subject);
+
+  /// No description provided for @notifJoinRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'{subject} asked to join your game'**
+  String notifJoinRequest(Object subject);
+
+  /// No description provided for @notifJoinApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re in: {subject}'**
+  String notifJoinApproved(Object subject);
+
+  /// No description provided for @notifPlayerJoined.
+  ///
+  /// In en, this message translates to:
+  /// **'{subject} joined your game'**
+  String notifPlayerJoined(Object subject);
+
+  /// No description provided for @notifPlayerLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{subject} left your game'**
+  String notifPlayerLeft(Object subject);
+
+  /// No description provided for @notifGameCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'The game {subject} was cancelled'**
+  String notifGameCancelled(Object subject);
+
+  /// No description provided for @notifGameSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Your game {subject} starts within an hour'**
+  String notifGameSoon(Object subject);
+
+  /// No description provided for @notifNewBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'New booking at {subject}'**
+  String notifNewBooking(Object subject);
+
+  /// No description provided for @notifBookingShare.
+  ///
+  /// In en, this message translates to:
+  /// **'You share a booking at {subject} — pay your share'**
+  String notifBookingShare(Object subject);
+
+  /// No description provided for @notifBookingCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'A booking at {subject} was cancelled'**
+  String notifBookingCancelled(Object subject);
+
+  /// No description provided for @notifBookingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Your booking at {subject} starts within an hour'**
+  String notifBookingSoon(Object subject);
+
+  /// No description provided for @notifVenueApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'{subject} was approved and is now listed'**
+  String notifVenueApproved(Object subject);
+
+  /// No description provided for @notifVenueRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'{subject} was not approved'**
+  String notifVenueRejected(Object subject);
+
+  /// No description provided for @notifVenueSuspended.
+  ///
+  /// In en, this message translates to:
+  /// **'{subject} was suspended'**
+  String notifVenueSuspended(Object subject);
+
+  /// No description provided for @notifNewReply.
+  ///
+  /// In en, this message translates to:
+  /// **'{subject} replied to your post'**
+  String notifNewReply(Object subject);
+
+  /// No description provided for @notifNewReaction.
+  ///
+  /// In en, this message translates to:
+  /// **'{subject} liked your post'**
+  String notifNewReaction(Object subject);
+
+  /// No description provided for @badgeFirstMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'First match'**
+  String get badgeFirstMatch;
+
+  /// No description provided for @badgeFirstMatchDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Played a first recorded match'**
+  String get badgeFirstMatchDescription;
+
+  /// No description provided for @badgeTenMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'10 matches'**
+  String get badgeTenMatches;
+
+  /// No description provided for @badgeTenMatchesDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Played 10 recorded matches'**
+  String get badgeTenMatchesDescription;
+
+  /// No description provided for @badgeFiftyMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'50 matches'**
+  String get badgeFiftyMatches;
+
+  /// No description provided for @badgeFiftyMatchesDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Played 50 recorded matches'**
+  String get badgeFiftyMatchesDescription;
+
+  /// No description provided for @badgeFirstWin.
+  ///
+  /// In en, this message translates to:
+  /// **'First win'**
+  String get badgeFirstWin;
+
+  /// No description provided for @badgeFirstWinDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Won a first match'**
+  String get badgeFirstWinDescription;
+
+  /// No description provided for @badgeWinStreak5.
+  ///
+  /// In en, this message translates to:
+  /// **'5 wins in a row'**
+  String get badgeWinStreak5;
+
+  /// No description provided for @badgeWinStreak5Description.
+  ///
+  /// In en, this message translates to:
+  /// **'Won five matches in a row'**
+  String get badgeWinStreak5Description;
+
+  /// No description provided for @badgeChampion.
+  ///
+  /// In en, this message translates to:
+  /// **'Champion'**
+  String get badgeChampion;
+
+  /// No description provided for @badgeChampionDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Won a tournament'**
+  String get badgeChampionDescription;
+
+  /// No description provided for @badgePodium.
+  ///
+  /// In en, this message translates to:
+  /// **'Podium'**
+  String get badgePodium;
+
+  /// No description provided for @badgePodiumDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Finished in the top three of a tournament'**
+  String get badgePodiumDescription;
+
+  /// No description provided for @badgeOrganizer.
+  ///
+  /// In en, this message translates to:
+  /// **'Organizer'**
+  String get badgeOrganizer;
+
+  /// No description provided for @badgeOrganizerDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Organized a tournament'**
+  String get badgeOrganizerDescription;
+
+  /// No description provided for @badgeRecruiter.
+  ///
+  /// In en, this message translates to:
+  /// **'Recruiter'**
+  String get badgeRecruiter;
+
+  /// No description provided for @badgeRecruiterDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Invited three friends who joined'**
+  String get badgeRecruiterDescription;
+
+  /// No description provided for @badgeRegular.
+  ///
+  /// In en, this message translates to:
+  /// **'Regular'**
+  String get badgeRegular;
+
+  /// No description provided for @badgeRegularDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Played four weeks in a row'**
+  String get badgeRegularDescription;
+
+  /// No description provided for @addCourt.
+  ///
+  /// In en, this message translates to:
+  /// **'Add court'**
+  String get addCourt;
+
+  /// No description provided for @addPhotosOfThePlace.
+  ///
+  /// In en, this message translates to:
+  /// **'At least 3 photos of the courts and facilities'**
+  String get addPhotosOfThePlace;
+
+  /// No description provided for @addSpecialPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a special price'**
+  String get addSpecialPrice;
+
+  /// No description provided for @addYourFirstCourt.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your first court so players can book it'**
+  String get addYourFirstCourt;
+
+  /// No description provided for @addressOnMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Address on the map'**
+  String get addressOnMap;
+
+  /// No description provided for @allPlayersWillBeNotified.
+  ///
+  /// In en, this message translates to:
+  /// **'All players will be notified'**
+  String get allPlayersWillBeNotified;
+
+  /// No description provided for @allowPayingAtTheVenue.
+  ///
+  /// In en, this message translates to:
+  /// **'Players may pay at the venue'**
+  String get allowPayingAtTheVenue;
+
+  /// No description provided for @amenityCafe.
+  ///
+  /// In en, this message translates to:
+  /// **'Café'**
+  String get amenityCafe;
+
+  /// No description provided for @amenityIndoor.
+  ///
+  /// In en, this message translates to:
+  /// **'Indoor'**
+  String get amenityIndoor;
+
+  /// No description provided for @amenityLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Floodlights'**
+  String get amenityLight;
+
+  /// No description provided for @amenityLocker.
+  ///
+  /// In en, this message translates to:
+  /// **'Lockers'**
+  String get amenityLocker;
+
+  /// No description provided for @amenityParking.
+  ///
+  /// In en, this message translates to:
+  /// **'Parking'**
+  String get amenityParking;
+
+  /// No description provided for @amenityRent.
+  ///
+  /// In en, this message translates to:
+  /// **'Racket rental'**
+  String get amenityRent;
+
+  /// No description provided for @amenityShower.
+  ///
+  /// In en, this message translates to:
+  /// **'Showers'**
+  String get amenityShower;
+
+  /// No description provided for @approveWhoJoins.
+  ///
+  /// In en, this message translates to:
+  /// **'I approve who joins'**
+  String get approveWhoJoins;
+
+  /// No description provided for @badges.
+  ///
+  /// In en, this message translates to:
+  /// **'Badges'**
+  String get badges;
+
+  /// No description provided for @beTheFirstToReply.
+  ///
+  /// In en, this message translates to:
+  /// **'Be the first to reply'**
+  String get beTheFirstToReply;
+
+  /// No description provided for @block.
+  ///
+  /// In en, this message translates to:
+  /// **'Block'**
+  String get block;
+
+  /// No description provided for @blockDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'They won\'t see your posts or message you, and you won\'t see theirs.'**
+  String get blockDescription;
+
+  /// No description provided for @blocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Blocked'**
+  String get blocked;
+
+  /// No description provided for @blockedUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'Blocked users'**
+  String get blockedUsers;
+
+  /// No description provided for @bookACourt.
+  ///
+  /// In en, this message translates to:
+  /// **'Book a court'**
+  String get bookACourt;
+
+  /// No description provided for @bookedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Booked!'**
+  String get bookedSuccessfully;
+
+  /// No description provided for @bookings.
+  ///
+  /// In en, this message translates to:
+  /// **'Bookings'**
+  String get bookings;
+
+  /// No description provided for @bookingsThisMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Bookings this month'**
+  String get bookingsThisMonth;
+
+  /// No description provided for @byLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'By level'**
+  String get byLevel;
+
+  /// No description provided for @byPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'By points'**
+  String get byPoints;
+
+  /// No description provided for @call.
+  ///
+  /// In en, this message translates to:
+  /// **'Call'**
+  String get call;
+
+  /// No description provided for @cancelBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel booking'**
+  String get cancelBooking;
+
+  /// No description provided for @cancelBookingPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Free cancellation until {hours} hours before; after that a part of the price is kept.'**
+  String cancelBookingPolicy(Object hours);
+
+  /// No description provided for @cancelTheGame.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel the game'**
+  String get cancelTheGame;
+
+  /// No description provided for @challenge.
+  ///
+  /// In en, this message translates to:
+  /// **'Challenge'**
+  String get challenge;
+
+  /// No description provided for @chatWithHost.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat with host'**
+  String get chatWithHost;
+
+  /// No description provided for @checkOutVenue.
+  ///
+  /// In en, this message translates to:
+  /// **'Check out {name} on Sportopia'**
+  String checkOutVenue(Object name);
+
+  /// No description provided for @chooseAVenue.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a venue'**
+  String get chooseAVenue;
+
+  /// No description provided for @closed.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed'**
+  String get closed;
+
+  /// No description provided for @closedOnThisDay.
+  ///
+  /// In en, this message translates to:
+  /// **'No free times on this day'**
+  String get closedOnThisDay;
+
+  /// No description provided for @closures.
+  ///
+  /// In en, this message translates to:
+  /// **'Closures'**
+  String get closures;
+
+  /// No description provided for @club.
+  ///
+  /// In en, this message translates to:
+  /// **'Club'**
+  String get club;
+
+  /// No description provided for @clubs.
+  ///
+  /// In en, this message translates to:
+  /// **'Clubs'**
+  String get clubs;
+
+  /// No description provided for @confirmAndPay.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm & pay'**
+  String get confirmAndPay;
+
+  /// No description provided for @costPerPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost per person'**
+  String get costPerPerson;
+
+  /// No description provided for @courtNameExample.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Court 1'**
+  String get courtNameExample;
+
+  /// No description provided for @courts.
+  ///
+  /// In en, this message translates to:
+  /// **'Courts'**
+  String get courts;
+
+  /// No description provided for @createAGameHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a game here'**
+  String get createAGameHere;
+
+  /// No description provided for @deleteConversation.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete conversation'**
+  String get deleteConversation;
+
+  /// No description provided for @editResult.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit result'**
+  String get editResult;
+
+  /// No description provided for @edited.
+  ///
+  /// In en, this message translates to:
+  /// **'edited'**
+  String get edited;
+
+  /// No description provided for @explore.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore'**
+  String get explore;
+
+  /// No description provided for @feed.
+  ///
+  /// In en, this message translates to:
+  /// **'Feed'**
+  String get feed;
+
+  /// No description provided for @findPartner.
+  ///
+  /// In en, this message translates to:
+  /// **'Find partner'**
+  String get findPartner;
+
+  /// No description provided for @findPlayers.
+  ///
+  /// In en, this message translates to:
+  /// **'Find players'**
+  String get findPlayers;
+
+  /// No description provided for @findPlayersForThisBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'Want to find players for this booking?'**
+  String get findPlayersForThisBooking;
+
+  /// No description provided for @findPlayersForYourGame.
+  ///
+  /// In en, this message translates to:
+  /// **'Find players for your game'**
+  String get findPlayersForYourGame;
+
+  /// No description provided for @follow.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow'**
+  String get follow;
+
+  /// No description provided for @followPlayersToSeeTheirPosts.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow players to see their posts here'**
+  String get followPlayersToSeeTheirPosts;
+
+  /// No description provided for @followTournament.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow {name} live on Sportopia'**
+  String followTournament(Object name);
+
+  /// No description provided for @followers.
+  ///
+  /// In en, this message translates to:
+  /// **'Followers'**
+  String get followers;
+
+  /// No description provided for @following.
+  ///
+  /// In en, this message translates to:
+  /// **'Following'**
+  String get following;
+
+  /// No description provided for @forMyLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'For my level'**
+  String get forMyLevel;
+
+  /// No description provided for @freeCancellationUntilHoursBefore.
+  ///
+  /// In en, this message translates to:
+  /// **'Free cancellation until {hours} hours before'**
+  String freeCancellationUntilHoursBefore(Object hours);
+
+  /// No description provided for @friday.
+  ///
+  /// In en, this message translates to:
+  /// **'Friday'**
+  String get friday;
+
+  /// No description provided for @friendlyGamesDontChangeLevels.
+  ///
+  /// In en, this message translates to:
+  /// **'The result won\'t change anyone\'s level'**
+  String get friendlyGamesDontChangeLevels;
+
+  /// No description provided for @friendsJoinedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} friends joined with your code'**
+  String friendsJoinedCount(Object count);
+
+  /// No description provided for @game.
+  ///
+  /// In en, this message translates to:
+  /// **'Game'**
+  String get game;
+
+  /// No description provided for @groupChat.
+  ///
+  /// In en, this message translates to:
+  /// **'Group chat'**
+  String get groupChat;
+
+  /// No description provided for @hiName.
+  ///
+  /// In en, this message translates to:
+  /// **'Hi {name}'**
+  String hiName(Object name);
+
+  /// No description provided for @hidden.
+  ///
+  /// In en, this message translates to:
+  /// **'Hidden'**
+  String get hidden;
+
+  /// No description provided for @home.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get home;
+
+  /// No description provided for @imIn.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'m in'**
+  String get imIn;
+
+  /// No description provided for @invitationCodeOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Invitation code (optional)'**
+  String get invitationCodeOptional;
+
+  /// No description provided for @invite.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite'**
+  String get invite;
+
+  /// No description provided for @inviteFriends.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite friends'**
+  String get inviteFriends;
+
+  /// No description provided for @inviteFriendsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Share your code; your friends enter it when they sign up.'**
+  String get inviteFriendsDescription;
+
+  /// No description provided for @inviteText.
+  ///
+  /// In en, this message translates to:
+  /// **'Join me on Sportopia — find partners, book courts and win titles. My invitation code: {code}'**
+  String inviteText(Object code);
+
+  /// No description provided for @joinMyGame.
+  ///
+  /// In en, this message translates to:
+  /// **'Join my {sport} game — {time}'**
+  String joinMyGame(Object sport, Object time);
+
+  /// No description provided for @joinRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Join requests'**
+  String get joinRequests;
+
+  /// No description provided for @joined.
+  ///
+  /// In en, this message translates to:
+  /// **'Joined'**
+  String get joined;
+
+  /// No description provided for @kilometersAway.
+  ///
+  /// In en, this message translates to:
+  /// **'{km} km'**
+  String kilometersAway(Object km);
+
+  /// No description provided for @leaderboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Leaderboard'**
+  String get leaderboard;
+
+  /// No description provided for @leaveTheGame.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave the game'**
+  String get leaveTheGame;
+
+  /// No description provided for @levelAdjustsAutomatically.
+  ///
+  /// In en, this message translates to:
+  /// **'Your level adjusts automatically after every recorded match'**
+  String get levelAdjustsAutomatically;
+
+  /// No description provided for @levelHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Level history'**
+  String get levelHistory;
+
+  /// No description provided for @listACourt.
+  ///
+  /// In en, this message translates to:
+  /// **'List a court'**
+  String get listACourt;
+
+  /// No description provided for @listAShop.
+  ///
+  /// In en, this message translates to:
+  /// **'List a shop'**
+  String get listAShop;
+
+  /// No description provided for @listYourCourtOrShop.
+  ///
+  /// In en, this message translates to:
+  /// **'List your court or shop'**
+  String get listYourCourtOrShop;
+
+  /// No description provided for @manage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage'**
+  String get manage;
+
+  /// No description provided for @message.
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get message;
+
+  /// No description provided for @messages.
+  ///
+  /// In en, this message translates to:
+  /// **'Messages'**
+  String get messages;
+
+  /// No description provided for @minutesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} min'**
+  String minutesCount(Object count);
+
+  /// No description provided for @monday.
+  ///
+  /// In en, this message translates to:
+  /// **'Monday'**
+  String get monday;
+
+  /// No description provided for @myBookings.
+  ///
+  /// In en, this message translates to:
+  /// **'My bookings'**
+  String get myBookings;
+
+  /// No description provided for @myGames.
+  ///
+  /// In en, this message translates to:
+  /// **'My games'**
+  String get myGames;
+
+  /// No description provided for @myVenues.
+  ///
+  /// In en, this message translates to:
+  /// **'My venues'**
+  String get myVenues;
+
+  /// No description provided for @nearYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Near you'**
+  String get nearYou;
+
+  /// No description provided for @newPost.
+  ///
+  /// In en, this message translates to:
+  /// **'New post'**
+  String get newPost;
+
+  /// No description provided for @newStory.
+  ///
+  /// In en, this message translates to:
+  /// **'Story'**
+  String get newStory;
+
+  /// No description provided for @noBookingsOnThisDay.
+  ///
+  /// In en, this message translates to:
+  /// **'No bookings on this day'**
+  String get noBookingsOnThisDay;
+
+  /// No description provided for @noConversationsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No conversations yet'**
+  String get noConversationsYet;
+
+  /// No description provided for @noGamesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No games yet'**
+  String get noGamesYet;
+
+  /// No description provided for @noOpenGamesBeTheFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'No open games — create the first one'**
+  String get noOpenGamesBeTheFirst;
+
+  /// No description provided for @notApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'Not approved'**
+  String get notApproved;
+
+  /// No description provided for @onlyMyFollowers.
+  ///
+  /// In en, this message translates to:
+  /// **'Only my followers'**
+  String get onlyMyFollowers;
+
+  /// No description provided for @openGames.
+  ///
+  /// In en, this message translates to:
+  /// **'Open game requests'**
+  String get openGames;
+
+  /// No description provided for @openTheLinkedItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get openTheLinkedItem;
+
+  /// No description provided for @orTypeThePlace.
+  ///
+  /// In en, this message translates to:
+  /// **'or type the place'**
+  String get orTypeThePlace;
+
+  /// No description provided for @payAtTheVenue.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay at the venue'**
+  String get payAtTheVenue;
+
+  /// No description provided for @payMyShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay my share'**
+  String get payMyShare;
+
+  /// No description provided for @payTheOrganizerAtTheVenue.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay the organizer at the venue'**
+  String get payTheOrganizerAtTheVenue;
+
+  /// No description provided for @perPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Per person'**
+  String get perPerson;
+
+  /// No description provided for @pickATime.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a time'**
+  String get pickATime;
+
+  /// No description provided for @pickTheLocationOnTheMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the map to set the location'**
+  String get pickTheLocationOnTheMap;
+
+  /// No description provided for @pickTheTeams.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick the teams'**
+  String get pickTheTeams;
+
+  /// No description provided for @placeOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Place {rank} of {count}'**
+  String placeOf(Object rank, Object count);
+
+  /// No description provided for @playARecordedMatchToSeeYourLevelMove.
+  ///
+  /// In en, this message translates to:
+  /// **'Play a recorded match to see your level move'**
+  String get playARecordedMatchToSeeYourLevelMove;
+
+  /// No description provided for @players.
+  ///
+  /// In en, this message translates to:
+  /// **'Players'**
+  String get players;
+
+  /// No description provided for @playersNeeded.
+  ///
+  /// In en, this message translates to:
+  /// **'Players needed'**
+  String get playersNeeded;
+
+  /// No description provided for @pointsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} pts'**
+  String pointsCount(Object count);
+
+  /// No description provided for @post.
+  ///
+  /// In en, this message translates to:
+  /// **'Post'**
+  String get post;
+
+  /// No description provided for @posts.
+  ///
+  /// In en, this message translates to:
+  /// **'Posts'**
+  String get posts;
+
+  /// No description provided for @pricePerHour.
+  ///
+  /// In en, this message translates to:
+  /// **'Price per hour'**
+  String get pricePerHour;
+
+  /// No description provided for @refundedIfYouWithdrawBeforeTheStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Refunded if you withdraw before the start'**
+  String get refundedIfYouWithdrawBeforeTheStart;
+
+  /// No description provided for @replies.
+  ///
+  /// In en, this message translates to:
+  /// **'Replies'**
+  String get replies;
+
+  /// No description provided for @requested.
+  ///
+  /// In en, this message translates to:
+  /// **'Requested'**
+  String get requested;
+
+  /// No description provided for @result.
+  ///
+  /// In en, this message translates to:
+  /// **'Result'**
+  String get result;
+
+  /// No description provided for @revenueThisMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Revenue this month'**
+  String get revenueThisMonth;
+
+  /// No description provided for @sameLevelPlayers.
+  ///
+  /// In en, this message translates to:
+  /// **'Same-level players'**
+  String get sameLevelPlayers;
+
+  /// No description provided for @saturday.
+  ///
+  /// In en, this message translates to:
+  /// **'Saturday'**
+  String get saturday;
+
+  /// No description provided for @sayHello.
+  ///
+  /// In en, this message translates to:
+  /// **'Say hello 👋'**
+  String get sayHello;
+
+  /// No description provided for @searchCourtsAndShops.
+  ///
+  /// In en, this message translates to:
+  /// **'Search courts and shops…'**
+  String get searchCourtsAndShops;
+
+  /// No description provided for @shareInTheFeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Share in the feed'**
+  String get shareInTheFeed;
+
+  /// No description provided for @shareResult.
+  ///
+  /// In en, this message translates to:
+  /// **'Share the result'**
+  String get shareResult;
+
+  /// No description provided for @shop.
+  ///
+  /// In en, this message translates to:
+  /// **'Shop'**
+  String get shop;
+
+  /// No description provided for @shops.
+  ///
+  /// In en, this message translates to:
+  /// **'Shops'**
+  String get shops;
+
+  /// No description provided for @shown.
+  ///
+  /// In en, this message translates to:
+  /// **'Shown'**
+  String get shown;
+
+  /// No description provided for @slotLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Slot length'**
+  String get slotLength;
+
+  /// No description provided for @specialPrices.
+  ///
+  /// In en, this message translates to:
+  /// **'Special prices'**
+  String get specialPrices;
+
+  /// No description provided for @splitCostWithFriends.
+  ///
+  /// In en, this message translates to:
+  /// **'Split the cost with friends'**
+  String get splitCostWithFriends;
+
+  /// No description provided for @spotsLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} spots left'**
+  String spotsLeft(Object count);
+
+  /// No description provided for @submitAndPublish.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit & publish'**
+  String get submitAndPublish;
+
+  /// No description provided for @sunday.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunday'**
+  String get sunday;
+
+  /// No description provided for @surface.
+  ///
+  /// In en, this message translates to:
+  /// **'Surface'**
+  String get surface;
+
+  /// No description provided for @thanksForYourReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Thanks, we\'ll review your report'**
+  String get thanksForYourReport;
+
+  /// No description provided for @theLinkedItemIsSharedWithThePost.
+  ///
+  /// In en, this message translates to:
+  /// **'It will be shared with the post'**
+  String get theLinkedItemIsSharedWithThePost;
+
+  /// No description provided for @thisMessageWasDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'This message was deleted'**
+  String get thisMessageWasDeleted;
+
+  /// No description provided for @thisSeason.
+  ///
+  /// In en, this message translates to:
+  /// **'This season'**
+  String get thisSeason;
+
+  /// No description provided for @thisVenueHasNoCourtsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'This venue has no courts yet'**
+  String get thisVenueHasNoCourtsYet;
+
+  /// No description provided for @thursday.
+  ///
+  /// In en, this message translates to:
+  /// **'Thursday'**
+  String get thursday;
+
+  /// No description provided for @trophies.
+  ///
+  /// In en, this message translates to:
+  /// **'Trophies'**
+  String get trophies;
+
+  /// No description provided for @tuesday.
+  ///
+  /// In en, this message translates to:
+  /// **'Tuesday'**
+  String get tuesday;
+
+  /// No description provided for @upcomingTournaments.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming tournaments'**
+  String get upcomingTournaments;
+
+  /// No description provided for @venuesAreListedAfterReview.
+  ///
+  /// In en, this message translates to:
+  /// **'It is listed on the map after review.'**
+  String get venuesAreListedAfterReview;
+
+  /// No description provided for @viewProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'View profile'**
+  String get viewProfile;
+
+  /// No description provided for @viewVenue.
+  ///
+  /// In en, this message translates to:
+  /// **'View venue'**
+  String get viewVenue;
+
+  /// No description provided for @views.
+  ///
+  /// In en, this message translates to:
+  /// **'views'**
+  String get views;
+
+  /// No description provided for @wednesday.
+  ///
+  /// In en, this message translates to:
+  /// **'Wednesday'**
+  String get wednesday;
+
+  /// No description provided for @weeksInARow.
+  ///
+  /// In en, this message translates to:
+  /// **'weeks in a row'**
+  String get weeksInARow;
+
+  /// No description provided for @whatArePlayingToday.
+  ///
+  /// In en, this message translates to:
+  /// **'What are you playing today?'**
+  String get whatArePlayingToday;
+
+  /// No description provided for @whatIsWrongWithIt.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s wrong with it?'**
+  String get whatIsWrongWithIt;
+
+  /// No description provided for @whatsOnYourMind.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s on your mind?'**
+  String get whatsOnYourMind;
+
+  /// No description provided for @when.
+  ///
+  /// In en, this message translates to:
+  /// **'When'**
+  String get when;
+
+  /// No description provided for @where.
+  ///
+  /// In en, this message translates to:
+  /// **'Where'**
+  String get where;
+
+  /// No description provided for @whereIsTheGame.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a venue or type the place'**
+  String get whereIsTheGame;
+
+  /// No description provided for @winRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Win rate'**
+  String get winRate;
+
+  /// No description provided for @winStreak.
+  ///
+  /// In en, this message translates to:
+  /// **'wins in a row'**
+  String get winStreak;
+
+  /// No description provided for @wins.
+  ///
+  /// In en, this message translates to:
+  /// **'Wins'**
+  String get wins;
+
+  /// No description provided for @writeAReply.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a reply…'**
+  String get writeAReply;
+
+  /// No description provided for @writeSomethingOrAddAPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Write something or add a photo'**
+  String get writeSomethingOrAddAPhoto;
+
+  /// No description provided for @youHaveNotBlockedAnyone.
+  ///
+  /// In en, this message translates to:
+  /// **'You haven\'t blocked anyone'**
+  String get youHaveNotBlockedAnyone;
+
+  /// No description provided for @youJoinedTheGame.
+  ///
+  /// In en, this message translates to:
+  /// **'You joined the game'**
+  String get youJoinedTheGame;
+
+  /// No description provided for @yourExperience.
+  ///
+  /// In en, this message translates to:
+  /// **'How was it?'**
+  String get yourExperience;
+
+  /// No description provided for @yourRequestWasSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Your request was sent'**
+  String get yourRequestWasSent;
+
+  /// No description provided for @yourShareIsPaidNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Your share is paid now from the wallet'**
+  String get yourShareIsPaidNow;
+
+  /// No description provided for @yourShareIsUnpaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Your share is unpaid'**
+  String get yourShareIsUnpaid;
+
+  /// No description provided for @yourVenueWasSentForReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent for review — it shows on the map once approved'**
+  String get yourVenueWasSentForReview;
+
+  /// No description provided for @copyId.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy ID'**
+  String get copyId;
+
+  /// No description provided for @player.
+  ///
+  /// In en, this message translates to:
+  /// **'Player'**
+  String get player;
+
+  /// No description provided for @scoreFormatHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Each set as A-B, separated by spaces; empty clears the result.'**
+  String get scoreFormatHint;
+
+  /// No description provided for @social.
+  ///
+  /// In en, this message translates to:
+  /// **'Social'**
+  String get social;
+
+  /// No description provided for @text.
+  ///
+  /// In en, this message translates to:
+  /// **'Text'**
+  String get text;
+
+  /// No description provided for @venues.
+  ///
+  /// In en, this message translates to:
+  /// **'Venues'**
+  String get venues;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -2170,5 +2170,429 @@
   },
   "finalMatch": "Final",
   "semiFinal": "Semi-final",
-  "quarterFinal": "Quarter-final"
+  "quarterFinal": "Quarter-final",
+  "notifTournamentStarted": "{subject} has started — your matches are out",
+  "@notifTournamentStarted": {
+    "placeholders": {
+      "subject": {}
+    }
+  },
+  "notifTournamentFinished": "{subject} is over — see the final standings",
+  "@notifTournamentFinished": {
+    "placeholders": {
+      "subject": {}
+    }
+  },
+  "notifTournamentCancelled": "{subject} was cancelled",
+  "@notifTournamentCancelled": {
+    "placeholders": {
+      "subject": {}
+    }
+  },
+  "notifNewEntry": "New registration in {subject}",
+  "@notifNewEntry": {
+    "placeholders": {
+      "subject": {}
+    }
+  },
+  "notifEntryApproved": "Your registration in {subject} was approved",
+  "@notifEntryApproved": {
+    "placeholders": {
+      "subject": {}
+    }
+  },
+  "notifEntryRejected": "Your registration in {subject} was rejected",
+  "@notifEntryRejected": {
+    "placeholders": {
+      "subject": {}
+    }
+  },
+  "notifMatchResult": "A result was recorded in {subject}",
+  "@notifMatchResult": {
+    "placeholders": {
+      "subject": {}
+    }
+  },
+  "notifMatchSoon": "Your match in {subject} starts within an hour",
+  "@notifMatchSoon": {
+    "placeholders": {
+      "subject": {}
+    }
+  },
+  "notifNewBadge": "New badge: {subject}",
+  "@notifNewBadge": {
+    "placeholders": {
+      "subject": {}
+    }
+  },
+  "notifChallenge": "{subject} challenged you to a game",
+  "@notifChallenge": {
+    "placeholders": {
+      "subject": {}
+    }
+  },
+  "notifGameInvite": "{subject} invited you to a game",
+  "@notifGameInvite": {
+    "placeholders": {
+      "subject": {}
+    }
+  },
+  "notifJoinRequest": "{subject} asked to join your game",
+  "@notifJoinRequest": {
+    "placeholders": {
+      "subject": {}
+    }
+  },
+  "notifJoinApproved": "You're in: {subject}",
+  "@notifJoinApproved": {
+    "placeholders": {
+      "subject": {}
+    }
+  },
+  "notifPlayerJoined": "{subject} joined your game",
+  "@notifPlayerJoined": {
+    "placeholders": {
+      "subject": {}
+    }
+  },
+  "notifPlayerLeft": "{subject} left your game",
+  "@notifPlayerLeft": {
+    "placeholders": {
+      "subject": {}
+    }
+  },
+  "notifGameCancelled": "The game {subject} was cancelled",
+  "@notifGameCancelled": {
+    "placeholders": {
+      "subject": {}
+    }
+  },
+  "notifGameSoon": "Your game {subject} starts within an hour",
+  "@notifGameSoon": {
+    "placeholders": {
+      "subject": {}
+    }
+  },
+  "notifNewBooking": "New booking at {subject}",
+  "@notifNewBooking": {
+    "placeholders": {
+      "subject": {}
+    }
+  },
+  "notifBookingShare": "You share a booking at {subject} — pay your share",
+  "@notifBookingShare": {
+    "placeholders": {
+      "subject": {}
+    }
+  },
+  "notifBookingCancelled": "A booking at {subject} was cancelled",
+  "@notifBookingCancelled": {
+    "placeholders": {
+      "subject": {}
+    }
+  },
+  "notifBookingSoon": "Your booking at {subject} starts within an hour",
+  "@notifBookingSoon": {
+    "placeholders": {
+      "subject": {}
+    }
+  },
+  "notifVenueApproved": "{subject} was approved and is now listed",
+  "@notifVenueApproved": {
+    "placeholders": {
+      "subject": {}
+    }
+  },
+  "notifVenueRejected": "{subject} was not approved",
+  "@notifVenueRejected": {
+    "placeholders": {
+      "subject": {}
+    }
+  },
+  "notifVenueSuspended": "{subject} was suspended",
+  "@notifVenueSuspended": {
+    "placeholders": {
+      "subject": {}
+    }
+  },
+  "notifNewReply": "{subject} replied to your post",
+  "@notifNewReply": {
+    "placeholders": {
+      "subject": {}
+    }
+  },
+  "notifNewReaction": "{subject} liked your post",
+  "@notifNewReaction": {
+    "placeholders": {
+      "subject": {}
+    }
+  },
+  "badgeFirstMatch": "First match",
+  "badgeFirstMatchDescription": "Played a first recorded match",
+  "badgeTenMatches": "10 matches",
+  "badgeTenMatchesDescription": "Played 10 recorded matches",
+  "badgeFiftyMatches": "50 matches",
+  "badgeFiftyMatchesDescription": "Played 50 recorded matches",
+  "badgeFirstWin": "First win",
+  "badgeFirstWinDescription": "Won a first match",
+  "badgeWinStreak5": "5 wins in a row",
+  "badgeWinStreak5Description": "Won five matches in a row",
+  "badgeChampion": "Champion",
+  "badgeChampionDescription": "Won a tournament",
+  "badgePodium": "Podium",
+  "badgePodiumDescription": "Finished in the top three of a tournament",
+  "badgeOrganizer": "Organizer",
+  "badgeOrganizerDescription": "Organized a tournament",
+  "badgeRecruiter": "Recruiter",
+  "badgeRecruiterDescription": "Invited three friends who joined",
+  "badgeRegular": "Regular",
+  "badgeRegularDescription": "Played four weeks in a row",
+  "addCourt": "Add court",
+  "addPhotosOfThePlace": "At least 3 photos of the courts and facilities",
+  "addSpecialPrice": "Add a special price",
+  "addYourFirstCourt": "Add your first court so players can book it",
+  "addressOnMap": "Address on the map",
+  "allPlayersWillBeNotified": "All players will be notified",
+  "allowPayingAtTheVenue": "Players may pay at the venue",
+  "amenityCafe": "Café",
+  "amenityIndoor": "Indoor",
+  "amenityLight": "Floodlights",
+  "amenityLocker": "Lockers",
+  "amenityParking": "Parking",
+  "amenityRent": "Racket rental",
+  "amenityShower": "Showers",
+  "approveWhoJoins": "I approve who joins",
+  "badges": "Badges",
+  "beTheFirstToReply": "Be the first to reply",
+  "block": "Block",
+  "blockDescription": "They won't see your posts or message you, and you won't see theirs.",
+  "blocked": "Blocked",
+  "blockedUsers": "Blocked users",
+  "bookACourt": "Book a court",
+  "bookedSuccessfully": "Booked!",
+  "bookings": "Bookings",
+  "bookingsThisMonth": "Bookings this month",
+  "byLevel": "By level",
+  "byPoints": "By points",
+  "call": "Call",
+  "cancelBooking": "Cancel booking",
+  "cancelBookingPolicy": "Free cancellation until {hours} hours before; after that a part of the price is kept.",
+  "@cancelBookingPolicy": {
+    "placeholders": {
+      "hours": {}
+    }
+  },
+  "cancelTheGame": "Cancel the game",
+  "challenge": "Challenge",
+  "chatWithHost": "Chat with host",
+  "checkOutVenue": "Check out {name} on Sportopia",
+  "@checkOutVenue": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "chooseAVenue": "Choose a venue",
+  "closed": "Closed",
+  "closedOnThisDay": "No free times on this day",
+  "closures": "Closures",
+  "club": "Club",
+  "clubs": "Clubs",
+  "confirmAndPay": "Confirm & pay",
+  "costPerPerson": "Cost per person",
+  "courtNameExample": "e.g. Court 1",
+  "courts": "Courts",
+  "createAGameHere": "Create a game here",
+  "deleteConversation": "Delete conversation",
+  "editResult": "Edit result",
+  "edited": "edited",
+  "explore": "Explore",
+  "feed": "Feed",
+  "findPartner": "Find partner",
+  "findPlayers": "Find players",
+  "findPlayersForThisBooking": "Want to find players for this booking?",
+  "findPlayersForYourGame": "Find players for your game",
+  "follow": "Follow",
+  "followPlayersToSeeTheirPosts": "Follow players to see their posts here",
+  "followTournament": "Follow {name} live on Sportopia",
+  "@followTournament": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "followers": "Followers",
+  "following": "Following",
+  "forMyLevel": "For my level",
+  "freeCancellationUntilHoursBefore": "Free cancellation until {hours} hours before",
+  "@freeCancellationUntilHoursBefore": {
+    "placeholders": {
+      "hours": {}
+    }
+  },
+  "friday": "Friday",
+  "friendlyGamesDontChangeLevels": "The result won't change anyone's level",
+  "friendsJoinedCount": "{count} friends joined with your code",
+  "@friendsJoinedCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "game": "Game",
+  "groupChat": "Group chat",
+  "hiName": "Hi {name}",
+  "@hiName": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "hidden": "Hidden",
+  "home": "Home",
+  "imIn": "I'm in",
+  "invitationCodeOptional": "Invitation code (optional)",
+  "invite": "Invite",
+  "inviteFriends": "Invite friends",
+  "inviteFriendsDescription": "Share your code; your friends enter it when they sign up.",
+  "inviteText": "Join me on Sportopia — find partners, book courts and win titles. My invitation code: {code}",
+  "@inviteText": {
+    "placeholders": {
+      "code": {}
+    }
+  },
+  "joinMyGame": "Join my {sport} game — {time}",
+  "@joinMyGame": {
+    "placeholders": {
+      "sport": {},
+      "time": {}
+    }
+  },
+  "joinRequests": "Join requests",
+  "joined": "Joined",
+  "kilometersAway": "{km} km",
+  "@kilometersAway": {
+    "placeholders": {
+      "km": {}
+    }
+  },
+  "leaderboard": "Leaderboard",
+  "leaveTheGame": "Leave the game",
+  "levelAdjustsAutomatically": "Your level adjusts automatically after every recorded match",
+  "levelHistory": "Level history",
+  "listACourt": "List a court",
+  "listAShop": "List a shop",
+  "listYourCourtOrShop": "List your court or shop",
+  "manage": "Manage",
+  "message": "Message",
+  "messages": "Messages",
+  "minutesCount": "{count} min",
+  "@minutesCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "monday": "Monday",
+  "myBookings": "My bookings",
+  "myGames": "My games",
+  "myVenues": "My venues",
+  "nearYou": "Near you",
+  "newPost": "New post",
+  "newStory": "Story",
+  "noBookingsOnThisDay": "No bookings on this day",
+  "noConversationsYet": "No conversations yet",
+  "noGamesYet": "No games yet",
+  "noOpenGamesBeTheFirst": "No open games — create the first one",
+  "notApproved": "Not approved",
+  "onlyMyFollowers": "Only my followers",
+  "openGames": "Open game requests",
+  "openTheLinkedItem": "Open",
+  "orTypeThePlace": "or type the place",
+  "payAtTheVenue": "Pay at the venue",
+  "payMyShare": "Pay my share",
+  "payTheOrganizerAtTheVenue": "Pay the organizer at the venue",
+  "perPerson": "Per person",
+  "pickATime": "Pick a time",
+  "pickTheLocationOnTheMap": "Tap the map to set the location",
+  "pickTheTeams": "Pick the teams",
+  "placeOf": "Place {rank} of {count}",
+  "@placeOf": {
+    "placeholders": {
+      "rank": {},
+      "count": {}
+    }
+  },
+  "playARecordedMatchToSeeYourLevelMove": "Play a recorded match to see your level move",
+  "players": "Players",
+  "playersNeeded": "Players needed",
+  "pointsCount": "{count} pts",
+  "@pointsCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "post": "Post",
+  "posts": "Posts",
+  "pricePerHour": "Price per hour",
+  "refundedIfYouWithdrawBeforeTheStart": "Refunded if you withdraw before the start",
+  "replies": "Replies",
+  "requested": "Requested",
+  "result": "Result",
+  "revenueThisMonth": "Revenue this month",
+  "sameLevelPlayers": "Same-level players",
+  "saturday": "Saturday",
+  "sayHello": "Say hello 👋",
+  "searchCourtsAndShops": "Search courts and shops…",
+  "shareInTheFeed": "Share in the feed",
+  "shareResult": "Share the result",
+  "shop": "Shop",
+  "shops": "Shops",
+  "shown": "Shown",
+  "slotLength": "Slot length",
+  "specialPrices": "Special prices",
+  "splitCostWithFriends": "Split the cost with friends",
+  "spotsLeft": "{count} spots left",
+  "@spotsLeft": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "submitAndPublish": "Submit & publish",
+  "sunday": "Sunday",
+  "surface": "Surface",
+  "thanksForYourReport": "Thanks, we'll review your report",
+  "theLinkedItemIsSharedWithThePost": "It will be shared with the post",
+  "thisMessageWasDeleted": "This message was deleted",
+  "thisSeason": "This season",
+  "thisVenueHasNoCourtsYet": "This venue has no courts yet",
+  "thursday": "Thursday",
+  "trophies": "Trophies",
+  "tuesday": "Tuesday",
+  "upcomingTournaments": "Upcoming tournaments",
+  "venuesAreListedAfterReview": "It is listed on the map after review.",
+  "viewProfile": "View profile",
+  "viewVenue": "View venue",
+  "views": "views",
+  "wednesday": "Wednesday",
+  "weeksInARow": "weeks in a row",
+  "whatArePlayingToday": "What are you playing today?",
+  "whatIsWrongWithIt": "What's wrong with it?",
+  "whatsOnYourMind": "What's on your mind?",
+  "when": "When",
+  "where": "Where",
+  "whereIsTheGame": "Choose a venue or type the place",
+  "winRate": "Win rate",
+  "winStreak": "wins in a row",
+  "wins": "Wins",
+  "writeAReply": "Write a reply…",
+  "writeSomethingOrAddAPhoto": "Write something or add a photo",
+  "youHaveNotBlockedAnyone": "You haven't blocked anyone",
+  "youJoinedTheGame": "You joined the game",
+  "yourExperience": "How was it?",
+  "yourRequestWasSent": "Your request was sent",
+  "yourShareIsPaidNow": "Your share is paid now from the wallet",
+  "yourShareIsUnpaid": "Your share is unpaid",
+  "yourVenueWasSentForReview": "Sent for review — it shows on the map once approved",
+  "copyId": "Copy ID",
+  "player": "Player",
+  "scoreFormatHint": "Each set as A-B, separated by spaces; empty clears the result.",
+  "social": "Social",
+  "text": "Text",
+  "venues": "Venues"
 }

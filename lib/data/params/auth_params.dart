@@ -77,6 +77,7 @@ class URegisterParams {
     this.firstName,
     this.lastName,
     this.nationalCode,
+    this.referralCode,
   });
 
   factory URegisterParams.fromJson(String str) => URegisterParams.fromMap(json.decode(str));
@@ -89,6 +90,7 @@ class URegisterParams {
     firstName: json["firstName"],
     lastName: json["lastName"],
     nationalCode: json["nationalCode"],
+    referralCode: json["referralCode"],
     tags: List<int>.from(json["tags"].map((dynamic x) => x)),
   );
   final String userName;
@@ -98,6 +100,7 @@ class URegisterParams {
   final String? firstName;
   final String? lastName;
   final String? nationalCode;
+  final String? referralCode;
   final List<int> tags;
 
   String toJson() => json.encode(toMap());
@@ -110,6 +113,7 @@ class URegisterParams {
     "firstName": firstName,
     "lastName": lastName,
     "nationalCode": nationalCode,
+    "referralCode": referralCode,
     "tags": List<dynamic>.from(tags.map((int x) => x)),
   };
 }
