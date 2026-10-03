@@ -175,12 +175,12 @@ class UTerminalAssignParams {
 
   UTerminalAssignParams({
     required this.serial,
-    this.title,
+    required this.title,
+    required this.terminalBrandId,
+    required this.terminalBrokerId,
     this.simCardSerial,
     this.merchantId,
     this.acceptedAgreement = false,
-    this.terminalBrandId,
-    this.terminalBrokerId,
   });
 
   factory UTerminalAssignParams.fromJson(String str) => UTerminalAssignParams.fromMap(json.decode(str));
