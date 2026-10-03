@@ -5598,22 +5598,19 @@ class AppLocalizationsFa extends AppLocalizations {
   String get chooseYourSports => 'چه ورزش‌هایی بازی می‌کنید؟';
 
   @override
-  String get chooseYourSportsDescription => 'بعداً هم می‌توانید تغییرش دهید.';
+  String get chooseYourSportsDescription => 'هر چند تا که دوست دارید. بعداً هم می‌توانید عوض کنید.';
 
   @override
   String get setYourLevel => 'سطح شما چیست؟';
 
   @override
-  String get setYourLevelDescription => 'تا شما را با بازیکنان هم‌سطح خودتان روبه‌رو کنیم.';
+  String get setYourLevelDescription => 'برای پیدا کردن هم‌بازی و تورنمنت هم‌سطح. بعد از چند بازی خودکار دقیق می‌شود.';
 
   @override
   String get beginner => 'مبتدی';
 
   @override
   String get intermediate => 'متوسط';
-
-  @override
-  String get professional => 'حرفه‌ای';
 
   @override
   String get mySports => 'ورزش‌های من';
@@ -5629,4 +5626,28 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get enterYourEmailToReceiveAResetCode => 'ایمیل خود را وارد کنید تا کد بازیابی برایتان ارسال شود.';
+
+  @override
+  String get newcomer => 'تازه‌کار';
+
+  @override
+  String get semiPro => 'نیمه‌حرفه‌ای';
+
+  @override
+  String get newcomerLevelDescription => 'تازه شروع کرده‌ام، قوانین را بلدم';
+
+  @override
+  String get beginnerLevelDescription => 'رالی کوتاه، ضربه‌های پایه';
+
+  @override
+  String get intermediateLevelDescription => 'بازی منظم، کنترل جهت توپ';
+
+  @override
+  String get advancedLevelDescription => 'تاکتیک، ضربه‌های تخصصی، مسابقه';
+
+  @override
+  String get semiProLevelDescription => 'رقابت در تورنمنت‌های رسمی';
+
+  @override
+  String get findPartnersBookCourtsWinTitles => 'هم‌بازی پیدا کن، زمین رزرو کن، قهرمان شو.';
 }

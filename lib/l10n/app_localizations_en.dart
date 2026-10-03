@@ -5599,22 +5599,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chooseYourSports => 'Which sports do you play?';
 
   @override
-  String get chooseYourSportsDescription => 'You can change this later.';
+  String get chooseYourSportsDescription => 'Pick as many as you like. You can change this later.';
 
   @override
   String get setYourLevel => 'What\'s your level?';
 
   @override
-  String get setYourLevelDescription => 'So we can match you with players at your level.';
+  String get setYourLevelDescription => 'Used to match partners and tournaments. It calibrates itself after a few games.';
 
   @override
   String get beginner => 'Beginner';
 
   @override
   String get intermediate => 'Intermediate';
-
-  @override
-  String get professional => 'Professional';
 
   @override
   String get mySports => 'My sports';
@@ -5630,4 +5627,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get enterYourEmailToReceiveAResetCode => 'Enter your email to receive a reset code.';
+
+  @override
+  String get newcomer => 'Newcomer';
+
+  @override
+  String get semiPro => 'Semi-pro';
+
+  @override
+  String get newcomerLevelDescription => 'Just started, know the rules';
+
+  @override
+  String get beginnerLevelDescription => 'Short rallies, basic shots';
+
+  @override
+  String get intermediateLevelDescription => 'Consistent play, directional control';
+
+  @override
+  String get advancedLevelDescription => 'Tactics, specialty shots, matches';
+
+  @override
+  String get semiProLevelDescription => 'Competes in official tournaments';
+
+  @override
+  String get findPartnersBookCourtsWinTitles => 'Find partners, book courts, win titles.';
 }

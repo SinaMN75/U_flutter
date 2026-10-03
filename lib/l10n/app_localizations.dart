@@ -11081,7 +11081,7 @@ abstract class AppLocalizations {
   /// No description provided for @chooseYourSportsDescription.
   ///
   /// In en, this message translates to:
-  /// **'You can change this later.'**
+  /// **'Pick as many as you like. You can change this later.'**
   String get chooseYourSportsDescription;
 
   /// No description provided for @setYourLevel.
@@ -11093,7 +11093,7 @@ abstract class AppLocalizations {
   /// No description provided for @setYourLevelDescription.
   ///
   /// In en, this message translates to:
-  /// **'So we can match you with players at your level.'**
+  /// **'Used to match partners and tournaments. It calibrates itself after a few games.'**
   String get setYourLevelDescription;
 
   /// No description provided for @beginner.
@@ -11107,12 +11107,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Intermediate'**
   String get intermediate;
-
-  /// No description provided for @professional.
-  ///
-  /// In en, this message translates to:
-  /// **'Professional'**
-  String get professional;
 
   /// No description provided for @mySports.
   ///
@@ -11143,6 +11137,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter your email to receive a reset code.'**
   String get enterYourEmailToReceiveAResetCode;
+
+  /// No description provided for @newcomer.
+  ///
+  /// In en, this message translates to:
+  /// **'Newcomer'**
+  String get newcomer;
+
+  /// No description provided for @semiPro.
+  ///
+  /// In en, this message translates to:
+  /// **'Semi-pro'**
+  String get semiPro;
+
+  /// No description provided for @newcomerLevelDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Just started, know the rules'**
+  String get newcomerLevelDescription;
+
+  /// No description provided for @beginnerLevelDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Short rallies, basic shots'**
+  String get beginnerLevelDescription;
+
+  /// No description provided for @intermediateLevelDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Consistent play, directional control'**
+  String get intermediateLevelDescription;
+
+  /// No description provided for @advancedLevelDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Tactics, specialty shots, matches'**
+  String get advancedLevelDescription;
+
+  /// No description provided for @semiProLevelDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Competes in official tournaments'**
+  String get semiProLevelDescription;
+
+  /// No description provided for @findPartnersBookCourtsWinTitles.
+  ///
+  /// In en, this message translates to:
+  /// **'Find partners, book courts, win titles.'**
+  String get findPartnersBookCourtsWinTitles;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

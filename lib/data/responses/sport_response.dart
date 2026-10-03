@@ -42,14 +42,8 @@ class USportResponse {
   /// [title] is a localized-constant key from the server; this is its text in the app language. `Text(sport.localizedTitle)`
   String get localizedTitle => USportKeyValues.label(title);
 
-  /// Beginner / intermediate / advanced / professional, by where [level] falls in this sport's range. `sport.levelLabel(3.5)`
-  String levelLabel(double level) {
-    final double ratio = maxLevel <= minLevel ? 0 : (level - minLevel) / (maxLevel - minLevel);
-    if (ratio < 0.25) return U.s.beginner;
-    if (ratio < 0.5) return U.s.intermediate;
-    if (ratio < 0.85) return U.s.advanced;
-    return U.s.professional;
-  }
+  /// The [USportLevels] step closest to [level]. `sport.levelLabel(3.5)` → "Intermediate"
+  String levelLabel(double level) => USportLevels.label(USportLevels.closest(level));
 
   String toJson() => json.encode(toMap());
 
@@ -92,6 +86,30 @@ class USportJson {
     "detail1": detail1,
     "detail2": detail2,
   };
+}
+
+/// The self-assessed level steps shown when a player picks a level (1–7 scale).
+abstract class USportLevels {
+  static const List<double> values = <double>[1, 2, 3, 4.2, 5.5];
+
+  static String label(int index) => <String>[U.s.newcomer, U.s.beginner, U.s.intermediate, U.s.advanced, U.s.semiPro][index];
+
+  static String description(int index) => <String>[
+    U.s.newcomerLevelDescription,
+    U.s.beginnerLevelDescription,
+    U.s.intermediateLevelDescription,
+    U.s.advancedLevelDescription,
+    U.s.semiProLevelDescription,
+  ][index];
+
+  /// Index of the step nearest to [level].
+  static int closest(double level) {
+    int best = 0;
+    for (int i = 1; i < values.length; i++) {
+      if ((values[i] - level).abs() < (values[best] - level).abs()) best = i;
+    }
+    return best;
+  }
 }
 
 abstract class USportKeyValues {
