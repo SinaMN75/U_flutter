@@ -2078,5 +2078,7 @@
   "professional": "Professional",
   "mySports": "My sports",
   "addSport": "Add sport",
-  "enterTheCodeSentToYourEmail": "Enter the code sent to your email"
+  "enterTheCodeSentToYourEmail": "Enter the code sent to your email",
+  "createAnAccountToFindPartnersAndJoinTournaments": "Create an account to find partners and join tournaments.",
+  "enterYourEmailToReceiveAResetCode": "Enter your email to receive a reset code."
 }

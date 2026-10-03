@@ -2062,5 +2062,7 @@
   "professional": "حرفه‌ای",
   "mySports": "ورزش‌های من",
   "addSport": "افزودن ورزش",
-  "enterTheCodeSentToYourEmail": "کد ارسال‌شده به ایمیل خود را وارد کنید"
+  "enterTheCodeSentToYourEmail": "کد ارسال‌شده به ایمیل خود را وارد کنید",
+  "createAnAccountToFindPartnersAndJoinTournaments": "حساب بسازید تا هم‌بازی پیدا کنید و در تورنمنت‌ها شرکت کنید.",
+  "enterYourEmailToReceiveAResetCode": "ایمیل خود را وارد کنید تا کد بازیابی برایتان ارسال شود."
 }

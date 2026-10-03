@@ -5624,4 +5624,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get enterTheCodeSentToYourEmail => 'Enter the code sent to your email';
+
+  @override
+  String get createAnAccountToFindPartnersAndJoinTournaments => 'Create an account to find partners and join tournaments.';
+
+  @override
+  String get enterYourEmailToReceiveAResetCode => 'Enter your email to receive a reset code.';
 }

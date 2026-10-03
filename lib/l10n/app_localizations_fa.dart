@@ -5623,4 +5623,10 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get enterTheCodeSentToYourEmail => 'کد ارسال‌شده به ایمیل خود را وارد کنید';
+
+  @override
+  String get createAnAccountToFindPartnersAndJoinTournaments => 'حساب بسازید تا هم‌بازی پیدا کنید و در تورنمنت‌ها شرکت کنید.';
+
+  @override
+  String get enterYourEmailToReceiveAResetCode => 'ایمیل خود را وارد کنید تا کد بازیابی برایتان ارسال شود.';
 }

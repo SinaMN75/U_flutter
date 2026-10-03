@@ -11131,6 +11131,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter the code sent to your email'**
   String get enterTheCodeSentToYourEmail;
+
+  /// No description provided for @createAnAccountToFindPartnersAndJoinTournaments.
+  ///
+  /// In en, this message translates to:
+  /// **'Create an account to find partners and join tournaments.'**
+  String get createAnAccountToFindPartnersAndJoinTournaments;
+
+  /// No description provided for @enterYourEmailToReceiveAResetCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email to receive a reset code.'**
+  String get enterYourEmailToReceiveAResetCode;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
