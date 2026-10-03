@@ -1418,3 +1418,40 @@ enum TagAppVersion with UNumericIdentifiable {
     return TagAppVersion.linux;
   }
 }
+
+enum TagSport with UNumericIdentifiable {
+  padel("پدل", "Padel", 101),
+  tennis("تنیس", "Tennis", 102),
+  squash("اسکواش", "Squash", 103),
+  billiards("بیلیارد", "Billiards", 104),
+  snooker("اسنوکر", "Snooker", 105),
+  football("فوتبال", "Football", 106),
+  karate("کاراته", "Karate", 107),
+
+  active("فعال", "Active", 201),
+  comingSoon("به‌زودی", "Coming Soon", 202),
+  disabled("غیرفعال", "Disabled", 203);
+
+  const TagSport(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagPlayerSportProfile with UNumericIdentifiable {
+  active("فعال", "Active", 101),
+  primary("ورزش اصلی", "Primary", 201);
+
+  const TagPlayerSportProfile(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}

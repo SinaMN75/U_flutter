@@ -58,6 +58,8 @@ part "params/selectors.dart";
 
 part "params/sim_params.dart";
 
+part "params/sport_params.dart";
+
 part "params/terminal_params.dart";
 
 part "params/ticket_params.dart";
@@ -132,6 +134,8 @@ part "responses/product_response.dart";
 
 part "responses/sim_response.dart";
 
+part "responses/sport_response.dart";
+
 part "responses/terminal_response.dart";
 
 part "responses/ticket_response.dart";
@@ -200,6 +204,8 @@ part "services/product_service.dart";
 
 part "services/sim_service.dart";
 
+part "services/sport_service.dart";
+
 part "services/terminal_service.dart";
 
 part "services/ticket_service.dart";
@@ -260,4 +266,5 @@ class UServices {
   static UPnService pn = UPnService();
   static UFileManagerService fileManager = UFileManagerService();
   static UDbAdminService dbAdmin = UDbAdminService();
+  static USportService sport = USportService();
 }

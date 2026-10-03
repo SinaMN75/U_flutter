@@ -5530,4 +5530,97 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get downloadLinks => 'لینک‌های دانلود';
+
+  @override
+  String get padel => 'پدل';
+
+  @override
+  String get tennis => 'تنیس';
+
+  @override
+  String get squash => 'اسکواش';
+
+  @override
+  String get billiards => 'بیلیارد';
+
+  @override
+  String get snooker => 'اسنوکر';
+
+  @override
+  String get football => 'فوتبال';
+
+  @override
+  String get karate => 'کاراته';
+
+  @override
+  String get level => 'سطح';
+
+  @override
+  String get sport => 'ورزش';
+
+  @override
+  String get sports => 'ورزش‌ها';
+
+  @override
+  String get sportType => 'نوع ورزش';
+
+  @override
+  String get minLevel => 'حداقل سطح';
+
+  @override
+  String get maxLevel => 'حداکثر سطح';
+
+  @override
+  String get primarySport => 'ورزش اصلی';
+
+  @override
+  String get playerSportProfiles => 'پروفایل‌های ورزشی بازیکنان';
+
+  @override
+  String get signInWithGoogle => 'ادامه با گوگل';
+
+  @override
+  String get resetPassword => 'بازیابی رمز عبور';
+
+  @override
+  String get sendCode => 'ارسال کد';
+
+  @override
+  String get dontHaveAnAccount => 'حساب ندارید؟ ثبت‌نام';
+
+  @override
+  String get alreadyHaveAnAccount => 'حساب دارید؟ ورود';
+
+  @override
+  String get or => 'یا';
+
+  @override
+  String get chooseYourSports => 'چه ورزش‌هایی بازی می‌کنید؟';
+
+  @override
+  String get chooseYourSportsDescription => 'بعداً هم می‌توانید تغییرش دهید.';
+
+  @override
+  String get setYourLevel => 'سطح شما چیست؟';
+
+  @override
+  String get setYourLevelDescription => 'تا شما را با بازیکنان هم‌سطح خودتان روبه‌رو کنیم.';
+
+  @override
+  String get beginner => 'مبتدی';
+
+  @override
+  String get intermediate => 'متوسط';
+
+  @override
+  String get professional => 'حرفه‌ای';
+
+  @override
+  String get mySports => 'ورزش‌های من';
+
+  @override
+  String get addSport => 'افزودن ورزش';
+
+  @override
+  String get enterTheCodeSentToYourEmail => 'کد ارسال‌شده به ایمیل خود را وارد کنید';
 }

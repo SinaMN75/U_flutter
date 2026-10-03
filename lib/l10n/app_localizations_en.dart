@@ -5531,4 +5531,97 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get downloadLinks => 'Download links';
+
+  @override
+  String get padel => 'Padel';
+
+  @override
+  String get tennis => 'Tennis';
+
+  @override
+  String get squash => 'Squash';
+
+  @override
+  String get billiards => 'Billiards';
+
+  @override
+  String get snooker => 'Snooker';
+
+  @override
+  String get football => 'Football';
+
+  @override
+  String get karate => 'Karate';
+
+  @override
+  String get level => 'Level';
+
+  @override
+  String get sport => 'Sport';
+
+  @override
+  String get sports => 'Sports';
+
+  @override
+  String get sportType => 'Sport type';
+
+  @override
+  String get minLevel => 'Minimum level';
+
+  @override
+  String get maxLevel => 'Maximum level';
+
+  @override
+  String get primarySport => 'Main sport';
+
+  @override
+  String get playerSportProfiles => 'Player sport profiles';
+
+  @override
+  String get signInWithGoogle => 'Continue with Google';
+
+  @override
+  String get resetPassword => 'Reset password';
+
+  @override
+  String get sendCode => 'Send code';
+
+  @override
+  String get dontHaveAnAccount => 'Don\'t have an account? Sign up';
+
+  @override
+  String get alreadyHaveAnAccount => 'Already have an account? Log in';
+
+  @override
+  String get or => 'or';
+
+  @override
+  String get chooseYourSports => 'Which sports do you play?';
+
+  @override
+  String get chooseYourSportsDescription => 'You can change this later.';
+
+  @override
+  String get setYourLevel => 'What\'s your level?';
+
+  @override
+  String get setYourLevelDescription => 'So we can match you with players at your level.';
+
+  @override
+  String get beginner => 'Beginner';
+
+  @override
+  String get intermediate => 'Intermediate';
+
+  @override
+  String get professional => 'Professional';
+
+  @override
+  String get mySports => 'My sports';
+
+  @override
+  String get addSport => 'Add sport';
+
+  @override
+  String get enterTheCodeSentToYourEmail => 'Enter the code sent to your email';
 }

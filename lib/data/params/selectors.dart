@@ -945,3 +945,45 @@ class UGoldTxnSelectorArgs {
     "creator": creator?.toMap(),
   };
 }
+
+class USportSelectorArgs {
+  final UUserSelectorArgs? creator;
+
+  const USportSelectorArgs({this.creator});
+
+  factory USportSelectorArgs.fromJson(String str) => USportSelectorArgs.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory USportSelectorArgs.fromMap(Map<String, dynamic> json) => USportSelectorArgs(
+    creator: json["creator"] == null ? null : UUserSelectorArgs.fromMap(json["creator"]),
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "creator": creator?.toMap(),
+  };
+}
+
+class UPlayerSportProfileSelectorArgs {
+  final UUserSelectorArgs? creator;
+  final UUserSelectorArgs? user;
+  final USportSelectorArgs? sport;
+
+  const UPlayerSportProfileSelectorArgs({this.creator, this.user, this.sport});
+
+  factory UPlayerSportProfileSelectorArgs.fromJson(String str) => UPlayerSportProfileSelectorArgs.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UPlayerSportProfileSelectorArgs.fromMap(Map<String, dynamic> json) => UPlayerSportProfileSelectorArgs(
+    creator: json["creator"] == null ? null : UUserSelectorArgs.fromMap(json["creator"]),
+    user: json["user"] == null ? null : UUserSelectorArgs.fromMap(json["user"]),
+    sport: json["sport"] == null ? null : USportSelectorArgs.fromMap(json["sport"]),
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "creator": creator?.toMap(),
+    "user": user?.toMap(),
+    "sport": sport?.toMap(),
+  };
+}

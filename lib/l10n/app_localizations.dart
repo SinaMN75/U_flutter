@@ -10945,6 +10945,192 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Download links'**
   String get downloadLinks;
+
+  /// No description provided for @padel.
+  ///
+  /// In en, this message translates to:
+  /// **'Padel'**
+  String get padel;
+
+  /// No description provided for @tennis.
+  ///
+  /// In en, this message translates to:
+  /// **'Tennis'**
+  String get tennis;
+
+  /// No description provided for @squash.
+  ///
+  /// In en, this message translates to:
+  /// **'Squash'**
+  String get squash;
+
+  /// No description provided for @billiards.
+  ///
+  /// In en, this message translates to:
+  /// **'Billiards'**
+  String get billiards;
+
+  /// No description provided for @snooker.
+  ///
+  /// In en, this message translates to:
+  /// **'Snooker'**
+  String get snooker;
+
+  /// No description provided for @football.
+  ///
+  /// In en, this message translates to:
+  /// **'Football'**
+  String get football;
+
+  /// No description provided for @karate.
+  ///
+  /// In en, this message translates to:
+  /// **'Karate'**
+  String get karate;
+
+  /// No description provided for @level.
+  ///
+  /// In en, this message translates to:
+  /// **'Level'**
+  String get level;
+
+  /// No description provided for @sport.
+  ///
+  /// In en, this message translates to:
+  /// **'Sport'**
+  String get sport;
+
+  /// No description provided for @sports.
+  ///
+  /// In en, this message translates to:
+  /// **'Sports'**
+  String get sports;
+
+  /// No description provided for @sportType.
+  ///
+  /// In en, this message translates to:
+  /// **'Sport type'**
+  String get sportType;
+
+  /// No description provided for @minLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum level'**
+  String get minLevel;
+
+  /// No description provided for @maxLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum level'**
+  String get maxLevel;
+
+  /// No description provided for @primarySport.
+  ///
+  /// In en, this message translates to:
+  /// **'Main sport'**
+  String get primarySport;
+
+  /// No description provided for @playerSportProfiles.
+  ///
+  /// In en, this message translates to:
+  /// **'Player sport profiles'**
+  String get playerSportProfiles;
+
+  /// No description provided for @signInWithGoogle.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Google'**
+  String get signInWithGoogle;
+
+  /// No description provided for @resetPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset password'**
+  String get resetPassword;
+
+  /// No description provided for @sendCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Send code'**
+  String get sendCode;
+
+  /// No description provided for @dontHaveAnAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account? Sign up'**
+  String get dontHaveAnAccount;
+
+  /// No description provided for @alreadyHaveAnAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account? Log in'**
+  String get alreadyHaveAnAccount;
+
+  /// No description provided for @or.
+  ///
+  /// In en, this message translates to:
+  /// **'or'**
+  String get or;
+
+  /// No description provided for @chooseYourSports.
+  ///
+  /// In en, this message translates to:
+  /// **'Which sports do you play?'**
+  String get chooseYourSports;
+
+  /// No description provided for @chooseYourSportsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'You can change this later.'**
+  String get chooseYourSportsDescription;
+
+  /// No description provided for @setYourLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s your level?'**
+  String get setYourLevel;
+
+  /// No description provided for @setYourLevelDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'So we can match you with players at your level.'**
+  String get setYourLevelDescription;
+
+  /// No description provided for @beginner.
+  ///
+  /// In en, this message translates to:
+  /// **'Beginner'**
+  String get beginner;
+
+  /// No description provided for @intermediate.
+  ///
+  /// In en, this message translates to:
+  /// **'Intermediate'**
+  String get intermediate;
+
+  /// No description provided for @professional.
+  ///
+  /// In en, this message translates to:
+  /// **'Professional'**
+  String get professional;
+
+  /// No description provided for @mySports.
+  ///
+  /// In en, this message translates to:
+  /// **'My sports'**
+  String get mySports;
+
+  /// No description provided for @addSport.
+  ///
+  /// In en, this message translates to:
+  /// **'Add sport'**
+  String get addSport;
+
+  /// No description provided for @enterTheCodeSentToYourEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the code sent to your email'**
+  String get enterTheCodeSentToYourEmail;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
