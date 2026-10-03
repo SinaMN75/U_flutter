@@ -1392,6 +1392,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get electricityWaterGas => 'برق، آب، گاز';
 
   @override
+  String get electronicAgreement => 'قرارداد الکترونیکی';
+
+  @override
   String get ellipse => 'بیضی';
 
   @override
@@ -3425,6 +3428,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get printDate => 'تاریخ چاپ';
+
+  @override
+  String get printedAgreement => 'قرارداد چاپی';
 
   @override
   String get printNumber => 'شماره چاپ';

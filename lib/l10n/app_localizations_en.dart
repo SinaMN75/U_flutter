@@ -1392,6 +1392,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get electricityWaterGas => 'Electricity, water, gas';
 
   @override
+  String get electronicAgreement => 'Electronic agreement';
+
+  @override
   String get ellipse => 'Ellipse';
 
   @override
@@ -3425,6 +3428,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get printDate => 'Print date';
+
+  @override
+  String get printedAgreement => 'Printed agreement';
 
   @override
   String get printNumber => 'Print number';

@@ -380,6 +380,7 @@ class UTerminalBrandCreateParams {
   final String code;
   final String title;
   final String model;
+  final String? agreement;
   final String detail1;
   final String detail2;
   final String? creatorId;
@@ -390,6 +391,7 @@ class UTerminalBrandCreateParams {
     required this.code,
     required this.title,
     required this.model,
+    this.agreement,
     this.id,
     this.detail1 = "",
     this.detail2 = "",
@@ -407,6 +409,7 @@ class UTerminalBrandCreateParams {
     code: json["code"] as String,
     title: json["title"] as String,
     model: json["model"] as String,
+    agreement: json["agreement"],
     detail1: json["detail1"] ?? "",
     detail2: json["detail2"] ?? "",
     creatorId: json["creatorId"],
@@ -419,6 +422,7 @@ class UTerminalBrandCreateParams {
     "code": code,
     "title": title,
     "model": model,
+    if (agreement != null) "agreement": agreement,
     "detail1": detail1,
     "detail2": detail2,
     if (creatorId != null) "creatorId": creatorId,
@@ -495,6 +499,7 @@ class UTerminalBrandUpdateParams {
   final String? code;
   final String? title;
   final String? model;
+  final String? agreement;
   final List<int>? tags;
   final String? detail1;
   final String? detail2;
@@ -509,6 +514,7 @@ class UTerminalBrandUpdateParams {
     this.code,
     this.title,
     this.model,
+    this.agreement,
     this.tags,
     this.detail1,
     this.detail2,
@@ -528,6 +534,7 @@ class UTerminalBrandUpdateParams {
     code: json["code"],
     title: json["title"],
     model: json["model"],
+    agreement: json["agreement"],
     tags: json["tags"] == null ? null : List<int>.from(json["tags"]!.map((dynamic x) => x)),
     detail1: json["detail1"],
     detail2: json["detail2"],
@@ -543,6 +550,7 @@ class UTerminalBrandUpdateParams {
     "code": code,
     "title": title,
     "model": model,
+    if (agreement != null) "agreement": agreement,
     "tags": tags == null ? null : List<dynamic>.from(tags!.map((int x) => x)),
     if (detail1 != null) "detail1": detail1,
     if (detail2 != null) "detail2": detail2,

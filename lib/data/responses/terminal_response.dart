@@ -186,7 +186,7 @@ class UTerminalBrandResponse {
   final String model;
   final List<int> tags;
   final String id;
-  final UBaseJson jsonData;
+  final UTerminalBrandJson jsonData;
   final DateTime createdAt;
   final UUserResponse? creator;
   final String? creatorId;
@@ -217,7 +217,7 @@ class UTerminalBrandResponse {
     model: json["model"],
     tags: List<int>.from(json["tags"]!.map((dynamic x) => x)),
     id: json["id"],
-    jsonData: UBaseJson.fromMap(json["jsonData"]),
+    jsonData: UTerminalBrandJson.fromMap(json["jsonData"]),
     createdAt: DateTime.parse(json["createdAt"]),
     creator: json["creator"] == null ? null : UUserResponse.fromMap(json["creator"]),
     creatorId: json["creatorId"],
@@ -241,6 +241,34 @@ class UTerminalBrandResponse {
     "adminUserIds": List<dynamic>.from(
       adminUserIds.map((String x) => x),
     ),
+  };
+}
+
+class UTerminalBrandJson {
+  final String? detail1;
+  final String? detail2;
+  final String? agreement;
+
+  UTerminalBrandJson({
+    this.detail1,
+    this.detail2,
+    this.agreement,
+  });
+
+  factory UTerminalBrandJson.fromJson(String str) => UTerminalBrandJson.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UTerminalBrandJson.fromMap(Map<String, dynamic> json) => UTerminalBrandJson(
+    detail1: json["detail1"],
+    detail2: json["detail2"],
+    agreement: json["agreement"],
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "detail1": detail1,
+    "detail2": detail2,
+    "agreement": agreement,
   };
 }
 

@@ -2774,6 +2774,12 @@ abstract class AppLocalizations {
   /// **'Electricity, water, gas'**
   String get electricityWaterGas;
 
+  /// No description provided for @electronicAgreement.
+  ///
+  /// In en, this message translates to:
+  /// **'Electronic agreement'**
+  String get electronicAgreement;
+
   /// No description provided for @ellipse.
   ///
   /// In en, this message translates to:
@@ -6793,6 +6799,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Print date'**
   String get printDate;
+
+  /// No description provided for @printedAgreement.
+  ///
+  /// In en, this message translates to:
+  /// **'Printed agreement'**
+  String get printedAgreement;
 
   /// No description provided for @printNumber.
   ///
