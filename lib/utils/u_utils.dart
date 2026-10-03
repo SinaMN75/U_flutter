@@ -156,6 +156,13 @@ abstract class UValidators {
     return null;
   };
 
+  /// Checks a phone number (8-15 digits, optional +). `UValidators.phone()`
+  static FormFieldValidator<String> iranianPhone({String? requiredMessage, String? invalidMessage, bool isRequired = true}) => (String? value) {
+    if (isRequired && (value == null || value.isEmpty)) return requiredMessage ?? U.s.required;
+    if (value != null && value.isNotEmpty && !value.toLatinNumber().isValidPhone && value.startsWith("09")) return invalidMessage ?? U.s.thisFieldIsInvalid;
+    return null;
+  };
+
   /// Only digits (Persian/Arabic digits accepted), optional length limits. `UValidators.number(minLength: 4)`
   static FormFieldValidator<String> number({String? requiredMessage, String? invalidMessage, int? minLength, int? maxLength, bool isRequired = true}) => (String? value) {
     if (isRequired && (value == null || value.isEmpty)) return requiredMessage ?? U.s.required;

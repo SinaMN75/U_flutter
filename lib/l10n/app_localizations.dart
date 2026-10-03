@@ -11185,6 +11185,402 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Find partners, book courts, win titles.'**
   String get findPartnersBookCourtsWinTitles;
+
+  /// No description provided for @tournament.
+  ///
+  /// In en, this message translates to:
+  /// **'Tournament'**
+  String get tournament;
+
+  /// No description provided for @tournaments.
+  ///
+  /// In en, this message translates to:
+  /// **'Tournaments'**
+  String get tournaments;
+
+  /// No description provided for @format.
+  ///
+  /// In en, this message translates to:
+  /// **'Format'**
+  String get format;
+
+  /// No description provided for @venue.
+  ///
+  /// In en, this message translates to:
+  /// **'Venue'**
+  String get venue;
+
+  /// No description provided for @prize.
+  ///
+  /// In en, this message translates to:
+  /// **'Prize'**
+  String get prize;
+
+  /// No description provided for @entrants.
+  ///
+  /// In en, this message translates to:
+  /// **'Entrants'**
+  String get entrants;
+
+  /// No description provided for @registered.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re registered'**
+  String get registered;
+
+  /// No description provided for @levelRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Level range'**
+  String get levelRange;
+
+  /// No description provided for @standings.
+  ///
+  /// In en, this message translates to:
+  /// **'Standings'**
+  String get standings;
+
+  /// No description provided for @matches.
+  ///
+  /// In en, this message translates to:
+  /// **'Matches'**
+  String get matches;
+
+  /// No description provided for @round.
+  ///
+  /// In en, this message translates to:
+  /// **'Round'**
+  String get round;
+
+  /// No description provided for @played.
+  ///
+  /// In en, this message translates to:
+  /// **'Played'**
+  String get played;
+
+  /// No description provided for @won.
+  ///
+  /// In en, this message translates to:
+  /// **'W'**
+  String get won;
+
+  /// No description provided for @drawn.
+  ///
+  /// In en, this message translates to:
+  /// **'D'**
+  String get drawn;
+
+  /// No description provided for @lost.
+  ///
+  /// In en, this message translates to:
+  /// **'L'**
+  String get lost;
+
+  /// No description provided for @difference.
+  ///
+  /// In en, this message translates to:
+  /// **'Diff'**
+  String get difference;
+
+  /// No description provided for @points.
+  ///
+  /// In en, this message translates to:
+  /// **'Pts'**
+  String get points;
+
+  /// No description provided for @enterScore.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter score'**
+  String get enterScore;
+
+  /// No description provided for @addSet.
+  ///
+  /// In en, this message translates to:
+  /// **'+ Set'**
+  String get addSet;
+
+  /// No description provided for @organizer.
+  ///
+  /// In en, this message translates to:
+  /// **'Organizer'**
+  String get organizer;
+
+  /// No description provided for @generateSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate the schedule'**
+  String get generateSchedule;
+
+  /// No description provided for @entries.
+  ///
+  /// In en, this message translates to:
+  /// **'Entries'**
+  String get entries;
+
+  /// No description provided for @partnerEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Partner\'s email'**
+  String get partnerEmail;
+
+  /// No description provided for @teamName.
+  ///
+  /// In en, this message translates to:
+  /// **'Team name (optional)'**
+  String get teamName;
+
+  /// No description provided for @createTournament.
+  ///
+  /// In en, this message translates to:
+  /// **'Create tournament'**
+  String get createTournament;
+
+  /// No description provided for @withdraw.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdraw'**
+  String get withdraw;
+
+  /// No description provided for @participantType.
+  ///
+  /// In en, this message translates to:
+  /// **'Participant type'**
+  String get participantType;
+
+  /// No description provided for @myTournaments.
+  ///
+  /// In en, this message translates to:
+  /// **'Mine'**
+  String get myTournaments;
+
+  /// No description provided for @yourLevelFits.
+  ///
+  /// In en, this message translates to:
+  /// **'Your level fits this tournament'**
+  String get yourLevelFits;
+
+  /// No description provided for @yourLevelDoesNotFit.
+  ///
+  /// In en, this message translates to:
+  /// **'Your level is outside this tournament\'s range'**
+  String get yourLevelDoesNotFit;
+
+  /// No description provided for @noMatchesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'The schedule hasn\'t been generated yet'**
+  String get noMatchesYet;
+
+  /// No description provided for @roundRobinDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone plays everyone; ranked by points and difference.'**
+  String get roundRobinDescription;
+
+  /// No description provided for @singleEliminationDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Loser is out, winner advances.'**
+  String get singleEliminationDescription;
+
+  /// No description provided for @doubleEliminationDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Out after two losses; a losers bracket gives a second chance.'**
+  String get doubleEliminationDescription;
+
+  /// No description provided for @groupsKnockoutDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Round robin in groups, top two advance to knockout.'**
+  String get groupsKnockoutDescription;
+
+  /// No description provided for @americanoDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Partners rotate every round; individual points add up.'**
+  String get americanoDescription;
+
+  /// No description provided for @mexicanoDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Like Americano, but each round pairs by current ranking.'**
+  String get mexicanoDescription;
+
+  /// No description provided for @swissDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Each round you face someone on a similar score, no elimination.'**
+  String get swissDescription;
+
+  /// No description provided for @ladderDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Challenge higher ranks; monthly promotion and relegation between boxes.'**
+  String get ladderDescription;
+
+  /// No description provided for @groups.
+  ///
+  /// In en, this message translates to:
+  /// **'Groups'**
+  String get groups;
+
+  /// No description provided for @groupNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Group {number}'**
+  String groupNumber(Object number);
+
+  /// No description provided for @bracket.
+  ///
+  /// In en, this message translates to:
+  /// **'Bracket'**
+  String get bracket;
+
+  /// No description provided for @podium.
+  ///
+  /// In en, this message translates to:
+  /// **'Podium'**
+  String get podium;
+
+  /// No description provided for @champion.
+  ///
+  /// In en, this message translates to:
+  /// **'Champion'**
+  String get champion;
+
+  /// No description provided for @boxNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Box {number}'**
+  String boxNumber(Object number);
+
+  /// No description provided for @boxes.
+  ///
+  /// In en, this message translates to:
+  /// **'Boxes'**
+  String get boxes;
+
+  /// No description provided for @nextSeason.
+  ///
+  /// In en, this message translates to:
+  /// **'Start the next period'**
+  String get nextSeason;
+
+  /// No description provided for @rounds.
+  ///
+  /// In en, this message translates to:
+  /// **'Rounds'**
+  String get rounds;
+
+  /// No description provided for @roundNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Round {number}'**
+  String roundNumber(Object number);
+
+  /// No description provided for @court.
+  ///
+  /// In en, this message translates to:
+  /// **'Court'**
+  String get court;
+
+  /// No description provided for @pointsPerMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Points per match'**
+  String get pointsPerMatch;
+
+  /// No description provided for @groupCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of groups'**
+  String get groupCount;
+
+  /// No description provided for @advancePerGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Advance per group'**
+  String get advancePerGroup;
+
+  /// No description provided for @thirdPlaceMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Play a third place match'**
+  String get thirdPlaceMatch;
+
+  /// No description provided for @setsToWin.
+  ///
+  /// In en, this message translates to:
+  /// **'Sets to win'**
+  String get setsToWin;
+
+  /// No description provided for @raceTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Race to'**
+  String get raceTo;
+
+  /// No description provided for @superTiebreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Deciding set as a super tiebreak (to 10)'**
+  String get superTiebreak;
+
+  /// No description provided for @unrated.
+  ///
+  /// In en, this message translates to:
+  /// **'Results don\'t change player levels'**
+  String get unrated;
+
+  /// No description provided for @boxSize.
+  ///
+  /// In en, this message translates to:
+  /// **'Players per box'**
+  String get boxSize;
+
+  /// No description provided for @knockout.
+  ///
+  /// In en, this message translates to:
+  /// **'Knockout'**
+  String get knockout;
+
+  /// No description provided for @promoted.
+  ///
+  /// In en, this message translates to:
+  /// **'Moves up'**
+  String get promoted;
+
+  /// No description provided for @relegated.
+  ///
+  /// In en, this message translates to:
+  /// **'Moves down'**
+  String get relegated;
+
+  /// No description provided for @scoreHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Score history'**
+  String get scoreHistory;
+
+  /// No description provided for @finalMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Final'**
+  String get finalMatch;
+
+  /// No description provided for @semiFinal.
+  ///
+  /// In en, this message translates to:
+  /// **'Semi-final'**
+  String get semiFinal;
+
+  /// No description provided for @quarterFinal.
+  ///
+  /// In en, this message translates to:
+  /// **'Quarter-final'**
+  String get quarterFinal;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

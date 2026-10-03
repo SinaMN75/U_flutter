@@ -5650,4 +5650,208 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get findPartnersBookCourtsWinTitles => 'هم‌بازی پیدا کن، زمین رزرو کن، قهرمان شو.';
+
+  @override
+  String get tournament => 'تورنمنت';
+
+  @override
+  String get tournaments => 'تورنمنت‌ها';
+
+  @override
+  String get format => 'فرمت';
+
+  @override
+  String get venue => 'مکان';
+
+  @override
+  String get prize => 'جایزه';
+
+  @override
+  String get entrants => 'شرکت‌کننده';
+
+  @override
+  String get registered => 'ثبت‌نام کرده‌اید';
+
+  @override
+  String get levelRange => 'بازه سطح';
+
+  @override
+  String get standings => 'جدول';
+
+  @override
+  String get matches => 'بازی‌ها';
+
+  @override
+  String get round => 'دور';
+
+  @override
+  String get played => 'بازی';
+
+  @override
+  String get won => 'برد';
+
+  @override
+  String get drawn => 'مساوی';
+
+  @override
+  String get lost => 'باخت';
+
+  @override
+  String get difference => 'تفاضل';
+
+  @override
+  String get points => 'امتیاز';
+
+  @override
+  String get enterScore => 'ثبت نتیجه';
+
+  @override
+  String get addSet => '+ ست';
+
+  @override
+  String get organizer => 'برگزارکننده';
+
+  @override
+  String get generateSchedule => 'ساخت برنامه بازی‌ها';
+
+  @override
+  String get entries => 'ثبت‌نام‌ها';
+
+  @override
+  String get partnerEmail => 'ایمیل هم‌تیمی';
+
+  @override
+  String get teamName => 'نام تیم (اختیاری)';
+
+  @override
+  String get createTournament => 'ساخت تورنمنت';
+
+  @override
+  String get withdraw => 'انصراف از ثبت‌نام';
+
+  @override
+  String get participantType => 'نوع شرکت‌کننده';
+
+  @override
+  String get myTournaments => 'برگزارکننده منم';
+
+  @override
+  String get yourLevelFits => 'سطح شما در بازه این تورنمنت است';
+
+  @override
+  String get yourLevelDoesNotFit => 'سطح شما خارج از بازه این تورنمنت است';
+
+  @override
+  String get noMatchesYet => 'برنامه بازی‌ها هنوز ساخته نشده است';
+
+  @override
+  String get roundRobinDescription => 'همه با همه؛ رتبه بر اساس امتیاز و تفاضل.';
+
+  @override
+  String get singleEliminationDescription => 'بازنده حذف می‌شود، برنده به دور بعد می‌رود.';
+
+  @override
+  String get doubleEliminationDescription => 'با دو باخت حذف می‌شوید؛ جدول بازنده‌ها شانس دوم است.';
+
+  @override
+  String get groupsKnockoutDescription => 'دوره‌ای در گروه‌ها، دو تیم اول هر گروه به حذفی می‌روند.';
+
+  @override
+  String get americanoDescription => 'هر دور هم‌تیمی عوض می‌شود؛ امتیاز فردی جمع می‌شود.';
+
+  @override
+  String get mexicanoDescription => 'مثل آمریکانو ولی هر دور بر اساس رتبه فعلی جفت می‌شوید.';
+
+  @override
+  String get swissDescription => 'هر دور با کسی با امتیاز مشابه بازی می‌کنید، بدون حذف.';
+
+  @override
+  String get ladderDescription => 'چالش رتبه‌های بالاتر؛ صعود و نزول ماهانه بین باکس‌ها.';
+
+  @override
+  String get groups => 'گروه‌ها';
+
+  @override
+  String groupNumber(Object number) {
+    return 'گروه $number';
+  }
+
+  @override
+  String get bracket => 'براکت';
+
+  @override
+  String get podium => 'سکوی نهایی';
+
+  @override
+  String get champion => 'قهرمان';
+
+  @override
+  String boxNumber(Object number) {
+    return 'باکس $number';
+  }
+
+  @override
+  String get boxes => 'باکس‌ها';
+
+  @override
+  String get nextSeason => 'شروع دوره بعد';
+
+  @override
+  String get rounds => 'دورها';
+
+  @override
+  String roundNumber(Object number) {
+    return 'دور $number';
+  }
+
+  @override
+  String get court => 'زمین';
+
+  @override
+  String get pointsPerMatch => 'امتیاز هر بازی';
+
+  @override
+  String get groupCount => 'تعداد گروه‌ها';
+
+  @override
+  String get advancePerGroup => 'صعود از هر گروه';
+
+  @override
+  String get thirdPlaceMatch => 'بازی رده‌بندی';
+
+  @override
+  String get setsToWin => 'ست لازم برای برد';
+
+  @override
+  String get raceTo => 'تا (ریک/فریم)';
+
+  @override
+  String get superTiebreak => 'ست تعیین‌کننده به‌صورت سوپر تای‌بریک (تا ۱۰)';
+
+  @override
+  String get unrated => 'نتایج سطح بازیکنان را تغییر ندهد';
+
+  @override
+  String get boxSize => 'بازیکن در هر باکس';
+
+  @override
+  String get knockout => 'حذفی';
+
+  @override
+  String get promoted => 'صعود';
+
+  @override
+  String get relegated => 'سقوط';
+
+  @override
+  String get scoreHistory => 'تاریخچه نتیجه';
+
+  @override
+  String get finalMatch => 'فینال';
+
+  @override
+  String get semiFinal => 'نیمه‌نهایی';
+
+  @override
+  String get quarterFinal => 'یک‌چهارم نهایی';
 }

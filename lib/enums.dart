@@ -1455,3 +1455,72 @@ enum TagPlayerSportProfile with UNumericIdentifiable {
   @override
   final int number;
 }
+
+enum TagTournament with UNumericIdentifiable {
+  roundRobin("دوره‌ای / لیگ", "Round robin / league", 101),
+  singleElimination("حذفی تک", "Single elimination", 102),
+  doubleElimination("حذفی دوگانه", "Double elimination", 103),
+  groupsKnockout("گروهی + حذفی", "Groups + knockout", 104),
+  americano("آمریکانو", "Americano", 105),
+  mexicano("مکزیکانو", "Mexicano", 106),
+  swiss("سوئیسی", "Swiss", 107),
+  ladder("نردبانی / باکس لیگ", "Ladder / box league", 108),
+
+  singles("انفرادی", "Singles", 201),
+  doubles("دونفره", "Doubles", 202),
+  team("تیمی", "Team", 203),
+
+  draft("پیش‌نویس", "Draft", 301),
+  registration("ثبت‌نام باز", "Registration open", 302),
+  inProgress("زنده", "Live", 303),
+  finished("تمام‌شده", "Finished", 304),
+  cancelled("لغو شده", "Cancelled", 305),
+
+  autoApprove("تأیید خودکار ثبت‌نام", "Auto-approve registrations", 401);
+
+  const TagTournament(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagTournamentEntry with UNumericIdentifiable {
+  pending("در انتظار تأیید", "Pending", 101),
+  approved("تأیید شده", "Approved", 102),
+  rejected("رد شده", "Rejected", 103);
+
+  const TagTournamentEntry(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagTournamentMatch with UNumericIdentifiable {
+  scheduled("در انتظار", "Scheduled", 101),
+  live("زنده", "Live", 102),
+  finished("تمام‌شده", "Finished", 103),
+  bye("استراحت", "Bye", 104),
+
+  group("گروهی", "Group", 201),
+  winners("جدول اصلی", "Winners bracket", 202),
+  losers("جدول بازنده‌ها", "Losers bracket", 203),
+  grandFinal("فینال بزرگ", "Grand final", 204),
+  thirdPlace("رده‌بندی", "Third place", 205);
+
+  const TagTournamentMatch(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}

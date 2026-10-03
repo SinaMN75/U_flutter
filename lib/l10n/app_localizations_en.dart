@@ -5651,4 +5651,208 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get findPartnersBookCourtsWinTitles => 'Find partners, book courts, win titles.';
+
+  @override
+  String get tournament => 'Tournament';
+
+  @override
+  String get tournaments => 'Tournaments';
+
+  @override
+  String get format => 'Format';
+
+  @override
+  String get venue => 'Venue';
+
+  @override
+  String get prize => 'Prize';
+
+  @override
+  String get entrants => 'Entrants';
+
+  @override
+  String get registered => 'You\'re registered';
+
+  @override
+  String get levelRange => 'Level range';
+
+  @override
+  String get standings => 'Standings';
+
+  @override
+  String get matches => 'Matches';
+
+  @override
+  String get round => 'Round';
+
+  @override
+  String get played => 'Played';
+
+  @override
+  String get won => 'W';
+
+  @override
+  String get drawn => 'D';
+
+  @override
+  String get lost => 'L';
+
+  @override
+  String get difference => 'Diff';
+
+  @override
+  String get points => 'Pts';
+
+  @override
+  String get enterScore => 'Enter score';
+
+  @override
+  String get addSet => '+ Set';
+
+  @override
+  String get organizer => 'Organizer';
+
+  @override
+  String get generateSchedule => 'Generate the schedule';
+
+  @override
+  String get entries => 'Entries';
+
+  @override
+  String get partnerEmail => 'Partner\'s email';
+
+  @override
+  String get teamName => 'Team name (optional)';
+
+  @override
+  String get createTournament => 'Create tournament';
+
+  @override
+  String get withdraw => 'Withdraw';
+
+  @override
+  String get participantType => 'Participant type';
+
+  @override
+  String get myTournaments => 'Mine';
+
+  @override
+  String get yourLevelFits => 'Your level fits this tournament';
+
+  @override
+  String get yourLevelDoesNotFit => 'Your level is outside this tournament\'s range';
+
+  @override
+  String get noMatchesYet => 'The schedule hasn\'t been generated yet';
+
+  @override
+  String get roundRobinDescription => 'Everyone plays everyone; ranked by points and difference.';
+
+  @override
+  String get singleEliminationDescription => 'Loser is out, winner advances.';
+
+  @override
+  String get doubleEliminationDescription => 'Out after two losses; a losers bracket gives a second chance.';
+
+  @override
+  String get groupsKnockoutDescription => 'Round robin in groups, top two advance to knockout.';
+
+  @override
+  String get americanoDescription => 'Partners rotate every round; individual points add up.';
+
+  @override
+  String get mexicanoDescription => 'Like Americano, but each round pairs by current ranking.';
+
+  @override
+  String get swissDescription => 'Each round you face someone on a similar score, no elimination.';
+
+  @override
+  String get ladderDescription => 'Challenge higher ranks; monthly promotion and relegation between boxes.';
+
+  @override
+  String get groups => 'Groups';
+
+  @override
+  String groupNumber(Object number) {
+    return 'Group $number';
+  }
+
+  @override
+  String get bracket => 'Bracket';
+
+  @override
+  String get podium => 'Podium';
+
+  @override
+  String get champion => 'Champion';
+
+  @override
+  String boxNumber(Object number) {
+    return 'Box $number';
+  }
+
+  @override
+  String get boxes => 'Boxes';
+
+  @override
+  String get nextSeason => 'Start the next period';
+
+  @override
+  String get rounds => 'Rounds';
+
+  @override
+  String roundNumber(Object number) {
+    return 'Round $number';
+  }
+
+  @override
+  String get court => 'Court';
+
+  @override
+  String get pointsPerMatch => 'Points per match';
+
+  @override
+  String get groupCount => 'Number of groups';
+
+  @override
+  String get advancePerGroup => 'Advance per group';
+
+  @override
+  String get thirdPlaceMatch => 'Play a third place match';
+
+  @override
+  String get setsToWin => 'Sets to win';
+
+  @override
+  String get raceTo => 'Race to';
+
+  @override
+  String get superTiebreak => 'Deciding set as a super tiebreak (to 10)';
+
+  @override
+  String get unrated => 'Results don\'t change player levels';
+
+  @override
+  String get boxSize => 'Players per box';
+
+  @override
+  String get knockout => 'Knockout';
+
+  @override
+  String get promoted => 'Moves up';
+
+  @override
+  String get relegated => 'Moves down';
+
+  @override
+  String get scoreHistory => 'Score history';
+
+  @override
+  String get finalMatch => 'Final';
+
+  @override
+  String get semiFinal => 'Semi-final';
+
+  @override
+  String get quarterFinal => 'Quarter-final';
 }

@@ -987,3 +987,74 @@ class UPlayerSportProfileSelectorArgs {
     "sport": sport?.toMap(),
   };
 }
+
+class UTournamentSelectorArgs {
+  final UUserSelectorArgs? creator;
+  final USportSelectorArgs? sport;
+  final UTournamentEntrySelectorArgs? entries;
+  final UTournamentMatchSelectorArgs? matches;
+
+  const UTournamentSelectorArgs({this.creator, this.sport, this.entries, this.matches});
+
+  factory UTournamentSelectorArgs.fromJson(String str) => UTournamentSelectorArgs.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UTournamentSelectorArgs.fromMap(Map<String, dynamic> json) => UTournamentSelectorArgs(
+    creator: json["creator"] == null ? null : UUserSelectorArgs.fromMap(json["creator"]),
+    sport: json["sport"] == null ? null : USportSelectorArgs.fromMap(json["sport"]),
+    entries: json["entries"] == null ? null : UTournamentEntrySelectorArgs.fromMap(json["entries"]),
+    matches: json["matches"] == null ? null : UTournamentMatchSelectorArgs.fromMap(json["matches"]),
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "creator": creator?.toMap(),
+    "sport": sport?.toMap(),
+    "entries": entries?.toMap(),
+    "matches": matches?.toMap(),
+  };
+}
+
+class UTournamentEntrySelectorArgs {
+  final UUserSelectorArgs? creator;
+
+  /// Include the players (id and names only).
+  final bool users;
+  final UTournamentSelectorArgs? tournament;
+
+  const UTournamentEntrySelectorArgs({this.creator, this.users = false, this.tournament});
+
+  factory UTournamentEntrySelectorArgs.fromJson(String str) => UTournamentEntrySelectorArgs.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UTournamentEntrySelectorArgs.fromMap(Map<String, dynamic> json) => UTournamentEntrySelectorArgs(
+    creator: json["creator"] == null ? null : UUserSelectorArgs.fromMap(json["creator"]),
+    users: json["users"] ?? false,
+    tournament: json["tournament"] == null ? null : UTournamentSelectorArgs.fromMap(json["tournament"]),
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "creator": creator?.toMap(),
+    "users": users,
+    "tournament": tournament?.toMap(),
+  };
+}
+
+class UTournamentMatchSelectorArgs {
+  final UUserSelectorArgs? creator;
+
+  const UTournamentMatchSelectorArgs({this.creator});
+
+  factory UTournamentMatchSelectorArgs.fromJson(String str) => UTournamentMatchSelectorArgs.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UTournamentMatchSelectorArgs.fromMap(Map<String, dynamic> json) => UTournamentMatchSelectorArgs(
+    creator: json["creator"] == null ? null : UUserSelectorArgs.fromMap(json["creator"]),
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "creator": creator?.toMap(),
+  };
+}
