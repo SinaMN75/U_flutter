@@ -12955,6 +12955,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Venues'**
   String get venues;
+
+  /// No description provided for @avaHamrah.
+  ///
+  /// In en, this message translates to:
+  /// **'Ava Hamrah'**
+  String get avaHamrah;
+
+  /// No description provided for @sendVerificationCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Send verification code'**
+  String get sendVerificationCode;
+
+  /// No description provided for @iAcceptTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'I accept the app\'s {terms}'**
+  String iAcceptTerms(Object terms);
+
+  /// No description provided for @verificationCodeSentTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the code sent to {mobile}'**
+  String verificationCodeSentTo(Object mobile);
+
+  /// No description provided for @loginSlide1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Services for ATM owners'**
+  String get loginSlide1Title;
+
+  /// No description provided for @loginSlide1Description.
+  ///
+  /// In en, this message translates to:
+  /// **'Reports, online support and contract signing; all services in one app'**
+  String get loginSlide1Description;
+
+  /// No description provided for @loginSlide2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Financial and payment services'**
+  String get loginSlide2Title;
+
+  /// No description provided for @loginSlide2Description.
+  ///
+  /// In en, this message translates to:
+  /// **'All financial and payment services; from top-ups and bills to insurance, travel and car services'**
+  String get loginSlide2Description;
+
+  /// No description provided for @loginSlide3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Secure, trusted'**
+  String get loginSlide3Title;
+
+  /// No description provided for @loginSlide3Description.
+  ///
+  /// In en, this message translates to:
+  /// **'Licensed by eNamad, the national gateway and payment companies'**
+  String get loginSlide3Description;
+
+  /// No description provided for @avaHamrahApplication.
+  ///
+  /// In en, this message translates to:
+  /// **'Ava Hamrah application'**
+  String get avaHamrahApplication;
+
+  /// No description provided for @enterYourMobileNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your mobile number'**
+  String get enterYourMobileNumber;
+
+  /// No description provided for @termsAndRules.
+  ///
+  /// In en, this message translates to:
+  /// **'terms and conditions'**
+  String get termsAndRules;
+
+  /// No description provided for @doYouHaveAReferralCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Have a referral code?'**
+  String get doYouHaveAReferralCode;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
