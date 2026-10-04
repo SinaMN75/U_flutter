@@ -6620,4 +6620,50 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get venues => 'Venues';
+
+  @override
+  String get avaHamrah => 'Ava Hamrah';
+
+  @override
+  String get sendVerificationCode => 'Send verification code';
+
+  @override
+  String iAcceptTerms(Object terms) {
+    return 'I accept the app\'s $terms';
+  }
+
+  @override
+  String verificationCodeSentTo(Object mobile) {
+    return 'Enter the code sent to $mobile';
+  }
+
+  @override
+  String get loginSlide1Title => 'Services for ATM owners';
+
+  @override
+  String get loginSlide1Description => 'Reports, online support and contract signing; all services in one app';
+
+  @override
+  String get loginSlide2Title => 'Financial and payment services';
+
+  @override
+  String get loginSlide2Description => 'All financial and payment services; from top-ups and bills to insurance, travel and car services';
+
+  @override
+  String get loginSlide3Title => 'Secure, trusted';
+
+  @override
+  String get loginSlide3Description => 'Licensed by eNamad, the national gateway and payment companies';
+
+  @override
+  String get avaHamrahApplication => 'Ava Hamrah application';
+
+  @override
+  String get enterYourMobileNumber => 'Enter your mobile number';
+
+  @override
+  String get termsAndRules => 'terms and conditions';
+
+  @override
+  String get doYouHaveAReferralCode => 'Have a referral code?';
 }

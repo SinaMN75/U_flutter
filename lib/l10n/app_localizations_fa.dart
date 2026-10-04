@@ -6619,4 +6619,50 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get venues => 'مجموعه‌ها';
+
+  @override
+  String get avaHamrah => 'آواهمراه';
+
+  @override
+  String get sendVerificationCode => 'ارسال کد تایید';
+
+  @override
+  String iAcceptTerms(Object terms) {
+    return '$terms اپلیکیشن را می‌پذیرم';
+  }
+
+  @override
+  String verificationCodeSentTo(Object mobile) {
+    return 'کد ارسال شده به $mobile را وارد کنید';
+  }
+
+  @override
+  String get loginSlide1Title => 'خدمات به دارندگان خودپرداز';
+
+  @override
+  String get loginSlide1Description => 'مشاهده گزارش‌ها، پشتیبانی آنلاین و امضای قرارداد؛ همه خدمات در یک اپلیکیشن';
+
+  @override
+  String get loginSlide2Title => 'خدمات مالی و پرداخت';
+
+  @override
+  String get loginSlide2Description => 'همه سرویس‌های مالی و پرداخت؛ از شارژ و قبوض تا بیمه، گردشگری و خدمات خودرو';
+
+  @override
+  String get loginSlide3Title => 'امن، معتبر';
+
+  @override
+  String get loginSlide3Description => 'دارای اینماد و مجوز از درگاه ملی و شرکت‌های پرداخت';
+
+  @override
+  String get avaHamrahApplication => 'اپلیکیشن آواهمراه';
+
+  @override
+  String get enterYourMobileNumber => 'شماره موبایل خود را وارد کنید';
+
+  @override
+  String get termsAndRules => 'شرایط و قوانین';
+
+  @override
+  String get doYouHaveAReferralCode => 'کد معرف دارید؟';
 }

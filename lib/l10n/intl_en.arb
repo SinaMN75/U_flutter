@@ -2594,5 +2594,29 @@
   "scoreFormatHint": "Each set as A-B, separated by spaces; empty clears the result.",
   "social": "Social",
   "text": "Text",
-  "venues": "Venues"
+  "venues": "Venues",
+  "avaHamrah": "Ava Hamrah",
+  "sendVerificationCode": "Send verification code",
+  "iAcceptTerms": "I accept the app's {terms}",
+  "@iAcceptTerms": {
+    "placeholders": {
+      "terms": {}
+    }
+  },
+  "verificationCodeSentTo": "Enter the code sent to {mobile}",
+  "@verificationCodeSentTo": {
+    "placeholders": {
+      "mobile": {}
+    }
+  },
+  "loginSlide1Title": "Services for ATM owners",
+  "loginSlide1Description": "Reports, online support and contract signing; all services in one app",
+  "loginSlide2Title": "Financial and payment services",
+  "loginSlide2Description": "All financial and payment services; from top-ups and bills to insurance, travel and car services",
+  "loginSlide3Title": "Secure, trusted",
+  "loginSlide3Description": "Licensed by eNamad, the national gateway and payment companies",
+  "avaHamrahApplication": "Ava Hamrah application",
+  "enterYourMobileNumber": "Enter your mobile number",
+  "termsAndRules": "terms and conditions",
+  "doYouHaveAReferralCode": "Have a referral code?"
 }

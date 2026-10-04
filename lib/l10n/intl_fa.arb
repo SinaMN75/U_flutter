@@ -2366,5 +2366,19 @@
   "scoreFormatHint": "هر ست به شکل A-B و با فاصله از هم؛ خالی یعنی پاک کردن نتیجه.",
   "social": "اجتماعی",
   "text": "متن",
-  "venues": "مجموعه‌ها"
+  "venues": "مجموعه‌ها",
+  "avaHamrah": "آواهمراه",
+  "sendVerificationCode": "ارسال کد تایید",
+  "iAcceptTerms": "{terms} اپلیکیشن را می‌پذیرم",
+  "verificationCodeSentTo": "کد ارسال شده به {mobile} را وارد کنید",
+  "loginSlide1Title": "خدمات به دارندگان خودپرداز",
+  "loginSlide1Description": "مشاهده گزارش‌ها، پشتیبانی آنلاین و امضای قرارداد؛ همه خدمات در یک اپلیکیشن",
+  "loginSlide2Title": "خدمات مالی و پرداخت",
+  "loginSlide2Description": "همه سرویس‌های مالی و پرداخت؛ از شارژ و قبوض تا بیمه، گردشگری و خدمات خودرو",
+  "loginSlide3Title": "امن، معتبر",
+  "loginSlide3Description": "دارای اینماد و مجوز از درگاه ملی و شرکت‌های پرداخت",
+  "avaHamrahApplication": "اپلیکیشن آواهمراه",
+  "enterYourMobileNumber": "شماره موبایل خود را وارد کنید",
+  "termsAndRules": "شرایط و قوانین",
+  "doYouHaveAReferralCode": "کد معرف دارید؟"
 }
