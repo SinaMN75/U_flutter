@@ -495,6 +495,15 @@ class UCameraFrame {
   }
 }
 
+/// Channel bytes arrive as a view into the whole platform message. Flutter web
+/// decodes images outside Chrome from `list.buffer`, which ignores the view's
+/// offset, so Safari got the message envelope around the JPEG and drew nothing.
+Uint8List? _ownBytes(Object? raw) {
+  if (raw is! Uint8List) return null;
+  if (raw.offsetInBytes == 0 && raw.lengthInBytes == raw.buffer.lengthInBytes) return raw;
+  return Uint8List.fromList(raw);
+}
+
 /// A taken photo: bytes/path, size, EXIF.
 class UCapturedPhoto {
   const UCapturedPhoto({
@@ -544,12 +553,12 @@ class UCapturedPhoto {
       width: ((map["width"] as num?) ?? 0).toInt(),
       height: ((map["height"] as num?) ?? 0).toInt(),
       path: map["path"] as String?,
-      bytes: map["bytes"] as Uint8List?,
+      bytes: _ownBytes(map["bytes"]),
       format: UPhotoFormat.values.firstWhere((UPhotoFormat f) => f.name == map["format"], orElse: () => UPhotoFormat.jpeg),
       orientation: ((map["orientation"] as num?) ?? 0).toInt(),
       mirrored: map["mirrored"] == true,
       sizeInBytes: ((map["sizeInBytes"] as num?) ?? 0).toInt(),
-      thumbnail: map["thumbnail"] as Uint8List?,
+      thumbnail: _ownBytes(map["thumbnail"]),
       metadata: rawMetadata is Map<Object?, Object?> ? rawMetadata.map((Object? k, Object? v) => MapEntry<String, Object?>(k.toString(), v)) : const <String, Object?>{},
     );
   }
@@ -584,8 +593,8 @@ class UCapturedVideo {
     height: ((map["height"] as num?) ?? 0).toInt(),
     sizeInBytes: ((map["sizeInBytes"] as num?) ?? 0).toInt(),
     container: UVideoContainer.values.firstWhere((UVideoContainer c) => c.name == map["container"], orElse: () => UVideoContainer.mp4),
-    bytes: map["bytes"] as Uint8List?,
-    thumbnail: map["thumbnail"] as Uint8List?,
+    bytes: _ownBytes(map["bytes"]),
+    thumbnail: _ownBytes(map["thumbnail"]),
   );
 }
 

@@ -278,7 +278,10 @@ class UCameraWeb {
 class _WebCameraSession {
   _WebCameraSession(this.id, this.config, this._messenger) {
     viewType = "u-camera-$id";
-    ui_web.platformViewRegistry.registerViewFactory(viewType, (int _) => _video);
+    ui_web.platformViewRegistry.registerViewFactory(viewType, (int _) {
+      unawaited(_resumeWhenMounted());
+      return _video;
+    });
     _eventChannelName = "u/camera/events/$id";
     _frameChannelName = "u/camera/frames/$id";
     MethodChannel(_eventChannelName, const StandardMethodCodec(), _messenger).setMethodCallHandler(_handleStream);
@@ -311,6 +314,7 @@ class _WebCameraSession {
   Timer? _frameTimer;
   Timer? _scanTimer;
   bool _scanning = false;
+  bool _previewPaused = false;
   List<String> _scanFormats = const <String>[];
 
   static Future<Object?> _handleStream(MethodCall call) async => null;
@@ -460,7 +464,20 @@ class _WebCameraSession {
     }
   }
 
+  /// The same <video> is handed to every view built for this session, and a
+  /// browser pauses a media element that leaves the DOM (the review screen after
+  /// a shot does exactly that). Flutter attaches the new view a frame after the
+  /// factory runs, so wait until it is in the document before restarting it.
+  Future<void> _resumeWhenMounted() async {
+    for (int attempt = 0; attempt < 100 && !_video.isConnected; attempt++) {
+      await Future<void>.delayed(const Duration(milliseconds: 20));
+    }
+    if (_stream == null || _previewPaused || !_video.paused) return;
+    _video.play().toDart.ignore();
+  }
+
   void setPaused(bool paused) {
+    _previewPaused = paused;
     if (paused) {
       _video.pause();
     } else {
@@ -532,7 +549,9 @@ class _WebCameraSession {
     await completer.future;
     _recorder = null;
 
-    final web.Blob blob = web.Blob(_chunks.toJS, web.BlobPropertyBag(type: "video/webm"));
+    // Safari records MP4 and Chrome WebM; labelling every clip WebM made Safari's unplayable.
+    final String mime = recorder.mimeType.isEmpty ? "video/webm" : recorder.mimeType;
+    final web.Blob blob = web.Blob(_chunks.toJS, web.BlobPropertyBag(type: mime));
     _recordingUrl = web.URL.createObjectURL(blob);
     final DateTime? startedAt = _recordingStartedAt;
     _recordingStartedAt = null;
@@ -543,7 +562,7 @@ class _WebCameraSession {
       "width": _width,
       "height": _height,
       "sizeInBytes": blob.size,
-      "container": "webm",
+      "container": mime.contains("mp4") ? "mp4" : "webm",
       "bytes": buffer.toDart.asUint8List(),
     };
   }

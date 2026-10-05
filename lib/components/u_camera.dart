@@ -444,6 +444,10 @@ class _UCameraPageState extends State<UCameraPage> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    // On the web `inactive` is a window blur and `hidden` a background tab; the
+    // browser keeps the stream itself, and tearing the session down here threw
+    // away the shot or recording in progress and left the preview blank.
+    if (kIsWeb) return;
     final UCameraController? controller = _controller;
     if (controller == null) return;
     if (state == AppLifecycleState.inactive || state == AppLifecycleState.paused) {
