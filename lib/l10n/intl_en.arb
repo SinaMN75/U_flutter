@@ -2624,5 +2624,15 @@
   "members": "Members",
   "addMember": "Add member",
   "commissionPercent": "Commission percent",
-  "phoneNumberOrNationalCode": "Phone number or national code"
+  "phoneNumberOrNationalCode": "Phone number or national code",
+  "settleContract": "Settle and check out",
+  "renewContract": "Renew contract",
+  "transferBed": "Move to another bed",
+  "deductions": "Deductions and damages",
+  "deductionReason": "Reason for deductions",
+  "splitInvoice": "Split into installments",
+  "installments": "Number of installments",
+  "iban": "IBAN",
+  "settlements": "Settlement requests",
+  "requestSettlement": "Request withdrawal"
 }

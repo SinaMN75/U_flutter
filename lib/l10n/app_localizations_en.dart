@@ -6684,4 +6684,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get phoneNumberOrNationalCode => 'Phone number or national code';
+
+  @override
+  String get settleContract => 'Settle and check out';
+
+  @override
+  String get renewContract => 'Renew contract';
+
+  @override
+  String get transferBed => 'Move to another bed';
+
+  @override
+  String get deductions => 'Deductions and damages';
+
+  @override
+  String get deductionReason => 'Reason for deductions';
+
+  @override
+  String get splitInvoice => 'Split into installments';
+
+  @override
+  String get installments => 'Number of installments';
+
+  @override
+  String get iban => 'IBAN';
+
+  @override
+  String get settlements => 'Settlement requests';
+
+  @override
+  String get requestSettlement => 'Request withdrawal';
 }

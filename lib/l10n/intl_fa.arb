@@ -2386,5 +2386,15 @@
   "members": "اعضا",
   "addMember": "افزودن عضو",
   "commissionPercent": "درصد کمیسیون",
-  "phoneNumberOrNationalCode": "شماره موبایل یا کد ملی"
+  "phoneNumberOrNationalCode": "شماره موبایل یا کد ملی",
+  "settleContract": "تسویه و خروج",
+  "renewContract": "تمدید قرارداد",
+  "transferBed": "جابه‌جایی تخت",
+  "deductions": "کسورات و خسارت",
+  "deductionReason": "علت کسر",
+  "splitInvoice": "تقسیط قبض",
+  "installments": "تعداد اقساط",
+  "iban": "شماره شبا",
+  "settlements": "درخواست‌های تسویه",
+  "requestSettlement": "درخواست برداشت"
 }

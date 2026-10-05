@@ -2599,3 +2599,91 @@ class UOrganizationMemberParams {
     "password": password,
   };
 }
+
+class UDormBedContractSettleParams {
+  UDormBedContractSettleParams({required this.id, this.endDate, this.deductions = 0, this.deductionReason});
+
+  final String id;
+  final DateTime? endDate;
+  final double deductions;
+  final String? deductionReason;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "endDate": endDate?.toIso8601String(),
+    "deductions": deductions,
+    "deductionReason": deductionReason,
+  };
+}
+
+class UDormBedContractRenewParams {
+  UDormBedContractRenewParams({required this.id, required this.endDate, this.rent});
+
+  final String id;
+  final DateTime endDate;
+  final double? rent;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "endDate": endDate.toIso8601String(),
+    "rent": rent,
+  };
+}
+
+class UDormBedContractTransferParams {
+  UDormBedContractTransferParams({required this.id, required this.bedId, this.date, this.rent});
+
+  final String id;
+  final String bedId;
+  final DateTime? date;
+  final double? rent;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "bedId": bedId,
+    "date": date?.toIso8601String(),
+    "rent": rent,
+  };
+}
+
+class UDormBedInvoiceSplitParams {
+  UDormBedInvoiceSplitParams({required this.id, required this.count});
+
+  final String id;
+  final int count;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "count": count,
+  };
+}
+
+class UOrganizationSettlementRequestParams {
+  UOrganizationSettlementRequestParams({required this.organizationId, required this.amount, required this.iban});
+
+  final String organizationId;
+  final double amount;
+  final String iban;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "organizationId": organizationId,
+    "amount": amount,
+    "iban": iban,
+  };
+}
+
+class UOrganizationSettlementProcessParams {
+  UOrganizationSettlementProcessParams({required this.organizationId, required this.settlementId, required this.approve, this.note});
+
+  final String organizationId;
+  final String settlementId;
+  final bool approve;
+  final String? note;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "organizationId": organizationId,
+    "settlementId": settlementId,
+    "approve": approve,
+    "note": note,
+  };
+}

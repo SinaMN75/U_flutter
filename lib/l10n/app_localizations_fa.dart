@@ -6683,4 +6683,34 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get phoneNumberOrNationalCode => 'شماره موبایل یا کد ملی';
+
+  @override
+  String get settleContract => 'تسویه و خروج';
+
+  @override
+  String get renewContract => 'تمدید قرارداد';
+
+  @override
+  String get transferBed => 'جابه‌جایی تخت';
+
+  @override
+  String get deductions => 'کسورات و خسارت';
+
+  @override
+  String get deductionReason => 'علت کسر';
+
+  @override
+  String get splitInvoice => 'تقسیط قبض';
+
+  @override
+  String get installments => 'تعداد اقساط';
+
+  @override
+  String get iban => 'شماره شبا';
+
+  @override
+  String get settlements => 'درخواست‌های تسویه';
+
+  @override
+  String get requestSettlement => 'درخواست برداشت';
 }

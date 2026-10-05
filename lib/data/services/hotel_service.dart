@@ -1,6 +1,48 @@
 part of "../data.dart";
 
 class UHotelService {
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> settleDormBedContract({
+    required UDormBedContractSettleParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Hotel/DormBedContract/Settle", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> renewDormBedContract({
+    required UDormBedContractRenewParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Hotel/DormBedContract/Renew", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> transferDormBedContract({
+    required UDormBedContractTransferParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Hotel/DormBedContract/Transfer", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> splitDormBedInvoice({
+    required UDormBedInvoiceSplitParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Hotel/DormBedInvoice/Split", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> requestOrganizationSettlement({
+    required UOrganizationSettlementRequestParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Hotel/Organization/RequestSettlement", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> processOrganizationSettlement({
+    required UOrganizationSettlementProcessParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Hotel/Organization/ProcessSettlement", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
   Future<(UResponse<UPropertyDashboardResponse>?, UEmptyResponse?, String?)> readPropertyDashboard({
     required UDashboardRangeParams p,
     Function(UResponse<UPropertyDashboardResponse> r)? onOk,

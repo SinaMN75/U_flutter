@@ -663,6 +663,9 @@ enum TagWalletTxn with UNumericIdentifiable {
   tournamentEntryRefund("استرداد ورودیه‌ی تورنمنت", "Tournament entry refund", 220),
   tournamentEntrySettlement("تسویه‌ی ورودیه‌های تورنمنت", "Tournament entry payout", 221),
   platformCommission("کمیسیون پلتفرم", "Platform commission", 222),
+  dormDepositRefund("برگشت ودیعه‌ی خوابگاه", "Dorm deposit refund", 223),
+  organizationSettlement("تسویه‌ی مجموعه", "Organization settlement", 224),
+  organizationSettlementRefund("برگشت تسویه‌ی مجموعه", "Organization settlement refund", 225),
   chargeSimPin("خرید شارژ پین سیم‌کارت", "SIM Charge (PIN)", 301),
   chargeSimTopup("شارژ مستقیم سیم‌کارت", "SIM Top-up", 302),
   internetSim("خرید بسته اینترنت", "Internet Package", 303),
@@ -972,7 +975,8 @@ enum TagDormBedContract with UNumericIdentifiable {
   weekly("هفتگی", "Weekly", 102),
   monthly("ماهانه", "Monthly", 103),
   yearly("سالانه", "Yearly", 104),
-  singleInvoice("فاکتور تکی", "Single Invoice", 201);
+  singleInvoice("فاکتور تکی", "Single Invoice", 201),
+  settled("تسویه شده", "Settled", 301);
 
   const TagDormBedContract(this.titleFa, this.titleEn, this.number);
 
@@ -987,6 +991,7 @@ enum TagDormBedContract with UNumericIdentifiable {
 enum TagDormBedInvoice with UNumericIdentifiable {
   deposit("ودیعه", "Deposit", 101),
   rent("اجاره", "Rent", 102),
+  service("خدمات", "Service", 103),
   paid("پرداخت شده", "Paid", 201),
   paidOnline("پرداخت آنلاین", "Paid Online", 202),
   paidManual("پرداخت دستی", "Paid Manual", 203),

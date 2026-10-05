@@ -462,7 +462,7 @@ class UDormRoomResponse {
 class UDormBedContractResponse {
   final String id;
   final DateTime createdAt;
-  final UBaseJson jsonData;
+  final UDormBedContractJson jsonData;
   final List<int> tags;
   final DateTime startDate;
   final DateTime endDate;
@@ -505,7 +505,7 @@ class UDormBedContractResponse {
   factory UDormBedContractResponse.fromMap(Map<String, dynamic> json) => UDormBedContractResponse(
     id: json["id"],
     createdAt: DateTime.parse(json["createdAt"]),
-    jsonData: UBaseJson.fromMap(json["jsonData"]),
+    jsonData: UDormBedContractJson.fromMap(json["jsonData"]),
     tags: json["tags"] == null ? <int>[] : List<int>.from(json["tags"]!.map((dynamic x) => x)),
     startDate: DateTime.parse(json["startDate"]),
     endDate: DateTime.parse(json["endDate"]),
@@ -1334,25 +1334,28 @@ class UOrganizationMember {
 }
 
 class UOrganizationJson {
-  UOrganizationJson({this.detail1, this.detail2, this.commissionPercent = 0, this.members = const <UOrganizationMember>[]});
+  UOrganizationJson({this.detail1, this.detail2, this.commissionPercent = 0, this.members = const <UOrganizationMember>[], this.settlements = const <UOrganizationSettlement>[]});
 
   factory UOrganizationJson.fromMap(Map<String, dynamic> json) => UOrganizationJson(
     detail1: json["detail1"],
     detail2: json["detail2"],
     commissionPercent: json["commissionPercent"] == null ? 0 : (json["commissionPercent"] as num).toDouble(),
     members: json["members"] == null ? <UOrganizationMember>[] : List<UOrganizationMember>.from(json["members"]!.map((dynamic x) => UOrganizationMember.fromMap(x))),
+    settlements: json["settlements"] == null ? <UOrganizationSettlement>[] : List<UOrganizationSettlement>.from(json["settlements"]!.map((dynamic x) => UOrganizationSettlement.fromMap(x))),
   );
 
   final String? detail1;
   final String? detail2;
   final double commissionPercent;
   final List<UOrganizationMember> members;
+  final List<UOrganizationSettlement> settlements;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "detail1": detail1,
     "detail2": detail2,
     "commissionPercent": commissionPercent,
     "members": members.map((UOrganizationMember x) => x.toMap()).toList(),
+    "settlements": settlements.map((UOrganizationSettlement x) => x.toMap()).toList(),
   };
 }
 
@@ -1704,4 +1707,88 @@ class UPropertyBreakdownItem {
   String toJson() => json.encode(toMap());
 
   factory UPropertyBreakdownItem.fromJson(String str) => UPropertyBreakdownItem.fromMap(json.decode(str));
+}
+
+class UOrganizationSettlement {
+  UOrganizationSettlement({required this.id, required this.amount, required this.iban, required this.createdAt, this.processedAt, this.approved, this.note});
+
+  factory UOrganizationSettlement.fromMap(Map<String, dynamic> json) => UOrganizationSettlement(
+    id: json["id"] as String,
+    amount: json["amount"] == null ? 0 : (json["amount"] as num).toDouble(),
+    iban: json["iban"] ?? "",
+    createdAt: DateTime.parse(json["createdAt"]),
+    processedAt: json["processedAt"] == null ? null : DateTime.parse(json["processedAt"]),
+    approved: json["approved"],
+    note: json["note"],
+  );
+
+  final String id;
+  final double amount;
+  final String iban;
+  final DateTime createdAt;
+  final DateTime? processedAt;
+  final bool? approved;
+  final String? note;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "amount": amount,
+    "iban": iban,
+    "createdAt": createdAt.toIso8601String(),
+    "processedAt": processedAt?.toIso8601String(),
+    "approved": approved,
+    "note": note,
+  };
+}
+
+class UContractBedChange {
+  UContractBedChange({required this.bedId, required this.from, required this.to});
+
+  factory UContractBedChange.fromMap(Map<String, dynamic> json) => UContractBedChange(
+    bedId: json["bedId"] as String,
+    from: DateTime.parse(json["from"]),
+    to: DateTime.parse(json["to"]),
+  );
+
+  final String bedId;
+  final DateTime from;
+  final DateTime to;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "bedId": bedId,
+    "from": from.toIso8601String(),
+    "to": to.toIso8601String(),
+  };
+}
+
+class UDormBedContractJson {
+  UDormBedContractJson({this.detail1, this.detail2, this.settledAt, this.deductions, this.deductionReason, this.depositRefund, this.bedHistory = const <UContractBedChange>[]});
+
+  factory UDormBedContractJson.fromMap(Map<String, dynamic> json) => UDormBedContractJson(
+    detail1: json["detail1"],
+    detail2: json["detail2"],
+    settledAt: json["settledAt"] == null ? null : DateTime.parse(json["settledAt"]),
+    deductions: json["deductions"] == null ? null : (json["deductions"] as num).toDouble(),
+    deductionReason: json["deductionReason"],
+    depositRefund: json["depositRefund"] == null ? null : (json["depositRefund"] as num).toDouble(),
+    bedHistory: json["bedHistory"] == null ? <UContractBedChange>[] : List<UContractBedChange>.from(json["bedHistory"]!.map((dynamic x) => UContractBedChange.fromMap(x))),
+  );
+
+  final String? detail1;
+  final String? detail2;
+  final DateTime? settledAt;
+  final double? deductions;
+  final String? deductionReason;
+  final double? depositRefund;
+  final List<UContractBedChange> bedHistory;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "detail1": detail1,
+    "detail2": detail2,
+    "settledAt": settledAt?.toIso8601String(),
+    "deductions": deductions,
+    "deductionReason": deductionReason,
+    "depositRefund": depositRefund,
+    "bedHistory": bedHistory.map((UContractBedChange x) => x.toMap()).toList(),
+  };
 }

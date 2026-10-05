@@ -13075,6 +13075,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Phone number or national code'**
   String get phoneNumberOrNationalCode;
+
+  /// No description provided for @settleContract.
+  ///
+  /// In en, this message translates to:
+  /// **'Settle and check out'**
+  String get settleContract;
+
+  /// No description provided for @renewContract.
+  ///
+  /// In en, this message translates to:
+  /// **'Renew contract'**
+  String get renewContract;
+
+  /// No description provided for @transferBed.
+  ///
+  /// In en, this message translates to:
+  /// **'Move to another bed'**
+  String get transferBed;
+
+  /// No description provided for @deductions.
+  ///
+  /// In en, this message translates to:
+  /// **'Deductions and damages'**
+  String get deductions;
+
+  /// No description provided for @deductionReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason for deductions'**
+  String get deductionReason;
+
+  /// No description provided for @splitInvoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Split into installments'**
+  String get splitInvoice;
+
+  /// No description provided for @installments.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of installments'**
+  String get installments;
+
+  /// No description provided for @iban.
+  ///
+  /// In en, this message translates to:
+  /// **'IBAN'**
+  String get iban;
+
+  /// No description provided for @settlements.
+  ///
+  /// In en, this message translates to:
+  /// **'Settlement requests'**
+  String get settlements;
+
+  /// No description provided for @requestSettlement.
+  ///
+  /// In en, this message translates to:
+  /// **'Request withdrawal'**
+  String get requestSettlement;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
