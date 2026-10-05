@@ -124,6 +124,7 @@ class UDormResponse {
   final List<UDormBedResponse>? beds;
   final List<UCommentResponse>? comments;
   final List<UMediaResponse>? media;
+  final String? organizationId;
 
   UDormResponse({
     required this.id,
@@ -146,6 +147,7 @@ class UDormResponse {
     this.beds,
     this.comments,
     this.media,
+    this.organizationId,
   });
 
   factory UDormResponse.fromJson(String str) => UDormResponse.fromMap(json.decode(str));
@@ -173,6 +175,7 @@ class UDormResponse {
     beds: json["beds"] == null ? <UDormBedResponse>[] : List<UDormBedResponse>.from(json["beds"]!.map((dynamic x) => UDormBedResponse.fromMap(x))),
     comments: json["comments"] == null ? <UCommentResponse>[] : List<UCommentResponse>.from(json["comments"]!.map((dynamic x) => UCommentResponse.fromMap(x))),
     media: json["media"] == null ? <UMediaResponse>[] : List<UMediaResponse>.from(json["media"]!.map((dynamic x) => UMediaResponse.fromMap(x))),
+    organizationId: json["organizationId"],
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -196,6 +199,7 @@ class UDormResponse {
     "beds": beds == null ? <UDormBedResponse>[] : List<UDormBedResponse>.from(beds!.map((UDormBedResponse x) => x.toMap())),
     "comments": comments == null ? <UCommentResponse>[] : List<UCommentResponse>.from(comments!.map((UCommentResponse x) => x.toMap())),
     "media": media == null ? <UMediaResponse>[] : List<UMediaResponse>.from(media!.map((UMediaResponse x) => x.toMap())),
+    "organizationId": organizationId,
   };
 }
 
@@ -221,6 +225,7 @@ class UHotelResponse {
   final List<UHotelReservationResponse>? reservations;
   final List<UCommentResponse>? comments;
   final List<UMediaResponse>? media;
+  final String? organizationId;
 
   UHotelResponse({
     required this.id,
@@ -244,6 +249,7 @@ class UHotelResponse {
     this.reservations,
     this.comments,
     this.media,
+    this.organizationId,
   });
 
   factory UHotelResponse.fromJson(String str) => UHotelResponse.fromMap(json.decode(str));
@@ -272,6 +278,7 @@ class UHotelResponse {
     reservations: json["reservations"] == null ? <UHotelReservationResponse>[] : List<UHotelReservationResponse>.from(json["reservations"]!.map((dynamic x) => UHotelReservationResponse.fromMap(x))),
     comments: json["comments"] == null ? <UCommentResponse>[] : List<UCommentResponse>.from(json["comments"]!.map((dynamic x) => UCommentResponse.fromMap(x))),
     media: json["media"] == null ? <UMediaResponse>[] : List<UMediaResponse>.from(json["media"]!.map((dynamic x) => UMediaResponse.fromMap(x))),
+    organizationId: json["organizationId"],
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -296,6 +303,7 @@ class UHotelResponse {
     "reservations": reservations == null ? <UHotelReservationResponse>[] : List<UHotelReservationResponse>.from(reservations!.map((UHotelReservationResponse x) => x.toMap())),
     "comments": comments == null ? <UCommentResponse>[] : List<UCommentResponse>.from(comments!.map((UCommentResponse x) => x.toMap())),
     "media": media == null ? <UMediaResponse>[] : List<UMediaResponse>.from(media!.map((UMediaResponse x) => x.toMap())),
+    "organizationId": organizationId,
   };
 }
 
@@ -1306,4 +1314,394 @@ class UHotelRoomAvailabilityResponse {
     "totalPrice": totalPrice,
     "fitsGuestCount": fitsGuestCount,
   };
+}
+
+class UOrganizationMember {
+  UOrganizationMember({required this.userId, this.permissions = const <int>[]});
+
+  factory UOrganizationMember.fromMap(Map<String, dynamic> json) => UOrganizationMember(
+    userId: json["userId"] as String,
+    permissions: json["permissions"] == null ? <int>[] : List<int>.from(json["permissions"]!.map((dynamic x) => x)),
+  );
+
+  final String userId;
+  final List<int> permissions;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "userId": userId,
+    "permissions": permissions,
+  };
+}
+
+class UOrganizationJson {
+  UOrganizationJson({this.detail1, this.detail2, this.commissionPercent = 0, this.members = const <UOrganizationMember>[]});
+
+  factory UOrganizationJson.fromMap(Map<String, dynamic> json) => UOrganizationJson(
+    detail1: json["detail1"],
+    detail2: json["detail2"],
+    commissionPercent: json["commissionPercent"] == null ? 0 : (json["commissionPercent"] as num).toDouble(),
+    members: json["members"] == null ? <UOrganizationMember>[] : List<UOrganizationMember>.from(json["members"]!.map((dynamic x) => UOrganizationMember.fromMap(x))),
+  );
+
+  final String? detail1;
+  final String? detail2;
+  final double commissionPercent;
+  final List<UOrganizationMember> members;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "detail1": detail1,
+    "detail2": detail2,
+    "commissionPercent": commissionPercent,
+    "members": members.map((UOrganizationMember x) => x.toMap()).toList(),
+  };
+}
+
+class UOrganizationResponse {
+  UOrganizationResponse({
+    required this.id,
+    required this.createdAt,
+    required this.jsonData,
+    required this.tags,
+    required this.title,
+    required this.ownerId,
+    this.creatorId,
+    this.adminUserIds = const <String>[],
+    this.balance = 0,
+  });
+
+  factory UOrganizationResponse.fromMap(Map<String, dynamic> json) => UOrganizationResponse(
+    id: json["id"] as String,
+    createdAt: DateTime.parse(json["createdAt"]),
+    jsonData: UOrganizationJson.fromMap(json["jsonData"]),
+    tags: List<int>.from(json["tags"]!.map((dynamic x) => x)),
+    title: json["title"] as String,
+    ownerId: json["ownerId"] as String,
+    creatorId: json["creatorId"],
+    adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
+    balance: json["balance"] == null ? 0 : (json["balance"] as num).toDouble(),
+  );
+
+  final String id;
+  final DateTime createdAt;
+  final UOrganizationJson jsonData;
+  final List<int> tags;
+  final String title;
+  final String ownerId;
+  final String? creatorId;
+  final List<String> adminUserIds;
+  final double balance;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "createdAt": createdAt.toIso8601String(),
+    "jsonData": jsonData.toMap(),
+    "tags": tags,
+    "title": title,
+    "ownerId": ownerId,
+    "creatorId": creatorId,
+    "adminUserIds": adminUserIds,
+    "balance": balance,
+  };
+}
+
+class UPropertyDashboardResponse {
+  final DateTime generatedAt;
+
+  final int usersCount;
+  final int newUsersCount;
+
+  final int hotelsCount;
+  final int hotelRoomsCount;
+  final int hotelRoomsAvailableCount;
+  final int hotelRoomsOccupiedCount;
+  final double hotelOccupancyRate;
+
+  final int dormsCount;
+  final int dormRoomsCount;
+  final int dormBedsCount;
+  final int dormBedsAvailableCount;
+  final int dormBedsOccupiedCount;
+  final double dormOccupancyRate;
+
+  final int contractsCount;
+  final int activeContractsCount;
+  final int upcomingContractsCount;
+  final int expiredContractsCount;
+  final int expiringSoonContractsCount;
+
+  final int invoicesCount;
+  final int paidInvoicesCount;
+  final int unpaidInvoicesCount;
+  final int overdueInvoicesCount;
+
+  final double totalDebt;
+  final double totalPaid;
+  final double totalPenalty;
+  final double totalOutstanding;
+
+  final List<UDormBedInvoiceChartResponse> monthlyRevenue;
+  final List<UExpiringContractItem> expiringContracts;
+  final List<UOverdueInvoiceItem> overdueInvoices;
+  final List<URecentContractItem> recentContracts;
+  final List<URecentUserItem> recentUsers;
+  final List<UPropertyBreakdownItem> hotelsByCity;
+  final List<UPropertyBreakdownItem> dormsByCity;
+
+  UPropertyDashboardResponse({
+    required this.generatedAt,
+    required this.usersCount,
+    required this.newUsersCount,
+    required this.hotelsCount,
+    required this.hotelRoomsCount,
+    required this.hotelRoomsAvailableCount,
+    required this.hotelRoomsOccupiedCount,
+    required this.hotelOccupancyRate,
+    required this.dormsCount,
+    required this.dormRoomsCount,
+    required this.dormBedsCount,
+    required this.dormBedsAvailableCount,
+    required this.dormBedsOccupiedCount,
+    required this.dormOccupancyRate,
+    required this.contractsCount,
+    required this.activeContractsCount,
+    required this.upcomingContractsCount,
+    required this.expiredContractsCount,
+    required this.expiringSoonContractsCount,
+    required this.invoicesCount,
+    required this.paidInvoicesCount,
+    required this.unpaidInvoicesCount,
+    required this.overdueInvoicesCount,
+    required this.totalDebt,
+    required this.totalPaid,
+    required this.totalPenalty,
+    required this.totalOutstanding,
+    required this.monthlyRevenue,
+    required this.expiringContracts,
+    required this.overdueInvoices,
+    required this.recentContracts,
+    required this.recentUsers,
+    required this.hotelsByCity,
+    required this.dormsByCity,
+  });
+
+  factory UPropertyDashboardResponse.fromMap(Map<String, dynamic> json) => UPropertyDashboardResponse(
+    generatedAt: DateTime.parse(json["generatedAt"]),
+    usersCount: json["usersCount"] ?? 0,
+    newUsersCount: json["newUsersCount"] ?? 0,
+    hotelsCount: json["hotelsCount"] ?? 0,
+    hotelRoomsCount: json["hotelRoomsCount"] ?? 0,
+    hotelRoomsAvailableCount: json["hotelRoomsAvailableCount"] ?? 0,
+    hotelRoomsOccupiedCount: json["hotelRoomsOccupiedCount"] ?? 0,
+    hotelOccupancyRate: (json["hotelOccupancyRate"] ?? 0).toString().toDouble(),
+    dormsCount: json["dormsCount"] ?? 0,
+    dormRoomsCount: json["dormRoomsCount"] ?? 0,
+    dormBedsCount: json["dormBedsCount"] ?? 0,
+    dormBedsAvailableCount: json["dormBedsAvailableCount"] ?? 0,
+    dormBedsOccupiedCount: json["dormBedsOccupiedCount"] ?? 0,
+    dormOccupancyRate: (json["dormOccupancyRate"] ?? 0).toString().toDouble(),
+    contractsCount: json["contractsCount"] ?? 0,
+    activeContractsCount: json["activeContractsCount"] ?? 0,
+    upcomingContractsCount: json["upcomingContractsCount"] ?? 0,
+    expiredContractsCount: json["expiredContractsCount"] ?? 0,
+    expiringSoonContractsCount: json["expiringSoonContractsCount"] ?? 0,
+    invoicesCount: json["invoicesCount"] ?? 0,
+    paidInvoicesCount: json["paidInvoicesCount"] ?? 0,
+    unpaidInvoicesCount: json["unpaidInvoicesCount"] ?? 0,
+    overdueInvoicesCount: json["overdueInvoicesCount"] ?? 0,
+    totalDebt: (json["totalDebt"] ?? 0).toString().toDouble(),
+    totalPaid: (json["totalPaid"] ?? 0).toString().toDouble(),
+    totalPenalty: (json["totalPenalty"] ?? 0).toString().toDouble(),
+    totalOutstanding: (json["totalOutstanding"] ?? 0).toString().toDouble(),
+    monthlyRevenue: ((json["monthlyRevenue"] ?? <dynamic>[]) as List<dynamic>).map((dynamic x) => UDormBedInvoiceChartResponse.fromMap(x)).toList(),
+    expiringContracts: ((json["expiringContracts"] ?? <dynamic>[]) as List<dynamic>).map((dynamic x) => UExpiringContractItem.fromMap(x)).toList(),
+    overdueInvoices: ((json["overdueInvoices"] ?? <dynamic>[]) as List<dynamic>).map((dynamic x) => UOverdueInvoiceItem.fromMap(x)).toList(),
+    recentContracts: ((json["recentContracts"] ?? <dynamic>[]) as List<dynamic>).map((dynamic x) => URecentContractItem.fromMap(x)).toList(),
+    recentUsers: ((json["recentUsers"] ?? <dynamic>[]) as List<dynamic>).map((dynamic x) => URecentUserItem.fromMap(x)).toList(),
+    hotelsByCity: ((json["hotelsByCity"] ?? <dynamic>[]) as List<dynamic>).map((dynamic x) => UPropertyBreakdownItem.fromMap(x)).toList(),
+    dormsByCity: ((json["dormsByCity"] ?? <dynamic>[]) as List<dynamic>).map((dynamic x) => UPropertyBreakdownItem.fromMap(x)).toList(),
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "generatedAt": generatedAt.toIso8601String(),
+    "usersCount": usersCount,
+    "newUsersCount": newUsersCount,
+    "hotelsCount": hotelsCount,
+    "hotelRoomsCount": hotelRoomsCount,
+    "hotelRoomsAvailableCount": hotelRoomsAvailableCount,
+    "hotelRoomsOccupiedCount": hotelRoomsOccupiedCount,
+    "hotelOccupancyRate": hotelOccupancyRate,
+    "dormsCount": dormsCount,
+    "dormRoomsCount": dormRoomsCount,
+    "dormBedsCount": dormBedsCount,
+    "dormBedsAvailableCount": dormBedsAvailableCount,
+    "dormBedsOccupiedCount": dormBedsOccupiedCount,
+    "dormOccupancyRate": dormOccupancyRate,
+    "contractsCount": contractsCount,
+    "activeContractsCount": activeContractsCount,
+    "upcomingContractsCount": upcomingContractsCount,
+    "expiredContractsCount": expiredContractsCount,
+    "expiringSoonContractsCount": expiringSoonContractsCount,
+    "invoicesCount": invoicesCount,
+    "paidInvoicesCount": paidInvoicesCount,
+    "unpaidInvoicesCount": unpaidInvoicesCount,
+    "overdueInvoicesCount": overdueInvoicesCount,
+    "totalDebt": totalDebt,
+    "totalPaid": totalPaid,
+    "totalPenalty": totalPenalty,
+    "totalOutstanding": totalOutstanding,
+    "monthlyRevenue": List<dynamic>.from(monthlyRevenue.map((UDormBedInvoiceChartResponse x) => x.toMap())),
+    "expiringContracts": List<dynamic>.from(expiringContracts.map((UExpiringContractItem x) => x.toMap())),
+    "overdueInvoices": List<dynamic>.from(overdueInvoices.map((UOverdueInvoiceItem x) => x.toMap())),
+    "recentContracts": List<dynamic>.from(recentContracts.map((URecentContractItem x) => x.toMap())),
+    "recentUsers": List<dynamic>.from(recentUsers.map((URecentUserItem x) => x.toMap())),
+    "hotelsByCity": List<dynamic>.from(hotelsByCity.map((UPropertyBreakdownItem x) => x.toMap())),
+    "dormsByCity": List<dynamic>.from(dormsByCity.map((UPropertyBreakdownItem x) => x.toMap())),
+  };
+
+  String toJson() => json.encode(toMap());
+
+  factory UPropertyDashboardResponse.fromJson(String str) => UPropertyDashboardResponse.fromMap(json.decode(str));
+}
+
+class UExpiringContractItem {
+  final String id;
+  final String? userName;
+  final String bedTitle;
+  final String dormTitle;
+  final DateTime endDate;
+  final double rent;
+
+  UExpiringContractItem({required this.id, required this.bedTitle, required this.dormTitle, required this.endDate, required this.rent, this.userName});
+
+  factory UExpiringContractItem.fromMap(Map<String, dynamic> json) => UExpiringContractItem(
+    id: json["id"] as String,
+    userName: json["userName"],
+    bedTitle: json["bedTitle"] ?? "",
+    dormTitle: json["dormTitle"] ?? "",
+    endDate: DateTime.parse(json["endDate"]),
+    rent: (json["rent"] ?? 0).toString().toDouble(),
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "userName": userName,
+    "bedTitle": bedTitle,
+    "dormTitle": dormTitle,
+    "endDate": endDate.toIso8601String(),
+    "rent": rent,
+  };
+
+  String toJson() => json.encode(toMap());
+
+  factory UExpiringContractItem.fromJson(String str) => UExpiringContractItem.fromMap(json.decode(str));
+}
+
+class UOverdueInvoiceItem {
+  final String id;
+  final String? userName;
+  final double debtAmount;
+  final double paidAmount;
+  final double penaltyAmount;
+  final DateTime dueDate;
+  final int daysOverdue;
+
+  UOverdueInvoiceItem({
+    required this.id,
+    required this.debtAmount,
+    required this.paidAmount,
+    required this.penaltyAmount,
+    required this.dueDate,
+    required this.daysOverdue,
+    this.userName,
+  });
+
+  factory UOverdueInvoiceItem.fromMap(Map<String, dynamic> json) => UOverdueInvoiceItem(
+    id: json["id"] as String,
+    userName: json["userName"],
+    debtAmount: (json["debtAmount"] ?? 0).toString().toDouble(),
+    paidAmount: (json["paidAmount"] ?? 0).toString().toDouble(),
+    penaltyAmount: (json["penaltyAmount"] ?? 0).toString().toDouble(),
+    dueDate: DateTime.parse(json["dueDate"]),
+    daysOverdue: json["daysOverdue"] ?? 0,
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "userName": userName,
+    "debtAmount": debtAmount,
+    "paidAmount": paidAmount,
+    "penaltyAmount": penaltyAmount,
+    "dueDate": dueDate.toIso8601String(),
+    "daysOverdue": daysOverdue,
+  };
+
+  String toJson() => json.encode(toMap());
+
+  factory UOverdueInvoiceItem.fromJson(String str) => UOverdueInvoiceItem.fromMap(json.decode(str));
+}
+
+class URecentContractItem {
+  final String id;
+  final String? userName;
+  final String bedTitle;
+  final String dormTitle;
+  final DateTime startDate;
+  final DateTime endDate;
+  final double rent;
+  final DateTime createdAt;
+
+  URecentContractItem({
+    required this.id,
+    required this.bedTitle,
+    required this.dormTitle,
+    required this.startDate,
+    required this.endDate,
+    required this.rent,
+    required this.createdAt,
+    this.userName,
+  });
+
+  factory URecentContractItem.fromMap(Map<String, dynamic> json) => URecentContractItem(
+    id: json["id"] as String,
+    userName: json["userName"],
+    bedTitle: json["bedTitle"] ?? "",
+    dormTitle: json["dormTitle"] ?? "",
+    startDate: DateTime.parse(json["startDate"]),
+    endDate: DateTime.parse(json["endDate"]),
+    rent: (json["rent"] ?? 0).toString().toDouble(),
+    createdAt: DateTime.parse(json["createdAt"]),
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "userName": userName,
+    "bedTitle": bedTitle,
+    "dormTitle": dormTitle,
+    "startDate": startDate.toIso8601String(),
+    "endDate": endDate.toIso8601String(),
+    "rent": rent,
+    "createdAt": createdAt.toIso8601String(),
+  };
+
+  String toJson() => json.encode(toMap());
+
+  factory URecentContractItem.fromJson(String str) => URecentContractItem.fromMap(json.decode(str));
+}
+
+class UPropertyBreakdownItem {
+  final String name;
+  final int count;
+
+  UPropertyBreakdownItem({required this.name, required this.count});
+
+  factory UPropertyBreakdownItem.fromMap(Map<String, dynamic> json) => UPropertyBreakdownItem(name: json["name"] ?? "", count: json["count"] ?? 0);
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "name": name,
+    "count": count,
+  };
+
+  String toJson() => json.encode(toMap());
+
+  factory UPropertyBreakdownItem.fromJson(String str) => UPropertyBreakdownItem.fromMap(json.decode(str));
 }

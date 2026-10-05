@@ -171,6 +171,7 @@ enum TagUser with UNumericIdentifiable {
   systemUser("کاربر سیستمی", "System User", 204),
   sunUser("کاربر سان", "Sun User", 205),
   subAdmin("زیرمجموعه ادمین", "Sub Admin", 206),
+  organization("حساب مجموعه", "Organization Account", 207),
   awaitingVerification("در انتظار تایید", "Awaiting Verification", 301),
   verified("تایید شده", "Verified", 302),
   nationalCardFrontVerified("کارت ملی جلو تایید شده", "National Card Front Verified", 401),
@@ -661,6 +662,7 @@ enum TagWalletTxn with UNumericIdentifiable {
   tournamentEntryFee("ورودیه‌ی تورنمنت", "Tournament entry fee", 219),
   tournamentEntryRefund("استرداد ورودیه‌ی تورنمنت", "Tournament entry refund", 220),
   tournamentEntrySettlement("تسویه‌ی ورودیه‌های تورنمنت", "Tournament entry payout", 221),
+  platformCommission("کمیسیون پلتفرم", "Platform commission", 222),
   chargeSimPin("خرید شارژ پین سیم‌کارت", "SIM Charge (PIN)", 301),
   chargeSimTopup("شارژ مستقیم سیم‌کارت", "SIM Top-up", 302),
   internetSim("خرید بسته اینترنت", "Internet Package", 303),
@@ -1071,6 +1073,20 @@ enum TagHotel with UNumericIdentifiable {
   allInclusive("همه‌چیز شامل", "All inclusive", 605);
 
   const TagHotel(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagOrganization with UNumericIdentifiable {
+  active("فعال", "Active", 101),
+  inactive("غیرفعال", "Inactive", 102);
+
+  const TagOrganization(this.titleFa, this.titleEn, this.number);
 
   @override
   final String titleFa;

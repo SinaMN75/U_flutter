@@ -2618,5 +2618,11 @@
   "avaHamrahApplication": "Ava Hamrah application",
   "enterYourMobileNumber": "Enter your mobile number",
   "termsAndRules": "terms and conditions",
-  "doYouHaveAReferralCode": "Have a referral code?"
+  "doYouHaveAReferralCode": "Have a referral code?",
+  "organization": "Organization",
+  "organizations": "Organizations",
+  "members": "Members",
+  "addMember": "Add member",
+  "commissionPercent": "Commission percent",
+  "phoneNumberOrNationalCode": "Phone number or national code"
 }

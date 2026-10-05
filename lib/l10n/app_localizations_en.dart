@@ -6666,4 +6666,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get doYouHaveAReferralCode => 'Have a referral code?';
+
+  @override
+  String get organization => 'Organization';
+
+  @override
+  String get organizations => 'Organizations';
+
+  @override
+  String get members => 'Members';
+
+  @override
+  String get addMember => 'Add member';
+
+  @override
+  String get commissionPercent => 'Commission percent';
+
+  @override
+  String get phoneNumberOrNationalCode => 'Phone number or national code';
 }

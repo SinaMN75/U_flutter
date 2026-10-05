@@ -46,7 +46,6 @@ part "params/ipg_params.dart";
 
 part "params/media_params.dart";
 
-part "params/merchant_params.dart";
 
 part "params/moadi_params.dart";
 
@@ -126,7 +125,6 @@ part "responses/ipg_response.dart";
 
 part "responses/media_response.dart";
 
-part "responses/merchant_response.dart";
 
 part "responses/moadi_response.dart";
 
@@ -202,7 +200,6 @@ part "services/ipg_service.dart";
 
 part "services/media_service.dart";
 
-part "services/merchant_service.dart";
 
 part "services/moadi_service.dart";
 
@@ -272,7 +269,6 @@ class UServices {
   static UBankAccountService bankAccount = UBankAccountService();
   static UNotificationService notification = UNotificationService();
   static UChargeInternetService chargeInternet = UChargeInternetService();
-  static UMerchantService merchant = UMerchantService();
   static UMoadiService moadi = UMoadiService();
   static UProcessService process = UProcessService();
   static USimService sim = USimService();

@@ -243,6 +243,7 @@ class UDormCreateParams {
     this.telegram,
     this.latitude,
     this.longitude,
+    this.organizationId,
   });
 
   factory UDormCreateParams.fromJson(String str) => UDormCreateParams.fromMap(json.decode(str));
@@ -277,6 +278,7 @@ class UDormCreateParams {
     telegram: json["telegram"],
     latitude: json["latitude"] == null ? null : (json["latitude"] as num).toDouble(),
     longitude: json["longitude"] == null ? null : (json["longitude"] as num).toDouble(),
+    organizationId: json["organizationId"],
   );
 
   final List<int> tags;
@@ -308,6 +310,7 @@ class UDormCreateParams {
   final String? telegram;
   final double? latitude;
   final double? longitude;
+  final String? organizationId;
 
   String toJson() => json.encode(toMap());
 
@@ -341,6 +344,7 @@ class UDormCreateParams {
     "telegram": telegram,
     "latitude": latitude,
     "longitude": longitude,
+    "organizationId": organizationId,
   };
 }
 
@@ -378,6 +382,7 @@ class UDormUpdateParams {
     this.telegram,
     this.latitude,
     this.longitude,
+    this.organizationId,
   });
 
   factory UDormUpdateParams.fromJson(String str) => UDormUpdateParams.fromMap(json.decode(str));
@@ -415,6 +420,7 @@ class UDormUpdateParams {
     telegram: json["telegram"],
     latitude: json["latitude"] == null ? null : (json["latitude"] as num).toDouble(),
     longitude: json["longitude"] == null ? null : (json["longitude"] as num).toDouble(),
+    organizationId: json["organizationId"],
   );
 
   final String id;
@@ -449,6 +455,7 @@ class UDormUpdateParams {
   final String? telegram;
   final double? latitude;
   final double? longitude;
+  final String? organizationId;
 
   String toJson() => json.encode(toMap());
 
@@ -485,6 +492,7 @@ class UDormUpdateParams {
     "telegram": telegram,
     "latitude": latitude,
     "longitude": longitude,
+    "organizationId": organizationId,
   };
 }
 
@@ -503,6 +511,7 @@ class UDormReadParams {
   final String? cityCode;
   final UDormSelectorArgs? selectorArgs;
   final int? orderBy;
+  final String? organizationId;
 
   UDormReadParams({
     this.pageSize,
@@ -519,6 +528,7 @@ class UDormReadParams {
     this.minRent,
     this.maxRent,
     this.availableOnly,
+    this.organizationId,
   });
 
   factory UDormReadParams.fromJson(String str) => UDormReadParams.fromMap(json.decode(str));
@@ -540,6 +550,7 @@ class UDormReadParams {
     cityCode: json["cityCode"],
     selectorArgs: json["selectorArgs"] == null ? null : UDormSelectorArgs.fromMap(json["selectorArgs"]),
     orderBy: json["orderBy"],
+    organizationId: json["organizationId"],
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -557,6 +568,7 @@ class UDormReadParams {
     "cityCode": cityCode,
     "selectorArgs": selectorArgs?.toMap(),
     "orderBy": orderBy,
+    "organizationId": organizationId,
   };
 }
 
@@ -591,6 +603,7 @@ class UHotelCreateParams {
     this.longitude,
     this.cancellationFreeHours,
     this.cancellationPenaltyNights,
+    this.organizationId,
   });
 
   factory UHotelCreateParams.fromJson(String str) => UHotelCreateParams.fromMap(json.decode(str));
@@ -625,6 +638,7 @@ class UHotelCreateParams {
     longitude: json["longitude"] == null ? null : (json["longitude"] as num).toDouble(),
     cancellationFreeHours: json["cancellationFreeHours"] == null ? null : (json["cancellationFreeHours"] as num).toInt(),
     cancellationPenaltyNights: json["cancellationPenaltyNights"] == null ? null : (json["cancellationPenaltyNights"] as num).toInt(),
+    organizationId: json["organizationId"],
   );
 
   final List<int> tags;
@@ -656,6 +670,7 @@ class UHotelCreateParams {
   final double? longitude;
   final int? cancellationFreeHours;
   final int? cancellationPenaltyNights;
+  final String? organizationId;
 
   String toJson() => json.encode(toMap());
 
@@ -689,6 +704,7 @@ class UHotelCreateParams {
     "longitude": longitude,
     "cancellationFreeHours": cancellationFreeHours,
     "cancellationPenaltyNights": cancellationPenaltyNights,
+    "organizationId": organizationId,
   };
 }
 
@@ -726,6 +742,7 @@ class UHotelUpdateParams {
     this.longitude,
     this.cancellationFreeHours,
     this.cancellationPenaltyNights,
+    this.organizationId,
   });
 
   factory UHotelUpdateParams.fromJson(String str) => UHotelUpdateParams.fromMap(json.decode(str));
@@ -763,6 +780,7 @@ class UHotelUpdateParams {
     longitude: json["longitude"] == null ? null : (json["longitude"] as num).toDouble(),
     cancellationFreeHours: json["cancellationFreeHours"] == null ? null : (json["cancellationFreeHours"] as num).toInt(),
     cancellationPenaltyNights: json["cancellationPenaltyNights"] == null ? null : (json["cancellationPenaltyNights"] as num).toInt(),
+    organizationId: json["organizationId"],
   );
 
   final String id;
@@ -797,6 +815,7 @@ class UHotelUpdateParams {
   final double? longitude;
   final int? cancellationFreeHours;
   final int? cancellationPenaltyNights;
+  final String? organizationId;
 
   String toJson() => json.encode(toMap());
 
@@ -833,6 +852,7 @@ class UHotelUpdateParams {
     "longitude": longitude,
     "cancellationFreeHours": cancellationFreeHours,
     "cancellationPenaltyNights": cancellationPenaltyNights,
+    "organizationId": organizationId,
   };
 }
 
@@ -852,6 +872,7 @@ class UHotelReadParams {
   final int? minStars;
   final int? orderBy;
   final UHotelSelectorArgs? selectorArgs;
+  final String? organizationId;
 
   UHotelReadParams({
     this.pageSize,
@@ -869,6 +890,7 @@ class UHotelReadParams {
     this.minPrice,
     this.maxPrice,
     this.minScore,
+    this.organizationId,
   });
 
   factory UHotelReadParams.fromJson(String str) => UHotelReadParams.fromMap(json.decode(str));
@@ -891,6 +913,7 @@ class UHotelReadParams {
     minStars: json["minStars"],
     orderBy: json["orderBy"],
     selectorArgs: json["selectorArgs"] == null ? null : UHotelSelectorArgs.fromMap(json["selectorArgs"]),
+    organizationId: json["organizationId"],
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -909,6 +932,7 @@ class UHotelReadParams {
     "minStars": minStars,
     "orderBy": orderBy,
     "selectorArgs": selectorArgs?.toMap(),
+    "organizationId": organizationId,
   };
 }
 
@@ -2482,5 +2506,96 @@ class UHotelReservationCancelParams {
   Map<String, dynamic> toMap() => <String, dynamic>{
     "id": id,
     "reason": reason,
+  };
+}
+
+class UOrganizationCreateParams {
+  UOrganizationCreateParams({
+    required this.title,
+    required this.ownerId,
+    this.tags = const <int>[101],
+    this.ownerPassword,
+    this.commissionPercent = 0,
+  });
+
+  final String title;
+  final String ownerId;
+  final List<int> tags;
+  final String? ownerPassword;
+  final double commissionPercent;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "title": title,
+    "ownerId": ownerId,
+    "tags": tags,
+    "ownerPassword": ownerPassword,
+    "commissionPercent": commissionPercent,
+  };
+}
+
+class UOrganizationUpdateParams {
+  UOrganizationUpdateParams({
+    required this.id,
+    this.title,
+    this.ownerId,
+    this.ownerPassword,
+    this.commissionPercent,
+    this.tags,
+    this.addTags,
+    this.removeTags,
+  });
+
+  final String id;
+  final String? title;
+  final String? ownerId;
+  final String? ownerPassword;
+  final double? commissionPercent;
+  final List<int>? tags;
+  final List<int>? addTags;
+  final List<int>? removeTags;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "title": title,
+    "ownerId": ownerId,
+    "ownerPassword": ownerPassword,
+    "commissionPercent": commissionPercent,
+    "tags": tags,
+    "addTags": addTags,
+    "removeTags": removeTags,
+  };
+}
+
+class UOrganizationReadParams {
+  UOrganizationReadParams({this.pageSize, this.pageNumber, this.title, this.ids, this.tags});
+
+  final int? pageSize;
+  final int? pageNumber;
+  final String? title;
+  final List<String>? ids;
+  final List<int>? tags;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "pageSize": pageSize,
+    "pageNumber": pageNumber,
+    "title": title,
+    "ids": ids ?? <String>[],
+    "tags": tags,
+  };
+}
+
+class UOrganizationMemberParams {
+  UOrganizationMemberParams({required this.organizationId, required this.userId, this.permissions = const <int>[], this.password});
+
+  final String organizationId;
+  final String userId;
+  final List<int> permissions;
+  final String? password;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "organizationId": organizationId,
+    "userId": userId,
+    "permissions": permissions,
+    "password": password,
   };
 }

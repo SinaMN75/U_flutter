@@ -1,5 +1,149 @@
 part of "../data.dart";
 
+class UMerchantResponse {
+  final String id;
+  final DateTime createdAt;
+  final UMerchantJson jsonData;
+  final List<int> tags;
+  final UUserResponse? creator;
+  final String? creatorId;
+  final String zipCode;
+  final String cityCode;
+  final String phoneNumber;
+  final String title;
+  final String landline;
+  final String nationalCode;
+  final String? bankAccountId;
+  final String mcc;
+  final String? merchantId;
+  final String? insId;
+  final String userId;
+  final UUserResponse? user;
+  final List<UTerminalResponse>? terminals;
+  final List<String> adminUserIds;
+
+  UMerchantResponse({
+    required this.id,
+    required this.createdAt,
+    required this.jsonData,
+    required this.tags,
+    required this.zipCode,
+    required this.cityCode,
+    required this.phoneNumber,
+    required this.title,
+    required this.landline,
+    required this.nationalCode,
+    required this.mcc,
+    required this.userId,
+    required this.adminUserIds,
+    this.creator,
+    this.creatorId,
+    this.bankAccountId,
+    this.merchantId,
+    this.insId,
+    this.user,
+    this.terminals,
+  });
+
+  factory UMerchantResponse.fromJson(String str) => UMerchantResponse.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UMerchantResponse.fromMap(Map<String, dynamic> json) => UMerchantResponse(
+    id: json["id"] as String,
+    createdAt: DateTime.parse(json["createdAt"]),
+    jsonData: UMerchantJson.fromMap(json["jsonData"]),
+    tags: List<int>.from(json["tags"]!.map((dynamic x) => x)),
+    creator: json["creator"] == null ? null : UUserResponse.fromMap(json["creator"]),
+    creatorId: json["creatorId"],
+    zipCode: json["zipCode"] as String,
+    cityCode: json["cityCode"] as String,
+    phoneNumber: json["phoneNumber"] as String,
+    title: json["title"] as String,
+    landline: json["landline"] as String,
+    nationalCode: json["nationalCode"] as String,
+    bankAccountId: json["bankAccountId"],
+    mcc: json["mcc"] as String,
+    merchantId: json["merchantId"],
+    insId: json["insId"],
+    userId: json["userId"] as String,
+    user: json["user"] == null ? null : UUserResponse.fromMap(json["user"]),
+    terminals: json["terminals"] == null ? <UTerminalResponse>[] : List<UTerminalResponse>.from(json["terminals"]!.map((dynamic x) => UTerminalResponse.fromMap(x))),
+    adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "createdAt": createdAt.toIso8601String(),
+    "jsonData": jsonData.toMap(),
+    "tags": List<int>.from(tags.map((int x) => x)),
+    "creator": creator?.toMap(),
+    "creatorId": creatorId,
+    "zipCode": zipCode,
+    "cityCode": cityCode,
+    "phoneNumber": phoneNumber,
+    "title": title,
+    "landline": landline,
+    "nationalCode": nationalCode,
+    "bankAccountId": bankAccountId,
+    "mcc": mcc,
+    "merchantId": merchantId,
+    "insId": insId,
+    "userId": userId,
+    "user": user?.toMap(),
+    "terminals": terminals == null ? <UTerminalResponse>[] : List<UTerminalResponse>.from(terminals!.map((UTerminalResponse x) => x.toMap())),
+    "adminUserIds": List<dynamic>.from(adminUserIds.map((String x) => x)),
+  };
+}
+
+class UMerchantJson {
+  final String? detail1;
+  final String? detail2;
+  final String? businessTitle;
+  final String? address;
+  final String? ownerPhoneNumber;
+  final int? definitionTemplate;
+  final int? settlementCurrency;
+  final String? ownerName;
+
+  UMerchantJson({
+    this.detail1,
+    this.detail2,
+    this.businessTitle,
+    this.address,
+    this.ownerPhoneNumber,
+    this.definitionTemplate,
+    this.settlementCurrency,
+    this.ownerName,
+  });
+
+  factory UMerchantJson.fromJson(String str) => UMerchantJson.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UMerchantJson.fromMap(Map<String, dynamic> json) => UMerchantJson(
+    detail1: json["detail1"],
+    detail2: json["detail2"],
+    businessTitle: json["businessTitle"],
+    address: json["address"],
+    ownerPhoneNumber: json["ownerPhoneNumber"],
+    definitionTemplate: json["definitionTemplate"],
+    settlementCurrency: json["settlementCurrency"],
+    ownerName: json["ownerName"],
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "detail1": detail1,
+    "detail2": detail2,
+    "businessTitle": businessTitle,
+    "address": address,
+    "ownerPhoneNumber": ownerPhoneNumber,
+    "definitionTemplate": definitionTemplate,
+    "settlementCurrency": settlementCurrency,
+    "ownerName": ownerName,
+  };
+}
+
 class UTerminalResponse {
   final String serial;
   final List<int> tags;
@@ -398,4 +542,221 @@ class UTerminalBrokerJson {
     "sign2Owner": sign2Owner,
     "logoBase64": logoBase64,
   };
+}
+
+class UFinancialOpsDashboardResponse {
+  final DateTime generatedAt;
+  final DateTime fromDate;
+  final DateTime toDate;
+
+  final int usersCount;
+  final int newUsersCount;
+
+  final int merchantsCount;
+  final int newMerchantsCount;
+
+  final int terminalsCount;
+  final int terminalsAssignedCount;
+  final int terminalsUnassignedCount;
+
+  final int txnCount;
+  final int newTxnCount;
+
+  final int walletsCount;
+  final double totalWalletBalance;
+
+  final double totalIn;
+  final double totalOut;
+  final double net;
+
+  final List<UAccountingBreakdownItem> txnByStatus;
+  final List<UAccountingBreakdownItem> txnByMethod;
+  final List<UAccountingBreakdownItem> terminalsByType;
+  final List<UAccountingTimelineItem> dailyTimeline;
+
+  final List<UTopMerchantItem> topMerchants;
+  final List<URecentTxnItem> recentTransactions;
+  final List<URecentMerchantItem> recentMerchants;
+  final List<URecentUserItem> recentUsers;
+
+  UFinancialOpsDashboardResponse({
+    required this.generatedAt,
+    required this.fromDate,
+    required this.toDate,
+    required this.usersCount,
+    required this.newUsersCount,
+    required this.merchantsCount,
+    required this.newMerchantsCount,
+    required this.terminalsCount,
+    required this.terminalsAssignedCount,
+    required this.terminalsUnassignedCount,
+    required this.txnCount,
+    required this.newTxnCount,
+    required this.walletsCount,
+    required this.totalWalletBalance,
+    required this.totalIn,
+    required this.totalOut,
+    required this.net,
+    required this.txnByStatus,
+    required this.txnByMethod,
+    required this.terminalsByType,
+    required this.dailyTimeline,
+    required this.topMerchants,
+    required this.recentTransactions,
+    required this.recentMerchants,
+    required this.recentUsers,
+  });
+
+  factory UFinancialOpsDashboardResponse.fromMap(Map<String, dynamic> json) => UFinancialOpsDashboardResponse(
+    generatedAt: DateTime.parse(json["generatedAt"]),
+    fromDate: DateTime.parse(json["fromDate"]),
+    toDate: DateTime.parse(json["toDate"]),
+    usersCount: json["usersCount"] ?? 0,
+    newUsersCount: json["newUsersCount"] ?? 0,
+    merchantsCount: json["merchantsCount"] ?? 0,
+    newMerchantsCount: json["newMerchantsCount"] ?? 0,
+    terminalsCount: json["terminalsCount"] ?? 0,
+    terminalsAssignedCount: json["terminalsAssignedCount"] ?? 0,
+    terminalsUnassignedCount: json["terminalsUnassignedCount"] ?? 0,
+    txnCount: json["txnCount"] ?? 0,
+    newTxnCount: json["newTxnCount"] ?? 0,
+    walletsCount: json["walletsCount"] ?? 0,
+    totalWalletBalance: (json["totalWalletBalance"] ?? 0).toString().toDouble(),
+    totalIn: (json["totalIn"] ?? 0).toString().toDouble(),
+    totalOut: (json["totalOut"] ?? 0).toString().toDouble(),
+    net: (json["net"] ?? 0).toString().toDouble(),
+    txnByStatus: ((json["txnByStatus"] ?? <dynamic>[]) as List<dynamic>).map((dynamic x) => UAccountingBreakdownItem.fromMap(x)).toList(),
+    txnByMethod: ((json["txnByMethod"] ?? <dynamic>[]) as List<dynamic>).map((dynamic x) => UAccountingBreakdownItem.fromMap(x)).toList(),
+    terminalsByType: ((json["terminalsByType"] ?? <dynamic>[]) as List<dynamic>).map((dynamic x) => UAccountingBreakdownItem.fromMap(x)).toList(),
+    dailyTimeline: ((json["dailyTimeline"] ?? <dynamic>[]) as List<dynamic>).map((dynamic x) => UAccountingTimelineItem.fromMap(x)).toList(),
+    topMerchants: ((json["topMerchants"] ?? <dynamic>[]) as List<dynamic>).map((dynamic x) => UTopMerchantItem.fromMap(x)).toList(),
+    recentTransactions: ((json["recentTransactions"] ?? <dynamic>[]) as List<dynamic>).map((dynamic x) => URecentTxnItem.fromMap(x)).toList(),
+    recentMerchants: ((json["recentMerchants"] ?? <dynamic>[]) as List<dynamic>).map((dynamic x) => URecentMerchantItem.fromMap(x)).toList(),
+    recentUsers: ((json["recentUsers"] ?? <dynamic>[]) as List<dynamic>).map((dynamic x) => URecentUserItem.fromMap(x)).toList(),
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "generatedAt": generatedAt.toIso8601String(),
+    "fromDate": fromDate.toIso8601String(),
+    "toDate": toDate.toIso8601String(),
+    "usersCount": usersCount,
+    "newUsersCount": newUsersCount,
+    "merchantsCount": merchantsCount,
+    "newMerchantsCount": newMerchantsCount,
+    "terminalsCount": terminalsCount,
+    "terminalsAssignedCount": terminalsAssignedCount,
+    "terminalsUnassignedCount": terminalsUnassignedCount,
+    "txnCount": txnCount,
+    "newTxnCount": newTxnCount,
+    "walletsCount": walletsCount,
+    "totalWalletBalance": totalWalletBalance,
+    "totalIn": totalIn,
+    "totalOut": totalOut,
+    "net": net,
+    "txnByStatus": List<dynamic>.from(txnByStatus.map((UAccountingBreakdownItem x) => x.toMap())),
+    "txnByMethod": List<dynamic>.from(txnByMethod.map((UAccountingBreakdownItem x) => x.toMap())),
+    "terminalsByType": List<dynamic>.from(terminalsByType.map((UAccountingBreakdownItem x) => x.toMap())),
+    "dailyTimeline": List<dynamic>.from(dailyTimeline.map((UAccountingTimelineItem x) => x.toMap())),
+    "topMerchants": List<dynamic>.from(topMerchants.map((UTopMerchantItem x) => x.toMap())),
+    "recentTransactions": List<dynamic>.from(recentTransactions.map((URecentTxnItem x) => x.toMap())),
+    "recentMerchants": List<dynamic>.from(recentMerchants.map((URecentMerchantItem x) => x.toMap())),
+    "recentUsers": List<dynamic>.from(recentUsers.map((URecentUserItem x) => x.toMap())),
+  };
+
+  String toJson() => json.encode(toMap());
+
+  factory UFinancialOpsDashboardResponse.fromJson(String str) => UFinancialOpsDashboardResponse.fromMap(json.decode(str));
+}
+
+class UTopMerchantItem {
+  final String id;
+  final String title;
+  final String city;
+  final int terminalCount;
+  final DateTime createdAt;
+
+  UTopMerchantItem({required this.id, required this.title, required this.city, required this.terminalCount, required this.createdAt});
+
+  factory UTopMerchantItem.fromMap(Map<String, dynamic> json) => UTopMerchantItem(
+    id: json["id"] as String,
+    title: json["title"] ?? "",
+    city: json["city"] ?? "",
+    terminalCount: json["terminalCount"] ?? 0,
+    createdAt: DateTime.parse(json["createdAt"]),
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "title": title,
+    "city": city,
+    "terminalCount": terminalCount,
+    "createdAt": createdAt.toIso8601String(),
+  };
+
+  String toJson() => json.encode(toMap());
+
+  factory UTopMerchantItem.fromJson(String str) => UTopMerchantItem.fromMap(json.decode(str));
+}
+
+class URecentTxnItem {
+  final String id;
+  final double amount;
+  final String trackingNumber;
+  final String? userName;
+  final List<String> tags;
+  final DateTime createdAt;
+
+  URecentTxnItem({required this.id, required this.amount, required this.trackingNumber, required this.tags, required this.createdAt, this.userName});
+
+  factory URecentTxnItem.fromMap(Map<String, dynamic> json) => URecentTxnItem(
+    id: json["id"] as String,
+    amount: (json["amount"] ?? 0).toString().toDouble(),
+    trackingNumber: json["trackingNumber"] ?? "",
+    userName: json["userName"],
+    tags: json["tags"] == null ? <String>[] : List<String>.from(json["tags"].map((dynamic x) => x.toString())),
+    createdAt: DateTime.parse(json["createdAt"]),
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "amount": amount,
+    "trackingNumber": trackingNumber,
+    "userName": userName,
+    "tags": List<dynamic>.from(tags.map((String x) => x)),
+    "createdAt": createdAt.toIso8601String(),
+  };
+
+  String toJson() => json.encode(toMap());
+
+  factory URecentTxnItem.fromJson(String str) => URecentTxnItem.fromMap(json.decode(str));
+}
+
+class URecentMerchantItem {
+  final String id;
+  final String title;
+  final String cityCode;
+  final int terminalCount;
+  final DateTime createdAt;
+
+  URecentMerchantItem({required this.id, required this.title, required this.cityCode, required this.terminalCount, required this.createdAt});
+
+  factory URecentMerchantItem.fromMap(Map<String, dynamic> json) => URecentMerchantItem(
+    id: json["id"] as String,
+    title: json["title"] ?? "",
+    cityCode: json["cityCode"] ?? "",
+    terminalCount: json["terminalCount"] ?? 0,
+    createdAt: DateTime.parse(json["createdAt"]),
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "title": title,
+    "cityCode": cityCode,
+    "terminalCount": terminalCount,
+    "createdAt": createdAt.toIso8601String(),
+  };
+
+  String toJson() => json.encode(toMap());
+
+  factory URecentMerchantItem.fromJson(String str) => URecentMerchantItem.fromMap(json.decode(str));
 }

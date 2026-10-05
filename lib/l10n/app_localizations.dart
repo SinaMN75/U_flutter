@@ -13039,6 +13039,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Have a referral code?'**
   String get doYouHaveAReferralCode;
+
+  /// No description provided for @organization.
+  ///
+  /// In en, this message translates to:
+  /// **'Organization'**
+  String get organization;
+
+  /// No description provided for @organizations.
+  ///
+  /// In en, this message translates to:
+  /// **'Organizations'**
+  String get organizations;
+
+  /// No description provided for @members.
+  ///
+  /// In en, this message translates to:
+  /// **'Members'**
+  String get members;
+
+  /// No description provided for @addMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Add member'**
+  String get addMember;
+
+  /// No description provided for @commissionPercent.
+  ///
+  /// In en, this message translates to:
+  /// **'Commission percent'**
+  String get commissionPercent;
+
+  /// No description provided for @phoneNumberOrNationalCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number or national code'**
+  String get phoneNumberOrNationalCode;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

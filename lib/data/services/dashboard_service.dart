@@ -55,20 +55,6 @@ class UDashboardService {
     return result;
   }
 
-  Future<(UResponse<UFinancialOpsDashboardResponse>?, UEmptyResponse?, String?)> readFinancialOpsDashboard({
-    required UDashboardRangeParams p,
-    Function(UResponse<UFinancialOpsDashboardResponse> r)? onOk,
-    Function(UEmptyResponse e)? onError,
-    Function(String e)? onException,
-  }) => _Api.call("/dashboard/ReadFinancialOpsDashboard", p.toMap(), _Api.one(UFinancialOpsDashboardResponse.fromMap), _Api.empty, onOk, onError, onException);
-
-  Future<(UResponse<UPropertyDashboardResponse>?, UEmptyResponse?, String?)> readPropertyDashboard({
-    required UDashboardRangeParams p,
-    Function(UResponse<UPropertyDashboardResponse> r)? onOk,
-    Function(UEmptyResponse e)? onError,
-    Function(String e)? onException,
-  }) => _Api.call("/dashboard/ReadPropertyDashboard", p.toMap(), _Api.one(UPropertyDashboardResponse.fromMap), _Api.empty, onOk, onError, onException);
-
   Future<(UResponse<UOsMetricsResponse>?, UEmptyResponse?, String?)> readOsMetrics({
     Function(UResponse<UOsMetricsResponse> r)? onOk,
     Function(UEmptyResponse e)? onError,

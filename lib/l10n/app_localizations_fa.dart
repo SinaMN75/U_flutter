@@ -6665,4 +6665,22 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get doYouHaveAReferralCode => 'کد معرف دارید؟';
+
+  @override
+  String get organization => 'مجموعه';
+
+  @override
+  String get organizations => 'مجموعه‌ها';
+
+  @override
+  String get members => 'اعضا';
+
+  @override
+  String get addMember => 'افزودن عضو';
+
+  @override
+  String get commissionPercent => 'درصد کمیسیون';
+
+  @override
+  String get phoneNumberOrNationalCode => 'شماره موبایل یا کد ملی';
 }

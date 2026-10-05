@@ -2380,5 +2380,11 @@
   "avaHamrahApplication": "اپلیکیشن آواهمراه",
   "enterYourMobileNumber": "شماره موبایل خود را وارد کنید",
   "termsAndRules": "شرایط و قوانین",
-  "doYouHaveAReferralCode": "کد معرف دارید؟"
+  "doYouHaveAReferralCode": "کد معرف دارید؟",
+  "organization": "مجموعه",
+  "organizations": "مجموعه‌ها",
+  "members": "اعضا",
+  "addMember": "افزودن عضو",
+  "commissionPercent": "درصد کمیسیون",
+  "phoneNumberOrNationalCode": "شماره موبایل یا کد ملی"
 }
