@@ -6837,4 +6837,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get voucherNotBalanced => 'Debit and credit totals are not equal';
+
+  @override
+  String get khabroom => 'Khabroom';
+
+  @override
+  String get sportopia => 'Sportopia';
+
+  @override
+  String get sharedModules => 'Shared';
 }

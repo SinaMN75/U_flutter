@@ -13381,6 +13381,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Debit and credit totals are not equal'**
   String get voucherNotBalanced;
+
+  /// No description provided for @khabroom.
+  ///
+  /// In en, this message translates to:
+  /// **'Khabroom'**
+  String get khabroom;
+
+  /// No description provided for @sportopia.
+  ///
+  /// In en, this message translates to:
+  /// **'Sportopia'**
+  String get sportopia;
+
+  /// No description provided for @sharedModules.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared'**
+  String get sharedModules;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

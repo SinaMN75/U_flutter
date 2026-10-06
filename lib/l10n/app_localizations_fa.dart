@@ -6836,4 +6836,13 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get voucherNotBalanced => 'جمع بدهکار و بستانکار برابر نیست';
+
+  @override
+  String get khabroom => 'خوابروم';
+
+  @override
+  String get sportopia => 'اسپورتوپیا';
+
+  @override
+  String get sharedModules => 'مشترک';
 }

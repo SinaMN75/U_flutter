@@ -2437,5 +2437,8 @@
   "over90days": "بیش از ۹۰ روز",
   "counterAccount": "حساب مقابل",
   "addLine": "افزودن ردیف",
-  "voucherNotBalanced": "جمع بدهکار و بستانکار برابر نیست"
+  "voucherNotBalanced": "جمع بدهکار و بستانکار برابر نیست",
+  "khabroom": "خوابروم",
+  "sportopia": "اسپورتوپیا",
+  "sharedModules": "مشترک"
 }

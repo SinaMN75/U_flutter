@@ -2675,5 +2675,8 @@
   "over90days": "Over 90 days",
   "counterAccount": "Counter account",
   "addLine": "Add line",
-  "voucherNotBalanced": "Debit and credit totals are not equal"
+  "voucherNotBalanced": "Debit and credit totals are not equal",
+  "khabroom": "Khabroom",
+  "sportopia": "Sportopia",
+  "sharedModules": "Shared"
 }
