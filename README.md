@@ -74,6 +74,7 @@ extension, and native feature listed below.
 | Video / audio players (`UMedia`, `UAudio`, `UVideoPlayer`) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅¹ |
 | Downloads (`UDownloads`, `UDownloadManager`) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | `UScreenGuard` | ✅ | ✅ | ⬜ | ✅ | ✅ | ⬜ |
+| NFC reader + card emulation (`UNfc`, `UNfcReader`, `UNfcCard`) | ✅ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 | Live AR (`UArScene`, `UArExperiences`, …) | ✅ | ✅ | ✅ | ⬜ | ⬜ | ⬜ |
 | 3D viewer (`U3DViewer`) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 
@@ -575,6 +576,15 @@ UArExperiences.places(places: <UArPlace>[UArPlace(id: "cafe", latitude: 35.7, lo
   `set(enabled:)`. On iOS, `onScreenshot` and `onScreenRecording` report capture attempts. It uses
   `FLAG_SECURE` on Android, a secure field on iOS, `NSWindow.sharingType = .none` on macOS and
   `WDA_EXCLUDEFROMCAPTURE` on Windows.
+- **`UNfc`** (Android) covers both NFC directions. Add the permission with `dart run u:app permission add nfc`.
+  - `UNfcCard` makes the phone a contactless card (HCE). POS terminals or other phones read it by
+    SELECTing your AID. It answers natively (`data` / `text`) or from Dart (`onCommand`), and can
+    keep answering after the app closes (`persist`). AIDs are registered at runtime, so apps
+    built on u never clash on a shared AID.
+  - `UNfcReader` reads tags, cards and phones: `readAid`, `readNdef`, `writeNdef`, `readOnce`, or
+    `start(onTag:)` with `UNfcTag.send` / `selectAid` / `transceive` for raw IsoDep / NfcA/B/F/V.
+  - `UNfcApdu`, `UNfcResponse` and `UNfcNdefRecord` build and parse APDUs and NDEF records
+    (text, URI, MIME, Android app record).
 - **`UEncryption`** is pure Dart:
   - Ciphers: AES (CBC/CFB/CTR/GCM/…), ChaCha20(-Poly1305), XChaCha20-Poly1305, Salsa20, Fernet, RC4.
   - Hashes: MD4/MD5, SHA-1/2/3, SHAKE, BLAKE2b, Keccak, RIPEMD-160, SM3, HMAC.
@@ -677,6 +687,7 @@ Everything below is exported from the single `package:u/utilities.dart` import.
 | `UMedia` / `UAudio` / `USound` | Native players, sources, subtitles, tags, HLS/DASH, library, playlists / app-wide music player / sound effects |
 | `UArExperiences` / `UAr` | Ready-made AR screens and capability checks |
 | `UScreenGuard` | Screenshot / recording prevention |
+| `UNfc` / `UNfcCard` / `UNfcReader` | NFC status, phone-as-card (HCE), tag/card/phone reading, APDU + NDEF helpers |
 | `UEncryption` / `UOtp` | Hashes, ciphers, KDFs, encoders / offline POS one-time codes |
 | `UIso` / `UIsoClient` | ISO 8583 setup and messaging |
 | `UValidators` | Form validators (see [Inputs](#inputs-and-forms)) |

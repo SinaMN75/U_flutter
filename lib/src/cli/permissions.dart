@@ -273,9 +273,9 @@ const List<UPermission> uPermissions = <UPermission>[
   ),
   UPermission(
     "nfc",
-    "Read NFC tags",
+    "Read NFC tags / act as an NFC card (UNfcReader, UNfcCard)",
     android: <AndroidPermission>[AndroidPermission("NFC")],
-    androidFeatures: <String>["android.hardware.nfc"],
+    androidFeatures: <String>["android.hardware.nfc", "android.hardware.nfc.hce"],
     ios: <String, String>{"NFCReaderUsageDescription": "This app reads NFC tags."},
     note: "On iOS also enable the \"Near Field Communication Tag Reading\" capability in Xcode.",
   ),

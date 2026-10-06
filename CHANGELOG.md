@@ -1,3 +1,13 @@
+## Unreleased
+
+* **`UNfc`, `UNfcCard`, `UNfcReader` (Android).** NFC in both directions, with no plugin dependency.
+  * `UNfcCard` emulates a contactless card (HCE). AIDs are registered at runtime, so the bundled
+    `UNfcHceService` does nothing until an app calls `start`. It can answer natively, answer from
+    Dart through `onCommand`, or keep answering after the app closes with `persist`.
+  * `UNfcReader` uses reader mode: `readAid`, `readNdef`, `writeNdef`, `readOnce`, and per-tag
+    `send`, `selectAid` and `transceive` (IsoDep, NfcA, NfcB, NfcF, NfcV).
+  * `dart run u:app permission add nfc` now also declares `android.hardware.nfc.hce`.
+
 ## 3.2.0
 
 Nine pub plugins are replaced by u's own native code on all six platforms, the admin panel is

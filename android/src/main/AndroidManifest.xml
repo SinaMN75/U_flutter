@@ -78,6 +78,18 @@
         <action android:name="android.intent.action.TIMEZONE_CHANGED" />
       </intent-filter>
     </receiver>
+    <!-- UNfcCard (HCE). Ships with no AIDs, so it is inert until the app registers AIDs at runtime. -->
+    <service
+      android:name="com.sinamn75.u.nfc.UNfcHceService"
+      android:exported="true"
+      android:permission="android.permission.BIND_NFC_SERVICE">
+      <intent-filter>
+        <action android:name="android.nfc.cardemulation.action.HOST_APDU_SERVICE" />
+      </intent-filter>
+      <meta-data
+        android:name="android.nfc.cardemulation.host_apdu_service"
+        android:resource="@xml/u_nfc_hce" />
+    </service>
     <provider
       android:name="androidx.core.content.FileProvider"
       android:authorities="${applicationId}.u.fileprovider"

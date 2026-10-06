@@ -10,6 +10,7 @@ import com.sinamn75.u.notification.UNotificationHandler
 import com.sinamn75.u.share.UShareHandler
 import com.sinamn75.u.media.UMediaHandler
 import com.sinamn75.u.media.UMediaSessionHandler
+import com.sinamn75.u.nfc.UNfcHandler
 import com.sinamn75.u.screenguard.ScreenGuardHandler
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -39,6 +40,7 @@ class UPlugin :
     private var share: UShareHandler? = null
     private var location: ULocationHandler? = null
     private var notify: UNotificationHandler? = null
+    private var nfc: UNfcHandler? = null
     private var activityBinding: ActivityPluginBinding? = null
     private val userLeaveHint = PluginRegistry.UserLeaveHintListener { media?.onUserLeaveHint() }
 
@@ -71,6 +73,7 @@ class UPlugin :
         share = UShareHandler(flutterPluginBinding.applicationContext, flutterPluginBinding.binaryMessenger)
         location = ULocationHandler(flutterPluginBinding.applicationContext, flutterPluginBinding.binaryMessenger)
         notify = UNotificationHandler(flutterPluginBinding.applicationContext, flutterPluginBinding.binaryMessenger)
+        nfc = UNfcHandler(flutterPluginBinding.applicationContext, flutterPluginBinding.binaryMessenger)
     }
 
     override fun onMethodCall(
@@ -108,6 +111,8 @@ class UPlugin :
         location = null
         notify?.dispose()
         notify = null
+        nfc?.dispose()
+        nfc = null
     }
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
@@ -118,6 +123,7 @@ class UPlugin :
         notify?.attach(binding)
         screenGuard?.setActivity(binding.activity)
         device?.setActivity(binding.activity)
+        nfc?.setActivity(binding.activity)
         media?.setActivity(binding.activity)
         camera?.setActivity(binding.activity)
         camera?.let { binding.addRequestPermissionsResultListener(it) }
@@ -138,6 +144,7 @@ class UPlugin :
         notify?.attach(binding)
         screenGuard?.setActivity(binding.activity)
         device?.setActivity(binding.activity)
+        nfc?.setActivity(binding.activity)
         media?.setActivity(binding.activity)
         camera?.setActivity(binding.activity)
         camera?.let { binding.addRequestPermissionsResultListener(it) }
@@ -169,6 +176,7 @@ class UPlugin :
         detachLeaveHint()
         screenGuard?.setActivity(null)
         device?.setActivity(null)
+        nfc?.setActivity(null)
         media?.setActivity(null)
         camera?.setActivity(null)
         ar?.setActivity(null)
@@ -179,6 +187,7 @@ class UPlugin :
         detachLeaveHint()
         screenGuard?.setActivity(null)
         device?.setActivity(null)
+        nfc?.setActivity(null)
         media?.setActivity(null)
         camera?.setActivity(null)
         ar?.setActivity(null)

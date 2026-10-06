@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- No static AIDs on purpose: UNfcCard.start registers them at runtime (CardEmulation.registerAidsForService). -->
+<host-apdu-service xmlns:android="http://schemas.android.com/apk/res/android"
+  android:description="@string/u_nfc_hce_description"
+  android:requireDeviceUnlock="false" />
