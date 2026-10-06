@@ -13135,6 +13135,252 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Request withdrawal'**
   String get requestSettlement;
+
+  /// No description provided for @booksDebit.
+  ///
+  /// In en, this message translates to:
+  /// **'Debit'**
+  String get booksDebit;
+
+  /// No description provided for @booksCredit.
+  ///
+  /// In en, this message translates to:
+  /// **'Credit'**
+  String get booksCredit;
+
+  /// No description provided for @chartOfAccounts.
+  ///
+  /// In en, this message translates to:
+  /// **'Chart of accounts'**
+  String get chartOfAccounts;
+
+  /// No description provided for @vouchers.
+  ///
+  /// In en, this message translates to:
+  /// **'Vouchers'**
+  String get vouchers;
+
+  /// No description provided for @voucher.
+  ///
+  /// In en, this message translates to:
+  /// **'Voucher'**
+  String get voucher;
+
+  /// No description provided for @ledger.
+  ///
+  /// In en, this message translates to:
+  /// **'Ledger'**
+  String get ledger;
+
+  /// No description provided for @kardex.
+  ///
+  /// In en, this message translates to:
+  /// **'Person ledger'**
+  String get kardex;
+
+  /// No description provided for @checks.
+  ///
+  /// In en, this message translates to:
+  /// **'Checks'**
+  String get checks;
+
+  /// No description provided for @check.
+  ///
+  /// In en, this message translates to:
+  /// **'Check'**
+  String get check;
+
+  /// No description provided for @profitAndLoss.
+  ///
+  /// In en, this message translates to:
+  /// **'Profit and loss'**
+  String get profitAndLoss;
+
+  /// No description provided for @netProfit.
+  ///
+  /// In en, this message translates to:
+  /// **'Net profit'**
+  String get netProfit;
+
+  /// No description provided for @incomes.
+  ///
+  /// In en, this message translates to:
+  /// **'Income'**
+  String get incomes;
+
+  /// No description provided for @expenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Expenses'**
+  String get expenses;
+
+  /// No description provided for @cashFlow.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash and bank flow'**
+  String get cashFlow;
+
+  /// No description provided for @debtorsAging.
+  ///
+  /// In en, this message translates to:
+  /// **'Debtors aging'**
+  String get debtorsAging;
+
+  /// No description provided for @incomeByPlace.
+  ///
+  /// In en, this message translates to:
+  /// **'By place'**
+  String get incomeByPlace;
+
+  /// No description provided for @openingBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening'**
+  String get openingBalance;
+
+  /// No description provided for @closingBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Closing'**
+  String get closingBalance;
+
+  /// No description provided for @recordReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Record receipt'**
+  String get recordReceipt;
+
+  /// No description provided for @recordExpense.
+  ///
+  /// In en, this message translates to:
+  /// **'Record expense'**
+  String get recordExpense;
+
+  /// No description provided for @moneyTransfer.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer between boxes'**
+  String get moneyTransfer;
+
+  /// No description provided for @manualVoucher.
+  ///
+  /// In en, this message translates to:
+  /// **'Manual voucher'**
+  String get manualVoucher;
+
+  /// No description provided for @moneyBox.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash box or bank'**
+  String get moneyBox;
+
+  /// No description provided for @payByCheck.
+  ///
+  /// In en, this message translates to:
+  /// **'By check'**
+  String get payByCheck;
+
+  /// No description provided for @bankName.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank'**
+  String get bankName;
+
+  /// No description provided for @sayadId.
+  ///
+  /// In en, this message translates to:
+  /// **'Sayad ID'**
+  String get sayadId;
+
+  /// No description provided for @checkDrawer.
+  ///
+  /// In en, this message translates to:
+  /// **'Drawer'**
+  String get checkDrawer;
+
+  /// No description provided for @checkDueDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Due date'**
+  String get checkDueDate;
+
+  /// No description provided for @clearCheck.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get clearCheck;
+
+  /// No description provided for @bounceCheck.
+  ///
+  /// In en, this message translates to:
+  /// **'Bounce'**
+  String get bounceCheck;
+
+  /// No description provided for @returnCheck.
+  ///
+  /// In en, this message translates to:
+  /// **'Return'**
+  String get returnCheck;
+
+  /// No description provided for @copyForExcel.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy for Excel'**
+  String get copyForExcel;
+
+  /// No description provided for @person.
+  ///
+  /// In en, this message translates to:
+  /// **'Person'**
+  String get person;
+
+  /// No description provided for @branch.
+  ///
+  /// In en, this message translates to:
+  /// **'Place'**
+  String get branch;
+
+  /// No description provided for @days0to30.
+  ///
+  /// In en, this message translates to:
+  /// **'0–30 days'**
+  String get days0to30;
+
+  /// No description provided for @days31to60.
+  ///
+  /// In en, this message translates to:
+  /// **'31–60 days'**
+  String get days31to60;
+
+  /// No description provided for @days61to90.
+  ///
+  /// In en, this message translates to:
+  /// **'61–90 days'**
+  String get days61to90;
+
+  /// No description provided for @over90days.
+  ///
+  /// In en, this message translates to:
+  /// **'Over 90 days'**
+  String get over90days;
+
+  /// No description provided for @counterAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Counter account'**
+  String get counterAccount;
+
+  /// No description provided for @addLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Add line'**
+  String get addLine;
+
+  /// No description provided for @voucherNotBalanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Debit and credit totals are not equal'**
+  String get voucherNotBalanced;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

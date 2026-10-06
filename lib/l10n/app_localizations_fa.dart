@@ -6713,4 +6713,127 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get requestSettlement => 'درخواست برداشت';
+
+  @override
+  String get booksDebit => 'بدهکار';
+
+  @override
+  String get booksCredit => 'بستانکار';
+
+  @override
+  String get chartOfAccounts => 'سرفصل حساب‌ها';
+
+  @override
+  String get vouchers => 'اسناد حسابداری';
+
+  @override
+  String get voucher => 'سند';
+
+  @override
+  String get ledger => 'دفتر حساب';
+
+  @override
+  String get kardex => 'کاردکس';
+
+  @override
+  String get checks => 'چک‌ها';
+
+  @override
+  String get check => 'چک';
+
+  @override
+  String get profitAndLoss => 'سود و زیان';
+
+  @override
+  String get netProfit => 'سود خالص';
+
+  @override
+  String get incomes => 'درآمدها';
+
+  @override
+  String get expenses => 'هزینه‌ها';
+
+  @override
+  String get cashFlow => 'گردش صندوق و بانک';
+
+  @override
+  String get debtorsAging => 'سنی‌بندی بدهکاران';
+
+  @override
+  String get incomeByPlace => 'به تفکیک شعبه';
+
+  @override
+  String get openingBalance => 'مانده‌ی اول دوره';
+
+  @override
+  String get closingBalance => 'مانده‌ی پایان دوره';
+
+  @override
+  String get recordReceipt => 'ثبت دریافت';
+
+  @override
+  String get recordExpense => 'ثبت هزینه';
+
+  @override
+  String get moneyTransfer => 'انتقال بین صندوق‌ها';
+
+  @override
+  String get manualVoucher => 'سند دستی';
+
+  @override
+  String get moneyBox => 'صندوق یا بانک';
+
+  @override
+  String get payByCheck => 'با چک';
+
+  @override
+  String get bankName => 'بانک';
+
+  @override
+  String get sayadId => 'شناسه‌ی صیادی';
+
+  @override
+  String get checkDrawer => 'صادرکننده';
+
+  @override
+  String get checkDueDate => 'تاریخ سررسید';
+
+  @override
+  String get clearCheck => 'وصول';
+
+  @override
+  String get bounceCheck => 'برگشت';
+
+  @override
+  String get returnCheck => 'عودت';
+
+  @override
+  String get copyForExcel => 'کپی برای اکسل';
+
+  @override
+  String get person => 'شخص';
+
+  @override
+  String get branch => 'شعبه';
+
+  @override
+  String get days0to30 => '۰ تا ۳۰ روز';
+
+  @override
+  String get days31to60 => '۳۱ تا ۶۰ روز';
+
+  @override
+  String get days61to90 => '۶۱ تا ۹۰ روز';
+
+  @override
+  String get over90days => 'بیش از ۹۰ روز';
+
+  @override
+  String get counterAccount => 'حساب مقابل';
+
+  @override
+  String get addLine => 'افزودن ردیف';
+
+  @override
+  String get voucherNotBalanced => 'جمع بدهکار و بستانکار برابر نیست';
 }

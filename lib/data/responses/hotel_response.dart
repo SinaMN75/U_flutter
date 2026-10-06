@@ -1792,3 +1792,347 @@ class UDormBedContractJson {
     "bedHistory": bedHistory.map((UContractBedChange x) => x.toMap()).toList(),
   };
 }
+
+double _num(dynamic x) => x == null ? 0 : (x as num).toDouble();
+
+class UAccountResponse {
+  UAccountResponse({
+    required this.id,
+    required this.tags,
+    required this.code,
+    required this.title,
+    required this.organizationId,
+    this.detail1,
+    this.debit = 0,
+    this.credit = 0,
+    this.balance = 0,
+  });
+
+  factory UAccountResponse.fromMap(Map<String, dynamic> json) => UAccountResponse(
+    id: json["id"] as String,
+    tags: List<int>.from(json["tags"]!.map((dynamic x) => x)),
+    code: json["code"] as String,
+    title: json["title"] as String,
+    organizationId: json["organizationId"] as String,
+    detail1: json["jsonData"]?["detail1"],
+    debit: _num(json["debit"]),
+    credit: _num(json["credit"]),
+    balance: _num(json["balance"]),
+  );
+
+  final String id;
+  final List<int> tags;
+  final String code;
+  final String title;
+  final String organizationId;
+  final String? detail1;
+  final double debit;
+  final double credit;
+  final double balance;
+
+  bool has(TagAccount t) => tags.contains(t.number);
+
+  bool get isMoneyBox => TagAccount.moneyBoxes.any(has);
+
+  bool get isSystem => tags.any((int x) => x >= 300);
+
+  TagAccount? get kind => TagAccount.kinds.where(has).firstOrNull;
+}
+
+class UVoucherLineResponse {
+  UVoucherLineResponse({
+    required this.id,
+    required this.accountId,
+    required this.accountCode,
+    required this.accountTitle,
+    this.personId,
+    this.personName,
+    this.debit = 0,
+    this.credit = 0,
+    this.description,
+  });
+
+  factory UVoucherLineResponse.fromMap(Map<String, dynamic> json) => UVoucherLineResponse(
+    id: json["id"] as String,
+    accountId: json["accountId"] as String,
+    accountCode: json["accountCode"] ?? "",
+    accountTitle: json["accountTitle"] ?? "",
+    personId: json["personId"],
+    personName: json["personName"],
+    debit: _num(json["debit"]),
+    credit: _num(json["credit"]),
+    description: json["description"],
+  );
+
+  final String id;
+  final String accountId;
+  final String accountCode;
+  final String accountTitle;
+  final String? personId;
+  final String? personName;
+  final double debit;
+  final double credit;
+  final String? description;
+}
+
+class UVoucherResponse {
+  UVoucherResponse({
+    required this.id,
+    required this.tags,
+    required this.number,
+    required this.date,
+    required this.organizationId,
+    this.placeId,
+    this.sourceId,
+    this.detail1,
+    this.total = 0,
+    this.lines = const <UVoucherLineResponse>[],
+  });
+
+  factory UVoucherResponse.fromMap(Map<String, dynamic> json) => UVoucherResponse(
+    id: json["id"] as String,
+    tags: List<int>.from(json["tags"]!.map((dynamic x) => x)),
+    number: json["number"] as int,
+    date: DateTime.parse(json["date"]),
+    organizationId: json["organizationId"] as String,
+    placeId: json["placeId"],
+    sourceId: json["sourceId"],
+    detail1: json["jsonData"]?["detail1"],
+    total: _num(json["total"]),
+    lines: json["lines"] == null ? <UVoucherLineResponse>[] : List<UVoucherLineResponse>.from(json["lines"]!.map((dynamic x) => UVoucherLineResponse.fromMap(x))),
+  );
+
+  final String id;
+  final List<int> tags;
+  final int number;
+  final DateTime date;
+  final String organizationId;
+  final String? placeId;
+  final String? sourceId;
+  final String? detail1;
+  final double total;
+  final List<UVoucherLineResponse> lines;
+
+  bool get isManual => tags.contains(TagVoucher.manual.number);
+}
+
+class ULedgerLineResponse {
+  ULedgerLineResponse({
+    required this.voucherId,
+    required this.number,
+    required this.date,
+    required this.tags,
+    required this.accountId,
+    required this.accountTitle,
+    this.description,
+    this.personId,
+    this.personName,
+    this.debit = 0,
+    this.credit = 0,
+    this.balance = 0,
+  });
+
+  factory ULedgerLineResponse.fromMap(Map<String, dynamic> json) => ULedgerLineResponse(
+    voucherId: json["voucherId"] as String,
+    number: json["number"] as int,
+    date: DateTime.parse(json["date"]),
+    tags: json["tags"] == null ? <int>[] : List<int>.from(json["tags"]!.map((dynamic x) => x)),
+    accountId: json["accountId"] as String,
+    accountTitle: json["accountTitle"] ?? "",
+    description: json["description"],
+    personId: json["personId"],
+    personName: json["personName"],
+    debit: _num(json["debit"]),
+    credit: _num(json["credit"]),
+    balance: _num(json["balance"]),
+  );
+
+  final String voucherId;
+  final int number;
+  final DateTime date;
+  final List<int> tags;
+  final String accountId;
+  final String accountTitle;
+  final String? description;
+  final String? personId;
+  final String? personName;
+  final double debit;
+  final double credit;
+  final double balance;
+}
+
+class ULedgerResponse {
+  ULedgerResponse({this.opening = 0, this.totalDebit = 0, this.totalCredit = 0, this.closing = 0, this.lines = const <ULedgerLineResponse>[]});
+
+  factory ULedgerResponse.fromMap(Map<String, dynamic> json) => ULedgerResponse(
+    opening: _num(json["opening"]),
+    totalDebit: _num(json["totalDebit"]),
+    totalCredit: _num(json["totalCredit"]),
+    closing: _num(json["closing"]),
+    lines: json["lines"] == null ? <ULedgerLineResponse>[] : List<ULedgerLineResponse>.from(json["lines"]!.map((dynamic x) => ULedgerLineResponse.fromMap(x))),
+  );
+
+  final double opening;
+  final double totalDebit;
+  final double totalCredit;
+  final double closing;
+  final List<ULedgerLineResponse> lines;
+}
+
+class ULedgerReportItem {
+  ULedgerReportItem({required this.accountId, required this.code, required this.title, this.amount = 0});
+
+  factory ULedgerReportItem.fromMap(Map<String, dynamic> json) => ULedgerReportItem(
+    accountId: json["accountId"] as String,
+    code: json["code"] ?? "",
+    title: json["title"] ?? "",
+    amount: _num(json["amount"]),
+  );
+
+  final String accountId;
+  final String code;
+  final String title;
+  final double amount;
+}
+
+class ULedgerMoneyBoxItem {
+  ULedgerMoneyBoxItem({required this.accountId, required this.title, this.tags = const <int>[], this.opening = 0, this.inAmount = 0, this.outAmount = 0, this.closing = 0});
+
+  factory ULedgerMoneyBoxItem.fromMap(Map<String, dynamic> json) => ULedgerMoneyBoxItem(
+    accountId: json["accountId"] as String,
+    title: json["title"] ?? "",
+    tags: json["tags"] == null ? <int>[] : List<int>.from(json["tags"]!.map((dynamic x) => x)),
+    opening: _num(json["opening"]),
+    inAmount: _num(json["in"]),
+    outAmount: _num(json["out"]),
+    closing: _num(json["closing"]),
+  );
+
+  final String accountId;
+  final String title;
+  final List<int> tags;
+  final double opening;
+  final double inAmount;
+  final double outAmount;
+  final double closing;
+}
+
+class ULedgerPlaceItem {
+  ULedgerPlaceItem({this.placeId, this.title = "", this.income = 0, this.expense = 0});
+
+  factory ULedgerPlaceItem.fromMap(Map<String, dynamic> json) => ULedgerPlaceItem(
+    placeId: json["placeId"],
+    title: json["title"] ?? "",
+    income: _num(json["income"]),
+    expense: _num(json["expense"]),
+  );
+
+  final String? placeId;
+  final String title;
+  final double income;
+  final double expense;
+}
+
+class ULedgerAgingItem {
+  ULedgerAgingItem({required this.personId, this.personName, this.phoneNumber, this.days0 = 0, this.days30 = 0, this.days60 = 0, this.days90 = 0, this.total = 0});
+
+  factory ULedgerAgingItem.fromMap(Map<String, dynamic> json) => ULedgerAgingItem(
+    personId: json["personId"] as String,
+    personName: json["personName"],
+    phoneNumber: json["phoneNumber"],
+    days0: _num(json["days0"]),
+    days30: _num(json["days30"]),
+    days60: _num(json["days60"]),
+    days90: _num(json["days90"]),
+    total: _num(json["total"]),
+  );
+
+  final String personId;
+  final String? personName;
+  final String? phoneNumber;
+  final double days0;
+  final double days30;
+  final double days60;
+  final double days90;
+  final double total;
+}
+
+class ULedgerReportResponse {
+  ULedgerReportResponse({
+    this.income = const <ULedgerReportItem>[],
+    this.expense = const <ULedgerReportItem>[],
+    this.netProfit = 0,
+    this.moneyBoxes = const <ULedgerMoneyBoxItem>[],
+    this.places = const <ULedgerPlaceItem>[],
+    this.aging = const <ULedgerAgingItem>[],
+  });
+
+  factory ULedgerReportResponse.fromMap(Map<String, dynamic> json) => ULedgerReportResponse(
+    income: List<ULedgerReportItem>.from((json["income"] ?? <dynamic>[]).map((dynamic x) => ULedgerReportItem.fromMap(x))),
+    expense: List<ULedgerReportItem>.from((json["expense"] ?? <dynamic>[]).map((dynamic x) => ULedgerReportItem.fromMap(x))),
+    netProfit: _num(json["netProfit"]),
+    moneyBoxes: List<ULedgerMoneyBoxItem>.from((json["moneyBoxes"] ?? <dynamic>[]).map((dynamic x) => ULedgerMoneyBoxItem.fromMap(x))),
+    places: List<ULedgerPlaceItem>.from((json["places"] ?? <dynamic>[]).map((dynamic x) => ULedgerPlaceItem.fromMap(x))),
+    aging: List<ULedgerAgingItem>.from((json["aging"] ?? <dynamic>[]).map((dynamic x) => ULedgerAgingItem.fromMap(x))),
+  );
+
+  final List<ULedgerReportItem> income;
+  final List<ULedgerReportItem> expense;
+  final double netProfit;
+  final List<ULedgerMoneyBoxItem> moneyBoxes;
+  final List<ULedgerPlaceItem> places;
+  final List<ULedgerAgingItem> aging;
+}
+
+class UCheckResponse {
+  UCheckResponse({
+    required this.id,
+    required this.tags,
+    required this.amount,
+    required this.dueDate,
+    required this.number,
+    required this.organizationId,
+    this.bank,
+    this.personId,
+    this.personName,
+    this.contractId,
+    this.placeId,
+    this.sayadId,
+    this.drawer,
+    this.detail1,
+  });
+
+  factory UCheckResponse.fromMap(Map<String, dynamic> json) => UCheckResponse(
+    id: json["id"] as String,
+    tags: List<int>.from(json["tags"]!.map((dynamic x) => x)),
+    amount: _num(json["amount"]),
+    dueDate: DateTime.parse(json["dueDate"]),
+    number: json["number"] ?? "",
+    organizationId: json["organizationId"] as String,
+    bank: json["bank"],
+    personId: json["personId"],
+    personName: json["personName"],
+    contractId: json["contractId"],
+    placeId: json["placeId"],
+    sayadId: json["jsonData"]?["sayadId"],
+    drawer: json["jsonData"]?["drawer"],
+    detail1: json["jsonData"]?["detail1"],
+  );
+
+  final String id;
+  final List<int> tags;
+  final double amount;
+  final DateTime dueDate;
+  final String number;
+  final String organizationId;
+  final String? bank;
+  final String? personId;
+  final String? personName;
+  final String? contractId;
+  final String? placeId;
+  final String? sayadId;
+  final String? drawer;
+  final String? detail1;
+
+  bool has(TagCheck t) => tags.contains(t.number);
+}

@@ -6714,4 +6714,127 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get requestSettlement => 'Request withdrawal';
+
+  @override
+  String get booksDebit => 'Debit';
+
+  @override
+  String get booksCredit => 'Credit';
+
+  @override
+  String get chartOfAccounts => 'Chart of accounts';
+
+  @override
+  String get vouchers => 'Vouchers';
+
+  @override
+  String get voucher => 'Voucher';
+
+  @override
+  String get ledger => 'Ledger';
+
+  @override
+  String get kardex => 'Person ledger';
+
+  @override
+  String get checks => 'Checks';
+
+  @override
+  String get check => 'Check';
+
+  @override
+  String get profitAndLoss => 'Profit and loss';
+
+  @override
+  String get netProfit => 'Net profit';
+
+  @override
+  String get incomes => 'Income';
+
+  @override
+  String get expenses => 'Expenses';
+
+  @override
+  String get cashFlow => 'Cash and bank flow';
+
+  @override
+  String get debtorsAging => 'Debtors aging';
+
+  @override
+  String get incomeByPlace => 'By place';
+
+  @override
+  String get openingBalance => 'Opening';
+
+  @override
+  String get closingBalance => 'Closing';
+
+  @override
+  String get recordReceipt => 'Record receipt';
+
+  @override
+  String get recordExpense => 'Record expense';
+
+  @override
+  String get moneyTransfer => 'Transfer between boxes';
+
+  @override
+  String get manualVoucher => 'Manual voucher';
+
+  @override
+  String get moneyBox => 'Cash box or bank';
+
+  @override
+  String get payByCheck => 'By check';
+
+  @override
+  String get bankName => 'Bank';
+
+  @override
+  String get sayadId => 'Sayad ID';
+
+  @override
+  String get checkDrawer => 'Drawer';
+
+  @override
+  String get checkDueDate => 'Due date';
+
+  @override
+  String get clearCheck => 'Clear';
+
+  @override
+  String get bounceCheck => 'Bounce';
+
+  @override
+  String get returnCheck => 'Return';
+
+  @override
+  String get copyForExcel => 'Copy for Excel';
+
+  @override
+  String get person => 'Person';
+
+  @override
+  String get branch => 'Place';
+
+  @override
+  String get days0to30 => '0–30 days';
+
+  @override
+  String get days31to60 => '31–60 days';
+
+  @override
+  String get days61to90 => '61–90 days';
+
+  @override
+  String get over90days => 'Over 90 days';
+
+  @override
+  String get counterAccount => 'Counter account';
+
+  @override
+  String get addLine => 'Add line';
+
+  @override
+  String get voucherNotBalanced => 'Debit and credit totals are not equal';
 }

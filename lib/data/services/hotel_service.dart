@@ -50,6 +50,104 @@ class UHotelService {
     Function(String e)? onException,
   }) => _Api.call("/Hotel/Dashboard/Read", p.toMap(), _Api.one(UPropertyDashboardResponse.fromMap), _Api.empty, onOk, onError, onException);
 
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> receiveDormBedInvoice({
+    required UInvoiceReceiveParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Hotel/DormBedInvoice/Receive", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> receiveHotelInvoice({
+    required UInvoiceReceiveParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Hotel/HotelInvoice/Receive", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<String>?, UEmptyResponse?, String?)> createAccount({
+    required UAccountCreateParams p,
+    Function(UResponse<String> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Hotel/Account/Create", p.toMap(), _Api.raw<String>(), _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<List<UAccountResponse>>?, UEmptyResponse?, String?)> readAccounts({
+    required UAccountReadParams p,
+    Function(UResponse<List<UAccountResponse>> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Hotel/Account/Read", p.toMap(), _Api.list(UAccountResponse.fromMap), _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> updateAccount({
+    required UAccountUpdateParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Hotel/Account/Update", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteAccount({
+    required UIdParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Hotel/Account/Delete", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<String>?, UEmptyResponse?, String?)> createVoucher({
+    required UVoucherCreateParams p,
+    Function(UResponse<String> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Hotel/Voucher/Create", p.toMap(), _Api.raw<String>(), _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<List<UVoucherResponse>>?, UEmptyResponse?, String?)> readVouchers({
+    required UVoucherReadParams p,
+    Function(UResponse<List<UVoucherResponse>> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Hotel/Voucher/Read", p.toMap(), _Api.list(UVoucherResponse.fromMap), _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteVoucher({
+    required UIdParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Hotel/Voucher/Delete", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<ULedgerResponse>?, UEmptyResponse?, String?)> readLedger({
+    required ULedgerReadParams p,
+    Function(UResponse<ULedgerResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Hotel/Ledger/Read", p.toMap(), _Api.one(ULedgerResponse.fromMap), _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<ULedgerReportResponse>?, UEmptyResponse?, String?)> readLedgerReport({
+    required ULedgerReportParams p,
+    Function(UResponse<ULedgerReportResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Hotel/Ledger/Report", p.toMap(), _Api.one(ULedgerReportResponse.fromMap), _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<String>?, UEmptyResponse?, String?)> createCheck({
+    required UCheckCreateParams p,
+    Function(UResponse<String> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Hotel/Check/Create", p.toMap(), _Api.raw<String>(), _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<List<UCheckResponse>>?, UEmptyResponse?, String?)> readChecks({
+    required UCheckReadParams p,
+    Function(UResponse<List<UCheckResponse>> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Hotel/Check/Read", p.toMap(), _Api.list(UCheckResponse.fromMap), _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> setCheckStatus({
+    required UCheckStatusParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Hotel/Check/SetStatus", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
   Future<(UResponse<String>?, UEmptyResponse?, String?)> createOrganization({
     required UOrganizationCreateParams p,
     Function(UResponse<String> r)? onOk,
