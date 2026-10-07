@@ -96,3 +96,30 @@ class UKeyValueData {
     "value": value,
   };
 }
+
+class UPlaceNearby {
+  UPlaceNearby({this.title = "", this.distanceMeters, this.minutes});
+
+  factory UPlaceNearby.fromMap(Map<String, dynamic> json) => UPlaceNearby(
+    title: json["title"] ?? "",
+    distanceMeters: json["distanceMeters"] == null ? null : (json["distanceMeters"] as num).toInt(),
+    minutes: json["minutes"] == null ? null : (json["minutes"] as num).toInt(),
+  );
+
+  final String title;
+  final int? distanceMeters;
+  final int? minutes;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"title": title, "distanceMeters": distanceMeters, "minutes": minutes};
+}
+
+class UPlaceFaq {
+  UPlaceFaq({this.question = "", this.answer = ""});
+
+  factory UPlaceFaq.fromMap(Map<String, dynamic> json) => UPlaceFaq(question: json["question"] ?? "", answer: json["answer"] ?? "");
+
+  final String question;
+  final String answer;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"question": question, "answer": answer};
+}

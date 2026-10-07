@@ -8171,7 +8171,7 @@ abstract class AppLocalizations {
   /// No description provided for @shared.
   ///
   /// In en, this message translates to:
-  /// **'Shared'**
+  /// **'Residents'**
   String get shared;
 
   /// No description provided for @shift.
@@ -13382,23 +13382,23 @@ abstract class AppLocalizations {
   /// **'Debit and credit totals are not equal'**
   String get voucherNotBalanced;
 
-  /// No description provided for @khabroom.
+  /// No description provided for @hotelDashboard.
   ///
   /// In en, this message translates to:
-  /// **'Khabroom'**
-  String get khabroom;
+  /// **'Hotel dashboard'**
+  String get hotelDashboard;
 
-  /// No description provided for @sportopia.
+  /// No description provided for @dormDashboard.
   ///
   /// In en, this message translates to:
-  /// **'Sportopia'**
-  String get sportopia;
+  /// **'Dorm dashboard'**
+  String get dormDashboard;
 
-  /// No description provided for @sharedModules.
+  /// No description provided for @residents.
   ///
   /// In en, this message translates to:
-  /// **'Shared'**
-  String get sharedModules;
+  /// **'Residents'**
+  String get residents;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

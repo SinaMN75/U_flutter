@@ -2438,7 +2438,7 @@
   "counterAccount": "حساب مقابل",
   "addLine": "افزودن ردیف",
   "voucherNotBalanced": "جمع بدهکار و بستانکار برابر نیست",
-  "khabroom": "خوابروم",
-  "sportopia": "اسپورتوپیا",
-  "sharedModules": "مشترک"
+  "hotelDashboard": "داشبورد هتل",
+  "dormDashboard": "داشبورد خوابگاه",
+  "residents": "ساکنان"
 }

@@ -4122,7 +4122,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get shareImage => 'Share image';
 
   @override
-  String get shared => 'Shared';
+  String get shared => 'Residents';
 
   @override
   String get shift => 'Shift';
@@ -6839,11 +6839,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get voucherNotBalanced => 'Debit and credit totals are not equal';
 
   @override
-  String get khabroom => 'Khabroom';
+  String get hotelDashboard => 'Hotel dashboard';
 
   @override
-  String get sportopia => 'Sportopia';
+  String get dormDashboard => 'Dorm dashboard';
 
   @override
-  String get sharedModules => 'Shared';
+  String get residents => 'Residents';
 }

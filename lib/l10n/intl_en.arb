@@ -1569,7 +1569,7 @@
   "settleAndCloseTheShift": "Settle and close the shift",
   "share": "Share",
   "shareImage": "Share image",
-  "shared": "Shared",
+  "shared": "Residents",
   "shift": "Shift",
   "shiftRevenue": "Shift revenue",
   "shiftStarted": "Shift started",
@@ -2676,7 +2676,7 @@
   "counterAccount": "Counter account",
   "addLine": "Add line",
   "voucherNotBalanced": "Debit and credit totals are not equal",
-  "khabroom": "Khabroom",
-  "sportopia": "Sportopia",
-  "sharedModules": "Shared"
+  "hotelDashboard": "Hotel dashboard",
+  "dormDashboard": "Dorm dashboard",
+  "residents": "Residents"
 }

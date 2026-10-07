@@ -6838,11 +6838,11 @@ class AppLocalizationsFa extends AppLocalizations {
   String get voucherNotBalanced => 'جمع بدهکار و بستانکار برابر نیست';
 
   @override
-  String get khabroom => 'خوابروم';
+  String get hotelDashboard => 'داشبورد هتل';
 
   @override
-  String get sportopia => 'اسپورتوپیا';
+  String get dormDashboard => 'داشبورد خوابگاه';
 
   @override
-  String get sharedModules => 'مشترک';
+  String get residents => 'ساکنان';
 }
