@@ -7289,4 +7289,64 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get dayCount => 'تعداد روز';
+
+  @override
+  String get createSuggestedPlans => 'ساخت پلن‌های پیشنهادی';
+
+  @override
+  String get createSuggestedPlansHint => '۵ پلن تکی (هر سیستم جدا) و ۴ پلن ترکیبی با قیمت‌های پیشنهادی ساخته می‌شود. بعد می‌توانید قیمت و جزئیات هر کدام را ویرایش یا حذف کنید.';
+
+  @override
+  String get planHotel => 'هتل';
+
+  @override
+  String get planHotelDescription => 'برای هتل‌ها، هتل‌آپارتمان‌ها و اقامتگاه‌ها';
+
+  @override
+  String get planDorm => 'خوابگاه و پانسیون';
+
+  @override
+  String get planDormDescription => 'برای خوابگاه‌های دانشجویی و پانسیون‌ها';
+
+  @override
+  String get planAccounting => 'حسابداری';
+
+  @override
+  String get planAccountingDescription => 'دفتر حساب، صندوق، بانک و چک برای هر کسب‌وکار';
+
+  @override
+  String get planInventory => 'انبارداری';
+
+  @override
+  String get planInventoryDescription => 'انبار، کالا، خرید و اموال برای هر کسب‌وکار';
+
+  @override
+  String get planStaff => 'کارکنان';
+
+  @override
+  String get planStaffDescription => 'شیفت، وظایف و درخواست‌های تعمیرات';
+
+  @override
+  String get planCafe => 'کافی‌شاپ و رستوران';
+
+  @override
+  String get planCafeDescription => 'انبارداری و حسابداری با هم';
+
+  @override
+  String get planFullDorm => 'خوابگاه کامل';
+
+  @override
+  String get planFullDormDescription => 'خوابگاه به همراه حسابداری، انبارداری و کارکنان';
+
+  @override
+  String get planFullHotel => 'هتل کامل';
+
+  @override
+  String get planFullHotelDescription => 'هتل به همراه حسابداری، انبارداری و کارکنان';
+
+  @override
+  String get planEverything => 'همه‌ی سیستم‌ها';
+
+  @override
+  String get planEverythingDescription => 'هتل، خوابگاه، حسابداری، انبارداری و کارکنان';
 }

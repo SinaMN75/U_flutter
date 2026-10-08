@@ -7290,4 +7290,64 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dayCount => 'Days';
+
+  @override
+  String get createSuggestedPlans => 'Create suggested plans';
+
+  @override
+  String get createSuggestedPlansHint => '5 single-system plans and 4 bundles are created with suggested prices. You can edit or delete each of them afterwards.';
+
+  @override
+  String get planHotel => 'Hotel';
+
+  @override
+  String get planHotelDescription => 'For hotels, apartment hotels and guest houses';
+
+  @override
+  String get planDorm => 'Dorm and boarding house';
+
+  @override
+  String get planDormDescription => 'For student dorms and boarding houses';
+
+  @override
+  String get planAccounting => 'Accounting';
+
+  @override
+  String get planAccountingDescription => 'Books, cash, bank and checks for any business';
+
+  @override
+  String get planInventory => 'Inventory';
+
+  @override
+  String get planInventoryDescription => 'Warehouses, items, purchases and assets for any business';
+
+  @override
+  String get planStaff => 'Staff';
+
+  @override
+  String get planStaffDescription => 'Shifts, tasks and maintenance requests';
+
+  @override
+  String get planCafe => 'Cafe and restaurant';
+
+  @override
+  String get planCafeDescription => 'Inventory and accounting together';
+
+  @override
+  String get planFullDorm => 'Complete dorm';
+
+  @override
+  String get planFullDormDescription => 'Dorm with accounting, inventory and staff';
+
+  @override
+  String get planFullHotel => 'Complete hotel';
+
+  @override
+  String get planFullHotelDescription => 'Hotel with accounting, inventory and staff';
+
+  @override
+  String get planEverything => 'Every system';
+
+  @override
+  String get planEverythingDescription => 'Hotel, dorm, accounting, inventory and staff';
 }

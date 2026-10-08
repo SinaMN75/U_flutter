@@ -14289,6 +14289,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Days'**
   String get dayCount;
+
+  /// No description provided for @createSuggestedPlans.
+  ///
+  /// In en, this message translates to:
+  /// **'Create suggested plans'**
+  String get createSuggestedPlans;
+
+  /// No description provided for @createSuggestedPlansHint.
+  ///
+  /// In en, this message translates to:
+  /// **'5 single-system plans and 4 bundles are created with suggested prices. You can edit or delete each of them afterwards.'**
+  String get createSuggestedPlansHint;
+
+  /// No description provided for @planHotel.
+  ///
+  /// In en, this message translates to:
+  /// **'Hotel'**
+  String get planHotel;
+
+  /// No description provided for @planHotelDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'For hotels, apartment hotels and guest houses'**
+  String get planHotelDescription;
+
+  /// No description provided for @planDorm.
+  ///
+  /// In en, this message translates to:
+  /// **'Dorm and boarding house'**
+  String get planDorm;
+
+  /// No description provided for @planDormDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'For student dorms and boarding houses'**
+  String get planDormDescription;
+
+  /// No description provided for @planAccounting.
+  ///
+  /// In en, this message translates to:
+  /// **'Accounting'**
+  String get planAccounting;
+
+  /// No description provided for @planAccountingDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Books, cash, bank and checks for any business'**
+  String get planAccountingDescription;
+
+  /// No description provided for @planInventory.
+  ///
+  /// In en, this message translates to:
+  /// **'Inventory'**
+  String get planInventory;
+
+  /// No description provided for @planInventoryDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Warehouses, items, purchases and assets for any business'**
+  String get planInventoryDescription;
+
+  /// No description provided for @planStaff.
+  ///
+  /// In en, this message translates to:
+  /// **'Staff'**
+  String get planStaff;
+
+  /// No description provided for @planStaffDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Shifts, tasks and maintenance requests'**
+  String get planStaffDescription;
+
+  /// No description provided for @planCafe.
+  ///
+  /// In en, this message translates to:
+  /// **'Cafe and restaurant'**
+  String get planCafe;
+
+  /// No description provided for @planCafeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Inventory and accounting together'**
+  String get planCafeDescription;
+
+  /// No description provided for @planFullDorm.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete dorm'**
+  String get planFullDorm;
+
+  /// No description provided for @planFullDormDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Dorm with accounting, inventory and staff'**
+  String get planFullDormDescription;
+
+  /// No description provided for @planFullHotel.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete hotel'**
+  String get planFullHotel;
+
+  /// No description provided for @planFullHotelDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Hotel with accounting, inventory and staff'**
+  String get planFullHotelDescription;
+
+  /// No description provided for @planEverything.
+  ///
+  /// In en, this message translates to:
+  /// **'Every system'**
+  String get planEverything;
+
+  /// No description provided for @planEverythingDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Hotel, dorm, accounting, inventory and staff'**
+  String get planEverythingDescription;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
