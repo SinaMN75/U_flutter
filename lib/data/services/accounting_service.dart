@@ -85,6 +85,13 @@ class UAccountingService {
     Function(String e)? onException,
   }) => _Api.call("/accounting/Ledger/Report", p.toMap(), _Api.one(ULedgerReportResponse.fromMap), _Api.empty, onOk, onError, onException);
 
+  Future<(UResponse<List<UTaxInvoiceItem>>?, UEmptyResponse?, String?)> readTaxInvoices({
+    required ULedgerReportParams p,
+    Function(UResponse<List<UTaxInvoiceItem>> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/accounting/Ledger/TaxInvoices", p.toMap(), _Api.list(UTaxInvoiceItem.fromMap), _Api.empty, onOk, onError, onException);
+
   Future<(UResponse<String>?, UEmptyResponse?, String?)> createCheck({
     required UCheckCreateParams p,
     Function(UResponse<String> r)? onOk,

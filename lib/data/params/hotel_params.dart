@@ -658,6 +658,7 @@ class UHotelReservationCreateParams {
   final int? penaltyPrecentEveryDate;
   final List<String>? adminUserIds;
   final List<UReservationGuestParams>? guests;
+  final String? roomNumber;
 
   UHotelReservationCreateParams({
     required this.tags,
@@ -677,6 +678,7 @@ class UHotelReservationCreateParams {
     this.creatorId,
     this.adminUserIds,
     this.guests,
+    this.roomNumber,
   });
 
   factory UHotelReservationCreateParams.fromJson(String str) => UHotelReservationCreateParams.fromMap(json.decode(str));
@@ -701,6 +703,7 @@ class UHotelReservationCreateParams {
     penaltyPrecentEveryDate: json["penaltyPrecentEveryDate"],
     adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
     guests: json["guests"] == null ? null : List<UReservationGuestParams>.from(json["guests"]!.map((dynamic x) => UReservationGuestParams.fromMap(x))),
+    roomNumber: json["roomNumber"],
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -721,6 +724,7 @@ class UHotelReservationCreateParams {
     "penaltyPrecentEveryDate": penaltyPrecentEveryDate,
     "adminUserIds": adminUserIds == null ? <dynamic>[] : List<dynamic>.from(adminUserIds!.map((String x) => x)),
     "guests": guests == null ? <dynamic>[] : List<dynamic>.from(guests!.map((UReservationGuestParams x) => x.toMap())),
+    "roomNumber": roomNumber,
   };
 }
 
@@ -742,6 +746,7 @@ class UHotelReservationUpdateParams {
   final List<String>? addAdminUserIds;
   final List<String>? removeAdminUserIds;
   final List<UReservationGuestParams>? guests;
+  final String? roomNumber;
 
   UHotelReservationUpdateParams({
     required this.id,
@@ -761,6 +766,7 @@ class UHotelReservationUpdateParams {
     this.addAdminUserIds,
     this.removeAdminUserIds,
     this.guests,
+    this.roomNumber,
   });
 
   factory UHotelReservationUpdateParams.fromJson(String str) => UHotelReservationUpdateParams.fromMap(json.decode(str));
@@ -785,6 +791,7 @@ class UHotelReservationUpdateParams {
     addAdminUserIds: json["addAdminUserIds"] == null ? <String>[] : List<String>.from(json["addAdminUserIds"]!.map((dynamic x) => x)),
     removeAdminUserIds: json["removeAdminUserIds"] == null ? <String>[] : List<String>.from(json["removeAdminUserIds"]!.map((dynamic x) => x)),
     guests: json["guests"] == null ? null : List<UReservationGuestParams>.from(json["guests"]!.map((dynamic x) => UReservationGuestParams.fromMap(x))),
+    roomNumber: json["roomNumber"],
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -805,6 +812,7 @@ class UHotelReservationUpdateParams {
     "addAdminUserIds": addAdminUserIds == null ? <dynamic>[] : List<dynamic>.from(addAdminUserIds!.map((String x) => x)),
     "removeAdminUserIds": removeAdminUserIds == null ? <dynamic>[] : List<dynamic>.from(removeAdminUserIds!.map((String x) => x)),
     "guests": guests == null ? <dynamic>[] : List<dynamic>.from(guests!.map((UReservationGuestParams x) => x.toMap())),
+    "roomNumber": roomNumber,
   };
 }
 
@@ -1136,8 +1144,13 @@ class UReservationGuestParams {
   final String fullName;
   final String? nationalCode;
   final String? phoneNumber;
+  final String? nationality;
+  final String? passportNumber;
+  final DateTime? birthDate;
+  final String? fatherName;
+  final String? gender;
 
-  UReservationGuestParams({required this.fullName, this.nationalCode, this.phoneNumber});
+  UReservationGuestParams({required this.fullName, this.nationalCode, this.phoneNumber, this.nationality, this.passportNumber, this.birthDate, this.fatherName, this.gender});
 
   factory UReservationGuestParams.fromJson(String str) => UReservationGuestParams.fromMap(json.decode(str));
 
@@ -1147,12 +1160,22 @@ class UReservationGuestParams {
     fullName: json["fullName"],
     nationalCode: json["nationalCode"],
     phoneNumber: json["phoneNumber"],
+    nationality: json["nationality"],
+    passportNumber: json["passportNumber"],
+    birthDate: json["birthDate"] == null ? null : DateTime.parse(json["birthDate"]),
+    fatherName: json["fatherName"],
+    gender: json["gender"],
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "fullName": fullName,
     "nationalCode": nationalCode,
     "phoneNumber": phoneNumber,
+    "nationality": nationality,
+    "passportNumber": passportNumber,
+    "birthDate": birthDate?.toIso8601String(),
+    "fatherName": fatherName,
+    "gender": gender,
   };
 }
 
@@ -1266,5 +1289,269 @@ class UHotelReservationCancelParams {
   Map<String, dynamic> toMap() => <String, dynamic>{
     "id": id,
     "reason": reason,
+  };
+}
+
+class UHotelRateCreateParams {
+  UHotelRateCreateParams({
+    required this.hotelId,
+    required this.startDate,
+    required this.endDate,
+    this.tags = const <int>[],
+    this.roomId,
+    this.price,
+    this.percent,
+    this.weekdays,
+    this.minNights,
+    this.detail1,
+  });
+
+  final String hotelId;
+  final DateTime startDate;
+  final DateTime endDate;
+  final List<int> tags;
+  final String? roomId;
+  final double? price;
+  final double? percent;
+  final List<int>? weekdays;
+  final int? minNights;
+  final String? detail1;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "hotelId": hotelId,
+    "startDate": startDate.toIso8601String(),
+    "endDate": endDate.toIso8601String(),
+    "tags": tags,
+    "roomId": roomId,
+    "price": price,
+    "percent": percent,
+    "weekdays": weekdays,
+    "minNights": minNights,
+    "detail1": detail1,
+  };
+}
+
+class UHotelRateUpdateParams {
+  UHotelRateUpdateParams({
+    required this.id,
+    this.startDate,
+    this.endDate,
+    this.price,
+    this.percent,
+    this.weekdays,
+    this.minNights,
+    this.tags,
+    this.detail1,
+  });
+
+  final String id;
+  final DateTime? startDate;
+  final DateTime? endDate;
+  final double? price;
+  final double? percent;
+  final List<int>? weekdays;
+  final int? minNights;
+  final List<int>? tags;
+  final String? detail1;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "startDate": startDate?.toIso8601String(),
+    "endDate": endDate?.toIso8601String(),
+    "price": price,
+    "percent": percent,
+    "weekdays": weekdays,
+    "minNights": minNights,
+    "tags": tags,
+    "detail1": detail1,
+  };
+}
+
+class UHotelRateReadParams {
+  UHotelRateReadParams({
+    this.pageSize,
+    this.pageNumber,
+    this.tags,
+    this.hotelId,
+    this.roomId,
+    this.fromDate,
+    this.toDate,
+  });
+
+  final int? pageSize;
+  final int? pageNumber;
+  final List<int>? tags;
+  final String? hotelId;
+  final String? roomId;
+  final DateTime? fromDate;
+  final DateTime? toDate;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "pageSize": pageSize,
+    "pageNumber": pageNumber,
+    "tags": tags,
+    "hotelId": hotelId,
+    "roomId": roomId,
+    "fromDate": fromDate?.toIso8601String(),
+    "toDate": toDate?.toIso8601String(),
+  };
+}
+
+class UHotelRoomCalendarParams {
+  UHotelRoomCalendarParams({
+    required this.roomId,
+    required this.fromDate,
+    this.days = 31,
+  });
+
+  final String roomId;
+  final DateTime fromDate;
+  final int days;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "roomId": roomId,
+    "fromDate": fromDate.toIso8601String(),
+    "days": days,
+  };
+}
+
+class UHotelHousekeepingParams {
+  UHotelHousekeepingParams({
+    required this.roomId,
+    required this.number,
+    required this.status,
+    this.note,
+  });
+
+  final String roomId;
+  final String number;
+  final int status;
+  final String? note;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "roomId": roomId,
+    "number": number,
+    "status": status,
+    "note": note,
+  };
+}
+
+class UHotelGroupRoomParams {
+  UHotelGroupRoomParams({
+    required this.roomId,
+    this.count = 1,
+    this.guestCount = 1,
+  });
+
+  final String roomId;
+  final int count;
+  final int guestCount;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "roomId": roomId,
+    "count": count,
+    "guestCount": guestCount,
+  };
+}
+
+class UHotelReservationGroupParams {
+  UHotelReservationGroupParams({
+    required this.userId,
+    required this.checkInDate,
+    required this.checkOutDate,
+    required this.groupName,
+    this.rooms = const <UHotelGroupRoomParams>[],
+    this.guestPhone,
+    this.notes,
+    this.penaltyPrecentEveryDate = 0,
+  });
+
+  final String userId;
+  final DateTime checkInDate;
+  final DateTime checkOutDate;
+  final String groupName;
+  final List<UHotelGroupRoomParams> rooms;
+  final String? guestPhone;
+  final String? notes;
+  final int penaltyPrecentEveryDate;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "userId": userId,
+    "checkInDate": checkInDate.toIso8601String(),
+    "checkOutDate": checkOutDate.toIso8601String(),
+    "groupName": groupName,
+    "rooms": rooms.map((UHotelGroupRoomParams x) => x.toMap()).toList(),
+    "guestPhone": guestPhone,
+    "notes": notes,
+    "penaltyPrecentEveryDate": penaltyPrecentEveryDate,
+  };
+}
+
+class UHotelReservationExtendParams {
+  UHotelReservationExtendParams({
+    required this.id,
+    required this.checkOutDate,
+  });
+
+  final String id;
+  final DateTime checkOutDate;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "checkOutDate": checkOutDate.toIso8601String(),
+  };
+}
+
+class UHotelReservationChangeRoomParams {
+  UHotelReservationChangeRoomParams({
+    required this.id,
+    required this.roomId,
+    this.keepPrice = false,
+    this.roomNumber,
+  });
+
+  final String id;
+  final String roomId;
+  final bool keepPrice;
+  final String? roomNumber;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "roomId": roomId,
+    "keepPrice": keepPrice,
+    "roomNumber": roomNumber,
+  };
+}
+
+class UHotelNightAuditParams {
+  UHotelNightAuditParams({
+    required this.hotelId,
+    this.date,
+  });
+
+  final String hotelId;
+  final DateTime? date;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "hotelId": hotelId,
+    "date": date?.toIso8601String(),
+  };
+}
+
+class UHotelGuestExportParams {
+  UHotelGuestExportParams({
+    required this.hotelId,
+    required this.fromDate,
+    required this.toDate,
+  });
+
+  final String hotelId;
+  final DateTime fromDate;
+  final DateTime toDate;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "hotelId": hotelId,
+    "fromDate": fromDate.toIso8601String(),
+    "toDate": toDate.toIso8601String(),
   };
 }

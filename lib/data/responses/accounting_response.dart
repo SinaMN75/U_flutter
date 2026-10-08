@@ -385,6 +385,9 @@ class ULedgerReportResponse {
     this.income = const <ULedgerReportItem>[],
     this.expense = const <ULedgerReportItem>[],
     this.netProfit = 0,
+    this.vatSales = 0,
+    this.vatPurchases = 0,
+    this.vatDue = 0,
     this.moneyBoxes = const <ULedgerMoneyBoxItem>[],
     this.places = const <ULedgerPlaceItem>[],
     this.aging = const <ULedgerAgingItem>[],
@@ -394,6 +397,9 @@ class ULedgerReportResponse {
     income: List<ULedgerReportItem>.from((json["income"] ?? <dynamic>[]).map((dynamic x) => ULedgerReportItem.fromMap(x))),
     expense: List<ULedgerReportItem>.from((json["expense"] ?? <dynamic>[]).map((dynamic x) => ULedgerReportItem.fromMap(x))),
     netProfit: _num(json["netProfit"]),
+    vatSales: _num(json["vatSales"]),
+    vatPurchases: _num(json["vatPurchases"]),
+    vatDue: _num(json["vatDue"]),
     moneyBoxes: List<ULedgerMoneyBoxItem>.from((json["moneyBoxes"] ?? <dynamic>[]).map((dynamic x) => ULedgerMoneyBoxItem.fromMap(x))),
     places: List<ULedgerPlaceItem>.from((json["places"] ?? <dynamic>[]).map((dynamic x) => ULedgerPlaceItem.fromMap(x))),
     aging: List<ULedgerAgingItem>.from((json["aging"] ?? <dynamic>[]).map((dynamic x) => ULedgerAgingItem.fromMap(x))),
@@ -402,6 +408,9 @@ class ULedgerReportResponse {
   final List<ULedgerReportItem> income;
   final List<ULedgerReportItem> expense;
   final double netProfit;
+  final double vatSales;
+  final double vatPurchases;
+  final double vatDue;
   final List<ULedgerMoneyBoxItem> moneyBoxes;
   final List<ULedgerPlaceItem> places;
   final List<ULedgerAgingItem> aging;
@@ -458,4 +467,55 @@ class UCheckResponse {
   final String? detail1;
 
   bool has(TagCheck t) => tags.contains(t.number);
+}
+
+class UTaxInvoiceItem {
+  UTaxInvoiceItem({
+    required this.sourceId,
+    required this.number,
+    required this.date,
+    this.personId,
+    this.personName,
+    this.nationalCode,
+    this.phoneNumber,
+    this.placeTitle,
+    this.description,
+    this.serviceId,
+    this.amount = 0,
+    this.vatPercent = 0,
+    this.vat = 0,
+    this.total = 0,
+  });
+
+  factory UTaxInvoiceItem.fromMap(Map<String, dynamic> json) => UTaxInvoiceItem(
+    sourceId: json["sourceId"] ?? "",
+    number: json["number"] == null ? 0 : (json["number"] as num).toInt(),
+    date: DateTime.parse(json["date"]),
+    personId: json["personId"],
+    personName: json["personName"],
+    nationalCode: json["nationalCode"],
+    phoneNumber: json["phoneNumber"],
+    placeTitle: json["placeTitle"],
+    description: json["description"],
+    serviceId: json["serviceId"],
+    amount: _num(json["amount"]),
+    vatPercent: _num(json["vatPercent"]),
+    vat: _num(json["vat"]),
+    total: _num(json["total"]),
+  );
+
+  final String sourceId;
+  final int number;
+  final DateTime date;
+  final String? personId;
+  final String? personName;
+  final String? nationalCode;
+  final String? phoneNumber;
+  final String? placeTitle;
+  final String? description;
+  final String? serviceId;
+  final double amount;
+  final double vatPercent;
+  final double vat;
+  final double total;
 }

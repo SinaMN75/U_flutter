@@ -6846,4 +6846,403 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get residents => 'Residents';
+
+  @override
+  String get action => 'Action';
+
+  @override
+  String get activityLog => 'Activity Log';
+
+  @override
+  String get arrivals => 'Arrivals';
+
+  @override
+  String get asset => 'Asset';
+
+  @override
+  String get assetTag => 'Asset Tag';
+
+  @override
+  String get assets => 'Assets';
+
+  @override
+  String get assignee => 'Assignee';
+
+  @override
+  String get attendance => 'Attendance';
+
+  @override
+  String get averageCost => 'Average Cost';
+
+  @override
+  String get birthDate => 'Birth Date';
+
+  @override
+  String get booking => 'Booking';
+
+  @override
+  String get changeRoom => 'Change Room';
+
+  @override
+  String get checkInChecklist => 'Check-in Checklist';
+
+  @override
+  String get checkOutChecklist => 'Check-out Checklist';
+
+  @override
+  String get checklistDamageHint => 'Damages create an invoice for the resident and go to their ledger.';
+
+  @override
+  String get checklistItem => 'Checklist Item';
+
+  @override
+  String get clockIn => 'Clock In';
+
+  @override
+  String get clockOut => 'Clock Out';
+
+  @override
+  String get closeDay => 'Close Day';
+
+  @override
+  String get closeDayHint => 'Unarrived reservations of this day are marked as no-show.';
+
+  @override
+  String get contactPerson => 'Contact Person';
+
+  @override
+  String get cost => 'Cost';
+
+  @override
+  String get createContract => 'Create Contract';
+
+  @override
+  String get creditAccount => 'Credit Account';
+
+  @override
+  String get customer => 'Customer';
+
+  @override
+  String get customers => 'Customers';
+
+  @override
+  String get damage => 'Damage';
+
+  @override
+  String get damaged => 'Damaged';
+
+  @override
+  String get departures => 'Departures';
+
+  @override
+  String get dormApplication => 'Residence Application';
+
+  @override
+  String get dormApplications => 'Residence Applications';
+
+  @override
+  String get dormRecords => 'Logs and Notices';
+
+  @override
+  String get emergencyContact => 'Emergency Contact';
+
+  @override
+  String get expenseAccount => 'Expense Account';
+
+  @override
+  String get expiresAt => 'Expires At';
+
+  @override
+  String get extendStay => 'Extend Stay';
+
+  @override
+  String get extraCharge => 'Extra Charge';
+
+  @override
+  String get fillRequiredFields => 'Please fill the required fields.';
+
+  @override
+  String get groupName => 'Group Name';
+
+  @override
+  String get groupReservation => 'Group Reservation';
+
+  @override
+  String get guardian => 'Guardian';
+
+  @override
+  String get guestList => 'Guest List';
+
+  @override
+  String get guestReport => 'Guest Report';
+
+  @override
+  String get guestReportHint => 'The list is copied for Excel, ready for the police registration system.';
+
+  @override
+  String get healthy => 'OK';
+
+  @override
+  String get housekeeping => 'Housekeeping';
+
+  @override
+  String get inHouse => 'In House';
+
+  @override
+  String get inventory => 'Inventory';
+
+  @override
+  String get keepPrice => 'Keep the price';
+
+  @override
+  String get lastAudit => 'Last Audit';
+
+  @override
+  String get laundryMachine => 'Laundry Machine';
+
+  @override
+  String get laundryMachines => 'Laundry Machines (comma separated)';
+
+  @override
+  String get laundrySlotMinutes => 'Laundry Slot (minutes)';
+
+  @override
+  String get logoUrl => 'Logo URL';
+
+  @override
+  String get lowStock => 'Low Stock';
+
+  @override
+  String get maxBeds => 'Max Beds';
+
+  @override
+  String get maxPlaces => 'Max Branches';
+
+  @override
+  String get maxRooms => 'Max Rooms';
+
+  @override
+  String get meal => 'Meal';
+
+  @override
+  String get mealMenu => 'Meal Menu';
+
+  @override
+  String get mealsAndLaundry => 'Meals and Laundry';
+
+  @override
+  String get minNights => 'Minimum Nights';
+
+  @override
+  String get minStock => 'Minimum Stock';
+
+  @override
+  String get nationality => 'Nationality';
+
+  @override
+  String get nightAudit => 'Night Audit';
+
+  @override
+  String get noShows => 'No Shows';
+
+  @override
+  String get openBalance => 'Open Balance';
+
+  @override
+  String get organizationInfo => 'Organization Info';
+
+  @override
+  String get organizationManagement => 'Organization Management';
+
+  @override
+  String get organizationNationalId => 'National ID';
+
+  @override
+  String get paidFrom => 'Paid From';
+
+  @override
+  String get passportNumber => 'Passport Number';
+
+  @override
+  String get pricePercent => 'Price Change (%)';
+
+  @override
+  String get priority => 'Priority';
+
+  @override
+  String get purchase => 'Purchase';
+
+  @override
+  String get purchaseDate => 'Purchase Date';
+
+  @override
+  String get purchaseOnCreditHint => 'Leave it empty to record the purchase on credit (payable to the supplier).';
+
+  @override
+  String get purchaseRequest => 'Purchase Request';
+
+  @override
+  String get purchases => 'Purchases';
+
+  @override
+  String get rate => 'Rate';
+
+  @override
+  String get rates => 'Rates';
+
+  @override
+  String get ratesAndCalendar => 'Rates and Calendar';
+
+  @override
+  String get receiveGoods => 'Receive Goods';
+
+  @override
+  String get relation => 'Relation';
+
+  @override
+  String get requester => 'Requester';
+
+  @override
+  String get reserved => 'Reserved';
+
+  @override
+  String get resident => 'Resident';
+
+  @override
+  String get returnDate => 'Return Date';
+
+  @override
+  String get review => 'Review';
+
+  @override
+  String get reviewNote => 'Review Note';
+
+  @override
+  String get roomRevenue => 'Room Revenue';
+
+  @override
+  String get shifts => 'Shifts';
+
+  @override
+  String get stock => 'Stock';
+
+  @override
+  String get stockMovement => 'Stock Movement';
+
+  @override
+  String get stockMovements => 'Stock Movements';
+
+  @override
+  String get subscriptionPlan => 'Subscription Plan';
+
+  @override
+  String get supplier => 'Supplier';
+
+  @override
+  String get suppliers => 'Suppliers';
+
+  @override
+  String get targetWarehouse => 'Target Warehouse';
+
+  @override
+  String get task => 'Task';
+
+  @override
+  String get tasksAndRequests => 'Tasks and Requests';
+
+  @override
+  String get unit => 'Unit';
+
+  @override
+  String get visitorName => 'Visitor Name';
+
+  @override
+  String get warehouse => 'Warehouse';
+
+  @override
+  String get warehouses => 'Warehouses';
+
+  @override
+  String get weekdays => 'Weekdays';
+
+  @override
+  String get withoutOrganization => 'Without organization';
+
+  @override
+  String get dormServices => 'Dorm Services';
+
+  @override
+  String get noticesAndRequests => 'Notices and Requests';
+
+  @override
+  String get reserve => 'Reserve';
+
+  @override
+  String get capacityIsFull => 'Full';
+
+  @override
+  String get maintenanceRequest => 'Maintenance Request';
+
+  @override
+  String get applyForResidence => 'Apply for Residence';
+
+  @override
+  String get applicationSent => 'Your application is sent.';
+
+  @override
+  String get vatPercent => 'VAT percent';
+
+  @override
+  String get taxServiceId => 'Tax service ID';
+
+  @override
+  String get valueAddedTax => 'Value added tax';
+
+  @override
+  String get vatSales => 'Output VAT';
+
+  @override
+  String get vatPurchases => 'Input VAT';
+
+  @override
+  String get vatDue => 'VAT payable';
+
+  @override
+  String get vatAmount => 'VAT amount';
+
+  @override
+  String get moadianExport => 'Tax system export';
+
+  @override
+  String get invoiceNumber => 'Invoice number';
+
+  @override
+  String get invoicePattern => 'Invoice pattern';
+
+  @override
+  String get invoicePatternSale => 'Sale';
+
+  @override
+  String get invoiceTypeFirst => 'Type 1';
+
+  @override
+  String get invoiceTypeSecond => 'Type 2';
+
+  @override
+  String get buyerName => 'Buyer name';
+
+  @override
+  String get buyerNationalCode => 'Buyer national ID';
+
+  @override
+  String get discount => 'Discount';
+
+  @override
+  String get amountAfterDiscount => 'Amount after discount';
+
+  @override
+  String get totalAmount => 'Total amount';
+
+  @override
+  String get settlementMethod => 'Settlement method';
 }

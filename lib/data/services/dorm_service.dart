@@ -216,4 +216,130 @@ class UDormService {
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
   }) => _Api.call("/Dorm/DormBedInvoice/ChartData", <String, dynamic>{}, _Api.list(UDormBedInvoiceChartResponse.fromMap), _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> setContractChecklist({
+    required UDormBedContractChecklistParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Dorm/DormBedContract/Checklist", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<String>?, UEmptyResponse?, String?)> printContract({
+    required UIdParams p,
+    Function(UResponse<String> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Dorm/DormBedContract/Print", p.toMap(), _Api.raw<String>(), _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<String>?, UEmptyResponse?, String?)> printInvoice({
+    required UIdParams p,
+    Function(UResponse<String> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Dorm/DormBedInvoice/Print", p.toMap(), _Api.raw<String>(), _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<String>?, UEmptyResponse?, String?)> createApplication({
+    required UDormApplicationCreateParams p,
+    Function(UResponse<String> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Dorm/DormApplication/Create", p.toMap(), _Api.raw<String>(), _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<List<UDormApplicationResponse>>?, UEmptyResponse?, String?)> readApplications({
+    required UDormApplicationReadParams p,
+    Function(UResponse<List<UDormApplicationResponse>> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Dorm/DormApplication/Read", p.toMap(), _Api.list(UDormApplicationResponse.fromMap), _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> reviewApplication({
+    required UDormApplicationReviewParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Dorm/DormApplication/Review", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteApplication({
+    required UIdParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Dorm/DormApplication/Delete", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<String>?, UEmptyResponse?, String?)> createRecord({
+    required UDormRecordCreateParams p,
+    Function(UResponse<String> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Dorm/DormRecord/Create", p.toMap(), _Api.raw<String>(), _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<List<UDormRecordResponse>>?, UEmptyResponse?, String?)> readRecords({
+    required UDormRecordReadParams p,
+    Function(UResponse<List<UDormRecordResponse>> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Dorm/DormRecord/Read", p.toMap(), _Api.list(UDormRecordResponse.fromMap), _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> updateRecord({
+    required UDormRecordUpdateParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Dorm/DormRecord/Update", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteRecord({
+    required UIdParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Dorm/DormRecord/Delete", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<String>?, UEmptyResponse?, String?)> createMeal({
+    required UDormMealCreateParams p,
+    Function(UResponse<String> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Dorm/DormMeal/Create", p.toMap(), _Api.raw<String>(), _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<List<UDormMealResponse>>?, UEmptyResponse?, String?)> readMeals({
+    required UDormMealReadParams p,
+    Function(UResponse<List<UDormMealResponse>> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Dorm/DormMeal/Read", p.toMap(), _Api.list(UDormMealResponse.fromMap), _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> updateMeal({
+    required UDormMealUpdateParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Dorm/DormMeal/Update", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteMeal({
+    required UIdParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Dorm/DormMeal/Delete", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<String>?, UEmptyResponse?, String?)> createBooking({
+    required UDormBookingCreateParams p,
+    Function(UResponse<String> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Dorm/DormBooking/Create", p.toMap(), _Api.raw<String>(), _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<List<UDormBookingResponse>>?, UEmptyResponse?, String?)> readBookings({
+    required UDormBookingReadParams p,
+    Function(UResponse<List<UDormBookingResponse>> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Dorm/DormBooking/Read", p.toMap(), _Api.list(UDormBookingResponse.fromMap), _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> cancelBooking({
+    required UIdParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Dorm/DormBooking/Cancel", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 }

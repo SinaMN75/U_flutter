@@ -7,6 +7,14 @@ class UOrganizationCreateParams {
     this.tags = const <int>[101],
     this.ownerPassword,
     this.commissionPercent = 0,
+    this.logoUrl,
+    this.address,
+    this.phoneNumber,
+    this.nationalId,
+    this.economicCode,
+    this.vatPercent,
+    this.taxServiceId,
+    this.plan,
   });
 
   final String title;
@@ -14,6 +22,14 @@ class UOrganizationCreateParams {
   final List<int> tags;
   final String? ownerPassword;
   final double commissionPercent;
+  final String? logoUrl;
+  final String? address;
+  final String? phoneNumber;
+  final String? nationalId;
+  final String? economicCode;
+  final double? vatPercent;
+  final String? taxServiceId;
+  final UOrganizationPlan? plan;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "title": title,
@@ -21,6 +37,14 @@ class UOrganizationCreateParams {
     "tags": tags,
     "ownerPassword": ownerPassword,
     "commissionPercent": commissionPercent,
+    "logoUrl": logoUrl,
+    "address": address,
+    "phoneNumber": phoneNumber,
+    "nationalId": nationalId,
+    "economicCode": economicCode,
+    "vatPercent": vatPercent,
+    "taxServiceId": taxServiceId,
+    "plan": plan?.toMap(),
   };
 }
 
@@ -34,6 +58,14 @@ class UOrganizationUpdateParams {
     this.tags,
     this.addTags,
     this.removeTags,
+    this.logoUrl,
+    this.address,
+    this.phoneNumber,
+    this.nationalId,
+    this.economicCode,
+    this.vatPercent,
+    this.taxServiceId,
+    this.plan,
   });
 
   final String id;
@@ -44,6 +76,14 @@ class UOrganizationUpdateParams {
   final List<int>? tags;
   final List<int>? addTags;
   final List<int>? removeTags;
+  final String? logoUrl;
+  final String? address;
+  final String? phoneNumber;
+  final String? nationalId;
+  final String? economicCode;
+  final double? vatPercent;
+  final String? taxServiceId;
+  final UOrganizationPlan? plan;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "id": id,
@@ -54,6 +94,14 @@ class UOrganizationUpdateParams {
     "tags": tags,
     "addTags": addTags,
     "removeTags": removeTags,
+    "logoUrl": logoUrl,
+    "address": address,
+    "phoneNumber": phoneNumber,
+    "nationalId": nationalId,
+    "economicCode": economicCode,
+    "vatPercent": vatPercent,
+    "taxServiceId": taxServiceId,
+    "plan": plan?.toMap(),
   };
 }
 
@@ -88,5 +136,281 @@ class UOrganizationMemberParams {
     "userId": userId,
     "permissions": permissions,
     "password": password,
+  };
+}
+
+class UStaffShiftCreateParams {
+  UStaffShiftCreateParams({
+    required this.organizationId,
+    required this.userId,
+    required this.startAt,
+    required this.endAt,
+    this.tags = const <int>[],
+    this.placeId,
+    this.detail1,
+  });
+
+  final String organizationId;
+  final String userId;
+  final DateTime startAt;
+  final DateTime endAt;
+  final List<int> tags;
+  final String? placeId;
+  final String? detail1;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "organizationId": organizationId,
+    "userId": userId,
+    "startAt": startAt.toIso8601String(),
+    "endAt": endAt.toIso8601String(),
+    "tags": tags,
+    "placeId": placeId,
+    "detail1": detail1,
+  };
+}
+
+class UStaffShiftUpdateParams {
+  UStaffShiftUpdateParams({
+    required this.id,
+    this.userId,
+    this.startAt,
+    this.endAt,
+    this.placeId,
+    this.tags,
+    this.detail1,
+  });
+
+  final String id;
+  final String? userId;
+  final DateTime? startAt;
+  final DateTime? endAt;
+  final String? placeId;
+  final List<int>? tags;
+  final String? detail1;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "userId": userId,
+    "startAt": startAt?.toIso8601String(),
+    "endAt": endAt?.toIso8601String(),
+    "placeId": placeId,
+    "tags": tags,
+    "detail1": detail1,
+  };
+}
+
+class UStaffShiftReadParams {
+  UStaffShiftReadParams({
+    this.organizationId,
+    this.pageSize,
+    this.pageNumber,
+    this.userId,
+    this.placeId,
+    this.fromDate,
+    this.toDate,
+  });
+
+  final String? organizationId;
+  final int? pageSize;
+  final int? pageNumber;
+  final String? userId;
+  final String? placeId;
+  final DateTime? fromDate;
+  final DateTime? toDate;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "organizationId": organizationId,
+    "pageSize": pageSize,
+    "pageNumber": pageNumber,
+    "userId": userId,
+    "placeId": placeId,
+    "fromDate": fromDate?.toIso8601String(),
+    "toDate": toDate?.toIso8601String(),
+  };
+}
+
+class UStaffTaskCreateParams {
+  UStaffTaskCreateParams({
+    required this.title,
+    this.tags = const <int>[],
+    this.organizationId,
+    this.placeId,
+    this.assigneeId,
+    this.dueDate,
+    this.description,
+    this.location,
+    this.roomId,
+    this.bedId,
+  });
+
+  final String title;
+  final List<int> tags;
+  final String? organizationId;
+  final String? placeId;
+  final String? assigneeId;
+  final DateTime? dueDate;
+  final String? description;
+  final String? location;
+  final String? roomId;
+  final String? bedId;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "title": title,
+    "tags": tags,
+    "organizationId": organizationId,
+    "placeId": placeId,
+    "assigneeId": assigneeId,
+    "dueDate": dueDate?.toIso8601String(),
+    "description": description,
+    "location": location,
+    "roomId": roomId,
+    "bedId": bedId,
+  };
+}
+
+class UStaffTaskUpdateParams {
+  UStaffTaskUpdateParams({
+    required this.id,
+    this.title,
+    this.placeId,
+    this.assigneeId,
+    this.dueDate,
+    this.description,
+    this.location,
+    this.doneNote,
+    this.cost,
+    this.tags,
+  });
+
+  final String id;
+  final String? title;
+  final String? placeId;
+  final String? assigneeId;
+  final DateTime? dueDate;
+  final String? description;
+  final String? location;
+  final String? doneNote;
+  final double? cost;
+  final List<int>? tags;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "title": title,
+    "placeId": placeId,
+    "assigneeId": assigneeId,
+    "dueDate": dueDate?.toIso8601String(),
+    "description": description,
+    "location": location,
+    "doneNote": doneNote,
+    "cost": cost,
+    "tags": tags,
+  };
+}
+
+class UStaffTaskReadParams {
+  UStaffTaskReadParams({
+    this.organizationId,
+    this.pageSize,
+    this.pageNumber,
+    this.tags,
+    this.placeId,
+    this.assigneeId,
+    this.mine = false,
+  });
+
+  final String? organizationId;
+  final int? pageSize;
+  final int? pageNumber;
+  final List<int>? tags;
+  final String? placeId;
+  final String? assigneeId;
+  final bool mine;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "organizationId": organizationId,
+    "pageSize": pageSize,
+    "pageNumber": pageNumber,
+    "tags": tags,
+    "placeId": placeId,
+    "assigneeId": assigneeId,
+    "mine": mine,
+  };
+}
+
+class UOrganizationCustomerSetParams {
+  UOrganizationCustomerSetParams({
+    required this.organizationId,
+    required this.userId,
+    this.tags = const <int>[],
+    this.note,
+  });
+
+  final String organizationId;
+  final String userId;
+  final List<int> tags;
+  final String? note;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "organizationId": organizationId,
+    "userId": userId,
+    "tags": tags,
+    "note": note,
+  };
+}
+
+class UOrganizationCustomerReadParams {
+  UOrganizationCustomerReadParams({
+    required this.organizationId,
+    this.pageSize,
+    this.pageNumber,
+    this.tags,
+    this.userId,
+  });
+
+  final String organizationId;
+  final int? pageSize;
+  final int? pageNumber;
+  final List<int>? tags;
+  final String? userId;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "organizationId": organizationId,
+    "pageSize": pageSize,
+    "pageNumber": pageNumber,
+    "tags": tags,
+    "userId": userId,
+  };
+}
+
+class UActivityLogReadParams {
+  UActivityLogReadParams({
+    this.organizationId,
+    this.pageSize,
+    this.pageNumber,
+    this.tags,
+    this.userId,
+    this.path,
+    this.fromCreatedAt,
+    this.toCreatedAt,
+  });
+
+  final String? organizationId;
+  final int? pageSize;
+  final int? pageNumber;
+  final List<int>? tags;
+  final String? userId;
+  final String? path;
+  final DateTime? fromCreatedAt;
+  final DateTime? toCreatedAt;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "organizationId": organizationId,
+    "pageSize": pageSize,
+    "pageNumber": pageNumber,
+    "tags": tags,
+    "userId": userId,
+    "path": path,
+    "fromCreatedAt": fromCreatedAt?.toIso8601String(),
+    "toCreatedAt": toCreatedAt?.toIso8601String(),
   };
 }

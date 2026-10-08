@@ -211,4 +211,95 @@ class UHotelService {
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
   }) => _Api.call("/Hotel/HotelReservation/CancelByUser", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException, locale: true);
+
+  Future<(UResponse<String>?, UEmptyResponse?, String?)> createRate({
+    required UHotelRateCreateParams p,
+    Function(UResponse<String> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Hotel/HotelRate/Create", p.toMap(), _Api.raw<String>(), _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<List<UHotelRateResponse>>?, UEmptyResponse?, String?)> readRates({
+    required UHotelRateReadParams p,
+    Function(UResponse<List<UHotelRateResponse>> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Hotel/HotelRate/Read", p.toMap(), _Api.list(UHotelRateResponse.fromMap), _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> updateRate({
+    required UHotelRateUpdateParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Hotel/HotelRate/Update", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteRate({
+    required UIdParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Hotel/HotelRate/Delete", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<List<UHotelCalendarDay>>?, UEmptyResponse?, String?)> readRoomCalendar({
+    required UHotelRoomCalendarParams p,
+    Function(UResponse<List<UHotelCalendarDay>> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Hotel/HotelRoom/Calendar", p.toMap(), _Api.list(UHotelCalendarDay.fromMap), _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> setHousekeeping({
+    required UHotelHousekeepingParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Hotel/HotelRoom/Housekeeping", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<List<dynamic>>?, UEmptyResponse?, String?)> createReservationGroup({
+    required UHotelReservationGroupParams p,
+    Function(UResponse<List<dynamic>> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Hotel/HotelReservation/CreateGroup", p.toMap(), _Api.raw<List<dynamic>>(), _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> extendReservation({
+    required UHotelReservationExtendParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Hotel/HotelReservation/Extend", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> changeReservationRoom({
+    required UHotelReservationChangeRoomParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Hotel/HotelReservation/ChangeRoom", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<List<UHotelGuestExportItem>>?, UEmptyResponse?, String?)> exportGuests({
+    required UHotelGuestExportParams p,
+    Function(UResponse<List<UHotelGuestExportItem>> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Hotel/HotelReservation/GuestExport", p.toMap(), _Api.list(UHotelGuestExportItem.fromMap), _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<String>?, UEmptyResponse?, String?)> printReservation({
+    required UIdParams p,
+    Function(UResponse<String> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Hotel/HotelReservation/Print", p.toMap(), _Api.raw<String>(), _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<UHotelNightAuditResponse>?, UEmptyResponse?, String?)> readNightAudit({
+    required UHotelNightAuditParams p,
+    Function(UResponse<UHotelNightAuditResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Hotel/NightAudit/Read", p.toMap(), _Api.one(UHotelNightAuditResponse.fromMap), _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<UHotelNightAuditResponse>?, UEmptyResponse?, String?)> closeNightAudit({
+    required UHotelNightAuditParams p,
+    Function(UResponse<UHotelNightAuditResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Hotel/NightAudit/Close", p.toMap(), _Api.one(UHotelNightAuditResponse.fromMap), _Api.empty, onOk, onError, onException);
 }

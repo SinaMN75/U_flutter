@@ -244,6 +244,8 @@ class UDormCreateParams {
     this.latitude,
     this.longitude,
     this.organizationId,
+    this.laundryMachines,
+    this.laundrySlotMinutes,
   });
 
   factory UDormCreateParams.fromJson(String str) => UDormCreateParams.fromMap(json.decode(str));
@@ -279,6 +281,8 @@ class UDormCreateParams {
     latitude: json["latitude"] == null ? null : (json["latitude"] as num).toDouble(),
     longitude: json["longitude"] == null ? null : (json["longitude"] as num).toDouble(),
     organizationId: json["organizationId"],
+    laundryMachines: json["laundryMachines"] == null ? <String>[] : List<String>.from(json["laundryMachines"]!.map((dynamic x) => x)),
+    laundrySlotMinutes: json["laundrySlotMinutes"] == null ? null : (json["laundrySlotMinutes"] as num).toInt(),
   );
 
   final List<int> tags;
@@ -311,6 +315,8 @@ class UDormCreateParams {
   final double? latitude;
   final double? longitude;
   final String? organizationId;
+  final List<String>? laundryMachines;
+  final int? laundrySlotMinutes;
 
   String toJson() => json.encode(toMap());
 
@@ -345,6 +351,8 @@ class UDormCreateParams {
     "latitude": latitude,
     "longitude": longitude,
     "organizationId": organizationId,
+    "laundryMachines": laundryMachines,
+    "laundrySlotMinutes": laundrySlotMinutes,
   };
 }
 
@@ -383,6 +391,8 @@ class UDormUpdateParams {
     this.latitude,
     this.longitude,
     this.organizationId,
+    this.laundryMachines,
+    this.laundrySlotMinutes,
   });
 
   factory UDormUpdateParams.fromJson(String str) => UDormUpdateParams.fromMap(json.decode(str));
@@ -421,6 +431,8 @@ class UDormUpdateParams {
     latitude: json["latitude"] == null ? null : (json["latitude"] as num).toDouble(),
     longitude: json["longitude"] == null ? null : (json["longitude"] as num).toDouble(),
     organizationId: json["organizationId"],
+    laundryMachines: json["laundryMachines"] == null ? <String>[] : List<String>.from(json["laundryMachines"]!.map((dynamic x) => x)),
+    laundrySlotMinutes: json["laundrySlotMinutes"] == null ? null : (json["laundrySlotMinutes"] as num).toInt(),
   );
 
   final String id;
@@ -456,6 +468,8 @@ class UDormUpdateParams {
   final double? latitude;
   final double? longitude;
   final String? organizationId;
+  final List<String>? laundryMachines;
+  final int? laundrySlotMinutes;
 
   String toJson() => json.encode(toMap());
 
@@ -493,6 +507,8 @@ class UDormUpdateParams {
     "latitude": latitude,
     "longitude": longitude,
     "organizationId": organizationId,
+    "laundryMachines": laundryMachines,
+    "laundrySlotMinutes": laundrySlotMinutes,
   };
 }
 
@@ -786,6 +802,12 @@ class UDormBedContractCreateParams {
   final String? detail2;
   final String? creatorId;
   final List<String>? adminUserIds;
+  final String? guardianName;
+  final String? guardianPhone;
+  final String? emergencyName;
+  final String? emergencyPhone;
+  final String? emergencyRelation;
+  final String? applicationId;
 
   UDormBedContractCreateParams({
     required this.tags,
@@ -801,6 +823,12 @@ class UDormBedContractCreateParams {
     this.detail2,
     this.creatorId,
     this.adminUserIds,
+    this.guardianName,
+    this.guardianPhone,
+    this.emergencyName,
+    this.emergencyPhone,
+    this.emergencyRelation,
+    this.applicationId,
   });
 
   factory UDormBedContractCreateParams.fromJson(String str) => UDormBedContractCreateParams.fromMap(json.decode(str));
@@ -821,6 +849,12 @@ class UDormBedContractCreateParams {
     detail2: json["detail2"],
     creatorId: json["creatorId"],
     adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
+    guardianName: json["guardianName"],
+    guardianPhone: json["guardianPhone"],
+    emergencyName: json["emergencyName"],
+    emergencyPhone: json["emergencyPhone"],
+    emergencyRelation: json["emergencyRelation"],
+    applicationId: json["applicationId"],
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -837,6 +871,12 @@ class UDormBedContractCreateParams {
     "detail2": detail2,
     "creatorId": creatorId,
     "adminUserIds": adminUserIds == null ? <dynamic>[] : List<dynamic>.from(adminUserIds!.map((String x) => x)),
+    "guardianName": guardianName,
+    "guardianPhone": guardianPhone,
+    "emergencyName": emergencyName,
+    "emergencyPhone": emergencyPhone,
+    "emergencyRelation": emergencyRelation,
+    "applicationId": applicationId,
   };
 }
 
@@ -946,6 +986,11 @@ class UDormBedContractUpdateParams {
   final List<String>? adminUserIds;
   final List<String>? addAdminUserIds;
   final List<String>? removeAdminUserIds;
+  final String? guardianName;
+  final String? guardianPhone;
+  final String? emergencyName;
+  final String? emergencyPhone;
+  final String? emergencyRelation;
 
   UDormBedContractUpdateParams({
     required this.id,
@@ -961,6 +1006,11 @@ class UDormBedContractUpdateParams {
     this.adminUserIds,
     this.addAdminUserIds,
     this.removeAdminUserIds,
+    this.guardianName,
+    this.guardianPhone,
+    this.emergencyName,
+    this.emergencyPhone,
+    this.emergencyRelation,
   });
 
   factory UDormBedContractUpdateParams.fromJson(String str) => UDormBedContractUpdateParams.fromMap(json.decode(str));
@@ -981,6 +1031,11 @@ class UDormBedContractUpdateParams {
     adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
     addAdminUserIds: json["addAdminUserIds"] == null ? <String>[] : List<String>.from(json["addAdminUserIds"]!.map((dynamic x) => x)),
     removeAdminUserIds: json["removeAdminUserIds"] == null ? <String>[] : List<String>.from(json["removeAdminUserIds"]!.map((dynamic x) => x)),
+    guardianName: json["guardianName"],
+    guardianPhone: json["guardianPhone"],
+    emergencyName: json["emergencyName"],
+    emergencyPhone: json["emergencyPhone"],
+    emergencyRelation: json["emergencyRelation"],
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -997,6 +1052,11 @@ class UDormBedContractUpdateParams {
     "adminUserIds": adminUserIds == null ? <dynamic>[] : List<dynamic>.from(adminUserIds!.map((String x) => x)),
     "addAdminUserIds": addAdminUserIds == null ? <dynamic>[] : List<dynamic>.from(addAdminUserIds!.map((String x) => x)),
     "removeAdminUserIds": removeAdminUserIds == null ? <dynamic>[] : List<dynamic>.from(removeAdminUserIds!.map((String x) => x)),
+    "guardianName": guardianName,
+    "guardianPhone": guardianPhone,
+    "emergencyName": emergencyName,
+    "emergencyPhone": emergencyPhone,
+    "emergencyRelation": emergencyRelation,
   };
 }
 
@@ -1295,5 +1355,383 @@ class UDormBedInvoiceSplitParams {
   Map<String, dynamic> toMap() => <String, dynamic>{
     "id": id,
     "count": count,
+  };
+}
+
+class UDormBedContractChecklistParams {
+  UDormBedContractChecklistParams({
+    required this.contractId,
+    required this.checkOut,
+    this.items = const <UHandoverItem>[],
+  });
+
+  final String contractId;
+  final bool checkOut;
+  final List<UHandoverItem> items;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "contractId": contractId,
+    "checkOut": checkOut,
+    "items": items.map((UHandoverItem x) => x.toMap()).toList(),
+  };
+}
+
+class UDormApplicationDocumentParams {
+  UDormApplicationDocumentParams({
+    required this.title,
+    this.url,
+  });
+
+  final String title;
+  final String? url;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "title": title,
+    "url": url,
+  };
+}
+
+class UDormApplicationCreateParams {
+  UDormApplicationCreateParams({
+    required this.dormId,
+    required this.desiredStartDate,
+    this.desiredEndDate,
+    this.userId,
+    this.detail1,
+    this.documents = const <UDormApplicationDocumentParams>[],
+  });
+
+  final String dormId;
+  final DateTime desiredStartDate;
+  final DateTime? desiredEndDate;
+  final String? userId;
+  final String? detail1;
+  final List<UDormApplicationDocumentParams> documents;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "dormId": dormId,
+    "desiredStartDate": desiredStartDate.toIso8601String(),
+    "desiredEndDate": desiredEndDate?.toIso8601String(),
+    "userId": userId,
+    "detail1": detail1,
+    "documents": documents.map((UDormApplicationDocumentParams x) => x.toMap()).toList(),
+  };
+}
+
+class UDormApplicationReadParams {
+  UDormApplicationReadParams({
+    this.pageSize,
+    this.pageNumber,
+    this.tags,
+    this.dormId,
+    this.userId,
+    this.mine = false,
+  });
+
+  final int? pageSize;
+  final int? pageNumber;
+  final List<int>? tags;
+  final String? dormId;
+  final String? userId;
+  final bool mine;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "pageSize": pageSize,
+    "pageNumber": pageNumber,
+    "tags": tags,
+    "dormId": dormId,
+    "userId": userId,
+    "mine": mine,
+  };
+}
+
+class UDormApplicationReviewParams {
+  UDormApplicationReviewParams({
+    required this.id,
+    required this.status,
+    this.reviewNote,
+    this.bedId,
+    this.documentApprovals,
+  });
+
+  final String id;
+  final int status;
+  final String? reviewNote;
+  final String? bedId;
+  final List<bool?>? documentApprovals;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "status": status,
+    "reviewNote": reviewNote,
+    "bedId": bedId,
+    "documentApprovals": documentApprovals,
+  };
+}
+
+class UDormRecordCreateParams {
+  UDormRecordCreateParams({
+    required this.dormId,
+    required this.title,
+    this.tags = const <int>[],
+    this.date,
+    this.endDate,
+    this.userId,
+    this.body,
+    this.visitorName,
+    this.visitorPhone,
+    this.visitorNationalCode,
+    this.relation,
+    this.roomId,
+    this.penalty,
+    this.items,
+  });
+
+  final String dormId;
+  final String title;
+  final List<int> tags;
+  final DateTime? date;
+  final DateTime? endDate;
+  final String? userId;
+  final String? body;
+  final String? visitorName;
+  final String? visitorPhone;
+  final String? visitorNationalCode;
+  final String? relation;
+  final String? roomId;
+  final double? penalty;
+  final List<UHandoverItem>? items;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "dormId": dormId,
+    "title": title,
+    "tags": tags,
+    "date": date?.toIso8601String(),
+    "endDate": endDate?.toIso8601String(),
+    "userId": userId,
+    "body": body,
+    "visitorName": visitorName,
+    "visitorPhone": visitorPhone,
+    "visitorNationalCode": visitorNationalCode,
+    "relation": relation,
+    "roomId": roomId,
+    "penalty": penalty,
+    "items": items?.map((UHandoverItem x) => x.toMap()).toList(),
+  };
+}
+
+class UDormRecordUpdateParams {
+  UDormRecordUpdateParams({
+    required this.id,
+    this.title,
+    this.date,
+    this.endDate,
+    this.body,
+    this.visitorName,
+    this.visitorPhone,
+    this.tags,
+    this.items,
+  });
+
+  final String id;
+  final String? title;
+  final DateTime? date;
+  final DateTime? endDate;
+  final String? body;
+  final String? visitorName;
+  final String? visitorPhone;
+  final List<int>? tags;
+  final List<UHandoverItem>? items;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "title": title,
+    "date": date?.toIso8601String(),
+    "endDate": endDate?.toIso8601String(),
+    "body": body,
+    "visitorName": visitorName,
+    "visitorPhone": visitorPhone,
+    "tags": tags,
+    "items": items?.map((UHandoverItem x) => x.toMap()).toList(),
+  };
+}
+
+class UDormRecordReadParams {
+  UDormRecordReadParams({
+    this.pageSize,
+    this.pageNumber,
+    this.tags,
+    this.dormId,
+    this.userId,
+    this.fromDate,
+    this.toDate,
+    this.mine = false,
+  });
+
+  final int? pageSize;
+  final int? pageNumber;
+  final List<int>? tags;
+  final String? dormId;
+  final String? userId;
+  final DateTime? fromDate;
+  final DateTime? toDate;
+  final bool mine;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "pageSize": pageSize,
+    "pageNumber": pageNumber,
+    "tags": tags,
+    "dormId": dormId,
+    "userId": userId,
+    "fromDate": fromDate?.toIso8601String(),
+    "toDate": toDate?.toIso8601String(),
+    "mine": mine,
+  };
+}
+
+class UDormMealCreateParams {
+  UDormMealCreateParams({
+    required this.dormId,
+    required this.title,
+    required this.date,
+    this.tags = const <int>[],
+    this.price = 0,
+    this.capacity,
+  });
+
+  final String dormId;
+  final String title;
+  final DateTime date;
+  final List<int> tags;
+  final double price;
+  final int? capacity;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "dormId": dormId,
+    "title": title,
+    "date": date.toIso8601String(),
+    "tags": tags,
+    "price": price,
+    "capacity": capacity,
+  };
+}
+
+class UDormMealUpdateParams {
+  UDormMealUpdateParams({
+    required this.id,
+    this.title,
+    this.date,
+    this.price,
+    this.capacity,
+    this.tags,
+  });
+
+  final String id;
+  final String? title;
+  final DateTime? date;
+  final double? price;
+  final int? capacity;
+  final List<int>? tags;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "title": title,
+    "date": date?.toIso8601String(),
+    "price": price,
+    "capacity": capacity,
+    "tags": tags,
+  };
+}
+
+class UDormMealReadParams {
+  UDormMealReadParams({
+    this.pageSize,
+    this.pageNumber,
+    this.tags,
+    this.dormId,
+    this.fromDate,
+    this.toDate,
+  });
+
+  final int? pageSize;
+  final int? pageNumber;
+  final List<int>? tags;
+  final String? dormId;
+  final DateTime? fromDate;
+  final DateTime? toDate;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "pageSize": pageSize,
+    "pageNumber": pageNumber,
+    "tags": tags,
+    "dormId": dormId,
+    "fromDate": fromDate?.toIso8601String(),
+    "toDate": toDate?.toIso8601String(),
+  };
+}
+
+class UDormBookingCreateParams {
+  UDormBookingCreateParams({
+    required this.dormId,
+    this.tags = const <int>[],
+    this.userId,
+    this.mealId,
+    this.startAt,
+    this.endAt,
+    this.resource,
+  });
+
+  final String dormId;
+  final List<int> tags;
+  final String? userId;
+  final String? mealId;
+  final DateTime? startAt;
+  final DateTime? endAt;
+  final String? resource;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "dormId": dormId,
+    "tags": tags,
+    "userId": userId,
+    "mealId": mealId,
+    "startAt": startAt?.toIso8601String(),
+    "endAt": endAt?.toIso8601String(),
+    "resource": resource,
+  };
+}
+
+class UDormBookingReadParams {
+  UDormBookingReadParams({
+    this.pageSize,
+    this.pageNumber,
+    this.tags,
+    this.dormId,
+    this.userId,
+    this.mealId,
+    this.fromDate,
+    this.toDate,
+    this.mine = false,
+  });
+
+  final int? pageSize;
+  final int? pageNumber;
+  final List<int>? tags;
+  final String? dormId;
+  final String? userId;
+  final String? mealId;
+  final DateTime? fromDate;
+  final DateTime? toDate;
+  final bool mine;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "pageSize": pageSize,
+    "pageNumber": pageNumber,
+    "tags": tags,
+    "dormId": dormId,
+    "userId": userId,
+    "mealId": mealId,
+    "fromDate": fromDate?.toIso8601String(),
+    "toDate": toDate?.toIso8601String(),
+    "mine": mine,
   };
 }

@@ -209,6 +209,7 @@ class UHotelJson {
     this.longitude,
     this.cancellationFreeHours = 24,
     this.cancellationPenaltyNights = 1,
+    this.lastAuditDate,
   });
 
   factory UHotelJson.fromJson(String str) => UHotelJson.fromMap(json.decode(str));
@@ -233,6 +234,7 @@ class UHotelJson {
     longitude: json["longitude"] == null ? null : (json["longitude"] as num).toDouble(),
     cancellationFreeHours: json["cancellationFreeHours"] == null ? 24 : (json["cancellationFreeHours"] as num).toInt(),
     cancellationPenaltyNights: json["cancellationPenaltyNights"] == null ? 1 : (json["cancellationPenaltyNights"] as num).toInt(),
+    lastAuditDate: json["lastAuditDate"] == null ? null : DateTime.parse(json["lastAuditDate"]),
   );
 
   final String? detail1;
@@ -254,6 +256,7 @@ class UHotelJson {
   final double? longitude;
   final int cancellationFreeHours;
   final int cancellationPenaltyNights;
+  final DateTime? lastAuditDate;
 
   String toJson() => json.encode(toMap());
 
@@ -277,6 +280,7 @@ class UHotelJson {
     "longitude": longitude,
     "cancellationFreeHours": cancellationFreeHours,
     "cancellationPenaltyNights": cancellationPenaltyNights,
+    "lastAuditDate": lastAuditDate?.toIso8601String(),
   };
 }
 
@@ -290,6 +294,7 @@ class UHotelRoomJson {
     this.floor,
     this.extraGuestCapacity,
     this.extraGuestPrice,
+    this.units = const <UHotelRoomUnit>[],
   });
 
   factory UHotelRoomJson.fromJson(String str) => UHotelRoomJson.fromMap(json.decode(str));
@@ -303,6 +308,7 @@ class UHotelRoomJson {
     floor: json["floor"] == null ? null : (json["floor"] as num).toInt(),
     extraGuestCapacity: json["extraGuestCapacity"] == null ? null : (json["extraGuestCapacity"] as num).toInt(),
     extraGuestPrice: json["extraGuestPrice"] == null ? null : (json["extraGuestPrice"] as num).toDouble(),
+    units: json["units"] == null ? <UHotelRoomUnit>[] : List<UHotelRoomUnit>.from(json["units"]!.map((dynamic x) => UHotelRoomUnit.fromMap(x))),
   );
 
   final String? detail1;
@@ -313,6 +319,7 @@ class UHotelRoomJson {
   final int? floor;
   final int? extraGuestCapacity;
   final double? extraGuestPrice;
+  final List<UHotelRoomUnit> units;
 
   String toJson() => json.encode(toMap());
 
@@ -325,6 +332,7 @@ class UHotelRoomJson {
     "floor": floor,
     "extraGuestCapacity": extraGuestCapacity,
     "extraGuestPrice": extraGuestPrice,
+    "units": units.map((UHotelRoomUnit x) => x.toMap()).toList(),
   };
 }
 
@@ -341,6 +349,9 @@ class UHotelReservationJson {
   final String? cancelReason;
   final double? cancellationPenalty;
   final double? refundAmount;
+  final String? roomNumber;
+  final String? groupCode;
+  final String? groupName;
 
   UHotelReservationJson({
     this.detail1,
@@ -355,6 +366,9 @@ class UHotelReservationJson {
     this.cancelReason,
     this.cancellationPenalty,
     this.refundAmount,
+    this.roomNumber,
+    this.groupCode,
+    this.groupName,
   });
 
   factory UHotelReservationJson.fromJson(String str) => UHotelReservationJson.fromMap(json.decode(str));
@@ -374,6 +388,9 @@ class UHotelReservationJson {
     cancelReason: json["cancelReason"],
     cancellationPenalty: json["cancellationPenalty"] == null ? null : (json["cancellationPenalty"] as num).toDouble(),
     refundAmount: json["refundAmount"] == null ? null : (json["refundAmount"] as num).toDouble(),
+    roomNumber: json["roomNumber"],
+    groupCode: json["groupCode"],
+    groupName: json["groupName"],
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -389,6 +406,9 @@ class UHotelReservationJson {
     "cancelReason": cancelReason,
     "cancellationPenalty": cancellationPenalty,
     "refundAmount": refundAmount,
+    "roomNumber": roomNumber,
+    "groupCode": groupCode,
+    "groupName": groupName,
   };
 }
 
@@ -396,8 +416,13 @@ class UReservationGuestJson {
   final String fullName;
   final String? nationalCode;
   final String? phoneNumber;
+  final String? nationality;
+  final String? passportNumber;
+  final DateTime? birthDate;
+  final String? fatherName;
+  final String? gender;
 
-  UReservationGuestJson({required this.fullName, this.nationalCode, this.phoneNumber});
+  UReservationGuestJson({required this.fullName, this.nationalCode, this.phoneNumber, this.nationality, this.passportNumber, this.birthDate, this.fatherName, this.gender});
 
   factory UReservationGuestJson.fromJson(String str) => UReservationGuestJson.fromMap(json.decode(str));
 
@@ -407,12 +432,22 @@ class UReservationGuestJson {
     fullName: json["fullName"] as String,
     nationalCode: json["nationalCode"],
     phoneNumber: json["phoneNumber"],
+    nationality: json["nationality"],
+    passportNumber: json["passportNumber"],
+    birthDate: json["birthDate"] == null ? null : DateTime.parse(json["birthDate"]),
+    fatherName: json["fatherName"],
+    gender: json["gender"],
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "fullName": fullName,
     "nationalCode": nationalCode,
     "phoneNumber": phoneNumber,
+    "nationality": nationality,
+    "passportNumber": passportNumber,
+    "birthDate": birthDate?.toIso8601String(),
+    "fatherName": fatherName,
+    "gender": gender,
   };
 }
 
@@ -717,4 +752,248 @@ class UHotelCityItem {
 
   final String name;
   final int count;
+}
+
+class UHotelRoomUnit {
+  UHotelRoomUnit({
+    required this.number,
+    this.status = 101,
+    this.note,
+    this.updatedAt,
+  });
+
+  factory UHotelRoomUnit.fromMap(Map<String, dynamic> json) => UHotelRoomUnit(
+    number: json["number"] ?? "",
+    status: json["status"] == null ? 0 : (json["status"] as num).toInt(),
+    note: json["note"],
+    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+  );
+
+  final String number;
+  final int status;
+  final String? note;
+  final DateTime? updatedAt;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "number": number,
+    "status": status,
+    "note": note,
+    "updatedAt": updatedAt?.toIso8601String(),
+  };
+}
+
+class UHotelRateResponse {
+  UHotelRateResponse({
+    required this.id,
+    required this.startDate,
+    required this.endDate,
+    required this.hotelId,
+    this.tags = const <int>[],
+    this.roomId,
+    this.roomTitle,
+    this.price,
+    this.percent,
+    this.weekdays = const <int>[],
+    this.minNights,
+    this.detail1,
+  });
+
+  factory UHotelRateResponse.fromMap(Map<String, dynamic> json) => UHotelRateResponse(
+    id: json["id"] ?? "",
+    tags: json["tags"] == null ? <int>[] : List<int>.from(json["tags"]!.map((dynamic x) => x)),
+    startDate: DateTime.parse(json["startDate"]),
+    endDate: DateTime.parse(json["endDate"]),
+    hotelId: json["hotelId"] ?? "",
+    roomId: json["roomId"],
+    roomTitle: json["roomTitle"],
+    price: json["price"] == null ? null : (json["price"] as num).toDouble(),
+    percent: json["percent"] == null ? null : (json["percent"] as num).toDouble(),
+    weekdays: json["jsonData"]?["weekdays"] == null ? <int>[] : List<int>.from(json["jsonData"]?["weekdays"]!.map((dynamic x) => x)),
+    minNights: json["jsonData"]?["minNights"] == null ? null : (json["jsonData"]?["minNights"] as num).toInt(),
+    detail1: json["jsonData"]?["detail1"],
+  );
+
+  final String id;
+  final List<int> tags;
+  final DateTime startDate;
+  final DateTime endDate;
+  final String hotelId;
+  final String? roomId;
+  final String? roomTitle;
+  final double? price;
+  final double? percent;
+  final List<int> weekdays;
+  final int? minNights;
+  final String? detail1;
+}
+
+class UHotelCalendarDay {
+  UHotelCalendarDay({
+    required this.date,
+    required this.price,
+    required this.booked,
+    required this.available,
+    required this.closed,
+  });
+
+  factory UHotelCalendarDay.fromMap(Map<String, dynamic> json) => UHotelCalendarDay(
+    date: DateTime.parse(json["date"]),
+    price: _num(json["price"]),
+    booked: json["booked"] == null ? 0 : (json["booked"] as num).toInt(),
+    available: json["available"] == null ? 0 : (json["available"] as num).toInt(),
+    closed: json["closed"] == true,
+  );
+
+  final DateTime date;
+  final double price;
+  final int booked;
+  final int available;
+  final bool closed;
+}
+
+class UHotelAuditItem {
+  UHotelAuditItem({
+    required this.reservationId,
+    required this.checkInDate,
+    required this.checkOutDate,
+    required this.balance,
+    this.reservationCode,
+    this.guestName,
+    this.roomTitle,
+    this.roomNumber,
+  });
+
+  factory UHotelAuditItem.fromMap(Map<String, dynamic> json) => UHotelAuditItem(
+    reservationId: json["reservationId"] ?? "",
+    checkInDate: DateTime.parse(json["checkInDate"]),
+    checkOutDate: DateTime.parse(json["checkOutDate"]),
+    reservationCode: json["reservationCode"],
+    guestName: json["guestName"],
+    roomTitle: json["roomTitle"],
+    roomNumber: json["roomNumber"],
+    balance: _num(json["balance"]),
+  );
+
+  final String reservationId;
+  final DateTime checkInDate;
+  final DateTime checkOutDate;
+  final String? reservationCode;
+  final String? guestName;
+  final String? roomTitle;
+  final String? roomNumber;
+  final double balance;
+}
+
+class UHotelRoomUnitItem {
+  UHotelRoomUnitItem({
+    required this.roomId,
+    required this.number,
+    required this.status,
+    this.roomTitle,
+  });
+
+  factory UHotelRoomUnitItem.fromMap(Map<String, dynamic> json) => UHotelRoomUnitItem(
+    roomId: json["roomId"] ?? "",
+    number: json["number"] ?? "",
+    status: json["status"] == null ? 0 : (json["status"] as num).toInt(),
+    roomTitle: json["roomTitle"],
+  );
+
+  final String roomId;
+  final String number;
+  final int status;
+  final String? roomTitle;
+}
+
+class UHotelNightAuditResponse {
+  UHotelNightAuditResponse({
+    required this.date,
+    required this.totalRooms,
+    required this.occupiedRooms,
+    required this.occupancy,
+    required this.roomRevenue,
+    required this.openBalance,
+    this.lastAuditDate,
+    this.arrivals = const <UHotelAuditItem>[],
+    this.departures = const <UHotelAuditItem>[],
+    this.inHouse = const <UHotelAuditItem>[],
+    this.noShows = const <UHotelAuditItem>[],
+    this.dirtyUnits = const <UHotelRoomUnitItem>[],
+  });
+
+  factory UHotelNightAuditResponse.fromMap(Map<String, dynamic> json) => UHotelNightAuditResponse(
+    date: DateTime.parse(json["date"]),
+    lastAuditDate: json["lastAuditDate"] == null ? null : DateTime.parse(json["lastAuditDate"]),
+    totalRooms: json["totalRooms"] == null ? 0 : (json["totalRooms"] as num).toInt(),
+    occupiedRooms: json["occupiedRooms"] == null ? 0 : (json["occupiedRooms"] as num).toInt(),
+    occupancy: _num(json["occupancy"]),
+    roomRevenue: _num(json["roomRevenue"]),
+    openBalance: _num(json["openBalance"]),
+    arrivals: json["arrivals"] == null ? <UHotelAuditItem>[] : List<UHotelAuditItem>.from(json["arrivals"]!.map((dynamic x) => UHotelAuditItem.fromMap(x))),
+    departures: json["departures"] == null ? <UHotelAuditItem>[] : List<UHotelAuditItem>.from(json["departures"]!.map((dynamic x) => UHotelAuditItem.fromMap(x))),
+    inHouse: json["inHouse"] == null ? <UHotelAuditItem>[] : List<UHotelAuditItem>.from(json["inHouse"]!.map((dynamic x) => UHotelAuditItem.fromMap(x))),
+    noShows: json["noShows"] == null ? <UHotelAuditItem>[] : List<UHotelAuditItem>.from(json["noShows"]!.map((dynamic x) => UHotelAuditItem.fromMap(x))),
+    dirtyUnits: json["dirtyUnits"] == null ? <UHotelRoomUnitItem>[] : List<UHotelRoomUnitItem>.from(json["dirtyUnits"]!.map((dynamic x) => UHotelRoomUnitItem.fromMap(x))),
+  );
+
+  final DateTime date;
+  final DateTime? lastAuditDate;
+  final int totalRooms;
+  final int occupiedRooms;
+  final double occupancy;
+  final double roomRevenue;
+  final double openBalance;
+  final List<UHotelAuditItem> arrivals;
+  final List<UHotelAuditItem> departures;
+  final List<UHotelAuditItem> inHouse;
+  final List<UHotelAuditItem> noShows;
+  final List<UHotelRoomUnitItem> dirtyUnits;
+}
+
+class UHotelGuestExportItem {
+  UHotelGuestExportItem({
+    required this.checkInDate,
+    required this.checkOutDate,
+    required this.fullName,
+    this.reservationCode,
+    this.roomTitle,
+    this.roomNumber,
+    this.nationalCode,
+    this.nationality,
+    this.passportNumber,
+    this.birthDate,
+    this.fatherName,
+    this.gender,
+    this.phoneNumber,
+  });
+
+  factory UHotelGuestExportItem.fromMap(Map<String, dynamic> json) => UHotelGuestExportItem(
+    checkInDate: DateTime.parse(json["checkInDate"]),
+    checkOutDate: DateTime.parse(json["checkOutDate"]),
+    fullName: json["fullName"] ?? "",
+    reservationCode: json["reservationCode"],
+    roomTitle: json["roomTitle"],
+    roomNumber: json["roomNumber"],
+    nationalCode: json["nationalCode"],
+    nationality: json["nationality"],
+    passportNumber: json["passportNumber"],
+    birthDate: json["birthDate"] == null ? null : DateTime.parse(json["birthDate"]),
+    fatherName: json["fatherName"],
+    gender: json["gender"],
+    phoneNumber: json["phoneNumber"],
+  );
+
+  final DateTime checkInDate;
+  final DateTime checkOutDate;
+  final String fullName;
+  final String? reservationCode;
+  final String? roomTitle;
+  final String? roomNumber;
+  final String? nationalCode;
+  final String? nationality;
+  final String? passportNumber;
+  final DateTime? birthDate;
+  final String? fatherName;
+  final String? gender;
+  final String? phoneNumber;
 }

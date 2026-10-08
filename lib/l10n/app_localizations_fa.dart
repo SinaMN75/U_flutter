@@ -6845,4 +6845,403 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get residents => 'ساکنان';
+
+  @override
+  String get action => 'عملیات';
+
+  @override
+  String get activityLog => 'گزارش فعالیت';
+
+  @override
+  String get arrivals => 'ورودی‌های امروز';
+
+  @override
+  String get asset => 'اموال';
+
+  @override
+  String get assetTag => 'برچسب اموال';
+
+  @override
+  String get assets => 'اموال';
+
+  @override
+  String get assignee => 'مسئول انجام';
+
+  @override
+  String get attendance => 'حضور (ورود / خروج)';
+
+  @override
+  String get averageCost => 'میانگین قیمت';
+
+  @override
+  String get birthDate => 'تاریخ تولد';
+
+  @override
+  String get booking => 'رزرو';
+
+  @override
+  String get changeRoom => 'تغییر اتاق';
+
+  @override
+  String get checkInChecklist => 'چک‌لیست تحویل اتاق';
+
+  @override
+  String get checkOutChecklist => 'چک‌لیست تخلیه‌ی اتاق';
+
+  @override
+  String get checklistDamageHint => 'خسارت‌ها یک قبض برای ساکن صادر می‌کنند و در کاردکس او ثبت می‌شوند.';
+
+  @override
+  String get checklistItem => 'مورد چک‌لیست';
+
+  @override
+  String get clockIn => 'ثبت ورود';
+
+  @override
+  String get clockOut => 'ثبت خروج';
+
+  @override
+  String get closeDay => 'بستن روز';
+
+  @override
+  String get closeDayHint => 'رزروهایی که تا این روز وارد نشده‌اند «عدم حضور» می‌شوند.';
+
+  @override
+  String get contactPerson => 'نام رابط';
+
+  @override
+  String get cost => 'هزینه';
+
+  @override
+  String get createContract => 'ثبت قرارداد';
+
+  @override
+  String get creditAccount => 'حساب طرف بستانکار';
+
+  @override
+  String get customer => 'مشتری';
+
+  @override
+  String get customers => 'مشتریان';
+
+  @override
+  String get damage => 'خسارت';
+
+  @override
+  String get damaged => 'آسیب‌دیده';
+
+  @override
+  String get departures => 'خروجی‌های امروز';
+
+  @override
+  String get dormApplication => 'درخواست اقامت';
+
+  @override
+  String get dormApplications => 'درخواست‌های اقامت';
+
+  @override
+  String get dormRecords => 'ثبت وقایع و اطلاعیه‌ها';
+
+  @override
+  String get emergencyContact => 'تماس اضطراری';
+
+  @override
+  String get expenseAccount => 'حساب هزینه';
+
+  @override
+  String get expiresAt => 'تاریخ انقضا';
+
+  @override
+  String get extendStay => 'تمدید اقامت';
+
+  @override
+  String get extraCharge => 'هزینه‌ی اضافه';
+
+  @override
+  String get fillRequiredFields => 'لطفاً فیلدهای الزامی را پر کنید.';
+
+  @override
+  String get groupName => 'نام گروه';
+
+  @override
+  String get groupReservation => 'رزرو گروهی';
+
+  @override
+  String get guardian => 'ولی';
+
+  @override
+  String get guestList => 'فهرست مهمانان';
+
+  @override
+  String get guestReport => 'گزارش مسافران';
+
+  @override
+  String get guestReportHint => 'فهرست برای اکسل کپی می‌شود تا در سامانه‌ی ثبت مسافر (اماکن) وارد شود.';
+
+  @override
+  String get healthy => 'سالم';
+
+  @override
+  String get housekeeping => 'خانه‌داری';
+
+  @override
+  String get inHouse => 'مهمانان مقیم';
+
+  @override
+  String get inventory => 'انبارداری';
+
+  @override
+  String get keepPrice => 'قیمت تغییر نکند';
+
+  @override
+  String get lastAudit => 'آخرین بستن روز';
+
+  @override
+  String get laundryMachine => 'دستگاه لباسشویی';
+
+  @override
+  String get laundryMachines => 'دستگاه‌های لباسشویی (با ویرگول جدا کنید)';
+
+  @override
+  String get laundrySlotMinutes => 'مدت هر نوبت لباسشویی (دقیقه)';
+
+  @override
+  String get logoUrl => 'آدرس لوگو';
+
+  @override
+  String get lowStock => 'کمبود موجودی';
+
+  @override
+  String get maxBeds => 'سقف تخت';
+
+  @override
+  String get maxPlaces => 'سقف شعبه';
+
+  @override
+  String get maxRooms => 'سقف اتاق هتل';
+
+  @override
+  String get meal => 'وعده‌ی غذایی';
+
+  @override
+  String get mealMenu => 'برنامه‌ی غذایی';
+
+  @override
+  String get mealsAndLaundry => 'غذا و لباسشویی';
+
+  @override
+  String get minNights => 'حداقل شب اقامت';
+
+  @override
+  String get minStock => 'حداقل موجودی';
+
+  @override
+  String get nationality => 'ملیت';
+
+  @override
+  String get nightAudit => 'بستن روز (Night Audit)';
+
+  @override
+  String get noShows => 'عدم حضور';
+
+  @override
+  String get openBalance => 'مانده‌ی باز';
+
+  @override
+  String get organizationInfo => 'اطلاعات مجموعه';
+
+  @override
+  String get organizationManagement => 'مدیریت مجموعه';
+
+  @override
+  String get organizationNationalId => 'شناسه‌ی ملی';
+
+  @override
+  String get paidFrom => 'پرداخت از';
+
+  @override
+  String get passportNumber => 'شماره‌ی گذرنامه';
+
+  @override
+  String get pricePercent => 'تغییر قیمت (درصد)';
+
+  @override
+  String get priority => 'اولویت';
+
+  @override
+  String get purchase => 'خرید';
+
+  @override
+  String get purchaseDate => 'تاریخ خرید';
+
+  @override
+  String get purchaseOnCreditHint => 'اگر خالی بماند، خرید به‌صورت نسیه (بدهی به تأمین‌کننده) ثبت می‌شود.';
+
+  @override
+  String get purchaseRequest => 'درخواست خرید';
+
+  @override
+  String get purchases => 'خریدها';
+
+  @override
+  String get rate => 'نرخ';
+
+  @override
+  String get rates => 'نرخ‌ها';
+
+  @override
+  String get ratesAndCalendar => 'قیمت‌گذاری و تقویم';
+
+  @override
+  String get receiveGoods => 'تحویل کالا';
+
+  @override
+  String get relation => 'نسبت';
+
+  @override
+  String get requester => 'درخواست‌دهنده';
+
+  @override
+  String get reserved => 'رزرو شده';
+
+  @override
+  String get resident => 'ساکن';
+
+  @override
+  String get returnDate => 'تاریخ بازگشت';
+
+  @override
+  String get review => 'بررسی';
+
+  @override
+  String get reviewNote => 'یادداشت بررسی';
+
+  @override
+  String get roomRevenue => 'درآمد اتاق امشب';
+
+  @override
+  String get shifts => 'شیفت‌ها';
+
+  @override
+  String get stock => 'موجودی';
+
+  @override
+  String get stockMovement => 'گردش کالا';
+
+  @override
+  String get stockMovements => 'گردش کالا';
+
+  @override
+  String get subscriptionPlan => 'پلن اشتراک';
+
+  @override
+  String get supplier => 'تأمین‌کننده';
+
+  @override
+  String get suppliers => 'تأمین‌کنندگان';
+
+  @override
+  String get targetWarehouse => 'انبار مقصد';
+
+  @override
+  String get task => 'کار';
+
+  @override
+  String get tasksAndRequests => 'کارها و درخواست‌ها';
+
+  @override
+  String get unit => 'واحد';
+
+  @override
+  String get visitorName => 'نام ملاقات‌کننده';
+
+  @override
+  String get warehouse => 'انبار';
+
+  @override
+  String get warehouses => 'انبارها';
+
+  @override
+  String get weekdays => 'روزهای هفته';
+
+  @override
+  String get withoutOrganization => 'بدون مجموعه';
+
+  @override
+  String get dormServices => 'خدمات خوابگاه';
+
+  @override
+  String get noticesAndRequests => 'اطلاعیه‌ها و درخواست‌ها';
+
+  @override
+  String get reserve => 'رزرو';
+
+  @override
+  String get capacityIsFull => 'تکمیل';
+
+  @override
+  String get maintenanceRequest => 'درخواست تعمیرات';
+
+  @override
+  String get applyForResidence => 'درخواست اقامت';
+
+  @override
+  String get applicationSent => 'درخواست شما ثبت شد.';
+
+  @override
+  String get vatPercent => 'درصد ارزش افزوده';
+
+  @override
+  String get taxServiceId => 'شناسه‌ی کالا یا خدمت (مودیان)';
+
+  @override
+  String get valueAddedTax => 'مالیات بر ارزش افزوده';
+
+  @override
+  String get vatSales => 'ارزش افزوده‌ی فروش';
+
+  @override
+  String get vatPurchases => 'ارزش افزوده‌ی خرید';
+
+  @override
+  String get vatDue => 'ارزش افزوده‌ی پرداختنی';
+
+  @override
+  String get vatAmount => 'مبلغ ارزش افزوده';
+
+  @override
+  String get moadianExport => 'خروجی سامانه‌ی مودیان';
+
+  @override
+  String get invoiceNumber => 'شماره‌ی صورتحساب';
+
+  @override
+  String get invoicePattern => 'الگوی صورتحساب';
+
+  @override
+  String get invoicePatternSale => 'فروش';
+
+  @override
+  String get invoiceTypeFirst => 'نوع اول';
+
+  @override
+  String get invoiceTypeSecond => 'نوع دوم';
+
+  @override
+  String get buyerName => 'نام خریدار';
+
+  @override
+  String get buyerNationalCode => 'شناسه‌ی ملی خریدار';
+
+  @override
+  String get discount => 'تخفیف';
+
+  @override
+  String get amountAfterDiscount => 'مبلغ پس از تخفیف';
+
+  @override
+  String get totalAmount => 'مبلغ کل';
+
+  @override
+  String get settlementMethod => 'روش تسویه';
 }

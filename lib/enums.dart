@@ -217,7 +217,9 @@ enum TagUser with UNumericIdentifiable {
   permissionManageContents("مدیریت محتوا", "Manage Contents", 621),
   permissionViewDashboard("مشاهده داشبورد", "View Dashboard", 622),
   permissionManageAccounting("ثبت اسناد حسابداری", "Manage Accounting", 623),
-  permissionViewAccounting("مشاهده گزارش‌های حسابداری", "View Accounting", 624);
+  permissionViewAccounting("مشاهده گزارش‌های حسابداری", "View Accounting", 624),
+  permissionManageInventory("مدیریت انبار و اموال", "Manage Inventory", 625),
+  permissionManageStaff("مدیریت کارکنان، شیفت و کارها", "Manage Staff", 626);
 
   const TagUser(this.titleFa, this.titleEn, this.number);
 
@@ -256,6 +258,8 @@ enum TagUser with UNumericIdentifiable {
     permissionViewDashboard,
     permissionManageAccounting,
     permissionViewAccounting,
+    permissionManageInventory,
+    permissionManageStaff,
   ];
 }
 
@@ -996,6 +1000,7 @@ enum TagDormBedInvoice with UNumericIdentifiable {
   deposit("ودیعه", "Deposit", 101),
   rent("اجاره", "Rent", 102),
   service("خدمات", "Service", 103),
+  damage("خسارت و جریمه", "Damage", 104),
   paid("پرداخت شده", "Paid", 201),
   paidOnline("پرداخت آنلاین", "Paid Online", 202),
   paidManual("پرداخت دستی", "Paid Manual", 203),
@@ -1128,7 +1133,11 @@ enum TagAccount with UNumericIdentifiable {
   serviceIncome("درآمد خدمات", "Service Income", 311),
   penaltyIncome("درآمد جریمه", "Penalty Income", 312),
   damageIncome("درآمد خسارت", "Damage Income", 313),
-  commissionExpense("کمیسیون سامانه", "Commission", 314);
+  commissionExpense("کمیسیون سامانه", "Commission", 314),
+  inventory("موجودی کالا", "Inventory", 315),
+  consumptionExpense("مصرف کالا", "Consumption", 316),
+  vatPayable("ارزش افزوده‌ی فروش", "VAT Payable", 317),
+  vatReceivable("ارزش افزوده‌ی خرید", "VAT Receivable", 318);
 
   const TagAccount(this.titleFa, this.titleEn, this.number);
 
@@ -1156,7 +1165,9 @@ enum TagVoucher with UNumericIdentifiable {
   check("چک", "Check", 208),
   expense("هزینه", "Expense", 209),
   transfer("انتقال وجه", "Transfer", 210),
-  opening("افتتاحیه", "Opening", 211);
+  opening("افتتاحیه", "Opening", 211),
+  purchase("خرید کالا", "Purchase", 212),
+  consumption("مصرف کالا", "Consumption", 213);
 
   const TagVoucher(this.titleFa, this.titleEn, this.number);
 
@@ -1207,6 +1218,7 @@ enum TagHotelReservation with UNumericIdentifiable {
 
 enum TagHotelInvoice with UNumericIdentifiable {
   full("کامل", "Full", 101),
+  extra("هزینه‌ی اضافه", "Extra", 102),
   paid("پرداخت شده", "Paid", 201),
   paidOnline("پرداخت آنلاین", "Paid Online", 202),
   paidManual("پرداخت دستی", "Paid Manual", 203),
@@ -1807,6 +1819,298 @@ enum TagMessage with UNumericIdentifiable {
   deleted("حذف شده", "Deleted", 202);
 
   const TagMessage(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagWarehouse with UNumericIdentifiable {
+  main("اصلی", "Main", 101),
+  branch("شعبه", "Branch", 102),
+  kitchen("آشپزخانه", "Kitchen", 103),
+  inactive("غیرفعال", "Inactive", 201);
+
+  const TagWarehouse(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagInventoryItem with UNumericIdentifiable {
+  consumable("مصرفی", "Consumable", 101),
+  food("مواد غذایی", "Food", 102),
+  cleaning("نظافت و بهداشت", "Cleaning", 103),
+  equipment("تجهیزات", "Equipment", 104),
+  inactive("غیرفعال", "Inactive", 201);
+
+  const TagInventoryItem(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagStockMovement with UNumericIdentifiable {
+  stockIn("ورود", "In", 101),
+  stockOut("خروج", "Out", 102),
+  transferIn("انتقال ورودی", "Transfer In", 103),
+  transferOut("انتقال", "Transfer", 104),
+  adjustment("اصلاح موجودی", "Adjustment", 105);
+
+  const TagStockMovement(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagSupplier with UNumericIdentifiable {
+  active("فعال", "Active", 101),
+  inactive("غیرفعال", "Inactive", 102);
+
+  const TagSupplier(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagPurchase with UNumericIdentifiable {
+  requested("درخواست شده", "Requested", 101),
+  approved("تأیید شده", "Approved", 102),
+  rejected("رد شده", "Rejected", 103),
+  received("تحویل شده", "Received", 104);
+
+  const TagPurchase(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagAsset with UNumericIdentifiable {
+  furniture("مبلمان", "Furniture", 101),
+  appliance("لوازم خانگی", "Appliance", 102),
+  electronic("الکترونیکی", "Electronic", 103),
+  other("سایر", "Other", 104),
+  inUse("در حال استفاده", "In Use", 201),
+  inRepair("در تعمیر", "In Repair", 202),
+  retired("از رده خارج", "Retired", 203);
+
+  const TagAsset(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+
+  static const List<TagAsset> kinds = <TagAsset>[furniture, appliance, electronic, other];
+
+  static const List<TagAsset> statuses = <TagAsset>[inUse, inRepair, retired];
+}
+
+enum TagDormApplication with UNumericIdentifiable {
+  pending("در انتظار بررسی", "Pending", 101),
+  approved("تأیید شده", "Approved", 102),
+  rejected("رد شده", "Rejected", 103),
+  waitlisted("لیست انتظار", "Waitlisted", 104),
+  converted("قرارداد شده", "Converted", 105);
+
+  const TagDormApplication(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagDormRecord with UNumericIdentifiable {
+  checkIn("ورود", "Check-in", 101),
+  checkOut("خروج", "Check-out", 102),
+  nightLeave("مرخصی شبانه", "Night Leave", 103),
+  visitor("ملاقات‌کننده", "Visitor", 104),
+  announcement("اطلاعیه", "Announcement", 201),
+  violation("تخلف", "Violation", 202),
+  warning("اخطار", "Warning", 203),
+  inspection("بازرسی", "Inspection", 204),
+  pending("در انتظار", "Pending", 301),
+  approved("تأیید شده", "Approved", 302),
+  rejected("رد شده", "Rejected", 303);
+
+  const TagDormRecord(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+
+  static const List<TagDormRecord> kinds = <TagDormRecord>[checkIn, checkOut, nightLeave, visitor, announcement, violation, warning, inspection];
+
+  static const List<TagDormRecord> statuses = <TagDormRecord>[pending, approved, rejected];
+}
+
+enum TagDormMeal with UNumericIdentifiable {
+  breakfast("صبحانه", "Breakfast", 101),
+  lunch("ناهار", "Lunch", 102),
+  dinner("شام", "Dinner", 103);
+
+  const TagDormMeal(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagDormBooking with UNumericIdentifiable {
+  meal("غذا", "Meal", 101),
+  laundry("لباسشویی", "Laundry", 102),
+  reserved("رزرو شده", "Reserved", 201),
+  cancelled("لغو شده", "Cancelled", 202),
+  used("استفاده شده", "Used", 203);
+
+  const TagDormBooking(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagHotelRate with UNumericIdentifiable {
+  seasonal("فصلی", "Seasonal", 101),
+  holiday("تعطیلات", "Holiday", 102),
+  plan("پلن قیمتی", "Rate Plan", 103),
+  closed("بسته", "Closed", 104);
+
+  const TagHotelRate(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagHousekeeping with UNumericIdentifiable {
+  clean("تمیز", "Clean", 101),
+  dirty("کثیف", "Dirty", 102),
+  inspected("بازرسی شده", "Inspected", 103),
+  outOfOrder("خارج از سرویس", "Out of Order", 104);
+
+  const TagHousekeeping(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagStaffShift with UNumericIdentifiable {
+  morning("صبح", "Morning", 101),
+  evening("عصر", "Evening", 102),
+  night("شب", "Night", 103),
+  planned("برنامه‌ریزی شده", "Planned", 201),
+  present("حاضر", "Present", 202),
+  absent("غایب", "Absent", 203);
+
+  const TagStaffShift(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+
+  static const List<TagStaffShift> kinds = <TagStaffShift>[morning, evening, night];
+
+  static const List<TagStaffShift> statuses = <TagStaffShift>[planned, present, absent];
+}
+
+enum TagStaffTask with UNumericIdentifiable {
+  task("کار", "Task", 101),
+  maintenance("تعمیرات", "Maintenance", 102),
+  cleaning("نظافت", "Cleaning", 103),
+  open("باز", "Open", 201),
+  inProgress("در حال انجام", "In Progress", 202),
+  done("انجام شده", "Done", 203),
+  cancelled("لغو شده", "Cancelled", 204),
+  low("کم", "Low", 301),
+  normal("عادی", "Normal", 302),
+  urgent("فوری", "Urgent", 303);
+
+  const TagStaffTask(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+
+  static const List<TagStaffTask> kinds = <TagStaffTask>[task, maintenance, cleaning];
+
+  static const List<TagStaffTask> statuses = <TagStaffTask>[open, inProgress, done, cancelled];
+
+  static const List<TagStaffTask> priorities = <TagStaffTask>[low, normal, urgent];
+}
+
+enum TagOrganizationCustomer with UNumericIdentifiable {
+  regular("عادی", "Regular", 101),
+  vip("ویژه", "VIP", 102),
+  blacklisted("لیست سیاه", "Blacklisted", 103);
+
+  const TagOrganizationCustomer(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagActivityLog with UNumericIdentifiable {
+  create("ایجاد", "Create", 101),
+  update("ویرایش", "Update", 102),
+  delete("حذف", "Delete", 103),
+  action("عملیات", "Action", 104);
+
+  const TagActivityLog(this.titleFa, this.titleEn, this.number);
 
   @override
   final String titleFa;

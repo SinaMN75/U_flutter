@@ -514,6 +514,8 @@ class UDormJson {
     this.telegram,
     this.latitude,
     this.longitude,
+    this.laundryMachines = const <String>[],
+    this.laundrySlotMinutes,
   });
 
   factory UDormJson.fromJson(String str) => UDormJson.fromMap(json.decode(str));
@@ -540,6 +542,8 @@ class UDormJson {
     telegram: json["telegram"],
     latitude: json["latitude"] == null ? null : (json["latitude"] as num).toDouble(),
     longitude: json["longitude"] == null ? null : (json["longitude"] as num).toDouble(),
+    laundryMachines: json["laundryMachines"] == null ? <String>[] : List<String>.from(json["laundryMachines"]!.map((dynamic x) => x)),
+    laundrySlotMinutes: json["laundrySlotMinutes"] == null ? null : (json["laundrySlotMinutes"] as num).toInt(),
   );
 
   final String? detail1;
@@ -563,6 +567,8 @@ class UDormJson {
   final String? telegram;
   final double? latitude;
   final double? longitude;
+  final List<String> laundryMachines;
+  final int? laundrySlotMinutes;
 
   String toJson() => json.encode(toMap());
 
@@ -588,6 +594,8 @@ class UDormJson {
     "telegram": telegram,
     "latitude": latitude,
     "longitude": longitude,
+    "laundryMachines": laundryMachines,
+    "laundrySlotMinutes": laundrySlotMinutes,
   };
 }
 
@@ -767,7 +775,7 @@ class UContractBedChange {
 }
 
 class UDormBedContractJson {
-  UDormBedContractJson({this.detail1, this.detail2, this.settledAt, this.deductions, this.deductionReason, this.depositRefund, this.bedHistory = const <UContractBedChange>[]});
+  UDormBedContractJson({this.detail1, this.detail2, this.settledAt, this.deductions, this.deductionReason, this.depositRefund, this.bedHistory = const <UContractBedChange>[], this.guardianName, this.guardianPhone, this.emergencyName, this.emergencyPhone, this.emergencyRelation, this.applicationId, this.damageInvoiceId, this.checkInChecklist = const <UHandoverItem>[], this.checkOutChecklist = const <UHandoverItem>[]});
 
   factory UDormBedContractJson.fromMap(Map<String, dynamic> json) => UDormBedContractJson(
     detail1: json["detail1"],
@@ -777,6 +785,15 @@ class UDormBedContractJson {
     deductionReason: json["deductionReason"],
     depositRefund: json["depositRefund"] == null ? null : (json["depositRefund"] as num).toDouble(),
     bedHistory: json["bedHistory"] == null ? <UContractBedChange>[] : List<UContractBedChange>.from(json["bedHistory"]!.map((dynamic x) => UContractBedChange.fromMap(x))),
+    guardianName: json["guardianName"],
+    guardianPhone: json["guardianPhone"],
+    emergencyName: json["emergencyName"],
+    emergencyPhone: json["emergencyPhone"],
+    emergencyRelation: json["emergencyRelation"],
+    applicationId: json["applicationId"],
+    damageInvoiceId: json["damageInvoiceId"],
+    checkInChecklist: json["checkInChecklist"] == null ? <UHandoverItem>[] : List<UHandoverItem>.from(json["checkInChecklist"]!.map((dynamic x) => UHandoverItem.fromMap(x))),
+    checkOutChecklist: json["checkOutChecklist"] == null ? <UHandoverItem>[] : List<UHandoverItem>.from(json["checkOutChecklist"]!.map((dynamic x) => UHandoverItem.fromMap(x))),
   );
 
   final String? detail1;
@@ -786,6 +803,15 @@ class UDormBedContractJson {
   final String? deductionReason;
   final double? depositRefund;
   final List<UContractBedChange> bedHistory;
+  final String? guardianName;
+  final String? guardianPhone;
+  final String? emergencyName;
+  final String? emergencyPhone;
+  final String? emergencyRelation;
+  final String? applicationId;
+  final String? damageInvoiceId;
+  final List<UHandoverItem> checkInChecklist;
+  final List<UHandoverItem> checkOutChecklist;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "detail1": detail1,
@@ -795,6 +821,15 @@ class UDormBedContractJson {
     "deductionReason": deductionReason,
     "depositRefund": depositRefund,
     "bedHistory": bedHistory.map((UContractBedChange x) => x.toMap()).toList(),
+    "guardianName": guardianName,
+    "guardianPhone": guardianPhone,
+    "emergencyName": emergencyName,
+    "emergencyPhone": emergencyPhone,
+    "emergencyRelation": emergencyRelation,
+    "applicationId": applicationId,
+    "damageInvoiceId": damageInvoiceId,
+    "checkInChecklist": checkInChecklist.map((UHandoverItem x) => x.toMap()).toList(),
+    "checkOutChecklist": checkOutChecklist.map((UHandoverItem x) => x.toMap()).toList(),
   };
 }
 
@@ -898,4 +933,243 @@ class UDormCityItem {
 
   final String name;
   final int count;
+}
+
+class UHandoverItem {
+  UHandoverItem({
+    required this.title,
+    this.ok = false,
+    this.note,
+    this.damage = 0,
+    this.photoUrls = const <String>[],
+  });
+
+  factory UHandoverItem.fromMap(Map<String, dynamic> json) => UHandoverItem(
+    title: json["title"] ?? "",
+    ok: json["ok"] == true,
+    note: json["note"],
+    damage: _num(json["damage"]),
+    photoUrls: json["photoUrls"] == null ? <String>[] : List<String>.from(json["photoUrls"]!.map((dynamic x) => x)),
+  );
+
+  final String title;
+  final bool ok;
+  final String? note;
+  final double damage;
+  final List<String> photoUrls;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "title": title,
+    "ok": ok,
+    "note": note,
+    "damage": damage,
+    "photoUrls": photoUrls,
+  };
+}
+
+class UDormApplicationDocument {
+  UDormApplicationDocument({
+    required this.title,
+    this.url,
+    this.approved,
+  });
+
+  factory UDormApplicationDocument.fromMap(Map<String, dynamic> json) => UDormApplicationDocument(
+    title: json["title"] ?? "",
+    url: json["url"],
+    approved: json["approved"] as bool?,
+  );
+
+  final String title;
+  final String? url;
+  final bool? approved;
+}
+
+class UDormApplicationResponse {
+  UDormApplicationResponse({
+    required this.id,
+    required this.createdAt,
+    required this.desiredStartDate,
+    required this.dormId,
+    required this.userId,
+    this.tags = const <int>[],
+    this.desiredEndDate,
+    this.dormTitle,
+    this.userName,
+    this.phoneNumber,
+    this.waitlistPosition,
+    this.detail1,
+    this.reviewNote,
+    this.bedId,
+    this.contractId,
+    this.documents = const <UDormApplicationDocument>[],
+  });
+
+  factory UDormApplicationResponse.fromMap(Map<String, dynamic> json) => UDormApplicationResponse(
+    id: json["id"] ?? "",
+    createdAt: DateTime.parse(json["createdAt"]),
+    tags: json["tags"] == null ? <int>[] : List<int>.from(json["tags"]!.map((dynamic x) => x)),
+    desiredStartDate: DateTime.parse(json["desiredStartDate"]),
+    desiredEndDate: json["desiredEndDate"] == null ? null : DateTime.parse(json["desiredEndDate"]),
+    dormId: json["dormId"] ?? "",
+    userId: json["userId"] ?? "",
+    dormTitle: json["dormTitle"],
+    userName: json["userName"],
+    phoneNumber: json["phoneNumber"],
+    waitlistPosition: json["waitlistPosition"] == null ? null : (json["waitlistPosition"] as num).toInt(),
+    detail1: json["jsonData"]?["detail1"],
+    reviewNote: json["jsonData"]?["reviewNote"],
+    bedId: json["jsonData"]?["bedId"],
+    contractId: json["jsonData"]?["contractId"],
+    documents: json["jsonData"]?["documents"] == null ? <UDormApplicationDocument>[] : List<UDormApplicationDocument>.from(json["jsonData"]?["documents"]!.map((dynamic x) => UDormApplicationDocument.fromMap(x))),
+  );
+
+  final String id;
+  final DateTime createdAt;
+  final List<int> tags;
+  final DateTime desiredStartDate;
+  final DateTime? desiredEndDate;
+  final String dormId;
+  final String userId;
+  final String? dormTitle;
+  final String? userName;
+  final String? phoneNumber;
+  final int? waitlistPosition;
+  final String? detail1;
+  final String? reviewNote;
+  final String? bedId;
+  final String? contractId;
+  final List<UDormApplicationDocument> documents;
+}
+
+class UDormRecordResponse {
+  UDormRecordResponse({
+    required this.id,
+    required this.title,
+    required this.date,
+    required this.dormId,
+    this.tags = const <int>[],
+    this.endDate,
+    this.dormTitle,
+    this.userId,
+    this.userName,
+    this.body,
+    this.visitorName,
+    this.visitorPhone,
+    this.relation,
+    this.penalty,
+    this.items = const <UHandoverItem>[],
+  });
+
+  factory UDormRecordResponse.fromMap(Map<String, dynamic> json) => UDormRecordResponse(
+    id: json["id"] ?? "",
+    tags: json["tags"] == null ? <int>[] : List<int>.from(json["tags"]!.map((dynamic x) => x)),
+    title: json["title"] ?? "",
+    date: DateTime.parse(json["date"]),
+    endDate: json["endDate"] == null ? null : DateTime.parse(json["endDate"]),
+    dormId: json["dormId"] ?? "",
+    dormTitle: json["dormTitle"],
+    userId: json["userId"],
+    userName: json["userName"],
+    body: json["jsonData"]?["body"],
+    visitorName: json["jsonData"]?["visitorName"],
+    visitorPhone: json["jsonData"]?["visitorPhone"],
+    relation: json["jsonData"]?["relation"],
+    penalty: json["jsonData"]?["penalty"] == null ? null : (json["jsonData"]?["penalty"] as num).toDouble(),
+    items: json["jsonData"]?["items"] == null ? <UHandoverItem>[] : List<UHandoverItem>.from(json["jsonData"]?["items"]!.map((dynamic x) => UHandoverItem.fromMap(x))),
+  );
+
+  final String id;
+  final List<int> tags;
+  final String title;
+  final DateTime date;
+  final DateTime? endDate;
+  final String dormId;
+  final String? dormTitle;
+  final String? userId;
+  final String? userName;
+  final String? body;
+  final String? visitorName;
+  final String? visitorPhone;
+  final String? relation;
+  final double? penalty;
+  final List<UHandoverItem> items;
+}
+
+class UDormMealResponse {
+  UDormMealResponse({
+    required this.id,
+    required this.title,
+    required this.date,
+    required this.price,
+    required this.dormId,
+    required this.reservedCount,
+    required this.reservedByMe,
+    this.tags = const <int>[],
+    this.capacity,
+  });
+
+  factory UDormMealResponse.fromMap(Map<String, dynamic> json) => UDormMealResponse(
+    id: json["id"] ?? "",
+    tags: json["tags"] == null ? <int>[] : List<int>.from(json["tags"]!.map((dynamic x) => x)),
+    title: json["title"] ?? "",
+    date: DateTime.parse(json["date"]),
+    price: _num(json["price"]),
+    dormId: json["dormId"] ?? "",
+    capacity: json["capacity"] == null ? null : (json["capacity"] as num).toInt(),
+    reservedCount: json["reservedCount"] == null ? 0 : (json["reservedCount"] as num).toInt(),
+    reservedByMe: json["reservedByMe"] == true,
+  );
+
+  final String id;
+  final List<int> tags;
+  final String title;
+  final DateTime date;
+  final double price;
+  final String dormId;
+  final int? capacity;
+  final int reservedCount;
+  final bool reservedByMe;
+}
+
+class UDormBookingResponse {
+  UDormBookingResponse({
+    required this.id,
+    required this.startAt,
+    required this.price,
+    required this.dormId,
+    required this.userId,
+    this.tags = const <int>[],
+    this.endAt,
+    this.resource,
+    this.userName,
+    this.mealId,
+    this.mealTitle,
+  });
+
+  factory UDormBookingResponse.fromMap(Map<String, dynamic> json) => UDormBookingResponse(
+    id: json["id"] ?? "",
+    tags: json["tags"] == null ? <int>[] : List<int>.from(json["tags"]!.map((dynamic x) => x)),
+    startAt: DateTime.parse(json["startAt"]),
+    endAt: json["endAt"] == null ? null : DateTime.parse(json["endAt"]),
+    price: _num(json["price"]),
+    dormId: json["dormId"] ?? "",
+    userId: json["userId"] ?? "",
+    resource: json["resource"],
+    userName: json["userName"],
+    mealId: json["mealId"],
+    mealTitle: json["mealTitle"],
+  );
+
+  final String id;
+  final List<int> tags;
+  final DateTime startAt;
+  final DateTime? endAt;
+  final double price;
+  final String dormId;
+  final String userId;
+  final String? resource;
+  final String? userName;
+  final String? mealId;
+  final String? mealTitle;
 }
