@@ -14084,8 +14084,6 @@ abstract class AppLocalizations {
   /// **'Your application is sent.'**
   String get applicationSent;
 
-
-
   /// No description provided for @vatPercent.
   ///
   /// In en, this message translates to:
