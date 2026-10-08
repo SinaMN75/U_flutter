@@ -18,7 +18,7 @@ class UOrganizationMember {
 }
 
 class UOrganizationJson {
-  UOrganizationJson({this.detail1, this.detail2, this.commissionPercent = 0, this.members = const <UOrganizationMember>[], this.settlements = const <UOrganizationSettlement>[], this.logoUrl, this.address, this.phoneNumber, this.nationalId, this.economicCode, this.vatPercent = 0, this.taxServiceId, this.plan});
+  UOrganizationJson({this.detail1, this.detail2, this.commissionPercent = 0, this.members = const <UOrganizationMember>[], this.settlements = const <UOrganizationSettlement>[], this.logoUrl, this.address, this.phoneNumber, this.nationalId, this.economicCode, this.vatPercent = 0, this.taxServiceId, this.subscriptions = const <UOrganizationSubscription>[]});
 
   factory UOrganizationJson.fromMap(Map<String, dynamic> json) => UOrganizationJson(
     detail1: json["detail1"],
@@ -33,7 +33,7 @@ class UOrganizationJson {
     economicCode: json["economicCode"],
     vatPercent: json["vatPercent"] == null ? 0 : (json["vatPercent"] as num).toDouble(),
     taxServiceId: json["taxServiceId"],
-    plan: json["plan"] == null ? null : UOrganizationPlan.fromMap(json["plan"]),
+    subscriptions: json["subscriptions"] == null ? <UOrganizationSubscription>[] : List<UOrganizationSubscription>.from(json["subscriptions"]!.map((dynamic x) => UOrganizationSubscription.fromMap(x))),
   );
 
   final String? detail1;
@@ -48,7 +48,7 @@ class UOrganizationJson {
   final String? economicCode;
   final double vatPercent;
   final String? taxServiceId;
-  final UOrganizationPlan? plan;
+  final List<UOrganizationSubscription> subscriptions;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "detail1": detail1,
@@ -63,7 +63,7 @@ class UOrganizationJson {
     "economicCode": economicCode,
     "vatPercent": vatPercent,
     "taxServiceId": taxServiceId,
-    "plan": plan?.toMap(),
+    "subscriptions": subscriptions.map((UOrganizationSubscription x) => x.toMap()).toList(),
   };
 }
 
@@ -78,6 +78,8 @@ class UOrganizationResponse {
     this.creatorId,
     this.adminUserIds = const <String>[],
     this.balance = 0,
+    this.modules,
+    this.subscriptionEndsAt,
   });
 
   factory UOrganizationResponse.fromMap(Map<String, dynamic> json) => UOrganizationResponse(
@@ -90,6 +92,8 @@ class UOrganizationResponse {
     creatorId: json["creatorId"],
     adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
     balance: json["balance"] == null ? 0 : (json["balance"] as num).toDouble(),
+    modules: json["modules"] == null ? null : List<int>.from(json["modules"]!.map((dynamic x) => x)),
+    subscriptionEndsAt: json["subscriptionEndsAt"] == null ? null : DateTime.parse(json["subscriptionEndsAt"]),
   );
 
   final String id;
@@ -101,6 +105,10 @@ class UOrganizationResponse {
   final String? creatorId;
   final List<String> adminUserIds;
   final double balance;
+  final List<int>? modules;
+  final DateTime? subscriptionEndsAt;
+
+  bool hasModule(TagModule m) => modules == null || modules!.contains(m.number);
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "id": id,
@@ -147,36 +155,139 @@ class UOrganizationSettlement {
   };
 }
 
-class UOrganizationPlan {
-  UOrganizationPlan({
-    this.title,
-    this.maxPlaces,
-    this.maxRooms,
-    this.maxBeds,
+class UPlanPrice {
+  UPlanPrice({required this.months, required this.price});
+
+  factory UPlanPrice.fromMap(Map<String, dynamic> json) => UPlanPrice(months: (json["months"] as num).toInt(), price: _num(json["price"]));
+
+  final int months;
+  final double price;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"months": months, "price": price};
+}
+
+class UPlanLimit {
+  UPlanLimit({required this.kind, required this.value});
+
+  factory UPlanLimit.fromMap(Map<String, dynamic> json) => UPlanLimit(kind: (json["kind"] as num).toInt(), value: (json["value"] as num).toInt());
+
+  final int kind;
+  final int value;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"kind": kind, "value": value};
+}
+
+class UOrganizationSubscription {
+  UOrganizationSubscription({
+    required this.id,
+    required this.title,
+    required this.status,
+    required this.createdAt,
+    this.planId,
+    this.modules = const <int>[],
+    this.limits = const <UPlanLimit>[],
+    this.months = 0,
+    this.days = 0,
+    this.trial = false,
+    this.price = 0,
+    this.credit = 0,
+    this.paid = 0,
+    this.startsAt,
     this.expiresAt,
   });
 
-  factory UOrganizationPlan.fromMap(Map<String, dynamic> json) => UOrganizationPlan(
-    title: json["title"],
-    maxPlaces: json["maxPlaces"] == null ? null : (json["maxPlaces"] as num).toInt(),
-    maxRooms: json["maxRooms"] == null ? null : (json["maxRooms"] as num).toInt(),
-    maxBeds: json["maxBeds"] == null ? null : (json["maxBeds"] as num).toInt(),
+  factory UOrganizationSubscription.fromMap(Map<String, dynamic> json) => UOrganizationSubscription(
+    id: json["id"] ?? "",
+    planId: json["planId"],
+    title: json["title"] ?? "",
+    status: json["status"] == null ? 0 : (json["status"] as num).toInt(),
+    createdAt: DateTime.parse(json["createdAt"]),
+    modules: json["modules"] == null ? <int>[] : List<int>.from(json["modules"]!.map((dynamic x) => x)),
+    limits: json["limits"] == null ? <UPlanLimit>[] : List<UPlanLimit>.from(json["limits"]!.map((dynamic x) => UPlanLimit.fromMap(x))),
+    months: json["months"] == null ? 0 : (json["months"] as num).toInt(),
+    days: json["days"] == null ? 0 : (json["days"] as num).toInt(),
+    trial: json["trial"] ?? false,
+    price: _num(json["price"]),
+    credit: _num(json["credit"]),
+    paid: _num(json["paid"]),
+    startsAt: json["startsAt"] == null ? null : DateTime.parse(json["startsAt"]),
     expiresAt: json["expiresAt"] == null ? null : DateTime.parse(json["expiresAt"]),
   );
 
-  final String? title;
-  final int? maxPlaces;
-  final int? maxRooms;
-  final int? maxBeds;
+  final String id;
+  final String? planId;
+  final String title;
+  final int status;
+  final DateTime createdAt;
+  final List<int> modules;
+  final List<UPlanLimit> limits;
+  final int months;
+  final int days;
+  final bool trial;
+  final double price;
+  final double credit;
+  final double paid;
+  final DateTime? startsAt;
   final DateTime? expiresAt;
 
+  bool get isLive => status == TagSubscription.active.number && startsAt != null && expiresAt != null && !startsAt!.isAfter(DateTime.now()) && expiresAt!.isAfter(DateTime.now());
+
   Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "planId": planId,
     "title": title,
-    "maxPlaces": maxPlaces,
-    "maxRooms": maxRooms,
-    "maxBeds": maxBeds,
+    "status": status,
+    "createdAt": createdAt.toIso8601String(),
+    "modules": modules,
+    "limits": limits.map((UPlanLimit x) => x.toMap()).toList(),
+    "months": months,
+    "days": days,
+    "trial": trial,
+    "price": price,
+    "credit": credit,
+    "paid": paid,
+    "startsAt": startsAt?.toIso8601String(),
     "expiresAt": expiresAt?.toIso8601String(),
   };
+}
+
+class USubscriptionPlanResponse {
+  USubscriptionPlanResponse({
+    required this.id,
+    required this.title,
+    this.tags = const <int>[],
+    this.order = 0,
+    this.description,
+    this.modules = const <int>[],
+    this.prices = const <UPlanPrice>[],
+    this.limits = const <UPlanLimit>[],
+    this.features = const <String>[],
+    this.trialDays = 0,
+  });
+
+  factory USubscriptionPlanResponse.fromMap(Map<String, dynamic> json) => USubscriptionPlanResponse(
+    id: json["id"] ?? "",
+    title: json["title"] ?? "",
+    tags: json["tags"] == null ? <int>[] : List<int>.from(json["tags"]!.map((dynamic x) => x)),
+    order: json["order"] == null ? 0 : (json["order"] as num).toInt(),
+    description: json["jsonData"]?["detail1"],
+    modules: json["jsonData"]?["modules"] == null ? <int>[] : List<int>.from(json["jsonData"]!["modules"]!.map((dynamic x) => x)),
+    prices: json["jsonData"]?["prices"] == null ? <UPlanPrice>[] : List<UPlanPrice>.from(json["jsonData"]!["prices"]!.map((dynamic x) => UPlanPrice.fromMap(x))),
+    limits: json["jsonData"]?["limits"] == null ? <UPlanLimit>[] : List<UPlanLimit>.from(json["jsonData"]!["limits"]!.map((dynamic x) => UPlanLimit.fromMap(x))),
+    features: json["jsonData"]?["features"] == null ? <String>[] : List<String>.from(json["jsonData"]!["features"]!.map((dynamic x) => x)),
+    trialDays: json["jsonData"]?["trialDays"] == null ? 0 : (json["jsonData"]!["trialDays"] as num).toInt(),
+  );
+
+  final String id;
+  final String title;
+  final List<int> tags;
+  final int order;
+  final String? description;
+  final List<int> modules;
+  final List<UPlanPrice> prices;
+  final List<UPlanLimit> limits;
+  final List<String> features;
+  final int trialDays;
 }
 
 class UStaffShiftResponse {

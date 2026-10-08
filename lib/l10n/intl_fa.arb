@@ -2573,5 +2573,20 @@
   "discount": "تخفیف",
   "amountAfterDiscount": "مبلغ پس از تخفیف",
   "totalAmount": "مبلغ کل",
-  "settlementMethod": "روش تسویه"
+  "settlementMethod": "روش تسویه",
+  "subscriptionPlans": "پلن‌های اشتراک",
+  "subscription": "اشتراک",
+  "systems": "سیستم‌ها",
+  "trialDays": "روزهای آزمایشی رایگان",
+  "pricePerPeriod": "قیمت هر دوره (خالی یعنی این دوره فروخته نمی‌شود)",
+  "planLimits": "محدودیت‌ها (خالی یعنی نامحدود)",
+  "planFeatures": "ویژگی‌ها برای نمایش در سایت (هر خط یکی)",
+  "allSystemsWithoutSubscription": "این مجموعه اشتراکی ندارد و به همه‌ی سیستم‌ها دسترسی دارد.",
+  "activeSystems": "سیستم‌های فعال",
+  "until": "تا",
+  "freeTrial": "آزمایشی رایگان",
+  "upgradeOrRenewOnWebsite": "ارتقا، تمدید یا افزودن سیستم در سایت",
+  "grantSubscription": "دادن اشتراک بدون پرداخت",
+  "monthCount": "تعداد ماه",
+  "dayCount": "تعداد روز"
 }

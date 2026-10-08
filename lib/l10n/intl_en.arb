@@ -2811,5 +2811,20 @@
   "discount": "Discount",
   "amountAfterDiscount": "Amount after discount",
   "totalAmount": "Total amount",
-  "settlementMethod": "Settlement method"
+  "settlementMethod": "Settlement method",
+  "subscriptionPlans": "Subscription plans",
+  "subscription": "Subscription",
+  "systems": "Systems",
+  "trialDays": "Free trial days",
+  "pricePerPeriod": "Price per period (empty = not sold)",
+  "planLimits": "Limits (empty = unlimited)",
+  "planFeatures": "Features shown on the website (one per line)",
+  "allSystemsWithoutSubscription": "This organization has no subscription and can use every system.",
+  "activeSystems": "Active systems",
+  "until": "until",
+  "freeTrial": "Free trial",
+  "upgradeOrRenewOnWebsite": "Upgrade, renew or add systems on the website",
+  "grantSubscription": "Grant a subscription without payment",
+  "monthCount": "Months",
+  "dayCount": "Days"
 }

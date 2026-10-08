@@ -7245,4 +7245,49 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settlementMethod => 'Settlement method';
+
+  @override
+  String get subscriptionPlans => 'Subscription plans';
+
+  @override
+  String get subscription => 'Subscription';
+
+  @override
+  String get systems => 'Systems';
+
+  @override
+  String get trialDays => 'Free trial days';
+
+  @override
+  String get pricePerPeriod => 'Price per period (empty = not sold)';
+
+  @override
+  String get planLimits => 'Limits (empty = unlimited)';
+
+  @override
+  String get planFeatures => 'Features shown on the website (one per line)';
+
+  @override
+  String get allSystemsWithoutSubscription => 'This organization has no subscription and can use every system.';
+
+  @override
+  String get activeSystems => 'Active systems';
+
+  @override
+  String get until => 'until';
+
+  @override
+  String get freeTrial => 'Free trial';
+
+  @override
+  String get upgradeOrRenewOnWebsite => 'Upgrade, renew or add systems on the website';
+
+  @override
+  String get grantSubscription => 'Grant a subscription without payment';
+
+  @override
+  String get monthCount => 'Months';
+
+  @override
+  String get dayCount => 'Days';
 }

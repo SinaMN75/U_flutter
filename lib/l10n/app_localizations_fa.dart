@@ -7244,4 +7244,49 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get settlementMethod => 'روش تسویه';
+
+  @override
+  String get subscriptionPlans => 'پلن‌های اشتراک';
+
+  @override
+  String get subscription => 'اشتراک';
+
+  @override
+  String get systems => 'سیستم‌ها';
+
+  @override
+  String get trialDays => 'روزهای آزمایشی رایگان';
+
+  @override
+  String get pricePerPeriod => 'قیمت هر دوره (خالی یعنی این دوره فروخته نمی‌شود)';
+
+  @override
+  String get planLimits => 'محدودیت‌ها (خالی یعنی نامحدود)';
+
+  @override
+  String get planFeatures => 'ویژگی‌ها برای نمایش در سایت (هر خط یکی)';
+
+  @override
+  String get allSystemsWithoutSubscription => 'این مجموعه اشتراکی ندارد و به همه‌ی سیستم‌ها دسترسی دارد.';
+
+  @override
+  String get activeSystems => 'سیستم‌های فعال';
+
+  @override
+  String get until => 'تا';
+
+  @override
+  String get freeTrial => 'آزمایشی رایگان';
+
+  @override
+  String get upgradeOrRenewOnWebsite => 'ارتقا، تمدید یا افزودن سیستم در سایت';
+
+  @override
+  String get grantSubscription => 'دادن اشتراک بدون پرداخت';
+
+  @override
+  String get monthCount => 'تعداد ماه';
+
+  @override
+  String get dayCount => 'تعداد روز';
 }

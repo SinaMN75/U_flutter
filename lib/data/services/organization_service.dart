@@ -126,4 +126,46 @@ class UOrganizationService {
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
   }) => _Api.call("/Organization/ActivityLog/Read", p.toMap(), _Api.list(UActivityLogResponse.fromMap), _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<List<USubscriptionPlanResponse>>?, UEmptyResponse?, String?)> readPlans({
+    required USubscriptionPlanReadParams p,
+    Function(UResponse<List<USubscriptionPlanResponse>> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Organization/Plan/Read", p.toMap(), _Api.list(USubscriptionPlanResponse.fromMap), _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<String>?, UEmptyResponse?, String?)> createPlan({
+    required USubscriptionPlanCreateParams p,
+    Function(UResponse<String> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Organization/Plan/Create", p.toMap(), _Api.raw<String>(), _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> updatePlan({
+    required USubscriptionPlanUpdateParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Organization/Plan/Update", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> deletePlan({
+    required UIdParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Organization/Plan/Delete", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> grantSubscription({
+    required USubscriptionGrantParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Organization/Subscription/Grant", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> cancelSubscription({
+    required USubscriptionCancelParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Organization/Subscription/Cancel", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 }

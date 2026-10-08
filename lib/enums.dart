@@ -462,7 +462,8 @@ enum TagTxn with UNumericIdentifiable {
   hotelInvoice("پرداخت فاکتور هتل", "Hotel Invoice", 304),
   billPayment("پرداخت قبض", "Bill Payment", 305),
   topUp("شارژ مستقیم", "Top Up", 306),
-  multiplexedSale("پرداخت تسهیمی", "Multiplexed Sale", 307);
+  multiplexedSale("پرداخت تسهیمی", "Multiplexed Sale", 307),
+  subscription("خرید اشتراک", "Subscription", 308);
 
   const TagTxn(this.titleFa, this.titleEn, this.number);
 
@@ -674,6 +675,7 @@ enum TagWalletTxn with UNumericIdentifiable {
   dormDepositRefund("برگشت ودیعه‌ی خوابگاه", "Dorm deposit refund", 223),
   organizationSettlement("تسویه‌ی مجموعه", "Organization settlement", 224),
   organizationSettlementRefund("برگشت تسویه‌ی مجموعه", "Organization settlement refund", 225),
+  subscription("خرید اشتراک", "Subscription", 226),
   chargeSimPin("خرید شارژ پین سیم‌کارت", "SIM Charge (PIN)", 301),
   chargeSimTopup("شارژ مستقیم سیم‌کارت", "SIM Top-up", 302),
   internetSim("خرید بسته اینترنت", "Internet Package", 303),
@@ -2111,6 +2113,71 @@ enum TagActivityLog with UNumericIdentifiable {
   action("عملیات", "Action", 104);
 
   const TagActivityLog(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagModule with UNumericIdentifiable {
+  hotel("هتل", "Hotel", 101),
+  dorm("خوابگاه و پانسیون", "Dorm", 102),
+  accounting("حسابداری", "Accounting", 103),
+  inventory("انبارداری و اموال", "Inventory", 104),
+  staff("کارکنان و وظایف", "Staff", 105);
+
+  const TagModule(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagSubscriptionPlan with UNumericIdentifiable {
+  active("فعال", "Active", 101),
+  inactive("غیرفعال", "Inactive", 102),
+  featured("پیشنهاد ویژه", "Featured", 201);
+
+  const TagSubscriptionPlan(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagSubscription with UNumericIdentifiable {
+  pending("در انتظار پرداخت", "Pending", 101),
+  active("فعال", "Active", 102),
+  replaced("جایگزین‌شده", "Replaced", 103),
+  cancelled("لغو‌شده", "Cancelled", 104);
+
+  const TagSubscription(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagPlanLimit with UNumericIdentifiable {
+  places("تعداد شعبه", "Branches", 101),
+  rooms("تعداد اتاق هتل", "Hotel rooms", 102),
+  beds("تعداد تخت", "Beds", 103),
+  members("تعداد کارکنان", "Staff members", 104),
+  warehouses("تعداد انبار", "Warehouses", 105);
+
+  const TagPlanLimit(this.titleFa, this.titleEn, this.number);
 
   @override
   final String titleFa;

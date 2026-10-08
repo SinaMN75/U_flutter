@@ -14,7 +14,6 @@ class UOrganizationCreateParams {
     this.economicCode,
     this.vatPercent,
     this.taxServiceId,
-    this.plan,
   });
 
   final String title;
@@ -29,7 +28,6 @@ class UOrganizationCreateParams {
   final String? economicCode;
   final double? vatPercent;
   final String? taxServiceId;
-  final UOrganizationPlan? plan;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "title": title,
@@ -44,7 +42,6 @@ class UOrganizationCreateParams {
     "economicCode": economicCode,
     "vatPercent": vatPercent,
     "taxServiceId": taxServiceId,
-    "plan": plan?.toMap(),
   };
 }
 
@@ -65,7 +62,6 @@ class UOrganizationUpdateParams {
     this.economicCode,
     this.vatPercent,
     this.taxServiceId,
-    this.plan,
   });
 
   final String id;
@@ -83,7 +79,6 @@ class UOrganizationUpdateParams {
   final String? economicCode;
   final double? vatPercent;
   final String? taxServiceId;
-  final UOrganizationPlan? plan;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "id": id,
@@ -101,7 +96,6 @@ class UOrganizationUpdateParams {
     "economicCode": economicCode,
     "vatPercent": vatPercent,
     "taxServiceId": taxServiceId,
-    "plan": plan?.toMap(),
   };
 }
 
@@ -413,4 +407,108 @@ class UActivityLogReadParams {
     "fromCreatedAt": fromCreatedAt?.toIso8601String(),
     "toCreatedAt": toCreatedAt?.toIso8601String(),
   };
+}
+
+class USubscriptionPlanCreateParams {
+  USubscriptionPlanCreateParams({
+    required this.title,
+    required this.modules,
+    required this.prices,
+    this.tags = const <int>[101],
+    this.order = 0,
+    this.detail1,
+    this.limits = const <UPlanLimit>[],
+    this.features = const <String>[],
+    this.trialDays = 0,
+  });
+
+  final String title;
+  final List<int> modules;
+  final List<UPlanPrice> prices;
+  final List<int> tags;
+  final int order;
+  final String? detail1;
+  final List<UPlanLimit> limits;
+  final List<String> features;
+  final int trialDays;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "title": title,
+    "modules": modules,
+    "prices": prices.map((UPlanPrice x) => x.toMap()).toList(),
+    "tags": tags,
+    "order": order,
+    "detail1": detail1,
+    "limits": limits.map((UPlanLimit x) => x.toMap()).toList(),
+    "features": features,
+    "trialDays": trialDays,
+  };
+}
+
+class USubscriptionPlanUpdateParams {
+  USubscriptionPlanUpdateParams({required this.id, this.title, this.modules, this.prices, this.tags, this.order, this.detail1, this.limits, this.features, this.trialDays});
+
+  final String id;
+  final String? title;
+  final List<int>? modules;
+  final List<UPlanPrice>? prices;
+  final List<int>? tags;
+  final int? order;
+  final String? detail1;
+  final List<UPlanLimit>? limits;
+  final List<String>? features;
+  final int? trialDays;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "title": title,
+    "modules": modules,
+    "prices": prices?.map((UPlanPrice x) => x.toMap()).toList(),
+    "tags": tags,
+    "order": order,
+    "detail1": detail1,
+    "limits": limits?.map((UPlanLimit x) => x.toMap()).toList(),
+    "features": features,
+    "trialDays": trialDays,
+  };
+}
+
+class USubscriptionPlanReadParams {
+  USubscriptionPlanReadParams({this.module, this.tags});
+
+  final int? module;
+  final List<int>? tags;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"module": module, "tags": tags, "pageSize": 100, "pageNumber": 1};
+}
+
+class USubscriptionGrantParams {
+  USubscriptionGrantParams({required this.organizationId, this.planId, this.title, this.modules, this.limits, this.months = 0, this.days = 0});
+
+  final String organizationId;
+  final String? planId;
+  final String? title;
+  final List<int>? modules;
+  final List<UPlanLimit>? limits;
+  final int months;
+  final int days;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "organizationId": organizationId,
+    "planId": planId,
+    "title": title,
+    "modules": modules,
+    "limits": limits?.map((UPlanLimit x) => x.toMap()).toList(),
+    "months": months,
+    "days": days,
+  };
+}
+
+class USubscriptionCancelParams {
+  USubscriptionCancelParams({required this.organizationId, required this.subscriptionId});
+
+  final String organizationId;
+  final String subscriptionId;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"organizationId": organizationId, "subscriptionId": subscriptionId};
 }

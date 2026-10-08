@@ -14199,6 +14199,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Settlement method'**
   String get settlementMethod;
+
+  /// No description provided for @subscriptionPlans.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription plans'**
+  String get subscriptionPlans;
+
+  /// No description provided for @subscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription'**
+  String get subscription;
+
+  /// No description provided for @systems.
+  ///
+  /// In en, this message translates to:
+  /// **'Systems'**
+  String get systems;
+
+  /// No description provided for @trialDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Free trial days'**
+  String get trialDays;
+
+  /// No description provided for @pricePerPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Price per period (empty = not sold)'**
+  String get pricePerPeriod;
+
+  /// No description provided for @planLimits.
+  ///
+  /// In en, this message translates to:
+  /// **'Limits (empty = unlimited)'**
+  String get planLimits;
+
+  /// No description provided for @planFeatures.
+  ///
+  /// In en, this message translates to:
+  /// **'Features shown on the website (one per line)'**
+  String get planFeatures;
+
+  /// No description provided for @allSystemsWithoutSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'This organization has no subscription and can use every system.'**
+  String get allSystemsWithoutSubscription;
+
+  /// No description provided for @activeSystems.
+  ///
+  /// In en, this message translates to:
+  /// **'Active systems'**
+  String get activeSystems;
+
+  /// No description provided for @until.
+  ///
+  /// In en, this message translates to:
+  /// **'until'**
+  String get until;
+
+  /// No description provided for @freeTrial.
+  ///
+  /// In en, this message translates to:
+  /// **'Free trial'**
+  String get freeTrial;
+
+  /// No description provided for @upgradeOrRenewOnWebsite.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade, renew or add systems on the website'**
+  String get upgradeOrRenewOnWebsite;
+
+  /// No description provided for @grantSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Grant a subscription without payment'**
+  String get grantSubscription;
+
+  /// No description provided for @monthCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Months'**
+  String get monthCount;
+
+  /// No description provided for @dayCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Days'**
+  String get dayCount;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
