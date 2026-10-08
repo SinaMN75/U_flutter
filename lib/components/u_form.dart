@@ -8,7 +8,7 @@ double _dialogWidth(BuildContext context, double max) {
 /// A dialog around a [Form]: Submit validates it, runs [onSubmit] with a loading button,
 /// and closes the dialog when [onSubmit] returns true. Without [onSubmit] it is view-only and shows a Close button.
 class UFormDialog extends StatefulWidget {
-  const UFormDialog({required this.title, required this.children, super.key, this.onSubmit, this.maxWidth = 480});
+  const UFormDialog({required this.title, required this.children, super.key, this.onSubmit, this.maxWidth = 480, this.help});
 
   /// Title text.
   final String title;
@@ -22,13 +22,16 @@ class UFormDialog extends StatefulWidget {
   /// Maximum width.
   final double maxWidth;
 
+  final String? help;
+
   /// Opens a form dialog; [onSubmit] returns true to close it. `UFormDialog.show(title: "Edit", children: (c, set) => [UTextField(labelText: "Name")], onSubmit: () async => true)`
   static Future<void> show({
     required String title,
     required List<Widget> Function(BuildContext context, StateSetter setState) children,
     Future<bool> Function()? onSubmit,
     double maxWidth = 480,
-  }) => UNavigator.dialog<void>(UFormDialog(title: title, onSubmit: onSubmit, maxWidth: maxWidth, children: children));
+    String? help,
+  }) => UNavigator.dialog<void>(UFormDialog(title: title, onSubmit: onSubmit, maxWidth: maxWidth, help: help, children: children));
 
   @override
   State<UFormDialog> createState() => _UFormDialogState();
@@ -49,7 +52,7 @@ class _UFormDialogState extends State<UFormDialog> {
 
   @override
   Widget build(BuildContext context) => AlertDialog(
-    title: Text(widget.title),
+    title: widget.help == null ? Text(widget.title) : URow(children: <Widget>[Text(widget.title).expanded(), UHelpActions(widget.help!)]),
     content: SizedBox(
       width: _dialogWidth(context, widget.maxWidth),
       child: SingleChildScrollView(
@@ -72,7 +75,7 @@ class _UFormDialogState extends State<UFormDialog> {
 
 /// A filter dialog: "Filter" closes it and runs [onApply], "Clear filters" closes it and runs [onClear].
 class UFilterDialog extends StatefulWidget {
-  const UFilterDialog({required this.title, required this.onApply, required this.onClear, required this.children, super.key});
+  const UFilterDialog({required this.title, required this.onApply, required this.onClear, required this.children, super.key, this.help});
 
   /// Title text.
   final String title;
@@ -86,13 +89,16 @@ class UFilterDialog extends StatefulWidget {
   /// Child widgets.
   final List<Widget> Function(StateSetter setState) children;
 
+  final String? help;
+
   /// Opens a filter dialog with Apply/Clear buttons.
   static Future<void> show({
     required String title,
     required VoidCallback onApply,
     required VoidCallback onClear,
     required List<Widget> Function(StateSetter setState) children,
-  }) => UNavigator.dialog<void>(UFilterDialog(title: title, onApply: onApply, onClear: onClear, children: children));
+    String? help,
+  }) => UNavigator.dialog<void>(UFilterDialog(title: title, onApply: onApply, onClear: onClear, help: help, children: children));
 
   @override
   State<UFilterDialog> createState() => _UFilterDialogState();
@@ -101,7 +107,7 @@ class UFilterDialog extends StatefulWidget {
 class _UFilterDialogState extends State<UFilterDialog> {
   @override
   Widget build(BuildContext context) => AlertDialog(
-    title: Text(widget.title),
+    title: widget.help == null ? Text(widget.title) : URow(children: <Widget>[Text(widget.title).expanded(), UHelpActions(widget.help!)]),
     content: SizedBox(
       width: _dialogWidth(context, 420),
       child: SingleChildScrollView(

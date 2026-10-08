@@ -114,6 +114,7 @@ export "components/u_download_manager_page.dart";
 export "components/u_drop_down.dart";
 export "components/u_epub_reader.dart";
 export "components/u_form.dart";
+export "components/u_help.dart";
 export "components/u_gauges.dart";
 export "components/u_general_widgets.dart";
 export "components/u_html_view.dart";

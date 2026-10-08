@@ -7365,4 +7365,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get demoDataConfirm => 'Demo data is written to this server and has to be removed by hand. Run it only on a test server. Continue?';
+
+  @override
+  String get helpMode => 'Help mode';
+
+  @override
+  String get pageTour => 'Page tour';
 }

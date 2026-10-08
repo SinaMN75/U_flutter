@@ -9,6 +9,7 @@ class UPopupMenuItem {
     this.visible = true,
     this.destructive = false,
     this.color,
+    this.help,
   });
 
   /// Label text.
@@ -28,6 +29,8 @@ class UPopupMenuItem {
 
   /// Main color (defaults to the theme).
   final Color? color;
+
+  final String? help;
 }
 
 /// ⋮ button that opens a menu of UPopupMenuItem. `UPopupMenu(items: [UPopupMenuItem(label: "Delete", icon: Icons.delete, onTap: delete, destructive: true)])`
@@ -61,7 +64,7 @@ class UPopupMenu extends StatelessWidget {
           onTap: i.onTap,
           child: UIconTextHorizontal(
             leading: Icon(i.icon, size: 20, color: color),
-            trailing: Text(i.label, style: color == null ? null : TextStyle(color: color)),
+            trailing: i.help == null ? Text(i.label, style: color == null ? null : TextStyle(color: color)) : Text(i.label, style: color == null ? null : TextStyle(color: color)).help(i.help!, inline: true),
           ),
         );
       }).toList(),

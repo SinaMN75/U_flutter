@@ -7364,4 +7364,10 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get demoDataConfirm => 'داده‌ی نمونه روی همین سرور ساخته می‌شود و پاک کردنش دستی است. فقط روی سرور تست اجرا کنید. ادامه می‌دهید؟';
+
+  @override
+  String get helpMode => 'حالت راهنما';
+
+  @override
+  String get pageTour => 'تور این صفحه';
 }

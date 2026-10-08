@@ -14437,6 +14437,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Demo data is written to this server and has to be removed by hand. Run it only on a test server. Continue?'**
   String get demoDataConfirm;
+
+  /// No description provided for @helpMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Help mode'**
+  String get helpMode;
+
+  /// No description provided for @pageTour.
+  ///
+  /// In en, this message translates to:
+  /// **'Page tour'**
+  String get pageTour;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
