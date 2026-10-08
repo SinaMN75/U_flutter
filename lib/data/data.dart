@@ -241,6 +241,7 @@ part "services/vehicle_service.dart";
 part "services/venue_service.dart";
 
 part "services/wallet_service.dart";
+part "services/data_seed_service.dart";
 
 part "payment/ipg_browser_controller.dart";
 
@@ -288,6 +289,7 @@ class UServices {
   static UTicketService ticket = UTicketService();
   static UParkingService parking = UParkingService();
   static UTxnService txn = UTxnService();
+  static UDataSeedService dataSeed = UDataSeedService();
   static UBlogService blog = UBlogService();
   static UPnService pn = UPnService();
   static UFileManagerService fileManager = UFileManagerService();

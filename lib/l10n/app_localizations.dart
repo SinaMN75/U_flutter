@@ -14407,6 +14407,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hotel, dorm, accounting, inventory and staff'**
   String get planEverythingDescription;
+
+  /// No description provided for @demoData.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo data'**
+  String get demoData;
+
+  /// No description provided for @createDemoData.
+  ///
+  /// In en, this message translates to:
+  /// **'Create demo data'**
+  String get createDemoData;
+
+  /// No description provided for @pleaseWait.
+  ///
+  /// In en, this message translates to:
+  /// **'Please wait…'**
+  String get pleaseWait;
+
+  /// No description provided for @demoDataHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Builds a complete test world: 4 organizations with different subscriptions, 2 hotels with 20 reservations in every state, 2 dorms with contracts and bills, inventory, accounting, staff and 42 users. Everything goes through the real rules. The logins are shown here afterwards. It can run once per server.'**
+  String get demoDataHint;
+
+  /// No description provided for @demoDataConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo data is written to this server and has to be removed by hand. Run it only on a test server. Continue?'**
+  String get demoDataConfirm;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

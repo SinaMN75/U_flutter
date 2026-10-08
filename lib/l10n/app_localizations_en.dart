@@ -7350,4 +7350,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get planEverythingDescription => 'Hotel, dorm, accounting, inventory and staff';
+
+  @override
+  String get demoData => 'Demo data';
+
+  @override
+  String get createDemoData => 'Create demo data';
+
+  @override
+  String get pleaseWait => 'Please wait…';
+
+  @override
+  String get demoDataHint => 'Builds a complete test world: 4 organizations with different subscriptions, 2 hotels with 20 reservations in every state, 2 dorms with contracts and bills, inventory, accounting, staff and 42 users. Everything goes through the real rules. The logins are shown here afterwards. It can run once per server.';
+
+  @override
+  String get demoDataConfirm => 'Demo data is written to this server and has to be removed by hand. Run it only on a test server. Continue?';
 }
