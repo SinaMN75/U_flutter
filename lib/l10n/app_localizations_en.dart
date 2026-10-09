@@ -1994,13 +1994,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hotel => 'Hotel';
 
   @override
-  String get hotelAvailable => 'Hotel Available';
+  String get hotelAvailable => 'Available rooms';
 
   @override
   String get hotelOccupancy => 'Hotel Occupancy';
 
   @override
-  String get hotelOccupied => 'Hotel Occupied';
+  String get hotelOccupied => 'Occupied rooms';
 
   @override
   String get hotelReservation => 'Hotel reservation';

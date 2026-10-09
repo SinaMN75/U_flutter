@@ -330,7 +330,7 @@ double _niceNum(double range, {required bool round}) {
   return nice * math.pow(10, exponent);
 }
 
-_Bounds _niceBounds(double dataMin, double dataMax, {int ticks = 5, bool includeZero = true}) {
+_Bounds _niceBounds(double dataMin, double dataMax, {int ticks = 5, bool includeZero = true, bool whole = false}) {
   double lo = dataMin;
   double hi = dataMax;
   if (includeZero && lo > 0) lo = 0;
@@ -340,7 +340,7 @@ _Bounds _niceBounds(double dataMin, double dataMax, {int ticks = 5, bool include
     hi += 1;
   }
   final double range = _niceNum(hi - lo, round: false);
-  final double step = _niceNum(range / (ticks - 1), round: true);
+  final double step = whole ? math.max<double>(1, _niceNum(range / (ticks - 1), round: true)) : _niceNum(range / (ticks - 1), round: true);
   final double niceMin = (lo / step).floorToDouble() * step;
   final double niceMax = (hi / step).ceilToDouble() * step;
   return _Bounds(min: niceMin, max: niceMax, step: step);
@@ -349,17 +349,19 @@ _Bounds _niceBounds(double dataMin, double dataMax, {int ticks = 5, bool include
 _Bounds _boundsForSeries(List<UChartSeries> series, {bool includeZero = true, int ticks = 5}) {
   double lo = double.infinity;
   double hi = double.negativeInfinity;
+  bool whole = true;
   for (final UChartSeries s in series) {
     for (final double v in s.values) {
       lo = math.min(lo, v);
       hi = math.max(hi, v);
+      if (v != v.roundToDouble()) whole = false;
     }
   }
   if (lo == double.infinity) {
     lo = 0;
     hi = 1;
   }
-  return _niceBounds(lo, hi, ticks: ticks, includeZero: includeZero);
+  return _niceBounds(lo, hi, ticks: ticks, includeZero: includeZero, whole: whole);
 }
 
 // ----------------------------------------------------------------------------

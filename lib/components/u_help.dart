@@ -13,6 +13,7 @@ abstract class UHelp {
   static final Map<String, UHelpItem> items = <String, UHelpItem>{};
   static final Map<String, BuildContext> _targets = <String, BuildContext>{};
   static OverlayEntry? _entry;
+  static String? _current;
   static const Color color = Color(0xFFFFB300);
   static const Color onColor = Color(0xFF3E2723);
 
@@ -36,6 +37,7 @@ abstract class UHelp {
   static void hide() {
     _entry?.remove();
     _entry = null;
+    _current = null;
   }
 
   static void _open(List<String> keys, {required bool spotlight}) {
@@ -61,7 +63,13 @@ class UHelpTarget extends StatefulWidget {
 class _UHelpTargetState extends State<UHelpTarget> {
   @override
   void dispose() {
-    if (UHelp._targets[widget.helpKey] == context) UHelp._targets.remove(widget.helpKey);
+    final String key = widget.helpKey;
+    if (UHelp._targets[key] == context) UHelp._targets.remove(key);
+    if (UHelp._current == key) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (UHelp._current == key && !(UHelp._targets[key]?.mounted ?? false)) UHelp.hide();
+      });
+    }
     super.dispose();
   }
 
@@ -116,7 +124,19 @@ class _UHelpBadge extends StatefulWidget {
 }
 
 class _UHelpBadgeState extends State<_UHelpBadge> with SingleTickerProviderStateMixin {
-  late final AnimationController _pulse = AnimationController(vsync: this, duration: const Duration(milliseconds: 1600))..repeat();
+  late final AnimationController _pulse = AnimationController(vsync: this, duration: const Duration(milliseconds: 1600));
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (MediaQuery.disableAnimationsOf(context)) {
+      _pulse
+        ..stop()
+        ..value = 1;
+    } else if (!_pulse.isAnimating) {
+      _pulse.repeat();
+    }
+  }
 
   @override
   void dispose() {
@@ -125,40 +145,40 @@ class _UHelpBadgeState extends State<_UHelpBadge> with SingleTickerProviderState
   }
 
   @override
-  Widget build(BuildContext context) {
-    const Color color = UHelp.color;
-    final bool still = MediaQuery.disableAnimationsOf(context);
-    return GestureDetector(
-      onTap: widget.onTap,
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: SizedBox.square(
-          dimension: 20,
-          child: AnimatedBuilder(
-            animation: _pulse,
-            builder: (BuildContext context, Widget? child) => Stack(
-              clipBehavior: Clip.none,
-              alignment: Alignment.center,
-              children: <Widget>[
-                if (!still)
-                  Container(
-                    width: 20 + 14 * _pulse.value,
-                    height: 20 + 14 * _pulse.value,
-                    decoration: BoxDecoration(shape: BoxShape.circle, color: color.withValues(alpha: 0.35 * (1 - _pulse.value))),
-                  ),
-                child!,
-              ],
-            ),
-            child: Container(
-              decoration: BoxDecoration(shape: BoxShape.circle, color: color, border: Border.all(color: Colors.white, width: 1.5)),
-              alignment: Alignment.center,
-              child: const Icon(Icons.question_mark_rounded, size: 13, color: UHelp.onColor),
-            ),
+  Widget build(BuildContext context) => GestureDetector(
+    onTap: widget.onTap,
+    child: MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: RepaintBoundary(
+        child: CustomPaint(
+          painter: _UHelpPulsePainter(_pulse),
+          child: Container(
+            width: 20,
+            height: 20,
+            decoration: BoxDecoration(shape: BoxShape.circle, color: UHelp.color, border: Border.all(color: Colors.white, width: 1.5)),
+            alignment: Alignment.center,
+            child: const Icon(Icons.question_mark_rounded, size: 13, color: UHelp.onColor),
           ),
         ),
       ),
-    );
+    ),
+  );
+}
+
+class _UHelpPulsePainter extends CustomPainter {
+  _UHelpPulsePainter(this.pulse) : super(repaint: pulse);
+
+  final Animation<double> pulse;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final double t = pulse.value;
+    if (t >= 1) return;
+    canvas.drawCircle(size.center(Offset.zero), size.width / 2 + 7 * t, Paint()..color = UHelp.color.withValues(alpha: 0.35 * (1 - t)));
   }
+
+  @override
+  bool shouldRepaint(_UHelpPulsePainter old) => old.pulse != pulse;
 }
 
 class _UHelpOverlay extends StatefulWidget {
@@ -181,12 +201,27 @@ class _UHelpOverlayState extends State<_UHelpOverlay> {
     _go(0);
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    MediaQuery.sizeOf(context);
+    if (_rect != null) WidgetsBinding.instance.addPostFrameCallback((_) => _measure(_index));
+  }
+
   Future<void> _go(int index) async {
     final BuildContext? target = UHelp._targets[widget.keys[index]];
     if (target == null || !target.mounted) return UHelp.hide();
+    UHelp._current = widget.keys[index];
     if (widget.spotlight) await Scrollable.ensureVisible(target, duration: const Duration(milliseconds: 250), alignment: 0.3);
-    if (!mounted || !target.mounted) return;
-    final RenderBox box = target.findRenderObject()! as RenderBox;
+    _measure(index);
+  }
+
+  void _measure(int index) {
+    final BuildContext? target = UHelp._targets[widget.keys[index]];
+    if (!mounted) return;
+    if (target == null || !target.mounted) return UHelp.hide();
+    final RenderObject? box = target.findRenderObject();
+    if (box is! RenderBox || !box.hasSize || !box.attached) return;
     setState(() {
       _index = index;
       _rect = box.localToGlobal(Offset.zero) & box.size;

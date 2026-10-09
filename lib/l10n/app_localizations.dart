@@ -3947,7 +3947,7 @@ abstract class AppLocalizations {
   /// No description provided for @hotelAvailable.
   ///
   /// In en, this message translates to:
-  /// **'Hotel Available'**
+  /// **'Available rooms'**
   String get hotelAvailable;
 
   /// No description provided for @hotelOccupancy.
@@ -3959,7 +3959,7 @@ abstract class AppLocalizations {
   /// No description provided for @hotelOccupied.
   ///
   /// In en, this message translates to:
-  /// **'Hotel Occupied'**
+  /// **'Occupied rooms'**
   String get hotelOccupied;
 
   /// No description provided for @hotelReservation.

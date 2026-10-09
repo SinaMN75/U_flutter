@@ -1994,13 +1994,13 @@ class AppLocalizationsFa extends AppLocalizations {
   String get hotel => 'هتل';
 
   @override
-  String get hotelAvailable => 'هتل خالی';
+  String get hotelAvailable => 'اتاق خالی';
 
   @override
   String get hotelOccupancy => 'اشغال هتل';
 
   @override
-  String get hotelOccupied => 'هتل اشغال‌شده';
+  String get hotelOccupied => 'اتاق اشغال‌شده';
 
   @override
   String get hotelReservation => 'رزرو هتل';
