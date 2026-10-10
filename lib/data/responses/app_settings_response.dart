@@ -87,6 +87,7 @@ class UChargeInternet {
   final String logo;
   final List<UChargeInternetPreDefinedAmounts> pinAmountsList;
   final List<UChargeInternetPreDefinedAmounts> topupAmountsList;
+  final double topupTaxPercent;
 
   UChargeInternet({
     required this.operator,
@@ -94,6 +95,7 @@ class UChargeInternet {
     required this.logo,
     required this.pinAmountsList,
     required this.topupAmountsList,
+    this.topupTaxPercent = 0,
   });
 
   factory UChargeInternet.fromJson(String str) => UChargeInternet.fromMap(json.decode(str));
@@ -106,6 +108,7 @@ class UChargeInternet {
     logo: json["logo"],
     pinAmountsList: _amounts(json["pinAmountsList"]),
     topupAmountsList: _amounts(json["topupAmountsList"]),
+    topupTaxPercent: (json["topupTaxPercent"] ?? 0).toString().toDouble(),
   );
 
   static List<UChargeInternetPreDefinedAmounts> _amounts(dynamic list) =>
@@ -117,6 +120,7 @@ class UChargeInternet {
     "logo": logo,
     "pinAmountsList": List<dynamic>.from(pinAmountsList.map((UChargeInternetPreDefinedAmounts x) => x.toMap())),
     "topupAmountsList": List<dynamic>.from(topupAmountsList.map((UChargeInternetPreDefinedAmounts x) => x.toMap())),
+    "topupTaxPercent": topupTaxPercent,
   };
 }
 
