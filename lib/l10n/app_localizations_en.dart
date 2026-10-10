@@ -7411,4 +7411,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get awaitingSettlement => 'Awaiting settlement';
+
+  @override
+  String get userNameOrPhoneNumber => 'Username or phone number';
+
+  @override
+  String get ownerAllPermissions => 'Owner — all permissions';
 }

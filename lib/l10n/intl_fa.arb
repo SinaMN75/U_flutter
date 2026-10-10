@@ -2628,5 +2628,7 @@
   "yesterday": "دیروز",
   "last7Days": "۷ روز اخیر",
   "thisMonth": "این ماه",
-  "awaitingSettlement": "منتظر تسویه"
+  "awaitingSettlement": "منتظر تسویه",
+  "userNameOrPhoneNumber": "نام کاربری یا شماره موبایل",
+  "ownerAllPermissions": "مالک — همه‌ی دسترسی‌ها"
 }

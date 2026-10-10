@@ -2866,5 +2866,7 @@
   "yesterday": "Yesterday",
   "last7Days": "Last 7 days",
   "thisMonth": "This month",
-  "awaitingSettlement": "Awaiting settlement"
+  "awaitingSettlement": "Awaiting settlement",
+  "userNameOrPhoneNumber": "Username or phone number",
+  "ownerAllPermissions": "Owner — all permissions"
 }

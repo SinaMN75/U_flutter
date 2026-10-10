@@ -14527,6 +14527,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Awaiting settlement'**
   String get awaitingSettlement;
+
+  /// No description provided for @userNameOrPhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Username or phone number'**
+  String get userNameOrPhoneNumber;
+
+  /// No description provided for @ownerAllPermissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner — all permissions'**
+  String get ownerAllPermissions;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

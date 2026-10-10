@@ -7410,4 +7410,10 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get awaitingSettlement => 'منتظر تسویه';
+
+  @override
+  String get userNameOrPhoneNumber => 'نام کاربری یا شماره موبایل';
+
+  @override
+  String get ownerAllPermissions => 'مالک — همه‌ی دسترسی‌ها';
 }
