@@ -57,6 +57,50 @@ class UNumberInputFormatter extends TextInputFormatter {
   }
 }
 
+/// Splits digits into [groups] joined by [separator] as you type (Persian digits converted). `UGroupedDigitsInputFormatter(groups: <int>[4, 4, 4, 4])` for card numbers, `UGroupedDigitsInputFormatter(groups: <int>[2, 2], separator: "/")` for card expiry.
+class UGroupedDigitsInputFormatter extends TextInputFormatter {
+  UGroupedDigitsInputFormatter({required this.groups, this.separator = " "});
+
+  /// Digits in each group; their sum is the most digits allowed.
+  final List<int> groups;
+
+  /// Text placed between groups.
+  final String separator;
+
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    final int maxDigits = groups.fold<int>(0, (int sum, int size) => sum + size);
+    String digits = newValue.text.extractLatinNumber();
+    int cursorDigits = newValue.text.substring(0, newValue.selection.baseOffset.clamp(0, newValue.text.length)).extractLatinNumber().length;
+
+    // Backspace on a separator only removes the separator, which would be re-added; remove the digit before it instead.
+    if (newValue.text.length < oldValue.text.length && digits == oldValue.text.extractLatinNumber() && cursorDigits > 0) {
+      digits = digits.substring(0, cursorDigits - 1) + digits.substring(cursorDigits);
+      cursorDigits--;
+    }
+    if (digits.length > maxDigits) digits = digits.substring(0, maxDigits);
+    cursorDigits = cursorDigits.clamp(0, digits.length);
+
+    final StringBuffer buffer = StringBuffer();
+    int index = 0;
+    int cursor = 0;
+    for (final int size in groups) {
+      if (index >= digits.length) break;
+      if (index > 0) buffer.write(separator);
+      final int end = (index + size).clamp(0, digits.length);
+      buffer.write(digits.substring(index, end));
+      if (cursorDigits >= index && cursorDigits <= end) cursor = buffer.length - (end - cursorDigits);
+      index = end;
+    }
+
+    final String formatted = buffer.toString();
+    return TextEditingValue(
+      text: formatted,
+      selection: TextSelection.collapsed(offset: cursor.clamp(0, formatted.length)),
+    );
+  }
+}
+
 /// Formats a phone number as you type for [countryCode]. `UTextField(formatters: [UPhoneInputFormatter(countryCode: "IR")])`
 class UPhoneInputFormatter extends TextInputFormatter {
   /// Country whose format is used.

@@ -469,11 +469,31 @@ class _CreditCardWidgetState extends State<UCreditCardWidget> with SingleTickerP
   }
 
   String _displayNumber() {
-    if (widget.cardNumber.isEmpty) {
-      return UCardBrandDetector.isAmex(_brand) ? "#### ###### #####" : "#### #### #### ####";
+    final List<int> groups = UCardBrandDetector.isAmex(_brand) ? <int>[4, 6, 5] : <int>[4, 4, 4, 4];
+    final String digits = widget.cardNumber.replaceAll(RegExp(r"\D"), "");
+    final int total = groups.fold<int>(0, (int sum, int size) => sum + size);
+    if (digits.length > total) {
+      if (!widget.obscureCardNumber) return widget.cardNumber;
+      return widget.cardNumber.replaceAllMapped(RegExp(r"\d(?=\d{4,}$)"), (_) => "*");
     }
-    if (!widget.obscureCardNumber) return widget.cardNumber;
-    return widget.cardNumber.replaceAllMapped(RegExp(r"\d(?=\d{4,}$)"), (_) => "*");
+
+    // A partly typed number is padded with "#" so the group count, and so the spread layout, stays fixed.
+    final StringBuffer buffer = StringBuffer();
+    int index = 0;
+    for (final int size in groups) {
+      if (index > 0) buffer.write(" ");
+      for (int i = index; i < index + size; i++) {
+        if (i >= digits.length) {
+          buffer.write("#");
+        } else if (widget.obscureCardNumber && i < digits.length - 4) {
+          buffer.write("*");
+        } else {
+          buffer.write(digits[i]);
+        }
+      }
+      index += size;
+    }
+    return buffer.toString();
   }
 }
 

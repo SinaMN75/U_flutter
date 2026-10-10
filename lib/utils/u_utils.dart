@@ -193,6 +193,19 @@ abstract class UValidators {
     return null;
   };
 
+  /// Checks an Iranian card expiry "YY/MM" (Jalali): month 01–12 and not already passed. `UValidators.iranianCardExpiry()`
+  static FormFieldValidator<String> iranianCardExpiry({String? requiredMessage, String? invalidMessage, String? expiredMessage, bool isRequired = true}) => (String? value) {
+    final String digits = (value ?? "").extractLatinNumber();
+    if (digits.isEmpty) return isRequired ? requiredMessage ?? U.s.required : null;
+    if (digits.length != 4) return invalidMessage ?? U.s.thisFieldIsInvalid;
+    final int year = 1400 + int.parse(digits.substring(0, 2));
+    final int month = int.parse(digits.substring(2));
+    if (month < 1 || month > 12) return invalidMessage ?? U.s.thisFieldIsInvalid;
+    final UJalali now = UJalali.now();
+    if (year < now.year || (year == now.year && month < now.month)) return expiredMessage ?? U.s.expired;
+    return null;
+  };
+
   /// Checks an IBAN / Sheba number ("IR" + 24 digits). `UValidators.iban()`
   static FormFieldValidator<String> iban({String? requiredMessage, String? invalidMessage, bool isRequired = true}) => (String? value) {
     if (isRequired && (value == null || value.isEmpty)) return requiredMessage ?? U.s.required;
