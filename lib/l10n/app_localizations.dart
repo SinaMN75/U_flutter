@@ -13127,7 +13127,7 @@ abstract class AppLocalizations {
   /// No description provided for @settlements.
   ///
   /// In en, this message translates to:
-  /// **'Settlement requests'**
+  /// **'Settlements'**
   String get settlements;
 
   /// No description provided for @requestSettlement.
@@ -14449,6 +14449,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Page tour'**
   String get pageTour;
+
+  /// No description provided for @accountNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Account number'**
+  String get accountNumber;
+
+  /// No description provided for @bankInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank details'**
+  String get bankInfo;
+
+  /// No description provided for @bankInfoMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'No bank details'**
+  String get bankInfoMissing;
+
+  /// No description provided for @paymentsAndSettlements.
+  ///
+  /// In en, this message translates to:
+  /// **'Payments & settlements'**
+  String get paymentsAndSettlements;
+
+  /// No description provided for @received.
+  ///
+  /// In en, this message translates to:
+  /// **'Received'**
+  String get received;
+
+  /// No description provided for @platformCommission.
+  ///
+  /// In en, this message translates to:
+  /// **'Platform commission'**
+  String get platformCommission;
+
+  /// No description provided for @refunds.
+  ///
+  /// In en, this message translates to:
+  /// **'Refunds'**
+  String get refunds;
+
+  /// No description provided for @settled.
+  ///
+  /// In en, this message translates to:
+  /// **'Settled'**
+  String get settled;
+
+  /// No description provided for @recordSettlement.
+  ///
+  /// In en, this message translates to:
+  /// **'Record settlement'**
+  String get recordSettlement;
+
+  /// No description provided for @yesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get yesterday;
+
+  /// No description provided for @last7Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 7 days'**
+  String get last7Days;
+
+  /// No description provided for @thisMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'This month'**
+  String get thisMonth;
+
+  /// No description provided for @awaitingSettlement.
+  ///
+  /// In en, this message translates to:
+  /// **'Awaiting settlement'**
+  String get awaitingSettlement;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

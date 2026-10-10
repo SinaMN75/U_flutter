@@ -29,32 +29,42 @@ class UAccountingReportParams {
 }
 
 class UOrganizationSettlementRequestParams {
-  UOrganizationSettlementRequestParams({required this.organizationId, required this.amount, required this.iban});
+  UOrganizationSettlementRequestParams({required this.organizationId, required this.amount, this.iban, this.trackingCode, this.date, this.note});
 
   final String organizationId;
   final double amount;
-  final String iban;
+  final String? iban;
+  final String? trackingCode;
+  final DateTime? date;
+  final String? note;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "organizationId": organizationId,
     "amount": amount,
     "iban": iban,
+    "trackingCode": trackingCode,
+    "date": date?.toIso8601String(),
+    "note": note,
   };
 }
 
 class UOrganizationSettlementProcessParams {
-  UOrganizationSettlementProcessParams({required this.organizationId, required this.settlementId, required this.approve, this.note});
+  UOrganizationSettlementProcessParams({required this.organizationId, required this.settlementId, required this.approve, this.note, this.trackingCode, this.date});
 
   final String organizationId;
   final String settlementId;
   final bool approve;
   final String? note;
+  final String? trackingCode;
+  final DateTime? date;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "organizationId": organizationId,
     "settlementId": settlementId,
     "approve": approve,
     "note": note,
+    "trackingCode": trackingCode,
+    "date": date?.toIso8601String(),
   };
 }
 

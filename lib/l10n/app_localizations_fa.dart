@@ -6709,7 +6709,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get iban => 'شماره شبا';
 
   @override
-  String get settlements => 'درخواست‌های تسویه';
+  String get settlements => 'تسویه‌ها';
 
   @override
   String get requestSettlement => 'درخواست برداشت';
@@ -7360,7 +7360,8 @@ class AppLocalizationsFa extends AppLocalizations {
   String get pleaseWait => 'لطفاً صبر کنید…';
 
   @override
-  String get demoDataHint => 'یک دنیای کامل برای تست ساخته می‌شود: ۴ مجموعه با اشتراک‌های مختلف (هتل، خوابگاه، کافی‌شاپ، و یک اقامتگاه با اشتراک تمام‌شده)، ۲ هتل با اتاق، نرخ فصلی و ۲۰ رزرو در همه‌ی وضعیت‌ها، ۲ خوابگاه با ۲۳ تخت، ۱۵ قرارداد، قبض پرداخت‌شده و معوق، درخواست اقامت، غذا و لباسشویی، انبار و خرید و اموال، سند و چک، شیفت و وظیفه، و ۴۲ کاربر. همه‌چیز از راه همان قوانین واقعی سامانه ساخته می‌شود. رمز همه‌ی حساب‌ها و شماره‌ی موبایل‌شان بعد از ساخت همین‌جا نشان داده می‌شود. فقط یک بار روی هر سرور قابل اجراست.';
+  String get demoDataHint =>
+      'یک دنیای کامل برای تست ساخته می‌شود: ۴ مجموعه با اشتراک‌های مختلف (هتل، خوابگاه، کافی‌شاپ، و یک اقامتگاه با اشتراک تمام‌شده)، ۲ هتل با اتاق، نرخ فصلی و ۲۰ رزرو در همه‌ی وضعیت‌ها، ۲ خوابگاه با ۲۳ تخت، ۱۵ قرارداد، قبض پرداخت‌شده و معوق، درخواست اقامت، غذا و لباسشویی، انبار و خرید و اموال، سند و چک، شیفت و وظیفه، و ۴۲ کاربر. همه‌چیز از راه همان قوانین واقعی سامانه ساخته می‌شود. رمز همه‌ی حساب‌ها و شماره‌ی موبایل‌شان بعد از ساخت همین‌جا نشان داده می‌شود. فقط یک بار روی هر سرور قابل اجراست.';
 
   @override
   String get demoDataConfirm => 'داده‌ی نمونه روی همین سرور ساخته می‌شود و پاک کردنش دستی است. فقط روی سرور تست اجرا کنید. ادامه می‌دهید؟';
@@ -7370,4 +7371,43 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get pageTour => 'تور این صفحه';
+
+  @override
+  String get accountNumber => 'شماره حساب';
+
+  @override
+  String get bankInfo => 'اطلاعات بانکی';
+
+  @override
+  String get bankInfoMissing => 'اطلاعات بانکی ثبت نشده';
+
+  @override
+  String get paymentsAndSettlements => 'پرداخت‌ها و تسویه‌ها';
+
+  @override
+  String get received => 'دریافتی';
+
+  @override
+  String get platformCommission => 'کمیسیون سامانه';
+
+  @override
+  String get refunds => 'برگشت به مشتری';
+
+  @override
+  String get settled => 'تسویه‌شده';
+
+  @override
+  String get recordSettlement => 'ثبت تسویه';
+
+  @override
+  String get yesterday => 'دیروز';
+
+  @override
+  String get last7Days => '۷ روز اخیر';
+
+  @override
+  String get thisMonth => 'این ماه';
+
+  @override
+  String get awaitingSettlement => 'منتظر تسویه';
 }

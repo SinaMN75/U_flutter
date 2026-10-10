@@ -80,6 +80,8 @@ class UOrganizationResponse {
     this.balance = 0,
     this.modules,
     this.subscriptionEndsAt,
+    this.bankAccount,
+    this.payments,
   });
 
   factory UOrganizationResponse.fromMap(Map<String, dynamic> json) => UOrganizationResponse(
@@ -94,6 +96,8 @@ class UOrganizationResponse {
     balance: json["balance"] == null ? 0 : (json["balance"] as num).toDouble(),
     modules: json["modules"] == null ? null : List<int>.from(json["modules"]!.map((dynamic x) => x)),
     subscriptionEndsAt: json["subscriptionEndsAt"] == null ? null : DateTime.parse(json["subscriptionEndsAt"]),
+    bankAccount: json["bankAccount"] == null ? null : UBankAccountResponse.fromMap(json["bankAccount"]),
+    payments: json["payments"] == null ? null : UOrganizationPayments.fromMap(json["payments"]),
   );
 
   final String id;
@@ -107,6 +111,10 @@ class UOrganizationResponse {
   final double balance;
   final List<int>? modules;
   final DateTime? subscriptionEndsAt;
+  final UBankAccountResponse? bankAccount;
+  final UOrganizationPayments? payments;
+
+  double get pendingSettlements => jsonData.settlements.where((UOrganizationSettlement s) => s.approved == null).fold(0, (double a, UOrganizationSettlement s) => a + s.amount);
 
   bool hasModule(TagModule m) => modules == null || modules!.contains(m.number);
 
@@ -123,8 +131,26 @@ class UOrganizationResponse {
   };
 }
 
+class UOrganizationPayments {
+  UOrganizationPayments({this.received = 0, this.receivedCount = 0, this.commission = 0, this.refunded = 0, this.settled = 0});
+
+  factory UOrganizationPayments.fromMap(Map<String, dynamic> json) => UOrganizationPayments(
+    received: _num(json["received"]),
+    receivedCount: (json["receivedCount"] as num?)?.toInt() ?? 0,
+    commission: _num(json["commission"]),
+    refunded: _num(json["refunded"]),
+    settled: _num(json["settled"]),
+  );
+
+  final double received;
+  final int receivedCount;
+  final double commission;
+  final double refunded;
+  final double settled;
+}
+
 class UOrganizationSettlement {
-  UOrganizationSettlement({required this.id, required this.amount, required this.iban, required this.createdAt, this.processedAt, this.approved, this.note});
+  UOrganizationSettlement({required this.id, required this.amount, required this.iban, required this.createdAt, this.processedAt, this.approved, this.note, this.trackingCode});
 
   factory UOrganizationSettlement.fromMap(Map<String, dynamic> json) => UOrganizationSettlement(
     id: json["id"] as String,
@@ -134,6 +160,7 @@ class UOrganizationSettlement {
     processedAt: json["processedAt"] == null ? null : DateTime.parse(json["processedAt"]),
     approved: json["approved"],
     note: json["note"],
+    trackingCode: json["trackingCode"],
   );
 
   final String id;
@@ -143,6 +170,7 @@ class UOrganizationSettlement {
   final DateTime? processedAt;
   final bool? approved;
   final String? note;
+  final String? trackingCode;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "id": id,
@@ -152,6 +180,7 @@ class UOrganizationSettlement {
     "processedAt": processedAt?.toIso8601String(),
     "approved": approved,
     "note": note,
+    "trackingCode": trackingCode,
   };
 }
 

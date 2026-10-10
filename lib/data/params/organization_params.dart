@@ -14,6 +14,9 @@ class UOrganizationCreateParams {
     this.economicCode,
     this.vatPercent,
     this.taxServiceId,
+    this.cardNumber,
+    this.accountNumber,
+    this.iBanNumber,
   });
 
   final String title;
@@ -28,6 +31,9 @@ class UOrganizationCreateParams {
   final String? economicCode;
   final double? vatPercent;
   final String? taxServiceId;
+  final String? cardNumber;
+  final String? accountNumber;
+  final String? iBanNumber;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "title": title,
@@ -42,6 +48,9 @@ class UOrganizationCreateParams {
     "economicCode": economicCode,
     "vatPercent": vatPercent,
     "taxServiceId": taxServiceId,
+    "cardNumber": cardNumber,
+    "accountNumber": accountNumber,
+    "iBanNumber": iBanNumber,
   };
 }
 
@@ -62,6 +71,9 @@ class UOrganizationUpdateParams {
     this.economicCode,
     this.vatPercent,
     this.taxServiceId,
+    this.cardNumber,
+    this.accountNumber,
+    this.iBanNumber,
   });
 
   final String id;
@@ -79,6 +91,9 @@ class UOrganizationUpdateParams {
   final String? economicCode;
   final double? vatPercent;
   final String? taxServiceId;
+  final String? cardNumber;
+  final String? accountNumber;
+  final String? iBanNumber;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "id": id,
@@ -96,17 +111,22 @@ class UOrganizationUpdateParams {
     "economicCode": economicCode,
     "vatPercent": vatPercent,
     "taxServiceId": taxServiceId,
+    "cardNumber": cardNumber,
+    "accountNumber": accountNumber,
+    "iBanNumber": iBanNumber,
   };
 }
 
 class UOrganizationReadParams {
-  UOrganizationReadParams({this.pageSize, this.pageNumber, this.title, this.ids, this.tags});
+  UOrganizationReadParams({this.pageSize, this.pageNumber, this.title, this.ids, this.tags, this.fromDate, this.toDate});
 
   final int? pageSize;
   final int? pageNumber;
   final String? title;
   final List<String>? ids;
   final List<int>? tags;
+  final DateTime? fromDate;
+  final DateTime? toDate;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "pageSize": pageSize,
@@ -114,6 +134,8 @@ class UOrganizationReadParams {
     "title": title,
     "ids": ids ?? <String>[],
     "tags": tags,
+    "fromDate": fromDate?.toIso8601String(),
+    "toDate": toDate?.toIso8601String(),
   };
 }
 

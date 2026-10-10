@@ -6710,7 +6710,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get iban => 'IBAN';
 
   @override
-  String get settlements => 'Settlement requests';
+  String get settlements => 'Settlements';
 
   @override
   String get requestSettlement => 'Request withdrawal';
@@ -7361,7 +7361,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pleaseWait => 'Please wait…';
 
   @override
-  String get demoDataHint => 'Builds a complete test world: 4 organizations with different subscriptions, 2 hotels with 20 reservations in every state, 2 dorms with contracts and bills, inventory, accounting, staff and 42 users. Everything goes through the real rules. The logins are shown here afterwards. It can run once per server.';
+  String get demoDataHint =>
+      'Builds a complete test world: 4 organizations with different subscriptions, 2 hotels with 20 reservations in every state, 2 dorms with contracts and bills, inventory, accounting, staff and 42 users. Everything goes through the real rules. The logins are shown here afterwards. It can run once per server.';
 
   @override
   String get demoDataConfirm => 'Demo data is written to this server and has to be removed by hand. Run it only on a test server. Continue?';
@@ -7371,4 +7372,43 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pageTour => 'Page tour';
+
+  @override
+  String get accountNumber => 'Account number';
+
+  @override
+  String get bankInfo => 'Bank details';
+
+  @override
+  String get bankInfoMissing => 'No bank details';
+
+  @override
+  String get paymentsAndSettlements => 'Payments & settlements';
+
+  @override
+  String get received => 'Received';
+
+  @override
+  String get platformCommission => 'Platform commission';
+
+  @override
+  String get refunds => 'Refunds';
+
+  @override
+  String get settled => 'Settled';
+
+  @override
+  String get recordSettlement => 'Record settlement';
+
+  @override
+  String get yesterday => 'Yesterday';
+
+  @override
+  String get last7Days => 'Last 7 days';
+
+  @override
+  String get thisMonth => 'This month';
+
+  @override
+  String get awaitingSettlement => 'Awaiting settlement';
 }
