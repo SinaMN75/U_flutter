@@ -470,15 +470,15 @@ class UCachedByteSource extends UDocByteSource {
         .read(index * uDocBlockSize, uDocBlockSize)
         .then(
           (Uint8List bytes) {
-        _blocks.put(index, bytes);
-        _inflight.remove(index);
-        return bytes;
-      },
-      onError: (Object error) {
-        _inflight.remove(index);
-        throw error;
-      },
-    );
+            _blocks.put(index, bytes);
+            _inflight.remove(index);
+            return bytes;
+          },
+          onError: (Object error) {
+            _inflight.remove(index);
+            throw error;
+          },
+        );
     _inflight[index] = request;
     return request;
   }
@@ -862,14 +862,14 @@ abstract class UDocText {
 
   static bool isNeutralCode(int code) =>
       code <= 0x40 ||
-          (code >= 0x5B && code <= 0x60) ||
-          (code >= 0x7B && code <= 0xBF) ||
-          code == 0x00D7 ||
-          code == 0x00F7 ||
-          isFormatCode(code) ||
-          (code >= 0x2000 && code <= 0x206F) ||
-          (code >= 0x3000 && code <= 0x303F) ||
-          code == 0xFFFD;
+      (code >= 0x5B && code <= 0x60) ||
+      (code >= 0x7B && code <= 0xBF) ||
+      code == 0x00D7 ||
+      code == 0x00F7 ||
+      isFormatCode(code) ||
+      (code >= 0x2000 && code <= 0x206F) ||
+      (code >= 0x3000 && code <= 0x303F) ||
+      code == 0xFFFD;
 
   /// Zero-width joiners, direction marks and other invisible format characters.
   static bool isFormatCode(int code) => (code >= 0x200B && code <= 0x200F) || (code >= 0x202A && code <= 0x202E) || (code >= 0x2060 && code <= 0x2069) || code == 0xFEFF || code == 0x061C;
@@ -880,11 +880,11 @@ abstract class UDocText {
 
   static bool isCombiningMark(int code) =>
       (code >= 0x0300 && code <= 0x036F) ||
-          (code >= 0x0610 && code <= 0x061A) ||
-          (code >= 0x064B && code <= 0x065F) ||
-          code == 0x0670 ||
-          (code >= 0x06D6 && code <= 0x06ED) ||
-          (code >= 0xFE20 && code <= 0xFE2F);
+      (code >= 0x0610 && code <= 0x061A) ||
+      (code >= 0x064B && code <= 0x065F) ||
+      code == 0x0670 ||
+      (code >= 0x06D6 && code <= 0x06ED) ||
+      (code >= 0xFE20 && code <= 0xFE2F);
 
   static bool isStrongLtrCode(int code) => !isRtlCode(code) && !isDigitCode(code) && !isNeutralCode(code) && !isCombiningMark(code) && code > 0x20;
 
@@ -1583,6 +1583,38 @@ class UDocTextPage {
     return null;
   }
 
+  /// The edge of a selection boundary: [before] the character at [offset] (a selection start), or after the
+  /// character at `offset - 1` (a selection end). In right-to-left text that edge is the character's right side.
+  UDocCaret? caretAt(int offset, {required bool before, UDocTextGeometry geometry = UDocTextGeometry.auto}) {
+    final int index = before ? offset : offset - 1;
+    if (index < 0 || index >= text.length) return null;
+    int cursor = 0;
+    for (final UDocTextRun run in runs) {
+      final int runEnd = cursor + run.text.length;
+      // The separator after a run belongs to no run: an end there sits after this run, a start before the next one.
+      final bool separator = index == runEnd;
+      if (run.text.isNotEmpty && (index < runEnd || (separator && !before))) {
+        final int local = max(0, min(index - cursor, run.text.length - 1));
+        return _caret(run, local, before: before, geometry: geometry);
+      }
+      if (separator && before) return caretAt(runEnd + 1, before: true, geometry: geometry);
+      cursor = runEnd + 1;
+    }
+    return null;
+  }
+
+  static UDocCaret _caret(UDocTextRun run, int local, {required bool before, required UDocTextGeometry geometry}) {
+    double x;
+    if (run.usesBox(geometry)) {
+      final double t = (before ? local : local + 1) / run.text.length;
+      x = run.rtl ? run.rect.right - t * run.rect.width : run.rect.left + t * run.rect.width;
+    } else {
+      final Rect piece = run.charRect(local);
+      x = before == !run.rtl ? piece.left : piece.right;
+    }
+    return UDocCaret(Rect.fromLTRB(x, run.rect.top, x, run.rect.bottom), rtl: run.rtl);
+  }
+
   String textFor(int start, int end) {
     final int from = start.clamp(0, text.length);
     final int to = end.clamp(0, text.length);
@@ -1685,6 +1717,21 @@ class UDocTextPage {
     }
     return best;
   }
+}
+
+/// One end of a selection: a zero-width, line-high [rect] in page units and the direction of the text there.
+@immutable
+class UDocCaret {
+  const UDocCaret(this.rect, {this.rtl = false});
+
+  final Rect rect;
+  final bool rtl;
+
+  @override
+  bool operator ==(Object other) => other is UDocCaret && other.rect == rect && other.rtl == rtl;
+
+  @override
+  int get hashCode => Object.hash(rect, rtl);
 }
 
 /// A text selection.

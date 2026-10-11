@@ -243,6 +243,8 @@ class UPdfViewerState extends State<UPdfViewer> {
   bool _thumbDragging = false;
   _UPdfSidebarTab _tab = _UPdfSidebarTab.thumbnails;
   UDocSelection _selection = UDocSelection.none;
+  UDocCaret? _startCaret;
+  UDocCaret? _endCaret;
   int _anchorOffset = -1;
   UDocMarkup? _activeMarkup;
   UPdfAnnotationInfo? _selectedAnnotation;
@@ -815,6 +817,8 @@ class UPdfViewerState extends State<UPdfViewer> {
 
   void _clearSelection() {
     _anchorOffset = -1;
+    _startCaret = null;
+    _endCaret = null;
     setState(() => _selection = UDocSelection.none);
     _controller.clearSelection();
   }
@@ -832,6 +836,8 @@ class UPdfViewerState extends State<UPdfViewer> {
     );
     setState(() {
       _selection = selection;
+      _startCaret = text.caretAt(from, before: true, geometry: _geometry);
+      _endCaret = text.caretAt(to, before: false, geometry: _geometry);
       _activeMarkup = null;
     });
     _controller.setSelection(selection);
@@ -867,6 +873,8 @@ class UPdfViewerState extends State<UPdfViewer> {
     _anchorOffset = offset;
     setState(() {
       _selection = UDocSelection(pageIndex: pageIndex, start: offset, end: offset, text: "");
+      _startCaret = null;
+      _endCaret = null;
       _activeMarkup = null;
     });
   }
@@ -884,10 +892,11 @@ class UPdfViewerState extends State<UPdfViewer> {
     if (_selection.isEmpty || _selection.pageIndex != pageIndex) return;
     final UDocTextPage text = await _controller.textPage(pageIndex);
     final int? offset = text.offsetAt(pagePoint, maxDistance: 400);
-    if (offset == null || !mounted) return;
-    final int start = isStart ? offset : _selection.start;
-    final int end = isStart ? _selection.end : offset + 1;
-    _anchorOffset = isStart ? _selection.end : _selection.start;
+    if (offset == null || !mounted || _selection.isEmpty || _selection.pageIndex != pageIndex) return;
+    // Only the dragged end moves, and it stops one character short of the other end so the two never swap roles.
+    final int start = isStart ? min(offset, _selection.end - 1) : _selection.start;
+    final int end = isStart ? _selection.end : max(offset + 1, _selection.start + 1);
+    _anchorOffset = isStart ? end : start;
     _setSelection(pageIndex, text, start, end);
   }
 
@@ -1716,6 +1725,8 @@ class UPdfViewerState extends State<UPdfViewer> {
         highlights: hits,
         activeHit: _controller.value.currentHit?.pageIndex == index ? _controller.value.currentHit : null,
         selectionRects: _selection.pageIndex == index ? _selection.rects : const <Rect>[],
+        selectionStart: _selection.pageIndex == index ? _startCaret : null,
+        selectionEnd: _selection.pageIndex == index ? _endCaret : null,
         selectionColor: accent.withValues(alpha: 0.28),
         onTap: (Offset point) => unawaited(_handleTap(index, point)),
         onMouseTap: (int count, Offset point) {
@@ -2469,6 +2480,8 @@ class UPdfPageView extends StatefulWidget {
     this.highlights = const <UDocSearchHit>[],
     this.activeHit,
     this.selectionRects = const <Rect>[],
+    this.selectionStart,
+    this.selectionEnd,
     this.selectionColor = const Color(0x472196F3),
     this.showHandles = true,
     this.selectable = true,
@@ -2503,6 +2516,10 @@ class UPdfPageView extends StatefulWidget {
 
   /// Selected text rectangles.
   final List<Rect> selectionRects;
+
+  /// Where the selection starts and ends (see [UDocTextPage.caretAt]); handles follow the text direction.
+  final UDocCaret? selectionStart;
+  final UDocCaret? selectionEnd;
 
   /// Selection color.
   final Color selectionColor;
@@ -2600,49 +2617,83 @@ class _UPdfPageViewState extends State<UPdfPageView> {
 
   Offset _toPagePoint(Offset local) => Offset(local.dx / widget.displayScale, local.dy / widget.displayScale);
 
-  Offset? get _startHandle {
-    if (widget.selectionRects.isEmpty) return null;
+  /// Fallback when no caret is given: the top-left and bottom-right corners of the selection.
+  UDocCaret? get _startCaret {
+    if (widget.selectionStart != null || widget.selectionRects.isEmpty) return widget.selectionStart;
     Rect first = widget.selectionRects.first;
     for (final Rect rect in widget.selectionRects) {
       if (rect.top < first.top - 1 || ((rect.top - first.top).abs() <= 1 && rect.left < first.left)) first = rect;
     }
-    return Offset(first.left * widget.displayScale, first.bottom * widget.displayScale);
+    return UDocCaret(Rect.fromLTRB(first.left, first.top, first.left, first.bottom));
   }
 
-  Offset? get _endHandle {
-    if (widget.selectionRects.isEmpty) return null;
+  UDocCaret? get _endCaret {
+    if (widget.selectionEnd != null || widget.selectionRects.isEmpty) return widget.selectionEnd;
     Rect last = widget.selectionRects.last;
     for (final Rect rect in widget.selectionRects) {
       if (rect.bottom > last.bottom + 1 || ((rect.bottom - last.bottom).abs() <= 1 && rect.right > last.right)) last = rect;
     }
-    return Offset(last.right * widget.displayScale, last.bottom * widget.displayScale);
+    return UDocCaret(Rect.fromLTRB(last.right, last.top, last.right, last.bottom));
   }
 
-  Widget _handle({required bool isStart, required Offset position}) => Positioned(
-    left: position.dx - 18,
-    top: position.dy - 6,
-    width: 36,
-    height: 36,
-    child: GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onPanUpdate: (DragUpdateDetails details) {
-        final RenderBox? box = context.findRenderObject() as RenderBox?;
-        if (box == null) return;
-        widget.onHandleDrag?.call(isStart, _toPagePoint(box.globalToLocal(details.globalPosition)));
-      },
-      child: Center(
-        child: Container(
-          width: 16,
-          height: 16,
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary,
-            shape: BoxShape.circle,
-            border: Border.all(color: const Color(0xFFFFFFFF), width: 2),
+  Offset? _dragFinger;
+  Offset _dragTarget = Offset.zero;
+
+  /// A teardrop hanging under the selection edge, pointing at it, with a finger-sized touch area.
+  Widget _handle({required bool isStart, required UDocCaret caret}) {
+    const double knob = 22;
+    const double touch = 48;
+    final double scale = widget.displayScale;
+    // Handles hang outwards: a start in left-to-right text hangs to the left, in right-to-left text to the right.
+    final bool hangLeft = isStart != caret.rtl;
+    final Offset tip = Offset(caret.rect.left * scale, caret.rect.bottom * scale);
+    final Offset center = tip + Offset(hangLeft ? -knob / 2 : knob / 2, knob / 2);
+    const Radius round = Radius.circular(knob / 2);
+    return Positioned(
+      key: ValueKey<bool>(isStart),
+      left: center.dx - touch / 2,
+      top: center.dy - touch / 2,
+      width: touch,
+      height: touch,
+      // Claims the pointer at once, so the page list never turns a handle drag into scrolling.
+      child: RawGestureDetector(
+        behavior: HitTestBehavior.opaque,
+        gestures: <Type, GestureRecognizerFactory<GestureRecognizer>>{
+          EagerGestureRecognizer: GestureRecognizerFactoryWithHandlers<EagerGestureRecognizer>(EagerGestureRecognizer.new, (EagerGestureRecognizer instance) {}),
+        },
+        child: Listener(
+          behavior: HitTestBehavior.opaque,
+          onPointerDown: (PointerDownEvent event) {
+            _dragFinger = event.position;
+            // Aim at the middle of the line, just inside the selected character, wherever the finger grabbed the handle.
+            final double inward = min(2, caret.rect.height * 0.15);
+            _dragTarget = Offset(caret.rect.left + (hangLeft ? inward : -inward), caret.rect.center.dy);
+          },
+          onPointerMove: (PointerMoveEvent event) {
+            final Offset? finger = _dragFinger;
+            if (finger == null) return;
+            widget.onHandleDrag?.call(isStart, _dragTarget + (event.position - finger) / scale);
+          },
+          onPointerUp: (PointerUpEvent event) {
+            _dragFinger = null;
+            widget.onSelectEnd?.call();
+          },
+          onPointerCancel: (PointerCancelEvent event) => _dragFinger = null,
+          child: Center(
+            child: Container(
+              width: knob,
+              height: knob,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary,
+                borderRadius: BorderRadius.only(topLeft: hangLeft ? round : Radius.zero, topRight: hangLeft ? Radius.zero : round, bottomLeft: round, bottomRight: round),
+                boxShadow: const <BoxShadow>[BoxShadow(color: Color(0x40000000), blurRadius: 3, offset: Offset(0, 1))],
+              ),
+            ),
           ),
         ),
       ),
-    ),
-  );
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -2677,8 +2728,8 @@ class _UPdfPageViewState extends State<UPdfPageView> {
       ),
       child: filtered,
     );
-    final Offset? start = _startHandle;
-    final Offset? end = _endHandle;
+    final UDocCaret? start = _startCaret;
+    final UDocCaret? end = _endCaret;
     final Widget gestures = RawGestureDetector(
       behavior: HitTestBehavior.opaque,
       gestures: <Type, GestureRecognizerFactory<GestureRecognizer>>{
@@ -2728,8 +2779,8 @@ class _UPdfPageViewState extends State<UPdfPageView> {
         fit: StackFit.expand,
         children: <Widget>[
           gestures,
-          if (widget.showHandles && start != null) _handle(isStart: true, position: start),
-          if (widget.showHandles && end != null) _handle(isStart: false, position: end),
+          if (widget.showHandles && start != null) _handle(isStart: true, caret: start),
+          if (widget.showHandles && end != null) _handle(isStart: false, caret: end),
         ],
       ),
     );
