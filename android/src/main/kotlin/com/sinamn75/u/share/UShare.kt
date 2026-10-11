@@ -313,8 +313,8 @@ class UShareHandler(
             intent.getParcelableArrayListExtra<Uri>(Intent.EXTRA_STREAM) ?: emptyList()
         }
 
-    private fun copyIn(uri: Uri): Map<String, Any?>? =
-        try {
+    private fun copyIn(uri: Uri): Map<String, Any?>? {
+        return try {
             val resolver = context.contentResolver
             val name =
                 resolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)?.use { c ->
@@ -327,6 +327,7 @@ class UShareHandler(
         } catch (_: Exception) {
             null
         }
+    }
 
     private fun emit(share: Map<String, Any?>) {
         val current = sink
