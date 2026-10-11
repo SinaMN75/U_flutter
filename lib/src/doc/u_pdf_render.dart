@@ -551,18 +551,18 @@ class UPdfIndex {
 /// Internal: CFF font.
 class UPdfCff implements UPdfGlyphSource {
   UPdfCff._(
-    this._charStrings,
-    this._globalSubrs,
-    this._localSubrs,
-    this._charsetIds,
-    this._isCid,
-    this._fdSelect,
-    this._fdLocalSubrs,
-    this._fontMatrix,
-    this._stringIndex,
-    this._defaultWidthX,
-    this._nominalWidthX,
-  );
+      this._charStrings,
+      this._globalSubrs,
+      this._localSubrs,
+      this._charsetIds,
+      this._isCid,
+      this._fdSelect,
+      this._fdLocalSubrs,
+      this._fontMatrix,
+      this._stringIndex,
+      this._defaultWidthX,
+      this._nominalWidthX,
+      );
 
   final UPdfIndex _charStrings;
   final UPdfIndex _globalSubrs;
@@ -5483,6 +5483,7 @@ class UPdfController extends UDocController {
   final Map<int, UDocPageInfo> _infos = <int, UDocPageInfo>{};
   final Map<int, UDocTextPage> _texts = <int, UDocTextPage>{};
   final Map<int, Future<ui.Picture?>> _pending = <int, Future<ui.Picture?>>{};
+  final Map<int, Future<UDocTextPage>> _pendingTexts = <int, Future<UDocTextPage>>{};
   final ULruCache<int, ui.Image> _thumbnails = ULruCache<int, ui.Image>(maxBytes: uDocThumbnailCacheBytes, sizeOf: _thumbnailSize, onEvict: _disposeThumbnail);
 
   List<UDocOutlineNode> outline = <UDocOutlineNode>[];
@@ -5687,14 +5688,28 @@ class UPdfController extends UDocController {
   }
 
   @override
-  Future<UDocTextPage> textPage(int pageIndex) async {
+  Future<UDocTextPage> textPage(int pageIndex) {
     final UDocTextPage? cached = _texts[pageIndex];
-    if (cached != null) return cached;
+    if (cached != null) return Future<UDocTextPage>.value(cached);
+    return _pendingTexts[pageIndex] ??= _extractText(pageIndex).whenComplete(() {
+      _pendingTexts.remove(pageIndex);
+    });
+  }
+
+  Future<UDocTextPage> _extractText(int pageIndex) async {
+    final Future<ui.Picture?>? rendering = _pending[pageIndex];
+    if (rendering != null) {
+      await rendering;
+      final UDocTextPage? rendered = _texts[pageIndex];
+      if (rendered != null && rendered.runs.isNotEmpty) return rendered;
+    }
     final UPdfPageRenderer? renderer = _renderer;
     final UPdfPage? page = await pdfPage(pageIndex);
     if (renderer == null || page == null) return UDocTextPage.empty;
     try {
       final UDocTextPage text = await renderer.extractText(page);
+      final UDocTextPage? existing = _texts[pageIndex];
+      if (existing != null && existing.runs.isNotEmpty && text.runs.isEmpty) return existing;
       _texts[pageIndex] = text;
       unawaited(_index?.writePage(pageIndex, text.text) ?? Future<void>.value());
       return text;
@@ -5737,6 +5752,7 @@ class UPdfController extends UDocController {
     _pages.clear();
     _infos.clear();
     _pending.clear();
+    _pendingTexts.clear();
     if (previous != null) UPdfDocumentPages.resetCaches(previous.fingerprint);
     await previous?.close();
     _document = null;
@@ -5853,6 +5869,7 @@ class UPdfController extends UDocController {
     _texts.remove(pageIndex);
     _pages.remove(pageIndex);
     _pending.remove(pageIndex);
+    _pendingTexts.remove(pageIndex);
     notifyListeners();
   }
 
@@ -5862,6 +5879,7 @@ class UPdfController extends UDocController {
     _texts.clear();
     _pages.clear();
     _pending.clear();
+    _pendingTexts.clear();
     final UPdfDocument? document = _document;
     if (document != null) {
       UPdfDocumentPages.resetCaches(document.fingerprint);

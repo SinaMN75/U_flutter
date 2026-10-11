@@ -1,6 +1,7 @@
 import "dart:convert";
 import "dart:math";
 import "dart:typed_data";
+
 part "../src/crypto/u_crypto_engine.dart";
 
 // UEncryption — hashing, encryption, key derivation and encoders in pure Dart (every platform, web included).

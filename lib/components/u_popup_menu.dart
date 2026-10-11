@@ -64,7 +64,9 @@ class UPopupMenu extends StatelessWidget {
           onTap: i.onTap,
           child: UIconTextHorizontal(
             leading: Icon(i.icon, size: 20, color: color),
-            trailing: i.help == null ? Text(i.label, style: color == null ? null : TextStyle(color: color)) : Text(i.label, style: color == null ? null : TextStyle(color: color)).help(i.help!, inline: true),
+            trailing: i.help == null
+                ? Text(i.label, style: color == null ? null : TextStyle(color: color))
+                : Text(i.label, style: color == null ? null : TextStyle(color: color)).help(i.help!, inline: true),
           ),
         );
       }).toList(),

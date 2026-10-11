@@ -142,7 +142,14 @@ class _UMapLocationLayerState extends State<UMapLocationLayer> {
     if (controller == null) return;
     final double zoom = starting ? (widget.followZoom ?? math.max(controller.camera.zoom, 16)) : controller.camera.zoom;
     final double rotation = mode == UMapFollowMode.heading && _heading != null ? -_heading! : (starting && mode == UMapFollowMode.follow ? controller.camera.rotation : controller.camera.rotation);
-    unawaited(controller.animateTo(center: p, zoom: zoom, rotation: rotation, duration: Duration(milliseconds: starting ? 600 : 350)));
+    unawaited(
+      controller.animateTo(
+        center: p,
+        zoom: zoom,
+        rotation: rotation,
+        duration: Duration(milliseconds: starting ? 600 : 350),
+      ),
+    );
   }
 
   @override
@@ -205,8 +212,7 @@ class _DotPainter extends CustomPainter {
         heading! - math.pi / 2 - 0.45,
         0.9,
         true,
-        Paint()
-          ..shader = RadialGradient(colors: <Color>[color.withValues(alpha: 0.45), color.withValues(alpha: 0)]).createShader(arc),
+        Paint()..shader = RadialGradient(colors: <Color>[color.withValues(alpha: 0.45), color.withValues(alpha: 0)]).createShader(arc),
       );
     }
     canvas

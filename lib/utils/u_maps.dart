@@ -118,25 +118,27 @@ abstract final class UMaps {
   // ---------------------------------------------------------------------------------------------- offline
 
   /// Prepares an offline download of a box (start(), pause(), resume(), cancel(), progress). Refuses sources that forbid bulk download. `UMaps.downloadRegion(source: s, bounds: b, maxZoom: 16).start()`
-  static UMapRegionDownload downloadRegion({required UMapTileSource source, required LatLngBounds bounds, String? name, int minZoom = 10, int maxZoom = 16, bool allowRestricted = false}) => UMapRegionDownload(
-    source: source,
-    allowRestricted: allowRestricted,
-    region: UMapRegion(id: "region_${DateTime.now().millisecondsSinceEpoch}", name: name ?? "Offline area", sourceId: source.id, minZoom: minZoom, maxZoom: maxZoom, bounds: bounds),
-  );
+  static UMapRegionDownload downloadRegion({required UMapTileSource source, required LatLngBounds bounds, String? name, int minZoom = 10, int maxZoom = 16, bool allowRestricted = false}) =>
+      UMapRegionDownload(
+        source: source,
+        allowRestricted: allowRestricted,
+        region: UMapRegion(id: "region_${DateTime.now().millisecondsSinceEpoch}", name: name ?? "Offline area", sourceId: source.id, minZoom: minZoom, maxZoom: maxZoom, bounds: bounds),
+      );
 
   /// Offline download of a corridor along a route ([width] metres each side). `UMaps.downloadAlongRoute(source: s, route: r.points).start()`
-  static UMapRegionDownload downloadAlongRoute({required UMapTileSource source, required List<LatLng> route, double width = 1000, int minZoom = 10, int maxZoom = 16, bool allowRestricted = false}) => UMapRegionDownload(
-    source: source,
-    allowRestricted: allowRestricted,
-    region: UMapRegion(
-      id: "route_${DateTime.now().millisecondsSinceEpoch}",
-      name: "Route",
-      sourceId: source.id,
-      minZoom: minZoom,
-      maxZoom: maxZoom,
-      polygon: UGeoOps.convexHull(UGeoOps.bufferLine(UGeoMath.simplify(route, width / 4), width)),
-    ),
-  );
+  static UMapRegionDownload downloadAlongRoute({required UMapTileSource source, required List<LatLng> route, double width = 1000, int minZoom = 10, int maxZoom = 16, bool allowRestricted = false}) =>
+      UMapRegionDownload(
+        source: source,
+        allowRestricted: allowRestricted,
+        region: UMapRegion(
+          id: "route_${DateTime.now().millisecondsSinceEpoch}",
+          name: "Route",
+          sourceId: source.id,
+          minZoom: minZoom,
+          maxZoom: maxZoom,
+          polygon: UGeoOps.convexHull(UGeoOps.bufferLine(UGeoMath.simplify(route, width / 4), width)),
+        ),
+      );
 
   /// Tiles and estimated bytes of a download before starting it. `UMaps.estimate(source, bounds, 10, 16)`
   static (int tiles, int bytes) estimate(UMapTileSource source, LatLngBounds bounds, int minZoom, int maxZoom) {
@@ -186,8 +188,7 @@ abstract final class UMaps {
   static Future<bool> openDirections(LatLng to, {LatLng? from}) => ULaunch.url(UMapLinks.googleDirections(to, from: from));
 
   /// Opens the point in the device's default maps app (geo: URI; Apple Maps link on iOS/macOS). `await UMaps.openInMapsApp(p)`
-  static Future<bool> openInMapsApp(LatLng p, {String? label}) =>
-      ULaunch.url(!kIsWeb && (Platform.isIOS || Platform.isMacOS) ? UMapLinks.apple(p, label: label) : UMapLinks.geo(p, label: label));
+  static Future<bool> openInMapsApp(LatLng p, {String? label}) => ULaunch.url(!kIsWeb && (Platform.isIOS || Platform.isMacOS) ? UMapLinks.apple(p, label: label) : UMapLinks.geo(p, label: label));
 
   // ---------------------------------------------------------------------------------------------- formatting
 

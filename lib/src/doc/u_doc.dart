@@ -470,15 +470,15 @@ class UCachedByteSource extends UDocByteSource {
         .read(index * uDocBlockSize, uDocBlockSize)
         .then(
           (Uint8List bytes) {
-            _blocks.put(index, bytes);
-            _inflight.remove(index);
-            return bytes;
-          },
-          onError: (Object error) {
-            _inflight.remove(index);
-            throw error;
-          },
-        );
+        _blocks.put(index, bytes);
+        _inflight.remove(index);
+        return bytes;
+      },
+      onError: (Object error) {
+        _inflight.remove(index);
+        throw error;
+      },
+    );
     _inflight[index] = request;
     return request;
   }
@@ -862,14 +862,14 @@ abstract class UDocText {
 
   static bool isNeutralCode(int code) =>
       code <= 0x40 ||
-      (code >= 0x5B && code <= 0x60) ||
-      (code >= 0x7B && code <= 0xBF) ||
-      code == 0x00D7 ||
-      code == 0x00F7 ||
-      isFormatCode(code) ||
-      (code >= 0x2000 && code <= 0x206F) ||
-      (code >= 0x3000 && code <= 0x303F) ||
-      code == 0xFFFD;
+          (code >= 0x5B && code <= 0x60) ||
+          (code >= 0x7B && code <= 0xBF) ||
+          code == 0x00D7 ||
+          code == 0x00F7 ||
+          isFormatCode(code) ||
+          (code >= 0x2000 && code <= 0x206F) ||
+          (code >= 0x3000 && code <= 0x303F) ||
+          code == 0xFFFD;
 
   /// Zero-width joiners, direction marks and other invisible format characters.
   static bool isFormatCode(int code) => (code >= 0x200B && code <= 0x200F) || (code >= 0x202A && code <= 0x202E) || (code >= 0x2060 && code <= 0x2069) || code == 0xFEFF || code == 0x061C;
@@ -880,11 +880,11 @@ abstract class UDocText {
 
   static bool isCombiningMark(int code) =>
       (code >= 0x0300 && code <= 0x036F) ||
-      (code >= 0x0610 && code <= 0x061A) ||
-      (code >= 0x064B && code <= 0x065F) ||
-      code == 0x0670 ||
-      (code >= 0x06D6 && code <= 0x06ED) ||
-      (code >= 0xFE20 && code <= 0xFE2F);
+          (code >= 0x0610 && code <= 0x061A) ||
+          (code >= 0x064B && code <= 0x065F) ||
+          code == 0x0670 ||
+          (code >= 0x06D6 && code <= 0x06ED) ||
+          (code >= 0xFE20 && code <= 0xFE2F);
 
   static bool isStrongLtrCode(int code) => !isRtlCode(code) && !isDigitCode(code) && !isNeutralCode(code) && !isCombiningMark(code) && code > 0x20;
 
@@ -1602,9 +1602,79 @@ class UDocTextPage {
     final String target = UDocText.normalize(trimmed);
     if (target.isEmpty) return null;
     final List<int> hits = UDocText.findAll(normalized.text, target);
-    if (hits.isEmpty) return null;
-    final int pick = _closest(hits, near < 0 ? -1 : near);
-    return (normalized.sourceAt(pick), normalized.sourceAt(pick + target.length - 1) + 1);
+    if (hits.isNotEmpty) {
+      final int pick = _closest(hits, near < 0 ? -1 : near);
+      return (normalized.sourceAt(pick), normalized.sourceAt(pick + target.length - 1) + 1);
+    }
+    return _locateLoose(trimmed, near);
+  }
+
+  /// Quotes taken from another text extractor differ in line breaks, spacing, joiners, private-use
+  /// glyphs, punctuation and the order of lines or mixed-direction words, so all of that is ignored:
+  /// the quote is cut into chunks and the shortest stretch of the page holding most of them wins.
+  (int, int)? _locateLoose(String needle, int near) {
+    final UDocNormalizedText page = UDocNormalizedText.letters(text);
+    final String target = UDocNormalizedText.letters(needle).text;
+    if (target.isEmpty || page.text.isEmpty) return null;
+    final int nearLetter = near < 0 ? -1 : (near * page.text.length / text.length).round();
+    final List<int> hits = UDocText.findAll(page.text, target);
+    if (hits.isNotEmpty) {
+      final int pick = _closest(hits, nearLetter);
+      return (page.sourceAt(pick), page.sourceAt(pick + target.length - 1) + 1);
+    }
+    const int chunk = 8;
+    if (target.length < chunk * 2) return null;
+    final List<int> offsets = <int>[for (int offset = 0; offset + chunk <= target.length; offset += chunk) offset];
+    if (offsets.last + chunk < target.length) offsets.add(target.length - chunk);
+    final List<(int, int)> anchors = <(int, int)>[];
+    for (final int offset in offsets) {
+      final List<int> found = UDocText.findAll(page.text, target.substring(offset, offset + chunk));
+      if (found.length > 4) continue;
+      for (final int at in found) {
+        anchors.add((at, offset));
+      }
+    }
+    if (anchors.isEmpty) return null;
+    anchors.sort(((int, int) a, (int, int) b) => a.$1.compareTo(b.$1));
+    final int window = target.length + target.length ~/ 2 + chunk;
+    final int needed = max(2, (offsets.length * 0.5).ceil());
+    int bestCount = 0;
+    int bestFrom = 0;
+    int bestTo = 0;
+    for (int from = 0, to = 0; from < anchors.length; from++) {
+      if (to < from) to = from;
+      while (to + 1 < anchors.length && anchors[to + 1].$1 - anchors[from].$1 <= window) {
+        to++;
+      }
+      final int count = anchors.sublist(from, to + 1).map(((int, int) anchor) => anchor.$2).toSet().length;
+      final bool closer = nearLetter >= 0 && (anchors[from].$1 - nearLetter).abs() < (anchors[bestFrom].$1 - nearLetter).abs();
+      if (count > bestCount || (count == bestCount && closer)) {
+        bestCount = count;
+        bestFrom = from;
+        bestTo = to;
+      }
+    }
+    if (bestCount < needed) return null;
+    // Chunks that also occur just outside the quote would stretch it; keep those agreeing with the majority.
+    final List<int> starts = anchors.sublist(bestFrom, bestTo + 1).map(((int, int) anchor) => anchor.$1 - anchor.$2).toList()..sort();
+    final int median = starts[starts.length ~/ 2];
+    final int tolerance = max(16, (target.length * 0.35).round());
+    final Map<int, (int, int)> perChunk = <int, (int, int)>{};
+    for (final (int, int) anchor in anchors.sublist(bestFrom, bestTo + 1)) {
+      final int distance = (anchor.$1 - anchor.$2 - median).abs();
+      final (int, int)? kept = perChunk[anchor.$2];
+      if (distance <= tolerance && (kept == null || distance < (kept.$1 - kept.$2 - median).abs())) perChunk[anchor.$2] = anchor;
+    }
+    final List<(int, int)> inside = perChunk.values.toList()..sort(((int, int) a, (int, int) b) => a.$1.compareTo(b.$1));
+    if (inside.isEmpty) return null;
+    final int firstOffset = inside.map(((int, int) anchor) => anchor.$2).reduce(min);
+    final int lastOffset = inside.map(((int, int) anchor) => anchor.$2).reduce(max);
+    final (int, int) first = inside.first;
+    final (int, int) last = inside.last;
+    final int begin = max(0, first.$1 - (first.$2 == firstOffset ? firstOffset : 0));
+    final int end = min(page.text.length, last.$1 + chunk + (last.$2 == lastOffset ? target.length - lastOffset - chunk : 0));
+    if (end <= begin) return null;
+    return (page.sourceAt(begin), page.sourceAt(end - 1) + 1);
   }
 
   static int _closest(List<int> positions, int near) {
@@ -2717,5 +2787,34 @@ class UDocNormalizedText {
       rawIndex += charLength;
     }
     return UDocNormalizedText(buffer.toString(), indices);
+  }
+
+  /// Like [build] but keeps only letters and digits: no spaces, line breaks, joiners, punctuation or private-use glyphs.
+  static UDocNormalizedText letters(String source) {
+    final UDocNormalizedText normalized = build(source);
+    final StringBuffer buffer = StringBuffer();
+    final List<int> indices = <int>[];
+    for (int i = 0; i < normalized.text.length; i++) {
+      if (!_isLetterOrDigit(normalized.text.codeUnitAt(i))) continue;
+      buffer.writeCharCode(normalized.text.codeUnitAt(i));
+      indices.add(normalized.sourceIndices[i]);
+    }
+    // Some extractors write the lam-alef ligature as alef + lam, so both orders read the same.
+    return UDocNormalizedText(buffer.toString().replaceAll("لا", "ال"), indices);
+  }
+
+  static bool _isLetterOrDigit(int code) {
+    if (code >= 0x30 && code <= 0x39) return true;
+    if (code >= 0x61 && code <= 0x7A) return true;
+    if (code >= 0x41 && code <= 0x5A) return true;
+    if (code < 0xC0) return false;
+    if (code >= 0xD800 && code <= 0xDFFF) return true;
+    if (code >= 0xE000 && code <= 0xF8FF) return false;
+    if (code >= 0x2000 && code <= 0x2BFF) return false;
+    if (code >= 0x3000 && code <= 0x303F) return false;
+    if (code >= 0xFE10 && code <= 0xFE6F) return false;
+    if (code >= 0xFF00 && code <= 0xFF0F) return false;
+    if (code == 0x060C || code == 0x061B || code == 0x061F || code == 0x06D4 || (code >= 0x066A && code <= 0x066D)) return false;
+    return !UDocText.isFormatCode(code) && !UDocText.isCombiningMark(code) && code != 0x00D7 && code != 0x00F7 && code != 0xFFFD;
   }
 }

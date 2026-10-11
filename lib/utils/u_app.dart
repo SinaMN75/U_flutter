@@ -1,7 +1,7 @@
 import "dart:ui" show AppExitType;
 
-import "package:u/utilities.dart";
 import "package:u/src/web/u_web_native.dart" if (dart.library.js_interop) "package:u/src/web/u_web_browser.dart";
+import "package:u/utilities.dart";
 
 /// App, device, platform, theme and language info in one place; filled by initU(). `UApp.version`, `UApp.isAndroid`, `UApp.toDarkMode()`
 abstract class UApp {

@@ -57,8 +57,7 @@ abstract class UBaseController {
   }
 
   /// Users matching [query], for user pickers.
-  Future<List<UUserResponse>> searchUsers(String query) async =>
-      (await UServices.user.read(p: UUserReadParams(query: query.nullIfEmpty(), pageSize: 20))).$1?.result ?? <UUserResponse>[];
+  Future<List<UUserResponse>> searchUsers(String query) async => (await UServices.user.read(p: UUserReadParams(query: query.nullIfEmpty(), pageSize: 20))).$1?.result ?? <UUserResponse>[];
 
   /// The users with [ids]; the ones that fail to load are skipped.
   Future<List<UUserResponse>> readUsersById(List<String> ids) async => <UUserResponse>[

@@ -340,8 +340,7 @@ class UMediaNotesController extends ChangeNotifier {
     return base64 ? json.toBase64() : json;
   }
 
-  /// Accepts [export] output (base64 or JSON) and the legacy SinApp
-  /// `{"markers":[{"seconds":…, "text":…, "color":…}]}` payload.
+  /// Accepts [export] output (base64 or JSON). Returns false when the payload is not understood.
   bool import(String data, {bool merge = false, bool notify = true}) {
     final Map<String, Object?>? json = UDocAnnotationController.decode(data);
     if (json == null) return false;
@@ -355,19 +354,6 @@ class UMediaNotesController extends ChangeNotifier {
         if (entry is Map<String, Object?>) incoming.add(UMediaNote.fromJson(entry));
       }
       _updatedAt = DateTime.tryParse((json["updated"] as String?) ?? "") ?? DateTime.now();
-    } else if (json["markers"] is List<Object?>) {
-      for (final Object? entry in json["markers"]! as List<Object?>) {
-        if (entry is! Map<String, Object?>) continue;
-        final num seconds = (entry["seconds"] as num?) ?? 0;
-        incoming.add(
-          UMediaNote.create(
-            position: Duration(milliseconds: (seconds * 1000).round()),
-            text: (entry["text"] as String?) ?? "",
-            color: Color((entry["color"] as num?)?.toInt() ?? 0xFFFFC107),
-          ),
-        );
-      }
-      _updatedAt = DateTime.now();
     } else {
       return false;
     }

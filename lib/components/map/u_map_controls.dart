@@ -31,7 +31,10 @@ class UMapCompass extends StatelessWidget {
               onTap: () => MapController.of(context).resetNorth(),
               child: SizedBox.square(
                 dimension: size,
-                child: Transform.rotate(angle: camera.rotationRad, child: CustomPaint(painter: _CompassPainter(Theme.of(context).colorScheme.onSurface))),
+                child: Transform.rotate(
+                  angle: camera.rotationRad,
+                  child: CustomPaint(painter: _CompassPainter(Theme.of(context).colorScheme.onSurface)),
+                ),
               ),
             ),
           ),
@@ -112,7 +115,14 @@ class UMapScaleBar extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(label, style: TextStyle(fontSize: 11, color: color, shadows: const <Shadow>[Shadow(color: Colors.white, blurRadius: 3)])),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 11,
+              color: color,
+              shadows: const <Shadow>[Shadow(color: Colors.white, blurRadius: 3)],
+            ),
+          ),
           CustomPaint(size: Size(width, 6), painter: _ScalePainter(color)),
         ],
       ),
@@ -231,7 +241,10 @@ class _UMapAttributionState extends State<UMapAttribution> {
     return GestureDetector(
       onTap: () => setState(() => _open = !_open),
       child: DecoratedBox(
-        decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.75), borderRadius: const BorderRadius.only(topLeft: Radius.circular(6))),
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: 0.75),
+          borderRadius: const BorderRadius.only(topLeft: Radius.circular(6)),
+        ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
           child: Text(text, style: const TextStyle(fontSize: 10, color: Colors.black87)),
@@ -269,7 +282,11 @@ abstract final class UMapStylePicker {
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(8),
-                        child: Image(image: UMapTileImage(s, 10, 652, 404), fit: BoxFit.cover, errorBuilder: (_, _, _) => const ColoredBox(color: Colors.black12)),
+                        child: Image(
+                          image: UMapTileImage(s, 10, 652, 404),
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, _, _) => const ColoredBox(color: Colors.black12),
+                        ),
                       ),
                     ),
                   ),
@@ -347,7 +364,11 @@ class _UMapCompareState extends State<UMapCompare> {
                 alignment: Alignment.center,
                 children: <Widget>[
                   Container(width: 3, color: Colors.white),
-                  const CircleAvatar(radius: 16, backgroundColor: Colors.white, child: Icon(Icons.compare_arrows, size: 18, color: Colors.black87)),
+                  const CircleAvatar(
+                    radius: 16,
+                    backgroundColor: Colors.white,
+                    child: Icon(Icons.compare_arrows, size: 18, color: Colors.black87),
+                  ),
                 ],
               ),
             ),
@@ -573,7 +594,10 @@ class _UMapSearchBarState extends State<UMapSearchBar> {
             hintText: widget.hint,
             prefixIcon: const Icon(Icons.search),
             suffixIcon: _loading
-                ? const Padding(padding: EdgeInsets.all(14), child: SizedBox.square(dimension: 18, child: CircularProgressIndicator(strokeWidth: 2)))
+                ? const Padding(
+                    padding: EdgeInsets.all(14),
+                    child: SizedBox.square(dimension: 18, child: CircularProgressIndicator(strokeWidth: 2)),
+                  )
                 : (_text.text.isEmpty
                       ? null
                       : IconButton(
@@ -587,7 +611,11 @@ class _UMapSearchBarState extends State<UMapSearchBar> {
             contentPadding: const EdgeInsets.symmetric(vertical: 14),
           ),
         ),
-        if (_error != null) Padding(padding: const EdgeInsets.all(8), child: Text(_error!, style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 12))),
+        if (_error != null)
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: Text(_error!, style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 12)),
+          ),
         if (_results.isNotEmpty)
           ConstrainedBox(
             constraints: const BoxConstraints(maxHeight: 300),
@@ -693,7 +721,15 @@ class _ProfilePainter extends CustomPainter {
       ..lineTo(0, size.height)
       ..close();
     canvas
-      ..drawPath(fill, Paint()..shader = LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: <Color>[color.withValues(alpha: 0.4), color.withValues(alpha: 0.02)]).createShader(Offset.zero & size))
+      ..drawPath(
+        fill,
+        Paint()
+          ..shader = LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: <Color>[color.withValues(alpha: 0.4), color.withValues(alpha: 0.02)],
+          ).createShader(Offset.zero & size),
+      )
       ..drawPath(
         line,
         Paint()
@@ -712,7 +748,10 @@ class _ProfilePainter extends CustomPainter {
       final double d = maxD * (x! / size.width).clamp(0, 1);
       final (double, double) near = profile.reduce(((double, double) a, (double, double) b) => (a.$1 - d).abs() < (b.$1 - d).abs() ? a : b);
       final TextPainter tp = TextPainter(
-        text: TextSpan(text: "${near.$2.round()} m", style: TextStyle(fontSize: 11, color: text)),
+        text: TextSpan(
+          text: "${near.$2.round()} m",
+          style: TextStyle(fontSize: 11, color: text),
+        ),
         textDirection: TextDirection.ltr,
       )..layout();
       tp.paint(canvas, Offset((x! + 4).clamp(0, size.width - tp.width), 0));
@@ -781,9 +820,14 @@ class UMapNavigationBanner extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                 child: Row(
                   children: <Widget>[
-                    Text(UMapFormat.eta(s.remainingTime, persian: persian), style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: Color(0xFF0B6E4F))),
+                    Text(
+                      UMapFormat.eta(s.remainingTime, persian: persian),
+                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: Color(0xFF0B6E4F)),
+                    ),
                     const SizedBox(width: 12),
-                    Expanded(child: Text("${UMapFormat.duration(s.remainingTime, persian: persian)} · ${UMapFormat.distance(s.remainingDistance, persian: persian)}")),
+                    Expanded(
+                      child: Text("${UMapFormat.duration(s.remainingTime, persian: persian)} · ${UMapFormat.distance(s.remainingDistance, persian: persian)}"),
+                    ),
                     if (s.speed != null) Text(UMapFormat.speed(s.speed!, persian: persian), style: const TextStyle(fontSize: 12)),
                     if (onClose != null) IconButton(icon: const Icon(Icons.close), onPressed: onClose),
                   ],
@@ -829,11 +873,18 @@ class UMapLegend extends StatelessWidget {
               const SizedBox(height: 4),
               Container(
                 height: 10,
-                decoration: BoxDecoration(gradient: LinearGradient(colors: colors), borderRadius: BorderRadius.circular(3)),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(colors: colors),
+                  borderRadius: BorderRadius.circular(3),
+                ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[Text(n(min), style: const TextStyle(fontSize: 10)), Text(n((min + max) / 2), style: const TextStyle(fontSize: 10)), Text(n(max), style: const TextStyle(fontSize: 10))],
+                children: <Widget>[
+                  Text(n(min), style: const TextStyle(fontSize: 10)),
+                  Text(n((min + max) / 2), style: const TextStyle(fontSize: 10)),
+                  Text(n(max), style: const TextStyle(fontSize: 10)),
+                ],
               ),
             ],
           ),

@@ -440,7 +440,8 @@ class UEpubReaderState extends State<UEpubReader> {
       if (!same) {
         _pages = <UEpubPage>[];
         _pagesKey = "";
-        _pageController?.dispose();
+        final PageController? previous = _pageController;
+        if (previous != null) WidgetsBinding.instance.addPostFrameCallback((Duration _) => previous.dispose());
         _pageController = null;
         _pageInChapter = atEnd ? 1 << 20 : 0;
       }
@@ -1250,6 +1251,7 @@ class UEpubReaderState extends State<UEpubReader> {
       key: _viewportKey,
       builder: (BuildContext context, BoxConstraints constraints) {
         if (_controller.book?.fixedLayout ?? false) return _buildFixedLayout(chapter);
+        _keepBlockOnReflow(chapter, constraints);
         final Widget view = _paged ? _buildPaged(chapter, constraints) : _buildContinuous(chapter);
         // A drawing tool owns single-finger drags; wheel and trackpad still scroll.
         return ScrollConfiguration(
@@ -1318,6 +1320,22 @@ class UEpubReaderState extends State<UEpubReader> {
     return _buildContinuous(chapter);
   }
 
+  String _reflowKey = "";
+
+  /// When the text reflows in scroll mode (font, margins, width), the paragraph being read stays on screen.
+  void _keepBlockOnReflow(UEpubChapter chapter, BoxConstraints constraints) {
+    final String key = "${chapter.spineIndex}|${constraints.maxWidth.round()}|${_controller.typography.toJson()}|${MediaQuery.textScalerOf(context).scale(10)}";
+    if (key == _reflowKey) return;
+    final bool sameChapter = _reflowKey.startsWith("${chapter.spineIndex}|");
+    _reflowKey = key;
+    if (!sameChapter || _paged) return;
+    final int block = _visibleBlock;
+    _estimates = null;
+    WidgetsBinding.instance.addPostFrameCallback((Duration _) {
+      if (mounted && !_paged && block > 0) _goToBlock(block, animate: false);
+    });
+  }
+
   Widget _buildContinuous(UEpubChapter chapter) {
     final UEpubTypography typography = _controller.typography;
     return Scrollbar(
@@ -1344,6 +1362,8 @@ class UEpubReaderState extends State<UEpubReader> {
     final Size size = Size(constraints.maxWidth, contentHeight);
     final String key = "${chapter.spineIndex}|${size.width.round()}x${size.height.round()}|${typography.toJson()}|${_controller.settings.colorMode.name}|${MediaQuery.textScalerOf(context).scale(10)}";
     if (key != _pagesKey || _pages.isEmpty) {
+      // Re-paginating (font, margins, rotation…) keeps the text that was on screen, not the page number.
+      final UEpubSlice? anchor = _pages.isEmpty || _pageInChapter >= _pages.length ? null : _pages[_pageInChapter].slices.firstOrNull;
       _pagesKey = key;
       final UDocColorMode mode = _controller.settings.colorMode;
       _pages = UEpubPaginator(typography: typography, size: size, textScaler: MediaQuery.textScalerOf(context)).paginateSlices(
@@ -1351,9 +1371,15 @@ class UEpubReaderState extends State<UEpubReader> {
         painterFor: (UEpubBlock block, double width) => UEpubTextStyler.painter(context, block, typography, mode, width),
         measureOther: (UEpubBlock block, double width) => block.kind == UEpubBlockKind.image ? contentHeight * 0.55 : 32,
       );
-      _pageInChapter = _pageInChapter.clamp(0, _pages.length - 1);
-      _pageController?.dispose();
+      if (anchor != null) {
+        final int found = _pages.indexWhere((UEpubPage page) => page.contains(anchor.blockIndex, anchor.start));
+        if (found >= 0) _pageInChapter = found;
+      }
+      _pageInChapter = _pageInChapter.clamp(0, max(0, _pages.length - 1));
+      final PageController? previous = _pageController;
       _pageController = PageController(initialPage: _pageInChapter + (_hasPreviousChapter ? 1 : 0));
+      // The old controller is still attached to the PageView being replaced in this frame.
+      if (previous != null) WidgetsBinding.instance.addPostFrameCallback((Duration _) => previous.dispose());
     }
     final int leading = _hasPreviousChapter ? 1 : 0;
     final int trailing = _hasNextChapter ? 1 : 0;
@@ -1620,7 +1646,13 @@ class UEpubReaderState extends State<UEpubReader> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           UTextLabelSmall("${(_percent() * 100).round()}%"),
-                          if (minutes > 0) UTextLabelSmall(U.s.minutesLeftInChapter("$minutes")),
+                          if (minutes > 0)
+                            Flexible(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 8),
+                                child: UTextLabelSmall(U.s.minutesLeftInChapter("$minutes"), maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center),
+                              ),
+                            ),
                           UTextLabelSmall(location),
                         ],
                       ).pSymmetric(horizontal: 16),

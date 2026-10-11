@@ -10,7 +10,11 @@ class _MapPaint extends StatelessWidget {
   final CustomPainter painter;
 
   @override
-  Widget build(BuildContext context) => MobileLayerTransformer(child: IgnorePointer(child: CustomPaint(size: Size.infinite, painter: painter)));
+  Widget build(BuildContext context) => MobileLayerTransformer(
+    child: IgnorePointer(
+      child: CustomPaint(size: Size.infinite, painter: painter),
+    ),
+  );
 }
 
 List<Color> _palette(List<Color> stops, int n) => List<Color>.generate(n, (int i) {
@@ -215,7 +219,10 @@ class _HexPainter extends CustomPainter {
       canvas.drawPath(hex, Paint()..color = color.withValues(alpha: layer.opacity));
       if (layer.showCounts) {
         final TextPainter tp = TextPainter(
-          text: TextSpan(text: b.value.round().toString(), style: const TextStyle(fontSize: 10, color: Colors.black87, fontWeight: FontWeight.w600)),
+          text: TextSpan(
+            text: b.value.round().toString(),
+            style: const TextStyle(fontSize: 10, color: Colors.black87, fontWeight: FontWeight.w600),
+          ),
           textDirection: TextDirection.ltr,
         )..layout();
         canvas
@@ -252,7 +259,17 @@ class _HexPainter extends CustomPainter {
 
 /// Polygons coloured by a value (population, sales…) with tap support; pair with [UMapLegend].
 class UMapChoroplethLayer extends StatelessWidget {
-  const UMapChoroplethLayer({required this.features, required this.valueOf, this.colors = uSequentialColors, this.min, this.max, this.opacity = 0.7, this.borderColor = Colors.white, this.onTap, super.key});
+  const UMapChoroplethLayer({
+    required this.features,
+    required this.valueOf,
+    this.colors = uSequentialColors,
+    this.min,
+    this.max,
+    this.opacity = 0.7,
+    this.borderColor = Colors.white,
+    this.onTap,
+    super.key,
+  });
 
   final UGeoFeatureCollection features;
   final double? Function(UGeoFeature feature) valueOf;
@@ -472,7 +489,10 @@ class _UMapFlowLayerState extends State<UMapFlowLayer> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     final MapCamera camera = MapCamera.of(context);
-    return AnimatedBuilder(animation: _c, builder: (BuildContext context, _) => _MapPaint(painter: _FlowPainter(widget, camera, _c.value)));
+    return AnimatedBuilder(
+      animation: _c,
+      builder: (BuildContext context, _) => _MapPaint(painter: _FlowPainter(widget, camera, _c.value)),
+    );
   }
 }
 
@@ -528,7 +548,18 @@ class _FlowPainter extends CustomPainter {
 
 /// A styled line: casing, gradient by values, arrows, marching-ants animation.
 class UMapStyledLine {
-  const UMapStyledLine({required this.points, this.color = const Color(0xFF1A73E8), this.width = 6, this.casing, this.arrows = false, this.arrowSpacing = 80, this.dashed = false, this.marching = false, this.values, this.gradient});
+  const UMapStyledLine({
+    required this.points,
+    this.color = const Color(0xFF1A73E8),
+    this.width = 6,
+    this.casing,
+    this.arrows = false,
+    this.arrowSpacing = 80,
+    this.dashed = false,
+    this.marching = false,
+    this.values,
+    this.gradient,
+  });
 
   final List<LatLng> points;
   final Color color;
@@ -588,7 +619,10 @@ class _UMapStyledLineLayerState extends State<UMapStyledLineLayer> with SingleTi
   @override
   Widget build(BuildContext context) {
     final MapCamera camera = MapCamera.of(context);
-    return AnimatedBuilder(animation: _c, builder: (BuildContext context, _) => _MapPaint(painter: _StyledLinePainter(widget.lines, camera, _c.value)));
+    return AnimatedBuilder(
+      animation: _c,
+      builder: (BuildContext context, _) => _MapPaint(painter: _StyledLinePainter(widget.lines, camera, _c.value)),
+    );
   }
 }
 
@@ -719,7 +753,14 @@ enum UMapFillPattern { hatch, crossHatch, dots, vertical, horizontal }
 
 /// A polygon with a pattern fill (restricted zones, construction, flood risk).
 class UMapPatternPolygon {
-  const UMapPatternPolygon({required this.points, this.holes = const <List<LatLng>>[], this.pattern = UMapFillPattern.hatch, this.color = const Color(0xFFE53935), this.spacing = 10, this.borderWidth = 2});
+  const UMapPatternPolygon({
+    required this.points,
+    this.holes = const <List<LatLng>>[],
+    this.pattern = UMapFillPattern.hatch,
+    this.color = const Color(0xFFE53935),
+    this.spacing = 10,
+    this.borderWidth = 2,
+  });
 
   final List<LatLng> points;
   final List<List<LatLng>> holes;
@@ -823,7 +864,9 @@ class UMapPathTextLayer extends StatelessWidget {
   final Color? halo;
 
   @override
-  Widget build(BuildContext context) => IgnorePointer(child: CustomPaint(size: Size.infinite, painter: _PathTextPainter(items, MapCamera.of(context), halo)));
+  Widget build(BuildContext context) => IgnorePointer(
+    child: CustomPaint(size: Size.infinite, painter: _PathTextPainter(items, MapCamera.of(context), halo)),
+  );
 }
 
 class _PathTextPainter extends CustomPainter {
@@ -955,7 +998,12 @@ class UMapTrackPlayback extends StatelessWidget {
             UMapMovingMarkersLayer(
               duration: const Duration(milliseconds: 60),
               markers: <UMapMovingMarker>[
-                UMapMovingMarker(id: "playback", point: here, heading: heading, child: marker ?? Icon(Icons.navigation, color: color, size: 32)),
+                UMapMovingMarker(
+                  id: "playback",
+                  point: here,
+                  heading: heading,
+                  child: marker ?? Icon(Icons.navigation, color: color, size: 32),
+                ),
               ],
             ),
         ],

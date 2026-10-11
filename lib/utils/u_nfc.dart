@@ -497,9 +497,8 @@ class UNfcApdu {
 class UNfcResponse {
   const UNfcResponse({required this.data, required this.sw1, required this.sw2});
 
-  factory UNfcResponse.parse(Uint8List raw) => raw.length < 2
-      ? UNfcResponse(data: raw, sw1: 0x6F, sw2: 0x00)
-      : UNfcResponse(data: Uint8List.sublistView(raw, 0, raw.length - 2), sw1: raw[raw.length - 2], sw2: raw[raw.length - 1]);
+  factory UNfcResponse.parse(Uint8List raw) =>
+      raw.length < 2 ? UNfcResponse(data: raw, sw1: 0x6F, sw2: 0x00) : UNfcResponse(data: Uint8List.sublistView(raw, 0, raw.length - 2), sw1: raw[raw.length - 2], sw2: raw[raw.length - 1]);
 
   final Uint8List data;
   final int sw1;
@@ -554,8 +553,7 @@ class UNfcNdefRecord {
   }
 
   /// MIME record. `UNfcNdefRecord.mime("application/json", utf8.encode(jsonEncode(data)))`
-  factory UNfcNdefRecord.mime(String mimeType, List<int> data) =>
-      UNfcNdefRecord(tnf: tnfMime, type: Uint8List.fromList(ascii.encode(mimeType)), payload: Uint8List.fromList(data));
+  factory UNfcNdefRecord.mime(String mimeType, List<int> data) => UNfcNdefRecord(tnf: tnfMime, type: Uint8List.fromList(ascii.encode(mimeType)), payload: Uint8List.fromList(data));
 
   /// Android Application Record: opens (or installs) [packageName] when tapped.
   factory UNfcNdefRecord.androidApp(String packageName) =>
@@ -587,7 +585,10 @@ class UNfcNdefRecord {
   static String _decodeUtf16(Uint8List b) {
     final bool little = b.length >= 2 && b[0] == 0xFF && b[1] == 0xFE;
     final int start = b.length >= 2 && ((b[0] == 0xFE && b[1] == 0xFF) || little) ? 2 : 0;
-    final List<int> units = <int>[for (int i = start; i + 1 < b.length; i += 2) if (little) b[i] | (b[i + 1] << 8) else (b[i] << 8) | b[i + 1]];
+    final List<int> units = <int>[
+      for (int i = start; i + 1 < b.length; i += 2)
+        if (little) b[i] | (b[i + 1] << 8) else (b[i] << 8) | b[i + 1],
+    ];
     return String.fromCharCodes(units);
   }
 

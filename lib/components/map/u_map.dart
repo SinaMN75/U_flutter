@@ -361,7 +361,10 @@ class _UMapState extends State<UMap> {
     final ColorFilter? filter = widget.colorFilter.filter;
     Widget wrap(Widget layer) => filter == null ? layer : ColorFiltered(colorFilter: filter, child: layer);
     return <Widget>[
-      if (widget.vectorStyle != null) wrap(UMapVectorTiles.layer(widget.vectorStyle!, source: widget.vectorSource, offlineOnly: widget.offlineOnly)) else wrap(UMapTiles.layer(base, offlineOnly: widget.offlineOnly)),
+      if (widget.vectorStyle != null)
+        wrap(UMapVectorTiles.layer(widget.vectorStyle!, source: widget.vectorSource, offlineOnly: widget.offlineOnly))
+      else
+        wrap(UMapTiles.layer(base, offlineOnly: widget.offlineOnly)),
       if (widget.hillshade) UMapTerrain.hillshadeLayer(),
       if (widget.contours) UMapTerrain.contourLayer(),
       for (final UMapTileSource o in widget.overlays) UMapTiles.layer(o, offlineOnly: widget.offlineOnly),
@@ -391,7 +394,8 @@ class _UMapState extends State<UMap> {
             : null,
         minZoom: widget.minZoom,
         maxZoom: widget.maxZoom,
-        backgroundColor: widget.backgroundColor ?? (widget.vectorStyle != null || widget.colorFilter != UMapColorFilter.none ? Theme.of(context).colorScheme.surfaceContainerHighest : const Color(0xFFE0E0E0)),
+        backgroundColor:
+            widget.backgroundColor ?? (widget.vectorStyle != null || widget.colorFilter != UMapColorFilter.none ? Theme.of(context).colorScheme.surfaceContainerHighest : const Color(0xFFE0E0E0)),
         cameraConstraint: widget.maxBounds == null ? const CameraConstraint.unconstrained() : CameraConstraint.contain(bounds: widget.maxBounds!),
         interactionOptions: InteractionOptions(flags: _flags),
         onTap: (TapPosition p, LatLng l) {
@@ -422,9 +426,27 @@ class _UMapState extends State<UMap> {
         if (widget.currentLocationLayer) UMapLocationLayer(follow: _follow),
         if (widget.drawController != null) UMapDrawLayer(controller: widget.drawController!, persian: widget.persianDigits),
         ...widget.topLayers,
-        if (widget.compass) const Align(alignment: AlignmentDirectional.topEnd, child: Padding(padding: EdgeInsets.all(12), child: UMapCompass())),
-        if (widget.scaleBar) Align(alignment: AlignmentDirectional.bottomStart, child: Padding(padding: const EdgeInsets.fromLTRB(72, 0, 12, 22), child: UMapScaleBar(persian: widget.persianDigits, imperial: widget.imperial))),
-        if (widget.miniMap) Align(alignment: AlignmentDirectional.topStart, child: Padding(padding: const EdgeInsets.all(12), child: UMapMiniMap(source: base))),
+        if (widget.compass)
+          const Align(
+            alignment: AlignmentDirectional.topEnd,
+            child: Padding(padding: EdgeInsets.all(12), child: UMapCompass()),
+          ),
+        if (widget.scaleBar)
+          Align(
+            alignment: AlignmentDirectional.bottomStart,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(72, 0, 12, 22),
+              child: UMapScaleBar(persian: widget.persianDigits, imperial: widget.imperial),
+            ),
+          ),
+        if (widget.miniMap)
+          Align(
+            alignment: AlignmentDirectional.topStart,
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: UMapMiniMap(source: base),
+            ),
+          ),
         if (widget.showAttribution) Align(alignment: AlignmentDirectional.bottomEnd, child: UMapAttribution(attributions)),
       ],
     );

@@ -1,7 +1,7 @@
 import "dart:ui" as ui;
 
-import "package:u/utilities.dart";
 import "package:u/src/barcode/u_barcode_engine.dart";
+import "package:u/utilities.dart";
 
 /// Every supported code: qrCode, dataMatrix, aztec, pdf417, code128, EAN/UPC, code39/93, ITF, Codabar, postal codes…
 enum UBarcodeType {

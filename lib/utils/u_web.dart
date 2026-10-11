@@ -1,5 +1,5 @@
-import "package:u/utilities.dart";
 import "package:u/src/web/u_web_native.dart" if (dart.library.js_interop) "package:u/src/web/u_web_browser.dart";
+import "package:u/utilities.dart";
 
 // =============================================================================
 // u_web — everything web-specific you are meant to call, read and change.

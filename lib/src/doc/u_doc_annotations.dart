@@ -685,9 +685,9 @@ class UDocAnnotationController extends ChangeNotifier {
     return base64 ? json.toBase64() : json;
   }
 
-  /// Accepts [export] output (base64 or raw JSON) and the legacy SinApp
-  /// `{"markers": [...], "pageMarks": [...]}` format. Returns false when the
-  /// payload is not understood.
+  /// Accepts [export] output (base64 or raw JSON). Markups that carry only
+  /// text (no rects) are placed by the viewer once the page text is known.
+  /// Returns false when the payload is not understood.
   bool import(String data, {bool merge = false, bool notify = true}) {
     final Map<String, Object?>? json = decode(data);
     if (json == null) return false;
@@ -705,9 +705,6 @@ class UDocAnnotationController extends ChangeNotifier {
         if (entry is Map<String, Object?>) bookmarks.add(UDocBookmark.fromJson(entry));
       }
       _updatedAt = DateTime.tryParse((json["updated"] as String?) ?? "") ?? DateTime.now();
-    } else if (json.containsKey("markers") || json.containsKey("pageMarks")) {
-      _importLegacy(json, markups, bookmarks);
-      _updatedAt = DateTime.now();
     } else {
       return false;
     }
@@ -726,7 +723,7 @@ class UDocAnnotationController extends ChangeNotifier {
     final Set<String> positions = _bookmarks.map((UDocBookmark bookmark) => "${bookmark.pageIndex}:${bookmark.blockIndex}").toSet();
     _bookmarks.addAll(
       bookmarks.where(
-        (UDocBookmark bookmark) => !marked.contains("${bookmark.id}|${bookmark.pageIndex}:${bookmark.blockIndex}") && !positions.contains("${bookmark.pageIndex}:${bookmark.blockIndex}"),
+            (UDocBookmark bookmark) => !marked.contains("${bookmark.id}|${bookmark.pageIndex}:${bookmark.blockIndex}") && !positions.contains("${bookmark.pageIndex}:${bookmark.blockIndex}"),
       ),
     );
     _bookmarks.sort((UDocBookmark a, UDocBookmark b) => a.pageIndex != b.pageIndex ? a.pageIndex.compareTo(b.pageIndex) : a.blockIndex.compareTo(b.blockIndex));
@@ -736,31 +733,6 @@ class UDocAnnotationController extends ChangeNotifier {
       unawaited(save());
     }
     return true;
-  }
-
-  void _importLegacy(Map<String, Object?> json, List<UDocMarkup> markups, List<UDocBookmark> bookmarks) {
-    for (final Object? entry in (json["markers"] as List<Object?>?) ?? const <Object?>[]) {
-      if (entry is! Map<String, Object?>) continue;
-      final Map<String, Object?> range = (entry["range"] as Map<String, Object?>?) ?? const <String, Object?>{};
-      final int page = ((entry["pageNumber"] ?? range["pageNumber"]) as num?)?.toInt() ?? 1;
-      final String type = (entry["type"] as String?) ?? "highlight";
-      final UDocMarkupKind kind = type == "border" ? UDocMarkupKind.border : (type == "text" ? UDocMarkupKind.note : UDocMarkupKind.highlight);
-      markups.add(
-        UDocMarkup.create(
-          kind: kind,
-          pageIndex: page - 1,
-          color: Color((entry["color"] as num?)?.toInt() ?? 0xFFFFEB3B),
-          start: (range["start"] as num?)?.toInt() ?? 0,
-          end: (range["end"] as num?)?.toInt() ?? 0,
-          text: (range["text"] as String?) ?? "",
-          note: (entry["text"] as String?) ?? "",
-          extra: const <String, Object?>{"legacy": true},
-        ),
-      );
-    }
-    for (final Object? page in (json["pageMarks"] as List<Object?>?) ?? const <Object?>[]) {
-      if (page is num) bookmarks.add(UDocBookmark(id: _newId(), pageIndex: page.toInt() - 1, createdAt: DateTime.now()));
-    }
   }
 
   static Map<String, Object?>? decode(String data) {
@@ -1053,11 +1025,11 @@ class UDocWatermarkLayer extends StatelessWidget {
                       children: watermark.lines
                           .map(
                             (String line) => Text(
-                              line,
-                              textDirection: UDocText.isRtl(line) ? TextDirection.rtl : TextDirection.ltr,
-                              style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.w700, color: watermark.color, fontFamily: "Vazir", package: "u", height: 1.3),
-                            ),
-                          )
+                          line,
+                          textDirection: UDocText.isRtl(line) ? TextDirection.rtl : TextDirection.ltr,
+                          style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.w700, color: watermark.color, fontFamily: "Vazir", package: "u", height: 1.3),
+                        ),
+                      )
                           .toList(),
                     ),
                   ),
@@ -1088,25 +1060,25 @@ class UDocColorBar extends StatelessWidget {
     children: colors
         .map(
           (Color color) => InkResponse(
-            onTap: () => onSelected(color),
-            radius: size,
-            child: Padding(
-              padding: const EdgeInsets.all(4),
-              child: Container(
-                width: size,
-                height: size,
-                decoration: BoxDecoration(
-                  color: color,
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: color.toARGB32() == selected.toARGB32() ? (onDark ? const Color(0xFFFFFFFF) : Theme.of(context).colorScheme.primary) : const Color(0x33000000),
-                    width: color.toARGB32() == selected.toARGB32() ? 2.5 : 1,
-                  ),
-                ),
+        onTap: () => onSelected(color),
+        radius: size,
+        child: Padding(
+          padding: const EdgeInsets.all(4),
+          child: Container(
+            width: size,
+            height: size,
+            decoration: BoxDecoration(
+              color: color,
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: color.toARGB32() == selected.toARGB32() ? (onDark ? const Color(0xFFFFFFFF) : Theme.of(context).colorScheme.primary) : const Color(0x33000000),
+                width: color.toARGB32() == selected.toARGB32() ? 2.5 : 1,
               ),
             ),
           ),
-        )
+        ),
+      ),
+    )
         .toList(),
   );
 }
@@ -1156,7 +1128,7 @@ class UDocSelectionMenu extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   ...kinds.map(
-                    (UDocMarkupKind kind) => _action(UDocPalette.iconOf(kind), UDocPalette.labelOf(kind), () => onMarkup(kind), foreground, tint: kind == UDocMarkupKind.note ? null : color),
+                        (UDocMarkupKind kind) => _action(UDocPalette.iconOf(kind), UDocPalette.labelOf(kind), () => onMarkup(kind), foreground, tint: kind == UDocMarkupKind.note ? null : color),
                   ),
                   if (onCopy != null) _action(Icons.copy_rounded, U.s.copy, onCopy, foreground),
                   if (onShare != null) _action(Icons.share_rounded, U.s.share, onShare, foreground),
@@ -1217,7 +1189,7 @@ class UDocMarkupMenu extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 ...kinds.map(
-                  (UDocMarkupKind kind) => IconButton(
+                      (UDocMarkupKind kind) => IconButton(
                     tooltip: UDocPalette.labelOf(kind),
                     visualDensity: VisualDensity.compact,
                     isSelected: markup.kind == kind,
@@ -1384,7 +1356,7 @@ class _UDocAnnotationsPanelState extends State<UDocAnnotationsPanel> {
                   child: FilterChip(label: UTextBodySmall(U.s.notes), selected: _notesOnly, onSelected: (bool value) => setState(() => _notesOnly = value)),
                 ),
                 ...UDocMarkupKind.values.map(
-                  (UDocMarkupKind kind) => Padding(
+                      (UDocMarkupKind kind) => Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 3),
                     child: ChoiceChip(
                       avatar: Icon(UDocPalette.iconOf(kind), size: 16),
@@ -1400,17 +1372,17 @@ class _UDocAnnotationsPanelState extends State<UDocAnnotationsPanel> {
           Expanded(
             child: groups.isEmpty
                 ? Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(24),
-                      child: UTextBodyMedium(U.s.noAnnotationsYet, textAlign: TextAlign.center, maxLines: 4),
-                    ),
-                  )
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: UTextBodyMedium(U.s.noAnnotationsYet, textAlign: TextAlign.center, maxLines: 4),
+              ),
+            )
                 : ListView.separated(
-                    padding: const EdgeInsets.fromLTRB(8, 4, 8, 16),
-                    itemCount: groups.length,
-                    separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 6),
-                    itemBuilder: (BuildContext context, int index) => _tile(context, groups[index]),
-                  ),
+              padding: const EdgeInsets.fromLTRB(8, 4, 8, 16),
+              itemCount: groups.length,
+              separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 6),
+              itemBuilder: (BuildContext context, int index) => _tile(context, groups[index]),
+            ),
           ),
         ],
       );

@@ -296,8 +296,7 @@ class UDownloadTile extends StatelessWidget {
     );
     if (task.status == UDownloadStatus.completed) {
       return <Widget>[
-        if (task.request.destination.target != UDownloadTarget.memory && !task.request.destination.isEncrypted)
-          button(Icons.open_in_new_rounded, U.s.open, () => unawaited(_manager.open(task))),
+        if (task.request.destination.target != UDownloadTarget.memory && !task.request.destination.isEncrypted) button(Icons.open_in_new_rounded, U.s.open, () => unawaited(_manager.open(task))),
         PopupMenuButton<String>(
           icon: Icon(Icons.more_vert_rounded, color: cs.onSurfaceVariant),
           onSelected: (String value) => unawaited(switch (value) {

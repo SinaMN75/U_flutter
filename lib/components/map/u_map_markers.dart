@@ -100,7 +100,10 @@ class _UMapClusterLayerState<T> extends State<UMapClusterLayer<T>> {
           border: Border.all(color: Colors.white, width: 2.5),
           boxShadow: const <BoxShadow>[BoxShadow(color: Colors.black26, blurRadius: 4)],
         ),
-        child: Text(c.count >= 1000 ? "${(c.count / 1000).toStringAsFixed(1)}k" : "${c.count}", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 13)),
+        child: Text(
+          c.count >= 1000 ? "${(c.count / 1000).toStringAsFixed(1)}k" : "${c.count}",
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 13),
+        ),
       ),
     );
   }
@@ -284,7 +287,10 @@ class _UMapPulseState extends State<UMapPulse> with SingleTickerProviderStateMix
         Container(
           width: widget.size * _c.value,
           height: widget.size * _c.value,
-          decoration: BoxDecoration(shape: BoxShape.circle, color: widget.color.withValues(alpha: (1 - _c.value) * 0.45)),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: widget.color.withValues(alpha: (1 - _c.value) * 0.45),
+          ),
         ),
         child!,
       ],
@@ -305,7 +311,10 @@ class UMapDropIn extends StatelessWidget {
     tween: Tween<double>(begin: 1, end: 0),
     duration: const Duration(milliseconds: 650),
     curve: Curves.bounceOut,
-    builder: (BuildContext context, double v, Widget? c) => Transform.translate(offset: Offset(0, -height * v), child: Opacity(opacity: (1 - v * 0.8).clamp(0, 1), child: c)),
+    builder: (BuildContext context, double v, Widget? c) => Transform.translate(
+      offset: Offset(0, -height * v),
+      child: Opacity(opacity: (1 - v * 0.8).clamp(0, 1), child: c),
+    ),
     child: child,
   );
 }
@@ -381,7 +390,9 @@ class UMapLabelLayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final MapCamera camera = MapCamera.of(context);
-    return IgnorePointer(child: CustomPaint(size: Size.infinite, painter: _LabelPainter(labels, camera, halo, Theme.of(context).colorScheme.onSurface, Directionality.of(context))));
+    return IgnorePointer(
+      child: CustomPaint(size: Size.infinite, painter: _LabelPainter(labels, camera, halo, Theme.of(context).colorScheme.onSurface, Directionality.of(context))),
+    );
   }
 }
 
@@ -522,11 +533,17 @@ class UMapInfoWindow extends StatelessWidget {
                   Row(
                     children: <Widget>[
                       if (leading != null) Padding(padding: const EdgeInsetsDirectional.only(end: 8), child: leading),
-                      Expanded(child: Text(title, style: const TextStyle(fontWeight: FontWeight.w700))),
+                      Expanded(
+                        child: Text(title, style: const TextStyle(fontWeight: FontWeight.w700)),
+                      ),
                       if (onClose != null) IconButton(visualDensity: VisualDensity.compact, icon: const Icon(Icons.close, size: 18), onPressed: onClose),
                     ],
                   ),
-                  if (subtitle != null) Padding(padding: const EdgeInsetsDirectional.only(end: 8), child: Text(subtitle!, style: TextStyle(fontSize: 12, color: scheme.onSurfaceVariant))),
+                  if (subtitle != null)
+                    Padding(
+                      padding: const EdgeInsetsDirectional.only(end: 8),
+                      child: Text(subtitle!, style: TextStyle(fontSize: 12, color: scheme.onSurfaceVariant)),
+                    ),
                   if (actions.isNotEmpty) Wrap(spacing: 4, children: actions),
                 ],
               ),
@@ -728,7 +745,13 @@ abstract final class UMapMarkerIcon {
     final BuildOwner build = BuildOwner(focusManager: FocusManager());
     final RenderObjectToWidgetElement<RenderBox> root = RenderObjectToWidgetAdapter<RenderBox>(
       container: boundary,
-      child: Directionality(textDirection: TextDirection.ltr, child: MediaQuery(data: MediaQueryData(size: size, devicePixelRatio: pixelRatio), child: widget)),
+      child: Directionality(
+        textDirection: TextDirection.ltr,
+        child: MediaQuery(
+          data: MediaQueryData(size: size, devicePixelRatio: pixelRatio),
+          child: widget,
+        ),
+      ),
     ).attachToRenderTree(build);
     build
       ..buildScope(root)
@@ -845,9 +868,11 @@ class _UMapLassoLayerState extends State<UMapLassoLayer> {
     final MapCamera camera = MapCamera.of(context);
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onPanStart: (DragStartDetails d) => setState(() => _screen
-        ..clear()
-        ..add(d.localPosition)),
+      onPanStart: (DragStartDetails d) => setState(
+        () => _screen
+          ..clear()
+          ..add(d.localPosition),
+      ),
       onPanUpdate: (DragUpdateDetails d) => setState(() => _screen.add(d.localPosition)),
       onPanEnd: (_) {
         final List<LatLng> polygon = _screen.map(camera.screenOffsetToLatLng).toList();

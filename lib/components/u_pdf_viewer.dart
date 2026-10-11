@@ -219,6 +219,7 @@ class UPdfViewerState extends State<UPdfViewer> {
   final TextEditingController _searchField = TextEditingController();
   final FocusNode _focus = FocusNode(debugLabel: "UPdfViewer");
   final Set<int> _resolving = <int>{};
+  final Set<String> _unplaceable = <String>{};
 
   UPdfEditController? _internalEditor;
   PageController? _pageController;
@@ -353,6 +354,7 @@ class UPdfViewerState extends State<UPdfViewer> {
         oldWidget.vaultKey != widget.vaultKey;
     if (sourceChanged && _ownsController) {
       _resolving.clear();
+      _unplaceable.clear();
       _links.clear();
       _selection = UDocSelection.none;
       unawaited(_open());
@@ -531,8 +533,28 @@ class UPdfViewerState extends State<UPdfViewer> {
     return low;
   }
 
+  String _scaleKey = "";
+  String _layoutKey = "";
+
+  /// Re-anchors on the current page when the mode, spread, direction or fitted scale changes, since every row offset moves.
+  void _keepPageOnLayoutChange(UDocViewSettings settings) {
+    final String key = "${settings.scrollMode}|$_effectiveSpread|${settings.isRtl}|${_baseScale.toStringAsFixed(5)}";
+    if (key == _layoutKey) return;
+    final bool first = _layoutKey.isEmpty;
+    _layoutKey = key;
+    if (first) return;
+    final int page = _visiblePage;
+    WidgetsBinding.instance.addPostFrameCallback((Duration _) => _jumpToPage(page, animated: false));
+  }
+
+  /// The fitted scale only follows the fit, viewport and layout, never the page being scrolled past,
+  /// so documents with mixed page sizes don't shift under the reader.
   void _computeBaseScale() {
     if (_controller.pageCount == 0 || _viewportWidth <= 0) return;
+    final UDocViewSettings settings = _controller.settings;
+    final String key = "${settings.fit}|${_viewportWidth.round()}|${_viewportHeight.round()}|$_effectiveSpread|${settings.scrollMode}|${_controller.pageCount}";
+    if (key == _scaleKey) return;
+    _scaleKey = key;
     final Size size = _rowSize(_rowOf(_visiblePage));
     if (size.width <= 0 || size.height <= 0) return;
     const double padding = 16;
@@ -652,21 +674,36 @@ class UPdfViewerState extends State<UPdfViewer> {
     final UDocViewSettings settings = _controller.settings;
     final double clamped = next.clamp(settings.minZoom, settings.maxZoom).toDouble();
     if ((clamped - _zoom).abs() < 0.001) return;
-    final double previous = _zoom;
+    final double ratio = clamped / _zoom;
+    final Offset anchor = focal ?? Offset(_viewportWidth / 2, _viewportHeight / 2);
+    final bool horizontal = settings.isHorizontal;
+    final double along = horizontal ? (settings.isRtl ? _viewportWidth - anchor.dx : anchor.dx) : anchor.dy;
+    final double across = horizontal ? anchor.dy : anchor.dx;
+    final double lead = horizontal ? 0 : _topPad;
+    final double viewportCross = horizontal ? _viewportHeight : _viewportWidth;
+    // The point under the finger, as a row and a fraction of it, so it stays put after the rows grow.
+    int row = -1;
+    double fraction = 0;
+    if (!settings.isPaged && _vertical.hasClients && _rows.isNotEmpty && _rowOffsets.length == _rows.length + 1) {
+      final double position = _vertical.offset + along - lead;
+      row = _rowAtOffset(position).clamp(0, _rows.length - 1);
+      fraction = ((position - _rowOffsets[row]) / max(_rowOffsets[row + 1] - _rowOffsets[row], 1)).clamp(0, 1).toDouble();
+    }
+    final double crossCenter = max(_crossExtent(settings), viewportCross) / 2;
+    final double crossFromCenter = _horizontal.hasClients ? _horizontal.offset + across - crossCenter : 0;
     setState(() {
       _zoom = clamped;
       _controller.updateSettings(settings.copyWith(zoom: clamped));
     });
-    final double ratio = clamped / previous;
-    final Offset anchor = focal ?? Offset(_viewportWidth / 2, _viewportHeight / 2);
     WidgetsBinding.instance.addPostFrameCallback((Duration _) {
-      if (_vertical.hasClients) {
-        final bool horizontal = _controller.settings.isHorizontal;
-        final double along = horizontal ? anchor.dx : anchor.dy;
-        _vertical.jumpTo(((_vertical.offset + along) * ratio - along).clamp(0, _vertical.position.maxScrollExtent).toDouble());
+      if (!mounted) return;
+      if (row >= 0 && _vertical.hasClients && row < _rowOffsets.length - 1) {
+        final double position = _rowOffsets[row] + fraction * (_rowOffsets[row + 1] - _rowOffsets[row]);
+        _vertical.jumpTo((position + lead - along).clamp(0, _vertical.position.maxScrollExtent).toDouble());
       }
       if (_horizontal.hasClients) {
-        _horizontal.jumpTo(((_horizontal.offset + anchor.dx) * ratio - anchor.dx).clamp(0, _horizontal.position.maxScrollExtent).toDouble());
+        final double center = max(_crossExtent(_controller.settings), viewportCross) / 2;
+        _horizontal.jumpTo((center + crossFromCenter * ratio - across).clamp(0, _horizontal.position.maxScrollExtent).toDouble());
       }
     });
   }
@@ -890,23 +927,36 @@ class UPdfViewerState extends State<UPdfViewer> {
   }
 
   /// Places markups that only carry text offsets (imported/legacy data) once the page text is known.
+  bool _awaitsPlacement(UDocMarkup markup) => _needsPlacement(markup) && !_unplaceable.contains(markup.id);
+
   Future<void> _resolvePage(int pageIndex) async {
     if (_resolving.contains(pageIndex)) return;
-    _resolving.add(pageIndex);
-    final List<UDocMarkup> pending = _markup.markupsOn(pageIndex).where(_needsPlacement).toList();
+    final List<UDocMarkup> pending = _markup.markupsOn(pageIndex).where(_awaitsPlacement).toList();
     if (pending.isEmpty) return;
-    final UDocTextPage text = await _controller.textPage(pageIndex);
-    if (!mounted || text.isEmpty) return;
-    final Size size = text.size.isEmpty ? _pageSize(pageIndex) : text.size;
-    for (final UDocMarkup markup in pending) {
-      (int, int)? range;
-      final bool offsetsMatch = markup.end > markup.start && markup.end <= text.text.length && UDocText.forSearch(text.textFor(markup.start, markup.end)) == UDocText.forSearch(markup.text);
-      if (offsetsMatch) range = (markup.start, markup.end);
-      range ??= text.locate(markup.text, near: markup.start);
-      if (range == null && markup.text.trim().isEmpty && markup.end > markup.start && markup.end <= text.text.length) range = (markup.start, markup.end);
-      if (range == null) continue;
-      final List<Rect> rects = text.rectsForRange(range.$1, range.$2, geometry: _geometry).map((Rect rect) => _normalize(rect, size)).toList();
-      if (rects.isNotEmpty) _markup.resolvePlacement(markup.id, rects, start: range.$1, end: range.$2, extra: const <String, Object?>{geometryKey: geometryVersion});
+    _resolving.add(pageIndex);
+    try {
+      final UDocTextPage text = await _controller.textPage(pageIndex);
+      if (!mounted) return;
+      final Size size = text.size.isEmpty ? _pageSize(pageIndex) : text.size;
+      for (final UDocMarkup markup in pending) {
+        if (_markup.byId(markup.id) == null) continue;
+        (int, int)? range;
+        if (!text.isEmpty) {
+          final bool offsetsMatch = markup.end > markup.start && markup.end <= text.text.length && UDocText.forSearch(text.textFor(markup.start, markup.end)) == UDocText.forSearch(markup.text);
+          if (offsetsMatch) range = (markup.start, markup.end);
+          range ??= text.locate(markup.text, near: markup.start);
+          if (range == null && markup.text.trim().isEmpty && markup.end > markup.start && markup.end <= text.text.length) range = (markup.start, markup.end);
+        }
+        final List<Rect> rects = range == null ? const <Rect>[] : text.rectsForRange(range.$1, range.$2, geometry: _geometry).map((Rect rect) => _normalize(rect, size)).toList();
+        if (range == null || rects.isEmpty) {
+          // Text that isn't on the page stays listed in the sidebar; it's just not tried again this session.
+          _unplaceable.add(markup.id);
+          continue;
+        }
+        _markup.resolvePlacement(markup.id, rects, start: range.$1, end: range.$2, extra: const <String, Object?>{geometryKey: geometryVersion});
+      }
+    } finally {
+      _resolving.remove(pageIndex);
     }
   }
 
@@ -1505,21 +1555,20 @@ class UPdfViewerState extends State<UPdfViewer> {
         _ensureRows();
         _computeBaseScale();
         _ensureOffsets();
+        _keepPageOnLayoutChange(settings);
         Widget content = settings.isPaged ? _buildPaged(settings) : _buildContinuous(settings);
-        if (_drawActive) {
-          content = ScrollConfiguration(
-            behavior: ScrollConfiguration.of(context).copyWith(dragDevices: const <PointerDeviceKind>{PointerDeviceKind.trackpad}),
-            child: content,
-          );
-        }
-        final Widget scaled = _gestureScale == 1
-            ? content
-            : Transform.scale(
-                scale: _gestureScale,
-                alignment: Alignment.topLeft,
-                origin: _gestureFocal,
-                child: content,
-              );
+        // Every wrapper stays in the tree even when it does nothing: inserting or removing one would
+        // recreate the scroll view, and a new scroll position starts back at page 1.
+        content = ScrollConfiguration(
+          behavior: _drawActive ? ScrollConfiguration.of(context).copyWith(dragDevices: const <PointerDeviceKind>{PointerDeviceKind.trackpad}) : ScrollConfiguration.of(context),
+          child: content,
+        );
+        final Widget scaled = Transform.scale(
+          scale: _gestureScale,
+          alignment: Alignment.topLeft,
+          origin: _gestureFocal,
+          child: content,
+        );
         return Listener(
           onPointerSignal: _onPointerSignal,
           onPointerPanZoomStart: (PointerPanZoomStartEvent event) => _beginVisualZoom(event.localPosition),
@@ -1562,17 +1611,23 @@ class UPdfViewerState extends State<UPdfViewer> {
     ),
   );
 
-  Widget _buildContinuous(UDocViewSettings settings) {
+  /// Width (vertical modes) or height (horizontal mode) of the widest rendered row, padding included.
+  double _crossExtent(UDocViewSettings settings) {
     final bool horizontal = settings.isHorizontal;
     double widest = 0;
-    if (!horizontal) {
-      final int limit = min(_rows.length, 64);
-      for (int i = 0; i < limit; i++) {
-        final double width = _rowSize(i).width;
-        if (width > widest) widest = width;
-      }
+    final int limit = min(_rows.length, 64);
+    for (int i = 0; i < limit; i++) {
+      final Size size = _rowSize(i);
+      final double extent = horizontal ? size.height : size.width;
+      if (extent > widest) widest = extent;
     }
-    final double contentWidth = widest * _scale + 16;
+    return widest * _scale + 16;
+  }
+
+  Widget _buildContinuous(UDocViewSettings settings) {
+    final bool horizontal = settings.isHorizontal;
+    final double viewportCross = horizontal ? _viewportHeight : _viewportWidth;
+    final double cross = max(_crossExtent(settings), viewportCross);
     final Widget list = ListView.builder(
       controller: _vertical,
       scrollDirection: horizontal ? Axis.horizontal : Axis.vertical,
@@ -1583,19 +1638,22 @@ class UPdfViewerState extends State<UPdfViewer> {
       itemExtentBuilder: (int index, SliverLayoutDimensions dimensions) => index < _rows.length ? _rowExtent(index) : null,
       itemBuilder: (BuildContext context, int index) => _buildRow(index, settings),
     );
-    if (horizontal || contentWidth <= _viewportWidth) return list;
     return Scrollbar(
       controller: _horizontal,
       child: SingleChildScrollView(
         controller: _horizontal,
-        scrollDirection: Axis.horizontal,
-        child: SizedBox(width: contentWidth, height: _viewportHeight, child: list),
+        scrollDirection: horizontal ? Axis.vertical : Axis.horizontal,
+        child: SizedBox(width: horizontal ? _viewportWidth : cross, height: horizontal ? cross : _viewportHeight, child: list),
       ),
     );
   }
 
   Widget _buildPaged(UDocViewSettings settings) {
-    _pageController ??= PageController(initialPage: _rowOf(_controller.value.pageIndex));
+    // An unattached controller would restore its initial page, not the one being read.
+    if (_pageController?.hasClients != true) {
+      _pageController?.dispose();
+      _pageController = PageController(initialPage: _rowOf(_visiblePage));
+    }
     return PageView.builder(
       controller: _pageController,
       scrollDirection: settings.scrollMode == UDocScrollMode.pagedVertical ? Axis.vertical : Axis.horizontal,
@@ -1641,7 +1699,7 @@ class UPdfViewerState extends State<UPdfViewer> {
     final Size display = Size(size.width * scale, size.height * scale);
     final List<UDocSearchHit> hits = _controller.value.searchHits.where((UDocSearchHit hit) => hit.pageIndex == index).toList();
     final List<UDocMarkup> markups = widget.enableMarkup ? _markup.markupsOn(index) : const <UDocMarkup>[];
-    if (markups.any(_needsPlacement)) {
+    if (markups.any(_awaitsPlacement)) {
       WidgetsBinding.instance.addPostFrameCallback((Duration _) => unawaited(_resolvePage(index)));
     }
     final UPdfEditController? pageEditor = editor;

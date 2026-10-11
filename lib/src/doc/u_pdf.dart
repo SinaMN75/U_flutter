@@ -2135,7 +2135,7 @@ class UPdfDocument {
   final ULruCache<int, Object?> _objects = ULruCache<int, Object?>(maxBytes: uDocObjectCacheBytes, sizeOf: _estimate);
   final ULruCache<int, Map<int, Object?>> _objectStreams = ULruCache<int, Map<int, Object?>>(maxBytes: uDocObjectCacheBytes ~/ 2, sizeOf: _estimateMap);
   final Map<int, UPdfDict> _nodeCache = <int, UPdfDict>{};
-  final Set<int> _resolving = <int>{};
+  static final Object _resolvingKey = Object();
   final Map<int, Object?> overlay = <int, Object?>{};
 
   UPdfEncryption? encryption;
@@ -2528,7 +2528,14 @@ class UPdfDocument {
     final Object? cached = _objects.get(ref.number);
     if (cached != null) return cached;
     if (_objects.containsKey(ref.number)) return null;
-    if (!_resolving.add(ref.number)) return null;
+    // Only a reference met again inside its own loading is a cycle. Concurrent loads of the same object
+    // (a page rendering while its text is extracted) each read it; answering null there loses fonts and text.
+    final Set<int> chain = (Zone.current[_resolvingKey] as Set<int>?) ?? const <int>{};
+    if (chain.contains(ref.number)) return null;
+    return runZoned(() => _loadObject(ref, decrypt: decrypt), zoneValues: <Object?, Object?>{_resolvingKey: <int>{...chain, ref.number}});
+  }
+
+  Future<Object?> _loadObject(UPdfRef ref, {required bool decrypt}) async {
     try {
       final UPdfXrefEntry? entry = xref.entries[ref.number];
       if (entry == null || entry.isFree) return null;
@@ -2543,8 +2550,6 @@ class UPdfDocument {
       return parsed;
     } on Object {
       return null;
-    } finally {
-      _resolving.remove(ref.number);
     }
   }
 

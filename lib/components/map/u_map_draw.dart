@@ -122,7 +122,10 @@ class UMapDrawController extends ChangeNotifier {
         return hit != null;
       case UMapDrawMode.point:
         _snapshot();
-        _shapes = <UMapShape>[..._shapes, UMapShape(id: _id(), kind: UMapShapeKind.point, points: <LatLng>[p], color: color)];
+        _shapes = <UMapShape>[
+          ..._shapes,
+          UMapShape(id: _id(), kind: UMapShapeKind.point, points: <LatLng>[p], color: color),
+        ];
         notifyListeners();
         return true;
       case UMapDrawMode.line:
@@ -310,7 +313,15 @@ class UMapDrawController extends ChangeNotifier {
       final UGeoGeometry g = f.geometry;
       final List<dynamic>? center = f.properties["center"] as List<dynamic>?;
       if (center != null && f.properties["radius"] is num) {
-        loaded.add(UMapShape(id: _id(), kind: UMapShapeKind.circle, points: <LatLng>[LatLng((center[1] as num).toDouble(), (center[0] as num).toDouble())], radius: (f.properties["radius"] as num).toDouble(), color: c));
+        loaded.add(
+          UMapShape(
+            id: _id(),
+            kind: UMapShapeKind.circle,
+            points: <LatLng>[LatLng((center[1] as num).toDouble(), (center[0] as num).toDouble())],
+            radius: (f.properties["radius"] as num).toDouble(),
+            color: c,
+          ),
+        );
       } else if (g is UGeoPoint) {
         loaded.add(UMapShape(id: _id(), kind: UMapShapeKind.point, points: <LatLng>[g.point], color: c, label: f.name));
       } else if (g is UGeoLine) {
@@ -384,7 +395,8 @@ class UMapDrawLayer extends StatelessWidget {
                   ),
               if (draft.length > 2 && (mode == UMapDrawMode.polygon || mode == UMapDrawMode.measureArea))
                 Polygon<Object>(points: draft, color: color.withValues(alpha: 0.12), borderColor: color, borderStrokeWidth: 2, pattern: const StrokePattern.dotted()),
-              if (draft.length > 1 && mode == UMapDrawMode.rectangle) Polygon<Object>(points: UGeoMath.boundsRing(LatLngBounds(draft.first, draft.last)), color: color.withValues(alpha: 0.15), borderColor: color, borderStrokeWidth: 2),
+              if (draft.length > 1 && mode == UMapDrawMode.rectangle)
+                Polygon<Object>(points: UGeoMath.boundsRing(LatLngBounds(draft.first, draft.last)), color: color.withValues(alpha: 0.15), borderColor: color, borderStrokeWidth: 2),
               if (draft.length > 1 && mode == UMapDrawMode.circle)
                 Polygon<Object>(points: UGeoMath.circle(draft.first, UGeoMath.distance(draft.first, draft.last)), color: color.withValues(alpha: 0.15), borderColor: color, borderStrokeWidth: 2),
             ],
@@ -394,20 +406,35 @@ class UMapDrawLayer extends StatelessWidget {
               for (final UMapShape s in shapes)
                 if (s.kind == UMapShapeKind.line) Polyline<Object>(points: s.points, color: s.color, strokeWidth: s.id == sel?.id ? 6 : 4),
               if (draft.length > 1 && <UMapDrawMode>[UMapDrawMode.line, UMapDrawMode.measureDistance, UMapDrawMode.freehand].contains(mode))
-                Polyline<Object>(points: draft, color: color, strokeWidth: 4, pattern: mode == UMapDrawMode.freehand ? const StrokePattern.solid() : StrokePattern.dashed(segments: const <double>[10, 6])),
+                Polyline<Object>(
+                  points: draft,
+                  color: color,
+                  strokeWidth: 4,
+                  pattern: mode == UMapDrawMode.freehand ? const StrokePattern.solid() : StrokePattern.dashed(segments: const <double>[10, 6]),
+                ),
             ],
           ),
           MarkerLayer(
             markers: <Marker>[
               for (final UMapShape s in shapes.where((UMapShape s) => s.kind == UMapShapeKind.point))
-                Marker(point: s.points.first, width: 36, height: 36, alignment: Alignment.topCenter, child: Icon(Icons.location_on, color: s.color, size: 36)),
+                Marker(
+                  point: s.points.first,
+                  width: 36,
+                  height: 36,
+                  alignment: Alignment.topCenter,
+                  child: Icon(Icons.location_on, color: s.color, size: 36),
+                ),
               for (final LatLng p in draft.length < 300 && mode != UMapDrawMode.freehand ? draft : const <LatLng>[])
                 Marker(
                   point: p,
                   width: 14,
                   height: 14,
                   child: DecoratedBox(
-                    decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle, border: Border.all(color: color, width: 3)),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: color, width: 3),
+                    ),
                   ),
                 ),
             ],
@@ -459,7 +486,11 @@ class _Handles extends StatelessWidget {
                 child: Container(
                   width: 18,
                   height: 18,
-                  decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle, border: Border.all(color: shape.color, width: 3)),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: shape.color, width: 3),
+                  ),
                 ),
               ),
             ),
@@ -475,7 +506,11 @@ class _Handles extends StatelessWidget {
                   child: Container(
                     width: 12,
                     height: 12,
-                    decoration: BoxDecoration(color: shape.color.withValues(alpha: 0.6), shape: BoxShape.circle, border: Border.all(color: Colors.white, width: 2)),
+                    decoration: BoxDecoration(
+                      color: shape.color.withValues(alpha: 0.6),
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white, width: 2),
+                    ),
                   ),
                 ),
               ),
@@ -631,7 +666,11 @@ class _UMapAnnotatorState extends State<UMapAnnotator> {
                   margin: const EdgeInsets.all(6),
                   width: 22,
                   height: 22,
-                  decoration: BoxDecoration(color: c, shape: BoxShape.circle, border: Border.all(color: _color == c ? Colors.amber : Colors.white, width: 3)),
+                  decoration: BoxDecoration(
+                    color: c,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: _color == c ? Colors.amber : Colors.white, width: 3),
+                  ),
                 ),
               ),
             const Spacer(),
@@ -680,7 +719,12 @@ class _AnnotationPainter extends CustomPainter {
           final TextPainter tp = TextPainter(
             text: TextSpan(
               text: text,
-              style: TextStyle(color: color, fontSize: 20, fontWeight: FontWeight.w700, shadows: const <Shadow>[Shadow(color: Colors.white, blurRadius: 4)]),
+              style: TextStyle(
+                color: color,
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+                shadows: const <Shadow>[Shadow(color: Colors.white, blurRadius: 4)],
+              ),
             ),
             textDirection: TextDirection.ltr,
           )..layout();

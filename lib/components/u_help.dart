@@ -44,7 +44,9 @@ abstract class UHelp {
     hide();
     final OverlayState? overlay = navigatorKey.currentState?.overlay;
     if (overlay == null) return;
-    _entry = OverlayEntry(builder: (BuildContext context) => _UHelpOverlay(keys: keys, spotlight: spotlight));
+    _entry = OverlayEntry(
+      builder: (BuildContext context) => _UHelpOverlay(keys: keys, spotlight: spotlight),
+    );
     overlay.insert(_entry!);
   }
 }
@@ -79,8 +81,22 @@ class _UHelpTargetState extends State<UHelpTarget> {
     return UObx(() {
       if (!UHelp.enabled.value || !UHelp.items.containsKey(widget.helpKey)) return widget.child;
       final Widget badge = _UHelpBadge(onTap: () => UHelp.show(widget.helpKey));
-      if (widget.inline) return URow(mainAxisSize: MainAxisSize.min, spacing: 6, children: <Widget>[Flexible(child: widget.child), badge]);
-      return Stack(clipBehavior: Clip.none, children: <Widget>[widget.child, PositionedDirectional(top: -6, end: -6, child: badge)]);
+      if (widget.inline)
+        return URow(
+          mainAxisSize: MainAxisSize.min,
+          spacing: 6,
+          children: <Widget>[
+            Flexible(child: widget.child),
+            badge,
+          ],
+        );
+      return Stack(
+        clipBehavior: Clip.none,
+        children: <Widget>[
+          widget.child,
+          PositionedDirectional(top: -6, end: -6, child: badge),
+        ],
+      );
     });
   }
 }
@@ -155,7 +171,11 @@ class _UHelpBadgeState extends State<_UHelpBadge> with SingleTickerProviderState
           child: Container(
             width: 20,
             height: 20,
-            decoration: BoxDecoration(shape: BoxShape.circle, color: UHelp.color, border: Border.all(color: Colors.white, width: 1.5)),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: UHelp.color,
+              border: Border.all(color: Colors.white, width: 1.5),
+            ),
             alignment: Alignment.center,
             child: const Icon(Icons.question_mark_rounded, size: 13, color: UHelp.onColor),
           ),
@@ -328,10 +348,13 @@ class _UHelpHolePainter extends CustomPainter {
         ..addRRect(cut),
       Paint()..color = dim,
     );
-    canvas.drawRRect(cut, Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2
-      ..color = ring);
+    canvas.drawRRect(
+      cut,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 2
+        ..color = ring,
+    );
   }
 
   @override
