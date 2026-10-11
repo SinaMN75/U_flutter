@@ -623,7 +623,7 @@
   "dorm": "خوابگاه",
   "dormAvailable": "خوابگاه خالی",
   "dormBeds": "تخت‌های خوابگاه",
-  "dormBedsAreBookedInPersonOnly": "رزرو خوابگاه فقط حضوری انجام می‌شود",
+  "dormBedsAreBookedInPersonOnly": "درخواست اقامت را آنلاین بفرستید",
   "dormContracts": "قراردادهای خوابگاه",
   "dormOccupancy": "اشغال خوابگاه",
   "dormOccupied": "خوابگاه اشغال‌شده",
@@ -658,7 +658,7 @@
   "drivingLicense": "گواهینامه رانندگی",
   "drivingLicenseNumber": "شماره گواهینامه",
   "due": "سررسید",
-  "dueDate": "معوق",
+  "dueDate": "سررسید",
   "duplicateBlock": "تکثیر بلوک",
   "duration": "مدت",
   "durationAfterThatPerMinute": "{duration} بعدی (دقیقه‌ای)",
@@ -1754,7 +1754,7 @@
   "toBirthDate": "تا تاریخ تولد",
   "toDate": "تا تاریخ",
   "toRegisterAMerchantYourWalletMustHaveAtLeast100000TomansBalance": "برای ثبت پذیرندگی کیف پول شما باید حداقل ۱۰۰ هزار تومان موجودی داشته باشد.",
-  "toTakeABedCallTheDormOrVisitInPersonOnceYouAreRegisteredTheContractAndItsMonthlyInvoicesShowUpRightHere": "برای گرفتن تخت، با خوابگاه تماس بگیرید یا حضوری مراجعه کنید. قرارداد و فاکتورهای ماهانه بعد از ثبت‌نام در همین اپ نمایش داده می‌شود.",
+  "toTakeABedCallTheDormOrVisitInPersonOnceYouAreRegisteredTheContractAndItsMonthlyInvoicesShowUpRightHere": "درخواست اقامت را از همین صفحه بفرستید. بعد از تأیید مدیر و بستن قرارداد، قرارداد و قبض‌های ماهانه در بخش «قراردادهای خوابگاه» نمایش داده می‌شود.",
   "toUseAvaHamrahServicesCompleteYourIdentityInformation": "برای استفاده از خدمات آواهمراه، اطلاعات هویتی خود را تکمیل کنید.",
   "today": "امروز",
   "tokenPrefix": "پیشوند توکن",
@@ -2630,5 +2630,9 @@
   "thisMonth": "این ماه",
   "awaitingSettlement": "منتظر تسویه",
   "userNameOrPhoneNumber": "نام کاربری یا شماره موبایل",
-  "ownerAllPermissions": "مالک — همه‌ی دسترسی‌ها"
+  "ownerAllPermissions": "مالک — همه‌ی دسترسی‌ها",
+  "passwordMinLength": "رمز باید حداقل ۶ حرف باشد.",
+  "stockValue": "ارزش",
+  "goods": "کالاها",
+  "topUpAmountRange": "مبلغ را بین ۱٬۰۰۰ تا ۵۰٬۰۰۰٬۰۰۰ تومان بنویسید."
 }

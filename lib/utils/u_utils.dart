@@ -118,7 +118,7 @@ abstract class UValidators {
   /// Fails on null, "", empty list or empty map. `UValidators.required()`
   static FormFieldValidator<T> required<T>({String? message}) => (T? value) {
     if (value == null) return message ?? U.s.required;
-    if (value is String && value.isEmpty) return message ?? U.s.required;
+    if (value is String && value.trim().isEmpty) return message ?? U.s.required;
     if (value is List && value.isEmpty) return message ?? U.s.required;
     if (value is Map && value.isEmpty) return message ?? U.s.required;
     return null;
@@ -159,7 +159,7 @@ abstract class UValidators {
   /// Checks a phone number (8-15 digits, optional +). `UValidators.phone()`
   static FormFieldValidator<String> iranianPhone({String? requiredMessage, String? invalidMessage, bool isRequired = true}) => (String? value) {
     if (isRequired && (value == null || value.isEmpty)) return requiredMessage ?? U.s.required;
-    if (value != null && value.isNotEmpty && !value.toLatinNumber().isValidPhone && value.startsWith("09")) return invalidMessage ?? U.s.thisFieldIsInvalid;
+    if (value != null && value.isNotEmpty && !RegExp(r"^09\d{9}$").hasMatch(value.toLatinNumber().replaceAll(" ", ""))) return invalidMessage ?? U.s.thisFieldIsInvalid;
     return null;
   };
 
@@ -209,7 +209,8 @@ abstract class UValidators {
   /// Checks an IBAN / Sheba number ("IR" + 24 digits). `UValidators.iban()`
   static FormFieldValidator<String> iban({String? requiredMessage, String? invalidMessage, bool isRequired = true}) => (String? value) {
     if (isRequired && (value == null || value.isEmpty)) return requiredMessage ?? U.s.required;
-    if (value != null && value.isNotEmpty && !UPersianTools.isShebaValid(value.toLatinNumber().replaceAll(" ", "").toUpperCase())) return invalidMessage ?? U.s.thisFieldIsInvalid;
+    final String sheba = (value ?? "").toLatinNumber().replaceAll(" ", "").toUpperCase();
+    if (sheba.isNotEmpty && !UPersianTools.isShebaValid(sheba.startsWith("IR") ? sheba : "IR$sheba")) return invalidMessage ?? U.s.thisFieldIsInvalid;
     return null;
   };
 

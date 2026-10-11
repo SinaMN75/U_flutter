@@ -623,7 +623,7 @@
   "dorm": "Dorm",
   "dormAvailable": "Dorm Available",
   "dormBeds": "Dorm Beds",
-  "dormBedsAreBookedInPersonOnly": "Dorm beds are booked in person only",
+  "dormBedsAreBookedInPersonOnly": "Apply for a bed online",
   "dormContracts": "Dorm contracts",
   "dormOccupancy": "Dorm Occupancy",
   "dormOccupied": "Dorm Occupied",
@@ -1754,7 +1754,7 @@
   "toBirthDate": "To Birth Date",
   "toDate": "To Date",
   "toRegisterAMerchantYourWalletMustHaveAtLeast100000TomansBalance": "To register a merchant, your wallet must have at least 100,000 Tomans balance.",
-  "toTakeABedCallTheDormOrVisitInPersonOnceYouAreRegisteredTheContractAndItsMonthlyInvoicesShowUpRightHere": "To take a bed, call the dorm or visit in person. Once you are registered, the contract and its monthly invoices show up right here.",
+  "toTakeABedCallTheDormOrVisitInPersonOnceYouAreRegisteredTheContractAndItsMonthlyInvoicesShowUpRightHere": "Send your application from this page. Once the manager approves it and signs the contract, the contract and its monthly invoices show up under Dorm contracts.",
   "toUseAvaHamrahServicesCompleteYourIdentityInformation": "To use AvaHamrah services, complete your identity information.",
   "today": "Today",
   "tokenPrefix": "Token prefix",
@@ -2868,5 +2868,9 @@
   "thisMonth": "This month",
   "awaitingSettlement": "Awaiting settlement",
   "userNameOrPhoneNumber": "Username or phone number",
-  "ownerAllPermissions": "Owner — all permissions"
+  "ownerAllPermissions": "Owner — all permissions",
+  "passwordMinLength": "Password must be at least 6 characters.",
+  "stockValue": "Value",
+  "goods": "Goods",
+  "topUpAmountRange": "Enter an amount between 1,000 and 50,000,000 Tomans."
 }

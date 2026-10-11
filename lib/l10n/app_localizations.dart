@@ -2495,7 +2495,7 @@ abstract class AppLocalizations {
   /// No description provided for @dormBedsAreBookedInPersonOnly.
   ///
   /// In en, this message translates to:
-  /// **'Dorm beds are booked in person only'**
+  /// **'Apply for a bed online'**
   String get dormBedsAreBookedInPersonOnly;
 
   /// No description provided for @dormContracts.
@@ -9281,7 +9281,7 @@ abstract class AppLocalizations {
   /// No description provided for @toTakeABedCallTheDormOrVisitInPersonOnceYouAreRegisteredTheContractAndItsMonthlyInvoicesShowUpRightHere.
   ///
   /// In en, this message translates to:
-  /// **'To take a bed, call the dorm or visit in person. Once you are registered, the contract and its monthly invoices show up right here.'**
+  /// **'Send your application from this page. Once the manager approves it and signs the contract, the contract and its monthly invoices show up under Dorm contracts.'**
   String get toTakeABedCallTheDormOrVisitInPersonOnceYouAreRegisteredTheContractAndItsMonthlyInvoicesShowUpRightHere;
 
   /// No description provided for @toUseAvaHamrahServicesCompleteYourIdentityInformation.
@@ -14539,6 +14539,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Owner — all permissions'**
   String get ownerAllPermissions;
+
+  /// No description provided for @passwordMinLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters.'**
+  String get passwordMinLength;
+
+  /// No description provided for @stockValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Value'**
+  String get stockValue;
+
+  /// No description provided for @goods.
+  ///
+  /// In en, this message translates to:
+  /// **'Goods'**
+  String get goods;
+
+  /// No description provided for @topUpAmountRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter an amount between 1,000 and 50,000,000 Tomans.'**
+  String get topUpAmountRange;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

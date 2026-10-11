@@ -19,6 +19,8 @@ class UReceipt {
     this.rows = const <UReceiptRow>[],
   });
 
+  static String Function(int amount) format = (int amount) => amount.rial();
+
   final String title;
   final int amount;
   final IconData icon;
@@ -71,7 +73,7 @@ class UReceiptSheet extends StatelessWidget {
         ListTile(
           leading: UIconBackground(receipt.icon, color: _onSuccess, size: 48),
           title: UTextBodyMedium(receipt.title, color: _onSuccess.withAlpha(0xCC)),
-          subtitle: UTextHeadlineSmall(receipt.amount.abs().rial(), color: _onSuccess, fontWeight: FontWeight.bold),
+          subtitle: UTextHeadlineSmall(UReceipt.format(receipt.amount.abs()), color: _onSuccess, fontWeight: FontWeight.bold),
           trailing: UIconTextHorizontal(
             leading: const Icon(Icons.check_circle, color: _onSuccess, size: 16),
             trailing: UTextLabelSmall(U.s.successful, color: _onSuccess),
@@ -87,7 +89,7 @@ class UReceiptSheet extends StatelessWidget {
   Widget _details(BuildContext context) {
     final ColorScheme scheme = context.colorScheme;
     final List<UReceiptRow> rows = <UReceiptRow>[
-      UReceiptRow(label: U.s.amount, value: receipt.amount.abs().rial()),
+      UReceiptRow(label: U.s.amount, value: UReceipt.format(receipt.amount.abs())),
       if (receipt.method != null) UReceiptRow(label: U.s.paymentMethod, value: receipt.method!),
       UReceiptRow(label: U.s.date, value: (receipt.date ?? DateTime.now()).toJalaliDateTime()),
       if (!receipt.trackingNumber.isNullOrEmpty()) UReceiptRow(label: U.s.trackingNumber, value: receipt.trackingNumber!, copyable: true),

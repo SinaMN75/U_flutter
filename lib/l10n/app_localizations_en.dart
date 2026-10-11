@@ -1247,7 +1247,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dormBeds => 'Dorm Beds';
 
   @override
-  String get dormBedsAreBookedInPersonOnly => 'Dorm beds are booked in person only';
+  String get dormBedsAreBookedInPersonOnly => 'Apply for a bed online';
 
   @override
   String get dormContracts => 'Dorm contracts';
@@ -4689,7 +4689,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get toTakeABedCallTheDormOrVisitInPersonOnceYouAreRegisteredTheContractAndItsMonthlyInvoicesShowUpRightHere =>
-      'To take a bed, call the dorm or visit in person. Once you are registered, the contract and its monthly invoices show up right here.';
+      'Send your application from this page. Once the manager approves it and signs the contract, the contract and its monthly invoices show up under Dorm contracts.';
 
   @override
   String get toUseAvaHamrahServicesCompleteYourIdentityInformation => 'To use AvaHamrah services, complete your identity information.';
@@ -7417,4 +7417,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ownerAllPermissions => 'Owner — all permissions';
+
+  @override
+  String get passwordMinLength => 'Password must be at least 6 characters.';
+
+  @override
+  String get stockValue => 'Value';
+
+  @override
+  String get goods => 'Goods';
+
+  @override
+  String get topUpAmountRange => 'Enter an amount between 1,000 and 50,000,000 Tomans.';
 }

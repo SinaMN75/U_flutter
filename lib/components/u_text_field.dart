@@ -251,7 +251,7 @@ class _UTextFieldState extends State<UTextField> {
             controller: widget.controller,
             keyboardType: widget.keyboardType,
             obscureText: obscure,
-            validator: widget.validator,
+            validator: widget.required ? UValidators.combineValidators<String>(<FormFieldValidator<String>>[UValidators.required<String>(), ?widget.validator]) : widget.validator,
             minLines: widget.lines,
             onFieldSubmitted: widget.onFieldSubmitted,
             maxLines: widget.lines == 1 ? 1 : 20,
@@ -471,7 +471,7 @@ class _UDropDownFieldState<T> extends State<UDropDownField<T>> {
           onChanged: (T? i) => widget.onChanged(i as T),
           onSaved: widget.onSave,
           onTap: widget.onTap,
-          validator: widget.validator,
+          validator: widget.required ? UValidators.combineValidators<T>(<FormFieldValidator<T>>[UValidators.required<T>(), ?widget.validator]) : widget.validator,
           decoration: InputDecoration(
             filled: true,
             labelText: widget.labelText,
