@@ -40,6 +40,8 @@ namespace u {
         using flutter::EncodableMap;
         using flutter::EncodableValue;
 
+        constexpr DWORD kVideoStream = static_cast<DWORD>(MF_SOURCE_READER_FIRST_VIDEO_STREAM);
+
         template<class T>
         void SafeRelease(T **value) {
             if (*value != nullptr) {
@@ -623,7 +625,7 @@ namespace u {
                 for (DWORD index = 0;; index++) {
                     IMFMediaType *type = nullptr;
                     if (FAILED(
-                            reader_->GetNativeMediaType(MF_SOURCE_READER_FIRST_VIDEO_STREAM, index,
+                            reader_->GetNativeMediaType(kVideoStream, index,
                                                         &type)))
                         break;
                     UINT32 width = 0;
@@ -653,7 +655,7 @@ namespace u {
                 if (FAILED(MFCreateMediaType(&output))) return false;
                 output->SetGUID(MF_MT_MAJOR_TYPE, MFMediaType_Video);
                 output->SetGUID(MF_MT_SUBTYPE, MFVideoFormat_RGB32);
-                const HRESULT hr = reader_->SetCurrentMediaType(MF_SOURCE_READER_FIRST_VIDEO_STREAM,
+                const HRESULT hr = reader_->SetCurrentMediaType(kVideoStream,
                                                                 nullptr, output);
                 SafeRelease(&output);
                 return SUCCEEDED(hr);
@@ -676,7 +678,7 @@ namespace u {
                     DWORD stream_flags = 0;
                     LONGLONG timestamp = 0;
                     IMFSample *sample = nullptr;
-                    if (FAILED(reader_->ReadSample(MF_SOURCE_READER_FIRST_VIDEO_STREAM, 0, nullptr,
+                    if (FAILED(reader_->ReadSample(kVideoStream, 0, nullptr,
                                                    &stream_flags, &timestamp, &sample))) {
                         Sleep(5);
                         continue;
