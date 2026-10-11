@@ -51,14 +51,14 @@ abstract final class UEpubTextStyler {
 
   /// Styled text of a block.
   static TextSpan span(
-    BuildContext context,
-    UEpubBlock block,
-    UEpubTypography typography,
-    UDocColorMode mode, {
-    int start = 0,
-    int end = -1,
-    void Function(String href)? onLink,
-  }) {
+      BuildContext context,
+      UEpubBlock block,
+      UEpubTypography typography,
+      UDocColorMode mode, {
+        int start = 0,
+        int end = -1,
+        void Function(String href)? onLink,
+      }) {
     final double base = typography.baseFontSize * (block.kind == UEpubBlockKind.heading ? headingScale(block.level) : 1);
     final Color text = foreground(context, mode);
     final Color link = Theme.of(context).colorScheme.primary;
@@ -405,9 +405,7 @@ class UEpubReaderState extends State<UEpubReader> {
     if (_ownsMarkup && widget.persistAnnotations) await _markup.attachStorage(widget.annotationStorageKey ?? "u_doc_markup_${_controller.documentId}");
     final String? remote = widget.annotationData;
     if (remote != null && remote.trim().isNotEmpty) {
-      final String local = _markup.isEmpty ? "" : _markup.export();
-      final String newest = UDocAnnotationController.pickNewest(local, remote);
-      if (newest != local) _markup.import(newest);
+      _markup.import(remote, merge: true);
     }
   }
 
@@ -735,8 +733,8 @@ class UEpubReaderState extends State<UEpubReader> {
     return _activeSelection
         .map(
           (_UEpubSelectionRange range) =>
-              chapter.blocks[range.blockIndex].text.substring(range.start.clamp(0, chapter.blocks[range.blockIndex].text.length), range.end.clamp(0, chapter.blocks[range.blockIndex].text.length)),
-        )
+          chapter.blocks[range.blockIndex].text.substring(range.start.clamp(0, chapter.blocks[range.blockIndex].text.length), range.end.clamp(0, chapter.blocks[range.blockIndex].text.length)),
+    )
         .join("\n");
   }
 
@@ -767,17 +765,17 @@ class UEpubReaderState extends State<UEpubReader> {
       ranges
           .map(
             (_UEpubSelectionRange range) => UDocMarkup.create(
-              kind: kind,
-              pageIndex: chapter.spineIndex,
-              blockIndex: range.blockIndex,
-              start: range.start,
-              end: range.end,
-              groupId: group,
-              text: chapter.blocks[range.blockIndex].text.substring(range.start, min(range.end, chapter.blocks[range.blockIndex].text.length)),
-              color: _markup.color,
-              note: note,
-            ),
-          )
+          kind: kind,
+          pageIndex: chapter.spineIndex,
+          blockIndex: range.blockIndex,
+          start: range.start,
+          end: range.end,
+          groupId: group,
+          text: chapter.blocks[range.blockIndex].text.substring(range.start, min(range.end, chapter.blocks[range.blockIndex].text.length)),
+          color: _markup.color,
+          note: note,
+        ),
+      )
           .toList(),
     );
     _clearSelection();
@@ -1269,14 +1267,14 @@ class UEpubReaderState extends State<UEpubReader> {
     final Widget guarded = widget.allowCopy
         ? selectable
         : Shortcuts(
-            shortcuts: const <ShortcutActivator, Intent>{
-              SingleActivator(LogicalKeyboardKey.keyC, control: true): DoNothingAndStopPropagationIntent(),
-              SingleActivator(LogicalKeyboardKey.keyC, meta: true): DoNothingAndStopPropagationIntent(),
-              SingleActivator(LogicalKeyboardKey.keyX, control: true): DoNothingAndStopPropagationIntent(),
-              SingleActivator(LogicalKeyboardKey.keyX, meta: true): DoNothingAndStopPropagationIntent(),
-            },
-            child: selectable,
-          );
+      shortcuts: const <ShortcutActivator, Intent>{
+        SingleActivator(LogicalKeyboardKey.keyC, control: true): DoNothingAndStopPropagationIntent(),
+        SingleActivator(LogicalKeyboardKey.keyC, meta: true): DoNothingAndStopPropagationIntent(),
+        SingleActivator(LogicalKeyboardKey.keyX, control: true): DoNothingAndStopPropagationIntent(),
+        SingleActivator(LogicalKeyboardKey.keyX, meta: true): DoNothingAndStopPropagationIntent(),
+      },
+      child: selectable,
+    );
     // Raw pointer events: SelectableRegion wins the tap gesture arena, so an
     // ancestor GestureDetector would never see taps on the text.
     return LayoutBuilder(
@@ -1500,10 +1498,10 @@ class UEpubReaderState extends State<UEpubReader> {
             onMarkup: (UDocMarkupKind kind) => unawaited(_applyMarkup(kind)),
             onCopy: widget.allowCopy
                 ? () {
-                    unawaited(UClipboard.set(_selectedText));
-                    UToast.toast(message: U.s.copied);
-                    _clearSelection();
-                  }
+              unawaited(UClipboard.set(_selectedText));
+              UToast.toast(message: U.s.copied);
+              _clearSelection();
+            }
                 : null,
             onShare: widget.allowCopy && widget.allowShare ? () => unawaited(UShare.text(_selectedText)) : null,
             onSearch: () {
@@ -1635,12 +1633,12 @@ class UEpubReaderState extends State<UEpubReader> {
                         child: value.pageCount <= 1
                             ? const SizedBox.shrink()
                             : Slider(
-                                value: value.pageIndex.toDouble().clamp(0, (value.pageCount - 1).toDouble()),
-                                max: (value.pageCount - 1).toDouble(),
-                                divisions: value.pageCount - 1,
-                                label: _chapterLabel(value.pageIndex),
-                                onChanged: (double next) => unawaited(_loadChapter(next.round())),
-                              ),
+                          value: value.pageIndex.toDouble().clamp(0, (value.pageCount - 1).toDouble()),
+                          max: (value.pageCount - 1).toDouble(),
+                          divisions: value.pageCount - 1,
+                          label: _chapterLabel(value.pageIndex),
+                          onChanged: (double next) => unawaited(_loadChapter(next.round())),
+                        ),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -2063,17 +2061,17 @@ class _UEpubBlockViewState extends State<UEpubBlockView> {
           children: block.cells
               .map(
                 (List<UEpubSpan> cell) => Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(border: Border.all(color: _foreground.withValues(alpha: 0.25))),
-                    child: Text(
-                      cell.map((UEpubSpan span) => span.text).join(),
-                      style: TextStyle(fontSize: widget.typography.baseFontSize * 0.92, color: _foreground, height: widget.typography.lineHeight),
-                      textDirection: block.rtl ? TextDirection.rtl : TextDirection.ltr,
-                    ),
-                  ),
+              child: Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(border: Border.all(color: _foreground.withValues(alpha: 0.25))),
+                child: Text(
+                  cell.map((UEpubSpan span) => span.text).join(),
+                  style: TextStyle(fontSize: widget.typography.baseFontSize * 0.92, color: _foreground, height: widget.typography.lineHeight),
+                  textDirection: block.rtl ? TextDirection.rtl : TextDirection.ltr,
                 ),
-              )
+              ),
+            ),
+          )
               .toList(),
         ),
       );
@@ -2367,27 +2365,27 @@ class _UEpubSettingsPanelState extends State<UEpubSettingsPanel> {
               children: _fonts
                   .map(
                     (String? family) => ChoiceChip(
-                      selected: typography.fontFamily == family,
-                      label: Text(
-                        family ?? U.s.defaultFont,
-                        style: TextStyle(fontFamily: family, package: family == "Vazir" ? "u" : null),
-                      ),
-                      onSelected: (bool _) => _apply(
-                        UEpubTypography(
-                          fontScale: typography.fontScale,
-                          lineHeight: typography.lineHeight,
-                          fontFamily: family,
-                          horizontalMargin: typography.horizontalMargin,
-                          verticalMargin: typography.verticalMargin,
-                          justify: typography.justify,
-                          paragraphSpacing: typography.paragraphSpacing,
-                          letterSpacing: typography.letterSpacing,
-                          wordSpacing: typography.wordSpacing,
-                          hyphenate: typography.hyphenate,
-                        ),
-                      ),
+                  selected: typography.fontFamily == family,
+                  label: Text(
+                    family ?? U.s.defaultFont,
+                    style: TextStyle(fontFamily: family, package: family == "Vazir" ? "u" : null),
+                  ),
+                  onSelected: (bool _) => _apply(
+                    UEpubTypography(
+                      fontScale: typography.fontScale,
+                      lineHeight: typography.lineHeight,
+                      fontFamily: family,
+                      horizontalMargin: typography.horizontalMargin,
+                      verticalMargin: typography.verticalMargin,
+                      justify: typography.justify,
+                      paragraphSpacing: typography.paragraphSpacing,
+                      letterSpacing: typography.letterSpacing,
+                      wordSpacing: typography.wordSpacing,
+                      hyphenate: typography.hyphenate,
                     ),
-                  )
+                  ),
+                ),
+              )
                   .toList(),
             ),
             const SizedBox(height: 8),
@@ -2409,11 +2407,11 @@ class _UEpubSettingsPanelState extends State<UEpubSettingsPanel> {
               children: <UDocScrollMode>[UDocScrollMode.verticalContinuous, UDocScrollMode.pagedHorizontal]
                   .map(
                     (UDocScrollMode mode) => ChoiceChip(
-                      selected: settings.scrollMode == mode,
-                      label: UTextBodySmall(mode == UDocScrollMode.verticalContinuous ? U.s.continuous : U.s.paged),
-                      onSelected: (bool _) => _settings(() => widget.controller.setScrollMode(mode)),
-                    ),
-                  )
+                  selected: settings.scrollMode == mode,
+                  label: UTextBodySmall(mode == UDocScrollMode.verticalContinuous ? U.s.continuous : U.s.paged),
+                  onSelected: (bool _) => _settings(() => widget.controller.setScrollMode(mode)),
+                ),
+              )
                   .toList(),
             ),
             const SizedBox(height: 12),
@@ -2424,11 +2422,11 @@ class _UEpubSettingsPanelState extends State<UEpubSettingsPanel> {
               children: <UDocColorMode>[UDocColorMode.normal, UDocColorMode.night, UDocColorMode.sepia, UDocColorMode.highContrast]
                   .map(
                     (UDocColorMode mode) => ChoiceChip(
-                      selected: settings.colorMode == mode,
-                      label: UTextBodySmall(_label(mode)),
-                      onSelected: (bool _) => _settings(() => widget.controller.setColorMode(mode)),
-                    ),
-                  )
+                  selected: settings.colorMode == mode,
+                  label: UTextBodySmall(_label(mode)),
+                  onSelected: (bool _) => _settings(() => widget.controller.setColorMode(mode)),
+                ),
+              )
                   .toList(),
             ),
             const SizedBox(height: 12),
@@ -2439,11 +2437,11 @@ class _UEpubSettingsPanelState extends State<UEpubSettingsPanel> {
               children: UDocDirection.values
                   .map(
                     (UDocDirection direction) => ChoiceChip(
-                      selected: settings.direction == direction,
-                      label: UTextBodySmall(direction == UDocDirection.rtl ? U.s.rightToLeft : U.s.leftToRight),
-                      onSelected: (bool _) => _settings(() => widget.controller.setDirection(direction)),
-                    ),
-                  )
+                  selected: settings.direction == direction,
+                  label: UTextBodySmall(direction == UDocDirection.rtl ? U.s.rightToLeft : U.s.leftToRight),
+                  onSelected: (bool _) => _settings(() => widget.controller.setDirection(direction)),
+                ),
+              )
                   .toList(),
             ),
             const SizedBox(height: 12),

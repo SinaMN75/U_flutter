@@ -101,6 +101,8 @@ class UMediaNotesController extends ChangeNotifier {
 
   final List<UMediaNote> _notes = <UMediaNote>[];
   final List<UDocShape> _shapes = <UDocShape>[];
+  final Map<String, DateTime> _deleted = <String, DateTime>{};
+  Set<String> _ids = <String>{};
   final List<(List<UMediaNote>, List<UDocShape>)> _undo = <(List<UMediaNote>, List<UDocShape>)>[];
   final List<(List<UMediaNote>, List<UDocShape>)> _redo = <(List<UMediaNote>, List<UDocShape>)>[];
   String? _lastShapeEdit;
@@ -153,12 +155,12 @@ class UMediaNotesController extends ChangeNotifier {
         .where((UDocShape shape) => shape.startMs != null)
         .map(
           (UDocShape shape) => UVideoMarker(
-            start: Duration(milliseconds: shape.startMs!),
-            end: shape.endMs == null ? null : Duration(milliseconds: shape.endMs!),
-            label: shape.hasText ? shape.text : U.s.drawings,
-            color: shape.strokeColor,
-          ),
-        ),
+        start: Duration(milliseconds: shape.startMs!),
+        end: shape.endMs == null ? null : Duration(milliseconds: shape.endMs!),
+        label: shape.hasText ? shape.text : U.s.drawings,
+        color: shape.strokeColor,
+      ),
+    ),
   ];
 
   /// Finds a note.
@@ -201,7 +203,29 @@ class UMediaNotesController extends ChangeNotifier {
     _redo.clear();
   }
 
+  Set<String> _currentIds() => <String>{..._notes.map((UMediaNote note) => note.id), ..._shapes.map((UDocShape shape) => shape.id)};
+
+  /// Remembers what disappeared so other devices drop it too; anything back again (undo, redo) is newer than its deletion.
+  void _trackDeletions() {
+    final DateTime now = DateTime.now();
+    final Set<String> current = _currentIds();
+    for (final String id in _ids.difference(current)) {
+      _deleted[id] = now;
+    }
+    for (final String id in current.where(_deleted.containsKey).toList()) {
+      _deleted.remove(id);
+      for (int i = 0; i < _notes.length; i++) {
+        if (_notes[i].id == id) _notes[i] = _notes[i].copyWith();
+      }
+      for (int i = 0; i < _shapes.length; i++) {
+        if (_shapes[i].id == id) _shapes[i] = _shapes[i].copyWith();
+      }
+    }
+    _ids = current;
+  }
+
   void _commit({bool debounce = false}) {
+    _trackDeletions();
     _notes.sort((UMediaNote a, UMediaNote b) => a.position.compareTo(b.position));
     _updatedAt = DateTime.now();
     notifyListeners();
@@ -332,6 +356,7 @@ class UMediaNotesController extends ChangeNotifier {
     "updated": _updatedAt.toIso8601String(),
     "notes": _notes.map((UMediaNote note) => note.toJson()).toList(),
     if (_shapes.isNotEmpty) "shapes": _shapes.map((UDocShape shape) => shape.toJson()).toList(),
+    if (_deleted.isNotEmpty) UDocSync.deletedKey: UDocSync.encodeDeleted(_deleted),
   };
 
   /// All notes as a compact string (base64 by default).
@@ -340,33 +365,40 @@ class UMediaNotesController extends ChangeNotifier {
     return base64 ? json.toBase64() : json;
   }
 
-  /// Accepts [export] output (base64 or JSON). Returns false when the payload is not understood.
+  /// Accepts [export] output (base64 or JSON). [merge] combines it with what is here the way devices
+  /// sync (see [UDocSync]); otherwise it replaces everything. Returns false when the payload is not understood.
   bool import(String data, {bool merge = false, bool notify = true}) {
-    final Map<String, Object?>? json = UDocAnnotationController.decode(data);
-    if (json == null) return false;
+    final Map<String, Object?>? decoded = UDocAnnotationController.decode(data);
+    if (decoded == null || !(decoded["notes"] is List<Object?> || decoded["shapes"] is List<Object?>)) return false;
+    final Map<String, Object?> json = merge ? UDocSync.merge(toJson(), decoded) : decoded;
+    // Syncing in what is already here changes nothing (and must not rebuild, save or add an undo step).
+    if (merge && UDocSync.sameContent(json, toJson())) return true;
     final List<UMediaNote> incoming = <UMediaNote>[];
     final List<UDocShape> drawings = <UDocShape>[];
     for (final Object? entry in (json["shapes"] as List<Object?>?) ?? const <Object?>[]) {
       if (entry is Map<String, Object?>) drawings.add(UDocShape.fromJson(entry));
     }
-    if (json["notes"] is List<Object?> || drawings.isNotEmpty) {
-      for (final Object? entry in (json["notes"] as List<Object?>?) ?? const <Object?>[]) {
-        if (entry is Map<String, Object?>) incoming.add(UMediaNote.fromJson(entry));
-      }
-      _updatedAt = DateTime.tryParse((json["updated"] as String?) ?? "") ?? DateTime.now();
-    } else {
-      return false;
+    for (final Object? entry in (json["notes"] as List<Object?>?) ?? const <Object?>[]) {
+      if (entry is Map<String, Object?>) incoming.add(UMediaNote.fromJson(entry));
     }
-    if (notify) _checkpoint();
-    if (!merge) {
-      _notes.clear();
-      _shapes.clear();
+    if (notify && !merge) _checkpoint();
+    // Undo steps were taken before another device's changes came in; replaying them would revert or delete those.
+    if (merge) {
+      _undo.clear();
+      _redo.clear();
     }
-    final Set<String> drawn = _shapes.map((UDocShape shape) => shape.id).toSet();
-    _shapes.addAll(drawings.where((UDocShape shape) => !drawn.contains(shape.id)));
-    final Set<String> known = _notes.map((UMediaNote note) => note.id).toSet();
-    _notes.addAll(incoming.where((UMediaNote note) => !known.contains(note.id)));
-    _notes.sort((UMediaNote a, UMediaNote b) => a.position.compareTo(b.position));
+    _updatedAt = DateTime.tryParse((json["updated"] as String?) ?? "") ?? DateTime.now();
+    _notes
+      ..clear()
+      ..addAll(incoming)
+      ..sort((UMediaNote a, UMediaNote b) => a.position.compareTo(b.position));
+    _shapes
+      ..clear()
+      ..addAll(drawings);
+    _deleted
+      ..clear()
+      ..addAll(UDocSync.deletedOf(json));
+    _ids = _currentIds();
     if (notify) {
       notifyListeners();
       unawaited(save());
@@ -588,83 +620,83 @@ class _UMediaNotesPanelState extends State<UMediaNotesPanel> {
           Expanded(
             child: notes.isEmpty
                 ? Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(24),
-                      child: UTextBodyMedium(U.s.noNotesYet, textAlign: TextAlign.center, maxLines: 4),
-                    ),
-                  )
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: UTextBodyMedium(U.s.noNotesYet, textAlign: TextAlign.center, maxLines: 4),
+              ),
+            )
                 : ValueListenableBuilder<UMediaValue>(
-                    valueListenable: widget.controller,
-                    builder: (BuildContext context, UMediaValue value, Widget? child) {
-                      final int current = widget.notes.indexBefore(value.position);
-                      final UMediaNote? currentNote = current >= 0 ? widget.notes.notes[current] : null;
-                      return ListView.builder(
-                        padding: const EdgeInsets.fromLTRB(8, 4, 8, 16),
-                        itemCount: notes.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          final UMediaNote note = notes[index];
-                          final bool active = currentNote?.id == note.id;
-                          return Card(
-                            color: active ? scheme.primaryContainer : null,
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(12),
-                              onTap: () => _seek(note),
-                              child: Padding(
-                                padding: const EdgeInsets.fromLTRB(10, 8, 4, 8),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                                      decoration: BoxDecoration(color: note.color, borderRadius: BorderRadius.circular(8)),
-                                      child: Directionality(
-                                        textDirection: TextDirection.ltr,
-                                        child: UTextLabelMedium(
-                                          "${uFormatDuration(note.position)}${note.isRange ? "–${uFormatDuration(note.end!)}" : ""}",
-                                          color: note.color.computeLuminance() > 0.5 ? const Color(0xFF000000) : const Color(0xFFFFFFFF),
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(top: 2),
-                                        child: Text(
-                                          note.text.isEmpty ? "—" : note.text,
-                                          textDirection: UDocText.isRtl(note.text) ? TextDirection.rtl : TextDirection.ltr,
-                                          style: Theme.of(context).textTheme.bodyMedium,
-                                        ),
-                                      ),
-                                    ),
-                                    PopupMenuButton<String>(
-                                      iconSize: 18,
-                                      padding: EdgeInsets.zero,
-                                      onSelected: (String action) async {
-                                        if (action == "edit") await _edit(note);
-                                        if (action == "color") {
-                                          final Color? color = await UNavigator.colorPicker(defaultColor: note.color, colors: UDocPalette.colors);
-                                          if (color != null) widget.notes.replace(note.copyWith(color: color));
-                                        }
-                                        if (action == "here") widget.notes.replace(note.copyWith(position: widget.controller.value.position));
-                                        if (action == "delete") widget.notes.remove(note.id);
-                                      },
-                                      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                                        PopupMenuItem<String>(value: "edit", child: UTextBodyMedium(U.s.editNote)),
-                                        PopupMenuItem<String>(value: "color", child: UTextBodyMedium(U.s.color)),
-                                        PopupMenuItem<String>(value: "here", child: UTextBodyMedium(uFormatDuration(widget.controller.value.position))),
-                                        PopupMenuItem<String>(value: "delete", child: UTextBodyMedium(U.s.delete)),
-                                      ],
-                                    ),
-                                  ],
+              valueListenable: widget.controller,
+              builder: (BuildContext context, UMediaValue value, Widget? child) {
+                final int current = widget.notes.indexBefore(value.position);
+                final UMediaNote? currentNote = current >= 0 ? widget.notes.notes[current] : null;
+                return ListView.builder(
+                  padding: const EdgeInsets.fromLTRB(8, 4, 8, 16),
+                  itemCount: notes.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final UMediaNote note = notes[index];
+                    final bool active = currentNote?.id == note.id;
+                    return Card(
+                      color: active ? scheme.primaryContainer : null,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(12),
+                        onTap: () => _seek(note),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(10, 8, 4, 8),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                decoration: BoxDecoration(color: note.color, borderRadius: BorderRadius.circular(8)),
+                                child: Directionality(
+                                  textDirection: TextDirection.ltr,
+                                  child: UTextLabelMedium(
+                                    "${uFormatDuration(note.position)}${note.isRange ? "–${uFormatDuration(note.end!)}" : ""}",
+                                    color: note.color.computeLuminance() > 0.5 ? const Color(0xFF000000) : const Color(0xFFFFFFFF),
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 2),
+                                  child: Text(
+                                    note.text.isEmpty ? "—" : note.text,
+                                    textDirection: UDocText.isRtl(note.text) ? TextDirection.rtl : TextDirection.ltr,
+                                    style: Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                ),
+                              ),
+                              PopupMenuButton<String>(
+                                iconSize: 18,
+                                padding: EdgeInsets.zero,
+                                onSelected: (String action) async {
+                                  if (action == "edit") await _edit(note);
+                                  if (action == "color") {
+                                    final Color? color = await UNavigator.colorPicker(defaultColor: note.color, colors: UDocPalette.colors);
+                                    if (color != null) widget.notes.replace(note.copyWith(color: color));
+                                  }
+                                  if (action == "here") widget.notes.replace(note.copyWith(position: widget.controller.value.position));
+                                  if (action == "delete") widget.notes.remove(note.id);
+                                },
+                                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                                  PopupMenuItem<String>(value: "edit", child: UTextBodyMedium(U.s.editNote)),
+                                  PopupMenuItem<String>(value: "color", child: UTextBodyMedium(U.s.color)),
+                                  PopupMenuItem<String>(value: "here", child: UTextBodyMedium(uFormatDuration(widget.controller.value.position))),
+                                  PopupMenuItem<String>(value: "delete", child: UTextBodyMedium(U.s.delete)),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
           ),
         ],
       );
@@ -743,18 +775,18 @@ class _UMovingWatermarkState extends State<UMovingWatermark> {
             children: widget.watermark.lines
                 .map(
                   (String line) => Text(
-                    line,
-                    textDirection: UDocText.isRtl(line) ? TextDirection.rtl : TextDirection.ltr,
-                    style: TextStyle(
-                      fontSize: widget.watermark.fontSize,
-                      fontWeight: FontWeight.w800,
-                      color: widget.watermark.color,
-                      fontFamily: "Vazir",
-                      package: "u",
-                      shadows: const <Shadow>[Shadow(color: Color(0x66000000), blurRadius: 3)],
-                    ),
-                  ),
-                )
+                line,
+                textDirection: UDocText.isRtl(line) ? TextDirection.rtl : TextDirection.ltr,
+                style: TextStyle(
+                  fontSize: widget.watermark.fontSize,
+                  fontWeight: FontWeight.w800,
+                  color: widget.watermark.color,
+                  fontFamily: "Vazir",
+                  package: "u",
+                  shadows: const <Shadow>[Shadow(color: Color(0x66000000), blurRadius: 3)],
+                ),
+              ),
+            )
                 .toList(),
           ),
         ),

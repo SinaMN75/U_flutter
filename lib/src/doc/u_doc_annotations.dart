@@ -74,6 +74,101 @@ T _enumOf<T extends Enum>(List<T> values, Object? name, T fallback) {
 
 String _newId() => "${DateTime.now().microsecondsSinceEpoch.toRadixString(36)}${Random().nextInt(1 << 20).toRadixString(36)}";
 
+/// Merges annotation payloads edited on several devices (as JSON maps, see the controllers' `toJson`).
+///
+/// Every list of items with an `id` is merged by id, keeping the most recently `updated` copy, so nothing
+/// made on one device is lost on another. Deletions are kept under `deleted` (id → time) and win over
+/// copies that are not newer than the deletion. Bookmarks on the same position collapse into the newest.
+abstract final class UDocSync {
+  static const String deletedKey = "deleted";
+
+  /// Deletion records kept per document; the oldest are dropped beyond this.
+  static const int maxDeleted = 2000;
+
+  static DateTime _time(Object? value) => DateTime.tryParse((value as String?) ?? "") ?? DateTime.fromMillisecondsSinceEpoch(0);
+
+  static DateTime _itemTime(Map<String, Object?> item) => _time(item["updated"] ?? item["created"]);
+
+  /// Reads the `deleted` map of a payload.
+  static Map<String, DateTime> deletedOf(Map<String, Object?> json) {
+    final Object? raw = json[deletedKey];
+    if (raw is! Map) return <String, DateTime>{};
+    return <String, DateTime>{for (final MapEntry<Object?, Object?> entry in raw.entries) if (entry.key is String) entry.key! as String: _time(entry.value)};
+  }
+
+  /// Newest [maxDeleted] deletion records, as stored in a payload.
+  static Map<String, String> encodeDeleted(Map<String, DateTime> deleted) {
+    final List<MapEntry<String, DateTime>> entries = deleted.entries.toList()..sort((MapEntry<String, DateTime> a, MapEntry<String, DateTime> b) => b.value.compareTo(a.value));
+    return <String, String>{for (final MapEntry<String, DateTime> entry in entries.take(maxDeleted)) entry.key: entry.value.toIso8601String()};
+  }
+
+  /// [a] and [b] combined; other top-level fields come from the more recently updated one.
+  static Map<String, Object?> merge(Map<String, Object?> a, Map<String, Object?> b) {
+    final bool bNewer = _time(b["updated"]).isAfter(_time(a["updated"]));
+    final Map<String, Object?> result = <String, Object?>{...bNewer ? a : b, ...bNewer ? b : a};
+    final Map<String, DateTime> deleted = deletedOf(a);
+    deletedOf(b).forEach((String id, DateTime time) {
+      final DateTime? existing = deleted[id];
+      if (existing == null || time.isAfter(existing)) deleted[id] = time;
+    });
+    for (final String key in <String>{...a.keys, ...b.keys}) {
+      final Object? left = a[key];
+      final Object? right = b[key];
+      if ((left != null && left is! List) || (right != null && right is! List)) continue;
+      final Map<String, Map<String, Object?>> byId = <String, Map<String, Object?>>{};
+      final List<Map<String, Object?>> anonymous = <Map<String, Object?>>[];
+      for (final Object? raw in <Object?>[...?(left as List<Object?>?), ...?(right as List<Object?>?)]) {
+        if (raw is! Map<String, Object?>) continue;
+        final Object? id = raw["id"];
+        if (id is! String) {
+          if (!anonymous.any((Map<String, Object?> other) => jsonEncode(other) == jsonEncode(raw))) anonymous.add(raw);
+          continue;
+        }
+        final Map<String, Object?>? existing = byId[id];
+        if (existing == null || _itemTime(raw).isAfter(_itemTime(existing))) byId[id] = raw;
+      }
+      List<Map<String, Object?>> items = byId.values.where((Map<String, Object?> item) {
+        final DateTime? removed = deleted[item["id"]];
+        return removed == null || _itemTime(item).isAfter(removed);
+      }).toList();
+      if (key == "bookmarks") {
+        final Map<String, Map<String, Object?>> byPosition = <String, Map<String, Object?>>{};
+        for (final Map<String, Object?> item in items) {
+          final String position = "${item["page"]}:${item["block"] ?? -1}";
+          final Map<String, Object?>? existing = byPosition[position];
+          if (existing == null || _itemTime(item).isAfter(_itemTime(existing))) byPosition[position] = item;
+        }
+        items = byPosition.values.toList();
+      }
+      result[key] = <Map<String, Object?>>[...items, ...anonymous];
+    }
+    if (deleted.isEmpty) {
+      result.remove(deletedKey);
+    } else {
+      result[deletedKey] = encodeDeleted(deleted);
+    }
+    final DateTime updated = bNewer ? _time(b["updated"]) : _time(a["updated"]);
+    result["updated"] = updated.toIso8601String();
+    return result;
+  }
+
+  /// Two payloads hold the same items, versions and deletions (field order and save time aside).
+  static bool sameContent(Map<String, Object?> a, Map<String, Object?> b) => _signature(a) == _signature(b);
+
+  static String _signature(Map<String, Object?> json) {
+    final List<String> parts = <String>[];
+    for (final String key in json.keys.toList()..sort()) {
+      final Object? value = json[key];
+      if (value is! List) continue;
+      final List<String> items = value.whereType<Map<String, Object?>>().map((Map<String, Object?> item) => "${item["id"] ?? jsonEncode(item)}@${_itemTime(item).millisecondsSinceEpoch}").toList()..sort();
+      if (items.isNotEmpty) parts.add("$key=${items.join(",")}");
+    }
+    final List<String> deleted = deletedOf(json).keys.toList()..sort();
+    if (deleted.isNotEmpty) parts.add("deleted=${deleted.join(",")}");
+    return parts.join("|");
+  }
+}
+
 /// One highlight / underline / note… anchored to a PDF page or an EPUB block.
 ///
 /// PDF markups keep [rects] normalised to 0..1 of the page, so they are drawn
@@ -224,12 +319,13 @@ class UDocBookmark {
     required this.id,
     required this.pageIndex,
     required this.createdAt,
+    DateTime? updatedAt,
     this.title = "",
     this.note = "",
     this.color = const Color(0xFFE53935),
     this.blockIndex = -1,
     this.progress = -1,
-  });
+  }) : updatedAt = updatedAt ?? createdAt;
 
   factory UDocBookmark.fromJson(Map<String, Object?> json) => UDocBookmark(
     id: (json["id"] as String?) ?? _newId(),
@@ -240,6 +336,7 @@ class UDocBookmark {
     note: (json["note"] as String?) ?? "",
     color: Color((json["color"] as num?)?.toInt() ?? 0xFFE53935),
     createdAt: DateTime.tryParse((json["created"] as String?) ?? "") ?? DateTime.now(),
+    updatedAt: DateTime.tryParse((json["updated"] as String?) ?? ""),
   );
 
   final String id;
@@ -250,9 +347,19 @@ class UDocBookmark {
   final String note;
   final Color color;
   final DateTime createdAt;
+  final DateTime updatedAt;
 
-  UDocBookmark copyWith({String? title, String? note, Color? color}) =>
-      UDocBookmark(id: id, pageIndex: pageIndex, blockIndex: blockIndex, progress: progress, title: title ?? this.title, note: note ?? this.note, color: color ?? this.color, createdAt: createdAt);
+  UDocBookmark copyWith({String? title, String? note, Color? color}) => UDocBookmark(
+    id: id,
+    pageIndex: pageIndex,
+    blockIndex: blockIndex,
+    progress: progress,
+    title: title ?? this.title,
+    note: note ?? this.note,
+    color: color ?? this.color,
+    createdAt: createdAt,
+    updatedAt: DateTime.now(),
+  );
 
   Map<String, Object?> toJson() => <String, Object?>{
     "id": id,
@@ -263,6 +370,7 @@ class UDocBookmark {
     if (note.isNotEmpty) "note": note,
     "color": color.toARGB32(),
     "created": createdAt.toIso8601String(),
+    "updated": updatedAt.toIso8601String(),
   };
 }
 
@@ -293,6 +401,8 @@ class UDocAnnotationController extends ChangeNotifier {
   final List<UDocMarkup> _markups = <UDocMarkup>[];
   final List<UDocBookmark> _bookmarks = <UDocBookmark>[];
   final List<UDocShape> _shapes = <UDocShape>[];
+  final Map<String, DateTime> _deleted = <String, DateTime>{};
+  Set<String> _ids = <String>{};
   final List<_UDocSnapshot> _undo = <_UDocSnapshot>[];
   final List<_UDocSnapshot> _redo = <_UDocSnapshot>[];
   Map<int, List<UDocMarkup>>? _byPage;
@@ -445,7 +555,32 @@ class UDocAnnotationController extends ChangeNotifier {
     _redo.clear();
   }
 
+  Set<String> _currentIds() => <String>{..._markups.map((UDocMarkup m) => m.id), ..._bookmarks.map((UDocBookmark b) => b.id), ..._shapes.map((UDocShape s) => s.id)};
+
+  /// Remembers what disappeared so other devices drop it too; anything back again (undo, redo) is newer than its deletion.
+  void _trackDeletions() {
+    final DateTime now = DateTime.now();
+    final Set<String> current = _currentIds();
+    for (final String id in _ids.difference(current)) {
+      _deleted[id] = now;
+    }
+    for (final String id in current.where(_deleted.containsKey).toList()) {
+      _deleted.remove(id);
+      for (int i = 0; i < _markups.length; i++) {
+        if (_markups[i].id == id) _markups[i] = _markups[i].copyWith();
+      }
+      for (int i = 0; i < _bookmarks.length; i++) {
+        if (_bookmarks[i].id == id) _bookmarks[i] = _bookmarks[i].copyWith();
+      }
+      for (int i = 0; i < _shapes.length; i++) {
+        if (_shapes[i].id == id) _shapes[i] = _shapes[i].copyWith();
+      }
+    }
+    _ids = current;
+  }
+
   void _commit({bool debounce = false}) {
+    _trackDeletions();
     _byPage = null;
     _shapesByPage = null;
     _updatedAt = DateTime.now();
@@ -594,7 +729,7 @@ class UDocAnnotationController extends ChangeNotifier {
     final UDocBookmark? existing = bookmarkOn(pageIndex);
     _checkpoint();
     if (existing != null) {
-      _bookmarks.remove(existing);
+      _bookmarks.removeWhere((UDocBookmark bookmark) => bookmark.pageIndex == pageIndex);
       _commit();
       return existing;
     }
@@ -677,6 +812,7 @@ class UDocAnnotationController extends ChangeNotifier {
     "markups": _markups.map((UDocMarkup markup) => markup.toJson()).toList(),
     "bookmarks": _bookmarks.map((UDocBookmark bookmark) => bookmark.toJson()).toList(),
     if (_shapes.isNotEmpty) "shapes": _shapes.map((UDocShape shape) => shape.toJson()).toList(),
+    if (_deleted.isNotEmpty) UDocSync.deletedKey: UDocSync.encodeDeleted(_deleted),
   };
 
   /// Base64 of the JSON payload — a compact, transport-safe string for servers.
@@ -687,46 +823,49 @@ class UDocAnnotationController extends ChangeNotifier {
 
   /// Accepts [export] output (base64 or raw JSON). Markups that carry only
   /// text (no rects) are placed by the viewer once the page text is known.
-  /// Returns false when the payload is not understood.
+  /// [merge] combines it with what is here the way devices sync (see [UDocSync]);
+  /// otherwise it replaces everything. Returns false when the payload is not understood.
   bool import(String data, {bool merge = false, bool notify = true}) {
-    final Map<String, Object?>? json = decode(data);
-    if (json == null) return false;
+    final Map<String, Object?>? decoded = decode(data);
+    if (decoded == null || !(decoded.containsKey("markups") || decoded.containsKey("bookmarks") || decoded.containsKey("shapes"))) return false;
+    final Map<String, Object?> json = merge ? UDocSync.merge(toJson(), decoded) : decoded;
+    // Syncing in what is already here changes nothing (and must not rebuild, save or add an undo step).
+    if (merge && UDocSync.sameContent(json, toJson())) return true;
     final List<UDocMarkup> markups = <UDocMarkup>[];
     final List<UDocBookmark> bookmarks = <UDocBookmark>[];
     final List<UDocShape> shapes = <UDocShape>[];
-    if (json.containsKey("markups") || json.containsKey("bookmarks") || json.containsKey("shapes")) {
-      for (final Object? entry in (json["shapes"] as List<Object?>?) ?? const <Object?>[]) {
-        if (entry is Map<String, Object?>) shapes.add(UDocShape.fromJson(entry));
-      }
-      for (final Object? entry in (json["markups"] as List<Object?>?) ?? const <Object?>[]) {
-        if (entry is Map<String, Object?>) markups.add(UDocMarkup.fromJson(entry));
-      }
-      for (final Object? entry in (json["bookmarks"] as List<Object?>?) ?? const <Object?>[]) {
-        if (entry is Map<String, Object?>) bookmarks.add(UDocBookmark.fromJson(entry));
-      }
-      _updatedAt = DateTime.tryParse((json["updated"] as String?) ?? "") ?? DateTime.now();
-    } else {
-      return false;
+    for (final Object? entry in (json["shapes"] as List<Object?>?) ?? const <Object?>[]) {
+      if (entry is Map<String, Object?>) shapes.add(UDocShape.fromJson(entry));
     }
-    if (notify) _checkpoint();
-    if (!merge) {
-      _markups.clear();
-      _bookmarks.clear();
-      _shapes.clear();
+    for (final Object? entry in (json["markups"] as List<Object?>?) ?? const <Object?>[]) {
+      if (entry is Map<String, Object?>) markups.add(UDocMarkup.fromJson(entry));
     }
-    final Set<String> drawn = _shapes.map((UDocShape shape) => shape.id).toSet();
-    _shapes.addAll(shapes.where((UDocShape shape) => !drawn.contains(shape.id)));
+    for (final Object? entry in (json["bookmarks"] as List<Object?>?) ?? const <Object?>[]) {
+      if (entry is Map<String, Object?>) bookmarks.add(UDocBookmark.fromJson(entry));
+    }
+    if (notify && !merge) _checkpoint();
+    // Undo steps were taken before another device's changes came in; replaying them would revert or delete those.
+    if (merge) {
+      _undo.clear();
+      _redo.clear();
+    }
+    _updatedAt = DateTime.tryParse((json["updated"] as String?) ?? "") ?? DateTime.now();
+    _markups
+      ..clear()
+      ..addAll(markups);
+    _shapes
+      ..clear()
+      ..addAll(shapes);
     _shapesByPage = null;
-    final Set<String> known = _markups.map((UDocMarkup markup) => markup.id).toSet();
-    _markups.addAll(markups.where((UDocMarkup markup) => !known.contains(markup.id)));
-    final Set<String> marked = _bookmarks.map((UDocBookmark bookmark) => "${bookmark.id}|${bookmark.pageIndex}:${bookmark.blockIndex}").toSet();
-    final Set<String> positions = _bookmarks.map((UDocBookmark bookmark) => "${bookmark.pageIndex}:${bookmark.blockIndex}").toSet();
-    _bookmarks.addAll(
-      bookmarks.where(
-            (UDocBookmark bookmark) => !marked.contains("${bookmark.id}|${bookmark.pageIndex}:${bookmark.blockIndex}") && !positions.contains("${bookmark.pageIndex}:${bookmark.blockIndex}"),
-      ),
-    );
-    _bookmarks.sort((UDocBookmark a, UDocBookmark b) => a.pageIndex != b.pageIndex ? a.pageIndex.compareTo(b.pageIndex) : a.blockIndex.compareTo(b.blockIndex));
+    final Set<String> positions = <String>{};
+    _bookmarks
+      ..clear()
+      ..addAll(bookmarks.where((UDocBookmark bookmark) => positions.add("${bookmark.pageIndex}:${bookmark.blockIndex}")))
+      ..sort((UDocBookmark a, UDocBookmark b) => a.pageIndex != b.pageIndex ? a.pageIndex.compareTo(b.pageIndex) : a.blockIndex.compareTo(b.blockIndex));
+    _deleted
+      ..clear()
+      ..addAll(UDocSync.deletedOf(json));
+    _ids = _currentIds();
     _byPage = null;
     if (notify) {
       notifyListeners();
@@ -754,7 +893,15 @@ class UDocAnnotationController extends ChangeNotifier {
     }
   }
 
-  /// Chooses the most recently updated of two exported payloads (for local vs. server sync).
+  /// Two exported payloads combined the way devices sync (see [UDocSync]); "" when neither is understood.
+  static String mergePayloads(String first, String second) {
+    final Map<String, Object?>? a = decode(first);
+    final Map<String, Object?>? b = decode(second);
+    if (a == null && b == null) return "";
+    return jsonEncode(a == null ? b : (b == null ? a : UDocSync.merge(a, b))).toBase64();
+  }
+
+  /// Chooses the most recently updated of two exported payloads. Prefer [mergePayloads], which loses nothing.
   static String pickNewest(String first, String second) {
     final Map<String, Object?>? a = decode(first);
     final Map<String, Object?>? b = decode(second);

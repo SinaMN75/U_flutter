@@ -349,11 +349,11 @@ class UPdfViewerState extends State<UPdfViewer> {
     super.didUpdateWidget(oldWidget);
     final bool sourceChanged =
         oldWidget.url != widget.url ||
-        oldWidget.filePath != widget.filePath ||
-        oldWidget.asset != widget.asset ||
-        oldWidget.bytes != widget.bytes ||
-        oldWidget.base64Pdf != widget.base64Pdf ||
-        oldWidget.vaultKey != widget.vaultKey;
+            oldWidget.filePath != widget.filePath ||
+            oldWidget.asset != widget.asset ||
+            oldWidget.bytes != widget.bytes ||
+            oldWidget.base64Pdf != widget.base64Pdf ||
+            oldWidget.vaultKey != widget.vaultKey;
     if (sourceChanged && _ownsController) {
       _resolving.clear();
       _unplaceable.clear();
@@ -395,9 +395,7 @@ class UPdfViewerState extends State<UPdfViewer> {
     if (_ownsMarkup && widget.persistAnnotations) await _markup.attachStorage(widget.annotationStorageKey ?? "u_doc_markup_${_controller.documentId}");
     final String? remote = widget.annotationData;
     if (remote != null && remote.trim().isNotEmpty) {
-      final String local = _markup.isEmpty ? "" : _markup.export();
-      final String newest = UDocAnnotationController.pickNewest(local, remote);
-      if (newest != local) _markup.import(newest);
+      _markup.import(remote, merge: true);
     }
   }
 
@@ -2180,11 +2178,11 @@ extension _UPdfViewerChrome on UPdfViewerState {
                   child: value.pageCount <= 1
                       ? const SizedBox.shrink()
                       : Slider(
-                          value: (_visiblePage + 1).toDouble().clamp(1, value.pageCount.toDouble()),
-                          min: 1,
-                          max: value.pageCount.toDouble(),
-                          onChanged: (double next) => _jumpToPage(next.round() - 1, animated: false),
-                        ),
+                    value: (_visiblePage + 1).toDouble().clamp(1, value.pageCount.toDouble()),
+                    min: 1,
+                    max: value.pageCount.toDouble(),
+                    onChanged: (double next) => _jumpToPage(next.round() - 1, animated: false),
+                  ),
                 ),
                 TextButton(
                   onPressed: () => unawaited(_askPageNumber()),
@@ -2337,13 +2335,13 @@ extension _UPdfViewerChrome on UPdfViewerState {
             suffixIcon: _searchField.text.isEmpty
                 ? null
                 : IconButton(
-                    icon: const Icon(Icons.close_rounded, size: 18),
-                    onPressed: () {
-                      _searchField.clear();
-                      _controller.clearSearch();
-                      applyState(() {});
-                    },
-                  ),
+              icon: const Icon(Icons.close_rounded, size: 18),
+              onPressed: () {
+                _searchField.clear();
+                _controller.clearSearch();
+                applyState(() {});
+              },
+            ),
           ),
         ),
       ),
@@ -2700,20 +2698,20 @@ class _UPdfPageViewState extends State<UPdfPageView> {
     final ui.Picture? picture = _picture;
     final Widget content = picture == null
         ? Center(
-            child: _failed
-                ? Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: UTextBodySmall(U.s.thisPageCouldNotBeRendered, textAlign: TextAlign.center),
-                  )
-                : const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2)),
-          )
+      child: _failed
+          ? Padding(
+        padding: const EdgeInsets.all(12),
+        child: UTextBodySmall(U.s.thisPageCouldNotBeRendered, textAlign: TextAlign.center),
+      )
+          : const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2)),
+    )
         : RepaintBoundary(
-            child: CustomPaint(
-              painter: _UPdfPagePainter(picture: picture, scale: widget.displayScale),
-              isComplex: true,
-              size: Size.infinite,
-            ),
-          );
+      child: CustomPaint(
+        painter: _UPdfPagePainter(picture: picture, scale: widget.displayScale),
+        isComplex: true,
+        size: Size.infinite,
+      ),
+    );
     final ColorFilter? filter = UDocColorFilters.forMode(widget.colorMode);
     final Widget filtered = filter == null ? content : ColorFiltered(colorFilter: filter, child: content);
     final Widget overlays = CustomPaint(
@@ -2734,14 +2732,14 @@ class _UPdfPageViewState extends State<UPdfPageView> {
       behavior: HitTestBehavior.opaque,
       gestures: <Type, GestureRecognizerFactory<GestureRecognizer>>{
         TapGestureRecognizer: GestureRecognizerFactoryWithHandlers<TapGestureRecognizer>(
-          () => TapGestureRecognizer(supportedDevices: _touchDevices),
-          (TapGestureRecognizer instance) {
+              () => TapGestureRecognizer(supportedDevices: _touchDevices),
+              (TapGestureRecognizer instance) {
             instance.onTapUp = (TapUpDetails details) => widget.onTap?.call(_toPagePoint(details.localPosition));
           },
         ),
         SerialTapGestureRecognizer: GestureRecognizerFactoryWithHandlers<SerialTapGestureRecognizer>(
-          () => SerialTapGestureRecognizer(supportedDevices: _pointerDevices),
-          (SerialTapGestureRecognizer instance) {
+              () => SerialTapGestureRecognizer(supportedDevices: _pointerDevices),
+              (SerialTapGestureRecognizer instance) {
             instance.onSerialTapUp = (SerialTapUpDetails details) {
               final Offset point = _toPagePoint(details.localPosition);
               if (widget.onMouseTap != null) {
@@ -2754,8 +2752,8 @@ class _UPdfPageViewState extends State<UPdfPageView> {
         ),
         if (widget.selectable)
           LongPressGestureRecognizer: GestureRecognizerFactoryWithHandlers<LongPressGestureRecognizer>(
-            () => LongPressGestureRecognizer(supportedDevices: _touchDevices),
-            (LongPressGestureRecognizer instance) {
+                () => LongPressGestureRecognizer(supportedDevices: _touchDevices),
+                (LongPressGestureRecognizer instance) {
               instance.onLongPressStart = (LongPressStartDetails details) => widget.onLongPress?.call(_toPagePoint(details.localPosition));
               instance.onLongPressMoveUpdate = (LongPressMoveUpdateDetails details) => widget.onDragSelect?.call(_toPagePoint(details.localPosition));
               instance.onLongPressEnd = (LongPressEndDetails details) => widget.onSelectEnd?.call();
@@ -2763,8 +2761,8 @@ class _UPdfPageViewState extends State<UPdfPageView> {
           ),
         if (widget.selectable)
           PanGestureRecognizer: GestureRecognizerFactoryWithHandlers<PanGestureRecognizer>(
-            () => PanGestureRecognizer(supportedDevices: _pointerDevices)..dragStartBehavior = DragStartBehavior.down,
-            (PanGestureRecognizer instance) {
+                () => PanGestureRecognizer(supportedDevices: _pointerDevices)..dragStartBehavior = DragStartBehavior.down,
+                (PanGestureRecognizer instance) {
               instance.onStart = (DragStartDetails details) => widget.onSelectStart?.call(_toPagePoint(details.localPosition));
               instance.onUpdate = (DragUpdateDetails details) => widget.onSelectUpdate?.call(_toPagePoint(details.localPosition));
               instance.onEnd = (DragEndDetails details) => widget.onSelectEnd?.call();
@@ -2855,10 +2853,10 @@ class _UPdfHighlightPainter extends CustomPainter {
   @override
   bool shouldRepaint(_UPdfHighlightPainter oldDelegate) =>
       oldDelegate.scale != scale ||
-      oldDelegate.highlights != highlights ||
-      oldDelegate.activeHit != activeHit ||
-      oldDelegate.selectionRects != selectionRects ||
-      oldDelegate.selectionColor != selectionColor;
+          oldDelegate.highlights != highlights ||
+          oldDelegate.activeHit != activeHit ||
+          oldDelegate.selectionRects != selectionRects ||
+          oldDelegate.selectionColor != selectionColor;
 }
 
 /// Table of contents panel of a PDF.
@@ -3124,7 +3122,7 @@ class _UPdfSettingsPanelState extends State<UPdfSettingsPanel> {
               const <UDocScrollMode>[UDocScrollMode.verticalContinuous, UDocScrollMode.horizontalContinuous, UDocScrollMode.pagedHorizontal, UDocScrollMode.pagedVertical],
               settings.scrollMode,
               _scrollLabel,
-              (UDocScrollMode mode) => _update(settings.copyWith(scrollMode: mode)),
+                  (UDocScrollMode mode) => _update(settings.copyWith(scrollMode: mode)),
             ),
             const SizedBox(height: 16),
             UTextTitleMedium(U.s.spread),
@@ -3137,8 +3135,8 @@ class _UPdfSettingsPanelState extends State<UPdfSettingsPanel> {
               _chips<UDocFit>(
                 const <UDocFit>[UDocFit.width, UDocFit.page, UDocFit.actual],
                 settings.fit,
-                (UDocFit fit) => fit == UDocFit.width ? U.s.fitWidth : (fit == UDocFit.page ? U.s.fitPage : U.s.actualSize),
-                (UDocFit fit) {
+                    (UDocFit fit) => fit == UDocFit.width ? U.s.fitWidth : (fit == UDocFit.page ? U.s.fitPage : U.s.actualSize),
+                    (UDocFit fit) {
                   widget.onFit!(fit);
                   setState(() {});
                 },
@@ -3151,7 +3149,7 @@ class _UPdfSettingsPanelState extends State<UPdfSettingsPanel> {
               const <UDocColorMode>[UDocColorMode.normal, UDocColorMode.night, UDocColorMode.sepia, UDocColorMode.grayscale, UDocColorMode.highContrast],
               settings.colorMode,
               _colorLabel,
-              (UDocColorMode mode) => _update(settings.copyWith(colorMode: mode)),
+                  (UDocColorMode mode) => _update(settings.copyWith(colorMode: mode)),
             ),
             const SizedBox(height: 16),
             UTextTitleMedium(U.s.pageDirection),
@@ -3159,8 +3157,8 @@ class _UPdfSettingsPanelState extends State<UPdfSettingsPanel> {
             _chips<UDocDirection>(
               UDocDirection.values,
               settings.direction,
-              (UDocDirection direction) => direction == UDocDirection.rtl ? U.s.rightToLeft : U.s.leftToRight,
-              (UDocDirection direction) => _update(settings.copyWith(direction: direction)),
+                  (UDocDirection direction) => direction == UDocDirection.rtl ? U.s.rightToLeft : U.s.leftToRight,
+                  (UDocDirection direction) => _update(settings.copyWith(direction: direction)),
             ),
             const SizedBox(height: 16),
             UTextTitleMedium(U.s.selectionAccuracy),
