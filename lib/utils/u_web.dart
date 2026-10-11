@@ -72,7 +72,6 @@ abstract class UPwa {
         safariHint: safariHint ?? U.s.openThisPageInSafariThenAddItToYourHomeScreen,
         doneLabel: doneLabel ?? U.s.gotIt,
       ),
-      showDragHandle: true,
     );
   }
 }

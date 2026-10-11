@@ -517,7 +517,7 @@ class UAddDownloadSheet extends StatefulWidget {
 
   /// Opens the "add download" sheet; returns the new task. `UAddDownloadSheet.show()`
   static Future<UDownloadTask?> show({UDownloadManager? manager, String? initialUrl}) =>
-      UNavigator.bottomSheet<UDownloadTask>(UAddDownloadSheet(manager: manager, initialUrl: initialUrl), showDragHandle: true);
+      UNavigator.bottomSheet<UDownloadTask>(UAddDownloadSheet(manager: manager, initialUrl: initialUrl));
 
   @override
   State<UAddDownloadSheet> createState() => _UAddDownloadSheetState();
@@ -630,7 +630,7 @@ class UDownloadSettingsSheet extends StatefulWidget {
   final UDownloadManager? manager;
 
   /// Opens the download settings sheet.
-  static Future<void> show({UDownloadManager? manager}) => UNavigator.bottomSheet<void>(UDownloadSettingsSheet(manager: manager), showDragHandle: true);
+  static Future<void> show({UDownloadManager? manager}) => UNavigator.bottomSheet<void>(UDownloadSettingsSheet(manager: manager));
 
   @override
   State<UDownloadSettingsSheet> createState() => _UDownloadSettingsSheetState();

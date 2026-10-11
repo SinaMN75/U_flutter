@@ -144,7 +144,7 @@ class UWebView extends StatefulWidget {
     this.enableJavaScriptDialogs = true,
     this.userAgent,
     this.desktopUserAgent =
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
         "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
     this.restrictToAllowedHosts = false,
     this.allowedHosts = const <String>[],
@@ -192,20 +192,20 @@ class UWebViewState extends State<UWebView> {
   void initState() {
     super.initState();
     controller =
-        WebViewController(
-            onPermissionRequest:
-                widget.onPermissionRequest ??
-                (WebViewPermissionRequest request) async {
-                  if (widget.autoGrantMediaPermissions) {
-                    await request.grant();
-                  } else {
-                    await request.deny();
-                  }
-                },
-          )
-          ..setJavaScriptMode(widget.enableJavaScript ? JavaScriptMode.unrestricted : JavaScriptMode.disabled)
-          ..enableZoom(widget.enablePinchZoom)
-          ..setNavigationDelegate(_buildNavigationDelegate());
+    WebViewController(
+      onPermissionRequest:
+      widget.onPermissionRequest ??
+              (WebViewPermissionRequest request) async {
+            if (widget.autoGrantMediaPermissions) {
+              await request.grant();
+            } else {
+              await request.deny();
+            }
+          },
+    )
+      ..setJavaScriptMode(widget.enableJavaScript ? JavaScriptMode.unrestricted : JavaScriptMode.disabled)
+      ..enableZoom(widget.enablePinchZoom)
+      ..setNavigationDelegate(_buildNavigationDelegate());
 
     if (widget.backgroundColor != null) {
       controller.setBackgroundColor(widget.backgroundColor!);
@@ -265,7 +265,7 @@ class UWebViewState extends State<UWebView> {
       await UNavigator.dialog(
         AlertDialog(
           content: Text(request.message),
-          actions: const <Widget>[TextButton(onPressed: UNavigator.back, child: Text("OK"))],
+          actions: <Widget>[TextButton(onPressed: UNavigator.back, child: Text(U.s.ok))],
         ),
       );
     });
@@ -277,8 +277,8 @@ class UWebViewState extends State<UWebView> {
         builder: (BuildContext dialogContext) => AlertDialog(
           content: Text(request.message),
           actions: <Widget>[
-            TextButton(onPressed: () => Navigator.of(dialogContext).pop(false), child: const Text("Cancel")),
-            TextButton(onPressed: () => Navigator.of(dialogContext).pop(true), child: const Text("OK")),
+            TextButton(onPressed: () => Navigator.of(dialogContext).pop(false), child: Text(U.s.cancel)),
+            TextButton(onPressed: () => Navigator.of(dialogContext).pop(true), child: Text(U.s.ok)),
           ],
         ),
       );
@@ -287,30 +287,32 @@ class UWebViewState extends State<UWebView> {
 
     controller.setOnJavaScriptTextInputDialog((JavaScriptTextInputDialogRequest request) async {
       if (!mounted) return request.defaultText ?? "";
-      final TextEditingController inputController = TextEditingController(text: request.defaultText);
       final String? result = await showDialog<String>(
         context: context,
-        builder: (BuildContext dialogContext) => AlertDialog(
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(request.message),
-              TextField(controller: inputController, autofocus: true),
+        builder: (BuildContext dialogContext) => UTextControllerScope(
+          text: request.defaultText ?? "",
+          builder: (BuildContext context, TextEditingController inputController) => AlertDialog(
+            scrollable: true,
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(request.message),
+                TextField(controller: inputController, autofocus: true),
+              ],
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(request.defaultText),
+                child: Text(U.s.cancel),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(inputController.text),
+                child: Text(U.s.ok),
+              ),
             ],
           ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(dialogContext).pop(request.defaultText),
-              child: const Text("Cancel"),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(dialogContext).pop(inputController.text),
-              child: const Text("OK"),
-            ),
-          ],
         ),
       );
-      inputController.dispose();
       return result ?? request.defaultText ?? "";
     });
   }
@@ -456,9 +458,9 @@ class UWebViewState extends State<UWebView> {
     valueListenable: isLoading,
     builder: (BuildContext context, bool loading, _) => loading
         ? ValueListenableBuilder<double>(
-            valueListenable: progress,
-            builder: (BuildContext context, double p, _) => LinearProgressIndicator(value: p <= 0 ? null : p, minHeight: 2),
-          )
+      valueListenable: progress,
+      builder: (BuildContext context, double p, _) => LinearProgressIndicator(value: p <= 0 ? null : p, minHeight: 2),
+    )
         : const SizedBox(height: 2),
   );
 

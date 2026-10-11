@@ -553,152 +553,165 @@ class _UMediaNotesPanelState extends State<UMediaNotesPanel> {
     if (text != null) widget.notes.replace(note.copyWith(text: text));
   }
 
+  Widget _card(BuildContext context, UMediaNote note, UMediaNote? currentNote, ColorScheme scheme) {
+    final bool active = currentNote?.id == note.id;
+    return Card(
+      color: active ? scheme.primaryContainer : null,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: () => _seek(note),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(10, 8, 4, 8),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                decoration: BoxDecoration(color: note.color, borderRadius: BorderRadius.circular(8)),
+                child: Directionality(
+                  textDirection: TextDirection.ltr,
+                  child: UTextLabelMedium(
+                    "${uFormatDuration(note.position)}${note.isRange ? "–${uFormatDuration(note.end!)}" : ""}",
+                    color: note.color.computeLuminance() > 0.5 ? const Color(0xFF000000) : const Color(0xFFFFFFFF),
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 2),
+                  child: Text(note.text.isEmpty ? "—" : note.text, textDirection: UDocText.isRtl(note.text) ? TextDirection.rtl : TextDirection.ltr, style: Theme.of(context).textTheme.bodyMedium),
+                ),
+              ),
+              PopupMenuButton<String>(
+                iconSize: 18,
+                padding: EdgeInsets.zero,
+                onSelected: (String action) async {
+                  if (action == "edit") await _edit(note);
+                  if (action == "color") {
+                    final Color? color = await UNavigator.colorPicker(defaultColor: note.color, colors: UDocPalette.colors);
+                    if (color != null) widget.notes.replace(note.copyWith(color: color));
+                  }
+                  if (action == "here") widget.notes.replace(note.copyWith(position: widget.controller.value.position));
+                  if (action == "delete") widget.notes.remove(note.id);
+                },
+                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                  PopupMenuItem<String>(value: "edit", child: UTextBodyMedium(U.s.editNote)),
+                  PopupMenuItem<String>(value: "color", child: UTextBodyMedium(U.s.color)),
+                  PopupMenuItem<String>(value: "here", child: UTextBodyMedium(uFormatDuration(widget.controller.value.position))),
+                  PopupMenuItem<String>(value: "delete", child: UTextBodyMedium(U.s.delete)),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) => AnimatedBuilder(
     animation: widget.notes,
     builder: (BuildContext context, Widget? child) {
       final List<UMediaNote> notes = widget.notes.search(_query.text);
       final ColorScheme scheme = Theme.of(context).colorScheme;
-      return Column(
-        children: <Widget>[
-          if (widget.showHeader)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 8, 4, 0),
-              child: Row(
-                children: <Widget>[
-                  Expanded(child: UTextTitleSmall("${U.s.videoNotes} (${widget.notes.length})")),
-                  IconButton(tooltip: U.s.undo, onPressed: widget.notes.canUndo ? widget.notes.undo : null, icon: const Icon(Icons.undo_rounded, size: 20)),
-                  PopupMenuButton<String>(
-                    tooltip: U.s.more,
-                    onSelected: (String action) async {
-                      if (action == "share") await UShare.text(widget.notes.toMarkdown());
-                      if (action == "copy") {
-                        await UClipboard.set(widget.notes.export());
-                        UToast.toast(message: U.s.copied);
-                      }
-                      if (action == "srt") await UShare.text(widget.notes.toSrt());
-                      if (action == "import") {
-                        final String? data = await UNavigator.inputDialog(title: U.s.importAnnotations, hint: U.s.importAnnotations);
-                        if (data != null && data.trim().isNotEmpty && !widget.notes.import(data, merge: true)) UToast.errorToast(message: U.s.thisFieldIsInvalid);
-                      }
-                      if (action == "clear") {
-                        final bool confirmed = await UNavigator.confirmAsync(title: U.s.clearAnnotations, message: U.s.areYouSureYouWantToDeleteThisItem(U.s.notes), destructive: true);
-                        if (confirmed) widget.notes.clear();
-                      }
-                    },
-                    itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                      PopupMenuItem<String>(value: "share", child: UTextBodyMedium(U.s.exportAnnotations)),
-                      PopupMenuItem<String>(value: "copy", child: UTextBodyMedium(U.s.export)),
-                      const PopupMenuItem<String>(value: "srt", child: UTextBodyMedium("SRT")),
-                      PopupMenuItem<String>(value: "import", child: UTextBodyMedium(U.s.importAnnotations)),
-                      PopupMenuItem<String>(value: "clear", child: UTextBodyMedium(U.s.clearAnnotations)),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 4, 12, 4),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: TextField(
-                    controller: _query,
-                    onChanged: (String _) => setState(() {}),
-                    decoration: InputDecoration(isDense: true, hintText: U.s.search, prefixIcon: const Icon(Icons.search_rounded, size: 20), border: const OutlineInputBorder()),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                FilledButton.icon(
-                  onPressed: () => unawaited(_addNote()),
-                  icon: const Icon(Icons.add_comment_rounded, size: 18),
-                  label: UTextBodySmall(U.s.addNote, color: scheme.onPrimary),
-                ),
+      final Widget? header = !widget.showHeader
+          ? null
+          : Padding(
+        padding: const EdgeInsets.fromLTRB(12, 8, 4, 0),
+        child: Row(
+          children: <Widget>[
+            Expanded(child: UTextTitleSmall("${U.s.videoNotes} (${widget.notes.length})")),
+            IconButton(tooltip: U.s.undo, onPressed: widget.notes.canUndo ? widget.notes.undo : null, icon: const Icon(Icons.undo_rounded, size: 20)),
+            PopupMenuButton<String>(
+              tooltip: U.s.more,
+              onSelected: (String action) async {
+                if (action == "share") await UShare.text(widget.notes.toMarkdown());
+                if (action == "copy") {
+                  await UClipboard.set(widget.notes.export());
+                  UToast.toast(message: U.s.copied);
+                }
+                if (action == "srt") await UShare.text(widget.notes.toSrt());
+                if (action == "import") {
+                  final String? data = await UNavigator.inputDialog(title: U.s.importAnnotations, hint: U.s.importAnnotations);
+                  if (data != null && data.trim().isNotEmpty && !widget.notes.import(data, merge: true)) UToast.errorToast(message: U.s.thisFieldIsInvalid);
+                }
+                if (action == "clear") {
+                  final bool confirmed = await UNavigator.confirmAsync(title: U.s.clearAnnotations, message: U.s.areYouSureYouWantToDeleteThisItem(U.s.notes), destructive: true);
+                  if (confirmed) widget.notes.clear();
+                }
+              },
+              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                PopupMenuItem<String>(value: "share", child: UTextBodyMedium(U.s.exportAnnotations)),
+                PopupMenuItem<String>(value: "copy", child: UTextBodyMedium(U.s.export)),
+                const PopupMenuItem<String>(value: "srt", child: UTextBodyMedium("SRT")),
+                PopupMenuItem<String>(value: "import", child: UTextBodyMedium(U.s.importAnnotations)),
+                PopupMenuItem<String>(value: "clear", child: UTextBodyMedium(U.s.clearAnnotations)),
               ],
             ),
-          ),
-          Expanded(
-            child: notes.isEmpty
-                ? Center(
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: UTextBodyMedium(U.s.noNotesYet, textAlign: TextAlign.center, maxLines: 4),
+          ],
+        ),
+      );
+      final Widget search = Padding(
+        padding: const EdgeInsets.fromLTRB(12, 4, 12, 4),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: TextField(
+                controller: _query,
+                onChanged: (String _) => setState(() {}),
+                decoration: InputDecoration(isDense: true, hintText: U.s.search, prefixIcon: const Icon(Icons.search_rounded, size: 20), border: const OutlineInputBorder()),
               ),
-            )
-                : ValueListenableBuilder<UMediaValue>(
-              valueListenable: widget.controller,
-              builder: (BuildContext context, UMediaValue value, Widget? child) {
-                final int current = widget.notes.indexBefore(value.position);
-                final UMediaNote? currentNote = current >= 0 ? widget.notes.notes[current] : null;
-                return ListView.builder(
-                  padding: const EdgeInsets.fromLTRB(8, 4, 8, 16),
-                  itemCount: notes.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final UMediaNote note = notes[index];
-                    final bool active = currentNote?.id == note.id;
-                    return Card(
-                      color: active ? scheme.primaryContainer : null,
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(12),
-                        onTap: () => _seek(note),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 8, 4, 8),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                                decoration: BoxDecoration(color: note.color, borderRadius: BorderRadius.circular(8)),
-                                child: Directionality(
-                                  textDirection: TextDirection.ltr,
-                                  child: UTextLabelMedium(
-                                    "${uFormatDuration(note.position)}${note.isRange ? "–${uFormatDuration(note.end!)}" : ""}",
-                                    color: note.color.computeLuminance() > 0.5 ? const Color(0xFF000000) : const Color(0xFFFFFFFF),
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 2),
-                                  child: Text(
-                                    note.text.isEmpty ? "—" : note.text,
-                                    textDirection: UDocText.isRtl(note.text) ? TextDirection.rtl : TextDirection.ltr,
-                                    style: Theme.of(context).textTheme.bodyMedium,
-                                  ),
-                                ),
-                              ),
-                              PopupMenuButton<String>(
-                                iconSize: 18,
-                                padding: EdgeInsets.zero,
-                                onSelected: (String action) async {
-                                  if (action == "edit") await _edit(note);
-                                  if (action == "color") {
-                                    final Color? color = await UNavigator.colorPicker(defaultColor: note.color, colors: UDocPalette.colors);
-                                    if (color != null) widget.notes.replace(note.copyWith(color: color));
-                                  }
-                                  if (action == "here") widget.notes.replace(note.copyWith(position: widget.controller.value.position));
-                                  if (action == "delete") widget.notes.remove(note.id);
-                                },
-                                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                                  PopupMenuItem<String>(value: "edit", child: UTextBodyMedium(U.s.editNote)),
-                                  PopupMenuItem<String>(value: "color", child: UTextBodyMedium(U.s.color)),
-                                  PopupMenuItem<String>(value: "here", child: UTextBodyMedium(uFormatDuration(widget.controller.value.position))),
-                                  PopupMenuItem<String>(value: "delete", child: UTextBodyMedium(U.s.delete)),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                );
-              },
             ),
-          ),
-        ],
+            const SizedBox(width: 8),
+            FilledButton.icon(
+              onPressed: () => unawaited(_addNote()),
+              icon: const Icon(Icons.add_comment_rounded, size: 18),
+              label: UTextBodySmall(U.s.addNote, color: scheme.onPrimary),
+            ),
+          ],
+        ),
+      );
+      final Widget empty = Padding(
+        padding: const EdgeInsets.all(24),
+        child: UTextBodyMedium(U.s.noNotesYet, textAlign: TextAlign.center, maxLines: 4),
+      );
+      return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) => ValueListenableBuilder<UMediaValue>(
+          valueListenable: widget.controller,
+          builder: (BuildContext context, UMediaValue value, Widget? child) {
+            final int current = widget.notes.indexBefore(value.position);
+            final UMediaNote? currentNote = current >= 0 ? widget.notes.notes[current] : null;
+            // Too short for fixed rows (keyboard up, phone on its side): everything scrolls together instead of overflowing.
+            if (constraints.maxHeight < 220) {
+              return ListView(
+                padding: const EdgeInsets.only(bottom: 16),
+                children: <Widget>[
+                  ?header,
+                  search,
+                  if (notes.isEmpty) empty,
+                  for (final UMediaNote note in notes) Padding(padding: const EdgeInsets.symmetric(horizontal: 8), child: _card(context, note, currentNote, scheme)),
+                ],
+              );
+            }
+            return Column(
+              children: <Widget>[
+                ?header,
+                search,
+                Expanded(
+                  child: notes.isEmpty
+                      ? Center(child: SingleChildScrollView(child: empty))
+                      : ListView.builder(
+                    padding: const EdgeInsets.fromLTRB(8, 4, 8, 16),
+                    itemCount: notes.length,
+                    itemBuilder: (BuildContext context, int index) => _card(context, notes[index], currentNote, scheme),
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
       );
     },
   );

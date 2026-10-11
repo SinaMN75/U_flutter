@@ -81,7 +81,7 @@ class _UHelpTargetState extends State<UHelpTarget> {
     return UObx(() {
       if (!UHelp.enabled.value || !UHelp.items.containsKey(widget.helpKey)) return widget.child;
       final Widget badge = _UHelpBadge(onTap: () => UHelp.show(widget.helpKey));
-      if (widget.inline)
+      if (widget.inline) {
         return URow(
           mainAxisSize: MainAxisSize.min,
           spacing: 6,
@@ -90,6 +90,7 @@ class _UHelpTargetState extends State<UHelpTarget> {
             badge,
           ],
         );
+      }
       return Stack(
         clipBehavior: Clip.none,
         children: <Widget>[
@@ -114,7 +115,7 @@ class UHelpActions extends StatelessWidget {
   Widget build(BuildContext context) {
     if (!UHelp.has(prefix)) return const SizedBox.shrink();
     return UObx(
-      () => URow(
+          () => URow(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           if (UHelp.enabled.value) IconButton(icon: const Icon(Icons.tour_outlined), tooltip: U.s.pageTour, onPressed: () => UHelp.tour(prefix)),

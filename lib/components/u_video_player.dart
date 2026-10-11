@@ -691,18 +691,18 @@ class USubtitleView extends StatelessWidget {
       children: cue.spans
           .map(
             (USubtitleSpan span) => TextSpan(
-              text: span.text,
-              style: !style.honorAssStyling
-                  ? null
-                  : base.copyWith(
-                      fontWeight: span.bold ? FontWeight.w800 : null,
-                      fontStyle: span.italic ? FontStyle.italic : null,
-                      decoration: span.underline ? TextDecoration.underline : (span.strikethrough ? TextDecoration.lineThrough : null),
-                      color: isStroke ? null : span.color,
-                      fontSize: span.fontScale == null ? null : size * span.fontScale!,
-                    ),
-            ),
-          )
+          text: span.text,
+          style: !style.honorAssStyling
+              ? null
+              : base.copyWith(
+            fontWeight: span.bold ? FontWeight.w800 : null,
+            fontStyle: span.italic ? FontStyle.italic : null,
+            decoration: span.underline ? TextDecoration.underline : (span.strikethrough ? TextDecoration.lineThrough : null),
+            color: isStroke ? null : span.color,
+            fontSize: span.fontScale == null ? null : size * span.fontScale!,
+          ),
+        ),
+      )
           .toList(growable: false),
     ),
     style: base,
@@ -1016,21 +1016,21 @@ class _UVideoGesturesState extends State<UVideoGestures> {
           behavior: HitTestBehavior.opaque,
           onTapUp: widget.config.tapToToggleControls || widget.onMouseTap != null
               ? (TapUpDetails d) {
-                  if (d.kind == PointerDeviceKind.mouse && widget.onMouseTap != null) {
-                    widget.onMouseTap!();
-                  } else if (widget.config.tapToToggleControls) {
-                    widget.onToggleControls?.call();
-                  }
-                }
+            if (d.kind == PointerDeviceKind.mouse && widget.onMouseTap != null) {
+              widget.onMouseTap!();
+            } else if (widget.config.tapToToggleControls) {
+              widget.onToggleControls?.call();
+            }
+          }
               : null,
           onDoubleTapDown: widget.config.doubleTapSeek || widget.onMouseDoubleTap != null
               ? (TapDownDetails d) {
-                  if (d.kind == PointerDeviceKind.mouse && widget.onMouseDoubleTap != null) {
-                    widget.onMouseDoubleTap!();
-                  } else if (widget.config.doubleTapSeek) {
-                    _handleDoubleTap(d.localPosition, size);
-                  }
-                }
+            if (d.kind == PointerDeviceKind.mouse && widget.onMouseDoubleTap != null) {
+              widget.onMouseDoubleTap!();
+            } else if (widget.config.doubleTapSeek) {
+              _handleDoubleTap(d.localPosition, size);
+            }
+          }
               : null,
           onDoubleTap: widget.config.doubleTapSeek || widget.onMouseDoubleTap != null ? () {} : null,
           onLongPressStart: widget.config.longPressSpeed ? (LongPressStartDetails _) => unawaited(_onLongPressStart()) : null,
@@ -1256,17 +1256,17 @@ class _UVideoSeekBarState extends State<UVideoSeekBar> {
                         onChangeStart: total <= 0
                             ? null
                             : (double _) {
-                                widget.onScrubStart?.call();
-                                setState(() => _dragValue = position);
-                              },
+                          widget.onScrubStart?.call();
+                          setState(() => _dragValue = position);
+                        },
                         onChanged: total <= 0 ? null : (double next) => setState(() => _dragValue = next),
                         onChangeEnd: total <= 0
                             ? null
                             : (double next) {
-                                setState(() => _dragValue = null);
-                                widget.onScrubEnd?.call();
-                                unawaited(widget.controller.seekToProgress(next));
-                              },
+                          setState(() => _dragValue = null);
+                          widget.onScrubEnd?.call();
+                          unawaited(widget.controller.seekToProgress(next));
+                        },
                       ),
                     ),
                     if (preview != null && total > 0) _bubble(context, preview, total, constraints.maxWidth, accent),
@@ -1479,7 +1479,11 @@ class UVideoControls extends StatelessWidget {
   Widget _fullLayer(BuildContext context) => SafeArea(
     child: LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-        final bool compact = constraints.maxWidth < 420 || constraints.maxHeight < 220;
+        // Full bars need about 500 px, compact ones about 340 px; smaller players keep only the central buttons.
+        final bool compact = constraints.maxWidth < 600 || constraints.maxHeight < 220;
+        if (constraints.maxWidth < 340 || constraints.maxHeight < 160) {
+          return Center(child: FittedBox(fit: BoxFit.scaleDown, child: _centerRow(context, true)));
+        }
         return UColumn(
           children: <Widget>[
             _topBar(context, compact),
@@ -1555,7 +1559,7 @@ class UVideoControls extends StatelessWidget {
             _circleButton(
               seconds == 10 ? Icons.replay_10_rounded : (seconds == 5 ? Icons.replay_5_rounded : (seconds == 30 ? Icons.replay_30_rounded : Icons.replay_rounded)),
               U.s.seekBackward,
-              () => unawaited(controller.seekBy(-seekStep)),
+                  () => unawaited(controller.seekBy(-seekStep)),
               compact ? 24 : 30,
             ),
           if (value.isBuffering)
@@ -1568,14 +1572,14 @@ class UVideoControls extends StatelessWidget {
             _circleButton(
               value.state == UMediaState.completed ? Icons.replay_rounded : (value.isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded),
               value.isPlaying ? U.s.pause : U.s.play,
-              () => unawaited(controller.playPause()),
+                  () => unawaited(controller.playPause()),
               compact ? 34 : 44,
             ),
           if (showSeekButtons && !value.isLive)
             _circleButton(
               seconds == 10 ? Icons.forward_10_rounded : (seconds == 5 ? Icons.forward_5_rounded : (seconds == 30 ? Icons.forward_30_rounded : Icons.forward_rounded)),
               U.s.seekForward,
-              () => unawaited(controller.seekBy(seekStep)),
+                  () => unawaited(controller.seekBy(seekStep)),
               compact ? 24 : 30,
             ),
           if (queue) _circleButton(Icons.skip_next_rounded, U.s.next, controller.hasNext ? () => unawaited(controller.next()) : null, compact ? 24 : 28),
@@ -1638,10 +1642,10 @@ class UVideoControls extends StatelessWidget {
     itemBuilder: (BuildContext context) => uSpeedPresets
         .map(
           (double speed) => PopupMenuItem<double>(
-            value: speed,
-            child: Text("${speed}x", style: TextStyle(fontWeight: speed == value.speed ? FontWeight.w800 : FontWeight.w400)),
-          ),
-        )
+        value: speed,
+        child: Text("${speed}x", style: TextStyle(fontWeight: speed == value.speed ? FontWeight.w800 : FontWeight.w400)),
+      ),
+    )
         .toList(),
     child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
@@ -1813,7 +1817,7 @@ class UMediaTrackSheet extends StatelessWidget {
               child: UTextBodySmall(U.s.noTracksAvailable, color: Theme.of(context).colorScheme.onSurfaceVariant),
             ),
           ...tracks.map(
-            (UMediaTrack track) => ListTile(
+                (UMediaTrack track) => ListTile(
               leading: Icon(_iconFor(track)),
               title: UTextBodyMedium(_labelFor(track)),
               subtitle: _subtitleFor(track) == null ? null : UTextLabelSmall(_subtitleFor(track)!),
@@ -1910,11 +1914,11 @@ class _UVideoSettingsSheetState extends State<UVideoSettingsSheet> {
         children: uSpeedPresets
             .map(
               (double speed) => ChoiceChip(
-                label: Text("${speed}x"),
-                selected: widget.controller.value.speed == speed,
-                onSelected: (bool _) => unawaited(widget.controller.setSpeed(speed)),
-              ),
-            )
+            label: Text("${speed}x"),
+            selected: widget.controller.value.speed == speed,
+            onSelected: (bool _) => unawaited(widget.controller.setSpeed(speed)),
+          ),
+        )
             .toList(growable: false),
       ).pSymmetric(horizontal: 16),
       ValueListenableBuilder<UMediaValue>(
@@ -1940,11 +1944,11 @@ class _UVideoSettingsSheetState extends State<UVideoSettingsSheet> {
         children: UMediaFit.values
             .map(
               (UMediaFit fit) => ChoiceChip(
-                label: Text(_fitLabel(fit)),
-                selected: widget.settings.fit == fit,
-                onSelected: (bool _) => widget.settings.fit = fit,
-              ),
-            )
+            label: Text(_fitLabel(fit)),
+            selected: widget.settings.fit == fit,
+            onSelected: (bool _) => widget.settings.fit = fit,
+          ),
+        )
             .toList(growable: false),
       ).pSymmetric(horizontal: 16),
     ],
@@ -1969,7 +1973,7 @@ class _UVideoSettingsSheetState extends State<UVideoSettingsSheet> {
         widget.settings.subtitleDelay.inMilliseconds / 1000,
         -10,
         10,
-        (double v) => widget.settings.setSubtitleDelay(widget.controller, Duration(milliseconds: (v * 1000).round())),
+            (double v) => widget.settings.setSubtitleDelay(widget.controller, Duration(milliseconds: (v * 1000).round())),
         suffix: "s",
       ),
     ],
@@ -2741,27 +2745,27 @@ class _UVideoState extends State<UVideo> {
             child: active.isEmpty
                 ? const SizedBox.shrink()
                 : Align(
-                    key: ValueKey<String>(active.first.id),
-                    alignment: Alignment.topLeft,
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 360),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                        decoration: BoxDecoration(
-                          color: const Color(0xCC000000),
-                          borderRadius: BorderRadius.circular(10),
-                          border: BorderDirectional(start: BorderSide(color: active.first.color, width: 4)),
-                        ),
-                        child: Text(
-                          active.first.text,
-                          maxLines: 4,
-                          overflow: TextOverflow.ellipsis,
-                          textDirection: UDocText.isRtl(active.first.text) ? TextDirection.rtl : TextDirection.ltr,
-                          style: const TextStyle(color: Color(0xFFFFFFFF), fontSize: 13, height: 1.35, fontFamily: "Vazir", package: "u"),
-                        ),
-                      ),
-                    ),
+              key: ValueKey<String>(active.first.id),
+              alignment: Alignment.topLeft,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 360),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: const Color(0xCC000000),
+                    borderRadius: BorderRadius.circular(10),
+                    border: BorderDirectional(start: BorderSide(color: active.first.color, width: 4)),
                   ),
+                  child: Text(
+                    active.first.text,
+                    maxLines: 4,
+                    overflow: TextOverflow.ellipsis,
+                    textDirection: UDocText.isRtl(active.first.text) ? TextDirection.rtl : TextDirection.ltr,
+                    style: const TextStyle(color: Color(0xFFFFFFFF), fontSize: 13, height: 1.35, fontFamily: "Vazir", package: "u"),
+                  ),
+                ),
+              ),
+            ),
           ),
         ),
       );
@@ -2824,19 +2828,19 @@ class _UVideoState extends State<UVideo> {
 abstract final class UVideoFullscreen {
   /// Opens [controller] full screen. `UVideoFullscreen.open(context, controller: c)`
   static Future<void> open(
-    BuildContext context, {
-    required UMediaController controller,
-    UVideoSettings? settings,
-    String? title,
-    List<UVideoMarker> markers = const <UVideoMarker>[],
-    UMediaNotesController? notes,
-    UVideoGestureConfig gestures = const UVideoGestureConfig(),
-    Color? accentColor,
-    Widget Function(BuildContext context, Duration position)? thumbnailBuilder,
-    UDocWatermark? watermark,
-    Duration seekStep = const Duration(seconds: 10),
-    bool forceLandscape = true,
-  }) async {
+      BuildContext context, {
+        required UMediaController controller,
+        UVideoSettings? settings,
+        String? title,
+        List<UVideoMarker> markers = const <UVideoMarker>[],
+        UMediaNotesController? notes,
+        UVideoGestureConfig gestures = const UVideoGestureConfig(),
+        Color? accentColor,
+        Widget Function(BuildContext context, Duration position)? thumbnailBuilder,
+        UDocWatermark? watermark,
+        Duration seekStep = const Duration(seconds: 10),
+        bool forceLandscape = true,
+      }) async {
     if (forceLandscape) {
       await SystemChrome.setPreferredOrientations(<DeviceOrientation>[DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     }
@@ -3016,9 +3020,9 @@ class UVideoPlayer extends StatefulWidget {
     this.seekStep = const Duration(seconds: 10),
     this.onControllerReady,
   }) : assert(
-         url != null || base64 != null || bytes != null || filePath != null || assetPath != null,
-         "Provide one video source",
-       );
+  url != null || base64 != null || bytes != null || filePath != null || assetPath != null,
+  "Provide one video source",
+  );
 
   /// Web address of the content.
   final String? url;
@@ -3338,9 +3342,47 @@ class UVideoWithNotes extends StatelessWidget {
               ],
             );
           }
+          // A phone on its side has no room under the video: the panel goes beside it.
+          if (constraints.maxWidth > constraints.maxHeight && constraints.maxWidth >= 560) {
+            return Row(
+              children: <Widget>[
+                Expanded(
+                  child: ColoredBox(
+                    color: const Color(0xFF000000),
+                    child: Center(child: video),
+                  ),
+                ),
+                SizedBox(
+                  width: min(panelWidth, constraints.maxWidth * 0.42),
+                  child: Material(
+                    color: Theme.of(context).colorScheme.surface,
+                    shape: BorderDirectional(start: BorderSide(color: Theme.of(context).dividerColor)),
+                    child: panel,
+                  ),
+                ),
+              ],
+            );
+          }
+          // The video shrinks rather than pushing the notes off screen. When the keyboard leaves too little room for a
+          // usable video it steps aside (still playing, same widget) until there is space again.
+          // It keeps its normal size while folded away, so its controls are never squeezed.
+          final double room = constraints.maxHeight - 140;
+          final bool folded = room < 150;
           return Column(
             children: <Widget>[
-              ColoredBox(color: const Color(0xFF000000), child: video),
+              ClipRect(
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  heightFactor: folded ? 0 : 1,
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(maxHeight: folded ? double.infinity : max(0, room)),
+                    child: ColoredBox(
+                      color: const Color(0xFF000000),
+                      child: Center(heightFactor: 1, child: video),
+                    ),
+                  ),
+                ),
+              ),
               Expanded(
                 child: Material(color: Theme.of(context).colorScheme.surface, child: panel),
               ),

@@ -36,7 +36,7 @@ class UReceiptSheet extends StatelessWidget {
   static const Color _success = Color(0xFF16A34A);
   static const Color _onSuccess = Color(0xFFFFFFFF);
 
-  static Future<void> show(UReceipt receipt) => UNavigator.bottomSheet<void>(UReceiptSheet(receipt: receipt), showDragHandle: true);
+  static Future<void> show(UReceipt receipt) => UNavigator.bottomSheet<void>(UReceiptSheet(receipt: receipt));
 
   final UReceipt receipt;
 

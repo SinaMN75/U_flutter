@@ -373,7 +373,7 @@ class UMapDrawLayer extends StatelessWidget {
             text: switch (mode) {
               UMapDrawMode.circle => UMapFormat.distance(UGeoMath.distance(draft.first, draft.last), persian: persian),
               UMapDrawMode.polygon || UMapDrawMode.measureArea || UMapDrawMode.rectangle =>
-                "${UMapFormat.area(mode == UMapDrawMode.rectangle ? UGeoMath.ringArea(UGeoMath.boundsRing(LatLngBounds(draft.first, draft.last))) : controller.draftArea, persian: persian)} · ${UMapFormat.distance(controller.draftLength, persian: persian)}",
+              "${UMapFormat.area(mode == UMapDrawMode.rectangle ? UGeoMath.ringArea(UGeoMath.boundsRing(LatLngBounds(draft.first, draft.last))) : controller.draftArea, persian: persian)} · ${UMapFormat.distance(controller.draftLength, persian: persian)}",
               _ => UMapFormat.distance(controller.draftLength, persian: persian),
             },
             priority: 20,
@@ -620,15 +620,16 @@ class _UMapAnnotatorState extends State<UMapAnnotator> {
   Color _color = const Color(0xFFE53935);
 
   Future<void> _addText(Offset at) async {
-    final TextEditingController t = TextEditingController();
     final String? text = await showDialog<String>(
       context: context,
-      builder: (BuildContext context) => AlertDialog(
-        content: TextField(controller: t, autofocus: true),
-        actions: <Widget>[TextButton(onPressed: () => Navigator.of(context).pop(t.text), child: const Text("OK"))],
+      builder: (BuildContext context) => UTextControllerScope(
+        builder: (BuildContext context, TextEditingController t) => AlertDialog(
+          scrollable: true,
+          content: TextField(controller: t, autofocus: true),
+          actions: <Widget>[TextButton(onPressed: () => Navigator.of(context).pop(t.text), child: Text(U.s.ok))],
+        ),
       ),
     );
-    t.dispose();
     if (text != null && text.isNotEmpty) setState(() => _items.add((_Tool.text, <Offset>[at], _color, text)));
   }
 

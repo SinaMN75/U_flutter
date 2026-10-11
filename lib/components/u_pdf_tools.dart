@@ -34,23 +34,25 @@ class _UPdfAnnotationsPanelState extends State<UPdfAnnotationsPanel> {
   }
 
   Future<void> _editNote(UPdfAnnotationInfo info) async {
-    final TextEditingController field = TextEditingController(text: info.contents);
     final String? value = await UNavigator.dialog<String>(
-      AlertDialog(
-        title: UTextTitleMedium(U.s.note),
-        content: TextField(
-          controller: field,
-          autofocus: true,
-          maxLines: 4,
-          decoration: const InputDecoration(border: OutlineInputBorder()),
+      UTextControllerScope(
+        text: info.contents,
+        builder: (BuildContext context, TextEditingController field) => AlertDialog(
+          scrollable: true,
+          title: UTextTitleMedium(U.s.note),
+          content: TextField(
+            controller: field,
+            autofocus: true,
+            maxLines: 4,
+            decoration: const InputDecoration(border: OutlineInputBorder()),
+          ),
+          actions: <Widget>[
+            TextButton(onPressed: UNavigator.back<String>, child: UTextBodyMedium(U.s.cancel)),
+            TextButton(onPressed: () => UNavigator.back<String>(field.text), child: UTextBodyMedium(U.s.save)),
+          ],
         ),
-        actions: <Widget>[
-          TextButton(onPressed: UNavigator.back<String>, child: UTextBodyMedium(U.s.cancel)),
-          TextButton(onPressed: () => UNavigator.back<String>(field.text), child: UTextBodyMedium(U.s.save)),
-        ],
       ),
     );
-    field.dispose();
     if (value == null) return;
     await widget.editor.updateAnnotation(info.pageIndex, info.objectNumber, contents: value);
     await _load();
@@ -74,38 +76,38 @@ class _UPdfAnnotationsPanelState extends State<UPdfAnnotationsPanel> {
             : _items.isEmpty
             ? Center(child: UTextBodyMedium(U.s.noResults))
             : ListView.builder(
-                itemCount: _items.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final UPdfAnnotationInfo info = _items[index];
-                  return ListTile(
-                    dense: true,
-                    leading: Container(
-                      width: 14,
-                      height: 14,
-                      decoration: BoxDecoration(color: info.color ?? const Color(0xFF9E9E9E), shape: BoxShape.circle),
-                    ),
-                    title: UTextBodyMedium(info.contents.isEmpty ? info.subtype : info.contents, maxLines: 2, overflow: TextOverflow.ellipsis),
-                    subtitle: UTextBodySmall("${U.s.page} ${info.pageIndex + 1}${info.author.isEmpty ? "" : " · ${info.author}"}"),
-                    onTap: () {
-                      UNavigator.back<void>();
-                      widget.onJump(info.pageIndex);
-                    },
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        IconButton(icon: const Icon(Icons.edit_note_rounded, size: 18), onPressed: () => unawaited(_editNote(info))),
-                        IconButton(
-                          icon: const Icon(Icons.delete_outline_rounded, size: 18),
-                          onPressed: () async {
-                            await widget.editor.deleteAnnotation(info.pageIndex, info.objectNumber);
-                            await _load();
-                          },
-                        ),
-                      ],
-                    ),
-                  );
-                },
+          itemCount: _items.length,
+          itemBuilder: (BuildContext context, int index) {
+            final UPdfAnnotationInfo info = _items[index];
+            return ListTile(
+              dense: true,
+              leading: Container(
+                width: 14,
+                height: 14,
+                decoration: BoxDecoration(color: info.color ?? const Color(0xFF9E9E9E), shape: BoxShape.circle),
               ),
+              title: UTextBodyMedium(info.contents.isEmpty ? info.subtype : info.contents, maxLines: 2, overflow: TextOverflow.ellipsis),
+              subtitle: UTextBodySmall("${U.s.page} ${info.pageIndex + 1}${info.author.isEmpty ? "" : " · ${info.author}"}"),
+              onTap: () {
+                UNavigator.back<void>();
+                widget.onJump(info.pageIndex);
+              },
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  IconButton(icon: const Icon(Icons.edit_note_rounded, size: 18), onPressed: () => unawaited(_editNote(info))),
+                  IconButton(
+                    icon: const Icon(Icons.delete_outline_rounded, size: 18),
+                    onPressed: () async {
+                      await widget.editor.deleteAnnotation(info.pageIndex, info.objectNumber);
+                      await _load();
+                    },
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     ],
   );
@@ -183,12 +185,12 @@ class _UPdfPageManagerPanelState extends State<UPdfPageManagerPanel> {
                 onPressed: _busy || _selected.isEmpty
                     ? null
                     : () => unawaited(
-                        _run(() async {
-                          for (final int index in _targets.reversed) {
-                            await widget.editor.rotatePage(index, 90);
-                          }
-                        }),
-                      ),
+                  _run(() async {
+                    for (final int index in _targets.reversed) {
+                      await widget.editor.rotatePage(index, 90);
+                    }
+                  }),
+                ),
                 icon: const Icon(Icons.rotate_right_rounded, size: 18),
                 label: UTextBodySmall(U.s.rotate),
               ),
@@ -196,14 +198,14 @@ class _UPdfPageManagerPanelState extends State<UPdfPageManagerPanel> {
                 onPressed: _busy || _selected.isEmpty
                     ? null
                     : () => unawaited(
-                        _run(() async {
-                          final List<int> doomed = _targets;
-                          final UPdfEdit? edit = widget.editor.edit;
-                          if (edit != null) await edit.deletePages(doomed);
-                          widget.viewer.invalidateAll();
-                          _selected.clear();
-                        }),
-                      ),
+                  _run(() async {
+                    final List<int> doomed = _targets;
+                    final UPdfEdit? edit = widget.editor.edit;
+                    if (edit != null) await edit.deletePages(doomed);
+                    widget.viewer.invalidateAll();
+                    _selected.clear();
+                  }),
+                ),
                 icon: const Icon(Icons.delete_outline_rounded, size: 18),
                 label: UTextBodySmall(U.s.delete),
               ),
@@ -216,14 +218,14 @@ class _UPdfPageManagerPanelState extends State<UPdfPageManagerPanel> {
                 onPressed: _busy
                     ? null
                     : () => unawaited(
-                        _run(() async {
-                          final UFileData? picked = await UFile.pickFile(fileType: FileType.custom, allowedExtensions: <String>["pdf"]);
-                          final Uint8List? bytes = picked?.bytes;
-                          if (bytes == null) return;
-                          final bool merged = await widget.editor.mergeFile(bytes);
-                          if (!merged) UToast.errorToast(message: U.s.couldNotOpenTheDocument);
-                        }),
-                      ),
+                  _run(() async {
+                    final UFileData? picked = await UFile.pickFile(fileType: FileType.custom, allowedExtensions: <String>["pdf"]);
+                    final Uint8List? bytes = picked?.bytes;
+                    if (bytes == null) return;
+                    final bool merged = await widget.editor.mergeFile(bytes);
+                    if (!merged) UToast.errorToast(message: U.s.couldNotOpenTheDocument);
+                  }),
+                ),
                 icon: const Icon(Icons.merge_rounded, size: 18),
                 label: UTextBodySmall(U.s.merge),
               ),
@@ -231,14 +233,14 @@ class _UPdfPageManagerPanelState extends State<UPdfPageManagerPanel> {
                 onPressed: _busy
                     ? null
                     : () => unawaited(
-                        _run(() async {
-                          final UPdfDocument? document = widget.viewer.document;
-                          if (document == null) return;
-                          final List<Uint8List> parts = await UPdfOps.split(document);
-                          if (parts.isEmpty) return;
-                          await _saveCopy(parts.first, "split_1.pdf");
-                        }),
-                      ),
+                  _run(() async {
+                    final UPdfDocument? document = widget.viewer.document;
+                    if (document == null) return;
+                    final List<Uint8List> parts = await UPdfOps.split(document);
+                    if (parts.isEmpty) return;
+                    await _saveCopy(parts.first, "split_1.pdf");
+                  }),
+                ),
                 icon: const Icon(Icons.call_split_rounded, size: 18),
                 label: UTextBodySmall(U.s.split),
               ),
@@ -320,10 +322,11 @@ class _UPdfDocumentToolsPanelState extends State<UPdfDocumentToolsPanel> {
     setState(() => _busy = false);
   }
 
-  Future<String?> _ask(String title, {String initial = ""}) async {
-    final TextEditingController field = TextEditingController(text: initial);
-    final String? value = await UNavigator.dialog<String>(
-      AlertDialog(
+  Future<String?> _ask(String title, {String initial = ""}) => UNavigator.dialog<String>(
+    UTextControllerScope(
+      text: initial,
+      builder: (BuildContext context, TextEditingController field) => AlertDialog(
+        scrollable: true,
         title: UTextTitleMedium(title),
         content: TextField(
           controller: field,
@@ -335,10 +338,8 @@ class _UPdfDocumentToolsPanelState extends State<UPdfDocumentToolsPanel> {
           TextButton(onPressed: () => UNavigator.back<String>(field.text), child: UTextBodyMedium(U.s.save)),
         ],
       ),
-    );
-    field.dispose();
-    return value;
-  }
+    ),
+  );
 
   @override
   Widget build(BuildContext context) => SafeArea(

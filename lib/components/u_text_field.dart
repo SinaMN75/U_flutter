@@ -1504,7 +1504,6 @@ class _UTextFieldPhoneNumberState extends State<UTextFieldPhoneNumber> {
     final UCountry? picked = widget.pickerMode == UCountryPickerMode.bottomSheet
         ? await UNavigator.bottomSheet<UCountry>(
             picker,
-            showDragHandle: true,
             shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
           )
         : await UNavigator.dialog<UCountry>(

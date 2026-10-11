@@ -365,39 +365,41 @@ abstract class UNavigator {
     bool obscureText = false,
     String? Function(String?)? validator,
   }) async {
-    final TextEditingController controller = TextEditingController(text: defaultValue);
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final String? text = await showDialog<String>(
       context: navigatorKey.currentContext!,
-      builder: (BuildContext context) => AlertDialog.adaptive(
-        title: Text(title),
-        content: Material(
-          type: MaterialType.transparency,
-          child: Form(
-            key: formKey,
-            child: UTextField(
-              hintText: hint,
-              lines: lines,
-              controller: controller,
-              obscureText: obscureText,
-              keyboardType: keyboardType,
-              validator: validator,
-              contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+      builder: (BuildContext context) => UTextControllerScope(
+        text: defaultValue,
+        builder: (BuildContext context, TextEditingController controller) => AlertDialog.adaptive(
+          scrollable: true,
+          title: Text(title),
+          content: Material(
+            type: MaterialType.transparency,
+            child: Form(
+              key: formKey,
+              child: UTextField(
+                hintText: hint,
+                lines: lines,
+                controller: controller,
+                obscureText: obscureText,
+                keyboardType: keyboardType,
+                validator: validator,
+                contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+              ),
             ),
           ),
+          actions: <Widget>[
+            TextButton(onPressed: onCancel ?? back, child: Text(cancelText ?? U.s.cancel)),
+            TextButton(
+              onPressed: () {
+                if (validator == null || (formKey.currentState?.validate() ?? true)) back(controller.text);
+              },
+              child: Text(submitText ?? U.s.submit),
+            ),
+          ],
         ),
-        actions: <Widget>[
-          TextButton(onPressed: onCancel ?? back, child: Text(cancelText ?? U.s.cancel)),
-          TextButton(
-            onPressed: () {
-              if (validator == null || (formKey.currentState?.validate() ?? true)) back(controller.text);
-            },
-            child: Text(submitText ?? U.s.submit),
-          ),
-        ],
       ),
     );
-    controller.dispose();
     if (text != null && onSubmit != null) {
       onSubmit(text);
     }
@@ -763,4 +765,33 @@ enum URouteTransitions {
   scale,
   rotate,
   size,
+}
+
+/// Gives [builder] a TextEditingController that lives exactly as long as this widget. Use it for text fields
+/// in dialogs: the closing animation keeps building the field after the result has been returned, so a
+/// controller disposed right after `await showDialog(…)` crashes.
+class UTextControllerScope extends StatefulWidget {
+  const UTextControllerScope({required this.builder, this.text = "", super.key});
+
+  /// Initial text.
+  final String text;
+
+  /// Builds the content with the controller.
+  final Widget Function(BuildContext context, TextEditingController controller) builder;
+
+  @override
+  State<UTextControllerScope> createState() => _UTextControllerScopeState();
+}
+
+class _UTextControllerScopeState extends State<UTextControllerScope> {
+  late final TextEditingController _controller = TextEditingController(text: widget.text);
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => widget.builder(context, _controller);
 }

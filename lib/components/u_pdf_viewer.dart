@@ -400,24 +400,25 @@ class UPdfViewerState extends State<UPdfViewer> {
   }
 
   Future<void> _askPassword() async {
-    final TextEditingController field = TextEditingController();
     final String? password = await UNavigator.dialog<String>(
-      AlertDialog(
-        title: UTextTitleMedium(U.s.documentPassword),
-        content: TextField(
-          controller: field,
-          obscureText: true,
-          autofocus: true,
-          decoration: InputDecoration(hintText: U.s.enterThePasswordToOpenThisDocument),
-          onSubmitted: UNavigator.back<String>,
+      UTextControllerScope(
+        builder: (BuildContext context, TextEditingController field) => AlertDialog(
+          scrollable: true,
+          title: UTextTitleMedium(U.s.documentPassword),
+          content: TextField(
+            controller: field,
+            obscureText: true,
+            autofocus: true,
+            decoration: InputDecoration(hintText: U.s.enterThePasswordToOpenThisDocument),
+            onSubmitted: UNavigator.back<String>,
+          ),
+          actions: <Widget>[
+            TextButton(onPressed: UNavigator.back<String>, child: UTextBodyMedium(U.s.cancel)),
+            TextButton(onPressed: () => UNavigator.back<String>(field.text), child: UTextBodyMedium(U.s.open)),
+          ],
         ),
-        actions: <Widget>[
-          TextButton(onPressed: UNavigator.back<String>, child: UTextBodyMedium(U.s.cancel)),
-          TextButton(onPressed: () => UNavigator.back<String>(field.text), child: UTextBodyMedium(U.s.open)),
-        ],
       ),
     );
-    field.dispose();
     if (password == null || password.isEmpty) return;
     await _controller.open(
       path: widget.filePath,
@@ -1338,24 +1339,26 @@ class UPdfViewerState extends State<UPdfViewer> {
   }
 
   Future<void> _askPageNumber() async {
-    final TextEditingController field = TextEditingController(text: "${_visiblePage + 1}");
     final String? result = await UNavigator.dialog<String>(
-      AlertDialog(
-        title: UTextTitleMedium(U.s.goToPage),
-        content: TextField(
-          controller: field,
-          keyboardType: TextInputType.number,
-          autofocus: true,
-          onSubmitted: UNavigator.back<String>,
-          decoration: InputDecoration(suffixText: "/ ${_controller.pageCount}", border: const OutlineInputBorder()),
+      UTextControllerScope(
+        text: "${_visiblePage + 1}",
+        builder: (BuildContext context, TextEditingController field) => AlertDialog(
+          scrollable: true,
+          title: UTextTitleMedium(U.s.goToPage),
+          content: TextField(
+            controller: field,
+            keyboardType: TextInputType.number,
+            autofocus: true,
+            onSubmitted: UNavigator.back<String>,
+            decoration: InputDecoration(suffixText: "/ ${_controller.pageCount}", border: const OutlineInputBorder()),
+          ),
+          actions: <Widget>[
+            TextButton(onPressed: UNavigator.back<String>, child: UTextBodyMedium(U.s.cancel)),
+            TextButton(onPressed: () => UNavigator.back<String>(field.text), child: UTextBodyMedium(U.s.goToPage)),
+          ],
         ),
-        actions: <Widget>[
-          TextButton(onPressed: UNavigator.back<String>, child: UTextBodyMedium(U.s.cancel)),
-          TextButton(onPressed: () => UNavigator.back<String>(field.text), child: UTextBodyMedium(U.s.goToPage)),
-        ],
       ),
     );
-    field.dispose();
     final int? page = int.tryParse((result ?? "").toLatinNumber().trim());
     if (page != null) _jumpToPage(page - 1);
   }

@@ -1388,53 +1388,73 @@ class UDocMarkupMenu extends StatelessWidget {
 /// Opens the note editor dialog.
 abstract final class UDocNoteEditor {
   /// Returns the edited note, an empty string to clear it, or null when cancelled.
-  static Future<String?> show({String initial = "", String quote = ""}) async {
-    final TextEditingController field = TextEditingController(text: initial);
-    final String? result = await UNavigator.dialog<String>(
-      AlertDialog(
-        title: UTextTitleMedium(initial.isEmpty ? U.s.addNote : U.s.editNote),
-        content: SizedBox(
-          width: 420,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              if (quote.trim().isNotEmpty)
-                Builder(
-                  builder: (BuildContext context) => Container(
-                    margin: const EdgeInsets.only(bottom: 12),
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      quote.trim(),
-                      maxLines: 4,
-                      overflow: TextOverflow.ellipsis,
-                      textDirection: UDocText.isRtl(quote) ? TextDirection.rtl : TextDirection.ltr,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(fontStyle: FontStyle.italic),
-                    ),
-                  ),
+  static Future<String?> show({String initial = "", String quote = ""}) => UNavigator.dialog<String>(_UDocNoteDialog(initial: initial, quote: quote));
+}
+
+/// Owns its text controller: the closing animation still builds the field after a result is returned.
+class _UDocNoteDialog extends StatefulWidget {
+  const _UDocNoteDialog({required this.initial, required this.quote});
+
+  final String initial;
+  final String quote;
+
+  @override
+  State<_UDocNoteDialog> createState() => _UDocNoteDialogState();
+}
+
+class _UDocNoteDialogState extends State<_UDocNoteDialog> {
+  late final TextEditingController _field = TextEditingController(text: widget.initial);
+
+  @override
+  void dispose() {
+    _field.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final String quote = widget.quote.trim();
+    return AlertDialog(
+      // With the keyboard up (or a phone on its side) little height is left; the content scrolls instead of overflowing.
+      scrollable: true,
+      title: UTextTitleMedium(widget.initial.isEmpty ? U.s.addNote : U.s.editNote),
+      content: SizedBox(
+        width: 420,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            if (quote.isNotEmpty)
+              Container(
+                margin: const EdgeInsets.only(bottom: 12),
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                  borderRadius: BorderRadius.circular(8),
                 ),
-              TextField(
-                controller: field,
-                autofocus: true,
-                minLines: 3,
-                maxLines: 8,
-                decoration: InputDecoration(hintText: U.s.writeYourNote, border: const OutlineInputBorder()),
+                child: Text(
+                  quote,
+                  maxLines: 4,
+                  overflow: TextOverflow.ellipsis,
+                  textDirection: UDocText.isRtl(quote) ? TextDirection.rtl : TextDirection.ltr,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(fontStyle: FontStyle.italic),
+                ),
               ),
-            ],
-          ),
+            TextField(
+              controller: _field,
+              autofocus: true,
+              minLines: 3,
+              maxLines: 8,
+              decoration: InputDecoration(hintText: U.s.writeYourNote, border: const OutlineInputBorder()),
+            ),
+          ],
         ),
-        actions: <Widget>[
-          TextButton(onPressed: UNavigator.back<String>, child: UTextBodyMedium(U.s.cancel)),
-          TextButton(onPressed: () => UNavigator.back<String>(field.text.trim()), child: UTextBodyMedium(U.s.save)),
-        ],
       ),
+      actions: <Widget>[
+        TextButton(onPressed: UNavigator.back<String>, child: UTextBodyMedium(U.s.cancel)),
+        TextButton(onPressed: () => UNavigator.back<String>(_field.text.trim()), child: UTextBodyMedium(U.s.save)),
+      ],
     );
-    field.dispose();
-    return result;
   }
 }
 
