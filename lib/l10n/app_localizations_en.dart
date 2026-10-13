@@ -1247,7 +1247,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dormBeds => 'Dorm Beds';
 
   @override
-  String get dormBedsAreBookedInPersonOnly => 'Apply for a bed online';
+  String get dormBedsAreBookedInPersonOnly => 'Dorm beds are booked in person only';
 
   @override
   String get dormContracts => 'Dorm contracts';
@@ -4689,7 +4689,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get toTakeABedCallTheDormOrVisitInPersonOnceYouAreRegisteredTheContractAndItsMonthlyInvoicesShowUpRightHere =>
-      'Send your application from this page. Once the manager approves it and signs the contract, the contract and its monthly invoices show up under Dorm contracts.';
+      'To take a bed, call the dorm or visit in person. Once you are registered, the contract and its monthly invoices show up right here.';
 
   @override
   String get toUseAvaHamrahServicesCompleteYourIdentityInformation => 'To use AvaHamrah services, complete your identity information.';
@@ -6710,7 +6710,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get iban => 'IBAN';
 
   @override
-  String get settlements => 'Settlements';
+  String get settlements => 'Settlement requests';
 
   @override
   String get requestSettlement => 'Request withdrawal';
@@ -7374,59 +7374,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pageTour => 'Page tour';
 
   @override
-  String get accountNumber => 'Account number';
+  String get loanDebt => 'Loan Debt';
 
   @override
-  String get bankInfo => 'Bank details';
+  String get installmentPurchases => 'Installment Purchases';
 
   @override
-  String get bankInfoMissing => 'No bank details';
+  String get creditDebt => 'Credit Debt';
 
   @override
-  String get paymentsAndSettlements => 'Payments & settlements';
-
-  @override
-  String get received => 'Received';
-
-  @override
-  String get platformCommission => 'Platform commission';
-
-  @override
-  String get refunds => 'Refunds';
-
-  @override
-  String get settled => 'Settled';
-
-  @override
-  String get recordSettlement => 'Record settlement';
-
-  @override
-  String get yesterday => 'Yesterday';
-
-  @override
-  String get last7Days => 'Last 7 days';
-
-  @override
-  String get thisMonth => 'This month';
-
-  @override
-  String get awaitingSettlement => 'Awaiting settlement';
-
-  @override
-  String get userNameOrPhoneNumber => 'Username or phone number';
-
-  @override
-  String get ownerAllPermissions => 'Owner — all permissions';
-
-  @override
-  String get passwordMinLength => 'Password must be at least 6 characters.';
-
-  @override
-  String get stockValue => 'Value';
-
-  @override
-  String get goods => 'Goods';
-
-  @override
-  String get topUpAmountRange => 'Enter an amount between 1,000 and 50,000,000 Tomans.';
+  String get creditPurchases => 'Credit Purchases';
 }

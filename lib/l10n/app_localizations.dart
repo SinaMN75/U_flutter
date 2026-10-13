@@ -2495,7 +2495,7 @@ abstract class AppLocalizations {
   /// No description provided for @dormBedsAreBookedInPersonOnly.
   ///
   /// In en, this message translates to:
-  /// **'Apply for a bed online'**
+  /// **'Dorm beds are booked in person only'**
   String get dormBedsAreBookedInPersonOnly;
 
   /// No description provided for @dormContracts.
@@ -9281,7 +9281,7 @@ abstract class AppLocalizations {
   /// No description provided for @toTakeABedCallTheDormOrVisitInPersonOnceYouAreRegisteredTheContractAndItsMonthlyInvoicesShowUpRightHere.
   ///
   /// In en, this message translates to:
-  /// **'Send your application from this page. Once the manager approves it and signs the contract, the contract and its monthly invoices show up under Dorm contracts.'**
+  /// **'To take a bed, call the dorm or visit in person. Once you are registered, the contract and its monthly invoices show up right here.'**
   String get toTakeABedCallTheDormOrVisitInPersonOnceYouAreRegisteredTheContractAndItsMonthlyInvoicesShowUpRightHere;
 
   /// No description provided for @toUseAvaHamrahServicesCompleteYourIdentityInformation.
@@ -13127,7 +13127,7 @@ abstract class AppLocalizations {
   /// No description provided for @settlements.
   ///
   /// In en, this message translates to:
-  /// **'Settlements'**
+  /// **'Settlement requests'**
   String get settlements;
 
   /// No description provided for @requestSettlement.
@@ -14450,119 +14450,29 @@ abstract class AppLocalizations {
   /// **'Page tour'**
   String get pageTour;
 
-  /// No description provided for @accountNumber.
+  /// No description provided for @loanDebt.
   ///
   /// In en, this message translates to:
-  /// **'Account number'**
-  String get accountNumber;
+  /// **'Loan Debt'**
+  String get loanDebt;
 
-  /// No description provided for @bankInfo.
+  /// No description provided for @installmentPurchases.
   ///
   /// In en, this message translates to:
-  /// **'Bank details'**
-  String get bankInfo;
+  /// **'Installment Purchases'**
+  String get installmentPurchases;
 
-  /// No description provided for @bankInfoMissing.
+  /// No description provided for @creditDebt.
   ///
   /// In en, this message translates to:
-  /// **'No bank details'**
-  String get bankInfoMissing;
+  /// **'Credit Debt'**
+  String get creditDebt;
 
-  /// No description provided for @paymentsAndSettlements.
+  /// No description provided for @creditPurchases.
   ///
   /// In en, this message translates to:
-  /// **'Payments & settlements'**
-  String get paymentsAndSettlements;
-
-  /// No description provided for @received.
-  ///
-  /// In en, this message translates to:
-  /// **'Received'**
-  String get received;
-
-  /// No description provided for @platformCommission.
-  ///
-  /// In en, this message translates to:
-  /// **'Platform commission'**
-  String get platformCommission;
-
-  /// No description provided for @refunds.
-  ///
-  /// In en, this message translates to:
-  /// **'Refunds'**
-  String get refunds;
-
-  /// No description provided for @settled.
-  ///
-  /// In en, this message translates to:
-  /// **'Settled'**
-  String get settled;
-
-  /// No description provided for @recordSettlement.
-  ///
-  /// In en, this message translates to:
-  /// **'Record settlement'**
-  String get recordSettlement;
-
-  /// No description provided for @yesterday.
-  ///
-  /// In en, this message translates to:
-  /// **'Yesterday'**
-  String get yesterday;
-
-  /// No description provided for @last7Days.
-  ///
-  /// In en, this message translates to:
-  /// **'Last 7 days'**
-  String get last7Days;
-
-  /// No description provided for @thisMonth.
-  ///
-  /// In en, this message translates to:
-  /// **'This month'**
-  String get thisMonth;
-
-  /// No description provided for @awaitingSettlement.
-  ///
-  /// In en, this message translates to:
-  /// **'Awaiting settlement'**
-  String get awaitingSettlement;
-
-  /// No description provided for @userNameOrPhoneNumber.
-  ///
-  /// In en, this message translates to:
-  /// **'Username or phone number'**
-  String get userNameOrPhoneNumber;
-
-  /// No description provided for @ownerAllPermissions.
-  ///
-  /// In en, this message translates to:
-  /// **'Owner — all permissions'**
-  String get ownerAllPermissions;
-
-  /// No description provided for @passwordMinLength.
-  ///
-  /// In en, this message translates to:
-  /// **'Password must be at least 6 characters.'**
-  String get passwordMinLength;
-
-  /// No description provided for @stockValue.
-  ///
-  /// In en, this message translates to:
-  /// **'Value'**
-  String get stockValue;
-
-  /// No description provided for @goods.
-  ///
-  /// In en, this message translates to:
-  /// **'Goods'**
-  String get goods;
-
-  /// No description provided for @topUpAmountRange.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter an amount between 1,000 and 50,000,000 Tomans.'**
-  String get topUpAmountRange;
+  /// **'Credit Purchases'**
+  String get creditPurchases;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

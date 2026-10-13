@@ -1247,7 +1247,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get dormBeds => 'تخت‌های خوابگاه';
 
   @override
-  String get dormBedsAreBookedInPersonOnly => 'درخواست اقامت را آنلاین بفرستید';
+  String get dormBedsAreBookedInPersonOnly => 'رزرو خوابگاه فقط حضوری انجام می‌شود';
 
   @override
   String get dormContracts => 'قراردادهای خوابگاه';
@@ -1352,7 +1352,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get due => 'سررسید';
 
   @override
-  String get dueDate => 'سررسید';
+  String get dueDate => 'معوق';
 
   @override
   String get duplicateBlock => 'تکثیر بلوک';
@@ -4688,7 +4688,7 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get toTakeABedCallTheDormOrVisitInPersonOnceYouAreRegisteredTheContractAndItsMonthlyInvoicesShowUpRightHere =>
-      'درخواست اقامت را از همین صفحه بفرستید. بعد از تأیید مدیر و بستن قرارداد، قرارداد و قبض‌های ماهانه در بخش «قراردادهای خوابگاه» نمایش داده می‌شود.';
+      'برای گرفتن تخت، با خوابگاه تماس بگیرید یا حضوری مراجعه کنید. قرارداد و فاکتورهای ماهانه بعد از ثبت‌نام در همین اپ نمایش داده می‌شود.';
 
   @override
   String get toUseAvaHamrahServicesCompleteYourIdentityInformation => 'برای استفاده از خدمات آواهمراه، اطلاعات هویتی خود را تکمیل کنید.';
@@ -6709,7 +6709,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get iban => 'شماره شبا';
 
   @override
-  String get settlements => 'تسویه‌ها';
+  String get settlements => 'درخواست‌های تسویه';
 
   @override
   String get requestSettlement => 'درخواست برداشت';
@@ -7373,59 +7373,14 @@ class AppLocalizationsFa extends AppLocalizations {
   String get pageTour => 'تور این صفحه';
 
   @override
-  String get accountNumber => 'شماره حساب';
+  String get loanDebt => 'بدهی تسهیلاتی';
 
   @override
-  String get bankInfo => 'اطلاعات بانکی';
+  String get installmentPurchases => 'خریدهای اقساطی';
 
   @override
-  String get bankInfoMissing => 'اطلاعات بانکی ثبت نشده';
+  String get creditDebt => 'بدهی اعتباری';
 
   @override
-  String get paymentsAndSettlements => 'پرداخت‌ها و تسویه‌ها';
-
-  @override
-  String get received => 'دریافتی';
-
-  @override
-  String get platformCommission => 'کمیسیون سامانه';
-
-  @override
-  String get refunds => 'برگشت به مشتری';
-
-  @override
-  String get settled => 'تسویه‌شده';
-
-  @override
-  String get recordSettlement => 'ثبت تسویه';
-
-  @override
-  String get yesterday => 'دیروز';
-
-  @override
-  String get last7Days => '۷ روز اخیر';
-
-  @override
-  String get thisMonth => 'این ماه';
-
-  @override
-  String get awaitingSettlement => 'منتظر تسویه';
-
-  @override
-  String get userNameOrPhoneNumber => 'نام کاربری یا شماره موبایل';
-
-  @override
-  String get ownerAllPermissions => 'مالک — همه‌ی دسترسی‌ها';
-
-  @override
-  String get passwordMinLength => 'رمز باید حداقل ۶ حرف باشد.';
-
-  @override
-  String get stockValue => 'ارزش';
-
-  @override
-  String get goods => 'کالاها';
-
-  @override
-  String get topUpAmountRange => 'مبلغ را بین ۱٬۰۰۰ تا ۵۰٬۰۰۰٬۰۰۰ تومان بنویسید.';
+  String get creditPurchases => 'خریدهای اعتباری';
 }
