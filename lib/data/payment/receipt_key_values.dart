@@ -4,6 +4,7 @@ abstract class UReceiptKeyValues {
   static const String bed = "bed";
   static const String billId = "billId";
   static const String billType = "billType";
+  static const String branch = "branch";
   static const String chargePin = "chargePin";
   static const String checkInDate = "checkInDate";
   static const String checkOutDate = "checkOutDate";
@@ -55,6 +56,8 @@ abstract class UReceiptKeyValues {
         return U.s.billId;
       case billType:
         return U.s.billType;
+      case branch:
+        return U.s.branch;
       case chargePin:
         return U.s.chargePin;
       case checkInDate:

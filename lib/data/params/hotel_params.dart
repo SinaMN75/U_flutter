@@ -285,6 +285,7 @@ class UHotelUpdateParams {
 }
 
 class UHotelReadParams {
+  final bool? manage;
   final double? minPrice;
   final double? maxPrice;
   final double? minScore;
@@ -303,6 +304,7 @@ class UHotelReadParams {
   final String? organizationId;
 
   UHotelReadParams({
+    this.manage,
     this.pageSize,
     this.pageNumber,
     this.fromCreatedAt,
@@ -345,6 +347,7 @@ class UHotelReadParams {
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
+    "manage": manage,
     "minPrice": minPrice,
     "maxPrice": maxPrice,
     "minScore": minScore,
@@ -561,6 +564,7 @@ class UHotelRoomUpdateParams {
 }
 
 class UHotelRoomReadParams {
+  final bool? manage;
   final int? pageSize;
   final int? pageNumber;
   final DateTime? fromCreatedAt;
@@ -579,6 +583,7 @@ class UHotelRoomReadParams {
   final int? maxCapacity;
 
   UHotelRoomReadParams({
+    this.manage,
     this.pageSize,
     this.pageNumber,
     this.fromCreatedAt,
@@ -621,6 +626,7 @@ class UHotelRoomReadParams {
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
+    "manage": manage,
     "pageSize": pageSize,
     "pageNumber": pageNumber,
     "fromCreatedAt": fromCreatedAt?.toIso8601String(),

@@ -70,6 +70,8 @@ class UMediaService {
     String? dormId,
     String? dormRoomId,
     String? dormBedId,
+    String? cafeId,
+    String? menuItemId,
   }) async {
     if (!photos.hasChanges) return;
     void ignore(_) {}
@@ -95,6 +97,8 @@ class UMediaService {
           dormId: dormId,
           dormRoomId: dormRoomId,
           dormBedId: dormBedId,
+          cafeId: cafeId,
+          menuItemId: menuItemId,
         ),
         onOk: ignore,
         onError: ignore,

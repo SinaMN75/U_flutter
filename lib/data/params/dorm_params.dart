@@ -133,6 +133,7 @@ class UDormBedUpdateParams {
 }
 
 class UDormBedReadParams {
+  final bool? manage;
   final int? pageSize;
   final int? pageNumber;
   final DateTime? fromCreatedAt;
@@ -151,6 +152,7 @@ class UDormBedReadParams {
   final int? orderBy;
 
   UDormBedReadParams({
+    this.manage,
     this.pageSize,
     this.pageNumber,
     this.fromCreatedAt,
@@ -193,6 +195,7 @@ class UDormBedReadParams {
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
+    "manage": manage,
     "pageSize": pageSize,
     "pageNumber": pageNumber,
     "fromCreatedAt": fromCreatedAt?.toIso8601String(),
@@ -513,6 +516,7 @@ class UDormUpdateParams {
 }
 
 class UDormReadParams {
+  final bool? manage;
   final double? minRent;
   final double? maxRent;
   final bool? availableOnly;
@@ -530,6 +534,7 @@ class UDormReadParams {
   final String? organizationId;
 
   UDormReadParams({
+    this.manage,
     this.pageSize,
     this.pageNumber,
     this.fromCreatedAt,
@@ -570,6 +575,7 @@ class UDormReadParams {
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
+    "manage": manage,
     "minRent": minRent,
     "maxRent": maxRent,
     "availableOnly": availableOnly,
@@ -729,6 +735,7 @@ class UDormRoomUpdateParams {
 }
 
 class UDormRoomReadParams {
+  final bool? manage;
   final int? pageSize;
   final int? pageNumber;
   final DateTime? fromCreatedAt;
@@ -742,6 +749,7 @@ class UDormRoomReadParams {
   final int? orderBy;
 
   UDormRoomReadParams({
+    this.manage,
     this.pageSize,
     this.pageNumber,
     this.fromCreatedAt,
@@ -774,6 +782,7 @@ class UDormRoomReadParams {
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
+    "manage": manage,
     "pageSize": pageSize,
     "pageNumber": pageNumber,
     "fromCreatedAt": fromCreatedAt?.toIso8601String(),

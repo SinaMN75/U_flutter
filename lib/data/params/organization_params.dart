@@ -5,7 +5,6 @@ class UOrganizationCreateParams {
     required this.title,
     required this.ownerId,
     this.tags = const <int>[101],
-    this.ownerPassword,
     this.commissionPercent = 0,
     this.logoUrl,
     this.address,
@@ -22,7 +21,6 @@ class UOrganizationCreateParams {
   final String title;
   final String ownerId;
   final List<int> tags;
-  final String? ownerPassword;
   final double commissionPercent;
   final String? logoUrl;
   final String? address;
@@ -39,7 +37,6 @@ class UOrganizationCreateParams {
     "title": title,
     "ownerId": ownerId,
     "tags": tags,
-    "ownerPassword": ownerPassword,
     "commissionPercent": commissionPercent,
     "logoUrl": logoUrl,
     "address": address,
@@ -59,7 +56,6 @@ class UOrganizationUpdateParams {
     required this.id,
     this.title,
     this.ownerId,
-    this.ownerPassword,
     this.commissionPercent,
     this.tags,
     this.addTags,
@@ -79,7 +75,6 @@ class UOrganizationUpdateParams {
   final String id;
   final String? title;
   final String? ownerId;
-  final String? ownerPassword;
   final double? commissionPercent;
   final List<int>? tags;
   final List<int>? addTags;
@@ -99,7 +94,6 @@ class UOrganizationUpdateParams {
     "id": id,
     "title": title,
     "ownerId": ownerId,
-    "ownerPassword": ownerPassword,
     "commissionPercent": commissionPercent,
     "tags": tags,
     "addTags": addTags,
@@ -118,7 +112,7 @@ class UOrganizationUpdateParams {
 }
 
 class UOrganizationReadParams {
-  UOrganizationReadParams({this.pageSize, this.pageNumber, this.title, this.ids, this.tags, this.fromDate, this.toDate});
+  UOrganizationReadParams({this.pageSize, this.pageNumber, this.title, this.ids, this.tags, this.fromDate, this.toDate, this.mine});
 
   final int? pageSize;
   final int? pageNumber;
@@ -127,10 +121,12 @@ class UOrganizationReadParams {
   final List<int>? tags;
   final DateTime? fromDate;
   final DateTime? toDate;
+  final bool? mine;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "pageSize": pageSize,
     "pageNumber": pageNumber,
+    "mine": mine,
     "title": title,
     "ids": ids ?? <String>[],
     "tags": tags,
@@ -140,18 +136,24 @@ class UOrganizationReadParams {
 }
 
 class UOrganizationMemberParams {
-  UOrganizationMemberParams({required this.organizationId, required this.userId, this.permissions = const <int>[], this.password});
+  UOrganizationMemberParams({required this.organizationId, this.userId, this.phoneNumber, this.firstName, this.lastName, this.permissions = const <int>[], this.places = const <UOrganizationMemberPlace>[]});
 
   final String organizationId;
-  final String userId;
+  final String? userId;
+  final String? phoneNumber;
+  final String? firstName;
+  final String? lastName;
   final List<int> permissions;
-  final String? password;
+  final List<UOrganizationMemberPlace> places;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "organizationId": organizationId,
     "userId": userId,
+    "phoneNumber": phoneNumber,
+    "firstName": firstName,
+    "lastName": lastName,
     "permissions": permissions,
-    "password": password,
+    "places": places.map((UOrganizationMemberPlace x) => x.toMap()).toList(),
   };
 }
 
@@ -533,4 +535,41 @@ class USubscriptionCancelParams {
   final String subscriptionId;
 
   Map<String, dynamic> toMap() => <String, dynamic>{"organizationId": organizationId, "subscriptionId": subscriptionId};
+}
+
+class USubscriptionQuoteParams {
+  USubscriptionQuoteParams({required this.planId, this.months = 1, this.trial = false, this.organizationId});
+
+  final String planId;
+  final int months;
+  final bool trial;
+  final String? organizationId;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"planId": planId, "months": months, "trial": trial, "organizationId": organizationId};
+}
+
+class USubscriptionBuyParams {
+  USubscriptionBuyParams({required this.planId, this.months = 1, this.trial = false, this.organizationId, this.title, this.fromWallet = false, this.cardNumber, this.accountNumber, this.iBanNumber});
+
+  final String planId;
+  final int months;
+  final bool trial;
+  final String? organizationId;
+  final String? title;
+  final bool fromWallet;
+  final String? cardNumber;
+  final String? accountNumber;
+  final String? iBanNumber;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "planId": planId,
+    "months": months,
+    "trial": trial,
+    "organizationId": organizationId,
+    "title": title,
+    "fromWallet": fromWallet,
+    "cardNumber": cardNumber,
+    "accountNumber": accountNumber,
+    "iBanNumber": iBanNumber,
+  };
 }

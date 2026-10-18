@@ -18,6 +18,8 @@ class UMediaCreateParams {
     this.hotelId,
     this.hotelRoomId,
     this.dormId,
+    this.menuItemId,
+    this.cafeId,
     this.dormRoomId,
     this.dormBedId,
     this.venueId,
@@ -40,6 +42,8 @@ class UMediaCreateParams {
   final String? hotelId;
   final String? hotelRoomId;
   final String? dormId;
+  final String? menuItemId;
+  final String? cafeId;
   final String? dormRoomId;
   final String? dormBedId;
   final String? venueId;
@@ -63,6 +67,8 @@ class UMediaCreateParams {
     "hotelId": hotelId,
     "hotelRoomId": hotelRoomId,
     "dormId": dormId,
+    "menuItemId": menuItemId,
+    "cafeId": cafeId,
     "dormRoomId": dormRoomId,
     "dormBedId": dormBedId,
     "venueId": venueId,
@@ -92,6 +98,8 @@ class UMediaUpdateParams {
     this.hotelId,
     this.hotelRoomId,
     this.dormId,
+    this.menuItemId,
+    this.cafeId,
     this.dormRoomId,
     this.dormBedId,
   });
@@ -119,6 +127,8 @@ class UMediaUpdateParams {
     hotelId: json["hotelId"],
     hotelRoomId: json["hotelRoomId"],
     dormId: json["dormId"],
+    menuItemId: json["menuItemId"],
+    cafeId: json["cafeId"],
     dormRoomId: json["dormRoomId"],
     dormBedId: json["dormBedId"],
   );
@@ -143,6 +153,8 @@ class UMediaUpdateParams {
   final String? hotelId;
   final String? hotelRoomId;
   final String? dormId;
+  final String? menuItemId;
+  final String? cafeId;
   final String? dormRoomId;
   final String? dormBedId;
 
@@ -169,6 +181,8 @@ class UMediaUpdateParams {
     "hotelId": hotelId,
     "hotelRoomId": hotelRoomId,
     "dormId": dormId,
+    "menuItemId": menuItemId,
+    "cafeId": cafeId,
     "dormRoomId": dormRoomId,
     "dormBedId": dormBedId,
   };

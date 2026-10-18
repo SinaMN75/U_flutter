@@ -7383,4 +7383,1312 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get creditPurchases => 'خریدهای اعتباری';
+
+  @override
+  String get tooManyRequests => 'تعداد درخواست‌ها زیاد است';
+
+  @override
+  String get pleaseWaitAFewSecondsAndTryAgain => 'لطفاً چند ثانیه صبر کنید و دوباره تلاش کنید';
+
+  @override
+  String get requestFailed => 'درخواست با خطا مواجه شد';
+
+  @override
+  String get serverError => 'خطای سرور';
+
+  @override
+  String get splash => 'صفحه آغازین';
+
+  @override
+  String get loans => 'اقساط';
+
+  @override
+  String get login => 'ورود';
+
+  @override
+  String get accentColor => 'رنگ اصلی';
+
+  @override
+  String get thisPlaceWillBeShownToEveryone => 'این مکان برای همه نمایش داده می‌شود';
+
+  @override
+  String get thisPlaceWillStayHidden => 'این مکان پنهان می‌ماند';
+
+  @override
+  String get cafe => 'کافه';
+
+  @override
+  String get cafes => 'کافه‌ها';
+
+  @override
+  String get itemOptions => 'گزینه‌های آیتم';
+
+  @override
+  String get labels => 'برچسب‌ها';
+
+  @override
+  String get markAsAvailable => 'موجود شد';
+
+  @override
+  String get markAsUnavailable => 'تمام شد';
+
+  @override
+  String get menuItem => 'آیتم منو';
+
+  @override
+  String get menuItems => 'آیتم‌های منو';
+
+  @override
+  String get menuSettings => 'تنظیمات منو';
+
+  @override
+  String get menus => 'منوها';
+
+  @override
+  String get noPlacesWaitingForReview => 'مکانی در انتظار بررسی نیست';
+
+  @override
+  String get openHours => 'ساعت کاری';
+
+  @override
+  String get ordering => 'سفارش‌گیری';
+
+  @override
+  String get orders => 'سفارش‌ها';
+
+  @override
+  String get placeApprovals => 'تأیید مکان‌ها';
+
+  @override
+  String get prepMinutes => 'زمان آماده‌سازی (دقیقه)';
+
+  @override
+  String get rejectAndRefund => 'رد و بازگشت وجه';
+
+  @override
+  String get tableCount => 'تعداد میزها';
+
+  @override
+  String get tagline => 'شعار';
+
+  @override
+  String get loanId => 'شناسه وام';
+
+  @override
+  String get kalabargBalanceInquiry => 'استعلام موجودی کالابرگ';
+
+  @override
+  String get beingSetUp => 'در حال راه‌اندازی';
+
+  @override
+  String get aboutYourBusiness => 'درباره‌ی کسب‌وکارتان';
+
+  @override
+  String get accountNumber => 'شماره حساب';
+
+  @override
+  String get accountant => 'حسابدار';
+
+  @override
+  String get activity => 'فعالیت‌ها';
+
+  @override
+  String get addAccountingToYourSubscriptionToKeepBooks => 'برای دفترداری، حسابداری را به اشتراکتان اضافه کنید';
+
+  @override
+  String get addBed => 'افزودن تخت';
+
+  @override
+  String get addCategoriesThenYourFirstItem => 'اول دسته‌ها را بسازید، بعد اولین آیتم را اضافه کنید';
+
+  @override
+  String get addChoice => 'افزودن انتخاب';
+
+  @override
+  String get addOption => 'افزودن گزینه';
+
+  @override
+  String get addRoomNumbersToYourRoomTypesFirst => 'اول برای اتاق‌ها شماره بگذارید';
+
+  @override
+  String get addStaff => 'افزودن همکار';
+
+  @override
+  String get addToBill => 'افزودن به صورت‌حساب';
+
+  @override
+  String get addToOrder => 'افزودن به سفارش';
+
+  @override
+  String get addYourBankAccountInSettings => 'حساب بانکی را در تنظیمات وارد کنید';
+
+  @override
+  String get addYourFirstPlace => 'اولین مکانتان را اضافه کنید';
+
+  @override
+  String get addYourFirstPlaceFromThePlacesTab => 'از بخش «مکان‌ها» اولین مکان را اضافه کنید';
+
+  @override
+  String get addYourRoomTypesFirst => 'اول انواع اتاق را اضافه کنید';
+
+  @override
+  String get addYourRoomsAndBedsFirst => 'اول اتاق‌ها و تخت‌ها را اضافه کنید';
+
+  @override
+  String get allRooms => 'همه‌ی اتاق‌ها';
+
+  @override
+  String get applicant => 'متقاضی';
+
+  @override
+  String get applications => 'درخواست‌ها';
+
+  @override
+  String get arriving => 'در راه';
+
+  @override
+  String get arrivingToday => 'ورود امروز';
+
+  @override
+  String get askForAnEarlyPayout => 'درخواست واریز زودتر';
+
+  @override
+  String get atTheTable => 'سر میز';
+
+  @override
+  String get atWork => 'سر کار';
+
+  @override
+  String get backOn => 'تاریخ برگشت';
+
+  @override
+  String get balanceOfEachBox => 'موجودی هر صندوق و بانک';
+
+  @override
+  String get bank => 'بانک';
+
+  @override
+  String get bankAccountForPayouts => 'حساب بانکی برای واریزها';
+
+  @override
+  String get bedAndDates => 'تخت و تاریخ';
+
+  @override
+  String get bedName => 'نام تخت';
+
+  @override
+  String get bills => 'قبض‌ها';
+
+  @override
+  String get billsAreMadeAutomaticallyFromTheContract => 'قبض‌ها خودکار از روی قرارداد ساخته می‌شوند';
+
+  @override
+  String get board => 'جدول اتاق‌ها';
+
+  @override
+  String get bookingsAndCheckIn => 'رزرو و پذیرش';
+
+  @override
+  String get books => 'دفاتر';
+
+  @override
+  String get booksAreNotInYourPlan => 'حسابداری در اشتراک شما نیست';
+
+  @override
+  String get business => 'کسب‌وکار';
+
+  @override
+  String get businessDetails => 'اطلاعات کسب‌وکار';
+
+  @override
+  String get businessName => 'نام کسب‌وکار';
+
+  @override
+  String get buy => 'خرید';
+
+  @override
+  String get byCard => 'با کارت';
+
+  @override
+  String get bySigningInYouAcceptTheTerms => 'با ورود، قوانین خوابروم را می‌پذیرید';
+
+  @override
+  String get cafesAndRestaurants => 'کافه‌ها و رستوران‌ها';
+
+  @override
+  String get canPickMoreThanOne => 'چند انتخاب';
+
+  @override
+  String get cancelOrder => 'لغو سفارش';
+
+  @override
+  String get cashAndBank => 'صندوق و بانک';
+
+  @override
+  String get cashier => 'صندوق‌دار';
+
+  @override
+  String get changed => 'تغییر داد';
+
+  @override
+  String get checkOutAndSettle => 'تسویه و خروج';
+
+  @override
+  String get checkOutExplanation => 'بدهی‌ها از ودیعه کم و باقی‌مانده به کیف پول ساکن برگردانده می‌شود. اگر ودیعه کافی نباشد، برای بقیه قبض ساخته می‌شود.';
+
+  @override
+  String get checkedSomeoneOut => 'تسویه کرد';
+
+  @override
+  String get chequeNumber => 'شماره چک';
+
+  @override
+  String get cheques => 'چک‌ها';
+
+  @override
+  String get chequesYouReceivedOrIssued => 'چک‌های دریافتی و پرداختی';
+
+  @override
+  String get choiceTitle => 'عنوان انتخاب';
+
+  @override
+  String get choices => 'انتخاب‌ها';
+
+  @override
+  String get closeTheDay => 'بستن روز';
+
+  @override
+  String get closeTheDayExplanation => 'درآمد اتاق‌های امروز در حساب‌ها ثبت می‌شود و کسانی که نیامده‌اند «عدم حضور» می‌شوند. ادامه می‌دهید؟';
+
+  @override
+  String get closedForBooking => 'بسته برای رزرو';
+
+  @override
+  String get collected => 'دریافت‌شده';
+
+  @override
+  String get colorAndOrdering => 'رنگ و سفارش‌گیری';
+
+  @override
+  String get confirmedRightAway => 'همین حالا تأیید شود';
+
+  @override
+  String get contractsAndAllDormInvoices => 'قراردادها و همه‌ی قبض‌های خوابگاه';
+
+  @override
+  String get contractsAndCheckOut => 'قرارداد و تسویه';
+
+  @override
+  String get contractsAndResidents => 'قرارداد و ساکنان';
+
+  @override
+  String get copyLink => 'کپی لینک';
+
+  @override
+  String get costIfAny => 'هزینه (اگر بود)';
+
+  @override
+  String get creditFromYourCurrentPlan => 'اعتبار باقی‌مانده‌ی اشتراک فعلی';
+
+  @override
+  String get customersAndResidents => 'مشتری‌ها و ساکنان';
+
+  @override
+  String get customersPayInTheAppKhabroomDepositsToThisAccountDaily => 'مشتری‌ها در اپلیکیشن پرداخت می‌کنند و خوابروم هر روز پول را به این حساب واریز می‌کند.';
+
+  @override
+  String get dailyRent => 'اجاره‌ی روزانه';
+
+  @override
+  String get damagesToDeduct => 'خسارت برای کسر از ودیعه';
+
+  @override
+  String get daysFree => 'روز رایگان';
+
+  @override
+  String get deleteBed => 'حذف تخت';
+
+  @override
+  String get deleteBills => 'حذف قبض';
+
+  @override
+  String get deleteBookings => 'حذف رزرو';
+
+  @override
+  String get deleteContracts => 'حذف قرارداد';
+
+  @override
+  String get deleteRoom => 'حذف اتاق';
+
+  @override
+  String get deleted => 'حذف کرد';
+
+  @override
+  String get depositPerBed => 'ودیعه‌ی هر تخت';
+
+  @override
+  String get depositReturned => 'ودیعه‌ی برگشتی';
+
+  @override
+  String get deposited => 'واریز شد';
+
+  @override
+  String get depositedToYourAccount => 'به حساب شما واریز شد';
+
+  @override
+  String get didNotReceiveIt => 'به دستم نرسید';
+
+  @override
+  String get didNotShowUp => 'نیامدند';
+
+  @override
+  String get dormHotelOrCafeStartWithAFreeTrial => 'خوابگاه، هتل یا کافه؛ با دوره‌ی رایگان شروع کنید';
+
+  @override
+  String get earlyPayoutExplanation => 'درخواست شما برای خوابروم فرستاده می‌شود و پس از بررسی واریز می‌شود.';
+
+  @override
+  String get editBed => 'ویرایش تخت';
+
+  @override
+  String get editPhoneNumber => 'ویرایش شماره';
+
+  @override
+  String get editRoom => 'ویرایش اتاق';
+
+  @override
+  String get editRoomsAndDetails => 'ویرایش اتاق‌ها و اطلاعات';
+
+  @override
+  String get editTheMenu => 'ویرایش منو';
+
+  @override
+  String get endsOn => 'پایان در';
+
+  @override
+  String get enterTheCode => 'کد را وارد کنید';
+
+  @override
+  String get entry => 'سند';
+
+  @override
+  String get equipment => 'اموال';
+
+  @override
+  String get extra => 'اضافه';
+
+  @override
+  String get forExampleChickenAndRice => 'مثلاً چلو مرغ';
+
+  @override
+  String get forExampleCoffeeUnderTheOrangeTrees => 'مثلاً قهوه زیر درخت نارنج';
+
+  @override
+  String get forExampleDoubleRoom => 'مثلاً اتاق دوتخته';
+
+  @override
+  String get forExampleLessSugar => 'مثلاً شکر کم';
+
+  @override
+  String get forExampleMilkType => 'مثلاً نوع شیر';
+
+  @override
+  String get forExampleNowruz => 'مثلاً نوروز';
+
+  @override
+  String get forExampleRoomServiceOrMinibar => 'مثلاً سرویس اتاق یا مینی‌بار';
+
+  @override
+  String get forExampleTowel => 'مثلاً حوله';
+
+  @override
+  String get forExampleWashingMachine => 'مثلاً ماشین لباسشویی';
+
+  @override
+  String get forExampleYasGroup => 'مثلاً مجموعه‌ی یاس';
+
+  @override
+  String get forTheWholeBusiness => 'برای کل کسب‌وکار';
+
+  @override
+  String get freeBeds => 'تخت خالی';
+
+  @override
+  String get freeRooms => 'اتاق خالی';
+
+  @override
+  String get fromOrTo => 'از / به';
+
+  @override
+  String get fromWallet => 'از کیف پول';
+
+  @override
+  String get generalMenu => 'منوی عمومی';
+
+  @override
+  String get getCode => 'دریافت کد';
+
+  @override
+  String get giveItTo => 'به چه کسی';
+
+  @override
+  String get guardianOptional => 'سرپرست (اختیاری)';
+
+  @override
+  String get handleOrders => 'رسیدگی به سفارش‌ها';
+
+  @override
+  String get howDoYouWantIt => 'چطور تحویل بگیرید؟';
+
+  @override
+  String get howManyPortions => 'چند پرس';
+
+  @override
+  String get howManyRooms => 'چند اتاق';
+
+  @override
+  String get howManyTables => 'چند میز دارید؟';
+
+  @override
+  String get ifTheCafeRejectsYourOrderTheMoneyGoesBackToYourWallet => 'اگر کافه سفارش را رد کند، پول به کیف پولتان برمی‌گردد.';
+
+  @override
+  String get inProgress => 'در جریان';
+
+  @override
+  String get inReview => 'در حال بررسی';
+
+  @override
+  String get income => 'درآمد';
+
+  @override
+  String get incomeExpensesAndVat => 'درآمد، هزینه و ارزش افزوده';
+
+  @override
+  String get khabroomFee => 'کارمزد خوابروم';
+
+  @override
+  String get lastClosedDay => 'آخرین روز بسته‌شده';
+
+  @override
+  String get lateFeePercentPerDay => 'جریمه‌ی دیرکرد (درصد در روز)';
+
+  @override
+  String get leaveAPlaceEmptyAndTheyWillNotSeeIt => 'مکانی که دسترسی ندارد را خالی بگذارید تا آن را نبیند.';
+
+  @override
+  String get leavingDate => 'تاریخ خروج';
+
+  @override
+  String get leavingSoon => 'در حال رفتن';
+
+  @override
+  String get leavingToday => 'خروج امروز';
+
+  @override
+  String get livingHere => 'ساکنان فعلی';
+
+  @override
+  String get look => 'ظاهر';
+
+  @override
+  String get mainStoreroom => 'انبار اصلی';
+
+  @override
+  String get makeAndEditBills => 'صدور و ویرایش قبض';
+
+  @override
+  String get makeResident => 'ثبت به‌عنوان ساکن';
+
+  @override
+  String get markAsDone => 'انجام شد';
+
+  @override
+  String get meals => 'غذا';
+
+  @override
+  String get menuAndReservations => 'منو و رزرو';
+
+  @override
+  String get menuIsOpen => 'منو باز است';
+
+  @override
+  String get menuLook => 'ظاهر منو';
+
+  @override
+  String get menuViews => 'بازدید منو';
+
+  @override
+  String get messageToTheApplicant => 'پیام برای متقاضی';
+
+  @override
+  String get minimumNights => 'حداقل شب';
+
+  @override
+  String get money => 'مالی';
+
+  @override
+  String get moneyYourCustomersPaidThatIsNotInYourAccountYet => 'پولی که مشتری‌ها پرداخته‌اند و هنوز به حسابتان نیامده';
+
+  @override
+  String get monthlyRentPerBed => 'اجاره‌ی ماهانه‌ی هر تخت';
+
+  @override
+  String get moveToAnotherBed => 'انتقال به تخت دیگر';
+
+  @override
+  String get mustChoose => 'اجباری';
+
+  @override
+  String get myOrders => 'سفارش‌های من';
+
+  @override
+  String get myPayments => 'پرداخت‌های من';
+
+  @override
+  String get myPersonalAccount => 'حساب شخصی من';
+
+  @override
+  String get myPlaces => 'مکان‌های من';
+
+  @override
+  String get myShifts => 'شیفت‌های من';
+
+  @override
+  String get myStaysPaymentsAndOrders => 'اقامت‌ها، پرداخت‌ها و سفارش‌های من';
+
+  @override
+  String get myTasks => 'کارهای من';
+
+  @override
+  String get nameBankAccountAndTax => 'نام، حساب بانکی و مالیات';
+
+  @override
+  String get nationalId => 'شناسه‌ی ملی';
+
+  @override
+  String get newBed => 'تخت تازه';
+
+  @override
+  String get newBill => 'قبض تازه';
+
+  @override
+  String get newBooking => 'رزرو تازه';
+
+  @override
+  String get newBusiness => 'کسب‌وکار تازه';
+
+  @override
+  String get newCheckOutDate => 'تاریخ خروج تازه';
+
+  @override
+  String get newCheque => 'چک تازه';
+
+  @override
+  String get newEndDate => 'تاریخ پایان تازه';
+
+  @override
+  String get newEquipment => 'اموال تازه';
+
+  @override
+  String get newItem => 'آیتم تازه';
+
+  @override
+  String get newMeal => 'غذای تازه';
+
+  @override
+  String get newOrders => 'سفارش جدید';
+
+  @override
+  String get newOrdersAppearHereByThemselves => 'سفارش‌های تازه خودشان اینجا می‌آیند.';
+
+  @override
+  String get newPersonTheyCanSignInLaterWithThisNumber => 'فرد تازه است؛ بعداً با همین شماره وارد می‌شود و همه‌چیز را می‌بیند.';
+
+  @override
+  String get newPlace => 'مکان تازه';
+
+  @override
+  String get newPlacesAreShownToCustomersAfterKhabroomApprovesThem => 'مکان‌های تازه بعد از تأیید خوابروم به مشتری‌ها نشان داده می‌شوند.';
+
+  @override
+  String get newPriceRule => 'قانون قیمت تازه';
+
+  @override
+  String get newPurchase => 'خرید تازه';
+
+  @override
+  String get newRecord => 'ثبت تازه';
+
+  @override
+  String get newRentIfItChanges => 'اجاره‌ی تازه (اگر عوض می‌شود)';
+
+  @override
+  String get newResident => 'ساکن تازه';
+
+  @override
+  String get newResidentForThisBed => 'ساکن تازه برای این تخت';
+
+  @override
+  String get newRoom => 'اتاق تازه';
+
+  @override
+  String get newRoomType => 'نوع اتاق تازه';
+
+  @override
+  String get newShift => 'شیفت تازه';
+
+  @override
+  String get newStockItem => 'کالای تازه';
+
+  @override
+  String get newTask => 'کار تازه';
+
+  @override
+  String get noActiveSubscription => 'اشتراک فعالی ندارید';
+
+  @override
+  String get noApplicationsHere => 'درخواستی اینجا نیست';
+
+  @override
+  String get noBillsHere => 'قبضی اینجا نیست';
+
+  @override
+  String get noBillsYet => 'هنوز قبضی نیست';
+
+  @override
+  String get noBookingsHere => 'رزروی اینجا نیست';
+
+  @override
+  String get noChequesYet => 'هنوز چکی نیست';
+
+  @override
+  String get noEntriesInThisPeriod => 'در این بازه سندی نیست';
+
+  @override
+  String get noEquipmentYet => 'هنوز اموالی ثبت نشده';
+
+  @override
+  String get noMealsPlanned => 'غذایی برنامه‌ریزی نشده';
+
+  @override
+  String get noOneHere => 'کسی اینجا نیست';
+
+  @override
+  String get noOneWithThisNumberLivesHere => 'کسی با این شماره اینجا ساکن نیست';
+
+  @override
+  String get noOpenOrders => 'سفارش بازی نیست';
+
+  @override
+  String get noPayoutsYet => 'هنوز واریزی نشده';
+
+  @override
+  String get noPlacesYet => 'هنوز مکانی نیست';
+
+  @override
+  String get noPriceRulesEveryNightUsesTheRoomPrice => 'قانونی نیست؛ همه‌ی شب‌ها با قیمت عادی اتاق حساب می‌شوند';
+
+  @override
+  String get noPurchasesYet => 'هنوز خریدی نیست';
+
+  @override
+  String get noRoomIsFreeForTheseDates => 'برای این تاریخ‌ها اتاق خالی نیست';
+
+  @override
+  String get noShiftsThisWeek => 'این هفته شیفتی نیست';
+
+  @override
+  String get nobodyYet => 'فعلاً هیچ‌کس';
+
+  @override
+  String get notPaid => 'پرداخت نشد';
+
+  @override
+  String get notYet => 'هنوز نه';
+
+  @override
+  String get noteForTheKitchen => 'توضیح برای آشپزخانه';
+
+  @override
+  String get nothingDoneYet => 'هنوز کاری انجام نشده';
+
+  @override
+  String get nothingHappenedYet => 'هنوز اتفاقی نیفتاده';
+
+  @override
+  String get nothingInStockYet => 'هنوز کالایی در انبار نیست';
+
+  @override
+  String get nothingNewSinceTheLastPayout => 'از آخرین واریز چیز تازه‌ای نیست';
+
+  @override
+  String get nothingRecordedYet => 'هنوز چیزی ثبت نشده';
+
+  @override
+  String get nothingToDo => 'کاری نمانده';
+
+  @override
+  String get numberOfBeds => 'تعداد تخت';
+
+  @override
+  String get occupiedBeds => 'تخت پر';
+
+  @override
+  String get occupiedRooms => 'اتاق پر';
+
+  @override
+  String get oneCategoryPerLineInTheOrderCustomersSeeThem => 'هر خط یک دسته، به همان ترتیبی که مشتری می‌بیند.';
+
+  @override
+  String get onlineOrdering => 'سفارش آنلاین';
+
+  @override
+  String get onlyForCurrentGuestsOrResidentsOfThisBusiness => 'فقط برای مهمان‌ها یا ساکنان فعلی همین مجموعه';
+
+  @override
+  String get onlyOnTheseDays => 'فقط این روزها';
+
+  @override
+  String get onlyWhatIsRunningLow => 'فقط کالاهای رو به اتمام';
+
+  @override
+  String get openForBooking => 'باز برای رزرو';
+
+  @override
+  String get openOrders => 'سفارش‌های باز';
+
+  @override
+  String get option => 'گزینه';
+
+  @override
+  String get orderAndPay => 'سفارش و پرداخت';
+
+  @override
+  String get orderAndPayFromYourTable => 'از سر میز سفارش دهید و پرداخت کنید';
+
+  @override
+  String get orderingIsOff => 'سفارش‌گیری خاموش است';
+
+  @override
+  String get ourPicks => 'پیشنهاد ما';
+
+  @override
+  String get overdueBills => 'قبض معوق';
+
+  @override
+  String get ownerEverything => 'مالک · همه‌ی دسترسی‌ها';
+
+  @override
+  String get paidFullyFromYourWallet => 'کل مبلغ از کیف پولتان پرداخت می‌شود';
+
+  @override
+  String get paidOut => 'واریزشده';
+
+  @override
+  String get paidOutDaily => 'واریز روزانه';
+
+  @override
+  String get payFromWalletFirst => 'اول از کیف پول';
+
+  @override
+  String get payout => 'واریز';
+
+  @override
+  String get payouts => 'واریزها';
+
+  @override
+  String get payoutsFromKhabroom => 'واریزهای خوابروم';
+
+  @override
+  String get people => 'نفر';
+
+  @override
+  String get peoplePerRoom => 'نفر در هر اتاق';
+
+  @override
+  String get peopleWhoWantToStay => 'کسانی که می‌خواهند ساکن شوند';
+
+  @override
+  String get pickAPlan => 'یک پلن انتخاب کنید';
+
+  @override
+  String get pickARoom => 'یک اتاق انتخاب کنید';
+
+  @override
+  String get pickTheCoverPhotoItIsShownFirst => 'عکس کاور را انتخاب کنید؛ اول از همه نشان داده می‌شود.';
+
+  @override
+  String get piece => 'عدد';
+
+  @override
+  String get places => 'مکان‌ها';
+
+  @override
+  String get pleaseChooseTheCity => 'شهر را انتخاب کنید';
+
+  @override
+  String get pointTheCameraAtTheQrCodeOnTheTable => 'دوربین را رو به کیوآرکد روی میز بگیرید';
+
+  @override
+  String get priceChangePercent => 'درصد تغییر قیمت';
+
+  @override
+  String get pricesAndClosedDays => 'قیمت‌ها و روزهای بسته';
+
+  @override
+  String get printTheseCodesAndPutOneOnEachTable => 'این کدها را چاپ کنید و روی هر میز یکی بگذارید.';
+
+  @override
+  String get reasonTheCustomerSeesIt => 'دلیل (مشتری می‌بیند)';
+
+  @override
+  String get receive => 'دریافت';
+
+  @override
+  String get receivePayment => 'ثبت دریافت';
+
+  @override
+  String get receivePayments => 'ثبت دریافت پول';
+
+  @override
+  String get received => 'رسید';
+
+  @override
+  String get receivedInto => 'واریز به';
+
+  @override
+  String get receivedThisMonth => 'دریافتی این ماه';
+
+  @override
+  String get reception => 'پذیرش';
+
+  @override
+  String get recordAccounting => 'ثبت اسناد';
+
+  @override
+  String get recordAnExpense => 'ثبت هزینه';
+
+  @override
+  String get recordPayment => 'ثبت پرداخت';
+
+  @override
+  String get recordWhatYouSpent => 'ثبت هزینه‌ها';
+
+  @override
+  String get recordedAPayment => 'پرداخت ثبت کرد';
+
+  @override
+  String get records => 'دفتر خوابگاه';
+
+  @override
+  String get removeFromTeam => 'حذف از تیم';
+
+  @override
+  String get renew => 'تمدید';
+
+  @override
+  String get renewOrAddASystem => 'تمدید یا افزودن سیستم';
+
+  @override
+  String get rentAndPayments => 'اجاره و پرداخت‌ها';
+
+  @override
+  String get repairsCleaningAndToDos => 'تعمیرات، نظافت و کارها';
+
+  @override
+  String get reply => 'پاسخ';
+
+  @override
+  String get reportAProblem => 'گزارش مشکل';
+
+  @override
+  String get residentsPhoneNumber => 'شماره‌ی ساکن';
+
+  @override
+  String get returnedToYourWallet => 'برگشت به کیف پول';
+
+  @override
+  String get roomName => 'نام اتاق';
+
+  @override
+  String get roomNumbers => 'شماره‌ی اتاق‌ها';
+
+  @override
+  String get roomTypeName => 'نام نوع اتاق';
+
+  @override
+  String get saveBooking => 'ثبت رزرو';
+
+  @override
+  String get saveContract => 'ثبت قرارداد';
+
+  @override
+  String get scan => 'اسکن';
+
+  @override
+  String get scanTheTableCode => 'اسکن کد میز';
+
+  @override
+  String get scans => 'اسکن';
+
+  @override
+  String get searchByName => 'جستجوی نام';
+
+  @override
+  String get seeItAsACustomer => 'دیدن مثل مشتری';
+
+  @override
+  String get seeTheBooks => 'دیدن گزارش‌های مالی';
+
+  @override
+  String get seeTheMenuAndOrderFromYourTable => 'منو را ببینید و از سر میز سفارش دهید';
+
+  @override
+  String get seeTheNumbers => 'دیدن آمار';
+
+  @override
+  String get sendToSupport => 'ارسال به پشتیبانی';
+
+  @override
+  String get setTheNumberOfTables => 'تعداد میزها را وارد کنید';
+
+  @override
+  String get shiftDone => 'شیفت تمام شد';
+
+  @override
+  String get shiftsAndTasks => 'شیفت و کارها';
+
+  @override
+  String get showToCustomers => 'نمایش به مشتری‌ها';
+
+  @override
+  String get shownAfterKhabroomApprovesIt => 'بعد از تأیید خوابروم نمایش داده می‌شود';
+
+  @override
+  String get signIn => 'ورود';
+
+  @override
+  String get signInToContinue => 'برای ادامه وارد شوید';
+
+  @override
+  String get signInToSeeYourPayments => 'برای دیدن پرداخت‌هایتان وارد شوید';
+
+  @override
+  String get signInToSeeYourProfile => 'برای دیدن پروفایل وارد شوید';
+
+  @override
+  String get signInToSeeYourReservations => 'برای دیدن رزروهایتان وارد شوید';
+
+  @override
+  String get signInWithYourPhoneNumberNoPasswordNeeded => 'با شماره‌ی موبایل وارد شوید؛ رمز لازم نیست';
+
+  @override
+  String get sizeInSquareMeters => 'متراژ (متر مربع)';
+
+  @override
+  String get startMyBusiness => 'شروع کسب‌وکار';
+
+  @override
+  String get stay => 'اقامت';
+
+  @override
+  String get staying => 'مقیم';
+
+  @override
+  String get stockPurchasesAndEquipment => 'موجودی، خرید و اموال';
+
+  @override
+  String get storekeeper => 'انباردار';
+
+  @override
+  String get storeroom => 'انبار';
+
+  @override
+  String get switchBetweenYourAccountAndYourBusinesses => 'جابه‌جایی بین حساب شخصی و کسب‌وکارها';
+
+  @override
+  String get tableNumber => 'شماره‌ی میز';
+
+  @override
+  String get tableScans => 'اسکن میزها';
+
+  @override
+  String get tables => 'میزها';
+
+  @override
+  String get tablesAndQr => 'میزها و کیوآرکد';
+
+  @override
+  String get takeOut => 'برداشت از انبار';
+
+  @override
+  String get takeaway => 'بیرون‌بر';
+
+  @override
+  String get tasks => 'کارها';
+
+  @override
+  String get taxDetails => 'اطلاعات مالیاتی';
+
+  @override
+  String get team => 'تیم';
+
+  @override
+  String get theCustomerPicksItUpAtTheCounter => 'مشتری از پیشخوان تحویل می‌گیرد';
+
+  @override
+  String get theDayWasClosed => 'روز بسته شد';
+
+  @override
+  String get theMoneyGoesBackToTheCustomersWallet => 'پول به کیف پول مشتری برمی‌گردد.';
+
+  @override
+  String get theMoneyGoesBackToYourWallet => 'پول به کیف پولتان برمی‌گردد.';
+
+  @override
+  String get theOrderIsBroughtToTheTable => 'سفارش سر میز آورده می‌شود';
+
+  @override
+  String get theOwnerHasNotGivenYouAccessToAnyPlaceYet => 'مالک هنوز به شما دسترسی هیچ مکانی را نداده است';
+
+  @override
+  String get thereIsNoFreeBed => 'تخت خالی نیست';
+
+  @override
+  String get theySignInWithThisNumberAndSeeThisBusinessInTheirList => 'با همین شماره وارد می‌شود و این کسب‌وکار را در فهرستش می‌بیند.';
+
+  @override
+  String get theyWillNoLongerSeeThisBusiness => 'دیگر این کسب‌وکار را نمی‌بیند.';
+
+  @override
+  String get thisCodeIsNotAKhabroomMenu => 'این کد، منوی خوابروم نیست';
+
+  @override
+  String get thisMenuHasNoItemsYet => 'این منو هنوز آیتمی ندارد';
+
+  @override
+  String get thisMenuIsForViewingOnly => 'این منو فقط برای دیدن است';
+
+  @override
+  String get thisPersonHasAnAccount => 'این فرد حساب دارد';
+
+  @override
+  String get toARoom => 'به اتاق';
+
+  @override
+  String get toClean => 'برای نظافت';
+
+  @override
+  String get toCollect => 'برای دریافت';
+
+  @override
+  String get toDo => 'انجام‌نشده';
+
+  @override
+  String get toMyRoom => 'به اتاقم';
+
+  @override
+  String get toPay => 'قابل پرداخت';
+
+  @override
+  String get topUpAmountRange => 'مبلغ را بین ۱٬۰۰۰ تا ۵۰٬۰۰۰٬۰۰۰ تومان بنویسید.';
+
+  @override
+  String get topUpAndTransactions => 'شارژ و تراکنش‌ها';
+
+  @override
+  String get totalToPay => 'جمع قابل پرداخت';
+
+  @override
+  String get trial => 'آزمایشی';
+
+  @override
+  String get turnItOnInMenuLook => 'از «ظاهر منو» روشنش کنید';
+
+  @override
+  String get turnOffToHideItForAWhile => 'برای پنهان کردن موقت خاموش کنید';
+
+  @override
+  String get unpaidBills => 'قبض پرداخت‌نشده';
+
+  @override
+  String get vat => 'ارزش افزوده';
+
+  @override
+  String get vatOnPurchases => 'ارزش افزوده‌ی خرید';
+
+  @override
+  String get vatOnSales => 'ارزش افزوده‌ی فروش';
+
+  @override
+  String get vatToPay => 'ارزش افزوده‌ی قابل پرداخت';
+
+  @override
+  String get viewOnlyMenu => 'منوی فقط‌نمایش';
+
+  @override
+  String get viewYourOrder => 'دیدن سفارش';
+
+  @override
+  String get visible => 'نمایان';
+
+  @override
+  String get visitorPhone => 'شماره‌ی ملاقات‌کننده';
+
+  @override
+  String get visitorsLeavesAndNotices => 'ملاقات، مرخصی و اطلاعیه';
+
+  @override
+  String get waitingForApproval => 'در انتظار تأیید';
+
+  @override
+  String get waitingForPayment => 'منتظر پرداخت';
+
+  @override
+  String get waitingForPayout => 'منتظر واریز';
+
+  @override
+  String get walletAndCard => 'کیف پول و کارت';
+
+  @override
+  String get wantsToComeFrom => 'می‌خواهد بیاید از';
+
+  @override
+  String get warnMeBelow => 'هشدار وقتی کمتر شد از';
+
+  @override
+  String get wasAddedToYourOrder => 'به سفارش اضافه شد';
+
+  @override
+  String get weSentACodeTo => 'کد را فرستادیم به';
+
+  @override
+  String get whatCustomersSee => 'آنچه مشتری می‌بیند';
+
+  @override
+  String get whatHappened => 'چه شده است؟';
+
+  @override
+  String get whatIsItFor => 'برای چیست؟';
+
+  @override
+  String get whatIsOnTheMenu => 'غذا چیست؟';
+
+  @override
+  String get whatNeedsDoing => 'چه کاری باید انجام شود؟';
+
+  @override
+  String get whatResidentsSay => 'نظر ساکنان';
+
+  @override
+  String get whatWasDone => 'چه کاری انجام شد؟';
+
+  @override
+  String get whatWasItFor => 'بابت چه؟';
+
+  @override
+  String get whatYouHave => 'اشتراک فعلی';
+
+  @override
+  String get whatsHappeningToday => 'امروز چه خبر است؟';
+
+  @override
+  String get whenOffTheMenuIsForViewingOnly => 'وقتی خاموش است، منو فقط برای دیدن است';
+
+  @override
+  String get whenOffTheQrCodesShowNothing => 'وقتی خاموش است، کیوآرکدها چیزی نشان نمی‌دهند';
+
+  @override
+  String get whereDoYouWantToWork => 'کجا می‌خواهید کار کنید؟';
+
+  @override
+  String get whereShouldWePayYou => 'پول را به کجا واریز کنیم؟';
+
+  @override
+  String get who => 'چه کسی';
+
+  @override
+  String get whoDidWhat => 'چه کسی چه کرد';
+
+  @override
+  String get whoIsComing => 'چه کسی می‌آید؟';
+
+  @override
+  String get whoIsIt => 'چه کسی است؟';
+
+  @override
+  String get whoSleepsWhere => 'چه کسی کجاست';
+
+  @override
+  String get whoWorksWhen => 'چه کسی کی کار می‌کند';
+
+  @override
+  String get withoutCategory => 'بدون دسته';
+
+  @override
+  String get youCanAddDormsHotelsAndCafesToItLater => 'بعداً می‌توانید خوابگاه، هتل و کافه به آن اضافه کنید.';
+
+  @override
+  String get youHaveANewOrder => 'سفارش تازه دارید';
+
+  @override
+  String get youHaveNotOrderedAnythingYet => 'هنوز سفارشی نداده‌اید';
+
+  @override
+  String get youHaveNothingToPay => 'چیزی برای پرداخت ندارید';
+
+  @override
+  String get youStartWithTheFreeTrialAndPayWhenItEnds => 'با دوره‌ی رایگان شروع می‌کنید و بعد از آن پرداخت می‌کنید.';
+
+  @override
+  String get yourCafeOrdersAndTheirStatus => 'سفارش‌های کافه و وضعیتشان';
+
+  @override
+  String get yourFirstName => 'نام شما';
+
+  @override
+  String get yourLastName => 'نام خانوادگی شما';
+
+  @override
+  String get yourMenuIsEmpty => 'منوی شما خالی است';
+
+  @override
+  String get yourOrder => 'سفارش شما';
+
+  @override
+  String get yourPlanDoesNotIncludeAnyPlaceType => 'اشتراک شما هیچ نوع مکانی ندارد';
+
+  @override
+  String get yourReply => 'پاسخ شما';
+
+  @override
+  String get yourShiftToday => 'شیفت امروز شما';
+
+  @override
+  String get yourSubscriptionEndsSoon => 'اشتراکتان به‌زودی تمام می‌شود';
+
+  @override
+  String get yourWalletIsChargedOnlyAfterTheCardPaymentSucceeds => 'سهم کیف پول فقط بعد از موفق شدن پرداخت کارتی کم می‌شود';
+
+  @override
+  String get forExampleRoom102 => 'مثلاً اتاق ۱۰۲';
+
+  @override
+  String get forExample20OrMinus10 => 'مثلاً ۲۰ یا -۱۰';
+
+  @override
+  String get forExample101To104 => 'مثلاً ۱۰۱ تا ۱۰۴';
+
+  @override
+  String get forExampleEveryDay8To24 => 'مثلاً هر روز ۸ تا ۲۴';
+
+  @override
+  String get forExampleRoom204Bathroom => 'مثلاً حمام اتاق ۲۰۴';
+
+  @override
+  String get orderNo => 'سفارش شماره';
+
+  @override
+  String get positionInLine => 'نوبت در صف';
 }

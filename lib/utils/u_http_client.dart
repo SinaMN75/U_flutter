@@ -195,7 +195,14 @@ abstract class UHttpClient {
           isRetryAfterRefresh: isRetryAfterRefresh,
         );
       } else {
-        final String message = unexpectedErrorMessage ?? U.s.unexpectedErrorPleaseTryAgain;
+        String message = unexpectedErrorMessage ?? "";
+
+        if (e is TimeoutException) {
+          message = "پاسخی از مرکز دریافت نشد.";
+        } else if (e is SocketException || e is ClientException) {
+          message = "ارتباط با مرکز برقرار نشد.";
+        }
+
         onException(message);
         return UHttpClientResponse(exception: message);
       }

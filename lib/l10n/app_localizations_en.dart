@@ -7384,4 +7384,1312 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get creditPurchases => 'Credit Purchases';
+
+  @override
+  String get tooManyRequests => 'Too many requests';
+
+  @override
+  String get pleaseWaitAFewSecondsAndTryAgain => 'Please wait a few seconds and try again';
+
+  @override
+  String get requestFailed => 'Request failed';
+
+  @override
+  String get serverError => 'Server error';
+
+  @override
+  String get splash => 'Splash';
+
+  @override
+  String get loans => 'Loans';
+
+  @override
+  String get login => 'Login';
+
+  @override
+  String get accentColor => 'Accent color';
+
+  @override
+  String get thisPlaceWillBeShownToEveryone => 'This place will be shown to everyone';
+
+  @override
+  String get thisPlaceWillStayHidden => 'This place will stay hidden';
+
+  @override
+  String get cafe => 'Cafe';
+
+  @override
+  String get cafes => 'Cafes';
+
+  @override
+  String get itemOptions => 'Item options';
+
+  @override
+  String get labels => 'Labels';
+
+  @override
+  String get markAsAvailable => 'Mark as available';
+
+  @override
+  String get markAsUnavailable => 'Mark as unavailable';
+
+  @override
+  String get menuItem => 'Menu item';
+
+  @override
+  String get menuItems => 'Menu items';
+
+  @override
+  String get menuSettings => 'Menu settings';
+
+  @override
+  String get menus => 'Menus';
+
+  @override
+  String get noPlacesWaitingForReview => 'No places waiting for review';
+
+  @override
+  String get openHours => 'Open hours';
+
+  @override
+  String get ordering => 'Ordering';
+
+  @override
+  String get orders => 'Orders';
+
+  @override
+  String get placeApprovals => 'Place approvals';
+
+  @override
+  String get prepMinutes => 'Prep minutes';
+
+  @override
+  String get rejectAndRefund => 'Reject and refund';
+
+  @override
+  String get tableCount => 'Table count';
+
+  @override
+  String get tagline => 'Tagline';
+
+  @override
+  String get loanId => 'Loan ID';
+
+  @override
+  String get kalabargBalanceInquiry => 'Kalabarg balance inquiry';
+
+  @override
+  String get beingSetUp => 'Being set up';
+
+  @override
+  String get aboutYourBusiness => 'About your business';
+
+  @override
+  String get accountNumber => 'Account number';
+
+  @override
+  String get accountant => 'Accountant';
+
+  @override
+  String get activity => 'Activity';
+
+  @override
+  String get addAccountingToYourSubscriptionToKeepBooks => 'Add accounting to your subscription to keep books';
+
+  @override
+  String get addBed => 'Add bed';
+
+  @override
+  String get addCategoriesThenYourFirstItem => 'Add categories then your first item';
+
+  @override
+  String get addChoice => 'Add choice';
+
+  @override
+  String get addOption => 'Add option';
+
+  @override
+  String get addRoomNumbersToYourRoomTypesFirst => 'Add room numbers to your room types first';
+
+  @override
+  String get addStaff => 'Add staff';
+
+  @override
+  String get addToBill => 'Add to bill';
+
+  @override
+  String get addToOrder => 'Add to order';
+
+  @override
+  String get addYourBankAccountInSettings => 'Add your bank account in settings';
+
+  @override
+  String get addYourFirstPlace => 'Add your first place';
+
+  @override
+  String get addYourFirstPlaceFromThePlacesTab => 'Add your first place from the places tab';
+
+  @override
+  String get addYourRoomTypesFirst => 'Add your room types first';
+
+  @override
+  String get addYourRoomsAndBedsFirst => 'Add your rooms and beds first';
+
+  @override
+  String get allRooms => 'All rooms';
+
+  @override
+  String get applicant => 'Applicant';
+
+  @override
+  String get applications => 'Applications';
+
+  @override
+  String get arriving => 'Arriving';
+
+  @override
+  String get arrivingToday => 'Arriving today';
+
+  @override
+  String get askForAnEarlyPayout => 'Ask for an early payout';
+
+  @override
+  String get atTheTable => 'At the table';
+
+  @override
+  String get atWork => 'At work';
+
+  @override
+  String get backOn => 'Back on';
+
+  @override
+  String get balanceOfEachBox => 'Balance of each box';
+
+  @override
+  String get bank => 'Bank';
+
+  @override
+  String get bankAccountForPayouts => 'Bank account for payouts';
+
+  @override
+  String get bedAndDates => 'Bed and dates';
+
+  @override
+  String get bedName => 'Bed name';
+
+  @override
+  String get bills => 'Bills';
+
+  @override
+  String get billsAreMadeAutomaticallyFromTheContract => 'Bills are made automatically from the contract';
+
+  @override
+  String get board => 'Board';
+
+  @override
+  String get bookingsAndCheckIn => 'Bookings and check in';
+
+  @override
+  String get books => 'Books';
+
+  @override
+  String get booksAreNotInYourPlan => 'Books are not in your plan';
+
+  @override
+  String get business => 'Business';
+
+  @override
+  String get businessDetails => 'Business details';
+
+  @override
+  String get businessName => 'Business name';
+
+  @override
+  String get buy => 'Buy';
+
+  @override
+  String get byCard => 'By card';
+
+  @override
+  String get bySigningInYouAcceptTheTerms => 'By signing in you accept the terms';
+
+  @override
+  String get cafesAndRestaurants => 'Cafes and restaurants';
+
+  @override
+  String get canPickMoreThanOne => 'Can pick more than one';
+
+  @override
+  String get cancelOrder => 'Cancel order';
+
+  @override
+  String get cashAndBank => 'Cash and bank';
+
+  @override
+  String get cashier => 'Cashier';
+
+  @override
+  String get changed => 'Changed';
+
+  @override
+  String get checkOutAndSettle => 'Check out and settle';
+
+  @override
+  String get checkOutExplanation => 'Debts are taken from the deposit and the rest goes back to the resident\'s wallet. If the deposit is not enough, a bill is made for the rest.';
+
+  @override
+  String get checkedSomeoneOut => 'Checked someone out';
+
+  @override
+  String get chequeNumber => 'Cheque number';
+
+  @override
+  String get cheques => 'Cheques';
+
+  @override
+  String get chequesYouReceivedOrIssued => 'Cheques you received or issued';
+
+  @override
+  String get choiceTitle => 'Choice title';
+
+  @override
+  String get choices => 'Choices';
+
+  @override
+  String get closeTheDay => 'Close the day';
+
+  @override
+  String get closeTheDayExplanation => 'Today\'s room revenue is posted to the books and guests who did not come are marked as no-show. Continue?';
+
+  @override
+  String get closedForBooking => 'Closed for booking';
+
+  @override
+  String get collected => 'Collected';
+
+  @override
+  String get colorAndOrdering => 'Color and ordering';
+
+  @override
+  String get confirmedRightAway => 'Confirmed right away';
+
+  @override
+  String get contractsAndAllDormInvoices => 'Contracts and all dorm invoices';
+
+  @override
+  String get contractsAndCheckOut => 'Contracts and check out';
+
+  @override
+  String get contractsAndResidents => 'Contracts and residents';
+
+  @override
+  String get copyLink => 'Copy link';
+
+  @override
+  String get costIfAny => 'Cost if any';
+
+  @override
+  String get creditFromYourCurrentPlan => 'Credit from your current plan';
+
+  @override
+  String get customersAndResidents => 'Customers and residents';
+
+  @override
+  String get customersPayInTheAppKhabroomDepositsToThisAccountDaily => 'Customers pay in the app Khabroom deposits to this account daily';
+
+  @override
+  String get dailyRent => 'Daily rent';
+
+  @override
+  String get damagesToDeduct => 'Damages to deduct';
+
+  @override
+  String get daysFree => 'Days free';
+
+  @override
+  String get deleteBed => 'Delete bed';
+
+  @override
+  String get deleteBills => 'Delete bills';
+
+  @override
+  String get deleteBookings => 'Delete bookings';
+
+  @override
+  String get deleteContracts => 'Delete contracts';
+
+  @override
+  String get deleteRoom => 'Delete room';
+
+  @override
+  String get deleted => 'Deleted';
+
+  @override
+  String get depositPerBed => 'Deposit per bed';
+
+  @override
+  String get depositReturned => 'Deposit returned';
+
+  @override
+  String get deposited => 'Deposited';
+
+  @override
+  String get depositedToYourAccount => 'Deposited to your account';
+
+  @override
+  String get didNotReceiveIt => 'Did not receive it';
+
+  @override
+  String get didNotShowUp => 'Did not show up';
+
+  @override
+  String get dormHotelOrCafeStartWithAFreeTrial => 'Dorm hotel or cafe start with a free trial';
+
+  @override
+  String get earlyPayoutExplanation => 'Your request is sent to Khabroom and paid after review.';
+
+  @override
+  String get editBed => 'Edit bed';
+
+  @override
+  String get editPhoneNumber => 'Edit phone number';
+
+  @override
+  String get editRoom => 'Edit room';
+
+  @override
+  String get editRoomsAndDetails => 'Edit rooms and details';
+
+  @override
+  String get editTheMenu => 'Edit the menu';
+
+  @override
+  String get endsOn => 'Ends on';
+
+  @override
+  String get enterTheCode => 'Enter the code';
+
+  @override
+  String get entry => 'Entry';
+
+  @override
+  String get equipment => 'Equipment';
+
+  @override
+  String get extra => 'Extra';
+
+  @override
+  String get forExampleChickenAndRice => 'For example chicken and rice';
+
+  @override
+  String get forExampleCoffeeUnderTheOrangeTrees => 'For example coffee under the orange trees';
+
+  @override
+  String get forExampleDoubleRoom => 'For example double room';
+
+  @override
+  String get forExampleLessSugar => 'For example less sugar';
+
+  @override
+  String get forExampleMilkType => 'For example milk type';
+
+  @override
+  String get forExampleNowruz => 'For example nowruz';
+
+  @override
+  String get forExampleRoomServiceOrMinibar => 'For example room service or minibar';
+
+  @override
+  String get forExampleTowel => 'For example towel';
+
+  @override
+  String get forExampleWashingMachine => 'For example washing machine';
+
+  @override
+  String get forExampleYasGroup => 'For example yas group';
+
+  @override
+  String get forTheWholeBusiness => 'For the whole business';
+
+  @override
+  String get freeBeds => 'Free beds';
+
+  @override
+  String get freeRooms => 'Free rooms';
+
+  @override
+  String get fromOrTo => 'From or to';
+
+  @override
+  String get fromWallet => 'From wallet';
+
+  @override
+  String get generalMenu => 'General menu';
+
+  @override
+  String get getCode => 'Get code';
+
+  @override
+  String get giveItTo => 'Give it to';
+
+  @override
+  String get guardianOptional => 'Guardian optional';
+
+  @override
+  String get handleOrders => 'Handle orders';
+
+  @override
+  String get howDoYouWantIt => 'How do you want it';
+
+  @override
+  String get howManyPortions => 'How many portions';
+
+  @override
+  String get howManyRooms => 'How many rooms';
+
+  @override
+  String get howManyTables => 'How many tables';
+
+  @override
+  String get ifTheCafeRejectsYourOrderTheMoneyGoesBackToYourWallet => 'If the cafe rejects your order the money goes back to your wallet';
+
+  @override
+  String get inProgress => 'In progress';
+
+  @override
+  String get inReview => 'In review';
+
+  @override
+  String get income => 'Income';
+
+  @override
+  String get incomeExpensesAndVat => 'Income expenses and VAT';
+
+  @override
+  String get khabroomFee => 'Khabroom fee';
+
+  @override
+  String get lastClosedDay => 'Last closed day';
+
+  @override
+  String get lateFeePercentPerDay => 'Late fee percent per day';
+
+  @override
+  String get leaveAPlaceEmptyAndTheyWillNotSeeIt => 'Leave a place empty and they will not see it';
+
+  @override
+  String get leavingDate => 'Leaving date';
+
+  @override
+  String get leavingSoon => 'Leaving soon';
+
+  @override
+  String get leavingToday => 'Leaving today';
+
+  @override
+  String get livingHere => 'Living here';
+
+  @override
+  String get look => 'Look';
+
+  @override
+  String get mainStoreroom => 'Main storeroom';
+
+  @override
+  String get makeAndEditBills => 'Make and edit bills';
+
+  @override
+  String get makeResident => 'Make resident';
+
+  @override
+  String get markAsDone => 'Mark as done';
+
+  @override
+  String get meals => 'Meals';
+
+  @override
+  String get menuAndReservations => 'Menu and reserVATions';
+
+  @override
+  String get menuIsOpen => 'Menu is open';
+
+  @override
+  String get menuLook => 'Menu look';
+
+  @override
+  String get menuViews => 'Menu views';
+
+  @override
+  String get messageToTheApplicant => 'Message to the applicant';
+
+  @override
+  String get minimumNights => 'Minimum nights';
+
+  @override
+  String get money => 'Money';
+
+  @override
+  String get moneyYourCustomersPaidThatIsNotInYourAccountYet => 'Money your customers paid that is not in your account yet';
+
+  @override
+  String get monthlyRentPerBed => 'Monthly rent per bed';
+
+  @override
+  String get moveToAnotherBed => 'Move to another bed';
+
+  @override
+  String get mustChoose => 'Must choose';
+
+  @override
+  String get myOrders => 'My orders';
+
+  @override
+  String get myPayments => 'My payments';
+
+  @override
+  String get myPersonalAccount => 'My personal account';
+
+  @override
+  String get myPlaces => 'My places';
+
+  @override
+  String get myShifts => 'My shifts';
+
+  @override
+  String get myStaysPaymentsAndOrders => 'My stays payments and orders';
+
+  @override
+  String get myTasks => 'My tasks';
+
+  @override
+  String get nameBankAccountAndTax => 'Name bank account and tax';
+
+  @override
+  String get nationalId => 'National id';
+
+  @override
+  String get newBed => 'New bed';
+
+  @override
+  String get newBill => 'New bill';
+
+  @override
+  String get newBooking => 'New booking';
+
+  @override
+  String get newBusiness => 'New business';
+
+  @override
+  String get newCheckOutDate => 'New check out date';
+
+  @override
+  String get newCheque => 'New cheque';
+
+  @override
+  String get newEndDate => 'New end date';
+
+  @override
+  String get newEquipment => 'New equipment';
+
+  @override
+  String get newItem => 'New item';
+
+  @override
+  String get newMeal => 'New meal';
+
+  @override
+  String get newOrders => 'New orders';
+
+  @override
+  String get newOrdersAppearHereByThemselves => 'New orders appear here by themselves';
+
+  @override
+  String get newPersonTheyCanSignInLaterWithThisNumber => 'New person they can sign in later with this number';
+
+  @override
+  String get newPlace => 'New place';
+
+  @override
+  String get newPlacesAreShownToCustomersAfterKhabroomApprovesThem => 'New places are shown to customers after Khabroom approves them';
+
+  @override
+  String get newPriceRule => 'New price rule';
+
+  @override
+  String get newPurchase => 'New purchase';
+
+  @override
+  String get newRecord => 'New record';
+
+  @override
+  String get newRentIfItChanges => 'New rent if it changes';
+
+  @override
+  String get newResident => 'New resident';
+
+  @override
+  String get newResidentForThisBed => 'New resident for this bed';
+
+  @override
+  String get newRoom => 'New room';
+
+  @override
+  String get newRoomType => 'New room type';
+
+  @override
+  String get newShift => 'New shift';
+
+  @override
+  String get newStockItem => 'New stock item';
+
+  @override
+  String get newTask => 'New task';
+
+  @override
+  String get noActiveSubscription => 'No active subscription';
+
+  @override
+  String get noApplicationsHere => 'No applications here';
+
+  @override
+  String get noBillsHere => 'No bills here';
+
+  @override
+  String get noBillsYet => 'No bills yet';
+
+  @override
+  String get noBookingsHere => 'No bookings here';
+
+  @override
+  String get noChequesYet => 'No cheques yet';
+
+  @override
+  String get noEntriesInThisPeriod => 'No entries in this period';
+
+  @override
+  String get noEquipmentYet => 'No equipment yet';
+
+  @override
+  String get noMealsPlanned => 'No meals planned';
+
+  @override
+  String get noOneHere => 'No one here';
+
+  @override
+  String get noOneWithThisNumberLivesHere => 'No one with this number lives here';
+
+  @override
+  String get noOpenOrders => 'No open orders';
+
+  @override
+  String get noPayoutsYet => 'No payouts yet';
+
+  @override
+  String get noPlacesYet => 'No places yet';
+
+  @override
+  String get noPriceRulesEveryNightUsesTheRoomPrice => 'No price rules every night uses the room price';
+
+  @override
+  String get noPurchasesYet => 'No purchases yet';
+
+  @override
+  String get noRoomIsFreeForTheseDates => 'No room is free for these dates';
+
+  @override
+  String get noShiftsThisWeek => 'No shifts this week';
+
+  @override
+  String get nobodyYet => 'Nobody yet';
+
+  @override
+  String get notPaid => 'Not paid';
+
+  @override
+  String get notYet => 'Not yet';
+
+  @override
+  String get noteForTheKitchen => 'Note for the kitchen';
+
+  @override
+  String get nothingDoneYet => 'Nothing done yet';
+
+  @override
+  String get nothingHappenedYet => 'Nothing happened yet';
+
+  @override
+  String get nothingInStockYet => 'Nothing in stock yet';
+
+  @override
+  String get nothingNewSinceTheLastPayout => 'Nothing new since the last payout';
+
+  @override
+  String get nothingRecordedYet => 'Nothing recorded yet';
+
+  @override
+  String get nothingToDo => 'Nothing to do';
+
+  @override
+  String get numberOfBeds => 'Number of beds';
+
+  @override
+  String get occupiedBeds => 'Occupied beds';
+
+  @override
+  String get occupiedRooms => 'Occupied rooms';
+
+  @override
+  String get oneCategoryPerLineInTheOrderCustomersSeeThem => 'One category per line in the order customers see them';
+
+  @override
+  String get onlineOrdering => 'Online ordering';
+
+  @override
+  String get onlyForCurrentGuestsOrResidentsOfThisBusiness => 'Only for current guests or residents of this business';
+
+  @override
+  String get onlyOnTheseDays => 'Only on these days';
+
+  @override
+  String get onlyWhatIsRunningLow => 'Only what is running low';
+
+  @override
+  String get openForBooking => 'Open for booking';
+
+  @override
+  String get openOrders => 'Open orders';
+
+  @override
+  String get option => 'Option';
+
+  @override
+  String get orderAndPay => 'Order and pay';
+
+  @override
+  String get orderAndPayFromYourTable => 'Order and pay from your table';
+
+  @override
+  String get orderingIsOff => 'Ordering is off';
+
+  @override
+  String get ourPicks => 'Our picks';
+
+  @override
+  String get overdueBills => 'Overdue bills';
+
+  @override
+  String get ownerEverything => 'Owner · everything';
+
+  @override
+  String get paidFullyFromYourWallet => 'Paid fully from your wallet';
+
+  @override
+  String get paidOut => 'Paid out';
+
+  @override
+  String get paidOutDaily => 'Paid out daily';
+
+  @override
+  String get payFromWalletFirst => 'Pay from wallet first';
+
+  @override
+  String get payout => 'Payout';
+
+  @override
+  String get payouts => 'Payouts';
+
+  @override
+  String get payoutsFromKhabroom => 'Payouts from Khabroom';
+
+  @override
+  String get people => 'People';
+
+  @override
+  String get peoplePerRoom => 'People per room';
+
+  @override
+  String get peopleWhoWantToStay => 'People who want to stay';
+
+  @override
+  String get pickAPlan => 'Pick a plan';
+
+  @override
+  String get pickARoom => 'Pick a room';
+
+  @override
+  String get pickTheCoverPhotoItIsShownFirst => 'Pick the cover photo it is shown first';
+
+  @override
+  String get piece => 'Piece';
+
+  @override
+  String get places => 'Places';
+
+  @override
+  String get pleaseChooseTheCity => 'Please choose the city';
+
+  @override
+  String get pointTheCameraAtTheQrCodeOnTheTable => 'Point the camera at the QR code on the table';
+
+  @override
+  String get priceChangePercent => 'Price change percent';
+
+  @override
+  String get pricesAndClosedDays => 'Prices and closed days';
+
+  @override
+  String get printTheseCodesAndPutOneOnEachTable => 'Print these codes and put one on each table';
+
+  @override
+  String get reasonTheCustomerSeesIt => 'Reason the customer sees it';
+
+  @override
+  String get receive => 'Receive';
+
+  @override
+  String get receivePayment => 'Receive payment';
+
+  @override
+  String get receivePayments => 'Receive payments';
+
+  @override
+  String get received => 'Received';
+
+  @override
+  String get receivedInto => 'Received into';
+
+  @override
+  String get receivedThisMonth => 'Received this month';
+
+  @override
+  String get reception => 'Reception';
+
+  @override
+  String get recordAccounting => 'Record accounting';
+
+  @override
+  String get recordAnExpense => 'Record an expense';
+
+  @override
+  String get recordPayment => 'Record payment';
+
+  @override
+  String get recordWhatYouSpent => 'Record what you spent';
+
+  @override
+  String get recordedAPayment => 'Recorded a payment';
+
+  @override
+  String get records => 'Records';
+
+  @override
+  String get removeFromTeam => 'Remove from team';
+
+  @override
+  String get renew => 'Renew';
+
+  @override
+  String get renewOrAddASystem => 'Renew or add a system';
+
+  @override
+  String get rentAndPayments => 'Rent and payments';
+
+  @override
+  String get repairsCleaningAndToDos => 'Repairs cleaning and to dos';
+
+  @override
+  String get reply => 'Reply';
+
+  @override
+  String get reportAProblem => 'Report a problem';
+
+  @override
+  String get residentsPhoneNumber => 'Residents phone number';
+
+  @override
+  String get returnedToYourWallet => 'Returned to your wallet';
+
+  @override
+  String get roomName => 'Room name';
+
+  @override
+  String get roomNumbers => 'Room numbers';
+
+  @override
+  String get roomTypeName => 'Room type name';
+
+  @override
+  String get saveBooking => 'Save booking';
+
+  @override
+  String get saveContract => 'Save contract';
+
+  @override
+  String get scan => 'Scan';
+
+  @override
+  String get scanTheTableCode => 'Scan the table code';
+
+  @override
+  String get scans => 'Scans';
+
+  @override
+  String get searchByName => 'Search by name';
+
+  @override
+  String get seeItAsACustomer => 'See it as a customer';
+
+  @override
+  String get seeTheBooks => 'See the books';
+
+  @override
+  String get seeTheMenuAndOrderFromYourTable => 'See the menu and order from your table';
+
+  @override
+  String get seeTheNumbers => 'See the numbers';
+
+  @override
+  String get sendToSupport => 'Send to support';
+
+  @override
+  String get setTheNumberOfTables => 'Set the number of tables';
+
+  @override
+  String get shiftDone => 'Shift done';
+
+  @override
+  String get shiftsAndTasks => 'Shifts and tasks';
+
+  @override
+  String get showToCustomers => 'Show to customers';
+
+  @override
+  String get shownAfterKhabroomApprovesIt => 'Shown after Khabroom approves it';
+
+  @override
+  String get signIn => 'Sign in';
+
+  @override
+  String get signInToContinue => 'Sign in to continue';
+
+  @override
+  String get signInToSeeYourPayments => 'Sign in to see your payments';
+
+  @override
+  String get signInToSeeYourProfile => 'Sign in to see your profile';
+
+  @override
+  String get signInToSeeYourReservations => 'Sign in to see your reserVATions';
+
+  @override
+  String get signInWithYourPhoneNumberNoPasswordNeeded => 'Sign in with your phone number no password needed';
+
+  @override
+  String get sizeInSquareMeters => 'Size in square meters';
+
+  @override
+  String get startMyBusiness => 'Start my business';
+
+  @override
+  String get stay => 'Stay';
+
+  @override
+  String get staying => 'Staying';
+
+  @override
+  String get stockPurchasesAndEquipment => 'Stock purchases and equipment';
+
+  @override
+  String get storekeeper => 'Storekeeper';
+
+  @override
+  String get storeroom => 'Storeroom';
+
+  @override
+  String get switchBetweenYourAccountAndYourBusinesses => 'Switch between your account and your businesses';
+
+  @override
+  String get tableNumber => 'Table number';
+
+  @override
+  String get tableScans => 'Table scans';
+
+  @override
+  String get tables => 'Tables';
+
+  @override
+  String get tablesAndQr => 'Tables and QR';
+
+  @override
+  String get takeOut => 'Take out';
+
+  @override
+  String get takeaway => 'Takeaway';
+
+  @override
+  String get tasks => 'Tasks';
+
+  @override
+  String get taxDetails => 'Tax details';
+
+  @override
+  String get team => 'Team';
+
+  @override
+  String get theCustomerPicksItUpAtTheCounter => 'The customer picks it up at the counter';
+
+  @override
+  String get theDayWasClosed => 'The day was closed';
+
+  @override
+  String get theMoneyGoesBackToTheCustomersWallet => 'The money goes back to the customers wallet';
+
+  @override
+  String get theMoneyGoesBackToYourWallet => 'The money goes back to your wallet';
+
+  @override
+  String get theOrderIsBroughtToTheTable => 'The order is brought to the table';
+
+  @override
+  String get theOwnerHasNotGivenYouAccessToAnyPlaceYet => 'The owner has not given you access to any place yet';
+
+  @override
+  String get thereIsNoFreeBed => 'There is no free bed';
+
+  @override
+  String get theySignInWithThisNumberAndSeeThisBusinessInTheirList => 'They sign in with this number and see this business in their list';
+
+  @override
+  String get theyWillNoLongerSeeThisBusiness => 'They will no longer see this business';
+
+  @override
+  String get thisCodeIsNotAKhabroomMenu => 'This code is not a Khabroom menu';
+
+  @override
+  String get thisMenuHasNoItemsYet => 'This menu has no items yet';
+
+  @override
+  String get thisMenuIsForViewingOnly => 'This menu is for viewing only';
+
+  @override
+  String get thisPersonHasAnAccount => 'This person has an account';
+
+  @override
+  String get toARoom => 'To a room';
+
+  @override
+  String get toClean => 'To clean';
+
+  @override
+  String get toCollect => 'To collect';
+
+  @override
+  String get toDo => 'To do';
+
+  @override
+  String get toMyRoom => 'To my room';
+
+  @override
+  String get toPay => 'To pay';
+
+  @override
+  String get topUpAmountRange => 'Enter an amount between 1,000 and 50,000,000 tomans.';
+
+  @override
+  String get topUpAndTransactions => 'Top up and transactions';
+
+  @override
+  String get totalToPay => 'Total to pay';
+
+  @override
+  String get trial => 'Trial';
+
+  @override
+  String get turnItOnInMenuLook => 'Turn it on in menu look';
+
+  @override
+  String get turnOffToHideItForAWhile => 'Turn off to hide it for a while';
+
+  @override
+  String get unpaidBills => 'Unpaid bills';
+
+  @override
+  String get vat => 'VAT';
+
+  @override
+  String get vatOnPurchases => 'VAT on purchases';
+
+  @override
+  String get vatOnSales => 'VAT on sales';
+
+  @override
+  String get vatToPay => 'VAT to pay';
+
+  @override
+  String get viewOnlyMenu => 'View only menu';
+
+  @override
+  String get viewYourOrder => 'View your order';
+
+  @override
+  String get visible => 'Visible';
+
+  @override
+  String get visitorPhone => 'Visitor phone';
+
+  @override
+  String get visitorsLeavesAndNotices => 'Visitors leaves and notices';
+
+  @override
+  String get waitingForApproval => 'Waiting for approval';
+
+  @override
+  String get waitingForPayment => 'Waiting for payment';
+
+  @override
+  String get waitingForPayout => 'Waiting for payout';
+
+  @override
+  String get walletAndCard => 'Wallet and card';
+
+  @override
+  String get wantsToComeFrom => 'Wants to come from';
+
+  @override
+  String get warnMeBelow => 'Warn me below';
+
+  @override
+  String get wasAddedToYourOrder => 'Was added to your order';
+
+  @override
+  String get weSentACodeTo => 'We sent a code to';
+
+  @override
+  String get whatCustomersSee => 'What customers see';
+
+  @override
+  String get whatHappened => 'What happened';
+
+  @override
+  String get whatIsItFor => 'What is it for';
+
+  @override
+  String get whatIsOnTheMenu => 'What is on the menu';
+
+  @override
+  String get whatNeedsDoing => 'What needs doing';
+
+  @override
+  String get whatResidentsSay => 'What residents say';
+
+  @override
+  String get whatWasDone => 'What was done';
+
+  @override
+  String get whatWasItFor => 'What was it for';
+
+  @override
+  String get whatYouHave => 'What you have';
+
+  @override
+  String get whatsHappeningToday => 'Whats happening today';
+
+  @override
+  String get whenOffTheMenuIsForViewingOnly => 'When off the menu is for viewing only';
+
+  @override
+  String get whenOffTheQrCodesShowNothing => 'When off the QR codes show nothing';
+
+  @override
+  String get whereDoYouWantToWork => 'Where do you want to work';
+
+  @override
+  String get whereShouldWePayYou => 'Where should we pay you';
+
+  @override
+  String get who => 'Who';
+
+  @override
+  String get whoDidWhat => 'Who did what';
+
+  @override
+  String get whoIsComing => 'Who is coming';
+
+  @override
+  String get whoIsIt => 'Who is it';
+
+  @override
+  String get whoSleepsWhere => 'Who sleeps where';
+
+  @override
+  String get whoWorksWhen => 'Who works when';
+
+  @override
+  String get withoutCategory => 'Without category';
+
+  @override
+  String get youCanAddDormsHotelsAndCafesToItLater => 'You can add dorms hotels and cafes to it later';
+
+  @override
+  String get youHaveANewOrder => 'You have a new order';
+
+  @override
+  String get youHaveNotOrderedAnythingYet => 'You have not ordered anything yet';
+
+  @override
+  String get youHaveNothingToPay => 'You have nothing to pay';
+
+  @override
+  String get youStartWithTheFreeTrialAndPayWhenItEnds => 'You start with the free trial and pay when it ends';
+
+  @override
+  String get yourCafeOrdersAndTheirStatus => 'Your cafe orders and their status';
+
+  @override
+  String get yourFirstName => 'Your first name';
+
+  @override
+  String get yourLastName => 'Your last name';
+
+  @override
+  String get yourMenuIsEmpty => 'Your menu is empty';
+
+  @override
+  String get yourOrder => 'Your order';
+
+  @override
+  String get yourPlanDoesNotIncludeAnyPlaceType => 'Your plan does not include any place type';
+
+  @override
+  String get yourReply => 'Your reply';
+
+  @override
+  String get yourShiftToday => 'Your shift today';
+
+  @override
+  String get yourSubscriptionEndsSoon => 'Your subscription ends soon';
+
+  @override
+  String get yourWalletIsChargedOnlyAfterTheCardPaymentSucceeds => 'Your wallet is charged only after the card payment succeeds';
+
+  @override
+  String get forExampleRoom102 => 'For example room 102';
+
+  @override
+  String get forExample20OrMinus10 => 'For example 20 or -10';
+
+  @override
+  String get forExample101To104 => 'For example 101 to 104';
+
+  @override
+  String get forExampleEveryDay8To24 => 'For example every day 8 to 24';
+
+  @override
+  String get forExampleRoom204Bathroom => 'For example room 204 bathroom';
+
+  @override
+  String get orderNo => 'Order no.';
+
+  @override
+  String get positionInLine => 'Position in line';
 }

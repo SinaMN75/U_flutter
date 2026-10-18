@@ -16,6 +16,7 @@ class UCommentResponse {
   final String? blogId;
   final String? hotelId;
   final String? dormId;
+  final String? cafeId;
   final String? venueId;
   final List<UCommentResponse>? children;
   final List<UMediaResponse>? media;
@@ -38,6 +39,7 @@ class UCommentResponse {
     this.blogId,
     this.hotelId,
     this.dormId,
+    this.cafeId,
     this.venueId,
     this.children,
     this.media,
@@ -63,6 +65,7 @@ class UCommentResponse {
     blogId: json["blogId"],
     hotelId: json["hotelId"],
     dormId: json["dormId"],
+    cafeId: json["cafeId"],
     venueId: json["venueId"],
     children: json["children"] == null ? <UCommentResponse>[] : List<UCommentResponse>.from(json["children"].map((dynamic x) => UCommentResponse.fromMap(x))),
     media: json["media"] == null ? <UMediaResponse>[] : List<UMediaResponse>.from(json["media"].map((dynamic x) => UMediaResponse.fromMap(x))),
@@ -85,6 +88,7 @@ class UCommentResponse {
     "blogId": blogId,
     "hotelId": hotelId,
     "dormId": dormId,
+    "cafeId": cafeId,
     "venueId": venueId,
     "children": children == null ? null : List<dynamic>.from(children!.map((UCommentResponse x) => x.toMap())),
     "media": media == null ? null : List<dynamic>.from(media!.map((UMediaResponse x) => x.toMap())),

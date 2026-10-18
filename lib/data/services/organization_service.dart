@@ -168,4 +168,25 @@ class UOrganizationService {
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
   }) => _Api.call("/Organization/Subscription/Cancel", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<USubscriptionQuoteResponse>?, UEmptyResponse?, String?)> quoteSubscription({
+    required USubscriptionQuoteParams p,
+    Function(UResponse<USubscriptionQuoteResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Organization/Subscription/Quote", p.toMap(), _Api.one(USubscriptionQuoteResponse.fromMap), _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<USubscriptionBuyResponse>?, UEmptyResponse?, String?)> buySubscription({
+    required USubscriptionBuyParams p,
+    Function(UResponse<USubscriptionBuyResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Organization/Subscription/Buy", p.toMap(), _Api.one(USubscriptionBuyResponse.fromMap), _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> paySubscription({
+    required UIdParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Organization/Subscription/Pay", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 }

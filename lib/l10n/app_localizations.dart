@@ -14473,6 +14473,2622 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Credit Purchases'**
   String get creditPurchases;
+
+  /// No description provided for @tooManyRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many requests'**
+  String get tooManyRequests;
+
+  /// No description provided for @pleaseWaitAFewSecondsAndTryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Please wait a few seconds and try again'**
+  String get pleaseWaitAFewSecondsAndTryAgain;
+
+  /// No description provided for @requestFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Request failed'**
+  String get requestFailed;
+
+  /// No description provided for @serverError.
+  ///
+  /// In en, this message translates to:
+  /// **'Server error'**
+  String get serverError;
+
+  /// No description provided for @splash.
+  ///
+  /// In en, this message translates to:
+  /// **'Splash'**
+  String get splash;
+
+  /// No description provided for @loans.
+  ///
+  /// In en, this message translates to:
+  /// **'Loans'**
+  String get loans;
+
+  /// No description provided for @login.
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get login;
+
+  /// No description provided for @accentColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Accent color'**
+  String get accentColor;
+
+  /// No description provided for @thisPlaceWillBeShownToEveryone.
+  ///
+  /// In en, this message translates to:
+  /// **'This place will be shown to everyone'**
+  String get thisPlaceWillBeShownToEveryone;
+
+  /// No description provided for @thisPlaceWillStayHidden.
+  ///
+  /// In en, this message translates to:
+  /// **'This place will stay hidden'**
+  String get thisPlaceWillStayHidden;
+
+  /// No description provided for @cafe.
+  ///
+  /// In en, this message translates to:
+  /// **'Cafe'**
+  String get cafe;
+
+  /// No description provided for @cafes.
+  ///
+  /// In en, this message translates to:
+  /// **'Cafes'**
+  String get cafes;
+
+  /// No description provided for @itemOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Item options'**
+  String get itemOptions;
+
+  /// No description provided for @labels.
+  ///
+  /// In en, this message translates to:
+  /// **'Labels'**
+  String get labels;
+
+  /// No description provided for @markAsAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as available'**
+  String get markAsAvailable;
+
+  /// No description provided for @markAsUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as unavailable'**
+  String get markAsUnavailable;
+
+  /// No description provided for @menuItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Menu item'**
+  String get menuItem;
+
+  /// No description provided for @menuItems.
+  ///
+  /// In en, this message translates to:
+  /// **'Menu items'**
+  String get menuItems;
+
+  /// No description provided for @menuSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Menu settings'**
+  String get menuSettings;
+
+  /// No description provided for @menus.
+  ///
+  /// In en, this message translates to:
+  /// **'Menus'**
+  String get menus;
+
+  /// No description provided for @noPlacesWaitingForReview.
+  ///
+  /// In en, this message translates to:
+  /// **'No places waiting for review'**
+  String get noPlacesWaitingForReview;
+
+  /// No description provided for @openHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Open hours'**
+  String get openHours;
+
+  /// No description provided for @ordering.
+  ///
+  /// In en, this message translates to:
+  /// **'Ordering'**
+  String get ordering;
+
+  /// No description provided for @orders.
+  ///
+  /// In en, this message translates to:
+  /// **'Orders'**
+  String get orders;
+
+  /// No description provided for @placeApprovals.
+  ///
+  /// In en, this message translates to:
+  /// **'Place approvals'**
+  String get placeApprovals;
+
+  /// No description provided for @prepMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Prep minutes'**
+  String get prepMinutes;
+
+  /// No description provided for @rejectAndRefund.
+  ///
+  /// In en, this message translates to:
+  /// **'Reject and refund'**
+  String get rejectAndRefund;
+
+  /// No description provided for @tableCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Table count'**
+  String get tableCount;
+
+  /// No description provided for @tagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Tagline'**
+  String get tagline;
+
+  /// No description provided for @loanId.
+  ///
+  /// In en, this message translates to:
+  /// **'Loan ID'**
+  String get loanId;
+
+  /// No description provided for @kalabargBalanceInquiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Kalabarg balance inquiry'**
+  String get kalabargBalanceInquiry;
+
+  /// No description provided for @beingSetUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Being set up'**
+  String get beingSetUp;
+
+  /// No description provided for @aboutYourBusiness.
+  ///
+  /// In en, this message translates to:
+  /// **'About your business'**
+  String get aboutYourBusiness;
+
+  /// No description provided for @accountNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Account number'**
+  String get accountNumber;
+
+  /// No description provided for @accountant.
+  ///
+  /// In en, this message translates to:
+  /// **'Accountant'**
+  String get accountant;
+
+  /// No description provided for @activity.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity'**
+  String get activity;
+
+  /// No description provided for @addAccountingToYourSubscriptionToKeepBooks.
+  ///
+  /// In en, this message translates to:
+  /// **'Add accounting to your subscription to keep books'**
+  String get addAccountingToYourSubscriptionToKeepBooks;
+
+  /// No description provided for @addBed.
+  ///
+  /// In en, this message translates to:
+  /// **'Add bed'**
+  String get addBed;
+
+  /// No description provided for @addCategoriesThenYourFirstItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Add categories then your first item'**
+  String get addCategoriesThenYourFirstItem;
+
+  /// No description provided for @addChoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Add choice'**
+  String get addChoice;
+
+  /// No description provided for @addOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Add option'**
+  String get addOption;
+
+  /// No description provided for @addRoomNumbersToYourRoomTypesFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Add room numbers to your room types first'**
+  String get addRoomNumbersToYourRoomTypesFirst;
+
+  /// No description provided for @addStaff.
+  ///
+  /// In en, this message translates to:
+  /// **'Add staff'**
+  String get addStaff;
+
+  /// No description provided for @addToBill.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to bill'**
+  String get addToBill;
+
+  /// No description provided for @addToOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to order'**
+  String get addToOrder;
+
+  /// No description provided for @addYourBankAccountInSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your bank account in settings'**
+  String get addYourBankAccountInSettings;
+
+  /// No description provided for @addYourFirstPlace.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your first place'**
+  String get addYourFirstPlace;
+
+  /// No description provided for @addYourFirstPlaceFromThePlacesTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your first place from the places tab'**
+  String get addYourFirstPlaceFromThePlacesTab;
+
+  /// No description provided for @addYourRoomTypesFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your room types first'**
+  String get addYourRoomTypesFirst;
+
+  /// No description provided for @addYourRoomsAndBedsFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your rooms and beds first'**
+  String get addYourRoomsAndBedsFirst;
+
+  /// No description provided for @allRooms.
+  ///
+  /// In en, this message translates to:
+  /// **'All rooms'**
+  String get allRooms;
+
+  /// No description provided for @applicant.
+  ///
+  /// In en, this message translates to:
+  /// **'Applicant'**
+  String get applicant;
+
+  /// No description provided for @applications.
+  ///
+  /// In en, this message translates to:
+  /// **'Applications'**
+  String get applications;
+
+  /// No description provided for @arriving.
+  ///
+  /// In en, this message translates to:
+  /// **'Arriving'**
+  String get arriving;
+
+  /// No description provided for @arrivingToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Arriving today'**
+  String get arrivingToday;
+
+  /// No description provided for @askForAnEarlyPayout.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask for an early payout'**
+  String get askForAnEarlyPayout;
+
+  /// No description provided for @atTheTable.
+  ///
+  /// In en, this message translates to:
+  /// **'At the table'**
+  String get atTheTable;
+
+  /// No description provided for @atWork.
+  ///
+  /// In en, this message translates to:
+  /// **'At work'**
+  String get atWork;
+
+  /// No description provided for @backOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Back on'**
+  String get backOn;
+
+  /// No description provided for @balanceOfEachBox.
+  ///
+  /// In en, this message translates to:
+  /// **'Balance of each box'**
+  String get balanceOfEachBox;
+
+  /// No description provided for @bank.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank'**
+  String get bank;
+
+  /// No description provided for @bankAccountForPayouts.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank account for payouts'**
+  String get bankAccountForPayouts;
+
+  /// No description provided for @bedAndDates.
+  ///
+  /// In en, this message translates to:
+  /// **'Bed and dates'**
+  String get bedAndDates;
+
+  /// No description provided for @bedName.
+  ///
+  /// In en, this message translates to:
+  /// **'Bed name'**
+  String get bedName;
+
+  /// No description provided for @bills.
+  ///
+  /// In en, this message translates to:
+  /// **'Bills'**
+  String get bills;
+
+  /// No description provided for @billsAreMadeAutomaticallyFromTheContract.
+  ///
+  /// In en, this message translates to:
+  /// **'Bills are made automatically from the contract'**
+  String get billsAreMadeAutomaticallyFromTheContract;
+
+  /// No description provided for @board.
+  ///
+  /// In en, this message translates to:
+  /// **'Board'**
+  String get board;
+
+  /// No description provided for @bookingsAndCheckIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Bookings and check in'**
+  String get bookingsAndCheckIn;
+
+  /// No description provided for @books.
+  ///
+  /// In en, this message translates to:
+  /// **'Books'**
+  String get books;
+
+  /// No description provided for @booksAreNotInYourPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Books are not in your plan'**
+  String get booksAreNotInYourPlan;
+
+  /// No description provided for @business.
+  ///
+  /// In en, this message translates to:
+  /// **'Business'**
+  String get business;
+
+  /// No description provided for @businessDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Business details'**
+  String get businessDetails;
+
+  /// No description provided for @businessName.
+  ///
+  /// In en, this message translates to:
+  /// **'Business name'**
+  String get businessName;
+
+  /// No description provided for @buy.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy'**
+  String get buy;
+
+  /// No description provided for @byCard.
+  ///
+  /// In en, this message translates to:
+  /// **'By card'**
+  String get byCard;
+
+  /// No description provided for @bySigningInYouAcceptTheTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'By signing in you accept the terms'**
+  String get bySigningInYouAcceptTheTerms;
+
+  /// No description provided for @cafesAndRestaurants.
+  ///
+  /// In en, this message translates to:
+  /// **'Cafes and restaurants'**
+  String get cafesAndRestaurants;
+
+  /// No description provided for @canPickMoreThanOne.
+  ///
+  /// In en, this message translates to:
+  /// **'Can pick more than one'**
+  String get canPickMoreThanOne;
+
+  /// No description provided for @cancelOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel order'**
+  String get cancelOrder;
+
+  /// No description provided for @cashAndBank.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash and bank'**
+  String get cashAndBank;
+
+  /// No description provided for @cashier.
+  ///
+  /// In en, this message translates to:
+  /// **'Cashier'**
+  String get cashier;
+
+  /// No description provided for @changed.
+  ///
+  /// In en, this message translates to:
+  /// **'Changed'**
+  String get changed;
+
+  /// No description provided for @checkOutAndSettle.
+  ///
+  /// In en, this message translates to:
+  /// **'Check out and settle'**
+  String get checkOutAndSettle;
+
+  /// No description provided for @checkOutExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Debts are taken from the deposit and the rest goes back to the resident\'s wallet. If the deposit is not enough, a bill is made for the rest.'**
+  String get checkOutExplanation;
+
+  /// No description provided for @checkedSomeoneOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Checked someone out'**
+  String get checkedSomeoneOut;
+
+  /// No description provided for @chequeNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Cheque number'**
+  String get chequeNumber;
+
+  /// No description provided for @cheques.
+  ///
+  /// In en, this message translates to:
+  /// **'Cheques'**
+  String get cheques;
+
+  /// No description provided for @chequesYouReceivedOrIssued.
+  ///
+  /// In en, this message translates to:
+  /// **'Cheques you received or issued'**
+  String get chequesYouReceivedOrIssued;
+
+  /// No description provided for @choiceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choice title'**
+  String get choiceTitle;
+
+  /// No description provided for @choices.
+  ///
+  /// In en, this message translates to:
+  /// **'Choices'**
+  String get choices;
+
+  /// No description provided for @closeTheDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Close the day'**
+  String get closeTheDay;
+
+  /// No description provided for @closeTheDayExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s room revenue is posted to the books and guests who did not come are marked as no-show. Continue?'**
+  String get closeTheDayExplanation;
+
+  /// No description provided for @closedForBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed for booking'**
+  String get closedForBooking;
+
+  /// No description provided for @collected.
+  ///
+  /// In en, this message translates to:
+  /// **'Collected'**
+  String get collected;
+
+  /// No description provided for @colorAndOrdering.
+  ///
+  /// In en, this message translates to:
+  /// **'Color and ordering'**
+  String get colorAndOrdering;
+
+  /// No description provided for @confirmedRightAway.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmed right away'**
+  String get confirmedRightAway;
+
+  /// No description provided for @contractsAndAllDormInvoices.
+  ///
+  /// In en, this message translates to:
+  /// **'Contracts and all dorm invoices'**
+  String get contractsAndAllDormInvoices;
+
+  /// No description provided for @contractsAndCheckOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Contracts and check out'**
+  String get contractsAndCheckOut;
+
+  /// No description provided for @contractsAndResidents.
+  ///
+  /// In en, this message translates to:
+  /// **'Contracts and residents'**
+  String get contractsAndResidents;
+
+  /// No description provided for @copyLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy link'**
+  String get copyLink;
+
+  /// No description provided for @costIfAny.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost if any'**
+  String get costIfAny;
+
+  /// No description provided for @creditFromYourCurrentPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Credit from your current plan'**
+  String get creditFromYourCurrentPlan;
+
+  /// No description provided for @customersAndResidents.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers and residents'**
+  String get customersAndResidents;
+
+  /// No description provided for @customersPayInTheAppKhabroomDepositsToThisAccountDaily.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers pay in the app Khabroom deposits to this account daily'**
+  String get customersPayInTheAppKhabroomDepositsToThisAccountDaily;
+
+  /// No description provided for @dailyRent.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily rent'**
+  String get dailyRent;
+
+  /// No description provided for @damagesToDeduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Damages to deduct'**
+  String get damagesToDeduct;
+
+  /// No description provided for @daysFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Days free'**
+  String get daysFree;
+
+  /// No description provided for @deleteBed.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete bed'**
+  String get deleteBed;
+
+  /// No description provided for @deleteBills.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete bills'**
+  String get deleteBills;
+
+  /// No description provided for @deleteBookings.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete bookings'**
+  String get deleteBookings;
+
+  /// No description provided for @deleteContracts.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete contracts'**
+  String get deleteContracts;
+
+  /// No description provided for @deleteRoom.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete room'**
+  String get deleteRoom;
+
+  /// No description provided for @deleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted'**
+  String get deleted;
+
+  /// No description provided for @depositPerBed.
+  ///
+  /// In en, this message translates to:
+  /// **'Deposit per bed'**
+  String get depositPerBed;
+
+  /// No description provided for @depositReturned.
+  ///
+  /// In en, this message translates to:
+  /// **'Deposit returned'**
+  String get depositReturned;
+
+  /// No description provided for @deposited.
+  ///
+  /// In en, this message translates to:
+  /// **'Deposited'**
+  String get deposited;
+
+  /// No description provided for @depositedToYourAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Deposited to your account'**
+  String get depositedToYourAccount;
+
+  /// No description provided for @didNotReceiveIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Did not receive it'**
+  String get didNotReceiveIt;
+
+  /// No description provided for @didNotShowUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Did not show up'**
+  String get didNotShowUp;
+
+  /// No description provided for @dormHotelOrCafeStartWithAFreeTrial.
+  ///
+  /// In en, this message translates to:
+  /// **'Dorm hotel or cafe start with a free trial'**
+  String get dormHotelOrCafeStartWithAFreeTrial;
+
+  /// No description provided for @earlyPayoutExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Your request is sent to Khabroom and paid after review.'**
+  String get earlyPayoutExplanation;
+
+  /// No description provided for @editBed.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit bed'**
+  String get editBed;
+
+  /// No description provided for @editPhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit phone number'**
+  String get editPhoneNumber;
+
+  /// No description provided for @editRoom.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit room'**
+  String get editRoom;
+
+  /// No description provided for @editRoomsAndDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit rooms and details'**
+  String get editRoomsAndDetails;
+
+  /// No description provided for @editTheMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit the menu'**
+  String get editTheMenu;
+
+  /// No description provided for @endsOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends on'**
+  String get endsOn;
+
+  /// No description provided for @enterTheCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the code'**
+  String get enterTheCode;
+
+  /// No description provided for @entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Entry'**
+  String get entry;
+
+  /// No description provided for @equipment.
+  ///
+  /// In en, this message translates to:
+  /// **'Equipment'**
+  String get equipment;
+
+  /// No description provided for @extra.
+  ///
+  /// In en, this message translates to:
+  /// **'Extra'**
+  String get extra;
+
+  /// No description provided for @forExampleChickenAndRice.
+  ///
+  /// In en, this message translates to:
+  /// **'For example chicken and rice'**
+  String get forExampleChickenAndRice;
+
+  /// No description provided for @forExampleCoffeeUnderTheOrangeTrees.
+  ///
+  /// In en, this message translates to:
+  /// **'For example coffee under the orange trees'**
+  String get forExampleCoffeeUnderTheOrangeTrees;
+
+  /// No description provided for @forExampleDoubleRoom.
+  ///
+  /// In en, this message translates to:
+  /// **'For example double room'**
+  String get forExampleDoubleRoom;
+
+  /// No description provided for @forExampleLessSugar.
+  ///
+  /// In en, this message translates to:
+  /// **'For example less sugar'**
+  String get forExampleLessSugar;
+
+  /// No description provided for @forExampleMilkType.
+  ///
+  /// In en, this message translates to:
+  /// **'For example milk type'**
+  String get forExampleMilkType;
+
+  /// No description provided for @forExampleNowruz.
+  ///
+  /// In en, this message translates to:
+  /// **'For example nowruz'**
+  String get forExampleNowruz;
+
+  /// No description provided for @forExampleRoomServiceOrMinibar.
+  ///
+  /// In en, this message translates to:
+  /// **'For example room service or minibar'**
+  String get forExampleRoomServiceOrMinibar;
+
+  /// No description provided for @forExampleTowel.
+  ///
+  /// In en, this message translates to:
+  /// **'For example towel'**
+  String get forExampleTowel;
+
+  /// No description provided for @forExampleWashingMachine.
+  ///
+  /// In en, this message translates to:
+  /// **'For example washing machine'**
+  String get forExampleWashingMachine;
+
+  /// No description provided for @forExampleYasGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'For example yas group'**
+  String get forExampleYasGroup;
+
+  /// No description provided for @forTheWholeBusiness.
+  ///
+  /// In en, this message translates to:
+  /// **'For the whole business'**
+  String get forTheWholeBusiness;
+
+  /// No description provided for @freeBeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Free beds'**
+  String get freeBeds;
+
+  /// No description provided for @freeRooms.
+  ///
+  /// In en, this message translates to:
+  /// **'Free rooms'**
+  String get freeRooms;
+
+  /// No description provided for @fromOrTo.
+  ///
+  /// In en, this message translates to:
+  /// **'From or to'**
+  String get fromOrTo;
+
+  /// No description provided for @fromWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'From wallet'**
+  String get fromWallet;
+
+  /// No description provided for @generalMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'General menu'**
+  String get generalMenu;
+
+  /// No description provided for @getCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Get code'**
+  String get getCode;
+
+  /// No description provided for @giveItTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Give it to'**
+  String get giveItTo;
+
+  /// No description provided for @guardianOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Guardian optional'**
+  String get guardianOptional;
+
+  /// No description provided for @handleOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'Handle orders'**
+  String get handleOrders;
+
+  /// No description provided for @howDoYouWantIt.
+  ///
+  /// In en, this message translates to:
+  /// **'How do you want it'**
+  String get howDoYouWantIt;
+
+  /// No description provided for @howManyPortions.
+  ///
+  /// In en, this message translates to:
+  /// **'How many portions'**
+  String get howManyPortions;
+
+  /// No description provided for @howManyRooms.
+  ///
+  /// In en, this message translates to:
+  /// **'How many rooms'**
+  String get howManyRooms;
+
+  /// No description provided for @howManyTables.
+  ///
+  /// In en, this message translates to:
+  /// **'How many tables'**
+  String get howManyTables;
+
+  /// No description provided for @ifTheCafeRejectsYourOrderTheMoneyGoesBackToYourWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'If the cafe rejects your order the money goes back to your wallet'**
+  String get ifTheCafeRejectsYourOrderTheMoneyGoesBackToYourWallet;
+
+  /// No description provided for @inProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'In progress'**
+  String get inProgress;
+
+  /// No description provided for @inReview.
+  ///
+  /// In en, this message translates to:
+  /// **'In review'**
+  String get inReview;
+
+  /// No description provided for @income.
+  ///
+  /// In en, this message translates to:
+  /// **'Income'**
+  String get income;
+
+  /// No description provided for @incomeExpensesAndVat.
+  ///
+  /// In en, this message translates to:
+  /// **'Income expenses and VAT'**
+  String get incomeExpensesAndVat;
+
+  /// No description provided for @khabroomFee.
+  ///
+  /// In en, this message translates to:
+  /// **'Khabroom fee'**
+  String get khabroomFee;
+
+  /// No description provided for @lastClosedDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Last closed day'**
+  String get lastClosedDay;
+
+  /// No description provided for @lateFeePercentPerDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Late fee percent per day'**
+  String get lateFeePercentPerDay;
+
+  /// No description provided for @leaveAPlaceEmptyAndTheyWillNotSeeIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave a place empty and they will not see it'**
+  String get leaveAPlaceEmptyAndTheyWillNotSeeIt;
+
+  /// No description provided for @leavingDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Leaving date'**
+  String get leavingDate;
+
+  /// No description provided for @leavingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Leaving soon'**
+  String get leavingSoon;
+
+  /// No description provided for @leavingToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Leaving today'**
+  String get leavingToday;
+
+  /// No description provided for @livingHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Living here'**
+  String get livingHere;
+
+  /// No description provided for @look.
+  ///
+  /// In en, this message translates to:
+  /// **'Look'**
+  String get look;
+
+  /// No description provided for @mainStoreroom.
+  ///
+  /// In en, this message translates to:
+  /// **'Main storeroom'**
+  String get mainStoreroom;
+
+  /// No description provided for @makeAndEditBills.
+  ///
+  /// In en, this message translates to:
+  /// **'Make and edit bills'**
+  String get makeAndEditBills;
+
+  /// No description provided for @makeResident.
+  ///
+  /// In en, this message translates to:
+  /// **'Make resident'**
+  String get makeResident;
+
+  /// No description provided for @markAsDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as done'**
+  String get markAsDone;
+
+  /// No description provided for @meals.
+  ///
+  /// In en, this message translates to:
+  /// **'Meals'**
+  String get meals;
+
+  /// No description provided for @menuAndReservations.
+  ///
+  /// In en, this message translates to:
+  /// **'Menu and reserVATions'**
+  String get menuAndReservations;
+
+  /// No description provided for @menuIsOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Menu is open'**
+  String get menuIsOpen;
+
+  /// No description provided for @menuLook.
+  ///
+  /// In en, this message translates to:
+  /// **'Menu look'**
+  String get menuLook;
+
+  /// No description provided for @menuViews.
+  ///
+  /// In en, this message translates to:
+  /// **'Menu views'**
+  String get menuViews;
+
+  /// No description provided for @messageToTheApplicant.
+  ///
+  /// In en, this message translates to:
+  /// **'Message to the applicant'**
+  String get messageToTheApplicant;
+
+  /// No description provided for @minimumNights.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum nights'**
+  String get minimumNights;
+
+  /// No description provided for @money.
+  ///
+  /// In en, this message translates to:
+  /// **'Money'**
+  String get money;
+
+  /// No description provided for @moneyYourCustomersPaidThatIsNotInYourAccountYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Money your customers paid that is not in your account yet'**
+  String get moneyYourCustomersPaidThatIsNotInYourAccountYet;
+
+  /// No description provided for @monthlyRentPerBed.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly rent per bed'**
+  String get monthlyRentPerBed;
+
+  /// No description provided for @moveToAnotherBed.
+  ///
+  /// In en, this message translates to:
+  /// **'Move to another bed'**
+  String get moveToAnotherBed;
+
+  /// No description provided for @mustChoose.
+  ///
+  /// In en, this message translates to:
+  /// **'Must choose'**
+  String get mustChoose;
+
+  /// No description provided for @myOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'My orders'**
+  String get myOrders;
+
+  /// No description provided for @myPayments.
+  ///
+  /// In en, this message translates to:
+  /// **'My payments'**
+  String get myPayments;
+
+  /// No description provided for @myPersonalAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'My personal account'**
+  String get myPersonalAccount;
+
+  /// No description provided for @myPlaces.
+  ///
+  /// In en, this message translates to:
+  /// **'My places'**
+  String get myPlaces;
+
+  /// No description provided for @myShifts.
+  ///
+  /// In en, this message translates to:
+  /// **'My shifts'**
+  String get myShifts;
+
+  /// No description provided for @myStaysPaymentsAndOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'My stays payments and orders'**
+  String get myStaysPaymentsAndOrders;
+
+  /// No description provided for @myTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'My tasks'**
+  String get myTasks;
+
+  /// No description provided for @nameBankAccountAndTax.
+  ///
+  /// In en, this message translates to:
+  /// **'Name bank account and tax'**
+  String get nameBankAccountAndTax;
+
+  /// No description provided for @nationalId.
+  ///
+  /// In en, this message translates to:
+  /// **'National id'**
+  String get nationalId;
+
+  /// No description provided for @newBed.
+  ///
+  /// In en, this message translates to:
+  /// **'New bed'**
+  String get newBed;
+
+  /// No description provided for @newBill.
+  ///
+  /// In en, this message translates to:
+  /// **'New bill'**
+  String get newBill;
+
+  /// No description provided for @newBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'New booking'**
+  String get newBooking;
+
+  /// No description provided for @newBusiness.
+  ///
+  /// In en, this message translates to:
+  /// **'New business'**
+  String get newBusiness;
+
+  /// No description provided for @newCheckOutDate.
+  ///
+  /// In en, this message translates to:
+  /// **'New check out date'**
+  String get newCheckOutDate;
+
+  /// No description provided for @newCheque.
+  ///
+  /// In en, this message translates to:
+  /// **'New cheque'**
+  String get newCheque;
+
+  /// No description provided for @newEndDate.
+  ///
+  /// In en, this message translates to:
+  /// **'New end date'**
+  String get newEndDate;
+
+  /// No description provided for @newEquipment.
+  ///
+  /// In en, this message translates to:
+  /// **'New equipment'**
+  String get newEquipment;
+
+  /// No description provided for @newItem.
+  ///
+  /// In en, this message translates to:
+  /// **'New item'**
+  String get newItem;
+
+  /// No description provided for @newMeal.
+  ///
+  /// In en, this message translates to:
+  /// **'New meal'**
+  String get newMeal;
+
+  /// No description provided for @newOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'New orders'**
+  String get newOrders;
+
+  /// No description provided for @newOrdersAppearHereByThemselves.
+  ///
+  /// In en, this message translates to:
+  /// **'New orders appear here by themselves'**
+  String get newOrdersAppearHereByThemselves;
+
+  /// No description provided for @newPersonTheyCanSignInLaterWithThisNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'New person they can sign in later with this number'**
+  String get newPersonTheyCanSignInLaterWithThisNumber;
+
+  /// No description provided for @newPlace.
+  ///
+  /// In en, this message translates to:
+  /// **'New place'**
+  String get newPlace;
+
+  /// No description provided for @newPlacesAreShownToCustomersAfterKhabroomApprovesThem.
+  ///
+  /// In en, this message translates to:
+  /// **'New places are shown to customers after Khabroom approves them'**
+  String get newPlacesAreShownToCustomersAfterKhabroomApprovesThem;
+
+  /// No description provided for @newPriceRule.
+  ///
+  /// In en, this message translates to:
+  /// **'New price rule'**
+  String get newPriceRule;
+
+  /// No description provided for @newPurchase.
+  ///
+  /// In en, this message translates to:
+  /// **'New purchase'**
+  String get newPurchase;
+
+  /// No description provided for @newRecord.
+  ///
+  /// In en, this message translates to:
+  /// **'New record'**
+  String get newRecord;
+
+  /// No description provided for @newRentIfItChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'New rent if it changes'**
+  String get newRentIfItChanges;
+
+  /// No description provided for @newResident.
+  ///
+  /// In en, this message translates to:
+  /// **'New resident'**
+  String get newResident;
+
+  /// No description provided for @newResidentForThisBed.
+  ///
+  /// In en, this message translates to:
+  /// **'New resident for this bed'**
+  String get newResidentForThisBed;
+
+  /// No description provided for @newRoom.
+  ///
+  /// In en, this message translates to:
+  /// **'New room'**
+  String get newRoom;
+
+  /// No description provided for @newRoomType.
+  ///
+  /// In en, this message translates to:
+  /// **'New room type'**
+  String get newRoomType;
+
+  /// No description provided for @newShift.
+  ///
+  /// In en, this message translates to:
+  /// **'New shift'**
+  String get newShift;
+
+  /// No description provided for @newStockItem.
+  ///
+  /// In en, this message translates to:
+  /// **'New stock item'**
+  String get newStockItem;
+
+  /// No description provided for @newTask.
+  ///
+  /// In en, this message translates to:
+  /// **'New task'**
+  String get newTask;
+
+  /// No description provided for @noActiveSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'No active subscription'**
+  String get noActiveSubscription;
+
+  /// No description provided for @noApplicationsHere.
+  ///
+  /// In en, this message translates to:
+  /// **'No applications here'**
+  String get noApplicationsHere;
+
+  /// No description provided for @noBillsHere.
+  ///
+  /// In en, this message translates to:
+  /// **'No bills here'**
+  String get noBillsHere;
+
+  /// No description provided for @noBillsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No bills yet'**
+  String get noBillsYet;
+
+  /// No description provided for @noBookingsHere.
+  ///
+  /// In en, this message translates to:
+  /// **'No bookings here'**
+  String get noBookingsHere;
+
+  /// No description provided for @noChequesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No cheques yet'**
+  String get noChequesYet;
+
+  /// No description provided for @noEntriesInThisPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'No entries in this period'**
+  String get noEntriesInThisPeriod;
+
+  /// No description provided for @noEquipmentYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No equipment yet'**
+  String get noEquipmentYet;
+
+  /// No description provided for @noMealsPlanned.
+  ///
+  /// In en, this message translates to:
+  /// **'No meals planned'**
+  String get noMealsPlanned;
+
+  /// No description provided for @noOneHere.
+  ///
+  /// In en, this message translates to:
+  /// **'No one here'**
+  String get noOneHere;
+
+  /// No description provided for @noOneWithThisNumberLivesHere.
+  ///
+  /// In en, this message translates to:
+  /// **'No one with this number lives here'**
+  String get noOneWithThisNumberLivesHere;
+
+  /// No description provided for @noOpenOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'No open orders'**
+  String get noOpenOrders;
+
+  /// No description provided for @noPayoutsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No payouts yet'**
+  String get noPayoutsYet;
+
+  /// No description provided for @noPlacesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No places yet'**
+  String get noPlacesYet;
+
+  /// No description provided for @noPriceRulesEveryNightUsesTheRoomPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'No price rules every night uses the room price'**
+  String get noPriceRulesEveryNightUsesTheRoomPrice;
+
+  /// No description provided for @noPurchasesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No purchases yet'**
+  String get noPurchasesYet;
+
+  /// No description provided for @noRoomIsFreeForTheseDates.
+  ///
+  /// In en, this message translates to:
+  /// **'No room is free for these dates'**
+  String get noRoomIsFreeForTheseDates;
+
+  /// No description provided for @noShiftsThisWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'No shifts this week'**
+  String get noShiftsThisWeek;
+
+  /// No description provided for @nobodyYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Nobody yet'**
+  String get nobodyYet;
+
+  /// No description provided for @notPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Not paid'**
+  String get notPaid;
+
+  /// No description provided for @notYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not yet'**
+  String get notYet;
+
+  /// No description provided for @noteForTheKitchen.
+  ///
+  /// In en, this message translates to:
+  /// **'Note for the kitchen'**
+  String get noteForTheKitchen;
+
+  /// No description provided for @nothingDoneYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing done yet'**
+  String get nothingDoneYet;
+
+  /// No description provided for @nothingHappenedYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing happened yet'**
+  String get nothingHappenedYet;
+
+  /// No description provided for @nothingInStockYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing in stock yet'**
+  String get nothingInStockYet;
+
+  /// No description provided for @nothingNewSinceTheLastPayout.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing new since the last payout'**
+  String get nothingNewSinceTheLastPayout;
+
+  /// No description provided for @nothingRecordedYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing recorded yet'**
+  String get nothingRecordedYet;
+
+  /// No description provided for @nothingToDo.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to do'**
+  String get nothingToDo;
+
+  /// No description provided for @numberOfBeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of beds'**
+  String get numberOfBeds;
+
+  /// No description provided for @occupiedBeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Occupied beds'**
+  String get occupiedBeds;
+
+  /// No description provided for @occupiedRooms.
+  ///
+  /// In en, this message translates to:
+  /// **'Occupied rooms'**
+  String get occupiedRooms;
+
+  /// No description provided for @oneCategoryPerLineInTheOrderCustomersSeeThem.
+  ///
+  /// In en, this message translates to:
+  /// **'One category per line in the order customers see them'**
+  String get oneCategoryPerLineInTheOrderCustomersSeeThem;
+
+  /// No description provided for @onlineOrdering.
+  ///
+  /// In en, this message translates to:
+  /// **'Online ordering'**
+  String get onlineOrdering;
+
+  /// No description provided for @onlyForCurrentGuestsOrResidentsOfThisBusiness.
+  ///
+  /// In en, this message translates to:
+  /// **'Only for current guests or residents of this business'**
+  String get onlyForCurrentGuestsOrResidentsOfThisBusiness;
+
+  /// No description provided for @onlyOnTheseDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Only on these days'**
+  String get onlyOnTheseDays;
+
+  /// No description provided for @onlyWhatIsRunningLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Only what is running low'**
+  String get onlyWhatIsRunningLow;
+
+  /// No description provided for @openForBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'Open for booking'**
+  String get openForBooking;
+
+  /// No description provided for @openOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'Open orders'**
+  String get openOrders;
+
+  /// No description provided for @option.
+  ///
+  /// In en, this message translates to:
+  /// **'Option'**
+  String get option;
+
+  /// No description provided for @orderAndPay.
+  ///
+  /// In en, this message translates to:
+  /// **'Order and pay'**
+  String get orderAndPay;
+
+  /// No description provided for @orderAndPayFromYourTable.
+  ///
+  /// In en, this message translates to:
+  /// **'Order and pay from your table'**
+  String get orderAndPayFromYourTable;
+
+  /// No description provided for @orderingIsOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Ordering is off'**
+  String get orderingIsOff;
+
+  /// No description provided for @ourPicks.
+  ///
+  /// In en, this message translates to:
+  /// **'Our picks'**
+  String get ourPicks;
+
+  /// No description provided for @overdueBills.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue bills'**
+  String get overdueBills;
+
+  /// No description provided for @ownerEverything.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner · everything'**
+  String get ownerEverything;
+
+  /// No description provided for @paidFullyFromYourWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid fully from your wallet'**
+  String get paidFullyFromYourWallet;
+
+  /// No description provided for @paidOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid out'**
+  String get paidOut;
+
+  /// No description provided for @paidOutDaily.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid out daily'**
+  String get paidOutDaily;
+
+  /// No description provided for @payFromWalletFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay from wallet first'**
+  String get payFromWalletFirst;
+
+  /// No description provided for @payout.
+  ///
+  /// In en, this message translates to:
+  /// **'Payout'**
+  String get payout;
+
+  /// No description provided for @payouts.
+  ///
+  /// In en, this message translates to:
+  /// **'Payouts'**
+  String get payouts;
+
+  /// No description provided for @payoutsFromKhabroom.
+  ///
+  /// In en, this message translates to:
+  /// **'Payouts from Khabroom'**
+  String get payoutsFromKhabroom;
+
+  /// No description provided for @people.
+  ///
+  /// In en, this message translates to:
+  /// **'People'**
+  String get people;
+
+  /// No description provided for @peoplePerRoom.
+  ///
+  /// In en, this message translates to:
+  /// **'People per room'**
+  String get peoplePerRoom;
+
+  /// No description provided for @peopleWhoWantToStay.
+  ///
+  /// In en, this message translates to:
+  /// **'People who want to stay'**
+  String get peopleWhoWantToStay;
+
+  /// No description provided for @pickAPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a plan'**
+  String get pickAPlan;
+
+  /// No description provided for @pickARoom.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a room'**
+  String get pickARoom;
+
+  /// No description provided for @pickTheCoverPhotoItIsShownFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick the cover photo it is shown first'**
+  String get pickTheCoverPhotoItIsShownFirst;
+
+  /// No description provided for @piece.
+  ///
+  /// In en, this message translates to:
+  /// **'Piece'**
+  String get piece;
+
+  /// No description provided for @places.
+  ///
+  /// In en, this message translates to:
+  /// **'Places'**
+  String get places;
+
+  /// No description provided for @pleaseChooseTheCity.
+  ///
+  /// In en, this message translates to:
+  /// **'Please choose the city'**
+  String get pleaseChooseTheCity;
+
+  /// No description provided for @pointTheCameraAtTheQrCodeOnTheTable.
+  ///
+  /// In en, this message translates to:
+  /// **'Point the camera at the QR code on the table'**
+  String get pointTheCameraAtTheQrCodeOnTheTable;
+
+  /// No description provided for @priceChangePercent.
+  ///
+  /// In en, this message translates to:
+  /// **'Price change percent'**
+  String get priceChangePercent;
+
+  /// No description provided for @pricesAndClosedDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Prices and closed days'**
+  String get pricesAndClosedDays;
+
+  /// No description provided for @printTheseCodesAndPutOneOnEachTable.
+  ///
+  /// In en, this message translates to:
+  /// **'Print these codes and put one on each table'**
+  String get printTheseCodesAndPutOneOnEachTable;
+
+  /// No description provided for @reasonTheCustomerSeesIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason the customer sees it'**
+  String get reasonTheCustomerSeesIt;
+
+  /// No description provided for @receive.
+  ///
+  /// In en, this message translates to:
+  /// **'Receive'**
+  String get receive;
+
+  /// No description provided for @receivePayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Receive payment'**
+  String get receivePayment;
+
+  /// No description provided for @receivePayments.
+  ///
+  /// In en, this message translates to:
+  /// **'Receive payments'**
+  String get receivePayments;
+
+  /// No description provided for @received.
+  ///
+  /// In en, this message translates to:
+  /// **'Received'**
+  String get received;
+
+  /// No description provided for @receivedInto.
+  ///
+  /// In en, this message translates to:
+  /// **'Received into'**
+  String get receivedInto;
+
+  /// No description provided for @receivedThisMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Received this month'**
+  String get receivedThisMonth;
+
+  /// No description provided for @reception.
+  ///
+  /// In en, this message translates to:
+  /// **'Reception'**
+  String get reception;
+
+  /// No description provided for @recordAccounting.
+  ///
+  /// In en, this message translates to:
+  /// **'Record accounting'**
+  String get recordAccounting;
+
+  /// No description provided for @recordAnExpense.
+  ///
+  /// In en, this message translates to:
+  /// **'Record an expense'**
+  String get recordAnExpense;
+
+  /// No description provided for @recordPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Record payment'**
+  String get recordPayment;
+
+  /// No description provided for @recordWhatYouSpent.
+  ///
+  /// In en, this message translates to:
+  /// **'Record what you spent'**
+  String get recordWhatYouSpent;
+
+  /// No description provided for @recordedAPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Recorded a payment'**
+  String get recordedAPayment;
+
+  /// No description provided for @records.
+  ///
+  /// In en, this message translates to:
+  /// **'Records'**
+  String get records;
+
+  /// No description provided for @removeFromTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from team'**
+  String get removeFromTeam;
+
+  /// No description provided for @renew.
+  ///
+  /// In en, this message translates to:
+  /// **'Renew'**
+  String get renew;
+
+  /// No description provided for @renewOrAddASystem.
+  ///
+  /// In en, this message translates to:
+  /// **'Renew or add a system'**
+  String get renewOrAddASystem;
+
+  /// No description provided for @rentAndPayments.
+  ///
+  /// In en, this message translates to:
+  /// **'Rent and payments'**
+  String get rentAndPayments;
+
+  /// No description provided for @repairsCleaningAndToDos.
+  ///
+  /// In en, this message translates to:
+  /// **'Repairs cleaning and to dos'**
+  String get repairsCleaningAndToDos;
+
+  /// No description provided for @reply.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply'**
+  String get reply;
+
+  /// No description provided for @reportAProblem.
+  ///
+  /// In en, this message translates to:
+  /// **'Report a problem'**
+  String get reportAProblem;
+
+  /// No description provided for @residentsPhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Residents phone number'**
+  String get residentsPhoneNumber;
+
+  /// No description provided for @returnedToYourWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'Returned to your wallet'**
+  String get returnedToYourWallet;
+
+  /// No description provided for @roomName.
+  ///
+  /// In en, this message translates to:
+  /// **'Room name'**
+  String get roomName;
+
+  /// No description provided for @roomNumbers.
+  ///
+  /// In en, this message translates to:
+  /// **'Room numbers'**
+  String get roomNumbers;
+
+  /// No description provided for @roomTypeName.
+  ///
+  /// In en, this message translates to:
+  /// **'Room type name'**
+  String get roomTypeName;
+
+  /// No description provided for @saveBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'Save booking'**
+  String get saveBooking;
+
+  /// No description provided for @saveContract.
+  ///
+  /// In en, this message translates to:
+  /// **'Save contract'**
+  String get saveContract;
+
+  /// No description provided for @scan.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan'**
+  String get scan;
+
+  /// No description provided for @scanTheTableCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan the table code'**
+  String get scanTheTableCode;
+
+  /// No description provided for @scans.
+  ///
+  /// In en, this message translates to:
+  /// **'Scans'**
+  String get scans;
+
+  /// No description provided for @searchByName.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by name'**
+  String get searchByName;
+
+  /// No description provided for @seeItAsACustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'See it as a customer'**
+  String get seeItAsACustomer;
+
+  /// No description provided for @seeTheBooks.
+  ///
+  /// In en, this message translates to:
+  /// **'See the books'**
+  String get seeTheBooks;
+
+  /// No description provided for @seeTheMenuAndOrderFromYourTable.
+  ///
+  /// In en, this message translates to:
+  /// **'See the menu and order from your table'**
+  String get seeTheMenuAndOrderFromYourTable;
+
+  /// No description provided for @seeTheNumbers.
+  ///
+  /// In en, this message translates to:
+  /// **'See the numbers'**
+  String get seeTheNumbers;
+
+  /// No description provided for @sendToSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Send to support'**
+  String get sendToSupport;
+
+  /// No description provided for @setTheNumberOfTables.
+  ///
+  /// In en, this message translates to:
+  /// **'Set the number of tables'**
+  String get setTheNumberOfTables;
+
+  /// No description provided for @shiftDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Shift done'**
+  String get shiftDone;
+
+  /// No description provided for @shiftsAndTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Shifts and tasks'**
+  String get shiftsAndTasks;
+
+  /// No description provided for @showToCustomers.
+  ///
+  /// In en, this message translates to:
+  /// **'Show to customers'**
+  String get showToCustomers;
+
+  /// No description provided for @shownAfterKhabroomApprovesIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Shown after Khabroom approves it'**
+  String get shownAfterKhabroomApprovesIt;
+
+  /// No description provided for @signIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get signIn;
+
+  /// No description provided for @signInToContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to continue'**
+  String get signInToContinue;
+
+  /// No description provided for @signInToSeeYourPayments.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to see your payments'**
+  String get signInToSeeYourPayments;
+
+  /// No description provided for @signInToSeeYourProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to see your profile'**
+  String get signInToSeeYourProfile;
+
+  /// No description provided for @signInToSeeYourReservations.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to see your reserVATions'**
+  String get signInToSeeYourReservations;
+
+  /// No description provided for @signInWithYourPhoneNumberNoPasswordNeeded.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with your phone number no password needed'**
+  String get signInWithYourPhoneNumberNoPasswordNeeded;
+
+  /// No description provided for @sizeInSquareMeters.
+  ///
+  /// In en, this message translates to:
+  /// **'Size in square meters'**
+  String get sizeInSquareMeters;
+
+  /// No description provided for @startMyBusiness.
+  ///
+  /// In en, this message translates to:
+  /// **'Start my business'**
+  String get startMyBusiness;
+
+  /// No description provided for @stay.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay'**
+  String get stay;
+
+  /// No description provided for @staying.
+  ///
+  /// In en, this message translates to:
+  /// **'Staying'**
+  String get staying;
+
+  /// No description provided for @stockPurchasesAndEquipment.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock purchases and equipment'**
+  String get stockPurchasesAndEquipment;
+
+  /// No description provided for @storekeeper.
+  ///
+  /// In en, this message translates to:
+  /// **'Storekeeper'**
+  String get storekeeper;
+
+  /// No description provided for @storeroom.
+  ///
+  /// In en, this message translates to:
+  /// **'Storeroom'**
+  String get storeroom;
+
+  /// No description provided for @switchBetweenYourAccountAndYourBusinesses.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch between your account and your businesses'**
+  String get switchBetweenYourAccountAndYourBusinesses;
+
+  /// No description provided for @tableNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Table number'**
+  String get tableNumber;
+
+  /// No description provided for @tableScans.
+  ///
+  /// In en, this message translates to:
+  /// **'Table scans'**
+  String get tableScans;
+
+  /// No description provided for @tables.
+  ///
+  /// In en, this message translates to:
+  /// **'Tables'**
+  String get tables;
+
+  /// No description provided for @tablesAndQr.
+  ///
+  /// In en, this message translates to:
+  /// **'Tables and QR'**
+  String get tablesAndQr;
+
+  /// No description provided for @takeOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Take out'**
+  String get takeOut;
+
+  /// No description provided for @takeaway.
+  ///
+  /// In en, this message translates to:
+  /// **'Takeaway'**
+  String get takeaway;
+
+  /// No description provided for @tasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Tasks'**
+  String get tasks;
+
+  /// No description provided for @taxDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Tax details'**
+  String get taxDetails;
+
+  /// No description provided for @team.
+  ///
+  /// In en, this message translates to:
+  /// **'Team'**
+  String get team;
+
+  /// No description provided for @theCustomerPicksItUpAtTheCounter.
+  ///
+  /// In en, this message translates to:
+  /// **'The customer picks it up at the counter'**
+  String get theCustomerPicksItUpAtTheCounter;
+
+  /// No description provided for @theDayWasClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'The day was closed'**
+  String get theDayWasClosed;
+
+  /// No description provided for @theMoneyGoesBackToTheCustomersWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'The money goes back to the customers wallet'**
+  String get theMoneyGoesBackToTheCustomersWallet;
+
+  /// No description provided for @theMoneyGoesBackToYourWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'The money goes back to your wallet'**
+  String get theMoneyGoesBackToYourWallet;
+
+  /// No description provided for @theOrderIsBroughtToTheTable.
+  ///
+  /// In en, this message translates to:
+  /// **'The order is brought to the table'**
+  String get theOrderIsBroughtToTheTable;
+
+  /// No description provided for @theOwnerHasNotGivenYouAccessToAnyPlaceYet.
+  ///
+  /// In en, this message translates to:
+  /// **'The owner has not given you access to any place yet'**
+  String get theOwnerHasNotGivenYouAccessToAnyPlaceYet;
+
+  /// No description provided for @thereIsNoFreeBed.
+  ///
+  /// In en, this message translates to:
+  /// **'There is no free bed'**
+  String get thereIsNoFreeBed;
+
+  /// No description provided for @theySignInWithThisNumberAndSeeThisBusinessInTheirList.
+  ///
+  /// In en, this message translates to:
+  /// **'They sign in with this number and see this business in their list'**
+  String get theySignInWithThisNumberAndSeeThisBusinessInTheirList;
+
+  /// No description provided for @theyWillNoLongerSeeThisBusiness.
+  ///
+  /// In en, this message translates to:
+  /// **'They will no longer see this business'**
+  String get theyWillNoLongerSeeThisBusiness;
+
+  /// No description provided for @thisCodeIsNotAKhabroomMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'This code is not a Khabroom menu'**
+  String get thisCodeIsNotAKhabroomMenu;
+
+  /// No description provided for @thisMenuHasNoItemsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'This menu has no items yet'**
+  String get thisMenuHasNoItemsYet;
+
+  /// No description provided for @thisMenuIsForViewingOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'This menu is for viewing only'**
+  String get thisMenuIsForViewingOnly;
+
+  /// No description provided for @thisPersonHasAnAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'This person has an account'**
+  String get thisPersonHasAnAccount;
+
+  /// No description provided for @toARoom.
+  ///
+  /// In en, this message translates to:
+  /// **'To a room'**
+  String get toARoom;
+
+  /// No description provided for @toClean.
+  ///
+  /// In en, this message translates to:
+  /// **'To clean'**
+  String get toClean;
+
+  /// No description provided for @toCollect.
+  ///
+  /// In en, this message translates to:
+  /// **'To collect'**
+  String get toCollect;
+
+  /// No description provided for @toDo.
+  ///
+  /// In en, this message translates to:
+  /// **'To do'**
+  String get toDo;
+
+  /// No description provided for @toMyRoom.
+  ///
+  /// In en, this message translates to:
+  /// **'To my room'**
+  String get toMyRoom;
+
+  /// No description provided for @toPay.
+  ///
+  /// In en, this message translates to:
+  /// **'To pay'**
+  String get toPay;
+
+  /// No description provided for @topUpAmountRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter an amount between 1,000 and 50,000,000 tomans.'**
+  String get topUpAmountRange;
+
+  /// No description provided for @topUpAndTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Top up and transactions'**
+  String get topUpAndTransactions;
+
+  /// No description provided for @totalToPay.
+  ///
+  /// In en, this message translates to:
+  /// **'Total to pay'**
+  String get totalToPay;
+
+  /// No description provided for @trial.
+  ///
+  /// In en, this message translates to:
+  /// **'Trial'**
+  String get trial;
+
+  /// No description provided for @turnItOnInMenuLook.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn it on in menu look'**
+  String get turnItOnInMenuLook;
+
+  /// No description provided for @turnOffToHideItForAWhile.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn off to hide it for a while'**
+  String get turnOffToHideItForAWhile;
+
+  /// No description provided for @unpaidBills.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpaid bills'**
+  String get unpaidBills;
+
+  /// No description provided for @vat.
+  ///
+  /// In en, this message translates to:
+  /// **'VAT'**
+  String get vat;
+
+  /// No description provided for @vatOnPurchases.
+  ///
+  /// In en, this message translates to:
+  /// **'VAT on purchases'**
+  String get vatOnPurchases;
+
+  /// No description provided for @vatOnSales.
+  ///
+  /// In en, this message translates to:
+  /// **'VAT on sales'**
+  String get vatOnSales;
+
+  /// No description provided for @vatToPay.
+  ///
+  /// In en, this message translates to:
+  /// **'VAT to pay'**
+  String get vatToPay;
+
+  /// No description provided for @viewOnlyMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'View only menu'**
+  String get viewOnlyMenu;
+
+  /// No description provided for @viewYourOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'View your order'**
+  String get viewYourOrder;
+
+  /// No description provided for @visible.
+  ///
+  /// In en, this message translates to:
+  /// **'Visible'**
+  String get visible;
+
+  /// No description provided for @visitorPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Visitor phone'**
+  String get visitorPhone;
+
+  /// No description provided for @visitorsLeavesAndNotices.
+  ///
+  /// In en, this message translates to:
+  /// **'Visitors leaves and notices'**
+  String get visitorsLeavesAndNotices;
+
+  /// No description provided for @waitingForApproval.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for approval'**
+  String get waitingForApproval;
+
+  /// No description provided for @waitingForPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for payment'**
+  String get waitingForPayment;
+
+  /// No description provided for @waitingForPayout.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for payout'**
+  String get waitingForPayout;
+
+  /// No description provided for @walletAndCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Wallet and card'**
+  String get walletAndCard;
+
+  /// No description provided for @wantsToComeFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'Wants to come from'**
+  String get wantsToComeFrom;
+
+  /// No description provided for @warnMeBelow.
+  ///
+  /// In en, this message translates to:
+  /// **'Warn me below'**
+  String get warnMeBelow;
+
+  /// No description provided for @wasAddedToYourOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Was added to your order'**
+  String get wasAddedToYourOrder;
+
+  /// No description provided for @weSentACodeTo.
+  ///
+  /// In en, this message translates to:
+  /// **'We sent a code to'**
+  String get weSentACodeTo;
+
+  /// No description provided for @whatCustomersSee.
+  ///
+  /// In en, this message translates to:
+  /// **'What customers see'**
+  String get whatCustomersSee;
+
+  /// No description provided for @whatHappened.
+  ///
+  /// In en, this message translates to:
+  /// **'What happened'**
+  String get whatHappened;
+
+  /// No description provided for @whatIsItFor.
+  ///
+  /// In en, this message translates to:
+  /// **'What is it for'**
+  String get whatIsItFor;
+
+  /// No description provided for @whatIsOnTheMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'What is on the menu'**
+  String get whatIsOnTheMenu;
+
+  /// No description provided for @whatNeedsDoing.
+  ///
+  /// In en, this message translates to:
+  /// **'What needs doing'**
+  String get whatNeedsDoing;
+
+  /// No description provided for @whatResidentsSay.
+  ///
+  /// In en, this message translates to:
+  /// **'What residents say'**
+  String get whatResidentsSay;
+
+  /// No description provided for @whatWasDone.
+  ///
+  /// In en, this message translates to:
+  /// **'What was done'**
+  String get whatWasDone;
+
+  /// No description provided for @whatWasItFor.
+  ///
+  /// In en, this message translates to:
+  /// **'What was it for'**
+  String get whatWasItFor;
+
+  /// No description provided for @whatYouHave.
+  ///
+  /// In en, this message translates to:
+  /// **'What you have'**
+  String get whatYouHave;
+
+  /// No description provided for @whatsHappeningToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Whats happening today'**
+  String get whatsHappeningToday;
+
+  /// No description provided for @whenOffTheMenuIsForViewingOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'When off the menu is for viewing only'**
+  String get whenOffTheMenuIsForViewingOnly;
+
+  /// No description provided for @whenOffTheQrCodesShowNothing.
+  ///
+  /// In en, this message translates to:
+  /// **'When off the QR codes show nothing'**
+  String get whenOffTheQrCodesShowNothing;
+
+  /// No description provided for @whereDoYouWantToWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Where do you want to work'**
+  String get whereDoYouWantToWork;
+
+  /// No description provided for @whereShouldWePayYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Where should we pay you'**
+  String get whereShouldWePayYou;
+
+  /// No description provided for @who.
+  ///
+  /// In en, this message translates to:
+  /// **'Who'**
+  String get who;
+
+  /// No description provided for @whoDidWhat.
+  ///
+  /// In en, this message translates to:
+  /// **'Who did what'**
+  String get whoDidWhat;
+
+  /// No description provided for @whoIsComing.
+  ///
+  /// In en, this message translates to:
+  /// **'Who is coming'**
+  String get whoIsComing;
+
+  /// No description provided for @whoIsIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Who is it'**
+  String get whoIsIt;
+
+  /// No description provided for @whoSleepsWhere.
+  ///
+  /// In en, this message translates to:
+  /// **'Who sleeps where'**
+  String get whoSleepsWhere;
+
+  /// No description provided for @whoWorksWhen.
+  ///
+  /// In en, this message translates to:
+  /// **'Who works when'**
+  String get whoWorksWhen;
+
+  /// No description provided for @withoutCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Without category'**
+  String get withoutCategory;
+
+  /// No description provided for @youCanAddDormsHotelsAndCafesToItLater.
+  ///
+  /// In en, this message translates to:
+  /// **'You can add dorms hotels and cafes to it later'**
+  String get youCanAddDormsHotelsAndCafesToItLater;
+
+  /// No description provided for @youHaveANewOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'You have a new order'**
+  String get youHaveANewOrder;
+
+  /// No description provided for @youHaveNotOrderedAnythingYet.
+  ///
+  /// In en, this message translates to:
+  /// **'You have not ordered anything yet'**
+  String get youHaveNotOrderedAnythingYet;
+
+  /// No description provided for @youHaveNothingToPay.
+  ///
+  /// In en, this message translates to:
+  /// **'You have nothing to pay'**
+  String get youHaveNothingToPay;
+
+  /// No description provided for @youStartWithTheFreeTrialAndPayWhenItEnds.
+  ///
+  /// In en, this message translates to:
+  /// **'You start with the free trial and pay when it ends'**
+  String get youStartWithTheFreeTrialAndPayWhenItEnds;
+
+  /// No description provided for @yourCafeOrdersAndTheirStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Your cafe orders and their status'**
+  String get yourCafeOrdersAndTheirStatus;
+
+  /// No description provided for @yourFirstName.
+  ///
+  /// In en, this message translates to:
+  /// **'Your first name'**
+  String get yourFirstName;
+
+  /// No description provided for @yourLastName.
+  ///
+  /// In en, this message translates to:
+  /// **'Your last name'**
+  String get yourLastName;
+
+  /// No description provided for @yourMenuIsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Your menu is empty'**
+  String get yourMenuIsEmpty;
+
+  /// No description provided for @yourOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Your order'**
+  String get yourOrder;
+
+  /// No description provided for @yourPlanDoesNotIncludeAnyPlaceType.
+  ///
+  /// In en, this message translates to:
+  /// **'Your plan does not include any place type'**
+  String get yourPlanDoesNotIncludeAnyPlaceType;
+
+  /// No description provided for @yourReply.
+  ///
+  /// In en, this message translates to:
+  /// **'Your reply'**
+  String get yourReply;
+
+  /// No description provided for @yourShiftToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Your shift today'**
+  String get yourShiftToday;
+
+  /// No description provided for @yourSubscriptionEndsSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Your subscription ends soon'**
+  String get yourSubscriptionEndsSoon;
+
+  /// No description provided for @yourWalletIsChargedOnlyAfterTheCardPaymentSucceeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Your wallet is charged only after the card payment succeeds'**
+  String get yourWalletIsChargedOnlyAfterTheCardPaymentSucceeds;
+
+  /// No description provided for @forExampleRoom102.
+  ///
+  /// In en, this message translates to:
+  /// **'For example room 102'**
+  String get forExampleRoom102;
+
+  /// No description provided for @forExample20OrMinus10.
+  ///
+  /// In en, this message translates to:
+  /// **'For example 20 or -10'**
+  String get forExample20OrMinus10;
+
+  /// No description provided for @forExample101To104.
+  ///
+  /// In en, this message translates to:
+  /// **'For example 101 to 104'**
+  String get forExample101To104;
+
+  /// No description provided for @forExampleEveryDay8To24.
+  ///
+  /// In en, this message translates to:
+  /// **'For example every day 8 to 24'**
+  String get forExampleEveryDay8To24;
+
+  /// No description provided for @forExampleRoom204Bathroom.
+  ///
+  /// In en, this message translates to:
+  /// **'For example room 204 bathroom'**
+  String get forExampleRoom204Bathroom;
+
+  /// No description provided for @orderNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Order no.'**
+  String get orderNo;
+
+  /// No description provided for @positionInLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Position in line'**
+  String get positionInLine;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

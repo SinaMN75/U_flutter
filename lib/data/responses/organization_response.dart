@@ -1,18 +1,41 @@
 part of "../data.dart";
 
 class UOrganizationMember {
-  UOrganizationMember({required this.userId, this.permissions = const <int>[]});
+  UOrganizationMember({required this.userId, this.permissions = const <int>[], this.places = const <UOrganizationMemberPlace>[]});
 
   factory UOrganizationMember.fromMap(Map<String, dynamic> json) => UOrganizationMember(
     userId: json["userId"] as String,
     permissions: json["permissions"] == null ? <int>[] : List<int>.from(json["permissions"]!.map((dynamic x) => x)),
+    places: json["places"] == null ? <UOrganizationMemberPlace>[] : List<UOrganizationMemberPlace>.from(json["places"]!.map((dynamic x) => UOrganizationMemberPlace.fromMap(x))),
   );
 
   final String userId;
   final List<int> permissions;
+  final List<UOrganizationMemberPlace> places;
+
+  bool can(TagUser permission, {String? placeId}) =>
+      permissions.contains(permission.number) || places.any((UOrganizationMemberPlace x) => (placeId == null || x.placeId == placeId) && x.permissions.contains(permission.number));
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "userId": userId,
+    "permissions": permissions,
+    "places": places.map((UOrganizationMemberPlace x) => x.toMap()).toList(),
+  };
+}
+
+class UOrganizationMemberPlace {
+  UOrganizationMemberPlace({required this.placeId, this.permissions = const <int>[]});
+
+  factory UOrganizationMemberPlace.fromMap(Map<String, dynamic> json) => UOrganizationMemberPlace(
+    placeId: json["placeId"] as String,
+    permissions: json["permissions"] == null ? <int>[] : List<int>.from(json["permissions"]!.map((dynamic x) => x)),
+  );
+
+  final String placeId;
+  final List<int> permissions;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "placeId": placeId,
     "permissions": permissions,
   };
 }
@@ -482,4 +505,48 @@ class UActivityLogResponse {
   final String? entityId;
   final String? userName;
   final String? body;
+}
+
+class USubscriptionQuoteResponse {
+  USubscriptionQuoteResponse({required this.planId, required this.title, required this.months, required this.price, required this.credit, required this.payable, this.trial = false, this.renewal = false, this.startsAt, this.expiresAt});
+
+  factory USubscriptionQuoteResponse.fromMap(Map<String, dynamic> json) => USubscriptionQuoteResponse(
+    planId: json["planId"],
+    title: json["title"] ?? "",
+    months: json["months"] ?? 0,
+    trial: json["trial"] ?? false,
+    renewal: json["renewal"] ?? false,
+    price: (json["price"] as num?)?.toDouble() ?? 0,
+    credit: (json["credit"] as num?)?.toDouble() ?? 0,
+    payable: (json["payable"] as num?)?.toDouble() ?? 0,
+    startsAt: json["startsAt"] == null ? null : DateTime.parse(json["startsAt"]),
+    expiresAt: json["expiresAt"] == null ? null : DateTime.parse(json["expiresAt"]),
+  );
+
+  final String planId;
+  final String title;
+  final int months;
+  final bool trial;
+  final bool renewal;
+  final double price;
+  final double credit;
+  final double payable;
+  final DateTime? startsAt;
+  final DateTime? expiresAt;
+}
+
+class USubscriptionBuyResponse {
+  USubscriptionBuyResponse({required this.organizationId, required this.subscriptionId, required this.payable, required this.active});
+
+  factory USubscriptionBuyResponse.fromMap(Map<String, dynamic> json) => USubscriptionBuyResponse(
+    organizationId: json["organizationId"],
+    subscriptionId: json["subscriptionId"],
+    payable: (json["payable"] as num?)?.toDouble() ?? 0,
+    active: json["active"] ?? false,
+  );
+
+  final String organizationId;
+  final String subscriptionId;
+  final double payable;
+  final bool active;
 }
