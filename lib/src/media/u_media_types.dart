@@ -38,9 +38,6 @@ enum UAudioFocusPolicy { exclusive, duck, mixWithOthers }
 /// DRM: widevine, playready, clearkey, fairplay.
 enum UDrmScheme { widevine, fairplay, playready, clearkey }
 
-/// Built-in equalizer presets.
-enum UEqualizerPreset { flat, pop, rock, jazz, classical, dance, bass, treble, vocal, custom }
-
 /// Picture-in-picture state.
 enum UPipState { unavailable, available, active }
 

@@ -83,7 +83,7 @@ class UDashboardService {
     (List<String>?, UEmptyResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
       method: "GET",
-      endpoint: "${U.baseUrl}/Log/Read",
+      endpoint: "${U.baseUrl}/Log/Read?token=${Uri.encodeQueryComponent(ULocalStorage.getToken() ?? "")}",
       onSuccess: (Response r) {
         final UResponse<List<String>> ok = UResponse<List<String>>.fromJson(
           r.body,
@@ -114,7 +114,7 @@ class UDashboardService {
     (bool, UEmptyResponse?, String?) result = (false, null, null);
     await UHttpClient.send(
       method: "DELETE",
-      endpoint: "${U.baseUrl}/Log/Clear",
+      endpoint: "${U.baseUrl}/Log/Clear?token=${Uri.encodeQueryComponent(ULocalStorage.getToken() ?? "")}",
       onSuccess: (Response r) {
         result = (true, null, null);
         onOk?.call();

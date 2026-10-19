@@ -27,9 +27,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get accenting => 'صعودی';
 
   @override
-  String get acceptTermsAndContinue => 'قبول شرایط و ادامه';
-
-  @override
   String get acceptedResidents => 'پذیرش ساکنین';
 
   @override
@@ -37,9 +34,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get accommodation => 'اقامتگاه';
-
-  @override
-  String get accommodationDashboard => 'داشبورد اقامتگاه';
 
   @override
   String get account => 'حساب';
@@ -57,21 +51,10 @@ class AppLocalizationsFa extends AppLocalizations {
   String get accounts => 'حساب ها';
 
   @override
-  String get accountsCardsAndTransactionsAreShownBasedOnTheActiveProfile => 'حساب‌ها، کارت‌ها و تراکنش‌ها بر اساس پروندهٔ فعال نمایش داده می‌شوند.';
-
-  @override
-  String get accountsInThisProfile => 'حساب‌های این پرونده';
-
-  @override
   String get active => 'فعال';
 
   @override
   String get activeContract => 'قرارداد فعال';
-
-  @override
-  String activeCount(Object count) {
-    return 'فعال ($count)';
-  }
 
   @override
   String get activeProfile => 'پروندهٔ فعال';
@@ -110,9 +93,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get addQuestion => 'افزودن سؤال';
-
-  @override
-  String get addReservation => 'افزودن رزرو';
 
   @override
   String get addStaffMember => 'افزودن کارمند';
@@ -178,9 +158,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get amountInRial => 'مبلغ به ریال';
 
   @override
-  String get amountsInThousandToman => 'مبالغ به هزار تومان';
-
-  @override
   String get annotations => 'یادداشت‌ها';
 
   @override
@@ -221,9 +198,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get approval => 'وضعیت تأیید';
-
-  @override
-  String get approvalCode => 'پیگیری';
 
   @override
   String get approve => 'تایید';
@@ -333,9 +307,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get avaHamrahSystem => 'سامانه آوا همراه';
 
   @override
-  String get avaHamrahTermsOfUse => 'شرایط استفاده از آواهمراه';
-
-  @override
   String get avaPark => 'آواپارک';
 
   @override
@@ -348,28 +319,16 @@ class AppLocalizationsFa extends AppLocalizations {
   String get availableCredit => 'اعتبار در دسترس';
 
   @override
-  String get availableCreditBalance => 'مانده اعتبار در دسترس';
-
-  @override
   String get averageDuration => 'میانگین مدت';
 
   @override
   String get back => 'بازگشت';
 
   @override
-  String get backToHome => 'بازگشت به خانه';
-
-  @override
   String get background => 'رنگ پس‌زمینه';
 
   @override
   String get balance => 'موجودی';
-
-  @override
-  String get balanceEnquiry => 'مانده گیری';
-
-  @override
-  String get balanceReceipt => 'رسید موجودی';
 
   @override
   String get bankAccountId => 'شناسه حساب بانکی';
@@ -429,9 +388,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get billType => 'نوع قبض';
 
   @override
-  String get binaryFiles => 'فایل‌های باینری';
-
-  @override
   String get bio => 'بیوگرافی';
 
   @override
@@ -449,9 +405,6 @@ class AppLocalizationsFa extends AppLocalizations {
   }
 
   @override
-  String get blockedAmount => 'مبلغ مسدود';
-
-  @override
   String get blog => 'وبلاگ';
 
   @override
@@ -464,13 +417,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get book => 'رزرو';
 
   @override
-  String get bookNow => 'رزرو کن';
-
-  @override
   String get bookThisRoom => 'رزرو این اتاق';
-
-  @override
-  String get bookedInPerson => 'رزرو حضوری';
 
   @override
   String get bookingPolicies => 'شرایط و خدمات';
@@ -535,9 +482,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get byContinuingYouAcceptTheTermsAndConditionsAndThePrivacyPolicy => 'با ادامه، قوانین و مقررات و حریم خصوصی را می‌پذیرم.';
 
   @override
-  String get byWeight => 'بر اساس وزن';
-
-  @override
   String get cacheCleared => 'حافظه پنهان پاک شد';
 
   @override
@@ -586,22 +530,10 @@ class AppLocalizationsFa extends AppLocalizations {
   String get capacity => 'ظرفیت';
 
   @override
-  String get cardDetails => 'اطلاعات کارت';
-
-  @override
-  String get cardLimitsSettings => 'سقف و تنظیمات کارت';
-
-  @override
   String get cardNumber => 'شماره کارت';
 
   @override
   String get cardRead => 'کارت خوانده شد';
-
-  @override
-  String get cardReadFailed => 'خواندن کارت ناموفق بود';
-
-  @override
-  String get cardToCard => 'کارت به کارت';
 
   @override
   String get cardTotal => 'جمع کارتی';
@@ -658,9 +590,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get chargeAmount => 'مبلغ شارژ';
 
   @override
-  String get chargePackage => 'شارژ و بسته';
-
-  @override
   String get chargePin => 'رمز شارژ';
 
   @override
@@ -694,9 +623,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get checkOutDate => 'تاریخ خروج';
 
   @override
-  String get checkOutThisApp => 'این اپلیکیشن را ببینید';
-
-  @override
   String get checkOutTime => 'ساعت خروج';
 
   @override
@@ -719,12 +645,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get chooseAPaymentMethod => 'انتخاب روش پرداخت';
-
-  @override
-  String get chooseAnItem => 'یک مورد انتخاب کنید';
-
-  @override
-  String get chooseHowToPay => 'روش پرداخت را انتخاب کنید';
 
   @override
   String get city => 'شهر';
@@ -832,13 +752,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get confirmed => 'تایید شده';
 
   @override
-  String get connectedAccount => 'حساب متصل';
-
-  @override
   String get connecting => 'در حال اتصال';
-
-  @override
-  String get connectingToHost => 'در حال اتصال به سرور';
 
   @override
   String get connectionLost => 'اتصال قطع است';
@@ -859,9 +773,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get contactInformation => 'اطلاعات تماس';
 
   @override
-  String get contactSupport => 'تماس با پشتیبانی';
-
-  @override
   String get contactUs => 'تماس با ما';
 
   @override
@@ -872,9 +783,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get contents => 'محتواها';
-
-  @override
-  String get continueToExit => 'ادامه ثبت خروج';
 
   @override
   String get continue_ => 'ادامه';
@@ -934,9 +842,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get couldNotOpenTheDocument => 'سند باز نشد';
 
   @override
-  String get couldNotStartAr => 'شروع واقعیت افزوده ممکن نشد';
-
-  @override
   String get count => 'تعداد';
 
   @override
@@ -977,11 +882,6 @@ class AppLocalizationsFa extends AppLocalizations {
   @override
   String countReceiptsAreQueuedForOfflineSending(Object count) {
     return '$count رسید در صف ارسال آفلاین است';
-  }
-
-  @override
-  String countTimes(Object count) {
-    return '$count بار';
   }
 
   @override
@@ -1031,9 +931,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get creditFacilities => 'تسهیلات اعتباری';
 
   @override
-  String get creditLimit => 'سقف اعتبار';
-
-  @override
   String get creditValidation => 'اعتبار سنجی';
 
   @override
@@ -1056,9 +953,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get currentPassword => 'رمز فعلی';
-
-  @override
-  String get currentValue => 'ارزش روز';
 
   @override
   String get custom => 'سفارشی';
@@ -1185,12 +1079,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get details => 'جزئیات';
 
   @override
-  String get detailsAndPhotos => 'جزئیات و تصاویر';
-
-  @override
-  String get detailsSaved => 'جزئیات ذخیره شد.';
-
-  @override
   String get deviceId => 'شناسه دستگاه';
 
   @override
@@ -1207,11 +1095,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get disabled => 'غیرفعال';
-
-  @override
-  String disabledSinceDate(Object date) {
-    return 'غیرفعال از $date';
-  }
 
   @override
   String get diskUsage => 'میزان استفاده دیسک';
@@ -1247,9 +1130,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get dormBeds => 'تخت‌های خوابگاه';
 
   @override
-  String get dormBedsAreBookedInPersonOnly => 'رزرو خوابگاه فقط حضوری انجام می‌شود';
-
-  @override
   String get dormContracts => 'قراردادهای خوابگاه';
 
   @override
@@ -1269,9 +1149,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get download => 'دانلود';
-
-  @override
-  String get downloadComplete => 'دانلود کامل شد';
 
   @override
   String get downloadData => 'دانلود اطلاعات';
@@ -1317,9 +1194,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get downloadErrorUnsupported => 'در این دستگاه پشتیبانی نمی‌شود';
-
-  @override
-  String get downloadPdf => 'دانلود PDF';
 
   @override
   String get downloadQueued => 'در صف';
@@ -1434,9 +1308,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get enterDate => 'وارد کردن تاریخ';
 
   @override
-  String get enterPhoneNumber => 'شماره موبایل وارد نمایید';
-
-  @override
   String get enterTheBillIdAndPaymentIdOrScanItsBarcode => 'شناسه قبض و شناسه پرداخت را وارد یا بارکد آن را اسکن کنید';
 
   @override
@@ -1446,22 +1317,13 @@ class AppLocalizationsFa extends AppLocalizations {
   String get enterThePasswordToOpenThisDocument => 'برای باز کردن این سند رمز را وارد کنید';
 
   @override
-  String get enterThePlateManually => 'ورود دستی پلاک';
-
-  @override
   String get enterThePlateYouSeeInThePhoto => 'پلاکی که در تصویر می‌بینید را وارد کنید';
 
   @override
   String get enterThePrepaidSimCardNumber => 'شماره سیم‌کارت اعتباری را وارد کنید';
 
   @override
-  String get enterTheSentVerificationCode => 'کد تایید ارسال شده را وارد نمایید.';
-
-  @override
   String get enterTheTrackingCodeShownByTheTerminalsPaymentApp => 'کد پیگیری نمایش‌داده‌شده در برنامه پرداخت دستگاه را وارد کنید.';
-
-  @override
-  String get enterYourPin => 'رمز خود را وارد کنید';
 
   @override
   String get enterYourPostalCodeCorrectlyAndInquire => 'کد پستی خود را به درستی وارد کرده و استعلام بگیرید.';
@@ -1481,9 +1343,6 @@ class AppLocalizationsFa extends AppLocalizations {
   @override
   String get entriesAndExitsKeepWorkingAndAreStoredOnTheDeviceCardPaymentIsAvailableTheOnlineGatewayIsNot =>
       'ثبت ورود و خروج ادامه دارد و روی دستگاه ذخیره می‌شود. پرداخت کارتی در دسترس است، درگاه اینترنتی نه.';
-
-  @override
-  String get entriesThisMonth => 'تردد این ماه';
 
   @override
   String get entryAndExitAreRecordedFreeOfCharge => 'ورود و خروج بدون هزینه ثبت می‌شود.';
@@ -1568,11 +1427,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get expired => 'منقضی';
-
-  @override
-  String expiredCount(Object count) {
-    return 'منقضی ($count)';
-  }
 
   @override
   String get expires => 'انقضا';
@@ -1797,9 +1651,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get fullscreen => 'تمام‌صفحه';
 
   @override
-  String get fullyBooked => 'تکمیل ظرفیت';
-
-  @override
   String get gatewayPaymentsByType => 'پرداخت‌های درگاه بر اساس نوع';
 
   @override
@@ -1839,9 +1690,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get goldApiTokens => 'توکن‌های API طلا';
 
   @override
-  String get goldBalance => 'موجودی طلا';
-
-  @override
   String get goldOrders => 'سفارش‌های طلا';
 
   @override
@@ -1858,9 +1706,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get goldTransactions => 'تراکنش‌های طلا';
-
-  @override
-  String get goldWallet => 'کیف پول طلا';
 
   @override
   String get goldWeight => 'وزن طلا';
@@ -1912,9 +1757,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get guests => 'مهمان‌ها';
-
-  @override
-  String get guestsAndRoom => 'مهمان‌ها و اتاق';
 
   @override
   String get handles => 'هندل‌ها';
@@ -1986,9 +1828,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get horizontal => 'افقی';
-
-  @override
-  String get hostTerminal => 'پایانه / پذیرنده';
 
   @override
   String get hotel => 'هتل';
@@ -2065,22 +1904,13 @@ class AppLocalizationsFa extends AppLocalizations {
   String get imei => 'آی‌ام‌ای‌آی';
 
   @override
-  String get imeiCode => 'کد IMEI';
-
-  @override
   String get imported => 'افزوده‌شده';
-
-  @override
-  String get importHostConfig => 'درون‌ریزی تنظیمات مرکز';
 
   @override
   String get indexes => 'ایندکس‌ها';
 
   @override
   String get indexUsage => 'میزان استفاده از ایندکس‌ها';
-
-  @override
-  String get inPerson => 'حضوری';
 
   @override
   String get inactive => 'غیرفعال';
@@ -2158,9 +1988,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get installationDate => 'تاریخ نصب';
 
   @override
-  String get instantMoneyTransfer => 'انتقال آنی وجه';
-
-  @override
   String get institutionId => 'شناسه موسسه';
 
   @override
@@ -2168,9 +1995,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get insufficientBalance => 'موجودی کافی نیست';
-
-  @override
-  String get insufficientWalletBalancePleaseUseThePaymentGateway => 'موجودی کیف پول کافی نیست. از درگاه پرداخت استفاده کنید.';
 
   @override
   String get internet => 'اینترنت';
@@ -2206,9 +2030,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get invalidPhoneNumber => 'شماره تلفن نامعتبر است';
 
   @override
-  String get invitation => 'دعوت‌نامه';
-
-  @override
   String get invoice => 'فاکتور';
 
   @override
@@ -2216,9 +2037,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get invoiceId => 'شناسه فاکتور';
-
-  @override
-  String get invoiceMarkedAsPaid => 'فاکتور پرداخت شد';
 
   @override
   String get invoiceType => 'نوع فاکتور';
@@ -2401,16 +2219,10 @@ class AppLocalizationsFa extends AppLocalizations {
   String get logInToStartYourShift => 'برای شروع شیفت وارد شوید';
 
   @override
-  String get logInToYourAccount => 'ورود به حساب کاربری';
-
-  @override
   String get logo => 'لوگو';
 
   @override
   String get logon => 'ورود به سیستم';
-
-  @override
-  String get logonDoneSuccessfully => 'ورود با موفقیت انجام شد';
 
   @override
   String get logout => 'خروج';
@@ -2447,9 +2259,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get management => 'مدیریت';
-
-  @override
-  String get manualRefund => 'بازگشت وجه دستی';
 
   @override
   String get margins => 'حاشیه‌ها';
@@ -2614,9 +2423,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get moreThan24Hours => 'بیش از ۲۴ ساعت';
 
   @override
-  String get morningShift => 'شیفت صبح';
-
-  @override
   String get mostFailingPaths => 'پرخطاترین مسیرها';
 
   @override
@@ -2641,9 +2447,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get mute => 'بی‌صدا';
 
   @override
-  String get myBankAccounts => 'حساب‌های بانکی من';
-
-  @override
   String get myGold => 'طلای من';
 
   @override
@@ -2651,9 +2454,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get myPos => 'خودپرداز من';
-
-  @override
-  String get myReceipt => 'رسید من';
 
   @override
   String get myReservations => 'رزروهای من';
@@ -2749,9 +2549,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get newStaffMember => 'کارمند جدید';
 
   @override
-  String get newSubscription => 'اشتراک جدید';
-
-  @override
   String get new_ => 'جدید';
 
   @override
@@ -2806,9 +2603,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get noData => 'داده‌ای موجود نیست';
 
   @override
-  String get noDeviceFound => 'دستگاهی یافت نشد';
-
-  @override
   String get noDownloads => 'هنوز دانلودی وجود ندارد';
 
   @override
@@ -2835,16 +2629,10 @@ class AppLocalizationsFa extends AppLocalizations {
   String get noOpenEntryWasFoundForThisPlate => 'ورود بازی برای این پلاک پیدا نشد';
 
   @override
-  String get noPhotosYet => 'هنوز تصویری ثبت نشده است.';
-
-  @override
   String get noPlacesHaveBeenAddedYet => 'هنوز اقامتگاهی ثبت نشده است';
 
   @override
   String get noPlacesNearby => 'مکانی در نزدیکی نیست';
-
-  @override
-  String get noResponseFromHost => 'پاسخی از سرور دریافت نشد';
 
   @override
   String get noResults => 'نتیجه‌ای یافت نشد';
@@ -2905,9 +2693,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get notes => 'یادداشت‌ها';
-
-  @override
-  String get nothingTracedYet => 'هنوز چیزی ثبت نشده';
 
   @override
   String get notifications => 'اعلان‌ها';
@@ -2976,9 +2761,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get openInBrowser => 'باز کردن در مرورگر';
 
   @override
-  String get openOnPublicHolidays => 'تعطیلات رسمی باز است';
-
-  @override
   String get openSettings => 'باز کردن تنظیمات';
 
   @override
@@ -3004,9 +2786,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get order => 'ترتیب';
-
-  @override
-  String get orderDetail => 'جزئیات سفارش';
 
   @override
   String get orderId => 'شناسه سفارش';
@@ -3102,12 +2881,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get parking => 'پارکینگ';
 
   @override
-  String get parkingAddress => 'نشانی پارکینگ';
-
-  @override
-  String get parkingCapacity => 'ظرفیت پارکینگ';
-
-  @override
   String get parkingInformation => 'اطلاعات پارکینگ';
 
   @override
@@ -3120,12 +2893,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get parkingNamePrintedOnTheReceipt => 'نام پارکینگ (روی رسید چاپ می‌شود)';
 
   @override
-  String get parkingPhoneNumber => 'تلفن پارکینگ';
-
-  @override
-  String get parkingReceipt => 'رسید پارکینگ';
-
-  @override
   String get parkingReport => 'گزارش پارکینگ';
 
   @override
@@ -3135,9 +2902,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get parkingSpot => 'جای پارک';
 
   @override
-  String get parkingSpotReservation => 'رزرو جای پارک';
-
-  @override
   String get password => 'رمز عبور';
 
   @override
@@ -3145,9 +2909,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get past => 'گذشته';
-
-  @override
-  String get pasteTheContentOfHostConfigJson => 'محتوای فایل hostConfig.json را جای‌گذاری کنید';
 
   @override
   String get path => 'مسیر';
@@ -3176,9 +2937,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get payAndInquire => 'پرداخت و استعلام';
 
   @override
-  String get payByCard => 'پرداخت با کارت';
-
-  @override
   String get payFromWallet => 'پرداخت از کیف پول';
 
   @override
@@ -3192,9 +2950,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get payOnlineWithABankCard => 'پرداخت اینترنتی با کارت بانکی';
-
-  @override
-  String get payTheInvoice => 'پرداخت فاکتور';
 
   @override
   String get payWithTheBankGateway => 'پرداخت با درگاه بانکی';
@@ -3296,9 +3051,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get pin => 'سنجاق کردن';
 
   @override
-  String get pinEntryCancelled => 'ورود رمز لغو شد';
-
-  @override
   String get pinned => 'سنجاق شده';
 
   @override
@@ -3308,19 +3060,10 @@ class AppLocalizationsFa extends AppLocalizations {
   String get placeTheBarcodeInsideTheFrame => 'بارکد را داخل کادر قرار دهید';
 
   @override
-  String get placesVisibility => 'ویژه، تأیید و نمایش اقامتگاه‌ها';
-
-  @override
   String get plate => 'پلاک';
 
   @override
   String get plateAndPrintReceipt => 'پلاک و چاپ رسید';
-
-  @override
-  String get plateBlacklist => 'لیست سیاه پلاک';
-
-  @override
-  String get plateDetected => 'پلاک شناسایی شد';
 
   @override
   String get plateHistoryInquiry => 'استعلام سوابق پلاک';
@@ -3354,9 +3097,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get pleaseEnterSomeInputText => 'لطفاً متن ورودی را وارد کنید.';
-
-  @override
-  String get pleaseEnterYourMobileNumberToLogIn => 'جهت ورود لطفا شماره موبایل خود را وارد کنید.';
 
   @override
   String pleaseSelectAItem(Object item) {
@@ -3451,9 +3191,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get printingFailed => 'چاپ رسید ناموفق بود';
 
   @override
-  String get printingReceipt => 'در حال چاپ رسید';
-
-  @override
   String get privacyPolicy => 'حریم خصوصی';
 
   @override
@@ -3538,16 +3275,10 @@ class AppLocalizationsFa extends AppLocalizations {
   String get readPlateWithCamera => 'خواندن پلاک با دوربین';
 
   @override
-  String get readThis => 'این را بخوانید';
-
-  @override
   String get readingMode => 'حالت مطالعه';
 
   @override
   String get readingTime => 'زمان مطالعه';
-
-  @override
-  String get realBalance => 'مانده واقعی';
 
   @override
   String get reason => 'علت';
@@ -3742,9 +3473,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get request => 'درخواست';
-
-  @override
-  String get requestApproval => 'درخواست تأیید';
 
   @override
   String get requestBody => 'بدنه درخواست';
@@ -3947,9 +3675,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get scanThisCodeToRegisterTheExit => 'برای ثبت خروج این کد را اسکن کنید';
 
   @override
-  String get scannedReceipt => 'رسید اسکن‌شده';
-
-  @override
   String get scopes => 'دسترسی‌ها';
 
   @override
@@ -3975,9 +3700,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get searchPlate => 'جستجوی پلاک';
-
-  @override
-  String get searchResults => 'نتایج جستجو';
 
   @override
   String get searchTables => 'جستجوی جدول‌ها';
@@ -4048,9 +3770,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get selectProfile => 'انتخاب پرونده';
 
   @override
-  String get selectTheDesiredSimCard => 'سیم‌کارت موردنظر را انتخاب کنید';
-
-  @override
   String selectTheVehicleForInquiry(Object inquiry) {
     return 'خودرو موردنظر را برای استعلام $inquiry انتخاب کنید';
   }
@@ -4093,9 +3812,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get services => 'خدمات';
-
-  @override
-  String get servicesIncluded => 'خدمات شامل اجاره';
 
   @override
   String get setAsCover => 'انتخاب به‌عنوان عکس اصلی';
@@ -4144,9 +3860,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get showAnnotations => 'نمایش یادداشت‌ها';
-
-  @override
-  String get showDynamicPinInApp => 'نمایش رمز دوم در اپ';
 
   @override
   String get showInFolder => 'نمایش در پوشه';
@@ -4397,16 +4110,10 @@ class AppLocalizationsFa extends AppLocalizations {
   String get superscript => 'بالانویس';
 
   @override
-  String get supportCode => 'کد پشتیبانی';
-
-  @override
   String get supportPassword => 'رمز پشتیبانی';
 
   @override
   String get swipeOrTapTheCard => 'کارت را بکشید یا بزنید';
-
-  @override
-  String get swipeYourCard => 'کارت خود را بکشید';
 
   @override
   String get switchCamera => 'تعویض دوربین';
@@ -4493,9 +4200,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get temporarilyBlock => 'مسدودسازی موقت';
 
   @override
-  String get temporarilyBlocked => 'مسدود موقت';
-
-  @override
   String get temporaryPassword => 'رمز موقت';
 
   @override
@@ -4508,16 +4212,10 @@ class AppLocalizationsFa extends AppLocalizations {
   String get terminalId => 'شناسه پایانه';
 
   @override
-  String get terminalIsNotLoggedOn => 'پایانه وارد سیستم نشده است';
-
-  @override
   String get terminalNumber => 'شماره ترمینال';
 
   @override
   String get terminalTitleOptional => 'عنوان پایانه (اختیاری)';
-
-  @override
-  String get terminalTrackingCode => 'کد رهگیری پایانه';
 
   @override
   String get terminalType => 'نوع پایانه';
@@ -4541,9 +4239,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get textColor => 'رنگ متن';
 
   @override
-  String get textFiles => 'فایل‌های متنی';
-
-  @override
   String get textSize => 'اندازه متن';
 
   @override
@@ -4553,27 +4248,13 @@ class AppLocalizationsFa extends AppLocalizations {
   String get thanksForYourReview => 'از ثبت نظر شما ممنونیم';
 
   @override
-  String theAccountUserNameIsValidButIsNotLinkedToAnyParkingYetAskTheParkingOwnerToAddYouAsAnOperator(Object userName) {
-    return 'حساب $userName معتبر است اما هنوز به هیچ پارکینگی متصل نشده. از صاحب پارکینگ بخواهید شما را به‌عنوان اپراتور اضافه کند.';
-  }
-
-  @override
   String get theAmountWasSentToTheDevicesCardReaderDoNotCloseThisScreenUntilTheTransactionFinishes => 'مبلغ روی کارت‌خوان دستگاه ارسال شد. تا پایان تراکنش صفحه را نبندید.';
-
-  @override
-  String get theAmountWillBeAddedToTheWalletAndPaid => 'مبلغ به کیف پول اضافه و پرداخت انجام می‌شود';
 
   @override
   String get theCurrentPasswordIsWrong => 'رمز فعلی نادرست است';
 
   @override
   String get theCustomerShouldScanThisCodeWithTheirPhone => 'مشتری این کد را با موبایل اسکن کند';
-
-  @override
-  String get theDynamicPinIsUsedForOnlinePurchases => 'رمز دوم پویا برای خریدهای اینترنتی استفاده می‌شود.';
-
-  @override
-  String get theDynamicPinWasSentViaSms => 'رمز دوم پویا پیامک شد';
 
   @override
   String get theEnteredNationalCodeIsIncorrect => 'کد ملی وارد شده صحیح نیست.';
@@ -4687,10 +4368,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get toRegisterAMerchantYourWalletMustHaveAtLeast100000TomansBalance => 'برای ثبت پذیرندگی کیف پول شما باید حداقل ۱۰۰ هزار تومان موجودی داشته باشد.';
 
   @override
-  String get toTakeABedCallTheDormOrVisitInPersonOnceYouAreRegisteredTheContractAndItsMonthlyInvoicesShowUpRightHere =>
-      'برای گرفتن تخت، با خوابگاه تماس بگیرید یا حضوری مراجعه کنید. قرارداد و فاکتورهای ماهانه بعد از ثبت‌نام در همین اپ نمایش داده می‌شود.';
-
-  @override
   String get toUseAvaHamrahServicesCompleteYourIdentityInformation => 'برای استفاده از خدمات آواهمراه، اطلاعات هویتی خود را تکمیل کنید.';
 
   @override
@@ -4776,9 +4453,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get transactionAmount => 'مبلغ تراکنش';
-
-  @override
-  String get transactionFailed => 'تراکنش ناموفق';
 
   @override
   String get transactionHistory => 'تاریخچه تراکنش‌ها';
@@ -4889,19 +4563,10 @@ class AppLocalizationsFa extends AppLocalizations {
   String get useThisPlate => 'استفاده از این پلاک';
 
   @override
-  String get usedCredit => 'اعتبار مصرف‌شده';
-
-  @override
   String get usedVolume => 'حجم مصرف‌شده';
 
   @override
   String get user => 'کاربر';
-
-  @override
-  String get userCreatedSuccessfully => 'کاربر با موفقعیت ساخته شد';
-
-  @override
-  String get userDetails => 'جزئیات کاربر';
 
   @override
   String get userDocuments => 'مدارک کاربر';
@@ -4914,12 +4579,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get userInformation => 'اطلاعات کاربر';
-
-  @override
-  String get userIp => 'کاربر / IP';
-
-  @override
-  String get userUpdatedSuccessfully => 'کاربر با موفقیت ویرایش شد';
 
   @override
   String get username => 'نام کاربری';
@@ -5009,9 +4668,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get viewAll => 'مشاهده همه';
 
   @override
-  String get viewDebt => 'مشاهده بدهی';
-
-  @override
   String get viewInAr => 'مشاهده در واقعیت افزوده';
 
   @override
@@ -5056,9 +4712,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get waitingForNetwork => 'در انتظار شبکه';
 
   @override
-  String get waitingForResponse => 'در انتظار پاسخ';
-
-  @override
   String get waitingForTheCard => 'در انتظار کارت…';
 
   @override
@@ -5074,9 +4727,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get walletBalance => 'موجودی کیف پول';
 
   @override
-  String get walletChargeWasNotCompletedIfAnyAmountWasDeductedItWillBeRefundedWithin15Minutes => 'شارژ کیف پول تکمیل نشد. در صورت کسر وجه، مبلغ طی ۱۵ دقیقه بازگردانده می‌شود.';
-
-  @override
   String get walletManagement => 'مدیریت کیف پول';
 
   @override
@@ -5090,9 +4740,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get watermark => 'واترمارک';
-
-  @override
-  String get weSentAVerificationCodeToThisNumber => 'کد تایید به این شماره پیامک شد.';
 
   @override
   String get weak => 'ضعیف';
@@ -5117,9 +4764,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get whereAreYouStaying => 'کجا اقامت می‌کنی؟';
-
-  @override
-  String get whichParking => 'کدام پارکینگ؟';
 
   @override
   String get wifiOnly => 'فقط وای‌فای';
@@ -5155,9 +4799,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get youAreOffline => 'شما آفلاین هستید';
 
   @override
-  String get youDoNotHaveAccessToAnyParking => 'دسترسی به پارکینگ ندارید';
-
-  @override
   String get youDoNotHaveAccessToThisPanel => 'به این پنل دسترسی ندارید';
 
   @override
@@ -5187,12 +4828,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get yourGoldOrderIsBeingProcessed => 'سفارش طلای شما در حال پردازش است و موجودی شما به‌زودی به‌روز می‌شود.';
 
   @override
-  String get yourGoldOrderWasPlaced => 'سفارش طلای شما ثبت شد';
-
-  @override
-  String get yourInvoice => 'فاکتور شما';
-
-  @override
   String get yourRating => 'امتیاز شما';
 
   @override
@@ -5209,9 +4844,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get yourSessionHasExpiredPleaseSignInAgain => 'نشست شما منقضی شده است. لطفاً دوباره وارد شوید.';
-
-  @override
-  String get yourShiftWillBeRecordedOnThisParking => 'شیفت شما روی همین پارکینگ ثبت می‌شود';
 
   @override
   String get yourStay => 'اقامت شما';
@@ -5313,9 +4945,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get selectionAccuracy => 'دقت هایلایت';
 
   @override
-  String get readingProgress => 'پیشرفت مطالعه';
-
-  @override
   String get addBookmark => 'افزودن نشانک';
 
   @override
@@ -5364,12 +4993,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get autoPip => 'تصویر در تصویر خودکار';
 
   @override
-  String get rememberPosition => 'به خاطر سپردن موقعیت';
-
-  @override
-  String get keyboardShortcuts => 'میان‌برهای صفحه‌کلید';
-
-  @override
   String get fineSpeed => 'تنظیم دقیق سرعت';
 
   @override
@@ -5381,11 +5004,6 @@ class AppLocalizationsFa extends AppLocalizations {
   @override
   String resumeFrom(Object position) {
     return 'ادامه از $position';
-  }
-
-  @override
-  String pageOfTotal(Object page, Object total) {
-    return 'صفحه $page از $total';
   }
 
   @override
@@ -5449,12 +5067,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get duplicate => 'تکثیر';
-
-  @override
-  String get bringToFront => 'آوردن به جلو';
-
-  @override
-  String get sendToBack => 'بردن به عقب';
 
   @override
   String get drawOnVideo => 'طراحی روی ویدیو';
@@ -5617,9 +5229,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get intermediate => 'متوسط';
-
-  @override
-  String get mySports => 'ورزش‌های من';
 
   @override
   String get addSport => 'افزودن ورزش';
@@ -5842,15 +5451,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get knockout => 'حذفی';
-
-  @override
-  String get promoted => 'صعود';
-
-  @override
-  String get relegated => 'سقوط';
-
-  @override
-  String get scoreHistory => 'تاریخچه نتیجه';
 
   @override
   String get finalMatch => 'فینال';
@@ -6621,9 +6221,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get venues => 'مجموعه‌ها';
 
   @override
-  String get avaHamrah => 'آواهمراه';
-
-  @override
   String get sendVerificationCode => 'ارسال کد تایید';
 
   @override
@@ -6662,9 +6259,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get termsAndRules => 'شرایط و قوانین';
-
-  @override
-  String get doYouHaveAReferralCode => 'کد معرف دارید؟';
 
   @override
   String get organization => 'مجموعه';
@@ -6709,7 +6303,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get iban => 'شماره شبا';
 
   @override
-  String get settlements => 'درخواست‌های تسویه';
+  String get settlements => 'تسویه‌ها';
 
   @override
   String get requestSettlement => 'درخواست برداشت';
@@ -7010,15 +6604,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get lowStock => 'کمبود موجودی';
-
-  @override
-  String get maxBeds => 'سقف تخت';
-
-  @override
-  String get maxPlaces => 'سقف شعبه';
-
-  @override
-  String get maxRooms => 'سقف اتاق هتل';
 
   @override
   String get meal => 'وعده‌ی غذایی';
@@ -8691,4 +8276,59 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get positionInLine => 'نوبت در صف';
+
+  @override
+  String get awaitingSettlement => 'منتظر تسویه';
+
+  @override
+  String get bankInfo => 'اطلاعات بانکی';
+
+  @override
+  String get bankInfoMissing => 'اطلاعات بانکی ثبت نشده';
+
+  @override
+  String get goods => 'کالاها';
+
+  @override
+  String get last7Days => '۷ روز اخیر';
+
+  @override
+  String get ownerAllPermissions => 'مالک — همه‌ی دسترسی‌ها';
+
+  @override
+  String get passwordMinLength => 'رمز باید حداقل ۶ حرف باشد.';
+
+  @override
+  String get paymentsAndSettlements => 'پرداخت‌ها و تسویه‌ها';
+
+  @override
+  String get platformCommission => 'کمیسیون سامانه';
+
+  @override
+  String get recordSettlement => 'ثبت تسویه';
+
+  @override
+  String get refunds => 'برگشت به مشتری';
+
+  @override
+  String get settled => 'تسویه‌شده';
+
+  @override
+  String get stockValue => 'ارزش';
+
+  @override
+  String get thisMonth => 'این ماه';
+
+  @override
+  String get userNameOrPhoneNumber => 'نام کاربری یا شماره موبایل';
+
+  @override
+  String get yesterday => 'دیروز';
+
+  @override
+  String get applyForABedOnline => 'درخواست اقامت را آنلاین بفرستید';
+
+  @override
+  String get sendYourApplicationFromThisPageOnceTheManagerApprovesItAndSignsTheContractTheContractAndItsMonthlyInvoicesShowUpUnderDormContracts =>
+      'درخواست اقامت را از همین صفحه بفرستید. بعد از تأیید مدیر و بستن قرارداد، قرارداد و قبض‌های ماهانه در بخش «قراردادهای خوابگاه» نمایش داده می‌شود.';
 }

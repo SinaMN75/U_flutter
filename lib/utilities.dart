@@ -181,7 +181,6 @@ export "src/iso8583/cp1256.dart";
 export "src/iso8583/field_packagers.dart";
 export "src/iso8583/frame_reader.dart";
 export "src/iso8583/host_config.dart";
-export "src/iso8583/host_config_codec.dart";
 export "src/iso8583/host_context.dart";
 export "src/iso8583/interpreter.dart";
 export "src/iso8583/iso_buffer.dart";

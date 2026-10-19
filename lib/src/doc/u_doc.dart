@@ -29,44 +29,11 @@ enum UDocColorMode { normal, night, sepia, grayscale, highContrast, custom }
 /// PDF owner permissions (print, copy, modify…).
 enum UDocPermission { print, printHighQuality, modify, copy, annotate, fillForms, accessibility, assemble }
 
-/// Save incrementally (fast) or fully rewrite.
-enum UDocSaveMode { incremental, rewrite, optimize }
-
 /// Where a document comes from: file, bytes, url, asset.
 enum UDocSourceKind { file, memory, network, asset, blob, storage }
 
-/// PDF annotation types (highlight, ink, note, link, widget…).
-enum UDocAnnotationKind {
-  highlight,
-  underline,
-  strikeOut,
-  squiggly,
-  ink,
-  text,
-  freeText,
-  line,
-  square,
-  circle,
-  polygon,
-  polyLine,
-  stamp,
-  caret,
-  fileAttachment,
-  sound,
-  movie,
-  widget,
-  screen,
-  popup,
-  link,
-  redact,
-  unknown,
-}
-
 /// PDF form field types (text, checkbox, radio, choice, signature).
 enum UDocFieldKind { text, checkBox, radioButton, comboBox, listBox, pushButton, signature, unknown }
-
-/// OCR engine for scanned pages.
-enum UDocOcrEngine { none, appleVision, windowsOcr, mlKit, tesseract }
 
 /// A document could not be parsed.
 class UDocParseException implements Exception {

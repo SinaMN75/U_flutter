@@ -2949,16 +2949,6 @@ class BarcodeCodabar extends Barcode1D {
   }
 }
 
-class BarcodeCode128Fnc {
-  static const String fnc1 = BarcodeMaps.code128FNC1String;
-
-  static const String fnc2 = BarcodeMaps.code128FNC2String;
-
-  static const String fnc3 = BarcodeMaps.code128FNC3String;
-
-  static const String fnc4 = BarcodeMaps.code128FNC4String;
-}
-
 class BarcodeCode128 extends Barcode1D {
   const BarcodeCode128({
     required this.useCode128A,

@@ -340,11 +340,12 @@ class UMenuOrderCreateParams {
 }
 
 class UMenuOrderReadParams {
-  UMenuOrderReadParams({this.pageSize, this.pageNumber, this.tags, this.manage, this.menuId, this.placeId, this.organizationId, this.fromDate, this.toDate, this.ids});
+  UMenuOrderReadParams({this.pageSize, this.pageNumber, this.tags, this.statuses, this.manage, this.menuId, this.placeId, this.organizationId, this.fromDate, this.toDate, this.ids});
 
   final int? pageSize;
   final int? pageNumber;
   final List<int>? tags;
+  final List<int>? statuses;
   final bool? manage;
   final String? menuId;
   final String? placeId;
@@ -357,6 +358,7 @@ class UMenuOrderReadParams {
     "pageSize": pageSize,
     "pageNumber": pageNumber,
     "tags": tags,
+    "statuses": statuses,
     "manage": manage,
     "menuId": menuId,
     "placeId": placeId,

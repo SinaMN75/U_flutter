@@ -1068,19 +1068,6 @@ enum TagDormBedInvoice with UNumericIdentifiable {
   final int number;
 }
 
-enum TagBed with UNumericIdentifiable {
-  test("تست", "Test", 999);
-
-  const TagBed(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
 enum TagHotel with UNumericIdentifiable {
   // Type
   hotel("هتل", "Hotel", 101),

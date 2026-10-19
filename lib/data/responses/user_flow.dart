@@ -704,13 +704,3 @@ enum UFieldWidth {
   auto,
 }
 
-class UPredefinedValidationPatterns {
-  static const String iranianNationalCode = r"^[0-9]{10}$";
-  static const String iranianMobilePhone = r"^09[0-9]{9}$";
-  static const String iranianPhoneNumber = r"^0[0-9]{2,3}[0-9]{7,8}$";
-  static const String iranianPostalCode = r"^[0-9]{10}$";
-  static const String email = r"^[^@\s]+@[^@\s]+\.[^@\s]+$";
-  static const String url = r"^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$";
-  static const String iban = r"^[A-Z]{2}[0-9]{2}[A-Z0-9]{1,30}$";
-  static const String creditCard = r"^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|6(?:011|5[0-9]{2})[0-9]{12}|(?:2131|1800|35\d{3})\d{11})$";
-}
