@@ -15,6 +15,12 @@ abstract class UJalaliDatePicker {
     String? helpText,
     bool asDialog = false,
     DatePickerEntryMode initialEntryMode = DatePickerEntryMode.calendar,
+    bool spinnerShowYear = true,
+    bool spinnerShowMonth = true,
+    bool spinnerShowDay = true,
+    int? spinnerDefaultYear,
+    int? spinnerDefaultMonth,
+    int? spinnerDefaultDay,
   }) {
     final UJalali initial = initialDate ?? UJalali.now();
     final UJalali first = firstDate ?? UJalali(initial.year - 100);
@@ -47,6 +53,12 @@ abstract class UJalaliDatePicker {
           firstDate: first,
           lastDate: last,
           helpText: helpText,
+          showYear: spinnerShowYear,
+          showMonth: spinnerShowMonth,
+          showDay: spinnerShowDay,
+          defaultYear: spinnerDefaultYear,
+          defaultMonth: spinnerDefaultMonth,
+          defaultDay: spinnerDefaultDay,
         );
         return asDialog
             ? UNavigator.dialog<UJalali>(
@@ -452,6 +464,12 @@ class UJalaliDatePickerSpinner extends StatefulWidget {
     this.onDateSelected,
     this.helpText,
     this.showTodayButton = true,
+    this.showYear = true,
+    this.showMonth = true,
+    this.showDay = true,
+    this.defaultYear,
+    this.defaultMonth,
+    this.defaultDay,
   });
 
   /// Date selected at start.
@@ -472,14 +490,33 @@ class UJalaliDatePickerSpinner extends StatefulWidget {
   /// Shows a "Today" button.
   final bool showTodayButton;
 
+  /// Shows the year wheel.
+  final bool showYear;
+
+  /// Shows the month wheel.
+  final bool showMonth;
+
+  /// Shows the day wheel.
+  final bool showDay;
+
+  /// Default year when the year wheel is hidden.
+  final int? defaultYear;
+
+  /// Default month when the month wheel is hidden.
+  final int? defaultMonth;
+
+  /// Default day when the day wheel is hidden.
+  final int? defaultDay;
+
   @override
   State<UJalaliDatePickerSpinner> createState() => _UJalaliDatePickerSpinnerState();
 }
 
 class _UJalaliDatePickerSpinnerState extends UState<UJalaliDatePickerSpinner> {
-  late int _year = widget.initialDate.year;
-  late int _month = widget.initialDate.month;
-  late int _day = widget.initialDate.day;
+  late int _year = (widget.defaultYear ?? widget.initialDate.year).clamp(widget.firstDate.year, widget.lastDate.year);
+  late int _month = (widget.defaultMonth ?? widget.initialDate.month).clamp(_minMonth, _maxMonth);
+  late int _day = (widget.defaultDay ?? widget.initialDate.day).clamp(_minDay, _maxDay);
+
   late final FixedExtentScrollController _yearController = FixedExtentScrollController(initialItem: _year - _minYear);
   late final FixedExtentScrollController _monthController = FixedExtentScrollController(initialItem: _month - _minMonth);
   late final FixedExtentScrollController _dayController = FixedExtentScrollController(initialItem: _day - _minDay);
@@ -587,27 +624,30 @@ class _UJalaliDatePickerSpinnerState extends UState<UJalaliDatePickerSpinner> {
             ),
             Row(
               children: <Widget>[
-                _wheel(
-                  controller: _dayController,
-                  itemCount: _maxDay - _minDay + 1,
-                  onChanged: _onDayChanged,
-                  labelBuilder: (int index) => UJalaliDatePicker.number(_minDay + index, persian: isFa),
-                  flex: 2,
-                ),
-                _wheel(
-                  controller: _monthController,
-                  itemCount: _maxMonth - _minMonth + 1,
-                  onChanged: _onMonthChanged,
-                  labelBuilder: (int index) => UJalaliDatePicker.monthName(_minMonth + index, persian: isFa),
-                  flex: 3,
-                ),
-                _wheel(
-                  controller: _yearController,
-                  itemCount: _maxYear - _minYear + 1,
-                  onChanged: _onYearChanged,
-                  labelBuilder: (int index) => UJalaliDatePicker.number(_minYear + index, persian: isFa),
-                  flex: 3,
-                ),
+                if (widget.showDay)
+                  _wheel(
+                    controller: _dayController,
+                    itemCount: _maxDay - _minDay + 1,
+                    onChanged: _onDayChanged,
+                    labelBuilder: (int index) => UJalaliDatePicker.number(_minDay + index, persian: isFa),
+                    flex: 2,
+                  ),
+                if (widget.showMonth)
+                  _wheel(
+                    controller: _monthController,
+                    itemCount: _maxMonth - _minMonth + 1,
+                    onChanged: _onMonthChanged,
+                    labelBuilder: (int index) => UJalaliDatePicker.monthName(_minMonth + index, persian: isFa),
+                    flex: 3,
+                  ),
+                if (widget.showYear)
+                  _wheel(
+                    controller: _yearController,
+                    itemCount: _maxYear - _minYear + 1,
+                    onChanged: _onYearChanged,
+                    labelBuilder: (int index) => UJalaliDatePicker.number(_minYear + index, persian: isFa),
+                    flex: 3,
+                  ),
               ],
             ),
           ],
