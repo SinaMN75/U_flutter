@@ -1378,7 +1378,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get errorLoadingBalance => 'خطا در بارگذاری موجودی';
 
   @override
-  String get errorLoadingData => 'خطا در بارگزاری اطلاعات';
+  String get errorLoadingData => 'خطا در بارگذاری اطلاعات';
 
   @override
   String get errorLoadingVideo => 'خطا در بارگذاری ویدیو';
