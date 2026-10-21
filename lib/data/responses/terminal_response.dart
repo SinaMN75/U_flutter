@@ -569,10 +569,10 @@ class UFinancialOpsDashboardResponse {
   final double totalOut;
   final double net;
 
-  final List<UAccountingBreakdownItem> txnByStatus;
-  final List<UAccountingBreakdownItem> txnByMethod;
-  final List<UAccountingBreakdownItem> terminalsByType;
-  final List<UAccountingTimelineItem> dailyTimeline;
+  final List<UBreakdownItem> txnByStatus;
+  final List<UBreakdownItem> txnByMethod;
+  final List<UBreakdownItem> terminalsByType;
+  final List<UTimelineItem> dailyTimeline;
 
   final List<UTopMerchantItem> topMerchants;
   final List<URecentTxnItem> recentTransactions;
@@ -625,10 +625,10 @@ class UFinancialOpsDashboardResponse {
     totalIn: (json["totalIn"] ?? 0).toString().toDouble(),
     totalOut: (json["totalOut"] ?? 0).toString().toDouble(),
     net: (json["net"] ?? 0).toString().toDouble(),
-    txnByStatus: ((json["txnByStatus"] ?? <dynamic>[]) as List<dynamic>).map((dynamic x) => UAccountingBreakdownItem.fromMap(x)).toList(),
-    txnByMethod: ((json["txnByMethod"] ?? <dynamic>[]) as List<dynamic>).map((dynamic x) => UAccountingBreakdownItem.fromMap(x)).toList(),
-    terminalsByType: ((json["terminalsByType"] ?? <dynamic>[]) as List<dynamic>).map((dynamic x) => UAccountingBreakdownItem.fromMap(x)).toList(),
-    dailyTimeline: ((json["dailyTimeline"] ?? <dynamic>[]) as List<dynamic>).map((dynamic x) => UAccountingTimelineItem.fromMap(x)).toList(),
+    txnByStatus: ((json["txnByStatus"] ?? <dynamic>[]) as List<dynamic>).map((dynamic x) => UBreakdownItem.fromMap(x)).toList(),
+    txnByMethod: ((json["txnByMethod"] ?? <dynamic>[]) as List<dynamic>).map((dynamic x) => UBreakdownItem.fromMap(x)).toList(),
+    terminalsByType: ((json["terminalsByType"] ?? <dynamic>[]) as List<dynamic>).map((dynamic x) => UBreakdownItem.fromMap(x)).toList(),
+    dailyTimeline: ((json["dailyTimeline"] ?? <dynamic>[]) as List<dynamic>).map((dynamic x) => UTimelineItem.fromMap(x)).toList(),
     topMerchants: ((json["topMerchants"] ?? <dynamic>[]) as List<dynamic>).map((dynamic x) => UTopMerchantItem.fromMap(x)).toList(),
     recentTransactions: ((json["recentTransactions"] ?? <dynamic>[]) as List<dynamic>).map((dynamic x) => URecentTxnItem.fromMap(x)).toList(),
     recentMerchants: ((json["recentMerchants"] ?? <dynamic>[]) as List<dynamic>).map((dynamic x) => URecentMerchantItem.fromMap(x)).toList(),
@@ -653,10 +653,10 @@ class UFinancialOpsDashboardResponse {
     "totalIn": totalIn,
     "totalOut": totalOut,
     "net": net,
-    "txnByStatus": List<dynamic>.from(txnByStatus.map((UAccountingBreakdownItem x) => x.toMap())),
-    "txnByMethod": List<dynamic>.from(txnByMethod.map((UAccountingBreakdownItem x) => x.toMap())),
-    "terminalsByType": List<dynamic>.from(terminalsByType.map((UAccountingBreakdownItem x) => x.toMap())),
-    "dailyTimeline": List<dynamic>.from(dailyTimeline.map((UAccountingTimelineItem x) => x.toMap())),
+    "txnByStatus": List<dynamic>.from(txnByStatus.map((UBreakdownItem x) => x.toMap())),
+    "txnByMethod": List<dynamic>.from(txnByMethod.map((UBreakdownItem x) => x.toMap())),
+    "terminalsByType": List<dynamic>.from(terminalsByType.map((UBreakdownItem x) => x.toMap())),
+    "dailyTimeline": List<dynamic>.from(dailyTimeline.map((UTimelineItem x) => x.toMap())),
     "topMerchants": List<dynamic>.from(topMerchants.map((UTopMerchantItem x) => x.toMap())),
     "recentTransactions": List<dynamic>.from(recentTransactions.map((URecentTxnItem x) => x.toMap())),
     "recentMerchants": List<dynamic>.from(recentMerchants.map((URecentMerchantItem x) => x.toMap())),
@@ -759,4 +759,64 @@ class URecentMerchantItem {
   String toJson() => json.encode(toMap());
 
   factory URecentMerchantItem.fromJson(String str) => URecentMerchantItem.fromMap(json.decode(str));
+}
+
+class UBreakdownItem {
+  final int tag;
+  final String tagName;
+  final double amount;
+  final int count;
+
+  UBreakdownItem({
+    required this.tag,
+    required this.tagName,
+    required this.amount,
+    required this.count,
+  });
+
+  factory UBreakdownItem.fromMap(Map<String, dynamic> json) => UBreakdownItem(
+    tag: json["tag"] ?? 0,
+    tagName: json["tagName"] ?? "",
+    amount: (json["amount"] ?? 0).toString().toDouble(),
+    count: json["count"] ?? 0,
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "tag": tag,
+    "tagName": tagName,
+    "amount": amount,
+    "count": count,
+  };
+
+  String toJson() => json.encode(toMap());
+
+  factory UBreakdownItem.fromJson(String str) => UBreakdownItem.fromMap(json.decode(str));
+}
+
+class UTimelineItem {
+  final DateTime date;
+  final double inAmount;
+  final double outAmount;
+
+  UTimelineItem({
+    required this.date,
+    required this.inAmount,
+    required this.outAmount,
+  });
+
+  factory UTimelineItem.fromMap(Map<String, dynamic> json) => UTimelineItem(
+    date: DateTime.parse(json["date"]),
+    inAmount: (json["in"] ?? 0).toString().toDouble(),
+    outAmount: (json["out"] ?? 0).toString().toDouble(),
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "date": date.toIso8601String(),
+    "in": inAmount,
+    "out": outAmount,
+  };
+
+  String toJson() => json.encode(toMap());
+
+  factory UTimelineItem.fromJson(String str) => UTimelineItem.fromMap(json.decode(str));
 }

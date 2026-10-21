@@ -45,12 +45,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get accountStatus => 'وضعیت حساب';
 
   @override
-  String get accounting => 'حسابداری';
-
-  @override
-  String get accounts => 'حساب ها';
-
-  @override
   String get active => 'فعال';
 
   @override
@@ -1043,9 +1037,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get deadRowsVacuum => 'ردیف‌های مرده (vacuum)';
 
   @override
-  String get debit => 'برداشت';
-
-  @override
   String get debt => 'بدهکار';
 
   @override
@@ -1665,9 +1656,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get fullscreen => 'تمام‌صفحه';
 
   @override
-  String get gatewayPaymentsByType => 'پرداخت‌های درگاه بر اساس نوع';
-
-  @override
   String get gatewayTotal => 'جمع درگاه';
 
   @override
@@ -1942,9 +1930,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get includesUpperAndLowerCase => 'شامل حرف بزرگ و کوچک';
 
   @override
-  String get incomeByType => 'درآمد بر اساس نوع';
-
-  @override
   String get increaseIndent => 'افزایش تورفتگی';
 
   @override
@@ -2126,9 +2111,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get language => 'زبان';
-
-  @override
-  String get last30Days => '۳۰ روز گذشته';
 
   @override
   String get lastName => 'نام خانوادگی';
@@ -3963,9 +3945,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get speedLimit => 'محدودیت سرعت';
 
   @override
-  String get spendingByType => 'هزینه بر اساس نوع';
-
-  @override
   String get split => 'تقسیم';
 
   @override
@@ -4146,9 +4125,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get systemUptime => 'زمان کارکرد سیستم';
-
-  @override
-  String get systemWideReport => 'گزارش کل سیستم';
 
   @override
   String get table => 'جدول';
@@ -6323,97 +6299,10 @@ class AppLocalizationsFa extends AppLocalizations {
   String get requestSettlement => 'درخواست برداشت';
 
   @override
-  String get booksDebit => 'بدهکار';
-
-  @override
-  String get booksCredit => 'بستانکار';
-
-  @override
-  String get chartOfAccounts => 'سرفصل حساب‌ها';
-
-  @override
-  String get vouchers => 'اسناد حسابداری';
-
-  @override
-  String get voucher => 'سند';
-
-  @override
-  String get ledger => 'دفتر حساب';
-
-  @override
-  String get kardex => 'کاردکس';
-
-  @override
-  String get checks => 'چک‌ها';
-
-  @override
   String get check => 'چک';
 
   @override
-  String get profitAndLoss => 'سود و زیان';
-
-  @override
-  String get netProfit => 'سود خالص';
-
-  @override
-  String get incomes => 'درآمدها';
-
-  @override
-  String get expenses => 'هزینه‌ها';
-
-  @override
-  String get cashFlow => 'گردش صندوق و بانک';
-
-  @override
-  String get debtorsAging => 'سنی‌بندی بدهکاران';
-
-  @override
-  String get incomeByPlace => 'به تفکیک شعبه';
-
-  @override
-  String get openingBalance => 'مانده‌ی اول دوره';
-
-  @override
-  String get closingBalance => 'مانده‌ی پایان دوره';
-
-  @override
-  String get recordReceipt => 'ثبت دریافت';
-
-  @override
-  String get recordExpense => 'ثبت هزینه';
-
-  @override
-  String get moneyTransfer => 'انتقال بین صندوق‌ها';
-
-  @override
-  String get manualVoucher => 'سند دستی';
-
-  @override
-  String get moneyBox => 'صندوق یا بانک';
-
-  @override
-  String get payByCheck => 'با چک';
-
-  @override
   String get bankName => 'بانک';
-
-  @override
-  String get sayadId => 'شناسه‌ی صیادی';
-
-  @override
-  String get checkDrawer => 'صادرکننده';
-
-  @override
-  String get checkDueDate => 'تاریخ سررسید';
-
-  @override
-  String get clearCheck => 'وصول';
-
-  @override
-  String get bounceCheck => 'برگشت';
-
-  @override
-  String get returnCheck => 'عودت';
 
   @override
   String get copyForExcel => 'کپی برای اکسل';
@@ -6425,25 +6314,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get branch => 'شعبه';
 
   @override
-  String get days0to30 => '۰ تا ۳۰ روز';
-
-  @override
-  String get days31to60 => '۳۱ تا ۶۰ روز';
-
-  @override
-  String get days61to90 => '۶۱ تا ۹۰ روز';
-
-  @override
-  String get over90days => 'بیش از ۹۰ روز';
-
-  @override
-  String get counterAccount => 'حساب مقابل';
-
-  @override
   String get addLine => 'افزودن ردیف';
-
-  @override
-  String get voucherNotBalanced => 'جمع بدهکار و بستانکار برابر نیست';
 
   @override
   String get hotelDashboard => 'داشبورد هتل';
@@ -6524,9 +6395,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get createContract => 'ثبت قرارداد';
 
   @override
-  String get creditAccount => 'حساب طرف بستانکار';
-
-  @override
   String get customer => 'مشتری';
 
   @override
@@ -6552,9 +6420,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get emergencyContact => 'تماس اضطراری';
-
-  @override
-  String get expenseAccount => 'حساب هزینه';
 
   @override
   String get expiresAt => 'تاریخ انقضا';
@@ -6656,9 +6521,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get organizationNationalId => 'شناسه‌ی ملی';
 
   @override
-  String get paidFrom => 'پرداخت از';
-
-  @override
   String get passportNumber => 'شماره‌ی گذرنامه';
 
   @override
@@ -6672,9 +6534,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get purchaseDate => 'تاریخ خرید';
-
-  @override
-  String get purchaseOnCreditHint => 'اگر خالی بماند، خرید به‌صورت نسیه (بدهی به تأمین‌کننده) ثبت می‌شود.';
 
   @override
   String get purchaseRequest => 'درخواست خرید';
@@ -6788,61 +6647,10 @@ class AppLocalizationsFa extends AppLocalizations {
   String get applicationSent => 'درخواست شما ثبت شد.';
 
   @override
-  String get vatPercent => 'درصد ارزش افزوده';
-
-  @override
-  String get taxServiceId => 'شناسه‌ی کالا یا خدمت (مودیان)';
-
-  @override
-  String get valueAddedTax => 'مالیات بر ارزش افزوده';
-
-  @override
-  String get vatSales => 'ارزش افزوده‌ی فروش';
-
-  @override
-  String get vatPurchases => 'ارزش افزوده‌ی خرید';
-
-  @override
-  String get vatDue => 'ارزش افزوده‌ی پرداختنی';
-
-  @override
-  String get vatAmount => 'مبلغ ارزش افزوده';
-
-  @override
-  String get moadianExport => 'خروجی سامانه‌ی مودیان';
-
-  @override
-  String get invoiceNumber => 'شماره‌ی صورتحساب';
-
-  @override
-  String get invoicePattern => 'الگوی صورتحساب';
-
-  @override
-  String get invoicePatternSale => 'فروش';
-
-  @override
-  String get invoiceTypeFirst => 'نوع اول';
-
-  @override
-  String get invoiceTypeSecond => 'نوع دوم';
-
-  @override
-  String get buyerName => 'نام خریدار';
-
-  @override
-  String get buyerNationalCode => 'شناسه‌ی ملی خریدار';
-
-  @override
   String get discount => 'تخفیف';
 
   @override
-  String get amountAfterDiscount => 'مبلغ پس از تخفیف';
-
-  @override
   String get totalAmount => 'مبلغ کل';
-
-  @override
-  String get settlementMethod => 'روش تسویه';
 
   @override
   String get subscriptionPlans => 'پلن‌های اشتراک';
@@ -6908,12 +6716,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get planDormDescription => 'برای خوابگاه‌های دانشجویی و پانسیون‌ها';
 
   @override
-  String get planAccounting => 'حسابداری';
-
-  @override
-  String get planAccountingDescription => 'دفتر حساب، صندوق، بانک و چک برای هر کسب‌وکار';
-
-  @override
   String get planInventory => 'انبارداری';
 
   @override
@@ -6929,25 +6731,25 @@ class AppLocalizationsFa extends AppLocalizations {
   String get planCafe => 'کافی‌شاپ و رستوران';
 
   @override
-  String get planCafeDescription => 'انبارداری و حسابداری با هم';
+  String get planCafeDescription => 'منوی آنلاین و سفارش، همراه با انبارداری';
 
   @override
   String get planFullDorm => 'خوابگاه کامل';
 
   @override
-  String get planFullDormDescription => 'خوابگاه به همراه حسابداری، انبارداری و کارکنان';
+  String get planFullDormDescription => 'خوابگاه به همراه انبارداری و کارکنان';
 
   @override
   String get planFullHotel => 'هتل کامل';
 
   @override
-  String get planFullHotelDescription => 'هتل به همراه حسابداری، انبارداری و کارکنان';
+  String get planFullHotelDescription => 'هتل به همراه انبارداری و کارکنان';
 
   @override
   String get planEverything => 'همه‌ی سیستم‌ها';
 
   @override
-  String get planEverythingDescription => 'هتل، خوابگاه، حسابداری، انبارداری و کارکنان';
+  String get planEverythingDescription => 'هتل، خوابگاه، کافه، انبارداری و کارکنان';
 
   @override
   String get demoData => 'داده‌ی نمونه';
@@ -6960,7 +6762,7 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get demoDataHint =>
-      'یک دنیای کامل برای تست ساخته می‌شود: ۴ مجموعه با اشتراک‌های مختلف (هتل، خوابگاه، کافی‌شاپ، و یک اقامتگاه با اشتراک تمام‌شده)، ۲ هتل با اتاق، نرخ فصلی و ۲۰ رزرو در همه‌ی وضعیت‌ها، ۲ خوابگاه با ۲۳ تخت، ۱۵ قرارداد، قبض پرداخت‌شده و معوق، درخواست اقامت، غذا و لباسشویی، انبار و خرید و اموال، سند و چک، شیفت و وظیفه، و ۴۲ کاربر. همه‌چیز از راه همان قوانین واقعی سامانه ساخته می‌شود. رمز همه‌ی حساب‌ها و شماره‌ی موبایل‌شان بعد از ساخت همین‌جا نشان داده می‌شود. فقط یک بار روی هر سرور قابل اجراست.';
+      'یک دنیای کامل برای تست ساخته می‌شود: ۴ مجموعه با اشتراک‌های مختلف (هتل، خوابگاه، کافی‌شاپ، و یک اقامتگاه با اشتراک تمام‌شده)، ۲ هتل با اتاق، نرخ فصلی و ۲۰ رزرو در همه‌ی وضعیت‌ها، ۲ خوابگاه با ۲۳ تخت، ۱۵ قرارداد، قبض پرداخت‌شده و معوق، درخواست اقامت، غذا و لباسشویی، انبار و خرید و اموال، شیفت و وظیفه، و ۴۲ کاربر. همه‌چیز از راه همان قوانین واقعی سامانه ساخته می‌شود. رمز همه‌ی حساب‌ها و شماره‌ی موبایل‌شان بعد از ساخت همین‌جا نشان داده می‌شود. فقط یک بار روی هر سرور قابل اجراست.';
 
   @override
   String get demoDataConfirm => 'داده‌ی نمونه روی همین سرور ساخته می‌شود و پاک کردنش دستی است. فقط روی سرور تست اجرا کنید. ادامه می‌دهید؟';
@@ -7086,13 +6888,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get accountNumber => 'شماره حساب';
 
   @override
-  String get accountant => 'حسابدار';
-
-  @override
   String get activity => 'فعالیت‌ها';
-
-  @override
-  String get addAccountingToYourSubscriptionToKeepBooks => 'برای دفترداری، حسابداری را به اشتراکتان اضافه کنید';
 
   @override
   String get addBed => 'افزودن تخت';
@@ -7161,9 +6957,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get backOn => 'تاریخ برگشت';
 
   @override
-  String get balanceOfEachBox => 'موجودی هر صندوق و بانک';
-
-  @override
   String get bank => 'بانک';
 
   @override
@@ -7186,12 +6979,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get bookingsAndCheckIn => 'رزرو و پذیرش';
-
-  @override
-  String get books => 'دفاتر';
-
-  @override
-  String get booksAreNotInYourPlan => 'حسابداری در اشتراک شما نیست';
 
   @override
   String get business => 'کسب‌وکار';
@@ -7221,9 +7008,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get cancelOrder => 'لغو سفارش';
 
   @override
-  String get cashAndBank => 'صندوق و بانک';
-
-  @override
   String get cashier => 'صندوق‌دار';
 
   @override
@@ -7237,15 +7021,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get checkedSomeoneOut => 'تسویه کرد';
-
-  @override
-  String get chequeNumber => 'شماره چک';
-
-  @override
-  String get cheques => 'چک‌ها';
-
-  @override
-  String get chequesYouReceivedOrIssued => 'چک‌های دریافتی و پرداختی';
 
   @override
   String get choiceTitle => 'عنوان انتخاب';
@@ -7416,9 +7191,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get freeRooms => 'اتاق خالی';
 
   @override
-  String get fromOrTo => 'از / به';
-
-  @override
   String get fromWallet => 'از کیف پول';
 
   @override
@@ -7456,12 +7228,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get inReview => 'در حال بررسی';
-
-  @override
-  String get income => 'درآمد';
-
-  @override
-  String get incomeExpensesAndVat => 'درآمد، هزینه و ارزش افزوده';
 
   @override
   String get khabroomFee => 'کارمزد خوابروم';
@@ -7581,9 +7347,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get newCheckOutDate => 'تاریخ خروج تازه';
 
   @override
-  String get newCheque => 'چک تازه';
-
-  @override
   String get newEndDate => 'تاریخ پایان تازه';
 
   @override
@@ -7657,12 +7420,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get noBookingsHere => 'رزروی اینجا نیست';
-
-  @override
-  String get noChequesYet => 'هنوز چکی نیست';
-
-  @override
-  String get noEntriesInThisPeriod => 'در این بازه سندی نیست';
 
   @override
   String get noEquipmentYet => 'هنوز اموالی ثبت نشده';
@@ -7845,34 +7602,16 @@ class AppLocalizationsFa extends AppLocalizations {
   String get receive => 'دریافت';
 
   @override
-  String get receivePayment => 'ثبت دریافت';
-
-  @override
   String get receivePayments => 'ثبت دریافت پول';
 
   @override
   String get received => 'رسید';
 
   @override
-  String get receivedInto => 'واریز به';
-
-  @override
   String get receivedThisMonth => 'دریافتی این ماه';
 
   @override
   String get reception => 'پذیرش';
-
-  @override
-  String get recordAccounting => 'ثبت اسناد';
-
-  @override
-  String get recordAnExpense => 'ثبت هزینه';
-
-  @override
-  String get recordPayment => 'ثبت پرداخت';
-
-  @override
-  String get recordWhatYouSpent => 'ثبت هزینه‌ها';
 
   @override
   String get recordedAPayment => 'پرداخت ثبت کرد';
@@ -7936,9 +7675,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get seeItAsACustomer => 'دیدن مثل مشتری';
-
-  @override
-  String get seeTheBooks => 'دیدن گزارش‌های مالی';
 
   @override
   String get seeTheMenuAndOrderFromYourTable => 'منو را ببینید و از سر میز سفارش دهید';
@@ -8112,18 +7848,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get unpaidBills => 'قبض پرداخت‌نشده';
 
   @override
-  String get vat => 'ارزش افزوده';
-
-  @override
-  String get vatOnPurchases => 'ارزش افزوده‌ی خرید';
-
-  @override
-  String get vatOnSales => 'ارزش افزوده‌ی فروش';
-
-  @override
-  String get vatToPay => 'ارزش افزوده‌ی قابل پرداخت';
-
-  @override
   String get viewOnlyMenu => 'منوی فقط‌نمایش';
 
   @override
@@ -8182,9 +7906,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get whatWasDone => 'چه کاری انجام شد؟';
-
-  @override
-  String get whatWasItFor => 'بابت چه؟';
 
   @override
   String get whatYouHave => 'اشتراک فعلی';

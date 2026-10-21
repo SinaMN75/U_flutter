@@ -41,7 +41,7 @@ class UOrganizationMemberPlace {
 }
 
 class UOrganizationJson {
-  UOrganizationJson({this.detail1, this.detail2, this.commissionPercent = 0, this.members = const <UOrganizationMember>[], this.settlements = const <UOrganizationSettlement>[], this.logoUrl, this.address, this.phoneNumber, this.nationalId, this.economicCode, this.vatPercent = 0, this.taxServiceId, this.subscriptions = const <UOrganizationSubscription>[]});
+  UOrganizationJson({this.detail1, this.detail2, this.commissionPercent = 0, this.members = const <UOrganizationMember>[], this.settlements = const <UOrganizationSettlement>[], this.logoUrl, this.address, this.phoneNumber, this.nationalId, this.economicCode, this.subscriptions = const <UOrganizationSubscription>[]});
 
   factory UOrganizationJson.fromMap(Map<String, dynamic> json) => UOrganizationJson(
     detail1: json["detail1"],
@@ -54,8 +54,6 @@ class UOrganizationJson {
     phoneNumber: json["phoneNumber"],
     nationalId: json["nationalId"],
     economicCode: json["economicCode"],
-    vatPercent: json["vatPercent"] == null ? 0 : (json["vatPercent"] as num).toDouble(),
-    taxServiceId: json["taxServiceId"],
     subscriptions: json["subscriptions"] == null ? <UOrganizationSubscription>[] : List<UOrganizationSubscription>.from(json["subscriptions"]!.map((dynamic x) => UOrganizationSubscription.fromMap(x))),
   );
 
@@ -69,8 +67,6 @@ class UOrganizationJson {
   final String? phoneNumber;
   final String? nationalId;
   final String? economicCode;
-  final double vatPercent;
-  final String? taxServiceId;
   final List<UOrganizationSubscription> subscriptions;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -84,8 +80,6 @@ class UOrganizationJson {
     "phoneNumber": phoneNumber,
     "nationalId": nationalId,
     "economicCode": economicCode,
-    "vatPercent": vatPercent,
-    "taxServiceId": taxServiceId,
     "subscriptions": subscriptions.map((UOrganizationSubscription x) => x.toMap()).toList(),
   };
 }
@@ -550,3 +544,5 @@ class USubscriptionBuyResponse {
   final double payable;
   final bool active;
 }
+
+double _num(dynamic x) => x == null ? 0 : (x as num).toDouble();

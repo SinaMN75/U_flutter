@@ -45,12 +45,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accountStatus => 'Account status';
 
   @override
-  String get accounting => 'Accounting';
-
-  @override
-  String get accounts => 'accounts';
-
-  @override
   String get active => 'Active';
 
   @override
@@ -1043,9 +1037,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get deadRowsVacuum => 'Dead rows (vacuum)';
 
   @override
-  String get debit => 'Debit';
-
-  @override
   String get debt => 'Debt';
 
   @override
@@ -1665,9 +1656,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fullscreen => 'Fullscreen';
 
   @override
-  String get gatewayPaymentsByType => 'Gateway Payments by Type';
-
-  @override
   String get gatewayTotal => 'Gateway total';
 
   @override
@@ -1942,9 +1930,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get includesUpperAndLowerCase => 'Includes upper and lower case';
 
   @override
-  String get incomeByType => 'Income by Type';
-
-  @override
   String get increaseIndent => 'Increase Indent';
 
   @override
@@ -2126,9 +2111,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get language => 'Language';
-
-  @override
-  String get last30Days => 'Last 30 Days';
 
   @override
   String get lastName => 'Last Name';
@@ -3963,9 +3945,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get speedLimit => 'Speed limit';
 
   @override
-  String get spendingByType => 'Spending by Type';
-
-  @override
   String get split => 'Split';
 
   @override
@@ -4146,9 +4125,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get systemUptime => 'System Uptime';
-
-  @override
-  String get systemWideReport => 'System-wide report';
 
   @override
   String get table => 'Table';
@@ -6324,97 +6300,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get requestSettlement => 'Request withdrawal';
 
   @override
-  String get booksDebit => 'Debit';
-
-  @override
-  String get booksCredit => 'Credit';
-
-  @override
-  String get chartOfAccounts => 'Chart of accounts';
-
-  @override
-  String get vouchers => 'Vouchers';
-
-  @override
-  String get voucher => 'Voucher';
-
-  @override
-  String get ledger => 'Ledger';
-
-  @override
-  String get kardex => 'Person ledger';
-
-  @override
-  String get checks => 'Checks';
-
-  @override
   String get check => 'Check';
 
   @override
-  String get profitAndLoss => 'Profit and loss';
-
-  @override
-  String get netProfit => 'Net profit';
-
-  @override
-  String get incomes => 'Income';
-
-  @override
-  String get expenses => 'Expenses';
-
-  @override
-  String get cashFlow => 'Cash and bank flow';
-
-  @override
-  String get debtorsAging => 'Debtors aging';
-
-  @override
-  String get incomeByPlace => 'By place';
-
-  @override
-  String get openingBalance => 'Opening';
-
-  @override
-  String get closingBalance => 'Closing';
-
-  @override
-  String get recordReceipt => 'Record receipt';
-
-  @override
-  String get recordExpense => 'Record expense';
-
-  @override
-  String get moneyTransfer => 'Transfer between boxes';
-
-  @override
-  String get manualVoucher => 'Manual voucher';
-
-  @override
-  String get moneyBox => 'Cash box or bank';
-
-  @override
-  String get payByCheck => 'By check';
-
-  @override
   String get bankName => 'Bank';
-
-  @override
-  String get sayadId => 'Sayad ID';
-
-  @override
-  String get checkDrawer => 'Drawer';
-
-  @override
-  String get checkDueDate => 'Due date';
-
-  @override
-  String get clearCheck => 'Clear';
-
-  @override
-  String get bounceCheck => 'Bounce';
-
-  @override
-  String get returnCheck => 'Return';
 
   @override
   String get copyForExcel => 'Copy for Excel';
@@ -6426,25 +6315,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get branch => 'Place';
 
   @override
-  String get days0to30 => '0–30 days';
-
-  @override
-  String get days31to60 => '31–60 days';
-
-  @override
-  String get days61to90 => '61–90 days';
-
-  @override
-  String get over90days => 'Over 90 days';
-
-  @override
-  String get counterAccount => 'Counter account';
-
-  @override
   String get addLine => 'Add line';
-
-  @override
-  String get voucherNotBalanced => 'Debit and credit totals are not equal';
 
   @override
   String get hotelDashboard => 'Hotel dashboard';
@@ -6525,9 +6396,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get createContract => 'Create Contract';
 
   @override
-  String get creditAccount => 'Credit Account';
-
-  @override
   String get customer => 'Customer';
 
   @override
@@ -6553,9 +6421,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get emergencyContact => 'Emergency Contact';
-
-  @override
-  String get expenseAccount => 'Expense Account';
 
   @override
   String get expiresAt => 'Expires At';
@@ -6657,9 +6522,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get organizationNationalId => 'National ID';
 
   @override
-  String get paidFrom => 'Paid From';
-
-  @override
   String get passportNumber => 'Passport Number';
 
   @override
@@ -6673,9 +6535,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get purchaseDate => 'Purchase Date';
-
-  @override
-  String get purchaseOnCreditHint => 'Leave it empty to record the purchase on credit (payable to the supplier).';
 
   @override
   String get purchaseRequest => 'Purchase Request';
@@ -6789,61 +6648,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get applicationSent => 'Your application is sent.';
 
   @override
-  String get vatPercent => 'VAT percent';
-
-  @override
-  String get taxServiceId => 'Tax service ID';
-
-  @override
-  String get valueAddedTax => 'Value added tax';
-
-  @override
-  String get vatSales => 'Output VAT';
-
-  @override
-  String get vatPurchases => 'Input VAT';
-
-  @override
-  String get vatDue => 'VAT payable';
-
-  @override
-  String get vatAmount => 'VAT amount';
-
-  @override
-  String get moadianExport => 'Tax system export';
-
-  @override
-  String get invoiceNumber => 'Invoice number';
-
-  @override
-  String get invoicePattern => 'Invoice pattern';
-
-  @override
-  String get invoicePatternSale => 'Sale';
-
-  @override
-  String get invoiceTypeFirst => 'Type 1';
-
-  @override
-  String get invoiceTypeSecond => 'Type 2';
-
-  @override
-  String get buyerName => 'Buyer name';
-
-  @override
-  String get buyerNationalCode => 'Buyer national ID';
-
-  @override
   String get discount => 'Discount';
 
   @override
-  String get amountAfterDiscount => 'Amount after discount';
-
-  @override
   String get totalAmount => 'Total amount';
-
-  @override
-  String get settlementMethod => 'Settlement method';
 
   @override
   String get subscriptionPlans => 'Subscription plans';
@@ -6909,12 +6717,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get planDormDescription => 'For student dorms and boarding houses';
 
   @override
-  String get planAccounting => 'Accounting';
-
-  @override
-  String get planAccountingDescription => 'Books, cash, bank and checks for any business';
-
-  @override
   String get planInventory => 'Inventory';
 
   @override
@@ -6930,25 +6732,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get planCafe => 'Cafe and restaurant';
 
   @override
-  String get planCafeDescription => 'Inventory and accounting together';
+  String get planCafeDescription => 'Online menu, orders and inventory';
 
   @override
   String get planFullDorm => 'Complete dorm';
 
   @override
-  String get planFullDormDescription => 'Dorm with accounting, inventory and staff';
+  String get planFullDormDescription => 'Dorm with inventory and staff';
 
   @override
   String get planFullHotel => 'Complete hotel';
 
   @override
-  String get planFullHotelDescription => 'Hotel with accounting, inventory and staff';
+  String get planFullHotelDescription => 'Hotel with inventory and staff';
 
   @override
   String get planEverything => 'Every system';
 
   @override
-  String get planEverythingDescription => 'Hotel, dorm, accounting, inventory and staff';
+  String get planEverythingDescription => 'Hotel, dorm, café, inventory and staff';
 
   @override
   String get demoData => 'Demo data';
@@ -6961,7 +6763,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get demoDataHint =>
-      'Builds a complete test world: 4 organizations with different subscriptions, 2 hotels with 20 reservations in every state, 2 dorms with contracts and bills, inventory, accounting, staff and 42 users. Everything goes through the real rules. The logins are shown here afterwards. It can run once per server.';
+      'Builds a complete test world: 4 organizations with different subscriptions, 2 hotels with 20 reservations in every state, 2 dorms with contracts and bills, inventory, staff and 42 users. Everything goes through the real rules. The logins are shown here afterwards. It can run once per server.';
 
   @override
   String get demoDataConfirm => 'Demo data is written to this server and has to be removed by hand. Run it only on a test server. Continue?';
@@ -7087,13 +6889,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accountNumber => 'Account number';
 
   @override
-  String get accountant => 'Accountant';
-
-  @override
   String get activity => 'Activity';
-
-  @override
-  String get addAccountingToYourSubscriptionToKeepBooks => 'Add accounting to your subscription to keep books';
 
   @override
   String get addBed => 'Add bed';
@@ -7162,9 +6958,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get backOn => 'Back on';
 
   @override
-  String get balanceOfEachBox => 'Balance of each box';
-
-  @override
   String get bank => 'Bank';
 
   @override
@@ -7187,12 +6980,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bookingsAndCheckIn => 'Bookings and check in';
-
-  @override
-  String get books => 'Books';
-
-  @override
-  String get booksAreNotInYourPlan => 'Books are not in your plan';
 
   @override
   String get business => 'Business';
@@ -7222,9 +7009,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cancelOrder => 'Cancel order';
 
   @override
-  String get cashAndBank => 'Cash and bank';
-
-  @override
   String get cashier => 'Cashier';
 
   @override
@@ -7238,15 +7022,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get checkedSomeoneOut => 'Checked someone out';
-
-  @override
-  String get chequeNumber => 'Cheque number';
-
-  @override
-  String get cheques => 'Cheques';
-
-  @override
-  String get chequesYouReceivedOrIssued => 'Cheques you received or issued';
 
   @override
   String get choiceTitle => 'Choice title';
@@ -7417,9 +7192,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get freeRooms => 'Free rooms';
 
   @override
-  String get fromOrTo => 'From or to';
-
-  @override
   String get fromWallet => 'From wallet';
 
   @override
@@ -7457,12 +7229,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get inReview => 'In review';
-
-  @override
-  String get income => 'Income';
-
-  @override
-  String get incomeExpensesAndVat => 'Income expenses and VAT';
 
   @override
   String get khabroomFee => 'Khabroom fee';
@@ -7582,9 +7348,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get newCheckOutDate => 'New check out date';
 
   @override
-  String get newCheque => 'New cheque';
-
-  @override
   String get newEndDate => 'New end date';
 
   @override
@@ -7658,12 +7421,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noBookingsHere => 'No bookings here';
-
-  @override
-  String get noChequesYet => 'No cheques yet';
-
-  @override
-  String get noEntriesInThisPeriod => 'No entries in this period';
 
   @override
   String get noEquipmentYet => 'No equipment yet';
@@ -7846,34 +7603,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get receive => 'Receive';
 
   @override
-  String get receivePayment => 'Receive payment';
-
-  @override
   String get receivePayments => 'Receive payments';
 
   @override
   String get received => 'Received';
 
   @override
-  String get receivedInto => 'Received into';
-
-  @override
   String get receivedThisMonth => 'Received this month';
 
   @override
   String get reception => 'Reception';
-
-  @override
-  String get recordAccounting => 'Record accounting';
-
-  @override
-  String get recordAnExpense => 'Record an expense';
-
-  @override
-  String get recordPayment => 'Record payment';
-
-  @override
-  String get recordWhatYouSpent => 'Record what you spent';
 
   @override
   String get recordedAPayment => 'Recorded a payment';
@@ -7937,9 +7676,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get seeItAsACustomer => 'See it as a customer';
-
-  @override
-  String get seeTheBooks => 'See the books';
 
   @override
   String get seeTheMenuAndOrderFromYourTable => 'See the menu and order from your table';
@@ -8113,18 +7849,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get unpaidBills => 'Unpaid bills';
 
   @override
-  String get vat => 'VAT';
-
-  @override
-  String get vatOnPurchases => 'VAT on purchases';
-
-  @override
-  String get vatOnSales => 'VAT on sales';
-
-  @override
-  String get vatToPay => 'VAT to pay';
-
-  @override
   String get viewOnlyMenu => 'View only menu';
 
   @override
@@ -8183,9 +7907,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get whatWasDone => 'What was done';
-
-  @override
-  String get whatWasItFor => 'What was it for';
 
   @override
   String get whatYouHave => 'What you have';

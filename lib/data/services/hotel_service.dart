@@ -8,13 +8,6 @@ class UHotelService {
     Function(String e)? onException,
   }) => _Api.call("/Hotel/Dashboard/Read", p.toMap(), _Api.one(UHotelDashboardResponse.fromMap), _Api.empty, onOk, onError, onException);
 
-  Future<(UEmptyResponse?, UEmptyResponse?, String?)> receiveHotelInvoice({
-    required UInvoiceReceiveParams p,
-    Function(UEmptyResponse r)? onOk,
-    Function(UEmptyResponse e)? onError,
-    Function(String e)? onException,
-  }) => _Api.call("/Hotel/HotelInvoice/Receive", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
-
   Future<(UResponse<String>?, UEmptyResponse?, String?)> createHotel({
     required UHotelCreateParams p,
     Function(UResponse<String> r)? onOk,

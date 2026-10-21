@@ -164,18 +164,6 @@ abstract class AppLocalizations {
   /// **'Account status'**
   String get accountStatus;
 
-  /// No description provided for @accounting.
-  ///
-  /// In en, this message translates to:
-  /// **'Accounting'**
-  String get accounting;
-
-  /// No description provided for @accounts.
-  ///
-  /// In en, this message translates to:
-  /// **'accounts'**
-  String get accounts;
-
   /// No description provided for @active.
   ///
   /// In en, this message translates to:
@@ -2096,12 +2084,6 @@ abstract class AppLocalizations {
   /// **'Dead rows (vacuum)'**
   String get deadRowsVacuum;
 
-  /// No description provided for @debit.
-  ///
-  /// In en, this message translates to:
-  /// **'Debit'**
-  String get debit;
-
   /// No description provided for @debt.
   ///
   /// In en, this message translates to:
@@ -3302,12 +3284,6 @@ abstract class AppLocalizations {
   /// **'Fullscreen'**
   String get fullscreen;
 
-  /// No description provided for @gatewayPaymentsByType.
-  ///
-  /// In en, this message translates to:
-  /// **'Gateway Payments by Type'**
-  String get gatewayPaymentsByType;
-
   /// No description provided for @gatewayTotal.
   ///
   /// In en, this message translates to:
@@ -3848,12 +3824,6 @@ abstract class AppLocalizations {
   /// **'Includes upper and lower case'**
   String get includesUpperAndLowerCase;
 
-  /// No description provided for @incomeByType.
-  ///
-  /// In en, this message translates to:
-  /// **'Income by Type'**
-  String get incomeByType;
-
   /// No description provided for @increaseIndent.
   ///
   /// In en, this message translates to:
@@ -4219,12 +4189,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Language'**
   String get language;
-
-  /// No description provided for @last30Days.
-  ///
-  /// In en, this message translates to:
-  /// **'Last 30 Days'**
-  String get last30Days;
 
   /// No description provided for @lastName.
   ///
@@ -7862,12 +7826,6 @@ abstract class AppLocalizations {
   /// **'Speed limit'**
   String get speedLimit;
 
-  /// No description provided for @spendingByType.
-  ///
-  /// In en, this message translates to:
-  /// **'Spending by Type'**
-  String get spendingByType;
-
   /// No description provided for @split.
   ///
   /// In en, this message translates to:
@@ -8227,12 +8185,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'System Uptime'**
   String get systemUptime;
-
-  /// No description provided for @systemWideReport.
-  ///
-  /// In en, this message translates to:
-  /// **'System-wide report'**
-  String get systemWideReport;
 
   /// No description provided for @table.
   ///
@@ -12374,191 +12326,17 @@ abstract class AppLocalizations {
   /// **'Request withdrawal'**
   String get requestSettlement;
 
-  /// No description provided for @booksDebit.
-  ///
-  /// In en, this message translates to:
-  /// **'Debit'**
-  String get booksDebit;
-
-  /// No description provided for @booksCredit.
-  ///
-  /// In en, this message translates to:
-  /// **'Credit'**
-  String get booksCredit;
-
-  /// No description provided for @chartOfAccounts.
-  ///
-  /// In en, this message translates to:
-  /// **'Chart of accounts'**
-  String get chartOfAccounts;
-
-  /// No description provided for @vouchers.
-  ///
-  /// In en, this message translates to:
-  /// **'Vouchers'**
-  String get vouchers;
-
-  /// No description provided for @voucher.
-  ///
-  /// In en, this message translates to:
-  /// **'Voucher'**
-  String get voucher;
-
-  /// No description provided for @ledger.
-  ///
-  /// In en, this message translates to:
-  /// **'Ledger'**
-  String get ledger;
-
-  /// No description provided for @kardex.
-  ///
-  /// In en, this message translates to:
-  /// **'Person ledger'**
-  String get kardex;
-
-  /// No description provided for @checks.
-  ///
-  /// In en, this message translates to:
-  /// **'Checks'**
-  String get checks;
-
   /// No description provided for @check.
   ///
   /// In en, this message translates to:
   /// **'Check'**
   String get check;
 
-  /// No description provided for @profitAndLoss.
-  ///
-  /// In en, this message translates to:
-  /// **'Profit and loss'**
-  String get profitAndLoss;
-
-  /// No description provided for @netProfit.
-  ///
-  /// In en, this message translates to:
-  /// **'Net profit'**
-  String get netProfit;
-
-  /// No description provided for @incomes.
-  ///
-  /// In en, this message translates to:
-  /// **'Income'**
-  String get incomes;
-
-  /// No description provided for @expenses.
-  ///
-  /// In en, this message translates to:
-  /// **'Expenses'**
-  String get expenses;
-
-  /// No description provided for @cashFlow.
-  ///
-  /// In en, this message translates to:
-  /// **'Cash and bank flow'**
-  String get cashFlow;
-
-  /// No description provided for @debtorsAging.
-  ///
-  /// In en, this message translates to:
-  /// **'Debtors aging'**
-  String get debtorsAging;
-
-  /// No description provided for @incomeByPlace.
-  ///
-  /// In en, this message translates to:
-  /// **'By place'**
-  String get incomeByPlace;
-
-  /// No description provided for @openingBalance.
-  ///
-  /// In en, this message translates to:
-  /// **'Opening'**
-  String get openingBalance;
-
-  /// No description provided for @closingBalance.
-  ///
-  /// In en, this message translates to:
-  /// **'Closing'**
-  String get closingBalance;
-
-  /// No description provided for @recordReceipt.
-  ///
-  /// In en, this message translates to:
-  /// **'Record receipt'**
-  String get recordReceipt;
-
-  /// No description provided for @recordExpense.
-  ///
-  /// In en, this message translates to:
-  /// **'Record expense'**
-  String get recordExpense;
-
-  /// No description provided for @moneyTransfer.
-  ///
-  /// In en, this message translates to:
-  /// **'Transfer between boxes'**
-  String get moneyTransfer;
-
-  /// No description provided for @manualVoucher.
-  ///
-  /// In en, this message translates to:
-  /// **'Manual voucher'**
-  String get manualVoucher;
-
-  /// No description provided for @moneyBox.
-  ///
-  /// In en, this message translates to:
-  /// **'Cash box or bank'**
-  String get moneyBox;
-
-  /// No description provided for @payByCheck.
-  ///
-  /// In en, this message translates to:
-  /// **'By check'**
-  String get payByCheck;
-
   /// No description provided for @bankName.
   ///
   /// In en, this message translates to:
   /// **'Bank'**
   String get bankName;
-
-  /// No description provided for @sayadId.
-  ///
-  /// In en, this message translates to:
-  /// **'Sayad ID'**
-  String get sayadId;
-
-  /// No description provided for @checkDrawer.
-  ///
-  /// In en, this message translates to:
-  /// **'Drawer'**
-  String get checkDrawer;
-
-  /// No description provided for @checkDueDate.
-  ///
-  /// In en, this message translates to:
-  /// **'Due date'**
-  String get checkDueDate;
-
-  /// No description provided for @clearCheck.
-  ///
-  /// In en, this message translates to:
-  /// **'Clear'**
-  String get clearCheck;
-
-  /// No description provided for @bounceCheck.
-  ///
-  /// In en, this message translates to:
-  /// **'Bounce'**
-  String get bounceCheck;
-
-  /// No description provided for @returnCheck.
-  ///
-  /// In en, this message translates to:
-  /// **'Return'**
-  String get returnCheck;
 
   /// No description provided for @copyForExcel.
   ///
@@ -12578,47 +12356,11 @@ abstract class AppLocalizations {
   /// **'Place'**
   String get branch;
 
-  /// No description provided for @days0to30.
-  ///
-  /// In en, this message translates to:
-  /// **'0–30 days'**
-  String get days0to30;
-
-  /// No description provided for @days31to60.
-  ///
-  /// In en, this message translates to:
-  /// **'31–60 days'**
-  String get days31to60;
-
-  /// No description provided for @days61to90.
-  ///
-  /// In en, this message translates to:
-  /// **'61–90 days'**
-  String get days61to90;
-
-  /// No description provided for @over90days.
-  ///
-  /// In en, this message translates to:
-  /// **'Over 90 days'**
-  String get over90days;
-
-  /// No description provided for @counterAccount.
-  ///
-  /// In en, this message translates to:
-  /// **'Counter account'**
-  String get counterAccount;
-
   /// No description provided for @addLine.
   ///
   /// In en, this message translates to:
   /// **'Add line'**
   String get addLine;
-
-  /// No description provided for @voucherNotBalanced.
-  ///
-  /// In en, this message translates to:
-  /// **'Debit and credit totals are not equal'**
-  String get voucherNotBalanced;
 
   /// No description provided for @hotelDashboard.
   ///
@@ -12776,12 +12518,6 @@ abstract class AppLocalizations {
   /// **'Create Contract'**
   String get createContract;
 
-  /// No description provided for @creditAccount.
-  ///
-  /// In en, this message translates to:
-  /// **'Credit Account'**
-  String get creditAccount;
-
   /// No description provided for @customer.
   ///
   /// In en, this message translates to:
@@ -12835,12 +12571,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Emergency Contact'**
   String get emergencyContact;
-
-  /// No description provided for @expenseAccount.
-  ///
-  /// In en, this message translates to:
-  /// **'Expense Account'**
-  String get expenseAccount;
 
   /// No description provided for @expiresAt.
   ///
@@ -13040,12 +12770,6 @@ abstract class AppLocalizations {
   /// **'National ID'**
   String get organizationNationalId;
 
-  /// No description provided for @paidFrom.
-  ///
-  /// In en, this message translates to:
-  /// **'Paid From'**
-  String get paidFrom;
-
   /// No description provided for @passportNumber.
   ///
   /// In en, this message translates to:
@@ -13075,12 +12799,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Purchase Date'**
   String get purchaseDate;
-
-  /// No description provided for @purchaseOnCreditHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Leave it empty to record the purchase on credit (payable to the supplier).'**
-  String get purchaseOnCreditHint;
 
   /// No description provided for @purchaseRequest.
   ///
@@ -13304,119 +13022,17 @@ abstract class AppLocalizations {
   /// **'Your application is sent.'**
   String get applicationSent;
 
-  /// No description provided for @vatPercent.
-  ///
-  /// In en, this message translates to:
-  /// **'VAT percent'**
-  String get vatPercent;
-
-  /// No description provided for @taxServiceId.
-  ///
-  /// In en, this message translates to:
-  /// **'Tax service ID'**
-  String get taxServiceId;
-
-  /// No description provided for @valueAddedTax.
-  ///
-  /// In en, this message translates to:
-  /// **'Value added tax'**
-  String get valueAddedTax;
-
-  /// No description provided for @vatSales.
-  ///
-  /// In en, this message translates to:
-  /// **'Output VAT'**
-  String get vatSales;
-
-  /// No description provided for @vatPurchases.
-  ///
-  /// In en, this message translates to:
-  /// **'Input VAT'**
-  String get vatPurchases;
-
-  /// No description provided for @vatDue.
-  ///
-  /// In en, this message translates to:
-  /// **'VAT payable'**
-  String get vatDue;
-
-  /// No description provided for @vatAmount.
-  ///
-  /// In en, this message translates to:
-  /// **'VAT amount'**
-  String get vatAmount;
-
-  /// No description provided for @moadianExport.
-  ///
-  /// In en, this message translates to:
-  /// **'Tax system export'**
-  String get moadianExport;
-
-  /// No description provided for @invoiceNumber.
-  ///
-  /// In en, this message translates to:
-  /// **'Invoice number'**
-  String get invoiceNumber;
-
-  /// No description provided for @invoicePattern.
-  ///
-  /// In en, this message translates to:
-  /// **'Invoice pattern'**
-  String get invoicePattern;
-
-  /// No description provided for @invoicePatternSale.
-  ///
-  /// In en, this message translates to:
-  /// **'Sale'**
-  String get invoicePatternSale;
-
-  /// No description provided for @invoiceTypeFirst.
-  ///
-  /// In en, this message translates to:
-  /// **'Type 1'**
-  String get invoiceTypeFirst;
-
-  /// No description provided for @invoiceTypeSecond.
-  ///
-  /// In en, this message translates to:
-  /// **'Type 2'**
-  String get invoiceTypeSecond;
-
-  /// No description provided for @buyerName.
-  ///
-  /// In en, this message translates to:
-  /// **'Buyer name'**
-  String get buyerName;
-
-  /// No description provided for @buyerNationalCode.
-  ///
-  /// In en, this message translates to:
-  /// **'Buyer national ID'**
-  String get buyerNationalCode;
-
   /// No description provided for @discount.
   ///
   /// In en, this message translates to:
   /// **'Discount'**
   String get discount;
 
-  /// No description provided for @amountAfterDiscount.
-  ///
-  /// In en, this message translates to:
-  /// **'Amount after discount'**
-  String get amountAfterDiscount;
-
   /// No description provided for @totalAmount.
   ///
   /// In en, this message translates to:
   /// **'Total amount'**
   String get totalAmount;
-
-  /// No description provided for @settlementMethod.
-  ///
-  /// In en, this message translates to:
-  /// **'Settlement method'**
-  String get settlementMethod;
 
   /// No description provided for @subscriptionPlans.
   ///
@@ -13544,18 +13160,6 @@ abstract class AppLocalizations {
   /// **'For student dorms and boarding houses'**
   String get planDormDescription;
 
-  /// No description provided for @planAccounting.
-  ///
-  /// In en, this message translates to:
-  /// **'Accounting'**
-  String get planAccounting;
-
-  /// No description provided for @planAccountingDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Books, cash, bank and checks for any business'**
-  String get planAccountingDescription;
-
   /// No description provided for @planInventory.
   ///
   /// In en, this message translates to:
@@ -13589,7 +13193,7 @@ abstract class AppLocalizations {
   /// No description provided for @planCafeDescription.
   ///
   /// In en, this message translates to:
-  /// **'Inventory and accounting together'**
+  /// **'Online menu, orders and inventory'**
   String get planCafeDescription;
 
   /// No description provided for @planFullDorm.
@@ -13601,7 +13205,7 @@ abstract class AppLocalizations {
   /// No description provided for @planFullDormDescription.
   ///
   /// In en, this message translates to:
-  /// **'Dorm with accounting, inventory and staff'**
+  /// **'Dorm with inventory and staff'**
   String get planFullDormDescription;
 
   /// No description provided for @planFullHotel.
@@ -13613,7 +13217,7 @@ abstract class AppLocalizations {
   /// No description provided for @planFullHotelDescription.
   ///
   /// In en, this message translates to:
-  /// **'Hotel with accounting, inventory and staff'**
+  /// **'Hotel with inventory and staff'**
   String get planFullHotelDescription;
 
   /// No description provided for @planEverything.
@@ -13625,7 +13229,7 @@ abstract class AppLocalizations {
   /// No description provided for @planEverythingDescription.
   ///
   /// In en, this message translates to:
-  /// **'Hotel, dorm, accounting, inventory and staff'**
+  /// **'Hotel, dorm, café, inventory and staff'**
   String get planEverythingDescription;
 
   /// No description provided for @demoData.
@@ -13649,7 +13253,7 @@ abstract class AppLocalizations {
   /// No description provided for @demoDataHint.
   ///
   /// In en, this message translates to:
-  /// **'Builds a complete test world: 4 organizations with different subscriptions, 2 hotels with 20 reservations in every state, 2 dorms with contracts and bills, inventory, accounting, staff and 42 users. Everything goes through the real rules. The logins are shown here afterwards. It can run once per server.'**
+  /// **'Builds a complete test world: 4 organizations with different subscriptions, 2 hotels with 20 reservations in every state, 2 dorms with contracts and bills, inventory, staff and 42 users. Everything goes through the real rules. The logins are shown here afterwards. It can run once per server.'**
   String get demoDataHint;
 
   /// No description provided for @demoDataConfirm.
@@ -13898,23 +13502,11 @@ abstract class AppLocalizations {
   /// **'Account number'**
   String get accountNumber;
 
-  /// No description provided for @accountant.
-  ///
-  /// In en, this message translates to:
-  /// **'Accountant'**
-  String get accountant;
-
   /// No description provided for @activity.
   ///
   /// In en, this message translates to:
   /// **'Activity'**
   String get activity;
-
-  /// No description provided for @addAccountingToYourSubscriptionToKeepBooks.
-  ///
-  /// In en, this message translates to:
-  /// **'Add accounting to your subscription to keep books'**
-  String get addAccountingToYourSubscriptionToKeepBooks;
 
   /// No description provided for @addBed.
   ///
@@ -14048,12 +13640,6 @@ abstract class AppLocalizations {
   /// **'Back on'**
   String get backOn;
 
-  /// No description provided for @balanceOfEachBox.
-  ///
-  /// In en, this message translates to:
-  /// **'Balance of each box'**
-  String get balanceOfEachBox;
-
   /// No description provided for @bank.
   ///
   /// In en, this message translates to:
@@ -14101,18 +13687,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Bookings and check in'**
   String get bookingsAndCheckIn;
-
-  /// No description provided for @books.
-  ///
-  /// In en, this message translates to:
-  /// **'Books'**
-  String get books;
-
-  /// No description provided for @booksAreNotInYourPlan.
-  ///
-  /// In en, this message translates to:
-  /// **'Books are not in your plan'**
-  String get booksAreNotInYourPlan;
 
   /// No description provided for @business.
   ///
@@ -14168,12 +13742,6 @@ abstract class AppLocalizations {
   /// **'Cancel order'**
   String get cancelOrder;
 
-  /// No description provided for @cashAndBank.
-  ///
-  /// In en, this message translates to:
-  /// **'Cash and bank'**
-  String get cashAndBank;
-
   /// No description provided for @cashier.
   ///
   /// In en, this message translates to:
@@ -14203,24 +13771,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Checked someone out'**
   String get checkedSomeoneOut;
-
-  /// No description provided for @chequeNumber.
-  ///
-  /// In en, this message translates to:
-  /// **'Cheque number'**
-  String get chequeNumber;
-
-  /// No description provided for @cheques.
-  ///
-  /// In en, this message translates to:
-  /// **'Cheques'**
-  String get cheques;
-
-  /// No description provided for @chequesYouReceivedOrIssued.
-  ///
-  /// In en, this message translates to:
-  /// **'Cheques you received or issued'**
-  String get chequesYouReceivedOrIssued;
 
   /// No description provided for @choiceTitle.
   ///
@@ -14558,12 +14108,6 @@ abstract class AppLocalizations {
   /// **'Free rooms'**
   String get freeRooms;
 
-  /// No description provided for @fromOrTo.
-  ///
-  /// In en, this message translates to:
-  /// **'From or to'**
-  String get fromOrTo;
-
   /// No description provided for @fromWallet.
   ///
   /// In en, this message translates to:
@@ -14641,18 +14185,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'In review'**
   String get inReview;
-
-  /// No description provided for @income.
-  ///
-  /// In en, this message translates to:
-  /// **'Income'**
-  String get income;
-
-  /// No description provided for @incomeExpensesAndVat.
-  ///
-  /// In en, this message translates to:
-  /// **'Income expenses and VAT'**
-  String get incomeExpensesAndVat;
 
   /// No description provided for @khabroomFee.
   ///
@@ -14888,12 +14420,6 @@ abstract class AppLocalizations {
   /// **'New check out date'**
   String get newCheckOutDate;
 
-  /// No description provided for @newCheque.
-  ///
-  /// In en, this message translates to:
-  /// **'New cheque'**
-  String get newCheque;
-
   /// No description provided for @newEndDate.
   ///
   /// In en, this message translates to:
@@ -15043,18 +14569,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No bookings here'**
   String get noBookingsHere;
-
-  /// No description provided for @noChequesYet.
-  ///
-  /// In en, this message translates to:
-  /// **'No cheques yet'**
-  String get noChequesYet;
-
-  /// No description provided for @noEntriesInThisPeriod.
-  ///
-  /// In en, this message translates to:
-  /// **'No entries in this period'**
-  String get noEntriesInThisPeriod;
 
   /// No description provided for @noEquipmentYet.
   ///
@@ -15416,12 +14930,6 @@ abstract class AppLocalizations {
   /// **'Receive'**
   String get receive;
 
-  /// No description provided for @receivePayment.
-  ///
-  /// In en, this message translates to:
-  /// **'Receive payment'**
-  String get receivePayment;
-
   /// No description provided for @receivePayments.
   ///
   /// In en, this message translates to:
@@ -15434,12 +14942,6 @@ abstract class AppLocalizations {
   /// **'Received'**
   String get received;
 
-  /// No description provided for @receivedInto.
-  ///
-  /// In en, this message translates to:
-  /// **'Received into'**
-  String get receivedInto;
-
   /// No description provided for @receivedThisMonth.
   ///
   /// In en, this message translates to:
@@ -15451,30 +14953,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reception'**
   String get reception;
-
-  /// No description provided for @recordAccounting.
-  ///
-  /// In en, this message translates to:
-  /// **'Record accounting'**
-  String get recordAccounting;
-
-  /// No description provided for @recordAnExpense.
-  ///
-  /// In en, this message translates to:
-  /// **'Record an expense'**
-  String get recordAnExpense;
-
-  /// No description provided for @recordPayment.
-  ///
-  /// In en, this message translates to:
-  /// **'Record payment'**
-  String get recordPayment;
-
-  /// No description provided for @recordWhatYouSpent.
-  ///
-  /// In en, this message translates to:
-  /// **'Record what you spent'**
-  String get recordWhatYouSpent;
 
   /// No description provided for @recordedAPayment.
   ///
@@ -15601,12 +15079,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'See it as a customer'**
   String get seeItAsACustomer;
-
-  /// No description provided for @seeTheBooks.
-  ///
-  /// In en, this message translates to:
-  /// **'See the books'**
-  String get seeTheBooks;
 
   /// No description provided for @seeTheMenuAndOrderFromYourTable.
   ///
@@ -15950,30 +15422,6 @@ abstract class AppLocalizations {
   /// **'Unpaid bills'**
   String get unpaidBills;
 
-  /// No description provided for @vat.
-  ///
-  /// In en, this message translates to:
-  /// **'VAT'**
-  String get vat;
-
-  /// No description provided for @vatOnPurchases.
-  ///
-  /// In en, this message translates to:
-  /// **'VAT on purchases'**
-  String get vatOnPurchases;
-
-  /// No description provided for @vatOnSales.
-  ///
-  /// In en, this message translates to:
-  /// **'VAT on sales'**
-  String get vatOnSales;
-
-  /// No description provided for @vatToPay.
-  ///
-  /// In en, this message translates to:
-  /// **'VAT to pay'**
-  String get vatToPay;
-
   /// No description provided for @viewOnlyMenu.
   ///
   /// In en, this message translates to:
@@ -16093,12 +15541,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'What was done'**
   String get whatWasDone;
-
-  /// No description provided for @whatWasItFor.
-  ///
-  /// In en, this message translates to:
-  /// **'What was it for'**
-  String get whatWasItFor;
 
   /// No description provided for @whatYouHave.
   ///

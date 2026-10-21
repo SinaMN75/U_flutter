@@ -36,13 +36,6 @@ class UDormService {
     Function(String e)? onException,
   }) => _Api.call("/Dorm/Dashboard/Read", p.toMap(), _Api.one(UDormDashboardResponse.fromMap), _Api.empty, onOk, onError, onException);
 
-  Future<(UEmptyResponse?, UEmptyResponse?, String?)> receiveDormBedInvoice({
-    required UInvoiceReceiveParams p,
-    Function(UEmptyResponse r)? onOk,
-    Function(UEmptyResponse e)? onError,
-    Function(String e)? onException,
-  }) => _Api.call("/Dorm/DormBedInvoice/Receive", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
-
   Future<(UResponse<String>?, UEmptyResponse?, String?)> createDorm({
     required UDormCreateParams p,
     Function(UResponse<String> r)? onOk,

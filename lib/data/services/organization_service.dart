@@ -189,4 +189,18 @@ class UOrganizationService {
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
   }) => _Api.call("/Organization/Subscription/Pay", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> requestSettlement({
+    required UOrganizationSettlementRequestParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Organization/Settlement/Request", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> processSettlement({
+    required UOrganizationSettlementProcessParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Organization/Settlement/Process", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 }

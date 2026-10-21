@@ -158,7 +158,6 @@ class UStockMovementCreateParams {
     this.targetWarehouseId,
     this.date,
     this.placeId,
-    this.accountId,
     this.detail1,
   });
 
@@ -171,7 +170,6 @@ class UStockMovementCreateParams {
   final String? targetWarehouseId;
   final DateTime? date;
   final String? placeId;
-  final String? accountId;
   final String? detail1;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -184,7 +182,6 @@ class UStockMovementCreateParams {
     "targetWarehouseId": targetWarehouseId,
     "date": date?.toIso8601String(),
     "placeId": placeId,
-    "accountId": accountId,
     "detail1": detail1,
   };
 }
@@ -335,7 +332,6 @@ class UPurchaseCreateParams {
     this.supplierId,
     this.date,
     this.detail1,
-    this.vat = 0,
   });
 
   final String organizationId;
@@ -344,7 +340,6 @@ class UPurchaseCreateParams {
   final String? supplierId;
   final DateTime? date;
   final String? detail1;
-  final double vat;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "organizationId": organizationId,
@@ -353,7 +348,6 @@ class UPurchaseCreateParams {
     "supplierId": supplierId,
     "date": date?.toIso8601String(),
     "detail1": detail1,
-    "vat": vat,
   };
 }
 
@@ -405,17 +399,14 @@ class UPurchaseReviewParams {
 class UPurchaseReceiveParams {
   UPurchaseReceiveParams({
     required this.id,
-    this.accountId,
     this.date,
   });
 
   final String id;
-  final String? accountId;
   final DateTime? date;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "id": id,
-    "accountId": accountId,
     "date": date?.toIso8601String(),
   };
 }

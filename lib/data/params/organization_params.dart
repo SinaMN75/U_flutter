@@ -11,8 +11,6 @@ class UOrganizationCreateParams {
     this.phoneNumber,
     this.nationalId,
     this.economicCode,
-    this.vatPercent,
-    this.taxServiceId,
     this.cardNumber,
     this.accountNumber,
     this.iBanNumber,
@@ -27,8 +25,6 @@ class UOrganizationCreateParams {
   final String? phoneNumber;
   final String? nationalId;
   final String? economicCode;
-  final double? vatPercent;
-  final String? taxServiceId;
   final String? cardNumber;
   final String? accountNumber;
   final String? iBanNumber;
@@ -43,8 +39,6 @@ class UOrganizationCreateParams {
     "phoneNumber": phoneNumber,
     "nationalId": nationalId,
     "economicCode": economicCode,
-    "vatPercent": vatPercent,
-    "taxServiceId": taxServiceId,
     "cardNumber": cardNumber,
     "accountNumber": accountNumber,
     "iBanNumber": iBanNumber,
@@ -65,8 +59,6 @@ class UOrganizationUpdateParams {
     this.phoneNumber,
     this.nationalId,
     this.economicCode,
-    this.vatPercent,
-    this.taxServiceId,
     this.cardNumber,
     this.accountNumber,
     this.iBanNumber,
@@ -84,8 +76,6 @@ class UOrganizationUpdateParams {
   final String? phoneNumber;
   final String? nationalId;
   final String? economicCode;
-  final double? vatPercent;
-  final String? taxServiceId;
   final String? cardNumber;
   final String? accountNumber;
   final String? iBanNumber;
@@ -103,8 +93,6 @@ class UOrganizationUpdateParams {
     "phoneNumber": phoneNumber,
     "nationalId": nationalId,
     "economicCode": economicCode,
-    "vatPercent": vatPercent,
-    "taxServiceId": taxServiceId,
     "cardNumber": cardNumber,
     "accountNumber": accountNumber,
     "iBanNumber": iBanNumber,
@@ -571,5 +559,45 @@ class USubscriptionBuyParams {
     "cardNumber": cardNumber,
     "accountNumber": accountNumber,
     "iBanNumber": iBanNumber,
+  };
+}
+
+class UOrganizationSettlementRequestParams {
+  UOrganizationSettlementRequestParams({required this.organizationId, required this.amount, this.iban, this.trackingCode, this.date, this.note});
+
+  final String organizationId;
+  final double amount;
+  final String? iban;
+  final String? trackingCode;
+  final DateTime? date;
+  final String? note;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "organizationId": organizationId,
+    "amount": amount,
+    "iban": iban,
+    "trackingCode": trackingCode,
+    "date": date?.toIso8601String(),
+    "note": note,
+  };
+}
+
+class UOrganizationSettlementProcessParams {
+  UOrganizationSettlementProcessParams({required this.organizationId, required this.settlementId, required this.approve, this.note, this.trackingCode, this.date});
+
+  final String organizationId;
+  final String settlementId;
+  final bool approve;
+  final String? note;
+  final String? trackingCode;
+  final DateTime? date;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "organizationId": organizationId,
+    "settlementId": settlementId,
+    "approve": approve,
+    "note": note,
+    "trackingCode": trackingCode,
+    "date": date?.toIso8601String(),
   };
 }

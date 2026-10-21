@@ -226,7 +226,6 @@ class UPurchaseResponse {
     this.detail1,
     this.reviewNote,
     this.receivedAt,
-    this.vat = 0,
   });
 
   factory UPurchaseResponse.fromMap(Map<String, dynamic> json) => UPurchaseResponse(
@@ -244,7 +243,6 @@ class UPurchaseResponse {
     detail1: json["jsonData"]?["detail1"],
     reviewNote: json["jsonData"]?["reviewNote"],
     receivedAt: json["jsonData"]?["receivedAt"] == null ? null : DateTime.parse(json["jsonData"]?["receivedAt"]),
-    vat: _num(json["jsonData"]?["vat"]),
   );
 
   final String id;
@@ -261,7 +259,6 @@ class UPurchaseResponse {
   final String? detail1;
   final String? reviewNote;
   final DateTime? receivedAt;
-  final double vat;
 }
 
 class UAssetResponse {

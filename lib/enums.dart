@@ -216,8 +216,6 @@ enum TagUser with UNumericIdentifiable {
   permissionManageWallets("مدیریت کیف پول‌ها", "Manage Wallets", 620),
   permissionManageContents("مدیریت محتوا", "Manage Contents", 621),
   permissionViewDashboard("مشاهده داشبورد", "View Dashboard", 622),
-  permissionManageAccounting("ثبت اسناد حسابداری", "Manage Accounting", 623),
-  permissionViewAccounting("مشاهده گزارش‌های حسابداری", "View Accounting", 624),
   permissionManageInventory("مدیریت انبار و اموال", "Manage Inventory", 625),
   permissionManageStaff("مدیریت کارکنان، شیفت و کارها", "Manage Staff", 626),
   permissionManageOrganizations("مدیریت مجموعه‌ها و اشتراک‌ها", "Manage Organizations", 627),
@@ -263,8 +261,6 @@ enum TagUser with UNumericIdentifiable {
     permissionManageWallets,
     permissionManageContents,
     permissionViewDashboard,
-    permissionManageAccounting,
-    permissionViewAccounting,
     permissionManageInventory,
     permissionManageStaff,
     permissionManageOrganizations,
@@ -277,8 +273,6 @@ enum TagUser with UNumericIdentifiable {
   ];
 
   static const List<TagUser> organizationPermissions = <TagUser>[
-    permissionManageAccounting,
-    permissionViewAccounting,
     permissionManageInventory,
     permissionManageStaff,
     permissionManageUsers,
@@ -1140,95 +1134,6 @@ enum TagOrganization with UNumericIdentifiable {
   inactive("غیرفعال", "Inactive", 102);
 
   const TagOrganization(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
-enum TagAccount with UNumericIdentifiable {
-  asset("دارایی", "Asset", 101),
-  liability("بدهی", "Liability", 102),
-  equity("سرمایه", "Equity", 103),
-  income("درآمد", "Income", 104),
-  expense("هزینه", "Expense", 105),
-  cash("صندوق", "Cash", 201),
-  bank("بانک", "Bank", 202),
-  pettyCash("تنخواه", "Petty Cash", 203),
-  inactive("غیرفعال", "Inactive", 204),
-  wallet("کیف پول سامانه", "Wallet", 301),
-  inTransit("وجوه در راه", "In Transit", 302),
-  receivable("بدهکاران", "Receivable", 303),
-  checksReceivable("اسناد دریافتنی", "Checks Receivable", 304),
-  depositsHeld("ودیعه‌ی ساکنان", "Deposits Held", 305),
-  checksPayable("اسناد پرداختنی", "Checks Payable", 306),
-  payables("بستانکاران", "Payables", 307),
-  capital("سرمایه", "Capital", 308),
-  rentIncome("درآمد اجاره", "Rent Income", 309),
-  hotelIncome("درآمد هتل", "Hotel Income", 310),
-  serviceIncome("درآمد خدمات", "Service Income", 311),
-  penaltyIncome("درآمد جریمه", "Penalty Income", 312),
-  damageIncome("درآمد خسارت", "Damage Income", 313),
-  commissionExpense("کمیسیون سامانه", "Commission", 314),
-  inventory("موجودی کالا", "Inventory", 315),
-  consumptionExpense("مصرف کالا", "Consumption", 316),
-  vatPayable("ارزش افزوده‌ی فروش", "VAT Payable", 317),
-  vatReceivable("ارزش افزوده‌ی خرید", "VAT Receivable", 318),
-  cafeIncome("درآمد کافه و رستوران", "Cafe Income", 319);
-
-  const TagAccount(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-
-  static const List<TagAccount> kinds = <TagAccount>[asset, liability, equity, income, expense];
-  static const List<TagAccount> moneyBoxes = <TagAccount>[cash, bank, pettyCash];
-}
-
-enum TagVoucher with UNumericIdentifiable {
-  manual("دستی", "Manual", 101),
-  auto("خودکار", "Auto", 102),
-  invoice("صدور قبض", "Invoice", 201),
-  payment("پرداخت آنلاین", "Payment", 202),
-  receipt("دریافت", "Receipt", 203),
-  refund("استرداد", "Refund", 204),
-  commission("کمیسیون", "Commission", 205),
-  settlement("تسویه‌ی قرارداد", "Settlement", 206),
-  payout("تسویه با مجموعه", "Payout", 207),
-  check("چک", "Check", 208),
-  expense("هزینه", "Expense", 209),
-  transfer("انتقال وجه", "Transfer", 210),
-  opening("افتتاحیه", "Opening", 211),
-  purchase("خرید کالا", "Purchase", 212),
-  consumption("مصرف کالا", "Consumption", 213);
-
-  const TagVoucher(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
-enum TagCheck with UNumericIdentifiable {
-  received("دریافتی", "Received", 101),
-  issued("پرداختی", "Issued", 102),
-  guarantee("ضمانت", "Guarantee", 103),
-  pending("در جریان", "Pending", 201),
-  cleared("وصول‌شده", "Cleared", 202),
-  bounced("برگشتی", "Bounced", 203),
-  returned("عودت‌شده", "Returned", 204);
-
-  const TagCheck(this.titleFa, this.titleEn, this.number);
 
   @override
   final String titleFa;
@@ -2163,7 +2068,6 @@ enum TagActivityLog with UNumericIdentifiable {
 enum TagModule with UNumericIdentifiable {
   hotel("هتل", "Hotel", 101),
   dorm("خوابگاه و پانسیون", "Dorm", 102),
-  accounting("حسابداری", "Accounting", 103),
   inventory("انبارداری و اموال", "Inventory", 104),
   staff("کارکنان و وظایف", "Staff", 105),
   cafe("کافه و منوی آنلاین", "Cafe", 106);
