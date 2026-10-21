@@ -7,11 +7,11 @@ class UEmptyResponse {
   });
 
   factory UEmptyResponse.fromJson(String str) {
-    final Map<String, dynamic> jsonMap = json.decode(str);
-    return UEmptyResponse(
-      status: jsonMap["status"] ?? 0,
-      message: jsonMap["message"] ?? "",
-    );
+    try {
+      final dynamic decoded = json.decode(str);
+      if (decoded is Map<String, dynamic>) return UEmptyResponse(status: decoded["status"] ?? 0, message: decoded["message"] ?? "");
+    } catch (_) {}
+    return UEmptyResponse(status: 0, message: U.s.somethingWentWrong);
   }
 
   final int status;

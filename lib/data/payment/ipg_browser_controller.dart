@@ -11,6 +11,7 @@ class UIpgBrowserController {
 
   final String url;
   final UIpgAdditionalData additionalData;
+  final DateTime _startedAt = DateTime.now().toUtc().subtract(const Duration(minutes: 5));
   bool finished = false;
   bool _checking = false;
 
@@ -23,7 +24,7 @@ class UIpgBrowserController {
     if (finished || _checking) return;
     _checking = true;
     final (UResponse<List<UTxnResponse>>? r, _, _) = await UServices.txn.read(
-      p: UTxnReadParams(creatorId: U.user.id, orderBy: TagOrderBy.createdAtDescending.number, pageNumber: 1, pageSize: 10),
+      p: UTxnReadParams(creatorId: U.user.id, fromCreatedAt: _startedAt, orderBy: TagOrderBy.createdAtDescending.number, pageNumber: 1, pageSize: 100),
     );
     _checking = false;
     if (finished) return;

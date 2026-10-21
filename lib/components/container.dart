@@ -590,7 +590,6 @@ class UScaffold extends StatelessWidget {
     }
 
     return Scaffold(
-      key: key,
       backgroundColor: color,
       appBar: appBar,
       drawer: drawer,

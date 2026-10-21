@@ -278,6 +278,10 @@ abstract class UHttpClient {
     }
 
     try {
+      if (fields != null && fields.containsKey("token")) {
+        await UAuth.ensureFreshToken();
+        fields = Map<String, dynamic>.from(fields)..["token"] = ULocalStorage.getToken();
+      }
       final MultipartRequest request = onProgress == null ? MultipartRequest(method, _buildUri(endpoint, queryParams)) : _UProgressMultipartRequest(method, _buildUri(endpoint, queryParams), report);
       request.headers.addAll(<String, String>{...?headers});
       if (fields != null) request.fields.addAll(removeNullEntries(fields)!.map((String key, dynamic value) => MapEntry<String, String>(key, value is String ? value : jsonEncode(value))));
@@ -366,7 +370,10 @@ abstract class UHttpClient {
 
   static final RegExp _nonWord = RegExp(r"[^\w]");
 
-  static String _cacheKey(String method, Uri uri, dynamic body) => "cache_${method}_${uri.toString().replaceAll(_nonWord, "_")}_${body == null ? "" : jsonEncode(body).hashCode}";
+  static String _cacheKey(String method, Uri uri, dynamic body) {
+    final dynamic keyBody = body is Map ? (Map<String, dynamic>.from(body)..remove("token")..["user"] = ULocalStorage.getUserId()) : body;
+    return "cache_${method}_${uri.toString().replaceAll(_nonWord, "_")}_${keyBody == null ? "" : jsonEncode(keyBody).hashCode}";
+  }
 
   static Future<void> _writeCache(String key, String body, Duration? cacheDuration) => UFileStorage.setString(key, body, bucket: UStorageBucket.cache, expireIn: cacheDuration);
 

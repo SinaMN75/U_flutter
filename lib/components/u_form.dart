@@ -44,10 +44,13 @@ class _UFormDialogState extends State<UFormDialog> {
   Future<void> _submit() async {
     if (_saving || !(_formKey.currentState?.validate() ?? false)) return;
     setState(() => _saving = true);
-    final bool ok = await widget.onSubmit!();
-    if (!mounted) return;
-    if (ok) return UNavigator.back();
-    setState(() => _saving = false);
+    bool ok = false;
+    try {
+      ok = await widget.onSubmit!();
+    } finally {
+      if (mounted && !ok) setState(() => _saving = false);
+    }
+    if (mounted && ok) UNavigator.back();
   }
 
   @override

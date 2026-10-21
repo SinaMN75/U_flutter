@@ -27,7 +27,10 @@ abstract class UIpgFlow {
   }) async {
     final Completer<bool> completer = Completer<bool>();
     bool paid = false;
-    if (p.amount <= 0) UToast.error(message: U.s.invalidAmount);
+    if (p.amount <= 0) {
+      UToast.error(message: U.s.invalidAmount);
+      return false;
+    }
     ULoading.show();
     await UServices.ipg.pay(
       p: UIpgPayParams(

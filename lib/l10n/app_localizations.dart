@@ -794,11 +794,11 @@ abstract class AppLocalizations {
   /// **'Beds'**
   String get beds;
 
-  /// No description provided for @between50000And10000000Rials.
+  /// No description provided for @betweenMinAndMaxRials.
   ///
   /// In en, this message translates to:
-  /// **'Between 50,000 and 10,000,000 Rials'**
-  String get between50000And10000000Rials;
+  /// **'Between {min} and {max} Rials'**
+  String betweenMinAndMaxRials(Object max, Object min);
 
   /// No description provided for @bill.
   ///
@@ -1417,6 +1417,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Close'**
   String get close;
+
+  /// No description provided for @agreementDownloaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Agreement downloaded'**
+  String get agreementDownloaded;
+
+  /// No description provided for @closeOthers.
+  ///
+  /// In en, this message translates to:
+  /// **'Close others'**
+  String get closeOthers;
+
+  /// No description provided for @closeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Close all'**
+  String get closeAll;
+
+  /// No description provided for @closeTabsToTheRight.
+  ///
+  /// In en, this message translates to:
+  /// **'Close tabs to the right'**
+  String get closeTabsToTheRight;
 
   /// No description provided for @closeShift.
   ///
@@ -8366,11 +8390,11 @@ abstract class AppLocalizations {
   /// **'Terminal number'**
   String get terminalNumber;
 
-  /// No description provided for @terminalTitleOptional.
+  /// No description provided for @terminalTitle.
   ///
   /// In en, this message translates to:
-  /// **'Terminal title (optional)'**
-  String get terminalTitleOptional;
+  /// **'Terminal title'**
+  String get terminalTitle;
 
   /// No description provided for @terminalType.
   ///

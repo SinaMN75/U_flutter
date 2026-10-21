@@ -364,7 +364,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get beds => 'تخت‌ها';
 
   @override
-  String get between50000And10000000Rials => 'بین 50.000 تا 10.000.000 ریال';
+  String betweenMinAndMaxRials(Object max, Object min) {
+    return 'بین $min تا $max ریال';
+  }
 
   @override
   String get bill => 'قبض';
@@ -678,6 +680,18 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get close => 'بستن';
+
+  @override
+  String get agreementDownloaded => 'قرارداد دانلود شد';
+
+  @override
+  String get closeOthers => 'بستن بقیه';
+
+  @override
+  String get closeAll => 'بستن همه';
+
+  @override
+  String get closeTabsToTheRight => 'بستن زبانه‌های بعدی';
 
   @override
   String get closeShift => 'بستن شیفت';
@@ -4215,7 +4229,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get terminalNumber => 'شماره ترمینال';
 
   @override
-  String get terminalTitleOptional => 'عنوان پایانه (اختیاری)';
+  String get terminalTitle => 'عنوان ترمینال';
 
   @override
   String get terminalType => 'نوع پایانه';

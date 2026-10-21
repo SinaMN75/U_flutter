@@ -3,7 +3,10 @@ part of "../data.dart";
 extension NullableWalletListExtension on Iterable<UWalletResponse>? {
   List<UWalletResponse> whereByTag(int tag) => (this ?? <UWalletResponse>[]).where((UWalletResponse i) => i.tags.contains(tag)).toList();
 
-  UWalletResponse primary() => (this ?? <UWalletResponse>[]).firstWhere((UWalletResponse i) => i.tags.contains(TagWallet.primary.number));
+  UWalletResponse primary() =>
+      firstWhereByTagOrNull(TagWallet.primary.number) ??
+      (this ?? <UWalletResponse>[]).firstOrNull ??
+      UWalletResponse(id: "", tags: <int>[], jsonData: UWalletJson.fromMap(<String, dynamic>{}), balance: 0, creatorId: "", adminUserIds: <String>[]);
 
   UWalletResponse? firstWhereByTagOrNull(int tag) => (this ?? <UWalletResponse>[]).firstWhereOrNull((UWalletResponse i) => i.tags.contains(tag));
 }

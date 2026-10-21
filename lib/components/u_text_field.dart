@@ -240,7 +240,7 @@ class _UTextFieldState extends State<UTextField> {
             autofillHints: widget.autoFillHints,
             textDirection: widget.keyboardType == TextInputType.number || widget.keyboardType == TextInputType.phone ? TextDirection.ltr : null,
             inputFormatters: widget.formatters ?? (widget.keyboardType == TextInputType.number || widget.keyboardType == TextInputType.phone ? <TextInputFormatter>[UNumberInputFormatter()] : null),
-            style: TextStyle(fontSize: widget.fontSize, color: widget.textColor),
+            style: TextStyle(fontSize: widget.fontSize, color: widget.textColor, height: widget.textHeight),
             maxLength: widget.maxLength,
             onChanged: widget.onChanged,
             readOnly: widget.readOnly,
@@ -273,6 +273,20 @@ class _UTextFieldState extends State<UTextField> {
                       splashRadius: 1,
                       onPressed: () => setState(() => obscure = !obscure),
                       icon: obscure ? const Icon(Icons.visibility) : const Icon(Icons.visibility_off),
+                    )
+                  : widget.hasClearButton && widget.controller != null && !widget.readOnly
+                  ? ListenableBuilder(
+                      listenable: widget.controller!,
+                      builder: (BuildContext context, Widget? child) => widget.controller!.text.isEmpty
+                          ? (widget.suffix ?? const SizedBox.shrink())
+                          : IconButton(
+                              splashRadius: 1,
+                              icon: const Icon(Icons.close),
+                              onPressed: () {
+                                widget.controller!.clear();
+                                widget.onChanged?.call("");
+                              },
+                            ),
                     )
                   : widget.suffix,
               prefixIcon: widget.prefix,
@@ -685,6 +699,15 @@ class _UTextFieldDatePickerState extends State<UTextFieldDatePicker> {
     super.initState();
   }
 
+  void _notify(UJalali jalali) {
+    final String? before = widget.controller?.text;
+    widget.onChange(selectedDateTime, jalali);
+    if (widget.controller == null || widget.controller!.text != before) return;
+    String two(int v) => v.toString().padLeft(2, "0");
+    final String day = widget.jalali ? "${jalali.year}/${two(jalali.month)}/${two(jalali.day)}" : "${selectedDateTime.year}/${two(selectedDateTime.month)}/${two(selectedDateTime.day)}";
+    widget.controller!.text = widget.time ? "$day ${two(selectedDateTime.hour)}:${two(selectedDateTime.minute)}" : day;
+  }
+
   @override
   Widget build(BuildContext context) => UTextField(
     controller: widget.controller,
@@ -737,7 +760,7 @@ class _UTextFieldDatePickerState extends State<UTextFieldDatePicker> {
               final DateTime gregorian = picked.toDateTime();
               selectedDateTime = DateTime(gregorian.year, gregorian.month, gregorian.day, selectedDateTime.hour, selectedDateTime.minute);
               setState(() {});
-              widget.onChange(selectedDateTime, picked);
+              _notify(picked);
             }
           } else {
             final DateTime? pickedDate = await showDatePicker(
@@ -758,7 +781,7 @@ class _UTextFieldDatePickerState extends State<UTextFieldDatePicker> {
               );
               setState(() {});
               final UJalali jalali = UJalali.fromDateTime(selectedDateTime);
-              widget.onChange(selectedDateTime, jalali);
+              _notify(jalali);
             }
           }
 
@@ -779,7 +802,7 @@ class _UTextFieldDatePickerState extends State<UTextFieldDatePicker> {
               );
               setState(() {});
               final UJalali jalali = UJalali.fromDateTime(selectedDateTime);
-              widget.onChange(selectedDateTime, jalali);
+              _notify(jalali);
             }
           }
         }

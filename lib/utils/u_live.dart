@@ -50,6 +50,7 @@ abstract class ULive {
     if (_socket != null || _connecting) return;
     _connecting = true;
     try {
+      await UAuth.ensureFreshToken();
       final ULiveSocket socket = await ULiveSocket.connect(_url);
       _socket = socket;
       _retry = 0;
@@ -86,7 +87,14 @@ abstract class ULive {
 
   static void _receive(String data) {
     for (final String frame in data.split(_separator).where((String i) => i.trim().isNotEmpty)) {
-      final Map<String, dynamic> message = json.decode(frame) as Map<String, dynamic>;
+      final dynamic decoded;
+      try {
+        decoded = json.decode(frame);
+      } catch (_) {
+        continue;
+      }
+      if (decoded is! Map<String, dynamic>) continue;
+      final Map<String, dynamic> message = decoded;
       switch (message["type"]) {
         case 1:
           _events.add(ULiveEvent(message["target"] as String, (message["arguments"] as List<dynamic>?) ?? <dynamic>[]));

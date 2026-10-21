@@ -1,5 +1,4 @@
-import "package:flutter/material.dart";
-import "package:u/components/container.dart";
+import "package:u/utilities.dart";
 
 /// One tab of UTabBar: id, title, icon, badge. `UTab(id: "users", title: "Users", icon: Icons.people)`
 class UTab {
@@ -306,13 +305,13 @@ class _UTabBarState extends State<UTabBar> {
     if (widget.closeLabels.containsKey(a)) return widget.closeLabels[a]!;
     switch (a) {
       case UTabMenuAction.close:
-        return "Close";
+        return U.s.close;
       case UTabMenuAction.closeOthers:
-        return "Close others";
+        return U.s.closeOthers;
       case UTabMenuAction.closeAll:
-        return "Close all";
+        return U.s.closeAll;
       case UTabMenuAction.closeToRight:
-        return "Close tabs to the right";
+        return U.s.closeTabsToTheRight;
     }
   }
 

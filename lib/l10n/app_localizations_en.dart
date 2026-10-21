@@ -364,7 +364,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get beds => 'Beds';
 
   @override
-  String get between50000And10000000Rials => 'Between 50,000 and 10,000,000 Rials';
+  String betweenMinAndMaxRials(Object max, Object min) {
+    return 'Between $min and $max Rials';
+  }
 
   @override
   String get bill => 'Bill';
@@ -678,6 +680,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get close => 'Close';
+
+  @override
+  String get agreementDownloaded => 'Agreement downloaded';
+
+  @override
+  String get closeOthers => 'Close others';
+
+  @override
+  String get closeAll => 'Close all';
+
+  @override
+  String get closeTabsToTheRight => 'Close tabs to the right';
 
   @override
   String get closeShift => 'Close shift';
@@ -4215,7 +4229,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get terminalNumber => 'Terminal number';
 
   @override
-  String get terminalTitleOptional => 'Terminal title (optional)';
+  String get terminalTitle => 'Terminal title';
 
   @override
   String get terminalType => 'Terminal type';
