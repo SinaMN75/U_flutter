@@ -39,7 +39,6 @@ part "params/gold_params.dart";
 part "params/cafe_params.dart";
 part "params/dorm_params.dart";
 part "params/hotel_params.dart";
-part "params/inventory_params.dart";
 part "params/organization_params.dart";
 
 part "params/inquiry_params.dart";
@@ -120,7 +119,6 @@ part "responses/gold_response.dart";
 part "responses/cafe_response.dart";
 part "responses/dorm_response.dart";
 part "responses/hotel_response.dart";
-part "responses/inventory_response.dart";
 part "responses/organization_response.dart";
 
 part "responses/inquiry_response.dart";
@@ -197,7 +195,6 @@ part "services/gold_service.dart";
 part "services/cafe_service.dart";
 part "services/dorm_service.dart";
 part "services/hotel_service.dart";
-part "services/inventory_service.dart";
 part "services/organization_service.dart";
 
 part "services/inquiry_service.dart";
@@ -281,7 +278,6 @@ class UServices {
   static UDormService dorm = UDormService();
   static UHotelService hotel = UHotelService();
   static UOrganizationService organization = UOrganizationService();
-  static UInventoryService inventory = UInventoryService();
   static UCafeService cafe = UCafeService();
   static UTicketService ticket = UTicketService();
   static UParkingService parking = UParkingService();
