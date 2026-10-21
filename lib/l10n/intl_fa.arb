@@ -642,7 +642,7 @@
   "errorCode": "کد خطا",
   "errorCorrection": "تصحیح خطا",
   "errorLoadingBalance": "خطا در بارگذاری موجودی",
-  "errorLoadingData": "خطا در بارگزاری اطلاعات",
+  "errorLoadingData": "خطا در بارگذاری اطلاعات",
   "errorLoadingVideo": "خطا در بارگذاری ویدیو",
   "errorReadingData": "خطا در خواندن داده‌ها",
   "errorSubmittingForm": "خطا در ارسال اطلاعات",
