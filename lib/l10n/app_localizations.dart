@@ -12428,12 +12428,6 @@ abstract class AppLocalizations {
   /// **'Attendance'**
   String get attendance;
 
-  /// No description provided for @averageCost.
-  ///
-  /// In en, this message translates to:
-  /// **'Average Cost'**
-  String get averageCost;
-
   /// No description provided for @birthDate.
   ///
   /// In en, this message translates to:
@@ -12650,12 +12644,6 @@ abstract class AppLocalizations {
   /// **'In House'**
   String get inHouse;
 
-  /// No description provided for @inventory.
-  ///
-  /// In en, this message translates to:
-  /// **'Inventory'**
-  String get inventory;
-
   /// No description provided for @keepPrice.
   ///
   /// In en, this message translates to:
@@ -12691,12 +12679,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Logo URL'**
   String get logoUrl;
-
-  /// No description provided for @lowStock.
-  ///
-  /// In en, this message translates to:
-  /// **'Low Stock'**
-  String get lowStock;
 
   /// No description provided for @meal.
   ///
@@ -12788,12 +12770,6 @@ abstract class AppLocalizations {
   /// **'Priority'**
   String get priority;
 
-  /// No description provided for @purchase.
-  ///
-  /// In en, this message translates to:
-  /// **'Purchase'**
-  String get purchase;
-
   /// No description provided for @purchaseDate.
   ///
   /// In en, this message translates to:
@@ -12805,12 +12781,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Purchase Request'**
   String get purchaseRequest;
-
-  /// No description provided for @purchases.
-  ///
-  /// In en, this message translates to:
-  /// **'Purchases'**
-  String get purchases;
 
   /// No description provided for @rate.
   ///
@@ -12914,24 +12884,6 @@ abstract class AppLocalizations {
   /// **'Subscription Plan'**
   String get subscriptionPlan;
 
-  /// No description provided for @supplier.
-  ///
-  /// In en, this message translates to:
-  /// **'Supplier'**
-  String get supplier;
-
-  /// No description provided for @suppliers.
-  ///
-  /// In en, this message translates to:
-  /// **'Suppliers'**
-  String get suppliers;
-
-  /// No description provided for @targetWarehouse.
-  ///
-  /// In en, this message translates to:
-  /// **'Target Warehouse'**
-  String get targetWarehouse;
-
   /// No description provided for @task.
   ///
   /// In en, this message translates to:
@@ -12955,18 +12907,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Visitor Name'**
   String get visitorName;
-
-  /// No description provided for @warehouse.
-  ///
-  /// In en, this message translates to:
-  /// **'Warehouse'**
-  String get warehouse;
-
-  /// No description provided for @warehouses.
-  ///
-  /// In en, this message translates to:
-  /// **'Warehouses'**
-  String get warehouses;
 
   /// No description provided for @weekdays.
   ///
@@ -13160,18 +13100,6 @@ abstract class AppLocalizations {
   /// **'For student dorms and boarding houses'**
   String get planDormDescription;
 
-  /// No description provided for @planInventory.
-  ///
-  /// In en, this message translates to:
-  /// **'Inventory'**
-  String get planInventory;
-
-  /// No description provided for @planInventoryDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Warehouses, items, purchases and assets for any business'**
-  String get planInventoryDescription;
-
   /// No description provided for @planStaff.
   ///
   /// In en, this message translates to:
@@ -13184,18 +13112,6 @@ abstract class AppLocalizations {
   /// **'Shifts, tasks and maintenance requests'**
   String get planStaffDescription;
 
-  /// No description provided for @planCafe.
-  ///
-  /// In en, this message translates to:
-  /// **'Cafe and restaurant'**
-  String get planCafe;
-
-  /// No description provided for @planCafeDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Online menu, orders and inventory'**
-  String get planCafeDescription;
-
   /// No description provided for @planFullDorm.
   ///
   /// In en, this message translates to:
@@ -13205,7 +13121,7 @@ abstract class AppLocalizations {
   /// No description provided for @planFullDormDescription.
   ///
   /// In en, this message translates to:
-  /// **'Dorm with inventory and staff'**
+  /// **'Dorm with staff'**
   String get planFullDormDescription;
 
   /// No description provided for @planFullHotel.
@@ -13217,7 +13133,7 @@ abstract class AppLocalizations {
   /// No description provided for @planFullHotelDescription.
   ///
   /// In en, this message translates to:
-  /// **'Hotel with inventory and staff'**
+  /// **'Hotel with staff'**
   String get planFullHotelDescription;
 
   /// No description provided for @planEverything.
@@ -13229,7 +13145,7 @@ abstract class AppLocalizations {
   /// No description provided for @planEverythingDescription.
   ///
   /// In en, this message translates to:
-  /// **'Hotel, dorm, café, inventory and staff'**
+  /// **'Hotel, dorm and staff'**
   String get planEverythingDescription;
 
   /// No description provided for @demoData.
@@ -13253,7 +13169,7 @@ abstract class AppLocalizations {
   /// No description provided for @demoDataHint.
   ///
   /// In en, this message translates to:
-  /// **'Builds a complete test world: 4 organizations with different subscriptions, 2 hotels with 20 reservations in every state, 2 dorms with contracts and bills, inventory, staff and 42 users. Everything goes through the real rules. The logins are shown here afterwards. It can run once per server.'**
+  /// **'Builds a complete test world: 3 organizations with different subscriptions, 2 hotels with 20 reservations in every state, 2 dorms with contracts and bills, staff and 40 users. Everything goes through the real rules. The logins are shown here afterwards. It can run once per server.'**
   String get demoDataHint;
 
   /// No description provided for @demoDataConfirm.
@@ -13358,83 +13274,17 @@ abstract class AppLocalizations {
   /// **'This place will stay hidden'**
   String get thisPlaceWillStayHidden;
 
-  /// No description provided for @cafe.
-  ///
-  /// In en, this message translates to:
-  /// **'Cafe'**
-  String get cafe;
-
-  /// No description provided for @cafes.
-  ///
-  /// In en, this message translates to:
-  /// **'Cafes'**
-  String get cafes;
-
-  /// No description provided for @itemOptions.
-  ///
-  /// In en, this message translates to:
-  /// **'Item options'**
-  String get itemOptions;
-
   /// No description provided for @labels.
   ///
   /// In en, this message translates to:
   /// **'Labels'**
   String get labels;
 
-  /// No description provided for @markAsAvailable.
-  ///
-  /// In en, this message translates to:
-  /// **'Mark as available'**
-  String get markAsAvailable;
-
-  /// No description provided for @markAsUnavailable.
-  ///
-  /// In en, this message translates to:
-  /// **'Mark as unavailable'**
-  String get markAsUnavailable;
-
-  /// No description provided for @menuItem.
-  ///
-  /// In en, this message translates to:
-  /// **'Menu item'**
-  String get menuItem;
-
-  /// No description provided for @menuItems.
-  ///
-  /// In en, this message translates to:
-  /// **'Menu items'**
-  String get menuItems;
-
-  /// No description provided for @menuSettings.
-  ///
-  /// In en, this message translates to:
-  /// **'Menu settings'**
-  String get menuSettings;
-
-  /// No description provided for @menus.
-  ///
-  /// In en, this message translates to:
-  /// **'Menus'**
-  String get menus;
-
   /// No description provided for @noPlacesWaitingForReview.
   ///
   /// In en, this message translates to:
   /// **'No places waiting for review'**
   String get noPlacesWaitingForReview;
-
-  /// No description provided for @openHours.
-  ///
-  /// In en, this message translates to:
-  /// **'Open hours'**
-  String get openHours;
-
-  /// No description provided for @ordering.
-  ///
-  /// In en, this message translates to:
-  /// **'Ordering'**
-  String get ordering;
 
   /// No description provided for @orders.
   ///
@@ -13447,30 +13297,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Place approvals'**
   String get placeApprovals;
-
-  /// No description provided for @prepMinutes.
-  ///
-  /// In en, this message translates to:
-  /// **'Prep minutes'**
-  String get prepMinutes;
-
-  /// No description provided for @rejectAndRefund.
-  ///
-  /// In en, this message translates to:
-  /// **'Reject and refund'**
-  String get rejectAndRefund;
-
-  /// No description provided for @tableCount.
-  ///
-  /// In en, this message translates to:
-  /// **'Table count'**
-  String get tableCount;
-
-  /// No description provided for @tagline.
-  ///
-  /// In en, this message translates to:
-  /// **'Tagline'**
-  String get tagline;
 
   /// No description provided for @loanId.
   ///
@@ -13514,24 +13340,6 @@ abstract class AppLocalizations {
   /// **'Add bed'**
   String get addBed;
 
-  /// No description provided for @addCategoriesThenYourFirstItem.
-  ///
-  /// In en, this message translates to:
-  /// **'Add categories then your first item'**
-  String get addCategoriesThenYourFirstItem;
-
-  /// No description provided for @addChoice.
-  ///
-  /// In en, this message translates to:
-  /// **'Add choice'**
-  String get addChoice;
-
-  /// No description provided for @addOption.
-  ///
-  /// In en, this message translates to:
-  /// **'Add option'**
-  String get addOption;
-
   /// No description provided for @addRoomNumbersToYourRoomTypesFirst.
   ///
   /// In en, this message translates to:
@@ -13549,12 +13357,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add to bill'**
   String get addToBill;
-
-  /// No description provided for @addToOrder.
-  ///
-  /// In en, this message translates to:
-  /// **'Add to order'**
-  String get addToOrder;
 
   /// No description provided for @addYourBankAccountInSettings.
   ///
@@ -13621,12 +13423,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Ask for an early payout'**
   String get askForAnEarlyPayout;
-
-  /// No description provided for @atTheTable.
-  ///
-  /// In en, this message translates to:
-  /// **'At the table'**
-  String get atTheTable;
 
   /// No description provided for @atWork.
   ///
@@ -13724,30 +13520,6 @@ abstract class AppLocalizations {
   /// **'By signing in you accept the terms'**
   String get bySigningInYouAcceptTheTerms;
 
-  /// No description provided for @cafesAndRestaurants.
-  ///
-  /// In en, this message translates to:
-  /// **'Cafes and restaurants'**
-  String get cafesAndRestaurants;
-
-  /// No description provided for @canPickMoreThanOne.
-  ///
-  /// In en, this message translates to:
-  /// **'Can pick more than one'**
-  String get canPickMoreThanOne;
-
-  /// No description provided for @cancelOrder.
-  ///
-  /// In en, this message translates to:
-  /// **'Cancel order'**
-  String get cancelOrder;
-
-  /// No description provided for @cashier.
-  ///
-  /// In en, this message translates to:
-  /// **'Cashier'**
-  String get cashier;
-
   /// No description provided for @changed.
   ///
   /// In en, this message translates to:
@@ -13772,18 +13544,6 @@ abstract class AppLocalizations {
   /// **'Checked someone out'**
   String get checkedSomeoneOut;
 
-  /// No description provided for @choiceTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Choice title'**
-  String get choiceTitle;
-
-  /// No description provided for @choices.
-  ///
-  /// In en, this message translates to:
-  /// **'Choices'**
-  String get choices;
-
   /// No description provided for @closeTheDay.
   ///
   /// In en, this message translates to:
@@ -13807,12 +13567,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Collected'**
   String get collected;
-
-  /// No description provided for @colorAndOrdering.
-  ///
-  /// In en, this message translates to:
-  /// **'Color and ordering'**
-  String get colorAndOrdering;
 
   /// No description provided for @confirmedRightAway.
   ///
@@ -13958,11 +13712,11 @@ abstract class AppLocalizations {
   /// **'Did not show up'**
   String get didNotShowUp;
 
-  /// No description provided for @dormHotelOrCafeStartWithAFreeTrial.
+  /// No description provided for @dormOrHotelStartWithAFreeTrial.
   ///
   /// In en, this message translates to:
-  /// **'Dorm hotel or cafe start with a free trial'**
-  String get dormHotelOrCafeStartWithAFreeTrial;
+  /// **'Dorm or hotel, start with a free trial'**
+  String get dormOrHotelStartWithAFreeTrial;
 
   /// No description provided for @earlyPayoutExplanation.
   ///
@@ -13993,12 +13747,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Edit rooms and details'**
   String get editRoomsAndDetails;
-
-  /// No description provided for @editTheMenu.
-  ///
-  /// In en, this message translates to:
-  /// **'Edit the menu'**
-  String get editTheMenu;
 
   /// No description provided for @endsOn.
   ///
@@ -14036,29 +13784,11 @@ abstract class AppLocalizations {
   /// **'For example chicken and rice'**
   String get forExampleChickenAndRice;
 
-  /// No description provided for @forExampleCoffeeUnderTheOrangeTrees.
-  ///
-  /// In en, this message translates to:
-  /// **'For example coffee under the orange trees'**
-  String get forExampleCoffeeUnderTheOrangeTrees;
-
   /// No description provided for @forExampleDoubleRoom.
   ///
   /// In en, this message translates to:
   /// **'For example double room'**
   String get forExampleDoubleRoom;
-
-  /// No description provided for @forExampleLessSugar.
-  ///
-  /// In en, this message translates to:
-  /// **'For example less sugar'**
-  String get forExampleLessSugar;
-
-  /// No description provided for @forExampleMilkType.
-  ///
-  /// In en, this message translates to:
-  /// **'For example milk type'**
-  String get forExampleMilkType;
 
   /// No description provided for @forExampleNowruz.
   ///
@@ -14114,12 +13844,6 @@ abstract class AppLocalizations {
   /// **'From wallet'**
   String get fromWallet;
 
-  /// No description provided for @generalMenu.
-  ///
-  /// In en, this message translates to:
-  /// **'General menu'**
-  String get generalMenu;
-
   /// No description provided for @getCode.
   ///
   /// In en, this message translates to:
@@ -14138,18 +13862,6 @@ abstract class AppLocalizations {
   /// **'Guardian optional'**
   String get guardianOptional;
 
-  /// No description provided for @handleOrders.
-  ///
-  /// In en, this message translates to:
-  /// **'Handle orders'**
-  String get handleOrders;
-
-  /// No description provided for @howDoYouWantIt.
-  ///
-  /// In en, this message translates to:
-  /// **'How do you want it'**
-  String get howDoYouWantIt;
-
   /// No description provided for @howManyPortions.
   ///
   /// In en, this message translates to:
@@ -14161,18 +13873,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'How many rooms'**
   String get howManyRooms;
-
-  /// No description provided for @howManyTables.
-  ///
-  /// In en, this message translates to:
-  /// **'How many tables'**
-  String get howManyTables;
-
-  /// No description provided for @ifTheCafeRejectsYourOrderTheMoneyGoesBackToYourWallet.
-  ///
-  /// In en, this message translates to:
-  /// **'If the cafe rejects your order the money goes back to your wallet'**
-  String get ifTheCafeRejectsYourOrderTheMoneyGoesBackToYourWallet;
 
   /// No description provided for @inProgress.
   ///
@@ -14234,18 +13934,6 @@ abstract class AppLocalizations {
   /// **'Living here'**
   String get livingHere;
 
-  /// No description provided for @look.
-  ///
-  /// In en, this message translates to:
-  /// **'Look'**
-  String get look;
-
-  /// No description provided for @mainStoreroom.
-  ///
-  /// In en, this message translates to:
-  /// **'Main storeroom'**
-  String get mainStoreroom;
-
   /// No description provided for @makeAndEditBills.
   ///
   /// In en, this message translates to:
@@ -14275,24 +13963,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Menu and reserVATions'**
   String get menuAndReservations;
-
-  /// No description provided for @menuIsOpen.
-  ///
-  /// In en, this message translates to:
-  /// **'Menu is open'**
-  String get menuIsOpen;
-
-  /// No description provided for @menuLook.
-  ///
-  /// In en, this message translates to:
-  /// **'Menu look'**
-  String get menuLook;
-
-  /// No description provided for @menuViews.
-  ///
-  /// In en, this message translates to:
-  /// **'Menu views'**
-  String get menuViews;
 
   /// No description provided for @messageToTheApplicant.
   ///
@@ -14329,18 +13999,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Move to another bed'**
   String get moveToAnotherBed;
-
-  /// No description provided for @mustChoose.
-  ///
-  /// In en, this message translates to:
-  /// **'Must choose'**
-  String get mustChoose;
-
-  /// No description provided for @myOrders.
-  ///
-  /// In en, this message translates to:
-  /// **'My orders'**
-  String get myOrders;
 
   /// No description provided for @myPayments.
   ///
@@ -14432,29 +14090,11 @@ abstract class AppLocalizations {
   /// **'New equipment'**
   String get newEquipment;
 
-  /// No description provided for @newItem.
-  ///
-  /// In en, this message translates to:
-  /// **'New item'**
-  String get newItem;
-
   /// No description provided for @newMeal.
   ///
   /// In en, this message translates to:
   /// **'New meal'**
   String get newMeal;
-
-  /// No description provided for @newOrders.
-  ///
-  /// In en, this message translates to:
-  /// **'New orders'**
-  String get newOrders;
-
-  /// No description provided for @newOrdersAppearHereByThemselves.
-  ///
-  /// In en, this message translates to:
-  /// **'New orders appear here by themselves'**
-  String get newOrdersAppearHereByThemselves;
 
   /// No description provided for @newPersonTheyCanSignInLaterWithThisNumber.
   ///
@@ -14594,12 +14234,6 @@ abstract class AppLocalizations {
   /// **'No one with this number lives here'**
   String get noOneWithThisNumberLivesHere;
 
-  /// No description provided for @noOpenOrders.
-  ///
-  /// In en, this message translates to:
-  /// **'No open orders'**
-  String get noOpenOrders;
-
   /// No description provided for @noPayoutsYet.
   ///
   /// In en, this message translates to:
@@ -14654,12 +14288,6 @@ abstract class AppLocalizations {
   /// **'Not yet'**
   String get notYet;
 
-  /// No description provided for @noteForTheKitchen.
-  ///
-  /// In en, this message translates to:
-  /// **'Note for the kitchen'**
-  String get noteForTheKitchen;
-
   /// No description provided for @nothingDoneYet.
   ///
   /// In en, this message translates to:
@@ -14671,12 +14299,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Nothing happened yet'**
   String get nothingHappenedYet;
-
-  /// No description provided for @nothingInStockYet.
-  ///
-  /// In en, this message translates to:
-  /// **'Nothing in stock yet'**
-  String get nothingInStockYet;
 
   /// No description provided for @nothingNewSinceTheLastPayout.
   ///
@@ -14714,24 +14336,6 @@ abstract class AppLocalizations {
   /// **'Occupied rooms'**
   String get occupiedRooms;
 
-  /// No description provided for @oneCategoryPerLineInTheOrderCustomersSeeThem.
-  ///
-  /// In en, this message translates to:
-  /// **'One category per line in the order customers see them'**
-  String get oneCategoryPerLineInTheOrderCustomersSeeThem;
-
-  /// No description provided for @onlineOrdering.
-  ///
-  /// In en, this message translates to:
-  /// **'Online ordering'**
-  String get onlineOrdering;
-
-  /// No description provided for @onlyForCurrentGuestsOrResidentsOfThisBusiness.
-  ///
-  /// In en, this message translates to:
-  /// **'Only for current guests or residents of this business'**
-  String get onlyForCurrentGuestsOrResidentsOfThisBusiness;
-
   /// No description provided for @onlyOnTheseDays.
   ///
   /// In en, this message translates to:
@@ -14750,41 +14354,11 @@ abstract class AppLocalizations {
   /// **'Open for booking'**
   String get openForBooking;
 
-  /// No description provided for @openOrders.
-  ///
-  /// In en, this message translates to:
-  /// **'Open orders'**
-  String get openOrders;
-
   /// No description provided for @option.
   ///
   /// In en, this message translates to:
   /// **'Option'**
   String get option;
-
-  /// No description provided for @orderAndPay.
-  ///
-  /// In en, this message translates to:
-  /// **'Order and pay'**
-  String get orderAndPay;
-
-  /// No description provided for @orderAndPayFromYourTable.
-  ///
-  /// In en, this message translates to:
-  /// **'Order and pay from your table'**
-  String get orderAndPayFromYourTable;
-
-  /// No description provided for @orderingIsOff.
-  ///
-  /// In en, this message translates to:
-  /// **'Ordering is off'**
-  String get orderingIsOff;
-
-  /// No description provided for @ourPicks.
-  ///
-  /// In en, this message translates to:
-  /// **'Our picks'**
-  String get ourPicks;
 
   /// No description provided for @overdueBills.
   ///
@@ -14894,12 +14468,6 @@ abstract class AppLocalizations {
   /// **'Please choose the city'**
   String get pleaseChooseTheCity;
 
-  /// No description provided for @pointTheCameraAtTheQrCodeOnTheTable.
-  ///
-  /// In en, this message translates to:
-  /// **'Point the camera at the QR code on the table'**
-  String get pointTheCameraAtTheQrCodeOnTheTable;
-
   /// No description provided for @priceChangePercent.
   ///
   /// In en, this message translates to:
@@ -14911,24 +14479,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Prices and closed days'**
   String get pricesAndClosedDays;
-
-  /// No description provided for @printTheseCodesAndPutOneOnEachTable.
-  ///
-  /// In en, this message translates to:
-  /// **'Print these codes and put one on each table'**
-  String get printTheseCodesAndPutOneOnEachTable;
-
-  /// No description provided for @reasonTheCustomerSeesIt.
-  ///
-  /// In en, this message translates to:
-  /// **'Reason the customer sees it'**
-  String get reasonTheCustomerSeesIt;
-
-  /// No description provided for @receive.
-  ///
-  /// In en, this message translates to:
-  /// **'Receive'**
-  String get receive;
 
   /// No description provided for @receivePayments.
   ///
@@ -15014,12 +14564,6 @@ abstract class AppLocalizations {
   /// **'Residents phone number'**
   String get residentsPhoneNumber;
 
-  /// No description provided for @returnedToYourWallet.
-  ///
-  /// In en, this message translates to:
-  /// **'Returned to your wallet'**
-  String get returnedToYourWallet;
-
   /// No description provided for @roomName.
   ///
   /// In en, this message translates to:
@@ -15056,35 +14600,11 @@ abstract class AppLocalizations {
   /// **'Scan'**
   String get scan;
 
-  /// No description provided for @scanTheTableCode.
-  ///
-  /// In en, this message translates to:
-  /// **'Scan the table code'**
-  String get scanTheTableCode;
-
-  /// No description provided for @scans.
-  ///
-  /// In en, this message translates to:
-  /// **'Scans'**
-  String get scans;
-
   /// No description provided for @searchByName.
   ///
   /// In en, this message translates to:
   /// **'Search by name'**
   String get searchByName;
-
-  /// No description provided for @seeItAsACustomer.
-  ///
-  /// In en, this message translates to:
-  /// **'See it as a customer'**
-  String get seeItAsACustomer;
-
-  /// No description provided for @seeTheMenuAndOrderFromYourTable.
-  ///
-  /// In en, this message translates to:
-  /// **'See the menu and order from your table'**
-  String get seeTheMenuAndOrderFromYourTable;
 
   /// No description provided for @seeTheNumbers.
   ///
@@ -15097,12 +14617,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Send to support'**
   String get sendToSupport;
-
-  /// No description provided for @setTheNumberOfTables.
-  ///
-  /// In en, this message translates to:
-  /// **'Set the number of tables'**
-  String get setTheNumberOfTables;
 
   /// No description provided for @shiftDone.
   ///
@@ -15194,59 +14708,17 @@ abstract class AppLocalizations {
   /// **'Stock purchases and equipment'**
   String get stockPurchasesAndEquipment;
 
-  /// No description provided for @storekeeper.
-  ///
-  /// In en, this message translates to:
-  /// **'Storekeeper'**
-  String get storekeeper;
-
-  /// No description provided for @storeroom.
-  ///
-  /// In en, this message translates to:
-  /// **'Storeroom'**
-  String get storeroom;
-
   /// No description provided for @switchBetweenYourAccountAndYourBusinesses.
   ///
   /// In en, this message translates to:
   /// **'Switch between your account and your businesses'**
   String get switchBetweenYourAccountAndYourBusinesses;
 
-  /// No description provided for @tableNumber.
-  ///
-  /// In en, this message translates to:
-  /// **'Table number'**
-  String get tableNumber;
-
-  /// No description provided for @tableScans.
-  ///
-  /// In en, this message translates to:
-  /// **'Table scans'**
-  String get tableScans;
-
   /// No description provided for @tables.
   ///
   /// In en, this message translates to:
   /// **'Tables'**
   String get tables;
-
-  /// No description provided for @tablesAndQr.
-  ///
-  /// In en, this message translates to:
-  /// **'Tables and QR'**
-  String get tablesAndQr;
-
-  /// No description provided for @takeOut.
-  ///
-  /// In en, this message translates to:
-  /// **'Take out'**
-  String get takeOut;
-
-  /// No description provided for @takeaway.
-  ///
-  /// In en, this message translates to:
-  /// **'Takeaway'**
-  String get takeaway;
 
   /// No description provided for @tasks.
   ///
@@ -15266,35 +14738,11 @@ abstract class AppLocalizations {
   /// **'Team'**
   String get team;
 
-  /// No description provided for @theCustomerPicksItUpAtTheCounter.
-  ///
-  /// In en, this message translates to:
-  /// **'The customer picks it up at the counter'**
-  String get theCustomerPicksItUpAtTheCounter;
-
   /// No description provided for @theDayWasClosed.
   ///
   /// In en, this message translates to:
   /// **'The day was closed'**
   String get theDayWasClosed;
-
-  /// No description provided for @theMoneyGoesBackToTheCustomersWallet.
-  ///
-  /// In en, this message translates to:
-  /// **'The money goes back to the customers wallet'**
-  String get theMoneyGoesBackToTheCustomersWallet;
-
-  /// No description provided for @theMoneyGoesBackToYourWallet.
-  ///
-  /// In en, this message translates to:
-  /// **'The money goes back to your wallet'**
-  String get theMoneyGoesBackToYourWallet;
-
-  /// No description provided for @theOrderIsBroughtToTheTable.
-  ///
-  /// In en, this message translates to:
-  /// **'The order is brought to the table'**
-  String get theOrderIsBroughtToTheTable;
 
   /// No description provided for @theOwnerHasNotGivenYouAccessToAnyPlaceYet.
   ///
@@ -15320,35 +14768,11 @@ abstract class AppLocalizations {
   /// **'They will no longer see this business'**
   String get theyWillNoLongerSeeThisBusiness;
 
-  /// No description provided for @thisCodeIsNotAKhabroomMenu.
-  ///
-  /// In en, this message translates to:
-  /// **'This code is not a Khabroom menu'**
-  String get thisCodeIsNotAKhabroomMenu;
-
-  /// No description provided for @thisMenuHasNoItemsYet.
-  ///
-  /// In en, this message translates to:
-  /// **'This menu has no items yet'**
-  String get thisMenuHasNoItemsYet;
-
-  /// No description provided for @thisMenuIsForViewingOnly.
-  ///
-  /// In en, this message translates to:
-  /// **'This menu is for viewing only'**
-  String get thisMenuIsForViewingOnly;
-
   /// No description provided for @thisPersonHasAnAccount.
   ///
   /// In en, this message translates to:
   /// **'This person has an account'**
   String get thisPersonHasAnAccount;
-
-  /// No description provided for @toARoom.
-  ///
-  /// In en, this message translates to:
-  /// **'To a room'**
-  String get toARoom;
 
   /// No description provided for @toClean.
   ///
@@ -15367,12 +14791,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'To do'**
   String get toDo;
-
-  /// No description provided for @toMyRoom.
-  ///
-  /// In en, this message translates to:
-  /// **'To my room'**
-  String get toMyRoom;
 
   /// No description provided for @toPay.
   ///
@@ -15404,12 +14822,6 @@ abstract class AppLocalizations {
   /// **'Trial'**
   String get trial;
 
-  /// No description provided for @turnItOnInMenuLook.
-  ///
-  /// In en, this message translates to:
-  /// **'Turn it on in menu look'**
-  String get turnItOnInMenuLook;
-
   /// No description provided for @turnOffToHideItForAWhile.
   ///
   /// In en, this message translates to:
@@ -15421,18 +14833,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unpaid bills'**
   String get unpaidBills;
-
-  /// No description provided for @viewOnlyMenu.
-  ///
-  /// In en, this message translates to:
-  /// **'View only menu'**
-  String get viewOnlyMenu;
-
-  /// No description provided for @viewYourOrder.
-  ///
-  /// In en, this message translates to:
-  /// **'View your order'**
-  String get viewYourOrder;
 
   /// No description provided for @visible.
   ///
@@ -15487,12 +14887,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Warn me below'**
   String get warnMeBelow;
-
-  /// No description provided for @wasAddedToYourOrder.
-  ///
-  /// In en, this message translates to:
-  /// **'Was added to your order'**
-  String get wasAddedToYourOrder;
 
   /// No description provided for @weSentACodeTo.
   ///
@@ -15554,18 +14948,6 @@ abstract class AppLocalizations {
   /// **'Whats happening today'**
   String get whatsHappeningToday;
 
-  /// No description provided for @whenOffTheMenuIsForViewingOnly.
-  ///
-  /// In en, this message translates to:
-  /// **'When off the menu is for viewing only'**
-  String get whenOffTheMenuIsForViewingOnly;
-
-  /// No description provided for @whenOffTheQrCodesShowNothing.
-  ///
-  /// In en, this message translates to:
-  /// **'When off the QR codes show nothing'**
-  String get whenOffTheQrCodesShowNothing;
-
   /// No description provided for @whereDoYouWantToWork.
   ///
   /// In en, this message translates to:
@@ -15614,29 +14996,11 @@ abstract class AppLocalizations {
   /// **'Who works when'**
   String get whoWorksWhen;
 
-  /// No description provided for @withoutCategory.
+  /// No description provided for @youCanAddDormsAndHotelsToItLater.
   ///
   /// In en, this message translates to:
-  /// **'Without category'**
-  String get withoutCategory;
-
-  /// No description provided for @youCanAddDormsHotelsAndCafesToItLater.
-  ///
-  /// In en, this message translates to:
-  /// **'You can add dorms hotels and cafes to it later'**
-  String get youCanAddDormsHotelsAndCafesToItLater;
-
-  /// No description provided for @youHaveANewOrder.
-  ///
-  /// In en, this message translates to:
-  /// **'You have a new order'**
-  String get youHaveANewOrder;
-
-  /// No description provided for @youHaveNotOrderedAnythingYet.
-  ///
-  /// In en, this message translates to:
-  /// **'You have not ordered anything yet'**
-  String get youHaveNotOrderedAnythingYet;
+  /// **'You can add dorms and hotels to it later'**
+  String get youCanAddDormsAndHotelsToItLater;
 
   /// No description provided for @youHaveNothingToPay.
   ///
@@ -15650,12 +15014,6 @@ abstract class AppLocalizations {
   /// **'You start with the free trial and pay when it ends'**
   String get youStartWithTheFreeTrialAndPayWhenItEnds;
 
-  /// No description provided for @yourCafeOrdersAndTheirStatus.
-  ///
-  /// In en, this message translates to:
-  /// **'Your cafe orders and their status'**
-  String get yourCafeOrdersAndTheirStatus;
-
   /// No description provided for @yourFirstName.
   ///
   /// In en, this message translates to:
@@ -15667,18 +15025,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your last name'**
   String get yourLastName;
-
-  /// No description provided for @yourMenuIsEmpty.
-  ///
-  /// In en, this message translates to:
-  /// **'Your menu is empty'**
-  String get yourMenuIsEmpty;
-
-  /// No description provided for @yourOrder.
-  ///
-  /// In en, this message translates to:
-  /// **'Your order'**
-  String get yourOrder;
 
   /// No description provided for @yourPlanDoesNotIncludeAnyPlaceType.
   ///
@@ -15728,23 +15074,11 @@ abstract class AppLocalizations {
   /// **'For example 101 to 104'**
   String get forExample101To104;
 
-  /// No description provided for @forExampleEveryDay8To24.
-  ///
-  /// In en, this message translates to:
-  /// **'For example every day 8 to 24'**
-  String get forExampleEveryDay8To24;
-
   /// No description provided for @forExampleRoom204Bathroom.
   ///
   /// In en, this message translates to:
   /// **'For example room 204 bathroom'**
   String get forExampleRoom204Bathroom;
-
-  /// No description provided for @orderNo.
-  ///
-  /// In en, this message translates to:
-  /// **'Order no.'**
-  String get orderNo;
 
   /// No description provided for @positionInLine.
   ///

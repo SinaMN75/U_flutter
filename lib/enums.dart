@@ -216,15 +216,10 @@ enum TagUser with UNumericIdentifiable {
   permissionManageWallets("مدیریت کیف پول‌ها", "Manage Wallets", 620),
   permissionManageContents("مدیریت محتوا", "Manage Contents", 621),
   permissionViewDashboard("مشاهده داشبورد", "View Dashboard", 622),
-  permissionManageInventory("مدیریت انبار و اموال", "Manage Inventory", 625),
   permissionManageStaff("مدیریت کارکنان، شیفت و کارها", "Manage Staff", 626),
   permissionManageOrganizations("مدیریت مجموعه‌ها و اشتراک‌ها", "Manage Organizations", 627),
   permissionApprovePlaces("تأیید مکان‌ها", "Approve Places", 628),
-  permissionManageSettlements("تسویه با مجموعه‌ها", "Manage Settlements", 629),
-  permissionManageCafes("مدیریت کافه‌ها", "Manage Cafes", 630),
-  permissionDeleteCafes("حذف کافه‌ها", "Delete Cafes", 631),
-  permissionManageMenus("مدیریت منو", "Manage Menus", 632),
-  permissionManageOrders("مدیریت سفارش‌ها", "Manage Orders", 633);
+  permissionManageSettlements("تسویه با مجموعه‌ها", "Manage Settlements", 629);
 
   const TagUser(this.titleFa, this.titleEn, this.number);
 
@@ -261,19 +256,13 @@ enum TagUser with UNumericIdentifiable {
     permissionManageWallets,
     permissionManageContents,
     permissionViewDashboard,
-    permissionManageInventory,
     permissionManageStaff,
     permissionManageOrganizations,
     permissionApprovePlaces,
     permissionManageSettlements,
-    permissionManageCafes,
-    permissionDeleteCafes,
-    permissionManageMenus,
-    permissionManageOrders,
   ];
 
   static const List<TagUser> organizationPermissions = <TagUser>[
-    permissionManageInventory,
     permissionManageStaff,
     permissionManageUsers,
     permissionViewDashboard,
@@ -295,19 +284,12 @@ enum TagUser with UNumericIdentifiable {
     permissionDeleteInvoices,
     permissionPayInvoices,
   ];
-
-  static const List<TagUser> cafePermissions = <TagUser>[
-    permissionManageCafes,
-    permissionManageMenus,
-    permissionManageOrders,
-  ];
 }
 
 enum TagCategory with UNumericIdentifiable {
   category("دسته‌بندی", "Category", 101),
   exam("پرسشنامه", "Exam", 102),
   user("کاربران", "User", 103),
-  menu("منو", "Menu", 104),
   speciality("تخصص", "Speciality", 105),
   dorm("خوابگاه", "Dorm", 106),
   room("اتاق", "Room", 107),
@@ -503,8 +485,7 @@ enum TagTxn with UNumericIdentifiable {
   billPayment("پرداخت قبض", "Bill Payment", 305),
   topUp("شارژ مستقیم", "Top Up", 306),
   multiplexedSale("پرداخت تسهیمی", "Multiplexed Sale", 307),
-  subscription("خرید اشتراک", "Subscription", 308),
-  menuOrder("سفارش کافه", "Menu Order", 309);
+  subscription("خرید اشتراک", "Subscription", 308);
 
   const TagTxn(this.titleFa, this.titleEn, this.number);
 
@@ -717,8 +698,6 @@ enum TagWalletTxn with UNumericIdentifiable {
   organizationSettlement("تسویه‌ی مجموعه", "Organization settlement", 224),
   organizationSettlementRefund("برگشت تسویه‌ی مجموعه", "Organization settlement refund", 225),
   subscription("خرید اشتراک", "Subscription", 226),
-  menuOrder("سفارش کافه", "Menu Order", 227),
-  menuOrderRefund("بازگشت وجه سفارش", "Menu Order Refund", 228),
   chargeSimPin("خرید شارژ پین سیم‌کارت", "SIM Charge (PIN)", 301),
   chargeSimTopup("شارژ مستقیم سیم‌کارت", "SIM Top-up", 302),
   internetSim("خرید بسته اینترنت", "Internet Package", 303),
@@ -1965,9 +1944,7 @@ enum TagActivityLog with UNumericIdentifiable {
 enum TagModule with UNumericIdentifiable {
   hotel("هتل", "Hotel", 101),
   dorm("خوابگاه و پانسیون", "Dorm", 102),
-  inventory("انبارداری و اموال", "Inventory", 104),
-  staff("کارکنان و وظایف", "Staff", 105),
-  cafe("کافه و منوی آنلاین", "Cafe", 106);
+  staff("کارکنان و وظایف", "Staff", 105);
 
   const TagModule(this.titleFa, this.titleEn, this.number);
 
@@ -2014,8 +1991,7 @@ enum TagPlanLimit with UNumericIdentifiable {
   places("تعداد شعبه", "Branches", 101),
   rooms("تعداد اتاق هتل", "Hotel rooms", 102),
   beds("تعداد تخت", "Beds", 103),
-  members("تعداد کارکنان", "Staff members", 104),
-  warehouses("تعداد انبار", "Warehouses", 105);
+  members("تعداد کارکنان", "Staff members", 104);
 
   const TagPlanLimit(this.titleFa, this.titleEn, this.number);
 
@@ -2027,100 +2003,3 @@ enum TagPlanLimit with UNumericIdentifiable {
   final int number;
 }
 
-enum TagCafe with UNumericIdentifiable {
-  cafe("کافه", "Cafe", 101),
-  restaurant("رستوران", "Restaurant", 102),
-  coffeeShop("کافی‌شاپ", "Coffee shop", 103),
-  bakery("نان و شیرینی", "Bakery", 104),
-  fastFood("فست‌فود", "Fast food", 105),
-  teaHouse("چایخانه", "Tea house", 106),
-  featured("ویژه", "Featured", 201),
-  active("فعال", "Active", 202),
-  inactive("غیرفعال", "Inactive", 203),
-  pendingApproval("در انتظار تأیید", "Pending approval", 401),
-  approved("تأییدشده", "Approved", 402),
-  rejected("ردشده", "Rejected", 403),
-  wifi("وای‌فای", "Wi-Fi", 501),
-  parking("پارکینگ", "Parking", 502),
-  outdoorSeating("فضای باز", "Outdoor seating", 503),
-  familySection("بخش خانوادگی", "Family section", 504),
-  liveMusic("موسیقی زنده", "Live music", 505),
-  petFriendly("پذیرش حیوان خانگی", "Pet friendly", 506),
-  smoking("فضای سیگار", "Smoking area", 507),
-  nonSmoking("بدون دخانیات", "Non-smoking", 508),
-  breakfast("صبحانه", "Breakfast", 509),
-  vegetarian("گیاهی", "Vegetarian", 510),
-  wheelchair("مناسب ویلچر", "Wheelchair access", 511),
-  cardPayment("کارت‌خوان", "Card payment", 512);
-
-  const TagCafe(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
-enum TagMenu with UNumericIdentifiable {
-  active("فعال", "Active", 101),
-  inactive("غیرفعال", "Inactive", 102),
-  ordering("سفارش آنلاین", "Online ordering", 201),
-  tableOrder("سفارش سر میز", "Table order", 301),
-  takeawayOrder("بیرون‌بر", "Takeaway", 302),
-  roomOrder("سفارش به اتاق", "Room order", 303);
-
-  const TagMenu(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
-enum TagMenuItem with UNumericIdentifiable {
-  available("موجود", "Available", 101),
-  unavailable("ناموجود", "Unavailable", 102),
-  featured("پیشنهاد ما", "Featured", 201),
-  isNew("جدید", "New", 202),
-  popular("پرطرفدار", "Popular", 203),
-  vegetarian("گیاهی", "Vegetarian", 301),
-  spicy("تند", "Spicy", 302),
-  glutenFree("بدون گلوتن", "Gluten free", 303),
-  sugarFree("بدون قند", "Sugar free", 304);
-
-  const TagMenuItem(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
-enum TagMenuOrder with UNumericIdentifiable {
-  pending("در انتظار پرداخت", "Awaiting payment", 101),
-  paid("سفارش جدید", "New", 102),
-  accepted("پذیرفته شد", "Accepted", 103),
-  preparing("در حال آماده‌سازی", "Preparing", 104),
-  ready("آماده", "Ready", 105),
-  completed("تحویل شد", "Delivered", 106),
-  rejected("رد شد", "Rejected", 107),
-  cancelled("لغو شد", "Cancelled", 108),
-  table("سر میز", "At the table", 201),
-  takeaway("بیرون‌بر", "Takeaway", 202),
-  room("به اتاق", "To the room", 203);
-
-  const TagMenuOrder(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}

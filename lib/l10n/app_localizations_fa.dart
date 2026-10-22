@@ -6350,9 +6350,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get attendance => 'حضور (ورود / خروج)';
 
   @override
-  String get averageCost => 'میانگین قیمت';
-
-  @override
   String get birthDate => 'تاریخ تولد';
 
   @override
@@ -6461,9 +6458,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get inHouse => 'مهمانان مقیم';
 
   @override
-  String get inventory => 'انبارداری';
-
-  @override
   String get keepPrice => 'قیمت تغییر نکند';
 
   @override
@@ -6480,9 +6474,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get logoUrl => 'آدرس لوگو';
-
-  @override
-  String get lowStock => 'کمبود موجودی';
 
   @override
   String get meal => 'وعده‌ی غذایی';
@@ -6530,16 +6521,10 @@ class AppLocalizationsFa extends AppLocalizations {
   String get priority => 'اولویت';
 
   @override
-  String get purchase => 'خرید';
-
-  @override
   String get purchaseDate => 'تاریخ خرید';
 
   @override
   String get purchaseRequest => 'درخواست خرید';
-
-  @override
-  String get purchases => 'خریدها';
 
   @override
   String get rate => 'نرخ';
@@ -6593,15 +6578,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get subscriptionPlan => 'پلن اشتراک';
 
   @override
-  String get supplier => 'تأمین‌کننده';
-
-  @override
-  String get suppliers => 'تأمین‌کنندگان';
-
-  @override
-  String get targetWarehouse => 'انبار مقصد';
-
-  @override
   String get task => 'کار';
 
   @override
@@ -6612,12 +6588,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get visitorName => 'نام ملاقات‌کننده';
-
-  @override
-  String get warehouse => 'انبار';
-
-  @override
-  String get warehouses => 'انبارها';
 
   @override
   String get weekdays => 'روزهای هفته';
@@ -6716,40 +6686,28 @@ class AppLocalizationsFa extends AppLocalizations {
   String get planDormDescription => 'برای خوابگاه‌های دانشجویی و پانسیون‌ها';
 
   @override
-  String get planInventory => 'انبارداری';
-
-  @override
-  String get planInventoryDescription => 'انبار، کالا، خرید و اموال برای هر کسب‌وکار';
-
-  @override
   String get planStaff => 'کارکنان';
 
   @override
   String get planStaffDescription => 'شیفت، وظایف و درخواست‌های تعمیرات';
 
   @override
-  String get planCafe => 'کافی‌شاپ و رستوران';
-
-  @override
-  String get planCafeDescription => 'منوی آنلاین و سفارش، همراه با انبارداری';
-
-  @override
   String get planFullDorm => 'خوابگاه کامل';
 
   @override
-  String get planFullDormDescription => 'خوابگاه به همراه انبارداری و کارکنان';
+  String get planFullDormDescription => 'خوابگاه به همراه کارکنان';
 
   @override
   String get planFullHotel => 'هتل کامل';
 
   @override
-  String get planFullHotelDescription => 'هتل به همراه انبارداری و کارکنان';
+  String get planFullHotelDescription => 'هتل به همراه کارکنان';
 
   @override
   String get planEverything => 'همه‌ی سیستم‌ها';
 
   @override
-  String get planEverythingDescription => 'هتل، خوابگاه، کافه، انبارداری و کارکنان';
+  String get planEverythingDescription => 'هتل، خوابگاه و کارکنان';
 
   @override
   String get demoData => 'داده‌ی نمونه';
@@ -6762,7 +6720,7 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get demoDataHint =>
-      'یک دنیای کامل برای تست ساخته می‌شود: ۴ مجموعه با اشتراک‌های مختلف (هتل، خوابگاه، کافی‌شاپ، و یک اقامتگاه با اشتراک تمام‌شده)، ۲ هتل با اتاق، نرخ فصلی و ۲۰ رزرو در همه‌ی وضعیت‌ها، ۲ خوابگاه با ۲۳ تخت، ۱۵ قرارداد، قبض پرداخت‌شده و معوق، درخواست اقامت، غذا و لباسشویی، انبار و خرید و اموال، شیفت و وظیفه، و ۴۲ کاربر. همه‌چیز از راه همان قوانین واقعی سامانه ساخته می‌شود. رمز همه‌ی حساب‌ها و شماره‌ی موبایل‌شان بعد از ساخت همین‌جا نشان داده می‌شود. فقط یک بار روی هر سرور قابل اجراست.';
+      'یک دنیای کامل برای تست ساخته می‌شود: ۳ مجموعه با اشتراک‌های مختلف (هتل، خوابگاه، و یک اقامتگاه با اشتراک تمام‌شده)، ۲ هتل با اتاق، نرخ فصلی و ۲۰ رزرو در همه‌ی وضعیت‌ها، ۲ خوابگاه با ۲۳ تخت، ۱۵ قرارداد، قبض پرداخت‌شده و معوق، درخواست اقامت، غذا و لباسشویی، شیفت و وظیفه، و ۴۰ کاربر. همه‌چیز از راه همان قوانین واقعی سامانه ساخته می‌شود. رمز همه‌ی حساب‌ها و شماره‌ی موبایل‌شان بعد از ساخت همین‌جا نشان داده می‌شود. فقط یک بار روی هر سرور قابل اجراست.';
 
   @override
   String get demoDataConfirm => 'داده‌ی نمونه روی همین سرور ساخته می‌شود و پاک کردنش دستی است. فقط روی سرور تست اجرا کنید. ادامه می‌دهید؟';
@@ -6816,61 +6774,16 @@ class AppLocalizationsFa extends AppLocalizations {
   String get thisPlaceWillStayHidden => 'این مکان پنهان می‌ماند';
 
   @override
-  String get cafe => 'کافه';
-
-  @override
-  String get cafes => 'کافه‌ها';
-
-  @override
-  String get itemOptions => 'گزینه‌های آیتم';
-
-  @override
   String get labels => 'برچسب‌ها';
 
   @override
-  String get markAsAvailable => 'موجود شد';
-
-  @override
-  String get markAsUnavailable => 'تمام شد';
-
-  @override
-  String get menuItem => 'آیتم منو';
-
-  @override
-  String get menuItems => 'آیتم‌های منو';
-
-  @override
-  String get menuSettings => 'تنظیمات منو';
-
-  @override
-  String get menus => 'منوها';
-
-  @override
   String get noPlacesWaitingForReview => 'مکانی در انتظار بررسی نیست';
-
-  @override
-  String get openHours => 'ساعت کاری';
-
-  @override
-  String get ordering => 'سفارش‌گیری';
 
   @override
   String get orders => 'سفارش‌ها';
 
   @override
   String get placeApprovals => 'تأیید مکان‌ها';
-
-  @override
-  String get prepMinutes => 'زمان آماده‌سازی (دقیقه)';
-
-  @override
-  String get rejectAndRefund => 'رد و بازگشت وجه';
-
-  @override
-  String get tableCount => 'تعداد میزها';
-
-  @override
-  String get tagline => 'شعار';
 
   @override
   String get loanId => 'شناسه وام';
@@ -6894,15 +6807,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get addBed => 'افزودن تخت';
 
   @override
-  String get addCategoriesThenYourFirstItem => 'اول دسته‌ها را بسازید، بعد اولین آیتم را اضافه کنید';
-
-  @override
-  String get addChoice => 'افزودن انتخاب';
-
-  @override
-  String get addOption => 'افزودن گزینه';
-
-  @override
   String get addRoomNumbersToYourRoomTypesFirst => 'اول برای اتاق‌ها شماره بگذارید';
 
   @override
@@ -6910,9 +6814,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get addToBill => 'افزودن به صورت‌حساب';
-
-  @override
-  String get addToOrder => 'افزودن به سفارش';
 
   @override
   String get addYourBankAccountInSettings => 'حساب بانکی را در تنظیمات وارد کنید';
@@ -6946,9 +6847,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get askForAnEarlyPayout => 'درخواست واریز زودتر';
-
-  @override
-  String get atTheTable => 'سر میز';
 
   @override
   String get atWork => 'سر کار';
@@ -6999,18 +6897,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get bySigningInYouAcceptTheTerms => 'با ورود، قوانین خوابروم را می‌پذیرید';
 
   @override
-  String get cafesAndRestaurants => 'کافه‌ها و رستوران‌ها';
-
-  @override
-  String get canPickMoreThanOne => 'چند انتخاب';
-
-  @override
-  String get cancelOrder => 'لغو سفارش';
-
-  @override
-  String get cashier => 'صندوق‌دار';
-
-  @override
   String get changed => 'تغییر داد';
 
   @override
@@ -7023,12 +6909,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get checkedSomeoneOut => 'تسویه کرد';
 
   @override
-  String get choiceTitle => 'عنوان انتخاب';
-
-  @override
-  String get choices => 'انتخاب‌ها';
-
-  @override
   String get closeTheDay => 'بستن روز';
 
   @override
@@ -7039,9 +6919,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get collected => 'دریافت‌شده';
-
-  @override
-  String get colorAndOrdering => 'رنگ و سفارش‌گیری';
 
   @override
   String get confirmedRightAway => 'همین حالا تأیید شود';
@@ -7116,7 +6993,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get didNotShowUp => 'نیامدند';
 
   @override
-  String get dormHotelOrCafeStartWithAFreeTrial => 'خوابگاه، هتل یا کافه؛ با دوره‌ی رایگان شروع کنید';
+  String get dormOrHotelStartWithAFreeTrial => 'خوابگاه یا هتل؛ با دوره‌ی رایگان شروع کنید';
 
   @override
   String get earlyPayoutExplanation => 'درخواست شما برای خوابروم فرستاده می‌شود و پس از بررسی واریز می‌شود.';
@@ -7132,9 +7009,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get editRoomsAndDetails => 'ویرایش اتاق‌ها و اطلاعات';
-
-  @override
-  String get editTheMenu => 'ویرایش منو';
 
   @override
   String get endsOn => 'پایان در';
@@ -7155,16 +7029,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get forExampleChickenAndRice => 'مثلاً چلو مرغ';
 
   @override
-  String get forExampleCoffeeUnderTheOrangeTrees => 'مثلاً قهوه زیر درخت نارنج';
-
-  @override
   String get forExampleDoubleRoom => 'مثلاً اتاق دوتخته';
-
-  @override
-  String get forExampleLessSugar => 'مثلاً شکر کم';
-
-  @override
-  String get forExampleMilkType => 'مثلاً نوع شیر';
 
   @override
   String get forExampleNowruz => 'مثلاً نوروز';
@@ -7194,9 +7059,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get fromWallet => 'از کیف پول';
 
   @override
-  String get generalMenu => 'منوی عمومی';
-
-  @override
   String get getCode => 'دریافت کد';
 
   @override
@@ -7206,22 +7068,10 @@ class AppLocalizationsFa extends AppLocalizations {
   String get guardianOptional => 'سرپرست (اختیاری)';
 
   @override
-  String get handleOrders => 'رسیدگی به سفارش‌ها';
-
-  @override
-  String get howDoYouWantIt => 'چطور تحویل بگیرید؟';
-
-  @override
   String get howManyPortions => 'چند پرس';
 
   @override
   String get howManyRooms => 'چند اتاق';
-
-  @override
-  String get howManyTables => 'چند میز دارید؟';
-
-  @override
-  String get ifTheCafeRejectsYourOrderTheMoneyGoesBackToYourWallet => 'اگر کافه سفارش را رد کند، پول به کیف پولتان برمی‌گردد.';
 
   @override
   String get inProgress => 'در جریان';
@@ -7254,12 +7104,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get livingHere => 'ساکنان فعلی';
 
   @override
-  String get look => 'ظاهر';
-
-  @override
-  String get mainStoreroom => 'انبار اصلی';
-
-  @override
   String get makeAndEditBills => 'صدور و ویرایش قبض';
 
   @override
@@ -7273,15 +7117,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get menuAndReservations => 'منو و رزرو';
-
-  @override
-  String get menuIsOpen => 'منو باز است';
-
-  @override
-  String get menuLook => 'ظاهر منو';
-
-  @override
-  String get menuViews => 'بازدید منو';
 
   @override
   String get messageToTheApplicant => 'پیام برای متقاضی';
@@ -7300,12 +7135,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get moveToAnotherBed => 'انتقال به تخت دیگر';
-
-  @override
-  String get mustChoose => 'اجباری';
-
-  @override
-  String get myOrders => 'سفارش‌های من';
 
   @override
   String get myPayments => 'پرداخت‌های من';
@@ -7353,16 +7182,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get newEquipment => 'اموال تازه';
 
   @override
-  String get newItem => 'آیتم تازه';
-
-  @override
   String get newMeal => 'غذای تازه';
-
-  @override
-  String get newOrders => 'سفارش جدید';
-
-  @override
-  String get newOrdersAppearHereByThemselves => 'سفارش‌های تازه خودشان اینجا می‌آیند.';
 
   @override
   String get newPersonTheyCanSignInLaterWithThisNumber => 'فرد تازه است؛ بعداً با همین شماره وارد می‌شود و همه‌چیز را می‌بیند.';
@@ -7434,9 +7254,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get noOneWithThisNumberLivesHere => 'کسی با این شماره اینجا ساکن نیست';
 
   @override
-  String get noOpenOrders => 'سفارش بازی نیست';
-
-  @override
   String get noPayoutsYet => 'هنوز واریزی نشده';
 
   @override
@@ -7464,16 +7281,10 @@ class AppLocalizationsFa extends AppLocalizations {
   String get notYet => 'هنوز نه';
 
   @override
-  String get noteForTheKitchen => 'توضیح برای آشپزخانه';
-
-  @override
   String get nothingDoneYet => 'هنوز کاری انجام نشده';
 
   @override
   String get nothingHappenedYet => 'هنوز اتفاقی نیفتاده';
-
-  @override
-  String get nothingInStockYet => 'هنوز کالایی در انبار نیست';
 
   @override
   String get nothingNewSinceTheLastPayout => 'از آخرین واریز چیز تازه‌ای نیست';
@@ -7494,15 +7305,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get occupiedRooms => 'اتاق پر';
 
   @override
-  String get oneCategoryPerLineInTheOrderCustomersSeeThem => 'هر خط یک دسته، به همان ترتیبی که مشتری می‌بیند.';
-
-  @override
-  String get onlineOrdering => 'سفارش آنلاین';
-
-  @override
-  String get onlyForCurrentGuestsOrResidentsOfThisBusiness => 'فقط برای مهمان‌ها یا ساکنان فعلی همین مجموعه';
-
-  @override
   String get onlyOnTheseDays => 'فقط این روزها';
 
   @override
@@ -7512,22 +7314,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get openForBooking => 'باز برای رزرو';
 
   @override
-  String get openOrders => 'سفارش‌های باز';
-
-  @override
   String get option => 'گزینه';
-
-  @override
-  String get orderAndPay => 'سفارش و پرداخت';
-
-  @override
-  String get orderAndPayFromYourTable => 'از سر میز سفارش دهید و پرداخت کنید';
-
-  @override
-  String get orderingIsOff => 'سفارش‌گیری خاموش است';
-
-  @override
-  String get ourPicks => 'پیشنهاد ما';
 
   @override
   String get overdueBills => 'قبض معوق';
@@ -7584,22 +7371,10 @@ class AppLocalizationsFa extends AppLocalizations {
   String get pleaseChooseTheCity => 'شهر را انتخاب کنید';
 
   @override
-  String get pointTheCameraAtTheQrCodeOnTheTable => 'دوربین را رو به کیوآرکد روی میز بگیرید';
-
-  @override
   String get priceChangePercent => 'درصد تغییر قیمت';
 
   @override
   String get pricesAndClosedDays => 'قیمت‌ها و روزهای بسته';
-
-  @override
-  String get printTheseCodesAndPutOneOnEachTable => 'این کدها را چاپ کنید و روی هر میز یکی بگذارید.';
-
-  @override
-  String get reasonTheCustomerSeesIt => 'دلیل (مشتری می‌بیند)';
-
-  @override
-  String get receive => 'دریافت';
 
   @override
   String get receivePayments => 'ثبت دریافت پول';
@@ -7644,9 +7419,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get residentsPhoneNumber => 'شماره‌ی ساکن';
 
   @override
-  String get returnedToYourWallet => 'برگشت به کیف پول';
-
-  @override
   String get roomName => 'نام اتاق';
 
   @override
@@ -7665,28 +7437,13 @@ class AppLocalizationsFa extends AppLocalizations {
   String get scan => 'اسکن';
 
   @override
-  String get scanTheTableCode => 'اسکن کد میز';
-
-  @override
-  String get scans => 'اسکن';
-
-  @override
   String get searchByName => 'جستجوی نام';
-
-  @override
-  String get seeItAsACustomer => 'دیدن مثل مشتری';
-
-  @override
-  String get seeTheMenuAndOrderFromYourTable => 'منو را ببینید و از سر میز سفارش دهید';
 
   @override
   String get seeTheNumbers => 'دیدن آمار';
 
   @override
   String get sendToSupport => 'ارسال به پشتیبانی';
-
-  @override
-  String get setTheNumberOfTables => 'تعداد میزها را وارد کنید';
 
   @override
   String get shiftDone => 'شیفت تمام شد';
@@ -7734,31 +7491,10 @@ class AppLocalizationsFa extends AppLocalizations {
   String get stockPurchasesAndEquipment => 'موجودی، خرید و اموال';
 
   @override
-  String get storekeeper => 'انباردار';
-
-  @override
-  String get storeroom => 'انبار';
-
-  @override
   String get switchBetweenYourAccountAndYourBusinesses => 'جابه‌جایی بین حساب شخصی و کسب‌وکارها';
 
   @override
-  String get tableNumber => 'شماره‌ی میز';
-
-  @override
-  String get tableScans => 'اسکن میزها';
-
-  @override
   String get tables => 'میزها';
-
-  @override
-  String get tablesAndQr => 'میزها و کیوآرکد';
-
-  @override
-  String get takeOut => 'برداشت از انبار';
-
-  @override
-  String get takeaway => 'بیرون‌بر';
 
   @override
   String get tasks => 'کارها';
@@ -7770,19 +7506,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get team => 'تیم';
 
   @override
-  String get theCustomerPicksItUpAtTheCounter => 'مشتری از پیشخوان تحویل می‌گیرد';
-
-  @override
   String get theDayWasClosed => 'روز بسته شد';
-
-  @override
-  String get theMoneyGoesBackToTheCustomersWallet => 'پول به کیف پول مشتری برمی‌گردد.';
-
-  @override
-  String get theMoneyGoesBackToYourWallet => 'پول به کیف پولتان برمی‌گردد.';
-
-  @override
-  String get theOrderIsBroughtToTheTable => 'سفارش سر میز آورده می‌شود';
 
   @override
   String get theOwnerHasNotGivenYouAccessToAnyPlaceYet => 'مالک هنوز به شما دسترسی هیچ مکانی را نداده است';
@@ -7797,19 +7521,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get theyWillNoLongerSeeThisBusiness => 'دیگر این کسب‌وکار را نمی‌بیند.';
 
   @override
-  String get thisCodeIsNotAKhabroomMenu => 'این کد، منوی خوابروم نیست';
-
-  @override
-  String get thisMenuHasNoItemsYet => 'این منو هنوز آیتمی ندارد';
-
-  @override
-  String get thisMenuIsForViewingOnly => 'این منو فقط برای دیدن است';
-
-  @override
   String get thisPersonHasAnAccount => 'این فرد حساب دارد';
-
-  @override
-  String get toARoom => 'به اتاق';
 
   @override
   String get toClean => 'برای نظافت';
@@ -7819,9 +7531,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get toDo => 'انجام‌نشده';
-
-  @override
-  String get toMyRoom => 'به اتاقم';
 
   @override
   String get toPay => 'قابل پرداخت';
@@ -7839,19 +7548,10 @@ class AppLocalizationsFa extends AppLocalizations {
   String get trial => 'آزمایشی';
 
   @override
-  String get turnItOnInMenuLook => 'از «ظاهر منو» روشنش کنید';
-
-  @override
   String get turnOffToHideItForAWhile => 'برای پنهان کردن موقت خاموش کنید';
 
   @override
   String get unpaidBills => 'قبض پرداخت‌نشده';
-
-  @override
-  String get viewOnlyMenu => 'منوی فقط‌نمایش';
-
-  @override
-  String get viewYourOrder => 'دیدن سفارش';
 
   @override
   String get visible => 'نمایان';
@@ -7879,9 +7579,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get warnMeBelow => 'هشدار وقتی کمتر شد از';
-
-  @override
-  String get wasAddedToYourOrder => 'به سفارش اضافه شد';
 
   @override
   String get weSentACodeTo => 'کد را فرستادیم به';
@@ -7914,12 +7611,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get whatsHappeningToday => 'امروز چه خبر است؟';
 
   @override
-  String get whenOffTheMenuIsForViewingOnly => 'وقتی خاموش است، منو فقط برای دیدن است';
-
-  @override
-  String get whenOffTheQrCodesShowNothing => 'وقتی خاموش است، کیوآرکدها چیزی نشان نمی‌دهند';
-
-  @override
   String get whereDoYouWantToWork => 'کجا می‌خواهید کار کنید؟';
 
   @override
@@ -7944,16 +7635,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get whoWorksWhen => 'چه کسی کی کار می‌کند';
 
   @override
-  String get withoutCategory => 'بدون دسته';
-
-  @override
-  String get youCanAddDormsHotelsAndCafesToItLater => 'بعداً می‌توانید خوابگاه، هتل و کافه به آن اضافه کنید.';
-
-  @override
-  String get youHaveANewOrder => 'سفارش تازه دارید';
-
-  @override
-  String get youHaveNotOrderedAnythingYet => 'هنوز سفارشی نداده‌اید';
+  String get youCanAddDormsAndHotelsToItLater => 'بعداً می‌توانید خوابگاه و هتل به آن اضافه کنید.';
 
   @override
   String get youHaveNothingToPay => 'چیزی برای پرداخت ندارید';
@@ -7962,19 +7644,10 @@ class AppLocalizationsFa extends AppLocalizations {
   String get youStartWithTheFreeTrialAndPayWhenItEnds => 'با دوره‌ی رایگان شروع می‌کنید و بعد از آن پرداخت می‌کنید.';
 
   @override
-  String get yourCafeOrdersAndTheirStatus => 'سفارش‌های کافه و وضعیتشان';
-
-  @override
   String get yourFirstName => 'نام شما';
 
   @override
   String get yourLastName => 'نام خانوادگی شما';
-
-  @override
-  String get yourMenuIsEmpty => 'منوی شما خالی است';
-
-  @override
-  String get yourOrder => 'سفارش شما';
 
   @override
   String get yourPlanDoesNotIncludeAnyPlaceType => 'اشتراک شما هیچ نوع مکانی ندارد';
@@ -8001,13 +7674,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get forExample101To104 => 'مثلاً ۱۰۱ تا ۱۰۴';
 
   @override
-  String get forExampleEveryDay8To24 => 'مثلاً هر روز ۸ تا ۲۴';
-
-  @override
   String get forExampleRoom204Bathroom => 'مثلاً حمام اتاق ۲۰۴';
-
-  @override
-  String get orderNo => 'سفارش شماره';
 
   @override
   String get positionInLine => 'نوبت در صف';

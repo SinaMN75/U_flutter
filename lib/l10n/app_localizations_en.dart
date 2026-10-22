@@ -6351,9 +6351,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get attendance => 'Attendance';
 
   @override
-  String get averageCost => 'Average Cost';
-
-  @override
   String get birthDate => 'Birth Date';
 
   @override
@@ -6462,9 +6459,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get inHouse => 'In House';
 
   @override
-  String get inventory => 'Inventory';
-
-  @override
   String get keepPrice => 'Keep the price';
 
   @override
@@ -6481,9 +6475,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get logoUrl => 'Logo URL';
-
-  @override
-  String get lowStock => 'Low Stock';
 
   @override
   String get meal => 'Meal';
@@ -6531,16 +6522,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get priority => 'Priority';
 
   @override
-  String get purchase => 'Purchase';
-
-  @override
   String get purchaseDate => 'Purchase Date';
 
   @override
   String get purchaseRequest => 'Purchase Request';
-
-  @override
-  String get purchases => 'Purchases';
 
   @override
   String get rate => 'Rate';
@@ -6594,15 +6579,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscriptionPlan => 'Subscription Plan';
 
   @override
-  String get supplier => 'Supplier';
-
-  @override
-  String get suppliers => 'Suppliers';
-
-  @override
-  String get targetWarehouse => 'Target Warehouse';
-
-  @override
   String get task => 'Task';
 
   @override
@@ -6613,12 +6589,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get visitorName => 'Visitor Name';
-
-  @override
-  String get warehouse => 'Warehouse';
-
-  @override
-  String get warehouses => 'Warehouses';
 
   @override
   String get weekdays => 'Weekdays';
@@ -6717,40 +6687,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get planDormDescription => 'For student dorms and boarding houses';
 
   @override
-  String get planInventory => 'Inventory';
-
-  @override
-  String get planInventoryDescription => 'Warehouses, items, purchases and assets for any business';
-
-  @override
   String get planStaff => 'Staff';
 
   @override
   String get planStaffDescription => 'Shifts, tasks and maintenance requests';
 
   @override
-  String get planCafe => 'Cafe and restaurant';
-
-  @override
-  String get planCafeDescription => 'Online menu, orders and inventory';
-
-  @override
   String get planFullDorm => 'Complete dorm';
 
   @override
-  String get planFullDormDescription => 'Dorm with inventory and staff';
+  String get planFullDormDescription => 'Dorm with staff';
 
   @override
   String get planFullHotel => 'Complete hotel';
 
   @override
-  String get planFullHotelDescription => 'Hotel with inventory and staff';
+  String get planFullHotelDescription => 'Hotel with staff';
 
   @override
   String get planEverything => 'Every system';
 
   @override
-  String get planEverythingDescription => 'Hotel, dorm, café, inventory and staff';
+  String get planEverythingDescription => 'Hotel, dorm and staff';
 
   @override
   String get demoData => 'Demo data';
@@ -6763,7 +6721,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get demoDataHint =>
-      'Builds a complete test world: 4 organizations with different subscriptions, 2 hotels with 20 reservations in every state, 2 dorms with contracts and bills, inventory, staff and 42 users. Everything goes through the real rules. The logins are shown here afterwards. It can run once per server.';
+      'Builds a complete test world: 3 organizations with different subscriptions, 2 hotels with 20 reservations in every state, 2 dorms with contracts and bills, staff and 40 users. Everything goes through the real rules. The logins are shown here afterwards. It can run once per server.';
 
   @override
   String get demoDataConfirm => 'Demo data is written to this server and has to be removed by hand. Run it only on a test server. Continue?';
@@ -6817,61 +6775,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get thisPlaceWillStayHidden => 'This place will stay hidden';
 
   @override
-  String get cafe => 'Cafe';
-
-  @override
-  String get cafes => 'Cafes';
-
-  @override
-  String get itemOptions => 'Item options';
-
-  @override
   String get labels => 'Labels';
 
   @override
-  String get markAsAvailable => 'Mark as available';
-
-  @override
-  String get markAsUnavailable => 'Mark as unavailable';
-
-  @override
-  String get menuItem => 'Menu item';
-
-  @override
-  String get menuItems => 'Menu items';
-
-  @override
-  String get menuSettings => 'Menu settings';
-
-  @override
-  String get menus => 'Menus';
-
-  @override
   String get noPlacesWaitingForReview => 'No places waiting for review';
-
-  @override
-  String get openHours => 'Open hours';
-
-  @override
-  String get ordering => 'Ordering';
 
   @override
   String get orders => 'Orders';
 
   @override
   String get placeApprovals => 'Place approvals';
-
-  @override
-  String get prepMinutes => 'Prep minutes';
-
-  @override
-  String get rejectAndRefund => 'Reject and refund';
-
-  @override
-  String get tableCount => 'Table count';
-
-  @override
-  String get tagline => 'Tagline';
 
   @override
   String get loanId => 'Loan ID';
@@ -6895,15 +6808,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addBed => 'Add bed';
 
   @override
-  String get addCategoriesThenYourFirstItem => 'Add categories then your first item';
-
-  @override
-  String get addChoice => 'Add choice';
-
-  @override
-  String get addOption => 'Add option';
-
-  @override
   String get addRoomNumbersToYourRoomTypesFirst => 'Add room numbers to your room types first';
 
   @override
@@ -6911,9 +6815,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get addToBill => 'Add to bill';
-
-  @override
-  String get addToOrder => 'Add to order';
 
   @override
   String get addYourBankAccountInSettings => 'Add your bank account in settings';
@@ -6947,9 +6848,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get askForAnEarlyPayout => 'Ask for an early payout';
-
-  @override
-  String get atTheTable => 'At the table';
 
   @override
   String get atWork => 'At work';
@@ -7000,18 +6898,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bySigningInYouAcceptTheTerms => 'By signing in you accept the terms';
 
   @override
-  String get cafesAndRestaurants => 'Cafes and restaurants';
-
-  @override
-  String get canPickMoreThanOne => 'Can pick more than one';
-
-  @override
-  String get cancelOrder => 'Cancel order';
-
-  @override
-  String get cashier => 'Cashier';
-
-  @override
   String get changed => 'Changed';
 
   @override
@@ -7024,12 +6910,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get checkedSomeoneOut => 'Checked someone out';
 
   @override
-  String get choiceTitle => 'Choice title';
-
-  @override
-  String get choices => 'Choices';
-
-  @override
   String get closeTheDay => 'Close the day';
 
   @override
@@ -7040,9 +6920,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get collected => 'Collected';
-
-  @override
-  String get colorAndOrdering => 'Color and ordering';
 
   @override
   String get confirmedRightAway => 'Confirmed right away';
@@ -7117,7 +6994,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get didNotShowUp => 'Did not show up';
 
   @override
-  String get dormHotelOrCafeStartWithAFreeTrial => 'Dorm hotel or cafe start with a free trial';
+  String get dormOrHotelStartWithAFreeTrial => 'Dorm or hotel, start with a free trial';
 
   @override
   String get earlyPayoutExplanation => 'Your request is sent to Khabroom and paid after review.';
@@ -7133,9 +7010,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get editRoomsAndDetails => 'Edit rooms and details';
-
-  @override
-  String get editTheMenu => 'Edit the menu';
 
   @override
   String get endsOn => 'Ends on';
@@ -7156,16 +7030,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get forExampleChickenAndRice => 'For example chicken and rice';
 
   @override
-  String get forExampleCoffeeUnderTheOrangeTrees => 'For example coffee under the orange trees';
-
-  @override
   String get forExampleDoubleRoom => 'For example double room';
-
-  @override
-  String get forExampleLessSugar => 'For example less sugar';
-
-  @override
-  String get forExampleMilkType => 'For example milk type';
 
   @override
   String get forExampleNowruz => 'For example nowruz';
@@ -7195,9 +7060,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fromWallet => 'From wallet';
 
   @override
-  String get generalMenu => 'General menu';
-
-  @override
   String get getCode => 'Get code';
 
   @override
@@ -7207,22 +7069,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get guardianOptional => 'Guardian optional';
 
   @override
-  String get handleOrders => 'Handle orders';
-
-  @override
-  String get howDoYouWantIt => 'How do you want it';
-
-  @override
   String get howManyPortions => 'How many portions';
 
   @override
   String get howManyRooms => 'How many rooms';
-
-  @override
-  String get howManyTables => 'How many tables';
-
-  @override
-  String get ifTheCafeRejectsYourOrderTheMoneyGoesBackToYourWallet => 'If the cafe rejects your order the money goes back to your wallet';
 
   @override
   String get inProgress => 'In progress';
@@ -7255,12 +7105,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get livingHere => 'Living here';
 
   @override
-  String get look => 'Look';
-
-  @override
-  String get mainStoreroom => 'Main storeroom';
-
-  @override
   String get makeAndEditBills => 'Make and edit bills';
 
   @override
@@ -7274,15 +7118,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get menuAndReservations => 'Menu and reserVATions';
-
-  @override
-  String get menuIsOpen => 'Menu is open';
-
-  @override
-  String get menuLook => 'Menu look';
-
-  @override
-  String get menuViews => 'Menu views';
 
   @override
   String get messageToTheApplicant => 'Message to the applicant';
@@ -7301,12 +7136,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get moveToAnotherBed => 'Move to another bed';
-
-  @override
-  String get mustChoose => 'Must choose';
-
-  @override
-  String get myOrders => 'My orders';
 
   @override
   String get myPayments => 'My payments';
@@ -7354,16 +7183,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get newEquipment => 'New equipment';
 
   @override
-  String get newItem => 'New item';
-
-  @override
   String get newMeal => 'New meal';
-
-  @override
-  String get newOrders => 'New orders';
-
-  @override
-  String get newOrdersAppearHereByThemselves => 'New orders appear here by themselves';
 
   @override
   String get newPersonTheyCanSignInLaterWithThisNumber => 'New person they can sign in later with this number';
@@ -7435,9 +7255,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noOneWithThisNumberLivesHere => 'No one with this number lives here';
 
   @override
-  String get noOpenOrders => 'No open orders';
-
-  @override
   String get noPayoutsYet => 'No payouts yet';
 
   @override
@@ -7465,16 +7282,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notYet => 'Not yet';
 
   @override
-  String get noteForTheKitchen => 'Note for the kitchen';
-
-  @override
   String get nothingDoneYet => 'Nothing done yet';
 
   @override
   String get nothingHappenedYet => 'Nothing happened yet';
-
-  @override
-  String get nothingInStockYet => 'Nothing in stock yet';
 
   @override
   String get nothingNewSinceTheLastPayout => 'Nothing new since the last payout';
@@ -7495,15 +7306,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get occupiedRooms => 'Occupied rooms';
 
   @override
-  String get oneCategoryPerLineInTheOrderCustomersSeeThem => 'One category per line in the order customers see them';
-
-  @override
-  String get onlineOrdering => 'Online ordering';
-
-  @override
-  String get onlyForCurrentGuestsOrResidentsOfThisBusiness => 'Only for current guests or residents of this business';
-
-  @override
   String get onlyOnTheseDays => 'Only on these days';
 
   @override
@@ -7513,22 +7315,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get openForBooking => 'Open for booking';
 
   @override
-  String get openOrders => 'Open orders';
-
-  @override
   String get option => 'Option';
-
-  @override
-  String get orderAndPay => 'Order and pay';
-
-  @override
-  String get orderAndPayFromYourTable => 'Order and pay from your table';
-
-  @override
-  String get orderingIsOff => 'Ordering is off';
-
-  @override
-  String get ourPicks => 'Our picks';
 
   @override
   String get overdueBills => 'Overdue bills';
@@ -7585,22 +7372,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pleaseChooseTheCity => 'Please choose the city';
 
   @override
-  String get pointTheCameraAtTheQrCodeOnTheTable => 'Point the camera at the QR code on the table';
-
-  @override
   String get priceChangePercent => 'Price change percent';
 
   @override
   String get pricesAndClosedDays => 'Prices and closed days';
-
-  @override
-  String get printTheseCodesAndPutOneOnEachTable => 'Print these codes and put one on each table';
-
-  @override
-  String get reasonTheCustomerSeesIt => 'Reason the customer sees it';
-
-  @override
-  String get receive => 'Receive';
 
   @override
   String get receivePayments => 'Receive payments';
@@ -7645,9 +7420,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get residentsPhoneNumber => 'Residents phone number';
 
   @override
-  String get returnedToYourWallet => 'Returned to your wallet';
-
-  @override
   String get roomName => 'Room name';
 
   @override
@@ -7666,28 +7438,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get scan => 'Scan';
 
   @override
-  String get scanTheTableCode => 'Scan the table code';
-
-  @override
-  String get scans => 'Scans';
-
-  @override
   String get searchByName => 'Search by name';
-
-  @override
-  String get seeItAsACustomer => 'See it as a customer';
-
-  @override
-  String get seeTheMenuAndOrderFromYourTable => 'See the menu and order from your table';
 
   @override
   String get seeTheNumbers => 'See the numbers';
 
   @override
   String get sendToSupport => 'Send to support';
-
-  @override
-  String get setTheNumberOfTables => 'Set the number of tables';
 
   @override
   String get shiftDone => 'Shift done';
@@ -7735,31 +7492,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get stockPurchasesAndEquipment => 'Stock purchases and equipment';
 
   @override
-  String get storekeeper => 'Storekeeper';
-
-  @override
-  String get storeroom => 'Storeroom';
-
-  @override
   String get switchBetweenYourAccountAndYourBusinesses => 'Switch between your account and your businesses';
 
   @override
-  String get tableNumber => 'Table number';
-
-  @override
-  String get tableScans => 'Table scans';
-
-  @override
   String get tables => 'Tables';
-
-  @override
-  String get tablesAndQr => 'Tables and QR';
-
-  @override
-  String get takeOut => 'Take out';
-
-  @override
-  String get takeaway => 'Takeaway';
 
   @override
   String get tasks => 'Tasks';
@@ -7771,19 +7507,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get team => 'Team';
 
   @override
-  String get theCustomerPicksItUpAtTheCounter => 'The customer picks it up at the counter';
-
-  @override
   String get theDayWasClosed => 'The day was closed';
-
-  @override
-  String get theMoneyGoesBackToTheCustomersWallet => 'The money goes back to the customers wallet';
-
-  @override
-  String get theMoneyGoesBackToYourWallet => 'The money goes back to your wallet';
-
-  @override
-  String get theOrderIsBroughtToTheTable => 'The order is brought to the table';
 
   @override
   String get theOwnerHasNotGivenYouAccessToAnyPlaceYet => 'The owner has not given you access to any place yet';
@@ -7798,19 +7522,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get theyWillNoLongerSeeThisBusiness => 'They will no longer see this business';
 
   @override
-  String get thisCodeIsNotAKhabroomMenu => 'This code is not a Khabroom menu';
-
-  @override
-  String get thisMenuHasNoItemsYet => 'This menu has no items yet';
-
-  @override
-  String get thisMenuIsForViewingOnly => 'This menu is for viewing only';
-
-  @override
   String get thisPersonHasAnAccount => 'This person has an account';
-
-  @override
-  String get toARoom => 'To a room';
 
   @override
   String get toClean => 'To clean';
@@ -7820,9 +7532,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get toDo => 'To do';
-
-  @override
-  String get toMyRoom => 'To my room';
 
   @override
   String get toPay => 'To pay';
@@ -7840,19 +7549,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get trial => 'Trial';
 
   @override
-  String get turnItOnInMenuLook => 'Turn it on in menu look';
-
-  @override
   String get turnOffToHideItForAWhile => 'Turn off to hide it for a while';
 
   @override
   String get unpaidBills => 'Unpaid bills';
-
-  @override
-  String get viewOnlyMenu => 'View only menu';
-
-  @override
-  String get viewYourOrder => 'View your order';
 
   @override
   String get visible => 'Visible';
@@ -7880,9 +7580,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get warnMeBelow => 'Warn me below';
-
-  @override
-  String get wasAddedToYourOrder => 'Was added to your order';
 
   @override
   String get weSentACodeTo => 'We sent a code to';
@@ -7915,12 +7612,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get whatsHappeningToday => 'Whats happening today';
 
   @override
-  String get whenOffTheMenuIsForViewingOnly => 'When off the menu is for viewing only';
-
-  @override
-  String get whenOffTheQrCodesShowNothing => 'When off the QR codes show nothing';
-
-  @override
   String get whereDoYouWantToWork => 'Where do you want to work';
 
   @override
@@ -7945,16 +7636,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get whoWorksWhen => 'Who works when';
 
   @override
-  String get withoutCategory => 'Without category';
-
-  @override
-  String get youCanAddDormsHotelsAndCafesToItLater => 'You can add dorms hotels and cafes to it later';
-
-  @override
-  String get youHaveANewOrder => 'You have a new order';
-
-  @override
-  String get youHaveNotOrderedAnythingYet => 'You have not ordered anything yet';
+  String get youCanAddDormsAndHotelsToItLater => 'You can add dorms and hotels to it later';
 
   @override
   String get youHaveNothingToPay => 'You have nothing to pay';
@@ -7963,19 +7645,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get youStartWithTheFreeTrialAndPayWhenItEnds => 'You start with the free trial and pay when it ends';
 
   @override
-  String get yourCafeOrdersAndTheirStatus => 'Your cafe orders and their status';
-
-  @override
   String get yourFirstName => 'Your first name';
 
   @override
   String get yourLastName => 'Your last name';
-
-  @override
-  String get yourMenuIsEmpty => 'Your menu is empty';
-
-  @override
-  String get yourOrder => 'Your order';
 
   @override
   String get yourPlanDoesNotIncludeAnyPlaceType => 'Your plan does not include any place type';
@@ -8002,13 +7675,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get forExample101To104 => 'For example 101 to 104';
 
   @override
-  String get forExampleEveryDay8To24 => 'For example every day 8 to 24';
-
-  @override
   String get forExampleRoom204Bathroom => 'For example room 204 bathroom';
-
-  @override
-  String get orderNo => 'Order no.';
 
   @override
   String get positionInLine => 'Position in line';
