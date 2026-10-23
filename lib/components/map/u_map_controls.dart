@@ -21,7 +21,7 @@ class UMapCompass extends StatelessWidget {
         ignoring: !rotated && !alwaysVisible,
         child: Semantics(
           button: true,
-          label: "Compass, reset to north",
+          label: U.s.compassResetToNorth,
           child: Material(
             elevation: 3,
             shape: const CircleBorder(),
@@ -82,9 +82,9 @@ class UMapZoomButtons extends StatelessWidget {
   Widget build(BuildContext context) => Column(
     mainAxisSize: MainAxisSize.min,
     children: <Widget>[
-      FloatingActionButton(heroTag: "UMapFab2", mini: true, tooltip: "Zoom in", onPressed: controller.zoomInAnimated, child: const Icon(Icons.add)),
+      FloatingActionButton(heroTag: "UMapFab2", mini: true, tooltip: U.s.zoomIn, onPressed: controller.zoomInAnimated, child: const Icon(Icons.add)),
       const SizedBox(height: 8),
-      FloatingActionButton(heroTag: "UMapFab3", mini: true, tooltip: "Zoom out", onPressed: controller.zoomOutAnimated, child: const Icon(Icons.remove)),
+      FloatingActionButton(heroTag: "UMapFab3", mini: true, tooltip: U.s.zoomOut, onPressed: controller.zoomOutAnimated, child: const Icon(Icons.remove)),
     ],
   );
 }
@@ -483,7 +483,7 @@ class UMapTimeSlider extends StatelessWidget {
               ),
             ),
             PopupMenuButton<double>(
-              tooltip: "Speed",
+              tooltip: U.s.speed,
               initialValue: controller.speed,
               onSelected: (double v) => controller.speed = v,
               itemBuilder: (_) => <double>[1, 10, 60, 300, 1800].map((double v) => PopupMenuItem<double>(value: v, child: Text("${v.toInt()}×"))).toList(),

@@ -570,7 +570,7 @@ class UMapDrawToolbar extends StatelessWidget {
           child: Row(
             children: <Widget>[
               IconButton(
-                tooltip: "Pan",
+                tooltip: U.s.pan,
                 isSelected: controller.mode == UMapDrawMode.none,
                 icon: Icon(icon(UMapDrawMode.none)),
                 onPressed: () => controller.mode = UMapDrawMode.none,
@@ -584,11 +584,11 @@ class UMapDrawToolbar extends StatelessWidget {
                   onPressed: () => controller.mode = m,
                 ),
               const SizedBox(height: 32, child: VerticalDivider()),
-              if (drafting) IconButton(tooltip: "Finish", icon: const Icon(Icons.check), onPressed: controller.finish),
-              if (drafting) IconButton(tooltip: "Remove last point", icon: const Icon(Icons.backspace_outlined), onPressed: controller.removeLastPoint),
-              IconButton(tooltip: "Undo", icon: const Icon(Icons.undo), onPressed: controller.canUndo ? controller.undo : null),
-              IconButton(tooltip: "Redo", icon: const Icon(Icons.redo), onPressed: controller.canRedo ? controller.redo : null),
-              IconButton(tooltip: "Delete", icon: const Icon(Icons.delete_outline), onPressed: controller.selected == null ? null : controller.deleteSelected),
+              if (drafting) IconButton(tooltip: U.s.finish, icon: const Icon(Icons.check), onPressed: controller.finish),
+              if (drafting) IconButton(tooltip: U.s.removeLastPoint, icon: const Icon(Icons.backspace_outlined), onPressed: controller.removeLastPoint),
+              IconButton(tooltip: U.s.undo, icon: const Icon(Icons.undo), onPressed: controller.canUndo ? controller.undo : null),
+              IconButton(tooltip: U.s.redo, icon: const Icon(Icons.redo), onPressed: controller.canRedo ? controller.redo : null),
+              IconButton(tooltip: U.s.delete, icon: const Icon(Icons.delete_outline), onPressed: controller.selected == null ? null : controller.deleteSelected),
             ],
           ),
         ),

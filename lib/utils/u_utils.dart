@@ -271,11 +271,11 @@ abstract class UValidators {
     return null;
   };
 
-  /// Required + 8 chars + strong password, with English messages. `UValidators.complexPassword()`
+  /// Required + 8 chars + strong password, with localized messages. `UValidators.complexPassword()`
   static FormFieldValidator<String> complexPassword() => combineValidators(<FormFieldValidator<String>>[
-    required(message: "Password is required"),
-    minLength(minLength: 8, message: "Password must be at least 8 characters"),
-    password(requiredMessage: "Password is required", weakMessage: "Password must contain uppercase, lowercase, number, and special character"),
+    required(message: U.s.passwordIsRequired),
+    minLength(minLength: 8, message: U.s.passwordMustBeAtLeast8Characters),
+    password(requiredMessage: U.s.passwordIsRequired, weakMessage: U.s.passwordMustContainUppercaseLowercaseNumberAndSpecialCharacter),
   ]);
 }
 

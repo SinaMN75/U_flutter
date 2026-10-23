@@ -9,6 +9,9 @@ class AppLocalizationsFa extends AppLocalizations {
   AppLocalizationsFa([String locale = 'fa']) : super(locale);
 
   @override
+  String get allTabs => 'همه تب‌ها';
+
+  @override
   String get aNewVersionIsAvailableReloadToGetIt => 'نسخه جدیدی منتشر شده است. برای دریافت آن صفحه را بارگذاری مجدد کنید.';
 
   @override
@@ -499,6 +502,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get callTheHotel => 'تماس با هتل';
 
   @override
+  String get cameraPermissionDenied => 'دسترسی به دوربین رد شد';
+
+  @override
   String get cameraPermissionIsRequired => 'دسترسی به دوربین لازم است';
 
   @override
@@ -524,6 +530,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get capacity => 'ظرفیت';
+
+  @override
+  String get cardHolder => 'صاحب کارت';
 
   @override
   String get cardNumber => 'شماره کارت';
@@ -725,6 +734,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get companyCode => 'کد شرکت';
+
+  @override
+  String get compassResetToNorth => 'قطب‌نما، بازگشت به شمال';
 
   @override
   String get completeThePaymentInTheBrowserThenComeBackHere => 'پرداخت را در مرورگر انجام دهید و سپس به اینجا برگردید.';
@@ -1078,6 +1090,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get description => 'توضیحات';
 
   @override
+  String get desktopSite => 'نسخه دسکتاپ';
+
+  @override
   String get detail1 => 'جزئیات ۱';
 
   @override
@@ -1334,6 +1349,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get enterTheTrackingCodeShownByTheTerminalsPaymentApp => 'کد پیگیری نمایش‌داده‌شده در برنامه پرداخت دستگاه را وارد کنید.';
 
   @override
+  String get enterUrl => 'آدرس را وارد کنید';
+
+  @override
   String get enterYourPostalCodeCorrectlyAndInquire => 'کد پستی خود را به درستی وارد کرده و استعلام بگیرید.';
 
   @override
@@ -1469,6 +1487,12 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get failed => 'ناموفق';
+
+  @override
+  String get failedToLoadImage => 'بارگذاری تصویر ناموفق بود';
+
+  @override
+  String get failedToLoadPage => 'بارگذاری صفحه ناموفق بود';
 
   @override
   String get failedToLoadTheModel => 'بارگذاری مدل ناموفق بود';
@@ -1607,6 +1631,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get forms => 'فرم‌ها';
+
+  @override
+  String get forward => 'جلو';
 
   @override
   String get frameRate => 'نرخ فریم';
@@ -2245,6 +2272,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get lyrics => 'متن ترانه';
 
   @override
+  String get map => 'نقشه';
+
+  @override
   String get mPos => 'کارتخوان سیار';
 
   @override
@@ -2449,6 +2479,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get myGold => 'طلای من';
 
   @override
+  String get myLocation => 'موقعیت من';
+
+  @override
   String get myMerchants => 'پذیرندگی‌های من';
 
   @override
@@ -2465,6 +2498,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get myVehicles => 'خودروهای من';
+
+  @override
+  String get nameOnCard => 'نام روی کارت';
 
   @override
   String get newFile => 'جدید';
@@ -2877,6 +2913,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get paidAmount => 'مبلغ پرداختی';
 
   @override
+  String get pan => 'جابجایی';
+
+  @override
   String get paragraph => 'پاراگراف';
 
   @override
@@ -2905,6 +2944,15 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get password => 'رمز عبور';
+
+  @override
+  String get passwordIsRequired => 'رمز عبور الزامی است';
+
+  @override
+  String get passwordMustBeAtLeast8Characters => 'رمز عبور باید حداقل ۸ کاراکتر باشد';
+
+  @override
+  String get passwordMustContainUppercaseLowercaseNumberAndSpecialCharacter => 'رمز عبور باید شامل حروف بزرگ، حروف کوچک، عدد و نماد باشد';
 
   @override
   String get passwordStrength => 'قدرت رمز';
@@ -3424,6 +3472,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get removeFromQueue => 'حذف از صف';
+
+  @override
+  String get removeLastPoint => 'حذف آخرین نقطه';
 
   @override
   String get removeRow => 'حذف ردیف';
@@ -4319,6 +4370,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get thisFolderIsEmpty => 'این پوشه خالی است';
 
   @override
+  String get thisLinkIsBlocked => 'این لینک مسدود است';
+
+  @override
   String get thisPageCouldNotBeRendered => 'این صفحه قابل نمایش نیست';
 
   @override
@@ -4822,6 +4876,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get yourGoldOrderIsBeingProcessed => 'سفارش طلای شما در حال پردازش است و موجودی شما به‌زودی به‌روز می‌شود.';
+
+  @override
+  String get yourLocation => 'موقعیت شما';
 
   @override
   String get yourRating => 'امتیاز شما';

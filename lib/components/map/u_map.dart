@@ -661,7 +661,7 @@ class UDemoMap extends StatelessWidget {
     ];
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Map Demo")),
+      appBar: AppBar(title: Text(U.s.map)),
       body: UMap(
         controller: controller,
         zoom: 12,

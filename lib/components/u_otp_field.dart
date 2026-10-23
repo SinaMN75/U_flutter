@@ -181,6 +181,8 @@ class UOtpField extends StatefulWidget {
 }
 
 class _UOtpFieldState extends State<UOtpField> with TickerProviderStateMixin {
+  static final RegExp _nonDigit = RegExp(r"\D");
+
   late TextEditingController _controller;
   late FocusNode _focusNode;
   late AnimationController _cursorController;
@@ -201,8 +203,19 @@ class _UOtpFieldState extends State<UOtpField> with TickerProviderStateMixin {
     _lastValue = _controller.text;
     _controller.addListener(_onValueChanged);
     _focusNode.addListener(_onFocusChanged);
-    _cursorController = AnimationController(vsync: this, duration: const Duration(milliseconds: 600))..repeat(reverse: true);
+    _cursorController = AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
     _shakeController = AnimationController(vsync: this, duration: const Duration(milliseconds: 400));
+    _syncCursor();
+  }
+
+  // The blinking cursor only ticks while a cell can actually show it.
+  void _syncCursor() {
+    final bool blink = widget.showCursor && _isActive && _controller.text.length < widget.length;
+    if (blink && !_cursorController.isAnimating) {
+      _cursorController.repeat(reverse: true);
+    } else if (!blink && _cursorController.isAnimating) {
+      _cursorController.stop();
+    }
   }
 
   @override
@@ -223,6 +236,7 @@ class _UOtpFieldState extends State<UOtpField> with TickerProviderStateMixin {
       _focusNode.addListener(_onFocusChanged);
     }
     if (widget.length < oldWidget.length && _controller.text.length > widget.length) _setValue(_controller.text.substring(0, widget.length));
+    _syncCursor();
   }
 
   @override
@@ -236,7 +250,10 @@ class _UOtpFieldState extends State<UOtpField> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  void _onFocusChanged() => setState(() {});
+  void _onFocusChanged() {
+    _syncCursor();
+    setState(() {});
+  }
 
   void _onValueChanged() {
     final String sanitized = _sanitize(_controller.text);
@@ -244,11 +261,9 @@ class _UOtpFieldState extends State<UOtpField> with TickerProviderStateMixin {
       _setValue(sanitized);
       return;
     }
-    if (sanitized == _lastValue) {
-      setState(() {});
-      return;
-    }
+    if (sanitized == _lastValue) return;
     _lastValue = sanitized;
+    _syncCursor();
     setState(() {});
     _formState?.didChange(sanitized);
     widget.onChanged?.call(sanitized);
@@ -261,7 +276,7 @@ class _UOtpFieldState extends State<UOtpField> with TickerProviderStateMixin {
 
   String _sanitize(String value) {
     String result = value.toLatinNumber();
-    if (widget.keyboardType == TextInputType.number || widget.keyboardType == TextInputType.phone) result = result.replaceAll(RegExp(r"\D"), "");
+    if (widget.keyboardType == TextInputType.number || widget.keyboardType == TextInputType.phone) result = result.replaceAll(_nonDigit, "");
     return result.length > widget.length ? result.substring(0, widget.length) : result;
   }
 

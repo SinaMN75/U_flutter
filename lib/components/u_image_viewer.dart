@@ -220,7 +220,7 @@ class _BetterImageViewerState extends State<UBetterImageViewer> {
                       _loadImage();
                     });
                   },
-                  child: const Text("Retry"),
+                  child: Text(U.s.retry),
                 ),
               ],
             ),
@@ -252,7 +252,7 @@ class _BetterImageViewerState extends State<UBetterImageViewer> {
                     child: Image(
                       image: _imageProvider!,
                       fit: BoxFit.contain,
-                      errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) => const Center(child: Text("Failed to load image")),
+                      errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) => Center(child: Text(U.s.failedToLoadImage)),
                     ),
                   ),
                 ),

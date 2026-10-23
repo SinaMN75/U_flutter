@@ -228,30 +228,35 @@ class UWebViewState extends State<UWebView> {
   }
 
   NavigationDelegate _buildNavigationDelegate() => NavigationDelegate(
-    onProgress: (int p) => progress.value = p / 100.0,
+    onProgress: (int p) {
+      if (mounted) progress.value = p / 100.0;
+    },
     onPageStarted: (String url) {
+      if (!mounted) return;
       isLoading.value = true;
       loadError.value = null;
       _publishUrl(url);
       widget.onPageStarted?.call(url);
     },
     onPageFinished: (String url) async {
+      if (!mounted) return;
       isLoading.value = false;
       _publishUrl(url);
       await _refreshNavState();
-      widget.onPageFinished?.call(url);
+      if (mounted) widget.onPageFinished?.call(url);
     },
     onUrlChange: (UrlChange change) {
-      if (change.url != null) _publishUrl(change.url!);
+      if (mounted && change.url != null) _publishUrl(change.url!);
     },
     onWebResourceError: (WebResourceError error) {
+      if (!mounted) return;
       isLoading.value = false;
-      loadError.value = error.description.isNotEmpty ? error.description : "Failed to load page";
+      loadError.value = error.description.isNotEmpty ? error.description : U.s.failedToLoadPage;
       widget.onWebResourceError?.call(error);
     },
     onNavigationRequest: (NavigationRequest request) {
       if (!_isHostAllowed(request.url)) {
-        UToast.snackBar(message: "This link is blocked");
+        UToast.snackBar(message: U.s.thisLinkIsBlocked);
         return NavigationDecision.prevent;
       }
       final bool allowed = widget.onNavigationRequest?.call(request.url) ?? true;
@@ -338,8 +343,11 @@ class UWebViewState extends State<UWebView> {
   }
 
   Future<void> _refreshNavState() async {
-    canGoBack.value = await controller.canGoBack();
-    canGoForward.value = await controller.canGoForward();
+    final bool back = await controller.canGoBack();
+    final bool forward = await controller.canGoForward();
+    if (!mounted) return;
+    canGoBack.value = back;
+    canGoForward.value = forward;
   }
 
   /// Opens a URL.
@@ -448,7 +456,7 @@ class UWebViewState extends State<UWebView> {
             child: Text(message, textAlign: TextAlign.center),
           ),
           const SizedBox(height: 12),
-          OutlinedButton(onPressed: reload, child: const Text("Retry")),
+          OutlinedButton(onPressed: reload, child: Text(U.s.retry)),
         ],
       ),
     ),
@@ -474,7 +482,7 @@ class UWebViewState extends State<UWebView> {
             ValueListenableBuilder<bool>(
               valueListenable: canGoBack,
               builder: (BuildContext context, bool can, _) => IconButton(
-                tooltip: "Back",
+                tooltip: U.s.back,
                 icon: const Icon(Icons.arrow_back),
                 onPressed: can ? goBack : null,
               ),
@@ -483,20 +491,20 @@ class UWebViewState extends State<UWebView> {
             ValueListenableBuilder<bool>(
               valueListenable: canGoForward,
               builder: (BuildContext context, bool can, _) => IconButton(
-                tooltip: "Forward",
+                tooltip: U.s.forward,
                 icon: const Icon(Icons.arrow_forward),
                 onPressed: can ? goForward : null,
               ),
             ),
           if (widget.showRefreshButton)
             IconButton(
-              tooltip: "Refresh",
+              tooltip: U.s.refresh,
               icon: const Icon(Icons.refresh),
               onPressed: reload,
             ),
           if (widget.showHomeButton)
             IconButton(
-              tooltip: "Home",
+              tooltip: U.s.home,
               icon: const Icon(Icons.home_outlined),
               onPressed: goHome,
             ),
@@ -508,16 +516,16 @@ class UWebViewState extends State<UWebView> {
                 textInputAction: TextInputAction.go,
                 onSubmitted: (_) => _submitUrlField(),
                 readOnly: true,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   isDense: true,
-                  border: OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent)),
-                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent)),
-                  disabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent)),
-                  errorBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent)),
-                  focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent)),
-                  focusedErrorBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent)),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                  hintText: "Enter URL",
+                  border: const OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent)),
+                  enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent)),
+                  disabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent)),
+                  errorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent)),
+                  focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent)),
+                  focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent)),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  hintText: U.s.enterUrl,
                 ),
               ),
             )
@@ -547,13 +555,13 @@ class UWebViewState extends State<UWebView> {
       }
     },
     itemBuilder: (BuildContext context) => <PopupMenuEntry<_MenuAction>>[
-      if (widget.showShareAction) const PopupMenuItem<_MenuAction>(value: _MenuAction.share, child: Text("Share")),
+      if (widget.showShareAction) PopupMenuItem<_MenuAction>(value: _MenuAction.share, child: Text(U.s.share)),
       if (widget.showOpenInBrowserAction && widget.onOpenInBrowserRequested != null)
-        const PopupMenuItem<_MenuAction>(
+        PopupMenuItem<_MenuAction>(
           value: _MenuAction.openInBrowser,
-          child: Text("Open in browser"),
+          child: Text(U.s.openInBrowser),
         ),
-      if (widget.showCopyLinkAction) const PopupMenuItem<_MenuAction>(value: _MenuAction.copyLink, child: Text("Copy link")),
+      if (widget.showCopyLinkAction) PopupMenuItem<_MenuAction>(value: _MenuAction.copyLink, child: Text(U.s.copyLink)),
       if (widget.showDesktopModeAction)
         PopupMenuItem<_MenuAction>(
           value: _MenuAction.desktopMode,
@@ -561,15 +569,15 @@ class UWebViewState extends State<UWebView> {
             valueListenable: isDesktopMode,
             builder: (BuildContext context, bool desktop, _) => Row(
               children: <Widget>[
-                const Expanded(child: Text("Desktop site")),
+                Expanded(child: Text(U.s.desktopSite)),
                 Checkbox(value: desktop, onChanged: (_) => toggleDesktopMode()),
               ],
             ),
           ),
         ),
       if (widget.showZoomActions) ...<PopupMenuEntry<_MenuAction>>[
-        const PopupMenuItem<_MenuAction>(value: _MenuAction.zoomIn, child: Text("Zoom in")),
-        const PopupMenuItem<_MenuAction>(value: _MenuAction.zoomOut, child: Text("Zoom out")),
+        PopupMenuItem<_MenuAction>(value: _MenuAction.zoomIn, child: Text(U.s.zoomIn)),
+        PopupMenuItem<_MenuAction>(value: _MenuAction.zoomOut, child: Text(U.s.zoomOut)),
       ],
     ],
   );

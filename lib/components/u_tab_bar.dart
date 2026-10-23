@@ -390,7 +390,7 @@ class _UTabBarState extends State<UTabBar> {
   );
 
   Widget _overflowButton() => PopupMenuButton<int>(
-    tooltip: "All tabs",
+    tooltip: U.s.allTabs,
     icon: Icon(Icons.expand_more_rounded, color: _t.controlColor),
     position: PopupMenuPosition.under,
     onSelected: widget.onSelect,

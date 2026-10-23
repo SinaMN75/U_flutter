@@ -9,6 +9,9 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get allTabs => 'All tabs';
+
+  @override
   String get aNewVersionIsAvailableReloadToGetIt => 'A new version is available. Reload to get it.';
 
   @override
@@ -499,6 +502,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get callTheHotel => 'Call the hotel';
 
   @override
+  String get cameraPermissionDenied => 'Camera permission denied';
+
+  @override
   String get cameraPermissionIsRequired => 'Camera permission is required';
 
   @override
@@ -524,6 +530,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get capacity => 'Capacity';
+
+  @override
+  String get cardHolder => 'Card holder';
 
   @override
   String get cardNumber => 'Card number';
@@ -725,6 +734,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get companyCode => 'Company code';
+
+  @override
+  String get compassResetToNorth => 'Compass, reset to north';
 
   @override
   String get completeThePaymentInTheBrowserThenComeBackHere => 'Complete the payment in the browser, then come back here.';
@@ -1078,6 +1090,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get description => 'Description';
 
   @override
+  String get desktopSite => 'Desktop site';
+
+  @override
   String get detail1 => 'Detail 1';
 
   @override
@@ -1334,6 +1349,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get enterTheTrackingCodeShownByTheTerminalsPaymentApp => 'Enter the tracking code shown by the terminal\'s payment app.';
 
   @override
+  String get enterUrl => 'Enter URL';
+
+  @override
   String get enterYourPostalCodeCorrectlyAndInquire => 'Enter your postal code correctly and inquire.';
 
   @override
@@ -1469,6 +1487,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get failed => 'Failed';
+
+  @override
+  String get failedToLoadImage => 'Failed to load image';
+
+  @override
+  String get failedToLoadPage => 'Failed to load page';
 
   @override
   String get failedToLoadTheModel => 'Failed to load the model';
@@ -1607,6 +1631,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get forms => 'Forms';
+
+  @override
+  String get forward => 'Forward';
 
   @override
   String get frameRate => 'Frame rate';
@@ -2245,6 +2272,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get lyrics => 'Lyrics';
 
   @override
+  String get map => 'Map';
+
+  @override
   String get mPos => 'mPOS';
 
   @override
@@ -2449,6 +2479,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get myGold => 'My gold';
 
   @override
+  String get myLocation => 'My location';
+
+  @override
   String get myMerchants => 'My merchants';
 
   @override
@@ -2465,6 +2498,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get myVehicles => 'My vehicles';
+
+  @override
+  String get nameOnCard => 'Name on card';
 
   @override
   String get newFile => 'New';
@@ -2877,6 +2913,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get paidAmount => 'Paid Amount';
 
   @override
+  String get pan => 'Pan';
+
+  @override
   String get paragraph => 'Paragraph';
 
   @override
@@ -2905,6 +2944,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get password => 'Password';
+
+  @override
+  String get passwordIsRequired => 'Password is required';
+
+  @override
+  String get passwordMustBeAtLeast8Characters => 'Password must be at least 8 characters';
+
+  @override
+  String get passwordMustContainUppercaseLowercaseNumberAndSpecialCharacter => 'Password must contain uppercase, lowercase, number, and special character';
 
   @override
   String get passwordStrength => 'Password strength';
@@ -3424,6 +3472,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get removeFromQueue => 'Remove from queue';
+
+  @override
+  String get removeLastPoint => 'Remove last point';
 
   @override
   String get removeRow => 'Remove Row';
@@ -4320,6 +4371,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get thisFolderIsEmpty => 'This folder is empty';
 
   @override
+  String get thisLinkIsBlocked => 'This link is blocked';
+
+  @override
   String get thisPageCouldNotBeRendered => 'This page could not be rendered';
 
   @override
@@ -4823,6 +4877,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get yourGoldOrderIsBeingProcessed => 'Your gold order is being processed. Your balance will be updated shortly.';
+
+  @override
+  String get yourLocation => 'Your location';
 
   @override
   String get yourRating => 'Your rating';

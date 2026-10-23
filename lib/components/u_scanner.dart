@@ -364,7 +364,7 @@ class _UScannerState extends State<UScanner> with SingleTickerProviderStateMixin
     if (controller == null) {
       final UCameraPermissionState permission = await UCameraController.requestPermission();
       if (!permission.isGranted) {
-        if (mounted) setState(() => _error = const UCameraException(code: UCameraErrorCode.permission, message: "Camera permission denied"));
+        if (mounted) setState(() => _error = UCameraException(code: UCameraErrorCode.permission, message: U.s.cameraPermissionDenied));
         return;
       }
       controller = UCameraController(

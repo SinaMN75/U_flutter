@@ -92,6 +92,12 @@ abstract class AppLocalizations {
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[Locale('en'), Locale('fa')];
 
+  /// No description provided for @allTabs.
+  ///
+  /// In en, this message translates to:
+  /// **'All tabs'**
+  String get allTabs;
+
   /// No description provided for @aNewVersionIsAvailableReloadToGetIt.
   ///
   /// In en, this message translates to:
@@ -1052,6 +1058,12 @@ abstract class AppLocalizations {
   /// **'Call the hotel'**
   String get callTheHotel;
 
+  /// No description provided for @cameraPermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera permission denied'**
+  String get cameraPermissionDenied;
+
   /// No description provided for @cameraPermissionIsRequired.
   ///
   /// In en, this message translates to:
@@ -1105,6 +1117,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Capacity'**
   String get capacity;
+
+  /// No description provided for @cardHolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Card holder'**
+  String get cardHolder;
 
   /// No description provided for @cardNumber.
   ///
@@ -1507,6 +1525,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Company code'**
   String get companyCode;
+
+  /// No description provided for @compassResetToNorth.
+  ///
+  /// In en, this message translates to:
+  /// **'Compass, reset to north'**
+  String get compassResetToNorth;
 
   /// No description provided for @completeThePaymentInTheBrowserThenComeBackHere.
   ///
@@ -2162,6 +2186,12 @@ abstract class AppLocalizations {
   /// **'Description'**
   String get description;
 
+  /// No description provided for @desktopSite.
+  ///
+  /// In en, this message translates to:
+  /// **'Desktop site'**
+  String get desktopSite;
+
   /// No description provided for @detail1.
   ///
   /// In en, this message translates to:
@@ -2666,6 +2696,12 @@ abstract class AppLocalizations {
   /// **'Enter the tracking code shown by the terminal\'s payment app.'**
   String get enterTheTrackingCodeShownByTheTerminalsPaymentApp;
 
+  /// No description provided for @enterUrl.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter URL'**
+  String get enterUrl;
+
   /// No description provided for @enterYourPostalCodeCorrectlyAndInquire.
   ///
   /// In en, this message translates to:
@@ -2930,6 +2966,18 @@ abstract class AppLocalizations {
   /// **'Failed'**
   String get failed;
 
+  /// No description provided for @failedToLoadImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load image'**
+  String get failedToLoadImage;
+
+  /// No description provided for @failedToLoadPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load page'**
+  String get failedToLoadPage;
+
   /// No description provided for @failedToLoadTheModel.
   ///
   /// In en, this message translates to:
@@ -3193,6 +3241,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Forms'**
   String get forms;
+
+  /// No description provided for @forward.
+  ///
+  /// In en, this message translates to:
+  /// **'Forward'**
+  String get forward;
 
   /// No description provided for @frameRate.
   ///
@@ -4454,6 +4508,12 @@ abstract class AppLocalizations {
   /// **'Lyrics'**
   String get lyrics;
 
+  /// No description provided for @map.
+  ///
+  /// In en, this message translates to:
+  /// **'Map'**
+  String get map;
+
   /// No description provided for @mPos.
   ///
   /// In en, this message translates to:
@@ -4862,6 +4922,12 @@ abstract class AppLocalizations {
   /// **'My gold'**
   String get myGold;
 
+  /// No description provided for @myLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'My location'**
+  String get myLocation;
+
   /// No description provided for @myMerchants.
   ///
   /// In en, this message translates to:
@@ -4897,6 +4963,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'My vehicles'**
   String get myVehicles;
+
+  /// No description provided for @nameOnCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Name on card'**
+  String get nameOnCard;
 
   /// No description provided for @newFile.
   ///
@@ -5714,6 +5786,12 @@ abstract class AppLocalizations {
   /// **'Paid Amount'**
   String get paidAmount;
 
+  /// No description provided for @pan.
+  ///
+  /// In en, this message translates to:
+  /// **'Pan'**
+  String get pan;
+
   /// No description provided for @paragraph.
   ///
   /// In en, this message translates to:
@@ -5773,6 +5851,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Password'**
   String get password;
+
+  /// No description provided for @passwordIsRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Password is required'**
+  String get passwordIsRequired;
+
+  /// No description provided for @passwordMustBeAtLeast8Characters.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 8 characters'**
+  String get passwordMustBeAtLeast8Characters;
+
+  /// No description provided for @passwordMustContainUppercaseLowercaseNumberAndSpecialCharacter.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must contain uppercase, lowercase, number, and special character'**
+  String get passwordMustContainUppercaseLowercaseNumberAndSpecialCharacter;
 
   /// No description provided for @passwordStrength.
   ///
@@ -6799,6 +6895,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Remove from queue'**
   String get removeFromQueue;
+
+  /// No description provided for @removeLastPoint.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove last point'**
+  String get removeLastPoint;
 
   /// No description provided for @removeRow.
   ///
@@ -8558,6 +8660,12 @@ abstract class AppLocalizations {
   /// **'This folder is empty'**
   String get thisFolderIsEmpty;
 
+  /// No description provided for @thisLinkIsBlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'This link is blocked'**
+  String get thisLinkIsBlocked;
+
   /// No description provided for @thisPageCouldNotBeRendered.
   ///
   /// In en, this message translates to:
@@ -9559,6 +9667,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your gold order is being processed. Your balance will be updated shortly.'**
   String get yourGoldOrderIsBeingProcessed;
+
+  /// No description provided for @yourLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Your location'**
+  String get yourLocation;
 
   /// No description provided for @yourRating.
   ///

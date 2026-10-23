@@ -192,7 +192,7 @@ class _UMapLocationLayerState extends State<UMapLocationLayer> {
               width: 72,
               height: 72,
               child: Semantics(
-                label: "Your location",
+                label: U.s.yourLocation,
                 child: CustomPaint(painter: _DotPainter(color, _heading == null ? null : _heading! * math.pi / 180)),
               ),
             ),
@@ -264,7 +264,7 @@ class UMapLocateButton extends StatelessWidget {
     builder: (BuildContext context, UMapFollowMode mode, _) => FloatingActionButton(
       heroTag: heroTag,
       mini: true,
-      tooltip: "My location",
+      tooltip: U.s.myLocation,
       onPressed: () => _tap(context),
       child: Icon(switch (mode) {
         UMapFollowMode.none => Icons.my_location,
