@@ -7782,4 +7782,70 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get sendYourApplicationFromThisPageOnceTheManagerApprovesItAndSignsTheContractTheContractAndItsMonthlyInvoicesShowUpUnderDormContracts =>
       'Send your application from this page. Once the manager approves it and signs the contract, the contract and its monthly invoices show up under Dorm contracts.';
+
+  @override
+  String get addCustomer => 'Add customer';
+
+  @override
+  String get addressAndContact => 'Address and contact';
+
+  @override
+  String get askTheOwnerToRenewTheSubscription => 'Ask the owner to renew the subscription.';
+
+  @override
+  String get customersAreFoundByTheirPhoneNumberTheyNeedAnAccountInTheApp => 'Customers are found by their phone number; they need an account in the app.';
+
+  @override
+  String get customersCanOpenItInTheirMapApp => 'Customers can open it in their map app';
+
+  @override
+  String get deletingAPlaceRemovesItsRoomsBookingsAndPhotosThisCannotBeUndone => 'Deleting a place removes its rooms, bookings and photos. This cannot be undone.';
+
+  @override
+  String get doYouRunAHotelOrADormManageItHereReservationsResidentsBillsAndPayouts => 'Do you run a hotel or a dorm? Manage it here: reservations, residents, bills and payouts.';
+
+  @override
+  String get locationIsSet => 'Location is set';
+
+  @override
+  String get myBusinesses => 'My businesses';
+
+  @override
+  String get noAccountWithThisPhoneNumber => 'No account with this phone number';
+
+  @override
+  String get noCustomersYetMarkGuestsFromTheirBookingOrContract => 'No customers yet. Mark guests from their booking or contract.';
+
+  @override
+  String get registerYourBusiness => 'Register your business';
+
+  @override
+  String get renewItToKeepUsingReservationsResidentsAndYourPlaces => 'Renew it to keep using reservations, residents and your places.';
+
+  @override
+  String get rulesAndPolicies => 'Rules and policies';
+
+  @override
+  String get sentForReviewItIsShownToCustomersOnceItIsApproved => 'Sent for review. It is shown to customers once it is approved.';
+
+  @override
+  String get startsOn => 'Starts on';
+
+  @override
+  String get useThisLocation => 'Use this location';
+
+  @override
+  String get vipAndBlacklist => 'VIP and blacklist';
+
+  @override
+  String get youAreOnTheFreeTrial => 'You are on the free trial';
+
+  @override
+  String get yourPlanDoesNotIncludeAnyPlaceTypeAddTheHotelOrDormSystemToIt => 'Your plan does not include any place type. Add the hotel or dorm system to it.';
+
+  @override
+  String get yourSubscriptionHasEnded => 'Your subscription has ended';
+
+  @override
+  String get yourSubscriptionHasEndedRenewItToAddPlaces => 'Your subscription has ended. Renew it to add places.';
 }

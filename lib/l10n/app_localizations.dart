@@ -15289,6 +15289,138 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Send your application from this page. Once the manager approves it and signs the contract, the contract and its monthly invoices show up under Dorm contracts.'**
   String get sendYourApplicationFromThisPageOnceTheManagerApprovesItAndSignsTheContractTheContractAndItsMonthlyInvoicesShowUpUnderDormContracts;
+
+  /// No description provided for @addCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'Add customer'**
+  String get addCustomer;
+
+  /// No description provided for @addressAndContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Address and contact'**
+  String get addressAndContact;
+
+  /// No description provided for @askTheOwnerToRenewTheSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask the owner to renew the subscription.'**
+  String get askTheOwnerToRenewTheSubscription;
+
+  /// No description provided for @customersAreFoundByTheirPhoneNumberTheyNeedAnAccountInTheApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers are found by their phone number; they need an account in the app.'**
+  String get customersAreFoundByTheirPhoneNumberTheyNeedAnAccountInTheApp;
+
+  /// No description provided for @customersCanOpenItInTheirMapApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers can open it in their map app'**
+  String get customersCanOpenItInTheirMapApp;
+
+  /// No description provided for @deletingAPlaceRemovesItsRoomsBookingsAndPhotosThisCannotBeUndone.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleting a place removes its rooms, bookings and photos. This cannot be undone.'**
+  String get deletingAPlaceRemovesItsRoomsBookingsAndPhotosThisCannotBeUndone;
+
+  /// No description provided for @doYouRunAHotelOrADormManageItHereReservationsResidentsBillsAndPayouts.
+  ///
+  /// In en, this message translates to:
+  /// **'Do you run a hotel or a dorm? Manage it here: reservations, residents, bills and payouts.'**
+  String get doYouRunAHotelOrADormManageItHereReservationsResidentsBillsAndPayouts;
+
+  /// No description provided for @locationIsSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Location is set'**
+  String get locationIsSet;
+
+  /// No description provided for @myBusinesses.
+  ///
+  /// In en, this message translates to:
+  /// **'My businesses'**
+  String get myBusinesses;
+
+  /// No description provided for @noAccountWithThisPhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'No account with this phone number'**
+  String get noAccountWithThisPhoneNumber;
+
+  /// No description provided for @noCustomersYetMarkGuestsFromTheirBookingOrContract.
+  ///
+  /// In en, this message translates to:
+  /// **'No customers yet. Mark guests from their booking or contract.'**
+  String get noCustomersYetMarkGuestsFromTheirBookingOrContract;
+
+  /// No description provided for @registerYourBusiness.
+  ///
+  /// In en, this message translates to:
+  /// **'Register your business'**
+  String get registerYourBusiness;
+
+  /// No description provided for @renewItToKeepUsingReservationsResidentsAndYourPlaces.
+  ///
+  /// In en, this message translates to:
+  /// **'Renew it to keep using reservations, residents and your places.'**
+  String get renewItToKeepUsingReservationsResidentsAndYourPlaces;
+
+  /// No description provided for @rulesAndPolicies.
+  ///
+  /// In en, this message translates to:
+  /// **'Rules and policies'**
+  String get rulesAndPolicies;
+
+  /// No description provided for @sentForReviewItIsShownToCustomersOnceItIsApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent for review. It is shown to customers once it is approved.'**
+  String get sentForReviewItIsShownToCustomersOnceItIsApproved;
+
+  /// No description provided for @startsOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Starts on'**
+  String get startsOn;
+
+  /// No description provided for @useThisLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this location'**
+  String get useThisLocation;
+
+  /// No description provided for @vipAndBlacklist.
+  ///
+  /// In en, this message translates to:
+  /// **'VIP and blacklist'**
+  String get vipAndBlacklist;
+
+  /// No description provided for @youAreOnTheFreeTrial.
+  ///
+  /// In en, this message translates to:
+  /// **'You are on the free trial'**
+  String get youAreOnTheFreeTrial;
+
+  /// No description provided for @yourPlanDoesNotIncludeAnyPlaceTypeAddTheHotelOrDormSystemToIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Your plan does not include any place type. Add the hotel or dorm system to it.'**
+  String get yourPlanDoesNotIncludeAnyPlaceTypeAddTheHotelOrDormSystemToIt;
+
+  /// No description provided for @yourSubscriptionHasEnded.
+  ///
+  /// In en, this message translates to:
+  /// **'Your subscription has ended'**
+  String get yourSubscriptionHasEnded;
+
+  /// No description provided for @yourSubscriptionHasEndedRenewItToAddPlaces.
+  ///
+  /// In en, this message translates to:
+  /// **'Your subscription has ended. Renew it to add places.'**
+  String get yourSubscriptionHasEndedRenewItToAddPlaces;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

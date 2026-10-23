@@ -7781,4 +7781,70 @@ class AppLocalizationsFa extends AppLocalizations {
   @override
   String get sendYourApplicationFromThisPageOnceTheManagerApprovesItAndSignsTheContractTheContractAndItsMonthlyInvoicesShowUpUnderDormContracts =>
       'درخواست اقامت را از همین صفحه بفرستید. بعد از تأیید مدیر و بستن قرارداد، قرارداد و قبض‌های ماهانه در بخش «قراردادهای خوابگاه» نمایش داده می‌شود.';
+
+  @override
+  String get addCustomer => 'افزودن مشتری';
+
+  @override
+  String get addressAndContact => 'نشانی و راه‌های تماس';
+
+  @override
+  String get askTheOwnerToRenewTheSubscription => 'از مالک بخواهید اشتراک را تمدید کند.';
+
+  @override
+  String get customersAreFoundByTheirPhoneNumberTheyNeedAnAccountInTheApp => 'مشتری با شماره موبایلش پیدا می‌شود؛ باید در اپ حساب داشته باشد.';
+
+  @override
+  String get customersCanOpenItInTheirMapApp => 'مشتری‌ها می‌توانند آن را در برنامه‌ی نقشه‌ی خود باز کنند';
+
+  @override
+  String get deletingAPlaceRemovesItsRoomsBookingsAndPhotosThisCannotBeUndone => 'با حذف مکان، اتاق‌ها، رزروها و عکس‌هایش هم پاک می‌شوند و برگشت‌پذیر نیست.';
+
+  @override
+  String get doYouRunAHotelOrADormManageItHereReservationsResidentsBillsAndPayouts => 'هتل یا خوابگاه دارید؟ همین‌جا مدیریتش کنید: رزروها، ساکنان، قبض‌ها و تسویه.';
+
+  @override
+  String get locationIsSet => 'موقعیت روی نقشه ثبت شده است';
+
+  @override
+  String get myBusinesses => 'کسب‌وکارهای من';
+
+  @override
+  String get noAccountWithThisPhoneNumber => 'حسابی با این شماره پیدا نشد';
+
+  @override
+  String get noCustomersYetMarkGuestsFromTheirBookingOrContract => 'هنوز مشتری‌ای ثبت نشده. مهمان‌ها را از صفحه‌ی رزرو یا قراردادشان علامت بزنید.';
+
+  @override
+  String get registerYourBusiness => 'ثبت کسب‌وکار';
+
+  @override
+  String get renewItToKeepUsingReservationsResidentsAndYourPlaces => 'برای ادامه‌ی کار با رزروها، ساکنان و مکان‌هایتان آن را تمدید کنید.';
+
+  @override
+  String get rulesAndPolicies => 'قوانین و شرایط';
+
+  @override
+  String get sentForReviewItIsShownToCustomersOnceItIsApproved => 'برای بررسی فرستاده شد. بعد از تأیید به مشتری‌ها نمایش داده می‌شود.';
+
+  @override
+  String get startsOn => 'شروع از';
+
+  @override
+  String get useThisLocation => 'همین موقعیت را ثبت کن';
+
+  @override
+  String get vipAndBlacklist => 'مشتری ویژه و لیست سیاه';
+
+  @override
+  String get youAreOnTheFreeTrial => 'در دوره‌ی آزمایشی رایگان هستید';
+
+  @override
+  String get yourPlanDoesNotIncludeAnyPlaceTypeAddTheHotelOrDormSystemToIt => 'اشتراک شما هیچ نوع مکانی ندارد. سیستم هتل یا خوابگاه را به آن اضافه کنید.';
+
+  @override
+  String get yourSubscriptionHasEnded => 'اشتراک شما تمام شده است';
+
+  @override
+  String get yourSubscriptionHasEndedRenewItToAddPlaces => 'اشتراک شما تمام شده است. برای افزودن مکان آن را تمدید کنید.';
 }
