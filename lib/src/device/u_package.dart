@@ -281,7 +281,8 @@ abstract final class UPackage {
   static Future<UPackageInfo> _webInfo() async {
     const UPackageInfo empty = UPackageInfo(appName: "", packageName: "", version: "0.0.0", buildNumber: "0");
     try {
-      final String? text = await UWebBridge.fetch("${UWebBridge.baseUrl()}version.json", "no-store");
+      // Runs inside initU(): a stalled request must not hold up app start.
+      final String? text = await UWebBridge.fetch("${UWebBridge.baseUrl()}version.json", "no-store").timeout(const Duration(seconds: 3), onTimeout: () => null);
       final UPackageInfo info = text == null ? empty : _merge(empty, asStringMap(jsonDecode(text)));
       return UPackageInfo.fromMap(<String, Object?>{...info.toMap(), "installer": "web", "packageName": info.packageName.isEmpty ? Uri.base.host : info.packageName});
     } catch (_) {

@@ -151,7 +151,10 @@ class _IoStorageBackend implements UStorageBackend {
   Future<List<String>> list(String directory) async {
     final Directory dir = Directory(directory);
     if (!dir.existsSync()) return <String>[];
-    return dir.listSync().whereType<File>().map((File f) => f.uri.pathSegments.last).toList(growable: false);
+    return <String>[
+      await for (final FileSystemEntity entity in dir.list())
+        if (entity is File) entity.uri.pathSegments.last,
+    ];
   }
 
   @override

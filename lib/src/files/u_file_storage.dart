@@ -127,13 +127,27 @@ abstract class UFileStorage {
   }
 
   static Future<void> _init() async {
-    for (final UStorageBucket bucket in UStorageBucket.values) {
-      final _BucketIndex index = _BucketIndex(bucket, await _backend.root(bucket));
-      _indexes[bucket] = index;
-      await _loadIndex(index);
+    final List<_BucketIndex> loaded = await Future.wait(
+      UStorageBucket.values.map((UStorageBucket bucket) async {
+        final _BucketIndex index = _BucketIndex(bucket, await _backend.root(bucket));
+        await _loadIndex(index);
+        return index;
+      }),
+    );
+    for (final _BucketIndex index in loaded) {
+      _indexes[index.bucket] = index;
     }
-    await evictExpired();
-    await trimCache();
+    // Lookups already skip expired entries, so the clean-up can run without holding up app start.
+    unawaited(_cleanUp());
+  }
+
+  static Future<void> _cleanUp() async {
+    try {
+      await evictExpired();
+      await trimCache();
+    } catch (e) {
+      debugPrint("UFileStorage: clean-up failed ($e).");
+    }
   }
 
   // Internal calls made while init() is still migrating must not wait on init() itself.

@@ -115,8 +115,10 @@ class UNetworkStatus {
   /// Name of the interface carrying the default route (wlan0, en0, …), when known.
   final String? interfaceName;
 
-  /// A network is connected.
-  bool get isOnline => connected && internet != false && !captivePortal;
+  /// A network is connected. The OS internet check ([internet], [captivePortal]) is left out on purpose: it probes
+  /// Google/Microsoft servers, fails where they are filtered and lags behind every network change, while the app's own
+  /// servers are reachable. Use [UConnectivity.hasInternet] for a real round trip.
+  bool get isOnline => connected;
 
   /// No network.
   bool get isOffline => !isOnline;
