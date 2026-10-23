@@ -8,6 +8,41 @@
     `send`, `selectAid` and `transceive` (IsoDep, NfcA, NfcB, NfcF, NfcV).
   * `dart run u:app permission add nfc` now also declares `android.hardware.nfc.hce`.
 
+### Fixes and performance
+
+* **Behaviour changes.**
+  * `UNetwork.isOnline` now means a network is attached, as documented. The OS internet check
+    (`internet`, `captivePortal`) probes Google/Microsoft servers; where those are filtered it
+    reported working connections as offline, and `UHttpClient` refused every request.
+  * `UHttpClient` no longer retries a timed-out POST/PATCH (it may already have run on the
+    server) and never retries errors that are not network failures. Error messages are localized.
+  * `UNavigator.offAll` completes once the page is pushed instead of when it is popped, so
+    `UHttpClient.onAuthFailed = () async => UNavigator.offAll(...)` no longer hangs requests.
+  * `UNavigator.push(preventDuplicates: true)` now ignores the same page pushed twice within
+    600 ms (double taps); it never worked before.
+  * `controller.numDouble()` keeps decimals: `"12.5"` is `12.5`, not `125`.
+* **Images.** Asset, file, memory and network images decode at the size they are shown while
+  keeping their aspect ratio (setting both cache dimensions squashed them). Network images are
+  shared through Flutter's image cache: no re-download or re-decode while scrolling, one download
+  per URL, the right image when a list item is reused, and a request timeout.
+* **State.** `UObx` survives builder exceptions and rebuilds requested during a build. `URxList`,
+  `URxMap` and `URxSet` track iteration once and notify once per bulk operation.
+* **Storage and startup.** `UStore` no longer hangs `set()` after a failed write and encodes JSON
+  values once. `UFileStorage` loads its indexes in parallel and cleans the cache in the background.
+  On the web, `initU()` no longer waits on a stalled `version.json`.
+* **Requests.** Response bodies are decoded once and large responses are parsed off the UI isolate.
+  `UIpgFlow.pay` always completes.
+* **Overlays.** `ULoading` and toasts can be shown from `initState`/`build`, and overlays no longer
+  close the wrong entry or stay on screen.
+* **Widgets.** Visible splash on colored `UContainer`s; `UScaffold` closes the keyboard on taps in
+  empty space; `.disabled()` keeps child state; `USkeleton` no longer uses a layer per bone;
+  `UBarcode` encodes once; `UPaginatedList` handles refresh races and short pages; time-only
+  `UTextFieldDatePicker`; slider, OTP, plate field, webview, scrolling text and tab bar lifecycle fixes.
+* **Engines.** Location listeners share one native stream; ISO8583 requests fail as soon as the host
+  drops; `ULive` stops reconnecting after `disconnect()`; vector-tile and tile-source caches no
+  longer leak or stay broken; the code-scan worker never strands waiting callers.
+* **Localization.** Remaining hardcoded English texts are localized (en + fa).
+
 ## 3.2.0
 
 Nine pub plugins are replaced by u's own native code on all six platforms, the admin panel is
