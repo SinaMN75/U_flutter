@@ -111,7 +111,7 @@ class UFilePicker extends StatefulWidget {
     this.videoTypes = const <String>["mp4", "mov", "avi", "mkv", "webm"],
     this.documentTypes = const <String>["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "txt"],
     this.allowedExtensions,
-    this.fileType = FileType.custom,
+    this.fileType = UFileType.custom,
     this.categories = const <UFilePickerCategory>[],
     this.categoryTitle,
     this.selectCover = false,
@@ -151,7 +151,7 @@ class UFilePicker extends StatefulWidget {
   final List<String>? allowedExtensions;
 
   /// Which files the picker offers.
-  final FileType fileType;
+  final UFileType fileType;
 
   /// Categories users can assign.
   final List<UFilePickerCategory> categories;
@@ -221,7 +221,7 @@ class _UFilePickerState extends State<UFilePicker> {
 
   List<String>? get _extensions {
     if (widget.allowedExtensions != null) return widget.allowedExtensions;
-    if (widget.fileType != FileType.custom) return null;
+    if (widget.fileType != UFileType.custom) return null;
     return <String>[...widget.imageTypes, ...widget.videoTypes, ...widget.documentTypes];
   }
 
@@ -237,7 +237,7 @@ class _UFilePickerState extends State<UFilePicker> {
     final List<String>? extensions = _extensions;
     final List<UFileData> picked = await UFile.pickFiles(
       allowMultiple: widget.allowMultipleSelection,
-      fileType: extensions == null ? widget.fileType : FileType.custom,
+      fileType: extensions == null ? widget.fileType : UFileType.custom,
       allowedExtensions: extensions,
     );
     if (!mounted) return;

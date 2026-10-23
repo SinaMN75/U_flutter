@@ -67,6 +67,31 @@ abstract final class UFilesChannel {
     }
   }
 
+  /// Shows the system picker and returns every chosen file as {name, bytes}. [type] is one of
+  /// any, image, video, media, audio, custom; [extensions] are lowercase without the dot.
+  static Future<List<Map<Object?, Object?>>?> pick({
+    required String type,
+    List<String>? extensions,
+    bool multiple = false,
+    int maxCount = 0,
+    String? title,
+    String? initialDirectory,
+  }) async {
+    final List<Object?>? result = await _call<List<Object?>>("pick", <String, Object?>{
+      "type": type,
+      "extensions": extensions,
+      "multiple": multiple,
+      "maxCount": maxCount,
+      "title": title,
+      "initialDirectory": initialDirectory,
+    });
+    return result?.whereType<Map<Object?, Object?>>().toList(growable: false);
+  }
+
+  /// Shows the system folder picker. Returns a path (a tree content URI on Android), or null when cancelled.
+  static Future<String?> pickDirectory({String? title, String? initialDirectory}) =>
+      _call<String>("pickDirectory", <String, Object?>{"title": title, "initialDirectory": initialDirectory});
+
   /// Bytes available to the app on the volume holding [path].
   static Future<int?> freeSpace(String path) async => (await _call<num>("freeSpace", <String, Object?>{"path": path}))?.toInt();
 

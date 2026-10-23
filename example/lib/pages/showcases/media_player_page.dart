@@ -402,7 +402,7 @@ final UDashManifest? mpd = UDashParser.parse(xml);''',
   }
 
   Future<void> _scanLibrary() async {
-    final String? directory = await FilePicker.getDirectoryPath();
+    final String? directory = await UFile.pickDirectory();
     if (directory == null) return;
     setState(() => _libraryScanning = true);
     await UMediaLibrary.instance.load();
@@ -413,8 +413,8 @@ final UDashManifest? mpd = UDashParser.parse(xml);''',
   }
 
   Future<void> _readTags() async {
-    final List<PlatformFile>? picked = await FilePicker.pickFiles(type: FileType.audio);
-    final String? path = picked?.single.path;
+    final UFileData? picked = await UFile.pickFile(fileType: UFileType.audio);
+    final String? path = picked?.path;
     if (path == null) return;
     final UMediaMetadata tags = await UTagParser.readFile(path);
     if (!mounted) return;

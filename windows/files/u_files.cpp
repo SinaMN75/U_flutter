@@ -13,6 +13,8 @@
 #include <flutter/plugin_registrar_windows.h>
 #include <flutter/standard_method_codec.h>
 
+#include <fstream>
+#include <iterator>
 #include <memory>
 #include <string>
 #include <vector>
@@ -245,6 +247,105 @@ namespace u {
             return items;
         }
 
+// ---------------------------------------------------------------------------
+// Pick files / folder
+// ---------------------------------------------------------------------------
+
+        std::wstring ItemPath(IShellItem* item) {
+            LPWSTR raw = nullptr;
+            if (FAILED(item->GetDisplayName(SIGDN_FILESYSPATH, &raw)) || raw == nullptr) return std::wstring();
+            std::wstring path(raw);
+            CoTaskMemFree(raw);
+            return path;
+        }
+
+        void PrepareDialog(IFileOpenDialog* dialog, const EncodableMap& args, FILEOPENDIALOGOPTIONS extra) {
+            FILEOPENDIALOGOPTIONS options = 0;
+            dialog->GetOptions(&options);
+            dialog->SetOptions(options | FOS_FORCEFILESYSTEM | FOS_FILEMUSTEXIST | extra);
+            const std::string title = StringArg(args, "title");
+            if (!title.empty()) dialog->SetTitle(Widen(title).c_str());
+            const std::string initial = StringArg(args, "initialDirectory");
+            IShellItem* folder = nullptr;
+            if (!initial.empty() && SUCCEEDED(SHCreateItemFromParsingName(WindowsPath(initial).c_str(), nullptr, IID_PPV_ARGS(&folder)))) {
+                dialog->SetFolder(folder);
+                folder->Release();
+            }
+        }
+
+        std::wstring FilterSpec(const EncodableMap& args) {
+            const std::string type = StringArg(args, "type");
+            if (type == "image") return L"*.jpg;*.jpeg;*.png;*.gif;*.webp;*.bmp;*.heic;*.heif;*.tif;*.tiff;*.ico;*.svg";
+            if (type == "video") return L"*.mp4;*.mov;*.m4v;*.avi;*.mkv;*.webm;*.wmv;*.flv;*.3gp;*.mpg;*.mpeg";
+            if (type == "media") return FilterSpec(EncodableMap{{EncodableValue("type"), EncodableValue("image")}}) + L";" + FilterSpec(EncodableMap{{EncodableValue("type"), EncodableValue("video")}});
+            if (type == "audio") return L"*.mp3;*.m4a;*.aac;*.wav;*.flac;*.ogg;*.opus;*.wma;*.aiff;*.mid";
+            std::wstring spec;
+            const EncodableValue* value = Arg(args, "extensions");
+            const EncodableList* extensions = value ? std::get_if<EncodableList>(value) : nullptr;
+            if (type != "custom" || extensions == nullptr) return spec;
+            for (const EncodableValue& extension : *extensions) {
+                const std::string* text = std::get_if<std::string>(&extension);
+                if (text == nullptr || text->empty()) continue;
+                if (!spec.empty()) spec += L";";
+                spec += L"*." + Widen(*text);
+            }
+            return spec;
+        }
+
+        EncodableValue PickFiles(const EncodableMap& args, HWND owner) {
+            IFileOpenDialog* dialog = nullptr;
+            if (FAILED(CoCreateInstance(CLSID_FileOpenDialog, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&dialog)))) return EncodableValue();
+            PrepareDialog(dialog, args, BoolArg(args, "multiple") ? FOS_ALLOWMULTISELECT : 0);
+            const std::wstring spec = FilterSpec(args);
+            if (!spec.empty()) {
+                const COMDLG_FILTERSPEC filters[] = {{L"Files", spec.c_str()}, {L"All files", L"*.*"}};
+                dialog->SetFileTypes(2, filters);
+            }
+            const EncodableValue* max_value = Arg(args, "maxCount");
+            const int32_t* max_count = max_value ? std::get_if<int32_t>(max_value) : nullptr;
+            EncodableValue picked;
+            IShellItemArray* items = nullptr;
+            if (SUCCEEDED(dialog->Show(owner)) && SUCCEEDED(dialog->GetResults(&items))) {
+                EncodableList files;
+                DWORD count = 0;
+                items->GetCount(&count);
+                for (DWORD i = 0; i < count && (max_count == nullptr || *max_count <= 0 || files.size() < static_cast<size_t>(*max_count)); i++) {
+                    IShellItem* item = nullptr;
+                    if (FAILED(items->GetItemAt(i, &item))) continue;
+                    const std::wstring path = ItemPath(item);
+                    item->Release();
+                    std::ifstream stream(path, std::ios::binary);
+                    if (path.empty() || !stream) continue;
+                    std::vector<uint8_t> bytes((std::istreambuf_iterator<char>(stream)), std::istreambuf_iterator<char>());
+                    const size_t slash = path.find_last_of(L"\\/");
+                    files.push_back(EncodableValue(EncodableMap{
+                        {EncodableValue("name"), EncodableValue(Narrow(slash == std::wstring::npos ? path : path.substr(slash + 1)))},
+                        {EncodableValue("path"), EncodableValue(Narrow(path))},
+                        {EncodableValue("bytes"), EncodableValue(std::move(bytes))},
+                    }));
+                }
+                items->Release();
+                picked = EncodableValue(std::move(files));
+            }
+            dialog->Release();
+            return picked;
+        }
+
+        EncodableValue PickDirectory(const EncodableMap& args, HWND owner) {
+            IFileOpenDialog* dialog = nullptr;
+            if (FAILED(CoCreateInstance(CLSID_FileOpenDialog, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&dialog)))) return EncodableValue();
+            PrepareDialog(dialog, args, FOS_PICKFOLDERS);
+            EncodableValue picked;
+            IShellItem* item = nullptr;
+            if (SUCCEEDED(dialog->Show(owner)) && SUCCEEDED(dialog->GetResult(&item))) {
+                const std::wstring path = ItemPath(item);
+                if (!path.empty()) picked = EncodableValue(Narrow(path));
+                item->Release();
+            }
+            dialog->Release();
+            return picked;
+        }
+
     }  // namespace
 
 // static
@@ -280,6 +381,9 @@ namespace u {
                 path = slash == std::wstring::npos ? std::wstring() : path.substr(0, slash);
             }
             result->Success(path.empty() ? EncodableValue() : EncodableValue(static_cast<int64_t>(available.QuadPart)));
+        } else if (method == "pick" || method == "pickDirectory") {
+            HWND owner = registrar_->GetView() ? GetAncestor(registrar_->GetView()->GetNativeWindow(), GA_ROOT) : nullptr;
+            result->Success(method == "pick" ? PickFiles(args, owner) : PickDirectory(args, owner));
         } else if (method == "saveAs") {
             IFileSaveDialog* dialog = nullptr;
             EncodableValue saved;

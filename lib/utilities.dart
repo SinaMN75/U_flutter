@@ -14,7 +14,6 @@ export "package:flutter_localizations/flutter_localizations.dart";
 
 // --- Packages u builds on ----------------------------------------------------------------------------
 export "package:async/async.dart";
-export "package:file_picker/file_picker.dart";
 export "package:flutter_map/flutter_map.dart";
 export "package:flutter_svg/flutter_svg.dart";
 export "package:http/http.dart";

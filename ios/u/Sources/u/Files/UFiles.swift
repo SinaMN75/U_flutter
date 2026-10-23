@@ -21,6 +21,7 @@ public final class UFilesHandler: NSObject {
     private var previewDelegate: UFilesPreviewDelegate?
     #endif
     private var activity: NSObjectProtocol?
+    private let picker = UFilesPicker()
 
     public init(messenger: FlutterBinaryMessenger) {
         channel = FlutterMethodChannel(name: "u/files", binaryMessenger: messenger)
@@ -41,6 +42,10 @@ public final class UFilesHandler: NSObject {
         switch call.method {
         case "freeSpace":
             result(freeSpace(args["path"] as? String ?? NSHomeDirectory()))
+        case "pick":
+            picker.pick(args, result: result)
+        case "pickDirectory":
+            picker.pickDirectory(args, result: result)
         case "saveAs":
             saveAs(source: args["sourcePath"] as! String, fileName: args["fileName"] as! String, result: result)
         case "open":

@@ -1,5 +1,14 @@
 ## Unreleased
 
+* **Native file picker, no `file_picker` dependency.** `UFile.pickFiles`, `pickFile`, `pickImage`
+  and `pickVideo` now use the `u/files` channel on all 6 platforms: the Android Photo Picker (API 33+,
+  no permission) or the Storage Access Framework, `PHPicker` / the document picker on iOS, `NSOpenPanel`
+  on macOS, the GTK native chooser (portal-aware) on Linux, `IFileOpenDialog` on Windows and a file
+  input on web.
+  * New: `maxCount`, `dialogTitle`, `initialDirectory`, `UFile.pickDirectory()` and `UFileData.path`
+    (the real path on desktop, a cached copy on Android/iOS).
+  * **Breaking:** `FileType` is now `UFileType` (same values), and `file_picker` is no longer re-exported.
+
 * **`UNfc`, `UNfcCard`, `UNfcReader` (Android).** NFC in both directions, with no plugin dependency.
   * `UNfcCard` emulates a contactless card (HCE). AIDs are registered at runtime, so the bundled
     `UNfcHceService` does nothing until an app calls `start`. It can answer natively, answer from

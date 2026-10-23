@@ -123,10 +123,10 @@ class _DocumentReaderPageState extends State<DocumentReaderPage> {
   }
 
   Future<void> _pick(String extension) async {
-    final PlatformFile? file = await FilePicker.pickFile(type: FileType.custom, allowedExtensions: <String>[extension]);
+    final UFileData? file = await UFile.pickFile(allowedExtensions: <String>[extension]);
     if (file == null) return;
     final String? path = kIsWeb ? null : file.path;
-    final Uint8List? bytes = path == null ? await file.xFile.readAsBytes() : null;
+    final Uint8List? bytes = path == null ? file.bytes : null;
     if (extension == "pdf") {
       await _openPdf(path: path, bytes: path == null ? bytes : null, title: file.name);
     } else {

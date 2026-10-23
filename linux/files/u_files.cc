@@ -80,6 +80,94 @@ FlMethodResponse* SaveAs(FlValue* args) {
   return Success(result);
 }
 
+// Matches the extension in any letter case, e.g. "pdf" → "*.[pP][dD][fF]".
+std::string ExtensionPattern(const gchar* extension) {
+  std::string pattern = "*.";
+  for (const gchar* c = extension; *c != '\0'; c++) {
+    if (g_ascii_isalpha(*c)) {
+      pattern += '[';
+      pattern += g_ascii_tolower(*c);
+      pattern += g_ascii_toupper(*c);
+      pattern += ']';
+    } else {
+      pattern += *c;
+    }
+  }
+  return pattern;
+}
+
+void AddFilter(GtkFileChooser* chooser, FlValue* args) {
+  const gchar* type = StringArg(args, "type");
+  if (type == nullptr || strcmp(type, "any") == 0) return;
+  GtkFileFilter* filter = gtk_file_filter_new();
+  if (strcmp(type, "image") == 0 || strcmp(type, "media") == 0) gtk_file_filter_add_mime_type(filter, "image/*");
+  if (strcmp(type, "video") == 0 || strcmp(type, "media") == 0) gtk_file_filter_add_mime_type(filter, "video/*");
+  if (strcmp(type, "audio") == 0) gtk_file_filter_add_mime_type(filter, "audio/*");
+  FlValue* extensions = fl_value_lookup_string(args, "extensions");
+  if (strcmp(type, "custom") == 0 && extensions != nullptr && fl_value_get_type(extensions) == FL_VALUE_TYPE_LIST) {
+    for (size_t i = 0; i < fl_value_get_length(extensions); i++) {
+      FlValue* extension = fl_value_get_list_value(extensions, i);
+      if (fl_value_get_type(extension) == FL_VALUE_TYPE_STRING) gtk_file_filter_add_pattern(filter, ExtensionPattern(fl_value_get_string(extension)).c_str());
+    }
+  }
+  gtk_file_chooser_add_filter(chooser, filter);
+}
+
+GtkFileChooserNative* Chooser(FlValue* args, GtkFileChooserAction action) {
+  const gchar* title = StringArg(args, "title");
+  const gchar* initial = StringArg(args, "initialDirectory");
+  GtkFileChooserNative* dialog = gtk_file_chooser_native_new(title, TopWindow(), action, "_Open", "_Cancel");
+  if (initial != nullptr) gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(dialog), initial);
+  return dialog;
+}
+
+FlMethodResponse* Pick(FlValue* args) {
+  GtkFileChooserNative* dialog = Chooser(args, GTK_FILE_CHOOSER_ACTION_OPEN);
+  GtkFileChooser* chooser = GTK_FILE_CHOOSER(dialog);
+  gtk_file_chooser_set_select_multiple(chooser, BoolArg(args, "multiple"));
+  AddFilter(chooser, args);
+  FlValue* max_value = fl_value_lookup_string(args, "maxCount");
+  const int64_t max_count = max_value != nullptr && fl_value_get_type(max_value) == FL_VALUE_TYPE_INT ? fl_value_get_int(max_value) : 0;
+  FlValue* result = fl_value_new_null();
+  if (gtk_native_dialog_run(GTK_NATIVE_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
+    fl_value_unref(result);
+    result = fl_value_new_list();
+    GSList* names = gtk_file_chooser_get_filenames(chooser);
+    int64_t count = 0;
+    for (GSList* item = names; item != nullptr && (max_count <= 0 || count < max_count); item = item->next) {
+      const gchar* path = static_cast<const gchar*>(item->data);
+      gchar* contents = nullptr;
+      gsize length = 0;
+      if (!g_file_get_contents(path, &contents, &length, nullptr)) continue;
+      g_autofree gchar* name = g_path_get_basename(path);
+      FlValue* file = fl_value_new_map();
+      fl_value_set_string_take(file, "name", fl_value_new_string(name));
+      fl_value_set_string_take(file, "path", fl_value_new_string(path));
+      fl_value_set_string_take(file, "bytes", fl_value_new_uint8_list(reinterpret_cast<const uint8_t*>(contents), length));
+      g_free(contents);
+      fl_value_append_take(result, file);
+      count++;
+    }
+    g_slist_free_full(names, g_free);
+  }
+  g_object_unref(dialog);
+  return Success(result);
+}
+
+FlMethodResponse* PickDirectory(FlValue* args) {
+  GtkFileChooserNative* dialog = Chooser(args, GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
+  FlValue* result = fl_value_new_null();
+  if (gtk_native_dialog_run(GTK_NATIVE_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
+    g_autofree gchar* path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+    if (path != nullptr) {
+      fl_value_unref(result);
+      result = fl_value_new_string(path);
+    }
+  }
+  g_object_unref(dialog);
+  return Success(result);
+}
+
 bool LaunchUri(const gchar* path) {
   g_autoptr(GFile) file = g_file_new_for_path(path);
   g_autofree gchar* uri = g_file_get_uri(file);
@@ -184,6 +272,10 @@ void HandleMethodCall(FlMethodChannel* channel, FlMethodCall* call, gpointer use
     response = FreeSpace(args);
   } else if (strcmp(method, "saveAs") == 0) {
     response = SaveAs(args);
+  } else if (strcmp(method, "pick") == 0) {
+    response = Pick(args);
+  } else if (strcmp(method, "pickDirectory") == 0) {
+    response = PickDirectory(args);
   } else if (strcmp(method, "open") == 0) {
     const gchar* path = StringArg(args, "path");
     response = Success(fl_value_new_bool(path != nullptr && LaunchUri(path)));

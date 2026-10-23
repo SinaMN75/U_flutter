@@ -104,7 +104,7 @@ class _CameraPageState extends State<CameraPage> {
   // ---------------------------------------------------------------------------
 
   Future<void> _decodeFromFile() async {
-    final UFileData? file = await UFile.pickFile(fileType: FileType.image);
+    final UFileData? file = await UFile.pickFile(fileType: UFileType.image);
     if (file == null) return;
     ULoading.show();
     final List<UCode> codes = await UCameraController.analyzeImage(bytes: file.bytes, options: const UCodeScanOptions(multiple: true, tryInvert: true));

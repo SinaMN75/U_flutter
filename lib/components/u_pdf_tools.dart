@@ -219,7 +219,7 @@ class _UPdfPageManagerPanelState extends State<UPdfPageManagerPanel> {
                     ? null
                     : () => unawaited(
                   _run(() async {
-                    final UFileData? picked = await UFile.pickFile(fileType: FileType.custom, allowedExtensions: <String>["pdf"]);
+                    final UFileData? picked = await UFile.pickFile(fileType: UFileType.custom, allowedExtensions: <String>["pdf"]);
                     final Uint8List? bytes = picked?.bytes;
                     if (bytes == null) return;
                     final bool merged = await widget.editor.mergeFile(bytes);

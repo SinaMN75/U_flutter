@@ -6,6 +6,7 @@ import "package:flutter_web_plugins/flutter_web_plugins.dart";
 import "package:u/src/media/u_media_web.dart";
 import "package:u/src/ar/u_ar_web.dart";
 import "package:u/src/camera/u_camera_web.dart";
+import "package:u/src/files/u_files_web.dart";
 import "package:web/web.dart" as web;
 
 // =============================================================================
@@ -31,6 +32,7 @@ abstract class UWeb {
     UMediaWeb.registerWith(registrar);
     UCameraWeb.registerWith(registrar);
     UArWeb.registerWith(registrar);
+    UFilesWeb.registerWith(registrar);
   }
 }
 

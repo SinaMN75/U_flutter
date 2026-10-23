@@ -1,6 +1,9 @@
 import "package:path/path.dart" as path;
 import "package:u/utilities.dart";
 
+/// Which files the system picker shows; [custom] uses the allowed extensions.
+enum UFileType { any, image, video, media, audio, custom }
+
 /// Where pickImage/pickVideo take media from: the gallery or the camera.
 enum UImageSource { camera, gallery }
 
@@ -14,6 +17,7 @@ class UFileData {
     this.id,
     this.tags,
     this.children,
+    this.path,
     this._name,
   });
 
@@ -34,6 +38,9 @@ class UFileData {
 
   /// Related files, e.g. pages of a document.
   final List<UFileData>? children;
+
+  /// Local path of a picked file (a cached copy on Android/iOS); null on web.
+  final String? path;
   final String? _name;
 
   /// File name with extension, e.g. "photo.jpg".
@@ -103,40 +110,50 @@ abstract class UFile {
   /// True when [extension] is an image type. `UFile.isImageExtension("png")` → true
   static bool isImageExtension(String? extension) => extension != null && imageExtensions.contains(extension.toLowerCase());
 
-  /// Opens the system file picker; [allowedExtensions] filters, [crop] crops picked images. `await UFile.pickFiles(allowedExtensions: ["pdf", "docx"])`
+  /// Opens the native system file picker; [allowedExtensions] filters, [maxCount] caps a multiple pick, [crop] crops picked images. `await UFile.pickFiles(allowedExtensions: ["pdf", "docx"])`
   static Future<List<UFileData>> pickFiles({
     bool allowMultiple = true,
-    FileType fileType = FileType.any,
+    UFileType fileType = UFileType.any,
     List<String>? allowedExtensions,
+    int? maxCount,
+    String? dialogTitle,
+    String? initialDirectory,
     UCropOptions? crop,
     Function(List<UFileData>)? action,
   }) async {
     try {
-      final FileType type = allowedExtensions != null && allowedExtensions.isNotEmpty ? FileType.custom : (fileType == FileType.custom ? FileType.any : fileType);
-      if (allowMultiple) {
-        final List<PlatformFile> list = await FilePicker.pickFiles(type: type, allowedExtensions: allowedExtensions);
-        if (list.isNullOrEmpty()) {
-          action?.call(<UFileData>[]);
-          return <UFileData>[];
-        }
-        final List<UFileData> files = await _collect(list.map(_fromPlatformFile), crop);
-        action?.call(files);
-        return files;
-      } else {
-        final PlatformFile? platformFile = await FilePicker.pickFile(type: type, allowedExtensions: allowedExtensions);
-        if (platformFile == null) {
-          action?.call(<UFileData>[]);
-          return <UFileData>[];
-        }
-        final List<UFileData> files = await _collect(<Future<UFileData>>[_fromPlatformFile(platformFile)], crop);
-        action?.call(files);
-        return files;
-      }
+      final List<String>? extensions = allowedExtensions?.map((String e) => (e.startsWith(".") ? e.substring(1) : e).toLowerCase()).where((String e) => e.isNotEmpty).toSet().toList();
+      final bool custom = extensions != null && extensions.isNotEmpty;
+      final UFileType type = custom ? UFileType.custom : (fileType == UFileType.custom ? UFileType.any : fileType);
+      final List<Map<Object?, Object?>> picked =
+          await UFilesChannel.pick(
+            type: type.name,
+            extensions: custom ? extensions : null,
+            multiple: allowMultiple,
+            maxCount: allowMultiple ? (maxCount ?? 0) : 1,
+            title: dialogTitle,
+            initialDirectory: initialDirectory,
+          ) ??
+          <Map<Object?, Object?>>[];
+      final Iterable<UFileData> raw = picked
+          .where((Map<Object?, Object?> m) => m["bytes"] is Uint8List)
+          .map((Map<Object?, Object?> m) {
+            final String name = "${m["name"] ?? "file"}";
+            return UFileData(bytes: m["bytes"]! as Uint8List, name: name, extension: _extensionOf(name), path: m["path"] as String?);
+          })
+          .where((UFileData f) => !custom || extensions.contains(f.extension));
+      final List<UFileData> limited = (allowMultiple ? (maxCount != null && maxCount > 0 ? raw.take(maxCount) : raw) : raw.take(1)).toList();
+      final List<UFileData> files = await _collect(limited.map(Future<UFileData>.value), crop);
+      action?.call(files);
+      return files;
     } catch (e) {
       action?.call(<UFileData>[]);
       return <UFileData>[];
     }
   }
+
+  /// Opens the native folder picker and returns its path (a tree content URI on Android), or null; not available on web. `await UFile.pickDirectory()`
+  static Future<String?> pickDirectory({String? dialogTitle, String? initialDirectory}) => UFilesChannel.pickDirectory(title: dialogTitle, initialDirectory: initialDirectory);
 
   /// Picks images from the gallery, or takes them with the camera; optional crop. Camera: `permission add camera`. `await UFile.pickImage(allowMultiple: true, maxCount: 5)`
   static Future<List<UFileData>> pickImage({
@@ -159,7 +176,7 @@ abstract class UFile {
         );
         files = await _applyCrop(await UCamera.open(options: base), crop);
       } else {
-        files = await pickFiles(fileType: FileType.image, allowMultiple: allowMultiple, crop: crop);
+        files = await pickFiles(fileType: UFileType.image, allowMultiple: allowMultiple, maxCount: maxCount, crop: crop);
       }
       action?.call(files);
       return files;
@@ -186,7 +203,7 @@ abstract class UFile {
 
   /// Picks one file of any type. `await UFile.pickFile(allowedExtensions: ["pdf"])`
   static Future<UFileData?> pickFile({
-    FileType fileType = FileType.any,
+    UFileType fileType = UFileType.any,
     List<String>? allowedExtensions,
     UCropOptions? crop,
     Function(UFileData?)? action,
@@ -233,7 +250,7 @@ abstract class UFile {
     Function(UFileData?)? action,
   }) async {
     if (source == UImageSource.camera) return recordVideo(options: options, action: action);
-    final List<UFileData> files = await pickFiles(allowMultiple: false, fileType: FileType.video);
+    final List<UFileData> files = await pickFiles(allowMultiple: false, fileType: UFileType.video);
     final UFileData? file = files.isEmpty ? null : files.first;
     action?.call(file);
     return file;
@@ -432,11 +449,6 @@ abstract class UFile {
     );
     if (cropped == null) return null;
     return UFileData(bytes: cropped, extension: "png");
-  }
-
-  static Future<UFileData> _fromPlatformFile(PlatformFile file) async {
-    final Uint8List bytes = await file.readAsBytes();
-    return UFileData(bytes: bytes, name: file.name, extension: _extensionOf(file.name));
   }
 
   static String _extensionOf(String? source, [String fallback = ""]) {

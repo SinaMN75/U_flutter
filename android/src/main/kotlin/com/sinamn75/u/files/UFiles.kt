@@ -23,6 +23,8 @@ import android.os.IBinder
 import android.os.Looper
 import android.os.PowerManager
 import android.os.StatFs
+import android.provider.DocumentsContract
+import android.provider.OpenableColumns
 import android.provider.MediaStore
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyPermanentlyInvalidatedException
@@ -65,6 +67,8 @@ class UFilesHandler(
     private var activity: Activity? = null
 
     private var pendingSaveAs: Pair<String, MethodChannel.Result>? = null
+    private var pendingPick: Pair<Int, MethodChannel.Result>? = null
+    private var pendingDirectory: MethodChannel.Result? = null
     private var pendingPermission: (() -> Unit)? = null
     private var pendingPermissionDenied: (() -> Unit)? = null
 
@@ -90,6 +94,8 @@ class UFilesHandler(
             "freeSpace" -> result.success(freeSpace(call.argument<String>("path") ?: context.filesDir.path))
             "saveToDownloads" -> saveToDownloads(call, result)
             "saveAs" -> saveAs(call, result)
+            "pick" -> pick(call, result)
+            "pickDirectory" -> pickDirectory(call, result)
             "open" -> result.success(open(call.argument<String>("path")!!, call.argument<String>("mimeType")))
             "reveal" -> result.success(showDownloads())
             "keepAwake" -> {
@@ -256,11 +262,117 @@ class UFilesHandler(
         }
     }
 
+    // -------------------------------------------------------------------------
+    // Pick files / directory
+    // -------------------------------------------------------------------------
+
+    private fun pick(
+        call: MethodCall,
+        result: MethodChannel.Result,
+    ) {
+        val current = activity ?: return result.error("no_activity", "Picking needs a foreground activity", null)
+        val type = call.argument<String>("type") ?: "any"
+        val multiple = call.argument<Boolean>("multiple") ?: false
+        val maxCount = call.argument<Int>("maxCount") ?: 0
+        val mimes =
+            when (type) {
+                "image" -> arrayOf("image/*")
+                "video" -> arrayOf("video/*")
+                "media" -> arrayOf("image/*", "video/*")
+                "audio" -> arrayOf("audio/*")
+                "custom" -> call.argument<List<String>>("extensions").orEmpty().mapNotNull { MimeTypeMap.getSingleton().getMimeTypeFromExtension(it) }.distinct().toTypedArray()
+                else -> emptyArray()
+            }
+        val intent =
+            if (Build.VERSION.SDK_INT >= 33 && type in setOf("image", "video", "media")) {
+                Intent(MediaStore.ACTION_PICK_IMAGES).apply {
+                    if (mimes.size == 1) this.type = mimes[0]
+                    if (multiple) putExtra(MediaStore.EXTRA_PICK_IMAGES_MAX, if (maxCount in 2..MediaStore.getPickImagesMaxLimit()) maxCount else MediaStore.getPickImagesMaxLimit())
+                }
+            } else {
+                Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                    addCategory(Intent.CATEGORY_OPENABLE)
+                    this.type = if (mimes.size == 1) mimes[0] else "*/*"
+                    if (mimes.size > 1) putExtra(Intent.EXTRA_MIME_TYPES, mimes)
+                    putExtra(Intent.EXTRA_ALLOW_MULTIPLE, multiple)
+                }
+            }
+        pendingPick?.second?.success(null)
+        pendingPick = (if (multiple) maxCount else 1) to result
+        try {
+            current.startActivityForResult(intent, PICK_REQUEST)
+        } catch (e: ActivityNotFoundException) {
+            pendingPick = null
+            result.error("unavailable", "No document provider", null)
+        }
+    }
+
+    private fun pickDirectory(
+        call: MethodCall,
+        result: MethodChannel.Result,
+    ) {
+        val current = activity ?: return result.error("no_activity", "Picking needs a foreground activity", null)
+        val intent =
+            Intent(Intent.ACTION_OPEN_DOCUMENT_TREE).apply {
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+                call.argument<String>("initialDirectory")?.takeIf { it.startsWith("content:") }?.let { putExtra(DocumentsContract.EXTRA_INITIAL_URI, Uri.parse(it)) }
+            }
+        pendingDirectory?.success(null)
+        pendingDirectory = result
+        try {
+            current.startActivityForResult(intent, DIRECTORY_REQUEST)
+        } catch (e: ActivityNotFoundException) {
+            pendingDirectory = null
+            result.error("unavailable", "No document provider", null)
+        }
+    }
+
+    private fun picked(
+        resultCode: Int,
+        data: Intent?,
+    ) {
+        val (maxCount, result) = pendingPick ?: return
+        pendingPick = null
+        if (resultCode != Activity.RESULT_OK || data == null) return result.success(null)
+        val clip = data.clipData
+        val uris = if (clip != null) (0 until clip.itemCount).map { clip.getItemAt(it).uri } else listOfNotNull(data.data)
+        background(result) { uris.take(if (maxCount > 0) maxCount else uris.size).mapNotNull(::readPicked) }
+    }
+
+    private fun readPicked(uri: Uri): Map<String, Any?>? {
+        val resolver = context.contentResolver
+        var name: String? = null
+        resolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)?.use { if (it.moveToFirst()) name = it.getString(0) }
+        val fileName =
+            (name ?: uri.lastPathSegment?.substringAfterLast('/') ?: "file").let {
+                if (it.contains('.')) it else "$it.${MimeTypeMap.getSingleton().getExtensionFromMimeType(resolver.getType(uri)) ?: "bin"}"
+            }
+        val target = File(File(context.cacheDir, "u_picker/${System.nanoTime()}").apply { mkdirs() }, fileName)
+        resolver.openInputStream(uri)?.use { input -> target.outputStream().use { input.copyTo(it, 256 * 1024) } } ?: return null
+        return mapOf("name" to fileName, "path" to target.path, "bytes" to target.readBytes())
+    }
+
     override fun onActivityResult(
         requestCode: Int,
         resultCode: Int,
         data: Intent?,
     ): Boolean {
+        if (requestCode == PICK_REQUEST) {
+            picked(resultCode, data)
+            return true
+        }
+        if (requestCode == DIRECTORY_REQUEST) {
+            val result = pendingDirectory ?: return true
+            pendingDirectory = null
+            val uri = data?.data
+            if (resultCode != Activity.RESULT_OK || uri == null) return true.also { result.success(null) }
+            try {
+                context.contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+            } catch (e: SecurityException) {
+            }
+            result.success(uri.toString())
+            return true
+        }
         if (requestCode != SAVE_AS_REQUEST) return false
         val (source, result) = pendingSaveAs ?: return true
         pendingSaveAs = null
@@ -357,6 +469,8 @@ class UFilesHandler(
     companion object {
         private const val SAVE_AS_REQUEST = 0x5A1E
         private const val PERMISSION_REQUEST = 0x5A1F
+        private const val PICK_REQUEST = 0x5A20
+        private const val DIRECTORY_REQUEST = 0x5A21
     }
 }
 
