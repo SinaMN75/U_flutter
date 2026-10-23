@@ -1,3 +1,4 @@
+import "package:u/src/image/u_cached_image.dart";
 import "package:u/utilities.dart";
 
 /// Bottom sheet listing the play queue (tap to jump, drag to reorder, swipe to remove).
@@ -311,21 +312,25 @@ class _UArtworkState extends State<UArtwork> {
 
   @override
   Widget build(BuildContext context) {
-    final double pixels = widget.size * MediaQuery.of(context).devicePixelRatio;
-    final int cacheSize = pixels.round().clamp(32, 1024);
+    final double dpr = MediaQuery.devicePixelRatioOf(context);
+    final double side = (widget.size * dpr).clamp(32, 1024) / dpr;
     final UArtworkRef? ref = widget.artwork;
 
     Widget child;
     if (_bytes != null) {
-      child = Image.memory(_bytes!, width: widget.size, height: widget.size, fit: widget.fit, cacheWidth: cacheSize, cacheHeight: cacheSize, gaplessPlayback: true);
-    } else if (ref != null && ref.uri != null && ref.uri!.isNotEmpty) {
-      child = Image.network(
-        ref.uri!,
+      child = Image(
+        image: UResizeImage.resizeIfNeeded(MemoryImage(_bytes!), width: side, height: side, fit: widget.fit, devicePixelRatio: dpr),
         width: widget.size,
         height: widget.size,
         fit: widget.fit,
-        cacheWidth: cacheSize,
-        cacheHeight: cacheSize,
+        gaplessPlayback: true,
+      );
+    } else if (ref != null && ref.uri != null && ref.uri!.isNotEmpty) {
+      child = Image(
+        image: UResizeImage.resizeIfNeeded(UNetworkImage(ref.uri!), width: side, height: side, fit: widget.fit, devicePixelRatio: dpr),
+        width: widget.size,
+        height: widget.size,
+        fit: widget.fit,
         errorBuilder: (BuildContext context, Object error, StackTrace? stack) => _fallback(context),
       );
     } else {
@@ -1300,7 +1305,7 @@ class _UMusicPlayerState extends State<UMusicPlayer> {
   }
 
   Widget _fullBody(BuildContext context, UMediaValue value, UMediaMetadata? metadata) {
-    final double artwork = _theme.artworkSize ?? (MediaQuery.of(context).size.width - 96).clamp(120, 360).toDouble();
+    final double artwork = _theme.artworkSize ?? (MediaQuery.sizeOf(context).width - 96).clamp(120, 360).toDouble();
     return UColumn(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[

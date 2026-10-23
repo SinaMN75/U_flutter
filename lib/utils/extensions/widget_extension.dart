@@ -75,7 +75,7 @@ extension WidgetsExtension on Widget {
   /// Shows a popup menu where the user taps; items return their int value. `child.showMenus([PopupMenuItem(value: 1, child: Text("Edit"))])`
   Widget showMenus(List<PopupMenuEntry<int>> items) => GestureDetector(
     onTapDown: (TapDownDetails details) async {
-      final Size screenSize = MediaQuery.of(navigatorKey.currentContext!).size;
+      final Size screenSize = (navigatorKey.currentContext!.findRenderObject()! as RenderBox).size;
       final Offset p = details.globalPosition;
       await showMenu<int>(
         context: navigatorKey.currentContext!,

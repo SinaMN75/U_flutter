@@ -1,5 +1,6 @@
 import "dart:ui" show ImageFilter;
 
+import "package:u/src/image/u_cached_image.dart";
 import "package:u/utilities.dart";
 
 /// Card list row with a tinted icon, title, subtitle and arrow. `UListTile(icon: Icons.person, title: "Profile", onTap: open)`
@@ -689,8 +690,8 @@ class UAvatar extends StatelessWidget {
     final Widget child = ClipOval(
       child: url == null || url!.isEmpty
           ? initials
-          : Image.network(
-              url!,
+          : Image(
+              image: UResizeImage.resizeIfNeeded(UNetworkImage(url!), width: size, height: size, fit: BoxFit.cover, devicePixelRatio: MediaQuery.maybeDevicePixelRatioOf(context) ?? 1),
               width: size,
               height: size,
               fit: BoxFit.cover,

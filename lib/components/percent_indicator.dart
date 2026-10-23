@@ -457,7 +457,21 @@ class _CirclePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) => true;
+  bool shouldRepaint(covariant _CirclePainter old) =>
+      old.progress != progress ||
+      old.lineWidth != lineWidth ||
+      old.backgroundWidth != backgroundWidth ||
+      old.radius != radius ||
+      old.progressColor != progressColor ||
+      old.backgroundColor != backgroundColor ||
+      old.reverse != reverse ||
+      old.rotateLinearGradient != rotateLinearGradient ||
+      old.startAngle != startAngle ||
+      old.circularStrokeCap != circularStrokeCap ||
+      old.linearGradient != linearGradient ||
+      old.arcBackgroundColor != arcBackgroundColor ||
+      old.arcType != arcType ||
+      old.maskFilter != maskFilter;
 }
 
 /// Animated progress bar with leading/trailing/center widgets. `ULinearPercentIndicator(percent: 0.4, lineHeight: 8)`
@@ -809,5 +823,14 @@ class _LinearPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) => true;
+  bool shouldRepaint(covariant _LinearPainter old) =>
+      old.progress != progress ||
+      old.isRTL != isRTL ||
+      old.progressColor != progressColor ||
+      old.backgroundColor != backgroundColor ||
+      old.barRadius != barRadius ||
+      old.linearGradient != linearGradient ||
+      old.linearGradientBackgroundColor != linearGradientBackgroundColor ||
+      old.maskFilter != maskFilter ||
+      old.clipLinearGradient != clipLinearGradient;
 }

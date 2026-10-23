@@ -1,3 +1,4 @@
+import "package:u/src/image/u_cached_image.dart";
 import "package:u/utilities.dart";
 
 /// Full-screen zoomable image (pinch, double-tap, hero). `UNavigator.push(UImageViewer(fileData: UFileData(url: url)))`
@@ -30,7 +31,7 @@ class UImageViewer extends StatelessWidget {
     if (fileData.bytes != null) {
       return MemoryImage(fileData.bytes!);
     } else if (fileData.url != null) {
-      return NetworkImage(fileData.url!);
+      return UNetworkImage(fileData.url!);
     } else {
       return const AssetImage("assets/placeholder.png");
     }
@@ -76,7 +77,7 @@ class UImageViewer extends StatelessWidget {
           ),
 
           Positioned(
-            top: MediaQuery.of(context).padding.top + 16,
+            top: MediaQuery.paddingOf(context).top + 16,
             right: 16,
             child: UContainer(
               onTap: () => Navigator.pop(context),
@@ -141,7 +142,7 @@ class _BetterImageViewerState extends State<UBetterImageViewer> {
       if (widget.fileData.bytes != null) {
         provider = MemoryImage(widget.fileData.bytes!);
       } else if (widget.fileData.url != null) {
-        provider = NetworkImage(widget.fileData.url!);
+        provider = UNetworkImage(widget.fileData.url!);
       } else {
         throw Exception("No image source available");
       }
@@ -260,7 +261,7 @@ class _BetterImageViewerState extends State<UBetterImageViewer> {
           ),
 
         Positioned(
-          top: MediaQuery.of(context).padding.top + 16,
+          top: MediaQuery.paddingOf(context).top + 16,
           right: 16,
           child: UContainer(
             onTap: () => Navigator.pop(context),
@@ -344,7 +345,7 @@ class _ImageGalleryViewerState extends State<UImageGalleryViewer> {
         ),
 
         Positioned(
-          top: MediaQuery.of(context).padding.top + 16,
+          top: MediaQuery.paddingOf(context).top + 16,
           left: 16,
           child: UContainer(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),

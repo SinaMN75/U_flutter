@@ -71,25 +71,39 @@ class _USkeletonState extends State<USkeleton> with SingleTickerProviderStateMix
     final bool dark = Theme.of(context).brightness == Brightness.dark;
     final Color base = dark ? const Color(0xFF2C2C2E) : const Color(0xFFE3E3E6);
     final Color light = dark ? const Color(0xFF3A3A3D) : const Color(0xFFF4F4F6);
-    final Widget shape = widget.child != null
-        ? widget.child!
-        : Container(
-            width: widget.width ?? double.infinity,
-            height: widget.height,
-            decoration: BoxDecoration(color: base, shape: widget._circle ? BoxShape.circle : BoxShape.rectangle, borderRadius: widget._circle ? null : BorderRadius.circular(widget.radius)),
-          );
+    LinearGradient shimmer() => LinearGradient(
+      colors: <Color>[base, light, base],
+      stops: const <double>[0.35, 0.5, 0.65],
+      begin: Alignment(-2 + _controller.value * 4, -0.3),
+      end: Alignment(-1 + _controller.value * 4, 0.3),
+    );
+
+    // Plain bones paint the shimmer as their own fill; only wrapped widgets need a ShaderMask (one saveLayer each).
+    if (widget.child == null) {
+      return IgnorePointer(
+        child: SizedBox(
+          width: widget.width ?? double.infinity,
+          height: widget.height,
+          child: AnimatedBuilder(
+            animation: _controller,
+            builder: (BuildContext context, Widget? child) => DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: shimmer(),
+                shape: widget._circle ? BoxShape.circle : BoxShape.rectangle,
+                borderRadius: widget._circle ? null : BorderRadius.circular(widget.radius),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
     return IgnorePointer(
       child: AnimatedBuilder(
         animation: _controller,
-        child: shape,
+        child: widget.child,
         builder: (BuildContext context, Widget? child) => ShaderMask(
           blendMode: BlendMode.srcATop,
-          shaderCallback: (Rect bounds) => LinearGradient(
-            colors: <Color>[base, light, base],
-            stops: const <double>[0.35, 0.5, 0.65],
-            begin: Alignment(-2 + _controller.value * 4, -0.3),
-            end: Alignment(-1 + _controller.value * 4, 0.3),
-          ).createShader(bounds),
+          shaderCallback: shimmer().createShader,
           child: child,
         ),
       ),

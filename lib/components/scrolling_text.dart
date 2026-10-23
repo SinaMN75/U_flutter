@@ -71,17 +71,21 @@ class UScrollingTextState extends State<UScrollingText> with SingleTickerProvide
     super.initState();
     scrollController = ScrollController();
     WidgetsBinding.instance.addPostFrameCallback((Duration callback) {
-      startTimer();
+      if (mounted) startTimer();
     });
   }
 
   /// Starts scrolling.
   void startTimer() {
-    if (_key.currentContext != null) {
-      final double widgetWidth = _key.currentContext!.findRenderObject()!.paintBounds.size.width;
-      final double widgetHeight = _key.currentContext!.findRenderObject()!.paintBounds.size.height;
+    timer?.cancel();
+    timer = null;
+    final RenderObject? box = _key.currentContext?.findRenderObject();
+    if (box != null) {
+      final double widgetWidth = box.paintBounds.size.width;
+      final double widgetHeight = box.paintBounds.size.height;
 
       timer = Timer.periodic(Duration(milliseconds: _timerRest), (Timer timer) {
+        if (!mounted || !scrollController.hasClients || !TickerMode.valuesOf(context).enabled) return;
         final double maxScrollExtent = scrollController.position.maxScrollExtent;
         final double pixels = scrollController.position.pixels;
         if (pixels + _moveDistance >= maxScrollExtent) {
@@ -105,8 +109,22 @@ class UScrollingTextState extends State<UScrollingText> with SingleTickerProvide
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    screenWidth = MediaQuery.of(navigatorKey.currentContext!).size.width;
-    screenHeight = MediaQuery.of(navigatorKey.currentContext!).size.height;
+    final Size size = MediaQuery.sizeOf(context);
+    screenWidth = size.width;
+    screenHeight = size.height;
+  }
+
+  @override
+  void didUpdateWidget(covariant UScrollingText oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.text != widget.text || oldWidget.scrollAxis != widget.scrollAxis || oldWidget.maxLengthForScrolling != widget.maxLengthForScrolling) {
+      timer?.cancel();
+      timer = null;
+      position = 0;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) startTimer();
+      });
+    }
   }
 
   /// Text widget used at both ends.

@@ -264,10 +264,12 @@ class UFlipCardController {
     final Duration? original = controller!.duration;
     controller!.duration = durationTotal;
     await controller!.forward();
+    if (!(state?.mounted ?? false)) return;
 
     final Duration durationFlipBack = duration ?? const Duration(milliseconds: 150);
 
     Timer(durationFlipBack, () {
+      if (!(state?.mounted ?? false)) return completer.complete();
       controller!.reverse().whenComplete(completer.complete);
       controller!.duration = original;
     });

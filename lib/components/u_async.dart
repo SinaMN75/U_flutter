@@ -169,6 +169,7 @@ class UPaginatedListState<T> extends State<UPaginatedList<T>> {
   bool _loading = false;
   bool _done = false;
   Object? _error;
+  int _generation = 0;
 
   /// Every item loaded so far.
   List<T> get items => List<T>.unmodifiable(_items);
@@ -182,9 +183,11 @@ class UPaginatedListState<T> extends State<UPaginatedList<T>> {
   /// Clears everything and loads the first page again.
   Future<void> refresh() async {
     setState(() {
+      _generation++;
       _items.clear();
       _page = widget.firstPage;
       _done = false;
+      _loading = false;
       _error = null;
     });
     await _loadMore();
@@ -192,23 +195,30 @@ class UPaginatedListState<T> extends State<UPaginatedList<T>> {
 
   Future<void> _loadMore() async {
     if (_loading || _done) return;
+    final int generation = _generation;
     setState(() {
       _loading = true;
       _error = null;
     });
     try {
       final List<T> page = await widget.fetch(_page);
-      if (!mounted) return;
+      if (!mounted || generation != _generation) return;
       setState(() {
         _items.addAll(page);
         _page++;
         _done = page.length < widget.pageSize;
       });
     } catch (e) {
-      if (mounted) setState(() => _error = e);
+      if (mounted && generation == _generation) setState(() => _error = e);
     } finally {
-      if (mounted) setState(() => _loading = false);
+      if (mounted && generation == _generation) setState(() => _loading = false);
     }
+  }
+
+  // Also runs when a page did not fill the viewport, which produces no scroll events.
+  bool _onMetrics(ScrollMetrics metrics) {
+    if (metrics.extentAfter < 400 && _error == null) _loadMore();
+    return false;
   }
 
   @override
@@ -224,29 +234,29 @@ class UPaginatedListState<T> extends State<UPaginatedList<T>> {
     final int extra = widget.header == null ? 0 : 1;
     return RefreshIndicator.adaptive(
       onRefresh: refresh,
-      child: NotificationListener<ScrollNotification>(
-        onNotification: (ScrollNotification n) {
-          if (n.metrics.extentAfter < 400) _loadMore();
-          return false;
-        },
-        child: ListView.separated(
-          controller: widget.controller,
-          padding: widget.padding,
-          shrinkWrap: widget.shrinkWrap,
-          physics: widget.physics ?? const AlwaysScrollableScrollPhysics(),
-          itemCount: _items.length + extra + 1,
-          separatorBuilder: (BuildContext context, int index) => index < extra || index >= _items.length + extra - 1 ? const SizedBox.shrink() : (widget.separator ?? const SizedBox.shrink()),
-          itemBuilder: (BuildContext context, int index) {
-            if (index < extra) return widget.header!;
-            final int i = index - extra;
-            if (i < _items.length) return widget.itemBuilder(context, _items[i], i);
-            if (_error != null) return TextButton(onPressed: _loadMore, child: Text(U.s.tryAgain));
-            if (_done) return const SizedBox.shrink();
-            return const Padding(
-              padding: EdgeInsets.all(16),
-              child: Center(child: CircularProgressIndicator.adaptive()),
-            );
-          },
+      child: NotificationListener<ScrollMetricsNotification>(
+        onNotification: (ScrollMetricsNotification n) => _onMetrics(n.metrics),
+        child: NotificationListener<ScrollNotification>(
+          onNotification: (ScrollNotification n) => _onMetrics(n.metrics),
+          child: ListView.separated(
+            controller: widget.controller,
+            padding: widget.padding,
+            shrinkWrap: widget.shrinkWrap,
+            physics: widget.physics ?? const AlwaysScrollableScrollPhysics(),
+            itemCount: _items.length + extra + 1,
+            separatorBuilder: (BuildContext context, int index) => index < extra || index >= _items.length + extra - 1 ? const SizedBox.shrink() : (widget.separator ?? const SizedBox.shrink()),
+            itemBuilder: (BuildContext context, int index) {
+              if (index < extra) return widget.header!;
+              final int i = index - extra;
+              if (i < _items.length) return widget.itemBuilder(context, _items[i], i);
+              if (_error != null) return TextButton(onPressed: _loadMore, child: Text(U.s.tryAgain));
+              if (_done) return const SizedBox.shrink();
+              return const Padding(
+                padding: EdgeInsets.all(16),
+                child: Center(child: CircularProgressIndicator.adaptive()),
+              );
+            },
+          ),
         ),
       ),
     );

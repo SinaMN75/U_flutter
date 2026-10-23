@@ -237,6 +237,7 @@ class _UTabBarState extends State<UTabBar> {
     super.initState();
     _scroll.addListener(_updateArrows);
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
       _updateArrows();
       _scrollSelectedIntoView();
     });
@@ -246,6 +247,7 @@ class _UTabBarState extends State<UTabBar> {
   void didUpdateWidget(covariant UTabBar oldWidget) {
     super.didUpdateWidget(oldWidget);
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
       _updateArrows();
       if (oldWidget.selectedIndex != widget.selectedIndex || oldWidget.tabs.length != widget.tabs.length) {
         _scrollSelectedIntoView();

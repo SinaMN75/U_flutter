@@ -152,7 +152,16 @@ class UReadMoreTextState extends State<UReadMoreText> {
 
   @override
   Widget build(BuildContext context) {
-    _disposeRecognizers();
+    // The previous spans stay on screen until this frame is laid out, so their recognizers die after it.
+    if (_recognizers.isNotEmpty) {
+      final List<TapGestureRecognizer> previous = List<TapGestureRecognizer>.of(_recognizers);
+      _recognizers.clear();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        for (final TapGestureRecognizer recognizer in previous) {
+          recognizer.dispose();
+        }
+      });
+    }
     final DefaultTextStyle defaultTextStyle = DefaultTextStyle.of(context);
     TextStyle? effectiveTextStyle = widget.style;
     if (widget.style?.inherit ?? false) {

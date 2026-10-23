@@ -294,7 +294,7 @@ class _CreditCardWidgetState extends State<UCreditCardWidget> with SingleTickerP
 
   @override
   Widget build(BuildContext context) {
-    final double width = widget.width ?? MediaQuery.of(context).size.width * 0.9;
+    final double width = widget.width ?? MediaQuery.sizeOf(context).width * 0.9;
     final double height = widget.height ?? width * 0.62;
     return AnimatedBuilder(
       animation: _animation,

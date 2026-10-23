@@ -31,7 +31,7 @@ class UContentBentoPage extends StatelessWidget {
     final List<_Bento> tiles = _tiles(context, c);
     if (tiles.isEmpty) return const Center(child: UEmptyState());
 
-    final int columns = MediaQuery.of(context).size.width >= 1000 ? 3 : 2;
+    final int columns = MediaQuery.sizeOf(context).width >= 1000 ? 3 : 2;
 
     return SingleChildScrollView(
       padding: padding,

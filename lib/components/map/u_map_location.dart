@@ -81,20 +81,27 @@ class _UMapLocationLayerState extends State<UMapLocationLayer> {
 
   Future<void> _listen() async {
     if (widget.positions == null) {
-      if (!await ULocation.isReady()) {
+      final bool ready = await ULocation.isReady();
+      if (!mounted) return;
+      if (!ready) {
         // Start once the locate button gets permission.
         widget.follow?.addListener(_retry);
         return;
       }
     }
     await _positions?.cancel();
+    await _compass?.cancel();
+    _compass = null;
+    if (!mounted) return;
     _positions = (widget.positions ?? ULocation.stream(const ULocationSettings(distanceFilter: 2))).listen(_onPosition);
     if (widget.positions == null) {
       _compass = ULocation.heading().listen(
         (UHeading h) {
-          if (!mounted) return;
-          final double? speedHeading = _speedHeading;
-          if (speedHeading == null) setState(() => _heading = h.trueNorth ?? h.magnetic);
+          if (!mounted || _speedHeading != null) return;
+          final double next = h.trueNorth ?? h.magnetic;
+          final double? current = _heading;
+          // Compass sensors report many times a second; a sub-degree turn is not worth a repaint.
+          if (current == null || ((next - current + 540) % 360 - 180).abs() >= 1) setState(() => _heading = next);
         },
         onError: (Object _) {},
       );

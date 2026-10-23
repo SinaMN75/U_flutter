@@ -50,23 +50,25 @@ abstract class U {
   /// Closes the tab at [index].
   static void removeTab(int index) {
     if (index >= 0 && index < tabs.length) {
+      final int current = tabController?.index ?? 0;
       tabs(<UTabData>[...tabs]..removeAt(index));
-      if (tabController != null && tabController!.index >= tabs.length) {
-        tabController!.animateTo(tabs.length - 1);
-      }
-      updateTabController();
+      updateTabController(index: index < current ? current - 1 : current);
     }
   }
 
-  /// Rebuilds the tab controller after tabs change.
-  static void updateTabController() {
-    if (tabController != null) {
-      tabController!.dispose();
-      tabController = null;
-    }
+  /// Rebuilds the tab controller after tabs change, keeping the selected tab (or selecting [index]).
+  static void updateTabController({int? index}) {
+    final int selected = index ?? tabController?.index ?? 0;
+    tabController?.dispose();
+    tabController = null;
     if (tabs.isNotEmpty && navigatorKey.currentState != null) {
-      tabController = TabController(length: tabs.length, vsync: navigatorKey.currentState!.overlay!);
+      tabController = TabController(length: tabs.length, vsync: navigatorKey.currentState!.overlay!, initialIndex: selected.clamp(0, tabs.length - 1));
     }
+  }
+
+  static void _animateToTab(int index) {
+    final TabController? controller = tabController;
+    if (controller != null && index >= 0 && index < controller.length) controller.animateTo(index);
   }
 
   /// Switches to the tab named [title], or opens it. `U.addOrSwitchTab("Users", const UsersPage())`
@@ -85,22 +87,11 @@ abstract class U {
     final int existingIndex = tabs.indexWhere((UTabData tab) => tab.title == title);
 
     if (existingIndex != -1) {
-      tabs.value = <UTabData>[...tabs]..removeAt(existingIndex);
-
-      tabs.value = <UTabData>[
-        ...tabs.sublist(0, existingIndex),
-        UTabData(title: title, page: page),
-        ...tabs.sublist(existingIndex),
-      ];
-
-      if (tabController != null) {
-        delay(100, () => tabController!.animateTo(existingIndex));
-      }
+      tabs.value = <UTabData>[...tabs]..[existingIndex] = UTabData(title: title, page: page);
+      delay(100, () => _animateToTab(existingIndex));
     } else {
       addTab(title, page);
-      if (tabController != null) {
-        delay(100, () => tabController!.animateTo(tabs.length - 1));
-      }
+      delay(100, () => _animateToTab(tabs.length - 1));
     }
   }
 }
