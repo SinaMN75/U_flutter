@@ -61,8 +61,9 @@ class UFileManagerService {
         onError(err);
       },
       onException: () {
-        result = (null, null, "");
-        onException("");
+        final String message = U.s.unexpectedErrorPleaseTryAgain;
+        result = (null, null, message);
+        onException(message);
       },
     );
     return result;

@@ -23,10 +23,14 @@ class UIpgBrowserController {
   Future<void> check({bool showPending = false}) async {
     if (finished || _checking) return;
     _checking = true;
-    final (UResponse<List<UTxnResponse>>? r, _, _) = await UServices.txn.read(
-      p: UTxnReadParams(creatorId: U.user.id, fromCreatedAt: _startedAt, orderBy: TagOrderBy.createdAtDescending.number, pageNumber: 1, pageSize: 100),
-    );
-    _checking = false;
+    final UResponse<List<UTxnResponse>>? r;
+    try {
+      (r, _, _) = await UServices.txn.read(
+        p: UTxnReadParams(creatorId: U.user.id, fromCreatedAt: _startedAt, orderBy: TagOrderBy.createdAtDescending.number, pageNumber: 1, pageSize: 100),
+      );
+    } finally {
+      _checking = false;
+    }
     if (finished) return;
 
     final UTxnResponse? txn = r?.result?.firstWhereOrNull((UTxnResponse e) => e.trackingNumber == additionalData.trackingNumber);

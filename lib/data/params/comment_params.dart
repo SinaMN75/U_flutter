@@ -24,7 +24,7 @@ class UCommentCreateParams {
 
   factory UCommentCreateParams.fromMap(Map<String, dynamic> json) => UCommentCreateParams(
     description: json["description"],
-    score: json["score"] ?? 0,
+    score: (json["score"] as num?)?.toDouble() ?? 0,
     reaction: json["reaction"],
     parentId: json["parentId"],
     productId: json["productId"],
@@ -98,7 +98,7 @@ class UCommentUpdateParams {
 
   factory UCommentUpdateParams.fromMap(Map<String, dynamic> json) => UCommentUpdateParams(
     description: json["description"],
-    score: json["score"],
+    score: (json["score"] as num?)?.toDouble(),
     id: json["id"],
     addTags: json["addTags"] == null ? null : List<int>.from(json["addTags"].map((dynamic x) => x)),
     removeTags: json["removeTags"] == null ? null : List<int>.from(json["removeTags"].map((dynamic x) => x)),

@@ -56,27 +56,5 @@ class UDbAdminService {
     Function(UResponse<UDbAdminQueryResultResponse> r) onOk,
     Function(UEmptyResponse e) onError,
     Function(String e) onException,
-  ) async {
-    (UResponse<UDbAdminQueryResultResponse>?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/DbAdmin/$path",
-      body: body.add("apiKey", U.apiKey).add("token", ULocalStorage.getToken()),
-      onSuccess: (Response r) {
-        final UResponse<UDbAdminQueryResultResponse> ok = UResponse<UDbAdminQueryResultResponse>.fromJson(r.body, (dynamic i) => UDbAdminQueryResultResponse.fromMap(i));
-        result = (ok, null, null);
-        onOk(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError(err);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException(e);
-      },
-    );
-    return result;
-  }
+  ) => _Api.call("/DbAdmin/$path", body, _Api.one(UDbAdminQueryResultResponse.fromMap), _Api.empty, onOk, onError, onException);
 }

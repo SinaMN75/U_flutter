@@ -26,8 +26,9 @@ class UMediaService {
         onError(err);
       },
       onException: () {
-        result = (null, null, "");
-        onException("");
+        final String message = U.s.unexpectedErrorPleaseTryAgain;
+        result = (null, null, message);
+        onException(message);
       },
     );
     return result;
@@ -60,10 +61,10 @@ class UMediaService {
     if (!photos.hasChanges) return;
     void ignore(_) {}
 
-    final Set<String> deletedIds = photos.removedFiles.map((UFileData f) => f.id!).toSet();
-    for (final String id in deletedIds) {
-      await delete(p: UIdParams(id: id), onOk: ignore, onError: ignore, onException: ignore);
-    }
+    final Set<String> deletedIds = <String>{
+      for (final UFileData f in photos.removedFiles) ?f.id,
+    };
+    await Future.wait(deletedIds.map((String id) => delete(p: UIdParams(id: id), onOk: ignore, onError: ignore, onException: ignore)));
 
     final List<UFileData> newFiles = photos.files;
     final UFileData? cover = photos.coverChanged ? photos.cover : null;
@@ -92,9 +93,11 @@ class UMediaService {
     // The cover mark lives on exactly one photo.
     final String? newCoverId = cover?.id ?? (coverNewIndex < 0 ? null : uploadedIds[coverNewIndex]);
     if (newCoverId == null) return;
-    for (final UMediaResponse m in existing.where((UMediaResponse m) => m.tags.contains(TagMedia.cover.number) && m.id != newCoverId && !deletedIds.contains(m.id))) {
-      await update(p: UMediaUpdateParams(id: m.id, removeTags: <int>[TagMedia.cover.number]), onOk: ignore, onError: ignore, onException: ignore);
-    }
+    await Future.wait(
+      existing
+          .where((UMediaResponse m) => m.tags.contains(TagMedia.cover.number) && m.id != newCoverId && !deletedIds.contains(m.id))
+          .map((UMediaResponse m) => update(p: UMediaUpdateParams(id: m.id, removeTags: <int>[TagMedia.cover.number]), onOk: ignore, onError: ignore, onException: ignore)),
+    );
     if (cover?.id != null) await update(p: UMediaUpdateParams(id: newCoverId, addTags: <int>[TagMedia.cover.number]), onOk: ignore, onError: ignore, onException: ignore);
   }
 }

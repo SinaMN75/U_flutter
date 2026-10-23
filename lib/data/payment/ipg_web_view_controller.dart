@@ -25,12 +25,18 @@ class UIpgWebViewController {
   }
 
   void _onWebMessage(String origin, Map<String, dynamic> data) {
-    if (finished || !(data["source"] == "u_ipg")) return;
-    _finish(data["additionalData"]);
+    final Object? additionalData = data["additionalData"];
+    if (finished || data["source"] != "u_ipg" || additionalData is! String) return;
+    _finish(additionalData);
   }
 
   void _finish(String data) {
-    final UIpgAdditionalData i = UIpgAdditionalData.fromJson(data.fromBase58());
+    final UIpgAdditionalData i;
+    try {
+      i = UIpgAdditionalData.fromJson(data.fromBase58());
+    } catch (_) {
+      return;
+    }
     finished = true;
     UToast.snackBar(message: i.paid ? U.s.paymentWasSuccessful : U.s.paymentFailed);
     UNavigator.back<UIpgAdditionalData>(i);

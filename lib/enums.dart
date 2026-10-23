@@ -11,30 +11,33 @@ mixin UNumericIdentifiable {
 }
 
 extension NumericEnumExtension<T extends Enum> on Iterable<T> {
-  List<int> get numbers => map((dynamic e) => (e as dynamic).number as int).toList();
+  static int _number(Object e) => e is UNumericIdentifiable ? e.number : (e as dynamic).number as int;
 
-  List<String> get titlesFa => map((dynamic e) => (e as dynamic).titleFa as String).toList();
+  static String _titleFa(Object e) => e is UNumericIdentifiable ? e.titleFa : (e as dynamic).titleFa as String;
 
-  List<String> get titlesEn => map((dynamic e) => (e as dynamic).titleEn as String).toList();
+  static String _titleEn(Object e) => e is UNumericIdentifiable ? e.titleEn : (e as dynamic).titleEn as String;
 
-  List<Map<String, dynamic>> toMapList() => map(
-    (dynamic e) => <String, dynamic>{
-      "number": (e as dynamic).number,
-      "titleFa": (e as dynamic).titleFa,
-      "titleEn": (e as dynamic).titleEn,
-    },
-  ).toList();
+  static String _localizedTitle(Object e) => e is UNumericIdentifiable ? e.localizedTitle : (e as dynamic).localizedTitle as String;
+
+  List<int> get numbers => <int>[for (final T e in this) _number(e)];
+
+  List<String> get titlesFa => <String>[for (final T e in this) _titleFa(e)];
+
+  List<String> get titlesEn => <String>[for (final T e in this) _titleEn(e)];
+
+  List<Map<String, dynamic>> toMapList() => <Map<String, dynamic>>[
+    for (final T e in this) <String, dynamic>{"number": _number(e), "titleFa": _titleFa(e), "titleEn": _titleEn(e)},
+  ];
 
   T? fromNumber(int id) {
-    try {
-      return firstWhere((dynamic element) => (element as dynamic).number == id);
-    } catch (e) {
-      return null;
+    for (final T e in this) {
+      if (_number(e) == id) return e;
     }
+    return null;
   }
 
   T fromNumericIdOrThrow(int id) {
-    final dynamic result = fromNumber(id);
+    final T? result = fromNumber(id);
     if (result == null) {
       throw ArgumentError.value(
         id,
@@ -45,21 +48,23 @@ extension NumericEnumExtension<T extends Enum> on Iterable<T> {
     return result;
   }
 
-  List<T> fromNumbers(Iterable<int> numbers) => numbers.map(fromNumber).whereType<T>().toList();
+  List<T> fromNumbers(Iterable<int> numbers) => <T>[
+    for (final int n in numbers) ?fromNumber(n),
+  ];
 
   /// The values of one hundred-group, e.g. `TagHotel.values.group(500)` = the hotel amenities (501, 502...).
-  List<T> group(int hundred) => where((dynamic e) => (e as dynamic).number ~/ 100 == hundred ~/ 100).toList();
+  List<T> group(int hundred) => <T>[
+    for (final T e in this)
+      if (_number(e) ~/ 100 == hundred ~/ 100) e,
+  ];
 
   List<String> titlesFromNumbers(
     Iterable<int> numbers, {
     bool localized = true,
-  }) => numbers
-      .map(fromNumber)
-      .whereType<T>()
-      .map(
-        (dynamic e) => localized ? (e as dynamic).localizedTitle as String : (e as dynamic).titleEn as String,
-      )
-      .toList();
+  }) => <String>[
+    for (final T e in fromNumbers(numbers))
+      if (localized) _localizedTitle(e) else _titleEn(e),
+  ];
 }
 
 enum Usc with UNumericIdentifiable {

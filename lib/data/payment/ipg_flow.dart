@@ -27,6 +27,7 @@ abstract class UIpgFlow {
   }) async {
     final Completer<bool> completer = Completer<bool>();
     bool paid = false;
+    bool answered = false;
     if (p.amount <= 0) {
       UToast.error(message: U.s.invalidAmount);
       return false;
@@ -44,10 +45,18 @@ abstract class UIpgFlow {
         multiplexedAccounts: p.multiplexedAccounts,
       ),
       onOk: (UResponse<UIpgPayResponse> response) async {
+        answered = true;
         ULoading.dismiss();
-        final UIpgAdditionalData requested = response.result!.additionalData;
+        final UIpgPayResponse? result = response.result;
+        if (result == null) {
+          UToast.error(message: response.message.nullIfEmpty() ?? U.s.unexpectedErrorPleaseTryAgain);
+          onPaid?.call(false);
+          completer.complete(false);
+          return;
+        }
+        final UIpgAdditionalData requested = result.additionalData;
         final UIpgAdditionalData? settled = await UNavigator.push<UIpgAdditionalData>(
-          inBrowser ? UIpgBrowserPage(url: response.result!.url, additionalData: requested) : UIpgWebViewPage(url: response.result!.url, additionalData: requested),
+          inBrowser ? UIpgBrowserPage(url: result.url, additionalData: requested) : UIpgWebViewPage(url: result.url, additionalData: requested),
         );
         paid = settled?.paid ?? false;
         if (paid && receipt != null) {
@@ -63,18 +72,25 @@ abstract class UIpgFlow {
         onPaid?.call(paid);
       },
       onError: (UEmptyResponse e) {
+        answered = true;
         ULoading.dismiss();
         UToast.error(message: e.message);
         onPaid?.call(false);
         completer.complete(false);
       },
       onException: (String e) {
+        answered = true;
         ULoading.dismiss();
         UToast.error(message: e);
         onPaid?.call(false);
         completer.complete(false);
       },
     );
+    // A signed-out session answers without calling back; never leave the caller waiting.
+    if (!answered) {
+      ULoading.dismiss();
+      completer.complete(false);
+    }
     return completer.future;
   }
 
