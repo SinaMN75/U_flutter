@@ -1,4 +1,5 @@
 import "dart:async";
+import "dart:math" as math;
 
 import "package:flutter/foundation.dart";
 import "package:flutter/services.dart";
@@ -114,15 +115,104 @@ abstract final class ULocationChannel {
     return raw == null ? null : UPosition.fromMap(raw);
   }
 
-  /// Live positions. One native stream at a time; later listeners share it.
+  // The native side has one sink per channel: a second listener would silently steal the stream and
+  // cancelling either would stop both. Every listener shares one native subscription instead.
+  static final Map<int, _PositionWatcher> _positionWatchers = <int, _PositionWatcher>{};
+  static final Map<int, MultiStreamController<UHeading>> _headingWatchers = <int, MultiStreamController<UHeading>>{};
+  static int _nextWatcher = 0;
+  static StreamSubscription<dynamic>? _positionsNative;
+  static ULocationSettings? _positionsSettings;
+  static StreamSubscription<dynamic>? _headingNative;
+
+  /// Live positions. One native stream at a time; later listeners share it (with the finest settings any of them asked for).
   static Stream<UPosition> positions([ULocationSettings settings = const ULocationSettings()]) {
     if (kIsWeb) return ULocationWeb.positions(settings);
-    return _updates.receiveBroadcastStream(settings.toMap()).map((dynamic e) => UPosition.fromMap(e as Map<Object?, Object?>)).handleError((Object e) => throw _mapStreamError(e));
+    return Stream<UPosition>.multi((MultiStreamController<UPosition> controller) {
+      final int id = _nextWatcher++;
+      _positionWatchers[id] = _PositionWatcher(settings, controller);
+      controller.onCancel = () {
+        _positionWatchers.remove(id);
+        _syncPositions();
+      };
+      _syncPositions();
+    });
   }
 
+  static void _syncPositions() {
+    if (_positionWatchers.isEmpty) {
+      unawaited(_positionsNative?.cancel());
+      _positionsNative = null;
+      _positionsSettings = null;
+      return;
+    }
+    final ULocationSettings merged = _mergeSettings(_positionWatchers.values.map((_PositionWatcher w) => w.settings).toList());
+    final ULocationSettings? active = _positionsSettings;
+    if (_positionsNative != null && active != null && mapEquals(active.toMap(), merged.toMap())) return;
+    // Cancel first: the native "cancel" is not tied to a listener, so sent later it would stop the new one.
+    unawaited(_positionsNative?.cancel());
+    _positionsSettings = merged;
+    _positionsNative = _updates.receiveBroadcastStream(merged.toMap()).listen(
+      (dynamic e) {
+        final UPosition position = UPosition.fromMap(e as Map<Object?, Object?>);
+        for (final _PositionWatcher watcher in _positionWatchers.values.toList()) {
+          watcher.offer(position);
+        }
+      },
+      onError: (Object e) {
+        final Object error = _mapStreamError(e);
+        for (final _PositionWatcher watcher in _positionWatchers.values.toList()) {
+          watcher.controller.addError(error);
+        }
+      },
+    );
+  }
+
+  static ULocationSettings _mergeSettings(List<ULocationSettings> all) {
+    if (all.length == 1) return all.first;
+    final ULocationSettings? background = all.where((ULocationSettings s) => s.background).firstOrNull;
+    final ULocationSettings lead = background ?? all.first;
+    return ULocationSettings(
+      accuracy: all.map((ULocationSettings s) => s.accuracy).reduce((ULocationAccuracy a, ULocationAccuracy b) => a.index >= b.index ? a : b),
+      distanceFilter: all.map((ULocationSettings s) => s.distanceFilter).reduce(math.min),
+      interval: all.map((ULocationSettings s) => s.interval).reduce((Duration a, Duration b) => a <= b ? a : b),
+      background: background != null,
+      significantChangesOnly: all.every((ULocationSettings s) => s.significantChangesOnly),
+      activity: lead.activity,
+      pauseAutomatically: all.every((ULocationSettings s) => s.pauseAutomatically),
+      showBackgroundIndicator: lead.showBackgroundIndicator,
+      notificationTitle: lead.notificationTitle,
+      notificationText: lead.notificationText,
+    );
+  }
+
+  /// Compass updates; every listener shares one native stream.
   static Stream<UHeading> heading() {
     if (kIsWeb) return ULocationWeb.heading();
-    return _heading.receiveBroadcastStream().map((dynamic e) => UHeading.fromMap(e as Map<Object?, Object?>)).handleError((Object e) => throw _mapStreamError(e));
+    return Stream<UHeading>.multi((MultiStreamController<UHeading> controller) {
+      final int id = _nextWatcher++;
+      _headingWatchers[id] = controller;
+      controller.onCancel = () {
+        _headingWatchers.remove(id);
+        if (_headingWatchers.isEmpty) {
+          unawaited(_headingNative?.cancel());
+          _headingNative = null;
+        }
+      };
+      _headingNative ??= _heading.receiveBroadcastStream().listen(
+        (dynamic e) {
+          final UHeading heading = UHeading.fromMap(e as Map<Object?, Object?>);
+          for (final MultiStreamController<UHeading> watcher in _headingWatchers.values.toList()) {
+            watcher.add(heading);
+          }
+        },
+        onError: (Object e) {
+          final Object error = _mapStreamError(e);
+          for (final MultiStreamController<UHeading> watcher in _headingWatchers.values.toList()) {
+            watcher.addError(error);
+          }
+        },
+      );
+    });
   }
 
   /// Places the user arrived at / left (iOS; empty elsewhere).
@@ -226,4 +316,28 @@ abstract final class ULocationChannel {
   }
 
   static Future<bool> isGeocodingAvailable() async => !kIsWeb && (await _call<bool>("geocodingAvailable") ?? false);
+}
+
+class _PositionWatcher {
+  _PositionWatcher(this.settings, this.controller);
+
+  final ULocationSettings settings;
+  final MultiStreamController<UPosition> controller;
+  UPosition? _last;
+
+  // The shared stream may run with a finer distance filter than this listener asked for.
+  void offer(UPosition position) {
+    final UPosition? last = _last;
+    if (last != null && settings.distanceFilter > 0 && _meters(last, position) < settings.distanceFilter) return;
+    _last = position;
+    controller.add(position);
+  }
+
+  static double _meters(UPosition a, UPosition b) {
+    const double radius = 6371000;
+    final double dLat = (b.latitude - a.latitude) * math.pi / 180;
+    final double dLon = (b.longitude - a.longitude) * math.pi / 180;
+    final double h = math.pow(math.sin(dLat / 2), 2) + math.cos(a.latitude * math.pi / 180) * math.cos(b.latitude * math.pi / 180) * math.pow(math.sin(dLon / 2), 2);
+    return 2 * radius * math.asin(math.min(1, math.sqrt(h)));
+  }
 }

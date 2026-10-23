@@ -71,10 +71,12 @@ class SocketIsoTransport implements IsoTransport {
           "socket error: $error",
         );
 
-        _incoming.addError(
-          IsoTransportException("socket error", error),
-          stackTrace,
-        );
+        if (!_incoming.isClosed) {
+          _incoming.addError(
+            IsoTransportException("socket error", error),
+            stackTrace,
+          );
+        }
 
         unawaited(close());
       },
@@ -83,6 +85,9 @@ class SocketIsoTransport implements IsoTransport {
           IsoTraceKind.link,
           "socket closed by the host",
         );
+
+        // Fail waiting requests now instead of letting each one run into its timeout.
+        if (!_incoming.isClosed) _incoming.addError(IsoTransportException("connection closed by the host"));
 
         unawaited(close());
       },
@@ -252,14 +257,16 @@ class SocketIsoTransport implements IsoTransport {
 
     _reader.reset();
 
-    if (_socket != null) {
+    // Cleared before awaiting so a concurrent close() or a reconnect never sees the dying socket.
+    final Socket? socket = _socket;
+    final Future<dynamic>? closing = _socket?.close();
+    _socket = null;
+    if (closing != null) {
       try {
-        await _socket!.close();
+        await closing.timeout(const Duration(seconds: 2));
       } catch (_) {
-        _socket!.destroy();
+        socket?.destroy();
       }
-
-      _socket = null;
     }
   }
 
