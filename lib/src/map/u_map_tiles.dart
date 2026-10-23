@@ -486,11 +486,17 @@ abstract final class UMapTiles {
   static Future<String> template(UMapTileSource source) {
     if (source.url.contains("{z}") || source.pmtiles != null) return Future<String>.value(source.url);
     return _templates[source.id] ??= () async {
-      final Response r = await _client.get(Uri.parse(source.url), headers: <String, String>{if (!kIsWeb) "User-Agent": userAgent, ...source.headers});
-      final Map<String, dynamic> json = jsonDecode(r.body) as Map<String, dynamic>;
-      final List<dynamic> tiles = json["tiles"] as List<dynamic>? ?? <dynamic>[];
-      if (tiles.isEmpty) throw StateError("TileJSON at ${source.url} lists no tiles");
-      return tiles.first.toString();
+      try {
+        final Response r = await _client.get(Uri.parse(source.url), headers: <String, String>{if (!kIsWeb) "User-Agent": userAgent, ...source.headers}).timeout(const Duration(seconds: 20));
+        final Map<String, dynamic> json = jsonDecode(r.body) as Map<String, dynamic>;
+        final List<dynamic> tiles = json["tiles"] as List<dynamic>? ?? <dynamic>[];
+        if (tiles.isEmpty) throw StateError("TileJSON at ${source.url} lists no tiles");
+        return tiles.first.toString();
+      } catch (_) {
+        // A failed lookup (e.g. offline at start) must be retried later, not cached for the whole session.
+        unawaited(_templates.remove(source.id));
+        rethrow;
+      }
     }();
   }
 

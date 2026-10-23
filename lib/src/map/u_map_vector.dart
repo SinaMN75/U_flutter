@@ -994,7 +994,9 @@ abstract final class UMapVectorRenderer {
     final String key = "${source.id}/$z/$x/$y";
     final UMvtTile? hot = _decoded.get(key);
     if (hot != null) return SynchronousFuture<UMvtTile?>(hot);
-    return _decoding[key] ??= () async {
+    final Future<UMvtTile?>? pending = _decoding[key];
+    if (pending != null) return pending;
+    final Future<UMvtTile?> decoding = () async {
       try {
         final Uint8List? bytes = await UMapTiles.load(source, z, x, y, offlineOnly: offlineOnly);
         if (bytes == null || bytes.isEmpty) return null;
@@ -1003,10 +1005,12 @@ abstract final class UMapVectorRenderer {
         return tile;
       } on Object {
         return null;
-      } finally {
-        unawaited(_decoding.remove(key));
       }
     }();
+    // A memory-cached small tile decodes synchronously, so removing inside the body would run before the entry is stored.
+    _decoding[key] = decoding;
+    unawaited(decoding.whenComplete(() => _decoding.remove(key)));
+    return decoding;
   }
 
   /// Renders tile z/x/y (style zoom = z) into a square image of [size] pixels; [pixelRatio] scales strokes and text.
