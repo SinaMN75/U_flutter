@@ -2,6 +2,10 @@ import "dart:ui" as ui;
 
 import "package:u/utilities.dart";
 
+final RegExp _reWhitespaceRun = RegExp(r"\s+");
+final RegExp _reTabsSpaces = RegExp(r"[ \t]+");
+final RegExp _reHyphenBreak = RegExp(r"(\w)-\n(\w)");
+
 /// Document type: pdf or epub.
 enum UDocKind { pdf, epub, unknown }
 
@@ -941,11 +945,11 @@ abstract class UDocText {
     return buffer.toString().toLatinNumber().toLowerCase();
   }
 
-  static String forSearch(String text) => normalize(text).replaceAll(RegExp(r"\s+"), " ").trim();
+  static String forSearch(String text) => normalize(text).replaceAll(_reWhitespaceRun, " ").trim();
 
-  static String collapseWhitespace(String text) => text.replaceAll(RegExp(r"[ \t]+"), " ").trim();
+  static String collapseWhitespace(String text) => text.replaceAll(_reTabsSpaces, " ").trim();
 
-  static String dehyphenate(String text) => text.replaceAll(RegExp(r"(\w)-\n(\w)"), r"$1$2").replaceAll("\n", " ");
+  static String dehyphenate(String text) => text.replaceAll(_reHyphenBreak, r"$1$2").replaceAll("\n", " ");
 
   static List<int> findAll(String haystack, String needle, {bool wholeWord = false}) {
     final List<int> hits = <int>[];

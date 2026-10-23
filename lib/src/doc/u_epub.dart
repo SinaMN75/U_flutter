@@ -2,6 +2,19 @@ import "dart:ui" as ui;
 
 import "package:u/utilities.dart";
 
+final RegExp _reWhitespaceRun = RegExp(r"\s+");
+final RegExp _reWhitespace = RegExp(r"\s");
+final RegExp _reAttribute = RegExp("([:A-Za-z_][-:A-Za-z0-9_.]*)\\s*(?:=\\s*(\"[^\"]*\"|'[^']*'|[^\\s>]+))?");
+final RegExp _reEntity = RegExp("&(#x?[0-9A-Fa-f]+|[A-Za-z]+);");
+final RegExp _reCssComment = RegExp(r"/\*.*?\*/", dotAll: true);
+final RegExp _reSelectorPart = RegExp(r"^([A-Za-z][A-Za-z0-9]*|\*)?(?:#([-\w]+))?(?:\.([-\w]+))?");
+final RegExp _reCssLength = RegExp(r"(-?[\d.]+)\s*(px|pt|em|rem|%)?");
+final RegExp _reCssRgb = RegExp(r"rgba?\(([^)]*)\)");
+final RegExp _reLineBreaks = RegExp(r"[\r\n\t]+");
+final RegExp _reSpaces = RegExp(" {2,}");
+final RegExp _reEmUnit = RegExp("r?em");
+final RegExp _reLocation = RegExp(r"^u-epub:(\d+)/(\d+):(\d+)$");
+
 /// Internal: hashes for EPUB ids.
 abstract class UEpubDigest {
   static Uint8List sha1(List<int> message) {
@@ -608,7 +621,7 @@ class UEpubNode {
 
   String get id => attributes["id"] ?? "";
 
-  List<String> get classes => (attributes["class"] ?? "").split(RegExp(r"\s+")).where((String value) => value.isNotEmpty).toList();
+  List<String> get classes => (attributes["class"] ?? "").split(_reWhitespaceRun).where((String value) => value.isNotEmpty).toList();
 
   String get textContent {
     if (isText) return text;
@@ -683,7 +696,7 @@ abstract class UEpubXml {
       }
       final bool selfClosing = raw.endsWith("/");
       final String body = selfClosing ? raw.substring(0, raw.length - 1) : raw;
-      final int space = body.indexOf(RegExp(r"\s"));
+      final int space = body.indexOf(_reWhitespace);
       final String name = _localName(space < 0 ? body : body.substring(0, space));
       final Map<String, String> attributes = space < 0 ? <String, String>{} : _attributes(body.substring(space + 1));
       final UEpubNode node = UEpubNode(tag: name, attributes: attributes);
@@ -724,7 +737,7 @@ abstract class UEpubXml {
 
   static Map<String, String> _attributes(String source) {
     final Map<String, String> out = <String, String>{};
-    final RegExp pattern = RegExp("([:A-Za-z_][-:A-Za-z0-9_.]*)\\s*(?:=\\s*(\"[^\"]*\"|'[^']*'|[^\\s>]+))?");
+    final RegExp pattern = _reAttribute;
     for (final RegExpMatch match in pattern.allMatches(source)) {
       final String key = (match.group(1) ?? "").toLowerCase();
       if (key.isEmpty) continue;
@@ -764,7 +777,7 @@ abstract class UEpubXml {
 
   static String decodeEntities(String source) {
     if (!source.contains("&")) return source;
-    return source.replaceAllMapped(RegExp("&(#x?[0-9A-Fa-f]+|[A-Za-z]+);"), (Match match) {
+    return source.replaceAllMapped(_reEntity, (Match match) {
       final String token = match.group(1) ?? "";
       if (token.startsWith("#x") || token.startsWith("#X")) {
         final int? code = int.tryParse(token.substring(2), radix: 16);
@@ -811,7 +824,7 @@ class UEpubStyleSheet {
 
   void parse(String source) {
     if (source.trim().isEmpty) return;
-    final String cleaned = source.replaceAll(RegExp(r"/\*.*?\*/", dotAll: true), "");
+    final String cleaned = source.replaceAll(_reCssComment, "");
     int index = 0;
     int guard = 0;
     while (index < cleaned.length && guard < 20000) {
@@ -836,10 +849,10 @@ class UEpubStyleSheet {
       for (final String selector in selectorText.split(",")) {
         final List<UEpubSelectorPart> parts = <UEpubSelectorPart>[];
         int specificity = 0;
-        for (final String piece in selector.trim().split(RegExp(r"\s+"))) {
+        for (final String piece in selector.trim().split(_reWhitespaceRun)) {
           if (piece.isEmpty || piece == ">" || piece == "+" || piece == "~") continue;
           final String withoutPseudo = piece.split(":").first;
-          final RegExpMatch? match = RegExp(r"^([A-Za-z][A-Za-z0-9]*|\*)?(?:#([-\w]+))?(?:\.([-\w]+))?").firstMatch(withoutPseudo);
+          final RegExpMatch? match = _reSelectorPart.firstMatch(withoutPseudo);
           if (match == null) continue;
           final String tag = (match.group(1) ?? "").toLowerCase();
           final String id = match.group(2) ?? "";
@@ -1285,7 +1298,7 @@ class UEpubBlockBuilder {
   }
 
   double _length(String value, double fallback) {
-    final RegExpMatch? match = RegExp(r"(-?[\d.]+)\s*(px|pt|em|rem|%)?").firstMatch(value.trim());
+    final RegExpMatch? match = _reCssLength.firstMatch(value.trim());
     if (match == null) return fallback;
     final double number = double.tryParse(match.group(1) ?? "") ?? fallback;
     switch (match.group(2)) {
@@ -1316,7 +1329,7 @@ class UEpubBlockBuilder {
       }
       return null;
     }
-    final RegExpMatch? rgb = RegExp(r"rgba?\(([^)]*)\)").firstMatch(text);
+    final RegExpMatch? rgb = _reCssRgb.firstMatch(text);
     if (rgb != null) {
       final List<String> parts = (rgb.group(1) ?? "").split(",");
       if (parts.length >= 3) {
@@ -1350,7 +1363,7 @@ class UEpubBlockBuilder {
   void _appendText(String raw) {
     if (raw.isEmpty) return;
     final bool preformatted = _pendingKind == UEpubBlockKind.preformatted;
-    final String text = preformatted ? raw : raw.replaceAll(RegExp(r"[\r\n\t]+"), " ").replaceAll(RegExp(" {2,}"), " ");
+    final String text = preformatted ? raw : raw.replaceAll(_reLineBreaks, " ").replaceAll(_reSpaces, " ");
     if (text.trim().isEmpty && !preformatted) {
       if (_inline.isNotEmpty && !_inline.last.text.endsWith(" ")) _inline.add(const UEpubSpan(text: " "));
       return;
@@ -1420,7 +1433,7 @@ class UEpubBlockBuilder {
       if (lower.endsWith("%")) {
         factor = (double.tryParse(lower.substring(0, lower.length - 1)) ?? 100) / 100;
       } else if (lower.endsWith("em") || lower.endsWith("rem")) {
-        factor = double.tryParse(lower.replaceAll(RegExp("r?em"), "")) ?? 1;
+        factor = double.tryParse(lower.replaceAll(_reEmUnit, "")) ?? 1;
       } else if (lower == "larger" || lower == "large" || lower == "x-large" || lower == "xx-large") {
         factor = 1.25;
       } else if (lower == "smaller" || lower == "small" || lower == "x-small") {
@@ -1493,7 +1506,7 @@ class UEpubPosition {
 
   static UEpubPosition? decode(String? value) {
     if (value == null || !value.startsWith("u-epub:")) return null;
-    final RegExpMatch? match = RegExp(r"^u-epub:(\d+)/(\d+):(\d+)$").firstMatch(value);
+    final RegExpMatch? match = _reLocation.firstMatch(value);
     if (match == null) return null;
     return UEpubPosition(
       spineIndex: int.tryParse(match.group(1) ?? "0") ?? 0,

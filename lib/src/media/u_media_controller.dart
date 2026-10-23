@@ -214,7 +214,13 @@ class UMediaController extends ValueNotifier<UMediaValue> {
     }
     final List<USubtitleCue> next = data.activeAt(position, delay: _subtitleDelay, scale: _subtitleScale);
     final List<USubtitleCue> current = activeCues.value;
-    if (next.length == current.length && (next.isEmpty || identical(next.first, current.first))) return;
+    if (next.length == current.length) {
+      int i = 0;
+      while (i < next.length && identical(next[i], current[i])) {
+        i++;
+      }
+      if (i == next.length) return;
+    }
     activeCues.value = next;
   }
 

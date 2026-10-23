@@ -1014,6 +1014,7 @@ abstract class UCameraChannel {
 /// Decodes frames off the UI isolate. One worker is shared by every controller.
 abstract class UCodeScanWorker {
   static Isolate? _isolate;
+  static ReceivePort? _receive;
   static SendPort? _port;
   static Completer<void>? _starting;
   static final Map<int, Completer<List<UCode>>> _pending = <int, Completer<List<UCode>>>{};
@@ -1027,7 +1028,16 @@ abstract class UCodeScanWorker {
     final Completer<void> completer = Completer<void>();
     _starting = completer;
     final ReceivePort receive = ReceivePort();
-    _isolate = await Isolate.spawn(_entry, receive.sendPort, debugName: "u-code-scanner");
+    _receive = receive;
+    try {
+      _isolate = await Isolate.spawn(_entry, receive.sendPort, debugName: "u-code-scanner");
+    } catch (e) {
+      receive.close();
+      _receive = null;
+      _starting = null;
+      completer.completeError(e);
+      rethrow;
+    }
     receive.listen((Object? message) {
       if (message is SendPort) {
         _port = message;
@@ -1068,7 +1078,13 @@ abstract class UCodeScanWorker {
   static Future<void> shutdown() async {
     _isolate?.kill(priority: Isolate.immediate);
     _isolate = null;
+    _receive?.close();
+    _receive = null;
     _port = null;
+    // Callers still waiting on a frame must not hang forever.
+    for (final Completer<List<UCode>> pending in _pending.values) {
+      if (!pending.isCompleted) pending.complete(const <UCode>[]);
+    }
     _pending.clear();
   }
 

@@ -231,6 +231,10 @@ class UBarcode extends StatefulWidget {
 
 class _UBarcodeState extends State<UBarcode> {
   ui.Image? _logo;
+  // Barcode has no value equality; keeping one instance lets the painter skip re-encoding on unrelated rebuilds.
+  late Barcode _barcode = _create();
+
+  Barcode _create() => _barcodeFor(widget.type, qrVersion: widget.qrCodeVersion, ecc: widget.errorCorrectionLevel ?? UErrorCorrectionLevel.low);
 
   @override
   void initState() {
@@ -242,6 +246,7 @@ class _UBarcodeState extends State<UBarcode> {
   void didUpdateWidget(covariant UBarcode oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.logoBytes != widget.logoBytes) _decodeLogo();
+    if (oldWidget.type != widget.type || oldWidget.qrCodeVersion != widget.qrCodeVersion || oldWidget.errorCorrectionLevel != widget.errorCorrectionLevel) _barcode = _create();
   }
 
   @override
@@ -267,7 +272,7 @@ class _UBarcodeState extends State<UBarcode> {
   @override
   Widget build(BuildContext context) {
     final ColorScheme scheme = Theme.of(context).colorScheme;
-    final Barcode barcode = _barcodeFor(widget.type, qrVersion: widget.qrCodeVersion, ecc: widget.errorCorrectionLevel ?? UErrorCorrectionLevel.low);
+    final Barcode barcode = _barcode;
     final Color foreground = widget.barColor ?? scheme.onSurface;
 
     return SizedBox(
@@ -399,7 +404,9 @@ class _UBarcodePainter extends CustomPainter {
       },
       textDirection: TextDirection.ltr,
     )..layout(minWidth: element.width, maxWidth: element.width);
-    tp.paint(canvas, Offset(area.left + element.left, area.top + element.top + (element.height - tp.height) / 2));
+    tp
+      ..paint(canvas, Offset(area.left + element.left, area.top + element.top + (element.height - tp.height) / 2))
+      ..dispose();
   }
 
   void _paintLogo(Canvas canvas, Rect area) {
@@ -424,7 +431,9 @@ class _UBarcodePainter extends CustomPainter {
       textAlign: TextAlign.center,
       textDirection: TextDirection.ltr,
     )..layout(maxWidth: size.width - 8);
-    tp.paint(canvas, Offset((size.width - tp.width) / 2, (size.height - tp.height) / 2));
+    tp
+      ..paint(canvas, Offset((size.width - tp.width) / 2, (size.height - tp.height) / 2))
+      ..dispose();
   }
 
   @override
