@@ -48,6 +48,9 @@ class _UPlateFieldState extends State<UPlateField> {
 </svg>
   """;
 
+  static final RegExp _digit = RegExp("[0-9]");
+  static final RegExp _nonDigit = RegExp("[^0-9]");
+
   late TextEditingController digits1Controller;
   late TextEditingController digits3Controller;
   late TextEditingController provinceController;
@@ -60,6 +63,7 @@ class _UPlateFieldState extends State<UPlateField> {
 
   final GlobalKey _letterButtonKey = GlobalKey();
   OverlayEntry? _overlayEntry;
+  String? _lastPlate;
 
   bool get _isReadOnly => widget.onPlateChange == null;
 
@@ -75,7 +79,7 @@ class _UPlateFieldState extends State<UPlateField> {
 
     if (widget.initialPlate.isNotEmpty) {
       for (int i = 0; i < widget.initialPlate.length && i < 2; i++) {
-        if (widget.initialPlate[i].contains(RegExp("[0-9]"))) parsedDigits1 += widget.initialPlate[i];
+        if (widget.initialPlate[i].contains(_digit)) parsedDigits1 += widget.initialPlate[i];
       }
       for (int i = 0; i < widget.initialPlate.length; i++) {
         if (uPlateLetters.contains(widget.initialPlate[i])) {
@@ -86,12 +90,12 @@ class _UPlateFieldState extends State<UPlateField> {
       final int letterIndex = widget.initialPlate.indexOf(parsedLetter);
       if (letterIndex != -1 && letterIndex + 1 < widget.initialPlate.length) {
         for (int i = letterIndex + 1; i < widget.initialPlate.length && i < letterIndex + 4; i++) {
-          if (widget.initialPlate[i].contains(RegExp("[0-9]"))) parsedDigits3 += widget.initialPlate[i];
+          if (widget.initialPlate[i].contains(_digit)) parsedDigits3 += widget.initialPlate[i];
         }
       }
       final List<String> digits = <String>[];
       for (int i = widget.initialPlate.length - 1; i >= 0 && digits.length < 2; i--) {
-        if (widget.initialPlate[i].contains(RegExp("[0-9]"))) digits.insert(0, widget.initialPlate[i]);
+        if (widget.initialPlate[i].contains(_digit)) digits.insert(0, widget.initialPlate[i]);
       }
       parsedProvince = digits.join();
     }
@@ -110,7 +114,7 @@ class _UPlateFieldState extends State<UPlateField> {
 
   void _onDigits1Changed() {
     if (_isReadOnly) return;
-    String value = digits1Controller.text.replaceAll(RegExp("[^0-9]"), "");
+    String value = digits1Controller.text.replaceAll(_nonDigit, "");
     if (value.length > 2) value = value.substring(0, 2);
     if (digits1Controller.text != value) {
       digits1Controller.value = TextEditingValue(
@@ -119,12 +123,16 @@ class _UPlateFieldState extends State<UPlateField> {
       );
     }
     _updateFullPlate();
-    if (value.length == 2 && letter.isEmpty) WidgetsBinding.instance.addPostFrameCallback((_) => _showLetterMenu());
+    if (value.length == 2 && letter.isEmpty && _overlayEntry == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted && _overlayEntry == null && letter.isEmpty) _showLetterMenu();
+      });
+    }
   }
 
   void _onDigits3Changed() {
     if (_isReadOnly) return;
-    String value = digits3Controller.text.replaceAll(RegExp("[^0-9]"), "");
+    String value = digits3Controller.text.replaceAll(_nonDigit, "");
     if (value.length > 3) value = value.substring(0, 3);
     if (digits3Controller.text != value) {
       digits3Controller.value = TextEditingValue(
@@ -138,7 +146,7 @@ class _UPlateFieldState extends State<UPlateField> {
 
   void _onProvinceChanged() {
     if (_isReadOnly) return;
-    String value = provinceController.text.replaceAll(RegExp("[^0-9]"), "");
+    String value = provinceController.text.replaceAll(_nonDigit, "");
     if (value.length > 2) value = value.substring(0, 2);
     if (provinceController.text != value) {
       provinceController.value = TextEditingValue(
@@ -151,13 +159,17 @@ class _UPlateFieldState extends State<UPlateField> {
 
   void _updateFullPlate() {
     if (_isReadOnly) return;
-    widget.onPlateChange!.call("${digits1Controller.text}$letter${digits3Controller.text}${provinceController.text}");
+    final String plate = "${digits1Controller.text}$letter${digits3Controller.text}${provinceController.text}";
+    if (plate == _lastPlate) return;
+    _lastPlate = plate;
+    widget.onPlateChange!.call(plate);
   }
 
   void _showLetterMenu() {
-    if (_isReadOnly) return;
-    _overlayEntry?.remove();
-    final RenderBox renderBox = _letterButtonKey.currentContext!.findRenderObject()! as RenderBox;
+    final RenderObject? box = _letterButtonKey.currentContext?.findRenderObject();
+    if (_isReadOnly || box is! RenderBox || !box.hasSize) return;
+    _hideLetterMenu();
+    final RenderBox renderBox = box;
     final Offset offset = renderBox.localToGlobal(Offset.zero);
     final Size size = renderBox.size;
     final ColorScheme scheme = Theme.of(context).colorScheme;
@@ -223,7 +235,9 @@ class _UPlateFieldState extends State<UPlateField> {
   }
 
   void _hideLetterMenu() {
-    _overlayEntry?.remove();
+    _overlayEntry
+      ?..remove()
+      ..dispose();
     _overlayEntry = null;
   }
 

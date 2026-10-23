@@ -803,6 +803,7 @@ class UPdfViewerState extends State<UPdfViewer> {
     final UPdfEditController? target = editor;
     if (target != null && target.tool == UPdfTool.select && (_toolsOpen || widget.editController != null)) {
       final UPdfAnnotationInfo? annotation = await target.annotationAt(pageIndex, pagePoint);
+      if (!mounted) return;
       if (annotation != null || _selectedAnnotation != null) {
         setState(() {
           _selectedAnnotation = annotation;

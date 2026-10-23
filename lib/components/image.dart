@@ -674,15 +674,18 @@ class UImageAsset extends StatelessWidget {
                     package: package,
                   ),
           )
-        : Image.asset(
-            path,
+        : Image(
+            image: UResizeImage.resizeIfNeeded(
+              AssetImage(path, package: package),
+              width: width,
+              height: height,
+              fit: fit,
+              devicePixelRatio: MediaQuery.maybeDevicePixelRatioOf(context) ?? 1.0,
+            ),
             color: color,
             width: width,
             height: height,
             fit: fit,
-            cacheWidth: width == null ? null : (width! * (MediaQuery.maybeDevicePixelRatioOf(context) ?? 1.0)).round(),
-            cacheHeight: height == null ? null : (height! * (MediaQuery.maybeDevicePixelRatioOf(context) ?? 1.0)).round(),
-            package: package,
             errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) => placeholder == null
                 ? SizedBox(width: width, height: height)
                 : UImageAsset(
@@ -1094,15 +1097,12 @@ class UImageFile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double dpr = MediaQuery.maybeDevicePixelRatioOf(context) ?? 1.0;
-    final Widget img = Image.file(
-      file,
+    final Widget img = Image(
+      image: UResizeImage.resizeIfNeeded(FileImage(file), width: width, height: height, fit: fit, devicePixelRatio: MediaQuery.maybeDevicePixelRatioOf(context) ?? 1.0),
       color: color,
       width: width,
       height: height,
       fit: fit,
-      cacheWidth: width == null ? null : (width! * dpr).round(),
-      cacheHeight: height == null ? null : (height! * dpr).round(),
     );
     return uWrap(
       img,
@@ -1277,15 +1277,12 @@ class UImageMemory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double dpr = MediaQuery.maybeDevicePixelRatioOf(context) ?? 1.0;
-    final Widget img = Image.memory(
-      file,
+    final Widget img = Image(
+      image: UResizeImage.resizeIfNeeded(MemoryImage(file), width: width, height: height, fit: fit, devicePixelRatio: MediaQuery.maybeDevicePixelRatioOf(context) ?? 1.0),
       color: color,
       width: width,
       height: height,
       fit: fit,
-      cacheWidth: width == null ? null : (width! * dpr).round(),
-      cacheHeight: height == null ? null : (height! * dpr).round(),
       errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) => placeholder == null
           ? SizedBox(width: width, height: height)
           : UImageAsset(

@@ -28,7 +28,7 @@ class _URichTextEditorFieldState extends State<URichTextEditorField> {
     borderRadius: BorderRadius.circular(8),
     onTap: () async {
       final String? html = await URichTextEditor.open(initialHtml: content);
-      if (html != null) {
+      if (html != null && mounted) {
         setState(() => content = html);
         widget.onSubmit(content);
       }
@@ -2312,7 +2312,7 @@ class _URichTextEditorState extends State<URichTextEditor> {
       allowMultiple: false,
       allowedExtensions: const <String>["jpg", "jpeg", "png", "gif", "webp"],
       action: (List<UFileData> files) async {
-        if (files.isEmpty) return;
+        if (files.isEmpty || !mounted) return;
         setState(() => _uploading = true);
         final URichImageUploader uploader = widget.onUploadImage ?? _defaultUpload;
         final String? url = await uploader(files.first);

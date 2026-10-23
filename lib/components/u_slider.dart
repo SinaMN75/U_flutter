@@ -89,7 +89,7 @@ class _USliderState extends State<USlider> {
   @override
   void didUpdateWidget(covariant USlider oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.autoPlay != oldWidget.autoPlay) {
+    if (widget.autoPlay != oldWidget.autoPlay || widget.autoPlayDuration != oldWidget.autoPlayDuration || widget.images.length != oldWidget.images.length) {
       widget.autoPlay ? _startAutoPlay() : _stopAutoPlay();
     }
   }
@@ -102,11 +102,12 @@ class _USliderState extends State<USlider> {
   }
 
   void _startAutoPlay() {
-    if (!widget.autoPlay || widget.images.length <= 1) return;
     _stopAutoPlay();
+    if (!widget.autoPlay || widget.autoPlayDuration <= 0 || widget.images.length <= 1) return;
     _autoPlayTimer = Timer.periodic(
       Duration(seconds: widget.autoPlayDuration),
       (Timer timer) {
+        if (!mounted || !_pageController.hasClients || !TickerMode.valuesOf(context).enabled) return;
         if (_currentPage < widget.images.length - 1) {
           _pageController.nextPage(duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
         } else {
@@ -371,9 +372,11 @@ class _UCarouselState<T> extends State<UCarousel<T>> implements _UCarouselBindin
   void stopAutoPlay() => _stopAutoPlay();
 
   void _startAutoPlay() {
-    if (!widget.autoPlay || _count <= 1) return;
     _stopAutoPlay();
-    _timer = Timer.periodic(widget.autoPlayInterval, (Timer _) => next());
+    if (!widget.autoPlay || _count <= 1 || widget.autoPlayInterval <= Duration.zero) return;
+    _timer = Timer.periodic(widget.autoPlayInterval, (Timer _) {
+      if (mounted && TickerMode.valuesOf(context).enabled) next();
+    });
   }
 
   void _stopAutoPlay() {
@@ -389,7 +392,7 @@ class _UCarouselState<T> extends State<UCarousel<T>> implements _UCarouselBindin
 
   @override
   void next() {
-    if (_count <= 1) return;
+    if (_count <= 1 || !_pageController.hasClients) return;
     if (_loop || _current < _count - 1) {
       _pageController.nextPage(duration: widget.autoPlayAnimationDuration, curve: widget.autoPlayCurve);
     } else {
@@ -399,7 +402,7 @@ class _UCarouselState<T> extends State<UCarousel<T>> implements _UCarouselBindin
 
   @override
   void previous() {
-    if (_count <= 1) return;
+    if (_count <= 1 || !_pageController.hasClients) return;
     if (_loop || _current > 0) {
       _pageController.previousPage(duration: widget.autoPlayAnimationDuration, curve: widget.autoPlayCurve);
     } else {
@@ -409,7 +412,7 @@ class _UCarouselState<T> extends State<UCarousel<T>> implements _UCarouselBindin
 
   @override
   void animateToPage(int page, {bool animate = true}) {
-    if (_count == 0) return;
+    if (_count == 0 || !_pageController.hasClients) return;
     final int target = page % _count;
     final int rawTarget = _loop ? _rawPage + (target - _current) : target;
     if (animate) {

@@ -1139,6 +1139,7 @@ class UArSceneState extends State<UArScene> with WidgetsBindingObserver, UArLife
       if (!_o.replaceWhenFull) return null;
       await remove(placed.first.nodeId);
     }
+    if (!mounted) return null;
     setState(() => busy = true);
     try {
       final UArAnchor anchor = await controller.addAnchor(placementPose(hit), trackableId: hit.trackableId);
@@ -1234,6 +1235,7 @@ class UArSceneState extends State<UArScene> with WidgetsBindingObserver, UArLife
     try {
       final UArNodeHit? nodeHit = await controller.hitTestNodes(point);
       final String? nodeId = nodeHit == null ? null : _rootOf(nodeHit.nodeId);
+      if (!mounted) return;
       if (nodeHit != null && nodeId != null) {
         setState(() => selectedNode = nodeId);
         widget.onNodeTap?.call(nodeHit, controller.value.nodes[nodeId]);
@@ -1247,7 +1249,7 @@ class UArSceneState extends State<UArScene> with WidgetsBindingObserver, UArLife
         final UArSurface surface = currentItem?.surface ?? UArSurface.any;
         hit = _pick(hits, surface);
       }
-      if (hit == null) return;
+      if (hit == null || !mounted) return;
       if (currentItem == null) {
         setState(() => selectedNode = null);
         widget.onSurfaceTap?.call(hit);

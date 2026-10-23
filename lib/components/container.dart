@@ -361,10 +361,17 @@ Widget _uBox({
 
   Widget? current = child;
 
+  // An InkWell ripple is painted on the Material behind the box, so an opaque background would hide it;
+  // paint the background with Ink instead so the ripple shows on top.
+  final GestureTapCallback? effectiveTap = onTap ?? onPress;
+  final bool onlyTap = onDoubleTap == null && onLongPress == null && onTapDown == null && onTapUp == null && onTapCancel == null && onSecondaryTap == null;
+  final bool hasTap = effectiveTap != null || !onlyTap;
+  final bool scalePress = (pressedScale ?? (onPress != null ? 0.9 : null)) != null && effectiveTap != null && onlyTap;
+  final bool inkBackground = splash && hasTap && !scalePress && transform == null && (color != null || decoration != null);
+
   final bool needsBox =
       padding != null ||
-      color != null ||
-      decoration != null ||
+      (!inkBackground && (color != null || decoration != null)) ||
       foregroundDecoration != null ||
       width != null ||
       height != null ||
@@ -381,15 +388,24 @@ Widget _uBox({
       padding: padding,
       transform: transform,
       transformAlignment: transformAlignment,
-      clipBehavior: decoration != null ? clipBehavior : Clip.none,
+      clipBehavior: decoration != null && !inkBackground ? clipBehavior : Clip.none,
       foregroundDecoration: foregroundDecoration,
-      color: decoration == null ? color : null,
-      decoration: decoration,
+      color: decoration == null && !inkBackground ? color : null,
+      decoration: inkBackground ? null : decoration,
       child: current,
     );
   }
 
   current ??= const SizedBox.shrink();
+
+  if (inkBackground) {
+    if (clipBehavior != Clip.none) {
+      current = shape == BoxShape.circle
+          ? ClipOval(clipBehavior: clipBehavior, child: current)
+          : ClipRRect(borderRadius: effectiveRadius ?? BorderRadius.zero, clipBehavior: clipBehavior, child: current);
+    }
+    current = Ink(decoration: decoration ?? BoxDecoration(color: color), child: current);
+  }
 
   return uWrap(
     current,
@@ -577,6 +593,7 @@ class UScaffold extends StatelessWidget {
 
     if (dismissKeyboardOnTap) {
       content = GestureDetector(
+        behavior: HitTestBehavior.translucent,
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: content,
       );
@@ -689,8 +706,8 @@ class UDefaultTabBar extends StatelessWidget {
           child: ConstrainedBox(
             constraints: constraints ?? const BoxConstraints(),
             child: SizedBox(
-              width: width ?? MediaQuery.of(context).size.width,
-              height: height ?? MediaQuery.of(context).size.height,
+              width: width ?? MediaQuery.sizeOf(context).width,
+              height: height ?? MediaQuery.sizeOf(context).height,
               child: TabBarView(
                 physics: physics,
                 controller: controller,

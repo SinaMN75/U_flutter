@@ -254,7 +254,7 @@ class _UTextFieldState extends State<UTextField> {
             validator: widget.required ? UValidators.combineValidators<String>(<FormFieldValidator<String>>[UValidators.required<String>(), ?widget.validator]) : widget.validator,
             minLines: widget.lines,
             onFieldSubmitted: widget.onFieldSubmitted,
-            maxLines: widget.lines == 1 ? 1 : 20,
+            maxLines: widget.lines == 1 ? 1 : max(widget.lines, 20),
             decoration: InputDecoration(
               labelText: widget.labelText,
               floatingLabelBehavior: widget.floatingLabelBehavior,
@@ -741,71 +741,62 @@ class _UTextFieldDatePickerState extends State<UTextFieldDatePicker> {
     positionedWidth: widget.positionedWidth,
     positionedHeight: widget.positionedHeight,
     onTap: () async {
-      if (!widget.readOnly) {
-        if (widget.date) {
-          if (widget.jalali) {
-            final int startYear = widget.startYear ?? 1350;
-            final int endYear = widget.endYear ?? 1420;
-            final UJalali? picked = await UJalaliDatePicker.show(
-              type: widget.jalaliType,
-              initialDate: UJalali.fromDateTime(selectedDateTime),
-              firstDate: UJalali(startYear),
-              lastDate: UJalali(endYear, 12, UJalali(endYear, 12).monthLength),
-              helpText: widget.helpText,
-              asDialog: widget.spinnerAsDialog,
-            );
+      if (widget.readOnly) return;
+      if (widget.date) {
+        if (widget.jalali) {
+          final int startYear = widget.startYear ?? 1350;
+          final int endYear = widget.endYear ?? 1420;
+          final UJalali? picked = await UJalaliDatePicker.show(
+            type: widget.jalaliType,
+            initialDate: UJalali.fromDateTime(selectedDateTime),
+            firstDate: UJalali(startYear),
+            lastDate: UJalali(endYear, 12, UJalali(endYear, 12).monthLength),
+            helpText: widget.helpText,
+            asDialog: widget.spinnerAsDialog,
+          );
 
-            if (!mounted) return;
-            if (picked != null) {
-              final DateTime gregorian = picked.toDateTime();
-              selectedDateTime = DateTime(gregorian.year, gregorian.month, gregorian.day, selectedDateTime.hour, selectedDateTime.minute);
-              setState(() {});
-              _notify(picked);
-            }
-          } else {
-            final DateTime? pickedDate = await showDatePicker(
-              context: context,
-              initialDate: selectedDateTime,
-              firstDate: DateTime(widget.startYear ?? 1950),
-              lastDate: DateTime(widget.endYear ?? 2040),
-            );
+          if (!mounted || picked == null) return;
+          final DateTime gregorian = picked.toDateTime();
+          selectedDateTime = DateTime(gregorian.year, gregorian.month, gregorian.day, selectedDateTime.hour, selectedDateTime.minute);
+          setState(() {});
+          _notify(picked);
+        } else {
+          final DateTime? pickedDate = await showDatePicker(
+            context: context,
+            initialDate: selectedDateTime,
+            firstDate: DateTime(widget.startYear ?? 1950),
+            lastDate: DateTime(widget.endYear ?? 2040),
+          );
 
-            if (!mounted) return;
-            if (pickedDate != null) {
-              selectedDateTime = DateTime(
-                pickedDate.year,
-                pickedDate.month,
-                pickedDate.day,
-                selectedDateTime.hour,
-                selectedDateTime.minute,
-              );
-              setState(() {});
-              final UJalali jalali = UJalali.fromDateTime(selectedDateTime);
-              _notify(jalali);
-            }
-          }
-
-          if (widget.time) {
-            final TimeOfDay? timeOfDay = await showTimePicker(
-              context: navigatorKey.currentContext!,
-              initialTime: TimeOfDay.fromDateTime(selectedDateTime),
-            );
-
-            if (!mounted) return;
-            if (timeOfDay != null) {
-              selectedDateTime = DateTime(
-                selectedDateTime.year,
-                selectedDateTime.month,
-                selectedDateTime.day,
-                timeOfDay.hour,
-                timeOfDay.minute,
-              );
-              setState(() {});
-              final UJalali jalali = UJalali.fromDateTime(selectedDateTime);
-              _notify(jalali);
-            }
-          }
+          if (!mounted || pickedDate == null) return;
+          selectedDateTime = DateTime(
+            pickedDate.year,
+            pickedDate.month,
+            pickedDate.day,
+            selectedDateTime.hour,
+            selectedDateTime.minute,
+          );
+          setState(() {});
+          _notify(UJalali.fromDateTime(selectedDateTime));
         }
+      }
+
+      if (widget.time) {
+        final TimeOfDay? timeOfDay = await showTimePicker(
+          context: navigatorKey.currentContext!,
+          initialTime: TimeOfDay.fromDateTime(selectedDateTime),
+        );
+
+        if (!mounted || timeOfDay == null) return;
+        selectedDateTime = DateTime(
+          selectedDateTime.year,
+          selectedDateTime.month,
+          selectedDateTime.day,
+          timeOfDay.hour,
+          timeOfDay.minute,
+        );
+        setState(() {});
+        _notify(UJalali.fromDateTime(selectedDateTime));
       }
     },
   );
@@ -1124,12 +1115,13 @@ class _UTextFieldAutoCompleteAsyncState<T> extends State<UTextFieldAutoCompleteA
   T? _selectedItem;
   Timer? _debounceTimer;
   bool _isLoading = false;
+  int _request = 0;
 
   @override
   void initState() {
+    super.initState();
     _selectedItem = widget.selectedItem;
     _search("");
-    super.initState();
   }
 
   @override
@@ -1139,25 +1131,25 @@ class _UTextFieldAutoCompleteAsyncState<T> extends State<UTextFieldAutoCompleteA
   }
 
   Future<void> _search(String query) async {
-    setState(() {
-      _list.clear();
-      _isLoading = false;
-    });
+    _list.clear();
+    _isLoading = false;
 
     _debounceTimer?.cancel();
     _debounceTimer = Timer(widget.debounceDuration, () async {
+      if (!mounted) return;
+      final int request = ++_request;
       setState(() => _isLoading = true);
 
       try {
         final List<T> results = await widget.fetchData(query);
-        if (!mounted) return;
+        if (!mounted || request != _request) return;
         setState(() {
           _list.clear();
           _list.addAll(results);
           _isLoading = false;
         });
       } catch (e) {
-        if (!mounted) return;
+        if (!mounted || request != _request) return;
         setState(() {
           _list.clear();
           _isLoading = false;
@@ -1175,9 +1167,10 @@ class _UTextFieldAutoCompleteAsyncState<T> extends State<UTextFieldAutoCompleteA
             _debounceTimer?.cancel();
             setDialogState(() => _isLoading = true);
             _debounceTimer = Timer(widget.debounceDuration, () async {
+              final int request = ++_request;
               try {
                 final List<T> results = await widget.fetchData(query);
-                if (!mounted) return;
+                if (!mounted || !context.mounted || request != _request) return;
                 setDialogState(() {
                   _list
                     ..clear()
@@ -1185,7 +1178,7 @@ class _UTextFieldAutoCompleteAsyncState<T> extends State<UTextFieldAutoCompleteA
                   _isLoading = false;
                 });
               } catch (e) {
-                if (!mounted) return;
+                if (!mounted || !context.mounted || request != _request) return;
                 setDialogState(() {
                   _list.clear();
                   _isLoading = false;
@@ -1437,6 +1430,16 @@ class _UTextFieldPhoneNumberState extends State<UTextFieldPhoneNumber> {
       if (mounted) _syncController();
     });
     widget.controller?.addListener(_onControllerChanged);
+  }
+
+  @override
+  void didUpdateWidget(covariant UTextFieldPhoneNumber oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!identical(oldWidget.controller, widget.controller)) {
+      oldWidget.controller?.removeListener(_onControllerChanged);
+      widget.controller?.addListener(_onControllerChanged);
+      _syncController();
+    }
   }
 
   @override

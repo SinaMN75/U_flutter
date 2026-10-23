@@ -123,6 +123,7 @@ class _UProcessVisualAuthFieldState extends State<UProcessVisualAuthField> with 
 
     try {
       await _cameraController!.startVideoRecording();
+      if (!mounted) return;
 
       setState(() {
         _isRecording = true;
@@ -136,7 +137,9 @@ class _UProcessVisualAuthFieldState extends State<UProcessVisualAuthField> with 
       _detachPlayer();
 
       await _progressController.forward(from: 0);
+      if (!mounted) return;
 
+      _timer?.cancel();
       _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
         _seconds++;
         if (_seconds >= 10) _stopRecording();
@@ -154,7 +157,7 @@ class _UProcessVisualAuthFieldState extends State<UProcessVisualAuthField> with 
 
     try {
       final UCapturedVideo? recorded = await _cameraController!.stopVideoRecording();
-      if (recorded == null) return;
+      if (recorded == null || !mounted) return;
 
       setState(() => _isRecording = false);
 
