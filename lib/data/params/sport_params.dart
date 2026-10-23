@@ -716,65 +716,6 @@ class UTournamentMatchUpdateParams {
   };
 }
 
-class UTournamentMatchReadParams {
-  UTournamentMatchReadParams({
-    this.userId,
-    this.tournamentId,
-    this.sportId,
-    this.upcoming,
-    this.tags,
-    this.ids,
-    this.orderBy,
-    this.pageSize,
-    this.pageNumber,
-    this.selectorArgs,
-  });
-
-  factory UTournamentMatchReadParams.fromJson(String str) => UTournamentMatchReadParams.fromMap(json.decode(str));
-
-  factory UTournamentMatchReadParams.fromMap(Map<String, dynamic> json) => UTournamentMatchReadParams(
-    userId: json["userId"],
-    tournamentId: json["tournamentId"],
-    sportId: json["sportId"],
-    upcoming: json["upcoming"],
-    tags: json["tags"] == null ? null : List<int>.from(json["tags"].map((dynamic x) => x)),
-    ids: json["ids"] == null ? null : List<String>.from(json["ids"].map((dynamic x) => x)),
-    orderBy: json["orderBy"],
-    pageSize: json["pageSize"],
-    pageNumber: json["pageNumber"],
-    selectorArgs: json["selectorArgs"] == null ? null : UTournamentMatchSelectorArgs.fromMap(json["selectorArgs"]),
-  );
-
-  /// Matches this user plays in.
-  final String? userId;
-  final String? tournamentId;
-  final String? sportId;
-
-  /// true: not played yet, soonest first; false: played, latest first.
-  final bool? upcoming;
-  final List<int>? tags;
-  final List<String>? ids;
-  final int? orderBy;
-  final int? pageSize;
-  final int? pageNumber;
-  final UTournamentMatchSelectorArgs? selectorArgs;
-
-  String toJson() => json.encode(toMap());
-
-  Map<String, dynamic> toMap() => <String, dynamic>{
-    "userId": userId,
-    "tournamentId": tournamentId,
-    "sportId": sportId,
-    "upcoming": upcoming,
-    "tags": tags,
-    "ids": ids,
-    "orderBy": orderBy,
-    "pageSize": pageSize,
-    "pageNumber": pageNumber,
-    "selectorArgs": selectorArgs?.toMap(),
-  };
-}
-
 class UPlayerRatingHistoryReadParams {
   UPlayerRatingHistoryReadParams({
     this.userId,

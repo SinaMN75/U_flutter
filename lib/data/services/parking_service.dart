@@ -29,13 +29,6 @@ class UParkingService {
     Function(String e)? onException,
   }) => _Api.call("/parking/DeleteParking", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 
-  Future<(UResponse<String>?, UEmptyResponse?, String?)> createParkingReport({
-    required UParkingReportCreateParams p,
-    Function(UResponse<String> r)? onOk,
-    Function(UEmptyResponse e)? onError,
-    Function(String e)? onException,
-  }) => _Api.call("/parking/CreateParkingReport", p.toMap(), _Api.raw<String>(), _Api.empty, onOk, onError, onException);
-
   Future<(UResponse<List<UParkingReportResponse>>?, UEmptyResponse?, String?)> readParkingReport({
     required UParkingReportReadParams p,
     Function(UResponse<List<UParkingReportResponse>> r)? onOk,
@@ -43,40 +36,12 @@ class UParkingService {
     Function(String e)? onException,
   }) => _Api.call("/parking/ReadParkingReport", p.toMap(), _Api.list(UParkingReportResponse.fromMap), _Api.empty, onOk, onError, onException);
 
-  Future<(UEmptyResponse?, UEmptyResponse?, String?)> updateParkingReport({
-    required UParkingReportUpdateParams p,
-    Function(UEmptyResponse r)? onOk,
-    Function(UEmptyResponse e)? onError,
-    Function(String e)? onException,
-  }) => _Api.call("/parking/UpdateParkingReport", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
-
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteParkingReport({
     required UIdParams p,
     Function(UEmptyResponse r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
   }) => _Api.call("/parking/DeleteParkingReport", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
-
-  Future<(UResponse<String>?, UEmptyResponse?, String?)> createParkingUser({
-    required UParkingUserCreateParams p,
-    Function(UResponse<String> r)? onOk,
-    Function(UEmptyResponse e)? onError,
-    Function(String e)? onException,
-  }) => _Api.call("/parking/CreateParkingUser", p.toMap(), _Api.raw<String>(), _Api.empty, onOk, onError, onException);
-
-  Future<(UResponse<List<UUserResponse>>?, UEmptyResponse?, String?)> readParkingUsers({
-    required UParkingUserReadParams p,
-    Function(UResponse<List<UUserResponse>> r)? onOk,
-    Function(UEmptyResponse e)? onError,
-    Function(String e)? onException,
-  }) => _Api.call("/parking/ReadParkingUsers", p.toMap(), _Api.list(UUserResponse.fromMap), _Api.empty, onOk, onError, onException);
-
-  Future<(UEmptyResponse?, UEmptyResponse?, String?)> removeParkingUser({
-    required UParkingUserDeleteParams p,
-    Function(UEmptyResponse r)? onOk,
-    Function(UEmptyResponse e)? onError,
-    Function(String e)? onException,
-  }) => _Api.call("/parking/RemoveParkingUser", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<String>?, UEmptyResponse?, String?)> createParkingTariff({
     required UParkingTariffCreateParams p,
@@ -91,13 +56,6 @@ class UParkingService {
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
   }) => _Api.call("/parking/ReadParkingTariff", p.toMap(), _Api.list(UParkingTariffResponse.fromMap), _Api.empty, onOk, onError, onException);
-
-  Future<(UEmptyResponse?, UEmptyResponse?, String?)> updateParkingTariff({
-    required UParkingTariffUpdateParams p,
-    Function(UEmptyResponse r)? onOk,
-    Function(UEmptyResponse e)? onError,
-    Function(String e)? onException,
-  }) => _Api.call("/parking/UpdateParkingTariff", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteParkingTariff({
     required UIdParams p,
@@ -147,13 +105,6 @@ class UParkingService {
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
   }) => _Api.call("/parking/ReadParkingPlateFlag", p.toMap(), _Api.list(UParkingPlateFlagResponse.fromMap), _Api.empty, onOk, onError, onException);
-
-  Future<(UEmptyResponse?, UEmptyResponse?, String?)> updateParkingPlateFlag({
-    required UParkingPlateFlagUpdateParams p,
-    Function(UEmptyResponse r)? onOk,
-    Function(UEmptyResponse e)? onError,
-    Function(String e)? onException,
-  }) => _Api.call("/parking/UpdateParkingPlateFlag", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteParkingPlateFlag({
     required UIdParams p,

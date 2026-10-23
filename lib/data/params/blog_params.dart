@@ -14,7 +14,6 @@ class UBlogCreateParams {
   final String? metaTitle;
   final String? metaDescription;
   final String? source;
-  final List<String>? categories;
   final List<String>? media;
   final String? code;
   final String? description;
@@ -42,7 +41,6 @@ class UBlogCreateParams {
     this.metaTitle,
     this.metaDescription,
     this.source,
-    this.categories,
     this.media,
     this.code,
     this.description,
@@ -75,7 +73,6 @@ class UBlogCreateParams {
     metaTitle: json["metaTitle"],
     metaDescription: json["metaDescription"],
     source: json["source"],
-    categories: json["categories"] == null ? <String>[] : List<String>.from(json["categories"]!.map((dynamic x) => x)),
     media: json["media"] == null ? <String>[] : List<String>.from(json["media"]!.map((dynamic x) => x)),
     code: json["code"],
     description: json["description"],
@@ -104,7 +101,6 @@ class UBlogCreateParams {
     "metaTitle": metaTitle,
     "metaDescription": metaDescription,
     "source": source,
-    "categories": categories == null ? <dynamic>[] : List<dynamic>.from(categories!.map((String x) => x)),
     "media": media == null ? <dynamic>[] : List<dynamic>.from(media!.map((String x) => x)),
     "code": code,
     "description": description,
@@ -137,9 +133,6 @@ class UBlogUpdateParams {
   final String? metaTitle;
   final String? metaDescription;
   final String? source;
-  final List<String>? addCategories;
-  final List<String>? removeCategories;
-  final List<String>? categories;
   final List<String>? media;
   final String? code;
   final String? description;
@@ -172,9 +165,6 @@ class UBlogUpdateParams {
     this.metaTitle,
     this.metaDescription,
     this.source,
-    this.addCategories,
-    this.removeCategories,
-    this.categories,
     this.media,
     this.code,
     this.description,
@@ -212,9 +202,6 @@ class UBlogUpdateParams {
     metaTitle: json["metaTitle"],
     metaDescription: json["metaDescription"],
     source: json["source"],
-    addCategories: json["addCategories"] == null ? <String>[] : List<String>.from(json["addCategories"]!.map((dynamic x) => x)),
-    removeCategories: json["removeCategories"] == null ? <String>[] : List<String>.from(json["removeCategories"]!.map((dynamic x) => x)),
-    categories: json["categories"] == null ? <String>[] : List<String>.from(json["categories"]!.map((dynamic x) => x)),
     media: json["media"] == null ? <String>[] : List<String>.from(json["media"]!.map((dynamic x) => x)),
     code: json["code"],
     description: json["description"],
@@ -248,9 +235,6 @@ class UBlogUpdateParams {
     "metaTitle": metaTitle,
     "metaDescription": metaDescription,
     "source": source,
-    "addCategories": addCategories == null ? <dynamic>[] : List<dynamic>.from(addCategories!.map((String x) => x)),
-    "removeCategories": removeCategories == null ? <dynamic>[] : List<dynamic>.from(removeCategories!.map((String x) => x)),
-    "categories": categories == null ? <dynamic>[] : List<dynamic>.from(categories!.map((String x) => x)),
     "media": media == null ? <dynamic>[] : List<dynamic>.from(media!.map((String x) => x)),
     "code": code,
     "description": description,
@@ -279,7 +263,6 @@ class UBlogReadParams {
   final String? query;
   final String? title;
   final String? slug;
-  final List<String>? categories;
   final UBlogSelectorArgs? selectorArgs;
   final int? orderBy;
   final String? code;
@@ -296,7 +279,6 @@ class UBlogReadParams {
     this.query,
     this.title,
     this.slug,
-    this.categories,
     this.selectorArgs,
     this.orderBy,
     this.code,
@@ -318,7 +300,6 @@ class UBlogReadParams {
     query: json["query"],
     title: json["title"],
     slug: json["slug"],
-    categories: json["categories"] == null ? <String>[] : List<String>.from(json["categories"]!.map((dynamic x) => x)),
     selectorArgs: json["selectorArgs"] == null ? null : UBlogSelectorArgs.fromMap(json["selectorArgs"]),
     orderBy: json["orderBy"],
     code: json["code"],
@@ -336,7 +317,6 @@ class UBlogReadParams {
     "query": query,
     "title": title,
     "slug": slug,
-    "categories": categories == null ? <dynamic>[] : List<dynamic>.from(categories!.map((String x) => x)),
     "selectorArgs": selectorArgs?.toMap(),
     "orderBy": orderBy,
     "code": code,

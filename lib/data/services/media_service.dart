@@ -33,13 +33,6 @@ class UMediaService {
     return result;
   }
 
-  Future<(UResponse<List<UMediaResponse>>?, UEmptyResponse?, String?)> read({
-    required UMediaReadParams p,
-    required Function(UResponse<List<UMediaResponse>> r) onOk,
-    required Function(UEmptyResponse e) onError,
-    required Function(String e) onException,
-  }) => _Api.call("/Media/Read", p.toMap(), _Api.list(UMediaResponse.fromMap), _Api.empty, onOk, onError, onException);
-
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> update({
     required UMediaUpdateParams p,
     required Function(UEmptyResponse r) onOk,
@@ -53,13 +46,6 @@ class UMediaService {
     required Function(UEmptyResponse e) onError,
     required Function(String e) onException,
   }) => _Api.call("/Media/Delete", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
-
-  Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteRange({
-    required UIdListParams p,
-    required Function(UEmptyResponse r)? onOk,
-    required Function(UEmptyResponse e)? onError,
-    required Function(String e)? onException,
-  }) => _Api.call("/Media/DeleteRange", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 
   /// Saves a [UFilePicker.gallery]: deletes removed photos, uploads new ones (category = first tag) and moves the cover mark.
   Future<void> syncGallery(

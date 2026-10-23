@@ -204,12 +204,6 @@ class UDormService {
     Function(String e)? onException,
   }) => _Api.call("/Dorm/DormBedInvoice/Pay", p.toMap(), _Api.empty, _Api.dyn, onOk, onError, onException, locale: true);
 
-  Future<(UResponse<List<UDormBedInvoiceChartResponse>>?, UEmptyResponse?, String?)> readDormBedInvoiceChartData({
-    Function(UResponse<List<UDormBedInvoiceChartResponse>> r)? onOk,
-    Function(UEmptyResponse e)? onError,
-    Function(String e)? onException,
-  }) => _Api.call("/Dorm/DormBedInvoice/ChartData", <String, dynamic>{}, _Api.list(UDormBedInvoiceChartResponse.fromMap), _Api.empty, onOk, onError, onException);
-
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> setContractChecklist({
     required UDormBedContractChecklistParams p,
     Function(UEmptyResponse r)? onOk,

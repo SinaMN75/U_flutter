@@ -286,28 +286,6 @@ enum TagUser with UNumericIdentifiable {
   ];
 }
 
-enum TagCategory with UNumericIdentifiable {
-  category("دسته‌بندی", "Category", 101),
-  exam("پرسشنامه", "Exam", 102),
-  user("کاربران", "User", 103),
-  speciality("تخصص", "Speciality", 105),
-  dorm("خوابگاه", "Dorm", 106),
-  room("اتاق", "Room", 107),
-  bed("تخت", "Bed", 108),
-  enabled("فعال", "Enabled", 201),
-  disabled("غیر فعال", "Disabled", 202),
-  hidden("مخفی", "Hidden", 203);
-
-  const TagCategory(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
 enum TagMedia with UNumericIdentifiable {
   image("تصویر", "Image", 101),
   profile("پروفایل", "Profile", 102),
@@ -405,7 +383,6 @@ enum TagReaction with UNumericIdentifiable {
 enum TagFollow with UNumericIdentifiable {
   user("کاربر", "User", 101),
   product("محصول", "Product", 102),
-  category("دسته‌بندی", "Category", 103),
   blog("وبلاگ", "Blog", 104);
 
   const TagFollow(this.titleFa, this.titleEn, this.number);
@@ -448,20 +425,6 @@ enum TagContent with UNumericIdentifiable {
   services2("خدمات ۲", "Services 2", 502);
 
   const TagContent(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
-enum TagTicket with UNumericIdentifiable {
-  superAdmin("سوپر ادمین", "Super Admin", 101),
-  admin("ادمین", "Admin", 102);
-
-  const TagTicket(this.titleFa, this.titleEn, this.number);
 
   @override
   final String titleFa;

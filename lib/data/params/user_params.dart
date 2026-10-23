@@ -1,24 +1,5 @@
 part of "../data.dart";
 
-class UUserBulkCreateParams {
-  UUserBulkCreateParams({
-    required this.users,
-  });
-
-  factory UUserBulkCreateParams.fromJson(String str) => UUserBulkCreateParams.fromMap(json.decode(str));
-
-  factory UUserBulkCreateParams.fromMap(Map<String, dynamic> json) => UUserBulkCreateParams(
-    users: List<UUserCreateParams>.from(json["users"].map((dynamic x) => UUserCreateParams.fromMap(x))),
-  );
-  final List<UUserCreateParams> users;
-
-  String toJson() => json.encode(toMap());
-
-  Map<String, dynamic> toMap() => <String, dynamic>{
-    "users": List<dynamic>.from(users.map((UUserCreateParams x) => x.toMap())),
-  };
-}
-
 class UUserCreateParams {
   UUserCreateParams({
     required this.userName,
@@ -36,7 +17,6 @@ class UUserCreateParams {
     this.height,
     this.fatherName,
     this.fcmToken,
-    this.categories,
     this.nationalCardFront,
     this.nationalCardBack,
     this.birthCertificateFirst,
@@ -80,7 +60,6 @@ class UUserCreateParams {
     visualAuthentication: json["visualAuthentication"],
     eSignature: json["eSignature"],
     tags: List<int>.from(json["tags"].map((dynamic x) => x)),
-    categories: json["categories"] == null ? null : List<String>.from(json["categories"].map((dynamic x) => x)),
     detail1: json["detail1"],
     detail2: json["detail2"],
     id: json["id"],
@@ -111,7 +90,6 @@ class UUserCreateParams {
   final String? visualAuthentication;
   final String? eSignature;
   final List<int> tags;
-  final List<String>? categories;
   final String? detail1;
   final String? detail2;
   final String? id;
@@ -145,7 +123,6 @@ class UUserCreateParams {
     "visualAuthentication": visualAuthentication,
     "eSignature": eSignature,
     "tags": List<dynamic>.from(tags.map((dynamic x) => x)),
-    "categories": categories == null ? null : List<dynamic>.from(categories!.map((dynamic x) => x)),
     "detail1": detail1,
     "detail2": detail2,
     "id": id,
@@ -167,7 +144,6 @@ class UUserReadParams {
     this.bio,
     this.startBirthDate,
     this.endBirthDate,
-    this.categories,
     this.pageSize,
     this.pageNumber,
     this.fromCreatedAt,
@@ -193,7 +169,6 @@ class UUserReadParams {
     bio: json["bio"],
     startBirthDate: json["startBirthDate"] == null ? null : DateTime.parse(json["startBirthDate"]),
     endBirthDate: json["endBirthDate"] == null ? null : DateTime.parse(json["endBirthDate"]),
-    categories: json["categories"] == null ? null : List<String>.from(json["categories"].map((dynamic x) => x)),
     pageSize: json["pageSize"] ?? 0,
     pageNumber: json["pageNumber"] ?? 0,
     fromCreatedAt: json["fromCreatedAt"] == null ? null : DateTime.parse(json["fromCreatedAt"]),
@@ -215,7 +190,6 @@ class UUserReadParams {
   final String? bio;
   final DateTime? startBirthDate;
   final DateTime? endBirthDate;
-  final List<String>? categories;
   final int? pageSize;
   final int? pageNumber;
   final DateTime? fromCreatedAt;
@@ -240,7 +214,6 @@ class UUserReadParams {
     "bio": bio,
     "startBirthDate": startBirthDate?.toIso8601String(),
     "endBirthDate": endBirthDate?.toIso8601String(),
-    "categories": categories == null ? null : List<dynamic>.from(categories!.map((dynamic x) => x)),
     "pageSize": pageSize,
     "pageNumber": pageNumber,
     "fromCreatedAt": fromCreatedAt?.toIso8601String(),
@@ -272,7 +245,6 @@ class UUserUpdateParams {
     this.city,
     this.weight,
     this.height,
-    this.categories,
     this.addTags,
     this.removeTags,
     this.tags,
@@ -338,7 +310,6 @@ class UUserUpdateParams {
     birthCertificateFifthRejectionReason: json["birthCertificateFifthRejectionReason"],
     visualAuthenticationRejectionReason: json["visualAuthenticationRejectionReason"],
     eSignatureRejectionReason: json["eSignatureRejectionReason"],
-    categories: json["categories"] == null ? null : List<String>.from(json["categories"].map((dynamic x) => x)),
     id: json["id"],
     addTags: json["addTags"] == null ? null : List<int>.from(json["addTags"].map((dynamic x) => x)),
     removeTags: json["removeTags"] == null ? null : List<int>.from(json["removeTags"].map((dynamic x) => x)),
@@ -365,7 +336,6 @@ class UUserUpdateParams {
   final String? city;
   final double? weight;
   final double? height;
-  final List<String>? categories;
   final String id;
   final List<int>? addTags;
   final List<int>? removeTags;
@@ -431,7 +401,6 @@ class UUserUpdateParams {
     "birthCertificateFifthRejectionReason": birthCertificateFifthRejectionReason,
     "visualAuthenticationRejectionReason": visualAuthenticationRejectionReason,
     "eSignatureRejectionReason": eSignatureRejectionReason,
-    "categories": categories == null ? null : List<dynamic>.from(categories!.map((dynamic x) => x)),
     "id": id,
     "addTags": addTags == null ? null : List<dynamic>.from(addTags!.map((dynamic x) => x)),
     "removeTags": removeTags == null ? null : List<dynamic>.from(removeTags!.map((dynamic x) => x)),

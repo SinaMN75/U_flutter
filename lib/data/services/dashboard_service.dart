@@ -1,60 +1,6 @@
 part of "../data.dart";
 
 class UDashboardService {
-  Future<(USystemMetricsResponse?, UEmptyResponse?, String?)> readSystemMetrics({
-    Function(USystemMetricsResponse r)? onOk,
-    VoidCallback? onError,
-    Function(String e)? onException,
-  }) async {
-    (USystemMetricsResponse?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/dashboard/ReadSystemMetrics",
-      onSuccess: (Response r) {
-        final USystemMetricsResponse ok = USystemMetricsResponse.fromJson(r.body);
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call();
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
-
-  Future<(UDashboardResponse?, UEmptyResponse?, String?)> read({
-    Function(UDashboardResponse r)? onOk,
-    VoidCallback? onError,
-    Function(String e)? onException,
-  }) async {
-    (UDashboardResponse?, UEmptyResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      endpoint: "${U.baseUrl}/dashboard/Read",
-      onSuccess: (Response r) {
-        final UDashboardResponse ok = UDashboardResponse.fromJson(r.body);
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final UEmptyResponse err = UEmptyResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call();
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
-
   Future<(UResponse<UOsMetricsResponse>?, UEmptyResponse?, String?)> readOsMetrics({
     Function(UResponse<UOsMetricsResponse> r)? onOk,
     Function(UEmptyResponse e)? onError,

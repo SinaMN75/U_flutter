@@ -1,7 +1,6 @@
 part of "../data.dart";
 
 class UUserSelectorArgs {
-  final UCategorySelectorArgs? category;
   final UMediaSelectorArgs? media;
   final UTxnSelectorArgs? txns;
   final UAddressSelectorArgs? address;
@@ -11,7 +10,6 @@ class UUserSelectorArgs {
   final USimCardSelectorArgs? simCard;
 
   const UUserSelectorArgs({
-    this.category,
     this.media,
     this.txns,
     this.address,
@@ -26,7 +24,6 @@ class UUserSelectorArgs {
   String toJson() => json.encode(toMap());
 
   factory UUserSelectorArgs.fromMap(Map<String, dynamic> json) => UUserSelectorArgs(
-    category: json["category"] == null ? null : UCategorySelectorArgs.fromMap(json["category"]),
     media: json["media"] == null ? null : UMediaSelectorArgs.fromMap(json["media"]),
     txns: json["txns"] == null ? null : UTxnSelectorArgs.fromMap(json["txns"]),
     address: json["address"] == null ? null : UAddressSelectorArgs.fromMap(json["address"]),
@@ -37,7 +34,6 @@ class UUserSelectorArgs {
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
-    "category": category?.toMap(),
     "media": media?.toMap(),
     "txns": txns?.toMap(),
     "address": address?.toMap(),
@@ -93,33 +89,6 @@ class UVasSelectorArgs {
     "creator": creator?.toMap(),
     "walletTxn": walletTxn?.toMap(),
     "txn": txn?.toMap(),
-  };
-}
-
-class UCategorySelectorArgs {
-  final UUserSelectorArgs? creator;
-  final UMediaSelectorArgs? media;
-  final UCategorySelectorArgs? children;
-  final int? childrenDebt;
-
-  const UCategorySelectorArgs({this.creator, this.media, this.children, this.childrenDebt});
-
-  factory UCategorySelectorArgs.fromJson(String str) => UCategorySelectorArgs.fromMap(json.decode(str));
-
-  String toJson() => json.encode(toMap());
-
-  factory UCategorySelectorArgs.fromMap(Map<String, dynamic> json) => UCategorySelectorArgs(
-    creator: json["creator"] == null ? null : UUserSelectorArgs.fromMap(json["creator"]),
-    media: json["media"] == null ? null : UMediaSelectorArgs.fromMap(json["media"]),
-    children: json["children"] == null ? null : UCategorySelectorArgs.fromMap(json["children"]),
-    childrenDebt: json["childrenDebt"],
-  );
-
-  Map<String, dynamic> toMap() => <String, dynamic>{
-    "creator": creator?.toMap(),
-    "media": media?.toMap(),
-    "children": children?.toMap(),
-    "childrenDebt": childrenDebt,
   };
 }
 
@@ -267,79 +236,6 @@ class UNotificationSelectorArgs {
   Map<String, dynamic> toMap() => <String, dynamic>{
     "creator": creator?.toMap(),
     "user": user?.toMap(),
-  };
-}
-
-class UTicketSelectorArgs {
-  final UUserSelectorArgs? creator;
-  final UMediaSelectorArgs? media;
-
-  const UTicketSelectorArgs({this.creator, this.media});
-
-  factory UTicketSelectorArgs.fromJson(String str) => UTicketSelectorArgs.fromMap(json.decode(str));
-
-  String toJson() => json.encode(toMap());
-
-  factory UTicketSelectorArgs.fromMap(Map<String, dynamic> json) => UTicketSelectorArgs(
-    creator: json["creator"] == null ? null : UUserSelectorArgs.fromMap(json["creator"]),
-    media: json["media"] == null ? null : UMediaSelectorArgs.fromMap(json["media"]),
-  );
-
-  Map<String, dynamic> toMap() => <String, dynamic>{
-    "creator": creator?.toMap(),
-    "media": media?.toMap(),
-  };
-}
-
-class UProductSelectorArgs {
-  final UUserSelectorArgs? creator;
-  final String? userId;
-  final UProductSelectorArgs? children;
-  final UCategorySelectorArgs? category;
-  final UMediaSelectorArgs? media;
-  final bool? childrenCount;
-  final bool? commentsCount;
-  final bool? isFollowing;
-  final int? childrenDebt;
-
-  const UProductSelectorArgs({
-    this.creator,
-    this.userId,
-    this.children,
-    this.category,
-    this.media,
-    this.childrenCount,
-    this.commentsCount,
-    this.isFollowing,
-    this.childrenDebt,
-  });
-
-  factory UProductSelectorArgs.fromJson(String str) => UProductSelectorArgs.fromMap(json.decode(str));
-
-  String toJson() => json.encode(toMap());
-
-  factory UProductSelectorArgs.fromMap(Map<String, dynamic> json) => UProductSelectorArgs(
-    creator: json["creator"] == null ? null : UUserSelectorArgs.fromMap(json["creator"]),
-    userId: json["userId"],
-    children: json["children"] == null ? null : UProductSelectorArgs.fromMap(json["children"]),
-    category: json["category"] == null ? null : UCategorySelectorArgs.fromMap(json["category"]),
-    media: json["media"] == null ? null : UMediaSelectorArgs.fromMap(json["media"]),
-    childrenCount: json["childrenCount"],
-    commentsCount: json["commentsCount"],
-    isFollowing: json["isFollowing"],
-    childrenDebt: json["childrenDebt"],
-  );
-
-  Map<String, dynamic> toMap() => <String, dynamic>{
-    "creator": creator?.toMap(),
-    "userId": userId,
-    "children": children?.toMap(),
-    "category": category?.toMap(),
-    "media": media?.toMap(),
-    "childrenCount": childrenCount,
-    "commentsCount": commentsCount,
-    "isFollowing": isFollowing,
-    "childrenDebt": childrenDebt,
   };
 }
 
@@ -720,7 +616,6 @@ class UDormRoomSelectorArgs {
 class UBlogSelectorArgs {
   final UUserSelectorArgs? creator;
   final UMediaSelectorArgs? media;
-  final UCategorySelectorArgs? category;
   final UCommentSelectorArgs? comments;
   final bool? commentsCount;
   final String? userId;
@@ -731,7 +626,6 @@ class UBlogSelectorArgs {
   const UBlogSelectorArgs({
     this.creator,
     this.media,
-    this.category,
     this.comments,
     this.commentsCount,
     this.userId,
@@ -747,7 +641,6 @@ class UBlogSelectorArgs {
   factory UBlogSelectorArgs.fromMap(Map<String, dynamic> json) => UBlogSelectorArgs(
     creator: json["creator"] == null ? null : UUserSelectorArgs.fromMap(json["creator"]),
     media: json["media"] == null ? null : UMediaSelectorArgs.fromMap(json["media"]),
-    category: json["category"] == null ? null : UCategorySelectorArgs.fromMap(json["category"]),
     comments: json["comments"] == null ? null : UCommentSelectorArgs.fromMap(json["comments"]),
     commentsCount: json["commentsCount"],
     userId: json["userId"],
@@ -759,7 +652,6 @@ class UBlogSelectorArgs {
   Map<String, dynamic> toMap() => <String, dynamic>{
     "creator": creator?.toMap(),
     "media": media?.toMap(),
-    "category": category?.toMap(),
     "comments": comments?.toMap(),
     "commentsCount": commentsCount,
     "userId": userId,

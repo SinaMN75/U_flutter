@@ -13700,12 +13700,6 @@ abstract class AppLocalizations {
   /// **'Deposited to your account'**
   String get depositedToYourAccount;
 
-  /// No description provided for @didNotReceiveIt.
-  ///
-  /// In en, this message translates to:
-  /// **'Did not receive it'**
-  String get didNotReceiveIt;
-
   /// No description provided for @didNotShowUp.
   ///
   /// In en, this message translates to:
@@ -14396,12 +14390,6 @@ abstract class AppLocalizations {
   /// **'Pay from wallet first'**
   String get payFromWalletFirst;
 
-  /// No description provided for @payout.
-  ///
-  /// In en, this message translates to:
-  /// **'Payout'**
-  String get payout;
-
   /// No description provided for @payouts.
   ///
   /// In en, this message translates to:
@@ -14552,12 +14540,6 @@ abstract class AppLocalizations {
   /// **'Reply'**
   String get reply;
 
-  /// No description provided for @reportAProblem.
-  ///
-  /// In en, this message translates to:
-  /// **'Report a problem'**
-  String get reportAProblem;
-
   /// No description provided for @residentsPhoneNumber.
   ///
   /// In en, this message translates to:
@@ -14611,12 +14593,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'See the numbers'**
   String get seeTheNumbers;
-
-  /// No description provided for @sendToSupport.
-  ///
-  /// In en, this message translates to:
-  /// **'Send to support'**
-  String get sendToSupport;
 
   /// No description provided for @shiftDone.
   ///
@@ -14899,12 +14875,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'What customers see'**
   String get whatCustomersSee;
-
-  /// No description provided for @whatHappened.
-  ///
-  /// In en, this message translates to:
-  /// **'What happened'**
-  String get whatHappened;
 
   /// No description provided for @whatIsItFor.
   ///

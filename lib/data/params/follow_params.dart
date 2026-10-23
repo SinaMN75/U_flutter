@@ -5,7 +5,6 @@ class UFollowParams {
     this.userId,
     this.creatorId,
     this.productId,
-    this.categoryId,
   });
 
   factory UFollowParams.fromJson(String str) => UFollowParams.fromMap(json.decode(str));
@@ -14,12 +13,10 @@ class UFollowParams {
     userId: json["userId"],
     creatorId: json["creatorId"],
     productId: json["productId"],
-    categoryId: json["categoryId"],
   );
   final String? userId;
   final String? creatorId;
   final String? productId;
-  final String? categoryId;
 
   String toJson() => json.encode(toMap());
 
@@ -27,6 +24,5 @@ class UFollowParams {
     "userId": userId,
     "creatorId": creatorId,
     "productId": productId,
-    "categoryId": categoryId,
   };
 }

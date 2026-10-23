@@ -15,13 +15,6 @@ class UVehicleService {
     Function(String e)? onException,
   }) => _Api.call("/vehicle/Read", p.toMap(), _Api.list(UVehicleResponse.fromMap), _Api.empty, onOk, onError, onException);
 
-  Future<(UEmptyResponse?, UEmptyResponse?, String?)> update({
-    required UVehicleUpdateParams p,
-    Function(UEmptyResponse r)? onOk,
-    Function(UEmptyResponse e)? onError,
-    Function(String e)? onException,
-  }) => _Api.call("/vehicle/Update", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
-
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> delete({
     required UIdParams p,
     Function(UEmptyResponse r)? onOk,

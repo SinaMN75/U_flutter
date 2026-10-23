@@ -163,20 +163,6 @@ class UHotelService {
     Function(String e)? onException,
   }) => _Api.call("/Hotel/HotelInvoice/Read", p.toMap(), _Api.list(UHotelInvoiceResponse.fromMap), _Api.dyn, onOk, onError, onException, locale: true);
 
-  Future<(UEmptyResponse?, UResponse<dynamic>?, String?)> updateHotelInvoice({
-    required UHotelInvoiceUpdateParams p,
-    Function(UEmptyResponse r)? onOk,
-    Function(UResponse<dynamic> e)? onError,
-    Function(String e)? onException,
-  }) => _Api.call("/Hotel/HotelInvoice/Update", p.toMap(), _Api.empty, _Api.dyn, onOk, onError, onException, locale: true);
-
-  Future<(UEmptyResponse?, UResponse<dynamic>?, String?)> deleteHotelInvoice({
-    required UIdParams p,
-    Function(UEmptyResponse r)? onOk,
-    Function(UResponse<dynamic> e)? onError,
-    Function(String e)? onException,
-  }) => _Api.call("/Hotel/HotelInvoice/Delete", p.toMap(), _Api.empty, _Api.dyn, onOk, onError, onException, locale: true);
-
   Future<(UEmptyResponse?, UResponse<dynamic>?, String?)> payHotelInvoice({
     required UIdParams p,
     Function(UEmptyResponse r)? onOk,

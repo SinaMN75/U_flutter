@@ -1,49 +1,5 @@
 part of "../data.dart";
 
-class UNotificationCreateParams {
-  final List<int> tags;
-  final String userId;
-  final String? id;
-  final String? detail1;
-  final String? detail2;
-  final String? creatorId;
-  final List<String>? adminUserIds;
-
-  UNotificationCreateParams({
-    required this.tags,
-    required this.userId,
-    this.id,
-    this.detail1,
-    this.detail2,
-    this.creatorId,
-    this.adminUserIds,
-  });
-
-  factory UNotificationCreateParams.fromJson(String str) => UNotificationCreateParams.fromMap(json.decode(str));
-
-  String toJson() => json.encode(toMap());
-
-  factory UNotificationCreateParams.fromMap(Map<String, dynamic> json) => UNotificationCreateParams(
-    tags: List<int>.from(json["tags"]!.map((dynamic x) => x)),
-    userId: json["userId"],
-    id: json["id"],
-    detail1: json["detail1"],
-    detail2: json["detail2"],
-    creatorId: json["creatorId"],
-    adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
-  );
-
-  Map<String, dynamic> toMap() => <String, dynamic>{
-    "tags": List<dynamic>.from(tags.map((int x) => x)),
-    "id": id,
-    "detail1": detail1,
-    "detail2": detail2,
-    "userId": userId,
-    "creatorId": creatorId,
-    "adminUserIds": adminUserIds == null ? <dynamic>[] : List<dynamic>.from(adminUserIds!.map((String x) => x)),
-  };
-}
-
 class UNotificationUpdateParams {
   final String id;
   final List<int>? addTags;

@@ -174,10 +174,6 @@ class _InputsComponentsPageState extends State<InputsComponentsPage> {
           "UCountryProvincePicker(onCityChanged: …)",
           child: UCountryProvincePicker(onCityChanged: (UCity? c) => UToast.toast(message: c?.nameEn ?? "-")),
         ),
-        Demo(
-          "UCategorySelector(…) (reads U.categories)",
-          child: UCategorySelector(onCategorySelected: (UCategoryResponse? c) {}, onSubCategorySelected: (UCategoryResponse? c) {}),
-        ),
       ]),
       DemoGroup("Jalali date pickers", <Widget>[
         Fn("await UJalaliDatePicker.show(type: material)", () async => (await UJalaliDatePicker.show(type: UJalaliDatePickerType.material))?.formatCompactDate()),

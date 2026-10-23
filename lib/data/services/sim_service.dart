@@ -15,13 +15,6 @@ class USimService {
     Function(String e)? onException,
   }) => _Api.call("/Sim/Read", p.toMap(), _Api.list(USimCardResponse.fromMap), _Api.empty, onOk, onError, onException);
 
-  Future<(UEmptyResponse?, UEmptyResponse?, String?)> update({
-    required USimCardUpdateParams p,
-    Function(UEmptyResponse r)? onOk,
-    Function(UEmptyResponse e)? onError,
-    Function(String e)? onException,
-  }) => _Api.call("/Sim/Update", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
-
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> delete({
     required UIdParams p,
     Function(UEmptyResponse r)? onOk,

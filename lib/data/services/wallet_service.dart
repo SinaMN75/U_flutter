@@ -15,13 +15,6 @@ class UWalletService {
     Function(String e)? onException,
   }) => _Api.call("/wallet/Transfer", p.toMap(), _Api.one(UWalletTxnResponse.fromMap), _Api.empty, onOk, onError, onException);
 
-  Future<(UEmptyResponse?, UEmptyResponse?, String?)> purchase({
-    required UWalletPurchaseParams p,
-    Function(UEmptyResponse r)? onOk,
-    Function(UEmptyResponse e)? onError,
-    Function(String e)? onException,
-  }) => _Api.call("/wallet/Purchase", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
-
   Future<(UResponse<List<UWalletResponse>>?, UEmptyResponse?, String?)> read({
     required UWalletReadParams p,
     Function(UResponse<List<UWalletResponse>> r)? onOk,

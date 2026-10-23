@@ -29,38 +29,6 @@ class UConversationCreateParams {
   };
 }
 
-class UConversationUpdateParams {
-  UConversationUpdateParams({
-    required this.id,
-    this.title,
-    this.addUserIds,
-    this.removeUserIds,
-  });
-
-  factory UConversationUpdateParams.fromJson(String str) => UConversationUpdateParams.fromMap(json.decode(str));
-
-  factory UConversationUpdateParams.fromMap(Map<String, dynamic> json) => UConversationUpdateParams(
-    id: json["id"],
-    title: json["title"],
-    addUserIds: json["addUserIds"] == null ? null : List<String>.from(json["addUserIds"].map((dynamic x) => x)),
-    removeUserIds: json["removeUserIds"] == null ? null : List<String>.from(json["removeUserIds"].map((dynamic x) => x)),
-  );
-
-  final String id;
-  final String? title;
-  final List<String>? addUserIds;
-  final List<String>? removeUserIds;
-
-  String toJson() => json.encode(toMap());
-
-  Map<String, dynamic> toMap() => <String, dynamic>{
-    "id": id,
-    "title": title,
-    "addUserIds": addUserIds,
-    "removeUserIds": removeUserIds,
-  };
-}
-
 class UConversationReadParams {
   UConversationReadParams({
     this.tags,

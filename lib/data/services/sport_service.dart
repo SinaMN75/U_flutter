@@ -15,13 +15,6 @@ class USportService {
     Function(String e)? onException,
   }) => _Api.call("/Sport/Sport/Read", p.toMap(), _Api.list(USportResponse.fromMap), _Api.empty, onOk, onError, onException);
 
-  Future<(UResponse<USportResponse>?, UEmptyResponse?, String?)> readSportById({
-    required UIdParams p,
-    Function(UResponse<USportResponse> r)? onOk,
-    Function(UEmptyResponse e)? onError,
-    Function(String e)? onException,
-  }) => _Api.call("/Sport/Sport/ReadById", p.toMap(), _Api.one(USportResponse.fromMap), _Api.empty, onOk, onError, onException);
-
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> updateSport({
     required USportUpdateParams p,
     Function(UEmptyResponse r)? onOk,
@@ -148,13 +141,6 @@ class USportService {
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
   }) => _Api.call("/Sport/TournamentMatch/Update", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
-
-  Future<(UResponse<List<UTournamentMatchResponse>>?, UEmptyResponse?, String?)> readTournamentMatches({
-    required UTournamentMatchReadParams p,
-    Function(UResponse<List<UTournamentMatchResponse>> r)? onOk,
-    Function(UEmptyResponse e)? onError,
-    Function(String e)? onException,
-  }) => _Api.call("/Sport/TournamentMatch/Read", p.toMap(), _Api.list(UTournamentMatchResponse.fromMap), _Api.empty, onOk, onError, onException);
 
   Future<(UResponse<List<UPlayerRatingHistoryResponse>>?, UEmptyResponse?, String?)> readPlayerRatingHistory({
     required UPlayerRatingHistoryReadParams p,

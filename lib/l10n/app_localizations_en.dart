@@ -6988,9 +6988,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get depositedToYourAccount => 'Deposited to your account';
 
   @override
-  String get didNotReceiveIt => 'Did not receive it';
-
-  @override
   String get didNotShowUp => 'Did not show up';
 
   @override
@@ -7336,9 +7333,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get payFromWalletFirst => 'Pay from wallet first';
 
   @override
-  String get payout => 'Payout';
-
-  @override
   String get payouts => 'Payouts';
 
   @override
@@ -7414,9 +7408,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reply => 'Reply';
 
   @override
-  String get reportAProblem => 'Report a problem';
-
-  @override
   String get residentsPhoneNumber => 'Residents phone number';
 
   @override
@@ -7442,9 +7433,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get seeTheNumbers => 'See the numbers';
-
-  @override
-  String get sendToSupport => 'Send to support';
 
   @override
   String get shiftDone => 'Shift done';
@@ -7586,9 +7574,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get whatCustomersSee => 'What customers see';
-
-  @override
-  String get whatHappened => 'What happened';
 
   @override
   String get whatIsItFor => 'What is it for';

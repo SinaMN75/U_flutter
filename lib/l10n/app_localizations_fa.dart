@@ -6987,9 +6987,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get depositedToYourAccount => 'به حساب شما واریز شد';
 
   @override
-  String get didNotReceiveIt => 'به دستم نرسید';
-
-  @override
   String get didNotShowUp => 'نیامدند';
 
   @override
@@ -7335,9 +7332,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get payFromWalletFirst => 'اول از کیف پول';
 
   @override
-  String get payout => 'واریز';
-
-  @override
   String get payouts => 'واریزها';
 
   @override
@@ -7413,9 +7407,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get reply => 'پاسخ';
 
   @override
-  String get reportAProblem => 'گزارش مشکل';
-
-  @override
   String get residentsPhoneNumber => 'شماره‌ی ساکن';
 
   @override
@@ -7441,9 +7432,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get seeTheNumbers => 'دیدن آمار';
-
-  @override
-  String get sendToSupport => 'ارسال به پشتیبانی';
 
   @override
   String get shiftDone => 'شیفت تمام شد';
@@ -7585,9 +7573,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get whatCustomersSee => 'آنچه مشتری می‌بیند';
-
-  @override
-  String get whatHappened => 'چه شده است؟';
 
   @override
   String get whatIsItFor => 'برای چیست؟';

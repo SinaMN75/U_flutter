@@ -9,7 +9,6 @@ class UMediaCreateParams {
     this.userId,
     this.contentId,
     this.commentId,
-    this.categoryId,
     this.productId,
     this.blogId,
     this.title,
@@ -28,7 +27,6 @@ class UMediaCreateParams {
   final String? userId;
   final String? contentId;
   final String? commentId;
-  final String? categoryId;
   final String? productId;
   final String? blogId;
   final String? title;
@@ -51,7 +49,6 @@ class UMediaCreateParams {
     "userId": userId,
     "contentId": contentId,
     "commentId": commentId,
-    "categoryId": categoryId,
     "productId": productId,
     "blogId": blogId,
     "title": title,
@@ -80,7 +77,6 @@ class UMediaUpdateParams {
     this.userId,
     this.contentId,
     this.commentId,
-    this.categoryId,
     this.productId,
     this.blogId,
     this.detail1,
@@ -107,7 +103,6 @@ class UMediaUpdateParams {
     userId: json["userId"],
     contentId: json["contentId"],
     commentId: json["commentId"],
-    categoryId: json["categoryId"],
     productId: json["productId"],
     blogId: json["blogId"],
     detail1: json["detail1"],
@@ -131,7 +126,6 @@ class UMediaUpdateParams {
   final String? userId;
   final String? contentId;
   final String? commentId;
-  final String? categoryId;
   final String? productId;
   final String? blogId;
   final String? detail1;
@@ -157,7 +151,6 @@ class UMediaUpdateParams {
     "userId": userId,
     "contentId": contentId,
     "commentId": commentId,
-    "categoryId": categoryId,
     "productId": productId,
     "blogId": blogId,
     "detail1": detail1,
@@ -171,53 +164,5 @@ class UMediaUpdateParams {
     "dormId": dormId,
     "dormRoomId": dormRoomId,
     "dormBedId": dormBedId,
-  };
-}
-
-class UMediaReadParams {
-  final int? pageSize;
-  final int? pageNumber;
-  final DateTime? fromCreatedAt;
-  final DateTime? toCreatedAt;
-  final List<int>? tags;
-  final int? orderBy;
-  final List<String>? ids;
-  final String? creatorId;
-
-  UMediaReadParams({
-    this.pageSize,
-    this.pageNumber,
-    this.fromCreatedAt,
-    this.toCreatedAt,
-    this.tags,
-    this.orderBy,
-    this.ids,
-    this.creatorId,
-  });
-
-  factory UMediaReadParams.fromJson(String str) => UMediaReadParams.fromMap(json.decode(str));
-
-  String toJson() => json.encode(toMap());
-
-  factory UMediaReadParams.fromMap(Map<String, dynamic> json) => UMediaReadParams(
-    pageSize: json["pageSize"] ?? 0,
-    pageNumber: json["pageNumber"] ?? 0,
-    fromCreatedAt: json["fromCreatedAt"] == null ? null : DateTime.parse(json["fromCreatedAt"]),
-    toCreatedAt: json["toCreatedAt"] == null ? null : DateTime.parse(json["toCreatedAt"]),
-    tags: json["tags"] == null ? null : List<int>.from(json["tags"].map((dynamic x) => x)),
-    orderBy: json["orderBy"],
-    ids: json["ids"] == null ? null : List<String>.from(json["ids"]!.map((dynamic x) => x)),
-    creatorId: json["creatorId"],
-  );
-
-  Map<String, dynamic> toMap() => <String, dynamic>{
-    if (pageSize != null) "pageSize": pageSize,
-    if (pageNumber != null) "pageNumber": pageNumber,
-    "fromCreatedAt": fromCreatedAt?.toIso8601String(),
-    "toCreatedAt": toCreatedAt?.toIso8601String(),
-    "tags": tags == null ? null : List<dynamic>.from(tags!.map((int x) => x)),
-    if (orderBy != null) "orderBy": orderBy,
-    if (ids != null) "ids": List<dynamic>.from(ids!.map((String x) => x)),
-    if (creatorId != null) "creatorId": creatorId,
   };
 }

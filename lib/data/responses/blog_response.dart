@@ -13,7 +13,6 @@ class UBlogResponse {
   final String? slug;
   final String? content;
   final List<UMediaResponse>? media;
-  final List<UCategoryResponse>? categories;
   final List<UCommentResponse>? comments;
   final int? commentCount;
   final String? code;
@@ -38,7 +37,6 @@ class UBlogResponse {
     this.slug,
     this.content,
     this.media,
-    this.categories,
     this.comments,
     this.commentCount,
     this.code,
@@ -68,7 +66,6 @@ class UBlogResponse {
     slug: json["slug"],
     content: json["content"],
     media: json["media"] == null ? <UMediaResponse>[] : List<UMediaResponse>.from(json["media"]!.map((dynamic x) => UMediaResponse.fromMap(x))),
-    categories: json["categories"] == null ? <UCategoryResponse>[] : List<UCategoryResponse>.from(json["categories"]!.map((dynamic x) => UCategoryResponse.fromMap(x))),
     comments: json["comments"] == null ? <UCommentResponse>[] : List<UCommentResponse>.from(json["comments"]!.map((dynamic x) => UCommentResponse.fromMap(x))),
     commentCount: json["commentCount"],
     code: json["code"],
@@ -94,7 +91,6 @@ class UBlogResponse {
     "slug": slug,
     "content": content,
     "media": media == null ? <UMediaResponse>[] : List<UMediaResponse>.from(media!.map((UMediaResponse x) => x.toMap())),
-    "categories": categories == null ? <UCategoryResponse>[] : List<UCategoryResponse>.from(categories!.map((UCategoryResponse x) => x.toMap())),
     "comments": comments == null ? <UCommentResponse>[] : List<UCommentResponse>.from(comments!.map((UCommentResponse x) => x.toMap())),
     "commentCount": commentCount,
     "code": code,

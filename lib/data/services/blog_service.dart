@@ -35,11 +35,4 @@ class UBlogService {
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
   }) => _Api.call("/Blog/Delete", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
-
-  Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteRange({
-    required UIdListParams p,
-    Function(UEmptyResponse r)? onOk,
-    Function(UEmptyResponse e)? onError,
-    Function(String e)? onException,
-  }) => _Api.call("/Blog/DeleteRange", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 }

@@ -8,13 +8,6 @@ class UUserService {
     Function(String e)? onException,
   }) => _Api.call("/user/Create", p.toMap(), _Api.raw<String>(), _Api.empty, onOk, onError, onException);
 
-  Future<(UEmptyResponse?, UEmptyResponse?, String?)> bulkCreate({
-    required UUserBulkCreateParams p,
-    Function(UEmptyResponse r)? onOk,
-    Function(UEmptyResponse e)? onError,
-    Function(String e)? onException,
-  }) => _Api.call("/user/BulkCreate", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
-
   Future<(UResponse<List<UUserResponse>>?, UEmptyResponse?, String?)> read({
     required UUserReadParams p,
     Function(UResponse<List<UUserResponse>> r)? onOk,

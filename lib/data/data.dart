@@ -2,7 +2,6 @@ import "package:u/utilities.dart";
 
 part "services/_api.dart";
 
-part "params/address_params.dart";
 
 part "params/api_log_params.dart";
 
@@ -10,13 +9,10 @@ part "params/app_settings_params.dart";
 
 part "params/auth_params.dart";
 
-part "params/bank_account_params.dart";
 
 part "params/base_params.dart";
 
 part "params/blog_params.dart";
-
-part "params/category_params.dart";
 
 part "params/chat_params.dart";
 
@@ -53,7 +49,6 @@ part "params/notification_params.dart";
 
 part "params/parking_params.dart";
 
-part "params/product_params.dart";
 
 part "params/selectors.dart";
 
@@ -64,8 +59,6 @@ part "params/social_params.dart";
 part "params/sport_params.dart";
 
 part "params/terminal_params.dart";
-
-part "params/ticket_params.dart";
 
 part "params/txn_params.dart";
 
@@ -93,8 +86,6 @@ part "responses/base_response.dart";
 
 part "responses/blog_response.dart";
 
-part "responses/category_response.dart";
-
 part "responses/chat_response.dart";
 
 part "responses/charge_internet_response.dart";
@@ -105,13 +96,11 @@ part "responses/content_response.dart";
 
 part "responses/dashboard_analytics_response.dart";
 
-part "responses/dashboard_response.dart";
 
 part "responses/db_admin_response.dart";
 
 part "responses/file_manager_response.dart";
 
-part "responses/follower_following_count_response.dart";
 
 part "responses/gold_response.dart";
 
@@ -136,7 +125,6 @@ part "responses/parking_response.dart";
 
 part "responses/process_response.dart";
 
-part "responses/product_response.dart";
 
 part "responses/sim_response.dart";
 
@@ -146,11 +134,9 @@ part "responses/sport_response.dart";
 
 part "responses/terminal_response.dart";
 
-part "responses/ticket_response.dart";
 
 part "responses/txn_response.dart";
 
-part "responses/user_flow.dart";
 
 part "responses/user_response.dart";
 
@@ -160,17 +146,13 @@ part "responses/venue_response.dart";
 
 part "responses/wallet_response.dart";
 
-part "services/address_service.dart";
 
 part "services/app_settings_service.dart";
 
 part "services/auth_service.dart";
 
-part "services/bank_account_service.dart";
 
 part "services/blog_service.dart";
-
-part "services/category_service.dart";
 
 part "services/chat_service.dart";
 
@@ -211,7 +193,6 @@ part "services/pn_service.dart";
 
 part "services/process_service.dart";
 
-part "services/product_service.dart";
 
 part "services/sim_service.dart";
 
@@ -220,8 +201,6 @@ part "services/social_service.dart";
 part "services/sport_service.dart";
 
 part "services/terminal_service.dart";
-
-part "services/ticket_service.dart";
 
 part "services/txn_service.dart";
 
@@ -251,10 +230,8 @@ part "payment/receipt_key_values.dart";
 class UServices {
   static UAuthService auth = UAuthService();
   static UAppSettingsService appSettings = UAppSettingsService();
-  static UCategoryService category = UCategoryService();
   static UDashboardService dashboard = UDashboardService();
   static UUserService user = UUserService();
-  static UProductService product = UProductService();
   static UContentService content = UContentService();
   static UCommentService comment = UCommentService();
   static UFollowService follow = UFollowService();
@@ -262,11 +239,9 @@ class UServices {
   static UMediaService media = UMediaService();
   static UWalletService wallet = UWalletService();
   static UIpgService ipg = UIpgService();
-  static UAddressService address = UAddressService();
   static UInquiryService inquiry = UInquiryService();
   static UVehicleService vehicle = UVehicleService();
   static UTerminalService terminal = UTerminalService();
-  static UBankAccountService bankAccount = UBankAccountService();
   static UNotificationService notification = UNotificationService();
   static UChargeInternetService chargeInternet = UChargeInternetService();
   static UMoadiService moadi = UMoadiService();
@@ -275,7 +250,6 @@ class UServices {
   static UDormService dorm = UDormService();
   static UHotelService hotel = UHotelService();
   static UOrganizationService organization = UOrganizationService();
-  static UTicketService ticket = UTicketService();
   static UParkingService parking = UParkingService();
   static UTxnService txn = UTxnService();
   static UDataSeedService dataSeed = UDataSeedService();

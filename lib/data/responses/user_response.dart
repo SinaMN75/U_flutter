@@ -51,7 +51,6 @@ class UUserResponse {
   final String? birthCertificateFifth;
   final String? visualAuthentication;
   final String? eSignature;
-  final List<UCategoryResponse>? categories;
   final List<UMediaResponse>? media;
   final List<UAddressResponse>? addresses;
   final List<UMerchantResponse>? merchants;
@@ -87,7 +86,6 @@ class UUserResponse {
     this.birthCertificateFifth,
     this.visualAuthentication,
     this.eSignature,
-    this.categories,
     this.media,
     this.addresses,
     this.merchants,
@@ -126,7 +124,6 @@ class UUserResponse {
     birthCertificateFifth: json["birthCertificateFifth"],
     visualAuthentication: json["visualAuthentication"],
     eSignature: json["eSignature"],
-    categories: json["categories"] == null ? <UCategoryResponse>[] : List<UCategoryResponse>.from(json["categories"].map((dynamic x) => UCategoryResponse.fromMap(x))),
     media: json["media"] == null ? <UMediaResponse>[] : List<UMediaResponse>.from(json["media"].map((dynamic x) => UMediaResponse.fromMap(x))),
     addresses: json["addresses"] == null ? <UAddressResponse>[] : List<UAddressResponse>.from(json["addresses"].map((dynamic x) => UAddressResponse.fromMap(x))),
     merchants: json["merchants"] == null ? <UMerchantResponse>[] : List<UMerchantResponse>.from(json["merchants"].map((dynamic x) => UMerchantResponse.fromMap(x))),
@@ -162,7 +159,6 @@ class UUserResponse {
     "birthCertificateFifth": birthCertificateFifth,
     "visualAuthentication": visualAuthentication,
     "eSignature": eSignature,
-    "categories": categories == null ? null : List<dynamic>.from(categories!.map((UCategoryResponse x) => x.toMap())),
     "media": media == null ? null : List<dynamic>.from(media!.map((UMediaResponse x) => x.toMap())),
     "addresses": addresses == null ? null : List<dynamic>.from(addresses!.map((UAddressResponse x) => x.toMap())),
     "merchants": merchants == null ? null : List<dynamic>.from(merchants!.map((UMerchantResponse x) => x.toMap())),
@@ -269,25 +265,5 @@ class UUserJson {
     "city": city,
     "referralCode": referralCode,
     "referrerId": referrerId,
-  };
-}
-
-class UUserDataDownloadResponse {
-  final String link;
-
-  UUserDataDownloadResponse({
-    required this.link,
-  });
-
-  factory UUserDataDownloadResponse.fromJson(String str) => UUserDataDownloadResponse.fromMap(json.decode(str));
-
-  String toJson() => json.encode(toMap());
-
-  factory UUserDataDownloadResponse.fromMap(Map<String, dynamic> json) => UUserDataDownloadResponse(
-    link: json["link"] as String,
-  );
-
-  Map<String, dynamic> toMap() => <String, dynamic>{
-    "link": link,
   };
 }

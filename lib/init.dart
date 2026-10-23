@@ -35,9 +35,6 @@ abstract class U {
   /// Content items (about us, banners…) loaded from the server.
   static List<UContentResponse> contents = <UContentResponse>[];
 
-  /// Categories loaded from the server.
-  static List<UCategoryResponse> categories = <UCategoryResponse>[];
-
   /// Open tabs of a desktop/admin tab layout (UDefaultTabBar).
   static final URxList<UTabData> tabs = <UTabData>[].obs;
 
