@@ -2,6 +2,9 @@ import "package:u/utilities.dart";
 
 /// International phone numbers: clean input, validate per country, format, convert to E.164 (+989121234567). `UPhoneNumberUtils.toE164("0912 123 4567", countryCode: "IR")`
 class UPhoneNumberUtils {
+  static final RegExp _nonDialable = RegExp(r"[^\d+]");
+  static final RegExp _digitsOnly = RegExp(r"^\d+$");
+
   /// Cleans a number for storage/API: Latin digits, no spaces, no trunk 0. `UPhoneNumberUtils.normalizePhone("۰۹۱۲ ۱۲۳", countryCode: "IR")`
   static String normalizePhone(
     String rawInput, {
@@ -15,7 +18,7 @@ class UPhoneNumberUtils {
     if (!countryCode.startsWith("+")) {
       countryCode = "+$countryCode";
     }
-    String input = rawInput.replaceAll(RegExp(r"[^\d+]"), "");
+    String input = rawInput.replaceAll(_nonDialable, "");
 
     if (input.startsWith(countryCode)) {
       return input;
@@ -33,14 +36,14 @@ class UPhoneNumberUtils {
     if (stripLeadingZero && input.startsWith("0")) {
       input = input.substring(1);
     }
-    if (RegExp(r"^\d+$").hasMatch(input)) {
+    if (_digitsOnly.hasMatch(input)) {
       return countryCode + input;
     }
     return input;
   }
 
   /// Keeps digits and +, converting Persian/Arabic digits.
-  static String sanitize(String rawInput) => rawInput.toLatinNumber().replaceAll(RegExp(r"[^\d+]"), "");
+  static String sanitize(String rawInput) => rawInput.toLatinNumber().replaceAll(_nonDialable, "");
 
   /// Dial code of an ISO code or dial code. `UPhoneNumberUtils.dialCodeOf("IR")` → "+98"
   static String dialCodeOf(String countryCode) {

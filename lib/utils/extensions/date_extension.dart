@@ -3,8 +3,15 @@ import "package:u/utilities.dart";
 
 /// Formatting, Jalali conversion, "time ago" and day math on DateTime. `DateTime.now().toJalaliDate()`
 extension DateTimeExtensions on DateTime {
+  static final Map<String, intl.DateFormat> _formats = <String, intl.DateFormat>{};
+
   /// Formats with an intl pattern. `date.formatDate("yyyy-MM-dd HH:mm")`
-  String formatDate(String dateFormat) => intl.DateFormat(dateFormat).format(this);
+  String formatDate(String dateFormat) {
+    final String key = "${intl.Intl.getCurrentLocale()}|$dateFormat";
+    final intl.DateFormat format = _formats[key] ??= intl.DateFormat(dateFormat);
+    if (_formats.length > 64) _formats.remove(_formats.keys.first);
+    return format.format(this);
+  }
 
   /// The current UTC time (ignores this date). `DateTime.now().utcNow()`
   DateTime utcNow() => DateTime.now().toUtc();

@@ -5,7 +5,7 @@ abstract class ULocalStorage {
   /// Loads storage from disk; initU() already does it.
   static Future<void> init() => UStorage.init();
 
-  static UStore _storeFor(String key) => UStorage.secureKeys.contains(key) ? UStorage.secure : UStorage.instance;
+  static UStore _storeFor(String key) => UStorage.isSecureKey(key) ? UStorage.secure : UStorage.instance;
 
   /// Every saved key (normal and encrypted).
   static Set<String> getKeys() => <String>{...UStorage.instance.keys, ...UStorage.secure.keys};

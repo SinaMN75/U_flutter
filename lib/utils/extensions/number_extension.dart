@@ -49,6 +49,8 @@ extension NumExtension on num {
 
 /// Rounding and money formatting on doubles. `1234.5.separate3By3()`
 extension DoubleExtionsion on double {
+  static final RegExp _trailingZeros = RegExp(r"0+$");
+
   /// Cuts to [maxPrecision] decimals (no rounding), then groups with commas. 1234567.891 → "1,234,567"
   String separate3By3({int maxPrecision = 0}) => toStringAsSmartRound(maxPrecision: maxPrecision).separateNumbers3By3();
 
@@ -58,7 +60,7 @@ extension DoubleExtionsion on double {
     if (!str.contains(".") || str.contains("e")) return str;
     final int periodIndex = str.indexOf(".");
     final String wholePart = str.substring(0, periodIndex);
-    final String mantissa = str.substring(periodIndex + 1, min(str.length, periodIndex + 1 + maxPrecision)).replaceAll(RegExp(r"0+$"), "");
+    final String mantissa = str.substring(periodIndex + 1, min(str.length, periodIndex + 1 + maxPrecision)).replaceAll(_trailingZeros, "");
     return mantissa.isEmpty ? wholePart : "$wholePart.$mantissa";
   }
 

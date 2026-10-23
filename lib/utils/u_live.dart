@@ -20,6 +20,7 @@ abstract class ULive {
   static final Set<(String, String)> _joined = <(String, String)>{};
   static ULiveSocket? _socket;
   static Timer? _ping;
+  static Timer? _reconnect;
   static bool _wanted = false;
   static bool _connecting = false;
   static int _invocation = 0;
@@ -45,23 +46,33 @@ abstract class ULive {
         .toString();
   }
 
-  static Future<void> connect() async {
+  static Future<void> connect() {
     _wanted = true;
-    if (_socket != null || _connecting) return;
+    return _connect();
+  }
+
+  static Future<void> _connect() async {
+    _reconnect?.cancel();
+    _reconnect = null;
+    if (!_wanted || _socket != null || _connecting) return;
     _connecting = true;
     try {
       await UAuth.ensureFreshToken();
       final ULiveSocket socket = await ULiveSocket.connect(_url);
+      if (!_wanted) {
+        await socket.close();
+        return;
+      }
       _socket = socket;
       _retry = 0;
-      socket.messages.listen(_receive, onDone: _lost, onError: (Object _) => _lost(), cancelOnError: true);
+      socket.messages.listen(_receive, onDone: () => _lost(socket), onError: (Object _) => _lost(socket), cancelOnError: true);
       socket.send('{"protocol":"json","version":1}$_separator');
       _ping = Timer.periodic(const Duration(seconds: 15), (_) => _send(<String, dynamic>{"type": 6}));
       for (final (String method, String id) in _joined) {
         unawaited(_invoke(method, <Object?>[id]));
       }
     } catch (_) {
-      _lost();
+      _lost(null);
     } finally {
       _connecting = false;
     }
@@ -71,18 +82,22 @@ abstract class ULive {
     _wanted = false;
     _joined.clear();
     _ping?.cancel();
+    _reconnect?.cancel();
+    _reconnect = null;
     final ULiveSocket? socket = _socket;
     _socket = null;
     await socket?.close();
   }
 
-  static void _lost() {
+  static void _lost(ULiveSocket? socket) {
+    if (socket != null && !identical(socket, _socket)) return;
     _ping?.cancel();
     _socket = null;
-    if (!_wanted) return;
+    if (socket != null) unawaited(socket.close().catchError((Object _) {}));
+    if (!_wanted || _reconnect != null) return;
     // Back off a little more after every failure, up to 30 seconds.
     _retry = (_retry + 1).clamp(1, 6);
-    Timer(Duration(seconds: <int>[1, 2, 5, 10, 20, 30][_retry - 1]), connect);
+    _reconnect = Timer(Duration(seconds: <int>[1, 2, 5, 10, 20, 30][_retry - 1]), () => unawaited(_connect()));
   }
 
   static void _receive(String data) {
@@ -99,7 +114,7 @@ abstract class ULive {
         case 1:
           _events.add(ULiveEvent(message["target"] as String, (message["arguments"] as List<dynamic>?) ?? <dynamic>[]));
         case 7:
-          _lost();
+          _lost(_socket);
       }
     }
   }

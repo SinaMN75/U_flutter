@@ -847,6 +847,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get correctTheEntryTime => 'اصلاح ساعت ورود';
 
   @override
+  String get couldNotConnectToTheServer => 'ارتباط با مرکز برقرار نشد.';
+
+  @override
   String get couldNotOpenTheDocument => 'سند باز نشد';
 
   @override
@@ -2465,6 +2468,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get newFile => 'جدید';
+
+  @override
+  String get noResponseFromTheServer => 'پاسخی از مرکز دریافت نشد.';
 
   @override
   String get noRows => 'ردیفی وجود ندارد';

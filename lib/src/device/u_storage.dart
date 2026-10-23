@@ -58,6 +58,9 @@ abstract final class UStorage {
   /// Keys that `ULocalStorage` always keeps in [secure] (auth tokens).
   static Set<String> get secureKeys => <String>{UConstants.token, UConstants.refreshToken, UConstants.refreshTokenExpiresAt};
 
+  /// True when `ULocalStorage` keeps [key] in [secure].
+  static bool isSecureKey(String key) => key == UConstants.token || key == UConstants.refreshToken || key == UConstants.refreshTokenExpiresAt;
+
   /// Opens the default and the secure store.
   /// Idempotent and cheap to call again; `initU()` calls it for you.
   static Future<void> init() => _init ??= _initialize();
@@ -359,7 +362,9 @@ class UStore {
   Future<void> _flushNow() async {
     _timer = null;
     while (_writing != null) {
-      await _writing;
+      try {
+        await _writing;
+      } catch (_) {}
     }
     final Completer<void>? done = _pending;
     if (done == null) return;
@@ -453,10 +458,7 @@ class UStore {
   }
 
   void _put(String key, Object value, int? expiresAt, {bool notify = true}) {
-    final List<Object?> raw = _UCodec.encode(value);
-    if (expiresAt != null) raw.add(expiresAt);
-    final String encoded = jsonEncode(raw);
-    final Object stored = _UCodec.decode(raw)!;
+    final (Object stored, String encoded) = _UCodec.encodeEntry(value, expiresAt);
     _values[key] = stored;
     _encoded[key] = encoded;
     if (expiresAt == null) {
@@ -552,6 +554,33 @@ class UStore {
 
 /// Tagged JSON encoding that keeps Dart types across restarts: `[tag, value, expiresAt?]`.
 abstract final class _UCodec {
+  // JSON payloads are encoded once: the string goes to disk and its decoded copy is what readers get.
+  static (Object, String) encodeEntry(Object value, int? expiresAt) {
+    final String suffix = expiresAt == null ? "" : ",$expiresAt";
+    final Object? json = _jsonPayload(value);
+    if (!identical(json, _notJson)) {
+      final String payload = jsonEncode(json);
+      return (jsonDecode(payload) as Object? ?? const <String, dynamic>{}, '["j",$payload$suffix]');
+    }
+    final List<Object?> raw = encode(value);
+    if (expiresAt != null) raw.add(expiresAt);
+    return (decode(raw)!, jsonEncode(raw));
+  }
+
+  static const Object _notJson = Object();
+
+  static Object? _jsonPayload(Object value) {
+    if (value is String || value is bool || value is num || value is DateTime || value is Duration || value is Uint8List || value is Enum || value is List<String> || value is Set<String>) {
+      return _notJson;
+    }
+    if (value is Map || value is List) return value;
+    try {
+      return (value as dynamic).toJson();
+    } on NoSuchMethodError {
+      throw ArgumentError.value(value, "value", "UStorage cannot store ${value.runtimeType}; give it a toJson() or store a Map");
+    }
+  }
+
   static List<Object?> encode(Object value) {
     if (value is String) return <Object?>["s", value];
     if (value is bool) return <Object?>["b", value];

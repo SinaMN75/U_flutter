@@ -339,13 +339,7 @@ abstract class UToast {
     if (duration != Duration.zero) {
       Future<void>.delayed(duration ?? Duration(seconds: U.snackBarDuration), () {
         if (_toastEntry != entry) return;
-
-        _toastEntry = null;
-
-        if (entry.mounted) {
-          entry.remove();
-        }
-
+        clearToast();
         onDismiss?.call();
       });
     }
@@ -354,12 +348,10 @@ abstract class UToast {
   /// Hides the current toast now.
   static void clearToast() {
     final OverlayEntry? entry = _toastEntry;
-
     _toastEntry = null;
-
-    if (entry != null && entry.mounted) {
-      entry.remove();
-    }
+    entry
+      ?..remove()
+      ..dispose();
   }
 
   /// Green floating toast. `UToast.successToast(message: "Done")`
@@ -440,6 +432,8 @@ class _UToastCard extends StatefulWidget {
 
 class _UToastCardState extends State<_UToastCard> with SingleTickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(vsync: this, duration: widget.animationDuration)..forward();
+  late final CurvedAnimation _curved = CurvedAnimation(parent: _controller, curve: Curves.easeOutBack);
+  late final Animation<Offset> _slide = Tween<Offset>(begin: _beginOffset, end: Offset.zero).animate(_curved);
 
   Alignment get _alignment => switch (widget.position) {
     UToastPosition.top => Alignment.topCenter,
@@ -455,20 +449,19 @@ class _UToastCardState extends State<_UToastCard> with SingleTickerProviderState
 
   @override
   void dispose() {
+    _curved.dispose();
     _controller.dispose();
     super.dispose();
   }
 
   @override
-  Widget build(BuildContext context) {
-    final CurvedAnimation curved = CurvedAnimation(parent: _controller, curve: Curves.easeOutBack);
-    return SafeArea(
+  Widget build(BuildContext context) => SafeArea(
       child: Align(
         alignment: _alignment,
         child: Padding(
           padding: widget.margin,
           child: SlideTransition(
-            position: Tween<Offset>(begin: _beginOffset, end: Offset.zero).animate(curved),
+            position: _slide,
             child: FadeTransition(
               opacity: _controller,
               child: Material(
@@ -502,7 +495,6 @@ class _UToastCardState extends State<_UToastCard> with SingleTickerProviderState
         ),
       ),
     );
-  }
 }
 
 // -----------------------------------------------------------------------------

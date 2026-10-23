@@ -1,6 +1,8 @@
 import "package:u/utilities.dart";
 
 abstract class UBaseController {
+  static final RegExp _listSeparator = RegExp("[،,]");
+
   final URxState state = URxState();
   final GlobalKey<FormState> formKey = GlobalKey();
 
@@ -61,7 +63,7 @@ abstract class UBaseController {
 
   /// The users with [ids]; the ones that fail to load are skipped.
   Future<List<UUserResponse>> readUsersById(List<String> ids) async => <UUserResponse>[
-    for (final String id in ids) ?(await UServices.user.readById(p: UIdParams(id: id))).$1?.result,
+    for (final (UResponse<UUserResponse>?, UEmptyResponse?, String?) r in await Future.wait(ids.map((String id) => UServices.user.readById(p: UIdParams(id: id))))) ?r.$1?.result,
   ];
 
   /// The number typed in [c] (Persian digits and separators allowed); null when empty.
@@ -70,7 +72,7 @@ abstract class UBaseController {
   int? intOf(TextEditingController c) => c.text.trim().isEmpty ? null : c.numInt();
 
   /// "a, b، c" → ["a", "b", "c"] (Latin and Persian commas).
-  List<String> splitList(String text) => text.split(RegExp("[،,]")).map((String i) => i.trim()).where((String i) => i.isNotEmpty).toList();
+  List<String> splitList(String text) => text.split(_listSeparator).map((String i) => i.trim()).where((String i) => i.isNotEmpty).toList();
 
   /// Asks for confirmation (the dialog closes itself), then runs [call] through [send]. Defaults to a delete prompt.
   void confirmAction(Future<(dynamic, dynamic, String?)> Function() call, void Function() reload, {String? title, String? message}) => UNavigator.confirm(

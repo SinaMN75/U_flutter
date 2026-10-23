@@ -36,7 +36,16 @@ abstract class UNavigator {
   static bool get canPop => Navigator.of(context).canPop();
 
   /// Name of the current route, if it has one.
-  static String? get currentRouteName => ModalRoute.of(context)?.settings.name;
+  static String? get currentRouteName {
+    Route<dynamic>? top;
+    navigatorKey.currentState?.popUntil((Route<dynamic> route) {
+      top = route;
+      return true;
+    });
+    return top?.settings.name;
+  }
+
+  static (Type, DateTime)? _lastPush;
 
   /// Opens a page with a transition (slide by default). `final bool? ok = await UNavigator.push<bool>(EditPage())`
   static Future<T?> push<T>(
@@ -52,8 +61,11 @@ abstract class UNavigator {
     Object? arguments,
     VoidCallback? onDismiss,
   }) {
-    if (preventDuplicates && ModalRoute.of(navigatorKey.currentContext!)?.settings.name == page.runtimeType.toString()) {
-      return Future<T?>.value();
+    if (preventDuplicates) {
+      final DateTime now = DateTime.now();
+      final (Type, DateTime)? last = _lastPush;
+      if (last != null && last.$1 == page.runtimeType && now.difference(last.$2) < const Duration(milliseconds: 600)) return Future<T?>.value();
+      _lastPush = (page.runtimeType, now);
     }
 
     return Navigator.push<T>(
@@ -112,17 +124,19 @@ abstract class UNavigator {
     Object? arguments,
     VoidCallback? onDismiss,
   }) async {
-    await Navigator.pushAndRemoveUntil(
-      navigatorKey.currentContext!,
-      PageRouteBuilder<dynamic>(
-        pageBuilder: (BuildContext context, Animation<double> _, Animation<double> _) => page,
-        transitionsBuilder: _getTransition(transition, curve),
-        transitionDuration: duration,
-        reverseTransitionDuration: duration,
-        settings: settings ?? RouteSettings(arguments: arguments),
-      ),
-      (Route<dynamic> route) => false,
-    ).then((_) => onDismiss?.call());
+    unawaited(
+      Navigator.pushAndRemoveUntil(
+        navigatorKey.currentContext!,
+        PageRouteBuilder<dynamic>(
+          pageBuilder: (BuildContext context, Animation<double> _, Animation<double> _) => page,
+          transitionsBuilder: _getTransition(transition, curve),
+          transitionDuration: duration,
+          reverseTransitionDuration: duration,
+          settings: settings ?? RouteSettings(arguments: arguments),
+        ),
+        (Route<dynamic> route) => false,
+      ).then((_) => onDismiss?.call()),
+    );
   }
 
   /// Opens a page and removes pages until the route named [untilRouteName].
@@ -522,9 +536,7 @@ abstract class UNavigator {
       clipBehavior: clipBehavior ?? Clip.antiAlias,
       constraints: constraints,
       builder: (BuildContext context) => Padding(
-        padding: EdgeInsets.only(
-          bottom: MediaQuery.of(navigatorKey.currentContext!).viewInsets.bottom,
-        ),
+        padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
         child: child,
       ),
     );
@@ -671,6 +683,7 @@ abstract class UNavigator {
 
     if (duration != Duration.zero) {
       Future<void>.delayed(duration, () {
+        if (!identical(_currentOverlay, overlay)) return;
         dismissOverlay();
         onDismiss?.call();
       });

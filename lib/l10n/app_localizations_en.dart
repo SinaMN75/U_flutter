@@ -847,6 +847,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get correctTheEntryTime => 'Correct the entry time';
 
   @override
+  String get couldNotConnectToTheServer => 'Could not connect to the server';
+
+  @override
   String get couldNotOpenTheDocument => 'Could not open the document';
 
   @override
@@ -2465,6 +2468,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get newFile => 'New';
+
+  @override
+  String get noResponseFromTheServer => 'No response from the server';
 
   @override
   String get noRows => 'No rows';

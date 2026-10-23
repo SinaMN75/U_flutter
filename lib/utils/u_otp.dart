@@ -38,7 +38,10 @@ abstract class UOtp {
     return _inv[c].toString();
   }
 
-  static String _digitsOnly(String s) => s.split("").where((String ch) => RegExp(r"\d").hasMatch(ch)).join();
+  static final RegExp _nonDigit = RegExp(r"\D");
+  static final Random _random = Random.secure();
+
+  static String _digitsOnly(String s) => s.replaceAll(_nonDigit, "");
 
   static String _nowDate() {
     final DateTime now = DateTime.now();
@@ -50,7 +53,7 @@ abstract class UOtp {
   static String _generate(String posSerial, int length, {required bool admin}) {
     final String serialNo = _digitsOnly(posSerial);
     final int max = pow(10, length - 3).toInt() - 1;
-    final String randomString = Random().nextInt(max).toString().padLeft(length - 3, "0");
+    final String randomString = _random.nextInt(max + 1).toString().padLeft(length - 3, "0");
     final String nowDate = _nowDate();
     final String serialCD = generateVerhoeff(admin ? serialNo : "$randomString$serialNo");
     final String nowCD = generateVerhoeff("$randomString$nowDate");

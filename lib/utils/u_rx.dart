@@ -1,5 +1,7 @@
 import "dart:collection";
+import "dart:math";
 
+import "package:flutter/scheduler.dart";
 import "package:flutter/widgets.dart";
 
 class _RxObserver {
@@ -224,6 +226,54 @@ class URxList<E> extends URx<List<E>> with ListMixin<E> {
   }
 
   @override
+  Iterator<E> get iterator {
+    _RxObserver.active?.read.add(this);
+    return _value.iterator;
+  }
+
+  @override
+  bool contains(Object? element) {
+    _RxObserver.active?.read.add(this);
+    return _value.contains(element);
+  }
+
+  @override
+  List<E> toList({bool growable = true}) {
+    _RxObserver.active?.read.add(this);
+    return _value.toList(growable: growable);
+  }
+
+  @override
+  void setAll(int index, Iterable<E> iterable) {
+    _value.setAll(index, iterable);
+    refresh();
+  }
+
+  @override
+  void setRange(int start, int end, Iterable<E> iterable, [int skipCount = 0]) {
+    _value.setRange(start, end, iterable, skipCount);
+    refresh();
+  }
+
+  @override
+  void fillRange(int start, int end, [E? fill]) {
+    _value.fillRange(start, end, fill);
+    refresh();
+  }
+
+  @override
+  void replaceRange(int start, int end, Iterable<E> newContents) {
+    _value.replaceRange(start, end, newContents);
+    refresh();
+  }
+
+  @override
+  void shuffle([Random? random]) {
+    _value.shuffle(random);
+    refresh();
+  }
+
+  @override
   void add(E element) {
     _value.add(element);
     refresh();
@@ -292,14 +342,16 @@ class URxList<E> extends URx<List<E>> with ListMixin<E> {
 
   @override
   void removeWhere(bool Function(E element) test) {
+    final int before = _value.length;
     _value.removeWhere(test);
-    refresh();
+    if (_value.length != before) refresh();
   }
 
   @override
   void retainWhere(bool Function(E element) test) {
+    final int before = _value.length;
     _value.retainWhere(test);
-    refresh();
+    if (_value.length != before) refresh();
   }
 
   @override
@@ -345,6 +397,48 @@ class URxMap<K, V> extends URx<Map<K, V>> with MapMixin<K, V> {
   }
 
   @override
+  Iterable<V> get values {
+    _RxObserver.active?.read.add(this);
+    return _value.values;
+  }
+
+  @override
+  Iterable<MapEntry<K, V>> get entries {
+    _RxObserver.active?.read.add(this);
+    return _value.entries;
+  }
+
+  @override
+  int get length {
+    _RxObserver.active?.read.add(this);
+    return _value.length;
+  }
+
+  @override
+  bool get isEmpty => length == 0;
+
+  @override
+  bool get isNotEmpty => length != 0;
+
+  @override
+  bool containsKey(Object? key) {
+    _RxObserver.active?.read.add(this);
+    return _value.containsKey(key);
+  }
+
+  @override
+  void forEach(void Function(K key, V value) action) {
+    _RxObserver.active?.read.add(this);
+    _value.forEach(action);
+  }
+
+  @override
+  void updateAll(V Function(K key, V value) update) {
+    _value.updateAll(update);
+    refresh();
+  }
+
+  @override
   void addAll(Map<K, V> other) {
     _value.addAll(other);
     refresh();
@@ -352,6 +446,7 @@ class URxMap<K, V> extends URx<Map<K, V>> with MapMixin<K, V> {
 
   @override
   V? remove(Object? key) {
+    if (!_value.containsKey(key)) return null;
     final V? removed = _value.remove(key);
     refresh();
     return removed;
@@ -365,8 +460,9 @@ class URxMap<K, V> extends URx<Map<K, V>> with MapMixin<K, V> {
 
   @override
   void removeWhere(bool Function(K key, V value) test) {
+    final int before = _value.length;
     _value.removeWhere(test);
-    refresh();
+    if (_value.length != before) refresh();
   }
 
   @override
@@ -434,43 +530,51 @@ class URxSet<E> extends URx<Set<E>> with SetMixin<E> {
   }
 
   @override
-  Set<E> toSet() => _value.toSet();
+  Set<E> toSet() {
+    _RxObserver.active?.read.add(this);
+    return _value.toSet();
+  }
 
   @override
   void addAll(Iterable<E> elements) {
+    final int before = _value.length;
     _value.addAll(elements);
-    refresh();
+    if (_value.length != before) refresh();
   }
 
   @override
   void clear() {
+    if (_value.isEmpty) return;
     _value.clear();
     refresh();
   }
 
-  // Notify once instead of once-per-element (see RxList note).
   @override
   void removeWhere(bool Function(E element) test) {
+    final int before = _value.length;
     _value.removeWhere(test);
-    refresh();
+    if (_value.length != before) refresh();
   }
 
   @override
   void retainWhere(bool Function(E element) test) {
+    final int before = _value.length;
     _value.retainWhere(test);
-    refresh();
+    if (_value.length != before) refresh();
   }
 
   @override
   void removeAll(Iterable<Object?> elements) {
+    final int before = _value.length;
     _value.removeAll(elements);
-    refresh();
+    if (_value.length != before) refresh();
   }
 
   @override
   void retainAll(Iterable<Object?> elements) {
+    final int before = _value.length;
     _value.retainAll(elements);
-    refresh();
+    if (_value.length != before) refresh();
   }
 
   /// Replaces every item and notifies once.
@@ -603,10 +707,20 @@ class UObx extends StatefulWidget {
 }
 
 class _ObxState extends State<UObx> {
-  final Set<URx<dynamic>> _subscriptions = <URx<dynamic>>{};
+  Set<URx<dynamic>> _subscriptions = <URx<dynamic>>{};
+  bool _rebuildScheduled = false;
 
   void _onChange() {
-    if (mounted) setState(() {});
+    if (!mounted || _rebuildScheduled) return;
+    if (SchedulerBinding.instance.schedulerPhase == SchedulerPhase.persistentCallbacks) {
+      _rebuildScheduled = true;
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        _rebuildScheduled = false;
+        if (mounted) setState(() {});
+      });
+      return;
+    }
+    setState(() {});
   }
 
   @override
@@ -614,10 +728,12 @@ class _ObxState extends State<UObx> {
     final _RxObserver observer = _RxObserver();
     final _RxObserver? previous = _RxObserver.active;
     _RxObserver.active = observer;
-    final Widget child = widget.builder();
-    _RxObserver.active = previous;
-    _sync(observer.read);
-    return child;
+    try {
+      return widget.builder();
+    } finally {
+      _RxObserver.active = previous;
+      _sync(observer.read);
+    }
   }
 
   void _sync(Set<URx<dynamic>> next) {
@@ -627,9 +743,7 @@ class _ObxState extends State<UObx> {
     for (final URx<dynamic> rx in next) {
       if (!_subscriptions.contains(rx)) rx.addListener(_onChange);
     }
-    _subscriptions
-      ..clear()
-      ..addAll(next);
+    _subscriptions = next;
   }
 
   @override

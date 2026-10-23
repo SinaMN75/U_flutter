@@ -6,6 +6,19 @@ typedef UCrashListener = void Function(Map<String, dynamic> errorData);
 /// Catches every uncaught Dart/Flutter error with app, device and screen info, so you can send it to your server. `UCrashlytics.initialize(onCrash: (report) => api.logCrash(report))`
 class UCrashlytics {
   static UCrashListener? _crashListener;
+  static bool _reporting = false;
+
+  // A listener that throws would report its own error again, forever.
+  static void _report(Map<String, dynamic> errorData) {
+    if (_reporting) return;
+    _reporting = true;
+    try {
+      _crashListener?.call(errorData);
+    } catch (_) {
+    } finally {
+      _reporting = false;
+    }
+  }
 
   /// Starts catching errors; previous handlers (console, other reporters) keep working. Call it in main() after initU().
   static Future<void> initialize({UCrashListener? onCrash}) async {
@@ -36,7 +49,7 @@ class UCrashlytics {
       "systemInfo": await _getSystemInfo(),
     };
 
-    _crashListener?.call(errorData);
+    _report(errorData);
   }
 
   static Future<void> _recordFlutterError(FlutterErrorDetails details) async {
@@ -54,7 +67,7 @@ class UCrashlytics {
       "systemInfo": await _getSystemInfo(),
     };
 
-    _crashListener?.call(errorData);
+    _report(errorData);
   }
 
   static String _formatStackTrace(StackTrace? stack) {
@@ -122,16 +135,16 @@ class UCrashlytics {
 
   static Map<String, dynamic> _getScreenInfo() {
     try {
-      final MediaQueryData media = MediaQuery.of(navigatorKey.currentContext!);
-      final Size size = media.size;
+      final FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
+      final Size size = view.physicalSize / view.devicePixelRatio;
 
       return <String, dynamic>{
         "size": <String, double>{
           "width": size.width,
           "height": size.height,
         },
-        "pixelRatio": media.devicePixelRatio,
-        "orientation": media.orientation.name,
+        "pixelRatio": view.devicePixelRatio,
+        "orientation": (size.width > size.height ? Orientation.landscape : Orientation.portrait).name,
         "deviceType": _getDeviceType(),
       };
     } catch (e) {

@@ -56,26 +56,36 @@ abstract class UApp {
   /// Stable id of this device, empty before initU() finishes. Web: resets when site data is cleared. `UApp.deviceId()`
   static String deviceId() => UDevice.isReady ? UDevice.id : "";
 
+  // Read from the view directly: MediaQuery.of(navigatorKey.currentContext!) would make the whole Navigator rebuild on every keyboard frame.
+  static Size get _screenSize {
+    final FlutterView? view = WidgetsBinding.instance.platformDispatcher.implicitView;
+    if (view == null) return MediaQuery.sizeOf(navigatorKey.currentContext!);
+    return view.physicalSize / view.devicePixelRatio;
+  }
+
   /// True when the screen is wider than tall (needs a built app, uses navigatorKey).
-  static bool isLandscape() => MediaQuery.of(navigatorKey.currentContext!).orientation == Orientation.landscape;
+  static bool isLandscape() => _screenSize.width > _screenSize.height;
 
   /// True when the screen is taller than wide.
-  static bool isPortrait() => MediaQuery.of(navigatorKey.currentContext!).orientation == Orientation.portrait;
+  static bool isPortrait() => !isLandscape();
 
   /// True when the short side is 600+ (always false on web). `if (UApp.isTablet()) twoColumns()`
-  static bool isTablet() => !isWeb && MediaQuery.of(navigatorKey.currentContext!).size.shortestSide >= 600;
+  static bool isTablet() => !isWeb && _screenSize.shortestSide >= 600;
 
   /// True when the short side is under 600 (always false on web).
-  static bool isPhone() => !isWeb && MediaQuery.of(navigatorKey.currentContext!).size.shortestSide < 600;
+  static bool isPhone() => !isWeb && _screenSize.shortestSide < 600;
 
   /// True when the window is narrower than 850 (phone layout, any platform).
-  static bool isMobileSize() => MediaQuery.of(navigatorKey.currentContext!).size.width < 850;
+  static bool isMobileSize() => _screenSize.width < 850;
 
   /// True when the window is 850-1100 wide.
-  static bool isTabletSize() => MediaQuery.of(navigatorKey.currentContext!).size.width < 1100 && MediaQuery.of(navigatorKey.currentContext!).size.width >= 850;
+  static bool isTabletSize() {
+    final double width = _screenSize.width;
+    return width < 1100 && width >= 850;
+  }
 
   /// True when the window is 1100+ wide.
-  static bool isDesktopSize() => MediaQuery.of(navigatorKey.currentContext!).size.width >= 1100;
+  static bool isDesktopSize() => _screenSize.width >= 1100;
 
   /// Current app language code. `UApp.locale()` → "fa"
   static String locale() => UAppState.locale.value.languageCode;

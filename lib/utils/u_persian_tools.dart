@@ -195,6 +195,14 @@ class UPersianTools {
   static final RegExp _faDigits = RegExp("[$_faNumber]");
   static final RegExp _arDigits = RegExp("[$_arNumber]");
   static final RegExp _thousandsGroup = RegExp(r"(\d)(?=(\d{3})+(?!\d))");
+  static final RegExp _punctuation = RegExp(r"""["'\-+()؟\s.]""");
+  static final RegExp _onlyFa = RegExp("^[$_faText]+\$");
+  static final RegExp _onlyFaComplex = RegExp("^[$_faComplexText]+\$");
+  static final RegExp _anyFa = RegExp("[$_faText]");
+  static final RegExp _anyFaComplex = RegExp("[$_faComplexText]");
+  static final RegExp _nonDigit = RegExp("[^0-9]");
+  static final RegExp _sameDigits = RegExp(r"^(\d)\1{9}$");
+  static final RegExp _sixteenDigits = RegExp(r"^\d{16}$");
   static const Map<int, String> _numberToWord = <int, String>{
     0: "",
     1: "یک",
@@ -491,17 +499,12 @@ class UPersianTools {
   /// True when [input] is Persian text only (spaces/punctuation allowed). `UPersianTools.isPersian("سلام")`
   static bool isPersian(String input, {bool complex = false}) {
     if (input.isEmpty) return false;
-    final RegExp pattern = RegExp('["\'-+()؟\\s.]');
-    final String rawText = input.replaceAll(pattern, "");
-    final String faRegExp = complex ? _faComplexText : _faText;
-    return RegExp("^[$faRegExp]+\$").hasMatch(rawText);
+    final String rawText = input.replaceAll(_punctuation, "");
+    return (complex ? _onlyFaComplex : _onlyFa).hasMatch(rawText);
   }
 
   /// True when [input] contains any Persian letter.
-  static bool hasPersian(String input, {bool complex = false}) {
-    final String faRegExp = complex ? _faComplexText : _faText;
-    return RegExp("[$faRegExp]").hasMatch(input);
-  }
+  static bool hasPersian(String input, {bool complex = false}) => (complex ? _anyFaComplex : _anyFa).hasMatch(input);
 
   /// Trims spaces.
   static String trim(String input) => input.trim();
@@ -516,8 +519,8 @@ class UPersianTools {
   static bool validateNationalCode(String? input) {
     if (input == null) return false;
     final String code = input.trim();
-    if (code.length != 10 || RegExp("[^0-9]").hasMatch(code)) return false;
-    if (RegExp(r"^(\d)\1{9}$").hasMatch(code)) return false;
+    if (code.length != 10 || _nonDigit.hasMatch(code)) return false;
+    if (_sameDigits.hasMatch(code)) return false;
     final List<int> digits = code.split("").map(int.parse).toList();
     int sum = 0;
     for (int i = 0; i < 9; i++) {
@@ -538,7 +541,7 @@ class UPersianTools {
 
   /// Checks a 16-digit bank card number (Luhn). `UPersianTools.validateCardNumber("6037991234567890")`
   static bool validateCardNumber(String cardNumber) {
-    if (!RegExp(r"^\d{16}$").hasMatch(cardNumber) || int.parse(cardNumber.substring(1, 11)) == 0) return false;
+    if (!_sixteenDigits.hasMatch(cardNumber) || int.parse(cardNumber.substring(1, 11)) == 0) return false;
     int sum = 0;
     for (int i = 0; i < 16; i++) {
       final int multiplier = i.isEven ? 2 : 1;

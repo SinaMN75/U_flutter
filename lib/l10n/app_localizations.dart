@@ -1748,6 +1748,12 @@ abstract class AppLocalizations {
   /// **'Correct the entry time'**
   String get correctTheEntryTime;
 
+  /// No description provided for @couldNotConnectToTheServer.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not connect to the server'**
+  String get couldNotConnectToTheServer;
+
   /// No description provided for @couldNotOpenTheDocument.
   ///
   /// In en, this message translates to:
@@ -4897,6 +4903,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'New'**
   String get newFile;
+
+  /// No description provided for @noResponseFromTheServer.
+  ///
+  /// In en, this message translates to:
+  /// **'No response from the server'**
+  String get noResponseFromTheServer;
 
   /// No description provided for @noRows.
   ///

@@ -153,7 +153,7 @@ abstract class UHttpClient {
       }
 
       try {
-        await for (final List<int> chunk in streamed.stream) {
+        await for (final List<int> chunk in streamed.stream.timeout(timeout)) {
           receivedBuilder.add(chunk);
           receivedCount += chunk.length;
           if (totalBytes != null && totalBytes > 0) report(uploadWeight + (receivedCount / totalBytes * downloadBand).round());
@@ -163,7 +163,7 @@ abstract class UHttpClient {
       }
       report(100);
 
-      response = Response.bytes(
+      response = _UResponse(
         receivedBuilder.takeBytes(),
         streamed.statusCode,
         request: streamed.request,
@@ -172,7 +172,7 @@ abstract class UHttpClient {
       );
     } catch (e, stack) {
       developer.log(e.toString(), stackTrace: stack);
-      if (retryAmount > 0) {
+      if (retryAmount > 0 && _isTransient(e, method)) {
         final int attempt = retryAmount < 1 ? 1 : (4 - retryAmount).clamp(1, 4);
         await Future<void>.delayed(Duration(milliseconds: 300 * attempt));
         return send(
@@ -195,20 +195,18 @@ abstract class UHttpClient {
           isRetryAfterRefresh: isRetryAfterRefresh,
         );
       } else {
-        String message = unexpectedErrorMessage ?? "";
-
-        if (e is TimeoutException) {
-          message = "پاسخی از مرکز دریافت نشد.";
-        } else if (e is SocketException || e is ClientException) {
-          message = "ارتباط با مرکز برقرار نشد.";
-        }
+        final String message = switch (e) {
+          TimeoutException() => U.s.noResponseFromTheServer,
+          SocketException() || ClientException() || HttpException() => U.s.couldNotConnectToTheServer,
+          _ => unexpectedErrorMessage ?? U.s.unexpectedErrorPleaseTryAgain,
+        };
 
         onException(message);
         return UHttpClientResponse(exception: message);
       }
     }
 
-    if (kDebugMode) response.prettyLog(params: jsonEncode(outgoingBody));
+    if (kDebugMode) response.prettyLog(params: _describeBody(outgoingBody));
 
     try {
       if (response.statusCode >= 200 && response.statusCode <= 299) {
@@ -287,7 +285,7 @@ abstract class UHttpClient {
       if (fields != null) request.fields.addAll(removeNullEntries(fields)!.map((String key, dynamic value) => MapEntry<String, String>(key, value is String ? value : jsonEncode(value))));
       request.files.addAll(files);
       final Response response = await request.send().timeout(timeout).then(Response.fromStream);
-      if (kDebugMode) response.prettyLog(params: jsonEncode(fields));
+      if (kDebugMode) response.prettyLog(params: _describeBody(fields));
       if (response.statusCode >= 200 && response.statusCode < 300) {
         onSuccess?.call(response);
       } else {
@@ -296,6 +294,23 @@ abstract class UHttpClient {
     } catch (e, stack) {
       onException();
       developer.log(e.toString(), stackTrace: stack);
+    }
+  }
+
+  static const Set<String> _idempotentMethods = <String>{"GET", "HEAD", "OPTIONS", "PUT", "DELETE"};
+
+  // A timed-out POST/PATCH may already have run on the server, so only connection failures retry it.
+  static bool _isTransient(Object e, String method) {
+    if (e is TimeoutException) return _idempotentMethods.contains(method.toUpperCase());
+    return e is SocketException || e is ClientException || e is HttpException;
+  }
+
+  static String _describeBody(dynamic body) {
+    if (body is List<int>) return "<${body.length} bytes>";
+    try {
+      return jsonEncode(body);
+    } catch (_) {
+      return "$body";
     }
   }
 
@@ -380,6 +395,13 @@ abstract class UHttpClient {
   static Future<String?> _readCache(String key) => UFileStorage.getString(key, bucket: UStorageBucket.cache);
 }
 
+class _UResponse extends Response {
+  _UResponse(super.bodyBytes, super.statusCode, {super.request, super.headers, super.reasonPhrase}) : super.bytes();
+
+  @override
+  late final String body = super.body;
+}
+
 class _UProgressRequest extends BaseRequest {
   _UProgressRequest(super.method, super.url, this._bodyBytes, this._onSendProgress);
 
@@ -400,7 +422,7 @@ class _UProgressRequest extends BaseRequest {
     Stream<List<int>> generate() async* {
       for (int i = 0; i < total; i += chunkSize) {
         final int end = (i + chunkSize) < total ? i + chunkSize : total;
-        final List<int> chunk = _bodyBytes.sublist(i, end);
+        final List<int> chunk = _bodyBytes is Uint8List ? Uint8List.sublistView(_bodyBytes, i, end) : _bodyBytes.sublist(i, end);
         sent += chunk.length;
         _onSendProgress((sent / total * 100).round());
         yield chunk;

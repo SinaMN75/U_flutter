@@ -92,39 +92,39 @@ class UNotificationJson {
 
 /// Sport, booking and social notifications carry a message key in detail1 and the subject (a title or a name) in detail2.
 abstract class UNotificationMessages {
-  static Map<String, String Function(String subject)> get _messages => <String, String Function(String subject)>{
-    "notifTournamentStarted": U.s.notifTournamentStarted,
-    "notifTournamentFinished": U.s.notifTournamentFinished,
-    "notifTournamentCancelled": U.s.notifTournamentCancelled,
-    "notifNewEntry": U.s.notifNewEntry,
-    "notifEntryApproved": U.s.notifEntryApproved,
-    "notifEntryRejected": U.s.notifEntryRejected,
-    "notifMatchResult": U.s.notifMatchResult,
-    "notifMatchSoon": U.s.notifMatchSoon,
-    "notifNewBadge": (String s) => U.s.notifNewBadge(UBadges.label(s)),
-    "notifChallenge": U.s.notifChallenge,
-    "notifGameInvite": U.s.notifGameInvite,
-    "notifJoinRequest": U.s.notifJoinRequest,
-    "notifJoinApproved": U.s.notifJoinApproved,
-    "notifPlayerJoined": U.s.notifPlayerJoined,
-    "notifPlayerLeft": U.s.notifPlayerLeft,
-    "notifGameCancelled": U.s.notifGameCancelled,
-    "notifGameSoon": U.s.notifGameSoon,
-    "notifNewBooking": U.s.notifNewBooking,
-    "notifBookingShare": U.s.notifBookingShare,
-    "notifBookingCancelled": U.s.notifBookingCancelled,
-    "notifBookingSoon": U.s.notifBookingSoon,
-    "notifVenueApproved": U.s.notifVenueApproved,
-    "notifVenueRejected": U.s.notifVenueRejected,
-    "notifVenueSuspended": U.s.notifVenueSuspended,
-    "notifNewReply": U.s.notifNewReply,
-    "notifNewReaction": U.s.notifNewReaction,
-  };
-
   /// The notification's text in the app language; other notifications show their own title.
   static String text(UNotificationResponse n) {
     final String key = n.jsonData.detail1 ?? "";
     final String subject = n.jsonData.detail2 ?? "";
-    return _messages[key]?.call(subject) ?? (key.isEmpty ? subject : key);
+    final AppLocalizations s = U.s;
+    return switch (key) {
+      "notifTournamentStarted" => s.notifTournamentStarted(subject),
+      "notifTournamentFinished" => s.notifTournamentFinished(subject),
+      "notifTournamentCancelled" => s.notifTournamentCancelled(subject),
+      "notifNewEntry" => s.notifNewEntry(subject),
+      "notifEntryApproved" => s.notifEntryApproved(subject),
+      "notifEntryRejected" => s.notifEntryRejected(subject),
+      "notifMatchResult" => s.notifMatchResult(subject),
+      "notifMatchSoon" => s.notifMatchSoon(subject),
+      "notifNewBadge" => s.notifNewBadge(UBadges.label(subject)),
+      "notifChallenge" => s.notifChallenge(subject),
+      "notifGameInvite" => s.notifGameInvite(subject),
+      "notifJoinRequest" => s.notifJoinRequest(subject),
+      "notifJoinApproved" => s.notifJoinApproved(subject),
+      "notifPlayerJoined" => s.notifPlayerJoined(subject),
+      "notifPlayerLeft" => s.notifPlayerLeft(subject),
+      "notifGameCancelled" => s.notifGameCancelled(subject),
+      "notifGameSoon" => s.notifGameSoon(subject),
+      "notifNewBooking" => s.notifNewBooking(subject),
+      "notifBookingShare" => s.notifBookingShare(subject),
+      "notifBookingCancelled" => s.notifBookingCancelled(subject),
+      "notifBookingSoon" => s.notifBookingSoon(subject),
+      "notifVenueApproved" => s.notifVenueApproved(subject),
+      "notifVenueRejected" => s.notifVenueRejected(subject),
+      "notifVenueSuspended" => s.notifVenueSuspended(subject),
+      "notifNewReply" => s.notifNewReply(subject),
+      "notifNewReaction" => s.notifNewReaction(subject),
+      _ => key.isEmpty ? subject : key,
+    };
   }
 }

@@ -52,7 +52,9 @@ abstract class UUUID {
   static String uuidV8([List<int>? bytes]) => _format(_version(Uint8List.fromList(bytes ?? UEncryption.randomBytes(16)), 8));
 
   /// True when [value] looks like a UUID ("8-4-4-4-12" hex). `UUUID.isValid(id)`
-  static bool isValid(String value) => RegExp(r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$").hasMatch(value);
+  static bool isValid(String value) => _pattern.hasMatch(value);
+
+  static final RegExp _pattern = RegExp(r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$");
 
   /// Version number of a UUID (1-8), or null if it is not one. `UUUID.versionOf(UUUID.uuidV7())` → 7
   static int? versionOf(String value) => isValid(value) ? int.parse(value[14], radix: 16) : null;
@@ -101,6 +103,9 @@ abstract class UUUID {
 
 /// Ready-made form validators; each returns a FormFieldValidator for `validator:`. `UTextField(validator: UValidators.email())`
 abstract class UValidators {
+  static final RegExp _iranianPhone = RegExp(r"^09\d{9}$");
+  static final RegExp _nonDecimal = RegExp(r"[^0-9.\-]");
+
   /// Runs [action] only when every field in the form is valid. `UValidators.validateForm(key: formKey, action: save)`
   static void validateForm({required GlobalKey<FormState> key, required VoidCallback action}) {
     if (key.currentState!.validate()) action();
@@ -159,7 +164,7 @@ abstract class UValidators {
   /// Checks a phone number (8-15 digits, optional +). `UValidators.phone()`
   static FormFieldValidator<String> iranianPhone({String? requiredMessage, String? invalidMessage, bool isRequired = true}) => (String? value) {
     if (isRequired && (value == null || value.isEmpty)) return requiredMessage ?? U.s.required;
-    if (value != null && value.isNotEmpty && !RegExp(r"^09\d{9}$").hasMatch(value.toLatinNumber().replaceAll(" ", ""))) return invalidMessage ?? U.s.thisFieldIsInvalid;
+    if (value != null && value.isNotEmpty && !_iranianPhone.hasMatch(value.toLatinNumber().replaceAll(" ", ""))) return invalidMessage ?? U.s.thisFieldIsInvalid;
     return null;
   };
 
@@ -219,7 +224,7 @@ abstract class UValidators {
       (String? value) {
         if (isRequired && (value == null || value.isEmpty)) return invalidNumberMessage;
         if (value != null && value.isNotEmpty) {
-          final double? numValue = double.tryParse(value.toLatinNumber().replaceAll(RegExp(r"[^0-9.\-]"), ""));
+          final double? numValue = double.tryParse(value.toLatinNumber().replaceAll(_nonDecimal, ""));
           if (numValue == null) return invalidNumberMessage;
           if (numValue < min || numValue > max) return rangeMessage;
         }

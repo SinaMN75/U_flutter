@@ -398,6 +398,7 @@ abstract class UFile {
   static Future<void> excludeFromBackup(String path) => UFilesChannel.excludeFromBackup(path);
 
   static Future<List<UFileData>> _collect(Iterable<Future<UFileData>> sources, UCropOptions? crop) async {
+    if (crop == null) return Future.wait(sources);
     final List<UFileData> out = <UFileData>[];
     for (final Future<UFileData> source in sources) {
       final UFileData base = await source;

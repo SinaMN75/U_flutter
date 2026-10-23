@@ -12,16 +12,16 @@ abstract class UState<T extends StatefulWidget> extends State<T> {
   MediaQueryData get mediaQuery => MediaQuery.of(context);
 
   /// Screen size.
-  Size get screenSize => mediaQuery.size;
+  Size get screenSize => MediaQuery.sizeOf(context);
 
   /// Space taken by the status bar / notch / home bar.
-  EdgeInsets get padding => mediaQuery.padding;
+  EdgeInsets get padding => MediaQuery.paddingOf(context);
 
   /// Safe-area padding, ignoring the keyboard.
-  EdgeInsets get viewPadding => mediaQuery.viewPadding;
+  EdgeInsets get viewPadding => MediaQuery.viewPaddingOf(context);
 
   /// Space taken by the keyboard.
-  EdgeInsets get viewInsets => mediaQuery.viewInsets;
+  EdgeInsets get viewInsets => MediaQuery.viewInsetsOf(context);
 
   /// Screen width.
   double get width => screenSize.width;
@@ -54,7 +54,7 @@ extension WidgetsExtension on Widget {
   Widget pLTRB(double left, double top, double right, double bottom) => Padding(padding: EdgeInsets.fromLTRB(left, top, right, bottom), child: this);
 
   /// Shrinks to fit the space (never grows). `Text(long).fit()`
-  Widget fit({Alignment alignment = Alignment.center}) => FittedBox(key: key, alignment: alignment, fit: BoxFit.scaleDown, child: this);
+  Widget fit({Alignment alignment = Alignment.center}) => FittedBox(alignment: alignment, fit: BoxFit.scaleDown, child: this);
 
   /// Takes the remaining space in a Row/Column. `child.expanded()`
   Widget expanded({int flex = 1}) => Expanded(flex: flex, child: this);
@@ -255,11 +255,10 @@ extension WidgetsExtension on Widget {
   Widget sliver() => SliverToBoxAdapter(child: this);
 
   /// Greys out and blocks taps when [disabled]. `form.disabled(isSaving)`
-  Widget disabled(bool disabled, {double opacity = 0.5}) => disabled
-      ? IgnorePointer(
-          child: Opacity(opacity: opacity, child: this),
-        )
-      : this;
+  Widget disabled(bool disabled, {double opacity = 0.5}) => IgnorePointer(
+    ignoring: disabled,
+    child: Opacity(opacity: disabled ? opacity : 1, child: this),
+  );
 
   /// Draws a shimmering loading placeholder in its shape while [loading]. `Text("Name").skeleton(isLoading)`
   Widget skeleton(bool loading) => loading ? USkeleton.wrap(child: this) : this;

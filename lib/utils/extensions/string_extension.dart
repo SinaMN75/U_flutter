@@ -3,14 +3,19 @@ import "package:u/utilities.dart";
 
 /// Shortcuts on a TextEditingController for number fields and on-screen keyboards. `controller.numInt()`
 extension TextEditingControllerExtension on TextEditingController {
-  /// Digits only, Persian digits converted. "۱۲,۳۰۰" → "12300"
-  String numString() => text.toLatinNumber().extractLatinNumber();
+  static final RegExp _nonDecimal = RegExp("[^0-9.]");
 
-  /// The digits as a double (0 when empty). `priceController.numDouble()`
-  double numDouble() => text.toLatinNumber().extractLatinNumber().toDouble();
+  /// Digits only, Persian digits converted. "۱۲,۳۰۰" → "12300"
+  String numString() => text.extractLatinNumber();
+
+  /// The number as a double, decimals kept (0 when empty). "۱۲,۳۰۰.۵" → 12300.5
+  double numDouble() {
+    final String number = text.toLatinNumber().replaceAll("٫", ".").replaceAll(_nonDecimal, "");
+    return double.tryParse(number) ?? number.replaceAll(".", "").toDouble();
+  }
 
   /// The digits as an int (0 when empty). `amountController.numInt()`
-  int numInt() => text.toLatinNumber().extractLatinNumber().toInt();
+  int numInt() => text.extractLatinNumber().toInt();
 
   /// The text, or null when empty (handy for optional API fields). `controller.valueOrNull()`
   String? valueOrNull() => text.isEmpty ? null : text;
@@ -53,14 +58,18 @@ extension TextEditingControllerExtension on TextEditingController {
 
 /// Null-safe helpers on String? (null counts as empty). `json["name"].isNullOrEmpty()`
 extension OptionalStringExtension on String? {
+  static final RegExp _nonDigits = RegExp("[^0-9]");
+  static final RegExp _thousands = RegExp(r"(\d{1,3})(?=(\d{3})+(?!\d))");
+  static final intl.NumberFormat _priceFormat = intl.NumberFormat("#,##0");
+
   /// Digits only ("0" when null). "a1b2" → "12"
-  String numberString() => (this ?? "0").replaceAll(RegExp("[^0-9]"), "");
+  String numberString() => (this ?? "0").replaceAll(_nonDigits, "");
 
   /// The text, or "" when null. `user.bio.toStringOrEmptyIfNull()`
   String toStringOrEmptyIfNull() => this ?? "";
 
   /// The digits as an int (0 when null). "Order #42" → 42
-  int number() => (this ?? "0").replaceAll(RegExp("[^0-9]"), "").toInt();
+  int number() => (this ?? "0").replaceAll(_nonDigits, "").toInt();
 
   /// Null when null or "". `name.nullIfEmpty()`
   String? nullIfEmpty() => (this ?? "").isEmpty ? null : this;
@@ -68,11 +77,11 @@ extension OptionalStringExtension on String? {
   /// Groups a whole number with commas, "0" when empty. "1500000" → "1,500,000"
   String getPrice() {
     final int nums = (this ?? "0").toInt();
-    return nums > 0 ? intl.NumberFormat("#,##0").format(nums) : "0";
+    return nums > 0 ? _priceFormat.format(nums) : "0";
   }
 
   /// Puts a comma every 3 digits. "1500000" → "1,500,000"
-  String separateNumbers3By3() => (this ?? "").replaceAllMapped(RegExp(r"(\d{1,3})(?=(\d{3})+(?!\d))"), (Match m) => "${m[1]},");
+  String separateNumbers3By3() => (this ?? "").replaceAllMapped(_thousands, (Match m) => "${m[1]},");
 
   /// ISO date text → long Jalali date (now when null). "2024-03-20" → "چهارشنبه ۱ فروردین ۱۴۰۳"
   String toJalaliDateString() => UJalali.fromDateTime(DateTime.parse(this ?? DateTime.now().toString())).formatFullDate();
@@ -87,10 +96,16 @@ extension OptionalStringExtension on String? {
   String toJalaliDate() => UJalali.fromDateTime(DateTime.parse(this ?? DateTime.now().toString())).formatCompactDate();
 
   /// "1500000" → "1,500,000 ریال"; [removeNegative] drops the minus sign.
-  String rial({bool removeNegative = false}) => "${(this ?? "").separateNumbers3By3()} ریال".trim().replaceAll(removeNegative ? "-" : "", "");
+  String rial({bool removeNegative = false}) {
+    final String text = "${(this ?? "").separateNumbers3By3()} ریال".trim();
+    return removeNegative ? text.replaceAll("-", "") : text;
+  }
 
   /// "1500000" → "1,500,000 تومان"; [removeNegative] drops the minus sign.
-  String toman({bool removeNegative = false}) => "${(this ?? "").separateNumbers3By3()} تومان".trim().replaceAll(removeNegative ? "-" : "", "");
+  String toman({bool removeNegative = false}) {
+    final String text = "${(this ?? "").separateNumbers3By3()} تومان".trim();
+    return removeNegative ? text.replaceAll("-", "") : text;
+  }
 
   /// Rial text → toman text (÷10). "150000" → "15,000 تومان"
   String rialToTomanMoneyPersian() => "${((this ?? "0").toInt() ~/ 10).toString().separateNumbers3By3()} تومان";
@@ -127,6 +142,8 @@ extension StringExtensions on String {
   static final RegExp _urlPattern = RegExp(r"^(https?://)?([\w\-]+\.)+[\w\-]+(:\d+)?(/\S*)?$");
   static final RegExp _phonePattern = RegExp(r"^\+?[\d\s-]{8,15}$");
   static final RegExp _alphanumericPattern = RegExp(r"^[a-zA-Z0-9]+$");
+  static final RegExp _queryOrHash = RegExp("[?#]");
+  static final RegExp _trailingSlashes = RegExp(r"[/\\]+$");
   static final RegExp _strongPasswordPattern = RegExp(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$");
 
   /// Base64 text → bytes. `imageBase64.toBytesFromBase64()`
@@ -193,9 +210,9 @@ extension StringExtensions on String {
   String get fileName {
     if (trim().isEmpty) return "";
     String url = this;
-    final int endIndex = url.indexOf(RegExp("[?#]"));
+    final int endIndex = url.indexOf(_queryOrHash);
     if (endIndex >= 0) url = url.substring(0, endIndex);
-    url = url.replaceAll(RegExp(r"[/\\]+$"), "");
+    url = url.replaceAll(_trailingSlashes, "");
     final int lastSlash = max(url.lastIndexOf("/"), url.lastIndexOf(r"\"));
     final String name = lastSlash >= 0 ? url.substring(lastSlash + 1) : url;
     try {
@@ -281,6 +298,7 @@ extension StringExtensions on String {
 
   /// Any digits (Persian, Arabic, Hindi, full-width…) → Latin digits. "۱۲۳" → "123"
   String toLatinNumber() {
+    if (!codeUnits.any((int c) => c > 0x7F)) return this;
     final StringBuffer result = StringBuffer();
     for (final int rune in runes) {
       final int? digit = _unicodeDigitToLatin(rune);
@@ -294,6 +312,7 @@ extension StringExtensions on String {
   }
 
   static int? _unicodeDigitToLatin(int codePoint) {
+    if (codePoint < 0x0660) return codePoint >= 0x30 && codePoint <= 0x39 ? codePoint - 0x30 : null;
     const List<int> zeros = <int>[0x30, 0x0660, 0x06F0, 0x0966, 0x09E6, 0x0A66, 0x0AE6, 0x0B66, 0x0BE6, 0x0C66, 0x0CE6, 0x0D66, 0x0E50, 0x0ED0, 0x0F20, 0x1040, 0x17E0, 0x1810, 0xFF10];
     for (final int zero in zeros) {
       if (codePoint >= zero && codePoint <= zero + 9) return codePoint - zero;

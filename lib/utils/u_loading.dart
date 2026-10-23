@@ -1,5 +1,6 @@
 import "dart:ui";
 
+import "package:flutter/scheduler.dart";
 import "package:u/utilities.dart";
 
 /// Builds your own percent label for ULoading, from 0-100.
@@ -218,6 +219,7 @@ class ULoadingSettings {
 /// Full-screen blocking loader over the whole app, from anywhere; UHttpClient-based services show it for you. `ULoading.show(); await save(); ULoading.dismiss();`
 class ULoading {
   static OverlayEntry? _overlayEntry;
+  static bool _inserted = false;
   static bool _isShowing = false;
   static ULoadingSettings _settings = const ULoadingSettings();
   static ULoadingSettings _activeSettings = const ULoadingSettings();
@@ -267,9 +269,20 @@ class ULoading {
     _activeSettings = (settings ?? _settings).copyWith(builder: customLoader, text: text, source: source, package: package);
     setPercent(null);
     _bindPercent(percent: percent, percentRx: percentRx);
-    _overlayEntry = OverlayEntry(builder: (BuildContext _) => _LoadingOverlay(settings: _activeSettings));
-    overlayState.insert(_overlayEntry!);
+    final OverlayEntry entry = OverlayEntry(builder: (BuildContext _) => _LoadingOverlay(settings: _activeSettings));
+    _overlayEntry = entry;
     _isShowing = true;
+    void insert() {
+      if (!identical(_overlayEntry, entry) || !overlayState.mounted) return;
+      overlayState.insert(entry);
+      _inserted = true;
+    }
+
+    if (SchedulerBinding.instance.schedulerPhase == SchedulerPhase.persistentCallbacks) {
+      SchedulerBinding.instance.addPostFrameCallback((_) => insert());
+    } else {
+      insert();
+    }
   }
 
   /// Changes text/percent/look of the visible loader. `ULoading.update(text: "Almost done")`
@@ -299,8 +312,14 @@ class ULoading {
   /// Hides the loader.
   static void dismiss() {
     if (!_isShowing) return;
-    _overlayEntry?.remove();
+    final OverlayEntry? entry = _overlayEntry;
+    if (entry != null && _inserted) {
+      entry
+        ..remove()
+        ..dispose();
+    }
     _overlayEntry = null;
+    _inserted = false;
     _isShowing = false;
     _unbindPercent();
     _percent.value = null;
@@ -366,10 +385,12 @@ class __LoadingOverlayState extends State<_LoadingOverlay> with SingleTickerProv
     child: Stack(
       children: <Widget>[
         Positioned.fill(
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: widget.settings.blurAmount, sigmaY: widget.settings.blurAmount),
-            child: UContainer(color: widget.settings.overlayColor),
-          ),
+          child: widget.settings.blurAmount > 0
+              ? BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: widget.settings.blurAmount, sigmaY: widget.settings.blurAmount),
+                  child: ColoredBox(color: widget.settings.overlayColor),
+                )
+              : ColoredBox(color: widget.settings.overlayColor),
         ),
         if (widget.settings.dismissible)
           const Positioned.fill(

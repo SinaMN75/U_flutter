@@ -518,6 +518,8 @@ class _GAlgo {
 // Extension for Jalali date with enhanced formatting and utilities
 /// Formatting, comparisons and day math on UJalali. `UJalali.now().formatCustom("wN dd mN yyyy")`
 extension JalaliExt on UJalali {
+  static final RegExp _formatTokens = RegExp("yyyy|yy|mNAf|mN|mm|dd|wN|wS|wW|HH|MM|SS|q");
+
   // Constants for weekdays
   /// Weekday number of Monday (Jalali week starts Saturday = 1).
   static const int monday = 3;
@@ -625,20 +627,24 @@ extension JalaliExt on UJalali {
   /// Your own pattern: yyyy yy mm dd mN mNAf wN wS wW HH MM SS q. `j.formatCustom("dd mN yyyy - HH:MM")`
   String formatCustom(String pattern, {bool persianDigits = false}) {
     final UJalaliFormatter f = formatter;
-    final String result = pattern
-        .replaceAll("yyyy", f.yyyy)
-        .replaceAll("yy", f.yy)
-        .replaceAll("mNAf", f.mNAf)
-        .replaceAll("mN", f.mN)
-        .replaceAll("mm", f.mm)
-        .replaceAll("dd", f.dd)
-        .replaceAll("wN", f.wN)
-        .replaceAll("wS", shortDayName[weekDay - 1])
-        .replaceAll("wW", narrowWeekdays[weekDay - 1])
-        .replaceAll("HH", hour.toString().padLeft(2, "0"))
-        .replaceAll("MM", minute.toString().padLeft(2, "0"))
-        .replaceAll("SS", second.toString().padLeft(2, "0"))
-        .replaceAll("q", quarter.toString());
+    final String result = pattern.replaceAllMapped(
+      _formatTokens,
+      (Match m) => switch (m[0]) {
+        "yyyy" => f.yyyy,
+        "yy" => f.yy,
+        "mNAf" => f.mNAf,
+        "mN" => f.mN,
+        "mm" => f.mm,
+        "dd" => f.dd,
+        "wN" => f.wN,
+        "wS" => shortDayName[weekDay - 1],
+        "wW" => narrowWeekdays[weekDay - 1],
+        "HH" => hour.toString().padLeft(2, "0"),
+        "MM" => minute.toString().padLeft(2, "0"),
+        "SS" => second.toString().padLeft(2, "0"),
+        _ => quarter.toString(),
+      },
+    );
     return persianDigits ? f.toPersian(result) : result;
   }
 
