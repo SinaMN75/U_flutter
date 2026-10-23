@@ -23,8 +23,14 @@ abstract class U {
   /// UCountry of [defaultPhoneCountryCode].
   static UCountry get defaultPhoneCountry => UCountries.byIsoCode(defaultPhoneCountryCode) ?? UCountries.byDialCode(defaultPhoneCountryCode) ?? UCountries.iran();
 
-  /// Localized strings (fa/en) from u's l10n. `Text(U.s.save)`
-  static AppLocalizations get s => AppLocalizations.of(navigatorKey.currentContext!)!;
+  /// Localized strings (fa/en) from u's l10n; works before the first frame too (uses the saved app language). `Text(U.s.save)`
+  static AppLocalizations get s {
+    final BuildContext? context = navigatorKey.currentContext;
+    final AppLocalizations? fromTree = context == null ? null : AppLocalizations.of(context);
+    if (fromTree != null) return fromTree;
+    final String code = (UStorage.isReady ? ULocalStorage.getLocale() : null) ?? UAppState.locale.value.languageCode;
+    return lookupAppLocalizations(code == "fa" ? const Locale("fa") : const Locale("en"));
+  }
 
   /// Logged-in user; set it after login.
   static late UUserResponse user;
