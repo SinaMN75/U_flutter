@@ -2984,5 +2984,9 @@
   "youAreOnTheFreeTrial": "You are on the free trial",
   "yourPlanDoesNotIncludeAnyPlaceTypeAddTheHotelOrDormSystemToIt": "Your plan does not include any place type. Add the hotel or dorm system to it.",
   "yourSubscriptionHasEnded": "Your subscription has ended",
-  "yourSubscriptionHasEndedRenewItToAddPlaces": "Your subscription has ended. Renew it to add places."
+  "yourSubscriptionHasEndedRenewItToAddPlaces": "Your subscription has ended. Renew it to add places.",
+  "turnover": "Turnover",
+  "billingStatement": "Billing statement",
+  "chargeReport": "Charge report",
+  "ascending": "Ascending"
 }

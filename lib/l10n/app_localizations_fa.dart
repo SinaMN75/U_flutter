@@ -7847,4 +7847,16 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get yourSubscriptionHasEndedRenewItToAddPlaces => 'اشتراک شما تمام شده است. برای افزودن مکان آن را تمدید کنید.';
+
+  @override
+  String get turnover => 'گردش';
+
+  @override
+  String get billingStatement => 'صورت‌وضعیت';
+
+  @override
+  String get chargeReport => 'گزارش شارژ';
+
+  @override
+  String get ascending => 'صعودی';
 }

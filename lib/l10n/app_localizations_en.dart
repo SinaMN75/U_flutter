@@ -7848,4 +7848,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get yourSubscriptionHasEndedRenewItToAddPlaces => 'Your subscription has ended. Renew it to add places.';
+
+  @override
+  String get turnover => 'Turnover';
+
+  @override
+  String get billingStatement => 'Billing statement';
+
+  @override
+  String get chargeReport => 'Charge report';
+
+  @override
+  String get ascending => 'Ascending';
 }

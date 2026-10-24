@@ -2752,5 +2752,9 @@
   "youAreOnTheFreeTrial": "در دوره‌ی آزمایشی رایگان هستید",
   "yourPlanDoesNotIncludeAnyPlaceTypeAddTheHotelOrDormSystemToIt": "اشتراک شما هیچ نوع مکانی ندارد. سیستم هتل یا خوابگاه را به آن اضافه کنید.",
   "yourSubscriptionHasEnded": "اشتراک شما تمام شده است",
-  "yourSubscriptionHasEndedRenewItToAddPlaces": "اشتراک شما تمام شده است. برای افزودن مکان آن را تمدید کنید."
+  "yourSubscriptionHasEndedRenewItToAddPlaces": "اشتراک شما تمام شده است. برای افزودن مکان آن را تمدید کنید.",
+  "turnover": "گردش",
+  "billingStatement": "صورت‌وضعیت",
+  "chargeReport": "گزارش شارژ",
+  "ascending": "صعودی"
 }

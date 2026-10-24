@@ -15421,6 +15421,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your subscription has ended. Renew it to add places.'**
   String get yourSubscriptionHasEndedRenewItToAddPlaces;
+
+  /// No description provided for @turnover.
+  ///
+  /// In en, this message translates to:
+  /// **'Turnover'**
+  String get turnover;
+
+  /// No description provided for @billingStatement.
+  ///
+  /// In en, this message translates to:
+  /// **'Billing statement'**
+  String get billingStatement;
+
+  /// No description provided for @chargeReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Charge report'**
+  String get chargeReport;
+
+  /// No description provided for @ascending.
+  ///
+  /// In en, this message translates to:
+  /// **'Ascending'**
+  String get ascending;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
