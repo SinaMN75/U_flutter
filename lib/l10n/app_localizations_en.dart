@@ -7866,4 +7866,82 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ascending => 'Ascending';
+
+  @override
+  String get browse => 'Browse';
+
+  @override
+  String get bookmarked => 'Bookmarked';
+
+  @override
+  String get bookmarkedItems => 'Bookmarked items';
+
+  @override
+  String get quickSale => 'Quick sale';
+
+  @override
+  String get inventory => 'Inventory';
+
+  @override
+  String get becomeASeller => 'Become a seller';
+
+  @override
+  String get productsAndCategories => 'Products and categories';
+
+  @override
+  String get inventoryAndReports => 'Inventory and reports';
+
+  @override
+  String get qrAndPoster => 'QR and poster';
+
+  @override
+  String get storeInformation => 'Store information';
+
+  @override
+  String get buyerMode => 'Buyer mode';
+
+  @override
+  String get myStorePage => 'My store page';
+
+  @override
+  String get sellerPanel => 'Seller panel';
+
+  @override
+  String get outOfStockForNow => 'Out of stock for now';
+
+  @override
+  String countLeft(Object count) {
+    return '$count left';
+  }
+
+  @override
+  String countItemsSelected(Object count) {
+    return '$count items selected';
+  }
+
+  @override
+  String get mySelections => 'My selections';
+
+  @override
+  String get threeD => '3D';
+
+  @override
+  String get ourPick => 'Our pick';
+
+  @override
+  String get tomanPerMonth => 'Toman per month';
+
+  @override
+  String countOfTotal(Object count, Object total) {
+    return '$count of $total';
+  }
+
+  @override
+  String get componentGallery => 'Component gallery';
+
+  @override
+  String get filters => 'Filters';
+
+  @override
+  String get searchStoresCafesOrProducts => 'Search stores, cafés or products';
 }

@@ -15457,6 +15457,150 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Ascending'**
   String get ascending;
+
+  /// No description provided for @browse.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse'**
+  String get browse;
+
+  /// No description provided for @bookmarked.
+  ///
+  /// In en, this message translates to:
+  /// **'Bookmarked'**
+  String get bookmarked;
+
+  /// No description provided for @bookmarkedItems.
+  ///
+  /// In en, this message translates to:
+  /// **'Bookmarked items'**
+  String get bookmarkedItems;
+
+  /// No description provided for @quickSale.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick sale'**
+  String get quickSale;
+
+  /// No description provided for @inventory.
+  ///
+  /// In en, this message translates to:
+  /// **'Inventory'**
+  String get inventory;
+
+  /// No description provided for @becomeASeller.
+  ///
+  /// In en, this message translates to:
+  /// **'Become a seller'**
+  String get becomeASeller;
+
+  /// No description provided for @productsAndCategories.
+  ///
+  /// In en, this message translates to:
+  /// **'Products and categories'**
+  String get productsAndCategories;
+
+  /// No description provided for @inventoryAndReports.
+  ///
+  /// In en, this message translates to:
+  /// **'Inventory and reports'**
+  String get inventoryAndReports;
+
+  /// No description provided for @qrAndPoster.
+  ///
+  /// In en, this message translates to:
+  /// **'QR and poster'**
+  String get qrAndPoster;
+
+  /// No description provided for @storeInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Store information'**
+  String get storeInformation;
+
+  /// No description provided for @buyerMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Buyer mode'**
+  String get buyerMode;
+
+  /// No description provided for @myStorePage.
+  ///
+  /// In en, this message translates to:
+  /// **'My store page'**
+  String get myStorePage;
+
+  /// No description provided for @sellerPanel.
+  ///
+  /// In en, this message translates to:
+  /// **'Seller panel'**
+  String get sellerPanel;
+
+  /// No description provided for @outOfStockForNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Out of stock for now'**
+  String get outOfStockForNow;
+
+  /// No description provided for @countLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} left'**
+  String countLeft(Object count);
+
+  /// No description provided for @countItemsSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} items selected'**
+  String countItemsSelected(Object count);
+
+  /// No description provided for @mySelections.
+  ///
+  /// In en, this message translates to:
+  /// **'My selections'**
+  String get mySelections;
+
+  /// No description provided for @threeD.
+  ///
+  /// In en, this message translates to:
+  /// **'3D'**
+  String get threeD;
+
+  /// No description provided for @ourPick.
+  ///
+  /// In en, this message translates to:
+  /// **'Our pick'**
+  String get ourPick;
+
+  /// No description provided for @tomanPerMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Toman per month'**
+  String get tomanPerMonth;
+
+  /// No description provided for @countOfTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} of {total}'**
+  String countOfTotal(Object count, Object total);
+
+  /// No description provided for @componentGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Component gallery'**
+  String get componentGallery;
+
+  /// No description provided for @filters.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get filters;
+
+  /// No description provided for @searchStoresCafesOrProducts.
+  ///
+  /// In en, this message translates to:
+  /// **'Search stores, cafés or products'**
+  String get searchStoresCafesOrProducts;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

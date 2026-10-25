@@ -2990,5 +2990,45 @@
   "turnover": "Turnover",
   "billingStatement": "Billing statement",
   "chargeReport": "Charge report",
-  "ascending": "Ascending"
+  "ascending": "Ascending",
+  "browse": "Browse",
+  "bookmarked": "Bookmarked",
+  "bookmarkedItems": "Bookmarked items",
+  "quickSale": "Quick sale",
+  "inventory": "Inventory",
+  "becomeASeller": "Become a seller",
+  "productsAndCategories": "Products and categories",
+  "inventoryAndReports": "Inventory and reports",
+  "qrAndPoster": "QR and poster",
+  "storeInformation": "Store information",
+  "buyerMode": "Buyer mode",
+  "myStorePage": "My store page",
+  "sellerPanel": "Seller panel",
+  "outOfStockForNow": "Out of stock for now",
+  "countLeft": "{count} left",
+  "@countLeft": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "countItemsSelected": "{count} items selected",
+  "@countItemsSelected": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "mySelections": "My selections",
+  "threeD": "3D",
+  "ourPick": "Our pick",
+  "tomanPerMonth": "Toman per month",
+  "countOfTotal": "{count} of {total}",
+  "@countOfTotal": {
+    "placeholders": {
+      "count": {},
+      "total": {}
+    }
+  },
+  "componentGallery": "Component gallery",
+  "filters": "Filters",
+  "searchStoresCafesOrProducts": "Search stores, cafés or products"
 }

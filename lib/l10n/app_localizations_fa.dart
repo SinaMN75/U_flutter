@@ -7865,4 +7865,82 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get ascending => 'صعودی';
+
+  @override
+  String get browse => 'گشتن';
+
+  @override
+  String get bookmarked => 'نشان‌شده';
+
+  @override
+  String get bookmarkedItems => 'نشان‌شده‌ها';
+
+  @override
+  String get quickSale => 'فروش سریع';
+
+  @override
+  String get inventory => 'انبار';
+
+  @override
+  String get becomeASeller => 'فروشنده شوید';
+
+  @override
+  String get productsAndCategories => 'کالاها و دسته‌بندی';
+
+  @override
+  String get inventoryAndReports => 'انبار و گزارش';
+
+  @override
+  String get qrAndPoster => 'QR و پوستر';
+
+  @override
+  String get storeInformation => 'اطلاعات فروشگاه';
+
+  @override
+  String get buyerMode => 'حالت خریدار';
+
+  @override
+  String get myStorePage => 'صفحه فروشگاه من';
+
+  @override
+  String get sellerPanel => 'پنل فروشنده';
+
+  @override
+  String get outOfStockForNow => 'فعلاً تمام شده';
+
+  @override
+  String countLeft(Object count) {
+    return '$count عدد مانده';
+  }
+
+  @override
+  String countItemsSelected(Object count) {
+    return '$count قلم انتخاب شده';
+  }
+
+  @override
+  String get mySelections => 'انتخاب‌های من';
+
+  @override
+  String get threeD => 'سه‌بعدی';
+
+  @override
+  String get ourPick => 'پیشنهاد ما';
+
+  @override
+  String get tomanPerMonth => 'تومان در ماه';
+
+  @override
+  String countOfTotal(Object count, Object total) {
+    return '$count از $total';
+  }
+
+  @override
+  String get componentGallery => 'گالری کامپوننت‌ها';
+
+  @override
+  String get filters => 'فیلترها';
+
+  @override
+  String get searchStoresCafesOrProducts => 'فروشگاه، کافه یا کالا را جستجو کنید';
 }
