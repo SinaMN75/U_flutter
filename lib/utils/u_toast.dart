@@ -109,7 +109,7 @@ abstract class UToast {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       if (title != null) UTextTitleSmall(title, color: foreground),
-                      if (textStyle != null) Text(message, style: textStyle) else UTextBodyMedium(message, color: foreground),
+                      if (textStyle != null) Text(message, style: textStyle) else UTextBodyMedium(message, color: foreground, maxLines: 2),
                     ],
                   ),
                 ),
@@ -276,7 +276,7 @@ abstract class UToast {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             if (title != null) UTextTitleSmall(title, color: foreground),
-            UTextBodyMedium(message, color: foreground),
+            UTextBodyMedium(message, color: foreground, maxLines: 2),
           ],
         ),
         actions: resolvedActions,
@@ -371,7 +371,7 @@ abstract class UToast {
     String? title,
     IconData? icon,
     UToastPosition position = UToastPosition.bottom,
-    Duration duration = const Duration(seconds: 3),
+    Duration? duration,
     VoidCallback? onTap,
     VoidCallback? onDismiss,
   }) => toast(message: message, title: title, type: UToastType.error, icon: icon, position: position, duration: duration, onTap: onTap, onDismiss: onDismiss);
@@ -382,7 +382,7 @@ abstract class UToast {
     String? title,
     IconData? icon,
     UToastPosition position = UToastPosition.bottom,
-    Duration duration = const Duration(seconds: 3),
+    Duration? duration,
     VoidCallback? onTap,
     VoidCallback? onDismiss,
   }) => toast(message: message, title: title, type: UToastType.warning, icon: icon, position: position, duration: duration, onTap: onTap, onDismiss: onDismiss);
@@ -393,7 +393,7 @@ abstract class UToast {
     String? title,
     IconData? icon,
     UToastPosition position = UToastPosition.bottom,
-    Duration duration = const Duration(seconds: 3),
+    Duration? duration,
     VoidCallback? onTap,
     VoidCallback? onDismiss,
   }) => toast(message: message, title: title, type: UToastType.info, icon: icon, position: position, duration: duration, onTap: onTap, onDismiss: onDismiss);
@@ -456,45 +456,45 @@ class _UToastCardState extends State<_UToastCard> with SingleTickerProviderState
 
   @override
   Widget build(BuildContext context) => SafeArea(
-      child: Align(
-        alignment: _alignment,
-        child: Padding(
-          padding: widget.margin,
-          child: SlideTransition(
-            position: _slide,
-            child: FadeTransition(
-              opacity: _controller,
-              child: Material(
-                type: MaterialType.transparency,
-                child: UContainer(
-                  onTap: widget.onTap,
-                  color: widget.background,
-                  radius: widget.borderRadius,
-                  boxShadow: <BoxShadow>[BoxShadow(color: const Color(0x33000000), blurRadius: widget.elevation, offset: Offset(0, widget.elevation / 2))],
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      if (widget.icon != null) Icon(widget.icon, color: widget.foreground).pOnly(right: 12),
-                      Flexible(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            if (widget.title != null) UTextTitleSmall(widget.title!, color: widget.foreground),
-                            UTextBodyMedium(widget.message, color: widget.foreground),
-                          ],
-                        ),
+    child: Align(
+      alignment: _alignment,
+      child: Padding(
+        padding: widget.margin,
+        child: SlideTransition(
+          position: _slide,
+          child: FadeTransition(
+            opacity: _controller,
+            child: Material(
+              type: MaterialType.transparency,
+              child: UContainer(
+                onTap: widget.onTap,
+                color: widget.background,
+                radius: widget.borderRadius,
+                boxShadow: <BoxShadow>[BoxShadow(color: const Color(0x33000000), blurRadius: widget.elevation, offset: Offset(0, widget.elevation / 2))],
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    if (widget.icon != null) Icon(widget.icon, color: widget.foreground).pOnly(right: 12),
+                    Flexible(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          if (widget.title != null) UTextTitleSmall(widget.title!, color: widget.foreground),
+                          UTextBodyMedium(widget.message, color: widget.foreground, maxLines: 2),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
         ),
       ),
-    );
+    ),
+  );
 }
 
 // -----------------------------------------------------------------------------
