@@ -3773,6 +3773,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get secretKey => 'کلید مخفی';
 
   @override
+  String get secureConnectionToTheServerFailed => 'برقراری ارتباط امن با مرکز ممکن نشد.';
+
+  @override
   String get seeAll => 'همه';
 
   @override
@@ -3862,6 +3865,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get serialNumber => 'شماره سریال';
+
+  @override
+  String get serverAddressCouldNotBeFound => 'آدرس مرکز پیدا نشد.';
 
   @override
   String get services => 'خدمات';

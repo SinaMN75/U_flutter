@@ -285,6 +285,20 @@ class _UOtpFieldState extends State<UOtpField> with TickerProviderStateMixin {
     selection: TextSelection.collapsed(offset: value.length),
   );
 
+  void _onTap() {
+    final bool reopenKeyboard = kIsWeb && defaultTargetPlatform == TargetPlatform.iOS && _focusNode.hasFocus;
+    _setValue(_controller.text);
+    if (reopenKeyboard) _reopenWebKeyboard();
+  }
+
+  // iOS Safari shows the keyboard only for a focus() made inside a user gesture, and the web engine ignores "show" while already
+  // editing, so an autofocused field stays without a keyboard. Restarting the editing session inside the tap focuses it again.
+  void _reopenWebKeyboard() {
+    SystemChannels.textInput.invokeMethod<void>("TextInput.hide");
+    SystemChannels.textInput.invokeMethod<void>("TextInput.setEditingState", _controller.value.toJSON());
+    SystemChannels.textInput.invokeMethod<void>("TextInput.show");
+  }
+
   bool get _isActive => widget.enabled && !widget.readOnly && (widget.keyboardMode == UOtpKeyboardMode.external || _focusNode.hasFocus);
 
   int get _cursorIndex => min(_controller.text.length, widget.length - 1);
@@ -423,7 +437,7 @@ class _UOtpFieldState extends State<UOtpField> with TickerProviderStateMixin {
       enableInteractiveSelection: true,
       style: const TextStyle(height: 1),
       decoration: const InputDecoration(counterText: "", border: InputBorder.none, contentPadding: EdgeInsets.zero),
-      onTap: () => _setValue(_controller.text),
+      onTap: _onTap,
       onSubmitted: widget.onSubmitted,
     ),
   );

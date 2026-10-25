@@ -7490,6 +7490,12 @@ abstract class AppLocalizations {
   /// **'Secret Key'**
   String get secretKey;
 
+  /// No description provided for @secureConnectionToTheServerFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Secure connection to the server failed'**
+  String get secureConnectionToTheServerFailed;
+
   /// No description provided for @seeAll.
   ///
   /// In en, this message translates to:
@@ -7663,6 +7669,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Serial number'**
   String get serialNumber;
+
+  /// No description provided for @serverAddressCouldNotBeFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Server address could not be found'**
+  String get serverAddressCouldNotBeFound;
 
   /// No description provided for @services.
   ///

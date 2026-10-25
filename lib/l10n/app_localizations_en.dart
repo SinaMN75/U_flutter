@@ -3773,6 +3773,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get secretKey => 'Secret Key';
 
   @override
+  String get secureConnectionToTheServerFailed => 'Secure connection to the server failed';
+
+  @override
   String get seeAll => 'See all';
 
   @override
@@ -3862,6 +3865,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get serialNumber => 'Serial number';
+
+  @override
+  String get serverAddressCouldNotBeFound => 'Server address could not be found';
 
   @override
   String get services => 'Services';

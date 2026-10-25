@@ -5,6 +5,9 @@ import "package:u/utilities.dart";
 /// How UHttpClient encodes a Map body: json or formData (x-www-form-urlencoded).
 enum URequestBodyType { json, formData }
 
+/// Why no response came: noNetwork (Wi-Fi, mobile data and cable are all off), timeout, hostNotFound, connectionFailed, secureConnectionFailed, unexpected.
+enum UHttpExceptionType { noNetwork, timeout, hostNotFound, connectionFailed, secureConnectionFailed, unexpected }
+
 /// Result of UHttpClient.send: exactly one of response (body), error (body) or exception (message) is set.
 class UHttpClientResponse {
   /// Response body on 2xx.
@@ -16,8 +19,11 @@ class UHttpClientResponse {
   /// Message when no response came (offline, timeout, crash).
   final String? exception;
 
+  /// Why no response came, set together with [exception].
+  final UHttpExceptionType? exceptionType;
+
   /// Result of a request.
-  UHttpClientResponse({this.response, this.error, this.exception});
+  UHttpClientResponse({this.response, this.error, this.exception, this.exceptionType});
 
   /// True on 2xx.
   bool get isSuccessful => response != null;
@@ -67,12 +73,10 @@ abstract class UHttpClient {
 
     final bool isTokenIssuingEndpoint = UAuth.isTokenIssuingEndpoint(endpoint);
 
-    final bool hasNetworkConnection = UNetwork.isOnline;
-
-    if (!hasNetworkConnection && offline == false) {
-      final String message = noNetworkMessage ?? U.s.connectionToNetworkWasNotPossible;
+    if (!offline && UNetwork.isOffline && !await _hasNetwork()) {
+      final String message = _exceptionMessage(UHttpExceptionType.noNetwork, noNetworkMessage, unexpectedErrorMessage);
       onException(message);
-      return UHttpClientResponse(exception: message);
+      return UHttpClientResponse(exception: message, exceptionType: UHttpExceptionType.noNetwork);
     }
 
     final Uri uri = _buildUri(endpoint, queryParams);
@@ -172,7 +176,8 @@ abstract class UHttpClient {
       );
     } catch (e, stack) {
       developer.log(e.toString(), stackTrace: stack);
-      if (retryAmount > 0 && _isTransient(e, method)) {
+      final UHttpExceptionType exceptionType = await _exceptionType(e);
+      if (retryAmount > 0 && exceptionType != UHttpExceptionType.noNetwork && _isTransient(e, method)) {
         final int attempt = retryAmount < 1 ? 1 : (4 - retryAmount).clamp(1, 4);
         await Future<void>.delayed(Duration(milliseconds: 300 * attempt));
         return send(
@@ -195,14 +200,9 @@ abstract class UHttpClient {
           isRetryAfterRefresh: isRetryAfterRefresh,
         );
       } else {
-        final String message = switch (e) {
-          TimeoutException() => U.s.noResponseFromTheServer,
-          SocketException() || ClientException() || HttpException() => U.s.couldNotConnectToTheServer,
-          _ => unexpectedErrorMessage ?? U.s.unexpectedErrorPleaseTryAgain,
-        };
-
+        final String message = _exceptionMessage(exceptionType, noNetworkMessage, unexpectedErrorMessage);
         onException(message);
-        return UHttpClientResponse(exception: message);
+        return UHttpClientResponse(exception: message, exceptionType: exceptionType);
       }
     }
 
@@ -248,7 +248,7 @@ abstract class UHttpClient {
       developer.log(e.toString(), stackTrace: stack);
       final String message = unexpectedErrorMessage ?? U.s.unexpectedErrorPleaseTryAgain;
       onException(message);
-      return UHttpClientResponse(exception: message);
+      return UHttpClientResponse(exception: message, exceptionType: UHttpExceptionType.unexpected);
     }
   }
 
@@ -304,6 +304,27 @@ abstract class UHttpClient {
     if (e is TimeoutException) return _idempotentMethods.contains(method.toUpperCase());
     return e is SocketException || e is ClientException || e is HttpException;
   }
+
+  // Only Wi-Fi, mobile data, cable… being on counts; a ping fails whenever the pinged server alone is down or filtered.
+  static Future<bool> _hasNetwork() async => (await UConnectivity.refresh()).isOnline;
+
+  static Future<UHttpExceptionType> _exceptionType(Object e) async {
+    if (e is! TimeoutException && e is! TlsException && e is! SocketException && e is! ClientException && e is! HttpException) return UHttpExceptionType.unexpected;
+    if (!await _hasNetwork()) return UHttpExceptionType.noNetwork;
+    if (e is TimeoutException) return UHttpExceptionType.timeout;
+    if (e is TlsException) return UHttpExceptionType.secureConnectionFailed;
+    if (e.toString().contains("Failed host lookup")) return UHttpExceptionType.hostNotFound;
+    return UHttpExceptionType.connectionFailed;
+  }
+
+  static String _exceptionMessage(UHttpExceptionType type, String? noNetworkMessage, String? unexpectedErrorMessage) => switch (type) {
+    UHttpExceptionType.noNetwork => noNetworkMessage ?? U.s.connectionToNetworkWasNotPossible,
+    UHttpExceptionType.timeout => U.s.noResponseFromTheServer,
+    UHttpExceptionType.hostNotFound => U.s.serverAddressCouldNotBeFound,
+    UHttpExceptionType.connectionFailed => U.s.couldNotConnectToTheServer,
+    UHttpExceptionType.secureConnectionFailed => U.s.secureConnectionToTheServerFailed,
+    UHttpExceptionType.unexpected => unexpectedErrorMessage ?? U.s.unexpectedErrorPleaseTryAgain,
+  };
 
   static String _describeBody(dynamic body) {
     if (body is List<int>) return "<${body.length} bytes>";
