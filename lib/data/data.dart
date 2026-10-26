@@ -4,13 +4,11 @@ import "package:u/utilities.dart";
 
 part "services/_api.dart";
 
-
 part "params/api_log_params.dart";
 
 part "params/app_settings_params.dart";
 
 part "params/auth_params.dart";
-
 
 part "params/base_params.dart";
 
@@ -35,7 +33,9 @@ part "params/follow_params.dart";
 part "params/gold_params.dart";
 
 part "params/dorm_params.dart";
+
 part "params/hotel_params.dart";
+
 part "params/organization_params.dart";
 
 part "params/inquiry_params.dart";
@@ -44,13 +44,11 @@ part "params/ipg_params.dart";
 
 part "params/media_params.dart";
 
-
 part "params/moadi_params.dart";
 
 part "params/notification_params.dart";
 
 part "params/parking_params.dart";
-
 
 part "params/selectors.dart";
 
@@ -98,16 +96,16 @@ part "responses/content_response.dart";
 
 part "responses/dashboard_analytics_response.dart";
 
-
 part "responses/db_admin_response.dart";
 
 part "responses/file_manager_response.dart";
 
-
 part "responses/gold_response.dart";
 
 part "responses/dorm_response.dart";
+
 part "responses/hotel_response.dart";
+
 part "responses/organization_response.dart";
 
 part "responses/inquiry_response.dart";
@@ -115,7 +113,6 @@ part "responses/inquiry_response.dart";
 part "responses/ipg_response.dart";
 
 part "responses/media_response.dart";
-
 
 part "responses/moadi_response.dart";
 
@@ -127,7 +124,6 @@ part "responses/parking_response.dart";
 
 part "responses/process_response.dart";
 
-
 part "responses/sim_response.dart";
 
 part "responses/social_response.dart";
@@ -136,9 +132,7 @@ part "responses/sport_response.dart";
 
 part "responses/terminal_response.dart";
 
-
 part "responses/txn_response.dart";
-
 
 part "responses/user_response.dart";
 
@@ -148,11 +142,9 @@ part "responses/venue_response.dart";
 
 part "responses/wallet_response.dart";
 
-
 part "services/app_settings_service.dart";
 
 part "services/auth_service.dart";
-
 
 part "services/blog_service.dart";
 
@@ -175,7 +167,9 @@ part "services/follow_service.dart";
 part "services/gold_service.dart";
 
 part "services/dorm_service.dart";
+
 part "services/hotel_service.dart";
+
 part "services/organization_service.dart";
 
 part "services/inquiry_service.dart";
@@ -183,7 +177,6 @@ part "services/inquiry_service.dart";
 part "services/ipg_service.dart";
 
 part "services/media_service.dart";
-
 
 part "services/moadi_service.dart";
 
@@ -194,7 +187,6 @@ part "services/parking_service.dart";
 part "services/pn_service.dart";
 
 part "services/process_service.dart";
-
 
 part "services/sim_service.dart";
 
@@ -213,7 +205,6 @@ part "services/vehicle_service.dart";
 part "services/venue_service.dart";
 
 part "services/wallet_service.dart";
-part "services/data_seed_service.dart";
 
 part "payment/ipg_browser_controller.dart";
 
@@ -254,7 +245,6 @@ class UServices {
   static UOrganizationService organization = UOrganizationService();
   static UParkingService parking = UParkingService();
   static UTxnService txn = UTxnService();
-  static UDataSeedService dataSeed = UDataSeedService();
   static UBlogService blog = UBlogService();
   static UPnService pn = UPnService();
   static UFileManagerService fileManager = UFileManagerService();
