@@ -1090,6 +1090,20 @@ enum TagOrganization with UNumericIdentifiable {
   final int number;
 }
 
+enum TagOrganizationKind with UNumericIdentifiable {
+  person("شخص حقیقی", "Person", 101),
+  company("شخص حقوقی", "Company", 102);
+
+  const TagOrganizationKind(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
 enum TagHotelReservation with UNumericIdentifiable {
   pending("در انتظار", "Pending", 101),
   confirmed("تایید شده", "Confirmed", 102),
@@ -1912,7 +1926,15 @@ enum TagActivityLog with UNumericIdentifiable {
 enum TagModule with UNumericIdentifiable {
   hotel("هتل", "Hotel", 101),
   dorm("خوابگاه و پانسیون", "Dorm", 102),
-  staff("کارکنان و وظایف", "Staff", 105);
+  staff("کارکنان و وظایف", "Staff", 105),
+  store("فروشگاه", "Store", 106),
+  videosAndLinks("ویدیو و لینک شبکه‌ها", "Videos and links", 107),
+  quickSale("فروش سریع و انبار", "Quick sale and stock", 108),
+  tableMenu("منوی کافه و QR میز", "Menu and table QR", 109),
+  followerAlerts("اعلان کالای تازه به دنبال‌کننده‌ها", "New item alerts to followers", 110),
+  arModels("مدل سه‌بعدی و AR", "3D models and AR", 111),
+  profitReports("گزارش سود و زیان", "Profit reports", 112),
+  customPosters("پوستر و برچسب اختصاصی", "Custom posters and labels", 113);
 
   const TagModule(this.titleFa, this.titleEn, this.number);
 
@@ -1927,7 +1949,8 @@ enum TagModule with UNumericIdentifiable {
 enum TagSubscriptionPlan with UNumericIdentifiable {
   active("فعال", "Active", 101),
   inactive("غیرفعال", "Inactive", 102),
-  featured("پیشنهاد ویژه", "Featured", 201);
+  featured("پیشنهاد ویژه", "Featured", 201),
+  free("رایگان", "Free", 202);
 
   const TagSubscriptionPlan(this.titleFa, this.titleEn, this.number);
 
@@ -1959,7 +1982,8 @@ enum TagPlanLimit with UNumericIdentifiable {
   places("تعداد شعبه", "Branches", 101),
   rooms("تعداد اتاق هتل", "Hotel rooms", 102),
   beds("تعداد تخت", "Beds", 103),
-  members("تعداد کارکنان", "Staff members", 104);
+  members("تعداد کارکنان", "Staff members", 104),
+  products("تعداد کالا", "Products", 105);
 
   const TagPlanLimit(this.titleFa, this.titleEn, this.number);
 

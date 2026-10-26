@@ -4,12 +4,14 @@ class UAppSettingsResponse {
   final List<UChargeInternet> chargeInternet;
   final double chargeInternetTaxPercent;
   final List<UAppVersionResponse> appVersions;
+  final UOrganizationSettings organization;
 
   UAppSettingsResponse({
     required this.apiCallCosts,
     required this.chargeInternet,
     required this.chargeInternetTaxPercent,
     this.appVersions = const <UAppVersionResponse>[],
+    this.organization = const UOrganizationSettings(),
   });
 
   factory UAppSettingsResponse.fromMap(Map<String, dynamic> json) => UAppSettingsResponse(
@@ -17,6 +19,7 @@ class UAppSettingsResponse {
     chargeInternet: json["chargeInternet"] == null ? <UChargeInternet>[] : List<UChargeInternet>.from(json["chargeInternet"]!.map((dynamic x) => UChargeInternet.fromMap(x))),
     chargeInternetTaxPercent: (json["chargeInternetTaxPercent"] ?? 0).toString().toDouble(),
     appVersions: json["appVersions"] == null ? <UAppVersionResponse>[] : List<UAppVersionResponse>.from(json["appVersions"]!.map((dynamic x) => UAppVersionResponse.fromMap(x))),
+    organization: json["organization"] == null ? const UOrganizationSettings() : UOrganizationSettings.fromMap(json["organization"]),
   );
 
   final UApiCallCosts apiCallCosts;
@@ -26,11 +29,32 @@ class UAppSettingsResponse {
     "apiCallCosts": apiCallCosts.toMap(),
     "chargeInternetTaxPercent": chargeInternetTaxPercent,
     "appVersions": List<dynamic>.from(appVersions.map((UAppVersionResponse x) => x.toMap())),
+    "organization": organization.toMap(),
   };
 
   String toJson() => json.encode(toMap());
 
   factory UAppSettingsResponse.fromJson(String str) => UAppSettingsResponse.fromMap(json.decode(str));
+}
+
+class UOrganizationSettings {
+  const UOrganizationSettings({this.maxPerOwner, this.bankRequired = true, this.subscriptionReminderDays = 3});
+
+  factory UOrganizationSettings.fromMap(Map<String, dynamic> json) => UOrganizationSettings(
+    maxPerOwner: json["maxPerOwner"] == null ? null : (json["maxPerOwner"] as num).toInt(),
+    bankRequired: json["bankRequired"] ?? true,
+    subscriptionReminderDays: json["subscriptionReminderDays"] == null ? 3 : (json["subscriptionReminderDays"] as num).toInt(),
+  );
+
+  final int? maxPerOwner;
+  final bool bankRequired;
+  final int subscriptionReminderDays;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "maxPerOwner": maxPerOwner,
+    "bankRequired": bankRequired,
+    "subscriptionReminderDays": subscriptionReminderDays,
+  };
 }
 
 class UApiCallCosts {

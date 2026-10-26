@@ -41,7 +41,7 @@ class UOrganizationMemberPlace {
 }
 
 class UOrganizationJson {
-  UOrganizationJson({this.detail1, this.detail2, this.commissionPercent = 0, this.members = const <UOrganizationMember>[], this.settlements = const <UOrganizationSettlement>[], this.logoUrl, this.address, this.phoneNumber, this.nationalId, this.economicCode, this.subscriptions = const <UOrganizationSubscription>[]});
+  UOrganizationJson({this.detail1, this.detail2, this.commissionPercent = 0, this.members = const <UOrganizationMember>[], this.settlements = const <UOrganizationSettlement>[], this.logoUrl, this.address, this.phoneNumber, this.nationalId, this.economicCode, this.kind, this.cityCode, this.subscriptions = const <UOrganizationSubscription>[]});
 
   factory UOrganizationJson.fromMap(Map<String, dynamic> json) => UOrganizationJson(
     detail1: json["detail1"],
@@ -54,6 +54,8 @@ class UOrganizationJson {
     phoneNumber: json["phoneNumber"],
     nationalId: json["nationalId"],
     economicCode: json["economicCode"],
+    kind: json["kind"] == null ? null : (json["kind"] as num).toInt(),
+    cityCode: json["cityCode"],
     subscriptions: json["subscriptions"] == null ? <UOrganizationSubscription>[] : List<UOrganizationSubscription>.from(json["subscriptions"]!.map((dynamic x) => UOrganizationSubscription.fromMap(x))),
   );
 
@@ -67,6 +69,8 @@ class UOrganizationJson {
   final String? phoneNumber;
   final String? nationalId;
   final String? economicCode;
+  final int? kind;
+  final String? cityCode;
   final List<UOrganizationSubscription> subscriptions;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -80,6 +84,8 @@ class UOrganizationJson {
     "phoneNumber": phoneNumber,
     "nationalId": nationalId,
     "economicCode": economicCode,
+    "kind": kind,
+    "cityCode": cityCode,
     "subscriptions": subscriptions.map((UOrganizationSubscription x) => x.toMap()).toList(),
   };
 }
@@ -96,6 +102,7 @@ class UOrganizationResponse {
     this.adminUserIds = const <String>[],
     this.balance = 0,
     this.modules,
+    this.limits,
     this.subscriptionEndsAt,
     this.bankAccount,
     this.payments,
@@ -112,6 +119,7 @@ class UOrganizationResponse {
     adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
     balance: json["balance"] == null ? 0 : (json["balance"] as num).toDouble(),
     modules: json["modules"] == null ? null : List<int>.from(json["modules"]!.map((dynamic x) => x)),
+    limits: json["limits"] == null ? null : List<UPlanLimit>.from(json["limits"]!.map((dynamic x) => UPlanLimit.fromMap(x))),
     subscriptionEndsAt: json["subscriptionEndsAt"] == null ? null : DateTime.parse(json["subscriptionEndsAt"]),
     bankAccount: json["bankAccount"] == null ? null : UBankAccountResponse.fromMap(json["bankAccount"]),
     payments: json["payments"] == null ? null : UOrganizationPayments.fromMap(json["payments"]),
@@ -127,6 +135,7 @@ class UOrganizationResponse {
   final List<String> adminUserIds;
   final double balance;
   final List<int>? modules;
+  final List<UPlanLimit>? limits;
   final DateTime? subscriptionEndsAt;
   final UBankAccountResponse? bankAccount;
   final UOrganizationPayments? payments;
@@ -134,6 +143,8 @@ class UOrganizationResponse {
   double get pendingSettlements => jsonData.settlements.where((UOrganizationSettlement s) => s.approved == null).fold(0, (double a, UOrganizationSettlement s) => a + s.amount);
 
   bool hasModule(TagModule m) => modules == null || modules!.contains(m.number);
+
+  int? limitOf(TagPlanLimit kind) => limits?.where((UPlanLimit x) => x.kind == kind.number).firstOrNull?.value;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "id": id,
@@ -240,6 +251,7 @@ class UOrganizationSubscription {
     this.paid = 0,
     this.startsAt,
     this.expiresAt,
+    this.remindedAt,
   });
 
   factory UOrganizationSubscription.fromMap(Map<String, dynamic> json) => UOrganizationSubscription(
@@ -258,6 +270,7 @@ class UOrganizationSubscription {
     paid: _num(json["paid"]),
     startsAt: json["startsAt"] == null ? null : DateTime.parse(json["startsAt"]),
     expiresAt: json["expiresAt"] == null ? null : DateTime.parse(json["expiresAt"]),
+    remindedAt: json["remindedAt"] == null ? null : DateTime.parse(json["remindedAt"]),
   );
 
   final String id;
@@ -275,6 +288,7 @@ class UOrganizationSubscription {
   final double paid;
   final DateTime? startsAt;
   final DateTime? expiresAt;
+  final DateTime? remindedAt;
 
   bool get isLive => status == TagSubscription.active.number && startsAt != null && expiresAt != null && !startsAt!.isAfter(DateTime.now()) && expiresAt!.isAfter(DateTime.now());
 
@@ -294,6 +308,7 @@ class UOrganizationSubscription {
     "paid": paid,
     "startsAt": startsAt?.toIso8601String(),
     "expiresAt": expiresAt?.toIso8601String(),
+    "remindedAt": remindedAt?.toIso8601String(),
   };
 }
 

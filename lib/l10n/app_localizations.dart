@@ -15601,6 +15601,192 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Search stores, cafés or products'**
   String get searchStoresCafesOrProducts;
+
+  /// No description provided for @skip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get skip;
+
+  /// No description provided for @seePricesBeforeYouBuy.
+  ///
+  /// In en, this message translates to:
+  /// **'See prices before you buy'**
+  String get seePricesBeforeYouBuy;
+
+  /// No description provided for @scanTheQrToSeeEveryItemAndPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan the QR to see every item and price'**
+  String get scanTheQrToSeeEveryItemAndPrice;
+
+  /// No description provided for @nearbyPlacesOnTheMapAndAr.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearby places on the map and AR'**
+  String get nearbyPlacesOnTheMapAndAr;
+
+  /// No description provided for @findCafesRestaurantsShopsAndStreetVendorsAroundYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Find cafes, restaurants, shops and street vendors around you'**
+  String get findCafesRestaurantsShopsAndStreetVendorsAroundYou;
+
+  /// No description provided for @bookmarkAndGetNotified.
+  ///
+  /// In en, this message translates to:
+  /// **'Bookmark and get notified'**
+  String get bookmarkAndGetNotified;
+
+  /// No description provided for @bookmarkStoresToHearAboutTheirNewItems.
+  ///
+  /// In en, this message translates to:
+  /// **'Bookmark stores to hear about their new items'**
+  String get bookmarkStoresToHearAboutTheirNewItems;
+
+  /// No description provided for @startBrowsing.
+  ///
+  /// In en, this message translates to:
+  /// **'Start browsing'**
+  String get startBrowsing;
+
+  /// No description provided for @signInWithMobileNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with mobile number'**
+  String get signInWithMobileNumber;
+
+  /// No description provided for @buildYourOwnShowcase.
+  ///
+  /// In en, this message translates to:
+  /// **'Build your own showcase'**
+  String get buildYourOwnShowcase;
+
+  /// No description provided for @bookmarkYourFavouriteStoresAndItems.
+  ///
+  /// In en, this message translates to:
+  /// **'Bookmark your favourite stores and items'**
+  String get bookmarkYourFavouriteStoresAndItems;
+
+  /// No description provided for @hearAboutNewItemsFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Hear about new items first'**
+  String get hearAboutNewItemsFirst;
+
+  /// No description provided for @signInOrSignUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in or sign up'**
+  String get signInOrSignUp;
+
+  /// No description provided for @weTextAVerificationCodeToYourMobile.
+  ///
+  /// In en, this message translates to:
+  /// **'We text a verification code to your mobile'**
+  String get weTextAVerificationCodeToYourMobile;
+
+  /// No description provided for @getVerificationCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Get verification code'**
+  String get getVerificationCode;
+
+  /// No description provided for @enterTheVerificationCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the verification code'**
+  String get enterTheVerificationCode;
+
+  /// No description provided for @sentTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent to {mobile}'**
+  String sentTo(Object mobile);
+
+  /// No description provided for @editNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit number'**
+  String get editNumber;
+
+  /// No description provided for @resendCodeIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend code in {time}'**
+  String resendCodeIn(Object time);
+
+  /// No description provided for @resendCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend code'**
+  String get resendCode;
+
+  /// No description provided for @confirmAndSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm and sign in'**
+  String get confirmAndSignIn;
+
+  /// No description provided for @haveAShop.
+  ///
+  /// In en, this message translates to:
+  /// **'Have a shop?'**
+  String get haveAShop;
+
+  /// No description provided for @becomeASellerAfterSigningIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Become a seller after signing in'**
+  String get becomeASellerAfterSigningIn;
+
+  /// No description provided for @newNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'New notifications'**
+  String get newNotifications;
+
+  /// No description provided for @followed.
+  ///
+  /// In en, this message translates to:
+  /// **'Followed'**
+  String get followed;
+
+  /// No description provided for @supportAndFaq.
+  ///
+  /// In en, this message translates to:
+  /// **'Support and FAQ'**
+  String get supportAndFaq;
+
+  /// No description provided for @becomeASellerAndBuildYourStore.
+  ///
+  /// In en, this message translates to:
+  /// **'Become a seller and build your store'**
+  String get becomeASellerAndBuildYourStore;
+
+  /// No description provided for @logOutOfAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Log out of account'**
+  String get logOutOfAccount;
+
+  /// No description provided for @nothingBookmarkedYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing bookmarked yet'**
+  String get nothingBookmarkedYet;
+
+  /// No description provided for @noNotificationsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications yet'**
+  String get noNotificationsYet;
+
+  /// No description provided for @bySigningInYouAcceptTheAppTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'By signing in you accept the {app} terms'**
+  String bySigningInYouAcceptTheAppTerms(Object app);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

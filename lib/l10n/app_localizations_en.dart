@@ -7944,4 +7944,103 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get searchStoresCafesOrProducts => 'Search stores, cafés or products';
+
+  @override
+  String get skip => 'Skip';
+
+  @override
+  String get seePricesBeforeYouBuy => 'See prices before you buy';
+
+  @override
+  String get scanTheQrToSeeEveryItemAndPrice => 'Scan the QR to see every item and price';
+
+  @override
+  String get nearbyPlacesOnTheMapAndAr => 'Nearby places on the map and AR';
+
+  @override
+  String get findCafesRestaurantsShopsAndStreetVendorsAroundYou => 'Find cafes, restaurants, shops and street vendors around you';
+
+  @override
+  String get bookmarkAndGetNotified => 'Bookmark and get notified';
+
+  @override
+  String get bookmarkStoresToHearAboutTheirNewItems => 'Bookmark stores to hear about their new items';
+
+  @override
+  String get startBrowsing => 'Start browsing';
+
+  @override
+  String get signInWithMobileNumber => 'Sign in with mobile number';
+
+  @override
+  String get buildYourOwnShowcase => 'Build your own showcase';
+
+  @override
+  String get bookmarkYourFavouriteStoresAndItems => 'Bookmark your favourite stores and items';
+
+  @override
+  String get hearAboutNewItemsFirst => 'Hear about new items first';
+
+  @override
+  String get signInOrSignUp => 'Sign in or sign up';
+
+  @override
+  String get weTextAVerificationCodeToYourMobile => 'We text a verification code to your mobile';
+
+  @override
+  String get getVerificationCode => 'Get verification code';
+
+  @override
+  String get enterTheVerificationCode => 'Enter the verification code';
+
+  @override
+  String sentTo(Object mobile) {
+    return 'Sent to $mobile';
+  }
+
+  @override
+  String get editNumber => 'Edit number';
+
+  @override
+  String resendCodeIn(Object time) {
+    return 'Resend code in $time';
+  }
+
+  @override
+  String get resendCode => 'Resend code';
+
+  @override
+  String get confirmAndSignIn => 'Confirm and sign in';
+
+  @override
+  String get haveAShop => 'Have a shop?';
+
+  @override
+  String get becomeASellerAfterSigningIn => 'Become a seller after signing in';
+
+  @override
+  String get newNotifications => 'New notifications';
+
+  @override
+  String get followed => 'Followed';
+
+  @override
+  String get supportAndFaq => 'Support and FAQ';
+
+  @override
+  String get becomeASellerAndBuildYourStore => 'Become a seller and build your store';
+
+  @override
+  String get logOutOfAccount => 'Log out of account';
+
+  @override
+  String get nothingBookmarkedYet => 'Nothing bookmarked yet';
+
+  @override
+  String get noNotificationsYet => 'No notifications yet';
+
+  @override
+  String bySigningInYouAcceptTheAppTerms(Object app) {
+    return 'By signing in you accept the $app terms';
+  }
 }

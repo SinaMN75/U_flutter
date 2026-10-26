@@ -8,6 +8,7 @@ class UUserSelectorArgs {
   final UMerchantSelectorArgs? merchant;
   final UBankAccountSelectorArgs? bankAccount;
   final USimCardSelectorArgs? simCard;
+  final UOrganizationSelectorArgs? organization;
 
   const UUserSelectorArgs({
     this.media,
@@ -17,6 +18,7 @@ class UUserSelectorArgs {
     this.merchant,
     this.bankAccount,
     this.simCard,
+    this.organization,
   });
 
   factory UUserSelectorArgs.fromJson(String str) => UUserSelectorArgs.fromMap(json.decode(str));
@@ -31,6 +33,7 @@ class UUserSelectorArgs {
     merchant: json["merchant"] == null ? null : UMerchantSelectorArgs.fromMap(json["merchant"]),
     bankAccount: json["bankAccount"] == null ? null : UBankAccountSelectorArgs.fromMap(json["bankAccount"]),
     simCard: json["simCard"] == null ? null : USimCardSelectorArgs.fromMap(json["simCard"]),
+    organization: json["organization"] == null ? null : UOrganizationSelectorArgs.fromMap(json["organization"]),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -41,7 +44,22 @@ class UUserSelectorArgs {
     "merchant": merchant?.toMap(),
     "bankAccount": bankAccount?.toMap(),
     "simCard": simCard?.toMap(),
+    "organization": organization?.toMap(),
   };
+}
+
+class UOrganizationSelectorArgs {
+  final UUserSelectorArgs? creator;
+
+  const UOrganizationSelectorArgs({this.creator});
+
+  factory UOrganizationSelectorArgs.fromMap(Map<String, dynamic> json) => UOrganizationSelectorArgs(creator: json["creator"] == null ? null : UUserSelectorArgs.fromMap(json["creator"]));
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"creator": creator?.toMap()};
+
+  String toJson() => json.encode(toMap());
+
+  factory UOrganizationSelectorArgs.fromJson(String str) => UOrganizationSelectorArgs.fromMap(json.decode(str));
 }
 
 class UParkingReportSelectorArgs {

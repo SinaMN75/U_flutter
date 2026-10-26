@@ -3030,5 +3030,51 @@
   },
   "componentGallery": "Component gallery",
   "filters": "Filters",
-  "searchStoresCafesOrProducts": "Search stores, cafés or products"
+  "searchStoresCafesOrProducts": "Search stores, cafés or products",
+  "skip": "Skip",
+  "seePricesBeforeYouBuy": "See prices before you buy",
+  "scanTheQrToSeeEveryItemAndPrice": "Scan the QR to see every item and price",
+  "nearbyPlacesOnTheMapAndAr": "Nearby places on the map and AR",
+  "findCafesRestaurantsShopsAndStreetVendorsAroundYou": "Find cafes, restaurants, shops and street vendors around you",
+  "bookmarkAndGetNotified": "Bookmark and get notified",
+  "bookmarkStoresToHearAboutTheirNewItems": "Bookmark stores to hear about their new items",
+  "startBrowsing": "Start browsing",
+  "signInWithMobileNumber": "Sign in with mobile number",
+  "buildYourOwnShowcase": "Build your own showcase",
+  "bookmarkYourFavouriteStoresAndItems": "Bookmark your favourite stores and items",
+  "hearAboutNewItemsFirst": "Hear about new items first",
+  "signInOrSignUp": "Sign in or sign up",
+  "weTextAVerificationCodeToYourMobile": "We text a verification code to your mobile",
+  "getVerificationCode": "Get verification code",
+  "enterTheVerificationCode": "Enter the verification code",
+  "sentTo": "Sent to {mobile}",
+  "@sentTo": {
+    "placeholders": {
+      "mobile": {}
+    }
+  },
+  "editNumber": "Edit number",
+  "resendCodeIn": "Resend code in {time}",
+  "@resendCodeIn": {
+    "placeholders": {
+      "time": {}
+    }
+  },
+  "resendCode": "Resend code",
+  "confirmAndSignIn": "Confirm and sign in",
+  "haveAShop": "Have a shop?",
+  "becomeASellerAfterSigningIn": "Become a seller after signing in",
+  "newNotifications": "New notifications",
+  "followed": "Followed",
+  "supportAndFaq": "Support and FAQ",
+  "becomeASellerAndBuildYourStore": "Become a seller and build your store",
+  "logOutOfAccount": "Log out of account",
+  "nothingBookmarkedYet": "Nothing bookmarked yet",
+  "noNotificationsYet": "No notifications yet",
+  "bySigningInYouAcceptTheAppTerms": "By signing in you accept the {app} terms",
+  "@bySigningInYouAcceptTheAppTerms": {
+    "placeholders": {
+      "app": {}
+    }
+  }
 }

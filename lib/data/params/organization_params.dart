@@ -11,6 +11,8 @@ class UOrganizationCreateParams {
     this.phoneNumber,
     this.nationalId,
     this.economicCode,
+    this.kind,
+    this.cityCode,
     this.cardNumber,
     this.accountNumber,
     this.iBanNumber,
@@ -25,6 +27,8 @@ class UOrganizationCreateParams {
   final String? phoneNumber;
   final String? nationalId;
   final String? economicCode;
+  final int? kind;
+  final String? cityCode;
   final String? cardNumber;
   final String? accountNumber;
   final String? iBanNumber;
@@ -39,6 +43,8 @@ class UOrganizationCreateParams {
     "phoneNumber": phoneNumber,
     "nationalId": nationalId,
     "economicCode": economicCode,
+    "kind": kind,
+    "cityCode": cityCode,
     "cardNumber": cardNumber,
     "accountNumber": accountNumber,
     "iBanNumber": iBanNumber,
@@ -59,6 +65,8 @@ class UOrganizationUpdateParams {
     this.phoneNumber,
     this.nationalId,
     this.economicCode,
+    this.kind,
+    this.cityCode,
     this.cardNumber,
     this.accountNumber,
     this.iBanNumber,
@@ -76,6 +84,8 @@ class UOrganizationUpdateParams {
   final String? phoneNumber;
   final String? nationalId;
   final String? economicCode;
+  final int? kind;
+  final String? cityCode;
   final String? cardNumber;
   final String? accountNumber;
   final String? iBanNumber;
@@ -93,6 +103,8 @@ class UOrganizationUpdateParams {
     "phoneNumber": phoneNumber,
     "nationalId": nationalId,
     "economicCode": economicCode,
+    "kind": kind,
+    "cityCode": cityCode,
     "cardNumber": cardNumber,
     "accountNumber": accountNumber,
     "iBanNumber": iBanNumber,
@@ -537,13 +549,31 @@ class USubscriptionQuoteParams {
 }
 
 class USubscriptionBuyParams {
-  USubscriptionBuyParams({required this.planId, this.months = 1, this.trial = false, this.organizationId, this.title, this.fromWallet = false, this.cardNumber, this.accountNumber, this.iBanNumber});
+  USubscriptionBuyParams({
+    required this.planId,
+    this.months = 1,
+    this.trial = false,
+    this.organizationId,
+    this.title,
+    this.kind,
+    this.nationalId,
+    this.economicCode,
+    this.cityCode,
+    this.fromWallet = false,
+    this.cardNumber,
+    this.accountNumber,
+    this.iBanNumber,
+  });
 
   final String planId;
   final int months;
   final bool trial;
   final String? organizationId;
   final String? title;
+  final int? kind;
+  final String? nationalId;
+  final String? economicCode;
+  final String? cityCode;
   final bool fromWallet;
   final String? cardNumber;
   final String? accountNumber;
@@ -555,6 +585,10 @@ class USubscriptionBuyParams {
     "trial": trial,
     "organizationId": organizationId,
     "title": title,
+    "kind": kind,
+    "nationalId": nationalId,
+    "economicCode": economicCode,
+    "cityCode": cityCode,
     "fromWallet": fromWallet,
     "cardNumber": cardNumber,
     "accountNumber": accountNumber,

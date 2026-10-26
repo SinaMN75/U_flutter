@@ -7943,4 +7943,103 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get searchStoresCafesOrProducts => 'فروشگاه، کافه یا کالا را جستجو کنید';
+
+  @override
+  String get skip => 'رد شدن';
+
+  @override
+  String get seePricesBeforeYouBuy => 'قیمت‌ها را قبل از خرید ببینید';
+
+  @override
+  String get scanTheQrToSeeEveryItemAndPrice => 'QR دم مغازه یا روی میز کافه را اسکن کنید؛ همه اجناس و قیمت‌ها جلوی چشمتان است.';
+
+  @override
+  String get nearbyPlacesOnTheMapAndAr => 'نزدیک‌ترین‌ها روی نقشه و AR';
+
+  @override
+  String get findCafesRestaurantsShopsAndStreetVendorsAroundYou => 'کافه، رستوران، مغازه یا دست‌فروش؛ روی نقشه ببینید یا دوربین را بچرخانید تا برچسبشان را ببینید.';
+
+  @override
+  String get bookmarkAndGetNotified => 'نشان کنید، خبردار شوید';
+
+  @override
+  String get bookmarkStoresToHearAboutTheirNewItems => 'فروشگاه‌های محبوبتان را نشان کنید تا وقتی کالای تازه آوردند به شما خبر بدهیم.';
+
+  @override
+  String get startBrowsing => 'شروع گشتن';
+
+  @override
+  String get signInWithMobileNumber => 'ورود با شماره موبایل';
+
+  @override
+  String get buildYourOwnShowcase => 'ویترینِ خودت\nرا بساز';
+
+  @override
+  String get bookmarkYourFavouriteStoresAndItems => 'فروشگاه‌ها و کالاهای محبوبت را نشان کن';
+
+  @override
+  String get hearAboutNewItemsFirst => 'از کالاهای تازه زودتر خبردار شو';
+
+  @override
+  String get signInOrSignUp => 'ورود یا ثبت‌نام';
+
+  @override
+  String get weTextAVerificationCodeToYourMobile => 'کد تأیید برای شماره موبایلت پیامک می‌شود';
+
+  @override
+  String get getVerificationCode => 'دریافت کد تأیید';
+
+  @override
+  String get enterTheVerificationCode => 'کد تأیید را وارد کنید';
+
+  @override
+  String sentTo(Object mobile) {
+    return 'به شماره $mobile فرستاده شد';
+  }
+
+  @override
+  String get editNumber => 'ویرایش شماره';
+
+  @override
+  String resendCodeIn(Object time) {
+    return 'ارسال دوباره کد تا $time';
+  }
+
+  @override
+  String get resendCode => 'ارسال دوباره کد';
+
+  @override
+  String get confirmAndSignIn => 'تأیید و ورود';
+
+  @override
+  String get haveAShop => 'مغازه دارید؟';
+
+  @override
+  String get becomeASellerAfterSigningIn => 'بعد از ورود، فروشنده شوید';
+
+  @override
+  String get newNotifications => 'اعلان تازه';
+
+  @override
+  String get followed => 'دنبال‌شده';
+
+  @override
+  String get supportAndFaq => 'پشتیبانی و سؤال‌های رایج';
+
+  @override
+  String get becomeASellerAndBuildYourStore => 'فروشنده شوید و فروشگاهتان را بسازید';
+
+  @override
+  String get logOutOfAccount => 'خروج از حساب';
+
+  @override
+  String get nothingBookmarkedYet => 'هنوز چیزی نشان نکرده‌اید';
+
+  @override
+  String get noNotificationsYet => 'هنوز اعلانی ندارید';
+
+  @override
+  String bySigningInYouAcceptTheAppTerms(Object app) {
+    return 'با ورود، قوانین $app را می‌پذیرید.';
+  }
 }

@@ -58,6 +58,7 @@ class UUserResponse {
   final List<UTxnResponse>? txns;
   final List<UBankAccountResponse>? bankAccounts;
   final List<USimCardResponse>? simCards;
+  final List<UOrganizationResponse>? organizations;
   final UUserResponse? creator;
   final String? creatorId;
   final List<String> adminUserIds;
@@ -93,6 +94,7 @@ class UUserResponse {
     this.txns,
     this.bankAccounts,
     this.simCards,
+    this.organizations,
     this.creator,
     this.creatorId,
   });
@@ -131,6 +133,7 @@ class UUserResponse {
     txns: json["txns"] == null ? <UTxnResponse>[] : List<UTxnResponse>.from(json["txns"].map((dynamic x) => UTxnResponse.fromMap(x))),
     bankAccounts: json["bankAccounts"] == null ? <UBankAccountResponse>[] : List<UBankAccountResponse>.from(json["bankAccounts"].map((dynamic x) => UBankAccountResponse.fromMap(x))),
     simCards: json["simCards"] == null ? <USimCardResponse>[] : List<USimCardResponse>.from(json["simCards"].map((dynamic x) => USimCardResponse.fromMap(x))),
+    organizations: json["organizations"] == null ? null : List<UOrganizationResponse>.from(json["organizations"].map((dynamic x) => UOrganizationResponse.fromMap(x))),
     creator: json["creator"] == null ? null : UUserResponse.fromMap(json["creator"]),
     creatorId: json["creatorId"],
     adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
@@ -166,6 +169,7 @@ class UUserResponse {
     "txns": txns == null ? null : List<dynamic>.from(txns!.map((UTxnResponse x) => x.toMap())),
     "bankAccounts": bankAccounts == null ? null : List<dynamic>.from(bankAccounts!.map((UBankAccountResponse x) => x.toMap())),
     "simCards": simCards == null ? null : List<dynamic>.from(simCards!.map((USimCardResponse x) => x.toMap())),
+    "organizations": organizations == null ? null : List<dynamic>.from(organizations!.map((UOrganizationResponse x) => x.toMap())),
     "creator": creator?.toMap(),
     "creatorId": creatorId,
     "adminUserIds": List<dynamic>.from(adminUserIds.map((String x) => x)),
