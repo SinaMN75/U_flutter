@@ -38,21 +38,18 @@ class UAppSettingsResponse {
 }
 
 class UOrganizationSettings {
-  const UOrganizationSettings({this.maxPerOwner, this.bankRequired = true, this.subscriptionReminderDays = 3});
+  const UOrganizationSettings({this.maxPerOwner, this.subscriptionReminderDays = 3});
 
   factory UOrganizationSettings.fromMap(Map<String, dynamic> json) => UOrganizationSettings(
     maxPerOwner: json["maxPerOwner"] == null ? null : (json["maxPerOwner"] as num).toInt(),
-    bankRequired: json["bankRequired"] ?? true,
     subscriptionReminderDays: json["subscriptionReminderDays"] == null ? 3 : (json["subscriptionReminderDays"] as num).toInt(),
   );
 
   final int? maxPerOwner;
-  final bool bankRequired;
   final int subscriptionReminderDays;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "maxPerOwner": maxPerOwner,
-    "bankRequired": bankRequired,
     "subscriptionReminderDays": subscriptionReminderDays,
   };
 }
