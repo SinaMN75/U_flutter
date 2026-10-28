@@ -15925,6 +15925,204 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Store page and QR'**
   String get storePageAndQr;
+
+  /// No description provided for @stepOfTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Step {step} of {total}'**
+  String stepOfTotal(Object step, Object total);
+
+  /// No description provided for @createASellerProfileAndAsManyStoresAsYourSubscriptionAllows.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a seller profile and as many stores as your subscription allows'**
+  String get createASellerProfileAndAsManyStoresAsYourSubscriptionAllows;
+
+  /// No description provided for @becomeASellerOneProfileManyStores.
+  ///
+  /// In en, this message translates to:
+  /// **'Become a seller; one profile, many stores'**
+  String get becomeASellerOneProfileManyStores;
+
+  /// No description provided for @sellerProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Seller profile'**
+  String get sellerProfile;
+
+  /// No description provided for @nameAndNationalCodeOrCompanyDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Name and national code or company details'**
+  String get nameAndNationalCodeOrCompanyDetails;
+
+  /// No description provided for @chooseASubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a subscription'**
+  String get chooseASubscription;
+
+  /// No description provided for @numberOfStoresProductsAndFeatures.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of stores, products and features'**
+  String get numberOfStoresProductsAndFeatures;
+
+  /// No description provided for @bankGatewayOrWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank gateway or wallet'**
+  String get bankGatewayOrWallet;
+
+  /// No description provided for @createAStore.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a store'**
+  String get createAStore;
+
+  /// No description provided for @asManyStoresAsYourSubscriptionAllows.
+  ///
+  /// In en, this message translates to:
+  /// **'As many stores as your subscription allows'**
+  String get asManyStoresAsYourSubscriptionAllows;
+
+  /// No description provided for @customerPaymentsGoStraightToYourAccountAppOnlyChargesTheSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer payments go straight to your account; {app} only charges the subscription'**
+  String customerPaymentsGoStraightToYourAccountAppOnlyChargesTheSubscription(Object app);
+
+  /// No description provided for @youShopWithTheSameAccountTheStoreTabOpensAfterThisStep.
+  ///
+  /// In en, this message translates to:
+  /// **'You shop with the same account; the store tab opens after this step'**
+  String get youShopWithTheSameAccountTheStoreTabOpensAfterThisStep;
+
+  /// No description provided for @asOnYourNationalCard.
+  ///
+  /// In en, this message translates to:
+  /// **'As on your national card'**
+  String get asOnYourNationalCard;
+
+  /// No description provided for @companyRegisteredName.
+  ///
+  /// In en, this message translates to:
+  /// **'Company registered name'**
+  String get companyRegisteredName;
+
+  /// No description provided for @asInTheOfficialGazette.
+  ///
+  /// In en, this message translates to:
+  /// **'As in the official gazette'**
+  String get asInTheOfficialGazette;
+
+  /// No description provided for @optional.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional'**
+  String get optional;
+
+  /// No description provided for @youNameEachStoreSeparatelyLater.
+  ///
+  /// In en, this message translates to:
+  /// **'You name each store separately later'**
+  String get youNameEachStoreSeparatelyLater;
+
+  /// No description provided for @iHaveReadAndAcceptTheAppSellerRules.
+  ///
+  /// In en, this message translates to:
+  /// **'I have read and accept the {app} seller rules'**
+  String iHaveReadAndAcceptTheAppSellerRules(Object app);
+
+  /// No description provided for @youMustAcceptTheRules.
+  ///
+  /// In en, this message translates to:
+  /// **'You must accept the rules'**
+  String get youMustAcceptTheRules;
+
+  /// No description provided for @createSellerProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Create seller profile'**
+  String get createSellerProfile;
+
+  /// No description provided for @yourSellerProfileWasCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Your seller profile was created'**
+  String get yourSellerProfileWasCreated;
+
+  /// No description provided for @noFreePlanIsAvailableRightNow.
+  ///
+  /// In en, this message translates to:
+  /// **'No free plan is available right now'**
+  String get noFreePlanIsAvailableRightNow;
+
+  /// No description provided for @editSellerProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit seller profile'**
+  String get editSellerProfile;
+
+  /// No description provided for @myStores.
+  ///
+  /// In en, this message translates to:
+  /// **'My stores'**
+  String get myStores;
+
+  /// No description provided for @youHaveNotCreatedAStoreYet.
+  ///
+  /// In en, this message translates to:
+  /// **'You have not created a store yet'**
+  String get youHaveNotCreatedAStoreYet;
+
+  /// No description provided for @planSubscriptionFree.
+  ///
+  /// In en, this message translates to:
+  /// **'{plan} subscription · free'**
+  String planSubscriptionFree(Object plan);
+
+  /// No description provided for @planSubscriptionDaysLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{plan} subscription · {days} days left'**
+  String planSubscriptionDaysLeft(Object plan, Object days);
+
+  /// No description provided for @store.
+  ///
+  /// In en, this message translates to:
+  /// **'Store'**
+  String get store;
+
+  /// No description provided for @myStore.
+  ///
+  /// In en, this message translates to:
+  /// **'My store'**
+  String get myStore;
+
+  /// No description provided for @sellers.
+  ///
+  /// In en, this message translates to:
+  /// **'Sellers'**
+  String get sellers;
+
+  /// No description provided for @legalName.
+  ///
+  /// In en, this message translates to:
+  /// **'Legal name'**
+  String get legalName;
+
+  /// No description provided for @currentPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Current plan'**
+  String get currentPlan;
+
+  /// No description provided for @kind.
+  ///
+  /// In en, this message translates to:
+  /// **'Kind'**
+  String get kind;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

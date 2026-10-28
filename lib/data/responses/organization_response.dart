@@ -41,7 +41,7 @@ class UOrganizationMemberPlace {
 }
 
 class UOrganizationJson {
-  UOrganizationJson({this.detail1, this.detail2, this.commissionPercent = 0, this.members = const <UOrganizationMember>[], this.settlements = const <UOrganizationSettlement>[], this.logoUrl, this.address, this.phoneNumber, this.nationalId, this.economicCode, this.kind, this.cityCode, this.subscriptions = const <UOrganizationSubscription>[]});
+  UOrganizationJson({this.detail1, this.detail2, this.commissionPercent = 0, this.members = const <UOrganizationMember>[], this.settlements = const <UOrganizationSettlement>[], this.logoUrl, this.address, this.phoneNumber, this.nationalId, this.economicCode, this.kind, this.cityCode, this.legalName, this.subscriptions = const <UOrganizationSubscription>[]});
 
   factory UOrganizationJson.fromMap(Map<String, dynamic> json) => UOrganizationJson(
     detail1: json["detail1"],
@@ -56,6 +56,7 @@ class UOrganizationJson {
     economicCode: json["economicCode"],
     kind: json["kind"] == null ? null : (json["kind"] as num).toInt(),
     cityCode: json["cityCode"],
+    legalName: json["legalName"],
     subscriptions: json["subscriptions"] == null ? <UOrganizationSubscription>[] : List<UOrganizationSubscription>.from(json["subscriptions"]!.map((dynamic x) => UOrganizationSubscription.fromMap(x))),
   );
 
@@ -71,6 +72,7 @@ class UOrganizationJson {
   final String? economicCode;
   final int? kind;
   final String? cityCode;
+  final String? legalName;
   final List<UOrganizationSubscription> subscriptions;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -86,6 +88,7 @@ class UOrganizationJson {
     "economicCode": economicCode,
     "kind": kind,
     "cityCode": cityCode,
+    "legalName": legalName,
     "subscriptions": subscriptions.map((UOrganizationSubscription x) => x.toMap()).toList(),
   };
 }

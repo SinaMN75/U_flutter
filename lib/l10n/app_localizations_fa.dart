@@ -8123,4 +8123,113 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get storePageAndQr => 'صفحه فروشگاه و QR';
+
+  @override
+  String stepOfTotal(Object step, Object total) {
+    return 'مرحله $step از $total';
+  }
+
+  @override
+  String get createASellerProfileAndAsManyStoresAsYourSubscriptionAllows => 'یک پروفایل فروشنده می‌سازید و زیر آن هر چند فروشگاه که اشتراکتان اجازه دهد: مغازه، کافه یا شعبه دوم.';
+
+  @override
+  String get becomeASellerOneProfileManyStores => 'فروشنده شوید؛\nیک پروفایل، چند فروشگاه';
+
+  @override
+  String get sellerProfile => 'پروفایل فروشنده';
+
+  @override
+  String get nameAndNationalCodeOrCompanyDetails => 'نام و کد ملی یا اطلاعات شرکت';
+
+  @override
+  String get chooseASubscription => 'انتخاب اشتراک';
+
+  @override
+  String get numberOfStoresProductsAndFeatures => 'تعداد فروشگاه، کالا و قابلیت‌ها';
+
+  @override
+  String get bankGatewayOrWallet => 'درگاه بانکی یا کیف پول';
+
+  @override
+  String get createAStore => 'ساخت فروشگاه';
+
+  @override
+  String get asManyStoresAsYourSubscriptionAllows => 'هر چند فروشگاه که اشتراک اجازه دهد';
+
+  @override
+  String customerPaymentsGoStraightToYourAccountAppOnlyChargesTheSubscription(Object app) {
+    return 'پول خرید مشتری‌ها مستقیم به حساب خودتان می‌رود؛ $app فقط هزینه اشتراک می‌گیرد.';
+  }
+
+  @override
+  String get youShopWithTheSameAccountTheStoreTabOpensAfterThisStep => 'با همین حساب خرید هم می‌کنید؛ تب فروشگاه بعد از این مرحله باز می‌شود.';
+
+  @override
+  String get asOnYourNationalCard => 'همان نامی که روی کارت ملی است';
+
+  @override
+  String get companyRegisteredName => 'نام ثبتی شرکت';
+
+  @override
+  String get asInTheOfficialGazette => 'مطابق روزنامه رسمی';
+
+  @override
+  String get optional => 'اختیاری';
+
+  @override
+  String get youNameEachStoreSeparatelyLater => 'نام هر فروشگاه را جدا بعداً می‌نویسید.';
+
+  @override
+  String iHaveReadAndAcceptTheAppSellerRules(Object app) {
+    return 'قوانین فروشندگان $app را خواندم و می‌پذیرم.';
+  }
+
+  @override
+  String get youMustAcceptTheRules => 'باید قوانین را بپذیرید';
+
+  @override
+  String get createSellerProfile => 'ساخت پروفایل فروشنده';
+
+  @override
+  String get yourSellerProfileWasCreated => 'پروفایل فروشنده شما ساخته شد';
+
+  @override
+  String get noFreePlanIsAvailableRightNow => 'فعلاً پلن رایگانی وجود ندارد';
+
+  @override
+  String get editSellerProfile => 'ویرایش پروفایل فروشنده';
+
+  @override
+  String get myStores => 'فروشگاه‌های من';
+
+  @override
+  String get youHaveNotCreatedAStoreYet => 'هنوز فروشگاهی نساخته‌اید';
+
+  @override
+  String planSubscriptionFree(Object plan) {
+    return 'اشتراک $plan · رایگان';
+  }
+
+  @override
+  String planSubscriptionDaysLeft(Object plan, Object days) {
+    return 'اشتراک $plan · $days روز مانده';
+  }
+
+  @override
+  String get store => 'فروشگاه';
+
+  @override
+  String get myStore => 'فروشگاه من';
+
+  @override
+  String get sellers => 'فروشنده‌ها';
+
+  @override
+  String get legalName => 'نام ثبتی';
+
+  @override
+  String get currentPlan => 'پلن فعلی';
+
+  @override
+  String get kind => 'نوع';
 }

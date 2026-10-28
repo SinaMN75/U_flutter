@@ -8124,4 +8124,113 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get storePageAndQr => 'Store page and QR';
+
+  @override
+  String stepOfTotal(Object step, Object total) {
+    return 'Step $step of $total';
+  }
+
+  @override
+  String get createASellerProfileAndAsManyStoresAsYourSubscriptionAllows => 'Create a seller profile and as many stores as your subscription allows';
+
+  @override
+  String get becomeASellerOneProfileManyStores => 'Become a seller; one profile, many stores';
+
+  @override
+  String get sellerProfile => 'Seller profile';
+
+  @override
+  String get nameAndNationalCodeOrCompanyDetails => 'Name and national code or company details';
+
+  @override
+  String get chooseASubscription => 'Choose a subscription';
+
+  @override
+  String get numberOfStoresProductsAndFeatures => 'Number of stores, products and features';
+
+  @override
+  String get bankGatewayOrWallet => 'Bank gateway or wallet';
+
+  @override
+  String get createAStore => 'Create a store';
+
+  @override
+  String get asManyStoresAsYourSubscriptionAllows => 'As many stores as your subscription allows';
+
+  @override
+  String customerPaymentsGoStraightToYourAccountAppOnlyChargesTheSubscription(Object app) {
+    return 'Customer payments go straight to your account; $app only charges the subscription';
+  }
+
+  @override
+  String get youShopWithTheSameAccountTheStoreTabOpensAfterThisStep => 'You shop with the same account; the store tab opens after this step';
+
+  @override
+  String get asOnYourNationalCard => 'As on your national card';
+
+  @override
+  String get companyRegisteredName => 'Company registered name';
+
+  @override
+  String get asInTheOfficialGazette => 'As in the official gazette';
+
+  @override
+  String get optional => 'Optional';
+
+  @override
+  String get youNameEachStoreSeparatelyLater => 'You name each store separately later';
+
+  @override
+  String iHaveReadAndAcceptTheAppSellerRules(Object app) {
+    return 'I have read and accept the $app seller rules';
+  }
+
+  @override
+  String get youMustAcceptTheRules => 'You must accept the rules';
+
+  @override
+  String get createSellerProfile => 'Create seller profile';
+
+  @override
+  String get yourSellerProfileWasCreated => 'Your seller profile was created';
+
+  @override
+  String get noFreePlanIsAvailableRightNow => 'No free plan is available right now';
+
+  @override
+  String get editSellerProfile => 'Edit seller profile';
+
+  @override
+  String get myStores => 'My stores';
+
+  @override
+  String get youHaveNotCreatedAStoreYet => 'You have not created a store yet';
+
+  @override
+  String planSubscriptionFree(Object plan) {
+    return '$plan subscription · free';
+  }
+
+  @override
+  String planSubscriptionDaysLeft(Object plan, Object days) {
+    return '$plan subscription · $days days left';
+  }
+
+  @override
+  String get store => 'Store';
+
+  @override
+  String get myStore => 'My store';
+
+  @override
+  String get sellers => 'Sellers';
+
+  @override
+  String get legalName => 'Legal name';
+
+  @override
+  String get currentPlan => 'Current plan';
+
+  @override
+  String get kind => 'Kind';
 }

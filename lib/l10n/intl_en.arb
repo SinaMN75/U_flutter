@@ -3130,5 +3130,65 @@
   "numberOfStores": "Number of stores",
   "numberOfProducts": "Number of products",
   "teamMembersInPanel": "Team members in panel",
-  "storePageAndQr": "Store page and QR"
+  "storePageAndQr": "Store page and QR",
+  "stepOfTotal": "Step {step} of {total}",
+  "@stepOfTotal": {
+    "placeholders": {
+      "step": {},
+      "total": {}
+    }
+  },
+  "createASellerProfileAndAsManyStoresAsYourSubscriptionAllows": "Create a seller profile and as many stores as your subscription allows",
+  "becomeASellerOneProfileManyStores": "Become a seller; one profile, many stores",
+  "sellerProfile": "Seller profile",
+  "nameAndNationalCodeOrCompanyDetails": "Name and national code or company details",
+  "chooseASubscription": "Choose a subscription",
+  "numberOfStoresProductsAndFeatures": "Number of stores, products and features",
+  "bankGatewayOrWallet": "Bank gateway or wallet",
+  "createAStore": "Create a store",
+  "asManyStoresAsYourSubscriptionAllows": "As many stores as your subscription allows",
+  "customerPaymentsGoStraightToYourAccountAppOnlyChargesTheSubscription": "Customer payments go straight to your account; {app} only charges the subscription",
+  "@customerPaymentsGoStraightToYourAccountAppOnlyChargesTheSubscription": {
+    "placeholders": {
+      "app": {}
+    }
+  },
+  "youShopWithTheSameAccountTheStoreTabOpensAfterThisStep": "You shop with the same account; the store tab opens after this step",
+  "asOnYourNationalCard": "As on your national card",
+  "companyRegisteredName": "Company registered name",
+  "asInTheOfficialGazette": "As in the official gazette",
+  "optional": "Optional",
+  "youNameEachStoreSeparatelyLater": "You name each store separately later",
+  "iHaveReadAndAcceptTheAppSellerRules": "I have read and accept the {app} seller rules",
+  "@iHaveReadAndAcceptTheAppSellerRules": {
+    "placeholders": {
+      "app": {}
+    }
+  },
+  "youMustAcceptTheRules": "You must accept the rules",
+  "createSellerProfile": "Create seller profile",
+  "yourSellerProfileWasCreated": "Your seller profile was created",
+  "noFreePlanIsAvailableRightNow": "No free plan is available right now",
+  "editSellerProfile": "Edit seller profile",
+  "myStores": "My stores",
+  "youHaveNotCreatedAStoreYet": "You have not created a store yet",
+  "planSubscriptionFree": "{plan} subscription · free",
+  "@planSubscriptionFree": {
+    "placeholders": {
+      "plan": {}
+    }
+  },
+  "planSubscriptionDaysLeft": "{plan} subscription · {days} days left",
+  "@planSubscriptionDaysLeft": {
+    "placeholders": {
+      "plan": {},
+      "days": {}
+    }
+  },
+  "store": "Store",
+  "myStore": "My store",
+  "sellers": "Sellers",
+  "legalName": "Legal name",
+  "currentPlan": "Current plan",
+  "kind": "Kind"
 }

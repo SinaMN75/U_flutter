@@ -13,6 +13,7 @@ class UOrganizationCreateParams {
     this.economicCode,
     this.kind,
     this.cityCode,
+    this.legalName,
     this.cardNumber,
     this.accountNumber,
     this.iBanNumber,
@@ -29,6 +30,7 @@ class UOrganizationCreateParams {
   final String? economicCode;
   final int? kind;
   final String? cityCode;
+  final String? legalName;
   final String? cardNumber;
   final String? accountNumber;
   final String? iBanNumber;
@@ -45,6 +47,7 @@ class UOrganizationCreateParams {
     "economicCode": economicCode,
     "kind": kind,
     "cityCode": cityCode,
+    "legalName": legalName,
     "cardNumber": cardNumber,
     "accountNumber": accountNumber,
     "iBanNumber": iBanNumber,
@@ -67,6 +70,7 @@ class UOrganizationUpdateParams {
     this.economicCode,
     this.kind,
     this.cityCode,
+    this.legalName,
     this.cardNumber,
     this.accountNumber,
     this.iBanNumber,
@@ -86,6 +90,7 @@ class UOrganizationUpdateParams {
   final String? economicCode;
   final int? kind;
   final String? cityCode;
+  final String? legalName;
   final String? cardNumber;
   final String? accountNumber;
   final String? iBanNumber;
@@ -105,6 +110,7 @@ class UOrganizationUpdateParams {
     "economicCode": economicCode,
     "kind": kind,
     "cityCode": cityCode,
+    "legalName": legalName,
     "cardNumber": cardNumber,
     "accountNumber": accountNumber,
     "iBanNumber": iBanNumber,
@@ -112,7 +118,7 @@ class UOrganizationUpdateParams {
 }
 
 class UOrganizationReadParams {
-  UOrganizationReadParams({this.pageSize, this.pageNumber, this.title, this.ids, this.tags, this.fromDate, this.toDate, this.mine});
+  UOrganizationReadParams({this.pageSize, this.pageNumber, this.title, this.ids, this.tags, this.fromDate, this.toDate, this.mine, this.module});
 
   final int? pageSize;
   final int? pageNumber;
@@ -122,11 +128,13 @@ class UOrganizationReadParams {
   final DateTime? fromDate;
   final DateTime? toDate;
   final bool? mine;
+  final int? module;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "pageSize": pageSize,
     "pageNumber": pageNumber,
     "mine": mine,
+    "module": module,
     "title": title,
     "ids": ids ?? <String>[],
     "tags": tags,
@@ -559,6 +567,7 @@ class USubscriptionBuyParams {
     this.nationalId,
     this.economicCode,
     this.cityCode,
+    this.legalName,
     this.fromWallet = false,
     this.cardNumber,
     this.accountNumber,
@@ -574,6 +583,7 @@ class USubscriptionBuyParams {
   final String? nationalId;
   final String? economicCode;
   final String? cityCode;
+  final String? legalName;
   final bool fromWallet;
   final String? cardNumber;
   final String? accountNumber;
@@ -589,6 +599,7 @@ class USubscriptionBuyParams {
     "nationalId": nationalId,
     "economicCode": economicCode,
     "cityCode": cityCode,
+    "legalName": legalName,
     "fromWallet": fromWallet,
     "cardNumber": cardNumber,
     "accountNumber": accountNumber,
