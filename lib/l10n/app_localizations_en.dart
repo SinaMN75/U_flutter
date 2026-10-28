@@ -6708,7 +6708,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pricePerPeriod => 'Price per period (empty = not sold)';
 
   @override
-  String get planLimits => 'Limits (empty = unlimited)';
+  String get planLimits => 'Limits (empty = unlimited, 0 = none)';
 
   @override
   String get planFeatures => 'Features shown on the website (one per line)';
@@ -8043,4 +8043,85 @@ class AppLocalizationsEn extends AppLocalizations {
   String bySigningInYouAcceptTheAppTerms(Object app) {
     return 'By signing in you accept the $app terms';
   }
+
+  @override
+  String get subscriptionsAndPlans => 'Subscriptions and plans';
+
+  @override
+  String get theRightSubscriptionForYourBusiness => 'The right subscription for your business';
+
+  @override
+  String get upgradeAnyTimeRemainingDaysAreDeducted => 'Upgrade any time; remaining days are deducted';
+
+  @override
+  String get threeMonths => '3 months';
+
+  @override
+  String get yearly => 'Yearly';
+
+  @override
+  String percentLess(Object percent) {
+    return '$percent% less';
+  }
+
+  @override
+  String get noDiscount => 'No discount';
+
+  @override
+  String get payMonthByMonth => 'Pay month by month';
+
+  @override
+  String amountTomanForMonths(Object amount, Object months) {
+    return '$amount toman for $months months';
+  }
+
+  @override
+  String countStores(Object count) {
+    return '$count stores';
+  }
+
+  @override
+  String get unlimitedStores => 'Unlimited stores';
+
+  @override
+  String countProducts(Object count) {
+    return '$count products';
+  }
+
+  @override
+  String get unlimitedProducts => 'Unlimited products';
+
+  @override
+  String countTeamMembers(Object count) {
+    return '$count team members';
+  }
+
+  @override
+  String get unlimitedTeamMembers => 'Unlimited team members';
+
+  @override
+  String get onlyYou => 'Only you';
+
+  @override
+  String customerPaymentsNeverPassThroughApp(Object app) {
+    return 'Customer payments never pass through $app; this is only the fee for the tools';
+  }
+
+  @override
+  String get fullComparison => 'Full comparison';
+
+  @override
+  String get feature => 'Feature';
+
+  @override
+  String get numberOfStores => 'Number of stores';
+
+  @override
+  String get numberOfProducts => 'Number of products';
+
+  @override
+  String get teamMembersInPanel => 'Team members in panel';
+
+  @override
+  String get storePageAndQr => 'Store page and QR';
 }

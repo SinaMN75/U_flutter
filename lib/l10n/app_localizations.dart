@@ -13145,7 +13145,7 @@ abstract class AppLocalizations {
   /// No description provided for @planLimits.
   ///
   /// In en, this message translates to:
-  /// **'Limits (empty = unlimited)'**
+  /// **'Limits (empty = unlimited, 0 = none)'**
   String get planLimits;
 
   /// No description provided for @planFeatures.
@@ -15787,6 +15787,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'By signing in you accept the {app} terms'**
   String bySigningInYouAcceptTheAppTerms(Object app);
+
+  /// No description provided for @subscriptionsAndPlans.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscriptions and plans'**
+  String get subscriptionsAndPlans;
+
+  /// No description provided for @theRightSubscriptionForYourBusiness.
+  ///
+  /// In en, this message translates to:
+  /// **'The right subscription for your business'**
+  String get theRightSubscriptionForYourBusiness;
+
+  /// No description provided for @upgradeAnyTimeRemainingDaysAreDeducted.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade any time; remaining days are deducted'**
+  String get upgradeAnyTimeRemainingDaysAreDeducted;
+
+  /// No description provided for @threeMonths.
+  ///
+  /// In en, this message translates to:
+  /// **'3 months'**
+  String get threeMonths;
+
+  /// No description provided for @yearly.
+  ///
+  /// In en, this message translates to:
+  /// **'Yearly'**
+  String get yearly;
+
+  /// No description provided for @percentLess.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% less'**
+  String percentLess(Object percent);
+
+  /// No description provided for @noDiscount.
+  ///
+  /// In en, this message translates to:
+  /// **'No discount'**
+  String get noDiscount;
+
+  /// No description provided for @payMonthByMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay month by month'**
+  String get payMonthByMonth;
+
+  /// No description provided for @amountTomanForMonths.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} toman for {months} months'**
+  String amountTomanForMonths(Object amount, Object months);
+
+  /// No description provided for @countStores.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} stores'**
+  String countStores(Object count);
+
+  /// No description provided for @unlimitedStores.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited stores'**
+  String get unlimitedStores;
+
+  /// No description provided for @countProducts.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} products'**
+  String countProducts(Object count);
+
+  /// No description provided for @unlimitedProducts.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited products'**
+  String get unlimitedProducts;
+
+  /// No description provided for @countTeamMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} team members'**
+  String countTeamMembers(Object count);
+
+  /// No description provided for @unlimitedTeamMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited team members'**
+  String get unlimitedTeamMembers;
+
+  /// No description provided for @onlyYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Only you'**
+  String get onlyYou;
+
+  /// No description provided for @customerPaymentsNeverPassThroughApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer payments never pass through {app}; this is only the fee for the tools'**
+  String customerPaymentsNeverPassThroughApp(Object app);
+
+  /// No description provided for @fullComparison.
+  ///
+  /// In en, this message translates to:
+  /// **'Full comparison'**
+  String get fullComparison;
+
+  /// No description provided for @feature.
+  ///
+  /// In en, this message translates to:
+  /// **'Feature'**
+  String get feature;
+
+  /// No description provided for @numberOfStores.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of stores'**
+  String get numberOfStores;
+
+  /// No description provided for @numberOfProducts.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of products'**
+  String get numberOfProducts;
+
+  /// No description provided for @teamMembersInPanel.
+  ///
+  /// In en, this message translates to:
+  /// **'Team members in panel'**
+  String get teamMembersInPanel;
+
+  /// No description provided for @storePageAndQr.
+  ///
+  /// In en, this message translates to:
+  /// **'Store page and QR'**
+  String get storePageAndQr;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

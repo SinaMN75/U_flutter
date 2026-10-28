@@ -2605,7 +2605,7 @@
   "systems": "Systems",
   "trialDays": "Free trial days",
   "pricePerPeriod": "Price per period (empty = not sold)",
-  "planLimits": "Limits (empty = unlimited)",
+  "planLimits": "Limits (empty = unlimited, 0 = none)",
   "planFeatures": "Features shown on the website (one per line)",
   "allSystemsWithoutSubscription": "This organization has no subscription and can use every system.",
   "activeSystems": "Active systems",
@@ -3076,5 +3076,59 @@
     "placeholders": {
       "app": {}
     }
-  }
+  },
+  "subscriptionsAndPlans": "Subscriptions and plans",
+  "theRightSubscriptionForYourBusiness": "The right subscription for your business",
+  "upgradeAnyTimeRemainingDaysAreDeducted": "Upgrade any time; remaining days are deducted",
+  "threeMonths": "3 months",
+  "yearly": "Yearly",
+  "percentLess": "{percent}% less",
+  "@percentLess": {
+    "placeholders": {
+      "percent": {}
+    }
+  },
+  "noDiscount": "No discount",
+  "payMonthByMonth": "Pay month by month",
+  "amountTomanForMonths": "{amount} toman for {months} months",
+  "@amountTomanForMonths": {
+    "placeholders": {
+      "amount": {},
+      "months": {}
+    }
+  },
+  "countStores": "{count} stores",
+  "@countStores": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "unlimitedStores": "Unlimited stores",
+  "countProducts": "{count} products",
+  "@countProducts": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "unlimitedProducts": "Unlimited products",
+  "countTeamMembers": "{count} team members",
+  "@countTeamMembers": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "unlimitedTeamMembers": "Unlimited team members",
+  "onlyYou": "Only you",
+  "customerPaymentsNeverPassThroughApp": "Customer payments never pass through {app}; this is only the fee for the tools",
+  "@customerPaymentsNeverPassThroughApp": {
+    "placeholders": {
+      "app": {}
+    }
+  },
+  "fullComparison": "Full comparison",
+  "feature": "Feature",
+  "numberOfStores": "Number of stores",
+  "numberOfProducts": "Number of products",
+  "teamMembersInPanel": "Team members in panel",
+  "storePageAndQr": "Store page and QR"
 }

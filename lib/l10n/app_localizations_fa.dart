@@ -6707,7 +6707,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get pricePerPeriod => 'قیمت هر دوره (خالی یعنی این دوره فروخته نمی‌شود)';
 
   @override
-  String get planLimits => 'محدودیت‌ها (خالی یعنی نامحدود)';
+  String get planLimits => 'محدودیت‌ها (خالی یعنی نامحدود، ۰ یعنی هیچ)';
 
   @override
   String get planFeatures => 'ویژگی‌ها برای نمایش در سایت (هر خط یکی)';
@@ -8042,4 +8042,85 @@ class AppLocalizationsFa extends AppLocalizations {
   String bySigningInYouAcceptTheAppTerms(Object app) {
     return 'با ورود، قوانین $app را می‌پذیرید.';
   }
+
+  @override
+  String get subscriptionsAndPlans => 'اشتراک‌ها و پلن‌ها';
+
+  @override
+  String get theRightSubscriptionForYourBusiness => 'اشتراک مناسب\nکسب‌وکارتان';
+
+  @override
+  String get upgradeAnyTimeRemainingDaysAreDeducted => 'هر وقت لازم شد ارتقا دهید؛ مبلغ روزهای باقی‌مانده از اشتراک جدید کم می‌شود.';
+
+  @override
+  String get threeMonths => '۳ ماهه';
+
+  @override
+  String get yearly => 'سالانه';
+
+  @override
+  String percentLess(Object percent) {
+    return '$percent٪ کمتر';
+  }
+
+  @override
+  String get noDiscount => 'بدون تخفیف';
+
+  @override
+  String get payMonthByMonth => 'پرداخت ماه‌به‌ماه';
+
+  @override
+  String amountTomanForMonths(Object amount, Object months) {
+    return '$amount تومان برای $months ماه';
+  }
+
+  @override
+  String countStores(Object count) {
+    return '$count فروشگاه';
+  }
+
+  @override
+  String get unlimitedStores => 'فروشگاه نامحدود';
+
+  @override
+  String countProducts(Object count) {
+    return '$count کالا';
+  }
+
+  @override
+  String get unlimitedProducts => 'کالای نامحدود';
+
+  @override
+  String countTeamMembers(Object count) {
+    return '$count همکار';
+  }
+
+  @override
+  String get unlimitedTeamMembers => 'همکار نامحدود';
+
+  @override
+  String get onlyYou => 'فقط خودتان';
+
+  @override
+  String customerPaymentsNeverPassThroughApp(Object app) {
+    return 'پول خرید مشتری‌ها هیچ‌وقت از $app رد نمی‌شود؛ این مبلغ فقط هزینه استفاده از ابزارهاست.';
+  }
+
+  @override
+  String get fullComparison => 'مقایسه کامل';
+
+  @override
+  String get feature => 'قابلیت';
+
+  @override
+  String get numberOfStores => 'تعداد فروشگاه';
+
+  @override
+  String get numberOfProducts => 'تعداد کالا';
+
+  @override
+  String get teamMembersInPanel => 'همکار در پنل';
+
+  @override
+  String get storePageAndQr => 'صفحه فروشگاه و QR';
 }
