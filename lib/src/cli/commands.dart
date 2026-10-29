@@ -1,3 +1,4 @@
+import "dart:convert";
 import "dart:io";
 
 import "package:u/src/cli/core.dart";
@@ -587,6 +588,95 @@ void cmdTeam(Project p, Args a) {
     p.section(f.target, () {
       p.edit(f.pbxproj, (String t) => Pbx.setInRunner(Pbx.mapAll(t, "DEVELOPMENT_TEAM", (String _) => team), "DEVELOPMENT_TEAM", team), "DEVELOPMENT_TEAM = $team");
     });
+  }
+}
+
+// =============================================================================================
+// spm
+
+/// Plugins with native code for [f] that ship no Package.swift, so they still need CocoaPods.
+/// Null when the plugin list is missing or points at folders that no longer exist.
+List<String>? _podOnlyPlugins(Project p, AppleFiles f) {
+  final String? text = p.read(".flutter-plugins-dependencies");
+  if (text == null) {
+    return null;
+  }
+  final Object? plugins = (jsonDecode(text) as Map<String, dynamic>)["plugins"];
+  final Object? list = plugins is Map<String, dynamic> ? plugins[f.target.id] : null;
+  if (list is! List<dynamic>) {
+    return <String>[];
+  }
+  final List<String> out = <String>[];
+  for (final Map<String, dynamic> plugin in list.whereType<Map<String, dynamic>>()) {
+    final String name = plugin["name"].toString();
+    final String path = plugin["path"].toString().replaceAll(RegExp(r"/$"), "");
+    if (!Directory(path).existsSync()) {
+      return null;
+    }
+    if (plugin["native_build"] != false && !File("$path/${f.dir}/$name/Package.swift").existsSync() && !File("$path/darwin/$name/Package.swift").existsSync()) {
+      out.add(name);
+    }
+  }
+  return out;
+}
+
+Future<void> cmdSpm(Project p, Args a) async {
+  _requireAny(p, <Target>[Target.ios, Target.macos], "spm");
+  Out.header("pubspec");
+  p.edit("pubspec.yaml", SwiftPm.enable, "${SwiftPm.key}: true");
+
+  final List<AppleFiles> migrated = <AppleFiles>[];
+  for (final AppleFiles f in <AppleFiles>[_ios, _macos]) {
+    p.section(f.target, () {
+      final List<String>? podOnly = _podOnlyPlugins(p, f);
+      if (podOnly == null || podOnly.isNotEmpty) {
+        Out.warn(
+          podOnly == null
+              ? "The plugin list is missing or out of date, so plugins could not be checked. Run `flutter pub get` first."
+              : "These plugins have no Package.swift and still need CocoaPods: ${podOnly.join(", ")}.",
+        );
+        if (!a.flag("force")) {
+          Out.note("CocoaPods was kept for ${f.target.id}. ${podOnly == null ? "Run `flutter pub get`" : "Update or replace those plugins"}, or pass --force to remove it anyway.");
+          return;
+        }
+      }
+      p.edit(f.pbxproj, CocoaPods.stripPbxproj, "no CocoaPods build phases, frameworks or xcconfigs");
+      for (final String xcconfig in f.xcconfigs) {
+        p.edit(xcconfig, CocoaPods.stripXcconfig, "no Pods #include", optional: true, quiet: true);
+      }
+      p.edit(f.workspace, CocoaPods.stripWorkspace, "no Pods.xcodeproj", optional: true, quiet: true);
+      p.delete(f.podfile, "deleted");
+      p.delete(f.podfileLock, "deleted");
+      p.delete(f.pods, "deleted");
+      migrated.add(f);
+    });
+  }
+
+  if (migrated.isEmpty || p.dryRun) {
+    return;
+  }
+  if (!Platform.isMacOS) {
+    Out.line();
+    Out.note("Run `flutter build ios --config-only` / `flutter build macos --config-only` on a Mac to add the Swift package to the Xcode project.");
+    return;
+  }
+  for (final AppleFiles f in migrated) {
+    Out.header("flutter build ${f.target.id} --config-only");
+    final String? before = p.read(f.pbxproj);
+    final ProcessResult r = await Process.run("flutter", <String>["build", f.target.id, "--config-only"], workingDirectory: p.root);
+    if (r.exitCode != 0) {
+      Out.line("${r.stdout}${r.stderr}".trim());
+      throw CliException("flutter build ${f.target.id} --config-only failed. Fix the error above and run it again.");
+    }
+    final String? after = p.read(f.pbxproj);
+    if (after != null && after.contains("FlutterGeneratedPluginSwiftPackage")) {
+      if (after != before) {
+        p.changes++;
+      }
+      Out.changed(f.pbxproj, "FlutterGeneratedPluginSwiftPackage linked by Flutter", dryRun: false);
+    } else {
+      Out.note("Flutter added no Swift package (no plugin needs one yet). It adds it on the first build that does.");
+    }
   }
 }
 

@@ -17,6 +17,15 @@
     `send`, `selectAid` and `transceive` (IsoDep, NfcA, NfcB, NfcF, NfcV).
   * `dart run u:app permission add nfc` now also declares `android.hardware.nfc.hce`.
 
+* **New `dart run u:app spm`** moves iOS and macOS from CocoaPods to Swift Package Manager without
+  needing `pod`.
+  * It turns on `enable-swift-package-manager` in pubspec.yaml.
+  * It removes the CocoaPods build phases, frameworks, xcconfig includes and the workspace entry,
+    and deletes the Podfile, Podfile.lock and Pods/.
+  * Then it runs `flutter build <platform> --config-only` so Flutter links its Swift package.
+  * A platform is skipped when a plugin still has no `Package.swift`. Pass `--force` to migrate it
+    anyway.
+
 ### Fixes and performance
 
 * **Behaviour changes.**

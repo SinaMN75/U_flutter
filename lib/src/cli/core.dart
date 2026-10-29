@@ -268,6 +268,19 @@ class Project {
     Out.changed(fromRel, "moved to $toRel", dryRun: dryRun);
   }
 
+  /// Deletes a file or a whole folder. Missing paths are skipped silently.
+  void delete(String rel, String what) {
+    final FileSystemEntityType type = FileSystemEntity.typeSync(path(rel), followLinks: false);
+    if (type == FileSystemEntityType.notFound) {
+      return;
+    }
+    if (!dryRun) {
+      (type == FileSystemEntityType.directory ? Directory(path(rel)) : file(rel)).deleteSync(recursive: true);
+    }
+    changes++;
+    Out.changed(rel, what, dryRun: dryRun);
+  }
+
   /// Deletes empty folders inside [rel], then [rel] and its parents while empty, stopping at [stopAt].
   void pruneEmptyDirs(String rel, String stopAt) {
     if (dryRun || !Directory(path(rel)).existsSync()) {

@@ -145,6 +145,7 @@ dart run u:app share-target image pdf                 # receive shares / "Open w
 dart run u:app query-schemes whatsapp tg              # let ULaunch.canOpen / isInstalled see other apps
 dart run u:app bump patch                             # 1.2.3+7 → 1.2.4+8
 dart run u:app signing --create                       # asks everything, creates the .jks, signs releases
+dart run u:app spm                                    # iOS + macOS on Swift Package Manager, no CocoaPods
 ```
 
 | Command | Android | iOS | macOS | Linux | Windows | Web |
@@ -157,6 +158,7 @@ dart run u:app signing --create                       # asks everything, creates
 | `deep-link` | ✅ | ✅ | ✅ | | | |
 | `share-target` | ✅ | ✅ | ✅ | | | |
 | `query-schemes` | ✅ | ✅ | | | | |
+| `spm` | | ✅ | ✅ | | | |
 | `team` | | ✅ | ✅ | | | |
 | `binary`, `company`, `copyright` | | | copyright | binary | ✅ | |
 | `web-color` | | | | | | ✅ |

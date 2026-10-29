@@ -183,6 +183,16 @@ class AppleFiles {
 
   String get podfile => "$dir/Podfile";
 
+  String get podfileLock => "$dir/Podfile.lock";
+
+  String get pods => "$dir/Pods";
+
+  String get workspace => "$dir/Runner.xcworkspace/contents.xcworkspacedata";
+
+  List<String> get xcconfigs => isIos
+      ? <String>["ios/Flutter/Debug.xcconfig", "ios/Flutter/Release.xcconfig", "ios/Flutter/Profile.xcconfig"]
+      : <String>["macos/Flutter/Flutter-Debug.xcconfig", "macos/Flutter/Flutter-Release.xcconfig", "macos/Flutter/Flutter-Profile.xcconfig"];
+
   String get deploymentKey => isIos ? "IPHONEOS_DEPLOYMENT_TARGET" : "MACOSX_DEPLOYMENT_TARGET";
 
   String get podPlatform => isIos ? "ios" : "osx";
@@ -284,6 +294,71 @@ abstract final class Podfile {
       return null;
     }
     return RegExp("^[ \\t]*platform\\s+:$platform\\s*,\\s*['\"]([^'\"]*)['\"]", multiLine: true).firstMatch(text)?.group(1);
+  }
+}
+
+/// Removes the CocoaPods integration `pod install` writes into an Xcode project.
+abstract final class CocoaPods {
+  static final RegExp _object = RegExp(r"^\t\t([0-9A-F]{24}) /\* (.*?) \*/ = \{", multiLine: true);
+
+  static final RegExp _podName = RegExp(r"^(Pods|(lib)?Pods[_-][^ ]+\.(framework|a|xcconfig)( in Frameworks)?|\[CP(-User)?\] .+)$");
+
+  /// Drops the objects [remove] picks and every line that points at them.
+  static String _removeObjects(String text, bool Function(String name, String body) remove) {
+    final Set<String> ids = <String>{};
+    final List<(int, int)> ranges = <(int, int)>[];
+    for (final Match m in _object.allMatches(text)) {
+      final int end = text.substring(m.start, lineEnd(text, m.start)).trimRight().endsWith("};") ? lineEnd(text, m.start) : lineEnd(text, text.indexOf("\n\t\t};", m.end) + 1);
+      if (remove(m.group(2)!, text.substring(m.end, end))) {
+        ids.add(m.group(1)!);
+        ranges.add((m.start, end));
+      }
+    }
+    if (ids.isEmpty) {
+      return text;
+    }
+    String out = text;
+    for (final (int, int) r in ranges.reversed) {
+      out = out.replaceRange(r.$1, r.$2, "");
+    }
+    return out.split("\n").where((String l) => !ids.any(l.contains)).join("\n");
+  }
+
+  static String stripPbxproj(String text) {
+    final String out = _removeObjects(text, (String name, String _) => _podName.hasMatch(name));
+    return _removeObjects(out, (String name, String body) => name == "Frameworks" && body.contains("isa = PBXGroup;") && RegExp(r"children = \(\s*\);").hasMatch(body));
+  }
+
+  static String stripXcconfig(String text) => text.replaceAll(RegExp(r'^#include\??[ \t]+"Pods/[^\n]*\n?', multiLine: true), "");
+
+  static String stripWorkspace(String text) => text.replaceAll(RegExp(r'[ \t]*<FileRef\s+location\s*=\s*"group:Pods/Pods\.xcodeproj">\s*</FileRef>[ \t]*\n?'), "");
+}
+
+/// The `flutter: config: enable-swift-package-manager` switch in pubspec.yaml.
+abstract final class SwiftPm {
+  static const String key = "enable-swift-package-manager";
+
+  static String enable(String text) {
+    final String out = text.replaceAll(RegExp(r"^[ \t]+disable-swift-package-manager:[^\n]*\n", multiLine: true), "");
+    final Match? flutter = RegExp(r"^flutter:[ \t]*(#[^\n]*)?$", multiLine: true).firstMatch(out);
+    if (flutter == null) {
+      return "${out.endsWith("\n") ? out : "$out\n"}\nflutter:\n  config:\n    $key: true\n";
+    }
+    final int start = lineEnd(out, flutter.start);
+    final Match? next = RegExp(r"^[^ \t\n#]", multiLine: true).allMatches(out).where((Match m) => m.start >= start).firstOrNull;
+    final int end = next?.start ?? out.length;
+    final String block = out.substring(start, end);
+    final Match? current = RegExp("^([ \\t]+$key:[ \\t]*)([^\\n]*)", multiLine: true).firstMatch(block);
+    if (current != null) {
+      return out.replaceRange(start + current.start, start + current.end, "${current.group(1)}true");
+    }
+    final String indent = RegExp(r"^([ \t]+)\S", multiLine: true).firstMatch(block)?.group(1) ?? "  ";
+    final Match? config = RegExp("^${indent}config:[ \\t]*\$", multiLine: true).firstMatch(block);
+    if (config != null) {
+      final int at = start + lineEnd(block, config.start);
+      return out.replaceRange(at, at, "$indent$indent$key: true\n");
+    }
+    return out.replaceRange(start, start, "${indent}config:\n$indent$indent$key: true\n");
   }
 }
 

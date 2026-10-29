@@ -132,6 +132,10 @@ flutter:
 # dart run u:app deep-link myapp --host open
 # dart run u:app deep-link remove myapp
 #
+# iOS + macOS on Swift Package Manager instead of CocoaPods (no `pod` needed):
+# dart run u:app spm
+# dart run u:app spm --force                 (also when a plugin still has no Package.swift)
+#
 # Apple signing / desktop identity / web:
 # dart run u:app team ABCDE12345
 # dart run u:app binary my_app
