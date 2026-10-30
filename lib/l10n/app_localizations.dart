@@ -16345,6 +16345,222 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Earlier'**
   String get earlier;
+
+  /// No description provided for @stores.
+  ///
+  /// In en, this message translates to:
+  /// **'Stores'**
+  String get stores;
+
+  /// No description provided for @storeTypes.
+  ///
+  /// In en, this message translates to:
+  /// **'Store Types'**
+  String get storeTypes;
+
+  /// No description provided for @storeType.
+  ///
+  /// In en, this message translates to:
+  /// **'Store Type'**
+  String get storeType;
+
+  /// No description provided for @newStoreType.
+  ///
+  /// In en, this message translates to:
+  /// **'New Store Type'**
+  String get newStoreType;
+
+  /// No description provided for @whatIsYourBusiness.
+  ///
+  /// In en, this message translates to:
+  /// **'What Is Your Business?'**
+  String get whatIsYourBusiness;
+
+  /// No description provided for @introduceYourStore.
+  ///
+  /// In en, this message translates to:
+  /// **'Introduce Your Store'**
+  String get introduceYourStore;
+
+  /// No description provided for @theIconOnTheMapComesFromThisChoice.
+  ///
+  /// In en, this message translates to:
+  /// **'The icon on the map comes from this choice.'**
+  String get theIconOnTheMapComesFromThisChoice;
+
+  /// No description provided for @addStore.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Store'**
+  String get addStore;
+
+  /// No description provided for @createStore.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Store'**
+  String get createStore;
+
+  /// No description provided for @editStore.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Store'**
+  String get editStore;
+
+  /// No description provided for @deleteStore.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Store'**
+  String get deleteStore;
+
+  /// No description provided for @createYourFirstStore.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Your First Store'**
+  String get createYourFirstStore;
+
+  /// No description provided for @currentStore.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Store'**
+  String get currentStore;
+
+  /// No description provided for @enterPanel.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Panel'**
+  String get enterPanel;
+
+  /// No description provided for @backToShopping.
+  ///
+  /// In en, this message translates to:
+  /// **'Back To Shopping'**
+  String get backToShopping;
+
+  /// No description provided for @switchStore.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch Store'**
+  String get switchStore;
+
+  /// No description provided for @manageStores.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Stores'**
+  String get manageStores;
+
+  /// No description provided for @shortIntroduction.
+  ///
+  /// In en, this message translates to:
+  /// **'Short Introduction'**
+  String get shortIntroduction;
+
+  /// No description provided for @coverPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Cover Photo'**
+  String get coverPhoto;
+
+  /// No description provided for @pleaseChooseABusinessType.
+  ///
+  /// In en, this message translates to:
+  /// **'Please choose a business type.'**
+  String get pleaseChooseABusinessType;
+
+  /// No description provided for @noBusinessTypeIsAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No business type is available.'**
+  String get noBusinessTypeIsAvailable;
+
+  /// No description provided for @storeIsHiddenUntilApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers will not see this store until an admin approves it.'**
+  String get storeIsHiddenUntilApproved;
+
+  /// No description provided for @seePlans.
+  ///
+  /// In en, this message translates to:
+  /// **'See Plans'**
+  String get seePlans;
+
+  /// No description provided for @notNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Not Now'**
+  String get notNow;
+
+  /// No description provided for @areYouSureYouWantToDeleteThisStore.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this store?'**
+  String get areYouSureYouWantToDeleteThisStore;
+
+  /// No description provided for @remainingDaysAreDeductedFromThePrice.
+  ///
+  /// In en, this message translates to:
+  /// **'The remaining days are deducted from the price'**
+  String get remainingDaysAreDeductedFromThePrice;
+
+  /// No description provided for @morePlansHaveHigherLimits.
+  ///
+  /// In en, this message translates to:
+  /// **'Higher plans allow more stores'**
+  String get morePlansHaveHigherLimits;
+
+  /// No description provided for @selectFromList.
+  ///
+  /// In en, this message translates to:
+  /// **'Select From List'**
+  String get selectFromList;
+
+  /// No description provided for @hexColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Hex Color'**
+  String get hexColor;
+
+  /// No description provided for @enterAValidColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid color like #1D4ED8.'**
+  String get enterAValidColor;
+
+  /// No description provided for @stepOfCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Step {step} of {total}'**
+  String stepOfCount(Object step, Object total);
+
+  /// No description provided for @usedOfLimitStores.
+  ///
+  /// In en, this message translates to:
+  /// **'{used} of {limit} stores'**
+  String usedOfLimitStores(Object used, Object limit);
+
+  /// No description provided for @planStoreLimitIsFull.
+  ///
+  /// In en, this message translates to:
+  /// **'The store limit of the {plan} plan is full'**
+  String planStoreLimitIsFull(Object plan);
+
+  /// No description provided for @planHasCountStoresAndAllAreCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'The {plan} plan allows {count} stores and you have created them all. Upgrade for more.'**
+  String planHasCountStoresAndAllAreCreated(Object plan, Object count);
+
+  /// No description provided for @upToCountStoresInPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Up to {count} stores in the {plan} plan'**
+  String upToCountStoresInPlan(Object count, Object plan);
+
+  /// No description provided for @typeAndCountProducts.
+  ///
+  /// In en, this message translates to:
+  /// **'{type}, {count} products'**
+  String typeAndCountProducts(Object type, Object count);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

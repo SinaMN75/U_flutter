@@ -284,7 +284,7 @@ abstract class UNavigator {
     IconData? icon,
     bool barrierDismissible = true,
   }) => dialog(
-    AlertDialog.adaptive(
+    _alert(
       icon: icon != null ? Icon(icon) : null,
       title: Text(title),
       content: Text(message),
@@ -296,6 +296,11 @@ abstract class UNavigator {
   );
 
   /// Yes/no dialog with callbacks. `UNavigator.confirm(title: "Delete?", message: "Cannot be undone", destructive: true, onConfirm: delete)`
+  // The Cupertino dialog uses a system font that browsers do not have for every script, so the web always gets the Material one.
+  static Widget _alert({Widget? icon, Widget? title, Widget? content, List<Widget>? actions, bool scrollable = false}) => kIsWeb
+      ? AlertDialog(icon: icon, title: title, content: content, actions: actions, scrollable: scrollable)
+      : AlertDialog.adaptive(icon: icon, title: title, content: content, actions: actions, scrollable: scrollable);
+
   static void confirm({
     required String title,
     required String message,
@@ -310,7 +315,7 @@ abstract class UNavigator {
     VoidCallback? onCancel,
     VoidCallback? onConfirm,
   }) => dialog(
-    AlertDialog.adaptive(
+    _alert(
       icon: icon != null ? Icon(icon) : null,
       title: Text(title),
       content: Text(message),
@@ -347,7 +352,7 @@ abstract class UNavigator {
     bool barrierDismissible = true,
   }) async {
     final bool? result = await dialog<bool>(
-      AlertDialog.adaptive(
+      _alert(
         icon: icon != null ? Icon(icon) : null,
         title: Text(title),
         content: Text(message),
@@ -384,7 +389,7 @@ abstract class UNavigator {
       context: navigatorKey.currentContext!,
       builder: (BuildContext context) => UTextControllerScope(
         text: defaultValue,
-        builder: (BuildContext context, TextEditingController controller) => AlertDialog.adaptive(
+        builder: (BuildContext context, TextEditingController controller) => _alert(
           scrollable: true,
           title: Text(title),
           content: Material(

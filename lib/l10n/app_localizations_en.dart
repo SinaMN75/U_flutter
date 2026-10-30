@@ -8383,4 +8383,124 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get earlier => 'Earlier';
+
+  @override
+  String get stores => 'Stores';
+
+  @override
+  String get storeTypes => 'Store Types';
+
+  @override
+  String get storeType => 'Store Type';
+
+  @override
+  String get newStoreType => 'New Store Type';
+
+  @override
+  String get whatIsYourBusiness => 'What Is Your Business?';
+
+  @override
+  String get introduceYourStore => 'Introduce Your Store';
+
+  @override
+  String get theIconOnTheMapComesFromThisChoice => 'The icon on the map comes from this choice.';
+
+  @override
+  String get addStore => 'Add Store';
+
+  @override
+  String get createStore => 'Create Store';
+
+  @override
+  String get editStore => 'Edit Store';
+
+  @override
+  String get deleteStore => 'Delete Store';
+
+  @override
+  String get createYourFirstStore => 'Create Your First Store';
+
+  @override
+  String get currentStore => 'Current Store';
+
+  @override
+  String get enterPanel => 'Enter Panel';
+
+  @override
+  String get backToShopping => 'Back To Shopping';
+
+  @override
+  String get switchStore => 'Switch Store';
+
+  @override
+  String get manageStores => 'Manage Stores';
+
+  @override
+  String get shortIntroduction => 'Short Introduction';
+
+  @override
+  String get coverPhoto => 'Cover Photo';
+
+  @override
+  String get pleaseChooseABusinessType => 'Please choose a business type.';
+
+  @override
+  String get noBusinessTypeIsAvailable => 'No business type is available.';
+
+  @override
+  String get storeIsHiddenUntilApproved => 'Customers will not see this store until an admin approves it.';
+
+  @override
+  String get seePlans => 'See Plans';
+
+  @override
+  String get notNow => 'Not Now';
+
+  @override
+  String get areYouSureYouWantToDeleteThisStore => 'Are you sure you want to delete this store?';
+
+  @override
+  String get remainingDaysAreDeductedFromThePrice => 'The remaining days are deducted from the price';
+
+  @override
+  String get morePlansHaveHigherLimits => 'Higher plans allow more stores';
+
+  @override
+  String get selectFromList => 'Select From List';
+
+  @override
+  String get hexColor => 'Hex Color';
+
+  @override
+  String get enterAValidColor => 'Enter a valid color like #1D4ED8.';
+
+  @override
+  String stepOfCount(Object step, Object total) {
+    return 'Step $step of $total';
+  }
+
+  @override
+  String usedOfLimitStores(Object used, Object limit) {
+    return '$used of $limit stores';
+  }
+
+  @override
+  String planStoreLimitIsFull(Object plan) {
+    return 'The store limit of the $plan plan is full';
+  }
+
+  @override
+  String planHasCountStoresAndAllAreCreated(Object plan, Object count) {
+    return 'The $plan plan allows $count stores and you have created them all. Upgrade for more.';
+  }
+
+  @override
+  String upToCountStoresInPlan(Object count, Object plan) {
+    return 'Up to $count stores in the $plan plan';
+  }
+
+  @override
+  String typeAndCountProducts(Object type, Object count) {
+    return '$type, $count products';
+  }
 }

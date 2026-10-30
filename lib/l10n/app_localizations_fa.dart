@@ -8382,4 +8382,124 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get earlier => 'قبل‌تر';
+
+  @override
+  String get stores => 'فروشگاه‌ها';
+
+  @override
+  String get storeTypes => 'انواع کسب‌وکار';
+
+  @override
+  String get storeType => 'نوع کسب‌وکار';
+
+  @override
+  String get newStoreType => 'نوع کسب‌وکار تازه';
+
+  @override
+  String get whatIsYourBusiness => 'کسب‌وکار شما چیست؟';
+
+  @override
+  String get introduceYourStore => 'معرفی فروشگاه';
+
+  @override
+  String get theIconOnTheMapComesFromThisChoice => 'آیکون روی نقشه هم از همین انتخاب می‌آید.';
+
+  @override
+  String get addStore => 'افزودن فروشگاه';
+
+  @override
+  String get createStore => 'ساخت فروشگاه';
+
+  @override
+  String get editStore => 'ویرایش فروشگاه';
+
+  @override
+  String get deleteStore => 'حذف فروشگاه';
+
+  @override
+  String get createYourFirstStore => 'ساخت اولین فروشگاه';
+
+  @override
+  String get currentStore => 'فروشگاه فعلی';
+
+  @override
+  String get enterPanel => 'ورود به پنل';
+
+  @override
+  String get backToShopping => 'بازگشت به خرید';
+
+  @override
+  String get switchStore => 'جابه‌جایی فروشگاه';
+
+  @override
+  String get manageStores => 'مدیریت فروشگاه‌ها';
+
+  @override
+  String get shortIntroduction => 'معرفی کوتاه';
+
+  @override
+  String get coverPhoto => 'عکس کاور';
+
+  @override
+  String get pleaseChooseABusinessType => 'نوع کسب‌وکار را انتخاب کنید.';
+
+  @override
+  String get noBusinessTypeIsAvailable => 'هنوز نوع کسب‌وکاری تعریف نشده است.';
+
+  @override
+  String get storeIsHiddenUntilApproved => 'تا تأیید مدیر، صفحه این فروشگاه برای مشتری‌ها دیده نمی‌شود.';
+
+  @override
+  String get seePlans => 'دیدن اشتراک‌ها';
+
+  @override
+  String get notNow => 'فعلاً نه';
+
+  @override
+  String get areYouSureYouWantToDeleteThisStore => 'این فروشگاه و همه اطلاعاتش حذف می‌شود. مطمئن هستید؟';
+
+  @override
+  String get remainingDaysAreDeductedFromThePrice => 'مبلغ روزهای باقی‌مانده کم می‌شود';
+
+  @override
+  String get morePlansHaveHigherLimits => 'در اشتراک‌های بالاتر فروشگاه بیشتری دارید';
+
+  @override
+  String get selectFromList => 'انتخاب از فهرست';
+
+  @override
+  String get hexColor => 'کد رنگ';
+
+  @override
+  String get enterAValidColor => 'رنگ را مثل #1D4ED8 وارد کنید.';
+
+  @override
+  String stepOfCount(Object step, Object total) {
+    return 'مرحله $step از $total';
+  }
+
+  @override
+  String usedOfLimitStores(Object used, Object limit) {
+    return '$used از $limit فروشگاه';
+  }
+
+  @override
+  String planStoreLimitIsFull(Object plan) {
+    return 'سقف فروشگاه‌های اشتراک $plan پر است';
+  }
+
+  @override
+  String planHasCountStoresAndAllAreCreated(Object plan, Object count) {
+    return 'اشتراک $plan $count فروشگاه دارد و همه را ساخته‌اید. برای فروشگاه بیشتر اشتراک را ارتقا دهید.';
+  }
+
+  @override
+  String upToCountStoresInPlan(Object count, Object plan) {
+    return 'تا $count فروشگاه در اشتراک $plan';
+  }
+
+  @override
+  String typeAndCountProducts(Object type, Object count) {
+    return '$type، $count کالا';
+  }
 }

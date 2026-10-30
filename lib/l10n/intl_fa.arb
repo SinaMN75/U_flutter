@@ -2906,5 +2906,76 @@
   "storeName": "نام فروشگاه",
   "createAStoreProfileAndAsManyStoresAsYourSubscriptionAllows": "یک پروفایل فروشگاه می‌سازید و زیر آن هر چند فروشگاه که اشتراکتان اجازه دهد: مغازه، کافه یا شعبه دوم.",
   "markAllRead": "همه خوانده شد",
-  "earlier": "قبل‌تر"
+  "earlier": "قبل‌تر",
+  "stores": "فروشگاه‌ها",
+  "storeTypes": "انواع کسب‌وکار",
+  "storeType": "نوع کسب‌وکار",
+  "newStoreType": "نوع کسب‌وکار تازه",
+  "whatIsYourBusiness": "کسب‌وکار شما چیست؟",
+  "introduceYourStore": "معرفی فروشگاه",
+  "theIconOnTheMapComesFromThisChoice": "آیکون روی نقشه هم از همین انتخاب می‌آید.",
+  "addStore": "افزودن فروشگاه",
+  "createStore": "ساخت فروشگاه",
+  "editStore": "ویرایش فروشگاه",
+  "deleteStore": "حذف فروشگاه",
+  "createYourFirstStore": "ساخت اولین فروشگاه",
+  "currentStore": "فروشگاه فعلی",
+  "enterPanel": "ورود به پنل",
+  "backToShopping": "بازگشت به خرید",
+  "switchStore": "جابه‌جایی فروشگاه",
+  "manageStores": "مدیریت فروشگاه‌ها",
+  "shortIntroduction": "معرفی کوتاه",
+  "coverPhoto": "عکس کاور",
+  "pleaseChooseABusinessType": "نوع کسب‌وکار را انتخاب کنید.",
+  "noBusinessTypeIsAvailable": "هنوز نوع کسب‌وکاری تعریف نشده است.",
+  "storeIsHiddenUntilApproved": "تا تأیید مدیر، صفحه این فروشگاه برای مشتری‌ها دیده نمی‌شود.",
+  "seePlans": "دیدن اشتراک‌ها",
+  "notNow": "فعلاً نه",
+  "areYouSureYouWantToDeleteThisStore": "این فروشگاه و همه اطلاعاتش حذف می‌شود. مطمئن هستید؟",
+  "remainingDaysAreDeductedFromThePrice": "مبلغ روزهای باقی‌مانده کم می‌شود",
+  "morePlansHaveHigherLimits": "در اشتراک‌های بالاتر فروشگاه بیشتری دارید",
+  "selectFromList": "انتخاب از فهرست",
+  "hexColor": "کد رنگ",
+  "enterAValidColor": "رنگ را مثل #1D4ED8 وارد کنید.",
+  "stepOfCount": "مرحله {step} از {total}",
+  "@stepOfCount": {
+    "placeholders": {
+      "step": {},
+      "total": {}
+    }
+  },
+  "usedOfLimitStores": "{used} از {limit} فروشگاه",
+  "@usedOfLimitStores": {
+    "placeholders": {
+      "used": {},
+      "limit": {}
+    }
+  },
+  "planStoreLimitIsFull": "سقف فروشگاه‌های اشتراک {plan} پر است",
+  "@planStoreLimitIsFull": {
+    "placeholders": {
+      "plan": {}
+    }
+  },
+  "planHasCountStoresAndAllAreCreated": "اشتراک {plan} {count} فروشگاه دارد و همه را ساخته‌اید. برای فروشگاه بیشتر اشتراک را ارتقا دهید.",
+  "@planHasCountStoresAndAllAreCreated": {
+    "placeholders": {
+      "plan": {},
+      "count": {}
+    }
+  },
+  "upToCountStoresInPlan": "تا {count} فروشگاه در اشتراک {plan}",
+  "@upToCountStoresInPlan": {
+    "placeholders": {
+      "count": {},
+      "plan": {}
+    }
+  },
+  "typeAndCountProducts": "{type}، {count} کالا",
+  "@typeAndCountProducts": {
+    "placeholders": {
+      "type": {},
+      "count": {}
+    }
+  }
 }

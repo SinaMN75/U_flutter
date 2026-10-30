@@ -3324,5 +3324,76 @@
   "storeName": "Store name",
   "createAStoreProfileAndAsManyStoresAsYourSubscriptionAllows": "Create a store profile and as many stores as your subscription allows",
   "markAllRead": "Mark all read",
-  "earlier": "Earlier"
+  "earlier": "Earlier",
+  "stores": "Stores",
+  "storeTypes": "Store Types",
+  "storeType": "Store Type",
+  "newStoreType": "New Store Type",
+  "whatIsYourBusiness": "What Is Your Business?",
+  "introduceYourStore": "Introduce Your Store",
+  "theIconOnTheMapComesFromThisChoice": "The icon on the map comes from this choice.",
+  "addStore": "Add Store",
+  "createStore": "Create Store",
+  "editStore": "Edit Store",
+  "deleteStore": "Delete Store",
+  "createYourFirstStore": "Create Your First Store",
+  "currentStore": "Current Store",
+  "enterPanel": "Enter Panel",
+  "backToShopping": "Back To Shopping",
+  "switchStore": "Switch Store",
+  "manageStores": "Manage Stores",
+  "shortIntroduction": "Short Introduction",
+  "coverPhoto": "Cover Photo",
+  "pleaseChooseABusinessType": "Please choose a business type.",
+  "noBusinessTypeIsAvailable": "No business type is available.",
+  "storeIsHiddenUntilApproved": "Customers will not see this store until an admin approves it.",
+  "seePlans": "See Plans",
+  "notNow": "Not Now",
+  "areYouSureYouWantToDeleteThisStore": "Are you sure you want to delete this store?",
+  "remainingDaysAreDeductedFromThePrice": "The remaining days are deducted from the price",
+  "morePlansHaveHigherLimits": "Higher plans allow more stores",
+  "selectFromList": "Select From List",
+  "hexColor": "Hex Color",
+  "enterAValidColor": "Enter a valid color like #1D4ED8.",
+  "stepOfCount": "Step {step} of {total}",
+  "@stepOfCount": {
+    "placeholders": {
+      "step": {},
+      "total": {}
+    }
+  },
+  "usedOfLimitStores": "{used} of {limit} stores",
+  "@usedOfLimitStores": {
+    "placeholders": {
+      "used": {},
+      "limit": {}
+    }
+  },
+  "planStoreLimitIsFull": "The store limit of the {plan} plan is full",
+  "@planStoreLimitIsFull": {
+    "placeholders": {
+      "plan": {}
+    }
+  },
+  "planHasCountStoresAndAllAreCreated": "The {plan} plan allows {count} stores and you have created them all. Upgrade for more.",
+  "@planHasCountStoresAndAllAreCreated": {
+    "placeholders": {
+      "plan": {},
+      "count": {}
+    }
+  },
+  "upToCountStoresInPlan": "Up to {count} stores in the {plan} plan",
+  "@upToCountStoresInPlan": {
+    "placeholders": {
+      "count": {},
+      "plan": {}
+    }
+  },
+  "typeAndCountProducts": "{type}, {count} products",
+  "@typeAndCountProducts": {
+    "placeholders": {
+      "type": {},
+      "count": {}
+    }
+  }
 }

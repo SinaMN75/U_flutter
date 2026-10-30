@@ -224,7 +224,9 @@ enum TagUser with UNumericIdentifiable {
   permissionManageStaff("مدیریت کارکنان، شیفت و کارها", "Manage Staff", 626),
   permissionManageOrganizations("مدیریت مجموعه‌ها و اشتراک‌ها", "Manage Organizations", 627),
   permissionApprovePlaces("تأیید مکان‌ها", "Approve Places", 628),
-  permissionManageSettlements("تسویه با مجموعه‌ها", "Manage Settlements", 629);
+  permissionManageSettlements("تسویه با مجموعه‌ها", "Manage Settlements", 629),
+  permissionManageStores("مدیریت فروشگاه‌ها", "Manage Stores", 630),
+  permissionDeleteStores("حذف فروشگاه‌ها", "Delete Stores", 631);
 
   const TagUser(this.titleFa, this.titleEn, this.number);
 
@@ -265,6 +267,8 @@ enum TagUser with UNumericIdentifiable {
     permissionManageOrganizations,
     permissionApprovePlaces,
     permissionManageSettlements,
+    permissionManageStores,
+    permissionDeleteStores,
   ];
 
   static const List<TagUser> organizationPermissions = <TagUser>[
@@ -297,6 +301,9 @@ enum TagMedia with UNumericIdentifiable {
 
   /// The main photo of a hotel / dorm / room (shown first).
   cover("عکس اصلی", "Cover", 201),
+
+  /// The logo of a store.
+  logo("لوگو", "Logo", 202),
 
   /// Gallery categories of hotel and dorm photos.
   exterior("نما و محوطه", "Exterior", 301),
@@ -1900,6 +1907,37 @@ enum TagActivityLog with UNumericIdentifiable {
   action("عملیات", "Action", 104);
 
   const TagActivityLog(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagStore with UNumericIdentifiable {
+  active("فعال", "Active", 202),
+  inactive("غیرفعال", "Inactive", 203),
+  pendingApproval("در انتظار تأیید", "Pending approval", 401),
+  approved("تأیید شده", "Approved", 402),
+  rejected("نیاز به اصلاح", "Needs changes", 403);
+
+  const TagStore(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagStoreType with UNumericIdentifiable {
+  active("فعال", "Active", 101),
+  inactive("غیرفعال", "Inactive", 102);
+
+  const TagStoreType(this.titleFa, this.titleEn, this.number);
 
   @override
   final String titleFa;

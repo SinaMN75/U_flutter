@@ -61,7 +61,9 @@ class UNetworkImage extends ImageProvider<UNetworkImage> {
   static final Map<String, Future<Uint8List>> _inFlight = <String, Future<Uint8List>>{};
 
   /// The image bytes from the disk cache, or downloaded (and cached) when missing.
-  static Future<Uint8List> fetch(String url) => _inFlight[url] ??= _fetch(url).whenComplete(() => _inFlight.remove(url));
+  static Future<Uint8List> fetch(String url) => _inFlight[url] ??= _fetch(url).whenComplete(() {
+    _inFlight.remove(url);
+  });
 
   static Future<Uint8List> _fetch(String url) async {
     final String key = "img_$url";
