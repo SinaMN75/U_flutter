@@ -41,7 +41,7 @@ class UOrganizationMemberPlace {
 }
 
 class UOrganizationJson {
-  UOrganizationJson({this.detail1, this.detail2, this.commissionPercent = 0, this.members = const <UOrganizationMember>[], this.settlements = const <UOrganizationSettlement>[], this.logoUrl, this.address, this.phoneNumber, this.nationalId, this.economicCode, this.kind, this.cityCode, this.legalName, this.subscriptions = const <UOrganizationSubscription>[]});
+  UOrganizationJson({this.detail1, this.detail2, this.commissionPercent = 0, this.members = const <UOrganizationMember>[], this.settlements = const <UOrganizationSettlement>[], this.logoUrl, this.address, this.phoneNumber, this.nationalId, this.economicCode, this.cityCode, this.subscriptions = const <UOrganizationSubscription>[]});
 
   factory UOrganizationJson.fromMap(Map<String, dynamic> json) => UOrganizationJson(
     detail1: json["detail1"],
@@ -54,9 +54,7 @@ class UOrganizationJson {
     phoneNumber: json["phoneNumber"],
     nationalId: json["nationalId"],
     economicCode: json["economicCode"],
-    kind: json["kind"] == null ? null : (json["kind"] as num).toInt(),
     cityCode: json["cityCode"],
-    legalName: json["legalName"],
     subscriptions: json["subscriptions"] == null ? <UOrganizationSubscription>[] : List<UOrganizationSubscription>.from(json["subscriptions"]!.map((dynamic x) => UOrganizationSubscription.fromMap(x))),
   );
 
@@ -70,9 +68,7 @@ class UOrganizationJson {
   final String? phoneNumber;
   final String? nationalId;
   final String? economicCode;
-  final int? kind;
   final String? cityCode;
-  final String? legalName;
   final List<UOrganizationSubscription> subscriptions;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -86,9 +82,7 @@ class UOrganizationJson {
     "phoneNumber": phoneNumber,
     "nationalId": nationalId,
     "economicCode": economicCode,
-    "kind": kind,
     "cityCode": cityCode,
-    "legalName": legalName,
     "subscriptions": subscriptions.map((UOrganizationSubscription x) => x.toMap()).toList(),
   };
 }
@@ -106,6 +100,7 @@ class UOrganizationResponse {
     this.balance = 0,
     this.modules,
     this.limits,
+    this.usage,
     this.subscriptionEndsAt,
     this.bankAccount,
     this.payments,
@@ -123,6 +118,7 @@ class UOrganizationResponse {
     balance: json["balance"] == null ? 0 : (json["balance"] as num).toDouble(),
     modules: json["modules"] == null ? null : List<int>.from(json["modules"]!.map((dynamic x) => x)),
     limits: json["limits"] == null ? null : List<UPlanLimit>.from(json["limits"]!.map((dynamic x) => UPlanLimit.fromMap(x))),
+    usage: json["usage"] == null ? null : List<UPlanLimit>.from(json["usage"]!.map((dynamic x) => UPlanLimit.fromMap(x))),
     subscriptionEndsAt: json["subscriptionEndsAt"] == null ? null : DateTime.parse(json["subscriptionEndsAt"]),
     bankAccount: json["bankAccount"] == null ? null : UBankAccountResponse.fromMap(json["bankAccount"]),
     payments: json["payments"] == null ? null : UOrganizationPayments.fromMap(json["payments"]),
@@ -139,6 +135,7 @@ class UOrganizationResponse {
   final double balance;
   final List<int>? modules;
   final List<UPlanLimit>? limits;
+  final List<UPlanLimit>? usage;
   final DateTime? subscriptionEndsAt;
   final UBankAccountResponse? bankAccount;
   final UOrganizationPayments? payments;
@@ -148,6 +145,8 @@ class UOrganizationResponse {
   bool hasModule(TagModule m) => modules == null || modules!.contains(m.number);
 
   int? limitOf(TagPlanLimit kind) => limits?.where((UPlanLimit x) => x.kind == kind.number).firstOrNull?.value;
+
+  int? usageOf(TagPlanLimit kind) => usage?.where((UPlanLimit x) => x.kind == kind.number).firstOrNull?.value;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "id": id,
@@ -252,6 +251,7 @@ class UOrganizationSubscription {
     this.price = 0,
     this.credit = 0,
     this.paid = 0,
+    this.paidVia,
     this.startsAt,
     this.expiresAt,
     this.remindedAt,
@@ -271,6 +271,7 @@ class UOrganizationSubscription {
     price: _num(json["price"]),
     credit: _num(json["credit"]),
     paid: _num(json["paid"]),
+    paidVia: json["paidVia"],
     startsAt: json["startsAt"] == null ? null : DateTime.parse(json["startsAt"]),
     expiresAt: json["expiresAt"] == null ? null : DateTime.parse(json["expiresAt"]),
     remindedAt: json["remindedAt"] == null ? null : DateTime.parse(json["remindedAt"]),
@@ -289,6 +290,7 @@ class UOrganizationSubscription {
   final double price;
   final double credit;
   final double paid;
+  final int? paidVia;
   final DateTime? startsAt;
   final DateTime? expiresAt;
   final DateTime? remindedAt;
@@ -309,6 +311,7 @@ class UOrganizationSubscription {
     "price": price,
     "credit": credit,
     "paid": paid,
+    "paidVia": paidVia,
     "startsAt": startsAt?.toIso8601String(),
     "expiresAt": expiresAt?.toIso8601String(),
     "remindedAt": remindedAt?.toIso8601String(),
@@ -520,7 +523,19 @@ class UActivityLogResponse {
 }
 
 class USubscriptionQuoteResponse {
-  USubscriptionQuoteResponse({required this.planId, required this.title, required this.months, required this.price, required this.credit, required this.payable, this.trial = false, this.renewal = false, this.startsAt, this.expiresAt});
+  USubscriptionQuoteResponse({
+    required this.planId,
+    required this.title,
+    required this.months,
+    required this.price,
+    required this.credit,
+    required this.payable,
+    this.trial = false,
+    this.renewal = false,
+    this.startsAt,
+    this.expiresAt,
+    this.replaces = const <String>[],
+  });
 
   factory USubscriptionQuoteResponse.fromMap(Map<String, dynamic> json) => USubscriptionQuoteResponse(
     planId: json["planId"],
@@ -533,6 +548,7 @@ class USubscriptionQuoteResponse {
     payable: (json["payable"] as num?)?.toDouble() ?? 0,
     startsAt: json["startsAt"] == null ? null : DateTime.parse(json["startsAt"]),
     expiresAt: json["expiresAt"] == null ? null : DateTime.parse(json["expiresAt"]),
+    replaces: json["replaces"] == null ? <String>[] : List<String>.from(json["replaces"]!.map((dynamic x) => x)),
   );
 
   final String planId;
@@ -545,6 +561,7 @@ class USubscriptionQuoteResponse {
   final double payable;
   final DateTime? startsAt;
   final DateTime? expiresAt;
+  final List<String> replaces;
 }
 
 class USubscriptionBuyResponse {

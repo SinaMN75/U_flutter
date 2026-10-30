@@ -8130,16 +8130,7 @@ class AppLocalizationsFa extends AppLocalizations {
   }
 
   @override
-  String get createASellerProfileAndAsManyStoresAsYourSubscriptionAllows => 'یک پروفایل فروشنده می‌سازید و زیر آن هر چند فروشگاه که اشتراکتان اجازه دهد: مغازه، کافه یا شعبه دوم.';
-
-  @override
   String get becomeASellerOneProfileManyStores => 'فروشنده شوید؛\nیک پروفایل، چند فروشگاه';
-
-  @override
-  String get sellerProfile => 'پروفایل فروشنده';
-
-  @override
-  String get nameAndNationalCodeOrCompanyDetails => 'نام و کد ملی یا اطلاعات شرکت';
 
   @override
   String get chooseASubscription => 'انتخاب اشتراک';
@@ -8165,19 +8156,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get youShopWithTheSameAccountTheStoreTabOpensAfterThisStep => 'با همین حساب خرید هم می‌کنید؛ تب فروشگاه بعد از این مرحله باز می‌شود.';
 
   @override
-  String get asOnYourNationalCard => 'همان نامی که روی کارت ملی است';
-
-  @override
-  String get companyRegisteredName => 'نام ثبتی شرکت';
-
-  @override
-  String get asInTheOfficialGazette => 'مطابق روزنامه رسمی';
-
-  @override
   String get optional => 'اختیاری';
-
-  @override
-  String get youNameEachStoreSeparatelyLater => 'نام هر فروشگاه را جدا بعداً می‌نویسید.';
 
   @override
   String iHaveReadAndAcceptTheAppSellerRules(Object app) {
@@ -8188,16 +8167,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get youMustAcceptTheRules => 'باید قوانین را بپذیرید';
 
   @override
-  String get createSellerProfile => 'ساخت پروفایل فروشنده';
-
-  @override
-  String get yourSellerProfileWasCreated => 'پروفایل فروشنده شما ساخته شد';
-
-  @override
   String get noFreePlanIsAvailableRightNow => 'فعلاً پلن رایگانی وجود ندارد';
-
-  @override
-  String get editSellerProfile => 'ویرایش پروفایل فروشنده';
 
   @override
   String get myStores => 'فروشگاه‌های من';
@@ -8212,7 +8182,7 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String planSubscriptionDaysLeft(Object plan, Object days) {
-    return 'اشتراک $plan · $days روز مانده';
+    return 'اشتراک $plan، $days روز مانده';
   }
 
   @override
@@ -8225,11 +8195,185 @@ class AppLocalizationsFa extends AppLocalizations {
   String get sellers => 'فروشنده‌ها';
 
   @override
-  String get legalName => 'نام ثبتی';
-
-  @override
   String get currentPlan => 'پلن فعلی';
 
   @override
-  String get kind => 'نوع';
+  String get mySubscription => 'اشتراک من';
+
+  @override
+  String get myCurrentSubscription => 'اشتراک فعلی من';
+
+  @override
+  String get continueToPayment => 'ادامه به پرداخت';
+
+  @override
+  String planSubscriptionDuration(Object plan, Object duration) {
+    return 'اشتراک $plan، $duration';
+  }
+
+  @override
+  String get subscriptionPayment => 'پرداخت اشتراک';
+
+  @override
+  String get selectedSubscription => 'اشتراک انتخابی';
+
+  @override
+  String get paymentGateway => 'درگاه بانکی';
+
+  @override
+  String get allShetabMemberCards => 'همه کارت‌های عضو شتاب';
+
+  @override
+  String appWallet(Object app) {
+    return 'کیف پول $app';
+  }
+
+  @override
+  String balanceAmountToman(Object amount) {
+    return 'موجودی $amount تومان';
+  }
+
+  @override
+  String chargeAmountToman(Object amount) {
+    return 'شارژ $amount تومان';
+  }
+
+  @override
+  String priceForMonths(Object months) {
+    return 'قیمت $months ماه';
+  }
+
+  @override
+  String discountForMonths(Object months) {
+    return 'تخفیف $months ماهه';
+  }
+
+  @override
+  String get remainingDaysCredit => 'اعتبار روزهای مانده';
+
+  @override
+  String get payable => 'قابل پرداخت';
+
+  @override
+  String payAmountToman(Object amount) {
+    return 'پرداخت $amount تومان';
+  }
+
+  @override
+  String get activateSubscription => 'فعال‌سازی اشتراک';
+
+  @override
+  String thisAmountIsTheFeeForUsingApp(Object app) {
+    return 'این مبلغ هزینه استفاده از $app است. پول خرید مشتری‌ها همچنان مستقیم به کارت خودتان واریز می‌شود.';
+  }
+
+  @override
+  String fromDateToDate(Object start, Object end) {
+    return 'از $start تا $end';
+  }
+
+  @override
+  String planSubscriptionActivated(Object plan) {
+    return 'اشتراک $plan فعال شد';
+  }
+
+  @override
+  String activeUntilDate(Object date) {
+    return 'تا $date فعال است.';
+  }
+
+  @override
+  String countDaysLeft(Object count) {
+    return '$count روز مانده';
+  }
+
+  @override
+  String untilDate(Object date) {
+    return 'تا $date';
+  }
+
+  @override
+  String sinceDate(Object date) {
+    return 'از $date';
+  }
+
+  @override
+  String get forAllYourStores => 'برای همه فروشگاه‌های شما';
+
+  @override
+  String get upgrade => 'ارتقا';
+
+  @override
+  String upgradeToPlan(Object plan) {
+    return 'ارتقا به $plan';
+  }
+
+  @override
+  String get yourUsage => 'مصرف شما';
+
+  @override
+  String get productsInAllStores => 'کالا در همه فروشگاه‌ها';
+
+  @override
+  String get teamMember => 'همکار';
+
+  @override
+  String get inYourSubscription => 'در اشتراک شما';
+
+  @override
+  String inPlan(Object plan) {
+    return 'در $plan';
+  }
+
+  @override
+  String get paymentHistory => 'سابقه پرداخت';
+
+  @override
+  String get amountToman => 'مبلغ (تومان)';
+
+  @override
+  String oneSubscriptionForSellerAndAllStores(Object seller) {
+    return 'یک اشتراک برای «$seller» و همه فروشگاه‌هایش';
+  }
+
+  @override
+  String get upgradeDeductsRemainingDaysOfThisSubscription =>
+      'با ارتقا، مبلغ روزهای باقی‌مانده این اشتراک از قیمت اشتراک جدید کم می‌شود. بعد از پایان اشتراک، صفحه فروشگاه‌ها باز می‌ماند ولی ویرایش و فروش سریع تا تمدید بسته است.';
+
+  @override
+  String get freePlanIsAlwaysActive => 'پلن رایگان همیشه فعال است';
+
+  @override
+  String countMonthsPeriod(Object count) {
+    return '$count ماهه';
+  }
+
+  @override
+  String countDaysPeriod(Object count) {
+    return '$count روزه';
+  }
+
+  @override
+  String get becomeASellerToBuyASubscription => 'برای خرید اشتراک اول فروشنده شوید';
+
+  @override
+  String get storeProfile => 'پروفایل فروشگاه';
+
+  @override
+  String get createStoreProfile => 'ساخت پروفایل فروشگاه';
+
+  @override
+  String get editStoreProfile => 'ویرایش پروفایل فروشگاه';
+
+  @override
+  String get yourStoreProfileWasCreated => 'پروفایل فروشگاه شما ساخته شد';
+
+  @override
+  String get storeNameAndCity => 'نام فروشگاه و شهر';
+
+  @override
+  String get storeName => 'نام فروشگاه';
+
+  @override
+  String get createAStoreProfileAndAsManyStoresAsYourSubscriptionAllows => 'یک پروفایل فروشگاه می‌سازید و زیر آن هر چند فروشگاه که اشتراکتان اجازه دهد: مغازه، کافه یا شعبه دوم.';
 }

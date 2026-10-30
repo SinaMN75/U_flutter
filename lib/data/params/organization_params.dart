@@ -11,9 +11,7 @@ class UOrganizationCreateParams {
     this.phoneNumber,
     this.nationalId,
     this.economicCode,
-    this.kind,
     this.cityCode,
-    this.legalName,
     this.cardNumber,
     this.accountNumber,
     this.iBanNumber,
@@ -28,9 +26,7 @@ class UOrganizationCreateParams {
   final String? phoneNumber;
   final String? nationalId;
   final String? economicCode;
-  final int? kind;
   final String? cityCode;
-  final String? legalName;
   final String? cardNumber;
   final String? accountNumber;
   final String? iBanNumber;
@@ -45,9 +41,7 @@ class UOrganizationCreateParams {
     "phoneNumber": phoneNumber,
     "nationalId": nationalId,
     "economicCode": economicCode,
-    "kind": kind,
     "cityCode": cityCode,
-    "legalName": legalName,
     "cardNumber": cardNumber,
     "accountNumber": accountNumber,
     "iBanNumber": iBanNumber,
@@ -68,9 +62,7 @@ class UOrganizationUpdateParams {
     this.phoneNumber,
     this.nationalId,
     this.economicCode,
-    this.kind,
     this.cityCode,
-    this.legalName,
     this.cardNumber,
     this.accountNumber,
     this.iBanNumber,
@@ -88,9 +80,7 @@ class UOrganizationUpdateParams {
   final String? phoneNumber;
   final String? nationalId;
   final String? economicCode;
-  final int? kind;
   final String? cityCode;
-  final String? legalName;
   final String? cardNumber;
   final String? accountNumber;
   final String? iBanNumber;
@@ -108,9 +98,7 @@ class UOrganizationUpdateParams {
     "phoneNumber": phoneNumber,
     "nationalId": nationalId,
     "economicCode": economicCode,
-    "kind": kind,
     "cityCode": cityCode,
-    "legalName": legalName,
     "cardNumber": cardNumber,
     "accountNumber": accountNumber,
     "iBanNumber": iBanNumber,
@@ -563,11 +551,9 @@ class USubscriptionBuyParams {
     this.trial = false,
     this.organizationId,
     this.title,
-    this.kind,
     this.nationalId,
     this.economicCode,
     this.cityCode,
-    this.legalName,
     this.fromWallet = false,
     this.cardNumber,
     this.accountNumber,
@@ -579,11 +565,9 @@ class USubscriptionBuyParams {
   final bool trial;
   final String? organizationId;
   final String? title;
-  final int? kind;
   final String? nationalId;
   final String? economicCode;
   final String? cityCode;
-  final String? legalName;
   final bool fromWallet;
   final String? cardNumber;
   final String? accountNumber;
@@ -595,11 +579,9 @@ class USubscriptionBuyParams {
     "trial": trial,
     "organizationId": organizationId,
     "title": title,
-    "kind": kind,
     "nationalId": nationalId,
     "economicCode": economicCode,
     "cityCode": cityCode,
-    "legalName": legalName,
     "fromWallet": fromWallet,
     "cardNumber": cardNumber,
     "accountNumber": accountNumber,

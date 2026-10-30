@@ -3138,10 +3138,7 @@
       "total": {}
     }
   },
-  "createASellerProfileAndAsManyStoresAsYourSubscriptionAllows": "Create a seller profile and as many stores as your subscription allows",
   "becomeASellerOneProfileManyStores": "Become a seller; one profile, many stores",
-  "sellerProfile": "Seller profile",
-  "nameAndNationalCodeOrCompanyDetails": "Name and national code or company details",
   "chooseASubscription": "Choose a subscription",
   "numberOfStoresProductsAndFeatures": "Number of stores, products and features",
   "bankGatewayOrWallet": "Bank gateway or wallet",
@@ -3154,11 +3151,7 @@
     }
   },
   "youShopWithTheSameAccountTheStoreTabOpensAfterThisStep": "You shop with the same account; the store tab opens after this step",
-  "asOnYourNationalCard": "As on your national card",
-  "companyRegisteredName": "Company registered name",
-  "asInTheOfficialGazette": "As in the official gazette",
   "optional": "Optional",
-  "youNameEachStoreSeparatelyLater": "You name each store separately later",
   "iHaveReadAndAcceptTheAppSellerRules": "I have read and accept the {app} seller rules",
   "@iHaveReadAndAcceptTheAppSellerRules": {
     "placeholders": {
@@ -3166,10 +3159,7 @@
     }
   },
   "youMustAcceptTheRules": "You must accept the rules",
-  "createSellerProfile": "Create seller profile",
-  "yourSellerProfileWasCreated": "Your seller profile was created",
   "noFreePlanIsAvailableRightNow": "No free plan is available right now",
-  "editSellerProfile": "Edit seller profile",
   "myStores": "My stores",
   "youHaveNotCreatedAStoreYet": "You have not created a store yet",
   "planSubscriptionFree": "{plan} subscription · free",
@@ -3188,7 +3178,149 @@
   "store": "Store",
   "myStore": "My store",
   "sellers": "Sellers",
-  "legalName": "Legal name",
   "currentPlan": "Current plan",
-  "kind": "Kind"
+  "mySubscription": "My subscription",
+  "myCurrentSubscription": "My current subscription",
+  "continueToPayment": "Continue to payment",
+  "planSubscriptionDuration": "{plan} subscription · {duration}",
+  "@planSubscriptionDuration": {
+    "placeholders": {
+      "plan": {},
+      "duration": {}
+    }
+  },
+  "subscriptionPayment": "Subscription payment",
+  "selectedSubscription": "Selected subscription",
+  "paymentGateway": "Payment gateway",
+  "allShetabMemberCards": "All Shetab member cards",
+  "appWallet": "{app} wallet",
+  "@appWallet": {
+    "placeholders": {
+      "app": {}
+    }
+  },
+  "balanceAmountToman": "Balance {amount} Toman",
+  "@balanceAmountToman": {
+    "placeholders": {
+      "amount": {}
+    }
+  },
+  "chargeAmountToman": "Charge {amount} Toman",
+  "@chargeAmountToman": {
+    "placeholders": {
+      "amount": {}
+    }
+  },
+  "priceForMonths": "Price for {months} months",
+  "@priceForMonths": {
+    "placeholders": {
+      "months": {}
+    }
+  },
+  "discountForMonths": "Discount for {months} months",
+  "@discountForMonths": {
+    "placeholders": {
+      "months": {}
+    }
+  },
+  "remainingDaysCredit": "Remaining days credit",
+  "payable": "Payable",
+  "payAmountToman": "Pay {amount} Toman",
+  "@payAmountToman": {
+    "placeholders": {
+      "amount": {}
+    }
+  },
+  "activateSubscription": "Activate subscription",
+  "thisAmountIsTheFeeForUsingApp": "This amount is the fee for using {app}. Your customers' payments still go straight to your own card.",
+  "@thisAmountIsTheFeeForUsingApp": {
+    "placeholders": {
+      "app": {}
+    }
+  },
+  "fromDateToDate": "From {start} to {end}",
+  "@fromDateToDate": {
+    "placeholders": {
+      "start": {},
+      "end": {}
+    }
+  },
+  "planSubscriptionActivated": "{plan} subscription activated",
+  "@planSubscriptionActivated": {
+    "placeholders": {
+      "plan": {}
+    }
+  },
+  "activeUntilDate": "Active until {date}.",
+  "@activeUntilDate": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "countDaysLeft": "{count} days left",
+  "@countDaysLeft": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "untilDate": "Until {date}",
+  "@untilDate": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "sinceDate": "Since {date}",
+  "@sinceDate": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "forAllYourStores": "For all your stores",
+  "upgrade": "Upgrade",
+  "upgradeToPlan": "Upgrade to {plan}",
+  "@upgradeToPlan": {
+    "placeholders": {
+      "plan": {}
+    }
+  },
+  "yourUsage": "Your usage",
+  "productsInAllStores": "Products in all stores",
+  "teamMember": "Team member",
+  "inYourSubscription": "In your subscription",
+  "inPlan": "In {plan}",
+  "@inPlan": {
+    "placeholders": {
+      "plan": {}
+    }
+  },
+  "paymentHistory": "Payment history",
+  "amountToman": "Amount (Toman)",
+  "oneSubscriptionForSellerAndAllStores": "One subscription for «{seller}» and all its stores",
+  "@oneSubscriptionForSellerAndAllStores": {
+    "placeholders": {
+      "seller": {}
+    }
+  },
+  "upgradeDeductsRemainingDaysOfThisSubscription": "Upgrading deducts the remaining days of this subscription from the new price. When it ends, your store pages stay open but editing and quick sale are closed until you renew.",
+  "freePlanIsAlwaysActive": "The free plan is always active",
+  "countMonthsPeriod": "{count} months",
+  "@countMonthsPeriod": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "countDaysPeriod": "{count} days",
+  "@countDaysPeriod": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "becomeASellerToBuyASubscription": "Become a seller to buy a subscription",
+  "storeProfile": "Store profile",
+  "createStoreProfile": "Create store profile",
+  "editStoreProfile": "Edit store profile",
+  "yourStoreProfileWasCreated": "Your store profile was created",
+  "storeNameAndCity": "Store name and city",
+  "storeName": "Store name",
+  "createAStoreProfileAndAsManyStoresAsYourSubscriptionAllows": "Create a store profile and as many stores as your subscription allows"
 }

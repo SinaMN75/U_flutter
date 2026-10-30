@@ -8131,16 +8131,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get createASellerProfileAndAsManyStoresAsYourSubscriptionAllows => 'Create a seller profile and as many stores as your subscription allows';
-
-  @override
   String get becomeASellerOneProfileManyStores => 'Become a seller; one profile, many stores';
-
-  @override
-  String get sellerProfile => 'Seller profile';
-
-  @override
-  String get nameAndNationalCodeOrCompanyDetails => 'Name and national code or company details';
 
   @override
   String get chooseASubscription => 'Choose a subscription';
@@ -8166,19 +8157,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get youShopWithTheSameAccountTheStoreTabOpensAfterThisStep => 'You shop with the same account; the store tab opens after this step';
 
   @override
-  String get asOnYourNationalCard => 'As on your national card';
-
-  @override
-  String get companyRegisteredName => 'Company registered name';
-
-  @override
-  String get asInTheOfficialGazette => 'As in the official gazette';
-
-  @override
   String get optional => 'Optional';
-
-  @override
-  String get youNameEachStoreSeparatelyLater => 'You name each store separately later';
 
   @override
   String iHaveReadAndAcceptTheAppSellerRules(Object app) {
@@ -8189,16 +8168,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get youMustAcceptTheRules => 'You must accept the rules';
 
   @override
-  String get createSellerProfile => 'Create seller profile';
-
-  @override
-  String get yourSellerProfileWasCreated => 'Your seller profile was created';
-
-  @override
   String get noFreePlanIsAvailableRightNow => 'No free plan is available right now';
-
-  @override
-  String get editSellerProfile => 'Edit seller profile';
 
   @override
   String get myStores => 'My stores';
@@ -8226,11 +8196,185 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sellers => 'Sellers';
 
   @override
-  String get legalName => 'Legal name';
-
-  @override
   String get currentPlan => 'Current plan';
 
   @override
-  String get kind => 'Kind';
+  String get mySubscription => 'My subscription';
+
+  @override
+  String get myCurrentSubscription => 'My current subscription';
+
+  @override
+  String get continueToPayment => 'Continue to payment';
+
+  @override
+  String planSubscriptionDuration(Object plan, Object duration) {
+    return '$plan subscription · $duration';
+  }
+
+  @override
+  String get subscriptionPayment => 'Subscription payment';
+
+  @override
+  String get selectedSubscription => 'Selected subscription';
+
+  @override
+  String get paymentGateway => 'Payment gateway';
+
+  @override
+  String get allShetabMemberCards => 'All Shetab member cards';
+
+  @override
+  String appWallet(Object app) {
+    return '$app wallet';
+  }
+
+  @override
+  String balanceAmountToman(Object amount) {
+    return 'Balance $amount Toman';
+  }
+
+  @override
+  String chargeAmountToman(Object amount) {
+    return 'Charge $amount Toman';
+  }
+
+  @override
+  String priceForMonths(Object months) {
+    return 'Price for $months months';
+  }
+
+  @override
+  String discountForMonths(Object months) {
+    return 'Discount for $months months';
+  }
+
+  @override
+  String get remainingDaysCredit => 'Remaining days credit';
+
+  @override
+  String get payable => 'Payable';
+
+  @override
+  String payAmountToman(Object amount) {
+    return 'Pay $amount Toman';
+  }
+
+  @override
+  String get activateSubscription => 'Activate subscription';
+
+  @override
+  String thisAmountIsTheFeeForUsingApp(Object app) {
+    return 'This amount is the fee for using $app. Your customers\' payments still go straight to your own card.';
+  }
+
+  @override
+  String fromDateToDate(Object start, Object end) {
+    return 'From $start to $end';
+  }
+
+  @override
+  String planSubscriptionActivated(Object plan) {
+    return '$plan subscription activated';
+  }
+
+  @override
+  String activeUntilDate(Object date) {
+    return 'Active until $date.';
+  }
+
+  @override
+  String countDaysLeft(Object count) {
+    return '$count days left';
+  }
+
+  @override
+  String untilDate(Object date) {
+    return 'Until $date';
+  }
+
+  @override
+  String sinceDate(Object date) {
+    return 'Since $date';
+  }
+
+  @override
+  String get forAllYourStores => 'For all your stores';
+
+  @override
+  String get upgrade => 'Upgrade';
+
+  @override
+  String upgradeToPlan(Object plan) {
+    return 'Upgrade to $plan';
+  }
+
+  @override
+  String get yourUsage => 'Your usage';
+
+  @override
+  String get productsInAllStores => 'Products in all stores';
+
+  @override
+  String get teamMember => 'Team member';
+
+  @override
+  String get inYourSubscription => 'In your subscription';
+
+  @override
+  String inPlan(Object plan) {
+    return 'In $plan';
+  }
+
+  @override
+  String get paymentHistory => 'Payment history';
+
+  @override
+  String get amountToman => 'Amount (Toman)';
+
+  @override
+  String oneSubscriptionForSellerAndAllStores(Object seller) {
+    return 'One subscription for «$seller» and all its stores';
+  }
+
+  @override
+  String get upgradeDeductsRemainingDaysOfThisSubscription =>
+      'Upgrading deducts the remaining days of this subscription from the new price. When it ends, your store pages stay open but editing and quick sale are closed until you renew.';
+
+  @override
+  String get freePlanIsAlwaysActive => 'The free plan is always active';
+
+  @override
+  String countMonthsPeriod(Object count) {
+    return '$count months';
+  }
+
+  @override
+  String countDaysPeriod(Object count) {
+    return '$count days';
+  }
+
+  @override
+  String get becomeASellerToBuyASubscription => 'Become a seller to buy a subscription';
+
+  @override
+  String get storeProfile => 'Store profile';
+
+  @override
+  String get createStoreProfile => 'Create store profile';
+
+  @override
+  String get editStoreProfile => 'Edit store profile';
+
+  @override
+  String get yourStoreProfileWasCreated => 'Your store profile was created';
+
+  @override
+  String get storeNameAndCity => 'Store name and city';
+
+  @override
+  String get storeName => 'Store name';
+
+  @override
+  String get createAStoreProfileAndAsManyStoresAsYourSubscriptionAllows => 'Create a store profile and as many stores as your subscription allows';
 }

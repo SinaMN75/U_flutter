@@ -1090,20 +1090,6 @@ enum TagOrganization with UNumericIdentifiable {
   final int number;
 }
 
-enum TagOrganizationKind with UNumericIdentifiable {
-  person("شخص حقیقی", "Person", 101),
-  company("شخص حقوقی", "Company", 102);
-
-  const TagOrganizationKind(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
 enum TagHotelReservation with UNumericIdentifiable {
   pending("در انتظار", "Pending", 101),
   confirmed("تایید شده", "Confirmed", 102),
@@ -1969,6 +1955,20 @@ enum TagSubscription with UNumericIdentifiable {
   cancelled("لغو‌شده", "Cancelled", 104);
 
   const TagSubscription(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagSubscriptionPayment with UNumericIdentifiable {
+  wallet("کیف پول", "Wallet", 101),
+  ipg("درگاه بانکی", "Payment gateway", 102);
+
+  const TagSubscriptionPayment(this.titleFa, this.titleEn, this.number);
 
   @override
   final String titleFa;
