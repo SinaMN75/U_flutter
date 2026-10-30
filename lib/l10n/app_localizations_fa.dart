@@ -8387,6 +8387,33 @@ class AppLocalizationsFa extends AppLocalizations {
   String get stores => 'فروشگاه‌ها';
 
   @override
+  String get newCategory => 'دسته جدید';
+
+  @override
+  String get addCategory => 'افزودن دسته';
+
+  @override
+  String get categoryName => 'نام دسته';
+
+  @override
+  String get manageCategories => 'مدیریت دسته‌ها';
+
+  @override
+  String get noCategoriesYet => 'هنوز دسته‌ای نساخته‌اید';
+
+  @override
+  String get forExampleBagsAndBackpacks => 'مثلاً «کیف و کوله»';
+
+  @override
+  String get deleteCategory => 'حذف دسته';
+
+  @override
+  String get areYouSureYouWantToDeleteThisCategory => 'از حذف این دسته اطمینان دارید؟';
+
+  @override
+  String get theOrderOfThisListIsTheOrderOfCategoriesOnTheStorePageDragTheHandleToMove => 'ترتیب این فهرست همان ترتیب دسته‌ها در صفحه فروشگاه است. برای جابه‌جایی، دستگیره را بکشید.';
+
+  @override
   String get storeTypes => 'انواع کسب‌وکار';
 
   @override

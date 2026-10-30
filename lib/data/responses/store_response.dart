@@ -1,5 +1,8 @@
 part of "../data.dart";
 
+/// A stored `#RRGGBB` color; a malformed value falls back to grey.
+Color _storeColor(String color) => Color(int.tryParse(color.replaceFirst("#", "").padLeft(8, "F").substring(0, 8), radix: 16) ?? 0xFF808080);
+
 /// Icons a store type can use; the key is what the server stores.
 abstract class UStoreTypeIcons {
   static const Map<String, IconData> values = <String, IconData>{
@@ -64,8 +67,33 @@ class UStoreTypeResponse {
 
   IconData get iconData => UStoreTypeIcons.of(icon);
 
-  /// The stored `#RRGGBB` color; a malformed value falls back to grey.
-  Color get colorValue => Color(int.tryParse(color.replaceFirst("#", "").padLeft(8, "F").substring(0, 8), radix: 16) ?? 0xFF808080);
+  Color get colorValue => _storeColor(color);
+}
+
+class UStoreCategoryResponse {
+  UStoreCategoryResponse({required this.id, required this.createdAt, required this.tags, required this.title, required this.color, required this.order, required this.storeId});
+
+  factory UStoreCategoryResponse.fromMap(Map<String, dynamic> json) => UStoreCategoryResponse(
+    id: json["id"],
+    createdAt: DateTime.parse(json["createdAt"]),
+    tags: List<int>.from((json["tags"] as List<dynamic>).map((dynamic x) => x)),
+    title: json["title"],
+    color: json["color"],
+    order: json["order"] ?? 0,
+    storeId: json["storeId"],
+  );
+
+  final String id;
+  final DateTime createdAt;
+  final List<int> tags;
+  final String title;
+  final String color;
+  final int order;
+  final String storeId;
+
+  bool get isActive => tags.contains(TagStoreCategory.active.number);
+
+  Color get colorValue => _storeColor(color);
 }
 
 class UStoreResponse {

@@ -224,3 +224,62 @@ class UStoreTypeReadParams {
     "pageNumber": pageNumber,
   }..removeWhere((String _, dynamic v) => v == null);
 }
+
+class UStoreCategoryCreateParams {
+  UStoreCategoryCreateParams({required this.storeId, required this.title, required this.color, this.tags});
+
+  final String storeId;
+  final String title;
+  final String color;
+  final List<int>? tags;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "storeId": storeId,
+    "title": title,
+    "color": color,
+    "tags": tags ?? <int>[TagStoreCategory.active.number],
+  };
+}
+
+class UStoreCategoryUpdateParams {
+  UStoreCategoryUpdateParams({required this.id, this.title, this.color, this.tags});
+
+  final String id;
+  final String? title;
+  final String? color;
+  final List<int>? tags;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "id": id,
+    "title": title,
+    "color": color,
+    "tags": tags,
+  };
+}
+
+class UStoreCategoryReadParams {
+  UStoreCategoryReadParams({required this.storeId, this.tags, this.pageSize, this.pageNumber});
+
+  final String storeId;
+  final List<int>? tags;
+  final int? pageSize;
+  final int? pageNumber;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "storeId": storeId,
+    "tags": tags,
+    "pageSize": pageSize,
+    "pageNumber": pageNumber,
+  }..removeWhere((String _, dynamic v) => v == null);
+}
+
+class UStoreCategoryReorderParams {
+  UStoreCategoryReorderParams({required this.storeId, required this.ids});
+
+  final String storeId;
+
+  /// Every category of the store, in the new order.
+  final List<String> ids;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"storeId": storeId, "ids": ids};
+}

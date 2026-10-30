@@ -16352,6 +16352,60 @@ abstract class AppLocalizations {
   /// **'Stores'**
   String get stores;
 
+  /// No description provided for @newCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'New category'**
+  String get newCategory;
+
+  /// No description provided for @addCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Add category'**
+  String get addCategory;
+
+  /// No description provided for @categoryName.
+  ///
+  /// In en, this message translates to:
+  /// **'Category name'**
+  String get categoryName;
+
+  /// No description provided for @manageCategories.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage categories'**
+  String get manageCategories;
+
+  /// No description provided for @noCategoriesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No categories yet'**
+  String get noCategoriesYet;
+
+  /// No description provided for @forExampleBagsAndBackpacks.
+  ///
+  /// In en, this message translates to:
+  /// **'For example, bags and backpacks'**
+  String get forExampleBagsAndBackpacks;
+
+  /// No description provided for @deleteCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete category'**
+  String get deleteCategory;
+
+  /// No description provided for @areYouSureYouWantToDeleteThisCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this category?'**
+  String get areYouSureYouWantToDeleteThisCategory;
+
+  /// No description provided for @theOrderOfThisListIsTheOrderOfCategoriesOnTheStorePageDragTheHandleToMove.
+  ///
+  /// In en, this message translates to:
+  /// **'The order of this list is the order of categories on the store page. Drag the handle to move.'**
+  String get theOrderOfThisListIsTheOrderOfCategoriesOnTheStorePageDragTheHandleToMove;
+
   /// No description provided for @storeTypes.
   ///
   /// In en, this message translates to:

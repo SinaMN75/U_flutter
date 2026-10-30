@@ -8388,6 +8388,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get stores => 'Stores';
 
   @override
+  String get newCategory => 'New category';
+
+  @override
+  String get addCategory => 'Add category';
+
+  @override
+  String get categoryName => 'Category name';
+
+  @override
+  String get manageCategories => 'Manage categories';
+
+  @override
+  String get noCategoriesYet => 'No categories yet';
+
+  @override
+  String get forExampleBagsAndBackpacks => 'For example, bags and backpacks';
+
+  @override
+  String get deleteCategory => 'Delete category';
+
+  @override
+  String get areYouSureYouWantToDeleteThisCategory => 'Are you sure you want to delete this category?';
+
+  @override
+  String get theOrderOfThisListIsTheOrderOfCategoriesOnTheStorePageDragTheHandleToMove => 'The order of this list is the order of categories on the store page. Drag the handle to move.';
+
+  @override
   String get storeTypes => 'Store Types';
 
   @override

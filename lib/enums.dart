@@ -1950,6 +1950,20 @@ enum TagStoreType with UNumericIdentifiable {
   final int number;
 }
 
+enum TagStoreCategory with UNumericIdentifiable {
+  active("فعال", "Active", 101),
+  inactive("غیرفعال", "Inactive", 102);
+
+  const TagStoreCategory(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
 enum TagModule with UNumericIdentifiable {
   hotel("هتل", "Hotel", 101),
   dorm("خوابگاه و پانسیون", "Dorm", 102),
