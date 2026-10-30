@@ -8377,4 +8377,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get createAStoreProfileAndAsManyStoresAsYourSubscriptionAllows => 'Create a store profile and as many stores as your subscription allows';
+
+  @override
+  String get markAllRead => 'Mark all read';
+
+  @override
+  String get earlier => 'Earlier';
 }

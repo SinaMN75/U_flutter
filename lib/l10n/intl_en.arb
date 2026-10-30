@@ -3322,5 +3322,7 @@
   "yourStoreProfileWasCreated": "Your store profile was created",
   "storeNameAndCity": "Store name and city",
   "storeName": "Store name",
-  "createAStoreProfileAndAsManyStoresAsYourSubscriptionAllows": "Create a store profile and as many stores as your subscription allows"
+  "createAStoreProfileAndAsManyStoresAsYourSubscriptionAllows": "Create a store profile and as many stores as your subscription allows",
+  "markAllRead": "Mark all read",
+  "earlier": "Earlier"
 }

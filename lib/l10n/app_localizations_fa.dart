@@ -8376,4 +8376,10 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get createAStoreProfileAndAsManyStoresAsYourSubscriptionAllows => 'یک پروفایل فروشگاه می‌سازید و زیر آن هر چند فروشگاه که اشتراکتان اجازه دهد: مغازه، کافه یا شعبه دوم.';
+
+  @override
+  String get markAllRead => 'همه خوانده شد';
+
+  @override
+  String get earlier => 'قبل‌تر';
 }

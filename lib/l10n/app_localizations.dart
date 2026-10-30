@@ -16333,6 +16333,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Create a store profile and as many stores as your subscription allows'**
   String get createAStoreProfileAndAsManyStoresAsYourSubscriptionAllows;
+
+  /// No description provided for @markAllRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark all read'**
+  String get markAllRead;
+
+  /// No description provided for @earlier.
+  ///
+  /// In en, this message translates to:
+  /// **'Earlier'**
+  String get earlier;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

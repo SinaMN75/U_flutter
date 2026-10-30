@@ -14,4 +14,10 @@ class UNotificationService {
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
   }) => _Api.call("/Notification/Update", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> markAllRead({
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Notification/MarkAllRead", <String, dynamic>{}, _Api.empty, _Api.empty, onOk, onError, onException);
 }

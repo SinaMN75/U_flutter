@@ -2904,5 +2904,7 @@
   "yourStoreProfileWasCreated": "پروفایل فروشگاه شما ساخته شد",
   "storeNameAndCity": "نام فروشگاه و شهر",
   "storeName": "نام فروشگاه",
-  "createAStoreProfileAndAsManyStoresAsYourSubscriptionAllows": "یک پروفایل فروشگاه می‌سازید و زیر آن هر چند فروشگاه که اشتراکتان اجازه دهد: مغازه، کافه یا شعبه دوم."
+  "createAStoreProfileAndAsManyStoresAsYourSubscriptionAllows": "یک پروفایل فروشگاه می‌سازید و زیر آن هر چند فروشگاه که اشتراکتان اجازه دهد: مغازه، کافه یا شعبه دوم.",
+  "markAllRead": "همه خوانده شد",
+  "earlier": "قبل‌تر"
 }
