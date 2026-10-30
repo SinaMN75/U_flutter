@@ -8597,4 +8597,67 @@ class AppLocalizationsEn extends AppLocalizations {
   String timeToTime(Object from, Object to) {
     return '$from to $to';
   }
+
+  @override
+  String get storeNotFound => 'Store Not Found';
+
+  @override
+  String get theLinkIsWrongOrTheStoreIsNotActive => 'The link is wrong or the store is not active.';
+
+  @override
+  String get closedNow => 'Closed Now';
+
+  @override
+  String get aboutStore => 'About Store';
+
+  @override
+  String get callStore => 'Call Store';
+
+  @override
+  String get backToHome => 'Back To Home';
+
+  @override
+  String get needsChanges => 'Needs Changes';
+
+  @override
+  String get messageToSeller => 'Message To Seller';
+
+  @override
+  String get sellerMobile => 'Seller Mobile';
+
+  @override
+  String get pinMatchesTheAddress => 'The pin matches the address';
+
+  @override
+  String get accountOwnerMatchesTheSeller => 'The account owner matches the seller';
+
+  @override
+  String get photosAreSuitable => 'Photos are suitable';
+
+  @override
+  String get enterAMessageForTheSeller => 'Enter a message for the seller.';
+
+  @override
+  String get thisStoreWasBlockedBySupport => 'This store was blocked by support.';
+
+  @override
+  String get openStorePage => 'Open Store Page';
+
+  @override
+  String get storeIsNotApprovedYet => 'Store is not approved yet.';
+
+  @override
+  String openUntilTime(Object time) {
+    return 'Open until $time';
+  }
+
+  @override
+  String dayIsToday(Object day) {
+    return '$day (today)';
+  }
+
+  @override
+  String dayToDay(Object from, Object to) {
+    return '$from to $to';
+  }
 }

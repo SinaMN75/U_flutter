@@ -1923,7 +1923,8 @@ enum TagStore with UNumericIdentifiable {
   inactive("غیرفعال", "Inactive", 203),
   pendingApproval("در انتظار تأیید", "Pending approval", 401),
   approved("تأیید شده", "Approved", 402),
-  rejected("نیاز به اصلاح", "Needs changes", 403);
+  rejected("نیاز به اصلاح", "Needs changes", 403),
+  blocked("مسدود", "Blocked", 404);
 
   const TagStore(this.titleFa, this.titleEn, this.number);
 

@@ -3436,5 +3436,40 @@
       "from": {},
       "to": {}
     }
+  },
+  "storeNotFound": "Store Not Found",
+  "theLinkIsWrongOrTheStoreIsNotActive": "The link is wrong or the store is not active.",
+  "closedNow": "Closed Now",
+  "aboutStore": "About Store",
+  "callStore": "Call Store",
+  "backToHome": "Back To Home",
+  "needsChanges": "Needs Changes",
+  "messageToSeller": "Message To Seller",
+  "sellerMobile": "Seller Mobile",
+  "pinMatchesTheAddress": "The pin matches the address",
+  "accountOwnerMatchesTheSeller": "The account owner matches the seller",
+  "photosAreSuitable": "Photos are suitable",
+  "enterAMessageForTheSeller": "Enter a message for the seller.",
+  "thisStoreWasBlockedBySupport": "This store was blocked by support.",
+  "openStorePage": "Open Store Page",
+  "storeIsNotApprovedYet": "Store is not approved yet.",
+  "openUntilTime": "Open until {time}",
+  "@openUntilTime": {
+    "placeholders": {
+      "time": {}
+    }
+  },
+  "dayIsToday": "{day} (today)",
+  "@dayIsToday": {
+    "placeholders": {
+      "day": {}
+    }
+  },
+  "dayToDay": "{from} to {to}",
+  "@dayToDay": {
+    "placeholders": {
+      "from": {},
+      "to": {}
+    }
   }
 }

@@ -86,6 +86,8 @@ class UStoreResponse {
     this.cardNumber,
     this.iBan,
     this.accountOwner,
+    this.reviewMessage,
+    this.viewCount = 0,
     this.organizationId,
     this.organizationTitle,
     this.storeType,
@@ -110,6 +112,8 @@ class UStoreResponse {
     cardNumber: json["jsonData"]?["cardNumber"],
     iBan: json["jsonData"]?["iBan"],
     accountOwner: json["jsonData"]?["accountOwner"],
+    reviewMessage: json["jsonData"]?["reviewMessage"],
+    viewCount: json["viewCount"] ?? 0,
     organizationId: json["organizationId"],
     organizationTitle: json["organizationTitle"],
     storeType: json["storeType"] == null ? null : UStoreTypeResponse.fromMap(json["storeType"]),
@@ -133,6 +137,8 @@ class UStoreResponse {
   final String? cardNumber;
   final String? iBan;
   final String? accountOwner;
+  final String? reviewMessage;
+  final int viewCount;
   final String? organizationId;
   final String? organizationTitle;
   final UStoreTypeResponse? storeType;
@@ -153,5 +159,34 @@ class UStoreResponse {
 
   bool get isMenu => tags.contains(TagStore.menu.number);
 
+  bool get isBlocked => tags.contains(TagStore.blocked.number);
+
   bool get isClosedForNow => closedUntil?.isAfter(DateTime.now()) ?? false;
+
+  UStoreWorkingDay? dayOf(int weekday) => workingHours.where((UStoreWorkingDay d) => d.day == weekday).firstOrNull;
+
+  /// The day whose hours cover [at], counting a night that runs past midnight into the next day.
+  UStoreWorkingDay? _openDayAt(DateTime at) {
+    if (isClosedForNow) return null;
+    final int now = at.hour * 60 + at.minute;
+    int? minutes(String? t) => t == null ? null : int.parse(t.substring(0, 2)) * 60 + int.parse(t.substring(3, 5));
+    final UStoreWorkingDay? today = dayOf(at.weekday);
+    final UStoreWorkingDay? yesterday = dayOf(at.weekday == DateTime.monday ? DateTime.sunday : at.weekday - 1);
+    if (today != null && today.isOpen) {
+      final int opens = minutes(today.opens) ?? 0;
+      final int closes = minutes(today.closes) ?? 0;
+      if (closes <= opens ? now >= opens : now >= opens && now < closes) return today;
+    }
+    if (yesterday != null && yesterday.isOpen) {
+      final int opens = minutes(yesterday.opens) ?? 0;
+      final int closes = minutes(yesterday.closes) ?? 0;
+      if (closes <= opens && now < closes) return yesterday;
+    }
+    return null;
+  }
+
+  bool get isOpenNow => _openDayAt(DateTime.now()) != null;
+
+  /// When the store closes today, while it is open.
+  String? get closesAtNow => _openDayAt(DateTime.now())?.closes;
 }

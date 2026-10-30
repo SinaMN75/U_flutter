@@ -131,6 +131,30 @@ class UStoreReadParams {
   }..removeWhere((String _, dynamic v) => v == null);
 }
 
+class UStoreCodeParams {
+  UStoreCodeParams({required this.code, this.selectorArgs});
+
+  final String code;
+  final UStoreSelectorArgs? selectorArgs;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "code": code,
+    "selectorArgs": selectorArgs?.toMap(),
+  }..removeWhere((String _, dynamic v) => v == null);
+}
+
+class UStoreReviewParams {
+  UStoreReviewParams({required this.id, required this.status, this.message});
+
+  final String id;
+
+  /// [TagStore.approved], [TagStore.rejected] (needs [message]) or [TagStore.blocked].
+  final int status;
+  final String? message;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"id": id, "status": status, "message": message};
+}
+
 class UStoreSelectorArgs {
   const UStoreSelectorArgs({this.creator, this.media});
 

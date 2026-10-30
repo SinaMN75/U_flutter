@@ -22,6 +22,20 @@ class UStoreService {
     Function(String e)? onException,
   }) => _Api.call("/Store/Store/ReadById", p.toMap(), _Api.one(UStoreResponse.fromMap), _Api.empty, onOk, onError, onException);
 
+  Future<(UResponse<UStoreResponse>?, UEmptyResponse?, String?)> readByCode({
+    required UStoreCodeParams p,
+    Function(UResponse<UStoreResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Store/Store/ReadByCode", p.toMap(), _Api.one(UStoreResponse.fromMap), _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> review({
+    required UStoreReviewParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Store/Store/Review", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> update({
     required UStoreUpdateParams p,
     Function(UEmptyResponse r)? onOk,

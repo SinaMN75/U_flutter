@@ -8596,4 +8596,67 @@ class AppLocalizationsFa extends AppLocalizations {
   String timeToTime(Object from, Object to) {
     return '$from تا $to';
   }
+
+  @override
+  String get storeNotFound => 'فروشگاه پیدا نشد';
+
+  @override
+  String get theLinkIsWrongOrTheStoreIsNotActive => 'لینک نادرست است یا این فروشگاه فعال نیست.';
+
+  @override
+  String get closedNow => 'بسته است';
+
+  @override
+  String get aboutStore => 'درباره فروشگاه';
+
+  @override
+  String get callStore => 'تماس با فروشگاه';
+
+  @override
+  String get backToHome => 'بازگشت به صفحه اصلی';
+
+  @override
+  String get needsChanges => 'نیاز به اصلاح';
+
+  @override
+  String get messageToSeller => 'پیام به فروشنده';
+
+  @override
+  String get sellerMobile => 'موبایل فروشنده';
+
+  @override
+  String get pinMatchesTheAddress => 'پین روی نقشه با نشانی جور است';
+
+  @override
+  String get accountOwnerMatchesTheSeller => 'نام صاحب حساب با فروشنده جور است';
+
+  @override
+  String get photosAreSuitable => 'عکس‌ها مناسب‌اند';
+
+  @override
+  String get enterAMessageForTheSeller => 'متن پیام به فروشنده را بنویسید.';
+
+  @override
+  String get thisStoreWasBlockedBySupport => 'این فروشگاه مسدود شده است و برای مشتری‌ها دیده نمی‌شود.';
+
+  @override
+  String get openStorePage => 'باز کردن صفحه فروشگاه';
+
+  @override
+  String get storeIsNotApprovedYet => 'فروشگاه هنوز تأیید نشده است.';
+
+  @override
+  String openUntilTime(Object time) {
+    return 'باز است تا $time';
+  }
+
+  @override
+  String dayIsToday(Object day) {
+    return '$day (امروز)';
+  }
+
+  @override
+  String dayToDay(Object from, Object to) {
+    return '$from تا $to';
+  }
 }

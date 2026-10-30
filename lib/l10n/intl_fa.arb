@@ -3018,5 +3018,40 @@
       "from": {},
       "to": {}
     }
+  },
+  "storeNotFound": "فروشگاه پیدا نشد",
+  "theLinkIsWrongOrTheStoreIsNotActive": "لینک نادرست است یا این فروشگاه فعال نیست.",
+  "closedNow": "بسته است",
+  "aboutStore": "درباره فروشگاه",
+  "callStore": "تماس با فروشگاه",
+  "backToHome": "بازگشت به صفحه اصلی",
+  "needsChanges": "نیاز به اصلاح",
+  "messageToSeller": "پیام به فروشنده",
+  "sellerMobile": "موبایل فروشنده",
+  "pinMatchesTheAddress": "پین روی نقشه با نشانی جور است",
+  "accountOwnerMatchesTheSeller": "نام صاحب حساب با فروشنده جور است",
+  "photosAreSuitable": "عکس‌ها مناسب‌اند",
+  "enterAMessageForTheSeller": "متن پیام به فروشنده را بنویسید.",
+  "thisStoreWasBlockedBySupport": "این فروشگاه مسدود شده است و برای مشتری‌ها دیده نمی‌شود.",
+  "openStorePage": "باز کردن صفحه فروشگاه",
+  "storeIsNotApprovedYet": "فروشگاه هنوز تأیید نشده است.",
+  "openUntilTime": "باز است تا {time}",
+  "@openUntilTime": {
+    "placeholders": {
+      "time": {}
+    }
+  },
+  "dayIsToday": "{day} (امروز)",
+  "@dayIsToday": {
+    "placeholders": {
+      "day": {}
+    }
+  },
+  "dayToDay": "{from} تا {to}",
+  "@dayToDay": {
+    "placeholders": {
+      "from": {},
+      "to": {}
+    }
   }
 }

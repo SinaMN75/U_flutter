@@ -16741,6 +16741,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{from} to {to}'**
   String timeToTime(Object from, Object to);
+
+  /// No description provided for @storeNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Store Not Found'**
+  String get storeNotFound;
+
+  /// No description provided for @theLinkIsWrongOrTheStoreIsNotActive.
+  ///
+  /// In en, this message translates to:
+  /// **'The link is wrong or the store is not active.'**
+  String get theLinkIsWrongOrTheStoreIsNotActive;
+
+  /// No description provided for @closedNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed Now'**
+  String get closedNow;
+
+  /// No description provided for @aboutStore.
+  ///
+  /// In en, this message translates to:
+  /// **'About Store'**
+  String get aboutStore;
+
+  /// No description provided for @callStore.
+  ///
+  /// In en, this message translates to:
+  /// **'Call Store'**
+  String get callStore;
+
+  /// No description provided for @backToHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Back To Home'**
+  String get backToHome;
+
+  /// No description provided for @needsChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs Changes'**
+  String get needsChanges;
+
+  /// No description provided for @messageToSeller.
+  ///
+  /// In en, this message translates to:
+  /// **'Message To Seller'**
+  String get messageToSeller;
+
+  /// No description provided for @sellerMobile.
+  ///
+  /// In en, this message translates to:
+  /// **'Seller Mobile'**
+  String get sellerMobile;
+
+  /// No description provided for @pinMatchesTheAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'The pin matches the address'**
+  String get pinMatchesTheAddress;
+
+  /// No description provided for @accountOwnerMatchesTheSeller.
+  ///
+  /// In en, this message translates to:
+  /// **'The account owner matches the seller'**
+  String get accountOwnerMatchesTheSeller;
+
+  /// No description provided for @photosAreSuitable.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos are suitable'**
+  String get photosAreSuitable;
+
+  /// No description provided for @enterAMessageForTheSeller.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a message for the seller.'**
+  String get enterAMessageForTheSeller;
+
+  /// No description provided for @thisStoreWasBlockedBySupport.
+  ///
+  /// In en, this message translates to:
+  /// **'This store was blocked by support.'**
+  String get thisStoreWasBlockedBySupport;
+
+  /// No description provided for @openStorePage.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Store Page'**
+  String get openStorePage;
+
+  /// No description provided for @storeIsNotApprovedYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Store is not approved yet.'**
+  String get storeIsNotApprovedYet;
+
+  /// No description provided for @openUntilTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Open until {time}'**
+  String openUntilTime(Object time);
+
+  /// No description provided for @dayIsToday.
+  ///
+  /// In en, this message translates to:
+  /// **'{day} (today)'**
+  String dayIsToday(Object day);
+
+  /// No description provided for @dayToDay.
+  ///
+  /// In en, this message translates to:
+  /// **'{from} to {to}'**
+  String dayToDay(Object from, Object to);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
