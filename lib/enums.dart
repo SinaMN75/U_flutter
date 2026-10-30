@@ -226,7 +226,8 @@ enum TagUser with UNumericIdentifiable {
   permissionApprovePlaces("تأیید مکان‌ها", "Approve Places", 628),
   permissionManageSettlements("تسویه با مجموعه‌ها", "Manage Settlements", 629),
   permissionManageStores("مدیریت فروشگاه‌ها", "Manage Stores", 630),
-  permissionDeleteStores("حذف فروشگاه‌ها", "Delete Stores", 631);
+  permissionDeleteStores("حذف فروشگاه‌ها", "Delete Stores", 631),
+  permissionManageCategories("مدیریت دسته‌بندی‌ها", "Manage Categories", 632);
 
   const TagUser(this.titleFa, this.titleEn, this.number);
 
@@ -269,6 +270,7 @@ enum TagUser with UNumericIdentifiable {
     permissionManageSettlements,
     permissionManageStores,
     permissionDeleteStores,
+    permissionManageCategories,
   ];
 
   static const List<TagUser> organizationPermissions = <TagUser>[
@@ -350,7 +352,9 @@ enum TagProduct with UNumericIdentifiable {
   room7("اتاق ۷ تخته", "7 Bed Room", 407),
   room8("اتاق ۸ تخته", "8 Bed Room", 408),
   room9("اتاق ۹ تخته", "9 Bed Room", 409),
-  room10("اتاق ۱۰ تخته", "10 Bed Room", 410);
+  room10("اتاق ۱۰ تخته", "10 Bed Room", 410),
+  hidden("پنهان", "Hidden", 501),
+  blocked("مسدود", "Blocked", 502);
 
   const TagProduct(this.titleFa, this.titleEn, this.number);
 
@@ -1950,11 +1954,11 @@ enum TagStoreType with UNumericIdentifiable {
   final int number;
 }
 
-enum TagStoreCategory with UNumericIdentifiable {
+enum TagCategory with UNumericIdentifiable {
   active("فعال", "Active", 101),
   inactive("غیرفعال", "Inactive", 102);
 
-  const TagStoreCategory(this.titleFa, this.titleEn, this.number);
+  const TagCategory(this.titleFa, this.titleEn, this.number);
 
   @override
   final String titleFa;

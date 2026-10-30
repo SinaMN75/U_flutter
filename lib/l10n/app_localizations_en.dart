@@ -8415,6 +8415,107 @@ class AppLocalizationsEn extends AppLocalizations {
   String get theOrderOfThisListIsTheOrderOfCategoriesOnTheStorePageDragTheHandleToMove => 'The order of this list is the order of categories on the store page. Drag the handle to move.';
 
   @override
+  String get newProduct => 'New product';
+
+  @override
+  String get editProduct => 'Edit product';
+
+  @override
+  String get saveProduct => 'Save product';
+
+  @override
+  String get productName => 'Product name';
+
+  @override
+  String get sellingPrice => 'Selling price';
+
+  @override
+  String get purchasePrice => 'Purchase price';
+
+  @override
+  String get alertBelow => 'Alert below';
+
+  @override
+  String get addPhoto => 'Add photo';
+
+  @override
+  String get makeCover => 'Make cover';
+
+  @override
+  String get mainInformation => 'Main information';
+
+  @override
+  String get priceAndStock => 'Price and stock';
+
+  @override
+  String get showOnStorePage => 'Show on store page';
+
+  @override
+  String get noProductsYet => 'No products yet';
+
+  @override
+  String get deleteProduct => 'Delete product';
+
+  @override
+  String get areYouSureYouWantToDeleteThisProduct => 'Are you sure you want to delete this product?';
+
+  @override
+  String get productNotFound => 'Product not found';
+
+  @override
+  String get noCategory => 'No category';
+
+  @override
+  String get enterAValidNumber => 'Enter a valid number';
+
+  @override
+  String get searchByProductName => 'Search by product name';
+
+  @override
+  String get soldOut => 'Sold out';
+
+  @override
+  String get blockedByAdmin => 'Blocked by admin';
+
+  @override
+  String get hiddenFromBuyers => 'Hidden from buyers';
+
+  @override
+  String countInStock(Object count) {
+    return '$count in stock';
+  }
+
+  @override
+  String countUnits(Object count) {
+    return '$count units';
+  }
+
+  @override
+  String countOfMax(Object count, Object max) {
+    return '$count of $max';
+  }
+
+  @override
+  String productsInCategories(Object products, Object categories) {
+    return '$products products in $categories categories';
+  }
+
+  @override
+  String planProductLimitIsFull(Object plan) {
+    return 'The product limit of the $plan plan is full';
+  }
+
+  @override
+  String planHasCountProductsAndAllAreCreated(Object plan, Object count) {
+    return 'The $plan plan allows $count products and you have created them all. Upgrade for more.';
+  }
+
+  @override
+  String upToCountProductsInPlan(Object count, Object plan) {
+    return 'Up to $count products in the $plan plan';
+  }
+
+  @override
   String get storeTypes => 'Store Types';
 
   @override

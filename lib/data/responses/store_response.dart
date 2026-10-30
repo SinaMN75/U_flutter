@@ -1,8 +1,5 @@
 part of "../data.dart";
 
-/// A stored `#RRGGBB` color; a malformed value falls back to grey.
-Color _storeColor(String color) => Color(int.tryParse(color.replaceFirst("#", "").padLeft(8, "F").substring(0, 8), radix: 16) ?? 0xFF808080);
-
 /// Icons a store type can use; the key is what the server stores.
 abstract class UStoreTypeIcons {
   static const Map<String, IconData> values = <String, IconData>{
@@ -67,33 +64,8 @@ class UStoreTypeResponse {
 
   IconData get iconData => UStoreTypeIcons.of(icon);
 
-  Color get colorValue => _storeColor(color);
-}
-
-class UStoreCategoryResponse {
-  UStoreCategoryResponse({required this.id, required this.createdAt, required this.tags, required this.title, required this.color, required this.order, required this.storeId});
-
-  factory UStoreCategoryResponse.fromMap(Map<String, dynamic> json) => UStoreCategoryResponse(
-    id: json["id"],
-    createdAt: DateTime.parse(json["createdAt"]),
-    tags: List<int>.from((json["tags"] as List<dynamic>).map((dynamic x) => x)),
-    title: json["title"],
-    color: json["color"],
-    order: json["order"] ?? 0,
-    storeId: json["storeId"],
-  );
-
-  final String id;
-  final DateTime createdAt;
-  final List<int> tags;
-  final String title;
-  final String color;
-  final int order;
-  final String storeId;
-
-  bool get isActive => tags.contains(TagStoreCategory.active.number);
-
-  Color get colorValue => _storeColor(color);
+  /// The stored `#RRGGBB` color; a malformed value falls back to grey.
+  Color get colorValue => Color(int.tryParse(color.replaceFirst("#", "").padLeft(8, "F").substring(0, 8), radix: 16) ?? 0xFF808080);
 }
 
 class UStoreResponse {
@@ -217,4 +189,75 @@ class UStoreResponse {
 
   /// When the store closes today, while it is open.
   String? get closesAtNow => _openDayAt(DateTime.now())?.closes;
+}
+
+class UProductResponse {
+  UProductResponse({
+    required this.id,
+    required this.createdAt,
+    required this.tags,
+    required this.title,
+    this.description,
+    this.price,
+    this.stock = 0,
+    this.purchasePrice,
+    this.unit,
+    this.lowStockAlert,
+    this.storeId,
+    this.storeTitle,
+    this.storeCode,
+    this.categoryId,
+    this.category,
+    this.media,
+  });
+
+  factory UProductResponse.fromMap(Map<String, dynamic> json) => UProductResponse(
+    id: json["id"],
+    createdAt: DateTime.parse(json["createdAt"]),
+    tags: List<int>.from((json["tags"] as List<dynamic>).map((dynamic x) => x)),
+    title: json["title"],
+    description: json["description"],
+    price: json["price"],
+    stock: json["stock"] ?? 0,
+    purchasePrice: json["jsonData"]?["purchasePrice"],
+    unit: json["jsonData"]?["unit"],
+    lowStockAlert: json["jsonData"]?["lowStockAlert"],
+    storeId: json["storeId"],
+    storeTitle: json["storeTitle"],
+    storeCode: json["storeCode"],
+    categoryId: json["categoryId"],
+    category: json["category"] == null ? null : UCategoryResponse.fromMap(json["category"]),
+    media: json["media"] == null ? null : List<UMediaResponse>.from((json["media"] as List<dynamic>).map((dynamic x) => UMediaResponse.fromMap(x))),
+  );
+
+  final String id;
+  final DateTime createdAt;
+  final List<int> tags;
+  final String title;
+  final String? description;
+  final num? price;
+  final int stock;
+  final num? purchasePrice;
+  final String? unit;
+  final int? lowStockAlert;
+  final String? storeId;
+  final String? storeTitle;
+  final String? storeCode;
+  final String? categoryId;
+  final UCategoryResponse? category;
+  final List<UMediaResponse>? media;
+
+  bool get isHidden => tags.contains(TagProduct.hidden.number);
+
+  bool get isBlocked => tags.contains(TagProduct.blocked.number);
+
+  bool get isOutOfStock => stock <= 0;
+
+  /// In stock, and at or under the seller's alert.
+  bool get isLowStock => !isOutOfStock && lowStockAlert != null && stock <= lowStockAlert!;
+
+  UMediaResponse? get cover => media?.firstByTag(TagMedia.cover) ?? media?.firstOrNull;
+
+  /// All photos with the cover first.
+  List<UMediaResponse> get images => <UMediaResponse>[?cover, ...?media?.where((UMediaResponse m) => m.id != cover?.id)];
 }

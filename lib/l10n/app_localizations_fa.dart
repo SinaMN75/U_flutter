@@ -8414,6 +8414,107 @@ class AppLocalizationsFa extends AppLocalizations {
   String get theOrderOfThisListIsTheOrderOfCategoriesOnTheStorePageDragTheHandleToMove => 'ترتیب این فهرست همان ترتیب دسته‌ها در صفحه فروشگاه است. برای جابه‌جایی، دستگیره را بکشید.';
 
   @override
+  String get newProduct => 'کالای جدید';
+
+  @override
+  String get editProduct => 'ویرایش کالا';
+
+  @override
+  String get saveProduct => 'ذخیره کالا';
+
+  @override
+  String get productName => 'نام کالا';
+
+  @override
+  String get sellingPrice => 'قیمت فروش';
+
+  @override
+  String get purchasePrice => 'قیمت خرید';
+
+  @override
+  String get alertBelow => 'هشدار زیر';
+
+  @override
+  String get addPhoto => 'افزودن عکس';
+
+  @override
+  String get makeCover => 'کاور شود';
+
+  @override
+  String get mainInformation => 'اطلاعات اصلی';
+
+  @override
+  String get priceAndStock => 'قیمت و موجودی';
+
+  @override
+  String get showOnStorePage => 'نمایش در صفحه فروشگاه';
+
+  @override
+  String get noProductsYet => 'هنوز کالایی نیست';
+
+  @override
+  String get deleteProduct => 'حذف کالا';
+
+  @override
+  String get areYouSureYouWantToDeleteThisProduct => 'از حذف این کالا اطمینان دارید؟';
+
+  @override
+  String get productNotFound => 'کالا پیدا نشد';
+
+  @override
+  String get noCategory => 'بدون دسته';
+
+  @override
+  String get enterAValidNumber => 'عدد درست وارد کنید';
+
+  @override
+  String get searchByProductName => 'جستجو با نام کالا';
+
+  @override
+  String get soldOut => 'تمام شد';
+
+  @override
+  String get blockedByAdmin => 'مسدود توسط ادمین';
+
+  @override
+  String get hiddenFromBuyers => 'پنهان';
+
+  @override
+  String countInStock(Object count) {
+    return '$count عدد موجود';
+  }
+
+  @override
+  String countUnits(Object count) {
+    return '$count عدد';
+  }
+
+  @override
+  String countOfMax(Object count, Object max) {
+    return '$count از $max';
+  }
+
+  @override
+  String productsInCategories(Object products, Object categories) {
+    return '$products کالا در $categories دسته';
+  }
+
+  @override
+  String planProductLimitIsFull(Object plan) {
+    return 'سقف کالاهای اشتراک $plan پر است';
+  }
+
+  @override
+  String planHasCountProductsAndAllAreCreated(Object plan, Object count) {
+    return 'اشتراک $plan $count کالا دارد و همه را ساخته‌اید. برای کالای بیشتر ارتقا دهید.';
+  }
+
+  @override
+  String upToCountProductsInPlan(Object count, Object plan) {
+    return 'تا $count کالا در اشتراک $plan';
+  }
+
+  @override
   String get storeTypes => 'انواع کسب‌وکار';
 
   @override

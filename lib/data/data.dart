@@ -34,6 +34,7 @@ part "params/gold_params.dart";
 
 part "params/dorm_params.dart";
 part "params/store_params.dart";
+part "params/category_params.dart";
 
 part "params/hotel_params.dart";
 
@@ -105,6 +106,7 @@ part "responses/gold_response.dart";
 
 part "responses/dorm_response.dart";
 part "responses/store_response.dart";
+part "responses/category_response.dart";
 
 part "responses/hotel_response.dart";
 
@@ -170,6 +172,7 @@ part "services/gold_service.dart";
 
 part "services/dorm_service.dart";
 part "services/store_service.dart";
+part "services/category_service.dart";
 
 part "services/hotel_service.dart";
 
@@ -245,6 +248,7 @@ class UServices {
   static USimService sim = USimService();
   static UDormService dorm = UDormService();
   static UStoreService store = UStoreService();
+  static UCategoryService category = UCategoryService();
   static UHotelService hotel = UHotelService();
   static UOrganizationService organization = UOrganizationService();
   static UParkingService parking = UParkingService();

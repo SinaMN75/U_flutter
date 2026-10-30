@@ -78,38 +78,38 @@ class UStoreService {
     Function(String e)? onException,
   }) => _Api.call("/Store/StoreType/Delete", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 
-  Future<(UResponse<String>?, UEmptyResponse?, String?)> createCategory({
-    required UStoreCategoryCreateParams p,
+  Future<(UResponse<String>?, UEmptyResponse?, String?)> createProduct({
+    required UProductCreateParams p,
     Function(UResponse<String> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) => _Api.call("/Store/StoreCategory/Create", p.toMap(), _Api.raw<String>(), _Api.empty, onOk, onError, onException);
+  }) => _Api.call("/Store/Product/Create", p.toMap(), _Api.raw<String>(), _Api.empty, onOk, onError, onException);
 
-  Future<(UResponse<List<UStoreCategoryResponse>>?, UEmptyResponse?, String?)> readCategories({
-    required UStoreCategoryReadParams p,
-    Function(UResponse<List<UStoreCategoryResponse>> r)? onOk,
+  Future<(UResponse<List<UProductResponse>>?, UEmptyResponse?, String?)> readProducts({
+    required UProductReadParams p,
+    Function(UResponse<List<UProductResponse>> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) => _Api.call("/Store/StoreCategory/Read", p.toMap(), _Api.list(UStoreCategoryResponse.fromMap), _Api.empty, onOk, onError, onException);
+  }) => _Api.call("/Store/Product/Read", p.toMap(), _Api.list(UProductResponse.fromMap), _Api.empty, onOk, onError, onException);
 
-  Future<(UEmptyResponse?, UEmptyResponse?, String?)> updateCategory({
-    required UStoreCategoryUpdateParams p,
+  Future<(UResponse<UProductResponse>?, UEmptyResponse?, String?)> readProductById({
+    required UIdParams p,
+    Function(UResponse<UProductResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Store/Product/ReadById", p.toMap(), _Api.one(UProductResponse.fromMap), _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> updateProduct({
+    required UProductUpdateParams p,
     Function(UEmptyResponse r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) => _Api.call("/Store/StoreCategory/Update", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+  }) => _Api.call("/Store/Product/Update", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 
-  Future<(UEmptyResponse?, UEmptyResponse?, String?)> reorderCategories({
-    required UStoreCategoryReorderParams p,
-    Function(UEmptyResponse r)? onOk,
-    Function(UEmptyResponse e)? onError,
-    Function(String e)? onException,
-  }) => _Api.call("/Store/StoreCategory/Reorder", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
-
-  Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteCategory({
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteProduct({
     required UIdParams p,
     Function(UEmptyResponse r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) => _Api.call("/Store/StoreCategory/Delete", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+  }) => _Api.call("/Store/Product/Delete", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 }

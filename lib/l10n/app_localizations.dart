@@ -16406,6 +16406,180 @@ abstract class AppLocalizations {
   /// **'The order of this list is the order of categories on the store page. Drag the handle to move.'**
   String get theOrderOfThisListIsTheOrderOfCategoriesOnTheStorePageDragTheHandleToMove;
 
+  /// No description provided for @newProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'New product'**
+  String get newProduct;
+
+  /// No description provided for @editProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit product'**
+  String get editProduct;
+
+  /// No description provided for @saveProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Save product'**
+  String get saveProduct;
+
+  /// No description provided for @productName.
+  ///
+  /// In en, this message translates to:
+  /// **'Product name'**
+  String get productName;
+
+  /// No description provided for @sellingPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Selling price'**
+  String get sellingPrice;
+
+  /// No description provided for @purchasePrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase price'**
+  String get purchasePrice;
+
+  /// No description provided for @alertBelow.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert below'**
+  String get alertBelow;
+
+  /// No description provided for @addPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Add photo'**
+  String get addPhoto;
+
+  /// No description provided for @makeCover.
+  ///
+  /// In en, this message translates to:
+  /// **'Make cover'**
+  String get makeCover;
+
+  /// No description provided for @mainInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Main information'**
+  String get mainInformation;
+
+  /// No description provided for @priceAndStock.
+  ///
+  /// In en, this message translates to:
+  /// **'Price and stock'**
+  String get priceAndStock;
+
+  /// No description provided for @showOnStorePage.
+  ///
+  /// In en, this message translates to:
+  /// **'Show on store page'**
+  String get showOnStorePage;
+
+  /// No description provided for @noProductsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No products yet'**
+  String get noProductsYet;
+
+  /// No description provided for @deleteProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete product'**
+  String get deleteProduct;
+
+  /// No description provided for @areYouSureYouWantToDeleteThisProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this product?'**
+  String get areYouSureYouWantToDeleteThisProduct;
+
+  /// No description provided for @productNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Product not found'**
+  String get productNotFound;
+
+  /// No description provided for @noCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'No category'**
+  String get noCategory;
+
+  /// No description provided for @enterAValidNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid number'**
+  String get enterAValidNumber;
+
+  /// No description provided for @searchByProductName.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by product name'**
+  String get searchByProductName;
+
+  /// No description provided for @soldOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sold out'**
+  String get soldOut;
+
+  /// No description provided for @blockedByAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Blocked by admin'**
+  String get blockedByAdmin;
+
+  /// No description provided for @hiddenFromBuyers.
+  ///
+  /// In en, this message translates to:
+  /// **'Hidden from buyers'**
+  String get hiddenFromBuyers;
+
+  /// No description provided for @countInStock.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} in stock'**
+  String countInStock(Object count);
+
+  /// No description provided for @countUnits.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} units'**
+  String countUnits(Object count);
+
+  /// No description provided for @countOfMax.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} of {max}'**
+  String countOfMax(Object count, Object max);
+
+  /// No description provided for @productsInCategories.
+  ///
+  /// In en, this message translates to:
+  /// **'{products} products in {categories} categories'**
+  String productsInCategories(Object products, Object categories);
+
+  /// No description provided for @planProductLimitIsFull.
+  ///
+  /// In en, this message translates to:
+  /// **'The product limit of the {plan} plan is full'**
+  String planProductLimitIsFull(Object plan);
+
+  /// No description provided for @planHasCountProductsAndAllAreCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'The {plan} plan allows {count} products and you have created them all. Upgrade for more.'**
+  String planHasCountProductsAndAllAreCreated(Object plan, Object count);
+
+  /// No description provided for @upToCountProductsInPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Up to {count} products in the {plan} plan'**
+  String upToCountProductsInPlan(Object count, Object plan);
+
   /// No description provided for @storeTypes.
   ///
   /// In en, this message translates to:

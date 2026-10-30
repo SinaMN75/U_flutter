@@ -2917,6 +2917,74 @@
   "deleteCategory": "حذف دسته",
   "areYouSureYouWantToDeleteThisCategory": "از حذف این دسته اطمینان دارید؟",
   "theOrderOfThisListIsTheOrderOfCategoriesOnTheStorePageDragTheHandleToMove": "ترتیب این فهرست همان ترتیب دسته‌ها در صفحه فروشگاه است. برای جابه‌جایی، دستگیره را بکشید.",
+  "newProduct": "کالای جدید",
+  "editProduct": "ویرایش کالا",
+  "saveProduct": "ذخیره کالا",
+  "productName": "نام کالا",
+  "sellingPrice": "قیمت فروش",
+  "purchasePrice": "قیمت خرید",
+  "alertBelow": "هشدار زیر",
+  "addPhoto": "افزودن عکس",
+  "makeCover": "کاور شود",
+  "mainInformation": "اطلاعات اصلی",
+  "priceAndStock": "قیمت و موجودی",
+  "showOnStorePage": "نمایش در صفحه فروشگاه",
+  "noProductsYet": "هنوز کالایی نیست",
+  "deleteProduct": "حذف کالا",
+  "areYouSureYouWantToDeleteThisProduct": "از حذف این کالا اطمینان دارید؟",
+  "productNotFound": "کالا پیدا نشد",
+  "noCategory": "بدون دسته",
+  "enterAValidNumber": "عدد درست وارد کنید",
+  "searchByProductName": "جستجو با نام کالا",
+  "soldOut": "تمام شد",
+  "blockedByAdmin": "مسدود توسط ادمین",
+  "hiddenFromBuyers": "پنهان",
+  "countInStock": "{count} عدد موجود",
+  "@countInStock": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "countUnits": "{count} عدد",
+  "@countUnits": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "countOfMax": "{count} از {max}",
+  "@countOfMax": {
+    "placeholders": {
+      "count": {},
+      "max": {}
+    }
+  },
+  "productsInCategories": "{products} کالا در {categories} دسته",
+  "@productsInCategories": {
+    "placeholders": {
+      "products": {},
+      "categories": {}
+    }
+  },
+  "planProductLimitIsFull": "سقف کالاهای اشتراک {plan} پر است",
+  "@planProductLimitIsFull": {
+    "placeholders": {
+      "plan": {}
+    }
+  },
+  "planHasCountProductsAndAllAreCreated": "اشتراک {plan} {count} کالا دارد و همه را ساخته‌اید. برای کالای بیشتر ارتقا دهید.",
+  "@planHasCountProductsAndAllAreCreated": {
+    "placeholders": {
+      "plan": {},
+      "count": {}
+    }
+  },
+  "upToCountProductsInPlan": "تا {count} کالا در اشتراک {plan}",
+  "@upToCountProductsInPlan": {
+    "placeholders": {
+      "count": {},
+      "plan": {}
+    }
+  },
   "storeTypes": "انواع کسب‌وکار",
   "storeType": "نوع کسب‌وکار",
   "newStoreType": "نوع کسب‌وکار تازه",

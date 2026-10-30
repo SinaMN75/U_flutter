@@ -3335,6 +3335,74 @@
   "deleteCategory": "Delete category",
   "areYouSureYouWantToDeleteThisCategory": "Are you sure you want to delete this category?",
   "theOrderOfThisListIsTheOrderOfCategoriesOnTheStorePageDragTheHandleToMove": "The order of this list is the order of categories on the store page. Drag the handle to move.",
+  "newProduct": "New product",
+  "editProduct": "Edit product",
+  "saveProduct": "Save product",
+  "productName": "Product name",
+  "sellingPrice": "Selling price",
+  "purchasePrice": "Purchase price",
+  "alertBelow": "Alert below",
+  "addPhoto": "Add photo",
+  "makeCover": "Make cover",
+  "mainInformation": "Main information",
+  "priceAndStock": "Price and stock",
+  "showOnStorePage": "Show on store page",
+  "noProductsYet": "No products yet",
+  "deleteProduct": "Delete product",
+  "areYouSureYouWantToDeleteThisProduct": "Are you sure you want to delete this product?",
+  "productNotFound": "Product not found",
+  "noCategory": "No category",
+  "enterAValidNumber": "Enter a valid number",
+  "searchByProductName": "Search by product name",
+  "soldOut": "Sold out",
+  "blockedByAdmin": "Blocked by admin",
+  "hiddenFromBuyers": "Hidden from buyers",
+  "countInStock": "{count} in stock",
+  "@countInStock": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "countUnits": "{count} units",
+  "@countUnits": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "countOfMax": "{count} of {max}",
+  "@countOfMax": {
+    "placeholders": {
+      "count": {},
+      "max": {}
+    }
+  },
+  "productsInCategories": "{products} products in {categories} categories",
+  "@productsInCategories": {
+    "placeholders": {
+      "products": {},
+      "categories": {}
+    }
+  },
+  "planProductLimitIsFull": "The product limit of the {plan} plan is full",
+  "@planProductLimitIsFull": {
+    "placeholders": {
+      "plan": {}
+    }
+  },
+  "planHasCountProductsAndAllAreCreated": "The {plan} plan allows {count} products and you have created them all. Upgrade for more.",
+  "@planHasCountProductsAndAllAreCreated": {
+    "placeholders": {
+      "plan": {},
+      "count": {}
+    }
+  },
+  "upToCountProductsInPlan": "Up to {count} products in the {plan} plan",
+  "@upToCountProductsInPlan": {
+    "placeholders": {
+      "count": {},
+      "plan": {}
+    }
+  },
   "storeTypes": "Store Types",
   "storeType": "Store Type",
   "newStoreType": "New Store Type",

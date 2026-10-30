@@ -225,61 +225,98 @@ class UStoreTypeReadParams {
   }..removeWhere((String _, dynamic v) => v == null);
 }
 
-class UStoreCategoryCreateParams {
-  UStoreCategoryCreateParams({required this.storeId, required this.title, required this.color, this.tags});
+class UProductCreateParams {
+  UProductCreateParams({required this.storeId, required this.title, required this.price, this.tags, this.categoryId, this.description, this.purchasePrice, this.stock = 0, this.lowStockAlert, this.unit});
 
   final String storeId;
   final String title;
-  final String color;
+  final num price;
   final List<int>? tags;
+  final String? categoryId;
+  final String? description;
+  final num? purchasePrice;
+  final int stock;
+  final int? lowStockAlert;
+  final String? unit;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "storeId": storeId,
     "title": title,
-    "color": color,
-    "tags": tags ?? <int>[TagStoreCategory.active.number],
+    "price": price,
+    "tags": tags ?? <int>[TagProduct.product.number, TagProduct.released.number],
+    "categoryId": categoryId,
+    "description": description,
+    "purchasePrice": purchasePrice,
+    "stock": stock,
+    "lowStockAlert": lowStockAlert,
+    "unit": unit,
   };
 }
 
-class UStoreCategoryUpdateParams {
-  UStoreCategoryUpdateParams({required this.id, this.title, this.color, this.tags});
+class UProductUpdateParams {
+  UProductUpdateParams({required this.id, this.title, this.price, this.categoryId, this.clearCategory = false, this.description, this.purchasePrice, this.stock, this.lowStockAlert, this.unit, this.addTags, this.removeTags});
 
   final String id;
   final String? title;
-  final String? color;
-  final List<int>? tags;
+  final num? price;
+  final String? categoryId;
+
+  /// Takes the product out of its category; wins over [categoryId].
+  final bool clearCategory;
+  final String? description;
+  final num? purchasePrice;
+  final int? stock;
+  final int? lowStockAlert;
+  final String? unit;
+  final List<int>? addTags;
+  final List<int>? removeTags;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "id": id,
     "title": title,
-    "color": color,
-    "tags": tags,
+    "price": price,
+    "categoryId": categoryId,
+    "clearCategory": clearCategory,
+    "description": description,
+    "purchasePrice": purchasePrice,
+    "stock": stock,
+    "lowStockAlert": lowStockAlert,
+    "unit": unit,
+    "addTags": addTags,
+    "removeTags": removeTags,
   };
 }
 
-class UStoreCategoryReadParams {
-  UStoreCategoryReadParams({required this.storeId, this.tags, this.pageSize, this.pageNumber});
+class UProductReadParams {
+  UProductReadParams({required this.storeId, this.title, this.categoryId, this.tags, this.pageSize, this.pageNumber, this.selectorArgs});
 
   final String storeId;
+  final String? title;
+  final String? categoryId;
   final List<int>? tags;
   final int? pageSize;
   final int? pageNumber;
+  final UProductSelectorArgs? selectorArgs;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "storeId": storeId,
+    "title": title,
+    "categoryId": categoryId,
     "tags": tags,
     "pageSize": pageSize,
     "pageNumber": pageNumber,
+    "selectorArgs": selectorArgs?.toMap(),
   }..removeWhere((String _, dynamic v) => v == null);
 }
 
-class UStoreCategoryReorderParams {
-  UStoreCategoryReorderParams({required this.storeId, required this.ids});
+class UProductSelectorArgs {
+  const UProductSelectorArgs({this.creator, this.media});
 
-  final String storeId;
+  final UUserSelectorArgs? creator;
+  final UMediaSelectorArgs? media;
 
-  /// Every category of the store, in the new order.
-  final List<String> ids;
-
-  Map<String, dynamic> toMap() => <String, dynamic>{"storeId": storeId, "ids": ids};
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "creator": creator?.toMap(),
+    "media": media?.toMap(),
+  };
 }
