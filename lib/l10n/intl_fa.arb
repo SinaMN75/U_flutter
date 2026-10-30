@@ -2977,5 +2977,46 @@
       "type": {},
       "count": {}
     }
+  },
+  "addressAndLocation": "نشانی و موقعیت",
+  "contactAndPayment": "تلفن و اطلاعات پرداخت",
+  "storeAddress": "نشانی فروشگاه",
+  "storePhone": "تلفن فروشگاه",
+  "moveTheMapToPutThePinOnYourDoor": "نقشه را جابه‌جا کنید تا پین روی در فروشگاه بیفتد",
+  "openToday": "باز",
+  "temporarilyClosedToday": "امروز موقتاً بسته‌ام",
+  "changeHours": "تغییر ساعت‌ها",
+  "opensAt": "شروع",
+  "closesAt": "پایان",
+  "displayMode": "نحوه نمایش",
+  "productCardsWithStock": "کارت کالاها با موجودی",
+  "menuWithTableNumbers": "منو با شماره میز",
+  "paymentInformation": "اطلاعات پرداخت",
+  "shownOnlyAfterBuyAndPay": "فقط بعد از زدن «خرید و پرداخت» به مشتری نشان داده می‌شود.",
+  "accountOwnerName": "نام صاحب حساب",
+  "sameNameTheBankShows": "همان نامی که بانک نشان می‌دهد",
+  "previewForCustomer": "پیش‌نمایش برای مشتری",
+  "copyCard": "کپی کارت",
+  "changeLogo": "تغییر لوگو",
+  "changeCover": "تغییر کاور",
+  "addressAndMap": "نشانی و نقشه",
+  "contact": "تماس",
+  "cafeMenuIsInGrowthPlan": "حالت منو در اشتراک شما نیست",
+  "menuModeLetsCustomersOrderByTable": "با حالت منو، مشتری منوی شما را با شماره میز خودش می‌بیند.",
+  "qrPerTable": "QR جدا برای هر میز",
+  "notSelected": "انتخاب نشده",
+  "storeInfoAndPayment": "اطلاعات و پرداخت",
+  "forOwnerName": "به نام {name}",
+  "@forOwnerName": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "timeToTime": "{from} تا {to}",
+  "@timeToTime": {
+    "placeholders": {
+      "from": {},
+      "to": {}
+    }
   }
 }

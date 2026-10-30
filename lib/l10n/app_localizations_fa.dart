@@ -8502,4 +8502,98 @@ class AppLocalizationsFa extends AppLocalizations {
   String typeAndCountProducts(Object type, Object count) {
     return '$type، $count کالا';
   }
+
+  @override
+  String get addressAndLocation => 'نشانی و موقعیت';
+
+  @override
+  String get contactAndPayment => 'تلفن و اطلاعات پرداخت';
+
+  @override
+  String get storeAddress => 'نشانی فروشگاه';
+
+  @override
+  String get storePhone => 'تلفن فروشگاه';
+
+  @override
+  String get moveTheMapToPutThePinOnYourDoor => 'نقشه را جابه‌جا کنید تا پین روی در فروشگاه بیفتد';
+
+  @override
+  String get openToday => 'باز';
+
+  @override
+  String get temporarilyClosedToday => 'امروز موقتاً بسته‌ام';
+
+  @override
+  String get changeHours => 'تغییر ساعت‌ها';
+
+  @override
+  String get opensAt => 'شروع';
+
+  @override
+  String get closesAt => 'پایان';
+
+  @override
+  String get displayMode => 'نحوه نمایش';
+
+  @override
+  String get productCardsWithStock => 'کارت کالاها با موجودی';
+
+  @override
+  String get menuWithTableNumbers => 'منو با شماره میز';
+
+  @override
+  String get paymentInformation => 'اطلاعات پرداخت';
+
+  @override
+  String get shownOnlyAfterBuyAndPay => 'فقط بعد از زدن «خرید و پرداخت» به مشتری نشان داده می‌شود.';
+
+  @override
+  String get accountOwnerName => 'نام صاحب حساب';
+
+  @override
+  String get sameNameTheBankShows => 'همان نامی که بانک نشان می‌دهد';
+
+  @override
+  String get previewForCustomer => 'پیش‌نمایش برای مشتری';
+
+  @override
+  String get copyCard => 'کپی کارت';
+
+  @override
+  String get changeLogo => 'تغییر لوگو';
+
+  @override
+  String get changeCover => 'تغییر کاور';
+
+  @override
+  String get addressAndMap => 'نشانی و نقشه';
+
+  @override
+  String get contact => 'تماس';
+
+  @override
+  String get cafeMenuIsInGrowthPlan => 'حالت منو در اشتراک شما نیست';
+
+  @override
+  String get menuModeLetsCustomersOrderByTable => 'با حالت منو، مشتری منوی شما را با شماره میز خودش می‌بیند.';
+
+  @override
+  String get qrPerTable => 'QR جدا برای هر میز';
+
+  @override
+  String get notSelected => 'انتخاب نشده';
+
+  @override
+  String get storeInfoAndPayment => 'اطلاعات و پرداخت';
+
+  @override
+  String forOwnerName(Object name) {
+    return 'به نام $name';
+  }
+
+  @override
+  String timeToTime(Object from, Object to) {
+    return '$from تا $to';
+  }
 }

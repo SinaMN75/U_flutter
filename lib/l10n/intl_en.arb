@@ -3395,5 +3395,46 @@
       "type": {},
       "count": {}
     }
+  },
+  "addressAndLocation": "Address And Location",
+  "contactAndPayment": "Contact And Payment",
+  "storeAddress": "Store Address",
+  "storePhone": "Store Phone",
+  "moveTheMapToPutThePinOnYourDoor": "Move the map to put the pin on your door",
+  "openToday": "Open Today",
+  "temporarilyClosedToday": "Temporarily Closed Today",
+  "changeHours": "Change Hours",
+  "opensAt": "Opens At",
+  "closesAt": "Closes At",
+  "displayMode": "Display Mode",
+  "productCardsWithStock": "Product cards with stock",
+  "menuWithTableNumbers": "Menu with table numbers",
+  "paymentInformation": "Payment Information",
+  "shownOnlyAfterBuyAndPay": "Shown only after the customer taps buy and pay.",
+  "accountOwnerName": "Account Owner Name",
+  "sameNameTheBankShows": "Same name the bank shows",
+  "previewForCustomer": "Preview For Customer",
+  "copyCard": "Copy Card",
+  "changeLogo": "Change Logo",
+  "changeCover": "Change Cover",
+  "addressAndMap": "Address And Map",
+  "contact": "Contact",
+  "cafeMenuIsInGrowthPlan": "Menu mode is not in your subscription",
+  "menuModeLetsCustomersOrderByTable": "With menu mode, customers see your menu with their table number.",
+  "qrPerTable": "A QR code for each table",
+  "notSelected": "Not Selected",
+  "storeInfoAndPayment": "Store Info And Payment",
+  "forOwnerName": "In the name of {name}",
+  "@forOwnerName": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "timeToTime": "{from} to {to}",
+  "@timeToTime": {
+    "placeholders": {
+      "from": {},
+      "to": {}
+    }
   }
 }

@@ -8503,4 +8503,98 @@ class AppLocalizationsEn extends AppLocalizations {
   String typeAndCountProducts(Object type, Object count) {
     return '$type, $count products';
   }
+
+  @override
+  String get addressAndLocation => 'Address And Location';
+
+  @override
+  String get contactAndPayment => 'Contact And Payment';
+
+  @override
+  String get storeAddress => 'Store Address';
+
+  @override
+  String get storePhone => 'Store Phone';
+
+  @override
+  String get moveTheMapToPutThePinOnYourDoor => 'Move the map to put the pin on your door';
+
+  @override
+  String get openToday => 'Open Today';
+
+  @override
+  String get temporarilyClosedToday => 'Temporarily Closed Today';
+
+  @override
+  String get changeHours => 'Change Hours';
+
+  @override
+  String get opensAt => 'Opens At';
+
+  @override
+  String get closesAt => 'Closes At';
+
+  @override
+  String get displayMode => 'Display Mode';
+
+  @override
+  String get productCardsWithStock => 'Product cards with stock';
+
+  @override
+  String get menuWithTableNumbers => 'Menu with table numbers';
+
+  @override
+  String get paymentInformation => 'Payment Information';
+
+  @override
+  String get shownOnlyAfterBuyAndPay => 'Shown only after the customer taps buy and pay.';
+
+  @override
+  String get accountOwnerName => 'Account Owner Name';
+
+  @override
+  String get sameNameTheBankShows => 'Same name the bank shows';
+
+  @override
+  String get previewForCustomer => 'Preview For Customer';
+
+  @override
+  String get copyCard => 'Copy Card';
+
+  @override
+  String get changeLogo => 'Change Logo';
+
+  @override
+  String get changeCover => 'Change Cover';
+
+  @override
+  String get addressAndMap => 'Address And Map';
+
+  @override
+  String get contact => 'Contact';
+
+  @override
+  String get cafeMenuIsInGrowthPlan => 'Menu mode is not in your subscription';
+
+  @override
+  String get menuModeLetsCustomersOrderByTable => 'With menu mode, customers see your menu with their table number.';
+
+  @override
+  String get qrPerTable => 'A QR code for each table';
+
+  @override
+  String get notSelected => 'Not Selected';
+
+  @override
+  String get storeInfoAndPayment => 'Store Info And Payment';
+
+  @override
+  String forOwnerName(Object name) {
+    return 'In the name of $name';
+  }
+
+  @override
+  String timeToTime(Object from, Object to) {
+    return '$from to $to';
+  }
 }

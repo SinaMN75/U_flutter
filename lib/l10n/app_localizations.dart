@@ -16561,6 +16561,186 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{type}, {count} products'**
   String typeAndCountProducts(Object type, Object count);
+
+  /// No description provided for @addressAndLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Address And Location'**
+  String get addressAndLocation;
+
+  /// No description provided for @contactAndPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact And Payment'**
+  String get contactAndPayment;
+
+  /// No description provided for @storeAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Store Address'**
+  String get storeAddress;
+
+  /// No description provided for @storePhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Store Phone'**
+  String get storePhone;
+
+  /// No description provided for @moveTheMapToPutThePinOnYourDoor.
+  ///
+  /// In en, this message translates to:
+  /// **'Move the map to put the pin on your door'**
+  String get moveTheMapToPutThePinOnYourDoor;
+
+  /// No description provided for @openToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Today'**
+  String get openToday;
+
+  /// No description provided for @temporarilyClosedToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Temporarily Closed Today'**
+  String get temporarilyClosedToday;
+
+  /// No description provided for @changeHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Hours'**
+  String get changeHours;
+
+  /// No description provided for @opensAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Opens At'**
+  String get opensAt;
+
+  /// No description provided for @closesAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Closes At'**
+  String get closesAt;
+
+  /// No description provided for @displayMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Display Mode'**
+  String get displayMode;
+
+  /// No description provided for @productCardsWithStock.
+  ///
+  /// In en, this message translates to:
+  /// **'Product cards with stock'**
+  String get productCardsWithStock;
+
+  /// No description provided for @menuWithTableNumbers.
+  ///
+  /// In en, this message translates to:
+  /// **'Menu with table numbers'**
+  String get menuWithTableNumbers;
+
+  /// No description provided for @paymentInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Information'**
+  String get paymentInformation;
+
+  /// No description provided for @shownOnlyAfterBuyAndPay.
+  ///
+  /// In en, this message translates to:
+  /// **'Shown only after the customer taps buy and pay.'**
+  String get shownOnlyAfterBuyAndPay;
+
+  /// No description provided for @accountOwnerName.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Owner Name'**
+  String get accountOwnerName;
+
+  /// No description provided for @sameNameTheBankShows.
+  ///
+  /// In en, this message translates to:
+  /// **'Same name the bank shows'**
+  String get sameNameTheBankShows;
+
+  /// No description provided for @previewForCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview For Customer'**
+  String get previewForCustomer;
+
+  /// No description provided for @copyCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy Card'**
+  String get copyCard;
+
+  /// No description provided for @changeLogo.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Logo'**
+  String get changeLogo;
+
+  /// No description provided for @changeCover.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Cover'**
+  String get changeCover;
+
+  /// No description provided for @addressAndMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Address And Map'**
+  String get addressAndMap;
+
+  /// No description provided for @contact.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact'**
+  String get contact;
+
+  /// No description provided for @cafeMenuIsInGrowthPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Menu mode is not in your subscription'**
+  String get cafeMenuIsInGrowthPlan;
+
+  /// No description provided for @menuModeLetsCustomersOrderByTable.
+  ///
+  /// In en, this message translates to:
+  /// **'With menu mode, customers see your menu with their table number.'**
+  String get menuModeLetsCustomersOrderByTable;
+
+  /// No description provided for @qrPerTable.
+  ///
+  /// In en, this message translates to:
+  /// **'A QR code for each table'**
+  String get qrPerTable;
+
+  /// No description provided for @notSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Not Selected'**
+  String get notSelected;
+
+  /// No description provided for @storeInfoAndPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Store Info And Payment'**
+  String get storeInfoAndPayment;
+
+  /// No description provided for @forOwnerName.
+  ///
+  /// In en, this message translates to:
+  /// **'In the name of {name}'**
+  String forOwnerName(Object name);
+
+  /// No description provided for @timeToTime.
+  ///
+  /// In en, this message translates to:
+  /// **'{from} to {to}'**
+  String timeToTime(Object from, Object to);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

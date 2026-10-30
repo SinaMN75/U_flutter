@@ -1917,6 +1917,8 @@ enum TagActivityLog with UNumericIdentifiable {
 }
 
 enum TagStore with UNumericIdentifiable {
+  shop("صفحه فروشگاه", "Store page", 101),
+  menu("منوی کافه و رستوران", "Cafe and restaurant menu", 102),
   active("فعال", "Active", 202),
   inactive("غیرفعال", "Inactive", 203),
   pendingApproval("در انتظار تأیید", "Pending approval", 401),

@@ -18,6 +18,25 @@ abstract class UStoreTypeIcons {
   static IconData of(String key) => values[key] ?? Icons.storefront_outlined;
 }
 
+class UStoreWorkingDay {
+  UStoreWorkingDay({required this.day, this.isOpen = false, this.opens, this.closes});
+
+  factory UStoreWorkingDay.fromMap(Map<String, dynamic> json) => UStoreWorkingDay(
+    day: json["day"],
+    isOpen: json["isOpen"] ?? false,
+    opens: json["opens"],
+    closes: json["closes"],
+  );
+
+  /// Same numbering as [DateTime.weekday]: 1 = Monday … 7 = Sunday.
+  final int day;
+  final bool isOpen;
+  final String? opens;
+  final String? closes;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"day": day, "isOpen": isOpen, "opens": opens, "closes": closes};
+}
+
 class UStoreTypeResponse {
   UStoreTypeResponse({required this.id, required this.createdAt, required this.tags, required this.title, required this.color, required this.icon, required this.order, this.hint});
 
@@ -58,6 +77,15 @@ class UStoreResponse {
     required this.code,
     required this.storeTypeId,
     this.description,
+    this.address,
+    this.phoneNumber,
+    this.latitude,
+    this.longitude,
+    this.workingHours = const <UStoreWorkingDay>[],
+    this.closedUntil,
+    this.cardNumber,
+    this.iBan,
+    this.accountOwner,
     this.organizationId,
     this.organizationTitle,
     this.storeType,
@@ -73,6 +101,15 @@ class UStoreResponse {
     code: json["code"],
     storeTypeId: json["storeTypeId"],
     description: json["jsonData"]?["description"],
+    address: json["jsonData"]?["address"],
+    phoneNumber: json["jsonData"]?["phoneNumber"],
+    latitude: (json["jsonData"]?["latitude"] as num?)?.toDouble(),
+    longitude: (json["jsonData"]?["longitude"] as num?)?.toDouble(),
+    workingHours: ((json["jsonData"]?["workingHours"] as List<dynamic>?) ?? <dynamic>[]).map((dynamic x) => UStoreWorkingDay.fromMap(x)).toList(),
+    closedUntil: json["jsonData"]?["closedUntil"] == null ? null : DateTime.parse(json["jsonData"]["closedUntil"]),
+    cardNumber: json["jsonData"]?["cardNumber"],
+    iBan: json["jsonData"]?["iBan"],
+    accountOwner: json["jsonData"]?["accountOwner"],
     organizationId: json["organizationId"],
     organizationTitle: json["organizationTitle"],
     storeType: json["storeType"] == null ? null : UStoreTypeResponse.fromMap(json["storeType"]),
@@ -87,6 +124,15 @@ class UStoreResponse {
   final String code;
   final String storeTypeId;
   final String? description;
+  final String? address;
+  final String? phoneNumber;
+  final double? latitude;
+  final double? longitude;
+  final List<UStoreWorkingDay> workingHours;
+  final DateTime? closedUntil;
+  final String? cardNumber;
+  final String? iBan;
+  final String? accountOwner;
   final String? organizationId;
   final String? organizationTitle;
   final UStoreTypeResponse? storeType;
@@ -104,4 +150,8 @@ class UStoreResponse {
   bool get isPending => tags.contains(TagStore.pendingApproval.number);
 
   bool get isActive => tags.contains(TagStore.active.number);
+
+  bool get isMenu => tags.contains(TagStore.menu.number);
+
+  bool get isClosedForNow => closedUntil?.isAfter(DateTime.now()) ?? false;
 }

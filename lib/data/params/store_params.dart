@@ -1,13 +1,37 @@
 part of "../data.dart";
 
 class UStoreCreateParams {
-  UStoreCreateParams({required this.title, required this.storeTypeId, this.tags = const <int>[], this.organizationId, this.description});
+  UStoreCreateParams({
+    required this.title,
+    required this.storeTypeId,
+    this.tags = const <int>[],
+    this.organizationId,
+    this.description,
+    this.address,
+    this.phoneNumber,
+    this.latitude,
+    this.longitude,
+    this.workingHours,
+    this.closedUntil,
+    this.cardNumber,
+    this.iBan,
+    this.accountOwner,
+  });
 
   final List<int> tags;
   final String title;
   final String storeTypeId;
   final String? organizationId;
   final String? description;
+  final String? address;
+  final String? phoneNumber;
+  final double? latitude;
+  final double? longitude;
+  final List<UStoreWorkingDay>? workingHours;
+  final DateTime? closedUntil;
+  final String? cardNumber;
+  final String? iBan;
+  final String? accountOwner;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "tags": tags,
@@ -15,16 +39,50 @@ class UStoreCreateParams {
     "storeTypeId": storeTypeId,
     "organizationId": organizationId,
     "description": description,
+    "address": address,
+    "phoneNumber": phoneNumber,
+    "latitude": latitude,
+    "longitude": longitude,
+    "workingHours": workingHours?.map((UStoreWorkingDay x) => x.toMap()).toList(),
+    "closedUntil": closedUntil?.toUtc().toIso8601String(),
+    "cardNumber": cardNumber,
+    "iBan": iBan,
+    "accountOwner": accountOwner,
   };
 }
 
 class UStoreUpdateParams {
-  UStoreUpdateParams({required this.id, this.title, this.storeTypeId, this.description, this.addTags, this.removeTags});
+  UStoreUpdateParams({
+    required this.id,
+    this.title,
+    this.storeTypeId,
+    this.description,
+    this.address,
+    this.phoneNumber,
+    this.latitude,
+    this.longitude,
+    this.workingHours,
+    this.closedUntil,
+    this.cardNumber,
+    this.iBan,
+    this.accountOwner,
+    this.addTags,
+    this.removeTags,
+  });
 
   final String id;
   final String? title;
   final String? storeTypeId;
   final String? description;
+  final String? address;
+  final String? phoneNumber;
+  final double? latitude;
+  final double? longitude;
+  final List<UStoreWorkingDay>? workingHours;
+  final DateTime? closedUntil;
+  final String? cardNumber;
+  final String? iBan;
+  final String? accountOwner;
   final List<int>? addTags;
   final List<int>? removeTags;
 
@@ -33,6 +91,15 @@ class UStoreUpdateParams {
     "title": title,
     "storeTypeId": storeTypeId,
     "description": description,
+    "address": address,
+    "phoneNumber": phoneNumber,
+    "latitude": latitude,
+    "longitude": longitude,
+    "workingHours": workingHours?.map((UStoreWorkingDay x) => x.toMap()).toList(),
+    "closedUntil": closedUntil?.toUtc().toIso8601String(),
+    "cardNumber": cardNumber,
+    "iBan": iBan,
+    "accountOwner": accountOwner,
     "addTags": addTags,
     "removeTags": removeTags,
   };
