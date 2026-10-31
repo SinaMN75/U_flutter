@@ -8787,4 +8787,77 @@ class AppLocalizationsFa extends AppLocalizations {
   String dayToDay(Object from, Object to) {
     return '$from تا $to';
   }
+
+  @override
+  String get specs => 'مشخصات';
+
+  @override
+  String get addSpec => 'افزودن مشخصه';
+
+  @override
+  String get specTitle => 'عنوان مشخصه';
+
+  @override
+  String get youTube => 'یوتیوب';
+
+  @override
+  String get addAnotherLink => 'لینک دیگر';
+
+  @override
+  String get linkTitle => 'عنوان لینک';
+
+  @override
+  String get linkAddress => 'نشانی لینک';
+
+  @override
+  String get uploadAVideoOrAddAYouTubeLink => 'ویدیو را بارگذاری کنید یا لینک یوتیوب بگذارید.';
+
+  @override
+  String get selectVideo => 'انتخاب ویدیو';
+
+  @override
+  String get changeVideo => 'تغییر ویدیو';
+
+  @override
+  String get deleteVideo => 'حذف ویدیو';
+
+  @override
+  String get playVideo => 'پخش ویدیو';
+
+  @override
+  String get introVideo => 'ویدیوی معرفی';
+
+  @override
+  String get fromTheStoresYouTube => 'از یوتیوب فروشگاه';
+
+  @override
+  String get instagramPost => 'پست اینستاگرام';
+
+  @override
+  String get videoOnYouTube => 'ویدیو در یوتیوب';
+
+  @override
+  String get networksAndContact => 'شبکه‌ها و تماس';
+
+  @override
+  String get thisFeatureIsNotInYourSubscription => 'این قابلیت در اشتراک شما نیست';
+
+  @override
+  String get videoAndLinksShowBuyersYourProductsBetter => 'با ویدیو و لینک‌ها مشتری کالا و فروشگاه شما را بهتر می‌شناسد.';
+
+  @override
+  String get aVideoForEveryProduct => 'ویدیو برای هر کالا';
+
+  @override
+  String get instagramAndYouTubeLinks => 'لینک اینستاگرام و یوتیوب';
+
+  @override
+  String countPhotos(Object count) {
+    return '$count عکس';
+  }
+
+  @override
+  String thisVideoIsLargerThanSizeMb(Object size) {
+    return 'حجم این ویدیو از $size مگابایت بیشتر است';
+  }
 }

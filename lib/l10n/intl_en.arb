@@ -3548,5 +3548,38 @@
       "from": {},
       "to": {}
     }
+  },
+  "specs": "Specs",
+  "addSpec": "Add spec",
+  "specTitle": "Spec title",
+  "youTube": "YouTube",
+  "addAnotherLink": "Add another link",
+  "linkTitle": "Link title",
+  "linkAddress": "Link address",
+  "uploadAVideoOrAddAYouTubeLink": "Upload a video or add a YouTube link.",
+  "selectVideo": "Select video",
+  "changeVideo": "Change video",
+  "deleteVideo": "Delete video",
+  "playVideo": "Play video",
+  "introVideo": "Intro video",
+  "fromTheStoresYouTube": "From the store's YouTube",
+  "instagramPost": "Instagram post",
+  "videoOnYouTube": "Video on YouTube",
+  "networksAndContact": "Networks and contact",
+  "thisFeatureIsNotInYourSubscription": "This feature is not in your subscription",
+  "videoAndLinksShowBuyersYourProductsBetter": "Video and links show buyers your products and store better.",
+  "aVideoForEveryProduct": "A video for every product",
+  "instagramAndYouTubeLinks": "Instagram and YouTube links",
+  "countPhotos": "{count} photos",
+  "@countPhotos": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "thisVideoIsLargerThanSizeMb": "This video is larger than {size} MB",
+  "@thisVideoIsLargerThanSizeMb": {
+    "placeholders": {
+      "size": {}
+    }
   }
 }

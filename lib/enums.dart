@@ -300,6 +300,7 @@ enum TagUser with UNumericIdentifiable {
 enum TagMedia with UNumericIdentifiable {
   image("تصویر", "Image", 101),
   profile("پروفایل", "Profile", 102),
+  video("ویدیو", "Video", 103),
 
   /// The main photo of a hotel / dorm / room (shown first).
   cover("عکس اصلی", "Cover", 201),
@@ -317,6 +318,23 @@ enum TagMedia with UNumericIdentifiable {
   surroundings("اطراف", "Surroundings", 307);
 
   const TagMedia(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+/// What a [UWebLink] points to; the server checks known kinds against their website.
+enum TagLink with UNumericIdentifiable {
+  youTube("یوتیوب", "YouTube", 101),
+  instagram("اینستاگرام", "Instagram", 102),
+  telegram("تلگرام", "Telegram", 103),
+  other("دیگر", "Other", 199);
+
+  const TagLink(this.titleFa, this.titleEn, this.number);
 
   @override
   final String titleFa;

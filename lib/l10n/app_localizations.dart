@@ -17083,6 +17083,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{from} to {to}'**
   String dayToDay(Object from, Object to);
+
+  /// No description provided for @specs.
+  ///
+  /// In en, this message translates to:
+  /// **'Specs'**
+  String get specs;
+
+  /// No description provided for @addSpec.
+  ///
+  /// In en, this message translates to:
+  /// **'Add spec'**
+  String get addSpec;
+
+  /// No description provided for @specTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Spec title'**
+  String get specTitle;
+
+  /// No description provided for @youTube.
+  ///
+  /// In en, this message translates to:
+  /// **'YouTube'**
+  String get youTube;
+
+  /// No description provided for @addAnotherLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Add another link'**
+  String get addAnotherLink;
+
+  /// No description provided for @linkTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Link title'**
+  String get linkTitle;
+
+  /// No description provided for @linkAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Link address'**
+  String get linkAddress;
+
+  /// No description provided for @uploadAVideoOrAddAYouTubeLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload a video or add a YouTube link.'**
+  String get uploadAVideoOrAddAYouTubeLink;
+
+  /// No description provided for @selectVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Select video'**
+  String get selectVideo;
+
+  /// No description provided for @changeVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Change video'**
+  String get changeVideo;
+
+  /// No description provided for @deleteVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete video'**
+  String get deleteVideo;
+
+  /// No description provided for @playVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Play video'**
+  String get playVideo;
+
+  /// No description provided for @introVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Intro video'**
+  String get introVideo;
+
+  /// No description provided for @fromTheStoresYouTube.
+  ///
+  /// In en, this message translates to:
+  /// **'From the store\'s YouTube'**
+  String get fromTheStoresYouTube;
+
+  /// No description provided for @instagramPost.
+  ///
+  /// In en, this message translates to:
+  /// **'Instagram post'**
+  String get instagramPost;
+
+  /// No description provided for @videoOnYouTube.
+  ///
+  /// In en, this message translates to:
+  /// **'Video on YouTube'**
+  String get videoOnYouTube;
+
+  /// No description provided for @networksAndContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Networks and contact'**
+  String get networksAndContact;
+
+  /// No description provided for @thisFeatureIsNotInYourSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'This feature is not in your subscription'**
+  String get thisFeatureIsNotInYourSubscription;
+
+  /// No description provided for @videoAndLinksShowBuyersYourProductsBetter.
+  ///
+  /// In en, this message translates to:
+  /// **'Video and links show buyers your products and store better.'**
+  String get videoAndLinksShowBuyersYourProductsBetter;
+
+  /// No description provided for @aVideoForEveryProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'A video for every product'**
+  String get aVideoForEveryProduct;
+
+  /// No description provided for @instagramAndYouTubeLinks.
+  ///
+  /// In en, this message translates to:
+  /// **'Instagram and YouTube links'**
+  String get instagramAndYouTubeLinks;
+
+  /// No description provided for @countPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} photos'**
+  String countPhotos(Object count);
+
+  /// No description provided for @thisVideoIsLargerThanSizeMb.
+  ///
+  /// In en, this message translates to:
+  /// **'This video is larger than {size} MB'**
+  String thisVideoIsLargerThanSizeMb(Object size);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

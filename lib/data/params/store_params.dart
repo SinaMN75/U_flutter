@@ -16,6 +16,7 @@ class UStoreCreateParams {
     this.cardNumber,
     this.iBan,
     this.accountOwner,
+    this.links,
   });
 
   final List<int> tags;
@@ -32,6 +33,7 @@ class UStoreCreateParams {
   final String? cardNumber;
   final String? iBan;
   final String? accountOwner;
+  final List<UWebLink>? links;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "tags": tags,
@@ -48,6 +50,7 @@ class UStoreCreateParams {
     "cardNumber": cardNumber,
     "iBan": iBan,
     "accountOwner": accountOwner,
+    "links": links?.map((UWebLink x) => x.toMap()).toList(),
   };
 }
 
@@ -66,6 +69,7 @@ class UStoreUpdateParams {
     this.cardNumber,
     this.iBan,
     this.accountOwner,
+    this.links,
     this.addTags,
     this.removeTags,
   });
@@ -83,6 +87,7 @@ class UStoreUpdateParams {
   final String? cardNumber;
   final String? iBan;
   final String? accountOwner;
+  final List<UWebLink>? links;
   final List<int>? addTags;
   final List<int>? removeTags;
 
@@ -100,6 +105,7 @@ class UStoreUpdateParams {
     "cardNumber": cardNumber,
     "iBan": iBan,
     "accountOwner": accountOwner,
+    "links": links?.map((UWebLink x) => x.toMap()).toList(),
     "addTags": addTags,
     "removeTags": removeTags,
   };
@@ -226,7 +232,7 @@ class UStoreTypeReadParams {
 }
 
 class UProductCreateParams {
-  UProductCreateParams({required this.storeId, required this.title, required this.price, this.tags, this.categoryId, this.description, this.purchasePrice, this.stock = 0, this.lowStockAlert, this.unit});
+  UProductCreateParams({required this.storeId, required this.title, required this.price, this.tags, this.categoryId, this.description, this.purchasePrice, this.stock = 0, this.lowStockAlert, this.unit, this.specs, this.links});
 
   final String storeId;
   final String title;
@@ -238,6 +244,8 @@ class UProductCreateParams {
   final int stock;
   final int? lowStockAlert;
   final String? unit;
+  final List<UKeyValueData>? specs;
+  final List<UWebLink>? links;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "storeId": storeId,
@@ -250,11 +258,13 @@ class UProductCreateParams {
     "stock": stock,
     "lowStockAlert": lowStockAlert,
     "unit": unit,
+    "specs": specs?.map((UKeyValueData x) => x.toMap()).toList(),
+    "links": links?.map((UWebLink x) => x.toMap()).toList(),
   };
 }
 
 class UProductUpdateParams {
-  UProductUpdateParams({required this.id, this.title, this.price, this.categoryId, this.clearCategory = false, this.description, this.purchasePrice, this.stock, this.lowStockAlert, this.unit, this.addTags, this.removeTags});
+  UProductUpdateParams({required this.id, this.title, this.price, this.categoryId, this.clearCategory = false, this.description, this.purchasePrice, this.stock, this.lowStockAlert, this.unit, this.specs, this.links, this.addTags, this.removeTags});
 
   final String id;
   final String? title;
@@ -268,6 +278,8 @@ class UProductUpdateParams {
   final int? stock;
   final int? lowStockAlert;
   final String? unit;
+  final List<UKeyValueData>? specs;
+  final List<UWebLink>? links;
   final List<int>? addTags;
   final List<int>? removeTags;
 
@@ -282,6 +294,8 @@ class UProductUpdateParams {
     "stock": stock,
     "lowStockAlert": lowStockAlert,
     "unit": unit,
+    "specs": specs?.map((UKeyValueData x) => x.toMap()).toList(),
+    "links": links?.map((UWebLink x) => x.toMap()).toList(),
     "addTags": addTags,
     "removeTags": removeTags,
   };

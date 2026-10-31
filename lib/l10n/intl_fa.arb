@@ -3130,5 +3130,38 @@
       "from": {},
       "to": {}
     }
+  },
+  "specs": "مشخصات",
+  "addSpec": "افزودن مشخصه",
+  "specTitle": "عنوان مشخصه",
+  "youTube": "یوتیوب",
+  "addAnotherLink": "لینک دیگر",
+  "linkTitle": "عنوان لینک",
+  "linkAddress": "نشانی لینک",
+  "uploadAVideoOrAddAYouTubeLink": "ویدیو را بارگذاری کنید یا لینک یوتیوب بگذارید.",
+  "selectVideo": "انتخاب ویدیو",
+  "changeVideo": "تغییر ویدیو",
+  "deleteVideo": "حذف ویدیو",
+  "playVideo": "پخش ویدیو",
+  "introVideo": "ویدیوی معرفی",
+  "fromTheStoresYouTube": "از یوتیوب فروشگاه",
+  "instagramPost": "پست اینستاگرام",
+  "videoOnYouTube": "ویدیو در یوتیوب",
+  "networksAndContact": "شبکه‌ها و تماس",
+  "thisFeatureIsNotInYourSubscription": "این قابلیت در اشتراک شما نیست",
+  "videoAndLinksShowBuyersYourProductsBetter": "با ویدیو و لینک‌ها مشتری کالا و فروشگاه شما را بهتر می‌شناسد.",
+  "aVideoForEveryProduct": "ویدیو برای هر کالا",
+  "instagramAndYouTubeLinks": "لینک اینستاگرام و یوتیوب",
+  "countPhotos": "{count} عکس",
+  "@countPhotos": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "thisVideoIsLargerThanSizeMb": "حجم این ویدیو از {size} مگابایت بیشتر است",
+  "@thisVideoIsLargerThanSizeMb": {
+    "placeholders": {
+      "size": {}
+    }
   }
 }

@@ -8788,4 +8788,77 @@ class AppLocalizationsEn extends AppLocalizations {
   String dayToDay(Object from, Object to) {
     return '$from to $to';
   }
+
+  @override
+  String get specs => 'Specs';
+
+  @override
+  String get addSpec => 'Add spec';
+
+  @override
+  String get specTitle => 'Spec title';
+
+  @override
+  String get youTube => 'YouTube';
+
+  @override
+  String get addAnotherLink => 'Add another link';
+
+  @override
+  String get linkTitle => 'Link title';
+
+  @override
+  String get linkAddress => 'Link address';
+
+  @override
+  String get uploadAVideoOrAddAYouTubeLink => 'Upload a video or add a YouTube link.';
+
+  @override
+  String get selectVideo => 'Select video';
+
+  @override
+  String get changeVideo => 'Change video';
+
+  @override
+  String get deleteVideo => 'Delete video';
+
+  @override
+  String get playVideo => 'Play video';
+
+  @override
+  String get introVideo => 'Intro video';
+
+  @override
+  String get fromTheStoresYouTube => 'From the store\'s YouTube';
+
+  @override
+  String get instagramPost => 'Instagram post';
+
+  @override
+  String get videoOnYouTube => 'Video on YouTube';
+
+  @override
+  String get networksAndContact => 'Networks and contact';
+
+  @override
+  String get thisFeatureIsNotInYourSubscription => 'This feature is not in your subscription';
+
+  @override
+  String get videoAndLinksShowBuyersYourProductsBetter => 'Video and links show buyers your products and store better.';
+
+  @override
+  String get aVideoForEveryProduct => 'A video for every product';
+
+  @override
+  String get instagramAndYouTubeLinks => 'Instagram and YouTube links';
+
+  @override
+  String countPhotos(Object count) {
+    return '$count photos';
+  }
+
+  @override
+  String thisVideoIsLargerThanSizeMb(Object size) {
+    return 'This video is larger than $size MB';
+  }
 }

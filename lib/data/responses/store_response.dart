@@ -37,6 +37,25 @@ class UStoreWorkingDay {
   Map<String, dynamic> toMap() => <String, dynamic>{"day": day, "isOpen": isOpen, "opens": opens, "closes": closes};
 }
 
+/// A link to a page outside the app; [kind] is a [TagLink] number.
+class UWebLink {
+  UWebLink({required this.kind, required this.url, this.title});
+
+  factory UWebLink.fromMap(Map<String, dynamic> json) => UWebLink(kind: json["kind"], url: json["url"], title: json["title"]);
+
+  final int kind;
+  final String url;
+  final String? title;
+
+  bool isKind(TagLink tag) => kind == tag.number;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"kind": kind, "url": url, "title": title};
+}
+
+extension WebLinkListExtension on Iterable<UWebLink> {
+  UWebLink? ofKind(TagLink tag) => firstWhereOrNull((UWebLink x) => x.isKind(tag));
+}
+
 class UStoreTypeResponse {
   UStoreTypeResponse({required this.id, required this.createdAt, required this.tags, required this.title, required this.color, required this.icon, required this.order, this.hint});
 
@@ -87,6 +106,7 @@ class UStoreResponse {
     this.iBan,
     this.accountOwner,
     this.reviewMessage,
+    this.links = const <UWebLink>[],
     this.viewCount = 0,
     this.organizationId,
     this.organizationTitle,
@@ -113,6 +133,7 @@ class UStoreResponse {
     iBan: json["jsonData"]?["iBan"],
     accountOwner: json["jsonData"]?["accountOwner"],
     reviewMessage: json["jsonData"]?["reviewMessage"],
+    links: ((json["jsonData"]?["links"] as List<dynamic>?) ?? <dynamic>[]).map((dynamic x) => UWebLink.fromMap(x)).toList(),
     viewCount: json["viewCount"] ?? 0,
     organizationId: json["organizationId"],
     organizationTitle: json["organizationTitle"],
@@ -138,6 +159,7 @@ class UStoreResponse {
   final String? iBan;
   final String? accountOwner;
   final String? reviewMessage;
+  final List<UWebLink> links;
   final int viewCount;
   final String? organizationId;
   final String? organizationTitle;
@@ -203,6 +225,8 @@ class UProductResponse {
     this.purchasePrice,
     this.unit,
     this.lowStockAlert,
+    this.specs = const <UKeyValueData>[],
+    this.links = const <UWebLink>[],
     this.storeId,
     this.storeTitle,
     this.storeCode,
@@ -222,6 +246,8 @@ class UProductResponse {
     purchasePrice: json["jsonData"]?["purchasePrice"],
     unit: json["jsonData"]?["unit"],
     lowStockAlert: json["jsonData"]?["lowStockAlert"],
+    specs: ((json["jsonData"]?["specs"] as List<dynamic>?) ?? <dynamic>[]).map((dynamic x) => UKeyValueData.fromMap(x)).toList(),
+    links: ((json["jsonData"]?["links"] as List<dynamic>?) ?? <dynamic>[]).map((dynamic x) => UWebLink.fromMap(x)).toList(),
     storeId: json["storeId"],
     storeTitle: json["storeTitle"],
     storeCode: json["storeCode"],
@@ -240,6 +266,8 @@ class UProductResponse {
   final num? purchasePrice;
   final String? unit;
   final int? lowStockAlert;
+  final List<UKeyValueData> specs;
+  final List<UWebLink> links;
   final String? storeId;
   final String? storeTitle;
   final String? storeCode;
@@ -256,8 +284,13 @@ class UProductResponse {
   /// In stock, and at or under the seller's alert.
   bool get isLowStock => !isOutOfStock && lowStockAlert != null && stock <= lowStockAlert!;
 
-  UMediaResponse? get cover => media?.firstByTag(TagMedia.cover) ?? media?.firstOrNull;
+  /// The uploaded video, if any.
+  UMediaResponse? get video => media?.firstByTag(TagMedia.video);
+
+  Iterable<UMediaResponse> get _photos => media?.where((UMediaResponse m) => !m.tags.contains(TagMedia.video.number)) ?? const <UMediaResponse>[];
+
+  UMediaResponse? get cover => _photos.firstByTag(TagMedia.cover) ?? _photos.firstOrNull;
 
   /// All photos with the cover first.
-  List<UMediaResponse> get images => <UMediaResponse>[?cover, ...?media?.where((UMediaResponse m) => m.id != cover?.id)];
+  List<UMediaResponse> get images => <UMediaResponse>[?cover, ..._photos.where((UMediaResponse m) => m.id != cover?.id)];
 }
