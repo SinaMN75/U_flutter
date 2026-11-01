@@ -225,6 +225,9 @@ class UProductResponse {
     this.purchasePrice,
     this.unit,
     this.lowStockAlert,
+    this.lengthCm,
+    this.widthCm,
+    this.heightCm,
     this.specs = const <UKeyValueData>[],
     this.links = const <UWebLink>[],
     this.storeId,
@@ -246,6 +249,9 @@ class UProductResponse {
     purchasePrice: json["jsonData"]?["purchasePrice"],
     unit: json["jsonData"]?["unit"],
     lowStockAlert: json["jsonData"]?["lowStockAlert"],
+    lengthCm: json["jsonData"]?["lengthCm"],
+    widthCm: json["jsonData"]?["widthCm"],
+    heightCm: json["jsonData"]?["heightCm"],
     specs: ((json["jsonData"]?["specs"] as List<dynamic>?) ?? <dynamic>[]).map((dynamic x) => UKeyValueData.fromMap(x)).toList(),
     links: ((json["jsonData"]?["links"] as List<dynamic>?) ?? <dynamic>[]).map((dynamic x) => UWebLink.fromMap(x)).toList(),
     storeId: json["storeId"],
@@ -266,6 +272,9 @@ class UProductResponse {
   final num? purchasePrice;
   final String? unit;
   final int? lowStockAlert;
+  final num? lengthCm;
+  final num? widthCm;
+  final num? heightCm;
   final List<UKeyValueData> specs;
   final List<UWebLink> links;
   final String? storeId;
@@ -287,7 +296,17 @@ class UProductResponse {
   /// The uploaded video, if any.
   UMediaResponse? get video => media?.firstByTag(TagMedia.video);
 
-  Iterable<UMediaResponse> get _photos => media?.where((UMediaResponse m) => !m.tags.contains(TagMedia.video.number)) ?? const <UMediaResponse>[];
+  UMediaResponse? _modelFile(String extension) => media?.byTag(TagMedia.model3D).firstWhereOrNull((UMediaResponse m) => m.path.toLowerCase().endsWith(extension));
+
+  /// The 3D model in GLB, which every platform can show.
+  UMediaResponse? get model3D => _modelFile(".glb");
+
+  /// The same model in USDZ, for iOS.
+  UMediaResponse? get model3DIos => _modelFile(".usdz");
+
+  bool get hasDimensions => lengthCm != null && widthCm != null && heightCm != null;
+
+  Iterable<UMediaResponse> get _photos => media?.where((UMediaResponse m) => !m.tags.contains(TagMedia.video.number) && !m.tags.contains(TagMedia.model3D.number)) ?? const <UMediaResponse>[];
 
   UMediaResponse? get cover => _photos.firstByTag(TagMedia.cover) ?? _photos.firstOrNull;
 

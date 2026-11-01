@@ -17221,6 +17221,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This video is larger than {size} MB'**
   String thisVideoIsLargerThanSizeMb(Object size);
+
+  /// No description provided for @dragToRotate.
+  ///
+  /// In en, this message translates to:
+  /// **'Drag to rotate'**
+  String get dragToRotate;
+
+  /// No description provided for @dragWithTheMouseToRotateScrollToZoom.
+  ///
+  /// In en, this message translates to:
+  /// **'Drag with the mouse to rotate · Scroll to zoom'**
+  String get dragWithTheMouseToRotateScrollToZoom;
+
+  /// No description provided for @dimensions.
+  ///
+  /// In en, this message translates to:
+  /// **'Dimensions'**
+  String get dimensions;
+
+  /// No description provided for @lengthCm.
+  ///
+  /// In en, this message translates to:
+  /// **'Length (cm)'**
+  String get lengthCm;
+
+  /// No description provided for @widthCm.
+  ///
+  /// In en, this message translates to:
+  /// **'Width (cm)'**
+  String get widthCm;
+
+  /// No description provided for @heightCm.
+  ///
+  /// In en, this message translates to:
+  /// **'Height (cm)'**
+  String get heightCm;
+
+  /// No description provided for @selectGlbOrUsdzFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Select .glb or .usdz file'**
+  String get selectGlbOrUsdzFile;
+
+  /// No description provided for @replaceGlbOrUsdzFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace .glb or .usdz file'**
+  String get replaceGlbOrUsdzFile;
+
+  /// No description provided for @withoutA3dModelThe3dTabAndArButtonAreNotShownToBuyers.
+  ///
+  /// In en, this message translates to:
+  /// **'Without a 3D model, the 3D tab and AR button are not shown to buyers.'**
+  String get withoutA3dModelThe3dTabAndArButtonAreNotShownToBuyers;
+
+  /// No description provided for @uploadTheGlbFileFirstUsdzIsOnlyForIphoneAndIpad.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload the .glb file first; .usdz is only for iPhone and iPad.'**
+  String get uploadTheGlbFileFirstUsdzIsOnlyForIphoneAndIpad;
+
+  /// No description provided for @deleteModel.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete model'**
+  String get deleteModel;
+
+  /// No description provided for @areYouSureYouWantToDeleteThisModel.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this model?'**
+  String get areYouSureYouWantToDeleteThisModel;
+
+  /// No description provided for @a3dModelShowsBuyersEverySideOfYourProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'A 3D model shows buyers every side of your product.'**
+  String get a3dModelShowsBuyersEverySideOfYourProduct;
+
+  /// No description provided for @a3dModelForEveryProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'A 3D model for every product'**
+  String get a3dModelForEveryProduct;
+
+  /// No description provided for @buyersRotateAndZoomItOnTheProductPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Buyers rotate and zoom it on the product page'**
+  String get buyersRotateAndZoomItOnTheProductPage;
+
+  /// No description provided for @lengthByWidthByHeightCm.
+  ///
+  /// In en, this message translates to:
+  /// **'{length} × {width} × {height} cm'**
+  String lengthByWidthByHeightCm(Object length, Object width, Object height);
+
+  /// No description provided for @thisModelIsLargerThanSizeMb.
+  ///
+  /// In en, this message translates to:
+  /// **'This model is larger than {size} MB'**
+  String thisModelIsLargerThanSizeMb(Object size);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

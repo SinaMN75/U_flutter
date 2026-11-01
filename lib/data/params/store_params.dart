@@ -232,7 +232,7 @@ class UStoreTypeReadParams {
 }
 
 class UProductCreateParams {
-  UProductCreateParams({required this.storeId, required this.title, required this.price, this.tags, this.categoryId, this.description, this.purchasePrice, this.stock = 0, this.lowStockAlert, this.unit, this.specs, this.links});
+  UProductCreateParams({required this.storeId, required this.title, required this.price, this.tags, this.categoryId, this.description, this.purchasePrice, this.stock = 0, this.lowStockAlert, this.lengthCm, this.widthCm, this.heightCm, this.unit, this.specs, this.links});
 
   final String storeId;
   final String title;
@@ -243,6 +243,11 @@ class UProductCreateParams {
   final num? purchasePrice;
   final int stock;
   final int? lowStockAlert;
+
+  /// 0 clears a size.
+  final double? lengthCm;
+  final double? widthCm;
+  final double? heightCm;
   final String? unit;
   final List<UKeyValueData>? specs;
   final List<UWebLink>? links;
@@ -257,6 +262,9 @@ class UProductCreateParams {
     "purchasePrice": purchasePrice,
     "stock": stock,
     "lowStockAlert": lowStockAlert,
+    "lengthCm": lengthCm,
+    "widthCm": widthCm,
+    "heightCm": heightCm,
     "unit": unit,
     "specs": specs?.map((UKeyValueData x) => x.toMap()).toList(),
     "links": links?.map((UWebLink x) => x.toMap()).toList(),
@@ -264,7 +272,7 @@ class UProductCreateParams {
 }
 
 class UProductUpdateParams {
-  UProductUpdateParams({required this.id, this.title, this.price, this.categoryId, this.clearCategory = false, this.description, this.purchasePrice, this.stock, this.lowStockAlert, this.unit, this.specs, this.links, this.addTags, this.removeTags});
+  UProductUpdateParams({required this.id, this.title, this.price, this.categoryId, this.clearCategory = false, this.description, this.purchasePrice, this.stock, this.lowStockAlert, this.lengthCm, this.widthCm, this.heightCm, this.unit, this.specs, this.links, this.addTags, this.removeTags});
 
   final String id;
   final String? title;
@@ -277,6 +285,11 @@ class UProductUpdateParams {
   final num? purchasePrice;
   final int? stock;
   final int? lowStockAlert;
+
+  /// 0 clears a size.
+  final double? lengthCm;
+  final double? widthCm;
+  final double? heightCm;
   final String? unit;
   final List<UKeyValueData>? specs;
   final List<UWebLink>? links;
@@ -293,6 +306,9 @@ class UProductUpdateParams {
     "purchasePrice": purchasePrice,
     "stock": stock,
     "lowStockAlert": lowStockAlert,
+    "lengthCm": lengthCm,
+    "widthCm": widthCm,
+    "heightCm": heightCm,
     "unit": unit,
     "specs": specs?.map((UKeyValueData x) => x.toMap()).toList(),
     "links": links?.map((UWebLink x) => x.toMap()).toList(),

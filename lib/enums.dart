@@ -301,6 +301,7 @@ enum TagMedia with UNumericIdentifiable {
   image("تصویر", "Image", 101),
   profile("پروفایل", "Profile", 102),
   video("ویدیو", "Video", 103),
+  model3D("مدل سه‌بعدی", "3D model", 104),
 
   /// The main photo of a hotel / dorm / room (shown first).
   cover("عکس اصلی", "Cover", 201),

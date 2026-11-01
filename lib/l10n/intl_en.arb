@@ -3581,5 +3581,34 @@
     "placeholders": {
       "size": {}
     }
+  },
+  "dragToRotate": "Drag to rotate",
+  "dragWithTheMouseToRotateScrollToZoom": "Drag with the mouse to rotate · Scroll to zoom",
+  "dimensions": "Dimensions",
+  "lengthCm": "Length (cm)",
+  "widthCm": "Width (cm)",
+  "heightCm": "Height (cm)",
+  "selectGlbOrUsdzFile": "Select .glb or .usdz file",
+  "replaceGlbOrUsdzFile": "Replace .glb or .usdz file",
+  "withoutA3dModelThe3dTabAndArButtonAreNotShownToBuyers": "Without a 3D model, the 3D tab and AR button are not shown to buyers.",
+  "uploadTheGlbFileFirstUsdzIsOnlyForIphoneAndIpad": "Upload the .glb file first; .usdz is only for iPhone and iPad.",
+  "deleteModel": "Delete model",
+  "areYouSureYouWantToDeleteThisModel": "Are you sure you want to delete this model?",
+  "a3dModelShowsBuyersEverySideOfYourProduct": "A 3D model shows buyers every side of your product.",
+  "a3dModelForEveryProduct": "A 3D model for every product",
+  "buyersRotateAndZoomItOnTheProductPage": "Buyers rotate and zoom it on the product page",
+  "lengthByWidthByHeightCm": "{length} × {width} × {height} cm",
+  "@lengthByWidthByHeightCm": {
+    "placeholders": {
+      "length": {},
+      "width": {},
+      "height": {}
+    }
+  },
+  "thisModelIsLargerThanSizeMb": "This model is larger than {size} MB",
+  "@thisModelIsLargerThanSizeMb": {
+    "placeholders": {
+      "size": {}
+    }
   }
 }

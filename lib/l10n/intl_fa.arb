@@ -3163,5 +3163,34 @@
     "placeholders": {
       "size": {}
     }
+  },
+  "dragToRotate": "برای چرخاندن بکشید",
+  "dragWithTheMouseToRotateScrollToZoom": "با ماوس بکشید تا بچرخد · اسکرول برای بزرگ‌نمایی",
+  "dimensions": "ابعاد",
+  "lengthCm": "طول (cm)",
+  "widthCm": "عرض (cm)",
+  "heightCm": "ارتفاع (cm)",
+  "selectGlbOrUsdzFile": "انتخاب فایل ‎.glb یا ‎.usdz",
+  "replaceGlbOrUsdzFile": "جایگزینی فایل ‎.glb یا ‎.usdz",
+  "withoutA3dModelThe3dTabAndArButtonAreNotShownToBuyers": "بدون مدل سه‌بعدی، تب «سه‌بعدی» و دکمه AR برای مشتری نشان داده نمی‌شود.",
+  "uploadTheGlbFileFirstUsdzIsOnlyForIphoneAndIpad": "اول فایل ‎.glb را بارگذاری کنید؛ ‎.usdz فقط برای آیفون و آیپد است.",
+  "deleteModel": "حذف مدل",
+  "areYouSureYouWantToDeleteThisModel": "از حذف این مدل مطمئن هستید؟",
+  "a3dModelShowsBuyersEverySideOfYourProduct": "مدل سه‌بعدی همه طرف‌های کالای شما را به خریدار نشان می‌دهد.",
+  "a3dModelForEveryProduct": "مدل سه‌بعدی برای هر کالا",
+  "buyersRotateAndZoomItOnTheProductPage": "خریدار آن را در صفحه کالا می‌چرخاند و بزرگ می‌کند",
+  "lengthByWidthByHeightCm": "{length} × {width} × {height} سانتی‌متر",
+  "@lengthByWidthByHeightCm": {
+    "placeholders": {
+      "length": {},
+      "width": {},
+      "height": {}
+    }
+  },
+  "thisModelIsLargerThanSizeMb": "این مدل بزرگ‌تر از {size} مگابایت است",
+  "@thisModelIsLargerThanSizeMb": {
+    "placeholders": {
+      "size": {}
+    }
   }
 }

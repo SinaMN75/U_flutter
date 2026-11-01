@@ -8861,4 +8861,59 @@ class AppLocalizationsEn extends AppLocalizations {
   String thisVideoIsLargerThanSizeMb(Object size) {
     return 'This video is larger than $size MB';
   }
+
+  @override
+  String get dragToRotate => 'Drag to rotate';
+
+  @override
+  String get dragWithTheMouseToRotateScrollToZoom => 'Drag with the mouse to rotate · Scroll to zoom';
+
+  @override
+  String get dimensions => 'Dimensions';
+
+  @override
+  String get lengthCm => 'Length (cm)';
+
+  @override
+  String get widthCm => 'Width (cm)';
+
+  @override
+  String get heightCm => 'Height (cm)';
+
+  @override
+  String get selectGlbOrUsdzFile => 'Select .glb or .usdz file';
+
+  @override
+  String get replaceGlbOrUsdzFile => 'Replace .glb or .usdz file';
+
+  @override
+  String get withoutA3dModelThe3dTabAndArButtonAreNotShownToBuyers => 'Without a 3D model, the 3D tab and AR button are not shown to buyers.';
+
+  @override
+  String get uploadTheGlbFileFirstUsdzIsOnlyForIphoneAndIpad => 'Upload the .glb file first; .usdz is only for iPhone and iPad.';
+
+  @override
+  String get deleteModel => 'Delete model';
+
+  @override
+  String get areYouSureYouWantToDeleteThisModel => 'Are you sure you want to delete this model?';
+
+  @override
+  String get a3dModelShowsBuyersEverySideOfYourProduct => 'A 3D model shows buyers every side of your product.';
+
+  @override
+  String get a3dModelForEveryProduct => 'A 3D model for every product';
+
+  @override
+  String get buyersRotateAndZoomItOnTheProductPage => 'Buyers rotate and zoom it on the product page';
+
+  @override
+  String lengthByWidthByHeightCm(Object length, Object width, Object height) {
+    return '$length × $width × $height cm';
+  }
+
+  @override
+  String thisModelIsLargerThanSizeMb(Object size) {
+    return 'This model is larger than $size MB';
+  }
 }

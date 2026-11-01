@@ -8860,4 +8860,59 @@ class AppLocalizationsFa extends AppLocalizations {
   String thisVideoIsLargerThanSizeMb(Object size) {
     return 'حجم این ویدیو از $size مگابایت بیشتر است';
   }
+
+  @override
+  String get dragToRotate => 'برای چرخاندن بکشید';
+
+  @override
+  String get dragWithTheMouseToRotateScrollToZoom => 'با ماوس بکشید تا بچرخد · اسکرول برای بزرگ‌نمایی';
+
+  @override
+  String get dimensions => 'ابعاد';
+
+  @override
+  String get lengthCm => 'طول (cm)';
+
+  @override
+  String get widthCm => 'عرض (cm)';
+
+  @override
+  String get heightCm => 'ارتفاع (cm)';
+
+  @override
+  String get selectGlbOrUsdzFile => 'انتخاب فایل ‎.glb یا ‎.usdz';
+
+  @override
+  String get replaceGlbOrUsdzFile => 'جایگزینی فایل ‎.glb یا ‎.usdz';
+
+  @override
+  String get withoutA3dModelThe3dTabAndArButtonAreNotShownToBuyers => 'بدون مدل سه‌بعدی، تب «سه‌بعدی» و دکمه AR برای مشتری نشان داده نمی‌شود.';
+
+  @override
+  String get uploadTheGlbFileFirstUsdzIsOnlyForIphoneAndIpad => 'اول فایل ‎.glb را بارگذاری کنید؛ ‎.usdz فقط برای آیفون و آیپد است.';
+
+  @override
+  String get deleteModel => 'حذف مدل';
+
+  @override
+  String get areYouSureYouWantToDeleteThisModel => 'از حذف این مدل مطمئن هستید؟';
+
+  @override
+  String get a3dModelShowsBuyersEverySideOfYourProduct => 'مدل سه‌بعدی همه طرف‌های کالای شما را به خریدار نشان می‌دهد.';
+
+  @override
+  String get a3dModelForEveryProduct => 'مدل سه‌بعدی برای هر کالا';
+
+  @override
+  String get buyersRotateAndZoomItOnTheProductPage => 'خریدار آن را در صفحه کالا می‌چرخاند و بزرگ می‌کند';
+
+  @override
+  String lengthByWidthByHeightCm(Object length, Object width, Object height) {
+    return '$length × $width × $height سانتی‌متر';
+  }
+
+  @override
+  String thisModelIsLargerThanSizeMb(Object size) {
+    return 'این مدل بزرگ‌تر از $size مگابایت است';
+  }
 }
