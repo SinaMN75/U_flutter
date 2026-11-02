@@ -12,6 +12,7 @@ class UListTile extends StatelessWidget {
     this.color,
     this.textColor,
     this.subtitle,
+    this.backgroundColor,
     this.trailingIcon = Icons.arrow_forward_ios,
     super.key,
   });
@@ -37,11 +38,14 @@ class UListTile extends StatelessWidget {
   /// Called when tapped.
   final VoidCallback onTap;
 
+  final Color? backgroundColor;
+
   @override
   Widget build(BuildContext context) => UPressable(
     onTap: onTap,
     child: Card(
       child: ListTile(
+        tileColor: backgroundColor,
         contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
         leading: UIconBackground(icon, color: color ?? Theme.of(context).colorScheme.primary),
         title: UTextBodyMedium(title, color: textColor, fontWeight: FontWeight.bold),
