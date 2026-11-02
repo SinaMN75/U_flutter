@@ -109,6 +109,7 @@ class UStoreResponse {
     this.links = const <UWebLink>[],
     this.viewCount = 0,
     this.paymentViewCount = 0,
+    this.menuIsActive = false,
     this.organizationId,
     this.organizationTitle,
     this.storeType,
@@ -137,6 +138,7 @@ class UStoreResponse {
     links: ((json["jsonData"]?["links"] as List<dynamic>?) ?? <dynamic>[]).map((dynamic x) => UWebLink.fromMap(x)).toList(),
     viewCount: json["viewCount"] ?? 0,
     paymentViewCount: json["paymentViewCount"] ?? 0,
+    menuIsActive: json["menuIsActive"] ?? false,
     organizationId: json["organizationId"],
     organizationTitle: json["organizationTitle"],
     storeType: json["storeType"] == null ? null : UStoreTypeResponse.fromMap(json["storeType"]),
@@ -164,6 +166,7 @@ class UStoreResponse {
   final List<UWebLink> links;
   final int viewCount;
   final int paymentViewCount;
+  final bool menuIsActive;
   final String? organizationId;
   final String? organizationTitle;
   final UStoreTypeResponse? storeType;

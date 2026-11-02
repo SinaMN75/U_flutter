@@ -3240,5 +3240,18 @@
       "app": {}
     }
   },
-  "couldNotCopyPleaseCopyItManually": "کپی نشد؛ لطفاً دستی کپی کنید."
+  "couldNotCopyPleaseCopyItManually": "کپی نشد؛ لطفاً دستی کپی کنید.",
+  "tableNumber": "میز {number}",
+  "@tableNumber": {
+    "placeholders": {
+      "number": {}
+    }
+  },
+  "tableNumberBill": "صورت‌حساب میز {number}",
+  "@tableNumberBill": {
+    "placeholders": {
+      "number": {}
+    }
+  },
+  "yourBill": "صورت‌حساب شما"
 }

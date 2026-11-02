@@ -8994,4 +8994,17 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get couldNotCopyPleaseCopyItManually => 'کپی نشد؛ لطفاً دستی کپی کنید.';
+
+  @override
+  String tableNumber(Object number) {
+    return 'میز $number';
+  }
+
+  @override
+  String tableNumberBill(Object number) {
+    return 'صورت‌حساب میز $number';
+  }
+
+  @override
+  String get yourBill => 'صورت‌حساب شما';
 }

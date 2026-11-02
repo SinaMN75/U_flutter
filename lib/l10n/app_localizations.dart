@@ -17461,6 +17461,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not copy; please copy it manually.'**
   String get couldNotCopyPleaseCopyItManually;
+
+  /// No description provided for @tableNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Table {number}'**
+  String tableNumber(Object number);
+
+  /// No description provided for @tableNumberBill.
+  ///
+  /// In en, this message translates to:
+  /// **'Table {number} bill'**
+  String tableNumberBill(Object number);
+
+  /// No description provided for @yourBill.
+  ///
+  /// In en, this message translates to:
+  /// **'Your bill'**
+  String get yourBill;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

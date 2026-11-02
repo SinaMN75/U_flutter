@@ -8995,4 +8995,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get couldNotCopyPleaseCopyItManually => 'Could not copy; please copy it manually.';
+
+  @override
+  String tableNumber(Object number) {
+    return 'Table $number';
+  }
+
+  @override
+  String tableNumberBill(Object number) {
+    return 'Table $number bill';
+  }
+
+  @override
+  String get yourBill => 'Your bill';
 }

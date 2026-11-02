@@ -3658,5 +3658,18 @@
       "app": {}
     }
   },
-  "couldNotCopyPleaseCopyItManually": "Could not copy; please copy it manually."
+  "couldNotCopyPleaseCopyItManually": "Could not copy; please copy it manually.",
+  "tableNumber": "Table {number}",
+  "@tableNumber": {
+    "placeholders": {
+      "number": {}
+    }
+  },
+  "tableNumberBill": "Table {number} bill",
+  "@tableNumberBill": {
+    "placeholders": {
+      "number": {}
+    }
+  },
+  "yourBill": "Your bill"
 }
