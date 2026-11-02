@@ -3671,5 +3671,77 @@
       "number": {}
     }
   },
-  "yourBill": "Your bill"
+  "yourBill": "Your bill",
+  "qrAlwaysGoesToThisStorePageNoNeedToReprintWhenProductsChange": "Your QR always goes to this store page; no need to reprint when products change.",
+  "priceOfEverythingWithOneScan": "Price of everything with one scan",
+  "itemsAndPrices": "Items and prices",
+  "pointYourPhoneCameraAtTheCode": "Point your phone camera at the code",
+  "scanAndChoosePayInPerson": "Scan and choose, pay in person",
+  "scanIt": "Scan it",
+  "seeItemsAddUpTheTotalBuyInPerson": "See items, add up the total, buy in person",
+  "noAppNeeded": "No app needed",
+  "doorPoster": "Door poster",
+  "smallSticker": "Small sticker",
+  "counterStand": "Counter stand",
+  "eightByEightCm": "8 × 8 cm",
+  "template": "Template",
+  "textAtTheTopOfThePoster": "Text at the top of the poster",
+  "downloadPdf": "Download PDF",
+  "downloadPdfForPrinting": "Download PDF for printing",
+  "downloadPngImage": "Download PNG image",
+  "qrCodeOnly": "QR code only",
+  "qrForEachTable": "QR for each table",
+  "forCafesAndRestaurants": "For cafes and restaurants",
+  "theTableNumberIsWrittenOnTheCustomersBill": "The table number is written on the customer's bill.",
+  "numberOfTables": "Number of tables",
+  "downloadAllTablesPdf": "Download all tables (PDF)",
+  "enterANumberFrom1ToMax": "Enter a number from 1 to {max}",
+  "@enterANumberFrom1ToMax": {
+    "placeholders": {
+      "max": {}
+    }
+  },
+  "scansInTheLast7Days": "Scans in the last 7 days",
+  "countTimes": "{count} times",
+  "@countTimes": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "couldNotCreateTheFile": "Could not create the file",
+  "fileSaved": "File saved",
+  "customPostersLetYouPickTheTemplateColorAndText": "Custom posters let you pick the template, color and text.",
+  "stickerAndCounterStandTemplates": "Sticker and counter stand templates",
+  "yourOwnColorAndTextOnThePoster": "Your own color and text on the poster",
+  "aQrForEachTableShowsTheCustomerTheirTableNumber": "A QR for each table shows the customer their table number.",
+  "scanStoreQr": "Scan store QR",
+  "putTheQrAtTheDoorOrOnTheTableInTheFrame": "Put the QR at the door or on the table in the frame",
+  "found": "Found",
+  "fromGallery": "From gallery",
+  "enterCode": "Enter code",
+  "storeCode": "Store code",
+  "recentScans": "Recent scans",
+  "thisCodeIsNotAStoreQr": "This code is not a store QR",
+  "tapAnItemToAddOneStockGoesDownAutomatically": "Tap an item to add one; stock goes down automatically.",
+  "tapItemsAfterSavingStockUpdatesAutomatically": "Tap items; after saving, stock updates automatically.",
+  "salesInvoice": "Sales invoice",
+  "recordSale": "Record sale",
+  "saleRecorded": "Sale recorded",
+  "notEnoughStock": "Not enough stock",
+  "stockCount": "Stock {count}",
+  "@stockCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "lastSaleTimeAmount": "Last sale: {time} · {amount} Toman",
+  "@lastSaleTimeAmount": {
+    "placeholders": {
+      "time": {},
+      "amount": {}
+    }
+  },
+  "quickSaleRecordsYourSalesAndUpdatesTheStock": "Quick sale records your sales and updates the stock.",
+  "sellSeveralItemsInOneTap": "Sell several items in a few taps",
+  "stockGoesDownWithEverySale": "Stock goes down with every sale"
 }

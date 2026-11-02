@@ -56,6 +56,71 @@ extension WebLinkListExtension on Iterable<UWebLink> {
   UWebLink? ofKind(TagLink tag) => firstWhereOrNull((UWebLink x) => x.isKind(tag));
 }
 
+/// How a store's printed poster looks; empty fields use the app's defaults.
+class UStorePoster {
+  UStorePoster({this.template, this.color, this.headline});
+
+  factory UStorePoster.fromMap(Map<String, dynamic> json) => UStorePoster(template: json["template"], color: json["color"], headline: json["headline"]);
+
+  final String? template;
+
+  /// `#RRGGBB`.
+  final String? color;
+  final String? headline;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"template": template, "color": color, "headline": headline};
+}
+
+class UStoreScanResponse {
+  UStoreScanResponse({this.total = 0, this.last7Days = 0});
+
+  factory UStoreScanResponse.fromMap(Map<String, dynamic> json) => UStoreScanResponse(total: json["total"] ?? 0, last7Days: json["last7Days"] ?? 0);
+
+  final int total;
+  final int last7Days;
+}
+
+/// A copy of the product at the time of the sale.
+class UStoreSaleLine {
+  UStoreSaleLine({required this.productId, required this.title, required this.quantity, required this.unitPrice, this.purchasePrice});
+
+  factory UStoreSaleLine.fromMap(Map<String, dynamic> json) => UStoreSaleLine(
+    productId: json["productId"],
+    title: json["title"] ?? "",
+    quantity: json["quantity"] ?? 0,
+    unitPrice: json["unitPrice"] ?? 0,
+    purchasePrice: json["purchasePrice"],
+  );
+
+  final String productId;
+  final String title;
+  final int quantity;
+  final num unitPrice;
+  final num? purchasePrice;
+}
+
+class UStoreSaleResponse {
+  UStoreSaleResponse({required this.id, required this.storeId, required this.createdAt, this.total = 0, this.tags = const <int>[], this.lines = const <UStoreSaleLine>[]});
+
+  factory UStoreSaleResponse.fromMap(Map<String, dynamic> json) => UStoreSaleResponse(
+    id: json["id"],
+    storeId: json["storeId"],
+    createdAt: DateTime.parse(json["createdAt"]),
+    total: json["total"] ?? 0,
+    tags: List<int>.from(json["tags"] ?? <int>[]),
+    lines: ((json["jsonData"]?["lines"] as List<dynamic>?) ?? <dynamic>[]).map((dynamic x) => UStoreSaleLine.fromMap(x)).toList(),
+  );
+
+  final String id;
+  final String storeId;
+  final DateTime createdAt;
+  final num total;
+
+  /// [TagStoreSale] numbers.
+  final List<int> tags;
+  final List<UStoreSaleLine> lines;
+}
+
 class UStoreTypeResponse {
   UStoreTypeResponse({required this.id, required this.createdAt, required this.tags, required this.title, required this.color, required this.icon, required this.order, this.hint});
 
@@ -107,6 +172,7 @@ class UStoreResponse {
     this.accountOwner,
     this.reviewMessage,
     this.links = const <UWebLink>[],
+    this.poster,
     this.viewCount = 0,
     this.paymentViewCount = 0,
     this.menuIsActive = false,
@@ -136,6 +202,7 @@ class UStoreResponse {
     accountOwner: json["jsonData"]?["accountOwner"],
     reviewMessage: json["jsonData"]?["reviewMessage"],
     links: ((json["jsonData"]?["links"] as List<dynamic>?) ?? <dynamic>[]).map((dynamic x) => UWebLink.fromMap(x)).toList(),
+    poster: json["jsonData"]?["poster"] == null ? null : UStorePoster.fromMap(json["jsonData"]["poster"]),
     viewCount: json["viewCount"] ?? 0,
     paymentViewCount: json["paymentViewCount"] ?? 0,
     menuIsActive: json["menuIsActive"] ?? false,
@@ -165,6 +232,7 @@ class UStoreResponse {
   final String? reviewMessage;
   final List<UWebLink> links;
   final int viewCount;
+  final UStorePoster? poster;
   final int paymentViewCount;
   final bool menuIsActive;
   final String? organizationId;

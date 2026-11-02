@@ -17479,6 +17479,312 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your bill'**
   String get yourBill;
+
+  /// No description provided for @qrAlwaysGoesToThisStorePageNoNeedToReprintWhenProductsChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Your QR always goes to this store page; no need to reprint when products change.'**
+  String get qrAlwaysGoesToThisStorePageNoNeedToReprintWhenProductsChange;
+
+  /// No description provided for @priceOfEverythingWithOneScan.
+  ///
+  /// In en, this message translates to:
+  /// **'Price of everything with one scan'**
+  String get priceOfEverythingWithOneScan;
+
+  /// No description provided for @itemsAndPrices.
+  ///
+  /// In en, this message translates to:
+  /// **'Items and prices'**
+  String get itemsAndPrices;
+
+  /// No description provided for @pointYourPhoneCameraAtTheCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Point your phone camera at the code'**
+  String get pointYourPhoneCameraAtTheCode;
+
+  /// No description provided for @scanAndChoosePayInPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan and choose, pay in person'**
+  String get scanAndChoosePayInPerson;
+
+  /// No description provided for @scanIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan it'**
+  String get scanIt;
+
+  /// No description provided for @seeItemsAddUpTheTotalBuyInPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'See items, add up the total, buy in person'**
+  String get seeItemsAddUpTheTotalBuyInPerson;
+
+  /// No description provided for @noAppNeeded.
+  ///
+  /// In en, this message translates to:
+  /// **'No app needed'**
+  String get noAppNeeded;
+
+  /// No description provided for @doorPoster.
+  ///
+  /// In en, this message translates to:
+  /// **'Door poster'**
+  String get doorPoster;
+
+  /// No description provided for @smallSticker.
+  ///
+  /// In en, this message translates to:
+  /// **'Small sticker'**
+  String get smallSticker;
+
+  /// No description provided for @counterStand.
+  ///
+  /// In en, this message translates to:
+  /// **'Counter stand'**
+  String get counterStand;
+
+  /// No description provided for @eightByEightCm.
+  ///
+  /// In en, this message translates to:
+  /// **'8 × 8 cm'**
+  String get eightByEightCm;
+
+  /// No description provided for @template.
+  ///
+  /// In en, this message translates to:
+  /// **'Template'**
+  String get template;
+
+  /// No description provided for @textAtTheTopOfThePoster.
+  ///
+  /// In en, this message translates to:
+  /// **'Text at the top of the poster'**
+  String get textAtTheTopOfThePoster;
+
+  /// No description provided for @downloadPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Download PDF'**
+  String get downloadPdf;
+
+  /// No description provided for @downloadPdfForPrinting.
+  ///
+  /// In en, this message translates to:
+  /// **'Download PDF for printing'**
+  String get downloadPdfForPrinting;
+
+  /// No description provided for @downloadPngImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Download PNG image'**
+  String get downloadPngImage;
+
+  /// No description provided for @qrCodeOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'QR code only'**
+  String get qrCodeOnly;
+
+  /// No description provided for @qrForEachTable.
+  ///
+  /// In en, this message translates to:
+  /// **'QR for each table'**
+  String get qrForEachTable;
+
+  /// No description provided for @forCafesAndRestaurants.
+  ///
+  /// In en, this message translates to:
+  /// **'For cafes and restaurants'**
+  String get forCafesAndRestaurants;
+
+  /// No description provided for @theTableNumberIsWrittenOnTheCustomersBill.
+  ///
+  /// In en, this message translates to:
+  /// **'The table number is written on the customer\'s bill.'**
+  String get theTableNumberIsWrittenOnTheCustomersBill;
+
+  /// No description provided for @numberOfTables.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of tables'**
+  String get numberOfTables;
+
+  /// No description provided for @downloadAllTablesPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Download all tables (PDF)'**
+  String get downloadAllTablesPdf;
+
+  /// No description provided for @enterANumberFrom1ToMax.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a number from 1 to {max}'**
+  String enterANumberFrom1ToMax(Object max);
+
+  /// No description provided for @scansInTheLast7Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Scans in the last 7 days'**
+  String get scansInTheLast7Days;
+
+  /// No description provided for @countTimes.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} times'**
+  String countTimes(Object count);
+
+  /// No description provided for @couldNotCreateTheFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not create the file'**
+  String get couldNotCreateTheFile;
+
+  /// No description provided for @fileSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'File saved'**
+  String get fileSaved;
+
+  /// No description provided for @customPostersLetYouPickTheTemplateColorAndText.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom posters let you pick the template, color and text.'**
+  String get customPostersLetYouPickTheTemplateColorAndText;
+
+  /// No description provided for @stickerAndCounterStandTemplates.
+  ///
+  /// In en, this message translates to:
+  /// **'Sticker and counter stand templates'**
+  String get stickerAndCounterStandTemplates;
+
+  /// No description provided for @yourOwnColorAndTextOnThePoster.
+  ///
+  /// In en, this message translates to:
+  /// **'Your own color and text on the poster'**
+  String get yourOwnColorAndTextOnThePoster;
+
+  /// No description provided for @aQrForEachTableShowsTheCustomerTheirTableNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'A QR for each table shows the customer their table number.'**
+  String get aQrForEachTableShowsTheCustomerTheirTableNumber;
+
+  /// No description provided for @scanStoreQr.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan store QR'**
+  String get scanStoreQr;
+
+  /// No description provided for @putTheQrAtTheDoorOrOnTheTableInTheFrame.
+  ///
+  /// In en, this message translates to:
+  /// **'Put the QR at the door or on the table in the frame'**
+  String get putTheQrAtTheDoorOrOnTheTableInTheFrame;
+
+  /// No description provided for @found.
+  ///
+  /// In en, this message translates to:
+  /// **'Found'**
+  String get found;
+
+  /// No description provided for @fromGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'From gallery'**
+  String get fromGallery;
+
+  /// No description provided for @enterCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter code'**
+  String get enterCode;
+
+  /// No description provided for @storeCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Store code'**
+  String get storeCode;
+
+  /// No description provided for @recentScans.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent scans'**
+  String get recentScans;
+
+  /// No description provided for @thisCodeIsNotAStoreQr.
+  ///
+  /// In en, this message translates to:
+  /// **'This code is not a store QR'**
+  String get thisCodeIsNotAStoreQr;
+
+  /// No description provided for @tapAnItemToAddOneStockGoesDownAutomatically.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap an item to add one; stock goes down automatically.'**
+  String get tapAnItemToAddOneStockGoesDownAutomatically;
+
+  /// No description provided for @tapItemsAfterSavingStockUpdatesAutomatically.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap items; after saving, stock updates automatically.'**
+  String get tapItemsAfterSavingStockUpdatesAutomatically;
+
+  /// No description provided for @salesInvoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Sales invoice'**
+  String get salesInvoice;
+
+  /// No description provided for @recordSale.
+  ///
+  /// In en, this message translates to:
+  /// **'Record sale'**
+  String get recordSale;
+
+  /// No description provided for @saleRecorded.
+  ///
+  /// In en, this message translates to:
+  /// **'Sale recorded'**
+  String get saleRecorded;
+
+  /// No description provided for @notEnoughStock.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough stock'**
+  String get notEnoughStock;
+
+  /// No description provided for @stockCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock {count}'**
+  String stockCount(Object count);
+
+  /// No description provided for @lastSaleTimeAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Last sale: {time} · {amount} Toman'**
+  String lastSaleTimeAmount(Object time, Object amount);
+
+  /// No description provided for @quickSaleRecordsYourSalesAndUpdatesTheStock.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick sale records your sales and updates the stock.'**
+  String get quickSaleRecordsYourSalesAndUpdatesTheStock;
+
+  /// No description provided for @sellSeveralItemsInOneTap.
+  ///
+  /// In en, this message translates to:
+  /// **'Sell several items in a few taps'**
+  String get sellSeveralItemsInOneTap;
+
+  /// No description provided for @stockGoesDownWithEverySale.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock goes down with every sale'**
+  String get stockGoesDownWithEverySale;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -386,6 +386,14 @@ abstract class UFile {
   /// Shows a file in Finder / Explorer / Files / the file manager. `UFile.reveal(path)`
   static Future<bool> reveal(String pathOrUri) => UFilesChannel.reveal(pathOrUri);
 
+  /// Gives [bytes] to the user as a file: the browser's download on the web, the Downloads folder elsewhere (Documents on iOS). Returns where it went. `await UFile.export(pdfBytes, fileName: "poster.pdf", mimeType: "application/pdf")`
+  static Future<String?> export(Uint8List bytes, {required String fileName, String? mimeType}) async {
+    final UStorageBackend backend = UFileStorage.backend;
+    final String path = "${await backend.root(UStorageBucket.cache)}/export_${DateTime.now().microsecondsSinceEpoch}_$fileName";
+    await backend.writeAll(path, bytes);
+    return UDownloadPlatform.publishToDownloads(backend, path, fileName, mimeType: mimeType);
+  }
+
   /// "Save as" dialog, then copies [sourcePath] there; returns the new location or null (Android, iOS, macOS, Windows, Linux). `await UFile.saveAs(sourcePath: p, fileName: "invoice.pdf")`
   static Future<String?> saveAs({required String sourcePath, required String fileName, String? mimeType}) => UFilesChannel.saveAs(sourcePath: sourcePath, fileName: fileName, mimeType: mimeType);
 

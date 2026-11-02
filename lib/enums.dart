@@ -1939,6 +1939,20 @@ enum TagActivityLog with UNumericIdentifiable {
   final int number;
 }
 
+enum TagStoreSale with UNumericIdentifiable {
+  cardToCard("کارت‌به‌کارت", "Card to card", 101),
+  cash("نقدی", "Cash", 102);
+
+  const TagStoreSale(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
 enum TagStore with UNumericIdentifiable {
   shop("صفحه فروشگاه", "Store page", 101),
   menu("منوی کافه و رستوران", "Cafe and restaurant menu", 102),

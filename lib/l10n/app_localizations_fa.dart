@@ -9007,4 +9007,165 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get yourBill => 'صورت‌حساب شما';
+
+  @override
+  String get qrAlwaysGoesToThisStorePageNoNeedToReprintWhenProductsChange => 'QR شما همیشه به همین صفحه فروشگاه می‌رود؛ با تغییر کالاها لازم نیست دوباره چاپ کنید.';
+
+  @override
+  String get priceOfEverythingWithOneScan => 'قیمت همه چیز با یک اسکن';
+
+  @override
+  String get itemsAndPrices => 'اجناس و قیمت‌ها';
+
+  @override
+  String get pointYourPhoneCameraAtTheCode => 'دوربین گوشی را روی کد بگیرید';
+
+  @override
+  String get scanAndChoosePayInPerson => 'اسکن و انتخاب، پرداخت حضوری';
+
+  @override
+  String get scanIt => 'اسکن کنید';
+
+  @override
+  String get seeItemsAddUpTheTotalBuyInPerson => 'اجناس را ببینید، جمع را حساب کنید، حضوری بخرید';
+
+  @override
+  String get noAppNeeded => 'بدون نصب برنامه';
+
+  @override
+  String get doorPoster => 'پوستر دم در';
+
+  @override
+  String get smallSticker => 'برچسب کوچک';
+
+  @override
+  String get counterStand => 'استند پیشخوان';
+
+  @override
+  String get eightByEightCm => '۸ × ۸ سانتی‌متر';
+
+  @override
+  String get template => 'قالب';
+
+  @override
+  String get textAtTheTopOfThePoster => 'متن بالای پوستر';
+
+  @override
+  String get downloadPdf => 'دانلود PDF';
+
+  @override
+  String get downloadPdfForPrinting => 'دانلود PDF برای چاپ';
+
+  @override
+  String get downloadPngImage => 'دانلود عکس PNG';
+
+  @override
+  String get qrCodeOnly => 'فقط کد QR';
+
+  @override
+  String get qrForEachTable => 'QR هر میز';
+
+  @override
+  String get forCafesAndRestaurants => 'برای کافه و رستوران';
+
+  @override
+  String get theTableNumberIsWrittenOnTheCustomersBill => 'شماره میز روی صورت‌حساب مشتری نوشته می‌شود.';
+
+  @override
+  String get numberOfTables => 'تعداد میز';
+
+  @override
+  String get downloadAllTablesPdf => 'دانلود همه میزها (PDF)';
+
+  @override
+  String enterANumberFrom1ToMax(Object max) {
+    return 'عددی از ۱ تا $max وارد کنید';
+  }
+
+  @override
+  String get scansInTheLast7Days => 'اسکن در ۷ روز گذشته';
+
+  @override
+  String countTimes(Object count) {
+    return '$count بار';
+  }
+
+  @override
+  String get couldNotCreateTheFile => 'ساخت فایل انجام نشد';
+
+  @override
+  String get fileSaved => 'فایل ذخیره شد';
+
+  @override
+  String get customPostersLetYouPickTheTemplateColorAndText => 'با پوستر اختصاصی، قالب، رنگ و متن را خودتان انتخاب می‌کنید.';
+
+  @override
+  String get stickerAndCounterStandTemplates => 'قالب برچسب و استند پیشخوان';
+
+  @override
+  String get yourOwnColorAndTextOnThePoster => 'رنگ و متن دلخواه روی پوستر';
+
+  @override
+  String get aQrForEachTableShowsTheCustomerTheirTableNumber => 'QR هر میز شماره میز را به مشتری نشان می‌دهد.';
+
+  @override
+  String get scanStoreQr => 'اسکن QR فروشگاه';
+
+  @override
+  String get putTheQrAtTheDoorOrOnTheTableInTheFrame => 'QR دم در مغازه یا روی میز را در کادر بگیرید';
+
+  @override
+  String get found => 'پیدا شد';
+
+  @override
+  String get fromGallery => 'از گالری';
+
+  @override
+  String get enterCode => 'وارد کردن کد';
+
+  @override
+  String get storeCode => 'کد فروشگاه';
+
+  @override
+  String get recentScans => 'اسکن‌های اخیر';
+
+  @override
+  String get thisCodeIsNotAStoreQr => 'این کد، QR فروشگاه نیست';
+
+  @override
+  String get tapAnItemToAddOneStockGoesDownAutomatically => 'روی هر کالا بزنید تا یکی اضافه شود؛ موجودی خودکار کم می‌شود.';
+
+  @override
+  String get tapItemsAfterSavingStockUpdatesAutomatically => 'کالاها را بزنید؛ بعد از ثبت، موجودی خودکار به‌روز می‌شود.';
+
+  @override
+  String get salesInvoice => 'فاکتور فروش';
+
+  @override
+  String get recordSale => 'ثبت فروش';
+
+  @override
+  String get saleRecorded => 'فروش ثبت شد';
+
+  @override
+  String get notEnoughStock => 'موجودی کافی نیست';
+
+  @override
+  String stockCount(Object count) {
+    return 'موجودی $count';
+  }
+
+  @override
+  String lastSaleTimeAmount(Object time, Object amount) {
+    return 'آخرین فروش: $time · $amount تومان';
+  }
+
+  @override
+  String get quickSaleRecordsYourSalesAndUpdatesTheStock => 'فروش سریع فروش‌های شما را ثبت می‌کند و موجودی را به‌روز نگه می‌دارد.';
+
+  @override
+  String get sellSeveralItemsInOneTap => 'فروش چند کالا با چند ضربه';
+
+  @override
+  String get stockGoesDownWithEverySale => 'موجودی با هر فروش کم می‌شود';
 }

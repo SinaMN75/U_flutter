@@ -37,6 +37,30 @@ class UStoreService {
     Function(String e)? onException,
   }) => _Api.call("/Store/Store/ReadPayment", p.toMap(), _Api.one(UStorePaymentResponse.fromMap), _Api.empty, onOk, onError, onException);
 
+  /// How many times the store's QR was scanned; only for its managers.
+  Future<(UResponse<UStoreScanResponse>?, UEmptyResponse?, String?)> readScans({
+    required UIdParams p,
+    Function(UResponse<UStoreScanResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Store/Store/ReadScans", p.toMap(), _Api.one(UStoreScanResponse.fromMap), _Api.empty, onOk, onError, onException);
+
+  /// Records a sale and takes the items out of stock; fails as a whole when one item is short.
+  Future<(UResponse<String>?, UEmptyResponse?, String?)> createSale({
+    required UStoreSaleCreateParams p,
+    Function(UResponse<String> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Store/Sale/Create", p.toMap(), _Api.raw<String>(), _Api.empty, onOk, onError, onException);
+
+  /// The store's sales, newest first; only for its managers.
+  Future<(UResponse<List<UStoreSaleResponse>>?, UEmptyResponse?, String?)> readSales({
+    required UStoreSaleReadParams p,
+    Function(UResponse<List<UStoreSaleResponse>> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Store/Sale/Read", p.toMap(), _Api.list(UStoreSaleResponse.fromMap), _Api.empty, onOk, onError, onException);
+
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> review({
     required UStoreReviewParams p,
     Function(UEmptyResponse r)? onOk,

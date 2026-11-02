@@ -3253,5 +3253,77 @@
       "number": {}
     }
   },
-  "yourBill": "صورت‌حساب شما"
+  "yourBill": "صورت‌حساب شما",
+  "qrAlwaysGoesToThisStorePageNoNeedToReprintWhenProductsChange": "QR شما همیشه به همین صفحه فروشگاه می‌رود؛ با تغییر کالاها لازم نیست دوباره چاپ کنید.",
+  "priceOfEverythingWithOneScan": "قیمت همه چیز با یک اسکن",
+  "itemsAndPrices": "اجناس و قیمت‌ها",
+  "pointYourPhoneCameraAtTheCode": "دوربین گوشی را روی کد بگیرید",
+  "scanAndChoosePayInPerson": "اسکن و انتخاب، پرداخت حضوری",
+  "scanIt": "اسکن کنید",
+  "seeItemsAddUpTheTotalBuyInPerson": "اجناس را ببینید، جمع را حساب کنید، حضوری بخرید",
+  "noAppNeeded": "بدون نصب برنامه",
+  "doorPoster": "پوستر دم در",
+  "smallSticker": "برچسب کوچک",
+  "counterStand": "استند پیشخوان",
+  "eightByEightCm": "۸ × ۸ سانتی‌متر",
+  "template": "قالب",
+  "textAtTheTopOfThePoster": "متن بالای پوستر",
+  "downloadPdf": "دانلود PDF",
+  "downloadPdfForPrinting": "دانلود PDF برای چاپ",
+  "downloadPngImage": "دانلود عکس PNG",
+  "qrCodeOnly": "فقط کد QR",
+  "qrForEachTable": "QR هر میز",
+  "forCafesAndRestaurants": "برای کافه و رستوران",
+  "theTableNumberIsWrittenOnTheCustomersBill": "شماره میز روی صورت‌حساب مشتری نوشته می‌شود.",
+  "numberOfTables": "تعداد میز",
+  "downloadAllTablesPdf": "دانلود همه میزها (PDF)",
+  "enterANumberFrom1ToMax": "عددی از ۱ تا {max} وارد کنید",
+  "@enterANumberFrom1ToMax": {
+    "placeholders": {
+      "max": {}
+    }
+  },
+  "scansInTheLast7Days": "اسکن در ۷ روز گذشته",
+  "countTimes": "{count} بار",
+  "@countTimes": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "couldNotCreateTheFile": "ساخت فایل انجام نشد",
+  "fileSaved": "فایل ذخیره شد",
+  "customPostersLetYouPickTheTemplateColorAndText": "با پوستر اختصاصی، قالب، رنگ و متن را خودتان انتخاب می‌کنید.",
+  "stickerAndCounterStandTemplates": "قالب برچسب و استند پیشخوان",
+  "yourOwnColorAndTextOnThePoster": "رنگ و متن دلخواه روی پوستر",
+  "aQrForEachTableShowsTheCustomerTheirTableNumber": "QR هر میز شماره میز را به مشتری نشان می‌دهد.",
+  "scanStoreQr": "اسکن QR فروشگاه",
+  "putTheQrAtTheDoorOrOnTheTableInTheFrame": "QR دم در مغازه یا روی میز را در کادر بگیرید",
+  "found": "پیدا شد",
+  "fromGallery": "از گالری",
+  "enterCode": "وارد کردن کد",
+  "storeCode": "کد فروشگاه",
+  "recentScans": "اسکن‌های اخیر",
+  "thisCodeIsNotAStoreQr": "این کد، QR فروشگاه نیست",
+  "tapAnItemToAddOneStockGoesDownAutomatically": "روی هر کالا بزنید تا یکی اضافه شود؛ موجودی خودکار کم می‌شود.",
+  "tapItemsAfterSavingStockUpdatesAutomatically": "کالاها را بزنید؛ بعد از ثبت، موجودی خودکار به‌روز می‌شود.",
+  "salesInvoice": "فاکتور فروش",
+  "recordSale": "ثبت فروش",
+  "saleRecorded": "فروش ثبت شد",
+  "notEnoughStock": "موجودی کافی نیست",
+  "stockCount": "موجودی {count}",
+  "@stockCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "lastSaleTimeAmount": "آخرین فروش: {time} · {amount} تومان",
+  "@lastSaleTimeAmount": {
+    "placeholders": {
+      "time": {},
+      "amount": {}
+    }
+  },
+  "quickSaleRecordsYourSalesAndUpdatesTheStock": "فروش سریع فروش‌های شما را ثبت می‌کند و موجودی را به‌روز نگه می‌دارد.",
+  "sellSeveralItemsInOneTap": "فروش چند کالا با چند ضربه",
+  "stockGoesDownWithEverySale": "موجودی با هر فروش کم می‌شود"
 }

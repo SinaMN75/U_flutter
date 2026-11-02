@@ -211,12 +211,113 @@ abstract class UPdfCodecs {
   }
 
   static Uint8List deflate(Uint8List input) {
-    if (kIsWeb) return input;
+    if (kIsWeb) return _dartDeflate(input);
     try {
       return Uint8List.fromList(zlib.encode(input));
     } on Object {
       return input;
     }
+  }
+
+  static const List<int> _lengthBase = <int>[3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 19, 23, 27, 31, 35, 43, 51, 59, 67, 83, 99, 115, 131, 163, 195, 227, 258];
+  static const List<int> _lengthExtra = <int>[0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0];
+  static const List<int> _distanceBase = <int>[1, 2, 3, 4, 5, 7, 9, 13, 17, 25, 33, 49, 65, 97, 129, 193, 257, 385, 513, 769, 1025, 1537, 2049, 3073, 4097, 6145, 8193, 12289, 16385, 24577];
+  static const List<int> _distanceExtra = <int>[0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13];
+
+  static int _reverseBits(int value, int count) {
+    int out = 0;
+    for (int i = 0; i < count; i++) {
+      out = (out << 1) | ((value >> i) & 1);
+    }
+    return out;
+  }
+
+  // The zlib format with one fixed-Huffman block and a single-candidate LZ77 search: the browser has no zlib, and page images are repetitive enough that this is enough.
+  static Uint8List _dartDeflate(Uint8List input) {
+    const int window = 32768;
+    const int minMatch = 3;
+    const int maxMatch = 258;
+    final Uint8List out = Uint8List(input.length + (input.length >> 2) + 32);
+    int pos = 0;
+    int buffer = 0;
+    int used = 0;
+    void put(int value, int count) {
+      buffer |= value << used;
+      used += count;
+      while (used >= 8) {
+        out[pos++] = buffer & 255;
+        buffer >>= 8;
+        used -= 8;
+      }
+    }
+
+    void symbol(int s) {
+      if (s < 144) {
+        put(_reverseBits(0x30 + s, 8), 8);
+      } else if (s < 256) {
+        put(_reverseBits(0x190 + s - 144, 9), 9);
+      } else if (s < 280) {
+        put(_reverseBits(s - 256, 7), 7);
+      } else {
+        put(_reverseBits(0xC0 + s - 280, 8), 8);
+      }
+    }
+
+    out[pos++] = 0x78;
+    out[pos++] = 0x01;
+    put(1, 1);
+    put(1, 2);
+
+    final Int32List table = Int32List(65536)..fillRange(0, 65536, -1);
+    int i = 0;
+    final int n = input.length;
+    while (i < n) {
+      int length = 0;
+      int distance = 0;
+      if (i + minMatch <= n) {
+        final int hash = (input[i] * 31337 + input[i + 1] * 1009 + input[i + 2]) & 0xFFFF;
+        final int candidate = table[hash];
+        table[hash] = i;
+        if (candidate >= 0 && i - candidate <= window) {
+          final int limit = min(maxMatch, n - i);
+          while (length < limit && input[candidate + length] == input[i + length]) {
+            length++;
+          }
+          distance = i - candidate;
+        }
+      }
+      if (length < minMatch) {
+        symbol(input[i++]);
+        continue;
+      }
+      int lengthCode = _lengthBase.length - 1;
+      while (_lengthBase[lengthCode] > length) {
+        lengthCode--;
+      }
+      symbol(257 + lengthCode);
+      if (_lengthExtra[lengthCode] > 0) put(length - _lengthBase[lengthCode], _lengthExtra[lengthCode]);
+      int distanceCode = _distanceBase.length - 1;
+      while (_distanceBase[distanceCode] > distance) {
+        distanceCode--;
+      }
+      put(_reverseBits(distanceCode, 5), 5);
+      if (_distanceExtra[distanceCode] > 0) put(distance - _distanceBase[distanceCode], _distanceExtra[distanceCode]);
+      i += length;
+    }
+    symbol(256);
+    if (used > 0) put(0, 8 - used);
+
+    int a = 1;
+    int b = 0;
+    for (final int byte in input) {
+      a = (a + byte) % 65521;
+      b = (b + a) % 65521;
+    }
+    out[pos++] = (b >> 8) & 255;
+    out[pos++] = b & 255;
+    out[pos++] = (a >> 8) & 255;
+    out[pos++] = a & 255;
+    return Uint8List.sublistView(out, 0, pos);
   }
 
   static Uint8List asciiHex(Uint8List input) {

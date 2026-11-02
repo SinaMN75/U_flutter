@@ -264,8 +264,8 @@ class UPdfEdit {
   Future<UPdfRef?> pageRef(int index) async => (await document.page(index))?.ref;
 
   UPdfStream buildStream(Uint8List data, {Map<String, Object?> extra = const <String, Object?>{}, bool compress = true}) {
-    final Uint8List deflated = compress && !kIsWeb ? UPdfCodecs.deflate(data) : data;
-    final bool useDeflate = compress && !kIsWeb && deflated.length < data.length;
+    final Uint8List deflated = compress ? UPdfCodecs.deflate(data) : data;
+    final bool useDeflate = compress && deflated.length < data.length;
     final Uint8List payload = useDeflate ? deflated : data;
     final Map<String, Object?> entries = <String, Object?>{...extra};
     if (useDeflate) entries["Filter"] = const UPdfName("FlateDecode");
@@ -1704,8 +1704,8 @@ class UPdfComposer {
   }
 
   UPdfStream _stream(Uint8List data, {Map<String, Object?> extra = const <String, Object?>{}}) {
-    final Uint8List deflated = kIsWeb ? data : UPdfCodecs.deflate(data);
-    final bool useDeflate = !kIsWeb && deflated.length < data.length;
+    final Uint8List deflated = UPdfCodecs.deflate(data);
+    final bool useDeflate = deflated.length < data.length;
     final Uint8List payload = useDeflate ? deflated : data;
     final Map<String, Object?> entries = <String, Object?>{...extra};
     if (useDeflate) entries["Filter"] = const UPdfName("FlateDecode");

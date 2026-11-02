@@ -70,11 +70,13 @@ class UStoreUpdateParams {
     this.iBan,
     this.accountOwner,
     this.links,
+    this.poster,
     this.addTags,
     this.removeTags,
   });
 
   final String id;
+  final UStorePoster? poster;
   final String? title;
   final String? storeTypeId;
   final String? description;
@@ -106,6 +108,7 @@ class UStoreUpdateParams {
     "iBan": iBan,
     "accountOwner": accountOwner,
     "links": links?.map((UWebLink x) => x.toMap()).toList(),
+    "poster": poster?.toMap(),
     "addTags": addTags,
     "removeTags": removeTags,
   };
@@ -138,13 +141,21 @@ class UStoreReadParams {
 }
 
 class UStoreCodeParams {
-  UStoreCodeParams({required this.code, this.selectorArgs});
+  UStoreCodeParams({required this.code, this.scanned = false, this.skipView = false, this.selectorArgs});
 
   final String code;
+
+  /// This read comes from a scanned QR, so the server counts a scan.
+  final bool scanned;
+
+  /// Only a preview of the store, so the server does not count a page view.
+  final bool skipView;
   final UStoreSelectorArgs? selectorArgs;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "code": code,
+    "scanned": scanned,
+    "skipView": skipView,
     "selectorArgs": selectorArgs?.toMap(),
   }..removeWhere((String _, dynamic v) => v == null);
 }
@@ -349,4 +360,35 @@ class UProductSelectorArgs {
     "creator": creator?.toMap(),
     "media": media?.toMap(),
   };
+}
+
+class UStoreSaleLineParams {
+  UStoreSaleLineParams({required this.productId, required this.quantity});
+
+  final String productId;
+  final int quantity;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"productId": productId, "quantity": quantity};
+}
+
+class UStoreSaleCreateParams {
+  UStoreSaleCreateParams({required this.storeId, required this.paymentMethod, required this.lines});
+
+  final String storeId;
+
+  /// A [TagStoreSale] number.
+  final int paymentMethod;
+  final List<UStoreSaleLineParams> lines;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"storeId": storeId, "paymentMethod": paymentMethod, "lines": lines.map((UStoreSaleLineParams x) => x.toMap()).toList()};
+}
+
+class UStoreSaleReadParams {
+  UStoreSaleReadParams({required this.storeId, this.pageSize, this.pageNumber});
+
+  final String storeId;
+  final int? pageSize;
+  final int? pageNumber;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"storeId": storeId, "pageSize": pageSize, "pageNumber": pageNumber}..removeWhere((String _, dynamic v) => v == null);
 }

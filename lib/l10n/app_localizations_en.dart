@@ -9008,4 +9008,165 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get yourBill => 'Your bill';
+
+  @override
+  String get qrAlwaysGoesToThisStorePageNoNeedToReprintWhenProductsChange => 'Your QR always goes to this store page; no need to reprint when products change.';
+
+  @override
+  String get priceOfEverythingWithOneScan => 'Price of everything with one scan';
+
+  @override
+  String get itemsAndPrices => 'Items and prices';
+
+  @override
+  String get pointYourPhoneCameraAtTheCode => 'Point your phone camera at the code';
+
+  @override
+  String get scanAndChoosePayInPerson => 'Scan and choose, pay in person';
+
+  @override
+  String get scanIt => 'Scan it';
+
+  @override
+  String get seeItemsAddUpTheTotalBuyInPerson => 'See items, add up the total, buy in person';
+
+  @override
+  String get noAppNeeded => 'No app needed';
+
+  @override
+  String get doorPoster => 'Door poster';
+
+  @override
+  String get smallSticker => 'Small sticker';
+
+  @override
+  String get counterStand => 'Counter stand';
+
+  @override
+  String get eightByEightCm => '8 × 8 cm';
+
+  @override
+  String get template => 'Template';
+
+  @override
+  String get textAtTheTopOfThePoster => 'Text at the top of the poster';
+
+  @override
+  String get downloadPdf => 'Download PDF';
+
+  @override
+  String get downloadPdfForPrinting => 'Download PDF for printing';
+
+  @override
+  String get downloadPngImage => 'Download PNG image';
+
+  @override
+  String get qrCodeOnly => 'QR code only';
+
+  @override
+  String get qrForEachTable => 'QR for each table';
+
+  @override
+  String get forCafesAndRestaurants => 'For cafes and restaurants';
+
+  @override
+  String get theTableNumberIsWrittenOnTheCustomersBill => 'The table number is written on the customer\'s bill.';
+
+  @override
+  String get numberOfTables => 'Number of tables';
+
+  @override
+  String get downloadAllTablesPdf => 'Download all tables (PDF)';
+
+  @override
+  String enterANumberFrom1ToMax(Object max) {
+    return 'Enter a number from 1 to $max';
+  }
+
+  @override
+  String get scansInTheLast7Days => 'Scans in the last 7 days';
+
+  @override
+  String countTimes(Object count) {
+    return '$count times';
+  }
+
+  @override
+  String get couldNotCreateTheFile => 'Could not create the file';
+
+  @override
+  String get fileSaved => 'File saved';
+
+  @override
+  String get customPostersLetYouPickTheTemplateColorAndText => 'Custom posters let you pick the template, color and text.';
+
+  @override
+  String get stickerAndCounterStandTemplates => 'Sticker and counter stand templates';
+
+  @override
+  String get yourOwnColorAndTextOnThePoster => 'Your own color and text on the poster';
+
+  @override
+  String get aQrForEachTableShowsTheCustomerTheirTableNumber => 'A QR for each table shows the customer their table number.';
+
+  @override
+  String get scanStoreQr => 'Scan store QR';
+
+  @override
+  String get putTheQrAtTheDoorOrOnTheTableInTheFrame => 'Put the QR at the door or on the table in the frame';
+
+  @override
+  String get found => 'Found';
+
+  @override
+  String get fromGallery => 'From gallery';
+
+  @override
+  String get enterCode => 'Enter code';
+
+  @override
+  String get storeCode => 'Store code';
+
+  @override
+  String get recentScans => 'Recent scans';
+
+  @override
+  String get thisCodeIsNotAStoreQr => 'This code is not a store QR';
+
+  @override
+  String get tapAnItemToAddOneStockGoesDownAutomatically => 'Tap an item to add one; stock goes down automatically.';
+
+  @override
+  String get tapItemsAfterSavingStockUpdatesAutomatically => 'Tap items; after saving, stock updates automatically.';
+
+  @override
+  String get salesInvoice => 'Sales invoice';
+
+  @override
+  String get recordSale => 'Record sale';
+
+  @override
+  String get saleRecorded => 'Sale recorded';
+
+  @override
+  String get notEnoughStock => 'Not enough stock';
+
+  @override
+  String stockCount(Object count) {
+    return 'Stock $count';
+  }
+
+  @override
+  String lastSaleTimeAmount(Object time, Object amount) {
+    return 'Last sale: $time · $amount Toman';
+  }
+
+  @override
+  String get quickSaleRecordsYourSalesAndUpdatesTheStock => 'Quick sale records your sales and updates the stock.';
+
+  @override
+  String get sellSeveralItemsInOneTap => 'Sell several items in a few taps';
+
+  @override
+  String get stockGoesDownWithEverySale => 'Stock goes down with every sale';
 }
