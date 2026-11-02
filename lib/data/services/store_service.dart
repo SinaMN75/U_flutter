@@ -29,6 +29,14 @@ class UStoreService {
     Function(String e)? onException,
   }) => _Api.call("/Store/Store/ReadByCode", p.toMap(), _Api.one(UStoreResponse.fromMap), _Api.empty, onOk, onError, onException);
 
+  /// The card, IBAN and owner a buyer pays to; the server counts each read.
+  Future<(UResponse<UStorePaymentResponse>?, UEmptyResponse?, String?)> readPayment({
+    required UIdParams p,
+    Function(UResponse<UStorePaymentResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Store/Store/ReadPayment", p.toMap(), _Api.one(UStorePaymentResponse.fromMap), _Api.empty, onOk, onError, onException);
+
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> review({
     required UStoreReviewParams p,
     Function(UEmptyResponse r)? onOk,

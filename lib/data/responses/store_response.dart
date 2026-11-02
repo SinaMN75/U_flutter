@@ -108,6 +108,7 @@ class UStoreResponse {
     this.reviewMessage,
     this.links = const <UWebLink>[],
     this.viewCount = 0,
+    this.paymentViewCount = 0,
     this.organizationId,
     this.organizationTitle,
     this.storeType,
@@ -135,6 +136,7 @@ class UStoreResponse {
     reviewMessage: json["jsonData"]?["reviewMessage"],
     links: ((json["jsonData"]?["links"] as List<dynamic>?) ?? <dynamic>[]).map((dynamic x) => UWebLink.fromMap(x)).toList(),
     viewCount: json["viewCount"] ?? 0,
+    paymentViewCount: json["paymentViewCount"] ?? 0,
     organizationId: json["organizationId"],
     organizationTitle: json["organizationTitle"],
     storeType: json["storeType"] == null ? null : UStoreTypeResponse.fromMap(json["storeType"]),
@@ -161,6 +163,7 @@ class UStoreResponse {
   final String? reviewMessage;
   final List<UWebLink> links;
   final int viewCount;
+  final int paymentViewCount;
   final String? organizationId;
   final String? organizationTitle;
   final UStoreTypeResponse? storeType;
@@ -312,4 +315,16 @@ class UProductResponse {
 
   /// All photos with the cover first.
   List<UMediaResponse> get images => <UMediaResponse>[?cover, ..._photos.where((UMediaResponse m) => m.id != cover?.id)];
+}
+
+class UStorePaymentResponse {
+  UStorePaymentResponse({this.cardNumber, this.iBan, this.accountOwner});
+
+  factory UStorePaymentResponse.fromMap(Map<String, dynamic> json) => UStorePaymentResponse(cardNumber: json["cardNumber"], iBan: json["iBan"], accountOwner: json["accountOwner"]);
+
+  final String? cardNumber;
+  final String? iBan;
+  final String? accountOwner;
+
+  bool get isEmpty => (cardNumber ?? "").isEmpty && (iBan ?? "").isEmpty;
 }

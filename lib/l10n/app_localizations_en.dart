@@ -8881,16 +8881,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get heightCm => 'Height (cm)';
 
   @override
-  String get selectGlbOrUsdzFile => 'Select .glb or .usdz file';
+  String get selectGlbOrUsdzFile => 'Select glb or usdz file';
 
   @override
-  String get replaceGlbOrUsdzFile => 'Replace .glb or .usdz file';
+  String get replaceGlbOrUsdzFile => 'Replace glb or usdz file';
 
   @override
   String get withoutA3dModelThe3dTabAndArButtonAreNotShownToBuyers => 'Without a 3D model, the 3D tab and AR button are not shown to buyers.';
 
   @override
-  String get uploadTheGlbFileFirstUsdzIsOnlyForIphoneAndIpad => 'Upload the .glb file first; .usdz is only for iPhone and iPad.';
+  String get uploadTheGlbFileFirstUsdzIsOnlyForIphoneAndIpad => 'Upload the glb file first; usdz is only for iPhone and iPad.';
 
   @override
   String get deleteModel => 'Delete model';
@@ -8916,4 +8916,83 @@ class AppLocalizationsEn extends AppLocalizations {
   String thisModelIsLargerThanSizeMb(Object size) {
     return 'This model is larger than $size MB';
   }
+
+  @override
+  String get addToSelections => 'Add To Selections';
+
+  @override
+  String get yourSelections => 'Your Selections';
+
+  @override
+  String get buyAndPay => 'Buy And Pay';
+
+  @override
+  String get youHaveNotSelectedAnythingYet => 'You Have Not Selected Anything Yet';
+
+  @override
+  String get backToGoods => 'Back To Goods';
+
+  @override
+  String get thisListIsOnlyOnYourPhoneYouCanShowItToTheSellerToCollectItFaster => 'This list is only on your phone. You can show it to the seller to collect it faster.';
+
+  @override
+  String get pricesAreInToman => 'Prices Are In Toman';
+
+  @override
+  String get grandTotal => 'Grand Total';
+
+  @override
+  String get payInPerson => 'Pay In Person';
+
+  @override
+  String get amountToPay => 'Amount To Pay';
+
+  @override
+  String get copyAmount => 'Copy Amount';
+
+  @override
+  String get copyIban => 'Copy IBAN';
+
+  @override
+  String get copyTheCardOrIban => 'Copy the card or IBAN';
+
+  @override
+  String get payInYourBankingApp => 'Pay in your banking app';
+
+  @override
+  String get showTheReceiptToTheSeller => 'Show the receipt to the seller';
+
+  @override
+  String get thisIsNotAnOnlinePurchasePayByCardTransferAndCollectYourItemsInPerson => 'This is not an online purchase; pay by card transfer and collect your items in person.';
+
+  @override
+  String get thisStoreHasNotAddedPaymentDetailsYet => 'This store has not added payment details yet.';
+
+  @override
+  String fromStoreName(Object store) {
+    return 'From $store';
+  }
+
+  @override
+  String eachPriceToman(Object price) {
+    return 'Each $price Toman';
+  }
+
+  @override
+  String countPieces(Object count) {
+    return '$count Pieces';
+  }
+
+  @override
+  String toStoreWithYourOwnBankingApp(Object store) {
+    return 'To $store, with your own banking app';
+  }
+
+  @override
+  String appReceivesNoMoneyPaymentGoesDirectlyToTheSellersAccount(Object app) {
+    return '$app receives no money; payment goes directly to the seller\'s account.';
+  }
+
+  @override
+  String get couldNotCopyPleaseCopyItManually => 'Could not copy; please copy it manually.';
 }

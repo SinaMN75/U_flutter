@@ -3170,10 +3170,10 @@
   "lengthCm": "طول (cm)",
   "widthCm": "عرض (cm)",
   "heightCm": "ارتفاع (cm)",
-  "selectGlbOrUsdzFile": "انتخاب فایل ‎.glb یا ‎.usdz",
-  "replaceGlbOrUsdzFile": "جایگزینی فایل ‎.glb یا ‎.usdz",
+  "selectGlbOrUsdzFile": "انتخاب فایل glb یا usdz",
+  "replaceGlbOrUsdzFile": "جایگزینی فایل glb یا usdz",
   "withoutA3dModelThe3dTabAndArButtonAreNotShownToBuyers": "بدون مدل سه‌بعدی، تب «سه‌بعدی» و دکمه AR برای مشتری نشان داده نمی‌شود.",
-  "uploadTheGlbFileFirstUsdzIsOnlyForIphoneAndIpad": "اول فایل ‎.glb را بارگذاری کنید؛ ‎.usdz فقط برای آیفون و آیپد است.",
+  "uploadTheGlbFileFirstUsdzIsOnlyForIphoneAndIpad": "اول فایل glb را بارگذاری کنید؛ usdz فقط برای آیفون و آیپد است.",
   "deleteModel": "حذف مدل",
   "areYouSureYouWantToDeleteThisModel": "از حذف این مدل مطمئن هستید؟",
   "a3dModelShowsBuyersEverySideOfYourProduct": "مدل سه‌بعدی همه طرف‌های کالای شما را به خریدار نشان می‌دهد.",
@@ -3192,5 +3192,53 @@
     "placeholders": {
       "size": {}
     }
-  }
+  },
+  "addToSelections": "افزودن به انتخاب‌ها",
+  "yourSelections": "انتخاب‌های شما",
+  "buyAndPay": "خرید و پرداخت",
+  "youHaveNotSelectedAnythingYet": "هنوز چیزی انتخاب نکرده‌اید",
+  "backToGoods": "برگشت به اجناس",
+  "thisListIsOnlyOnYourPhoneYouCanShowItToTheSellerToCollectItFaster": "این فهرست فقط روی گوشی شماست. می‌توانید آن را به فروشنده نشان دهید تا سریع‌تر جمع کند.",
+  "pricesAreInToman": "قیمت‌ها به تومان",
+  "grandTotal": "جمع کل",
+  "payInPerson": "پرداخت حضوری",
+  "amountToPay": "مبلغ قابل پرداخت",
+  "copyAmount": "کپی مبلغ",
+  "copyIban": "کپی شبا",
+  "copyTheCardOrIban": "کارت یا شبا را کپی کنید",
+  "payInYourBankingApp": "در اپ بانکی پرداخت کنید",
+  "showTheReceiptToTheSeller": "رسید را به فروشنده نشان دهید",
+  "thisIsNotAnOnlinePurchasePayByCardTransferAndCollectYourItemsInPerson": "خرید آنلاین نیست؛ با کارت‌به‌کارت پرداخت کنید و اجناس را حضوری تحویل بگیرید.",
+  "thisStoreHasNotAddedPaymentDetailsYet": "این فروشگاه هنوز اطلاعات پرداخت ثبت نکرده است.",
+  "fromStoreName": "از {store}",
+  "@fromStoreName": {
+    "placeholders": {
+      "store": {}
+    }
+  },
+  "eachPriceToman": "هر عدد {price} تومان",
+  "@eachPriceToman": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "countPieces": "{count} قلم",
+  "@countPieces": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "toStoreWithYourOwnBankingApp": "به {store}، با اپلیکیشن بانکی خودتان",
+  "@toStoreWithYourOwnBankingApp": {
+    "placeholders": {
+      "store": {}
+    }
+  },
+  "appReceivesNoMoneyPaymentGoesDirectlyToTheSellersAccount": "{app} پولی دریافت نمی‌کند؛ پرداخت مستقیم به حساب فروشنده است.",
+  "@appReceivesNoMoneyPaymentGoesDirectlyToTheSellersAccount": {
+    "placeholders": {
+      "app": {}
+    }
+  },
+  "couldNotCopyPleaseCopyItManually": "کپی نشد؛ لطفاً دستی کپی کنید."
 }

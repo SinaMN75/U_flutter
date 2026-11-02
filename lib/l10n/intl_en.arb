@@ -3588,10 +3588,10 @@
   "lengthCm": "Length (cm)",
   "widthCm": "Width (cm)",
   "heightCm": "Height (cm)",
-  "selectGlbOrUsdzFile": "Select .glb or .usdz file",
-  "replaceGlbOrUsdzFile": "Replace .glb or .usdz file",
+  "selectGlbOrUsdzFile": "Select glb or usdz file",
+  "replaceGlbOrUsdzFile": "Replace glb or usdz file",
   "withoutA3dModelThe3dTabAndArButtonAreNotShownToBuyers": "Without a 3D model, the 3D tab and AR button are not shown to buyers.",
-  "uploadTheGlbFileFirstUsdzIsOnlyForIphoneAndIpad": "Upload the .glb file first; .usdz is only for iPhone and iPad.",
+  "uploadTheGlbFileFirstUsdzIsOnlyForIphoneAndIpad": "Upload the glb file first; usdz is only for iPhone and iPad.",
   "deleteModel": "Delete model",
   "areYouSureYouWantToDeleteThisModel": "Are you sure you want to delete this model?",
   "a3dModelShowsBuyersEverySideOfYourProduct": "A 3D model shows buyers every side of your product.",
@@ -3610,5 +3610,53 @@
     "placeholders": {
       "size": {}
     }
-  }
+  },
+  "addToSelections": "Add To Selections",
+  "yourSelections": "Your Selections",
+  "buyAndPay": "Buy And Pay",
+  "youHaveNotSelectedAnythingYet": "You Have Not Selected Anything Yet",
+  "backToGoods": "Back To Goods",
+  "thisListIsOnlyOnYourPhoneYouCanShowItToTheSellerToCollectItFaster": "This list is only on your phone. You can show it to the seller to collect it faster.",
+  "pricesAreInToman": "Prices Are In Toman",
+  "grandTotal": "Grand Total",
+  "payInPerson": "Pay In Person",
+  "amountToPay": "Amount To Pay",
+  "copyAmount": "Copy Amount",
+  "copyIban": "Copy IBAN",
+  "copyTheCardOrIban": "Copy the card or IBAN",
+  "payInYourBankingApp": "Pay in your banking app",
+  "showTheReceiptToTheSeller": "Show the receipt to the seller",
+  "thisIsNotAnOnlinePurchasePayByCardTransferAndCollectYourItemsInPerson": "This is not an online purchase; pay by card transfer and collect your items in person.",
+  "thisStoreHasNotAddedPaymentDetailsYet": "This store has not added payment details yet.",
+  "fromStoreName": "From {store}",
+  "@fromStoreName": {
+    "placeholders": {
+      "store": {}
+    }
+  },
+  "eachPriceToman": "Each {price} Toman",
+  "@eachPriceToman": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "countPieces": "{count} Pieces",
+  "@countPieces": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "toStoreWithYourOwnBankingApp": "To {store}, with your own banking app",
+  "@toStoreWithYourOwnBankingApp": {
+    "placeholders": {
+      "store": {}
+    }
+  },
+  "appReceivesNoMoneyPaymentGoesDirectlyToTheSellersAccount": "{app} receives no money; payment goes directly to the seller's account.",
+  "@appReceivesNoMoneyPaymentGoesDirectlyToTheSellersAccount": {
+    "placeholders": {
+      "app": {}
+    }
+  },
+  "couldNotCopyPleaseCopyItManually": "Could not copy; please copy it manually."
 }

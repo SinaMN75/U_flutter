@@ -8880,16 +8880,16 @@ class AppLocalizationsFa extends AppLocalizations {
   String get heightCm => 'ارتفاع (cm)';
 
   @override
-  String get selectGlbOrUsdzFile => 'انتخاب فایل ‎.glb یا ‎.usdz';
+  String get selectGlbOrUsdzFile => 'انتخاب فایل glb یا usdz';
 
   @override
-  String get replaceGlbOrUsdzFile => 'جایگزینی فایل ‎.glb یا ‎.usdz';
+  String get replaceGlbOrUsdzFile => 'جایگزینی فایل glb یا usdz';
 
   @override
   String get withoutA3dModelThe3dTabAndArButtonAreNotShownToBuyers => 'بدون مدل سه‌بعدی، تب «سه‌بعدی» و دکمه AR برای مشتری نشان داده نمی‌شود.';
 
   @override
-  String get uploadTheGlbFileFirstUsdzIsOnlyForIphoneAndIpad => 'اول فایل ‎.glb را بارگذاری کنید؛ ‎.usdz فقط برای آیفون و آیپد است.';
+  String get uploadTheGlbFileFirstUsdzIsOnlyForIphoneAndIpad => 'اول فایل glb را بارگذاری کنید؛ usdz فقط برای آیفون و آیپد است.';
 
   @override
   String get deleteModel => 'حذف مدل';
@@ -8915,4 +8915,83 @@ class AppLocalizationsFa extends AppLocalizations {
   String thisModelIsLargerThanSizeMb(Object size) {
     return 'این مدل بزرگ‌تر از $size مگابایت است';
   }
+
+  @override
+  String get addToSelections => 'افزودن به انتخاب‌ها';
+
+  @override
+  String get yourSelections => 'انتخاب‌های شما';
+
+  @override
+  String get buyAndPay => 'خرید و پرداخت';
+
+  @override
+  String get youHaveNotSelectedAnythingYet => 'هنوز چیزی انتخاب نکرده‌اید';
+
+  @override
+  String get backToGoods => 'برگشت به اجناس';
+
+  @override
+  String get thisListIsOnlyOnYourPhoneYouCanShowItToTheSellerToCollectItFaster => 'این فهرست فقط روی گوشی شماست. می‌توانید آن را به فروشنده نشان دهید تا سریع‌تر جمع کند.';
+
+  @override
+  String get pricesAreInToman => 'قیمت‌ها به تومان';
+
+  @override
+  String get grandTotal => 'جمع کل';
+
+  @override
+  String get payInPerson => 'پرداخت حضوری';
+
+  @override
+  String get amountToPay => 'مبلغ قابل پرداخت';
+
+  @override
+  String get copyAmount => 'کپی مبلغ';
+
+  @override
+  String get copyIban => 'کپی شبا';
+
+  @override
+  String get copyTheCardOrIban => 'کارت یا شبا را کپی کنید';
+
+  @override
+  String get payInYourBankingApp => 'در اپ بانکی پرداخت کنید';
+
+  @override
+  String get showTheReceiptToTheSeller => 'رسید را به فروشنده نشان دهید';
+
+  @override
+  String get thisIsNotAnOnlinePurchasePayByCardTransferAndCollectYourItemsInPerson => 'خرید آنلاین نیست؛ با کارت‌به‌کارت پرداخت کنید و اجناس را حضوری تحویل بگیرید.';
+
+  @override
+  String get thisStoreHasNotAddedPaymentDetailsYet => 'این فروشگاه هنوز اطلاعات پرداخت ثبت نکرده است.';
+
+  @override
+  String fromStoreName(Object store) {
+    return 'از $store';
+  }
+
+  @override
+  String eachPriceToman(Object price) {
+    return 'هر عدد $price تومان';
+  }
+
+  @override
+  String countPieces(Object count) {
+    return '$count قلم';
+  }
+
+  @override
+  String toStoreWithYourOwnBankingApp(Object store) {
+    return 'به $store، با اپلیکیشن بانکی خودتان';
+  }
+
+  @override
+  String appReceivesNoMoneyPaymentGoesDirectlyToTheSellersAccount(Object app) {
+    return '$app پولی دریافت نمی‌کند؛ پرداخت مستقیم به حساب فروشنده است.';
+  }
+
+  @override
+  String get couldNotCopyPleaseCopyItManually => 'کپی نشد؛ لطفاً دستی کپی کنید.';
 }

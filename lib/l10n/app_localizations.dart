@@ -17261,13 +17261,13 @@ abstract class AppLocalizations {
   /// No description provided for @selectGlbOrUsdzFile.
   ///
   /// In en, this message translates to:
-  /// **'Select .glb or .usdz file'**
+  /// **'Select glb or usdz file'**
   String get selectGlbOrUsdzFile;
 
   /// No description provided for @replaceGlbOrUsdzFile.
   ///
   /// In en, this message translates to:
-  /// **'Replace .glb or .usdz file'**
+  /// **'Replace glb or usdz file'**
   String get replaceGlbOrUsdzFile;
 
   /// No description provided for @withoutA3dModelThe3dTabAndArButtonAreNotShownToBuyers.
@@ -17279,7 +17279,7 @@ abstract class AppLocalizations {
   /// No description provided for @uploadTheGlbFileFirstUsdzIsOnlyForIphoneAndIpad.
   ///
   /// In en, this message translates to:
-  /// **'Upload the .glb file first; .usdz is only for iPhone and iPad.'**
+  /// **'Upload the glb file first; usdz is only for iPhone and iPad.'**
   String get uploadTheGlbFileFirstUsdzIsOnlyForIphoneAndIpad;
 
   /// No description provided for @deleteModel.
@@ -17323,6 +17323,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This model is larger than {size} MB'**
   String thisModelIsLargerThanSizeMb(Object size);
+
+  /// No description provided for @addToSelections.
+  ///
+  /// In en, this message translates to:
+  /// **'Add To Selections'**
+  String get addToSelections;
+
+  /// No description provided for @yourSelections.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Selections'**
+  String get yourSelections;
+
+  /// No description provided for @buyAndPay.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy And Pay'**
+  String get buyAndPay;
+
+  /// No description provided for @youHaveNotSelectedAnythingYet.
+  ///
+  /// In en, this message translates to:
+  /// **'You Have Not Selected Anything Yet'**
+  String get youHaveNotSelectedAnythingYet;
+
+  /// No description provided for @backToGoods.
+  ///
+  /// In en, this message translates to:
+  /// **'Back To Goods'**
+  String get backToGoods;
+
+  /// No description provided for @thisListIsOnlyOnYourPhoneYouCanShowItToTheSellerToCollectItFaster.
+  ///
+  /// In en, this message translates to:
+  /// **'This list is only on your phone. You can show it to the seller to collect it faster.'**
+  String get thisListIsOnlyOnYourPhoneYouCanShowItToTheSellerToCollectItFaster;
+
+  /// No description provided for @pricesAreInToman.
+  ///
+  /// In en, this message translates to:
+  /// **'Prices Are In Toman'**
+  String get pricesAreInToman;
+
+  /// No description provided for @grandTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Grand Total'**
+  String get grandTotal;
+
+  /// No description provided for @payInPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay In Person'**
+  String get payInPerson;
+
+  /// No description provided for @amountToPay.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount To Pay'**
+  String get amountToPay;
+
+  /// No description provided for @copyAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy Amount'**
+  String get copyAmount;
+
+  /// No description provided for @copyIban.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy IBAN'**
+  String get copyIban;
+
+  /// No description provided for @copyTheCardOrIban.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy the card or IBAN'**
+  String get copyTheCardOrIban;
+
+  /// No description provided for @payInYourBankingApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay in your banking app'**
+  String get payInYourBankingApp;
+
+  /// No description provided for @showTheReceiptToTheSeller.
+  ///
+  /// In en, this message translates to:
+  /// **'Show the receipt to the seller'**
+  String get showTheReceiptToTheSeller;
+
+  /// No description provided for @thisIsNotAnOnlinePurchasePayByCardTransferAndCollectYourItemsInPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'This is not an online purchase; pay by card transfer and collect your items in person.'**
+  String get thisIsNotAnOnlinePurchasePayByCardTransferAndCollectYourItemsInPerson;
+
+  /// No description provided for @thisStoreHasNotAddedPaymentDetailsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'This store has not added payment details yet.'**
+  String get thisStoreHasNotAddedPaymentDetailsYet;
+
+  /// No description provided for @fromStoreName.
+  ///
+  /// In en, this message translates to:
+  /// **'From {store}'**
+  String fromStoreName(Object store);
+
+  /// No description provided for @eachPriceToman.
+  ///
+  /// In en, this message translates to:
+  /// **'Each {price} Toman'**
+  String eachPriceToman(Object price);
+
+  /// No description provided for @countPieces.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Pieces'**
+  String countPieces(Object count);
+
+  /// No description provided for @toStoreWithYourOwnBankingApp.
+  ///
+  /// In en, this message translates to:
+  /// **'To {store}, with your own banking app'**
+  String toStoreWithYourOwnBankingApp(Object store);
+
+  /// No description provided for @appReceivesNoMoneyPaymentGoesDirectlyToTheSellersAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'{app} receives no money; payment goes directly to the seller\'s account.'**
+  String appReceivesNoMoneyPaymentGoesDirectlyToTheSellersAccount(Object app);
+
+  /// No description provided for @couldNotCopyPleaseCopyItManually.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not copy; please copy it manually.'**
+  String get couldNotCopyPleaseCopyItManually;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
