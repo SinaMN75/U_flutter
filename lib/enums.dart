@@ -1948,9 +1948,11 @@ enum TagActivityLog with UNumericIdentifiable {
 enum TagStockMove with UNumericIdentifiable {
   stockIn("ورود", "Stock in", 101),
   sale("فروش", "Sale", 102),
-  returned("مرجوعی", "Return", 103),
+  customerReturn("مرجوعی مشتری", "Customer return", 103),
   waste("ضایعات", "Waste", 104),
-  adjust("اصلاح موجودی", "Stock correction", 105);
+  adjust("اصلاح موجودی", "Stock correction", 105),
+  supplierReturn("مرجوعی به تأمین‌کننده", "Return to supplier", 106),
+  stockOut("خروج", "Stock out", 107);
 
   const TagStockMove(this.titleFa, this.titleEn, this.number);
 

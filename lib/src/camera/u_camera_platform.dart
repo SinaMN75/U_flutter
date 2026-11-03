@@ -1130,6 +1130,7 @@ class UCameraController extends ValueNotifier<UCameraValue> {
   Duration _recordedBeforePause = Duration.zero;
   bool _disposed = false;
   bool _decodeBusy = false;
+  Rect? _scanRegion;
   DateTime _lastScanAt = DateTime.fromMillisecondsSinceEpoch(0);
   final Map<String, DateTime> _recentCodes = <String, DateTime>{};
 
@@ -1440,7 +1441,13 @@ class UCameraController extends ValueNotifier<UCameraValue> {
     try {
       final UGrayImage gray = frame.toGray();
       if (gray.isEmpty) return;
-      final List<UCode> found = await UCodeScanWorker.decode(gray.data, gray.width, gray.height, gray.stride, _config.scanOptions);
+      final Rect? region = _scanRegion;
+      final UCodeScanOptions options = region == null
+          ? _config.scanOptions
+          : _config.scanOptions.copyWith(
+              region: UCameraUtils.uprightRegionToFrame(region, width: frame.width, height: frame.height, rotation: frame.rotation),
+            );
+      final List<UCode> found = await UCodeScanWorker.decode(gray.data, gray.width, gray.height, gray.stride, options);
       if (found.isNotEmpty) _emitCodes(found, platform: false);
     } catch (_) {
       // A single bad frame must never break the stream.
@@ -1873,25 +1880,11 @@ class UCameraController extends ValueNotifier<UCameraValue> {
   /// Clears the de-duplication window so the same code fires again.
   void resetScanHistory() => _recentCodes.clear();
 
-  /// Restricts decoding to a rectangle of the preview, in normalized
-  /// coordinates. Cutting the search area is the cheapest speed win there is.
-  void setScanRegion(Rect? normalizedRegion) {
-    final UCameraSize preview = value.previewSize;
-    if (normalizedRegion == null || preview.width == 0) {
-      _config = _config.copyWith(scanOptions: _config.scanOptions.copyWith());
-      return;
-    }
-    _config = _config.copyWith(
-      scanOptions: _config.scanOptions.copyWith(
-        region: Rect.fromLTWH(
-          normalizedRegion.left * preview.width,
-          normalizedRegion.top * preview.height,
-          normalizedRegion.width * preview.width,
-          normalizedRegion.height * preview.height,
-        ),
-      ),
-    );
-  }
+  /// Restricts decoding to a rectangle of the upright, unmirrored preview, in
+  /// normalized (0..1) coordinates; null scans the whole frame. Each frame maps
+  /// it to its own size and rotation. Cutting the search area is the cheapest
+  /// speed win there is.
+  void setScanRegion(Rect? normalizedRegion) => _scanRegion = normalizedRegion;
 }
 
 /// Camera and microphone permission state in one object.

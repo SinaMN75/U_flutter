@@ -398,7 +398,7 @@ class UStockMoveCreateParams {
 
   final String productId;
 
-  /// [TagStockMove.stockIn], [TagStockMove.returned] or [TagStockMove.waste] as a number.
+  /// Any [TagStockMove] but [TagStockMove.sale] and [TagStockMove.adjust], as a number.
   final int kind;
   final int quantity;
   final num? unitPrice;

@@ -17828,12 +17828,6 @@ abstract class AppLocalizations {
   /// **'Unit purchase price'**
   String get unitPurchasePrice;
 
-  /// No description provided for @unitSellingPrice.
-  ///
-  /// In en, this message translates to:
-  /// **'Unit selling price'**
-  String get unitSellingPrice;
-
   /// No description provided for @stockAfterSaving.
   ///
   /// In en, this message translates to:

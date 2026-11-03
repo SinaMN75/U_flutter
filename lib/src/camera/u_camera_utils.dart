@@ -91,6 +91,36 @@ abstract class UCameraUtils {
     return Rect.fromPoints(topLeft, bottomRight);
   }
 
+  /// Maps a widget rectangle (such as a scan window) to the normalized (0..1)
+  /// rectangle of the upright, unmirrored preview it covers.
+  static Rect widgetRectToNormalized({
+    required Rect rect,
+    required Size widgetSize,
+    required UCameraSize previewSize,
+    BoxFit fit = BoxFit.cover,
+    bool mirrored = false,
+  }) => Rect.fromPoints(
+    normalizePoint(local: rect.topLeft, widgetSize: widgetSize, previewSize: previewSize, fit: fit, mirrored: mirrored),
+    normalizePoint(local: rect.bottomRight, widgetSize: widgetSize, previewSize: previewSize, fit: fit, mirrored: mirrored),
+  );
+
+  /// Maps a normalized rectangle of the upright image to pixels of a raw frame
+  /// of [width] x [height] that needs [rotation] degrees clockwise to be upright.
+  static Rect uprightRegionToFrame(Rect region, {required int width, required int height, int rotation = 0}) {
+    final Rect raw = switch ((rotation % 360 + 360) % 360) {
+      90 => Rect.fromLTRB(region.top, 1 - region.right, region.bottom, 1 - region.left),
+      180 => Rect.fromLTRB(1 - region.right, 1 - region.bottom, 1 - region.left, 1 - region.top),
+      270 => Rect.fromLTRB(1 - region.bottom, region.left, 1 - region.top, region.right),
+      _ => region,
+    };
+    return Rect.fromLTRB(
+      (raw.left.clamp(0.0, 1.0) * width).floorToDouble(),
+      (raw.top.clamp(0.0, 1.0) * height).floorToDouble(),
+      (raw.right.clamp(0.0, 1.0) * width).ceilToDouble(),
+      (raw.bottom.clamp(0.0, 1.0) * height).ceilToDouble(),
+    );
+  }
+
   /// Normalized scan window for a centered rectangle of [size] inside [bounds].
   static Rect centeredScanWindow(Size bounds, Size size) {
     if (bounds.width <= 0 || bounds.height <= 0) return const Rect.fromLTWH(0, 0, 1, 1);

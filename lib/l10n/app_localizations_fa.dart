@@ -9193,9 +9193,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get unitPurchasePrice => 'قیمت خرید واحد';
 
   @override
-  String get unitSellingPrice => 'قیمت فروش واحد';
-
-  @override
   String get stockAfterSaving => 'موجودی بعد از ثبت';
 
   @override

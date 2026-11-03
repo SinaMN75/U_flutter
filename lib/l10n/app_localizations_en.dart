@@ -9194,9 +9194,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get unitPurchasePrice => 'Unit purchase price';
 
   @override
-  String get unitSellingPrice => 'Unit selling price';
-
-  @override
   String get stockAfterSaving => 'Stock after saving';
 
   @override

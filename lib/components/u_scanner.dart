@@ -518,7 +518,9 @@ class _UScannerState extends State<UScanner> with SingleTickerProviderStateMixin
               );
           if (widget.restrictToScanWindow || widget.scanWindow != null) {
             controller.setScanRegion(
-              Rect.fromLTWH(window.left / bounds.width, window.top / bounds.height, window.width / bounds.width, window.height / bounds.height),
+              value.previewSize.width == 0
+                  ? null
+                  : UCameraUtils.widgetRectToNormalized(rect: window, widgetSize: bounds, previewSize: value.rotatedPreviewSize, fit: widget.fit, mirrored: value.mirrored),
             );
           }
           final Color borderColor = widget.borderColor ?? Theme.of(context).colorScheme.primary;
