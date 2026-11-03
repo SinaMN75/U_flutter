@@ -355,13 +355,14 @@ class UGeofenceEvent {
 /// Compass reading: degrees from north, accuracy.
 @immutable
 class UHeading {
-  const UHeading({required this.magnetic, required this.time, this.trueNorth, this.accuracy});
+  const UHeading({required this.magnetic, required this.time, this.trueNorth, this.accuracy, this.pitch});
 
   /// Reads it from the native map.
   factory UHeading.fromMap(Map<Object?, Object?> m) => UHeading(
     magnetic: (m["magnetic"]! as num).toDouble(),
     trueNorth: (m["true"] as num?)?.toDouble(),
     accuracy: (m["accuracy"] as num?)?.toDouble(),
+    pitch: (m["pitch"] as num?)?.toDouble(),
     time: DateTime.fromMillisecondsSinceEpoch((m["time"] as num?)?.toInt() ?? DateTime.now().millisecondsSinceEpoch),
   );
 
@@ -376,6 +377,9 @@ class UHeading {
 
   /// When it was measured.
   final DateTime time;
+
+  /// Camera tilt above the horizon in degrees (negative below), from [ULocation.cameraHeading] where known.
+  final double? pitch;
 
   /// The best available heading.
   double get degrees => trueNorth ?? magnetic;

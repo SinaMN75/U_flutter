@@ -13,7 +13,8 @@ class UCategoryService {
     Function(UResponse<List<UCategoryResponse>> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) => _Api.call("/Category/Read", p.toMap(), _Api.list(UCategoryResponse.fromMap), _Api.empty, onOk, onError, onException);
+    bool cacheFallback = false,
+  }) => _Api.call("/Category/Read", p.toMap(), _Api.list(UCategoryResponse.fromMap), _Api.empty, onOk, onError, onException, cacheFallback: cacheFallback);
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> update({
     required UCategoryUpdateParams p,

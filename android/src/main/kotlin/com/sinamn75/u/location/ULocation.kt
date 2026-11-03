@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.hardware.GeomagneticField
+import android.hardware.display.DisplayManager
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -23,6 +24,8 @@ import android.os.Bundle
 import android.os.CancellationSignal
 import android.os.Handler
 import android.os.Looper
+import android.view.Display
+import android.view.Surface
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.EventChannel
@@ -45,6 +48,7 @@ class ULocationHandler(
     private val channel = MethodChannel(messenger, "u/location")
     private val updatesChannel = EventChannel(messenger, "u/location/updates")
     private val headingChannel = EventChannel(messenger, "u/location/heading")
+    private val cameraHeadingChannel = EventChannel(messenger, "u/location/cameraHeading")
     private val geofenceChannel = EventChannel(messenger, "u/location/geofence")
     private val visitsChannel = EventChannel(messenger, "u/location/visits")
     private val manager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -56,12 +60,13 @@ class ULocationHandler(
     private var wantsAlways = false
     private var updatesSink: EventChannel.EventSink? = null
     private var updatesListener: LocationListener? = null
-    private var headingListener: SensorEventListener? = null
+    private val headings = listOf(Heading(camera = false), Heading(camera = true))
 
     init {
         channel.setMethodCallHandler(this)
         updatesChannel.setStreamHandler(Updates())
-        headingChannel.setStreamHandler(Heading())
+        headingChannel.setStreamHandler(headings[0])
+        cameraHeadingChannel.setStreamHandler(headings[1])
         geofenceChannel.setStreamHandler(Geofences())
         visitsChannel.setStreamHandler(
             object : EventChannel.StreamHandler {
@@ -397,7 +402,12 @@ class ULocationHandler(
     // Heading
     // -------------------------------------------------------------------------
 
-    inner class Heading : EventChannel.StreamHandler {
+    /// [camera]: the direction the back camera looks and its tilt, for camera overlays held upright.
+    inner class Heading(
+        private val camera: Boolean,
+    ) : EventChannel.StreamHandler {
+        private var listener: SensorEventListener? = null
+
         override fun onListen(
             arguments: Any?,
             events: EventChannel.EventSink?,
@@ -405,22 +415,37 @@ class ULocationHandler(
             val sink = events ?: return
             val sensors = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
             val rotation = sensors.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR) ?: return sink.error("unsupported", "No rotation sensor", null)
-            stopHeading()
+            stop()
             val matrix = FloatArray(9)
+            val remapped = FloatArray(9)
             val angles = FloatArray(3)
             var accuracy = 30.0
             var last = -1.0
+            var lastPitch = 0.0
             var lastAt = 0L
             val listener =
                 object : SensorEventListener {
                     override fun onSensorChanged(event: SensorEvent) {
                         SensorManager.getRotationMatrixFromVector(matrix, event.values)
-                        SensorManager.getOrientation(matrix, angles)
+                        if (camera) {
+                            // Puts the device Y axis along the back camera for the current screen rotation.
+                            when (displayRotation()) {
+                                Surface.ROTATION_90 -> SensorManager.remapCoordinateSystem(matrix, SensorManager.AXIS_Z, SensorManager.AXIS_MINUS_X, remapped)
+                                Surface.ROTATION_180 -> SensorManager.remapCoordinateSystem(matrix, SensorManager.AXIS_MINUS_X, SensorManager.AXIS_MINUS_Z, remapped)
+                                Surface.ROTATION_270 -> SensorManager.remapCoordinateSystem(matrix, SensorManager.AXIS_MINUS_Z, SensorManager.AXIS_X, remapped)
+                                else -> SensorManager.remapCoordinateSystem(matrix, SensorManager.AXIS_X, SensorManager.AXIS_Z, remapped)
+                            }
+                            SensorManager.getOrientation(remapped, angles)
+                        } else {
+                            SensorManager.getOrientation(matrix, angles)
+                        }
                         val magnetic = (Math.toDegrees(angles[0].toDouble()) + 360) % 360
+                        val pitch = -Math.toDegrees(angles[1].toDouble())
                         val now = System.currentTimeMillis()
                         // At most ~20 updates a second, and only when it moved by a degree.
-                        if (now - lastAt < 50 || (last >= 0 && Math.abs(magnetic - last) < 1)) return
+                        if (now - lastAt < 50 || (last >= 0 && Math.abs(magnetic - last) < 1 && Math.abs(pitch - lastPitch) < 1)) return
                         last = magnetic
+                        lastPitch = pitch
                         lastAt = now
                         val location = if (hasForeground()) lastKnown() else null
                         val trueNorth =
@@ -428,7 +453,7 @@ class ULocationHandler(
                                 val field = GeomagneticField(it.latitude.toFloat(), it.longitude.toFloat(), it.altitude.toFloat(), now)
                                 (magnetic + field.declination + 360) % 360
                             }
-                        sink.success(mapOf("magnetic" to magnetic, "true" to trueNorth, "accuracy" to accuracy, "time" to now))
+                        sink.success(mapOf("magnetic" to magnetic, "true" to trueNorth, "accuracy" to accuracy, "time" to now, "pitch" to if (camera) pitch else null))
                     }
 
                     override fun onAccuracyChanged(
@@ -443,19 +468,23 @@ class ULocationHandler(
                             }
                     }
                 }
-            headingListener = listener
+            this.listener = listener
             sensors.registerListener(listener, rotation, SensorManager.SENSOR_DELAY_UI)
         }
 
         override fun onCancel(arguments: Any?) {
-            stopHeading()
+            stop()
+        }
+
+        fun stop() {
+            listener?.let { (context.getSystemService(Context.SENSOR_SERVICE) as SensorManager).unregisterListener(it) }
+            listener = null
         }
     }
 
-    private fun stopHeading() {
-        headingListener?.let { (context.getSystemService(Context.SENSOR_SERVICE) as SensorManager).unregisterListener(it) }
-        headingListener = null
-    }
+    private fun stopHeading() = headings.forEach { it.stop() }
+
+    private fun displayRotation(): Int = (context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager).getDisplay(Display.DEFAULT_DISPLAY)?.rotation ?: Surface.ROTATION_0
 
     // -------------------------------------------------------------------------
     // Geofences (proximity alerts: framework API, no Play Services)

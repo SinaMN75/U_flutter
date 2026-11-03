@@ -45,6 +45,9 @@ abstract final class ULocation {
   /// Compass direction while you listen: Android, iOS, Windows with a compass, mobile web; not macOS/Linux. `ULocation.heading().listen((h) => angle = h.degrees)`
   static Stream<UHeading> heading() => ULocationChannel.heading();
 
+  /// Direction the back camera looks and its tilt ([UHeading.pitch]) while the phone is held upright, for camera overlays: Android; elsewhere the plain [heading]. `ULocation.cameraHeading().listen((h) => look = h.degrees)`
+  static Stream<UHeading> cameraHeading() => ULocationChannel.cameraHeading();
+
   /// iOS only: places the user arrives at and leaves (battery friendly). `ULocation.visits().listen(logVisit)`
   static Stream<UVisit> visits() => ULocationChannel.visits();
 

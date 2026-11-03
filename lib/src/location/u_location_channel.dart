@@ -29,6 +29,7 @@ abstract final class ULocationChannel {
   static const MethodChannel _channel = MethodChannel("u/location");
   static const EventChannel _updates = EventChannel("u/location/updates");
   static const EventChannel _heading = EventChannel("u/location/heading");
+  static const EventChannel _cameraHeading = EventChannel("u/location/cameraHeading");
   static const EventChannel _geofence = EventChannel("u/location/geofence");
   static const EventChannel _visits = EventChannel("u/location/visits");
 
@@ -183,6 +184,12 @@ abstract final class ULocationChannel {
       notificationTitle: lead.notificationTitle,
       notificationText: lead.notificationText,
     );
+  }
+
+  /// Where the back camera looks, with its tilt (Android); the plain compass elsewhere.
+  static Stream<UHeading> cameraHeading() {
+    if (kIsWeb || defaultTargetPlatform != TargetPlatform.android) return heading();
+    return _cameraHeading.receiveBroadcastStream().map((Object? e) => UHeading.fromMap(e! as Map<Object?, Object?>));
   }
 
   /// Compass updates; every listener shares one native stream.

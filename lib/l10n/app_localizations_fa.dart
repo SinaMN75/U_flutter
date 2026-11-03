@@ -9515,4 +9515,168 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get withAr => 'دارای AR';
+
+  @override
+  String countStoresWithinDistance(Object count, Object distance) {
+    return '$count فروشگاه تا $distance';
+  }
+
+  @override
+  String get straightAhead => 'روبه‌رو';
+
+  @override
+  String get aheadOnTheLeft => 'جلوتر، سمت چپ';
+
+  @override
+  String get aheadOnTheRight => 'جلوتر، سمت راست';
+
+  @override
+  String get onYourLeft => 'سمت چپ شما';
+
+  @override
+  String get onYourRight => 'سمت راست شما';
+
+  @override
+  String get behindYou => 'پشت سر شما';
+
+  @override
+  String get storesAroundYou => 'فروشگاه‌های اطراف';
+
+  @override
+  String get seeInYourRoom => 'در اتاق خود ببینید';
+
+  @override
+  String get placedDragToMove => 'گذاشته شد · برای جابه‌جایی بکشید';
+
+  @override
+  String get photoSaved => 'عکس ذخیره شد';
+
+  @override
+  String get realSize => 'اندازه واقعی';
+
+  @override
+  String heightCountCm(Object count) {
+    return 'ارتفاع $count سانتی‌متر';
+  }
+
+  @override
+  String get addedToSelections => 'به انتخاب‌ها اضافه شد';
+
+  @override
+  String get reportAProblem => 'گزارش مشکل';
+
+  @override
+  String get whatIsWrong => 'مشکل چیست؟';
+
+  @override
+  String get wrongPrice => 'قیمت اشتباه';
+
+  @override
+  String get wrongAddress => 'نشانی اشتباه';
+
+  @override
+  String get inappropriateContent => 'محتوای نامناسب';
+
+  @override
+  String get fakeOrMisleading => 'جعلی یا گمراه‌کننده';
+
+  @override
+  String get moreDetailsOptional => 'توضیح بیشتر (اختیاری)';
+
+  @override
+  String get platformOverview => 'نمای کلی پلتفرم';
+
+  @override
+  String get activeStores => 'فروشگاه فعال';
+
+  @override
+  String get awaitingApproval => 'در انتظار تأیید';
+
+  @override
+  String get buyerUsers => 'کاربران خریدار';
+
+  @override
+  String get activeSubscriptions => 'اشتراک فعال';
+
+  @override
+  String get subscriptionRevenue30Days => 'درآمد اشتراک (۳۰ روز)';
+
+  @override
+  String get storesByType => 'فروشگاه‌ها بر اساس نوع';
+
+  @override
+  String get violationReports => 'گزارش‌های تخلف';
+
+  @override
+  String countReports(Object count) {
+    return '$count گزارش';
+  }
+
+  @override
+  String get markResolved => 'رسیدگی شد';
+
+  @override
+  String get dismissReport => 'رد گزارش';
+
+  @override
+  String get moderatorNote => 'یادداشت بررسی';
+
+  @override
+  String get noOpenReports => 'گزارش بازی نیست';
+
+  @override
+  String get nothingFound => 'چیزی پیدا نشد';
+
+  @override
+  String nothingWithinDistanceOfYouWidenTheRangeOrTryAnotherName(Object distance) {
+    return 'در $distanceی شما چیزی با این نام نیست. محدوده را بزرگ‌تر کنید یا نام دیگری بنویسید.';
+  }
+
+  @override
+  String get widenTheRange => 'بزرگ کردن محدوده';
+
+  @override
+  String get internetIsOff => 'اینترنت قطع است';
+
+  @override
+  String get youCanStillSeeTheLastStoresYouVisitedPricesMayBeOutOfDate => 'آخرین فروشگاه‌هایی که دیدید را بدون اینترنت هم می‌توانید ببینید؛ قیمت‌ها شاید به‌روز نباشند.';
+
+  @override
+  String get seeRecentVisits => 'دیدن آخرین بازدیدها';
+
+  @override
+  String get theServerDidNotAnswerTryAgainInAMoment => 'سرور جواب نداد. کمی بعد دوباره امتحان کنید.';
+
+  @override
+  String closedNowOpensTodayAtTime(Object time) {
+    return 'الان بسته است · امروز $time باز می‌شود';
+  }
+
+  @override
+  String closedNowOpensTomorrowAtTime(Object time) {
+    return 'الان بسته است · فردا $time باز می‌شود';
+  }
+
+  @override
+  String closedNowOpensDayAtTime(Object day, Object time) {
+    return 'الان بسته است · $day $time باز می‌شود';
+  }
+
+  @override
+  String get youCanSeeTheMenuButPricesMayChangeBeforeItOpens => 'منو را می‌توانید ببینید، ولی قیمت‌ها ممکن است تا باز شدن تغییر کند.';
+
+  @override
+  String get notifyMeWhenItOpens => 'وقتی باز شد خبرم کن';
+
+  @override
+  String get weWillLetYouKnowWhenItOpens => 'وقتی باز شد خبرتان می‌کنیم';
+
+  @override
+  String get recentVisits => 'آخرین بازدیدها';
+
+  @override
+  String get youHaveNotVisitedAnyStoreYet => 'هنوز فروشگاهی ندیده‌اید';
+
+  @override
+  String get youAreOfflinePricesMayBeOutOfDate => 'اینترنت قطع است؛ قیمت‌ها شاید به‌روز نباشند.';
 }

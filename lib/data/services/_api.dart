@@ -14,6 +14,7 @@ abstract class _Api {
     Function(String e)? onException, {
     String method = "POST",
     bool locale = false,
+    bool cacheFallback = false,
     Function(int percent)? onProgress,
   }) async {
     String? okBody;
@@ -24,6 +25,7 @@ abstract class _Api {
       endpoint: "${U.baseUrl}$path",
       body: body == null ? null : _body(body, locale: locale),
       onProgress: onProgress?.call,
+      cacheFallback: cacheFallback,
       onSuccess: (Response r) => okBody = r.body,
       onError: (Response r) => errorBody = r.body,
       onException: (String e) => exception = e,

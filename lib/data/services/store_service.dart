@@ -43,7 +43,8 @@ class UStoreService {
     Function(UResponse<UStoreResponse> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) => _Api.call("/Store/Store/ReadByCode", p.toMap(), _Api.one(UStoreResponse.fromMap), _Api.empty, onOk, onError, onException);
+    bool cacheFallback = false,
+  }) => _Api.call("/Store/Store/ReadByCode", p.toMap(), _Api.one(UStoreResponse.fromMap), _Api.empty, onOk, onError, onException, cacheFallback: cacheFallback);
 
   /// The card, IBAN and owner a buyer pays to; the server counts each read.
   Future<(UResponse<UStorePaymentResponse>?, UEmptyResponse?, String?)> readPayment({
@@ -68,6 +69,21 @@ class UStoreService {
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
   }) => _Api.call("/Store/Store/ReadReport", p.toMap(), _Api.one(UStoreReportResponse.fromMap), _Api.empty, onOk, onError, onException);
+
+  /// Asks for one notification when a closed store opens next (or takes it back with `on: false`).
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> setOpenAlert({
+    required UStoreOpenAlertParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Store/Store/SetOpenAlert", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  /// Whole-platform numbers for staff: stores, sellers, buyers, scans, subscriptions and open reports.
+  Future<(UResponse<UStorePlatformReportResponse>?, UEmptyResponse?, String?)> readPlatformReport({
+    Function(UResponse<UStorePlatformReportResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Store/Store/ReadPlatformReport", UBaseParams().toMap(), _Api.one(UStorePlatformReportResponse.fromMap), _Api.empty, onOk, onError, onException);
 
   /// Records goods coming in, a return or waste and updates the stock.
   Future<(UResponse<String>?, UEmptyResponse?, String?)> createStockMove({
@@ -162,14 +178,16 @@ class UStoreService {
     Function(UResponse<List<UProductResponse>> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) => _Api.call("/Store/Product/Read", p.toMap(), _Api.list(UProductResponse.fromMap), _Api.empty, onOk, onError, onException);
+    bool cacheFallback = false,
+  }) => _Api.call("/Store/Product/Read", p.toMap(), _Api.list(UProductResponse.fromMap), _Api.empty, onOk, onError, onException, cacheFallback: cacheFallback);
 
   Future<(UResponse<UProductResponse>?, UEmptyResponse?, String?)> readProductById({
     required UIdParams p,
     Function(UResponse<UProductResponse> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) => _Api.call("/Store/Product/ReadById", p.toMap(), _Api.one(UProductResponse.fromMap), _Api.empty, onOk, onError, onException);
+    bool cacheFallback = false,
+  }) => _Api.call("/Store/Product/ReadById", p.toMap(), _Api.one(UProductResponse.fromMap), _Api.empty, onOk, onError, onException, cacheFallback: cacheFallback);
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> updateProduct({
     required UProductUpdateParams p,

@@ -18427,6 +18427,306 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'With AR'**
   String get withAr;
+
+  /// No description provided for @countStoresWithinDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} stores within {distance}'**
+  String countStoresWithinDistance(Object count, Object distance);
+
+  /// No description provided for @straightAhead.
+  ///
+  /// In en, this message translates to:
+  /// **'Straight ahead'**
+  String get straightAhead;
+
+  /// No description provided for @aheadOnTheLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Ahead on the left'**
+  String get aheadOnTheLeft;
+
+  /// No description provided for @aheadOnTheRight.
+  ///
+  /// In en, this message translates to:
+  /// **'Ahead on the right'**
+  String get aheadOnTheRight;
+
+  /// No description provided for @onYourLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'On your left'**
+  String get onYourLeft;
+
+  /// No description provided for @onYourRight.
+  ///
+  /// In en, this message translates to:
+  /// **'On your right'**
+  String get onYourRight;
+
+  /// No description provided for @behindYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Behind you'**
+  String get behindYou;
+
+  /// No description provided for @storesAroundYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Stores around you'**
+  String get storesAroundYou;
+
+  /// No description provided for @seeInYourRoom.
+  ///
+  /// In en, this message translates to:
+  /// **'See in your room'**
+  String get seeInYourRoom;
+
+  /// No description provided for @placedDragToMove.
+  ///
+  /// In en, this message translates to:
+  /// **'Placed · drag to move'**
+  String get placedDragToMove;
+
+  /// No description provided for @photoSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo saved'**
+  String get photoSaved;
+
+  /// No description provided for @realSize.
+  ///
+  /// In en, this message translates to:
+  /// **'Real size'**
+  String get realSize;
+
+  /// No description provided for @heightCountCm.
+  ///
+  /// In en, this message translates to:
+  /// **'Height {count} cm'**
+  String heightCountCm(Object count);
+
+  /// No description provided for @addedToSelections.
+  ///
+  /// In en, this message translates to:
+  /// **'Added to selections'**
+  String get addedToSelections;
+
+  /// No description provided for @reportAProblem.
+  ///
+  /// In en, this message translates to:
+  /// **'Report a problem'**
+  String get reportAProblem;
+
+  /// No description provided for @whatIsWrong.
+  ///
+  /// In en, this message translates to:
+  /// **'What is wrong?'**
+  String get whatIsWrong;
+
+  /// No description provided for @wrongPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong price'**
+  String get wrongPrice;
+
+  /// No description provided for @wrongAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong address'**
+  String get wrongAddress;
+
+  /// No description provided for @inappropriateContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Inappropriate content'**
+  String get inappropriateContent;
+
+  /// No description provided for @fakeOrMisleading.
+  ///
+  /// In en, this message translates to:
+  /// **'Fake or misleading'**
+  String get fakeOrMisleading;
+
+  /// No description provided for @moreDetailsOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'More details (optional)'**
+  String get moreDetailsOptional;
+
+  /// No description provided for @platformOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Platform overview'**
+  String get platformOverview;
+
+  /// No description provided for @activeStores.
+  ///
+  /// In en, this message translates to:
+  /// **'Active stores'**
+  String get activeStores;
+
+  /// No description provided for @awaitingApproval.
+  ///
+  /// In en, this message translates to:
+  /// **'Awaiting approval'**
+  String get awaitingApproval;
+
+  /// No description provided for @buyerUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'Buyer users'**
+  String get buyerUsers;
+
+  /// No description provided for @activeSubscriptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Active subscriptions'**
+  String get activeSubscriptions;
+
+  /// No description provided for @subscriptionRevenue30Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription revenue (30 days)'**
+  String get subscriptionRevenue30Days;
+
+  /// No description provided for @storesByType.
+  ///
+  /// In en, this message translates to:
+  /// **'Stores by type'**
+  String get storesByType;
+
+  /// No description provided for @violationReports.
+  ///
+  /// In en, this message translates to:
+  /// **'Violation reports'**
+  String get violationReports;
+
+  /// No description provided for @countReports.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} reports'**
+  String countReports(Object count);
+
+  /// No description provided for @markResolved.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark resolved'**
+  String get markResolved;
+
+  /// No description provided for @dismissReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Dismiss report'**
+  String get dismissReport;
+
+  /// No description provided for @moderatorNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Moderator note'**
+  String get moderatorNote;
+
+  /// No description provided for @noOpenReports.
+  ///
+  /// In en, this message translates to:
+  /// **'No open reports'**
+  String get noOpenReports;
+
+  /// No description provided for @nothingFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing found'**
+  String get nothingFound;
+
+  /// No description provided for @nothingWithinDistanceOfYouWidenTheRangeOrTryAnotherName.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing within {distance} of you. Widen the range or try another name.'**
+  String nothingWithinDistanceOfYouWidenTheRangeOrTryAnotherName(Object distance);
+
+  /// No description provided for @widenTheRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Widen the range'**
+  String get widenTheRange;
+
+  /// No description provided for @internetIsOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Internet is off'**
+  String get internetIsOff;
+
+  /// No description provided for @youCanStillSeeTheLastStoresYouVisitedPricesMayBeOutOfDate.
+  ///
+  /// In en, this message translates to:
+  /// **'You can still see the last stores you visited; prices may be out of date.'**
+  String get youCanStillSeeTheLastStoresYouVisitedPricesMayBeOutOfDate;
+
+  /// No description provided for @seeRecentVisits.
+  ///
+  /// In en, this message translates to:
+  /// **'See recent visits'**
+  String get seeRecentVisits;
+
+  /// No description provided for @theServerDidNotAnswerTryAgainInAMoment.
+  ///
+  /// In en, this message translates to:
+  /// **'The server did not answer. Try again in a moment.'**
+  String get theServerDidNotAnswerTryAgainInAMoment;
+
+  /// No description provided for @closedNowOpensTodayAtTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed now · opens today at {time}'**
+  String closedNowOpensTodayAtTime(Object time);
+
+  /// No description provided for @closedNowOpensTomorrowAtTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed now · opens tomorrow at {time}'**
+  String closedNowOpensTomorrowAtTime(Object time);
+
+  /// No description provided for @closedNowOpensDayAtTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed now · opens {day} at {time}'**
+  String closedNowOpensDayAtTime(Object day, Object time);
+
+  /// No description provided for @youCanSeeTheMenuButPricesMayChangeBeforeItOpens.
+  ///
+  /// In en, this message translates to:
+  /// **'You can see the menu, but prices may change before it opens.'**
+  String get youCanSeeTheMenuButPricesMayChangeBeforeItOpens;
+
+  /// No description provided for @notifyMeWhenItOpens.
+  ///
+  /// In en, this message translates to:
+  /// **'Notify me when it opens'**
+  String get notifyMeWhenItOpens;
+
+  /// No description provided for @weWillLetYouKnowWhenItOpens.
+  ///
+  /// In en, this message translates to:
+  /// **'We will let you know when it opens'**
+  String get weWillLetYouKnowWhenItOpens;
+
+  /// No description provided for @recentVisits.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent visits'**
+  String get recentVisits;
+
+  /// No description provided for @youHaveNotVisitedAnyStoreYet.
+  ///
+  /// In en, this message translates to:
+  /// **'You have not visited any store yet'**
+  String get youHaveNotVisitedAnyStoreYet;
+
+  /// No description provided for @youAreOfflinePricesMayBeOutOfDate.
+  ///
+  /// In en, this message translates to:
+  /// **'You are offline; prices may be out of date.'**
+  String get youAreOfflinePricesMayBeOutOfDate;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

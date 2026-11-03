@@ -652,36 +652,51 @@ class _UArGateState extends State<UArGate> {
     return widget.builder(context, availability.capabilities);
   }
 
-  // Drawn on a card so it reads on the black AR page in light and dark themes.
-  Widget _message(String text, String? action, Future<void> Function()? onAction) => Stack(
+  Widget _message(String text, String? action, Future<void> Function()? onAction) =>
+      _UArMessage(text: text, action: action, onAction: onAction, onRetry: _check, style: widget.style, showCloseButton: widget.showCloseButton);
+}
+
+// Drawn on a card so it reads on the black AR page in light and dark themes.
+class _UArMessage extends StatelessWidget {
+  const _UArMessage({required this.text, required this.onRetry, required this.style, required this.showCloseButton, this.action, this.onAction});
+
+  final String text;
+  final String? action;
+  final Future<void> Function()? onAction;
+  final Future<void> Function() onRetry;
+  final UArStyle style;
+  final bool showCloseButton;
+
+  @override
+  Widget build(BuildContext context) => Stack(
     fit: StackFit.expand,
     children: <Widget>[
       Center(
         child: Padding(
-          padding: widget.style.padding,
+          padding: style.padding,
           child: DecoratedBox(
-            decoration: BoxDecoration(color: widget.style.surface(context), borderRadius: BorderRadius.circular(widget.style.borderRadius)),
+            decoration: BoxDecoration(color: style.surface(context), borderRadius: BorderRadius.circular(style.borderRadius)),
             child: Padding(
               padding: const EdgeInsets.all(24),
               child: UArForeground(
-                color: widget.style.onSurface(context),
+                color: style.onSurface(context),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Icon(Icons.view_in_ar_outlined, size: 56, color: widget.style.accent(context)),
+                    Icon(Icons.view_in_ar_outlined, size: 56, color: style.accent(context)),
                     const SizedBox(height: 16),
                     UTextBodyLarge(text, textAlign: TextAlign.center, maxLines: 6),
                     if (action != null && onAction != null) ...<Widget>[
                       const SizedBox(height: 16),
                       UButton(
                         title: action,
-                        backgroundColor: widget.style.accent(context),
-                        foregroundColor: widget.style.onAccent(context),
-                        onTap: () => unawaited(onAction()),
+                        backgroundColor: style.accent(context),
+                        foregroundColor: style.onAccent(context),
+                        onTap: () => unawaited(onAction!()),
                       ),
                     ],
                     const SizedBox(height: 8),
-                    UButton(title: U.s.retry, type: UButtonType.text, foregroundColor: widget.style.accent(context), onTap: () => unawaited(_check())),
+                    UButton(title: U.s.retry, type: UButtonType.text, foregroundColor: style.accent(context), onTap: () => unawaited(onRetry())),
                   ],
                 ),
               ),
@@ -689,11 +704,11 @@ class _UArGateState extends State<UArGate> {
           ),
         ),
       ),
-      if (widget.showCloseButton)
+      if (showCloseButton)
         PositionedDirectional(
           top: MediaQuery.paddingOf(context).top + 12,
           start: 12,
-          child: UArRoundButton(icon: Icons.close, tooltip: U.s.close, style: widget.style, onTap: () => Navigator.of(context).maybePop()),
+          child: UArRoundButton(icon: Icons.close, tooltip: U.s.close, style: style, onTap: () => Navigator.of(context).maybePop()),
         ),
     ],
   );
@@ -1965,6 +1980,10 @@ class UArGeoView extends StatefulWidget {
     this.labels = const UArLabels(),
     this.style = const UArStyle(),
     this.showCloseButton = true,
+    this.cardScale,
+    this.overlayBuilder,
+    this.sensorFallback = true,
+    this.fieldOfView = 65,
     super.key,
   });
 
@@ -2013,12 +2032,41 @@ class UArGeoView extends StatefulWidget {
   /// Shows a close button.
   final bool showCloseButton;
 
+  /// Card size factor for a distance in metres (default: full size up to 40 m, down to 60%).
+  final double Function(double distance)? cardScale;
+
+  /// Your own controls drawn over the labels, rebuilt with the latest position and heading.
+  final Widget Function(BuildContext context, UArGeoSnapshot snapshot)? overlayBuilder;
+
+  /// On phones without AR support, draws the labels over the plain camera from GPS and the compass instead of an error.
+  final bool sensorFallback;
+
+  /// Camera view angle along the screen's long side in degrees, used by the [sensorFallback].
+  final double fieldOfView;
+
+  /// Default card size factor for a distance in metres.
+  static double defaultCardScale(double distance) => (40 / max(distance, 1)).clamp(0.6, 1.0);
+
   @override
   State<UArGeoView> createState() => UArGeoViewState();
 }
 
+/// What [UArGeoView.overlayBuilder] can read on each update.
+class UArGeoSnapshot {
+  const UArGeoSnapshot({this.position, this.heading, this.sensorOnly = false});
+
+  /// Latest position fix.
+  final UPosition? position;
+
+  /// Where the camera looks, in degrees from north.
+  final double? heading;
+
+  /// True when labels follow the compass over the plain camera, without AR tracking.
+  final bool sensorOnly;
+}
+
 /// State of UArGeoView.
-class UArGeoViewState extends State<UArGeoView> with WidgetsBindingObserver, UArLifecycle<UArGeoView> {
+class UArGeoViewState extends State<UArGeoView> with WidgetsBindingObserver, UArLifecycle<UArGeoView>, _UArGeoLabels<UArGeoView> {
   /// The AR controller.
   late final UArController controller = UArController(config: widget.config);
   final Map<String, String> _anchors = <String, String>{};
@@ -2027,6 +2075,9 @@ class UArGeoViewState extends State<UArGeoView> with WidgetsBindingObserver, UAr
 
   @override
   UArController? get lifecycleController => controller;
+
+  @override
+  UArGeoView get view => widget;
 
   @override
   void initState() {
@@ -2107,6 +2158,7 @@ class UArGeoViewState extends State<UArGeoView> with WidgetsBindingObserver, UAr
     needsLocation: true,
     labels: widget.labels,
     style: widget.style,
+    fallback: widget.sensorFallback && !kIsWeb && (Platform.isAndroid || Platform.isIOS) ? (BuildContext context, UArAvailability _) => _UArSensorGeoView(view: widget) : null,
     builder: (BuildContext context, UArCapabilities capabilities) => ColoredBox(
       color: const Color(0xFF000000),
       child: UArView(
@@ -2118,9 +2170,10 @@ class UArGeoViewState extends State<UArGeoView> with WidgetsBindingObserver, UAr
             builder: (BuildContext context, Map<String, UArProjection> projections, Widget? _) => Stack(
               fit: StackFit.expand,
               children: <Widget>[
-                ..._cards(context, constraints.biggest, projections),
+                ...geoCards(context, constraints.biggest, projections, heading: controller.value.frame.heading, here: controller.lastPosition, distanceTo: _distanceTo),
+                if (widget.overlayBuilder != null) widget.overlayBuilder!(context, UArGeoSnapshot(position: controller.lastPosition, heading: controller.value.frame.heading)),
                 _status(context),
-                if (widget.showCompass) _compass(context),
+                if (widget.showCompass) geoCompass(context, controller.value.frame.heading),
                 if (widget.showCloseButton)
                   PositionedDirectional(
                     top: MediaQuery.paddingOf(context).top + 12,
@@ -2136,18 +2189,207 @@ class UArGeoViewState extends State<UArGeoView> with WidgetsBindingObserver, UAr
     ),
   );
 
-  List<Widget> _cards(BuildContext context, Size size, Map<String, UArProjection> projections) {
+  Widget _status(BuildContext context) {
+    final UArValue value = controller.value;
+    String? hint = uArTrackingHint(value, widget.labels, needsSurface: false);
+    final double? accuracy = value.frame.headingAccuracy;
+    if (hint == null && controller.lastPosition == null && (value.geo == null || !value.geo!.isTracking)) hint = widget.labels.waitingForLocation ?? U.s.waitingForLocation;
+    if (hint == null && accuracy != null && accuracy > 30) hint = widget.labels.calibrateCompass ?? U.s.calibrateYourCompassByMovingYourPhoneInAFigureEight;
+    if (hint == null && controller.lastPosition != null && _anchors.isEmpty && widget.places.isNotEmpty && !_placing) hint = widget.labels.noPlaces ?? U.s.noPlacesNearby;
+    if (kIsWeb && !value.isXrActive) hint = null;
+    return geoHint(context, hint);
+  }
+
+}
+
+// Labels over the plain camera, placed from GPS and the compass, for phones without AR support.
+class _UArSensorGeoView extends StatefulWidget {
+  const _UArSensorGeoView({required this.view});
+
+  final UArGeoView view;
+
+  @override
+  State<_UArSensorGeoView> createState() => _UArSensorGeoViewState();
+}
+
+class _UArSensorGeoViewState extends State<_UArSensorGeoView> with WidgetsBindingObserver, _UArGeoLabels<_UArSensorGeoView> {
+  UCameraController? _camera;
+  StreamSubscription<UPosition>? _positions;
+  StreamSubscription<UHeading>? _headings;
+  UPosition? _here;
+  double? _heading;
+  double? _pitch;
+  double? _accuracy;
+  String? _error;
+  bool _locationError = false;
+
+  @override
+  UArGeoView get view => widget.view;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    unawaited(_start());
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    unawaited(_positions?.cancel());
+    unawaited(_headings?.cancel());
+    unawaited(_camera?.dispose());
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    final UCameraController? camera = _camera;
+    if (camera == null) return;
+    if (state == AppLifecycleState.paused) unawaited(camera.suspend());
+    if (state == AppLifecycleState.resumed) unawaited(camera.resume());
+  }
+
+  Future<void> _start() async {
+    setState(() {
+      _error = null;
+      _locationError = false;
+    });
+    final UCameraPermissionState permission = await UCameraController.requestPermission();
+    if (!permission.isGranted) {
+      if (mounted) setState(() => _error = view.labels.permission ?? U.s.cameraPermissionIsRequired);
+      return;
+    }
+    if (await ULocation.ensureReady() != null) {
+      if (mounted) {
+        setState(() {
+          _error = view.labels.locationPermission ?? U.s.locationPermissionIsRequired;
+          _locationError = true;
+        });
+      }
+      return;
+    }
+    final UCameraController camera = _camera ?? UCameraController(config: const UCameraConfig(enableAudio: false));
+    if (_camera == null) await camera.initialize();
+    if (!mounted) return unawaited(camera.dispose());
+    _camera = camera;
+    _positions ??= ULocation.stream(const ULocationSettings(interval: Duration(seconds: 2))).listen((UPosition p) => setState(() => _here = p), onError: (Object _) {});
+    _headings ??= ULocation.cameraHeading().listen(_onHeading, onError: (Object _) {});
+    unawaited(ULocation.position().then((UPosition? p) => mounted && p != null && _here == null ? setState(() => _here = p) : null));
+    setState(() {});
+  }
+
+  // Low-pass filter across the 0/360 seam so labels do not shake.
+  void _onHeading(UHeading h) {
+    final double previous = _heading ?? h.degrees;
+    final double delta = (h.degrees - previous + 540) % 360 - 180;
+    setState(() {
+      _heading = (previous + delta * 0.3 + 360) % 360;
+      _pitch = h.pitch == null ? null : (_pitch ?? h.pitch!) * 0.7 + h.pitch! * 0.3;
+      _accuracy = h.accuracy;
+    });
+  }
+
+  double _distanceTo(UArPlace place) {
+    final UPosition? here = _here;
+    if (here == null) return double.infinity;
+    return UArGeo.distance(here.latitude, here.longitude, place.latitude, place.longitude);
+  }
+
+  /// Projects each nearby place from its bearing and the camera's view angle.
+  Map<String, UArProjection> _project(Size size) {
+    final UPosition? here = _here;
+    final double? heading = _heading;
+    if (here == null || heading == null || size.isEmpty) return <String, UArProjection>{};
+    final double long = view.fieldOfView * pi / 180;
+    final double ratio = size.width / size.height;
+    final double horizontal = (ratio <= 1 ? 2 * atan(tan(long / 2) * ratio) : long) * 180 / pi;
+    final double vertical = (ratio <= 1 ? long : 2 * atan(tan(long / 2) / ratio)) * 180 / pi;
+    final List<UArPlace> near = view.places.where((UArPlace p) => _distanceTo(p) <= view.maxDistance).toList()..sort((UArPlace a, UArPlace b) => _distanceTo(a).compareTo(_distanceTo(b)));
+    final Map<String, UArProjection> projections = <String, UArProjection>{};
+    for (final UArPlace place in near.take(view.maxVisible)) {
+      final double distance = _distanceTo(place);
+      final double relative = (UArGeo.bearing(here.latitude, here.longitude, place.latitude, place.longitude) - heading + 540) % 360 - 180;
+      final double elevation = atan2(place.heightAboveGround - 1.5, max(distance, 1)) * 180 / pi;
+      projections[place.id] = UArProjection(
+        id: place.id,
+        x: 0.5 + relative / horizontal,
+        y: (0.5 - (elevation - (_pitch ?? 0)) / vertical).clamp(0.1, 0.9),
+        distance: distance,
+        visibility: relative.abs() <= horizontal / 2 ? 1 : (relative.abs() > 90 ? -1 : 0),
+      );
+    }
+    return projections;
+  }
+
+  String? _hint(Map<String, UArProjection> projections) {
+    if (_here == null) return view.labels.waitingForLocation ?? U.s.waitingForLocation;
+    if (_accuracy != null && _accuracy! > 30) return view.labels.calibrateCompass ?? U.s.calibrateYourCompassByMovingYourPhoneInAFigureEight;
+    if (_heading != null && projections.isEmpty && view.places.isNotEmpty) return view.labels.noPlaces ?? U.s.noPlacesNearby;
+    return null;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final String? error = _error;
+    if (error != null) {
+      return _UArMessage(
+        text: error,
+        action: view.labels.openSettings ?? U.s.openSettings,
+        onAction: () async => _locationError ? await ULocation.openAppSettings() : await UCameraController.openSettings(),
+        onRetry: _start,
+        style: view.style,
+        showCloseButton: true,
+      );
+    }
+    final UCameraController? camera = _camera;
+    return ColoredBox(
+      color: const Color(0xFF000000),
+      child: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          if (camera != null) UCameraPreview(controller: camera) else const Center(child: CircularProgressIndicator()),
+          LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              final Map<String, UArProjection> projections = _project(constraints.biggest);
+              return Stack(
+                fit: StackFit.expand,
+                children: <Widget>[
+                  ...geoCards(context, constraints.biggest, projections, heading: _heading, here: _here, distanceTo: _distanceTo),
+                  if (view.overlayBuilder != null) view.overlayBuilder!(context, UArGeoSnapshot(position: _here, heading: _heading, sensorOnly: true)),
+                  geoHint(context, _hint(projections)),
+                  if (view.showCompass) geoCompass(context, _heading),
+                  if (view.showCloseButton)
+                    PositionedDirectional(
+                      top: MediaQuery.paddingOf(context).top + 12,
+                      start: 12,
+                      child: UArRoundButton(icon: Icons.close, tooltip: U.s.close, style: view.style, onTap: () => Navigator.of(context).maybePop()),
+                    ),
+                ],
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Card layout shared by [UArGeoView] and its sensor fallback.
+mixin _UArGeoLabels<T extends StatefulWidget> on State<T> {
+  UArGeoView get view;
+
+  /// Cards for the places on screen and edge arrows for the rest.
+  List<Widget> geoCards(BuildContext context, Size size, Map<String, UArProjection> projections, {required double? heading, required UPosition? here, required double Function(UArPlace place) distanceTo}) {
     final List<(UArPlace, UArProjection, double)> onScreen = <(UArPlace, UArProjection, double)>[];
     final List<(UArPlace, double, bool)> offScreen = <(UArPlace, double, bool)>[];
-    final double? heading = controller.value.frame.heading;
-    final UPosition? here = controller.lastPosition;
-    for (final UArPlace place in widget.places) {
+    for (final UArPlace place in view.places) {
       final UArProjection? projection = projections[place.id];
       if (projection == null) continue;
-      final double distance = _distanceTo(place).isFinite ? _distanceTo(place) : projection.distance;
+      final double distance = distanceTo(place).isFinite ? distanceTo(place) : projection.distance;
       if (projection.isVisible) {
         onScreen.add((place, projection, distance));
-      } else if (widget.showEdgeIndicators) {
+      } else if (view.showEdgeIndicators) {
         bool left = projection.x < 0.5;
         if (heading != null && here != null) {
           final double relative = (UArGeo.bearing(here.latitude, here.longitude, place.latitude, place.longitude) - heading + 540) % 360 - 180;
@@ -2160,11 +2402,11 @@ class UArGeoViewState extends State<UArGeoView> with WidgetsBindingObserver, UAr
     final List<Rect> taken = <Rect>[];
     final List<Widget> cards = <Widget>[];
     for (final (UArPlace, UArProjection, double) entry in onScreen) {
-      final double scale = (40 / max(entry.$3, 1)).clamp(0.6, 1.0);
-      final Size cardSize = widget.cardSize * scale;
+      final double scale = (view.cardScale ?? UArGeoView.defaultCardScale)(entry.$3);
+      final Size cardSize = view.cardSize * scale;
       final Offset point = entry.$2.toOffset(size);
       Rect rect = Rect.fromLTWH(point.dx - cardSize.width / 2, point.dy - cardSize.height, cardSize.width, cardSize.height);
-      if (widget.stackCards) {
+      if (view.stackCards) {
         for (int i = 0; i < 12 && taken.any((Rect r) => r.overlaps(rect)); i++) {
           rect = rect.shift(Offset(0, -cardSize.height - 6));
         }
@@ -2177,12 +2419,12 @@ class UArGeoViewState extends State<UArGeoView> with WidgetsBindingObserver, UAr
           width: rect.width,
           height: rect.height,
           child: GestureDetector(
-            onTap: widget.onPlaceTap == null ? null : () => widget.onPlaceTap!(entry.$1),
+            onTap: view.onPlaceTap == null ? null : () => view.onPlaceTap!(entry.$1),
             child: FittedBox(
               child: SizedBox(
-                width: widget.cardSize.width,
-                height: widget.cardSize.height,
-                child: widget.cardBuilder?.call(context, entry.$1, entry.$3, entry.$2) ?? _defaultCard(context, entry.$1, entry.$3),
+                width: view.cardSize.width,
+                height: view.cardSize.height,
+                child: view.cardBuilder?.call(context, entry.$1, entry.$3, entry.$2) ?? _geoDefaultCard(context, entry.$1, entry.$3),
               ),
             ),
           ),
@@ -2200,9 +2442,9 @@ class UArGeoViewState extends State<UArGeoView> with WidgetsBindingObserver, UAr
           right: entry.$3 ? null : 8,
           top: size.height * 0.35 + index * 52,
           child:
-              widget.edgeIndicatorBuilder?.call(context, entry.$1, entry.$2, entry.$3) ??
+              view.edgeIndicatorBuilder?.call(context, entry.$1, entry.$2, entry.$3) ??
               UArPill(
-                style: widget.style,
+                style: view.style,
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -2224,10 +2466,10 @@ class UArGeoViewState extends State<UArGeoView> with WidgetsBindingObserver, UAr
     return reversed;
   }
 
-  Widget _defaultCard(BuildContext context, UArPlace place, double distance) => DecoratedBox(
+  Widget _geoDefaultCard(BuildContext context, UArPlace place, double distance) => DecoratedBox(
     decoration: BoxDecoration(
-      color: widget.style.surface(context),
-      borderRadius: BorderRadius.circular(widget.style.borderRadius),
+      color: view.style.surface(context),
+      borderRadius: BorderRadius.circular(view.style.borderRadius),
       boxShadow: <BoxShadow>[BoxShadow(color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.25), blurRadius: 12, offset: const Offset(0, 4))],
     ),
     child: Padding(
@@ -2236,14 +2478,14 @@ class UArGeoViewState extends State<UArGeoView> with WidgetsBindingObserver, UAr
         children: <Widget>[
           if (place.imageUrl != null)
             ClipRRect(
-              borderRadius: BorderRadius.circular(widget.style.borderRadius - 4),
+              borderRadius: BorderRadius.circular(view.style.borderRadius - 4),
               child: UImage(place.imageUrl!, width: 64, height: 64, fit: BoxFit.cover),
             )
           else
             CircleAvatar(
               radius: 28,
-              backgroundColor: widget.style.accent(context),
-              child: Icon(place.icon ?? Icons.storefront, color: widget.style.onAccent(context)),
+              backgroundColor: view.style.accent(context),
+              child: Icon(place.icon ?? Icons.storefront, color: view.style.onAccent(context)),
             ),
           const SizedBox(width: 10),
           Expanded(
@@ -2253,7 +2495,7 @@ class UArGeoViewState extends State<UArGeoView> with WidgetsBindingObserver, UAr
               children: <Widget>[
                 UTextTitleSmall(place.title, maxLines: 1, overflow: TextOverflow.ellipsis, fontWeight: FontWeight.bold),
                 if (place.subtitle != null) UTextBodySmall(place.subtitle!, maxLines: 1, overflow: TextOverflow.ellipsis),
-                UTextLabelSmall(UArGeo.formatDistance(distance), color: widget.style.accent(context)),
+                UTextLabelSmall(UArGeo.formatDistance(distance), color: view.style.accent(context)),
               ],
             ),
           ),
@@ -2262,36 +2504,14 @@ class UArGeoViewState extends State<UArGeoView> with WidgetsBindingObserver, UAr
     ),
   );
 
-  Widget _status(BuildContext context) {
-    final UArValue value = controller.value;
-    String? hint = uArTrackingHint(value, widget.labels, needsSurface: false);
-    final double? accuracy = value.frame.headingAccuracy;
-    if (hint == null && controller.lastPosition == null && (value.geo == null || !value.geo!.isTracking)) hint = widget.labels.waitingForLocation ?? U.s.waitingForLocation;
-    if (hint == null && accuracy != null && accuracy > 30) hint = widget.labels.calibrateCompass ?? U.s.calibrateYourCompassByMovingYourPhoneInAFigureEight;
-    if (hint == null && controller.lastPosition != null && _anchors.isEmpty && widget.places.isNotEmpty && !_placing) hint = widget.labels.noPlaces ?? U.s.noPlacesNearby;
-    if (kIsWeb && !value.isXrActive) hint = null;
-    if (hint == null) return const SizedBox.shrink();
-    return Positioned(
-      bottom: MediaQuery.paddingOf(context).bottom + 24,
-      left: 24,
-      right: 24,
-      child: Center(
-        child: UArPill(
-          style: widget.style,
-          child: UTextBodyMedium(hint, textAlign: TextAlign.center),
-        ),
-      ),
-    );
-  }
-
-  Widget _compass(BuildContext context) {
-    final double? heading = controller.value.frame.heading;
+  /// Compass pill pointing north.
+  Widget geoCompass(BuildContext context, double? heading) {
     if (heading == null) return const SizedBox.shrink();
     return PositionedDirectional(
       top: MediaQuery.paddingOf(context).top + 12,
       end: 12,
       child: UArPill(
-        style: widget.style,
+        style: view.style,
         padding: const EdgeInsets.all(8),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -2299,6 +2519,21 @@ class UArGeoViewState extends State<UArGeoView> with WidgetsBindingObserver, UAr
             Transform.rotate(angle: -heading * pi / 180, child: const Icon(Icons.navigation, size: 26)),
             UTextLabelSmall("${heading.round()}°"),
           ],
+        ),
+      ),
+    );
+  }
+  /// Hint pill above the bottom edge.
+  Widget geoHint(BuildContext context, String? hint) {
+    if (hint == null) return const SizedBox.shrink();
+    return Positioned(
+      bottom: MediaQuery.paddingOf(context).bottom + 24,
+      left: 24,
+      right: 24,
+      child: Center(
+        child: UArPill(
+          style: view.style,
+          child: UTextBodyMedium(hint, textAlign: TextAlign.center),
         ),
       ),
     );

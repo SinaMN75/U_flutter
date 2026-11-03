@@ -1700,9 +1700,16 @@ enum TagReport with UNumericIdentifiable {
   message("پیام", "Message", 103),
   venue("مجموعه", "Venue", 104),
   comment("نظر", "Comment", 105),
+  store("فروشگاه", "Store", 106),
+  product("کالا", "Product", 107),
   pending("در انتظار بررسی", "Pending", 201),
   resolved("رسیدگی شد", "Resolved", 202),
-  dismissed("رد شد", "Dismissed", 203);
+  dismissed("رد شد", "Dismissed", 203),
+  wrongPrice("قیمت اشتباه", "Wrong price", 301),
+  wrongAddress("نشانی اشتباه", "Wrong address", 302),
+  inappropriate("محتوای نامناسب", "Inappropriate content", 303),
+  fake("جعلی", "Fake", 304),
+  other("سایر", "Other", 305);
 
   const TagReport(this.titleFa, this.titleEn, this.number);
 

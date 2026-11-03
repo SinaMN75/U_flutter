@@ -261,6 +261,20 @@ class UStoreCodeParams {
   }..removeWhere((String _, dynamic v) => v == null);
 }
 
+class UStoreOpenAlertParams {
+  UStoreOpenAlertParams({required this.storeId, this.on = true, int? utcOffsetMinutes}) : utcOffsetMinutes = utcOffsetMinutes ?? DateTime.now().timeZoneOffset.inMinutes;
+
+  final String storeId;
+
+  /// False takes the alert back.
+  final bool on;
+
+  /// The caller's clock, on which the store's hours are read; the device's by default.
+  final int utcOffsetMinutes;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"storeId": storeId, "on": on, "utcOffsetMinutes": utcOffsetMinutes};
+}
+
 class UStoreReviewParams {
   UStoreReviewParams({required this.id, required this.status, this.message});
 

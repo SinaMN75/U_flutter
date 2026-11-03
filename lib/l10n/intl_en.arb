@@ -3916,5 +3916,92 @@
     }
   },
   "whenAProductRunsLowOrSellsOut": "When a product runs low or sells out",
-  "withAr": "With AR"
+  "withAr": "With AR",
+  "countStoresWithinDistance": "{count} stores within {distance}",
+  "@countStoresWithinDistance": {
+    "placeholders": {
+      "count": {},
+      "distance": {}
+    }
+  },
+  "straightAhead": "Straight ahead",
+  "aheadOnTheLeft": "Ahead on the left",
+  "aheadOnTheRight": "Ahead on the right",
+  "onYourLeft": "On your left",
+  "onYourRight": "On your right",
+  "behindYou": "Behind you",
+  "storesAroundYou": "Stores around you",
+  "seeInYourRoom": "See in your room",
+  "placedDragToMove": "Placed · drag to move",
+  "photoSaved": "Photo saved",
+  "realSize": "Real size",
+  "heightCountCm": "Height {count} cm",
+  "@heightCountCm": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "addedToSelections": "Added to selections",
+  "reportAProblem": "Report a problem",
+  "whatIsWrong": "What is wrong?",
+  "wrongPrice": "Wrong price",
+  "wrongAddress": "Wrong address",
+  "inappropriateContent": "Inappropriate content",
+  "fakeOrMisleading": "Fake or misleading",
+  "moreDetailsOptional": "More details (optional)",
+  "platformOverview": "Platform overview",
+  "activeStores": "Active stores",
+  "awaitingApproval": "Awaiting approval",
+  "buyerUsers": "Buyer users",
+  "activeSubscriptions": "Active subscriptions",
+  "subscriptionRevenue30Days": "Subscription revenue (30 days)",
+  "storesByType": "Stores by type",
+  "violationReports": "Violation reports",
+  "countReports": "{count} reports",
+  "@countReports": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "markResolved": "Mark resolved",
+  "dismissReport": "Dismiss report",
+  "moderatorNote": "Moderator note",
+  "noOpenReports": "No open reports",
+  "nothingFound": "Nothing found",
+  "nothingWithinDistanceOfYouWidenTheRangeOrTryAnotherName": "Nothing within {distance} of you. Widen the range or try another name.",
+  "@nothingWithinDistanceOfYouWidenTheRangeOrTryAnotherName": {
+    "placeholders": {
+      "distance": {}
+    }
+  },
+  "widenTheRange": "Widen the range",
+  "internetIsOff": "Internet is off",
+  "youCanStillSeeTheLastStoresYouVisitedPricesMayBeOutOfDate": "You can still see the last stores you visited; prices may be out of date.",
+  "seeRecentVisits": "See recent visits",
+  "theServerDidNotAnswerTryAgainInAMoment": "The server did not answer. Try again in a moment.",
+  "closedNowOpensTodayAtTime": "Closed now · opens today at {time}",
+  "@closedNowOpensTodayAtTime": {
+    "placeholders": {
+      "time": {}
+    }
+  },
+  "closedNowOpensTomorrowAtTime": "Closed now · opens tomorrow at {time}",
+  "@closedNowOpensTomorrowAtTime": {
+    "placeholders": {
+      "time": {}
+    }
+  },
+  "closedNowOpensDayAtTime": "Closed now · opens {day} at {time}",
+  "@closedNowOpensDayAtTime": {
+    "placeholders": {
+      "day": {},
+      "time": {}
+    }
+  },
+  "youCanSeeTheMenuButPricesMayChangeBeforeItOpens": "You can see the menu, but prices may change before it opens.",
+  "notifyMeWhenItOpens": "Notify me when it opens",
+  "weWillLetYouKnowWhenItOpens": "We will let you know when it opens",
+  "recentVisits": "Recent visits",
+  "youHaveNotVisitedAnyStoreYet": "You have not visited any store yet",
+  "youAreOfflinePricesMayBeOutOfDate": "You are offline; prices may be out of date."
 }

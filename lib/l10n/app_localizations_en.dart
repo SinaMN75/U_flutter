@@ -9516,4 +9516,168 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get withAr => 'With AR';
+
+  @override
+  String countStoresWithinDistance(Object count, Object distance) {
+    return '$count stores within $distance';
+  }
+
+  @override
+  String get straightAhead => 'Straight ahead';
+
+  @override
+  String get aheadOnTheLeft => 'Ahead on the left';
+
+  @override
+  String get aheadOnTheRight => 'Ahead on the right';
+
+  @override
+  String get onYourLeft => 'On your left';
+
+  @override
+  String get onYourRight => 'On your right';
+
+  @override
+  String get behindYou => 'Behind you';
+
+  @override
+  String get storesAroundYou => 'Stores around you';
+
+  @override
+  String get seeInYourRoom => 'See in your room';
+
+  @override
+  String get placedDragToMove => 'Placed · drag to move';
+
+  @override
+  String get photoSaved => 'Photo saved';
+
+  @override
+  String get realSize => 'Real size';
+
+  @override
+  String heightCountCm(Object count) {
+    return 'Height $count cm';
+  }
+
+  @override
+  String get addedToSelections => 'Added to selections';
+
+  @override
+  String get reportAProblem => 'Report a problem';
+
+  @override
+  String get whatIsWrong => 'What is wrong?';
+
+  @override
+  String get wrongPrice => 'Wrong price';
+
+  @override
+  String get wrongAddress => 'Wrong address';
+
+  @override
+  String get inappropriateContent => 'Inappropriate content';
+
+  @override
+  String get fakeOrMisleading => 'Fake or misleading';
+
+  @override
+  String get moreDetailsOptional => 'More details (optional)';
+
+  @override
+  String get platformOverview => 'Platform overview';
+
+  @override
+  String get activeStores => 'Active stores';
+
+  @override
+  String get awaitingApproval => 'Awaiting approval';
+
+  @override
+  String get buyerUsers => 'Buyer users';
+
+  @override
+  String get activeSubscriptions => 'Active subscriptions';
+
+  @override
+  String get subscriptionRevenue30Days => 'Subscription revenue (30 days)';
+
+  @override
+  String get storesByType => 'Stores by type';
+
+  @override
+  String get violationReports => 'Violation reports';
+
+  @override
+  String countReports(Object count) {
+    return '$count reports';
+  }
+
+  @override
+  String get markResolved => 'Mark resolved';
+
+  @override
+  String get dismissReport => 'Dismiss report';
+
+  @override
+  String get moderatorNote => 'Moderator note';
+
+  @override
+  String get noOpenReports => 'No open reports';
+
+  @override
+  String get nothingFound => 'Nothing found';
+
+  @override
+  String nothingWithinDistanceOfYouWidenTheRangeOrTryAnotherName(Object distance) {
+    return 'Nothing within $distance of you. Widen the range or try another name.';
+  }
+
+  @override
+  String get widenTheRange => 'Widen the range';
+
+  @override
+  String get internetIsOff => 'Internet is off';
+
+  @override
+  String get youCanStillSeeTheLastStoresYouVisitedPricesMayBeOutOfDate => 'You can still see the last stores you visited; prices may be out of date.';
+
+  @override
+  String get seeRecentVisits => 'See recent visits';
+
+  @override
+  String get theServerDidNotAnswerTryAgainInAMoment => 'The server did not answer. Try again in a moment.';
+
+  @override
+  String closedNowOpensTodayAtTime(Object time) {
+    return 'Closed now · opens today at $time';
+  }
+
+  @override
+  String closedNowOpensTomorrowAtTime(Object time) {
+    return 'Closed now · opens tomorrow at $time';
+  }
+
+  @override
+  String closedNowOpensDayAtTime(Object day, Object time) {
+    return 'Closed now · opens $day at $time';
+  }
+
+  @override
+  String get youCanSeeTheMenuButPricesMayChangeBeforeItOpens => 'You can see the menu, but prices may change before it opens.';
+
+  @override
+  String get notifyMeWhenItOpens => 'Notify me when it opens';
+
+  @override
+  String get weWillLetYouKnowWhenItOpens => 'We will let you know when it opens';
+
+  @override
+  String get recentVisits => 'Recent visits';
+
+  @override
+  String get youHaveNotVisitedAnyStoreYet => 'You have not visited any store yet';
+
+  @override
+  String get youAreOfflinePricesMayBeOutOfDate => 'You are offline; prices may be out of date.';
 }

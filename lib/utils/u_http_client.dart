@@ -22,8 +22,11 @@ class UHttpClientResponse {
   /// Why no response came, set together with [exception].
   final UHttpExceptionType? exceptionType;
 
+  /// True when [response] is the last saved copy, served because the network failed ([UHttpClient.send]'s `cacheFallback`).
+  final bool fromCache;
+
   /// Result of a request.
-  UHttpClientResponse({this.response, this.error, this.exception, this.exceptionType});
+  UHttpClientResponse({this.response, this.error, this.exception, this.exceptionType, this.fromCache = false});
 
   /// True on 2xx.
   bool get isSuccessful => response != null;
@@ -42,7 +45,7 @@ abstract class UHttpClient {
   /// Runs once when the session can no longer be refreshed, e.g. go to login. `UHttpClient.onAuthFailed = () async => UNavigator.offAll(LoginPage())`
   static Future<void> Function()? onAuthFailed;
 
-  /// Sends a request: retries network failures 3×, refreshes an expired token once, [offline]/[cacheDuration] cache the body, [onProgress] reports 0-100.
+  /// Sends a request: retries network failures 3×, refreshes an expired token once, [offline]/[cacheDuration] cache the body, [cacheFallback] answers from the last saved body when the network fails, [onProgress] reports 0-100.
   static Future<UHttpClientResponse> send({
     required String method,
     required String endpoint,
@@ -57,6 +60,7 @@ abstract class UHttpClient {
     String? unexpectedErrorMessage,
     bool offline = false,
     Duration? cacheDuration,
+    bool cacheFallback = false,
     int retryAmount = 3,
     Duration timeout = const Duration(seconds: 30),
     void Function(int percent)? onProgress,
@@ -73,20 +77,30 @@ abstract class UHttpClient {
 
     final bool isTokenIssuingEndpoint = UAuth.isTokenIssuingEndpoint(endpoint);
 
+    final Uri uri = _buildUri(endpoint, queryParams);
+    final bool cacheEnabled = offline || cacheDuration != null || cacheFallback;
+    final String cacheKey = cacheEnabled ? _cacheKey(method, uri, body) : "";
+
+    Future<UHttpClientResponse?> fallback() async {
+      if (!cacheFallback) return null;
+      final String? cachedData = await _readCache(cacheKey);
+      if (cachedData == null) return null;
+      onSuccess(_cachedResponse(cachedData, method, uri));
+      return UHttpClientResponse(response: cachedData, fromCache: true);
+    }
+
     if (!offline && UNetwork.isOffline && !await _hasNetwork()) {
+      final UHttpClientResponse? cached = await fallback();
+      if (cached != null) return cached;
       final String message = _exceptionMessage(UHttpExceptionType.noNetwork, noNetworkMessage, unexpectedErrorMessage);
       onException(message);
       return UHttpClientResponse(exception: message, exceptionType: UHttpExceptionType.noNetwork);
     }
 
-    final Uri uri = _buildUri(endpoint, queryParams);
-    final bool cacheEnabled = offline || cacheDuration != null;
-    final String cacheKey = cacheEnabled ? _cacheKey(method, uri, body) : "";
-
     if (offline) {
       final String? cachedData = await _readCache(cacheKey);
       if (cachedData != null) {
-        final Response response = Response(cachedData, 200, request: Request(method, uri));
+        final Response response = _cachedResponse(cachedData, method, uri);
         onSuccess(response);
         return UHttpClientResponse(response: cachedData);
       }
@@ -189,6 +203,7 @@ abstract class UHttpClient {
           headers: headers,
           offline: offline,
           cacheDuration: cacheDuration,
+          cacheFallback: cacheFallback,
           body: body,
           bodyType: bodyType,
           noNetworkMessage: noNetworkMessage,
@@ -200,6 +215,10 @@ abstract class UHttpClient {
           isRetryAfterRefresh: isRetryAfterRefresh,
         );
       } else {
+        if (exceptionType != UHttpExceptionType.unexpected) {
+          final UHttpClientResponse? cached = await fallback();
+          if (cached != null) return cached;
+        }
         final String message = _exceptionMessage(exceptionType, noNetworkMessage, unexpectedErrorMessage);
         onException(message);
         return UHttpClientResponse(exception: message, exceptionType: exceptionType);
@@ -230,6 +249,7 @@ abstract class UHttpClient {
             unexpectedErrorMessage: unexpectedErrorMessage,
             offline: offline,
             cacheDuration: cacheDuration,
+            cacheFallback: cacheFallback,
             retryAmount: retryAmount,
             timeout: timeout,
             onProgress: onProgress,
@@ -412,6 +432,10 @@ abstract class UHttpClient {
   }
 
   static Future<void> _writeCache(String key, String body, Duration? cacheDuration) => UFileStorage.setString(key, body, bucket: UStorageBucket.cache, expireIn: cacheDuration);
+
+  // From bytes with a UTF-8 charset: Response(String) encodes as Latin-1 and throws on Persian text.
+  static Response _cachedResponse(String body, String method, Uri uri) =>
+      Response.bytes(utf8.encode(body), 200, request: Request(method, uri), headers: <String, String>{"content-type": "application/json; charset=utf-8"});
 
   static Future<String?> _readCache(String key) => UFileStorage.getString(key, bucket: UStorageBucket.cache);
 }

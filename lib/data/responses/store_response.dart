@@ -143,6 +143,67 @@ class UStoreReportResponse {
   final List<UStoreReportSeller> topSellers;
 }
 
+/// Whole-platform numbers; buyers are users who own no organization, revenue covers the last 30 days.
+class UStorePlatformReportResponse {
+  UStorePlatformReportResponse({
+    this.activeStores = 0,
+    this.pendingStores = 0,
+    this.blockedStores = 0,
+    this.products = 0,
+    this.sellers = 0,
+    this.buyers = 0,
+    this.scansToday = 0,
+    this.activeSubscriptions = 0,
+    this.subscriptionRevenue30Days = 0,
+    this.pendingReports = 0,
+    this.storesByType = const <UStorePlatformTypeCount>[],
+  });
+
+  factory UStorePlatformReportResponse.fromMap(Map<String, dynamic> json) => UStorePlatformReportResponse(
+    activeStores: json["activeStores"] ?? 0,
+    pendingStores: json["pendingStores"] ?? 0,
+    blockedStores: json["blockedStores"] ?? 0,
+    products: json["products"] ?? 0,
+    sellers: json["sellers"] ?? 0,
+    buyers: json["buyers"] ?? 0,
+    scansToday: json["scansToday"] ?? 0,
+    activeSubscriptions: json["activeSubscriptions"] ?? 0,
+    subscriptionRevenue30Days: json["subscriptionRevenue30Days"] ?? 0,
+    pendingReports: json["pendingReports"] ?? 0,
+    storesByType: ((json["storesByType"] as List<dynamic>?) ?? <dynamic>[]).map((dynamic x) => UStorePlatformTypeCount.fromMap(x)).toList(),
+  );
+
+  final int activeStores;
+  final int pendingStores;
+  final int blockedStores;
+  final int products;
+  final int sellers;
+  final int buyers;
+  final int scansToday;
+  final int activeSubscriptions;
+  final num subscriptionRevenue30Days;
+  final int pendingReports;
+  final List<UStorePlatformTypeCount> storesByType;
+}
+
+class UStorePlatformTypeCount {
+  UStorePlatformTypeCount({required this.storeTypeId, required this.title, required this.color, this.count = 0});
+
+  factory UStorePlatformTypeCount.fromMap(Map<String, dynamic> json) => UStorePlatformTypeCount(
+    storeTypeId: json["storeTypeId"],
+    title: json["title"] ?? "",
+    color: json["color"] ?? "",
+    count: json["count"] ?? 0,
+  );
+
+  final String storeTypeId;
+  final String title;
+  final String color;
+  final int count;
+
+  Color get colorValue => Color(int.tryParse(color.replaceFirst("#", "").padLeft(8, "F").substring(0, 8), radix: 16) ?? 0xFF808080);
+}
+
 class UStockMoveResponse {
   UStockMoveResponse({required this.id, required this.productId, required this.productTitle, required this.createdAt, this.quantity = 0, this.balance = 0, this.unitPrice, this.tags = const <int>[], this.note});
 
@@ -282,6 +343,7 @@ class UStoreResponse {
     this.viewCount = 0,
     this.paymentViewCount = 0,
     this.menuIsActive = false,
+    this.hasOpenAlert = false,
     this.organizationId,
     this.organizationTitle,
     this.distanceKm,
@@ -314,6 +376,7 @@ class UStoreResponse {
     viewCount: json["viewCount"] ?? 0,
     paymentViewCount: json["paymentViewCount"] ?? 0,
     menuIsActive: json["menuIsActive"] ?? false,
+    hasOpenAlert: json["hasOpenAlert"] ?? false,
     organizationId: json["organizationId"],
     organizationTitle: json["organizationTitle"],
     distanceKm: json["distanceKm"],
@@ -345,6 +408,9 @@ class UStoreResponse {
   final UStorePoster? poster;
   final int paymentViewCount;
   final bool menuIsActive;
+
+  /// The caller asked to hear when the store opens (filled by `readByCode`).
+  final bool hasOpenAlert;
   final String? organizationId;
   final String? organizationTitle;
 
@@ -399,6 +465,20 @@ class UStoreResponse {
 
   /// When the store closes today, while it is open.
   String? get closesAtNow => _openDayAt(DateTime.now())?.closes;
+
+  /// The next moment the store opens after [from] (now by default) within a week, or null when it has no open day.
+  DateTime? nextOpening([DateTime? from]) {
+    final DateTime start = from ?? DateTime.now();
+    final DateTime after = closedUntil != null && closedUntil!.isAfter(start) ? closedUntil!.toLocal() : start;
+    for (int i = 0; i < 8; i++) {
+      final DateTime date = DateTime(after.year, after.month, after.day + i);
+      final UStoreWorkingDay? day = dayOf(date.weekday);
+      if (day == null || !day.isOpen || day.opens == null) continue;
+      final DateTime opens = DateTime(date.year, date.month, date.day, int.parse(day.opens!.substring(0, 2)), int.parse(day.opens!.substring(3, 5)));
+      if (opens.isAfter(after)) return opens;
+    }
+    return null;
+  }
 }
 
 class UProductResponse {

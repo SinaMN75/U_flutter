@@ -184,6 +184,7 @@ class UReportResponse {
     this.creatorId,
     this.reason,
     this.creator,
+    this.targetTitle,
   });
 
   factory UReportResponse.fromJson(String str) => UReportResponse.fromMap(json.decode(str));
@@ -197,6 +198,7 @@ class UReportResponse {
     targetId: json["targetId"],
     reason: json["reason"],
     creator: json["creator"] == null ? null : UUserResponse.fromMap(json["creator"]),
+    targetTitle: json["targetTitle"],
   );
 
   final String id;
@@ -208,9 +210,14 @@ class UReportResponse {
   final String? reason;
   final UUserResponse? creator;
 
+  /// Name of the reported store or product (staff only).
+  final String? targetTitle;
+
   TagReport? get kind => TagReport.values.group(100).firstWhereOrNull((TagReport t) => tags.contains(t.number));
 
   TagReport? get status => TagReport.values.group(200).firstWhereOrNull((TagReport t) => tags.contains(t.number));
+
+  TagReport? get reasonTag => TagReport.values.group(300).firstWhereOrNull((TagReport t) => tags.contains(t.number));
 
   String toJson() => json.encode(toMap());
 
@@ -223,6 +230,7 @@ class UReportResponse {
     "targetId": targetId,
     "reason": reason,
     "creator": creator?.toMap(),
+    "targetTitle": targetTitle,
   };
 }
 
