@@ -45,6 +45,30 @@ class UStoreService {
     Function(String e)? onException,
   }) => _Api.call("/Store/Store/ReadScans", p.toMap(), _Api.one(UStoreScanResponse.fromMap), _Api.empty, onOk, onError, onException);
 
+  /// Sales and visits of a store for its owner and the platform.
+  Future<(UResponse<UStoreReportResponse>?, UEmptyResponse?, String?)> readReport({
+    required UStoreReportParams p,
+    Function(UResponse<UStoreReportResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Store/Store/ReadReport", p.toMap(), _Api.one(UStoreReportResponse.fromMap), _Api.empty, onOk, onError, onException);
+
+  /// Records goods coming in, a return or waste and updates the stock.
+  Future<(UResponse<String>?, UEmptyResponse?, String?)> createStockMove({
+    required UStockMoveCreateParams p,
+    Function(UResponse<String> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Store/Stock/Create", p.toMap(), _Api.raw<String>(), _Api.empty, onOk, onError, onException);
+
+  /// The store's stock moves, newest first; pass a product for its history.
+  Future<(UResponse<List<UStockMoveResponse>>?, UEmptyResponse?, String?)> readStockMoves({
+    required UStockMoveReadParams p,
+    Function(UResponse<List<UStockMoveResponse>> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Store/Stock/Read", p.toMap(), _Api.list(UStockMoveResponse.fromMap), _Api.empty, onOk, onError, onException);
+
   /// Records a sale and takes the items out of stock; fails as a whole when one item is short.
   Future<(UResponse<String>?, UEmptyResponse?, String?)> createSale({
     required UStoreSaleCreateParams p,

@@ -17785,6 +17785,402 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Stock goes down with every sale'**
   String get stockGoesDownWithEverySale;
+
+  /// No description provided for @inventoryAndSales.
+  ///
+  /// In en, this message translates to:
+  /// **'Inventory and sales'**
+  String get inventoryAndSales;
+
+  /// No description provided for @recordEveryMoveSoTheStoreStockStaysRight.
+  ///
+  /// In en, this message translates to:
+  /// **'Record every move so the store stock stays right.'**
+  String get recordEveryMoveSoTheStoreStockStaysRight;
+
+  /// No description provided for @recordInOrOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Record in or out'**
+  String get recordInOrOut;
+
+  /// No description provided for @recordStockMove.
+  ///
+  /// In en, this message translates to:
+  /// **'Record stock move'**
+  String get recordStockMove;
+
+  /// No description provided for @recordKind.
+  ///
+  /// In en, this message translates to:
+  /// **'Record {kind}'**
+  String recordKind(Object kind);
+
+  /// No description provided for @stockMoves.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock moves'**
+  String get stockMoves;
+
+  /// No description provided for @unitPurchasePrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit purchase price'**
+  String get unitPurchasePrice;
+
+  /// No description provided for @unitSellingPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit selling price'**
+  String get unitSellingPrice;
+
+  /// No description provided for @stockAfterSaving.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock after saving'**
+  String get stockAfterSaving;
+
+  /// No description provided for @forExampleTheDistributorOrCustomerName.
+  ///
+  /// In en, this message translates to:
+  /// **'For example, the distributor or customer name'**
+  String get forExampleTheDistributorOrCustomerName;
+
+  /// No description provided for @selectAProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a product'**
+  String get selectAProduct;
+
+  /// No description provided for @product.
+  ///
+  /// In en, this message translates to:
+  /// **'Product'**
+  String get product;
+
+  /// No description provided for @stockMoveRecorded.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock move recorded'**
+  String get stockMoveRecorded;
+
+  /// No description provided for @noStockMovesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No stock moves yet'**
+  String get noStockMovesYet;
+
+  /// No description provided for @salesToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Sales today'**
+  String get salesToday;
+
+  /// No description provided for @salesThisWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Sales this week'**
+  String get salesThisWeek;
+
+  /// No description provided for @salesThisMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Sales this month'**
+  String get salesThisMonth;
+
+  /// No description provided for @salesThisYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Sales this year'**
+  String get salesThisYear;
+
+  /// No description provided for @profitThisWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Profit this week'**
+  String get profitThisWeek;
+
+  /// No description provided for @approximateProfit.
+  ///
+  /// In en, this message translates to:
+  /// **'Approximate profit'**
+  String get approximateProfit;
+
+  /// No description provided for @runningLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Running low'**
+  String get runningLow;
+
+  /// No description provided for @runningLowOrOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Running low or out'**
+  String get runningLowOrOut;
+
+  /// No description provided for @stockValueAtPurchasePrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock value at purchase price'**
+  String get stockValueAtPurchasePrice;
+
+  /// No description provided for @purchaseValueAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase value {amount}'**
+  String purchaseValueAmount(Object amount);
+
+  /// No description provided for @salesReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Sales report'**
+  String get salesReport;
+
+  /// No description provided for @week.
+  ///
+  /// In en, this message translates to:
+  /// **'Week'**
+  String get week;
+
+  /// No description provided for @topSellers.
+  ///
+  /// In en, this message translates to:
+  /// **'Top sellers'**
+  String get topSellers;
+
+  /// No description provided for @itemsSold.
+  ///
+  /// In en, this message translates to:
+  /// **'Items sold'**
+  String get itemsSold;
+
+  /// No description provided for @salesOfPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Sales of the period'**
+  String get salesOfPeriod;
+
+  /// No description provided for @quantitySold.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} sold'**
+  String quantitySold(Object count);
+
+  /// No description provided for @noSalesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No sales yet'**
+  String get noSalesYet;
+
+  /// No description provided for @profitReportsShowWhatYouEarnFromEverySale.
+  ///
+  /// In en, this message translates to:
+  /// **'Profit reports show what you earn from every sale.'**
+  String get profitReportsShowWhatYouEarnFromEverySale;
+
+  /// No description provided for @profitByPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Profit by period'**
+  String get profitByPeriod;
+
+  /// No description provided for @salesMinusPurchasePrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Sales minus purchase price'**
+  String get salesMinusPurchasePrice;
+
+  /// No description provided for @helloName.
+  ///
+  /// In en, this message translates to:
+  /// **'Hello, {name}'**
+  String helloName(Object name);
+
+  /// No description provided for @storeIsPercentReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Your store is {percent}% ready'**
+  String storeIsPercentReady(Object percent);
+
+  /// No description provided for @aFewStepsLeftUntilCustomersSeeYouFully.
+  ///
+  /// In en, this message translates to:
+  /// **'A few steps left until customers see you fully'**
+  String get aFewStepsLeftUntilCustomersSeeYouFully;
+
+  /// No description provided for @addressStep.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get addressStep;
+
+  /// No description provided for @paymentStep.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment details'**
+  String get paymentStep;
+
+  /// No description provided for @firstProductsStep.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} of {total} first products'**
+  String firstProductsStep(Object count, Object total);
+
+  /// No description provided for @pageViewsToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Page views today'**
+  String get pageViewsToday;
+
+  /// No description provided for @qrScansToday.
+  ///
+  /// In en, this message translates to:
+  /// **'QR scans today'**
+  String get qrScansToday;
+
+  /// No description provided for @timesUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'times'**
+  String get timesUnit;
+
+  /// No description provided for @recordSaleShort.
+  ///
+  /// In en, this message translates to:
+  /// **'New sale'**
+  String get recordSaleShort;
+
+  /// No description provided for @stockIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock in'**
+  String get stockIn;
+
+  /// No description provided for @allStock.
+  ///
+  /// In en, this message translates to:
+  /// **'All stock'**
+  String get allStock;
+
+  /// No description provided for @allMoves.
+  ///
+  /// In en, this message translates to:
+  /// **'All moves'**
+  String get allMoves;
+
+  /// No description provided for @latestStockMoves.
+  ///
+  /// In en, this message translates to:
+  /// **'Latest stock moves'**
+  String get latestStockMoves;
+
+  /// No description provided for @yourStoreQr.
+  ///
+  /// In en, this message translates to:
+  /// **'Your store QR'**
+  String get yourStoreQr;
+
+  /// No description provided for @stickItAtTheDoorSoPassersBySeeThePrices.
+  ///
+  /// In en, this message translates to:
+  /// **'Stick it at the door so passers-by see the prices.'**
+  String get stickItAtTheDoorSoPassersBySeeThePrices;
+
+  /// No description provided for @makePosterAndDownload.
+  ///
+  /// In en, this message translates to:
+  /// **'Make poster and download'**
+  String get makePosterAndDownload;
+
+  /// No description provided for @seeMyStorePage.
+  ///
+  /// In en, this message translates to:
+  /// **'See my store page'**
+  String get seeMyStorePage;
+
+  /// No description provided for @salesAndProfitReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Sales and profit report'**
+  String get salesAndProfitReport;
+
+  /// No description provided for @teamMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Team members'**
+  String get teamMembers;
+
+  /// No description provided for @addTeamMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Add team member'**
+  String get addTeamMember;
+
+  /// No description provided for @editTeamMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit team member'**
+  String get editTeamMember;
+
+  /// No description provided for @teamMembersWorkWithTheirOwnAccountsAndSeeOnlyWhatYouAllow.
+  ///
+  /// In en, this message translates to:
+  /// **'Team members work with their own accounts and see only what you allow.'**
+  String get teamMembersWorkWithTheirOwnAccountsAndSeeOnlyWhatYouAllow;
+
+  /// No description provided for @noTeamMembersYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No team members yet'**
+  String get noTeamMembersYet;
+
+  /// No description provided for @areYouSureYouWantToRemoveThisTeamMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to remove this team member?'**
+  String get areYouSureYouWantToRemoveThisTeamMember;
+
+  /// No description provided for @pleaseChooseAtLeastOnePermission.
+  ///
+  /// In en, this message translates to:
+  /// **'Please choose at least one permission.'**
+  String get pleaseChooseAtLeastOnePermission;
+
+  /// No description provided for @teamMembersHelpYouRunTheStore.
+  ///
+  /// In en, this message translates to:
+  /// **'Team members help you run the store.'**
+  String get teamMembersHelpYouRunTheStore;
+
+  /// No description provided for @addTeamMembersByMobileNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Add team members by mobile number'**
+  String get addTeamMembersByMobileNumber;
+
+  /// No description provided for @chooseWhatEachMemberCanDo.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose what each member can do'**
+  String get chooseWhatEachMemberCanDo;
+
+  /// No description provided for @teamLimitOfThePlanIsFull.
+  ///
+  /// In en, this message translates to:
+  /// **'The team member limit of your plan is full'**
+  String get teamLimitOfThePlanIsFull;
+
+  /// No description provided for @addMoreMembersWithAHigherPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Add more members with a higher plan.'**
+  String get addMoreMembersWithAHigherPlan;
+
+  /// No description provided for @youWorkInThisStoreAsATeamMember.
+  ///
+  /// In en, this message translates to:
+  /// **'You work in this store as a team member'**
+  String get youWorkInThisStoreAsATeamMember;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

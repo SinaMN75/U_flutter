@@ -227,7 +227,10 @@ enum TagUser with UNumericIdentifiable {
   permissionManageSettlements("تسویه با مجموعه‌ها", "Manage Settlements", 629),
   permissionManageStores("مدیریت فروشگاه‌ها", "Manage Stores", 630),
   permissionDeleteStores("حذف فروشگاه‌ها", "Delete Stores", 631),
-  permissionManageCategories("مدیریت دسته‌بندی‌ها", "Manage Categories", 632);
+  permissionManageCategories("مدیریت دسته‌بندی‌ها", "Manage Categories", 632),
+  permissionManageProducts("مدیریت کالاها", "Manage Products", 633),
+  permissionQuickSale("فروش سریع", "Quick Sale", 634),
+  permissionManageInventory("مدیریت انبار", "Manage Inventory", 635);
 
   const TagUser(this.titleFa, this.titleEn, this.number);
 
@@ -271,6 +274,9 @@ enum TagUser with UNumericIdentifiable {
     permissionManageStores,
     permissionDeleteStores,
     permissionManageCategories,
+    permissionManageProducts,
+    permissionQuickSale,
+    permissionManageInventory,
   ];
 
   static const List<TagUser> organizationPermissions = <TagUser>[
@@ -1930,6 +1936,23 @@ enum TagActivityLog with UNumericIdentifiable {
   action("عملیات", "Action", 104);
 
   const TagActivityLog(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagStockMove with UNumericIdentifiable {
+  stockIn("ورود", "Stock in", 101),
+  sale("فروش", "Sale", 102),
+  returned("مرجوعی", "Return", 103),
+  waste("ضایعات", "Waste", 104),
+  adjust("اصلاح موجودی", "Stock correction", 105);
+
+  const TagStockMove(this.titleFa, this.titleEn, this.number);
 
   @override
   final String titleFa;

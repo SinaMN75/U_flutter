@@ -9168,4 +9168,214 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get stockGoesDownWithEverySale => 'موجودی با هر فروش کم می‌شود';
+
+  @override
+  String get inventoryAndSales => 'انبار و فروش';
+
+  @override
+  String get recordEveryMoveSoTheStoreStockStaysRight => 'هر ورود و خروج را ثبت کنید تا موجودی صفحه فروشگاه خودکار درست بماند.';
+
+  @override
+  String get recordInOrOut => 'ثبت ورود یا خروج';
+
+  @override
+  String get recordStockMove => 'ثبت گردش کالا';
+
+  @override
+  String recordKind(Object kind) {
+    return 'ثبت $kind';
+  }
+
+  @override
+  String get stockMoves => 'گردش کالا';
+
+  @override
+  String get unitPurchasePrice => 'قیمت خرید واحد';
+
+  @override
+  String get unitSellingPrice => 'قیمت فروش واحد';
+
+  @override
+  String get stockAfterSaving => 'موجودی بعد از ثبت';
+
+  @override
+  String get forExampleTheDistributorOrCustomerName => 'مثلاً نام پخش‌کننده یا مشتری';
+
+  @override
+  String get selectAProduct => 'کالا را انتخاب کنید';
+
+  @override
+  String get product => 'کالا';
+
+  @override
+  String get stockMoveRecorded => 'گردش کالا ثبت شد';
+
+  @override
+  String get noStockMovesYet => 'هنوز گردش کالایی ثبت نشده است';
+
+  @override
+  String get salesToday => 'فروش امروز';
+
+  @override
+  String get salesThisWeek => 'فروش این هفته';
+
+  @override
+  String get salesThisMonth => 'فروش این ماه';
+
+  @override
+  String get salesThisYear => 'فروش امسال';
+
+  @override
+  String get profitThisWeek => 'سود این هفته';
+
+  @override
+  String get approximateProfit => 'سود تقریبی';
+
+  @override
+  String get runningLow => 'رو به اتمام';
+
+  @override
+  String get runningLowOrOut => 'رو به اتمام یا تمام شده';
+
+  @override
+  String get stockValueAtPurchasePrice => 'ارزش موجودی (قیمت خرید)';
+
+  @override
+  String purchaseValueAmount(Object amount) {
+    return 'ارزش خرید $amount';
+  }
+
+  @override
+  String get salesReport => 'گزارش فروش';
+
+  @override
+  String get week => 'هفته';
+
+  @override
+  String get topSellers => 'پرفروش‌ترین‌ها';
+
+  @override
+  String get itemsSold => 'اقلام فروخته‌شده';
+
+  @override
+  String get salesOfPeriod => 'فروش این بازه';
+
+  @override
+  String quantitySold(Object count) {
+    return '$count فروخته‌شده';
+  }
+
+  @override
+  String get noSalesYet => 'هنوز فروشی ثبت نشده است';
+
+  @override
+  String get profitReportsShowWhatYouEarnFromEverySale => 'گزارش سود نشان می‌دهد از هر فروش چقدر به دستتان می‌رسد.';
+
+  @override
+  String get profitByPeriod => 'سود هر بازه';
+
+  @override
+  String get salesMinusPurchasePrice => 'فروش منهای قیمت خرید';
+
+  @override
+  String helloName(Object name) {
+    return 'سلام، $name';
+  }
+
+  @override
+  String storeIsPercentReady(Object percent) {
+    return 'فروشگاه شما $percent٪ آماده است';
+  }
+
+  @override
+  String get aFewStepsLeftUntilCustomersSeeYouFully => 'چند کار مانده تا مشتری‌ها کامل ببینندتان';
+
+  @override
+  String get addressStep => 'نشانی';
+
+  @override
+  String get paymentStep => 'اطلاعات پرداخت';
+
+  @override
+  String firstProductsStep(Object count, Object total) {
+    return '$count از $total کالای اول';
+  }
+
+  @override
+  String get pageViewsToday => 'بازدید صفحه امروز';
+
+  @override
+  String get qrScansToday => 'اسکن QR امروز';
+
+  @override
+  String get timesUnit => 'بار';
+
+  @override
+  String get recordSaleShort => 'ثبت فروش';
+
+  @override
+  String get stockIn => 'ورود کالا';
+
+  @override
+  String get allStock => 'همه موجودی';
+
+  @override
+  String get allMoves => 'همه';
+
+  @override
+  String get latestStockMoves => 'آخرین گردش کالا';
+
+  @override
+  String get yourStoreQr => 'QR فروشگاه شما';
+
+  @override
+  String get stickItAtTheDoorSoPassersBySeeThePrices => 'آن را دم در بچسبانید تا رهگذرها قیمت‌ها را ببینند.';
+
+  @override
+  String get makePosterAndDownload => 'ساخت پوستر و دانلود';
+
+  @override
+  String get seeMyStorePage => 'دیدن صفحه فروشگاه من';
+
+  @override
+  String get salesAndProfitReport => 'گزارش فروش و سود';
+
+  @override
+  String get teamMembers => 'همکاران';
+
+  @override
+  String get addTeamMember => 'افزودن همکار';
+
+  @override
+  String get editTeamMember => 'ویرایش همکار';
+
+  @override
+  String get teamMembersWorkWithTheirOwnAccountsAndSeeOnlyWhatYouAllow => 'همکاران با حساب خودشان وارد می‌شوند و فقط همان چیزی را می‌بینند که اجازه داده‌اید.';
+
+  @override
+  String get noTeamMembersYet => 'هنوز همکاری اضافه نکرده‌اید';
+
+  @override
+  String get areYouSureYouWantToRemoveThisTeamMember => 'از حذف این همکار اطمینان دارید؟';
+
+  @override
+  String get pleaseChooseAtLeastOnePermission => 'حداقل یک دسترسی را انتخاب کنید.';
+
+  @override
+  String get teamMembersHelpYouRunTheStore => 'همکاران در اداره فروشگاه کمکتان می‌کنند.';
+
+  @override
+  String get addTeamMembersByMobileNumber => 'افزودن همکار با شماره موبایل';
+
+  @override
+  String get chooseWhatEachMemberCanDo => 'تعیین دسترسی هر همکار';
+
+  @override
+  String get teamLimitOfThePlanIsFull => 'سقف همکاران اشتراک شما پر است';
+
+  @override
+  String get addMoreMembersWithAHigherPlan => 'با اشتراک بالاتر می‌توانید همکار بیشتری اضافه کنید.';
+
+  @override
+  String get youWorkInThisStoreAsATeamMember => 'شما همکار این فروشگاه هستید';
 }

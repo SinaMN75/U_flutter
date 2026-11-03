@@ -3743,5 +3743,102 @@
   },
   "quickSaleRecordsYourSalesAndUpdatesTheStock": "Quick sale records your sales and updates the stock.",
   "sellSeveralItemsInOneTap": "Sell several items in a few taps",
-  "stockGoesDownWithEverySale": "Stock goes down with every sale"
+  "stockGoesDownWithEverySale": "Stock goes down with every sale",
+  "inventoryAndSales": "Inventory and sales",
+  "recordEveryMoveSoTheStoreStockStaysRight": "Record every move so the store stock stays right.",
+  "recordInOrOut": "Record in or out",
+  "recordStockMove": "Record stock move",
+  "recordKind": "Record {kind}",
+  "@recordKind": {
+    "placeholders": {
+      "kind": {}
+    }
+  },
+  "stockMoves": "Stock moves",
+  "unitPurchasePrice": "Unit purchase price",
+  "unitSellingPrice": "Unit selling price",
+  "stockAfterSaving": "Stock after saving",
+  "forExampleTheDistributorOrCustomerName": "For example, the distributor or customer name",
+  "selectAProduct": "Select a product",
+  "product": "Product",
+  "stockMoveRecorded": "Stock move recorded",
+  "noStockMovesYet": "No stock moves yet",
+  "salesToday": "Sales today",
+  "salesThisWeek": "Sales this week",
+  "salesThisMonth": "Sales this month",
+  "salesThisYear": "Sales this year",
+  "profitThisWeek": "Profit this week",
+  "approximateProfit": "Approximate profit",
+  "runningLow": "Running low",
+  "runningLowOrOut": "Running low or out",
+  "stockValueAtPurchasePrice": "Stock value at purchase price",
+  "purchaseValueAmount": "Purchase value {amount}",
+  "@purchaseValueAmount": {
+    "placeholders": {
+      "amount": {}
+    }
+  },
+  "salesReport": "Sales report",
+  "week": "Week",
+  "topSellers": "Top sellers",
+  "itemsSold": "Items sold",
+  "salesOfPeriod": "Sales of the period",
+  "quantitySold": "{count} sold",
+  "@quantitySold": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "noSalesYet": "No sales yet",
+  "profitReportsShowWhatYouEarnFromEverySale": "Profit reports show what you earn from every sale.",
+  "profitByPeriod": "Profit by period",
+  "salesMinusPurchasePrice": "Sales minus purchase price",
+  "helloName": "Hello, {name}",
+  "@helloName": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "storeIsPercentReady": "Your store is {percent}% ready",
+  "@storeIsPercentReady": {
+    "placeholders": {
+      "percent": {}
+    }
+  },
+  "aFewStepsLeftUntilCustomersSeeYouFully": "A few steps left until customers see you fully",
+  "addressStep": "Address",
+  "paymentStep": "Payment details",
+  "firstProductsStep": "{count} of {total} first products",
+  "@firstProductsStep": {
+    "placeholders": {
+      "count": {},
+      "total": {}
+    }
+  },
+  "pageViewsToday": "Page views today",
+  "qrScansToday": "QR scans today",
+  "timesUnit": "times",
+  "recordSaleShort": "New sale",
+  "stockIn": "Stock in",
+  "allStock": "All stock",
+  "allMoves": "All moves",
+  "latestStockMoves": "Latest stock moves",
+  "yourStoreQr": "Your store QR",
+  "stickItAtTheDoorSoPassersBySeeThePrices": "Stick it at the door so passers-by see the prices.",
+  "makePosterAndDownload": "Make poster and download",
+  "seeMyStorePage": "See my store page",
+  "salesAndProfitReport": "Sales and profit report",
+  "teamMembers": "Team members",
+  "addTeamMember": "Add team member",
+  "editTeamMember": "Edit team member",
+  "teamMembersWorkWithTheirOwnAccountsAndSeeOnlyWhatYouAllow": "Team members work with their own accounts and see only what you allow.",
+  "noTeamMembersYet": "No team members yet",
+  "areYouSureYouWantToRemoveThisTeamMember": "Are you sure you want to remove this team member?",
+  "pleaseChooseAtLeastOnePermission": "Please choose at least one permission.",
+  "teamMembersHelpYouRunTheStore": "Team members help you run the store.",
+  "addTeamMembersByMobileNumber": "Add team members by mobile number",
+  "chooseWhatEachMemberCanDo": "Choose what each member can do",
+  "teamLimitOfThePlanIsFull": "The team member limit of your plan is full",
+  "addMoreMembersWithAHigherPlan": "Add more members with a higher plan.",
+  "youWorkInThisStoreAsATeamMember": "You work in this store as a team member"
 }

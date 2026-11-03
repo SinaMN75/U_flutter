@@ -145,10 +145,10 @@ class UStoreCodeParams {
 
   final String code;
 
-  /// This read comes from a scanned QR, so the server counts a scan.
+  /// This read comes from a scanned QR, so the server counts a scan and not a page view.
   final bool scanned;
 
-  /// Only a preview of the store, so the server does not count a page view.
+  /// The scan that led here was already counted, so the server does not count a page view.
   final bool skipView;
   final UStoreSelectorArgs? selectorArgs;
 
@@ -391,4 +391,41 @@ class UStoreSaleReadParams {
   final int? pageNumber;
 
   Map<String, dynamic> toMap() => <String, dynamic>{"storeId": storeId, "pageSize": pageSize, "pageNumber": pageNumber}..removeWhere((String _, dynamic v) => v == null);
+}
+
+class UStockMoveCreateParams {
+  UStockMoveCreateParams({required this.productId, required this.kind, required this.quantity, this.unitPrice, this.note});
+
+  final String productId;
+
+  /// [TagStockMove.stockIn], [TagStockMove.returned] or [TagStockMove.waste] as a number.
+  final int kind;
+  final int quantity;
+  final num? unitPrice;
+  final String? note;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"productId": productId, "kind": kind, "quantity": quantity, "unitPrice": unitPrice, "note": note}..removeWhere((String _, dynamic v) => v == null);
+}
+
+class UStockMoveReadParams {
+  UStockMoveReadParams({required this.storeId, this.productId, this.pageSize, this.pageNumber});
+
+  final String storeId;
+  final String? productId;
+  final int? pageSize;
+  final int? pageNumber;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"storeId": storeId, "productId": productId, "pageSize": pageSize, "pageNumber": pageNumber}..removeWhere((String _, dynamic v) => v == null);
+}
+
+class UStoreReportParams {
+  UStoreReportParams({required this.storeId, this.days = 7, int? utcOffsetMinutes}) : utcOffsetMinutes = utcOffsetMinutes ?? DateTime.now().timeZoneOffset.inMinutes;
+
+  final String storeId;
+
+  /// 7, 30 or 365: the length of the chart, top sellers and period totals.
+  final int days;
+  final int utcOffsetMinutes;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"storeId": storeId, "days": days, "utcOffsetMinutes": utcOffsetMinutes};
 }

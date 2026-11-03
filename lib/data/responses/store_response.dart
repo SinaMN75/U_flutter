@@ -71,6 +71,112 @@ class UStorePoster {
   Map<String, dynamic> toMap() => <String, dynamic>{"template": template, "color": color, "headline": headline};
 }
 
+class UStoreReportDay {
+  UStoreReportDay({required this.day, this.amount = 0});
+
+  factory UStoreReportDay.fromMap(Map<String, dynamic> json) => UStoreReportDay(day: DateTime.parse(json["day"]), amount: json["amount"] ?? 0);
+
+  final DateTime day;
+  final num amount;
+}
+
+class UStoreReportSeller {
+  UStoreReportSeller({required this.productId, required this.title, this.quantity = 0, this.amount = 0});
+
+  factory UStoreReportSeller.fromMap(Map<String, dynamic> json) => UStoreReportSeller(productId: json["productId"], title: json["title"] ?? "", quantity: json["quantity"] ?? 0, amount: json["amount"] ?? 0);
+
+  final String productId;
+  final String title;
+  final int quantity;
+  final num amount;
+}
+
+/// Sales and visits of a store. Amounts count returned items out; profit is null without [TagModule.profitReports].
+class UStoreReportResponse {
+  UStoreReportResponse({
+    this.viewsToday = 0,
+    this.scansToday = 0,
+    this.salesToday = 0,
+    this.salesWeek = 0,
+    this.salesMonth = 0,
+    this.salesYear = 0,
+    this.profitWeek,
+    this.profitPeriod,
+    this.salesPeriod = 0,
+    this.itemsPeriod = 0,
+    this.stockValue = 0,
+    this.lowStockCount = 0,
+    this.days = const <UStoreReportDay>[],
+    this.topSellers = const <UStoreReportSeller>[],
+  });
+
+  factory UStoreReportResponse.fromMap(Map<String, dynamic> json) => UStoreReportResponse(
+    viewsToday: json["viewsToday"] ?? 0,
+    scansToday: json["scansToday"] ?? 0,
+    salesToday: json["salesToday"] ?? 0,
+    salesWeek: json["salesWeek"] ?? 0,
+    salesMonth: json["salesMonth"] ?? 0,
+    salesYear: json["salesYear"] ?? 0,
+    profitWeek: json["profitWeek"],
+    profitPeriod: json["profitPeriod"],
+    salesPeriod: json["salesPeriod"] ?? 0,
+    itemsPeriod: json["itemsPeriod"] ?? 0,
+    stockValue: json["stockValue"] ?? 0,
+    lowStockCount: json["lowStockCount"] ?? 0,
+    days: ((json["days"] as List<dynamic>?) ?? <dynamic>[]).map((dynamic x) => UStoreReportDay.fromMap(x)).toList(),
+    topSellers: ((json["topSellers"] as List<dynamic>?) ?? <dynamic>[]).map((dynamic x) => UStoreReportSeller.fromMap(x)).toList(),
+  );
+
+  final int viewsToday;
+  final int scansToday;
+  final num salesToday;
+  final num salesWeek;
+  final num salesMonth;
+  final num salesYear;
+  final num? profitWeek;
+  final num? profitPeriod;
+  final num salesPeriod;
+  final int itemsPeriod;
+  final num stockValue;
+  final int lowStockCount;
+  final List<UStoreReportDay> days;
+  final List<UStoreReportSeller> topSellers;
+}
+
+class UStockMoveResponse {
+  UStockMoveResponse({required this.id, required this.productId, required this.productTitle, required this.createdAt, this.quantity = 0, this.balance = 0, this.unitPrice, this.tags = const <int>[], this.note});
+
+  factory UStockMoveResponse.fromMap(Map<String, dynamic> json) => UStockMoveResponse(
+    id: json["id"],
+    productId: json["productId"],
+    productTitle: json["productTitle"] ?? "",
+    createdAt: DateTime.parse(json["createdAt"]),
+    quantity: json["quantity"] ?? 0,
+    balance: json["balance"] ?? 0,
+    unitPrice: json["unitPrice"],
+    tags: List<int>.from(json["tags"] ?? <int>[]),
+    note: json["jsonData"]?["note"],
+  );
+
+  final String id;
+  final String productId;
+  final String productTitle;
+  final DateTime createdAt;
+
+  /// Positive when stock came in, negative when it went out.
+  final int quantity;
+
+  /// The stock left after this move.
+  final int balance;
+  final num? unitPrice;
+
+  /// [TagStockMove] numbers.
+  final List<int> tags;
+  final String? note;
+
+  TagStockMove get kind => TagStockMove.values.firstWhere((TagStockMove x) => tags.contains(x.number), orElse: () => TagStockMove.adjust);
+}
+
 class UStoreScanResponse {
   UStoreScanResponse({this.total = 0, this.last7Days = 0});
 

@@ -3325,5 +3325,102 @@
   },
   "quickSaleRecordsYourSalesAndUpdatesTheStock": "فروش سریع فروش‌های شما را ثبت می‌کند و موجودی را به‌روز نگه می‌دارد.",
   "sellSeveralItemsInOneTap": "فروش چند کالا با چند ضربه",
-  "stockGoesDownWithEverySale": "موجودی با هر فروش کم می‌شود"
+  "stockGoesDownWithEverySale": "موجودی با هر فروش کم می‌شود",
+  "inventoryAndSales": "انبار و فروش",
+  "recordEveryMoveSoTheStoreStockStaysRight": "هر ورود و خروج را ثبت کنید تا موجودی صفحه فروشگاه خودکار درست بماند.",
+  "recordInOrOut": "ثبت ورود یا خروج",
+  "recordStockMove": "ثبت گردش کالا",
+  "recordKind": "ثبت {kind}",
+  "@recordKind": {
+    "placeholders": {
+      "kind": {}
+    }
+  },
+  "stockMoves": "گردش کالا",
+  "unitPurchasePrice": "قیمت خرید واحد",
+  "unitSellingPrice": "قیمت فروش واحد",
+  "stockAfterSaving": "موجودی بعد از ثبت",
+  "forExampleTheDistributorOrCustomerName": "مثلاً نام پخش‌کننده یا مشتری",
+  "selectAProduct": "کالا را انتخاب کنید",
+  "product": "کالا",
+  "stockMoveRecorded": "گردش کالا ثبت شد",
+  "noStockMovesYet": "هنوز گردش کالایی ثبت نشده است",
+  "salesToday": "فروش امروز",
+  "salesThisWeek": "فروش این هفته",
+  "salesThisMonth": "فروش این ماه",
+  "salesThisYear": "فروش امسال",
+  "profitThisWeek": "سود این هفته",
+  "approximateProfit": "سود تقریبی",
+  "runningLow": "رو به اتمام",
+  "runningLowOrOut": "رو به اتمام یا تمام شده",
+  "stockValueAtPurchasePrice": "ارزش موجودی (قیمت خرید)",
+  "purchaseValueAmount": "ارزش خرید {amount}",
+  "@purchaseValueAmount": {
+    "placeholders": {
+      "amount": {}
+    }
+  },
+  "salesReport": "گزارش فروش",
+  "week": "هفته",
+  "topSellers": "پرفروش‌ترین‌ها",
+  "itemsSold": "اقلام فروخته‌شده",
+  "salesOfPeriod": "فروش این بازه",
+  "quantitySold": "{count} فروخته‌شده",
+  "@quantitySold": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "noSalesYet": "هنوز فروشی ثبت نشده است",
+  "profitReportsShowWhatYouEarnFromEverySale": "گزارش سود نشان می‌دهد از هر فروش چقدر به دستتان می‌رسد.",
+  "profitByPeriod": "سود هر بازه",
+  "salesMinusPurchasePrice": "فروش منهای قیمت خرید",
+  "helloName": "سلام، {name}",
+  "@helloName": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "storeIsPercentReady": "فروشگاه شما {percent}٪ آماده است",
+  "@storeIsPercentReady": {
+    "placeholders": {
+      "percent": {}
+    }
+  },
+  "aFewStepsLeftUntilCustomersSeeYouFully": "چند کار مانده تا مشتری‌ها کامل ببینندتان",
+  "addressStep": "نشانی",
+  "paymentStep": "اطلاعات پرداخت",
+  "firstProductsStep": "{count} از {total} کالای اول",
+  "@firstProductsStep": {
+    "placeholders": {
+      "count": {},
+      "total": {}
+    }
+  },
+  "pageViewsToday": "بازدید صفحه امروز",
+  "qrScansToday": "اسکن QR امروز",
+  "timesUnit": "بار",
+  "recordSaleShort": "ثبت فروش",
+  "stockIn": "ورود کالا",
+  "allStock": "همه موجودی",
+  "allMoves": "همه",
+  "latestStockMoves": "آخرین گردش کالا",
+  "yourStoreQr": "QR فروشگاه شما",
+  "stickItAtTheDoorSoPassersBySeeThePrices": "آن را دم در بچسبانید تا رهگذرها قیمت‌ها را ببینند.",
+  "makePosterAndDownload": "ساخت پوستر و دانلود",
+  "seeMyStorePage": "دیدن صفحه فروشگاه من",
+  "salesAndProfitReport": "گزارش فروش و سود",
+  "teamMembers": "همکاران",
+  "addTeamMember": "افزودن همکار",
+  "editTeamMember": "ویرایش همکار",
+  "teamMembersWorkWithTheirOwnAccountsAndSeeOnlyWhatYouAllow": "همکاران با حساب خودشان وارد می‌شوند و فقط همان چیزی را می‌بینند که اجازه داده‌اید.",
+  "noTeamMembersYet": "هنوز همکاری اضافه نکرده‌اید",
+  "areYouSureYouWantToRemoveThisTeamMember": "از حذف این همکار اطمینان دارید؟",
+  "pleaseChooseAtLeastOnePermission": "حداقل یک دسترسی را انتخاب کنید.",
+  "teamMembersHelpYouRunTheStore": "همکاران در اداره فروشگاه کمکتان می‌کنند.",
+  "addTeamMembersByMobileNumber": "افزودن همکار با شماره موبایل",
+  "chooseWhatEachMemberCanDo": "تعیین دسترسی هر همکار",
+  "teamLimitOfThePlanIsFull": "سقف همکاران اشتراک شما پر است",
+  "addMoreMembersWithAHigherPlan": "با اشتراک بالاتر می‌توانید همکار بیشتری اضافه کنید.",
+  "youWorkInThisStoreAsATeamMember": "شما همکار این فروشگاه هستید"
 }

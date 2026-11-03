@@ -9169,4 +9169,214 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get stockGoesDownWithEverySale => 'Stock goes down with every sale';
+
+  @override
+  String get inventoryAndSales => 'Inventory and sales';
+
+  @override
+  String get recordEveryMoveSoTheStoreStockStaysRight => 'Record every move so the store stock stays right.';
+
+  @override
+  String get recordInOrOut => 'Record in or out';
+
+  @override
+  String get recordStockMove => 'Record stock move';
+
+  @override
+  String recordKind(Object kind) {
+    return 'Record $kind';
+  }
+
+  @override
+  String get stockMoves => 'Stock moves';
+
+  @override
+  String get unitPurchasePrice => 'Unit purchase price';
+
+  @override
+  String get unitSellingPrice => 'Unit selling price';
+
+  @override
+  String get stockAfterSaving => 'Stock after saving';
+
+  @override
+  String get forExampleTheDistributorOrCustomerName => 'For example, the distributor or customer name';
+
+  @override
+  String get selectAProduct => 'Select a product';
+
+  @override
+  String get product => 'Product';
+
+  @override
+  String get stockMoveRecorded => 'Stock move recorded';
+
+  @override
+  String get noStockMovesYet => 'No stock moves yet';
+
+  @override
+  String get salesToday => 'Sales today';
+
+  @override
+  String get salesThisWeek => 'Sales this week';
+
+  @override
+  String get salesThisMonth => 'Sales this month';
+
+  @override
+  String get salesThisYear => 'Sales this year';
+
+  @override
+  String get profitThisWeek => 'Profit this week';
+
+  @override
+  String get approximateProfit => 'Approximate profit';
+
+  @override
+  String get runningLow => 'Running low';
+
+  @override
+  String get runningLowOrOut => 'Running low or out';
+
+  @override
+  String get stockValueAtPurchasePrice => 'Stock value at purchase price';
+
+  @override
+  String purchaseValueAmount(Object amount) {
+    return 'Purchase value $amount';
+  }
+
+  @override
+  String get salesReport => 'Sales report';
+
+  @override
+  String get week => 'Week';
+
+  @override
+  String get topSellers => 'Top sellers';
+
+  @override
+  String get itemsSold => 'Items sold';
+
+  @override
+  String get salesOfPeriod => 'Sales of the period';
+
+  @override
+  String quantitySold(Object count) {
+    return '$count sold';
+  }
+
+  @override
+  String get noSalesYet => 'No sales yet';
+
+  @override
+  String get profitReportsShowWhatYouEarnFromEverySale => 'Profit reports show what you earn from every sale.';
+
+  @override
+  String get profitByPeriod => 'Profit by period';
+
+  @override
+  String get salesMinusPurchasePrice => 'Sales minus purchase price';
+
+  @override
+  String helloName(Object name) {
+    return 'Hello, $name';
+  }
+
+  @override
+  String storeIsPercentReady(Object percent) {
+    return 'Your store is $percent% ready';
+  }
+
+  @override
+  String get aFewStepsLeftUntilCustomersSeeYouFully => 'A few steps left until customers see you fully';
+
+  @override
+  String get addressStep => 'Address';
+
+  @override
+  String get paymentStep => 'Payment details';
+
+  @override
+  String firstProductsStep(Object count, Object total) {
+    return '$count of $total first products';
+  }
+
+  @override
+  String get pageViewsToday => 'Page views today';
+
+  @override
+  String get qrScansToday => 'QR scans today';
+
+  @override
+  String get timesUnit => 'times';
+
+  @override
+  String get recordSaleShort => 'New sale';
+
+  @override
+  String get stockIn => 'Stock in';
+
+  @override
+  String get allStock => 'All stock';
+
+  @override
+  String get allMoves => 'All moves';
+
+  @override
+  String get latestStockMoves => 'Latest stock moves';
+
+  @override
+  String get yourStoreQr => 'Your store QR';
+
+  @override
+  String get stickItAtTheDoorSoPassersBySeeThePrices => 'Stick it at the door so passers-by see the prices.';
+
+  @override
+  String get makePosterAndDownload => 'Make poster and download';
+
+  @override
+  String get seeMyStorePage => 'See my store page';
+
+  @override
+  String get salesAndProfitReport => 'Sales and profit report';
+
+  @override
+  String get teamMembers => 'Team members';
+
+  @override
+  String get addTeamMember => 'Add team member';
+
+  @override
+  String get editTeamMember => 'Edit team member';
+
+  @override
+  String get teamMembersWorkWithTheirOwnAccountsAndSeeOnlyWhatYouAllow => 'Team members work with their own accounts and see only what you allow.';
+
+  @override
+  String get noTeamMembersYet => 'No team members yet';
+
+  @override
+  String get areYouSureYouWantToRemoveThisTeamMember => 'Are you sure you want to remove this team member?';
+
+  @override
+  String get pleaseChooseAtLeastOnePermission => 'Please choose at least one permission.';
+
+  @override
+  String get teamMembersHelpYouRunTheStore => 'Team members help you run the store.';
+
+  @override
+  String get addTeamMembersByMobileNumber => 'Add team members by mobile number';
+
+  @override
+  String get chooseWhatEachMemberCanDo => 'Choose what each member can do';
+
+  @override
+  String get teamLimitOfThePlanIsFull => 'The team member limit of your plan is full';
+
+  @override
+  String get addMoreMembersWithAHigherPlan => 'Add more members with a higher plan.';
+
+  @override
+  String get youWorkInThisStoreAsATeamMember => 'You work in this store as a team member';
 }
