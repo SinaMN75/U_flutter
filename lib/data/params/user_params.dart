@@ -240,6 +240,11 @@ class UUserUpdateParams {
     this.bio,
     this.birthdate,
     this.fcmToken,
+    this.muteFollowAlerts,
+    this.muteLowStock,
+    this.quietFrom,
+    this.quietTo,
+    this.utcOffsetMinutes,
     this.fatherName,
     this.country,
     this.city,
@@ -331,6 +336,13 @@ class UUserUpdateParams {
   final String? bio;
   final DateTime? birthdate;
   final String? fcmToken;
+  final bool? muteFollowAlerts;
+  final bool? muteLowStock;
+
+  /// HH:mm; an empty string for both turns quiet hours off.
+  final String? quietFrom;
+  final String? quietTo;
+  final int? utcOffsetMinutes;
   final String? fatherName;
   final String? country;
   final String? city;
@@ -378,6 +390,11 @@ class UUserUpdateParams {
     "bio": bio,
     "birthdate": birthdate?.toIso8601String(),
     "fcmToken": fcmToken,
+    "muteFollowAlerts": muteFollowAlerts,
+    "muteLowStock": muteLowStock,
+    "quietFrom": quietFrom,
+    "quietTo": quietTo,
+    "utcOffsetMinutes": utcOffsetMinutes,
     "fatherName": fatherName,
     "country": country,
     "city": city,

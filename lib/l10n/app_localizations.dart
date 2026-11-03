@@ -18175,6 +18175,258 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You work in this store as a team member'**
   String get youWorkInThisStoreAsATeamMember;
+
+  /// No description provided for @alertsForEachStore.
+  ///
+  /// In en, this message translates to:
+  /// **'Alerts for each store'**
+  String get alertsForEachStore;
+
+  /// No description provided for @allowLocationToSeeDistances.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow location to see distances'**
+  String get allowLocationToSeeDistances;
+
+  /// No description provided for @aroundYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Around you'**
+  String get aroundYou;
+
+  /// No description provided for @businessType.
+  ///
+  /// In en, this message translates to:
+  /// **'Business type'**
+  String get businessType;
+
+  /// No description provided for @countKilometers.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} km'**
+  String countKilometers(Object count);
+
+  /// No description provided for @countMeters.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} m'**
+  String countMeters(Object count);
+
+  /// No description provided for @countMinutesWalk.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} min walk'**
+  String countMinutesWalk(Object count);
+
+  /// No description provided for @countStoresFound.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} stores found'**
+  String countStoresFound(Object count);
+
+  /// No description provided for @distanceFromYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance from you'**
+  String get distanceFromYou;
+
+  /// No description provided for @fromStoresYouFollow.
+  ///
+  /// In en, this message translates to:
+  /// **'From stores you follow'**
+  String get fromStoresYouFollow;
+
+  /// No description provided for @inStock.
+  ///
+  /// In en, this message translates to:
+  /// **'In stock'**
+  String get inStock;
+
+  /// No description provided for @newProductAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'New product alerts'**
+  String get newProductAlerts;
+
+  /// No description provided for @noAlertsDuringTheseHoursTheyStillShowInTheList.
+  ///
+  /// In en, this message translates to:
+  /// **'No alerts during these hours; they still show in the list'**
+  String get noAlertsDuringTheseHoursTheyStillShowInTheList;
+
+  /// No description provided for @noBookmarkedGoods.
+  ///
+  /// In en, this message translates to:
+  /// **'No bookmarked goods'**
+  String get noBookmarkedGoods;
+
+  /// No description provided for @noBookmarkedStores.
+  ///
+  /// In en, this message translates to:
+  /// **'No bookmarked stores'**
+  String get noBookmarkedStores;
+
+  /// No description provided for @notificationSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification settings'**
+  String get notificationSettings;
+
+  /// No description provided for @onlyProductsInStock.
+  ///
+  /// In en, this message translates to:
+  /// **'Only products in stock'**
+  String get onlyProductsInStock;
+
+  /// No description provided for @onlyProductsWithAr.
+  ///
+  /// In en, this message translates to:
+  /// **'Only products with AR'**
+  String get onlyProductsWithAr;
+
+  /// No description provided for @openNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Open now'**
+  String get openNow;
+
+  /// No description provided for @priceRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Price range'**
+  String get priceRange;
+
+  /// No description provided for @priceRangeToman.
+  ///
+  /// In en, this message translates to:
+  /// **'Price range (toman)'**
+  String get priceRangeToman;
+
+  /// No description provided for @productNameForExampleMilkOrLatte.
+  ///
+  /// In en, this message translates to:
+  /// **'Product name, for example milk or latte'**
+  String get productNameForExampleMilkOrLatte;
+
+  /// No description provided for @productRunningLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Product running low'**
+  String get productRunningLow;
+
+  /// No description provided for @quietHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Quiet hours'**
+  String get quietHours;
+
+  /// No description provided for @searchStoresOrGoodsOnTheMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Search stores or goods on the map'**
+  String get searchStoresOrGoodsOnTheMap;
+
+  /// No description provided for @seeGoods.
+  ///
+  /// In en, this message translates to:
+  /// **'See goods'**
+  String get seeGoods;
+
+  /// No description provided for @settingsSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings saved'**
+  String get settingsSaved;
+
+  /// No description provided for @showCountResults.
+  ///
+  /// In en, this message translates to:
+  /// **'Show {count} results'**
+  String showCountResults(Object count);
+
+  /// No description provided for @showResults.
+  ///
+  /// In en, this message translates to:
+  /// **'Show results'**
+  String get showResults;
+
+  /// No description provided for @signInToBookmarkStoresAndGoods.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to bookmark stores and goods'**
+  String get signInToBookmarkStoresAndGoods;
+
+  /// No description provided for @sortBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort by'**
+  String get sortBy;
+
+  /// No description provided for @sortedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Sorted by {sort}'**
+  String sortedBy(Object sort);
+
+  /// No description provided for @storeCafeOrRestaurantName.
+  ///
+  /// In en, this message translates to:
+  /// **'Store, cafe or restaurant name'**
+  String get storeCafeOrRestaurantName;
+
+  /// No description provided for @storeOrProductName.
+  ///
+  /// In en, this message translates to:
+  /// **'Store or product name'**
+  String get storeOrProductName;
+
+  /// No description provided for @tapTheBookmarkOnAStoreOrProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the bookmark on a store or product'**
+  String get tapTheBookmarkOnAStoreOrProduct;
+
+  /// No description provided for @tryAnotherFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'Try another filter'**
+  String get tryAnotherFilter;
+
+  /// No description provided for @turnOnAlertsToHearAboutNewProducts.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on alerts to hear about new products'**
+  String get turnOnAlertsToHearAboutNewProducts;
+
+  /// No description provided for @turnOnLocationToSeeWhatIsNearby.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on location to see what is nearby'**
+  String get turnOnLocationToSeeWhatIsNearby;
+
+  /// No description provided for @typeAStoreOrProductName.
+  ///
+  /// In en, this message translates to:
+  /// **'Type a store or product name'**
+  String get typeAStoreOrProductName;
+
+  /// No description provided for @upToDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'Up to {distance}'**
+  String upToDistance(Object distance);
+
+  /// No description provided for @whenAProductRunsLowOrSellsOut.
+  ///
+  /// In en, this message translates to:
+  /// **'When a product runs low or sells out'**
+  String get whenAProductRunsLowOrSellsOut;
+
+  /// No description provided for @withAr.
+  ///
+  /// In en, this message translates to:
+  /// **'With AR'**
+  String get withAr;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

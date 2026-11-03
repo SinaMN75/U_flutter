@@ -179,6 +179,10 @@ class UUserResponse {
 class UUserJson {
   UUserJson({
     this.fcmToken,
+    this.muteFollowAlerts = false,
+    this.muteLowStock = false,
+    this.quietFrom,
+    this.quietTo,
     this.weight,
     this.height,
     this.fatherName,
@@ -205,6 +209,10 @@ class UUserJson {
 
   factory UUserJson.fromMap(Map<String, dynamic> json) => UUserJson(
     fcmToken: json["fcmToken"],
+    muteFollowAlerts: json["muteFollowAlerts"] ?? false,
+    muteLowStock: json["muteLowStock"] ?? false,
+    quietFrom: json["quietFrom"],
+    quietTo: json["quietTo"],
     weight: json["weight"]?.toDouble(),
     height: json["height"]?.toDouble(),
     fatherName: json["fatherName"],
@@ -226,6 +234,12 @@ class UUserJson {
     referrerId: json["referrerId"],
   );
   final String? fcmToken;
+  final bool muteFollowAlerts;
+  final bool muteLowStock;
+
+  /// Quiet hours (HH:mm, the user's own time); null means none.
+  final String? quietFrom;
+  final String? quietTo;
   final double? weight;
   final double? height;
   final String? fatherName;
@@ -250,6 +264,10 @@ class UUserJson {
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "fcmToken": fcmToken,
+    "muteFollowAlerts": muteFollowAlerts,
+    "muteLowStock": muteLowStock,
+    "quietFrom": quietFrom,
+    "quietTo": quietTo,
     "weight": weight,
     "height": height,
     "fatherName": fatherName,

@@ -9375,4 +9375,144 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get youWorkInThisStoreAsATeamMember => 'شما همکار این فروشگاه هستید';
+
+  @override
+  String get alertsForEachStore => 'اعلان هر فروشگاه';
+
+  @override
+  String get allowLocationToSeeDistances => 'برای دیدن فاصله‌ها، دسترسی به موقعیت را بدهید';
+
+  @override
+  String get aroundYou => 'اطراف شما';
+
+  @override
+  String get businessType => 'نوع کسب‌وکار';
+
+  @override
+  String countKilometers(Object count) {
+    return '$count کیلومتر';
+  }
+
+  @override
+  String countMeters(Object count) {
+    return '$count متر';
+  }
+
+  @override
+  String countMinutesWalk(Object count) {
+    return '$count دقیقه پیاده';
+  }
+
+  @override
+  String countStoresFound(Object count) {
+    return '$count فروشگاه پیدا شد';
+  }
+
+  @override
+  String get distanceFromYou => 'فاصله از شما';
+
+  @override
+  String get fromStoresYouFollow => 'از فروشگاه‌هایی که دنبال می‌کنید';
+
+  @override
+  String get inStock => 'موجود';
+
+  @override
+  String get newProductAlerts => 'اعلان کالای تازه';
+
+  @override
+  String get noAlertsDuringTheseHoursTheyStillShowInTheList => 'در این ساعت‌ها اعلانی نمی‌آید، ولی در لیست اعلان‌ها هست';
+
+  @override
+  String get noBookmarkedGoods => 'کالای نشان‌شده‌ای ندارید';
+
+  @override
+  String get noBookmarkedStores => 'فروشگاه نشان‌شده‌ای ندارید';
+
+  @override
+  String get notificationSettings => 'تنظیمات اعلان';
+
+  @override
+  String get onlyProductsInStock => 'فقط کالاهای موجود';
+
+  @override
+  String get onlyProductsWithAr => 'فقط کالاهای دارای AR';
+
+  @override
+  String get openNow => 'الان باز است';
+
+  @override
+  String get priceRange => 'محدوده قیمت';
+
+  @override
+  String get priceRangeToman => 'محدوده قیمت (تومان)';
+
+  @override
+  String get productNameForExampleMilkOrLatte => 'نام کالا، مثلاً «شیر» یا «لاته»';
+
+  @override
+  String get productRunningLow => 'کالای رو به اتمام';
+
+  @override
+  String get quietHours => 'ساعت سکوت';
+
+  @override
+  String get searchStoresOrGoodsOnTheMap => 'جستجوی فروشگاه یا کالا روی نقشه';
+
+  @override
+  String get seeGoods => 'دیدن اجناس';
+
+  @override
+  String get settingsSaved => 'تنظیمات ذخیره شد';
+
+  @override
+  String showCountResults(Object count) {
+    return 'نمایش $count نتیجه';
+  }
+
+  @override
+  String get showResults => 'نمایش نتایج';
+
+  @override
+  String get signInToBookmarkStoresAndGoods => 'برای نشان کردن فروشگاه‌ها و کالاها وارد شوید';
+
+  @override
+  String get sortBy => 'مرتب‌سازی';
+
+  @override
+  String sortedBy(Object sort) {
+    return 'مرتب: $sort';
+  }
+
+  @override
+  String get storeCafeOrRestaurantName => 'نام فروشگاه، کافه یا رستوران';
+
+  @override
+  String get storeOrProductName => 'نام فروشگاه یا کالا';
+
+  @override
+  String get tapTheBookmarkOnAStoreOrProduct => 'روی نشان فروشگاه یا کالا بزنید';
+
+  @override
+  String get tryAnotherFilter => 'فیلتر دیگری را امتحان کنید';
+
+  @override
+  String get turnOnAlertsToHearAboutNewProducts => 'اعلان را روشن کنید تا وقتی فروشگاه کالای تازه گذاشت خبردار شوید';
+
+  @override
+  String get turnOnLocationToSeeWhatIsNearby => 'برای دیدن اطراف، موقعیت را روشن کنید';
+
+  @override
+  String get typeAStoreOrProductName => 'نام فروشگاه یا کالا را بنویسید';
+
+  @override
+  String upToDistance(Object distance) {
+    return 'تا $distance';
+  }
+
+  @override
+  String get whenAProductRunsLowOrSellsOut => 'وقتی کالایی رو به اتمام است یا تمام می‌شود';
+
+  @override
+  String get withAr => 'دارای AR';
 }

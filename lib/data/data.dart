@@ -102,6 +102,7 @@ part "responses/db_admin_response.dart";
 
 part "responses/file_manager_response.dart";
 
+part "responses/follow_response.dart";
 part "responses/gold_response.dart";
 
 part "responses/dorm_response.dart";

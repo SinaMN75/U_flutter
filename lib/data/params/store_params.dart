@@ -140,6 +140,107 @@ class UStoreReadParams {
   }..removeWhere((String _, dynamic v) => v == null);
 }
 
+/// Filters shared by the public store and product searches.
+class UPlaceSearchParams {
+  UPlaceSearchParams({
+    this.query,
+    this.storeTypeIds = const <String>[],
+    this.latitude,
+    this.longitude,
+    this.maxDistanceKm,
+    this.openNow = false,
+    int? utcOffsetMinutes,
+    this.sort = TagSearchSort.nearest,
+    this.pageSize = 20,
+    this.pageNumber = 1,
+  }) : utcOffsetMinutes = utcOffsetMinutes ?? DateTime.now().timeZoneOffset.inMinutes;
+
+  final String? query;
+  final List<String> storeTypeIds;
+  final double? latitude;
+  final double? longitude;
+  final double? maxDistanceKm;
+
+  /// Only places open now, in the caller's time zone.
+  final bool openNow;
+  final int utcOffsetMinutes;
+  final TagSearchSort sort;
+  final int pageSize;
+  final int pageNumber;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "query": query,
+    "storeTypeIds": storeTypeIds,
+    "latitude": latitude,
+    "longitude": longitude,
+    "maxDistanceKm": maxDistanceKm,
+    "openNow": openNow,
+    "utcOffsetMinutes": utcOffsetMinutes,
+    "sort": sort.number,
+    "pageSize": pageSize,
+    "pageNumber": pageNumber,
+  }..removeWhere((String _, dynamic v) => v == null);
+}
+
+class UStoreExploreParams extends UPlaceSearchParams {
+  UStoreExploreParams({
+    super.query,
+    super.storeTypeIds,
+    super.latitude,
+    super.longitude,
+    super.maxDistanceKm,
+    super.openNow,
+    super.utcOffsetMinutes,
+    super.sort,
+    super.pageSize,
+    super.pageNumber,
+    this.selectorArgs,
+  });
+
+  final UStoreSelectorArgs? selectorArgs;
+
+  @override
+  Map<String, dynamic> toMap() => <String, dynamic>{...super.toMap(), "selectorArgs": selectorArgs?.toMap()}..removeWhere((String _, dynamic v) => v == null);
+}
+
+class UProductSearchParams extends UPlaceSearchParams {
+  UProductSearchParams({
+    super.query,
+    super.storeTypeIds,
+    super.latitude,
+    super.longitude,
+    super.maxDistanceKm,
+    super.openNow,
+    super.utcOffsetMinutes,
+    super.sort,
+    super.pageSize,
+    super.pageNumber,
+    this.minPrice,
+    this.maxPrice,
+    this.inStock = false,
+    this.hasModel = false,
+    this.selectorArgs,
+  });
+
+  final num? minPrice;
+  final num? maxPrice;
+  final bool inStock;
+
+  /// Only products with a 3D model, which can be shown in AR.
+  final bool hasModel;
+  final UProductSelectorArgs? selectorArgs;
+
+  @override
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    ...super.toMap(),
+    "minPrice": minPrice,
+    "maxPrice": maxPrice,
+    "inStock": inStock,
+    "hasModel": hasModel,
+    "selectorArgs": selectorArgs?.toMap(),
+  }..removeWhere((String _, dynamic v) => v == null);
+}
+
 class UStoreCodeParams {
   UStoreCodeParams({required this.code, this.scanned = false, this.skipView = false, this.selectorArgs});
 
@@ -243,7 +344,7 @@ class UStoreTypeReadParams {
 }
 
 class UProductCreateParams {
-  UProductCreateParams({required this.storeId, required this.title, required this.price, this.tags, this.categoryId, this.description, this.purchasePrice, this.stock = 0, this.lowStockAlert, this.lengthCm, this.widthCm, this.heightCm, this.unit, this.specs, this.links});
+  UProductCreateParams({required this.storeId, required this.title, required this.price, this.tags, this.categoryId, this.description, this.purchasePrice, this.stock = 0, this.lowStockAlert, this.lengthCm, this.widthCm, this.heightCm, this.unit, this.measureUnit, this.specs, this.links});
 
   final String storeId;
   final String title;
@@ -260,6 +361,9 @@ class UProductCreateParams {
   final double? widthCm;
   final double? heightCm;
   final String? unit;
+
+  /// [TagMeasureUnit] number.
+  final int? measureUnit;
   final List<UKeyValueData>? specs;
   final List<UWebLink>? links;
 
@@ -277,13 +381,14 @@ class UProductCreateParams {
     "widthCm": widthCm,
     "heightCm": heightCm,
     "unit": unit,
+    "measureUnit": measureUnit,
     "specs": specs?.map((UKeyValueData x) => x.toMap()).toList(),
     "links": links?.map((UWebLink x) => x.toMap()).toList(),
   };
 }
 
 class UProductUpdateParams {
-  UProductUpdateParams({required this.id, this.title, this.price, this.categoryId, this.clearCategory = false, this.description, this.purchasePrice, this.stock, this.lowStockAlert, this.lengthCm, this.widthCm, this.heightCm, this.unit, this.specs, this.links, this.addTags, this.removeTags});
+  UProductUpdateParams({required this.id, this.title, this.price, this.categoryId, this.clearCategory = false, this.description, this.purchasePrice, this.stock, this.lowStockAlert, this.lengthCm, this.widthCm, this.heightCm, this.unit, this.measureUnit, this.specs, this.links, this.addTags, this.removeTags});
 
   final String id;
   final String? title;
@@ -302,6 +407,9 @@ class UProductUpdateParams {
   final double? widthCm;
   final double? heightCm;
   final String? unit;
+
+  /// [TagMeasureUnit] number.
+  final int? measureUnit;
   final List<UKeyValueData>? specs;
   final List<UWebLink>? links;
   final List<int>? addTags;
@@ -321,6 +429,7 @@ class UProductUpdateParams {
     "widthCm": widthCm,
     "heightCm": heightCm,
     "unit": unit,
+    "measureUnit": measureUnit,
     "specs": specs?.map((UKeyValueData x) => x.toMap()).toList(),
     "links": links?.map((UWebLink x) => x.toMap()).toList(),
     "addTags": addTags,

@@ -9376,4 +9376,144 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get youWorkInThisStoreAsATeamMember => 'You work in this store as a team member';
+
+  @override
+  String get alertsForEachStore => 'Alerts for each store';
+
+  @override
+  String get allowLocationToSeeDistances => 'Allow location to see distances';
+
+  @override
+  String get aroundYou => 'Around you';
+
+  @override
+  String get businessType => 'Business type';
+
+  @override
+  String countKilometers(Object count) {
+    return '$count km';
+  }
+
+  @override
+  String countMeters(Object count) {
+    return '$count m';
+  }
+
+  @override
+  String countMinutesWalk(Object count) {
+    return '$count min walk';
+  }
+
+  @override
+  String countStoresFound(Object count) {
+    return '$count stores found';
+  }
+
+  @override
+  String get distanceFromYou => 'Distance from you';
+
+  @override
+  String get fromStoresYouFollow => 'From stores you follow';
+
+  @override
+  String get inStock => 'In stock';
+
+  @override
+  String get newProductAlerts => 'New product alerts';
+
+  @override
+  String get noAlertsDuringTheseHoursTheyStillShowInTheList => 'No alerts during these hours; they still show in the list';
+
+  @override
+  String get noBookmarkedGoods => 'No bookmarked goods';
+
+  @override
+  String get noBookmarkedStores => 'No bookmarked stores';
+
+  @override
+  String get notificationSettings => 'Notification settings';
+
+  @override
+  String get onlyProductsInStock => 'Only products in stock';
+
+  @override
+  String get onlyProductsWithAr => 'Only products with AR';
+
+  @override
+  String get openNow => 'Open now';
+
+  @override
+  String get priceRange => 'Price range';
+
+  @override
+  String get priceRangeToman => 'Price range (toman)';
+
+  @override
+  String get productNameForExampleMilkOrLatte => 'Product name, for example milk or latte';
+
+  @override
+  String get productRunningLow => 'Product running low';
+
+  @override
+  String get quietHours => 'Quiet hours';
+
+  @override
+  String get searchStoresOrGoodsOnTheMap => 'Search stores or goods on the map';
+
+  @override
+  String get seeGoods => 'See goods';
+
+  @override
+  String get settingsSaved => 'Settings saved';
+
+  @override
+  String showCountResults(Object count) {
+    return 'Show $count results';
+  }
+
+  @override
+  String get showResults => 'Show results';
+
+  @override
+  String get signInToBookmarkStoresAndGoods => 'Sign in to bookmark stores and goods';
+
+  @override
+  String get sortBy => 'Sort by';
+
+  @override
+  String sortedBy(Object sort) {
+    return 'Sorted by $sort';
+  }
+
+  @override
+  String get storeCafeOrRestaurantName => 'Store, cafe or restaurant name';
+
+  @override
+  String get storeOrProductName => 'Store or product name';
+
+  @override
+  String get tapTheBookmarkOnAStoreOrProduct => 'Tap the bookmark on a store or product';
+
+  @override
+  String get tryAnotherFilter => 'Try another filter';
+
+  @override
+  String get turnOnAlertsToHearAboutNewProducts => 'Turn on alerts to hear about new products';
+
+  @override
+  String get turnOnLocationToSeeWhatIsNearby => 'Turn on location to see what is nearby';
+
+  @override
+  String get typeAStoreOrProductName => 'Type a store or product name';
+
+  @override
+  String upToDistance(Object distance) {
+    return 'Up to $distance';
+  }
+
+  @override
+  String get whenAProductRunsLowOrSellsOut => 'When a product runs low or sells out';
+
+  @override
+  String get withAr => 'With AR';
 }

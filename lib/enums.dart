@@ -424,7 +424,8 @@ enum TagReaction with UNumericIdentifiable {
 enum TagFollow with UNumericIdentifiable {
   user("کاربر", "User", 101),
   product("محصول", "Product", 102),
-  blog("وبلاگ", "Blog", 104);
+  blog("وبلاگ", "Blog", 104),
+  store("فروشگاه", "Store", 105);
 
   const TagFollow(this.titleFa, this.titleEn, this.number);
 
@@ -829,6 +830,7 @@ enum TagNotification with UNumericIdentifiable {
   achievement("افتخار", "Achievement", 113),
   reminder("یادآوری", "Reminder", 114),
   order("سفارش", "Order", 115),
+  newProduct("کالای تازه", "New product", 116),
   unread("خوانده نشده", "Unread", 201),
   read("خوانده شده", "Read", 202),
   test("تست", "Test", 999);
@@ -1955,6 +1957,50 @@ enum TagStockMove with UNumericIdentifiable {
   stockOut("خروج", "Stock out", 107);
 
   const TagStockMove(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagSearchSort with UNumericIdentifiable {
+  nearest("نزدیک‌ترین", "Nearest", 101),
+  newest("تازه‌ترین", "Newest", 102),
+  cheapest("ارزان‌ترین", "Cheapest", 103);
+
+  const TagSearchSort(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagMeasureUnit with UNumericIdentifiable {
+  piece("عدد", "Piece", 101),
+  kilogram("کیلوگرم", "Kilogram", 102),
+  gram("گرم", "Gram", 103),
+  liter("لیتر", "Liter", 104),
+  milliliter("میلی‌لیتر", "Milliliter", 105),
+  meter("متر", "Meter", 106),
+  centimeter("سانتی‌متر", "Centimeter", 107),
+  squareMeter("متر مربع", "Square meter", 108),
+  pack("بسته", "Pack", 109),
+  box("جعبه", "Box", 110),
+  carton("کارتن", "Carton", 111),
+  dozen("دوجین", "Dozen", 112),
+  pair("جفت", "Pair", 113),
+  set("دست", "Set", 114),
+  bottle("بطری", "Bottle", 115),
+  cup("فنجان", "Cup", 116),
+  serving("پرس", "Serving", 117);
+
+  const TagMeasureUnit(this.titleFa, this.titleEn, this.number);
 
   @override
   final String titleFa;

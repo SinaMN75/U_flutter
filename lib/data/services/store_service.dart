@@ -8,6 +8,22 @@ class UStoreService {
     Function(String e)? onException,
   }) => _Api.call("/Store/Store/Create", p.toMap(), _Api.raw<String>(), _Api.empty, onOk, onError, onException);
 
+  /// Public store search with distance, type and open-now filters.
+  Future<(UResponse<List<UStoreResponse>>?, UEmptyResponse?, String?)> explore({
+    required UStoreExploreParams p,
+    Function(UResponse<List<UStoreResponse>> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Store/Store/Explore", p.toMap(), _Api.list(UStoreResponse.fromMap), _Api.empty, onOk, onError, onException);
+
+  /// Public product search across stores.
+  Future<(UResponse<List<UProductResponse>>?, UEmptyResponse?, String?)> searchProducts({
+    required UProductSearchParams p,
+    Function(UResponse<List<UProductResponse>> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Store/Product/Search", p.toMap(), _Api.list(UProductResponse.fromMap), _Api.empty, onOk, onError, onException);
+
   Future<(UResponse<List<UStoreResponse>>?, UEmptyResponse?, String?)> read({
     required UStoreReadParams p,
     Function(UResponse<List<UStoreResponse>> r)? onOk,

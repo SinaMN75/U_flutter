@@ -284,6 +284,8 @@ class UStoreResponse {
     this.menuIsActive = false,
     this.organizationId,
     this.organizationTitle,
+    this.distanceKm,
+    this.productCount,
     this.storeType,
     this.media,
     this.creator,
@@ -314,6 +316,8 @@ class UStoreResponse {
     menuIsActive: json["menuIsActive"] ?? false,
     organizationId: json["organizationId"],
     organizationTitle: json["organizationTitle"],
+    distanceKm: json["distanceKm"],
+    productCount: json["productCount"],
     storeType: json["storeType"] == null ? null : UStoreTypeResponse.fromMap(json["storeType"]),
     media: json["media"] == null ? null : List<UMediaResponse>.from((json["media"] as List<dynamic>).map((dynamic x) => UMediaResponse.fromMap(x))),
     creator: json["creator"] == null ? null : UUserResponse.fromMap(json["creator"]),
@@ -343,6 +347,10 @@ class UStoreResponse {
   final bool menuIsActive;
   final String? organizationId;
   final String? organizationTitle;
+
+  /// Filled by searches: distance from the caller, and listed products (matching the query, if any).
+  final num? distanceKm;
+  final int? productCount;
   final UStoreTypeResponse? storeType;
   final List<UMediaResponse>? media;
   final UUserResponse? creator;
@@ -404,6 +412,7 @@ class UProductResponse {
     this.stock = 0,
     this.purchasePrice,
     this.unit,
+    this.measureUnit,
     this.lowStockAlert,
     this.lengthCm,
     this.widthCm,
@@ -413,6 +422,7 @@ class UProductResponse {
     this.storeId,
     this.storeTitle,
     this.storeCode,
+    this.distanceKm,
     this.categoryId,
     this.category,
     this.media,
@@ -428,6 +438,7 @@ class UProductResponse {
     stock: json["stock"] ?? 0,
     purchasePrice: json["jsonData"]?["purchasePrice"],
     unit: json["jsonData"]?["unit"],
+    measureUnit: json["jsonData"]?["measureUnit"],
     lowStockAlert: json["jsonData"]?["lowStockAlert"],
     lengthCm: json["jsonData"]?["lengthCm"],
     widthCm: json["jsonData"]?["widthCm"],
@@ -437,6 +448,7 @@ class UProductResponse {
     storeId: json["storeId"],
     storeTitle: json["storeTitle"],
     storeCode: json["storeCode"],
+    distanceKm: json["distanceKm"],
     categoryId: json["categoryId"],
     category: json["category"] == null ? null : UCategoryResponse.fromMap(json["category"]),
     media: json["media"] == null ? null : List<UMediaResponse>.from((json["media"] as List<dynamic>).map((dynamic x) => UMediaResponse.fromMap(x))),
@@ -451,6 +463,9 @@ class UProductResponse {
   final int stock;
   final num? purchasePrice;
   final String? unit;
+
+  /// [TagMeasureUnit] number.
+  final int? measureUnit;
   final int? lowStockAlert;
   final num? lengthCm;
   final num? widthCm;
@@ -460,6 +475,9 @@ class UProductResponse {
   final String? storeId;
   final String? storeTitle;
   final String? storeCode;
+
+  /// Filled by searches: distance from the caller to the product's store.
+  final num? distanceKm;
   final String? categoryId;
   final UCategoryResponse? category;
   final List<UMediaResponse>? media;
@@ -469,6 +487,8 @@ class UProductResponse {
   bool get isBlocked => tags.contains(TagProduct.blocked.number);
 
   bool get isOutOfStock => stock <= 0;
+
+  TagMeasureUnit? get measure => TagMeasureUnit.values.firstWhereOrNull((TagMeasureUnit x) => x.number == measureUnit);
 
   /// In stock, and at or under the seller's alert.
   bool get isLowStock => !isOutOfStock && lowStockAlert != null && stock <= lowStockAlert!;

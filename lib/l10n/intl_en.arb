@@ -3839,5 +3839,82 @@
   "chooseWhatEachMemberCanDo": "Choose what each member can do",
   "teamLimitOfThePlanIsFull": "The team member limit of your plan is full",
   "addMoreMembersWithAHigherPlan": "Add more members with a higher plan.",
-  "youWorkInThisStoreAsATeamMember": "You work in this store as a team member"
+  "youWorkInThisStoreAsATeamMember": "You work in this store as a team member",
+  "alertsForEachStore": "Alerts for each store",
+  "allowLocationToSeeDistances": "Allow location to see distances",
+  "aroundYou": "Around you",
+  "businessType": "Business type",
+  "countKilometers": "{count} km",
+  "@countKilometers": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "countMeters": "{count} m",
+  "@countMeters": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "countMinutesWalk": "{count} min walk",
+  "@countMinutesWalk": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "countStoresFound": "{count} stores found",
+  "@countStoresFound": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "distanceFromYou": "Distance from you",
+  "fromStoresYouFollow": "From stores you follow",
+  "inStock": "In stock",
+  "newProductAlerts": "New product alerts",
+  "noAlertsDuringTheseHoursTheyStillShowInTheList": "No alerts during these hours; they still show in the list",
+  "noBookmarkedGoods": "No bookmarked goods",
+  "noBookmarkedStores": "No bookmarked stores",
+  "notificationSettings": "Notification settings",
+  "onlyProductsInStock": "Only products in stock",
+  "onlyProductsWithAr": "Only products with AR",
+  "openNow": "Open now",
+  "priceRange": "Price range",
+  "priceRangeToman": "Price range (toman)",
+  "productNameForExampleMilkOrLatte": "Product name, for example milk or latte",
+  "productRunningLow": "Product running low",
+  "quietHours": "Quiet hours",
+  "searchStoresOrGoodsOnTheMap": "Search stores or goods on the map",
+  "seeGoods": "See goods",
+  "settingsSaved": "Settings saved",
+  "showCountResults": "Show {count} results",
+  "@showCountResults": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "showResults": "Show results",
+  "signInToBookmarkStoresAndGoods": "Sign in to bookmark stores and goods",
+  "sortBy": "Sort by",
+  "sortedBy": "Sorted by {sort}",
+  "@sortedBy": {
+    "placeholders": {
+      "sort": {}
+    }
+  },
+  "storeCafeOrRestaurantName": "Store, cafe or restaurant name",
+  "storeOrProductName": "Store or product name",
+  "tapTheBookmarkOnAStoreOrProduct": "Tap the bookmark on a store or product",
+  "tryAnotherFilter": "Try another filter",
+  "turnOnAlertsToHearAboutNewProducts": "Turn on alerts to hear about new products",
+  "turnOnLocationToSeeWhatIsNearby": "Turn on location to see what is nearby",
+  "typeAStoreOrProductName": "Type a store or product name",
+  "upToDistance": "Up to {distance}",
+  "@upToDistance": {
+    "placeholders": {
+      "distance": {}
+    }
+  },
+  "whenAProductRunsLowOrSellsOut": "When a product runs low or sells out",
+  "withAr": "With AR"
 }
