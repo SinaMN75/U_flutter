@@ -126,8 +126,16 @@ class UTxnReadParams {
   final UTxnSelectorArgs? selectorArgs;
   final int? orderBy;
   final String? creatorId;
+  final String? userId;
+  final double? minAmount;
+  final double? maxAmount;
+  final String? query;
 
   UTxnReadParams({
+    this.userId,
+    this.minAmount,
+    this.maxAmount,
+    this.query,
     this.pageSize,
     this.pageNumber,
     this.fromCreatedAt,
@@ -153,6 +161,10 @@ class UTxnReadParams {
     selectorArgs: json["selectorArgs"] == null ? null : UTxnSelectorArgs.fromMap(json["selectorArgs"]),
     orderBy: json["orderBy"],
     creatorId: json["creatorId"],
+    userId: json["userId"],
+    minAmount: json["minAmount"]?.toDouble(),
+    maxAmount: json["maxAmount"]?.toDouble(),
+    query: json["query"],
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -165,5 +177,9 @@ class UTxnReadParams {
     "selectorArgs": selectorArgs?.toMap(),
     "orderBy": orderBy,
     "creatorId": creatorId,
+    "userId": userId,
+    "minAmount": minAmount,
+    "maxAmount": maxAmount,
+    "query": query,
   };
 }

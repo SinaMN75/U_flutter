@@ -18727,6 +18727,246 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You are offline; prices may be out of date.'**
   String get youAreOfflinePricesMayBeOutOfDate;
+
+  /// No description provided for @finance.
+  ///
+  /// In en, this message translates to:
+  /// **'Finance'**
+  String get finance;
+
+  /// No description provided for @financialOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Financial Overview'**
+  String get financialOverview;
+
+  /// No description provided for @walletTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Wallet Transactions'**
+  String get walletTransactions;
+
+  /// No description provided for @gatewayPayments.
+  ///
+  /// In en, this message translates to:
+  /// **'Gateway Payments'**
+  String get gatewayPayments;
+
+  /// No description provided for @sender.
+  ///
+  /// In en, this message translates to:
+  /// **'Sender'**
+  String get sender;
+
+  /// No description provided for @senderOrReceiver.
+  ///
+  /// In en, this message translates to:
+  /// **'Sender Or Receiver'**
+  String get senderOrReceiver;
+
+  /// No description provided for @creator.
+  ///
+  /// In en, this message translates to:
+  /// **'Creator'**
+  String get creator;
+
+  /// No description provided for @minimumAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum Amount'**
+  String get minimumAmount;
+
+  /// No description provided for @maximumAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum Amount'**
+  String get maximumAmount;
+
+  /// No description provided for @minimumBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum Balance'**
+  String get minimumBalance;
+
+  /// No description provided for @maximumBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum Balance'**
+  String get maximumBalance;
+
+  /// No description provided for @newestFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Newest First'**
+  String get newestFirst;
+
+  /// No description provided for @oldestFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Oldest First'**
+  String get oldestFirst;
+
+  /// No description provided for @highestAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Highest Amount'**
+  String get highestAmount;
+
+  /// No description provided for @lowestAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Lowest Amount'**
+  String get lowestAmount;
+
+  /// No description provided for @highestBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Highest Balance'**
+  String get highestBalance;
+
+  /// No description provided for @lowestBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Lowest Balance'**
+  String get lowestBalance;
+
+  /// No description provided for @systemWallets.
+  ///
+  /// In en, this message translates to:
+  /// **'System Wallets'**
+  String get systemWallets;
+
+  /// No description provided for @userWallets.
+  ///
+  /// In en, this message translates to:
+  /// **'User Wallets'**
+  String get userWallets;
+
+  /// No description provided for @usersBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Users Balance'**
+  String get usersBalance;
+
+  /// No description provided for @systemBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'System Balance'**
+  String get systemBalance;
+
+  /// No description provided for @negativeWallets.
+  ///
+  /// In en, this message translates to:
+  /// **'Negative Wallets'**
+  String get negativeWallets;
+
+  /// No description provided for @ledgerIsBalanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Ledger Is Balanced'**
+  String get ledgerIsBalanced;
+
+  /// No description provided for @ledgerIsNotBalanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Ledger Is Not Balanced'**
+  String get ledgerIsNotBalanced;
+
+  /// No description provided for @ledgerBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Ledger Balance'**
+  String get ledgerBalance;
+
+  /// No description provided for @mismatchedWallets.
+  ///
+  /// In en, this message translates to:
+  /// **'Mismatched Wallets'**
+  String get mismatchedWallets;
+
+  /// No description provided for @reconcileBalances.
+  ///
+  /// In en, this message translates to:
+  /// **'Reconcile Balances'**
+  String get reconcileBalances;
+
+  /// No description provided for @theSumOfAllWalletBalancesMustBeZero.
+  ///
+  /// In en, this message translates to:
+  /// **'The sum of all wallet balances must be zero.'**
+  String get theSumOfAllWalletBalancesMustBeZero;
+
+  /// No description provided for @eachMismatchedWalletBalanceIsSetToTheSumOfItsTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Each mismatched wallet balance is set to the sum of its transactions.'**
+  String get eachMismatchedWalletBalanceIsSetToTheSumOfItsTransactions;
+
+  /// No description provided for @walletCharges.
+  ///
+  /// In en, this message translates to:
+  /// **'Wallet Charges'**
+  String get walletCharges;
+
+  /// No description provided for @transactionVolume.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction Volume'**
+  String get transactionVolume;
+
+  /// No description provided for @transactionsByType.
+  ///
+  /// In en, this message translates to:
+  /// **'Transactions By Type'**
+  String get transactionsByType;
+
+  /// No description provided for @paymentsByStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Payments By Status'**
+  String get paymentsByStatus;
+
+  /// No description provided for @paidPaymentsByType.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid Payments By Type'**
+  String get paidPaymentsByType;
+
+  /// No description provided for @dailyActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Activity'**
+  String get dailyActivity;
+
+  /// No description provided for @successfulPayments.
+  ///
+  /// In en, this message translates to:
+  /// **'Successful Payments'**
+  String get successfulPayments;
+
+  /// No description provided for @allowsNegativeBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Allows Negative Balance'**
+  String get allowsNegativeBalance;
+
+  /// No description provided for @viewTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'View Transactions'**
+  String get viewTransactions;
+
+  /// No description provided for @transactionDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction Details'**
+  String get transactionDetails;
+
+  /// No description provided for @walletType.
+  ///
+  /// In en, this message translates to:
+  /// **'Wallet Type'**
+  String get walletType;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

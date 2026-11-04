@@ -9680,4 +9680,124 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get youAreOfflinePricesMayBeOutOfDate => 'You are offline; prices may be out of date.';
+
+  @override
+  String get finance => 'Finance';
+
+  @override
+  String get financialOverview => 'Financial Overview';
+
+  @override
+  String get walletTransactions => 'Wallet Transactions';
+
+  @override
+  String get gatewayPayments => 'Gateway Payments';
+
+  @override
+  String get sender => 'Sender';
+
+  @override
+  String get senderOrReceiver => 'Sender Or Receiver';
+
+  @override
+  String get creator => 'Creator';
+
+  @override
+  String get minimumAmount => 'Minimum Amount';
+
+  @override
+  String get maximumAmount => 'Maximum Amount';
+
+  @override
+  String get minimumBalance => 'Minimum Balance';
+
+  @override
+  String get maximumBalance => 'Maximum Balance';
+
+  @override
+  String get newestFirst => 'Newest First';
+
+  @override
+  String get oldestFirst => 'Oldest First';
+
+  @override
+  String get highestAmount => 'Highest Amount';
+
+  @override
+  String get lowestAmount => 'Lowest Amount';
+
+  @override
+  String get highestBalance => 'Highest Balance';
+
+  @override
+  String get lowestBalance => 'Lowest Balance';
+
+  @override
+  String get systemWallets => 'System Wallets';
+
+  @override
+  String get userWallets => 'User Wallets';
+
+  @override
+  String get usersBalance => 'Users Balance';
+
+  @override
+  String get systemBalance => 'System Balance';
+
+  @override
+  String get negativeWallets => 'Negative Wallets';
+
+  @override
+  String get ledgerIsBalanced => 'Ledger Is Balanced';
+
+  @override
+  String get ledgerIsNotBalanced => 'Ledger Is Not Balanced';
+
+  @override
+  String get ledgerBalance => 'Ledger Balance';
+
+  @override
+  String get mismatchedWallets => 'Mismatched Wallets';
+
+  @override
+  String get reconcileBalances => 'Reconcile Balances';
+
+  @override
+  String get theSumOfAllWalletBalancesMustBeZero => 'The sum of all wallet balances must be zero.';
+
+  @override
+  String get eachMismatchedWalletBalanceIsSetToTheSumOfItsTransactions => 'Each mismatched wallet balance is set to the sum of its transactions.';
+
+  @override
+  String get walletCharges => 'Wallet Charges';
+
+  @override
+  String get transactionVolume => 'Transaction Volume';
+
+  @override
+  String get transactionsByType => 'Transactions By Type';
+
+  @override
+  String get paymentsByStatus => 'Payments By Status';
+
+  @override
+  String get paidPaymentsByType => 'Paid Payments By Type';
+
+  @override
+  String get dailyActivity => 'Daily Activity';
+
+  @override
+  String get successfulPayments => 'Successful Payments';
+
+  @override
+  String get allowsNegativeBalance => 'Allows Negative Balance';
+
+  @override
+  String get viewTransactions => 'View Transactions';
+
+  @override
+  String get transactionDetails => 'Transaction Details';
+
+  @override
+  String get walletType => 'Wallet Type';
 }

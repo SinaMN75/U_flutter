@@ -35,4 +35,23 @@ class UWalletService {
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
   }) => _Api.call("/wallet/ReadTxn", p.toMap(), _Api.list(UWalletTxnResponse.fromMap), _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<UWalletReportResponse>?, UEmptyResponse?, String?)> readReport({
+    required UWalletReportParams p,
+    Function(UResponse<UWalletReportResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/wallet/ReadReport", p.toMap(), _Api.one(UWalletReportResponse.fromMap), _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<UWalletLedgerCheckResponse>?, UEmptyResponse?, String?)> readLedgerCheck({
+    Function(UResponse<UWalletLedgerCheckResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/wallet/ReadLedgerCheck", <String, dynamic>{}, _Api.one(UWalletLedgerCheckResponse.fromMap), _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> reconcile({
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/wallet/Reconcile", <String, dynamic>{}, _Api.empty, _Api.empty, onOk, onError, onException);
 }

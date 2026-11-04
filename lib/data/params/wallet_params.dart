@@ -37,11 +37,21 @@ class UWalletReadParams {
 
   final List<int>? tags;
   final List<String>? ids;
-  final String creatorId;
+  final String? creatorId;
+  final String? userId;
+  final double? minBalance;
+  final double? maxBalance;
+  final bool? system;
+  final String? query;
   final UWalletSelectorArgs? selectorArgs;
 
   UWalletReadParams({
-    required this.creatorId,
+    this.creatorId,
+    this.userId,
+    this.minBalance,
+    this.maxBalance,
+    this.system,
+    this.query,
     this.pageSize,
     this.pageNumber,
     this.fromCreatedAt,
@@ -58,6 +68,11 @@ class UWalletReadParams {
 
   factory UWalletReadParams.fromMap(Map<String, dynamic> json) => UWalletReadParams(
     creatorId: json["creatorId"],
+    userId: json["userId"],
+    minBalance: json["minBalance"]?.toDouble(),
+    maxBalance: json["maxBalance"]?.toDouble(),
+    system: json["system"],
+    query: json["query"],
     pageSize: json["pageSize"],
     pageNumber: json["pageNumber"],
     fromCreatedAt: json["fromCreatedAt"] == null ? null : DateTime.parse(json["fromCreatedAt"]),
@@ -76,6 +91,11 @@ class UWalletReadParams {
     "tags": tags == null ? <dynamic>[] : List<dynamic>.from(tags!.map((int x) => x)),
     "ids": ids == null ? <dynamic>[] : List<dynamic>.from(ids!.map((String x) => x)),
     "creatorId": creatorId,
+    "userId": userId,
+    "minBalance": minBalance,
+    "maxBalance": maxBalance,
+    "system": system,
+    "query": query,
     "selectorArgs": selectorArgs?.toMap(),
     "orderBy": orderBy,
   };
@@ -88,13 +108,23 @@ class UWalletTxnReadParams {
   final DateTime? toCreatedAt;
   final List<int>? tags;
   final List<String>? ids;
-  final String userId;
+  final String? userId;
+  final String? senderId;
+  final String? receiverId;
+  final double? minAmount;
+  final double? maxAmount;
+  final String? query;
   final UWalletTxnSelectorArgs? selectorArgs;
   final int? orderBy;
   final String? creatorId;
 
   UWalletTxnReadParams({
-    required this.userId,
+    this.userId,
+    this.senderId,
+    this.receiverId,
+    this.minAmount,
+    this.maxAmount,
+    this.query,
     this.pageSize,
     this.pageNumber,
     this.fromCreatedAt,
@@ -118,6 +148,11 @@ class UWalletTxnReadParams {
     tags: json["tags"] == null ? <int>[] : List<int>.from(json["tags"]!.map((dynamic x) => x)),
     ids: json["ids"] == null ? <String>[] : List<String>.from(json["ids"]!.map((dynamic x) => x)),
     userId: json["userId"],
+    senderId: json["senderId"],
+    receiverId: json["receiverId"],
+    minAmount: json["minAmount"]?.toDouble(),
+    maxAmount: json["maxAmount"]?.toDouble(),
+    query: json["query"],
     selectorArgs: json["selectorArgs"] == null ? null : UWalletTxnSelectorArgs.fromMap(json["selectorArgs"]),
     orderBy: json["orderBy"],
     creatorId: json["creatorId"],
@@ -131,6 +166,11 @@ class UWalletTxnReadParams {
     "tags": tags == null ? <dynamic>[] : List<dynamic>.from(tags!.map((int x) => x)),
     "ids": ids == null ? <dynamic>[] : List<dynamic>.from(ids!.map((String x) => x)),
     "userId": userId,
+    "senderId": senderId,
+    "receiverId": receiverId,
+    "minAmount": minAmount,
+    "maxAmount": maxAmount,
+    "query": query,
     "selectorArgs": selectorArgs?.toMap(),
     "orderBy": orderBy,
     "creatorId": creatorId,
@@ -174,5 +214,26 @@ class UWalletTransferParams {
     "senderId": senderId,
     "detail1": detail1,
     if (keyValues != null) "keyValues": List<dynamic>.from(keyValues!.map((UKeyValueData x) => x.toMap())),
+  };
+}
+
+class UWalletReportParams {
+  final DateTime? fromDate;
+  final DateTime? toDate;
+
+  UWalletReportParams({this.fromDate, this.toDate});
+
+  factory UWalletReportParams.fromJson(String str) => UWalletReportParams.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UWalletReportParams.fromMap(Map<String, dynamic> json) => UWalletReportParams(
+    fromDate: json["fromDate"] == null ? null : DateTime.parse(json["fromDate"]),
+    toDate: json["toDate"] == null ? null : DateTime.parse(json["toDate"]),
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "fromDate": fromDate?.toIso8601String(),
+    "toDate": toDate?.toIso8601String(),
   };
 }

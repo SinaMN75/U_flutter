@@ -9679,4 +9679,124 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get youAreOfflinePricesMayBeOutOfDate => 'اینترنت قطع است؛ قیمت‌ها شاید به‌روز نباشند.';
+
+  @override
+  String get finance => 'مالی';
+
+  @override
+  String get financialOverview => 'نمای کلی مالی';
+
+  @override
+  String get walletTransactions => 'تراکنش‌های کیف پول';
+
+  @override
+  String get gatewayPayments => 'پرداخت‌های درگاه';
+
+  @override
+  String get sender => 'فرستنده';
+
+  @override
+  String get senderOrReceiver => 'فرستنده یا گیرنده';
+
+  @override
+  String get creator => 'ثبت‌کننده';
+
+  @override
+  String get minimumAmount => 'حداقل مبلغ';
+
+  @override
+  String get maximumAmount => 'حداکثر مبلغ';
+
+  @override
+  String get minimumBalance => 'حداقل موجودی';
+
+  @override
+  String get maximumBalance => 'حداکثر موجودی';
+
+  @override
+  String get newestFirst => 'جدیدترین';
+
+  @override
+  String get oldestFirst => 'قدیمی‌ترین';
+
+  @override
+  String get highestAmount => 'بیشترین مبلغ';
+
+  @override
+  String get lowestAmount => 'کمترین مبلغ';
+
+  @override
+  String get highestBalance => 'بیشترین موجودی';
+
+  @override
+  String get lowestBalance => 'کمترین موجودی';
+
+  @override
+  String get systemWallets => 'کیف پول‌های سیستمی';
+
+  @override
+  String get userWallets => 'کیف پول‌های کاربران';
+
+  @override
+  String get usersBalance => 'موجودی کاربران';
+
+  @override
+  String get systemBalance => 'موجودی سیستم';
+
+  @override
+  String get negativeWallets => 'کیف پول‌های منفی';
+
+  @override
+  String get ledgerIsBalanced => 'دفتر کل تراز است';
+
+  @override
+  String get ledgerIsNotBalanced => 'دفتر کل تراز نیست';
+
+  @override
+  String get ledgerBalance => 'مانده‌ی دفتر';
+
+  @override
+  String get mismatchedWallets => 'کیف پول‌های ناهماهنگ';
+
+  @override
+  String get reconcileBalances => 'اصلاح موجودی‌ها';
+
+  @override
+  String get theSumOfAllWalletBalancesMustBeZero => 'جمع موجودی همه‌ی کیف پول‌ها باید صفر باشد.';
+
+  @override
+  String get eachMismatchedWalletBalanceIsSetToTheSumOfItsTransactions => 'موجودی هر کیف پول ناهماهنگ برابر جمع تراکنش‌هایش می‌شود.';
+
+  @override
+  String get walletCharges => 'شارژ کیف پول‌ها';
+
+  @override
+  String get transactionVolume => 'حجم تراکنش‌ها';
+
+  @override
+  String get transactionsByType => 'تراکنش‌ها بر اساس نوع';
+
+  @override
+  String get paymentsByStatus => 'پرداخت‌ها بر اساس وضعیت';
+
+  @override
+  String get paidPaymentsByType => 'پرداخت‌های موفق بر اساس نوع';
+
+  @override
+  String get dailyActivity => 'فعالیت روزانه';
+
+  @override
+  String get successfulPayments => 'پرداخت‌های موفق';
+
+  @override
+  String get allowsNegativeBalance => 'موجودی منفی مجاز';
+
+  @override
+  String get viewTransactions => 'مشاهده‌ی تراکنش‌ها';
+
+  @override
+  String get transactionDetails => 'جزئیات تراکنش';
+
+  @override
+  String get walletType => 'نوع کیف پول';
 }
