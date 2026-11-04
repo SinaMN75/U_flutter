@@ -281,6 +281,17 @@ abstract class UEncryption {
   /// HMAC-SHA512 hex. `hmacSha512(body, secret)`
   static String hmacSha512(String text, String key) => _toHex(_hmac(_sha512, _u8(key), _u8(text)));
 
+  /// AES-GCM over raw bytes with your own 12-byte nonce (never reuse one with the same key); returns ciphertext + 16-byte tag. `aesGcmEncryptBytes(key, nonce, data)`
+  static Uint8List aesGcmEncryptBytes(List<int> key, List<int> nonce, List<int> data, {List<int> aad = const <int>[]}) =>
+      _aesGcmEncrypt(Uint8List.fromList(key), Uint8List.fromList(nonce), Uint8List.fromList(data), Uint8List.fromList(aad));
+
+  /// Opens aesGcmEncryptBytes output; throws FormatException if anything was changed. `aesGcmDecryptBytes(key, nonce, sealed)`
+  static Uint8List aesGcmDecryptBytes(List<int> key, List<int> nonce, List<int> sealed, {List<int> aad = const <int>[]}) =>
+      _aesGcmDecrypt(Uint8List.fromList(key), Uint8List.fromList(nonce), Uint8List.fromList(sealed), Uint8List.fromList(aad));
+
+  /// Compares two byte lists without leaking timing. `constantTimeEqualsBytes(sentMac, expectedMac)`
+  static bool constantTimeEqualsBytes(List<int> a, List<int> b) => _ctEquals(Uint8List.fromList(a), Uint8List.fromList(b));
+
   /// CRC-32 checksum as an int (zip/png style). `crc32("hi")`
   static int crc32(String text) => _crc32(_u8(text));
 

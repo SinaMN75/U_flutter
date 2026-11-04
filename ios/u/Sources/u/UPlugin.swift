@@ -12,6 +12,7 @@ public final class UPlugin: NSObject, FlutterPlugin {
     private var launch: ULaunchHandler?
     private var share: UShareHandler?
     private var location: ULocationHandler?
+    private var ble: UBleHandler?
     private var notify: UNotifyHandler?
 
     public static func register(
@@ -46,6 +47,7 @@ public final class UPlugin: NSObject, FlutterPlugin {
         instance.launch = ULaunchHandler(messenger: registrar.messenger())
         instance.share = UShareHandler(messenger: registrar.messenger())
         instance.location = ULocationHandler(messenger: registrar.messenger())
+        instance.ble = UBleHandler(messenger: registrar.messenger())
         instance.notify = UNotifyHandler(messenger: registrar.messenger())
         registrar.addApplicationDelegate(instance)
         if #available(iOS 13.0, *) {

@@ -9800,4 +9800,91 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get walletType => 'Wallet Type';
+
+  @override
+  String get theCardReaderCodeIsNotValid => 'The card reader code is not valid';
+
+  @override
+  String get pairACardReaderFirst => 'Pair a card reader first';
+
+  @override
+  String get cardReaderNotFoundNearby => 'Card reader not found nearby';
+
+  @override
+  String get theCardReaderRejectedThisPhonePairAgain => 'The card reader rejected this phone; pair again';
+
+  @override
+  String get secureConnectionToTheCardReaderFailed => 'Secure connection to the card reader failed';
+
+  @override
+  String get bluetoothIsOff => 'Bluetooth is off';
+
+  @override
+  String get bluetoothPermissionWasDenied => 'Bluetooth permission was denied';
+
+  @override
+  String get bluetoothIsNotSupportedOnThisDevice => 'Bluetooth is not supported on this device';
+
+  @override
+  String get theCardReaderDisconnected => 'The card reader disconnected';
+
+  @override
+  String get theCardReaderDidNotRespond => 'The card reader did not respond';
+
+  @override
+  String get theCardReaderIsBusy => 'The card reader is busy';
+
+  @override
+  String get cashRegister => 'Cash Register';
+
+  @override
+  String get cardReader => 'Card Reader';
+
+  @override
+  String get connected => 'Connected';
+
+  @override
+  String get notConnected => 'Not Connected';
+
+  @override
+  String get connect => 'Connect';
+
+  @override
+  String get disconnect => 'Disconnect';
+
+  @override
+  String get pairCardReader => 'Pair Card Reader';
+
+  @override
+  String get forgetCardReader => 'Forget Card Reader';
+
+  @override
+  String get cardReaderPaired => 'Card reader paired';
+
+  @override
+  String get openBluetoothSettingsOnTheCardReaderAndScanItsCode => 'Open Bluetooth Settings on the card reader and scan its code';
+
+  @override
+  String get pairOnceAfterThatThePhoneConnectsByItself => 'Pair once; after that the phone connects by itself';
+
+  @override
+  String get purchase => 'Purchase';
+
+  @override
+  String get balanceInquiry => 'Balance Inquiry';
+
+  @override
+  String get enterAValidAmount => 'Enter a valid amount';
+
+  @override
+  String get continueOnTheCardReader => 'Continue on the card reader';
+
+  @override
+  String get paymentApproved => 'Payment approved';
+
+  @override
+  String get transactionFailed => 'Transaction failed';
+
+  @override
+  String get noTransactionsYet => 'No transactions yet';
 }

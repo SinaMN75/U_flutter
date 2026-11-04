@@ -1,6 +1,7 @@
 package com.sinamn75.u
 
 import com.sinamn75.u.ar.UArHandler
+import com.sinamn75.u.ble.UBleHandler
 import com.sinamn75.u.camera.UCameraHandler
 import com.sinamn75.u.device.UDeviceHandler
 import com.sinamn75.u.files.UFilesHandler
@@ -41,6 +42,7 @@ class UPlugin :
     private var location: ULocationHandler? = null
     private var notify: UNotificationHandler? = null
     private var nfc: UNfcHandler? = null
+    private var ble: UBleHandler? = null
     private var activityBinding: ActivityPluginBinding? = null
     private val userLeaveHint = PluginRegistry.UserLeaveHintListener { media?.onUserLeaveHint() }
 
@@ -74,6 +76,7 @@ class UPlugin :
         location = ULocationHandler(flutterPluginBinding.applicationContext, flutterPluginBinding.binaryMessenger)
         notify = UNotificationHandler(flutterPluginBinding.applicationContext, flutterPluginBinding.binaryMessenger)
         nfc = UNfcHandler(flutterPluginBinding.applicationContext, flutterPluginBinding.binaryMessenger)
+        ble = UBleHandler(flutterPluginBinding.applicationContext, flutterPluginBinding.binaryMessenger)
     }
 
     override fun onMethodCall(
@@ -113,6 +116,8 @@ class UPlugin :
         notify = null
         nfc?.dispose()
         nfc = null
+        ble?.dispose()
+        ble = null
     }
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
@@ -120,6 +125,7 @@ class UPlugin :
         launch?.attach(binding)
         share?.attach(binding)
         location?.attach(binding)
+        ble?.attach(binding)
         notify?.attach(binding)
         screenGuard?.setActivity(binding.activity)
         device?.setActivity(binding.activity)
@@ -141,6 +147,7 @@ class UPlugin :
         launch?.attach(binding)
         share?.attach(binding)
         location?.attach(binding)
+        ble?.attach(binding)
         notify?.attach(binding)
         screenGuard?.setActivity(binding.activity)
         device?.setActivity(binding.activity)
@@ -167,6 +174,7 @@ class UPlugin :
         launch?.detach()
         share?.detach()
         location?.detach()
+        ble?.detach()
         notify?.detach()
         activityBinding?.removeOnUserLeaveHintListener(userLeaveHint)
         activityBinding = null

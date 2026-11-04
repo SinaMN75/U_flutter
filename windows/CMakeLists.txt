@@ -37,6 +37,8 @@ list(APPEND PLUGIN_SOURCES
   "launch/u_launch.h"
   "location/u_location.cpp"
   "location/u_location.h"
+  "ble/u_ble.cpp"
+  "ble/u_ble.h"
   "notification/u_notification.cpp"
   "notification/u_notification.h"
 )

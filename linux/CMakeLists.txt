@@ -20,6 +20,7 @@ list(APPEND PLUGIN_SOURCES
   "device/u_device.cc"
   "launch/u_launch.cc"
   "location/u_location.cc"
+  "ble/u_ble.cc"
   "notification/u_notification.cc"
 )
 

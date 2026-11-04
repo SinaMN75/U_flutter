@@ -1,5 +1,18 @@
 ## Unreleased
 
+* **`UBle`: Bluetooth Low Energy central on all 6 platforms**, with no plugin dependency: `scan`
+  (service and manufacturer-data filters), `connect`, `subscribe` (notifications) and `write`.
+  BluetoothLeScanner/BluetoothGatt on Android, CoreBluetooth on iOS and macOS, WinRT on Windows,
+  BlueZ over D-Bus on Linux and Web Bluetooth on web (the browser's chooser, from a tap).
+  Declare it with `dart run u:app permission add bluetooth`.
+
+* **`UPosLink`: encrypted Bluetooth link to a payment terminal** that sends PC-POS JSON commands
+  (`sale`, `balance`, `confirm`, `cancel`, `voidSale`, `refund`, `deviceInfo`, or any `send`).
+  Pair once by scanning the terminal's QR code; the link then finds the terminal by itself.
+  HMAC handshake and AES-256-GCM per message; the pairing key rotates on first use.
+
+* `UEncryption.aesGcmEncryptBytes`, `aesGcmDecryptBytes` and `constantTimeEqualsBytes` for binary protocols.
+
 * **Native file picker, no `file_picker` dependency.** `UFile.pickFiles`, `pickFile`, `pickImage`
   and `pickVideo` now use the `u/files` channel on all 6 platforms: the Android Photo Picker (API 33+,
   no permission) or the Storage Access Framework, `PHPicker` / the document picker on iOS, `NSOpenPanel`

@@ -9799,4 +9799,91 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get walletType => 'نوع کیف پول';
+
+  @override
+  String get theCardReaderCodeIsNotValid => 'این کد مال کارتخوان نیست';
+
+  @override
+  String get pairACardReaderFirst => 'اول به کارتخوان وصل شوید';
+
+  @override
+  String get cardReaderNotFoundNearby => 'کارتخوان در نزدیکی پیدا نشد؛ بلوتوث آن روشن باشد';
+
+  @override
+  String get theCardReaderRejectedThisPhonePairAgain => 'کارتخوان این گوشی را نشناخت؛ دوباره کد بگیرید و اسکن کنید';
+
+  @override
+  String get secureConnectionToTheCardReaderFailed => 'اتصال امن به کارتخوان برقرار نشد';
+
+  @override
+  String get bluetoothIsOff => 'بلوتوث خاموش است';
+
+  @override
+  String get bluetoothPermissionWasDenied => 'اجازه بلوتوث داده نشد';
+
+  @override
+  String get bluetoothIsNotSupportedOnThisDevice => 'این دستگاه یا مرورگر از بلوتوث پشتیبانی نمی‌کند';
+
+  @override
+  String get theCardReaderDisconnected => 'اتصال کارتخوان قطع شد';
+
+  @override
+  String get theCardReaderDidNotRespond => 'کارتخوان پاسخ نداد';
+
+  @override
+  String get theCardReaderIsBusy => 'کارتخوان مشغول تراکنش دیگری است';
+
+  @override
+  String get cashRegister => 'صندوق فروشگاه';
+
+  @override
+  String get cardReader => 'کارتخوان';
+
+  @override
+  String get connected => 'متصل';
+
+  @override
+  String get notConnected => 'وصل نیست';
+
+  @override
+  String get connect => 'اتصال';
+
+  @override
+  String get disconnect => 'قطع اتصال';
+
+  @override
+  String get pairCardReader => 'اتصال به کارتخوان';
+
+  @override
+  String get forgetCardReader => 'حذف کارتخوان';
+
+  @override
+  String get cardReaderPaired => 'کارتخوان متصل شد';
+
+  @override
+  String get openBluetoothSettingsOnTheCardReaderAndScanItsCode => 'در کارتخوان «تنظیمات بلوتوث» و بعد «اتصال گوشی فروشنده» را بزنید و کد را اسکن کنید';
+
+  @override
+  String get pairOnceAfterThatThePhoneConnectsByItself => 'فقط یک بار لازم است؛ بعد از آن گوشی خودش به کارتخوان وصل می‌شود';
+
+  @override
+  String get purchase => 'خرید';
+
+  @override
+  String get balanceInquiry => 'گرفتن موجودی';
+
+  @override
+  String get enterAValidAmount => 'مبلغ درست وارد کنید';
+
+  @override
+  String get continueOnTheCardReader => 'ادامه را روی کارتخوان انجام دهید';
+
+  @override
+  String get paymentApproved => 'پرداخت موفق بود';
+
+  @override
+  String get transactionFailed => 'تراکنش ناموفق بود';
+
+  @override
+  String get noTransactionsYet => 'هنوز تراکنشی ثبت نشده';
 }

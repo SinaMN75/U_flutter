@@ -1,5 +1,6 @@
 #include "u_plugin.h"
 
+#include "ble/u_ble.h"
 #include "camera/u_camera.h"
 #include "common/u_platform.h"
 #include "device/u_device.h"
@@ -55,6 +56,7 @@ void UPlugin::RegisterWithRegistrar(
   RegisterLaunch(registrar);
   RegisterShare(registrar);
   RegisterLocation(registrar);
+  RegisterBle(registrar);
   RegisterNotification(registrar);
 }
 

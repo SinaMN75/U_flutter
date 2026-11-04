@@ -6,6 +6,7 @@
 
 #include <cstring>
 
+#include "ble/u_ble.h"
 #include "camera/u_camera.h"
 #include "device/u_device.h"
 #include "launch/u_launch.h"
@@ -85,6 +86,7 @@ void u_plugin_register_with_registrar(FlPluginRegistrar* registrar) {
   u_device_register(registrar);
   u_launch_register(registrar);
   u_location_register(registrar);
+  u_ble_register(registrar);
   u_notification_register(registrar);
 
   g_object_unref(plugin);

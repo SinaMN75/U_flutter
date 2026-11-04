@@ -18967,6 +18967,180 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Wallet Type'**
   String get walletType;
+
+  /// No description provided for @theCardReaderCodeIsNotValid.
+  ///
+  /// In en, this message translates to:
+  /// **'The card reader code is not valid'**
+  String get theCardReaderCodeIsNotValid;
+
+  /// No description provided for @pairACardReaderFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Pair a card reader first'**
+  String get pairACardReaderFirst;
+
+  /// No description provided for @cardReaderNotFoundNearby.
+  ///
+  /// In en, this message translates to:
+  /// **'Card reader not found nearby'**
+  String get cardReaderNotFoundNearby;
+
+  /// No description provided for @theCardReaderRejectedThisPhonePairAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'The card reader rejected this phone; pair again'**
+  String get theCardReaderRejectedThisPhonePairAgain;
+
+  /// No description provided for @secureConnectionToTheCardReaderFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Secure connection to the card reader failed'**
+  String get secureConnectionToTheCardReaderFailed;
+
+  /// No description provided for @bluetoothIsOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Bluetooth is off'**
+  String get bluetoothIsOff;
+
+  /// No description provided for @bluetoothPermissionWasDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Bluetooth permission was denied'**
+  String get bluetoothPermissionWasDenied;
+
+  /// No description provided for @bluetoothIsNotSupportedOnThisDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'Bluetooth is not supported on this device'**
+  String get bluetoothIsNotSupportedOnThisDevice;
+
+  /// No description provided for @theCardReaderDisconnected.
+  ///
+  /// In en, this message translates to:
+  /// **'The card reader disconnected'**
+  String get theCardReaderDisconnected;
+
+  /// No description provided for @theCardReaderDidNotRespond.
+  ///
+  /// In en, this message translates to:
+  /// **'The card reader did not respond'**
+  String get theCardReaderDidNotRespond;
+
+  /// No description provided for @theCardReaderIsBusy.
+  ///
+  /// In en, this message translates to:
+  /// **'The card reader is busy'**
+  String get theCardReaderIsBusy;
+
+  /// No description provided for @cashRegister.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash Register'**
+  String get cashRegister;
+
+  /// No description provided for @cardReader.
+  ///
+  /// In en, this message translates to:
+  /// **'Card Reader'**
+  String get cardReader;
+
+  /// No description provided for @connected.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected'**
+  String get connected;
+
+  /// No description provided for @notConnected.
+  ///
+  /// In en, this message translates to:
+  /// **'Not Connected'**
+  String get notConnected;
+
+  /// No description provided for @connect.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect'**
+  String get connect;
+
+  /// No description provided for @disconnect.
+  ///
+  /// In en, this message translates to:
+  /// **'Disconnect'**
+  String get disconnect;
+
+  /// No description provided for @pairCardReader.
+  ///
+  /// In en, this message translates to:
+  /// **'Pair Card Reader'**
+  String get pairCardReader;
+
+  /// No description provided for @forgetCardReader.
+  ///
+  /// In en, this message translates to:
+  /// **'Forget Card Reader'**
+  String get forgetCardReader;
+
+  /// No description provided for @cardReaderPaired.
+  ///
+  /// In en, this message translates to:
+  /// **'Card reader paired'**
+  String get cardReaderPaired;
+
+  /// No description provided for @openBluetoothSettingsOnTheCardReaderAndScanItsCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Bluetooth Settings on the card reader and scan its code'**
+  String get openBluetoothSettingsOnTheCardReaderAndScanItsCode;
+
+  /// No description provided for @pairOnceAfterThatThePhoneConnectsByItself.
+  ///
+  /// In en, this message translates to:
+  /// **'Pair once; after that the phone connects by itself'**
+  String get pairOnceAfterThatThePhoneConnectsByItself;
+
+  /// No description provided for @purchase.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase'**
+  String get purchase;
+
+  /// No description provided for @balanceInquiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Balance Inquiry'**
+  String get balanceInquiry;
+
+  /// No description provided for @enterAValidAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid amount'**
+  String get enterAValidAmount;
+
+  /// No description provided for @continueOnTheCardReader.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue on the card reader'**
+  String get continueOnTheCardReader;
+
+  /// No description provided for @paymentApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment approved'**
+  String get paymentApproved;
+
+  /// No description provided for @transactionFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction failed'**
+  String get transactionFailed;
+
+  /// No description provided for @noTransactionsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No transactions yet'**
+  String get noTransactionsYet;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
