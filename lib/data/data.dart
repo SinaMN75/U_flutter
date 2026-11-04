@@ -28,6 +28,8 @@ part "params/db_admin_params.dart";
 
 part "params/file_manager_params.dart";
 
+part "params/exchange_rate_params.dart";
+
 part "params/follow_params.dart";
 
 part "params/gold_params.dart";
@@ -102,6 +104,8 @@ part "responses/db_admin_response.dart";
 
 part "responses/file_manager_response.dart";
 
+part "responses/exchange_rate_response.dart";
+
 part "responses/follow_response.dart";
 part "responses/gold_response.dart";
 
@@ -166,6 +170,8 @@ part "services/dashboard_service.dart";
 part "services/db_admin_service.dart";
 
 part "services/file_manager_service.dart";
+
+part "services/exchange_rate_service.dart";
 
 part "services/follow_service.dart";
 
@@ -236,6 +242,7 @@ class UServices {
   static UCommentService comment = UCommentService();
   static UFollowService follow = UFollowService();
   static UGoldService gold = UGoldService();
+  static UExchangeRateService exchangeRate = UExchangeRateService();
   static UMediaService media = UMediaService();
   static UWalletService wallet = UWalletService();
   static UIpgService ipg = UIpgService();

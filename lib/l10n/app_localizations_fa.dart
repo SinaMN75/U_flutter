@@ -3312,6 +3312,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get admins => 'مدیران';
 
   @override
+  String get allCurrencies => 'همه‌ی ارزها';
+
+  @override
   String get allowedIps => 'IPهای مجاز';
 
   @override
@@ -3378,6 +3381,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get attendance => 'حضور (ورود / خروج)';
 
   @override
+  String get autoRefresh => 'به‌روزرسانی خودکار';
+
+  @override
   String get available => 'موجود';
 
   @override
@@ -3403,6 +3409,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get barcodeQrGenerator => 'تولید بارکد / کیو‌آر';
+
+  @override
+  String get baseCurrency => 'ارز مبنا';
 
   @override
   String get basicSettings => 'تنظیمات پایه';
@@ -3453,6 +3462,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get cacheHitRatio => 'نرخ برخورد کش';
 
   @override
+  String get candlestickChart => 'نمودار شمعی';
+
+  @override
   String get changesApplyLiveAndResetToDefaultsOnServerRestart => 'تغییرات بلافاصله اعمال شده و با ری‌استارت سرور به حالت پیش‌فرض بازمی‌گردند.';
 
   @override
@@ -3477,6 +3489,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get closeDayHint => 'رزروهایی که تا این روز وارد نشده‌اند «عدم حضور» می‌شوند.';
 
   @override
+  String get closingPrice => 'قیمت پایانی';
+
+  @override
   String get comments => 'نظرات';
 
   @override
@@ -3499,6 +3514,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get contractsExpiringSoon => 'قراردادهای در حال انقضا';
+
+  @override
+  String get converter => 'مبدل';
 
   @override
   String get copyJson => 'کپی JSON';
@@ -3744,6 +3762,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get exception => 'استثنا';
 
   @override
+  String get exchangeRates => 'نرخ ارز و طلا';
+
+  @override
   String get expiringSoon => 'در حال انقضا';
 
   @override
@@ -3792,6 +3813,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get framework => 'فریم‌ورک';
+
+  @override
+  String get freeMarket => 'بازار آزاد';
 
   @override
   String get gatewayPayments => 'پرداخت‌های درگاه';
@@ -3851,6 +3875,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get hexColor => 'کد رنگ';
 
   @override
+  String get high => 'بیشترین';
+
+  @override
   String get highestAmount => 'بیشترین مبلغ';
 
   @override
@@ -3906,6 +3933,12 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get institutionId => 'شناسه موسسه';
+
+  @override
+  String get international => 'بین‌المللی';
+
+  @override
+  String get internationalRatesAreUpdatedOnceADay => 'نرخ‌های بین‌المللی روزی یک بار به‌روز می‌شوند.';
 
   @override
   String get invoices => 'فاکتورها';
@@ -3993,6 +4026,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get light => 'روشن';
 
   @override
+  String get lineChart => 'نمودار خطی';
+
+  @override
   String get loadAverage => 'میانگین بار';
 
   @override
@@ -4008,6 +4044,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get longRunningQueries => 'کوئری‌های طولانی';
 
   @override
+  String get low => 'کمترین';
+
+  @override
   String get lowestAmount => 'کمترین مبلغ';
 
   @override
@@ -4021,6 +4060,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get markAsPaid => 'ثبت پرداخت';
+
+  @override
+  String get market => 'بازار';
 
   @override
   String get markThisInvoiceAsFullyPaid => 'این فاکتور به‌طور کامل پرداخت شود؟';
@@ -4196,6 +4238,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get onlyExceptions => 'فقط استثنا';
 
   @override
+  String get openingPrice => 'قیمت آغازین';
+
+  @override
   String get operatingSystem => 'سیستم‌عامل';
 
   @override
@@ -4349,6 +4394,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get previewNotAvailableForThisFileType => 'پیش‌نمایش برای این نوع فایل در دسترس نیست';
 
   @override
+  String get priceHistory => 'تاریخچه‌ی قیمت';
+
+  @override
   String get priceNight => 'قیمت / شب';
 
   @override
@@ -4380,6 +4428,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get providerTransactions => 'تراکنش‌های سرویس‌دهنده';
+
+  @override
+  String get quarter => 'سه ماه';
 
   @override
   String get query => 'کوئری';
@@ -4582,6 +4633,11 @@ class AppLocalizationsFa extends AppLocalizations {
   String get socialMedia => 'شبکه‌های اجتماعی';
 
   @override
+  String sourcesAreNotRespondingShowingPricesFetchedAt(Object time) {
+    return 'منبع‌ها پاسخ نمی‌دهند. قیمت‌های دریافت‌شده در $time نمایش داده می‌شوند.';
+  }
+
+  @override
   String get splitInvoice => 'تقسیط قبض';
 
   @override
@@ -4622,6 +4678,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get supportPassword => 'رمز پشتیبانی';
+
+  @override
+  String get swap => 'جابه‌جایی';
 
   @override
   String get systems => 'سیستم‌ها';

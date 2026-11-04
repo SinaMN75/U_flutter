@@ -6398,6 +6398,12 @@ abstract class AppLocalizations {
   /// **'Admins'**
   String get admins;
 
+  /// No description provided for @allCurrencies.
+  ///
+  /// In en, this message translates to:
+  /// **'All Currencies'**
+  String get allCurrencies;
+
   /// No description provided for @allowedIps.
   ///
   /// In en, this message translates to:
@@ -6530,6 +6536,12 @@ abstract class AppLocalizations {
   /// **'Attendance'**
   String get attendance;
 
+  /// No description provided for @autoRefresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto Refresh'**
+  String get autoRefresh;
+
   /// No description provided for @available.
   ///
   /// In en, this message translates to:
@@ -6583,6 +6595,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Barcode / QR generator'**
   String get barcodeQrGenerator;
+
+  /// No description provided for @baseCurrency.
+  ///
+  /// In en, this message translates to:
+  /// **'Base Currency'**
+  String get baseCurrency;
 
   /// No description provided for @basicSettings.
   ///
@@ -6680,6 +6698,12 @@ abstract class AppLocalizations {
   /// **'Cache hit ratio'**
   String get cacheHitRatio;
 
+  /// No description provided for @candlestickChart.
+  ///
+  /// In en, this message translates to:
+  /// **'Candlestick Chart'**
+  String get candlestickChart;
+
   /// No description provided for @changesApplyLiveAndResetToDefaultsOnServerRestart.
   ///
   /// In en, this message translates to:
@@ -6728,6 +6752,12 @@ abstract class AppLocalizations {
   /// **'Unarrived reservations of this day are marked as no-show.'**
   String get closeDayHint;
 
+  /// No description provided for @closingPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Closing Price'**
+  String get closingPrice;
+
   /// No description provided for @comments.
   ///
   /// In en, this message translates to:
@@ -6775,6 +6805,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Contracts Expiring Soon'**
   String get contractsExpiringSoon;
+
+  /// No description provided for @converter.
+  ///
+  /// In en, this message translates to:
+  /// **'Converter'**
+  String get converter;
 
   /// No description provided for @copyJson.
   ///
@@ -7238,6 +7274,12 @@ abstract class AppLocalizations {
   /// **'Exception'**
   String get exception;
 
+  /// No description provided for @exchangeRates.
+  ///
+  /// In en, this message translates to:
+  /// **'Exchange Rates'**
+  String get exchangeRates;
+
   /// No description provided for @expiringSoon.
   ///
   /// In en, this message translates to:
@@ -7333,6 +7375,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Framework'**
   String get framework;
+
+  /// No description provided for @freeMarket.
+  ///
+  /// In en, this message translates to:
+  /// **'Free Market'**
+  String get freeMarket;
 
   /// No description provided for @gatewayPayments.
   ///
@@ -7448,6 +7496,12 @@ abstract class AppLocalizations {
   /// **'Hex Color'**
   String get hexColor;
 
+  /// No description provided for @high.
+  ///
+  /// In en, this message translates to:
+  /// **'High'**
+  String get high;
+
   /// No description provided for @highestAmount.
   ///
   /// In en, this message translates to:
@@ -7561,6 +7615,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Institution ID'**
   String get institutionId;
+
+  /// No description provided for @international.
+  ///
+  /// In en, this message translates to:
+  /// **'International'**
+  String get international;
+
+  /// No description provided for @internationalRatesAreUpdatedOnceADay.
+  ///
+  /// In en, this message translates to:
+  /// **'International rates are updated once a day.'**
+  String get internationalRatesAreUpdatedOnceADay;
 
   /// No description provided for @invoices.
   ///
@@ -7724,6 +7790,12 @@ abstract class AppLocalizations {
   /// **'Light'**
   String get light;
 
+  /// No description provided for @lineChart.
+  ///
+  /// In en, this message translates to:
+  /// **'Line Chart'**
+  String get lineChart;
+
   /// No description provided for @loadAverage.
   ///
   /// In en, this message translates to:
@@ -7754,6 +7826,12 @@ abstract class AppLocalizations {
   /// **'Long-running queries'**
   String get longRunningQueries;
 
+  /// No description provided for @low.
+  ///
+  /// In en, this message translates to:
+  /// **'Low'**
+  String get low;
+
   /// No description provided for @lowestAmount.
   ///
   /// In en, this message translates to:
@@ -7783,6 +7861,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Mark as Paid'**
   String get markAsPaid;
+
+  /// No description provided for @market.
+  ///
+  /// In en, this message translates to:
+  /// **'Market'**
+  String get market;
 
   /// No description provided for @markThisInvoiceAsFullyPaid.
   ///
@@ -8126,6 +8210,12 @@ abstract class AppLocalizations {
   /// **'Only Exceptions'**
   String get onlyExceptions;
 
+  /// No description provided for @openingPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening Price'**
+  String get openingPrice;
+
   /// No description provided for @operatingSystem.
   ///
   /// In en, this message translates to:
@@ -8432,6 +8522,12 @@ abstract class AppLocalizations {
   /// **'Preview not available for this file type'**
   String get previewNotAvailableForThisFileType;
 
+  /// No description provided for @priceHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Price History'**
+  String get priceHistory;
+
   /// No description provided for @priceNight.
   ///
   /// In en, this message translates to:
@@ -8497,6 +8593,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Provider transactions'**
   String get providerTransactions;
+
+  /// No description provided for @quarter.
+  ///
+  /// In en, this message translates to:
+  /// **'Quarter'**
+  String get quarter;
 
   /// No description provided for @query.
   ///
@@ -8894,6 +8996,12 @@ abstract class AppLocalizations {
   /// **'Social Media'**
   String get socialMedia;
 
+  /// No description provided for @sourcesAreNotRespondingShowingPricesFetchedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Sources are not responding. Showing prices fetched at {time}.'**
+  String sourcesAreNotRespondingShowingPricesFetchedAt(Object time);
+
   /// No description provided for @splitInvoice.
   ///
   /// In en, this message translates to:
@@ -8977,6 +9085,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Support Password'**
   String get supportPassword;
+
+  /// No description provided for @swap.
+  ///
+  /// In en, this message translates to:
+  /// **'Swap'**
+  String get swap;
 
   /// No description provided for @systems.
   ///

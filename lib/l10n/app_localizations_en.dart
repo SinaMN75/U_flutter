@@ -3312,6 +3312,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get admins => 'Admins';
 
   @override
+  String get allCurrencies => 'All Currencies';
+
+  @override
   String get allowedIps => 'Allowed IPs';
 
   @override
@@ -3378,6 +3381,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get attendance => 'Attendance';
 
   @override
+  String get autoRefresh => 'Auto Refresh';
+
+  @override
   String get available => 'Available';
 
   @override
@@ -3403,6 +3409,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get barcodeQrGenerator => 'Barcode / QR generator';
+
+  @override
+  String get baseCurrency => 'Base Currency';
 
   @override
   String get basicSettings => 'Basic settings';
@@ -3453,6 +3462,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cacheHitRatio => 'Cache hit ratio';
 
   @override
+  String get candlestickChart => 'Candlestick Chart';
+
+  @override
   String get changesApplyLiveAndResetToDefaultsOnServerRestart => 'Changes apply live and reset to defaults on server restart.';
 
   @override
@@ -3477,6 +3489,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get closeDayHint => 'Unarrived reservations of this day are marked as no-show.';
 
   @override
+  String get closingPrice => 'Closing Price';
+
+  @override
   String get comments => 'Comments';
 
   @override
@@ -3499,6 +3514,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get contractsExpiringSoon => 'Contracts Expiring Soon';
+
+  @override
+  String get converter => 'Converter';
 
   @override
   String get copyJson => 'Copy JSON';
@@ -3744,6 +3762,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get exception => 'Exception';
 
   @override
+  String get exchangeRates => 'Exchange Rates';
+
+  @override
   String get expiringSoon => 'Expiring Soon';
 
   @override
@@ -3792,6 +3813,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get framework => 'Framework';
+
+  @override
+  String get freeMarket => 'Free Market';
 
   @override
   String get gatewayPayments => 'Gateway Payments';
@@ -3851,6 +3875,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hexColor => 'Hex Color';
 
   @override
+  String get high => 'High';
+
+  @override
   String get highestAmount => 'Highest Amount';
 
   @override
@@ -3906,6 +3933,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get institutionId => 'Institution ID';
+
+  @override
+  String get international => 'International';
+
+  @override
+  String get internationalRatesAreUpdatedOnceADay => 'International rates are updated once a day.';
 
   @override
   String get invoices => 'Invoices';
@@ -3993,6 +4026,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get light => 'Light';
 
   @override
+  String get lineChart => 'Line Chart';
+
+  @override
   String get loadAverage => 'Load Average';
 
   @override
@@ -4008,6 +4044,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get longRunningQueries => 'Long-running queries';
 
   @override
+  String get low => 'Low';
+
+  @override
   String get lowestAmount => 'Lowest Amount';
 
   @override
@@ -4021,6 +4060,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get markAsPaid => 'Mark as Paid';
+
+  @override
+  String get market => 'Market';
 
   @override
   String get markThisInvoiceAsFullyPaid => 'Mark this invoice as fully paid?';
@@ -4196,6 +4238,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onlyExceptions => 'Only Exceptions';
 
   @override
+  String get openingPrice => 'Opening Price';
+
+  @override
   String get operatingSystem => 'Operating System';
 
   @override
@@ -4349,6 +4394,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get previewNotAvailableForThisFileType => 'Preview not available for this file type';
 
   @override
+  String get priceHistory => 'Price History';
+
+  @override
   String get priceNight => 'Price / Night';
 
   @override
@@ -4380,6 +4428,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get providerTransactions => 'Provider transactions';
+
+  @override
+  String get quarter => 'Quarter';
 
   @override
   String get query => 'Query';
@@ -4582,6 +4633,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get socialMedia => 'Social Media';
 
   @override
+  String sourcesAreNotRespondingShowingPricesFetchedAt(Object time) {
+    return 'Sources are not responding. Showing prices fetched at $time.';
+  }
+
+  @override
   String get splitInvoice => 'Split into installments';
 
   @override
@@ -4622,6 +4678,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get supportPassword => 'Support Password';
+
+  @override
+  String get swap => 'Swap';
 
   @override
   String get systems => 'Systems';

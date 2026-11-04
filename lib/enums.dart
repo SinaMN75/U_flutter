@@ -1435,6 +1435,24 @@ enum TagGoldTxn with UNumericIdentifiable {
   final int number;
 }
 
+enum TagExchangeRateGroup with UNumericIdentifiable {
+  currency("ارز", "Currency", 101),
+  goldCoin("طلا و سکه", "Gold & Coin", 102),
+  metal("فلزات گران‌بها", "Precious Metals", 103),
+  crypto("ارز دیجیتال", "Crypto", 104),
+  commodity("کالا", "Commodities", 105),
+  marketIndex("شاخص", "Index", 106);
+
+  const TagExchangeRateGroup(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
 enum TagIpgPayment with UNumericIdentifiable {
   normalSale("خرید عادی", "Normal Sale", 101),
   bill("پرداخت قبض", "Bill", 102),
