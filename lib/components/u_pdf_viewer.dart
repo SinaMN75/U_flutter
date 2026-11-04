@@ -2076,7 +2076,7 @@ extension _UPdfViewerChrome on UPdfViewerState {
         children: <Widget>[
           _toolChip(target, UPdfTool.highlight, Icons.format_color_fill_rounded, U.s.highlight),
           _toolChip(target, UPdfTool.underline, Icons.format_underlined_rounded, U.s.underline),
-          _toolChip(target, UPdfTool.strikeOut, Icons.format_strikethrough_rounded, U.s.strikeThrough),
+          _toolChip(target, UPdfTool.strikeOut, Icons.format_strikethrough_rounded, U.s.strikethrough),
           _toolChip(target, UPdfTool.ink, Icons.draw_rounded, U.s.draw),
           _toolChip(target, UPdfTool.rectangle, Icons.crop_square_rounded, U.s.rectangle),
           _toolChip(target, UPdfTool.ellipse, Icons.circle_outlined, U.s.ellipse),
@@ -2164,7 +2164,7 @@ extension _UPdfViewerChrome on UPdfViewerState {
             padding: const EdgeInsets.symmetric(horizontal: 4),
             child: Row(
               children: <Widget>[
-                IconButton(icon: const Icon(Icons.chevron_left_rounded), tooltip: U.s.previousPage, onPressed: _visiblePage > 0 ? previousPage : null),
+                IconButton(icon: const Icon(Icons.chevron_left_rounded), tooltip: U.s.previousItem(U.s.page), onPressed: _visiblePage > 0 ? previousPage : null),
                 IconButton(icon: const Icon(Icons.zoom_out_rounded), tooltip: U.s.zoomOut, onPressed: () => _setZoom(_zoom / 1.25)),
                 if (!compact)
                   PopupMenuButton<UDocFit>(
@@ -2192,7 +2192,7 @@ extension _UPdfViewerChrome on UPdfViewerState {
                   onPressed: () => unawaited(_askPageNumber()),
                   child: Directionality(textDirection: TextDirection.ltr, child: UTextBodySmall("${_visiblePage + 1} / ${value.pageCount}")),
                 ),
-                IconButton(icon: const Icon(Icons.chevron_right_rounded), tooltip: U.s.nextPage, onPressed: _visiblePage < value.pageCount - 1 ? nextPage : null),
+                IconButton(icon: const Icon(Icons.chevron_right_rounded), tooltip: U.s.nextItem(U.s.page), onPressed: _visiblePage < value.pageCount - 1 ? nextPage : null),
               ],
             ),
           ),
@@ -3178,7 +3178,7 @@ class _UPdfSettingsPanelState extends State<UPdfSettingsPanel> {
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
               value: settings.showAnnotations,
-              title: UTextBodyMedium(U.s.showAnnotations),
+              title: UTextBodyMedium(U.s.showItem(U.s.annotations)),
               onChanged: (bool next) {
                 widget.controller.invalidateAll();
                 _update(settings.copyWith(showAnnotations: next));

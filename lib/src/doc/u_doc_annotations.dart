@@ -44,7 +44,7 @@ abstract final class UDocPalette {
       case UDocMarkupKind.underline:
         return U.s.underline;
       case UDocMarkupKind.strikeThrough:
-        return U.s.strikeThrough;
+        return U.s.strikethrough;
       case UDocMarkupKind.squiggly:
         return U.s.squiggly;
       case UDocMarkupKind.border:
@@ -1348,7 +1348,7 @@ class UDocMarkupMenu extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  tooltip: markup.hasNote ? U.s.editNote : U.s.addNote,
+                  tooltip: markup.hasNote ? U.s.editItem(U.s.note) : U.s.addItem(U.s.note),
                   visualDensity: VisualDensity.compact,
                   onPressed: () async {
                     final String? note = await UDocNoteEditor.show(initial: markup.note, quote: markup.text);
@@ -1417,7 +1417,7 @@ class _UDocNoteDialogState extends State<_UDocNoteDialog> {
     return AlertDialog(
       // With the keyboard up (or a phone on its side) little height is left; the content scrolls instead of overflowing.
       scrollable: true,
-      title: UTextTitleMedium(widget.initial.isEmpty ? U.s.addNote : U.s.editNote),
+      title: UTextTitleMedium(widget.initial.isEmpty ? U.s.addItem(U.s.note) : U.s.editItem(U.s.note)),
       content: SizedBox(
         width: 420,
         child: Column(
@@ -1588,7 +1588,7 @@ class _UDocAnnotationsPanelState extends State<UDocAnnotationsPanel> {
                             padding: EdgeInsets.zero,
                             onSelected: (String action) => unawaited(_act(action, first, quote)),
                             itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                              PopupMenuItem<String>(value: "note", child: UTextBodyMedium(first.hasNote ? U.s.editNote : U.s.addNote)),
+                              PopupMenuItem<String>(value: "note", child: UTextBodyMedium(first.hasNote ? U.s.editItem(U.s.note) : U.s.addItem(U.s.note))),
                               PopupMenuItem<String>(value: "color", child: UTextBodyMedium(U.s.color)),
                               if (widget.allowCopy && quote.isNotEmpty) PopupMenuItem<String>(value: "copy", child: UTextBodyMedium(U.s.copy)),
                               PopupMenuItem<String>(value: "delete", child: UTextBodyMedium(U.s.delete)),
@@ -1682,7 +1682,7 @@ class UDocBookmarksPanel extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   IconButton(
-                    tooltip: U.s.editNote,
+                    tooltip: U.s.editItem(U.s.note),
                     icon: const Icon(Icons.edit_note_rounded, size: 20),
                     onPressed: () async {
                       final String? note = await UDocNoteEditor.show(initial: bookmark.note);

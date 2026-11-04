@@ -75,7 +75,7 @@ class _UIpgBrowserPageState extends State<UIpgBrowserPage> {
           CircleAvatar(radius: 70, backgroundColor: scheme.onPrimary.withAlpha(0x1F)).position(top: 80, left: 180),
           ListTile(
             leading: UIconBackground(Icons.open_in_browser_rounded, color: scheme.onPrimary, size: 48),
-            title: UTextBodyMedium(U.s.paymentStatus, color: scheme.onPrimary.withAlpha(0xCC)),
+            title: UTextBodyMedium(U.s.itemStatus(U.s.payment), color: scheme.onPrimary.withAlpha(0xCC)),
             subtitle: UTextHeadlineSmall(U.s.pending, color: scheme.onPrimary, fontWeight: FontWeight.bold),
             trailing: UIconTextHorizontal(
               leading: SizedBox.square(dimension: 14, child: CircularProgressIndicator(strokeWidth: 2, color: scheme.onPrimary)),

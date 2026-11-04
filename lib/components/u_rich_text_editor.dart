@@ -1436,7 +1436,7 @@ abstract class UEditorStyles {
       case UBlockType.table:
         return U.s.table;
       case UBlockType.image:
-        return U.s.insertImage;
+        return U.s.insertItem(U.s.image);
       case UBlockType.divider:
         return U.s.divider;
     }
@@ -1626,7 +1626,7 @@ abstract class UEditorDialogs {
   }
 
   /// Prompts for a link href. Returns an empty string to remove the link.
-  static Future<String?> editLink({String? existing}) => UNavigator.inputDialog(title: U.s.insertLink, hint: U.s.url, defaultValue: existing ?? "https://");
+  static Future<String?> editLink({String? existing}) => UNavigator.inputDialog(title: U.s.insertItem(U.s.link), hint: U.s.url, defaultValue: existing ?? "https://");
 
   /// Asks for a row/column count and returns a fresh empty table.
   static Future<UTableData?> insertTable() {
@@ -1636,7 +1636,7 @@ abstract class UEditorDialogs {
     return UNavigator.dialog<UTableData>(
       StatefulBuilder(
         builder: (BuildContext context, StateSetter setInner) => AlertDialog(
-          title: Text(U.s.insertTable),
+          title: Text(U.s.insertItem(U.s.table)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -2246,7 +2246,7 @@ class _URichTextEditorState extends State<URichTextEditor> {
     final TextSelection? sel = _restoredSelection();
     final URichTextController? c = _activeController;
     if (sel == null || c == null) return;
-    final int? picked = await UEditorDialogs.pickColor(context: context, current: c.activeValue(attr) as int?, title: attr == UInlineAttr.highlight ? U.s.highlightColor : U.s.textColor);
+    final int? picked = await UEditorDialogs.pickColor(context: context, current: c.activeValue(attr) as int?, title: attr == UInlineAttr.highlight ? U.s.itemColor(U.s.highlight) : U.s.itemColor(U.s.text));
     if (picked == null) return;
     c.selection = sel;
     c.applyValue(attr, picked == 0 ? null : picked);
@@ -2446,9 +2446,9 @@ class _URichTextEditorState extends State<URichTextEditor> {
             onTap: () => _onSelection((URichTextController c) => c.toggleAttribute(UInlineAttr.subscript)),
           ),
           const UEditorToolSeparator(),
-          UEditorToolButton(icon: Icons.format_color_text, tooltip: U.s.textColor, onTap: () => _pickColor(UInlineAttr.color)),
-          UEditorToolButton(icon: Icons.border_color_outlined, tooltip: U.s.highlightColor, onTap: () => _pickColor(UInlineAttr.highlight)),
-          UEditorToolButton(icon: Icons.link, tooltip: U.s.insertLink, active: c?.activeLink() != null, onTap: _editLink),
+          UEditorToolButton(icon: Icons.format_color_text, tooltip: U.s.itemColor(U.s.text), onTap: () => _pickColor(UInlineAttr.color)),
+          UEditorToolButton(icon: Icons.border_color_outlined, tooltip: U.s.itemColor(U.s.highlight), onTap: () => _pickColor(UInlineAttr.highlight)),
+          UEditorToolButton(icon: Icons.link, tooltip: U.s.insertItem(U.s.link), active: c?.activeLink() != null, onTap: _editLink),
           const UEditorToolSeparator(),
           UEditorToolButton(
             icon: Icons.format_list_bulleted,
@@ -2476,8 +2476,8 @@ class _URichTextEditorState extends State<URichTextEditor> {
           UEditorToolButton(icon: Icons.format_align_right, tooltip: U.s.alignRight, active: _active?.align == TextAlign.right, onTap: () => _setAlign(TextAlign.right)),
           UEditorToolButton(icon: Icons.format_align_justify, tooltip: U.s.justify, active: _active?.align == TextAlign.justify, onTap: () => _setAlign(TextAlign.justify)),
           const UEditorToolSeparator(),
-          UEditorToolButton(icon: Icons.image_outlined, tooltip: U.s.insertImage, onTap: _insertImage),
-          UEditorToolButton(icon: Icons.table_chart_outlined, tooltip: U.s.insertTable, onTap: _insertTable),
+          UEditorToolButton(icon: Icons.image_outlined, tooltip: U.s.insertItem(U.s.image), onTap: _insertImage),
+          UEditorToolButton(icon: Icons.table_chart_outlined, tooltip: U.s.insertItem(U.s.table), onTap: _insertTable),
           UEditorToolButton(
             icon: Icons.horizontal_rule,
             tooltip: U.s.divider,
@@ -2727,7 +2727,7 @@ class _URichTextEditorState extends State<URichTextEditor> {
             children: <Widget>[
               UEditorToolButton(icon: Icons.add, tooltip: U.s.addItem(U.s.rows), size: 16, onTap: () => setState(table.addRow)),
               UEditorToolButton(icon: Icons.add_box_outlined, tooltip: U.s.addItem(U.s.columns), size: 16, onTap: () => setState(table.addColumn)),
-              UEditorToolButton(icon: Icons.remove, tooltip: U.s.removeRow, size: 16, onTap: () => setState(() => table.removeRow(table.rowCount - 1))),
+              UEditorToolButton(icon: Icons.remove, tooltip: U.s.deleteRow, size: 16, onTap: () => setState(() => table.removeRow(table.rowCount - 1))),
               UEditorToolButton(icon: Icons.indeterminate_check_box_outlined, tooltip: U.s.removeColumn, size: 16, onTap: () => setState(() => table.removeColumn(table.columnCount - 1))),
               UEditorToolButton(
                 icon: Icons.table_rows_outlined,

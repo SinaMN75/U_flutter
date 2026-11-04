@@ -299,7 +299,7 @@ class _UFilePickerState extends State<UFilePicker> {
                 if (all.isEmpty)
                   _DropZone(
                     icon: widget.icon,
-                    title: widget.selectFileTitle ?? U.s.selectFiles,
+                    title: widget.selectFileTitle ?? U.s.selectItem(U.s.files),
                     subtitle: widget.subtitle ?? U.s.tapToBrowseYourFiles,
                     formats: _formatsHint(),
                     busy: _picking,
@@ -510,7 +510,7 @@ class _ImageTile extends StatelessWidget {
                 child: isCover
                     ? _Pill(text: U.s.cover, icon: Icons.star_rounded, background: scheme.tertiary, foreground: scheme.onTertiary)
                     : isNew
-                    ? _Pill(text: U.s.newFile, background: scheme.primary, foreground: scheme.onPrimary)
+                    ? _Pill(text: U.s.new_, background: scheme.primary, foreground: scheme.onPrimary)
                     : const SizedBox.shrink(),
               ),
             ),
@@ -617,7 +617,7 @@ class _FileTile extends StatelessWidget {
             PositionedDirectional(
               top: 6,
               start: 6,
-              child: _Pill(text: U.s.newFile, background: scheme.primary, foreground: scheme.onPrimary),
+              child: _Pill(text: U.s.new_, background: scheme.primary, foreground: scheme.onPrimary),
             ),
           if (enabled)
             PositionedDirectional(

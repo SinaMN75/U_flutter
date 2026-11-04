@@ -51,7 +51,7 @@ class _UProcessViewState extends State<UProcessView> {
         appBar: AppBar(),
         body: UIconTextVertical(
           leading: UTextBodyMedium(U.s.errorLoadingData),
-          trailing: UButton(title: U.s.tryAgain, onTap: c.read),
+          trailing: UButton(title: U.s.retry, onTap: c.read),
         ),
       );
     }

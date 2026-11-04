@@ -47,7 +47,7 @@ String uDownloadErrorLabel(UDownloadError? error) => switch (error?.code) {
   UDownloadErrorCode.unauthorized => U.s.downloadErrorUnauthorized,
   UDownloadErrorCode.forbidden => U.s.downloadErrorForbidden,
   UDownloadErrorCode.notFound => U.s.downloadErrorNotFound,
-  UDownloadErrorCode.serverError => U.s.downloadErrorServer,
+  UDownloadErrorCode.serverError => U.s.serverError,
   UDownloadErrorCode.fileChanged => U.s.downloadErrorFileChanged,
   UDownloadErrorCode.checksumMismatch => U.s.downloadErrorChecksum,
   UDownloadErrorCode.insufficientSpace => U.s.downloadErrorSpace,
@@ -141,7 +141,7 @@ class _UDownloadManagerPageState extends State<UDownloadManagerPage> {
             actions: <Widget>[
               if (widget.allowAdd)
                 IconButton(
-                  tooltip: U.s.addDownload,
+                  tooltip: U.s.addItem(U.s.download),
                   onPressed: () => unawaited(UAddDownloadSheet.show(manager: _manager)),
                   icon: const Icon(Icons.add_link_rounded),
                 ),
@@ -581,7 +581,7 @@ class _UAddDownloadSheetState extends State<UAddDownloadSheet> {
       spacing: 12,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        UTextTitleMedium(U.s.addDownload, fontWeight: FontWeight.bold),
+        UTextTitleMedium(U.s.addItem(U.s.download), fontWeight: FontWeight.bold),
         TextField(
           controller: _url,
           keyboardType: TextInputType.url,

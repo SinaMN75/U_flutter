@@ -53,9 +53,9 @@ abstract class UReceiptKeyValues {
       case bed:
         return U.s.bed;
       case billId:
-        return U.s.billId;
+        return U.s.itemId(U.s.bill);
       case billType:
-        return U.s.billType;
+        return U.s.itemType(U.s.bill);
       case branch:
         return U.s.branch;
       case chargePin:
@@ -79,7 +79,7 @@ abstract class UReceiptKeyValues {
       case internetPackage:
         return U.s.internetPackage;
       case invoiceId:
-        return U.s.invoiceId;
+        return U.s.itemId(U.s.invoice);
       case licencePlate:
         return U.s.licencePlate;
       case nationalCode:
@@ -91,7 +91,7 @@ abstract class UReceiptKeyValues {
       case orderId:
         return U.s.orderId;
       case paymentId:
-        return U.s.paymentId;
+        return U.s.itemId(U.s.payment);
       case penalty:
         return U.s.penalty;
       case period:
@@ -103,15 +103,15 @@ abstract class UReceiptKeyValues {
       case refundAmount:
         return U.s.refundAmount;
       case reservationId:
-        return U.s.reservationId;
+        return U.s.itemId(U.s.reservation);
       case room:
         return U.s.room;
       case trackingNumber:
         return U.s.trackingNumber;
       case unitPrice:
-        return U.s.unitPrice;
+        return U.s.itemPrice(U.s.unit);
       case zipCode:
-        return U.s.zipCode;
+        return U.s.postalCode;
       default:
         return key;
     }

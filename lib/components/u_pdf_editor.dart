@@ -722,7 +722,7 @@ class _UPdfEditorPageState extends State<UPdfEditorPage> {
             _toolButton(UPdfTool.select, Icons.pan_tool_alt_outlined, U.s.select),
             _toolButton(UPdfTool.highlight, Icons.format_color_fill_rounded, U.s.highlight),
             _toolButton(UPdfTool.underline, Icons.format_underlined_rounded, U.s.underline),
-            _toolButton(UPdfTool.strikeOut, Icons.format_strikethrough_rounded, U.s.strikeThrough),
+            _toolButton(UPdfTool.strikeOut, Icons.format_strikethrough_rounded, U.s.strikethrough),
             _toolButton(UPdfTool.ink, Icons.draw_rounded, U.s.draw),
             _toolButton(UPdfTool.rectangle, Icons.crop_square_rounded, U.s.rectangle),
             _toolButton(UPdfTool.ellipse, Icons.circle_outlined, U.s.ellipse),

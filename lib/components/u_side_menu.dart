@@ -757,7 +757,7 @@ class _USideMenuState extends State<USideMenu> with TickerProviderStateMixin {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           IconButton(
-            tooltip: U.s.showMenu,
+            tooltip: U.s.showItem(U.s.menu),
             color: _t.indicatorColor,
             icon: const Icon(Icons.view_sidebar_rounded),
             onPressed: () {

@@ -2813,7 +2813,7 @@ class _UVideoState extends State<UVideo> {
         UTextBodySmall(error.message.isEmpty ? U.s.errorLoadingVideo : error.message, color: const Color(0xB3FFFFFF), textAlign: TextAlign.center),
         UButton(
           type: UButtonType.text,
-          title: U.s.tryAgain,
+          title: U.s.retry,
           onTap: () {
             final UMediaSource? source = widget.controller.currentSource;
             if (source != null) unawaited(widget.controller.open(source, autoPlay: true));

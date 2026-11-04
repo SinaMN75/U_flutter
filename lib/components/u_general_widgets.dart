@@ -281,7 +281,7 @@ class UErrorRetry extends StatelessWidget {
   @override
   Widget build(BuildContext context) => UIconTextVertical(
     leading: UTextBodyMedium(title ?? U.s.errorLoadingData),
-    trailing: UButton(title: buttonTitle ?? U.s.tryAgain, onTap: onTap),
+    trailing: UButton(title: buttonTitle ?? U.s.retry, onTap: onTap),
   );
 }
 

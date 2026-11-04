@@ -249,7 +249,7 @@ class UPaginatedListState<T> extends State<UPaginatedList<T>> {
               if (index < extra) return widget.header!;
               final int i = index - extra;
               if (i < _items.length) return widget.itemBuilder(context, _items[i], i);
-              if (_error != null) return TextButton(onPressed: _loadMore, child: Text(U.s.tryAgain));
+              if (_error != null) return TextButton(onPressed: _loadMore, child: Text(U.s.retry));
               if (_done) return const SizedBox.shrink();
               return const Padding(
                 padding: EdgeInsets.all(16),

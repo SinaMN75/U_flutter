@@ -426,7 +426,7 @@ class _USignaturePadState extends State<USignaturePad> {
         if (widget.showColorPicker)
           for (final Color c in palette)
             Tooltip(
-              message: U.s.penColor,
+              message: U.s.itemColor(U.s.pen),
               child: InkResponse(
                 onTap: () => _controller.penColor = c,
                 child: UContainer(

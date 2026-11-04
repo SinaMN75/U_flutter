@@ -276,7 +276,7 @@ class _UJalaliDatePickerMaterialState extends UState<UJalaliDatePickerMaterial> 
     mainAxisSize: MainAxisSize.min,
     children: <Widget>[
       UTextLabelMedium(
-        widget.helpText ?? (_entryMode == DatePickerEntryMode.input ? U.s.enterDate : U.s.selectDate),
+        widget.helpText ?? (_entryMode == DatePickerEntryMode.input ? U.s.enterDate : U.s.selectItem(U.s.date)),
         color: scheme.onSurfaceVariant,
       ),
       const SizedBox(height: 28),
@@ -332,12 +332,12 @@ class _UJalaliDatePickerMaterialState extends UState<UJalaliDatePickerMaterial> 
       if (_pickerMode == DatePickerMode.day) ...<Widget>[
         IconButton(
           onPressed: _pageOf(_displayYear, _displayMonth) > 0 ? () => _goToPage(_pageOf(_displayYear, _displayMonth) - 1) : null,
-          tooltip: U.s.previousMonth,
+          tooltip: U.s.previousItem(U.s.month),
           icon: Icon(Icons.chevron_left, color: scheme.onSurfaceVariant),
         ),
         IconButton(
           onPressed: _pageOf(_displayYear, _displayMonth) < _monthCount - 1 ? () => _goToPage(_pageOf(_displayYear, _displayMonth) + 1) : null,
-          tooltip: U.s.nextMonth,
+          tooltip: U.s.nextItem(U.s.month),
           icon: Icon(Icons.chevron_right, color: scheme.onSurfaceVariant),
         ),
       ],

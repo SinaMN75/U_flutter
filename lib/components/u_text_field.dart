@@ -1677,7 +1677,7 @@ class _UCountryPickerState extends UState<_UCountryPicker> {
     child: Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        UTextTitleMedium(U.s.selectCountry, fontWeight: FontWeight.w600).pOnly(top: 16),
+        UTextTitleMedium(U.s.selectItem(U.s.country), fontWeight: FontWeight.w600).pOnly(top: 16),
         UTextField(
           controller: widget.searchController,
           hintText: U.s.searchCountryCodeOrDialCode,

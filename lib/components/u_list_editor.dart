@@ -74,7 +74,7 @@ class UListEditor<T> extends StatefulWidget {
   /// Frequently asked questions: a row is kept only with both a question and an answer.
   static UListEditor<UPlaceFaq> faqs({required List<UPlaceFaq> items, required ValueChanged<List<UPlaceFaq>> onChanged}) => UListEditor<UPlaceFaq>(
     items: items,
-    addLabel: U.s.addQuestion,
+    addLabel: U.s.addItem(U.s.question),
     onChanged: onChanged,
     fields: <UListEditorField<UPlaceFaq>>[
       UListEditorField<UPlaceFaq>(U.s.question, (UPlaceFaq f) => f.question),

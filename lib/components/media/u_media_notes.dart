@@ -597,7 +597,7 @@ class _UMediaNotesPanelState extends State<UMediaNotesPanel> {
                   if (action == "delete") widget.notes.remove(note.id);
                 },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                  PopupMenuItem<String>(value: "edit", child: UTextBodyMedium(U.s.editNote)),
+                  PopupMenuItem<String>(value: "edit", child: UTextBodyMedium(U.s.editItem(U.s.note))),
                   PopupMenuItem<String>(value: "color", child: UTextBodyMedium(U.s.color)),
                   PopupMenuItem<String>(value: "here", child: UTextBodyMedium(uFormatDuration(widget.controller.value.position))),
                   PopupMenuItem<String>(value: "delete", child: UTextBodyMedium(U.s.delete)),
@@ -668,7 +668,7 @@ class _UMediaNotesPanelState extends State<UMediaNotesPanel> {
             FilledButton.icon(
               onPressed: () => unawaited(_addNote()),
               icon: const Icon(Icons.add_comment_rounded, size: 18),
-              label: UTextBodySmall(U.s.addNote, color: scheme.onPrimary),
+              label: UTextBodySmall(U.s.addItem(U.s.note), color: scheme.onPrimary),
             ),
           ],
         ),

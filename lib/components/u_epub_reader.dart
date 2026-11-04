@@ -1471,12 +1471,12 @@ class UEpubReaderState extends State<UEpubReader> {
         TextButton.icon(
           onPressed: _hasPreviousChapter ? () => unawaited(_loadChapter(_controller.value.pageIndex - 1)) : null,
           icon: const Icon(Icons.chevron_left_rounded),
-          label: UTextBodySmall(U.s.previousChapter),
+          label: UTextBodySmall(U.s.previousItem(U.s.chapter)),
         ),
         TextButton.icon(
           onPressed: _hasNextChapter ? () => unawaited(_loadChapter(_controller.value.pageIndex + 1)) : null,
           icon: const Icon(Icons.chevron_right_rounded),
-          label: UTextBodySmall(U.s.nextChapter),
+          label: UTextBodySmall(U.s.nextItem(U.s.chapter)),
         ),
       ],
     ),
@@ -1623,7 +1623,7 @@ class UEpubReaderState extends State<UEpubReader> {
             padding: const EdgeInsets.symmetric(horizontal: 4),
             child: Row(
               children: <Widget>[
-                IconButton(icon: const Icon(Icons.skip_previous_rounded), tooltip: U.s.previousChapter, onPressed: _hasPreviousChapter ? () => unawaited(_loadChapter(value.pageIndex - 1)) : null),
+                IconButton(icon: const Icon(Icons.skip_previous_rounded), tooltip: U.s.previousItem(U.s.chapter), onPressed: _hasPreviousChapter ? () => unawaited(_loadChapter(value.pageIndex - 1)) : null),
                 Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -1657,7 +1657,7 @@ class UEpubReaderState extends State<UEpubReader> {
                     ],
                   ),
                 ),
-                IconButton(icon: const Icon(Icons.skip_next_rounded), tooltip: U.s.nextChapter, onPressed: _hasNextChapter ? () => unawaited(_loadChapter(value.pageIndex + 1)) : null),
+                IconButton(icon: const Icon(Icons.skip_next_rounded), tooltip: U.s.nextItem(U.s.chapter), onPressed: _hasNextChapter ? () => unawaited(_loadChapter(value.pageIndex + 1)) : null),
               ],
             ),
           ),

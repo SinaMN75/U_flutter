@@ -142,7 +142,7 @@ class _UStorageManagerPageState extends State<UStorageManagerPage> {
     return UColumn(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        _summaryBar(cs, "${U.s.totalSize}: ${_formatBytes(UFileStorage.usage())}", onClear: _clearFiles),
+        _summaryBar(cs, "${U.s.totalItem(U.s.size)}: ${_formatBytes(UFileStorage.usage())}", onClear: _clearFiles),
         SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
           child: UColumn(
