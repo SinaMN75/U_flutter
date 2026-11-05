@@ -38,6 +38,21 @@ class URx<T> extends ChangeNotifier {
   /// Notifies listeners without changing the value (after mutating an object inside).
   void refresh() => notifyListeners();
 
+  bool _disposed = false;
+
+  // A request that finishes after its page closed may still set the value; that must not throw.
+  @override
+  void notifyListeners() {
+    if (!_disposed) super.notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    if (_disposed) return;
+    _disposed = true;
+    super.dispose();
+  }
+
   @override
   String toString() => _value.toString();
 }

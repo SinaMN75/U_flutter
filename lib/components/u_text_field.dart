@@ -19,6 +19,7 @@ class UTextField extends StatefulWidget {
     this.textHeight,
     this.onChanged,
     this.onFieldSubmitted,
+    this.textInputAction,
     this.maxLength,
     this.formatters,
     this.autoFillHints,
@@ -127,6 +128,9 @@ class UTextField extends StatefulWidget {
   /// Called when the user presses the keyboard's done/enter.
   final ValueChanged<String>? onFieldSubmitted;
 
+  /// The keyboard's action key. Defaults to done (and Enter submits) inside a [USubmitScope].
+  final TextInputAction? textInputAction;
+
   /// Input formatters, e.g. UTextFieldFormatter / digits only.
   final List<TextInputFormatter>? formatters;
 
@@ -225,6 +229,7 @@ class _UTextFieldState extends State<UTextField> {
   @override
   Widget build(BuildContext context) {
     final InputDecorationThemeData inputTheme = Theme.of(context).inputDecorationTheme;
+    final VoidCallback? submit = widget.onFieldSubmitted == null && widget.lines == 1 && !widget.readOnly ? USubmitScope.maybeOf(context) : null;
     return uWrap(
       Column(
         mainAxisSize: MainAxisSize.min,
@@ -253,7 +258,8 @@ class _UTextFieldState extends State<UTextField> {
             obscureText: obscure,
             validator: widget.required ? UValidators.combineValidators<String>(<FormFieldValidator<String>>[UValidators.required<String>(), ?widget.validator]) : widget.validator,
             minLines: widget.lines,
-            onFieldSubmitted: widget.onFieldSubmitted,
+            onFieldSubmitted: widget.onFieldSubmitted ?? (submit == null ? null : (_) => submit()),
+            textInputAction: widget.textInputAction ?? (submit == null ? null : TextInputAction.done),
             maxLines: widget.lines == 1 ? 1 : max(widget.lines, 20),
             decoration: InputDecoration(
               labelText: widget.labelText,

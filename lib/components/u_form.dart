@@ -7,6 +7,19 @@ double _dialogWidth(BuildContext context, double max) {
 
 /// A dialog around a [Form]: Submit validates it, runs [onSubmit] with a loading button,
 /// and closes the dialog when [onSubmit] returns true. Without [onSubmit] it is view-only and shows a Close button.
+/// Makes Enter (the keyboard's done key) in any single-line [UTextField] below it run [onSubmit], like an HTML form.
+/// `USubmitScope(onSubmit: c.submit, child: Form(key: c.formKey, child: ...))`
+class USubmitScope extends InheritedWidget {
+  const USubmitScope({required this.onSubmit, required super.child, super.key});
+
+  final VoidCallback onSubmit;
+
+  static VoidCallback? maybeOf(BuildContext context) => context.getInheritedWidgetOfExactType<USubmitScope>()?.onSubmit;
+
+  @override
+  bool updateShouldNotify(USubmitScope oldWidget) => false;
+}
+
 class UFormDialog extends StatefulWidget {
   const UFormDialog({required this.title, required this.children, super.key, this.onSubmit, this.maxWidth = 480, this.help});
 
@@ -59,16 +72,19 @@ class _UFormDialogState extends State<UFormDialog> {
     content: SizedBox(
       width: _dialogWidth(context, widget.maxWidth),
       child: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: UColumn(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              ...widget.children(context, setState),
-              const SizedBox(height: 20),
-              if (widget.onSubmit == null) UButton(title: U.s.close, onTap: UNavigator.back) else UButtonSubmitCancel(isLoading: _saving, onSubmit: _submit),
-            ],
+        child: USubmitScope(
+          onSubmit: widget.onSubmit == null ? UNavigator.back : _submit,
+          child: Form(
+            key: _formKey,
+            child: UColumn(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                ...widget.children(context, setState),
+                const SizedBox(height: 20),
+                if (widget.onSubmit == null) UButton(title: U.s.close, onTap: UNavigator.back) else UButtonSubmitCancel(isLoading: _saving, onSubmit: _submit),
+              ],
+            ),
           ),
         ),
       ),
@@ -108,30 +124,35 @@ class UFilterDialog extends StatefulWidget {
 }
 
 class _UFilterDialogState extends State<UFilterDialog> {
+  void _apply() {
+    UNavigator.back();
+    widget.onApply();
+  }
+
   @override
   Widget build(BuildContext context) => AlertDialog(
     title: widget.help == null ? Text(widget.title) : URow(children: <Widget>[Text(widget.title).expanded(), UHelpActions(widget.help!)]),
     content: SizedBox(
       width: _dialogWidth(context, 420),
       child: SingleChildScrollView(
-        child: UColumn(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            ...widget.children(setState),
-            const SizedBox(height: 20),
-            UButtonSubmitCancel(
-              submitTitle: U.s.filter,
-              cancelTitle: U.s.clearFilters,
-              onSubmit: () {
-                UNavigator.back();
-                widget.onApply();
-              },
-              onCancel: () {
-                UNavigator.back();
-                widget.onClear();
-              },
-            ),
-          ],
+        child: USubmitScope(
+          onSubmit: _apply,
+          child: UColumn(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ...widget.children(setState),
+              const SizedBox(height: 20),
+              UButtonSubmitCancel(
+                submitTitle: U.s.filter,
+                cancelTitle: U.s.clearFilters,
+                onSubmit: _apply,
+                onCancel: () {
+                  UNavigator.back();
+                  widget.onClear();
+                },
+              ),
+            ],
+          ),
         ),
       ),
     ),
