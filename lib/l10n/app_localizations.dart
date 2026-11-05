@@ -2804,6 +2804,12 @@ abstract class AppLocalizations {
   /// **'Later'**
   String get later;
 
+  /// No description provided for @ledgerBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Ledger Balance'**
+  String get ledgerBalance;
+
   /// No description provided for @leftToRight.
   ///
   /// In en, this message translates to:
@@ -6572,6 +6578,12 @@ abstract class AppLocalizations {
   /// **'Background'**
   String get background;
 
+  /// No description provided for @balanceAfterTransaction.
+  ///
+  /// In en, this message translates to:
+  /// **'Balance After Transaction'**
+  String get balanceAfterTransaction;
+
   /// No description provided for @bankAccountId.
   ///
   /// In en, this message translates to:
@@ -6848,6 +6860,12 @@ abstract class AppLocalizations {
   /// **'Count'**
   String get count;
 
+  /// No description provided for @counterparty.
+  ///
+  /// In en, this message translates to:
+  /// **'Counterparty'**
+  String get counterparty;
+
   /// No description provided for @countPerPage.
   ///
   /// In en, this message translates to:
@@ -6949,6 +6967,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Crypto Tester'**
   String get cryptoTester;
+
+  /// No description provided for @currency.
+  ///
+  /// In en, this message translates to:
+  /// **'Currency'**
+  String get currency;
 
   /// No description provided for @currentPlan.
   ///
@@ -7178,12 +7202,6 @@ abstract class AppLocalizations {
   /// **'Due'**
   String get due;
 
-  /// No description provided for @eachMismatchedWalletBalanceIsSetToTheSumOfItsTransactions.
-  ///
-  /// In en, this message translates to:
-  /// **'Each mismatched wallet balance is set to the sum of its transactions.'**
-  String get eachMismatchedWalletBalanceIsSetToTheSumOfItsTransactions;
-
   /// No description provided for @editRow.
   ///
   /// In en, this message translates to:
@@ -7351,6 +7369,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'First Signatory'**
   String get firstSignatory;
+
+  /// No description provided for @fixMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Fix Mismatch'**
+  String get fixMismatch;
 
   /// No description provided for @folder.
   ///
@@ -7765,12 +7789,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Leave masked to keep the current value'**
   String get leaveMaskedToKeepTheCurrentValue;
-
-  /// No description provided for @ledgerBalance.
-  ///
-  /// In en, this message translates to:
-  /// **'Ledger Balance'**
-  String get ledgerBalance;
 
   /// No description provided for @ledgerIsBalanced.
   ///
@@ -8684,12 +8702,6 @@ abstract class AppLocalizations {
   /// **'Recent rows (selected)'**
   String get recentRowsSelected;
 
-  /// No description provided for @reconcileBalances.
-  ///
-  /// In en, this message translates to:
-  /// **'Reconcile Balances'**
-  String get reconcileBalances;
-
   /// No description provided for @recordSettlement.
   ///
   /// In en, this message translates to:
@@ -9158,11 +9170,35 @@ abstract class AppLocalizations {
   /// **'Text spacing'**
   String get textSpacing;
 
+  /// No description provided for @theBalanceIsCorrect.
+  ///
+  /// In en, this message translates to:
+  /// **'The balance is correct'**
+  String get theBalanceIsCorrect;
+
+  /// No description provided for @theBalanceIsSetToTheSumOfTheTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'The balance is set to the sum of the transactions.'**
+  String get theBalanceIsSetToTheSumOfTheTransactions;
+
+  /// No description provided for @theDifferenceIsRecordedAgainstTheCounterpartyThisBalanceStaysTheSame.
+  ///
+  /// In en, this message translates to:
+  /// **'The difference is recorded against the counterparty; this balance stays the same.'**
+  String get theDifferenceIsRecordedAgainstTheCounterpartyThisBalanceStaysTheSame;
+
   /// No description provided for @theSumOfAllWalletBalancesMustBeZero.
   ///
   /// In en, this message translates to:
   /// **'The sum of all wallet balances must be zero.'**
   String get theSumOfAllWalletBalancesMustBeZero;
+
+  /// No description provided for @theTransactionsAreCorrect.
+  ///
+  /// In en, this message translates to:
+  /// **'The transactions are correct'**
+  String get theTransactionsAreCorrect;
 
   /// No description provided for @thisFolderIsEmpty.
   ///

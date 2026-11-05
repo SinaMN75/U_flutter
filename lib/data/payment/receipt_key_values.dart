@@ -1,6 +1,7 @@
 part of "../data.dart";
 
 abstract class UReceiptKeyValues {
+  static const String balanceBefore = "balanceBefore";
   static const String bed = "bed";
   static const String billId = "billId";
   static const String billType = "billType";
@@ -9,6 +10,7 @@ abstract class UReceiptKeyValues {
   static const String checkInDate = "checkInDate";
   static const String checkOutDate = "checkOutDate";
   static const String contract = "contract";
+  static const String difference = "difference";
   static const String dorm = "dorm";
   static const String drivingLicenseNumber = "drivingLicenseNumber";
   static const String goldWeight = "goldWeight";
@@ -16,6 +18,7 @@ abstract class UReceiptKeyValues {
   static const String iBan = "iBan";
   static const String internetPackage = "internetPackage";
   static const String invoiceId = "invoiceId";
+  static const String ledgerBefore = "ledgerBefore";
   static const String licencePlate = "licencePlate";
   static const String nationalCode = "nationalCode";
   static const String numberOfNights = "numberOfNights";
@@ -33,7 +36,7 @@ abstract class UReceiptKeyValues {
   static const String unitPrice = "unitPrice";
   static const String zipCode = "zipCode";
 
-  static const Set<String> _money = <String>{penalty, refundAmount, unitPrice};
+  static const Set<String> _money = <String>{balanceBefore, difference, ledgerBefore, penalty, refundAmount, unitPrice};
   static const Set<String> _dates = <String>{checkInDate, checkOutDate};
   static const Set<String> _copyable = <String>{
     billId,
@@ -50,6 +53,8 @@ abstract class UReceiptKeyValues {
 
   static String label(String key) {
     switch (key) {
+      case balanceBefore:
+        return U.s.balance;
       case bed:
         return U.s.bed;
       case billId:
@@ -66,6 +71,8 @@ abstract class UReceiptKeyValues {
         return U.s.checkOutDate;
       case contract:
         return U.s.contract;
+      case difference:
+        return U.s.difference;
       case dorm:
         return U.s.dorm;
       case drivingLicenseNumber:
@@ -80,6 +87,8 @@ abstract class UReceiptKeyValues {
         return U.s.internetPackage;
       case invoiceId:
         return U.s.itemId(U.s.invoice);
+      case ledgerBefore:
+        return U.s.ledgerBalance;
       case licencePlate:
         return U.s.licencePlate;
       case nationalCode:
@@ -127,6 +136,8 @@ abstract class UReceiptKeyValues {
     return raw;
   }
 
+  static bool _isGuid(String v) => RegExp(r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$").hasMatch(v.trim());
+
   static String _date(String raw) {
     final DateTime? parsed = DateTime.tryParse(raw);
     return parsed == null ? raw : parsed.toJalaliDate();
@@ -141,14 +152,18 @@ abstract class UReceiptKeyValues {
     return result;
   }
 
+  /// Internal links to other records (invoice, reservation, order ids) are GUIDs, not codes people read, so they are left out.
   static List<UReceiptRow> rows(List<UKeyValueData> keyValues) => keyValues
-      .where((UKeyValueData i) => i.key.isNotEmpty)
+      .where((UKeyValueData i) => i.key.isNotEmpty && !_isGuid(i.value))
       .map((UKeyValueData i) => UReceiptRow(label: label(i.key), value: value(i.key, i.value), copyable: _copyable.contains(i.key)))
       .toList();
 }
 
 extension UWalletTxnReceiptExtension on UWalletTxnResponse {
-  List<UReceiptRow> get receiptRows => UReceiptKeyValues.rows(jsonData.keyValues);
+  List<UReceiptRow> get receiptRows => <UReceiptRow>[
+    if (trackingNumber.isNotNullOrEmpty()) UReceiptRow(label: U.s.trackingNumber, value: trackingNumber!, copyable: true),
+    ...UReceiptKeyValues.rows(jsonData.keyValues.where((UKeyValueData i) => i.key != UReceiptKeyValues.trackingNumber || i.value != trackingNumber).toList()),
+  ];
 }
 
 extension UTxnReceiptExtension on UTxnResponse {

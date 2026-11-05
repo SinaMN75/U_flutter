@@ -36,6 +36,14 @@ class UWalletService {
     Function(String e)? onException,
   }) => _Api.call("/wallet/ReadTxn", p.toMap(), _Api.list(UWalletTxnResponse.fromMap), _Api.empty, onOk, onError, onException);
 
+  /// Opens (or returns) a wallet in [UWalletOpenParams.currency] for the user; empty currency means the server's default.
+  Future<(UResponse<UWalletResponse>?, UEmptyResponse?, String?)> open({
+    required UWalletOpenParams p,
+    Function(UResponse<UWalletResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/wallet/Open", p.toMap(), _Api.one(UWalletResponse.fromMap), _Api.empty, onOk, onError, onException);
+
   Future<(UResponse<UWalletReportResponse>?, UEmptyResponse?, String?)> readReport({
     required UWalletReportParams p,
     Function(UResponse<UWalletReportResponse> r)? onOk,
@@ -49,9 +57,10 @@ class UWalletService {
     Function(String e)? onException,
   }) => _Api.call("/wallet/ReadLedgerCheck", <String, dynamic>{}, _Api.one(UWalletLedgerCheckResponse.fromMap), _Api.empty, onOk, onError, onException);
 
-  Future<(UEmptyResponse?, UEmptyResponse?, String?)> reconcile({
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> resolveMismatch({
+    required UWalletResolveMismatchParams p,
     Function(UEmptyResponse r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) => _Api.call("/wallet/Reconcile", <String, dynamic>{}, _Api.empty, _Api.empty, onOk, onError, onException);
+  }) => _Api.call("/wallet/ResolveMismatch", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 }

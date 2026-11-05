@@ -4,11 +4,15 @@ class UWalletChargeParams {
   final String userId;
   final String? walletId;
   final double amount;
+  final String? description;
+  final String? currency;
 
   UWalletChargeParams({
     required this.userId,
     required this.amount,
     this.walletId,
+    this.description,
+    this.currency,
   });
 
   factory UWalletChargeParams.fromJson(String str) => UWalletChargeParams.fromMap(json.decode(str));
@@ -19,12 +23,16 @@ class UWalletChargeParams {
     userId: json["userId"],
     walletId: json["walletId"],
     amount: json["amount"].toDouble(),
+    description: json["description"],
+    currency: json["currency"],
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "userId": userId,
     "walletId": walletId,
     "amount": amount,
+    "description": description,
+    "currency": currency,
   };
 }
 
@@ -39,6 +47,7 @@ class UWalletReadParams {
   final List<String>? ids;
   final String? creatorId;
   final String? userId;
+  final String? currency;
   final double? minBalance;
   final double? maxBalance;
   final bool? system;
@@ -48,6 +57,7 @@ class UWalletReadParams {
   UWalletReadParams({
     this.creatorId,
     this.userId,
+    this.currency,
     this.minBalance,
     this.maxBalance,
     this.system,
@@ -69,6 +79,7 @@ class UWalletReadParams {
   factory UWalletReadParams.fromMap(Map<String, dynamic> json) => UWalletReadParams(
     creatorId: json["creatorId"],
     userId: json["userId"],
+    currency: json["currency"],
     minBalance: json["minBalance"]?.toDouble(),
     maxBalance: json["maxBalance"]?.toDouble(),
     system: json["system"],
@@ -92,6 +103,7 @@ class UWalletReadParams {
     "ids": ids == null ? <dynamic>[] : List<dynamic>.from(ids!.map((String x) => x)),
     "creatorId": creatorId,
     "userId": userId,
+    "currency": currency,
     "minBalance": minBalance,
     "maxBalance": maxBalance,
     "system": system,
@@ -111,6 +123,7 @@ class UWalletTxnReadParams {
   final String? userId;
   final String? senderId;
   final String? receiverId;
+  final String? currency;
   final double? minAmount;
   final double? maxAmount;
   final String? query;
@@ -122,6 +135,7 @@ class UWalletTxnReadParams {
     this.userId,
     this.senderId,
     this.receiverId,
+    this.currency,
     this.minAmount,
     this.maxAmount,
     this.query,
@@ -150,6 +164,7 @@ class UWalletTxnReadParams {
     userId: json["userId"],
     senderId: json["senderId"],
     receiverId: json["receiverId"],
+    currency: json["currency"],
     minAmount: json["minAmount"]?.toDouble(),
     maxAmount: json["maxAmount"]?.toDouble(),
     query: json["query"],
@@ -168,6 +183,7 @@ class UWalletTxnReadParams {
     "userId": userId,
     "senderId": senderId,
     "receiverId": receiverId,
+    "currency": currency,
     "minAmount": minAmount,
     "maxAmount": maxAmount,
     "query": query,
@@ -182,6 +198,7 @@ class UWalletTransferParams {
   final double amount;
   final String? senderId;
   final String? detail1;
+  final String? currency;
   final List<int> tagWalletTxn;
   final List<UKeyValueData>? keyValues;
 
@@ -191,6 +208,7 @@ class UWalletTransferParams {
     required this.tagWalletTxn,
     this.senderId,
     this.detail1,
+    this.currency,
     this.keyValues,
   });
 
@@ -204,6 +222,7 @@ class UWalletTransferParams {
     tagWalletTxn: List<int>.from(json["tagWalletTxn"]!.map((dynamic x) => x)),
     senderId: json["senderId"],
     detail1: json["detail1"],
+    currency: json["currency"],
     keyValues: json["keyValues"] == null ? null : List<UKeyValueData>.from(json["keyValues"]!.map((dynamic x) => UKeyValueData.fromMap(x))),
   );
 
@@ -213,27 +232,73 @@ class UWalletTransferParams {
     "tagWalletTxn": List<dynamic>.from(tagWalletTxn.map((int x) => x)),
     "senderId": senderId,
     "detail1": detail1,
+    "currency": currency,
     if (keyValues != null) "keyValues": List<dynamic>.from(keyValues!.map((UKeyValueData x) => x.toMap())),
   };
 }
 
 class UWalletReportParams {
+  final String? currency;
   final DateTime? fromDate;
   final DateTime? toDate;
 
-  UWalletReportParams({this.fromDate, this.toDate});
+  UWalletReportParams({this.currency, this.fromDate, this.toDate});
 
   factory UWalletReportParams.fromJson(String str) => UWalletReportParams.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
   factory UWalletReportParams.fromMap(Map<String, dynamic> json) => UWalletReportParams(
+    currency: json["currency"],
     fromDate: json["fromDate"] == null ? null : DateTime.parse(json["fromDate"]),
     toDate: json["toDate"] == null ? null : DateTime.parse(json["toDate"]),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
+    "currency": currency,
     "fromDate": fromDate?.toIso8601String(),
     "toDate": toDate?.toIso8601String(),
   };
+}
+
+class UWalletResolveMismatchParams {
+  final String walletId;
+  final bool trustBalance;
+  final String? counterpartyId;
+  final String reason;
+
+  UWalletResolveMismatchParams({required this.walletId, required this.trustBalance, required this.reason, this.counterpartyId});
+
+  factory UWalletResolveMismatchParams.fromJson(String str) => UWalletResolveMismatchParams.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UWalletResolveMismatchParams.fromMap(Map<String, dynamic> json) => UWalletResolveMismatchParams(
+    walletId: json["walletId"],
+    trustBalance: json["trustBalance"] ?? false,
+    counterpartyId: json["counterpartyId"],
+    reason: json["reason"] ?? "",
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "walletId": walletId,
+    "trustBalance": trustBalance,
+    "counterpartyId": counterpartyId,
+    "reason": reason,
+  };
+}
+
+class UWalletOpenParams {
+  final String? userId;
+  final String? currency;
+
+  UWalletOpenParams({this.userId, this.currency});
+
+  factory UWalletOpenParams.fromJson(String str) => UWalletOpenParams.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory UWalletOpenParams.fromMap(Map<String, dynamic> json) => UWalletOpenParams(userId: json["userId"], currency: json["currency"]);
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"userId": userId, "currency": currency};
 }

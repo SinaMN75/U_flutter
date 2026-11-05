@@ -1425,6 +1425,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get later => 'Later';
 
   @override
+  String get ledgerBalance => 'Ledger Balance';
+
+  @override
   String get leftToRight => 'Left to right';
 
   @override
@@ -3399,6 +3402,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get background => 'Background';
 
   @override
+  String get balanceAfterTransaction => 'Balance After Transaction';
+
+  @override
   String get bankAccountId => 'Bank Account ID';
 
   @override
@@ -3537,6 +3543,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get count => 'Count';
 
   @override
+  String get counterparty => 'Counterparty';
+
+  @override
   String countPerPage(Object count) {
     return '$count per page';
   }
@@ -3598,6 +3607,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cryptoTester => 'Crypto Tester';
+
+  @override
+  String get currency => 'Currency';
 
   @override
   String get currentPlan => 'Current plan';
@@ -3714,9 +3726,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get due => 'Due';
 
   @override
-  String get eachMismatchedWalletBalanceIsSetToTheSumOfItsTransactions => 'Each mismatched wallet balance is set to the sum of its transactions.';
-
-  @override
   String get editRow => 'Edit row';
 
   @override
@@ -3801,6 +3810,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get firstSignatory => 'First Signatory';
+
+  @override
+  String get fixMismatch => 'Fix Mismatch';
 
   @override
   String get folder => 'Folder';
@@ -4012,9 +4024,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get leaveMaskedToKeepTheCurrentValue => 'Leave masked to keep the current value';
-
-  @override
-  String get ledgerBalance => 'Ledger Balance';
 
   @override
   String get ledgerIsBalanced => 'Ledger Is Balanced';
@@ -4477,9 +4486,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recentRowsSelected => 'Recent rows (selected)';
 
   @override
-  String get reconcileBalances => 'Reconcile Balances';
-
-  @override
   String get recordSettlement => 'Record settlement';
 
   @override
@@ -4716,7 +4722,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get textSpacing => 'Text spacing';
 
   @override
+  String get theBalanceIsCorrect => 'The balance is correct';
+
+  @override
+  String get theBalanceIsSetToTheSumOfTheTransactions => 'The balance is set to the sum of the transactions.';
+
+  @override
+  String get theDifferenceIsRecordedAgainstTheCounterpartyThisBalanceStaysTheSame => 'The difference is recorded against the counterparty; this balance stays the same.';
+
+  @override
   String get theSumOfAllWalletBalancesMustBeZero => 'The sum of all wallet balances must be zero.';
+
+  @override
+  String get theTransactionsAreCorrect => 'The transactions are correct';
 
   @override
   String get thisFolderIsEmpty => 'This folder is empty';

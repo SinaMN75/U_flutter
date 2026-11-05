@@ -677,6 +677,7 @@ enum TagWallet with UNumericIdentifiable {
 enum TagWalletTxn with UNumericIdentifiable {
   charge("شارژ کیف پول", "Wallet Top-up", 101),
   transfer("انتقال وجه", "Money Transfer", 102),
+  ledgerCorrection("اصلاح دفتر کل", "Ledger Correction", 103),
   mobileAndNationalCodeVerification("اعتبارسنجی موبایل و کد ملی", "Mobile & National ID Match", 201),
   zipCodeToAddressDetail("استعلام کد پستی", "Postal Code to Address", 202),
   vehicleViolationsDetail("استعلام خلافی خودرو", "Vehicle Violations", 203),

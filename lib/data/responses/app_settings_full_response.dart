@@ -23,6 +23,8 @@ class UAppSettings {
     required this.chargeInternet,
     required this.chargeInternetTaxPercent,
     required this.users,
+    this.defaultCurrency,
+    this.currencies,
   });
 
   factory UAppSettings.fromMap(Map<String, dynamic> j) => UAppSettings(
@@ -47,6 +49,8 @@ class UAppSettings {
     chargeInternet: List<USettingsChargeInternet>.from((j["chargeInternet"] as List<dynamic>? ?? <dynamic>[]).map((dynamic x) => USettingsChargeInternet.fromMap(x))),
     chargeInternetTaxPercent: double.tryParse("${j["chargeInternetTaxPercent"] ?? 0}") ?? 0,
     users: j["users"],
+    defaultCurrency: j["defaultCurrency"],
+    currencies: j["currencies"],
   );
 
   String baseUrl;
@@ -70,6 +74,8 @@ class UAppSettings {
   List<USettingsChargeInternet> chargeInternet;
   double chargeInternetTaxPercent;
   dynamic users;
+  dynamic defaultCurrency;
+  dynamic currencies;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "baseUrl": baseUrl,
@@ -93,6 +99,8 @@ class UAppSettings {
     "chargeInternet": chargeInternet.map((USettingsChargeInternet e) => e.toMap()).toList(),
     "chargeInternetTaxPercent": chargeInternetTaxPercent,
     "users": users,
+    if (defaultCurrency != null) "defaultCurrency": defaultCurrency,
+    if (currencies != null) "currencies": currencies,
   };
 
   String toJson() => json.encode(toMap());

@@ -5,6 +5,8 @@ class UAppSettingsResponse {
   final double chargeInternetTaxPercent;
   final List<UAppVersionResponse> appVersions;
   final UOrganizationSettings organization;
+  final String defaultCurrency;
+  final List<UCurrencySettings> currencies;
 
   UAppSettingsResponse({
     required this.apiCallCosts,
@@ -12,6 +14,8 @@ class UAppSettingsResponse {
     required this.chargeInternetTaxPercent,
     this.appVersions = const <UAppVersionResponse>[],
     this.organization = const UOrganizationSettings(),
+    this.defaultCurrency = "IRR",
+    this.currencies = const <UCurrencySettings>[],
   });
 
   factory UAppSettingsResponse.fromMap(Map<String, dynamic> json) => UAppSettingsResponse(
@@ -20,6 +24,8 @@ class UAppSettingsResponse {
     chargeInternetTaxPercent: (json["chargeInternetTaxPercent"] ?? 0).toString().toDouble(),
     appVersions: json["appVersions"] == null ? <UAppVersionResponse>[] : List<UAppVersionResponse>.from(json["appVersions"]!.map((dynamic x) => UAppVersionResponse.fromMap(x))),
     organization: json["organization"] == null ? const UOrganizationSettings() : UOrganizationSettings.fromMap(json["organization"]),
+    defaultCurrency: json["defaultCurrency"] ?? "IRR",
+    currencies: json["currencies"] == null ? <UCurrencySettings>[] : List<UCurrencySettings>.from(json["currencies"]!.map((dynamic x) => UCurrencySettings.fromMap(x))),
   );
 
   final UApiCallCosts apiCallCosts;
@@ -30,6 +36,8 @@ class UAppSettingsResponse {
     "chargeInternetTaxPercent": chargeInternetTaxPercent,
     "appVersions": List<dynamic>.from(appVersions.map((UAppVersionResponse x) => x.toMap())),
     "organization": organization.toMap(),
+    "defaultCurrency": defaultCurrency,
+    "currencies": List<dynamic>.from(currencies.map((UCurrencySettings x) => x.toMap())),
   };
 
   String toJson() => json.encode(toMap());
@@ -245,4 +253,15 @@ class UAppVersionLink {
     "url": url,
     "iconBase64": iconBase64,
   };
+}
+
+class UCurrencySettings {
+  final String code;
+  final int decimals;
+
+  const UCurrencySettings({required this.code, this.decimals = 0});
+
+  factory UCurrencySettings.fromMap(Map<String, dynamic> json) => UCurrencySettings(code: json["code"] ?? "", decimals: json["decimals"] ?? 0);
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"code": code, "decimals": decimals};
 }

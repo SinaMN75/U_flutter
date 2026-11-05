@@ -37,6 +37,8 @@ extension NullableWalletExtension on UWalletTxnResponse {
         return Icons.add_card_outlined;
       case TagWalletTxn.transfer:
         return Icons.swap_horiz;
+      case TagWalletTxn.ledgerCorrection:
+        return Icons.rule;
       case TagWalletTxn.chargeSimPin:
       case TagWalletTxn.chargeSimTopup:
         return Icons.sim_card_outlined;
@@ -99,6 +101,7 @@ class UWalletResponse {
   final double balance;
   final String creatorId;
   final UUserResponse? creator;
+  final String? currency;
   final List<String> adminUserIds;
 
   UWalletResponse({
@@ -110,6 +113,7 @@ class UWalletResponse {
     required this.adminUserIds,
     this.createdAt,
     this.creator,
+    this.currency,
   });
 
   factory UWalletResponse.fromJson(String str) => UWalletResponse.fromMap(json.decode(str));
@@ -124,6 +128,7 @@ class UWalletResponse {
     balance: json["balance"].toString().toDouble(),
     creatorId: json["creatorId"] ?? "",
     creator: json["creator"] == null ? null : UUserResponse.fromMap(json["creator"]),
+    currency: json["currency"],
     adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
   );
 
@@ -132,6 +137,7 @@ class UWalletResponse {
     "tags": List<dynamic>.from(tags.map((int x) => x)),
     "jsonData": jsonData.toMap(),
     "createdAt": createdAt?.toIso8601String(),
+    "currency": currency,
     "balance": balance,
     "creatorId": creatorId,
     "creator": creator?.toMap(),
@@ -151,6 +157,8 @@ class UWalletTxnResponse {
   final String receiverId;
   final UUserResponse? creator;
   final String? creatorId;
+  final String? trackingNumber;
+  final String? currency;
   final List<String> adminUserIds;
 
   UWalletTxnResponse({
@@ -166,6 +174,8 @@ class UWalletTxnResponse {
     this.receiver,
     this.creator,
     this.creatorId,
+    this.trackingNumber,
+    this.currency,
   });
 
   factory UWalletTxnResponse.fromJson(String str) => UWalletTxnResponse.fromMap(json.decode(str));
@@ -184,6 +194,8 @@ class UWalletTxnResponse {
     receiverId: json["receiverId"] as String,
     creator: json["creator"] == null ? null : UUserResponse.fromMap(json["creator"]),
     creatorId: json["creatorId"],
+    trackingNumber: json["trackingNumber"],
+    currency: json["currency"],
     adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
   );
 
@@ -192,6 +204,8 @@ class UWalletTxnResponse {
     "tags": List<dynamic>.from(tags.map((int x) => x)),
     "jsonData": jsonData.toMap(),
     "createdAt": createdAt.toIso8601String(),
+    "trackingNumber": trackingNumber,
+    "currency": currency,
     "amount": amount,
     "sender": sender?.toMap(),
     "senderId": senderId,
@@ -235,11 +249,15 @@ class UWalletTxnJson {
   final List<UKeyValueData> keyValues;
   final String? detail1;
   final String? detail2;
+  final double? senderBalance;
+  final double? receiverBalance;
 
   UWalletTxnJson({
     this.keyValues = const <UKeyValueData>[],
     this.detail1,
     this.detail2,
+    this.senderBalance,
+    this.receiverBalance,
   });
 
   factory UWalletTxnJson.fromJson(String str) => UWalletTxnJson.fromMap(json.decode(str));
@@ -250,16 +268,21 @@ class UWalletTxnJson {
     keyValues: json["keyValues"] == null ? <UKeyValueData>[] : List<UKeyValueData>.from(json["keyValues"]!.map((dynamic x) => UKeyValueData.fromMap(x))),
     detail1: json["detail1"],
     detail2: json["detail2"],
+    senderBalance: json["senderBalance"]?.toString().toDouble(),
+    receiverBalance: json["receiverBalance"]?.toString().toDouble(),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "keyValues": List<dynamic>.from(keyValues.map((UKeyValueData x) => x.toMap())),
     "detail1": detail1,
     "detail2": detail2,
+    "senderBalance": senderBalance,
+    "receiverBalance": receiverBalance,
   };
 }
 
 class UWalletReportResponse {
+  final String currency;
   final double totalBalance;
   final double usersBalance;
   final double systemBalance;
@@ -298,6 +321,7 @@ class UWalletReportResponse {
     required this.paymentsByStatus,
     required this.paymentsByKind,
     required this.daily,
+    this.currency = "",
   });
 
   factory UWalletReportResponse.fromJson(String str) => UWalletReportResponse.fromMap(json.decode(str));
@@ -305,6 +329,7 @@ class UWalletReportResponse {
   String toJson() => json.encode(toMap());
 
   factory UWalletReportResponse.fromMap(Map<String, dynamic> json) => UWalletReportResponse(
+    currency: json["currency"] ?? "",
     totalBalance: (json["totalBalance"] ?? 0).toString().toDouble(),
     usersBalance: (json["usersBalance"] ?? 0).toString().toDouble(),
     systemBalance: (json["systemBalance"] ?? 0).toString().toDouble(),
@@ -326,6 +351,7 @@ class UWalletReportResponse {
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
+    "currency": currency,
     "totalBalance": totalBalance,
     "usersBalance": usersBalance,
     "systemBalance": systemBalance,
@@ -425,6 +451,7 @@ class UWalletReportDay {
 
 class UWalletLedgerCheckResponse {
   final double totalBalance;
+  final List<UWalletCurrencyTotal> totals;
   final int walletsCount;
   final int mismatchedCount;
   final double mismatchedAmount;
@@ -436,6 +463,7 @@ class UWalletLedgerCheckResponse {
     required this.mismatchedCount,
     required this.mismatchedAmount,
     required this.wallets,
+    this.totals = const <UWalletCurrencyTotal>[],
   });
 
   factory UWalletLedgerCheckResponse.fromJson(String str) => UWalletLedgerCheckResponse.fromMap(json.decode(str));
@@ -444,6 +472,7 @@ class UWalletLedgerCheckResponse {
 
   factory UWalletLedgerCheckResponse.fromMap(Map<String, dynamic> json) => UWalletLedgerCheckResponse(
     totalBalance: (json["totalBalance"] ?? 0).toString().toDouble(),
+    totals: json["totals"] == null ? <UWalletCurrencyTotal>[] : List<UWalletCurrencyTotal>.from(json["totals"]!.map((dynamic x) => UWalletCurrencyTotal.fromMap(x))),
     walletsCount: json["walletsCount"] ?? 0,
     mismatchedCount: json["mismatchedCount"] ?? 0,
     mismatchedAmount: (json["mismatchedAmount"] ?? 0).toString().toDouble(),
@@ -452,6 +481,7 @@ class UWalletLedgerCheckResponse {
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "totalBalance": totalBalance,
+    "totals": List<dynamic>.from(totals.map((UWalletCurrencyTotal x) => x.toMap())),
     "walletsCount": walletsCount,
     "mismatchedCount": mismatchedCount,
     "mismatchedAmount": mismatchedAmount,
@@ -459,9 +489,26 @@ class UWalletLedgerCheckResponse {
   };
 }
 
+class UWalletCurrencyTotal {
+  final String currency;
+  final double totalBalance;
+  final int walletsCount;
+
+  UWalletCurrencyTotal({required this.currency, required this.totalBalance, required this.walletsCount});
+
+  factory UWalletCurrencyTotal.fromMap(Map<String, dynamic> json) => UWalletCurrencyTotal(
+    currency: json["currency"] ?? "",
+    totalBalance: (json["totalBalance"] ?? 0).toString().toDouble(),
+    walletsCount: json["walletsCount"] ?? 0,
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"currency": currency, "totalBalance": totalBalance, "walletsCount": walletsCount};
+}
+
 class UWalletLedgerItem {
   final String walletId;
   final String userId;
+  final String currency;
   final UUserResponse? user;
   final double balance;
   final double ledgerBalance;
@@ -474,6 +521,7 @@ class UWalletLedgerItem {
     required this.ledgerBalance,
     required this.difference,
     this.user,
+    this.currency = "",
   });
 
   factory UWalletLedgerItem.fromJson(String str) => UWalletLedgerItem.fromMap(json.decode(str));
@@ -483,6 +531,7 @@ class UWalletLedgerItem {
   factory UWalletLedgerItem.fromMap(Map<String, dynamic> json) => UWalletLedgerItem(
     walletId: json["walletId"] ?? "",
     userId: json["userId"] ?? "",
+    currency: json["currency"] ?? "",
     user: json["user"] == null ? null : UUserResponse.fromMap(json["user"]),
     balance: (json["balance"] ?? 0).toString().toDouble(),
     ledgerBalance: (json["ledgerBalance"] ?? 0).toString().toDouble(),
@@ -492,6 +541,7 @@ class UWalletLedgerItem {
   Map<String, dynamic> toMap() => <String, dynamic>{
     "walletId": walletId,
     "userId": userId,
+    "currency": currency,
     "user": user?.toMap(),
     "balance": balance,
     "ledgerBalance": ledgerBalance,

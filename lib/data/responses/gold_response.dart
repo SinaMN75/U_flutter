@@ -723,6 +723,7 @@ class UGoldTxnResponse {
   final double amount;
   final double unitPrice;
   final String? orderId;
+  final String? trackingNumber;
   final String idempotencyKey;
   final List<String> adminUserIds;
 
@@ -741,6 +742,7 @@ class UGoldTxnResponse {
     this.creator,
     this.creatorId,
     this.orderId,
+    this.trackingNumber,
   });
 
   factory UGoldTxnResponse.fromJson(String str) => UGoldTxnResponse.fromMap(json.decode(str));
@@ -760,6 +762,7 @@ class UGoldTxnResponse {
     amount: json["amount"] == null ? 0 : (json["amount"] as num).toDouble(),
     unitPrice: json["unitPrice"] == null ? 0 : (json["unitPrice"] as num).toDouble(),
     orderId: json["orderId"],
+    trackingNumber: json["trackingNumber"],
     idempotencyKey: json["idempotencyKey"] ?? "",
     adminUserIds: json["adminUserIds"] == null ? <String>[] : List<String>.from(json["adminUserIds"]!.map((dynamic x) => x)),
   );
@@ -777,6 +780,7 @@ class UGoldTxnResponse {
     "amount": amount,
     "unitPrice": unitPrice,
     "orderId": orderId,
+    "trackingNumber": trackingNumber,
     "idempotencyKey": idempotencyKey,
     "adminUserIds": List<dynamic>.from(adminUserIds.map((String x) => x)),
   };

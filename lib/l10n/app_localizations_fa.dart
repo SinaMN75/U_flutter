@@ -1425,6 +1425,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get later => 'بعداً';
 
   @override
+  String get ledgerBalance => 'مانده‌ی دفتر';
+
+  @override
   String get leftToRight => 'چپ به راست';
 
   @override
@@ -3399,6 +3402,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get background => 'رنگ پس‌زمینه';
 
   @override
+  String get balanceAfterTransaction => 'موجودی پس از تراکنش';
+
+  @override
   String get bankAccountId => 'شناسه حساب بانکی';
 
   @override
@@ -3537,6 +3543,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get count => 'تعداد';
 
   @override
+  String get counterparty => 'طرف حساب';
+
+  @override
   String countPerPage(Object count) {
     return '$count در هر صفحه';
   }
@@ -3598,6 +3607,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get cryptoTester => 'آزمایشگر رمزنگاری';
+
+  @override
+  String get currency => 'ارز';
 
   @override
   String get currentPlan => 'پلن فعلی';
@@ -3714,9 +3726,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get due => 'سررسید';
 
   @override
-  String get eachMismatchedWalletBalanceIsSetToTheSumOfItsTransactions => 'موجودی هر کیف پول ناهماهنگ برابر جمع تراکنش‌هایش می‌شود.';
-
-  @override
   String get editRow => 'ویرایش ردیف';
 
   @override
@@ -3801,6 +3810,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get firstSignatory => 'امضاکننده اول';
+
+  @override
+  String get fixMismatch => 'رفع ناهماهنگی';
 
   @override
   String get folder => 'پوشه';
@@ -4012,9 +4024,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get leaveMaskedToKeepTheCurrentValue => 'برای حفظ مقدار فعلی، ماسک را تغییر ندهید';
-
-  @override
-  String get ledgerBalance => 'مانده‌ی دفتر';
 
   @override
   String get ledgerIsBalanced => 'دفتر کل تراز است';
@@ -4477,9 +4486,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get recentRowsSelected => 'ردیف‌های اخیر (جدول انتخاب‌شده)';
 
   @override
-  String get reconcileBalances => 'اصلاح موجودی‌ها';
-
-  @override
   String get recordSettlement => 'ثبت تسویه';
 
   @override
@@ -4716,7 +4722,19 @@ class AppLocalizationsFa extends AppLocalizations {
   String get textSpacing => 'فاصله متن';
 
   @override
+  String get theBalanceIsCorrect => 'موجودی درست است';
+
+  @override
+  String get theBalanceIsSetToTheSumOfTheTransactions => 'موجودی برابر جمع تراکنش‌ها می‌شود و این اصلاح ثبت می‌شود.';
+
+  @override
+  String get theDifferenceIsRecordedAgainstTheCounterpartyThisBalanceStaysTheSame => 'اختلاف به‌صورت تراکنش با طرف حساب ثبت می‌شود و موجودی این کیف پول تغییر نمی‌کند.';
+
+  @override
   String get theSumOfAllWalletBalancesMustBeZero => 'جمع موجودی همه‌ی کیف پول‌ها باید صفر باشد.';
+
+  @override
+  String get theTransactionsAreCorrect => 'تراکنش‌ها درست هستند';
 
   @override
   String get thisFolderIsEmpty => 'این پوشه خالی است';
