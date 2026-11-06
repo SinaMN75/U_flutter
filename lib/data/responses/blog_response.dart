@@ -17,7 +17,6 @@ class UBlogResponse {
   final int? commentCount;
   final String? code;
   final String? description;
-  final String? type;
   final double? latitude;
   final double? longitude;
   final String? parentId;
@@ -41,7 +40,6 @@ class UBlogResponse {
     this.commentCount,
     this.code,
     this.description,
-    this.type,
     this.latitude,
     this.longitude,
     this.parentId,
@@ -70,7 +68,6 @@ class UBlogResponse {
     commentCount: json["commentCount"],
     code: json["code"],
     description: json["description"],
-    type: json["type"],
     latitude: (json["latitude"] as num?)?.toDouble(),
     longitude: (json["longitude"] as num?)?.toDouble(),
     parentId: json["parentId"],
@@ -95,7 +92,6 @@ class UBlogResponse {
     "commentCount": commentCount,
     "code": code,
     "description": description,
-    "type": type,
     "latitude": latitude,
     "longitude": longitude,
     "parentId": parentId,
@@ -110,7 +106,6 @@ class UBlogJson {
   final String? source;
   final String? detail1;
   final String? detail2;
-  final String? actionType;
   final String? actionTitle;
   final String? actionUri;
   final List<String>? relatedBlogs;
@@ -121,7 +116,6 @@ class UBlogJson {
     this.source,
     this.detail1,
     this.detail2,
-    this.actionType,
     this.actionTitle,
     this.actionUri,
     this.relatedBlogs,
@@ -137,7 +131,6 @@ class UBlogJson {
     source: json["source"],
     detail1: json["detail1"],
     detail2: json["detail2"],
-    actionType: json["actionType"],
     actionTitle: json["actionTitle"],
     actionUri: json["actionUri"],
     relatedBlogs: json["relatedBlogs"] == null ? <String>[] : List<String>.from(json["relatedBlogs"]!.map((dynamic x) => x)),
@@ -149,7 +142,6 @@ class UBlogJson {
     "source": source,
     "detail1": detail1,
     "detail2": detail2,
-    "actionType": actionType,
     "actionTitle": actionTitle,
     "actionUri": actionUri,
     "relatedBlogs": relatedBlogs == null ? <dynamic>[] : List<dynamic>.from(relatedBlogs!.map((String x) => x)),

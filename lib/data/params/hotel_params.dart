@@ -383,7 +383,7 @@ class UHotelRoomCreateParams {
     this.adminUserIds,
     this.roomNumber,
     this.description,
-    this.bedType,
+    this.beds,
     this.sizeSquareMeters,
     this.floor,
     this.extraGuestCapacity,
@@ -407,7 +407,6 @@ class UHotelRoomCreateParams {
     quantity: json["quantity"] ?? 1,
     isAvailable: json["isAvailable"] ?? true,
     description: json["description"],
-    bedType: json["bedType"],
     sizeSquareMeters: json["sizeSquareMeters"] == null ? null : (json["sizeSquareMeters"] as num).toDouble(),
     floor: json["floor"] == null ? null : (json["floor"] as num).toInt(),
     extraGuestCapacity: json["extraGuestCapacity"] == null ? null : (json["extraGuestCapacity"] as num).toInt(),
@@ -428,7 +427,9 @@ class UHotelRoomCreateParams {
   final int quantity;
   final bool isAvailable;
   final String? description;
-  final String? bedType;
+
+  /// The beds in the room (6xx [TagRoom], several allowed); sent in the tags.
+  final List<TagRoom>? beds;
   final double? sizeSquareMeters;
   final int? floor;
   final int? extraGuestCapacity;
@@ -437,7 +438,7 @@ class UHotelRoomCreateParams {
   String toJson() => json.encode(toMap());
 
   Map<String, dynamic> toMap() => <String, dynamic>{
-    "tags": tags,
+    "tags": <int>[...tags, ...?beds?.map((TagRoom x) => x.number)],
     "id": id,
     "creatorId": creatorId,
     "detail1": detail1,
@@ -451,7 +452,6 @@ class UHotelRoomCreateParams {
     "quantity": quantity,
     "isAvailable": isAvailable,
     "description": description,
-    "bedType": bedType,
     "sizeSquareMeters": sizeSquareMeters,
     "floor": floor,
     "extraGuestCapacity": extraGuestCapacity,
@@ -478,7 +478,7 @@ class UHotelRoomUpdateParams {
     this.quantity,
     this.isAvailable,
     this.description,
-    this.bedType,
+    this.beds,
     this.sizeSquareMeters,
     this.floor,
     this.extraGuestCapacity,
@@ -505,7 +505,6 @@ class UHotelRoomUpdateParams {
     quantity: json["quantity"] == null ? null : (json["quantity"] as num).toInt(),
     isAvailable: json["isAvailable"],
     description: json["description"],
-    bedType: json["bedType"],
     sizeSquareMeters: json["sizeSquareMeters"] == null ? null : (json["sizeSquareMeters"] as num).toDouble(),
     floor: json["floor"] == null ? null : (json["floor"] as num).toInt(),
     extraGuestCapacity: json["extraGuestCapacity"] == null ? null : (json["extraGuestCapacity"] as num).toInt(),
@@ -529,7 +528,9 @@ class UHotelRoomUpdateParams {
   final int? quantity;
   final bool? isAvailable;
   final String? description;
-  final String? bedType;
+
+  /// The beds in the room (6xx [TagRoom], several allowed); sent in the tags.
+  final List<TagRoom>? beds;
   final double? sizeSquareMeters;
   final int? floor;
   final int? extraGuestCapacity;
@@ -540,8 +541,8 @@ class UHotelRoomUpdateParams {
   Map<String, dynamic> toMap() => <String, dynamic>{
     "id": id,
     "tags": tags,
-    "addTags": addTags,
-    "removeTags": removeTags,
+    "addTags": <int>[...?addTags, ...?beds?.map((TagRoom x) => x.number)],
+    "removeTags": <int>[...?removeTags, if (beds != null) ...TagRoom.values.group(600).where((TagRoom x) => !beds!.contains(x)).map((TagRoom x) => x.number)],
     "detail1": detail1,
     "detail2": detail2,
     "adminUserIds": adminUserIds,
@@ -555,7 +556,6 @@ class UHotelRoomUpdateParams {
     "quantity": quantity,
     "isAvailable": isAvailable,
     "description": description,
-    "bedType": bedType,
     "sizeSquareMeters": sizeSquareMeters,
     "floor": floor,
     "extraGuestCapacity": extraGuestCapacity,
@@ -1070,11 +1070,13 @@ class UReservationGuestParams {
   final String fullName;
   final String? nationalCode;
   final String? phoneNumber;
+
+  /// ISO 3166-1 alpha-2, e.g. "IR".
   final String? nationality;
   final String? passportNumber;
   final DateTime? birthDate;
   final String? fatherName;
-  final String? gender;
+  final TagGender? gender;
 
   UReservationGuestParams({required this.fullName, this.nationalCode, this.phoneNumber, this.nationality, this.passportNumber, this.birthDate, this.fatherName, this.gender});
 
@@ -1090,7 +1092,7 @@ class UReservationGuestParams {
     passportNumber: json["passportNumber"],
     birthDate: json["birthDate"] == null ? null : DateTime.parse(json["birthDate"]),
     fatherName: json["fatherName"],
-    gender: json["gender"],
+    gender: json["gender"] == null ? null : TagGender.values.fromNumber(json["gender"]),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -1101,7 +1103,7 @@ class UReservationGuestParams {
     "passportNumber": passportNumber,
     "birthDate": birthDate?.toIso8601String(),
     "fatherName": fatherName,
-    "gender": gender,
+    "gender": gender?.number,
   };
 }
 

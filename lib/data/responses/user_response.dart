@@ -206,8 +206,6 @@ class UUserJson {
     this.passports = const <String>[],
     this.language,
     this.currency,
-    this.calendar,
-    this.distanceUnit,
     this.destinationCountryId,
     this.destinationCityId,
   });
@@ -242,8 +240,6 @@ class UUserJson {
     passports: json["passports"] == null ? const <String>[] : List<String>.from(json["passports"].map((dynamic x) => x)),
     language: json["language"],
     currency: json["currency"],
-    calendar: json["calendar"],
-    distanceUnit: json["distanceUnit"],
     destinationCountryId: json["destinationCountryId"],
     destinationCityId: json["destinationCityId"],
   );
@@ -274,16 +270,11 @@ class UUserJson {
   final String? referralCode;
   final String? referrerId;
 
-  /// Travel profile; the home is [country] and [city]. Passports are ISO alpha-2 codes.
+  /// Travel profile; the home is [country] and [city]. Passports are ISO alpha-2 codes. Calendar and distance unit are user tags (7xx, 8xx).
   final List<String> passports;
   final String? language;
   final String? currency;
 
-  /// A [TagCalendar] number.
-  final int? calendar;
-
-  /// A [TagDistanceUnit] number.
-  final int? distanceUnit;
   final String? destinationCountryId;
   final String? destinationCityId;
 
@@ -317,8 +308,6 @@ class UUserJson {
     "passports": passports,
     "language": language,
     "currency": currency,
-    "calendar": calendar,
-    "distanceUnit": distanceUnit,
     "destinationCountryId": destinationCountryId,
     "destinationCityId": destinationCityId,
   };

@@ -129,7 +129,6 @@ class UConversationResponse {
 class UMessageJson {
   UMessageJson({
     this.replyToId,
-    this.linkType,
     this.linkId,
     this.detail1,
     this.detail2,
@@ -139,14 +138,14 @@ class UMessageJson {
 
   factory UMessageJson.fromMap(Map<String, dynamic> json) => UMessageJson(
     replyToId: json["replyToId"],
-    linkType: json["linkType"],
     linkId: json["linkId"],
     detail1: json["detail1"],
     detail2: json["detail2"],
   );
 
   final String? replyToId;
-  final String? linkType;
+
+  /// The id of what a shared message opens; what it is comes from [UMessageResponse.link].
   final String? linkId;
   final String? detail1;
   final String? detail2;
@@ -155,7 +154,6 @@ class UMessageJson {
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "replyToId": replyToId,
-    "linkType": linkType,
     "linkId": linkId,
     "detail1": detail1,
     "detail2": detail2,
@@ -201,6 +199,9 @@ class UMessageResponse {
   bool get isDeleted => tags.contains(TagMessage.deleted.number);
 
   bool get isEdited => tags.contains(TagMessage.edited.number);
+
+  /// What a shared message opens (a 3xx tag), with [UMessageJson.linkId].
+  TagMessage? get link => TagMessage.values.group(300).firstWhereOrNull((TagMessage x) => tags.contains(x.number));
 
   String toJson() => json.encode(toMap());
 

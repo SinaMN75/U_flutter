@@ -20,8 +20,8 @@ class UCustodyProgramCreateParams {
   final String storeId;
   final String title;
 
-  /// "g", "coin", ...
-  final String unit;
+  /// One of the 2xx values of [TagCustodyProgram] (gram, coin…).
+  final TagCustodyProgram unit;
   final TagCustodyProgram status;
   final String? description;
   final String? rules;
@@ -38,8 +38,7 @@ class UCustodyProgramCreateParams {
   Map<String, dynamic> toMap() => <String, dynamic>{
     "storeId": storeId,
     "title": title,
-    "unit": unit,
-    "tags": <int>[status.number],
+    "tags": <int>[status.number, unit.number],
     "description": description,
     "rules": rules,
     "minPurchase": minPurchase,
@@ -71,7 +70,9 @@ class UCustodyProgramUpdateParams {
 
   final String id;
   final String? title;
-  final String? unit;
+
+  /// One of the 2xx values of [TagCustodyProgram].
+  final TagCustodyProgram? unit;
 
   /// Only platform managers suspend a program or lift a suspension.
   final TagCustodyProgram? status;
@@ -92,8 +93,11 @@ class UCustodyProgramUpdateParams {
   Map<String, dynamic> toMap() => <String, dynamic>{
     "id": id,
     "title": title,
-    "unit": unit,
-    "tags": status == null ? null : <int>[status!.number],
+    "addTags": <int>[?status?.number, ?unit?.number],
+    "removeTags": <int>[
+      if (status != null) ...TagCustodyProgram.values.group(100).where((TagCustodyProgram x) => x != status).map((TagCustodyProgram x) => x.number),
+      if (unit != null) ...TagCustodyProgram.values.group(200).where((TagCustodyProgram x) => x != unit).map((TagCustodyProgram x) => x.number),
+    ],
     "description": description,
     "rules": rules,
     "minPurchase": minPurchase,
@@ -211,7 +215,7 @@ class UCustodyEntryCreateParams {
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "memberId": memberId,
-    "kind": kind.number,
+    "tags": <int>[kind.number],
     "quantity": quantity,
     "unitPrice": unitPrice,
     "amount": amount,

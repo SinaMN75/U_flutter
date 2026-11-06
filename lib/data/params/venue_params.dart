@@ -369,7 +369,6 @@ class UCourtCreateParams {
     sportId: json["sportId"],
     slotMinutes: json["slotMinutes"] ?? 60,
     description: json["description"],
-    surface: json["surface"],
     players: json["players"],
     priceRules: json["priceRules"] == null ? null : List<UCourtPriceRule>.from(json["priceRules"].map((dynamic x) => UCourtPriceRule.fromMap(x))),
     id: json["id"],
@@ -384,7 +383,8 @@ class UCourtCreateParams {
   final String? sportId;
   final int slotMinutes;
   final String? description;
-  final String? surface;
+  /// The playing surface (a 3xx [TagCourt], at most one); sent in the tags.
+  final TagCourt? surface;
   final int? players;
   final List<UCourtPriceRule>? priceRules;
   final String? id;
@@ -397,11 +397,10 @@ class UCourtCreateParams {
     "title": title,
     "venueId": venueId,
     "pricePerHour": pricePerHour,
-    "tags": tags,
+    "tags": <int>[...tags, ?surface?.number],
     "sportId": sportId,
     "slotMinutes": slotMinutes,
     "description": description,
-    "surface": surface,
     "players": players,
     "priceRules": priceRules?.map((UCourtPriceRule x) => x.toMap()).toList(),
     "id": id,
@@ -437,7 +436,6 @@ class UCourtUpdateParams {
     pricePerHour: json["pricePerHour"]?.toDouble(),
     slotMinutes: json["slotMinutes"],
     description: json["description"],
-    surface: json["surface"],
     players: json["players"],
     priceRules: json["priceRules"] == null ? null : List<UCourtPriceRule>.from(json["priceRules"].map((dynamic x) => UCourtPriceRule.fromMap(x))),
     tags: json["tags"] == null ? null : List<int>.from(json["tags"].map((dynamic x) => x)),
@@ -453,7 +451,8 @@ class UCourtUpdateParams {
   final double? pricePerHour;
   final int? slotMinutes;
   final String? description;
-  final String? surface;
+  /// The playing surface (a 3xx [TagCourt], at most one); sent in the tags.
+  final TagCourt? surface;
   final int? players;
   final List<UCourtPriceRule>? priceRules;
   final List<int>? tags;
@@ -471,12 +470,11 @@ class UCourtUpdateParams {
     "pricePerHour": pricePerHour,
     "slotMinutes": slotMinutes,
     "description": description,
-    "surface": surface,
     "players": players,
     "priceRules": priceRules?.map((UCourtPriceRule x) => x.toMap()).toList(),
     "tags": tags,
-    "addTags": addTags,
-    "removeTags": removeTags,
+    "addTags": <int>[...?addTags, ?surface?.number],
+    "removeTags": <int>[...?removeTags, if (surface != null) ...TagCourt.values.group(300).where((TagCourt x) => x != surface).map((TagCourt x) => x.number)],
     "detail1": detail1,
     "detail2": detail2,
   };

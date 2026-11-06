@@ -75,7 +75,7 @@ class UMessageCreateParams {
     required this.text,
     this.tags = const <int>[],
     this.replyToId,
-    this.linkType,
+    this.link,
     this.linkId,
   });
 
@@ -86,7 +86,6 @@ class UMessageCreateParams {
     text: json["text"],
     tags: json["tags"] == null ? const <int>[] : List<int>.from(json["tags"].map((dynamic x) => x)),
     replyToId: json["replyToId"],
-    linkType: json["linkType"],
     linkId: json["linkId"],
   );
 
@@ -94,7 +93,9 @@ class UMessageCreateParams {
   final String text;
   final List<int> tags;
   final String? replyToId;
-  final String? linkType;
+
+  /// What a shared message opens (a 3xx tag), with [linkId]; sent in the tags.
+  final TagMessage? link;
   final String? linkId;
 
   String toJson() => json.encode(toMap());
@@ -102,9 +103,8 @@ class UMessageCreateParams {
   Map<String, dynamic> toMap() => <String, dynamic>{
     "conversationId": conversationId,
     "text": text,
-    "tags": tags,
+    "tags": <int>[...tags, ?link?.number],
     "replyToId": replyToId,
-    "linkType": linkType,
     "linkId": linkId,
   };
 }

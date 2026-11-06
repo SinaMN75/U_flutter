@@ -5492,6 +5492,12 @@ abstract class AppLocalizations {
   /// **'Superscript'**
   String get superscript;
 
+  /// No description provided for @surface.
+  ///
+  /// In en, this message translates to:
+  /// **'Surface'**
+  String get surface;
+
   /// No description provided for @switchCamera.
   ///
   /// In en, this message translates to:
@@ -8179,6 +8185,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Nationality'**
   String get nationality;
+
+  /// No description provided for @nationalityMustBeATwoLetterCountryCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Nationality must be a two-letter country code'**
+  String get nationalityMustBeATwoLetterCountryCode;
 
   /// No description provided for @needsChanges.
   ///
@@ -15361,12 +15373,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Deciding set as a super tiebreak (to 10)'**
   String get superTiebreak;
-
-  /// No description provided for @surface.
-  ///
-  /// In en, this message translates to:
-  /// **'Surface'**
-  String get surface;
 
   /// No description provided for @swissDescription.
   ///

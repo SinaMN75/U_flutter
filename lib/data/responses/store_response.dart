@@ -491,8 +491,6 @@ class UProductResponse {
     this.price,
     this.stock = 0,
     this.purchasePrice,
-    this.unit,
-    this.measureUnit,
     this.lowStockAlert,
     this.lengthCm,
     this.widthCm,
@@ -517,8 +515,6 @@ class UProductResponse {
     price: json["price"],
     stock: json["stock"] ?? 0,
     purchasePrice: json["jsonData"]?["purchasePrice"],
-    unit: json["jsonData"]?["unit"],
-    measureUnit: json["jsonData"]?["measureUnit"],
     lowStockAlert: json["jsonData"]?["lowStockAlert"],
     lengthCm: json["jsonData"]?["lengthCm"],
     widthCm: json["jsonData"]?["widthCm"],
@@ -542,10 +538,6 @@ class UProductResponse {
   final num? price;
   final int stock;
   final num? purchasePrice;
-  final String? unit;
-
-  /// [TagMeasureUnit] number.
-  final int? measureUnit;
   final int? lowStockAlert;
   final num? lengthCm;
   final num? widthCm;
@@ -568,7 +560,8 @@ class UProductResponse {
 
   bool get isOutOfStock => stock <= 0;
 
-  TagMeasureUnit? get measure => TagMeasureUnit.values.firstWhereOrNull((TagMeasureUnit x) => x.number == measureUnit);
+  /// The unit of measure (a 6xx tag).
+  TagProduct? get measure => TagProduct.values.group(600).firstWhereOrNull((TagProduct x) => tags.contains(x.number));
 
   /// In stock, and at or under the seller's alert.
   bool get isLowStock => !isOutOfStock && lowStockAlert != null && stock <= lowStockAlert!;

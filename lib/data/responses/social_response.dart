@@ -28,7 +28,6 @@ class UPostJson {
   UPostJson({
     this.reactions = const <UPostReaction>[],
     this.viewerIds = const <String>[],
-    this.linkType,
     this.linkId,
     this.detail1,
     this.detail2,
@@ -39,7 +38,6 @@ class UPostJson {
   factory UPostJson.fromMap(Map<String, dynamic> json) => UPostJson(
     reactions: json["reactions"] == null ? const <UPostReaction>[] : List<UPostReaction>.from(json["reactions"].map((dynamic x) => UPostReaction.fromMap(x))),
     viewerIds: json["viewerIds"] == null ? const <String>[] : List<String>.from(json["viewerIds"].map((dynamic x) => x)),
-    linkType: json["linkType"],
     linkId: json["linkId"],
     detail1: json["detail1"],
     detail2: json["detail2"],
@@ -50,8 +48,7 @@ class UPostJson {
   /// Who saw a story (its author only).
   final List<String> viewerIds;
 
-  /// "tournament", "openMatch", "achievement", "venue"...
-  final String? linkType;
+  /// The id of what the post is about; what it is comes from [UPostResponse.link].
   final String? linkId;
   final String? detail1;
   final String? detail2;
@@ -61,7 +58,6 @@ class UPostJson {
   Map<String, dynamic> toMap() => <String, dynamic>{
     "reactions": reactions.map((UPostReaction x) => x.toMap()).toList(),
     "viewerIds": viewerIds,
-    "linkType": linkType,
     "linkId": linkId,
     "detail1": detail1,
     "detail2": detail2,
@@ -125,6 +121,9 @@ class UPostResponse {
   bool get isStory => tags.contains(TagPost.story.number);
 
   bool get isHidden => tags.contains(TagPost.hidden.number);
+
+  /// What the post is about (a 4xx tag), with [UPostJson.linkId].
+  TagPost? get link => TagPost.values.group(400).firstWhereOrNull((TagPost x) => tags.contains(x.number));
 
   String toJson() => json.encode(toMap());
 

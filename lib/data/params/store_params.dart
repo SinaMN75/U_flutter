@@ -358,7 +358,7 @@ class UStoreTypeReadParams {
 }
 
 class UProductCreateParams {
-  UProductCreateParams({required this.storeId, required this.title, required this.price, this.tags, this.categoryId, this.description, this.purchasePrice, this.stock = 0, this.lowStockAlert, this.lengthCm, this.widthCm, this.heightCm, this.unit, this.measureUnit, this.specs, this.links});
+  UProductCreateParams({required this.storeId, required this.title, required this.price, this.tags, this.categoryId, this.description, this.purchasePrice, this.stock = 0, this.lowStockAlert, this.lengthCm, this.widthCm, this.heightCm, this.measure, this.specs, this.links});
 
   final String storeId;
   final String title;
@@ -374,10 +374,8 @@ class UProductCreateParams {
   final double? lengthCm;
   final double? widthCm;
   final double? heightCm;
-  final String? unit;
-
-  /// [TagMeasureUnit] number.
-  final int? measureUnit;
+  /// The unit of measure, a 6xx [TagProduct]; stored in the product's tags.
+  final TagProduct? measure;
   final List<UKeyValueData>? specs;
   final List<UWebLink>? links;
 
@@ -385,7 +383,7 @@ class UProductCreateParams {
     "storeId": storeId,
     "title": title,
     "price": price,
-    "tags": tags ?? <int>[TagProduct.product.number, TagProduct.released.number],
+    "tags": <int>[...tags ?? <int>[TagProduct.product.number, TagProduct.released.number], ?measure?.number],
     "categoryId": categoryId,
     "description": description,
     "purchasePrice": purchasePrice,
@@ -394,15 +392,13 @@ class UProductCreateParams {
     "lengthCm": lengthCm,
     "widthCm": widthCm,
     "heightCm": heightCm,
-    "unit": unit,
-    "measureUnit": measureUnit,
     "specs": specs?.map((UKeyValueData x) => x.toMap()).toList(),
     "links": links?.map((UWebLink x) => x.toMap()).toList(),
   };
 }
 
 class UProductUpdateParams {
-  UProductUpdateParams({required this.id, this.title, this.price, this.categoryId, this.clearCategory = false, this.description, this.purchasePrice, this.stock, this.lowStockAlert, this.lengthCm, this.widthCm, this.heightCm, this.unit, this.measureUnit, this.specs, this.links, this.addTags, this.removeTags});
+  UProductUpdateParams({required this.id, this.title, this.price, this.categoryId, this.clearCategory = false, this.description, this.purchasePrice, this.stock, this.lowStockAlert, this.lengthCm, this.widthCm, this.heightCm, this.measure, this.specs, this.links, this.addTags, this.removeTags});
 
   final String id;
   final String? title;
@@ -420,10 +416,8 @@ class UProductUpdateParams {
   final double? lengthCm;
   final double? widthCm;
   final double? heightCm;
-  final String? unit;
-
-  /// [TagMeasureUnit] number.
-  final int? measureUnit;
+  /// The unit of measure, a 6xx [TagProduct]; stored in the product's tags.
+  final TagProduct? measure;
   final List<UKeyValueData>? specs;
   final List<UWebLink>? links;
   final List<int>? addTags;
@@ -442,12 +436,10 @@ class UProductUpdateParams {
     "lengthCm": lengthCm,
     "widthCm": widthCm,
     "heightCm": heightCm,
-    "unit": unit,
-    "measureUnit": measureUnit,
     "specs": specs?.map((UKeyValueData x) => x.toMap()).toList(),
     "links": links?.map((UWebLink x) => x.toMap()).toList(),
-    "addTags": addTags,
-    "removeTags": removeTags,
+    "addTags": <int>[...?addTags, ?measure?.number],
+    "removeTags": <int>[...?removeTags, if (measure != null) ...TagProduct.values.group(600).where((TagProduct x) => x != measure).map((TagProduct x) => x.number)],
   };
 }
 

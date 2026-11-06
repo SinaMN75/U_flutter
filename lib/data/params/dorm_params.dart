@@ -815,7 +815,8 @@ class UDormBedContractCreateParams {
   final String? guardianPhone;
   final String? emergencyName;
   final String? emergencyPhone;
-  final String? emergencyRelation;
+  /// How the emergency contact is related to the resident (a 4xx [TagDormBedContract]); sent in the tags.
+  final TagDormBedContract? emergencyRelation;
   final String? applicationId;
 
   UDormBedContractCreateParams({
@@ -862,12 +863,11 @@ class UDormBedContractCreateParams {
     guardianPhone: json["guardianPhone"],
     emergencyName: json["emergencyName"],
     emergencyPhone: json["emergencyPhone"],
-    emergencyRelation: json["emergencyRelation"],
     applicationId: json["applicationId"],
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
-    "tags": List<dynamic>.from(tags.map((int x) => x)),
+    "tags": <int>[...tags, ?emergencyRelation?.number],
     "id": id,
     "startDate": startDate.toIso8601String(),
     "endDate": endDate.toIso8601String(),
@@ -884,7 +884,6 @@ class UDormBedContractCreateParams {
     "guardianPhone": guardianPhone,
     "emergencyName": emergencyName,
     "emergencyPhone": emergencyPhone,
-    "emergencyRelation": emergencyRelation,
     "applicationId": applicationId,
   };
 }
@@ -999,7 +998,8 @@ class UDormBedContractUpdateParams {
   final String? guardianPhone;
   final String? emergencyName;
   final String? emergencyPhone;
-  final String? emergencyRelation;
+  /// How the emergency contact is related to the resident (a 4xx [TagDormBedContract]); sent in the tags.
+  final TagDormBedContract? emergencyRelation;
 
   UDormBedContractUpdateParams({
     required this.id,
@@ -1044,13 +1044,12 @@ class UDormBedContractUpdateParams {
     guardianPhone: json["guardianPhone"],
     emergencyName: json["emergencyName"],
     emergencyPhone: json["emergencyPhone"],
-    emergencyRelation: json["emergencyRelation"],
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "id": id,
-    "addTags": addTags == null ? <dynamic>[] : List<dynamic>.from(addTags!.map((int x) => x)),
-    "removeTags": removeTags == null ? <dynamic>[] : List<dynamic>.from(removeTags!.map((int x) => x)),
+    "addTags": <int>[...?addTags, ?emergencyRelation?.number],
+    "removeTags": <int>[...?removeTags, if (emergencyRelation != null) ...TagDormBedContract.values.group(400).where((TagDormBedContract x) => x != emergencyRelation).map((TagDormBedContract x) => x.number)],
     "tags": tags == null ? <dynamic>[] : List<dynamic>.from(tags!.map((int x) => x)),
     "startDate": startDate?.toIso8601String(),
     "endDate": endDate?.toIso8601String(),
@@ -1065,7 +1064,6 @@ class UDormBedContractUpdateParams {
     "guardianPhone": guardianPhone,
     "emergencyName": emergencyName,
     "emergencyPhone": emergencyPhone,
-    "emergencyRelation": emergencyRelation,
   };
 }
 
@@ -1506,7 +1504,8 @@ class UDormRecordCreateParams {
   final String? visitorName;
   final String? visitorPhone;
   final String? visitorNationalCode;
-  final String? relation;
+  /// How a visitor is related to the resident (a 4xx [TagDormRecord]); sent in the tags.
+  final TagDormRecord? relation;
   final String? roomId;
   final double? penalty;
   final List<UHandoverItem>? items;
@@ -1514,7 +1513,7 @@ class UDormRecordCreateParams {
   Map<String, dynamic> toMap() => <String, dynamic>{
     "dormId": dormId,
     "title": title,
-    "tags": tags,
+    "tags": <int>[...tags, ?relation?.number],
     "date": date?.toIso8601String(),
     "endDate": endDate?.toIso8601String(),
     "userId": userId,
@@ -1522,7 +1521,6 @@ class UDormRecordCreateParams {
     "visitorName": visitorName,
     "visitorPhone": visitorPhone,
     "visitorNationalCode": visitorNationalCode,
-    "relation": relation,
     "roomId": roomId,
     "penalty": penalty,
     "items": items?.map((UHandoverItem x) => x.toMap()).toList(),

@@ -53,13 +53,15 @@ class UNotificationResponse {
     "adminUserIds": List<dynamic>.from(adminUserIds.map((String x) => x)),
     "zipCode": zipCode,
   };
+
+  /// What the notification opens (a 3xx tag), with [UNotificationJson.linkId].
+  TagNotification? get link => TagNotification.values.group(300).firstWhereOrNull((TagNotification x) => tags.contains(x.number));
 }
 
 class UNotificationJson {
   UNotificationJson({
     this.detail1,
     this.detail2,
-    this.linkType,
     this.linkId,
   });
 
@@ -68,7 +70,6 @@ class UNotificationJson {
   factory UNotificationJson.fromMap(Map<String, dynamic> json) => UNotificationJson(
     detail1: json["detail1"],
     detail2: json["detail2"],
-    linkType: json["linkType"],
     linkId: json["linkId"],
   );
 
@@ -76,8 +77,7 @@ class UNotificationJson {
   final String? detail1;
   final String? detail2;
 
-  /// What the notification opens, e.g. "tournament" + its id.
-  final String? linkType;
+  /// The id of what the notification opens; what it is comes from [UNotificationResponse.link].
   final String? linkId;
 
   String toJson() => json.encode(toMap());
@@ -85,7 +85,6 @@ class UNotificationJson {
   Map<String, dynamic> toMap() => <String, dynamic>{
     "detail1": detail1,
     "detail2": detail2,
-    "linkType": linkType,
     "linkId": linkId,
   };
 }

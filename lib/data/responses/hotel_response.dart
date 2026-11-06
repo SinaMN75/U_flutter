@@ -186,6 +186,9 @@ class UHotelRoomResponse {
     "media": media == null ? <UMediaResponse>[] : List<UMediaResponse>.from(media!.map((UMediaResponse x) => x.toMap())),
     "adminUserIds": List<dynamic>.from(adminUserIds.map((String x) => x)),
   };
+
+  /// The beds in the room (6xx tags; several allowed).
+  List<TagRoom> get beds => TagRoom.values.group(600).where((TagRoom x) => tags.contains(x.number)).toList();
 }
 
 class UHotelJson {
@@ -289,7 +292,6 @@ class UHotelRoomJson {
     this.detail1,
     this.detail2,
     this.description,
-    this.bedType,
     this.sizeSquareMeters,
     this.floor,
     this.extraGuestCapacity,
@@ -303,7 +305,6 @@ class UHotelRoomJson {
     detail1: json["detail1"],
     detail2: json["detail2"],
     description: json["description"],
-    bedType: json["bedType"],
     sizeSquareMeters: json["sizeSquareMeters"] == null ? null : (json["sizeSquareMeters"] as num).toDouble(),
     floor: json["floor"] == null ? null : (json["floor"] as num).toInt(),
     extraGuestCapacity: json["extraGuestCapacity"] == null ? null : (json["extraGuestCapacity"] as num).toInt(),
@@ -314,7 +315,6 @@ class UHotelRoomJson {
   final String? detail1;
   final String? detail2;
   final String? description;
-  final String? bedType;
   final double? sizeSquareMeters;
   final int? floor;
   final int? extraGuestCapacity;
@@ -327,7 +327,6 @@ class UHotelRoomJson {
     "detail1": detail1,
     "detail2": detail2,
     "description": description,
-    "bedType": bedType,
     "sizeSquareMeters": sizeSquareMeters,
     "floor": floor,
     "extraGuestCapacity": extraGuestCapacity,
@@ -420,7 +419,7 @@ class UReservationGuestJson {
   final String? passportNumber;
   final DateTime? birthDate;
   final String? fatherName;
-  final String? gender;
+  final TagGender? gender;
 
   UReservationGuestJson({required this.fullName, this.nationalCode, this.phoneNumber, this.nationality, this.passportNumber, this.birthDate, this.fatherName, this.gender});
 
@@ -436,7 +435,7 @@ class UReservationGuestJson {
     passportNumber: json["passportNumber"],
     birthDate: json["birthDate"] == null ? null : DateTime.parse(json["birthDate"]),
     fatherName: json["fatherName"],
-    gender: json["gender"],
+    gender: json["gender"] == null ? null : TagGender.values.fromNumber(json["gender"]),
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -447,7 +446,7 @@ class UReservationGuestJson {
     "passportNumber": passportNumber,
     "birthDate": birthDate?.toIso8601String(),
     "fatherName": fatherName,
-    "gender": gender,
+    "gender": gender?.number,
   };
 }
 
@@ -979,7 +978,7 @@ class UHotelGuestExportItem {
     passportNumber: json["passportNumber"],
     birthDate: json["birthDate"] == null ? null : DateTime.parse(json["birthDate"]),
     fatherName: json["fatherName"],
-    gender: json["gender"],
+    gender: json["gender"] == null ? null : TagGender.values.fromNumber(json["gender"]),
     phoneNumber: json["phoneNumber"],
   );
 
@@ -994,6 +993,6 @@ class UHotelGuestExportItem {
   final String? passportNumber;
   final DateTime? birthDate;
   final String? fatherName;
-  final String? gender;
+  final TagGender? gender;
   final String? phoneNumber;
 }

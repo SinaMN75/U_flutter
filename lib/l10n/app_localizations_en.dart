@@ -2851,6 +2851,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get superscript => 'Superscript';
 
   @override
+  String get surface => 'Surface';
+
+  @override
   String get switchCamera => 'Switch Camera';
 
   @override
@@ -4221,6 +4224,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get nationality => 'Nationality';
+
+  @override
+  String get nationalityMustBeATwoLetterCountryCode => 'Nationality must be a two-letter country code';
 
   @override
   String get needsChanges => 'Needs Changes';
@@ -7924,9 +7930,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get superTiebreak => 'Deciding set as a super tiebreak (to 10)';
-
-  @override
-  String get surface => 'Surface';
 
   @override
   String get swissDescription => 'Each round you face someone on a similar score, no elimination.';

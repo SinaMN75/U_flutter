@@ -17,8 +17,6 @@ class UBlogCreateParams {
   final List<String>? media;
   final String? code;
   final String? description;
-  final String? type;
-  final String? actionType;
   final String? actionTitle;
   final String? actionUri;
   final double? latitude;
@@ -44,8 +42,6 @@ class UBlogCreateParams {
     this.media,
     this.code,
     this.description,
-    this.type,
-    this.actionType,
     this.actionTitle,
     this.actionUri,
     this.latitude,
@@ -76,8 +72,6 @@ class UBlogCreateParams {
     media: json["media"] == null ? <String>[] : List<String>.from(json["media"]!.map((dynamic x) => x)),
     code: json["code"],
     description: json["description"],
-    type: json["type"],
-    actionType: json["actionType"],
     actionTitle: json["actionTitle"],
     actionUri: json["actionUri"],
     latitude: (json["latitude"] as num?)?.toDouble(),
@@ -104,8 +98,6 @@ class UBlogCreateParams {
     "media": media == null ? <dynamic>[] : List<dynamic>.from(media!.map((String x) => x)),
     "code": code,
     "description": description,
-    "type": type,
-    "actionType": actionType,
     "actionTitle": actionTitle,
     "actionUri": actionUri,
     "latitude": latitude,
@@ -136,8 +128,6 @@ class UBlogUpdateParams {
   final List<String>? media;
   final String? code;
   final String? description;
-  final String? type;
-  final String? actionType;
   final String? actionTitle;
   final String? actionUri;
   final double? latitude;
@@ -168,8 +158,6 @@ class UBlogUpdateParams {
     this.media,
     this.code,
     this.description,
-    this.type,
-    this.actionType,
     this.actionTitle,
     this.actionUri,
     this.latitude,
@@ -205,8 +193,6 @@ class UBlogUpdateParams {
     media: json["media"] == null ? <String>[] : List<String>.from(json["media"]!.map((dynamic x) => x)),
     code: json["code"],
     description: json["description"],
-    type: json["type"],
-    actionType: json["actionType"],
     actionTitle: json["actionTitle"],
     actionUri: json["actionUri"],
     latitude: (json["latitude"] as num?)?.toDouble(),
@@ -238,8 +224,6 @@ class UBlogUpdateParams {
     "media": media == null ? <dynamic>[] : List<dynamic>.from(media!.map((String x) => x)),
     "code": code,
     "description": description,
-    "type": type,
-    "actionType": actionType,
     "actionTitle": actionTitle,
     "actionUri": actionUri,
     "latitude": latitude,

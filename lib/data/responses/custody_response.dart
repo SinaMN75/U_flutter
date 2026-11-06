@@ -50,7 +50,6 @@ class UCustodyProgramResponse {
     required this.tags,
     required this.jsonData,
     required this.title,
-    required this.unit,
     required this.storeId,
     this.memberCount = 0,
     this.heldQuantity = 0,
@@ -64,7 +63,6 @@ class UCustodyProgramResponse {
     tags: List<int>.from(json["tags"].map((dynamic x) => x)),
     jsonData: UCustodyProgramJson.fromMap(json["jsonData"] ?? <String, dynamic>{}),
     title: json["title"],
-    unit: json["unit"],
     storeId: json["storeId"],
     memberCount: json["memberCount"] ?? 0,
     heldQuantity: json["heldQuantity"]?.toDouble() ?? 0,
@@ -77,7 +75,6 @@ class UCustodyProgramResponse {
   final List<int> tags;
   final UCustodyProgramJson jsonData;
   final String title;
-  final String unit;
   final String storeId;
   final int memberCount;
 
@@ -88,7 +85,10 @@ class UCustodyProgramResponse {
   final UCustodyRateResponse? rate;
   final UStoreResponse? store;
 
-  TagCustodyProgram get status => TagCustodyProgram.values.firstWhereOrNull((TagCustodyProgram x) => tags.contains(x.number)) ?? TagCustodyProgram.active;
+  /// The unit the asset is counted in (a 2xx value).
+  TagCustodyProgram get unit => TagCustodyProgram.values.group(200).firstWhereOrNull((TagCustodyProgram x) => tags.contains(x.number)) ?? TagCustodyProgram.gram;
+
+  TagCustodyProgram get status => TagCustodyProgram.values.group(100).firstWhereOrNull((TagCustodyProgram x) => tags.contains(x.number)) ?? TagCustodyProgram.active;
 }
 
 class UCustodyRateResponse {

@@ -2851,6 +2851,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get superscript => 'بالانویس';
 
   @override
+  String get surface => 'نوع کف';
+
+  @override
   String get switchCamera => 'تعویض دوربین';
 
   @override
@@ -4221,6 +4224,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get nationality => 'ملیت';
+
+  @override
+  String get nationalityMustBeATwoLetterCountryCode => 'ملیت باید کد دوحرفی کشور باشد';
 
   @override
   String get needsChanges => 'نیاز به اصلاح';
@@ -7923,9 +7929,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get superTiebreak => 'ست تعیین‌کننده به‌صورت سوپر تای‌بریک (تا ۱۰)';
-
-  @override
-  String get surface => 'نوع کف';
 
   @override
   String get swissDescription => 'هر دور با کسی با امتیاز مشابه بازی می‌کنید، بدون حذف.';

@@ -1,14 +1,17 @@
 part of "../data.dart";
 
 class UGeoPhone {
-  UGeoPhone({required this.title, required this.number});
+  UGeoPhone({required this.kind, required this.number});
 
-  factory UGeoPhone.fromMap(Map<String, dynamic> json) => UGeoPhone(title: json["title"] ?? "", number: json["number"] ?? "");
+  factory UGeoPhone.fromMap(Map<String, dynamic> json) => UGeoPhone(
+    kind: TagEmergencyNumber.values.firstWhereOrNull((TagEmergencyNumber x) => x.number == json["kind"]) ?? TagEmergencyNumber.general,
+    number: json["number"] ?? "",
+  );
 
-  final String title;
+  final TagEmergencyNumber kind;
   final String number;
 
-  Map<String, dynamic> toMap() => <String, dynamic>{"title": title, "number": number};
+  Map<String, dynamic> toMap() => <String, dynamic>{"kind": kind.number, "number": number};
 }
 
 /// The embassy of [country] inside the country it is listed on.

@@ -5,7 +5,7 @@ class UPostCreateParams {
     this.tags = const <int>[],
     this.text,
     this.parentId,
-    this.linkType,
+    this.link,
     this.linkId,
     this.id,
     this.detail1,
@@ -18,7 +18,6 @@ class UPostCreateParams {
     tags: json["tags"] == null ? const <int>[] : List<int>.from(json["tags"].map((dynamic x) => x)),
     text: json["text"],
     parentId: json["parentId"],
-    linkType: json["linkType"],
     linkId: json["linkId"],
     id: json["id"],
     detail1: json["detail1"],
@@ -30,7 +29,9 @@ class UPostCreateParams {
 
   /// A reply to this post.
   final String? parentId;
-  final String? linkType;
+
+  /// What the post is about (a 4xx tag), with [linkId]; sent in the tags.
+  final TagPost? link;
   final String? linkId;
   final String? id;
   final String? detail1;
@@ -39,10 +40,9 @@ class UPostCreateParams {
   String toJson() => json.encode(toMap());
 
   Map<String, dynamic> toMap() => <String, dynamic>{
-    "tags": tags,
+    "tags": <int>[...tags, ?link?.number],
     "text": text,
     "parentId": parentId,
-    "linkType": linkType,
     "linkId": linkId,
     "id": id,
     "detail1": detail1,

@@ -353,6 +353,9 @@ class UDormBedContractResponse {
     "invoices": invoices == null ? <dynamic>[] : List<dynamic>.from(invoices!.map((UDormBedInvoiceResponse x) => x.toMap())),
     "adminUserIds": List<dynamic>.from(adminUserIds.map((String x) => x)),
   };
+
+  /// How the emergency contact is related to the resident (a 4xx tag).
+  TagDormBedContract? get emergencyRelation => TagDormBedContract.values.group(400).firstWhereOrNull((TagDormBedContract x) => tags.contains(x.number));
 }
 
 class UDormBedInvoiceResponse {
@@ -775,7 +778,7 @@ class UContractBedChange {
 }
 
 class UDormBedContractJson {
-  UDormBedContractJson({this.detail1, this.detail2, this.settledAt, this.deductions, this.deductionReason, this.depositRefund, this.bedHistory = const <UContractBedChange>[], this.guardianName, this.guardianPhone, this.emergencyName, this.emergencyPhone, this.emergencyRelation, this.applicationId, this.damageInvoiceId, this.checkInChecklist = const <UHandoverItem>[], this.checkOutChecklist = const <UHandoverItem>[]});
+  UDormBedContractJson({this.detail1, this.detail2, this.settledAt, this.deductions, this.deductionReason, this.depositRefund, this.bedHistory = const <UContractBedChange>[], this.guardianName, this.guardianPhone, this.emergencyName, this.emergencyPhone, this.applicationId, this.damageInvoiceId, this.checkInChecklist = const <UHandoverItem>[], this.checkOutChecklist = const <UHandoverItem>[]});
 
   factory UDormBedContractJson.fromMap(Map<String, dynamic> json) => UDormBedContractJson(
     detail1: json["detail1"],
@@ -789,7 +792,6 @@ class UDormBedContractJson {
     guardianPhone: json["guardianPhone"],
     emergencyName: json["emergencyName"],
     emergencyPhone: json["emergencyPhone"],
-    emergencyRelation: json["emergencyRelation"],
     applicationId: json["applicationId"],
     damageInvoiceId: json["damageInvoiceId"],
     checkInChecklist: json["checkInChecklist"] == null ? <UHandoverItem>[] : List<UHandoverItem>.from(json["checkInChecklist"]!.map((dynamic x) => UHandoverItem.fromMap(x))),
@@ -807,7 +809,6 @@ class UDormBedContractJson {
   final String? guardianPhone;
   final String? emergencyName;
   final String? emergencyPhone;
-  final String? emergencyRelation;
   final String? applicationId;
   final String? damageInvoiceId;
   final List<UHandoverItem> checkInChecklist;
@@ -825,7 +826,6 @@ class UDormBedContractJson {
     "guardianPhone": guardianPhone,
     "emergencyName": emergencyName,
     "emergencyPhone": emergencyPhone,
-    "emergencyRelation": emergencyRelation,
     "applicationId": applicationId,
     "damageInvoiceId": damageInvoiceId,
     "checkInChecklist": checkInChecklist.map((UHandoverItem x) => x.toMap()).toList(),
@@ -1056,7 +1056,6 @@ class UDormRecordResponse {
     this.body,
     this.visitorName,
     this.visitorPhone,
-    this.relation,
     this.penalty,
     this.items = const <UHandoverItem>[],
   });
@@ -1074,7 +1073,6 @@ class UDormRecordResponse {
     body: json["jsonData"]?["body"],
     visitorName: json["jsonData"]?["visitorName"],
     visitorPhone: json["jsonData"]?["visitorPhone"],
-    relation: json["jsonData"]?["relation"],
     penalty: json["jsonData"]?["penalty"] == null ? null : (json["jsonData"]?["penalty"] as num).toDouble(),
     items: json["jsonData"]?["items"] == null ? <UHandoverItem>[] : List<UHandoverItem>.from(json["jsonData"]?["items"]!.map((dynamic x) => UHandoverItem.fromMap(x))),
   );
@@ -1091,9 +1089,11 @@ class UDormRecordResponse {
   final String? body;
   final String? visitorName;
   final String? visitorPhone;
-  final String? relation;
   final double? penalty;
   final List<UHandoverItem> items;
+
+  /// How a visitor is related to the resident (a 4xx tag).
+  TagDormRecord? get relation => TagDormRecord.values.group(400).firstWhereOrNull((TagDormRecord x) => tags.contains(x.number));
 }
 
 class UDormMealResponse {

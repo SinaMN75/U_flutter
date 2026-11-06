@@ -197,6 +197,11 @@ enum TagUser with UNumericIdentifiable {
   birthCertificateFifthAwaitingVerification("شناسنامه صفحه پنجم در انتظار تایید", "Birth Certificate Fifth Awaiting Verification", 507),
   visualAuthenticationAwaitingVerification("احراز هویت تصویری در انتظار تایید", "Visual Authentication Awaiting Verification", 508),
   eSignatureAwaitingVerification("امضای الکترونیکی در انتظار تایید", "E-Signature Awaiting Verification", 509),
+  calendarGregorian("تقویم میلادی", "Gregorian calendar", 701),
+  calendarJalali("تقویم شمسی", "Jalali calendar", 702),
+  calendarHijri("تقویم قمری", "Hijri calendar", 703),
+  distanceKilometer("کیلومتر", "Kilometer", 801),
+  distanceMile("مایل", "Mile", 802),
 
   // ---- subAdmin permissions (6xx). super/system admins have all of them; only a superAdmin or systemAdmin can give them ----
   permissionManageHotels("مدیریت هتل‌ها", "Manage Hotels", 601),
@@ -339,6 +344,20 @@ enum TagMedia with UNumericIdentifiable {
 }
 
 /// What a [UWebLink] points to; the server checks known kinds against their website.
+enum TagGender with UNumericIdentifiable {
+  male("مرد", "Male", 101),
+  female("زن", "Female", 102);
+
+  const TagGender(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
 enum TagLink with UNumericIdentifiable {
   youTube("یوتیوب", "YouTube", 101),
   instagram("اینستاگرام", "Instagram", 102),
@@ -383,7 +402,24 @@ enum TagProduct with UNumericIdentifiable {
   room9("اتاق ۹ تخته", "9 Bed Room", 409),
   room10("اتاق ۱۰ تخته", "10 Bed Room", 410),
   hidden("پنهان", "Hidden", 501),
-  blocked("مسدود", "Blocked", 502);
+  blocked("مسدود", "Blocked", 502),
+  piece("عدد", "Piece", 601),
+  kilogram("کیلوگرم", "Kilogram", 602),
+  gram("گرم", "Gram", 603),
+  liter("لیتر", "Liter", 604),
+  milliliter("میلی‌لیتر", "Milliliter", 605),
+  meter("متر", "Meter", 606),
+  centimeter("سانتی‌متر", "Centimeter", 607),
+  squareMeter("متر مربع", "Square meter", 608),
+  pack("بسته", "Pack", 609),
+  box("جعبه", "Box", 610),
+  carton("کارتن", "Carton", 611),
+  dozen("دوجین", "Dozen", 612),
+  pair("جفت", "Pair", 613),
+  set("دست", "Set", 614),
+  bottle("بطری", "Bottle", 615),
+  cup("فنجان", "Cup", 616),
+  serving("پرس", "Serving", 617);
 
   const TagProduct(this.titleFa, this.titleEn, this.number);
 
@@ -838,6 +874,18 @@ enum TagNotification with UNumericIdentifiable {
   newProduct("کالای تازه", "New product", 116),
   unread("خوانده نشده", "Unread", 201),
   read("خوانده شده", "Read", 202),
+  linkStore("فروشگاه", "Store", 301),
+  linkProduct("کالا", "Product", 302),
+  linkInventory("انبار", "Inventory", 303),
+  linkStoreOpen("صفحه فروشگاه", "Store page", 304),
+  linkSubscription("اشتراک", "Subscription", 305),
+  linkBooking("رزرو", "Booking", 306),
+  linkOpenMatch("بازی آزاد", "Open match", 307),
+  linkTournament("تورنمنت", "Tournament", 308),
+  linkAchievement("دستاورد", "Achievement", 309),
+  linkPost("پست", "Post", 310),
+  linkVenue("مجموعه ورزشی", "Venue", 311),
+  linkUser("کاربر", "User", 312),
   test("تست", "Test", 999);
 
   const TagNotification(this.titleFa, this.titleEn, this.number);
@@ -1020,7 +1068,16 @@ enum TagDormBedContract with UNumericIdentifiable {
   monthly("ماهانه", "Monthly", 103),
   yearly("سالانه", "Yearly", 104),
   singleInvoice("فاکتور تکی", "Single Invoice", 201),
-  settled("تسویه شده", "Settled", 301);
+  settled("تسویه شده", "Settled", 301),
+  father("پدر", "Father", 401),
+  mother("مادر", "Mother", 402),
+  brother("برادر", "Brother", 403),
+  sister("خواهر", "Sister", 404),
+  spouse("همسر", "Spouse", 405),
+  child("فرزند", "Child", 406),
+  relative("خویشاوند", "Relative", 407),
+  friend("دوست", "Friend", 408),
+  otherRelation("سایر", "Other", 499);
 
   const TagDormBedContract(this.titleFa, this.titleEn, this.number);
 
@@ -1288,7 +1345,14 @@ enum TagRoom with UNumericIdentifiable {
   balcony("بالکن", "Balcony", 511),
   hairDryer("سشوار", "Hair dryer", 512),
   kitchenette("آشپزخانه اختصاصی", "Kitchenette", 513),
-  wardrobe("کمد لباس", "Wardrobe", 514);
+  wardrobe("کمد لباس", "Wardrobe", 514),
+  singleBed("تخت یک‌نفره", "Single bed", 601),
+  doubleBed("تخت دونفره", "Double bed", 602),
+  queenBed("تخت کوئین", "Queen bed", 603),
+  kingBed("تخت کینگ", "King bed", 604),
+  sofaBed("کاناپه‌تخت", "Sofa bed", 605),
+  bunkBed("تخت دوطبقه", "Bunk bed", 606),
+  floorBedding("رختخواب سنتی", "Floor bedding", 607);
 
   const TagRoom(this.titleFa, this.titleEn, this.number);
 
@@ -1668,7 +1732,17 @@ enum TagCourt with UNumericIdentifiable {
   indoor("سرپوشیده", "Indoor", 101),
   outdoor("روباز", "Outdoor", 102),
   active("فعال", "Active", 201),
-  inactive("غیرفعال", "Inactive", 202);
+  inactive("غیرفعال", "Inactive", 202),
+  artificialGrass("چمن مصنوعی", "Artificial grass", 301),
+  grass("چمن طبیعی", "Grass", 302),
+  clay("خاک رس", "Clay", 303),
+  acrylic("اکریلیک", "Acrylic", 304),
+  hard("سخت (بتن، آسفالت)", "Hard", 305),
+  wood("پارکت", "Wood", 306),
+  cloth("ماهوت", "Cloth", 307),
+  sand("ماسه", "Sand", 308),
+  mat("تاتامی و تشک", "Mat", 309),
+  otherSurface("سایر", "Other", 399);
 
   const TagCourt(this.titleFa, this.titleEn, this.number);
 
@@ -1705,7 +1779,19 @@ enum TagPost with UNumericIdentifiable {
   comment("پاسخ", "Reply", 103),
   public("عمومی", "Public", 201),
   followers("دنبال‌کننده‌ها", "Followers", 202),
-  hidden("پنهان", "Hidden", 301);
+  hidden("پنهان", "Hidden", 301),
+  linkStore("فروشگاه", "Store", 401),
+  linkProduct("کالا", "Product", 402),
+  linkInventory("انبار", "Inventory", 403),
+  linkStoreOpen("صفحه فروشگاه", "Store page", 404),
+  linkSubscription("اشتراک", "Subscription", 405),
+  linkBooking("رزرو", "Booking", 406),
+  linkOpenMatch("بازی آزاد", "Open match", 407),
+  linkTournament("تورنمنت", "Tournament", 408),
+  linkAchievement("دستاورد", "Achievement", 409),
+  linkPost("پست", "Post", 410),
+  linkVenue("مجموعه ورزشی", "Venue", 411),
+  linkUser("کاربر", "User", 412);
 
   const TagPost(this.titleFa, this.titleEn, this.number);
 
@@ -1776,7 +1862,19 @@ enum TagMessage with UNumericIdentifiable {
   system("سیستمی", "System", 102),
   shared("اشتراکی", "Shared", 103),
   edited("ویرایش شده", "Edited", 201),
-  deleted("حذف شده", "Deleted", 202);
+  deleted("حذف شده", "Deleted", 202),
+  linkStore("فروشگاه", "Store", 301),
+  linkProduct("کالا", "Product", 302),
+  linkInventory("انبار", "Inventory", 303),
+  linkStoreOpen("صفحه فروشگاه", "Store page", 304),
+  linkSubscription("اشتراک", "Subscription", 305),
+  linkBooking("رزرو", "Booking", 306),
+  linkOpenMatch("بازی آزاد", "Open match", 307),
+  linkTournament("تورنمنت", "Tournament", 308),
+  linkAchievement("دستاورد", "Achievement", 309),
+  linkPost("پست", "Post", 310),
+  linkVenue("مجموعه ورزشی", "Venue", 311),
+  linkUser("کاربر", "User", 312);
 
   const TagMessage(this.titleFa, this.titleEn, this.number);
 
@@ -1816,7 +1914,16 @@ enum TagDormRecord with UNumericIdentifiable {
   inspection("بازرسی", "Inspection", 204),
   pending("در انتظار", "Pending", 301),
   approved("تأیید شده", "Approved", 302),
-  rejected("رد شده", "Rejected", 303);
+  rejected("رد شده", "Rejected", 303),
+  father("پدر", "Father", 401),
+  mother("مادر", "Mother", 402),
+  brother("برادر", "Brother", 403),
+  sister("خواهر", "Sister", 404),
+  spouse("همسر", "Spouse", 405),
+  child("فرزند", "Child", 406),
+  relative("خویشاوند", "Relative", 407),
+  friend("دوست", "Friend", 408),
+  otherRelation("سایر", "Other", 499);
 
   const TagDormRecord(this.titleFa, this.titleEn, this.number);
 
@@ -2011,35 +2118,6 @@ enum TagSearchSort with UNumericIdentifiable {
   final int number;
 }
 
-enum TagMeasureUnit with UNumericIdentifiable {
-  piece("عدد", "Piece", 101),
-  kilogram("کیلوگرم", "Kilogram", 102),
-  gram("گرم", "Gram", 103),
-  liter("لیتر", "Liter", 104),
-  milliliter("میلی‌لیتر", "Milliliter", 105),
-  meter("متر", "Meter", 106),
-  centimeter("سانتی‌متر", "Centimeter", 107),
-  squareMeter("متر مربع", "Square meter", 108),
-  pack("بسته", "Pack", 109),
-  box("جعبه", "Box", 110),
-  carton("کارتن", "Carton", 111),
-  dozen("دوجین", "Dozen", 112),
-  pair("جفت", "Pair", 113),
-  set("دست", "Set", 114),
-  bottle("بطری", "Bottle", 115),
-  cup("فنجان", "Cup", 116),
-  serving("پرس", "Serving", 117);
-
-  const TagMeasureUnit(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
 enum TagStoreSale with UNumericIdentifiable {
   cardToCard("کارت‌به‌کارت", "Card to card", 101),
   cash("نقدی", "Cash", 102);
@@ -2127,6 +2205,24 @@ enum TagCountry with UNumericIdentifiable {
   final int number;
 }
 
+enum TagEmergencyNumber with UNumericIdentifiable {
+  general("اورژانس همگانی", "Emergency", 101),
+  police("پلیس", "Police", 102),
+  ambulance("آمبولانس", "Ambulance", 103),
+  fire("آتش‌نشانی", "Fire", 104),
+  touristPolice("پلیس گردشگری", "Tourist police", 105),
+  roadAssistance("امداد جاده‌ای", "Road assistance", 106);
+
+  const TagEmergencyNumber(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
 enum TagCity with UNumericIdentifiable {
   active("فعال", "Active", 101),
   inactive("غیرفعال", "Inactive", 102),
@@ -2174,11 +2270,16 @@ enum TagVisaRule with UNumericIdentifiable {
   final int number;
 }
 
-/// A store's custody program: [paused] takes no new purchases, [suspended] is stopped by the platform.
+/// A store's custody program: one status (1xx; [paused] takes no new purchases, [suspended] is stopped by the platform) and one unit (2xx).
 enum TagCustodyProgram with UNumericIdentifiable {
   active("فعال", "Active", 101),
   paused("توقف خرید", "Paused", 102),
-  suspended("معلق", "Suspended", 103);
+  suspended("معلق", "Suspended", 103),
+  gram("گرم", "Gram", 201),
+  mithqal("مثقال", "Mithqal", 202),
+  ounce("اونس", "Ounce", 203),
+  coin("سکه", "Coin", 204),
+  piece("عدد", "Piece", 205);
 
   const TagCustodyProgram(this.titleFa, this.titleEn, this.number);
 
@@ -2223,35 +2324,6 @@ enum TagCustodyEntry with UNumericIdentifiable {
   adjustment("اصلاح", "Adjustment", 103);
 
   const TagCustodyEntry(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
-enum TagCalendar with UNumericIdentifiable {
-  gregorian("میلادی", "Gregorian", 101),
-  jalali("شمسی", "Jalali", 102),
-  hijri("قمری", "Hijri", 103);
-
-  const TagCalendar(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
-enum TagDistanceUnit with UNumericIdentifiable {
-  kilometer("کیلومتر", "Kilometer", 101),
-  mile("مایل", "Mile", 102);
-
-  const TagDistanceUnit(this.titleFa, this.titleEn, this.number);
 
   @override
   final String titleFa;

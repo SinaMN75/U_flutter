@@ -303,7 +303,6 @@ class UVenueResponse {
 class UCourtJson {
   UCourtJson({
     this.description,
-    this.surface,
     this.players = 4,
     this.priceRules = const <UCourtPriceRule>[],
     this.detail1,
@@ -314,7 +313,6 @@ class UCourtJson {
 
   factory UCourtJson.fromMap(Map<String, dynamic> json) => UCourtJson(
     description: json["description"],
-    surface: json["surface"],
     players: json["players"] ?? 4,
     priceRules: json["priceRules"] == null ? const <UCourtPriceRule>[] : List<UCourtPriceRule>.from(json["priceRules"].map((dynamic x) => UCourtPriceRule.fromMap(x))),
     detail1: json["detail1"],
@@ -322,7 +320,6 @@ class UCourtJson {
   );
 
   final String? description;
-  final String? surface;
   final int players;
   final List<UCourtPriceRule> priceRules;
   final String? detail1;
@@ -332,7 +329,6 @@ class UCourtJson {
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "description": description,
-    "surface": surface,
     "players": players,
     "priceRules": priceRules.map((UCourtPriceRule x) => x.toMap()).toList(),
     "detail1": detail1,
@@ -406,6 +402,9 @@ class UCourtResponse {
     "venue": venue?.toMap(),
     "sport": sport?.toMap(),
   };
+
+  /// The playing surface (a 3xx tag).
+  TagCourt? get surface => TagCourt.values.group(300).firstWhereOrNull((TagCourt x) => tags.contains(x.number));
 }
 
 class UCourtSlotResponse {

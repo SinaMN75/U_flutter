@@ -251,8 +251,6 @@ class UUserUpdateParams {
     this.passports,
     this.language,
     this.currency,
-    this.calendar,
-    this.distanceUnit,
     this.destinationCountryId,
     this.destinationCityId,
     this.weight,
@@ -305,8 +303,6 @@ class UUserUpdateParams {
     passports: json["passports"] == null ? null : List<String>.from(json["passports"].map((dynamic x) => x)),
     language: json["language"],
     currency: json["currency"],
-    calendar: json["calendar"],
-    distanceUnit: json["distanceUnit"],
     destinationCountryId: json["destinationCountryId"],
     destinationCityId: json["destinationCityId"],
     weight: json["weight"]?.toDouble(),
@@ -362,15 +358,11 @@ class UUserUpdateParams {
   final String? city;
 
   /// Travel profile. An empty list or string clears the value; so does the empty Guid (all zeros) for the destination ids.
+  /// Calendar and distance unit are user tags (7xx, 8xx): set them with [addTags] / [removeTags]; at most one of each group.
   final List<String>? passports;
   final String? language;
   final String? currency;
 
-  /// A [TagCalendar] number.
-  final int? calendar;
-
-  /// A [TagDistanceUnit] number.
-  final int? distanceUnit;
   final String? destinationCountryId;
   final String? destinationCityId;
   final double? weight;
@@ -428,8 +420,6 @@ class UUserUpdateParams {
     "passports": passports,
     "language": language,
     "currency": currency,
-    "calendar": calendar,
-    "distanceUnit": distanceUnit,
     "destinationCountryId": destinationCountryId,
     "destinationCityId": destinationCityId,
     "weight": weight,
