@@ -7953,6 +7953,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get yourVenueWasSentForReview => 'Sent for review — it shows on the map once approved';
 
   @override
+  String get allYourAppsInOnePlace => 'All your apps in one place';
+
+  @override
+  String get apps => 'Apps';
+
+  @override
+  String get rahnavard => 'Rahnavard';
+
+  @override
+  String get superApp => 'Super App';
+
+  @override
+  String get tapAnAppToOpenIt => 'Tap an app to open it';
+
+  @override
+  String get vitrin => 'Vitrin';
+
+  @override
+  String get zarrin => 'Zarrin';
+
+  @override
   String get a3dModelForEveryProduct => 'A 3D model for every product';
 
   @override

@@ -7952,6 +7952,27 @@ class AppLocalizationsFa extends AppLocalizations {
   String get yourVenueWasSentForReview => 'برای بررسی فرستاده شد؛ بعد از تأیید روی نقشه می‌آید';
 
   @override
+  String get allYourAppsInOnePlace => 'همه‌ی اپ‌هایت یک‌جا';
+
+  @override
+  String get apps => 'اپ‌ها';
+
+  @override
+  String get rahnavard => 'رهنورد';
+
+  @override
+  String get superApp => 'سوپراپ';
+
+  @override
+  String get tapAnAppToOpenIt => 'روی هر اپ بزن تا خودش باز شود';
+
+  @override
+  String get vitrin => 'ویترین';
+
+  @override
+  String get zarrin => 'زرین';
+
+  @override
   String get a3dModelForEveryProduct => 'مدل سه‌بعدی برای هر کالا';
 
   @override

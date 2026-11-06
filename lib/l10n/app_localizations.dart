@@ -15416,6 +15416,48 @@ abstract class AppLocalizations {
   /// **'Sent for review — it shows on the map once approved'**
   String get yourVenueWasSentForReview;
 
+  /// No description provided for @allYourAppsInOnePlace.
+  ///
+  /// In en, this message translates to:
+  /// **'All your apps in one place'**
+  String get allYourAppsInOnePlace;
+
+  /// No description provided for @apps.
+  ///
+  /// In en, this message translates to:
+  /// **'Apps'**
+  String get apps;
+
+  /// No description provided for @rahnavard.
+  ///
+  /// In en, this message translates to:
+  /// **'Rahnavard'**
+  String get rahnavard;
+
+  /// No description provided for @superApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Super App'**
+  String get superApp;
+
+  /// No description provided for @tapAnAppToOpenIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap an app to open it'**
+  String get tapAnAppToOpenIt;
+
+  /// No description provided for @vitrin.
+  ///
+  /// In en, this message translates to:
+  /// **'Vitrin'**
+  String get vitrin;
+
+  /// No description provided for @zarrin.
+  ///
+  /// In en, this message translates to:
+  /// **'Zarrin'**
+  String get zarrin;
+
   /// No description provided for @a3dModelForEveryProduct.
   ///
   /// In en, this message translates to:
