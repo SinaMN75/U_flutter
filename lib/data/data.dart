@@ -33,6 +33,8 @@ part "params/exchange_rate_params.dart";
 part "params/follow_params.dart";
 
 part "params/gold_params.dart";
+part "params/geo_params.dart";
+part "params/custody_params.dart";
 
 part "params/dorm_params.dart";
 part "params/store_params.dart";
@@ -108,6 +110,8 @@ part "responses/exchange_rate_response.dart";
 
 part "responses/follow_response.dart";
 part "responses/gold_response.dart";
+part "responses/geo_response.dart";
+part "responses/custody_response.dart";
 
 part "responses/dorm_response.dart";
 part "responses/store_response.dart";
@@ -176,6 +180,8 @@ part "services/exchange_rate_service.dart";
 part "services/follow_service.dart";
 
 part "services/gold_service.dart";
+part "services/geo_service.dart";
+part "services/custody_service.dart";
 
 part "services/dorm_service.dart";
 part "services/store_service.dart";
@@ -242,6 +248,8 @@ class UServices {
   static UCommentService comment = UCommentService();
   static UFollowService follow = UFollowService();
   static UGoldService gold = UGoldService();
+  static UGeoService geo = UGeoService();
+  static UCustodyService custody = UCustodyService();
   static UExchangeRateService exchangeRate = UExchangeRateService();
   static UMediaService media = UMediaService();
   static UWalletService wallet = UWalletService();

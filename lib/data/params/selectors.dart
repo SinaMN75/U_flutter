@@ -1168,3 +1168,94 @@ class UMessageSelectorArgs {
     "user": user,
   };
 }
+
+class UCountrySelectorArgs {
+  final UUserSelectorArgs? creator;
+  final UCitySelectorArgs? cities;
+
+  /// Every rule of the country; managers only.
+  final UVisaRuleSelectorArgs? visaRules;
+  final UMediaSelectorArgs? media;
+
+  const UCountrySelectorArgs({this.creator, this.cities, this.visaRules, this.media});
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "creator": creator?.toMap(),
+    "cities": cities?.toMap(),
+    "visaRules": visaRules?.toMap(),
+    "media": media?.toMap(),
+  };
+}
+
+class UCitySelectorArgs {
+  final UUserSelectorArgs? creator;
+  final UCountrySelectorArgs? country;
+  final UMediaSelectorArgs? media;
+
+  const UCitySelectorArgs({this.creator, this.country, this.media});
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "creator": creator?.toMap(),
+    "country": country?.toMap(),
+    "media": media?.toMap(),
+  };
+}
+
+class UPlaceSelectorArgs {
+  final UUserSelectorArgs? creator;
+  final UCitySelectorArgs? city;
+  final bool category;
+  final UMediaSelectorArgs? media;
+
+  const UPlaceSelectorArgs({this.creator, this.city, this.category = false, this.media});
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "creator": creator?.toMap(),
+    "city": city?.toMap(),
+    "category": category,
+    "media": media?.toMap(),
+  };
+}
+
+class UVisaRuleSelectorArgs {
+  final UUserSelectorArgs? creator;
+  final UCountrySelectorArgs? country;
+
+  const UVisaRuleSelectorArgs({this.creator, this.country});
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "creator": creator?.toMap(),
+    "country": country?.toMap(),
+  };
+}
+
+class UCustodyProgramSelectorArgs {
+  final UUserSelectorArgs? creator;
+  final UStoreSelectorArgs? store;
+
+  const UCustodyProgramSelectorArgs({this.creator, this.store});
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"creator": creator?.toMap(), "store": store?.toMap()};
+}
+
+class UCustodyMemberSelectorArgs {
+  final UUserSelectorArgs? creator;
+  final UCustodyProgramSelectorArgs? program;
+
+  /// The member's public profile (name and photo).
+  final bool user;
+
+  const UCustodyMemberSelectorArgs({this.creator, this.program, this.user = false});
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"creator": creator?.toMap(), "program": program?.toMap(), "user": user};
+}
+
+class UCustodyEntrySelectorArgs {
+  final UUserSelectorArgs? creator;
+  final UCustodyProgramSelectorArgs? program;
+  final UCustodyMemberSelectorArgs? member;
+
+  const UCustodyEntrySelectorArgs({this.creator, this.program, this.member});
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"creator": creator?.toMap(), "program": program?.toMap(), "member": member?.toMap()};
+}

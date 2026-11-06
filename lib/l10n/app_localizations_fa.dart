@@ -3468,6 +3468,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get cacheHitRatio => 'نرخ برخورد کش';
 
   @override
+  String get callingCode => 'پیش‌شماره';
+
+  @override
   String get candlestickChart => 'نمودار شمعی';
 
   @override
@@ -3487,6 +3490,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get checkOutChecklist => 'چک‌لیست تخلیه‌ی اتاق';
+
+  @override
+  String get cities => 'شهرها';
 
   @override
   String get clearLogs => 'پاک کردن لاگ‌ها';
@@ -3556,6 +3562,9 @@ class AppLocalizationsFa extends AppLocalizations {
   }
 
   @override
+  String get countries => 'کشورها';
+
+  @override
   String countRows(Object count) {
     return '$count ردیف';
   }
@@ -3615,6 +3624,15 @@ class AppLocalizationsFa extends AppLocalizations {
   String get currentPlan => 'پلن فعلی';
 
   @override
+  String get currentRate => 'نرخ فعلی';
+
+  @override
+  String get custodyProgram => 'باشگاه امانت';
+
+  @override
+  String get custodyPrograms => 'باشگاه‌های امانت';
+
+  @override
   String get dailyActivity => 'فعالیت روزانه';
 
   @override
@@ -3663,6 +3681,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get debtAmount => 'مبلغ بدهی';
 
   @override
+  String get declaredStock => 'موجودی اعلام‌شده';
+
+  @override
   String get decode => 'کدگشایی';
 
   @override
@@ -3676,6 +3697,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get deleteThisRowCannotBeUndone => 'این ردیف حذف شود؟ این کار قابل بازگشت نیست.';
+
+  @override
+  String get deliveryFee => 'کارمزد تحویل';
 
   @override
   String get detail1 => 'جزئیات ۱';
@@ -3732,7 +3756,13 @@ class AppLocalizationsFa extends AppLocalizations {
   String get electronicAgreement => 'قرارداد الکترونیکی';
 
   @override
+  String get embassies => 'سفارت‌ها';
+
+  @override
   String get emergencyContact => 'تماس اضطراری';
+
+  @override
+  String get emergencyNumbers => 'شماره‌های ضروری';
 
   @override
   String get encode => 'کدگذاری';
@@ -3781,6 +3811,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get fatherName => 'نام پدر';
+
+  @override
+  String get feePercent => 'درصد کارمزد';
 
   @override
   String get female => 'خانم';
@@ -3882,6 +3915,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get healthy => 'سالم';
+
+  @override
+  String get heldQuantity => 'موجودی امانی';
 
   @override
   String get hexColor => 'کد رنگ';
@@ -3996,6 +4032,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get label => 'برچسب';
 
   @override
+  String get languages => 'زبان‌ها';
+
+  @override
   String get last7Days => '۷ روز اخیر';
 
   @override
@@ -4024,6 +4063,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get leaveMaskedToKeepTheCurrentValue => 'برای حفظ مقدار فعلی، ماسک را تغییر ندهید';
+
+  @override
+  String get ledger => 'دفتر امانت';
 
   @override
   String get ledgerIsBalanced => 'دفتر کل تراز است';
@@ -4065,6 +4107,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get machineName => 'نام سرور';
 
   @override
+  String get makingChargePercent => 'درصد اجرت ساخت';
+
+  @override
   String get male => 'آقا';
 
   @override
@@ -4086,6 +4131,12 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get maxPrice => 'حداکثر قیمت';
+
+  @override
+  String get maxPurchase => 'حداکثر خرید';
+
+  @override
+  String get maxStayDays => 'حداکثر روز اقامت';
 
   @override
   String get mcc => 'کد MCC';
@@ -4122,6 +4173,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get minPrice => 'حداقل قیمت';
+
+  @override
+  String get minPurchase => 'حداقل خرید';
 
   @override
   String get minute => 'دقیقه';
@@ -4179,6 +4233,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get net => 'خالص';
+
+  @override
+  String get newEntry => 'ردیف تازه';
 
   @override
   String get newestFirst => 'جدیدترین';
@@ -4241,6 +4298,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get oldestFirst => 'قدیمی‌ترین';
 
   @override
+  String get onePerLine => 'هر مورد در یک خط';
+
+  @override
   String get onlyErrors => 'فقط خطا';
 
   @override
@@ -4301,6 +4361,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get parkingReport => 'گزارش پارکینگ';
 
   @override
+  String get passport => 'پاسپورت';
+
+  @override
   String get passportNumber => 'شماره‌ی گذرنامه';
 
   @override
@@ -4328,6 +4391,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get phoneNumberOrNationalCode => 'شماره موبایل یا کد ملی';
 
   @override
+  String get photos => 'عکس‌ها';
+
+  @override
   String get photosAreSuitable => 'عکس‌ها مناسب‌اند';
 
   @override
@@ -4344,6 +4410,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get placeApprovals => 'تأیید مکان‌ها';
+
+  @override
+  String get placeCategories => 'دسته‌های مکان';
 
   @override
   String get planDorm => 'خوابگاه و پانسیون';
@@ -4493,6 +4562,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get refunds => 'برگشت به مشتری';
+
+  @override
+  String get region => 'منطقه';
 
   @override
   String get registerAMerchantForAFullyVerifiedUser => 'ثبت پذیرنده برای کاربری که کاملاً احراز هویت شده است.';
@@ -4755,6 +4827,12 @@ class AppLocalizationsFa extends AppLocalizations {
   String get timezone => 'منطقه زمانی';
 
   @override
+  String get timeZone => 'منطقه‌ی زمانی';
+
+  @override
+  String get tips => 'نکته‌ها';
+
+  @override
   String get toBirthDate => 'تا تاریخ تولد';
 
   @override
@@ -4827,6 +4905,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get unassignedTerminals => 'پایانه‌های تخصیص‌نیافته';
 
   @override
+  String get unitPrice => 'نرخ واحد';
+
+  @override
   String get unpublish => 'لغو انتشار';
 
   @override
@@ -4876,6 +4957,12 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get violationReports => 'گزارش‌های تخلف';
+
+  @override
+  String get visaRule => 'قانون ویزا';
+
+  @override
+  String get visaRules => 'قوانین ویزا';
 
   @override
   String get walletCharges => 'شارژ کیف پول‌ها';

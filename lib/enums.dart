@@ -230,7 +230,9 @@ enum TagUser with UNumericIdentifiable {
   permissionManageCategories("مدیریت دسته‌بندی‌ها", "Manage Categories", 632),
   permissionManageProducts("مدیریت کالاها", "Manage Products", 633),
   permissionQuickSale("فروش سریع", "Quick Sale", 634),
-  permissionManageInventory("مدیریت انبار", "Manage Inventory", 635);
+  permissionManageInventory("مدیریت انبار", "Manage Inventory", 635),
+  permissionManageGeo("مدیریت کشورها، شهرها و مکان‌ها", "Manage Countries, Cities and Places", 636),
+  permissionManageCustody("مدیریت باشگاه‌های امانت", "Manage Custody Programs", 637);
 
   const TagUser(this.titleFa, this.titleEn, this.number);
 
@@ -277,6 +279,8 @@ enum TagUser with UNumericIdentifiable {
     permissionManageProducts,
     permissionQuickSale,
     permissionManageInventory,
+    permissionManageGeo,
+    permissionManageCustody,
   ];
 
   static const List<TagUser> organizationPermissions = <TagUser>[
@@ -2086,9 +2090,168 @@ enum TagStoreType with UNumericIdentifiable {
 
 enum TagCategory with UNumericIdentifiable {
   active("فعال", "Active", 101),
-  inactive("غیرفعال", "Inactive", 102);
+  inactive("غیرفعال", "Inactive", 102),
+  place("دسته‌ی مکان", "Place category", 201);
 
   const TagCategory(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+/// A country of the Geo module: one status and any regions.
+enum TagCountry with UNumericIdentifiable {
+  active("فعال", "Active", 101),
+  comingSoon("به‌زودی", "Coming soon", 102),
+  inactive("غیرفعال", "Inactive", 103),
+  africa("آفریقا", "Africa", 201),
+  asia("آسیا", "Asia", 202),
+  caucasus("قفقاز", "Caucasus", 203),
+  europe("اروپا", "Europe", 204),
+  middleEast("خاورمیانه", "Middle East", 205),
+  northAmerica("آمریکای شمالی", "North America", 206),
+  southAmerica("آمریکای جنوبی", "South America", 207),
+  oceania("اقیانوسیه", "Oceania", 208);
+
+  const TagCountry(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagCity with UNumericIdentifiable {
+  active("فعال", "Active", 101),
+  inactive("غیرفعال", "Inactive", 102),
+  capital("پایتخت", "Capital", 201);
+
+  const TagCity(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagPlace with UNumericIdentifiable {
+  active("فعال", "Active", 101),
+  inactive("غیرفعال", "Inactive", 102);
+
+  const TagPlace(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+/// From the easiest entry to none; a country shows the easiest rule of the traveller's passports.
+enum TagVisaRule with UNumericIdentifiable {
+  visaFree("بدون ویزا", "Visa free", 101),
+  visaOnArrival("ویزای فرودگاهی", "Visa on arrival", 102),
+  eVisa("ویزای الکترونیکی", "e-Visa", 103),
+  visaRequired("نیاز به ویزا", "Visa required", 104),
+  notAllowed("ورود ممکن نیست", "Entry not allowed", 105);
+
+  const TagVisaRule(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+/// A store's custody program: [paused] takes no new purchases, [suspended] is stopped by the platform.
+enum TagCustodyProgram with UNumericIdentifiable {
+  active("فعال", "Active", 101),
+  paused("توقف خرید", "Paused", 102),
+  suspended("معلق", "Suspended", 103);
+
+  const TagCustodyProgram(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagCustodyRate with UNumericIdentifiable {
+  sell("نرخ فروش", "Sell rate", 101);
+
+  const TagCustodyRate(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagCustodyMember with UNumericIdentifiable {
+  active("فعال", "Active", 101),
+  suspended("معلق", "Suspended", 102);
+
+  const TagCustodyMember(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagCustodyEntry with UNumericIdentifiable {
+  purchase("خرید", "Purchase", 101),
+  delivery("تحویل", "Delivery", 102),
+  adjustment("اصلاح", "Adjustment", 103);
+
+  const TagCustodyEntry(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagCalendar with UNumericIdentifiable {
+  gregorian("میلادی", "Gregorian", 101),
+  jalali("شمسی", "Jalali", 102),
+  hijri("قمری", "Hijri", 103);
+
+  const TagCalendar(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagDistanceUnit with UNumericIdentifiable {
+  kilometer("کیلومتر", "Kilometer", 101),
+  mile("مایل", "Mile", 102);
+
+  const TagDistanceUnit(this.titleFa, this.titleEn, this.number);
 
   @override
   final String titleFa;

@@ -48,7 +48,7 @@ class UMediaService {
     required Function(String e) onException,
   }) => _Api.call("/Media/Delete", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 
-  /// Saves a [UFilePicker.gallery]: deletes removed photos, uploads new ones (category = first tag) and moves the cover mark.
+  /// Saves a [UFilePicker.gallery] of a hotel, dorm, room, bed, country, city or place: deletes removed photos, uploads new ones (category = first tag) and moves the cover mark.
   Future<void> syncGallery(
     UFilePickerController photos, {
     required List<UMediaResponse> existing,
@@ -57,6 +57,9 @@ class UMediaService {
     String? dormId,
     String? dormRoomId,
     String? dormBedId,
+    String? countryId,
+    String? cityId,
+    String? placeId,
   }) async {
     if (!photos.hasChanges) return;
     void ignore(_) {}
@@ -82,6 +85,9 @@ class UMediaService {
           dormId: dormId,
           dormRoomId: dormRoomId,
           dormBedId: dormBedId,
+          countryId: countryId,
+          cityId: cityId,
+          placeId: placeId,
         ),
         onOk: ignore,
         onError: ignore,

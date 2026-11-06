@@ -6710,6 +6710,12 @@ abstract class AppLocalizations {
   /// **'Cache hit ratio'**
   String get cacheHitRatio;
 
+  /// No description provided for @callingCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Calling code'**
+  String get callingCode;
+
   /// No description provided for @candlestickChart.
   ///
   /// In en, this message translates to:
@@ -6751,6 +6757,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Check-out Checklist'**
   String get checkOutChecklist;
+
+  /// No description provided for @cities.
+  ///
+  /// In en, this message translates to:
+  /// **'Cities'**
+  String get cities;
 
   /// No description provided for @clearLogs.
   ///
@@ -6878,6 +6890,12 @@ abstract class AppLocalizations {
   /// **'{count} reports'**
   String countReports(Object count);
 
+  /// No description provided for @countries.
+  ///
+  /// In en, this message translates to:
+  /// **'Countries'**
+  String get countries;
+
   /// No description provided for @countRows.
   ///
   /// In en, this message translates to:
@@ -6980,6 +6998,24 @@ abstract class AppLocalizations {
   /// **'Current plan'**
   String get currentPlan;
 
+  /// No description provided for @currentRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Current rate'**
+  String get currentRate;
+
+  /// No description provided for @custodyProgram.
+  ///
+  /// In en, this message translates to:
+  /// **'Custody program'**
+  String get custodyProgram;
+
+  /// No description provided for @custodyPrograms.
+  ///
+  /// In en, this message translates to:
+  /// **'Custody programs'**
+  String get custodyPrograms;
+
   /// No description provided for @dailyActivity.
   ///
   /// In en, this message translates to:
@@ -7076,6 +7112,12 @@ abstract class AppLocalizations {
   /// **'Debt Amount'**
   String get debtAmount;
 
+  /// No description provided for @declaredStock.
+  ///
+  /// In en, this message translates to:
+  /// **'Declared stock'**
+  String get declaredStock;
+
   /// No description provided for @decode.
   ///
   /// In en, this message translates to:
@@ -7105,6 +7147,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delete this row? This cannot be undone.'**
   String get deleteThisRowCannotBeUndone;
+
+  /// No description provided for @deliveryFee.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery fee'**
+  String get deliveryFee;
 
   /// No description provided for @detail1.
   ///
@@ -7214,11 +7262,23 @@ abstract class AppLocalizations {
   /// **'Electronic agreement'**
   String get electronicAgreement;
 
+  /// No description provided for @embassies.
+  ///
+  /// In en, this message translates to:
+  /// **'Embassies'**
+  String get embassies;
+
   /// No description provided for @emergencyContact.
   ///
   /// In en, this message translates to:
   /// **'Emergency Contact'**
   String get emergencyContact;
+
+  /// No description provided for @emergencyNumbers.
+  ///
+  /// In en, this message translates to:
+  /// **'Emergency numbers'**
+  String get emergencyNumbers;
 
   /// No description provided for @encode.
   ///
@@ -7315,6 +7375,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Father Name'**
   String get fatherName;
+
+  /// No description provided for @feePercent.
+  ///
+  /// In en, this message translates to:
+  /// **'Fee percent'**
+  String get feePercent;
 
   /// No description provided for @female.
   ///
@@ -7513,6 +7579,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'OK'**
   String get healthy;
+
+  /// No description provided for @heldQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Held quantity'**
+  String get heldQuantity;
 
   /// No description provided for @hexColor.
   ///
@@ -7730,6 +7802,12 @@ abstract class AppLocalizations {
   /// **'Label'**
   String get label;
 
+  /// No description provided for @languages.
+  ///
+  /// In en, this message translates to:
+  /// **'Languages'**
+  String get languages;
+
   /// No description provided for @last7Days.
   ///
   /// In en, this message translates to:
@@ -7789,6 +7867,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Leave masked to keep the current value'**
   String get leaveMaskedToKeepTheCurrentValue;
+
+  /// No description provided for @ledger.
+  ///
+  /// In en, this message translates to:
+  /// **'Ledger'**
+  String get ledger;
 
   /// No description provided for @ledgerIsBalanced.
   ///
@@ -7868,6 +7952,12 @@ abstract class AppLocalizations {
   /// **'Machine Name'**
   String get machineName;
 
+  /// No description provided for @makingChargePercent.
+  ///
+  /// In en, this message translates to:
+  /// **'Making charge percent'**
+  String get makingChargePercent;
+
   /// No description provided for @male.
   ///
   /// In en, this message translates to:
@@ -7909,6 +7999,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Max Price'**
   String get maxPrice;
+
+  /// No description provided for @maxPurchase.
+  ///
+  /// In en, this message translates to:
+  /// **'Max purchase'**
+  String get maxPurchase;
+
+  /// No description provided for @maxStayDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Max stay days'**
+  String get maxStayDays;
 
   /// No description provided for @mcc.
   ///
@@ -7981,6 +8083,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Min Price'**
   String get minPrice;
+
+  /// No description provided for @minPurchase.
+  ///
+  /// In en, this message translates to:
+  /// **'Min purchase'**
+  String get minPurchase;
 
   /// No description provided for @minute.
   ///
@@ -8095,6 +8203,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Net'**
   String get net;
+
+  /// No description provided for @newEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'New entry'**
+  String get newEntry;
 
   /// No description provided for @newestFirst.
   ///
@@ -8216,6 +8330,12 @@ abstract class AppLocalizations {
   /// **'Oldest First'**
   String get oldestFirst;
 
+  /// No description provided for @onePerLine.
+  ///
+  /// In en, this message translates to:
+  /// **'One per line'**
+  String get onePerLine;
+
   /// No description provided for @onlyErrors.
   ///
   /// In en, this message translates to:
@@ -8336,6 +8456,12 @@ abstract class AppLocalizations {
   /// **'Parking Report'**
   String get parkingReport;
 
+  /// No description provided for @passport.
+  ///
+  /// In en, this message translates to:
+  /// **'Passport'**
+  String get passport;
+
   /// No description provided for @passportNumber.
   ///
   /// In en, this message translates to:
@@ -8390,6 +8516,12 @@ abstract class AppLocalizations {
   /// **'Phone number or national code'**
   String get phoneNumberOrNationalCode;
 
+  /// No description provided for @photos.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos'**
+  String get photos;
+
   /// No description provided for @photosAreSuitable.
   ///
   /// In en, this message translates to:
@@ -8425,6 +8557,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Place approvals'**
   String get placeApprovals;
+
+  /// No description provided for @placeCategories.
+  ///
+  /// In en, this message translates to:
+  /// **'Place categories'**
+  String get placeCategories;
 
   /// No description provided for @planDorm.
   ///
@@ -8719,6 +8857,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Refunds'**
   String get refunds;
+
+  /// No description provided for @region.
+  ///
+  /// In en, this message translates to:
+  /// **'Region'**
+  String get region;
 
   /// No description provided for @registerAMerchantForAFullyVerifiedUser.
   ///
@@ -9236,6 +9380,18 @@ abstract class AppLocalizations {
   /// **'Timezone'**
   String get timezone;
 
+  /// No description provided for @timeZone.
+  ///
+  /// In en, this message translates to:
+  /// **'Time zone'**
+  String get timeZone;
+
+  /// No description provided for @tips.
+  ///
+  /// In en, this message translates to:
+  /// **'Tips'**
+  String get tips;
+
   /// No description provided for @toBirthDate.
   ///
   /// In en, this message translates to:
@@ -9380,6 +9536,12 @@ abstract class AppLocalizations {
   /// **'Unassigned Terminals'**
   String get unassignedTerminals;
 
+  /// No description provided for @unitPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit price'**
+  String get unitPrice;
+
   /// No description provided for @unpublish.
   ///
   /// In en, this message translates to:
@@ -9481,6 +9643,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Violation reports'**
   String get violationReports;
+
+  /// No description provided for @visaRule.
+  ///
+  /// In en, this message translates to:
+  /// **'Visa rule'**
+  String get visaRule;
+
+  /// No description provided for @visaRules.
+  ///
+  /// In en, this message translates to:
+  /// **'Visa rules'**
+  String get visaRules;
 
   /// No description provided for @walletCharges.
   ///
