@@ -140,8 +140,8 @@ class UContentBentoPage extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(24),
               gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
+                begin: Alignment.bottomRight,
+                end: Alignment.topLeft,
                 colors: <Color>[scheme.primary, scheme.primaryContainer],
               ),
             ),

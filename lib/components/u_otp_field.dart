@@ -427,12 +427,12 @@ class _UOtpFieldState extends State<UOtpField> with TickerProviderStateMixin {
       keyboardType: widget.keyboardType,
       textInputAction: TextInputAction.done,
       autofillHints: widget.enableSmsAutoFill ? const <String>[AutofillHints.oneTimeCode] : null,
-      inputFormatters:
-          widget.inputFormatters ??
-          <TextInputFormatter>[
-            LengthLimitingTextInputFormatter(widget.length),
-            if (widget.keyboardType == TextInputType.number || widget.keyboardType == TextInputType.phone) FilteringTextInputFormatter.digitsOnly,
-          ],
+      // inputFormatters:
+      //     widget.inputFormatters ??
+      //     <TextInputFormatter>[
+      //       LengthLimitingTextInputFormatter(widget.length),
+      //       if (widget.keyboardType == TextInputType.number || widget.keyboardType == TextInputType.phone) FilteringTextInputFormatter.digitsOnly,
+      //     ],
       showCursor: false,
       enableInteractiveSelection: true,
       style: const TextStyle(height: 1),
