@@ -129,7 +129,7 @@ class UContentBentoPage extends StatelessWidget {
 
     if (!hasImage && !_has(j.title) && !_has(j.subTitle)) return null;
 
-    const double height = 210;
+    const double height = 180;
     final Color foreground = hasImage ? const Color(0xFFFFFFFF) : scheme.onPrimary;
 
     final Widget background = hasImage
