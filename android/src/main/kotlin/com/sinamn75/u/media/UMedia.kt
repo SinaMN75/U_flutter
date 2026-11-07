@@ -513,7 +513,8 @@ object UMediaPip {
                 .Builder()
                 .setAspectRatio(Rational(numerator, 1000))
                 .build()
-        return current.enterPictureInPictureMode(params)
+        // Called from onUserLeaveHint too, outside the method channel's guard: a refusal must not crash the app.
+        return runCatching { current.enterPictureInPictureMode(params) }.getOrDefault(false)
     }
 
     fun exit(activity: Activity?) {

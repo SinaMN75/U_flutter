@@ -277,12 +277,24 @@ class UDocMarkup {
     return false;
   }
 
-  UDocMarkup copyWith({UDocMarkupKind? kind, Color? color, String? note, List<Rect>? rects, int? start, int? end, String? text, Map<String, Object?>? extra, bool touch = true}) => UDocMarkup(
+  UDocMarkup copyWith({
+    UDocMarkupKind? kind,
+    Color? color,
+    String? note,
+    List<Rect>? rects,
+    int? pageIndex,
+    int? blockIndex,
+    int? start,
+    int? end,
+    String? text,
+    Map<String, Object?>? extra,
+    bool touch = true,
+  }) => UDocMarkup(
     id: id,
     groupId: groupId,
     kind: kind ?? this.kind,
-    pageIndex: pageIndex,
-    blockIndex: blockIndex,
+    pageIndex: pageIndex ?? this.pageIndex,
+    blockIndex: blockIndex ?? this.blockIndex,
     start: start ?? this.start,
     end: end ?? this.end,
     text: text ?? this.text,
@@ -713,6 +725,19 @@ class UDocAnnotationController extends ChangeNotifier {
     _checkpoint();
     _markups.removeWhere((UDocMarkup markup) => markup.groupKey == groupKey);
     _commit();
+  }
+
+  /// Moves text markups to new places after the document text changed (one undo step).
+  void relocate(Map<String, ({int pageIndex, int blockIndex, int start, int end})> places) {
+    bool changed = false;
+    for (int i = 0; i < _markups.length; i++) {
+      final ({int pageIndex, int blockIndex, int start, int end})? place = places[_markups[i].id];
+      if (place == null) continue;
+      if (!changed) _checkpoint();
+      changed = true;
+      _markups[i] = _markups[i].copyWith(pageIndex: place.pageIndex, blockIndex: place.blockIndex, start: place.start, end: place.end, rects: const <Rect>[]);
+    }
+    if (changed) _commit();
   }
 
   /// Silently stores geometry computed after the fact (no undo entry).

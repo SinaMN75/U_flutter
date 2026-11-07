@@ -190,6 +190,7 @@ class UEpubReader extends StatefulWidget {
     this.restorePosition = true,
     this.actions = const <Widget>[],
     this.onChapterChanged,
+    this.onLinkTapped,
     this.onBack,
     super.key,
   }) : assert(filePath != null || bytes != null || url != null || asset != null || controller != null, "Provide one EPUB source");
@@ -282,6 +283,9 @@ class UEpubReader extends StatefulWidget {
   /// Called with the new chapter index.
   final void Function(int chapterIndex)? onChapterChanged;
 
+  /// Called first when a link is tapped; return true when you handled it (default: web links open, internal links jump).
+  final Future<bool> Function(String href)? onLinkTapped;
+
   /// Called when the back button is pressed.
   final VoidCallback? onBack;
 
@@ -343,6 +347,7 @@ class UEpubReaderState extends State<UEpubReader> {
   bool _selectionAtDown = false;
   List<double>? _estimates;
   String _estimatesKey = "";
+  int _contentVersion = 0;
 
   /// The EPUB controller.
   UEpubController get controller => _controller;
@@ -368,6 +373,7 @@ class UEpubReaderState extends State<UEpubReader> {
     final UEpubController? provided = widget.controller;
     _controller = provided ?? UEpubController();
     _ownsController = provided == null;
+    _contentVersion = _controller.contentVersion;
     _controller.addListener(_onChanged);
     final UDocAnnotationController? markup = widget.annotations;
     _markup = markup ?? UDocAnnotationController(onChanged: (UDocAnnotationController controller) => widget.onAnnotationsChanged?.call(controller.export()));
@@ -468,9 +474,32 @@ class UEpubReaderState extends State<UEpubReader> {
 
   void _onChanged() {
     if (!mounted) return;
+    if (_contentVersion != _controller.contentVersion) {
+      _contentVersion = _controller.contentVersion;
+      unawaited(_reloadChapter());
+    }
     final UDocMarkup? active = _activeMarkup;
     if (active != null && _markup.byId(active.id) == null) _activeMarkup = null;
     setState(() {});
+  }
+
+  /// The content changed under the same position: shows the new blocks without moving.
+  Future<void> _reloadChapter() async {
+    final UEpubChapter? current = _chapter;
+    if (current == null) return;
+    if (current.spineIndex >= _controller.pageCount) {
+      await _loadChapter(_controller.pageCount - 1);
+      return;
+    }
+    final UEpubChapter chapter = await _controller.chapter(current.spineIndex);
+    if (!mounted) return;
+    _clearSelection();
+    setState(() {
+      _chapter = chapter;
+      _estimates = null;
+      _pagesKey = "";
+      _visibleBlock = min(_visibleBlock, max(0, chapter.blocks.length - 1));
+    });
   }
 
   void _onScroll() {
@@ -650,7 +679,9 @@ class UEpubReaderState extends State<UEpubReader> {
 
   Future<void> _handleLink(String href) async {
     _linkTapped = true;
-    final UEpubBook? book = _controller.book;
+    final Future<bool> Function(String href)? custom = widget.onLinkTapped;
+    if (custom != null && await custom(href)) return;
+    final UEpubSource? book = _controller.source;
     if (book == null) return;
     if (href.startsWith("http://") || href.startsWith("https://") || href.startsWith("mailto:")) {
       await ULaunch.url(href);
@@ -663,7 +694,7 @@ class UEpubReaderState extends State<UEpubReader> {
     final int hash = path.indexOf("#");
     final String target = _normalizePath(hash < 0 ? path : path.substring(0, hash));
     final String? anchor = hash < 0 ? null : path.substring(hash + 1);
-    final int index = book.spineIndexFor(target);
+    final int index = book.spineIndexFor(anchor == null ? target : "$target#$anchor");
     if (index < 0 || index == chapter?.spineIndex) {
       if (anchor != null && chapter != null) {
         final int blockIndex = chapter.anchorBlock(anchor);
@@ -1248,7 +1279,7 @@ class UEpubReaderState extends State<UEpubReader> {
     final Widget content = LayoutBuilder(
       key: _viewportKey,
       builder: (BuildContext context, BoxConstraints constraints) {
-        if (_controller.book?.fixedLayout ?? false) return _buildFixedLayout(chapter);
+        if (_controller.source?.fixedLayout ?? false) return _buildFixedLayout(chapter);
         _keepBlockOnReflow(chapter, constraints);
         final Widget view = _paged ? _buildPaged(chapter, constraints) : _buildContinuous(chapter);
         // A drawing tool owns single-finger drags; wheel and trackpad still scroll.
@@ -1433,7 +1464,9 @@ class UEpubReaderState extends State<UEpubReader> {
       if (identical(hit, _flash) || hit == _controller.value.currentHit) activeHit = (hit.start, hit.end);
     }
     return UEpubBlockView(
-      key: ValueKey<String>("${chapter.spineIndex}:${slice.blockIndex}:${slice.start}"),
+      // The kind is part of the key: an edited document can turn a paragraph into a list at the same index,
+      // and the block's widget tree must never change shape under the same state.
+      key: ValueKey<String>("${chapter.spineIndex}:${slice.blockIndex}:${slice.start}:${block.kind.index}:${block.spans.isEmpty ? 0 : 1}"),
       block: block,
       blockIndex: slice.blockIndex,
       sliceStart: slice.start,
@@ -1993,8 +2026,10 @@ class _UEpubBlockViewState extends State<UEpubBlockView> {
     final Widget content = _buildContent(context);
     if (tools == null) return content;
     // Always the same Stack so the SelectionListener below never re-registers.
+    // Passthrough keeps the full width, so right-to-left text stays on the right.
     return Stack(
       clipBehavior: Clip.none,
+      fit: StackFit.passthrough,
       children: <Widget>[
         content,
         Positioned.fill(
@@ -2064,10 +2099,25 @@ class _UEpubBlockViewState extends State<UEpubBlockView> {
               child: Container(
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(border: Border.all(color: _foreground.withValues(alpha: 0.25))),
-                child: Text(
-                  cell.map((UEpubSpan span) => span.text).join(),
+                child: Text.rich(
+                  TextSpan(
+                    children: cell
+                        .map(
+                          (UEpubSpan span) => TextSpan(
+                            text: span.text,
+                            style: TextStyle(
+                              fontWeight: span.bold ? FontWeight.w700 : null,
+                              fontStyle: span.italic ? FontStyle.italic : null,
+                              fontFamily: span.monospace ? "monospace" : null,
+                              decoration: span.strike ? TextDecoration.lineThrough : (span.underline ? TextDecoration.underline : null),
+                              color: span.href != null ? Theme.of(context).colorScheme.primary : null,
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
                   style: TextStyle(fontSize: widget.typography.baseFontSize * 0.92, color: _foreground, height: widget.typography.lineHeight),
-                  textDirection: block.rtl ? TextDirection.rtl : TextDirection.ltr,
+                  textDirection: block.rtl || UDocText.isMostlyRtl(cell.map((UEpubSpan span) => span.text).join()) ? TextDirection.rtl : TextDirection.ltr,
                 ),
               ),
             ),
@@ -2116,31 +2166,37 @@ class _UEpubBlockViewState extends State<UEpubBlockView> {
     );
     Widget content = text;
     if (block.kind == UEpubBlockKind.listItem) {
-      content = Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          SizedBox(
-            width: 32,
-            child: Padding(
-              padding: const EdgeInsetsDirectional.only(end: 8, top: 2),
-              child: Text(
-                widget.sliceStart == 0 ? block.listMarker : "",
-                textAlign: TextAlign.end,
-                style: TextStyle(color: _foreground, fontSize: widget.typography.baseFontSize),
+      content = Directionality(
+        textDirection: direction,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(
+              width: 32,
+              child: Padding(
+                padding: const EdgeInsetsDirectional.only(end: 8, top: 2),
+                child: Text(
+                  widget.sliceStart == 0 ? block.listMarker : "",
+                  textAlign: TextAlign.end,
+                  style: TextStyle(color: _foreground, fontSize: widget.typography.baseFontSize),
+                ),
               ),
             ),
-          ),
-          Expanded(child: text),
-        ],
+            Expanded(child: text),
+          ],
+        ),
       );
     }
     if (block.kind == UEpubBlockKind.blockquote) {
-      content = Container(
-        padding: const EdgeInsetsDirectional.only(start: 12, end: 12),
-        decoration: BoxDecoration(
-          border: BorderDirectional(start: BorderSide(color: _foreground.withValues(alpha: 0.35), width: 3)),
+      content = Directionality(
+        textDirection: direction,
+        child: Container(
+          padding: const EdgeInsetsDirectional.only(start: 12, end: 12),
+          decoration: BoxDecoration(
+            border: BorderDirectional(start: BorderSide(color: _foreground.withValues(alpha: 0.35), width: 3)),
+          ),
+          child: text,
         ),
-        child: text,
       );
     }
     if (block.kind == UEpubBlockKind.preformatted) {

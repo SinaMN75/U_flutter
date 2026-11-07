@@ -5,6 +5,7 @@ import "../../demo/gallery_page.dart";
 
 const String _pdfAsset = "assets/docs/sample_fa_en.pdf";
 const String _epubAsset = "assets/docs/sample_fa.epub";
+const String _markdownAsset = "assets/docs/sample.md";
 const String _pdfUrl = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
 
 /// SinApp's previous (pdfrx based) annotation format, base64 of this JSON.
@@ -122,6 +123,32 @@ class _DocumentReaderPageState extends State<DocumentReaderPage> {
     controller.dispose();
   }
 
+  Future<void> _openMarkdown({String? asset, String? path, Uint8List? bytes, String? text, bool editor = false}) => UNavigator.push<void>(
+    UScaffold(
+      body: UMarkdownReader(
+        asset: asset,
+        filePath: path,
+        bytes: bytes,
+        text: text,
+        startInEditor: editor,
+        showBackButton: true,
+        showSidebar: _sidebar,
+        allowCopy: _allowCopy,
+        allowShare: _allowCopy,
+        secure: _secure,
+        watermark: _mark,
+        noteDisplay: _noteDisplay,
+        onAnnotationsChanged: _onSync,
+        onSave: path != null
+            ? null
+            : (String markdown) async {
+                ULocalStorage.set("demo_markdown_saved", markdown);
+                return true;
+              },
+      ),
+    ),
+  );
+
   Future<void> _pick(String extension) async {
     final UFileData? file = await UFile.pickFile(allowedExtensions: <String>[extension]);
     if (file == null) return;
@@ -129,6 +156,8 @@ class _DocumentReaderPageState extends State<DocumentReaderPage> {
     final Uint8List? bytes = path == null ? file.bytes : null;
     if (extension == "pdf") {
       await _openPdf(path: path, bytes: path == null ? bytes : null, title: file.name);
+    } else if (extension == "md") {
+      await _openMarkdown(path: path, bytes: path == null ? bytes : null);
     } else {
       await _openEpub(path: path, bytes: path == null ? bytes : null);
     }
@@ -147,6 +176,7 @@ class _DocumentReaderPageState extends State<DocumentReaderPage> {
       _optionsSection(),
       _pdfSection(),
       _epubSection(),
+      _markdownSection(),
       _syncSection(),
       _apiSection(),
     ],
@@ -266,6 +296,35 @@ UEpubReader(
         FilledButton.icon(onPressed: () => unawaited(_openEpub(asset: _epubAsset)), icon: const Icon(Icons.menu_book_rounded), label: const Text("Persian EPUB sample")),
         FilledButton.tonalIcon(onPressed: () => unawaited(_openEpub(asset: _epubAsset, draw: true)), icon: const Icon(Icons.draw_rounded), label: const Text("Draw on the EPUB")),
         OutlinedButton.icon(onPressed: () => unawaited(_pick("epub")), icon: const Icon(Icons.folder_open_rounded), label: const Text("Open an EPUB…")),
+      ],
+    ),
+  );
+
+  DemoSection _markdownSection() => DemoSection(
+    title: "UMarkdownReader",
+    description:
+        "The EPUB reader's features on Markdown (CommonMark + tables, task lists, footnotes, front matter), plus a source editor: "
+        "formatting toolbar, shortcuts (⌘B, ⌘I, ⌘K…), smart lists, find & replace, live split preview, save and export as Markdown, HTML or plain text. "
+        "Highlights move with their text when you edit.",
+    code: r'''
+UMarkdownReader(
+  filePath: "/docs/readme.md",     // or text / bytes / asset / url / vaultKey
+  chapterLevel: 1,                 // a chapter per # heading (0 = one chapter)
+  onSave: (String md) async => api.save(md),   // else writes back to the file / vault
+  onAnnotationsChanged: (String data) => api.saveNotes(data),
+)''',
+    child: Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: <Widget>[
+        FilledButton.icon(onPressed: () => unawaited(_openMarkdown(asset: _markdownAsset)), icon: const Icon(Icons.article_rounded), label: const Text("Markdown sample")),
+        FilledButton.tonalIcon(onPressed: () => unawaited(_openMarkdown(asset: _markdownAsset, editor: true)), icon: const Icon(Icons.edit_note_rounded), label: const Text("Open in the editor")),
+        FilledButton.tonalIcon(
+          onPressed: () => unawaited(_openMarkdown(text: ULocalStorage.getString("demo_markdown_saved") ?? "# New note\n\nStart typing…", editor: true)),
+          icon: const Icon(Icons.note_add_outlined),
+          label: const Text("Saved note"),
+        ),
+        OutlinedButton.icon(onPressed: () => unawaited(_pick("md")), icon: const Icon(Icons.folder_open_rounded), label: const Text("Open a Markdown file…")),
       ],
     ),
   );

@@ -244,25 +244,61 @@ class UEpubSpineItem {
 }
 
 /// An opened EPUB: metadata, chapters, resources, table of contents.
-class UEpubBook {
+/// What a reflowable reader shows: an EPUB book, or any other document turned into chapters of blocks (e.g. Markdown).
+abstract class UEpubSource {
+  /// Stable id of the document (progress, highlights and annotations are stored under it).
+  String get fingerprint;
+
+  int get chapterCount;
+
+  UDocMetadata get metadata;
+
+  UDocDirection get direction;
+
+  List<UDocOutlineNode> get navigation;
+
+  /// Pages are fixed images instead of reflowable text.
+  bool get fixedLayout => false;
+
+  String? get coverHref => null;
+
+  Future<UEpubChapter> chapter(int index);
+
+  /// Bytes of an image or other resource the chapters point to.
+  Future<Uint8List> resource(String href);
+
+  /// Chapter index of [href], or -1.
+  int spineIndexFor(String href);
+
+  Future<void> close();
+}
+
+class UEpubBook extends UEpubSource {
   UEpubBook._(this.archive, this.fingerprint);
 
   final UEpubArchive archive;
+  @override
   final String fingerprint;
 
   final Map<String, UEpubResource> resources = <String, UEpubResource>{};
   final Map<String, UEpubResource> resourcesByHref = <String, UEpubResource>{};
   final List<UEpubSpineItem> spine = <UEpubSpineItem>[];
+  @override
   final List<UDocOutlineNode> navigation = <UDocOutlineNode>[];
   final Map<String, String> obfuscatedFonts = <String, String>{};
 
+  @override
   UDocMetadata metadata = const UDocMetadata();
+  @override
   UDocDirection direction = UDocDirection.ltr;
   String opfPath = "";
   String opfDirectory = "";
+  @override
   String? coverHref;
+  @override
   bool fixedLayout = false;
 
+  @override
   int get chapterCount => spine.length;
 
   static Future<UEpubBook> open({String? path, String? url, Uint8List? bytes, String? asset, Object? blob, Map<String, String>? headers}) async {
@@ -533,6 +569,7 @@ class UEpubBook {
     return parts.join("/");
   }
 
+  @override
   int spineIndexFor(String href) {
     final String target = _normalize(href.split("#").first);
     for (int i = 0; i < spine.length; i++) {
@@ -541,6 +578,7 @@ class UEpubBook {
     return -1;
   }
 
+  @override
   Future<Uint8List> resource(String href) async {
     final String path = _normalize(href.split("#").first);
     final Uint8List data = await archive.read(path);
@@ -577,6 +615,7 @@ class UEpubBook {
     return Uint8List.fromList(bytes);
   }
 
+  @override
   Future<UEpubChapter> chapter(int index) async {
     if (index < 0 || index >= spine.length) return UEpubChapter(spineIndex: index, href: "", blocks: const <UEpubBlock>[], title: "", text: "");
     final UEpubSpineItem item = spine[index];
@@ -603,6 +642,7 @@ class UEpubBook {
     return UEpubChapter(spineIndex: index, href: item.href, blocks: builder.blocks, title: builder.title, text: builder.plainText);
   }
 
+  @override
   Future<void> close() async => archive.close();
 }
 
@@ -1629,8 +1669,11 @@ class UEpubTypography {
 class UEpubController extends UDocController {
   UEpubController();
 
-  UEpubBook? _book;
+  UEpubSource? _source;
   UDocTextIndex? _index;
+
+  /// Grows every time [replaceSource] swaps the content.
+  int contentVersion = 0;
 
   final Map<int, UEpubChapter> _chapters = <int, UEpubChapter>{};
   final ULruCache<String, Uint8List> _images = ULruCache<String, Uint8List>(maxBytes: 24 * 1024 * 1024, sizeOf: _imageSize);
@@ -1642,10 +1685,17 @@ class UEpubController extends UDocController {
 
   static int _imageSize(Uint8List value) => value.length;
 
-  UEpubBook? get book => _book;
+  /// The open EPUB book (null for other sources).
+  UEpubBook? get book {
+    final UEpubSource? source = _source;
+    return source is UEpubBook ? source : null;
+  }
+
+  /// The open content.
+  UEpubSource? get source => _source;
 
   @override
-  String get documentId => _book?.fingerprint ?? "epub";
+  String get documentId => _source?.fingerprint ?? "epub";
 
   @override
   UDocKind get kind => UDocKind.epub;
@@ -1653,20 +1703,36 @@ class UEpubController extends UDocController {
   Future<void> open({String? path, String? url, Uint8List? bytes, String? asset, Object? blob, Map<String, String>? headers}) async {
     emit(value.copyWith(state: UDocState.opening, isBusy: true, clearError: true));
     try {
-      final UEpubBook book = await UEpubBook.open(path: path, url: url, bytes: bytes, asset: asset, blob: blob, headers: headers);
-      _book = book;
-      _index = await UDocTextIndex.open(book.fingerprint);
-      outline = book.navigation;
+      await openSource(await UEpubBook.open(path: path, url: url, bytes: bytes, asset: asset, blob: blob, headers: headers));
+    } on UDocError catch (error) {
+      failWith(error);
+    } on Object catch (error) {
+      failWith(UDocError(code: UDocErrorCode.corrupt, message: "Could not open the book", detail: "$error"));
+    }
+  }
+
+  /// Opens any [UEpubSource] (an EPUB book, a Markdown document…).
+  Future<void> openSource(UEpubSource source) async {
+    emit(value.copyWith(state: UDocState.opening, isBusy: true, clearError: true));
+    try {
+      final UEpubSource? previous = _source;
+      if (previous != null && !identical(previous, source)) await previous.close();
+      _source = source;
+      _chapters.clear();
+      _images.clear();
+      await _index?.close();
+      _index = await UDocTextIndex.open(source.fingerprint);
+      outline = source.navigation;
       await UDocProgressStore.instance.load();
-      final UDocProgress? progress = UDocProgressStore.instance.get(book.fingerprint);
+      final UDocProgress? progress = UDocProgressStore.instance.get(source.fingerprint);
       emit(
         value.copyWith(
           state: UDocState.ready,
           kind: UDocKind.epub,
-          pageCount: book.chapterCount,
-          metadata: book.metadata,
-          settings: settings.copyWith(direction: book.direction, scrollMode: UDocScrollMode.verticalContinuous),
-          pageIndex: progress != null && progress.pageIndex < book.chapterCount ? progress.pageIndex : 0,
+          pageCount: source.chapterCount,
+          metadata: source.metadata,
+          settings: settings.copyWith(direction: source.direction, scrollMode: UDocScrollMode.verticalContinuous),
+          pageIndex: progress != null && progress.pageIndex < source.chapterCount ? progress.pageIndex : 0,
           isBusy: false,
           loadedPercent: 1,
           clearError: true,
@@ -1676,14 +1742,35 @@ class UEpubController extends UDocController {
     } on UDocError catch (error) {
       failWith(error);
     } on Object catch (error) {
-      failWith(UDocError(code: UDocErrorCode.corrupt, message: "Could not open the book", detail: "$error"));
+      failWith(UDocError(code: UDocErrorCode.corrupt, message: "Could not open the document", detail: "$error"));
     }
+  }
+
+  /// Swaps the content of an open document (e.g. after an edit) while keeping
+  /// the position, settings and annotations. The reader reloads its chapter.
+  Future<void> replaceSource(UEpubSource source) async {
+    final UEpubSource? previous = _source;
+    if (previous == null) return openSource(source);
+    if (!identical(previous, source)) await previous.close();
+    _source = source;
+    _chapters.clear();
+    _images.clear();
+    outline = source.navigation;
+    contentVersion++;
+    emit(
+      value.copyWith(
+        pageCount: source.chapterCount,
+        metadata: source.metadata,
+        pageIndex: value.pageIndex.clamp(0, max(0, source.chapterCount - 1)),
+        clearError: true,
+      ),
+    );
   }
 
   Future<UEpubChapter> chapter(int index) async {
     final UEpubChapter? cached = _chapters[index];
     if (cached != null) return cached;
-    final UEpubBook? book = _book;
+    final UEpubSource? book = _source;
     if (book == null) return UEpubChapter(spineIndex: index, href: "", blocks: const <UEpubBlock>[], title: "", text: "");
     final UEpubChapter chapter = await book.chapter(index);
     if (_chapters.length > 12) _chapters.clear();
@@ -1695,7 +1782,7 @@ class UEpubController extends UDocController {
   Future<Uint8List?> image(String href) async {
     final Uint8List? cached = _images.get(href);
     if (cached != null) return cached;
-    final UEpubBook? book = _book;
+    final UEpubSource? book = _source;
     if (book == null) return null;
     final Uint8List data = await book.resource(href);
     if (data.isEmpty) return null;
@@ -1731,7 +1818,7 @@ class UEpubController extends UDocController {
     }
   }
 
-  String get _highlightKey => "u_epub_highlights_${_book?.fingerprint ?? ""}";
+  String get _highlightKey => "u_epub_highlights_${_source?.fingerprint ?? ""}";
 
   Future<void> _loadHighlights() async {
     try {
@@ -1786,20 +1873,20 @@ class UEpubController extends UDocController {
 
   /// Reading position stored by [saveProgress], if any.
   UEpubPosition? get savedPosition {
-    final UEpubBook? book = _book;
+    final UEpubSource? book = _source;
     if (book == null) return null;
     return UEpubPosition.decode(UDocProgressStore.instance.get(book.fingerprint)?.cfi);
   }
 
   double get savedPercent {
-    final UEpubBook? book = _book;
+    final UEpubSource? book = _source;
     if (book == null) return 0;
     return UDocProgressStore.instance.get(book.fingerprint)?.percent ?? 0;
   }
 
   /// Searches block by block so every hit knows its exact block and offsets.
   Future<List<UEpubSearchHit>> searchBlocks(String query, {UDocSearchOptions options = const UDocSearchOptions()}) async {
-    final UEpubBook? book = _book;
+    final UEpubSource? book = _source;
     final String trimmed = query.trim();
     if (book == null || trimmed.isEmpty) {
       clearSearch();
@@ -1838,7 +1925,7 @@ class UEpubController extends UDocController {
   }
 
   Future<List<UDocSearchHit>> search(String query, {UDocSearchOptions options = const UDocSearchOptions()}) async {
-    final UEpubBook? book = _book;
+    final UEpubSource? book = _source;
     final String trimmed = query.trim();
     if (book == null || trimmed.isEmpty) {
       clearSearch();
@@ -1874,7 +1961,7 @@ class UEpubController extends UDocController {
   }
 
   void saveProgress({double percent = 0, String? position}) {
-    final UEpubBook? book = _book;
+    final UEpubSource? book = _source;
     if (book == null) return;
     UDocProgressStore.instance.put(
       UDocProgress(
@@ -1894,8 +1981,8 @@ class UEpubController extends UDocController {
     _chapters.clear();
     _images.clear();
     await _index?.close();
-    await _book?.close();
-    _book = null;
+    await _source?.close();
+    _source = null;
     emit(value.copyWith(state: UDocState.closed));
   }
 

@@ -242,6 +242,12 @@ abstract class AppLocalizations {
   /// **'All tabs'**
   String get allTabs;
 
+  /// No description provided for @altText.
+  ///
+  /// In en, this message translates to:
+  /// **'Alt text'**
+  String get altText;
+
   /// No description provided for @amenities.
   ///
   /// In en, this message translates to:
@@ -1508,6 +1514,12 @@ abstract class AppLocalizations {
   /// **'Disabled'**
   String get disabled;
 
+  /// No description provided for @discard.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard'**
+  String get discard;
+
   /// No description provided for @distanceMeters.
   ///
   /// In en, this message translates to:
@@ -1681,6 +1693,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Scheduled'**
   String get downloadScheduled;
+
+  /// No description provided for @doYouWantToSaveYourChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Do you want to save your changes?'**
+  String get doYouWantToSaveYourChanges;
 
   /// No description provided for @dragToMovePinchToScaleTwistToRotate.
   ///
@@ -1922,6 +1940,12 @@ abstract class AppLocalizations {
   /// **'Share notes'**
   String get exportAnnotations;
 
+  /// No description provided for @exportAsItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Export as {item}'**
+  String exportAsItem(Object item);
+
   /// No description provided for @exportImages.
   ///
   /// In en, this message translates to:
@@ -2149,6 +2173,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Football'**
   String get football;
+
+  /// No description provided for @footnote.
+  ///
+  /// In en, this message translates to:
+  /// **'Footnote'**
+  String get footnote;
 
   /// No description provided for @forgotPassword.
   ///
@@ -2497,6 +2527,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'How to get there'**
   String get howToGetThere;
+
+  /// No description provided for @html.
+  ///
+  /// In en, this message translates to:
+  /// **'HTML'**
+  String get html;
 
   /// No description provided for @htmlSource.
   ///
@@ -2983,6 +3019,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Margins'**
   String get margins;
+
+  /// No description provided for @markdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Markdown'**
+  String get markdown;
 
   /// No description provided for @matchCase.
   ///
@@ -4093,6 +4135,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Place the barcode inside the frame'**
   String get placeTheBarcodeInsideTheFrame;
+
+  /// No description provided for @plainText.
+  ///
+  /// In en, this message translates to:
+  /// **'Plain text'**
+  String get plainText;
 
   /// No description provided for @plate.
   ///
@@ -5953,6 +6001,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unpin'**
   String get unpin;
+
+  /// No description provided for @unsavedChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Unsaved changes'**
+  String get unsavedChanges;
 
   /// No description provided for @until.
   ///

@@ -86,6 +86,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get allTabs => 'همه تب‌ها';
 
   @override
+  String get altText => 'متن جایگزین';
+
+  @override
   String get amenities => 'امکانات';
 
   @override
@@ -737,6 +740,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get disabled => 'غیرفعال';
 
   @override
+  String get discard => 'صرف‌نظر';
+
+  @override
   String get distanceMeters => 'فاصله (متر)';
 
   @override
@@ -822,6 +828,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get downloadScheduled => 'زمان‌بندی شده';
+
+  @override
+  String get doYouWantToSaveYourChanges => 'می‌خواهید تغییرات را ذخیره کنید؟';
 
   @override
   String get dragToMovePinchToScaleTwistToRotate => 'برای جابه‌جایی بکشید، برای تغییر اندازه دو انگشت را باز و بسته کنید و برای چرخش بچرخانید';
@@ -946,6 +955,11 @@ class AppLocalizationsFa extends AppLocalizations {
   String get exportAnnotations => 'اشتراک‌گذاری یادداشت‌ها';
 
   @override
+  String exportAsItem(Object item) {
+    return 'خروجی $item';
+  }
+
+  @override
   String get exportImages => 'خروجی تصاویر';
 
   @override
@@ -1060,6 +1074,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get football => 'فوتبال';
+
+  @override
+  String get footnote => 'پانویس';
 
   @override
   String get forgotPassword => 'فراموشی رمز عبور';
@@ -1240,6 +1257,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get howToGetThere => 'راهنمای دسترسی';
+
+  @override
+  String get html => 'HTML';
 
   @override
   String get htmlSource => 'کد HTML';
@@ -1513,6 +1533,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get margins => 'حاشیه‌ها';
+
+  @override
+  String get markdown => 'مارک‌داون';
 
   @override
   String get matchCase => 'تطابق حروف بزرگ و کوچک';
@@ -2130,6 +2153,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get placeTheBarcodeInsideTheFrame => 'بارکد را داخل کادر قرار دهید';
+
+  @override
+  String get plainText => 'متن ساده';
 
   @override
   String get plate => 'پلاک';
@@ -3082,6 +3108,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get unpin => 'برداشتن سنجاق';
+
+  @override
+  String get unsavedChanges => 'تغییرات ذخیره‌نشده';
 
   @override
   String get until => 'تا';

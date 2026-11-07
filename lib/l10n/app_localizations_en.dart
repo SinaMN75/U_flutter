@@ -86,6 +86,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get allTabs => 'All tabs';
 
   @override
+  String get altText => 'Alt text';
+
+  @override
   String get amenities => 'Amenities';
 
   @override
@@ -737,6 +740,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get disabled => 'Disabled';
 
   @override
+  String get discard => 'Discard';
+
+  @override
   String get distanceMeters => 'Distance (m)';
 
   @override
@@ -822,6 +828,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get downloadScheduled => 'Scheduled';
+
+  @override
+  String get doYouWantToSaveYourChanges => 'Do you want to save your changes?';
 
   @override
   String get dragToMovePinchToScaleTwistToRotate => 'Drag to move, pinch to scale, twist to rotate';
@@ -946,6 +955,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get exportAnnotations => 'Share notes';
 
   @override
+  String exportAsItem(Object item) {
+    return 'Export as $item';
+  }
+
+  @override
   String get exportImages => 'Export images';
 
   @override
@@ -1060,6 +1074,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get football => 'Football';
+
+  @override
+  String get footnote => 'Footnote';
 
   @override
   String get forgotPassword => 'Forgot password';
@@ -1240,6 +1257,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get howToGetThere => 'How to get there';
+
+  @override
+  String get html => 'HTML';
 
   @override
   String get htmlSource => 'HTML Source';
@@ -1513,6 +1533,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get margins => 'Margins';
+
+  @override
+  String get markdown => 'Markdown';
 
   @override
   String get matchCase => 'Match Case';
@@ -2130,6 +2153,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get placeTheBarcodeInsideTheFrame => 'Place the barcode inside the frame';
+
+  @override
+  String get plainText => 'Plain text';
 
   @override
   String get plate => 'Plate';
@@ -3082,6 +3108,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get unpin => 'Unpin';
+
+  @override
+  String get unsavedChanges => 'Unsaved changes';
 
   @override
   String get until => 'until';
