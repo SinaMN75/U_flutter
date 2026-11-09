@@ -113,7 +113,7 @@ class Args {
     }
   }
 
-  static const Set<String> _flags = <String>{"help", "dry-run", "create", "force"};
+  static const Set<String> _flags = <String>{"help", "dry-run", "create", "force", "fullscreen", "no-clean"};
 
   final List<String> positional = <String>[];
   final Map<String, String> options = <String, String>{};
@@ -251,6 +251,33 @@ class Project {
     if (!dryRun) {
       f.parent.createSync(recursive: true);
       f.writeAsStringSync(content);
+    }
+    changes++;
+    Out.changed(rel, what, dryRun: dryRun);
+  }
+
+  /// Names of the files directly inside a folder (empty when it does not exist).
+  List<String> dirFiles(String rel) {
+    final Directory d = Directory(path(rel));
+    if (!d.existsSync()) {
+      return <String>[];
+    }
+    return d.listSync().whereType<File>().map((File f) => f.uri.pathSegments.last).toList()..sort();
+  }
+
+  /// Creates or replaces a binary file (images, icons).
+  void writeBytes(String rel, List<int> bytes, String what) {
+    final File f = file(rel);
+    if (f.existsSync()) {
+      final List<int> old = f.readAsBytesSync();
+      if (old.length == bytes.length && Iterable<int>.generate(old.length).every((int i) => old[i] == bytes[i])) {
+        Out.same(rel, what);
+        return;
+      }
+    }
+    if (!dryRun) {
+      f.parent.createSync(recursive: true);
+      f.writeAsBytesSync(bytes);
     }
     changes++;
     Out.changed(rel, what, dryRun: dryRun);

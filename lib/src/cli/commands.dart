@@ -663,7 +663,7 @@ Future<void> cmdSpm(Project p, Args a) async {
   for (final AppleFiles f in migrated) {
     Out.header("flutter build ${f.target.id} --config-only");
     final String? before = p.read(f.pbxproj);
-    final ProcessResult r = await Process.run("flutter", <String>["build", f.target.id, "--config-only"], workingDirectory: p.root);
+    final ProcessResult r = await Process.run("flutter", <String>["build", f.target.id, "--config-only"], workingDirectory: p.root, runInShell: Platform.isWindows);
     if (r.exitCode != 0) {
       Out.line("${r.stdout}${r.stderr}".trim());
       throw CliException("flutter build ${f.target.id} --config-only failed. Fix the error above and run it again.");

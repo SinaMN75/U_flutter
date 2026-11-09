@@ -1,9 +1,12 @@
 import "dart:async";
 import "dart:io";
 
+import "package:u/src/cli/build.dart";
 import "package:u/src/cli/commands.dart";
 import "package:u/src/cli/core.dart";
+import "package:u/src/cli/icons.dart";
 import "package:u/src/cli/report.dart";
+import "package:u/src/cli/splash.dart";
 
 class _Command {
   const _Command(this.name, this.usage, this.summary, this.run, {this.examples = const <String>[], this.aliases = const <String>[]});
@@ -109,6 +112,54 @@ const List<_Command> _commands = <_Command>[
   _Command("copyright", "copyright <text>", "macOS PRODUCT_COPYRIGHT + Windows LegalCopyright", cmdCopyright, examples: <String>["copyright \"© 2026 Sina Co.\""]),
   _Command("web-color", "web-color <#hex> [--background <#hex>]", "Web manifest theme/background color + <meta theme-color>", cmdWebColor, examples: <String>["web-color \"#0175C2\""]),
   _Command(
+    "icon",
+    "icon <image.png> [--background <#hex|image.png>] [--foreground <image.png>] [--monochrome [image.png]] [--inset <percent>] [--ios-background <#hex>]",
+    "App icon for all 6 platforms from one PNG (adaptive + themed Android icons, no package needed)",
+    cmdIcon,
+    examples: <String>[
+      "icon assets/icon.png",
+      "icon assets/icon.png --background \"#FFFFFF\"",
+      "icon assets/icon.png --background \"#0175C2\" --foreground assets/icon_foreground.png --monochrome",
+      "icon assets/icon.png --background assets/icon_background.png --inset 20",
+      "icon assets/icon.png --ios-background \"#000000\" --platforms android,ios",
+    ],
+    aliases: <String>["icons", "launcher-icon", "app-icon"],
+  ),
+  _Command(
+    "splash",
+    "splash [--color <#hex>] [--image <png>] [--size <dp>] [--dark-color <#hex>] [--dark-image <png>] [--branding <png>] [--fullscreen] ...   |   splash remove",
+    "Native launch screen on Android (incl. 12+), iOS and web, light and dark (no package needed)",
+    cmdSplash,
+    examples: <String>[
+      "splash --color \"#FFFFFF\"",
+      "splash --color \"#FFFFFF\" --image assets/logo.png",
+      "splash --color \"#FFFFFF\" --image assets/logo.png --size 160",
+      "splash --color \"#FFFFFF\" --image assets/logo.png --dark-color \"#121212\" --dark-image assets/logo_dark.png",
+      "splash --color \"#FFFFFF\" --image assets/logo.png --branding assets/brand.png --fullscreen",
+      "splash --background-image assets/splash_bg.png --image assets/logo.png",
+      "splash --image assets/logo.png --android12-image assets/logo_a12.png --icon-background \"#0175C2\"",
+      "splash remove",
+    ],
+    aliases: <String>["launch-screen", "splash-screen"],
+  ),
+  _Command(
+    "build",
+    "build <apk|aab|ios|ipa|macos|windows|linux|web|all>... [--out <folder>] [--no-clean] [--web both|cdn|no-cdn] [--args=\"<flutter build flags>\"]",
+    "Clean, build release files and copy them to the Desktop as <name>-<version> (any OS)",
+    cmdBuild,
+    examples: <String>[
+      "build apk",
+      "build apk ios",
+      "build apk web",
+      "build apk ios macos web",
+      "build all",
+      "build aab --no-clean",
+      "build web --web no-cdn --out build/release",
+      "build apk --args=\"--obfuscate --split-debug-info=build/symbols\"",
+    ],
+    aliases: <String>["release"],
+  ),
+  _Command(
     "signing",
     "signing --create   |   signing",
     "Android release signing: create a .jks step by step (like Android Studio) or use an existing one",
@@ -139,7 +190,17 @@ void _help() {
   Out.line("  ${"--dry-run".padRight(13)}Show what would change without writing anything (-n)");
   Out.line("  ${"--help".padRight(13)}Help for a command, e.g. dart run u:app min-sdk --help");
   Out.line("\n${Out.bold("Examples")}");
-  for (final String e in <String>["info", "name \"My Shop\"", "id com.sinamn75.shop", "min-sdk android 24 ios 18", "permission add camera location internet", "bump patch"]) {
+  for (final String e in <String>[
+    "info",
+    "name \"My Shop\"",
+    "id com.sinamn75.shop",
+    "min-sdk android 24 ios 18",
+    "permission add camera location internet",
+    "icon assets/icon.png --background \"#FFFFFF\"",
+    "splash --color \"#FFFFFF\" --image assets/logo.png",
+    "bump patch",
+    "build apk ios web",
+  ]) {
     Out.line("  dart run u:app $e");
   }
   Out.line();
@@ -187,7 +248,7 @@ Future<int> runCli(List<String> raw) async {
     await command.run(project, args);
     if (project.dryRun) {
       Out.line("\n${Out.yellow("Dry run: nothing was written.")} ${project.changes} change(s) would be made.");
-    } else if (command.name != "info" && command.name != "doctor" && !(command.name == "permission" && (args.positional.isEmpty || args.positional.first == "list"))) {
+    } else if (command.name != "info" && command.name != "doctor" && command.name != "build" && !(command.name == "permission" && (args.positional.isEmpty || args.positional.first == "list"))) {
       Out.line("\n${project.changes == 0 ? Out.dim("Nothing to change.") : Out.green("Done: ${project.changes} change(s).")}");
     }
     return 0;

@@ -1,5 +1,19 @@
 ## Unreleased
 
+* **`dart run u:app icon`, `splash` and `build`: no more `flutter_launcher_icons` or `flutter_native_splash`.**
+  * `icon <image.png>` writes every icon of all 6 platforms from one PNG: Android legacy, adaptive
+    (`--background`, `--foreground`, `--inset`) and Android 13+ themed (`--monochrome`) icons, the iOS
+    set without alpha (`--ios-background`), macOS, the Windows `.ico`, a Linux window icon and web
+    favicon + maskable icons.
+  * `splash` sets the native launch screen on Android up to 11, Android 12+, iOS and web: color,
+    logo (`--size`), background image, branding, Android 12+ icon and icon background, dark variants
+    of each and `--fullscreen`. `splash remove` restores Flutter's default.
+  * `build <apk|aab|ios|ipa|macos|windows|linux|web|all>...` replaces the shell one-liners: it cleans,
+    builds and copies `<name>-<version>` files to the Desktop on Windows, macOS and Linux (`--out`,
+    `--no-clean`, `--web`, `--args`).
+  * Pure Dart PNG decoder/encoder, resizer, `.ico` and zip writers, so nothing else is installed.
+  * New `COMMANDS.md` documents every u:app and official Flutter command with all combinations.
+
 * **`UBle`: Bluetooth Low Energy central on all 6 platforms**, with no plugin dependency: `scan`
   (service and manufacturer-data filters), `connect`, `subscribe` (notifications) and `write`.
   BluetoothLeScanner/BluetoothGatt on Android, CoreBluetooth on iOS and macOS, WinRT on Windows,

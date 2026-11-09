@@ -72,10 +72,10 @@ flutter:
 
 #  flutter pub upgrade --major-versions --tighten
 
-#  flutter pub run flutter_launcher_icons:main
-
 # ───────────────────────── u:app: native app settings for all 6 platforms ─────────────────────────
-# Run these inside the app that depends on u (not in this plugin). Every command accepts:
+# Full documentation of every command and combination: COMMANDS.md
+# Run these inside the app that depends on u (not in this plugin). They work on Windows, macOS and Linux.
+# Every command accepts:
 #   --platforms android,ios,macos,linux,windows,web   only touch these platforms
 #   --dry-run                                         show what would change, write nothing
 #   --help                                            usage + examples for that command
@@ -149,31 +149,40 @@ flutter:
 # android/key.properties and the Gradle signingConfig. After that every release build is signed.
 # dart run u:app signing --create
 # dart run u:app signing                     (use a .jks you already have)
+#
+# App icon for all 6 platforms from one PNG (replaces flutter_launcher_icons):
+# dart run u:app icon assets/icon.png
+# dart run u:app icon assets/icon.png --background "#FFFFFF"
+# dart run u:app icon assets/icon.png --background "#0175C2" --foreground assets/icon_foreground.png --monochrome
+# dart run u:app icon assets/icon.png --background assets/icon_background.png --inset 20
+# dart run u:app icon assets/icon.png --ios-background "#000000"
+#
+# Native splash screen on Android (incl. 12+), iOS and web (replaces flutter_native_splash):
+# dart run u:app splash --color "#FFFFFF"
+# dart run u:app splash --color "#FFFFFF" --image assets/logo.png
+# dart run u:app splash --color "#FFFFFF" --image assets/logo.png --size 160
+# dart run u:app splash --color "#FFFFFF" --image assets/logo.png --dark-color "#121212" --dark-image assets/logo_dark.png
+# dart run u:app splash --color "#FFFFFF" --image assets/logo.png --branding assets/brand.png --fullscreen
+# dart run u:app splash --background-image assets/splash_bg.png --image assets/logo.png
+# dart run u:app splash --image assets/logo.png --android12-image assets/logo_a12.png --icon-background "#0175C2"
+# dart run u:app splash remove
+#
+# Release builds: flutter clean + pub get, build, copy <name>-<version> files to the Desktop (any OS;
+# ios/ipa/macos need a Mac, windows needs Windows, linux needs Linux):
+# dart run u:app build apk
+# dart run u:app build aab
+# dart run u:app build ios                   (archive → Xcode Organizer)
+# dart run u:app build ipa
+# dart run u:app build web                   (with and without the CanvasKit CDN, U_BUILD_ID set)
+# dart run u:app build macos
+# dart run u:app build windows
+# dart run u:app build linux
+# dart run u:app build apk ios
+# dart run u:app build apk web
+# dart run u:app build apk macos
+# dart run u:app build apk macos web
+# dart run u:app build apk ios macos web
+# dart run u:app build all                   (everything this computer can build)
+# dart run u:app build apk --no-clean --out build/release
+# dart run u:app build apk --args="--obfuscate --split-debug-info=build/symbols"
 # ─────────────────────────────────────────────────────────────────────────────────────────────────────
-
-# Android:
-# N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .) && flutter clean && flutter pub get && flutter build apk --target-platform android-arm64,android-arm --release && cp build/app/outputs/flutter-apk/app-release.apk ~/Desktop/$N-$V.apk
-
-# iOS → Xcode Organizer:
-# N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .) && flutter clean && flutter pub get && flutter build ios --release --no-codesign && xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release -archivePath ~/Library/Developer/Xcode/Archives/$(date '+%Y-%m-%d')/$N-$V.xcarchive archive && open -a Xcode
-
-# Web:
-# N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .) B=$(sed -n 's/^version: *//p' pubspec.yaml) && flutter clean && flutter pub get && flutter build web --release --dart-define=U_BUILD_ID="$B" && (cd build/web && zip -r ~/Desktop/$N-$V-web.zip .) && flutter build web --release --no-web-resources-cdn --dart-define=U_BUILD_ID="$B" && (cd build/web && zip -r ~/Desktop/$N-$V-web-no-cdn.zip .)
-
-# macOS:
-# N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .) && flutter clean && flutter pub get && flutter build macos --release && (cd build/macos/Build/Products/Release && zip -r ~/Desktop/$N-$V-macos.zip *.app)
-
-# Android + iOS:
-# N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .) && flutter clean && flutter pub get && flutter build apk --target-platform android-arm64,android-arm --release && flutter build ios --release --no-codesign && xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release -archivePath ~/Library/Developer/Xcode/Archives/$(date '+%Y-%m-%d')/$N-$V.xcarchive archive && cp build/app/outputs/flutter-apk/app-release.apk ~/Desktop/$N-$V.apk && open -a Xcode
-
-# Android + Web:
-# N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .) B=$(sed -n 's/^version: *//p' pubspec.yaml) && flutter clean && flutter pub get && flutter build apk --target-platform android-arm64,android-arm --release && flutter build web --release --dart-define=U_BUILD_ID="$B" && (cd build/web && zip -r ~/Desktop/$N-$V-web.zip .) && flutter build web --release --no-web-resources-cdn --dart-define=U_BUILD_ID="$B" && (cd build/web && zip -r ~/Desktop/$N-$V-web-no-cdn.zip .) && cp build/app/outputs/flutter-apk/app-release.apk ~/Desktop/$N-$V.apk
-
-# Android + macOS:
-# N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .) && flutter clean && flutter pub get && flutter build apk --target-platform android-arm64,android-arm --release && flutter build macos --release && cp build/app/outputs/flutter-apk/app-release.apk ~/Desktop/$N-$V.apk && (cd build/macos/Build/Products/Release && zip -r ~/Desktop/$N-$V-macos.zip *.app)
-
-# Android + macOS + Web:
-# N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .) B=$(sed -n 's/^version: *//p' pubspec.yaml) && flutter clean && flutter pub get && flutter build apk --target-platform android-arm64,android-arm --release && flutter build macos --release && flutter build web --release --dart-define=U_BUILD_ID="$B" && (cd build/web && zip -r ~/Desktop/$N-$V-web.zip .) && flutter build web --release --no-web-resources-cdn --dart-define=U_BUILD_ID="$B" && (cd build/web && zip -r ~/Desktop/$N-$V-web-no-cdn.zip .) && cp build/app/outputs/flutter-apk/app-release.apk ~/Desktop/$N-$V.apk && (cd build/macos/Build/Products/Release && zip -r ~/Desktop/$N-$V-macos.zip *.app)
-
-# Android + iOS + macOS + Web:
-# N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .) B=$(sed -n 's/^version: *//p' pubspec.yaml) && flutter clean && flutter pub get && flutter build apk --target-platform android-arm64,android-arm --release && flutter build ios --release --no-codesign && xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release -archivePath ~/Library/Developer/Xcode/Archives/$(date '+%Y-%m-%d')/$N-$V.xcarchive archive && flutter build macos --release && flutter build web --release --dart-define=U_BUILD_ID="$B" && (cd build/web && zip -r ~/Desktop/$N-$V-web.zip .) && flutter build web --release --no-web-resources-cdn --dart-define=U_BUILD_ID="$B" && (cd build/web && zip -r ~/Desktop/$N-$V-web-no-cdn.zip .) && cp build/app/outputs/flutter-apk/app-release.apk ~/Desktop/$N-$V.apk && (cd build/macos/Build/Products/Release && zip -r ~/Desktop/$N-$V-macos.zip *.app) && open -a Xcode

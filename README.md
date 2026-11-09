@@ -146,6 +146,9 @@ dart run u:app query-schemes whatsapp tg              # let ULaunch.canOpen / is
 dart run u:app bump patch                             # 1.2.3+7 → 1.2.4+8
 dart run u:app signing --create                       # asks everything, creates the .jks, signs releases
 dart run u:app spm                                    # iOS + macOS on Swift Package Manager, no CocoaPods
+dart run u:app icon assets/icon.png --background "#FFFFFF"            # app icon, all 6 platforms
+dart run u:app splash --color "#FFFFFF" --image assets/logo.png       # native splash, light + dark
+dart run u:app build apk ios web                      # release files on the Desktop, any OS
 ```
 
 | Command | Android | iOS | macOS | Linux | Windows | Web |
@@ -163,6 +166,9 @@ dart run u:app spm                                    # iOS + macOS on Swift Pac
 | `binary`, `company`, `copyright` | | | copyright | binary | ✅ | |
 | `web-color` | | | | | | ✅ |
 | `version`, `bump`, `description` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| `icon` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| `splash` | ✅ | ✅ | — | — | — | ✅ |
+| `build` | apk, aab | archive, ipa | ✅ | ✅ | ✅ | ✅ |
 
 Permissions use 33 friendly names: `internet`, `network-state`, `camera`, `microphone`, `speech`,
 `location`, `location-always`, `photos`, `save-photos`, `music`, `storage`, `contacts`, `calendar`,
@@ -183,8 +189,15 @@ the command prints a note.
 arguments, `query-schemes` adds `whatsapp`, `tg`, `instagram`, `comgooglemaps` and `waze`. A dotted
 name, such as `ir.eitaa.messenger`, becomes an Android `<queries>` package.
 
+`icon` and `splash` replace `flutter_launcher_icons` and `flutter_native_splash`: one PNG gives every
+icon size (adaptive and themed Android icons, iOS without alpha, the Windows `.ico`, a Linux window
+icon, web maskable icons), and the splash covers Android up to 11, Android 12+, iOS and web, in light
+and dark. The PNG codec and the zip writer are part of u, so nothing else is installed. `build`
+cleans, builds and copies `<name>-<version>` files to the Desktop on Windows, macOS and Linux.
+
 Every command takes `--platforms android,ios` and `--dry-run`. `dart run u:app <command> --help`
-shows examples. The full copy-paste list is at the bottom of this package's `pubspec.yaml`.
+shows examples. [COMMANDS.md](COMMANDS.md) documents every command, option and combination, plus the
+official Flutter commands; the copy-paste list is at the bottom of this package's `pubspec.yaml`.
 
 ## What's inside
 
@@ -776,7 +789,7 @@ lib/
   src/<feature>/      engines and platform channels (device, launch, location, notification,
                       share, media, camera, files, doc, barcode, crypto, ar, iso8583, cli, …)
 android/ ios/ macos/ linux/ windows/   native code, one folder per feature
-bin/app.dart          the `dart run u:app` CLI
+bin/app.dart          the `dart run u:app` CLI (all commands: COMMANDS.md)
 ```
 
 Every public member has a one-line doc comment that says what it does, gives an example, and names
