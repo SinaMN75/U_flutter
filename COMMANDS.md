@@ -218,7 +218,7 @@ dart run u:app splash --color "#FFFFFF" --image assets/logo.png --dry-run
 
 ```
 dart run u:app build <apk|aab|ios|ipa|macos|windows|linux|web|all>... [--out <folder>] [--no-clean]
-                     [--fail-fast] [--web both|cdn|no-cdn] [--args="<extra flutter build flags>"]
+                     [--fail-fast] [--web <variants>] [--args="<extra flutter build flags>"]
 ```
 
 Alias: `release`. One command for any mix of targets, on any OS. It runs `flutter clean` and
@@ -226,7 +226,7 @@ Alias: `release`. One command for any mix of targets, on any OS. It runs `flutte
 as `<name>-<version>` (from `pubspec.yaml`; `1.2.3+7` gives `123`). The zip files are made by u
 itself, so no `zip` tool is needed (Linux bundles keep their file permissions).
 
-A target that fails does not stop the others. The error is printed, the next target builds, and the
+A target (or one web variant) that fails does not stop the others. The error is printed, the next target builds, and the
 end of the output lists what was created, what failed and why, and the command that rebuilds only
 the failed targets (for example `dart run u:app build ios --no-clean`). The command then exits with
 code 1, so scripts and CI still see the failure. Add `--fail-fast` to stop at the first failure
@@ -242,7 +242,7 @@ can build without them.
 | `macos` | `mac`, `osx` | `flutter build macos --release`, then `ditto` | `<name>-<v>-macos.zip` with the `.app` | macOS |
 | `windows` | `win` | `flutter build windows --release` | `<name>-<v>-windows.zip` | Windows |
 | `linux` | | `flutter build linux --release` | `<name>-<v>-linux.zip` | Linux |
-| `web` | | `flutter build web --release --dart-define=U_BUILD_ID=<version>`, twice | `<name>-<v>-web.zip` (CanvasKit from Google's CDN) and `<name>-<v>-web-no-cdn.zip` (CanvasKit bundled, for networks that block the CDN) | any OS |
+| `web` | | `flutter build web --release --dart-define=U_BUILD_ID=<version>` four times (see the table below) | four zips: JavaScript and WebAssembly, each with the renderer from Google's CDN and bundled | any OS |
 | `all` | | every target above that this OS can build and the app has (apk, ios, macos, windows, linux, web) | | |
 
 | Option | Meaning |
@@ -250,11 +250,27 @@ can build without them.
 | `--out <folder>` | Where the files go. Default: your Desktop (`%USERPROFILE%\Desktop` on Windows, `~/Desktop` elsewhere), or `build/release` when there is no Desktop folder. |
 | `--no-clean` | Skip `flutter clean` (faster, for a second build of the same code or to retry the failed targets). |
 | `--fail-fast` | Stop at the first target that fails. By default the other targets still build. |
-| `--web both\|cdn\|no-cdn` | Which web builds to make. Default `both`. |
+| `--web <variants>` | Which web builds to make, comma separated. Default `all`. See the table below. |
 | `--args="…"` | Extra flags for every `flutter build`, e.g. `--obfuscate --split-debug-info=build/symbols`, `--flavor prod`, `--dart-define=KEY=VALUE`. |
 | `--dry-run` | Print the commands without running anything. |
 
 Targets can be separate words or comma separated (`build apk,web`).
+
+Web builds (`--web`):
+
+| Variant | Extra flags | Zip | Use it when |
+| --- | --- | --- | --- |
+| `cdn` | none | `<name>-<v>-web.zip` | Normal hosting. The renderer (CanvasKit) loads from Google's CDN. |
+| `no-cdn` | `--no-web-resources-cdn` | `<name>-<v>-web-no-cdn.zip` | Networks that block Google's CDN (or no internet). The renderer is inside the zip. |
+| `wasm` | `--wasm` | `<name>-<v>-web-wasm.zip` | Faster start and smoother frames in browsers with WasmGC (Chrome, Edge, Firefox, Safari 18.2+). Other browsers get the JavaScript build in the same zip. Needs the server to send the `Cross-Origin-Opener-Policy: same-origin` and `Cross-Origin-Embedder-Policy: require-corp` headers for multi-threaded rendering. |
+| `wasm-no-cdn` | `--wasm --no-web-resources-cdn` | `<name>-<v>-web-wasm-no-cdn.zip` | WebAssembly where Google's CDN is blocked. |
+| `all` | | all four | The default. |
+| `js` (or `both`) | | `cdn` + `no-cdn` | The two JavaScript builds only. |
+| `wasm-all` | | `wasm` + `wasm-no-cdn` | The two WebAssembly builds only. |
+
+Each web build starts from an empty `build/web` and is zipped right away. A variant that fails (for
+example a package that does not compile to WebAssembly) doesn't stop the others; the retry command
+names only the failed variants, e.g. `dart run u:app build web --web wasm,wasm-no-cdn --no-clean`.
 
 Every combination, the same on every OS (iOS and macOS need a Mac):
 
@@ -290,8 +306,15 @@ dart run u:app build apk linux web
 dart run u:app build all
 
 # variations
+dart run u:app build web                                  # all four web zips
+dart run u:app build web --web js                         # JavaScript, with and without the CDN
+dart run u:app build web --web wasm-all                   # WebAssembly, with and without the CDN
 dart run u:app build web --web cdn
 dart run u:app build web --web no-cdn
+dart run u:app build web --web wasm
+dart run u:app build web --web wasm-no-cdn
+dart run u:app build web --web cdn,wasm                   # any mix, comma separated
+dart run u:app build apk web --web js
 dart run u:app build apk --no-clean
 dart run u:app build all --fail-fast
 dart run u:app build apk web --out build/release
@@ -592,6 +615,7 @@ flutter build web --release
 flutter build web --release --no-web-resources-cdn
 flutter build web --release --base-href /my-app/
 flutter build web --release --wasm
+flutter build web --release --wasm --no-web-resources-cdn
 flutter build web --release --dart-define=U_BUILD_ID=1.0.0+1
 ```
 
@@ -626,6 +650,11 @@ N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.y
 ```
 
 ```bash
+# Web WebAssembly (with and without the CDN)
+N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .) B=$(sed -n 's/^version: *//p' pubspec.yaml) && flutter clean && flutter pub get && rm -rf build/web && flutter build web --release --wasm --dart-define=U_BUILD_ID="$B" && (cd build/web && zip -r ~/Desktop/$N-$V-web-wasm.zip .) && rm -rf build/web && flutter build web --release --wasm --no-web-resources-cdn --dart-define=U_BUILD_ID="$B" && (cd build/web && zip -r ~/Desktop/$N-$V-web-wasm-no-cdn.zip .)
+```
+
+```bash
 # iOS → Xcode Organizer (macOS only)
 N=$(sed -n 's/^name: *//p' pubspec.yaml) V=$(sed -n 's/^version: *//p' pubspec.yaml | cut -d+ -f1 | tr -d .) && flutter clean && flutter pub get && flutter build ios --release --no-codesign && xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release -archivePath ~/Library/Developer/Xcode/Archives/$(date '+%Y-%m-%d')/$N-$V.xcarchive archive && open -a Xcode
 ```
@@ -653,6 +682,11 @@ $N = (Select-String '^name:\s*(\S+)' pubspec.yaml).Matches[0].Groups[1].Value; $
 ```powershell
 # Web (with and without the CDN)
 $N = (Select-String '^name:\s*(\S+)' pubspec.yaml).Matches[0].Groups[1].Value; $B = (Select-String '^version:\s*(\S+)' pubspec.yaml).Matches[0].Groups[1].Value; $V = $B.Split('+')[0].Replace('.', ''); flutter clean; flutter pub get; flutter build web --release --dart-define=U_BUILD_ID=$B; Compress-Archive -Path build\web\* -DestinationPath "$env:USERPROFILE\Desktop\$N-$V-web.zip" -Force; flutter build web --release --no-web-resources-cdn --dart-define=U_BUILD_ID=$B; Compress-Archive -Path build\web\* -DestinationPath "$env:USERPROFILE\Desktop\$N-$V-web-no-cdn.zip" -Force
+```
+
+```powershell
+# Web WebAssembly (with and without the CDN)
+$N = (Select-String '^name:\s*(\S+)' pubspec.yaml).Matches[0].Groups[1].Value; $B = (Select-String '^version:\s*(\S+)' pubspec.yaml).Matches[0].Groups[1].Value; $V = $B.Split('+')[0].Replace('.', ''); flutter clean; flutter pub get; Remove-Item build\web -Recurse -Force -ErrorAction SilentlyContinue; flutter build web --release --wasm --dart-define=U_BUILD_ID=$B; Compress-Archive -Path build\web\* -DestinationPath "$env:USERPROFILE\Desktop\$N-$V-web-wasm.zip" -Force; Remove-Item build\web -Recurse -Force; flutter build web --release --wasm --no-web-resources-cdn --dart-define=U_BUILD_ID=$B; Compress-Archive -Path build\web\* -DestinationPath "$env:USERPROFILE\Desktop\$N-$V-web-wasm-no-cdn.zip" -Force
 ```
 
 ```powershell

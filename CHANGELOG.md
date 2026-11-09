@@ -10,7 +10,8 @@
     of each and `--fullscreen`. `splash remove` restores Flutter's default.
   * `build <apk|aab|ios|ipa|macos|windows|linux|web|all>...` replaces the shell one-liners: it cleans,
     builds and copies `<name>-<version>` files to the Desktop on Windows, macOS and Linux (`--out`,
-    `--no-clean`, `--web`, `--args`). A failed target doesn't stop the others; the summary lists
+    `--no-clean`, `--web`, `--args`). Web gives four zips by default: JavaScript and WebAssembly
+    (`--wasm`), each with the renderer from the CDN and bundled; `--web js|wasm-all|cdn,wasm,…` picks them. A failed target doesn't stop the others; the summary lists
     the failures with the command to rebuild them (`--fail-fast` stops at the first one).
   * Pure Dart PNG decoder/encoder, resizer, `.ico` and zip writers, so nothing else is installed.
   * New `COMMANDS.md` documents every u:app and official Flutter command with all combinations.

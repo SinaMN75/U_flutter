@@ -173,7 +173,10 @@ flutter:
 # dart run u:app build aab
 # dart run u:app build ios                   (archive → Xcode Organizer)
 # dart run u:app build ipa
-# dart run u:app build web                   (with and without the CanvasKit CDN, U_BUILD_ID set)
+# dart run u:app build web                   (4 zips: JS and WebAssembly, each with and without the CDN; U_BUILD_ID set)
+# dart run u:app build web --web js          (JS only, with and without the CDN)
+# dart run u:app build web --web wasm-all    (WebAssembly only, with and without the CDN)
+# dart run u:app build web --web cdn,wasm    (any mix of cdn, no-cdn, wasm, wasm-no-cdn)
 # dart run u:app build macos
 # dart run u:app build windows
 # dart run u:app build linux

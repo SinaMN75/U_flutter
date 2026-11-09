@@ -12,7 +12,7 @@ enum _Output {
   macos("macOS .app zipped", Target.macos),
   windows("Windows release folder zipped", Target.windows),
   linux("Linux bundle zipped", Target.linux),
-  web("Web build zipped, with and without the CanvasKit CDN", Target.web);
+  web("Web", Target.web);
 
   const _Output(this.summary, this.platform);
 
@@ -38,6 +38,38 @@ enum _Output {
     linux => "linux",
     _ => null,
   };
+}
+
+/// One web build: JavaScript or WebAssembly, with the renderer from Google's CDN or bundled.
+enum _Web {
+  cdn("cdn", "JavaScript, CanvasKit from the CDN", <String>[]),
+  noCdn("no-cdn", "JavaScript, CanvasKit bundled", <String>["--no-web-resources-cdn"]),
+  wasm("wasm", "WebAssembly, renderer from the CDN", <String>["--wasm"]),
+  wasmNoCdn("wasm-no-cdn", "WebAssembly, renderer bundled", <String>["--wasm", "--no-web-resources-cdn"]);
+
+  const _Web(this.id, this.summary, this.flags);
+
+  final String id;
+  final String summary;
+  final List<String> flags;
+
+  String get suffix => this == cdn ? "web" : "web-$id";
+
+  static List<_Web> parse(String value) {
+    final Set<_Web> out = <_Web>{};
+    for (final String v in value.toLowerCase().split(",").map((String s) => s.trim()).where((String s) => s.isNotEmpty)) {
+      out.addAll(switch (v) {
+        "all" => _Web.values,
+        "js" || "both" => <_Web>[cdn, noCdn],
+        "wasm-all" => <_Web>[wasm, wasmNoCdn],
+        _ => <_Web>[_Web.values.firstWhere((_Web w) => w.id == v, orElse: () => throw CliException("--web takes all, js, wasm-all, cdn, no-cdn, wasm or wasm-no-cdn (comma separated)."))],
+      });
+    }
+    if (out.isEmpty) {
+      throw CliException("--web needs a value, e.g. --web all");
+    }
+    return _Web.values.where(out.contains).toList();
+  }
 }
 
 String _desktop(Project p) {
@@ -102,11 +134,10 @@ Future<void> cmdBuild(Project p, Args a) async {
   final String base = "$out/$name-$v";
   final List<String> extra = (a.option("args") ?? "").split(" ").where((String s) => s.isNotEmpty).toList();
   final List<String> made = <String>[];
-  final Map<_Output, String> failed = <_Output, String>{};
-  final String web = a.option("web") ?? "both";
-  if (!<String>["both", "cdn", "no-cdn"].contains(web)) {
-    throw CliException("--web takes both, cdn or no-cdn.");
-  }
+  final Map<String, String> failed = <String, String>{};
+  final List<String> retry = <String>[];
+  final List<_Web> failedWeb = <_Web>[];
+  final List<_Web> webs = _Web.parse(a.option("web") ?? "all");
 
   Out.line("${Out.bold("$name $full")} → ${targets.map((_Output o) => o.name).join(", ")}  ${Out.dim("(files go to $out)")}");
   if (!a.flag("no-clean")) {
@@ -129,6 +160,14 @@ Future<void> cmdBuild(Project p, Args a) async {
       zipFolder(dir, to);
     }
     made.add(to);
+  }
+
+  Future<void> buildWeb(_Web w) async {
+    if (!p.dryRun && Directory(p.path("build/web")).existsSync()) {
+      Directory(p.path("build/web")).deleteSync(recursive: true);
+    }
+    await _run(p, "flutter", <String>["build", "web", "--release", ...w.flags, "--dart-define=U_BUILD_ID=$full", ...extra]);
+    zip(p.path("build/web"), "$base-${w.suffix}.zip");
   }
 
   Future<void> build(_Output o) async {
@@ -166,17 +205,14 @@ Future<void> cmdBuild(Project p, Args a) async {
         await _run(p, "flutter", <String>["build", "linux", "--release", ...extra]);
         zip(p.dryRun ? "build/linux/x64/release/bundle" : "${_find(p, "build/linux", (String n) => n == "x64" || n == "arm64", "Linux build")}/release/bundle", "$base-linux.zip");
       case _Output.web:
-        for (final bool cdn in <bool>[if (web != "no-cdn") true, if (web != "cdn") false]) {
-          await _run(p, "flutter", <String>["build", "web", "--release", if (!cdn) "--no-web-resources-cdn", "--dart-define=U_BUILD_ID=$full", ...extra]);
-          zip(p.path("build/web"), cdn ? "$base-web.zip" : "$base-web-no-cdn.zip");
-        }
+        break;
     }
   }
 
-  for (final _Output o in targets) {
-    Out.header(o.summary);
+  Future<bool> attempt(String label, Future<void> Function() step) async {
     try {
-      await build(o);
+      await step();
+      return true;
     } on Exception catch (e) {
       final String reason = switch (e) {
         CliException() => e.message,
@@ -185,11 +221,28 @@ Future<void> cmdBuild(Project p, Args a) async {
         _ => e.toString(),
       };
       if (a.flag("fail-fast")) {
-        throw CliException("${o.name}: $reason");
+        throw CliException("$label: $reason");
       }
-      failed[o] = reason;
-      Out.error("${o.name} failed: $reason");
-      Out.note("Going on with the other targets.");
+      failed[label] = reason;
+      Out.error("$label failed: $reason");
+      Out.note("Going on with the other builds.");
+      return false;
+    }
+  }
+
+  for (final _Output o in targets) {
+    if (o == _Output.web) {
+      for (final _Web w in webs) {
+        Out.header("Web: ${w.summary}");
+        if (!await attempt("web ${w.id}", () => buildWeb(w))) {
+          failedWeb.add(w);
+        }
+      }
+      continue;
+    }
+    Out.header(o.summary);
+    if (!await attempt(o.name, () => build(o))) {
+      retry.add(o.name);
     }
   }
   Out.header(p.dryRun ? "Would create" : "Created");
@@ -201,10 +254,12 @@ Future<void> cmdBuild(Project p, Args a) async {
   }
   if (failed.isNotEmpty) {
     Out.header("Failed");
-    for (final MapEntry<_Output, String> f in failed.entries) {
-      Out.line("  ${Out.red("✗")} ${f.key.name}  ${Out.dim(f.value)}");
+    for (final MapEntry<String, String> f in failed.entries) {
+      Out.line("  ${Out.red("✗")} ${f.key}  ${Out.dim(f.value)}");
     }
-    Out.line("\n  Fix the error above, then build only those: ${Out.bold("dart run u:app build ${failed.keys.map((_Output o) => o.name).join(" ")} --no-clean")}");
-    throw CliException("${failed.length} of ${targets.length} builds failed: ${failed.keys.map((_Output o) => o.name).join(", ")}.");
+    final String again = <String>[...retry, if (failedWeb.isNotEmpty) "web --web ${failedWeb.map((_Web w) => w.id).join(",")}"].join(" ");
+    Out.line("\n  Fix the error above, then build only those: ${Out.bold("dart run u:app build $again --no-clean")}");
+    final int total = targets.length - (targets.contains(_Output.web) ? 1 : 0) + (targets.contains(_Output.web) ? webs.length : 0);
+    throw CliException("${failed.length} of $total builds failed: ${failed.keys.join(", ")}.");
   }
 }
