@@ -218,13 +218,20 @@ dart run u:app splash --color "#FFFFFF" --image assets/logo.png --dry-run
 
 ```
 dart run u:app build <apk|aab|ios|ipa|macos|windows|linux|web|all>... [--out <folder>] [--no-clean]
-                     [--web both|cdn|no-cdn] [--args="<extra flutter build flags>"]
+                     [--fail-fast] [--web both|cdn|no-cdn] [--args="<extra flutter build flags>"]
 ```
 
 Alias: `release`. One command for any mix of targets, on any OS. It runs `flutter clean` and
 `flutter pub get` once, builds each target in release mode and copies the result to your Desktop
 as `<name>-<version>` (from `pubspec.yaml`; `1.2.3+7` gives `123`). The zip files are made by u
 itself, so no `zip` tool is needed (Linux bundles keep their file permissions).
+
+A target that fails does not stop the others. The error is printed, the next target builds, and the
+end of the output lists what was created, what failed and why, and the command that rebuilds only
+the failed targets (for example `dart run u:app build ios --no-clean`). The command then exits with
+code 1, so scripts and CI still see the failure. Add `--fail-fast` to stop at the first failure
+instead. A failing `flutter clean` or `flutter pub get` always stops everything, because no target
+can build without them.
 
 | Target | Aliases | Runs | You get | Needs |
 | --- | --- | --- | --- | --- |
@@ -241,7 +248,8 @@ itself, so no `zip` tool is needed (Linux bundles keep their file permissions).
 | Option | Meaning |
 | --- | --- |
 | `--out <folder>` | Where the files go. Default: your Desktop (`%USERPROFILE%\Desktop` on Windows, `~/Desktop` elsewhere), or `build/release` when there is no Desktop folder. |
-| `--no-clean` | Skip `flutter clean` (faster, for a second build of the same code). |
+| `--no-clean` | Skip `flutter clean` (faster, for a second build of the same code or to retry the failed targets). |
+| `--fail-fast` | Stop at the first target that fails. By default the other targets still build. |
 | `--web both\|cdn\|no-cdn` | Which web builds to make. Default `both`. |
 | `--args="…"` | Extra flags for every `flutter build`, e.g. `--obfuscate --split-debug-info=build/symbols`, `--flavor prod`, `--dart-define=KEY=VALUE`. |
 | `--dry-run` | Print the commands without running anything. |
@@ -285,6 +293,7 @@ dart run u:app build all
 dart run u:app build web --web cdn
 dart run u:app build web --web no-cdn
 dart run u:app build apk --no-clean
+dart run u:app build all --fail-fast
 dart run u:app build apk web --out build/release
 dart run u:app build apk --args="--obfuscate --split-debug-info=build/symbols"
 dart run u:app build apk aab --args="--flavor prod"

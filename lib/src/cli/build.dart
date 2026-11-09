@@ -75,7 +75,7 @@ String _find(Project p, String parent, bool Function(String name) test, String w
 
 Future<void> cmdBuild(Project p, Args a) async {
   if (a.positional.isEmpty) {
-    throw CliException("Missing build target.\n  Usage: dart run u:app build <apk|aab|ios|ipa|macos|windows|linux|web|all>... [--out <folder>] [--no-clean]");
+    throw CliException("Missing build target.\n  Usage: dart run u:app build <apk|aab|ios|ipa|macos|windows|linux|web|all>... [--out <folder>] [--no-clean] [--fail-fast]");
   }
   final String os = Platform.operatingSystem;
   final List<_Output> outputs = <_Output>[];
@@ -102,6 +102,11 @@ Future<void> cmdBuild(Project p, Args a) async {
   final String base = "$out/$name-$v";
   final List<String> extra = (a.option("args") ?? "").split(" ").where((String s) => s.isNotEmpty).toList();
   final List<String> made = <String>[];
+  final Map<_Output, String> failed = <_Output, String>{};
+  final String web = a.option("web") ?? "both";
+  if (!<String>["both", "cdn", "no-cdn"].contains(web)) {
+    throw CliException("--web takes both, cdn or no-cdn.");
+  }
 
   Out.line("${Out.bold("$name $full")} → ${targets.map((_Output o) => o.name).join(", ")}  ${Out.dim("(files go to $out)")}");
   if (!a.flag("no-clean")) {
@@ -126,8 +131,7 @@ Future<void> cmdBuild(Project p, Args a) async {
     made.add(to);
   }
 
-  for (final _Output o in targets) {
-    Out.header(o.summary);
+  Future<void> build(_Output o) async {
     switch (o) {
       case _Output.apk:
         await _run(p, "flutter", <String>["build", "apk", "--target-platform", "android-arm64,android-arm", "--release", ...extra]);
@@ -142,7 +146,11 @@ Future<void> cmdBuild(Project p, Args a) async {
         final String archive = "${Platform.environment["HOME"]}/Library/Developer/Xcode/Archives/$day/$name-$v.xcarchive";
         await _run(p, "xcodebuild", <String>["-workspace", "ios/Runner.xcworkspace", "-scheme", "Runner", "-configuration", "Release", "-archivePath", archive, "archive"]);
         made.add(archive);
-        await _run(p, "open", <String>["-a", "Xcode"]);
+        try {
+          await _run(p, "open", <String>["-a", "Xcode"]);
+        } on Exception {
+          Out.warn("Couldn't open Xcode. Find the archive in Xcode → Window → Organizer.");
+        }
       case _Output.ipa:
         await _run(p, "flutter", <String>["build", "ipa", "--release", ...extra]);
         copy(p.dryRun ? "build/ios/ipa/$name.ipa" : _find(p, "build/ios/ipa", (String n) => n.endsWith(".ipa"), ".ipa"), "$base.ipa");
@@ -158,18 +166,45 @@ Future<void> cmdBuild(Project p, Args a) async {
         await _run(p, "flutter", <String>["build", "linux", "--release", ...extra]);
         zip(p.dryRun ? "build/linux/x64/release/bundle" : "${_find(p, "build/linux", (String n) => n == "x64" || n == "arm64", "Linux build")}/release/bundle", "$base-linux.zip");
       case _Output.web:
-        final String mode = a.option("web") ?? "both";
-        if (!<String>["both", "cdn", "no-cdn"].contains(mode)) {
-          throw CliException("--web takes both, cdn or no-cdn.");
-        }
-        for (final bool cdn in <bool>[if (mode != "no-cdn") true, if (mode != "cdn") false]) {
+        for (final bool cdn in <bool>[if (web != "no-cdn") true, if (web != "cdn") false]) {
           await _run(p, "flutter", <String>["build", "web", "--release", if (!cdn) "--no-web-resources-cdn", "--dart-define=U_BUILD_ID=$full", ...extra]);
           zip(p.path("build/web"), cdn ? "$base-web.zip" : "$base-web-no-cdn.zip");
         }
     }
   }
+
+  for (final _Output o in targets) {
+    Out.header(o.summary);
+    try {
+      await build(o);
+    } on Exception catch (e) {
+      final String reason = switch (e) {
+        CliException() => e.message,
+        ProcessException() => "${e.executable} couldn't start: ${e.message}",
+        FileSystemException() => "${e.message}: ${e.path ?? ""}",
+        _ => e.toString(),
+      };
+      if (a.flag("fail-fast")) {
+        throw CliException("${o.name}: $reason");
+      }
+      failed[o] = reason;
+      Out.error("${o.name} failed: $reason");
+      Out.note("Going on with the other targets.");
+    }
+  }
   Out.header(p.dryRun ? "Would create" : "Created");
+  if (made.isEmpty) {
+    Out.note("Nothing.");
+  }
   for (final String f in made) {
     Out.line("  ${p.dryRun ? Out.yellow("~") : Out.green("✓")} $f");
+  }
+  if (failed.isNotEmpty) {
+    Out.header("Failed");
+    for (final MapEntry<_Output, String> f in failed.entries) {
+      Out.line("  ${Out.red("✗")} ${f.key.name}  ${Out.dim(f.value)}");
+    }
+    Out.line("\n  Fix the error above, then build only those: ${Out.bold("dart run u:app build ${failed.keys.map((_Output o) => o.name).join(" ")} --no-clean")}");
+    throw CliException("${failed.length} of ${targets.length} builds failed: ${failed.keys.map((_Output o) => o.name).join(", ")}.");
   }
 }

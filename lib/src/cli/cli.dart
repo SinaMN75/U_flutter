@@ -144,8 +144,8 @@ const List<_Command> _commands = <_Command>[
   ),
   _Command(
     "build",
-    "build <apk|aab|ios|ipa|macos|windows|linux|web|all>... [--out <folder>] [--no-clean] [--web both|cdn|no-cdn] [--args=\"<flutter build flags>\"]",
-    "Clean, build release files and copy them to the Desktop as <name>-<version> (any OS)",
+    "build <apk|aab|ios|ipa|macos|windows|linux|web|all>... [--out <folder>] [--no-clean] [--fail-fast] [--web both|cdn|no-cdn] [--args=\"<flutter build flags>\"]",
+    "Clean, build release files and copy them to the Desktop as <name>-<version>; a failed target doesn't stop the others (any OS)",
     cmdBuild,
     examples: <String>[
       "build apk",
@@ -154,6 +154,7 @@ const List<_Command> _commands = <_Command>[
       "build apk ios macos web",
       "build all",
       "build aab --no-clean",
+      "build all --fail-fast",
       "build web --web no-cdn --out build/release",
       "build apk --args=\"--obfuscate --split-debug-info=build/symbols\"",
     ],

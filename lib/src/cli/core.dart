@@ -113,7 +113,7 @@ class Args {
     }
   }
 
-  static const Set<String> _flags = <String>{"help", "dry-run", "create", "force", "fullscreen", "no-clean"};
+  static const Set<String> _flags = <String>{"help", "dry-run", "create", "force", "fullscreen", "no-clean", "fail-fast"};
 
   final List<String> positional = <String>[];
   final Map<String, String> options = <String, String>{};

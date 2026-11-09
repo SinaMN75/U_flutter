@@ -182,7 +182,8 @@ flutter:
 # dart run u:app build apk macos
 # dart run u:app build apk macos web
 # dart run u:app build apk ios macos web
-# dart run u:app build all                   (everything this computer can build)
+# dart run u:app build all                   (everything this computer can build; a failed target doesn't stop the rest)
+# dart run u:app build all --fail-fast       (stop at the first failed target)
 # dart run u:app build apk --no-clean --out build/release
 # dart run u:app build apk --args="--obfuscate --split-debug-info=build/symbols"
 # ─────────────────────────────────────────────────────────────────────────────────────────────────────
