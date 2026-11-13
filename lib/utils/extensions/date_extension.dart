@@ -31,6 +31,27 @@ extension DateTimeExtensions on DateTime {
   /// Converts to a UJalali date for Jalali math and formatting. `date.toJalali().formatFullDate()`
   UJalali toJalali() => UJalali.fromDateTime(this);
 
+  /// Hijri (tabular Islamic calendar) year, month and day; can differ by a day from the moon-sighted calendar. `date.toHijri()` → (1448, 5, 25)
+  (int, int, int) toHijri() {
+    final int a = (14 - month) ~/ 12;
+    final int y = year + 4800 - a;
+    final int m = month + 12 * a - 3;
+    final int jd = day + (153 * m + 2) ~/ 5 + 365 * y + y ~/ 4 - y ~/ 100 + y ~/ 400 - 32045;
+    int l = jd - 1948440 + 10632;
+    final int n = (l - 1) ~/ 10631;
+    l = l - 10631 * n + 354;
+    final int j = ((10985 - l) ~/ 5316) * ((50 * l) ~/ 17719) + (l ~/ 5670) * ((43 * l) ~/ 15238);
+    l = l - ((30 - j) ~/ 15) * ((17719 * j) ~/ 50) - (j ~/ 16) * ((15238 * j) ~/ 43) + 29;
+    final int hm = (24 * l) ~/ 709;
+    return (30 * n + j - 30, hm, l - (709 * hm) ~/ 24);
+  }
+
+  /// Hijri date (tabular). "1448/05/25"
+  String toHijriDate() {
+    final (int y, int m, int d) = toHijri();
+    return "$y/${m.twoDigits}/${d.twoDigits}";
+  }
+
   /// Jalali date with your own pattern (yyyy, mm, dd, mN month name, wN weekday…). `date.toJalaliFormat("wN dd mN yyyy")`
   String toJalaliFormat(String pattern, {bool persianDigits = false}) => toJalali().formatCustom(pattern, persianDigits: persianDigits);
 

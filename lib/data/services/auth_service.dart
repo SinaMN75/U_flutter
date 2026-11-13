@@ -36,6 +36,20 @@ class UAuthService {
     Function(String e)? onException,
   }) => _Api.call("/auth/VerifyCodeForLogin", p.toMap(), _session, _Api.empty, onOk, onError, onException);
 
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> getEmailVerificationCodeForLogin({
+    required UGetEmailVerificationCodeForLoginParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/auth/GetEmailVerificationCodeForLogin", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<ULoginResponse>?, UEmptyResponse?, String?)> verifyEmailCodeForLogin({
+    required UVerifyEmailForLoginParams p,
+    Function(UResponse<ULoginResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/auth/VerifyEmailCodeForLogin", p.toMap(), _session, _Api.empty, onOk, onError, onException);
+
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> completeProfile({
     required UAuthCompleteProfileParams p,
     Function(UEmptyResponse r)? onOk,

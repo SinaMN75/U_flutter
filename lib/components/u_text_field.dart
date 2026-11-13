@@ -1290,6 +1290,7 @@ class UTextFieldPhoneNumber extends StatefulWidget {
     this.controller,
     this.initialValue,
     this.initialCountryCode,
+    this.countryPicker = true,
     this.text,
     this.labelText,
     this.hintText,
@@ -1333,6 +1334,9 @@ class UTextFieldPhoneNumber extends StatefulWidget {
 
   /// Starting country (ISO or dial code); defaults to U.defaultPhoneCountryCode.
   final String? initialCountryCode;
+
+  /// False keeps the starting country fixed: no picker, typed "+" numbers stay in that country.
+  final bool countryPicker;
 
   /// Text to show.
   final String? text;
@@ -1500,7 +1504,7 @@ class _UTextFieldPhoneNumberState extends State<UTextFieldPhoneNumber> {
     final String raw = _phoneController.text;
     if (raw == _lastText) return;
     if (raw.startsWith("+") || raw.startsWith("00")) {
-      final UCountry country = UPhoneNumberUtils.countryOf(raw) ?? _selectedCountry;
+      final UCountry country = widget.countryPicker ? UPhoneNumberUtils.countryOf(raw) ?? _selectedCountry : _selectedCountry;
       _setNational(UPhoneNumberUtils.nationalNumber(raw, countryCode: country.dialCode), country);
       _emit();
       return;
@@ -1530,7 +1534,7 @@ class _UTextFieldPhoneNumberState extends State<UTextFieldPhoneNumber> {
   }
 
   Future<void> _openPicker() async {
-    if (widget.readOnly) return;
+    if (widget.readOnly || !widget.countryPicker) return;
     _searchController.clear();
     final Widget picker = _UCountryPicker(selected: _selectedCountry, searchController: _searchController);
     final UCountry? picked = widget.pickerMode == UCountryPickerMode.bottomSheet
@@ -1590,7 +1594,7 @@ class _UTextFieldPhoneNumberState extends State<UTextFieldPhoneNumber> {
     ),
     prefix: _CountrySelector(
       country: _selectedCountry,
-      enabled: !widget.readOnly,
+      enabled: !widget.readOnly && widget.countryPicker,
       onTap: _openPicker,
     ),
   ).ltr();

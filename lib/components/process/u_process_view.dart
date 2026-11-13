@@ -48,6 +48,7 @@ class _UProcessViewState extends State<UProcessView> {
     if (c.state.isLoading()) return const Scaffold(body: Center(child: CircularProgressIndicator()));
     if (c.state.isError()) {
       return UScaffold(
+        alignment: Alignment.center,
         appBar: AppBar(),
         body: UIconTextVertical(
           leading: UTextBodyMedium(U.s.errorLoadingData),

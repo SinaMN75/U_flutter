@@ -118,6 +118,48 @@ class URegisterParams {
   };
 }
 
+class UGetEmailVerificationCodeForLoginParams {
+  UGetEmailVerificationCodeForLoginParams({
+    required this.email,
+  });
+
+  factory UGetEmailVerificationCodeForLoginParams.fromJson(String str) => UGetEmailVerificationCodeForLoginParams.fromMap(json.decode(str));
+
+  factory UGetEmailVerificationCodeForLoginParams.fromMap(Map<String, dynamic> json) => UGetEmailVerificationCodeForLoginParams(
+    email: json["email"],
+  );
+  final String email;
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "email": email,
+  };
+}
+
+class UVerifyEmailForLoginParams {
+  UVerifyEmailForLoginParams({
+    required this.email,
+    required this.otp,
+  });
+
+  factory UVerifyEmailForLoginParams.fromJson(String str) => UVerifyEmailForLoginParams.fromMap(json.decode(str));
+
+  factory UVerifyEmailForLoginParams.fromMap(Map<String, dynamic> json) => UVerifyEmailForLoginParams(
+    email: json["email"],
+    otp: json["otp"],
+  );
+  final String email;
+  final String otp;
+
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "email": email,
+    "otp": otp,
+  };
+}
+
 class UVerifyMobileForLoginParams {
   UVerifyMobileForLoginParams({
     required this.phoneNumber,

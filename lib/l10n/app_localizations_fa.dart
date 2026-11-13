@@ -334,7 +334,15 @@ class AppLocalizationsFa extends AppLocalizations {
   String get business => 'کسب‌وکار';
 
   @override
+  String get buy => 'خرید';
+
+  @override
   String get buyGold => 'خرید طلا';
+
+  @override
+  String bySigningInYouAcceptTheAppTerms(Object app) {
+    return 'با ورود، قوانین $app را می‌پذیرید.';
+  }
 
   @override
   String get calibrateYourCompassByMovingYourPhoneInAFigureEight => 'قطب‌نما را با حرکت دادن گوشی به شکل عدد ۸ کالیبره کنید';
@@ -535,6 +543,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get confirmAndContinue => 'تایید و ادامه';
+
+  @override
+  String get confirmAndSignIn => 'تأیید و ورود';
 
   @override
   String get confirmed => 'تایید شده';
@@ -1061,6 +1072,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get floor => 'طبقه';
 
   @override
+  String get follow => 'دنبال کردن';
+
+  @override
   String get followUs => 'ما را دنبال کنید';
 
   @override
@@ -1147,6 +1161,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get getSupportPassword => 'دریافت رمز پشتیبانی';
+
+  @override
+  String get getVerificationCode => 'دریافت کد تأیید';
 
   @override
   String get goldWeight => 'وزن طلا';
@@ -1517,6 +1534,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get logout => 'خروج';
 
   @override
+  String get logOutOfAccount => 'خروج از حساب';
+
+  @override
   String get lookAroundToFindASurface => 'برای پیدا کردن یک سطح، اطراف را نگاه کنید';
 
   @override
@@ -1668,6 +1688,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get newPassword => 'رمز جدید';
+
+  @override
+  String get newPost => 'پست جدید';
 
   @override
   String get newRequest => 'درخواست جدید';
@@ -1909,6 +1932,9 @@ class AppLocalizationsFa extends AppLocalizations {
   }
 
   @override
+  String get notNow => 'فعلاً نه';
+
+  @override
   String get noTracksAvailable => 'باندی در دسترس نیست';
 
   @override
@@ -1973,6 +1999,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get optimize => 'بهینه‌سازی';
+
+  @override
+  String get or => 'یا';
 
   @override
   String get orderId => 'شناسه سفارش';
@@ -2320,6 +2349,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get refundAmount => 'مبلغ بازگشتی';
 
   @override
+  String get region => 'منطقه';
+
+  @override
   String get register => 'ثبت‌نام';
 
   @override
@@ -2411,6 +2443,14 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get resend => 'ارسال دوباره';
+
+  @override
+  String get resendCode => 'ارسال دوباره کد';
+
+  @override
+  String resendCodeIn(Object time) {
+    return 'ارسال دوباره کد تا $time';
+  }
 
   @override
   String get reservation => 'رزرو';
@@ -2611,6 +2651,11 @@ class AppLocalizationsFa extends AppLocalizations {
   }
 
   @override
+  String sentTo(Object mobile) {
+    return 'به شماره $mobile فرستاده شد';
+  }
+
+  @override
   String get sepia => 'سپیا';
 
   @override
@@ -2679,7 +2724,16 @@ class AppLocalizationsFa extends AppLocalizations {
   String get shuffle => 'تصادفی';
 
   @override
+  String get signInOrSignUp => 'ورود یا ثبت‌نام';
+
+  @override
   String get signInToContinue => 'برای ادامه وارد شوید';
+
+  @override
+  String get signInWithGoogle => 'ادامه با گوگل';
+
+  @override
+  String get signInWithMobileNumber => 'ورود با شماره موبایل';
 
   @override
   String get signInWithYourPhoneNumberNoPasswordNeeded => 'با شماره‌ی موبایل وارد شوید؛ رمز لازم نیست';
@@ -2698,6 +2752,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get size => 'حجم';
+
+  @override
+  String get skip => 'رد شدن';
 
   @override
   String get skipThisVersion => 'این نسخه را نشان نده';
@@ -4597,9 +4654,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get refunds => 'برگشت به مشتری';
-
-  @override
-  String get region => 'منطقه';
 
   @override
   String get registerAMerchantForAFullyVerifiedUser => 'ثبت پذیرنده برای کاربری که کاملاً احراز هویت شده است.';
@@ -6540,9 +6594,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get businessDetails => 'اطلاعات کسب‌وکار';
 
   @override
-  String get buy => 'خرید';
-
-  @override
   String get byCard => 'با کارت';
 
   @override
@@ -7631,9 +7682,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get findPlayersForYourGame => 'برای بازی‌ات هم‌بازی پیدا کن';
 
   @override
-  String get follow => 'دنبال کردن';
-
-  @override
   String get followers => 'دنبال‌کننده';
 
   @override
@@ -7774,9 +7822,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get nearYou => 'نزدیک تو';
 
   @override
-  String get newPost => 'پست جدید';
-
-  @override
   String get newStory => 'استوری';
 
   @override
@@ -7802,9 +7847,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get openTheLinkedItem => 'مشاهده';
-
-  @override
-  String get or => 'یا';
 
   @override
   String get orTypeThePlace => 'یا نام مکان را بنویسید';
@@ -7932,9 +7974,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get shown => 'نمایش';
-
-  @override
-  String get signInWithGoogle => 'ادامه با گوگل';
 
   @override
   String get singleEliminationDescription => 'بازنده حذف می‌شود، برنده به دور بعد می‌رود.';
@@ -8071,22 +8110,319 @@ class AppLocalizationsFa extends AppLocalizations {
   String get yourVenueWasSentForReview => 'برای بررسی فرستاده شد؛ بعد از تأیید روی نقشه می‌آید';
 
   @override
+  String get aFewShortQuestionsSoSuggestionsFitYou => 'چند سؤال کوتاه تا پیشنهادها به کارت بیاید';
+
+  @override
+  String get afterSigningInItContinuesAndYouComeBackToThisPage => 'بعد از ورود، همین کار خودش انجام می‌شود و به همین صفحه برمی‌گردی.';
+
+  @override
+  String get afterSigningInWhatYouWantedToDoContinues => 'بعد از ورود، کاری که می‌خواستی انجام بدهی ادامه پیدا می‌کند.';
+
+  @override
   String get allYourAppsInOnePlace => 'همه‌ی اپ‌هایت یک‌جا';
+
+  @override
+  String get appLanguage => 'زبان اپ';
+
+  @override
+  String get apple => 'اپل';
 
   @override
   String get apps => 'اپ‌ها';
 
   @override
+  String get autoTranslation => 'ترجمه‌ی خودکار';
+
+  @override
+  String get bookATimeShowYourPickUpCodeAndGetYourGoldFromTheSameStore => 'وقت بگیر، کد تحویل را نشان بده و طلایت را از همان فروشگاه بگیر.';
+
+  @override
+  String get buyByAmountOrWeight => 'به مبلغ یا به وزن بخر';
+
+  @override
+  String get buyGoldEvenWithLittleMoney => 'طلا بخر، حتی با پول کم';
+
+  @override
+  String get buyRealGoldGramByGramWithAnyBudget => 'طلای واقعی بخر، گرم‌به‌گرم، با هر بودجه‌ای';
+
+  @override
+  String get calendar => 'تقویم';
+
+  @override
+  String get connectWithTravelersAndGuides => 'با مسافرها و راهنماها وصل شو';
+
+  @override
+  String get continueWithoutSigningIn => 'فعلاً بدون ورود';
+
+  @override
+  String get countryOfResidence => 'کشور محل زندگی';
+
+  @override
+  String get createYourProfile => 'ساخت پروفایل';
+
+  @override
+  String get distanceUnit => 'واحد فاصله';
+
+  @override
+  String get everyPlaceYouVisitIsRecordedWithAPhotoEarnBadgesAndCompleteTheCountry => 'هر جای دیدنی که بروی با یک عکس ثبت می‌شود. نشان بگیر و کشور را کامل کن.';
+
+  @override
+  String get everythingIsReadyWhereverYouGo => 'هر جا رفتی، همه‌چیز آماده است';
+
+  @override
+  String get exploreAndRaiseYourProgress => 'کشف کن و درصدت را بالا ببر';
+
+  @override
+  String get findAGoldsmith => 'پیدا کردن طلافروشی';
+
+  @override
+  String get findATrustedGoldsmithNearYouAndAcceptTheirClubRules => 'طلافروشی معتمد نزدیکت را پیدا کن و قوانین باشگاهش را بپذیر.';
+
+  @override
+  String get getYourSimCardInternetTaxiAndHotelBeforeYouArriveWithSupportInYourLanguage => 'سیم‌کارت، اینترنت، تاکسی و هتل را قبل از رسیدن بگیر؛ با پشتیبانی به زبان خودت.';
+
+  @override
+  String get giveAnyAmountToYourTrustedGoldsmithAndItIsSetAsideGramByGramAtTheDailyRate => 'هر مبلغی که داری به طلافروش معتمدت بده؛ با نرخ روز بازار، گرم‌به‌گرم برایت کنار گذاشته می‌شود.';
+
+  @override
+  String gold18KDailyRateItem(Object item) {
+    return 'طلای ۱۸ عیار · نرخ روز بازار $item';
+  }
+
+  @override
+  String get gold18KPerGram => 'طلای ۱۸ · هر گرم';
+
+  @override
+  String get goldsmiths => 'طلافروشی‌ها';
+
+  @override
+  String get google => 'گوگل';
+
+  @override
+  String get helloGuest => 'سلام، مهمان';
+
+  @override
+  String helloItem(Object item) {
+    return 'سلام، $item';
+  }
+
+  @override
+  String howDoYouUseItem(Object item) {
+    return 'چطور از $item استفاده می‌کنی؟';
+  }
+
+  @override
+  String get howItWorks => 'چطور کار می‌کند';
+
+  @override
+  String get howMuchGoldDoesThisAmountBuy => 'با این مبلغ چقدر طلا داری؟';
+
+  @override
+  String get iAmATraveler => 'مسافرم';
+
+  @override
+  String get iProvideServices => 'ارائه‌دهنده‌ی خدماتم';
+
+  @override
+  String itemMillion(Object item) {
+    return '$item م';
+  }
+
+  @override
+  String get itIsConvertedToGramsAtTheDailyRateAndRecordedInYourCustodyReceipt => 'با نرخ روز بازار به گرم تبدیل و در رسید امانت ثبت می‌شود.';
+
+  @override
+  String get join => 'عضویت';
+
+  @override
+  String get joinAClub => 'عضو باشگاه شو';
+
+  @override
+  String get joinTheClubOfAGoldsmithNearYouYourBalanceIsPhysicalGoldHeldByThem => 'عضو باشگاه مشتریان طلافروشی محله‌ات شو. موجودی‌ات امانت فیزیکی نزد اوست، نه عددی برای خرید و فروش لحظه‌ای.';
+
+  @override
+  String get languageAndRegion => 'زبان و منطقه';
+
+  @override
+  String get letsGoWithoutSigningUp => 'بزن بریم، بدون ثبت‌نام';
+
+  @override
+  String get letsStart => 'شروع کنیم';
+
+  @override
+  String get marketDailyRate => 'نرخ روز بازار';
+
+  @override
+  String membersItem(Object item) {
+    return '$item عضو';
+  }
+
+  @override
+  String minimumPurchaseItem(Object item) {
+    return 'حداقل خرید $item';
+  }
+
+  @override
+  String get nationalityPassport => 'ملیت (پاسپورت)';
+
+  @override
+  String get noGoldsmithHasJoinedYet => 'هنوز طلافروشی عضو نشده است.';
+
+  @override
+  String get noSeparateSignUpYourAccountIsCreatedOnFirstSignIn => 'ثبت‌نام جدا لازم نیست؛ با اولین ورود حسابت ساخته می‌شود.';
+
+  @override
+  String get oneAccountForAllApps => 'یک حساب برای همه‌ی اپ‌ها';
+
+  @override
+  String get oneAccountForEveryAppInTheFamilySignInToOneAndYouAreSignedInToAll => 'یک حساب برای همه‌ی اپ‌های خانواده. در یکی وارد شوی، در همه وارد هستی.';
+
+  @override
+  String get pickUp => 'تحویل';
+
+  @override
+  String get pickUpAnyPartOfYourBalanceInPersonFromTheSameStoreByAppointment => 'هر مقدار از موجودی‌ات را که خواستی، با وقت قبلی حضوری از همان فروشگاه تحویل بگیر.';
+
+  @override
+  String get pickUpInPerson => 'حضوری تحویل بگیر';
+
+  @override
+  String get placesTravelServicesAndTheTravelerCommunity => 'جاهای دیدنی، خدمات سفر و اجتماع مسافرها';
+
+  @override
   String get rahnavard => 'رهنورد';
+
+  @override
+  String get realGoldWithARealGoldsmith => 'طلای واقعی، نزد طلافروش واقعی';
+
+  @override
+  String get saveAndContinue => 'ذخیره و ادامه';
+
+  @override
+  String get sharePhotosAndVideosBookLocalGuidesAndTranslatorsOrOfferYourOwnService => 'عکس و ویدیو بگذار، تور لیدر و مترجم محلی رزرو کن یا خودت خدمت ارائه بده.';
+
+  @override
+  String get showPricesIn => 'نمایش قیمت به';
+
+  @override
+  String signedInAsItem(Object item) {
+    return 'با حساب $item وارد شده‌ای';
+  }
+
+  @override
+  String get signingInHereSignsYouInToEveryApp => 'با همین ورود، در همه‌ی اپ‌ها وارد می‌شوی.';
+
+  @override
+  String get signInOnceAndYouAreSignedInToEveryApp => 'با یک بار ورود، در همه‌ی اپ‌های خانواده وارد هستی.';
+
+  @override
+  String get signInToBook => 'برای رزرو وارد شو';
+
+  @override
+  String get signInToBuyAndPay => 'برای خرید و پرداخت وارد شو';
+
+  @override
+  String get signInToBuyJoinAClubAndPickUpBrowsingIsFree => 'برای خرید، عضویت در باشگاه و تحویل وارد شو؛ گشتن بدون ورود آزاد است.';
+
+  @override
+  String get signInToFollow => 'برای دنبال کردن وارد شو';
+
+  @override
+  String signInToItem(Object item) {
+    return 'ورود به $item';
+  }
+
+  @override
+  String get signInToJoin => 'برای عضویت وارد شو';
+
+  @override
+  String get signInToPickUp => 'برای تحویل گرفتن وارد شو';
+
+  @override
+  String get signInToSave => 'برای نشان کردن وارد شو';
+
+  @override
+  String get signInToSaveYourRegionCalendarAndUnits => 'برای ذخیره‌ی منطقه، تقویم و واحدها وارد شو.';
+
+  @override
+  String get signInToWriteAPost => 'برای نوشتن پست وارد شو';
+
+  @override
+  String get signInWithEmail => 'ورود با ایمیل';
+
+  @override
+  String get silverPerGram => 'نقره · هر گرم';
 
   @override
   String get superApp => 'سوپراپ';
 
   @override
+  String get takeItPhysicallyWheneverYouWant => 'هر وقت خواستی، فیزیکی‌اش کن';
+
+  @override
   String get tapAnAppToOpenIt => 'روی هر اپ بزن تا خودش باز شود';
 
   @override
+  String get theDailyRateIsNotAvailableRightNow => 'نرخ روز فعلاً در دسترس نیست';
+
+  @override
+  String get theOriginalTextIsAlwaysOneTapAway => 'متن اصلی همیشه با یک لمس دیده می‌شود.';
+
+  @override
+  String theRestOfItemIsOpenWithoutSigningIn(Object item) {
+    return 'بقیه‌ی $item بدون ورود هم باز است.';
+  }
+
+  @override
+  String get thisAccountAlsoWorksInTheOtherAppsOfTheFamily => 'با حساب یکپارچه‌ی خانواده؛ همین حساب در اپ‌های دیگر خانواده هم کار می‌کند.';
+
+  @override
+  String get tourGuideTranslatorDriverPhotographerStayOrBusiness => 'تور لیدر، مترجم، راننده، عکاس، اقامتگاه یا کسب‌وکار';
+
+  @override
+  String get translatePostsCommentsAndChats => 'ترجمه‌ی پست‌ها، نظرها و گفتگوها';
+
+  @override
+  String get trustedGoldsmithsCustomerClub => 'باشگاه مشتریان طلافروشی‌های معتمد';
+
+  @override
+  String updatedAtItem(Object item) {
+    return 'به‌روز $item';
+  }
+
+  @override
+  String get visaAndTravelTipsFollowYourPassport => 'ویزا و نکته‌های سفر بر اساس پاسپورتت نشان داده می‌شود.';
+
+  @override
+  String get visaEmbassyAndTipsFollowYourPassportPricesShowInLocalCurrencyWithYourEquivalent => 'ویزا، سفارت و نکته‌های هر کشور بر اساس پاسپورتت؛ قیمت‌ها به پول محلی با معادل به واحد انتخابی‌ات.';
+
+  @override
   String get vitrin => 'ویترین';
+
+  @override
+  String get weEmailYouASignInCode => 'کد ورود به ایمیلت فرستاده می‌شود';
+
+  @override
+  String get whatAreYouInterestedIn => 'به چه چیزی علاقه داری؟';
+
+  @override
+  String get youAreBrowsingAsAGuest => 'به‌عنوان مهمان می‌گردی';
+
+  @override
+  String get youCanBrowseWithoutSigningInSigningInIsOnlyForPersonalActions => 'بدون ورود هم می‌توانی بگردی؛ ورود فقط برای کارهای شخصی است.';
+
+  @override
+  String get youCanPickBothOneAccountTwoModesChangeItLaterInYourAccount => 'می‌توانی هر دو را انتخاب کنی؛ یک حساب با دو حالت. بعداً هم از حساب من قابل تغییر است.';
+
+  @override
+  String get yourAssetsAndReceiptsGatherHere => 'دارایی و رسیدهایت این‌جا جمع می‌شود';
+
+  @override
+  String get yourMoneyBecomesGramsAtTheDailyRateAndIsHeldByYourLocalGoldsmithPickItUpInPersonAnytime =>
+      'پولت با نرخ روز بازار به گرم تبدیل و نزد طلافروش محله‌ات برایت نگه داشته می‌شود؛ هر وقت خواستی حضوری تحویل بگیر.';
+
+  @override
+  String get yourWalletProfileAndVerificationAreTheSameInEveryApp => 'کیف پول، پروفایل و احراز هویت در همه‌ی اپ‌ها یکی است.';
 
   @override
   String get zarrin => 'زرین';
@@ -8288,11 +8624,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get buyersRotateAndZoomItOnTheProductPage => 'خریدار آن را در صفحه کالا می‌چرخاند و بزرگ می‌کند';
 
   @override
-  String bySigningInYouAcceptTheAppTerms(Object app) {
-    return 'با ورود، قوانین $app را می‌پذیرید.';
-  }
-
-  @override
   String get cafeMenuIsInGrowthPlan => 'حالت منو در اشتراک شما نیست';
 
   @override
@@ -8347,9 +8678,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get componentGallery => 'گالری کامپوننت‌ها';
-
-  @override
-  String get confirmAndSignIn => 'تأیید و ورود';
 
   @override
   String get connect => 'اتصال';
@@ -8635,9 +8963,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get fullComparison => 'مقایسه کامل';
 
   @override
-  String get getVerificationCode => 'دریافت کد تأیید';
-
-  @override
   String get grandTotal => 'جمع کل';
 
   @override
@@ -8735,9 +9060,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get location => 'موقعیت مکانی';
-
-  @override
-  String get logOutOfAccount => 'خروج از حساب';
 
   @override
   String get mainInformation => 'اطلاعات اصلی';
@@ -8863,9 +9185,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get notifyMeWhenItOpens => 'وقتی باز شد خبرم کن';
-
-  @override
-  String get notNow => 'فعلاً نه';
 
   @override
   String get noTransactionsYet => 'هنوز تراکنشی ثبت نشده';
@@ -9148,14 +9467,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get reportAProblem => 'گزارش مشکل';
 
   @override
-  String get resendCode => 'ارسال دوباره کد';
-
-  @override
-  String resendCodeIn(Object time) {
-    return 'ارسال دوباره کد تا $time';
-  }
-
-  @override
   String get runningLow => 'رو به اتمام';
 
   @override
@@ -9258,11 +9569,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get sellSeveralItemsInOneTap => 'فروش چند کالا با چند ضربه';
 
   @override
-  String sentTo(Object mobile) {
-    return 'به شماره $mobile فرستاده شد';
-  }
-
-  @override
   String get settingsSaved => 'تنظیمات ذخیره شد';
 
   @override
@@ -9283,21 +9589,12 @@ class AppLocalizationsFa extends AppLocalizations {
   String get showTheReceiptToTheSeller => 'رسید را به فروشنده نشان دهید';
 
   @override
-  String get signInOrSignUp => 'ورود یا ثبت‌نام';
-
-  @override
   String get signInToBookmarkStoresAndGoods => 'برای نشان کردن فروشگاه‌ها و کالاها وارد شوید';
-
-  @override
-  String get signInWithMobileNumber => 'ورود با شماره موبایل';
 
   @override
   String sinceDate(Object date) {
     return 'از $date';
   }
-
-  @override
-  String get skip => 'رد شدن';
 
   @override
   String get smallSticker => 'برچسب کوچک';

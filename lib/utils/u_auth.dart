@@ -17,6 +17,9 @@ abstract class UAuth {
     "/auth/GetVerificationCodeForLogin",
     "/auth/VerifyCodeForLogin",
     "/auth/LoginOrRegister",
+    "/auth/GetEmailVerificationCodeForLogin",
+    "/auth/VerifyEmailCodeForLogin",
+    "/auth/LoginWithGoogle",
   ];
 
   /// Counter bumped on every login/logout; lets requests started before a logout ignore their result.

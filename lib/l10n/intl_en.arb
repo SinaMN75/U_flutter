@@ -118,7 +118,14 @@
   "bufferHealth": "Buffer health",
   "bulletedList": "Bulleted List",
   "business": "Business",
+  "buy": "Buy",
   "buyGold": "Buy gold",
+  "bySigningInYouAcceptTheAppTerms": "By signing in you accept the {app} terms",
+  "@bySigningInYouAcceptTheAppTerms": {
+    "placeholders": {
+      "app": {}
+    }
+  },
   "calibrateYourCompassByMovingYourPhoneInAFigureEight": "Calibrate your compass by moving your phone in a figure eight",
   "cameraPermissionDenied": "Camera permission denied",
   "cameraPermissionIsRequired": "Camera permission is required",
@@ -190,6 +197,7 @@
   "completeThePaymentInTheBrowserThenComeBackHere": "Complete the payment in the browser, then come back here.",
   "confirm": "Confirm",
   "confirmAndContinue": "Confirm and continue",
+  "confirmAndSignIn": "Confirm and sign in",
   "confirmed": "Confirmed",
   "connecting": "Connecting",
   "connectionsPerDownload": "Connections per download",
@@ -409,6 +417,7 @@
   "flipHorizontal": "Flip horizontal",
   "flipVertical": "Flip vertical",
   "floor": "Floor",
+  "follow": "Follow",
   "followUs": "Follow us",
   "font": "Font",
   "fontFamily": "Font",
@@ -448,6 +457,7 @@
   "generate": "Generate",
   "generateSchedule": "Generate the schedule",
   "getSupportPassword": "Get Support Password",
+  "getVerificationCode": "Get verification code",
   "goldWeight": "Gold weight",
   "goods": "Goods",
   "googlePlayServicesForArIsRequired": "Google Play Services for AR is required",
@@ -640,6 +650,7 @@
   "login": "Login",
   "logo": "Logo",
   "logout": "Logout",
+  "logOutOfAccount": "Log out of account",
   "lookAroundToFindASurface": "Look around to find a surface",
   "lookAtTheCamera": "Look at the camera",
   "loudnessNormalization": "Loudness normalization",
@@ -704,6 +715,7 @@
   },
   "newMessage": "New message",
   "newPassword": "New password",
+  "newPost": "New post",
   "newRequest": "New Request",
   "newStaffMember": "New staff member",
   "next": "Next",
@@ -905,6 +917,7 @@
       "subject": {}
     }
   },
+  "notNow": "Not Now",
   "noTracksAvailable": "No tracks available",
   "nowPlaying": "Now playing",
   "number": "Number",
@@ -927,6 +940,7 @@
   "operations": "Operations",
   "operator": "Operator",
   "optimize": "Optimize",
+  "or": "or",
   "orderId": "Order id",
   "organizer": "Organizer",
   "original": "Original",
@@ -1055,6 +1069,7 @@
   "reference": "Reference",
   "refresh": "Refresh",
   "refundAmount": "Refund amount",
+  "region": "Region",
   "register": "Register",
   "registerANewSubscription": "Register a new subscription",
   "registrationDate": "Registration Date",
@@ -1086,6 +1101,13 @@
   "required": "Required",
   "requiredDocuments": "Required documents",
   "resend": "Resend",
+  "resendCode": "Resend code",
+  "resendCodeIn": "Resend code in {time}",
+  "@resendCodeIn": {
+    "placeholders": {
+      "time": {}
+    }
+  },
   "reservation": "Reservation",
   "reservations": "Reservations",
   "reset": "Reset",
@@ -1178,6 +1200,12 @@
       "item": {}
     }
   },
+  "sentTo": "Sent to {mobile}",
+  "@sentTo": {
+    "placeholders": {
+      "mobile": {}
+    }
+  },
   "sepia": "Sepia",
   "serial": "Serial",
   "serverAddressCouldNotBeFound": "Server address could not be found",
@@ -1205,13 +1233,17 @@
     }
   },
   "shuffle": "Shuffle",
+  "signInOrSignUp": "Sign in or sign up",
   "signInToContinue": "Sign in to continue",
+  "signInWithGoogle": "Continue with Google",
+  "signInWithMobileNumber": "Sign in with mobile number",
   "signInWithYourPhoneNumberNoPasswordNeeded": "Sign in with your phone number no password needed",
   "simCardNumber": "SIM Card Number",
   "simCardSerial": "SIM Card Serial",
   "simultaneousDownloads": "Simultaneous downloads",
   "singlePage": "Single page",
   "size": "Size",
+  "skip": "Skip",
   "skipThisVersion": "Skip this version",
   "sleepTimer": "Sleep timer",
   "slotLength": "Slot length",
@@ -1911,7 +1943,6 @@
   "recordSettlement": "Record settlement",
   "refreshTables": "Refresh tables",
   "refunds": "Refunds",
-  "region": "Region",
   "registerAMerchantForAFullyVerifiedUser": "Register a merchant for a fully verified user.",
   "rejectDocuments": "Reject Documents",
   "relation": "Relation",
@@ -2698,7 +2729,6 @@
   "bookingsAndCheckIn": "Bookings and check in",
   "bookThisRoom": "Book this room",
   "businessDetails": "Business details",
-  "buy": "Buy",
   "byCard": "By card",
   "byContinuingYouAcceptTheTermsAndConditionsAndThePrivacyPolicy": "By continuing, you accept the terms and conditions and the privacy policy.",
   "bySigningInYouAcceptTheTerms": "By signing in you accept the terms",
@@ -3111,7 +3141,6 @@
   "findPlayers": "Find players",
   "findPlayersForThisBooking": "Want to find players for this booking?",
   "findPlayersForYourGame": "Find players for your game",
-  "follow": "Follow",
   "followers": "Followers",
   "following": "Following",
   "followPlayersToSeeTheirPosts": "Follow players to see their posts here",
@@ -3190,7 +3219,6 @@
   "myTournaments": "Mine",
   "myVenues": "My venues",
   "nearYou": "Near you",
-  "newPost": "New post",
   "newStory": "Story",
   "nextSeason": "Start the next period",
   "noBookingsOnThisDay": "No bookings on this day",
@@ -3200,7 +3228,6 @@
   "onlyMyFollowers": "Only my followers",
   "open24Hours": "Open 24 hours",
   "openTheLinkedItem": "Open",
-  "or": "or",
   "orTypeThePlace": "or type the place",
   "participantType": "Participant type",
   "partnerEmail": "Partner's email",
@@ -3253,7 +3280,6 @@
   "shop": "Shop",
   "shops": "Shops",
   "shown": "Shown",
-  "signInWithGoogle": "Continue with Google",
   "singleEliminationDescription": "Loser is out, winner advances.",
   "specialPrices": "Special prices",
   "splitCostWithFriends": "Split the cost with friends",
@@ -3304,12 +3330,154 @@
   "yourShareIsUnpaid": "Your share is unpaid",
   "yourVenueWasSentForReview": "Sent for review — it shows on the map once approved",
   "@@x-section-superapp": "Super app family (super_app_flutter: shell, super app hub and the Vitrin, Rahnavard, Zarrin modules)",
+  "aFewShortQuestionsSoSuggestionsFitYou": "A few short questions so suggestions fit you",
+  "afterSigningInItContinuesAndYouComeBackToThisPage": "After signing in, it continues by itself and you come back to this page.",
+  "afterSigningInWhatYouWantedToDoContinues": "After signing in, what you wanted to do continues.",
   "allYourAppsInOnePlace": "All your apps in one place",
+  "appLanguage": "App language",
+  "apple": "Apple",
   "apps": "Apps",
+  "autoTranslation": "Auto translation",
+  "bookATimeShowYourPickUpCodeAndGetYourGoldFromTheSameStore": "Book a time, show your pick-up code and get your gold from the same store.",
+  "buyByAmountOrWeight": "Buy by amount or weight",
+  "buyGoldEvenWithLittleMoney": "Buy gold, even with little money",
+  "buyRealGoldGramByGramWithAnyBudget": "Buy real gold, gram by gram, with any budget",
+  "calendar": "Calendar",
+  "connectWithTravelersAndGuides": "Connect with travelers and guides",
+  "continueWithoutSigningIn": "Continue without signing in",
+  "countryOfResidence": "Country of residence",
+  "createYourProfile": "Create your profile",
+  "distanceUnit": "Distance unit",
+  "everyPlaceYouVisitIsRecordedWithAPhotoEarnBadgesAndCompleteTheCountry": "Every place you visit is recorded with a photo. Earn badges and complete the country.",
+  "everythingIsReadyWhereverYouGo": "Everything is ready wherever you go",
+  "exploreAndRaiseYourProgress": "Explore and raise your progress",
+  "findAGoldsmith": "Find a goldsmith",
+  "findATrustedGoldsmithNearYouAndAcceptTheirClubRules": "Find a trusted goldsmith near you and accept their club rules.",
+  "getYourSimCardInternetTaxiAndHotelBeforeYouArriveWithSupportInYourLanguage": "Get your SIM card, internet, taxi and hotel before you arrive, with support in your language.",
+  "giveAnyAmountToYourTrustedGoldsmithAndItIsSetAsideGramByGramAtTheDailyRate": "Give any amount to your trusted goldsmith and it is set aside gram by gram at the daily rate.",
+  "gold18KDailyRateItem": "18K gold · daily market rate {item}",
+  "@gold18KDailyRateItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "gold18KPerGram": "18K gold · per gram",
+  "goldsmiths": "Goldsmiths",
+  "google": "Google",
+  "helloGuest": "Hello, guest",
+  "helloItem": "Hello, {item}",
+  "@helloItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "howDoYouUseItem": "How do you use {item}?",
+  "@howDoYouUseItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "howItWorks": "How it works",
+  "howMuchGoldDoesThisAmountBuy": "How much gold does this amount buy?",
+  "iAmATraveler": "I am a traveler",
+  "iProvideServices": "I provide services",
+  "itemMillion": "{item} M",
+  "@itemMillion": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "itIsConvertedToGramsAtTheDailyRateAndRecordedInYourCustodyReceipt": "It is converted to grams at the daily rate and recorded in your custody receipt.",
+  "join": "Join",
+  "joinAClub": "Join a club",
+  "joinTheClubOfAGoldsmithNearYouYourBalanceIsPhysicalGoldHeldByThem": "Join the club of a goldsmith near you. Your balance is physical gold held by them, not a number to trade.",
+  "languageAndRegion": "Language and region",
+  "letsGoWithoutSigningUp": "Let's go, without signing up",
+  "letsStart": "Let's start",
+  "marketDailyRate": "Market daily rate",
+  "membersItem": "{item} members",
+  "@membersItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "minimumPurchaseItem": "Minimum purchase {item}",
+  "@minimumPurchaseItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "nationalityPassport": "Nationality (passport)",
+  "noGoldsmithHasJoinedYet": "No goldsmith has joined yet.",
+  "noSeparateSignUpYourAccountIsCreatedOnFirstSignIn": "No separate sign-up; your account is created on first sign-in.",
+  "oneAccountForAllApps": "One account for all apps",
+  "oneAccountForEveryAppInTheFamilySignInToOneAndYouAreSignedInToAll": "One account for every app in the family. Sign in to one and you are signed in to all.",
+  "pickUp": "Pick up",
+  "pickUpAnyPartOfYourBalanceInPersonFromTheSameStoreByAppointment": "Pick up any part of your balance in person from the same store by appointment.",
+  "pickUpInPerson": "Pick up in person",
+  "placesTravelServicesAndTheTravelerCommunity": "Places, travel services and the traveler community",
   "rahnavard": "Rahnavard",
+  "realGoldWithARealGoldsmith": "Real gold with a real goldsmith",
+  "saveAndContinue": "Save and continue",
+  "sharePhotosAndVideosBookLocalGuidesAndTranslatorsOrOfferYourOwnService": "Share photos and videos, book local guides and translators, or offer your own service.",
+  "showPricesIn": "Show prices in",
+  "signedInAsItem": "Signed in as {item}",
+  "@signedInAsItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "signingInHereSignsYouInToEveryApp": "Signing in here signs you in to every app.",
+  "signInOnceAndYouAreSignedInToEveryApp": "Sign in once and you are signed in to every app.",
+  "signInToBook": "Sign in to book",
+  "signInToBuyAndPay": "Sign in to buy and pay",
+  "signInToBuyJoinAClubAndPickUpBrowsingIsFree": "Sign in to buy, join a club and pick up; browsing is free.",
+  "signInToFollow": "Sign in to follow",
+  "signInToItem": "Sign in to {item}",
+  "@signInToItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "signInToJoin": "Sign in to join",
+  "signInToPickUp": "Sign in to pick up",
+  "signInToSave": "Sign in to save",
+  "signInToSaveYourRegionCalendarAndUnits": "Sign in to save your region, calendar and units.",
+  "signInToWriteAPost": "Sign in to write a post",
+  "signInWithEmail": "Sign in with email",
+  "silverPerGram": "Silver · per gram",
   "superApp": "Super App",
+  "takeItPhysicallyWheneverYouWant": "Take it physically whenever you want",
   "tapAnAppToOpenIt": "Tap an app to open it",
+  "theDailyRateIsNotAvailableRightNow": "The daily rate is not available right now",
+  "theOriginalTextIsAlwaysOneTapAway": "The original text is always one tap away.",
+  "theRestOfItemIsOpenWithoutSigningIn": "The rest of {item} is open without signing in.",
+  "@theRestOfItemIsOpenWithoutSigningIn": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "thisAccountAlsoWorksInTheOtherAppsOfTheFamily": "This account also works in the other apps of the family.",
+  "tourGuideTranslatorDriverPhotographerStayOrBusiness": "Tour guide, translator, driver, photographer, stay or business",
+  "translatePostsCommentsAndChats": "Translate posts, comments and chats",
+  "trustedGoldsmithsCustomerClub": "Trusted goldsmiths' customer club",
+  "updatedAtItem": "Updated {item}",
+  "@updatedAtItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "visaAndTravelTipsFollowYourPassport": "Visa and travel tips follow your passport.",
+  "visaEmbassyAndTipsFollowYourPassportPricesShowInLocalCurrencyWithYourEquivalent": "Visa, embassy and tips follow your passport; prices show in local currency with your equivalent.",
   "vitrin": "Vitrin",
+  "weEmailYouASignInCode": "We email you a sign-in code",
+  "whatAreYouInterestedIn": "What are you interested in?",
+  "youAreBrowsingAsAGuest": "You are browsing as a guest",
+  "youCanBrowseWithoutSigningInSigningInIsOnlyForPersonalActions": "You can browse without signing in; signing in is only for personal actions.",
+  "youCanPickBothOneAccountTwoModesChangeItLaterInYourAccount": "You can pick both: one account, two modes. Change it later in your account.",
+  "yourAssetsAndReceiptsGatherHere": "Your assets and receipts gather here",
+  "yourMoneyBecomesGramsAtTheDailyRateAndIsHeldByYourLocalGoldsmithPickItUpInPersonAnytime": "Your money becomes grams at the daily rate and is held by your local goldsmith; pick it up in person anytime.",
+  "yourWalletProfileAndVerificationAreTheSameInEveryApp": "Your wallet, profile and verification are the same in every app.",
   "zarrin": "Zarrin",
   "@@x-section-vitrin": "Vitrin",
   "a3dModelForEveryProduct": "A 3D model for every product",
@@ -3400,12 +3568,6 @@
   "buyAndPay": "Buy And Pay",
   "buyerMode": "Buyer mode",
   "buyersRotateAndZoomItOnTheProductPage": "Buyers rotate and zoom it on the product page",
-  "bySigningInYouAcceptTheAppTerms": "By signing in you accept the {app} terms",
-  "@bySigningInYouAcceptTheAppTerms": {
-    "placeholders": {
-      "app": {}
-    }
-  },
   "cafeMenuIsInGrowthPlan": "Menu mode is not in your subscription",
   "callStore": "Call Store",
   "cardReader": "Card Reader",
@@ -3443,7 +3605,6 @@
     }
   },
   "componentGallery": "Component gallery",
-  "confirmAndSignIn": "Confirm and sign in",
   "connect": "Connect",
   "connected": "Connected",
   "contactAndPayment": "Contact And Payment",
@@ -3654,7 +3815,6 @@
   "fromStoresYouFollow": "From stores you follow",
   "fromTheStoresYouTube": "From the store's YouTube",
   "fullComparison": "Full comparison",
-  "getVerificationCode": "Get verification code",
   "grandTotal": "Grand Total",
   "haveAShop": "Have a shop?",
   "hearAboutNewItemsFirst": "Hear about new items first",
@@ -3717,7 +3877,6 @@
   "linkAddress": "Link address",
   "linkTitle": "Link title",
   "location": "Location",
-  "logOutOfAccount": "Log out of account",
   "mainInformation": "Main information",
   "makeCover": "Make cover",
   "makePosterAndDownload": "Make poster and download",
@@ -3764,7 +3923,6 @@
   },
   "notificationSettings": "Notification settings",
   "notifyMeWhenItOpens": "Notify me when it opens",
-  "notNow": "Not Now",
   "noTransactionsYet": "No transactions yet",
   "numberOfProducts": "Number of products",
   "numberOfStores": "Number of stores",
@@ -3937,13 +4095,6 @@
   "remainingDaysCredit": "Remaining days credit",
   "replaceGlbOrUsdzFile": "Replace glb or usdz file",
   "reportAProblem": "Report a problem",
-  "resendCode": "Resend code",
-  "resendCodeIn": "Resend code in {time}",
-  "@resendCodeIn": {
-    "placeholders": {
-      "time": {}
-    }
-  },
   "runningLow": "Running low",
   "runningLowOrOut": "Running low or out",
   "saleRecorded": "Sale recorded",
@@ -3978,12 +4129,6 @@
   "selectGlbOrUsdzFile": "Select glb or usdz file",
   "sellerPanel": "Seller panel",
   "sellSeveralItemsInOneTap": "Sell several items in a few taps",
-  "sentTo": "Sent to {mobile}",
-  "@sentTo": {
-    "placeholders": {
-      "mobile": {}
-    }
-  },
   "settingsSaved": "Settings saved",
   "showCountResults": "Show {count} results",
   "@showCountResults": {
@@ -3995,16 +4140,13 @@
   "showOnStorePage": "Show on store page",
   "showResults": "Show results",
   "showTheReceiptToTheSeller": "Show the receipt to the seller",
-  "signInOrSignUp": "Sign in or sign up",
   "signInToBookmarkStoresAndGoods": "Sign in to bookmark stores and goods",
-  "signInWithMobileNumber": "Sign in with mobile number",
   "sinceDate": "Since {date}",
   "@sinceDate": {
     "placeholders": {
       "date": {}
     }
   },
-  "skip": "Skip",
   "smallSticker": "Small sticker",
   "soldOut": "Sold out",
   "sortedBy": "Sorted by {sort}",

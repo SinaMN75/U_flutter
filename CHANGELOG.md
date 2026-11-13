@@ -1,5 +1,10 @@
 ## Unreleased
 
+* `DateTime.toHijri()` and `toHijriDate()`: tabular Islamic (Hijri) calendar date.
+* `UServices.auth.getEmailVerificationCodeForLogin` and `verifyEmailCodeForLogin`: sign in or sign up with a one-time code sent by email.
+* `TagUser`: travel usage (9xx), interests (10xx) and `keepOriginalLanguage` (1101).
+* `UTextFieldPhoneNumber(countryPicker: false)` keeps the starting country fixed (no picker), for apps
+  that accept only one country's numbers.
 * **`dart run u:app icon`, `splash` and `build`: no more `flutter_launcher_icons` or `flutter_native_splash`.**
   * `icon <image.png>` writes every icon of all 6 platforms from one PNG: Android legacy, adaptive
     (`--background`, `--foreground`, `--inset`) and Android 13+ themed (`--monochrome`) icons, the iOS

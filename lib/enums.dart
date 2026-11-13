@@ -203,6 +203,22 @@ enum TagUser with UNumericIdentifiable {
   distanceKilometer("کیلومتر", "Kilometer", 801),
   distanceMile("مایل", "Mile", 802),
 
+  // ---- how the user uses the travel features (9xx, any of them) ----
+  usageTraveler("مسافر", "Traveler", 901),
+  usageServiceProvider("ارائه‌دهنده‌ی خدمات", "Service provider", 902),
+
+  // ---- interests (10xx, any of them) ----
+  interestHistory("تاریخی", "History", 1001),
+  interestNature("طبیعت", "Nature", 1002),
+  interestFood("غذا", "Food", 1003),
+  interestShopping("خرید", "Shopping", 1004),
+  interestAdventure("ماجراجویی", "Adventure", 1005),
+  interestReligious("زیارتی", "Religious", 1006),
+  interestNightlife("زندگی شبانه", "Nightlife", 1007),
+
+  // ---- content translation (11xx): present = keep posts, comments and chats in their original language ----
+  keepOriginalLanguage("نمایش متن اصلی", "Keep original language", 1101),
+
   // ---- subAdmin permissions (6xx). super/system admins have all of them; only a superAdmin or systemAdmin can give them ----
   permissionManageHotels("مدیریت هتل‌ها", "Manage Hotels", 601),
   permissionDeleteHotels("حذف هتل‌ها", "Delete Hotels", 602),

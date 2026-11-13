@@ -334,7 +334,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get business => 'Business';
 
   @override
+  String get buy => 'Buy';
+
+  @override
   String get buyGold => 'Buy gold';
+
+  @override
+  String bySigningInYouAcceptTheAppTerms(Object app) {
+    return 'By signing in you accept the $app terms';
+  }
 
   @override
   String get calibrateYourCompassByMovingYourPhoneInAFigureEight => 'Calibrate your compass by moving your phone in a figure eight';
@@ -535,6 +543,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get confirmAndContinue => 'Confirm and continue';
+
+  @override
+  String get confirmAndSignIn => 'Confirm and sign in';
 
   @override
   String get confirmed => 'Confirmed';
@@ -1061,6 +1072,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get floor => 'Floor';
 
   @override
+  String get follow => 'Follow';
+
+  @override
   String get followUs => 'Follow us';
 
   @override
@@ -1147,6 +1161,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get getSupportPassword => 'Get Support Password';
+
+  @override
+  String get getVerificationCode => 'Get verification code';
 
   @override
   String get goldWeight => 'Gold weight';
@@ -1517,6 +1534,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get logout => 'Logout';
 
   @override
+  String get logOutOfAccount => 'Log out of account';
+
+  @override
   String get lookAroundToFindASurface => 'Look around to find a surface';
 
   @override
@@ -1668,6 +1688,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get newPassword => 'New password';
+
+  @override
+  String get newPost => 'New post';
 
   @override
   String get newRequest => 'New Request';
@@ -1909,6 +1932,9 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get notNow => 'Not Now';
+
+  @override
   String get noTracksAvailable => 'No tracks available';
 
   @override
@@ -1973,6 +1999,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get optimize => 'Optimize';
+
+  @override
+  String get or => 'or';
 
   @override
   String get orderId => 'Order id';
@@ -2320,6 +2349,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get refundAmount => 'Refund amount';
 
   @override
+  String get region => 'Region';
+
+  @override
   String get register => 'Register';
 
   @override
@@ -2411,6 +2443,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get resend => 'Resend';
+
+  @override
+  String get resendCode => 'Resend code';
+
+  @override
+  String resendCodeIn(Object time) {
+    return 'Resend code in $time';
+  }
 
   @override
   String get reservation => 'Reservation';
@@ -2611,6 +2651,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String sentTo(Object mobile) {
+    return 'Sent to $mobile';
+  }
+
+  @override
   String get sepia => 'Sepia';
 
   @override
@@ -2679,7 +2724,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get shuffle => 'Shuffle';
 
   @override
+  String get signInOrSignUp => 'Sign in or sign up';
+
+  @override
   String get signInToContinue => 'Sign in to continue';
+
+  @override
+  String get signInWithGoogle => 'Continue with Google';
+
+  @override
+  String get signInWithMobileNumber => 'Sign in with mobile number';
 
   @override
   String get signInWithYourPhoneNumberNoPasswordNeeded => 'Sign in with your phone number no password needed';
@@ -2698,6 +2752,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get size => 'Size';
+
+  @override
+  String get skip => 'Skip';
 
   @override
   String get skipThisVersion => 'Skip this version';
@@ -4597,9 +4654,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get refunds => 'Refunds';
-
-  @override
-  String get region => 'Region';
 
   @override
   String get registerAMerchantForAFullyVerifiedUser => 'Register a merchant for a fully verified user.';
@@ -6541,9 +6595,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get businessDetails => 'Business details';
 
   @override
-  String get buy => 'Buy';
-
-  @override
   String get byCard => 'By card';
 
   @override
@@ -7632,9 +7683,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get findPlayersForYourGame => 'Find players for your game';
 
   @override
-  String get follow => 'Follow';
-
-  @override
   String get followers => 'Followers';
 
   @override
@@ -7775,9 +7823,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get nearYou => 'Near you';
 
   @override
-  String get newPost => 'New post';
-
-  @override
   String get newStory => 'Story';
 
   @override
@@ -7803,9 +7848,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get openTheLinkedItem => 'Open';
-
-  @override
-  String get or => 'or';
 
   @override
   String get orTypeThePlace => 'or type the place';
@@ -7933,9 +7975,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get shown => 'Shown';
-
-  @override
-  String get signInWithGoogle => 'Continue with Google';
 
   @override
   String get singleEliminationDescription => 'Loser is out, winner advances.';
@@ -8072,22 +8111,319 @@ class AppLocalizationsEn extends AppLocalizations {
   String get yourVenueWasSentForReview => 'Sent for review — it shows on the map once approved';
 
   @override
+  String get aFewShortQuestionsSoSuggestionsFitYou => 'A few short questions so suggestions fit you';
+
+  @override
+  String get afterSigningInItContinuesAndYouComeBackToThisPage => 'After signing in, it continues by itself and you come back to this page.';
+
+  @override
+  String get afterSigningInWhatYouWantedToDoContinues => 'After signing in, what you wanted to do continues.';
+
+  @override
   String get allYourAppsInOnePlace => 'All your apps in one place';
+
+  @override
+  String get appLanguage => 'App language';
+
+  @override
+  String get apple => 'Apple';
 
   @override
   String get apps => 'Apps';
 
   @override
+  String get autoTranslation => 'Auto translation';
+
+  @override
+  String get bookATimeShowYourPickUpCodeAndGetYourGoldFromTheSameStore => 'Book a time, show your pick-up code and get your gold from the same store.';
+
+  @override
+  String get buyByAmountOrWeight => 'Buy by amount or weight';
+
+  @override
+  String get buyGoldEvenWithLittleMoney => 'Buy gold, even with little money';
+
+  @override
+  String get buyRealGoldGramByGramWithAnyBudget => 'Buy real gold, gram by gram, with any budget';
+
+  @override
+  String get calendar => 'Calendar';
+
+  @override
+  String get connectWithTravelersAndGuides => 'Connect with travelers and guides';
+
+  @override
+  String get continueWithoutSigningIn => 'Continue without signing in';
+
+  @override
+  String get countryOfResidence => 'Country of residence';
+
+  @override
+  String get createYourProfile => 'Create your profile';
+
+  @override
+  String get distanceUnit => 'Distance unit';
+
+  @override
+  String get everyPlaceYouVisitIsRecordedWithAPhotoEarnBadgesAndCompleteTheCountry => 'Every place you visit is recorded with a photo. Earn badges and complete the country.';
+
+  @override
+  String get everythingIsReadyWhereverYouGo => 'Everything is ready wherever you go';
+
+  @override
+  String get exploreAndRaiseYourProgress => 'Explore and raise your progress';
+
+  @override
+  String get findAGoldsmith => 'Find a goldsmith';
+
+  @override
+  String get findATrustedGoldsmithNearYouAndAcceptTheirClubRules => 'Find a trusted goldsmith near you and accept their club rules.';
+
+  @override
+  String get getYourSimCardInternetTaxiAndHotelBeforeYouArriveWithSupportInYourLanguage => 'Get your SIM card, internet, taxi and hotel before you arrive, with support in your language.';
+
+  @override
+  String get giveAnyAmountToYourTrustedGoldsmithAndItIsSetAsideGramByGramAtTheDailyRate => 'Give any amount to your trusted goldsmith and it is set aside gram by gram at the daily rate.';
+
+  @override
+  String gold18KDailyRateItem(Object item) {
+    return '18K gold · daily market rate $item';
+  }
+
+  @override
+  String get gold18KPerGram => '18K gold · per gram';
+
+  @override
+  String get goldsmiths => 'Goldsmiths';
+
+  @override
+  String get google => 'Google';
+
+  @override
+  String get helloGuest => 'Hello, guest';
+
+  @override
+  String helloItem(Object item) {
+    return 'Hello, $item';
+  }
+
+  @override
+  String howDoYouUseItem(Object item) {
+    return 'How do you use $item?';
+  }
+
+  @override
+  String get howItWorks => 'How it works';
+
+  @override
+  String get howMuchGoldDoesThisAmountBuy => 'How much gold does this amount buy?';
+
+  @override
+  String get iAmATraveler => 'I am a traveler';
+
+  @override
+  String get iProvideServices => 'I provide services';
+
+  @override
+  String itemMillion(Object item) {
+    return '$item M';
+  }
+
+  @override
+  String get itIsConvertedToGramsAtTheDailyRateAndRecordedInYourCustodyReceipt => 'It is converted to grams at the daily rate and recorded in your custody receipt.';
+
+  @override
+  String get join => 'Join';
+
+  @override
+  String get joinAClub => 'Join a club';
+
+  @override
+  String get joinTheClubOfAGoldsmithNearYouYourBalanceIsPhysicalGoldHeldByThem => 'Join the club of a goldsmith near you. Your balance is physical gold held by them, not a number to trade.';
+
+  @override
+  String get languageAndRegion => 'Language and region';
+
+  @override
+  String get letsGoWithoutSigningUp => 'Let\'s go, without signing up';
+
+  @override
+  String get letsStart => 'Let\'s start';
+
+  @override
+  String get marketDailyRate => 'Market daily rate';
+
+  @override
+  String membersItem(Object item) {
+    return '$item members';
+  }
+
+  @override
+  String minimumPurchaseItem(Object item) {
+    return 'Minimum purchase $item';
+  }
+
+  @override
+  String get nationalityPassport => 'Nationality (passport)';
+
+  @override
+  String get noGoldsmithHasJoinedYet => 'No goldsmith has joined yet.';
+
+  @override
+  String get noSeparateSignUpYourAccountIsCreatedOnFirstSignIn => 'No separate sign-up; your account is created on first sign-in.';
+
+  @override
+  String get oneAccountForAllApps => 'One account for all apps';
+
+  @override
+  String get oneAccountForEveryAppInTheFamilySignInToOneAndYouAreSignedInToAll => 'One account for every app in the family. Sign in to one and you are signed in to all.';
+
+  @override
+  String get pickUp => 'Pick up';
+
+  @override
+  String get pickUpAnyPartOfYourBalanceInPersonFromTheSameStoreByAppointment => 'Pick up any part of your balance in person from the same store by appointment.';
+
+  @override
+  String get pickUpInPerson => 'Pick up in person';
+
+  @override
+  String get placesTravelServicesAndTheTravelerCommunity => 'Places, travel services and the traveler community';
+
+  @override
   String get rahnavard => 'Rahnavard';
+
+  @override
+  String get realGoldWithARealGoldsmith => 'Real gold with a real goldsmith';
+
+  @override
+  String get saveAndContinue => 'Save and continue';
+
+  @override
+  String get sharePhotosAndVideosBookLocalGuidesAndTranslatorsOrOfferYourOwnService => 'Share photos and videos, book local guides and translators, or offer your own service.';
+
+  @override
+  String get showPricesIn => 'Show prices in';
+
+  @override
+  String signedInAsItem(Object item) {
+    return 'Signed in as $item';
+  }
+
+  @override
+  String get signingInHereSignsYouInToEveryApp => 'Signing in here signs you in to every app.';
+
+  @override
+  String get signInOnceAndYouAreSignedInToEveryApp => 'Sign in once and you are signed in to every app.';
+
+  @override
+  String get signInToBook => 'Sign in to book';
+
+  @override
+  String get signInToBuyAndPay => 'Sign in to buy and pay';
+
+  @override
+  String get signInToBuyJoinAClubAndPickUpBrowsingIsFree => 'Sign in to buy, join a club and pick up; browsing is free.';
+
+  @override
+  String get signInToFollow => 'Sign in to follow';
+
+  @override
+  String signInToItem(Object item) {
+    return 'Sign in to $item';
+  }
+
+  @override
+  String get signInToJoin => 'Sign in to join';
+
+  @override
+  String get signInToPickUp => 'Sign in to pick up';
+
+  @override
+  String get signInToSave => 'Sign in to save';
+
+  @override
+  String get signInToSaveYourRegionCalendarAndUnits => 'Sign in to save your region, calendar and units.';
+
+  @override
+  String get signInToWriteAPost => 'Sign in to write a post';
+
+  @override
+  String get signInWithEmail => 'Sign in with email';
+
+  @override
+  String get silverPerGram => 'Silver · per gram';
 
   @override
   String get superApp => 'Super App';
 
   @override
+  String get takeItPhysicallyWheneverYouWant => 'Take it physically whenever you want';
+
+  @override
   String get tapAnAppToOpenIt => 'Tap an app to open it';
 
   @override
+  String get theDailyRateIsNotAvailableRightNow => 'The daily rate is not available right now';
+
+  @override
+  String get theOriginalTextIsAlwaysOneTapAway => 'The original text is always one tap away.';
+
+  @override
+  String theRestOfItemIsOpenWithoutSigningIn(Object item) {
+    return 'The rest of $item is open without signing in.';
+  }
+
+  @override
+  String get thisAccountAlsoWorksInTheOtherAppsOfTheFamily => 'This account also works in the other apps of the family.';
+
+  @override
+  String get tourGuideTranslatorDriverPhotographerStayOrBusiness => 'Tour guide, translator, driver, photographer, stay or business';
+
+  @override
+  String get translatePostsCommentsAndChats => 'Translate posts, comments and chats';
+
+  @override
+  String get trustedGoldsmithsCustomerClub => 'Trusted goldsmiths\' customer club';
+
+  @override
+  String updatedAtItem(Object item) {
+    return 'Updated $item';
+  }
+
+  @override
+  String get visaAndTravelTipsFollowYourPassport => 'Visa and travel tips follow your passport.';
+
+  @override
+  String get visaEmbassyAndTipsFollowYourPassportPricesShowInLocalCurrencyWithYourEquivalent => 'Visa, embassy and tips follow your passport; prices show in local currency with your equivalent.';
+
+  @override
   String get vitrin => 'Vitrin';
+
+  @override
+  String get weEmailYouASignInCode => 'We email you a sign-in code';
+
+  @override
+  String get whatAreYouInterestedIn => 'What are you interested in?';
+
+  @override
+  String get youAreBrowsingAsAGuest => 'You are browsing as a guest';
+
+  @override
+  String get youCanBrowseWithoutSigningInSigningInIsOnlyForPersonalActions => 'You can browse without signing in; signing in is only for personal actions.';
+
+  @override
+  String get youCanPickBothOneAccountTwoModesChangeItLaterInYourAccount => 'You can pick both: one account, two modes. Change it later in your account.';
+
+  @override
+  String get yourAssetsAndReceiptsGatherHere => 'Your assets and receipts gather here';
+
+  @override
+  String get yourMoneyBecomesGramsAtTheDailyRateAndIsHeldByYourLocalGoldsmithPickItUpInPersonAnytime =>
+      'Your money becomes grams at the daily rate and is held by your local goldsmith; pick it up in person anytime.';
+
+  @override
+  String get yourWalletProfileAndVerificationAreTheSameInEveryApp => 'Your wallet, profile and verification are the same in every app.';
 
   @override
   String get zarrin => 'Zarrin';
@@ -8289,11 +8625,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get buyersRotateAndZoomItOnTheProductPage => 'Buyers rotate and zoom it on the product page';
 
   @override
-  String bySigningInYouAcceptTheAppTerms(Object app) {
-    return 'By signing in you accept the $app terms';
-  }
-
-  @override
   String get cafeMenuIsInGrowthPlan => 'Menu mode is not in your subscription';
 
   @override
@@ -8348,9 +8679,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get componentGallery => 'Component gallery';
-
-  @override
-  String get confirmAndSignIn => 'Confirm and sign in';
 
   @override
   String get connect => 'Connect';
@@ -8636,9 +8964,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fullComparison => 'Full comparison';
 
   @override
-  String get getVerificationCode => 'Get verification code';
-
-  @override
   String get grandTotal => 'Grand Total';
 
   @override
@@ -8736,9 +9061,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get location => 'Location';
-
-  @override
-  String get logOutOfAccount => 'Log out of account';
 
   @override
   String get mainInformation => 'Main information';
@@ -8864,9 +9186,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notifyMeWhenItOpens => 'Notify me when it opens';
-
-  @override
-  String get notNow => 'Not Now';
 
   @override
   String get noTransactionsYet => 'No transactions yet';
@@ -9149,14 +9468,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reportAProblem => 'Report a problem';
 
   @override
-  String get resendCode => 'Resend code';
-
-  @override
-  String resendCodeIn(Object time) {
-    return 'Resend code in $time';
-  }
-
-  @override
   String get runningLow => 'Running low';
 
   @override
@@ -9259,11 +9570,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sellSeveralItemsInOneTap => 'Sell several items in a few taps';
 
   @override
-  String sentTo(Object mobile) {
-    return 'Sent to $mobile';
-  }
-
-  @override
   String get settingsSaved => 'Settings saved';
 
   @override
@@ -9284,21 +9590,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get showTheReceiptToTheSeller => 'Show the receipt to the seller';
 
   @override
-  String get signInOrSignUp => 'Sign in or sign up';
-
-  @override
   String get signInToBookmarkStoresAndGoods => 'Sign in to bookmark stores and goods';
-
-  @override
-  String get signInWithMobileNumber => 'Sign in with mobile number';
 
   @override
   String sinceDate(Object date) {
     return 'Since $date';
   }
-
-  @override
-  String get skip => 'Skip';
 
   @override
   String get smallSticker => 'Small sticker';
