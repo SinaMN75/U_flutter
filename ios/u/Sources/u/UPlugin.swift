@@ -14,6 +14,7 @@ public final class UPlugin: NSObject, FlutterPlugin {
     private var location: ULocationHandler?
     private var ble: UBleHandler?
     private var notify: UNotifyHandler?
+    private var sharedSignIn: USharedSignInHandler?
 
     public static func register(
         with registrar: FlutterPluginRegistrar
@@ -49,6 +50,7 @@ public final class UPlugin: NSObject, FlutterPlugin {
         instance.location = ULocationHandler(messenger: registrar.messenger())
         instance.ble = UBleHandler(messenger: registrar.messenger())
         instance.notify = UNotifyHandler(messenger: registrar.messenger())
+        instance.sharedSignIn = USharedSignInHandler(messenger: registrar.messenger())
         registrar.addApplicationDelegate(instance)
         if #available(iOS 13.0, *) {
             registrar.addSceneDelegate(instance)

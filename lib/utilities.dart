@@ -62,6 +62,7 @@ export "utils/u_rx.dart";
 export "utils/u_screen_guard.dart";
 export "utils/u_shamsi.dart";
 export "utils/u_share.dart";
+export "utils/u_shared_sign_in.dart";
 export "utils/u_timezone.dart";
 export "utils/u_toast.dart";
 export "utils/u_update_dialog.dart";

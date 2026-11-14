@@ -80,6 +80,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get all => 'همه';
 
   @override
+  String get allowLocationToSeeDistances => 'برای دیدن فاصله‌ها، دسترسی به موقعیت را بدهید';
+
+  @override
   String get allPlayersWillBeNotified => 'به همه‌ی بازیکن‌ها خبر داده می‌شود';
 
   @override
@@ -348,6 +351,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get calibrateYourCompassByMovingYourPhoneInAFigureEight => 'قطب‌نما را با حرکت دادن گوشی به شکل عدد ۸ کالیبره کنید';
 
   @override
+  String get call => 'تماس';
+
+  @override
   String get cameraPermissionDenied => 'دسترسی به دوربین رد شد';
 
   @override
@@ -449,6 +455,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get checkOutTime => 'ساعت خروج';
 
   @override
+  String get cities => 'شهرها';
+
+  @override
   String get city => 'شهر';
 
   @override
@@ -495,6 +504,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get closeDay => 'بستن روز';
+
+  @override
+  String get closedNow => 'بسته است';
 
   @override
   String get closeOthers => 'بستن بقیه';
@@ -625,9 +637,17 @@ class AppLocalizationsFa extends AppLocalizations {
   }
 
   @override
+  String countMeters(Object count) {
+    return '$count متر';
+  }
+
+  @override
   String countOfTotal(Object count, Object total) {
     return '$count از $total';
   }
+
+  @override
+  String get countries => 'کشورها';
 
   @override
   String get country => 'کشور';
@@ -660,6 +680,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get curfewTime => 'ساعت آخرین ورود';
 
   @override
+  String get currency => 'ارز';
+
+  @override
   String get custom => 'سفارشی';
 
   @override
@@ -673,6 +696,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get dailyCap => 'سقف ۲۴ ساعته';
+
+  @override
+  String get dark => 'تیره';
 
   @override
   String get darkMode => 'حالت تاریک';
@@ -719,6 +745,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get deleteRow => 'حذف ردیف';
+
+  @override
+  String get deliveryFee => 'کارمزد تحویل';
 
   @override
   String get departures => 'خروجی‌های امروز';
@@ -885,6 +914,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get email => 'ایمیل';
 
   @override
+  String get emergencyNumbers => 'شماره‌های ضروری';
+
+  @override
   String get encryptedStorage => 'حافظه رمزگذاری‌شده';
 
   @override
@@ -919,6 +951,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get entries => 'ثبت‌نام‌ها';
+
+  @override
+  String get entryKit => 'کیت ورود';
 
   @override
   String get equalizer => 'اکولایزر';
@@ -1483,6 +1518,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get licencePlate => 'پلاک';
 
   @override
+  String get light => 'روشن';
+
+  @override
   String get lightFill => 'پس‌زمینه کم‌رنگ';
 
   @override
@@ -1990,6 +2028,11 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get openThisPageInSafariThenAddItToYourHomeScreen => 'این صفحه را در Safari باز کنید، سپس آن را به صفحه اصلی اضافه کنید';
+
+  @override
+  String openUntilTime(Object time) {
+    return 'باز است تا $time';
+  }
 
   @override
   String get operations => 'عملیات';
@@ -2666,6 +2709,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get serverError => 'خطای سرور';
+
+  @override
+  String get services => 'خدمات';
 
   @override
   String get setAsCover => 'انتخاب به‌عنوان عکس اصلی';
@@ -3581,9 +3627,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get checkOutChecklist => 'چک‌لیست تخلیه‌ی اتاق';
 
   @override
-  String get cities => 'شهرها';
-
-  @override
   String get clearLogs => 'پاک کردن لاگ‌ها';
 
   @override
@@ -3651,9 +3694,6 @@ class AppLocalizationsFa extends AppLocalizations {
   }
 
   @override
-  String get countries => 'کشورها';
-
-  @override
   String countRows(Object count) {
     return '$count ردیف';
   }
@@ -3707,9 +3747,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get cryptoTester => 'آزمایشگر رمزنگاری';
 
   @override
-  String get currency => 'ارز';
-
-  @override
   String get currentPlan => 'پلن فعلی';
 
   @override
@@ -3738,9 +3775,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get damaged => 'آسیب‌دیده';
-
-  @override
-  String get dark => 'تیره';
 
   @override
   String get data => 'داده‌ها';
@@ -3786,9 +3820,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get deleteThisRowCannotBeUndone => 'این ردیف حذف شود؟ این کار قابل بازگشت نیست.';
-
-  @override
-  String get deliveryFee => 'کارمزد تحویل';
 
   @override
   String get detail1 => 'جزئیات ۱';
@@ -3849,9 +3880,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get emergencyContact => 'تماس اضطراری';
-
-  @override
-  String get emergencyNumbers => 'شماره‌های ضروری';
 
   @override
   String get encode => 'کدگذاری';
@@ -4161,9 +4189,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get ledgerIsNotBalanced => 'دفتر کل تراز نیست';
-
-  @override
-  String get light => 'روشن';
 
   @override
   String get lineChart => 'نمودار خطی';
@@ -5465,9 +5490,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get sellingGoldIsClosedRightNow => 'در حال حاضر امکان فروش طلا وجود ندارد';
-
-  @override
-  String get services => 'خدمات';
 
   @override
   String get simCard => 'سیمکارت';
@@ -7579,9 +7601,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get byPoints => 'بر اساس امتیاز';
 
   @override
-  String get call => 'تماس';
-
-  @override
   String cancelBookingPolicy(Object hours) {
     return 'لغو رایگان تا $hours ساعت قبل؛ بعد از آن بخشی از مبلغ برنمی‌گردد.';
   }
@@ -8110,6 +8129,15 @@ class AppLocalizationsFa extends AppLocalizations {
   String get yourVenueWasSentForReview => 'برای بررسی فرستاده شد؛ بعد از تأیید روی نقشه می‌آید';
 
   @override
+  String get acceptTheClubRulesFirst => 'اول قوانین باشگاه را بپذیر';
+
+  @override
+  String get addressAndWorkingHours => 'نشانی و ساعت کار';
+
+  @override
+  String get addYourPassport => 'پاسپورتت را وارد کن';
+
+  @override
   String get aFewShortQuestionsSoSuggestionsFitYou => 'چند سؤال کوتاه تا پیشنهادها به کارت بیاید';
 
   @override
@@ -8134,6 +8162,12 @@ class AppLocalizationsFa extends AppLocalizations {
   String get autoTranslation => 'ترجمه‌ی خودکار';
 
   @override
+  String get beforeOrAfterYouArrive => 'قبل یا بعد از رسیدن';
+
+  @override
+  String get beingPrepared => 'در حال آماده‌سازی';
+
+  @override
   String get bookATimeShowYourPickUpCodeAndGetYourGoldFromTheSameStore => 'وقت بگیر، کد تحویل را نشان بده و طلایت را از همان فروشگاه بگیر.';
 
   @override
@@ -8149,19 +8183,64 @@ class AppLocalizationsFa extends AppLocalizations {
   String get calendar => 'تقویم';
 
   @override
+  String capitalItem(Object item) {
+    return 'پایتخت: $item';
+  }
+
+  @override
+  String get chooseADestination => 'انتخاب مقصد';
+
+  @override
+  String citiesAndPlaces(Object cities, Object places) {
+    return '$cities شهر · $places جای دیدنی';
+  }
+
+  @override
+  String cityCountry(Object city, Object country) {
+    return '$city، $country';
+  }
+
+  @override
+  String get clubRules => 'قوانین باشگاه';
+
+  @override
+  String get community => 'اجتماع';
+
+  @override
   String get connectWithTravelersAndGuides => 'با مسافرها و راهنماها وصل شو';
+
+  @override
+  String continueAsName(Object name) {
+    return 'ادامه با حساب $name';
+  }
 
   @override
   String get continueWithoutSigningIn => 'فعلاً بدون ورود';
 
   @override
+  String get continueWithThisAccount => 'ادامه با همین حساب';
+
+  @override
   String get countryOfResidence => 'کشور محل زندگی';
+
+  @override
+  String get coveredCountries => 'کشورهای تحت پوشش';
 
   @override
   String get createYourProfile => 'ساخت پروفایل';
 
   @override
   String get distanceUnit => 'واحد فاصله';
+
+  @override
+  String doneOfTotalDone(Object done, Object total) {
+    return '$done از $total انجام شد';
+  }
+
+  @override
+  String embassyOfCountryInCity(Object country, Object city) {
+    return 'سفارت $country در $city';
+  }
 
   @override
   String get everyPlaceYouVisitIsRecordedWithAPhotoEarnBadgesAndCompleteTheCountry => 'هر جای دیدنی که بروی با یک عکس ثبت می‌شود. نشان بگیر و کشور را کامل کن.';
@@ -8176,7 +8255,16 @@ class AppLocalizationsFa extends AppLocalizations {
   String get findAGoldsmith => 'پیدا کردن طلافروشی';
 
   @override
+  String get findATravelCompanion => 'همسفر پیدا کن';
+
+  @override
   String get findATrustedGoldsmithNearYouAndAcceptTheirClubRules => 'طلافروشی معتمد نزدیکت را پیدا کن و قوانین باشگاهش را بپذیر.';
+
+  @override
+  String get firstPurchase => 'اولین خرید';
+
+  @override
+  String get getReadyBeforeYouArrive => 'قبل از رسیدن آماده کن';
 
   @override
   String get getYourSimCardInternetTaxiAndHotelBeforeYouArriveWithSupportInYourLanguage => 'سیم‌کارت، اینترنت، تاکسی و هتل را قبل از رسیدن بگیر؛ با پشتیبانی به زبان خودت.';
@@ -8193,6 +8281,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get gold18KPerGram => 'طلای ۱۸ · هر گرم';
 
   @override
+  String get goldsmithNameMarketOrNeighbourhood => 'نام طلافروشی، بازار یا محله';
+
+  @override
   String get goldsmiths => 'طلافروشی‌ها';
 
   @override
@@ -8207,6 +8298,16 @@ class AppLocalizationsFa extends AppLocalizations {
   }
 
   @override
+  String hoursAhead(Object hours) {
+    return '$hours ساعت جلوتر';
+  }
+
+  @override
+  String hoursBehind(Object hours) {
+    return '$hours ساعت عقب‌تر';
+  }
+
+  @override
   String howDoYouUseItem(Object item) {
     return 'چطور از $item استفاده می‌کنی؟';
   }
@@ -8218,7 +8319,17 @@ class AppLocalizationsFa extends AppLocalizations {
   String get howMuchGoldDoesThisAmountBuy => 'با این مبلغ چقدر طلا داری؟';
 
   @override
+  String howMuchOfCountryWillYouExplore(Object country) {
+    return 'چند درصد $country رو می‌گردی؟';
+  }
+
+  @override
   String get iAmATraveler => 'مسافرم';
+
+  @override
+  String iHaveReadAndAcceptTheClubRulesAndCustodyTermsOfItem(Object item) {
+    return 'قوانین باشگاه و قرارداد امانت $item را خواندم و می‌پذیرم.';
+  }
 
   @override
   String get iProvideServices => 'ارائه‌دهنده‌ی خدماتم';
@@ -8238,7 +8349,13 @@ class AppLocalizationsFa extends AppLocalizations {
   String get joinAClub => 'عضو باشگاه شو';
 
   @override
+  String get joinTheClubForFree => 'عضویت رایگان در باشگاه';
+
+  @override
   String get joinTheClubOfAGoldsmithNearYouYourBalanceIsPhysicalGoldHeldByThem => 'عضو باشگاه مشتریان طلافروشی محله‌ات شو. موجودی‌ات امانت فیزیکی نزد اوست، نه عددی برای خرید و فروش لحظه‌ای.';
+
+  @override
+  String get justArrivedDoTheseFirstToGetAroundEasily => 'تازه رسیدی؟ این کارها رو اول انجام بده تا راحت بچرخی.';
 
   @override
   String get languageAndRegion => 'زبان و منطقه';
@@ -8250,7 +8367,13 @@ class AppLocalizationsFa extends AppLocalizations {
   String get letsStart => 'شروع کنیم';
 
   @override
+  String get makingCharge => 'اجرت ساخت';
+
+  @override
   String get marketDailyRate => 'نرخ روز بازار';
+
+  @override
+  String get maximumQuantity => 'حداکثر مقدار خرید';
 
   @override
   String membersItem(Object item) {
@@ -8263,19 +8386,64 @@ class AppLocalizationsFa extends AppLocalizations {
   }
 
   @override
+  String get minimumQuantity => 'حداقل مقدار خرید';
+
+  @override
+  String minutesAhead(Object minutes) {
+    return '$minutes دقیقه جلوتر';
+  }
+
+  @override
+  String minutesBehind(Object minutes) {
+    return '$minutes دقیقه عقب‌تر';
+  }
+
+  @override
   String get nationalityPassport => 'ملیت (پاسپورت)';
 
   @override
   String get noGoldsmithHasJoinedYet => 'هنوز طلافروشی عضو نشده است.';
 
   @override
+  String get noRuleForYourPassport => 'قانونی برای پاسپورتت ثبت نشده';
+
+  @override
   String get noSeparateSignUpYourAccountIsCreatedOnFirstSignIn => 'ثبت‌نام جدا لازم نیست؛ با اولین ورود حسابت ساخته می‌شود.';
+
+  @override
+  String get notVerifiedYet => 'هنوز تأیید نشده';
+
+  @override
+  String get notVisitedYet => 'هنوز نرفتی';
 
   @override
   String get oneAccountForAllApps => 'یک حساب برای همه‌ی اپ‌ها';
 
   @override
   String get oneAccountForEveryAppInTheFamilySignInToOneAndYouAreSignedInToAll => 'یک حساب برای همه‌ی اپ‌های خانواده. در یکی وارد شوی، در همه وارد هستی.';
+
+  @override
+  String percentExplored(Object percent) {
+    return '$percent٪ گشتی';
+  }
+
+  @override
+  String percentItem(Object item) {
+    return '$item٪';
+  }
+
+  @override
+  String percentOfCountryExplored(Object percent, Object country) {
+    return '$percent٪ $country رو گشتی';
+  }
+
+  @override
+  String perItem(Object item) {
+    return 'هر $item';
+  }
+
+  @override
+  String get pickADestinationToSeeItsVisaEntryKitAndPlaces => 'مقصدت رو انتخاب کن تا ویزا، کیت ورود و جاهای دیدنی‌اش رو ببینی.';
 
   @override
   String get pickUp => 'تحویل';
@@ -8287,6 +8455,14 @@ class AppLocalizationsFa extends AppLocalizations {
   String get pickUpInPerson => 'حضوری تحویل بگیر';
 
   @override
+  String placesCount(Object count) {
+    return '$count جای دیدنی';
+  }
+
+  @override
+  String get placesToSee => 'جاهای دیدنی';
+
+  @override
   String get placesTravelServicesAndTheTravelerCommunity => 'جاهای دیدنی، خدمات سفر و اجتماع مسافرها';
 
   @override
@@ -8296,10 +8472,24 @@ class AppLocalizationsFa extends AppLocalizations {
   String get realGoldWithARealGoldsmith => 'طلای واقعی، نزد طلافروش واقعی';
 
   @override
+  String get sameTime => 'هم‌ساعت';
+
+  @override
   String get saveAndContinue => 'ذخیره و ادامه';
 
   @override
+  String get searchCountry => 'جستجوی کشور';
+
+  @override
+  String setCountryAsYourDestination(Object country) {
+    return 'انتخاب $country به‌عنوان مقصد فعلی';
+  }
+
+  @override
   String get sharePhotosAndVideosBookLocalGuidesAndTranslatorsOrOfferYourOwnService => 'عکس و ویدیو بگذار، تور لیدر و مترجم محلی رزرو کن یا خودت خدمت ارائه بده.';
+
+  @override
+  String get shareRidesStaysAndTripsWithOtherTravellers => 'ماشین، اقامتگاه و سفر مشترک با مسافرهای دیگر';
 
   @override
   String get showPricesIn => 'نمایش قیمت به';
@@ -8308,6 +8498,14 @@ class AppLocalizationsFa extends AppLocalizations {
   String signedInAsItem(Object item) {
     return 'با حساب $item وارد شده‌ای';
   }
+
+  @override
+  String signedInOnAppOnThisPhone(Object app) {
+    return 'روی همین گوشی در $app وارد هستی';
+  }
+
+  @override
+  String get signInAndEveryPlaceYouVisitIsRecorded => 'با ورود، هر جا بری ثبت می‌شه و نشان می‌گیری.';
 
   @override
   String get signingInHereSignsYouInToEveryApp => 'با همین ورود، در همه‌ی اپ‌ها وارد می‌شوی.';
@@ -8348,6 +8546,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get signInToWriteAPost => 'برای نوشتن پست وارد شو';
 
   @override
+  String get signInWithAnotherAccount => 'ورود با حساب دیگر';
+
+  @override
   String get signInWithEmail => 'ورود با ایمیل';
 
   @override
@@ -8374,7 +8575,27 @@ class AppLocalizationsFa extends AppLocalizations {
   }
 
   @override
+  String get theStoreSetsItsOwnRateEachPurchaseIsFixedAtTheRateOfThatMoment => 'نرخ را خود فروشگاه تعیین می‌کند و هر خرید با نرخ همان لحظه قطعی می‌شود.';
+
+  @override
   String get thisAccountAlsoWorksInTheOtherAppsOfTheFamily => 'با حساب یکپارچه‌ی خانواده؛ همین حساب در اپ‌های دیگر خانواده هم کار می‌کند.';
+
+  @override
+  String get thisAccountIsNoLongerAvailableHerePleaseSignIn => 'این حساب دیگر این‌جا در دسترس نیست؛ لطفاً وارد شو';
+
+  @override
+  String get thisClubIsNotTakingNewPurchasesRightNow => 'این باشگاه فعلاً خرید تازه نمی‌پذیرد';
+
+  @override
+  String get timeDifferenceWithYourTime => 'اختلاف ساعت با ساعت تو';
+
+  @override
+  String get todaysRate => 'نرخ امروز';
+
+  @override
+  String todaysRatePerItem(Object item) {
+    return 'نرخ امروز هر $item';
+  }
 
   @override
   String get tourGuideTranslatorDriverPhotographerStayOrBusiness => 'تور لیدر، مترجم، راننده، عکاس، اقامتگاه یا کسب‌وکار';
@@ -8391,10 +8612,31 @@ class AppLocalizationsFa extends AppLocalizations {
   }
 
   @override
+  String verifiedByItem(Object item) {
+    return 'تأییدشده توسط $item';
+  }
+
+  @override
+  String get visa => 'ویزا';
+
+  @override
   String get visaAndTravelTipsFollowYourPassport => 'ویزا و نکته‌های سفر بر اساس پاسپورتت نشان داده می‌شود.';
 
   @override
   String get visaEmbassyAndTipsFollowYourPassportPricesShowInLocalCurrencyWithYourEquivalent => 'ویزا، سفارت و نکته‌های هر کشور بر اساس پاسپورتت؛ قیمت‌ها به پول محلی با معادل به واحد انتخابی‌ات.';
+
+  @override
+  String visaWithYourPassportItem(Object item) {
+    return 'ویزا با پاسپورت تو ($item)';
+  }
+
+  @override
+  String get visited => 'رفتم';
+
+  @override
+  String visitedOfTotalPlacesCities(Object visited, Object total, Object cities) {
+    return '$visited از $total جای دیدنی · $cities شهر';
+  }
 
   @override
   String get vitrin => 'ویترین';
@@ -8403,7 +8645,21 @@ class AppLocalizationsFa extends AppLocalizations {
   String get weEmailYouASignInCode => 'کد ورود به ایمیلت فرستاده می‌شود';
 
   @override
+  String get welcomeTo => 'خوش آمدی به';
+
+  @override
   String get whatAreYouInterestedIn => 'به چه چیزی علاقه داری؟';
+
+  @override
+  String get whereAreYouTravelling => 'کجا سفر می‌کنی؟';
+
+  @override
+  String get youAreAMember => 'عضو هستی';
+
+  @override
+  String youAreAMemberOfTheClubOfItem(Object item) {
+    return 'عضو باشگاه $item هستی';
+  }
 
   @override
   String get youAreBrowsingAsAGuest => 'به‌عنوان مهمان می‌گردی';
@@ -8415,7 +8671,15 @@ class AppLocalizationsFa extends AppLocalizations {
   String get youCanPickBothOneAccountTwoModesChangeItLaterInYourAccount => 'می‌توانی هر دو را انتخاب کنی؛ یک حساب با دو حالت. بعداً هم از حساب من قابل تغییر است.';
 
   @override
+  String youJoinedTheClubOfItem(Object item) {
+    return 'عضو باشگاه $item شدی';
+  }
+
+  @override
   String get yourAssetsAndReceiptsGatherHere => 'دارایی و رسیدهایت این‌جا جمع می‌شود';
+
+  @override
+  String get yourCurrentDestination => 'مقصد فعلی تو';
 
   @override
   String get yourMoneyBecomesGramsAtTheDailyRateAndIsHeldByYourLocalGoldsmithPickItUpInPersonAnytime =>
@@ -8494,9 +8758,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get allMoves => 'همه';
-
-  @override
-  String get allowLocationToSeeDistances => 'برای دیدن فاصله‌ها، دسترسی به موقعیت را بدهید';
 
   @override
   String get allShetabMemberCards => 'همه کارت‌های عضو شتاب';
@@ -8659,9 +8920,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get chooseWhatEachMemberCanDo => 'تعیین دسترسی هر همکار';
 
   @override
-  String get closedNow => 'بسته است';
-
-  @override
   String closedNowOpensDayAtTime(Object day, Object time) {
     return 'الان بسته است · $day $time باز می‌شود';
   }
@@ -8732,11 +8990,6 @@ class AppLocalizationsFa extends AppLocalizations {
   @override
   String countLeft(Object count) {
     return '$count عدد مانده';
-  }
-
-  @override
-  String countMeters(Object count) {
-    return '$count متر';
   }
 
   @override
@@ -9226,11 +9479,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get openNow => 'الان باز است';
-
-  @override
-  String openUntilTime(Object time) {
-    return 'باز است تا $time';
-  }
 
   @override
   String get ourPick => 'پیشنهاد ما';

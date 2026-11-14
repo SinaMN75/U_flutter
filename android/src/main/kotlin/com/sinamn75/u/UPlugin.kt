@@ -13,6 +13,7 @@ import com.sinamn75.u.media.UMediaHandler
 import com.sinamn75.u.media.UMediaSessionHandler
 import com.sinamn75.u.nfc.UNfcHandler
 import com.sinamn75.u.screenguard.ScreenGuardHandler
+import com.sinamn75.u.sharedsignin.USharedSignInHandler
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -43,6 +44,7 @@ class UPlugin :
     private var notify: UNotificationHandler? = null
     private var nfc: UNfcHandler? = null
     private var ble: UBleHandler? = null
+    private var sharedSignIn: USharedSignInHandler? = null
     private var activityBinding: ActivityPluginBinding? = null
     private val userLeaveHint = PluginRegistry.UserLeaveHintListener { media?.onUserLeaveHint() }
 
@@ -77,6 +79,7 @@ class UPlugin :
         notify = UNotificationHandler(flutterPluginBinding.applicationContext, flutterPluginBinding.binaryMessenger)
         nfc = UNfcHandler(flutterPluginBinding.applicationContext, flutterPluginBinding.binaryMessenger)
         ble = UBleHandler(flutterPluginBinding.applicationContext, flutterPluginBinding.binaryMessenger)
+        sharedSignIn = USharedSignInHandler(flutterPluginBinding.applicationContext, flutterPluginBinding.binaryMessenger)
     }
 
     override fun onMethodCall(
@@ -118,6 +121,8 @@ class UPlugin :
         nfc = null
         ble?.dispose()
         ble = null
+        sharedSignIn?.dispose()
+        sharedSignIn = null
     }
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {

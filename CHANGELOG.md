@@ -1,5 +1,18 @@
 ## Unreleased
 
+* **`USharedSignIn`: "continue as …" between separately installed apps of one publisher.** Each app
+  keeps a record (user, masked contact, app name, sign-in key) that only its sibling apps can read:
+  a signature-protected `USharedSignInProvider` on Android (declared by the app), a shared keychain
+  access group on iOS and macOS, a cookie on the shared parent domain on web. `configure`,
+  `accounts`, `write`, `clear`; with SinaMN75U, `publish` and `signIn` use the new
+  `UServices.auth.createSignInTransfer` / `redeemSignInTransfer`. `UWebBridge.cookies()` and
+  `setCookie()` on web.
+* Geo: `UServices.geo.createVisit`, `readVisits`, `deleteVisit` (`UPlaceVisitResponse`); country and
+  city `progress` (`UGeoProgress`) and `utcOffsetMinutes`, country `placeCount` and `entryKit`, place
+  `visited`; `TagCountry` entry kit items (3xx), `TagPlaceVisit`; `UUserJson.entryKitDone` and
+  `UUserUpdateParams.entryKitDone`.
+* Custody: `UCustodyProgramReadParams` `query`, `verified`, `sort`, `latitude`, `longitude`; program
+  `distanceKm` and `isMember`. `TagSearchSort.mostMembers`.
 * `DateTime.toHijri()` and `toHijriDate()`: tabular Islamic (Hijri) calendar date.
 * `UServices.auth.getEmailVerificationCodeForLogin` and `verifyEmailCodeForLogin`: sign in or sign up with a one-time code sent by email.
 * `TagUser`: travel usage (9xx), interests (10xx) and `keepOriginalLanguage` (1101).

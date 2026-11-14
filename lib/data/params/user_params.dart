@@ -253,6 +253,7 @@ class UUserUpdateParams {
     this.currency,
     this.destinationCountryId,
     this.destinationCityId,
+    this.entryKitDone,
     this.weight,
     this.height,
     this.addTags,
@@ -305,6 +306,7 @@ class UUserUpdateParams {
     currency: json["currency"],
     destinationCountryId: json["destinationCountryId"],
     destinationCityId: json["destinationCityId"],
+    entryKitDone: json["entryKitDone"] == null ? null : List<int>.from(json["entryKitDone"].map((dynamic x) => x)),
     weight: json["weight"]?.toDouble(),
     height: json["height"]?.toDouble(),
     nationalCardFront: json["nationalCardFront"],
@@ -365,6 +367,9 @@ class UUserUpdateParams {
 
   final String? destinationCountryId;
   final String? destinationCityId;
+
+  /// [TagCountry] 3xx entry kit items done; replaces the whole list.
+  final List<int>? entryKitDone;
   final double? weight;
   final double? height;
   final String id;
@@ -422,6 +427,7 @@ class UUserUpdateParams {
     "currency": currency,
     "destinationCountryId": destinationCountryId,
     "destinationCityId": destinationCityId,
+    "entryKitDone": entryKitDone,
     "weight": weight,
     "height": height,
     "nationalCardFront": nationalCardFront,

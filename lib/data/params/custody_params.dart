@@ -111,12 +111,35 @@ class UCustodyProgramUpdateParams {
 }
 
 class UCustodyProgramReadParams {
-  UCustodyProgramReadParams({this.storeId, this.joined, this.tags, this.selectorArgs, this.pageSize, this.pageNumber});
+  UCustodyProgramReadParams({
+    this.storeId,
+    this.joined,
+    this.query,
+    this.verified,
+    this.sort,
+    this.latitude,
+    this.longitude,
+    this.tags,
+    this.selectorArgs,
+    this.pageSize,
+    this.pageNumber,
+  });
 
   final String? storeId;
 
   /// Only the programs the signed-in user is a member of.
   final bool? joined;
+
+  /// Part of the program's or the store's title or address.
+  final String? query;
+
+  /// Only programs of stores the platform has approved.
+  final bool? verified;
+
+  /// [TagSearchSort.nearest] (with [latitude] and [longitude]), [TagSearchSort.newest] or [TagSearchSort.mostMembers].
+  final TagSearchSort? sort;
+  final double? latitude;
+  final double? longitude;
   final List<int>? tags;
   final UCustodyProgramSelectorArgs? selectorArgs;
   final int? pageSize;
@@ -125,6 +148,11 @@ class UCustodyProgramReadParams {
   Map<String, dynamic> toMap() => <String, dynamic>{
     "storeId": storeId,
     "joined": joined,
+    "query": query,
+    "verified": verified,
+    "sort": sort?.number,
+    "latitude": latitude,
+    "longitude": longitude,
     "tags": tags,
     "selectorArgs": selectorArgs?.toMap(),
     "pageSize": pageSize,

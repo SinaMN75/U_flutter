@@ -53,6 +53,8 @@ class UCustodyProgramResponse {
     required this.storeId,
     this.memberCount = 0,
     this.heldQuantity = 0,
+    this.distanceKm,
+    this.isMember,
     this.rate,
     this.store,
   });
@@ -66,6 +68,8 @@ class UCustodyProgramResponse {
     storeId: json["storeId"],
     memberCount: json["memberCount"] ?? 0,
     heldQuantity: json["heldQuantity"]?.toDouble() ?? 0,
+    distanceKm: json["distanceKm"]?.toDouble(),
+    isMember: json["isMember"],
     rate: json["rate"] == null ? null : UCustodyRateResponse.fromMap(json["rate"]),
     store: json["store"] == null ? null : UStoreResponse.fromMap(json["store"]),
   );
@@ -80,6 +84,12 @@ class UCustodyProgramResponse {
 
   /// The sum of every member's balance.
   final double heldQuantity;
+
+  /// From the point of the read, when the store has a location.
+  final double? distanceKm;
+
+  /// The signed-in user; null for guests.
+  final bool? isMember;
 
   /// The latest rate.
   final UCustodyRateResponse? rate;

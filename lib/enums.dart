@@ -2122,7 +2122,8 @@ enum TagStockMove with UNumericIdentifiable {
 enum TagSearchSort with UNumericIdentifiable {
   nearest("نزدیک‌ترین", "Nearest", 101),
   newest("تازه‌ترین", "Newest", 102),
-  cheapest("ارزان‌ترین", "Cheapest", 103);
+  cheapest("ارزان‌ترین", "Cheapest", 103),
+  mostMembers("بیشترین عضو", "Most members", 104);
 
   const TagSearchSort(this.titleFa, this.titleEn, this.number);
 
@@ -2209,7 +2210,13 @@ enum TagCountry with UNumericIdentifiable {
   middleEast("خاورمیانه", "Middle East", 205),
   northAmerica("آمریکای شمالی", "North America", 206),
   southAmerica("آمریکای جنوبی", "South America", 207),
-  oceania("اقیانوسیه", "Oceania", 208);
+  oceania("اقیانوسیه", "Oceania", 208),
+  kitSimCard("سیم‌کارت محلی", "Local SIM card", 301),
+  kitMobileInternet("بسته‌ی اینترنت", "Mobile internet", 302),
+  kitCurrencyExchange("تبدیل ارز", "Currency exchange", 303),
+  kitAirportTransfer("تاکسی تا هتل", "Airport transfer", 304),
+  kitTravelInsurance("بیمه‌ی مسافرتی", "Travel insurance", 305),
+  kitAccommodation("اقامتگاه", "Accommodation", 306);
 
   const TagCountry(this.titleFa, this.titleEn, this.number);
 
@@ -2259,6 +2266,19 @@ enum TagPlace with UNumericIdentifiable {
   inactive("غیرفعال", "Inactive", 102);
 
   const TagPlace(this.titleFa, this.titleEn, this.number);
+
+  @override
+  final String titleFa;
+  @override
+  final String titleEn;
+  @override
+  final int number;
+}
+
+enum TagPlaceVisit with UNumericIdentifiable {
+  checkedIn("بازدید شد", "Checked in", 101);
+
+  const TagPlaceVisit(this.titleFa, this.titleEn, this.number);
 
   @override
   final String titleFa;

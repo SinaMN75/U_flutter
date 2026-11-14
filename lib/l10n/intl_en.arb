@@ -29,6 +29,7 @@
   "alignLeft": "Align Left",
   "alignRight": "Align Right",
   "all": "All",
+  "allowLocationToSeeDistances": "Allow location to see distances",
   "allPlayersWillBeNotified": "All players will be notified",
   "allTabs": "All tabs",
   "altText": "Alt text",
@@ -127,6 +128,7 @@
     }
   },
   "calibrateYourCompassByMovingYourPhoneInAFigureEight": "Calibrate your compass by moving your phone in a figure eight",
+  "call": "Call",
   "cameraPermissionDenied": "Camera permission denied",
   "cameraPermissionIsRequired": "Camera permission is required",
   "cancel": "Cancel",
@@ -165,6 +167,7 @@
   "checkOut": "Check Out",
   "checkOutDate": "Check-out Date",
   "checkOutTime": "Check-out Time",
+  "cities": "Cities",
   "city": "City",
   "clear": "Clear",
   "clearAll": "Clear all",
@@ -181,6 +184,7 @@
   "closeAll": "Close all",
   "closed": "Closed",
   "closeDay": "Close Day",
+  "closedNow": "Closed Now",
   "closeOthers": "Close others",
   "closesAt": "Closes At",
   "closeTabsToTheRight": "Close tabs to the right",
@@ -241,6 +245,12 @@
       "count": {}
     }
   },
+  "countMeters": "{count} m",
+  "@countMeters": {
+    "placeholders": {
+      "count": {}
+    }
+  },
   "countOfTotal": "{count} of {total}",
   "@countOfTotal": {
     "placeholders": {
@@ -248,6 +258,7 @@
       "total": {}
     }
   },
+  "countries": "Countries",
   "country": "Country",
   "court": "Court",
   "courts": "Courts",
@@ -258,11 +269,13 @@
   "createdAt": "Created At",
   "cropImage": "Crop Image",
   "curfewTime": "Curfew time",
+  "currency": "Currency",
   "custom": "Custom",
   "customer": "Customer",
   "customers": "Customers",
   "daily": "Daily",
   "dailyCap": "Daily cap",
+  "dark": "Dark",
   "darkMode": "Dark mode",
   "dashboard": "Dashboard",
   "dashed": "Dashed",
@@ -287,6 +300,7 @@
     }
   },
   "deleteRow": "Delete row",
+  "deliveryFee": "Delivery fee",
   "departures": "Departures",
   "deposit": "Deposit",
   "descending": "Descending",
@@ -346,6 +360,7 @@
   },
   "ellipse": "Ellipse",
   "email": "Email",
+  "emergencyNumbers": "Emergency numbers",
   "encryptedStorage": "Encrypted storage",
   "endDate": "End Date",
   "english": "English",
@@ -358,6 +373,7 @@
   "entrancePrice": "Entrance Price",
   "entrants": "Entrants",
   "entries": "Entries",
+  "entryKit": "Entry kit",
   "equalizer": "Equalizer",
   "equalizerUnavailable": "Equalizer unavailable",
   "erase": "Erase",
@@ -633,6 +649,7 @@
   "letterSpacing": "Letter spacing",
   "level": "Level",
   "licencePlate": "Licence Plate",
+  "light": "Light",
   "lightFill": "Light fill",
   "lightMode": "Light mode",
   "line": "Line",
@@ -937,6 +954,12 @@
   "opensAt": "Opens At",
   "openSettings": "Open settings",
   "openThisPageInSafariThenAddItToYourHomeScreen": "Open this page in Safari, then add it to your Home Screen",
+  "openUntilTime": "Open until {time}",
+  "@openUntilTime": {
+    "placeholders": {
+      "time": {}
+    }
+  },
   "operations": "Operations",
   "operator": "Operator",
   "optimize": "Optimize",
@@ -1210,6 +1233,7 @@
   "serial": "Serial",
   "serverAddressCouldNotBeFound": "Server address could not be found",
   "serverError": "Server error",
+  "services": "Services",
   "setAsCover": "Set as cover",
   "setPointA": "Set point A",
   "setPointB": "Set point B",
@@ -1537,7 +1561,6 @@
   "checklistDamageHint": "Damages create an invoice for the resident and go to their ledger.",
   "checklistItem": "Checklist Item",
   "checkOutChecklist": "Check-out Checklist",
-  "cities": "Cities",
   "clearLogs": "Clear Logs",
   "closeDayHint": "Unarrived reservations of this day are marked as no-show.",
   "closingPrice": "Closing Price",
@@ -1569,7 +1592,6 @@
       "count": {}
     }
   },
-  "countries": "Countries",
   "countRows": "{count} rows",
   "@countRows": {
     "placeholders": {
@@ -1605,7 +1627,6 @@
   "creditFacilities": "Credit facilities",
   "creditor": "Creditor",
   "cryptoTester": "Crypto Tester",
-  "currency": "Currency",
   "currentPlan": "Current plan",
   "currentRate": "Current rate",
   "custodyProgram": "Custody program",
@@ -1616,7 +1637,6 @@
   "dailyPrice": "Daily Price",
   "damage": "Damage",
   "damaged": "Damaged",
-  "dark": "Dark",
   "data": "Data",
   "database": "Database",
   "databaseConsole": "Database Console",
@@ -1632,7 +1652,6 @@
   "deductionReason": "Reason for deductions",
   "deductions": "Deductions and damages",
   "deleteThisRowCannotBeUndone": "Delete this row? This cannot be undone.",
-  "deliveryFee": "Delivery fee",
   "detail1": "Detail 1",
   "detail2": "Detail 2",
   "deviceType": "Device Type",
@@ -1653,7 +1672,6 @@
   "electronicAgreement": "Electronic agreement",
   "embassies": "Embassies",
   "emergencyContact": "Emergency Contact",
-  "emergencyNumbers": "Emergency numbers",
   "encode": "Encode",
   "encrypt": "Encrypt",
   "encryptDecryptEncodeAndHashTextLocallyNoServerCalls": "Encrypt, decrypt, encode and hash text locally — no server calls.",
@@ -1770,7 +1788,6 @@
   "ledger": "Ledger",
   "ledgerIsBalanced": "Ledger Is Balanced",
   "ledgerIsNotBalanced": "Ledger Is Not Balanced",
-  "light": "Light",
   "lineChart": "Line Chart",
   "loadAverage": "Load Average",
   "logoUrl": "Logo URL",
@@ -2231,7 +2248,6 @@
     }
   },
   "sellingGoldIsClosedRightNow": "Selling gold is not possible right now",
-  "services": "Services",
   "simCard": "SIM CARD",
   "simCardCharge": "SIM card charge",
   "simType": "SIM type",
@@ -3098,7 +3114,6 @@
   "bracket": "Bracket",
   "byLevel": "By level",
   "byPoints": "By points",
-  "call": "Call",
   "cancelBookingPolicy": "Free cancellation until {hours} hours before; after that a part of the price is kept.",
   "@cancelBookingPolicy": {
     "placeholders": {
@@ -3330,6 +3345,9 @@
   "yourShareIsUnpaid": "Your share is unpaid",
   "yourVenueWasSentForReview": "Sent for review — it shows on the map once approved",
   "@@x-section-superapp": "Super app family (super_app_flutter: shell, super app hub and the Vitrin, Rahnavard, Zarrin modules)",
+  "acceptTheClubRulesFirst": "Accept the club rules first",
+  "addressAndWorkingHours": "Address and working hours",
+  "addYourPassport": "Add your passport",
   "aFewShortQuestionsSoSuggestionsFitYou": "A few short questions so suggestions fit you",
   "afterSigningInItContinuesAndYouComeBackToThisPage": "After signing in, it continues by itself and you come back to this page.",
   "afterSigningInWhatYouWantedToDoContinues": "After signing in, what you wanted to do continues.",
@@ -3338,21 +3356,71 @@
   "apple": "Apple",
   "apps": "Apps",
   "autoTranslation": "Auto translation",
+  "beforeOrAfterYouArrive": "Before or after you arrive",
+  "beingPrepared": "Being prepared",
   "bookATimeShowYourPickUpCodeAndGetYourGoldFromTheSameStore": "Book a time, show your pick-up code and get your gold from the same store.",
   "buyByAmountOrWeight": "Buy by amount or weight",
   "buyGoldEvenWithLittleMoney": "Buy gold, even with little money",
   "buyRealGoldGramByGramWithAnyBudget": "Buy real gold, gram by gram, with any budget",
   "calendar": "Calendar",
+  "capitalItem": "Capital: {item}",
+  "@capitalItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "chooseADestination": "Choose a destination",
+  "citiesAndPlaces": "{cities} cities · {places} places",
+  "@citiesAndPlaces": {
+    "placeholders": {
+      "cities": {},
+      "places": {}
+    }
+  },
+  "cityCountry": "{city}, {country}",
+  "@cityCountry": {
+    "placeholders": {
+      "city": {},
+      "country": {}
+    }
+  },
+  "clubRules": "Club rules",
+  "community": "Community",
   "connectWithTravelersAndGuides": "Connect with travelers and guides",
+  "continueAsName": "Continue as {name}",
+  "@continueAsName": {
+    "placeholders": {
+      "name": {}
+    }
+  },
   "continueWithoutSigningIn": "Continue without signing in",
+  "continueWithThisAccount": "Continue with this account",
   "countryOfResidence": "Country of residence",
+  "coveredCountries": "Covered countries",
   "createYourProfile": "Create your profile",
   "distanceUnit": "Distance unit",
+  "doneOfTotalDone": "{done} of {total} done",
+  "@doneOfTotalDone": {
+    "placeholders": {
+      "done": {},
+      "total": {}
+    }
+  },
+  "embassyOfCountryInCity": "Embassy of {country} in {city}",
+  "@embassyOfCountryInCity": {
+    "placeholders": {
+      "country": {},
+      "city": {}
+    }
+  },
   "everyPlaceYouVisitIsRecordedWithAPhotoEarnBadgesAndCompleteTheCountry": "Every place you visit is recorded with a photo. Earn badges and complete the country.",
   "everythingIsReadyWhereverYouGo": "Everything is ready wherever you go",
   "exploreAndRaiseYourProgress": "Explore and raise your progress",
   "findAGoldsmith": "Find a goldsmith",
+  "findATravelCompanion": "Find a travel companion",
   "findATrustedGoldsmithNearYouAndAcceptTheirClubRules": "Find a trusted goldsmith near you and accept their club rules.",
+  "firstPurchase": "First purchase",
+  "getReadyBeforeYouArrive": "Get ready before you arrive",
   "getYourSimCardInternetTaxiAndHotelBeforeYouArriveWithSupportInYourLanguage": "Get your SIM card, internet, taxi and hotel before you arrive, with support in your language.",
   "giveAnyAmountToYourTrustedGoldsmithAndItIsSetAsideGramByGramAtTheDailyRate": "Give any amount to your trusted goldsmith and it is set aside gram by gram at the daily rate.",
   "gold18KDailyRateItem": "18K gold · daily market rate {item}",
@@ -3362,6 +3430,7 @@
     }
   },
   "gold18KPerGram": "18K gold · per gram",
+  "goldsmithNameMarketOrNeighbourhood": "Goldsmith name, market or neighbourhood",
   "goldsmiths": "Goldsmiths",
   "google": "Google",
   "helloGuest": "Hello, guest",
@@ -3369,6 +3438,18 @@
   "@helloItem": {
     "placeholders": {
       "item": {}
+    }
+  },
+  "hoursAhead": "{hours} hours ahead",
+  "@hoursAhead": {
+    "placeholders": {
+      "hours": {}
+    }
+  },
+  "hoursBehind": "{hours} hours behind",
+  "@hoursBehind": {
+    "placeholders": {
+      "hours": {}
     }
   },
   "howDoYouUseItem": "How do you use {item}?",
@@ -3379,7 +3460,19 @@
   },
   "howItWorks": "How it works",
   "howMuchGoldDoesThisAmountBuy": "How much gold does this amount buy?",
+  "howMuchOfCountryWillYouExplore": "How much of {country} will you explore?",
+  "@howMuchOfCountryWillYouExplore": {
+    "placeholders": {
+      "country": {}
+    }
+  },
   "iAmATraveler": "I am a traveler",
+  "iHaveReadAndAcceptTheClubRulesAndCustodyTermsOfItem": "I have read and accept the club rules and custody terms of {item}.",
+  "@iHaveReadAndAcceptTheClubRulesAndCustodyTermsOfItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
   "iProvideServices": "I provide services",
   "itemMillion": "{item} M",
   "@itemMillion": {
@@ -3390,11 +3483,15 @@
   "itIsConvertedToGramsAtTheDailyRateAndRecordedInYourCustodyReceipt": "It is converted to grams at the daily rate and recorded in your custody receipt.",
   "join": "Join",
   "joinAClub": "Join a club",
+  "joinTheClubForFree": "Join the club for free",
   "joinTheClubOfAGoldsmithNearYouYourBalanceIsPhysicalGoldHeldByThem": "Join the club of a goldsmith near you. Your balance is physical gold held by them, not a number to trade.",
+  "justArrivedDoTheseFirstToGetAroundEasily": "Just arrived? Do these first to get around easily.",
   "languageAndRegion": "Language and region",
   "letsGoWithoutSigningUp": "Let's go, without signing up",
   "letsStart": "Let's start",
+  "makingCharge": "Making charge",
   "marketDailyRate": "Market daily rate",
+  "maximumQuantity": "Maximum quantity",
   "membersItem": "{item} members",
   "@membersItem": {
     "placeholders": {
@@ -3407,19 +3504,77 @@
       "item": {}
     }
   },
+  "minimumQuantity": "Minimum quantity",
+  "minutesAhead": "{minutes} minutes ahead",
+  "@minutesAhead": {
+    "placeholders": {
+      "minutes": {}
+    }
+  },
+  "minutesBehind": "{minutes} minutes behind",
+  "@minutesBehind": {
+    "placeholders": {
+      "minutes": {}
+    }
+  },
   "nationalityPassport": "Nationality (passport)",
   "noGoldsmithHasJoinedYet": "No goldsmith has joined yet.",
+  "noRuleForYourPassport": "No rule for your passport",
   "noSeparateSignUpYourAccountIsCreatedOnFirstSignIn": "No separate sign-up; your account is created on first sign-in.",
+  "notVerifiedYet": "Not verified yet",
+  "notVisitedYet": "Not visited yet",
   "oneAccountForAllApps": "One account for all apps",
   "oneAccountForEveryAppInTheFamilySignInToOneAndYouAreSignedInToAll": "One account for every app in the family. Sign in to one and you are signed in to all.",
+  "percentExplored": "{percent}% explored",
+  "@percentExplored": {
+    "placeholders": {
+      "percent": {}
+    }
+  },
+  "percentItem": "{item}%",
+  "@percentItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "percentOfCountryExplored": "{percent}% of {country} explored",
+  "@percentOfCountryExplored": {
+    "placeholders": {
+      "percent": {},
+      "country": {}
+    }
+  },
+  "perItem": "Per {item}",
+  "@perItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "pickADestinationToSeeItsVisaEntryKitAndPlaces": "Pick a destination to see its visa, entry kit and places.",
   "pickUp": "Pick up",
   "pickUpAnyPartOfYourBalanceInPersonFromTheSameStoreByAppointment": "Pick up any part of your balance in person from the same store by appointment.",
   "pickUpInPerson": "Pick up in person",
+  "placesCount": "{count} places",
+  "@placesCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "placesToSee": "Places to see",
   "placesTravelServicesAndTheTravelerCommunity": "Places, travel services and the traveler community",
   "rahnavard": "Rahnavard",
   "realGoldWithARealGoldsmith": "Real gold with a real goldsmith",
+  "sameTime": "Same time",
   "saveAndContinue": "Save and continue",
+  "searchCountry": "Search country",
+  "setCountryAsYourDestination": "Set {country} as your destination",
+  "@setCountryAsYourDestination": {
+    "placeholders": {
+      "country": {}
+    }
+  },
   "sharePhotosAndVideosBookLocalGuidesAndTranslatorsOrOfferYourOwnService": "Share photos and videos, book local guides and translators, or offer your own service.",
+  "shareRidesStaysAndTripsWithOtherTravellers": "Share rides, stays and trips with other travellers",
   "showPricesIn": "Show prices in",
   "signedInAsItem": "Signed in as {item}",
   "@signedInAsItem": {
@@ -3427,6 +3582,13 @@
       "item": {}
     }
   },
+  "signedInOnAppOnThisPhone": "Signed in on {app} on this phone",
+  "@signedInOnAppOnThisPhone": {
+    "placeholders": {
+      "app": {}
+    }
+  },
+  "signInAndEveryPlaceYouVisitIsRecorded": "Sign in and every place you visit is recorded.",
   "signingInHereSignsYouInToEveryApp": "Signing in here signs you in to every app.",
   "signInOnceAndYouAreSignedInToEveryApp": "Sign in once and you are signed in to every app.",
   "signInToBook": "Sign in to book",
@@ -3444,6 +3606,7 @@
   "signInToSave": "Sign in to save",
   "signInToSaveYourRegionCalendarAndUnits": "Sign in to save your region, calendar and units.",
   "signInToWriteAPost": "Sign in to write a post",
+  "signInWithAnotherAccount": "Sign in with another account",
   "signInWithEmail": "Sign in with email",
   "silverPerGram": "Silver · per gram",
   "superApp": "Super App",
@@ -3457,7 +3620,18 @@
       "item": {}
     }
   },
+  "theStoreSetsItsOwnRateEachPurchaseIsFixedAtTheRateOfThatMoment": "The store sets its own rate. Each purchase is fixed at the rate of that moment.",
   "thisAccountAlsoWorksInTheOtherAppsOfTheFamily": "This account also works in the other apps of the family.",
+  "thisAccountIsNoLongerAvailableHerePleaseSignIn": "This account is no longer available here, please sign in",
+  "thisClubIsNotTakingNewPurchasesRightNow": "This club is not taking new purchases right now",
+  "timeDifferenceWithYourTime": "Time difference with your time",
+  "todaysRate": "Today's rate",
+  "todaysRatePerItem": "Today's rate per {item}",
+  "@todaysRatePerItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
   "tourGuideTranslatorDriverPhotographerStayOrBusiness": "Tour guide, translator, driver, photographer, stay or business",
   "translatePostsCommentsAndChats": "Translate posts, comments and chats",
   "trustedGoldsmithsCustomerClub": "Trusted goldsmiths' customer club",
@@ -3467,15 +3641,53 @@
       "item": {}
     }
   },
+  "verifiedByItem": "Verified by {item}",
+  "@verifiedByItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "visa": "Visa",
   "visaAndTravelTipsFollowYourPassport": "Visa and travel tips follow your passport.",
   "visaEmbassyAndTipsFollowYourPassportPricesShowInLocalCurrencyWithYourEquivalent": "Visa, embassy and tips follow your passport; prices show in local currency with your equivalent.",
+  "visaWithYourPassportItem": "Visa with your passport ({item})",
+  "@visaWithYourPassportItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "visited": "Visited",
+  "visitedOfTotalPlacesCities": "{visited} of {total} places · {cities} cities",
+  "@visitedOfTotalPlacesCities": {
+    "placeholders": {
+      "visited": {},
+      "total": {},
+      "cities": {}
+    }
+  },
   "vitrin": "Vitrin",
   "weEmailYouASignInCode": "We email you a sign-in code",
+  "welcomeTo": "Welcome to",
   "whatAreYouInterestedIn": "What are you interested in?",
+  "whereAreYouTravelling": "Where are you travelling?",
+  "youAreAMember": "You are a member",
+  "youAreAMemberOfTheClubOfItem": "You are a member of the club of {item}",
+  "@youAreAMemberOfTheClubOfItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
   "youAreBrowsingAsAGuest": "You are browsing as a guest",
   "youCanBrowseWithoutSigningInSigningInIsOnlyForPersonalActions": "You can browse without signing in; signing in is only for personal actions.",
   "youCanPickBothOneAccountTwoModesChangeItLaterInYourAccount": "You can pick both: one account, two modes. Change it later in your account.",
+  "youJoinedTheClubOfItem": "You joined the club of {item}",
+  "@youJoinedTheClubOfItem": {
+    "placeholders": {
+      "item": {}
+    }
+  },
   "yourAssetsAndReceiptsGatherHere": "Your assets and receipts gather here",
+  "yourCurrentDestination": "Your current destination",
   "yourMoneyBecomesGramsAtTheDailyRateAndIsHeldByYourLocalGoldsmithPickItUpInPersonAnytime": "Your money becomes grams at the daily rate and is held by your local goldsmith; pick it up in person anytime.",
   "yourWalletProfileAndVerificationAreTheSameInEveryApp": "Your wallet, profile and verification are the same in every app.",
   "zarrin": "Zarrin",
@@ -3507,7 +3719,6 @@
   "alertBelow": "Alert below",
   "alertsForEachStore": "Alerts for each store",
   "allMoves": "All moves",
-  "allowLocationToSeeDistances": "Allow location to see distances",
   "allShetabMemberCards": "All Shetab member cards",
   "allStock": "All stock",
   "amountToman": "Amount (Toman)",
@@ -3584,7 +3795,6 @@
   },
   "chooseASubscription": "Choose a subscription",
   "chooseWhatEachMemberCanDo": "Choose what each member can do",
-  "closedNow": "Closed Now",
   "closedNowOpensDayAtTime": "Closed now · opens {day} at {time}",
   "@closedNowOpensDayAtTime": {
     "placeholders": {
@@ -3641,12 +3851,6 @@
   },
   "countLeft": "{count} left",
   "@countLeft": {
-    "placeholders": {
-      "count": {}
-    }
-  },
-  "countMeters": "{count} m",
-  "@countMeters": {
     "placeholders": {
       "count": {}
     }
@@ -3941,12 +4145,6 @@
   "onYourRight": "On your right",
   "openBluetoothSettingsOnTheCardReaderAndScanItsCode": "Open Bluetooth Settings on the card reader and scan its code",
   "openNow": "Open now",
-  "openUntilTime": "Open until {time}",
-  "@openUntilTime": {
-    "placeholders": {
-      "time": {}
-    }
-  },
   "ourPick": "Our pick",
   "outOfStockForNow": "Out of stock for now",
   "pageViewsToday": "Page views today",

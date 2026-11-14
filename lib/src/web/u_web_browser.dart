@@ -410,4 +410,30 @@ abstract class UWebBridge {
       "reasons": <String>[if (automated) "navigator.webdriver is set"],
     };
   }
+
+  // ---------------------------------------------------------------------------
+  // Cookies
+  // ---------------------------------------------------------------------------
+
+  /// The page's readable cookies, URI-decoded.
+  static Map<String, String> cookies() {
+    final Map<String, String> result = <String, String>{};
+    for (final String part in web.document.cookie.split(";")) {
+      final int eq = part.indexOf("=");
+      if (eq <= 0) continue;
+      try {
+        result[part.substring(0, eq).trim()] = Uri.decodeComponent(part.substring(eq + 1).trim());
+      } catch (_) {}
+    }
+    return result;
+  }
+
+  /// Writes a cookie; [domain] shares it with every subdomain, [maxAgeSeconds] 0 deletes it.
+  static void setCookie(String name, String value, {String? domain, int? maxAgeSeconds}) {
+    final StringBuffer cookie = StringBuffer("$name=${Uri.encodeComponent(value)}; path=/; SameSite=Lax");
+    if (domain != null && domain.isNotEmpty) cookie.write("; domain=$domain");
+    if (maxAgeSeconds != null) cookie.write("; max-age=$maxAgeSeconds");
+    if (web.window.location.protocol == "https:") cookie.write("; Secure");
+    web.document.cookie = cookie.toString();
+  }
 }

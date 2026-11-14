@@ -127,4 +127,25 @@ class UGeoService {
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
   }) => _Api.call("/Geo/VisaRule/Delete", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<String>?, UEmptyResponse?, String?)> createVisit({
+    required UPlaceVisitCreateParams p,
+    Function(UResponse<String> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Geo/Visit/Create", p.toMap(), _Api.raw<String>(), _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<List<UPlaceVisitResponse>>?, UEmptyResponse?, String?)> readVisits({
+    required UPlaceVisitReadParams p,
+    Function(UResponse<List<UPlaceVisitResponse>> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Geo/Visit/Read", p.toMap(), _Api.list(UPlaceVisitResponse.fromMap), _Api.empty, onOk, onError, onException);
+
+  Future<(UEmptyResponse?, UEmptyResponse?, String?)> deleteVisit({
+    required UIdParams p,
+    Function(UEmptyResponse r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/Geo/Visit/Delete", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 }

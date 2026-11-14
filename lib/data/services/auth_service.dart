@@ -71,6 +71,19 @@ class UAuthService {
     Function(String e)? onException,
   }) => _Api.call("/auth/LoginWithGoogle", p.toMap(), _session, _Api.empty, onOk, onError, onException);
 
+  Future<(UResponse<USignInTransferResponse>?, UEmptyResponse?, String?)> createSignInTransfer({
+    Function(UResponse<USignInTransferResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/auth/CreateSignInTransfer", <String, dynamic>{}, _Api.one(USignInTransferResponse.fromMap), _Api.empty, onOk, onError, onException);
+
+  Future<(UResponse<ULoginResponse>?, UEmptyResponse?, String?)> redeemSignInTransfer({
+    required URedeemSignInTransferParams p,
+    Function(UResponse<ULoginResponse> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/auth/RedeemSignInTransfer", p.toMap(), _session, _Api.empty, onOk, onError, onException);
+
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> forgotPassword({
     required UForgotPasswordParams p,
     Function(UEmptyResponse r)? onOk,

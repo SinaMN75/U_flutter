@@ -65,4 +65,9 @@ abstract class UWebBridge {
 
   // No screen wake lock off the web; the "u/device" channel handles it natively.
   static Future<bool> keepScreenOn(bool on) async => false;
+
+  // No cookies off the web.
+  static Map<String, String> cookies() => <String, String>{};
+
+  static void setCookie(String name, String value, {String? domain, int? maxAgeSeconds}) {}
 }

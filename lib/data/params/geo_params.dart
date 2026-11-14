@@ -410,3 +410,37 @@ class UVisaRuleReadParams {
     "pageNumber": pageNumber,
   }..removeWhere((String _, dynamic v) => v == null);
 }
+
+class UPlaceVisitCreateParams {
+  UPlaceVisitCreateParams({required this.placeId, this.latitude, this.longitude});
+
+  final String placeId;
+  final double? latitude;
+  final double? longitude;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "placeId": placeId,
+    "latitude": latitude,
+    "longitude": longitude,
+  }..removeWhere((String _, dynamic v) => v == null);
+}
+
+class UPlaceVisitReadParams {
+  UPlaceVisitReadParams({this.countryId, this.cityId, this.placeId, this.selectorArgs, this.pageSize, this.pageNumber});
+
+  final String? countryId;
+  final String? cityId;
+  final String? placeId;
+  final UPlaceVisitSelectorArgs? selectorArgs;
+  final int? pageSize;
+  final int? pageNumber;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "countryId": countryId,
+    "cityId": cityId,
+    "placeId": placeId,
+    "selectorArgs": selectorArgs?.toMap(),
+    "pageSize": pageSize,
+    "pageNumber": pageNumber,
+  }..removeWhere((String _, dynamic v) => v == null);
+}

@@ -99,6 +99,9 @@ class UCountryResponse {
     required this.title,
     this.order = 0,
     this.cityCount = 0,
+    this.placeCount = 0,
+    this.utcOffsetMinutes,
+    this.progress,
     this.visa,
     this.cities,
     this.visaRules,
@@ -114,6 +117,9 @@ class UCountryResponse {
     title: json["title"],
     order: json["order"] ?? 0,
     cityCount: json["cityCount"] ?? 0,
+    placeCount: json["placeCount"] ?? 0,
+    utcOffsetMinutes: json["utcOffsetMinutes"],
+    progress: json["progress"] == null ? null : UGeoProgress.fromMap(json["progress"]),
     visa: json["visa"] == null ? null : UVisaRuleResponse.fromMap(json["visa"]),
     cities: json["cities"] == null ? null : List<UCityResponse>.from(json["cities"].map((dynamic x) => UCityResponse.fromMap(x))),
     visaRules: json["visaRules"] == null ? null : List<UVisaRuleResponse>.from(json["visaRules"].map((dynamic x) => UVisaRuleResponse.fromMap(x))),
@@ -129,6 +135,15 @@ class UCountryResponse {
   final int order;
   final int cityCount;
 
+  /// Active places.
+  final int placeCount;
+
+  /// The current offset of [UCountryJson.timeZone]; null when the time zone is not set.
+  final int? utcOffsetMinutes;
+
+  /// How much of the country the signed-in traveller has visited; null for guests.
+  final UGeoProgress? progress;
+
   /// The easiest rule among the traveller's passports; null when no passport is known or there is no rule.
   final UVisaRuleResponse? visa;
   final List<UCityResponse>? cities;
@@ -138,6 +153,28 @@ class UCountryResponse {
   bool get isComingSoon => tags.contains(TagCountry.comingSoon.number);
 
   bool get isInactive => tags.contains(TagCountry.inactive.number);
+
+  /// The entry kit items (3xx) this country offers, in tag order.
+  List<TagCountry> get entryKit => TagCountry.values.where((TagCountry t) => t.number ~/ 100 == 3 && tags.contains(t.number)).toList();
+}
+
+/// Active places of a country or city and how many of them the traveller has visited.
+class UGeoProgress {
+  UGeoProgress({this.places = 0, this.visited = 0, this.percent = 0, this.visitedCities = 0});
+
+  factory UGeoProgress.fromMap(Map<String, dynamic> json) => UGeoProgress(
+    places: json["places"] ?? 0,
+    visited: json["visited"] ?? 0,
+    percent: json["percent"] ?? 0,
+    visitedCities: json["visitedCities"] ?? 0,
+  );
+
+  final int places;
+  final int visited;
+  final int percent;
+
+  /// Countries only.
+  final int visitedCities;
 }
 
 class UCityJson {
@@ -163,6 +200,8 @@ class UCityResponse {
     this.longitude,
     this.order = 0,
     this.placeCount = 0,
+    this.utcOffsetMinutes,
+    this.progress,
     this.country,
     this.media,
   });
@@ -178,6 +217,8 @@ class UCityResponse {
     longitude: json["longitude"]?.toDouble(),
     order: json["order"] ?? 0,
     placeCount: json["placeCount"] ?? 0,
+    utcOffsetMinutes: json["utcOffsetMinutes"],
+    progress: json["progress"] == null ? null : UGeoProgress.fromMap(json["progress"]),
     country: json["country"] == null ? null : UCountryResponse.fromMap(json["country"]),
     media: json["media"] == null ? null : List<UMediaResponse>.from(json["media"].map((dynamic x) => UMediaResponse.fromMap(x))),
   );
@@ -192,6 +233,12 @@ class UCityResponse {
   final double? longitude;
   final int order;
   final int placeCount;
+
+  /// The current offset of the city's own time zone; null = the country's.
+  final int? utcOffsetMinutes;
+
+  /// Null for guests.
+  final UGeoProgress? progress;
   final UCountryResponse? country;
   final List<UMediaResponse>? media;
 
@@ -231,6 +278,7 @@ class UPlaceResponse {
     this.longitude = 0,
     this.categoryId,
     this.distanceKm,
+    this.visited,
     this.city,
     this.category,
     this.media,
@@ -248,6 +296,7 @@ class UPlaceResponse {
     longitude: json["longitude"]?.toDouble() ?? 0,
     categoryId: json["categoryId"],
     distanceKm: json["distanceKm"]?.toDouble(),
+    visited: json["visited"],
     city: json["city"] == null ? null : UCityResponse.fromMap(json["city"]),
     category: json["category"] == null ? null : UCategoryResponse.fromMap(json["category"]),
     media: json["media"] == null ? null : List<UMediaResponse>.from(json["media"].map((dynamic x) => UMediaResponse.fromMap(x))),
@@ -266,11 +315,57 @@ class UPlaceResponse {
 
   /// When read near a point.
   final double? distanceKm;
+
+  /// By the signed-in traveller; null for guests.
+  final bool? visited;
   final UCityResponse? city;
   final UCategoryResponse? category;
   final List<UMediaResponse>? media;
 
   bool get isActive => tags.contains(TagPlace.active.number);
+}
+
+class UPlaceVisitJson {
+  UPlaceVisitJson({this.latitude, this.longitude});
+
+  factory UPlaceVisitJson.fromMap(Map<String, dynamic> json) => UPlaceVisitJson(latitude: json["latitude"]?.toDouble(), longitude: json["longitude"]?.toDouble());
+
+  /// Where the traveller was when marking the place.
+  final double? latitude;
+  final double? longitude;
+}
+
+class UPlaceVisitResponse {
+  UPlaceVisitResponse({
+    required this.id,
+    required this.createdAt,
+    required this.tags,
+    required this.jsonData,
+    required this.placeId,
+    required this.cityId,
+    required this.countryId,
+    this.place,
+  });
+
+  factory UPlaceVisitResponse.fromMap(Map<String, dynamic> json) => UPlaceVisitResponse(
+    id: json["id"],
+    createdAt: DateTime.parse(json["createdAt"]),
+    tags: List<int>.from(json["tags"].map((dynamic x) => x)),
+    jsonData: UPlaceVisitJson.fromMap(json["jsonData"] ?? <String, dynamic>{}),
+    placeId: json["placeId"],
+    cityId: json["cityId"],
+    countryId: json["countryId"],
+    place: json["place"] == null ? null : UPlaceResponse.fromMap(json["place"]),
+  );
+
+  final String id;
+  final DateTime createdAt;
+  final List<int> tags;
+  final UPlaceVisitJson jsonData;
+  final String placeId;
+  final String cityId;
+  final String countryId;
+  final UPlaceResponse? place;
 }
 
 class UVisaRuleJson {

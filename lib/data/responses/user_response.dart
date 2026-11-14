@@ -208,6 +208,7 @@ class UUserJson {
     this.currency,
     this.destinationCountryId,
     this.destinationCityId,
+    this.entryKitDone = const <int>[],
   });
 
   factory UUserJson.fromJson(String str) => UUserJson.fromMap(json.decode(str));
@@ -242,6 +243,7 @@ class UUserJson {
     currency: json["currency"],
     destinationCountryId: json["destinationCountryId"],
     destinationCityId: json["destinationCityId"],
+    entryKitDone: json["entryKitDone"] == null ? const <int>[] : List<int>.from(json["entryKitDone"].map((dynamic x) => x)),
   );
   final String? fcmToken;
   final bool muteFollowAlerts;
@@ -278,6 +280,9 @@ class UUserJson {
   final String? destinationCountryId;
   final String? destinationCityId;
 
+  /// Entry kit items ([TagCountry] 3xx) done for the destination country; the server clears it when the destination changes.
+  final List<int> entryKitDone;
+
   String toJson() => json.encode(toMap());
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -310,5 +315,6 @@ class UUserJson {
     "currency": currency,
     "destinationCountryId": destinationCountryId,
     "destinationCityId": destinationCityId,
+    "entryKitDone": entryKitDone,
   };
 }

@@ -1217,6 +1217,16 @@ class UPlaceSelectorArgs {
   };
 }
 
+class UPlaceVisitSelectorArgs {
+  final UPlaceSelectorArgs? place;
+
+  const UPlaceVisitSelectorArgs({this.place});
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "place": place?.toMap(),
+  };
+}
+
 class UVisaRuleSelectorArgs {
   final UUserSelectorArgs? creator;
   final UCountrySelectorArgs? country;

@@ -274,3 +274,11 @@ class UResetPasswordParams {
     "newPassword": newPassword,
   };
 }
+
+class URedeemSignInTransferParams {
+  URedeemSignInTransferParams({required this.key});
+
+  final String key;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"key": key};
+}

@@ -20,6 +20,7 @@ abstract class UAuth {
     "/auth/GetEmailVerificationCodeForLogin",
     "/auth/VerifyEmailCodeForLogin",
     "/auth/LoginWithGoogle",
+    "/auth/RedeemSignInTransfer",
   ];
 
   /// Counter bumped on every login/logout; lets requests started before a logout ignore their result.

@@ -80,6 +80,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get all => 'All';
 
   @override
+  String get allowLocationToSeeDistances => 'Allow location to see distances';
+
+  @override
   String get allPlayersWillBeNotified => 'All players will be notified';
 
   @override
@@ -348,6 +351,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get calibrateYourCompassByMovingYourPhoneInAFigureEight => 'Calibrate your compass by moving your phone in a figure eight';
 
   @override
+  String get call => 'Call';
+
+  @override
   String get cameraPermissionDenied => 'Camera permission denied';
 
   @override
@@ -449,6 +455,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get checkOutTime => 'Check-out Time';
 
   @override
+  String get cities => 'Cities';
+
+  @override
   String get city => 'City';
 
   @override
@@ -495,6 +504,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get closeDay => 'Close Day';
+
+  @override
+  String get closedNow => 'Closed Now';
 
   @override
   String get closeOthers => 'Close others';
@@ -625,9 +637,17 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String countMeters(Object count) {
+    return '$count m';
+  }
+
+  @override
   String countOfTotal(Object count, Object total) {
     return '$count of $total';
   }
+
+  @override
+  String get countries => 'Countries';
 
   @override
   String get country => 'Country';
@@ -660,6 +680,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get curfewTime => 'Curfew time';
 
   @override
+  String get currency => 'Currency';
+
+  @override
   String get custom => 'Custom';
 
   @override
@@ -673,6 +696,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dailyCap => 'Daily cap';
+
+  @override
+  String get dark => 'Dark';
 
   @override
   String get darkMode => 'Dark mode';
@@ -719,6 +745,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get deleteRow => 'Delete row';
+
+  @override
+  String get deliveryFee => 'Delivery fee';
 
   @override
   String get departures => 'Departures';
@@ -885,6 +914,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get email => 'Email';
 
   @override
+  String get emergencyNumbers => 'Emergency numbers';
+
+  @override
   String get encryptedStorage => 'Encrypted storage';
 
   @override
@@ -919,6 +951,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get entries => 'Entries';
+
+  @override
+  String get entryKit => 'Entry kit';
 
   @override
   String get equalizer => 'Equalizer';
@@ -1483,6 +1518,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get licencePlate => 'Licence Plate';
 
   @override
+  String get light => 'Light';
+
+  @override
   String get lightFill => 'Light fill';
 
   @override
@@ -1990,6 +2028,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get openThisPageInSafariThenAddItToYourHomeScreen => 'Open this page in Safari, then add it to your Home Screen';
+
+  @override
+  String openUntilTime(Object time) {
+    return 'Open until $time';
+  }
 
   @override
   String get operations => 'Operations';
@@ -2666,6 +2709,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get serverError => 'Server error';
+
+  @override
+  String get services => 'Services';
 
   @override
   String get setAsCover => 'Set as cover';
@@ -3581,9 +3627,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get checkOutChecklist => 'Check-out Checklist';
 
   @override
-  String get cities => 'Cities';
-
-  @override
   String get clearLogs => 'Clear Logs';
 
   @override
@@ -3651,9 +3694,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get countries => 'Countries';
-
-  @override
   String countRows(Object count) {
     return '$count rows';
   }
@@ -3707,9 +3747,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cryptoTester => 'Crypto Tester';
 
   @override
-  String get currency => 'Currency';
-
-  @override
   String get currentPlan => 'Current plan';
 
   @override
@@ -3738,9 +3775,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get damaged => 'Damaged';
-
-  @override
-  String get dark => 'Dark';
 
   @override
   String get data => 'Data';
@@ -3786,9 +3820,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get deleteThisRowCannotBeUndone => 'Delete this row? This cannot be undone.';
-
-  @override
-  String get deliveryFee => 'Delivery fee';
 
   @override
   String get detail1 => 'Detail 1';
@@ -3849,9 +3880,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get emergencyContact => 'Emergency Contact';
-
-  @override
-  String get emergencyNumbers => 'Emergency numbers';
 
   @override
   String get encode => 'Encode';
@@ -4161,9 +4189,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ledgerIsNotBalanced => 'Ledger Is Not Balanced';
-
-  @override
-  String get light => 'Light';
 
   @override
   String get lineChart => 'Line Chart';
@@ -5465,9 +5490,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sellingGoldIsClosedRightNow => 'Selling gold is not possible right now';
-
-  @override
-  String get services => 'Services';
 
   @override
   String get simCard => 'SIM CARD';
@@ -7580,9 +7602,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get byPoints => 'By points';
 
   @override
-  String get call => 'Call';
-
-  @override
   String cancelBookingPolicy(Object hours) {
     return 'Free cancellation until $hours hours before; after that a part of the price is kept.';
   }
@@ -8111,6 +8130,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get yourVenueWasSentForReview => 'Sent for review — it shows on the map once approved';
 
   @override
+  String get acceptTheClubRulesFirst => 'Accept the club rules first';
+
+  @override
+  String get addressAndWorkingHours => 'Address and working hours';
+
+  @override
+  String get addYourPassport => 'Add your passport';
+
+  @override
   String get aFewShortQuestionsSoSuggestionsFitYou => 'A few short questions so suggestions fit you';
 
   @override
@@ -8135,6 +8163,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get autoTranslation => 'Auto translation';
 
   @override
+  String get beforeOrAfterYouArrive => 'Before or after you arrive';
+
+  @override
+  String get beingPrepared => 'Being prepared';
+
+  @override
   String get bookATimeShowYourPickUpCodeAndGetYourGoldFromTheSameStore => 'Book a time, show your pick-up code and get your gold from the same store.';
 
   @override
@@ -8150,19 +8184,64 @@ class AppLocalizationsEn extends AppLocalizations {
   String get calendar => 'Calendar';
 
   @override
+  String capitalItem(Object item) {
+    return 'Capital: $item';
+  }
+
+  @override
+  String get chooseADestination => 'Choose a destination';
+
+  @override
+  String citiesAndPlaces(Object cities, Object places) {
+    return '$cities cities · $places places';
+  }
+
+  @override
+  String cityCountry(Object city, Object country) {
+    return '$city, $country';
+  }
+
+  @override
+  String get clubRules => 'Club rules';
+
+  @override
+  String get community => 'Community';
+
+  @override
   String get connectWithTravelersAndGuides => 'Connect with travelers and guides';
+
+  @override
+  String continueAsName(Object name) {
+    return 'Continue as $name';
+  }
 
   @override
   String get continueWithoutSigningIn => 'Continue without signing in';
 
   @override
+  String get continueWithThisAccount => 'Continue with this account';
+
+  @override
   String get countryOfResidence => 'Country of residence';
+
+  @override
+  String get coveredCountries => 'Covered countries';
 
   @override
   String get createYourProfile => 'Create your profile';
 
   @override
   String get distanceUnit => 'Distance unit';
+
+  @override
+  String doneOfTotalDone(Object done, Object total) {
+    return '$done of $total done';
+  }
+
+  @override
+  String embassyOfCountryInCity(Object country, Object city) {
+    return 'Embassy of $country in $city';
+  }
 
   @override
   String get everyPlaceYouVisitIsRecordedWithAPhotoEarnBadgesAndCompleteTheCountry => 'Every place you visit is recorded with a photo. Earn badges and complete the country.';
@@ -8177,7 +8256,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get findAGoldsmith => 'Find a goldsmith';
 
   @override
+  String get findATravelCompanion => 'Find a travel companion';
+
+  @override
   String get findATrustedGoldsmithNearYouAndAcceptTheirClubRules => 'Find a trusted goldsmith near you and accept their club rules.';
+
+  @override
+  String get firstPurchase => 'First purchase';
+
+  @override
+  String get getReadyBeforeYouArrive => 'Get ready before you arrive';
 
   @override
   String get getYourSimCardInternetTaxiAndHotelBeforeYouArriveWithSupportInYourLanguage => 'Get your SIM card, internet, taxi and hotel before you arrive, with support in your language.';
@@ -8194,6 +8282,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gold18KPerGram => '18K gold · per gram';
 
   @override
+  String get goldsmithNameMarketOrNeighbourhood => 'Goldsmith name, market or neighbourhood';
+
+  @override
   String get goldsmiths => 'Goldsmiths';
 
   @override
@@ -8208,6 +8299,16 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String hoursAhead(Object hours) {
+    return '$hours hours ahead';
+  }
+
+  @override
+  String hoursBehind(Object hours) {
+    return '$hours hours behind';
+  }
+
+  @override
   String howDoYouUseItem(Object item) {
     return 'How do you use $item?';
   }
@@ -8219,7 +8320,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get howMuchGoldDoesThisAmountBuy => 'How much gold does this amount buy?';
 
   @override
+  String howMuchOfCountryWillYouExplore(Object country) {
+    return 'How much of $country will you explore?';
+  }
+
+  @override
   String get iAmATraveler => 'I am a traveler';
+
+  @override
+  String iHaveReadAndAcceptTheClubRulesAndCustodyTermsOfItem(Object item) {
+    return 'I have read and accept the club rules and custody terms of $item.';
+  }
 
   @override
   String get iProvideServices => 'I provide services';
@@ -8239,7 +8350,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get joinAClub => 'Join a club';
 
   @override
+  String get joinTheClubForFree => 'Join the club for free';
+
+  @override
   String get joinTheClubOfAGoldsmithNearYouYourBalanceIsPhysicalGoldHeldByThem => 'Join the club of a goldsmith near you. Your balance is physical gold held by them, not a number to trade.';
+
+  @override
+  String get justArrivedDoTheseFirstToGetAroundEasily => 'Just arrived? Do these first to get around easily.';
 
   @override
   String get languageAndRegion => 'Language and region';
@@ -8251,7 +8368,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get letsStart => 'Let\'s start';
 
   @override
+  String get makingCharge => 'Making charge';
+
+  @override
   String get marketDailyRate => 'Market daily rate';
+
+  @override
+  String get maximumQuantity => 'Maximum quantity';
 
   @override
   String membersItem(Object item) {
@@ -8264,19 +8387,64 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get minimumQuantity => 'Minimum quantity';
+
+  @override
+  String minutesAhead(Object minutes) {
+    return '$minutes minutes ahead';
+  }
+
+  @override
+  String minutesBehind(Object minutes) {
+    return '$minutes minutes behind';
+  }
+
+  @override
   String get nationalityPassport => 'Nationality (passport)';
 
   @override
   String get noGoldsmithHasJoinedYet => 'No goldsmith has joined yet.';
 
   @override
+  String get noRuleForYourPassport => 'No rule for your passport';
+
+  @override
   String get noSeparateSignUpYourAccountIsCreatedOnFirstSignIn => 'No separate sign-up; your account is created on first sign-in.';
+
+  @override
+  String get notVerifiedYet => 'Not verified yet';
+
+  @override
+  String get notVisitedYet => 'Not visited yet';
 
   @override
   String get oneAccountForAllApps => 'One account for all apps';
 
   @override
   String get oneAccountForEveryAppInTheFamilySignInToOneAndYouAreSignedInToAll => 'One account for every app in the family. Sign in to one and you are signed in to all.';
+
+  @override
+  String percentExplored(Object percent) {
+    return '$percent% explored';
+  }
+
+  @override
+  String percentItem(Object item) {
+    return '$item%';
+  }
+
+  @override
+  String percentOfCountryExplored(Object percent, Object country) {
+    return '$percent% of $country explored';
+  }
+
+  @override
+  String perItem(Object item) {
+    return 'Per $item';
+  }
+
+  @override
+  String get pickADestinationToSeeItsVisaEntryKitAndPlaces => 'Pick a destination to see its visa, entry kit and places.';
 
   @override
   String get pickUp => 'Pick up';
@@ -8288,6 +8456,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pickUpInPerson => 'Pick up in person';
 
   @override
+  String placesCount(Object count) {
+    return '$count places';
+  }
+
+  @override
+  String get placesToSee => 'Places to see';
+
+  @override
   String get placesTravelServicesAndTheTravelerCommunity => 'Places, travel services and the traveler community';
 
   @override
@@ -8297,10 +8473,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get realGoldWithARealGoldsmith => 'Real gold with a real goldsmith';
 
   @override
+  String get sameTime => 'Same time';
+
+  @override
   String get saveAndContinue => 'Save and continue';
 
   @override
+  String get searchCountry => 'Search country';
+
+  @override
+  String setCountryAsYourDestination(Object country) {
+    return 'Set $country as your destination';
+  }
+
+  @override
   String get sharePhotosAndVideosBookLocalGuidesAndTranslatorsOrOfferYourOwnService => 'Share photos and videos, book local guides and translators, or offer your own service.';
+
+  @override
+  String get shareRidesStaysAndTripsWithOtherTravellers => 'Share rides, stays and trips with other travellers';
 
   @override
   String get showPricesIn => 'Show prices in';
@@ -8309,6 +8499,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String signedInAsItem(Object item) {
     return 'Signed in as $item';
   }
+
+  @override
+  String signedInOnAppOnThisPhone(Object app) {
+    return 'Signed in on $app on this phone';
+  }
+
+  @override
+  String get signInAndEveryPlaceYouVisitIsRecorded => 'Sign in and every place you visit is recorded.';
 
   @override
   String get signingInHereSignsYouInToEveryApp => 'Signing in here signs you in to every app.';
@@ -8349,6 +8547,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signInToWriteAPost => 'Sign in to write a post';
 
   @override
+  String get signInWithAnotherAccount => 'Sign in with another account';
+
+  @override
   String get signInWithEmail => 'Sign in with email';
 
   @override
@@ -8375,7 +8576,27 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get theStoreSetsItsOwnRateEachPurchaseIsFixedAtTheRateOfThatMoment => 'The store sets its own rate. Each purchase is fixed at the rate of that moment.';
+
+  @override
   String get thisAccountAlsoWorksInTheOtherAppsOfTheFamily => 'This account also works in the other apps of the family.';
+
+  @override
+  String get thisAccountIsNoLongerAvailableHerePleaseSignIn => 'This account is no longer available here, please sign in';
+
+  @override
+  String get thisClubIsNotTakingNewPurchasesRightNow => 'This club is not taking new purchases right now';
+
+  @override
+  String get timeDifferenceWithYourTime => 'Time difference with your time';
+
+  @override
+  String get todaysRate => 'Today\'s rate';
+
+  @override
+  String todaysRatePerItem(Object item) {
+    return 'Today\'s rate per $item';
+  }
 
   @override
   String get tourGuideTranslatorDriverPhotographerStayOrBusiness => 'Tour guide, translator, driver, photographer, stay or business';
@@ -8392,10 +8613,31 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String verifiedByItem(Object item) {
+    return 'Verified by $item';
+  }
+
+  @override
+  String get visa => 'Visa';
+
+  @override
   String get visaAndTravelTipsFollowYourPassport => 'Visa and travel tips follow your passport.';
 
   @override
   String get visaEmbassyAndTipsFollowYourPassportPricesShowInLocalCurrencyWithYourEquivalent => 'Visa, embassy and tips follow your passport; prices show in local currency with your equivalent.';
+
+  @override
+  String visaWithYourPassportItem(Object item) {
+    return 'Visa with your passport ($item)';
+  }
+
+  @override
+  String get visited => 'Visited';
+
+  @override
+  String visitedOfTotalPlacesCities(Object visited, Object total, Object cities) {
+    return '$visited of $total places · $cities cities';
+  }
 
   @override
   String get vitrin => 'Vitrin';
@@ -8404,7 +8646,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get weEmailYouASignInCode => 'We email you a sign-in code';
 
   @override
+  String get welcomeTo => 'Welcome to';
+
+  @override
   String get whatAreYouInterestedIn => 'What are you interested in?';
+
+  @override
+  String get whereAreYouTravelling => 'Where are you travelling?';
+
+  @override
+  String get youAreAMember => 'You are a member';
+
+  @override
+  String youAreAMemberOfTheClubOfItem(Object item) {
+    return 'You are a member of the club of $item';
+  }
 
   @override
   String get youAreBrowsingAsAGuest => 'You are browsing as a guest';
@@ -8416,7 +8672,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get youCanPickBothOneAccountTwoModesChangeItLaterInYourAccount => 'You can pick both: one account, two modes. Change it later in your account.';
 
   @override
+  String youJoinedTheClubOfItem(Object item) {
+    return 'You joined the club of $item';
+  }
+
+  @override
   String get yourAssetsAndReceiptsGatherHere => 'Your assets and receipts gather here';
+
+  @override
+  String get yourCurrentDestination => 'Your current destination';
 
   @override
   String get yourMoneyBecomesGramsAtTheDailyRateAndIsHeldByYourLocalGoldsmithPickItUpInPersonAnytime =>
@@ -8495,9 +8759,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get allMoves => 'All moves';
-
-  @override
-  String get allowLocationToSeeDistances => 'Allow location to see distances';
 
   @override
   String get allShetabMemberCards => 'All Shetab member cards';
@@ -8660,9 +8921,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chooseWhatEachMemberCanDo => 'Choose what each member can do';
 
   @override
-  String get closedNow => 'Closed Now';
-
-  @override
   String closedNowOpensDayAtTime(Object day, Object time) {
     return 'Closed now · opens $day at $time';
   }
@@ -8733,11 +8991,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String countLeft(Object count) {
     return '$count left';
-  }
-
-  @override
-  String countMeters(Object count) {
-    return '$count m';
   }
 
   @override
@@ -9227,11 +9480,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get openNow => 'Open now';
-
-  @override
-  String openUntilTime(Object time) {
-    return 'Open until $time';
-  }
 
   @override
   String get ourPick => 'Our pick';

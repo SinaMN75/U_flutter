@@ -14,6 +14,7 @@ public class UPlugin: NSObject, FlutterPlugin, FlutterAppLifecycleDelegate {
   private var location: ULocationHandler?
   private var ble: UBleHandler?
   private var notify: UNotifyHandler?
+  private var sharedSignIn: USharedSignInHandler?
 
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "u", binaryMessenger: registrar.messenger)
@@ -31,6 +32,7 @@ public class UPlugin: NSObject, FlutterPlugin, FlutterAppLifecycleDelegate {
     instance.location = ULocationHandler(messenger: registrar.messenger)
     instance.ble = UBleHandler(messenger: registrar.messenger)
     instance.notify = UNotifyHandler(messenger: registrar.messenger)
+    instance.sharedSignIn = USharedSignInHandler(messenger: registrar.messenger)
     registrar.addApplicationDelegate(instance)
     registrar.addMethodCallDelegate(instance, channel: channel)
   }
