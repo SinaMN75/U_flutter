@@ -228,6 +228,23 @@ class UPdfViewerState extends State<UPdfViewer> {
   double _gestureScale = 1;
   Offset _gestureFocal = Offset.zero;
   double _pinchStartZoom = 1;
+  Drag? _alongDrag;
+  Drag? _acrossDrag;
+  bool _pinching = false;
+
+  /// 0 = not decided, 1 = scroll axis only, 2 = cross axis only, 3 = free.
+  int _panLock = 0;
+  PointerDeviceKind? _panKind;
+  final List<ScrollHoldController> _holds = <ScrollHoldController>[];
+  final Map<int, Offset> _touches = <int, Offset>{};
+
+  /// Global position of the body's top-left corner, to turn finger positions into body coordinates.
+  Offset _touchOrigin = Offset.zero;
+  bool _twoFinger = false;
+  bool _twoFingerZoom = false;
+  Offset _twoFingerFocal = Offset.zero;
+  double _twoFingerSpan = 1;
+  VelocityTracker? _twoFingerVelocity;
   double _viewportWidth = 0;
   double _viewportHeight = 0;
   int _visiblePage = 0;
@@ -253,6 +270,8 @@ class UPdfViewerState extends State<UPdfViewer> {
   Timer? _indicatorTimer;
   List<List<int>> _rows = <List<int>>[];
   List<double> _rowOffsets = <double>[];
+  String _crossKey = "";
+  final Map<int, UPdfTool> _lastEditTools = <int, UPdfTool>{};
 
   /// Markups whose rects were computed with older text geometry are re-placed from their text.
   static const String geometryKey = "gv";
@@ -979,13 +998,12 @@ class UPdfViewerState extends State<UPdfViewer> {
       children: <Widget>[
         Positioned.fromRect(
           rect: box,
-          child: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onPanUpdate: (DragUpdateDetails details) {
+          child: _UPdfDragArea(
+            onUpdate: (DragUpdateDetails details) {
               final Rect current = _annotationDraft ?? _pdfRectToDevice(annotation.rect, info);
               setState(() => _annotationDraft = current.shift(Offset(details.delta.dx / scale, details.delta.dy / scale)));
             },
-            onPanEnd: (DragEndDetails details) => unawaited(_commitAnnotationRect(annotation, info)),
+            onEnd: () => unawaited(_commitAnnotationRect(annotation, info)),
             child: DecoratedBox(
               decoration: BoxDecoration(border: Border.all(color: scheme.primary, width: 2)),
             ),
@@ -996,15 +1014,14 @@ class UPdfViewerState extends State<UPdfViewer> {
           top: box.bottom - 14,
           width: 28,
           height: 28,
-          child: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onPanUpdate: (DragUpdateDetails details) {
+          child: _UPdfDragArea(
+            onUpdate: (DragUpdateDetails details) {
               final Rect current = _annotationDraft ?? _pdfRectToDevice(annotation.rect, info);
               final double width = (current.width + details.delta.dx / scale).clamp(8, 4000).toDouble();
               final double height = (current.height + details.delta.dy / scale).clamp(8, 4000).toDouble();
               setState(() => _annotationDraft = Rect.fromLTWH(current.left, current.top, width, height));
             },
-            onPanEnd: (DragEndDetails details) => unawaited(_commitAnnotationRect(annotation, info)),
+            onEnd: () => unawaited(_commitAnnotationRect(annotation, info)),
             child: Center(
               child: Container(
                 width: 14,
@@ -1213,6 +1230,176 @@ class UPdfViewerState extends State<UPdfViewer> {
       final double delta = (resolved as PointerScrollEvent).scrollDelta.dy;
       _setZoom(delta < 0 ? _zoom * 1.1 : _zoom / 1.1, focal: resolved.localPosition);
     });
+  }
+
+  /// A drawing or editing tool owns single-finger and stylus drags.
+  bool get _toolOwnsDrag {
+    final UPdfEditController? target = editor;
+    return _drawActive || (target != null && target.tool != UPdfTool.select);
+  }
+
+  /// Devices the page pan/pinch recognizer listens to. While a tool owns drags only the trackpad goes through
+  /// it; two fingers are handled by [_touchDown] and friends instead.
+  Set<PointerDeviceKind> get _panDevices =>
+      _toolOwnsDrag ? const <PointerDeviceKind>{PointerDeviceKind.trackpad} : const <PointerDeviceKind>{PointerDeviceKind.touch, PointerDeviceKind.stylus, PointerDeviceKind.invertedStylus, PointerDeviceKind.trackpad};
+
+  // ── Two-finger scroll and zoom while a tool is drawing ──
+  // One finger or the stylus keeps drawing. A second finger turns the gesture into scrolling: the stroke
+  // in progress is dropped, the pages move with the fingers (and fling), and spreading the fingers zooms.
+
+  void _touchDown(PointerDownEvent event) {
+    if (event.kind != PointerDeviceKind.touch || !_toolOwnsDrag || _controller.settings.isPaged) return;
+    _touches[event.pointer] = event.position;
+    _touchOrigin = event.position - event.localPosition;
+    if (_touches.length == 2 && !_twoFinger) _beginTwoFinger(event);
+  }
+
+  void _touchMove(PointerMoveEvent event) {
+    if (!_touches.containsKey(event.pointer)) return;
+    _touches[event.pointer] = event.position;
+    if (_twoFinger) _updateTwoFinger(event);
+  }
+
+  void _touchUp(int pointer) {
+    if (_touches.remove(pointer) == null) return;
+    if (_twoFinger && _touches.length < 2) _endTwoFinger();
+    // Drawing resumes only when every finger is up, so the finger left behind never starts a stroke.
+    if (_touches.isEmpty) _suspendTools(false);
+  }
+
+  (Offset, double) _twoFingerGeometry() {
+    final List<Offset> points = _touches.values.take(2).toList();
+    return ((points[0] + points[1]) / 2, (points[0] - points[1]).distance);
+  }
+
+  void _suspendTools(bool value) {
+    _draw.suspended = value;
+    editor?.suspended = value;
+  }
+
+  void _beginTwoFinger(PointerDownEvent event) {
+    _twoFinger = true;
+    _twoFingerZoom = false;
+    _suspendTools(true);
+    final (Offset focal, double span) = _twoFingerGeometry();
+    _twoFingerFocal = focal;
+    _twoFingerSpan = max(span, 1);
+    _twoFingerVelocity = VelocityTracker.withKind(PointerDeviceKind.touch)..addPosition(event.timeStamp, focal);
+    final Offset local = focal - _touchOrigin;
+    _beginVisualZoom(local);
+    _startPanDrags(focal, local, event.timeStamp, PointerDeviceKind.touch);
+  }
+
+  void _updateTwoFinger(PointerMoveEvent event) {
+    final (Offset focal, double span) = _twoFingerGeometry();
+    final double scale = span / _twoFingerSpan;
+    final Offset local = focal - _touchOrigin;
+    if (!_twoFingerZoom && (scale - 1).abs() > 0.12) {
+      _twoFingerZoom = true;
+      _endPanDrags(Velocity.zero);
+    }
+    if (_twoFingerZoom) {
+      _updateVisualZoom(scale, local);
+      return;
+    }
+    final Offset delta = focal - _twoFingerFocal;
+    _twoFingerFocal = focal;
+    _twoFingerVelocity?.addPosition(event.timeStamp, focal);
+    final bool horizontal = _controller.settings.isHorizontal;
+    final double along = horizontal ? delta.dx : delta.dy;
+    final double across = horizontal ? delta.dy : delta.dx;
+    _alongDrag?.update(DragUpdateDetails(globalPosition: focal, sourceTimeStamp: event.timeStamp, delta: horizontal ? Offset(along, 0) : Offset(0, along), primaryDelta: along));
+    _acrossDrag?.update(DragUpdateDetails(globalPosition: focal, sourceTimeStamp: event.timeStamp, delta: horizontal ? Offset(0, across) : Offset(across, 0), primaryDelta: across));
+  }
+
+  void _endTwoFinger() {
+    _twoFinger = false;
+    if (_twoFingerZoom) {
+      _twoFingerZoom = false;
+      _endPanDrags(Velocity.zero);
+      _endVisualZoom();
+      return;
+    }
+    Offset velocity = _twoFingerVelocity?.getVelocity().pixelsPerSecond ?? Offset.zero;
+    if (velocity.distance > kMaxFlingVelocity) velocity = velocity / velocity.distance * kMaxFlingVelocity;
+    _endPanDrags(Velocity(pixelsPerSecond: velocity));
+    _twoFingerVelocity = null;
+  }
+
+  void _startPanDrags(Offset global, Offset local, Duration? timeStamp, PointerDeviceKind? kind) {
+    final DragStartDetails start = DragStartDetails(globalPosition: global, localPosition: local, sourceTimeStamp: timeStamp, kind: kind);
+    if (_vertical.hasClients) _alongDrag = _vertical.position.drag(start, () => _alongDrag = null);
+    if (_horizontal.hasClients && _horizontal.position.maxScrollExtent > 0) _acrossDrag = _horizontal.position.drag(start, () => _acrossDrag = null);
+  }
+
+  /// A finger on a flinging page stops it, as in a native scroll view.
+  void _stopFling() {
+    for (final ScrollController controller in <ScrollController>[_vertical, _horizontal]) {
+      if (!controller.hasClients || !controller.position.isScrollingNotifier.value) continue;
+      _holds.add(controller.position.hold(() {}));
+    }
+  }
+
+  void _releaseHolds() {
+    for (final ScrollHoldController hold in _holds) {
+      hold.cancel();
+    }
+    _holds.clear();
+  }
+
+  void _onPanStart(ScaleStartDetails details) {
+    _beginVisualZoom(details.localFocalPoint);
+    _pinching = false;
+    _panLock = 0;
+    _panKind = details.kind;
+    _holds.clear();
+    if (_controller.settings.isPaged) return;
+    _startPanDrags(details.focalPoint, details.localFocalPoint, details.sourceTimeStamp, details.kind);
+  }
+
+  void _onPanUpdate(ScaleUpdateDetails details) {
+    final bool trackpad = _panKind == PointerDeviceKind.trackpad;
+    if (!_pinching && ((!trackpad && details.pointerCount >= 2) || (trackpad && (details.scale - 1).abs() > 0.02))) {
+      _pinching = true;
+      _endPanDrags(Velocity.zero);
+    }
+    if (_pinching) {
+      if ((details.scale - 1).abs() > 0.01) _updateVisualZoom(details.scale, details.localFocalPoint);
+      return;
+    }
+    final bool horizontal = _controller.settings.isHorizontal;
+    final Offset delta = details.focalPointDelta;
+    double along = horizontal ? delta.dx : delta.dy;
+    double across = horizontal ? delta.dy : delta.dx;
+    // A clearly straight first move locks that axis, like a native scroll view; a diagonal one pans freely.
+    if (_panLock == 0 && delta.distance > 0) _panLock = along.abs() > across.abs() * 2 ? 1 : (across.abs() > along.abs() * 2 ? 2 : 3);
+    if (_panLock == 1) across = 0;
+    if (_panLock == 2) along = 0;
+    _alongDrag?.update(DragUpdateDetails(globalPosition: details.focalPoint, localPosition: details.localFocalPoint, sourceTimeStamp: details.sourceTimeStamp, delta: horizontal ? Offset(along, 0) : Offset(0, along), primaryDelta: along));
+    _acrossDrag?.update(DragUpdateDetails(globalPosition: details.focalPoint, localPosition: details.localFocalPoint, sourceTimeStamp: details.sourceTimeStamp, delta: horizontal ? Offset(0, across) : Offset(across, 0), primaryDelta: across));
+  }
+
+  void _onPanEnd(ScaleEndDetails details) {
+    if (_pinching) {
+      _pinching = false;
+      _endVisualZoom();
+      return;
+    }
+    Offset velocity = details.velocity.pixelsPerSecond;
+    if (velocity.distance > kMaxFlingVelocity) velocity = velocity / velocity.distance * kMaxFlingVelocity;
+    if (_panLock == 1) velocity = _controller.settings.isHorizontal ? Offset(velocity.dx, 0) : Offset(0, velocity.dy);
+    if (_panLock == 2) velocity = _controller.settings.isHorizontal ? Offset(0, velocity.dy) : Offset(velocity.dx, 0);
+    _endPanDrags(Velocity(pixelsPerSecond: velocity));
+    if (_gestureScale != 1) _endVisualZoom();
+  }
+
+  void _endPanDrags(Velocity velocity) {
+    final bool horizontal = _controller.settings.isHorizontal;
+    final Offset v = velocity.pixelsPerSecond;
+    _alongDrag?.end(DragEndDetails(velocity: Velocity(pixelsPerSecond: horizontal ? Offset(v.dx, 0) : Offset(0, v.dy)), primaryVelocity: horizontal ? v.dx : v.dy));
+    _acrossDrag?.end(DragEndDetails(velocity: Velocity(pixelsPerSecond: horizontal ? Offset(0, v.dy) : Offset(v.dx, 0)), primaryVelocity: horizontal ? v.dy : v.dx));
+    _alongDrag = null;
+    _acrossDrag = null;
   }
 
   void _beginVisualZoom(Offset focal) {
@@ -1523,7 +1710,8 @@ class UPdfViewerState extends State<UPdfViewer> {
         if (widget.showScrollThumb && value.isReady && !settings.isPaged && !settings.isHorizontal) _buildScrollThumb(value),
         if (value.isReady && _indicatorVisible) _buildPageIndicator(value),
         if (widget.showToolbar && _chromeVisible) Positioned(left: 0, right: 0, top: 0, child: _buildToolbar(value)),
-        if (widget.showBottomBar && _chromeVisible && value.isReady) Positioned(left: 0, right: 0, bottom: 0, child: _buildBottomBar(value)),
+        if (widget.showBottomBar && _chromeVisible && value.isReady && !_phoneDock) Positioned(left: 0, right: 0, bottom: 0, child: _buildBottomBar(value)),
+        if (_phoneDock && value.isReady) _buildToolDock(editor),
         if (_selection.isNotEmpty) _buildSelectionMenu(),
         if (_activeMarkup != null && _selection.isEmpty) _buildMarkupMenu(_activeMarkup!),
         if (overlaySidebar) ...<Widget>[
@@ -1570,8 +1758,14 @@ class UPdfViewerState extends State<UPdfViewer> {
         Widget content = settings.isPaged ? _buildPaged(settings) : _buildContinuous(settings);
         // Every wrapper stays in the tree even when it does nothing: inserting or removing one would
         // recreate the scroll view, and a new scroll position starts back at page 1.
+        // In continuous mode the list and the horizontal scroll view never take drags themselves: one recognizer
+        // below pans both axes at once (zoomed pages move freely, not one axis at a time) and pinches. Paged mode
+        // keeps the page view's own swipes. Wheel and keyboard scrolling are not drags and keep working.
+        final bool continuous = !settings.isPaged;
         content = ScrollConfiguration(
-          behavior: _drawActive ? ScrollConfiguration.of(context).copyWith(dragDevices: const <PointerDeviceKind>{PointerDeviceKind.trackpad}) : ScrollConfiguration.of(context),
+          behavior: ScrollConfiguration.of(context).copyWith(
+            dragDevices: continuous ? const <PointerDeviceKind>{} : (_drawActive ? const <PointerDeviceKind>{PointerDeviceKind.trackpad} : null),
+          ),
           child: content,
         );
         final Widget scaled = Transform.scale(
@@ -1582,20 +1776,43 @@ class UPdfViewerState extends State<UPdfViewer> {
         );
         return Listener(
           onPointerSignal: _onPointerSignal,
-          onPointerPanZoomStart: (PointerPanZoomStartEvent event) => _beginVisualZoom(event.localPosition),
-          onPointerPanZoomUpdate: (PointerPanZoomUpdateEvent event) {
-            if ((event.scale - 1).abs() > 0.01) _updateVisualZoom(event.scale, event.localPosition);
+          onPointerDown: (PointerDownEvent event) {
+            _stopFling();
+            _touchDown(event);
           },
-          onPointerPanZoomEnd: (PointerPanZoomEndEvent event) => _endVisualZoom(),
-          child: GestureDetector(
-            supportedDevices: _drawActive ? const <PointerDeviceKind>{} : const <PointerDeviceKind>{PointerDeviceKind.touch, PointerDeviceKind.stylus},
-            onScaleStart: (ScaleStartDetails details) => _beginVisualZoom(details.localFocalPoint),
-            onScaleUpdate: (ScaleUpdateDetails details) {
-              if (details.pointerCount >= 2) _updateVisualZoom(details.scale, details.localFocalPoint);
+          onPointerMove: _touchMove,
+          onPointerUp: (PointerUpEvent event) {
+            _releaseHolds();
+            _touchUp(event.pointer);
+          },
+          onPointerCancel: (PointerCancelEvent event) {
+            _releaseHolds();
+            _touchUp(event.pointer);
+          },
+          child: RawGestureDetector(
+            gestures: <Type, GestureRecognizerFactory<GestureRecognizer>>{
+              ScaleGestureRecognizer: GestureRecognizerFactoryWithHandlers<ScaleGestureRecognizer>(
+                ScaleGestureRecognizer.new,
+                (ScaleGestureRecognizer instance) {
+                  instance
+                    ..supportedDevices = _panDevices
+                    // Same start distance as a native scroll view, so a pan starts as soon as a scroll would.
+                    ..gestureSettings = continuous ? const DeviceGestureSettings(touchSlop: kTouchSlop / 2) : null
+                    ..onStart = _onPanStart
+                    ..onUpdate = _onPanUpdate
+                    ..onEnd = _onPanEnd;
+                },
+              ),
+              DoubleTapGestureRecognizer: GestureRecognizerFactoryWithHandlers<DoubleTapGestureRecognizer>(
+                () => DoubleTapGestureRecognizer(supportedDevices: const <PointerDeviceKind>{PointerDeviceKind.touch, PointerDeviceKind.stylus}),
+                (DoubleTapGestureRecognizer instance) {
+                  instance.onDoubleTapDown = (TapDownDetails details) {
+                    if (!_drawActive) _setZoom(_zoom > 1.2 ? 1 : 2.5, focal: details.localPosition);
+                  };
+                  instance.onDoubleTap = () {};
+                },
+              ),
             },
-            onScaleEnd: (ScaleEndDetails details) => _endVisualZoom(),
-            onDoubleTapDown: (TapDownDetails details) => _setZoom(_zoom > 1.2 ? 1 : 2.5, focal: details.localPosition),
-            onDoubleTap: () {},
             child: scaled,
           ),
         );
@@ -1638,7 +1855,9 @@ class UPdfViewerState extends State<UPdfViewer> {
   Widget _buildContinuous(UDocViewSettings settings) {
     final bool horizontal = settings.isHorizontal;
     final double viewportCross = horizontal ? _viewportHeight : _viewportWidth;
-    final double cross = max(_crossExtent(settings), viewportCross);
+    final double extent = _crossExtent(settings);
+    // A row a fraction of a pixel wider than the screen would make the page wobble sideways while scrolling.
+    final double cross = extent - viewportCross < 1 ? viewportCross : extent;
     final Widget list = ListView.builder(
       controller: _vertical,
       scrollDirection: horizontal ? Axis.horizontal : Axis.vertical,
@@ -1649,10 +1868,22 @@ class UPdfViewerState extends State<UPdfViewer> {
       itemExtentBuilder: (int index, SliverLayoutDimensions dimensions) => index < _rows.length ? _rowExtent(index) : null,
       itemBuilder: (BuildContext context, int index) => _buildRow(index, settings),
     );
+    // Mixed page sizes make the row wider than the screen at fit width; start in the middle so no page is cut.
+    final String crossKey = "${cross.round()}|${viewportCross.round()}|$horizontal";
+    if (crossKey != _crossKey) {
+      _crossKey = crossKey;
+      if (_zoom == 1 && cross > viewportCross) {
+        WidgetsBinding.instance.addPostFrameCallback((Duration _) {
+          if (mounted && _horizontal.hasClients) _horizontal.jumpTo(_horizontal.position.maxScrollExtent / 2);
+        });
+      }
+    }
     return Scrollbar(
       controller: _horizontal,
       child: SingleChildScrollView(
         controller: _horizontal,
+        // Offsets always grow left to right (also in right-to-left apps); the zoom anchor math relies on it.
+        reverse: !horizontal && Directionality.of(context) == TextDirection.rtl,
         scrollDirection: horizontal ? Axis.vertical : Axis.horizontal,
         child: SizedBox(width: horizontal ? _viewportWidth : cross, height: horizontal ? cross : _viewportHeight, child: list),
       ),
@@ -1961,6 +2192,7 @@ extension _UPdfViewerChrome on UPdfViewerState {
     final bool compact = _viewportWidth < 520;
     final bool bookmarked = widget.enableMarkup && _markup.isBookmarked(_visiblePage);
     final UPdfEditController? target = editor;
+    final bool toolHeader = _phoneTools && (_drawOpen || (_toolsOpen && target != null));
     return Material(
       color: scheme.surface.withValues(alpha: 0.96),
       elevation: 2,
@@ -1969,6 +2201,9 @@ extension _UPdfViewerChrome on UPdfViewerState {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
+            if (toolHeader)
+              _buildToolHeader(target)
+            else
             SizedBox(
               height: 56,
               child: Row(
@@ -2045,8 +2280,8 @@ extension _UPdfViewerChrome on UPdfViewerState {
               ),
             ),
             if (_searchOpen) _buildSearchBar(value),
-            if (_toolsOpen && target != null) _buildToolsRow(target),
-            if (_drawOpen)
+            if (_toolsOpen && target != null && !_phoneTools) _buildToolsRow(target),
+            if (_drawOpen && !_phoneTools)
               SizedBox(
                 height: 52,
                 child: UDocDrawToolbar(
@@ -2067,61 +2302,165 @@ extension _UPdfViewerChrome on UPdfViewerState {
     child: Row(children: <Widget>[Icon(icon, size: 20), const SizedBox(width: 12), UTextBodyMedium(label)]),
   );
 
-  Widget _buildToolsRow(UPdfEditController target) => SizedBox(
-    height: 52,
-    child: SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      padding: const EdgeInsets.symmetric(horizontal: 8),
+  /// Phones get the drawing and editing tools as a floating dock, with done, undo and redo in the top bar.
+  bool get _phoneTools => _viewportWidth > 0 && _viewportWidth < 600;
+
+  bool get _phoneDock => _phoneTools && (_drawOpen || (_toolsOpen && editor != null));
+
+  void _closeTools(UPdfEditController target) => applyState(() {
+    _toolsOpen = false;
+    target.setTool(UPdfTool.select);
+  });
+
+  /// Top bar while drawing or editing on a phone: done, the mode's name, undo and redo (or save).
+  Widget _buildToolHeader(UPdfEditController? target) {
+    final bool drawing = _drawOpen;
+    return SizedBox(
+      height: 56,
       child: Row(
         children: <Widget>[
-          _toolChip(target, UPdfTool.highlight, Icons.format_color_fill_rounded, U.s.highlight),
-          _toolChip(target, UPdfTool.underline, Icons.format_underlined_rounded, U.s.underline),
-          _toolChip(target, UPdfTool.strikeOut, Icons.format_strikethrough_rounded, U.s.strikethrough),
-          _toolChip(target, UPdfTool.ink, Icons.draw_rounded, U.s.draw),
-          _toolChip(target, UPdfTool.rectangle, Icons.crop_square_rounded, U.s.rectangle),
-          _toolChip(target, UPdfTool.ellipse, Icons.circle_outlined, U.s.ellipse),
-          _toolChip(target, UPdfTool.arrow, Icons.north_east_rounded, U.s.arrow),
-          _toolChip(target, UPdfTool.note, Icons.sticky_note_2_outlined, U.s.note),
-          _toolChip(target, UPdfTool.textBox, Icons.title_rounded, U.s.textBox),
-          _toolChip(target, UPdfTool.redact, Icons.hide_source_rounded, U.s.redact),
-          _toolChip(target, UPdfTool.eraser, Icons.cleaning_services_rounded, U.s.erase),
-          const VerticalDivider(width: 12),
-          IconButton(
-            icon: const Icon(Icons.palette_outlined),
-            tooltip: U.s.color,
-            onPressed: () async {
-              final Color? color = await UNavigator.colorPicker(defaultColor: target.color, colors: UDocPalette.colors);
-              if (color == null) return;
-              target.setColor(color);
-              target.setInkColor(color);
-            },
+          const SizedBox(width: 8),
+          IconButton.filledTonal(
+            tooltip: U.s.done,
+            icon: const Icon(Icons.check_rounded),
+            onPressed: drawing ? () => toggleDrawing(false) : () => _closeTools(target!),
           ),
-          IconButton(icon: const Icon(Icons.undo_rounded), tooltip: U.s.undo, onPressed: target.canUndo ? () => unawaited(target.undo()) : null),
-          if (_saving)
-            const Padding(
-              padding: EdgeInsets.all(12),
-              child: SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2)),
-            )
-          else
-            IconButton(icon: const Icon(Icons.save_rounded), tooltip: U.s.save, onPressed: target.hasChanges ? () => unawaited(_saveDocument(target)) : null),
+          const SizedBox(width: 8),
+          Expanded(child: UTextTitleSmall(drawing ? U.s.draw : U.s.edit, maxLines: 1, overflow: TextOverflow.ellipsis)),
+          if (drawing) ...<Widget>[
+            IconButton(icon: const Icon(Icons.undo_rounded), tooltip: U.s.undo, onPressed: _markup.canUndo ? _markup.undo : null),
+            IconButton(icon: const Icon(Icons.redo_rounded), tooltip: U.s.redo, onPressed: _markup.canRedo ? _markup.redo : null),
+          ] else if (target != null)
+            ..._editHistory(target),
+          const SizedBox(width: 4),
         ],
+      ),
+    );
+  }
+
+  /// The floating tool dock on phones (drawing tools or PDF editing tools).
+  Widget _buildToolDock(UPdfEditController? target) {
+    final Widget dock = _drawOpen
+        ? UDocDrawToolbar(tools: _draw, showHistory: false, floating: true)
+        : Material(
+            color: Theme.of(context).colorScheme.surfaceContainerHigh,
+            elevation: 6,
+            shadowColor: const Color(0x66000000),
+            shape: const StadiumBorder(),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+              child: SingleChildScrollView(scrollDirection: Axis.horizontal, child: Row(mainAxisSize: MainAxisSize.min, children: _editToolButtons(target!))),
+            ),
+          );
+    return Positioned(
+      left: 12,
+      right: 12,
+      bottom: 12 + MediaQuery.paddingOf(context).bottom,
+      child: Center(child: dock),
+    );
+  }
+
+  Widget _buildToolsRow(UPdfEditController target) => SizedBox(
+    height: 52,
+    child: Align(
+      alignment: AlignmentDirectional.centerStart,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ..._editToolButtons(target),
+            Container(width: 1, height: 26, margin: const EdgeInsets.symmetric(horizontal: 4), color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.18)),
+            ..._editHistory(target),
+          ],
+        ),
       ),
     ),
   );
 
-  Widget _toolChip(UPdfEditController target, UPdfTool tool, IconData icon, String label) => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 2),
-    child: IconButton(
-      tooltip: label,
-      isSelected: target.tool == tool,
-      icon: Icon(icon, color: target.tool == tool ? Theme.of(context).colorScheme.primary : null),
-      onPressed: () {
-        target.setTool(target.tool == tool ? UPdfTool.select : tool);
-        applyState(() {});
-        if (_selection.isNotEmpty && (tool == UPdfTool.highlight || tool == UPdfTool.underline || tool == UPdfTool.strikeOut)) unawaited(_applyPdfMarkup());
-      },
-    ),
-  );
+  List<Widget> _editHistory(UPdfEditController target) => <Widget>[
+    IconButton(icon: const Icon(Icons.undo_rounded), tooltip: U.s.undo, onPressed: target.canUndo ? () => unawaited(target.undo()) : null),
+    if (_saving)
+      const Padding(
+        padding: EdgeInsets.all(12),
+        child: SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2)),
+      )
+    else
+      IconButton(icon: const Icon(Icons.save_rounded), tooltip: U.s.save, onPressed: target.hasChanges ? () => unawaited(_saveDocument(target)) : null),
+  ];
+
+  void _selectEditTool(UPdfEditController target, UPdfTool tool) {
+    target.setTool(tool);
+    applyState(() {});
+    if (_selection.isNotEmpty && (tool == UPdfTool.highlight || tool == UPdfTool.underline || tool == UPdfTool.strikeOut)) unawaited(_applyPdfMarkup());
+  }
+
+  /// Color, then the tools with related ones grouped (markups, shapes, notes), so a phone needs no scrolling.
+  List<Widget> _editToolButtons(UPdfEditController target) {
+    final ColorScheme scheme = Theme.of(context).colorScheme;
+    Widget group(int index, String label, List<(UPdfTool, IconData, String)> items) {
+      final List<UPdfTool> members = items.map(((UPdfTool, IconData, String) item) => item.$1).toList();
+      final UPdfTool current = members.contains(target.tool) ? target.tool : (_lastEditTools[index] ?? members.first);
+      return UDocToolGroupButton<UPdfTool>(
+        items: items,
+        current: current,
+        selected: members.contains(target.tool),
+        label: label,
+        onSelected: (UPdfTool tool) {
+          _lastEditTools[index] = tool;
+          _selectEditTool(target, tool);
+        },
+      );
+    }
+
+    Widget single(UPdfTool tool, IconData icon, String label) =>
+        UDocToolButton(icon: icon, label: label, selected: target.tool == tool, onTap: () => _selectEditTool(target, target.tool == tool ? UPdfTool.select : tool));
+
+    return <Widget>[
+      Tooltip(
+        message: U.s.color,
+        child: InkResponse(
+          radius: 24,
+          onTap: () async {
+            final Color? color = await UNavigator.colorPicker(defaultColor: target.color, colors: UDocPalette.colors);
+            if (color == null) return;
+            target.setColor(color);
+            target.setInkColor(color);
+          },
+          child: SizedBox(
+            width: 44,
+            height: 44,
+            child: Center(
+              child: Container(
+                width: 26,
+                height: 26,
+                decoration: BoxDecoration(color: target.color, shape: BoxShape.circle, border: Border.all(color: scheme.onSurface.withValues(alpha: 0.35), width: 2)),
+              ),
+            ),
+          ),
+        ),
+      ),
+      Container(width: 1, height: 26, margin: const EdgeInsets.symmetric(horizontal: 4), color: scheme.onSurface.withValues(alpha: 0.18)),
+      group(0, U.s.highlight, <(UPdfTool, IconData, String)>[
+        (UPdfTool.highlight, Icons.format_color_fill_rounded, U.s.highlight),
+        (UPdfTool.underline, Icons.format_underlined_rounded, U.s.underline),
+        (UPdfTool.strikeOut, Icons.format_strikethrough_rounded, U.s.strikethrough),
+      ]),
+      single(UPdfTool.ink, Icons.draw_rounded, U.s.draw),
+      group(1, U.s.shapes, <(UPdfTool, IconData, String)>[
+        (UPdfTool.rectangle, Icons.crop_square_rounded, U.s.rectangle),
+        (UPdfTool.ellipse, Icons.circle_outlined, U.s.ellipse),
+        (UPdfTool.arrow, Icons.north_east_rounded, U.s.arrow),
+      ]),
+      group(2, U.s.text, <(UPdfTool, IconData, String)>[
+        (UPdfTool.note, Icons.sticky_note_2_outlined, U.s.note),
+        (UPdfTool.textBox, Icons.title_rounded, U.s.textBox),
+      ]),
+      single(UPdfTool.redact, Icons.hide_source_rounded, U.s.redact),
+      single(UPdfTool.eraser, Icons.cleaning_services_rounded, U.s.erase),
+    ];
+  }
 
   Widget _buildSearchBar(UDocValue value) => SizedBox(
     height: 52,
@@ -2444,6 +2783,29 @@ extension _UPdfViewerChrome on UPdfViewerState {
   }
 }
 
+/// A drag target that starts after a few pixels, so the page pan (which needs a scroll's distance) never takes it.
+class _UPdfDragArea extends StatelessWidget {
+  const _UPdfDragArea({required this.onUpdate, required this.onEnd, required this.child});
+
+  final GestureDragUpdateCallback onUpdate;
+  final VoidCallback onEnd;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => RawGestureDetector(
+    behavior: HitTestBehavior.opaque,
+    gestures: <Type, GestureRecognizerFactory<GestureRecognizer>>{
+      PanGestureRecognizer: GestureRecognizerFactoryWithHandlers<PanGestureRecognizer>(PanGestureRecognizer.new, (PanGestureRecognizer instance) {
+        instance
+          ..gestureSettings = const DeviceGestureSettings(touchSlop: 2)
+          ..onUpdate = onUpdate
+          ..onEnd = (DragEndDetails details) => onEnd();
+      }),
+    },
+    child: child,
+  );
+}
+
 class _UPdfMarkupPainter extends CustomPainter {
   const _UPdfMarkupPainter({required this.markups, required this.size, required this.activeId, required this.showBadges});
 
@@ -2564,15 +2926,47 @@ class _UPdfPageViewState extends State<UPdfPageView> {
   static const Set<PointerDeviceKind> _pointerDevices = <PointerDeviceKind>{PointerDeviceKind.mouse, PointerDeviceKind.trackpad};
   static const Set<PointerDeviceKind> _touchDevices = <PointerDeviceKind>{PointerDeviceKind.touch, PointerDeviceKind.stylus, PointerDeviceKind.invertedStylus};
 
+  /// Page bitmaps shared by every page view, so scrolling back to a page shows it at once.
+  static final UDocImageCache _rasters = UDocImageCache(maxBytes: 96 * 1024 * 1024);
+
+  /// Largest whole-page bitmap; deeper zoom adds a sharp bitmap of the visible part only.
+  static const int _maxPagePixels = 8000000;
+  static const int _maxDetailPixels = 12000000;
+
   ui.Picture? _picture;
   bool _loading = false;
   bool _failed = false;
+
+  ui.Image? _base;
+  double _baseScale = 0;
+  ui.Image? _detail;
+  Rect _detailRect = Rect.zero;
+  double _detailScale = 0;
+  Timer? _rasterTimer;
+  int _rasterToken = 0;
+  final List<ScrollPosition> _positions = <ScrollPosition>[];
 
   @override
   void initState() {
     super.initState();
     widget.controller.addListener(_onControllerChanged);
     unawaited(_load());
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    for (final ScrollPosition position in _positions) {
+      position.removeListener(_onScrolled);
+    }
+    _positions.clear();
+    ScrollableState? scrollable = Scrollable.maybeOf(context);
+    while (scrollable != null && _positions.length < 4) {
+      _positions.add(scrollable.position);
+      scrollable.position.addListener(_onScrolled);
+      scrollable = Scrollable.maybeOf(scrollable.context);
+    }
+    _scheduleRaster();
   }
 
   @override
@@ -2585,14 +2979,139 @@ class _UPdfPageViewState extends State<UPdfPageView> {
     if (oldWidget.pageIndex != widget.pageIndex || oldWidget.controller != widget.controller) {
       _picture = null;
       _failed = false;
+      _clearRasters();
       unawaited(_load());
+    } else if (oldWidget.displayScale != widget.displayScale) {
+      _scheduleRaster(delay: const Duration(milliseconds: 60));
     }
   }
 
   @override
   void dispose() {
     widget.controller.removeListener(_onControllerChanged);
+    for (final ScrollPosition position in _positions) {
+      position.removeListener(_onScrolled);
+    }
+    _rasterTimer?.cancel();
+    _rasterToken++;
+    _clearRasters();
     super.dispose();
+  }
+
+  void _clearRasters() {
+    _base?.dispose();
+    _base = null;
+    _baseScale = 0;
+    _detail?.dispose();
+    _detail = null;
+  }
+
+  /// Pixels per page unit the screen needs now.
+  double get _targetScale => widget.displayScale * MediaQuery.devicePixelRatioOf(context);
+
+  /// Scales snap up to steps of about 9%, so small zoom changes reuse the bitmap instead of re-rendering.
+  static double _snap(double scale) => pow(2, (log(max(scale, 0.01)) / ln2 * 8).ceil() / 8).toDouble();
+
+  void _onScrolled() {
+    if (_detailScale > 0 || (_base != null && _targetScale > _baseScale * 1.1)) _scheduleRaster(delay: const Duration(milliseconds: 120));
+  }
+
+  void _scheduleRaster({Duration delay = Duration.zero}) {
+    _rasterTimer?.cancel();
+    _rasterTimer = Timer(delay, () => unawaited(_raster()));
+  }
+
+  Future<ui.Image?> _rasterize(ui.Picture picture, Rect area, double scale) async {
+    final int width = max(1, (area.width * scale).ceil());
+    final int height = max(1, (area.height * scale).ceil());
+    final ui.PictureRecorder recorder = ui.PictureRecorder();
+    final Canvas canvas = Canvas(recorder);
+    canvas.scale(scale);
+    canvas.translate(-area.left, -area.top);
+    canvas.drawPicture(picture);
+    final ui.Picture scaled = recorder.endRecording();
+    try {
+      return await scaled.toImage(width, height);
+    } on Object {
+      return null;
+    } finally {
+      scaled.dispose();
+    }
+  }
+
+  /// The part of the page inside every enclosing scroll view, in page units.
+  Rect? _visiblePart(Size page) {
+    final RenderObject? object = context.findRenderObject();
+    if (object is! RenderBox || !object.attached || !object.hasSize || widget.displayScale <= 0) return null;
+    final Offset origin = object.localToGlobal(Offset.zero);
+    Rect visible = origin & object.size;
+    for (final ScrollPosition position in _positions) {
+      final RenderObject? viewport = position.context.notificationContext?.findRenderObject();
+      if (viewport is RenderBox && viewport.attached && viewport.hasSize) visible = visible.intersect(viewport.localToGlobal(Offset.zero) & viewport.size);
+    }
+    if (visible.width <= 0 || visible.height <= 0) return null;
+    final Rect local = visible.shift(-origin);
+    return Rect.fromLTRB(local.left / widget.displayScale, local.top / widget.displayScale, local.right / widget.displayScale, local.bottom / widget.displayScale).intersect(Offset.zero & page);
+  }
+
+  Future<void> _raster() async {
+    final ui.Picture? picture = _picture;
+    if (picture == null || !mounted) return;
+    final int token = ++_rasterToken;
+    final Size page = widget.controller.pageInfo(widget.pageIndex).rotatedSize;
+    if (page.isEmpty) return;
+    final double target = _snap(_targetScale);
+    final double cap = sqrt(_maxPagePixels / (page.width * page.height));
+    final double baseScale = min(target, cap);
+    if (_base == null || (baseScale - _baseScale).abs() > 0.001) {
+      final String key = "${widget.controller.documentId}#page${widget.pageIndex}@${identityHashCode(picture)}x${(baseScale * 1000).round()}";
+      ui.Image? image = _rasters.get(key)?.clone();
+      if (image == null) {
+        image = await _rasterize(picture, Offset.zero & page, baseScale);
+        if (image != null) _rasters.put(key, image.clone());
+      }
+      if (!mounted || token != _rasterToken || picture != _picture) {
+        image?.dispose();
+        return;
+      }
+      if (image != null) {
+        setState(() {
+          _base?.dispose();
+          _base = image;
+          _baseScale = baseScale;
+        });
+      }
+    }
+    if (target <= _baseScale * 1.1) {
+      if (_detail != null) setState(_clearDetail);
+      return;
+    }
+    final Rect? visible = _visiblePart(page);
+    if (visible == null || visible.isEmpty) {
+      if (_detail != null) setState(_clearDetail);
+      return;
+    }
+    // Already sharp for what is on screen.
+    if (_detail != null && _detailScale == target && _detailRect.contains(visible.topLeft) && _detailRect.contains(visible.bottomRight)) return;
+    Rect area = visible.inflate(max(visible.width, visible.height) * 0.25).intersect(Offset.zero & page);
+    if (area.width * area.height * target * target > _maxDetailPixels) area = visible;
+    final ui.Image? detail = await _rasterize(picture, area, target);
+    if (!mounted || token != _rasterToken || picture != _picture) {
+      detail?.dispose();
+      return;
+    }
+    setState(() {
+      _detail?.dispose();
+      _detail = detail;
+      _detailRect = area;
+      _detailScale = detail == null ? 0 : target;
+    });
+  }
+
+  void _clearDetail() {
+    _detail?.dispose();
+    _detail = null;
+    _detailScale = 0;
   }
 
   void _onControllerChanged() {
@@ -2611,6 +3130,7 @@ class _UPdfPageViewState extends State<UPdfPageView> {
     final ui.Picture? picture = await widget.controller.renderPage(widget.pageIndex);
     _loading = false;
     if (!mounted) return;
+    if (picture != null) _scheduleRaster();
     setState(() {
       _picture = picture;
       _failed = picture == null;
@@ -2700,7 +3220,15 @@ class _UPdfPageViewState extends State<UPdfPageView> {
   @override
   Widget build(BuildContext context) {
     final ui.Picture? picture = _picture;
-    final Widget content = picture == null
+    final ui.Image? base = _base;
+    final Widget content = base != null
+        ? RepaintBoundary(
+      child: CustomPaint(
+        painter: _UPdfRasterPainter(base: base, detail: _detail, detailRect: _detailRect, scale: widget.displayScale),
+        size: Size.infinite,
+      ),
+    )
+        : picture == null
         ? Center(
       child: _failed
           ? Padding(
@@ -2765,7 +3293,8 @@ class _UPdfPageViewState extends State<UPdfPageView> {
           ),
         if (widget.selectable)
           PanGestureRecognizer: GestureRecognizerFactoryWithHandlers<PanGestureRecognizer>(
-                () => PanGestureRecognizer(supportedDevices: _pointerDevices)..dragStartBehavior = DragStartBehavior.down,
+                // Mouse only: a trackpad two-finger swipe is a scroll, never a selection.
+              () => PanGestureRecognizer(supportedDevices: const <PointerDeviceKind>{PointerDeviceKind.mouse})..dragStartBehavior = DragStartBehavior.down,
                 (PanGestureRecognizer instance) {
               instance.onStart = (DragStartDetails details) => widget.onSelectStart?.call(_toPagePoint(details.localPosition));
               instance.onUpdate = (DragUpdateDetails details) => widget.onSelectUpdate?.call(_toPagePoint(details.localPosition));
@@ -2787,6 +3316,33 @@ class _UPdfPageViewState extends State<UPdfPageView> {
       ),
     );
   }
+}
+
+/// Paints the page bitmap stretched to the page, and the sharper bitmap of the visible part over it.
+class _UPdfRasterPainter extends CustomPainter {
+  const _UPdfRasterPainter({required this.base, required this.detail, required this.detailRect, required this.scale});
+
+  final ui.Image base;
+  final ui.Image? detail;
+  final Rect detailRect;
+  final double scale;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final Paint paint = Paint()..filterQuality = FilterQuality.medium;
+    canvas.save();
+    canvas.clipRect(Offset.zero & size);
+    canvas.drawImageRect(base, Rect.fromLTWH(0, 0, base.width.toDouble(), base.height.toDouble()), Offset.zero & size, paint);
+    final ui.Image? sharp = detail;
+    if (sharp != null) {
+      final Rect target = Rect.fromLTRB(detailRect.left * scale, detailRect.top * scale, detailRect.right * scale, detailRect.bottom * scale);
+      canvas.drawImageRect(sharp, Rect.fromLTWH(0, 0, sharp.width.toDouble(), sharp.height.toDouble()), target, paint);
+    }
+    canvas.restore();
+  }
+
+  @override
+  bool shouldRepaint(_UPdfRasterPainter oldDelegate) => oldDelegate.base != base || oldDelegate.detail != detail || oldDelegate.detailRect != detailRect || oldDelegate.scale != scale;
 }
 
 class _UPdfPagePainter extends CustomPainter {

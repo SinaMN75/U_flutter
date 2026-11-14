@@ -595,14 +595,10 @@ class UPdfCff implements UPdfGlyphSource {
     try {
       if (bytes.length < 4) return null;
       final int headerSize = bytes[2];
-      final UDocCursor cursor = UDocCursor(bytes, start: headerSize);
-      UPdfIndex.read(cursor);
-      final UDocCursor topCursor = UDocCursor(bytes, start: cursor.position);
-      final UPdfIndex topDicts = UPdfIndex.read(topCursor);
-      final UDocCursor stringCursor = UDocCursor(bytes, start: topCursor.position);
-      final UPdfIndex strings = UPdfIndex.read(stringCursor);
-      final UDocCursor globalCursor = UDocCursor(bytes, start: stringCursor.position);
-      final UPdfIndex globalSubrs = UPdfIndex.read(globalCursor);
+      final UPdfIndex names = UPdfIndex.read(UDocCursor(bytes, start: headerSize));
+      final UPdfIndex topDicts = UPdfIndex.read(UDocCursor(bytes, start: names.endOffset));
+      final UPdfIndex strings = UPdfIndex.read(UDocCursor(bytes, start: topDicts.endOffset));
+      final UPdfIndex globalSubrs = UPdfIndex.read(UDocCursor(bytes, start: strings.endOffset));
       if (topDicts.count == 0) return null;
       final Map<int, List<num>> top = _readDict(topDicts[0]);
       final int charStringsOffset = (top[17]?.first ?? 0).toInt();
@@ -3114,6 +3110,14 @@ abstract class UPdfColorSpace {
 
   static int _byte(double value) => (value * 255).round().clamp(0, 255);
 
+  /// CMYK (0..1 ink) to 0xRRGGBB, fitted to a coated press profile so colors match Acrobat instead of the naive 1 - c - k.
+  static int cmykToRgb(double c, double m, double y, double k) {
+    final double r = 255 + c * (-4.387332384609988 * c + 54.48615194189176 * m + 18.82290502165302 * y + 212.25662451639585 * k - 285.2331026137004) + m * (1.7149763477362134 * m - 5.6096736904047315 * y - 17.873870861415444 * k - 5.497006427196366) + y * (-2.5217340131683033 * y - 21.248923337353073 * k + 17.5119270841813) + k * (-21.86122147463605 * k - 189.48180835922747);
+    final double g = 255 + c * (8.841041422036149 * c + 60.118027045597366 * m + 6.871425592049007 * y + 31.159100130055922 * k - 79.2970844816548) + m * (-15.310361306967817 * m + 17.575251261109482 * y + 131.35250912493976 * k - 190.9453302588951) + y * (4.444339102852739 * y + 9.8632861493405 * k - 24.86741582555878) + k * (-20.737325471181034 * k - 187.80453709719578);
+    final double b = 255 + c * (0.8842522430003296 * c + 8.078677503112928 * m + 30.89978309703729 * y - 0.23883238689178934 * k - 14.183576799673286) + m * (10.49593273432072 * m + 63.02378494754052 * y + 50.606957656360734 * k - 112.23884253719248) + y * (0.03296041114873217 * y + 115.60384449646641 * k - 193.58209356861505) + k * (-22.33816807309886 * k - 180.12613974708367);
+    return (r.round().clamp(0, 255) << 16) | (g.round().clamp(0, 255) << 8) | b.round().clamp(0, 255);
+  }
+
   static Future<UPdfColorSpace> load(UPdfDocument document, Object? value, {UPdfDict? resources, int depth = 0}) async {
     if (depth > 8) return deviceGray;
     final Object? resolved = await document.resolve(value);
@@ -3259,7 +3263,7 @@ class _UPdfCmykSpace implements UPdfColorSpace {
     final double m = values.length > 1 ? values[1].clamp(0, 1).toDouble() : 0;
     final double y = values.length > 2 ? values[2].clamp(0, 1).toDouble() : 0;
     final double k = values.length > 3 ? values[3].clamp(0, 1).toDouble() : 0;
-    return Color.fromARGB(255, UPdfColorSpace._byte((1 - c) * (1 - k)), UPdfColorSpace._byte((1 - m) * (1 - k)), UPdfColorSpace._byte((1 - y) * (1 - k)));
+    return Color(0xFF000000 | UPdfColorSpace.cmykToRgb(c, m, y, k));
   }
 }
 
@@ -3634,8 +3638,25 @@ class UPdfCcittDecoder {
   }
 }
 
+/// Internal: decoded image samples before color conversion.
+class _UPdfSamples {
+  _UPdfSamples({required this.width, required this.height, required this.bits, required this.components, required this.data, this.colorChannels});
+
+  final int width;
+  final int height;
+  final int bits;
+  final int components;
+  final Uint8List data;
+
+  /// Color channels the data itself declares (JPEG 2000 color box); null when the PDF decides.
+  final int? colorChannels;
+}
+
 /// Internal: image decoders.
 abstract class UPdfImages {
+  /// Images above this many pixels are subsampled; a full-resolution scan would use hundreds of megabytes.
+  static const int maxPixels = 16000000;
+
   static Future<ui.Image?> fromPixels(Uint8List rgba, int width, int height) async {
     if (width <= 0 || height <= 0 || rgba.length < width * height * 4) return null;
     try {
@@ -3659,170 +3680,453 @@ abstract class UPdfImages {
     }
   }
 
+  static Future<List<double>> _numbers(UPdfDocument document, Object? value) async {
+    final Object? resolved = await document.resolve(value);
+    final List<double> numbers = <double>[];
+    if (resolved is List<Object?>) {
+      for (final Object? entry in resolved) {
+        final Object? item = await document.resolve(entry);
+        if (item is num) numbers.add(item.toDouble());
+      }
+    }
+    return numbers;
+  }
+
+  static Future<int> _int(UPdfDocument document, Object? value, int fallback) async {
+    final Object? resolved = await document.resolve(value);
+    return resolved is num ? resolved.toInt() : fallback;
+  }
+
+  static UJpegImage? _jpegJob((Uint8List, int?) job) => UJpeg.decode(job.$1, colorTransform: job.$2);
+
+  static UJpxImage? _jpxJob((Uint8List, bool) job) => UJpx.decode(job.$1, palette: job.$2);
+
+  static Uint8List _convertJob(_UPdfPixelJob job) => job.run();
+
+  /// Raw samples of an image stream with every filter undone (JPEG, JBIG2 and CCITT included).
+  /// [native] lets plain gray and RGB JPEGs go through the platform codec; the result is then an image, not samples.
+  static Future<(_UPdfSamples?, ui.Image?)> _samples(UPdfDocument document, UPdfStream stream, {required int components, bool native = false}) async {
+    final UPdfDict dict = stream.dict;
+    final int width = await _int(document, dict["Width"] ?? dict["W"], 0);
+    final int height = await _int(document, dict["Height"] ?? dict["H"], 0);
+    if (width <= 0 || height <= 0 || width * height > 200000000) return (null, null);
+    final bool isMask = (await document.resolve(dict["ImageMask"] ?? dict["IM"])) as bool? ?? false;
+    final int bits = isMask ? 1 : await _int(document, dict["BitsPerComponent"] ?? dict["BPC"], 8);
+    final UPdfDecodedStream decoded = await document.decodeStream(stream);
+    final String? filter = decoded.imageFilter;
+    final Uint8List bytes = decoded.bytes;
+    if (filter == "DCTDecode" || filter == "DCT") {
+      final (int, bool)? probe = UJpeg.probe(bytes);
+      if (native && probe != null && probe.$1 == components && (components == 1 || components == 3)) {
+        final ui.Image? image = await fromEncoded(bytes);
+        if (image != null) return (null, image);
+      }
+      final int? transform = decoded.imageParms == null ? null : await _int(document, decoded.imageParms?["ColorTransform"], -1);
+      final (Uint8List, int?) job = (bytes, transform == null || transform < 0 ? null : transform);
+      final UJpegImage? jpeg = bytes.length > 65536 && !kIsWeb ? await compute(_jpegJob, job) : _jpegJob(job);
+      if (jpeg == null) {
+        final ui.Image? image = native ? null : await fromEncoded(bytes);
+        return (null, image);
+      }
+      // The decoder output is the image data as the PDF means it; inverted CMYK files carry their own /Decode [1 0 …].
+      return (_UPdfSamples(width: jpeg.width, height: jpeg.height, bits: 8, components: jpeg.components, data: jpeg.data), null);
+    }
+    if (filter == "JPXDecode") {
+      // A PDF color space overrides the JPEG 2000 one, palette included (an /Indexed image wants the indices).
+      final bool declared = dict["ColorSpace"] != null || dict["CS"] != null;
+      final (Uint8List, bool) job = (bytes, !declared);
+      final UJpxImage? jpx = bytes.length > 65536 && !kIsWeb ? await compute(_jpxJob, job) : _jpxJob(job);
+      if (jpx == null) return (null, null);
+      return (_UPdfSamples(width: jpx.width, height: jpx.height, bits: 8, components: jpx.components, data: jpx.data, colorChannels: jpx.colorChannels), null);
+    }
+    if (filter == "JBIG2Decode") {
+      Uint8List? globals;
+      final Object? globalsObject = await document.resolve(decoded.imageParms?["JBIG2Globals"]);
+      if (globalsObject is UPdfStream) globals = (await document.decodeStream(globalsObject)).bytes;
+      final Uint8List? packed = UJbig2.decode(bytes, width: width, height: height, globals: globals);
+      if (packed == null) return (null, null);
+      return (_UPdfSamples(width: width, height: height, bits: 1, components: 1, data: packed), null);
+    }
+    if (filter == "CCITTFaxDecode" || filter == "CCF") {
+      final UPdfDict? parms = decoded.imageParms;
+      final int k = await _int(document, parms?["K"], 0);
+      final int columns = await _int(document, parms?["Columns"], 1728);
+      final int rows = await _int(document, parms?["Rows"], height);
+      final bool blackIs1 = (await document.resolve(parms?["BlackIs1"])) as bool? ?? false;
+      final bool align = (await document.resolve(parms?["EncodedByteAlign"])) as bool? ?? false;
+      final Uint8List data = UPdfCcittDecoder(columns: columns, rows: rows, k: k, blackIs1: blackIs1, byteAlign: align).decode(bytes);
+      return (_UPdfSamples(width: width, height: height, bits: 1, components: 1, data: data), null);
+    }
+    return (_UPdfSamples(width: width, height: height, bits: bits, components: components, data: bytes), null);
+  }
+
   static Future<ui.Image?> decode(UPdfDocument document, UPdfStream stream, {UPdfDict? resources, Color fillColor = const Color(0xFF000000)}) async {
     try {
       final UPdfDict dict = stream.dict;
-      final int width = ((await document.resolve(dict["Width"] ?? dict["W"])) as num?)?.toInt() ?? 0;
-      final int height = ((await document.resolve(dict["Height"] ?? dict["H"])) as num?)?.toInt() ?? 0;
-      if (width <= 0 || height <= 0 || width * height > 80000000) return null;
       final bool isMask = (await document.resolve(dict["ImageMask"] ?? dict["IM"])) as bool? ?? false;
-      final int bits = isMask ? 1 : (((await document.resolve(dict["BitsPerComponent"] ?? dict["BPC"])) as num?)?.toInt() ?? 8);
-      final UPdfDecodedStream decoded = await document.decodeStream(stream);
-      final List<double> decodeArray = <double>[];
-      final Object? decodeObject = await document.resolve(dict["Decode"] ?? dict["D"]);
-      if (decodeObject is List<Object?>) {
-        for (final Object? entry in decodeObject) {
-          final Object? value = await document.resolve(entry);
-          if (value is num) decodeArray.add(value.toDouble());
-        }
-      }
-      Uint8List samples = decoded.bytes;
+      final List<double> decodeArray = await _numbers(document, dict["Decode"] ?? dict["D"]);
       UPdfColorSpace space = isMask ? UPdfColorSpace.deviceGray : await UPdfColorSpace.load(document, dict["ColorSpace"] ?? dict["CS"], resources: resources);
-      final String? filter = decoded.imageFilter;
-      if (filter == "DCTDecode" || filter == "DCT" || filter == "JPXDecode") {
-        final ui.Image? direct = await fromEncoded(samples);
-        if (direct != null) return await _applyMask(document, direct, dict, resources);
-        if (filter == "JPXDecode") return null;
-        return null;
-      }
-      if (filter == "JBIG2Decode") {
-        Uint8List? globals;
-        final UPdfDict? parms = decoded.imageParms;
-        final Object? globalsObject = await document.resolve(parms?["JBIG2Globals"]);
-        if (globalsObject is UPdfStream) globals = (await document.decodeStream(globalsObject)).bytes;
-        final Uint8List? packed = UJbig2.decode(samples, width: width, height: height, globals: globals);
-        if (packed == null) return null;
-        samples = packed;
-        space = UPdfColorSpace.deviceGray;
-      }
-      if (filter == "CCITTFaxDecode" || filter == "CCF") {
-        final UPdfDict? parms = decoded.imageParms;
-        final int k = ((await document.resolve(parms?["K"])) as num?)?.toInt() ?? 0;
-        final int columns = ((await document.resolve(parms?["Columns"])) as num?)?.toInt() ?? 1728;
-        final int rowCount = ((await document.resolve(parms?["Rows"])) as num?)?.toInt() ?? height;
-        final bool blackIs1 = (await document.resolve(parms?["BlackIs1"])) as bool? ?? false;
-        final bool align = (await document.resolve(parms?["EncodedByteAlign"])) as bool? ?? false;
-        samples = UPdfCcittDecoder(columns: columns, rows: rowCount, k: k, blackIs1: blackIs1, byteAlign: align).decode(samples);
-        space = UPdfColorSpace.deviceGray;
-      }
-      final int componentCount = isMask ? 1 : space.components;
-      final int maxValue = (1 << bits) - 1;
-      final int rowBits = width * componentCount * bits;
-      final int rowBytes = (rowBits + 7) >> 3;
-      final Uint8List rgba = Uint8List(width * height * 4);
-      final bool indexed = space.family == "Indexed";
-      final List<double> values = List<double>.filled(componentCount, 0);
-      final Map<int, int> cache = <int, int>{};
-      for (int y = 0; y < height; y++) {
-        final int rowStart = y * rowBytes;
-        if (rowStart >= samples.length) break;
-        for (int x = 0; x < width; x++) {
-          int key = 0;
-          for (int c = 0; c < componentCount; c++) {
-            final int bitOffset = (x * componentCount + c) * bits;
-            int raw = 0;
-            if (bits == 8) {
-              final int index = rowStart + (bitOffset >> 3);
-              raw = index < samples.length ? samples[index] : 0;
-            } else if (bits == 16) {
-              final int index = rowStart + (bitOffset >> 3);
-              raw = index + 1 < samples.length ? samples[index] : 0;
-            } else {
-              for (int b = 0; b < bits; b++) {
-                final int bit = bitOffset + b;
-                final int index = rowStart + (bit >> 3);
-                final int value = index < samples.length ? (samples[index] >> (7 - (bit & 7))) & 1 : 0;
-                raw = (raw << 1) | value;
-              }
-            }
-            if (bits == 16) raw = raw & 0xFF;
-            double normalized = indexed ? raw.toDouble() : raw / (bits == 16 ? 255 : maxValue);
-            if (decodeArray.length >= (c + 1) * 2) {
-              final double low = decodeArray[c * 2];
-              final double high = decodeArray[c * 2 + 1];
-              normalized = indexed ? low + raw * (high - low) / maxValue : low + normalized * (high - low);
-            }
-            values[c] = normalized;
-            key = (key << 8) | (raw & 0xFF);
+      final Object? smask = await document.resolve(dict["SMask"]);
+      final Object? mask = await document.resolve(dict["Mask"]);
+      final bool plainSpace = space.family == "DeviceGray" || space.family == "DeviceRGB";
+      final (_UPdfSamples?, ui.Image?) source = await _samples(document, stream, components: isMask ? 1 : space.components, native: !isMask && plainSpace && decodeArray.isEmpty);
+      final ui.Image? image = source.$2;
+      if (image != null && smask is! UPdfStream && mask == null) return image;
+      Uint8List rgba;
+      int width;
+      int height;
+      (Uint8List, int, int)? alphaPlane;
+      if (image != null) {
+        final ByteData? pixels = await image.toByteData(format: ui.ImageByteFormat.rawStraightRgba);
+        width = image.width;
+        height = image.height;
+        image.dispose();
+        if (pixels == null) return null;
+        rgba = pixels.buffer.asUint8List(pixels.offsetInBytes, pixels.lengthInBytes);
+      } else {
+        _UPdfSamples? samples = source.$1;
+        if (samples == null) return null;
+        if (!isMask && samples.components != space.components && space.family != "Indexed") {
+          // JPEG 2000 carries its own color space (no /ColorSpace) and may carry an alpha channel (/SMaskInData).
+          final bool declared = dict["ColorSpace"] != null || dict["CS"] != null;
+          final int maskInData = await _int(document, dict["SMaskInData"], 0);
+          int color = declared ? space.components : (samples.colorChannels ?? (samples.components >= 3 ? 3 : 1));
+          if (!declared && samples.colorChannels == null && samples.components == 4 && maskInData == 0) color = 4;
+          if (samples.components > color) {
+            final (_UPdfSamples, Uint8List) split = _split(samples, color);
+            samples = split.$1;
+            if (maskInData != 0) alphaPlane = (split.$2, samples.width, samples.height);
           }
-          final int offset = (y * width + x) * 4;
-          if (isMask) {
-            final bool paint = values[0] < 0.5;
-            rgba[offset] = (fillColor.r * 255).round();
-            rgba[offset + 1] = (fillColor.g * 255).round();
-            rgba[offset + 2] = (fillColor.b * 255).round();
-            rgba[offset + 3] = paint ? 255 : 0;
-            continue;
+          if (!declared || samples.components != space.components) {
+            space = samples.components == 1 ? UPdfColorSpace.deviceGray : (samples.components == 4 ? UPdfColorSpace.deviceCmyk : UPdfColorSpace.deviceRgb);
           }
-          final int? cached = componentCount <= 2 ? cache[key] : null;
-          final int argb = cached ?? space.color(values).toARGB32();
-          if (componentCount <= 2 && cached == null) cache[key] = argb;
-          rgba[offset] = (argb >> 16) & 0xFF;
-          rgba[offset + 1] = (argb >> 8) & 0xFF;
-          rgba[offset + 2] = argb & 0xFF;
-          rgba[offset + 3] = 255;
+        }
+        final List<int>? colorKey = mask is List<Object?> ? (await _numbers(document, mask)).map((double value) => value.round()).toList() : null;
+        final _UPdfPixelJob job = _UPdfPixelJob.build(samples, space, decodeArray, isMask: isMask, fillColor: fillColor, colorKey: colorKey);
+        final int step = job.step;
+        width = (samples.width + step - 1) ~/ step;
+        height = (samples.height + step - 1) ~/ step;
+        rgba = job.generic != null ? job.run() : (samples.width * samples.height > 250000 && !kIsWeb ? await compute(_convertJob, job) : job.run());
+      }
+      // A mask finer than the image (a 1x1 color through an 8x8 stencil) sets the output resolution.
+      final Object? maskStream = smask is UPdfStream ? smask : (mask is UPdfStream ? mask : null);
+      if (maskStream is UPdfStream) {
+        final int maskWidth = await _int(document, maskStream.dict["Width"] ?? maskStream.dict["W"], 0);
+        final int maskHeight = await _int(document, maskStream.dict["Height"] ?? maskStream.dict["H"], 0);
+        final int targetWidth = max(width, maskWidth);
+        final int targetHeight = max(height, maskHeight);
+        if ((targetWidth > width || targetHeight > height) && targetWidth * targetHeight <= maxPixels) {
+          final Uint8List larger = Uint8List(targetWidth * targetHeight * 4);
+          for (int y = 0; y < targetHeight; y++) {
+            final int sy = y * height ~/ targetHeight;
+            for (int x = 0; x < targetWidth; x++) {
+              final int from = (sy * width + x * width ~/ targetWidth) * 4;
+              final int to = (y * targetWidth + x) * 4;
+              larger[to] = rgba[from];
+              larger[to + 1] = rgba[from + 1];
+              larger[to + 2] = rgba[from + 2];
+              larger[to + 3] = rgba[from + 3];
+            }
+          }
+          rgba = larger;
+          width = targetWidth;
+          height = targetHeight;
         }
       }
-      await _applyAlpha(document, rgba, width, height, dict, resources);
+      final (Uint8List, int, int)? inData = alphaPlane;
+      if (inData != null) {
+        for (int y = 0; y < height; y++) {
+          final int sy = min(y * inData.$3 ~/ height, inData.$3 - 1);
+          for (int x = 0; x < width; x++) {
+            final int sx = min(x * inData.$2 ~/ width, inData.$2 - 1);
+            rgba[(y * width + x) * 4 + 3] = inData.$1[sy * inData.$2 + sx];
+          }
+        }
+      }
+      if (smask is UPdfStream) {
+        await _applySoftMask(document, smask, rgba, width, height, space);
+      } else if (mask is UPdfStream) {
+        await _applyStencilMask(document, mask, rgba, width, height);
+      }
+      _premultiply(rgba);
       return await fromPixels(rgba, width, height);
     } on Object {
       return null;
     }
   }
 
-  static Future<ui.Image?> _applyMask(UPdfDocument document, ui.Image image, UPdfDict dict, UPdfDict? resources) async {
-    final Object? smask = await document.resolve(dict["SMask"]);
-    if (smask is! UPdfStream) return image;
-    try {
-      final ui.PictureRecorder recorder = ui.PictureRecorder();
-      final Canvas canvas = Canvas(recorder);
-      final ui.Image? mask = await decode(document, smask, resources: resources);
-      if (mask == null) return image;
-      final Rect bounds = Rect.fromLTWH(0, 0, image.width.toDouble(), image.height.toDouble());
-      canvas.saveLayer(bounds, Paint());
-      canvas.drawImageRect(image, Rect.fromLTWH(0, 0, image.width.toDouble(), image.height.toDouble()), bounds, Paint());
-      canvas.drawImageRect(mask, Rect.fromLTWH(0, 0, mask.width.toDouble(), mask.height.toDouble()), bounds, Paint()..blendMode = BlendMode.dstIn);
-      canvas.restore();
-      final ui.Picture picture = recorder.endRecording();
-      final ui.Image composed = await picture.toImage(image.width, image.height);
-      picture.dispose();
-      mask.dispose();
-      image.dispose();
-      return composed;
-    } on Object {
-      return image;
+  /// Pixels are built with straight alpha; the engine takes premultiplied RGBA.
+  static void _premultiply(Uint8List rgba) {
+    for (int i = 0; i + 3 < rgba.length; i += 4) {
+      final int a = rgba[i + 3];
+      if (a == 255) continue;
+      if (a == 0) {
+        rgba[i] = 0;
+        rgba[i + 1] = 0;
+        rgba[i + 2] = 0;
+        continue;
+      }
+      rgba[i] = (rgba[i] * a + 127) ~/ 255;
+      rgba[i + 1] = (rgba[i + 1] * a + 127) ~/ 255;
+      rgba[i + 2] = (rgba[i + 2] * a + 127) ~/ 255;
     }
   }
 
-  static Future<void> _applyAlpha(UPdfDocument document, Uint8List rgba, int width, int height, UPdfDict dict, UPdfDict? resources) async {
-    final Object? smaskObject = await document.resolve(dict["SMask"]);
-    if (smaskObject is! UPdfStream) return;
-    try {
-      final int maskWidth = ((await document.resolve(smaskObject.dict["Width"])) as num?)?.toInt() ?? 0;
-      final int maskHeight = ((await document.resolve(smaskObject.dict["Height"])) as num?)?.toInt() ?? 0;
-      final int maskBits = ((await document.resolve(smaskObject.dict["BitsPerComponent"])) as num?)?.toInt() ?? 8;
-      final UPdfDecodedStream mask = await document.decodeStream(smaskObject);
-      if (mask.isImageEncoded || maskWidth <= 0 || maskHeight <= 0) return;
-      final int rowBytes = (maskWidth * maskBits + 7) >> 3;
-      for (int y = 0; y < height; y++) {
-        final int maskY = maskHeight == height ? y : (y * maskHeight ~/ height);
-        for (int x = 0; x < width; x++) {
-          final int maskX = maskWidth == width ? x : (x * maskWidth ~/ width);
-          int alpha = 255;
-          if (maskBits == 8) {
-            final int index = maskY * rowBytes + maskX;
-            alpha = index < mask.bytes.length ? mask.bytes[index] : 255;
-          } else if (maskBits == 1) {
-            final int bit = maskX;
-            final int index = maskY * rowBytes + (bit >> 3);
-            alpha = index < mask.bytes.length ? (((mask.bytes[index] >> (7 - (bit & 7))) & 1) == 1 ? 255 : 0) : 255;
-          }
-          rgba[(y * width + x) * 4 + 3] = alpha;
+  /// The first [color] channels as their own samples, and the next channel (alpha) as a plane.
+  static (_UPdfSamples, Uint8List) _split(_UPdfSamples samples, int color) {
+    final int count = samples.components;
+    final int pixels = samples.width * samples.height;
+    final Uint8List colors = Uint8List(pixels * color);
+    final Uint8List alpha = Uint8List(pixels);
+    for (int i = 0; i < pixels; i++) {
+      for (int c = 0; c < color; c++) {
+        colors[i * color + c] = samples.data[i * count + c];
+      }
+      alpha[i] = samples.data[i * count + color];
+    }
+    return (_UPdfSamples(width: samples.width, height: samples.height, bits: 8, components: color, data: colors), alpha);
+  }
+
+  /// Gray values (0..255) of a mask stream, scaled to [width] x [height].
+  static Future<Uint8List?> _maskValues(UPdfDocument document, UPdfStream stream, int width, int height, {required bool stencil}) async {
+    final (_UPdfSamples?, ui.Image?) source = await _samples(document, stream, components: 1);
+    final _UPdfSamples? samples = source.$1;
+    if (samples == null) return null;
+    final List<double> decodeArray = await _numbers(document, stream.dict["Decode"] ?? stream.dict["D"]);
+    final _UPdfPixelJob job = _UPdfPixelJob.build(samples, UPdfColorSpace.deviceGray, decodeArray, isMask: false, fillColor: const Color(0xFF000000));
+    final Uint8List gray = job.values();
+    final Uint8List out = Uint8List(width * height);
+    final int sourceWidth = (samples.width + job.step - 1) ~/ job.step;
+    final int sourceHeight = (samples.height + job.step - 1) ~/ job.step;
+    for (int y = 0; y < height; y++) {
+      final int sy = min(y * sourceHeight ~/ height, sourceHeight - 1);
+      for (int x = 0; x < width; x++) {
+        final int sx = min(x * sourceWidth ~/ width, sourceWidth - 1);
+        out[y * width + x] = gray[sy * sourceWidth + sx];
+      }
+    }
+    return out;
+  }
+
+  static Future<void> _applySoftMask(UPdfDocument document, UPdfStream smask, Uint8List rgba, int width, int height, UPdfColorSpace space) async {
+    final Uint8List? alpha = await _maskValues(document, smask, width, height, stencil: false);
+    if (alpha == null) return;
+    final List<double> matte = await _numbers(document, smask.dict["Matte"]);
+    Color? matteColor;
+    if (matte.isNotEmpty && matte.length == space.components) matteColor = space.color(matte);
+    final List<int> matteRgb = matteColor == null ? const <int>[] : <int>[(matteColor.r * 255).round(), (matteColor.g * 255).round(), (matteColor.b * 255).round()];
+    for (int i = 0; i < alpha.length; i++) {
+      final int a = alpha[i];
+      final int o = i * 4;
+      if (matteRgb.isNotEmpty && a > 0 && a < 255) {
+        for (int c = 0; c < 3; c++) {
+          rgba[o + c] = (matteRgb[c] + (rgba[o + c] - matteRgb[c]) * 255 / a).round().clamp(0, 255);
         }
       }
-    } on Object {
-      return;
+      rgba[o + 3] = (rgba[o + 3] * a) ~/ 255;
     }
+  }
+
+  /// /Mask as an image: samples of 1 are masked out (not painted).
+  static Future<void> _applyStencilMask(UPdfDocument document, UPdfStream mask, Uint8List rgba, int width, int height) async {
+    final Uint8List? values = await _maskValues(document, mask, width, height, stencil: true);
+    if (values == null) return;
+    for (int i = 0; i < values.length; i++) {
+      if (values[i] >= 128) rgba[i * 4 + 3] = 0;
+    }
+  }
+}
+
+/// Internal: converts image samples to RGBA; plain data so it can run in another isolate.
+class _UPdfPixelJob {
+  _UPdfPixelJob({
+    required this.samples,
+    required this.step,
+    required this.mode,
+    required this.luts,
+    required this.palette,
+    required this.colorKey,
+    this.generic,
+  });
+
+  final _UPdfSamples samples;
+  final int step;
+
+  /// 0 = palette (one component), 1 = RGB, 2 = CMYK, 3 = generic.
+  final int mode;
+
+  /// Per component: raw sample -> 0..255 after the Decode array (ink for CMYK).
+  final List<Uint8List> luts;
+
+  /// Mode 0: raw sample -> RGBA.
+  final Uint8List palette;
+  final List<int>? colorKey;
+  final Color Function(List<double> values)? generic;
+  List<double> genericDecode = const <double>[];
+  bool genericIndexed = false;
+
+  static _UPdfPixelJob build(_UPdfSamples samples, UPdfColorSpace space, List<double> decodeArray, {required bool isMask, required Color fillColor, List<int>? colorKey}) {
+    final int pixels = samples.width * samples.height;
+    final int step = pixels > UPdfImages.maxPixels ? sqrt(pixels / UPdfImages.maxPixels).ceil() : 1;
+    final int bits = samples.bits == 16 ? 8 : samples.bits;
+    final int maxValue = (1 << bits) - 1;
+    final int count = samples.components;
+    final bool indexed = space.family == "Indexed";
+    double decoded(int component, int raw) {
+      final double low = decodeArray.length >= component * 2 + 2 ? decodeArray[component * 2] : (indexed ? 0 : 0);
+      final double high = decodeArray.length >= component * 2 + 2 ? decodeArray[component * 2 + 1] : (indexed ? maxValue.toDouble() : 1);
+      return low + raw * (high - low) / maxValue;
+    }
+
+    if (isMask || count == 1) {
+      final Uint8List palette = Uint8List((maxValue + 1) * 4);
+      for (int raw = 0; raw <= maxValue; raw++) {
+        final double value = decoded(0, raw);
+        if (isMask) {
+          palette[raw * 4] = (fillColor.r * 255).round();
+          palette[raw * 4 + 1] = (fillColor.g * 255).round();
+          palette[raw * 4 + 2] = (fillColor.b * 255).round();
+          palette[raw * 4 + 3] = value < 0.5 ? 255 : 0;
+          continue;
+        }
+        final int argb = space.color(<double>[value]).toARGB32();
+        palette[raw * 4] = (argb >> 16) & 0xFF;
+        palette[raw * 4 + 1] = (argb >> 8) & 0xFF;
+        palette[raw * 4 + 2] = argb & 0xFF;
+        palette[raw * 4 + 3] = 255;
+      }
+      return _UPdfPixelJob(samples: samples, step: step, mode: 0, luts: const <Uint8List>[], palette: palette, colorKey: colorKey);
+    }
+    final int mode = space.family == "DeviceRGB" && count == 3 ? 1 : (space.family == "DeviceCMYK" && count == 4 ? 2 : 3);
+    final List<Uint8List> luts = <Uint8List>[];
+    for (int c = 0; c < count; c++) {
+      final Uint8List lut = Uint8List(maxValue + 1);
+      for (int raw = 0; raw <= maxValue; raw++) {
+        lut[raw] = (decoded(c, raw) * 255).round().clamp(0, 255);
+      }
+      luts.add(lut);
+    }
+    final _UPdfPixelJob job = _UPdfPixelJob(samples: samples, step: step, mode: mode, luts: luts, palette: Uint8List(0), colorKey: colorKey, generic: mode == 3 ? space.color : null);
+    if (mode == 3) {
+      job.genericDecode = decodeArray;
+      job.genericIndexed = indexed;
+    }
+    return job;
+  }
+
+  /// Raw samples unpacked to one byte each (16-bit samples keep their high byte).
+  Uint8List _unpacked() {
+    final int count = samples.components;
+    final int width = samples.width;
+    final int height = samples.height;
+    final Uint8List data = samples.data;
+    if (samples.bits == 8) return data;
+    final Uint8List out = Uint8List(width * height * count);
+    if (samples.bits == 16) {
+      for (int i = 0; i < out.length && i * 2 < data.length; i++) {
+        out[i] = data[i * 2];
+      }
+      return out;
+    }
+    final int bits = samples.bits;
+    final int rowBytes = (width * count * bits + 7) >> 3;
+    final int mask = (1 << bits) - 1;
+    int target = 0;
+    for (int y = 0; y < height; y++) {
+      int bit = y * rowBytes * 8;
+      for (int i = 0; i < width * count; i++) {
+        final int index = bit >> 3;
+        if (index >= data.length) return out;
+        out[target++] = (data[index] >> (8 - bits - (bit & 7))) & mask;
+        bit += bits;
+      }
+    }
+    return out;
+  }
+
+  /// First channel after the Decode array (used for masks).
+  Uint8List values() {
+    final Uint8List raw = _unpacked();
+    final int width = (samples.width + step - 1) ~/ step;
+    final int height = (samples.height + step - 1) ~/ step;
+    final Uint8List out = Uint8List(width * height);
+    final int count = samples.components;
+    for (int y = 0; y < height; y++) {
+      final int row = y * step * samples.width;
+      for (int x = 0; x < width; x++) {
+        final int index = (row + x * step) * count;
+        out[y * width + x] = index >= raw.length ? 0 : (mode == 0 ? palette[raw[index] * 4] : luts[0][raw[index]]);
+      }
+    }
+    return out;
+  }
+
+  Uint8List run() {
+    final Uint8List raw = _unpacked();
+    final int count = samples.components;
+    final int width = (samples.width + step - 1) ~/ step;
+    final int height = (samples.height + step - 1) ~/ step;
+    final Uint8List out = Uint8List(width * height * 4);
+    final List<int>? key = colorKey != null && colorKey!.length >= count * 2 ? colorKey : null;
+    final Map<int, int> cache = <int, int>{};
+    final List<double> values = List<double>.filled(count, 0);
+    final int maxValue = (1 << (samples.bits == 16 ? 8 : samples.bits)) - 1;
+    for (int y = 0; y < height; y++) {
+      final int row = y * step * samples.width;
+      for (int x = 0; x < width; x++) {
+        final int index = (row + x * step) * count;
+        final int o = (y * width + x) * 4;
+        if (index + count > raw.length) {
+          out[o + 3] = 255;
+          continue;
+        }
+        switch (mode) {
+          case 0:
+            final int p = raw[index] * 4;
+            out[o] = palette[p];
+            out[o + 1] = palette[p + 1];
+            out[o + 2] = palette[p + 2];
+            out[o + 3] = palette[p + 3];
+            break;
+          case 1:
+            out[o] = luts[0][raw[index]];
+            out[o + 1] = luts[1][raw[index + 1]];
+            out[o + 2] = luts[2][raw[index + 2]];
+            out[o + 3] = 255;
+            break;
+          case 2:
+            final int rgb = UPdfColorSpace.cmykToRgb(luts[0][raw[index]] / 255, luts[1][raw[index + 1]] / 255, luts[2][raw[index + 2]] / 255, luts[3][raw[index + 3]] / 255);
+            out[o] = (rgb >> 16) & 0xFF;
+            out[o + 1] = (rgb >> 8) & 0xFF;
+            out[o + 2] = rgb & 0xFF;
+            out[o + 3] = 255;
+            break;
+          default:
+            int packed = 0;
+            for (int c = 0; c < count; c++) {
+              packed = packed * 256 + raw[index + c];
+              final double low = genericDecode.length >= c * 2 + 2 ? genericDecode[c * 2] : 0;
+              final double high = genericDecode.length >= c * 2 + 2 ? genericDecode[c * 2 + 1] : (genericIndexed ? maxValue.toDouble() : 1);
+              values[c] = low + raw[index + c] * (high - low) / maxValue;
+            }
+            final int argb = count <= 6 ? (cache[packed] ??= generic!(values).toARGB32()) : generic!(values).toARGB32();
+            if (cache.length > 65536) cache.clear();
+            out[o] = (argb >> 16) & 0xFF;
+            out[o + 1] = (argb >> 8) & 0xFF;
+            out[o + 2] = argb & 0xFF;
+            out[o + 3] = 255;
+        }
+        if (key != null) {
+          bool inside = true;
+          for (int c = 0; c < count && inside; c++) {
+            final int value = raw[index + c];
+            if (value < key[c * 2] || value > key[c * 2 + 1]) inside = false;
+          }
+          if (inside) out[o + 3] = 0;
+        }
+      }
+    }
+    return out;
   }
 }
 
@@ -4041,6 +4345,7 @@ class _UPdfState {
     this.font,
     this.fillShader,
     this.strokeShader,
+    this.softMask,
   });
 
   List<double> ctm;
@@ -4067,6 +4372,7 @@ class _UPdfState {
   int renderMode;
   Shader? fillShader;
   Shader? strokeShader;
+  _UPdfSoftMask? softMask;
 
   _UPdfState clone() => _UPdfState(
     ctm: List<double>.from(ctm),
@@ -4093,6 +4399,7 @@ class _UPdfState {
     renderMode: renderMode,
     fillShader: fillShader,
     strokeShader: strokeShader,
+    softMask: softMask,
   );
 
   static _UPdfState initial(List<double> ctm) => _UPdfState(
@@ -4190,6 +4497,24 @@ class UPdfPageRenderer {
   }
 }
 
+/// Internal: a soft mask (ExtGState /SMask): the mask group, how it is read and the CTM it was set under.
+class _UPdfSoftMask {
+  _UPdfSoftMask({required this.group, required this.luminosity, required this.backdrop, required this.ctm, required this.resources});
+
+  final UPdfStream group;
+
+  /// /S /Luminosity (mask = brightness of the group over the backdrop) or /Alpha (mask = its coverage).
+  final bool luminosity;
+
+  /// /BC, the color behind the group; black when absent.
+  final Color backdrop;
+  final List<double> ctm;
+  final UPdfDict? resources;
+
+  /// The group rendered once in device space, reused by every operation it masks.
+  ui.Picture? picture;
+}
+
 class _UPdfContentExecutor {
   _UPdfContentExecutor({required this.document, required this.canvas, required this.options, this.textOnly = false});
 
@@ -4200,6 +4525,7 @@ class _UPdfContentExecutor {
 
   final List<_UPdfState> _stack = <_UPdfState>[];
   final List<Object?> _operands = <Object?>[];
+  final Stopwatch _slice = Stopwatch()..start();
   final List<_UPdfGlyphRecord> _glyphs = <_UPdfGlyphRecord>[];
   final Map<String, UPdfFont> _fonts = <String, UPdfFont>{};
 
@@ -4242,11 +4568,23 @@ class _UPdfContentExecutor {
         truncated = true;
         return;
       }
+      // Heavy pages (millions of operators) would otherwise hold the UI thread for seconds: give the
+      // event loop a turn every few milliseconds so scrolling and animations keep their frames.
+      if ((_operations & 255) == 0 && _slice.elapsedMilliseconds > 6) {
+        await Future<void>.delayed(Duration.zero);
+        _slice.reset();
+      }
       UPdfSyntax.skipWhitespace(cursor);
       if (cursor.isEmpty) break;
       final int byte = cursor.peek;
       if (byte == 0x2F || byte == 0x5B || byte == 0x28 || byte == 0x3C || UPdfSyntax.isDigit(byte) || byte == 0x2B || byte == 0x2D || byte == 0x2E) {
-        _operands.add(UPdfSyntax.parseObject(cursor));
+        final int before = cursor.position;
+        try {
+          _operands.add(UPdfSyntax.parseObject(cursor));
+        } on Object {
+          truncated = true;
+          if (cursor.position == before) cursor.skip(1);
+        }
         if (_operands.length > 64) _operands.removeRange(0, _operands.length - 64);
         continue;
       }
@@ -4255,12 +4593,18 @@ class _UPdfContentExecutor {
         cursor.skip(1);
         continue;
       }
-      if (op == "BI") {
-        await _inlineImage(cursor, resources);
-        _operands.clear();
-        continue;
+      // A broken operator (bad font, image or operands) only loses itself, like Acrobat; the rest of the page still draws.
+      final int saveCount = canvas.getSaveCount();
+      try {
+        if (op == "BI") {
+          await _withSoftMask(() => _inlineImage(cursor, resources), depth);
+        } else {
+          await _apply(op, resources, depth);
+        }
+      } on Object {
+        truncated = true;
+        if (canvas.getSaveCount() > saveCount && op != "q") canvas.restoreToCount(saveCount);
       }
-      await _apply(op, resources, depth);
       _operands.clear();
     }
   }
@@ -4377,6 +4721,14 @@ class _UPdfContentExecutor {
   }
 
   Future<void> _apply(String op, UPdfDict? resources, int depth) async {
+    if (_state.softMask != null && _pendingClip == 0 && _paintOps.contains(op)) {
+      await _withSoftMask(() => _applyOp(op, resources, depth), depth);
+      return;
+    }
+    await _applyOp(op, resources, depth);
+  }
+
+  Future<void> _applyOp(String op, UPdfDict? resources, int depth) async {
     switch (op) {
       case "q":
         _stack.add(_state.clone());
@@ -4757,12 +5109,97 @@ class _UPdfContentExecutor {
     final Object? blend = await document.resolve(entry["BM"]);
     final String blendName = blend is UPdfName ? blend.value : (blend is List<Object?> && blend.isNotEmpty && blend.first is UPdfName ? (blend.first! as UPdfName).value : "");
     _state.blend = _blendFor(blendName);
+    if (entry.has("SMask")) {
+      final Object? mask = await document.resolve(entry["SMask"]);
+      _state.softMask = mask is UPdfDict ? await _softMaskOf(mask, resources) : null;
+    }
     final Object? fontEntry = await document.resolve(entry["Font"]);
     if (fontEntry is List<Object?> && fontEntry.length >= 2) {
       final Object? fontDict = await document.resolve(fontEntry[0]);
       final Object? size = await document.resolve(fontEntry[1]);
       if (fontDict is UPdfDict) _state.font = await UPdfFont.load(document, fontDict);
       if (size is num) _state.fontSize = size.toDouble();
+    }
+  }
+
+  Future<_UPdfSoftMask?> _softMaskOf(UPdfDict mask, UPdfDict? resources) async {
+    final Object? group = await document.resolve(mask["G"]);
+    if (group is! UPdfStream) return null;
+    final Object? subtype = await document.resolve(mask["S"]);
+    final bool luminosity = !(subtype is UPdfName && subtype.value == "Alpha");
+    Color backdrop = const Color(0xFF000000);
+    final Object? bc = await document.resolve(mask["BC"]);
+    if (bc is List<Object?> && bc.isNotEmpty) {
+      final List<double> values = <double>[];
+      for (final Object? value in bc) {
+        final Object? item = await document.resolve(value);
+        if (item is num) values.add(item.toDouble());
+      }
+      final Object? groupInfo = await document.resolve(group.dict["Group"]);
+      final UPdfColorSpace space = groupInfo is UPdfDict && groupInfo.has("CS")
+          ? await UPdfColorSpace.load(document, groupInfo["CS"], resources: resources)
+          : (values.length == 1 ? UPdfColorSpace.deviceGray : (values.length == 4 ? UPdfColorSpace.deviceCmyk : UPdfColorSpace.deviceRgb));
+      backdrop = space.color(values);
+    }
+    return _UPdfSoftMask(group: group, luminosity: luminosity, backdrop: backdrop, ctm: List<double>.from(_state.ctm), resources: resources);
+  }
+
+  /// Device-space picture of a soft mask group, rendered by a child executor on its own canvas.
+  Future<ui.Picture?> _maskPicture(_UPdfSoftMask mask, int depth) async {
+    final ui.Picture? cached = mask.picture;
+    if (cached != null) return cached;
+    final ui.PictureRecorder recorder = ui.PictureRecorder();
+    final Canvas maskCanvas = Canvas(recorder);
+    // Luminosity is read over an opaque backdrop, so the group's own transparency darkens the mask as it should.
+    if (mask.luminosity) maskCanvas.drawRect(const Rect.fromLTWH(-100000, -100000, 200000, 200000), Paint()..color = mask.backdrop.withValues(alpha: 1));
+    final _UPdfContentExecutor child = _UPdfContentExecutor(document: document, canvas: maskCanvas, options: options);
+    try {
+      await child.runForm(mask.group, mask.resources, mask.ctm, depth + 1);
+    } on Object {
+      truncated = true;
+    }
+    return mask.picture = recorder.endRecording();
+  }
+
+  /// Runs a form XObject on a fresh state whose CTM is [ctm] (used for soft mask groups).
+  Future<void> runForm(UPdfStream form, UPdfDict? resources, List<double> ctm, int depth) async {
+    _state = _UPdfState.initial(List<double>.from(ctm));
+    canvas.save();
+    canvas.transform(uPdfMatrix4(ctm));
+    await _runForm(form, resources, depth);
+    canvas.restore();
+  }
+
+  static const Set<String> _paintOps = <String>{"S", "s", "f", "F", "f*", "B", "B*", "b", "b*", "Tj", "TJ", "'", "\"", "Do", "sh"};
+
+  /// Paints through the current soft mask: the operation draws into a layer, the mask group (turned into
+  /// alpha) is composited over it with dstIn, and the layer goes onto the page.
+  Future<void> _withSoftMask(Future<void> Function() paint, int depth) async {
+    final _UPdfSoftMask? mask = _state.softMask;
+    if (mask == null || textOnly || _skipDrawing) {
+      await paint();
+      return;
+    }
+    final ui.Picture? picture = await _maskPicture(mask, depth);
+    _state.softMask = null;
+    canvas.saveLayer(null, Paint());
+    try {
+      await paint();
+    } finally {
+      _state.softMask = mask;
+      if (picture != null) {
+        final Paint maskPaint = Paint()..blendMode = BlendMode.dstIn;
+        if (mask.luminosity) {
+          maskPaint.colorFilter = const ColorFilter.matrix(<double>[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.2125, 0.7154, 0.0721, 0, 0]);
+        }
+        canvas.saveLayer(null, maskPaint);
+        canvas.save();
+        canvas.transform(uPdfMatrix4(uPdfInvert(_state.ctm)));
+        canvas.drawPicture(picture);
+        canvas.restore();
+        canvas.restore();
+      }
+      canvas.restore();
     }
   }
 
@@ -4840,7 +5277,7 @@ class _UPdfContentExecutor {
           if (glyph != null) {
             _drawGlyph(glyph, trm);
           } else if (text.isNotEmpty && text != " ") {
-            _drawFallbackGlyph(text, trm, font);
+            _drawFallbackGlyph(text, trm, font, width0);
           }
         }
       }
@@ -4861,12 +5298,17 @@ class _UPdfContentExecutor {
     canvas.restore();
   }
 
-  void _drawFallbackGlyph(String text, List<double> trm, UPdfFont font) {
+  /// Text in a font that is not embedded, drawn with a system font. Each glyph is squeezed or stretched
+  /// to the width the PDF gives it (as Acrobat does), so substituted text keeps the original layout.
+  void _drawFallbackGlyph(String text, List<double> trm, UPdfFont font, double width) {
     final ui.Paragraph? paragraph = UPdfFallbackText.paragraph(text, font, _state.fillColor.withValues(alpha: _state.fillColor.a * _state.fillAlpha));
     if (paragraph == null) return;
+    const double size = UPdfFallbackText.fontSize;
+    final double natural = paragraph.maxIntrinsicWidth / size;
+    final double stretch = natural > 0.05 && width > 0.05 && text.runes.length == 1 ? (width / natural).clamp(0.6, 1.4).toDouble() : 1;
     canvas.save();
     canvas.transform(uPdfMatrix4(trm));
-    canvas.transform(uPdfMatrix4(const <double>[1, 0, 0, -1, 0, 0]));
+    canvas.transform(uPdfMatrix4(<double>[stretch / size, 0, 0, -1 / size, 0, 0]));
     canvas.drawParagraph(paragraph, Offset(0, -paragraph.alphabeticBaseline));
     canvas.restore();
   }
@@ -4965,7 +5407,34 @@ class _UPdfContentExecutor {
       return;
     }
     if (type != "Form") return;
-    await _runForm(stream, resources, depth);
+    final Object? group = await document.resolve(stream.dict["Group"]);
+    final bool transparencyGroup = group is UPdfDict && (await document.resolve(group["S"])) is UPdfName && ((await document.resolve(group["S"]))! as UPdfName).value == "Transparency";
+    final double alpha = _state.fillAlpha;
+    final double strokeAlpha = _state.strokeAlpha;
+    final BlendMode blend = _state.blend;
+    if (!transparencyGroup || textOnly || (alpha >= 1 && blend == BlendMode.srcOver)) {
+      await _runForm(stream, resources, depth);
+      return;
+    }
+    // A transparency group is painted as one unit: its contents start from alpha 1 and normal blending,
+    // and the result is composited with the alpha and blend mode in force at Do (so a group at 15 %
+    // stays at 15 % even if it sets its own alpha to 1 inside).
+    canvas.saveLayer(null, Paint()
+      ..color = const Color(0xFF000000).withValues(alpha: alpha)
+      ..blendMode = blend);
+    _state
+      ..fillAlpha = 1
+      ..strokeAlpha = 1
+      ..blend = BlendMode.srcOver;
+    try {
+      await _runForm(stream, resources, depth);
+    } finally {
+      _state
+        ..fillAlpha = alpha
+        ..strokeAlpha = strokeAlpha
+        ..blend = blend;
+      canvas.restore();
+    }
   }
 
   Future<void> _runForm(UPdfStream stream, UPdfDict? resources, int depth) async {
@@ -5007,12 +5476,27 @@ class _UPdfContentExecutor {
   }
 
   Future<void> _drawImage(UPdfStream stream, UPdfDict? resources) async {
-    final ui.Image? image = await UPdfImages.decode(document, stream, resources: resources, fillColor: _state.fillColor);
-    if (image == null) return;
+    final bool isMask = (await document.resolve(stream.dict["ImageMask"] ?? stream.dict["IM"])) as bool? ?? false;
+    // Decoded images are shared between renders (zoom, scrolling back, thumbnails); a stencil mask depends on the fill color.
+    final String? key = stream.objectNumber > 0 ? "${document.fingerprint}#image${stream.objectNumber}.${stream.generation}@${document.revision}${isMask ? "|${_state.fillColor.toARGB32()}" : ""}" : null;
+    ui.Image? image = key == null ? null : UDocImageCache.instance.get(key)?.clone();
+    if (image == null) {
+      image = await UPdfImages.decode(document, stream, resources: resources, fillColor: _state.fillColor);
+      if (image == null) return;
+      if (key != null) UDocImageCache.instance.put(key, image.clone());
+    }
+    // An image blown up past 1.5 points per pixel keeps hard pixel edges (charts, QR codes, pixel art), as in
+    // Acrobat, unless the PDF asks for /Interpolate.
+    final List<double> ctm = _state.ctm;
+    final double scale = options.scale <= 0 ? 1 : options.scale;
+    final double pixelWidth = sqrt(ctm[0] * ctm[0] + ctm[1] * ctm[1]) / scale / image.width;
+    final double pixelHeight = sqrt(ctm[2] * ctm[2] + ctm[3] * ctm[3]) / scale / image.height;
+    final bool interpolate = (await document.resolve(stream.dict["Interpolate"] ?? stream.dict["I"])) as bool? ?? false;
+    final bool blocky = !interpolate && min(pixelWidth, pixelHeight) >= 1.5;
     canvas.save();
     canvas.transform(uPdfMatrix4(<double>[1 / image.width, 0, 0, -1 / image.height, 0, 1]));
     final Paint paint = Paint()
-      ..filterQuality = FilterQuality.medium
+      ..filterQuality = blocky ? FilterQuality.none : FilterQuality.medium
       ..isAntiAlias = true
       ..blendMode = _state.blend
       ..color = const Color(0xFF000000).withValues(alpha: _state.fillAlpha);
@@ -5924,6 +6408,9 @@ class UPdfController extends UDocController {
 
 /// Internal: text for pages without a text layer.
 abstract class UPdfFallbackText {
+  /// Layout size; glyphs are laid out large and scaled down, tiny font sizes get poor metrics on some engines.
+  static const double fontSize = 64;
+
   static final ULruCache<String, ui.Paragraph> _cache = ULruCache<String, ui.Paragraph>(maxBytes: 2 * 1024 * 1024, sizeOf: _size);
 
   static int _size(ui.Paragraph paragraph) => 512;
@@ -5946,17 +6433,17 @@ abstract class UPdfFallbackText {
       final ui.ParagraphBuilder builder = ui.ParagraphBuilder(
         ui.ParagraphStyle(
           fontFamily: _family(font.baseFont),
-          fontSize: 1,
+          fontSize: fontSize,
           fontWeight: bold ? FontWeight.w700 : FontWeight.w400,
           fontStyle: italic ? FontStyle.italic : FontStyle.normal,
           textDirection: TextDirection.ltr,
           maxLines: 1,
         ),
       );
-      builder.pushStyle(ui.TextStyle(color: color, fontSize: 1));
+      builder.pushStyle(ui.TextStyle(color: color, fontSize: fontSize));
       builder.addText(text);
       final ui.Paragraph paragraph = builder.build();
-      paragraph.layout(const ui.ParagraphConstraints(width: 1000));
+      paragraph.layout(const ui.ParagraphConstraints(width: fontSize * 1000));
       _cache.put(key, paragraph);
       return paragraph;
     } on Object {

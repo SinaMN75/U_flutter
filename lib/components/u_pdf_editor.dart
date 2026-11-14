@@ -20,6 +20,7 @@ class UPdfEditController extends ChangeNotifier {
   String _author = "";
   final List<int> _undoStack = <int>[];
   final Map<int, List<Offset>> _liveStrokes = <int, List<Offset>>{};
+  bool _suspended = false;
 
   /// Current tool.
   UPdfTool get tool => _tool;
@@ -53,6 +54,17 @@ class UPdfEditController extends ChangeNotifier {
 
   /// The underlying editable document.
   UPdfEdit? get edit => _edit;
+
+  /// True while the viewer scrolls or zooms with two fingers: the stroke in progress is dropped and new
+  /// strokes are ignored until it is false again.
+  bool get suspended => _suspended;
+
+  set suspended(bool value) {
+    if (_suspended == value) return;
+    _suspended = value;
+    if (value) _liveStrokes.clear();
+    notifyListeners();
+  }
 
   /// Points of the stroke being drawn on a page.
   List<Offset> liveStroke(int pageIndex) => _liveStrokes[pageIndex] ?? const <Offset>[];
@@ -122,6 +134,7 @@ class UPdfEditController extends ChangeNotifier {
 
   /// Starts a pen stroke.
   void beginStroke(int pageIndex, Offset devicePoint) {
+    if (_suspended) return;
     _liveStrokes[pageIndex] = <Offset>[devicePoint];
     notifyListeners();
   }

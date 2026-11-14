@@ -165,6 +165,8 @@ export "src/doc/u_doc_annotations.dart";
 export "src/doc/u_doc_draw.dart";
 export "src/doc/u_epub.dart";
 export "src/doc/u_jbig2.dart";
+export "src/doc/u_jpeg.dart";
+export "src/doc/u_jpx.dart";
 export "src/doc/u_markdown.dart";
 export "src/doc/u_pdf.dart";
 export "src/doc/u_pdf_edit.dart";

@@ -308,6 +308,8 @@ class UDocDrawController extends ChangeNotifier {
   bool _constrain = false;
   String? _selectedId;
   Duration _videoDuration = const Duration(seconds: 5);
+  bool _suspended = false;
+  final List<UDocDrawTool> _recent = <UDocDrawTool>[];
 
   UDocDrawTool get tool => _tool;
 
@@ -349,8 +351,26 @@ class UDocDrawController extends ChangeNotifier {
   /// How long a drawing stays on a video frame.
   Duration get videoDuration => _videoDuration;
 
+  /// True while the host scrolls or zooms with two fingers: layers drop the stroke in progress and ignore
+  /// drags until it is false again, so a second finger never leaves a stray line.
+  bool get suspended => _suspended;
+
+  set suspended(bool value) {
+    if (_suspended == value) return;
+    _suspended = value;
+    notifyListeners();
+  }
+
+  /// The member of [group] used last (the first one when none was used yet).
+  UDocDrawTool lastOf(List<UDocDrawTool> group) => _recent.firstWhere(group.contains, orElse: () => group.contains(_lastShape) ? _lastShape : group.first);
+
   set tool(UDocDrawTool value) {
     _tool = value;
+    if (value != UDocDrawTool.none) {
+      _recent
+        ..remove(value)
+        ..insert(0, value);
+    }
     if (shapeTools.contains(value)) _lastShape = value;
     if (value != UDocDrawTool.select) _selectedId = null;
     notifyListeners();
@@ -769,7 +789,14 @@ class _UDocShapeLayerState extends State<UDocShapeLayer> {
   }
 
   void _onTools() {
-    if (mounted) setState(() {});
+    if (!mounted) return;
+    if (_tools.suspended) {
+      _draft = null;
+      _start = null;
+      _drag = _UDocDragMode.none;
+      _dragOrigin = null;
+    }
+    setState(() {});
   }
 
   bool get _drawing => widget.enabled && _tools.isActive;
@@ -827,6 +854,7 @@ class _UDocShapeLayerState extends State<UDocShapeLayer> {
   // ───────── gestures ─────────
 
   void _onPanStart(DragStartDetails details) {
+    if (_tools.suspended) return;
     final Offset point = details.localPosition;
     final UDocDrawTool tool = _tools.tool;
     if (tool == UDocDrawTool.select) {
@@ -865,6 +893,7 @@ class _UDocShapeLayerState extends State<UDocShapeLayer> {
   }
 
   void _onPanUpdate(DragUpdateDetails details) {
+    if (_tools.suspended) return;
     final Offset point = details.localPosition;
     final UDocDrawTool tool = _tools.tool;
     if (tool == UDocDrawTool.select) {
@@ -1213,6 +1242,8 @@ class UDocDrawToolbar extends StatelessWidget {
     ],
     this.showVideoDuration = false,
     this.dark = false,
+    this.showHistory = true,
+    this.floating = false,
     super.key,
   });
 
@@ -1223,6 +1254,12 @@ class UDocDrawToolbar extends StatelessWidget {
   final List<UDocDrawTool> available;
   final bool showVideoDuration;
   final bool dark;
+
+  /// Undo, redo and done in the bar; false when the host shows them elsewhere (e.g. a phone's top bar).
+  final bool showHistory;
+
+  /// A rounded, raised dock that floats over the content instead of a flat strip.
+  final bool floating;
 
   static IconData iconOf(UDocDrawTool tool) {
     switch (tool) {
@@ -1297,241 +1334,234 @@ class UDocDrawToolbar extends StatelessWidget {
       final ColorScheme scheme = Theme.of(context).colorScheme;
       final Color foreground = dark ? const Color(0xFFFFFFFF) : scheme.onSurface;
       final Color accent = dark ? const Color(0xFF90CAF9) : scheme.primary;
-      Widget tool(UDocDrawTool value) {
-        final bool selected = tools.tool == value;
-        return Tooltip(
-          message: labelOf(value),
-          child: InkResponse(
-            onTap: () => tools.toggle(value),
-            radius: 22,
-            child: Container(
-              width: 38,
-              height: 38,
-              margin: const EdgeInsets.symmetric(horizontal: 1),
-              decoration: BoxDecoration(color: selected ? accent.withValues(alpha: 0.18) : null, borderRadius: BorderRadius.circular(10)),
-              child: Icon(iconOf(value), size: 20, color: selected ? accent : foreground),
-            ),
-          ),
-        );
-      }
-
-      final List<UDocDrawTool> shapes = available.where(UDocDrawController.shapeTools.contains).toList();
-      final List<Widget> toolButtons = <Widget>[];
-      for (final UDocDrawTool value in available) {
-        if (shapes.length > 1 && shapes.contains(value)) {
-          if (value == shapes.first) toolButtons.add(_shapesButton(context, shapes, foreground, accent));
-        } else {
-          toolButtons.add(tool(value));
-        }
-      }
-      return Row(
-        children: <Widget>[
-          Expanded(
-            child: ScrollConfiguration(
-              // Mouse users can drag the row when it does not fit.
-              behavior: ScrollConfiguration.of(context).copyWith(dragDevices: PointerDeviceKind.values.toSet(), scrollbars: false),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 6),
-                child: Row(
-                  children: <Widget>[
-                    _colorButton(context, U.s.color, tools.strokeColor, (Color color) => tools.strokeColor = color, foreground),
-                    _fillButton(context, foreground),
-                    _styleButton(context, foreground),
-                    _divider(foreground),
-                    ...toolButtons,
-                  ],
-                ),
-              ),
-            ),
-          ),
+      final List<Widget> buttons = <Widget>[
+        _styleButton(context, foreground),
+        _divider(foreground),
+        ..._toolButtons(foreground, accent),
+      ];
+      final List<Widget> history = <Widget>[
+        if (showHistory) ...<Widget>[
           _divider(foreground),
-          IconButton(
-            tooltip: U.s.undo,
-            onPressed: onUndo,
-            icon: Icon(Icons.undo_rounded, color: onUndo == null ? foreground.withValues(alpha: 0.35) : foreground),
-          ),
-          IconButton(
-            tooltip: U.s.redo,
-            onPressed: onRedo,
-            icon: Icon(Icons.redo_rounded, color: onRedo == null ? foreground.withValues(alpha: 0.35) : foreground),
-          ),
+          UDocToolButton(icon: Icons.undo_rounded, label: U.s.undo, onTap: onUndo, foreground: foreground, accent: accent),
+          UDocToolButton(icon: Icons.redo_rounded, label: U.s.redo, onTap: onRedo, foreground: foreground, accent: accent),
           if (onDone != null)
             Padding(
-              padding: const EdgeInsetsDirectional.only(start: 2, end: 8),
+              padding: const EdgeInsetsDirectional.only(start: 4),
               child: IconButton.filledTonal(tooltip: U.s.done, onPressed: onDone, icon: const Icon(Icons.check_rounded)),
             ),
         ],
+      ];
+      // Grouped tools fit a phone; a very narrow host still scrolls instead of overflowing.
+      final Widget row = ScrollConfiguration(
+        behavior: ScrollConfiguration.of(context).copyWith(dragDevices: PointerDeviceKind.values.toSet(), scrollbars: false),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          padding: EdgeInsets.symmetric(horizontal: floating ? 4 : 6),
+          child: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[...buttons, ...history]),
+        ),
+      );
+      if (!floating) return Align(alignment: AlignmentDirectional.centerStart, child: row);
+      return Material(
+        color: dark ? const Color(0xE6202124) : scheme.surfaceContainerHigh,
+        elevation: 6,
+        shadowColor: const Color(0x66000000),
+        shape: const StadiumBorder(),
+        child: Padding(padding: const EdgeInsets.symmetric(vertical: 4), child: row),
       );
     },
   );
 
-  /// One button for every shape: tap selects the last shape, tap again (or long-press) lists them all.
-  Widget _shapesButton(BuildContext context, List<UDocDrawTool> shapes, Color foreground, Color accent) {
-    final UDocDrawTool current = shapes.contains(tools.tool) ? tools.tool : (shapes.contains(tools.lastShape) ? tools.lastShape : shapes.first);
-    final bool selected = shapes.contains(tools.tool);
-    return MenuAnchor(
-      menuChildren: shapes
-          .map(
-            (UDocDrawTool value) => MenuItemButton(
-              leadingIcon: Icon(iconOf(value), color: value == tools.tool ? accent : null),
-              onPressed: () => tools.tool = value,
-              child: Text(labelOf(value)),
-            ),
-          )
-          .toList(),
-      builder: (BuildContext context, MenuController controller, Widget? child) => Tooltip(
-        message: "${labelOf(current)} · ${U.s.shapes}",
-        child: InkResponse(
-          radius: 22,
-          onTap: () {
-            if (selected) {
-              controller.isOpen ? controller.close() : controller.open();
-            } else {
-              tools.tool = current;
-            }
-          },
-          onLongPress: controller.open,
-          onSecondaryTap: controller.open,
-          child: Container(
-            width: 44,
-            height: 38,
-            margin: const EdgeInsets.symmetric(horizontal: 1),
-            decoration: BoxDecoration(color: selected ? accent.withValues(alpha: 0.18) : null, borderRadius: BorderRadius.circular(10)),
-            child: Stack(
-              alignment: Alignment.center,
-              children: <Widget>[
-                Icon(iconOf(current), size: 20, color: selected ? accent : foreground),
-                PositionedDirectional(end: 0, bottom: 2, child: Icon(Icons.arrow_drop_down_rounded, size: 16, color: selected ? accent : foreground.withValues(alpha: 0.7))),
-              ],
-            ),
+  /// Related tools share one button: markers, shapes and text each show their current member.
+  static const List<List<UDocDrawTool>> groups = <List<UDocDrawTool>>[
+    <UDocDrawTool>[UDocDrawTool.highlighter, UDocDrawTool.areaHighlight],
+    UDocDrawController.shapeTools,
+    <UDocDrawTool>[UDocDrawTool.textBox, UDocDrawTool.stickyNote],
+  ];
+
+  List<Widget> _toolButtons(Color foreground, Color accent) {
+    final List<Widget> out = <Widget>[];
+    final Set<int> placed = <int>{};
+    for (final UDocDrawTool value in available) {
+      final int group = groups.indexWhere((List<UDocDrawTool> members) => members.contains(value));
+      final List<UDocDrawTool> members = group < 0 ? const <UDocDrawTool>[] : groups[group].where(available.contains).toList();
+      if (members.length > 1) {
+        if (!placed.add(group)) continue;
+        final UDocDrawTool current = members.contains(tools.tool) ? tools.tool : tools.lastOf(members);
+        out.add(
+          UDocToolGroupButton<UDocDrawTool>(
+            items: members.map((UDocDrawTool tool) => (tool, iconOf(tool), labelOf(tool))).toList(),
+            current: current,
+            selected: members.contains(tools.tool),
+            label: group == 1 ? U.s.shapes : (group == 2 ? U.s.text : U.s.highlighterPen),
+            onSelected: (UDocDrawTool tool) => tools.tool = tool,
+            onDeselect: () => tools.tool = UDocDrawTool.none,
+            foreground: foreground,
+            accent: accent,
           ),
-        ),
-      ),
-    );
+        );
+        continue;
+      }
+      out.add(UDocToolButton(icon: iconOf(value), label: labelOf(value), selected: tools.tool == value, onTap: () => tools.toggle(value), foreground: foreground, accent: accent));
+    }
+    return out;
   }
 
-  Widget _divider(Color color) => Container(width: 1, height: 26, margin: const EdgeInsets.symmetric(horizontal: 6), color: color.withValues(alpha: 0.2));
+  Widget _divider(Color color) => Container(width: 1, height: 26, margin: const EdgeInsets.symmetric(horizontal: 4), color: color.withValues(alpha: 0.18));
 
-  Widget _colorButton(BuildContext context, String tooltip, Color color, ValueChanged<Color> onSelected, Color foreground) => MenuAnchor(
-    menuChildren: <Widget>[
-      Padding(
-        padding: const EdgeInsets.all(8),
-        child: SizedBox(
-          width: 220,
-          child: Wrap(
-            spacing: 4,
-            runSpacing: 4,
-            children: <Color>[...UDocPalette.colors, const Color(0xFFFFFFFF), const Color(0xFF795548), const Color(0xFF009688)]
-                .map(
-                  (Color option) => InkResponse(
-                    onTap: () => onSelected(option),
-                    child: Container(
-                      width: 28,
-                      height: 28,
-                      decoration: BoxDecoration(
-                        color: option,
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: option.toARGB32() == color.toARGB32() ? Theme.of(context).colorScheme.primary : const Color(0x33000000),
-                          width: option.toARGB32() == color.toARGB32() ? 3 : 1,
-                        ),
-                      ),
-                    ),
-                  ),
-                )
-                .toList(),
-          ),
-        ),
+  /// One button for color, fill, thickness and the rest: a dot of the current color. Phones get a bottom sheet,
+  /// wider screens a menu.
+  Widget _styleButton(BuildContext context, Color foreground) {
+    final Widget dot = Container(
+      width: 26,
+      height: 26,
+      decoration: BoxDecoration(
+        color: tools.strokeColor,
+        shape: BoxShape.circle,
+        border: Border.all(color: foreground.withValues(alpha: 0.35), width: 2),
       ),
-    ],
-    builder: (BuildContext context, MenuController controller, Widget? child) => IconButton(
-      tooltip: tooltip,
-      onPressed: () => controller.isOpen ? controller.close() : controller.open(),
-      icon: Container(
-        width: 22,
-        height: 22,
-        decoration: BoxDecoration(
-          color: color,
-          shape: BoxShape.circle,
-          border: Border.all(color: foreground.withValues(alpha: 0.5), width: 1.5),
-        ),
-      ),
-    ),
-  );
-
-  Widget _fillButton(BuildContext context, Color foreground) {
-    final Color? fill = tools.fillColor;
-    return MenuAnchor(
-      menuChildren: <Widget>[
-        MenuItemButton(leadingIcon: const Icon(Icons.format_color_reset_rounded), onPressed: () => tools.fillColor = null, child: Text(U.s.noFill)),
-        MenuItemButton(leadingIcon: const Icon(Icons.opacity_rounded), onPressed: () => tools.fillColor = tools.strokeColor.withValues(alpha: 0.25), child: Text(U.s.lightFill)),
-        MenuItemButton(leadingIcon: const Icon(Icons.format_color_fill_rounded), onPressed: () => tools.fillColor = tools.strokeColor, child: Text(U.s.solidFill)),
-        MenuItemButton(leadingIcon: const Icon(Icons.crop_din_rounded), onPressed: () => tools.fillColor = const Color(0xFFFFFFFF), child: Text(U.s.whiteFill)),
-      ],
-      builder: (BuildContext context, MenuController controller, Widget? child) => IconButton(
-        tooltip: U.s.fill,
-        onPressed: () => controller.isOpen ? controller.close() : controller.open(),
-        icon: fill == null
-            ? Icon(Icons.format_color_reset_rounded, color: foreground)
-            : Container(
-                width: 22,
-                height: 22,
-                decoration: BoxDecoration(
-                  color: fill,
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(color: foreground.withValues(alpha: 0.5), width: 1.5),
+      child: tools.fillColor == null
+          ? null
+          : Center(
+              child: Container(
+                width: 10,
+                height: 10,
+                decoration: BoxDecoration(color: tools.fillColor, borderRadius: BorderRadius.circular(3), border: Border.all(color: const Color(0xCCFFFFFF))),
+              ),
+            ),
+    );
+    final bool sheet = MediaQuery.sizeOf(context).width < 600;
+    if (sheet) {
+      return Tooltip(
+        message: U.s.color,
+        child: InkResponse(
+          radius: 24,
+          onTap: () => unawaited(
+            showModalBottomSheet<void>(
+              context: context,
+              showDragHandle: true,
+              isScrollControlled: true,
+              builder: (BuildContext context) => SafeArea(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+                  child: UDocDrawStylePanel(tools: tools, showVideoDuration: showVideoDuration),
                 ),
               ),
+            ),
+          ),
+          child: SizedBox(width: 44, height: 44, child: Center(child: dot)),
+        ),
+      );
+    }
+    return MenuAnchor(
+      menuChildren: <Widget>[
+        SizedBox(
+          width: 300,
+          child: Padding(padding: const EdgeInsets.all(14), child: UDocDrawStylePanel(tools: tools, showVideoDuration: showVideoDuration)),
+        ),
+      ],
+      builder: (BuildContext context, MenuController controller, Widget? child) => Tooltip(
+        message: U.s.color,
+        child: InkResponse(
+          radius: 24,
+          onTap: () => controller.isOpen ? controller.close() : controller.open(),
+          child: SizedBox(width: 44, height: 44, child: Center(child: dot)),
+        ),
       ),
     );
   }
+}
 
-  Widget _styleButton(BuildContext context, Color foreground) => MenuAnchor(
-    menuChildren: <Widget>[
-      SizedBox(
-        width: 280,
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: AnimatedBuilder(
-            animation: tools,
-            builder: (BuildContext context, Widget? child) => Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                _slider(U.s.thickness, tools.strokeWidth, 0.5, 24, (double value) => tools.strokeWidth = value),
-                _slider(U.s.opacity, tools.opacity, 0.1, 1, (double value) => tools.opacity = value, percent: true),
-                _slider(U.s.fontSize, tools.fontSize, 8, 72, (double value) => tools.fontSize = value),
-                SwitchListTile(dense: true, contentPadding: EdgeInsets.zero, value: tools.dashed, title: Text(U.s.dashed), onChanged: (bool value) => tools.dashed = value),
-                SwitchListTile(dense: true, contentPadding: EdgeInsets.zero, value: tools.bold, title: Text(U.s.bold), onChanged: (bool value) => tools.bold = value),
-                SwitchListTile(dense: true, contentPadding: EdgeInsets.zero, value: tools.constrain, title: Text(U.s.keepProportions), onChanged: (bool value) => tools.constrain = value),
-                if (showVideoDuration) ...<Widget>[
-                  const SizedBox(height: 4),
-                  Text(U.s.showFor, style: Theme.of(context).textTheme.labelLarge),
-                  Wrap(
-                    spacing: 6,
-                    children: <int>[2, 5, 10, 30, 0]
-                        .map(
-                          (int seconds) => ChoiceChip(
-                            label: Text(seconds == 0 ? "∞" : "${seconds}s"),
-                            selected: tools.videoDuration.inSeconds == seconds,
-                            onSelected: (bool _) => tools.videoDuration = Duration(seconds: seconds),
-                          ),
-                        )
-                        .toList(),
+/// Color, fill, thickness, opacity, font size and line options of a [UDocDrawController].
+class UDocDrawStylePanel extends StatelessWidget {
+  const UDocDrawStylePanel({required this.tools, this.showVideoDuration = false, super.key});
+
+  final UDocDrawController tools;
+
+  /// Shows how long a drawing stays on a video frame.
+  final bool showVideoDuration;
+
+  static const List<Color> colors = <Color>[...UDocPalette.colors, Color(0xFFFFFFFF), Color(0xFF795548), Color(0xFF009688)];
+
+  @override
+  Widget build(BuildContext context) => AnimatedBuilder(
+    animation: tools,
+    builder: (BuildContext context, Widget? child) {
+      final ColorScheme scheme = Theme.of(context).colorScheme;
+      final TextStyle? title = Theme.of(context).textTheme.labelLarge;
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Text(U.s.color, style: title),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: colors.map((Color option) {
+              final bool selected = option.toARGB32() == tools.strokeColor.toARGB32();
+              return Semantics(
+                button: true,
+                selected: selected,
+                child: InkResponse(
+                  onTap: () => tools.strokeColor = option,
+                  radius: 22,
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 150),
+                    width: 36,
+                    height: 36,
+                    decoration: BoxDecoration(
+                      color: option,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: selected ? scheme.primary : const Color(0x33000000), width: selected ? 3 : 1),
+                    ),
+                    child: selected ? Icon(Icons.check_rounded, size: 18, color: option.computeLuminance() > 0.6 ? const Color(0xFF000000) : const Color(0xFFFFFFFF)) : null,
                   ),
-                ],
-              ],
-            ),
+                ),
+              );
+            }).toList(),
           ),
-        ),
-      ),
-    ],
-    builder: (BuildContext context, MenuController controller, Widget? child) => IconButton(
-      tooltip: U.s.settings,
-      onPressed: () => controller.isOpen ? controller.close() : controller.open(),
-      icon: Icon(Icons.line_weight_rounded, color: foreground),
-    ),
+          const SizedBox(height: 16),
+          Text(U.s.fill, style: title),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 6,
+            runSpacing: 6,
+            children: <(Color?, IconData, String)>[
+              (null, Icons.format_color_reset_rounded, U.s.noFill),
+              (tools.strokeColor.withValues(alpha: 0.25), Icons.opacity_rounded, U.s.lightFill),
+              (tools.strokeColor, Icons.format_color_fill_rounded, U.s.solidFill),
+              (const Color(0xFFFFFFFF), Icons.crop_din_rounded, U.s.whiteFill),
+            ].map(((Color?, IconData, String) option) {
+              final bool selected = option.$1?.toARGB32() == tools.fillColor?.toARGB32();
+              return ChoiceChip(avatar: Icon(option.$2, size: 18), label: Text(option.$3), selected: selected, showCheckmark: false, onSelected: (bool _) => tools.fillColor = option.$1);
+            }).toList(),
+          ),
+          const SizedBox(height: 12),
+          _slider(U.s.thickness, tools.strokeWidth, 0.5, 24, (double value) => tools.strokeWidth = value),
+          _slider(U.s.opacity, tools.opacity, 0.1, 1, (double value) => tools.opacity = value, percent: true),
+          _slider(U.s.fontSize, tools.fontSize, 8, 72, (double value) => tools.fontSize = value),
+          SwitchListTile(dense: true, contentPadding: EdgeInsets.zero, value: tools.dashed, title: Text(U.s.dashed), onChanged: (bool value) => tools.dashed = value),
+          SwitchListTile(dense: true, contentPadding: EdgeInsets.zero, value: tools.bold, title: Text(U.s.bold), onChanged: (bool value) => tools.bold = value),
+          SwitchListTile(dense: true, contentPadding: EdgeInsets.zero, value: tools.constrain, title: Text(U.s.keepProportions), onChanged: (bool value) => tools.constrain = value),
+          if (showVideoDuration) ...<Widget>[
+            const SizedBox(height: 4),
+            Text(U.s.showFor, style: title),
+            Wrap(
+              spacing: 6,
+              children: <int>[2, 5, 10, 30, 0]
+                  .map(
+                    (int seconds) => ChoiceChip(
+                      label: Text(seconds == 0 ? "∞" : "${seconds}s"),
+                      selected: tools.videoDuration.inSeconds == seconds,
+                      onSelected: (bool _) => tools.videoDuration = Duration(seconds: seconds),
+                    ),
+                  )
+                  .toList(),
+            ),
+          ],
+        ],
+      );
+    },
   );
 
   Widget _slider(String label, double value, double min, double max, ValueChanged<double> onChanged, {bool percent = false}) => Column(
@@ -1547,4 +1577,143 @@ class UDocDrawToolbar extends StatelessWidget {
       Slider(value: value.clamp(min, max), min: min, max: max, onChanged: onChanged),
     ],
   );
+}
+
+/// A square-ish tool button that fills with the accent color when [selected]; [grouped] adds a small
+/// corner mark meaning "more tools behind this one".
+class UDocToolButton extends StatelessWidget {
+  const UDocToolButton({required this.icon, required this.label, this.selected = false, this.grouped = false, this.onTap, this.onLongPress, this.foreground, this.accent, this.size = 44, super.key});
+
+  final IconData icon;
+  final String label;
+  final bool selected;
+  final bool grouped;
+  final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
+  final Color? foreground;
+  final Color? accent;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme scheme = Theme.of(context).colorScheme;
+    final Color fg = foreground ?? scheme.onSurface;
+    final Color ac = accent ?? scheme.primary;
+    final Color color = onTap == null ? fg.withValues(alpha: 0.35) : (selected ? ac : fg);
+    return Tooltip(
+      message: label,
+      child: Semantics(
+        button: true,
+        selected: selected,
+        label: label,
+        child: InkResponse(
+          onTap: onTap,
+          onLongPress: onLongPress,
+          onSecondaryTap: onLongPress,
+          radius: size / 2,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 160),
+            width: size,
+            height: size,
+            margin: const EdgeInsets.symmetric(horizontal: 1),
+            decoration: BoxDecoration(color: selected ? ac.withValues(alpha: 0.16) : null, borderRadius: BorderRadius.circular(size * 0.32)),
+            child: Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
+                Icon(icon, size: 22, color: color),
+                if (grouped)
+                  PositionedDirectional(
+                    end: 6,
+                    bottom: 6,
+                    child: CustomPaint(size: const Size(5, 5), painter: _UDocCornerPainter(color.withValues(alpha: 0.75), rtl: Directionality.of(context) == TextDirection.rtl)),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _UDocCornerPainter extends CustomPainter {
+  const _UDocCornerPainter(this.color, {required this.rtl});
+
+  final Color color;
+  final bool rtl;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final Path path = Path()
+      ..moveTo(rtl ? 0 : size.width, 0)
+      ..lineTo(rtl ? 0 : size.width, size.height)
+      ..lineTo(rtl ? size.width : 0, size.height)
+      ..close();
+    canvas.drawPath(path, Paint()..color = color);
+  }
+
+  @override
+  bool shouldRepaint(_UDocCornerPainter oldDelegate) => oldDelegate.color != color || oldDelegate.rtl != rtl;
+}
+
+/// One button for a group of related tools: it shows [current]; a tap picks it, a tap while selected or a
+/// long press lists every member.
+class UDocToolGroupButton<T> extends StatelessWidget {
+  const UDocToolGroupButton({
+    required this.items,
+    required this.current,
+    required this.selected,
+    required this.label,
+    required this.onSelected,
+    this.onDeselect,
+    this.foreground,
+    this.accent,
+    super.key,
+  });
+
+  /// (value, icon, label) of every member.
+  final List<(T, IconData, String)> items;
+  final T current;
+  final bool selected;
+
+  /// Name of the group, shown in the tooltip.
+  final String label;
+  final ValueChanged<T> onSelected;
+  final VoidCallback? onDeselect;
+  final Color? foreground;
+  final Color? accent;
+
+  @override
+  Widget build(BuildContext context) {
+    final (T, IconData, String) shown = items.firstWhere(((T, IconData, String) item) => item.$1 == current, orElse: () => items.first);
+    return MenuAnchor(
+      menuChildren: items
+          .map(
+            ((T, IconData, String) item) => MenuItemButton(
+              leadingIcon: Icon(item.$2, color: selected && item.$1 == current ? (accent ?? Theme.of(context).colorScheme.primary) : null),
+              onPressed: () => onSelected(item.$1),
+              child: Text(item.$3),
+            ),
+          )
+          .toList(),
+      builder: (BuildContext context, MenuController controller, Widget? child) => UDocToolButton(
+        icon: shown.$2,
+        label: "${shown.$3} · $label",
+        selected: selected,
+        grouped: true,
+        foreground: foreground,
+        accent: accent,
+        onTap: () {
+          if (!selected) {
+            onSelected(shown.$1);
+          } else if (controller.isOpen) {
+            controller.close();
+          } else {
+            controller.open();
+          }
+        },
+        onLongPress: controller.open,
+      ),
+    );
+  }
 }

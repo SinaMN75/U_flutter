@@ -1226,12 +1226,20 @@ class UEpubReaderState extends State<UEpubReader> {
             ),
           ),
         if (widget.showToolbar && _chromeVisible) Positioned(left: 0, right: 0, top: 0, child: _buildToolbar(value)),
-        if (widget.showBottomBar && _chromeVisible && value.isReady)
+        if (widget.showBottomBar && _chromeVisible && value.isReady && !_phoneDraw)
           Positioned(
             left: 0,
             right: 0,
             bottom: 0,
             child: AnimatedBuilder(animation: _scroll, builder: (BuildContext context, Widget? child) => _buildBottomBar(value)),
+          ),
+        // On a phone the drawing tools float at the bottom; done, undo and redo sit in the top bar.
+        if (_phoneDraw)
+          Positioned(
+            left: 12,
+            right: 12,
+            bottom: 12 + MediaQuery.paddingOf(context).bottom,
+            child: Center(child: UDocDrawToolbar(tools: _draw, showHistory: false, floating: true)),
           ),
         if (_activeSelection.isNotEmpty) _buildSelectionMenu(),
         if (_activeMarkup != null && _activeSelection.isEmpty) _buildMarkupMenu(_activeMarkup!),
@@ -1560,6 +1568,8 @@ class UEpubReaderState extends State<UEpubReader> {
     ),
   );
 
+  bool get _phoneDraw => _drawOpen && _totalWidth > 0 && _totalWidth < 600;
+
   Widget _buildToolbar(UDocValue value) {
     final bool compact = _totalWidth < 520;
     final bool bookmarked = widget.enableMarkup && _currentBookmarks.isNotEmpty;
@@ -1571,6 +1581,22 @@ class UEpubReaderState extends State<UEpubReader> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
+            if (_phoneDraw)
+              SizedBox(
+                height: 56,
+                child: Row(
+                  children: <Widget>[
+                    const SizedBox(width: 8),
+                    IconButton.filledTonal(tooltip: U.s.done, icon: const Icon(Icons.check_rounded), onPressed: () => toggleDrawing(false)),
+                    const SizedBox(width: 8),
+                    Expanded(child: UTextTitleSmall(U.s.draw, maxLines: 1, overflow: TextOverflow.ellipsis)),
+                    IconButton(icon: const Icon(Icons.undo_rounded), tooltip: U.s.undo, onPressed: _markup.canUndo ? _markup.undo : null),
+                    IconButton(icon: const Icon(Icons.redo_rounded), tooltip: U.s.redo, onPressed: _markup.canRedo ? _markup.redo : null),
+                    const SizedBox(width: 4),
+                  ],
+                ),
+              )
+            else
             SizedBox(
               height: 56,
               child: Row(
@@ -1621,7 +1647,7 @@ class UEpubReaderState extends State<UEpubReader> {
                 ],
               ),
             ),
-            if (_drawOpen)
+            if (_drawOpen && !_phoneDraw)
               SizedBox(
                 height: 52,
                 child: UDocDrawToolbar(

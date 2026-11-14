@@ -2698,7 +2698,10 @@ class UPdfDocument {
     while (window <= uDocMaxAllocation) {
       try {
         final UDocCursor cursor = await _window(offset, window);
-        return UPdfSyntax.parseObject(cursor);
+        final Object? value = UPdfSyntax.parseObject(cursor);
+        UPdfSyntax.skipWhitespace(cursor);
+        if (cursor.isEmpty && offset + window < source.length) throw const UDocParseException("Object crosses the read window");
+        return value;
       } on UDocParseException {
         if (offset + window >= source.length) return null;
         window *= 4;
@@ -2726,6 +2729,9 @@ class UPdfDocument {
         final int actualNumber = expectedNumber >= 0 ? expectedNumber : number.toInt();
         final Object? value = UPdfSyntax.parseObject(cursor);
         UPdfSyntax.skipWhitespace(cursor);
+        // The parser is lenient and returns what it has at the end of the bytes, so an object that runs past
+        // the window (an InDesign /PieceInfo can be many KB) would silently lose its later keys (/Resources…).
+        if (cursor.isEmpty && take < available) throw const UDocParseException("Object crosses the read window");
         if (value is UPdfDict && cursor.matches(const <int>[0x73, 0x74, 0x72, 0x65, 0x61, 0x6D])) {
           cursor.skip(6);
           if (!cursor.isEmpty && cursor.peek == UPdfSyntax.carriageReturn) cursor.skip(1);
@@ -2958,6 +2964,18 @@ extension UPdfDocumentPages on UPdfDocument {
   }
 
   Future<UPdfPage> _buildPage(int index, UPdfRef? ref, UPdfDict dict, Object? resources, Object? mediaBox, Object? cropBox, Object? rotate) async {
+    // Inheritable attributes still missing (a page reached through the flat fallback, or a tree whose
+    // counts are wrong) come from the /Parent chain, as the spec says.
+    Object? parent = await resolve(dict["Parent"]);
+    int depth = 0;
+    while (parent is UPdfDict && depth < uDocMaxDepth && (resources == null || mediaBox == null || cropBox == null || rotate == null)) {
+      resources ??= parent["Resources"];
+      mediaBox ??= parent["MediaBox"];
+      cropBox ??= parent["CropBox"];
+      rotate ??= parent["Rotate"];
+      parent = await resolve(parent["Parent"]);
+      depth++;
+    }
     final Object? resolvedResources = await resolve(resources);
     final Object? resolvedMedia = await resolve(mediaBox);
     final Object? resolvedCrop = await resolve(cropBox);
