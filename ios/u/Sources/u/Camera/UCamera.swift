@@ -167,6 +167,8 @@ public final class UCameraSession: NSObject {
     private var textureId: Int64 = -1
     private var latestBuffer: CVPixelBuffer?
     private let bufferLock = NSLock()
+    private var sentPreviewWidth = 0
+    private var sentPreviewHeight = 0
 
     private var streamingFrames = false
     private var frameInterval: TimeInterval = 0.08
@@ -873,6 +875,13 @@ extension UCameraSession: AVCaptureVideoDataOutputSampleBufferDelegate {
         latestBuffer = buffer
         bufferLock.unlock()
         if textureId >= 0 { registry.textureFrameAvailable(textureId) }
+        let pixelWidth = CVPixelBufferGetWidth(buffer)
+        let pixelHeight = CVPixelBufferGetHeight(buffer)
+        if pixelWidth != sentPreviewWidth || pixelHeight != sentPreviewHeight {
+            sentPreviewWidth = pixelWidth
+            sentPreviewHeight = pixelHeight
+            send(["event": "previewSize", "width": pixelWidth, "height": pixelHeight])
+        }
 
         guard streamingFrames else { return }
         let now = Date().timeIntervalSince1970

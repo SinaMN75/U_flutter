@@ -64,12 +64,12 @@ class _UProcessViewState extends State<UProcessView> {
 
       return UScaffold(
         padding: const EdgeInsets.symmetric(horizontal: 12),
-        appBar: AppBar(title: Text(step.title)),
+        appBar: AppBar(title: Text(step.title, maxLines: 1, overflow: TextOverflow.ellipsis)),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: hasFields || hasMessageBox
             ? UButton(
                 width: MediaQuery.sizeOf(context).width,
-                title: hasFields ? U.s.submit : U.s.confirm,
+                title: hasFields ? U.s.submit : U.s.gotIt,
                 onTap: hasFields ? c.send : c.dismiss,
               ).pSymmetric(horizontal: 20)
             : null,

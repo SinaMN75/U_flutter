@@ -52,6 +52,9 @@ class _UProcessTextFieldState extends State<UProcessTextField> {
         validator: _requiredValidator,
         controller: _dateController,
         jalali: true,
+        jalaliType: UJalaliDatePickerType.classic,
+        startYear: 1300,
+        endYear: UJalali.now().year,
         onChange: (DateTime d, UJalali j) {
           _dateController.text = j.formatCompactDate();
           _setValue(d.toIso8601String());

@@ -270,7 +270,7 @@ class _UPlateFieldState extends State<UPlateField> {
           height: 48,
           color: _isReadOnly ? _scheme.surfaceContainerHighest : null,
           radius: 8,
-          border: Border.all(color: letter.isEmpty ? _scheme.onSurfaceVariant : _scheme.onSurface, width: 1.5),
+          border: Border.all(color: letter.isEmpty ? _scheme.onSurfaceVariant : _scheme.onSurface),
           child: Center(
             child: Text(
               letter.isEmpty ? U.s.letter : letter,
@@ -314,7 +314,7 @@ class _UPlateFieldState extends State<UPlateField> {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(width: 2, color: _scheme.primary),
+        borderSide: BorderSide(color: _scheme.primary),
       ),
       contentPadding: const EdgeInsets.symmetric(),
       filled: readOnly,

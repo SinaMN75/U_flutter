@@ -212,34 +212,32 @@ class _UProcessVisualAuthFieldState extends State<UProcessVisualAuthField> with 
     final ColorScheme scheme = Theme.of(context).colorScheme;
     return Column(
       children: <Widget>[
-        SizedBox(
-          height: 240,
-          width: 240,
-          child: Stack(
-            alignment: Alignment.center,
-            children: <Widget>[
-              SizedBox(
-                height: 240,
-                width: 240,
-                child: AnimatedBuilder(
-                  animation: _progressAnimation,
-                  builder: (BuildContext context, Widget? child) => CircularProgressIndicator(
-                    value: _isRecording ? _progressAnimation.value : 0,
-                    strokeWidth: 6,
-                    color: scheme.primary,
-                    backgroundColor: scheme.surfaceContainerHighest,
-                  ),
+        UColumn(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: SizedBox(
+                width: 220,
+                height: 293,
+                child: _buildMediaPreview(),
+              ),
+            ),
+            const SizedBox(height: 10),
+            SizedBox(
+              width: 220,
+              child: AnimatedBuilder(
+                animation: _progressAnimation,
+                builder: (BuildContext context, Widget? child) => LinearProgressIndicator(
+                  value: _isRecording ? _progressAnimation.value : 0,
+                  minHeight: 4,
+                  borderRadius: BorderRadius.circular(4),
+                  color: scheme.primary,
+                  backgroundColor: scheme.surfaceContainerHighest,
                 ),
               ),
-              ClipOval(
-                child: SizedBox(
-                  width: 220,
-                  height: 220,
-                  child: _buildMediaPreview(),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
         const SizedBox(height: 16),
         UTextBodyMedium(widget.field.text1 ?? "", textAlign: TextAlign.center).pSymmetric(horizontal: 24),

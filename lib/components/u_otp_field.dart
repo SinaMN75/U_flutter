@@ -393,7 +393,7 @@ class _UOtpFieldState extends State<UOtpField> with TickerProviderStateMixin {
       decoration: BoxDecoration(
         color: state == UOtpCellState.active ? widget.focusedFillColor ?? widget.fillColor : widget.fillColor,
         borderRadius: BorderRadius.circular(widget.borderRadius),
-        border: Border.all(color: _borderColor(state, scheme), width: state == UOtpCellState.active ? widget.borderWidth + 1 : widget.borderWidth),
+        border: Border.all(color: _borderColor(state, scheme), width: widget.borderWidth),
         boxShadow: state == UOtpCellState.active ? widget.activeBoxShadow : null,
       ),
       child: filled
