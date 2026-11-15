@@ -32,14 +32,3 @@ class ULoginResponse {
 }
 
 /// A key another app of the same publisher on this device redeems for the same session.
-class USignInTransferResponse {
-  USignInTransferResponse({required this.key, required this.expiresAt});
-
-  factory USignInTransferResponse.fromMap(Map<String, dynamic> json) => USignInTransferResponse(
-    key: json["key"],
-    expiresAt: DateTime.parse(json["expiresAt"]).toUtc(),
-  );
-
-  final String key;
-  final DateTime expiresAt;
-}

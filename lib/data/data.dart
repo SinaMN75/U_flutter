@@ -14,8 +14,6 @@ part "params/base_params.dart";
 
 part "params/blog_params.dart";
 
-part "params/chat_params.dart";
-
 part "params/charge_internet_params.dart";
 
 part "params/comment_params.dart";
@@ -33,8 +31,6 @@ part "params/exchange_rate_params.dart";
 part "params/follow_params.dart";
 
 part "params/gold_params.dart";
-part "params/geo_params.dart";
-part "params/custody_params.dart";
 
 part "params/dorm_params.dart";
 part "params/store_params.dart";
@@ -62,8 +58,6 @@ part "params/sim_params.dart";
 
 part "params/social_params.dart";
 
-part "params/sport_params.dart";
-
 part "params/terminal_params.dart";
 
 part "params/txn_params.dart";
@@ -71,8 +65,6 @@ part "params/txn_params.dart";
 part "params/user_params.dart";
 
 part "params/vehicle_params.dart";
-
-part "params/venue_params.dart";
 
 part "params/wallet_params.dart";
 
@@ -92,8 +84,6 @@ part "responses/base_response.dart";
 
 part "responses/blog_response.dart";
 
-part "responses/chat_response.dart";
-
 part "responses/charge_internet_response.dart";
 
 part "responses/comment_response.dart";
@@ -110,8 +100,6 @@ part "responses/exchange_rate_response.dart";
 
 part "responses/follow_response.dart";
 part "responses/gold_response.dart";
-part "responses/geo_response.dart";
-part "responses/custody_response.dart";
 
 part "responses/dorm_response.dart";
 part "responses/store_response.dart";
@@ -141,8 +129,6 @@ part "responses/sim_response.dart";
 
 part "responses/social_response.dart";
 
-part "responses/sport_response.dart";
-
 part "responses/terminal_response.dart";
 
 part "responses/txn_response.dart";
@@ -151,8 +137,6 @@ part "responses/user_response.dart";
 
 part "responses/vehicle_response.dart";
 
-part "responses/venue_response.dart";
-
 part "responses/wallet_response.dart";
 
 part "services/app_settings_service.dart";
@@ -160,8 +144,6 @@ part "services/app_settings_service.dart";
 part "services/auth_service.dart";
 
 part "services/blog_service.dart";
-
-part "services/chat_service.dart";
 
 part "services/charge_internet_service.dart";
 
@@ -180,8 +162,6 @@ part "services/exchange_rate_service.dart";
 part "services/follow_service.dart";
 
 part "services/gold_service.dart";
-part "services/geo_service.dart";
-part "services/custody_service.dart";
 
 part "services/dorm_service.dart";
 part "services/store_service.dart";
@@ -211,8 +191,6 @@ part "services/sim_service.dart";
 
 part "services/social_service.dart";
 
-part "services/sport_service.dart";
-
 part "services/terminal_service.dart";
 
 part "services/txn_service.dart";
@@ -220,8 +198,6 @@ part "services/txn_service.dart";
 part "services/user_service.dart";
 
 part "services/vehicle_service.dart";
-
-part "services/venue_service.dart";
 
 part "services/wallet_service.dart";
 
@@ -248,8 +224,6 @@ class UServices {
   static UCommentService comment = UCommentService();
   static UFollowService follow = UFollowService();
   static UGoldService gold = UGoldService();
-  static UGeoService geo = UGeoService();
-  static UCustodyService custody = UCustodyService();
   static UExchangeRateService exchangeRate = UExchangeRateService();
   static UMediaService media = UMediaService();
   static UWalletService wallet = UWalletService();
@@ -273,8 +247,5 @@ class UServices {
   static UPnService pn = UPnService();
   static UFileManagerService fileManager = UFileManagerService();
   static UDbAdminService dbAdmin = UDbAdminService();
-  static USportService sport = USportService();
-  static UVenueService venue = UVenueService();
   static USocialService social = USocialService();
-  static UChatService chat = UChatService();
 }

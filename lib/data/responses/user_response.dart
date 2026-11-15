@@ -198,17 +198,11 @@ class UUserJson {
     this.eSignatureRejectionReason,
     this.detail1,
     this.detail2,
-    this.googleId,
     this.country,
     this.city,
     this.referralCode,
     this.referrerId,
-    this.passports = const <String>[],
-    this.language,
-    this.currency,
-    this.destinationCountryId,
-    this.destinationCityId,
-    this.entryKitDone = const <int>[],
+    this.utcOffsetMinutes = 0,
   });
 
   factory UUserJson.fromJson(String str) => UUserJson.fromMap(json.decode(str));
@@ -233,17 +227,11 @@ class UUserJson {
     eSignatureRejectionReason: json["eSignatureRejectionReason"],
     detail1: json["detail1"],
     detail2: json["detail2"],
-    googleId: json["googleId"],
     country: json["country"],
     city: json["city"],
     referralCode: json["referralCode"],
     referrerId: json["referrerId"],
-    passports: json["passports"] == null ? const <String>[] : List<String>.from(json["passports"].map((dynamic x) => x)),
-    language: json["language"],
-    currency: json["currency"],
-    destinationCountryId: json["destinationCountryId"],
-    destinationCityId: json["destinationCityId"],
-    entryKitDone: json["entryKitDone"] == null ? const <int>[] : List<int>.from(json["entryKitDone"].map((dynamic x) => x)),
+    utcOffsetMinutes: json["utcOffsetMinutes"] ?? 0,
   );
   final String? fcmToken;
   final bool muteFollowAlerts;
@@ -266,22 +254,13 @@ class UUserJson {
   final String? eSignatureRejectionReason;
   final String? detail1;
   final String? detail2;
-  final String? googleId;
   final String? country;
   final String? city;
   final String? referralCode;
   final String? referrerId;
 
-  /// Travel profile; the home is [country] and [city]. Passports are ISO alpha-2 codes. Calendar and distance unit are user tags (7xx, 8xx).
-  final List<String> passports;
-  final String? language;
-  final String? currency;
-
-  final String? destinationCountryId;
-  final String? destinationCityId;
-
-  /// Entry kit items ([TagCountry] 3xx) done for the destination country; the server clears it when the destination changes.
-  final List<int> entryKitDone;
+  /// Minutes from UTC; the server uses it for quiet hours.
+  final int utcOffsetMinutes;
 
   String toJson() => json.encode(toMap());
 
@@ -305,16 +284,10 @@ class UUserJson {
     "eSignatureRejectionReason": eSignatureRejectionReason,
     "detail1": detail1,
     "detail2": detail2,
-    "googleId": googleId,
     "country": country,
     "city": city,
     "referralCode": referralCode,
     "referrerId": referrerId,
-    "passports": passports,
-    "language": language,
-    "currency": currency,
-    "destinationCountryId": destinationCountryId,
-    "destinationCityId": destinationCityId,
-    "entryKitDone": entryKitDone,
+    "utcOffsetMinutes": utcOffsetMinutes,
   };
 }

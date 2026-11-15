@@ -73,7 +73,7 @@ class UNotificationJson {
     linkId: json["linkId"],
   );
 
-  /// The title, or for sport / social notifications a message key (see [UNotificationMessages]).
+  /// Title, or a message key the app resolves itself.
   final String? detail1;
   final String? detail2;
 
@@ -87,43 +87,4 @@ class UNotificationJson {
     "detail2": detail2,
     "linkId": linkId,
   };
-}
-
-/// Sport, booking and social notifications carry a message key in detail1 and the subject (a title or a name) in detail2.
-abstract class UNotificationMessages {
-  /// The notification's text in the app language; other notifications show their own title.
-  static String text(UNotificationResponse n) {
-    final String key = n.jsonData.detail1 ?? "";
-    final String subject = n.jsonData.detail2 ?? "";
-    final AppLocalizations s = U.s;
-    return switch (key) {
-      "notifTournamentStarted" => s.notifTournamentStarted(subject),
-      "notifTournamentFinished" => s.notifTournamentFinished(subject),
-      "notifTournamentCancelled" => s.notifTournamentCancelled(subject),
-      "notifNewEntry" => s.notifNewEntry(subject),
-      "notifEntryApproved" => s.notifEntryApproved(subject),
-      "notifEntryRejected" => s.notifEntryRejected(subject),
-      "notifMatchResult" => s.notifMatchResult(subject),
-      "notifMatchSoon" => s.notifMatchSoon(subject),
-      "notifNewBadge" => s.notifNewBadge(UBadges.label(subject)),
-      "notifChallenge" => s.notifChallenge(subject),
-      "notifGameInvite" => s.notifGameInvite(subject),
-      "notifJoinRequest" => s.notifJoinRequest(subject),
-      "notifJoinApproved" => s.notifJoinApproved(subject),
-      "notifPlayerJoined" => s.notifPlayerJoined(subject),
-      "notifPlayerLeft" => s.notifPlayerLeft(subject),
-      "notifGameCancelled" => s.notifGameCancelled(subject),
-      "notifGameSoon" => s.notifGameSoon(subject),
-      "notifNewBooking" => s.notifNewBooking(subject),
-      "notifBookingShare" => s.notifBookingShare(subject),
-      "notifBookingCancelled" => s.notifBookingCancelled(subject),
-      "notifBookingSoon" => s.notifBookingSoon(subject),
-      "notifVenueApproved" => s.notifVenueApproved(subject),
-      "notifVenueRejected" => s.notifVenueRejected(subject),
-      "notifVenueSuspended" => s.notifVenueSuspended(subject),
-      "notifNewReply" => s.notifNewReply(subject),
-      "notifNewReaction" => s.notifNewReaction(subject),
-      _ => key.isEmpty ? subject : key,
-    };
-  }
 }

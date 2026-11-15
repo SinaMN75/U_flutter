@@ -197,27 +197,6 @@ enum TagUser with UNumericIdentifiable {
   birthCertificateFifthAwaitingVerification("شناسنامه صفحه پنجم در انتظار تایید", "Birth Certificate Fifth Awaiting Verification", 507),
   visualAuthenticationAwaitingVerification("احراز هویت تصویری در انتظار تایید", "Visual Authentication Awaiting Verification", 508),
   eSignatureAwaitingVerification("امضای الکترونیکی در انتظار تایید", "E-Signature Awaiting Verification", 509),
-  calendarGregorian("تقویم میلادی", "Gregorian calendar", 701),
-  calendarJalali("تقویم شمسی", "Jalali calendar", 702),
-  calendarHijri("تقویم قمری", "Hijri calendar", 703),
-  distanceKilometer("کیلومتر", "Kilometer", 801),
-  distanceMile("مایل", "Mile", 802),
-
-  // ---- how the user uses the travel features (9xx, any of them) ----
-  usageTraveler("مسافر", "Traveler", 901),
-  usageServiceProvider("ارائه‌دهنده‌ی خدمات", "Service provider", 902),
-
-  // ---- interests (10xx, any of them) ----
-  interestHistory("تاریخی", "History", 1001),
-  interestNature("طبیعت", "Nature", 1002),
-  interestFood("غذا", "Food", 1003),
-  interestShopping("خرید", "Shopping", 1004),
-  interestAdventure("ماجراجویی", "Adventure", 1005),
-  interestReligious("زیارتی", "Religious", 1006),
-  interestNightlife("زندگی شبانه", "Nightlife", 1007),
-
-  // ---- content translation (11xx): present = keep posts, comments and chats in their original language ----
-  keepOriginalLanguage("نمایش متن اصلی", "Keep original language", 1101),
 
   // ---- subAdmin permissions (6xx). super/system admins have all of them; only a superAdmin or systemAdmin can give them ----
   permissionManageHotels("مدیریت هتل‌ها", "Manage Hotels", 601),
@@ -251,9 +230,7 @@ enum TagUser with UNumericIdentifiable {
   permissionManageCategories("مدیریت دسته‌بندی‌ها", "Manage Categories", 632),
   permissionManageProducts("مدیریت کالاها", "Manage Products", 633),
   permissionQuickSale("فروش سریع", "Quick Sale", 634),
-  permissionManageInventory("مدیریت انبار", "Manage Inventory", 635),
-  permissionManageGeo("مدیریت کشورها، شهرها و مکان‌ها", "Manage Countries, Cities and Places", 636),
-  permissionManageCustody("مدیریت باشگاه‌های امانت", "Manage Custody Programs", 637);
+  permissionManageInventory("مدیریت انبار", "Manage Inventory", 635);
 
   const TagUser(this.titleFa, this.titleEn, this.number);
 
@@ -300,8 +277,6 @@ enum TagUser with UNumericIdentifiable {
     permissionManageProducts,
     permissionQuickSale,
     permissionManageInventory,
-    permissionManageGeo,
-    permissionManageCustody,
   ];
 
   static const List<TagUser> organizationPermissions = <TagUser>[
@@ -478,9 +453,7 @@ enum TagReaction with UNumericIdentifiable {
 }
 
 enum TagFollow with UNumericIdentifiable {
-  user("کاربر", "User", 101),
   product("محصول", "Product", 102),
-  blog("وبلاگ", "Blog", 104),
   store("فروشگاه", "Store", 105);
 
   const TagFollow(this.titleFa, this.titleEn, this.number);
@@ -749,12 +722,6 @@ enum TagWalletTxn with UNumericIdentifiable {
   goldPurchase("خرید طلا", "Gold Purchase", 213),
   goldSale("فروش طلا", "Gold Sale", 214),
   goldPurchaseRefund("استرداد خرید طلا", "Gold Purchase Refund", 215),
-  courtBooking("رزرو زمین", "Court booking", 216),
-  courtBookingRefund("استرداد رزرو زمین", "Court booking refund", 217),
-  courtBookingSettlement("تسویه‌ی رزرو زمین", "Court booking payout", 218),
-  tournamentEntryFee("ورودیه‌ی تورنمنت", "Tournament entry fee", 219),
-  tournamentEntryRefund("استرداد ورودیه‌ی تورنمنت", "Tournament entry refund", 220),
-  tournamentEntrySettlement("تسویه‌ی ورودیه‌های تورنمنت", "Tournament entry payout", 221),
   platformCommission("کمیسیون پلتفرم", "Platform commission", 222),
   dormDepositRefund("برگشت ودیعه‌ی خوابگاه", "Dorm deposit refund", 223),
   organizationSettlement("تسویه‌ی مجموعه", "Organization settlement", 224),
@@ -880,11 +847,6 @@ enum TagNotification with UNumericIdentifiable {
   invoiceDue("سررسید فاکتور", "Invoice Due", 106),
   invoiceOverdue("فاکتور معوق", "Invoice Overdue", 107),
   invoicePaid("پرداخت فاکتور", "Invoice Paid", 108),
-  sport("ورزش", "Sport", 109),
-  booking("رزرو زمین", "Booking", 110),
-  social("اجتماعی", "Social", 111),
-  message("پیام", "Message", 112),
-  achievement("افتخار", "Achievement", 113),
   reminder("یادآوری", "Reminder", 114),
   order("سفارش", "Order", 115),
   newProduct("کالای تازه", "New product", 116),
@@ -895,12 +857,6 @@ enum TagNotification with UNumericIdentifiable {
   linkInventory("انبار", "Inventory", 303),
   linkStoreOpen("صفحه فروشگاه", "Store page", 304),
   linkSubscription("اشتراک", "Subscription", 305),
-  linkBooking("رزرو", "Booking", 306),
-  linkOpenMatch("بازی آزاد", "Open match", 307),
-  linkTournament("تورنمنت", "Tournament", 308),
-  linkAchievement("دستاورد", "Achievement", 309),
-  linkPost("پست", "Post", 310),
-  linkVenue("مجموعه ورزشی", "Venue", 311),
   linkUser("کاربر", "User", 312),
   test("تست", "Test", 999);
 
@@ -1036,23 +992,6 @@ enum TagFileFieldType with UNumericIdentifiable {
   text("متن", "Text", 104);
 
   const TagFileFieldType(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
-// NOTE: TagProcessStatus has no counterpart in the C# source — left as-is.
-enum TagProcessStatus with UNumericIdentifiable {
-  available("موجود", "Available", 101),
-  comingSoon("به زودی", "Coming Soon", 102),
-  disabled("غیر فعال", "Disabled", 103),
-  hidden("مخفی", "Hidden", 104);
-
-  const TagProcessStatus(this.titleFa, this.titleEn, this.number);
 
   @override
   final String titleFa;
@@ -1583,247 +1522,8 @@ enum TagAppVersion with UNumericIdentifiable {
   }
 }
 
-enum TagSport with UNumericIdentifiable {
-  padel("پدل", "Padel", 101),
-  tennis("تنیس", "Tennis", 102),
-  squash("اسکواش", "Squash", 103),
-  billiards("بیلیارد", "Billiards", 104),
-  snooker("اسنوکر", "Snooker", 105),
-  football("فوتبال", "Football", 106),
-  karate("کاراته", "Karate", 107),
-
-  active("فعال", "Active", 201),
-  comingSoon("به‌زودی", "Coming Soon", 202),
-  disabled("غیرفعال", "Disabled", 203);
-
-  const TagSport(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
-enum TagPlayerSportProfile with UNumericIdentifiable {
-  active("فعال", "Active", 101),
-  primary("ورزش اصلی", "Primary", 201);
-
-  const TagPlayerSportProfile(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
-enum TagTournament with UNumericIdentifiable {
-  roundRobin("دوره‌ای / لیگ", "Round robin / league", 101),
-  singleElimination("حذفی تک", "Single elimination", 102),
-  doubleElimination("حذفی دوگانه", "Double elimination", 103),
-  groupsKnockout("گروهی + حذفی", "Groups + knockout", 104),
-  americano("آمریکانو", "Americano", 105),
-  mexicano("مکزیکانو", "Mexicano", 106),
-  swiss("سوئیسی", "Swiss", 107),
-  ladder("نردبانی / باکس لیگ", "Ladder / box league", 108),
-
-  singles("انفرادی", "Singles", 201),
-  doubles("دونفره", "Doubles", 202),
-  team("تیمی", "Team", 203),
-
-  draft("پیش‌نویس", "Draft", 301),
-  registration("ثبت‌نام باز", "Registration open", 302),
-  inProgress("زنده", "Live", 303),
-  finished("تمام‌شده", "Finished", 304),
-  cancelled("لغو شده", "Cancelled", 305),
-
-  autoApprove("تأیید خودکار ثبت‌نام", "Auto-approve registrations", 401);
-
-  const TagTournament(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
-enum TagTournamentEntry with UNumericIdentifiable {
-  pending("در انتظار تأیید", "Pending", 101),
-  approved("تأیید شده", "Approved", 102),
-  rejected("رد شده", "Rejected", 103);
-
-  const TagTournamentEntry(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
-enum TagTournamentMatch with UNumericIdentifiable {
-  scheduled("در انتظار", "Scheduled", 101),
-  live("زنده", "Live", 102),
-  finished("تمام‌شده", "Finished", 103),
-  bye("استراحت", "Bye", 104),
-
-  group("گروهی", "Group", 201),
-  winners("جدول اصلی", "Winners bracket", 202),
-  losers("جدول بازنده‌ها", "Losers bracket", 203),
-  grandFinal("فینال بزرگ", "Grand final", 204),
-  thirdPlace("رده‌بندی", "Third place", 205);
-
-  const TagTournamentMatch(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
-enum TagPlayerAchievement with UNumericIdentifiable {
-  placement("رتبه‌ی تورنمنت", "Tournament placement", 101),
-  badge("نشان", "Badge", 102),
-  hidden("مخفی", "Hidden", 201);
-
-  const TagPlayerAchievement(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
-enum TagOpenMatch with UNumericIdentifiable {
-  open("باز", "Open", 101),
-  full("تکمیل", "Full", 102),
-  finished("تمام‌شده", "Finished", 103),
-  cancelled("لغو شده", "Cancelled", 104),
-  public("عمومی", "Public", 201),
-  private("خصوصی", "Private", 202),
-  competitive("رقابتی", "Competitive", 301),
-  friendly("دوستانه", "Friendly", 302),
-  challenge("چالش", "Challenge", 401);
-
-  const TagOpenMatch(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
-enum TagVenue with UNumericIdentifiable {
-  club("باشگاه", "Club", 101),
-  shop("فروشگاه", "Shop", 102),
-  pending("در انتظار تأیید", "Pending", 201),
-  approved("تأیید شده", "Approved", 202),
-  rejected("رد شده", "Rejected", 203),
-  suspended("معلق", "Suspended", 204),
-  payAtVenue("پرداخت در محل", "Pay at the venue", 301);
-
-  const TagVenue(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
-enum TagCourt with UNumericIdentifiable {
-  indoor("سرپوشیده", "Indoor", 101),
-  outdoor("روباز", "Outdoor", 102),
-  active("فعال", "Active", 201),
-  inactive("غیرفعال", "Inactive", 202),
-  artificialGrass("چمن مصنوعی", "Artificial grass", 301),
-  grass("چمن طبیعی", "Grass", 302),
-  clay("خاک رس", "Clay", 303),
-  acrylic("اکریلیک", "Acrylic", 304),
-  hard("سخت (بتن، آسفالت)", "Hard", 305),
-  wood("پارکت", "Wood", 306),
-  cloth("ماهوت", "Cloth", 307),
-  sand("ماسه", "Sand", 308),
-  mat("تاتامی و تشک", "Mat", 309),
-  otherSurface("سایر", "Other", 399);
-
-  const TagCourt(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
-enum TagBooking with UNumericIdentifiable {
-  pending("در انتظار", "Pending", 101),
-  confirmed("قطعی", "Confirmed", 102),
-  cancelled("لغو شده", "Cancelled", 103),
-  completed("انجام شده", "Completed", 104),
-  noShow("عدم حضور", "No-show", 105),
-  paidFromWallet("پرداخت از کیف پول", "Paid from wallet", 201),
-  payAtVenue("پرداخت در محل", "Pay at the venue", 202);
-
-  const TagBooking(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
-enum TagPost with UNumericIdentifiable {
-  post("پست", "Post", 101),
-  story("استوری", "Story", 102),
-  comment("پاسخ", "Reply", 103),
-  public("عمومی", "Public", 201),
-  followers("دنبال‌کننده‌ها", "Followers", 202),
-  hidden("پنهان", "Hidden", 301),
-  linkStore("فروشگاه", "Store", 401),
-  linkProduct("کالا", "Product", 402),
-  linkInventory("انبار", "Inventory", 403),
-  linkStoreOpen("صفحه فروشگاه", "Store page", 404),
-  linkSubscription("اشتراک", "Subscription", 405),
-  linkBooking("رزرو", "Booking", 406),
-  linkOpenMatch("بازی آزاد", "Open match", 407),
-  linkTournament("تورنمنت", "Tournament", 408),
-  linkAchievement("دستاورد", "Achievement", 409),
-  linkPost("پست", "Post", 410),
-  linkVenue("مجموعه ورزشی", "Venue", 411),
-  linkUser("کاربر", "User", 412);
-
-  const TagPost(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
 enum TagReport with UNumericIdentifiable {
-  post("پست", "Post", 101),
   user("کاربر", "User", 102),
-  message("پیام", "Message", 103),
-  venue("مجموعه", "Venue", 104),
   comment("نظر", "Comment", 105),
   store("فروشگاه", "Store", 106),
   product("کالا", "Product", 107),
@@ -1837,62 +1537,6 @@ enum TagReport with UNumericIdentifiable {
   other("سایر", "Other", 305);
 
   const TagReport(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
-enum TagBlock with UNumericIdentifiable {
-  user("کاربر", "User", 101);
-
-  const TagBlock(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
-enum TagConversation with UNumericIdentifiable {
-  direct("خصوصی", "Direct", 101),
-  group("گروهی", "Group", 102);
-
-  const TagConversation(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
-enum TagMessage with UNumericIdentifiable {
-  text("متن", "Text", 101),
-  system("سیستمی", "System", 102),
-  shared("اشتراکی", "Shared", 103),
-  edited("ویرایش شده", "Edited", 201),
-  deleted("حذف شده", "Deleted", 202),
-  linkStore("فروشگاه", "Store", 301),
-  linkProduct("کالا", "Product", 302),
-  linkInventory("انبار", "Inventory", 303),
-  linkStoreOpen("صفحه فروشگاه", "Store page", 304),
-  linkSubscription("اشتراک", "Subscription", 305),
-  linkBooking("رزرو", "Booking", 306),
-  linkOpenMatch("بازی آزاد", "Open match", 307),
-  linkTournament("تورنمنت", "Tournament", 308),
-  linkAchievement("دستاورد", "Achievement", 309),
-  linkPost("پست", "Post", 310),
-  linkVenue("مجموعه ورزشی", "Venue", 311),
-  linkUser("کاربر", "User", 312);
-
-  const TagMessage(this.titleFa, this.titleEn, this.number);
 
   @override
   final String titleFa;
@@ -2122,8 +1766,7 @@ enum TagStockMove with UNumericIdentifiable {
 enum TagSearchSort with UNumericIdentifiable {
   nearest("نزدیک‌ترین", "Nearest", 101),
   newest("تازه‌ترین", "Newest", 102),
-  cheapest("ارزان‌ترین", "Cheapest", 103),
-  mostMembers("بیشترین عضو", "Most members", 104);
+  cheapest("ارزان‌ترین", "Cheapest", 103);
 
   const TagSearchSort(this.titleFa, this.titleEn, this.number);
 
@@ -2186,181 +1829,9 @@ enum TagStoreType with UNumericIdentifiable {
 
 enum TagCategory with UNumericIdentifiable {
   active("فعال", "Active", 101),
-  inactive("غیرفعال", "Inactive", 102),
-  place("دسته‌ی مکان", "Place category", 201);
-
-  const TagCategory(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
-/// A country of the Geo module: one status and any regions.
-enum TagCountry with UNumericIdentifiable {
-  active("فعال", "Active", 101),
-  comingSoon("به‌زودی", "Coming soon", 102),
-  inactive("غیرفعال", "Inactive", 103),
-  africa("آفریقا", "Africa", 201),
-  asia("آسیا", "Asia", 202),
-  caucasus("قفقاز", "Caucasus", 203),
-  europe("اروپا", "Europe", 204),
-  middleEast("خاورمیانه", "Middle East", 205),
-  northAmerica("آمریکای شمالی", "North America", 206),
-  southAmerica("آمریکای جنوبی", "South America", 207),
-  oceania("اقیانوسیه", "Oceania", 208),
-  kitSimCard("سیم‌کارت محلی", "Local SIM card", 301),
-  kitMobileInternet("بسته‌ی اینترنت", "Mobile internet", 302),
-  kitCurrencyExchange("تبدیل ارز", "Currency exchange", 303),
-  kitAirportTransfer("تاکسی تا هتل", "Airport transfer", 304),
-  kitTravelInsurance("بیمه‌ی مسافرتی", "Travel insurance", 305),
-  kitAccommodation("اقامتگاه", "Accommodation", 306);
-
-  const TagCountry(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
-enum TagEmergencyNumber with UNumericIdentifiable {
-  general("اورژانس همگانی", "Emergency", 101),
-  police("پلیس", "Police", 102),
-  ambulance("آمبولانس", "Ambulance", 103),
-  fire("آتش‌نشانی", "Fire", 104),
-  touristPolice("پلیس گردشگری", "Tourist police", 105),
-  roadAssistance("امداد جاده‌ای", "Road assistance", 106);
-
-  const TagEmergencyNumber(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
-enum TagCity with UNumericIdentifiable {
-  active("فعال", "Active", 101),
-  inactive("غیرفعال", "Inactive", 102),
-  capital("پایتخت", "Capital", 201);
-
-  const TagCity(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
-enum TagPlace with UNumericIdentifiable {
-  active("فعال", "Active", 101),
   inactive("غیرفعال", "Inactive", 102);
 
-  const TagPlace(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
-enum TagPlaceVisit with UNumericIdentifiable {
-  checkedIn("بازدید شد", "Checked in", 101);
-
-  const TagPlaceVisit(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
-/// From the easiest entry to none; a country shows the easiest rule of the traveller's passports.
-enum TagVisaRule with UNumericIdentifiable {
-  visaFree("بدون ویزا", "Visa free", 101),
-  visaOnArrival("ویزای فرودگاهی", "Visa on arrival", 102),
-  eVisa("ویزای الکترونیکی", "e-Visa", 103),
-  visaRequired("نیاز به ویزا", "Visa required", 104),
-  notAllowed("ورود ممکن نیست", "Entry not allowed", 105);
-
-  const TagVisaRule(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
-/// A store's custody program: one status (1xx; [paused] takes no new purchases, [suspended] is stopped by the platform) and one unit (2xx).
-enum TagCustodyProgram with UNumericIdentifiable {
-  active("فعال", "Active", 101),
-  paused("توقف خرید", "Paused", 102),
-  suspended("معلق", "Suspended", 103),
-  gram("گرم", "Gram", 201),
-  mithqal("مثقال", "Mithqal", 202),
-  ounce("اونس", "Ounce", 203),
-  coin("سکه", "Coin", 204),
-  piece("عدد", "Piece", 205);
-
-  const TagCustodyProgram(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
-enum TagCustodyRate with UNumericIdentifiable {
-  sell("نرخ فروش", "Sell rate", 101);
-
-  const TagCustodyRate(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
-enum TagCustodyMember with UNumericIdentifiable {
-  active("فعال", "Active", 101),
-  suspended("معلق", "Suspended", 102);
-
-  const TagCustodyMember(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
-enum TagCustodyEntry with UNumericIdentifiable {
-  purchase("خرید", "Purchase", 101),
-  delivery("تحویل", "Delivery", 102),
-  adjustment("اصلاح", "Adjustment", 103);
-
-  const TagCustodyEntry(this.titleFa, this.titleEn, this.number);
+  const TagCategory(this.titleFa, this.titleEn, this.number);
 
   @override
   final String titleFa;

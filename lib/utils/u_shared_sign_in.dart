@@ -33,7 +33,7 @@ class USharedAccount {
   final String appId;
   final String appName;
 
-  /// Opaque key the app exchanges for a session; for SinaMN75U a sign-in transfer key.
+  /// Opaque key the sibling uses to continue as this account.
   final String key;
   final DateTime expiresAt;
 
@@ -59,9 +59,8 @@ class USharedAccount {
 ///
 /// ```dart
 /// USharedSignIn.configure(appId: "com.x.shop", apps: <String>["com.x.shop", "com.x.travel"], webDomain: "x.com", appleAccessGroup: "TEAMID.com.x.family");
-/// await USharedSignIn.publish(appName: "Shop"); // after sign-in and at start (SinaMN75U backend)
+/// await USharedSignIn.write(USharedAccount(...)); // after sign-in
 /// final List<USharedAccount> list = await USharedSignIn.accounts();
-/// if (list.isNotEmpty && await USharedSignIn.signIn(list.first)) ...
 /// await USharedSignIn.clear(); // on sign-out
 /// ```
 abstract final class USharedSignIn {
@@ -121,36 +120,6 @@ abstract final class USharedSignIn {
     if (!isConfigured) return;
     if (kIsWeb) return UWebBridge.setCookie(_cookieName, "", domain: _cookieDomain, maxAgeSeconds: 0);
     await _invoke("clear");
-  }
-
-  // ---------------------------------------------------------------------------
-  // SinaMN75U backend (opt-in): the key is a sign-in transfer key from /auth/CreateSignInTransfer.
-  // ---------------------------------------------------------------------------
-
-  /// When signed in, asks the server for a fresh transfer key and saves the record; [appName] is shown by the siblings.
-  static Future<void> publish({required String appName}) async {
-    if (!isConfigured || !UAuth.isSignedIn) return;
-    final (UResponse<USignInTransferResponse>?, UEmptyResponse?, String?) r = await UServices.auth.createSignInTransfer();
-    final USignInTransferResponse? transfer = r.$1?.result;
-    if (transfer == null) return;
-    final UUserResponse user = U.user;
-    await write(
-      USharedAccount(
-        userId: user.id,
-        name: user.displayName,
-        hint: maskedContact(user.phoneNumber, user.email),
-        appId: _appId,
-        appName: appName,
-        key: transfer.key,
-        expiresAt: transfer.expiresAt,
-      ),
-    );
-  }
-
-  /// Exchanges the account's key for a session of the same user (tokens are saved like any login); false when the key is no longer valid.
-  static Future<bool> signIn(USharedAccount account) async {
-    final (UResponse<ULoginResponse>?, UEmptyResponse?, String?) r = await UServices.auth.redeemSignInTransfer(p: URedeemSignInTransferParams(key: account.key));
-    return r.$1?.result != null;
   }
 
   /// "+98 912 *** 6789" or "sa***@mail.com"; empty when neither is known.

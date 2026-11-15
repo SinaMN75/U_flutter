@@ -19,12 +19,7 @@ class UMediaCreateParams {
     this.dormId,
     this.dormRoomId,
     this.dormBedId,
-    this.venueId,
-    this.postId,
     this.storeId,
-    this.countryId,
-    this.cityId,
-    this.placeId,
   });
 
   final UFileData file;
@@ -44,12 +39,7 @@ class UMediaCreateParams {
   final String? dormId;
   final String? dormRoomId;
   final String? dormBedId;
-  final String? venueId;
-  final String? postId;
   final String? storeId;
-  final String? countryId;
-  final String? cityId;
-  final String? placeId;
 
   String toJson() => json.encode(toMap());
 
@@ -70,12 +60,7 @@ class UMediaCreateParams {
     "dormId": dormId,
     "dormRoomId": dormRoomId,
     "dormBedId": dormBedId,
-    "venueId": venueId,
-    "postId": postId,
     "storeId": storeId,
-    "countryId": countryId,
-    "cityId": cityId,
-    "placeId": placeId,
   };
 }
 

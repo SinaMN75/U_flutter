@@ -118,48 +118,6 @@ class URegisterParams {
   };
 }
 
-class UGetEmailVerificationCodeForLoginParams {
-  UGetEmailVerificationCodeForLoginParams({
-    required this.email,
-  });
-
-  factory UGetEmailVerificationCodeForLoginParams.fromJson(String str) => UGetEmailVerificationCodeForLoginParams.fromMap(json.decode(str));
-
-  factory UGetEmailVerificationCodeForLoginParams.fromMap(Map<String, dynamic> json) => UGetEmailVerificationCodeForLoginParams(
-    email: json["email"],
-  );
-  final String email;
-
-  String toJson() => json.encode(toMap());
-
-  Map<String, dynamic> toMap() => <String, dynamic>{
-    "email": email,
-  };
-}
-
-class UVerifyEmailForLoginParams {
-  UVerifyEmailForLoginParams({
-    required this.email,
-    required this.otp,
-  });
-
-  factory UVerifyEmailForLoginParams.fromJson(String str) => UVerifyEmailForLoginParams.fromMap(json.decode(str));
-
-  factory UVerifyEmailForLoginParams.fromMap(Map<String, dynamic> json) => UVerifyEmailForLoginParams(
-    email: json["email"],
-    otp: json["otp"],
-  );
-  final String email;
-  final String otp;
-
-  String toJson() => json.encode(toMap());
-
-  Map<String, dynamic> toMap() => <String, dynamic>{
-    "email": email,
-    "otp": otp,
-  };
-}
-
 class UVerifyMobileForLoginParams {
   UVerifyMobileForLoginParams({
     required this.phoneNumber,
@@ -210,25 +168,6 @@ class UAuthCompleteProfileParams {
   };
 }
 
-class UGoogleLoginParams {
-  UGoogleLoginParams({
-    required this.idToken,
-  });
-
-  factory UGoogleLoginParams.fromJson(String str) => UGoogleLoginParams.fromMap(json.decode(str));
-
-  factory UGoogleLoginParams.fromMap(Map<String, dynamic> json) => UGoogleLoginParams(
-    idToken: json["idToken"],
-  );
-  final String idToken;
-
-  String toJson() => json.encode(toMap());
-
-  Map<String, dynamic> toMap() => <String, dynamic>{
-    "idToken": idToken,
-  };
-}
-
 class UForgotPasswordParams {
   UForgotPasswordParams({
     required this.email,
@@ -273,12 +212,4 @@ class UResetPasswordParams {
     "code": code,
     "newPassword": newPassword,
   };
-}
-
-class URedeemSignInTransferParams {
-  URedeemSignInTransferParams({required this.key});
-
-  final String key;
-
-  Map<String, dynamic> toMap() => <String, dynamic>{"key": key};
 }

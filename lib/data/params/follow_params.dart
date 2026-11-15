@@ -2,7 +2,6 @@ part of "../data.dart";
 
 class UFollowParams {
   UFollowParams({
-    this.userId,
     this.creatorId,
     this.productId,
     this.storeId,
@@ -12,24 +11,21 @@ class UFollowParams {
   factory UFollowParams.fromJson(String str) => UFollowParams.fromMap(json.decode(str));
 
   factory UFollowParams.fromMap(Map<String, dynamic> json) => UFollowParams(
-    userId: json["userId"],
     creatorId: json["creatorId"],
     productId: json["productId"],
     storeId: json["storeId"],
     notify: json["notify"],
   );
-  final String? userId;
   final String? creatorId;
   final String? productId;
   final String? storeId;
 
-  /// For a store: notifications on (the server default) or off.
+  /// For a store or a product: notifications on (the server default) or off.
   final bool? notify;
 
   String toJson() => json.encode(toMap());
 
   Map<String, dynamic> toMap() => <String, dynamic>{
-    "userId": userId,
     "creatorId": creatorId,
     "productId": productId,
     "storeId": storeId,

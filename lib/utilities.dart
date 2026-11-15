@@ -243,5 +243,5 @@ export "src/share/u_share_channel.dart";
 
 // --- Backend: API services, models, tags and the admin panel -----------------------------------------
 export "data/data.dart";
-export "enums.dart";
+export "data/enums.dart";
 export "l10n/app_localizations.dart";

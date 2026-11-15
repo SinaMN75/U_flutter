@@ -12,15 +12,12 @@ abstract class UAuth {
 
   static const List<String> _tokenIssuingEndpoints = <String>[
     "/auth/Login",
-    "/auth/Register",
     "/auth/RefreshToken",
     "/auth/GetVerificationCodeForLogin",
     "/auth/VerifyCodeForLogin",
     "/auth/LoginOrRegister",
-    "/auth/GetEmailVerificationCodeForLogin",
-    "/auth/VerifyEmailCodeForLogin",
-    "/auth/LoginWithGoogle",
-    "/auth/RedeemSignInTransfer",
+    "/auth/ForgotPassword",
+    "/auth/ResetPassword",
   ];
 
   /// Counter bumped on every login/logout; lets requests started before a logout ignore their result.
