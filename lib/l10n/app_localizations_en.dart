@@ -9343,6 +9343,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get manageStores => 'Manage Stores';
 
   @override
+  String get manualPrice => 'Manual price';
+
+  @override
   String get markAllRead => 'Mark all read';
 
   @override
@@ -10008,6 +10011,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get theOrderOfThisListIsTheOrderOfCategoriesOnTheStorePageDragTheHandleToMove => 'The order of this list is the order of categories on the store page. Drag the handle to move.';
 
   @override
+  String get thePaymentWasApprovedButTheSaleWasNotRecorded => 'The payment was approved, but the sale was not recorded';
+
+  @override
   String get theRightSubscriptionForYourBusiness => 'The right subscription for your business';
 
   @override
@@ -10080,6 +10086,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get turnOnLocationToSeeWhatIsNearby => 'Turn on location to see what is nearby';
+
+  @override
+  String get typeAPriceToChargeTheCardReader => 'Type a price to charge the card reader';
 
   @override
   String get typeAStoreOrProductName => 'Type a store or product name';

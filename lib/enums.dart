@@ -2137,7 +2137,8 @@ enum TagSearchSort with UNumericIdentifiable {
 
 enum TagStoreSale with UNumericIdentifiable {
   cardToCard("کارت‌به‌کارت", "Card to card", 101),
-  cash("نقدی", "Cash", 102);
+  cash("نقدی", "Cash", 102),
+  cardReader("کارتخوان", "Card reader", 103);
 
   const TagStoreSale(this.titleFa, this.titleEn, this.number);
 

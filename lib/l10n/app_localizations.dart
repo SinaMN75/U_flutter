@@ -17870,6 +17870,12 @@ abstract class AppLocalizations {
   /// **'Manage Stores'**
   String get manageStores;
 
+  /// No description provided for @manualPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Manual price'**
+  String get manualPrice;
+
   /// No description provided for @markAllRead.
   ///
   /// In en, this message translates to:
@@ -19100,6 +19106,12 @@ abstract class AppLocalizations {
   /// **'The order of this list is the order of categories on the store page. Drag the handle to move.'**
   String get theOrderOfThisListIsTheOrderOfCategoriesOnTheStorePageDragTheHandleToMove;
 
+  /// No description provided for @thePaymentWasApprovedButTheSaleWasNotRecorded.
+  ///
+  /// In en, this message translates to:
+  /// **'The payment was approved, but the sale was not recorded'**
+  String get thePaymentWasApprovedButTheSaleWasNotRecorded;
+
   /// No description provided for @theRightSubscriptionForYourBusiness.
   ///
   /// In en, this message translates to:
@@ -19231,6 +19243,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Turn on location to see what is nearby'**
   String get turnOnLocationToSeeWhatIsNearby;
+
+  /// No description provided for @typeAPriceToChargeTheCardReader.
+  ///
+  /// In en, this message translates to:
+  /// **'Type a price to charge the card reader'**
+  String get typeAPriceToChargeTheCardReader;
 
   /// No description provided for @typeAStoreOrProductName.
   ///

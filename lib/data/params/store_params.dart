@@ -478,12 +478,15 @@ class UProductSelectorArgs {
 }
 
 class UStoreSaleLineParams {
-  UStoreSaleLineParams({required this.productId, required this.quantity});
+  UStoreSaleLineParams({required this.productId, required this.quantity, this.unitPrice});
 
   final String productId;
   final int quantity;
 
-  Map<String, dynamic> toMap() => <String, dynamic>{"productId": productId, "quantity": quantity};
+  /// Rial. Null keeps the product's current price.
+  final num? unitPrice;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"productId": productId, "quantity": quantity, "unitPrice": unitPrice}..removeWhere((String _, dynamic v) => v == null);
 }
 
 class UStoreSaleCreateParams {

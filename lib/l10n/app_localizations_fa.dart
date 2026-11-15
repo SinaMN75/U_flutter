@@ -9342,6 +9342,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get manageStores => 'مدیریت فروشگاه‌ها';
 
   @override
+  String get manualPrice => 'قیمت دستی';
+
+  @override
   String get markAllRead => 'همه خوانده شد';
 
   @override
@@ -10007,6 +10010,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get theOrderOfThisListIsTheOrderOfCategoriesOnTheStorePageDragTheHandleToMove => 'ترتیب این فهرست همان ترتیب دسته‌ها در صفحه فروشگاه است. برای جابه‌جایی، دستگیره را بکشید.';
 
   @override
+  String get thePaymentWasApprovedButTheSaleWasNotRecorded => 'پرداخت تأیید شد، ولی فروش ثبت نشد';
+
+  @override
   String get theRightSubscriptionForYourBusiness => 'اشتراک مناسب\nکسب‌وکارتان';
 
   @override
@@ -10079,6 +10085,9 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get turnOnLocationToSeeWhatIsNearby => 'برای دیدن اطراف، موقعیت را روشن کنید';
+
+  @override
+  String get typeAPriceToChargeTheCardReader => 'یک قیمت بنویسید تا به کارتخوان برود';
 
   @override
   String get typeAStoreOrProductName => 'نام فروشگاه یا کالا را بنویسید';
