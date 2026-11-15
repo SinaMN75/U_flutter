@@ -5287,6 +5287,18 @@ class AppLocalizationsFa extends AppLocalizations {
   String get goodNoon => 'ظهر بخیر';
 
   @override
+  String get cardToCard => 'کارت به کارت';
+
+  @override
+  String get instantTransfer => 'انتقال آنی وجه';
+
+  @override
+  String get allOperators => 'تمامی اپراتورها';
+
+  @override
+  String get buyInsurance => 'خرید بیمه';
+
+  @override
   String get hasImage => 'دارای تصویر';
 
   @override

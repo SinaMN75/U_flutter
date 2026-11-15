@@ -10268,6 +10268,30 @@ abstract class AppLocalizations {
   /// **'Good noon'**
   String get goodNoon;
 
+  /// No description provided for @cardToCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Card to card'**
+  String get cardToCard;
+
+  /// No description provided for @instantTransfer.
+  ///
+  /// In en, this message translates to:
+  /// **'Instant transfer'**
+  String get instantTransfer;
+
+  /// No description provided for @allOperators.
+  ///
+  /// In en, this message translates to:
+  /// **'All operators'**
+  String get allOperators;
+
+  /// No description provided for @buyInsurance.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy insurance'**
+  String get buyInsurance;
+
   /// No description provided for @hasImage.
   ///
   /// In en, this message translates to:

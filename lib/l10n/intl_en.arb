@@ -2171,6 +2171,10 @@
   "goodMorning": "Good morning",
   "goodNight": "Good night",
   "goodNoon": "Good noon",
+  "cardToCard": "Card to card",
+  "instantTransfer": "Instant transfer",
+  "allOperators": "All operators",
+  "buyInsurance": "Buy insurance",
   "hasImage": "Has image",
   "iAcceptTerms": "I accept the app's {terms}",
   "@iAcceptTerms": {

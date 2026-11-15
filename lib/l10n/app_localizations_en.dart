@@ -5287,6 +5287,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get goodNoon => 'Good noon';
 
   @override
+  String get cardToCard => 'Card to card';
+
+  @override
+  String get instantTransfer => 'Instant transfer';
+
+  @override
+  String get allOperators => 'All operators';
+
+  @override
+  String get buyInsurance => 'Buy insurance';
+
+  @override
   String get hasImage => 'Has image';
 
   @override
