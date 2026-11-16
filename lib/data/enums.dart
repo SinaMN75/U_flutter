@@ -888,22 +888,6 @@ enum TagTxnErrorCodes with UNumericIdentifiable {
   final int number;
 }
 
-enum TagVas with UNumericIdentifiable {
-  water("آب", "Water", 101),
-  chargeTopup("شارژ مستقیم", "Charge Topup", 201),
-  chargePin("شارژ با پین", "Charge Pin", 202),
-  internetPackage("بسته اینترنت", "Internet Package", 203);
-
-  const TagVas(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
 enum TagSimOperator with UNumericIdentifiable {
   hamrahAvval("همراه اول", "Hamrah Avval", 1),
   iranCell("ایرانسل", "Iran Cell", 2),

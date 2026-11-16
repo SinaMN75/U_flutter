@@ -86,30 +86,6 @@ class UParkingReportSelectorArgs {
   };
 }
 
-class UVasSelectorArgs {
-  final UUserSelectorArgs? creator;
-  final UWalletTxnSelectorArgs? walletTxn;
-  final UTxnSelectorArgs? txn;
-
-  const UVasSelectorArgs({this.creator, this.walletTxn, this.txn});
-
-  factory UVasSelectorArgs.fromJson(String str) => UVasSelectorArgs.fromMap(json.decode(str));
-
-  String toJson() => json.encode(toMap());
-
-  factory UVasSelectorArgs.fromMap(Map<String, dynamic> json) => UVasSelectorArgs(
-    creator: json["creator"] == null ? null : UUserSelectorArgs.fromMap(json["creator"]),
-    walletTxn: json["walletTxn"] == null ? null : UWalletTxnSelectorArgs.fromMap(json["walletTxn"]),
-    txn: json["txn"] == null ? null : UTxnSelectorArgs.fromMap(json["txn"]),
-  );
-
-  Map<String, dynamic> toMap() => <String, dynamic>{
-    "creator": creator?.toMap(),
-    "walletTxn": walletTxn?.toMap(),
-    "txn": txn?.toMap(),
-  };
-}
-
 class UContentSelectorArgs {
   final UUserSelectorArgs? creator;
   final UMediaSelectorArgs? media;
