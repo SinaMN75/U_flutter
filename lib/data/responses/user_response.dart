@@ -52,7 +52,6 @@ class UUserResponse {
   final String? visualAuthentication;
   final String? eSignature;
   final List<UMediaResponse>? media;
-  final List<UAddressResponse>? addresses;
   final List<UMerchantResponse>? merchants;
   final List<UWalletResponse>? wallets;
   final List<UTxnResponse>? txns;
@@ -88,7 +87,6 @@ class UUserResponse {
     this.visualAuthentication,
     this.eSignature,
     this.media,
-    this.addresses,
     this.merchants,
     this.wallets,
     this.txns,
@@ -127,7 +125,6 @@ class UUserResponse {
     visualAuthentication: json["visualAuthentication"],
     eSignature: json["eSignature"],
     media: json["media"] == null ? <UMediaResponse>[] : List<UMediaResponse>.from(json["media"].map((dynamic x) => UMediaResponse.fromMap(x))),
-    addresses: json["addresses"] == null ? <UAddressResponse>[] : List<UAddressResponse>.from(json["addresses"].map((dynamic x) => UAddressResponse.fromMap(x))),
     merchants: json["merchants"] == null ? <UMerchantResponse>[] : List<UMerchantResponse>.from(json["merchants"].map((dynamic x) => UMerchantResponse.fromMap(x))),
     wallets: json["wallets"] == null ? <UWalletResponse>[] : List<UWalletResponse>.from(json["wallets"].map((dynamic x) => UWalletResponse.fromMap(x))),
     txns: json["txns"] == null ? <UTxnResponse>[] : List<UTxnResponse>.from(json["txns"].map((dynamic x) => UTxnResponse.fromMap(x))),
@@ -163,7 +160,6 @@ class UUserResponse {
     "visualAuthentication": visualAuthentication,
     "eSignature": eSignature,
     "media": media == null ? null : List<dynamic>.from(media!.map((UMediaResponse x) => x.toMap())),
-    "addresses": addresses == null ? null : List<dynamic>.from(addresses!.map((UAddressResponse x) => x.toMap())),
     "merchants": merchants == null ? null : List<dynamic>.from(merchants!.map((UMerchantResponse x) => x.toMap())),
     "wallets": wallets == null ? null : List<dynamic>.from(wallets!.map((UWalletResponse x) => x.toMap())),
     "txns": txns == null ? null : List<dynamic>.from(txns!.map((UTxnResponse x) => x.toMap())),

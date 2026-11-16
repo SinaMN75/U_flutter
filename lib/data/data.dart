@@ -68,8 +68,6 @@ part "params/vehicle_params.dart";
 
 part "params/wallet_params.dart";
 
-part "responses/address_response.dart";
-
 part "responses/api_log_response.dart";
 
 part "responses/app_settings_full_response.dart";

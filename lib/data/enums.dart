@@ -676,19 +676,6 @@ enum TagParkingPayment with UNumericIdentifiable {
   final int number;
 }
 
-enum TagAddress with UNumericIdentifiable {
-  verified("تایید شده", "Verified", 101);
-
-  const TagAddress(this.titleFa, this.titleEn, this.number);
-
-  @override
-  final String titleFa;
-  @override
-  final String titleEn;
-  @override
-  final int number;
-}
-
 enum TagWallet with UNumericIdentifiable {
   primary("اصلی", "Primary", 101);
 

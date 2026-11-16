@@ -3,7 +3,6 @@ part of "../data.dart";
 class UUserSelectorArgs {
   final UMediaSelectorArgs? media;
   final UTxnSelectorArgs? txns;
-  final UAddressSelectorArgs? address;
   final UWalletSelectorArgs? wallet;
   final UMerchantSelectorArgs? merchant;
   final UBankAccountSelectorArgs? bankAccount;
@@ -13,7 +12,6 @@ class UUserSelectorArgs {
   const UUserSelectorArgs({
     this.media,
     this.txns,
-    this.address,
     this.wallet,
     this.merchant,
     this.bankAccount,
@@ -28,7 +26,6 @@ class UUserSelectorArgs {
   factory UUserSelectorArgs.fromMap(Map<String, dynamic> json) => UUserSelectorArgs(
     media: json["media"] == null ? null : UMediaSelectorArgs.fromMap(json["media"]),
     txns: json["txns"] == null ? null : UTxnSelectorArgs.fromMap(json["txns"]),
-    address: json["address"] == null ? null : UAddressSelectorArgs.fromMap(json["address"]),
     wallet: json["wallet"] == null ? null : UWalletSelectorArgs.fromMap(json["wallet"]),
     merchant: json["merchant"] == null ? null : UMerchantSelectorArgs.fromMap(json["merchant"]),
     bankAccount: json["bankAccount"] == null ? null : UBankAccountSelectorArgs.fromMap(json["bankAccount"]),
@@ -39,7 +36,6 @@ class UUserSelectorArgs {
   Map<String, dynamic> toMap() => <String, dynamic>{
     "media": media?.toMap(),
     "txns": txns?.toMap(),
-    "address": address?.toMap(),
     "wallet": wallet?.toMap(),
     "merchant": merchant?.toMap(),
     "bankAccount": bankAccount?.toMap(),
@@ -335,20 +331,6 @@ class UBankAccountSelectorArgs {
   String toJson() => json.encode(toMap());
 
   factory UBankAccountSelectorArgs.fromJson(String str) => UBankAccountSelectorArgs.fromMap(json.decode(str));
-}
-
-class UAddressSelectorArgs {
-  final UUserSelectorArgs? creator;
-
-  const UAddressSelectorArgs({this.creator});
-
-  factory UAddressSelectorArgs.fromMap(Map<String, dynamic> json) => UAddressSelectorArgs(creator: json["creator"] == null ? null : UUserSelectorArgs.fromMap(json["creator"]));
-
-  Map<String, dynamic> toMap() => <String, dynamic>{"creator": creator?.toMap()};
-
-  String toJson() => json.encode(toMap());
-
-  factory UAddressSelectorArgs.fromJson(String str) => UAddressSelectorArgs.fromMap(json.decode(str));
 }
 
 class UWalletSelectorArgs {
