@@ -6968,12 +6968,6 @@ abstract class AppLocalizations {
   /// **'Candlestick Chart'**
   String get candlestickChart;
 
-  /// No description provided for @changesApplyLiveAndResetToDefaultsOnServerRestart.
-  ///
-  /// In en, this message translates to:
-  /// **'Changes apply live and reset to defaults on server restart.'**
-  String get changesApplyLiveAndResetToDefaultsOnServerRestart;
-
   /// No description provided for @chargeAndInternet.
   ///
   /// In en, this message translates to:
@@ -8071,12 +8065,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Laundry Slot (minutes)'**
   String get laundrySlotMinutes;
-
-  /// No description provided for @leaveMaskedToKeepTheCurrentValue.
-  ///
-  /// In en, this message translates to:
-  /// **'Leave masked to keep the current value'**
-  String get leaveMaskedToKeepTheCurrentValue;
 
   /// No description provided for @ledger.
   ///

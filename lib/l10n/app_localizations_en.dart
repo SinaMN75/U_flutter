@@ -3609,9 +3609,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get candlestickChart => 'Candlestick Chart';
 
   @override
-  String get changesApplyLiveAndResetToDefaultsOnServerRestart => 'Changes apply live and reset to defaults on server restart.';
-
-  @override
   String get chargeAndInternet => 'Charge and internet';
 
   @override
@@ -4177,9 +4174,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get laundrySlotMinutes => 'Laundry Slot (minutes)';
-
-  @override
-  String get leaveMaskedToKeepTheCurrentValue => 'Leave masked to keep the current value';
 
   @override
   String get ledger => 'Ledger';

@@ -3609,9 +3609,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get candlestickChart => 'نمودار شمعی';
 
   @override
-  String get changesApplyLiveAndResetToDefaultsOnServerRestart => 'تغییرات بلافاصله اعمال شده و با ری‌استارت سرور به حالت پیش‌فرض بازمی‌گردند.';
-
-  @override
   String get chargeAndInternet => 'شارژ و اینترنت';
 
   @override
@@ -4177,9 +4174,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get laundrySlotMinutes => 'مدت هر نوبت لباسشویی (دقیقه)';
-
-  @override
-  String get leaveMaskedToKeepTheCurrentValue => 'برای حفظ مقدار فعلی، ماسک را تغییر ندهید';
 
   @override
   String get ledger => 'دفتر امانت';
