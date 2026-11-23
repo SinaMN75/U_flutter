@@ -106,8 +106,12 @@ class UPhoneInputFormatter extends TextInputFormatter {
   /// Country whose format is used.
   final String countryCode;
 
+  /// True formats an Iran number as a landline, "21 8877 6655".
+  final bool landline;
+
   UPhoneInputFormatter({
     required this.countryCode,
+    this.landline = false,
   });
 
   static bool _isDigit(String character) => character.codeUnitAt(0) >= 48 && character.codeUnitAt(0) <= 57;
@@ -153,7 +157,7 @@ class UPhoneInputFormatter extends TextInputFormatter {
     }
 
     final String limited = UPhoneNumberUtils.inputDigits(digits, countryCode: countryCode);
-    final String formatted = UPhoneNumberUtils.formatNational(limited, countryCode: countryCode);
+    final String formatted = UPhoneNumberUtils.formatNational(limited, countryCode: countryCode, landline: landline);
 
     final int target = typed - (digits.length - limited.length);
     int offset = 0;

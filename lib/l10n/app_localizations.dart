@@ -8096,12 +8096,6 @@ abstract class AppLocalizations {
   /// **'Load Average'**
   String get loadAverage;
 
-  /// No description provided for @logoUrl.
-  ///
-  /// In en, this message translates to:
-  /// **'Logo URL'**
-  String get logoUrl;
-
   /// No description provided for @logs.
   ///
   /// In en, this message translates to:

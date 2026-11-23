@@ -1318,6 +1318,7 @@ class UTextFieldPhoneNumber extends StatefulWidget {
     this.bottom,
     this.positionedWidth,
     this.positionedHeight,
+    this.landline = false,
   });
 
   /// How the country picker opens: dropdown, dialog or bottom sheet.
@@ -1352,6 +1353,9 @@ class UTextFieldPhoneNumber extends StatefulWidget {
 
   /// Marks the field as required.
   final bool required;
+
+  /// True checks and shows a landline. An Iran landline does not start with 9.
+  final bool landline;
 
   /// Shows the value without allowing edits.
   final bool readOnly;
@@ -1464,7 +1468,7 @@ class _UTextFieldPhoneNumberState extends State<UTextFieldPhoneNumber> {
 
   String get _e164 => _national.isEmpty ? "" : "${_selectedCountry.dialCode}$_national";
 
-  bool get _isComplete => _national.isNotEmpty && UPhoneNumberUtils.isValid(_e164, countryCode: _selectedCountry.dialCode);
+  bool get _isComplete => _national.isNotEmpty && UPhoneNumberUtils.isValid(_e164, countryCode: _selectedCountry.dialCode, landline: widget.landline);
 
   void _syncController() {
     final TextEditingController? controller = widget.controller;
@@ -1490,7 +1494,7 @@ class _UTextFieldPhoneNumberState extends State<UTextFieldPhoneNumber> {
 
   void _setNational(String digits, UCountry country, {bool notify = true}) {
     final String limited = UPhoneNumberUtils.inputDigits(digits, countryCode: country.dialCode);
-    final String formatted = UPhoneNumberUtils.formatNational(limited, countryCode: country.dialCode);
+    final String formatted = UPhoneNumberUtils.formatNational(limited, countryCode: country.dialCode, landline: widget.landline);
     _lastText = formatted;
     if (country.dialCode != _selectedCountry.dialCode) _selectedCountry = country;
     _phoneController.value = TextEditingValue(
@@ -1558,12 +1562,12 @@ class _UTextFieldPhoneNumberState extends State<UTextFieldPhoneNumber> {
     focusNode: widget.focusNode,
     text: widget.text,
     labelText: widget.labelText,
-    hintText: widget.hintText ?? UPhoneNumberUtils.placeholder(_selectedCountry.dialCode),
+    hintText: widget.hintText ?? UPhoneNumberUtils.placeholder(_selectedCountry.dialCode, landline: widget.landline),
     required: widget.required,
     readOnly: widget.readOnly,
     validator: _validate,
     keyboardType: TextInputType.phone,
-    formatters: <TextInputFormatter>[UPhoneInputFormatter(countryCode: _selectedCountry.dialCode)],
+    formatters: <TextInputFormatter>[UPhoneInputFormatter(countryCode: _selectedCountry.dialCode, landline: widget.landline)],
     autoFillHints: const <String>[AutofillHints.telephoneNumber],
     contentPadding: widget.contentPadding ?? const EdgeInsets.only(left: 4, right: 12, top: 14, bottom: 14),
     margin: widget.margin,

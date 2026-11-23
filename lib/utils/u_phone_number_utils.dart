@@ -160,14 +160,16 @@ class UPhoneNumberUtils {
     return "${dialCodeOf(countryCode)}$national";
   }
 
-  /// True when the number has a valid length/shape for [countryCode]. `UPhoneNumberUtils.isValid("09121234567", countryCode: "IR")`
-  static bool isValid(String rawInput, {required String countryCode}) {
+  /// True when the number has a valid length/shape for [countryCode]. A landline in Iran is ten digits and does not start with 9.
+  static bool isValid(String rawInput, {required String countryCode, bool landline = false}) {
     final String code = dialCodeOf(countryCode);
     final String national = nationalNumber(rawInput, countryCode: code);
     if (national.length < nationalMinDigits || national.length > maxNationalDigits(code)) return false;
     if (national.startsWith("0") && !significantLeadingZeroDialCodes.contains(code)) return false;
     final List<int>? lengths = nationalDigitLengths[code];
-    return lengths == null || lengths.contains(national.length);
+    if (lengths != null && !lengths.contains(national.length)) return false;
+    if (landline && code == "+98" && national.startsWith("9")) return false;
+    return true;
   }
 
   /// Display masks per dial code and length.
@@ -295,10 +297,10 @@ class UPhoneNumberUtils {
     }
   }
 
-  /// Digits formatted for display, e.g. "912 123 4567".
-  static String formatNational(String digits, {required String countryCode}) {
+  /// Digits formatted for display, e.g. "912 123 4567". An Iran landline uses "21 8877 6655".
+  static String formatNational(String digits, {required String countryCode, bool landline = false}) {
     if (digits.isEmpty) return "";
-    final String mask = formatMask(digits.length, countryCode);
+    final String mask = landline && dialCodeOf(countryCode) == "+98" ? "## #### ####" : formatMask(digits.length, countryCode);
     if (!mask.contains("#")) return digits;
     final StringBuffer out = StringBuffer();
     int d = 0;
@@ -335,8 +337,9 @@ class UPhoneNumberUtils {
     return max;
   }
 
-  /// Example number for a field hint.
-  static String placeholder(String countryCode) {
+  /// Example number for a field hint. An Iran landline hint is "00 0000 0000".
+  static String placeholder(String countryCode, {bool landline = false}) {
+    if (landline && dialCodeOf(countryCode) == "+98") return "00 0000 0000";
     final List<int>? lengths = nationalDigitLengths[dialCodeOf(countryCode)];
     final int length = lengths == null || lengths.isEmpty ? 9 : lengths.last;
     return formatMask(length, countryCode).replaceAll("#", "0");

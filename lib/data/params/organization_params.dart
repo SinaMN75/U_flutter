@@ -6,7 +6,6 @@ class UOrganizationCreateParams {
     required this.ownerId,
     this.tags = const <int>[101],
     this.commissionPercent = 0,
-    this.logoUrl,
     this.address,
     this.phoneNumber,
     this.nationalId,
@@ -21,7 +20,6 @@ class UOrganizationCreateParams {
   final String ownerId;
   final List<int> tags;
   final double commissionPercent;
-  final String? logoUrl;
   final String? address;
   final String? phoneNumber;
   final String? nationalId;
@@ -36,7 +34,6 @@ class UOrganizationCreateParams {
     "ownerId": ownerId,
     "tags": tags,
     "commissionPercent": commissionPercent,
-    "logoUrl": logoUrl,
     "address": address,
     "phoneNumber": phoneNumber,
     "nationalId": nationalId,
@@ -57,7 +54,6 @@ class UOrganizationUpdateParams {
     this.tags,
     this.addTags,
     this.removeTags,
-    this.logoUrl,
     this.address,
     this.phoneNumber,
     this.nationalId,
@@ -75,7 +71,6 @@ class UOrganizationUpdateParams {
   final List<int>? tags;
   final List<int>? addTags;
   final List<int>? removeTags;
-  final String? logoUrl;
   final String? address;
   final String? phoneNumber;
   final String? nationalId;
@@ -93,7 +88,6 @@ class UOrganizationUpdateParams {
     "tags": tags,
     "addTags": addTags,
     "removeTags": removeTags,
-    "logoUrl": logoUrl,
     "address": address,
     "phoneNumber": phoneNumber,
     "nationalId": nationalId,

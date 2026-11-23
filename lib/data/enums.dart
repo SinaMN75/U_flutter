@@ -177,6 +177,7 @@ enum TagUser with UNumericIdentifiable {
   sunUser("کاربر سان", "Sun User", 205),
   subAdmin("زیرمجموعه ادمین", "Sub Admin", 206),
   organization("حساب مجموعه", "Organization Account", 207),
+  deleted("حذف شده", "Deleted", 208),
   awaitingVerification("در انتظار تایید", "Awaiting Verification", 301),
   verified("تایید شده", "Verified", 302),
   nationalCardFrontVerified("کارت ملی جلو تایید شده", "National Card Front Verified", 401),

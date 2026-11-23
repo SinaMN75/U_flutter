@@ -41,7 +41,7 @@ class UOrganizationMemberPlace {
 }
 
 class UOrganizationJson {
-  UOrganizationJson({this.detail1, this.detail2, this.commissionPercent = 0, this.members = const <UOrganizationMember>[], this.settlements = const <UOrganizationSettlement>[], this.logoUrl, this.address, this.phoneNumber, this.nationalId, this.economicCode, this.cityCode, this.subscriptions = const <UOrganizationSubscription>[]});
+  UOrganizationJson({this.detail1, this.detail2, this.commissionPercent = 0, this.members = const <UOrganizationMember>[], this.settlements = const <UOrganizationSettlement>[], this.address, this.phoneNumber, this.nationalId, this.economicCode, this.cityCode, this.subscriptions = const <UOrganizationSubscription>[]});
 
   factory UOrganizationJson.fromMap(Map<String, dynamic> json) => UOrganizationJson(
     detail1: json["detail1"],
@@ -49,7 +49,6 @@ class UOrganizationJson {
     commissionPercent: json["commissionPercent"] == null ? 0 : (json["commissionPercent"] as num).toDouble(),
     members: json["members"] == null ? <UOrganizationMember>[] : List<UOrganizationMember>.from(json["members"]!.map((dynamic x) => UOrganizationMember.fromMap(x))),
     settlements: json["settlements"] == null ? <UOrganizationSettlement>[] : List<UOrganizationSettlement>.from(json["settlements"]!.map((dynamic x) => UOrganizationSettlement.fromMap(x))),
-    logoUrl: json["logoUrl"],
     address: json["address"],
     phoneNumber: json["phoneNumber"],
     nationalId: json["nationalId"],
@@ -63,7 +62,6 @@ class UOrganizationJson {
   final double commissionPercent;
   final List<UOrganizationMember> members;
   final List<UOrganizationSettlement> settlements;
-  final String? logoUrl;
   final String? address;
   final String? phoneNumber;
   final String? nationalId;
@@ -77,7 +75,6 @@ class UOrganizationJson {
     "commissionPercent": commissionPercent,
     "members": members.map((UOrganizationMember x) => x.toMap()).toList(),
     "settlements": settlements.map((UOrganizationSettlement x) => x.toMap()).toList(),
-    "logoUrl": logoUrl,
     "address": address,
     "phoneNumber": phoneNumber,
     "nationalId": nationalId,
@@ -104,6 +101,7 @@ class UOrganizationResponse {
     this.subscriptionEndsAt,
     this.bankAccount,
     this.payments,
+    this.media,
   });
 
   factory UOrganizationResponse.fromMap(Map<String, dynamic> json) => UOrganizationResponse(
@@ -122,6 +120,7 @@ class UOrganizationResponse {
     subscriptionEndsAt: json["subscriptionEndsAt"] == null ? null : DateTime.parse(json["subscriptionEndsAt"]),
     bankAccount: json["bankAccount"] == null ? null : UBankAccountResponse.fromMap(json["bankAccount"]),
     payments: json["payments"] == null ? null : UOrganizationPayments.fromMap(json["payments"]),
+    media: json["media"] == null ? null : List<UMediaResponse>.from((json["media"] as List<dynamic>).map((dynamic x) => UMediaResponse.fromMap(x))),
   );
 
   final String id;
@@ -139,6 +138,9 @@ class UOrganizationResponse {
   final DateTime? subscriptionEndsAt;
   final UBankAccountResponse? bankAccount;
   final UOrganizationPayments? payments;
+  final List<UMediaResponse>? media;
+
+  UMediaResponse? get logo => media?.firstByTag(TagMedia.logo);
 
   double get pendingSettlements => jsonData.settlements.where((UOrganizationSettlement s) => s.approved == null).fold(0, (double a, UOrganizationSettlement s) => a + s.amount);
 

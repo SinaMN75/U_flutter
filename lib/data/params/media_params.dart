@@ -20,6 +20,7 @@ class UMediaCreateParams {
     this.dormRoomId,
     this.dormBedId,
     this.storeId,
+    this.organizationId,
   });
 
   final UFileData file;
@@ -40,6 +41,7 @@ class UMediaCreateParams {
   final String? dormRoomId;
   final String? dormBedId;
   final String? storeId;
+  final String? organizationId;
 
   String toJson() => json.encode(toMap());
 
@@ -61,6 +63,7 @@ class UMediaCreateParams {
     "dormRoomId": dormRoomId,
     "dormBedId": dormBedId,
     "storeId": storeId,
+    "organizationId": organizationId,
   };
 }
 
@@ -87,6 +90,8 @@ class UMediaUpdateParams {
     this.dormId,
     this.dormRoomId,
     this.dormBedId,
+    this.storeId,
+    this.organizationId,
   });
 
   factory UMediaUpdateParams.fromJson(String str) => UMediaUpdateParams.fromMap(json.decode(str));
@@ -113,6 +118,8 @@ class UMediaUpdateParams {
     dormId: json["dormId"],
     dormRoomId: json["dormRoomId"],
     dormBedId: json["dormBedId"],
+    storeId: json["storeId"],
+    organizationId: json["organizationId"],
   );
 
   final String id;
@@ -136,6 +143,8 @@ class UMediaUpdateParams {
   final String? dormId;
   final String? dormRoomId;
   final String? dormBedId;
+  final String? storeId;
+  final String? organizationId;
 
   String toJson() => json.encode(toMap());
 
@@ -161,5 +170,7 @@ class UMediaUpdateParams {
     "dormId": dormId,
     "dormRoomId": dormRoomId,
     "dormBedId": dormBedId,
+    "storeId": storeId,
+    "organizationId": organizationId,
   };
 }
