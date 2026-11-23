@@ -367,6 +367,7 @@ dart run u:app description "Order food in two taps"
 | `compile-sdk <level\|default>` | Android compileSdk. |
 | `ndk <version\|default>` | Android ndkVersion (fixes "plugin requires a newer NDK"). |
 | `java <8\|11\|17\|21>` | Android Java source/target and Kotlin jvmTarget. |
+| `toolchain` (alias `gradle`) | Raises Gradle, the Android Gradle Plugin, Kotlin and Java up to the versions this Flutter SDK ships. A project that is already newer stays there. `compileSdk`, `targetSdk` and `ndk` that say `flutter.*` are left alone. |
 
 ```bash
 dart run u:app min-sdk android 24
@@ -382,7 +383,13 @@ dart run u:app compile-sdk default
 dart run u:app ndk 27.0.12077973
 dart run u:app ndk default
 dart run u:app java 17
+dart run u:app toolchain
+dart run u:app toolchain --agp 9.5.2 --gradle 9.6.0 --kotlin 2.4.21
+dart run u:app toolchain --java 21
+dart run u:app toolchain --dry-run
 ```
+
+`toolchain` reads the Flutter SDK on this machine (`android/local.properties`, then `FLUTTER_ROOT`, then `flutter` on `PATH`) and copies the versions that SDK uses for a new app. That is the newest set this Flutter actually builds with. Pass a flag to pin one piece yourself, including a version newer than Flutter ships. Run it in an app, or inside a plugin to update that plugin's `android/build.gradle`.
 
 ---
 

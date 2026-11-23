@@ -3,6 +3,7 @@ import "package:u/src/cli/core.dart";
 import "package:u/src/cli/permissions.dart";
 import "package:u/src/cli/platforms.dart";
 import "package:u/src/cli/plist.dart";
+import "package:u/src/cli/toolchain.dart";
 
 const AppleFiles _ios = AppleFiles(Target.ios);
 const AppleFiles _macos = AppleFiles(Target.macos);
@@ -84,6 +85,12 @@ void cmdInfo(Project p, Args a) {
     _row("targetSdk", Gradle.display(Gradle.get(gradle, <String>["targetSdk", "targetSdkVersion"])));
     _row("compileSdk", Gradle.display(Gradle.get(gradle, <String>["compileSdk", "compileSdkVersion"])));
     _row("ndkVersion", Gradle.display(Gradle.get(gradle, <String>["ndkVersion"])));
+    final String? settings = AndroidFiles.settings(p) == null ? null : p.read(AndroidFiles.settings(p)!);
+    final String? root = AndroidFiles.rootBuild(p) == null ? null : p.read(AndroidFiles.rootBuild(p)!);
+    _row("gradle", readWrapperGradle(p.read(AndroidFiles.wrapper)));
+    _row("android plugin", readAgpVersion(settings) ?? readAgpVersion(root));
+    _row("kotlin", readKotlinVersion(settings) ?? readKotlinVersion(root) ?? readKotlinVersion(gradle));
+    _row("java", Gradle.jvmVersion(gradle)?.toString());
     _row("orientation", _androidOrientation(manifest));
     _row("permissions", _list(declaredPermissions(p, Target.android)));
     _row("deep links", _list(_androidSchemes(manifest).map((String s) => "$s://").toList()));
@@ -194,6 +201,7 @@ void cmdDoctor(Project p, Args a) {
     if (_releaseUsesDebugKeys(gradle)) {
       d.warn("Release builds are signed with debug keys (Play Console rejects them). Fix: dart run u:app signing --create");
     }
+    warnToolchain(p, d.warn);
     for (final String k in <String>["versionCode", "versionName"]) {
       final String? v = Gradle.get(gradle, <String>[k]);
       if (v != null && !v.startsWith("flutter.")) {

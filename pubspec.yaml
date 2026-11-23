@@ -100,6 +100,10 @@ flutter:
 # dart run u:app compile-sdk 36
 # dart run u:app ndk 27.0.12077973
 # dart run u:app java 17
+# dart run u:app toolchain
+# dart run u:app toolchain --agp 9.5.2 --gradle 9.6.0 --kotlin 2.4.21
+# dart run u:app toolchain --java 21
+# dart run u:app toolchain --dry-run
 #
 # Version & description:
 # dart run u:app version 1.0.0+1

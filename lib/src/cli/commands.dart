@@ -452,21 +452,9 @@ void cmdJava(Project p, Args a) {
   if (!_need(p, Target.android) || !p.targets(Target.android)) {
     return;
   }
-  final bool eight = v == "8" || v == "1.8";
-  final String enumSuffix = eight ? "1_8" : v;
-  final String target = eight ? "1.8" : v;
+  final String target = v == "8" || v == "1.8" ? "1.8" : v;
   Out.header("android");
-  p.edit(AndroidFiles.gradle(p), (String t) {
-    final String out = t
-        .replaceAll(RegExp(r"JavaVersion\.VERSION_\d+(?:_\d+)?"), "JavaVersion.VERSION_$enumSuffix")
-        .replaceAll(RegExp(r"JvmTarget\.JVM_\d+(?:_\d+)?"), "JvmTarget.JVM_$enumSuffix")
-        .replaceAllMapped(RegExp("(jvmTarget\\s*=?\\s*)([\"'])[\\d.]+\\2"), (Match m) => "${m.group(1)}${m.group(2)}$target${m.group(2)}")
-        .replaceAllMapped(RegExp(r"(jvmToolchain\()\d+(\))"), (Match m) => "${m.group(1)}${eight ? 8 : v}${m.group(2)}");
-    if (!RegExp(r"JavaVersion\.|JvmTarget\.|jvmTarget|jvmToolchain").hasMatch(t)) {
-      throw EditSkip("no Java / Kotlin JVM target settings found");
-    }
-    return out;
-  }, "Java source/target + Kotlin jvmTarget = $target");
+  p.edit(AndroidFiles.gradle(p), (String t) => Gradle.applyJvm(t, v), "Java source/target + Kotlin jvmTarget = $target");
 }
 
 // =============================================================================================

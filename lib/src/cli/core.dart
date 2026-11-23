@@ -147,7 +147,8 @@ class Project {
   Project(this.root, {required this.dryRun, this.only});
 
   /// Walks up from the current directory to the nearest pubspec.yaml.
-  factory Project.find({required bool dryRun, Set<Target>? only}) {
+  /// [allowPlugin] lets one command run inside a Flutter plugin (its `android/build.gradle`).
+  factory Project.find({required bool dryRun, Set<Target>? only, bool allowPlugin = false}) {
     Directory dir = Directory.current.absolute;
     while (!File("${dir.path}/pubspec.yaml").existsSync()) {
       final Directory parent = dir.parent;
@@ -157,10 +158,11 @@ class Project {
       dir = parent;
     }
     final Project p = Project(dir.path, dryRun: dryRun, only: only);
-    if (RegExp(r"^[ \t]+plugin:[ \t]*$", multiLine: true).hasMatch(p.read("pubspec.yaml") ?? "")) {
+    final bool pluginBuild = p.exists("android/build.gradle.kts") || p.exists("android/build.gradle");
+    if (p.isPlugin && !allowPlugin) {
       throw CliException("${p.root} is a plugin, not an app. Run this command inside the app that uses it (for example its example/ folder).");
     }
-    if (!Target.values.any(p.present)) {
+    if (!Target.values.any(p.present) && !(p.isPlugin && pluginBuild)) {
       throw CliException("No platform folders (android/, ios/, macos/, linux/, windows/, web/) found in ${p.root}.");
     }
     return p;
@@ -170,6 +172,9 @@ class Project {
   final bool dryRun;
   final Set<Target>? only;
   int changes = 0;
+
+  /// A Flutter plugin package (`flutter: plugin:`), not an app.
+  bool get isPlugin => RegExp(r"^[ \t]+plugin:[ \t]*$", multiLine: true).hasMatch(read("pubspec.yaml") ?? "");
 
   String path(String rel) => "$root/$rel";
 

@@ -9,10 +9,31 @@ import "package:u/src/cli/plist.dart";
 abstract final class AndroidFiles {
   static const String manifest = "android/app/src/main/AndroidManifest.xml";
   static const String keyProperties = "android/key.properties";
+  static const String wrapper = "android/gradle/wrapper/gradle-wrapper.properties";
 
   static String gradle(Project p) => p.exists("android/app/build.gradle.kts") ? "android/app/build.gradle.kts" : "android/app/build.gradle";
 
   static bool kts(Project p) => gradle(p).endsWith(".kts");
+
+  static String? settings(Project p) {
+    if (p.exists("android/settings.gradle.kts")) {
+      return "android/settings.gradle.kts";
+    }
+    if (p.exists("android/settings.gradle")) {
+      return "android/settings.gradle";
+    }
+    return null;
+  }
+
+  static String? rootBuild(Project p) {
+    if (p.exists("android/build.gradle.kts")) {
+      return "android/build.gradle.kts";
+    }
+    if (p.exists("android/build.gradle")) {
+      return "android/build.gradle";
+    }
+    return null;
+  }
 }
 
 /// Line-based edits of `android/app/build.gradle(.kts)`.
@@ -63,6 +84,45 @@ abstract final class Gradle {
       return "—";
     }
     return v.startsWith("flutter.") ? "$v ${Out.dim("(Flutter default)")}" : v;
+  }
+
+  static final RegExp _jvm = RegExp(r"JavaVersion\.|JvmTarget\.|jvmTarget|jvmToolchain");
+
+  /// The Java level this file compiles for (8, 11, 17, …), from source, target, or jvmTarget.
+  static int? jvmVersion(String? text) {
+    if (text == null) {
+      return null;
+    }
+    final Match? v = RegExp(r"JavaVersion\.VERSION_(\d+)(?:_(\d+))?").firstMatch(text);
+    if (v != null) {
+      return v.group(1) == "1" ? int.tryParse(v.group(2) ?? "") : int.tryParse(v.group(1)!);
+    }
+    final Match? jvm = RegExp(r"JvmTarget\.JVM_(\d+)(?:_(\d+))?").firstMatch(text);
+    if (jvm != null) {
+      return jvm.group(1) == "1" ? int.tryParse(jvm.group(2) ?? "") : int.tryParse(jvm.group(1)!);
+    }
+    final Match? quoted = RegExp("""jvmTarget\\s*=?\\s*["'](\\d+(?:\\.\\d+)?)["']""").firstMatch(text);
+    if (quoted != null) {
+      final String raw = quoted.group(1)!;
+      return int.tryParse(raw == "1.8" ? "8" : raw.split(".").first);
+    }
+    return int.tryParse(RegExp(r"jvmToolchain\((\d+)\)").firstMatch(text)?.group(1) ?? "");
+  }
+
+  /// Sets every Java source/target and Kotlin jvmTarget in [text] to [version] (8, 11, 17, 21, …).
+  static String applyJvm(String text, String version) {
+    if (!_jvm.hasMatch(text)) {
+      throw EditSkip("no Java / Kotlin JVM target settings found");
+    }
+    final bool eight = version == "8" || version == "1.8";
+    final String enumSuffix = eight ? "1_8" : version;
+    final String target = eight ? "1.8" : version;
+    final String number = eight ? "8" : version;
+    return text
+        .replaceAll(RegExp(r"JavaVersion\.VERSION_\d+(?:_\d+)?"), "JavaVersion.VERSION_$enumSuffix")
+        .replaceAll(RegExp(r"JvmTarget\.JVM_\d+(?:_\d+)?"), "JvmTarget.JVM_$enumSuffix")
+        .replaceAllMapped(RegExp("""(jvmTarget\\s*=?\\s*)(["'])[\\d.]+\\2"""), (Match m) => "${m.group(1)}${m.group(2)}$target${m.group(2)}")
+        .replaceAllMapped(RegExp(r"(jvmToolchain\()\d+(\))"), (Match m) => "${m.group(1)}$number${m.group(2)}");
   }
 }
 

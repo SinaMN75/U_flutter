@@ -7,6 +7,7 @@ import "package:u/src/cli/core.dart";
 import "package:u/src/cli/icons.dart";
 import "package:u/src/cli/report.dart";
 import "package:u/src/cli/splash.dart";
+import "package:u/src/cli/toolchain.dart";
 
 class _Command {
   const _Command(this.name, this.usage, this.summary, this.run, {this.examples = const <String>[], this.aliases = const <String>[]});
@@ -50,6 +51,14 @@ const List<_Command> _commands = <_Command>[
   _Command("compile-sdk", "compile-sdk <level|default>", "Android compileSdk", cmdCompileSdk, examples: <String>["compile-sdk 36"]),
   _Command("ndk", "ndk <version|default>", "Android ndkVersion (fixes \"plugin requires a newer NDK\" errors)", cmdNdk, examples: <String>["ndk 27.0.12077973"]),
   _Command("java", "java <8|11|17|21>", "Android Java source/target + Kotlin jvmTarget", cmdJava, examples: <String>["java 17"]),
+  _Command(
+    "toolchain",
+    "toolchain [--agp <ver>] [--gradle <ver>] [--kotlin <ver>] [--java <17|21>] [--compile-sdk <level>] [--target-sdk <level>] [--ndk <ver>]",
+    "Raise Android Gradle, Kotlin and Java to the versions this Flutter SDK ships",
+    cmdToolchain,
+    examples: <String>["toolchain", "toolchain --agp 9.5.2 --gradle 9.6.0 --kotlin 2.4.21", "toolchain --java 21"],
+    aliases: <String>["gradle"],
+  ),
   _Command("version", "version <x.y.z+build>", "Set the app version in pubspec.yaml (every platform reads it)", cmdVersion, examples: <String>["version 1.4.0+27"]),
   _Command(
     "bump",
@@ -200,6 +209,7 @@ void _help() {
     "name \"My Shop\"",
     "id com.sinamn75.shop",
     "min-sdk android 24 ios 18",
+    "toolchain",
     "permission add camera location internet",
     "icon assets/icon.png --background \"#FFFFFF\"",
     "splash --color \"#FFFFFF\" --image assets/logo.png",
@@ -249,7 +259,7 @@ Future<int> runCli(List<String> raw) async {
   }
   args.positional.removeAt(0);
   try {
-    final Project project = Project.find(dryRun: args.flag("dry-run"), only: args.platforms);
+    final Project project = Project.find(dryRun: args.flag("dry-run"), only: args.platforms, allowPlugin: command.name == "toolchain");
     await command.run(project, args);
     if (project.dryRun) {
       Out.line("\n${Out.yellow("Dry run: nothing was written.")} ${project.changes} change(s) would be made.");
