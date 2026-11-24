@@ -1446,12 +1446,23 @@ class UPdfViewerState extends State<UPdfViewer> {
     return title;
   }
 
+  bool get _sidebarSearchOpen => widget.showSidebar && _tab == _UPdfSidebarTab.search && (_wide ? _sidebarPinned : _sidebarOpen);
+
   void _openSearch() {
-    if (widget.showSidebar) {
-      _openSidebar(_UPdfSidebarTab.search);
-    } else {
-      setState(() => _searchOpen = true);
+    if (!widget.showSidebar) {
+      _toggleSearch();
+      return;
     }
+    if (_sidebarSearchOpen) {
+      setState(() {
+        _tab = _UPdfSidebarTab.thumbnails;
+        if (!_wide) _sidebarOpen = false;
+        _searchField.clear();
+        _controller.clearSearch();
+      });
+      return;
+    }
+    _openSidebar(_UPdfSidebarTab.search);
   }
 
   void _openSidebar(_UPdfSidebarTab tab) {
@@ -1572,9 +1583,8 @@ class UPdfViewerState extends State<UPdfViewer> {
         if (!_markup.import(data, merge: true)) UToast.errorToast(message: U.s.thisFieldIsInvalid);
         break;
       case "clearDrawings":
-        final int page = _visiblePage;
         final bool clear = await UNavigator.confirmAsync(title: U.s.clearDrawings, message: U.s.clearDrawingsConfirm, destructive: true);
-        if (clear) _markup.clearShapes(pageIndex: page);
+        if (clear) _markup.clearShapes();
         break;
       case "clearAll":
         final bool confirmed = await UNavigator.confirmAsync(title: U.s.clearAnnotations, message: U.s.areYouSureYouWantToDeleteThisItem(U.s.annotations), destructive: true);
@@ -2218,7 +2228,11 @@ extension _UPdfViewerChrome on UPdfViewerState {
                   ),
                   ...widget.actions,
                   if (value.isReady)
-                    IconButton(icon: Icon(_searchOpen ? Icons.search_off_rounded : Icons.search_rounded), tooltip: U.s.search, onPressed: widget.showSidebar ? _openSearch : _toggleSearch),
+                    IconButton(
+                      icon: Icon(_searchOpen || _sidebarSearchOpen ? Icons.search_off_rounded : Icons.search_rounded),
+                      tooltip: U.s.search,
+                      onPressed: _openSearch,
+                    ),
                   if (value.isReady && widget.enableMarkup)
                     IconButton(
                       icon: Icon(bookmarked ? Icons.bookmark_rounded : Icons.bookmark_add_outlined, color: bookmarked ? _markup.bookmarkOn(_visiblePage)?.color : null),
@@ -2249,32 +2263,12 @@ extension _UPdfViewerChrome on UPdfViewerState {
                       },
                     ),
                   if (value.isReady) IconButton(icon: const Icon(Icons.tune_rounded), tooltip: U.s.settings, onPressed: () => unawaited(_openSettings())),
-                  if (value.isReady)
+                  if (value.isReady && _moreMenu(target).isNotEmpty)
                     PopupMenuButton<String>(
                       icon: const Icon(Icons.more_vert_rounded),
                       tooltip: U.s.more,
                       onSelected: (String action) => unawaited(_onMenu(action)),
-                      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                        if (widget.enableMarkup) ...<PopupMenuEntry<String>>[
-                          _menuItem("annotations", Icons.sticky_note_2_outlined, U.s.annotations),
-                          _menuItem("bookmarks", Icons.bookmarks_outlined, U.s.bookmarks),
-                          if (widget.allowCopy) ...<PopupMenuEntry<String>>[
-                            _menuItem("exportNotes", Icons.ios_share_rounded, U.s.exportAnnotations),
-                            _menuItem("exportData", Icons.data_object_rounded, U.s.export),
-                          ],
-                          _menuItem("importData", Icons.download_rounded, U.s.importAnnotations),
-                          if (_drawingEnabled && _markup.shapesOn(_visiblePage).isNotEmpty) _menuItem("clearDrawings", Icons.layers_clear_outlined, U.s.clearDrawings),
-                          _menuItem("clearAll", Icons.delete_sweep_outlined, U.s.clearAnnotations),
-                        ],
-                        if (target != null) ...<PopupMenuEntry<String>>[
-                          const PopupMenuDivider(),
-                          _menuItem("pdfAnnotations", Icons.draw_outlined, U.s.annotations),
-                          _menuItem("pages", Icons.auto_stories_outlined, U.s.pages),
-                          _menuItem("tools", Icons.handyman_outlined, U.s.tools),
-                        ],
-                        const PopupMenuDivider(),
-                        _menuItem("info", Icons.info_outline_rounded, U.s.documentInfo),
-                      ],
+                      itemBuilder: (BuildContext context) => _moreMenu(target),
                     ),
                 ],
               ),
@@ -2295,6 +2289,24 @@ extension _UPdfViewerChrome on UPdfViewerState {
         ),
       ),
     );
+  }
+
+  List<PopupMenuEntry<String>> _moreMenu(UPdfEditController? target) {
+    final List<PopupMenuEntry<String>> items = <PopupMenuEntry<String>>[];
+    if (widget.enableMarkup && !_wide) items.add(_menuItem("annotations", Icons.sticky_note_2_outlined, U.s.annotations));
+    if (widget.enableMarkup && widget.allowCopy) {
+      items.add(_menuItem("exportNotes", Icons.ios_share_rounded, U.s.exportAnnotations));
+      items.add(_menuItem("exportData", Icons.data_object_rounded, U.s.export));
+    }
+    if (_drawingEnabled && _markup.shapes.isNotEmpty) items.add(_menuItem("clearDrawings", Icons.layers_clear_outlined, U.s.clearDrawings));
+    if (widget.enableMarkup && !_markup.isEmpty) items.add(_menuItem("clearAll", Icons.delete_sweep_outlined, U.s.clearAnnotations));
+    if (target != null) {
+      if (items.isNotEmpty) items.add(const PopupMenuDivider());
+      items.add(_menuItem("pdfAnnotations", Icons.draw_outlined, U.s.annotations));
+      items.add(_menuItem("pages", Icons.auto_stories_outlined, U.s.pages));
+      items.add(_menuItem("tools", Icons.handyman_outlined, U.s.tools));
+    }
+    return items;
   }
 
   PopupMenuItem<String> _menuItem(String value, IconData icon, String label) => PopupMenuItem<String>(
@@ -2546,9 +2558,8 @@ extension _UPdfViewerChrome on UPdfViewerState {
       (_UPdfSidebarTab.outline, Icons.format_list_bulleted_rounded, U.s.outline),
       if (widget.enableMarkup) (_UPdfSidebarTab.annotations, Icons.sticky_note_2_outlined, U.s.annotations),
       if (widget.enableMarkup) (_UPdfSidebarTab.bookmarks, Icons.bookmarks_outlined, U.s.bookmarks),
-      (_UPdfSidebarTab.search, Icons.search_rounded, U.s.search),
     ];
-    if (!tabs.any(((_UPdfSidebarTab, IconData, String) tab) => tab.$1 == _tab)) _tab = tabs.first.$1;
+    if (_tab != _UPdfSidebarTab.search && !tabs.any(((_UPdfSidebarTab, IconData, String) tab) => tab.$1 == _tab)) _tab = tabs.first.$1;
     return Column(
       children: <Widget>[
         SizedBox(
@@ -2583,7 +2594,7 @@ extension _UPdfViewerChrome on UPdfViewerState {
           itemBuilder: (BuildContext context, int index) {
             final bool current = index == _visiblePage;
             final UDocBookmark? bookmark = widget.enableMarkup ? _markup.bookmarkOn(index) : null;
-            final int notes = widget.enableMarkup ? _markup.markupsOn(index).length : 0;
+            final int notes = widget.enableMarkup ? _markup.markupsOn(index).length + _markup.shapesOn(index).length : 0;
             final double ratio = _controller.pageInfo(index).aspectRatio;
             return Padding(
               padding: const EdgeInsets.only(bottom: 12),
@@ -2646,6 +2657,10 @@ extension _UPdfViewerChrome on UPdfViewerState {
             _closeSidebarIfOverlay();
             applyState(() => _activeMarkup = markup);
             _jumpToRect(markup.pageIndex, markup.bounds);
+          },
+          onOpenShape: (UDocShape shape) {
+            _closeSidebarIfOverlay();
+            _jumpToRect(shape.pageIndex, shape.bounds);
           },
         );
       case _UPdfSidebarTab.bookmarks:

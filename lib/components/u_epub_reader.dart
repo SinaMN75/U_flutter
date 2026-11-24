@@ -908,6 +908,15 @@ class UEpubReaderState extends State<UEpubReader> {
     if (hit is UEpubSearchHit) unawaited(_openHit(hit));
   }
 
+  Future<void> _openShape(UDocShape shape) async {
+    _closeSidebarIfOverlay();
+    if (_chapter?.spineIndex != shape.pageIndex) {
+      await _loadChapter(shape.pageIndex, block: max(0, shape.blockIndex));
+    } else {
+      _goToBlock(max(0, shape.blockIndex));
+    }
+  }
+
   Future<void> _openMarkup(UDocMarkup markup) async {
     _closeSidebarIfOverlay();
     if (_chapter?.spineIndex != markup.pageIndex) {
@@ -1768,6 +1777,7 @@ class UEpubReaderState extends State<UEpubReader> {
           allowCopy: widget.allowCopy,
           pageLabel: (UDocMarkup markup) => _chapterLabel(markup.pageIndex),
           onOpen: (UDocMarkup markup) => unawaited(_openMarkup(markup)),
+          onOpenShape: (UDocShape shape) => unawaited(_openShape(shape)),
         );
       case _UEpubSidebarTab.bookmarks:
         return UDocBookmarksPanel(controller: _markup, pageLabel: (UDocBookmark bookmark) => _chapterLabel(bookmark.pageIndex), onOpen: (UDocBookmark bookmark) => unawaited(_openBookmark(bookmark)));

@@ -155,12 +155,8 @@ class USideMenuController extends ChangeNotifier {
   /// Expands/collapses the menu.
   void toggleCollapsed() => collapsed = !collapsed;
 
-  /// Switches expanded → rail → hidden.
-  void cycleMode() => mode = switch (_resolvedMode) {
-    USideMenuMode.expanded => USideMenuMode.rail,
-    USideMenuMode.rail => USideMenuMode.hidden,
-    USideMenuMode.hidden => USideMenuMode.expanded,
-  };
+  /// Switches the wide menu and the icon rail. Phones stay a drawer.
+  void cycleMode() => mode = _resolvedMode == USideMenuMode.expanded ? USideMenuMode.rail : USideMenuMode.expanded;
 
   /// Current search text.
   String get search => _search;
@@ -452,6 +448,7 @@ class USideMenu extends StatefulWidget {
     super.key,
     this.theme,
     this.header,
+    this.collapsedHeader,
     this.enableSearch = true,
     this.searchHint,
     this.enablePinning = true,
@@ -481,6 +478,9 @@ class USideMenu extends StatefulWidget {
 
   /// Widget at the top.
   final Widget? header;
+
+  /// Logo shown when the menu is an icon rail. Falls back to [header].
+  final Widget? collapsedHeader;
 
   /// Shows a search box that filters items.
   final bool enableSearch;
@@ -713,12 +713,13 @@ class _USideMenuState extends State<USideMenu> with TickerProviderStateMixin {
     final Widget? action = _buildHeaderAction(collapsed, inOverlay: inOverlay);
 
     if (collapsed) {
+      final Widget? mark = widget.collapsedHeader ?? (widget.header == null ? null : _LogoFallback(header: widget.header!));
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            if (widget.header != null) _LogoFallback(header: widget.header!),
+            ?mark,
             ?action,
           ],
         ),
@@ -773,7 +774,7 @@ class _USideMenuState extends State<USideMenu> with TickerProviderStateMixin {
     if (!widget.enableToggleButton) return null;
 
     return IconButton(
-      tooltip: collapsed ? U.s.hideMenu : U.s.collapse,
+      tooltip: collapsed ? U.s.showItem(U.s.menu) : U.s.collapse,
       color: _t.indicatorColor,
       icon: AnimatedRotation(
         turns: collapsed ? 0.5 : 0,

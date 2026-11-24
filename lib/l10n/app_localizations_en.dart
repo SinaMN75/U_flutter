@@ -476,7 +476,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get clearDrawings => 'Clear drawings';
 
   @override
-  String get clearDrawingsConfirm => 'Remove every drawing on this page?';
+  String get clearDrawingsConfirm => 'Remove every drawing?';
 
   @override
   String get clearFilters => 'Clear Filters';

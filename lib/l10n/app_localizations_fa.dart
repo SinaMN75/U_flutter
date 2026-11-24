@@ -476,7 +476,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get clearDrawings => 'پاک کردن طراحی‌ها';
 
   @override
-  String get clearDrawingsConfirm => 'همه طراحی‌های این صفحه حذف شود؟';
+  String get clearDrawingsConfirm => 'همه طراحی‌ها حذف شود؟';
 
   @override
   String get clearFilters => 'حذف فیلترها';

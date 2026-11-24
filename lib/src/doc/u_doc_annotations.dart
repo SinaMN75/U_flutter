@@ -1485,10 +1485,11 @@ class _UDocNoteDialogState extends State<_UDocNoteDialog> {
 
 /// Searchable list of every markup and note, grouped per selection.
 class UDocAnnotationsPanel extends StatefulWidget {
-  const UDocAnnotationsPanel({required this.controller, required this.onOpen, this.pageLabel, this.allowCopy = true, this.title, super.key});
+  const UDocAnnotationsPanel({required this.controller, required this.onOpen, this.onOpenShape, this.pageLabel, this.allowCopy = true, this.title, super.key});
 
   final UDocAnnotationController controller;
   final void Function(UDocMarkup markup) onOpen;
+  final void Function(UDocShape shape)? onOpenShape;
   final String Function(UDocMarkup markup)? pageLabel;
   final bool allowCopy;
   final String? title;
@@ -1510,6 +1511,35 @@ class _UDocAnnotationsPanelState extends State<UDocAnnotationsPanel> {
 
   String _label(UDocMarkup markup) => widget.pageLabel?.call(markup) ?? "${U.s.page} ${markup.pageIndex + 1}";
 
+  bool _shapeMatches(UDocShape shape, String needle) {
+    final bool highlight = shape.kind == UDocShapeKind.highlighter || shape.kind == UDocShapeKind.areaHighlight;
+    if (_notesOnly && !shape.hasText) return false;
+    if (_kind == UDocMarkupKind.highlight && !highlight) return false;
+    if (_kind != null && _kind != UDocMarkupKind.highlight) return false;
+    if (needle.isEmpty) return true;
+    return UDocText.forSearch(shape.text).contains(needle);
+  }
+
+  IconData _shapeIcon(UDocShapeKind kind) {
+    switch (kind) {
+      case UDocShapeKind.highlighter:
+      case UDocShapeKind.areaHighlight:
+        return Icons.highlight_alt_rounded;
+      case UDocShapeKind.textBox:
+      case UDocShapeKind.stickyNote:
+        return Icons.sticky_note_2_outlined;
+      case UDocShapeKind.pen:
+        return Icons.draw_rounded;
+      default:
+        return Icons.polyline_rounded;
+    }
+  }
+
+  Future<void> _deleteShape(UDocShape shape) async {
+    final bool confirmed = await UNavigator.confirmAsync(title: U.s.delete, message: U.s.areYouSureYouWantToDeleteThisItem(U.s.drawings), destructive: true);
+    if (confirmed) widget.controller.removeShape(shape.id);
+  }
+
   @override
   Widget build(BuildContext context) => AnimatedBuilder(
     animation: widget.controller,
@@ -1522,6 +1552,8 @@ class _UDocAnnotationsPanelState extends State<UDocAnnotationsPanel> {
         if (needle.isEmpty) return true;
         return UDocText.forSearch("${entries.map((UDocMarkup markup) => markup.text).join(" ")} ${first.note}").contains(needle);
       }).toList();
+      final List<UDocShape> shapes = widget.controller.shapes.where((UDocShape shape) => _shapeMatches(shape, needle)).toList()
+        ..sort((UDocShape a, UDocShape b) => a.pageIndex != b.pageIndex ? a.pageIndex.compareTo(b.pageIndex) : a.createdAt.compareTo(b.createdAt));
       return Column(
         children: <Widget>[
           Padding(
@@ -1562,7 +1594,7 @@ class _UDocAnnotationsPanelState extends State<UDocAnnotationsPanel> {
             ),
           ),
           Expanded(
-            child: groups.isEmpty
+            child: groups.isEmpty && shapes.isEmpty
                 ? Center(
               child: Padding(
                 padding: const EdgeInsets.all(24),
@@ -1571,15 +1603,45 @@ class _UDocAnnotationsPanelState extends State<UDocAnnotationsPanel> {
             )
                 : ListView.separated(
               padding: const EdgeInsets.fromLTRB(8, 4, 8, 16),
-              itemCount: groups.length,
+              itemCount: groups.length + shapes.length,
               separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 6),
-              itemBuilder: (BuildContext context, int index) => _tile(context, groups[index]),
+              itemBuilder: (BuildContext context, int index) => index < groups.length ? _tile(context, groups[index]) : _shapeTile(context, shapes[index - groups.length]),
             ),
           ),
         ],
       );
     },
   );
+
+  Widget _shapeTile(BuildContext context, UDocShape shape) {
+    final ColorScheme scheme = Theme.of(context).colorScheme;
+    final String page = "${U.s.page} ${shape.pageIndex + 1}";
+    return Material(
+      color: scheme.surfaceContainerLow,
+      borderRadius: BorderRadius.circular(12),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: widget.onOpenShape == null ? null : () => widget.onOpenShape!(shape),
+        child: Row(
+          children: <Widget>[
+            Container(width: 5, height: 48, color: shape.strokeColor),
+            const SizedBox(width: 10),
+            Icon(_shapeIcon(shape.kind), size: 16, color: shape.strokeColor),
+            const SizedBox(width: 6),
+            Expanded(
+              child: UTextLabelMedium(shape.hasText ? shape.text : page, maxLines: 2, overflow: TextOverflow.ellipsis),
+            ),
+            IconButton(
+              tooltip: U.s.delete,
+              visualDensity: VisualDensity.compact,
+              icon: const Icon(Icons.delete_outline_rounded, size: 18),
+              onPressed: () => unawaited(_deleteShape(shape)),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   Widget _tile(BuildContext context, List<UDocMarkup> entries) {
     final UDocMarkup first = entries.first;

@@ -1013,7 +1013,7 @@ abstract class AppLocalizations {
   /// No description provided for @clearDrawingsConfirm.
   ///
   /// In en, this message translates to:
-  /// **'Remove every drawing on this page?'**
+  /// **'Remove every drawing?'**
   String get clearDrawingsConfirm;
 
   /// No description provided for @clearFilters.

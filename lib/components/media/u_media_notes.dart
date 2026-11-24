@@ -13,6 +13,7 @@ class UMediaNote {
     this.end,
     this.text = "",
     this.color = const Color(0xFFFFC107),
+    this.pinned = false,
     this.extra = const <String, Object?>{},
   });
 
@@ -29,6 +30,7 @@ class UMediaNote {
     end: json["endMs"] == null ? null : Duration(milliseconds: (json["endMs"]! as num).toInt()),
     text: (json["text"] as String?) ?? "",
     color: Color((json["color"] as num?)?.toInt() ?? 0xFFFFC107),
+    pinned: json["pinned"] == true,
     createdAt: DateTime.tryParse((json["created"] as String?) ?? "") ?? DateTime.now(),
     updatedAt: DateTime.tryParse((json["updated"] as String?) ?? "") ?? DateTime.now(),
     extra: <String, Object?>{...?(json["extra"] as Map<String, Object?>?)},
@@ -49,6 +51,9 @@ class UMediaNote {
   /// Main color (defaults to the theme).
   final Color color;
 
+  /// Stays at the top of the notes list.
+  final bool pinned;
+
   /// When the note was created.
   final DateTime createdAt;
 
@@ -62,12 +67,13 @@ class UMediaNote {
   bool get isRange => end != null && end! > position;
 
   /// Copy with some fields changed.
-  UMediaNote copyWith({Duration? position, Duration? end, bool clearEnd = false, String? text, Color? color}) => UMediaNote(
+  UMediaNote copyWith({Duration? position, Duration? end, bool clearEnd = false, String? text, Color? color, bool? pinned}) => UMediaNote(
     id: id,
     position: position ?? this.position,
     end: clearEnd ? null : (end ?? this.end),
     text: text ?? this.text,
     color: color ?? this.color,
+    pinned: pinned ?? this.pinned,
     createdAt: createdAt,
     updatedAt: DateTime.now(),
     extra: extra,
@@ -80,6 +86,7 @@ class UMediaNote {
     if (end != null) "endMs": end!.inMilliseconds,
     "text": text,
     "color": color.toARGB32(),
+    if (pinned) "pinned": true,
     "created": createdAt.toIso8601String(),
     "updated": updatedAt.toIso8601String(),
     if (extra.isNotEmpty) "extra": extra,
@@ -578,6 +585,10 @@ class _UMediaNotesPanelState extends State<UMediaNotesPanel> {
                 ),
               ),
               const SizedBox(width: 10),
+              if (note.pinned) ...<Widget>[
+                const Padding(padding: EdgeInsets.only(top: 4), child: Icon(Icons.push_pin_rounded, size: 16)),
+                const SizedBox(width: 4),
+              ],
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(top: 2),
@@ -589,6 +600,7 @@ class _UMediaNotesPanelState extends State<UMediaNotesPanel> {
                 padding: EdgeInsets.zero,
                 onSelected: (String action) async {
                   if (action == "edit") await _edit(note);
+                  if (action == "pin") widget.notes.replace(note.copyWith(pinned: !note.pinned));
                   if (action == "color") {
                     final Color? color = await UNavigator.colorPicker(defaultColor: note.color, colors: UDocPalette.colors);
                     if (color != null) widget.notes.replace(note.copyWith(color: color));
@@ -597,6 +609,7 @@ class _UMediaNotesPanelState extends State<UMediaNotesPanel> {
                   if (action == "delete") widget.notes.remove(note.id);
                 },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                  PopupMenuItem<String>(value: "pin", child: UTextBodyMedium(note.pinned ? U.s.unpin : U.s.pin)),
                   PopupMenuItem<String>(value: "edit", child: UTextBodyMedium(U.s.editItem(U.s.note))),
                   PopupMenuItem<String>(value: "color", child: UTextBodyMedium(U.s.color)),
                   PopupMenuItem<String>(value: "here", child: UTextBodyMedium(uFormatDuration(widget.controller.value.position))),
@@ -614,7 +627,11 @@ class _UMediaNotesPanelState extends State<UMediaNotesPanel> {
   Widget build(BuildContext context) => AnimatedBuilder(
     animation: widget.notes,
     builder: (BuildContext context, Widget? child) {
-      final List<UMediaNote> notes = widget.notes.search(_query.text);
+      final List<UMediaNote> notes = widget.notes.search(_query.text).toList()
+        ..sort((UMediaNote a, UMediaNote b) {
+          if (a.pinned != b.pinned) return a.pinned ? -1 : 1;
+          return a.position.compareTo(b.position);
+        });
       final ColorScheme scheme = Theme.of(context).colorScheme;
       final Widget? header = !widget.showHeader
           ? null
@@ -628,15 +645,7 @@ class _UMediaNotesPanelState extends State<UMediaNotesPanel> {
               tooltip: U.s.more,
               onSelected: (String action) async {
                 if (action == "share") await UShare.text(widget.notes.toMarkdown());
-                if (action == "copy") {
-                  await UClipboard.set(widget.notes.export());
-                  UToast.toast(message: U.s.copied);
-                }
                 if (action == "srt") await UShare.text(widget.notes.toSrt());
-                if (action == "import") {
-                  final String? data = await UNavigator.inputDialog(title: U.s.importAnnotations, hint: U.s.importAnnotations);
-                  if (data != null && data.trim().isNotEmpty && !widget.notes.import(data, merge: true)) UToast.errorToast(message: U.s.thisFieldIsInvalid);
-                }
                 if (action == "clear") {
                   final bool confirmed = await UNavigator.confirmAsync(title: U.s.clearAnnotations, message: U.s.areYouSureYouWantToDeleteThisItem(U.s.notes), destructive: true);
                   if (confirmed) widget.notes.clear();
@@ -644,9 +653,7 @@ class _UMediaNotesPanelState extends State<UMediaNotesPanel> {
               },
               itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
                 PopupMenuItem<String>(value: "share", child: UTextBodyMedium(U.s.exportAnnotations)),
-                PopupMenuItem<String>(value: "copy", child: UTextBodyMedium(U.s.export)),
                 const PopupMenuItem<String>(value: "srt", child: UTextBodyMedium("SRT")),
-                PopupMenuItem<String>(value: "import", child: UTextBodyMedium(U.s.importAnnotations)),
                 PopupMenuItem<String>(value: "clear", child: UTextBodyMedium(U.s.clearAnnotations)),
               ],
             ),
