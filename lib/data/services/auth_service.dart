@@ -13,7 +13,18 @@ class UAuthService {
     Function(UResponse<ULoginResponse> r)? onOk,
     Function(UEmptyResponse e)? onError,
     Function(String e)? onException,
-  }) => _Api.call("/auth/RefreshToken", p.toMap(), _session, _Api.empty, onOk, onError, onException);
+  }) {
+    final int sessionEpoch = UAuth.epoch;
+    return _Api.call(
+      "/auth/RefreshToken",
+      p.toMap(),
+      (String body) => _session(body, sessionEpoch: sessionEpoch),
+      _Api.empty,
+      onOk,
+      onError,
+      onException,
+    );
+  }
 
   Future<(UEmptyResponse?, UEmptyResponse?, String?)> getVerificationCodeForLogin({
     required UGetMobileVerificationCodeForLoginParams p,
@@ -57,9 +68,14 @@ class UAuthService {
     Function(String e)? onException,
   }) => _Api.call("/auth/ResetPassword", p.toMap(), _Api.empty, _Api.empty, onOk, onError, onException);
 
-  UResponse<ULoginResponse> _session(String body) {
+  UResponse<ULoginResponse> _session(String body, {int? sessionEpoch}) {
     final UResponse<ULoginResponse> response = UResponse<ULoginResponse>.fromJson(body, (dynamic i) => ULoginResponse.fromMap(i));
-    setUserData(response.result!);
+    if (sessionEpoch != null && sessionEpoch != UAuth.epoch) {
+      return UResponse<ULoginResponse>(result: null, status: response.status, message: response.message);
+    }
+    final ULoginResponse? session = response.result;
+    if (session == null) throw const FormatException("Missing login result.");
+    setUserData(session);
     return response;
   }
 

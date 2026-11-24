@@ -32,6 +32,7 @@ abstract class UAuth {
   /// Call after saving new tokens; resets the session-ended flag.
   static void onTokensIssued() {
     _epoch++;
+    _refreshInFlight = null;
     _authFailureHandled = false;
   }
 
@@ -106,26 +107,29 @@ abstract class UAuth {
 
   /// Refreshes the tokens now; parallel calls share one request. Returns true on success.
   static Future<bool> refresh() {
-    _refreshInFlight ??= _refresh().whenComplete(() => _refreshInFlight = null);
-    return _refreshInFlight!;
+    final Future<bool>? inFlight = _refreshInFlight;
+    if (inFlight != null) return inFlight;
+    final Future<bool> request = _refresh();
+    _refreshInFlight = request;
+    return request.whenComplete(() {
+      if (identical(_refreshInFlight, request)) _refreshInFlight = null;
+    });
   }
 
   static Future<bool> _refresh() async {
     final String? refreshToken = ULocalStorage.getRefreshToken();
     if (refreshToken == null || refreshToken.isEmpty) return false;
     if (isRefreshTokenExpired) return false;
-    final (UResponse<ULoginResponse>?, UEmptyResponse?, String?) result = await UAuthService().refreshToken(
+    final int sessionEpoch = _epoch;
+    final (UResponse<ULoginResponse>? response, UEmptyResponse? error, String? exception) = await UAuthService().refreshToken(
       p: URefreshTokenParams(refreshToken: refreshToken),
-      onOk: (UResponse<ULoginResponse> r) {},
-      onError: (UEmptyResponse e) {},
-      onException: (String e) {},
     );
-    if (result.$1?.result != null) {
+    if (response?.result != null) {
       _log("refresh: OK, new token stored. ${diagnostics()}");
       return true;
     }
-    final UEmptyResponse? error = result.$2;
-    _log("refresh: FAILED status=${error?.status} message=${error?.message} exception=${result.$3}");
+    if (_epoch != sessionEpoch) return false;
+    _log("refresh: FAILED status=${error?.status} message=${error?.message} exception=$exception");
     final bool isRejected =
         error != null &&
         (error.status == Usc.unAuthorized.number ||
@@ -139,6 +143,8 @@ abstract class UAuth {
 
   /// Signs out: clears storage and files but keeps the language and theme. `await UAuth.signOut(); UNavigator.offAll(LoginPage())`
   static Future<void> signOut() async {
+    _epoch++;
+    _refreshInFlight = null;
     final String? locale = ULocalStorage.getLocale();
     final bool isDarkMode = ULocalStorage.isDarkMode();
     await ULocalStorage.clear();
@@ -146,11 +152,12 @@ abstract class UAuth {
     if (locale != null) ULocalStorage.setLocale(locale);
     ULocalStorage.setDarkMode(isDarkMode);
     _authFailureHandled = false;
-    _epoch++;
   }
 
   /// Deletes only the tokens and user id.
   static Future<void> clear() async {
+    _epoch++;
+    _refreshInFlight = null;
     await ULocalStorage.remove(UConstants.token);
     await ULocalStorage.remove(UConstants.refreshToken);
     await ULocalStorage.remove(UConstants.refreshTokenExpiresAt);
