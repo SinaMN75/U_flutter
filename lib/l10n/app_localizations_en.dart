@@ -4191,7 +4191,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loadAverage => 'Load Average';
 
   @override
-  @override
   String get logs => 'Logs';
 
   @override

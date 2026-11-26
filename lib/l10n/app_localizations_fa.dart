@@ -4191,7 +4191,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get loadAverage => 'میانگین بار';
 
   @override
-  @override
   String get logs => 'لاگ‌ها';
 
   @override
