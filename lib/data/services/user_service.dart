@@ -15,6 +15,13 @@ class UUserService {
     Function(String e)? onException,
   }) => _Api.call("/User/Read", p.toMap(), _Api.list(UUserResponse.fromMap), _Api.empty, onOk, onError, onException);
 
+  Future<(UResponse<List<UUserResponse>>?, UEmptyResponse?, String?)> readPublic({
+    required UUserReadParams p,
+    Function(UResponse<List<UUserResponse>> r)? onOk,
+    Function(UEmptyResponse e)? onError,
+    Function(String e)? onException,
+  }) => _Api.call("/User/ReadPublic", p.toMap(), _Api.list(UUserResponse.fromMap), _Api.empty, onOk, onError, onException);
+
   Future<(UResponse<UUserResponse>?, UEmptyResponse?, String?)> readById({
     required UIdParams p,
     Function(UResponse<UUserResponse> r)? onOk,
