@@ -109,6 +109,7 @@ export "components/u_base64_image_picker.dart";
 export "components/u_button.dart";
 export "components/u_camera.dart";
 export "components/u_charts.dart";
+export "components/u_color_picker.dart";
 export "components/u_content_bento_page.dart";
 export "components/u_credit_card.dart";
 export "components/u_download_manager_page.dart";
