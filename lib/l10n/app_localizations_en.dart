@@ -5146,10 +5146,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cached => 'Cached';
 
   @override
+  String get charities => 'Charities';
+
+  @override
   String get charity => 'Charity';
 
   @override
+  String charityAmountHint(Object min, Object max) {
+    return 'The amount can be a number between $min and $max rials';
+  }
+
+  @override
+  String get charityChooseAmount => 'Choose amount';
+
+  @override
+  String get charityColorHint => 'Write the colour as #RRGGBB';
+
+  @override
   String get charityDonation => 'Charity donation';
+
+  @override
+  String get charityEnterAmount => 'Choose or enter an amount';
+
+  @override
+  String get charityName => 'Charity name';
+
+  @override
+  String get charitySubtitle => 'Short description';
 
   @override
   String get checkManagement => 'Check management';

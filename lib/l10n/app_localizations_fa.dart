@@ -5146,10 +5146,33 @@ class AppLocalizationsFa extends AppLocalizations {
   String get cached => 'ذخیره‌شده';
 
   @override
+  String get charities => 'خیریه‌ها';
+
+  @override
   String get charity => 'نیکوکاری';
 
   @override
+  String charityAmountHint(Object min, Object max) {
+    return 'مبلغ می‌تواند عددی بین $min تا $max ریال باشد';
+  }
+
+  @override
+  String get charityChooseAmount => 'انتخاب مبلغ';
+
+  @override
+  String get charityColorHint => 'رنگ را به شکل #RRGGBB بنویسید';
+
+  @override
   String get charityDonation => 'کمک خیریه';
+
+  @override
+  String get charityEnterAmount => 'مبلغ مورد نظر خود را انتخاب یا وارد کنید';
+
+  @override
+  String get charityName => 'نام خیریه';
+
+  @override
+  String get charitySubtitle => 'توضیح کوتاه';
 
   @override
   String get checkManagement => 'مدیریت چک‌ها';

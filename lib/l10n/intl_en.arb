@@ -2124,8 +2124,21 @@
     }
   },
   "cached": "Cached",
+  "charities": "Charities",
   "charity": "Charity",
+  "charityAmountHint": "The amount can be a number between {min} and {max} rials",
+  "@charityAmountHint": {
+    "placeholders": {
+      "min": {},
+      "max": {}
+    }
+  },
+  "charityChooseAmount": "Choose amount",
+  "charityColorHint": "Write the colour as #RRGGBB",
   "charityDonation": "Charity donation",
+  "charityEnterAmount": "Choose or enter an amount",
+  "charityName": "Charity name",
+  "charitySubtitle": "Short description",
   "checkManagement": "Check management",
   "checkOrderStatus": "Check order status",
   "civicPartnership": "Civic Partnership",

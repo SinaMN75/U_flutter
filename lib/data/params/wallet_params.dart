@@ -36,6 +36,16 @@ class UWalletChargeParams {
   };
 }
 
+class UWalletPurchaseParams {
+  UWalletPurchaseParams({required this.tag, required this.amount, this.userId});
+
+  final int tag;
+  final double amount;
+  final String? userId;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{"tag": tag, "amount": amount, "userId": userId};
+}
+
 class UWalletReadParams {
   final int? pageSize;
   final int? pageNumber;

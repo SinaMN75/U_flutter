@@ -1938,8 +1938,21 @@
     }
   },
   "cached": "ذخیره‌شده",
+  "charities": "خیریه‌ها",
   "charity": "نیکوکاری",
+  "charityAmountHint": "مبلغ می‌تواند عددی بین {min} تا {max} ریال باشد",
+  "@charityAmountHint": {
+    "placeholders": {
+      "min": {},
+      "max": {}
+    }
+  },
+  "charityChooseAmount": "انتخاب مبلغ",
+  "charityColorHint": "رنگ را به شکل #RRGGBB بنویسید",
   "charityDonation": "کمک خیریه",
+  "charityEnterAmount": "مبلغ مورد نظر خود را انتخاب یا وارد کنید",
+  "charityName": "نام خیریه",
+  "charitySubtitle": "توضیح کوتاه",
   "checkManagement": "مدیریت چک‌ها",
   "checkOrderStatus": "بررسی وضعیت سفارش",
   "civicPartnership": "مشارکت مدنی",

@@ -199,6 +199,7 @@ class UUserJson {
     this.referralCode,
     this.referrerId,
     this.utcOffsetMinutes = 0,
+    this.color,
   });
 
   factory UUserJson.fromJson(String str) => UUserJson.fromMap(json.decode(str));
@@ -228,6 +229,7 @@ class UUserJson {
     referralCode: json["referralCode"],
     referrerId: json["referrerId"],
     utcOffsetMinutes: json["utcOffsetMinutes"] ?? 0,
+    color: json["color"],
   );
   final String? fcmToken;
   final bool muteFollowAlerts;
@@ -258,6 +260,9 @@ class UUserJson {
   /// Minutes from UTC; the server uses it for quiet hours.
   final int utcOffsetMinutes;
 
+  /// Card colour, `#RRGGBB`. Null when the user has no colour.
+  final String? color;
+
   String toJson() => json.encode(toMap());
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -285,5 +290,6 @@ class UUserJson {
     "referralCode": referralCode,
     "referrerId": referrerId,
     "utcOffsetMinutes": utcOffsetMinutes,
+    "color": color,
   };
 }

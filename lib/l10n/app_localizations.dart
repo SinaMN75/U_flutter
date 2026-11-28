@@ -9986,17 +9986,59 @@ abstract class AppLocalizations {
   /// **'Cached'**
   String get cached;
 
+  /// No description provided for @charities.
+  ///
+  /// In en, this message translates to:
+  /// **'Charities'**
+  String get charities;
+
   /// No description provided for @charity.
   ///
   /// In en, this message translates to:
   /// **'Charity'**
   String get charity;
 
+  /// No description provided for @charityAmountHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The amount can be a number between {min} and {max} rials'**
+  String charityAmountHint(Object min, Object max);
+
+  /// No description provided for @charityChooseAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose amount'**
+  String get charityChooseAmount;
+
+  /// No description provided for @charityColorHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write the colour as #RRGGBB'**
+  String get charityColorHint;
+
   /// No description provided for @charityDonation.
   ///
   /// In en, this message translates to:
   /// **'Charity donation'**
   String get charityDonation;
+
+  /// No description provided for @charityEnterAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose or enter an amount'**
+  String get charityEnterAmount;
+
+  /// No description provided for @charityName.
+  ///
+  /// In en, this message translates to:
+  /// **'Charity name'**
+  String get charityName;
+
+  /// No description provided for @charitySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Short description'**
+  String get charitySubtitle;
 
   /// No description provided for @checkManagement.
   ///

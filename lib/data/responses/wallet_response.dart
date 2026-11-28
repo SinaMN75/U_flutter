@@ -76,6 +76,8 @@ extension NullableWalletExtension on UWalletTxnResponse {
         return Icons.account_balance_outlined;
       case TagWalletTxn.subscription:
         return Icons.workspace_premium_outlined;
+      case TagWalletTxn.charity:
+        return Icons.volunteer_activism_outlined;
       case TagWalletTxn.goldPurchase:
       case TagWalletTxn.goldSale:
       case TagWalletTxn.goldPurchaseRefund:
