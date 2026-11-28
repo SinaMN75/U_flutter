@@ -12,6 +12,7 @@ class UUserCreateParams {
     this.lastName,
     this.nationalCode,
     this.bio,
+    this.color,
     this.birthdate,
     this.weight,
     this.height,
@@ -45,6 +46,7 @@ class UUserCreateParams {
     lastName: json["lastName"],
     nationalCode: json["nationalCode"],
     bio: json["bio"],
+    color: json["color"],
     birthdate: json["birthdate"] == null ? null : DateTime.parse(json["birthdate"]),
     weight: json["weight"]?.toDouble(),
     height: json["height"]?.toDouble(),
@@ -75,6 +77,7 @@ class UUserCreateParams {
   final String? lastName;
   final String? nationalCode;
   final String? bio;
+  final String? color;
   final DateTime? birthdate;
   final double? weight;
   final double? height;
@@ -108,6 +111,7 @@ class UUserCreateParams {
     "lastName": lastName,
     "nationalCode": nationalCode,
     "bio": bio,
+    "color": color,
     "birthdate": birthdate?.toIso8601String(),
     "weight": weight,
     "height": height,
@@ -238,6 +242,7 @@ class UUserUpdateParams {
     this.phoneNumber,
     this.email,
     this.bio,
+    this.color,
     this.birthdate,
     this.fcmToken,
     this.muteFollowAlerts,
@@ -290,6 +295,7 @@ class UUserUpdateParams {
     phoneNumber: json["phoneNumber"],
     email: json["email"],
     bio: json["bio"],
+    color: json["color"],
     birthdate: json["birthdate"] == null ? null : DateTime.parse(json["birthdate"]),
     fcmToken: json["fcmToken"],
     fatherName: json["fatherName"],
@@ -334,6 +340,7 @@ class UUserUpdateParams {
   final String? phoneNumber;
   final String? email;
   final String? bio;
+  final String? color;
   final DateTime? birthdate;
   final String? fcmToken;
   final bool? muteFollowAlerts;
@@ -388,6 +395,7 @@ class UUserUpdateParams {
     "phoneNumber": phoneNumber,
     "email": email,
     "bio": bio,
+    "color": color,
     "birthdate": birthdate?.toIso8601String(),
     "fcmToken": fcmToken,
     "muteFollowAlerts": muteFollowAlerts,
